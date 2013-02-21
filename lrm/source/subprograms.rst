@@ -43,7 +43,13 @@ variable.
    
 #. An *input* of a subprogram is a global item or parameter whose initial
    value may be used in determining the final value of an output of the 
-   subprogram.
+   subprogram.  
+   
+   As a special case, a global item or parameter is also considered an input if
+   it is deemed to have no observable effect on any output of the subprogram but 
+   is only used in determining a **null** value.  Such a **null** value can only 
+   be specified using a an explicit ``null_dependency_clause`` in the Depends 
+   aspect of the subprogram (see :ref:`depends-aspects`).
 
 .. centered:: **Verification Rules**
 
@@ -537,9 +543,10 @@ the grammar of ``dependency_relation`` given below.
    dependency_relation    ::= null
                             | (dependency_clause {, dependency_clause})
    dependency_clause      ::= output_list =>[+] input_list
+                            | null_dependency_clause
+   null_dependency_clause ::= null => input_list
    output_list            ::= output
                             | (output {, output})
-                            | null
    input_list             ::= input
                             | (input {, input})
                             | null
@@ -625,6 +632,8 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 6.1.5 LR Each input shall appear at least once
+      
+#. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
 
 .. centered:: **Static Semantics**
 
@@ -640,16 +649,18 @@ where
    *self-dependency*, that is, it is dependent on itself. 
    [The text (A, B, C) =>+ Z is shorthand for 
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
+   
+#. A ``dependency_clause`` of the form A =>+ A has the same meaning as A => A.
 
 #. A ``dependency_clause`` with a **null** ``input_list`` means that the final
    value of each ``output`` in the ``output_list`` does not depend on any
    ``input``, other than itself, if the ``output_list`` =>+ **null**
    self-dependency syntax is used.
 
-#. An ``output_list`` that is **null** represents a *sink* for each
+#. A ``null_dpendency_clause`` represents a *sink* for each
    ``input`` in the ``input_list``.  The ``inputs`` in the ``input_list`` have
    no discernible effect from an information flow analysis viewpoint.
-   [The purpose of a **null** ``output_list`` is to facilitate the abstraction 
+   [The purpose of a ``null_dependency_clause`` is to facilitate the abstraction 
    and calling of subprograms whose implementation is not in |SPARK|.]
 
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
@@ -923,30 +934,32 @@ subprogram bodies.
 
 .. centered:: **Verification Rules**
 
-#. A ``global_item`` shall occur in a Global aspect of a subprogram if and
-   only if it is referenced by the subprogram.
+#. A``global_item`` shall occur in a Global aspect of a 
+   subprogram if and only if it denotes an entity that is referenced by the 
+   subprogram.
    
-#. Each ``global_item`` in a Global aspect of a subprogram that is an input
-   or output of the subprogram shall satisfy the following mode
+#. Each entity denoted by a ``global_item`` in a Global aspect of a subprogram 
+   that is an input or output of the subprogram shall satisfy the following mode
    specification rules 
    [which are checked during analysis of the subprogram body]:
 
-   * a ``global_item`` that is an input but not an output is mode **in** and 
-     has a ``mode_selector`` of Input; 
+   * a ``global_item`` that denotes an input but not an output is mode **in** 
+     and has a ``mode_selector`` of Input; 
    
-   * a ``global_item`` that is an output but not an input is always fully 
+   * a ``global_item`` that denotes an output but not an input is always fully 
      initialized on every call of the subprogram, is mode **out** and has a 
      ``mode_selector`` of Output;
      
-   * otherwise the ``global_item`` is both an input and an output, is
+   * otherwise the ``global_item`` denotes both an input and an output, is
      mode **in out** and has a ``mode_selector`` of In_Out.
 
-#. A ``global_item`` that is referenced by a subprogram but is neither an
-   input nor an output of that subprogram [that is, it is only used to determine
-   the value of an assertion expression] has a ``mode_selector`` of Proof_In.
+#. An entity that is denoted by a ``global_item`` which is referenced by a 
+   subprogram but is neither an input nor an output but is only referenced
+   directly, or indirectly in assertion expressions has a ``mode_selector`` of 
+   Proof_In.
 
 .. todo::
-    Consider how implicitly generated proof obligations associated wth runtime checks
+    Consider how implicitly generated proof obligations associated with runtime checks
     should be viewed in relation to Proof_In.
     To be addressed in the Milestone 4 version of this document.
 
