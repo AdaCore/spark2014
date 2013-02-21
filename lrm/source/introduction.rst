@@ -130,7 +130,7 @@ which is specific to |SPARK|):
    to be performed on the language feature.
 
 All sections are always listed and if no content is required then the
-corresponding section will be marked *Not applicable*.
+corresponding section will be marked *Not applicable*. 
 
 In addition, examples of the use of the new features are given along with the
 language definition detail.
@@ -200,8 +200,8 @@ formal program verification phase may be considered to be complete.
 .. [#bounded_errors] In the case of some bounded errors a check and any resulting
    exception only *may* be required.
 
-Note that in some cases the result of performing formal verification of a program may
-depend on properties of the machine on which that program is executed or on properties of the tools
+Note that formal verification of a program must take acount
+of the machine on which that program is executed and the properties of the tools
 used to compile and build it. In such cases it must be possible to represent the dependencies as explicit
 inputs to the formal verification process.
 

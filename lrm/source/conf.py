@@ -54,9 +54,9 @@ copyright = u'2013, Altran UK Ltd and AdaCore'
 # built documents.
 #
 # The short X.Y version.
-version = '0.1'
+version = '0.2'
 # The full version, including alpha/beta/rc tags.
-release = '0.1'
+release = '0.2'
 
 # Substitution for the new SPARK name
 rst_prolog = """.. |SPARK| replace:: SPARK 2014
@@ -71,6 +71,8 @@ rst_prolog = """.. |SPARK| replace:: SPARK 2014
 #today = ''
 # Else, today_fmt is used as the format for a strftime call.
 #today_fmt = '%B %d, %Y'
+
+today='February 25, 2013'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
