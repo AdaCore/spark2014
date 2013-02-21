@@ -3,8 +3,8 @@ package Swap_Add_14
 is
    procedure Swap
       with Global  => (In_Out => (X, Y)),
-           Depends => (X => Y,   -- equivalent of "X from Y"
-	               Y => X);  -- equivalent of "Y from X"
+           Depends => (X => Y,   -- to be read as "X depends on Y"
+	               Y => X);  -- to be read as "Y depends on X"
    
    function Add return Integer
       with Global  => (Input => (X, Y));
