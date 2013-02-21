@@ -936,6 +936,9 @@ There are no additional dynamic semantics associated with type invariants.
      the check is performed on each such part of type T.
      [Note that these checks are only performed statically, and this does not create an
      obligation to extend the run-time checks performed in relation to type invariants.]
+     
+..todo:: The support for type invariants needs to be considered further and will
+  be completed for Milestone 3 version of this document.
 
 Deferred Constants
 ------------------
