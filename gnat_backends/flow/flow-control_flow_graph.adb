@@ -718,6 +718,7 @@ package body Flow.Control_Flow_Graph is
             Do_While_Loop;
 
          elsif Iterator_Specification (N) /= Empty then
+            --  N_Iterator_Specification is not in SPARK2014
             raise Why.Not_Implemented;
 
          else
