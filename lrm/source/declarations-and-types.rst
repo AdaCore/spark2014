@@ -29,6 +29,17 @@ For a type or subtype to be in |SPARK|, all predicate specifications that apply
 to the (sub)type must be in |SPARK|.  Notwithstanding any rule to the contrary,
 a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
 
+Classification of Operations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No restrictions or extensions.
+
+Subtype Predicates
+~~~~~~~~~~~~~~~~~~
+
+..todo:: It is intended to support subtype predicates.  Analysis is required
+  to determine if any subset rules need to be applied.
+
 Objects and Named Numbers
 -------------------------
 
