@@ -717,6 +717,9 @@ package body Flow.Control_Flow_Graph is
             --  We have a while loop.
             Do_While_Loop;
 
+         elsif Iterator_Specification (N) /= Empty then
+            raise Why.Not_Implemented;
+
          else
             --  We have a for loop. Make sure we don't have an
             --  iterator, but a normal range.
