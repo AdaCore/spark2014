@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                            GNAT2WHY COMPONENTS                           --
+--                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
---        F L O W . P R O G R A M _ D E P E N D E N C E _ G R A P H         --
+--                 F L O W . I N T E R P R O C E D U R A L                  --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                  Copyright (C) 2013, Altran UK Limited                   --
 --                                                                          --
@@ -21,17 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Flow.Program_Dependence_Graph is
+package Flow.Interprocedural is
 
-   procedure Create
-     (FA : in out Flow_Analysis_Graphs)
-   is
-   begin
-      FA.PDG := FA.CFG.Create;
+   procedure Create (FA : in out Flow_Analysis_Graphs);
+   --  Initializee the transitive dependency graph by filling in the
+   --  non-ipfa dependencies.
 
-      FA.PDG.Copy_Edges (FA.CDG);
-      FA.PDG.Copy_Edges (FA.DDG);
-      FA.PDG.Copy_Edges (FA.TDG);
-   end Create;
-
-end Flow.Program_Dependence_Graph;
+end Flow.Interprocedural;

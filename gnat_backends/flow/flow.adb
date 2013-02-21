@@ -39,6 +39,7 @@ with Alfa.Util;
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Control_Dependence_Graph;
+with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 with Flow.Analysis;
 
@@ -392,10 +393,18 @@ package body Flow is
             CFG          => Flow_Graphs.Create,
             DDG          => Flow_Graphs.Create,
             CDG          => Flow_Graphs.Create,
+            TDG          => Flow_Graphs.Create,
             PDG          => Flow_Graphs.Create,
             Vars         => Flow_Id_Sets.Empty_Set,
             Loops        => Node_Sets.Empty_Set);
 
+         if Debug_Flag_Dot_ZZ then
+            Output.Write_Str (Character'Val (8#33#) & "[32m" &
+                                "Flow analysis of " &
+                                Get_Name_String (Chars (E)) &
+                                Character'Val (8#33#) & "[0m");
+            Output.Write_Eol;
+         end if;
          Control_Flow_Graph.Create (Body_N, FA);
 
          --  We print this graph first in cast the other algorithms
@@ -409,6 +418,7 @@ package body Flow is
 
          Data_Dependence_Graph.Create (FA);
          Control_Dependence_Graph.Create (FA);
+         Interprocedural.Create (FA);
          Program_Dependence_Graph.Create (FA);
 
          --  Now we print everything else.

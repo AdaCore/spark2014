@@ -216,6 +216,7 @@ package Flow is
       CFG          : Flow_Graphs.T;
       DDG          : Flow_Graphs.T;
       CDG          : Flow_Graphs.T;
+      TDG          : Flow_Graphs.T;
       PDG          : Flow_Graphs.T;
       Vars         : Flow_Id_Sets.Set;
       Loops        : Node_Sets.Set;
