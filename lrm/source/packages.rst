@@ -32,7 +32,7 @@ The variable declarations are only visible to clients of Q if they
 are declared in the visible part of Q.  The
 declarations of all other variables are *hidden* from a client of Q.
 Though the variables are hidden they still form part (or all) of the
-state of Q and this hidden state cannot be ignored for static analyses
+state of Q and this *hidden state* cannot be ignored for static analyses
 and proof.  *State abstraction* is the means by which this hidden state
 is managed for static analyses and proof.
 
@@ -448,7 +448,7 @@ Package Bodies
 #. Each statement of a ``handled_sequence_of_statements`` of a ``package_body`` 
    shall not read, directly or indirectly, a value which is not entirely derived 
    entirely from compile-time constants.
-
+   
 State Refinement
 ~~~~~~~~~~~~~~~~
 
@@ -609,6 +609,11 @@ Initialization Refinement
 Refined Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
+..todo: The subject of refined Global, Depends, Pre and Post aspects is still 
+  under discussion (and their need questioned) and so the subsections covering 
+  these aspects is subject to change.  To be resolved and completed by
+  Milestone 3 version of this document.
+  
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
