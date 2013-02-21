@@ -176,6 +176,200 @@ package body Flow is
       return Defining_Identifier (N);
    end Loop_Parameter_From_Loop;
 
+   -----------------
+   -- Print_Graph --
+   -----------------
+
+   procedure Print_Graph
+     (Filename     : String;
+      G            : Flow_Graphs.T;
+      Start_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+      End_Vertex   : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex) is
+
+      use Flow_Graphs;
+
+      function NDI
+        (G : T'Class;
+         V : Vertex_Id) return Node_Display_Info;
+      --  Pretty-printing for each vertex in the dot output.
+
+      function EDI
+        (G      : T'Class;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : Edge_Colours) return Edge_Display_Info;
+      --  Pretty-printing for each edge in the dot output.
+
+      ---------
+      -- NDI --
+      ---------
+
+      function NDI
+        (G : T'Class;
+         V : Vertex_Id) return Node_Display_Info
+      is
+         Rv : Node_Display_Info := Node_Display_Info'
+           (Show   => True,
+            Shape  => Flow_Graphs.Node_Shape_T'First,
+            Colour => Null_Unbounded_String,
+            Label  => Null_Unbounded_String);
+      begin
+         if G.Get_Attributes (V).Is_Null_Node then
+            Rv.Show := False;
+         elsif V = Start_Vertex then
+            Rv.Label := To_Unbounded_String ("start");
+            Rv.Shape := Shape_None;
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+              G.Out_Neighbour_Count (V) > 0;
+         elsif V = End_Vertex then
+            Rv.Label := To_Unbounded_String ("end");
+            Rv.Shape := Shape_None;
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+              G.Out_Neighbour_Count (V) > 0;
+         else
+            Temp_String := Null_Unbounded_String;
+            Output.Set_Special_Output (Add_To_Temp_String'Access);
+
+            declare
+               F : constant Flow_Id      := G.Get_Key (V);
+               A : constant V_Attributes := G.Get_Attributes (V);
+            begin
+               case F.Kind is
+                  when Direct_Mapping =>
+                     declare
+                        N : constant Node_Id := Get_Direct_Mapping_Id (F);
+                     begin
+                        case Nkind (N) is
+                           when N_If_Statement =>
+                              Rv.Shape := Shape_Diamond;
+                              Output.Write_Str ("if ");
+                              Sprint_Node (Condition (N));
+                           when N_Loop_Statement =>
+                              Rv.Shape := Shape_Diamond;
+                              if Iteration_Scheme (N) = Empty then
+                                 --  Basic loop. Should never
+                                 --  appear as a vertex in the
+                                 --  graph.
+                                 pragma Assert (False);
+                              elsif Condition (Iteration_Scheme (N)) /=
+                                Empty then
+                                 --  While loop.
+                                 Output.Write_Str ("while ");
+                                 Sprint_Node
+                                   (Condition (Iteration_Scheme (N)));
+                              else
+                                 Sprint_Node
+                                   (Iteration_Scheme (N));
+                              end if;
+
+                           when N_Procedure_Call_Statement =>
+                              Rv.Shape := Shape_Box;
+                              Output.Write_Str ("call ");
+                              Sprint_Node (Name (N));
+
+                           when others =>
+                              if A.Is_Parameter then
+                                 Rv.Shape := Shape_None;
+
+                                 case F.Variant is
+                                    when In_View =>
+                                       Sprint_Flow_Id (A.Parameter_Formal);
+                                       Output.Write_Str ("'in");
+                                       Output.Write_Str ("&nbsp;:=&nbsp;");
+                                       Sprint_Flow_Id (A.Parameter_Actual);
+
+                                    when Out_View =>
+                                       Sprint_Flow_Id (A.Parameter_Actual);
+                                       Output.Write_Str ("&nbsp;:=&nbsp;");
+                                       Sprint_Flow_Id (A.Parameter_Formal);
+                                       Output.Write_Str ("'out");
+                                    when others =>
+                                       raise Program_Error;
+                                 end case;
+
+                              else
+                                 Sprint_Node (N);
+                              end if;
+                        end case;
+                     end;
+
+                     case F.Variant is
+                        when Initial_Value =>
+                           Rv.Shape := Shape_None;
+                           Output.Write_Str ("'initial");
+
+                           if not A.Is_Initialised then
+                              Rv.Colour := To_Unbounded_String ("red");
+                           end if;
+
+                        when Final_Value =>
+                           Rv.Shape := Shape_None;
+                           Output.Write_Str ("'final");
+                           if A.Is_Export then
+                              Rv.Colour := To_Unbounded_String ("blue");
+                           end if;
+
+                        when others =>
+                           null;
+                     end case;
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+               if A.Loops.Length > 0 and not A.Is_Parameter then
+                  Output.Write_Str ("\nLoops:");
+                  for Loop_Identifier of A.Loops loop
+                     Output.Write_Str ("&nbsp;");
+                     Sprint_Node (Loop_Identifier);
+                  end loop;
+               end if;
+            end;
+
+            Output.Write_Eol;
+            Output.Cancel_Special_Output;
+            Rv.Label := Temp_String;
+         end if;
+
+         return Rv;
+      end NDI;
+
+      ---------
+      -- EDI --
+      ---------
+
+      function EDI
+        (G      : T'Class;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : Edge_Colours) return Edge_Display_Info
+      is
+         pragma Unreferenced (G, A, B, Marked);
+
+         Rv : Edge_Display_Info :=
+           Edge_Display_Info'(Show   => True,
+                              Shape  => Edge_Normal,
+                              Colour => Null_Unbounded_String,
+                              Label  => Null_Unbounded_String);
+      begin
+         case Colour is
+            when EC_Default =>
+               null;
+            when EC_DDG =>
+               Rv.Colour := To_Unbounded_String ("red");
+            when EC_TD =>
+               Rv.Colour := To_Unbounded_String ("cornflowerblue");
+         end case;
+         return Rv;
+      end EDI;
+   begin
+      G.Write_Pdf_File
+        (Filename  => Filename,
+         Node_Info => NDI'Access,
+         Edge_Info => EDI'Access);
+   end Print_Graph;
+
    -------------------------
    -- Flow_Analyse_Entity --
    -------------------------
@@ -190,181 +384,6 @@ package body Flow is
       declare
          Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
          FA     : Flow_Analysis_Graphs;
-
-         function NDI
-           (G : T'Class;
-            V : Vertex_Id) return Node_Display_Info;
-         --  Pretty-printing for each vertex in the dot output.
-
-         function EDI
-           (G      : T'Class;
-            A      : Vertex_Id;
-            B      : Vertex_Id;
-            Marked : Boolean;
-            Colour : Edge_Colours) return Edge_Display_Info;
-         --  Pretty-printing for each edge in the dot output.
-
-         ---------
-         -- NDI --
-         ---------
-
-         function NDI
-           (G : T'Class;
-            V : Vertex_Id) return Node_Display_Info
-         is
-            Rv : Node_Display_Info := Node_Display_Info'
-              (Show   => True,
-               Shape  => Flow_Graphs.Node_Shape_T'First,
-               Colour => Null_Unbounded_String,
-               Label  => Null_Unbounded_String);
-         begin
-            if G.Get_Attributes (V).Is_Null_Node then
-               Rv.Show := False;
-            elsif V = FA.Start_Vertex then
-               Rv.Label := To_Unbounded_String ("start");
-               Rv.Shape := Shape_None;
-               Rv.Show  := G.In_Neighbour_Count (V) > 0 or
-                 G.Out_Neighbour_Count (V) > 0;
-            elsif V = FA.End_Vertex then
-               Rv.Label := To_Unbounded_String ("end");
-               Rv.Shape := Shape_None;
-               Rv.Show  := G.In_Neighbour_Count (V) > 0 or
-                 G.Out_Neighbour_Count (V) > 0;
-            else
-               Temp_String := Null_Unbounded_String;
-               Output.Set_Special_Output (Add_To_Temp_String'Access);
-
-               declare
-                  F : constant Flow_Id      := G.Get_Key (V);
-                  A : constant V_Attributes := G.Get_Attributes (V);
-               begin
-                  case F.Kind is
-                     when Direct_Mapping =>
-                        declare
-                           N : constant Node_Id := Get_Direct_Mapping_Id (F);
-                        begin
-                           case Nkind (N) is
-                              when N_If_Statement =>
-                                 Rv.Shape := Shape_Diamond;
-                                 Output.Write_Str ("if ");
-                                 Sprint_Node (Condition (N));
-                              when N_Loop_Statement =>
-                                 Rv.Shape := Shape_Diamond;
-                                 if Iteration_Scheme (N) = Empty then
-                                    --  Basic loop. Should never
-                                    --  appear as a vertex in the
-                                    --  graph.
-                                    pragma Assert (False);
-                                 elsif Condition (Iteration_Scheme (N)) /=
-                                   Empty then
-                                    --  While loop.
-                                    Output.Write_Str ("while ");
-                                    Sprint_Node
-                                      (Condition (Iteration_Scheme (N)));
-                                 else
-                                    Sprint_Node
-                                      (Iteration_Scheme (N));
-                                 end if;
-
-                              when N_Procedure_Call_Statement =>
-                                 Rv.Shape := Shape_Box;
-                                 Output.Write_Str ("call ");
-                                 Sprint_Node (Name (N));
-
-                              when others =>
-                                 if A.Is_Parameter then
-                                    Rv.Shape := Shape_None;
-
-                                    case F.Variant is
-                                       when In_View =>
-                                          Sprint_Flow_Id (A.Parameter_Formal);
-                                          Output.Write_Str ("'in");
-                                          Output.Write_Str ("&nbsp;:=&nbsp;");
-                                          Sprint_Flow_Id (A.Parameter_Actual);
-
-                                       when Out_View =>
-                                          Sprint_Flow_Id (A.Parameter_Actual);
-                                          Output.Write_Str ("&nbsp;:=&nbsp;");
-                                          Sprint_Flow_Id (A.Parameter_Formal);
-                                          Output.Write_Str ("'out");
-                                       when others =>
-                                          raise Program_Error;
-                                    end case;
-
-                                 else
-                                    Sprint_Node (N);
-                                 end if;
-                           end case;
-                        end;
-
-                        case F.Variant is
-                           when Initial_Value =>
-                              Rv.Shape := Shape_None;
-                              Output.Write_Str ("'initial");
-
-                              if not A.Is_Initialised then
-                                 Rv.Colour := To_Unbounded_String ("red");
-                              end if;
-
-                           when Final_Value =>
-                              Rv.Shape := Shape_None;
-                              Output.Write_Str ("'final");
-                              if A.Is_Export then
-                                 Rv.Colour := To_Unbounded_String ("blue");
-                              end if;
-
-                           when others =>
-                              null;
-                        end case;
-                     when others =>
-                        raise Program_Error;
-                  end case;
-
-                  if A.Loops.Length > 0 and not A.Is_Parameter then
-                     Output.Write_Str ("\nLoops:");
-                     for Loop_Identifier of A.Loops loop
-                        Output.Write_Str ("&nbsp;");
-                        Sprint_Node (Loop_Identifier);
-                     end loop;
-                  end if;
-               end;
-
-               Output.Write_Eol;
-               Output.Cancel_Special_Output;
-               Rv.Label := Temp_String;
-            end if;
-
-            return Rv;
-         end NDI;
-
-         ---------
-         -- EDI --
-         ---------
-
-         function EDI
-           (G      : T'Class;
-            A      : Vertex_Id;
-            B      : Vertex_Id;
-            Marked : Boolean;
-            Colour : Edge_Colours) return Edge_Display_Info
-         is
-            pragma Unreferenced (G, A, B, Marked);
-
-            Rv : Edge_Display_Info :=
-              Edge_Display_Info'(Show   => True,
-                                 Shape  => Edge_Normal,
-                                 Colour => Null_Unbounded_String,
-                                 Label  => Null_Unbounded_String);
-         begin
-            case Colour is
-               when EC_Default =>
-                  null;
-               when EC_DDG =>
-                  Rv.Colour := To_Unbounded_String ("red");
-            end case;
-            return Rv;
-         end EDI;
-
       begin
          FA := Flow_Analysis_Graphs'
            (Subprogram   => E,
@@ -382,10 +401,10 @@ package body Flow is
          --  We print this graph first in cast the other algorithms
          --  barf.
          if Debug_Flag_Dot_ZZ then
-            FA.CFG.Write_Pdf_File
-              (Filename  => Get_Name_String (Chars (E)) & "_cfg",
-               Node_Info => NDI'Access,
-               Edge_Info => EDI'Access);
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cfg",
+                         G            => FA.CFG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
          end if;
 
          Data_Dependence_Graph.Create (FA);
@@ -394,20 +413,20 @@ package body Flow is
 
          --  Now we print everything else.
          if Debug_Flag_Dot_ZZ then
-            FA.DDG.Write_Pdf_File
-              (Filename  => Get_Name_String (Chars (E)) & "_ddg",
-               Node_Info => NDI'Access,
-               Edge_Info => EDI'Access);
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
+                         G            => FA.DDG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
 
-            FA.CDG.Write_Pdf_File
-              (Filename  => Get_Name_String (Chars (E)) & "_cdg",
-               Node_Info => NDI'Access,
-               Edge_Info => EDI'Access);
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
+                         G            => FA.CDG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
 
-            FA.PDG.Write_Pdf_File
-              (Filename  => Get_Name_String (Chars (E)) & "_pdg",
-               Node_Info => NDI'Access,
-               Edge_Info => EDI'Access);
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
+                         G            => FA.PDG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
          end if;
 
          Analysis.Find_Ineffective_Imports (FA);

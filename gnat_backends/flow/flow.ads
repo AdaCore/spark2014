@@ -40,7 +40,7 @@ with Graph;
 
 package Flow is
 
-   type Edge_Colours is (EC_Default, EC_DDG);
+   type Edge_Colours is (EC_Default, EC_DDG, EC_TD);
 
    type Flow_Id_Kind is (Null_Value,
                          Direct_Mapping,
@@ -216,6 +216,13 @@ package Flow is
                   Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
+
+   procedure Print_Graph
+     (Filename     : String;
+      G            : Flow_Graphs.T;
+      Start_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+      End_Vertex   : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
+   --  Write a dot and pdf file for the given graph.
 
    procedure Flow_Analyse_Entity (E : Entity_Id);
    --  Flow analyse the given entity. This subprogram does nothing for
