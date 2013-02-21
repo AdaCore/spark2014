@@ -1135,25 +1135,6 @@ package body Flow.Control_Flow_Graph is
       --     * a constant
 
       function Proc (N : Node_Id) return Traverse_Result is
-         procedure Add_To_VS (E : Entity_Id);
-         --  Add the relevant entity to VS. For parameters we always
-         --  pick the Spec_Entity, if possible.
-
-         procedure Add_To_VS (E : Entity_Id) is
-         begin
-            case Ekind (E) is
-               when E_In_Parameter |
-                 E_Out_Parameter |
-                 E_In_Out_Parameter =>
-                  if Spec_Entity (E) /= Empty then
-                     VS.Include (Direct_Mapping_Id (Spec_Entity (E)));
-                  else
-                     VS.Include (Direct_Mapping_Id (E));
-                  end if;
-               when others =>
-                  VS.Include (Direct_Mapping_Id (E));
-            end case;
-         end Add_To_VS;
       begin
          case Nkind (N) is
             when N_Identifier =>
@@ -1165,7 +1146,8 @@ package body Flow.Control_Flow_Graph is
                        E_In_Parameter |
                        E_In_Out_Parameter |
                        E_Constant =>
-                        Add_To_VS (Entity (N));
+                        VS.Include (Direct_Mapping_Id
+                                      (Unique_Entity (Entity (N))));
                      when others =>
                         null;
                   end case;
@@ -1178,7 +1160,8 @@ package body Flow.Control_Flow_Graph is
                     E_In_Parameter |
                     E_In_Out_Parameter |
                     E_Constant =>
-                     Add_To_VS (N);
+                     VS.Include (Direct_Mapping_Id
+                                   (Unique_Entity (N)));
                   when others =>
                      null;
                end case;
