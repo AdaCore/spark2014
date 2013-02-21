@@ -223,9 +223,13 @@ package body Flow is
             elsif V = FA.Start_Vertex then
                Rv.Label := To_Unbounded_String ("start");
                Rv.Shape := Shape_None;
+               Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+                 G.Out_Neighbour_Count (V) > 0;
             elsif V = FA.End_Vertex then
                Rv.Label := To_Unbounded_String ("end");
                Rv.Shape := Shape_None;
+               Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+                 G.Out_Neighbour_Count (V) > 0;
             else
                Temp_String := Null_Unbounded_String;
                Output.Set_Special_Output (Add_To_Temp_String'Access);
