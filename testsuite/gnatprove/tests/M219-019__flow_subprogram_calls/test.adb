@@ -1,3 +1,5 @@
+with Other;
+
 package body Test is
 
    ------------------------------------------------------------
@@ -38,7 +40,7 @@ package body Test is
    end HRB_Main;
 
    ------------------------------------------------------------
-   --  This is my silly testcase
+   --  This is my silly recursive testcase
    ------------------------------------------------------------
 
    procedure Flo_Rec_Flush (A, B, C : in out Integer)
@@ -51,5 +53,79 @@ package body Test is
          Flo_Rec_Flush (A, B, C);
       end if;
    end Flo_Rec_Flush;
+
+   ------------------------------------------------------------
+   --  Tests for IPA v.s. trusting contracts
+   ------------------------------------------------------------
+
+   procedure Swap_A (X, Y : in out Integer);
+   --  Implemented here, without contracts.
+
+   procedure Swap_B (X, Y : in out Integer)
+   with Depends => (X => Y,
+                    Y => X);
+   --  Implemented here, with contracts.
+
+   procedure Swap_C (X, Y : in out Integer)
+   with Depends => (X => Y,
+                    Y => X);
+   --  Using Other.Swap_With_Contract
+
+   procedure Swap_D (X, Y : in out Integer)
+   with Depends => (X => Y,
+                    Y => X);
+   --  Using Other.Swap_Without_Contract
+
+   procedure Swap_E (X, Y : in out Integer)
+   with Depends => (X => Y,
+                    Y => X);
+   --  Using Swap_A (no contracts)
+
+   procedure Swap_F (X, Y : in out Integer)
+   with Depends => (X => Y,
+                    Y => X);
+   --  Using Swap_B (contracts)
+
+   procedure Swap_A (X, Y : in out Integer)
+   is
+      Tmp : Integer;
+   begin
+      Tmp := X;
+      X := Y;
+      Y := Tmp;
+   end Swap_A;
+
+   procedure Swap_B (X, Y : in out Integer)
+   is
+      Tmp : Integer;
+   begin
+      Tmp := X;
+      X := Y;
+      Y := Tmp;
+   end Swap_B;
+
+   procedure Swap_C (X, Y : in out Integer)
+   is
+   begin
+      Other.Swap_With_Contract (X, Y);
+   end Swap_C;
+
+   procedure Swap_D (X, Y : in out Integer)
+   is
+   begin
+      Other.Swap_Without_Contract (X, Y);
+   end Swap_D;
+
+   procedure Swap_E (X, Y : in out Integer)
+   is
+   begin
+      Swap_A (X, Y);
+   end Swap_E;
+
+   procedure Swap_F (X, Y : in out Integer)
+   is
+   begin
+      Swap_B (X, Y);
+   end Swap_F;
 
 end Test;
