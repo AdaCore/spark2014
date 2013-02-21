@@ -190,6 +190,11 @@ respect to Syntax, Name Resolution, Legality Rules, Dynamic Semantics, and
 assertion policy. Apart from the legality rule that restricts the use of 
 Loop_Invariant to a loop (see :ref:`loop_invariants`).
 
+.. note:: (TJJ 21-Feb-2013) Loop_Invariant is partially covered in two separate 
+   sections when we re-instate and complete the loop invariant, variant, loop 
+   entry value text we should rationalize the placement of the description
+   of loop invariant to one section.
+   
 .. _assertcutinv_proof_semantics:
 
 .. centered:: **Verification Rules**
