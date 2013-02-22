@@ -23,10 +23,13 @@ is
 
   --  Embedded package body for Source_A
   package body Source_A
+     with Refined_State => (State => State)
   is
     State : Integer;
 
     procedure Read (Level : out Integer)
+       with Refined_Global  => State,
+            Refined_Depends => (Level => State)
     is
     begin
       Level := State;
@@ -35,10 +38,13 @@ is
 
   --  Embedded package body for Source_B
   package body Source_B
+     with Refined_State => (State => State)
   is
     State : Integer;
 
     procedure Read (Level : out Integer)
+       with Refined_Global  => State,
+            Refined_Depends => (Level => State)
     is
     begin
       Level := State;

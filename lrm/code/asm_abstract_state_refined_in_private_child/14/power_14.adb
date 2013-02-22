@@ -5,8 +5,8 @@ package body Power_14
 is
 
   procedure Read_Power(Level : out Integer)
-     with Global => (Source_A_14.State, Source_B_14.State),
-         Depends => (Level => (Source_A_14.State, Source_B_14.State))
+     with Refined_Global  => (Source_A_14.State, Source_B_14.State),
+          Refined_Depends => (Level => (Source_A_14.State, Source_B_14.State))
   is
      Level_A : Integer;
      Level_B : Integer;

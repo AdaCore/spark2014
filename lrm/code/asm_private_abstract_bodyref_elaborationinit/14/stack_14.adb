@@ -5,7 +5,7 @@ is
    -- initialization by elaboration of declaration
 
    procedure Push(X : in Integer)
-      with Refiend_Global => (In_Out => Stack)
+      with Refined_Global => (In_Out => Stack)
    is
    begin
       Pointer := Pointer + 1;
@@ -13,7 +13,7 @@ is
    end Push;
 
    procedure Pop(X : out Integer)
-      with Refiend_Global => (In_Out => Stack)
+      with Refined_Global => (In_Out => Stack)
    is
    begin
       X := S(Pointer);

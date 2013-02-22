@@ -19,8 +19,7 @@ This example demonstrates how global variables can be accessed through
 procedures/functions and presents how the SPARK 2005 `derives` annotation maps 
 over to `depends` in |SPARK|. The example consists of one procedure (`Swap`) and 
 one function (`Add`). `Swap` accesses two global variables and swaps their contents 
-while `Add` returns their sum. The bodies of both SPARK 2005 and |SPARK| are identical 
-and add no further insight and have thus not been included.
+while `Add` returns their sum.
 
 Specification in SPARK 2005:
 

@@ -21,7 +21,7 @@ is
                                                              2 ..3 => on);
 
    function ReadValue return Reading
-      with Global => (Input => (Val1.State, Val2.State, Val3.State))
+      with Refined_Global => (Input => (Val1.State, Val2.State, Val3.State))
    is
       A, B, C : Reading;
    begin
