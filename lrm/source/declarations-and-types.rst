@@ -38,7 +38,8 @@ Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
 .. todo:: It is intended to support subtype predicates.  Analysis is required
-          to determine if any subset rules need to be applied.
+          to determine if any subset rules need to be applied and also regarding
+          any extra proof rules that might need to be applied.
 
 Objects and Named Numbers
 -------------------------
