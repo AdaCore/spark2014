@@ -66,10 +66,10 @@ package body Test is
                     Y => X);
    --  Implemented here, with contracts.
 
-   --  procedure Swap_C (X, Y : in out Integer)
-   --  with Depends => (X => Y,
-   --                   Y => X);
-   --  --  Using Other.Swap_With_Contract
+   procedure Swap_C (X, Y : in out Integer)
+   with Depends => (X => Y,
+                    Y => X);
+   --  Using Other.Swap_With_Contract
 
    procedure Swap_D (X, Y : in out Integer)
    with Depends => (X => Y,
@@ -104,11 +104,11 @@ package body Test is
       Y := Tmp;
    end Swap_B;
 
-   --  procedure Swap_C (X, Y : in out Integer)
-   --  is
-   --  begin
-   --     Other.Swap_With_Contract (X, Y);
-   --  end Swap_C;
+   procedure Swap_C (X, Y : in out Integer)
+   is
+   begin
+      Other.Swap_With_Contract (X, Y);
+   end Swap_C;
 
    procedure Swap_D (X, Y : in out Integer)
    is
