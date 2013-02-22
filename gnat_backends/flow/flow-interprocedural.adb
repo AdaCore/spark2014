@@ -117,26 +117,51 @@ package body Flow.Interprocedural is
             Row : Node_Id;
             LHS : Node_Id;
             RHS : Node_Id;
+
+            Inputs  : Node_Sets.Set;
+            Outputs : Node_Sets.Set;
          begin
             Row := First (CA);
             while Row /= Empty loop
-               LHS := First (Choices (Row));
-               while LHS /= Empty loop
-                  RHS := Expression (Row);
-                  case Nkind (RHS) is
-                     when N_Aggregate =>
-                        RHS := First (Expressions (RHS));
-                        while RHS /= Empty loop
-                           Add_TD_Edge (Entity (RHS), Entity (LHS));
-                           RHS := Next (RHS);
-                        end loop;
-                     when N_Identifier =>
-                        Add_TD_Edge (Entity (RHS), Entity (LHS));
-                     when others =>
-                        raise Why.Not_Implemented;
-                  end case;
+               Inputs  := Node_Sets.Empty_Set;
+               Outputs := Node_Sets.Empty_Set;
 
-                  LHS := Next (LHS);
+               LHS := First (Choices (Row));
+               case Nkind (LHS) is
+                  when N_Aggregate =>
+                     LHS := First (Expressions (LHS));
+                     while LHS /= Empty loop
+                        Outputs.Include (Entity (LHS));
+                        LHS := Next (LHS);
+                     end loop;
+                  when N_Identifier =>
+                     Outputs.Include (Entity (LHS));
+                  when N_Null =>
+                     null;
+                  when others =>
+                     raise Why.Not_Implemented;
+               end case;
+
+               RHS := Expression (Row);
+               case Nkind (RHS) is
+                  when N_Aggregate =>
+                     RHS := First (Expressions (RHS));
+                     while RHS /= Empty loop
+                        Inputs.Include (Entity (RHS));
+                        RHS := Next (RHS);
+                     end loop;
+                  when N_Identifier =>
+                     Inputs.Include (Entity (RHS));
+                  when N_Null =>
+                     null;
+                  when others =>
+                     raise Why.Not_Implemented;
+               end case;
+
+               for Input of Inputs loop
+                  for Output of Outputs loop
+                     Add_TD_Edge (Input, Output);
+                  end loop;
                end loop;
 
                Row := Next (Row);
@@ -173,10 +198,10 @@ package body Flow.Interprocedural is
 
             --  TODO: Collect globals
 
-            for I of Inputs loop
-               for O of Outputs loop
-                  FA.TDG.Add_Edge (Find_Parameter_Vertex (FA.CDG, V, I),
-                                   Find_Parameter_Vertex (FA.CDG, V, O),
+            for Input of Inputs loop
+               for Output of Outputs loop
+                  FA.TDG.Add_Edge (Find_Parameter_Vertex (FA.CDG, V, Input),
+                                   Find_Parameter_Vertex (FA.CDG, V, Output),
                                    EC_TD);
                end loop;
             end loop;
