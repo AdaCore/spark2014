@@ -240,4 +240,7 @@ package Flow is
    --  Flow analyse the given entity. This subprogram does nothing for
    --  entities without a body and not in SPARK 2014.
 
+   procedure Flow_Analyse_CUnit;
+   --  Flow analyses the current compilation unit
+
 end Flow;

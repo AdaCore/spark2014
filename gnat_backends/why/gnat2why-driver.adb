@@ -75,9 +75,6 @@ package body Gnat2Why.Driver is
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
 
-   procedure Flow_Analyse_CUnit;
-   --  Flow analyses the current compilation unit
-
    procedure Translate_Entity (E : Entity_Id);
    --  Translates entity E into Why
 
@@ -149,21 +146,6 @@ package body Gnat2Why.Driver is
          Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
       end if;
    end Do_Generate_VCs;
-
-   ------------------------
-   -- Flow_Analyse_CUnit --
-   ------------------------
-
-   procedure Flow_Analyse_CUnit is
-   begin
-      for E of Spec_Entities loop
-         Flow_Analyse_Entity (E);
-      end loop;
-
-      for E of Body_Entities loop
-         Flow_Analyse_Entity (E);
-      end loop;
-   end Flow_Analyse_CUnit;
 
    -----------------
    -- GNAT_To_Why --
