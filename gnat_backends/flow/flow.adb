@@ -47,7 +47,7 @@ use type Ada.Containers.Count_Type;
 
 package body Flow is
 
-   use type Flow_Graphs.Vertex_Id;
+   use Flow_Graphs;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
 
@@ -58,6 +58,10 @@ package body Flow is
    procedure Add_To_Temp_String (S : String);
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
+
+   procedure Flow_Analyse_Entity (E : Entity_Id);
+   --  Flow analyse the given entity. This subprogram does nothing for
+   --  entities without a body and not in SPARK 2014.
 
    -------------------------
    -- Add_To_Temp_String  --
@@ -183,11 +187,9 @@ package body Flow is
 
    procedure Print_Graph
      (Filename     : String;
-      G            : Flow_Graphs.T;
-      Start_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      End_Vertex   : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex) is
-
-      use Flow_Graphs;
+      G            : T;
+      Start_Vertex : Vertex_Id := Null_Vertex;
+      End_Vertex   : Vertex_Id := Null_Vertex) is
 
       function NDI
         (G : T'Class;
@@ -212,7 +214,7 @@ package body Flow is
       is
          Rv : Node_Display_Info := Node_Display_Info'
            (Show   => True,
-            Shape  => Flow_Graphs.Node_Shape_T'First,
+            Shape  => Node_Shape_T'First,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
       begin
@@ -380,7 +382,6 @@ package body Flow is
    -------------------------
 
    procedure Flow_Analyse_Entity (E : Entity_Id) is
-      use Flow_Graphs;
    begin
       if not (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E)) then
          return;
@@ -392,13 +393,13 @@ package body Flow is
       begin
          FA := Flow_Analysis_Graphs'
            (Subprogram   => E,
-            Start_Vertex => Flow_Graphs.Null_Vertex,
-            End_Vertex   => Flow_Graphs.Null_Vertex,
-            CFG          => Flow_Graphs.Create,
-            DDG          => Flow_Graphs.Create,
-            CDG          => Flow_Graphs.Create,
-            TDG          => Flow_Graphs.Create,
-            PDG          => Flow_Graphs.Create,
+            Start_Vertex => Null_Vertex,
+            End_Vertex   => Null_Vertex,
+            CFG          => Create,
+            DDG          => Create,
+            CDG          => Create,
+            TDG          => Create,
+            PDG          => Create,
             Vars         => Flow_Id_Sets.Empty_Set,
             Loops        => Node_Sets.Empty_Set);
 

@@ -236,10 +236,6 @@ package Flow is
       End_Vertex   : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
    --  Write a dot and pdf file for the given graph.
 
-   procedure Flow_Analyse_Entity (E : Entity_Id);
-   --  Flow analyse the given entity. This subprogram does nothing for
-   --  entities without a body and not in SPARK 2014.
-
    procedure Flow_Analyse_CUnit;
    --  Flow analyses the current compilation unit
 
