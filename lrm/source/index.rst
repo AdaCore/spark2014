@@ -47,13 +47,6 @@ SPARK 2014 Reference Manual
    B. To-Do Summary <todo-summary>
    C. GNU Free Documentation License <gfdl>
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
 
 
 
