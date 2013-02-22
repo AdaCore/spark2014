@@ -609,10 +609,10 @@ Initialization Refinement
 Refined Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-..todo: The subject of refined Global, Depends, Pre and Post aspects is still 
-  under discussion (and their need questioned) and so the subsections covering 
-  these aspects is subject to change.  To be resolved and completed by
-  Milestone 3 version of this document.
+.. todo:: The subject of refined Global, Depends, Pre and Post aspects is still
+          under discussion (and their need questioned) and so the subsections covering
+          these aspects is subject to change.  To be resolved and completed by
+          Milestone 3 version of this document.
   
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -937,8 +937,8 @@ There are no additional dynamic semantics associated with type invariants.
      [Note that these checks are only performed statically, and this does not create an
      obligation to extend the run-time checks performed in relation to type invariants.]
      
-..todo:: The support for type invariants needs to be considered further and will
-  be completed for Milestone 3 version of this document.
+.. todo:: The support for type invariants needs to be considered further and will
+          be completed for Milestone 3 version of this document.
 
 Deferred Constants
 ------------------
