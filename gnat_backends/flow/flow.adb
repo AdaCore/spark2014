@@ -325,6 +325,10 @@ package body Flow is
                      Sprint_Node (Loop_Identifier);
                   end loop;
                end if;
+
+               if A.Perform_IPFA then
+                  Output.Write_Str ("\nIPFA");
+               end if;
             end;
 
             Output.Write_Eol;
