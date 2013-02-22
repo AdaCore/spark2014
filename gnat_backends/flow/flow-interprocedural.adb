@@ -26,8 +26,6 @@ with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinfo;    use Sinfo;
 
-with Treepr; use Treepr;
-
 with Why;
 
 package body Flow.Interprocedural is
@@ -38,38 +36,11 @@ package body Flow.Interprocedural is
    --  Add dependencies for a simple procedure call where we cannot
    --  perform IPFA.
 
-   function Process_Depends (D : Node_Id) return Flow_Graphs.T;
-
    function Find_Parameter_Vertex (CDG       : Flow_Graphs.T;
                                    Callsite  : Flow_Graphs.Vertex_Id;
                                    Parameter : Flow_Id)
                                    return Flow_Graphs.Vertex_Id;
    --  Search for the relevant parameter vertex for a given call.
-
-   function Process_Depends (D : Node_Id) return Flow_Graphs.T is
-      G : Flow_Graphs.T;
-      Row : Node_Id;
-      LHS : Node_Id;
-      RHS : Node_Id;
-   begin
-      G := Flow_Graphs.Create;
-      Row := First (Component_Associations (D));
-      while Row /= Empty loop
-         Print_Node_Subtree (Row);
-         LHS := First (Choices (Row));
-         while LHS /= Empty loop
-            Print_Node_Subtree (LHS);
-
-            RHS := Expression (Row);
-            Print_Node_Subtree (RHS);
-
-            LHS := Next (LHS);
-         end loop;
-
-         Row := Next (Row);
-      end loop;
-      return G;
-   end Process_Depends;
 
    function Find_Parameter_Vertex (CDG       : Flow_Graphs.T;
                                    Callsite  : Flow_Graphs.Vertex_Id;
@@ -109,17 +80,68 @@ package body Flow.Interprocedural is
       pragma Assert (not A.Perform_IPFA);
 
       Called_Procedure : constant Entity_Id := Entity (Name (N));
+
+      procedure Add_TD_Edge (A, B : Entity_Id);
+      --  Add a parameter dependency edge from the input A to the
+      --  output B.
+
+      procedure Add_TD_Edge (A, B : Entity_Id) is
+      begin
+         FA.TDG.Add_Edge
+           (Find_Parameter_Vertex
+              (FA.CDG,
+               V,
+               Direct_Mapping_Id (Unique_Entity (A), In_View)),
+            Find_Parameter_Vertex
+              (FA.CDG,
+               V,
+               Direct_Mapping_Id (Unique_Entity (B), Out_View)),
+            EC_TD);
+      end Add_TD_Edge;
+
    begin
       if Has_Aspect (Called_Procedure, Aspect_Depends) then
          --  We have a dependency aspect, so we should use it.
          declare
             Depends : constant Node_Id :=
-              Find_Aspect (Called_Procedure, Aspect_Depends);
-         begin
-            Print_Graph ("depends", Process_Depends (Depends));
-         end;
+              Aspect_Rep_Item (Find_Aspect (Called_Procedure, Aspect_Depends));
+            pragma Assert
+              (List_Length (Pragma_Argument_Associations (Depends)) = 1);
 
-         raise Why.Not_Implemented;
+            PAA : constant Node_Id :=
+              First (Pragma_Argument_Associations (Depends));
+            pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+            CA : constant List_Id := Component_Associations (Expression (PAA));
+
+            Row : Node_Id;
+            LHS : Node_Id;
+            RHS : Node_Id;
+         begin
+            Row := First (CA);
+            while Row /= Empty loop
+               LHS := First (Choices (Row));
+               while LHS /= Empty loop
+                  RHS := Expression (Row);
+                  case Nkind (RHS) is
+                     when N_Aggregate =>
+                        RHS := First (Expressions (RHS));
+                        while RHS /= Empty loop
+                           Add_TD_Edge (Entity (RHS), Entity (LHS));
+                           RHS := Next (RHS);
+                        end loop;
+                     when N_Identifier =>
+                        Add_TD_Edge (Entity (RHS), Entity (LHS));
+                     when others =>
+                        raise Why.Not_Implemented;
+                  end case;
+
+                  LHS := Next (LHS);
+               end loop;
+
+               Row := Next (Row);
+            end loop;
+         end;
 
       else
          --  We do not have a dependency aspect, so we will make up
@@ -129,8 +151,6 @@ package body Flow.Interprocedural is
             Outputs : Flow_Id_Sets.Set;
             E       : Entity_Id;
          begin
-            Print_Node_Subtree (Called_Procedure);
-
             E := First_Entity (Called_Procedure);
             while E /= Empty loop
                case Ekind (E) is
