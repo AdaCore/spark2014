@@ -130,7 +130,10 @@ which is specific to |SPARK|):
    to be performed on the language feature.
 
 All sections are always listed and if no content is required then the
-corresponding section will be marked *Not applicable*. 
+corresponding section will be marked *Not applicable*. When presenting rules,
+additional text may be provided in square brackets [ ].
+This text is redundant in terms of defining the rules themselves and simply provides
+explanatory detail.
 
 In addition, examples of the use of the new features are given along with the
 language definition detail.
