@@ -53,8 +53,8 @@ is
   end Source_B;
 
   procedure Read_Power(Level : out Integer)
-     with Global  => (Source_A.State, Source_B.State),
-          Depends => (Level => (Source_A.State, Source_B.State))
+     with Refined_Global  => (Source_A.State, Source_B.State),
+          Refined_Depends => (Level => (Source_A.State, Source_B.State))
   is
      Level_A : Integer;
      Level_B : Integer;
