@@ -227,8 +227,8 @@ or as a set of disjoint and complete contract cases:
    :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
-      Contract_Cases => (X < Threshold  => X = X'Old + 1,
-                         X >= Threshold => X = X'Old);
+      Contract_Cases => (X < Threshold => X = X'Old + 1,
+                         X = Threshold => X = X'Old);
 
 or, finally, as a combination of both (where the contract cases should cover
 the cases allowed by the precondition):
@@ -239,8 +239,8 @@ the cases allowed by the precondition):
     procedure Incr_Threshold (X : in out Integer) with
       Pre  => X >= 0,
       Post => X >= X'Old,
-      Contract_Cases => (X < Threshold  => X = X'Old + 1,
-                         X >= Threshold => X = X'Old);
+      Contract_Cases => (X < Threshold => X = X'Old + 1,
+                         X = Threshold => X = X'Old);
 
 Note that contract cases provide a convenient way to express complex
 contracts, which would be cumbersome to express with a precondition and
@@ -251,10 +251,10 @@ the following precondition and postcondition:
    :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
-      Pre  => (X < Threshold and not (X >= Threshold))
-               or else (not (X < Threshold) and X >= Threshold),
+      Pre  => (X < Threshold and not (X = Threshold))
+               or else (not (X < Threshold) and X = Threshold),
       Post => (if X'Old < Threshold'Old then X = X'Old + 1
-               elsif X'Old >= Threshold'Old then X = X'Old);
+               elsif X'Old = Threshold'Old then X = X'Old);
 
 Note that these two declarations do not lead to the same proofs. Indeed, with
 contract-cases, the fact that the contract cases are disjoint and cover the cases
