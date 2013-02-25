@@ -59,7 +59,8 @@ package body Flow is
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
-   procedure Flow_Analyse_Entity (E : Entity_Id);
+   function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs
+     with Pre => (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E));
    --  Flow analyse the given entity. This subprogram does nothing for
    --  entities without a body and not in SPARK 2014.
 
@@ -381,75 +382,64 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   procedure Flow_Analyse_Entity (E : Entity_Id) is
+   function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs is
+      Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+      FA     : Flow_Analysis_Graphs;
    begin
-      if not (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E)) then
-         return;
+      FA := Flow_Analysis_Graphs'
+        (Subprogram   => E,
+         Start_Vertex => Null_Vertex,
+         End_Vertex   => Null_Vertex,
+         CFG          => Create,
+         DDG          => Create,
+         CDG          => Create,
+         TDG          => Create,
+         PDG          => Create,
+         Vars         => Flow_Id_Sets.Empty_Set,
+         Loops        => Node_Sets.Empty_Set);
+
+      if Debug_Flag_Dot_ZZ then
+         Output.Write_Str (Character'Val (8#33#) & "[32m" &
+                             "Flow analysis (cons) of " &
+                             Get_Name_String (Chars (E)) &
+                             Character'Val (8#33#) & "[0m");
+         Output.Write_Eol;
+      end if;
+      Control_Flow_Graph.Create (Body_N, FA);
+
+      --  We print this graph first in cast the other algorithms
+      --  barf.
+      if Debug_Flag_Dot_ZZ then
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cfg",
+                      G            => FA.CFG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
       end if;
 
-      declare
-         Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
-         FA     : Flow_Analysis_Graphs;
-      begin
-         FA := Flow_Analysis_Graphs'
-           (Subprogram   => E,
-            Start_Vertex => Null_Vertex,
-            End_Vertex   => Null_Vertex,
-            CFG          => Create,
-            DDG          => Create,
-            CDG          => Create,
-            TDG          => Create,
-            PDG          => Create,
-            Vars         => Flow_Id_Sets.Empty_Set,
-            Loops        => Node_Sets.Empty_Set);
+      Data_Dependence_Graph.Create (FA);
+      Control_Dependence_Graph.Create (FA);
+      Interprocedural.Create (FA);
+      Program_Dependence_Graph.Create (FA);
 
-         if Debug_Flag_Dot_ZZ then
-            Output.Write_Str (Character'Val (8#33#) & "[32m" &
-                                "Flow analysis of " &
-                                Get_Name_String (Chars (E)) &
-                                Character'Val (8#33#) & "[0m");
-            Output.Write_Eol;
-         end if;
-         Control_Flow_Graph.Create (Body_N, FA);
+      --  Now we print everything else.
+      if Debug_Flag_Dot_ZZ then
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
+                      G            => FA.DDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
 
-         --  We print this graph first in cast the other algorithms
-         --  barf.
-         if Debug_Flag_Dot_ZZ then
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cfg",
-                         G            => FA.CFG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
-         end if;
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
+                      G            => FA.CDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
 
-         Data_Dependence_Graph.Create (FA);
-         Control_Dependence_Graph.Create (FA);
-         Interprocedural.Create (FA);
-         Program_Dependence_Graph.Create (FA);
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
+                      G            => FA.PDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
+      end if;
 
-         --  Now we print everything else.
-         if Debug_Flag_Dot_ZZ then
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
-                         G            => FA.DDG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
-
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
-                         G            => FA.CDG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
-
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
-                         G            => FA.PDG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
-         end if;
-
-         Analysis.Find_Ineffective_Imports (FA);
-         Analysis.Find_Ineffective_Statements (FA);
-         Analysis.Find_Use_Of_Uninitialised_Variables (FA);
-         Analysis.Find_Stable_Elements (FA);
-
-      end;
+      return FA;
    end Flow_Analyse_Entity;
 
    ------------------------
@@ -457,14 +447,37 @@ package body Flow is
    ------------------------
 
    procedure Flow_Analyse_CUnit is
+      FA_Graphs : Analysis_Maps.Map;
    begin
+      --  Process entities and construct graphs if necessary
       for E of Spec_Entities loop
-         Flow_Analyse_Entity (E);
+         if Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E) then
+            FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+         end if;
       end loop;
 
       for E of Body_Entities loop
-         Flow_Analyse_Entity (E);
+         if Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E) then
+            FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+         end if;
       end loop;
+
+      --  TODO: Perform interprocedural analysis
+
+      --  Analyse graphs and produce error messages
+      if Debug_Flag_Dot_ZZ then
+         Output.Write_Str (Character'Val (8#33#) & "[32m" &
+                             "Flow analysis (errors)" &
+                             Character'Val (8#33#) & "[0m");
+         Output.Write_Eol;
+      end if;
+      for FA of FA_Graphs loop
+         Analysis.Find_Ineffective_Imports (FA);
+         Analysis.Find_Ineffective_Statements (FA);
+         Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+         Analysis.Find_Stable_Elements (FA);
+      end loop;
+
    end Flow_Analyse_CUnit;
 
 end Flow;

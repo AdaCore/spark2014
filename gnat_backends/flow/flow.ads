@@ -222,6 +222,13 @@ package Flow is
       Loops        : Node_Sets.Set;
    end record;
 
+   package Analysis_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Flow_Analysis_Graphs,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) = E_Loop,
           Post => Loop_Parameter_From_Loop'Result = Empty or else
