@@ -158,6 +158,10 @@ Milestone 4:
 
 * Experiment with advanced |SPARK tools|
 
+Milestone 5:
+
+* Support stripping and restoring aspects to allow program to be compiled by an Ada 2005 compiler
+
 Milestone |rel2+|:
 
 * Write abstract derives, invisibly "generate" concrete derives
