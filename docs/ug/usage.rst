@@ -256,6 +256,12 @@ the following precondition and postcondition:
       Post => (if X'Old < Threshold'Old then X = X'Old + 1
                elsif X'Old >= Threshold'Old then X = X'Old);
 
+Note that these two declarations do not lead to the same proofs. Indeed, with
+contract-cases, the fact that the contract cases are disjoint and cover the cases
+allowed by the precondition is proven once and for all. On the other hand, with
+the precondition and the postcondition, it is assumed by the prover and must
+be verified at each call. 
+
 Contract cases can be expressed both as pragmas and aspects. The syntax of
 contract case pragmas is the following:
 
