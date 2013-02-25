@@ -6,30 +6,30 @@ package body Test is
    --  The example from the Horowitz, Reps, Binkley SDG paper
    ------------------------------------------------------------
 
-   procedure HRB_Add (A : in out Integer;
-                      B : in out Integer)
-   is
-   begin
-      A := A + B;
-   end HRB_Add;
-
-   procedure HRB_Increment (Z : in out Integer)
-   is
-      Tmp : Integer := 1;
-   begin
-      HRB_Add (Z, B => Tmp);
-   end HRB_Increment;
-
-   procedure HRB_A (X : in out Integer;
-                    Y : in out Integer)
-   is
-   begin
-      HRB_Add (X, Y);
-      HRB_Increment (Y);
-   end HRB_A;
-
    procedure HRB_Main (Sum : out Integer)
    is
+      procedure HRB_Add (A : in out Integer;
+                         B : in out Integer)
+      is
+      begin
+         A := A + B;
+      end HRB_Add;
+
+      procedure HRB_Increment (Z : in out Integer)
+      is
+         Tmp : Integer := 1;
+      begin
+         HRB_Add (Z, B => Tmp);
+      end HRB_Increment;
+
+      procedure HRB_A (X : in out Integer;
+                       Y : in out Integer)
+      is
+      begin
+         HRB_Add (X, Y);
+         HRB_Increment (Y);
+      end HRB_A;
+
       I   : Integer;
    begin
       Sum := 0;
