@@ -4,7 +4,7 @@ GNU Free Documentation License
 
 Version 1.3, 3 November 2008
 
-Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
 
 Everyone is permitted to copy and distribute verbatim copies of this license document,
 but changing it is not allowed.
