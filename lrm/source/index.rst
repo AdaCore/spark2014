@@ -44,8 +44,9 @@ SPARK 2014 Reference Manual
    :maxdepth: 3
 
    A. SPARK 2005 to |SPARK| Mapping Specification <mapping-spec>
-   B. To-Do Summary <todo-summary>
-   C. GNU Free Documentation License <gfdl>
+   B. Restrictions and Profiles <restrictions-and-profiles>
+   C. To-Do Summary <todo-summary>
+   D. GNU Free Documentation License <gfdl>
 
 
 

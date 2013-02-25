@@ -85,6 +85,16 @@ are in |SPARK|.
 .. todo:: Think about Pre'Class and Post'Class.
           To be completed in the Milestone 3 version of this document.
 
+.. centered:: **Verification Rules**
+
+#. Verification conditions are generated from the program text to
+   demonstrate that the implementation of the body of the subprogram
+   satisfies the post condition provided the precondition is True and
+   the subprogram completes normally.
+
+.. note:: (TJJ 29/11/12) Do we need this verification rule?  If we do
+          it needs to be more precise I think.
+
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 

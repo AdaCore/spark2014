@@ -44,6 +44,12 @@ User-Defined Iterator Types
 
 |SPARK| does not support the implementation of user-defined iterator types.
 
+.. note:: Do we need the following rule?
+
+.. centered:: **Extended Legality Rules**
+
+#. ``Ada.Iterator_Interfaces`` shall not be named in a ``with_clause``.
+
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -52,7 +58,6 @@ Generalized Loop Iteration
 .. todo:: Need to consider further the support for iterators and whether
           the application of constant iterators could be supported.
           To be completed in Milestone.4 version of this document.
-
 
 .. _loop_invariants:
 
@@ -115,13 +120,196 @@ Loop_Variant has different dynamic semantics as detailed below.
      loop_variant_parameters ::= loop_variant_item {, loop_variant_item}
      loop_variant_item       ::= change_direction => discrete_expression
      change_direction        ::= Increases | Decreases
-  
 
-*To be completed in the Milestone 3 version of this document.*
 
 .. todo::
-   Provide detail on pragmas Loop_Invariant and Loop_Variant, and attribute Loop_Entry.
+   Complete detail on pragmas Loop_Invariant and Loop_Variant, and attribute Loop_Entry.
    To be completed in the Milestone 3 version of this document.
+   
+.. centered:: **Legality Rules**
+
+
+The following constructs are said to be "restricted to loops":
+
+* A ``Loop_Invariant`` pragma;
+* A ``Loop_Variant`` pragma;
+* A ``block_statement`` whose ``sequence_of_statements`` or ``declarative_part``
+  immediately includes a construct which is restricted to loops.
+
+A construct which is restricted to loops shall occur
+immediately within either:
+
+* the ``sequence_of_statements`` of a ``loop_statement``; or
+* the ``sequence_of_statements`` or ``declarative_part`` of a
+  ``block_statement``.
+
+[Roughly speaking, a ``Loop_Invariant`` or ``Loop_Variant`` pragma
+must occur immediately within a loop statement except that intervening
+block statements are ignored for purposes of this rule.]
+
+The expression of a ``loop_variant_item`` is expected to be of any
+discrete type.
+
+.. centered:: **Static Semantics**
+
+.. todo:: Anything to say here? RCC does not know. Any comment from SB or YM? Target: Milestone 3
+          version of document.
+
+.. centered:: **Dynamic Semantics**
+
+Other than the above legality rules, pragma ``Loop_Invariant`` is equivalent to
+pragma ``Assert``.
+
+Pragma ``Loop_Variant`` is an assertion (as defined in RM
+11.4.2(1.1/3)) and is governed in the same way as pragma ``Assert``
+by the ``Assert`` assertion aspect. In particular, the elaboration of
+a disabled ``Loop_Variant`` pragma has no effect.
+
+The elaboration of an enabled ``Loop_Variant`` pragma begins by
+evaluating the ``discrete_expressions`` in textual order.
+For the first elaboration of the pragma within a given execution
+of the enclosing loop statement, no further action is taken.
+For subsequent elaborations of the pragma, one or more of these
+expression results are each compared to their corresponding
+result from the previous iteration as follows: comparisons are
+performed in textual order either until unequal values are found
+or until values for all expressions have been compared. In either
+case, the last pair of values to be compared is then checked as
+follows: if the ``change_direction`` for the associated
+``loop_variant_item`` is ``Increases`` (respectively, ``Decreases``) then a
+check is performed that the expression value obtained during the
+current iteration is greater (respectively, less) than the value
+obtained during the preceding iteration. The exception
+``Assertions.Assertion_Error`` is raised if this check fails. All
+comparisons and checks are performed using predefined operations.
+
+.. centered:: **Verification Rules**
+
+.. centered:: *Checked by Proof*
+
+.. todo:: describe Proof Semantics of pragma Loop_Invariant. Target: Milestone 3
+          version of document.
+
+The pragma ``Loop_Variant`` describes a lexicographic order, which must be
+proved to decrease after each iteration of the loop. This means that it is
+checked, in the order of appearance in the variant list, that each component
+behaves as described. If the component does indeed decrease (or increase,
+depending on the chosen keyword), we stop and the variant is proved. If the
+component does the opposite (decrease while it was specified to increase, and
+vice versa), the variant is invalid. If the component stays the same, we move
+on to the next component. If all components stay the same, the variant is not
+proved.
+
+Proving this property implies the termination of the loop.
+
+Attribute ``Loop_Entry``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+For a prefix ``X`` that denotes an object of a nonlimited type, the
+following attribute is defined
+
+::
+
+   X'Loop_Entry [(loop_name)]
+
+A ``Loop_Entry`` ``attribute_reference`` "applies to a loop statement" in the
+same way that an ``exit_statement`` does (see RM 5.7). For every rule
+about ``exit_statements`` in the Name Resolution Rules and Legality Rules
+sections of RM 5.7, a corresponding rule applies to ``Loop_Entry``
+``attribute_references``.
+
+For each ``X'Loop_Entry`` other than one occurring within a disabled
+assertion expression, a constant is implicitly declared at the
+beginning of the associated loop statement. The constant is of the
+type of ``X`` and is initialized to the result of evaluating ``X`` (as an
+expression) at the point of the constant declaration. The value of
+``X'Loop_Entry`` is the value of this constant; the type of ``X'Loop_Entry``
+is the type of ``X``. These implicit constant declarations occur in an
+arbitrary order.
+
+The previous paragraph notwithstanding, the implicit constant declaration
+is not elaborated if the ``loop_statement`` has an ``iteration_scheme`` whose
+evaluation yields the result that the ``sequence_of_statements`` of the
+``loop_statement`` will not be executed (loosely speaking, if the loop completes
+after zero iterations).
+
+Note: This means that the constant is not elaborated unless the
+loop body will execute (or at least begin execution) at least once.
+For example, a while loop
+
+.. code-block:: ada
+
+   while <condition> do
+     sequence_of_statements; -- contains Loop_Entry uses
+   end loop;
+
+may be thought of as being transformed into
+
+.. code-block:: ada
+
+   if <condition> then
+     declare
+       ... implicitly declared Loop_Entry constants
+     begin
+        loop
+           sequence_of_statements;
+           exit when not <condition>;
+        end loop;
+     end;
+   end if;
+
+This rule prevents the following example from raising ``Constraint_Error``:
+
+.. code-block:: ada
+
+   declare
+     procedure P (X : in out String) is
+     begin
+       for I in X'Range loop
+         pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
+         ...; -- modify X
+       end loop;
+     end P;
+     Length_Is_Zero : String := "";
+   begin
+     P (Length_Is_Zero);
+   end;
+
+In many cases, the language rules pertaining to the ``Loop_Entry``
+attribute match those pertaining to the ``Old`` attribute (see Ada LRM 6.1.1), except
+with "Loop_Entry" substituted for "Old". These include:
+
+* prefix name resolution rules (including expected type definition)
+* nominal subtype definition
+* accessibility level definition
+* run-time tag-value determination (in the case where ``X`` is tagged)
+* interactions with abstract types
+* interactions with anonymous access types
+* forbidden attribute uses in the prefix of the ``attribute_reference``.
+
+Note: The following rules are not included in the
+above list; corresponding rules are instead stated explicitly below:
+
+* the requirement that an ``Old`` ``attribute_reference`` must occur in a
+  postcondition expression;
+* the rule disallowing a use of an entity declared within the
+  postcondition expression;
+* the rule that a potentially unevaluated ``Old`` ``attribute_reference``
+  shall statically denote an entity.
+
+A ``Loop_Entry`` ``attribute_reference`` shall occur within a
+``Loop_Variant`` or ``Loop_Invariant`` pragma.
+
+The prefix of a ``Loop_Entry`` ``attribute_reference`` shall not contain a use
+of an entity declared within the ``loop_statement`` but not within the prefix
+itself.
+
+The prefix of a ``Loop_Entry`` ``attribute_reference`` shall statically denote
+an entity, or shall denote an ``object_renaming_declaration``, if
+
+* the ``attribute_reference`` is potentially unevaluated; or
+* the ``attribute_reference`` does not apply to the innermost
+  enclosing ``loop_statement``.
 
 Block Statements
 ----------------
