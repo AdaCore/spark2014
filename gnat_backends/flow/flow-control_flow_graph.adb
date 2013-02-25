@@ -24,7 +24,7 @@
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;
 with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
+
 with Treepr;   use Treepr;
 
 with Flow.Debug; use Flow.Debug;
@@ -171,6 +171,14 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Subprogram_Body;
+
+   procedure Process_Subprogram_Globals
+     (Callsite          : Node_Id;
+      In_List           : in out Vertex_Vectors.Vector;
+      Out_List          : in out Vertex_Vectors.Vector;
+      FA                : in out Flow_Analysis_Graphs;
+      CM                : in out Connection_Maps.Map;
+      Ctx               : in out Context);
 
    procedure Process_Parameter_Associations
      (L                 : List_Id;
@@ -789,15 +797,17 @@ package body Flow.Control_Flow_Graph is
                                Loops    => Ctx.Current_Loops),
          V);
 
-      --  Deal with the procedures parameters
+      --  Deal with the procedures parameters.
       Process_Parameter_Associations (Parameter_Associations (N),
                                       Called_Procedure,
                                       In_List,
                                       Out_List,
                                       FA, CM, Ctx);
 
-      --  Deal with the procedures globals
-      --  TODO
+      --  Process globals.
+      Process_Subprogram_Globals (N,
+                                  In_List, Out_List,
+                                  FA, CM, Ctx);
 
       --  We now build the connection map for this sequence.
       declare
@@ -902,6 +912,52 @@ package body Flow.Control_Flow_Graph is
             Standard_Exits => CM.Element
               (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
    end Do_Subprogram_Body;
+
+   --------------------------------
+   -- Process_Subprogram_Globals --
+   --------------------------------
+
+   procedure Process_Subprogram_Globals
+     (Callsite          : Node_Id;
+      In_List           : in out Vertex_Vectors.Vector;
+      Out_List          : in out Vertex_Vectors.Vector;
+      FA                : in out Flow_Analysis_Graphs;
+      CM                : in out Connection_Maps.Map;
+      Ctx               : in out Context) is
+
+      pragma Unreferenced (CM);
+
+      Reads  : Flow_Id_Sets.Set;
+      Writes : Flow_Id_Sets.Set;
+      V      : Flow_Graphs.Vertex_Id;
+   begin
+      --  Obtain globals (either from contracts or the computerd
+      --  stuff).
+      Get_Globals (Callsite => Callsite,
+                   Reads    => Reads,
+                   Writes   => Writes);
+
+      for R of Reads loop
+         FA.CFG.Add_Vertex (R,
+                            Make_Global_Attributes
+                              (Call_Vertex => Callsite,
+                               Global      => R,
+                               Loops       => Ctx.Current_Loops),
+                            V);
+         In_List.Append (V);
+      end loop;
+
+      for W of Writes loop
+         FA.CFG.Add_Vertex (W,
+                            Make_Global_Attributes
+                              (Call_Vertex => Callsite,
+                               Global      => W,
+                               Loops       => Ctx.Current_Loops),
+                            V);
+         Out_List.Append (V);
+      end loop;
+
+   end Process_Subprogram_Globals;
 
    --------------------------------------
    --  Process_Parameter_Associations  --
@@ -1150,6 +1206,7 @@ package body Flow.Control_Flow_Graph is
                         null;
                   end case;
                end if;
+
             when N_Defining_Identifier =>
                case Ekind (N) is
                   when E_Variable |

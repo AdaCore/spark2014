@@ -21,8 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sinfo; use Sinfo;
-
 --  with Treepr; use Treepr;
 
 --  with Why;
@@ -115,6 +113,36 @@ package body Flow.Control_Flow_Graph.Utility is
 
       return A;
    end Make_Parameter_Attributes;
+
+   ----------------------------
+   -- Make_Global_Attributes --
+   ----------------------------
+
+   function Make_Global_Attributes
+     (Call_Vertex : Node_Id;
+      Global      : Flow_Id;
+      Loops       : Node_Sets.Set)
+      return V_Attributes
+   is
+      A : V_Attributes := Null_Attributes;
+   begin
+      A.Is_Global   := True;
+      A.Call_Vertex := Direct_Mapping_Id (Call_Vertex);
+      A.Loops       := Loops;
+
+      case Global.Variant is
+         when Global_In_View =>
+            A.Variables_Used :=
+              Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
+         when Global_Out_View =>
+            A.Variables_Defined :=
+              Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
+         when others =>
+            raise Program_Error;
+      end case;
+
+      return A;
+   end Make_Global_Attributes;
 
    ------------------------------
    -- Make_Variable_Attributes --

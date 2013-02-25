@@ -25,10 +25,12 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
-with Sinfo;  use Sinfo;
-with Namet;  use Namet;
-with Sprint; use Sprint;
-with Debug;  use Debug;
+with Aspects; use Aspects;
+with Debug;   use Debug;
+with Namet;   use Namet;
+with Nlists;  use Nlists;
+with Snames;  use Snames;
+with Sprint;  use Sprint;
 
 with Output;
 
@@ -87,7 +89,8 @@ package body Flow is
                when Null_Value =>
                   return True;
                when Direct_Mapping =>
-                  return Left.Node_A = Right.Node_A;
+                  return Left.Node_A = Right.Node_A and then
+                    Left.Node_B = Right.Node_B;
                when Record_Field =>
                   raise Why.Not_Implemented;
                when Magic_String =>
@@ -96,14 +99,17 @@ package body Flow is
 
          elsif Left.Kind = Null_Value then
             return True;
+
          else
             return False;
          end if;
 
       elsif Left.Kind = Direct_Mapping and Right.Kind = Magic_String then
          raise Why.Not_Implemented;
+
       elsif Left.Kind = Magic_String and Right.Kind = Direct_Mapping then
          raise Why.Not_Implemented;
+
       else
          return False;
       end if;
@@ -154,6 +160,24 @@ package body Flow is
       return F.Node_A;
    end Get_Direct_Mapping_Id;
 
+   --------------------
+   -- Change_Variant --
+   --------------------
+
+   function Change_Variant (F       : Flow_Id;
+                            Variant : Non_Global_Variant)
+                            return Flow_Id is
+   begin
+      case F.Kind is
+         when Null_Value =>
+            return Null_Flow_Id;
+         when Direct_Mapping =>
+            return Direct_Mapping_Id (Get_Direct_Mapping_Id (F), Variant);
+         when others =>
+            raise Why.Not_Implemented;
+      end case;
+   end Change_Variant;
+
    -------------------------------
    -- Loop_Parameter_From_Loop  --
    -------------------------------
@@ -181,6 +205,102 @@ package body Flow is
 
       return Defining_Identifier (N);
    end Loop_Parameter_From_Loop;
+
+   -----------------
+   -- Get_Globals --
+   -----------------
+
+   procedure Get_Globals (Callsite : Node_Id;
+                          Reads    : out Flow_Id_Sets.Set;
+                          Writes   : out Flow_Id_Sets.Set)
+   is
+      Called_Subprogram : constant Entity_Id := Entity (Name (Callsite));
+   begin
+      Reads  := Flow_Id_Sets.Empty_Set;
+      Writes := Flow_Id_Sets.Empty_Set;
+
+      if Has_Aspect (Called_Subprogram, Aspect_Global) then
+         declare
+            Global : constant Node_Id :=
+              Aspect_Rep_Item (Find_Aspect (Called_Subprogram, Aspect_Global));
+            pragma Assert
+              (List_Length (Pragma_Argument_Associations (Global)) = 1);
+
+            PAA : constant Node_Id :=
+              First (Pragma_Argument_Associations (Global));
+            pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+            CA       : List_Id;
+
+            Row      : Node_Id;
+            The_Mode : Name_Id;
+            RHS      : Node_Id;
+
+            procedure Process (The_Mode   : Name_Id;
+                               The_Global : Entity_Id);
+            --  Add the given global to the reads or writes list,
+            --  depending on the mode.
+
+            procedure Process (The_Mode   : Name_Id;
+                               The_Global : Entity_Id)
+            is
+            begin
+               case The_Mode is
+                  when Name_Input =>
+                     Reads.Insert (Direct_Mapping_Id
+                                     (The_Global, Callsite, Global_In_View));
+                  when Name_In_Out =>
+                     Reads.Insert (Direct_Mapping_Id
+                                     (The_Global, Callsite, Global_In_View));
+                     Writes.Insert (Direct_Mapping_Id
+                                      (The_Global, Callsite, Global_Out_View));
+                  when Name_Output =>
+                     Writes.Insert (Direct_Mapping_Id
+                                      (The_Global, Callsite, Global_Out_View));
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end Process;
+         begin
+            if Nkind (Expression (PAA)) = N_Null then
+               --  No globals. We are good to return as is.
+               return;
+            else
+               CA := Component_Associations (Expression (PAA));
+            end if;
+
+            Row := First (CA);
+            while Row /= Empty loop
+               pragma Assert (List_Length (Choices (Row)) = 1);
+               The_Mode := Chars (First (Choices (Row)));
+
+               RHS := Expression (Row);
+               case Nkind (RHS) is
+                  when N_Aggregate =>
+                     RHS := First (Expressions (RHS));
+                     while RHS /= Empty loop
+                        Process (The_Mode, Entity (RHS));
+                        RHS := Next (RHS);
+                     end loop;
+                  when N_Identifier =>
+                     Process (The_Mode, Entity (RHS));
+                  when N_Null =>
+                     null;
+                  when others =>
+                     raise Why.Not_Implemented;
+               end case;
+
+               Row := Next (Row);
+            end loop;
+         end;
+      else
+
+         --  TODO
+         null;
+
+      end if;
+
+   end Get_Globals;
 
    -----------------
    -- Print_Graph --
@@ -288,6 +408,22 @@ package body Flow is
                                        Output.Write_Str ("&nbsp;:=&nbsp;");
                                        Sprint_Flow_Id (A.Parameter_Formal);
                                        Output.Write_Str ("'out");
+                                    when others =>
+                                       raise Program_Error;
+                                 end case;
+
+                              elsif A.Is_Global then
+                                 Rv.Shape := Shape_None;
+
+                                 Output.Write_Str ("global&nbsp;");
+                                 Sprint_Node (N);
+                                 case F.Variant is
+                                    when Global_In_View =>
+                                       Output.Write_Str ("'in");
+
+                                    when Global_Out_View =>
+                                       Output.Write_Str ("'out");
+
                                     when others =>
                                        raise Program_Error;
                                  end case;

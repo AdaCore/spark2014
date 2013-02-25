@@ -56,12 +56,26 @@ package Flow.Control_Flow_Graph.Utility is
       Loops       : Node_Sets.Set)
       return V_Attributes
       with Post => not Make_Parameter_Attributes'Result.Is_Null_Node and
-                   not Make_Parameter_Attributes'Result.Is_Program_Node;
+                   not Make_Parameter_Attributes'Result.Is_Program_Node and
+                   not Make_Parameter_Attributes'Result.Is_Global and
+                   Make_Parameter_Attributes'Result.Is_Parameter;
    --  Create attributes for parameters for subprogram calls. If
    --  In_Vertex is true, create the attributes for the in version of
    --  a parameter; if In_Vertex is false we create the attributes for
    --  the out version. Note that variables defined and used is
    --  calculated automatically.
+
+   function Make_Global_Attributes
+     (Call_Vertex : Node_Id;
+      Global      : Flow_Id;
+      Loops       : Node_Sets.Set)
+      return V_Attributes
+      with Post => not Make_Global_Attributes'Result.Is_Null_Node and
+                   not Make_Global_Attributes'Result.Is_Program_Node and
+                   not Make_Global_Attributes'Result.Is_Parameter and
+                   Make_Global_Attributes'Result.Is_Global;
+   --  Create attributes for globals. Note that variables defined and
+   --  used is calculated automatically.
 
    function Make_Variable_Attributes
      (E       : Entity_Id;

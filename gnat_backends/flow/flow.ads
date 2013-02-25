@@ -28,6 +28,7 @@ with Ada.Containers.Vectors;
 
 with Atree; use Atree;
 with Einfo; use Einfo;
+with Sinfo; use Sinfo;
 with Types; use Types;
 
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
@@ -56,12 +57,22 @@ package Flow is
       --  For the 'initial and 'final vertices.
 
       In_View,
-      Out_View
+      Out_View,
       --  For the procedure call parameter vertices.
+
+      Global_In_View,
+      Global_Out_View
+      --  For the procedure call global vertices.
    );
 
    subtype Initial_Or_Final_Variant is Flow_Id_Variant
      range Initial_Value .. Final_Value;
+
+   subtype Non_Global_Variant is Flow_Id_Variant
+     range Normal_Use .. Out_View;
+
+   subtype Global_Variant is Flow_Id_Variant
+     range Global_In_View .. Global_Out_View;
 
    type Flow_Id is record
       Kind    : Flow_Id_Kind;
@@ -84,7 +95,7 @@ package Flow is
    procedure Sprint_Flow_Id (F : Flow_Id);
 
    function Direct_Mapping_Id (N       : Node_Id;
-                               Variant : Flow_Id_Variant := Normal_Use)
+                               Variant : Non_Global_Variant := Normal_Use)
                                return Flow_Id
    is (Flow_Id'(Kind    => Direct_Mapping,
                 Variant => Variant,
@@ -92,10 +103,24 @@ package Flow is
                 Node_B  => Empty,
                 E_Name  => Null_Entity_Name));
 
+   function Direct_Mapping_Id (Global   : Entity_Id;
+                               Callsite : Node_Id;
+                               Variant  : Global_Variant)
+                               return Flow_Id
+   is (Flow_Id'(Kind    => Direct_Mapping,
+                Variant => Variant,
+                Node_A  => Global,
+                Node_B  => Callsite,
+                E_Name  => Null_Entity_Name));
+
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
       return Node_Id
-      with Pre => (F.Kind = Direct_Mapping);
+     with Pre => (F.Kind = Direct_Mapping);
+
+   function Change_Variant (F       : Flow_Id;
+                            Variant : Non_Global_Variant)
+                            return Flow_Id;
 
    package Flow_Id_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Flow_Id,
@@ -130,6 +155,10 @@ package Flow is
       Is_Parameter      : Boolean;
       --  True if this vertex models an argument to a procedure call.
 
+      Is_Global         : Boolean;
+      --  True if this vertex models a global for a procedure or
+      --  function call.
+
       Perform_IPFA      : Boolean;
       --  True if the dependencies for this callsite should be filled
       --  in using interprocedural flow analysis.
@@ -160,6 +189,7 @@ package Flow is
                    Is_Export         => False,
                    Is_Callsite       => False,
                    Is_Parameter      => False,
+                   Is_Global         => False,
                    Perform_IPFA      => False,
                    Call_Vertex       => Null_Flow_Id,
                    Parameter_Actual  => Null_Flow_Id,
@@ -176,6 +206,7 @@ package Flow is
                    Is_Export         => False,
                    Is_Callsite       => False,
                    Is_Parameter      => False,
+                   Is_Global         => False,
                    Perform_IPFA      => False,
                    Call_Vertex       => Null_Flow_Id,
                    Parameter_Actual  => Null_Flow_Id,
@@ -235,6 +266,17 @@ package Flow is
                   Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
+
+   procedure Get_Globals (Callsite : Node_Id;
+                          Reads    : out Flow_Id_Sets.Set;
+                          Writes   : out Flow_Id_Sets.Set)
+   with Pre  => Nkind (Callsite) in N_Subprogram_Call,
+        Post => (for all G of Reads  => G.Variant = Global_In_View) and
+                (for all G of Writes => G.Variant = Global_Out_View);
+   --  Given a subprogram call, work out globals from the provided
+   --  aspect or the computed globals. The sets returned will contain
+   --  Flow_Id with the variant set to Global_In_View and
+   --  Global_Out_View.
 
    procedure Print_Graph
      (Filename     : String;

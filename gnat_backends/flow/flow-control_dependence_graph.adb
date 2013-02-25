@@ -43,7 +43,7 @@ package body Flow.Control_Dependence_Graph is
          declare
             A : constant V_Attributes := FA.CDG.Get_Attributes (V);
          begin
-            if A.Is_Parameter then
+            if A.Is_Parameter or A.Is_Global then
                pragma Assert (FA.CDG.In_Neighbour_Count (V) = 1);
                pragma Assert (FA.CDG.Out_Neighbour_Count (V) = 0);
                FA.CDG.Clear_Vertex (V);

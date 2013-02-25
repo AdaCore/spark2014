@@ -24,11 +24,15 @@
 with Aspects;  use Aspects;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
+
+with Sprint; use Sprint;
+with Output; use Output;
 
 with Why;
 
 package body Flow.Interprocedural is
+
+   use type Flow_Graphs.Vertex_Id;
 
    procedure Add_Simple_Procedure_Dependency
      (FA : in out Flow_Analysis_Graphs;
@@ -45,7 +49,7 @@ package body Flow.Interprocedural is
    function Find_Parameter_Vertex (CDG       : Flow_Graphs.T;
                                    Callsite  : Flow_Graphs.Vertex_Id;
                                    Parameter : Flow_Id)
-                                  return Flow_Graphs.Vertex_Id is
+                                   return Flow_Graphs.Vertex_Id is
    begin
       for V of CDG.Get_Collection (Callsite, Flow_Graphs.Out_Neighbours) loop
          declare
@@ -65,7 +69,7 @@ package body Flow.Interprocedural is
             end case;
          end;
       end loop;
-      raise Program_Error;
+      return Flow_Graphs.Null_Vertex;
    end Find_Parameter_Vertex;
 
    procedure Add_Simple_Procedure_Dependency
@@ -86,17 +90,29 @@ package body Flow.Interprocedural is
       --  output B.
 
       procedure Add_TD_Edge (A, B : Entity_Id) is
+         V_A, V_B : Flow_Graphs.Vertex_Id;
       begin
-         FA.TDG.Add_Edge
-           (Find_Parameter_Vertex
-              (FA.CDG,
-               V,
-               Direct_Mapping_Id (Unique_Entity (A), In_View)),
-            Find_Parameter_Vertex
-              (FA.CDG,
-               V,
-               Direct_Mapping_Id (Unique_Entity (B), Out_View)),
-            EC_TD);
+         V_A := Find_Parameter_Vertex
+           (FA.CDG,
+            V,
+            Direct_Mapping_Id (Unique_Entity (A), In_View));
+         if V_A = Flow_Graphs.Null_Vertex then
+            V_A := FA.CDG.Get_Vertex
+              (Direct_Mapping_Id (Unique_Entity (A), N, Global_In_View));
+         end if;
+         pragma Assert (V_A /= Flow_Graphs.Null_Vertex);
+
+         V_B := Find_Parameter_Vertex
+           (FA.CDG,
+            V,
+            Direct_Mapping_Id (Unique_Entity (B), Out_View));
+         if V_B = Flow_Graphs.Null_Vertex then
+            V_B := FA.CDG.Get_Vertex
+              (Direct_Mapping_Id (Unique_Entity (B), N, Global_Out_View));
+         end if;
+         pragma Assert (V_B /= Flow_Graphs.Null_Vertex);
+
+         FA.TDG.Add_Edge (V_A, V_B, EC_TD);
       end Add_TD_Edge;
 
    begin
@@ -160,6 +176,11 @@ package body Flow.Interprocedural is
 
                for Input of Inputs loop
                   for Output of Outputs loop
+                     Sprint_Node (Input);
+                     Write_Str (" -> ");
+                     Sprint_Node (Output);
+                     Write_Eol;
+
                      Add_TD_Edge (Input, Output);
                   end loop;
                end loop;
@@ -176,7 +197,7 @@ package body Flow.Interprocedural is
             Outputs : Flow_Id_Sets.Set;
             E       : Entity_Id;
          begin
-            E := First_Entity (Called_Procedure);
+            E := First_Formal (Called_Procedure);
             while E /= Empty loop
                case Ekind (E) is
                   when E_In_Parameter =>
@@ -191,9 +212,9 @@ package body Flow.Interprocedural is
                      Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                         Out_View));
                   when others =>
-                     null;
+                     raise Why.Not_Implemented;
                end case;
-               E := Next_Entity (E);
+               E := Next_Formal (E);
             end loop;
 
             --  TODO: Collect globals
