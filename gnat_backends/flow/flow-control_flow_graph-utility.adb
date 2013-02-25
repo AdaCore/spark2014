@@ -23,9 +23,9 @@
 
 with Sinfo; use Sinfo;
 
-with Treepr; use Treepr;
+--  with Treepr; use Treepr;
 
-with Why;
+--  with Why;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -69,16 +69,16 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops           := Loops;
       A.Is_Callsite     := True;
 
-      case Nkind (Parent (Procedure_Spec)) is
-         when N_Subprogram_Body =>
-            A.Perform_IPFA := True;
-         when N_Subprogram_Declaration =>
-            A.Perform_IPFA :=
-              Corresponding_Body (Parent (Procedure_Spec)) /= Empty;
-         when others =>
-            Print_Node_Subtree (Parent (Procedure_Spec));
-            raise Why.Not_Implemented;
-      end case;
+      --  case Nkind (Parent (Procedure_Spec)) is
+      --     when N_Subprogram_Body =>
+      --        A.Perform_IPFA := True;
+      --     when N_Subprogram_Declaration =>
+      --        A.Perform_IPFA :=
+      --          Corresponding_Body (Parent (Procedure_Spec)) /= Empty;
+      --     when others =>
+      --        Print_Node_Subtree (Parent (Procedure_Spec));
+      --        raise Why.Not_Implemented;
+      --  end case;
 
       return A;
    end Make_Call_Attributes;

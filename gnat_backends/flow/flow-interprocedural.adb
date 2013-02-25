@@ -191,7 +191,7 @@ package body Flow.Interprocedural is
                      Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                         Out_View));
                   when others =>
-                     raise Why.Not_Implemented;
+                     null;
                end case;
                E := Next_Entity (E);
             end loop;
