@@ -201,7 +201,7 @@ all of these sections as invariant. To do this, add their titles to the list of 
 the Modified Version's license notice. These titles must be distinct from any other section titles.
 
 You may add a section Entitled 'Endorsements', provided it contains nothing but endorsements of your
-Modified Version by various parties—for example, statements of peer review or that the text has been
+Modified Version by various parties -- for example, statements of peer review or that the text has been
 approved by an organization as the authoritative definition of a standard.
 
 You may add a passage of up to five words as a Front-Cover Text, and a passage of up to 25 words as a
