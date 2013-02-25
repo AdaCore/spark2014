@@ -41,6 +41,7 @@ package body Flow.Control_Flow_Graph is
    use type Ada.Containers.Count_Type;
 
    use Vertex_Sets;
+   use type Flow_Id_Sets.Set;
 
    ------------------------------------------------------------
    --  Local types
@@ -233,8 +234,6 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      use type Flow_Id_Sets.Set;
-
       V : Flow_Graphs.Vertex_Id;
 
       V_Used_RHS  : Flow_Id_Sets.Set;
@@ -1132,6 +1131,10 @@ package body Flow.Control_Flow_Graph is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
+            when N_Subprogram_Body | N_Subprogram_Declaration =>
+               --  Do not descend into nested subprograms.
+               return Skip;
+
             when N_Identifier =>
                if Entity (N) /= Empty then
                   case Ekind (Entity (N)) is
@@ -1207,7 +1210,8 @@ package body Flow.Control_Flow_Graph is
       Do_Subprogram_Body (N, FA, Connection_Map, The_Context);
 
       --  Work out all variables and add 'initial and 'final vertices.
-      FA.Vars := Get_Variable_Set (N);
+      FA.Vars := Get_Variable_Set (Declarations (N)) or
+        Get_Variable_Set (Handled_Statement_Sequence (N));
       --  Functions track their return via the name of the function.
       if Ekind (FA.Subprogram) = E_Function then
          FA.Vars.Include (Direct_Mapping_Id (FA.Subprogram));
