@@ -501,6 +501,7 @@ function findlast list element_type : cursor
 (************************************** API *************************************)
 
   function empty_list__object : list = empty_list
+  function no_element__object : cursor = no_element
 
   function list__capacity__record (co : list) : Ada__containers__count_type.count_type =
           Ada__containers__count_type.of_int (capacity co)
@@ -654,7 +655,7 @@ function findlast list element_type : cursor
      has_element co cu
   predicate delete__post (co oldco:list) (cu oldcu:cursor)
                                              (c : Ada__containers__count_type.count_type) =
-     delete_mult oldco oldcu (Ada__containers__count_type.to_int c) co
+     delete_mult oldco oldcu (Ada__containers__count_type.to_int c) co /\ cu = no_element
   val delete__program (co:ref list) (cu:ref cursor)
                                              (c : Ada__containers__count_type.count_type) : unit
      requires { has_element !co !cu }

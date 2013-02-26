@@ -662,7 +662,7 @@ package body Gnat2Why.Decls is
                --    ("Param : " & Ada.Strings.Fixed.Translate
                --       (Name_Buffer (1 .. Name_Len),
                --        Ada.Strings.Maps.Constants.Lower_Case_Map));
-               return Defining_Identifier (CurLabs);
+               return Defining_Entity (CurLabs);
             end if;
          end Get_Assoc_From_Param;
 
@@ -709,14 +709,16 @@ package body Gnat2Why.Decls is
                                 (Full_Name (Entity (Param)))),
                            Kind     => EW_Module,
                            Use_Kind => EW_Export));
-                     Emit
-                       (TFile.Cur_Theory,
-                        New_Type (Name       => New_Identifier
-                                  (Name => Short_Name (Formal)),
-                                  Definition =>
-                                  New_Transparent_Type_Definition
-                                    (Domain          => EW_Term,
-                                     Type_Definition => Actual_Type)));
+                     if Short_Name (Formal) /= Short_Name (Entity (Param)) then
+                        Emit
+                          (TFile.Cur_Theory,
+                           New_Type (Name       => New_Identifier
+                                     (Name => Short_Name (Formal)),
+                                     Definition =>
+                                       New_Transparent_Type_Definition
+                                         (Domain          => EW_Term,
+                                          Type_Definition => Actual_Type)));
+                     end if;
                      Close_Theory (TFile, Filter_Entity => Empty);
                   when Subprogram_Kind | Object_Kind | Named_Kind =>
                      Reps (Current) := New_Clone_Substitution
@@ -748,7 +750,7 @@ package body Gnat2Why.Decls is
         (Parent (Generic_Parent (Parent (Package_Entity))))));
       TFile : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
    begin
-
+      --  Ada.Text_IO.Put_Line ("--------- + --------");
       Open_Theory (TFile, Clone_Name,
                    Comment => "Clone of " & Generic_Name & ".mlw");
 
@@ -767,6 +769,7 @@ package body Gnat2Why.Decls is
                     Defined_Entity => Package_Entity);
 
       Parse_Declarations (Decls, Clone_Name);
+      --  Ada.Text_IO.Put_Line ("--------- - --------");
    end Translate_Container_Package;
 
    ---------------------------
