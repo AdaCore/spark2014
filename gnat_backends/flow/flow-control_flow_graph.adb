@@ -687,6 +687,7 @@ package body Flow.Control_Flow_Graph is
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                  Var_Use => Get_Variable_Set (DSD),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
