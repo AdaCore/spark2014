@@ -1,0 +1,23 @@
+with Ada.Containers.Formal_Doubly_Linked_Lists;
+with Ada.Containers; use Ada.Containers;
+package P is
+
+   type Element_Type is new Integer range 1 .. 100;
+
+   function My_Eq (I1 : Element_Type; I2 : Element_Type) return Boolean is
+     (I1 = I2);
+
+   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
+     (Element_Type, My_Eq);
+   use My_Lists;
+
+   procedure Identity (L : in out List; Cu : in out Cursor) with
+     Pre => Length (L) < L.Capacity and
+     (Has_Element (L, Cu) or Cu = No_Element),
+     Post => Strict_Equal (L, L'Old) and Cu = No_Element;
+
+   procedure Nearly_Identity (L : in out List; Cu : in out Cursor) with
+     Pre => Has_Element (L, Cu),
+     Post => (if Cu = Cu'Old then Strict_Equal (L, L'Old));
+
+end P;
