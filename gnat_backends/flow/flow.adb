@@ -29,6 +29,7 @@ with Aspects; use Aspects;
 with Debug;   use Debug;
 with Namet;   use Namet;
 with Nlists;  use Nlists;
+with Sinfo;   use Sinfo;
 with Snames;  use Snames;
 with Sprint;  use Sprint;
 
@@ -241,19 +242,18 @@ package body Flow is
    -- Get_Globals --
    -----------------
 
-   procedure Get_Globals (Callsite : Node_Id;
-                          Reads    : out Flow_Id_Sets.Set;
-                          Writes   : out Flow_Id_Sets.Set)
+   procedure Get_Globals (Subprogram : Entity_Id;
+                          Reads      : out Flow_Id_Sets.Set;
+                          Writes     : out Flow_Id_Sets.Set)
    is
-      Called_Subprogram : constant Entity_Id := Entity (Name (Callsite));
    begin
       Reads  := Flow_Id_Sets.Empty_Set;
       Writes := Flow_Id_Sets.Empty_Set;
 
-      if Has_Aspect (Called_Subprogram, Aspect_Global) then
+      if Has_Aspect (Subprogram, Aspect_Global) then
          declare
             Global : constant Node_Id :=
-              Aspect_Rep_Item (Find_Aspect (Called_Subprogram, Aspect_Global));
+              Aspect_Rep_Item (Find_Aspect (Subprogram, Aspect_Global));
             pragma Assert
               (List_Length (Pragma_Argument_Associations (Global)) = 1);
 
@@ -566,7 +566,7 @@ package body Flow is
          CDG          => Create,
          TDG          => Create,
          PDG          => Create,
-         Vars         => Flow_Id_Sets.Empty_Set,
+         All_Vars     => Flow_Id_Sets.Empty_Set,
          Loops        => Node_Sets.Empty_Set);
 
       if Debug_Flag_Dot_ZZ then

@@ -96,4 +96,18 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
 
+   function Make_Global_Variable_Attributes
+     (F       : Flow_Id;
+      Mode    : Global_Modes;
+      E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+      with Pre  => F.Variant in Initial_Or_Final_Variant,
+           Post => not Make_Global_Variable_Attributes'Result.Is_Null_Node and
+                   not Make_Global_Variable_Attributes'Result.Is_Program_Node;
+   --  Create attributes for the initial_value and final_use vertices
+   --  for globals. The following is calculated automatically:
+   --     * Is_Initialised
+   --     * Is_Export
+   --     * Variables_Defined or Variables_Used
+
 end Flow.Control_Flow_Graph.Utility;

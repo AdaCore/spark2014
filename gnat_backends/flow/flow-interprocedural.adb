@@ -24,9 +24,7 @@
 with Aspects;  use Aspects;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
-
-with Sprint; use Sprint;
-with Output; use Output;
+with Sinfo;    use Sinfo;
 
 with Why;
 
@@ -204,11 +202,6 @@ package body Flow.Interprocedural is
 
                for Input of Inputs loop
                   for Output of Outputs loop
-                     Sprint_Node (Input);
-                     Write_Str (" -> ");
-                     Sprint_Node (Output);
-                     Write_Eol;
-
                      Add_TD_Edge (Input, Output);
                   end loop;
                end loop;

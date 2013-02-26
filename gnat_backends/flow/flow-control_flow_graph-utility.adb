@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sinfo; use Sinfo;
+
 --  with Treepr; use Treepr;
 
 --  with Why;
@@ -189,5 +191,36 @@ package body Flow.Control_Flow_Graph.Utility is
 
       return A;
    end Make_Variable_Attributes;
+
+   -------------------------------------
+   -- Make_Global_Variable_Attributes --
+   -------------------------------------
+
+   function Make_Global_Variable_Attributes
+     (F       : Flow_Id;
+      Mode    : Global_Modes;
+      E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes is
+      A : V_Attributes := Null_Attributes;
+   begin
+      A.Error_Location := E_Loc;
+
+      case F.Variant is
+         when Initial_Value =>
+            A.Is_Initialised    := Mode in Initialised_Global_Modes;
+            A.Variables_Defined :=
+              Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+
+         when Final_Value =>
+            A.Is_Export      := Mode in Exported_Global_Modes;
+            A.Variables_Used :=
+              Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      return A;
+   end Make_Global_Variable_Attributes;
 
 end Flow.Control_Flow_Graph.Utility;

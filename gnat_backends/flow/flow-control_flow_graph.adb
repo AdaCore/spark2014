@@ -24,6 +24,7 @@
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;
 with Sem_Util; use Sem_Util;
+with Sinfo;    use Sinfo;
 
 with Treepr;   use Treepr;
 
@@ -42,6 +43,7 @@ package body Flow.Control_Flow_Graph is
 
    use Vertex_Sets;
    use type Flow_Id_Sets.Set;
+   use type Node_Sets.Set;
 
    ------------------------------------------------------------
    --  Local types
@@ -99,6 +101,19 @@ package body Flow.Control_Flow_Graph is
       with Pre => From /= Flow_Graphs.Null_Vertex and
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
+
+   procedure Create_Initial_And_Final_Vertices
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs);
+   --  Create the 'initial and 'final vertices for the given entity
+   --  and link them up to the start and end vertices.
+
+   procedure Create_Initial_And_Final_Vertices
+     (F    : Flow_Id;
+      Mode : Global_Modes;
+      FA   : in out Flow_Analysis_Graphs);
+   --  Create the 'initial and 'final vertices for the given global
+   --  and link them up to the start and end vertices.
 
    procedure Do_Assignment_Statement
      (N   : Node_Id;
@@ -231,6 +246,67 @@ package body Flow.Control_Flow_Graph is
    begin
       CFG.Add_Edge (From, To, EC_Default);
    end Linkup;
+
+   ---------------------------------------
+   -- Create_Initial_And_Final_Vertices --
+   ----------------------------------------
+
+   procedure Create_Initial_And_Final_Vertices
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs) is
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  Setup the n'initial vertex. Note that initialisation for
+      --  variables is detected (and set) when building the flow graph
+      --  for declarative parts.
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (Unique_Entity (E), Initial_Value),
+         Make_Variable_Attributes (E       => Unique_Entity (E),
+                                   Variant => Initial_Value,
+                                   E_Loc   => E),
+         V);
+      Linkup (FA.CFG, V, FA.Start_Vertex);
+
+      --  Setup the n'final vertex.
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (Unique_Entity (E), Final_Value),
+         Make_Variable_Attributes (E       => Unique_Entity (E),
+                                   Variant => Final_Value,
+                                   E_Loc   => E),
+         V);
+      Linkup (FA.CFG, FA.End_Vertex, V);
+
+      FA.All_Vars.Include (Direct_Mapping_Id (Unique_Entity (E)));
+   end Create_Initial_And_Final_Vertices;
+
+   procedure Create_Initial_And_Final_Vertices
+     (F    : Flow_Id;
+      Mode : Global_Modes;
+      FA   : in out Flow_Analysis_Graphs)
+   is
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  Setup the n'initial vertex. Initialisation is deduced from
+      --  the mode.
+      FA.CFG.Add_Vertex
+        (Change_Variant (F, Initial_Value),
+         Make_Global_Variable_Attributes
+           (F    => Change_Variant (F, Initial_Value),
+            Mode => Mode),
+         V);
+      Linkup (FA.CFG, V, FA.Start_Vertex);
+
+      --  Setup the n'final vertex.
+      FA.CFG.Add_Vertex
+        (Change_Variant (F, Final_Value),
+         Make_Global_Variable_Attributes
+           (F    => Change_Variant (F, Final_Value),
+            Mode => Mode),
+         V);
+      Linkup (FA.CFG, FA.End_Vertex, V);
+
+      FA.All_Vars.Include (F);
+   end Create_Initial_And_Final_Vertices;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -624,6 +700,8 @@ package body Flow.Control_Flow_Graph is
          LPS : constant Node_Id :=
            Loop_Parameter_Specification (Iteration_Scheme (N));
 
+         LP : constant Entity_Id := Defining_Identifier (LPS);
+
          DSD : constant Node_Id := Discrete_Subtype_Definition (LPS);
 
          R : Node_Id;
@@ -643,13 +721,19 @@ package body Flow.Control_Flow_Graph is
                raise Why.Not_Implemented;
          end case;
 
+         --  We have a new variable here which we have not picked up
+         --  in Create, so we should set it up.
+         Create_Initial_And_Final_Vertices (LP, FA);
+
+         --  Work out which of the three variants (empty, full,
+         --  unknown) we have...
          if Is_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We have an empty range. We should complain!
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                    (Direct_Mapping_Id (LP)),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -666,7 +750,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                    (Direct_Mapping_Id (LP)),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -686,7 +770,7 @@ package body Flow.Control_Flow_Graph is
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (Defining_Identifier (LPS))),
+                    (Direct_Mapping_Id (LP)),
                   Var_Use => Get_Variable_Set (DSD),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
@@ -944,9 +1028,9 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Obtain globals (either from contracts or the computerd
       --  stuff).
-      Get_Globals (Callsite => Callsite,
-                   Reads    => Reads,
-                   Writes   => Writes);
+      Get_Globals (Subprogram => Entity (Name (Callsite)),
+                   Reads      => Reads,
+                   Writes     => Writes);
 
       for R of Reads loop
          FA.CFG.Add_Vertex (Make_Global_Attributes
@@ -1258,17 +1342,29 @@ package body Flow.Control_Flow_Graph is
       return VS;
    end Get_Variable_Set;
 
-   --------------
-   --  Create  --
-   --------------
+   -------------
+   -- Create --
+   -------------
 
    procedure Create
      (N  : Node_Id;
       FA : in out Flow_Analysis_Graphs)
    is
       Connection_Map : Connection_Maps.Map;
-      The_Context    : Context := No_Context;
+
+      The_Context    : Context          := No_Context;
+
+      Subprogram_Spec : Entity_Id;
+      Subprogram      : Entity_Id;
    begin
+      if Acts_As_Spec (N) then
+         Subprogram_Spec := Defining_Unit_Name (Specification (N));
+         Subprogram      := Defining_Unit_Name (Specification (N));
+      else
+         Subprogram_Spec := Corresponding_Spec (N);
+         Subprogram      := Defining_Unit_Name (Specification (N));
+      end if;
+
       --  Start with a blank slate.
       Connection_Map := Connection_Maps.Empty_Map;
 
@@ -1276,46 +1372,107 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex (Null_Attributes, FA.Start_Vertex);
       FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
 
+      --  Collect parameters to this procedure and stick them into
+      --  FA.Params.
+      declare
+         E : Entity_Id;
+      begin
+         E := First_Formal (Subprogram_Spec);
+         while E /= Empty loop
+            Create_Initial_And_Final_Vertices (E, FA);
+            E := Next_Formal (E);
+         end loop;
+      end;
+
+      --  Collect globals for this procedure and stick them into
+      --  FA.All_Globals.
+      declare
+         type G_Prop is record
+            Is_Read  : Boolean;
+            Is_Write : Boolean;
+         end record;
+
+         package Global_Maps is new Ada.Containers.Hashed_Maps
+           (Key_Type        => Flow_Id,
+            Element_Type    => G_Prop,
+            Hash            => Hash,
+            Equivalent_Keys => "=",
+            "="             => "=");
+
+         Reads   : Flow_Id_Sets.Set;
+         Writes  : Flow_Id_Sets.Set;
+         Globals : Global_Maps.Map := Global_Maps.Empty_Map;
+      begin
+         Get_Globals (Subprogram => Subprogram_Spec,
+                      Reads      => Reads,
+                      Writes     => Writes);
+         for G of Reads loop
+            Globals.Include (Change_Variant (G, Normal_Use),
+                             G_Prop'(Is_Read  => True,
+                                     Is_Write => False));
+         end loop;
+         for G of Writes loop
+            declare
+               P : G_Prop;
+            begin
+               if Globals.Contains (Change_Variant (G, Normal_Use)) then
+                  P := Globals (Change_Variant (G, Normal_Use));
+                  P.Is_Write := True;
+               else
+                  P := G_Prop'(Is_Read  => False,
+                               Is_Write => True);
+               end if;
+               Globals.Include (Change_Variant (G, Normal_Use), P);
+            end;
+         end loop;
+
+         for C in Globals.Iterate loop
+            declare
+               G : constant Flow_Id := Global_Maps.Key (C);
+               P : constant G_Prop  := Global_Maps.Element (C);
+
+               Mode : Global_Modes;
+            begin
+               if P.Is_Read and P.Is_Write then
+                  Mode := Global_Mode_In_Out;
+               elsif P.Is_Read then
+                  Mode := Global_Mode_In;
+               elsif P.Is_Write then
+                  Mode := Global_Mode_Out;
+               else
+                  raise Program_Error;
+               end if;
+
+               Create_Initial_And_Final_Vertices (G, Mode, FA);
+            end;
+         end loop;
+      end;
+
+      --  Finaly collect all variables and stick them into
+      --  FA.All_Vars.
+      declare
+         E : Entity_Id;
+      begin
+         E := First_Entity (Subprogram);
+         while E /= Empty loop
+            case Ekind (E) is
+               when E_Variable | E_Constant =>
+                  Create_Initial_And_Final_Vertices (E, FA);
+               when others =>
+                  null;
+            end case;
+            E := Next_Entity (E);
+         end loop;
+
+         if Ekind (FA.Subprogram) = E_Function then
+            Create_Initial_And_Final_Vertices (FA.Subprogram, FA);
+         end if;
+      end;
+
       --  Produce flowgraph for the body
       Do_Subprogram_Body (N, FA, Connection_Map, The_Context);
 
-      --  Work out all variables and add 'initial and 'final vertices.
-      FA.Vars := Get_Variable_Set (Declarations (N)) or
-        Get_Variable_Set (Handled_Statement_Sequence (N));
-      --  Functions track their return via the name of the function.
-      if Ekind (FA.Subprogram) = E_Function then
-         FA.Vars.Include (Direct_Mapping_Id (FA.Subprogram));
-      end if;
-      for F of FA.Vars loop
-         case F.Kind is
-            when Direct_Mapping =>
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                  V : Flow_Graphs.Vertex_Id;
-               begin
-                  --  Setup the n'initial vertex. Note that
-                  --  initialisation for variables is detected (and
-                  --  set) when building the flow graph for
-                  --  declarative parts.
-                  FA.CFG.Add_Vertex
-                    (Direct_Mapping_Id (E, Initial_Value),
-                     Make_Variable_Attributes (E, Initial_Value),
-                     V);
-                  Linkup (FA.CFG, V, FA.Start_Vertex);
-
-                  --  Setup the n'final vertex. TODO: global out
-                  --  variables are also exports.
-                  FA.CFG.Add_Vertex
-                    (Direct_Mapping_Id (E, Final_Value),
-                     Make_Variable_Attributes (E, Final_Value),
-                     V);
-                  Linkup (FA.CFG, FA.End_Vertex, V);
-               end;
-            when others =>
-               raise Why.Not_Implemented;
-         end case;
-      end loop;
-      --  Print_Node_Set (FA.Vars);
+      --  Print_Node_Set (FA.All_Vars);
 
       --  Connect up the start and end vertices.
       Linkup (FA.CFG,

@@ -28,7 +28,6 @@ with Ada.Containers.Vectors;
 
 with Atree; use Atree;
 with Einfo; use Einfo;
-with Sinfo; use Sinfo;
 with Types; use Types;
 
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
@@ -40,6 +39,17 @@ with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
 with Graph;
 
 package Flow is
+
+   type Global_Modes is (Global_Mode_In,
+                         Global_Mode_Proof,
+                         Global_Mode_In_Out,
+                         Global_Mode_Out);
+
+   subtype Initialised_Global_Modes is Global_Modes
+     range Global_Mode_In .. Global_Mode_In_Out;
+
+   subtype Exported_Global_Modes is Global_Modes
+     range Global_Mode_In_Out .. Global_Mode_Out;
 
    type Edge_Colours is (EC_Default, EC_DDG, EC_TD);
 
@@ -236,7 +246,7 @@ package Flow is
       CDG          : Flow_Graphs.T;
       TDG          : Flow_Graphs.T;
       PDG          : Flow_Graphs.T;
-      Vars         : Flow_Id_Sets.Set;
+      All_Vars     : Flow_Id_Sets.Set;
       Loops        : Node_Sets.Set;
    end record;
 
@@ -254,10 +264,11 @@ package Flow is
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
 
-   procedure Get_Globals (Callsite : Node_Id;
-                          Reads    : out Flow_Id_Sets.Set;
-                          Writes   : out Flow_Id_Sets.Set)
-   with Pre  => Nkind (Callsite) in N_Subprogram_Call,
+   procedure Get_Globals (Subprogram : Entity_Id;
+                          Reads      : out Flow_Id_Sets.Set;
+                          Writes     : out Flow_Id_Sets.Set)
+   with Pre  => Ekind (Subprogram) = E_Procedure or
+                Ekind (Subprogram) = E_Function,
         Post => (for all G of Reads  => G.Variant = In_View) and
                 (for all G of Writes => G.Variant = Out_View);
    --  Given a subprogram call, work out globals from the provided
