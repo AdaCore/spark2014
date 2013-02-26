@@ -731,7 +731,7 @@ package body Flow.Control_Flow_Graph is
             --  We have a while loop.
             Do_While_Loop;
 
-         elsif Iterator_Specification (N) /= Empty then
+         elsif Iterator_Specification (Iteration_Scheme (N)) /= Empty then
             --  N_Iterator_Specification is not in SPARK2014
             raise Why.Not_Implemented;
 
