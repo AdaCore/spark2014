@@ -89,8 +89,7 @@ package body Flow is
                when Null_Value =>
                   return True;
                when Direct_Mapping =>
-                  return Left.Node_A = Right.Node_A and then
-                    Left.Node_B = Right.Node_B;
+                  return Left.Node_A = Right.Node_A;
                when Record_Field =>
                   raise Why.Not_Implemented;
                when Magic_String =>
@@ -151,6 +150,38 @@ package body Flow is
       end case;
    end Sprint_Flow_Id;
 
+   -------------------
+   -- Print_Flow_Id --
+   -------------------
+
+   procedure Print_Flow_Id (F : Flow_Id) is
+   begin
+      Sprint_Flow_Id (F);
+      case F.Variant is
+         when Normal_Use =>
+            null;
+         when Initial_Value =>
+            Output.Write_Str ("'initial");
+         when Final_Value =>
+            Output.Write_Str ("'initial");
+         when In_View =>
+            Output.Write_Str ("'in");
+         when Out_View =>
+            Output.Write_Str ("'out");
+      end case;
+      case F.Kind is
+         when Null_Value =>
+            null;
+         when Direct_Mapping =>
+            Output.Write_Str (" (direct)");
+         when Record_Field =>
+            Output.Write_Str (" (record)");
+         when Magic_String =>
+            Output.Write_Str (" (magic)");
+      end case;
+      Output.Write_Eol;
+   end Print_Flow_Id;
+
    ---------------------------
    -- Get_Direct_Mapping_Id --
    ---------------------------
@@ -165,8 +196,8 @@ package body Flow is
    --------------------
 
    function Change_Variant (F       : Flow_Id;
-                            Variant : Non_Global_Variant)
-                            return Flow_Id is
+                            Variant : Flow_Id_Variant)
+                           return Flow_Id is
    begin
       case F.Kind is
          when Null_Value =>
@@ -248,15 +279,15 @@ package body Flow is
                case The_Mode is
                   when Name_Input =>
                      Reads.Insert (Direct_Mapping_Id
-                                     (The_Global, Callsite, Global_In_View));
+                                     (The_Global, In_View));
                   when Name_In_Out =>
                      Reads.Insert (Direct_Mapping_Id
-                                     (The_Global, Callsite, Global_In_View));
+                                     (The_Global, In_View));
                      Writes.Insert (Direct_Mapping_Id
-                                      (The_Global, Callsite, Global_Out_View));
+                                      (The_Global, Out_View));
                   when Name_Output =>
                      Writes.Insert (Direct_Mapping_Id
-                                      (The_Global, Callsite, Global_Out_View));
+                                      (The_Global, Out_View));
                   when others =>
                      raise Program_Error;
                end case;
@@ -338,140 +369,144 @@ package body Flow is
             Shape  => Node_Shape_T'First,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
+
+         F : constant Flow_Id      := G.Get_Key (V);
+         A : constant V_Attributes := G.Get_Attributes (V);
       begin
-         if G.Get_Attributes (V).Is_Null_Node then
+         Temp_String := Null_Unbounded_String;
+         Output.Set_Special_Output (Add_To_Temp_String'Access);
+
+         if A.Is_Null_Node then
             Rv.Show := False;
+
          elsif V = Start_Vertex then
             Rv.Label := To_Unbounded_String ("start");
             Rv.Shape := Shape_None;
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or
               G.Out_Neighbour_Count (V) > 0;
+
          elsif V = End_Vertex then
             Rv.Label := To_Unbounded_String ("end");
             Rv.Shape := Shape_None;
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or
               G.Out_Neighbour_Count (V) > 0;
+
+         elsif A.Is_Parameter then
+            Rv.Shape := Shape_None;
+
+            case F.Variant is
+               when In_View =>
+                  Sprint_Flow_Id (A.Parameter_Formal);
+                  Output.Write_Str ("'in");
+                  Output.Write_Str ("&nbsp;:=&nbsp;");
+                  Sprint_Flow_Id (A.Parameter_Actual);
+
+               when Out_View =>
+                  Sprint_Flow_Id (A.Parameter_Actual);
+                  Output.Write_Str ("&nbsp;:=&nbsp;");
+                  Sprint_Flow_Id (A.Parameter_Formal);
+                  Output.Write_Str ("'out");
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         elsif A.Is_Global then
+            Rv.Shape := Shape_None;
+
+            Output.Write_Str ("global&nbsp;");
+            Sprint_Flow_Id (A.Parameter_Formal);
+            case A.Parameter_Formal.Variant is
+               when In_View =>
+                  Output.Write_Str ("'in");
+
+               when Out_View =>
+                  Output.Write_Str ("'out");
+
+               when others =>
+                  raise Program_Error;
+            end case;
+
          else
-            Temp_String := Null_Unbounded_String;
-            Output.Set_Special_Output (Add_To_Temp_String'Access);
+            case F.Kind is
+               when Direct_Mapping =>
+                  declare
+                     N : constant Node_Id := Get_Direct_Mapping_Id (F);
+                  begin
+                     case Nkind (N) is
+                        when N_If_Statement =>
+                           Rv.Shape := Shape_Diamond;
+                           Output.Write_Str ("if ");
+                           Sprint_Node (Condition (N));
 
-            declare
-               F : constant Flow_Id      := G.Get_Key (V);
-               A : constant V_Attributes := G.Get_Attributes (V);
-            begin
-               case F.Kind is
-                  when Direct_Mapping =>
-                     declare
-                        N : constant Node_Id := Get_Direct_Mapping_Id (F);
-                     begin
-                        case Nkind (N) is
-                           when N_If_Statement =>
-                              Rv.Shape := Shape_Diamond;
-                              Output.Write_Str ("if ");
-                              Sprint_Node (Condition (N));
-                           when N_Loop_Statement =>
-                              Rv.Shape := Shape_Diamond;
-                              if Iteration_Scheme (N) = Empty then
-                                 --  Basic loop. Should never
-                                 --  appear as a vertex in the
-                                 --  graph.
-                                 pragma Assert (False);
-                              elsif Condition (Iteration_Scheme (N)) /=
-                                Empty then
-                                 --  While loop.
-                                 Output.Write_Str ("while ");
-                                 Sprint_Node
-                                   (Condition (Iteration_Scheme (N)));
-                              else
-                                 Sprint_Node
-                                   (Iteration_Scheme (N));
-                              end if;
-
-                           when N_Procedure_Call_Statement =>
-                              Rv.Shape := Shape_Box;
-                              Output.Write_Str ("call ");
-                              Sprint_Node (Name (N));
-
-                           when others =>
-                              if A.Is_Parameter then
-                                 Rv.Shape := Shape_None;
-
-                                 case F.Variant is
-                                    when In_View =>
-                                       Sprint_Flow_Id (A.Parameter_Formal);
-                                       Output.Write_Str ("'in");
-                                       Output.Write_Str ("&nbsp;:=&nbsp;");
-                                       Sprint_Flow_Id (A.Parameter_Actual);
-
-                                    when Out_View =>
-                                       Sprint_Flow_Id (A.Parameter_Actual);
-                                       Output.Write_Str ("&nbsp;:=&nbsp;");
-                                       Sprint_Flow_Id (A.Parameter_Formal);
-                                       Output.Write_Str ("'out");
-                                    when others =>
-                                       raise Program_Error;
-                                 end case;
-
-                              elsif A.Is_Global then
-                                 Rv.Shape := Shape_None;
-
-                                 Output.Write_Str ("global&nbsp;");
-                                 Sprint_Node (N);
-                                 case F.Variant is
-                                    when Global_In_View =>
-                                       Output.Write_Str ("'in");
-
-                                    when Global_Out_View =>
-                                       Output.Write_Str ("'out");
-
-                                    when others =>
-                                       raise Program_Error;
-                                 end case;
-
-                              else
-                                 Sprint_Node (N);
-                              end if;
-                        end case;
-                     end;
-
-                     case F.Variant is
-                        when Initial_Value =>
-                           Rv.Shape := Shape_None;
-                           Output.Write_Str ("'initial");
-
-                           if not A.Is_Initialised then
-                              Rv.Colour := To_Unbounded_String ("red");
+                        when N_Loop_Statement =>
+                           Rv.Shape := Shape_Diamond;
+                           if Iteration_Scheme (N) = Empty then
+                              --  Basic loop. Should never
+                              --  appear as a vertex in the
+                              --  graph.
+                              pragma Assert (False);
+                           elsif Condition (Iteration_Scheme (N)) /=
+                             Empty then
+                              --  While loop.
+                              Output.Write_Str ("while ");
+                              Sprint_Node
+                                (Condition (Iteration_Scheme (N)));
+                           else
+                              Sprint_Node
+                                (Iteration_Scheme (N));
                            end if;
 
-                        when Final_Value =>
-                           Rv.Shape := Shape_None;
-                           Output.Write_Str ("'final");
-                           if A.Is_Export then
-                              Rv.Colour := To_Unbounded_String ("blue");
-                           end if;
+                        when N_Procedure_Call_Statement =>
+                           Rv.Shape := Shape_Box;
+                           Output.Write_Str ("call ");
+                           Sprint_Node (Name (N));
 
                         when others =>
-                           null;
+                           Sprint_Node (N);
                      end case;
-                  when others =>
-                     raise Program_Error;
-               end case;
+                  end;
 
-               if A.Loops.Length > 0 and not A.Is_Parameter then
-                  Output.Write_Str ("\nLoops:");
-                  for Loop_Identifier of A.Loops loop
-                     Output.Write_Str ("&nbsp;");
-                     Sprint_Node (Loop_Identifier);
-                  end loop;
-               end if;
+                  case F.Variant is
+                     when Initial_Value =>
+                        Rv.Shape := Shape_None;
+                        Output.Write_Str ("'initial");
 
-               if A.Perform_IPFA then
-                  Output.Write_Str ("\nIPFA");
-               end if;
-            end;
+                        if not A.Is_Initialised then
+                           Rv.Colour := To_Unbounded_String ("red");
+                        end if;
 
-            Output.Write_Eol;
-            Output.Cancel_Special_Output;
+                     when Final_Value =>
+                        Rv.Shape := Shape_None;
+                        Output.Write_Str ("'final");
+                        if A.Is_Export then
+                           Rv.Colour := To_Unbounded_String ("blue");
+                        end if;
+
+                     when others =>
+                        null;
+                  end case;
+
+               when others =>
+                  raise Why.Not_Implemented;
+            end case;
+
+            if A.Loops.Length > 0 and not (A.Is_Parameter or A.Is_Global) then
+               Output.Write_Str ("\nLoops:");
+               for Loop_Identifier of A.Loops loop
+                  Output.Write_Str ("&nbsp;");
+                  Sprint_Node (Loop_Identifier);
+               end loop;
+            end if;
+
+            if A.Perform_IPFA then
+               Output.Write_Str ("\nIPFA");
+            end if;
+         end if;
+
+         Output.Write_Eol;
+         Output.Cancel_Special_Output;
+
+         if Length (Temp_String) > 0 then
             Rv.Label := Temp_String;
          end if;
 

@@ -56,20 +56,48 @@ package body Flow.Interprocedural is
             F : constant Flow_Id      := CDG.Get_Key (V);
             A : constant V_Attributes := CDG.Get_Attributes (V);
          begin
-            case Parameter.Kind is
-               when Direct_Mapping =>
-                  if Parameter.Variant = F.Variant and then
-                    Parameter.Kind = F.Kind and then
-                    Get_Direct_Mapping_Id (Parameter) =
-                    Get_Direct_Mapping_Id (A.Parameter_Formal) then
-                     return V;
-                  end if;
-               when others =>
-                  raise Why.Not_Implemented;
-            end case;
+            if A.Is_Parameter then
+               --  Parameters *must* be using direct mapping for both
+               --  the actual and formal.
+               pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
+               pragma Assert (F.Kind = Direct_Mapping);
+               if Parameter.Kind = Direct_Mapping and then
+                 Parameter.Variant = F.Variant and then
+                 Get_Direct_Mapping_Id (Parameter) =
+                 Get_Direct_Mapping_Id (A.Parameter_Formal) then
+                  return V;
+               end if;
+
+            elsif A.Is_Global then
+               --  Globals can be direct mappings or magic strings,
+               --  but in either case the parameter and the formal
+               --  will always match in kind.
+               case A.Parameter_Formal.Kind is
+                  when Direct_Mapping =>
+                     if Parameter.Kind = Direct_Mapping and then
+                       A.Parameter_Formal.Variant = Parameter.Variant and then
+                       Get_Direct_Mapping_Id (Parameter) =
+                       Get_Direct_Mapping_Id (A.Parameter_Formal) then
+                        return V;
+                     end if;
+                  when Magic_String =>
+                     raise Why.Not_Implemented;
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+            else
+               --  We have a parameter which is neither a parameter or
+               --  a global, i.e. we have messed up in the graph
+               --  construction.
+               raise Program_Error;
+            end if;
          end;
       end loop;
-      return Flow_Graphs.Null_Vertex;
+
+      --  We have looked for a vertex which doesn't exist, which means
+      --  the graph is broken.
+      raise Program_Error;
    end Find_Parameter_Vertex;
 
    procedure Add_Simple_Procedure_Dependency
@@ -96,20 +124,20 @@ package body Flow.Interprocedural is
            (FA.CDG,
             V,
             Direct_Mapping_Id (Unique_Entity (A), In_View));
-         if V_A = Flow_Graphs.Null_Vertex then
-            V_A := FA.CDG.Get_Vertex
-              (Direct_Mapping_Id (Unique_Entity (A), N, Global_In_View));
-         end if;
+         --  if V_A = Flow_Graphs.Null_Vertex then
+         --     V_A := FA.CDG.Get_Vertex
+         --       (Direct_Mapping_Id (Unique_Entity (A), N, Global_In_View));
+         --  end if;
          pragma Assert (V_A /= Flow_Graphs.Null_Vertex);
 
          V_B := Find_Parameter_Vertex
            (FA.CDG,
             V,
             Direct_Mapping_Id (Unique_Entity (B), Out_View));
-         if V_B = Flow_Graphs.Null_Vertex then
-            V_B := FA.CDG.Get_Vertex
-              (Direct_Mapping_Id (Unique_Entity (B), N, Global_Out_View));
-         end if;
+         --  if V_B = Flow_Graphs.Null_Vertex then
+         --     V_B := FA.CDG.Get_Vertex
+         --       (Direct_Mapping_Id (Unique_Entity (B), N, Global_Out_View));
+         --  end if;
          pragma Assert (V_B /= Flow_Graphs.Null_Vertex);
 
          FA.TDG.Add_Edge (V_A, V_B, EC_TD);

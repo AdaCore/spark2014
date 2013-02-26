@@ -32,9 +32,10 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Var_Use : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Loops   : Node_Sets.Set    := Node_Sets.Empty_Set)
+     (Var_Def : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Var_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -43,6 +44,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined := Var_Def;
       A.Variables_Used    := Var_Use;
       A.Loops             := Loops;
+      A.Error_Location    := E_Loc;
 
       return A;
    end Make_Basic_Attributes;
@@ -52,8 +54,9 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (Callsite : Node_Id       := Empty;
-      Loops    : Node_Sets.Set := Node_Sets.Empty_Set)
+     (Callsite : Node_Id           := Empty;
+      Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc    : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -66,6 +69,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Program_Node := True;
       A.Loops           := Loops;
       A.Is_Callsite     := True;
+      A.Error_Location  := E_Loc;
 
       --  case Nkind (Parent (Procedure_Spec)) is
       --     when N_Subprogram_Body =>
@@ -90,7 +94,8 @@ package body Flow.Control_Flow_Graph.Utility is
       Actual      : Node_Id;
       Formal      : Node_Id;
       In_Vertex   : Boolean;
-      Loops       : Node_Sets.Set)
+      Loops       : Node_Sets.Set;
+      E_Loc       : Node_Or_Entity_Id := Empty)
      return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -100,6 +105,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Parameter_Actual := Direct_Mapping_Id (Actual);
       A.Parameter_Formal := Direct_Mapping_Id (Formal);
       A.Loops            := Loops;
+      A.Error_Location   := E_Loc;
 
       if In_Vertex then
          pragma Assert (Ekind (Formal) = E_In_Parameter or
@@ -121,20 +127,23 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Global_Attributes
      (Call_Vertex : Node_Id;
       Global      : Flow_Id;
-      Loops       : Node_Sets.Set)
+      Loops       : Node_Sets.Set;
+      E_Loc       : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Global   := True;
-      A.Call_Vertex := Direct_Mapping_Id (Call_Vertex);
-      A.Loops       := Loops;
+      A.Is_Global        := True;
+      A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Formal := Global;
+      A.Loops            := Loops;
+      A.Error_Location   := E_Loc;
 
       case Global.Variant is
-         when Global_In_View =>
+         when In_View =>
             A.Variables_Used :=
               Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
-         when Global_Out_View =>
+         when Out_View =>
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
          when others =>
@@ -150,11 +159,14 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Variable_Attributes
      (E       : Entity_Id;
-      Variant : Initial_Or_Final_Variant)
+      Variant : Initial_Or_Final_Variant;
+      E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
+      A.Error_Location := E_Loc;
+
       case Variant is
          when Initial_Value =>
             A.Is_Initialised :=

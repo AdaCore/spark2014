@@ -298,7 +298,8 @@ package body Flow.Control_Flow_Graph is
                                 Var_Use => V_Used_RHS or
                                   V_Used_LHS or
                                   V_Also_Used,
-                                Loops   => Ctx.Current_Loops),
+                                Loops   => Ctx.Current_Loops,
+                                E_Loc   => N),
          V);
 
       --  Control goes in V and of V
@@ -354,7 +355,8 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set (Condition (N)),
-                                   Loops   => Ctx.Current_Loops),
+                                   Loops   => Ctx.Current_Loops,
+                                   E_Loc   => N),
             V);
          CM.Include (Union_Id (N),
                      Graph_Connections'
@@ -416,7 +418,8 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Use => Get_Variable_Set (Condition (N)),
-                                Loops   => Ctx.Current_Loops),
+                                Loops   => Ctx.Current_Loops,
+                                E_Loc   => N),
          V);
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
@@ -603,7 +606,8 @@ package body Flow.Control_Flow_Graph is
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes (Var_Use => Get_Variable_Set
                                      (Condition (Iteration_Scheme (N))),
-                                   Loops   => Ctx.Current_Loops),
+                                   Loops   => Ctx.Current_Loops,
+                                   E_Loc   => N),
             V);
 
          --  Flow for the while loops goes into the condition and then
@@ -646,7 +650,8 @@ package body Flow.Control_Flow_Graph is
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
-                  Loops   => Ctx.Current_Loops),
+                  Loops   => Ctx.Current_Loops,
+                  E_Loc   => N),
                V);
 
             --  Flow goes into and out of the loop. Note that we do
@@ -662,7 +667,8 @@ package body Flow.Control_Flow_Graph is
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
-                  Loops   => Ctx.Current_Loops),
+                  Loops   => Ctx.Current_Loops,
+                  E_Loc   => N),
                V);
 
             --  Flow goes into the first statement and out the loop vertex.
@@ -681,7 +687,8 @@ package body Flow.Control_Flow_Graph is
                Make_Basic_Attributes
                  (Var_Def => Flow_Id_Sets.To_Set
                     (Direct_Mapping_Id (Defining_Identifier (LPS))),
-                  Loops   => Ctx.Current_Loops),
+                  Loops   => Ctx.Current_Loops,
+                  E_Loc   => N),
                V);
 
             --  Flow for the conditional for loop is like a while
@@ -764,7 +771,8 @@ package body Flow.Control_Flow_Graph is
               (Var_Def => Flow_Id_Sets.To_Set (Direct_Mapping_Id
                                                  (Defining_Identifier (N))),
                Var_Use => Get_Variable_Set (Expression (N)),
-               Loops   => Ctx.Current_Loops),
+               Loops   => Ctx.Current_Loops,
+               E_Loc   => N),
             V);
       end if;
       CM.Include (Union_Id (N),
@@ -794,7 +802,8 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
          Make_Call_Attributes (Callsite => N,
-                               Loops    => Ctx.Current_Loops),
+                               Loops    => Ctx.Current_Loops,
+                               E_Loc    => N),
          V);
 
       --  Deal with the procedures parameters.
@@ -870,7 +879,8 @@ package body Flow.Control_Flow_Graph is
               (Var_Def => Flow_Id_Sets.To_Set (Direct_Mapping_Id
                                                  (FA.Subprogram)),
                Var_Use => Get_Variable_Set (Expression (N)),
-               Loops   => Ctx.Current_Loops),
+               Loops   => Ctx.Current_Loops,
+               E_Loc   => N),
             V);
       end if;
 
@@ -938,21 +948,21 @@ package body Flow.Control_Flow_Graph is
                    Writes   => Writes);
 
       for R of Reads loop
-         FA.CFG.Add_Vertex (R,
-                            Make_Global_Attributes
+         FA.CFG.Add_Vertex (Make_Global_Attributes
                               (Call_Vertex => Callsite,
                                Global      => R,
-                               Loops       => Ctx.Current_Loops),
+                               Loops       => Ctx.Current_Loops,
+                               E_Loc       => Callsite),
                             V);
          In_List.Append (V);
       end loop;
 
       for W of Writes loop
-         FA.CFG.Add_Vertex (W,
-                            Make_Global_Attributes
+         FA.CFG.Add_Vertex (Make_Global_Attributes
                               (Call_Vertex => Callsite,
                                Global      => W,
-                               Loops       => Ctx.Current_Loops),
+                               Loops       => Ctx.Current_Loops,
+                               E_Loc       => Callsite),
                             V);
          Out_List.Append (V);
       end loop;
@@ -1013,7 +1023,8 @@ package body Flow.Control_Flow_Graph is
                   Actual      => Actual,
                   Formal      => Formal,
                   In_Vertex   => True,
-                  Loops       => Ctx.Current_Loops),
+                  Loops       => Ctx.Current_Loops,
+                  E_Loc       => P),
                V);
             In_List.Append (V);
          end if;
@@ -1028,7 +1039,8 @@ package body Flow.Control_Flow_Graph is
                   Actual      => Actual,
                   Formal      => Formal,
                   In_Vertex   => False,
-                  Loops       => Ctx.Current_Loops),
+                  Loops       => Ctx.Current_Loops,
+                  E_Loc       => P),
                V);
             Out_List.Append (V);
          end if;

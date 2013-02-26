@@ -26,9 +26,10 @@
 package Flow.Control_Flow_Graph.Utility is
 
    function Make_Basic_Attributes
-     (Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Var_Use : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Loops   : Node_Sets.Set    := Node_Sets.Empty_Set)
+     (Var_Def : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Var_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Basic_Attributes'Result.Is_Null_Node and
                    Make_Basic_Attributes'Result.Is_Program_Node;
@@ -36,8 +37,9 @@ package Flow.Control_Flow_Graph.Utility is
    --  variables.
 
    function Make_Call_Attributes
-     (Callsite : Node_Id       := Empty;
-      Loops    : Node_Sets.Set := Node_Sets.Empty_Set)
+     (Callsite : Node_Id           := Empty;
+      Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc    : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Pre  => Callsite /= Empty,
            Post => not Make_Call_Attributes'Result.Is_Null_Node and
@@ -53,7 +55,8 @@ package Flow.Control_Flow_Graph.Utility is
       Actual      : Node_Id;
       Formal      : Node_Id;
       In_Vertex   : Boolean;
-      Loops       : Node_Sets.Set)
+      Loops       : Node_Sets.Set;
+      E_Loc       : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Parameter_Attributes'Result.Is_Null_Node and
                    not Make_Parameter_Attributes'Result.Is_Program_Node and
@@ -68,7 +71,8 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Global_Attributes
      (Call_Vertex : Node_Id;
       Global      : Flow_Id;
-      Loops       : Node_Sets.Set)
+      Loops       : Node_Sets.Set;
+      E_Loc       : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Global_Attributes'Result.Is_Null_Node and
                    not Make_Global_Attributes'Result.Is_Program_Node and
@@ -79,7 +83,8 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Variable_Attributes
      (E       : Entity_Id;
-      Variant : Initial_Or_Final_Variant)
+      Variant : Initial_Or_Final_Variant;
+      E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Variable_Attributes'Result.Is_Null_Node and
                    not Make_Variable_Attributes'Result.Is_Program_Node;

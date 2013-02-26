@@ -26,30 +26,63 @@ with Why;
 
 package body Flow.Analysis is
 
-   procedure Error_Msg_Flow (Msg : String; F : Flow_Id);
-   --  Output an error message attaced to the given flow_id thing.
+   procedure Error_Msg_Flow (Msg : String;
+                             G   : Flow_Graphs.T'Class;
+                             Loc : Flow_Graphs.Vertex_Id);
+   --  Output an error message attaced to the given vertex.
 
-   procedure Error_Msg_Flow (Msg : String; L, F : Flow_Id);
-   --  Output an error message attaced to the given flow_id thing L.
+   procedure Error_Msg_Flow (Msg : String;
+                             G   : Flow_Graphs.T'Class;
+                             Loc : Flow_Graphs.Vertex_Id;
+                             F   : Flow_Id);
+   --  Output an error message attaced to the given vertex
+   --  with a substitution using F.
 
-   procedure Error_Msg_Flow (Msg : String; F : Flow_Id) is
+   procedure Error_Msg_Flow (Msg : String;
+                             G   : Flow_Graphs.T'Class;
+                             Loc : Flow_Graphs.Vertex_Id) is
+      K : constant Flow_Id      := G.Get_Key (Loc);
+      A : constant V_Attributes := G.Get_Attributes (Loc);
    begin
-      case F.Kind is
-         when Direct_Mapping =>
-            Error_Msg_N (Msg, Get_Direct_Mapping_Id (F));
-         when others =>
-            raise Why.Not_Implemented;
-      end case;
+      if A.Error_Location /= Empty then
+         --  Try the helpful location first.
+         Error_Msg_N (Msg, A.Error_Location);
+
+      else
+         --  Do our best with the key
+         case K.Kind is
+            when Direct_Mapping =>
+               Error_Msg_N (Msg, Get_Direct_Mapping_Id (K));
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
+      end if;
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (Msg : String; L, F : Flow_Id) is
+   procedure Error_Msg_Flow (Msg : String;
+                             G   : Flow_Graphs.T'Class;
+                             Loc : Flow_Graphs.Vertex_Id;
+                             F   : Flow_Id) is
+      K : constant Flow_Id      := G.Get_Key (Loc);
+      A : constant V_Attributes := G.Get_Attributes (Loc);
    begin
-      if L.Kind = Direct_Mapping and F.Kind = Direct_Mapping then
-         Error_Msg_NE (Msg,
-                       Get_Direct_Mapping_Id (L),
-                       Get_Direct_Mapping_Id (F));
+      pragma Assert (F.Kind = Direct_Mapping);
+
+      if A.Error_Location /= Empty then
+         --  Try the helpful location first.
+         Error_Msg_NE (Msg, A.Error_Location, Get_Direct_Mapping_Id (F));
+
       else
-         raise Why.Not_Implemented;
+         --  Do our best with the key
+         case K.Kind is
+            when Direct_Mapping =>
+               Error_Msg_NE (Msg,
+                             Get_Direct_Mapping_Id (K),
+                             Get_Direct_Mapping_Id (F));
+            when others =>
+               Print_Flow_Id (K);
+               raise Why.Not_Implemented;
+         end case;
       end if;
    end Error_Msg_Flow;
 
@@ -73,7 +106,7 @@ package body Flow.Analysis is
               and then (not Atr.Is_Loop_Parameter) then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access) then
-                  Error_Msg_Flow ("ineffective import!", Key);
+                  Error_Msg_Flow ("ineffective import!", FA.PDG, V);
                end if;
             end if;
          end;
@@ -92,13 +125,12 @@ package body Flow.Analysis is
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Key : constant Flow_Id      := FA.PDG.Get_Key (V);
             Atr : constant V_Attributes := FA.PDG.Get_Attributes (V);
          begin
             if Atr.Is_Program_Node then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access) then
-                  Error_Msg_Flow ("ineffective statement!", Key);
+                  Error_Msg_Flow ("ineffective statement!", FA.PDG, V);
                end if;
             end if;
          end;
@@ -121,10 +153,10 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         Error_Msg_Flow ("may never be initialized!",
-                                        Key_U);
+                                        FA.PDG, V_Use);
                      else
                         Error_Msg_Flow ("use of uninitialized variable &!",
-                                        Key_U, Key_I);
+                                        FA.PDG, V_Use, Key_I);
                      end if;
                   end;
                end loop;
@@ -174,7 +206,7 @@ package body Flow.Analysis is
                         Tmp.Set_Attributes (N_Loop, Atr);
 
                         --  Complain
-                        Error_Msg_Flow ("stable!", FA.PDG.Get_Key (N_Loop));
+                        Error_Msg_Flow ("stable!", FA.PDG, N_Loop);
 
                         --  There might be other stable elements now.
                         Done := False;

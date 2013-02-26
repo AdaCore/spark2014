@@ -57,22 +57,12 @@ package Flow is
       --  For the 'initial and 'final vertices.
 
       In_View,
-      Out_View,
+      Out_View
       --  For the procedure call parameter vertices.
-
-      Global_In_View,
-      Global_Out_View
-      --  For the procedure call global vertices.
    );
 
    subtype Initial_Or_Final_Variant is Flow_Id_Variant
      range Initial_Value .. Final_Value;
-
-   subtype Non_Global_Variant is Flow_Id_Variant
-     range Normal_Use .. Out_View;
-
-   subtype Global_Variant is Flow_Id_Variant
-     range Global_In_View .. Global_Out_View;
 
    type Flow_Id is record
       Kind    : Flow_Id_Kind;
@@ -94,23 +84,15 @@ package Flow is
 
    procedure Sprint_Flow_Id (F : Flow_Id);
 
+   procedure Print_Flow_Id (F : Flow_Id);
+
    function Direct_Mapping_Id (N       : Node_Id;
-                               Variant : Non_Global_Variant := Normal_Use)
+                               Variant : Flow_Id_Variant := Normal_Use)
                                return Flow_Id
    is (Flow_Id'(Kind    => Direct_Mapping,
                 Variant => Variant,
                 Node_A  => N,
                 Node_B  => Empty,
-                E_Name  => Null_Entity_Name));
-
-   function Direct_Mapping_Id (Global   : Entity_Id;
-                               Callsite : Node_Id;
-                               Variant  : Global_Variant)
-                               return Flow_Id
-   is (Flow_Id'(Kind    => Direct_Mapping,
-                Variant => Variant,
-                Node_A  => Global,
-                Node_B  => Callsite,
                 E_Name  => Null_Entity_Name));
 
    function Get_Direct_Mapping_Id
@@ -119,7 +101,7 @@ package Flow is
      with Pre => (F.Kind = Direct_Mapping);
 
    function Change_Variant (F       : Flow_Id;
-                            Variant : Non_Global_Variant)
+                            Variant : Flow_Id_Variant)
                             return Flow_Id;
 
    package Flow_Id_Sets is new Ada.Containers.Hashed_Sets
@@ -179,6 +161,9 @@ package Flow is
       Loops             : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop
       --  name/label). For loop stability analysis.
+
+      Error_Location    : Node_Or_Entity_Id;
+      --  If we have an error involving this vertex, raise it here.
    end record;
 
    Null_Attributes : constant V_Attributes :=
@@ -196,7 +181,8 @@ package Flow is
                    Parameter_Formal  => Null_Flow_Id,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set,
-                   Loops             => Node_Sets.Empty_Set);
+                   Loops             => Node_Sets.Empty_Set,
+                   Error_Location    => Empty);
 
    Null_Node_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node      => True,
@@ -213,7 +199,8 @@ package Flow is
                    Parameter_Formal  => Null_Flow_Id,
                    Variables_Defined => Flow_Id_Sets.Empty_Set,
                    Variables_Used    => Flow_Id_Sets.Empty_Set,
-                   Loops             => Node_Sets.Empty_Set);
+                   Loops             => Node_Sets.Empty_Set,
+                   Error_Location    => Empty);
 
    package Flow_Graphs is new Graph
      (Vertex_Key        => Flow_Id,
@@ -271,8 +258,8 @@ package Flow is
                           Reads    : out Flow_Id_Sets.Set;
                           Writes   : out Flow_Id_Sets.Set)
    with Pre  => Nkind (Callsite) in N_Subprogram_Call,
-        Post => (for all G of Reads  => G.Variant = Global_In_View) and
-                (for all G of Writes => G.Variant = Global_Out_View);
+        Post => (for all G of Reads  => G.Variant = In_View) and
+                (for all G of Writes => G.Variant = Out_View);
    --  Given a subprogram call, work out globals from the provided
    --  aspect or the computed globals. The sets returned will contain
    --  Flow_Id with the variant set to Global_In_View and
