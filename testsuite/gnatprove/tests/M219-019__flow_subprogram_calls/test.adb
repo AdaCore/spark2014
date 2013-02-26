@@ -128,4 +128,40 @@ package body Test is
       Swap_B (X, Y);
    end Swap_F;
 
+   ------------------------------------------------------------
+   --  Tests for globals
+   ------------------------------------------------------------
+
+   procedure Global_Test
+   is
+      Counter : Integer;
+      N       : Integer;
+
+      procedure Do_Stuff_A (X : in out Integer)
+      with Global  => (In_Out => (Counter)),
+           Depends => (X       => X,
+                       Counter => Counter);
+
+      procedure Do_Stuff_B (X : Integer)
+      with Global => (Output => Counter);
+
+      procedure Do_Stuff_A (X : in out Integer)
+      is
+      begin
+         X       := X + 1;
+         Counter := Counter + 1;
+      end Do_Stuff_A;
+
+      procedure Do_Stuff_B (X : Integer)
+      is
+      begin
+         Counter := X;
+      end Do_Stuff_B;
+
+   begin
+      N := 10;
+      Do_Stuff_A (N);
+      Do_Stuff_B (N);
+   end Global_Test;
+
 end Test;
