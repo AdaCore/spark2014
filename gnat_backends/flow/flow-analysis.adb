@@ -24,6 +24,9 @@
 with Errout; use Errout;
 with Why;
 
+--  with Flow.Debug; use Flow.Debug;
+--  with Treepr;     use Treepr;
+
 package body Flow.Analysis is
 
    procedure Error_Msg_Flow (Msg : String;
@@ -37,6 +40,10 @@ package body Flow.Analysis is
                              F   : Flow_Id);
    --  Output an error message attaced to the given vertex
    --  with a substitution using F.
+
+   --------------------
+   -- Error_Msg_Flow --
+   --------------------
 
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
@@ -86,6 +93,41 @@ package body Flow.Analysis is
       end if;
    end Error_Msg_Flow;
 
+   ------------------
+   -- Sanity_Check --
+   ------------------
+
+   procedure Sanity_Check (FA : Flow_Analysis_Graphs) is
+      use type Flow_Id_Sets.Set;
+   begin
+      --  Sanity check all vertices if they mention a flow id that we
+      --  do not know about.
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+
+            All_Vars : constant Flow_Id_Sets.Set :=
+              A.Variables_Used or A.Variables_Defined;
+         begin
+            for Var of All_Vars loop
+               declare
+                  Neutral : constant Flow_Id :=
+                    Change_Variant (Var, Normal_Use);
+               begin
+                  if not FA.All_Vars.Contains (Neutral) then
+                     Error_Msg_Flow ("& not visible!", FA.CFG,
+                                     V, Var);
+                  end if;
+               end;
+            end loop;
+         end;
+      end loop;
+   end Sanity_Check;
+
+   ------------------------------
+   -- Find_Ineffective_Imports --
+   ------------------------------
+
    procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs) is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
@@ -113,6 +155,10 @@ package body Flow.Analysis is
       end loop;
    end Find_Ineffective_Imports;
 
+   ---------------------------------
+   -- Find_Ineffective_Statements --
+   ---------------------------------
+
    procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
@@ -136,6 +182,10 @@ package body Flow.Analysis is
          end;
       end loop;
    end Find_Ineffective_Statements;
+
+   -----------------------------------------
+   -- Find_Use_Of_Uninitialised_Variables --
+   -----------------------------------------
 
    procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs) is
    begin
@@ -164,6 +214,10 @@ package body Flow.Analysis is
          end;
       end loop;
    end Find_Use_Of_Uninitialised_Variables;
+
+   --------------------------
+   -- Find_Stable_Elements --
+   --------------------------
 
    procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs) is
       Done      : Boolean       := False;

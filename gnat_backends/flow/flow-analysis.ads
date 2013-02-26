@@ -26,6 +26,12 @@
 
 package Flow.Analysis is
 
+   procedure Sanity_Check (FA : Flow_Analysis_Graphs);
+   --  Check basic things, such as:
+   --     - are all global variables used declared as such?
+   --
+   --  Complexity is O(N)
+
    procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs);
    --  Find all ineffective initial values.
    --

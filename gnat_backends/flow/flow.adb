@@ -643,6 +643,7 @@ package body Flow is
          Output.Write_Eol;
       end if;
       for FA of FA_Graphs loop
+         Analysis.Sanity_Check (FA);
          Analysis.Find_Ineffective_Imports (FA);
          Analysis.Find_Ineffective_Statements (FA);
          Analysis.Find_Use_Of_Uninitialised_Variables (FA);
