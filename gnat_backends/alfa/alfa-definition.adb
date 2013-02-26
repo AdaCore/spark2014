@@ -1787,7 +1787,8 @@ package body Alfa.Definition is
    procedure Mark_Package_Declaration (N : Node_Id) is
 
       procedure Declare_In_Container (Decls : List_Id);
-      --  Mark types and subprograms from formal container instantiations
+      --  Mark types, subprograms and objects from formal container
+      --  instantiations.
 
       --------------------------
       -- Declare_In_Container --
@@ -1804,14 +1805,15 @@ package body Alfa.Definition is
                                N_Private_Type_Declaration      |
                                N_Private_Extension_Declaration |
                                N_Subtype_Declaration           |
-                               N_Subprogram_Declaration
+                               N_Subprogram_Declaration        |
+                               N_Object_Declaration
             then
                Id := Defining_Entity (Decl);
 
                if Ekind (Id) in Type_Kind then
                   Mark_Type_Entity (Id, In_Container => True);
 
-               elsif Ekind (Id) in Subprogram_Kind then
+               elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
                   Entities_In_Alfa.Include (Id);
                end if;
             end if;
