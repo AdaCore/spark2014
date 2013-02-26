@@ -1,0 +1,287 @@
+admin.adb:103:7: info: assertion proved
+admin.adb:110:10: info: loop invariant initialization proved
+admin.adb:110:10: info: loop invariant preservation proved
+admin.adb:121:13: info: assertion proved
+admin.adb:129:17: info: range check proved
+admin.adb:137:16: info: loop invariant initialization proved
+admin.adb:137:16: info: loop invariant preservation proved
+admin.adb:144:38: info: index check proved
+admin.adb:156:36: info: index check proved
+admin.adb:253:16: info: range check proved
+admin.ads:103:50: info: postcondition proved
+admin.ads:145:31: info: postcondition proved
+admin.ads:163:50: info: postcondition proved
+admin.ads:190:7: postcondition not proved, requires Op = OverrideLock) = (RolePresent(TheAdmin) = PrivTypes.guard
+admin.ads:191:7: info: precondition proved
+admin.ads:217:26: info: postcondition proved
+admintoken.adb:268:33: info: range check proved
+admintoken.ads:125:45: info: postcondition proved
+admintoken.ads:79:44: info: postcondition proved
+alarm-interfac.ads:54:26: postcondition not proved, requires IsAlarming
+alarm-interfac.ads:70:26: postcondition not proved, requires not IsAlarming
+alarm.ads:82:49: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= IsAlarming
+auditlog.adb:1000:50: range check not proved
+auditlog.adb:1002:44: range check not proved
+auditlog.adb:1085:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1087:50: range check not proved
+auditlog.adb:1087:53: info: overflow check proved
+auditlog.adb:1087:72: info: overflow check proved
+auditlog.adb:1089:10: assertion not proved, requires LogFileEntries(CurrentLogFile) = MaxLogFileEntries
+auditlog.adb:1090:10: assertion not proved, requires UsedLogFiles.Length = LogFileCountT'Last - 1
+auditlog.adb:1103:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1105:50: range check not proved
+auditlog.adb:1105:53: info: overflow check proved
+auditlog.adb:1105:72: info: overflow check proved
+auditlog.adb:1107:10: assertion not proved, requires LogFileEntries(CurrentLogFile) = 1
+auditlog.adb:1108:10: assertion not proved, requires UsedLogFiles.Length = LogFileCountT'last
+auditlog.adb:1118:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1119:47: range check not proved
+auditlog.adb:1119:50: info: overflow check proved
+auditlog.adb:1119:69: info: overflow check proved
+auditlog.adb:1494:14: info: range check proved
+auditlog.adb:1649:22: precondition not proved
+auditlog.adb:1692:16: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1693:53: info: range check proved
+auditlog.adb:1693:56: info: overflow check proved
+auditlog.adb:1693:75: overflow check not proved
+auditlog.adb:1723:52: info: range check proved
+auditlog.adb:1733:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1735:47: range check not proved
+auditlog.adb:1735:50: overflow check not proved
+auditlog.adb:1735:69: overflow check not proved
+auditlog.adb:1827:15: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1828:52: info: range check proved
+auditlog.adb:1828:55: info: overflow check proved
+auditlog.adb:1828:74: info: overflow check proved
+auditlog.adb:1838:10: info: assertion proved
+auditlog.adb:1843:50: info: range check proved
+auditlog.adb:1843:53: info: overflow check proved
+auditlog.adb:1843:72: info: overflow check proved
+auditlog.adb:1849:53: info: range check proved
+auditlog.adb:1852:47: info: range check proved
+auditlog.adb:1859:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1861:47: range check not proved
+auditlog.adb:1861:50: info: overflow check proved
+auditlog.adb:1861:69: info: overflow check proved
+auditlog.adb:1905:10: info: assertion proved
+auditlog.adb:194:26: info: range check proved
+auditlog.adb:237:39: info: range check proved
+auditlog.adb:491:22: precondition not proved
+auditlog.adb:813:75: range check not proved
+auditlog.adb:873:16: info: assertion proved
+auditlog.adb:891:53: range check not proved
+auditlog.adb:925:10: info: assertion proved
+auditlog.adb:934:44: range check not proved
+bio-interfac.adb:78:38: range check not proved
+bio.adb:126:10: assertion not proved, requires Result = InternalError
+certificatestore.adb:216:10: info: range check proved
+certificatestore.adb:219:31: range check not proved
+certproc.adb:1127:7: range check not proved
+certproc.adb:1129:56: info: range check proved
+certproc.adb:1138:45: range check not proved
+certproc.adb:147:30: info: range check proved
+certproc.adb:151:7: range check not proved
+certproc.adb:154:7: range check not proved
+certproc.adb:189:61: precondition not proved
+certproc.adb:189:61: range check not proved
+certproc.adb:193:61: precondition not proved
+certproc.adb:193:61: range check not proved
+certproc.adb:197:61: precondition not proved
+certproc.adb:197:61: range check not proved
+certproc.adb:201:61: precondition not proved
+certproc.adb:201:61: range check not proved
+certproc.adb:205:61: precondition not proved
+certproc.adb:205:61: range check not proved
+certproc.adb:210:60: precondition not proved
+certproc.adb:210:60: range check not proved
+certproc.adb:214:60: precondition not proved
+certproc.adb:214:60: range check not proved
+certproc.adb:218:60: precondition not proved
+certproc.adb:218:60: range check not proved
+certproc.adb:222:60: precondition not proved
+certproc.adb:222:60: range check not proved
+certproc.adb:226:60: precondition not proved
+certproc.adb:226:60: range check not proved
+certproc.adb:460:13: range check not proved
+certproc.adb:462:64: info: range check proved
+certproc.adb:469:13: range check not proved
+certproc.adb:471:64: info: range check proved
+clock-interfac.adb:59:21: info: overflow check proved
+clock-interfac.adb:63:36: range check not proved
+clock-interfac.adb:66:45: overflow check not proved
+clock-interfac.adb:66:45: range check not proved
+clock.adb:242:28: info: range check proved
+clock.adb:243:30: info: range check proved
+clock.adb:244:26: info: range check proved
+clock.adb:245:36: info: range check proved
+clock.adb:245:42: info: overflow check proved
+clock.adb:246:25: info: overflow check proved
+clock.adb:246:25: info: range check proved
+clock.adb:246:38: info: range check proved
+clock.adb:246:43: info: overflow check proved
+clock.adb:280:41: info: division check proved
+clock.adb:280:41: info: range check proved
+clock.adb:281:44: info: division check proved
+clock.adb:282:25: info: division check proved
+clock.adb:282:25: info: range check proved
+clock.adb:329:44: info: division check proved
+clock.adb:334:45: info: division check proved
+clock.adb:335:32: info: division check proved
+clock.adb:340:45: info: division check proved
+clock.adb:341:32: info: division check proved
+clock.adb:346:44: info: division check proved
+clock.adb:387:7: info: assertion proved
+clock.adb:407:49: info: division check proved
+clock.adb:412:50: info: division check proved
+clock.adb:413:32: info: division check proved
+clock.adb:418:50: info: division check proved
+clock.adb:419:32: info: division check proved
+clock.adb:424:50: info: division check proved
+clock.adb:425:32: info: division check proved
+clock.adb:58:8: info: range check proved
+clock.adb:74:11: info: range check proved
+clock.adb:80:22: assertion not proved, requires I <= S'last
+clock.adb:82:12: index check not proved
+clock.adb:82:56: info: division check proved
+clock.adb:83:20: info: division check proved
+configdata.adb:1062:30: info: division check proved
+configdata.adb:1064:59: range check not proved
+configdata.adb:1064:72: info: division check proved
+configdata.adb:1065:72: info: division check proved
+configdata.adb:1068:31: info: division check proved
+configdata.adb:1068:42: info: division check proved
+configdata.adb:1069:59: range check not proved
+configdata.adb:1069:72: info: division check proved
+configdata.adb:1070:72: info: division check proved
+configdata.adb:1599:70: info: range check proved
+configdata.adb:1767:17: info: division check proved
+configdata.adb:1767:17: info: range check proved
+configdata.adb:237:44: info: overflow check proved
+configdata.adb:237:44: info: range check proved
+configdata.adb:276:51: info: overflow check proved
+configdata.adb:276:51: info: range check proved
+configdata.adb:323:20: info: range check proved
+configdata.adb:331:48: info: index check proved
+configdata.adb:331:63: info: index check proved
+configdata.adb:379:35: info: overflow check proved
+configdata.adb:379:35: info: range check proved
+configdata.adb:380:35: info: range check proved
+configdata.adb:380:45: info: overflow check proved
+configdata.adb:380:50: info: overflow check proved
+configdata.adb:380:68: info: range check proved
+configdata.adb:416:38: info: range check proved
+configdata.adb:723:23: info: range check proved
+configdata.adb:729:53: info: index check proved
+configdata.adb:729:75: info: index check proved
+crypto.adb:331:24: range check not proved
+crypto.adb:669:38: info: range check proved
+display.adb:128:11: info: range check proved
+display.adb:137:30: info: index check proved
+display.adb:138:30: info: index check proved
+display.adb:139:30: info: index check proved
+display.adb:140:32: range check not proved
+display.adb:143:11: info: range check proved
+display.adb:148:33: index check not proved
+display.adb:148:33: overflow check not proved
+display.adb:150:32: range check not proved
+door.ads:157:10: postcondition not proved, requires Latch.IsLocked'Old <= ( Latch.CurrentLatch = Latch.CurrentLatch'Old and then Latch.LatchTimeout = Latch.LatchTimeout'Old and then LatchLatch.islocked
+door.ads:215:8: postcondition not proved, requires Latch.IsLocked and then TheCurrentDoor = Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Alarm_Timeout) ) = (TheDoorAlarm = AlarmTypes.alarming
+door.ads:270:8: postcondition not proved, requires Latch.IsLocked and then TheCurrentDoor = Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Alarm_Timeout) ) = (TheDoorAlarm = AlarmTypes.alarming
+enclave.adb:1046:15: precondition not proved
+enclave.adb:109:18: precondition not proved
+enclave.adb:1189:15: precondition not proved
+enclave.adb:1368:12: precondition not proved
+enclave.adb:1885:17: precondition not proved
+enclave.adb:288:16: precondition not proved
+enclave.adb:2956:27: precondition not proved
+enclave.adb:2965:21: precondition not proved
+enclave.adb:2966:42: info: range check proved
+enclave.adb:638:48: info: precondition proved
+enclave.ads:118:7: postcondition not proved, requires KeyStore.PrivateKeyPresent = not EnrolmentIsInProgress
+enclave.ads:228:6: postcondition not proved, requires EnrolmentIsInProgress or else statusIsEnclaveQuiescent
+enclave.ads:286:7: postcondition not proved, requires not EnrolmentIsInProgress
+enclave.ads:576:19: info: precondition proved
+enclave.ads:585:19: info: precondition proved
+enclave.ads:590:24: info: precondition proved
+enclave.ads:594:7: postcondition not proved, requires not EnrolmentIsInProgress
+enclave.ads:621:19: info: precondition proved
+enclave.ads:630:19: info: precondition proved
+enclave.ads:635:24: info: precondition proved
+enclave.ads:652:23: precondition not proved
+file.adb:412:7: info: range check proved
+file.adb:413:39: overflow check not proved
+file.adb:414:30: range check not proved
+file.adb:417:39: overflow check not proved
+file.adb:418:25: overflow check not proved
+file.adb:422:39: overflow check not proved
+file.adb:554:14: info: range check proved
+file.adb:584:14: info: range check proved
+file.adb:832:14: info: range check proved
+keyboard-interfac.adb:199:19: info: range check proved
+keyboard-interfac.adb:24:22: warning: tasking is ignored in formal verification
+keystore.adb:196:14: info: range check proved
+keystore.adb:203:33: index check not proved
+keystore.adb:203:33: overflow check not proved
+keystore.adb:203:49: overflow check not proved
+keystore.adb:220:52: info: division check proved
+keystore.adb:223:14: info: range check proved
+keystore.adb:250:36: range check not proved
+keystore.ads:255:46: postcondition not proved, requires PrivateKeyPresent
+keystore.ads:275:26: postcondition not proved, requires not PrivateKeyPresent
+latch-interfac.ads:45:35: postcondition not proved, requires isLocked or Fault
+latch-interfac.ads:61:39: postcondition not proved, requires not isLocked or Fault
+latch.ads:107:7: postcondition not proved, requires IsLocked = Clock.GreaterThanOrEqual(Clock.TheCurrentTime, LatchTimeout)
+latch.ads:143:10: postcondition not proved, requires IsLocked = LatchisLocked or SystemFault
+latch.ads:162:40: postcondition not proved, requires Latch_Timeout = Time
+msgproc.adb:106:49: overflow check not proved
+msgproc.adb:110:20: index check not proved
+msgproc.adb:114:49: info: range check proved
+msgproc.adb:127:52: overflow check not proved
+msgproc.adb:130:26: info: range check proved
+msgproc.adb:130:52: overflow check not proved
+msgproc.adb:34:13: info: range check proved
+msgproc.adb:38:7: info: range check proved
+msgproc.adb:76:13: info: range check proved
+msgproc.adb:84:7: info: range check proved
+msgproc.adb:89:11: info: range check proved
+msgproc.adb:91:17: index check not proved
+msgproc.adb:97:45: overflow check not proved
+poll.ads:151:51: info: postcondition proved
+screen-interfac.adb:7:14: info: range check proved
+screen.adb:455:10: info: range check proved
+screen.adb:457:37: index check not proved
+screen.adb:461:46: overflow check not proved
+screen.adb:519:10: info: range check proved
+screen.adb:540:10: info: range check proved
+screen.adb:561:10: info: range check proved
+screen.adb:813:10: info: range check proved
+spark_io.adb:440:13: info: range check proved
+spark_io.adb:447:26: info: overflow check proved
+spark_io.adb:447:26: range check not proved
+spark_io.adb:450:22: overflow check not proved
+spark_io.adb:451:30: index check not proved
+spark_io.adb:456:26: info: overflow check proved
+spark_io.adb:456:26: range check not proved
+stats.adb:104:47: info: overflow check proved
+stats.adb:53:57: info: overflow check proved
+stats.adb:70:51: info: overflow check proved
+stats.adb:87:53: info: overflow check proved
+tcpip.adb:118:26: info: range check proved
+tcpip.adb:326:60: overflow check not proved
+tcpip.adb:326:60: range check not proved
+tismain.adb:836:17: precondition not proved
+tismain.adb:839:17: precondition not proved
+tismain.adb:847:17: precondition not proved
+tokenapi.adb:73:8: range check not proved
+tokenreader-interfac.adb:120:43: range check not proved
+tokenreader-interfac.adb:55:7: range check not proved
+tokenreader.adb:101:47: info: range check proved
+tokenreader.adb:127:46: info: range check proved
+tokenreader.adb:153:44: info: range check proved
+tokenreader.adb:310:17: info: range check proved
+tokenreader.adb:311:48: info: range check proved
+tokenreader.adb:751:43: info: range check proved
+updates.ads:189:31: info: postcondition proved
+updates.ads:97:31: info: postcondition proved
+userentry.adb:683:19: precondition not proved
+usertoken.adb:706:33: info: range check proved
