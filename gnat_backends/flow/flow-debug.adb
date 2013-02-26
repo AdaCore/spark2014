@@ -22,8 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Output; use Output;
-with Treepr; use Treepr;
-with Why;
 
 package body Flow.Debug is
 
@@ -40,15 +38,7 @@ package body Flow.Debug is
       Write_Eol;
       Indent;
       for F of S loop
-         case F.Kind is
-            when Null_Value =>
-               Write_Str ("<null>");
-               Write_Eol;
-            when Direct_Mapping =>
-               Print_Node_Briefly (Get_Direct_Mapping_Id (F));
-            when others =>
-               raise Why.Not_Implemented;
-         end case;
+         Print_Flow_Id (F);
       end loop;
       Outdent;
    end Print_Node_Set;
