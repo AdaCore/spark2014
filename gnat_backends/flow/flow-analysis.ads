@@ -37,6 +37,11 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+   procedure Find_Illegal_Updates (FA : Flow_Analysis_Graphs);
+   --  Find all cases where we update an in parameter or global.
+   --
+   --  Complexity is O(N)
+
    procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --

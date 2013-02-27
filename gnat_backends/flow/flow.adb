@@ -523,6 +523,8 @@ package body Flow is
                         Output.Write_Str ("'final");
                         if A.Is_Export then
                            Rv.Colour := To_Unbounded_String ("blue");
+                        elsif A.Is_Constant then
+                           Rv.Colour := To_Unbounded_String ("red");
                         end if;
 
                      when others =>
@@ -697,6 +699,7 @@ package body Flow is
       for FA of FA_Graphs loop
          Analysis.Sanity_Check (FA);
          Analysis.Find_Ineffective_Imports (FA);
+         Analysis.Find_Illegal_Updates (FA);
          Analysis.Find_Ineffective_Statements (FA);
          Analysis.Find_Use_Of_Uninitialised_Variables (FA);
          Analysis.Find_Stable_Elements (FA);

@@ -162,6 +162,34 @@ package body Flow.Analysis is
       end loop;
    end Find_Ineffective_Imports;
 
+   --------------------------
+   -- Find_Illegal_Updates --
+   --------------------------
+
+   procedure Find_Illegal_Updates (FA : Flow_Analysis_Graphs) is
+   begin
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            F : constant Flow_Id      := FA.PDG.Get_Key (V);
+            A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+         begin
+            --  We look for all constant final use vertices...
+            if F.Variant = Final_Value and A.Is_Constant then
+               --  For each of their inputs...
+               for W of FA.PDG.Get_Collection
+                 (V, Flow_Graphs.In_Neighbours) loop
+                  --  ...which is not the initial value itself, we
+                  --  raise an error.
+                  if FA.PDG.Get_Key (W).Variant /= Initial_Value then
+                     Error_Msg_Flow ("illegal update!",
+                                     FA.PDG, W);
+                  end if;
+               end loop;
+            end if;
+         end;
+      end loop;
+   end Find_Illegal_Updates;
+
    ---------------------------------
    -- Find_Ineffective_Statements --
    ---------------------------------

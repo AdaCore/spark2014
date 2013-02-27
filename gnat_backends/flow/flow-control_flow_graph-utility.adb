@@ -168,6 +168,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes := Null_Attributes;
    begin
       A.Error_Location := E_Loc;
+      A.Is_Constant    :=
+        Ekind (E) = E_In_Parameter or
+        Ekind (E) = E_Loop_Parameter;
 
       case Variant is
          when Initial_Value =>
@@ -205,6 +208,7 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Error_Location := E_Loc;
       A.Is_Global      := True;
+      A.Is_Constant    := Mode in In_Global_Modes;
 
       case F.Variant is
          when Initial_Value =>

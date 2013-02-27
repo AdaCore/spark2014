@@ -45,6 +45,9 @@ package Flow is
                          Global_Mode_In_Out,
                          Global_Mode_Out);
 
+   subtype In_Global_Modes is Global_Modes
+     range Global_Mode_In .. Global_Mode_Proof;
+
    subtype Initialised_Global_Modes is Global_Modes
      range Global_Mode_In .. Global_Mode_In_Out;
 
@@ -147,6 +150,9 @@ package Flow is
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
+      Is_Constant         : Boolean;
+      --  True if this value may not be updated.
+
       Is_Callsite         : Boolean;
       --  True if the vertex represents a subprogram call.
 
@@ -189,6 +195,7 @@ package Flow is
                    Is_Global           => False,
                    Is_Loop_Parameter   => False,
                    Is_Export           => False,
+                   Is_Constant         => False,
                    Is_Callsite         => False,
                    Is_Parameter        => False,
                    Is_Global_Parameter => False,
@@ -208,6 +215,7 @@ package Flow is
                    Is_Global           => False,
                    Is_Loop_Parameter   => False,
                    Is_Export           => False,
+                   Is_Constant         => False,
                    Is_Callsite         => False,
                    Is_Parameter        => False,
                    Is_Global_Parameter => False,
