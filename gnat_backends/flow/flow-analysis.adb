@@ -148,7 +148,14 @@ package body Flow.Analysis is
               and then (not Atr.Is_Loop_Parameter) then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access) then
-                  Error_Msg_Flow ("ineffective import!", FA.PDG, V);
+
+                  if Atr.Is_Global then
+                     Error_Msg_Flow ("ineffective global import &!",
+                                     FA.PDG, FA.Start_Vertex, Key);
+                  else
+                     Error_Msg_Flow ("ineffective import!", FA.PDG, V);
+                  end if;
+
                end if;
             end if;
          end;
@@ -200,10 +207,18 @@ package body Flow.Analysis is
                  (V_Initial, Flow_Graphs.Out_Neighbours) loop
                   declare
                      Key_U : constant Flow_Id := FA.PDG.Get_Key (V_Use);
+                     Atr_U : constant V_Attributes :=
+                       FA.PDG.Get_Attributes (V_Use);
                   begin
                      if Key_U.Variant = Final_Value then
-                        Error_Msg_Flow ("may never be initialized!",
-                                        FA.PDG, V_Use);
+                        if Atr_U.Is_Global then
+                           Error_Msg_Flow ("ineffective global export &!",
+                                           FA.PDG, FA.Start_Vertex, Key_I);
+
+                        else
+                           Error_Msg_Flow ("may never be initialized!",
+                                           FA.PDG, V_Use);
+                        end if;
                      else
                         Error_Msg_Flow ("use of uninitialized variable &!",
                                         FA.PDG, V_Use, Key_I);

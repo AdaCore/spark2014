@@ -25,13 +25,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
 
-with Aspects; use Aspects;
-with Debug;   use Debug;
-with Namet;   use Namet;
-with Nlists;  use Nlists;
-with Sinfo;   use Sinfo;
-with Snames;  use Snames;
-with Sprint;  use Sprint;
+with Aspects;  use Aspects;
+with Debug;    use Debug;
+with Namet;    use Namet;
+with Nlists;   use Nlists;
+with Sem_Util; use Sem_Util;
+with Sinfo;    use Sinfo;
+with Snames;   use Snames;
+with Sprint;   use Sprint;
 
 with Output;
 
@@ -328,10 +329,47 @@ package body Flow is
                Row := Next (Row);
             end loop;
          end;
-      else
 
-         --  TODO
-         null;
+      else
+         --  We don't have a global aspect, so we should look at the
+         --  computed globals...
+
+         declare
+            ALI_Reads  : constant Name_Set.Set := Get_Reads (Subprogram);
+            ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
+
+            function Get_Flow_Id (Name : String;
+                                  View : Parameter_Variant)
+                                  return Flow_Id;
+            --  Return a suitable flow id for the unique_name of an
+            --  entity. We try our best to get a direct mapping,
+            --  resorting to the magic string only as a last resort.
+
+            function Get_Flow_Id (Name : String;
+                                  View : Parameter_Variant)
+                                  return Flow_Id
+            is
+            begin
+               for E of All_Entities loop
+                  if Unique_Name (E) = Name then
+                     return Direct_Mapping_Id (E, View);
+                  end if;
+               end loop;
+               raise Why.Not_Implemented;
+            end Get_Flow_Id;
+
+         begin
+            for R of ALI_Reads loop
+               Reads.Include (Get_Flow_Id (R.all, In_View));
+            end loop;
+            for W of ALI_Writes loop
+               --  This is not a mistake, we must assume that all
+               --  values written may also not change or that they are
+               --  only partially updated.
+               Reads.Include (Get_Flow_Id (W.all, In_View));
+               Writes.Include (Get_Flow_Id (W.all, Out_View));
+            end loop;
+         end;
 
       end if;
 
@@ -410,11 +448,12 @@ package body Flow is
                   Output.Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Flow_Id (A.Parameter_Formal);
                   Output.Write_Str ("'out");
+
                when others =>
                   raise Program_Error;
             end case;
 
-         elsif A.Is_Global then
+         elsif A.Is_Global_Parameter then
             Rv.Shape := Shape_None;
 
             Output.Write_Str ("global&nbsp;");
@@ -494,7 +533,8 @@ package body Flow is
                   raise Why.Not_Implemented;
             end case;
 
-            if A.Loops.Length > 0 and not (A.Is_Parameter or A.Is_Global) then
+            if A.Loops.Length > 0 and not (A.Is_Parameter or
+                                             A.Is_Global_Parameter) then
                Output.Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
                   Output.Write_Str ("&nbsp;");
@@ -504,6 +544,10 @@ package body Flow is
 
             if A.Perform_IPFA then
                Output.Write_Str ("\nIPFA");
+            end if;
+
+            if A.Is_Global then
+               Output.Write_Str ("\n(global)");
             end if;
          end if;
 

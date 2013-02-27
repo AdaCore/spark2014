@@ -74,6 +74,9 @@ package Flow is
    subtype Initial_Or_Final_Variant is Flow_Id_Variant
      range Initial_Value .. Final_Value;
 
+   subtype Parameter_Variant is Flow_Id_Variant
+     range In_View .. Out_View;
+
    type Flow_Id is record
       Kind    : Flow_Id_Kind;
       Variant : Flow_Id_Variant;
@@ -121,96 +124,101 @@ package Flow is
       "="                 => "=");
 
    type V_Attributes is record
-      Is_Null_Node      : Boolean;
+      Is_Null_Node        : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early
       --  returns or null statements.
 
-      Is_Program_Node   : Boolean;
+      Is_Program_Node     : Boolean;
       --  Set for all vertices which trace directly to an element in
       --  the AST.
 
-      Is_Initialised    : Boolean;
+      Is_Initialised      : Boolean;
       --  True if an initial value is either imported (in or in out)
       --  or otherwise initialised.
 
-      Is_Loop_Parameter : Boolean;
+      Is_Global           : Boolean;
+      --  True if the imported or exported variable is a global.
+
+      Is_Loop_Parameter   : Boolean;
       --  True for loop parameters so they can be ignored in
       --  ineffective-import analysis.
 
-      Is_Export         : Boolean;
+      Is_Export           : Boolean;
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
-      Is_Callsite       : Boolean;
+      Is_Callsite         : Boolean;
       --  True if the vertex represents a subprogram call.
 
-      Is_Parameter      : Boolean;
+      Is_Parameter        : Boolean;
       --  True if this vertex models an argument to a procedure call.
 
-      Is_Global         : Boolean;
+      Is_Global_Parameter : Boolean;
       --  True if this vertex models a global for a procedure or
       --  function call.
 
-      Perform_IPFA      : Boolean;
+      Perform_IPFA        : Boolean;
       --  True if the dependencies for this callsite should be filled
       --  in using interprocedural flow analysis.
 
-      Call_Vertex       : Flow_Id;
+      Call_Vertex         : Flow_Id;
       --  Used to identify which vertex a parameter vertex belongs to.
 
-      Parameter_Actual  : Flow_Id;
-      Parameter_Formal  : Flow_Id;
+      Parameter_Actual    : Flow_Id;
+      Parameter_Formal    : Flow_Id;
       --  For nodes where Is_Parameter is true, this keeps track of
       --  which parameter this is. This is also quite useful for
       --  pretty-printing.
 
-      Variables_Defined : Flow_Id_Sets.Set;
-      Variables_Used    : Flow_Id_Sets.Set;
+      Variables_Defined   : Flow_Id_Sets.Set;
+      Variables_Used      : Flow_Id_Sets.Set;
       --  For producing the DDG.
 
-      Loops             : Node_Sets.Set;
+      Loops               : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop
       --  name/label). For loop stability analysis.
 
-      Error_Location    : Node_Or_Entity_Id;
+      Error_Location      : Node_Or_Entity_Id;
       --  If we have an error involving this vertex, raise it here.
    end record;
 
    Null_Attributes : constant V_Attributes :=
-     V_Attributes'(Is_Null_Node      => False,
-                   Is_Program_Node   => False,
-                   Is_Initialised    => False,
-                   Is_Loop_Parameter => False,
-                   Is_Export         => False,
-                   Is_Callsite       => False,
-                   Is_Parameter      => False,
-                   Is_Global         => False,
-                   Perform_IPFA      => False,
-                   Call_Vertex       => Null_Flow_Id,
-                   Parameter_Actual  => Null_Flow_Id,
-                   Parameter_Formal  => Null_Flow_Id,
-                   Variables_Defined => Flow_Id_Sets.Empty_Set,
-                   Variables_Used    => Flow_Id_Sets.Empty_Set,
-                   Loops             => Node_Sets.Empty_Set,
-                   Error_Location    => Empty);
+     V_Attributes'(Is_Null_Node        => False,
+                   Is_Program_Node     => False,
+                   Is_Initialised      => False,
+                   Is_Global           => False,
+                   Is_Loop_Parameter   => False,
+                   Is_Export           => False,
+                   Is_Callsite         => False,
+                   Is_Parameter        => False,
+                   Is_Global_Parameter => False,
+                   Perform_IPFA        => False,
+                   Call_Vertex         => Null_Flow_Id,
+                   Parameter_Actual    => Null_Flow_Id,
+                   Parameter_Formal    => Null_Flow_Id,
+                   Variables_Defined   => Flow_Id_Sets.Empty_Set,
+                   Variables_Used      => Flow_Id_Sets.Empty_Set,
+                   Loops               => Node_Sets.Empty_Set,
+                   Error_Location      => Empty);
 
    Null_Node_Attributes : constant V_Attributes :=
-     V_Attributes'(Is_Null_Node      => True,
-                   Is_Program_Node   => True,
-                   Is_Initialised    => False,
-                   Is_Loop_Parameter => False,
-                   Is_Export         => False,
-                   Is_Callsite       => False,
-                   Is_Parameter      => False,
-                   Is_Global         => False,
-                   Perform_IPFA      => False,
-                   Call_Vertex       => Null_Flow_Id,
-                   Parameter_Actual  => Null_Flow_Id,
-                   Parameter_Formal  => Null_Flow_Id,
-                   Variables_Defined => Flow_Id_Sets.Empty_Set,
-                   Variables_Used    => Flow_Id_Sets.Empty_Set,
-                   Loops             => Node_Sets.Empty_Set,
-                   Error_Location    => Empty);
+     V_Attributes'(Is_Null_Node        => True,
+                   Is_Program_Node     => True,
+                   Is_Initialised      => False,
+                   Is_Global           => False,
+                   Is_Loop_Parameter   => False,
+                   Is_Export           => False,
+                   Is_Callsite         => False,
+                   Is_Parameter        => False,
+                   Is_Global_Parameter => False,
+                   Perform_IPFA        => False,
+                   Call_Vertex         => Null_Flow_Id,
+                   Parameter_Actual    => Null_Flow_Id,
+                   Parameter_Formal    => Null_Flow_Id,
+                   Variables_Defined   => Flow_Id_Sets.Empty_Set,
+                   Variables_Used      => Flow_Id_Sets.Empty_Set,
+                   Loops               => Node_Sets.Empty_Set,
+                   Error_Location      => Empty);
 
    package Flow_Graphs is new Graph
      (Vertex_Key        => Flow_Id,

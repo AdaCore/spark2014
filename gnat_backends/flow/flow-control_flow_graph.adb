@@ -1403,6 +1403,7 @@ package body Flow.Control_Flow_Graph is
 
       Subprogram_Spec : Entity_Id;
       Subprogram      : Entity_Id;
+
    begin
       if Acts_As_Spec (N) then
          Subprogram_Spec := Defining_Unit_Name (Specification (N));
@@ -1416,7 +1417,15 @@ package body Flow.Control_Flow_Graph is
       Connection_Map := Connection_Maps.Empty_Map;
 
       --  Create the magic start and end vertices.
-      FA.CFG.Add_Vertex (Null_Attributes, FA.Start_Vertex);
+      declare
+         Start_Atr : V_Attributes := Null_Attributes;
+      begin
+         --  We attach the subprogram's location to the start vertex
+         --  as it gives us a convenient way to generate error
+         --  messages applying to the whole subprogram.
+         Start_Atr.Error_Location := N;
+         FA.CFG.Add_Vertex (Start_Atr, FA.Start_Vertex);
+      end;
       FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
 
       --  Collect parameters to this procedure and stick them into

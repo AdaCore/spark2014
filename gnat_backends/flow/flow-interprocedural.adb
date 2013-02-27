@@ -66,7 +66,7 @@ package body Flow.Interprocedural is
                   return V;
                end if;
 
-            elsif A.Is_Global then
+            elsif A.Is_Global_Parameter then
                --  Globals can be direct mappings or magic strings,
                --  but in either case the parameter and the formal
                --  will always match in kind.

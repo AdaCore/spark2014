@@ -135,11 +135,11 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Global        := True;
-      A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Formal := Global;
-      A.Loops            := Loops;
-      A.Error_Location   := E_Loc;
+      A.Is_Global_Parameter := True;
+      A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Formal    := Global;
+      A.Loops               := Loops;
+      A.Error_Location      := E_Loc;
 
       case Global.Variant is
          when In_View =>
@@ -204,6 +204,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes := Null_Attributes;
    begin
       A.Error_Location := E_Loc;
+      A.Is_Global      := True;
 
       case F.Variant is
          when Initial_Value =>

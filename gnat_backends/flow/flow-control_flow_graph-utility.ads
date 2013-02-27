@@ -60,7 +60,7 @@ package Flow.Control_Flow_Graph.Utility is
       return V_Attributes
       with Post => not Make_Parameter_Attributes'Result.Is_Null_Node and
                    not Make_Parameter_Attributes'Result.Is_Program_Node and
-                   not Make_Parameter_Attributes'Result.Is_Global and
+                   not Make_Parameter_Attributes'Result.Is_Global_Parameter and
                    Make_Parameter_Attributes'Result.Is_Parameter;
    --  Create attributes for parameters for subprogram calls. If
    --  In_Vertex is true, create the attributes for the in version of
@@ -77,7 +77,7 @@ package Flow.Control_Flow_Graph.Utility is
       with Post => not Make_Global_Attributes'Result.Is_Null_Node and
                    not Make_Global_Attributes'Result.Is_Program_Node and
                    not Make_Global_Attributes'Result.Is_Parameter and
-                   Make_Global_Attributes'Result.Is_Global;
+                   Make_Global_Attributes'Result.Is_Global_Parameter;
    --  Create attributes for globals. Note that variables defined and
    --  used is calculated automatically.
 
@@ -87,11 +87,13 @@ package Flow.Control_Flow_Graph.Utility is
       E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Variable_Attributes'Result.Is_Null_Node and
-                   not Make_Variable_Attributes'Result.Is_Program_Node;
+                   not Make_Variable_Attributes'Result.Is_Program_Node and
+                   not Make_Variable_Attributes'Result.Is_Global;
    --  Create attributes for the initial_value and final_use
    --  vertices. We also calculate the following attributes
    --  automatically:
    --     * Is_Initialised
+   --     * Is_Global (always false)
    --     * Is_Loop_Parameter
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
@@ -103,10 +105,13 @@ package Flow.Control_Flow_Graph.Utility is
       return V_Attributes
       with Pre  => F.Variant in Initial_Or_Final_Variant,
            Post => not Make_Global_Variable_Attributes'Result.Is_Null_Node and
-                   not Make_Global_Variable_Attributes'Result.Is_Program_Node;
+             not Make_Global_Variable_Attributes'Result.Is_Program_Node and
+             Make_Global_Variable_Attributes'Result.Is_Global;
+
    --  Create attributes for the initial_value and final_use vertices
    --  for globals. The following is calculated automatically:
    --     * Is_Initialised
+   --     * Is_Global (always true)
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
 
