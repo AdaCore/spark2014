@@ -50,6 +50,10 @@ use type Ada.Containers.Count_Type;
 
 package body Flow is
 
+   Debug_Print_CFG           : constant Boolean := True;
+   Debug_Print_Intermediates : constant Boolean := False;
+   Debug_Print_PDG           : constant Boolean := True;
+
    use Flow_Graphs;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
@@ -580,7 +584,7 @@ package body Flow is
 
       --  We print this graph first in cast the other algorithms
       --  barf.
-      if Debug_Flag_Dot_ZZ then
+      if Debug_Flag_Dot_ZZ and Debug_Print_CFG then
          Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cfg",
                       G            => FA.CFG,
                       Start_Vertex => FA.Start_Vertex,
@@ -594,20 +598,24 @@ package body Flow is
 
       --  Now we print everything else.
       if Debug_Flag_Dot_ZZ then
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
-                      G            => FA.DDG,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
+         if Debug_Print_Intermediates then
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
+                         G            => FA.DDG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
 
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
-                      G            => FA.CDG,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
+                         G            => FA.CDG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
+         end if;
 
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
-                      G            => FA.PDG,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
+         if Debug_Print_PDG then
+            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
+                         G            => FA.PDG,
+                         Start_Vertex => FA.Start_Vertex,
+                         End_Vertex   => FA.End_Vertex);
+         end if;
       end if;
 
       return FA;
