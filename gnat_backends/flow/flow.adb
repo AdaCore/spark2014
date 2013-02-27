@@ -35,6 +35,7 @@ with Snames;   use Snames;
 with Sprint;   use Sprint;
 
 with Output;
+--  with Treepr; use Treepr;
 
 with Why;
 with Alfa.Definition; use Alfa.Definition;
@@ -266,8 +267,6 @@ package body Flow is
               First (Pragma_Argument_Associations (Global));
             pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-            CA       : List_Id;
-
             Row      : Node_Id;
             The_Mode : Name_Id;
             RHS      : Node_Id;
@@ -299,37 +298,60 @@ package body Flow is
             end Process;
          begin
             if Nkind (Expression (PAA)) = N_Null then
-               --  No globals. We are good to return as is.
+               --  global => null
+               --  No globals, nothing to do.
                return;
+
+            elsif Nkind (Expression (PAA)) = N_Identifier then
+               --  global => foo
+               --  A single input
+               Process (Name_Input, Entity (Expression (PAA)));
+
+            elsif Nkind (Expression (PAA)) = N_Aggregate and then
+              Expressions (Expression (PAA)) /= No_List then
+               --  global => (foo, bar)
+               --  Inputs
+               raise Why.Not_Implemented;
+
+            elsif Nkind (Expression (PAA)) = N_Aggregate and then
+              Component_Associations (Expression (PAA)) /= No_List then
+               --  global => (mode => foo,
+               --             mode => (bar, baz))
+               --  A mixture of things.
+
+               declare
+                  CA : constant List_Id :=
+                    Component_Associations (Expression (PAA));
+               begin
+                  Row := First (CA);
+                  while Row /= Empty loop
+                     pragma Assert (List_Length (Choices (Row)) = 1);
+                     The_Mode := Chars (First (Choices (Row)));
+
+                     RHS := Expression (Row);
+                     case Nkind (RHS) is
+                        when N_Aggregate =>
+                           RHS := First (Expressions (RHS));
+                           while RHS /= Empty loop
+                              Process (The_Mode, Entity (RHS));
+                              RHS := Next (RHS);
+                           end loop;
+                        when N_Identifier =>
+                           Process (The_Mode, Entity (RHS));
+                        when N_Null =>
+                           null;
+                        when others =>
+                           raise Why.Not_Implemented;
+                     end case;
+
+                     Row := Next (Row);
+                  end loop;
+               end;
+
             else
-               CA := Component_Associations (Expression (PAA));
+               raise Why.Not_Implemented;
             end if;
-
-            Row := First (CA);
-            while Row /= Empty loop
-               pragma Assert (List_Length (Choices (Row)) = 1);
-               The_Mode := Chars (First (Choices (Row)));
-
-               RHS := Expression (Row);
-               case Nkind (RHS) is
-                  when N_Aggregate =>
-                     RHS := First (Expressions (RHS));
-                     while RHS /= Empty loop
-                        Process (The_Mode, Entity (RHS));
-                        RHS := Next (RHS);
-                     end loop;
-                  when N_Identifier =>
-                     Process (The_Mode, Entity (RHS));
-                  when N_Null =>
-                     null;
-                  when others =>
-                     raise Why.Not_Implemented;
-               end case;
-
-               Row := Next (Row);
-            end loop;
          end;
-
       else
          --  We don't have a global aspect, so we should look at the
          --  computed globals...
