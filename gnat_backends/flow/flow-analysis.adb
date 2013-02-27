@@ -212,7 +212,7 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
-                           Error_Msg_Flow ("ineffective global export &!",
+                           Error_Msg_Flow ("global & may not be set!",
                                            FA.PDG, FA.Start_Vertex, Key_I);
 
                         else
