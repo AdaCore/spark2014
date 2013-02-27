@@ -129,13 +129,36 @@ package body Test is
    end Swap_F;
 
    ------------------------------------------------------------
+   --  Tests for calling functions
+   ------------------------------------------------------------
+
+   function Factorial (N : Positive) return Positive is
+   begin
+      if N = 1 then
+         return 1;
+      else
+         return N * Factorial (N - 1);
+      end if;
+   end Factorial;
+
+   procedure Calling_Function_01 (A : Boolean;
+                                  N : in out Integer)
+   is
+   begin
+      if A then
+         N := 0;
+      else
+         N := Factorial (N);
+      end if;
+   end Calling_Function_01;
+
+   ------------------------------------------------------------
    --  Tests for globals
    ------------------------------------------------------------
 
-   procedure Global_Test
+   procedure Global_Test_01 (N : out Integer)
    is
       Counter : Integer;
-      N       : Integer;
 
       procedure Do_Stuff_A (X : in out Integer)
       with Global  => (In_Out => (Counter)),
@@ -162,6 +185,28 @@ package body Test is
       N := 10;
       Do_Stuff_A (N);
       Do_Stuff_B (N);
-   end Global_Test;
+   end Global_Test_01;
+
+   procedure Global_Test_02 (A : Integer;
+                             B : out Integer)
+   is
+      S : Integer;
+
+      function F return Integer
+        with Global => (Input => S);
+
+      function F return Integer
+      is
+      begin
+         return S;
+      end F;
+
+   begin
+
+      S := A;
+      B := F;
+
+   end Global_Test_02;
+
 
 end Test;
