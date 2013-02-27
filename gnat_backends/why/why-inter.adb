@@ -403,6 +403,15 @@ package body Why.Inter is
    --  Start of Add_Use_For_Entity
 
    begin
+      --  In the few special cases for which the Full_Name of N is not based on
+      --  its Unique_Name, the corresponding theories are standard ones (dealt
+      --  with separately). Return in that case, to avoid generating wrong
+      --  includes based on a non-unique Full_Name.
+
+      if Full_Name_Is_Not_Unique_Name (N) then
+         return;
+      end if;
+
       if File_Name /= P.Name.all then
          Add_With_Clause (P, File_Name, Theory_Name, Import);
       else
@@ -572,14 +581,7 @@ package body Why.Inter is
                  then not Is_Quantified_Loop_Param (N))
             then
                Standard_Imports.Set_SI (N);
-
-               --  Values of the Standard Boolean type are translated as "bool"
-               --  values in Why.
-
-               if N /= Standard_Boolean then
-                  Add_Use_For_Entity
-                    (P, N, With_Completion => With_Completion);
-               end if;
+               Add_Use_For_Entity (P, N, With_Completion => With_Completion);
 
                --  When Defined_Entity is present, add the entities on which it
                --  depends in the graph of dependencies.
@@ -835,10 +837,20 @@ package body Why.Inter is
 
    function Full_Name (N : Entity_Id) return String is
    begin
-      if N = Standard_Boolean then
-         return "bool";
-      elsif N = Universal_Fixed then
-         return "real";
+      --  In special cases, return a fixed name. These cases should match those
+      --  for which Full_Name_Is_Not_Unique_Name returns True.
+
+      if Full_Name_Is_Not_Unique_Name (N) then
+         if N = Standard_Boolean then
+            return "bool";
+         elsif N = Universal_Fixed then
+            return "real";
+         else
+            raise Program_Error;
+         end if;
+
+      --  In the general case, return a name based on the Unique_Name
+
       else
          declare
             S : String := Unique_Name (N);
@@ -854,6 +866,15 @@ package body Why.Inter is
          end;
       end if;
    end Full_Name;
+
+   ----------------------------------
+   -- Full_Name_Is_Not_Unique_Name --
+   ----------------------------------
+
+   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean is
+   begin
+      return N = Standard_Boolean or else N = Universal_Fixed;
+   end Full_Name_Is_Not_Unique_Name;
 
    -----------------
    -- Get_EW_Type --

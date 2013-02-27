@@ -250,6 +250,13 @@ package Why.Inter is
       with Pre => (Nkind (N) in N_Entity);
    --  Given an N_Entity, return its Full Name, as used in Why.
 
+   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean;
+   --  The full name of an entity is based on its unique name in nearly all
+   --  cases, so that this name can be used e.g. to retrieve completion
+   --  theories. In a few cases which require special handling
+   --  (currently Standard_Boolean and Universal_Fixed), the full name is hard
+   --  coded for Why, so should not be used as a representative of the entity.
+
    function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean;
    --  Return True if Left and Right are both W_Base_Type_Id nodes, and Eq
    --  returns True on these seen as W_Base_Type_Id nodes.
