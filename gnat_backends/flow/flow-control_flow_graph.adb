@@ -487,7 +487,9 @@ package body Flow.Control_Flow_Graph is
       If_Part   : constant List_Id := Then_Statements (N);
       Else_Part : constant List_Id := Else_Statements (N);
    begin
-      pragma Assert (Elsif_Parts (N) = No_List);
+      if Elsif_Parts (N) /= No_List then
+         raise Why.Not_Implemented;
+      end if;
 
       --  We have a vertex for the if statement itself.
       FA.CFG.Add_Vertex
@@ -1227,7 +1229,6 @@ package body Flow.Control_Flow_Graph is
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
-            CM.Include (Union_Id (N), No_Connections);
             raise Why.Not_Implemented;
       end case;
    end Process_Statement;
