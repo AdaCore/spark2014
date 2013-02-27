@@ -127,7 +127,11 @@ package body Why.Inter is
             if Ekind (UE) in Type_Kind and then not In_Alfa (UE) then
                return;
             end if;
-            if Is_Boolean_Type (UE) then
+
+            --  Only Standard.Boolean is modeled as bool; any other boolean
+            --  subtype is modeled as an abstract type to have range checks.
+
+            if UE = Standard_Boolean then
                Imports (SI_Boolean) := True;
                Imports (SI_Integer) := True;
             else
@@ -395,6 +399,9 @@ package body Why.Inter is
       Import      : constant EW_Clone_Type :=
         (if Use_Kind = EW_Clone_Default then Import_Type_Of_Entity (N)
          else Use_Kind);
+
+   --  Start of Add_Use_For_Entity
+
    begin
       if File_Name /= P.Name.all then
          Add_With_Clause (P, File_Name, Theory_Name, Import);
@@ -565,7 +572,14 @@ package body Why.Inter is
                  then not Is_Quantified_Loop_Param (N))
             then
                Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N, With_Completion => With_Completion);
+
+               --  Values of the Standard Boolean type are translated as "bool"
+               --  values in Why.
+
+               if N /= Standard_Boolean then
+                  Add_Use_For_Entity
+                    (P, N, With_Completion => With_Completion);
+               end if;
 
                --  When Defined_Entity is present, add the entities on which it
                --  depends in the graph of dependencies.
