@@ -122,21 +122,11 @@ package body Flow.Interprocedural is
            (FA.CDG,
             V,
             Direct_Mapping_Id (Unique_Entity (A), In_View));
-         --  if V_A = Flow_Graphs.Null_Vertex then
-         --     V_A := FA.CDG.Get_Vertex
-         --       (Direct_Mapping_Id (Unique_Entity (A), N, Global_In_View));
-         --  end if;
-         pragma Assert (V_A /= Flow_Graphs.Null_Vertex);
 
          V_B := Find_Parameter_Vertex
            (FA.CDG,
             V,
             Direct_Mapping_Id (Unique_Entity (B), Out_View));
-         --  if V_B = Flow_Graphs.Null_Vertex then
-         --     V_B := FA.CDG.Get_Vertex
-         --       (Direct_Mapping_Id (Unique_Entity (B), N, Global_Out_View));
-         --  end if;
-         pragma Assert (V_B /= Flow_Graphs.Null_Vertex);
 
          FA.TDG.Add_Edge (V_A, V_B, EC_TD);
       end Add_TD_Edge;
@@ -218,6 +208,12 @@ package body Flow.Interprocedural is
             Outputs : Flow_Id_Sets.Set;
             E       : Entity_Id;
          begin
+            --  Collect all the globals first.
+            Get_Globals (Subprogram => Called_Procedure,
+                         Reads      => Inputs,
+                         Writes     => Outputs);
+
+            --  Add parameters.
             E := First_Formal (Called_Procedure);
             while E /= Empty loop
                case Ekind (E) is
@@ -238,8 +234,7 @@ package body Flow.Interprocedural is
                E := Next_Formal (E);
             end loop;
 
-            --  TODO: Collect globals
-
+            --  Each output depends on all inputs.
             for Input of Inputs loop
                for Output of Outputs loop
                   FA.TDG.Add_Edge (Find_Parameter_Vertex (FA.CDG, V, Input),
