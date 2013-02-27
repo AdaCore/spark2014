@@ -178,7 +178,9 @@ package body Test is
       procedure Do_Stuff_B (X : Integer)
       is
       begin
-         Counter := X;
+         if X > 0 then
+            Counter := X;
+         end if;
       end Do_Stuff_B;
 
    begin
@@ -187,7 +189,30 @@ package body Test is
       Do_Stuff_B (N);
    end Global_Test_01;
 
-   procedure Global_Test_02 (A : Integer;
+   procedure Global_Test_02 (N : out Integer)
+   is
+      Counter : Integer;
+
+      procedure Do_Stuff_C (X : in out Integer)
+      is
+      begin
+         X       := X + 1;
+         Counter := Counter + 1;
+      end Do_Stuff_C;
+
+      procedure Do_Stuff_D (X : Integer)
+      is
+      begin
+         Counter := X;
+      end Do_Stuff_D;
+
+   begin
+      N := 10;
+      Do_Stuff_C (N);
+      Do_Stuff_D (N);
+   end Global_Test_02;
+
+   procedure Global_Test_03 (A : Integer;
                              B : out Integer)
    is
       S : Integer;
@@ -206,7 +231,7 @@ package body Test is
       S := A;
       B := F;
 
-   end Global_Test_02;
+   end Global_Test_03;
 
 
 end Test;
