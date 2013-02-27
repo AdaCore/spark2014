@@ -1,0 +1,1 @@
+bool.adb:4:14: postcondition not proved, requires X = Y'old

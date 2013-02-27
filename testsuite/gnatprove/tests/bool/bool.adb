@@ -1,8 +1,9 @@
 procedure Bool is
    --  in place swapping of Boolean values
    procedure Swap (X, Y : in out Boolean) with
-     Post => X = Y'Old and Y = X'Old
-   is
+     Post => X = Y'Old and Y = X'Old;
+
+   procedure Swap (X, Y : in out Boolean) is
    begin
       X := X xor Y;
       Y := X = Y;    --  Y is not X'Old
