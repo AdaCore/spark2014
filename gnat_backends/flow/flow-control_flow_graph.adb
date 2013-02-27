@@ -202,8 +202,7 @@ package body Flow.Control_Flow_Graph is
       Out_List          : in out Vertex_Vectors.Vector;
       FA                : in out Flow_Analysis_Graphs;
       CM                : in out Connection_Maps.Map;
-      Ctx               : in out Context)
-      with Pre => List_Length (L) >= 1;
+      Ctx               : in out Context);
 
    procedure Process_Statement_List
      (L   : List_Id;
