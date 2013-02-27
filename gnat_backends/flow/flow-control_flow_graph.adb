@@ -1272,6 +1272,13 @@ package body Flow.Control_Flow_Graph is
       Unused : Traverse_Final_Result;
       pragma Unreferenced (Unused);
 
+      procedure Process_Function_Call
+        (Callsite       : Node_Id;
+         Used_Variables : in out Flow_Id_Sets.Set)
+         with Pre => Nkind (Callsite) = N_Function_Call;
+      --  Work out which variables (including globals) are used in the
+      --  function call and add them to the given set.
+
       function Proc (N : Node_Id) return Traverse_Result;
       --  Adds each identifier or defining_identifier found to VS, as
       --  long as we are dealing with:
@@ -1280,11 +1287,52 @@ package body Flow.Control_Flow_Graph is
       --     * a loop parameter
       --     * a constant
 
+      ---------------------------
+      -- Process_Function_Call --
+      ---------------------------
+
+      procedure Process_Function_Call
+        (Callsite       : Node_Id;
+         Used_Variables : in out Flow_Id_Sets.Set) is
+
+         Subprogram : constant Entity_Id := Entity (Name (Callsite));
+
+         Global_Reads  : Flow_Id_Sets.Set;
+         Global_Writes : Flow_Id_Sets.Set;
+
+      begin
+         Get_Globals (Subprogram => Subprogram,
+                      Reads      => Global_Reads,
+                      Writes     => Global_Writes);
+         pragma Assert (Flow_Id_Sets.Length (Global_Writes) = 0);
+
+         Used_Variables :=
+           Used_Variables or
+           Get_Variable_Set (Parameter_Associations (Callsite));
+
+         for G of Global_Reads loop
+            Used_Variables.Include (Change_Variant (G, Normal_Use));
+         end loop;
+      end Process_Function_Call;
+
+      ----------
+      -- Proc --
+      ----------
+
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Subprogram_Body | N_Subprogram_Declaration =>
-               --  Do not descend into nested subprograms.
+            when N_Procedure_Call_Statement |
+              N_Subprogram_Body |
+              N_Subprogram_Declaration =>
+               --  If we ever get one of these we have a problem -
+               --  Get_Variable_Set is only really meant to be called
+               --  on expressions and not statements.
+               raise Program_Error;
+
+            when N_Function_Call =>
+               Process_Function_Call (Callsite       => N,
+                                      Used_Variables => VS);
                return Skip;
 
             when N_Identifier =>
