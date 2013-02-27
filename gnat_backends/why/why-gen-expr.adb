@@ -600,9 +600,14 @@ package body Why.Gen.Expr is
       Op_Type : W_Base_Type_Id;
       Left1   : W_Expr_Id;
       Right1  : W_Expr_Id;
+
    begin
+      --  The only comparisons between Boolean operands that we translate in
+      --  Why without going throught integers are the equality and inequality
+      --  in a predicate context, translated as equivalence or inequivalence.
+
       if Get_Base_Type (Arg_Types) = EW_Bool
-        and then Cmp in EW_Inequality
+        and then (Cmp in EW_Inequality or else Domain /= EW_Pred)
       then
          Op_Type := EW_Int_Type;
          Left1  :=
