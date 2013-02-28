@@ -28,4 +28,12 @@ package body Test is
       return True;
    end Is_Prime;
 
+   function Ext_Return_01 (N : in Positive) return Integer
+   is
+   begin
+      return R : Integer do
+         R := N + 1;
+      end return;
+   end Ext_Return_01;
+
 end Test;
