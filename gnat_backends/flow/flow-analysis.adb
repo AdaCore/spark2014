@@ -99,9 +99,13 @@ package body Flow.Analysis is
    -- Sanity_Check --
    ------------------
 
-   procedure Sanity_Check (FA : Flow_Analysis_Graphs) is
+   procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
+                           Sane : out Boolean) is
       use type Flow_Id_Sets.Set;
    begin
+      --  Innocent until proven guilty.
+      Sane := True;
+
       --  Sanity check all vertices if they mention a flow id that we
       --  do not know about.
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -119,11 +123,20 @@ package body Flow.Analysis is
                   if not FA.All_Vars.Contains (Neutral) then
                      Error_Msg_Flow ("& not visible!", FA.CFG,
                                      V, Var);
+                     Sane := False;
                   end if;
                end;
             end loop;
          end;
       end loop;
+
+      if not Sane then
+         Error_Msg_Flow
+           ("analysis analysis of & abandoned due to inconsistent graph",
+            FA.CFG,
+            FA.Start_Vertex,
+            Direct_Mapping_Id (FA.Subprogram));
+      end if;
    end Sanity_Check;
 
    ------------------------------

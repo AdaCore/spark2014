@@ -695,6 +695,7 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
       FA_Graphs : Analysis_Maps.Map;
+      Success   : Boolean;
    begin
       --  Process entities and construct graphs if necessary
       for E of Spec_Entities loop
@@ -719,12 +720,14 @@ package body Flow is
          Output.Write_Eol;
       end if;
       for FA of FA_Graphs loop
-         Analysis.Sanity_Check (FA);
-         Analysis.Find_Ineffective_Imports (FA);
-         Analysis.Find_Illegal_Updates (FA);
-         Analysis.Find_Ineffective_Statements (FA);
-         Analysis.Find_Use_Of_Uninitialised_Variables (FA);
-         Analysis.Find_Stable_Elements (FA);
+         Analysis.Sanity_Check (FA, Success);
+         if Success then
+            Analysis.Find_Ineffective_Imports (FA);
+            Analysis.Find_Illegal_Updates (FA);
+            Analysis.Find_Ineffective_Statements (FA);
+            Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+            Analysis.Find_Stable_Elements (FA);
+         end if;
       end loop;
 
    end Flow_Analyse_CUnit;
