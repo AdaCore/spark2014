@@ -233,5 +233,48 @@ package body Test is
 
    end Global_Test_03;
 
+   procedure Global_Test_04
+   is
+      S : Integer;
+
+      procedure Direct_Update_Bad
+        with Global => S;
+
+      procedure Direct_Update
+        with Global => (Output => S);
+
+      procedure Indirect_Update
+        with Global => S;
+
+      procedure Set (X : out Integer);
+
+      procedure Direct_Update_Bad
+      is
+      begin
+         S := 12;
+      end Direct_Update_Bad;
+
+      procedure Direct_Update
+      is
+      begin
+         S := 12;
+      end Direct_Update;
+
+      procedure Indirect_Update
+      is
+      begin
+         Direct_Update;
+         Set (S);
+      end Indirect_Update;
+
+      procedure Set (X : out Integer)
+      is
+      begin
+         X := 12;
+      end Set;
+   begin
+      Direct_Update;
+   end Global_Test_04;
+
 
 end Test;
