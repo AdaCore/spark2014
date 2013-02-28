@@ -39,9 +39,15 @@ module Main
   axiom position_no_element:
     forall co:list [position co no_element]. position co no_element = 0
 
-  axiom position_eq:
-    forall co:list, cu1 cu2:cursor [position co cu1, position co cu2].
-          position co cu1 > 0 -> position co cu1 = position co cu2 -> cu1 = cu2
+  function position_inv list int : cursor
+
+  axiom position_eq1:
+   forall co:list, i :int [position co (position_inv co i)]. 0<i<=length co -> 
+              position co (position_inv co i)=i
+
+  axiom position_eq2:
+    forall co:list, cu:cursor [position co cu].
+          position co cu > 0 -> position_inv co (position co cu) = cu
 
   predicate is_empty list
 
@@ -238,8 +244,8 @@ function findlast list element_type : cursor
   axiom equal_inv:
    forall co1 co2 : list [equal co1 co2]. not equal co1 co2 ->
    (length co1 <> length co2 \/
-   exists cu1 cu2 : cursor. position co1 cu1 > 0 /\ position co2 cu2 = position co1 cu1 /\
-	oeq (element co2 cu2) (element co1 cu1) = False)
+   exists i : int. 0<i<=length co1 /\ oeq (element co1 (position_inv co1 i))
+       (element co2 (position_inv co2 i))=False)
 
   axiom equal_sym :
   forall e1 e2 : list [equal e1 e2].
@@ -933,11 +939,8 @@ function findlast list element_type : cursor
      requires { cu = no_element \/ has_element co cu }
      ensures  { result = right co cu }
 
-  function strict_equal__logic list list : bool
-
-  axiom strict_equal__logic_def:
-    forall co1 co2 : list [strict_equal__logic co1 co2].
-      strict_equal__logic co1 co2 = True <-> strict_equal co1 co2
+  function strict_equal__logic (co1 co2 : list) : bool =
+    if strict_equal co1 co2 then True else False
 
   predicate strict_equal__pre (co1:list) (co2:list) = true
   predicate strict_equal__post (co1:list) (co2:list) (result:bool) =
@@ -945,11 +948,8 @@ function findlast list element_type : cursor
   val strict_equal__program (co1:list) (co2:list) : bool
      ensures  { result  = True <-> strict_equal co1 co2 }
 
-  function oeq__2__logic list list : bool
-
-  axiom oeq__2__logic_def:
-    forall co1 co2 : list [oeq__2__logic co1 co2].
-      oeq__2__logic co1 co2 = True <-> equal co1 co2
+  function oeq__2__logic (co1:list) (co2:list) : bool =
+    if equal co1 co2 then True else False
 
   predicate oeq__2__pre (co1:list) (co2:list) = true
   predicate oeq__2__post (co1:list) (co2:list) (result:bool) = 

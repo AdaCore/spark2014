@@ -3,7 +3,8 @@ package body P is
    procedure Identity (L : in out List; Cu : in out Cursor) is
    begin
       Insert (L, Cu, 1);
-      Previous (L, Cu);
+      Cu := (if Cu = No_Element then Last (L) 
+             else Previous (L, Cu));
       Delete (L, Cu);
    end Identity;
 
