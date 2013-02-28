@@ -147,7 +147,7 @@ abstractions, with each pair of state abstractions representing disjoint sets of
 hidden variables.
 
 If a subprogram P with a Global aspect is declared in the
-``visible_part`` of a package and P reads or updates any of the hidden
+visible part of a package and P reads or updates any of the hidden
 state of the package then P must include in its Global aspect the
 abstract state names with the correct mode that represent the hidden
 state referenced by P.  If P has a Depends aspect then the abstract
@@ -155,9 +155,8 @@ state names must appear as inputs and outputs of P, as appropriate, in
 the ``dependency_relation`` of the Depends aspect.
 
 The Abstract State aspect is introduced by an ``aspect_specification``
-where the ``aspect_mark`` is Abstract_State and the
-``aspect_definition`` must follow the grammar of
-``abstract_state_list`` given below.
+where the ``aspect_mark`` is Abstract_State and the ``aspect_definition`` 
+must follow the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Syntax**
 
@@ -210,14 +209,22 @@ where the ``aspect_mark`` is Abstract_State and the
       :Trace Unit: 7.1.2 LR If property_list includes Input or Output, it shall also include Volatile
 
 #. The ``identifier`` of a ``name_value_property`` shall be
-   Integrity.
+   Integrity  or Constituent_Of and at most one each may appear in the 
+   ``property_list``.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 7.1.2 LR name_value_property identifier must be Integrity
+      
+#. A ``name_value_property`` with an ``identifier`` of Constituent_Of may
+   only appear in an aspect specification of a private child package,
+   or a package declared immediately within the visible part of a private child 
+   package. The expression of such a ``name_value_property`` must denote a state 
+   abstraction.
 
-#. If a ``property_list`` includes Integrity then it shall be the final
-   property in the list. [This eliminates the possibility of a positional
+#. If a ``property_list`` contains at least one ``name_value_property`` then 
+   they shall be the final properties in the list. 
+   [This eliminates the possibility of a positional
    association following a named association in the property list.]
 
    .. ifconfig:: Display_Trace_Units
@@ -277,12 +284,35 @@ where the ``aspect_mark`` is Abstract_State and the
    hidden state.
    [The specification is checked when the package is analyzed.]
 
-#. A *volatile* state abstraction is one declared with a property list
-   that includes the Volatile property, and either Input or Output.
+#. A *volatile* state abstraction is one declared with a ``property_list``
+   that includes the Volatile ``property``, and either Input or Output.
+   
+#. A state abstraction which is declared with a ``property_list`` that includes 
+   the Integrity ``name_value_property`` is said to have an *integrity level* 
+   specified by the Integer expression of the ``name_value_property``.
+   
+#. A state abstraction which is declared with a ``property_list`` that includes
+   a Constituent_Of ``name_value_property``  indicates that it is a 
+   constituent (see :ref:`_state_refinement`) of the state abstraction denoted 
+   by the expression of the ``name_value_property`` and only that state 
+   abstraction.
+   
+#. A state abstraction declared in the ``aspect_specification`` of a private 
+   child package, Q, or a package declared immediately within the visible part
+   of Q, without a Constituent_Of ``property`` is considered to be a 
+   constituent of one of Q's parent's state abstractions and no other state 
+   abstraction.
 
 .. centered:: **Verification Rules**
 
-There are no Verification Rules associated with the Abstract State aspect.
+#. A state abstraction which is declared with a ``property_list`` that includes
+   a Constituent_Of ``name_value_property`` shall be a constituent of the 
+   state abstraction denoted by the expression of the ``name_value_property``.
+   
+#. A state abstraction declared in the ``aspect_specification`` of a private 
+   child package, Q, or a package immediatly within the visible part of Q,
+   without a Constituent_Of ``property`` shall be a constituent of one of Q's 
+   parent's state abstractions.
    
 .. centered:: **Dynamic Semantics**
 
@@ -311,17 +341,28 @@ aspect.
    end Q;
 
    package X
-      with  Abstract_State => (A, B, (C with Volatile, Input))
-   is                          -- Three abstract state names are declared A, B & C.
-                               -- A and B are non-volatile abstract states
-      ...                      -- C is designated as a volatile input.
+   with  
+      Abstract_State => (A, B, (C with Volatile, Input))
+   is                     -- Three abstract state names are declared A, B & C.
+                          -- A and B are non-volatile abstract states
+      ...                 -- C is designated as a volatile input.
    end X;
 
    package Sensor -- simple volatile, input device driver
-      with Abstract_State => (Port with Volatile, Input);
+   with 
+      Abstract_State => (Port with Volatile, Input);
    is
       ...
    end Sensor;
+   
+   private package Sensor.Raw
+   with
+      Abstract_State => (Port_22 with Volatile, Input, 
+                         Constituent_Of => Sensor.Port)
+   is
+      
+      ...
+   end Sensor.Raw;
 
 .. todo:: 
      Further semantic detail regarding Volatile state and integrity levels
@@ -380,51 +421,12 @@ There are no dynamic semantics associated with the integrity levels.
       ...
    end MILS;
 
-Synthesized State Abstractions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A package which has hidden state is considered to have one or more
-state abstractions even if they are not explicitly declared.  If the
-state abstractions are not explicitly declared they will be
-synthesized from the implementation (if it exists) of the package and
-its private descendent.
-
-.. centered:: **Static Semantics**
-
-#. A state abstraction of a package is considered to represent
-   hidden state in one of the following categories:
-
-   * Non-Volatile Uninitialized State - state which is not initialized
-     during the elaboration of the package
-   * Non-Volatile Initialized State - state which is initialized
-     during the elaboration of the package
-   * Volatile Input State - Volatile state which is an input only and
-     is considered to be implicitly initialized.
-   * Volatile Output State - Volatile state which is an output only
-     and is considered to be implicitly initialized.
-
-#. If a package has hidden state but no Abstract State Aspect is
-   provided, a state abstraction is synthesized for each category of
-   hidden state for which there exits *variables* of the category.
-   The synthesized state abstractions are given one of the following
-   default ``state_names`` representing each of the categories of
-   state:
-
-   * Uninitialized_State
-   * Initialized_State
-   * Volatile_Input_State
-   * Volatile_Output_State
-
-   A default ``state_name`` is only synthesized if the hidden state of
-   the corresponding category is present within the package or its
-   private descendants.
-
-
-Input, Output and Integrity Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Input, Output, Constituent_Of  and Integrity Aspects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For variables which are declared directly within the visible part of a
-package specification, the Volatile, Input, Output,
+package specification, the Volatile, Input, Output, Constituent_Of
 and Integrity aspects may be specified directly as part of the
 variable's declaration.
 
@@ -432,29 +434,58 @@ variable's declaration.
 
 #. Input and Output are Boolean aspects, so have no
    ``aspect_definition`` part.
+
 #. Integrity requires an ``aspect_definition`` which is a static
    expression of any integer type.
+
 #. The Input, Output and Integrity aspects may only be applied to a
    variable declaration that appears in the visible part of a package
    specification.
+
 #. If a variable has the Volatile aspect, then it must also have
    exactly one of the Input or Output aspects.
+
+#. The Constituent_Of aspect requires an ``aspect_definition`` which denotes
+   a state abstraction.
+
+#. A Constituent_Of aspect can only appear in the ``aspect_specification`` of a
+   variable declared in the visible part of a private child package or
+   the visible part of a package declared within the visible part of the 
+   private child package..
+   
+.. centered:: **Static Semantics**
+
+# An Integrity aspect in the ``aspect_specification`` of variable declaration
+  defines the integrity level of the variable to be as given by the Integer
+  expression given by its ``aspect_definition``.
+
+# A Constituent_Of aspect in the ``aspect_specification`` of a variable 
+  declaration indicates that the variable is a constituent of the state
+  abstraction denoted by its ``aspect_definition``.
+
+#. A variable that is declared in the visible part of a private child package
+   or within the visible part of a package declared within the visible part of
+   a private child package which does not have a Constituent_Of aspect is 
+   considered to be a constituent of one of the state abstractions of the
+   parent of the private child packages.
 
 .. centered:: **Examples**
 
 .. code-block:: ada
 
-   package Raw_Input_Port
+   private package Input_Port.Raw
    is
 
       Sensor : Integer
          with Volatile,
               Input,
               Address => 16#DEADBEEF#,
-              Integrity => 4;
+              Integrity => 4
+              Constituent_Of => Input_Port.Pressure_Input;
 
-   end Raw_Input_Port;
+   end Input_Port.Raw_Input_Port;
 
+   
 
 Initializes Aspect
 ~~~~~~~~~~~~~~~~~~
@@ -805,17 +836,17 @@ Package Bodies
    shall not read, directly or indirectly, a value which is not entirely derived 
    entirely from compile-time constants.
    
+.. _state_refinement:
+
 State Refinement
 ~~~~~~~~~~~~~~~~
 
-A ``state_name`` declared by an Abstract State aspect in the
-specification of a package Q is an abstraction of the non-visible
-variables declared in the private part, body, or private descendants
-of Q, which together form the hidden state, of Q.  In the body of Q
-each ``state_name`` has to be refined by showing which variables and
-subordinate abstract states are represented by the ``state_name`` (its
-constituents).  A Refined State aspect in the body of Q is used
-for this purpose.
+A ``state_name`` declared by an Abstract State aspect in the specification of a
+package is an abstraction representing its hidden state. The declaration must be
+completed in the package body by a Refined State aspect. The Refined State
+aspect is used to show for each ``state_name`` which variables and subordinate
+abstract states are represented by the ``state_name`` and are known as its 
+*constituents*.
 
 In the body of a package the constituents of the refined
 ``state_name``, the refined view, has to be used rather than the

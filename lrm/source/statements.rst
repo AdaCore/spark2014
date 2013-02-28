@@ -44,12 +44,6 @@ User-Defined Iterator Types
 
 |SPARK| does not support the implementation of user-defined iterator types.
 
-.. note:: Do we need the following rule?
-
-.. centered:: **Extended Legality Rules**
-
-#. ``Ada.Iterator_Interfaces`` shall not be named in a ``with_clause``.
-
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
