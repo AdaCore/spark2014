@@ -110,12 +110,12 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location   := E_Loc;
 
       if In_Vertex then
-         pragma Assert (Ekind (Formal) = E_In_Parameter or
-                          Ekind (Formal) = E_In_Out_Parameter);
+         pragma Assert
+           (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter);
          A.Variables_Used := Get_Variable_Set (Actual);
       else
-         pragma Assert (Ekind (Formal) = E_Out_Parameter or
-                          Ekind (Formal) = E_In_Out_Parameter);
+         pragma Assert
+           (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          A.Variables_Defined := Get_Variable_Set (Actual);
       end if;
 
@@ -174,20 +174,20 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Variant is
          when Initial_Value =>
-            A.Is_Initialised :=
-              Ekind (E) = E_In_Out_Parameter or
-              Ekind (E) = E_In_Parameter or
-              Ekind (E) = E_Loop_Parameter;
+            A.Is_Initialised := Ekind (E) in
+              E_In_Out_Parameter |
+              E_In_Parameter |
+              E_Loop_Parameter;
 
             A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
 
             A.Variables_Defined := Flow_Id_Sets.To_Set (Direct_Mapping_Id (E));
 
          when Final_Value =>
-            A.Is_Export :=
-              Ekind (E) = E_In_Out_Parameter or
-              Ekind (E) = E_Out_Parameter or
-              Ekind (E) = E_Function;
+            A.Is_Export := Ekind (E) in
+              E_In_Out_Parameter |
+              E_Out_Parameter |
+              E_Function;
 
             A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
 
