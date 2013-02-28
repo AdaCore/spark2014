@@ -29,6 +29,8 @@ with Why;
 
 package body Flow.Analysis is
 
+   use type Flow_Graphs.Vertex_Id;
+
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
                              Loc : Flow_Graphs.Vertex_Id);
@@ -167,26 +169,76 @@ package body Flow.Analysis is
    --------------------------
 
    procedure Find_Illegal_Updates (FA : Flow_Analysis_Graphs) is
-   begin
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            F : constant Flow_Id      := FA.PDG.Get_Key (V);
-            A : constant V_Attributes := FA.PDG.Get_Attributes (V);
-         begin
-            --  We look for all constant final use vertices...
-            if F.Variant = Final_Value and A.Is_Constant then
-               --  For each of their inputs...
-               for W of FA.PDG.Get_Collection
-                 (V, Flow_Graphs.In_Neighbours) loop
-                  --  ...which is not the initial value itself, we
-                  --  raise an error.
-                  if FA.PDG.Get_Key (W).Variant /= Initial_Value then
-                     Error_Msg_Flow ("illegal update!",
-                                     FA.PDG, W);
-                  end if;
-               end loop;
+      procedure Print_Error (Illegal_Use_Loc : Flow_Graphs.Vertex_Id;
+                             The_Global_Id   : Flow_Id;
+                             The_Global_Atr  : V_Attributes);
+      --  Helper procedure to print the error message.
+
+      procedure Print_Error (Illegal_Use_Loc : Flow_Graphs.Vertex_Id;
+                             The_Global_Id   : Flow_Id;
+                             The_Global_Atr  : V_Attributes)
+      is
+         Illegal_Use_Atr : constant V_Attributes :=
+           FA.PDG.Get_Attributes (Illegal_Use_Loc);
+      begin
+         if The_Global_Atr.Is_Global then
+            if Illegal_Use_Atr.Is_Parameter then
+               --  foo (bar);
+               Error_Msg_Flow ("actual for & cannot be a global input!",
+                               FA.PDG,
+                               Illegal_Use_Loc,
+                               Illegal_Use_Atr.Parameter_Formal);
+
+            elsif Illegal_Use_Atr.Is_Global_Parameter then
+               --  foo;
+               Error_Msg_Flow ("global item & must denote a global output!",
+                               FA.PDG,
+                               Illegal_Use_Loc,
+                               The_Global_Id);
+
+            else
+               --  bar := 12;
+               Error_Msg_Flow ("assignment to global in & not allowed!",
+                               FA.PDG,
+                               Illegal_Use_Loc,
+                               The_Global_Id);
             end if;
-         end;
+         else
+            --  It *has* to be a global. The compiler would catch any
+            --  updates to in parameters and loop parameters...
+            raise Why.Not_Implemented;
+         end if;
+      end Print_Error;
+   begin
+      --  We look at all vertices...
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         --  For any vertex which defines a variable (at most one, I
+         --  suppose) we check we are allowed to define that variable.
+         for Var of FA.PDG.Get_Attributes (V).Variables_Defined loop
+            declare
+               Corresp_Final_Vertex : constant Flow_Graphs.Vertex_Id :=
+                 FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
+               pragma Assert (Corresp_Final_Vertex /=
+                                Flow_Graphs.Null_Vertex);
+
+               Final_Atr : constant V_Attributes :=
+                 FA.PDG.Get_Attributes (Corresp_Final_Vertex);
+            begin
+               --  We only do this check if Var is something which we
+               --  should not change.
+               if Final_Atr.Is_Constant then
+                  if FA.PDG.Get_Key (V).Variant = Initial_Value then
+                     --  The initial use vertex is, of course, allowed
+                     --  to define the variable.
+                     null;
+                  else
+                     Print_Error (Illegal_Use_Loc => V,
+                                  The_Global_Id   => Var,
+                                  The_Global_Atr  => Final_Atr);
+                  end if;
+               end if;
+            end;
+         end loop;
       end loop;
    end Find_Illegal_Updates;
 
