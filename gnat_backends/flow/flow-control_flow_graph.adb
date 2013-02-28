@@ -844,6 +844,9 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
    begin
+      --  First, we need a 'initial and 'final vertex for this object.
+      Create_Initial_And_Final_Vertices (Defining_Identifier (N), FA);
+
       if Expression (N) = Empty then
          --  Just a null vertex.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
@@ -1403,15 +1406,12 @@ package body Flow.Control_Flow_Graph is
       The_Context    : Context          := No_Context;
 
       Subprogram_Spec : Entity_Id;
-      Subprogram      : Entity_Id;
 
    begin
       if Acts_As_Spec (N) then
          Subprogram_Spec := Defining_Unit_Name (Specification (N));
-         Subprogram      := Defining_Unit_Name (Specification (N));
       else
          Subprogram_Spec := Corresponding_Spec (N);
-         Subprogram      := Defining_Unit_Name (Specification (N));
       end if;
 
       --  Start with a blank slate.
@@ -1505,26 +1505,16 @@ package body Flow.Control_Flow_Graph is
          end loop;
       end;
 
-      --  Finaly collect all variables and stick them into
+      --  If we are dealing with a function, we use its entity to deal
+      --  with the value returned, so that should also go into
       --  FA.All_Vars.
-      declare
-         E : Entity_Id;
-      begin
-         E := First_Entity (Subprogram);
-         while E /= Empty loop
-            case Ekind (E) is
-               when E_Variable | E_Constant =>
-                  Create_Initial_And_Final_Vertices (E, FA);
-               when others =>
-                  null;
-            end case;
-            E := Next_Entity (E);
-         end loop;
+      if Ekind (FA.Subprogram) = E_Function then
+         Create_Initial_And_Final_Vertices (FA.Subprogram, FA);
+      end if;
 
-         if Ekind (FA.Subprogram) = E_Function then
-            Create_Initial_And_Final_Vertices (FA.Subprogram, FA);
-         end if;
-      end;
+      --  If you're now wondering where we deal with locally declared
+      --  objects; we deal with them as they are encountered. See
+      --  Do_N_Object_Declaration for enlightenment.
 
       --  Produce flowgraph for the body
       Do_Subprogram_Body (N, FA, Connection_Map, The_Context);
