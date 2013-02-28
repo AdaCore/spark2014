@@ -189,6 +189,8 @@ package body Flow.Control_Flow_Graph.Utility is
               Ekind (E) = E_Out_Parameter or
               Ekind (E) = E_Function;
 
+            A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
+
             A.Variables_Used := Flow_Id_Sets.To_Set (Direct_Mapping_Id (E));
       end case;
 

@@ -226,7 +226,8 @@ package body Flow.Analysis is
             begin
                --  We only do this check if Var is something which we
                --  should not change.
-               if Final_Atr.Is_Constant then
+               if Final_Atr.Is_Constant and not
+                 Final_Atr.Is_Loop_Parameter then
                   if FA.PDG.Get_Key (V).Variant = Initial_Value then
                      --  The initial use vertex is, of course, allowed
                      --  to define the variable.
