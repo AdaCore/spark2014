@@ -58,4 +58,9 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs);
+   --  Find unused objects.
+   --
+   --  Complexity is O(N)
+
 end Flow.Analysis;

@@ -727,6 +727,7 @@ package body Flow is
             Analysis.Find_Ineffective_Statements (FA);
             Analysis.Find_Use_Of_Uninitialised_Variables (FA);
             Analysis.Find_Stable_Elements (FA);
+            Analysis.Find_Unused_Objects (FA);
          end if;
       end loop;
 

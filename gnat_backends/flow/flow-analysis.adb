@@ -390,4 +390,48 @@ package body Flow.Analysis is
       end loop;
    end Find_Stable_Elements;
 
+   -------------------------
+   -- Find_Unused_Objects --
+   -------------------------
+
+   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs)
+   is
+   begin
+      for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            I_F : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
+            I_A : constant V_Attributes := FA.PDG.Get_Attributes (V_Initial);
+
+            V_Final : Flow_Graphs.Vertex_Id;
+            F_F     : Flow_Id;
+         begin
+            --  For all 'initial vertices which have precisely one link...
+            if I_F.Variant = Initial_Value and then
+              FA.PDG.Out_Neighbour_Count (V_Initial) = 1 then
+               for V of FA.PDG.Get_Collection (V_Initial,
+                                               Flow_Graphs.Out_Neighbours) loop
+                  V_Final := V;
+               end loop;
+               F_F := FA.PDG.Get_Key (V_Final);
+               --  If that one link goes directly to the final use
+               --  vertex and its the only link...
+               if F_F.Variant = Final_Value and then
+                 FA.PDG.In_Neighbour_Count (V_Final) = 1 then
+                  --  then we are dealing with an unused object.
+                  if I_A.Is_Global then
+                     --  We have an unused global, we need to give the
+                     --  error on the subprogram, instead of the
+                     --  global.
+                     Error_Msg_Flow ("global & is not used!",
+                                     FA.PDG, FA.Start_Vertex, I_F);
+                  else
+                     Error_Msg_Flow ("& is not used!",
+                                     FA.PDG, V_Initial, I_F);
+                  end if;
+               end if;
+            end if;
+         end;
+      end loop;
+   end Find_Unused_Objects;
+
 end Flow.Analysis;
