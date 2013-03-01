@@ -311,7 +311,16 @@ package body Flow is
               Expressions (Expression (PAA)) /= No_List then
                --  global => (foo, bar)
                --  Inputs
-               raise Why.Not_Implemented;
+               RHS := First (Expressions (Expression (PAA)));
+               while RHS /= Empty loop
+                  case Nkind (RHS) is
+                     when N_Identifier =>
+                        Process (Name_Input, Entity (RHS));
+                     when others =>
+                        raise Why.Not_Implemented;
+                  end case;
+                  RHS := Next (RHS);
+               end loop;
 
             elsif Nkind (Expression (PAA)) = N_Aggregate and then
               Component_Associations (Expression (PAA)) /= No_List then
