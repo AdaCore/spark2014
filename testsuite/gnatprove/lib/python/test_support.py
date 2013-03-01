@@ -10,7 +10,7 @@ import glob
 import shutil
 import json
 
-max_steps = 100
+max_steps = 200
 default_vc_timeout = 120
 parallel_procs = 1
 #  Change directory
