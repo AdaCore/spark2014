@@ -143,11 +143,17 @@ package Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Range_Check   : Node_Id := Empty) return W_Expr_Id;
+      Range_Check   : Node_Id := Empty;
+      Discr_Check   : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
    --  We insert a conversion so that its type corresponds to "To".
-   --  ??? In the case of record conversions, this function also inserts
-   --  discriminant checks. To be removed.
+   --  When Range_Check is set, a range check is inserted into the conversion,
+   --  and the node is used to determine the kind of the check. "Range check"
+   --  here includes regular range checks of scalar types, index checks, length
+   --  checks of constrained arrays and range checks for conversion to
+   --  unconstrained array types.
+   --  when Discr_Check is set, a discriminant check is inserted into the
+   --  conversion, and the node is used to determine the subtype for the check.
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
                                 return W_Expr_Id;

@@ -27,6 +27,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Elists;             use Elists;
 with Nlists;             use Nlists;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
@@ -87,6 +88,19 @@ package body Why.Gen.Records is
    --  functions to the root type (in logic space) and from the root type (in
    --  logic and program space).
 
+   --  For all record types which are not root types, we define a check
+   --  function, which checks whether its argument is in the current
+   --  (sub-)type. This check function must be defined over the root type,
+   --  otherwise it is not expressible or trivially true. This function is
+   --  similar to the range_check functions in scalar/array types. In many
+   --  cases, the subtype constraints are dynamic, so we cannot refer to them
+   --  directly here. Instead, we take them as additional arguments:
+
+   --  val range_check_ (x : base) (d1 : type_of_discr_1)
+   --                              (d2 : type_of_discr_d2)
+   --  requires { d1 = constr_of_first_discr /\ d2 = constr_of_second_discr }
+   --  ensures  { result = x }
+
    --  For the implementation details: This is one place where we have to look
    --  at the declaration node to find which discriminant values imply the
    --  presence of which components. We traverse the N_Component_List of the
@@ -124,8 +138,53 @@ package body Why.Gen.Records is
    --  Opposite of Einfo.Is_Completely_Hidden, which also returns True if E is
    --  not a discriminant.
 
+   function First_Discriminant (Id : E) return E;
+   --  Get the first discriminant of the record type entity [Id]
+
+   function Count_Why_Record_Fields (E : Entity_Id) return Natural;
+   --  count the number of fields
+
+   function Count_Discriminants (E : Entity_Id) return Natural;
+   --  count the number of discriminants
+
+   -------------------------
+   -- Count_Discriminants --
+   -------------------------
+
+   function Count_Discriminants (E : Entity_Id) return Natural
+   is
+      Discr : Entity_Id := First_Discriminant (E);
+      Count : Natural := 0;
+   begin
+      while Present (Discr) loop
+         if Is_Not_Hidden_Discriminant (Discr) then
+            Count := Count + 1;
+         end if;
+         Next_Discriminant (Discr);
+      end loop;
+      return Count;
+   end Count_Discriminants;
+
+   -----------------------------
+   -- Count_Why_Record_Fields --
+   -----------------------------
+
+   function Count_Why_Record_Fields (E : Entity_Id) return Natural
+   is
+      Cnt : Natural := 0;
+      Field : Node_Id := First_Component_Or_Discriminant (E);
+   begin
+      while Present (Field) loop
+         if Is_Not_Hidden_Discriminant (Field) then
+            Cnt := Cnt + 1;
+         end if;
+         Next_Component_Or_Discriminant (Field);
+      end loop;
+      return Cnt;
+   end Count_Why_Record_Fields;
+
    -----------------------
-   -- Define_Ada_Record --
+   -- Declare_Ada_Record --
    -----------------------
 
    procedure Declare_Ada_Record
@@ -134,9 +193,6 @@ package body Why.Gen.Records is
       E       : Entity_Id)
    is
 
-      function Count_Why_Record_Fields (E : Entity_Id) return Natural;
-      --  count the number of fields
-
       procedure Declare_Record_Type;
       --  declare the record type
 
@@ -144,6 +200,10 @@ package body Why.Gen.Records is
       --  for each record field, declare an access program function, whose
       --  result is the same as the record field access, but there is a
       --  precondition (when needed)
+
+      procedure Declare_Conversion_Check_Function;
+      --  generate the program function which is used to insert subtype
+      --  discriminant checks
 
       function Compute_Discriminant_Check (Field : Entity_Id)
                                            return W_Pred_Id;
@@ -274,23 +334,69 @@ package body Why.Gen.Records is
          return Cond;
       end Compute_Others_Choice;
 
-      -----------------------------
-      -- Count_Why_Record_Fields --
-      -----------------------------
+      ---------------------------------------
+      -- Declare_Conversion_Check_Function --
+      ---------------------------------------
 
-      function Count_Why_Record_Fields (E : Entity_Id) return Natural
+      procedure Declare_Conversion_Check_Function
       is
-         Cnt : Natural := 0;
-         Field : Node_Id := First_Component_Or_Discriminant (E);
+         Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
+         Root_Abstr : constant W_Primitive_Type_Id :=
+           New_Abstract_Type (Name => Root_Ident);
+         A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
+         Num_Discr  : constant Natural := Count_Discriminants (E);
+         Discr      : Node_Id := First_Discriminant (E);
+         Post       : constant W_Pred_Id :=
+           New_Relation (Op      => EW_Eq,
+                         Op_Type => EW_Abstract,
+                         Left    => +To_Ident (WNE_Result),
+                         Right   => +A_Ident);
+         R_Binder   : Binder_Array (1 .. Num_Discr + 1);
+         Precond    : W_Pred_Id := True_Pred;
+         Count      : Natural := 1;
       begin
-         while Present (Field) loop
-            if Is_Not_Hidden_Discriminant (Field) then
-               Cnt := Cnt + 1;
+         R_Binder (Num_Discr + 1) :=
+           Binder_Type'(B_Name => A_Ident,
+                        B_Type => Root_Abstr,
+                        others => <>);
+         Count := 1;
+         Discr := First_Discriminant (E);
+         while Present (Discr) loop
+            if Is_Not_Hidden_Discriminant (Discr) then
+               R_Binder (Count) :=
+                 Binder_Type'(B_Name => To_Why_Id (Discr, Local => True),
+                              B_Type =>
+                                Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
+                              others => <>);
+               Precond :=
+                 +New_And_Expr
+                 (Domain => EW_Pred,
+                  Left   => +Precond,
+                  Right  =>
+                    New_Relation
+                      (Domain => EW_Pred,
+                       Op      => EW_Eq,
+                       Op_Type => EW_Abstract,
+                       Left    => +To_Why_Id (Discr, Local => True),
+                       Right   =>
+                         New_Call
+                           (Ada_Node => Root,
+                            Name     => To_Why_Id (Discr, Rec => Root),
+                            Args     => (1 => +A_Ident),
+                            Domain   => EW_Term)));
+               Count := Count + 1;
             end if;
-            Next_Component_Or_Discriminant (Field);
+            Next_Discriminant (Discr);
          end loop;
-         return Cnt;
-      end Count_Why_Record_Fields;
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => To_Ident (WNE_Range_Check_Fun),
+                  Binders     => R_Binder,
+                  Return_Type => Root_Abstr,
+                  Pre         => Precond,
+                  Post        => Post));
+      end Declare_Conversion_Check_Function;
 
       ----------------------------------
       -- Declare_Conversion_Functions --
@@ -791,12 +897,76 @@ package body Why.Gen.Records is
       --  We need to delare conversion functions before the protected access
       --  functions, because the former may be used in the latter
 
-      if Root_Record_Type (E) /= E then
+      if not Is_Root then
          Declare_Conversion_Functions;
       end if;
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
+      if not Is_Root and then Has_Discriminants (E) then
+         Declare_Conversion_Check_Function;
+      end if;
    end Declare_Ada_Record;
+
+   ------------------------
+   -- First_Discriminant --
+   ------------------------
+
+   function First_Discriminant (Id : E) return E is
+      Comp_Id : E;
+
+   begin
+      pragma Assert
+        (Is_Record_Type (Id) or else Is_Incomplete_Or_Private_Type (Id));
+
+      Comp_Id := First_Entity (Id);
+      while Present (Comp_Id) loop
+         exit when Ekind (Comp_Id) = E_Discriminant;
+         Comp_Id := Next_Entity (Comp_Id);
+      end loop;
+
+      return Comp_Id;
+   end First_Discriminant;
+
+   function Insert_Subtype_Discriminant_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      Expr     : W_Prog_Id) return W_Prog_Id
+   is
+      Root : constant Entity_Id := Root_Record_Type (Check_Ty);
+   begin
+      if Root = Check_Ty or else not Has_Discriminants (Check_Ty) then
+         return Expr;
+      end if;
+      declare
+         Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
+         Args      : W_Expr_Array (1 .. Num_Discr + 1);
+         Count     : Natural := 1;
+         Discr     : Entity_Id := First_Discriminant (Check_Ty);
+         Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Check_Ty));
+      begin
+         Args (Num_Discr + 1) := +Expr;
+         while Present (Discr) loop
+            if Is_Not_Hidden_Discriminant (Discr) then
+               Args (Count) :=
+                 Transform_Expr
+                   (Domain => EW_Term,
+                    Params => Logic_Params,
+                    Expr   => Node (Elmt),
+                    Expected_Type => EW_Abstract (Etype (Discr)));
+               Count := Count + 1;
+               Next_Elmt (Elmt);
+            end if;
+            Next_Discriminant (Discr);
+         end loop;
+         return
+           +New_VC_Call
+             (Ada_Node => Ada_Node,
+              Name     => Range_Check_Name (Check_Ty),
+              Progs    => Args,
+              Domain   => EW_Prog,
+              Reason   => VC_Discriminant_Check);
+      end;
+   end Insert_Subtype_Discriminant_Check;
 
    ---------------------------
    -- New_Ada_Record_Access --

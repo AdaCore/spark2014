@@ -4382,6 +4382,7 @@ package body Gnat2Why.Expr is
       if Domain in EW_Term | EW_Prog then
          declare
             Range_Check_Node : Node_Id := Empty;
+            Discr_Check_Node : Node_Id := Empty;
          begin
 
             --  ??? Protect array types, range checks currently broken for
@@ -4404,12 +4405,22 @@ package body Gnat2Why.Expr is
                Range_Check_Node := Expr;
             end if;
 
+            if Domain = EW_Prog and then
+              Nkind (Parent (Expr)) in
+              N_Type_Conversion | N_Assignment_Statement then
+
+               --  ??? in which cases exactly do we need a check?
+
+               Discr_Check_Node := Parent (Expr);
+            end if;
+
             T := Insert_Conversion (Domain        => Domain,
                                     Ada_Node      => Expr,
                                     Expr          => T,
                                     From          => Current_Type,
                                     To            => Expected_Type,
-                                    Range_Check   => Range_Check_Node);
+                                    Range_Check   => Range_Check_Node,
+                                    Discr_Check   => Discr_Check_Node);
          end;
       end if;
 

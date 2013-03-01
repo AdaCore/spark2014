@@ -42,6 +42,7 @@ with Why.Atree.Traversal;   use Why.Atree.Traversal;
 with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
+with Why.Gen.Records;       use Why.Gen.Records;
 with Why.Inter;             use Why.Inter;
 
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
@@ -247,20 +248,61 @@ package body Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Range_Check   : Node_Id := Empty) return W_Expr_Id
+      Range_Check   : Node_Id := Empty;
+      Discr_Check   : Node_Id := Empty) return W_Expr_Id
    is
       Base   : constant W_Base_Type_Id :=
         LCA (To, From, Force => Range_Check /= Empty);
+
+      function Insert_Discr_Check
+        (Expr : W_Expr_Id) return W_Expr_Id;
+      --  insert a discriminant check, if Discr_Check is not empty.
+
+      function Compute_Check_Subtype return Entity_Id;
+      --  compute the record type given the discriminant check node
 
       function Insert_Single_Conversion
         (To   : W_Base_Type_Id;
          From : W_Base_Type_Id;
          Expr : W_Expr_Id) return W_Expr_Id;
-
       --  Assuming that there is at most one step between To and From in the
       --  type hierarchy (i.e. that it exists a conversion from From
       --  to To; a counterexample would be two abstract types whose base
       --  types differ), insert the corresponding conversion.
+
+      ---------------------------
+      -- Compute_Check_Subtype --
+      ---------------------------
+
+      function Compute_Check_Subtype return Entity_Id
+      is
+      begin
+         case Nkind (Discr_Check) is
+            when N_Assignment_Statement =>
+               return Etype (Name (Discr_Check));
+            when N_Type_Conversion =>
+               return Etype (Discr_Check);
+            when others =>
+               raise Program_Error;
+         end case;
+      end Compute_Check_Subtype;
+
+      ------------------------
+      -- Insert_Discr_Check --
+      ------------------------
+
+      function Insert_Discr_Check (Expr : W_Expr_Id) return W_Expr_Id
+      is
+      begin
+         if Discr_Check = Empty then
+            return Expr;
+         end if;
+         return
+           +Insert_Subtype_Discriminant_Check
+           (Ada_Node,
+            Compute_Check_Subtype,
+            +Expr);
+      end Insert_Discr_Check;
 
       ------------------------------
       -- Insert_Single_Conversion --
@@ -301,7 +343,9 @@ package body Why.Gen.Expr is
    --  Start of processing for Insert_Conversion
 
    begin
-      if Eq (To, From) and Range_Check = Empty then
+      if Eq (To, From) and then
+        Range_Check = Empty and then
+        Discr_Check = Empty then
          return Expr;
       end if;
 
@@ -310,19 +354,17 @@ package body Why.Gen.Expr is
       then
 
          --  the case of record conversions
-         --  ??? Similar to range checks (see the "else" case), this code will
-         --  have to insert discriminant checks before or after the conversion.
 
          return
            Insert_Single_Conversion
              (To   => To,
               From => Base,
               Expr =>
-                Insert_Single_Conversion
-                  (To   => Base,
-                   From => From,
-                   Expr => Expr));
-
+                Insert_Discr_Check
+                  (Insert_Single_Conversion
+                       (To   => Base,
+                        From => From,
+                        Expr => Expr)));
       else
 
          --  the regular case, we take care to insert the range check at a
