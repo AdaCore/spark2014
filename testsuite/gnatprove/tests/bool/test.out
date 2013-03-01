@@ -1,2 +1,2 @@
 bool.adb:19:34: info: postcondition proved
-bool.adb:4:28: postcondition not proved, requires Y = X'old
+bool.adb:4:24: postcondition not proved

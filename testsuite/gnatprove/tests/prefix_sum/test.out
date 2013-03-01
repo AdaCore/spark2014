@@ -2,13 +2,13 @@ prefixsum.adb:101:10: loop variant not proved
 prefixsum.adb:103:25: overflow check not proved
 prefixsum.adb:103:29: overflow check not proved
 prefixsum.adb:103:29: range check not proved
+prefixsum.adb:105:13: loop invariant initialization not proved
+prefixsum.adb:105:13: loop invariant preservation not proved
 prefixsum.adb:108:31: division check not proved
-prefixsum.adb:109:23: loop invariant initialization not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
 prefixsum.adb:109:66: index check not proved
 prefixsum.adb:10:40: range check not proved
 prefixsum.adb:110:34: division check not proved
 prefixsum.adb:111:47: index check not proved
-prefixsum.adb:115:20: loop invariant preservation not proved, requires A (K) = A'loop_entry
 prefixsum.adb:117:27: division check not proved
 prefixsum.adb:121:13: loop variant not proved
 prefixsum.adb:123:32: overflow check not proved
@@ -24,17 +24,15 @@ prefixsum.adb:127:32: range check not proved
 prefixsum.adb:127:40: overflow check not proved
 prefixsum.adb:129:25: division check not proved
 prefixsum.adb:15:27: division check not proved
-prefixsum.adb:18:18: loop invariant preservation not proved, requires A (K) = A'Loop_Entry (0) + A'Loop_Entry (1) + A'Loop_Entry (2) + A'Loop_Entry (3) + A'Loop_Entry (4) + A'Loop_Entry (5) + A'Loop_Entry (6) + A'loop_entry
 prefixsum.adb:22:30: division check not proved
 prefixsum.adb:25:60: index check not proved
 prefixsum.adb:26:41: index check not proved
 prefixsum.adb:26:62: index check not proved
 prefixsum.adb:27:30: division check not proved
 prefixsum.adb:30:60: index check not proved
-prefixsum.adb:32:18: loop invariant initialization not proved, requires A (K) = A'loop_entry
 prefixsum.adb:33:10: loop variant not proved
-prefixsum.adb:39:15: loop invariant initialization not proved, requires Left + 1) mod Space = 0
-prefixsum.adb:39:15: loop invariant preservation not proved, requires Left + 1) mod Space = 0
+prefixsum.adb:38:13: loop invariant initialization not proved
+prefixsum.adb:38:13: loop invariant preservation not proved
 prefixsum.adb:39:26: division check not proved
 prefixsum.adb:41:56: range check not proved
 prefixsum.adb:43:57: range check not proved
@@ -53,7 +51,8 @@ prefixsum.adb:60:39: overflow check not proved
 prefixsum.adb:62:25: overflow check not proved
 prefixsum.adb:62:25: range check not proved
 prefixsum.adb:76:27: info: division check proved
-prefixsum.adb:80:13: loop invariant preservation not proved, requires Space = 4 or Space = 2 or Space = 1
+prefixsum.adb:79:10: loop invariant initialization not proved
+prefixsum.adb:79:10: loop invariant preservation not proved
 prefixsum.adb:82:36: division check not proved
 prefixsum.adb:82:49: range check not proved
 prefixsum.adb:87:49: division check not proved
@@ -61,7 +60,8 @@ prefixsum.adb:88:64: index check not proved
 prefixsum.adb:89:49: division check not proved
 prefixsum.adb:90:45: index check not proved
 prefixsum.adb:93:49: division check not proved
-prefixsum.adb:96:21: loop invariant initialization not proved, requires A (5) = A'Loop_Entry (7) + A'loop_entry
+prefixsum.adb:9:10: loop invariant initialization not proved
+prefixsum.adb:9:10: loop invariant preservation not proved
 prefixsum.ads:26:23: info: division check proved
 prefixsum.ads:27:28: overflow check not proved
 prefixsum.ads:27:36: overflow check not proved
@@ -80,24 +80,26 @@ prefixsum.ads:30:54: index check not proved
 prefixsum.ads:31:25: division check not proved
 prefixsum.ads:32:28: overflow check not proved
 prefixsum.ads:32:34: index check not proved
-prefixsum.ads:38:14: postcondition not proved, requires All_Elements_In (A, 8 * Maximum)
 prefixsum.ads:40:17: info: precondition proved
+prefixsum.ads:40:17: postcondition not proved
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:52:14: postcondition not proved, requires A (1) = Ghost (0)
+prefixsum.ads:65:14: postcondition not proved
 prefixsum_expanded.adb:116:27: info: division check proved
-prefixsum_expanded.adb:119:11: assertion not proved, requires Saved_A (0) = Ghost(0)
+prefixsum_expanded.adb:118:7: assertion not proved
+prefixsum_expanded.adb:11:10: loop invariant initialization not proved
+prefixsum_expanded.adb:11:10: loop invariant preservation not proved
 prefixsum_expanded.adb:12:40: range check not proved
-prefixsum_expanded.adb:139:13: loop invariant initialization not proved, requires All_Elements_In (A, (4 / Space) * 8 * Maximum)
+prefixsum_expanded.adb:136:10: loop invariant initialization not proved
+prefixsum_expanded.adb:136:10: loop invariant preservation not proved
 prefixsum_expanded.adb:139:36: division check not proved
 prefixsum_expanded.adb:139:49: range check not proved
-prefixsum_expanded.adb:151:20: loop invariant preservation not proved, requires A (1) = A'loop_entry
 prefixsum_expanded.adb:161:10: loop variant not proved
 prefixsum_expanded.adb:163:25: overflow check not proved
 prefixsum_expanded.adb:163:29: overflow check not proved
 prefixsum_expanded.adb:163:29: range check not proved
+prefixsum_expanded.adb:165:13: loop invariant initialization not proved
+prefixsum_expanded.adb:165:13: loop invariant preservation not proved
 prefixsum_expanded.adb:168:31: division check not proved
-prefixsum_expanded.adb:169:23: loop invariant initialization not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
-prefixsum_expanded.adb:169:23: loop invariant preservation not proved, requires A (K) = A'Loop_Entry (K) + A'loop_entry
 prefixsum_expanded.adb:169:66: index check not proved
 prefixsum_expanded.adb:170:34: division check not proved
 prefixsum_expanded.adb:171:47: index check not proved
@@ -115,18 +117,16 @@ prefixsum_expanded.adb:187:32: overflow check not proved
 prefixsum_expanded.adb:187:32: range check not proved
 prefixsum_expanded.adb:187:40: overflow check not proved
 prefixsum_expanded.adb:189:25: division check not proved
-prefixsum_expanded.adb:197:10: assertion not proved, requires A (2) = Saved_A (1) + Saved_A (7)
-prefixsum_expanded.adb:43:17: loop invariant preservation not proved, requires A (5) = A'Loop_Entry (5) + A'loop_entry
-prefixsum_expanded.adb:45:17: loop invariant initialization not proved, requires A (0) = A'loop_entry
+prefixsum_expanded.adb:192:7: assertion not proved
 prefixsum_expanded.adb:52:10: loop variant not proved
-prefixsum_expanded.adb:58:15: loop invariant initialization not proved, requires Left + 1) mod Space = 0
+prefixsum_expanded.adb:57:13: loop invariant initialization not proved
+prefixsum_expanded.adb:57:13: loop invariant preservation not proved
 prefixsum_expanded.adb:58:26: division check not proved
 prefixsum_expanded.adb:60:56: range check not proved
 prefixsum_expanded.adb:62:57: range check not proved
 prefixsum_expanded.adb:64:26: division check not proved
 prefixsum_expanded.adb:70:37: division check not proved
 prefixsum_expanded.adb:72:64: index check not proved
-prefixsum_expanded.adb:74:21: loop invariant preservation not proved, requires A (K) = A'loop_entry
 prefixsum_expanded.adb:75:13: loop variant not proved
 prefixsum_expanded.adb:77:31: overflow check not proved
 prefixsum_expanded.adb:78:16: index check not proved
@@ -138,7 +138,7 @@ prefixsum_expanded.adb:79:31: range check not proved
 prefixsum_expanded.adb:79:39: overflow check not proved
 prefixsum_expanded.adb:81:25: overflow check not proved
 prefixsum_expanded.adb:81:25: range check not proved
-prefixsum_expanded.adb:85:10: assertion not proved, requires A (7) = Saved_A (0) + Saved_A (1) + Saved_A (2) + Saved_A (3) + Saved_A (4) + Saved_A (5) + Saved_A (6) + Saved_A (7)
+prefixsum_expanded.adb:84:7: assertion not proved
 prefixsum_expanded.ads:25:23: overflow check not proved
 prefixsum_expanded.ads:25:31: overflow check not proved
 prefixsum_expanded.ads:25:39: overflow check not proved
@@ -151,21 +151,21 @@ prefixsum_expanded.ads:27:31: overflow check not proved
 prefixsum_expanded.ads:27:39: overflow check not proved
 prefixsum_expanded.ads:29:23: overflow check not proved
 prefixsum_expanded.ads:31:23: overflow check not proved
-prefixsum_expanded.ads:43:14: postcondition not proved, requires All_Elements_In (A, 8 * Maximum)
+prefixsum_expanded.ads:45:17: postcondition not proved
 prefixsum_expanded.ads:45:17: precondition not proved
 prefixsum_expanded.ads:53:17: info: precondition proved
-prefixsum_expanded.ads:55:8: postcondition not proved, requires A (0) = 0
-prefixsum_general.adb:13:13: loop invariant initialization not proved, requires A'Length mod Space = 0
+prefixsum_expanded.ads:70:14: postcondition not proved
+prefixsum_general.adb:12:10: loop invariant initialization not proved
+prefixsum_general.adb:12:10: loop invariant preservation not proved
 prefixsum_general.adb:13:22: division check not proved
-prefixsum_general.adb:21:13: loop invariant preservation not proved, requires Left + 1) mod Space = 0
 prefixsum_general.adb:21:24: division check not proved
 prefixsum_general.adb:30:27: division check not proved
 prefixsum_general.adb:31:25: precondition not proved
 prefixsum_general.adb:31:56: range check not proved
 prefixsum_general.adb:32:10: loop variant not proved
 prefixsum_general.adb:34:21: overflow check not proved
-prefixsum_general.adb:36:16: loop invariant initialization not proved, requires Left + Space < A'length
-prefixsum_general.adb:38:16: loop invariant preservation not proved, requires A'Length mod Space = 0
+prefixsum_general.adb:35:13: loop invariant initialization not proved
+prefixsum_general.adb:35:13: loop invariant preservation not proved
 prefixsum_general.adb:38:25: division check not proved
 prefixsum_general.adb:44:27: division check not proved
 prefixsum_general.adb:56:43: division check not proved
@@ -214,6 +214,6 @@ prefixsum_general.adb:99:25: division check not proved
 prefixsum_general.ads:16:25: overflow check not proved
 prefixsum_general.ads:16:27: precondition not proved
 prefixsum_general.ads:16:60: range check not proved
-prefixsum_general.ads:21:28: postcondition not proved, requires A (A'Last) = Summation (A'Old, 0, A'last)
+prefixsum_general.ads:21:28: postcondition not proved
 prefixsum_general.ads:21:30: precondition not proved
 prefixsum_general.ads:8:56: info: division check proved

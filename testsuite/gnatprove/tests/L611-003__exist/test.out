@@ -6,7 +6,7 @@ stack.adb:6:12: info: index check proved
 stack.adb:7:12: precondition not proved
 stack.ads:19:12: postcondition not proved, requires Valid (T, Size'result)
 stack.ads:22:38: info: precondition proved
-stack.ads:23:29: postcondition not proved, requires Last_Element (T, S) = Value
+stack.ads:23:25: postcondition not proved
 stack.ads:32:24: info: index check proved
 stack.ads:36:11: info: index check proved
 stack.ads:38:13: info: index check proved

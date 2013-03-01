@@ -2,15 +2,15 @@ fib.adb:101:13: assertion not proved, requires p1 * b1) * (b1 ** (k1 - 1)) = a1 
 fib.adb:102:22: range check not proved
 fib.adb:103:22: overflow check not proved
 fib.adb:10:17: overflow check not proved
-fib.adb:110:33: loop invariant initialization not proved, requires a2 ** n2 = p2 * (b2 ** k2
-fib.adb:110:69: loop invariant preservation not proved, requires k1 >= 0
+fib.adb:110:10: loop invariant initialization not proved
+fib.adb:110:10: loop invariant preservation not proved
 fib.adb:112:10: loop variant not proved
 fib.adb:113:17: division check not proved
 fib.adb:114:13: assertion not proved, requires p2 * (b2 * b2) ** (k2 mod 2) = a2 ** n2
 fib.adb:114:50: division check not proved
 fib.adb:115:22: division check not proved
 fib.adb:116:22: overflow check not proved
-fib.adb:119:36: assertion not proved, requires k2 >= 1
+fib.adb:118:13: assertion not proved
 fib.adb:120:22: range check not proved
 fib.adb:121:22: overflow check not proved
 fib.adb:130:11: info: range check proved
@@ -32,7 +32,7 @@ fib.adb:140:24: overflow check not proved
 fib.adb:148:11: info: range check proved
 fib.adb:149:13: index check not proved
 fib.adb:149:22: index check not proved
-fib.adb:151:11: info: range check proved
+fib.adb:151:11: range check not proved
 fib.adb:151:32: overflow check not proved
 fib.adb:152:13: index check not proved
 fib.adb:152:24: index check not proved
@@ -45,8 +45,8 @@ fib.adb:157:32: overflow check not proved
 fib.adb:158:13: index check not proved
 fib.adb:158:24: index check not proved
 fib.adb:158:24: overflow check not proved
-fib.adb:28:33: loop invariant initialization not proved, requires a1 = Fibonacci(i)
-fib.adb:28:33: loop invariant preservation not proved, requires a1 = Fibonacci(i)
+fib.adb:28:10: loop invariant initialization not proved
+fib.adb:28:10: loop invariant preservation not proved
 fib.adb:28:38: precondition not proved
 fib.adb:29:30: precondition not proved
 fib.adb:29:42: range check not proved
@@ -56,8 +56,8 @@ fib.adb:34:19: overflow check not proved
 fib.adb:34:19: range check not proved
 fib.adb:35:19: range check not proved
 fib.adb:36:17: overflow check not proved
-fib.adb:40:33: loop invariant initialization not proved, requires a2 = Fibonacci(i)
-fib.adb:40:33: loop invariant preservation not proved, requires a2 = Fibonacci(i)
+fib.adb:40:10: loop invariant initialization not proved
+fib.adb:40:10: loop invariant preservation not proved
 fib.adb:40:38: precondition not proved
 fib.adb:41:30: precondition not proved
 fib.adb:41:42: range check not proved
@@ -83,8 +83,8 @@ fib.adb:81:10: loop invariant preservation not proved, requires p2 = Factorial(i
 fib.adb:81:38: precondition not proved
 fib.adb:82:18: overflow check not proved
 fib.adb:82:18: range check not proved
-fib.adb:8:33: loop invariant preservation not proved, requires b <= a
-fib.adb:8:49: loop invariant initialization not proved, requires a <= 2 ** (i - 2
+fib.adb:8:10: loop invariant initialization not proved
+fib.adb:8:10: loop invariant preservation not proved
 fib.adb:94:10: loop invariant initialization not proved, requires a1 ** n1 = p1 * (b1 ** k1
 fib.adb:94:10: loop invariant preservation not proved, requires a1 ** n1 = p1 * (b1 ** k1
 fib.adb:95:10: loop variant not proved

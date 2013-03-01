@@ -16,7 +16,7 @@ database.adb:291:42: info: precondition proved
 database.adb:303:27: info: precondition proved
 database.adb:309:42: info: precondition proved
 database.adb:44:18: info: postcondition proved
-database.adb:52:18: info: postcondition proved
+database.adb:52:18: postcondition not proved
 database.ads:111:25: info: precondition proved
 database.ads:112:14: info: precondition proved
 database.ads:112:32: info: postcondition proved
