@@ -253,6 +253,9 @@ package body Why.Gen.Expr is
    is
       Base   : constant W_Base_Type_Id :=
         LCA (To, From, Force => Range_Check /= Empty);
+      Is_Record_Conversion : constant Boolean :=
+        Get_Base_Type (Base) = EW_Abstract and then
+        Is_Record_Type (Get_Ada_Node (+Base));
 
       function Insert_Discr_Check
         (Expr : W_Expr_Id) return W_Expr_Id;
@@ -345,13 +348,11 @@ package body Why.Gen.Expr is
    begin
       if Eq (To, From) and then
         Range_Check = Empty and then
-        Discr_Check = Empty then
+        (if Is_Record_Conversion then Discr_Check = Empty) then
          return Expr;
       end if;
 
-      if Get_Base_Type (Base) = EW_Abstract and then
-        Is_Record_Type (Get_Ada_Node (+Base))
-      then
+      if Is_Record_Conversion then
 
          --  the case of record conversions
 

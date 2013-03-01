@@ -154,6 +154,8 @@ package Why.Gen.Expr is
    --  unconstrained array types.
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
+   --  Note that Discr_Check is ignored when the conversion is not between
+   --  record types.
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
                                 return W_Expr_Id;
