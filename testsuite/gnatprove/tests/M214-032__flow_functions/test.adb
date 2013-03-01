@@ -36,4 +36,15 @@ package body Test is
       end return;
    end Ext_Return_01;
 
+   function No_Return (N : in Integer) return Boolean
+   is
+   begin
+      if N > 0 then
+         return True;
+      end if;
+      if N < 0 then
+         return False;
+      end if;
+   end No_Return;
+
 end Test;

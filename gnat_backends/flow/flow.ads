@@ -139,6 +139,9 @@ package Flow is
       --  True if an initial value is either imported (in or in out)
       --  or otherwise initialised.
 
+      Is_Function_Return  : Boolean;
+      --  True if this vertex models the returned value of a function.
+
       Is_Global           : Boolean;
       --  True if the imported or exported variable is a global.
 
@@ -192,6 +195,7 @@ package Flow is
      V_Attributes'(Is_Null_Node        => False,
                    Is_Program_Node     => False,
                    Is_Initialised      => False,
+                   Is_Function_Return  => False,
                    Is_Global           => False,
                    Is_Loop_Parameter   => False,
                    Is_Export           => False,
@@ -212,6 +216,7 @@ package Flow is
      V_Attributes'(Is_Null_Node        => True,
                    Is_Program_Node     => True,
                    Is_Initialised      => False,
+                   Is_Function_Return  => False,
                    Is_Global           => False,
                    Is_Loop_Parameter   => False,
                    Is_Export           => False,

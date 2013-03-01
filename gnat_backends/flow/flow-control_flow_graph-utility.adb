@@ -167,17 +167,16 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Error_Location := E_Loc;
-      A.Is_Constant    :=
-        Ekind (E) = E_In_Parameter or
-        Ekind (E) = E_Loop_Parameter;
+      A.Error_Location     := E_Loc;
+      A.Is_Constant        := Ekind (E) in E_In_Parameter | E_Loop_Parameter;
+      A.Is_Function_Return := Ekind (E) = E_Function;
 
       case Variant is
          when Initial_Value =>
             A.Is_Initialised := Ekind (E) in
               E_In_Out_Parameter |
-              E_In_Parameter |
-              E_Loop_Parameter;
+                 E_In_Parameter |
+                 E_Loop_Parameter;
 
             A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
 
@@ -186,8 +185,8 @@ package body Flow.Control_Flow_Graph.Utility is
          when Final_Value =>
             A.Is_Export := Ekind (E) in
               E_In_Out_Parameter |
-              E_Out_Parameter |
-              E_Function;
+                 E_Out_Parameter |
+                 E_Function;
 
             A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
 

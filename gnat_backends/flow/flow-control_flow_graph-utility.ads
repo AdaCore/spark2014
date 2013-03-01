@@ -93,6 +93,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  vertices. We also calculate the following attributes
    --  automatically:
    --     * Is_Initialised
+   --     * Is_Function_Return
    --     * Is_Global (always false)
    --     * Is_Loop_Parameter
    --     * Is_Export

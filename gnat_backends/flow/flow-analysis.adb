@@ -309,6 +309,13 @@ package body Flow.Analysis is
                            Error_Msg_Flow ("global & might not be set!",
                                            FA.PDG, FA.Start_Vertex, Key_I);
 
+                        elsif Atr_U.Is_Function_Return then
+                           --  This is actually a totally different
+                           --  error. It means we have a path where we
+                           --  do not return from the function.
+                           Error_Msg_Flow ("function & might not return!",
+                                           FA.PDG, FA.Start_Vertex, Key_I);
+
                         elsif Atr_U.Is_Export then
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
@@ -316,6 +323,7 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              ("formal parameter & might not be set!",
                               FA.PDG, V_Use, Key_I);
+
                         else
                            --  We are dealing with a local variable,
                            --  so we don't care if there is a path
