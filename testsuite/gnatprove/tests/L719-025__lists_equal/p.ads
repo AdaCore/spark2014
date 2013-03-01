@@ -18,6 +18,16 @@ package P is
 
    procedure Nearly_Identity (L : in out List; Cu : in out Cursor) with
      Pre => Has_Element (L, Cu),
-     Post => (if Cu = Cu'Old then Strict_Equal (L, L'Old));
+     Post => L = L'Old and
+     (if Cu = Cu'Old then Strict_Equal (L, L'Old));
+
+   procedure Identity_Swap (L : in out List; Cu1 : Cursor; Cu2 : Cursor) with
+     Pre => Has_Element (L, Cu1) and Has_Element (L, Cu2),
+     Post => Strict_Equal (L, L'Old);
+
+   procedure Identity_Swap_Links (L : in out List; Cu1 : Cursor; Cu2 : Cursor)
+   with
+     Pre => Has_Element (L, Cu1) and Has_Element (L, Cu2),
+     Post => Strict_Equal (L, L'Old);
 
 end P;

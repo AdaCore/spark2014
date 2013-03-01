@@ -481,6 +481,75 @@ function findlast list element_type : cursor
                   (position li1 cu = length li1 \/
                     position li1 cu < length li1 /\ delete_mult nl (next li1 cu) (c - 1) li2))
 
+  predicate swap_links list cursor cursor list
+
+  axiom swap_links_elements:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, element co1 cu | 
+               swap_links co1 cu1 cu2 co2, element co2 cu].
+    swap_links co1 cu1 cu2 co2 -> position co1 cu > 0 ->
+    element co1 cu = element co2 cu
+
+  axiom swap_links_length:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, length co1].
+    swap_links co1 cu1 cu2 co2 -> length co1 = length co2
+
+  axiom swap_links_capacity:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, capacity co1
+             | swap_links co1 cu1 cu2 co2, capacity co2].
+    swap_links co1 cu1 cu2 co2 -> capacity co1 = capacity co2
+
+  axiom swap_links_position_ext:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, position co1 cu | 
+               swap_links co1 cu1 cu2 co2, position co2 cu].
+    swap_links co1 cu1 cu2 co2 -> 
+     cu <> cu1 -> cu <> cu2 -> position co1 cu = position co2 cu
+
+  axiom swap_links_position_in:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2].
+    swap_links co1 cu1 cu2 co2 -> 
+     position co1 cu1 = position co2 cu2 /\
+     position co1 cu2 = position co2 cu1 /\
+     position co1 cu1 > 0 /\ position co1 cu2 > 0
+
+  predicate swap list cursor cursor list
+
+  axiom swap_position:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, position co1 cu | 
+               swap co1 cu1 cu2 co2, position co2 cu].
+    swap co1 cu1 cu2 co2 -> position co1 cu = position co2 cu
+
+  axiom swap_length:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, length co1].
+    swap co1 cu1 cu2 co2 -> length co1 = length co2
+
+  axiom swap_capacity:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, capacity co1
+             | swap co1 cu1 cu2 co2, capacity co2].
+    swap co1 cu1 cu2 co2 -> capacity co1 = capacity co2
+
+  axiom swap_element_ext:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, element co1 cu | 
+               swap co1 cu1 cu2 co2, element co2 cu].
+    swap co1 cu1 cu2 co2 -> position co1 cu > 0 ->
+     cu <> cu1 -> cu <> cu2 -> element co1 cu = element co2 cu
+
+  axiom swap_element_in:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2].
+    swap co1 cu1 cu2 co2 -> 
+     element co1 cu1 = element co2 cu2 /\
+     element co1 cu2 = element co2 cu1 /\
+     position co1 cu1 > 0 /\ position co1 cu2 > 0
+
   predicate has_element list cursor
 
   axiom has_element_pos:
@@ -699,21 +768,26 @@ function findlast list element_type : cursor
      ensures { delete_mult (old !co) (last (old !co)) 
                              (Ada__containers__count_type.to_int c) !co }
 
-  predicate swap__pre (co:list) (cu1 cu2 : cursor) = true
+  predicate swap__pre (co:list) (cu1 cu2 : cursor) =
+    has_element co cu1 /\ has_element co cu2
   predicate swap__post (co oldco:list) (cu1 cu2 : cursor) =
-     exists interm : list. 
-                       replace_element oldco cu1 (element oldco cu2) interm /\
-                       replace_element interm cu2 (element oldco cu1) co
+    (cu1 = cu2 /\ co = oldco) \/ (cu1 <> cu2 /\ swap oldco cu1 cu2 co)
   val swap__program (co:ref list) (cu1 cu2 : cursor) : unit
+    requires { has_element !co cu1 /\ has_element !co cu2 }
      writes     { co }
-     ensures { exists interm : list. 
-                       replace_element (old !co) cu1 (element (old !co) cu2) interm /\
-                       replace_element interm cu2 (element (old !co) cu1) !co }
+     ensures { (cu1 = cu2 /\ !co = old !co) \/
+                         (cu1 <> cu2 /\ swap (old !co) cu1 cu2 !co) }
 
-  predicate swap_links__pre (co:list) (cu1 cu2 : cursor) = true
-  predicate swap_links__post (co oldco:list) (cu1 cu2 : cursor) = true
+  predicate swap_links__pre (co:list) (cu1 cu2 : cursor) =
+    has_element co cu1 /\ has_element co cu2
+  predicate swap_links__post (co oldco:list) (cu1 cu2 : cursor) =
+    (cu1 = cu2 /\ co = oldco) \/ (cu1 <> cu2 /\
+    swap_links oldco cu1 cu2 co)
   val swap_links__program (co:ref list) (cu1 cu2 : cursor) : unit
+    requires { has_element !co cu1 /\ has_element !co cu2 }
      writes     { co }
+     ensures { (cu1 = cu2 /\ !co = old !co) \/
+                         (cu1 <> cu2 /\ swap_links (old !co) cu1 cu2 !co) }
 
   predicate splice__pre (target:list) (cu:cursor) (source:list) =
      capacity target >= (length target) + (length source) 
