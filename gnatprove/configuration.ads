@@ -85,11 +85,11 @@ package Configuration is
    --    for unproved VCs (timeout, max steps)
    --
 
-   type Proof_Mode is (Normal, No_WP, All_Split, Path_WP, No_Split);
+   type Proof_Mode is (Then_Split, No_WP, All_Split, Path_WP, No_Split);
    --  This is a debug option of GNATprove. This option is simply passed to
    --  gnatwhy3.
    --  The modes for proof are:
-   --  Normal: Compute WP, split VCs as necessary, call prover as necessary
+   --  Then_Split: compute WP, split VCs as necessary, call prover as necessary
    --  No_WP: do not compute WP, do not split VCs, do not call prover
    --  All_Split: compute VCs, split all VCs, do not call prover
    --  Path_WP: use the "normal" (exponential) WP
@@ -99,9 +99,9 @@ package Configuration is
 
    MMode        : GP_Mode := GPM_Prove;
    Report       : Report_Mode := GPR_Fail;
-   --  Silent Reporting is the Default
-   Proof        : Proof_Mode := Normal;
-   --  Normal proof mode is the default
+   --  Silent reporting is the default
+   Proof        : Proof_Mode;
+   --  The default proof mode depends on other switches
    Parallel     : aliased Integer;
    --  The number of parallel processes. Specified with -j.
    Timeout      : aliased Integer;

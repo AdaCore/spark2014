@@ -246,7 +246,7 @@ procedure Gnatprove is
       if Force then
          Args.Append ("--force");
       end if;
-      if Proof /= Normal then
+      if Proof /= Then_Split then
          Args.Append ("--proof");
          Args.Append (To_String (Proof));
       end if;

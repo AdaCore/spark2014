@@ -179,7 +179,7 @@ ASCII.LF &
       case P is
          when No_WP => return "no_wp";
          when All_Split => return "all_split";
-         when Normal => return "normal";
+         when Then_Split => return "then_split";
          when Path_WP => return "path_wp";
          when No_Split => return "no_split";
       end case;
@@ -491,8 +491,8 @@ ASCII.LF &
            ("report should be one of (fail | all | detailed)");
       end if;
 
-      if Proof_Input.all = "normal" or else Proof_Input.all = "" then
-         Proof := Normal;
+      if Proof_Input.all = "then_split" then
+         Proof := Then_Split;
       elsif Proof_Input.all = "no_wp" then
          Proof := No_WP;
       elsif Proof_Input.all = "all_split" then
@@ -501,10 +501,22 @@ ASCII.LF &
          Proof := Path_WP;
       elsif Proof_Input.all = "no_split" then
          Proof := No_Split;
+
+      --  The default proof mode is no_split, unless --limit-line is used to
+      --  focus the proof on a line (typically interactively), in which case
+      --  the default proof mode is then_split, so that a failure to prove a VC
+      --  gives a program path that can be shown to the user.
+
+      elsif Proof_Input.all = "" then
+         if Limit_Line /= null and then Limit_Line.all /= "" then
+            Proof := Then_Split;
+         else
+            Proof := No_Split;
+         end if;
       else
          Abort_With_Help
            ("proof mode should be one of " &
-            "(normal | no_wp | all_split|path_wp|no_split)");
+            "(then_split | no_wp | all_split | path_wp | no_split)");
       end if;
 
       declare
