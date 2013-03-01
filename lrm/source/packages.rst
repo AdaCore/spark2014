@@ -293,7 +293,7 @@ must follow the grammar of ``abstract_state_list`` given below.
    
 #. A state abstraction which is declared with a ``property_list`` that includes
    a Constituent_Of ``name_value_property``  indicates that it is a 
-   constituent (see :ref:`_state_refinement`) of the state abstraction denoted 
+   constituent (see :ref:`state_refinement`) of the state abstraction denoted 
    by the expression of the ``name_value_property`` and only that state 
    abstraction.
    
