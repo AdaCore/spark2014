@@ -306,12 +306,21 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
-                           Error_Msg_Flow ("global & may not be set!",
+                           Error_Msg_Flow ("global & might not be set!",
                                            FA.PDG, FA.Start_Vertex, Key_I);
 
+                        elsif Atr_U.Is_Export then
+                           --  As we don't have a global, but an
+                           --  export, it means we must be dealing
+                           --  with a parameter.
+                           Error_Msg_Flow
+                             ("formal parameter & might not be set!",
+                              FA.PDG, V_Use, Key_I);
                         else
-                           Error_Msg_Flow ("may never be initialized!",
-                                           FA.PDG, V_Use);
+                           --  We are dealing with a local variable,
+                           --  so we don't care if there is a path
+                           --  where it is not set.
+                           null;
                         end if;
                      else
                         Error_Msg_Flow ("use of uninitialized variable &!",
