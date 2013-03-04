@@ -238,8 +238,8 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 #. The visible state and state abstractions of a package P consist of:
 
-   * any variables declared immediately within the visible part
-     of P; and
+   * any non-manifest objects, types, or subtypes declared immediately
+     within the visible part of P; and
    * any state abstractions declared by the Abstract State aspect
      specification (if any) of package P; and
    * the visible state and state abstractions of any packages declared
@@ -247,16 +247,13 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 #. The hidden state of a package P consists of:
 
-   * any variables declared immediately within the private part or
-     body of P;
+   * any non-manifest objects, types, or subtypes declared immediately
+     within the private part or body of P;
    * the state abstractions of any packages declared immediately within the 
      visible part of P; and
    * the visible state and state abstractions of any packages declared
      immediately within the private part or body of P, and of any
      private child units of P or of their public descendants.
-
-   .. note::
-      (SB) These definitions may eventually be expanded to include non-static constants, not just variables.
 
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit

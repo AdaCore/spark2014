@@ -36,6 +36,14 @@ variable.
 
 #. The *initial* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
+
+   .. note::
+      (SB) Given
+
+         X : Integer := 123;
+
+      , it seems confusing to say that the initial value of X is anything
+      other than 123. Perhaps "incoming value" would be better?
    
 #. An *output* of a subprogram is a global item or parameter whose final
    value may be updated by a call to the subprogram.  The result of a function
@@ -45,6 +53,19 @@ variable.
    value may be used in determining the final value of an output of the 
    subprogram.  
    
+   [Static constants do not participate in dataflow analysis; in particular,
+   a static constant is not considered to be an input to a subprogram.
+   A named nonstatic constant may be an input of a subprogram. A named type or
+   subtype whose elaboration evaluates one or more nonstatic expressions
+   (thereby, in effect, declaring one or more anonymous constants) may
+   be an input of subprogram if one or more of those anonymous constants
+   may be used in determining the final value of an output of the
+   subprogram. The name of the type or subtype acts, in effect, as a name
+   for those anonymous constants. In the case of an anonymous subtype,
+   this principle is repeated and the name of the enclosing named entity
+   takes on this role (in addition, in the case of a named object
+   declaration, to its normal role as the name of the declared object).]
+
    As a special case, a global item or parameter is also considered an input if
    it is deemed to have no observable effect on any output of the subprogram but 
    is only used in determining a **null** value.  Such a **null** value can only 
@@ -361,13 +382,65 @@ where
 
    :Trace Unit: 6.1.4 Syntax
 
+.. centered:: **Static Semantics**
+
+[As part of defining which entities are allowed as inputs, outputs,
+and state constituents, the term "manifest" is defined as a generalization
+of the Ada's notion of staticness.]
+A type is said to be *manifest* if the elaboration of its
+declaration does not include the evaluation of any non-static scalar
+expression and each of its non-manifest component subtypes (if any)
+is subject to a per-object constraint and is a subtype of manifest type.
+A subtype is said to be *manifest* if its type is manifest, its
+constraint, if any, is a static constraint, and no Dynamic_Predicate
+aspect specification applies to the subtype. A scalar expression is
+said to be *manifest* if it is static. A composite expression is
+said to be *manifest* if its evaluation does not include the evaluation
+of any non-static scalar expression and it is
+
+- a static expression; or
+
+- a parenthesized manifest expression; or
+
+- a qualified expression or type conversion whose subtype mark
+  designates a manifest subtype and whose operand is a manifest
+  expression; or
+
+- a name denoting a slice or component of a manifest object; or
+
+- an aggregate whose applicable index constraint (if any) is static,
+  whose component expressions are all manifest, and
+  for which the evaluation of each "<>" component value (if any) fully
+  initializes the assocaited component and does not involve the evaluation
+  of any non-manifest expressions; or
+
+- an extension aggregate which meets the above conditions for an aggregate
+  and whose ancestor_part is either a manifest expression or a subtype_mark
+  denoting a manifest subtype; or
+
+- a conditional expression all of whose dependent expressions are
+  manifest (TBD: could relax and only require that the selected
+  dependendent expression must be manifest).
+
+[TBD: given a one-part expression function whose expression
+is manifest, should a call to the function be manifest? Since this is
+all just for purposes of flow analysis, we could relax things even
+further and allow a call to an arbitrary function to be manifest as
+long as the function has no global inputs and we only pass in manifest
+actuals.]
+
+A constant object declared declared by an object_declaration or
+an extended_return_object_declaration is manifest if its subtype
+is manifest and its initialization expression is manifest. The result
+object for the evaluation of a manifest composite expression is
+manifest [; this rule is needed because such an object can be renamed].
+
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` shall denote an entire variable 
+#. A ``global_item`` shall denote an entire object, a type, a subtype,
    or a state abstraction; this rule is a name resolution rule.
 
-   .. note::
-      (SB) This rule may eventually be relaxed to allow references to non-static constants.
+#. A ``global_item`` shall not denote a manifest object, type, or subtype.
 
    .. ifconfig:: Display_Trace_Units
    
@@ -566,13 +639,16 @@ where
 
 .. centered:: **Legality Rules**
 
-#. Every ``input`` and ``output`` of a ``dependency_relation`` of a Depends
-   aspect shall denote an entire variable or a state abstraction; this rule
-   is a name resolution rule.
+#. Every ``input`` of a ``dependency_relation`` of a Depends
+   aspect shall denote an entire object, a type, a subtype, or a state
+   abstraction; this rule is a name resolution rule.
 
-.. note::
- (SB) This rule may eventually be relaxed to allow references to non-static
- constants as inputs.
+#. An ``input`` of a ``dependency_relation`` of a Depends
+   aspect shall not denote a manifest constant, type, or subtype.
+
+#. Every non-function_result ``output`` of a ``dependency_relation`` of a
+   Depends aspect shall denote an entire object or a state abstraction;
+   this rule is a name resolution rule.
 
    .. ifconfig:: Display_Trace_Units
 
