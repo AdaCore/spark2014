@@ -63,4 +63,9 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Check_Contracts (FA : Flow_Analysis_Graphs);
+   --  Check the given global and depends against the reality.
+   --
+   --  Complexity is O(N^2)
+
 end Flow.Analysis;

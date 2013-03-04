@@ -21,15 +21,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Aspects; use Aspects;
 with Errout; use Errout;
+with Nlists;  use Nlists;
+with Sinfo;   use Sinfo;
+
 with Why;
 
---  with Flow.Debug; use Flow.Debug;
---  with Treepr;     use Treepr;
+with Flow.Slice; use Flow.Slice;
+
+with Treepr; use Treepr;
+--  with Output; use Output;
 
 package body Flow.Analysis is
 
    use type Flow_Graphs.Vertex_Id;
+   use type Node_Sets.Set;
 
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
@@ -441,5 +448,152 @@ package body Flow.Analysis is
          end;
       end loop;
    end Find_Unused_Objects;
+
+   ---------------------
+   -- Check_Contracts --
+   ---------------------
+
+   procedure Check_Contracts (FA : Flow_Analysis_Graphs) is
+      User_Deps : Dependency_Maps.Map;
+
+      function Find_Export (E : Entity_Id) return Node_Id;
+      --  Looks through the depends aspect on FA.Subprogram and
+      --  returns the node which represents E in the dependency for E.
+
+      function Find_Export (E : Entity_Id) return Node_Id
+      is
+         Pragma_Depends : constant Node_Id :=
+           Aspect_Rep_Item (Find_Aspect (FA.Subprogram, Aspect_Depends));
+         pragma Assert
+           (List_Length (Pragma_Argument_Associations (Pragma_Depends)) = 1);
+
+         PAA : constant Node_Id :=
+           First (Pragma_Argument_Associations (Pragma_Depends));
+         pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+         CA : constant List_Id := Component_Associations (Expression (PAA));
+
+         Row : Node_Id;
+         LHS : Node_Id;
+      begin
+         Row := First (CA);
+         while Row /= Empty loop
+            LHS := First (Choices (Row));
+            case Nkind (LHS) is
+               when N_Aggregate =>
+                  LHS := First (Expressions (LHS));
+                  while LHS /= Empty loop
+                     if Entity (LHS) = E then
+                        return LHS;
+                     end if;
+                     LHS := Next (LHS);
+                  end loop;
+               when N_Identifier =>
+                  if Entity (LHS) = E then
+                     return LHS;
+                  end if;
+               when N_Null =>
+                  null;
+               when others =>
+                  Print_Node_Subtree (LHS);
+                  raise Why.Not_Implemented;
+            end case;
+
+            Row := Next (Row);
+         end loop;
+         raise Why.Unexpected_Node;
+      end Find_Export;
+
+   begin
+      if not Has_Depends (FA.Subprogram) then
+         --  If the user has not specified a dependency relation we
+         --  have no work to do.
+         return;
+      end if;
+
+      --  Obtain the dependency relation specified by the user.
+      Get_Depends (FA.Subprogram,
+                   User_Deps);
+
+      --  Check that we are consistent.
+      for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            F_F : constant Flow_Id      := FA.PDG.Get_Key (V_Final);
+            F_A : constant V_Attributes := FA.PDG.Get_Attributes (V_Final);
+            F_E : Entity_Id;
+            --  This captures the variable we are checking.
+
+            S_F : Flow_Id_Sets.Set;
+            S_E : Node_Sets.Set;
+            --  This captures the set of things F_E actually depends
+            --  on.
+
+            Tmp : Node_Sets.Set;
+         begin
+            --  We need to check all exports.
+            if F_F.Variant = Final_Value and then F_A.Is_Export then
+               case F_F.Kind is
+                  when Direct_Mapping =>
+                     F_E := Get_Direct_Mapping_Id (F_F);
+
+                     if User_Deps.Contains (F_E) then
+                        --  The user has specified this as an output,
+                        --  and so have we. Check the deps match.
+
+                        --  First make a set of just entity
+                        --  ids. Anything that isn't we can raise an
+                        --  error for.
+                        S_F := Dependency (FA, V_Final);
+                        S_E := Node_Sets.Empty_Set;
+                        for Var of S_F loop
+                           --  Everything the user has written must
+                           --  necessarily appear in the AST, so we
+                           --  always will have an entity for it.
+                           case Var.Kind is
+                              when Direct_Mapping =>
+                                 S_E.Include (Get_Direct_Mapping_Id (Var));
+
+                              when others =>
+                                 raise Why.Unexpected_Node;
+                           end case;
+                        end loop;
+
+                        --  Check if we have missed something.
+                        Tmp := S_E - User_Deps (F_E);
+                        for Var_Missed of Tmp loop
+                           Error_Msg_NE ("missing dependency on &!",
+                                         Find_Export (F_E),
+                                         Var_Missed);
+                        end loop;
+
+                        --  Check if we have said something wrong.
+                        Tmp := User_Deps (F_E) - S_E;
+                        for Var_Wrong of Tmp loop
+                           Error_Msg_NE ("does not depend on &!",
+                                         Find_Export (F_E),
+                                         Var_Wrong);
+                        end loop;
+                     else
+                        --  We have this as an output, but the user
+                        --  does not. We complain.
+                        Error_Msg_NE ("missing dependency for &!",
+                                      Find_Aspect (FA.Subprogram,
+                                                   Aspect_Depends),
+                                      F_E);
+                     end if;
+
+                  when Magic_String =>
+                     --  We have a dependency on something in another
+                     --  package, it is not possible to write a valid
+                     --  depends aspect for this subprogram.
+                     raise Why.Not_Implemented;
+
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
+            end if;
+         end;
+      end loop;
+   end Check_Contracts;
 
 end Flow.Analysis;
