@@ -556,7 +556,8 @@ package body Graph is
       Include_Start : Boolean;
       Visitor       : access procedure
         (V  : Vertex_Id;
-         TV : out Traversal_Instruction))
+         TV : out Traversal_Instruction);
+      Reversed      : Boolean := False)
    is
       type Bit_Field is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
@@ -589,15 +590,26 @@ package body Graph is
 
       procedure Schedule_Children (V : Valid_Vertex_Id) is
       begin
-         for C in G.Vertices (V).Out_Neighbours.Iterate loop
-            declare
-               Out_Node : constant Valid_Vertex_Id := Key (C);
-            begin
+         if Reversed then
+            --  If we're in reversed mode we just go through the in
+            --  neighbours instead of the out neighbours. No other
+            --  difference.
+            for Out_Node of G.Vertices (V).In_Neighbours loop
                if not Will_Visit (Out_Node) then
                   Schedule_Vertex (Out_Node);
                end if;
-            end;
-         end loop;
+            end loop;
+         else
+            for C in G.Vertices (V).Out_Neighbours.Iterate loop
+               declare
+                  Out_Node : constant Valid_Vertex_Id := Key (C);
+               begin
+                  if not Will_Visit (Out_Node) then
+                     Schedule_Vertex (Out_Node);
+                  end if;
+               end;
+            end loop;
+         end if;
       end Schedule_Children;
 
    begin

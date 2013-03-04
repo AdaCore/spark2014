@@ -342,7 +342,8 @@ package Graph is
       Include_Start : Boolean;
       Visitor       : access procedure
         (V  : Vertex_Id;
-         TV : out Traversal_Instruction));
+         TV : out Traversal_Instruction);
+      Reversed      : Boolean := False);
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
    --  only visited if there is a non-trivial path from Start -> Start
@@ -352,6 +353,11 @@ package Graph is
    --  instruction which can be used to not traverse the children of
    --  node V. Note that any of these children could be reached by
    --  other paths.
+   --
+   --  If reversed is given then we operate on the reversed graph
+   --  without actually reversing it. In particular this is much more
+   --  efficient than first calling Invert and then calling DFS on the
+   --  reversed graph.
    --
    --  Complexity is obviously O(N).
 
