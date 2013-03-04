@@ -35,7 +35,7 @@ with Snames;   use Snames;
 with Sprint;   use Sprint;
 
 with Output;
---  with Treepr; use Treepr;
+with Treepr; use Treepr;
 
 with Why;
 with Alfa.Definition; use Alfa.Definition;
@@ -405,6 +405,100 @@ package body Flow is
       end if;
 
    end Get_Globals;
+
+   -----------------
+   -- Has_Depends --
+   -----------------
+
+   function Has_Depends (Subprogram : Entity_Id) return Boolean is
+   begin
+      return Has_Aspect (Subprogram, Aspect_Depends);
+   end Has_Depends;
+
+   -----------------
+   -- Get_Depends --
+   -----------------
+
+   procedure Get_Depends (Subprogram : Entity_Id;
+                          Depends    : out Dependency_Maps.Map) is
+      Pragma_Depends : constant Node_Id :=
+        Aspect_Rep_Item (Find_Aspect (Subprogram, Aspect_Depends));
+      pragma Assert
+        (List_Length (Pragma_Argument_Associations (Pragma_Depends)) = 1);
+
+      PAA : constant Node_Id :=
+        First (Pragma_Argument_Associations (Pragma_Depends));
+      pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+      CA : constant List_Id := Component_Associations (Expression (PAA));
+
+      Row : Node_Id;
+      LHS : Node_Id;
+      RHS : Node_Id;
+
+      Inputs  : Node_Sets.Set;
+      Outputs : Node_Sets.Set;
+
+   begin
+      Depends := Dependency_Maps.Empty_Map;
+
+      if Ekind (Subprogram) = E_Function then
+         raise Why.Not_Implemented;
+      end if;
+
+      Row := First (CA);
+      while Row /= Empty loop
+         Inputs  := Node_Sets.Empty_Set;
+         Outputs := Node_Sets.Empty_Set;
+
+         LHS := First (Choices (Row));
+         case Nkind (LHS) is
+            when N_Aggregate =>
+               LHS := First (Expressions (LHS));
+               while LHS /= Empty loop
+                  Outputs.Include (Entity (LHS));
+                  LHS := Next (LHS);
+               end loop;
+            when N_Identifier =>
+               Outputs.Include (Entity (LHS));
+            when N_Null =>
+               null;
+            when others =>
+               Print_Node_Subtree (LHS);
+               raise Why.Not_Implemented;
+         end case;
+
+         RHS := Expression (Row);
+         case Nkind (RHS) is
+            when N_Aggregate =>
+               RHS := First (Expressions (RHS));
+               while RHS /= Empty loop
+                  Inputs.Include (Entity (RHS));
+                  RHS := Next (RHS);
+               end loop;
+            when N_Identifier =>
+               Inputs.Include (Entity (RHS));
+            when N_Null =>
+               null;
+            when others =>
+               Print_Node_Subtree (RHS);
+               raise Why.Not_Implemented;
+         end case;
+
+         for Input of Inputs loop
+            for Output of Outputs loop
+               if Depends.Contains (Output) then
+                  Depends (Output).Include (Input);
+               else
+                  Depends.Include (Output, Node_Sets.To_Set (Input));
+               end if;
+            end loop;
+         end loop;
+
+         Row := Next (Row);
+      end loop;
+
+   end Get_Depends;
 
    -----------------
    -- Print_Graph --

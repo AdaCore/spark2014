@@ -278,6 +278,13 @@ package Flow is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   package Dependency_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Node_Sets.Set,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Sets."=");
+
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) = E_Loop,
           Post => Loop_Parameter_From_Loop'Result = Empty or else
@@ -288,14 +295,24 @@ package Flow is
    procedure Get_Globals (Subprogram : Entity_Id;
                           Reads      : out Flow_Id_Sets.Set;
                           Writes     : out Flow_Id_Sets.Set)
-   with Pre  => Ekind (Subprogram) = E_Procedure or
-                Ekind (Subprogram) = E_Function,
+   with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
         Post => (for all G of Reads  => G.Variant = In_View) and
                 (for all G of Writes => G.Variant = Out_View);
    --  Given a subprogram call, work out globals from the provided
    --  aspect or the computed globals. The sets returned will contain
    --  Flow_Id with the variant set to Global_In_View and
    --  Global_Out_View.
+
+   function Has_Depends (Subprogram : Entity_Id) return Boolean
+   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+   --  Return true if the given subprogram has been annotated with a
+   --  dependency relation.
+
+   procedure Get_Depends (Subprogram : Entity_Id;
+                          Depends    : out Dependency_Maps.Map)
+   with Pre => Ekind (Subprogram) in E_Procedure | E_Function and
+               Has_Depends (Subprogram);
+   --  Return the dependency relation of the given subprogram.
 
    procedure Print_Graph
      (Filename     : String;

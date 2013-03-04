@@ -153,6 +153,7 @@ package body Flow.Interprocedural is
             Inputs  : Node_Sets.Set;
             Outputs : Node_Sets.Set;
          begin
+            --  TODO: Refactor by using Flow.Get_Depends
             Row := First (CA);
             while Row /= Empty loop
                Inputs  := Node_Sets.Empty_Set;
