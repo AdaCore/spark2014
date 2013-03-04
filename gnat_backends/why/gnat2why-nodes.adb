@@ -589,7 +589,7 @@ package body Gnat2Why.Nodes is
       end String_Image;
 
    begin
-      return Node_To_String (N, "default");
+      return Node_To_String (N, "");
    end String_Of_Node;
 
    ------------------
