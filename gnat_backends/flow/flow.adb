@@ -170,7 +170,7 @@ package body Flow is
          when Initial_Value =>
             Output.Write_Str ("'initial");
          when Final_Value =>
-            Output.Write_Str ("'initial");
+            Output.Write_Str ("'final");
          when In_View =>
             Output.Write_Str ("'in");
          when Out_View =>
