@@ -23,28 +23,33 @@
 
 package body Flow.Slice is
 
-   function Internal_Dependency (FA      : Flow_Analysis_Graphs;
-                                 V_Final : Flow_Graphs.Vertex_Id;
-                                 IPFA    : Boolean)
-                                 return Vertex_Sets.Set;
+   function Internal_Dependency
+     (FA      : Flow_Analysis_Graphs;
+      V_Final : Flow_Graphs.Vertex_Id;
+      IPFA    : Boolean)
+      return Vertex_Sets.Set;
    --  Helper function to compute the dependencies for a single
    --  vertex.
 
-   function Internal_Dependency (FA      : Flow_Analysis_Graphs;
-                                 V_Final : Flow_Graphs.Vertex_Id;
-                                 IPFA    : Boolean)
-                                 return Vertex_Sets.Set is
-
+   function Internal_Dependency
+     (FA      : Flow_Analysis_Graphs;
+      V_Final : Flow_Graphs.Vertex_Id;
+      IPFA    : Boolean)
+      return Vertex_Sets.Set
+   is
       Deps : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
-      procedure Visitor (V  : Flow_Graphs.Vertex_Id;
-                         TV : out Flow_Graphs.Traversal_Instruction);
+      procedure Visitor
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Traversal_Instruction);
       --  If the visited vertex is an in vertex or a procedure
       --  parameter vertex, we add it to the set of things we depend
       --  on.
 
-      procedure Visitor (V  : Flow_Graphs.Vertex_Id;
-                         TV : out Flow_Graphs.Traversal_Instruction) is
+      procedure Visitor
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Traversal_Instruction)
+      is
          F : constant Flow_Id := FA.PDG.Get_Key (V);
       begin
          case F.Variant is
@@ -69,9 +74,11 @@ package body Flow.Slice is
       return Deps;
    end Internal_Dependency;
 
-   function Dependency (FA      : Flow_Analysis_Graphs;
-                        V_Final : Flow_Graphs.Vertex_Id)
-                        return Flow_Id_Sets.Set is
+   function Dependency
+     (FA      : Flow_Analysis_Graphs;
+      V_Final : Flow_Graphs.Vertex_Id)
+      return Flow_Id_Sets.Set
+   is
       Tmp  : constant Vertex_Sets.Set :=
         Internal_Dependency (FA      => FA,
                              V_Final => V_Final,
@@ -80,15 +87,15 @@ package body Flow.Slice is
       Deps : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for V of Tmp loop
-         Deps.Include (Change_Variant (FA.PDG.Get_Key (V),
-                                       Normal_Use));
+         Deps.Include (Change_Variant (FA.PDG.Get_Key (V), Normal_Use));
       end loop;
       return Deps;
    end Dependency;
 
-   function IPFA_Dependency (FA      : Flow_Analysis_Graphs;
-                             V_Final : Flow_Graphs.Vertex_Id)
-                             return Vertex_Sets.Set is
+   function IPFA_Dependency
+     (FA      : Flow_Analysis_Graphs;
+      V_Final : Flow_Graphs.Vertex_Id)
+     return Vertex_Sets.Set is
    begin
       return Internal_Dependency (FA      => FA,
                                   V_Final => V_Final,

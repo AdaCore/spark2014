@@ -26,18 +26,20 @@
 
 package Flow.Slice is
 
-   function Dependency (FA      : Flow_Analysis_Graphs;
-                        V_Final : Flow_Graphs.Vertex_Id)
-                        return Flow_Id_Sets.Set;
+   function Dependency
+     (FA      : Flow_Analysis_Graphs;
+      V_Final : Flow_Graphs.Vertex_Id)
+      return Flow_Id_Sets.Set;
    --  Compute all inputs the given vertex depends on. For IPFA please
    --  use the function IPFA_Dependency, which also includes
    --  dependencies on called subprograms.
    --
    --  Complexity is O(N).
 
-   function IPFA_Dependency (FA      : Flow_Analysis_Graphs;
-                             V_Final : Flow_Graphs.Vertex_Id)
-                             return Vertex_Sets.Set;
+   function IPFA_Dependency
+     (FA      : Flow_Analysis_Graphs;
+      V_Final : Flow_Graphs.Vertex_Id)
+      return Vertex_Sets.Set;
    --  Compute all inputs the given vertex depends on.
    --
    --  Complexity is O(N).
