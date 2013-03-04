@@ -47,6 +47,7 @@ SPARK 2014 Reference Manual
    B. Restrictions and Profiles <restrictions-and-profiles>
    C. To-Do Summary <todo-summary>
    D. GNU Free Documentation License <gfdl>
+   E. Code Profiles High-Level Requirements <code_policy_hlrs>
 
 
 
