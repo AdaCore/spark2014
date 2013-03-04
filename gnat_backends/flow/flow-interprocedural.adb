@@ -21,8 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;  use Aspects;
-with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinfo;    use Sinfo;
 
@@ -132,72 +130,22 @@ package body Flow.Interprocedural is
       end Add_TD_Edge;
 
    begin
-      if Has_Aspect (Called_Procedure, Aspect_Depends) then
+      if Has_Depends (Called_Procedure) then
          --  We have a dependency aspect, so we should use it.
          declare
-            Depends : constant Node_Id :=
-              Aspect_Rep_Item (Find_Aspect (Called_Procedure, Aspect_Depends));
-            pragma Assert
-              (List_Length (Pragma_Argument_Associations (Depends)) = 1);
-
-            PAA : constant Node_Id :=
-              First (Pragma_Argument_Associations (Depends));
-            pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
-
-            CA : constant List_Id := Component_Associations (Expression (PAA));
-
-            Row : Node_Id;
-            LHS : Node_Id;
-            RHS : Node_Id;
-
-            Inputs  : Node_Sets.Set;
-            Outputs : Node_Sets.Set;
+            Deps : Dependency_Maps.Map;
          begin
-            --  TODO: Refactor by using Flow.Get_Depends
-            Row := First (CA);
-            while Row /= Empty loop
-               Inputs  := Node_Sets.Empty_Set;
-               Outputs := Node_Sets.Empty_Set;
-
-               LHS := First (Choices (Row));
-               case Nkind (LHS) is
-                  when N_Aggregate =>
-                     LHS := First (Expressions (LHS));
-                     while LHS /= Empty loop
-                        Outputs.Include (Entity (LHS));
-                        LHS := Next (LHS);
-                     end loop;
-                  when N_Identifier =>
-                     Outputs.Include (Entity (LHS));
-                  when N_Null =>
-                     null;
-                  when others =>
-                     raise Why.Not_Implemented;
-               end case;
-
-               RHS := Expression (Row);
-               case Nkind (RHS) is
-                  when N_Aggregate =>
-                     RHS := First (Expressions (RHS));
-                     while RHS /= Empty loop
-                        Inputs.Include (Entity (RHS));
-                        RHS := Next (RHS);
-                     end loop;
-                  when N_Identifier =>
-                     Inputs.Include (Entity (RHS));
-                  when N_Null =>
-                     null;
-                  when others =>
-                     raise Why.Not_Implemented;
-               end case;
-
-               for Input of Inputs loop
-                  for Output of Outputs loop
+            Get_Depends (Called_Procedure, Deps);
+            for C in Deps.Iterate loop
+               declare
+                  Output : constant Entity_Id     := Dependency_Maps.Key (C);
+                  Inputs : constant Node_Sets.Set :=
+                    Dependency_Maps.Element (C);
+               begin
+                  for Input of Inputs loop
                      Add_TD_Edge (Input, Output);
                   end loop;
-               end loop;
-
-               Row := Next (Row);
+               end;
             end loop;
          end;
 
