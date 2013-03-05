@@ -457,10 +457,12 @@ package body Flow is
             when N_Aggregate =>
                LHS := First (Expressions (LHS));
                while LHS /= Empty loop
+                  pragma Assert (Entity (LHS) /= Empty);
                   Outputs.Include (Entity (LHS));
                   LHS := Next (LHS);
                end loop;
             when N_Identifier =>
+               pragma Assert (Entity (LHS) /= Empty);
                Outputs.Include (Entity (LHS));
             when N_Null =>
                null;

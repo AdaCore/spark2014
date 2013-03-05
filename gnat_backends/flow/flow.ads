@@ -321,8 +321,12 @@ package Flow is
 
    procedure Get_Depends (Subprogram : Entity_Id;
                           Depends    : out Dependency_Maps.Map)
-   with Pre => Ekind (Subprogram) in E_Procedure | E_Function and
-               Has_Depends (Subprogram);
+   with Pre  => Ekind (Subprogram) in E_Procedure | E_Function and
+                Has_Depends (Subprogram),
+        Post => (for all C in Depends.Iterate =>
+                   Dependency_Maps.Key (C) /= Empty and
+                   (for all D of Dependency_Maps.Element (C) =>
+                      D /= Empty));
    --  Return the dependency relation of the given subprogram.
 
    procedure Print_Graph
