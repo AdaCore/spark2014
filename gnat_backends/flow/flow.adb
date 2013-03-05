@@ -835,13 +835,14 @@ package body Flow is
       --  TODO: Perform interprocedural analysis
 
       --  Analyse graphs and produce error messages
-      if Debug_Flag_Dot_ZZ then
-         Output.Write_Str (Character'Val (8#33#) & "[32m" &
-                             "Flow analysis (errors)" &
-                             Character'Val (8#33#) & "[0m");
-         Output.Write_Eol;
-      end if;
       for FA of FA_Graphs loop
+         if Debug_Flag_Dot_ZZ then
+            Output.Write_Str (Character'Val (8#33#) & "[32m" &
+                                "Flow analysis (errors) for " &
+                                Get_Name_String (Chars (FA.Subprogram)) &
+                                Character'Val (8#33#) & "[0m");
+            Output.Write_Eol;
+         end if;
          Analysis.Sanity_Check (FA, Success);
          if Success then
             Analysis.Find_Ineffective_Imports (FA);
