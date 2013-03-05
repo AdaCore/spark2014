@@ -1,5 +1,5 @@
-Code Policy High-Level Requirements
-===================================
+Code Profile High-Level Requirements
+====================================
 
 Introduction
 ------------
