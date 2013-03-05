@@ -17,7 +17,7 @@ package body Duplicates is
 
          pragma Loop_Invariant
            (not Has_Duplicates (Arr(Arr'First .. Last))
-              and then (for all Item of Arr'Loop_Entry =>
+              and then (for all Item of Arr'Loop_Entry (Arr'First .. New_Item) =>
                           (for some J in Arr'First .. Last =>
                              Item = Arr(J)))
               and then (for all J in Arr'First .. Last =>
