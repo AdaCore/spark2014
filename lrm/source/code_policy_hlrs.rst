@@ -75,6 +75,12 @@ Defining a Profile
 
    **Rationale**: This provides greater flexibility for the user and means they are not simply
    tied into using the provided Profiles and Policies.
+   
+#. **Requirement:** It shall be possible to check Policies for consistency. *Note that this
+   will likely be covered by an appropriate procedure.*
+
+   **Rationale:** It is possible that simultaneously imposed Policies might be inconsistent
+   and hence there are no programs that can satisfy them.
 
 Applying Profiles
 -----------------
