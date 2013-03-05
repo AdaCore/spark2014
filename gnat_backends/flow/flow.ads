@@ -80,21 +80,32 @@ package Flow is
    subtype Parameter_Variant is Flow_Id_Variant
      range In_View .. Out_View;
 
+   package Entity_Lists is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Entity_Id);
+
    type Flow_Id is record
-      Kind    : Flow_Id_Kind;
-      Variant : Flow_Id_Variant;
-      Node_A  : Node_Id;
-      Node_B  : Node_Id;
-      E_Name  : Entity_Name;
+      Kind      : Flow_Id_Kind;
+      Variant   : Flow_Id_Variant;
+
+      Node      : Node_Or_Entity_Id;
+      --  For Kind = Direct_Mapping | Record_Field
+
+      Name      : Entity_Name;
+      --  For Kind = Magic_String
+
+      Component : Entity_Lists.Vector;
+      --  For Kind = Record_Field
    end record;
 
    function "=" (Left, Right : Flow_Id) return Boolean;
 
-   Null_Flow_Id : constant Flow_Id := Flow_Id'(Kind    => Null_Value,
-                                               Variant => Normal_Use,
-                                               Node_A  => Empty,
-                                               Node_B  => Empty,
-                                               E_Name  => Null_Entity_Name);
+   Null_Flow_Id : constant Flow_Id :=
+     Flow_Id'(Kind      => Null_Value,
+              Variant   => Normal_Use,
+              Node      => Empty,
+              Name      => Null_Entity_Name,
+              Component => Entity_Lists.Empty_Vector);
 
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type;
 
@@ -105,11 +116,11 @@ package Flow is
    function Direct_Mapping_Id (N       : Node_Id;
                                Variant : Flow_Id_Variant := Normal_Use)
                                return Flow_Id
-   is (Flow_Id'(Kind    => Direct_Mapping,
-                Variant => Variant,
-                Node_A  => N,
-                Node_B  => Empty,
-                E_Name  => Null_Entity_Name));
+   is (Flow_Id'(Kind      => Direct_Mapping,
+                Variant   => Variant,
+                Node      => N,
+                Name      => Null_Entity_Name,
+                Component => Entity_Lists.Empty_Vector));
 
    function Get_Direct_Mapping_Id
      (F : Flow_Id)

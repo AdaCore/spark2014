@@ -21,9 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Maps;
 with Ada.Characters.Latin_1;
+with Ada.Strings.Hash;
+with Ada.Strings.Maps;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Aspects;  use Aspects;
 with Debug;    use Debug;
@@ -96,11 +97,11 @@ package body Flow is
                when Null_Value =>
                   return True;
                when Direct_Mapping =>
-                  return Left.Node_A = Right.Node_A;
+                  return Left.Node = Right.Node;
                when Record_Field =>
                   raise Why.Not_Implemented;
                when Magic_String =>
-                  return Name_Equal (Left.E_Name, Right.E_Name);
+                  return Name_Equal (Left.Name, Right.Name);
             end case;
 
          elsif Left.Kind = Null_Value then
@@ -131,11 +132,11 @@ package body Flow is
          when Null_Value =>
             return 0;
          when Direct_Mapping =>
-            return Ada.Containers.Hash_Type (N.Node_A);
+            return Ada.Strings.Hash (Unique_Name (N.Node));
          when Record_Field =>
             raise Why.Not_Implemented;
          when Magic_String =>
-            return Name_Hash (N.E_Name);
+            return Ada.Strings.Hash (N.Name.all);
       end case;
    end Hash;
 
@@ -149,7 +150,7 @@ package body Flow is
          when Null_Value =>
             Output.Write_Str ("<null>");
          when Direct_Mapping =>
-            Sprint_Node (F.Node_A);
+            Sprint_Node (F.Node);
          when Record_Field =>
             raise Why.Not_Implemented;
          when Magic_String =>
@@ -195,7 +196,7 @@ package body Flow is
 
    function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is
    begin
-      return F.Node_A;
+      return F.Node;
    end Get_Direct_Mapping_Id;
 
    --------------------
