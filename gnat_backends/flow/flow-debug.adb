@@ -23,7 +23,6 @@
 
 with Output; use Output;
 with Sprint; use Sprint;
-with Treepr; use Treepr;
 
 package body Flow.Debug is
 
