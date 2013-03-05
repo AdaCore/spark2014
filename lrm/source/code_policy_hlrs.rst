@@ -6,7 +6,7 @@ Introduction
 
 The detail below defines the high-level requirements for the 
 Code Profile language feature. Note that not all requirements
-given below are expected to be implemented in the tool: some,
+given below are expected to have tool support: some,
 for example, may be implemented via procedures to be followed by the user.
 
 General Points To Note
@@ -153,7 +153,7 @@ Applying Profiles
 
    **Rationale**:   To allow the user maximum flexibility when applying a Profile.
 
-   **Requirement**:  Within an area of code otherwise covered by a given Profile, it shall be
+#. **Requirement**:  Within an area of code otherwise covered by a given Profile, it shall be
    possible to designate code artefacts as being outside of the Profile. *Note that
    if we step outside of one Profile, all other imposed Profiles still hold;
    if no Profile is imposed explicitly then the Ada 2012 Profile holds. Note

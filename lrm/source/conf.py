@@ -72,8 +72,6 @@ rst_prolog = """.. |SPARK| replace:: SPARK 2014
 # Else, today_fmt is used as the format for a strftime call.
 #today_fmt = '%B %d, %Y'
 
-today='February 25, 2013'
-
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = []
