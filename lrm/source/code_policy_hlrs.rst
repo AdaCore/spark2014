@@ -24,7 +24,61 @@ General Points To Note
 Example
 -------
 
-*Goal of covering each of the requirements, to justify them.*
+The most obvious example of a Profile that will be developed under the SPARK 2014 project
+is *Classic SPARK*, which represents the set of restrictions imposed by SPARK 2005.
+
+Goal
+~~~~
+
+That |SPARK| is designed to allow the largest subset of Ada amenable to formal verification
+leads to a product offering quite distinct from the current SPARKPro toolset and language.
+This is because limitations were imposed on the Ada 2005 subset allowable under SPARK 2005
+for other reasons, such as:
+
+#. Enforcing good programming practice;
+
+#. Making code easier to read and understand;
+
+#. Ensuring that the memory used by a program can be statically determined.
+
+Hence, the Classic SPARK Profile will aim to meet the same goals as are met by SPARK 2005,
+by imposing many of the restrictions imposed by SPARK 2005 (it will be possible, however,
+to eliminate restrictions that were only present due to time or cost constraints).
+
+Example Policies
+~~~~~~~~~~~~~~~~
+
+A Code Profile is composed of a number of Policies, where each Policy imposes
+a restriction to be met by programs written by the user.
+
+The following are example Policies that could be part of the Classic SPARK Profile.
+
+No_Recursion
+^^^^^^^^^^^^
+
+Recursion shall be forbidden. *This check would be performed
+by flow analysis.*
+
+No_Default_Subprogram_Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This Policy prohibits the use of default subprogram parameters, that is, a
+``parameter_specification`` cannot have a ``default_expression``.
+*This check could be performed in the GNAT front-end.*
+
+Limited_Variable_Access_During_Elaboration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+No variable declared immediately within another package can
+be read or updated during elaboration of this package.
+
+User-defined modifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Having defined the Classic SPARK Profile, some users might decide they need not
+impose all Policies that it contains. For example, they might feel recursion should
+be allowed and so the No_Recursion Policy is not needed. Hence, it should be possible
+for users to define new Profiles (possibly based on modification of existing Profiles).
 
 High-level goal
 ---------------
