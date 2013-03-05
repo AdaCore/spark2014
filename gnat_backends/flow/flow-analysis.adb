@@ -31,7 +31,6 @@ with Why;
 with Flow.Slice; use Flow.Slice;
 
 with Treepr; use Treepr;
---  with Output; use Output;
 
 package body Flow.Analysis is
 

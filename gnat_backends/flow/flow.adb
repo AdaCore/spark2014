@@ -195,7 +195,7 @@ package body Flow is
    -----------------------
 
    function Direct_Mapping_Id
-     (N       : Node_Id;
+     (N       : Node_Or_Entity_Id;
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id is
    begin
@@ -492,10 +492,12 @@ package body Flow is
             when N_Aggregate =>
                RHS := First (Expressions (RHS));
                while RHS /= Empty loop
+                  pragma Assert (Entity (RHS) /= Empty);
                   Inputs.Include (Entity (RHS));
                   RHS := Next (RHS);
                end loop;
             when N_Identifier =>
+               pragma Assert (Entity (RHS) /= Empty);
                Inputs.Include (Entity (RHS));
             when N_Null =>
                null;
@@ -504,13 +506,10 @@ package body Flow is
                raise Why.Not_Implemented;
          end case;
 
-         for Input of Inputs loop
-            for Output of Outputs loop
-               if Depends.Contains (Output) then
-                  Depends (Output).Include (Input);
-               else
-                  Depends.Include (Output, Node_Sets.To_Set (Input));
-               end if;
+         for Output of Outputs loop
+            Depends.Include (Output, Node_Sets.Empty_Set);
+            for Input of Inputs loop
+               Depends (Output).Include (Input);
             end loop;
          end loop;
 
