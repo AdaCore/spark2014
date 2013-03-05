@@ -370,9 +370,13 @@ package body Flow.Analysis is
 
                      --  We start by checking if the used variables
                      --  contain the loop parameter for our loop.
-                     Is_Stable := not Atr.Variables_Used.Contains
-                       (Direct_Mapping_Id
-                          (Loop_Parameter_From_Loop (Loop_Id)));
+                     if Loop_Parameter_From_Loop (Loop_Id) /= Empty then
+                        Is_Stable := not Atr.Variables_Used.Contains
+                          (Direct_Mapping_Id
+                             (Loop_Parameter_From_Loop (Loop_Id)));
+                     else
+                        Is_Stable := True;
+                     end if;
 
                      --  We then check if we have at least one
                      --  in-neighbour from "outside" the loop.
