@@ -190,6 +190,22 @@ package body Flow is
       Output.Write_Eol;
    end Print_Flow_Id;
 
+   -----------------------
+   -- Direct_Mapping_Id --
+   -----------------------
+
+   function Direct_Mapping_Id
+     (N       : Node_Id;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id is
+   begin
+      return Flow_Id'(Kind      => Direct_Mapping,
+                      Variant   => Variant,
+                      Node      => N,
+                      Name      => Null_Entity_Name,
+                      Component => Entity_Lists.Empty_Vector);
+   end Direct_Mapping_Id;
+
    ---------------------------
    -- Get_Direct_Mapping_Id --
    ---------------------------

@@ -157,7 +157,8 @@ package Graph is
 
    function Get_Attributes
      (G : T'Class;
-      V : Vertex_Id) return Vertex_Attributes;
+      V : Vertex_Id) return Vertex_Attributes
+      with Pre => V /= Null_Vertex;
    --  Obtain the user-defined attributes of the given vertex.
    --
    --  Complexity is O(1).
@@ -165,7 +166,8 @@ package Graph is
    procedure Set_Attributes
      (G : in out T'Class;
       V : Vertex_Id;
-      A : Vertex_Attributes);
+      A : Vertex_Attributes)
+      with Pre => V /= Null_Vertex;
    --  Set the user-defined attributes of the given vertex.
    --
    --  Complexity is O(1).

@@ -113,19 +113,20 @@ package Flow is
 
    procedure Print_Flow_Id (F : Flow_Id);
 
-   function Direct_Mapping_Id (N       : Node_Id;
-                               Variant : Flow_Id_Variant := Normal_Use)
-                               return Flow_Id
-   is (Flow_Id'(Kind      => Direct_Mapping,
-                Variant   => Variant,
-                Node      => N,
-                Name      => Null_Entity_Name,
-                Component => Entity_Lists.Empty_Vector));
+   function Direct_Mapping_Id
+     (N       : Node_Or_Entity_Id;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id
+      with Pre => N /= Empty;
+   --  Create a Flow_Id for the given node or entity.
 
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
       return Node_Id
-     with Pre => (F.Kind = Direct_Mapping);
+      with Pre  => (F.Kind = Direct_Mapping),
+           Post => (Get_Direct_Mapping_Id'Result /= Empty);
+   --  Given a direct mapping Flow_Id, return the associated node or
+   --  entity.
 
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
