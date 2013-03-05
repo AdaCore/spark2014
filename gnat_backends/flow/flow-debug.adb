@@ -22,15 +22,16 @@
 ------------------------------------------------------------------------------
 
 with Output; use Output;
+with Sprint; use Sprint;
+with Treepr; use Treepr;
 
 package body Flow.Debug is
 
-   ----------------------
-   --  Print_Node_Set  --
-   ----------------------
+   --------------------
+   -- Print_Node_Set --
+   --------------------
 
-   procedure Print_Node_Set (S : Flow_Id_Sets.Set)
-   is
+   procedure Print_Node_Set (S : Flow_Id_Sets.Set) is
    begin
       Write_Str ("Flow_Id_Set with ");
       Write_Int (Int (S.Length));
@@ -42,5 +43,33 @@ package body Flow.Debug is
       end loop;
       Outdent;
    end Print_Node_Set;
+
+   --------------------------
+   -- Print_Dependency_Map --
+   --------------------------
+
+   procedure Print_Dependency_Map (M : Dependency_Maps.Map) is
+   begin
+      Write_Str ("Dependency_Map:");
+      Write_Eol;
+      Indent;
+      for C in M.Iterate loop
+         declare
+            A : constant Entity_Id     := Dependency_Maps.Key (C);
+            D : constant Node_Sets.Set := Dependency_Maps.Element (C);
+         begin
+            Sprint_Node (A);
+            Write_Str (" depends on:");
+            Write_Eol;
+            Indent;
+            for B of D loop
+               Sprint_Node (B);
+               Write_Eol;
+            end loop;
+            Outdent;
+         end;
+      end loop;
+      Outdent;
+   end Print_Dependency_Map;
 
 end Flow.Debug;
