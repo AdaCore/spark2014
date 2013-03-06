@@ -53,12 +53,11 @@ Command-line Usage
 
    -d, --debug            Debug mode
    --proof=               Proof mode
-      normal                Normal mode
       no_wp                 Do not compute VCs, do not call prover
       all_split             Compute all VCs, save them to file, do not call prover
       path_wp               Use traditional way of computing VCs, one for each path
-      no_split              Compute only a single VC for each check; fastest
-                            but least precise option
+      no_split              Compute one VC per check
+      then_split            Start with one VC per check, then split
    --pedantic             Use a strict interpretation of the Ada standard
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
    --timeout=s            Set the prover timeout in seconds (default: 1)
@@ -87,19 +86,21 @@ interpretation of the Ada standard. For example, ranges for integer base types
 are reduced to the minimum guaranteed, not to the matching machine
 integer type as done in practice on all compilers.
 
-The options ``--steps`` and ``--timeout`` can be used to influence the
-behavior of the prover Alt-Ergo. The option ``-j`` activates parallel
-compilation and parallel proofs.  The option ``proof`` is intended for debug
-use and influences th work that is actually done by gnatprove. If this option
-is set to ``normal``, gnatprove will compute VCs and run the prover in an
-optimal way to prove the user code. If this option is set to ``no_split``,
-less VCs are generated, which will make |GNATprove| run faster, but may prove
-less objectives. If this option is set to ``no_wp``, the VCs are not computed,
-and no prover is called. If this option is set to ``all_split`` the VCs are
-computed, but no prover is called. If this option is set to ``path_wp``, one
-VC is generated for each path. With the option ``-q``, gnatprove does give the
-minimum of messages, while with option ``-v``, on the contrary, all details
-are given.
+The options ``--steps`` and ``--timeout`` can be used to influence the behavior
+of the prover Alt-Ergo. The option ``-j`` activates parallel compilation and
+parallel proofs.  The option ``proof`` is intended for debug use and influences
+the work that is actually done by |GNATprove|. If this option is set to
+``no_split`` (default unless ``--limit-line`` is used), one VC is generated for
+each check, which will make |GNATprove| run faster, and avoid any possible
+combinatorial explosion of the number of VCs. If this option is set to
+``then_split`` (default when ``--limit-line`` is used), |GNATprove| will start
+by computing a single VC for each check like for ``no_split``, but then each
+unproved VC is splitted if possible, which is slower but more precise. If this
+option is set to ``no_wp``, the VCs are not computed, and no prover is
+called. If this option is set to ``all_split`` the VCs are computed, but no
+prover is called. If this option is set to ``path_wp``, one VC is generated for
+each path. With the option ``-q``, |GNATprove| does give the minimum of
+messages, while with option ``-v``, on the contrary, all details are given.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only the file 12 of
@@ -107,7 +108,7 @@ file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
 the call to |GNATprove|. Using the option ``--limit-subp=`` one can limit proofs
 to a subprogram declared in a particular file at a particular line.
 
-By default, gnatprove avoids recompiling/reproving unchanged files, on a
+By default, |GNATprove| avoids recompiling/reproving unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
 
 Output
@@ -182,7 +183,7 @@ which can be obtained by a right click:
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in
 ``Project --> Edit Project Properties --> Switches``).
 
-For unproved VCs, you can see in GPS a path for which gnatprove does not
+For unproved VCs, you can see in GPS a path for which |GNATprove| does not
 manage to prove the VC. This can be achieved by right-clicking on the message
 for the unproved VC in the location view, and choosing ``Prove --> Show
 Path``.
@@ -260,7 +261,7 @@ Note that these two declarations do not lead to the same proofs. Indeed, with
 contract-cases, the fact that the contract cases are disjoint and cover the cases
 allowed by the precondition is proven once and for all. On the other hand, with
 the precondition and the postcondition, it is assumed by the prover and must
-be verified at each call. 
+be verified at each call.
 
 Contract cases can be expressed both as pragmas and aspects. The syntax of
 contract case pragmas is the following:
