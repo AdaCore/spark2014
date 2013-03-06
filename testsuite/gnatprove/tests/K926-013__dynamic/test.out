@@ -9,7 +9,7 @@ dynamic.adb:18:17: info: range check proved
 dynamic.adb:19:17: info: range check proved
 dynamic.adb:20:19: range check not proved
 dynamic.adb:21:17: range check not proved
-dynamic.adb:22:19: overflow check not proved
+dynamic.adb:22:19: info: overflow check proved
 dynamic.adb:22:19: range check not proved
 dynamic.adb:24:14: info: overflow check proved
 dynamic.adb:4:33: info: overflow check proved

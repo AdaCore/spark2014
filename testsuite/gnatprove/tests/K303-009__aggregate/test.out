@@ -16,7 +16,7 @@ arr_aggregate.ads:24:15: postcondition not proved
 arr_aggregate.ads:24:69: info: index check proved
 arr_aggregate.ads:27:69: info: index check proved
 arr_aggregate.ads:28:77: info: index check proved
-arr_aggregate.ads:32:15: postcondition not proved
+arr_aggregate.ads:32:15: info: postcondition proved
 arr_aggregate.ads:37:15: postcondition not proved
 arr_aggregate.ads:45:15: postcondition not proved
 rec_aggregate.ads:26:15: info: postcondition proved

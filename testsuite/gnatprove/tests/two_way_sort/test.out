@@ -24,7 +24,7 @@ p1.adb:6:27: info: index check proved
 p1.adb:6:34: index check not proved
 p1.adb:7:26: postcondition not proved
 p1.adb:8:57: index check not proved
-p1.adb:8:68: index check not proved
+p1.adb:8:68: info: index check proved
 p1.ads:6:16: postcondition not proved, requires A'Last < A'First or else (...
 p1.ads:7:63: index check not proved
 p1.ads:8:53: overflow check not proved

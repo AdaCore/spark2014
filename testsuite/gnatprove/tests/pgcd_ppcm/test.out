@@ -21,10 +21,10 @@ a.ads:14:47: info: overflow check proved
 a.ads:18:29: info: overflow check proved
 a.ads:18:38: info: overflow check proved
 a.ads:18:45: info: overflow check proved
-a.ads:19:29: overflow check not proved
+a.ads:19:29: info: overflow check proved
 a.ads:19:38: info: overflow check proved
 a.ads:19:45: info: overflow check proved
 a.ads:19:6: postcondition not proved, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
-a.ads:8:34: overflow check not proved
+a.ads:8:34: info: overflow check proved
 a.ads:9:34: overflow check not proved
 a.ads:9:6: postcondition not proved, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B

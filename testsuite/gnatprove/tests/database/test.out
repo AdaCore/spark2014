@@ -22,7 +22,7 @@ database.ads:112:14: info: precondition proved
 database.ads:112:32: info: postcondition proved
 database.ads:112:34: info: precondition proved
 database.ads:112:56: info: precondition proved
-database.ads:53:30: info: postcondition proved
+database.ads:53:30: postcondition not proved
 database.ads:53:41: info: precondition proved
 database.ads:74:41: info: precondition proved
 database.ads:93:14: info: precondition proved
