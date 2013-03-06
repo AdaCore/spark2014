@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
+
 with System.Strings;
 with Ada.Text_IO;    use Ada.Text_IO;
 
@@ -487,12 +489,12 @@ package body Graph is
 
       procedure Are_We_There_Yet
          (V  : Vertex_Id;
-          TV : out Traversal_Instruction);
+          TV : out Simple_Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
       procedure Are_We_There_Yet
          (V  : Vertex_Id;
-          TV : out Traversal_Instruction) is
+          TV : out Simple_Traversal_Instruction) is
       begin
          if V = B then
             Path_Exists := True;
@@ -520,12 +522,12 @@ package body Graph is
 
       procedure Are_We_There_Yet
          (V  : Vertex_Id;
-          TV : out Traversal_Instruction);
+          TV : out Simple_Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
       procedure Are_We_There_Yet
         (V  : Vertex_Id;
-         TV : out Traversal_Instruction) is
+         TV : out Simple_Traversal_Instruction) is
       begin
          if F (V) then
             Path_Exists := True;
@@ -556,7 +558,7 @@ package body Graph is
       Include_Start : Boolean;
       Visitor       : access procedure
         (V  : Vertex_Id;
-         TV : out Traversal_Instruction);
+         TV : out Simple_Traversal_Instruction);
       Reversed      : Boolean := False)
    is
       type Bit_Field is array
@@ -564,7 +566,7 @@ package body Graph is
 
       Will_Visit : Bit_Field         := Bit_Field'(others => False);
       Stack      : Vertex_Index_List := VIL.Empty_Vector;
-      TV         : Traversal_Instruction;
+      TV         : Simple_Traversal_Instruction;
 
       procedure Schedule_Vertex (V : Valid_Vertex_Id);
       --  Add V to the stack of vertices to visit and flag it as "to
@@ -644,6 +646,192 @@ package body Graph is
          end;
       end loop;
    end DFS;
+
+   ---------
+   -- BFS --
+   ---------
+
+   procedure BFS
+     (G             : T'Class;
+      Start         : Vertex_Id;
+      Include_Start : Boolean;
+      Visitor       : access procedure
+        (V      : Vertex_Id;
+         Origin : Vertex_Id;
+         Depth  : Natural;
+         T_Ins  : out Simple_Traversal_Instruction);
+      Reversed      : Boolean := False)
+   is
+      type Index_And_Depth is record
+         Origin : Valid_Vertex_Id;
+         Index  : Valid_Vertex_Id;
+         Depth  : Natural;
+      end record;
+
+      package Queues is new Ada.Containers.Doubly_Linked_Lists
+        (Element_Type => Index_And_Depth);
+
+      type Bit_Field is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
+
+      Q      : Queues.List;
+      Marked : Bit_Field := Bit_Field'(others => False);
+
+      procedure Enqueue (A : Valid_Vertex_Id;
+                         B : Valid_Vertex_Id;
+                         D : Natural);
+      --  Add a single A -> B link to the queue.
+
+      procedure Enqueue_Children (V : Valid_Vertex_Id;
+                                  D : Natural);
+      --  Add all children of V to the queue.
+
+      procedure Enqueue (A : Valid_Vertex_Id;
+                         B : Valid_Vertex_Id;
+                         D : Natural) is
+      begin
+         Q.Append (Index_And_Depth'(Origin => A,
+                                    Index  => B,
+                                    Depth  => D));
+         Marked (B) := True;
+      end Enqueue;
+
+      procedure Enqueue_Children (V : Valid_Vertex_Id;
+                                  D : Natural) is
+      begin
+         if Reversed then
+            for W of G.Vertices (V).In_Neighbours loop
+               if not Marked (W) then
+                  Enqueue (A => V,
+                           B => W,
+                           D => D + 1);
+               end if;
+            end loop;
+         else
+            for C in G.Vertices (V).Out_Neighbours.Iterate loop
+               declare
+                  W : constant Valid_Vertex_Id := Key (C);
+               begin
+                  if not Marked (W) then
+                     Enqueue (A => V,
+                              B => W,
+                              D => D + 1);
+                  end if;
+               end;
+            end loop;
+         end if;
+      end Enqueue_Children;
+
+   begin
+
+      if Include_Start then
+         Enqueue (A => Start,
+                  B => Start,
+                  D => 0);
+      else
+         Enqueue_Children (Start, 0);
+      end if;
+
+      while not Q.Is_Empty loop
+         declare
+            Origin : constant Valid_Vertex_Id := Q.First_Element.Origin;
+            V      : constant Valid_Vertex_Id := Q.First_Element.Index;
+            D      : constant Natural         := Q.First_Element.Depth;
+            T_Ins  : Simple_Traversal_Instruction;
+         begin
+            Q.Delete_First;
+
+            Visitor (V, Origin, D, T_Ins);
+
+            case T_Ins is
+               when Continue =>
+                  Enqueue_Children (V, D);
+               when Skip_Children =>
+                  null;
+               when Abort_Traversal =>
+                  exit;
+            end case;
+         end;
+      end loop;
+
+   end BFS;
+
+   -------------------
+   -- Shortest_Path --
+   -------------------
+
+   procedure Shortest_Path
+     (G             : T'Class;
+      Start         : Vertex_Id;
+      Allow_Trivial : Boolean;
+      Search        : access procedure
+        (V           : Vertex_Id;
+         Instruction : out Traversal_Instruction);
+      Step          : access procedure (V : Vertex_Id);
+      Reversed      : Boolean := False)
+   is
+      package Vertex_Maps is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Valid_Vertex_Id,
+         Element_Type    => Valid_Vertex_Id,
+         Hash            => Vertex_Hash,
+         Equivalent_Keys => "=",
+         "="             => "=");
+
+      Tree  : Vertex_Maps.Map   := Vertex_Maps.Empty_Map;
+      Dest  : Vertex_Id         := Null_Vertex;
+      Route : Vertex_Index_List := VIL.Empty_Vector;
+
+      procedure Make_Tree (V      : Vertex_Id;
+                           Origin : Vertex_Id;
+                           Depth  : Natural;
+                           T_Ins  : out Simple_Traversal_Instruction);
+      --  Internal visitor for the BFS. This will construct a tree
+      --  which we can use to find our way home.
+
+      procedure Make_Tree (V      : Vertex_Id;
+                           Origin : Vertex_Id;
+                           Depth  : Natural;
+                           T_Ins  : out Simple_Traversal_Instruction)
+      is
+         pragma Unreferenced (Depth);
+         Tmp : Traversal_Instruction;
+      begin
+         Search (V, Tmp);
+         if Tmp = Found_Destination then
+            T_Ins := Abort_Traversal;
+            Dest  := V;
+         else
+            T_Ins := Tmp;
+         end if;
+
+         Tree.Include (V, Origin);
+      end Make_Tree;
+
+   begin
+
+      BFS (G             => G,
+           Start         => Start,
+           Include_Start => Allow_Trivial,
+           Visitor       => Make_Tree'Access,
+           Reversed      => Reversed);
+
+      if Dest /= Null_Vertex then
+         declare
+            P : Valid_Vertex_Id := Dest;
+         begin
+            while P /= Start loop
+               Route.Append (P);
+               P := Tree (P);
+            end loop;
+            Route.Append (P);
+         end;
+
+         for V of reverse Route loop
+            Step (V);
+         end loop;
+      end if;
+
+   end Shortest_Path;
 
    ----------------------------------------------------------------------
    --  Graph-wide operations

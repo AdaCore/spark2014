@@ -113,7 +113,13 @@ package Graph is
 
    type Cursor (Collection_Type : Collection_Type_T) is private;
 
-   type Traversal_Instruction is (Continue, Skip_Children, Abort_Traversal);
+   type Traversal_Instruction is (Continue,
+                                  Skip_Children,
+                                  Abort_Traversal,
+                                  Found_Destination);
+
+   subtype Simple_Traversal_Instruction is Traversal_Instruction
+     range Traversal_Instruction'First .. Abort_Traversal;
 
    ----------------------------------------------------------------------
    --  Basic operations
@@ -344,7 +350,7 @@ package Graph is
       Include_Start : Boolean;
       Visitor       : access procedure
         (V  : Vertex_Id;
-         TV : out Traversal_Instruction);
+         TV : out Simple_Traversal_Instruction);
       Reversed      : Boolean := False);
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
@@ -362,6 +368,50 @@ package Graph is
    --  reversed graph.
    --
    --  Complexity is obviously O(N).
+
+   procedure BFS
+     (G             : T'Class;
+      Start         : Vertex_Id;
+      Include_Start : Boolean;
+      Visitor       : access procedure
+        (V      : Vertex_Id;
+         Origin : Vertex_Id;
+         Depth  : Natural;
+         T_Ins  : out Simple_Traversal_Instruction);
+      Reversed      : Boolean := False);
+   --  Same as above, but perform a breadth first search instead.
+   --
+   --  Complexity is also O(N).
+
+   procedure Shortest_Path
+     (G             : T'Class;
+      Start         : Vertex_Id;
+      Allow_Trivial : Boolean;
+      Search        : access procedure
+        (V           : Vertex_Id;
+         Instruction : out Traversal_Instruction);
+      Step          : access procedure (V : Vertex_Id);
+      Reversed      : Boolean := False);
+   --  Search for a path rooted at node Start. If Allow_Trivial is
+   --  True we begin by checking Start itself, otherwise Start is only
+   --  checked if we reach it through an edge.
+   --
+   --  On each step of the search Search is called, which must return
+   --  Found_Destination if we have found what we are looking for. The
+   --  other traversal instructions can also be specified:
+   --     * Continue        : Continue searching
+   --     * Skip_Children   : Abort search and resume elsewhere
+   --     * Abort_Traversal : Abort search
+   --
+   --  Reversed has the same meaning as it does for procedure DFS
+   --  above.
+   --
+   --  Finally, if a path is found the Step procedure is called for
+   --  each vertex on the path starting with Start and finally for the
+   --  vertex Found_Destination was returned for. If step is never
+   --  called there is no path.
+   --
+   --  Complexity is O(N).
 
    ----------------------------------------------------------------------
    --  Graph-wide operations

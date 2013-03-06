@@ -41,14 +41,14 @@ package body Flow.Slice is
 
       procedure Visitor
         (V  : Flow_Graphs.Vertex_Id;
-         TV : out Flow_Graphs.Traversal_Instruction);
+         TV : out Flow_Graphs.Simple_Traversal_Instruction);
       --  If the visited vertex is an in vertex or a procedure
       --  parameter vertex, we add it to the set of things we depend
       --  on.
 
       procedure Visitor
         (V  : Flow_Graphs.Vertex_Id;
-         TV : out Flow_Graphs.Traversal_Instruction)
+         TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
          F : constant Flow_Id := FA.PDG.Get_Key (V);
       begin

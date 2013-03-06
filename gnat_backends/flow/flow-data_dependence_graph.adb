@@ -31,14 +31,16 @@ package body Flow.Data_Dependence_Graph is
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          for Var of FA.CFG.Get_Attributes (V_D).Variables_Defined loop
             declare
-               procedure Visitor (V_U : Flow_Graphs.Vertex_Id;
-                                  TV  : out Flow_Graphs.Traversal_Instruction);
+               procedure Visitor
+                 (V_U : Flow_Graphs.Vertex_Id;
+                  TV  : out Flow_Graphs.Simple_Traversal_Instruction);
                --  For Var, check if there is a def-use link from V_D
                --  to V_U. Stop traversal if node V_U also defined
                --  Var.
 
-               procedure Visitor (V_U : Flow_Graphs.Vertex_Id;
-                                  TV  : out Flow_Graphs.Traversal_Instruction)
+               procedure Visitor
+                 (V_U : Flow_Graphs.Vertex_Id;
+                  TV  : out Flow_Graphs.Simple_Traversal_Instruction)
                is
                begin
                   if FA.CFG.Get_Attributes
