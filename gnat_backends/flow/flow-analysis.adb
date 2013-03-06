@@ -21,16 +21,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO;
+
 with Aspects; use Aspects;
-with Errout; use Errout;
+with Errout;  use Errout;
+with Namet;   use Namet;
 with Nlists;  use Nlists;
 with Sinfo;   use Sinfo;
+with Sinput;  use Sinput;
+
+with Treepr; use Treepr;
 
 with Why;
 
 with Flow.Slice; use Flow.Slice;
-
-with Treepr; use Treepr;
 
 package body Flow.Analysis is
 
@@ -49,13 +53,26 @@ package body Flow.Analysis is
    --  Output an error message attaced to the given vertex
    --  with a substitution using F.
 
+   function Get_Line (G   : Flow_Graphs.T'Class;
+                      V   : Flow_Graphs.Vertex_Id;
+                      Sep : Character := ':')
+                     return String;
+   --  Obtain the location for the given vertex as in "foo.adb:12".
+
+   function Get_Line_And_Column (G   : Flow_Graphs.T'Class;
+                                 V   : Flow_Graphs.Vertex_Id;
+                                 Sep : Character := ':')
+                                 return String;
+   --  Obtain the location for the given vertex as in "foo.adb:12:33".
+
    --------------------
    -- Error_Msg_Flow --
    --------------------
 
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
-                             Loc : Flow_Graphs.Vertex_Id) is
+                             Loc : Flow_Graphs.Vertex_Id)
+   is
       K : constant Flow_Id      := G.Get_Key (Loc);
       A : constant V_Attributes := G.Get_Attributes (Loc);
    begin
@@ -77,7 +94,8 @@ package body Flow.Analysis is
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
                              Loc : Flow_Graphs.Vertex_Id;
-                             F   : Flow_Id) is
+                             F   : Flow_Id)
+   is
       K : constant Flow_Id      := G.Get_Key (Loc);
       A : constant V_Attributes := G.Get_Attributes (Loc);
    begin
@@ -100,6 +118,82 @@ package body Flow.Analysis is
          end case;
       end if;
    end Error_Msg_Flow;
+
+   --------------
+   -- Get_Line --
+   --------------
+
+   function Get_Line (G   : Flow_Graphs.T'Class;
+                      V   : Flow_Graphs.Vertex_Id;
+                      Sep : Character := ':')
+                      return String
+   is
+      K : constant Flow_Id      := G.Get_Key (V);
+      A : constant V_Attributes := G.Get_Attributes (V);
+      N : Node_Or_Entity_Id;
+   begin
+      if A.Error_Location /= Empty then
+         N := A.Error_Location;
+      else
+         case K.Kind is
+            when Direct_Mapping =>
+               N := Get_Direct_Mapping_Id (K);
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
+      end if;
+
+      declare
+         SI      : constant Source_File_Index :=
+           Get_Source_File_Index (Sloc (N));
+
+         Line_No : constant String :=
+           Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
+      begin
+         return Get_Name_String (File_Name (SI)) &
+           Sep & Line_No (2 .. Line_No'Last);
+      end;
+   end Get_Line;
+
+   -------------------------
+   -- Get_Line_And_Column --
+   -------------------------
+
+   function Get_Line_And_Column (G   : Flow_Graphs.T'Class;
+                                 V   : Flow_Graphs.Vertex_Id;
+                                 Sep : Character := ':')
+                                 return String
+   is
+      K : constant Flow_Id      := G.Get_Key (V);
+      A : constant V_Attributes := G.Get_Attributes (V);
+      N : Node_Or_Entity_Id;
+   begin
+      if A.Error_Location /= Empty then
+         N := A.Error_Location;
+      else
+         case K.Kind is
+            when Direct_Mapping =>
+               N := Get_Direct_Mapping_Id (K);
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
+      end if;
+
+      declare
+         SI      : constant Source_File_Index :=
+           Get_Source_File_Index (Sloc (N));
+
+         Line_No : constant String :=
+           Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
+
+         Col_No  : constant String :=
+           Column_Number'Image (Get_Column_Number (Sloc (N)));
+      begin
+         return Get_Name_String (File_Name (SI)) &
+           Sep & Line_No (2 .. Line_No'Last) &
+           Sep & Col_No (2 .. Col_No'Last);
+      end;
+   end Get_Line_And_Column;
 
    ------------------
    -- Sanity_Check --
@@ -294,7 +388,75 @@ package body Flow.Analysis is
    -- Find_Use_Of_Uninitialised_Variables --
    -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs) is
+   procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs)
+   is
+      procedure Mark_Definition_Free_Path
+        (Dest : Flow_Graphs.Vertex_Id;
+         Var  : Flow_Id;
+         Tag  : String);
+
+      procedure Mark_Definition_Free_Path
+        (Dest : Flow_Graphs.Vertex_Id;
+         Var  : Flow_Id;
+         Tag  : String)
+      is
+         Filename : constant String :=
+           Get_Line_And_Column (FA.PDG, Dest, '_') &
+           "_" & Tag &
+           ".trace";
+
+         Path_Found : Boolean := False;
+         FD         : Ada.Text_IO.File_Type;
+
+         procedure Are_We_There_Yet
+           (V           : Flow_Graphs.Vertex_Id;
+            Instruction : out Flow_Graphs.Traversal_Instruction);
+
+         procedure Add_Loc
+           (V : Flow_Graphs.Vertex_Id);
+
+         procedure Are_We_There_Yet
+           (V           : Flow_Graphs.Vertex_Id;
+            Instruction : out Flow_Graphs.Traversal_Instruction)
+         is
+            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         begin
+            if V = FA.End_Vertex then
+               Instruction := Flow_Graphs.Found_Destination;
+               Path_Found  := True;
+            elsif A.Variables_Defined.Contains (Var) then
+               Instruction := Flow_Graphs.Skip_Children;
+            else
+               Instruction := Flow_Graphs.Continue;
+            end if;
+         end Are_We_There_Yet;
+
+         procedure Add_Loc
+           (V : Flow_Graphs.Vertex_Id)
+         is
+            F : constant Flow_Id := FA.CFG.Get_Key (V);
+         begin
+            if F.Kind = Direct_Mapping then
+               Ada.Text_IO.Put (FD, Get_Line (FA.CFG, V));
+               Ada.Text_IO.New_Line (FD);
+            end if;
+         end Add_Loc;
+
+         pragma Unreferenced (Var);
+      begin
+         Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
+
+         FA.CFG.Shortest_Path (Start         => FA.Start_Vertex,
+                               Allow_Trivial => False,
+                               Search        => Are_We_There_Yet'Access,
+                               Step          => Add_Loc'Access);
+
+         --  A little sanity check can't hurt.
+         pragma Assert (Path_Found);
+
+         Ada.Text_IO.Close (FD);
+      end Mark_Definition_Free_Path;
+
    begin
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -312,23 +474,32 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
-                           Error_Msg_Flow ("global & might not be set!",
-                                           FA.PDG, FA.Start_Vertex, Key_I);
+                           Error_Msg_Flow
+                             ("global & might not be set [uninitialized]!",
+                              FA.PDG, FA.Start_Vertex, Key_I);
+                           Mark_Definition_Free_Path
+                             (FA.Start_Vertex, Key_I, "uninitialized");
 
                         elsif Atr_U.Is_Function_Return then
                            --  This is actually a totally different
                            --  error. It means we have a path where we
                            --  do not return from the function.
-                           Error_Msg_Flow ("function & might not return!",
-                                           FA.PDG, FA.Start_Vertex, Key_I);
+                           Error_Msg_Flow
+                             ("function & might not return [noreturn]!",
+                              FA.PDG, FA.Start_Vertex, Key_I);
+                           Mark_Definition_Free_Path
+                             (FA.Start_Vertex, Key_I, "noreturn");
 
                         elsif Atr_U.Is_Export then
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
                            Error_Msg_Flow
-                             ("formal parameter & might not be set!",
+                             ("formal parameter & might not be set" &
+                                " [uninitialized]!",
                               FA.PDG, V_Use, Key_I);
+                           Mark_Definition_Free_Path
+                             (V_Use, Key_I, "uninitialized");
 
                         else
                            --  We are dealing with a local variable,
