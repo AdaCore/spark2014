@@ -243,7 +243,7 @@ def check_dot_files(opt=None):
     """Create a list that contains all dot files lying under directory gnatprove"""
     dot_files = []
     for r,d,f in os.walk("gnatprove"):
-        for files in f:
+        for files in sorted(f):
             if files.endswith(".dot"):
                 dot_files.append(os.path.join(r,files))
 
