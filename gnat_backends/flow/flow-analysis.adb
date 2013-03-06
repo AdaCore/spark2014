@@ -391,17 +391,24 @@ package body Flow.Analysis is
    procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs)
    is
       procedure Mark_Definition_Free_Path
-        (Dest : Flow_Graphs.Vertex_Id;
-         Var  : Flow_Id;
-         Tag  : String);
+        (E_Loc : Flow_Graphs.Vertex_Id;
+         From  : Flow_Graphs.Vertex_Id;
+         To    : Flow_Graphs.Vertex_Id;
+         Var   : Flow_Id;
+         Tag   : String);
+      --  Write a trace file for the error message at E_Loc with the
+      --  given Tag. The trace will mark the path From -> To which
+      --  does not define Var.
 
       procedure Mark_Definition_Free_Path
-        (Dest : Flow_Graphs.Vertex_Id;
-         Var  : Flow_Id;
-         Tag  : String)
+        (E_Loc : Flow_Graphs.Vertex_Id;
+         From  : Flow_Graphs.Vertex_Id;
+         To    : Flow_Graphs.Vertex_Id;
+         Var   : Flow_Id;
+         Tag   : String)
       is
          Filename : constant String :=
-           Get_Line_And_Column (FA.PDG, Dest, '_') &
+           Get_Line_And_Column (FA.PDG, E_Loc, '_') &
            "_" & Tag &
            ".trace";
 
@@ -411,9 +418,11 @@ package body Flow.Analysis is
          procedure Are_We_There_Yet
            (V           : Flow_Graphs.Vertex_Id;
             Instruction : out Flow_Graphs.Traversal_Instruction);
+         --  Visitor procedure for Shortest_Path.
 
          procedure Add_Loc
            (V : Flow_Graphs.Vertex_Id);
+         --  Step procedure for Shortest_Path.
 
          procedure Are_We_There_Yet
            (V           : Flow_Graphs.Vertex_Id;
@@ -421,7 +430,7 @@ package body Flow.Analysis is
          is
             A : constant V_Attributes := FA.CFG.Get_Attributes (V);
          begin
-            if V = FA.End_Vertex then
+            if V = To then
                Instruction := Flow_Graphs.Found_Destination;
                Path_Found  := True;
             elsif A.Variables_Defined.Contains (Var) then
@@ -442,11 +451,10 @@ package body Flow.Analysis is
             end if;
          end Add_Loc;
 
-         pragma Unreferenced (Var);
       begin
          Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
 
-         FA.CFG.Shortest_Path (Start         => FA.Start_Vertex,
+         FA.CFG.Shortest_Path (Start         => From,
                                Allow_Trivial => False,
                                Search        => Are_We_There_Yet'Access,
                                Step          => Add_Loc'Access);
@@ -478,7 +486,11 @@ package body Flow.Analysis is
                              ("global & might not be set [uninitialized]!",
                               FA.PDG, FA.Start_Vertex, Key_I);
                            Mark_Definition_Free_Path
-                             (FA.Start_Vertex, Key_I, "uninitialized");
+                             (E_Loc => FA.Start_Vertex,
+                              From  => FA.Start_Vertex,
+                              To    => FA.End_Vertex,
+                              Var   => Key_I,
+                              Tag   => "uninitialized");
 
                         elsif Atr_U.Is_Function_Return then
                            --  This is actually a totally different
@@ -488,7 +500,11 @@ package body Flow.Analysis is
                              ("function & might not return [noreturn]!",
                               FA.PDG, FA.Start_Vertex, Key_I);
                            Mark_Definition_Free_Path
-                             (FA.Start_Vertex, Key_I, "noreturn");
+                             (E_Loc => FA.Start_Vertex,
+                              From  => FA.Start_Vertex,
+                              To    => FA.End_Vertex,
+                              Var   => Key_I,
+                              Tag   => "uninitialized");
 
                         elsif Atr_U.Is_Export then
                            --  As we don't have a global, but an
@@ -499,7 +515,11 @@ package body Flow.Analysis is
                                 " [uninitialized]!",
                               FA.PDG, V_Use, Key_I);
                            Mark_Definition_Free_Path
-                             (V_Use, Key_I, "uninitialized");
+                             (E_Loc => V_Use,
+                              From  => FA.Start_Vertex,
+                              To    => FA.End_Vertex,
+                              Var   => Key_I,
+                              Tag   => "uninitialized");
 
                         else
                            --  We are dealing with a local variable,
@@ -508,8 +528,15 @@ package body Flow.Analysis is
                            null;
                         end if;
                      else
-                        Error_Msg_Flow ("use of uninitialized variable &!",
-                                        FA.PDG, V_Use, Key_I);
+                        Error_Msg_Flow
+                          ("use of uninitialized variable & [uninitialized]!",
+                           FA.PDG, V_Use, Key_I);
+                        Mark_Definition_Free_Path
+                          (E_Loc => V_Use,
+                           From  => FA.Start_Vertex,
+                           To    => V_Use,
+                           Var   => Key_I,
+                           Tag   => "uninitialized");
                      end if;
                   end;
                end loop;
