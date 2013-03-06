@@ -232,3 +232,22 @@ def grep(regex, strlist, invert=False):
         if (invert and not m) or (not invert and m):
             print line
 
+def check_dot_files(opt=None):
+    """Call gnatprove with --mode=flow and --debug"""
+    if opt is None:
+        opt = []
+    opt += ["-P", "test.gpr", "--quiet", "--debug", "--mode=flow"]
+    opt += ["-j%d"%(parallel_procs)]
+    gnatprove(opt)
+
+    """Create a list that contains all dot files lying under directory gnatprove"""
+    dot_files = []
+    for r,d,f in os.walk("gnatprove"):
+        for files in f:
+            if files.endswith(".dot"):
+                dot_files.append(os.path.join(r,files))
+
+    """Dump the contents of all dot files on stdout"""
+    for dot_file in dot_files:
+        cat(dot_file)
+
