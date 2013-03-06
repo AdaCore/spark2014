@@ -489,7 +489,7 @@ package body Flow.Analysis is
                              (E_Loc => FA.Start_Vertex,
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
-                              Var   => Key_I,
+                              Var   => Change_Variant (Key_I, Normal_Use),
                               Tag   => "uninitialized");
 
                         elsif Atr_U.Is_Function_Return then
@@ -503,7 +503,7 @@ package body Flow.Analysis is
                              (E_Loc => FA.Start_Vertex,
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
-                              Var   => Key_I,
+                              Var   => Change_Variant (Key_I, Normal_Use),
                               Tag   => "uninitialized");
 
                         elsif Atr_U.Is_Export then
@@ -518,7 +518,7 @@ package body Flow.Analysis is
                              (E_Loc => V_Use,
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
-                              Var   => Key_I,
+                              Var   => Change_Variant (Key_I, Normal_Use),
                               Tag   => "uninitialized");
 
                         else
@@ -535,7 +535,7 @@ package body Flow.Analysis is
                           (E_Loc => V_Use,
                            From  => FA.Start_Vertex,
                            To    => V_Use,
-                           Var   => Key_I,
+                           Var   => Change_Variant (Key_I, Normal_Use),
                            Tag   => "uninitialized");
                      end if;
                   end;
