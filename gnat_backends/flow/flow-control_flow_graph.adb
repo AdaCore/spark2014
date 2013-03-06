@@ -958,7 +958,7 @@ package body Flow.Control_Flow_Graph is
       if Expression (N) = Empty then
          --  We have a return for a procedure.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Null_Node_Attributes,
+                            Make_Return_Attributes (E_Loc => N),
                             V);
       else
          --  We have a function return.

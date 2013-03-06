@@ -51,6 +51,21 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Basic_Attributes;
 
+   ----------------------------
+   -- Make_Return_Attributes --
+   ----------------------------
+
+   function Make_Return_Attributes
+     (E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+   is
+      A : V_Attributes := Null_Attributes;
+   begin
+      A.Error_Location    := E_Loc;
+
+      return A;
+   end Make_Return_Attributes;
+
    --------------------------
    -- Make_Call_Attributes --
    --------------------------

@@ -36,6 +36,13 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for vertices which simply define and use some
    --  variables.
 
+   function Make_Return_Attributes
+     (E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+      with Post => not Make_Return_Attributes'Result.Is_Null_Node and
+                   not Make_Return_Attributes'Result.Is_Program_Node;
+   --  Create attributes for vertices modelling return statements.
+
    function Make_Call_Attributes
      (Callsite : Node_Id           := Empty;
       Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
