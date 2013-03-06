@@ -59,6 +59,9 @@ package Configuration is
    IDE_Progress_Bar : aliased Boolean;
    --  True if --ide-progress-bar switch is present. Generate information on
    --  progress for display in IDE.
+   Show_Tag     : aliased Boolean;
+   --  True if --show_tag switch is present. Add a unique tag to each error
+   --  message.
    Limit_Line   : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-line= was given
    Limit_Subp   : aliased GNAT.Strings.String_Access;

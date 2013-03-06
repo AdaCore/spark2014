@@ -253,6 +253,9 @@ procedure Gnatprove is
       if IDE_Progress_Bar then
          Args.Append ("--ide-progress-bar");
       end if;
+      if Show_Tag then
+         Args.Append ("--show-tag");
+      end if;
       if Parallel > 1 then
          Args.Append ("-j");
          Args.Append (Int_Image (Parallel));
@@ -600,6 +603,12 @@ procedure Gnatprove is
       Args.Append ("-gnatc");       --  No object file generation
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
+      if Show_Tag then
+         Args.Append ("-gnatw.d"); -- generation of unique tag
+      end if;
+      if Debug then
+         Args.Append ("-gnatd.Z");
+      end if;
       case MMode is
          when GPM_Detect =>
             Args.Append ("-gnatd.K");
@@ -607,9 +616,6 @@ procedure Gnatprove is
             Args.Append ("-gnatd.E");
          when GPM_Flow =>
             Args.Append ("-gnatd.Q");
-            if Debug then
-               Args.Append ("-gnatd.Z");
-            end if;
          when GPM_Prove =>
             null;
       end case;

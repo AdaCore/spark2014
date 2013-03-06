@@ -111,6 +111,8 @@ ASCII.LF &
 "     --proof=p      Set the proof mode "&
 "(p=normal*, no_wp, all_split, path_wp, no_split)" &
 ASCII.LF &
+"     --show-tag     Append a unique tag to each error message" &
+ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
 "     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo"
@@ -360,6 +362,12 @@ ASCII.LF &
          IDE_Progress_Bar'Access,
          Long_Switch => "--ide-progress-bar",
          Help => "Generate information on progress for display in IDE");
+
+      Define_Switch
+        (Config,
+         Show_Tag'Access,
+         Long_Switch => "--show-tag",
+         Help => "Add a unique tag at the end of each error message");
 
       Define_Switch
          (Config,
