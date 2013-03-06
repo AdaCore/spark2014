@@ -184,10 +184,10 @@ begin
    pragma Assert (Strict_Equal (Right (L2, First (L2)),
                      Right (L1, Next (L1, First (L1)))));
 
-   L1.Clear;
+   Clear (L1);
 
    for E in 1 .. 3 loop
-      L1.Append (E);
+      Append (L1, E);
    end loop;
 
    Move (Target => L2, Source => L1);
@@ -196,14 +196,14 @@ begin
       E : Integer;
    begin
       --  Precondition should not be provable
-      E := L1.First_Element;
+      E := First_Element (L1);
    end;
 
    declare
       E : Integer;
    begin
       --  Precondition should not be provable
-      E := L1.Last_Element;
+      E := Last_Element (L1);
    end;
 
 end test_vdll;
