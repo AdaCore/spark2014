@@ -1,0 +1,17 @@
+test.adb:14:24: missing dependency on "Y"
+test.adb:14:24: does not depend on "X"
+test.adb:29:47: formal parameter "Par2" might not be set
+test.adb:32:24: missing dependency on "Par2"
+test.adb:33:24: missing dependency on "Par1"
+test.adb:49:04: ineffective global import "X"
+test.adb:53:07: ineffective statement
+test.adb:54:15: ineffective statement
+test.adb:134:04: flow analysis of "Check_Contract_7" abandoned due to inconsistent graph
+test.adb:137:07: "Z" not visible
+test.adb:144:04: flow analysis of "Check_Contract_8" abandoned due to inconsistent graph
+test.adb:147:09: "Z" not visible
+
+   compilation of test.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
