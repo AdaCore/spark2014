@@ -880,74 +880,106 @@ High-level requirements
 Language definition
 ^^^^^^^^^^^^^^^^^^^
 
-In |SPARK| a function may be denoted as being a Ghost function using the
-boolean ``aspect_mark`` Ghost. This shows an intent that this function should only be
-called directly, or indirectly from within assertion expressions excluding
-predicate subtypes.  In Ada subtype predicates are executed irrespective of the
-assertion policy.
+Ghost entities are intended for use in discharging proof obligations and
+in making it easier to express assertions about a program.
+The essential property of ghost entities is that they have no
+effect on the dynamic behavior of a valid SPARK program. More specifically,
+if one were to take a valid SPARK program and remove all
+ghost entity declarations from it and all assertions containing
+references to those entities, then the resulting program might
+no longer be a valid SPARK program (e.g., it might no longer
+be possible to discharge all the program's proof obligations)
+but its dynamic semantics (when viewed as an Ada program) should
+be unaffected by this transformation.
 
-.. centered:: **Legality Rules**
-
-#. A function with a Ghost ``aspect_mark`` in the ``aspect_specification`` of
-   its declaration may only be called from within an assertion expression,
-   excluding subtype predicates, or from within another ghost function.
+.. note::
+   (SB) Now that this section is about ghost entities in general, not
+   just ghost functions, should it be moved to elsewhere in the manual?
 
 .. centered:: **Static Semantics**
 
-#. There are no static semantics associated with Ghost aspects.
+|SPARK| defines the convention_identifier Ghost.
+An entity (e.g., a subprogram or an object) whose Convention aspect
+is specified to have the value Ghost is said to be a Ghost
+entity (e.g., a ghost function or a ghost variable).
+
+A ghost entity is not considered to be an input or output of a
+subprogram.
+A ghost entity declared immediately within a package is not a constituent
+of the state (visible or hidden) of that package,
+
+.. centered:: **Legality Rules**
+
+A ghost entity shall only be referenced from within an assertion
+expression or as part of the declaration or completion of a
+ghost entity (e.g., from within the body of a ghost function).
+A ghost entity shall not be referenced from
+within the expression of a predicate specification of a non-ghost
+subtype [because such predicates participate in determining
+the outcome of a membership test].
+
+All subcomponents of a ghost object shall be initialized by the
+elaboration of the declaration of the object.
+
+TBD: Make worst-case assumptions about private types for this rule,
+or blast through privacy?
+
+A ghost entity shall not be referenced in a Global, Refined_Global,
+Depends, Refined_Depends, or Refined_State aspect specification.
+
+TBD: disallow a ghost tagged type because just its existence (even if
+it is never referenced) changes the behavior of Ada.Tags operations?
+Overriding is not a problem because Convention participates in
+conformance checks (so ghost can't override non-ghost and vice versa).
+
+TBD: Volatile ghosts seem useless, but do we need to prohibit them?
+No reason to mention them one way or the other as far as I can see.
 
 .. centered:: **Dynamic Semantics**
 
-#. There are no dynamic semantics associated with Ghost aspects.
+The effects of specifying a convention of Ghost
+on the runtime representation, calling conventions, and other such
+dynamic properties of an entity are the same as if a convention of
+Ada had been specified.
+
+If it is intended that a ghost entity should not have any runtime
+representation (e.g., if the entity is used only in discharging proof
+obligations and is not referenced (directly or indirectly) in any
+enabled (e.g., via an Assertion_Policy pragma) assertions),
+then the Import aspect of the entity may be specified to be True.
+Neither the Link_Name nor the External_Name aspects of an imported ghost
+entity may be specified. The Link_Name of an imported ghost entity is defined
+to be a name that cannot be resolved in the external environment.
 
 .. centered:: **Verification Rules**
 
-#. There are no verification rules associated with Ghost aspects.
+There are no verification rules associated with Ghost aspects.
 
    .. centered:: **Examples**
 
 .. code-block:: ada
 
-   function A_Ghost_Function (X, Y : Integer) return Integer
+   function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural
+      is (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
    with
-      Pre  => X + Y <= Integer'Last,
-      Post => X + Y > 0,
-      Ghost;
+      Pre  => Lo <= Hi,
+      Post => A_Ghost_Function'Result in Lo .. Hi,
+      Convention => Ghost;
+
+   function A_Ghost_Function (Lo, Hi : Natural) return Natural
+   with
+      Pre  => Lo <= Hi,
+      Post => A_Ghost_Function'Result in Lo .. Hi,
+      Convention => Ghost;
    -- The body of the function is declared elsewhere.
-   
-   function A_Ghost_Expression_Function (X : Y : Integer) return Boolean is (X < Y)
+
+   function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
    with
-      Ghost;
-
-
-Non-Executable Ghost Functions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-|SPARK| permits the use of non-executable ghost functions that have no body and
-are used in formal specification and verification only. A non-executable ghost
-function is introduced by declaring a ghost function with an Import
-``aspect_mark`` in its declaration.
-
-If a call is made, directly or indirectly, to this function other than in an
-assertion expression which is not a subtype predicate, or if the assertion
-policy Ignore is not selected, an error will be reported when an attempt is made
-to build and execute the program.
-
-It is expected that the definition of a non-executable ghost function will be 
-provided within an external proof tool.
-
-There are no additional legality rules, static or dynamic semantics or verification rules
-associated with non-executable ghost functions.
-
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   function A_Non_Executable_Function (X, Y : T) return Integer
-   with
-      Ghost,
+      Pre  => Lo <= Hi,
+      Post => A_Ghost_Function'Result in Lo .. Hi,
+      Convention => Ghost,
       Import;
+   -- The body of the function is not declared elsewhere.
 
 
 Formal Parameter Modes
