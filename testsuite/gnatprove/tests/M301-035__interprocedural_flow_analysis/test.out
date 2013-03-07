@@ -1,7 +1,7 @@
 [32mFlow analysis (cons) of swap[0m
 [32mFlow analysis (cons) of swap_with_depends[0m
-[32mFlow analysis (errors) for swap_with_depends[0m
 [32mFlow analysis (errors) for swap[0m
+[32mFlow analysis (errors) for swap_with_depends[0m
 [32mFlow analysis (cons) of double_max[0m
 [32mFlow analysis (cons) of max[0m
 [32mFlow analysis (cons) of mutual_recursion_a[0m
@@ -19,137 +19,19 @@
 [32mFlow analysis (cons) of round_swap_1[0m
 [32mFlow analysis (cons) of round_swap_2[0m
 [32mFlow analysis (errors) for round_swap_with_depends_2[0m
-[32mFlow analysis (errors) for round_swap_with_depends_1[0m
 [32mFlow analysis (errors) for round_swap_1[0m
+[32mFlow analysis (errors) for round_swap_with_depends_1[0m
 [32mFlow analysis (errors) for round_swap_2[0m
-across_compilation_units-child.ads:6:24: missing dependency on "Y"
 across_compilation_units-child.ads:6:24: missing dependency on "X"
+across_compilation_units-child.ads:6:24: missing dependency on "Y"
 across_compilation_units-child.ads:7:24: missing dependency on "Y"
-across_compilation_units-child.ads:8:24: missing dependency on "Z"
 across_compilation_units-child.ads:8:24: missing dependency on "X"
+across_compilation_units-child.ads:8:24: missing dependency on "Z"
 
    compilation of across_compilation_units-child.adb failed
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  10 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
-    10 ->  11 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    12 ->  14 [arrowType="normal"];
-    13 ->  12 [arrowType="normal"];
-    14 ->  15 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  18 [arrowType="normal"];
-    17 ->  19 [arrowType="normal"];
-    18 ->  17 [arrowType="normal"];
-    19 ->  2 [arrowType="normal"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    3 [label="condition'initial\n(global)",shape="plaintext"];
-    4 [label="condition'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="if condition",shape="diamond"];
-    11 [label="condition := false;"];
-    12 [label="x := 2 {*} x;"];
-    13 [label="call mutual_recursion_b",shape="box"];
-    14 [label="global&nbsp;condition'in",shape="plaintext"];
-    15 [label="global&nbsp;x'in",shape="plaintext"];
-    16 [label="global&nbsp;y'in",shape="plaintext"];
-    17 [label="global&nbsp;condition'out",shape="plaintext"];
-    18 [label="global&nbsp;x'out",shape="plaintext"];
-    19 [label="global&nbsp;y'out",shape="plaintext"];
-
-    1 ->  10 [arrowType="normal"];
-    3 ->  10 [arrowType="normal",color="red"];
-    3 ->  14 [arrowType="normal",color="red"];
-    5 ->  12 [arrowType="normal",color="red"];
-    5 ->  15 [arrowType="normal",color="red"];
-    7 ->  8 [arrowType="normal",color="red"];
-    7 ->  16 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal"];
-    10 ->  12 [arrowType="normal"];
-    10 ->  13 [arrowType="normal"];
-    11 ->  4 [arrowType="normal",color="red"];
-    12 ->  6 [arrowType="normal",color="red"];
-    12 ->  12 [arrowType="normal",color="red"];
-    13 ->  14 [arrowType="normal"];
-    13 ->  15 [arrowType="normal"];
-    13 ->  16 [arrowType="normal"];
-    13 ->  17 [arrowType="normal"];
-    13 ->  18 [arrowType="normal"];
-    13 ->  19 [arrowType="normal"];
-    14 ->  17 [arrowType="normal",color="cornflowerblue"];
-    14 ->  18 [arrowType="normal",color="cornflowerblue"];
-    14 ->  19 [arrowType="normal",color="cornflowerblue"];
-    15 ->  18 [arrowType="normal",color="cornflowerblue"];
-    16 ->  19 [arrowType="normal",color="cornflowerblue"];
-    17 ->  4 [arrowType="normal",color="red"];
-    18 ->  6 [arrowType="normal",color="red"];
-    19 ->  8 [arrowType="normal",color="red"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="var'initial",shape="plaintext"];
-    4 [label="var'final",shape="plaintext",fontcolor="red"];
-    5 [label="fact'initial",shape="plaintext",fontcolor="red"];
-    6 [label="fact'final",shape="plaintext",fontcolor="blue"];
-    8 [label="if var > 1",shape="diamond"];
-    9 [label="call factorial",shape="box"];
-    10 [label="var'in&nbsp;:=&nbsp;{var - 1}",shape="plaintext"];
-    11 [label="fact&nbsp;:=&nbsp;fact'out",shape="plaintext"];
-    12 [label="fact := {fact {*} var};"];
-    13 [label="fact := 1;"];
-
-    1 ->  8 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    8 ->  9 [arrowType="normal"];
-    8 ->  13 [arrowType="normal"];
-    9 ->  10 [arrowType="normal"];
-    10 ->  11 [arrowType="normal"];
-    11 ->  12 [arrowType="normal"];
-    12 ->  2 [arrowType="normal"];
-    13 ->  2 [arrowType="normal"];
-}
 
 digraph G {
    graph [splines=True];
@@ -188,138 +70,6 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap_with_depends",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap_with_depends",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  10 [arrowType="normal"];
-    1 ->  15 [arrowType="normal"];
-    3 ->  18 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    7 ->  13 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal"];
-    10 ->  12 [arrowType="normal"];
-    10 ->  13 [arrowType="normal"];
-    10 ->  14 [arrowType="normal"];
-    11 ->  14 [arrowType="normal",color="cornflowerblue"];
-    12 ->  16 [arrowType="normal",color="red"];
-    13 ->  12 [arrowType="normal",color="cornflowerblue"];
-    14 ->  8 [arrowType="normal",color="red"];
-    15 ->  16 [arrowType="normal"];
-    15 ->  17 [arrowType="normal"];
-    15 ->  18 [arrowType="normal"];
-    15 ->  19 [arrowType="normal"];
-    16 ->  19 [arrowType="normal",color="cornflowerblue"];
-    17 ->  6 [arrowType="normal",color="red"];
-    18 ->  17 [arrowType="normal",color="cornflowerblue"];
-    19 ->  4 [arrowType="normal",color="red"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap_with_depends",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap_with_depends",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  10 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
-    10 ->  11 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    12 ->  14 [arrowType="normal"];
-    13 ->  12 [arrowType="normal"];
-    14 ->  15 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  18 [arrowType="normal"];
-    17 ->  19 [arrowType="normal"];
-    18 ->  17 [arrowType="normal"];
-    19 ->  2 [arrowType="normal"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    3 [label="condition'initial\n(global)",shape="plaintext"];
-    4 [label="condition'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="if condition",shape="diamond"];
-    11 [label="condition := false;"];
-    12 [label="y := 2 {*} y;"];
-    13 [label="call mutual_recursion_a",shape="box"];
-    14 [label="global&nbsp;condition'in",shape="plaintext"];
-    15 [label="global&nbsp;x'in",shape="plaintext"];
-    16 [label="global&nbsp;y'in",shape="plaintext"];
-    17 [label="global&nbsp;condition'out",shape="plaintext"];
-    18 [label="global&nbsp;x'out",shape="plaintext"];
-    19 [label="global&nbsp;y'out",shape="plaintext"];
-
-    1 ->  10 [arrowType="normal"];
-    3 ->  10 [arrowType="normal",color="red"];
-    3 ->  14 [arrowType="normal",color="red"];
-    5 ->  6 [arrowType="normal",color="red"];
-    5 ->  15 [arrowType="normal",color="red"];
-    7 ->  12 [arrowType="normal",color="red"];
-    7 ->  16 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal"];
-    10 ->  12 [arrowType="normal"];
-    10 ->  13 [arrowType="normal"];
-    11 ->  4 [arrowType="normal",color="red"];
-    12 ->  8 [arrowType="normal",color="red"];
-    12 ->  12 [arrowType="normal",color="red"];
-    13 ->  14 [arrowType="normal"];
-    13 ->  15 [arrowType="normal"];
-    13 ->  16 [arrowType="normal"];
-    13 ->  17 [arrowType="normal"];
-    13 ->  18 [arrowType="normal"];
-    13 ->  19 [arrowType="normal"];
-    14 ->  17 [arrowType="normal",color="cornflowerblue"];
-    14 ->  18 [arrowType="normal",color="cornflowerblue"];
-    14 ->  19 [arrowType="normal",color="cornflowerblue"];
-    15 ->  18 [arrowType="normal",color="cornflowerblue"];
-    16 ->  19 [arrowType="normal",color="cornflowerblue"];
-    17 ->  4 [arrowType="normal",color="red"];
-    18 ->  6 [arrowType="normal",color="red"];
-    19 ->  8 [arrowType="normal",color="red"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
     3 [label="x'initial\n(global)",shape="plaintext"];
     4 [label="x'final\n(global)",shape="plaintext",fontcolor="red"];
     5 [label="y'initial\n(global)",shape="plaintext"];
@@ -353,101 +103,30 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  10 [arrowType="normal"];
-    1 ->  15 [arrowType="normal"];
-    3 ->  18 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    7 ->  13 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal"];
-    10 ->  12 [arrowType="normal"];
-    10 ->  13 [arrowType="normal"];
-    10 ->  14 [arrowType="normal"];
-    11 ->  12 [arrowType="normal",color="cornflowerblue"];
-    11 ->  14 [arrowType="normal",color="cornflowerblue"];
-    12 ->  16 [arrowType="normal",color="red"];
-    13 ->  12 [arrowType="normal",color="cornflowerblue"];
-    13 ->  14 [arrowType="normal",color="cornflowerblue"];
-    14 ->  8 [arrowType="normal",color="red"];
-    15 ->  16 [arrowType="normal"];
-    15 ->  17 [arrowType="normal"];
-    15 ->  18 [arrowType="normal"];
-    15 ->  19 [arrowType="normal"];
-    16 ->  17 [arrowType="normal",color="cornflowerblue"];
-    16 ->  19 [arrowType="normal",color="cornflowerblue"];
-    17 ->  6 [arrowType="normal",color="red"];
-    18 ->  17 [arrowType="normal",color="cornflowerblue"];
-    18 ->  19 [arrowType="normal",color="cornflowerblue"];
-    19 ->  4 [arrowType="normal",color="red"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
     2 [label="end",shape="plaintext"];
-    3 [label="maximum'initial",shape="plaintext",fontcolor="red"];
-    4 [label="maximum'final",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="red"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="red"];
-    10 [label="if x > y",shape="diamond"];
-    11 [label="maximum := x;"];
-    13 [label="maximum := y;"];
+    3 [label="var'initial",shape="plaintext"];
+    4 [label="var'final",shape="plaintext",fontcolor="red"];
+    5 [label="fact'initial",shape="plaintext",fontcolor="red"];
+    6 [label="fact'final",shape="plaintext",fontcolor="blue"];
+    8 [label="if var > 1",shape="diamond"];
+    9 [label="call factorial",shape="box"];
+    10 [label="var'in&nbsp;:=&nbsp;{var - 1}",shape="plaintext"];
+    11 [label="fact&nbsp;:=&nbsp;fact'out",shape="plaintext"];
+    12 [label="fact := {fact {*} var};"];
+    13 [label="fact := 1;"];
 
-    1 ->  10 [arrowType="normal"];
+    1 ->  8 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
     3 ->  1 [arrowType="normal"];
     5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
-    10 ->  11 [arrowType="normal"];
-    10 ->  13 [arrowType="normal"];
-    11 ->  2 [arrowType="normal"];
-    13 ->  2 [arrowType="normal"];
-}
-
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="x'initial",shape="plaintext"];
-    4 [label="x'final",shape="plaintext",fontcolor="blue"];
-    5 [label="y'initial",shape="plaintext"];
-    6 [label="y'final",shape="plaintext",fontcolor="blue"];
-    7 [label="temp'initial",shape="plaintext",fontcolor="red"];
-    8 [label="temp'final",shape="plaintext"];
-    10 [label="temp := x;"];
-    11 [label="x := y;"];
-    12 [label="y := temp;"];
-
-    1 ->  10 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  13 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
     10 ->  11 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
     12 ->  2 [arrowType="normal"];
+    13 ->  2 [arrowType="normal"];
 }
 
 digraph G {
@@ -507,23 +186,38 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
+    3 [label="n'initial",shape="plaintext"];
+    4 [label="n'final",shape="plaintext",fontcolor="red"];
+    5 [label="fibonacci'initial",shape="plaintext",fontcolor="red"];
+    6 [label="fibonacci'final",shape="plaintext",fontcolor="blue"];
+    8 [label="if n < 3",shape="diamond"];
+    9 [label="return 1<<<1>>>;"];
+    10 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2)<<<integer(fibonacci(n {-} 1) {+} fibonacci (n {-} 2))>>>;"];
+
+    1 ->  8 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  8 [arrowType="normal",color="red"];
+    3 ->  10 [arrowType="normal",color="red"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  10 [arrowType="normal"];
+    9 ->  6 [arrowType="normal",color="red"];
+    10 ->  6 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
     2 [label="end",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    3 [label="maximum'initial",shape="plaintext",fontcolor="red"];
+    4 [label="maximum'final",shape="plaintext",fontcolor="blue"];
     5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    6 [label="x'final\n(global)",shape="plaintext",fontcolor="red"];
     7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    8 [label="y'final\n(global)",shape="plaintext",fontcolor="red"];
+    10 [label="if x > y",shape="diamond"];
+    11 [label="maximum := x;"];
+    12 [label="return;"];
+    13 [label="maximum := y;"];
 
     1 ->  10 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -533,62 +227,38 @@ digraph G {
     5 ->  1 [arrowType="normal"];
     7 ->  1 [arrowType="normal"];
     10 ->  11 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    12 ->  14 [arrowType="normal"];
-    13 ->  12 [arrowType="normal"];
-    14 ->  15 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  18 [arrowType="normal"];
-    17 ->  19 [arrowType="normal"];
-    18 ->  17 [arrowType="normal"];
-    19 ->  2 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+    13 ->  2 [arrowType="normal"];
 }
 
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    3 [label="maximum'initial",shape="plaintext",fontcolor="red"];
+    4 [label="maximum'final",shape="plaintext",fontcolor="blue"];
     5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    6 [label="x'final\n(global)",shape="plaintext",fontcolor="red"];
     7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    8 [label="y'final\n(global)",shape="plaintext",fontcolor="red"];
+    10 [label="if x > y",shape="diamond"];
+    11 [label="maximum := x;"];
+    12 [label="return;"];
+    13 [label="maximum := y;"];
 
     1 ->  10 [arrowType="normal"];
-    1 ->  15 [arrowType="normal"];
-    3 ->  18 [arrowType="normal",color="red"];
+    5 ->  6 [arrowType="normal",color="red"];
+    5 ->  10 [arrowType="normal",color="red"];
     5 ->  11 [arrowType="normal",color="red"];
+    7 ->  8 [arrowType="normal",color="red"];
+    7 ->  10 [arrowType="normal",color="red"];
     7 ->  13 [arrowType="normal",color="red"];
     10 ->  11 [arrowType="normal"];
     10 ->  12 [arrowType="normal"];
     10 ->  13 [arrowType="normal"];
-    10 ->  14 [arrowType="normal"];
-    11 ->  12 [arrowType="normal",color="cornflowerblue"];
-    11 ->  14 [arrowType="normal",color="cornflowerblue"];
-    12 ->  16 [arrowType="normal",color="red"];
-    13 ->  12 [arrowType="normal",color="cornflowerblue"];
-    13 ->  14 [arrowType="normal",color="cornflowerblue"];
-    14 ->  8 [arrowType="normal",color="red"];
-    15 ->  16 [arrowType="normal"];
-    15 ->  17 [arrowType="normal"];
-    15 ->  18 [arrowType="normal"];
-    15 ->  19 [arrowType="normal"];
-    16 ->  17 [arrowType="normal",color="cornflowerblue"];
-    16 ->  19 [arrowType="normal",color="cornflowerblue"];
-    17 ->  6 [arrowType="normal",color="red"];
-    18 ->  17 [arrowType="normal",color="cornflowerblue"];
-    18 ->  19 [arrowType="normal",color="cornflowerblue"];
-    19 ->  4 [arrowType="normal",color="red"];
+    11 ->  4 [arrowType="normal",color="red"];
+    13 ->  4 [arrowType="normal",color="red"];
 }
 
 digraph G {
@@ -635,41 +305,50 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    3 [label="condition'initial\n(global)",shape="plaintext"];
+    4 [label="condition'final\n(global)",shape="plaintext",fontcolor="blue"];
     5 [label="x'initial\n(global)",shape="plaintext"];
     6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
     7 [label="y'initial\n(global)",shape="plaintext"];
     8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    10 [label="call swap_with_depends",shape="box"];
-    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    15 [label="call swap_with_depends",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    10 [label="if condition",shape="diamond"];
+    11 [label="condition := false;"];
+    12 [label="x := 2 {*} x;"];
+    13 [label="call mutual_recursion_b",shape="box"];
+    14 [label="global&nbsp;condition'in",shape="plaintext"];
+    15 [label="global&nbsp;x'in",shape="plaintext"];
+    16 [label="global&nbsp;y'in",shape="plaintext"];
+    17 [label="global&nbsp;condition'out",shape="plaintext"];
+    18 [label="global&nbsp;x'out",shape="plaintext"];
+    19 [label="global&nbsp;y'out",shape="plaintext"];
 
     1 ->  10 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
+    3 ->  10 [arrowType="normal",color="red"];
+    3 ->  14 [arrowType="normal",color="red"];
+    5 ->  12 [arrowType="normal",color="red"];
+    5 ->  15 [arrowType="normal",color="red"];
+    7 ->  8 [arrowType="normal",color="red"];
+    7 ->  16 [arrowType="normal",color="red"];
     10 ->  11 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    12 ->  14 [arrowType="normal"];
-    13 ->  12 [arrowType="normal"];
-    14 ->  15 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  18 [arrowType="normal"];
-    17 ->  19 [arrowType="normal"];
-    18 ->  17 [arrowType="normal"];
-    19 ->  2 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
+    11 ->  4 [arrowType="normal",color="red"];
+    12 ->  6 [arrowType="normal",color="red"];
+    12 ->  12 [arrowType="normal",color="red"];
+    13 ->  14 [arrowType="normal"];
+    13 ->  15 [arrowType="normal"];
+    13 ->  16 [arrowType="normal"];
+    13 ->  17 [arrowType="normal"];
+    13 ->  18 [arrowType="normal"];
+    13 ->  19 [arrowType="normal"];
+    14 ->  17 [arrowType="normal",color="cornflowerblue"];
+    14 ->  18 [arrowType="normal",color="cornflowerblue"];
+    14 ->  19 [arrowType="normal",color="cornflowerblue"];
+    15 ->  18 [arrowType="normal",color="cornflowerblue"];
+    16 ->  19 [arrowType="normal",color="cornflowerblue"];
+    17 ->  4 [arrowType="normal",color="red"];
+    18 ->  6 [arrowType="normal",color="red"];
+    19 ->  8 [arrowType="normal",color="red"];
 }
 
 digraph G {
@@ -716,38 +395,188 @@ digraph G {
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    3 [label="maximum'initial",shape="plaintext",fontcolor="red"];
-    4 [label="maximum'final",shape="plaintext",fontcolor="blue"];
+    3 [label="condition'initial\n(global)",shape="plaintext"];
+    4 [label="condition'final\n(global)",shape="plaintext",fontcolor="blue"];
     5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="red"];
+    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
     7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="red"];
-    10 [label="if x > y",shape="diamond"];
-    11 [label="maximum := x;"];
-    13 [label="maximum := y;"];
+    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="if condition",shape="diamond"];
+    11 [label="condition := false;"];
+    12 [label="y := 2 {*} y;"];
+    13 [label="call mutual_recursion_a",shape="box"];
+    14 [label="global&nbsp;condition'in",shape="plaintext"];
+    15 [label="global&nbsp;x'in",shape="plaintext"];
+    16 [label="global&nbsp;y'in",shape="plaintext"];
+    17 [label="global&nbsp;condition'out",shape="plaintext"];
+    18 [label="global&nbsp;x'out",shape="plaintext"];
+    19 [label="global&nbsp;y'out",shape="plaintext"];
 
     1 ->  10 [arrowType="normal"];
+    3 ->  10 [arrowType="normal",color="red"];
+    3 ->  14 [arrowType="normal",color="red"];
     5 ->  6 [arrowType="normal",color="red"];
-    5 ->  10 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    7 ->  8 [arrowType="normal",color="red"];
-    7 ->  10 [arrowType="normal",color="red"];
-    7 ->  13 [arrowType="normal",color="red"];
+    5 ->  15 [arrowType="normal",color="red"];
+    7 ->  12 [arrowType="normal",color="red"];
+    7 ->  16 [arrowType="normal",color="red"];
     10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
     10 ->  13 [arrowType="normal"];
     11 ->  4 [arrowType="normal",color="red"];
-    13 ->  4 [arrowType="normal",color="red"];
+    12 ->  8 [arrowType="normal",color="red"];
+    12 ->  12 [arrowType="normal",color="red"];
+    13 ->  14 [arrowType="normal"];
+    13 ->  15 [arrowType="normal"];
+    13 ->  16 [arrowType="normal"];
+    13 ->  17 [arrowType="normal"];
+    13 ->  18 [arrowType="normal"];
+    13 ->  19 [arrowType="normal"];
+    14 ->  17 [arrowType="normal",color="cornflowerblue"];
+    14 ->  18 [arrowType="normal",color="cornflowerblue"];
+    14 ->  19 [arrowType="normal",color="cornflowerblue"];
+    15 ->  18 [arrowType="normal",color="cornflowerblue"];
+    16 ->  19 [arrowType="normal",color="cornflowerblue"];
+    17 ->  4 [arrowType="normal",color="red"];
+    18 ->  6 [arrowType="normal",color="red"];
+    19 ->  8 [arrowType="normal",color="red"];
 }
 
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    3 [label="z'initial\n(global)",shape="plaintext"];
-    4 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="x'initial\n(global)",shape="plaintext"];
-    6 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="y'initial\n(global)",shape="plaintext"];
-    8 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  12 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    18 ->  17 [arrowType="normal"];
+    19 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  10 [arrowType="normal"];
+    1 ->  15 [arrowType="normal"];
+    3 ->  11 [arrowType="normal",color="red"];
+    5 ->  13 [arrowType="normal",color="red"];
+    7 ->  18 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
+    10 ->  14 [arrowType="normal"];
+    11 ->  12 [arrowType="normal",color="cornflowerblue"];
+    11 ->  14 [arrowType="normal",color="cornflowerblue"];
+    12 ->  16 [arrowType="normal",color="red"];
+    13 ->  12 [arrowType="normal",color="cornflowerblue"];
+    13 ->  14 [arrowType="normal",color="cornflowerblue"];
+    14 ->  6 [arrowType="normal",color="red"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  17 [arrowType="normal"];
+    15 ->  18 [arrowType="normal"];
+    15 ->  19 [arrowType="normal"];
+    16 ->  17 [arrowType="normal",color="cornflowerblue"];
+    16 ->  19 [arrowType="normal",color="cornflowerblue"];
+    17 ->  4 [arrowType="normal",color="red"];
+    18 ->  17 [arrowType="normal",color="cornflowerblue"];
+    18 ->  19 [arrowType="normal",color="cornflowerblue"];
+    19 ->  8 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap_with_depends",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap_with_depends",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  12 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    18 ->  17 [arrowType="normal"];
+    19 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
     10 [label="call swap_with_depends",shape="box"];
     11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
     12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
@@ -761,9 +590,9 @@ digraph G {
 
     1 ->  10 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
-    3 ->  18 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    7 ->  13 [arrowType="normal",color="red"];
+    3 ->  11 [arrowType="normal",color="red"];
+    5 ->  13 [arrowType="normal",color="red"];
+    7 ->  18 [arrowType="normal",color="red"];
     10 ->  11 [arrowType="normal"];
     10 ->  12 [arrowType="normal"];
     10 ->  13 [arrowType="normal"];
@@ -771,41 +600,191 @@ digraph G {
     11 ->  14 [arrowType="normal",color="cornflowerblue"];
     12 ->  16 [arrowType="normal",color="red"];
     13 ->  12 [arrowType="normal",color="cornflowerblue"];
-    14 ->  8 [arrowType="normal",color="red"];
+    14 ->  6 [arrowType="normal",color="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
     15 ->  19 [arrowType="normal"];
     16 ->  19 [arrowType="normal",color="cornflowerblue"];
-    17 ->  6 [arrowType="normal",color="red"];
+    17 ->  4 [arrowType="normal",color="red"];
     18 ->  17 [arrowType="normal",color="cornflowerblue"];
-    19 ->  4 [arrowType="normal",color="red"];
+    19 ->  8 [arrowType="normal",color="red"];
 }
 
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
-    3 [label="n'initial",shape="plaintext"];
-    4 [label="n'final",shape="plaintext",fontcolor="red"];
-    5 [label="fibonacci'initial",shape="plaintext",fontcolor="red"];
-    6 [label="fibonacci'final",shape="plaintext",fontcolor="blue"];
-    8 [label="if n < 3",shape="diamond"];
-    9 [label="return 1<<<1>>>;"];
-    10 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2)<<<integer(fibonacci(n {-} 1) {+} fibonacci (n {-} 2))>>>;"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
 
-    1 ->  8 [arrowType="normal"];
-    3 ->  4 [arrowType="normal",color="red"];
-    3 ->  8 [arrowType="normal",color="red"];
-    3 ->  10 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal"];
-    8 ->  10 [arrowType="normal"];
-    9 ->  6 [arrowType="normal",color="red"];
-    10 ->  6 [arrowType="normal",color="red"];
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  12 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    18 ->  17 [arrowType="normal"];
+    19 ->  2 [arrowType="normal"];
 }
 
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  10 [arrowType="normal"];
+    1 ->  15 [arrowType="normal"];
+    3 ->  11 [arrowType="normal",color="red"];
+    5 ->  13 [arrowType="normal",color="red"];
+    7 ->  18 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
+    10 ->  14 [arrowType="normal"];
+    11 ->  12 [arrowType="normal",color="cornflowerblue"];
+    11 ->  14 [arrowType="normal",color="cornflowerblue"];
+    12 ->  16 [arrowType="normal",color="red"];
+    13 ->  12 [arrowType="normal",color="cornflowerblue"];
+    13 ->  14 [arrowType="normal",color="cornflowerblue"];
+    14 ->  6 [arrowType="normal",color="red"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  17 [arrowType="normal"];
+    15 ->  18 [arrowType="normal"];
+    15 ->  19 [arrowType="normal"];
+    16 ->  17 [arrowType="normal",color="cornflowerblue"];
+    16 ->  19 [arrowType="normal",color="cornflowerblue"];
+    17 ->  4 [arrowType="normal",color="red"];
+    18 ->  17 [arrowType="normal",color="cornflowerblue"];
+    18 ->  19 [arrowType="normal",color="cornflowerblue"];
+    19 ->  8 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap_with_depends",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap_with_depends",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  12 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    18 ->  17 [arrowType="normal"];
+    19 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    10 [label="call swap_with_depends",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    13 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    14 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    15 [label="call swap_with_depends",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    19 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  10 [arrowType="normal"];
+    1 ->  15 [arrowType="normal"];
+    3 ->  11 [arrowType="normal",color="red"];
+    5 ->  13 [arrowType="normal",color="red"];
+    7 ->  18 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
+    10 ->  14 [arrowType="normal"];
+    11 ->  14 [arrowType="normal",color="cornflowerblue"];
+    12 ->  16 [arrowType="normal",color="red"];
+    13 ->  12 [arrowType="normal",color="cornflowerblue"];
+    14 ->  6 [arrowType="normal",color="red"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  17 [arrowType="normal"];
+    15 ->  18 [arrowType="normal"];
+    15 ->  19 [arrowType="normal"];
+    16 ->  19 [arrowType="normal",color="cornflowerblue"];
+    17 ->  4 [arrowType="normal",color="red"];
+    18 ->  17 [arrowType="normal",color="cornflowerblue"];
+    19 ->  8 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
     3 [label="x'initial",shape="plaintext"];
     4 [label="x'final",shape="plaintext",fontcolor="blue"];
     5 [label="y'initial",shape="plaintext"];
@@ -817,14 +796,15 @@ digraph G {
     12 [label="y := temp;"];
 
     1 ->  10 [arrowType="normal"];
-    1 ->  11 [arrowType="normal"];
-    1 ->  12 [arrowType="normal"];
-    3 ->  10 [arrowType="normal",color="red"];
-    5 ->  11 [arrowType="normal",color="red"];
-    10 ->  8 [arrowType="normal",color="red"];
-    10 ->  12 [arrowType="normal",color="red"];
-    11 ->  4 [arrowType="normal",color="red"];
-    12 ->  6 [arrowType="normal",color="red"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
 }
 
 digraph G {
@@ -875,5 +855,29 @@ digraph G {
     10 ->  11 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
     12 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="blue"];
+    7 [label="temp'initial",shape="plaintext",fontcolor="red"];
+    8 [label="temp'final",shape="plaintext"];
+    10 [label="temp := x;"];
+    11 [label="x := y;"];
+    12 [label="y := temp;"];
+
+    1 ->  10 [arrowType="normal"];
+    1 ->  11 [arrowType="normal"];
+    1 ->  12 [arrowType="normal"];
+    3 ->  10 [arrowType="normal",color="red"];
+    5 ->  11 [arrowType="normal",color="red"];
+    10 ->  8 [arrowType="normal",color="red"];
+    10 ->  12 [arrowType="normal",color="red"];
+    11 ->  4 [arrowType="normal",color="red"];
+    12 ->  6 [arrowType="normal",color="red"];
 }
 
