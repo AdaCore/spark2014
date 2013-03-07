@@ -236,10 +236,11 @@ def check_dot_files(opt=None):
     """Call do_flow"""
     do_flow()
 
-    """Create a list that contains all dot files lying under directory gnatprove"""
+    # Create a list that contains all dot files lying under directory
+    # gnatprove.
     dot_files = glob.glob('gnatprove/*.dot')
 
-    """Dump the contents of all dot files on stdout"""
+    # Dump the contents of all dot files on stdout
     for dot_file in sorted(dot_files):
         cat(dot_file)
 
