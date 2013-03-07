@@ -49,7 +49,7 @@ coverage: obj/smissing.o force
 	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
 	  -o ../../../install/bin/$(TOOL_NAME) \
 	  -cargs -fprofile-arcs -ftest-coverage \
-	  -largs smissing.o -fprofile-arcs
+	  -largs smissing.o -fprofile-arcs -ftest-coverage
 
 
 obj/smissing.o: ../smissing.c
