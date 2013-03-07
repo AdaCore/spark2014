@@ -1058,19 +1058,24 @@ package body Gnat2Why.Subprograms is
    ------------------------------------
 
    function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id is
-      PPC : Node_Id;
+      PPC  : Node_Id;
+      Post : Node_Id := Empty;
 
    begin
+      --  Pre- and postconditions are stored in reverse order in
+      --  Pre_Post_Conditions, hence retrieve the last postcondition in this
+      --  list to get the first one in source code.
+
       PPC := Pre_Post_Conditions (Contract (E));
       while Present (PPC) loop
          if Pragma_Name (PPC) = Name_Postcondition then
-            return Expression (First (Pragma_Argument_Associations (PPC)));
+            Post := Expression (First (Pragma_Argument_Associations (PPC)));
          end if;
 
          PPC := Next_Pragma (PPC);
       end loop;
 
-      return Empty;
+      return Post;
    end Get_Location_For_Postcondition;
 
    ----------------------------------------
