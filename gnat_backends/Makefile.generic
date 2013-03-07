@@ -4,11 +4,11 @@
 # number of processors
 PROCS=0
 
-# for debugging/development
-CFLAGS=-O0 -gnata -gnat12 -gnatg
-
-# for production
-# CFLAGS=-O2 -gnatpn
+# CFLAGS is only used for debugging/development, in targets build and coverage.
+# ADAFLAGS is used for production, in targets gnat1 and gnat2why.
+# -gnatec expects an absolute path, so we assume a compilation started from the
+# top Makefile in hi-lite repository for the value of $(PWD)
+CFLAGS=-O0 -gnata -gnat12 -gnatg -gnatVa -gnatec=$(PWD)/gnat_backends/gnat2why.adc
 
 LOCAL_OBJ=obj
 RM=rm -rf
