@@ -1,4 +1,4 @@
-p.adb:15:9: overflow check not proved
+p.adb:15:9: info: overflow check proved
 p.adb:20:4: info: assertion proved
 p.adb:20:69: info: overflow check proved
 p.adb:23:7: info: loop invariant initialization proved

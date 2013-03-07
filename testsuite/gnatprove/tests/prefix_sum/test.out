@@ -70,7 +70,7 @@ prefixsum.ads:27:52: overflow check not proved
 prefixsum.ads:28:28: overflow check not proved
 prefixsum.ads:28:36: overflow check not proved
 prefixsum.ads:28:44: overflow check not proved
-prefixsum.ads:29:25: division check not proved
+prefixsum.ads:29:25: info: division check proved
 prefixsum.ads:30:28: overflow check not proved
 prefixsum.ads:30:34: index check not proved
 prefixsum.ads:30:38: overflow check not proved

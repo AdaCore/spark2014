@@ -98,11 +98,11 @@ fib.ads:25:18: postcondition not proved, requires p1 = p2
 fib.ads:33:18: postcondition not proved, requires p1 = p1
 fib.ads:41:50: index check not proved
 fib.ads:41:58: index check not proved
-fib.ads:42:55: info: index check proved
+fib.ads:42:55: index check not proved
 fib.ads:42:68: index check not proved
 fib.ads:43:49: postcondition not proved, requires A1(I) = A2(I)
 fib.ads:51:49: index check not proved
 fib.ads:51:57: index check not proved
-fib.ads:52:54: info: index check proved
-fib.ads:52:66: info: index check proved
+fib.ads:52:54: index check not proved
+fib.ads:52:66: index check not proved
 fib.ads:53:49: postcondition not proved, requires A1(I) = A2(I)

@@ -1,5 +1,5 @@
-check.ads:3:37: division check not proved
-check.ads:3:37: overflow check not proved
-check.ads:3:70: division check not proved
-check.ads:3:70: overflow check not proved
+check.ads:3:37: info: division check proved
+check.ads:3:37: info: overflow check proved
+check.ads:3:70: info: division check proved
+check.ads:3:70: info: overflow check proved
 check.ads:4:32: info: postcondition proved
