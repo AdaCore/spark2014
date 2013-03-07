@@ -1,2 +1,2 @@
 lrm/code/*/*/* no-precommit-check
-tdp/IntegrationTests/code/* no-precommit-check
+integration_tests/code/* no-precommit-check
