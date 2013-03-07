@@ -736,10 +736,17 @@ package body Flow is
          return Rv;
       end EDI;
    begin
-      G.Write_Pdf_File
-        (Filename  => Filename,
-         Node_Info => NDI'Access,
-         Edge_Info => EDI'Access);
+      if Debug_Flag_Dot_ZZ then
+         G.Write_Pdf_File
+           (Filename  => Filename,
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
+      else
+         G.Write_Dot_File
+           (Filename  => Filename,
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
+      end if;
    end Print_Graph;
 
    -------------------------
@@ -773,7 +780,7 @@ package body Flow is
 
       --  We print this graph first in cast the other algorithms
       --  barf.
-      if Debug_Flag_Dot_ZZ and Debug_Print_CFG then
+      if Debug_Print_CFG then
          Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cfg",
                       G            => FA.CFG,
                       Start_Vertex => FA.Start_Vertex,
@@ -786,25 +793,23 @@ package body Flow is
       Program_Dependence_Graph.Create (FA);
 
       --  Now we print everything else.
-      if Debug_Flag_Dot_ZZ then
-         if Debug_Print_Intermediates then
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
-                         G            => FA.DDG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
+      if Debug_Print_Intermediates then
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
+                      G            => FA.DDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
 
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
-                         G            => FA.CDG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
-         end if;
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
+                      G            => FA.CDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
+      end if;
 
-         if Debug_Print_PDG then
-            Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
-                         G            => FA.PDG,
-                         Start_Vertex => FA.Start_Vertex,
-                         End_Vertex   => FA.End_Vertex);
-         end if;
+      if Debug_Print_PDG then
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
+                      G            => FA.PDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
       end if;
 
       return FA;
