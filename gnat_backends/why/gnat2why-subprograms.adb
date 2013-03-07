@@ -838,7 +838,7 @@ package body Gnat2Why.Subprograms is
       Cur_Spec : W_Expr_Id := Why_Empty;
       PPC      : Node_Id;
    begin
-      PPC := Spec_PPC_List (Contract (E));
+      PPC := Pre_Post_Conditions (Contract (E));
       while Present (PPC) loop
          if Pragma_Name (PPC) = Kind then
             declare
@@ -1061,7 +1061,7 @@ package body Gnat2Why.Subprograms is
       PPC : Node_Id;
 
    begin
-      PPC := Spec_PPC_List (Contract (E));
+      PPC := Pre_Post_Conditions (Contract (E));
       while Present (PPC) loop
          if Pragma_Name (PPC) = Name_Postcondition then
             return Expression (First (Pragma_Argument_Associations (PPC)));

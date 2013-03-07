@@ -2286,7 +2286,7 @@ package body Alfa.Definition is
 
       Push_Logic_Scope;
 
-      Prag := Spec_PPC_List (Contract (Id));
+      Prag := Pre_Post_Conditions (Contract (Id));
       while Present (Prag) loop
          Expr := Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
          Mark (Expr);

@@ -682,7 +682,7 @@ package body Why.Inter is
                Has_Effects : constant Boolean :=
                  Has_Global_Reads (Decl_E)
                    or else Has_Global_Writes (Decl_E)
-                   or else Present (Spec_PPC_List (Contract (Decl_E)));
+                   or else Present (Pre_Post_Conditions (Contract (Decl_E)));
             begin
                --  Subprograms without read/write global effects are declared
                --  in the "type" Why files instead of the "context" Why files,

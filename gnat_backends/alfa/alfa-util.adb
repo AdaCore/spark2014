@@ -418,7 +418,7 @@ package body Alfa.Util is
    -----------------------------------
 
    function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id is
-      Prag : Node_Id := Spec_CTC_List (Contract (E));
+      Prag : Node_Id := Contract_Test_Cases (Contract (E));
    begin
       while Present (Prag) loop
          if Pragma_Name (Prag) = Name_Contract_Cases then

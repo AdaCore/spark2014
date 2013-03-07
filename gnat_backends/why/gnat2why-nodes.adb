@@ -320,7 +320,7 @@ package body Gnat2Why.Nodes is
    function Has_Precondition (E : Entity_Id) return Boolean is
       PPC      : Node_Id;
    begin
-      PPC := Spec_PPC_List (Contract (E));
+      PPC := Pre_Post_Conditions (Contract (E));
       while Present (PPC) loop
          if Pragma_Name (PPC) = Name_Precondition then
             return True;
