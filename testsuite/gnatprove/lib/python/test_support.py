@@ -233,12 +233,8 @@ def grep(regex, strlist, invert=False):
             print line
 
 def check_dot_files(opt=None):
-    """Call gnatprove with --mode=flow"""
-    if opt is None:
-        opt = []
-    opt += ["-P", "test.gpr", "--quiet", "--mode=flow"]
-    opt += ["-j%d"%(parallel_procs)]
-    gnatprove(opt)
+    """Call do_flow"""
+    do_flow()
 
     """Create a list that contains all dot files lying under directory gnatprove"""
     dot_files = glob.glob('gnatprove/*.dot')
