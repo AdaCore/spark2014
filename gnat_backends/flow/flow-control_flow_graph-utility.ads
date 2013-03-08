@@ -89,11 +89,11 @@ package Flow.Control_Flow_Graph.Utility is
    --  used is calculated automatically.
 
    function Make_Variable_Attributes
-     (E       : Entity_Id;
-      Variant : Initial_Or_Final_Variant;
-      E_Loc   : Node_Or_Entity_Id := Empty)
+     (F_Ent : Flow_Id;
+      E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
-      with Post => not Make_Variable_Attributes'Result.Is_Null_Node and
+      with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field,
+           Post => not Make_Variable_Attributes'Result.Is_Null_Node and
                    not Make_Variable_Attributes'Result.Is_Program_Node and
                    not Make_Variable_Attributes'Result.Is_Global;
    --  Create attributes for the initial_value and final_use

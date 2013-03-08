@@ -98,7 +98,7 @@ package body Flow.Analysis is
       K : constant Flow_Id      := G.Get_Key (Loc);
       A : constant V_Attributes := G.Get_Attributes (Loc);
    begin
-      pragma Assert (F.Kind = Direct_Mapping);
+      pragma Assert (F.Kind in Direct_Mapping | Record_Field);
 
       if A.Error_Location /= Empty then
          --  Try the helpful location first.

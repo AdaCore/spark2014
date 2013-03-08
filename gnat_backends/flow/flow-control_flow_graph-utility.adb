@@ -21,9 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  with Treepr; use Treepr;
-
---  with Why;
+with Why;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -173,37 +171,42 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------
 
    function Make_Variable_Attributes
-     (E       : Entity_Id;
-      Variant : Initial_Or_Final_Variant;
-      E_Loc   : Node_Or_Entity_Id := Empty)
+     (F_Ent : Flow_Id;
+      E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      A : V_Attributes := Null_Attributes;
+      A          : V_Attributes       := Null_Attributes;
+      Entire_Var : constant Entity_Id := F_Ent.Node;
    begin
       A.Error_Location     := E_Loc;
-      A.Is_Constant        := Ekind (E) in E_In_Parameter | E_Loop_Parameter;
-      A.Is_Function_Return := Ekind (E) = E_Function;
+      A.Is_Constant        :=
+        Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
+      A.Is_Function_Return := Ekind (Entire_Var) = E_Function;
 
-      case Variant is
+      case F_Ent.Variant is
          when Initial_Value =>
-            A.Is_Initialised := Ekind (E) in
+            A.Is_Initialised := Ekind (Entire_Var) in
               E_In_Out_Parameter |
                  E_In_Parameter |
                  E_Loop_Parameter;
 
-            A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
+            A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 
-            A.Variables_Defined := Flow_Id_Sets.To_Set (Direct_Mapping_Id (E));
+            A.Variables_Defined := Flow_Id_Sets.To_Set (Change_Variant
+                                                          (F_Ent, Normal_Use));
 
          when Final_Value =>
-            A.Is_Export := Ekind (E) in
+            A.Is_Export := Ekind (Entire_Var) in
               E_In_Out_Parameter |
                  E_Out_Parameter |
                  E_Function;
 
-            A.Is_Loop_Parameter := Ekind (E) = E_Loop_Parameter;
+            A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 
-            A.Variables_Used := Flow_Id_Sets.To_Set (Direct_Mapping_Id (E));
+            A.Variables_Used := Flow_Id_Sets.To_Set (Change_Variant
+                                                       (F_Ent, Normal_Use));
+         when others =>
+            raise Why.Unexpected_Node;
       end case;
 
       return A;

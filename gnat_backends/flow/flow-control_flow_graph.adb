@@ -114,6 +114,34 @@ package body Flow.Control_Flow_Graph is
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
 
+   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
+   --  Returns a set of flow_ids for all parts of the unique entity
+   --  for E. For records this includes all subcomponents, for
+   --  everything else this is just the variable E.
+
+   function All_Record_Components
+     (Entire_Var : Entity_Id)
+      return Flow_Id_Sets.Set
+      with Pre => Ekind (Etype (Entire_Var)) = E_Record_Type;
+   --  Given the record Entire_Var, return a set with all components.
+   --  So, for example we might return:
+   --     * p.x
+   --     * p.r.a
+   --     * p.r.b
+
+   function All_Record_Components
+     (The_Record_Field : Flow_Id)
+      return Flow_Id_Sets.Set
+      with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
+                  and then Ekind (Etype
+                                    (Get_Direct_Mapping_Id
+                                       (The_Record_Field))) = E_Record_Type;
+   --  As above but only include fields that are equal to Record_Field or are
+   --  nested under it. For example if Record_Field = p.r for the above
+   --  record, then we will get the following set:
+   --     * p.r.a
+   --     * p.r.b
+
    procedure Do_Assignment_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -251,30 +279,34 @@ package body Flow.Control_Flow_Graph is
 
    procedure Create_Initial_And_Final_Vertices
      (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs) is
+      FA : in out Flow_Analysis_Graphs)
+   is
       V : Flow_Graphs.Vertex_Id;
    begin
-      --  Setup the n'initial vertex. Note that initialisation for
-      --  variables is detected (and set) when building the flow graph
-      --  for declarative parts.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (Unique_Entity (E), Initial_Value),
-         Make_Variable_Attributes (E       => Unique_Entity (E),
-                                   Variant => Initial_Value,
-                                   E_Loc   => E),
-         V);
-      Linkup (FA.CFG, V, FA.Start_Vertex);
 
-      --  Setup the n'final vertex.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (Unique_Entity (E), Final_Value),
-         Make_Variable_Attributes (E       => Unique_Entity (E),
-                                   Variant => Final_Value,
-                                   E_Loc   => E),
-         V);
-      Linkup (FA.CFG, FA.End_Vertex, V);
+      for F of Flatten_Variable (E) loop
+         --  Setup the n'initial vertex. Note that initialisation for
+         --  variables is detected (and set) when building the flow graph
+         --  for declarative parts.
+         FA.CFG.Add_Vertex
+           (Change_Variant (F, Initial_Value),
+            Make_Variable_Attributes (F_Ent => Change_Variant
+                                        (F, Initial_Value),
+                                      E_Loc => E),
+            V);
+         Linkup (FA.CFG, V, FA.Start_Vertex);
 
-      FA.All_Vars.Include (Direct_Mapping_Id (Unique_Entity (E)));
+         --  Setup the n'final vertex.
+         FA.CFG.Add_Vertex
+           (Change_Variant (F, Final_Value),
+            Make_Variable_Attributes (F_Ent => Change_Variant
+                                        (F, Final_Value),
+                                      E_Loc => E),
+            V);
+         Linkup (FA.CFG, FA.End_Vertex, V);
+
+         FA.All_Vars.Include (F);
+      end loop;
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
@@ -305,6 +337,116 @@ package body Flow.Control_Flow_Graph is
 
       FA.All_Vars.Include (F);
    end Create_Initial_And_Final_Vertices;
+
+   ----------------------
+   -- Flatten_Variable --
+   ----------------------
+
+   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set
+   is
+      U : constant Entity_Id := Unique_Entity (E);
+   begin
+      case Ekind (Etype (U)) is
+         when Discrete_Or_Fixed_Point_Kind | Array_Kind =>
+            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
+
+         when E_Record_Type =>
+            return All_Record_Components (Entire_Var => U);
+
+         when others =>
+            Print_Node_Briefly (Etype (E));
+            raise Why.Not_Implemented;
+      end case;
+   end Flatten_Variable;
+
+   ---------------------------
+   -- All_Record_Components --
+   ---------------------------
+
+   function All_Record_Components
+     (Entire_Var : Entity_Id)
+      return Flow_Id_Sets.Set
+   is
+   begin
+      return All_Record_Components (Direct_Mapping_Id (Entire_Var));
+   end All_Record_Components;
+
+   function All_Record_Components
+     (The_Record_Field : Flow_Id)
+      return Flow_Id_Sets.Set
+   is
+      Entire_Var : constant Entity_Id :=
+        Get_Direct_Mapping_Id (The_Record_Field);
+
+      All_Comp   : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
+
+      procedure Possibly_Include (F : Flow_Id);
+      --  Include F in All_Comp if it is Under or a subcomponent of
+      --  Under.
+
+      procedure Process_Record (R_Type : Entity_Id;
+                                Comp   : Entity_Lists.Vector)
+      with Pre => Ekind (R_Type) = E_Record_Type;
+      --  Recursively go through the record's components, adding
+      --  everything to All_Comp.
+
+      procedure Possibly_Include (F : Flow_Id)
+      is
+      begin
+         --  ??? Direct access into flow_id, should be removed somehow.
+         if F.Component.Length < The_Record_Field.Component.Length then
+            return;
+         end if;
+
+         for I in Natural
+           range 1 .. Natural (The_Record_Field.Component.Length)
+         loop
+            if The_Record_Field.Component (I) /= F.Component (I) then
+               return;
+            end if;
+         end loop;
+
+         All_Comp.Include (F);
+      end Possibly_Include;
+
+      procedure Process_Record (R_Type : Entity_Id;
+                                Comp   : Entity_Lists.Vector)
+      is
+         C : Entity_Id;
+         F : Flow_Id;
+      begin
+         --  Make a vertex for each subcomponent, unless its a
+         --  record. If we have a record we recurse instead.
+         C := First_Component (R_Type);
+         while C /= Empty loop
+            declare
+               Tmp : Entity_Lists.Vector := Comp;
+            begin
+               Tmp.Append (C);
+
+               case Ekind (Etype (C)) is
+                  when E_Record_Type =>
+                     Process_Record (Etype (C), Tmp);
+
+                  when others =>
+                     F := Flow_Id'(Kind      => Record_Field,
+                                   Variant   => Normal_Use,
+                                   Node      => Entire_Var,
+                                   Name      => Null_Entity_Name,
+                                   Component => Tmp);
+                     Possibly_Include (F);
+               end case;
+            end;
+
+            C := Next_Component (C);
+         end loop;
+      end Process_Record;
+
+   begin
+      Process_Record (Etype (Entire_Var),
+                      Entity_Lists.Empty_Vector);
+      return All_Comp;
+   end All_Record_Components;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -346,13 +488,13 @@ package body Flow.Control_Flow_Graph is
                V_Def_LHS := Get_Variable_Set (LHS);
             when N_Selected_Component =>
                --  R.A :=
-               V_Def_LHS := Get_Variable_Set (Prefix (LHS));
-               V_Also_Used := V_Def_LHS;
+               V_Def_LHS := Get_Variable_Set (LHS);
             when N_Indexed_Component =>
                --  R.A (...) :=
                V_Def_LHS  := Get_Variable_Set (Prefix (LHS));
                V_Used_LHS := Get_Variable_Set (Expressions (LHS));
                V_Also_Used := V_Def_LHS;
+               raise Why.Not_Implemented;
             when others =>
                raise Why.Not_Implemented;
          end case;
@@ -362,8 +504,6 @@ package body Flow.Control_Flow_Graph is
       --  Print_Node_Subtree (N);
       --  Print_Node_Set (V_Def_LHS);
       --  Print_Node_Set (V_Used_LHS or V_Used_RHS or V_Also_Used);
-
-      pragma Assert (V_Def_LHS.Length = 1);
 
       --  We have a vertex
       FA.CFG.Add_Vertex
@@ -732,8 +872,7 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
-                 (Var_Def => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (LP)),
+                 (Var_Def => Flatten_Variable (LP),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -749,8 +888,7 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
-                 (Var_Def => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (LP)),
+                 (Var_Def => Flatten_Variable (LP),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
                V);
@@ -769,8 +907,7 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Basic_Attributes
-                 (Var_Def => Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (LP)),
+                 (Var_Def => Flatten_Variable (LP),
                   Var_Use => Get_Variable_Set (DSD),
                   Loops   => Ctx.Current_Loops,
                   E_Loc   => N),
@@ -856,8 +993,7 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def => Flow_Id_Sets.To_Set (Direct_Mapping_Id
-                                                 (Defining_Identifier (N))),
+              (Var_Def => Flatten_Variable (Defining_Identifier (N)),
                Var_Use => Get_Variable_Set (Expression (N)),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
@@ -964,8 +1100,7 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def => Flow_Id_Sets.To_Set (Direct_Mapping_Id
-                                                 (FA.Subprogram)),
+              (Var_Def => Flatten_Variable (FA.Subprogram),
                Var_Use => Get_Variable_Set (Expression (N)),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
@@ -1347,8 +1482,7 @@ package body Flow.Control_Flow_Graph is
                        E_In_Parameter |
                        E_In_Out_Parameter |
                        E_Constant =>
-                        VS.Include (Direct_Mapping_Id
-                                      (Unique_Entity (Entity (N))));
+                        VS.Union (Flatten_Variable (Entity (N)));
                      when others =>
                         null;
                   end case;
@@ -1362,11 +1496,35 @@ package body Flow.Control_Flow_Graph is
                     E_In_Parameter |
                     E_In_Out_Parameter |
                     E_Constant =>
-                     VS.Include (Direct_Mapping_Id
-                                   (Unique_Entity (N)));
+                     VS.Union (Flatten_Variable (N));
                   when others =>
                      null;
                end case;
+
+            when N_Selected_Component =>
+               declare
+                  P : Node_Id := N;
+               begin
+                  --  Jump up until we hit a prefix which is not just
+                  --  another component.
+                  while Nkind (P) = N_Selected_Component loop
+                     P := Prefix (P);
+                  end loop;
+
+                  case Nkind (P) is
+                     when N_Identifier =>
+                        --  R.X.Y.Z
+                        VS.Union (All_Record_Components (Record_Field_Id (N)));
+                        return Skip;
+
+                     when others =>
+                        raise Why.Not_Implemented;
+                  end case;
+               end;
+
+            when N_Indexed_Component =>
+               raise Why.Not_Implemented;
+
             when others =>
                null;
          end case;
