@@ -1,7 +1,6 @@
-test.adb:39:04: function "No_Return" might not return
+test.adb:39:04: function "No_Return" might not return [noreturn]
 
-   compilation of test.adb failed
+compilation of test.adb failed
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
-

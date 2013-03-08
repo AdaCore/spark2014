@@ -1,7 +1,7 @@
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
-admin.adb:121:13: info: assertion proved
+admin.adb:121:13: assertion not proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
 admin.adb:137:16: info: loop invariant preservation proved
@@ -9,7 +9,7 @@ admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved
 admin.ads:103:50: info: postcondition proved
-admin.ads:145:31: info: postcondition proved
+admin.ads:145:31: postcondition not proved
 admin.ads:163:50: info: postcondition proved
 admin.ads:191:7: info: precondition proved
 admin.ads:193:57: postcondition not proved
@@ -17,9 +17,9 @@ admin.ads:217:26: info: postcondition proved
 admintoken.adb:268:33: info: range check proved
 admintoken.ads:125:45: info: postcondition proved
 admintoken.ads:79:44: info: postcondition proved
-alarm-interfac.ads:54:26: postcondition not proved, requires IsAlarming
-alarm-interfac.ads:70:26: postcondition not proved, requires not IsAlarming
-alarm.ads:82:49: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= IsAlarming
+alarm-interfac.ads:54:26: postcondition not proved, requires (IsAlarming)
+alarm-interfac.ads:70:26: postcondition not proved, requires not (IsAlarming)
+alarm.ads:82:49: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:1000:50: range check not proved
 auditlog.adb:1002:44: range check not proved
 auditlog.adb:1085:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
@@ -36,18 +36,18 @@ auditlog.adb:1107:10: assertion not proved, requires LogFileEntries(CurrentLogFi
 auditlog.adb:1108:10: assertion not proved, requires UsedLogFiles.Length = LogFileCountT'last
 auditlog.adb:1117:7: assertion not proved
 auditlog.adb:1119:47: range check not proved
-auditlog.adb:1119:50: info: overflow check proved
-auditlog.adb:1119:69: info: overflow check proved
+auditlog.adb:1119:50: overflow check not proved
+auditlog.adb:1119:69: overflow check not proved
 auditlog.adb:1494:14: info: range check proved
 auditlog.adb:1649:22: precondition not proved
 auditlog.adb:1688:13: assertion not proved
-auditlog.adb:1693:53: info: range check proved
-auditlog.adb:1693:56: info: overflow check proved
+auditlog.adb:1693:53: range check not proved
+auditlog.adb:1693:56: overflow check not proved
 auditlog.adb:1693:75: overflow check not proved
-auditlog.adb:1723:52: info: range check proved
+auditlog.adb:1723:52: range check not proved
 auditlog.adb:1733:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1735:47: range check not proved
-auditlog.adb:1735:50: info: overflow check proved
+auditlog.adb:1735:50: overflow check not proved
 auditlog.adb:1735:69: overflow check not proved
 auditlog.adb:1825:10: assertion not proved
 auditlog.adb:1828:52: info: range check proved
@@ -145,7 +145,7 @@ clock.adb:82:12: index check not proved
 clock.adb:82:56: info: division check proved
 clock.adb:83:20: info: division check proved
 configdata.adb:1062:30: info: division check proved
-configdata.adb:1064:59: info: range check proved
+configdata.adb:1064:59: range check not proved
 configdata.adb:1064:72: info: division check proved
 configdata.adb:1065:72: info: division check proved
 configdata.adb:1068:31: info: division check proved
@@ -170,25 +170,25 @@ configdata.adb:380:45: info: overflow check proved
 configdata.adb:380:50: info: overflow check proved
 configdata.adb:380:68: info: range check proved
 configdata.adb:416:38: info: range check proved
-configdata.adb:723:23: info: range check proved
+configdata.adb:723:23: range check not proved
 configdata.adb:729:53: info: index check proved
 configdata.adb:729:75: info: index check proved
 crypto.adb:331:24: range check not proved
 crypto.adb:669:38: info: range check proved
 display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
-display.adb:138:30: info: index check proved
-display.adb:139:30: info: index check proved
+display.adb:138:30: index check not proved
+display.adb:139:30: index check not proved
 display.adb:140:32: range check not proved
 display.adb:143:11: info: range check proved
 display.adb:148:33: index check not proved
-display.adb:148:33: info: overflow check proved
+display.adb:148:33: overflow check not proved
 display.adb:150:32: range check not proved
 door.ads:160:32: postcondition not proved
 door.ads:219:50: postcondition not proved
 door.ads:274:45: postcondition not proved
 enclave.adb:1046:15: precondition not proved
-enclave.adb:109:18: precondition not proved
+enclave.adb:109:18: info: precondition proved
 enclave.adb:1189:15: precondition not proved
 enclave.adb:1368:12: precondition not proved
 enclave.adb:1885:17: precondition not proved
@@ -196,16 +196,16 @@ enclave.adb:288:16: precondition not proved
 enclave.adb:2956:27: precondition not proved
 enclave.adb:2965:21: precondition not proved
 enclave.adb:2966:42: info: range check proved
-enclave.adb:638:48: info: precondition proved
+enclave.adb:638:48: precondition not proved
 enclave.ads:119:35: postcondition not proved
 enclave.ads:227:35: postcondition not proved
 enclave.ads:291:34: postcondition not proved
 enclave.ads:576:19: info: precondition proved
 enclave.ads:585:19: info: precondition proved
 enclave.ads:590:24: info: precondition proved
-enclave.ads:621:19: info: precondition proved
-enclave.ads:630:19: info: precondition proved
-enclave.ads:635:24: info: precondition proved
+enclave.ads:621:19: precondition not proved
+enclave.ads:630:19: precondition not proved
+enclave.ads:635:24: precondition not proved
 enclave.ads:648:12: postcondition not proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
@@ -213,7 +213,7 @@ file.adb:413:39: overflow check not proved
 file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
-file.adb:422:39: info: overflow check proved
+file.adb:422:39: overflow check not proved
 file.adb:554:14: info: range check proved
 file.adb:584:14: info: range check proved
 file.adb:832:14: info: range check proved
@@ -224,10 +224,10 @@ keystore.adb:203:33: index check not proved
 keystore.adb:203:33: overflow check not proved
 keystore.adb:203:49: overflow check not proved
 keystore.adb:220:52: info: division check proved
-keystore.adb:223:14: info: range check proved
+keystore.adb:223:14: range check not proved
 keystore.adb:250:36: range check not proved
 keystore.ads:255:65: postcondition not proved
-keystore.ads:275:26: postcondition not proved, requires not PrivateKeyPresent
+keystore.ads:275:26: postcondition not proved, requires not (PrivateKeyPresent)
 latch-interfac.ads:45:35: postcondition not proved, requires isLocked or Fault
 latch-interfac.ads:61:39: postcondition not proved, requires not isLocked or Fault
 latch.ads:109:53: postcondition not proved
@@ -237,7 +237,7 @@ msgproc.adb:106:49: overflow check not proved
 msgproc.adb:110:20: index check not proved
 msgproc.adb:114:49: info: range check proved
 msgproc.adb:127:52: overflow check not proved
-msgproc.adb:130:26: info: range check proved
+msgproc.adb:130:26: range check not proved
 msgproc.adb:130:52: overflow check not proved
 msgproc.adb:34:13: info: range check proved
 msgproc.adb:38:7: info: range check proved
@@ -246,7 +246,7 @@ msgproc.adb:84:7: info: range check proved
 msgproc.adb:89:11: info: range check proved
 msgproc.adb:91:17: index check not proved
 msgproc.adb:97:45: overflow check not proved
-poll.ads:151:51: info: postcondition proved
+poll.ads:151:51: postcondition not proved
 screen-interfac.adb:7:14: info: range check proved
 screen.adb:455:10: info: range check proved
 screen.adb:457:37: index check not proved
@@ -256,11 +256,11 @@ screen.adb:540:10: info: range check proved
 screen.adb:561:10: info: range check proved
 screen.adb:813:10: info: range check proved
 spark_io.adb:440:13: info: range check proved
-spark_io.adb:447:26: info: overflow check proved
+spark_io.adb:447:26: overflow check not proved
 spark_io.adb:447:26: range check not proved
 spark_io.adb:450:22: overflow check not proved
 spark_io.adb:451:30: index check not proved
-spark_io.adb:456:26: info: overflow check proved
+spark_io.adb:456:26: overflow check not proved
 spark_io.adb:456:26: range check not proved
 stats.adb:104:47: info: overflow check proved
 stats.adb:53:57: info: overflow check proved

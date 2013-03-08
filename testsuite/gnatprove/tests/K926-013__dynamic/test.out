@@ -19,4 +19,4 @@ dynamic.adb:7:15: info: range check proved
 dynamic.adb:8:15: info: range check proved
 dynamic.adb:9:15: info: range check proved
 dynamic.ads:7:23: info: overflow check proved
-dynamic.ads:7:57: postcondition not proved
+dynamic.ads:7:27: postcondition not proved

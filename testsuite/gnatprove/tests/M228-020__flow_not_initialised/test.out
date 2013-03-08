@@ -1,9 +1,9 @@
-test.adb:18:23: formal parameter "B" might not be set
-test.adb:30:23: formal parameter "B" might not be set
-test.adb:31:23: formal parameter "C" might not be set
+test.adb:18:23: formal parameter "B" might not be set [uninitialized]
+test.adb:30:23: formal parameter "B" might not be set [uninitialized]
+test.adb:31:23: formal parameter "C" might not be set [uninitialized]
+test.adb:31:23: "C" is not used
 
-   compilation of test.adb failed
+compilation of test.adb failed
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
-

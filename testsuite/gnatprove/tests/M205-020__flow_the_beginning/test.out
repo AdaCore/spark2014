@@ -1,14 +1,13 @@
 foo.adb:3:16: ineffective import
-foo.adb:4:16: may never be initialized
+foo.adb:4:16: formal parameter "Z" might not be set [uninitialized]
 foo.adb:6:04: may never be initialized
 foo.adb:9:04: ineffective statement
 foo.adb:10:09: ineffective statement
 foo.adb:12:09: ineffective statement
-foo.adb:12:09: use of uninitialized variable "Z"
-foo.adb:15:04: use of uninitialized variable "B"
+foo.adb:12:09: use of uninitialized variable "Z" [uninitialized]
+foo.adb:15:04: use of uninitialized variable "B" [uninitialized]
 
-   compilation of foo.adb failed
+compilation of foo.adb failed
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
-

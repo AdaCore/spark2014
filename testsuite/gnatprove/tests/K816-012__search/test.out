@@ -16,8 +16,8 @@ search.adb:3:13: info: range check proved
 search.adb:45:12: info: range check proved
 search.adb:53:19: info: index check proved
 search.adb:53:51: info: index check proved
+search.ads:13:36: info: postcondition proved
 search.ads:13:50: index check not proved
-search.ads:14:36: info: postcondition proved
 search.ads:14:50: index check not proved
 search.ads:24:44: info: postcondition proved
 search.ads:24:53: info: index check proved

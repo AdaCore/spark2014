@@ -1,7 +1,7 @@
 natural_set.adb:17:31: info: range check proved
 natural_set.adb:18:16: info: index check proved
-natural_set.ads:11:50: info: postcondition proved
-natural_set.ads:16:63: info: postcondition proved
+natural_set.ads:11:21: info: postcondition proved
+natural_set.ads:16:19: info: postcondition proved
 natural_set.ads:25:15: postcondition not proved, requires Contains (S, Value)
 natural_set.ads:45:57: info: index check proved
 natural_set.ads:47:18: info: index check proved
