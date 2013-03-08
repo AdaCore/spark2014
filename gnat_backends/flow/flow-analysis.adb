@@ -27,7 +27,6 @@ with Aspects; use Aspects;
 with Errout;  use Errout;
 with Namet;   use Namet;
 with Nlists;  use Nlists;
-with Sinfo;   use Sinfo;
 with Sinput;  use Sinput;
 
 with Treepr; use Treepr;

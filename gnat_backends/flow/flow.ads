@@ -28,6 +28,7 @@ with Ada.Containers.Vectors;
 
 with Atree; use Atree;
 with Einfo; use Einfo;
+with Sinfo; use Sinfo;
 with Types; use Types;
 
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
@@ -127,6 +128,13 @@ package Flow is
            Post => (Get_Direct_Mapping_Id'Result /= Empty);
    --  Given a direct mapping Flow_Id, return the associated node or
    --  entity.
+
+   function Record_Field_Id
+     (N       : Node_Id;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id
+      with Pre => N /= Empty and then Nkind (N) = N_Selected_Component;
+   --  Create a Flow_Id for the given record field.
 
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)

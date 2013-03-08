@@ -31,7 +31,6 @@ with Debug;    use Debug;
 with Namet;    use Namet;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
 with Snames;   use Snames;
 with Sprint;   use Sprint;
 
@@ -99,7 +98,19 @@ package body Flow is
                when Direct_Mapping =>
                   return Left.Node = Right.Node;
                when Record_Field =>
-                  raise Why.Not_Implemented;
+                  if Left.Node = Right.Node
+                    and then Left.Component.Length = Right.Component.Length
+                  then
+                     for I in Natural
+                       range 1 .. Natural (Left.Component.Length) loop
+                        if Left.Component (I) /= Right.Component (I) then
+                           return False;
+                        end if;
+                     end loop;
+                     return True;
+                  else
+                     return False;
+                  end if;
                when Magic_String =>
                   return Name_Equal (Left.Name, Right.Name);
             end case;
@@ -134,7 +145,9 @@ package body Flow is
          when Direct_Mapping =>
             return Ada.Strings.Hash (Unique_Name (N.Node));
          when Record_Field =>
-            raise Why.Not_Implemented;
+            --  ??? We should also hash the components, but we can do
+            --  this later.
+            return Ada.Strings.Hash (Unique_Name (N.Node));
          when Magic_String =>
             return Ada.Strings.Hash (N.Name.all);
       end case;
@@ -152,7 +165,11 @@ package body Flow is
          when Direct_Mapping =>
             Sprint_Node (F.Node);
          when Record_Field =>
-            raise Why.Not_Implemented;
+            Sprint_Node (F.Node);
+            for Comp of F.Component loop
+               Output.Write_Str (".");
+               Sprint_Node (Comp);
+            end loop;
          when Magic_String =>
             raise Why.Not_Implemented;
       end case;
@@ -215,21 +232,49 @@ package body Flow is
       return F.Node;
    end Get_Direct_Mapping_Id;
 
+   ---------------------
+   -- Record_Field_Id --
+   ---------------------
+
+   function Record_Field_Id
+     (N       : Node_Id;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id
+   is
+      F : Flow_Id := Flow_Id'(Kind      => Record_Field,
+                              Variant   => Variant,
+                              Node      => Empty,
+                              Name      => Null_Entity_Name,
+                              Component => Entity_Lists.Empty_Vector);
+      P : Node_Id;
+   begin
+      P := N;
+      while Nkind (P) = N_Selected_Component loop
+         F.Component.Append (Entity (Selector_Name (P)));
+         P := Prefix (P);
+      end loop;
+      pragma Assert (Nkind (P) = N_Identifier);
+      F.Node := Unique_Entity (Entity (P));
+      F.Component.Reverse_Elements;
+      return F;
+   end Record_Field_Id;
+
    --------------------
    -- Change_Variant --
    --------------------
 
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
-                           return Flow_Id is
+                            return Flow_Id
+   is
+      CF : Flow_Id := F;
    begin
       case F.Kind is
          when Null_Value =>
             return Null_Flow_Id;
-         when Direct_Mapping =>
-            return Direct_Mapping_Id (Get_Direct_Mapping_Id (F), Variant);
          when others =>
-            raise Why.Not_Implemented;
+            CF.Variant := Variant;
+            return CF;
       end case;
    end Change_Variant;
 
@@ -652,30 +697,33 @@ package body Flow is
                      end case;
                   end;
 
-                  case F.Variant is
-                     when Initial_Value =>
-                        Rv.Shape := Shape_None;
-                        Output.Write_Str ("'initial");
-
-                        if not A.Is_Initialised then
-                           Rv.Colour := To_Unbounded_String ("red");
-                        end if;
-
-                     when Final_Value =>
-                        Rv.Shape := Shape_None;
-                        Output.Write_Str ("'final");
-                        if A.Is_Export then
-                           Rv.Colour := To_Unbounded_String ("blue");
-                        elsif A.Is_Constant then
-                           Rv.Colour := To_Unbounded_String ("red");
-                        end if;
-
-                     when others =>
-                        null;
-                  end case;
+               when Record_Field =>
+                  Sprint_Flow_Id (F);
 
                when others =>
                   raise Why.Not_Implemented;
+            end case;
+
+            case F.Variant is
+               when Initial_Value =>
+                  Rv.Shape := Shape_None;
+                  Output.Write_Str ("'initial");
+
+                  if not A.Is_Initialised then
+                     Rv.Colour := To_Unbounded_String ("red");
+                  end if;
+
+               when Final_Value =>
+                  Rv.Shape := Shape_None;
+                  Output.Write_Str ("'final");
+                  if A.Is_Export then
+                     Rv.Colour := To_Unbounded_String ("blue");
+                  elsif A.Is_Constant then
+                     Rv.Colour := To_Unbounded_String ("red");
+                  end if;
+
+               when others =>
+                  null;
             end case;
 
             if A.Loops.Length > 0 and not (A.Is_Parameter or
