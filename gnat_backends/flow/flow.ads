@@ -124,10 +124,10 @@ package Flow is
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
       return Node_Id
-      with Pre  => (F.Kind = Direct_Mapping),
+      with Pre  => (F.Kind in Direct_Mapping | Record_Field),
            Post => (Get_Direct_Mapping_Id'Result /= Empty);
    --  Given a direct mapping Flow_Id, return the associated node or
-   --  entity.
+   --  entity. In case of a record field, return the entire variable.
 
    function Record_Field_Id
      (N       : Node_Id;
