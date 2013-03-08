@@ -13,6 +13,98 @@ digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
     2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="red"];
+    7 [label="coprime'initial",shape="plaintext",fontcolor="red"];
+    8 [label="coprime'final",shape="plaintext",fontcolor="blue"];
+    10 [label="if prime (x) or else prime (y)",shape="diamond"];
+    11 [label="return true<<<true>>>;"];
+    12 [label="R4b'initial",shape="plaintext",fontcolor="red"];
+    13 [label="R4b'final",shape="plaintext"];
+    14 [label="<<<R4b : constant natural := min (x, y);>>>"];
+    15 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
+    16 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    17 [label="i'initial",shape="plaintext"];
+    18 [label="i'final",shape="plaintext",fontcolor="red"];
+    19 [label="for i in 2 .. min (x, y)<<<R4b>>>",shape="diamond"];
+    20 [label="return true<<<true>>>;"];
+
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    2 ->  13 [arrowType="normal"];
+    2 ->  18 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  14 [arrowType="normal"];
+    11 ->  2 [arrowType="normal"];
+    12 ->  1 [arrowType="normal"];
+    14 ->  19 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  19 [arrowType="normal"];
+    16 ->  2 [arrowType="normal"];
+    17 ->  1 [arrowType="normal"];
+    19 ->  15 [arrowType="normal"];
+    19 ->  20 [arrowType="normal"];
+    20 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="red"];
+    7 [label="coprime'initial",shape="plaintext",fontcolor="red"];
+    8 [label="coprime'final",shape="plaintext",fontcolor="blue"];
+    10 [label="if prime (x) or else prime (y)",shape="diamond"];
+    11 [label="return true<<<true>>>;"];
+    12 [label="R4b'initial",shape="plaintext",fontcolor="red"];
+    13 [label="R4b'final",shape="plaintext"];
+    14 [label="<<<R4b : constant natural := min (x, y);>>>"];
+    15 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
+    16 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    17 [label="i'initial",shape="plaintext"];
+    18 [label="i'final",shape="plaintext",fontcolor="red"];
+    19 [label="for i in 2 .. min (x, y)<<<R4b>>>",shape="diamond"];
+    20 [label="return true<<<true>>>;"];
+
+    1 ->  10 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  10 [arrowType="normal",color="red"];
+    3 ->  14 [arrowType="normal",color="red"];
+    3 ->  15 [arrowType="normal",color="red"];
+    5 ->  6 [arrowType="normal",color="red"];
+    5 ->  10 [arrowType="normal",color="red"];
+    5 ->  14 [arrowType="normal",color="red"];
+    5 ->  15 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  14 [arrowType="normal"];
+    10 ->  19 [arrowType="normal"];
+    11 ->  8 [arrowType="normal",color="red"];
+    12 ->  13 [arrowType="normal",color="red"];
+    14 ->  13 [arrowType="normal",color="red"];
+    14 ->  19 [arrowType="normal",color="red"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  19 [arrowType="normal"];
+    16 ->  8 [arrowType="normal",color="red"];
+    17 ->  18 [arrowType="normal",color="red"];
+    19 ->  15 [arrowType="normal"];
+    19 ->  18 [arrowType="normal",color="red"];
+    19 ->  20 [arrowType="normal"];
+    20 ->  8 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
     3 [label="x'initial\n(global)",shape="plaintext"];
     4 [label="x'final\n(global)",shape="plaintext",fontcolor="red"];
     5 [label="y'initial\n(global)",shape="plaintext"];
@@ -241,6 +333,59 @@ digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
     2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="red"];
+    7 [label="min'initial",shape="plaintext",fontcolor="red"];
+    8 [label="min'final",shape="plaintext",fontcolor="blue"];
+    10 [label="if x < y",shape="diamond"];
+    11 [label="return x<<<x>>>;"];
+    12 [label="return y<<<y>>>;"];
+
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    11 ->  2 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="red"];
+    7 [label="min'initial",shape="plaintext",fontcolor="red"];
+    8 [label="min'final",shape="plaintext",fontcolor="blue"];
+    10 [label="if x < y",shape="diamond"];
+    11 [label="return x<<<x>>>;"];
+    12 [label="return y<<<y>>>;"];
+
+    1 ->  10 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  10 [arrowType="normal",color="red"];
+    3 ->  11 [arrowType="normal",color="red"];
+    5 ->  6 [arrowType="normal",color="red"];
+    5 ->  10 [arrowType="normal",color="red"];
+    5 ->  12 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    11 ->  8 [arrowType="normal",color="red"];
+    12 ->  8 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
     3 [label="condition'initial\n(global)",shape="plaintext"];
     4 [label="condition'final\n(global)",shape="plaintext",fontcolor="blue"];
     5 [label="x'initial\n(global)",shape="plaintext"];
@@ -415,6 +560,63 @@ digraph G {
     17 ->  4 [arrowType="normal",color="red"];
     18 ->  6 [arrowType="normal",color="red"];
     19 ->  8 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="prime'initial",shape="plaintext",fontcolor="red"];
+    6 [label="prime'final",shape="plaintext",fontcolor="blue"];
+    8 [label="if (x mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
+    9 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    10 [label="i'initial",shape="plaintext"];
+    11 [label="i'final",shape="plaintext",fontcolor="red"];
+    12 [label="for i in 2 .. x / 2",shape="diamond"];
+    13 [label="return true<<<true>>>;"];
+
+    1 ->  12 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  11 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  12 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
+    10 ->  1 [arrowType="normal"];
+    12 ->  8 [arrowType="normal"];
+    12 ->  13 [arrowType="normal"];
+    13 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="prime'initial",shape="plaintext",fontcolor="red"];
+    6 [label="prime'final",shape="plaintext",fontcolor="blue"];
+    8 [label="if (x mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
+    9 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    10 [label="i'initial",shape="plaintext"];
+    11 [label="i'final",shape="plaintext",fontcolor="red"];
+    12 [label="for i in 2 .. x / 2",shape="diamond"];
+    13 [label="return true<<<true>>>;"];
+
+    1 ->  12 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  8 [arrowType="normal",color="red"];
+    3 ->  12 [arrowType="normal",color="red"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  12 [arrowType="normal"];
+    9 ->  6 [arrowType="normal",color="red"];
+    12 ->  8 [arrowType="normal"];
+    12 ->  11 [arrowType="normal",color="red"];
+    12 ->  13 [arrowType="normal"];
+    13 ->  6 [arrowType="normal",color="red"];
 }
 
 digraph G {
