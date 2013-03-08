@@ -900,19 +900,33 @@ be unaffected by this transformation.
 
 |SPARK| defines the convention_identifier Ghost.
 An entity (e.g., a subprogram or an object) whose Convention aspect
-is specified to have the value Ghost is said to be a Ghost
+is specified to have the value Ghost is said to be a ghost
 entity (e.g., a ghost function or a ghost variable).
 
-A ghost entity is not considered to be an input or output of a
-subprogram.
-A ghost entity declared immediately within a package is not a constituent
-of the state (visible or hidden) of that package,
+The Convention aspect of an entity declared inside of a ghost entity (e.g.,
+within the body of a ghost function) is defined to be Ghost.
+The Link_Name aspect of an imported ghost entity is defined
+to be a name that cannot be resolved in the external environment.
 
 .. centered:: **Legality Rules**
 
-A ghost entity shall only be referenced from within an assertion
-expression or as part of the declaration or completion of a
-ghost entity (e.g., from within the body of a ghost function).
+A ghost entity shall only be referenced:
+
+- from within an assertion expression; or
+- within or as part of the declaration or completion of a
+  ghost entity (e.g., from within the body of a ghost function); or
+- within a statement which does not contain (and is not itself) either an
+  assignment statement targeting a non-ghost variable or
+  a procedure call which passes a non-ghost variable as an
+  out or in out mode actual parameter.
+
+Within a ghost procedure, the view of any non-ghost variable is
+a constant view. Within a ghost procedure, a volatile non-global
+object shall not be read.
+TBD: In a ghost procedure we don't want to allow assignments to non-ghosts
+either via assignment statements or procedure calls. Is this rule
+the best way to accomplish this?
+
 A ghost entity shall not be referenced from
 within the expression of a predicate specification of a non-ghost
 subtype [because such predicates participate in determining
@@ -920,12 +934,20 @@ the outcome of a membership test].
 
 All subcomponents of a ghost object shall be initialized by the
 elaboration of the declaration of the object.
-
 TBD: Make worst-case assumptions about private types for this rule,
 or blast through privacy?
 
-A ghost entity shall not be referenced in a Global, Refined_Global,
-Depends, Refined_Depends, or Refined_State aspect specification.
+A ghost instantiation shall not be an instantation of a non-ghost
+generic package.
+TBD: Just being conservative here until we have more precise rules
+about the side effects of elaborating an instance of a generic package.
+We need the general rule that the elaboration of a
+ghost declaration of any kind cannot modify non-ghost state.
+
+The Link_Name or External_Name aspects of an imported ghost
+entity shall not be specified. A Convention aspect specification
+for an entity declared inside of a ghost entity shall be confirming
+[(in other words, the specified Convention shall be Ghost)].
 
 TBD: disallow a ghost tagged type because just its existence (even if
 it is never referenced) changes the behavior of Ada.Tags operations?
@@ -934,6 +956,17 @@ conformance checks (so ghost can't override non-ghost and vice versa).
 
 TBD: Volatile ghosts seem useless, but do we need to prohibit them?
 No reason to mention them one way or the other as far as I can see.
+
+TBD: We are ignoring interactions between ghostliness and freezing.
+Adding a ghost variable, for example, could change the freezing point
+of a non-ghost type. It appears that this is ok; that is, this is does
+not violate the ghosts-have-no-effect-on-program-behavior rule.
+
+TBD: Can a ghost variable be a constituent of a non-ghost state
+abstraction, or would this somehow allow unwanted dependencies?
+If not, then we presumably need to allow ghost state abstractions
+or else it would illegal for a library level package body to
+declare a ghost variable.
 
 .. centered:: **Dynamic Semantics**
 
@@ -947,13 +980,21 @@ representation (e.g., if the entity is used only in discharging proof
 obligations and is not referenced (directly or indirectly) in any
 enabled (e.g., via an Assertion_Policy pragma) assertions),
 then the Import aspect of the entity may be specified to be True.
-Neither the Link_Name nor the External_Name aspects of an imported ghost
-entity may be specified. The Link_Name of an imported ghost entity is defined
-to be a name that cannot be resolved in the external environment.
 
 .. centered:: **Verification Rules**
 
-There are no verification rules associated with Ghost aspects.
+A non-ghost output shall not depend on a ghost input.
+TBD: Is this rule implied by other rules?
+
+A ghost entity shall not be referenced
+
+- within a call to a procedure which has a non-ghost output; or
+
+- within a control flow expression (e.g., the condition of an
+  if statement or the selecting expression of a case statement)
+  of a compound statement which contains such a procedure call.
+
+A ghost procedure shall not have a non-ghost output.
 
    .. centered:: **Examples**
 
