@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -282,9 +283,9 @@ package body Why.Gen.Expr is
       begin
          case Nkind (Discr_Check) is
             when N_Assignment_Statement =>
-               return Etype (Name (Discr_Check));
+               return Unique_Entity (Etype (Name (Discr_Check)));
             when N_Type_Conversion =>
-               return Etype (Discr_Check);
+               return Unique_Entity (Etype (Discr_Check));
             when others =>
                raise Program_Error;
          end case;
