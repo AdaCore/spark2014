@@ -381,8 +381,8 @@ package body Flow.Control_Flow_Graph is
       All_Comp   : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
 
       procedure Possibly_Include (F : Flow_Id);
-      --  Include F in All_Comp if it is Under or a subcomponent of
-      --  Under.
+      --  Include F in All_Comp if it is The_Record_Field or a
+      --  subcomponent of it.
 
       procedure Process_Record (R_Type : Entity_Id;
                                 Comp   : Entity_Lists.Vector)
