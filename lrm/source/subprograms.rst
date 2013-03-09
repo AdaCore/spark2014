@@ -406,12 +406,14 @@ of any non-static scalar expression and it is
   designates a manifest subtype and whose operand is a manifest
   expression; or
 
-- a name denoting a slice or component of a manifest object; or
+- a name denoting a component of a manifest object; or
+
+- a name denoting a slice of a manifest object having static bounds; or
 
 - an aggregate whose applicable index constraint (if any) is static,
   whose component expressions are all manifest, and
   for which the evaluation of each "<>" component value (if any) fully
-  initializes the assocaited component and does not involve the evaluation
+  initializes the associated component and does not involve the evaluation
   of any non-manifest expressions; or
 
 - an extension aggregate which meets the above conditions for an aggregate
@@ -420,7 +422,11 @@ of any non-static scalar expression and it is
 
 - a conditional expression all of whose dependent expressions are
   manifest (TBD: could relax and only require that the selected
-  dependendent expression must be manifest).
+  dependendent expression must be manifest) and whose selected
+  dependent expression is known statically (i.e., for a case expression,
+  the selecting expression is static; for an if expression, either
+  all conditions are static or the first N-1 conditions are statically
+  False (for some value of N) and the Nth condition is statically True).
 
 [TBD: given a one-part expression function whose expression
 is manifest, should a call to the function be manifest? Since this is
@@ -438,9 +444,20 @@ manifest [; this rule is needed because such an object can be renamed].
 .. centered:: **Legality Rules**
 
 #. A ``global_item`` shall denote an entire object, a type, a subtype,
-   or a state abstraction; this rule is a name resolution rule.
+   or a state abstraction.
+
+#. The rule that a ``global_item``
+   shall not denote a function or a function call [(which is already
+   implied by the preceding rule)] is a name resolution rule.
+   [In particular, a ``global_item`` can unambiguously denote a
+   state abstraction even if a function having the same fully qualified
+   name is also present].
 
 #. A ``global_item`` shall not denote a manifest object, type, or subtype.
+
+#. A ``global_item`` shall not denote a state abstraction whose refinement
+   is visible [(a state abstraction cannot be named within its enclosing
+   package's body other than in its refinement)].
 
    .. ifconfig:: Display_Trace_Units
    
@@ -461,7 +478,7 @@ manifest [; this rule is needed because such an object can be renamed].
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
 #. ``global_items`` in the same Global aspect specification shall denote
-   distinct objects or state abstractions.
+   distinct entities.
 
    .. ifconfig:: Display_Trace_Units
    
@@ -641,14 +658,25 @@ where
 
 #. Every ``input`` of a ``dependency_relation`` of a Depends
    aspect shall denote an entire object, a type, a subtype, or a state
-   abstraction; this rule is a name resolution rule.
+   abstraction.
 
 #. An ``input`` of a ``dependency_relation`` of a Depends
    aspect shall not denote a manifest constant, type, or subtype.
 
+#. An ``input`` or ``output`` of a ``dependency_relation`` of a Depends
+   aspect shall not denote a state abstraction whose refinement
+   is visible [(a state abstraction cannot be named within its enclosing
+   package's body other than in its refinement)].
+
 #. Every non-function_result ``output`` of a ``dependency_relation`` of a
-   Depends aspect shall denote an entire object or a state abstraction;
-   this rule is a name resolution rule.
+   Depends aspect shall denote an entire object or a state abstraction.
+
+#. The rule that an ``input`` or ``output`` of a ``dependency_relation``
+   shall not denote a function or a function call [(which is already
+   implied by the preceding rules)] is a name resolution rule.
+   [In particular, an ``input`` or ``output`` can unambiguously denote a
+   state abstraction even if a function having the same fully qualified
+   name is also present].
 
    .. ifconfig:: Display_Trace_Units
 
@@ -747,10 +775,16 @@ where
    [From an information flow analysis viewpoint it is a 
    null operation (a no-op).]
    
-#. A function which does not have an explicit Depends aspect
+#. A function without an explicit Depends aspect specification
    is assumed to have the ``dependency_relation`` 
    that its result is dependent on all of its inputs.  
-   [Generally a Depends aspect is not required for functions.]
+   [Generally an explicit Depends aspect is not required for functions.]
+
+#. A subprogram which has an explicit Depends aspect specification
+   and lacks an explicit Global specification is assumed to have
+   the [unique] Global aspect specification that is consistent with the
+   subprogram's Depends aspect. [An explicit Global aspect specification
+   is not required in this case.]
 
 .. todo::
    Add rules relating to volatile state.
@@ -959,7 +993,7 @@ No reason to mention them one way or the other as far as I can see.
 
 TBD: We are ignoring interactions between ghostliness and freezing.
 Adding a ghost variable, for example, could change the freezing point
-of a non-ghost type. It appears that this is ok; that is, this is does
+of a non-ghost type. It appears that this is ok; that is, this does
 not violate the ghosts-have-no-effect-on-program-behavior rule.
 
 TBD: Can a ghost variable be a constituent of a non-ghost state
@@ -968,6 +1002,15 @@ If not, then we presumably need to allow ghost state abstractions
 or else it would illegal for a library level package body to
 declare a ghost variable.
 
+TBD: Do we want an implicit Ghost convention for an entity declared
+within a statement whose execution depends on a ghost value?
+
+.. code-block:: ada
+
+  if My_Ghost_Counter > 0 then
+    declare
+      X : Integer; -- implicitly Ghost?
+
 .. centered:: **Dynamic Semantics**
 
 The effects of specifying a convention of Ghost
@@ -975,11 +1018,11 @@ on the runtime representation, calling conventions, and other such
 dynamic properties of an entity are the same as if a convention of
 Ada had been specified.
 
-If it is intended that a ghost entity should not have any runtime
+[If it is intended that a ghost entity should not have any runtime
 representation (e.g., if the entity is used only in discharging proof
 obligations and is not referenced (directly or indirectly) in any
 enabled (e.g., via an Assertion_Policy pragma) assertions),
-then the Import aspect of the entity may be specified to be True.
+then the Import aspect of the entity may be specified to be True.]
 
 .. centered:: **Verification Rules**
 
@@ -991,8 +1034,16 @@ A ghost entity shall not be referenced
 - within a call to a procedure which has a non-ghost output; or
 
 - within a control flow expression (e.g., the condition of an
-  if statement or the selecting expression of a case statement)
-  of a compound statement which contains such a procedure call.
+  if statement, the selecting expression of a case statement, the
+  bounds of a for loop) of a compound statement which contains
+  such a procedure call. [The case of an non-ghost-updating
+  assignment statement is is handled by a legality rule; this rule is
+  needed to prevent a call to a procedure which updates a
+  non-ghost via an up-level reference, as opposed to updating a parameter.]
+
+TBD: Is there a better way to express this rule? We want to say that
+an update of a non-ghost shall not have a control flow dependency
+on a ghost. Can we just say that?
 
 A ghost procedure shall not have a non-ghost output.
 
@@ -1059,10 +1110,10 @@ No extensions or restrictions.
 Global Aspects
 ~~~~~~~~~~~~~~
 
-If a subprogram does not have a separate declaration then the Global 
-aspect is applied to the declaration of its body or body stub.
-The implementation of a subprogram body must be consistent with its
-Global Aspect.
+THe Global aspect may only be specified for the initial declaration of a
+subprogram (which may be either a body or a body stub).
+The implementation of a subprogram body must be consistent with the
+subprogram's Global Aspect.
 
 Note that a Refined Global aspect may be applied to a subprogram body when using state
 abstraction; see section :ref:`refined-global-aspect` for further details.

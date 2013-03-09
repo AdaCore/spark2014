@@ -846,7 +846,7 @@ abstract states are represented by the ``state_name`` and are known as its
 *constituents*.
 
 In the body of a package the constituents of the refined
-``state_name``, the refined view, has to be used rather than the
+``state_name``, the refined view, have to be used rather than the
 abstract view of the ``state_name``.  Refined global, depends, pre
 and post aspects are provided to express the refined view.
 
@@ -957,6 +957,7 @@ the grammar of ``state_and_category_list`` given below.
   state_and_category_list          ::= (state_and_category {, state_and_category})
   state_and_category               ::= abstract_state_name => constituent_with_property_list
   abstract_state_name              ::= state_name
+                                       | null
   constituent_with_property_list   ::= constituent_with_property
                                      | (constituent_with_property {, constituent_with_property})
   constituent_with_property        ::= constituent
@@ -1313,86 +1314,68 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a
-Refined Global aspect applied to its body or body stub. The
-Refined Global aspect defines the global items of the subprogram
-in terms of the ``constituents`` of a ``state_name`` of the package
-rather than the ``state_name``.
+Refined Global aspect applied to its body or body stub.
+A Refined Global Aspect of a subprogram defines a *refinement*
+of the Global Aspect of the subprogram; that is, the Refined Global aspect
+repeats the Global aspect of he subprogram except that references to
+state abstractions whose refinments are visible at the point of the
+subprogram_body are replaced with references to [some or all of the]
+constituents of those abstractions.
 
 The Refined Global aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition`` must follow
-the grammar of ``global_specification`` in :ref:`global-aspects`.
-
-.. todo:: Complete language definition for Refined_Global aspect.
-          To be completed in the Milestone 3 version of this document.
+the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition``
+must follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 .. centered:: **Legality Rules**
 
-#. A Refined Global Aspect may only appear on the body or body stub
-   of a subprogram P in a package whose ``visible_part`` contains the
-   declaration of P.
+A Refined_Global Aspect may only appear on body_stub (if one is present)
+or the body (if no stub is present) of a subprogram P which is declared
+in the visible part of a package and whose Global aspect is specified
+(either explicitly or implicitly).
 
-   .. ifconfig:: Display_Trace_Units
+A Refined_Global aspect specification shall "refine" the subprogram's
+Global aspect as follows:
 
-      :Trace Unit: TBD
+   - For each global_item in the Global aspect which denotes
+     a state abstraction whose refinement is visible at the point
+     of the Refined_Global aspect specification, the Refined_Global
+     specification shall include one or more global_items which
+     denote constituents (direct or indirect) of that state abstraction.
 
-#. A Refined Global Aspect on the body or body stub of a
-   subprogram P may only mention ``constituents`` of a ``state_name``
-   given in the Global Aspect in the declaration of P, a *global*
-   item, which is not a ``state_name`` of the enclosing package, named
-   in the the Global Aspect of P or a ``constituent`` of a
-   **null** ``abstract_state_name``.
+   - For each global_item in the Global aspect which does not
+     denote such a state abstraction, the Refined_Global specification
+     shall include exactly one global_item which denotes the same entity as
+     the global_item in the Global aspect.
 
-   .. ifconfig:: Display_Trace_Units
+   - A global_item denoting a declaration which is referenced in a (visible)
+     **null** state refinement may be referenced with mode **in out**.
 
-      :Trace Unit: TBD
+     TBD: do we still need null state refinements if we have ghost variables?
+     This rule was copied from existing text, but I (SB) don't
+     have a clear picture of how null statement refinements work.
 
-.. centered:: **Static Semantics**
+   - No other global_items shall be included in the Refined_Global
+     aspect specification. Global_items in the a Refined_Global
+     aspect specification shall denote distinct entities.
 
+The mode of each global_item in a Refined_Global aspect shall match
+that of the corresponding global_item in the Global aspect unless
+the mode specified in the Global aspect is **in out** and the
+corresponding global_item of Global aspect denotes a state abstraction
+whose refinement is visible.
 
-#. A Refined Global Aspect of a subprogram defines a *refinement*
-   of the Global Aspect of the subprogram.
+If the Global aspect specification references a state abstraction with
+mode **out** whose refinement is visible, then every constituent of that
+state abstraction shall be
+referenced in the Refined_Global aspect specification. This rule is
+applied recursively if one of those constituents is itself a state
+abstraction whoe refinement is visible.
+
+TBD: Interactions with volatiles.
 
 .. centered:: **Verification Rules**
 
 .. centered:: *Checked by Flow-Analysis*
-
-#. A *refinement* G' of a Global Aspect G declared within package
-   Q shall satisfy the following rules:
-
-   * For each item in G which is not a ``state_name`` of Q, the same
-     item must appear with the same mode in G';
-   * For each item in G which is a ``state_name`` S of package Q that
-     is non-volatile at least one ``constituent`` of S must appear in
-     G' and,
-
-     * if the item in G has mode **in** then each ``constituent`` of S
-       in G' must be of mode **in**.
-     * if the item in G has mode **out** then each ``constituent`` of
-       S in G' must be of mode **out**.
-     * if the item in G has mode **in out** then each ``constituent``
-       of S in G' may be of mode **in**, **out** or **in out** but if
-       S has only one ``constituent`` it must appear in G' with the
-       mode **in out**.  Each ``constituent`` of S in G' may be of
-       mode **out** provided that not every ``constituent`` of S is
-       included in G'.
-
-   * For each item in G which is a ``state_name`` S of package Q that
-     is Volatile at least one ``constituent`` of S must appear in G'
-     and,
-
-     * if S is a Volatile Input at least one ``constituent`` of S in
-       G' must be of mode **in**.
-     * if S is a Volatile Output at least one ``constituent`` of S in
-       G' must be of mode **out**.
-
-   * A ``constituent`` of a **null** ``abstract_name`` may also be
-     mentioned in G' provided its mode is **in out**.
-
-   * function may have a Refined Global Aspect G' which mentions a
-     ``constituent`` of a **null** ``abstract_name`` but its mode must
-     be **in out**.  The **null** ``abstract_state`` does not appear
-     in G. The **null** ``abstract_state`` must not affect the value of the
-     result of the function it must be purely for optimization.
 
 #. If a subprogram has a Refined Global Aspect which satisfies the
    flow analysis checks, it is used in the analysis of the subprogram
