@@ -19,5 +19,9 @@ sparkified
 GNAT-*
 gnat_src
 gnat2why/design
+gnat2why/design/*
+gnat2why/design/*/*
+gnat2why/design/*/*/*
+gnat2why/design/*/*/*/*
 stdlib_tmp
 install
