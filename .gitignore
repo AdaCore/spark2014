@@ -18,6 +18,6 @@
 sparkified
 GNAT-*
 gnat_src
-gnat_backends/testsuite/out
+gnat2why/design
 stdlib_tmp
 install
