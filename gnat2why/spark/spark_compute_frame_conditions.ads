@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---         A L F A . C O M P U T E _ F R A M E _ C O N D I T I O N S        --
+--        S P A R K _ C O M P U T E _ F R A M E _ C O N D I T I O N S       --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,6 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-procedure Alfa.Compute_Frame_Conditions;
+procedure SPARK_Compute_Frame_Conditions;
 --  Compute the frame condition for all subprograms, based on Alfa information
 --  in ALI files given in input.

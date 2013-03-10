@@ -2,7 +2,7 @@
 # tools.
 #
 # To build gnat2why, you need a working GNAT compiler and a symbolic link in
-# gnat_backends/gnat_src that points to the GNAT sources.
+# gnat2why/gnat_src that points to the GNAT sources.
 #
 # To build gnatprove, you additionnally need an installation of the gnatcoll
 # library, and local checked out repositories of submodules why3 and alt-ergo.
@@ -103,17 +103,17 @@ $(DOC):
 	$(MAKE) -C docs/$@ clean
 
 gnat1why:
-	$(MAKE) -C gnat_backends/why/xgen
-	$(MAKE) -C gnat_backends/why gnat1 gnat2why
+	$(MAKE) -C gnat2why/why/xgen
+	$(MAKE) -C gnat2why/why gnat1 gnat2why
 
 gnat2why:
-	$(MAKE) -C gnat_backends/why/xgen
-	$(MAKE) -C gnat_backends/why
+	$(MAKE) -C gnat2why/why/xgen
+	$(MAKE) -C gnat2why/why
 
 coverage:
-	$(MAKE) -C gnat_backends/why/xgen
-	$(MAKE) -C gnat_backends/why coverage
-	cd gnat_backends/testsuite; ./run-tests -j 5
+	$(MAKE) -C gnat2why/why/xgen
+	$(MAKE) -C gnat2why/why coverage
+	cd gnat2why/testsuite; ./run-tests -j 5
 
 gnatprove:
 	$(MAKE) -C gnatprove build
@@ -179,8 +179,8 @@ install-examples:
 	done
 
 clean:
-	$(MAKE) -C gnat_backends/why/xgen clean
-	$(MAKE) -C gnat_backends/why clean
+	$(MAKE) -C gnat2why/why/xgen clean
+	$(MAKE) -C gnat2why/why clean
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean
 	$(MAKE) -C docs/alfa clean

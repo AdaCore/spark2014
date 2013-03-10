@@ -32,7 +32,7 @@ with Osint;
 with Stringt;
 with System;
 
-with Alfa.Util;        use Alfa.Util;
+with SPARK_Util;      use SPARK_Util;
 
 with Gnat2Why.Driver;
 
@@ -97,9 +97,9 @@ package body Back_End is
 
    begin
 
-      --  We are in the gnat2why executable, so Alfa_Mode is always true
+      --  We are in the gnat2why executable, so SPARK_Mode is always true
 
-      Opt.Alfa_Mode := True;
+      Opt.SPARK_Mode := True;
 
       --  If save_argv is non null, it means we are part of gnat1+gnat2why
       --  and need to set gnat_argv to save_argv so that Ada.Command_Line

@@ -34,7 +34,7 @@ with Snames;             use Snames;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
-with Alfa.Util;          use Alfa.Util;
+with SPARK_Util;         use SPARK_Util;
 
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;

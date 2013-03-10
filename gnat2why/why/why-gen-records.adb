@@ -32,7 +32,7 @@ with Nlists;             use Nlists;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 
-with Alfa.Util;          use Alfa.Util;
+with SPARK_Util;         use SPARK_Util;
 with VC_Kinds;           use VC_Kinds;
 
 with Gnat2Why.Expr;      use Gnat2Why.Expr;

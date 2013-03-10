@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                       A L F A . D E F I N I T I O N                      --
+--                            S P A R K _ U T I L                           --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -30,7 +30,7 @@ with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
 
-package body Alfa.Util is
+package body SPARK_Util is
 
    function File_Is_Formal_Container (Name : String) return Boolean;
    --  Return true when the string in argument is a file of formal container
@@ -852,4 +852,4 @@ package body Alfa.Util is
       end loop;
    end Underlying_Formal_Container_Type;
 
-end Alfa.Util;
+end SPARK_Util;

@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---         A L F A . C O M P U T E _ F R A M E _ C O N D I T I O N S        --
+--        S P A R K _ C O M P U T E _ F R A M E _ C O N D I T I O N S       --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -23,11 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Command_Line;      use Ada.Command_Line;
-with Ada.Text_IO;           use Ada.Text_IO;
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with Ada.Command_Line;       use Ada.Command_Line;
+with Ada.Text_IO;            use Ada.Text_IO;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
-procedure Alfa.Compute_Frame_Conditions is
+procedure SPARK_Compute_Frame_Conditions is
 
    Stop : exception;
    --  Terminate execution
@@ -39,7 +39,7 @@ begin
    end if;
 
    for J in 1 .. Argument_Count loop
-      Load_Alfa (Argument (J));
+      Load_SPARK_Xrefs (Argument (J));
    end loop;
 
    Put_Line ("");
@@ -53,4 +53,4 @@ begin
    Put_Line ("## After propagation ##");
    Put_Line ("");
    Display_Maps;
-end Alfa.Compute_Frame_Conditions;
+end SPARK_Compute_Frame_Conditions;

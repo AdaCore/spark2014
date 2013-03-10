@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                       A L F A . D E F I N I T I O N                      --
+--                      S P A R K _ D E F I N I T I O N                     --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
@@ -88,9 +88,11 @@
 --  is not in Alfa. This is the case if the type of the constant is in Alfa,
 --  while its initializing expression is not.
 
+with Types;          use Types;
+
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
-package Alfa.Definition is
+package SPARK_Definition is
 
    Spec_Entities : List_Of_Nodes.List;
    Body_Entities : List_Of_Nodes.List;
@@ -126,4 +128,4 @@ package Alfa.Definition is
    function Body_In_Alfa (Id : Entity_Id) return Boolean;
    --  Return whether the body of subprogram Id is in Alfa
 
-end Alfa.Definition;
+end SPARK_Definition;

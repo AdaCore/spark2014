@@ -36,8 +36,8 @@ with Sinfo;              use Sinfo;
 with Sinput;             use Sinput;
 with Stand;              use Stand;
 
-with Alfa.Definition;    use Alfa.Definition;
-with Alfa.Util;          use Alfa.Util;
+with SPARK_Definition;   use SPARK_Definition;
+with SPARK_Util;         use SPARK_Util;
 
 with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;

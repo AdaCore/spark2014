@@ -26,20 +26,20 @@ with Ada.Strings.Hash;
 with Ada.Strings.Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Aspects;  use Aspects;
-with Debug;    use Debug;
-with Namet;    use Namet;
-with Nlists;   use Nlists;
-with Sem_Util; use Sem_Util;
-with Snames;   use Snames;
-with Sprint;   use Sprint;
+with Aspects;               use Aspects;
+with Debug;                 use Debug;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Sem_Util;              use Sem_Util;
+with Snames;                use Snames;
+with Sprint;                use Sprint;
 
 with Output;
-with Treepr; use Treepr;
+with Treepr;                use Treepr;
 
 with Why;
-with Alfa.Definition; use Alfa.Definition;
-with Alfa.Util;
+with SPARK_Definition;      use SPARK_Definition;
+with SPARK_Util;
 
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
@@ -802,7 +802,7 @@ package body Flow is
    -------------------------
 
    function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs is
-      Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+      Body_N : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
       FA     : Flow_Analysis_Graphs;
    begin
       FA := Flow_Analysis_Graphs'

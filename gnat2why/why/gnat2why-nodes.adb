@@ -25,22 +25,22 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with String_Utils;    use String_Utils;
+with String_Utils;          use String_Utils;
 
-with Csets;           use Csets;
-with Lib;             use Lib;
-with Pprint;          use Pprint;
-with Sem_Util;        use Sem_Util;
-with Snames;          use Snames;
-with Stringt;         use Stringt;
-with Urealp;          use Urealp;
+with Csets;                 use Csets;
+with Lib;                   use Lib;
+with Pprint;                use Pprint;
+with Sem_Util;              use Sem_Util;
+with Snames;                use Snames;
+with Stringt;               use Stringt;
+with Urealp;                use Urealp;
 
-with Alfa.Definition; use Alfa.Definition;
-with Alfa.Util;       use Alfa.Util;
+with SPARK_Definition;      use SPARK_Definition;
+with SPARK_Util;            use SPARK_Util;
 
-with Why.Gen.Names;   use Why.Gen.Names;
-with Why.Sinfo;       use Why.Sinfo;
-with Why.Inter;       use Why.Inter;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Sinfo;             use Why.Sinfo;
+with Why.Inter;             use Why.Inter;
 
 package body Gnat2Why.Nodes is
 

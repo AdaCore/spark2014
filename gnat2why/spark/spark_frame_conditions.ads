@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                A L F A . F R A M E _ C O N D I T I O N S                 --
+--                S P A R K _ F R A M E _ C O N D I T I O N S               --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -36,7 +36,9 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Hash;
 
-package Alfa.Frame_Conditions is
+with Types;                      use Types;
+
+package SPARK_Frame_Conditions is
 
    type Entity_Name is new String_Ptr;
    --  Unique name representing an entity
@@ -87,7 +89,7 @@ package Alfa.Frame_Conditions is
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
    --  Return the name of the file defining the entity E
 
-   procedure Load_Alfa (ALI_Filename : String);
+   procedure Load_SPARK_Xrefs (ALI_Filename : String);
    --  Extract xref information from an ALI file
 
    procedure Set_Ignore_Errors (Ignore_Errors : Boolean);
@@ -100,4 +102,4 @@ package Alfa.Frame_Conditions is
    --  scope that should have been present in some ALI file. This mode is used
    --  in simpler modes of operation that do not lead to translation into Why.
 
-end Alfa.Frame_Conditions;
+end SPARK_Frame_Conditions;

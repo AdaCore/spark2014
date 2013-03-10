@@ -2,11 +2,11 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                       A L F A . D E F I N I T I O N                      --
+--                      S P A R K _ D E F I N I T I O N                     --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2011-2013, AdaCore                  --
+--                      Copyright (C) 2011-2013, AdaCore                    --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -46,10 +46,10 @@ with Table;
 
 with Alfa_Violations;       use all type Alfa_Violations.Vkind;
 
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
-with Alfa.Util;             use Alfa.Util;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 
-package body Alfa.Definition is
+package body SPARK_Definition is
 
    ---------------------
    -- Local Constants --
@@ -758,7 +758,7 @@ package body Alfa.Definition is
                    Ada.Strings.Fixed.Translate
                      (Get_Name_String (Chars (Name (Iter))),
                       Ada.Strings.Maps.Constants.Lower_Case_Map) =
-                   Alfa.Util.Lowercase_Iterate_Name
+                   SPARK_Util.Lowercase_Iterate_Name
                  and then
                    Location_In_Formal_Containers (Sloc (Entity (Name (Iter))))
                then
@@ -903,7 +903,7 @@ package body Alfa.Definition is
 
             declare
                E      : constant Entity_Id := Defining_Entity (N);
-               Body_N : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+               Body_N : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
             begin
                if Present (Get_Expression_Function (E))
                  and then not Comes_From_Source (Original_Node (Body_N))
@@ -1261,7 +1261,7 @@ package body Alfa.Definition is
       --  issued even on operations like "A * B / C" which are not reordered
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
-      if Opt.Strict_Alfa_Mode
+      if Opt.SPARK_Strict_Mode
 
         --  Ignore code defined in the standard library, unless the main unit
         --  is from the standard library. In particular, ignore code from
@@ -2424,7 +2424,7 @@ package body Alfa.Definition is
          N   : Node_Id;
          V   : Alfa_Violations.Vkind) is
       begin
-         Alfa.Definition.Mark_Violation (Msg, N, V);
+         SPARK_Definition.Mark_Violation (Msg, N, V);
       end Mark_Violation;
 
       procedure Mark_Violation
@@ -2432,7 +2432,7 @@ package body Alfa.Definition is
          N    : Node_Id;
          From : Entity_Id) is
       begin
-         Alfa.Definition.Mark_Violation (Msg, N, From);
+         SPARK_Definition.Mark_Violation (Msg, N, From);
       end Mark_Violation;
 
    begin
@@ -2891,7 +2891,7 @@ package body Alfa.Definition is
            and then Ekind (E) = E_Function
            and then Present (Get_Expression_Function (E))
          then
-            Body_N   := Alfa.Util.Get_Subprogram_Body (E);
+            Body_N   := SPARK_Util.Get_Subprogram_Body (E);
             Insert_E := Defining_Entity (Body_N);
             pragma Assert (Ekind (Insert_E) = E_Subprogram_Body);
          end if;
@@ -2953,4 +2953,4 @@ package body Alfa.Definition is
 
    end Scope_Stack;
 
-end Alfa.Definition;
+end SPARK_Definition;

@@ -32,7 +32,7 @@ with Sinput;              use Sinput;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 
-with Alfa.Util;           use Alfa.Util;
+with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;

@@ -34,7 +34,7 @@ with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
 with Stand;                 use Stand;
 
-with Alfa.Util;             use Alfa.Util;
+with SPARK_Util;            use SPARK_Util;
 
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
@@ -118,7 +118,7 @@ package body Why.Gen.Expr is
 
             if Nkind (N) = N_Defining_Identifier
               and then Ekind (N) = E_Discriminant
-              and then not Alfa.Util.Is_Formal_Container_Capacity (N)
+              and then not SPARK_Util.Is_Formal_Container_Capacity (N)
             then
                N := Scope (N);
             end if;
@@ -326,7 +326,7 @@ package body Why.Gen.Expr is
              (Present (Ada_Node)
               and then Ekind (Etype (Ada_Node)) in Record_Kind
               and then
-                Alfa.Util.Type_Based_On_Formal_Container (Etype (Ada_Node)))
+                SPARK_Util.Type_Based_On_Formal_Container (Etype (Ada_Node)))
          then
             return Expr;
          else

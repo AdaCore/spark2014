@@ -23,44 +23,44 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 
-with AA_Util;               use AA_Util;
-with ALI.Util;              use ALI.Util;
-with ALI;                   use ALI;
-with Atree;                 use Atree;
+with AA_Util;                use AA_Util;
+with ALI.Util;               use ALI.Util;
+with ALI;                    use ALI;
+with Atree;                  use Atree;
 with Binderr;
-with Debug;                 use Debug;
-with Einfo;                 use Einfo;
-with Errout;                use Errout;
-with Flow;                  use Flow;
-with Namet;                 use Namet;
-with Nlists;                use Nlists;
-with Opt;                   use Opt;
-with Osint.C;               use Osint.C;
-with Osint;                 use Osint;
-with Output;                use Output;
-with Outputs;               use Outputs;
+with Debug;                  use Debug;
+with Einfo;                  use Einfo;
+with Errout;                 use Errout;
+with Flow;                   use Flow;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Opt;                    use Opt;
+with Osint.C;                use Osint.C;
+with Osint;                  use Osint;
+with Output;                 use Output;
+with Outputs;                use Outputs;
 with Sem;
-with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
-with Stand;                 use Stand;
-with Switch;                use Switch;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Stand;                  use Stand;
+with Switch;                 use Switch;
 
-with Alfa.Definition;       use Alfa.Definition;
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
-with Alfa.Util;             use Alfa.Util;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 
-with Why;                   use Why;
-with Why.Atree.Sprint;      use Why.Atree.Sprint;
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Inter;             use Why.Inter;
-with Why.Types;             use Why.Types;
+with Why;                    use Why;
+with Why.Atree.Sprint;       use Why.Atree.Sprint;
+with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Inter;              use Why.Inter;
+with Why.Types;              use Why.Types;
 
-with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
-with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
-with Gnat2Why.Types;        use Gnat2Why.Types;
+with Gnat2Why.Decls;         use Gnat2Why.Decls;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
+with Gnat2Why.Types;         use Gnat2Why.Types;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -243,7 +243,7 @@ package body Gnat2Why.Driver is
       --  Load Alfa information from ALIs for all dependent units
 
       for Index in ALIs.First .. ALIs.Last loop
-         Load_Alfa (Name_String (Name_Id
+         Load_SPARK_Xrefs (Name_String (Name_Id
            (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
       end loop;
 

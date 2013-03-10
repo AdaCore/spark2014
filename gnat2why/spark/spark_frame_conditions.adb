@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                A L F A . F R A M E _ C O N D I T I O N S                 --
+--                S P A R K _ F R A M E _ C O N D I T I O N S               --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -23,14 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;                use Ada.Text_IO;
+with Ada.Text_IO;            use Ada.Text_IO;
 with Unchecked_Deallocation;
 
-with Get_Alfa;
-with Output;                     use Output;
-with Sem_Util;                   use Sem_Util;
+with Get_SPARK_Xrefs;
+with Output;                 use Output;
+with Sem_Util;               use Sem_Util;
+with SPARK_Xrefs;            use SPARK_Xrefs;
 
-package body Alfa.Frame_Conditions is
+package body SPARK_Frame_Conditions is
 
    -----------------
    -- Local Types --
@@ -560,13 +561,13 @@ package body Alfa.Frame_Conditions is
    ----------------------
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
-      (Ent.all = Alfa.Name_Of_Heap_Variable);
+      (Ent.all = SPARK_Xrefs.Name_Of_Heap_Variable);
 
-   ---------------
-   -- Load_Alfa --
-   ---------------
+   ----------------------
+   -- Load_SPARK_Xrefs --
+   ----------------------
 
-   procedure Load_Alfa (ALI_Filename : String) is
+   procedure Load_SPARK_Xrefs (ALI_Filename : String) is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
@@ -625,9 +626,9 @@ package body Alfa.Frame_Conditions is
          C := Getc;
       end Skipc;
 
-      procedure Get_Alfa_From_ALI is new Get_Alfa;
+      procedure Get_SPARK_From_ALI is new Get_SPARK_Xrefs;
 
-   --  Start of processing for Load_Alfa
+   --  Start of processing for Load_SPARK_Xrefs
 
    begin
       Open (ALI_File, In_File, ALI_Filename);
@@ -656,12 +657,13 @@ package body Alfa.Frame_Conditions is
 
       Index := 1;
 
-      Get_Alfa_From_ALI;
+      Get_SPARK_From_ALI;
       Close (ALI_File);
 
-      --  Walk low-level Alfa tables for this unit and populate high-level maps
+      --  Walk low-level SPARK tables for this unit and populate high-level
+      --  maps.
 
-      Walk_Alfa_Tables : declare
+      Walk_SPARK_Tables : declare
 
          type Scope_Name is record
             File_Num  : Nat;
@@ -693,7 +695,7 @@ package body Alfa.Frame_Conditions is
          Scope_Specs    : Scope_Spec.Map;
          Current_Entity : Entity_Name;
 
-      --  Start of processing for Walk_Alfa_Tables
+      --  Start of processing for Walk_SPARK_Tables
 
       begin
          --  Fill Scope_Entities : build entity representatives for all scopes
@@ -702,12 +704,13 @@ package body Alfa.Frame_Conditions is
          --  Fill Scope_Specs : build a correspondance table between body and
          --  spec scope for the same entity.
 
-         for F in Alfa_File_Table.First .. Alfa_File_Table.Last loop
-            for S in Alfa_File_Table.Table (F).From_Scope
-              .. Alfa_File_Table.Table (F).To_Scope
+         for F in SPARK_File_Table.First .. SPARK_File_Table.Last loop
+            for S in SPARK_File_Table.Table (F).From_Scope
+              .. SPARK_File_Table.Table (F).To_Scope
             loop
                declare
-                  Srec : Alfa_Scope_Record renames Alfa_Scope_Table.Table (S);
+                  Srec : SPARK_Scope_Record renames
+                           SPARK_Scope_Table.Table (S);
                   Sco  : constant Scope_Name :=
                            Scope_Name'(File_Num  => Srec.File_Num,
                                        Scope_Num => Srec.Scope_Num);
@@ -735,19 +738,20 @@ package body Alfa.Frame_Conditions is
          --  Fill in high-level tables from xrefs
 
          Current_Entity := Null_Entity_Name;
-         for F in Alfa_File_Table.First .. Alfa_File_Table.Last loop
-            for S in Alfa_File_Table.Table (F).From_Scope
-              .. Alfa_File_Table.Table (F).To_Scope
+         for F in SPARK_File_Table.First .. SPARK_File_Table.Last loop
+            for S in SPARK_File_Table.Table (F).From_Scope
+              .. SPARK_File_Table.Table (F).To_Scope
             loop
-               for X in Alfa_Scope_Table.Table (S).From_Xref
-                 .. Alfa_Scope_Table.Table (S).To_Xref
+               for X in SPARK_Scope_Table.Table (S).From_Xref
+                 .. SPARK_Scope_Table.Table (S).To_Xref
                loop
                   Do_One_Xref : declare
-                     Frec : Alfa_File_Record renames
-                              Alfa_File_Table.Table (F);
-                     Srec : Alfa_Scope_Record renames
-                              Alfa_Scope_Table.Table (S);
-                     Xref : Alfa_Xref_Record renames Alfa_Xref_Table.Table (X);
+                     Frec : SPARK_File_Record renames
+                              SPARK_File_Table.Table (F);
+                     Srec : SPARK_Scope_Record renames
+                              SPARK_Scope_Table.Table (S);
+                     Xref : SPARK_Xref_Record renames
+                              SPARK_Xref_Table.Table (X);
 
                      File_Entity : Entity_Name;
                      Ref_Entity : constant Entity_Name :=
@@ -827,8 +831,8 @@ package body Alfa.Frame_Conditions is
                end loop;
             end loop;
          end loop;
-      end Walk_Alfa_Tables;
-   end Load_Alfa;
+      end Walk_SPARK_Tables;
+   end Load_SPARK_Xrefs;
 
    ----------------------
    -- Make_Entity_Name --
@@ -1082,4 +1086,4 @@ package body Alfa.Frame_Conditions is
       return Names;
    end To_Names;
 
-end Alfa.Frame_Conditions;
+end SPARK_Frame_Conditions;

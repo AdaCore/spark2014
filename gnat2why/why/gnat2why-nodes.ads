@@ -28,7 +28,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Hashed_Maps;
 
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 with AA_Util;               use AA_Util;
 with Atree;                 use Atree;

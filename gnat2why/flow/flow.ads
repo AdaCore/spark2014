@@ -31,10 +31,10 @@ with Einfo; use Einfo;
 with Sinfo; use Sinfo;
 with Types; use Types;
 
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 --  Node_Sets and Node_Hash
 
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 --  Entity_Name
 
 with Graph;

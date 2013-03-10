@@ -27,12 +27,13 @@ with AA_Util;             use AA_Util;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
+with SPARK_Xrefs;         use SPARK_Xrefs;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 with Constant_Tree;
 
-with Alfa.Definition;     use Alfa.Definition;
-with Alfa.Util;           use Alfa.Util;
+with SPARK_Definition;    use SPARK_Definition;
+with SPARK_Util;          use SPARK_Util;
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Tables;    use Why.Atree.Tables;
@@ -1092,8 +1093,8 @@ package body Why.Inter is
    function To_Why_Id (Obj : String) return W_Identifier_Id
    is
    begin
-      if Obj = Alfa.Name_Of_Heap_Variable then
-         return New_Identifier (Name => Alfa.Name_Of_Heap_Variable);
+      if Obj = SPARK_Xrefs.Name_Of_Heap_Variable then
+         return New_Identifier (Name => SPARK_Xrefs.Name_Of_Heap_Variable);
       else
          return Prefix (Obj, Avoid_Why3_Keyword (Extract_Object_Name (Obj)));
       end if;
@@ -1106,7 +1107,7 @@ package body Why.Inter is
    function To_Why_Type (T : String) return W_Identifier_Id
    is
    begin
-      if T = Alfa.Name_Of_Heap_Variable then
+      if T = SPARK_Xrefs.Name_Of_Heap_Variable then
          return New_Identifier (Name => "__type_of_heap");
       else
          return Prefix (T, WNE_Type);

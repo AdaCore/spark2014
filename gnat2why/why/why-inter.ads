@@ -27,7 +27,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 
-with Alfa.Frame_Conditions;              use Alfa.Frame_Conditions;
+with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 
 with Atree;                              use Atree;
 with Sinfo;                              use Sinfo;

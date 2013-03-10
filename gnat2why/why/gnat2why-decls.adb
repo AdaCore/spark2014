@@ -30,8 +30,8 @@ with Einfo;                use Einfo;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 
-with Alfa.Definition;      use Alfa.Definition;
-with Alfa.Util;            use Alfa.Util;
+with SPARK_Definition;     use SPARK_Definition;
+with SPARK_Util;           use SPARK_Util;
 
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -48,13 +48,13 @@ with Gnat2Why.Expr;        use Gnat2Why.Expr;
 with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 
-with Sem_Ch12;                  use Sem_Ch12;
-with String_Utils;              use String_Utils;
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sem_Util;                  use Sem_Util;
-with Gnat2Why.Subprograms;      use Gnat2Why.Subprograms;
-with Why.Gen.Terms;             use Why.Gen.Terms;
+with Sem_Ch12;             use Sem_Ch12;
+with String_Utils;         use String_Utils;
+with Namet;                use Namet;
+with Nlists;               use Nlists;
+with Sem_Util;             use Sem_Util;
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Why.Gen.Terms;        use Why.Gen.Terms;
 
 package body Gnat2Why.Decls is
 
@@ -493,7 +493,7 @@ package body Gnat2Why.Decls is
                   --  for use in translating quantification over this
                   --  container's type.
 
-                  if Name = Alfa.Util.Lowercase_Has_Element_Name then
+                  if Name = SPARK_Util.Lowercase_Has_Element_Name then
                      declare
                         Container_Type : constant Entity_Id :=
                           Etype (Defining_Identifier

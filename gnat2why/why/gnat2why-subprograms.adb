@@ -25,43 +25,42 @@
 
 with GNAT.Source_Info;
 
-with Atree;                 use Atree;
-with Einfo;                 use Einfo;
-with Namet;                 use Namet;
-with Nlists;                use Nlists;
-with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
-with Snames;                use Snames;
-with Stand;                 use Stand;
-with Uintp;                 use Uintp;
-with VC_Kinds;              use VC_Kinds;
+with Atree;                  use Atree;
+with Einfo;                  use Einfo;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
+with Snames;                 use Snames;
+with Stand;                  use Stand;
+with Uintp;                  use Uintp;
+with VC_Kinds;               use VC_Kinds;
 
-with Alfa;                  use Alfa;
-with Alfa.Definition;       use Alfa.Definition;
-with Alfa.Frame_Conditions; use Alfa.Frame_Conditions;
-with Alfa.Util;             use Alfa.Util;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 
-with Why;                   use Why;
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Builders;    use Why.Atree.Builders;
-with Why.Atree.Mutators;    use Why.Atree.Mutators;
-with Why.Conversions;       use Why.Conversions;
---   with Why.Gen.Binders;       use Why.Gen.Binders;
-with Why.Gen.Decl;          use Why.Gen.Decl;
-with Why.Gen.Expr;          use Why.Gen.Expr;
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Preds;         use Why.Gen.Preds;
-with Why.Gen.Progs;         use Why.Gen.Progs;
-with Why.Ids;               use Why.Ids;
-with Why.Sinfo;             use Why.Sinfo;
-with Why.Types;             use Why.Types;
+with Why;                    use Why;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Mutators;     use Why.Atree.Mutators;
+with Why.Conversions;        use Why.Conversions;
+--   with Why.Gen.Binders;   use Why.Gen.Binders;
+with Why.Gen.Decl;           use Why.Gen.Decl;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Preds;          use Why.Gen.Preds;
+with Why.Gen.Progs;          use Why.Gen.Progs;
+with Why.Ids;                use Why.Ids;
+with Why.Sinfo;              use Why.Sinfo;
+with Why.Types;              use Why.Types;
 
-with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Expr;         use Gnat2Why.Expr;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
-with Gnat2Why.Types;        use Gnat2Why.Types;
-with Gnat2Why.Util;         use Gnat2Why.Util;
+with Gnat2Why.Decls;         use Gnat2Why.Decls;
+with Gnat2Why.Expr;          use Gnat2Why.Expr;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Gnat2Why.Types;         use Gnat2Why.Types;
+with Gnat2Why.Util;          use Gnat2Why.Util;
 
 package body Gnat2Why.Subprograms is
 
@@ -249,7 +248,7 @@ package body Gnat2Why.Subprograms is
       Guard_Map    : Ada_To_Why_Ident.Map) return W_Prog_Id
    is
       R    : W_Prog_Id        := Initial_Body;
-      Node : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+      Node : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
    begin
       R := Transform_Declarations_Block (Declarations (Node), R);
 
@@ -878,7 +877,7 @@ package body Gnat2Why.Subprograms is
       E      : Entity_Id)
    is
       Name       : constant String  := Full_Name (E);
-      Body_N     : constant Node_Id := Alfa.Util.Get_Subprogram_Body (E);
+      Body_N     : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
       Post_N     : constant Node_Id := Get_Location_For_Postcondition (E);
       Pre        : W_Pred_Id;
       Post       : W_Pred_Id;

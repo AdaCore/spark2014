@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                             A L F A . U T I L                            --
+--                            S P A R K _ U T I L                           --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
@@ -30,12 +30,13 @@ with Impunit;          use Impunit;
 with Namet;            use Namet;
 with Sinfo;            use Sinfo;
 with Snames;           use Snames;
+with Types;            use Types;
 
 with Why.Atree.Tables; use Why.Atree.Tables;
 
 with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
 
-package Alfa.Util is
+package SPARK_Util is
 
    -------------------
    -- Special modes --
@@ -201,4 +202,4 @@ package Alfa.Util is
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
    --  Returns the innermost loop enclosing N, if any, and Empty otherwise
 
-end Alfa.Util;
+end SPARK_Util;
