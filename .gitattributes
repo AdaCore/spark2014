@@ -8,3 +8,8 @@ testsuite/gnatmerge/tests/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/*/*/* no-precommit-check
+gnat2why/design no-precommit-check
+gnat2why/design/* no-precommit-check
+gnat2why/design/*/* no-precommit-check
+gnat2why/design/*/*/* no-precommit-check
+gnat2why/design/*/*/*/* no-precommit-check
