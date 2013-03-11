@@ -669,6 +669,11 @@ package body Flow is
                            Output.Write_Str ("if ");
                            Sprint_Node (Condition (N));
 
+                        when N_Elsif_Part =>
+                           Rv.Shape := Shape_Diamond;
+                           Output.Write_Str ("elsif ");
+                           Sprint_Node (Condition (N));
+
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
                            if Iteration_Scheme (N) = Empty then
