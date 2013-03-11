@@ -1,4 +1,2 @@
-compilation of p.adb failed
-gprbuild: *** compilation phase failed
 p.adb:5:07: explicit dereference is not in SPARK
 p.ads:2:09: access type is not in SPARK

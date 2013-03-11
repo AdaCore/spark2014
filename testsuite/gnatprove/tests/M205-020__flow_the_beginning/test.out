@@ -6,8 +6,4 @@ foo.adb:10:09: ineffective statement
 foo.adb:12:09: ineffective statement
 foo.adb:12:09: use of uninitialized variable "Z" [uninitialized]
 foo.adb:15:04: use of uninitialized variable "B" [uninitialized]
-
-compilation of foo.adb failed
-
-gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.

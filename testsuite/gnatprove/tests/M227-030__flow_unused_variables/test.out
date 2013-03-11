@@ -8,9 +8,5 @@ test.adb:41:23: ineffective import
 test.adb:41:23: "A" is not used
 test.adb:52:07: "L" is not used
 test.adb:61:07: ineffective statement
-
-   compilation of test.adb failed
-
-gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
 
