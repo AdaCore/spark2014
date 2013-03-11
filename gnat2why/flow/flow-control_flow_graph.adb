@@ -142,6 +142,21 @@ package body Flow.Control_Flow_Graph is
    --     * p.r.a
    --     * p.r.b
 
+   procedure Untangle_Assignment_Target
+     (N            : Node_Id;
+      Vars_Defined : out Flow_Id_Sets.Set;
+      Vars_Used    : out Flow_Id_Sets.Set)
+      with Pre => Nkind (N) in N_Identifier |
+                               N_Selected_Component |
+                               N_Indexed_Component,
+           Post => Vars_Defined.Length >= 1;
+   --  Given the target of an assignment (perhaps the left-hand-side
+   --  of an assignment statement or an out vertex in a procedure
+   --  call), work out which variables are actually set and which
+   --  variables are used to determine what is set (in the case of
+   --  arrays).
+   pragma Unreferenced (Untangle_Assignment_Target);
+
    procedure Do_Assignment_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -447,6 +462,20 @@ package body Flow.Control_Flow_Graph is
                       Entity_Lists.Empty_Vector);
       return All_Comp;
    end All_Record_Components;
+
+   --------------------------------
+   -- Untangle_Assignment_Target --
+   --------------------------------
+
+   procedure Untangle_Assignment_Target
+     (N            : Node_Id;
+      Vars_Defined : out Flow_Id_Sets.Set;
+      Vars_Used    : out Flow_Id_Sets.Set)
+   is
+   begin
+      --  ??? Pavlos to implement :)
+      null;
+   end Untangle_Assignment_Target;
 
    -------------------------------
    --  Do_Assignment_Statement  --
