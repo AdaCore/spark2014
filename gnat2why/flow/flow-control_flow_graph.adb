@@ -651,11 +651,11 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V, V_Elsif, V_Prev : Flow_Graphs.Vertex_Id;
-      If_Part            : constant List_Id := Then_Statements (N);
-      Else_Part          : constant List_Id := Else_Statements (N);
-      Elsif_Part         : constant List_Id := Elsif_Parts (N);
-      Elsif_Statement    : Node_Id;
+      V, V_Prev       : Flow_Graphs.Vertex_Id;
+      If_Part         : constant List_Id := Then_Statements (N);
+      Else_Part       : constant List_Id := Else_Statements (N);
+      Elsif_Part      : constant List_Id := Elsif_Parts (N);
+      Elsif_Statement : Node_Id;
    begin
       --  We have a vertex for the if statement itself.
       FA.CFG.Add_Vertex
@@ -667,47 +667,77 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
 
+      --  We hang the if part off that.
       Process_Statement_List (If_Part, FA, CM, Ctx);
       Linkup (FA.CFG, V, CM (Union_Id (If_Part)).Standard_Entry);
-      CM (Union_Id (N)).Standard_Exits.Union (CM (Union_Id (If_Part)).
-        Standard_Exits);
+      CM (Union_Id (N)).Standard_Exits.Union
+        (CM (Union_Id (If_Part)).Standard_Exits);
+
+      --  If we have elsif parts we chain them together in the obvious
+      --  way:
+      --
+      --  if
+      --  | \
+      --  |  if part
+      --  |         \-----------------
+      --  elsif                       \
+      --  |    \                       |
+      --  |     elsif part             |
+      --  |               \---------   |
+      --  elsif                     \  |
+      --  |    \                     | |
+      --  |     another elsif part   | |
+      --  |                       \  | |
+      --  (optional else part)     | | |
+      --
+      --  The standard exits for all parts feed into the standard
+      --  exits of the entire if statement.
+      --
+      --  Finally please note that at the end variable V is either the
+      --  vertex for the if statement itself or the very last elsif
+      --  part.
 
       if Elsif_Part /= No_List then
          Elsif_Statement := First (Elsif_Part);
          V_Prev          := V;
 
          while Present (Elsif_Statement) loop
-            --  We have a vertex for each elsif statement.
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (Elsif_Statement),
-               Make_Basic_Attributes (Var_Use => Get_Variable_Set (
-                                        Condition (Elsif_Statement)),
-                                      Loops   => Ctx.Current_Loops,
-                                      E_Loc   => Elsif_Statement),
-               V_Elsif);
-            CM.Include (Union_Id (Elsif_Statement), No_Connections);
-            CM (Union_Id (Elsif_Statement)).Standard_Entry := V_Elsif;
+            declare
+               Elsif_Body : constant List_Id :=
+                 Then_Statements (Elsif_Statement);
+            begin
+               --  We have a vertex V for each elsif statement, which we
+               --  link to the previous one (V_Prev).
+               FA.CFG.Add_Vertex
+                 (Direct_Mapping_Id (Elsif_Statement),
+                  Make_Basic_Attributes (Var_Use => Get_Variable_Set
+                                           (Condition (Elsif_Statement)),
+                                         Loops   => Ctx.Current_Loops,
+                                         E_Loc   => Elsif_Statement),
+                  V);
+               Linkup (FA.CFG, V_Prev, V);
 
-            Linkup (FA.CFG, V_Prev, V_Elsif);
+               Process_Statement_List (Elsif_Body, FA, CM, Ctx);
+               Linkup (FA.CFG,
+                       V,
+                       CM (Union_Id (Elsif_Body)).Standard_Entry);
+               CM (Union_Id (N)).Standard_Exits.Union
+                 (CM (Union_Id (Elsif_Body)).Standard_Exits);
+            end;
 
-            Process_Statement_List (Then_Statements (Elsif_Statement),
-              FA, CM, Ctx);
-            Linkup (FA.CFG, V_Elsif, CM (Union_Id (Then_Statements (
-              Elsif_Statement))).Standard_Entry);
-            CM (Union_Id (N)).Standard_Exits.Union (CM (Union_Id (
-              Then_Statements (Elsif_Statement))).Standard_Exits);
-
-            V_Prev := V_Elsif;
+            V_Prev := V;
             Next (Elsif_Statement);
          end loop;
-         V := V_Prev;
       end if;
+
+      --  Remember that V is the vertex associated with either the
+      --  last elsif blob or the if statement itself.
 
       if Else_Part /= No_List then
          Process_Statement_List (Else_Part, FA, CM, Ctx);
          Linkup (FA.CFG, V, CM (Union_Id (Else_Part)).Standard_Entry);
-         CM (Union_Id (N)).Standard_Exits.Union (CM (Union_Id (Else_Part)).
-           Standard_Exits);
+         CM (Union_Id (N)).Standard_Exits.Union
+           (CM (Union_Id (Else_Part)).Standard_Exits);
       else
          CM (Union_Id (N)).Standard_Exits.Insert (V);
       end if;
