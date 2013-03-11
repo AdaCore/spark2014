@@ -26,6 +26,8 @@
 with Ada.IO_Exceptions;
 with Ada.Text_IO;
 with GNAT.Directory_Operations;
+with GNAT.Expect;               use GNAT.Expect;
+with GNAT.Regpat;               use GNAT.Regpat;
 
 package body Call is
 
@@ -40,6 +42,9 @@ package body Call is
       (Command : String;
        Arguments : Argument_List);
    --  print the command line for debug purposes
+
+   Line_Regex : constant Pattern_Matcher :=
+     Compile ("[^\r\n]*(\n|\r\n)", Multiple_Lines);
 
    ------------------------
    -- Abort_With_Message --
@@ -104,6 +109,8 @@ package body Call is
       Free_Args : Boolean := True)
    is
       Executable : String_Access := Locate_Exec_On_Path (Command);
+      PD         : Process_Descriptor;
+      Match      : Expect_Match;
    begin
       if Executable = null then
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
@@ -114,7 +121,38 @@ package body Call is
          Ada.Text_IO.New_Line;
       end if;
 
-      Spawn (Executable.all, Arguments, Standout, Status, Err_To_Out => True);
+      begin
+         Non_Blocking_Spawn
+           (PD,
+            Executable.all,
+            Arguments,
+            Err_To_Out => True);
+         loop
+            Expect (PD, Match, Line_Regex, Timeout => 1000);
+            if Match /= Expect_Timeout then
+               declare
+                  Line : constant String := Expect_Out (PD);
+               begin
+
+                  --  the two kinds of lines that we want to filter from
+                  --  gprbuild output
+
+                  if not Starts_With
+                    (Line,
+                     "gprbuild: *** compilation phase failed") and then
+                    not Starts_With
+                      (Line,
+                       "   compilation of")
+                  then
+                     Ada.Text_IO.Put (Line);
+                  end if;
+               end;
+            end if;
+         end loop;
+      exception
+         when Process_Died =>
+            Close (PD, Status);
+      end;
       if Free_Args then
          Free_Argument_List (Arguments);
       end if;
