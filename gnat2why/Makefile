@@ -1,7 +1,4 @@
-
-all:
-	make -C why/xgen
-	make -C why
-
-clean:
-	make -C why clean
+MAIN_FILE=gnat1drv
+TOOL_NAME=gnat2why
+GNAT1_NAME=gnat1why
+-include Makefile.generic

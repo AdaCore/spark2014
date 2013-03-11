@@ -22,38 +22,37 @@ uname:=$(shell uname)
 all: setup build
 
 setup:
-	mkdir -p $(LOCAL_OBJ) ../../install/bin
-	cp -p ../gnat.adc $(LOCAL_OBJ)
+	mkdir -p $(LOCAL_OBJ) ../install/bin
+	cp -p gnat.adc $(LOCAL_OBJ)
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" -e "s^@ADALIB@^$(adalib)^" \
-	    ../sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
-	for f in `cd ../gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
+	    sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
+	for f in `cd gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
 	do \
-		cp -p ../gnat_src/$$f $(LOCAL_OBJ); \
+		cp -p gnat_src/$$f $(LOCAL_OBJ); \
 	done
 	cd $(LOCAL_OBJ) && gnatmake -q xtreeprs xnmake xsnamest
 	cd $(LOCAL_OBJ) && ./xtreeprs && ./xnmake && ./xsnamest
 	mv $(LOCAL_OBJ)/snames.ns $(LOCAL_OBJ)/snames.ads
 	mv $(LOCAL_OBJ)/snames.nb $(LOCAL_OBJ)/snames.adb
 
-COMMON_INCLUDES=-I.. -I../../spark -I../../utils -I../../../common -I../../flow
-INCLUDES=$(COMMON_INCLUDES) -I../..
+COMMON_INCLUDES=-I../why -I. -I../spark -I../utils -I../../common -I../flow
+INCLUDES=$(COMMON_INCLUDES) -I..
 
 build: obj/smissing.o force
 	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
-	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
-	  -o ../../../install/bin/$(TOOL_NAME) -largs smissing.o
+	  -I$(adainclude)  -I../gnat_src $(MAIN_FILE) \
+	  -o ../../install/bin/$(TOOL_NAME) -largs smissing.o
 
 coverage: obj/smissing.o force
 	cd $(LOCAL_OBJ) && gnatmake -f \
 	   -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
-	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
-	  -o ../../../install/bin/$(TOOL_NAME) \
+	  -I$(adainclude)  -I../gnat_src $(MAIN_FILE) \
+	  -o ../../install/bin/$(TOOL_NAME) \
 	  -cargs -fprofile-arcs -ftest-coverage \
 	  -largs smissing.o -fprofile-arcs -ftest-coverage
 
-
-obj/smissing.o: ../smissing.c
-	gcc -c ../smissing.c -o obj/smissing.o
+obj/smissing.o: smissing.c
+	gcc -c smissing.c -o obj/smissing.o
 
 # This target builds a combined gnat1+TOOL_NAME executable.
 # It requires a GNAT_BUILD_DIR env variable which should point to
@@ -113,21 +112,21 @@ GNAT1_LIBS=$(OBJ)/../libbackend.a $(GCC47_LIBS) $(OBJ)/../../libcpp/libcpp.a \
    $(OBJ)/../../zlib/libz.a
 
 gnat1: force
-	mkdir -p $(LOCAL_OBJ) ../../install/bin
-	cp -p ../gnat.adc $(LOCAL_OBJ)
+	mkdir -p $(LOCAL_OBJ) ../install/bin
+	cp -p gnat.adc $(LOCAL_OBJ)
 	sed -e 's/Always_Compatible_Rep.*/Always_Compatible_Rep     : constant Boolean := False;/' \
 	    $(SRC)/system.ads > $(LOCAL_OBJ)/system.ads
 	cd $(LOCAL_OBJ) && gnatmake -m -a -j$(PROCS) $(GNAT1_INCLUDES) \
-	  -o ../../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
+	  -o ../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
 	  -cargs $(ADAFLAGS) -gnatg $(GCCFLAGS) -gnat12 -gnatyN -gnatws \
 	  -bargs -n -nostdlib \
 	  -largs --GCC="gcc $(GNAT1_INCLUDES)" $(GNAT1_C_OBJS) \
 		$(GNAT1_RTS_OBJS) $(GNAT1_LIBS) $(LDFLAGS)
 
 $(TOOL_NAME): force
-	mkdir -p obj-tools ../../install/bin
+	mkdir -p obj-tools ../install/bin
 	cd obj-tools && gnatmake -j$(PROCS) -gnat12 $(GCCFLAGS) \
-	  ../$(TOOL_NAME)_wrapper -o ../../../install/bin/$(TOOL_NAME)
+	  ../why/$(TOOL_NAME)_wrapper -o ../../install/bin/$(TOOL_NAME)
 
 force:
 

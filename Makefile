@@ -104,15 +104,15 @@ $(DOC):
 
 gnat1why:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why/why gnat1 gnat2why
+	$(MAKE) -C gnat2why gnat1 gnat2why
 
 gnat2why:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why/why
+	$(MAKE) -C gnat2why
 
 coverage:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why/why coverage
+	$(MAKE) -C gnat2why coverage
 	cd gnat2why/testsuite; ./run-tests -j 5
 
 gnatprove:
@@ -180,7 +180,7 @@ install-examples:
 
 clean:
 	$(MAKE) -C gnat2why/why/xgen clean
-	$(MAKE) -C gnat2why/why clean
+	$(MAKE) -C gnat2why clean
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean
 	$(MAKE) -C docs/alfa clean

@@ -1,11 +1,10 @@
-
 project GNAT2Why is
 
    for Object_Dir use "obj";
-   for Exec_Dir use "../../install/bin";
+   for Exec_Dir use "../install/bin";
 
-   for Source_Dirs use (".", "..", "../spark", "../utils", "../..",
-                        "../flow", "../../common", "../gnat_src", "obj");
+   for Source_Dirs use ("why", ".", "spark", "utils", "..",
+                        "flow", "../common", "gnat_src", "obj");
 
    for Main use ("gnat1drv.adb");
 
