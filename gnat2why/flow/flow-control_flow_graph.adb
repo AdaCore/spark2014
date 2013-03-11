@@ -362,7 +362,7 @@ package body Flow.Control_Flow_Graph is
       U : constant Entity_Id := Unique_Entity (E);
    begin
       case Ekind (Etype (U)) is
-         when Discrete_Or_Fixed_Point_Kind | Array_Kind =>
+         when Elementary_Kind | Array_Kind =>
             return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
 
          when E_Record_Type =>
