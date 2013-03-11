@@ -934,9 +934,36 @@ package body Why.Gen.Records is
    is
       Root : constant Entity_Id := Root_Record_Type (Check_Ty);
    begin
-      if Root = Check_Ty or else not Has_Discriminants (Check_Ty) then
+      --  We make a last verification here to see whether a discriminant check
+      --  is actually necessary.
+
+      --  If the type does not have any discriminants, no check is needed
+      --  obviously.
+
+      if not Has_Discriminants (Check_Ty) then
          return Expr;
       end if;
+
+      --  If the check type is a "root type", we cannot generate a check, as
+      --  we do not have the appropriate predicate in Why3. However, the
+      --  frontend always generates appropriate subtypes for discriminant
+      --  records. As a consequence, we can only end up with the "root" type
+      --  as a check type if we are in the case of a record type with default
+      --  discriminants. But this case does not require checks.
+
+      if Root = Check_Ty then
+         return Expr;
+      end if;
+
+      --  The check type can still have default discriminants. We check that
+      --  explicitly here.
+
+      if not Is_Constrained (Check_Ty) and then
+        Present (Discriminant_Constraint (Check_Ty)) and then
+        not Is_Empty_Elmt_List (Discriminant_Constraint (Check_Ty)) then
+         return Expr;
+      end if;
+
       declare
          Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
          Args      : W_Expr_Array (1 .. Num_Discr + 1);
