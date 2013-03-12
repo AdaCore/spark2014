@@ -156,11 +156,13 @@ Formal Analysis
 |SPARK| will be amenable to a range of formal analyses, including but not limited to:
 
 - Data-flow analysis, which considers the initialization of variables and the
-  direction of data flow into and out of subprograms.
+  data dependences of subprograms (which parameters and variables get read or
+  written).
 
-- Information-flow analysis, which also considers the coupling between the inputs
-  and outputs of a subprogram. The term *flow analysis* is used to mean data-flow
-  analysis and information-flow analysis taken together.
+- Information-flow analysis, which also considers the coupling between the
+  inputs and outputs of a subprogram (which input values of parameters and
+  variables influence which output values). The term *flow analysis* is used to
+  mean data-flow analysis and information-flow analysis taken together.
 
 - Formal verification of robustness properties. In Ada terminology, this refers to
   the proof that certain predefined checks, such as the ones which could raise
