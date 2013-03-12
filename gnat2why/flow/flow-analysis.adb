@@ -64,6 +64,13 @@ package body Flow.Analysis is
                                  return String;
    --  Obtain the location for the given vertex as in "foo.adb:12:33".
 
+   procedure Write_Vertex_Set
+     (G     : Flow_Graphs.T;
+      E_Loc : Node_Or_Entity_Id;
+      Set   : Vertex_Sets.Set;
+      Tag   : String);
+   --  Write a trace file for GPS.
+
    --------------------
    -- Error_Msg_Flow --
    --------------------
@@ -193,6 +200,50 @@ package body Flow.Analysis is
            Sep & Col_No (2 .. Col_No'Last);
       end;
    end Get_Line_And_Column;
+
+   ----------------------
+   -- Write_Vertex_Set --
+   ----------------------
+
+   procedure Write_Vertex_Set
+     (G     : Flow_Graphs.T;
+      E_Loc : Node_Or_Entity_Id;
+      Set   : Vertex_Sets.Set;
+      Tag   : String)
+   is
+      SI      : constant Source_File_Index :=
+        Get_Source_File_Index (Sloc (E_Loc));
+
+      Line_No : constant String :=
+        Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (E_Loc)));
+
+      Col_No  : constant String :=
+        Column_Number'Image (Get_Column_Number (Sloc (E_Loc)));
+
+      Filename : constant String :=
+        Get_Name_String (File_Name (SI)) &
+        "_" & Line_No (2 .. Line_No'Last) &
+        "_" & Col_No (2 .. Col_No'Last) &
+        "_" & Tag &
+        ".trace";
+
+      FD       : Ada.Text_IO.File_Type;
+   begin
+      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
+
+      for V of Set loop
+         declare
+            F : constant Flow_Id := G.Get_Key (V);
+         begin
+            if F.Kind = Direct_Mapping then
+               Ada.Text_IO.Put (FD, Get_Line (G, V));
+               Ada.Text_IO.New_Line (FD);
+            end if;
+         end;
+      end loop;
+
+      Ada.Text_IO.Close (FD);
+   end Write_Vertex_Set;
 
    ------------------
    -- Sanity_Check --
@@ -660,6 +711,12 @@ package body Flow.Analysis is
       --  Looks through the depends aspect on FA.Subprogram and
       --  returns the node which represents E in the dependency for E.
 
+      procedure Show_Dependency (Error_Loc   : Node_Id;
+                                 Initial_Var : Entity_Id;
+                                 Final_Var   : Entity_Id);
+      --  Show the dependency of initial_var on final_var. The error
+      --  is attached to Final_Var.
+
       function Find_Export (E : Entity_Id) return Node_Id
       is
          Pragma_Depends : constant Node_Id :=
@@ -703,6 +760,70 @@ package body Flow.Analysis is
          end loop;
          raise Why.Unexpected_Node;
       end Find_Export;
+
+      procedure Show_Dependency (Error_Loc   : Node_Id;
+                                 Initial_Var : Entity_Id;
+                                 Final_Var   : Entity_Id)
+      is
+
+         F_Initial  : constant Flow_Id := Direct_Mapping_Id (Initial_Var,
+                                                             Initial_Value);
+         F_Final    : constant Flow_Id := Direct_Mapping_Id (Final_Var,
+                                                             Final_Value);
+
+         V_Initial  : constant Flow_Graphs.Vertex_Id :=
+           FA.PDG.Get_Vertex (F_Initial);
+         V_Final    : constant Flow_Graphs.Vertex_Id :=
+           FA.PDG.Get_Vertex (F_Final);
+
+         Path_Found : Boolean         := False;
+         Slice      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+         procedure Are_We_There_Yet
+           (V           : Flow_Graphs.Vertex_Id;
+            Instruction : out Flow_Graphs.Traversal_Instruction);
+         --  Visitor procedure for Shortest_Path.
+
+         procedure Add_Loc
+           (V : Flow_Graphs.Vertex_Id);
+         --  Step procedure for Shortest_Path.
+
+         procedure Are_We_There_Yet
+           (V           : Flow_Graphs.Vertex_Id;
+            Instruction : out Flow_Graphs.Traversal_Instruction) is
+         begin
+            if V = V_Final then
+               Instruction := Flow_Graphs.Found_Destination;
+               Path_Found  := True;
+            else
+               Instruction := Flow_Graphs.Continue;
+            end if;
+         end Are_We_There_Yet;
+
+         procedure Add_Loc
+           (V : Flow_Graphs.Vertex_Id) is
+         begin
+            if V /= V_Initial and V /= V_Final then
+               Slice.Include (V);
+            end if;
+         end Add_Loc;
+
+      begin
+
+         FA.PDG.Shortest_Path (Start => V_Initial,
+                               Allow_Trivial => False,
+                               Search        => Are_We_There_Yet'Access,
+                               Step          => Add_Loc'Access);
+
+         --  A sanity check.
+         pragma Assert (Path_Found);
+
+         Write_Vertex_Set (G     => FA.PDG,
+                           E_Loc => Error_Loc,
+                           Set   => Slice,
+                           Tag   => "flow");
+
+      end Show_Dependency;
 
    begin
       if not Has_Depends (FA.Subprogram) then
@@ -761,9 +882,12 @@ package body Flow.Analysis is
                         --  Check if we have missed something.
                         Tmp := S_E - User_Deps (F_E);
                         for Var_Missed of Tmp loop
-                           Error_Msg_NE ("missing dependency on &!",
+                           Error_Msg_NE ("missing dependency on &! [flow]",
                                          Find_Export (F_E),
                                          Var_Missed);
+                           Show_Dependency (Error_Loc   => Find_Export (F_E),
+                                            Initial_Var => Var_Missed,
+                                            Final_Var   => F_E);
                         end loop;
 
                         --  Check if we have said something wrong.
