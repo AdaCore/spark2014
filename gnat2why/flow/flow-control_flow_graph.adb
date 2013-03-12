@@ -155,7 +155,6 @@ package body Flow.Control_Flow_Graph is
    --  call), work out which variables are actually set and which
    --  variables are used to determine what is set (in the case of
    --  arrays).
-   pragma Unreferenced (Untangle_Assignment_Target);
 
    procedure Do_Assignment_Statement
      (N   : Node_Id;
@@ -1494,8 +1493,6 @@ package body Flow.Control_Flow_Graph is
 
    function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set is
       VS     : Flow_Id_Sets.Set;
-      Unused : Traverse_Final_Result;
-      pragma Unreferenced (Unused);
 
       procedure Process_Function_Call
         (Callsite       : Node_Id;
@@ -1588,29 +1585,16 @@ package body Flow.Control_Flow_Graph is
                      null;
                end case;
 
-            when N_Selected_Component =>
+            when N_Selected_Component | N_Indexed_Component =>
                declare
-                  P : Node_Id := N;
+                  D, U : Flow_Id_Sets.Set;
                begin
-                  --  Jump up until we hit a prefix which is not just
-                  --  another component.
-                  while Nkind (P) = N_Selected_Component loop
-                     P := Prefix (P);
-                  end loop;
-
-                  case Nkind (P) is
-                     when N_Identifier =>
-                        --  R.X.Y.Z
-                        VS.Union (All_Record_Components (Record_Field_Id (N)));
-                        return Skip;
-
-                     when others =>
-                        raise Why.Not_Implemented;
-                  end case;
+                  Untangle_Assignment_Target (N            => N,
+                                              Vars_Defined => D,
+                                              Vars_Used    => U);
+                  VS.Union (D);
+                  VS.Union (U);
                end;
-
-            when N_Indexed_Component =>
-               raise Why.Not_Implemented;
 
             when others =>
                null;
@@ -1618,9 +1602,9 @@ package body Flow.Control_Flow_Graph is
          return OK;
       end Proc;
 
-      function Traverse is new Traverse_Func (Process => Proc);
+      procedure Traverse is new Traverse_Proc (Process => Proc);
    begin
-      Unused := Traverse (N);
+      Traverse (N);
       return VS;
    end Get_Variable_Set;
 
