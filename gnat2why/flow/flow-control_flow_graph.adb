@@ -471,9 +471,104 @@ package body Flow.Control_Flow_Graph is
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
    is
+      Bottom_Node   : Node_Id;
+      End_Of_Record : Node_Id;
+
+      procedure Find_Bottom_Node (N             : Node_Id;
+                                  Bottom_Node   : out Node_Id;
+                                  End_Of_Record : out Node_Id);
+      --  This procedure returns the bottom node of the subtree and
+      --  finds the first non record node.
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Traverses a subtree and adds each variable found inside
+      --  the expression part of an N_Indexed_Component to the
+      --  Vars_Used set.
+
+      -------------------
+      -- Find_Top_Node --
+      -------------------
+
+      procedure Find_Bottom_Node (N             : Node_Id;
+                                  Bottom_Node   : out Node_Id;
+                                  End_Of_Record : out Node_Id)
+      is
+         Temp_Node : Node_Id := N;
+
+         function Has_Prefix (N : Node_Id) return Boolean;
+         --  Return True if N has attribute Prefix
+
+         ----------------
+         -- Has_Prefix --
+         ----------------
+
+         function Has_Prefix (N : Node_Id) return Boolean is
+         begin
+            return
+              Nkind_In (N,
+                N_Indexed_Component,
+                N_Selected_Component);
+         end Has_Prefix;
+      begin
+         End_Of_Record := N;
+         --  Initially we set First_Non_Record to N
+
+         while Has_Prefix (Temp_Node) loop
+            if Nkind (Temp_Node) = N_Indexed_Component then
+               End_Of_Record := Temp_Node;
+            end if;
+            --  If we find a node that is an array, we update
+            --  End_Of_Record with it.
+
+            Temp_Node := Prefix (Temp_Node);
+         end loop;
+
+         if End_Of_Record /= N then
+            End_Of_Record := Prefix (End_Of_Record);
+         end if;
+         --  If we did actually find a node that is an array then
+         --  we need to go one level further down.
+
+         Bottom_Node := Temp_Node;
+         --  Bottom_Node now holds the leftmost item of the
+         --  declaration.
+      end Find_Bottom_Node;
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Indexed_Component then
+            Vars_Used.Union (Get_Variable_Set (Expressions (N)));
+         end if;
+         return OK;
+      end Proc;
+
+      procedure Traverse is new Traverse_Proc (Proc);
    begin
-      --  ??? Pavlos to implement :)
-      null;
+      case Nkind (N) is
+         when N_Identifier =>
+            --  X :=
+            Vars_Defined := Get_Variable_Set (N);
+         when N_Selected_Component | N_Indexed_Component =>
+            --  R.A :=
+            --  A (...) :=
+            Traverse (N);
+            Find_Bottom_Node (N, Bottom_Node, End_Of_Record);
+            if Nkind (Parent (Bottom_Node)) = N_Selected_Component then
+               Vars_Defined.Union (All_Record_Components
+                 (Record_Field_Id (End_Of_Record)));
+            else
+               Vars_Defined.Insert (Direct_Mapping_Id (Entity
+                 (Bottom_Node)));
+               Vars_Used.Insert (Direct_Mapping_Id (Entity
+                 (Bottom_Node)));
+            end if;
+         when others =>
+            raise Why.Not_Implemented;
+      end case;
    end Untangle_Assignment_Target;
 
    -------------------------------
@@ -498,35 +593,13 @@ package body Flow.Control_Flow_Graph is
       V_Def_LHS   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       --  Things defined because they appear on the LHS (in A (J), A
       --  would be used).
-
-      V_Also_Used : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      --  Things used because of the limitations of flow analysis. In
-      --  (A (J) := 0, A would also be used as the other elements do
-      --  not change.)
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set (Expression (N));
 
-      declare
-         LHS : Node_Id renames Name (N);
-      begin
-         case Nkind (LHS) is
-            when N_Identifier =>
-               --  X :=
-               V_Def_LHS := Get_Variable_Set (LHS);
-            when N_Selected_Component =>
-               --  R.A :=
-               V_Def_LHS := Get_Variable_Set (LHS);
-            when N_Indexed_Component =>
-               --  R.A (...) :=
-               V_Def_LHS  := Get_Variable_Set (Prefix (LHS));
-               V_Used_LHS := Get_Variable_Set (Expressions (LHS));
-               V_Also_Used := V_Def_LHS;
-               raise Why.Not_Implemented;
-            when others =>
-               raise Why.Not_Implemented;
-         end case;
-      end;
+      Untangle_Assignment_Target (N            => Name (N),
+                                  Vars_Used    => V_Used_LHS,
+                                  Vars_Defined => V_Def_LHS);
 
       --  Print the node and its def-use effect
       --  Print_Node_Subtree (N);
@@ -538,8 +611,7 @@ package body Flow.Control_Flow_Graph is
         (Direct_Mapping_Id (N),
          Make_Basic_Attributes (Var_Def => V_Def_LHS,
                                 Var_Use => V_Used_RHS or
-                                  V_Used_LHS or
-                                  V_Also_Used,
+                                  V_Used_LHS,
                                 Loops   => Ctx.Current_Loops,
                                 E_Loc   => N),
          V);
@@ -846,8 +918,6 @@ package body Flow.Control_Flow_Graph is
 
       procedure Do_Loop is
          Contains_Return : Boolean := False;
-         Unused          : Traverse_Final_Result;
-         pragma Unreferenced (Unused);
 
          function Proc (N : Node_Id) return Traverse_Result;
          --  Set Contains_Return to true if we find a return statement.
@@ -865,10 +935,10 @@ package body Flow.Control_Flow_Graph is
             end case;
          end Proc;
 
-         function Find_Return is new Traverse_Func (Process => Proc);
+         procedure Find_Return is new Traverse_Proc (Process => Proc);
       begin
          --  Check if we have a return statement.
-         Unused := Find_Return (N);
+         Find_Return (N);
 
          --  We have a null vertex for the loop, as we have no
          --  condition.
@@ -1595,6 +1665,7 @@ package body Flow.Control_Flow_Graph is
                   VS.Union (D);
                   VS.Union (U);
                end;
+               return Skip;
 
             when others =>
                null;
