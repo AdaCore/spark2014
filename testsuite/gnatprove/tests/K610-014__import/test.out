@@ -1,1 +1,1 @@
-p.ads:7:20: info: postcondition proved
+p.ads:7:43: postcondition not proved, requires not (Left = Right
