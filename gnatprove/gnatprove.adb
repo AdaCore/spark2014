@@ -396,7 +396,7 @@ procedure Gnatprove is
       Close (Obj_Dir_File);
 
       Call_Exit_On_Failure
-        (Command   => "SPARK_report",
+        (Command   => "spark_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
          Verbose   => Verbose);
 
