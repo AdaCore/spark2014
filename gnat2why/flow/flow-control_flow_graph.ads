@@ -27,11 +27,27 @@
 
 package Flow.Control_Flow_Graph is
 
+   use type Ada.Containers.Count_Type;
+
    function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression.
 
    function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
+
+   procedure Untangle_Assignment_Target
+     (N            : Node_Id;
+      Vars_Defined : out Flow_Id_Sets.Set;
+      Vars_Used    : out Flow_Id_Sets.Set)
+      with Pre => Nkind (N) in N_Identifier |
+                               N_Selected_Component |
+                               N_Indexed_Component,
+           Post => Vars_Defined.Length >= 1;
+   --  Given the target of an assignment (perhaps the left-hand-side
+   --  of an assignment statement or an out vertex in a procedure
+   --  call), work out which variables are actually set and which
+   --  variables are used to determine what is set (in the case of
+   --  arrays).
 
    procedure Create
      (N  : Node_Id;

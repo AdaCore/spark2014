@@ -38,7 +38,6 @@ with Why;
 package body Flow.Control_Flow_Graph is
 
    use type Flow_Graphs.Vertex_Id;
-   use type Ada.Containers.Count_Type;
 
    use Vertex_Sets;
    use type Flow_Id_Sets.Set;
@@ -141,20 +140,6 @@ package body Flow.Control_Flow_Graph is
    --  record, then we will get the following set:
    --     * p.r.a
    --     * p.r.b
-
-   procedure Untangle_Assignment_Target
-     (N            : Node_Id;
-      Vars_Defined : out Flow_Id_Sets.Set;
-      Vars_Used    : out Flow_Id_Sets.Set)
-      with Pre => Nkind (N) in N_Identifier |
-                               N_Selected_Component |
-                               N_Indexed_Component,
-           Post => Vars_Defined.Length >= 1;
-   --  Given the target of an assignment (perhaps the left-hand-side
-   --  of an assignment statement or an out vertex in a procedure
-   --  call), work out which variables are actually set and which
-   --  variables are used to determine what is set (in the case of
-   --  arrays).
 
    procedure Do_Assignment_Statement
      (N   : Node_Id;
@@ -578,134 +563,6 @@ package body Flow.Control_Flow_Graph is
                       Entity_Lists.Empty_Vector);
       return All_Comp;
    end All_Record_Components;
-
-   --------------------------------
-   -- Untangle_Assignment_Target --
-   --------------------------------
-
-   procedure Untangle_Assignment_Target
-     (N            : Node_Id;
-      Vars_Defined : out Flow_Id_Sets.Set;
-      Vars_Used    : out Flow_Id_Sets.Set)
-   is
-      Bottom_Node   : Node_Id;
-      End_Of_Record : Node_Id;
-
-      procedure Find_Bottom_Node (N             : Node_Id;
-                                  Bottom_Node   : out Node_Id;
-                                  End_Of_Record : out Node_Id);
-      --  This procedure returns the bottom node of the subtree and
-      --  finds the end of the outermost record node.
-
-      --  Let's consider the parse tree for P.R.A (I).A (J).X
-      --  In the following parse tree 'i' represents an indexed
-      --  component and s represents a selected component.
-      --
-      --                               Parse Tree
-      --                                    s
-      --                                   / \
-      --                                  i   X
-      --                                 / \
-      --                                s   J
-      --                               / \
-      --                              i   A
-      --                             / \
-      --        End_Of_Record --->  s   I
-      --                           / \
-      --                          s   A
-      --                         / \
-      --      Bottom_Node --->  P   R
-
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Traverses a subtree and adds each variable found inside
-      --  the expression part of an N_Indexed_Component to the
-      --  Vars_Used set.
-
-      -------------------
-      -- Find_Top_Node --
-      -------------------
-
-      procedure Find_Bottom_Node (N             : Node_Id;
-                                  Bottom_Node   : out Node_Id;
-                                  End_Of_Record : out Node_Id)
-      is
-         Temp_Node : Node_Id := N;
-
-         function Has_Prefix (N : Node_Id) return Boolean;
-         --  Return True if N has attribute Prefix
-
-         ----------------
-         -- Has_Prefix --
-         ----------------
-
-         function Has_Prefix (N : Node_Id) return Boolean is
-         begin
-            return
-              Nkind_In (N,
-                N_Indexed_Component,
-                N_Selected_Component);
-         end Has_Prefix;
-      begin
-         End_Of_Record := N;
-         --  Initially we set First_Non_Record to N
-
-         while Has_Prefix (Temp_Node) loop
-            if Nkind (Temp_Node) = N_Indexed_Component then
-               End_Of_Record := Temp_Node;
-            end if;
-            --  If we find a node that is an array, we update
-            --  End_Of_Record with it.
-
-            Temp_Node := Prefix (Temp_Node);
-         end loop;
-
-         if End_Of_Record /= N then
-            End_Of_Record := Prefix (End_Of_Record);
-         end if;
-         --  If we did actually find a node that is an array then
-         --  we need to go one level further down.
-
-         Bottom_Node := Temp_Node;
-         --  Bottom_Node now holds the leftmost item of the
-         --  declaration.
-      end Find_Bottom_Node;
-
-      ----------
-      -- Proc --
-      ----------
-
-      function Proc (N : Node_Id) return Traverse_Result is
-      begin
-         if Nkind (N) = N_Indexed_Component then
-            Vars_Used.Union (Get_Variable_Set (Expressions (N)));
-         end if;
-         return OK;
-      end Proc;
-
-      procedure Traverse is new Traverse_Proc (Proc);
-   begin
-      case Nkind (N) is
-         when N_Identifier =>
-            --  X :=
-            Vars_Defined := Get_Variable_Set (N);
-         when N_Selected_Component | N_Indexed_Component =>
-            --  R.A :=
-            --  A (...) :=
-            Traverse (N);
-            Find_Bottom_Node (N, Bottom_Node, End_Of_Record);
-            if Nkind (Parent (Bottom_Node)) = N_Selected_Component then
-               Vars_Defined.Union (All_Record_Components
-                 (Record_Field_Id (End_Of_Record)));
-            else
-               Vars_Defined.Insert (Direct_Mapping_Id (Entity
-                 (Bottom_Node)));
-               Vars_Used.Insert (Direct_Mapping_Id (Entity
-                 (Bottom_Node)));
-            end if;
-         when others =>
-            raise Why.Not_Implemented;
-      end case;
-   end Untangle_Assignment_Target;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -1876,6 +1733,134 @@ package body Flow.Control_Flow_Graph is
       end loop;
       return VS;
    end Get_Variable_Set;
+
+   --------------------------------
+   -- Untangle_Assignment_Target --
+   --------------------------------
+
+   procedure Untangle_Assignment_Target
+     (N            : Node_Id;
+      Vars_Defined : out Flow_Id_Sets.Set;
+      Vars_Used    : out Flow_Id_Sets.Set)
+   is
+      Bottom_Node   : Node_Id;
+      End_Of_Record : Node_Id;
+
+      procedure Find_Bottom_Node (N             : Node_Id;
+                                  Bottom_Node   : out Node_Id;
+                                  End_Of_Record : out Node_Id);
+      --  This procedure returns the bottom node of the subtree and
+      --  finds the end of the outermost record node.
+
+      --  Let's consider the parse tree for P.R.A (I).A (J).X
+      --  In the following parse tree 'i' represents an indexed
+      --  component and s represents a selected component.
+      --
+      --                               Parse Tree
+      --                                    s
+      --                                   / \
+      --                                  i   X
+      --                                 / \
+      --                                s   J
+      --                               / \
+      --                              i   A
+      --                             / \
+      --        End_Of_Record --->  s   I
+      --                           / \
+      --                          s   A
+      --                         / \
+      --      Bottom_Node --->  P   R
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Traverses a subtree and adds each variable found inside
+      --  the expression part of an N_Indexed_Component to the
+      --  Vars_Used set.
+
+      -------------------
+      -- Find_Top_Node --
+      -------------------
+
+      procedure Find_Bottom_Node (N             : Node_Id;
+                                  Bottom_Node   : out Node_Id;
+                                  End_Of_Record : out Node_Id)
+      is
+         Temp_Node : Node_Id := N;
+
+         function Has_Prefix (N : Node_Id) return Boolean;
+         --  Return True if N has attribute Prefix
+
+         ----------------
+         -- Has_Prefix --
+         ----------------
+
+         function Has_Prefix (N : Node_Id) return Boolean is
+         begin
+            return
+              Nkind_In (N,
+                N_Indexed_Component,
+                N_Selected_Component);
+         end Has_Prefix;
+      begin
+         End_Of_Record := N;
+         --  Initially we set First_Non_Record to N
+
+         while Has_Prefix (Temp_Node) loop
+            if Nkind (Temp_Node) = N_Indexed_Component then
+               End_Of_Record := Temp_Node;
+            end if;
+            --  If we find a node that is an array, we update
+            --  End_Of_Record with it.
+
+            Temp_Node := Prefix (Temp_Node);
+         end loop;
+
+         if End_Of_Record /= N then
+            End_Of_Record := Prefix (End_Of_Record);
+         end if;
+         --  If we did actually find a node that is an array then
+         --  we need to go one level further down.
+
+         Bottom_Node := Temp_Node;
+         --  Bottom_Node now holds the leftmost item of the
+         --  declaration.
+      end Find_Bottom_Node;
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Indexed_Component then
+            Vars_Used.Union (Get_Variable_Set (Expressions (N)));
+         end if;
+         return OK;
+      end Proc;
+
+      procedure Traverse is new Traverse_Proc (Proc);
+   begin
+      case Nkind (N) is
+         when N_Identifier =>
+            --  X :=
+            Vars_Defined := Get_Variable_Set (N);
+         when N_Selected_Component | N_Indexed_Component =>
+            --  R.A :=
+            --  A (...) :=
+            Traverse (N);
+            Find_Bottom_Node (N, Bottom_Node, End_Of_Record);
+            if Nkind (Parent (Bottom_Node)) = N_Selected_Component then
+               Vars_Defined.Union (All_Record_Components
+                 (Record_Field_Id (End_Of_Record)));
+            else
+               Vars_Defined.Insert (Direct_Mapping_Id (Entity
+                 (Bottom_Node)));
+               Vars_Used.Insert (Direct_Mapping_Id (Entity
+                 (Bottom_Node)));
+            end if;
+         when others =>
+            raise Why.Not_Implemented;
+      end case;
+   end Untangle_Assignment_Target;
 
    -------------
    -- Create --

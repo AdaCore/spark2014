@@ -127,7 +127,9 @@ package body Flow.Control_Flow_Graph.Utility is
       else
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
-         A.Variables_Defined := Get_Variable_Set (Actual);
+         Untangle_Assignment_Target (N            => Actual,
+                                     Vars_Defined => A.Variables_Defined,
+                                     Vars_Used    => A.Variables_Used);
       end if;
 
       return A;
@@ -157,6 +159,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Variables_Used :=
               Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
          when Out_View =>
+            --  ??? We need to make use of untangle_assignment_target here.
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
          when others =>
