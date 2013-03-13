@@ -10,10 +10,12 @@ project GNAT2Why is
 
    package Builder is
       for Executable ("gnat1drv.adb") use "gnat2why";
+      for Global_Configuration_Pragmas use "gnat2why.adc";
    end Builder;
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-O0", "-gnata", "-gnat12", "-gnatg");
+      for Default_Switches ("Ada") use
+        ("-O0", "-gnata", "-gnat12", "-gnatg", "-gnatVa");
    end Compiler;
 
 end GNAT2Why;
