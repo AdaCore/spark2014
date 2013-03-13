@@ -9,10 +9,10 @@ ng.adb:40:19: overflow check not proved
 ng.adb:41:19: division check not proved
 ng.adb:41:19: overflow check not proved
 ng.adb:41:19: range check not proved
-ng.adb:60:18: info: overflow check proved
-ng.adb:60:18: info: range check proved
+ng.adb:60:18: overflow check not proved
+ng.adb:60:18: range check not proved
 ng.adb:61:17: overflow check not proved
-ng.adb:61:23: info: division check proved
+ng.adb:61:23: division check not proved
 ng.adb:61:23: overflow check not proved
 ng.adb:61:23: range check not proved
 ng.adb:64:23: overflow check not proved
@@ -22,7 +22,7 @@ ng.adb:64:37: overflow check not proved
 ng.adb:64:37: range check not proved
 ng.adb:64:43: overflow check not proved
 ng.adb:77:7: precondition not proved
-ng_v1.adb:30:23: info: division check proved
+ng_v1.adb:30:23: division check not proved
 ng_v1.adb:33:53: division check not proved
 ng_v1.ads:28:17: postcondition not proved, requires EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
 ng_v1.ads:31:23: info: division check proved
