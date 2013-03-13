@@ -1,13 +1,3 @@
-test.adb:43:10: ineffective statement
-test.adb:45:10: ineffective statement
-test.adb:47:10: ineffective statement
-test.adb:49:10: ineffective statement
-
-   compilation of test.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
