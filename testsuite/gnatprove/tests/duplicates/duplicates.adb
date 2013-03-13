@@ -1,7 +1,6 @@
 package body Duplicates is
 
    procedure Dedupe (Arr: in out Int_Array; Last : out Natural) is
-      Arr_Copy : constant Int_Array := Arr;
    begin
       Last := Arr'First;
       for New_Item in Arr'First + 1 .. Arr'Last loop
@@ -18,12 +17,12 @@ package body Duplicates is
 
          pragma Loop_Invariant
            (not Has_Duplicates (Arr(Arr'First .. Last))
-              and then (for all Item of Arr_Copy (Arr'First .. New_Item) =>
-                          (for some J in Arr'First .. Last =>
-                             Item = Arr(J)))
-              and then (for all J in Arr'First .. Last =>
-                          (for some Item of Arr_Copy =>
-                             Item = Arr(J))));
+              and then 
+           (for all Item of Arr'Loop_Entry (Arr'First .. New_Item) =>
+              (for some J in Arr'First .. Last => Item = Arr(J)))
+              and then 
+           (for all J in Arr'First .. Last =>
+              (for some Item of Arr'Loop_Entry => Item = Arr(J))));
       end loop;
    end Dedupe;
 
