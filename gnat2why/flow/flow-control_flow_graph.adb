@@ -162,6 +162,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Assignment_Statement;
+   --  Process assignment statements. Pretty obvious stuff.
 
    procedure Do_Case_Statement
      (N   : Node_Id;
@@ -169,6 +170,27 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Case_Statement;
+   --  The CFG that we generate for case statements look like
+   --  the following:
+   --
+   --                       case
+   --                      / | | \
+   --         ____________/  | |  \________________
+   --        /           ___/   \_____             \
+   --       /           /             \             \
+   --      /            |              |             \
+   --    when         when           when   (optional when others)
+   --      |            |              |              |
+   --      |            |              |              |
+   --  when part    when part      when part      when part
+   --      |            |              |              |
+   --       \            \            /              /
+   --        \            \___   ____/              /
+   --         \_____________  | |  ________________/
+   --                       | | | |
+   --
+   --  The standard exits of all parts feed into the standard
+   --  exits of the entire case statement.
 
    procedure Do_Exit_Statement
      (N   : Node_Id;
@@ -176,6 +198,11 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Exit_Statement;
+   --  Deal with loop exit statements. We do this by actually finding
+   --  the loop we are associated with and changing the connection map
+   --  of that loop and not just our own. This procedure is somewhat
+   --  unique as all others Do_XYZ procedures only ever deal with
+   --  things pertaining to their given node.
 
    procedure Do_Full_Type_Declaration
      (N   : Node_Id;
@@ -183,6 +210,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Full_Type_Declaration;
+   --  ??? to be implemented
 
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
@@ -190,6 +218,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
+   --  Simply calls Process_Statement_List.
 
    procedure Do_If_Statement
      (N   : Node_Id;
@@ -197,6 +226,22 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_If_Statement;
+   --  Deals with if statements. We generate a CFG which looks like
+   --  this:
+   --
+   --  if
+   --  | \
+   --  |  if part
+   --  |         \-----------------
+   --  elsif                       \
+   --  |    \                       |
+   --  |     elsif part             |
+   --  |               \---------   |
+   --  elsif                     \  |
+   --  |    \                     | |
+   --  |     another elsif part   | |
+   --  |                       \  | |
+   --  (optional else part)     | | |
 
    procedure Do_Loop_Statement
      (N   : Node_Id;
@@ -206,6 +251,14 @@ package body Flow.Control_Flow_Graph is
       with Pre  => Nkind (N) = N_Loop_Statement and then
                    Identifier (N) /= Empty,
            Post => Ctx.Current_Loops.Length = Ctx.Current_Loops'Old.Length;
+   --  Deals with all three kinds of loops SPARK supports:
+   --
+   --     * for loops
+   --     * while loops
+   --     * (infinite) loops
+   --
+   --  Refer to the documentation of the nested procedures on how the
+   --  constructed CFG will look like.
 
    procedure Do_Object_Declaration
      (N   : Node_Id;
@@ -213,6 +266,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Object_Declaration;
+   --  Deal with declarations (with an optional initialisation). We
+   --  either generate a null vertex which is then stripped from the
+   --  graph or a simple defining vertex.
 
    procedure Do_Procedure_Call_Statement
      (N   : Node_Id;
@@ -220,6 +276,41 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Procedure_Call_Statement;
+   --  Deal with procedure calls. We follow the ideas of the SDG paper
+   --  by Horowitz, Reps and Binkley and have a separate vertex for
+   --  each parameter (if a paramater is an in out, we have two
+   --  vertices modelling it).
+   --
+   --  For a procedure P (A : in     Integer;
+   --                     B : in out Integer;
+   --                     C :    out Integer)
+   --  we produce the following CFG when called as P (X, Y, Z):
+   --
+   --     call P
+   --     |
+   --     a_in := x
+   --     |
+   --     b_in := y
+   --     |
+   --     y := b_out
+   --     |
+   --     z := c_out
+   --
+   --  Globals are treated like parameters. Each of these vertices
+   --  will also have call_vertex set in its attributes so that we can
+   --  fiddle the CDG to look like this:
+   --
+   --                     call P
+   --                    / |  | \
+   --           --------/  |  |  ---------
+   --          /           /  \           \
+   --  a_in := x  b_in := y    y := b_out  z := c_out
+   --
+   --  Note that dependencies between the parameters are NOT set up
+   --  here, this is done in Flow.Interprocedural. The vertex for call
+   --  P will have IPFA set or not set, which changes how we fill in
+   --  the dependencies. This decision is made in
+   --  Control_Flow_Graph.Utility.
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
@@ -227,6 +318,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Simple_Return_Statement;
+   --  This deals with return statements (with and without an
+   --  expression). They do not have a standard exit, instead we
+   --  directly link them to the end vertex.
 
    procedure Do_Subprogram_Body
      (N   : Node_Id;
@@ -234,6 +328,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Subprogram_Body;
+   --  This is the top level procedure which deals with a subprogam:
+   --  the declarations and sequence of statements is processed and
+   --  linked.
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
@@ -242,6 +339,10 @@ package body Flow.Control_Flow_Graph is
       FA                : in out Flow_Analysis_Graphs;
       CM                : in out Connection_Maps.Map;
       Ctx               : in out Context);
+   --  This procedures creates the in and out vertices for a
+   --  subprogram's globals. They are not connected to anything,
+   --  instead the vertices are added to the given in_list and
+   --  out_list.
 
    procedure Process_Parameter_Associations
      (L                 : List_Id;
@@ -251,18 +352,27 @@ package body Flow.Control_Flow_Graph is
       FA                : in out Flow_Analysis_Graphs;
       CM                : in out Connection_Maps.Map;
       Ctx               : in out Context);
+   --  Similar to the above procedure, this deals with the actuals
+   --  provided in a subprogram call. The vertices are created but not
+   --  linked up; as above they are added to in_list and out_list.
 
    procedure Process_Statement_List
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context);
+   --  This processes a list of statements and links up each statement
+   --  to the its successor. The final connection map for L will map
+   --  to the standard entry of the first statement and the standard
+   --  exits of the last statement.
 
    procedure Process_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context);
+   --  Process an arbitrary statement (this is basically a big case
+   --  block which calls the various Do_XYZ procedures).
 
    procedure Simplify
      (G : in out Flow_Graphs.T'Class);
@@ -662,28 +772,6 @@ package body Flow.Control_Flow_Graph is
       V, V_Alter  : Flow_Graphs.Vertex_Id;
       Alternative : Node_Id;
    begin
-      --  The CFGs that we generate for case statements look like
-      --  the following.
-      --
-      --                       case
-      --                      / | | \
-      --         ____________/  | |  \________________
-      --        /           ___/   \_____             \
-      --       /           /             \             \
-      --      /            |              |             \
-      --    when         when           when   (optional when others)
-      --      |            |              |              |
-      --      |            |              |              |
-      --  when part    when part      when part      when part
-      --      |            |              |              |
-      --       \            \            /              /
-      --        \            \___   ____/              /
-      --         \_____________  | |  ________________/
-      --                       | | | |
-      --
-      --  The standard exits of all parts feed into the standard
-      --  exits of the entire case statement.
-
       --  We have a vertex V for the case statement itself
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
