@@ -702,10 +702,7 @@ package body Flow.Control_Flow_Graph is
          --  Case_Statement_Alternative and we link that to V.
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (Alternative),
-            Make_Basic_Attributes (Var_Use => Get_Variable_Set
-                                     (Discrete_Choices (Alternative)),
-                                   Loops   => Ctx.Current_Loops,
-                                   E_Loc   => Alternative),
+            Make_Aux_Vertex_Attributes (E_Loc => Alternative),
             V_Alter);
          Linkup (FA.CFG, V, V_Alter);
 
@@ -1347,7 +1344,7 @@ package body Flow.Control_Flow_Graph is
       if Expression (N) = Empty then
          --  We have a return for a procedure.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Make_Return_Attributes (E_Loc => N),
+                            Make_Aux_Vertex_Attributes (E_Loc => N),
                             V);
       else
          --  We have a function return.
