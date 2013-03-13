@@ -940,6 +940,10 @@ package body Why.Gen.Records is
       return Comp_Id;
    end First_Discriminant;
 
+   ---------------------------------------
+   -- Insert_Subtype_Discriminant_Check --
+   ---------------------------------------
+
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
@@ -977,35 +981,13 @@ package body Why.Gen.Records is
          return Expr;
       end if;
 
-      declare
-         Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
-         Args      : W_Expr_Array (1 .. Num_Discr + 1);
-         Count     : Natural := 1;
-         Discr     : Entity_Id := First_Discriminant (Check_Ty);
-         Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Check_Ty));
-      begin
-         Args (Num_Discr + 1) := +Expr;
-         while Present (Discr) loop
-            if Is_Not_Hidden_Discriminant (Discr) then
-               Args (Count) :=
-                 Transform_Expr
-                   (Domain => EW_Term,
-                    Params => Logic_Params,
-                    Expr   => Node (Elmt),
-                    Expected_Type => EW_Abstract (Etype (Discr)));
-               Count := Count + 1;
-               Next_Elmt (Elmt);
-            end if;
-            Next_Discriminant (Discr);
-         end loop;
-         return
-           +New_VC_Call
-             (Ada_Node => Ada_Node,
-              Name     => Range_Check_Name (Check_Ty),
-              Progs    => Args,
-              Domain   => EW_Prog,
-              Reason   => VC_Discriminant_Check);
-      end;
+      return
+        +New_VC_Call
+        (Ada_Node => Ada_Node,
+         Name     => Range_Check_Name (Check_Ty),
+         Progs    => Prepare_Args_For_Subtype_Check (Check_Ty, +Expr),
+         Domain   => EW_Prog,
+         Reason   => VC_Discriminant_Check);
    end Insert_Subtype_Discriminant_Check;
 
    ---------------------------
@@ -1080,5 +1062,36 @@ package body Why.Gen.Records is
          return Update_Expr;
       end if;
    end New_Ada_Record_Update;
+
+   ------------------------------------
+   -- Prepare_Args_For_Subtype_Check --
+   ------------------------------------
+
+   function Prepare_Args_For_Subtype_Check
+     (Check_Ty : Entity_Id;
+      Expr     : W_Expr_Id) return W_Expr_Array
+   is
+      Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
+      Args      : W_Expr_Array (1 .. Num_Discr + 1);
+      Count     : Natural := 1;
+      Discr     : Entity_Id := First_Discriminant (Check_Ty);
+      Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Check_Ty));
+   begin
+      Args (Num_Discr + 1) := +Expr;
+      while Present (Discr) loop
+         if Is_Not_Hidden_Discriminant (Discr) then
+            Args (Count) :=
+              Transform_Expr
+                (Domain => EW_Term,
+                 Params => Logic_Params,
+                 Expr   => Node (Elmt),
+                 Expected_Type => EW_Abstract (Etype (Discr)));
+            Count := Count + 1;
+            Next_Elmt (Elmt);
+         end if;
+         Next_Discriminant (Discr);
+      end loop;
+      return Args;
+   end Prepare_Args_For_Subtype_Check;
 
 end Why.Gen.Records;

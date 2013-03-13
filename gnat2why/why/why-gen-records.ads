@@ -71,4 +71,11 @@ package Why.Gen.Records is
    --  Given a record subtype and an expression, add a call to the subtype
    --  discriminant check function, to generate a discriminant check.
 
+   function Prepare_Args_For_Subtype_Check
+     (Check_Ty : Entity_Id;
+      Expr     : W_Expr_Id) return W_Expr_Array;
+   --  Given a record type, compute the argument array that can be used
+   --  together with its subtype check predicate of program function. The
+   --  last argument is actually the given expression itself.
+
 end Why.Gen.Records;

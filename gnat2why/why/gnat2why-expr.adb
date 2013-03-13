@@ -401,6 +401,13 @@ package body Gnat2Why.Expr is
    function Transform_Compare_Op (Op : N_Op_Compare) return EW_Relation;
    --  Convert an Ada comparison operator to a Why relation symbol
 
+   function Transform_Membership_Expression
+     (Params : Transformation_Params;
+      Domain : EW_Domain;
+      Expr   : Node_Id)
+      return W_Expr_Id;
+   --  Convert a membership expression (N_In) into a boolean Why expression
+
    -------------------
    -- Apply_Modulus --
    -------------------
@@ -4114,21 +4121,7 @@ package body Gnat2Why.Expr is
             end Short_Circuit;
 
          when N_In =>
-            declare
-               Subdomain : constant EW_Domain :=
-                             (if Domain = EW_Pred then EW_Term else Domain);
-               Var       : constant Node_Id := Left_Opnd (Expr);
-            begin
-               T :=
-                 Range_Expr
-                   (Right_Opnd (Expr),
-                    Transform_Expr (Var,
-                                    Base_Why_Type (Var),
-                                    Subdomain,
-                                    Local_Params),
-                    Domain,
-                    Local_Params);
-            end;
+            T := Transform_Membership_Expression (Local_Params, Domain, Expr);
 
          when N_Quantified_Expression =>
             T := Transform_Quantified_Expression (Expr, Domain, Local_Params);
@@ -4535,6 +4528,82 @@ package body Gnat2Why.Expr is
       end if;
       return T;
    end Transform_Identifier;
+
+   -------------------------------------
+   -- Transform_Membership_Expression --
+   -------------------------------------
+
+   function Transform_Membership_Expression
+     (Params : Transformation_Params;
+      Domain : EW_Domain;
+      Expr   : Node_Id)
+     return W_Expr_Id
+   is
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+      Var       : constant Node_Id := Left_Opnd (Expr);
+      In_Expr   : constant Node_Id := Right_Opnd (Expr);
+      Bool_True : constant W_Expr_Id :=
+        New_Literal (Domain => EW_Term,
+                     Value => EW_True);
+      Check_Expr : constant W_Expr_Id :=
+        Transform_Expr (Var,
+                        Base_Why_Type (Var),
+                        Subdomain,
+                        Params);
+   begin
+
+      --  First handle the case where there is a subtype mark of a record type
+      --  on the right
+
+      if Nkind (In_Expr) = N_Identifier and then
+        Ekind (Entity (In_Expr)) in Type_Kind and then
+        Ekind (Unique_Entity (Entity (In_Expr))) in Record_Kind
+      then
+         declare
+            Ty   : constant Entity_Id :=
+              Unique_Entity (Entity (In_Expr));
+         begin
+
+            --  eliminate trivial cases first, the membership test is always
+            --  true here.
+
+            if Root_Type (Ty) = Ty or else
+              not Has_Discriminants (Ty) or else
+              not Is_Constrained (Ty)
+            then
+               return Bool_True;
+            end if;
+
+            declare
+               Call : constant W_Expr_Id :=
+                 New_Call (Domain => Domain,
+                           Name =>
+                             Prefix (S        => Full_Name (Ty),
+                                     W        => WNE_Range_Pred,
+                                     Ada_Node => Ty),
+                           Args =>
+                             Prepare_Args_For_Subtype_Check (Ty, Check_Expr));
+            begin
+               return
+                 New_Conditional
+                   (Domain    => Domain,
+                    Condition => Call,
+                    Then_Part => Bool_True,
+                      Else_Part =>
+                        New_Literal (Domain => EW_Term,
+                                     Value => EW_False));
+            end;
+         end;
+      else
+         return
+           Range_Expr
+             (In_Expr,
+              Check_Expr,
+              Domain,
+              Params);
+      end if;
+   end Transform_Membership_Expression;
 
    ----------------------------
    -- Transform_Pragma_Check --
