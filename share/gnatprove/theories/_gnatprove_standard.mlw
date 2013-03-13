@@ -84,6 +84,10 @@ module Floating
   axiom Round_monotonic_int2:
     forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
 
+  axiom Round_bound:
+    forall x:real.
+      x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
+
   (* Boolean comparison functions for reals *)
 
   function bool_lt real real : bool
