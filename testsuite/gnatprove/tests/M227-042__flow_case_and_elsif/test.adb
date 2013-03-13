@@ -36,4 +36,18 @@ package body Test is
          Par1 := 999;
       end if;
    end if_4;
+
+   procedure case_1 (Par1 : Integer; Par2 : out Integer) is
+   begin
+      case Par1 is
+         when 1 =>
+            Par2 := 1;
+         when 2 | 3 =>
+            Par2 := 2;
+         when 4 .. 10 =>
+            Par2 := 3;
+         when others =>
+            Par2 := 4;
+      end case;
+   end case_1;
 end Test;

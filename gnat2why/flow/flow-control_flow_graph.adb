@@ -163,6 +163,13 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Assignment_Statement;
 
+   procedure Do_Case_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Case_Statement;
+
    procedure Do_Exit_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -641,6 +648,78 @@ package body Flow.Control_Flow_Graph is
                     (Standard_Entry => V,
                      Standard_Exits => Vertex_Sets.To_Set (V)));
    end Do_Assignment_Statement;
+
+   -------------------------
+   --  Do_Case_Statement  --
+   -------------------------
+
+   procedure Do_Case_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      V, V_Alter  : Flow_Graphs.Vertex_Id;
+      Alternative : Node_Id;
+   begin
+      --  The CFGs that we generate for case statements look like
+      --  the following.
+      --
+      --                       case
+      --                      / | | \
+      --         ____________/  | |  \________________
+      --        /           ___/   \_____             \
+      --       /           /             \             \
+      --      /            |              |             \
+      --    when         when           when   (optional when others)
+      --      |            |              |              |
+      --      |            |              |              |
+      --  when part    when part      when part      when part
+      --      |            |              |              |
+      --       \            \            /              /
+      --        \            \___   ____/              /
+      --         \_____________  | |  ________________/
+      --                       | | | |
+      --
+      --  The standard exits of all parts feed into the standard
+      --  exits of the entire case statement.
+
+      --  We have a vertex V for the case statement itself
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (N),
+         Make_Basic_Attributes (Var_Use => Get_Variable_Set
+                                  (Expression (N)),
+                                Loops   => Ctx.Current_Loops,
+                                E_Loc   => N),
+         V);
+      CM.Include (Union_Id (N), No_Connections);
+      CM (Union_Id (N)).Standard_Entry := V;
+
+      Alternative := First (Alternatives (N));
+
+      while Present (Alternative) loop
+         --  We introduce a vertex V_Alter for each
+         --  Case_Statement_Alternative and we link that to V.
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (Alternative),
+            Make_Basic_Attributes (Var_Use => Get_Variable_Set
+                                     (Discrete_Choices (Alternative)),
+                                   Loops   => Ctx.Current_Loops,
+                                   E_Loc   => Alternative),
+            V_Alter);
+         Linkup (FA.CFG, V, V_Alter);
+
+         --  We link V_Alter with its statements
+         Process_Statement_List (Statements (Alternative), FA, CM, Ctx);
+         Linkup (FA.CFG,
+                 V_Alter,
+                 CM (Union_Id (Statements (Alternative))).Standard_Entry);
+         CM (Union_Id (N)).Standard_Exits.Union
+           (CM (Union_Id (Statements (Alternative))).Standard_Exits);
+
+         Next (Alternative);
+      end loop;
+   end Do_Case_Statement;
 
    -------------------------
    --  Do_Exit_Statement  --
@@ -1525,6 +1604,8 @@ package body Flow.Control_Flow_Graph is
       case Nkind (N) is
          when N_Assignment_Statement =>
             Do_Assignment_Statement (N, FA, CM, Ctx);
+         when N_Case_Statement =>
+            Do_Case_Statement (N, FA, CM, Ctx);
          when N_Exit_Statement =>
             Do_Exit_Statement (N, FA, CM, Ctx);
          when N_Full_Type_Declaration =>

@@ -1,3 +1,84 @@
+test.adb:43:10: ineffective statement
+test.adb:45:10: ineffective statement
+test.adb:47:10: ineffective statement
+test.adb:49:10: ineffective statement
+
+   compilation of test.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="par1'initial",shape="plaintext"];
+    4 [label="par1'final",shape="plaintext",fontcolor="red"];
+    5 [label="par2'initial",shape="plaintext",fontcolor="red"];
+    6 [label="par2'final",shape="plaintext",fontcolor="blue"];
+    8 [label="case par1",shape="diamond"];
+    9 [label="when 1",shape="plaintext"];
+    10 [label="par2 := 1;"];
+    11 [label="when 2, 3",shape="plaintext"];
+    12 [label="par2 := 2;"];
+    13 [label="when 4 .. 10",shape="plaintext"];
+    14 [label="par2 := 3;"];
+    15 [label="when others",shape="plaintext"];
+    16 [label="par2 := 4;"];
+
+    1 ->  8 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  11 [arrowType="normal"];
+    8 ->  13 [arrowType="normal"];
+    8 ->  15 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
+    10 ->  2 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
+    14 ->  2 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="par1'initial",shape="plaintext"];
+    4 [label="par1'final",shape="plaintext",fontcolor="red"];
+    5 [label="par2'initial",shape="plaintext",fontcolor="red"];
+    6 [label="par2'final",shape="plaintext",fontcolor="blue"];
+    8 [label="case par1",shape="diamond"];
+    9 [label="when 1",shape="plaintext"];
+    10 [label="par2 := 1;"];
+    11 [label="when 2, 3",shape="plaintext"];
+    12 [label="par2 := 2;"];
+    13 [label="when 4 .. 10",shape="plaintext"];
+    14 [label="par2 := 3;"];
+    15 [label="when others",shape="plaintext"];
+    16 [label="par2 := 4;"];
+
+    1 ->  8 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  8 [arrowType="normal",color="red"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  10 [arrowType="normal"];
+    8 ->  11 [arrowType="normal"];
+    8 ->  12 [arrowType="normal"];
+    8 ->  13 [arrowType="normal"];
+    8 ->  14 [arrowType="normal"];
+    8 ->  15 [arrowType="normal"];
+    8 ->  16 [arrowType="normal"];
+    10 ->  6 [arrowType="normal",color="red"];
+    12 ->  6 [arrowType="normal",color="red"];
+    14 ->  6 [arrowType="normal",color="red"];
+    16 ->  6 [arrowType="normal",color="red"];
+}
+
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

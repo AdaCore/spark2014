@@ -664,14 +664,24 @@ package body Flow is
                      N : constant Node_Id := Get_Direct_Mapping_Id (F);
                   begin
                      case Nkind (N) is
-                        when N_If_Statement =>
+                        when N_Case_Statement =>
                            Rv.Shape := Shape_Diamond;
-                           Output.Write_Str ("if ");
-                           Sprint_Node (Condition (N));
+                           Output.Write_Str ("case ");
+                           Sprint_Node (Expression (N));
+
+                        when N_Case_Statement_Alternative =>
+                           Rv.Shape := Shape_None;
+                           Output.Write_Str ("when ");
+                           Sprint_Comma_List (Discrete_Choices (N));
 
                         when N_Elsif_Part =>
                            Rv.Shape := Shape_Diamond;
                            Output.Write_Str ("elsif ");
+                           Sprint_Node (Condition (N));
+
+                        when N_If_Statement =>
+                           Rv.Shape := Shape_Diamond;
+                           Output.Write_Str ("if ");
                            Sprint_Node (Condition (N));
 
                         when N_Loop_Statement =>
