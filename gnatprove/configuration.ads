@@ -71,8 +71,8 @@ package Configuration is
 
    type GP_Mode is (GPM_Detect, GPM_Force, GPM_Flow, GPM_Prove);
    --  The four feature modes of GNATprove:
-   --  * GPM_Detect : Alfa Detection only
-   --  * GPM_Force  : Alfa Detection only, output errors for violations of Alfa
+   --  * GPM_Detect : SPARK Detection only
+   --  * GPM_Force  : SPARK Detection only, output errors for violations
    --  * GPM_Check  : Check consistency of contracts, no proof of subprogram
    --                 bodies
    --  * GPM_Prove  : Check validity of contracts, proof of subprogram bodies
@@ -98,7 +98,7 @@ package Configuration is
    --  Path_WP: use the "normal" (exponential) WP
    --  No_Split: only use fast WP, no split of VCs at all
 
-   subtype GP_Alfa_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
+   subtype GP_SPARK_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
    MMode        : GP_Mode := GPM_Prove;
    Report       : Report_Mode := GPR_Fail;
@@ -163,11 +163,11 @@ package Configuration is
       Ada.Directories.Compose (Gpr_Cnf_Dir, "frames.cgpr");
    Gpr_Why_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
-   Alfa_Report_File : constant String := "gnatprove.out";
-   --  The name of the file in which the Alfa report is generated
+   SPARK_Report_File : constant String := "gnatprove.out";
+   --  The name of the file in which the SPARK report is generated
 
-   Alfa_Suffix    : constant String := ".alfa";
-   --  Suffix for raw Alfa information files
+   SPARK_Suffix    : constant String := ".alfa";
+   --  Suffix for raw SPARK information files
 
    procedure Read_Command_Line (Tree : out Project_Tree);
 

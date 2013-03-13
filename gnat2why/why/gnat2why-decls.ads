@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                   G N A T 2 W H Y - D E C L S                            --
+--                         G N A T 2 W H Y - D E C L S                      --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --

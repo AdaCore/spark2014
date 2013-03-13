@@ -23,28 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Ada.Text_IO;            use Ada.Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
 
-with AA_Util;               use AA_Util;
-with Alloc;                 use Alloc;
-with Atree;                 use Atree;
+with AA_Util;                use AA_Util;
+with Alloc;                  use Alloc;
+with Atree;                  use Atree;
 with Debug;
-with Einfo;                 use Einfo;
-with Errout;                use Errout;
-with Namet;                 use Namet;
-with Nlists;                use Nlists;
+with Einfo;                  use Einfo;
+with Errout;                 use Errout;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
 with Opt;
-with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
-with Snames;                use Snames;
-with Stand;                 use Stand;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
+with Snames;                 use Snames;
+with Stand;                  use Stand;
 with Table;
 
-with Alfa_Violations;       use all type Alfa_Violations.Vkind;
+with SPARK_Violations;       use all type SPARK_Violations.Vkind;
 
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
@@ -57,9 +57,9 @@ package body SPARK_Definition is
 
    Name_GNATprove : constant String := "gnatprove";
 
-   --  Standard types which are in Alfa are associated to True
+   --  Standard types which are in SPARK are associated to True
 
-   Standard_Type_Is_In_Alfa : constant array (S_Types) of Boolean :=
+   Standard_Type_Is_In_SPARK : constant array (S_Types) of Boolean :=
      (S_Boolean             => True,
 
       S_Short_Short_Integer => True,
@@ -95,7 +95,7 @@ package body SPARK_Definition is
 
    Output_File : Ada.Text_IO.File_Type;
    --  <file>.alfa in which this pass generates information about subprograms
-   --  in Alfa and subprograms not in Alfa.
+   --  in SPARK and subprograms not in SPARK.
 
    Current_Unit_Is_Main_Body : Boolean;
    --  Flag set when marking the body for the current compiled unit
@@ -109,24 +109,24 @@ package body SPARK_Definition is
    Formal_Proof_Off : Node_Sets.Set;
    --  Flag set after "Pragma Annotate (GNATprove, Disable)"
 
-   type Violations is array (Alfa_Violations.Vkind) of Node_Sets.Set;
+   type Violations is array (SPARK_Violations.Vkind) of Node_Sets.Set;
 
    Spec_Violations : Violations;
-   --  Sets of entities which violate Alfa restrictions, per violation kind
+   --  Sets of entities which violate SPARK restrictions, per violation kind
 
    Body_Violations : Violations;
-   --  Sets of subprogram entities whose body violate Alfa restrictions, per
+   --  Sets of subprogram entities whose body violate SPARK restrictions, per
    --  violation kind.
 
-   Entities_In_Alfa : Node_Sets.Set;
-   --  Entities in Alfa. An entity is inserted in this set if, after marking,
+   Entities_In_SPARK : Node_Sets.Set;
+   --  Entities in SPARK. An entity is inserted in this set if, after marking,
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
-   Bodies_In_Alfa   : Node_Sets.Set;
-   --  Subprogram entities whose body is in Alfa. An entity is inserted in this
-   --  set if, after marking, no violations where attached to the corresponding
-   --  body scope.
+   Bodies_In_SPARK   : Node_Sets.Set;
+   --  Subprogram entities whose body is in SPARK. An entity is inserted
+   --  in this set if, after marking, no violations where attached to the
+   --  corresponding body scope.
 
    -----------------
    -- Scope Stack --
@@ -182,7 +182,7 @@ package body SPARK_Definition is
       function Formal_Proof_Currently_Forced return Boolean;
       --  Determine the most top-level scope to have formal proof forced or
       --  disabled, and return True if formal proof is forced. Return False
-      --  in all other cases. This is useful to notify the user about Alfa
+      --  in all other cases. This is useful to notify the user about SPARK
       --  violations in a scope where formal proof is forced.
 
       generic
@@ -226,25 +226,25 @@ package body SPARK_Definition is
    procedure Mark_Type_Entity (Id : Entity_Id; In_Container : Boolean);
    --  Types are special, we represent them by entities. In_Container is True
    --  for a type defined in a formal container package instance, which should
-   --  be marked in Alfa or not, but not translated into Why3.
+   --  be marked in SPARK or not, but not translated into Why3.
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
    --  Mark a possibly null list of actions L from expression N. It should be
    --  called before the expression to which the actions apply is marked, so
-   --  that declarations of constants in actions are possibly marked in Alfa.
+   --  that declarations of constants in actions are possibly marked in SPARK.
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
 
-   procedure Mark_Most_Underlying_Type_In_Alfa (Id : Entity_Id; N : Node_Id);
-   --  The most underlying type for type Id should be in Alfa, otherwise mark
-   --  node N as not in Alfa.
+   procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id);
+   --  The most underlying type for type Id should be in SPARK, otherwise mark
+   --  node N as not in SPARK.
 
    procedure Mark_Violation
      (Msg : String;
       N   : Node_Id;
-      V   : Alfa_Violations.Vkind);
-   --  Mark node N as a violation of Alfa. The violation is attached to all
+      V   : SPARK_Violations.Vkind);
+   --  Mark node N as a violation of SPARK. The violation is attached to all
    --  entities in the current scope stack. A message is also issued in some
    --  cases.
 
@@ -267,27 +267,28 @@ package body SPARK_Definition is
    --  Make To inherit the violations of From in Violations
 
    function Has_Violations (Id : Entity_Id) return Boolean;
-   --  Return whether a violation of Alfa was detected while analyzing the
+   --  Return whether a violation of SPARK was detected while analyzing the
    --  definition of entity Id. This does not include violations in the body of
    --  a subprogram, which are recorded separately.
 
    function Has_Body_Violations (Id : Entity_Id) return Boolean;
-   --  Return whether a violation of Alfa was detected while analyzing the body
-   --  of subprogram Id.
+   --  Return whether a violation of SPARK was detected while analyzing the
+   --  body of subprogram Id.
 
-   function Force_Alfa (N : Node_Id) return Boolean;
-   --  Return whether Alfa rules should be enforced in the current scope,
+   function Force_SPARK (N : Node_Id) return Boolean;
+   --  Return whether SPARK rules should be enforced in the current scope,
    --  either because option -gnatd.K or -gnatd.E was passed to gnat2why (which
    --  only applies to user source code), or because the current scope is
    --  forcing formal proof.
 
    function Complete_Error_Msg
      (Msg : String;
-      V   : Alfa_Violations.Vkind) return String;
-   --  Generate a message for Alfa violations, which may be an error, a warning
-   --  or an info message depending on the analysis mode and the violation.
+      V   : SPARK_Violations.Vkind) return String;
+   --  Generate a message for SPARK violations, which may be an error, a
+   --  warning or an info message depending on the analysis mode and the
+   --  violation.
 
-   procedure Generate_Output_In_Out_Alfa (Id : Entity_Id);
+   procedure Generate_Output_In_Out_SPARK (Id : Entity_Id);
    --  Produce a line in output file for subprogram Id, following syntax:
    --
    --    cd name location opt_list_NIR opt_list_NYI
@@ -296,29 +297,29 @@ package body SPARK_Definition is
    --
    --    c and d are characters which denote respectively whether the body and
    --    spec of subprogram Id are:
-   --      + in Alfa
-   --      - not in Alfa roadmap
-   --      * not yet implemented in Alfa
+   --      + in SPARK
+   --      - not in SPARK roadmap
+   --      * not yet implemented in SPARK
    --
    --    name is the name of subprogram Id
    --    location is the location (file:line) of subprogram Id
    --
-   --    opt_list_NIR and opt_list_NYI are optional lists of violations of Alfa
-   --    for not-in-roadmap constructs (NIR) or not-yet-implemented constructs
-   --    (NYI). opt_list_NIR is enclosed in parentheses. opt_list_NYI is
-   --    enclosed in brackets. Both are comma-separated lists.
+   --    opt_list_NIR and opt_list_NYI are optional lists of violations of
+   --    SPARK for not-in-roadmap constructs (NIR) or not-yet-implemented
+   --    constructs (NYI). opt_list_NIR is enclosed in parentheses.
+   --    opt_list_NYI is enclosed in brackets. Both are comma-separated lists.
    --
    --  examples:
    --
    --  -+ pack__f f.adb:3 (tasking)
-   --  Subprogram Pack.F has its spec in Alfa, and its body not in Alfa, due to
-   --  the use of tasking.
+   --  Subprogram Pack.F has its spec in SPARK, and its body not in SPARK, due
+   --  to the use of tasking.
    --
    --  ++ pack__g f.adb:78
-   --  Subprogram Pack.G is in Alfa
+   --  Subprogram Pack.G is in SPARK
    --
    --  ** pack__h f.adb:3 [slice, not yet implemented]
-   --  Subprogram Pack.H has both its spec and body not implemented in Alfa,
+   --  Subprogram Pack.H has both its spec and body not implemented in SPARK,
    --  due to the use of slices, plus some other not precised constructs.
 
    -------------------
@@ -342,13 +343,13 @@ package body SPARK_Definition is
    end Before_Marking;
 
    ------------------
-   -- Body_In_Alfa --
+   -- Body_In_SPARK --
    ------------------
 
-   function Body_In_Alfa (Id : Entity_Id) return Boolean is
+   function Body_In_SPARK (Id : Entity_Id) return Boolean is
    begin
-      return Bodies_In_Alfa.Contains (Id);
-   end Body_In_Alfa;
+      return Bodies_In_SPARK.Contains (Id);
+   end Body_In_SPARK;
 
    ------------------------
    -- Complete_Error_Msg --
@@ -356,10 +357,10 @@ package body SPARK_Definition is
 
    function Complete_Error_Msg
      (Msg : String;
-      V   : Alfa_Violations.Vkind) return String
+      V   : SPARK_Violations.Vkind) return String
    is
       --  When reporting a forward reference, this takes priority over the
-      --  default reason for not being in Alfa (e.g. "subprogram called")
+      --  default reason for not being in SPARK (e.g. "subprogram called")
 
       Use_Msg : constant String :=
                   (if V = NIR_Forward_Reference then
@@ -367,10 +368,10 @@ package body SPARK_Definition is
                    else Msg);
    begin
       case V is
-         when Alfa_Violations.Not_In_Roadmap =>
+         when SPARK_Violations.Not_In_Roadmap =>
 
             --  In mode 'detect', only issue a warning when a construct is not
-            --  in Alfa.
+            --  in SPARK.
 
             if Debug.Debug_Flag_Dot_KK then
                return Use_Msg & "? is not in 'S'P'A'R'K";
@@ -378,7 +379,7 @@ package body SPARK_Definition is
                return Use_Msg & " is not in 'S'P'A'R'K";
             end if;
 
-         when Alfa_Violations.Not_Yet_Implemented =>
+         when SPARK_Violations.Not_Yet_Implemented =>
 
             --  In mode 'detect', only issue an info message when a construct
             --  is not yet supported.
@@ -392,10 +393,10 @@ package body SPARK_Definition is
    end Complete_Error_Msg;
 
    ----------------
-   -- Force_Alfa --
+   -- Force_SPARK --
    ----------------
 
-   function Force_Alfa (N : Node_Id) return Boolean is
+   function Force_SPARK (N : Node_Id) return Boolean is
      (((Debug.Debug_Flag_Dot_KK
          or else Debug.Debug_Flag_Dot_EE)
         and then (In_Main_Unit_Spec (N)
@@ -403,11 +404,11 @@ package body SPARK_Definition is
        or else
          Formal_Proof_Currently_Forced);
 
-   ---------------------------------
-   -- Generate_Output_In_Out_Alfa --
-   ---------------------------------
+   ----------------------------------
+   -- Generate_Output_In_Out_SPARK --
+   ----------------------------------
 
-   procedure Generate_Output_In_Out_Alfa (Id : Entity_Id) is
+   procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
       generic
          type Violation_Subkind is (<>);
          Open, Close : Character;
@@ -422,22 +423,22 @@ package body SPARK_Definition is
       --  enclosed in Open-Close characters.
 
       function Suffix return String;
-      --  Suffix string indicates why subprogram body is not in Alfa
+      --  Suffix string indicates why subprogram body is not in SPARK
 
       ----------------------
       -- Helper Functions --
       ----------------------
 
       function Has_Violation
-        (V : Alfa_Violations.Vkind;
+        (V : SPARK_Violations.Vkind;
          E : Entity_Id) return Boolean
       is
         (Body_Violations (V).Contains (E));
 
       function Get_Violation_Msg
-        (V : Alfa_Violations.Vkind) return Unbounded_String
+        (V : SPARK_Violations.Vkind) return Unbounded_String
       is
-        (Alfa_Violations.Violation_Msg (V));
+        (SPARK_Violations.Violation_Msg (V));
 
       function Location return String is
         (Name_String (Chars (Id)) & ' ' & Build_Location_String (Sloc (Id)));
@@ -477,10 +478,10 @@ package body SPARK_Definition is
 
       function Collect_NYI_Msg_Violations is
         new Collect_Msg_Violations
-          (Alfa_Violations.Not_Yet_Implemented, '[', ']');
+          (SPARK_Violations.Not_Yet_Implemented, '[', ']');
 
       function Collect_NIR_Msg_Violations is
-        new Collect_Msg_Violations (Alfa_Violations.Not_In_Roadmap, '(', ')');
+        new Collect_Msg_Violations (SPARK_Violations.Not_In_Roadmap, '(', ')');
 
       ------------
       -- Suffix --
@@ -488,7 +489,7 @@ package body SPARK_Definition is
 
       function Suffix return String is
       begin
-         if Body_In_Alfa (Id) then
+         if Body_In_SPARK (Id) then
             return "";
          else
             declare
@@ -512,24 +513,24 @@ package body SPARK_Definition is
 
       C1, C2 : Character;
       --  Character indicates whether entity body (C1) and spec (C2) are:
-      --    + in Alfa
-      --    - not in Alfa roadmap
-      --    * not yet implemented in Alfa
+      --    + in SPARK
+      --    - not in SPARK roadmap
+      --    * not yet implemented in SPARK
 
    begin
       if Comes_From_Source (Id) then
-         if Body_In_Alfa (Id) then
+         if Body_In_SPARK (Id) then
             C1 := '+';
-         elsif (for some V in Alfa_Violations.Not_In_Roadmap =>
+         elsif (for some V in SPARK_Violations.Not_In_Roadmap =>
                    Body_Violations (V).Contains (Id)) then
             C1 := '-';
          else
             C1 := '*';
          end if;
 
-         if In_Alfa (Id) then
+         if In_SPARK (Id) then
             C2 := '+';
-         elsif (for some V in Alfa_Violations.Not_In_Roadmap =>
+         elsif (for some V in SPARK_Violations.Not_In_Roadmap =>
                    Spec_Violations (V).Contains (Id)) then
             C2 := '-';
          else
@@ -538,7 +539,7 @@ package body SPARK_Definition is
 
          Put_Line (Output_File, C1 & C2 & ' ' & Location & Suffix);
       end if;
-   end Generate_Output_In_Out_Alfa;
+   end Generate_Output_In_Out_SPARK;
 
    -------------------------
    -- Has_Body_Violations --
@@ -554,11 +555,11 @@ package body SPARK_Definition is
    function Has_Violations (Id : Entity_Id) return Boolean is
      (for some S of Spec_Violations => S.Contains (Id));
 
-   -------------
-   -- In_Alfa --
-   -------------
+   --------------
+   -- In_SPARK --
+   --------------
 
-   function In_Alfa (Id : Entity_Id) return Boolean is
+   function In_SPARK (Id : Entity_Id) return Boolean is
    begin
       --  Type might not have been marked yet, in case it is an Itype or a
       --  class-wide type.
@@ -570,8 +571,8 @@ package body SPARK_Definition is
          Mark_Type_Entity (Id, In_Container => False);
       end if;
 
-      return Entities_In_Alfa.Contains (Id);
-   end In_Alfa;
+      return Entities_In_SPARK.Contains (Id);
+   end In_SPARK;
 
    ------------------------
    -- Inherit_Violations --
@@ -582,11 +583,11 @@ package body SPARK_Definition is
       To, From : Entity_Id)
    is
    begin
-      --  If From was explicitly marked as not in Alfa, inherit the reason for
-      --  not being in Alfa.
+      --  If From was explicitly marked as not in SPARK, inherit the reason for
+      --  not being in SPARK.
 
       if (for some S of Spec_Violations => S.Contains (From)) then
-         for V in Alfa_Violations.Vkind loop
+         for V in SPARK_Violations.Vkind loop
             if Spec_Violations (V).Contains (From) then
                A (V).Include (To);
             end if;
@@ -608,12 +609,12 @@ package body SPARK_Definition is
 
    procedure Mark (N : Node_Id) is
    begin
-      --  If present, the type of N should be in Alfa. This also allows marking
-      --  Itypes and class-wide types at their first occurrence (inside
-      --  In_Alfa).
+      --  If present, the type of N should be in SPARK. This also allows
+      --  marking Itypes and class-wide types at their first occurrence
+      --  (inside In_SPARK).
 
       if Nkind (N) in N_Has_Etype
-        and then not In_Alfa (Etype (N))
+        and then not In_SPARK (Etype (N))
       then
          Mark_Violation ("type used", N, From => Etype (N));
       end if;
@@ -628,7 +629,7 @@ package body SPARK_Definition is
          when N_Aggregate =>
 
             --  In logic scopes, aggregates should be completely initialized to
-            --  be in Alfa, otherwise they do not have a logic interpretation.
+            --  be in SPARK, otherwise they do not have a logic interpretation.
 
             if In_Logic_Scope
               and then not Aggregate_Is_Fully_Initialized (N)
@@ -637,7 +638,7 @@ package body SPARK_Definition is
                                N, NIR_Uninit_Logic_Expr);
             end if;
 
-            Mark_Most_Underlying_Type_In_Alfa (Etype (N), N);
+            Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
 
@@ -736,7 +737,7 @@ package body SPARK_Definition is
             Mark_If_Statement (N);
 
          when N_Indexed_Component =>
-            Mark_Most_Underlying_Type_In_Alfa (Etype (Prefix (N)), N);
+            Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
             Mark (Prefix (N));
             Mark_List (Expressions (N));
 
@@ -747,7 +748,7 @@ package body SPARK_Definition is
 
             --  Treat specially the case of X.Iterate for X a formal container,
             --  so that the iterator type is ignored instead of being
-            --  identified as a violation of Alfa.
+            --  identified as a violation of SPARK.
 
             declare
                Iter : constant Node_Id := Name (N);
@@ -854,12 +855,12 @@ package body SPARK_Definition is
             Mark_Simple_Return_Statement (N);
 
          when N_Selected_Component =>
-            Mark_Most_Underlying_Type_In_Alfa (Etype (Prefix (N)), N);
+            Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
             Mark (Prefix (N));
             Mark (Selector_Name (N));
 
          when N_Slice =>
-            Mark_Most_Underlying_Type_In_Alfa (Etype (Prefix (N)), N);
+            Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
             Mark (Prefix (N));
             Mark (Discrete_Range (N));
 
@@ -1031,7 +1032,7 @@ package body SPARK_Definition is
          when N_Expression_Function =>
             raise Program_Error;
 
-         --  The following kind is never generated in Alfa mode
+         --  The following kind is never generated in SPARK mode
 
          when N_Expression_With_Actions =>
             raise Program_Error;
@@ -1255,10 +1256,10 @@ package body SPARK_Definition is
             null;
       end case;
 
-      --  In strict Alfa mode, issue a warning whenever an arithmetic operation
-      --  could be reordered by the compiler, like "A + B - C", as a given
-      --  ordering may overflow and another may not. Not that a warning is
-      --  issued even on operations like "A * B / C" which are not reordered
+      --  In strict SPARK mode, issue a warning whenever an arithmetic
+      --  operation could be reordered by the compiler, like "A + B - C", as a
+      --  given ordering may overflow and another may not. Not that a warning
+      --  is issued even on operations like "A * B / C" which are not reordered
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
       if Opt.SPARK_Strict_Mode
@@ -1268,7 +1269,7 @@ package body SPARK_Definition is
         --  instances of generics defined in the standard library (unless we
         --  are analyzing the standard library itself). As a result, no warning
         --  is generated in this case for standard library code. Such warnings
-        --  are only noise, because a user sets the strict Alfa mode precisely
+        --  are only noise, because a user sets the strict SPARK mode precisely
         --  when he uses another compiler than GNAT, with a different
         --  implementation of the standard library.
 
@@ -1334,15 +1335,15 @@ package body SPARK_Definition is
       end if;
 
       --  If this is an indirect call, an entry call, a call to a protected
-      --  operation or the subprogram called is not in Alfa, then the call is
-      --  not in Alfa.
+      --  operation or the subprogram called is not in SPARK, then the call is
+      --  not in SPARK.
 
       if not Is_Entity_Name (Nam)
         or else No (Entity (Nam))
       then
          Mark_Violation ("call", N, NIR_Indirect_Call);
 
-      elsif not In_Alfa (Entity (Nam)) then
+      elsif not In_SPARK (Entity (Nam)) then
          Mark_Violation ("subprogram called", N, From => Entity (Nam));
       end if;
    end Mark_Call;
@@ -1356,7 +1357,7 @@ package body SPARK_Definition is
       Context_N : Node_Id;
 
    begin
-      --  Separately mark declarations from Standard as in Alfa or not
+      --  Separately mark declarations from Standard as in SPARK or not
 
       if Defining_Entity (N) = Standard_Standard then
          return;
@@ -1425,18 +1426,18 @@ package body SPARK_Definition is
             when Object_Kind =>
                if (Ekind_In (E, E_Variable, E_Constant)
                     or else Ekind (E) in Formal_Kind)
-                 and then not (In_Alfa (Entity (N)))
+                 and then not (In_SPARK (Entity (N)))
                then
                   Mark_Violation ("object", N, From => Entity (N));
                end if;
 
             when Named_Kind =>
-               if not (In_Alfa (Entity (N))) then
+               if not (In_SPARK (Entity (N))) then
                   Mark_Violation ("object", N, From => Entity (N));
                end if;
 
             when Type_Kind =>
-               if not In_Alfa (Entity (N)) then
+               if not In_SPARK (Entity (N)) then
                   Mark_Violation ("type", N, From => Entity (N));
                end if;
 
@@ -1543,7 +1544,7 @@ package body SPARK_Definition is
          Mark (Discrete_Subtype_Definition
                (Loop_Parameter_Specification (N)));
 
-         --  The loop parameter shall be added to the entities in Alfa. This
+         --  The loop parameter shall be added to the entities in SPARK. This
          --  can be done by pushing it to the stack and popping it directly
          --  afterwards.
          declare
@@ -1575,14 +1576,14 @@ package body SPARK_Definition is
       end loop;
    end Mark_List;
 
-   -------------------
-   -- Mark_Non_Alfa --
-   -------------------
+   --------------------
+   -- Mark_Violation --
+   --------------------
 
    procedure Mark_Violation
      (Msg    : String;
       N      : Node_Id;
-      V      : Alfa_Violations.Vkind)
+      V      : SPARK_Violations.Vkind)
    is
       procedure Mark_Body_Violations (E : Entity_Id);
       procedure Mark_Spec_Violations (E : Entity_Id);
@@ -1603,7 +1604,7 @@ package body SPARK_Definition is
       --  If formal proof is forced and node N is not compiler-generated, then
       --  notify the user about the violation.
 
-      if Force_Alfa (N)
+      if Force_SPARK (N)
         and then Comes_From_Source (N)
       then
          Error_Msg_F (Complete_Error_Msg (Msg, V), N);
@@ -1636,7 +1637,7 @@ package body SPARK_Definition is
       --  If formal proof is forced and node N is not compiler-generated, then
       --  notify the user about the violation.
 
-      if Force_Alfa (N)
+      if Force_SPARK (N)
         and then Comes_From_Source (N)
       then
          if In_Standard_Scope (From)
@@ -1644,19 +1645,19 @@ package body SPARK_Definition is
          then
             Error_Msg_F (Complete_Error_Msg (Msg, NIR_XXX), N);
 
-         elsif (for some V in Alfa_Violations.Not_In_Roadmap =>
+         elsif (for some V in SPARK_Violations.Not_In_Roadmap =>
                   Spec_Violations (V).Contains (From))
          then
-            for V in Alfa_Violations.Not_In_Roadmap loop
+            for V in SPARK_Violations.Not_In_Roadmap loop
                if Spec_Violations (V).Contains (From) then
                   Error_Msg_F (Complete_Error_Msg (Msg, V), N);
                end if;
             end loop;
 
-         elsif (for some V in Alfa_Violations.Not_Yet_Implemented =>
+         elsif (for some V in SPARK_Violations.Not_Yet_Implemented =>
                   Spec_Violations (V).Contains (From))
          then
-            for V in Alfa_Violations.Not_Yet_Implemented loop
+            for V in SPARK_Violations.Not_Yet_Implemented loop
                if Spec_Violations (V).Contains (From) then
                   Error_Msg_F (Complete_Error_Msg (Msg, V), N);
                end if;
@@ -1681,12 +1682,12 @@ package body SPARK_Definition is
       T    : constant Entity_Id := Etype (Id);
 
    begin
-      --  The number declaration is in Alfa if-and-only-if its base type is
-      --  in Alfa.
+      --  The number declaration is in SPARK if-and-only-if its base type is
+      --  in SPARK.
 
       Push_Scope (Id);
 
-      if not In_Alfa (T) then
+      if not In_SPARK (T) then
          Mark_Violation ("type", N, From => T);
       end if;
 
@@ -1718,12 +1719,12 @@ package body SPARK_Definition is
          Add_Full_And_Partial_View (Full_View (Id), Id);
       end if;
 
-      --  The object is in Alfa if-and-only-if its type is in Alfa, it is not
-      --  aliased, and its initialization expression, if any, is in Alfa.
+      --  The object is in SPARK if-and-only-if its type is in SPARK, it is not
+      --  aliased, and its initialization expression, if any, is in SPARK.
 
       Push_Scope (Id);
 
-      if not In_Alfa (T) then
+      if not In_SPARK (T) then
          Mark_Violation ("type", Def, From => T);
       end if;
 
@@ -1814,7 +1815,7 @@ package body SPARK_Definition is
                   Mark_Type_Entity (Id, In_Container => True);
 
                elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                  Entities_In_Alfa.Include (Id);
+                  Entities_In_SPARK.Include (Id);
                end if;
             end if;
 
@@ -1830,7 +1831,7 @@ package body SPARK_Definition is
 
    begin
       --  Do not analyze specs for instantiations of the formal containers.
-      --  Only mark types in Alfa or not, and mark all subprograms in Alfa,
+      --  Only mark types in SPARK or not, and mark all subprograms in SPARK,
       --  but none should be scheduled for translation into Why3.
 
       if Is_Instantiation_Of_Formal_Container (N) then
@@ -1846,7 +1847,7 @@ package body SPARK_Definition is
          end if;
 
          --  Mark types and subprograms from the formal container instantiation
-         --  as in Alfa or not.
+         --  as in SPARK or not.
 
          Declare_In_Container (Vis_Decls);
          Declare_In_Container (Priv_Decls);
@@ -1902,14 +1903,14 @@ package body SPARK_Definition is
          --  not analyzed.
 
          --  The following is a special form used in conjunction with the
-         --  Alfa subset of Ada:
+         --  SPARK subset of Ada:
 
          --    pragma Annotate (GNATprove, MODE);
          --    MODE ::= Force | Ignore
 
          --    This pragma either forces (mode Force) or disables (mode Ignore)
          --    formal verification of the subprogram in which it is added. When
-         --    formal verification is forced, all violations of the the Alfa
+         --    formal verification is forced, all violations of the the SPARK
          --    subset of Ada present in the subprogram are reported as errors
          --    to the user.
 
@@ -1971,7 +1972,7 @@ package body SPARK_Definition is
                         return;
                   end if;
 
-                  --  Notify user if some Alfa violation occurred before this
+                  --  Notify user if some SPARK violation occurred before this
                   --  point in Cur_Ent. These violations are not precisly
                   --  located, but this is better than ignoring these
                   --  violations.
@@ -2063,44 +2064,44 @@ package body SPARK_Definition is
 
    procedure Mark_Standard_Package is
 
-      procedure Insert_All_And_Alfa (E : Entity_Id);
+      procedure Insert_All_And_SPARK (E : Entity_Id);
 
-      -------------------------
-      -- Insert_All_And_Alfa --
-      -------------------------
+      --------------------------
+      -- Insert_All_And_SPARK --
+      --------------------------
 
-      procedure Insert_All_And_Alfa (E : Entity_Id) is
+      procedure Insert_All_And_SPARK (E : Entity_Id) is
       begin
          All_Entities.Insert (E);
-         Entities_In_Alfa.Insert (E);
-      end Insert_All_And_Alfa;
+         Entities_In_SPARK.Insert (E);
+      end Insert_All_And_SPARK;
 
    begin
       for S in S_Types loop
          All_Entities.Insert (Standard_Entity (S));
-         if Standard_Type_Is_In_Alfa (S) then
-            Entities_In_Alfa.Insert (Standard_Entity (S));
-            Entities_In_Alfa.Include (Etype (Standard_Entity (S)));
+         if Standard_Type_Is_In_SPARK (S) then
+            Entities_In_SPARK.Insert (Standard_Entity (S));
+            Entities_In_SPARK.Include (Etype (Standard_Entity (S)));
          end if;
       end loop;
 
       for S in S_ASCII_Names loop
-         Insert_All_And_Alfa (Standard_Entity (S));
+         Insert_All_And_SPARK (Standard_Entity (S));
       end loop;
 
-      Insert_All_And_Alfa (Standard_Void_Type);
+      Insert_All_And_SPARK (Standard_Void_Type);
 
-      Insert_All_And_Alfa (Standard_False);
-      Insert_All_And_Alfa (Standard_True);
+      Insert_All_And_SPARK (Standard_False);
+      Insert_All_And_SPARK (Standard_True);
 
-      Insert_All_And_Alfa (Universal_Integer);
-      Insert_All_And_Alfa (Universal_Real);
-      Insert_All_And_Alfa (Universal_Fixed);
+      Insert_All_And_SPARK (Universal_Integer);
+      Insert_All_And_SPARK (Universal_Real);
+      Insert_All_And_SPARK (Universal_Fixed);
 
-      Insert_All_And_Alfa (Standard_Integer_8);
-      Insert_All_And_Alfa (Standard_Integer_16);
-      Insert_All_And_Alfa (Standard_Integer_32);
-      Insert_All_And_Alfa (Standard_Integer_64);
+      Insert_All_And_SPARK (Standard_Integer_8);
+      Insert_All_And_SPARK (Standard_Integer_16);
+      Insert_All_And_SPARK (Standard_Integer_32);
+      Insert_All_And_SPARK (Standard_Integer_64);
    end Mark_Standard_Package;
 
    --------------------------
@@ -2146,7 +2147,7 @@ package body SPARK_Definition is
 
       --  Inherit violations from spec to body
 
-      if not In_Alfa (Id) then
+      if not In_SPARK (Id) then
          Inherit_Violations (Body_Violations, From => Id, To => Id);
       end if;
 
@@ -2157,10 +2158,10 @@ package body SPARK_Definition is
       Mark (HSS);
       Pop_Scope (Id);
 
-      --  Postprocessing: indicate in output file if subprogram is in Alfa or
+      --  Postprocessing: indicate in output file if subprogram is in SPARK or
       --  not, for debug and verifications.
 
-      Generate_Output_In_Out_Alfa (Id);
+      Generate_Output_In_Out_SPARK (Id);
    end Mark_Subprogram_Body;
 
    ---------------------------------
@@ -2243,11 +2244,12 @@ package body SPARK_Definition is
             while Present (Param_Spec) loop
                Formal := Defining_Identifier (Param_Spec);
 
-               --  The parameter is in Alfa if-and-only-if its type is in Alfa
+               --  The parameter is in SPARK if-and-only-if its type is in
+               --  SPARK.
 
                Push_Scope (Formal);
 
-               if not In_Alfa (Etype (Formal)) then
+               if not In_SPARK (Etype (Formal)) then
                   Mark_Violation
                     ("type of formal", Param_Spec, From => Etype (Formal));
                end if;
@@ -2257,11 +2259,11 @@ package body SPARK_Definition is
             end loop;
          end if;
 
-         --  If the result type of a subprogram is not in Alfa, then the
-         --  subprogram is not in Alfa.
+         --  If the result type of a subprogram is not in SPARK, then the
+         --  subprogram is not in SPARK.
 
          if Nkind (N) = N_Function_Specification
-           and then not In_Alfa (Etype (Id))
+           and then not In_SPARK (Etype (Id))
          then
             Mark_Violation
               ("return type", Result_Definition (N), From => Etype (Id));
@@ -2335,9 +2337,9 @@ package body SPARK_Definition is
          T := Etype (N);
       end if;
 
-      --  Check that the base type is in Alfa
+      --  Check that the base type is in SPARK
 
-      if not In_Alfa (T) then
+      if not In_SPARK (T) then
          Mark_Violation ("base type", N, From => T);
       end if;
 
@@ -2356,13 +2358,13 @@ package body SPARK_Definition is
 
                      case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
-                        if not In_Alfa (Entity (Cstr)) then
+                        if not In_SPARK (Entity (Cstr)) then
                            Mark_Violation
                              ("index type", N, From => Entity (Cstr));
                         end if;
 
                      when N_Subtype_Indication =>
-                        if not In_Alfa (Subtype_Mark (Cstr)) then
+                        if not In_SPARK (Subtype_Mark (Cstr)) then
                            Mark_Violation
                              ("index type", N, From => Subtype_Mark (Cstr));
                         end if;
@@ -2404,7 +2406,7 @@ package body SPARK_Definition is
       procedure Mark_Violation
         (Msg : String;
          N   : Node_Id;
-         V   : Alfa_Violations.Vkind);
+         V   : SPARK_Violations.Vkind);
       --  Local wrapper which does not issue violation when In_Container is
       --  True.
 
@@ -2422,7 +2424,7 @@ package body SPARK_Definition is
       procedure Mark_Violation
         (Msg : String;
          N   : Node_Id;
-         V   : Alfa_Violations.Vkind) is
+         V   : SPARK_Violations.Vkind) is
       begin
          SPARK_Definition.Mark_Violation (Msg, N, V);
       end Mark_Violation;
@@ -2456,7 +2458,7 @@ package body SPARK_Definition is
 
       --  Type declarations may refer to private types whose full view has not
       --  been declared yet. However, it is this full view which may define the
-      --  type in Why3, if it happens to by in Alfa. Hence the need to define
+      --  type in Why3, if it happens to by in SPARK. Hence the need to define
       --  it now, so that it is available for the current type definition. So
       --  we start here with marking all needed types if not already marked.
 
@@ -2539,30 +2541,30 @@ package body SPARK_Definition is
                   Mark_Violation ("array type", Id, NYI_Multi_Dim_Array);
                end if;
 
-               --  Check that all index types are in Alfa
+               --  Check that all index types are in SPARK
 
                while Present (Index) loop
-                  if not In_Alfa (Etype (Index)) then
+                  if not In_SPARK (Etype (Index)) then
                      Mark_Violation
                        ("index type", Id, From => Etype (Index));
                   end if;
                   Next_Index (Index);
                end loop;
 
-               --  Access definition for component type is not in Alfa
+               --  Access definition for component type is not in SPARK
 
                if No (Component_Typ) then
                   Mark_Violation ("access type", Id, NIR_Access);
                end if;
 
-               --  Check that component type is in Alfa. There is a special
+               --  Check that component type is in SPARK. There is a special
                --  case for component types from formal containers, as
-               --  node_type is not in Alfa, but we still want arrays of these
-               --  to be considered in Alfa, as they are implicitly declared by
-               --  the frontend when declaring a subtype of a formal container
-               --  type.
+               --  node_type is not in SPARK, but we still want arrays of these
+               --  to be considered in SPARK, as they are implicitly declared
+               --  by the frontend when declaring a subtype of a formal
+               --  container type.
 
-               if not In_Alfa (Component_Typ)
+               if not In_SPARK (Component_Typ)
                  and not
                    Location_In_Formal_Containers (Sloc (Etype (Component_Typ)))
                then
@@ -2571,7 +2573,7 @@ package body SPARK_Definition is
                end if;
             end;
 
-         --  Scalar types are always in Alfa
+         --  Scalar types are always in SPARK
 
          when Integer_Kind | Real_Kind | Enumeration_Kind =>
             null;
@@ -2579,7 +2581,7 @@ package body SPARK_Definition is
          when E_Record_Type | E_Record_Subtype =>
 
             if Ekind (Id) = E_Record_Subtype and then
-              not In_Alfa (Base_Type (Id)) then
+              not In_SPARK (Base_Type (Id)) then
                Mark_Violation ("base type", Id, From => Base_Type (Id));
             end if;
             if Is_Interface (Id) then
@@ -2601,7 +2603,7 @@ package body SPARK_Definition is
                      end if;
 
                      if Ekind (Field) in Object_Kind
-                       and then not In_Alfa (Typ)
+                       and then not In_SPARK (Typ)
                      then
                         Mark_Violation ("component type", Typ, From => Typ);
                      end if;
@@ -2630,7 +2632,8 @@ package body SPARK_Definition is
                Add_Full_And_Partial_View (Full_View (Id), Id);
             end if;
 
-            --  Private types that are not a record type or subtype are in Alfa
+            --  Private types that are not a record type or subtype are in
+            --  SPARK.
 
             if Ekind_In (Id, E_Record_Type_With_Private,
                          E_Record_Subtype_With_Private)
@@ -2646,7 +2649,7 @@ package body SPARK_Definition is
 
       --  If the type is in a formal container package instance, insert it in
       --  the set of entities already treated before calling Pop_Scope, so that
-      --  it is only marked in Alfa if necessary, but it is not marked for
+      --  it is only marked in SPARK if necessary, but it is not marked for
       --  translation into Why3.
 
       if In_Container and then Type_In_Formal_Container (Id) then
@@ -2724,13 +2727,14 @@ package body SPARK_Definition is
             --  Detect violation in subprogram declarations and subprogram
             --  bodies
 
-            --  If the non-Alfa construct is in a precondition or
-            --  postcondition, then mark the subprogram as not in Alfa, because
-            --  neither the subprogram nor its callers can be proved formally.
+            --  If the non-SPARK construct is in a precondition or
+            --  postcondition, then mark the subprogram as not in SPARK,
+            --  because neither the subprogram nor its callers can be
+            --  proved formally.
 
-            --  If the non-Alfa construct is in a regular piece of code inside
+            --  If the non-SPARK construct is in a regular piece of code inside
             --  the body of the subprogram, then mark the subprogram body as
-            --  not in Alfa, because the subprogram cannot be proved formally,
+            --  not in SPARK, because the subprogram cannot be proved formally,
             --  but its callers could.
 
          when Subprogram_Kind =>
@@ -2755,16 +2759,17 @@ package body SPARK_Definition is
    end Mark_Violations_For_All_Scopes;
 
    ----------------------------------
-   -- Most_Underlying_Type_In_Alfa --
+   -- Most_Underlying_Type_In_SPARK --
    ----------------------------------
 
-   procedure Mark_Most_Underlying_Type_In_Alfa (Id : Entity_Id; N : Node_Id) is
+   procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id)
+   is
       Typ : constant Entity_Id := Most_Underlying_Type (Id);
    begin
-      if not In_Alfa (Typ) then
+      if not In_SPARK (Typ) then
          Mark_Violation ("type", N, From => Typ);
       end if;
-   end Mark_Most_Underlying_Type_In_Alfa;
+   end Mark_Most_Underlying_Type_In_SPARK;
 
    -----------------
    -- Scope_Stack --
@@ -2781,7 +2786,7 @@ package body SPARK_Definition is
            Table_Low_Bound      => First_Scope_Index,
            Table_Initial        => Alloc.Scope_Stack_Initial,
            Table_Increment      => Alloc.Scope_Stack_Increment,
-           Table_Name           => "Alfa.Definition.Scope_Stack");
+           Table_Name           => "SPARK_Definition.Scope_Table");
 
       -------------------
       -- Current_Scope --
@@ -2914,15 +2919,15 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  Finally mark the entity (body) in Alfa if appropriate
+         --  Finally mark the entity (body) in SPARK if appropriate
 
          if Cur_Scope.Is_Body then
             if not Has_Body_Violations (E) then
-               Bodies_In_Alfa.Include (E);
+               Bodies_In_SPARK.Include (E);
             end if;
          else
             if not Has_Violations (E) then
-               Entities_In_Alfa.Include (E);
+               Entities_In_SPARK.Include (E);
             end if;
          end if;
       end Pop_Scope;

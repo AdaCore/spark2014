@@ -31,27 +31,27 @@
 
 --    Framing           The 'frame' or 'frame condition' of the current unit U
 --                      is computed, based on the information stored in the
---                      Alfa sections of ALI files for all units on which U
+--                      SPARK sections of ALI files for all units on which U
 --                      depends recursively. This means U and all units with'ed
 --                      directly or indirectly by U. The frame for a subprogram
 --                      consists in all variables which this subprogram may
 --                      read and/or write.
 
 --    Detection         Each entity declared in the current unit is classified
---                      as either in the Alfa subset that can be formally
+--                      as either in the SPARK subset that can be formally
 --                      analyzed, or outside this subset.  For all entities,
 --                      this classification is based solely on the declaration
 --                      of the entity. Additionally, subprogram bodies are
---                      classified as in or out of Alfa, based on the
+--                      classified as in or out of SPARK, based on the
 --                      subprogram spec classification, the constructs used in
 --                      the body of the subprogram, and the classification of
 --                      the entities used in the body of the subprogram. The
 --                      result of this classification is a partitioning of the
---                      program between entities and subprogram bodies in Alfa,
---                      or not in Alfa.
+--                      program between entities and subprogram bodies in
+--                      SPARK, or not in SPARK.
 
---    Transformation    Entities and subprogram bodies classified as in Alfa in
---                      the previous phase are transformed into a Why3
+--    Transformation    Entities and subprogram bodies classified as in SPARK
+--                      in the previous phase are transformed into a Why3
 --                      declarations. These declarations are dispatched between
 --                      a set of Why3 files, so that any use of an entity is
 --                      preceded by its declaration.  The mapping between Ada
@@ -82,7 +82,7 @@
 --  5. WF_Context_In_Body  subprogram specs in body  u__context_in_body.mlw
 --  6. WF_Main             subprogram bodies         u__package.mlw
 
---  Each Alfa entity defined in unit U is transformed into a set of Why3
+--  Each SPARK entity defined in unit U is transformed into a set of Why3
 --  declarations in the files above. These declarations are grouped in theories
 --  or modules, so that the context used for generating VCs for a given module
 --  is minimized, which leads to smaller (hence easier) VCs. This context is
@@ -93,7 +93,7 @@
 --  theories/modules in different files is only from a file of higher rank to
 --  a file of lower rank, or to a file with same rank but avoiding cycles.
 
---  The generation of theories/modules for an entity in Alfa proceeds as
+--  The generation of theories/modules for an entity in SPARK proceeds as
 --  follows, where the corresponding type/context file of an entity is the
 --  Type_/Context_ In_Spec file if the entity is declared in the unit spec,
 --  Type_/Context_ In_Body file if the entity is declared in the unit body.
@@ -198,7 +198,7 @@
 --         checking the absence of run-time errors on the precondition of the
 --         subprogram in any context.
 
---         If the body of the subprogram is in Alfa, a program function with
+--         If the body of the subprogram is in SPARK, a program function with
 --         definition is created in its own module, in the main file. VCs
 --         generated for this program function correspond to checking the
 --         absence of run-time errors and the contract of the subprogram.

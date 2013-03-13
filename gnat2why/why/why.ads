@@ -31,14 +31,14 @@ package Why is
 
    Not_Implemented : exception;
    --  Use this exception for cases where an implementation is intended, but
-   --  not done yet
+   --  not done yet.
 
-   Not_Alfa        : exception;
+   Not_SPARK       : exception;
    --  Use this exception for cases that are outside the subset defined by
-   --  Alfa
+   --  SPARK.
 
-   Unexpected_Node  : exception;
+   Unexpected_Node : exception;
    --  Use this exception for cases that are not expected at this place in the
-   --  Ada AST
+   --  Ada AST.
 
 end Why;

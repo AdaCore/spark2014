@@ -30,17 +30,17 @@ with Ada.Containers.Hashed_Maps;
 
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
-with AA_Util;               use AA_Util;
-with Atree;                 use Atree;
-with Einfo;                 use Einfo;
-with Namet;                 use Namet;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
-with Stand;                 use Stand;
-with Types;                 use Types;
+with AA_Util;                use AA_Util;
+with Atree;                  use Atree;
+with Einfo;                  use Einfo;
+with Namet;                  use Namet;
+with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
+with Stand;                  use Stand;
+with Types;                  use Types;
 
-with Why.Ids;               use Why.Ids;
-with Why.Types;             use Why.Types;
+with Why.Ids;                use Why.Ids;
+with Why.Types;              use Why.Types;
 
 package Gnat2Why.Nodes is
    --  This package contains data structures and facilities to deal with the

@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                        A L F A _ V I O L A T I O N S                     --
+--                       S P A R K _ V I O L A T I O N S                    --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Alfa_Violations is
+package body SPARK_Violations is
 
 begin
    for V in Vkind loop
       Violation_From_Msg.Insert (Violation_Msg (V), V);
    end loop;
-end Alfa_Violations;
+end SPARK_Violations;

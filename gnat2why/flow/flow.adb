@@ -69,7 +69,7 @@ package body Flow is
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
    function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs
-     with Pre => (Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E));
+     with Pre => (Ekind (E) in Subprogram_Kind and then Body_In_SPARK (E));
    --  Flow analyse the given entity. This subprogram does nothing for
    --  entities without a body and not in SPARK 2014.
 
@@ -878,13 +878,13 @@ package body Flow is
    begin
       --  Process entities and construct graphs if necessary
       for E of Spec_Entities loop
-         if Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E) then
+         if Ekind (E) in Subprogram_Kind and then Body_In_SPARK (E) then
             FA_Graphs.Include (E, Flow_Analyse_Entity (E));
          end if;
       end loop;
 
       for E of Body_Entities loop
-         if Ekind (E) in Subprogram_Kind and then Body_In_Alfa (E) then
+         if Ekind (E) in Subprogram_Kind and then Body_In_SPARK (E) then
             FA_Graphs.Include (E, Flow_Analyse_Entity (E));
          end if;
       end loop;

@@ -77,10 +77,10 @@ procedure Gnatprove is
        Proj         : Project_Tree;
        Obj_Path     : File_Array);
 
-   procedure Generate_Alfa_Report
+   procedure Generate_SPARK_Report
      (Obj_Dir : String;
       Obj_Path  : File_Array);
-   --  Generate the Alfa report.
+   --  Generate the SPARK report.
 
    procedure Generate_Project_File
       (Filename     : String;
@@ -172,7 +172,7 @@ procedure Gnatprove is
 
       --  Keep going after a compilation error in 'detect' and 'force' modes
 
-      if MMode in GP_Alfa_Detection_Mode then
+      if MMode in GP_SPARK_Detection_Mode then
          Args.Append ("-k");
       end if;
 
@@ -320,7 +320,7 @@ procedure Gnatprove is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Status);
             if Status /= 0
-              and then MMode in GP_Alfa_Detection_Mode
+              and then MMode in GP_SPARK_Detection_Mode
             then
                Status := 0;
             end if;
@@ -328,7 +328,7 @@ procedure Gnatprove is
          when GS_Gnat2Why =>
             Translate_To_Why (Project_File, Status);
             if Status /= 0
-              and then MMode in GP_Alfa_Detection_Mode
+              and then MMode in GP_SPARK_Detection_Mode
             then
                Status := 0;
             end if;
@@ -344,11 +344,11 @@ procedure Gnatprove is
       end if;
    end Execute_Step;
 
-   --------------------------
-   -- Generate_Alfa_Report --
-   --------------------------
+   ---------------------------
+   -- Generate_SPARK_Report --
+   ---------------------------
 
-   procedure Generate_Alfa_Report
+   procedure Generate_SPARK_Report
      (Obj_Dir : String;
       Obj_Path  : File_Array)
    is
@@ -376,11 +376,11 @@ procedure Gnatprove is
          end if;
       end Append_To_Dir_Name;
 
-      Alfa_Files_Wildcard : constant String :=
+      SPARK_Files_Wildcard : constant String :=
          Append_To_Dir_Name
            (Dirname  => Obj_Dir,
             Filename => "*.alfa");
-      --  Alfa files for the current project. Other Alfa files are present in
+      --  SPARK files for the current project. Other SPARK files are present in
       --  object directories of sub-projects, although we do not mention them
       --  in the message below.
 
@@ -396,7 +396,7 @@ procedure Gnatprove is
       Close (Obj_Dir_File);
 
       Call_Exit_On_Failure
-        (Command   => "alfa_report",
+        (Command   => "SPARK_report",
          Arguments => (1 => new String'(Obj_Dir_Fn)),
          Verbose   => Verbose);
 
@@ -407,18 +407,18 @@ procedure Gnatprove is
       if not Quiet then
          if MMode = GPM_Detect then
             Put_Line ("**********************************");
-            Cat (File                  => Alfa_Report_File,
+            Cat (File                  => SPARK_Report_File,
                  Cut_Non_Blank_Line_At => Max_Non_Blank_Lines);
             Put_Line ("**********************************");
-            Put_Line ("Statistics above are logged in " & Alfa_Report_File);
+            Put_Line ("Statistics above are logged in " & SPARK_Report_File);
          else
-            Put_Line ("Statistics logged in " & Alfa_Report_File);
+            Put_Line ("Statistics logged in " & SPARK_Report_File);
          end if;
 
          Put_Line
-            ("(detailed info can be found in " & Alfa_Files_Wildcard & ")");
+            ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
       end if;
-   end Generate_Alfa_Report;
+   end Generate_SPARK_Report;
 
    ---------------------------
    -- Generate_Project_File --
@@ -647,7 +647,7 @@ begin
       Execute_Step (GS_ALI, Project_File.all, Tree, Obj_Path);
       Execute_Step (GS_Gnat2Why, Project_File.all, Tree, Obj_Path);
 
-      Generate_Alfa_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
+      Generate_SPARK_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
 
       if MMode in GPM_Detect | GPM_Force | GPM_Flow then
          GNAT.OS_Lib.OS_Exit (0);

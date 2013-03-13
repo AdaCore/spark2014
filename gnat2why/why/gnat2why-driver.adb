@@ -103,8 +103,8 @@ package body Gnat2Why.Driver is
    begin
       case Ekind (E) is
          when Subprogram_Kind =>
-            if In_Alfa (E) then
-               --  Always generate a module for Alfa subprogram declarations,
+            if In_SPARK (E) then
+               --  Always generate a module for SPARK subprogram declarations,
                --  so that units which depend on this one can rely on the
                --  presence of the completion.
 
@@ -123,9 +123,9 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      --  Currently generate VCs only on subprograms in Alfa
+      --  Currently generate VCs only on subprograms in SPARK
 
-      if not (Ekind (E) in Subprogram_Kind and then In_Alfa (E)) then
+      if not (Ekind (E) in Subprogram_Kind and then In_SPARK (E)) then
          return;
       end if;
 
@@ -142,7 +142,7 @@ package body Gnat2Why.Driver is
       --  errors in the body of a subprogram, and to check that a subprogram
       --  body implements its contract.
 
-      if Body_In_Alfa (E) then
+      if Body_In_SPARK (E) then
          Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
       end if;
    end Do_Generate_VCs;
@@ -187,7 +187,7 @@ package body Gnat2Why.Driver is
 
       --  Authorize warnings now, since regular compiler warnings should
       --  already have been issued, e.g. to generate warnings related to
-      --  misuse of Alfa specific pragmas.
+      --  misuse of SPARK specific pragmas.
 
       Warning_Mode := Normal;
 
@@ -202,10 +202,11 @@ package body Gnat2Why.Driver is
          Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
       end if;
 
-      --  Compute the frame condition. This starts with identifying ALI
-      --  files for the current unit and all dependent (with'ed) units.
-      --  Then Alfa information is loaded from all these files. Finally the
-      --  local Alfa information is propagated to get the frame condition.
+      --  Compute the frame condition. This starts with identifying ALI files
+      --  for the current unit and all dependent (with'ed) units. Then SPARK
+      --  cross-reference information is loaded from all these files. Finally
+      --  the local SPARK cross-reference information is propagated to get the
+      --  frame condition.
 
       Initialize_ALI;
       Initialize_ALI_Source;
@@ -240,18 +241,20 @@ package body Gnat2Why.Driver is
          raise Terminate_Program;
       end if;
 
-      --  Load Alfa information from ALIs for all dependent units
+      --  Load SPARK cross-reference information from ALIs for all dependent
+      --  units.
 
       for Index in ALIs.First .. ALIs.Last loop
          Load_SPARK_Xrefs (Name_String (Name_Id
            (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
       end loop;
 
-      --  Compute the frame condition from raw Alfa information
+      --  Compute the frame condition from raw SPARK cross-reference
+      --  information.
 
       Propagate_Through_Call_Graph (Ignore_Errors => False);
 
-      --  Mark all compilation units with "in Alfa / not in Alfa" marks, in
+      --  Mark all compilation units with "in SPARK / not in SPARK" marks, in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always
       --  comes last.
@@ -403,20 +406,20 @@ package body Gnat2Why.Driver is
 
             --  Private types not translated in Why3
 
-            if In_Alfa (E)
+            if In_SPARK (E)
               and then Ekind (E) not in Private_Kind
             then
                Translate_Type (File, E);
             end if;
 
          when Named_Kind =>
-            if In_Alfa (E) then
+            if In_SPARK (E) then
                Translate_Constant (File, E);
             end if;
 
          when Object_Kind =>
             if not Is_Mutable_In_Why (E) then
-               if In_Alfa (E) then
+               if In_SPARK (E) then
                   Translate_Constant (File, E);
                end if;
             else
@@ -424,7 +427,7 @@ package body Gnat2Why.Driver is
             end if;
 
          when Subprogram_Kind =>
-            if In_Alfa (E) then
+            if In_SPARK (E) then
                Translate_Subprogram_Spec (File, E);
             end if;
 
@@ -471,7 +474,7 @@ package body Gnat2Why.Driver is
 
       --  Authorize warnings now, since regular compiler warnings should
       --  already have been issued, e.g. to generate warnings related to
-      --  misuse of Alfa specific pragmas.
+      --  misuse of SPARK specific pragmas.
 
       Warning_Mode := Normal;
 

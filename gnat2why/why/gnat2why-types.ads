@@ -59,7 +59,7 @@
 --  further up if the completion is a derived type of a private type ...)
 
 --  There is an exception to that rule, namely for private types whose
---  completion is not in Alfa. Such types *are* in Alfa, and in this
+--  completion is not in SPARK. Such types *are* in SPARK, and in this
 --  case gnat2why *only* looks at the private entity.
 
 --  For more details about the different encodings, the packages

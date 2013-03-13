@@ -96,12 +96,12 @@ package Gnat2Why.Subprograms is
      (File    : in out Why_File;
       E       : Entity_Id;
       In_Body : Boolean);
-   --  If subprogram E's body is in Alfa, generate a Why axiom that, given a
+   --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
    --  = E". The axiom is only generated if the body of the expression function
    --  only contains aggregates that are fully initialized. In_Body is True
    --  if the body of the expression function is defined in the body of the
-   --  current unit. If subprogram E's body is not in Alfa, generate an empty
+   --  current unit. If subprogram E's body is not in SPARK, generate an empty
    --  module.
 
 end Gnat2Why.Subprograms;

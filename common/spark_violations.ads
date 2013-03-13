@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                        A L F A _ V I O L A T I O N S                     --
+--                       S P A R K _ V I O L A T I O N S                    --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -28,14 +28,14 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Hash;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 
-package Alfa_Violations is
+package SPARK_Violations is
 
    pragma Elaborate_Body;
 
    type Vkind is (
 
       --  NYI: Not Yet Implemented
-      --  These constructs should be supported in Alfa one day
+      --  These constructs should be supported in SPARK one day
 
       NYI_Aggregate,        --  aggregate
       NYI_Arith_Operation,  --  arithmetic operation
@@ -58,7 +58,7 @@ package Alfa_Violations is
       NYI_Extended_Return,  --  extended return
 
       --  NIR: Not In Roadmap
-      --  These constructs are not in Alfa in the foreseeable future
+      --  These constructs are not in SPARK in the foreseeable future
 
       NIR_Access,           --  access types
       NIR_Assembly_Lang,    --  assembly language
@@ -146,4 +146,4 @@ package Alfa_Violations is
 
    Violation_From_Msg : Name_Map.Map;
 
-end Alfa_Violations;
+end SPARK_Violations;

@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                            A L F A _ R E P O R T                         --
+--                           S P A R K _ R E P O R T                        --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -38,27 +38,27 @@ with Call;                    use Call;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;             use GNAT.OS_Lib;
 
-with Alfa_Violations;
+with SPARK_Violations;
 
 with Configuration;           use Configuration;
 
-procedure Alfa_Report is
+procedure SPARK_Report is
 
-   type Alfa_Status is (Supported, Not_Yet, Unsupported);
-   type Alfa_Counts is array (Alfa_Status) of Natural;
+   type SPARK_Status is (Supported, Not_Yet, Unsupported);
+   type SPARK_Counts is array (SPARK_Status) of Natural;
 
-   Global_Count : Alfa_Counts := Alfa_Counts'(others => 0);
+   Global_Count : SPARK_Counts := SPARK_Counts'(others => 0);
 
-   function Alfa_Count return Natural is
+   function SPARK_Count return Natural is
      (Global_Count (Supported) + Global_Count (Not_Yet));
 
-   function Not_Alfa_Count return Natural is (Global_Count (Unsupported));
+   function Not_SPARK_Count return Natural is (Global_Count (Unsupported));
 
-   function Total_Count return Natural is (Alfa_Count + Not_Alfa_Count);
+   function Total_Count return Natural is (SPARK_Count + Not_SPARK_Count);
 
-   procedure Incr_Count (S : Alfa_Status);
+   procedure Incr_Count (S : SPARK_Status);
 
-   type Violation_Count is array (Alfa_Violations.Vkind) of Natural;
+   type Violation_Count is array (SPARK_Violations.Vkind) of Natural;
    Violation_Cnt : Violation_Count := (others => 0);
 
    function Filename_Hash (N : Unbounded_String) return Hash_Type is
@@ -71,21 +71,21 @@ procedure Alfa_Report is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   Total_Files       : Natural := 0;
-   File_Alfa_Cnt     : Filename_Map.Map;
-   File_Not_Alfa_Cnt : Filename_Map.Map;
+   Total_Files        : Natural := 0;
+   File_SPARK_Cnt     : Filename_Map.Map;
+   File_Not_SPARK_Cnt : Filename_Map.Map;
 
-   procedure Handle_Alfa_File (Fn : String);
-   --  Parse and extract all information from a single Alfa file.
+   procedure Handle_SPARK_File (Fn : String);
+   --  Parse and extract all information from a single SPARK file.
 
-   procedure Handle_Alfa_Line (Line : String);
-   --  Parse and extract all information from a single Alfa line.
+   procedure Handle_SPARK_Line (Line : String);
+   --  Parse and extract all information from a single SPARK line.
 
    procedure Handle_Source_Dir (Dir : String);
    --  Parse all .alfa files of this directory.
 
    procedure Print_Report;
-   --  Print the final Alfa report
+   --  Print the final SPARK report
 
    procedure Print_Statistics
      (Handle      : Ada.Text_IO.File_Type;
@@ -98,34 +98,35 @@ procedure Alfa_Report is
    --    label:  X% (Cnt / Total)
    --  where X is the ration Cnt / Total expressed in percent.
 
-   ----------------------
-   -- Handle_Alfa_File --
-   ----------------------
+   -----------------------
+   -- Handle_SPARK_File --
+   -----------------------
 
-   procedure Handle_Alfa_File (Fn : String)
+   procedure Handle_SPARK_File (Fn : String)
    is
-      procedure Iterate_Alfa_Lines is new For_Line_In_File (Handle_Alfa_Line);
+      procedure Iterate_SPARK_Lines is new
+        For_Line_In_File (Handle_SPARK_Line);
 
-      Cur_Alfa_Cnt     : constant Natural := Alfa_Count;
-      Cur_Not_Alfa_Cnt : constant Natural := Not_Alfa_Count;
+      Cur_SPARK_Cnt     : constant Natural := SPARK_Count;
+      Cur_Not_SPARK_Cnt : constant Natural := Not_SPARK_Count;
 
    begin
-      Iterate_Alfa_Lines (Fn);
+      Iterate_SPARK_Lines (Fn);
 
       --  Update counts for files
 
       Total_Files := Total_Files + 1;
-      File_Alfa_Cnt.Insert
-        (To_Unbounded_String (Fn), Alfa_Count - Cur_Alfa_Cnt);
-      File_Not_Alfa_Cnt.Insert
-        (To_Unbounded_String (Fn), Not_Alfa_Count - Cur_Not_Alfa_Cnt);
-   end Handle_Alfa_File;
+      File_SPARK_Cnt.Insert
+        (To_Unbounded_String (Fn), SPARK_Count - Cur_SPARK_Cnt);
+      File_Not_SPARK_Cnt.Insert
+        (To_Unbounded_String (Fn), Not_SPARK_Count - Cur_Not_SPARK_Cnt);
+   end Handle_SPARK_File;
 
-   ----------------------
-   -- Handle_Alfa_Line --
-   ----------------------
+   -----------------------
+   -- Handle_SPARK_Line --
+   -----------------------
 
-   procedure Handle_Alfa_Line (Line : String) is
+   procedure Handle_SPARK_Line (Line : String) is
       Violation_Mode : Boolean := False;
       Cur            : Positive;
 
@@ -147,7 +148,7 @@ procedure Alfa_Report is
 
       procedure Add_One_Violation (S : String) is
          Count : Natural renames
-                   Violation_Cnt (Alfa_Violations.Violation_From_Msg.Element
+                   Violation_Cnt (SPARK_Violations.Violation_From_Msg.Element
                                   (To_Unbounded_String (S)));
       begin
          Count := Count + 1;
@@ -201,7 +202,7 @@ procedure Alfa_Report is
          end case;
          Cur := Cur + 1;
       end loop;
-   end Handle_Alfa_Line;
+   end Handle_SPARK_Line;
 
    -----------------------
    -- Handle_Source_Dir --
@@ -209,28 +210,28 @@ procedure Alfa_Report is
 
    procedure Handle_Source_Dir (Dir : String)
    is
-      procedure Local_Handle_Alfa_File
+      procedure Local_Handle_SPARK_File
         (Item    : String;
          Index   : Positive;
          Quit    : in out Boolean);
 
-      ----------------------------
-      -- Local_Handle_Alfa_File --
-      ----------------------------
+      -----------------------------
+      -- Local_Handle_SPARK_File --
+      -----------------------------
 
-      procedure Local_Handle_Alfa_File
+      procedure Local_Handle_SPARK_File
         (Item    : String;
          Index   : Positive;
          Quit    : in out Boolean) is
       begin
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
-         Handle_Alfa_File (Item);
-      end Local_Handle_Alfa_File;
+         Handle_SPARK_File (Item);
+      end Local_Handle_SPARK_File;
 
       procedure Iterate is new
          GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-           (Action => Local_Handle_Alfa_File);
+           (Action => Local_Handle_SPARK_File);
 
       Save_Dir : constant String := Ada.Directories.Current_Directory;
 
@@ -238,7 +239,7 @@ procedure Alfa_Report is
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate (Path => '*' & Configuration.Alfa_Suffix);
+      Iterate (Path => '*' & Configuration.SPARK_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>
@@ -250,7 +251,7 @@ procedure Alfa_Report is
    -- Incr_Count --
    ----------------
 
-   procedure Incr_Count (S : Alfa_Status) is
+   procedure Incr_Count (S : SPARK_Status) is
    begin
       Global_Count (S) := Global_Count (S) + 1;
    end Incr_Count;
@@ -265,22 +266,22 @@ procedure Alfa_Report is
       Handle : File_Type;
 
       type Violation_Ranking is
-        array (Alfa_Violations.Vkind range <>) of Alfa_Violations.Vkind;
-      Violation_Rank : Violation_Ranking (Alfa_Violations.Vkind);
+        array (SPARK_Violations.Vkind range <>) of SPARK_Violations.Vkind;
+      Violation_Rank : Violation_Ranking (SPARK_Violations.Vkind);
 
       File_Names : array (1 .. Total_Files) of Unbounded_String;
       type File_Ranking is array (Positive range <>) of Positive;
-      File_Alfa_Rank     : File_Ranking (1 .. Total_Files);
-      File_Not_Alfa_Rank : File_Ranking (1 .. Total_Files);
+      File_SPARK_Rank     : File_Ranking (1 .. Total_Files);
+      File_Not_SPARK_Rank : File_Ranking (1 .. Total_Files);
 
       -----------------------
       -- Local Subprograms --
       -----------------------
 
-      function Greater_Count (V1, V2 : Alfa_Violations.Vkind) return Boolean;
+      function Greater_Count (V1, V2 : SPARK_Violations.Vkind) return Boolean;
 
-      function Greater_Alfa_Count (F1, F2 : Positive) return Boolean;
-      function Greater_Not_Alfa_Count (F1, F2 : Positive) return Boolean;
+      function Greater_SPARK_Count (F1, F2 : Positive) return Boolean;
+      function Greater_Not_SPARK_Count (F1, F2 : Positive) return Boolean;
 
       procedure Print_File_Count
         (M            : Filename_Map.Map;
@@ -289,37 +290,38 @@ procedure Alfa_Report is
 
       generic
          with function Violation_Filter
-           (V : Alfa_Violations.Vkind) return Boolean;
+           (V : SPARK_Violations.Vkind) return Boolean;
       procedure Print_Violations;
 
       -------------------
       -- Greater_Count --
       -------------------
 
-      function Greater_Count (V1, V2 : Alfa_Violations.Vkind) return Boolean is
+      function Greater_Count (V1, V2 : SPARK_Violations.Vkind) return Boolean
+      is
       begin
          return Violation_Cnt (V1) > Violation_Cnt (V2);
       end Greater_Count;
 
-      ------------------------
-      -- Greater_Alfa_Count --
-      ------------------------
+      -------------------------
+      -- Greater_SPARK_Count --
+      -------------------------
 
-      function Greater_Alfa_Count (F1, F2 : Positive) return Boolean is
+      function Greater_SPARK_Count (F1, F2 : Positive) return Boolean is
       begin
-         return File_Alfa_Cnt.Element (File_Names (F1)) >
-           File_Alfa_Cnt.Element (File_Names (F2));
-      end Greater_Alfa_Count;
+         return File_SPARK_Cnt.Element (File_Names (F1)) >
+           File_SPARK_Cnt.Element (File_Names (F2));
+      end Greater_SPARK_Count;
 
-      ----------------------------
-      -- Greater_Not_Alfa_Count --
-      ----------------------------
+      -----------------------------
+      -- Greater_Not_SPARK_Count --
+      -----------------------------
 
-      function Greater_Not_Alfa_Count (F1, F2 : Positive) return Boolean is
+      function Greater_Not_SPARK_Count (F1, F2 : Positive) return Boolean is
       begin
-         return File_Not_Alfa_Cnt.Element (File_Names (F1)) >
-           File_Not_Alfa_Cnt.Element (File_Names (F2));
-      end Greater_Not_Alfa_Count;
+         return File_Not_SPARK_Cnt.Element (File_Names (F1)) >
+           File_Not_SPARK_Cnt.Element (File_Names (F2));
+      end Greater_Not_SPARK_Count;
 
       ----------------------
       -- Print_File_Count --
@@ -340,7 +342,7 @@ procedure Alfa_Report is
                F_Cnt   : constant Natural := M.Element (F_Name);
                Lab     : constant String :=
                            ' ' & GNAT.Directory_Operations.Base_Name
-                             (To_String (F_Name), Configuration.Alfa_Suffix);
+                             (To_String (F_Name), Configuration.SPARK_Suffix);
                Tot_Cnt : constant Natural :=
                            F_Cnt + M_Complement.Element (F_Name);
             begin
@@ -369,12 +371,12 @@ procedure Alfa_Report is
          Num_Printed : Natural := 0;
 
       begin
-         for J in Alfa_Violations.Vkind loop
+         for J in SPARK_Violations.Vkind loop
             declare
-               V     : constant Alfa_Violations.Vkind := Violation_Rank (J);
+               V     : constant SPARK_Violations.Vkind := Violation_Rank (J);
                V_Cnt : constant Natural := Violation_Cnt (V);
                Lab   : constant String :=
-                         ' ' & To_String (Alfa_Violations.Violation_Msg (V));
+                         ' ' & To_String (SPARK_Violations.Violation_Msg (V));
             begin
                if Violation_Filter (V)
                  and then V_Cnt > 0
@@ -397,39 +399,39 @@ procedure Alfa_Report is
 
       procedure Sort_Violations is new
         Ada.Containers.Generic_Array_Sort
-          (Index_Type   => Alfa_Violations.Vkind,
-           Element_Type => Alfa_Violations.Vkind,
+          (Index_Type   => SPARK_Violations.Vkind,
+           Element_Type => SPARK_Violations.Vkind,
            Array_Type   => Violation_Ranking,
            "<"          => Greater_Count);
 
-      procedure Sort_Files_Alfa is new
+      procedure Sort_Files_SPARK is new
         Ada.Containers.Generic_Array_Sort
           (Index_Type   => Positive,
            Element_Type => Positive,
            Array_Type   => File_Ranking,
-           "<"          => Greater_Alfa_Count);
+           "<"          => Greater_SPARK_Count);
 
-      procedure Sort_Files_Not_Alfa is new
+      procedure Sort_Files_Not_SPARK is new
         Ada.Containers.Generic_Array_Sort
           (Index_Type   => Positive,
            Element_Type => Positive,
            Array_Type   => File_Ranking,
-           "<"          => Greater_Not_Alfa_Count);
+           "<"          => Greater_Not_SPARK_Count);
 
       procedure Print_NYI_Violations is new
-        Print_Violations (Alfa_Violations.Is_Not_Yet_Implemented);
+        Print_Violations (SPARK_Violations.Is_Not_Yet_Implemented);
 
       procedure Print_NIR_Violations is new
-        Print_Violations (Alfa_Violations.Is_Not_In_Roadmap);
+        Print_Violations (SPARK_Violations.Is_Not_In_Roadmap);
 
    begin
       --  global statistics
 
-      Create (Handle, Out_File, Configuration.Alfa_Report_File);
+      Create (Handle, Out_File, Configuration.SPARK_Report_File);
       Print_Statistics (Handle      => Handle,
                         Label       => "Subprograms in SPARK",
                         Label_Len   => Label_Length,
-                        Cnt         => Alfa_Count,
+                        Cnt         => SPARK_Count,
                         Total       => Total_Count,
                         Cnt_Padding => True);
       Print_Statistics (Handle      => Handle,
@@ -453,7 +455,7 @@ procedure Alfa_Report is
 
       --  statistics per violations
 
-      for J in Alfa_Violations.Vkind loop
+      for J in SPARK_Violations.Vkind loop
          Violation_Rank (J) := J;
       end loop;
 
@@ -475,31 +477,31 @@ procedure Alfa_Report is
          use Filename_Map;
          C : Cursor;
       begin
-         C := File_Alfa_Cnt.First;
+         C := File_SPARK_Cnt.First;
          for J in 1 .. Total_Files loop
             File_Names (J)         := Key (C);
-            File_Alfa_Rank (J)     := J;
-            File_Not_Alfa_Rank (J) := J;
+            File_SPARK_Rank (J)     := J;
+            File_Not_SPARK_Rank (J) := J;
             Next (C);
          end loop;
       end;
 
-      Sort_Files_Alfa (File_Alfa_Rank);
-      Sort_Files_Not_Alfa (File_Not_Alfa_Rank);
+      Sort_Files_SPARK (File_SPARK_Rank);
+      Sort_Files_Not_SPARK (File_Not_SPARK_Rank);
 
       New_Line (Handle);
       Put_Line (Handle,
                 "Units with the largest number of subprograms in SPARK:");
-      Print_File_Count (M            => File_Alfa_Cnt,
-                        M_Complement => File_Not_Alfa_Cnt,
-                        R            => File_Alfa_Rank);
+      Print_File_Count (M            => File_SPARK_Cnt,
+                        M_Complement => File_Not_SPARK_Cnt,
+                        R            => File_SPARK_Rank);
 
       New_Line (Handle);
       Put_Line (Handle,
                 "Units with the largest number of subprograms not in SPARK:");
-      Print_File_Count (M            => File_Not_Alfa_Cnt,
-                        M_Complement => File_Alfa_Cnt,
-                        R            => File_Not_Alfa_Rank);
+      Print_File_Count (M            => File_Not_SPARK_Cnt,
+                        M_Complement => File_SPARK_Cnt,
+                        R            => File_Not_SPARK_Rank);
    end Print_Report;
 
    ----------------------
@@ -599,7 +601,7 @@ procedure Alfa_Report is
 
    Source_Directories_File : GNAT.OS_Lib.String_Access;
 
-   --  begin processing for Alfa_Report;
+--  Start of SPARK_Report
 
 begin
    if Ada.Command_Line.Argument_Count = 0 then
@@ -608,4 +610,4 @@ begin
    Source_Directories_File := new String'(Ada.Command_Line.Argument (1));
    Iterate_Source_Dirs (Source_Directories_File.all);
    Print_Report;
-end Alfa_Report;
+end SPARK_Report;

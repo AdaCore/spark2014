@@ -190,7 +190,7 @@ package Why.Sinfo is
       EW_Array,
 
       --  This is the set of all private types whose most underlying type is
-      --  not in Alfa.
+      --  not in SPARK.
       EW_Private,
 
       EW_Abstract);

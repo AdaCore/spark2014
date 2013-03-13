@@ -1560,7 +1560,7 @@ package body Gnat2Why.Expr is
       Expr     : W_Prog_Id) return W_Prog_Id
    is
 
-      --  Here, we deal with assignment statements. In Alfa, the general form
+      --  Here, we deal with assignment statements. In SPARK, the general form
       --  of an assignment is
       --
       --    Lvalue := Expr;

@@ -615,7 +615,7 @@ package body Gnat2Why.Nodes is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      if In_Alfa (Most_Underlying_Type (T)) then
+      if In_SPARK (Most_Underlying_Type (T)) then
          return Most_Underlying_Type (T);
       else
          return T;

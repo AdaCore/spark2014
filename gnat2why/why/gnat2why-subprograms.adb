@@ -1111,9 +1111,9 @@ package body Gnat2Why.Subprograms is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  If the entity's body is not in Alfa, generate an empty module.
+      --  If the entity's body is not in SPARK, generate an empty module.
 
-      if not Body_In_Alfa (E) then
+      if not Body_In_SPARK (E) then
          Close_Theory (File, Filter_Entity => Empty);
          return;
       end if;

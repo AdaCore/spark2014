@@ -133,7 +133,7 @@ package body Gnat2Why.Types is
    begin
       if E = Standard_Boolean then
          return New_Identifier (Name => "bool");
-      elsif not In_Alfa (Most_Underlying_Type (E)) then
+      elsif not In_SPARK (Most_Underlying_Type (E)) then
          return New_Identifier (Name => To_String (WNE_Private));
       else
          return To_Why_Id (E);
@@ -170,11 +170,11 @@ package body Gnat2Why.Types is
       elsif Ekind (Ty) in Private_Kind then
 
          --  For a private type or record subtype, use the most underlying type
-         --  if it is in Alfa. Otherwise, return the special private type.
+         --  if it is in SPARK. Otherwise, return the special private type.
 
          if Type_In_Formal_Container (Ty) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
-         elsif In_Alfa (Most_Underlying_Type (Ty)) then
+         elsif In_SPARK (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
          else
             return New_Base_Type (Base_Type => EW_Private);

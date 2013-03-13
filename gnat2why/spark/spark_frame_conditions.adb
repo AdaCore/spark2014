@@ -635,11 +635,11 @@ package body SPARK_Frame_Conditions is
 
       Scan_ALI : loop
          if End_Of_File (ALI_File) then
-            --  No Alfa information in this ALI
+            --  No SPARK cross-reference information in this ALI
 
             Close (ALI_File);
             Write_Str ("error:" & ALI_Filename &
-                         " does not contain Alfa section");
+                         " does not contain SPARK Xrefs section");
             Write_Eol;
 
             raise Terminate_Program;

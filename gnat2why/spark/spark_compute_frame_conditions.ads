@@ -24,5 +24,5 @@
 ------------------------------------------------------------------------------
 
 procedure SPARK_Compute_Frame_Conditions;
---  Compute the frame condition for all subprograms, based on Alfa information
---  in ALI files given in input.
+--  Compute the frame condition for all subprograms, based on SPARK
+--  cross-reference information in ALI files given in input.

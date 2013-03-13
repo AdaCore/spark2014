@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                   G N A T 2 W H Y - D E C L S                            --
+--                         G N A T 2 W H Y - D E C L S                      --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -91,7 +91,7 @@ package body Gnat2Why.Decls is
    is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
-        (if In_Alfa (E) then
+        (if In_SPARK (E) then
             New_Type
               (Name  => To_Ident (WNE_Type),
                Alias => +Why_Logic_Type_Of_Ada_Obj (E))
@@ -118,7 +118,7 @@ package body Gnat2Why.Decls is
          then
             return E;
          end if;
-         if In_Alfa (Most_Underlying_Type (E)) then
+         if In_SPARK (Most_Underlying_Type (E)) then
             return Normalize_Type (Most_Underlying_Type (E));
          end if;
          return E;
@@ -141,7 +141,7 @@ package body Gnat2Why.Decls is
 
       Emit (File.Cur_Theory, Decl);
 
-      if In_Alfa (Most_Underlying_Type (Etype (E))) then
+      if In_SPARK (Most_Underlying_Type (Etype (E))) then
          Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
       end if;
 
@@ -285,20 +285,20 @@ package body Gnat2Why.Decls is
 
    procedure Translate_Container_Package (Package_Entity : Entity_Id) is
 
-      --  Generates a theory per Alfa entity of the package spec
-      --  Each theories should define every why element that is expected by the
-      --  usual translation mechanism so that belonging to an axiomatized
-      --  package is transparent.
       procedure Parse_Declarations
         (Decls      : List_Id;
          Clone_Name : String);
+      --  Generates a theory per SPARK entity of the package spec. Each
+      --  theories should define every why element that is expected by the
+      --  usual translation mechanism so that belonging to an axiomatized
+      --  package is transparent.
 
-      --  Creates the substitution for the generic parameter
-      --  The substitution is then used to clone the axiomatization
       function Parse_Parameters
         (Assoc      : List_Id;
          Labs       : List_Id;
          Clone_Name : String) return W_Clone_Substitution_Array;
+      --  Creates the substitution for the generic parameter
+      --  The substitution is then used to clone the axiomatization
 
       procedure Parse_Declarations
         (Decls      : List_Id;
@@ -337,7 +337,7 @@ package body Gnat2Why.Decls is
                                  B_Type => Corresponding_Type,
                                  others => <>);
                begin
-                  if not In_Alfa (E) then
+                  if not In_SPARK (E) then
                      return;
                   end if;
                   --  Ada.Text_IO.Put_Line ("New type : " & Type_Name);
@@ -590,7 +590,7 @@ package body Gnat2Why.Decls is
                   TFile : Why_File :=
                     Why_Files (Dispatch_Entity (E));
                begin
-                  if not In_Alfa (E) then
+                  if not In_SPARK (E) then
                      return;
                   end if;
 

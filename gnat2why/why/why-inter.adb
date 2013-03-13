@@ -122,10 +122,10 @@ package body Why.Inter is
             end if;
             SI_Seen.Include (UE);
             if Ekind (UE) in Object_Kind and then
-              not In_Alfa (UE) then
+              not In_SPARK (UE) then
                return;
             end if;
-            if Ekind (UE) in Type_Kind and then not In_Alfa (UE) then
+            if Ekind (UE) in Type_Kind and then not In_SPARK (UE) then
                return;
             end if;
 
@@ -160,7 +160,7 @@ package body Why.Inter is
                   end case;
 
                when Private_Kind =>
-                  if In_Alfa (Most_Underlying_Type (UE)) then
+                  if In_SPARK (Most_Underlying_Type (UE)) then
                      Set_SI_Internal (Most_Underlying_Type (UE));
                   end if;
 
@@ -797,7 +797,7 @@ package body Why.Inter is
       elsif Ekind (N) in Private_Kind then
          if Type_In_Formal_Container (N) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
-         elsif In_Alfa (Most_Underlying_Type (N)) then
+         elsif In_SPARK (Most_Underlying_Type (N)) then
             return EW_Abstract (Most_Underlying_Type (N));
          else
             return New_Base_Type (Base_Type => EW_Private);
@@ -940,7 +940,7 @@ package body Why.Inter is
          when Private_Kind =>
             if Type_In_Formal_Container (Ty) then
                return EW_Abstract;
-            elsif In_Alfa (Most_Underlying_Type (Ty)) then
+            elsif In_SPARK (Most_Underlying_Type (Ty)) then
                return Get_EW_Term_Type (Most_Underlying_Type (Ty));
             else
                return EW_Private;
