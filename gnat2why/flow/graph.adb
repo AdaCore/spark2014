@@ -338,6 +338,21 @@ package body Graph is
       end loop;
    end Copy_Edges;
 
+   ------------
+   -- Parent --
+   ------------
+
+   function Parent
+     (G : T'Class;
+      V : Vertex_Id)
+      return Vertex_Id is
+   begin
+      for P of G.Vertices (V).In_Neighbours loop
+         return P;
+      end loop;
+      return Null_Vertex;
+   end Parent;
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------
