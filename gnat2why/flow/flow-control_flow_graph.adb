@@ -478,7 +478,26 @@ package body Flow.Control_Flow_Graph is
                                   Bottom_Node   : out Node_Id;
                                   End_Of_Record : out Node_Id);
       --  This procedure returns the bottom node of the subtree and
-      --  finds the first non record node.
+      --  finds the end of the outermost record node.
+
+      --  Let's consider the parse tree for P.R.A (I).A (J).X
+      --  In the following parse tree 'i' represents an indexed
+      --  component and s represents a selected component.
+      --
+      --                               Parse Tree
+      --                                    s
+      --                                   / \
+      --                                  i   X
+      --                                 / \
+      --                                s   J
+      --                               / \
+      --                              i   A
+      --                             / \
+      --        End_Of_Record --->  s   I
+      --                           / \
+      --                          s   A
+      --                         / \
+      --      Bottom_Node --->  P   R
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Traverses a subtree and adds each variable found inside
