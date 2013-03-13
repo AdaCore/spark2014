@@ -352,13 +352,16 @@ package body Why.Gen.Records is
                          Left    => +To_Ident (WNE_Result),
                          Right   => +A_Ident);
          R_Binder   : Binder_Array (1 .. Num_Discr + 1);
-         Precond    : W_Pred_Id := True_Pred;
+         Args       : W_Expr_Array (1 .. Num_Discr + 1);
+         Check_Pred : W_Pred_Id := True_Pred;
          Count      : Natural := 1;
+         Pre_Cond   : W_Pred_Id;
       begin
          R_Binder (Num_Discr + 1) :=
            Binder_Type'(B_Name => A_Ident,
                         B_Type => Root_Abstr,
                         others => <>);
+         Args (Num_Discr + 1) := +A_Ident;
          Count := 1;
          Discr := First_Discriminant (E);
          while Present (Discr) loop
@@ -368,10 +371,11 @@ package body Why.Gen.Records is
                               B_Type =>
                                 Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
                               others => <>);
-               Precond :=
+               Args (Count) := +To_Why_Id (Discr, Local => True);
+               Check_Pred :=
                  +New_And_Expr
                  (Domain => EW_Pred,
-                  Left   => +Precond,
+                  Left   => +Check_Pred,
                   Right  =>
                     New_Relation
                       (Domain => EW_Pred,
@@ -389,12 +393,21 @@ package body Why.Gen.Records is
             Next_Discriminant (Discr);
          end loop;
          Emit (Theory,
+               New_Function_Def
+                 (Domain      => EW_Pred,
+                  Name        => To_Ident (WNE_Range_Pred),
+                  Binders     => R_Binder,
+                  Def         => +Check_Pred));
+         Pre_Cond :=
+           New_Call (Name   => To_Ident (WNE_Range_Pred),
+                     Args   => Args);
+         Emit (Theory,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => To_Ident (WNE_Range_Check_Fun),
                   Binders     => R_Binder,
                   Return_Type => Root_Abstr,
-                  Pre         => Precond,
+                  Pre         => Pre_Cond,
                   Post        => Post));
       end Declare_Conversion_Check_Function;
 
