@@ -7,10 +7,21 @@
 %\usepackage{amsfonts,amsmath}
 \usepackage[T1]{fontenc}
 %
+\newcommand{\DO}{\textsc{do-178}}
+\newcommand{\DOB}{\textsc{do-178b}}
+\newcommand{\DOC}{\textsc{do-178c}}
+\newcommand{\hilite}{Hi-Lite}
+\newcommand{\gnatprove}{GNATprove}
+\newcommand{\oldspark}{SPARK~2005}
+\newcommand{\newspark}{SPARK~2014}
+\newcommand{\ada}{Ada}
+\newcommand{\adatwtw}{Ada~2012}
+
+
 \begin{document}
 %
-\title{NewSPARK and GNATprove Kick Ass}
-\subtitle{Possible Subtitle}
+\title{\newspark\ and \gnatprove}
+\subtitle{A Competition Report from Builders of an Industrial-Strength Verifying Compiler}
 \author{Duc Hoang\inst{1} \and Yannick Moy\inst{1} \and Angela Wallenburg\inst{2}
 }                     % Do not remove
 \institute{AdaCore, \email{\{duc.hoang, yannick.moy\}@adacore.com}
@@ -27,20 +38,84 @@ Insert your abstract here.
 %
 \section{Introduction}
 \label{intro}
-Let's mention for example Hi-Lite \cite{hiliteERTS2012} to get the bib in place. This paper is a cool features list with some discussion around the VerifyThis 2012 competition.
+High quality software, or low defect software, is often costly to
+develop. This is a common experience in safety critical systems
+development, whether the development is driven by standards such as
+\DO, or by any other need to create highly reliable and long-lived
+software. Today, extensive and expensive testing is the primary method
+used to gain confidence in such software.
 
-\begin{itemize}
-\item SPARK 2005: verification platform and industrial use
-\item SPARK 2014: complete update of language and tools. main restrictions (no
-  pointer, no exception, no task, function without side-effects, no aliasing)
-\item Hi-Lite: research project in which Altran and AdaCore collaborated with
-  INRIA to create new tool architecture. compiler and verifier based off same
-  frontend, which puts all the checks in the AST.
-\item GNATprove: name of the formal verification tool. currently prototype. was
-  used at VerifyThis competition
-\end{itemize}
+The computing research community has been occupied for decades with
+the grand challenge of (building) \emph{the verifying compiler}
+\cite{Hoare03theverifying}:
+%
+\begin{quote} A verifying compiler uses mathematical and logical reasoning
+  to check the correctness of the programs that it compiles. The
+  criterion of correctness is specified by types, assertions, and
+  other redundant annotations associated with the code of the
+  program. The compiler will work in combination with other program
+  development and testing tools, to achieve any desired degree of
+  confidence in the structural soundness of the system and the total
+  correctness of its more critical components.
+\end{quote}
+
+As predicted in \cite{Hoare03theverifying} this grand challenge has
+called for for co-operation among research teams and it has encouraged
+and benefitted from competition. An example of such beneficial
+competition is the VerifyThis competition, which is the context of
+this very report.
+
+Great strides have been made in proof automation. At present, static
+so called ``push-button'' program verification is achieveable for some
+substantial classes of industrial programs. New programming language
+features for program verification have been explored and theoretical
+models of complex existing language features have been devised to
+increase the reasoning capabilities for mainstream programming
+languages. See \cite{HatcliffLLMP12} for many insights in the
+programming language approach to program verification. However, there
+are still some remaining challenges before we can expect verifying
+compilers to be as widely used as testing. 
+
+There are some notable exceptions where formal software verification
+has been succesfully used and scaled to large industrial projects. For
+example the \oldspark\ language and toolset for static verification
+has been applied for many years in on-board aircraft systems, control
+systems, cryptographic systems, and rail systems
+\cite{sparkbook2012,oneill2012}.
+
+We would like to identify two main hurdles currently in the take-up of
+verifying compiler technology:
+%
+\begin{enumerate}
+\item difficulty to reach non-expert users, and 
+\item lack of convincing cost-benefit argument.
+\end{enumerate} 
+%
+In this paper we will describe our approach to solve those two
+problems in the design of the \newspark\ language and the associated
+formal verification tool \gnatprove. We will use running examples from
+the VerifiThis 2012 competition and discuss the results of using our
+tools on those problems.
+
+This paper is organised as follows: First we describe the key language
+features of \newspark, which is a complete update of the
+\oldspark\ language and tools designed with many lessons learned from
+the programming language and verification community, and naturally
+from experiences in industrial use of \oldspark. Then in
+Sect. \ref{hilite} we describe our unique integration of testing and
+proving. This was developed in the collaborative research project
+\hilite\ \cite{hiliteERTS2012} with Altran, AdaCore, and INRIA, to
+create a new tool architecture compiler and verifier based on same the
+same front-end \cite{ksd2012}. In Sect. \ref{overflowsemantics} we
+describe specific language features to be able to allow naturally
+writing specifications. We present in Sect. \ref{automation}
+GNATprove, our formal verification tool, that is currently a
+prototype, and in Sect \ref{verifythis} its results in the VerifyThis
+2012 competition. We conclude with future work.
 
 \section{Key Language Features for Verification}
+\label{langfeatures}
+Using LCP as running example.
 
 in Ada 2012 (which was inspired by SPARK 2005):
 \begin{itemize}
@@ -66,6 +141,7 @@ new in SPARK 2014:
 \end{itemize}
 
 \section{Integrated Testing and Proving}
+\label{hilite}
 
 \begin{itemize}
 \item execution semantics for functional properties $\rightarrow$ debug
@@ -77,6 +153,7 @@ new in SPARK 2014:
 \end{itemize}
 
 \section{Choosing the Right Semantics for Integers}
+\label{overflowsemantics}
 
 example of problem:
 \begin{itemize}
@@ -101,6 +178,7 @@ flexible solution:
 \end{itemize}
 
 \section{Making Automatic Verification Work}
+\label{automation}
 
 \begin{itemize}
 \item bulk parallelism
@@ -115,6 +193,7 @@ flexible solution:
 \end{itemize}
 
 \section{VerifyThis Competition}
+\label{verifythis}
 
 \begin{itemize}
 \item solution for challenge 1
@@ -125,6 +204,7 @@ flexible solution:
 \end{itemize}
 
 \section{Ongoing Work}
+\label{ongoing}
 
 \begin{itemize}
 \item IDE integration (analyze line/file, show path)
@@ -138,7 +218,6 @@ flexible solution:
 \item adaptation for non-executable annotations and proof assistants
 \end{itemize}
 
-\label{verifythis}
 %
 \bibliographystyle{alpha}
 \bibliography{sttt_2013}
