@@ -245,6 +245,16 @@ package body Flow.Control_Flow_Graph is
    --  Refer to the documentation of the nested procedures on how the
    --  constructed CFG will look like.
 
+   procedure Do_Null_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Null_Statement;
+   --  Deals with null statements. We create a new vertex that has control
+   --  flow in from the top and leave from the bottom (nothing happens in
+   --  between).
+
    procedure Do_Object_Declaration
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1164,6 +1174,30 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Do_Loop_Statement;
 
+   -------------------------
+   --  Do_Null_Statement  --
+   -------------------------
+
+   procedure Do_Null_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      pragma Unreferenced (Ctx);
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  We introduce a vertex V which has control entering from the top and
+      --  leaving from the bottom.
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (N),
+         Make_Aux_Vertex_Attributes (E_Loc => N),
+         V);
+      CM.Include (Union_Id (N), No_Connections);
+      CM (Union_Id (N)).Standard_Entry := V;
+      CM (Union_Id (N)).Standard_Exits.Insert (V);
+   end Do_Null_Statement;
+
    -----------------------------
    --  Do_Object_Declaration  --
    -----------------------------
@@ -1556,6 +1590,8 @@ package body Flow.Control_Flow_Graph is
             Do_If_Statement (N, FA, CM, Ctx);
          when N_Loop_Statement =>
             Do_Loop_Statement (N, FA, CM, Ctx);
+         when N_Null_Statement =>
+            Do_Null_Statement (N, FA, CM, Ctx);
          when N_Object_Declaration =>
             Do_Object_Declaration (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>
