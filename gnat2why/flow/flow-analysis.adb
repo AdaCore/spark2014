@@ -883,9 +883,10 @@ package body Flow.Analysis is
                         --  Check if we have missed something.
                         Tmp := S_E - User_Deps (F_E);
                         for Var_Missed of Tmp loop
-                           Error_Msg_NE ("missing dependency on &! [flow]",
-                                         Find_Export (F_E),
-                                         Var_Missed);
+                           Error_Msg_Node_1 := F_E;
+                           Error_Msg_Node_2 := Var_Missed;
+                           Error_Msg_N ("& depends on &! [flow]",
+                                        Find_Export (F_E));
                            Show_Dependency (Error_Loc   => Find_Export (F_E),
                                             Initial_Var => Var_Missed,
                                             Final_Var   => F_E);
@@ -894,9 +895,10 @@ package body Flow.Analysis is
                         --  Check if we have said something wrong.
                         Tmp := User_Deps (F_E) - S_E;
                         for Var_Wrong of Tmp loop
-                           Error_Msg_NE ("does not depend on &!",
-                                         Find_Export (F_E),
-                                         Var_Wrong);
+                           Error_Msg_Node_1 := F_E;
+                           Error_Msg_Node_2 := Var_Wrong;
+                           Error_Msg_N ("& does not depend on &!",
+                                        Find_Export (F_E));
                         end loop;
                      else
                         --  We have this as an output, but the user
