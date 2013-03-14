@@ -1,0 +1,161 @@
+\documentclass{beamer}
+\input{praxis-beamer}
+
+\title{SPARK 2014 Advisory Panel}
+\subtitle{Teleconference 1}
+
+\begin{document}
+
+\begin{altrantitle}
+\titleprismlabela{SPARK 2014}
+\titleprismlabelb{High Assurance by Design}
+\titleprismlabelc{Partnership Logo}
+%%  \titleprismlabelc{\includegrahics{}}
+\end{altrantitle}
+
+\begin{frame}{Introduction}
+
+  \begin{itemize}
+
+  \item \emph{round-table introductions}
+  \item \emph{agenda ...}
+
+  \end{itemize}
+
+  \end{frame}
+
+\begin{frame}{Progress Update}
+
+  \begin{itemize}
+
+  \item \emph{General progress update}
+  \item \emph{Highlight on a key area eg. improved flow error visualisation}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{LRM Review Comments}
+
+  \begin{itemize}
+
+  \item \emph{process - we will respond to all comments}
+  \item \emph{the following slides highlight a few key themes ...}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{SPARK 2014 Portability}
+
+  \begin{itemize}
+  \item SPARK 2014 will retain the property of compiler portability
+
+  \item LRM Release 0.2 defines contracts in terms of Ada 2012 'aspects'
+
+  \item Direct use of the new aspects requires an Ada 2012 compiler which supports them in a way consistent with the definition given in the LRM
+
+    \begin{itemize}
+    \item The GNAT implementation is one such compiler
+    \item In practice, we would expect other Ada 2012 compilers to recognize the extra ascpects --- or at least ignore them
+    \end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{SPARK 2014 Portability cont.}
+
+  \begin{itemize}
+  \item In addition, SPARK 2014 will have a pragma version of each contract:
+
+    \begin{itemize}
+    \item Allows a SPARK 2014 program to be compiled by and executed by \emph{any} Ada 2012 implementation
+
+    \item ''If an implementation does not recognize the name of a pragma, then it has no effect on the semantics of the program.'' [Ada RM, Sec 2.8, Rule 11]
+
+    \item (The pragma versions of the contracts are still a 'ToDo' at this release of the document.)
+
+    \end{itemize}
+
+  \item \emph{Do we also want to mention the use case of using an Ada 2005 compiler with SPARK 2014?}
+  
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Access Types}
+
+  \begin{itemize}
+  \item Access types are excluded from SPARK 2014 (to avoid aliasing)
+  \item We have been asked about the possible use of access types for handling collections of indefinite objects
+  \item Instead of this, in SPARK 2014 you can ...
+
+    \begin{itemize}
+    \item have a (possibly generic) unit My\_collection, with private type T implementing the collection, with spec in SPARK, but body in full Ada
+    \item either specify the API through Pre/Post, or
+    \item in future, specify a model in Why for the unit (what we currently
+      do for formal containers)
+    \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Other Topics}
+
+  \begin{itemize}
+
+  \item Translator/Migration to SPARK 2014
+  \item Profiles
+  \item Integrity Contracts
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Translator/Migration to SPARK 2014}
+
+  \begin{itemize}
+
+  \item \emph{outline our current position - a migration guide and service but no supported tool}
+  \item \emph{how do people envisage migrating to SPARK 2014 - will this meet their needs?}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Profiles}
+
+  \begin{itemize}
+
+  \item \emph{Jon to add outline of 'strict' profile as basis for discussion}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Integrity Contracts}
+
+  \begin{itemize}
+
+  \item \emph{SM to add description of integrity contracts}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Conclusion}
+
+  \begin{itemize}
+
+  \item Feedback - what do you want from future news emails and conferences?
+  \item Key dates: next LRM release; next teleconference
+  \item AOB
+
+  \end{itemize}
+
+\end{frame}
+
+\end{document}
+
