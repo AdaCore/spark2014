@@ -271,8 +271,9 @@ package body Flow.Analysis is
                     Change_Variant (Var, Normal_Use);
                begin
                   if not FA.All_Vars.Contains (Neutral) then
-                     Error_Msg_Flow ("& not visible!", FA.CFG,
-                                     V, Var);
+                     Error_Msg_Flow
+                       ("& must be listed in the Global aspect!",
+                        FA.CFG, V, Var);
                      Sane := False;
                   end if;
                end;
