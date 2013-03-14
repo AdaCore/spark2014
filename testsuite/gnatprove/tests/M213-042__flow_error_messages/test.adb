@@ -49,6 +49,22 @@ package body Test is
       end if;
    end Extra_Dep;
 
+   procedure Masked_Code (A : Boolean;
+                          X : out Integer)
+   is
+   begin
+      if A then
+         X := 8;
+      else
+         X := 12;
+      end if;
+
+      if not A then
+         X := 3;
+      else
+         X := 7;
+      end if;
+   end Masked_Code;
 
 
 end Test;

@@ -37,8 +37,14 @@ with Flow.Slice; use Flow.Slice;
 
 package body Flow.Analysis is
 
+   use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
    use type Node_Sets.Set;
+
+   function Error_Location (G : Flow_Graphs.T'Class;
+                            V : Flow_Graphs.Vertex_Id)
+                            return Node_Or_Entity_Id;
+   --  Find a good place to raise an error for vertex V.
 
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
@@ -70,6 +76,31 @@ package body Flow.Analysis is
       Set   : Vertex_Sets.Set;
       Tag   : String);
    --  Write a trace file for GPS.
+
+   --------------------
+   -- Error_Location --
+   --------------------
+
+   function Error_Location (G : Flow_Graphs.T'Class;
+                            V : Flow_Graphs.Vertex_Id)
+                            return Node_Or_Entity_Id
+   is
+      K : constant Flow_Id      := G.Get_Key (V);
+      A : constant V_Attributes := G.Get_Attributes (V);
+   begin
+      if A.Error_Location /= Empty then
+         return A.Error_Location;
+
+      else
+         case K.Kind is
+            when Direct_Mapping | Record_Field =>
+               return Get_Direct_Mapping_Id (K);
+
+            when others =>
+               raise Why.Not_Implemented;
+         end case;
+      end if;
+   end Error_Location;
 
    --------------------
    -- Error_Msg_Flow --
@@ -415,20 +446,91 @@ package body Flow.Analysis is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
+      function Find_Masking_Code
+        (Ineffective_Statement : Flow_Graphs.Vertex_Id)
+         return Vertex_Sets.Set;
+      --  Find out why a given vertex is ineffective. A vertex is
+      --  ineffective if the variable(s) defined by it are re-defined
+      --  on all paths leading from it without being used. Thus all
+      --  reachable vertices which also define at least one variable
+      --  of that set (and do not use it), render the vertex
+      --  ineffective.
+
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value and then
            FA.PDG.Get_Attributes (V).Is_Export;
       end Is_Final_Use;
+
+      function Find_Masking_Code
+        (Ineffective_Statement : Flow_Graphs.Vertex_Id)
+         return Vertex_Sets.Set
+      is
+         Mask         : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+         Vars_Defined : constant Flow_Id_Sets.Set :=
+           FA.CFG.Get_Attributes (Ineffective_Statement).Variables_Defined;
+
+         procedure Visitor
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Check if V masks the ineffective statement.
+
+         procedure Visitor
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+            use type Flow_Id_Sets.Set;
+
+            Intersection : constant Flow_Id_Sets.Set :=
+              Vars_Defined and
+              (FA.CFG.Get_Attributes (V).Variables_Defined -
+                 FA.CFG.Get_Attributes (V).Variables_Used);
+         begin
+            if V /= Ineffective_Statement and then
+              Intersection.Length >= 1
+            then
+               Mask.Include (V);
+               TV := Flow_Graphs.Skip_Children;
+            else
+               TV := Flow_Graphs.Continue;
+            end if;
+         end Visitor;
+
+      begin
+         FA.CFG.DFS (Start         => Ineffective_Statement,
+                     Include_Start => False,
+                     Visitor       => Visitor'Access);
+         return Mask;
+      end Find_Masking_Code;
+
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Atr : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            Mask : Vertex_Sets.Set;
          begin
             if Atr.Is_Program_Node then
                if not FA.PDG.Non_Trivial_Path_Exists
-                 (V, Is_Final_Use'Access) then
-                  Error_Msg_Flow ("ineffective statement!", FA.PDG, V);
+                 (V, Is_Final_Use'Access)
+               then
+                  Mask := Find_Masking_Code (V);
+
+                  if Mask.Length >= 1 then
+                     --  We have a useful path we can show.
+                     Error_Msg_Flow ("ineffective statement! [ineffective]",
+                                     FA.PDG, V);
+                     Write_Vertex_Set
+                       (G     => FA.PDG,
+                        E_Loc => Error_Location (FA.PDG, V),
+                        Set   => Mask,
+                        Tag   => "ineffective");
+
+                  else
+                     --  The variables defined by this statement are
+                     --  just not used; no useful path can be show.
+                     Error_Msg_Flow ("ineffective statement!",
+                                     FA.PDG, V);
+                  end if;
                end if;
             end if;
          end;
