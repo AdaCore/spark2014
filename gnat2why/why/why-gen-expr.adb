@@ -347,9 +347,15 @@ package body Why.Gen.Expr is
    --  Start of processing for Insert_Conversion
 
    begin
+
+      --  It seems that when the to and from types are equal, we can stop. But
+      --  this is only true when no check needs to be inserted. We check this
+      --  here for range checks. For discriminant checks, this is not needed,
+      --  for the reason that conversion types are never equal when a
+      --  discriminant check needs to be inserted.
+
       if Eq (To, From) and then
-        Range_Check = Empty and then
-        (if Is_Record_Conversion then Discr_Check = Empty) then
+        Range_Check = Empty then
          return Expr;
       end if;
 
