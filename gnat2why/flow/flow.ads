@@ -162,8 +162,16 @@ package Flow is
       --  returns or null statements.
 
       Is_Program_Node     : Boolean;
-      --  Set for all vertices which trace directly to an element in
-      --  the AST.
+      --  Set for all vertices which both
+      --     - trace directly to an element in the AST,
+      --     - they are constructs which could be ineffective
+      --
+      --  Setting this attribute enables the following analyses which
+      --  would not normally be performed:
+      --     * ineffective_statements
+      --
+      --  It should be noted that most vertices we construct will have
+      --  this set to true.
 
       Is_Initialised      : Boolean;
       --  True if an initial value is either imported (in or in out)
