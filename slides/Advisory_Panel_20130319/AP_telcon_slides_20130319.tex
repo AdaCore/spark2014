@@ -284,11 +284,78 @@
 
 \end{frame}
 
-\begin{frame}{Profiles}
+\begin{frame}{Profiles - Potential Goals}
 
   \begin{itemize}
 
-  \item \emph{Jon to add outline of 'strict' profile as basis for discussion}
+  \item Simplicity (of formal definition; ease of use; good practice).
+  
+  \item Bounded space and time requirements.
+  
+  \item Run-time footprint.
+
+  \item Domain needs.
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Profiles - Strict (Bounded Space and Time)}
+
+  \begin{itemize}
+
+  \item No recursion.
+  
+  \item All constraints on subtypes shall be statically determinable
+        (i.e. no dynamic subtypes).
+
+  \item It is not possible to complete a deferred constant by a pragma Import.
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Profiles - Strict (Simplicity)}
+
+  \begin{itemize}
+
+  \item Public children cannot see private siblings.
+
+  \item During package initialization, user-defined subprograms cannot be called.
+        \emph{Related to modular analysis}
+
+  \item During package initialization, no variable declared within another package
+        can be read or updated. \emph{Related to modular analysis}
+
+  \item No generics.
+
+  \item A formal parameter cannot have a default expression/no
+        default initializations for record components.
+
+  \item No use clauses.
+
+  \item No renaming.
+  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Profiles - Strict (Simplicity)}
+
+  \begin{itemize}
+
+  \item User-defined operators are not permitted.
+
+  \item No slices.
+
+  \item The last statement in a function subprogram shall be a return statement
+        (and no other occurrences of return statements are allowed).
+
+  \item At most one tagged type or type extension declared in any package.
+
+  \item No anonymous subtypes.
+
+  \item No discriminated/variant records.
+
+  \item No dynamic dispatching.
 
   \end{itemize}
 
