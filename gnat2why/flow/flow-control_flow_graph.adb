@@ -265,6 +265,16 @@ package body Flow.Control_Flow_Graph is
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex.
 
+   procedure Do_Pragma
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Pragma;
+   --  Deals with pragmas. We only check for uninitialised variables. We
+   --  do not check for ineffective statements since all pragmas aught to
+   --  be ineffective by definition.
+
    procedure Do_Procedure_Call_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1234,6 +1244,33 @@ package body Flow.Control_Flow_Graph is
                                      Standard_Exits => To_Set (V)));
    end Do_Object_Declaration;
 
+   -----------------
+   --  Do_Pragma  --
+   -----------------
+
+   procedure Do_Pragma
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      pragma Unreferenced (Ctx);
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  We create a vertex for the pragma. Control enters from the
+      --  top and exits from the bottom.
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (N),
+         Make_Sink_Vertex_Attributes
+           (Var_Use => Get_Variable_Set
+                         (Pragma_Argument_Associations (N)),
+            E_Loc   => N),
+         V);
+      CM.Include (Union_Id (N), No_Connections);
+      CM (Union_Id (N)).Standard_Entry := V;
+      CM (Union_Id (N)).Standard_Exits.Insert (V);
+   end Do_Pragma;
+
    -----------------------------------
    --  Do_Procedure_Call_Statement  --
    -----------------------------------
@@ -1594,6 +1631,8 @@ package body Flow.Control_Flow_Graph is
             Do_Null_Statement (N, FA, CM, Ctx);
          when N_Object_Declaration =>
             Do_Object_Declaration (N, FA, CM, Ctx);
+         when N_Pragma =>
+            Do_Pragma (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>

@@ -36,6 +36,17 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for vertices which simply define and use some
    --  variables.
 
+   function Make_Sink_Vertex_Attributes
+     (Var_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+      with Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
+                   not Make_Sink_Vertex_Attributes'Result.Is_Program_Node;
+   --  Create attributes for vertices modelling the following
+   --  constructs:
+   --
+   --     * pragmas
+
    function Make_Aux_Vertex_Attributes
      (E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
