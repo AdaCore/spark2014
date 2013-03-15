@@ -73,4 +73,13 @@ package body Untangle_Tests is
       end loop;
    end Transform;
 
+   --  Tests R.X.{subcomponents} := {record}
+   procedure Set_Normal (T : in out Triangle;
+                         N : Coordinate)
+   is
+   begin
+      T.Normal := N;
+   end Set_Normal;
+
+
 end Untangle_Tests;
