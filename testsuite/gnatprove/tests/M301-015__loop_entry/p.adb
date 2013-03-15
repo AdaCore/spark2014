@@ -14,18 +14,24 @@ begin
                X (I3) (I21, I22) (I1) := 1;
                pragma Loop_Invariant
                  (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last)
-                    and then
-                  X (I3) (I21, I22) (I1 + 1  .. Last) =
-                    X'Loop_Entry (I3) (I21, I22) (I1 + 1 .. Last)
-                    and then
-                  X (I3)'Loop_Entry (I21, I22) (I1 + 1  .. Last) =
-                    X (I3) (I21, I22)'Loop_Entry (I1 + 1 .. Last)
-                    and then
-                  X (I3)'Loop_Entry (L4) (I21, I22) (I1 + 1  .. Last) =
-                    X (I3) (I21, I22)'Loop_Entry (L4) (I1 + 1 .. Last)
+--                      and then
+--                    X (I3) (I21, I22) (I1 + 1  .. Last) =
+--                      X'Loop_Entry (I3) (I21, I22) (I1 + 1 .. Last)
+--                      and then
+--                    X (I3)'Loop_Entry (I21, I22) (I1 + 1  .. Last) =
+--                      X (I3) (I21, I22)'Loop_Entry (I1 + 1 .. Last)
+--                      and then
+--                    X (I3)'Loop_Entry (L4) (I21, I22) (I1 + 1  .. Last) =
+--                      X (I3) (I21, I22)'Loop_Entry (L4) (I1 + 1 .. Last)
                  );
             end loop L4;
+            pragma Loop_Invariant
+              (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
          end loop L3;
+         pragma Loop_Invariant
+           (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
       end loop L2;
+      pragma Loop_Invariant
+        (X (I3 + 1 .. Last) = X'Loop_Entry (I3 + 1 .. Last));
    end loop L1;
 end P;
