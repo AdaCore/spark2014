@@ -1276,7 +1276,9 @@ package body Flow.Control_Flow_Graph is
 
       case Get_Pragma_Id (Pragma_Name (N)) is
          when Pragma_Annotate     |
+              Pragma_Depends      |
               Pragma_Export       |
+              Pragma_Global       |
               Pragma_Import       |
               Pragma_Preelaborate |
               Pragma_Pure         |
