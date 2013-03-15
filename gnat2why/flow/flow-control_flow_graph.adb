@@ -24,6 +24,7 @@
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;
 with Sem_Util; use Sem_Util;
+with Snames;   use Snames;
 
 with Treepr;   use Treepr;
 
@@ -272,8 +273,10 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Pragma;
    --  Deals with pragmas. We only check for uninitialised variables. We
-   --  do not check for ineffective statements since all pragmas aught to
-   --  be ineffective by definition.
+   --  do not check for ineffective statements since all pragmas ought to
+   --  be ineffective by definition. Some pragmas are ignored altogether.
+   --  The lists of the pragmas that are being ignored and the pragmas
+   --  that are analyzed are located in the body.
 
    procedure Do_Procedure_Call_Statement
      (N   : Node_Id;
@@ -1257,18 +1260,59 @@ package body Flow.Control_Flow_Graph is
       pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
    begin
-      --  We create a vertex for the pragma. Control enters from the
-      --  top and exits from the bottom.
-      FA.CFG.Add_Vertex
-        (Direct_Mapping_Id (N),
-         Make_Sink_Vertex_Attributes
-           (Var_Use => Get_Variable_Set
-                         (Pragma_Argument_Associations (N)),
-            E_Loc   => N),
-         V);
-      CM.Include (Union_Id (N), No_Connections);
-      CM (Union_Id (N)).Standard_Entry := V;
-      CM (Union_Id (N)).Standard_Exits.Insert (V);
+      --  The following pragmas are simply ignored:
+      --    Pragma_Annotate
+      --    Pragma_Export
+      --    Pragma_Import
+      --    Pragma_Preelaborate
+      --    Pragma_Pure
+      --    Pragma_Warnings
+
+      --  The following pragmas are checked for uninitialized variables:
+      --    Pragma_Check
+      --    Pragma_Loop_Variant
+      --    Pragma_Precondition
+      --    Pragma_Postcondition
+
+      case Get_Pragma_Id (Pragma_Name (N)) is
+         when Pragma_Annotate     |
+              Pragma_Export       |
+              Pragma_Import       |
+              Pragma_Preelaborate |
+              Pragma_Pure         |
+              Pragma_Warnings     =>
+
+            --  We create a null attributes vertex for the pragma. Control
+            --  enters from the top and exits from the bottom.
+            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                               Null_Node_Attributes,
+                               V);
+            CM.Include (Union_Id (N), No_Connections);
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits := To_Set (V);
+
+         when Pragma_Check         |
+              Pragma_Loop_Variant  |
+              Pragma_Precondition  |
+              Pragma_Postcondition =>
+
+            --  We create a vertex for the pragma. Control enters from the
+            --  top and exits from the bottom.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               Make_Sink_Vertex_Attributes
+                 (Var_Use => Get_Variable_Set
+                               (Pragma_Argument_Associations (N)),
+                  E_Loc   => N),
+               V);
+            CM.Include (Union_Id (N), No_Connections);
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits := To_Set (V);
+
+         when others =>
+            Print_Node_Subtree (N);
+            raise Why.Not_Implemented;
+      end case;
    end Do_Pragma;
 
    -----------------------------------
