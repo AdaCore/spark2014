@@ -13,20 +13,25 @@ package Segway is
    Speed : Speed_Type;
    State : State_Type;
 
-   function Speed_Is_Valid return Boolean is
+   function Speed_Is_Valid return Boolean
+     with Global => Speed
+   is
       (case State is
          when Still    => Speed = 0,
          when Forward  => Speed > 0,
          when Backward => Speed < 0);
 
    procedure State_Update (I : Valid_Input)
-   with Pre => Speed_Is_Valid,
+   with Global => (In_Out => (State, Speed)),
+        Depends => ((State, Speed) =>+ (Speed, I)),
+        Pre => Speed_Is_Valid,
         Post => Speed_Is_Valid;
 
    type Reader is access function return Input;
 
    procedure Execute (Read : Reader)
-   with Pre => Speed_Is_Valid,
+   with
+     Pre => Speed_Is_Valid,
      Post => State = Still and Speed_Is_Valid,
      Test_Case =>
        (Name     => "Segway standing still",

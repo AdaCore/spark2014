@@ -1,7 +1,9 @@
 package body Segway is
 
    procedure Halt
-   with Pre  => Speed_Is_Valid,
+   with Global => (In_Out => (State, Speed)),
+        Depends => ((State, Speed) => (State, Speed)),
+        Pre  => Speed_Is_Valid,
         Post => State = Still and Speed_Is_Valid;
 
    ------------------
