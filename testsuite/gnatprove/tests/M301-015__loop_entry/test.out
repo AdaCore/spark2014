@@ -1,0 +1,3 @@
+
+p.adb:15:16: loop invariant initialization not proved
+p.adb:15:16: loop invariant preservation not proved
