@@ -2025,6 +2025,12 @@ package body SPARK_Definition is
                end loop;
             end;
 
+         --  SPARK pragmas
+
+         when Pragma_Global  |
+              Pragma_Depends =>
+            null;
+
          --  Ignored pragmas, either because they are already taken into
          --  account (Precondition and Postcondition), or because they have no
          --  effect on verification (Export, Import, Preelaborate, Pure,
