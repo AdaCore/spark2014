@@ -274,9 +274,25 @@ package body Flow.Control_Flow_Graph is
       with Pre => Nkind (N) = N_Pragma;
    --  Deals with pragmas. We only check for uninitialised variables. We
    --  do not check for ineffective statements since all pragmas ought to
-   --  be ineffective by definition. Some pragmas are ignored altogether.
-   --  The lists of the pragmas that are being ignored and the pragmas
-   --  that are analyzed are located in the body.
+   --  be ineffective by definition.
+   --
+   --  The following pragmas are simply ignored:
+   --    Pragma_Annotate
+   --    Pragma_Depends       (we deal with this separately)
+   --    Pragma_Export
+   --    Pragma_Global        (we deal with this separately)
+   --    Pragma_Import
+   --    Pragma_Preelaborate
+   --    Pragma_Pure
+   --    Pragma_Warnings
+
+   --  The following pragmas are checked for uninitialized variables:
+   --    Pragma_Check
+   --    Pragma_Loop_Variant
+   --    Pragma_Precondition
+   --    Pragma_Postcondition
+   --
+   --  Any other pragmas will raise Why.Not_Implemented.
 
    procedure Do_Procedure_Call_Statement
      (N   : Node_Id;
@@ -1247,9 +1263,9 @@ package body Flow.Control_Flow_Graph is
                                      Standard_Exits => To_Set (V)));
    end Do_Object_Declaration;
 
-   -----------------
-   --  Do_Pragma  --
-   -----------------
+   ---------------
+   -- Do_Pragma --
+   ---------------
 
    procedure Do_Pragma
      (N   : Node_Id;
@@ -1260,20 +1276,6 @@ package body Flow.Control_Flow_Graph is
       pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
    begin
-      --  The following pragmas are simply ignored:
-      --    Pragma_Annotate
-      --    Pragma_Export
-      --    Pragma_Import
-      --    Pragma_Preelaborate
-      --    Pragma_Pure
-      --    Pragma_Warnings
-
-      --  The following pragmas are checked for uninitialized variables:
-      --    Pragma_Check
-      --    Pragma_Loop_Variant
-      --    Pragma_Precondition
-      --    Pragma_Postcondition
-
       case Get_Pragma_Id (Pragma_Name (N)) is
          when Pragma_Annotate     |
               Pragma_Depends      |
@@ -1284,8 +1286,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Pure         |
               Pragma_Warnings     =>
 
-            --  We create a null attributes vertex for the pragma. Control
-            --  enters from the top and exits from the bottom.
+            --  We create a null vertex for the pragma.
             FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                                Null_Node_Attributes,
                                V);
@@ -1298,13 +1299,13 @@ package body Flow.Control_Flow_Graph is
               Pragma_Precondition  |
               Pragma_Postcondition =>
 
-            --  We create a vertex for the pragma. Control enters from the
-            --  top and exits from the bottom.
+            --  We create a sink vertex for the pragma (which we just
+            --  use to check for uninitialized variables).
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Sink_Vertex_Attributes
                  (Var_Use => Get_Variable_Set
-                               (Pragma_Argument_Associations (N)),
+                    (Pragma_Argument_Associations (N)),
                   E_Loc   => N),
                V);
             CM.Include (Union_Id (N), No_Connections);
