@@ -64,12 +64,6 @@ package body Flow.Analysis is
                      return String;
    --  Obtain the location for the given vertex as in "foo.adb:12".
 
-   function Get_Line_And_Column (G   : Flow_Graphs.T'Class;
-                                 V   : Flow_Graphs.Vertex_Id;
-                                 Sep : Character := ':')
-                                 return String;
-   --  Obtain the location for the given vertex as in "foo.adb:12:33".
-
    procedure Write_Vertex_Set
      (G     : Flow_Graphs.T;
       E_Loc : Node_Or_Entity_Id;
@@ -165,72 +159,14 @@ package body Flow.Analysis is
                       Sep : Character := ':')
                       return String
    is
-      K : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := G.Get_Attributes (V);
-      N : Node_Or_Entity_Id;
+      N       : constant Node_Or_Entity_Id := Error_Location (G, V);
+      SI      : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
+      Line_No : constant String :=
+        Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
    begin
-      if A.Error_Location /= Empty then
-         N := A.Error_Location;
-      else
-         case K.Kind is
-            when Direct_Mapping =>
-               N := Get_Direct_Mapping_Id (K);
-            when others =>
-               raise Why.Not_Implemented;
-         end case;
-      end if;
-
-      declare
-         SI      : constant Source_File_Index :=
-           Get_Source_File_Index (Sloc (N));
-
-         Line_No : constant String :=
-           Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
-      begin
-         return Get_Name_String (File_Name (SI)) &
-           Sep & Line_No (2 .. Line_No'Last);
-      end;
+      return Get_Name_String (File_Name (SI)) & Sep &
+        Line_No (2 .. Line_No'Last);
    end Get_Line;
-
-   -------------------------
-   -- Get_Line_And_Column --
-   -------------------------
-
-   function Get_Line_And_Column (G   : Flow_Graphs.T'Class;
-                                 V   : Flow_Graphs.Vertex_Id;
-                                 Sep : Character := ':')
-                                 return String
-   is
-      K : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := G.Get_Attributes (V);
-      N : Node_Or_Entity_Id;
-   begin
-      if A.Error_Location /= Empty then
-         N := A.Error_Location;
-      else
-         case K.Kind is
-            when Direct_Mapping =>
-               N := Get_Direct_Mapping_Id (K);
-            when others =>
-               raise Why.Not_Implemented;
-         end case;
-      end if;
-
-      declare
-         SI      : constant Source_File_Index :=
-           Get_Source_File_Index (Sloc (N));
-
-         Line_No : constant String :=
-           Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
-
-         Col_No  : constant String :=
-           Column_Number'Image (Get_Column_Number (Sloc (N)));
-      begin
-         return Get_Name_String (File_Name (SI)) &
-           Sep & Line_No (2 .. Line_No'Last) &
-           Sep & Col_No (2 .. Col_No'Last);
-      end;
-   end Get_Line_And_Column;
 
    ----------------------
    -- Write_Vertex_Set --
@@ -560,13 +496,8 @@ package body Flow.Analysis is
          Var   : Flow_Id;
          Tag   : String)
       is
-         Filename : constant String :=
-           Get_Line_And_Column (FA.PDG, E_Loc, '_') &
-           "_" & Tag &
-           ".trace";
-
          Path_Found : Boolean := False;
-         FD         : Ada.Text_IO.File_Type;
+         Path       : Vertex_Sets.Set;
 
          procedure Are_We_There_Yet
            (V           : Flow_Graphs.Vertex_Id;
@@ -598,15 +529,12 @@ package body Flow.Analysis is
          is
             F : constant Flow_Id := FA.CFG.Get_Key (V);
          begin
-            if F.Kind = Direct_Mapping then
-               Ada.Text_IO.Put (FD, Get_Line (FA.CFG, V));
-               Ada.Text_IO.New_Line (FD);
+            if V /= To and F.Kind = Direct_Mapping then
+               Path.Include (V);
             end if;
          end Add_Loc;
 
       begin
-         Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
-
          FA.CFG.Shortest_Path (Start         => From,
                                Allow_Trivial => False,
                                Search        => Are_We_There_Yet'Access,
@@ -615,7 +543,10 @@ package body Flow.Analysis is
          --  A little sanity check can't hurt.
          pragma Assert (Path_Found);
 
-         Ada.Text_IO.Close (FD);
+         Write_Vertex_Set (G     => FA.CFG,
+                           E_Loc => Error_Location (FA.CFG, E_Loc),
+                           Set   => Path,
+                           Tag   => Tag);
       end Mark_Definition_Free_Path;
 
    begin
@@ -657,7 +588,7 @@ package body Flow.Analysis is
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
                               Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => "uninitialized");
+                              Tag   => "noreturn");
 
                         elsif Atr_U.Is_Export then
                            --  As we don't have a global, but an
