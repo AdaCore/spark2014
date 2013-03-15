@@ -1,8 +1,42 @@
 \documentclass{beamer}
 \input{praxis-beamer}
 
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+
 \title{SPARK 2014 Advisory Panel}
 \subtitle{Teleconference 1}
+
+% Inspired by http://tex.stackexchange.com/questions/15237
+\makeatletter
+\newenvironment{btHighlight}[1][]
+{\begingroup\tikzset{bt@Highlight@par/.style={#1}}\begin{lrbox}{\@tempboxa}}
+{\end{lrbox}\bt@HL@box[bt@Highlight@par]{\@tempboxa}\endgroup}
+
+\newcommand\btHL[1][]{%
+  \begin{btHighlight}[#1]\bgroup\aftergroup\bt@HL@endenv%
+}
+\def\bt@HL@endenv{%
+  \end{btHighlight}%
+  \egroup
+}
+\newcommand{\bt@HL@box}[2][]{%
+  \tikz[remember picture]{%
+    \pgfpathrectangle{\pgfpoint{1pt}{0pt}}{\pgfpoint{\wd #2}{\ht #2}}%
+    \pgfusepath{use as bounding box}%
+    \node[anchor=base west,%
+          outer sep=0pt,%
+          inner xsep=1pt,%
+          inner ysep=0pt,%
+          rounded corners=2pt,%
+          minimum height=\ht\strutbox+1pt,%
+          #1]%
+          {%
+            \raisebox{1pt}{\strut}\strut\usebox{#2}%
+          };%
+  }%
+}
+\makeatother
 
 \begin{document}
 
@@ -34,6 +68,131 @@
   \end{itemize}
 
 \end{frame}
+
+\begin{frame}[fragile]{Progress Update - Flow Analysis}
+
+  \lstdefinestyle{magic}{
+    basicstyle=\tiny\tt,
+    keywordstyle=\color{AnColour02},
+    moredelim=**[is][{\btHL[fill=AnSecondaryRed!50,name=error]}]{`}{`},
+    moredelim=**[is][{\btHL[fill=AnSecondaryYellow!50]}]{@}{@},
+  }
+
+  The new flow analysis allows for \structure{better error
+    explanations} using program slices.
+
+  \vskip 0.5cm
+
+  \begin{onlyenv}<1>
+  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
+    procedure Extra_Dep (A, B, C :     Integer;
+                         X, Y    : out Integer)
+      with Depends => (X => (A, B),
+                       Y => (B, C));
+  \end{pxcode}
+  \end{onlyenv}
+
+  \begin{onlyenv}<2->
+  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
+    procedure Extra_Dep (A, B, C :     Integer;
+                         X, Y    : out Integer)
+      with Depends => (`X => (A, B)`,
+                       Y => (B, C));
+  \end{pxcode}
+  \end{onlyenv}
+
+  \begin{onlyenv}<1-2>
+  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
+    procedure Extra_Dep (A, B, C :     Integer;
+                         X, Y    : out Integer)
+    is
+    begin
+       X := A + B;
+       Y := B;
+       if C > 0 then
+          Y := 0;
+       else
+          X := 0;
+       end if;
+    end Extra_Dep;
+  \end{pxcode}
+  \end{onlyenv}
+
+  \begin{onlyenv}<3>
+  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
+    procedure Extra_Dep (A, B, C :     Integer;
+                         X, Y    : out Integer)
+    is
+    begin
+       X := A + B;
+       Y := B;
+       @if C > 0 then@
+          Y := 0;
+       else
+          @X := 0;@
+       end if;
+    end Extra_Dep;
+  \end{pxcode}
+  \end{onlyenv}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node<2-> (error_string)
+      at ($(error) + (6cm, 0cm)$) {``X'' depends on ``C''};
+
+    \draw<2->[->,black,shorten >=5pt] (error_string) -- (error);
+
+    \node<3->[text width=7cm,anchor=west] (error_string)
+      at (3cm, 1.5cm) {
+        the reason shown in GPS, highlighting the indirect control
+        dependency on C
+      };
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]{Progress Update - Flow Analysis}
+
+  \lstdefinestyle{magic}{
+    basicstyle=\tiny\tt,
+    keywordstyle=\color{AnColour02},
+    moredelim=**[is][{\btHL[fill=AnSecondaryRed!50,name=error2]}]{`}{`},
+    moredelim=**[is][{\btHL[fill=AnSecondaryYellow!50]}]{@}{@},
+  }
+
+  The new flow analysis also supports a \structure{larger language
+    subset}, for example early returns.
+
+  \vskip 0.5cm
+
+  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
+    procedure Output_Not_Set (A : Boolean; `X : out Integer`)
+    is
+    begin
+       @if A then@
+          @return;@
+       end if;
+       X := 12;
+    end Output_Not_Set;
+  \end{pxcode}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node(error2_string)
+      at ($(error2) + (1cm, -2cm)$) {formal parameter ``X'' might not be set};
+
+    \draw[->,black,shorten >=5pt] (error2_string) -- (error2);
+
+    \node[text width=7cm,anchor=west] (explanation2)
+      at (2cm, -1cm) {
+        the reason shown in GPS, highlighting a path where X is not set
+      };
+
+    \draw[->] (explanation2) -| (-0.4cm, 1.6cm) -- (-0.2cm, 1.6cm);
+
+  \end{tikzpicture}
+
+\end{frame}
+
 
 \begin{frame}{LRM Review Comments}
 
