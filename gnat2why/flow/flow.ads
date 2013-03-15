@@ -100,6 +100,7 @@ package Flow is
    end record;
 
    function "=" (Left, Right : Flow_Id) return Boolean;
+   --  Equality function for flow id.
 
    Null_Flow_Id : constant Flow_Id :=
      Flow_Id'(Kind      => Null_Value,
@@ -109,10 +110,17 @@ package Flow is
               Component => Entity_Lists.Empty_Vector);
 
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type;
+   --  Hash function for flow id's. The idea is that a direct mapping
+   --  to node N will return the same hash as a magic string mapping
+   --  to node N.
 
    procedure Sprint_Flow_Id (F : Flow_Id);
+   --  Debug procedure to print the given flow id, similar to
+   --  Sprint_Node.
 
    procedure Print_Flow_Id (F : Flow_Id);
+   --  Debug procedure to print the flow id with more information
+   --  (such as kind and variant) attached.
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
@@ -139,6 +147,8 @@ package Flow is
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;
+   --  Returns a copy of the given flow id, but with a modified
+   --  variant.
 
    package Flow_Id_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Flow_Id,
