@@ -1262,13 +1262,26 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
    begin
       case Get_Pragma_Id (Pragma_Name (N)) is
+         when Pragma_Depends |
+              Pragma_Global  =>
+
+            --  We create a null vertex for the pragmas mentioned above;
+            --  the reason is that we process them elsewhere and hence
+            --  they are excluded from this procedure.
+            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                               Null_Node_Attributes,
+                               V);
+            CM.Include (Union_Id (N), No_Connections);
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits := To_Set (V);
+
          when Unknown_Pragma =>
             --  If we find an Unknown_Pragma we raise Why.Not_SPARK
             raise Why.Not_SPARK;
 
          when others =>
             --  For every other pragma we create a sink vertex which
-            --  we use to check for uninitialized variables.
+            --  we then use to check for uninitialized variables.
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (N),
                Make_Sink_Vertex_Attributes
