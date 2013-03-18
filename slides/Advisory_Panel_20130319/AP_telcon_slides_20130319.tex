@@ -59,7 +59,6 @@
   \item Progress update
   \item Round-up of LRM review comments
   \item Discussion Topics
-  \item \emph{SPARk Pro wavefront - ignore Aspects?}
   \item Conclusion
 
   \end{itemize}
@@ -214,12 +213,12 @@
 
   \begin{itemize}
 
-  \item Thanks for all the comments received ...
+  \item Thanks for all the comments received:
 
     \begin{itemize}
     \item Very valuable input
     \item We will respond to all comments by email
-    \item Please feel free to submit further comments (via GNAT Tracker account)
+    \item Please feel free to submit further comments (via your GNAT Tracker account)
     \end{itemize}
 
   \item The following slides highlight a few key themes ...
@@ -233,7 +232,7 @@
   \begin{itemize}
   \item SPARK 2014 will retain the property of compiler portability
 
-  \item LRM Release 0.2 defines contracts in terms of Ada 2012 'aspects'
+  \item LRM Release 0.2 defines contracts in terms of Ada 2012 `aspects'
 
   \item Direct use of the new aspects requires an Ada 2012 compiler which supports them in a way consistent with the definition given in the LRM
 
@@ -254,13 +253,11 @@
     \begin{itemize}
     \item Allows a SPARK 2014 program to be compiled by and executed by \emph{any} Ada 2012 implementation
 
-    \item ''If an implementation does not recognize the name of a pragma, then it has no effect on the semantics of the program.'' [Ada RM, Sec 2.8, Rule 11]
+    \item ``If an implementation does not recognize the name of a pragma, then it has no effect on the semantics of the program.'' [Ada RM, Sec 2.8, Rule 11]
 
-    \item (The pragma versions of the contracts are still a 'ToDo' at this release of the document.)
+    \item (The pragma versions of the contracts are still a `ToDo' at this release of the document.)
 
     \end{itemize}
-
-  \item \emph{Do we also want to mention the use case of using an Ada 2005 compiler with SPARK 2014?}
 
 \end{itemize}
 
@@ -284,40 +281,59 @@
 
 \end{frame}
 
-\begin{frame}{Other Topics}
+\begin{frame}{Assume}
 
   \begin{itemize}
 
-  \item Translator/Migration to SPARK 2014
+  \item Concerns have been raised over the effect of pragma Assume and other assertion statements: could an incorrect Assume/Assert affect program execution?
+
+  \item No. Unlike the prover, the compiler treats pragma Assume like pragma Assert.
+
+  \item There are two cases to consider:
+  \begin{enumerate}
+    \item Assertions are activated: runtime checks are activated, and the compiler may use the assert/assume to generate optimized code. This is safe.
+    \item Assertions are disabled: no runtime checks, and the compiler will not take the assumption into account for code generation.
+  \end{enumerate}
+
+  \item However, the generation of proof obligations is unaffected by the suppression of checks or the disabling of assertions.
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Discussion Topics}
+
+  \begin{itemize}
+
   \item Profiles
+  \item Translator/Migration to SPARK 2014
   \item Integrity Contracts
 
   \end{itemize}
 
 \end{frame}
 
-\begin{frame}{Translator/Migration to SPARK 2014}
+\begin{frame}{Profiles}
 
   \begin{itemize}
 
-  \item \emph{outline our current position - a migration guide and service but no supported tool}
-  \item \emph{how do people envisage migrating to SPARK 2014 - will this meet their needs?}
+  \item Profiles are restricted subsets of SPARK 2014
 
-  \end{itemize}
+  \item Restrictions used will depend on the project-specific context
 
-\end{frame}
+  \item Potential goals of a `Strict' profile:
 
-\begin{frame}{Profiles - Potential Goals}
+    \begin{itemize}
 
-  \begin{itemize}
+    \item Simplicity (of formal definition; ease of use; good practice).
 
-  \item Simplicity (of formal definition; ease of use; good practice).
+    \item Bounded space and time requirements.
 
-  \item Bounded space and time requirements.
+    \item Run-time footprint.
 
-  \item Run-time footprint.
+    \item Domain needs.
 
-  \item Domain needs.
+    \end{itemize}
 
   \end{itemize}
 
@@ -384,11 +400,41 @@
 
 \end{frame}
 
-\begin{frame}{Integrity Contracts}
+\begin{frame}{Migration to SPARK 2014}
 
   \begin{itemize}
 
-  \item \emph{SM to add description of integrity contracts}
+  \item SPARK 2014 user documentation will include a migration guide --- based on the ``Mapping Specification'' in Appendix A of the LRM
+  \item AdaCore and Altran will be able to assist with the migration process
+  \item How do you envisage the transition to SPARK 2014 --- by translation of existing code?
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Integrity Properties}
+
+  \lstdefinestyle{magic}{
+    basicstyle=\tiny\tt,
+    keywordstyle=\color{AnColour02},
+    moredelim=**[is][{\btHL[fill=AnSecondaryRed!50,name=error]}]{`}{`},
+    moredelim=**[is][{\btHL[fill=AnSecondaryYellow!50]}]{@}{@},
+  }
+
+  \begin{itemize}
+
+  \item A means of attaching an integrity level to an own variable
+  \item The Examiner checks that information flows correctly between variables wrt their integrity levels and a specified policy (`safety' or `security').
+  \item For example, you could have declarations
+
+  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
+--# own Default_Key         (Integrity => Integrities.Unclassified);
+--#     Root_Signing_Key    (Integrity => Integrities.Top_Secret);
+  \end{pxcode}
+
+  \item An assignment of the form Default\_Key := Root\_Signing\_Key would then yield a warning from the Examiner of a policy violation (assuming policy = security)
+
+  \item Straw poll has indicated this feature is not currently being used
 
   \end{itemize}
 
@@ -399,7 +445,15 @@
   \begin{itemize}
 
   \item Feedback - what do you want from future news emails and conferences?
-  \item Key dates: next LRM release; next teleconference
+
+  \item Key dates: 
+    \begin{itemize}
+    \item News email 2 - April
+    \item Hi-Lite project completion - May
+    \item Second LRM release - mid June
+    \item Teleconference 2 - late June/early July
+    \end{itemize}
+
   \item AOB
 
   \end{itemize}
