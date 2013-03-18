@@ -11,7 +11,7 @@ package body Test is
       end if;
    end Compare_And_Swap;
 
-   procedure Paralel_Block_Statements (Operation: Integer ; X, Y : in out Integer) is
+   procedure Parallel_Block_Statements (Operation: Integer ; X, Y : in out Integer) is
    begin
       case Operation is
          when 1 =>
@@ -44,7 +44,7 @@ package body Test is
          when others =>
             null;
       end case;
-   end Paralel_Block_Statements;
+   end Parallel_Block_Statements;
 
    procedure Nested_Block_Statements (X, Y : in out Integer) is
    begin
