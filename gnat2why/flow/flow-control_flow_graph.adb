@@ -1994,12 +1994,9 @@ package body Flow.Control_Flow_Graph is
      (N  : Node_Id;
       FA : in out Flow_Analysis_Graphs)
    is
-      Connection_Map : Connection_Maps.Map;
-
-      The_Context    : Context          := No_Context;
-
+      Connection_Map  : Connection_Maps.Map;
+      The_Context     : Context              := No_Context;
       Subprogram_Spec : Entity_Id;
-
    begin
       if Acts_As_Spec (N) then
          Subprogram_Spec := Defining_Unit_Name (Specification (N));
