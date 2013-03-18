@@ -14,12 +14,12 @@ package Segway is
    State : State_Type;
 
    function Speed_Is_Valid return Boolean
-     with Global => Speed
    is
       (case State is
          when Still    => Speed = 0,
          when Forward  => Speed > 0,
-         when Backward => Speed < 0);
+         when Backward => Speed < 0)
+     with Global => Speed;
 
    procedure State_Update (I : Valid_Input)
    with Global => (In_Out => (State, Speed)),
