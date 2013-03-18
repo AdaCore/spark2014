@@ -1770,7 +1770,7 @@ package body Flow.Control_Flow_Graph is
                                       Used_Variables => VS);
                return Skip;
 
-            when N_Identifier =>
+            when N_Identifier | N_Expanded_Name =>
                if Present (Entity (N)) and then
                  not Is_Non_Significant_Pragma_Reference (N)
                then
@@ -1943,7 +1943,7 @@ package body Flow.Control_Flow_Graph is
       procedure Traverse is new Traverse_Proc (Proc);
    begin
       case Nkind (N) is
-         when N_Identifier =>
+         when N_Identifier | N_Expanded_Name =>
             --  X :=
             Vars_Defined := Get_Variable_Set (N);
          when N_Selected_Component | N_Indexed_Component =>

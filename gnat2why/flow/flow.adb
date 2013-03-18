@@ -364,7 +364,9 @@ package body Flow is
                --  No globals, nothing to do.
                return;
 
-            elsif Nkind (Expression (PAA)) = N_Identifier then
+            elsif Nkind (Expression (PAA)) in
+              N_Identifier | N_Expanded_Name
+            then
                --  global => foo
                --  A single input
                Process (Name_Input, Entity (Expression (PAA)));
@@ -376,7 +378,7 @@ package body Flow is
                RHS := First (Expressions (Expression (PAA)));
                while RHS /= Empty loop
                   case Nkind (RHS) is
-                     when N_Identifier =>
+                     when N_Identifier | N_Expanded_Name =>
                         Process (Name_Input, Entity (RHS));
                      when others =>
                         raise Why.Not_Implemented;
@@ -407,11 +409,12 @@ package body Flow is
                               Process (The_Mode, Entity (RHS));
                               RHS := Next (RHS);
                            end loop;
-                        when N_Identifier =>
+                        when N_Identifier | N_Expanded_Name =>
                            Process (The_Mode, Entity (RHS));
                         when N_Null =>
                            null;
                         when others =>
+                           Print_Node_Subtree (RHS);
                            raise Why.Not_Implemented;
                      end case;
 
@@ -522,7 +525,7 @@ package body Flow is
                   Outputs.Include (Entity (LHS));
                   LHS := Next (LHS);
                end loop;
-            when N_Identifier =>
+            when N_Identifier | N_Expanded_Name =>
                pragma Assert (Entity (LHS) /= Empty);
                Outputs.Include (Entity (LHS));
             when N_Null =>
@@ -541,7 +544,7 @@ package body Flow is
                   Inputs.Include (Entity (RHS));
                   RHS := Next (RHS);
                end loop;
-            when N_Identifier =>
+            when N_Identifier | N_Expanded_Name =>
                pragma Assert (Entity (RHS) /= Empty);
                Inputs.Include (Entity (RHS));
             when N_Null =>
