@@ -1,6 +1,6 @@
 
-p.adb:15:16: info: loop invariant preservation proved
 p.adb:15:16: loop invariant initialization not proved, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
+p.adb:15:16: loop invariant preservation not proved, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
 p.adb:28:13: info: loop invariant initialization proved
 p.adb:28:13: info: loop invariant preservation proved
 p.adb:31:10: info: loop invariant initialization proved
