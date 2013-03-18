@@ -346,15 +346,15 @@ package body Flow.Control_Flow_Graph is
    --  expression). They do not have a standard exit, instead we
    --  directly link them to the end vertex.
 
-   procedure Do_Subprogram_Body
+   procedure Do_Subprogram_Or_Block
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Subprogram_Body;
-   --  This is the top level procedure which deals with a subprogam:
-   --  the declarations and sequence of statements is processed and
-   --  linked.
+      with Pre => Nkind (N) in N_Subprogram_Body | N_Block_Statement;
+   --  This is the top level procedure which deals with a subprogam or
+   --  a block statement. The declarations and sequence of statements
+   --  is processed and linked.
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
@@ -1430,11 +1430,11 @@ package body Flow.Control_Flow_Graph is
       Linkup (FA.CFG, V, FA.End_Vertex);
    end Do_Simple_Return_Statement;
 
-   --------------------------
-   --  Do_Subprogram_Body  --
-   --------------------------
+   ----------------------------
+   -- Do_Subprogram_Or_Block --
+   ----------------------------
 
-   procedure Do_Subprogram_Body
+   procedure Do_Subprogram_Or_Block
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
@@ -1458,7 +1458,7 @@ package body Flow.Control_Flow_Graph is
               (Union_Id (Declarations (N))).Standard_Entry,
             Standard_Exits => CM.Element
               (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
-   end Do_Subprogram_Body;
+   end Do_Subprogram_Or_Block;
 
    --------------------------------
    -- Process_Subprogram_Globals --
@@ -1684,6 +1684,8 @@ package body Flow.Control_Flow_Graph is
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
+         when N_Block_Statement =>
+            Do_Subprogram_Or_Block (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
             raise Why.Not_Implemented;
@@ -2108,7 +2110,7 @@ package body Flow.Control_Flow_Graph is
       --  Do_N_Object_Declaration for enlightenment.
 
       --  Produce flowgraph for the body
-      Do_Subprogram_Body (N, FA, Connection_Map, The_Context);
+      Do_Subprogram_Or_Block (N, FA, Connection_Map, The_Context);
 
       --  Print_Node_Set (FA.All_Vars);
 
