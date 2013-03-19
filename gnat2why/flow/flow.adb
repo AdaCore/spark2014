@@ -853,20 +853,22 @@ package body Flow is
                       End_Vertex   => FA.End_Vertex);
       end if;
 
-      Data_Dependence_Graph.Create (FA);
       Control_Dependence_Graph.Create (FA);
+
+      if Debug_Print_Intermediates then
+         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
+                      G            => FA.CDG,
+                      Start_Vertex => FA.Start_Vertex,
+                      End_Vertex   => FA.End_Vertex);
+      end if;
+
+      Data_Dependence_Graph.Create (FA);
       Interprocedural.Create (FA);
       Program_Dependence_Graph.Create (FA);
 
-      --  Now we print everything else.
       if Debug_Print_Intermediates then
          Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
                       G            => FA.DDG,
-                      Start_Vertex => FA.Start_Vertex,
-                      End_Vertex   => FA.End_Vertex);
-
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
-                      G            => FA.CDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
