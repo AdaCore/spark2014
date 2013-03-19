@@ -92,6 +92,7 @@ package body Flow.Interprocedural is
 
       --  We have looked for a vertex which doesn't exist, which means
       --  the graph is broken.
+      Print_Flow_Id (Parameter);
       raise Program_Error;
    end Find_Parameter_Vertex;
 
