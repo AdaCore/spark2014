@@ -1391,10 +1391,7 @@ package body Graph is
    -- Vertex_To_Natural --
    -----------------------
 
-   function Vertex_To_Natural (G : T'Class;
-                               V : Vertex_Id)
-                               return Natural
-   is
+   function Vertex_To_Natural (G : T'Class; V : Vertex_Id) return Natural is
       pragma Unreferenced (G);
    begin
       return Natural (V);
