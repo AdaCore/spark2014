@@ -19,39 +19,34 @@ It follows as a consequence of these rules that the evaluation
 of any |SPARK| expression is side-effect free.
 
 We also introduce the notion of a *global item*, which is a name that denotes a
-global variable or a state abstraction (see :ref:`abstract-state`). 
-Global items are presented in Global aspects (see :ref:`global-aspects`).
+global object or a state abstraction (see :ref:`abstract-state`). A global item
+may also denote a type or subtype when the (sub)type declaration involves
+dynamic expressions. Global items are presented in Global aspects 
+(see :ref:`global-aspects`).
 
 An *entire object* is an object which is not a subcomponent of a larger 
 containing object.  More specifically, an *entire object* is
 an object declared by an object_declaration (as opposed to, for example,
 a slice or the result object of a function call) or a formal parameter of
-a subprogram. An *entire variable* is an an entire object which is a 
-variable.
+a subprogram.
 
 .. centered:: **Static Semantics**
 
-#. The *final* value of a global item or parameter of a subprogram is its 
+#. The *exit* value of a global item or parameter of a subprogram is its 
    value immediately following the successful call of the subprogram.
 
-#. The *initial* value of a global item or parameter of a subprogram is its
+#. The *entry* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
-
-   .. note::
-      (SB) Given
-
-         X : Integer := 123;
-
-      , it seems confusing to say that the initial value of X is anything
-      other than 123. Perhaps "incoming value" would be better?
    
 #. An *output* of a subprogram is a global item or parameter whose final
    value may be updated by a call to the subprogram.  The result of a function
    is also an output.
    
 #. An *input* of a subprogram is a global item or parameter whose initial
-   value may be used in determining the final value of an output of the 
-   subprogram.  
+   value may be used in determining the exit value of an output of the 
+   subprogram. As a special case, a global item or parameter is also an input if
+   it is mentioned in a ``null_dependency_clause`` in the Depends 
+   aspect of the subprogram (see :ref:`depends-aspects`).
    
    [Static constants do not participate in dataflow analysis; in particular,
    a static constant is not considered to be an input to a subprogram.
@@ -59,18 +54,12 @@ variable.
    subtype whose elaboration evaluates one or more nonstatic expressions
    (thereby, in effect, declaring one or more anonymous constants) may
    be an input of subprogram if one or more of those anonymous constants
-   may be used in determining the final value of an output of the
+   may be used in determining the exit value of an output of the
    subprogram. The name of the type or subtype acts, in effect, as a name
    for those anonymous constants. In the case of an anonymous subtype,
    this principle is repeated and the name of the enclosing named entity
    takes on this role (in addition, in the case of a named object
    declaration, to its normal role as the name of the declared object).]
-
-   As a special case, a global item or parameter is also considered an input if
-   it is deemed to have no observable effect on any output of the subprogram but 
-   is only used in determining a **null** value.  Such a **null** value can only 
-   be specified using a an explicit ``null_dependency_clause`` in the Depends 
-   aspect of the subprogram (see :ref:`depends-aspects`).
 
 .. centered:: **Verification Rules**
 
@@ -78,8 +67,6 @@ variable.
    with a mode of **out** or **in out**. This rule also applies to
    a subprogram_body for a function for which no explicit declaration
    is given.
-
-
    
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: Release
@@ -149,13 +136,13 @@ High-Level Requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-The Contract_Cases aspect provides a structured way of defining a
-subprogram contract using mutually exclusive subcontract cases.
-The final case in the Contract_Case aspect may be the keyword **others** which means that, in a
-specific call to the subprogram, if all the ``conditions`` are False
-this ``contract_case`` is taken.  If an **others** ``contract_case``
-is not specified, then in a specific call of the subprogram exactly
-one of the guarding ``conditions`` should be True
+The Contract_Cases aspect provides a structured way of defining a subprogram
+contract using mutually exclusive subcontract cases. The final case in the
+Contract_Case aspect may be the keyword **others** which means that, in a
+specific call to the subprogram, if all the ``conditions`` are False this
+``contract_case`` is taken. If an **others** ``contract_case`` is not specified,
+then in a specific call of the subprogram exactly one of the guarding
+``conditions`` should be True
 
 A Contract_Cases aspect may be used in conjunction with the
 language-defined aspects Pre and Post in which case the precondition
@@ -191,10 +178,10 @@ is short hand for
 
 where
 
-  A1 .. An are Boolean expressions involving the initial values of
+  A1 .. An are Boolean expressions involving the entry values of
   formal parameters and global variables and
 
-  B1 .. Bn are Boolean expressions that may also use the final values of
+  B1 .. Bn are Boolean expressions that may also use the exit values of
   formal parameters, global variables and results.
 
   ``Exactly_One_Of(A1,A2...An)`` evaluates to True if exactly one of its inputs evaluates
@@ -384,62 +371,72 @@ where
 
 .. centered:: **Static Semantics**
 
-[As part of defining which entities are allowed as inputs, outputs,
-and state constituents, the term "manifest" is defined as a generalization
-of the Ada's notion of staticness.]
-A type is said to be *manifest* if the elaboration of its
-declaration does not include the evaluation of any non-static scalar
-expression and each of its non-manifest component subtypes (if any)
-is subject to a per-object constraint and is a subtype of manifest type.
-A subtype is said to be *manifest* if its type is manifest, its
-constraint, if any, is a static constraint, and no Dynamic_Predicate
-aspect specification applies to the subtype. A scalar expression is
-said to be *manifest* if it is static. A composite expression is
-said to be *manifest* if its evaluation does not include the evaluation
-of any non-static scalar expression and it is
+#. [As part of defining which entities are allowed as inputs, outputs,
+   and state constituents, the term "manifest" is defined as a generalization of
+   the Ada's notion of staticness.] A type is said to be *manifest* if the
+   elaboration of its declaration does not include the evaluation of any
+   non-static scalar expression and each of its non-manifest component subtypes
+   (if any) is subject to a per-object constraint and is a subtype of a manifest
+   type. A subtype is said to be *manifest* if its type is manifest, its
+   constraint, if any, is a static constraint, and no Dynamic_Predicate aspect
+   specification applies to the subtype. A scalar expression is said to be
+   *manifest* if it is static. A composite expression is said to be *manifest*
+   if its evaluation does not include the evaluation of any non-static scalar
+   expression and it is
 
-- a static expression; or
+   - a static expression; or
+   
+   - a parenthesized manifest expression; or
 
-- a parenthesized manifest expression; or
+   - a qualified expression or type conversion whose subtype mark
+     designates a manifest subtype and whose operand is a manifest
+     expression; or
 
-- a qualified expression or type conversion whose subtype mark
-  designates a manifest subtype and whose operand is a manifest
-  expression; or
+   - a name denoting a component of a manifest object; or
 
-- a name denoting a component of a manifest object; or
+   - a name denoting a slice of a manifest object having static bounds; or
 
-- a name denoting a slice of a manifest object having static bounds; or
+   - an aggregate whose applicable index constraint (if any) is static, whose
+     component expressions are all manifest, and for which the evaluation of each
+     "<>" component value (if any) fully initializes the associated component and
+     does not involve the evaluation of any non-manifest expressions; or
 
-- an aggregate whose applicable index constraint (if any) is static,
-  whose component expressions are all manifest, and
-  for which the evaluation of each "<>" component value (if any) fully
-  initializes the associated component and does not involve the evaluation
-  of any non-manifest expressions; or
+   - an extension aggregate which meets the above conditions for an aggregate
+     and whose ancestor_part is either a manifest expression or a subtype_mark
+     denoting a manifest subtype; or
 
-- an extension aggregate which meets the above conditions for an aggregate
-  and whose ancestor_part is either a manifest expression or a subtype_mark
-  denoting a manifest subtype; or
+   - a conditional expression all of whose dependent expressions are
+     manifest and whose selected dependent expression is known statically 
+     (i.e., for a case expression, the selecting expression is static; for an if 
+     expression, either all conditions are static or the first N-1 conditions 
+     are statically False (for some value of N) and the Nth condition is 
+     statically True); or
 
-- a conditional expression all of whose dependent expressions are
-  manifest (TBD: could relax and only require that the selected
-  dependendent expression must be manifest) and whose selected
-  dependent expression is known statically (i.e., for a case expression,
-  the selecting expression is static; for an if expression, either
-  all conditions are static or the first N-1 conditions are statically
-  False (for some value of N) and the Nth condition is statically True).
+   - a call with no non-manifest parameters to a function with global inputs.
 
-[TBD: given a one-part expression function whose expression
-is manifest, should a call to the function be manifest? Since this is
-all just for purposes of flow analysis, we could relax things even
-further and allow a call to an arbitrary function to be manifest as
-long as the function has no global inputs and we only pass in manifest
-actuals.]
+   A constant object declared by an object_declaration or an
+   ``extended_return_object_declaration`` is manifest if its subtype is manifest
+   and its initialization expression is manifest. The result object for the
+   evaluation of a manifest composite expression is manifest [; this rule is
+   needed because such an object can be renamed].
 
-A constant object declared declared by an object_declaration or
-an extended_return_object_declaration is manifest if its subtype
-is manifest and its initialization expression is manifest. The result
-object for the evaluation of a manifest composite expression is
-manifest [; this rule is needed because such an object can be renamed].
+#. A ``global_specification`` that is a ``global_list`` is shorthand for a
+   ``moded_global_list`` with the ``mode_selector`` Input.
+
+#. A ``global_item`` is *referenced* by a subprogram if:
+
+   * It is an input or an output of the subprogram, or;
+
+   * Its entry value is used to determine the value of an assertion
+     expression within the subprogram, or;
+
+   * Its entry value is used to determine the value of an assertion
+     expression within another subprogram that is called either directly or
+     indirectly by this subprogram.
+     
+#. A ``null_global_specification`` indicates that the subprogram does not
+   reference any ``global_item`` directly or indirectly.
+
 
 .. centered:: **Legality Rules**
 
@@ -461,7 +458,7 @@ manifest [; this rule is needed because such an object can be renamed].
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR global_item shall denote an entire variable or a state abstraction
+      :Trace Unit: 6.1.4 LR global_item shall denote an entire  or a state abstraction
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
@@ -484,32 +481,12 @@ manifest [; this rule is needed because such an object can be renamed].
    
       :Trace Unit: 6.1.4 LR global_items shall denote distinct objects or state abstractions.
 
-#. A ``global_item`` occurring in a Global aspect of a subprogram aspect
-   specification shall not denote a formal parameter of the subprogram.
+#. A ``global_item`` occurring in a Global aspect specification of a subprogram
+   shall not denote a formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
    
       :Trace Unit: 6.1.4 LR A global_item cannot denote a formal parameter
-
-
-.. centered:: **Static Semantics**
-
-#. A ``global_specification`` that is a ``global_list`` is considered to be a
-   ``moded_global_list`` with the ``mode_selector`` Input.
-
-#. A ``global_item`` is *referenced* by a subprogram if:
-
-   * It is an input or an output of the subprogram, or;
-
-   * Its initial value is used to determine the value of an assertion
-     expression within the subprogram, or;
-
-   * Its initial value is used to determine the value of an assertion
-     expression within another subprogram that is called either directly or
-     indirectly by this subprogram.
-     
-#. A ``null_global_specification`` indicates that the subprogram does not
-   reference any ``global_item`` directly or indirectly.
 
 
 .. centered:: **Dynamic Semantics**
@@ -581,7 +558,7 @@ High-level requirements
 
    * **Requirement:** That (X,Y) is in the dependency relation for a given subprogram
      (i.e. X depends on Y) means that X is an output of the subprogram
-     such that the initial value of the input Y is used to set the final value of X on
+     such that the entry value of the input Y is used to set the exit value of X on
      at least one executable path.
 
      **Rationale:** by definition.
@@ -609,8 +586,8 @@ analysis. Depends aspects are simple specifications.
 
 A Depends aspect for a subprogram specifies for each output every input on
 which it depends. The meaning of X depends on Y in this context is that the
-final value of output, X, on the completion of the subprogram is at least partly
-determined from the initial value of input, Y and is written X => Y. As in UML,
+exit value of output, X, on the completion of the subprogram is at least partly
+determined from the entry value of input, Y and is written X => Y. As in UML,
 the entity at the tail of the arrow depends on the entity at the head of the
 arrow.
 
@@ -747,8 +724,8 @@ where
 #. The grammar terms ``input`` and ``output`` have the meaning given to input
    and output given in :ref:`subprogram-declarations`.
    
-#. A ``dependency_clause`` has the meaning that the final value of every 
-   ``output`` in the ``output_list`` is dependent on the initial value of every 
+#. A ``dependency_clause`` has the meaning that the exit value of every 
+   ``output`` in the ``output_list`` is dependent on the entry value of every 
    ``input`` in the ``input_list``.
    
 #. A ``dependency_clause`` with a "+" symbol in the syntax ``output_list`` =>+
@@ -823,29 +800,29 @@ aspects are checked when a subprogram body is a analyzed.
 
    procedure P (X, Y, Z in : Integer; Result : out Boolean)
    with Depends => (Result => (X, Y, Z));
-   -- The final value of Result depends on the initial values of X, Y and Z
+   -- The exit value of Result depends on the entry values of X, Y and Z
 
    procedure Q (X, Y, Z in : Integer; A, B, C, D, E : out Integer)
    with Depends => ((A, B) => (X, Y),
                      C     => (X, Z),
                      D     => Y,
                      E     => null);
-   -- The final values of A and B depend on the initial values of X and Y.
-   -- The final value of C depends on the initial values of X and Z.
-   -- The final value of D depends on the initial value of Y.
-   -- The final value of E does not depend on any input value.
+   -- The exit values of A and B depend on the entry values of X and Y.
+   -- The exit value of C depends on the entry values of X and Z.
+   -- The exit value of D depends on the entry value of Y.
+   -- The exit value of E does not depend on any input value.
 
    procedure R (X, Y, Z : in Integer; A, B, C, D : in out Integer)
    with Depends => ((A, B) =>+ (A, X, Y),
                      C     =>+ Z,
                      D     =>+ null);
    -- The "+" sign attached to the arrow indicates self-dependency, that is
-   -- the final value of A depends on the initial value of A as well as the
-   -- initial values of X and Y.
-   -- Similarly, the final value of B depends on the initial value of B
-   -- as well as the initial values of A, X and Y.
-   -- The final value of C depends on the initial value of C and Z.
-   -- The final value of D depends only on the initial value of D.
+   -- the exit value of A depends on the entry value of A as well as the
+   -- entry values of X and Y.
+   -- Similarly, the exit value of B depends on the entry value of B
+   -- as well as the entry values of A, X and Y.
+   -- The exit value of C depends on the entry value of C and Z.
+   -- The exit value of D depends only on the entry value of D.
 
    procedure S
    with Global  => (Input  => (X, Y, Z),
