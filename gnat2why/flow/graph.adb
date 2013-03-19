@@ -1383,4 +1383,21 @@ package body Graph is
       end;
    end Write_Pdf_File;
 
+   ----------------------------------------------------------------------
+   --  Debug
+   ----------------------------------------------------------------------
+
+   -----------------------
+   -- Vertex_To_Natural --
+   -----------------------
+
+   function Vertex_To_Natural (G : T'Class;
+                               V : Vertex_Id)
+                               return Natural
+   is
+      pragma Unreferenced (G);
+   begin
+      return Natural (V);
+   end Vertex_To_Natural;
+
 end Graph;

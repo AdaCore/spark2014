@@ -524,6 +524,15 @@ package Graph is
                                    return Edge_Display_Info);
    --  As above, but also generate a pdf file using dot.
 
+   ----------------------------------------------------------------------
+   --  Debug
+   ----------------------------------------------------------------------
+
+   function Vertex_To_Natural (G : T'Class;
+                               V : Vertex_Id)
+                               return Natural;
+   --  Debug function to get the internal index of the given vertex.
+
 private
 
    ----------------------------------------------------------------------
