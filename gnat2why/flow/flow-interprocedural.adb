@@ -169,14 +169,17 @@ package body Flow.Interprocedural is
                   when E_In_Parameter =>
                      Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                        In_View));
+
                   when E_In_Out_Parameter =>
                      Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                        In_View));
                      Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                         Out_View));
+
                   when E_Out_Parameter =>
                      Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                         Out_View));
+
                   when others =>
                      raise Why.Not_Implemented;
                end case;

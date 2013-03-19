@@ -23,6 +23,8 @@
 
 package body Flow.Control_Dependence_Graph is
 
+   use type Flow_Graphs.Vertex_Id;
+
    procedure Create (FA : in out Flow_Analysis_Graphs)
    is
       Reversed_CFG : Flow_Graphs.T;
@@ -39,17 +41,69 @@ package body Flow.Control_Dependence_Graph is
       --  control dependent on the same node. For clarity, we want all
       --  parameter vertices to be control dependent on the call
       --  vertex.
+      --
+      --  There are a few complications here, triggered by loops which
+      --  are executed at least once (i.e. general loops and for loops
+      --  over a statically non-empty range). We have quite involved
+      --  sanity checks which push up the complexity (path finding is
+      --  linear), but this kind of graph fiddeling is much easier to
+      --  justify that way.
+
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.CDG.Get_Attributes (V);
+            A  : constant V_Attributes := FA.CDG.Get_Attributes (V);
+            CV : constant Flow_Graphs.Vertex_Id :=
+              FA.CDG.Get_Vertex (A.Call_Vertex);
          begin
             if A.Is_Parameter or A.Is_Global_Parameter then
-               pragma Assert (FA.CDG.In_Neighbour_Count (V) = 1);
-               pragma Assert (FA.CDG.Out_Neighbour_Count (V) = 0);
+               --  Sanity check that we will not lose control
+               --  dependence.
+               for P of FA.CDG.Get_Collection (V,
+                                               Flow_Graphs.In_Neighbours)
+               loop
+                  if P = V then
+                     --  Self dependence is OK and we don't care if it
+                     --  disappears.
+                     null;
+
+                  elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
+                     --  THe call vertex is ultimately control
+                     --  dependent on the in neighbour we are
+                     --  eliminating from our parameter vertex, so we
+                     --  don't really lose anything.
+                     null;
+
+                  else
+                     --  Bath, we have a problem.
+                     raise Program_Error;
+                  end if;
+               end loop;
+
+               --  Sanity check that we won't lose outwards control
+               --  influence.
+               for S of FA.CDG.Get_Collection (V,
+                                               Flow_Graphs.Out_Neighbours)
+               loop
+                  if S = V then
+                     --  Self dependence is OK and we don't care if it
+                     --  disappears.
+                     null;
+
+                  elsif S = CV
+                    or else CV = FA.CDG.Get_Vertex
+                    (FA.CDG.Get_Attributes (S).Call_Vertex)
+                  then
+                     --  This can happen if we have infinite loops.
+                     null;
+
+                  else
+                     --  Panic!
+                     raise Program_Error;
+                  end if;
+               end loop;
+
                FA.CDG.Clear_Vertex (V);
-               FA.CDG.Add_Edge (FA.CDG.Get_Vertex (A.Call_Vertex),
-                                V,
-                                EC_Default);
+               FA.CDG.Add_Edge (CV, V, EC_Default);
             end if;
          end;
       end loop;
