@@ -1,0 +1,160 @@
+test.adb:22:26: ineffective statement
+test.adb:23:28: ineffective statement
+test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="table'initial",shape="plaintext"];
+    4 [label="table'final",shape="plaintext",fontcolor="blue"];
+    5 [label="x'initial",shape="plaintext"];
+    6 [label="x'final",shape="plaintext",fontcolor="red"];
+    7 [label="x'initial",shape="plaintext"];
+    8 [label="x'final",shape="plaintext",fontcolor="red"];
+    10 [label="table (10 - i) := i;\nLoops:&nbsp;L_1"];
+    11 [label="i'initial",shape="plaintext"];
+    12 [label="i'final",shape="plaintext",fontcolor="red"];
+    13 [label="for i in reverse 1 .. 9",shape="diamond"];
+    14 [label="pragma assert ( for some x in 1 .. 9 => x = table (x));<<<pragma check (assert,  for some x in 1 .. 9 => x = table (x));>>>"];
+    15 [label="if ( for all x in 1 .. 9 => table (x) > 0)",shape="diamond"];
+    16 [label="table (5) := 0;"];
+
+    1 ->  10 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    2 ->  12 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    13 ->  10 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    15 ->  2 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="table'initial",shape="plaintext"];
+    4 [label="table'final",shape="plaintext",fontcolor="blue"];
+    5 [label="x'initial",shape="plaintext"];
+    6 [label="x'final",shape="plaintext",fontcolor="red"];
+    7 [label="x'initial",shape="plaintext"];
+    8 [label="x'final",shape="plaintext",fontcolor="red"];
+    10 [label="table (10 - i) := i;\nLoops:&nbsp;L_1"];
+    11 [label="i'initial",shape="plaintext"];
+    12 [label="i'final",shape="plaintext",fontcolor="red"];
+    13 [label="for i in reverse 1 .. 9",shape="diamond"];
+    14 [label="pragma assert ( for some x in 1 .. 9 => x = table (x));<<<pragma check (assert,  for some x in 1 .. 9 => x = table (x));>>>"];
+    15 [label="if ( for all x in 1 .. 9 => table (x) > 0)",shape="diamond"];
+    16 [label="table (5) := 0;"];
+
+    1 ->  10 [arrowType="normal"];
+    1 ->  13 [arrowType="normal"];
+    1 ->  14 [arrowType="normal"];
+    1 ->  15 [arrowType="normal"];
+    3 ->  10 [arrowType="normal",color="red"];
+    5 ->  6 [arrowType="normal",color="red"];
+    5 ->  14 [arrowType="normal",color="red"];
+    7 ->  8 [arrowType="normal",color="red"];
+    7 ->  15 [arrowType="normal",color="red"];
+    10 ->  4 [arrowType="normal",color="red"];
+    10 ->  10 [arrowType="normal",color="red"];
+    10 ->  14 [arrowType="normal",color="red"];
+    10 ->  15 [arrowType="normal",color="red"];
+    10 ->  16 [arrowType="normal",color="red"];
+    11 ->  10 [arrowType="normal",color="red"];
+    13 ->  10 [arrowType="normal"];
+    13 ->  12 [arrowType="normal",color="red"];
+    13 ->  13 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  4 [arrowType="normal",color="red"];
+    16 ->  16 [arrowType="normal",color="red"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="table'initial",shape="plaintext"];
+    4 [label="table'final",shape="plaintext",fontcolor="blue"];
+    5 [label="x'initial",shape="plaintext"];
+    6 [label="x'final",shape="plaintext",fontcolor="red"];
+    8 [label="call qe_1",shape="box"];
+    9 [label="table'in&nbsp;:=&nbsp;table",shape="plaintext"];
+    10 [label="table&nbsp;:=&nbsp;table'out",shape="plaintext"];
+    11 [label="temp_table'initial",shape="plaintext",fontcolor="red"];
+    12 [label="temp_table'final",shape="plaintext"];
+    14 [label="temp_table (i) := i;\nLoops:&nbsp;L_3"];
+    15 [label="i'initial",shape="plaintext"];
+    16 [label="i'final",shape="plaintext",fontcolor="red"];
+    17 [label="for i in 1 .. 9",shape="diamond"];
+    18 [label="pragma assert ( for all x in 1 .. 9 => table (x) /= temp_table (x));<<<pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));>>>"];
+
+    1 ->  8 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  12 [arrowType="normal"];
+    2 ->  16 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
+    10 ->  14 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    14 ->  17 [arrowType="normal"];
+    15 ->  1 [arrowType="normal"];
+    17 ->  14 [arrowType="normal"];
+    17 ->  18 [arrowType="normal"];
+    18 ->  2 [arrowType="normal"];
+}
+
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="table'initial",shape="plaintext"];
+    4 [label="table'final",shape="plaintext",fontcolor="blue"];
+    5 [label="x'initial",shape="plaintext"];
+    6 [label="x'final",shape="plaintext",fontcolor="red"];
+    8 [label="call qe_1",shape="box"];
+    9 [label="table'in&nbsp;:=&nbsp;table",shape="plaintext"];
+    10 [label="table&nbsp;:=&nbsp;table'out",shape="plaintext"];
+    11 [label="temp_table'initial",shape="plaintext",fontcolor="red"];
+    12 [label="temp_table'final",shape="plaintext"];
+    14 [label="temp_table (i) := i;\nLoops:&nbsp;L_3"];
+    15 [label="i'initial",shape="plaintext"];
+    16 [label="i'final",shape="plaintext",fontcolor="red"];
+    17 [label="for i in 1 .. 9",shape="diamond"];
+    18 [label="pragma assert ( for all x in 1 .. 9 => table (x) /= temp_table (x));<<<pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));>>>"];
+
+    1 ->  8 [arrowType="normal"];
+    1 ->  14 [arrowType="normal"];
+    1 ->  17 [arrowType="normal"];
+    1 ->  18 [arrowType="normal"];
+    3 ->  9 [arrowType="normal",color="red"];
+    5 ->  6 [arrowType="normal",color="red"];
+    5 ->  18 [arrowType="normal",color="red"];
+    8 ->  9 [arrowType="normal"];
+    8 ->  10 [arrowType="normal"];
+    9 ->  10 [arrowType="normal",color="cornflowerblue"];
+    10 ->  4 [arrowType="normal",color="red"];
+    10 ->  18 [arrowType="normal",color="red"];
+    11 ->  14 [arrowType="normal",color="red"];
+    14 ->  12 [arrowType="normal",color="red"];
+    14 ->  14 [arrowType="normal",color="red"];
+    14 ->  18 [arrowType="normal",color="red"];
+    15 ->  14 [arrowType="normal",color="red"];
+    17 ->  14 [arrowType="normal"];
+    17 ->  16 [arrowType="normal",color="red"];
+    17 ->  17 [arrowType="normal"];
+}
+
