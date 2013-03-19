@@ -1,5 +1,5 @@
 package body Stack_ASM
-  with Abstract_State => (The_Stack, The_Ptr)
+  with Refined_State => (State => (The_Stack, The_Ptr))
 is
 
   type Length_T is range 0 .. 100;
