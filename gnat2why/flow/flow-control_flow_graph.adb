@@ -346,9 +346,10 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context);
-   --  This procedure adds a vertex for each variable introduced
-   --  by a quantified expression. Each of these vertices is
-   --  connected to its corresponding Start.
+   --  This procedure goes through a given list of statements and
+   --  recursively looks at each one, setting up the 'initial and
+   --  'final vertices for symbols introduced by quantified
+   --  expressions. We do not descend into nested subprograms.
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
@@ -1459,13 +1460,10 @@ package body Flow.Control_Flow_Graph is
       pragma Unreferenced (CM);
       pragma Unreferenced (Ctx);
 
-      N : Node_Id := First (L);
-
       function Proc (N : Node_Id) return Traverse_Result;
       --  Traverses the tree looking for quantified expressions. Once
-      --  it finds one, it creates a vertex for the variable introduced
-      --  by the quantified expression and it connects it to the Start
-      --  vertex.
+      --  it finds one, it creates the 'initial and 'final vertices
+      --  for the variable introduced by the quantified expression.
 
       ----------
       -- Proc --
@@ -1476,28 +1474,29 @@ package body Flow.Control_Flow_Graph is
          case Nkind (N) is
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               --  If we ever get one of these we skip the rest of
-               --  the nodes that hang under them.
+               --  If we ever get one of these we skip the rest of the
+               --  nodes that hang under them.
                return Skip;
 
             when N_Quantified_Expression =>
+               --  Sanity check: Iterator_Specification is not in
+               --  SPARK so it should always be empty.
                pragma Assert (No (Iterator_Specification (N)));
-               --  Iterator_Specification is not in SPARK so it should
-               --  always be empty.
-               declare
-                  Variable_Introduced : constant Entity_Id :=
-                    Defining_Identifier (Loop_Parameter_Specification (N));
-               begin
-                  Create_Initial_And_Final_Vertices (Variable_Introduced, FA);
-               end;
+
+               Create_Initial_And_Final_Vertices
+                 (Defining_Identifier (Loop_Parameter_Specification (N)),
+                  FA);
 
             when others =>
                null;
          end case;
+
          return OK;
       end Proc;
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
+
+      N : Node_Id := First (L);
    begin
       while Present (N) loop
          Traverse (N);
@@ -2142,13 +2141,12 @@ package body Flow.Control_Flow_Graph is
          end loop;
       end;
 
-      --  Collect variables introduced by quantified expressions and
-      --  add them to the Start vertex.
+      --  Collect variables introduced by quantified expressions.
       Process_Quantified_Expressions
         (Declarations (N), FA, Connection_Map, The_Context);
       Process_Quantified_Expressions
-        (Statements (Handled_Statement_Sequence (N)), FA, Connection_Map,
-         The_Context);
+        (Statements (Handled_Statement_Sequence (N)),
+         FA, Connection_Map, The_Context);
 
       --  If we are dealing with a function, we use its entity to deal
       --  with the value returned, so that should also go into
