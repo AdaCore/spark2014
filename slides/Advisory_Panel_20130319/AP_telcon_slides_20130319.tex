@@ -84,7 +84,20 @@
 
 \end{frame}
 
-\begin{frame}[fragile]{Progress Update - Flow Analysis}
+\begin{frame}[fragile]{Visualisation - Proof}
+
+  \begin{itemize}
+
+  \item Path display for failed verification conditions
+  \item Example - failed array bounds check (line highlighted in red):
+  \includegraphics[width=0.5\textwidth]{show_path.jpg}
+  \item Path (in blue) shows that we can have \verb|J = X'First|, so accessing the array at position \verb|J - 1| would be an error
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Visualisation - Flow Analysis}
 
   \lstdefinestyle{magic}{
     basicstyle=\tiny\tt,
@@ -166,7 +179,7 @@
 
 \end{frame}
 
-\begin{frame}[fragile]{Progress Update - Flow Analysis}
+\begin{frame}[fragile]{Visualisation - Flow Analysis}
 
   \lstdefinestyle{magic}{
     basicstyle=\tiny\tt,
@@ -218,13 +231,23 @@
     \begin{itemize}
     \item Very valuable input
     \item We will respond to all comments by email
-    \item Please feel free to submit further comments (via your GNAT Tracker account)
+    \item Please feel free to submit further comments (via your GNAT Tracker account to spark@adacore.com)
     \end{itemize}
 
   \item The following slides highlight a few key themes ...
 
   \end{itemize}
 
+\end{frame}
+
+\begin{frame}{Language Roadmap}
+
+  \begin{itemize}
+  \item SPARK 2014 will be introduced alongside the existing SPARK profiles for Ada'83, '95 and 2005
+  \item SPARK 2014 will offer the choice of a much larger language subset and new tool features alongside the existing SPARK Pro profiles
+  \item Existing SPARK Pro language profiles will continue to be available to support customer's long-term project requirements
+  \end{itemize}
+ 
 \end{frame}
 
 \begin{frame}{SPARK 2014 Portability}
@@ -281,6 +304,25 @@
 
 \end{frame}
 
+\begin{frame}[fragile]{Annotations and Contracts}
+
+  \begin{itemize}
+  \item In general, all existing contracts will be carried forward in some form (with the possible exception of the integrity contract - see later)
+  \item Syntax for some contracts is not finalised in this release of the LRM
+  \item Specific mappings include:
+
+    \begin{itemize}
+    \item \verb|--# assert| becomes \verb|pragma Loop_Invaraint| or \verb|pragma Assert_and_Cut| (LRM, Section A.3)
+    \item \verb|--# check| becomes \verb|pragma Assert| (LRM, Section A.3)
+    \item \verb|--# assume| becomes \verb|pragma Assume| (LRM, Section A.3)
+    \item \verb|--# accept| equivalent mechanism details TBD
+    \item \verb|--# inherit| this is no longer required --- all necessary information is given by the Ada \verb|with| statement 
+    \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
 \begin{frame}{Assume}
 
   \begin{itemize}
@@ -306,7 +348,7 @@
   \begin{itemize}
 
   \item Profiles
-  \item Translator/Migration to SPARK 2014
+  \item Translation/Migration to SPARK 2014
   \item Integrity Contracts
 
   \end{itemize}
@@ -321,7 +363,7 @@
 
   \item Restrictions used will depend on the project-specific context
 
-  \item Potential goals of a `Strict' profile:
+  \item Potential goals of a profile:
 
     \begin{itemize}
 
@@ -334,6 +376,8 @@
     \item Domain needs.
 
     \end{itemize}
+
+  \item `Strict' profile goals ...
 
   \end{itemize}
 
@@ -414,25 +458,24 @@
 
 \begin{frame}[fragile]{Integrity Properties}
 
-  \lstdefinestyle{magic}{
-    basicstyle=\tiny\tt,
-    keywordstyle=\color{AnColour02},
-    moredelim=**[is][{\btHL[fill=AnSecondaryRed!50,name=error]}]{`}{`},
-    moredelim=**[is][{\btHL[fill=AnSecondaryYellow!50]}]{@}{@},
-  }
-
   \begin{itemize}
 
   \item A means of attaching an integrity level to an own variable
   \item The Examiner checks that information flows correctly between variables wrt their integrity levels and a specified policy (`safety' or `security').
   \item For example, you could have declarations
 
-  \begin{pxcode}[language=SPARK,style=magic,gobble=4]
---# own Default_Key         (Integrity => Integrities.Unclassified);
---#     Root_Signing_Key    (Integrity => Integrities.Top_Secret);
+  \begin{pxcode}[language=SPARK,style=tinystyle,gobble=4]
+    --# own Default_Key      (Integrity => Integrities.Unclassified);
+    --#     Root_Signing_Key (Integrity => Integrities.Top_Secret);
   \end{pxcode}
 
-  \item An assignment of the form Default\_Key := Root\_Signing\_Key would then yield a warning from the Examiner of a policy violation (assuming policy = security)
+  \item An assignment of the form 
+
+  \begin{pxcode}[language=SPARK,style=tinystyle,gobble=4]
+    Default_Key:= Root_Signing_Key;
+  \end{pxcode}
+
+  would then yield a warning from the Examiner of a policy violation (assuming policy = security)
 
   \item Straw poll has indicated this feature is not currently being used
 
