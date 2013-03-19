@@ -528,9 +528,7 @@ package Graph is
    --  Debug
    ----------------------------------------------------------------------
 
-   function Vertex_To_Natural (G : T'Class;
-                               V : Vertex_Id)
-                               return Natural;
+   function Vertex_To_Natural (G : T'Class; V : Vertex_Id) return Natural;
    --  Debug function to get the internal index of the given vertex.
 
 private
