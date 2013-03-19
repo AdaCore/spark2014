@@ -10,8 +10,18 @@ package body Broken is
    procedure Test_01
    is
    begin
-      loop
+      for I in 1 .. 10 loop
          Do_Stuff (I);
       end loop;
    end Test_01;
+
+   procedure Test_02
+   is
+   begin
+      loop
+         Do_Stuff (I);
+      end loop;
+   end Test_02;
+
+
 end Broken;

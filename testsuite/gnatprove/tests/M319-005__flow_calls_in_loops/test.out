@@ -1,1 +1,6 @@
-NOT IMPLEMENTED YET
+broken.adb:14:10: stable
+broken.adb:22:10: stable
+
+
+gnatprove: error during translation to intermediate language, aborting.
+
