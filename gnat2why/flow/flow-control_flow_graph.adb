@@ -374,23 +374,6 @@ package body Flow.Control_Flow_Graph is
    --  a block statement. The declarations and sequence of statements
    --  is processed and linked.
 
-   procedure Do_Representation_Clause
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-      with Pre => Nkind (N) in N_Representation_Clause;
-   --  This deals with representation clauses. More specifically,
-   --  all of the following nodes that are included in an
-   --  N_Representation_Clause:
-   --    N_At_Clause
-   --    N_Component
-   --    N_Enumeration_Representation_Clause
-   --    N_Mod_Clause
-   --    N_Record_Representation_Clause
-   --    N_Attribute_Definition_Clause
-   --  are ignored.
-
    procedure Process_Quantified_Expressions
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1570,35 +1553,6 @@ package body Flow.Control_Flow_Graph is
               (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
    end Do_Subprogram_Or_Block;
 
-   ------------------------------
-   -- Do_Representation_Clause --
-   ------------------------------
-
-   procedure Do_Representation_Clause
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   is
-      pragma Unreferenced (Ctx);
-
-      V : Flow_Graphs.Vertex_Id;
-   begin
-      --  A null vertex is created for:
-      --     N_At_Clause
-      --     N_Component_Clause
-      --     N_Enumeration_Representation_Clause
-      --     N_Mod_Clause
-      --     N_Record_Representation_Clause
-      --     N_Attribute_Definition_Clause
-      FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                         Null_Node_Attributes,
-                           V);
-      CM.Include (Union_Id (N), No_Connections);
-      CM (Union_Id (N)).Standard_Entry := V;
-      CM (Union_Id (N)).Standard_Exits := To_Set (V);
-   end Do_Representation_Clause;
-
    ------------------------------------
    -- Process_Quantified_Expressions --
    ------------------------------------
@@ -1802,12 +1756,13 @@ package body Flow.Control_Flow_Graph is
       --  Create initial nodes for the statements.
       P    := First (L);
       Prev := Empty;
-      while P /= Empty loop
+      while Present (P) loop
          case Nkind (P) is
-            when N_Freeze_Entity |
-              N_Implicit_Label_Declaration |
-              N_Subprogram_Body |
-              N_Subprogram_Declaration =>
+            when N_Freeze_Entity              |
+                 N_Implicit_Label_Declaration |
+                 N_Subprogram_Body            |
+                 N_Subprogram_Declaration     |
+                 N_Representation_Clause      =>
                --  We completely skip these.
                P := Next (P);
 
@@ -1832,7 +1787,7 @@ package body Flow.Control_Flow_Graph is
          end case;
       end loop;
 
-      if Prev /= Empty then
+      if Present (Prev) then
          --  Set the standard exits of the list, if we processed at
          --  least one element.
          CM (Union_Id (L)).Standard_Exits :=
@@ -1880,8 +1835,6 @@ package body Flow.Control_Flow_Graph is
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
-         when N_Representation_Clause =>
-            Do_Representation_Clause (N, FA, CM, Ctx);
          when N_Block_Statement =>
             Do_Subprogram_Or_Block (N, FA, CM, Ctx);
          when others =>
