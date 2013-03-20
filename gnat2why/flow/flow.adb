@@ -294,6 +294,20 @@ package body Flow is
       end case;
    end Change_Variant;
 
+   -------------------
+   -- Parent_Record --
+   -------------------
+
+   function Parent_Record (F : Flow_Id) return Flow_Id is
+   begin
+      return R : Flow_Id := F do
+         R.Component.Delete_Last;
+         if R.Component.Length = 0 then
+            R.Kind := Direct_Mapping;
+         end if;
+      end return;
+   end Parent_Record;
+
    -------------------------------
    -- Loop_Parameter_From_Loop  --
    -------------------------------

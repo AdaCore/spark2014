@@ -154,6 +154,11 @@ package Flow is
    --  Returns a copy of the given flow id, but with a modified
    --  variant.
 
+   function Parent_Record (F : Flow_Id) return Flow_Id
+     with Pre  => F.Kind = Record_Field,
+          Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
+   --  Return the parent record for the given record field.
+
    package Flow_Id_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Flow_Id,
       Hash                => Hash,
