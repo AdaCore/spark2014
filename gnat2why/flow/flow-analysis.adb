@@ -102,24 +102,9 @@ package body Flow.Analysis is
 
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
-                             Loc : Flow_Graphs.Vertex_Id)
-   is
-      K : constant Flow_Id      := G.Get_Key (Loc);
-      A : constant V_Attributes := G.Get_Attributes (Loc);
+                             Loc : Flow_Graphs.Vertex_Id) is
    begin
-      if A.Error_Location /= Empty then
-         --  Try the helpful location first.
-         Error_Msg_N (Msg, A.Error_Location);
-
-      else
-         --  Do our best with the key
-         case K.Kind is
-            when Direct_Mapping =>
-               Error_Msg_N (Msg, Get_Direct_Mapping_Id (K));
-            when others =>
-               raise Why.Not_Implemented;
-         end case;
-      end if;
+      Error_Msg_N (Msg, Error_Location (G, Loc));
    end Error_Msg_Flow;
 
    procedure Error_Msg_Flow (Msg : String;
@@ -127,27 +112,41 @@ package body Flow.Analysis is
                              Loc : Flow_Graphs.Vertex_Id;
                              F   : Flow_Id)
    is
-      K : constant Flow_Id      := G.Get_Key (Loc);
-      A : constant V_Attributes := G.Get_Attributes (Loc);
+      L : constant Node_Or_Entity_Id := Error_Location (G, Loc);
+      M : String := Msg;
    begin
-      pragma Assert (F.Kind in Direct_Mapping | Record_Field);
+      for I in M'Range
+      loop
+         if M (I) = '&' then
+            case F.Kind is
+               when Direct_Mapping =>
+                  null;
+               when others =>
+                  M (I) := '~';
+            end case;
+         end if;
+      end loop;
 
-      if A.Error_Location /= Empty then
-         --  Try the helpful location first.
-         Error_Msg_NE (Msg, A.Error_Location, Get_Direct_Mapping_Id (F));
+      case F.Kind is
+         when Direct_Mapping =>
+            Error_Msg_NE (M,
+                          L,
+                          Get_Direct_Mapping_Id (F));
 
-      else
-         --  Do our best with the key
-         case K.Kind is
-            when Direct_Mapping =>
-               Error_Msg_NE (Msg,
-                             Get_Direct_Mapping_Id (K),
-                             Get_Direct_Mapping_Id (F));
-            when others =>
-               Print_Flow_Id (K);
-               raise Why.Not_Implemented;
-         end case;
-      end if;
+         when Record_Field =>
+            declare
+               S : constant String := Flow_Id_To_String (F);
+            begin
+               Error_Msg_String (1 .. S'Length + 2) := """" & S & """";
+               Error_Msg_Strlen := S'Length + 2;
+            end;
+            Error_Msg_N (M, L);
+
+         when others =>
+            Print_Flow_Id (F);
+            raise Why.Not_Implemented;
+
+      end case;
    end Error_Msg_Flow;
 
    --------------

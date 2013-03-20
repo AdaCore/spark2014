@@ -122,6 +122,10 @@ package Flow is
    --  Debug procedure to print the flow id with more information
    --  (such as kind and variant) attached.
 
+   function Flow_Id_To_String (F : Flow_Id) return String;
+   --  Convert a flow id to a human readable string. This is used for
+   --  emitting error messages.
+
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
       Variant : Flow_Id_Variant := Normal_Use)

@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
+with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Hash;
 with Ada.Strings.Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -206,6 +207,21 @@ package body Flow is
       end case;
       Output.Write_Eol;
    end Print_Flow_Id;
+
+   -----------------------
+   -- Flow_Id_To_String --
+   -----------------------
+
+   function Flow_Id_To_String (F : Flow_Id) return String
+   is
+   begin
+      Temp_String := Null_Unbounded_String;
+      Output.Set_Special_Output (Add_To_Temp_String'Access);
+      Sprint_Flow_Id (F);
+      Output.Write_Eol;
+      Output.Cancel_Special_Output;
+      return To_String (Trim (Temp_String, Right));
+   end Flow_Id_To_String;
 
    -----------------------
    -- Direct_Mapping_Id --
