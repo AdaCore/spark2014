@@ -59,6 +59,8 @@ package body Flow.Slice is
                if IPFA then
                   Deps.Include (V);
                end if;
+            when Initial_Grouping | Final_Grouping =>
+               null;
             when Normal_Use =>
                null;
          end case;

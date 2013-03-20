@@ -70,6 +70,10 @@ package Flow is
       Final_Value,
       --  For the 'initial and 'final vertices.
 
+      Initial_Grouping,
+      Final_Grouping,
+      --  For the tree of record components.
+
       In_View,
       Out_View
       --  For the procedure call parameter vertices.
@@ -80,6 +84,13 @@ package Flow is
 
    subtype Parameter_Variant is Flow_Id_Variant
      range In_View .. Out_View;
+
+   type Corresponding_Grouping_Map is
+     array (Initial_Or_Final_Variant) of Flow_Id_Variant;
+
+   Corresponding_Grouping : constant Corresponding_Grouping_Map :=
+     (Initial_Value => Initial_Grouping,
+      Final_Value   => Final_Grouping);
 
    package Entity_Lists is new Ada.Containers.Vectors
      (Index_Type   => Positive,

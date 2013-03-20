@@ -190,6 +190,10 @@ package body Flow is
             Output.Write_Str ("'initial");
          when Final_Value =>
             Output.Write_Str ("'final");
+         when Initial_Grouping =>
+            Output.Write_Str ("'group'initial");
+         when Final_Grouping =>
+            Output.Write_Str ("'group'final");
          when In_View =>
             Output.Write_Str ("'in");
          when Out_View =>
@@ -753,6 +757,14 @@ package body Flow is
             end case;
 
             case F.Variant is
+               when Initial_Grouping =>
+                  Rv.Shape := Shape_None;
+                  Output.Write_Str ("'group'initial");
+
+               when Final_Grouping =>
+                  Rv.Shape := Shape_None;
+                  Output.Write_Str ("'group'final");
+
                when Initial_Value =>
                   Rv.Shape := Shape_None;
                   Output.Write_Str ("'initial");

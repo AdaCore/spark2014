@@ -101,6 +101,24 @@ package body Flow.Control_Flow_Graph is
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
 
+   procedure Create_Record_Tree (F  : Flow_Id;
+                                 FA : in out Flow_Analysis_Graphs);
+   --  Create part of the tree structure used to represent records. In
+   --  particular, we create the subtree which is formed by the leaf F
+   --  up to the entire variable represented by F. In the art below
+   --  the vertices marked with a * are created by this procedure if F
+   --  is R.A.Y. If we come to a vertex which already exists, we
+   --  stop. This means calling this procedure once for each leaf will
+   --  eventually result in the entire tree.
+   --
+   --                  R*
+   --                 / \
+   --                /   \
+   --             R.A*    R.B
+   --            /   \
+   --           /     \
+   --      R.A.X       R.A.Y*
+
    procedure Create_Initial_And_Final_Vertices
      (E  : Entity_Id;
       FA : in out Flow_Analysis_Graphs);
@@ -455,6 +473,65 @@ package body Flow.Control_Flow_Graph is
       CFG.Add_Edge (From, To, EC_Default);
    end Linkup;
 
+   ------------------------
+   -- Create_Record_Tree --
+   ------------------------
+
+   procedure Create_Record_Tree (F  : Flow_Id;
+                                 FA : in out Flow_Analysis_Graphs)
+   is
+   begin
+      case F.Variant is
+         when Normal_Use | In_View | Out_View =>
+            raise Program_Error;
+
+         when Initial_Value | Final_Value =>
+            case F.Kind is
+               when Null_Value =>
+                  raise Program_Error;
+               when Direct_Mapping =>
+                  null;
+               when Record_Field =>
+                  declare
+                     P : constant Flow_Id :=
+                       Change_Variant (Parent_Record (F),
+                                       Corresponding_Grouping (F.Variant));
+                  begin
+                     Create_Record_Tree (P, FA);
+                     Linkup (FA.CFG,
+                             FA.CFG.Get_Vertex (P),
+                             FA.CFG.Get_Vertex (F));
+                  end;
+               when Magic_String =>
+                  null;
+            end case;
+
+         when Initial_Grouping | Final_Grouping =>
+            case F.Kind is
+               when Null_Value =>
+                  raise Program_Error;
+               when Direct_Mapping | Record_Field =>
+                  --  Only proceed if we don't have this vertex yet.
+                  if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
+                     --  Create vertex.
+                     FA.CFG.Add_Vertex
+                       (F,
+                        Make_Aux_Vertex_Attributes);
+
+                     if F.Kind = Record_Field then
+                        Create_Record_Tree (Parent_Record (F), FA);
+                        Linkup (FA.CFG,
+                                FA.CFG.Get_Vertex (Parent_Record (F)),
+                                FA.CFG.Get_Vertex (F));
+                     end if;
+                  end if;
+               when Magic_String =>
+                  null;
+            end case;
+
+      end case;
+   end Create_Record_Tree;
+
    ---------------------------------------
    -- Create_Initial_And_Final_Vertices --
    ----------------------------------------
@@ -477,6 +554,9 @@ package body Flow.Control_Flow_Graph is
                                       E_Loc => E),
             V);
          Linkup (FA.CFG, V, FA.Start_Vertex);
+
+         Create_Record_Tree (Change_Variant (F, Initial_Value),
+                             FA);
 
          --  Setup the n'final vertex.
          FA.CFG.Add_Vertex
