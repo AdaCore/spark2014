@@ -695,41 +695,88 @@ package body Flow.Analysis is
 
    procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs)
    is
+      Unused_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Used_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Entire_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
+      --  First we collect a set of all unused inputs.
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            I_F : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            I_A : constant V_Attributes := FA.PDG.Get_Attributes (V_Initial);
-
-            V_Final : Flow_Graphs.Vertex_Id;
-            F_F     : Flow_Id;
+            I_F       : constant Flow_Id := FA.PDG.Get_Key (V_Initial);
+            V_Final   : Flow_Graphs.Vertex_Id;
+            F_F       : Flow_Id;
+            Is_Unused : Boolean := False;
          begin
-            --  For all 'initial vertices which have precisely one link...
-            if I_F.Variant = Initial_Value and then
-              FA.PDG.Out_Neighbour_Count (V_Initial) = 1 then
-               for V of FA.PDG.Get_Collection (V_Initial,
-                                               Flow_Graphs.Out_Neighbours) loop
-                  V_Final := V;
-               end loop;
-               F_F := FA.PDG.Get_Key (V_Final);
-               --  If that one link goes directly to the final use
-               --  vertex and its the only link...
-               if F_F.Variant = Final_Value and then
-                 FA.PDG.In_Neighbour_Count (V_Final) = 1 then
-                  --  then we are dealing with an unused object.
-                  if I_A.Is_Global then
-                     --  We have an unused global, we need to give the
-                     --  error on the subprogram, instead of the
-                     --  global.
-                     Error_Msg_Flow ("global & is not used!",
-                                     FA.PDG, FA.Start_Vertex, I_F);
-                  else
-                     Error_Msg_Flow ("& is not used!",
-                                     FA.PDG, V_Initial, I_F);
+            if I_F.Variant = Initial_Value then
+               --  For all 'initial vertices which have precisely one
+               --  link...
+               if FA.PDG.Out_Neighbour_Count (V_Initial) = 1 then
+                  for V of FA.PDG.Get_Collection
+                    (V_Initial, Flow_Graphs.Out_Neighbours)
+                  loop
+                     V_Final := V;
+                  end loop;
+                  F_F := FA.PDG.Get_Key (V_Final);
+                  --  If that one link goes directly to the final use
+                  --  vertex and its the only link...
+                  if F_F.Variant = Final_Value and then
+                    FA.PDG.In_Neighbour_Count (V_Final) = 1 then
+                     --  then we are dealing with an unused object.
+                     Is_Unused := True;
                   end if;
+               end if;
+
+               --  Note the entire variable.
+               declare
+                  P : Flow_Graphs.Vertex_Id := V_Initial;
+               begin
+                  while P /= Flow_Graphs.Null_Vertex loop
+                     if FA.CFG.Parent (P) = Flow_Graphs.Null_Vertex then
+                        Entire_Ids.Include (P);
+                        exit;
+                     end if;
+                     P := FA.CFG.Parent (P);
+                  end loop;
+               end;
+
+               --  Flag up records used.
+               if Is_Unused then
+                  Unused_Ids.Include (V_Initial);
+               else
+                  declare
+                     P : Flow_Graphs.Vertex_Id := V_Initial;
+                  begin
+                     while P /= Flow_Graphs.Null_Vertex loop
+                        Used_Ids.Include (P);
+                        P := FA.CFG.Parent (P);
+                     end loop;
+                  end;
                end if;
             end if;
          end;
+      end loop;
+
+      --  Now that we have this set we can issue error messages. We
+      --  can't do it inline because we need to pay special attention
+      --  to records.
+      for V of Entire_Ids loop
+         if not Used_Ids.Contains (V) then
+            declare
+               F : constant Flow_Id      := FA.PDG.Get_Key (V);
+               A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            begin
+               if A.Is_Global then
+                  --  We have an unused global, we need to give the
+                  --  error on the subprogram, instead of the
+                  --  global.
+                  Error_Msg_Flow ("global & is not used!",
+                                  FA.PDG, FA.Start_Vertex, F);
+               else
+                  Error_Msg_Flow ("& is not used!",
+                                  FA.PDG, V, F);
+               end if;
+            end;
+         end if;
       end loop;
    end Find_Unused_Objects;
 
