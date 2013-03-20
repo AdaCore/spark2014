@@ -341,6 +341,22 @@ package body Flow.Control_Flow_Graph is
    --  a block statement. The declarations and sequence of statements
    --  is processed and linked.
 
+   procedure Do_Representation_Clause
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) in N_Representation_Clause;
+   --  This deals with representation clauses. More specifically,
+   --  the following nodes are ignored:
+   --    N_At_Clause
+   --    N_Component
+   --    N_Enumeration_Representation_Clause
+   --    N_Mod_Clause
+   --    N_Record_Representation_Clause
+   --  while the following nodes raise why.Not_SPARK:
+   --    N_Attribute_Definition_Clause
+
    procedure Process_Quantified_Expressions
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1447,6 +1463,25 @@ package body Flow.Control_Flow_Graph is
               (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
    end Do_Subprogram_Or_Block;
 
+   ------------------------------
+   -- Do_Representation_Clause --
+   ------------------------------
+
+   procedure Do_Representation_Clause
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      pragma Unreferenced (FA);
+      pragma Unreferenced (CM);
+      pragma Unreferenced (Ctx);
+   begin
+      if Nkind (N) = N_Attribute_Definition_Clause then
+         raise Why.Not_SPARK;
+      end if;
+   end Do_Representation_Clause;
+
    ------------------------------------
    -- Process_Quantified_Expressions --
    ------------------------------------
@@ -1728,6 +1763,8 @@ package body Flow.Control_Flow_Graph is
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
+         when N_Representation_Clause =>
+            Do_Representation_Clause (N, FA, CM, Ctx);
          when N_Block_Statement =>
             Do_Subprogram_Or_Block (N, FA, CM, Ctx);
          when others =>
