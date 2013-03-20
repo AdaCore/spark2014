@@ -1499,12 +1499,25 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      pragma Unreferenced (FA);
-      pragma Unreferenced (CM);
       pragma Unreferenced (Ctx);
+
+      V : Flow_Graphs.Vertex_Id;
    begin
       if Nkind (N) = N_Attribute_Definition_Clause then
          raise Why.Not_SPARK;
+      else
+         --  A null vertex is created for:
+         --     N_At_Clause
+         --     N_Component_Clause
+         --     N_Enumeration_Representation_Clause
+         --     N_Mod_Clause
+         --     N_Record_Representation_Clause
+         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                            Null_Node_Attributes,
+                            V);
+         CM.Include (Union_Id (N), No_Connections);
+         CM (Union_Id (N)).Standard_Entry := V;
+         CM (Union_Id (N)).Standard_Exits := To_Set (V);
       end if;
    end Do_Representation_Clause;
 
