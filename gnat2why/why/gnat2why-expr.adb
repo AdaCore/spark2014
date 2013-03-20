@@ -3113,9 +3113,9 @@ package body Gnat2Why.Expr is
 
                   --  Array_Type'First
 
-                  if Nkind (Var) = N_Identifier and then
-                    Is_Type (Entity (Var)) then
-
+                  if Nkind (Var) in N_Identifier | N_Expanded_Name
+                    and then Is_Type (Entity (Var))
+                  then
                      T := New_Attribute_Expr
                        (Etype (First_Index (Entity (Var))),
                         Attr_Id);
@@ -4556,9 +4556,9 @@ package body Gnat2Why.Expr is
       --  First handle the case where there is a subtype mark of a record type
       --  on the right
 
-      if Nkind (In_Expr) = N_Identifier and then
-        Ekind (Entity (In_Expr)) in Type_Kind and then
-        Ekind (Unique_Entity (Entity (In_Expr))) in Record_Kind
+      if Nkind (In_Expr) in N_Identifier | N_Expanded_Name
+        and then Ekind (Entity (In_Expr)) in Type_Kind
+        and then Ekind (Unique_Entity (Entity (In_Expr))) in Record_Kind
       then
          declare
             Ty   : constant Entity_Id :=
