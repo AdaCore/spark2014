@@ -363,14 +363,15 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
       with Pre => Nkind (N) in N_Representation_Clause;
    --  This deals with representation clauses. More specifically,
-   --  the following nodes are ignored:
+   --  all of the following nodes that are included in an
+   --  N_Representation_Clause:
    --    N_At_Clause
    --    N_Component
    --    N_Enumeration_Representation_Clause
    --    N_Mod_Clause
    --    N_Record_Representation_Clause
-   --  while the following nodes raise why.Not_SPARK:
    --    N_Attribute_Definition_Clause
+   --  are ignored.
 
    procedure Process_Quantified_Expressions
      (L   : List_Id;
@@ -1503,22 +1504,19 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
    begin
-      if Nkind (N) = N_Attribute_Definition_Clause then
-         raise Why.Not_SPARK;
-      else
-         --  A null vertex is created for:
-         --     N_At_Clause
-         --     N_Component_Clause
-         --     N_Enumeration_Representation_Clause
-         --     N_Mod_Clause
-         --     N_Record_Representation_Clause
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Null_Node_Attributes,
-                            V);
-         CM.Include (Union_Id (N), No_Connections);
-         CM (Union_Id (N)).Standard_Entry := V;
-         CM (Union_Id (N)).Standard_Exits := To_Set (V);
-      end if;
+      --  A null vertex is created for:
+      --     N_At_Clause
+      --     N_Component_Clause
+      --     N_Enumeration_Representation_Clause
+      --     N_Mod_Clause
+      --     N_Record_Representation_Clause
+      --     N_Attribute_Definition_Clause
+      FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                         Null_Node_Attributes,
+                           V);
+      CM.Include (Union_Id (N), No_Connections);
+      CM (Union_Id (N)).Standard_Entry := V;
+      CM (Union_Id (N)).Standard_Exits := To_Set (V);
    end Do_Representation_Clause;
 
    ------------------------------------
