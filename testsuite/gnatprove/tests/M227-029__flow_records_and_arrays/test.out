@@ -1,1 +1,12 @@
-NOT IMPLEMENTED YET
+parameter_tests.adb:35:04: global "g.y" might not be set [uninitialized]
+parameter_tests.adb:49:04: ineffective global import "G"
+message_tests.adb:40:33: ineffective import "C"
+message_tests.adb:40:33: "C" is not used
+message_tests.adb:48:32: component "c.flags.b" of formal parameter might not be set [uninitialized]
+message_tests.adb:48:32: component "c.flags.a" of formal parameter might not be set [uninitialized]
+message_tests.adb:48:32: component "c.w" of formal parameter might not be set [uninitialized]
+message_tests.adb:66:15: use of uninitialized variable "f.b" [uninitialized]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+
