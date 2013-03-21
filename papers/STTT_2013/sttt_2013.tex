@@ -6,16 +6,20 @@
 %\usepackage{amssymb}
 %\usepackage{amsfonts,amsmath}
 \usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xspace}
+\lstset{language=Ada}
+
 %
 \newcommand{\DO}{\textsc{do-178}}
 \newcommand{\DOB}{\textsc{do-178b}}
 \newcommand{\DOC}{\textsc{do-178c}}
 \newcommand{\hilite}{Hi-Lite}
-\newcommand{\gnatprove}{GNATprove}
-\newcommand{\oldspark}{SPARK~2005}
-\newcommand{\newspark}{SPARK~2014}
-\newcommand{\ada}{Ada}
-\newcommand{\adatwtw}{Ada~2012}
+\newcommand{\gnatprove}{GNATprove\xspace}
+\newcommand{\oldspark}{SPARK~2005\xspace}
+\newcommand{\newspark}{SPARK~2014\xspace}
+\newcommand{\ada}{Ada\xspace}
+\newcommand{\adatwtw}{Ada~2012\xspace}
 
 
 \begin{document}
@@ -74,7 +78,7 @@ increase the reasoning capabilities for mainstream programming
 languages. See \cite{HatcliffLLMP12} for many insights in the
 programming language approach to program verification. However, there
 are still some remaining challenges before we can expect verifying
-compilers to be as widely used as testing. 
+compilers to be as widely used as testing.
 
 There are some notable exceptions where formal software verification
 has been succesfully used and scaled to large industrial projects. For
@@ -87,9 +91,9 @@ We would like to identify two main hurdles currently in the take-up of
 verifying compiler technology:
 %
 \begin{enumerate}
-\item difficulty to reach non-expert users, and 
+\item difficulty to reach non-expert users, and
 \item lack of convincing cost-benefit argument.
-\end{enumerate} 
+\end{enumerate}
 %
 In this paper we will describe our approach to solve those two
 problems in the design of the \newspark\ language and the associated
@@ -195,9 +199,91 @@ flexible solution:
 \section{VerifyThis Competition}
 \label{verifythis}
 
+\subsection{Solution to Challenge 1}
+
+The longest common prefix solution can be readily coded in Ada as follows:
+
+\begin{footnotesize}
+\begin{verbatim}
+subtype Index is Positive range 1 .. 1_000_000;
+type Text is array (Index range <>) of Integer;
+
+function LCP (A : Text; X, Y : Integer) return Natural with
+  Pre  => X in A'Range and then Y in A'Range,
+  Post =>
+    (for all K in 0 .. LCP'Result - 1 => A (X + K) = A (Y + K))
+      and then
+    (X + LCP'Result = A'Last + 1
+      or else Y + LCP'Result = A'Last + 1
+      or else A (X + LCP'Result) /= A (Y + LCP'Result));
+
+function LCP (A : Text; X, Y : Integer) return Natural is
+   L : Natural;
+begin
+   L := 0;
+   while X + L <= A'Last
+     and then Y + L <= A'Last
+     and then A (X + L) = A (Y + L)
+   loop
+      pragma Loop_Invariant
+        (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
+      pragma Loop_Variant (Increases => L);
+      L := L + 1;
+   end loop;
+   return L;
+end LCP;
+\end{verbatim}
+\end{footnotesize}
+
+The type \verb|Text| is an array of integers with unknown bounds. The input
+specification that parameters \verb|X| and \verb|Y| are indices in the array
+parameter \verb|A| can be expressed as a precondition involving the Ada
+attribute \verb|'Range|, and membership tests \verb|X in ...| The output
+specification that the result is the length of the longest common prefix
+starting at \verb|X| and \verb|Y| can be expressed as a postcondition in two
+parts, using the Ada attribute \verb|'Result| to express the function result:
 \begin{itemize}
-\item solution for challenge 1
-\item solution for challenge 2
+\item A quantification stating that the subarrays of \verb|A| of length
+  \verb|LCP'Result| starting at \verb|X| and \verb|Y| are equal.
+\item A disjunction of cases stating that either one of the two subarrays
+  reaches the end of array \verb|A|, or the elements following the two
+  subarrays in \verb|A| are different.
+\end{itemize}
+
+Running \gnatprove on this code without loop invariant or loop variant results
+in the generation of 13 VCs: 1 VC for the postcondition, and 12 VCs for all
+run-time checks (6 array index checks, 5 numeric overflow checks, 1 subtype
+range check). All VCs related to run-time checks are proved. These VCs
+represent both checks in the code and checks in assertions for the array
+accesses in the postcondition. The VC for the postcondition is not proved, due
+to the presence of a loop in the body of \verb|LCP|.
+
+Proving the postcondition requires the insertion of a loop invariant in the
+body of \verb|LCP|, which expresses that the subarrays of \verb|A| of length
+\verb|L| starting at \verb|X| and \verb|Y| are equal. Since \verb|L| is the
+value returned by \verb|LCP|, this loop invariant matches the first part of the
+postcondition when the loop terminates. As expected, the postcondition is
+proved with this additional loop invariant. \gnatprove generates 4 additional
+VCs to prove that the loop invariant initially holds at the first iteration
+through the loop, that it is maintained by subsequent iterations, and that the
+two array accesses in the loop invariant expression are within bounds. All 4
+additional VCs are also proved.
+
+Finally, proving termination of \verb|LCP| requires the insertion of a loop
+variant in the body of \verb|LCP|, which expresses that the value of \verb|L|
+always increases between two consecutive iterations through the loop. Since
+\verb|L| is of a bounded type (the scalar type \verb|Natural| of natural
+numbers), it cannot be infinitely incremented without failing a run-time
+check. Since we have already proved that no run-time check fails in \verb|LCP|,
+proving the variant proves the termination of \verb|LCP|. The corresponding VC
+is proved by \gnatprove.
+
+The final version of \verb|LCP| is proved in 6s on a DELL laptop with 4G RAM
+and 3GHz processor.
+
+\subsection{Solution to Challenge 2}
+
+\begin{itemize}
 \item use of execution to debug annotations during competition $\rightarrow$
   prize of user-assistance tool feature
 \item snapshot of GNATprove results in GPS
