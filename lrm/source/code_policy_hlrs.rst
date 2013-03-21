@@ -120,7 +120,12 @@ Applying Profiles
 
    **Rationale**:   To allow the user maximum flexibility when applying a Profile.
 
-#. **Requirement**: It shall be possible to accept deviations from a given Profile or Policy.
+#. **Requirement**: It shall be possible to accept deviations from a given Profile or Policy,
+   and at a finer level of granularity than partition-wide or program-unit level.
+   *Note it must be possible to add a justification for the overriding of the error message
+   associated with the deviation, as well as having the possibility of logging that an error
+   message has been overridden (to provide evidence for assurance purposes).*
+
 
    **Rationale**: This provides similar functionality to that of the --# accept statement
    in SPARK 2005 and gives the user the flexibility to decide that a given instance of a deviation is
