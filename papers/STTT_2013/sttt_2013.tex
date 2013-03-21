@@ -21,6 +21,15 @@
 \newcommand{\ada}{Ada\xspace}
 \newcommand{\adatwtw}{Ada~2012\xspace}
 
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\adhoc}{\textit{ad hoc}\xspace}
+\newcommand{\Eg}{\textit{E.g.,}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
 
 \begin{document}
 %
@@ -282,6 +291,162 @@ The final version of \verb|LCP| is proved in 6s on a DELL laptop with 4G RAM
 and 3GHz processor.
 
 \subsection{Solution to Challenge 2}
+
+We have chosen to implement an imperative version of prefix sum instead of a
+recursive one, which better matches the constraints commonly found in critical
+embedded software where recursion is usually not allowed. In order to make
+automatic proof possible, we fix the length of the array to 8. The complete
+solution is quite long (186 loc, not counting empty lines), so we only show
+here selected parts. The initial solution without annotations is
+straighforward, and only 50 lines long. As an example, here is the
+implementation of procedure \verb|Upsweep|:
+
+\begin{footnotesize}
+\begin{verbatim}
+procedure Upsweep (A : in out Input; Output_Space : out Positive) is
+   Space : Positive := 1;
+   Left  : Natural;
+   Right : Natural;
+begin
+   while Space < A'Length loop
+      Left := Space - 1;
+      while Left < A'Length loop
+         Right     := Left + Space;
+         A (Right) := A (Left) + A (Right);
+         Left      := Left + Space * 2;
+      end loop;
+      Space := Space * 2;
+   end loop;
+   Output_Space := Space;
+end Upsweep;
+\end{verbatim}
+\end{footnotesize}
+
+The postcondition of procedure \verb|Upsweep| states that
+the array parameter \verb|A| is put in an intermediate form \wrt its initial
+value (denoted \verb|A'Old|). The contract of procedure \verb|Downsweep| states
+it takes as input an array parameter \verb|A| in an intermediate form \wrt a
+\verb|Ghost| array parameter, and that it outputs in the same parameter
+\verb|A| the desired prefix sums of array \verb|Ghost|. By calling in sequence
+\verb|Upsweep| and \verb|Downsweep| on an array \verb|A|, with the initial
+value of \verb|A| passed as \verb|Ghost| parameter, a caller performs the
+desired in-place modification of \verb|A|. Although SPARK does not support yet
+ghost parameters, which are only used for proofs, this is here the role of
+parameter \verb|Ghost|, hence its name.
+
+\begin{footnotesize}
+\begin{verbatim}
+procedure Upsweep (A : in out Input; Output_Space : out Positive) with
+  Pre  => All_Elements_In (A, Maximum),
+  Post => All_Elements_In (A, 8 * Maximum)
+    and then Output_Space = 8
+    and then Intermediate_Form (A, A'Old);
+
+procedure Downsweep
+  (Ghost : Input; A : in out Input; Input_Space : in Positive)
+with
+  Pre => All_Elements_In (Ghost, Maximum)
+    and then All_Elements_In (A, 8 * Maximum)
+    and then Input_Space = 8
+    and then Intermediate_Form (A, Ghost),
+  Post =>
+    A (0) = 0
+      and then
+    A (1) = Ghost (0)
+      and then
+    A (2) = Ghost (0) + Ghost (1)
+      and then
+    A (3) = Ghost (0) + Ghost (1) + Ghost (2)
+      and then
+    A (4) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
+      and then
+    A (5) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+      and then
+    A (6) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+          + Ghost (5)
+      and then
+    A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+          + Ghost (5) + Ghost (6);
+\end{verbatim}
+\end{footnotesize}
+
+The function \verb|Intermediate_Form| gives the exact relationship between the
+initial value of the array (parameter \verb|B| below) and its intermediate
+value between the calls to \verb|Upsweep| and \verb|Downsweep| (parameter
+\verb|A| below). We define it as an expression function in Ada, which has the
+benefit that \gnatprove automatically generates a postcondition for
+\verb|Intermediate_Form| equivalent to its body. We also give a precondition to
+\verb|Intermediate_Form| to prove that its evaluation cannot fail run-time
+checks (overflow checks and index checks here).
+
+\begin{footnotesize}
+\begin{verbatim}
+function Intermediate_Form (A, B : Input) return Boolean with
+  Pre => All_Elements_In (A, Maximum * 8)
+    and then All_Elements_In (B, Maximum);
+
+function Intermediate_Form (A, B : Input) return Boolean is
+  (for all K in A'Range =>
+     (if (K + 1) mod 8 = 0 then
+        A (K) = B (0) + B (1) + B (2) + B (3) +
+                B (4) + B (5) + B (6) + B (7)
+     elsif (K + 1) mod 4 = 0 then
+        A (K) = B (K) + B (K-1) + B (K-2) + B (K-3)
+     elsif (K + 1) mod 2 = 0 then
+        A (K) = B (K) + B (K-1)
+     else
+        A (K) = B (K)));
+\end{verbatim}
+\end{footnotesize}
+
+Note that the contracts of all previous procedure and functions contain calls
+to function \verb|All_Elements_In|, which returns \verb|True| if all elements
+of an array are bounded in absolute value, which we also define as an
+expression function:
+
+\begin{footnotesize}
+\begin{verbatim}
+function All_Elements_In (A : Input; Max : Positive) return Boolean is
+   (for all K in A'Range => A (K) in -Max .. Max);
+\end{verbatim}
+\end{footnotesize}
+
+These specifications add 62 lines to the initial 50 lines for the solution. To
+prove them with \gnatprove, we add 84 more lines for loop invariants and loop
+variants. As an example, here are the loop invariant and loop variant for the
+inner loop of procedure \verb|Upsweep|. Inside the loop invariant,
+\verb|A'Loop_Entry| denotes the value of \verb|A| on entry to the loop.
+
+\begin{footnotesize}
+\begin{verbatim}
+pragma Loop_Invariant (
+  (Left + 1) mod Space = 0
+    and then
+  All_Left_Elements_In (A, Left, Space * 2 * Maximum)
+    and then
+  All_Right_Elements_In (A, Left - 1, Space * Maximum)
+    and then
+  (Left + 1) mod (Space * 2) = Space
+    and then
+  (if Left >= A'Length then Left = 8 or Left = 9)
+    and then
+  (for all K in A'Range =>
+    (if K in A'First .. Left - Space
+       and then (K + 1) mod (2 * Space) = 0
+     then
+        A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
+     else
+        A (K) = A'Loop_Entry (K))));
+pragma Loop_Variant (Increases => Left);
+\end{verbatim}
+\end{footnotesize}
+
+The final version of prefix sum is partially proved (78 VCs proved, 8 VCs
+unproved) in 138s on a DELL laptop with 24G RAM and 24 processors at 2.4GHz.
+These 8 unproved VCs are either loop invariants or postconditions, which are
+not proved automatically due to the use of the \verb|mod| operator, currently
+not well handled in the underlying automatic prover. We have checked all of
+them manually.
 
 \begin{itemize}
 \item use of execution to debug annotations during competition $\rightarrow$
