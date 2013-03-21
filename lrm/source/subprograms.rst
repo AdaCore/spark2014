@@ -425,7 +425,7 @@ where
 
 #. A ``global_item`` is *referenced* by a subprogram if:
 
-   * It is an input or an output of the subprogram, or;
+   * It denotes an input or an output of the subprogram, or;
 
    * Its entry value is used to determine the value of an assertion
      expression within the subprogram, or;
@@ -474,7 +474,14 @@ where
    
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
-#. ``global_items`` in the same Global aspect specification shall denote
+#. A ``global_item`` with a ``mode_selector`` of
+   ``Output`` or ``In_Out`` shall not denote a constant, type or subtype.
+
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR Constants, types and subtypes  cannot have Output or In_Out as mode_selector
+      
+#. The ``global_items`` in a single Global aspect specification shall denote
    distinct entities.
 
    .. ifconfig:: Display_Trace_Units
@@ -486,7 +493,15 @@ where
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR A global_item cannot denote a formal parameter
+      :Trace Unit: 6.1.4 LR a global_item of a subprogram shall not be a 
+        formal parameter of the same subprogram.
+      
+#. If a subprogram is nested within another and if the Global aspect 
+   specification of the outer subprogram has an entity deonted by a
+   ``global_item`` with a ``mode_specification`` of Input, then a 
+   ``global_item`` of the Glpbal aspect specification of the inner
+   subprogram shall not denote the same entity with a ``mode_selector`` of 
+   In_Out or Out.
 
 
 .. centered:: **Dynamic Semantics**
@@ -495,9 +510,29 @@ There are no dynamic semantics associated with a Global aspect.
 
 .. centered:: **Verification Rules**
 
-There are no verification rules associated with a Global aspect of a subprogram
-declaration.  The rules given in the Subprogram Bodies section under Global 
-aspects are checked when a subprogram body is analyzed.
+#. A``global_item`` shall occur in a Global aspect of a 
+   subprogram if and only if it denotes an entity that is referenced by the 
+   subprogram.
+   
+#. Each entity denoted by a ``global_item`` in a Global aspect of a subprogram 
+   that is an input or output of the subprogram shall satisfy the following mode
+   specification rules 
+   [which are checked during analysis of the subprogram body]:
+
+   * a ``global_item`` that denotes an input but not an output is mode **in** 
+     and has a ``mode_selector`` of Input; 
+   
+   * a ``global_item`` that denotes an output but not an input is always fully 
+     initialized on every call of the subprogram, is mode **out** and has a 
+     ``mode_selector`` of Output;
+     
+   * otherwise the ``global_item`` denotes both an input and an output, is
+     mode **in out** and has a ``mode_selector`` of In_Out.
+
+#. An entity that is denoted by a ``global_item`` which is referenced by a 
+   subprogram but is neither an input nor an output but is only referenced
+   directly, or indirectly in assertion expressions has a ``mode_selector`` of 
+   Proof_In.
 
 .. centered:: **Examples**
 
@@ -601,6 +636,15 @@ aspect but, unlike a postcondition, the Depends aspect has
 to be complete in the sense that every input and output of the subprogram must
 appear in the Depends aspect.
 
+The Depends aspect may only be specified for the initial declaration of a
+subprogram (which may be a declaration, a body or a body stub).
+The implementation of a subprogram body must be consistent with the
+subprogram's Depends Aspect.
+
+Note that a Refined Depends aspect may be applied to a subprogram body when 
+using state abstraction; see section :ref:`refined-depends-aspect` for further 
+details.
+
 The Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Depends and the ``aspect_definition`` must follow
 the grammar of ``dependency_relation`` given below.
@@ -633,20 +677,33 @@ where
 
 .. centered:: **Legality Rules**
 
-#. Every ``input`` of a ``dependency_relation`` of a Depends
-   aspect shall denote an entire object, a type, a subtype, or a state
-   abstraction.
+#. The *input set* of a subprogram is the set of formal parameters of the 
+   subprogram of mode **in** and **in out** along with the entities denoted by 
+   ``global_items`` of the Global aspect of the subprogram with a 
+   ``mode_selector`` of Input or In_Out.   
+   
+#. The *output set* of a subprogram is the set of formal parameters of the 
+   subprogram of mode **in out** and **out** along with the entities denoted by 
+   ``global_items`` of the Global aspect of the subprogram with a 
+   ``mode_selector`` of In_Out or Output and (for a function) the 
+   ``function_result``.
+   
+#. The entity denoted by each ``input`` of a ``dependency_relation`` of a 
+   subprogram shall be a member of the input set of the subprogram.
 
-#. An ``input`` of a ``dependency_relation`` of a Depends
-   aspect shall not denote a manifest constant, type, or subtype.
+#. Every member of the input set of a subprogram shall be denoted by at least 
+   one ``input`` of the ``dependency_relation`` of the subprogram.
+   
+#. The entity denoted by each ``output`` of a ``dependency_relation`` of a 
+   subprogram shall be a member of the output set of the subprogram.
 
+#. Every member of the output set of a subprogram shall be dentoed by exactly 
+   one ``output`` in the ``dependency_relation`` of the subprogram.
+      
 #. An ``input`` or ``output`` of a ``dependency_relation`` of a Depends
    aspect shall not denote a state abstraction whose refinement
    is visible [(a state abstraction cannot be named within its enclosing
    package's body other than in its refinement)].
-
-#. Every non-function_result ``output`` of a ``dependency_relation`` of a
-   Depends aspect shall denote an entire object or a state abstraction.
 
 #. The rule that an ``input`` or ``output`` of a ``dependency_relation``
    shall not denote a function or a function call [(which is already
@@ -654,19 +711,6 @@ where
    [In particular, an ``input`` or ``output`` can unambiguously denote a
    state abstraction even if a function having the same fully qualified
    name is also present].
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 LR Must be a state abstraction/whole object or formal parameter
-
-#. An ``input`` must have a mode of **in** or **in out**
-   and an ``output`` must have an mode of **in out** or
-   **out**.  [Note: As a consequence an entity which is both an
-   ``input`` and an ``output`` shall have a mode of **in out**.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 LR input must be of mode in or in out and output must be of mode out or in out
 
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
@@ -679,55 +723,26 @@ where
 
 #. There can be at most one ``output_list`` which is a **null** symbol
    and if it exists it must be the ``output_list`` of the last
-   ``dependency_clause`` in the ``dependency_relation``.  An
-   ``input`` which is in an ``input_list`` of a **null** ``output_list`` may
-   not appear in another ``input_list`` of the same
-   ``dependency_relation``.
+   ``dependency_clause`` in the ``dependency_relation``.  
+   
+#. An entity denoted by an ``input`` which is in an ``input_list`` of a 
+   **null** ``output_list`` may not be denoted by an ``input`` in another 
+   ``input_list`` of the same ``dependency_relation``.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 6.1.5 LR null restrictions in Depends aspect
 
-#. The entity denoted by an ``output`` in an ``output_list`` shall
-   not be denoted by any other ``output`` in that ``output_list`` or any other
-   ``output_list``.   
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 LR Unique output entities
-
-#. The entity denoted by an ``input`` in an ``input_list`` shall
-   not be denoted by any other ``input`` in that ``input_list``.     
+#. The ``inputs`` in a single ``input_list`` shall denote distinct entities.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 6.1.5 LR Unique input entities
 
-#. Every ``output`` of the subprogram shall appear in exactly one
-   ``output_list``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 LR Each output appears exactly once
-   
-#. Every ``input`` of the subprogram shall appear in at least one
-   ``input_list``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 LR Each input shall appear at least once
-      
 #. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
 
 .. centered:: **Static Semantics**
 
-#. The grammar terms ``input`` and ``output`` have the meaning given to input
-   and output given in :ref:`subprogram-declarations`.
-   
-#. A ``dependency_clause`` has the meaning that the exit value of every 
-   ``output`` in the ``output_list`` is dependent on the entry value of every 
-   ``input`` in the ``input_list``.
-   
 #. A ``dependency_clause`` with a "+" symbol in the syntax ``output_list`` =>+
    ``input_list`` means that each ``output`` in the ``output_list`` has a
    *self-dependency*, that is, it is dependent on itself. 
@@ -737,32 +752,36 @@ where
 #. A ``dependency_clause`` of the form A =>+ A has the same meaning as A => A.
 
 #. A ``dependency_clause`` with a **null** ``input_list`` means that the final
-   value of each ``output`` in the ``output_list`` does not depend on any
-   ``input``, other than itself, if the ``output_list`` =>+ **null**
-   self-dependency syntax is used.
+   value of the entity denoted by each ``output`` in the ``output_list`` does 
+   not depend on any member of the input set of the subrogram 
+   (other than itself, if the ``output_list`` =>+ **null** self-dependency 
+   syntax is used).
 
-#. A ``null_dpendency_clause`` represents a *sink* for each
-   ``input`` in the ``input_list``.  The ``inputs`` in the ``input_list`` have
-   no discernible effect from an information flow analysis viewpoint.
-   [The purpose of a ``null_dependency_clause`` is to facilitate the abstraction 
-   and calling of subprograms whose implementation is not in |SPARK|.]
+#. The ``inputs`` in the ``input_list`` a ``null_dependency_clause`` may be read
+   by the subprogram but play no role in determining the values of any outputs
+   of the subprogram.
 
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
    indicates that the subprogram has no ``inputs`` or ``outputs``.  
    [From an information flow analysis viewpoint it is a 
    null operation (a no-op).]
    
-#. A function without an explicit Depends aspect specification
+#. [A function without an explicit Depends aspect specification
    is assumed to have the ``dependency_relation`` 
    that its result is dependent on all of its inputs.  
-   [Generally an explicit Depends aspect is not required for functions.]
+   Generally an explicit Depends aspect is not required for functions.]
 
-#. A subprogram which has an explicit Depends aspect specification
-   and lacks an explicit Global specification is assumed to have
+#. [A subprogram which has an explicit Depends aspect specification
+   and lacks an explicit Global aspect specification is assumed to have
    the [unique] Global aspect specification that is consistent with the
-   subprogram's Depends aspect. [An explicit Global aspect specification
-   is not required in this case.]
-
+   subprogram's Depends aspect.]
+   
+#. [A subprogram which has an explicit Global aspect specification
+   but lacks an explicit Depends aspect specification and, as yet, has no 
+   implmentation of its body is assumed to have the conservative 
+   ``dependency_relation`` that each member of the output set is dependent on 
+   every member of the input set.]
+   
 .. todo::
    Add rules relating to volatile state.
    To be completed in the Milestone 3 version of this document.
@@ -783,16 +802,16 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-There are no verification rules associated with a Depends aspect of a subprogram
-declaration.  The rules given in the Subprogram Bodies section under Depends 
-aspects are checked when a subprogram body is a analyzed.
-
-.. todo::
-    Consider whether to capture the rules from SPARK 2005 about flow=auto mode in this document
-    or whether it is purely a tool issue
-    (in SPARK 2005, in flow=auto mode if a subprogram is missing a dependency relation
-    then the flow analysis
-    assumes all outputs of the subprogram are derived from all of its inputs).
+#. Each entity denoted by an ``output`` given in the Depends aspect of a
+   subprogram must be an output in the implementation of the subprogram body and 
+   the output must depend on all, but only, the entities denoted by the
+   ``inputs`` given in the ``input_list`` associated with the ``output``.
+   
+#. Each output of the implementation of the subprogram body is denoted by 
+   an ``output`` in the Depends aspect of the subprogram.
+   
+#. Each input of the implementation of a subprogram body is denoted by an
+   ``input`` of the Depends aspect of the subprogram.
 
 .. centered:: **Examples**
 
@@ -1083,112 +1102,6 @@ Inline Expansion of Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 No extensions or restrictions.
-
-Global Aspects
-~~~~~~~~~~~~~~
-
-THe Global aspect may only be specified for the initial declaration of a
-subprogram (which may be either a body or a body stub).
-The implementation of a subprogram body must be consistent with the
-subprogram's Global Aspect.
-
-Note that a Refined Global aspect may be applied to a subprogram body when using state
-abstraction; see section :ref:`refined-global-aspect` for further details.
-
-.. centered:: **Syntax**
-
-No extra syntax is associated with Global aspects on 
-subprogram bodies.
-
-.. centered:: **Legality Rules**
-
-No extra legality rules are associated with Global aspects on 
-subprogram bodies.
-
-.. centered:: **Static Semantics**
-
-No extra static semantics are associated with Global aspects on 
-subprogram bodies.
-
-.. centered:: **Dynamic Semantics**
-
-No extra dynamic semantics are associated with Global aspects on 
-subprogram bodies.
-
-.. centered:: **Verification Rules**
-
-#. A``global_item`` shall occur in a Global aspect of a 
-   subprogram if and only if it denotes an entity that is referenced by the 
-   subprogram.
-   
-#. Each entity denoted by a ``global_item`` in a Global aspect of a subprogram 
-   that is an input or output of the subprogram shall satisfy the following mode
-   specification rules 
-   [which are checked during analysis of the subprogram body]:
-
-   * a ``global_item`` that denotes an input but not an output is mode **in** 
-     and has a ``mode_selector`` of Input; 
-   
-   * a ``global_item`` that denotes an output but not an input is always fully 
-     initialized on every call of the subprogram, is mode **out** and has a 
-     ``mode_selector`` of Output;
-     
-   * otherwise the ``global_item`` denotes both an input and an output, is
-     mode **in out** and has a ``mode_selector`` of In_Out.
-
-#. An entity that is denoted by a ``global_item`` which is referenced by a 
-   subprogram but is neither an input nor an output but is only referenced
-   directly, or indirectly in assertion expressions has a ``mode_selector`` of 
-   Proof_In.
-
-.. todo::
-    Consider how implicitly generated proof obligations associated with runtime checks
-    should be viewed in relation to Proof_In.
-    To be addressed in the Milestone 4 version of this document.
-
-Depends Aspects
-~~~~~~~~~~~~~~~
-
-If a subprogram does not have a separate declaration then the Depends 
-aspect is applied to the declaration of its its body or body stub.
-The implementation of a subprogram body must be consistent with its 
-Depends Aspect.  
-
-Note that a Refined Depends aspect may be applied to a subprogram body when using state
-abstraction; see section :ref:`refined-depends-aspect` for further details.
-
-.. centered:: **Syntax**
-
-No extra syntax is associated with Depends aspects on 
-subprogram bodies.
-
-.. centered:: **Legality Rules**
-
-No extra legality rules are associated with Depends aspects on 
-subprogram bodies.
-
-.. centered:: **Static Semantics**
-
-No extra static semantics are associated with Depends aspects on 
-subprogram bodies.
-
-.. centered:: **Dynamic Semantics**
-
-No extra dynamic semantics are associated with Depends aspects on 
-subprogram bodies
-
-.. centered:: **Verification Rules**
-
-#. Each ``output`` given in the Depends aspect must be an ``output`` in
-   the implementation of the subprogram body and the ``output`` must depend on 
-   all, but only, the ``inputs`` given in the ``input_list`` associated with the 
-   ``output``.
-   
-#. Each ``output`` of the implementation of the subprogram body is present as 
-   an output in the Depends aspect.
-   
-#. Each ``input`` of the Depends aspect is an ``input`` of the implementation of 
-   the subprogram body.
 
 
 Subprogram Calls
