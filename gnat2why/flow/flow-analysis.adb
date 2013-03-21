@@ -55,8 +55,8 @@ package body Flow.Analysis is
                              G   : Flow_Graphs.T'Class;
                              Loc : Flow_Graphs.Vertex_Id;
                              F   : Flow_Id);
-   --  Output an error message attaced to the given vertex
-   --  with a substitution using F.
+   --  Output an error message attaced to the given vertex with a
+   --  substitution using F. Use & as the substitution character.
 
    function Get_Line (G   : Flow_Graphs.T'Class;
                       V   : Flow_Graphs.Vertex_Id;
@@ -115,14 +115,13 @@ package body Flow.Analysis is
       L : constant Node_Or_Entity_Id := Error_Location (G, Loc);
       M : String := Msg;
    begin
-      for I in M'Range
-      loop
-         if M (I) = '&' then
+      for J in M'Range loop
+         if M (J) = '&' then
             case F.Kind is
                when Direct_Mapping =>
                   null;
                when others =>
-                  M (I) := '~';
+                  M (J) := '~';
             end case;
          end if;
       end loop;
