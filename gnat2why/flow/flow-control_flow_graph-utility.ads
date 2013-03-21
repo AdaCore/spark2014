@@ -58,6 +58,11 @@ package Flow.Control_Flow_Graph.Utility is
    --     * return statements without expression
    --     * when labels in a case statement
 
+   function Make_Record_Tree_Attributes
+     (Leaf : V_Attributes)
+      return V_Attributes;
+   --  Returns a copy of Leaf, but with blank def/use sets.
+
    function Make_Call_Attributes
      (Callsite : Node_Id           := Empty;
       Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;

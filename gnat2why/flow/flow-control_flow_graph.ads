@@ -35,6 +35,15 @@ package Flow.Control_Flow_Graph is
    function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
+   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
+   --  Returns a set of flow_ids for all parts of the unique entity
+   --  for E. For records this includes all subcomponents, for
+   --  everything else this is just the variable E.
+
+   function Flatten_Variable (F : Flow_Id) return Flow_Id_Sets.Set
+     with Pre => F.Kind in Direct_Mapping | Magic_String;
+   --  As above, but for flow ids.
+
    procedure Untangle_Assignment_Target
      (N            : Node_Id;
       Vars_Defined : out Flow_Id_Sets.Set;

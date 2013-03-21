@@ -101,8 +101,10 @@ package body Flow.Control_Flow_Graph is
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
 
-   procedure Create_Record_Tree (F  : Flow_Id;
-                                 FA : in out Flow_Analysis_Graphs);
+   procedure Create_Record_Tree
+     (F        : Flow_Id;
+      Leaf_Atr : V_Attributes;
+      FA       : in out Flow_Analysis_Graphs);
    --  Create part of the tree structure used to represent records. In
    --  particular, we create the subtree which is formed by the leaf F
    --  up to the entire variable represented by F. In the art below
@@ -131,11 +133,6 @@ package body Flow.Control_Flow_Graph is
       FA   : in out Flow_Analysis_Graphs);
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
-
-   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
-   --  Returns a set of flow_ids for all parts of the unique entity
-   --  for E. For records this includes all subcomponents, for
-   --  everything else this is just the variable E.
 
    function All_Record_Components
      (Entire_Var : Entity_Id)
@@ -460,9 +457,10 @@ package body Flow.Control_Flow_Graph is
    -- Create_Record_Tree --
    ------------------------
 
-   procedure Create_Record_Tree (F  : Flow_Id;
-                                 FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Create_Record_Tree
+     (F        : Flow_Id;
+      Leaf_Atr : V_Attributes;
+      FA       : in out Flow_Analysis_Graphs) is
    begin
       case F.Variant is
          when Normal_Use | In_View | Out_View =>
@@ -480,7 +478,7 @@ package body Flow.Control_Flow_Graph is
                        Change_Variant (Parent_Record (F),
                                        Corresponding_Grouping (F.Variant));
                   begin
-                     Create_Record_Tree (P, FA);
+                     Create_Record_Tree (P, Leaf_Atr, FA);
                      Linkup (FA.CFG,
                              FA.CFG.Get_Vertex (P),
                              FA.CFG.Get_Vertex (F));
@@ -499,10 +497,10 @@ package body Flow.Control_Flow_Graph is
                      --  Create vertex.
                      FA.CFG.Add_Vertex
                        (F,
-                        Make_Aux_Vertex_Attributes);
+                        Make_Record_Tree_Attributes (Leaf_Atr));
 
                      if F.Kind = Record_Field then
-                        Create_Record_Tree (Parent_Record (F), FA);
+                        Create_Record_Tree (Parent_Record (F), Leaf_Atr, FA);
                         Linkup (FA.CFG,
                                 FA.CFG.Get_Vertex (Parent_Record (F)),
                                 FA.CFG.Get_Vertex (F));
@@ -511,7 +509,6 @@ package body Flow.Control_Flow_Graph is
                when Magic_String =>
                   null;
             end case;
-
       end case;
    end Create_Record_Tree;
 
@@ -524,21 +521,23 @@ package body Flow.Control_Flow_Graph is
       FA : in out Flow_Analysis_Graphs)
    is
       V : Flow_Graphs.Vertex_Id;
+      A : V_Attributes;
    begin
-
       for F of Flatten_Variable (E) loop
          --  Setup the n'initial vertex. Note that initialisation for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
+         A := Make_Variable_Attributes (F_Ent => Change_Variant
+                                          (F, Initial_Value),
+                                        E_Loc => E);
          FA.CFG.Add_Vertex
            (Change_Variant (F, Initial_Value),
-            Make_Variable_Attributes (F_Ent => Change_Variant
-                                        (F, Initial_Value),
-                                      E_Loc => E),
+            A,
             V);
          Linkup (FA.CFG, V, FA.Start_Vertex);
 
          Create_Record_Tree (Change_Variant (F, Initial_Value),
+                             A,
                              FA);
 
          --  Setup the n'final vertex.
@@ -560,49 +559,36 @@ package body Flow.Control_Flow_Graph is
       FA   : in out Flow_Analysis_Graphs)
    is
       V : Flow_Graphs.Vertex_Id;
+      A : V_Attributes;
    begin
-      --  Setup the n'initial vertex. Initialisation is deduced from
-      --  the mode.
-      FA.CFG.Add_Vertex
-        (Change_Variant (F, Initial_Value),
-         Make_Global_Variable_Attributes
-           (F    => Change_Variant (F, Initial_Value),
-            Mode => Mode),
-         V);
-      Linkup (FA.CFG, V, FA.Start_Vertex);
+      for F_Part of Flatten_Variable (F) loop
+         --  Setup the n'initial vertex. Initialisation is deduced from
+         --  the mode.
+         A := Make_Global_Variable_Attributes
+           (F    => Change_Variant (F_Part, Initial_Value),
+            Mode => Mode);
+         FA.CFG.Add_Vertex
+           (Change_Variant (F_Part, Initial_Value),
+            A,
+            V);
+         Linkup (FA.CFG, V, FA.Start_Vertex);
 
-      --  Setup the n'final vertex.
-      FA.CFG.Add_Vertex
-        (Change_Variant (F, Final_Value),
-         Make_Global_Variable_Attributes
-           (F    => Change_Variant (F, Final_Value),
-            Mode => Mode),
-         V);
-      Linkup (FA.CFG, FA.End_Vertex, V);
+         Create_Record_Tree (Change_Variant (F_Part, Initial_Value),
+                             A,
+                             FA);
 
-      FA.All_Vars.Include (F);
+         --  Setup the n'final vertex.
+         FA.CFG.Add_Vertex
+           (Change_Variant (F_Part, Final_Value),
+            Make_Global_Variable_Attributes
+              (F    => Change_Variant (F_Part, Final_Value),
+               Mode => Mode),
+            V);
+         Linkup (FA.CFG, FA.End_Vertex, V);
+
+         FA.All_Vars.Include (F_Part);
+      end loop;
    end Create_Initial_And_Final_Vertices;
-
-   ----------------------
-   -- Flatten_Variable --
-   ----------------------
-
-   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set
-   is
-      U : constant Entity_Id := Unique_Entity (E);
-   begin
-      case Ekind (Etype (U)) is
-         when Elementary_Kind | Array_Kind =>
-            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
-
-         when E_Record_Type =>
-            return All_Record_Components (Entire_Var => U);
-
-         when others =>
-            Print_Node_Briefly (Etype (E));
-            raise Why.Not_Implemented;
-      end case;
-   end Flatten_Variable;
 
    ---------------------------
    -- All_Record_Components --
@@ -2008,6 +1994,38 @@ package body Flow.Control_Flow_Graph is
       end loop;
       return VS;
    end Get_Variable_Set;
+
+   ----------------------
+   -- Flatten_Variable --
+   ----------------------
+
+   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set is
+      U : constant Entity_Id := Unique_Entity (E);
+   begin
+      case Ekind (Etype (U)) is
+         when Elementary_Kind | Array_Kind =>
+            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
+
+         when E_Record_Type =>
+            return All_Record_Components (Entire_Var => U);
+
+         when others =>
+            Print_Node_Briefly (Etype (E));
+            raise Why.Not_Implemented;
+      end case;
+   end Flatten_Variable;
+
+   function Flatten_Variable (F : Flow_Id) return Flow_Id_Sets.Set is
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            return Flatten_Variable (Get_Direct_Mapping_Id (F));
+         when Magic_String =>
+            return Flow_Id_Sets.To_Set (F);
+         when others =>
+            raise Program_Error;
+      end case;
+   end Flatten_Variable;
 
    --------------------------------
    -- Untangle_Assignment_Target --

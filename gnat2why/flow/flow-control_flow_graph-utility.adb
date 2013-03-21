@@ -79,6 +79,21 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Aux_Vertex_Attributes;
 
+   ---------------------------------
+   -- Make_Record_Tree_Attributes --
+   ---------------------------------
+
+   function Make_Record_Tree_Attributes (Leaf : V_Attributes)
+                                         return V_Attributes
+   is
+      A : V_Attributes := Leaf;
+   begin
+      A.Variables_Used    := Flow_Id_Sets.Empty_Set;
+      A.Variables_Defined := Flow_Id_Sets.Empty_Set;
+
+      return A;
+   end Make_Record_Tree_Attributes;
+
    --------------------------
    -- Make_Call_Attributes --
    --------------------------
@@ -174,11 +189,12 @@ package body Flow.Control_Flow_Graph.Utility is
       case Global.Variant is
          when In_View =>
             A.Variables_Used :=
-              Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
+              Flatten_Variable (Change_Variant (Global, Normal_Use));
          when Out_View =>
-            --  ??? We need to make use of untangle_assignment_target here.
+            --  We do not need untangle_assignment_target as we only
+            --  ever update the entire global.
             A.Variables_Defined :=
-              Flow_Id_Sets.To_Set (Change_Variant (Global, Normal_Use));
+              Flatten_Variable (Change_Variant (Global, Normal_Use));
          when others =>
             raise Program_Error;
       end case;
