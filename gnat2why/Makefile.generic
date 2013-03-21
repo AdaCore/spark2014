@@ -63,6 +63,8 @@ obj/smissing.o: smissing.c
 
 MPFR_LIB_DIR=$(GNAT_BUILD_DIR)/libmpfr/install/lib
 GMP_LIB_DIR=$(MPFR_LIB_DIR)
+MPC_LIB_DIR=$(MPFR_LIB_DIR)
+ELF_LIB_DIR=$(MPFR_LIB_DIR)
 
 # Optional environment variables:
 # ADAFLAGS: additional gnat switches to pass to gnatmake
@@ -108,7 +110,7 @@ GCC47_LIBS=$(shell if [ -f $(OBJ)/../libcommon-target.a ]; then echo $(OBJ)/../l
 
 GNAT1_LIBS=$(OBJ)/../libbackend.a $(GCC47_LIBS) $(OBJ)/../../libcpp/libcpp.a \
    $(OBJ)/../../libdecnumber/libdecnumber.a $(OBJ)/../../libiberty/libiberty.a \
-   -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
+   -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -L$(MPC_LIB_DIR) -L$(ELF_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
    $(OBJ)/../../zlib/libz.a
 
 gnat1: force
