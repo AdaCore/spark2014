@@ -259,15 +259,17 @@ package body Flow.Analysis is
    -- Find_Ineffective_Imports --
    ------------------------------
 
-   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs) is
-      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
+   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs)
+   is
+      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
+      is (FA.PDG.Get_Key (V).Variant = Final_Value and then
+            FA.PDG.Get_Attributes (V).Is_Export);
       --  Checks if the given vertex V is a final-use vertex.
 
-      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
-      begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.PDG.Get_Attributes (V).Is_Export;
-      end Is_Final_Use;
+      Ineffective_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Effective_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Entire_Ids      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -276,20 +278,63 @@ package body Flow.Analysis is
          begin
             if Key.Variant = Initial_Value
               and then Atr.Is_Initialised
-              and then (not Atr.Is_Loop_Parameter) then
-               if not FA.PDG.Non_Trivial_Path_Exists
-                 (V, Is_Final_Use'Access) then
+              and then (not Atr.Is_Loop_Parameter)
+            then
+               --  Note the entire variable.
+               declare
+                  P : Flow_Graphs.Vertex_Id := V;
+               begin
+                  while P /= Flow_Graphs.Null_Vertex loop
+                     if FA.CFG.Parent (P) = Flow_Graphs.Null_Vertex then
+                        Entire_Ids.Include (P);
+                        exit;
+                     end if;
+                     P := FA.CFG.Parent (P);
+                  end loop;
+               end;
 
-                  if Atr.Is_Global then
-                     Error_Msg_Flow ("ineffective global import &!",
-                                     FA.PDG, FA.Start_Vertex, Key);
-                  else
-                     Error_Msg_Flow ("ineffective import!", FA.PDG, V);
-                  end if;
-
+               --  Check if we're ineffective or not.
+               if FA.PDG.Non_Trivial_Path_Exists (V,
+                                                  Is_Final_Use'Access)
+               then
+                  --  We can reach a final use vertex, so we are doing
+                  --  something useful. We flag up the entire chain as
+                  --  being useful.
+                  Effective_Ids.Include (V);
+                  declare
+                     P : Flow_Graphs.Vertex_Id := V;
+                  begin
+                     while P /= Flow_Graphs.Null_Vertex loop
+                        Effective_Ids.Include (P);
+                        P := FA.CFG.Parent (P);
+                     end loop;
+                  end;
+               else
+                  --  We cannot reach any final use vertex, hence the
+                  --  import of V is ineffective.
+                  Ineffective_Ids.Include (V);
                end if;
             end if;
          end;
+      end loop;
+
+      --  Now that we can issue error messages. We can't do it inline
+      --  because we need to pay special attention to records.
+      for V of Entire_Ids loop
+         if not Effective_Ids.Contains (V) then
+            declare
+               F : constant Flow_Id      := FA.PDG.Get_Key (V);
+               A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+            begin
+               if A.Is_Global then
+                  Error_Msg_Flow ("ineffective global import &!",
+                                  FA.PDG, FA.Start_Vertex, F);
+               else
+                  Error_Msg_Flow ("ineffective import &!",
+                                  FA.PDG, V, F);
+               end if;
+            end;
+         end if;
       end loop;
    end Find_Ineffective_Imports;
 
@@ -592,10 +637,19 @@ package body Flow.Analysis is
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
-                           Error_Msg_Flow
-                             ("formal parameter & might not be set" &
-                                " [uninitialized]!",
-                              FA.PDG, V_Use, Key_I);
+                           case Key_I.Kind is
+                              when Record_Field =>
+                                 Error_Msg_Flow
+                                   ("component & of formal parameter might" &
+                                      " not be set" &
+                                      " [uninitialized]!",
+                                    FA.PDG, V_Use, Key_I);
+                              when others =>
+                                 Error_Msg_Flow
+                                   ("formal parameter & might not be set" &
+                                      " [uninitialized]!",
+                                    FA.PDG, V_Use, Key_I);
+                           end case;
                            Mark_Definition_Free_Path
                              (E_Loc => V_Use,
                               From  => FA.Start_Vertex,
