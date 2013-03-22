@@ -1,0 +1,17 @@
+
+max.adb:10:54: info: index check proved
+max.adb:11:18: assertion not proved, requires M = Max
+max.adb:12:7: assertion not proved
+max.adb:14:49: info: index check proved
+max.adb:16:50: info: index check proved
+max.adb:23:53: info: index check proved
+max.adb:25:54: info: index check proved
+max.adb:26:18: assertion not proved, requires M = Max
+max.adb:35:10: assertion not proved
+max.adb:35:64: info: index check proved
+max.adb:37:65: info: index check proved
+max.adb:41:10: info: loop invariant initialization proved
+max.adb:41:10: loop invariant preservation not proved
+max.adb:44:56: info: index check proved
+max.adb:46:57: info: index check proved
+max.adb:8:53: info: index check proved
