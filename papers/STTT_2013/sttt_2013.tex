@@ -256,7 +256,10 @@ parts, using the Ada attribute \verb|'Result| to express the function result:
   \verb|LCP'Result| starting at \verb|X| and \verb|Y| are equal.
 \item A disjunction of cases stating that either one of the two subarrays
   reaches the end of array \verb|A|, or the elements following the two
-  subarrays in \verb|A| are different.
+  subarrays in \verb|A| are different. Note here that the use of the lazy
+  boolean connective \verb|or else| is compulsory to make sure that
+  \verb|X + LCP'Result| and \verb|Y + LCP'Result| are without bounds when
+  accessing \verb|A| in the last line of the postcondition.
 \end{itemize}
 
 Running \gnatprove on this code without loop invariant or loop variant results
@@ -448,9 +451,42 @@ not proved automatically due to the use of the \verb|mod| operator, currently
 not well handled in the underlying automatic prover. We have checked all of
 them manually.
 
+\subsection{Useful Tool Features}
+
+The format of the competition exercized useful features of \gnatprove, which
+helped finding errors early in the code or in the annotations. The most useful
+of these features is certainly the ability to execute annotations, which allows
+testing and debugging annotations as if they were code. It was used during the
+competition to quickly locate the reason for an unprovable VC on challenge 1:
+the loop test was using a strict comparison operator instead of the correct
+non-strict one. To locate the problem, the participating author simply wrote a
+test exercizing \verb|LCP| on an input, compiled it with run-time checks, and
+run it. The run-time error raised precisely located the failing loop
+invariant. Although this example was simple enough to immediately understand
+the underlying problem, it would have been possible to use the debugger to
+further investigate the issue, which can be extremely useful on real industrial
+code. The ability to execute annotations was also useful for challenge 2, which
+requires the development of complex loop invariants, to quickly correct
+erroneous ones. This feature won the prize of user-assistance tool feature
+awarded by the jury of the VerifyThis competition.
+
+The second most useful feature for these challenges was the ability to
+eliminate completely all possibilities of numeric overflows in annotations, as
+described in Section~\ref{???}. While using this feature results in only 10
+more overflow VCs in challenge 1, which are all proved with the current
+annotations, it adds 60 overflow VCs in challenge 2, most of which require
+modifications of annotations, or addition of new annotations, to be
+proved. Note that this feature is compatible with the execution of annotations,
+as compilation also takes into account the overflow mode when compiling
+arithmetic expressions.
+
+More generally, these small challenges already make use of numerous language
+features in Ada and SPARK that facilitate the expression of specifications:
+preconditions and postconditions, loop invariants and loop variants, expression
+functions, quantified expressions and if expressions, special attributes
+\verb|'Result|, \verb|'Old| and \verb|'Loop_Entry|.
+
 \begin{itemize}
-\item use of execution to debug annotations during competition $\rightarrow$
-  prize of user-assistance tool feature
 \item snapshot of GNATprove results in GPS
 \end{itemize}
 
