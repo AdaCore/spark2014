@@ -107,7 +107,7 @@ verifying compiler technology:
 In this paper we will describe our approach to solve those two
 problems in the design of the \newspark\ language and the associated
 formal verification tool \gnatprove. We will use running examples from
-the VerifiThis 2012 competition and discuss the results of using our
+the VerifyThis 2012 competition and discuss the results of using our
 tools on those problems.
 
 This paper is organised as follows: First we describe the key language
@@ -193,24 +193,62 @@ flexible solution:
 \section{Making Automatic Verification Work}
 \label{automation}
 
-\begin{itemize}
-\item bulk parallelism
-\item use of dependencies and signatures to minimize rework
-\item generation of small contexts in VCs (modularity, abstraction in Why3)
-\item fast-WP generation (Leino's work)
-\item portfolio approach (various provers, allowed with Why3)
-\item selection of hypotheses
-\item manual axiomatization of critical data structures (e.g. containers)
-\item axiomatization as decision procedures (Claire's work as well as François
-  Bobot)
-\end{itemize}
+As \gnatprove uses the Why3 platform~\cite{why3} to generate VCs and call
+provers, it can target as many output formats and automatic or manual provers
+as the Why3 platform allows (many!), but we focus on the automatic proof of VCs
+through the use of the SMT prover Alt-Ergo~\cite{altergo} which is included in
+\gnatprove distribution. There are two steps to make automatic verification
+work: first make it possible, then make it efficient.
+
+The choice of programming language is essential to make automatic verification
+possible. On the one hand, it should proscribe those features which render
+automatic verification impossible or very hard, and on the other hand, it
+should contain enough features which facilitate the expression of
+specifications. The former is obtained by restricting \newspark to a subset of
+\adatwtw without pointers and exceptions. The later is obtained by the features
+introduced in \adatwtw and \newspark. \adatwtw was specifically designed to
+include preconditions, postcondition, type invariants, \etc so that a user can
+specify arbitrarily complex invariant properties on the data and control of her
+program, and test these properties at run time. \newspark further adds loop
+invariants, loop variants, \etc so that a user can formally prove these
+properties.
+
+Efficient formal verification relies on a subtle coordination between the VC
+generator and the prover, so that the VCs produced can be efficiently
+proved. \gnatprove relies heavily on the features of the Why3
+language~\cite{guitton2011boogie} to produce provable VCs. For example, the VCs
+are kept small by translating the semantic dependencies between entities at the
+Ada source code level into syntactic inclusions between modules at the Why3
+intermediate code level, and by using the abstraction feature in Why3 for the
+intermediate code that checks for absence of run-time errors. This ensures that
+the generated VCs only contain relevant definitions and axioms. As another
+example, one can choose to produce fewer but more complex VCs: the default in
+\gnatprove is that a VC accounts for all paths leading to an assertion, using
+an efficient computation~\cite{leino2005ipl}, instead of generating one VC for
+each path leading to an assertion (also available in \gnatprove on option). The
+choice of axiomatization of Ada data types (integer types, enumeration types,
+record types, array types, \etc) in Why3 also has a determinant effect on the
+provability of VCs. We have changed various times these axiomatizations to
+better suit the mechanisms inside SMT provers like Alt-Ergo. Similarly, we have
+tailored the axiomatization for a generic library of
+containers~\cite{dross:2011:tap} to SMT provers.
+
+Finally, modular verification based on pre- and postconditions can very easily
+exploit multicore architectures, as the generation of VCs for different units,
+or the proof of different VCs, can both be run in parallel. Typically, project
+contain hundreds of units, and lead to the generation of thousands of VCs,
+which can be run by \gnatprove on as many cores as available. Note also that
+\gnatprove uses file timestamps to avoid re-generating VCs for units which have
+not been updated, and file hashes to avoid re-proving VCs that have already
+been proved. This is crucial when developing either the code or the associated
+annotations, to avoid useless rework.
 
 \section{VerifyThis Competition}
 \label{verifythis}
 
 \subsection{Solution to Challenge 1}
 
-The longest common prefix solution can be readily coded in Ada as follows:
+The longest common prefix solution can be readily coded in \adatwtw as follows:
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -250,7 +288,8 @@ parameter \verb|A| can be expressed as a precondition involving the Ada
 attribute \verb|'Range|, and membership tests \verb|X in ...| The output
 specification that the result is the length of the longest common prefix
 starting at \verb|X| and \verb|Y| can be expressed as a postcondition in two
-parts, using the Ada attribute \verb|'Result| to express the function result:
+parts, using the \adatwtw attribute \verb|'Result| to express the function
+result:
 \begin{itemize}
 \item A quantification stating that the subarrays of \verb|A| of length
   \verb|LCP'Result| starting at \verb|X| and \verb|Y| are equal.
@@ -325,17 +364,17 @@ end Upsweep;
 \end{verbatim}
 \end{footnotesize}
 
-The postcondition of procedure \verb|Upsweep| states that
-the array parameter \verb|A| is put in an intermediate form \wrt its initial
-value (denoted \verb|A'Old|). The contract of procedure \verb|Downsweep| states
-it takes as input an array parameter \verb|A| in an intermediate form \wrt a
-\verb|Ghost| array parameter, and that it outputs in the same parameter
-\verb|A| the desired prefix sums of array \verb|Ghost|. By calling in sequence
-\verb|Upsweep| and \verb|Downsweep| on an array \verb|A|, with the initial
-value of \verb|A| passed as \verb|Ghost| parameter, a caller performs the
-desired in-place modification of \verb|A|. Although SPARK does not support yet
-ghost parameters, which are only used for proofs, this is here the role of
-parameter \verb|Ghost|, hence its name.
+The postcondition of procedure \verb|Upsweep| states that the array parameter
+\verb|A| is put in an intermediate form \wrt its initial value (denoted
+\verb|A'Old|). The contract of procedure \verb|Downsweep| states it takes as
+input an array parameter \verb|A| in an intermediate form \wrt a \verb|Ghost|
+array parameter, and that it outputs in the same parameter \verb|A| the desired
+prefix sums of array \verb|Ghost|. By calling in sequence \verb|Upsweep| and
+\verb|Downsweep| on an array \verb|A|, with the initial value of \verb|A|
+passed as \verb|Ghost| parameter, a caller performs the desired in-place
+modification of \verb|A|. Although \newspark does not support yet ghost
+parameters, which are only used for proofs, this is here the role of parameter
+\verb|Ghost|, hence its name.
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -376,8 +415,8 @@ with
 The function \verb|Intermediate_Form| gives the exact relationship between the
 initial value of the array (parameter \verb|B| below) and its intermediate
 value between the calls to \verb|Upsweep| and \verb|Downsweep| (parameter
-\verb|A| below). We define it as an expression function in Ada, which has the
-benefit that \gnatprove automatically generates a postcondition for
+\verb|A| below). We define it as an expression function in \adatwtw, which has
+the benefit that \gnatprove automatically generates a postcondition for
 \verb|Intermediate_Form| equivalent to its body. We also give a precondition to
 \verb|Intermediate_Form| to prove that its evaluation cannot fail run-time
 checks (overflow checks and index checks here).
@@ -481,10 +520,10 @@ as compilation also takes into account the overflow mode when compiling
 arithmetic expressions.
 
 More generally, these small challenges already make use of numerous language
-features in Ada and SPARK that facilitate the expression of specifications:
-preconditions and postconditions, loop invariants and loop variants, expression
-functions, quantified expressions and if expressions, special attributes
-\verb|'Result|, \verb|'Old| and \verb|'Loop_Entry|.
+features in \adatwtw and \newspark that facilitate the expression of
+specifications: preconditions and postconditions, loop invariants and loop
+variants, expression functions, quantified expressions and if expressions,
+special attributes \verb|'Result|, \verb|'Old| and \verb|'Loop_Entry|.
 
 \begin{itemize}
 \item snapshot of GNATprove results in GPS
@@ -503,6 +542,10 @@ functions, quantified expressions and if expressions, special attributes
   the consistency of the generated AST with checks.
 \item target parametrization
 \item adaptation for non-executable annotations and proof assistants
+\item axiomatization as decision procedures (Claire's work as well as François
+  Bobot)
+\item selection of hypotheses
+\item portfolio approach (various provers, allowed with Why3)
 \end{itemize}
 
 %
