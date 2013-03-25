@@ -1744,11 +1744,17 @@ package body Flow.Control_Flow_Graph is
       Prev := Empty;
       while Present (P) loop
          case Nkind (P) is
-            when N_Freeze_Entity              |
-                 N_Implicit_Label_Declaration |
-                 N_Subprogram_Body            |
-                 N_Subprogram_Declaration     |
-                 N_Representation_Clause      =>
+            when N_Freeze_Entity                   |
+                 N_Implicit_Label_Declaration      |
+                 N_Subprogram_Body                 |
+                 N_Subprogram_Declaration          |
+                 N_Representation_Clause           |
+                 N_Package_Body_Stub               |
+                 N_Subprogram_Body_Stub            |
+                 N_Use_Package_Clause              |
+                 N_Use_Type_Clause                 |
+                 N_Object_Renaming_Declaration     |
+                 N_Subprogram_Renaming_Declaration =>
                --  We completely skip these.
                P := Next (P);
 
@@ -1756,7 +1762,7 @@ package body Flow.Control_Flow_Graph is
                Process_Statement (P, FA, CM, Ctx);
 
                --  Connect this statement to the previous one.
-               if Prev /= Empty then
+               if Present (Prev) then
                   Linkup (FA.CFG,
                           CM (Union_Id (Prev)).Standard_Exits,
                           CM (Union_Id (P)).Standard_Entry);
@@ -1801,6 +1807,8 @@ package body Flow.Control_Flow_Graph is
       case Nkind (N) is
          when N_Assignment_Statement =>
             Do_Assignment_Statement (N, FA, CM, Ctx);
+         when N_Block_Statement =>
+            Do_Subprogram_Or_Block (N, FA, CM, Ctx);
          when N_Case_Statement =>
             Do_Case_Statement (N, FA, CM, Ctx);
          when N_Exit_Statement =>
@@ -1821,8 +1829,8 @@ package body Flow.Control_Flow_Graph is
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
-         when N_Block_Statement =>
-            Do_Subprogram_Or_Block (N, FA, CM, Ctx);
+         when N_Validate_Unchecked_Conversion =>
+            raise Program_Error;
          when others =>
             Print_Node_Subtree (N);
             raise Why.Not_Implemented;
