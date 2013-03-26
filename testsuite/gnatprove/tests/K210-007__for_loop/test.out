@@ -5,7 +5,7 @@ s.adb:27:10: info: loop invariant initialization proved
 s.adb:27:10: info: loop invariant preservation proved
 s.adb:30:7: info: assertion proved
 s.adb:36:10: info: loop invariant initialization proved
-s.adb:36:10: info: loop invariant preservation proved
+s.adb:36:10: loop invariant preservation not proved
 s.adb:37:33: info: index check proved
 s.adb:37:54: info: index check proved
 s.adb:39:32: info: index check proved

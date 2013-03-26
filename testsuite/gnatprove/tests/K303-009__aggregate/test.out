@@ -8,7 +8,7 @@ arr_aggregate.adb:51:7: info: precondition proved
 arr_aggregate.adb:56:7: info: precondition proved
 arr_aggregate.ads:11:15: info: postcondition proved
 arr_aggregate.ads:11:43: info: index check proved
-arr_aggregate.ads:16:15: info: postcondition proved
+arr_aggregate.ads:16:15: postcondition not proved
 arr_aggregate.ads:16:41: info: index check proved
 arr_aggregate.ads:19:38: info: index check proved
 arr_aggregate.ads:20:43: info: index check proved
