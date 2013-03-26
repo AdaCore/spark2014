@@ -4712,8 +4712,7 @@ package body Gnat2Why.Expr is
       Range_E    : constant Node_Id   := Extract_Set_Node (Expr, Over_Range);
       Index_Type : constant Entity_Id := Etype (Index_Ent);
       Why_Id     : constant W_Identifier_Id :=
-                     New_Identifier (Ada_Node => Index_Type,
-                                     Name     => Full_Name (Index_Ent));
+                     New_Identifier (Name     => Full_Name (Index_Ent));
       Index_Base : constant W_Primitive_Type_Id :=
                      (if Over_Range then
                         New_Base_Type (Base_Type => EW_Int)
