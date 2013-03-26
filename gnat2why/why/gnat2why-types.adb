@@ -218,9 +218,10 @@ package body Gnat2Why.Types is
 
          elsif Type_Based_On_Formal_Container (E) then
             --  Minimal translation for subtype of formal containers
-            --  type t = base_t
-            --  function of_base base_t : t
-            --  function to_base t : base_t
+            --  type tmp = base_t
+            --  type t = tmp
+            --  function of_base (x : base_t) : t := x
+            --  function to_base (x : t) : base_t := x
             --  To be removed when container typa are handled like private
             --  records with discriminants and a non alfa fullview.
             declare
@@ -231,14 +232,20 @@ package body Gnat2Why.Types is
                Base_Type : constant W_Primitive_Type_Id :=
                  Why_Logic_Type_Of_Ada_Type
                    (Underlying_Formal_Container_Type (E));
+               Tmp : constant W_Identifier_Id :=
+                 New_Identifier (Name => Full_Name (E) & "__tmp");
             begin
                Emit
                  (File.Cur_Theory,
-                  New_Type (Name  => Rename_Id,
+                  New_Type (Name  => Tmp,
                             Alias => Base_Type));
                Emit
+                 (File.Cur_Theory,
+                  New_Type (Name  => Rename_Id,
+                            Alias => New_Abstract_Type (Name => Tmp)));
+               Emit
                  (Theory,
-                  New_Function_Decl
+                  New_Function_Def
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_To_Base),
                      Binders     =>
@@ -248,10 +255,12 @@ package body Gnat2Why.Types is
                                            (Name => Full_Name (E) & "__x"),
                                        B_Type => Rename_Type,
                                        others => <>)),
-                     Return_Type => Base_Type));
+                     Return_Type => Base_Type,
+                     Def         => +New_Identifier
+                       (Name => Full_Name (E) & "__x")));
                Emit
                  (Theory,
-                  New_Function_Decl
+                  New_Function_Def
                     (Domain      => EW_Term,
                      Name        => To_Ident (WNE_Of_Base),
                      Binders     =>
@@ -261,7 +270,9 @@ package body Gnat2Why.Types is
                                            (Name => Full_Name (E) & "__x"),
                                        B_Type => Base_Type,
                                        others => <>)),
-                     Return_Type => Rename_Type));
+                     Return_Type => Rename_Type,
+                     Def         => +New_Identifier
+                       (Name => Full_Name (E) & "__x")));
             end;
          else
             case Ekind (E) is
