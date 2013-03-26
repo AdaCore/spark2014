@@ -392,7 +392,8 @@ where
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` shall denote an entire object or a state abstraction.
+#. A ``global_item`` shall denote an entire object, that is a variable, or a 
+   state abstraction.
 
 #. The rule that a ``global_item``
    shall not denote a function or a function call [(which is already

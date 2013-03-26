@@ -209,27 +209,26 @@ must follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.2 LR If property_list includes Input or Output, it shall also include Volatile
 
 #. The ``identifier`` of a ``name_value_property`` shall be
-   Integrity  or Constituent_Of and at most one each may appear in the 
-   ``property_list``.
+   Part_Of and at most one may appear in the ``property_list``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR name_value_property identifier must be Integrity
+      :Trace Unit: 7.1.2 LR name_value_property identifier must be Part_Of
       
-#. A ``name_value_property`` with an ``identifier`` of Constituent_Of may
+#. A ``name_value_property`` with an ``identifier`` of Part_Of may
    only appear in an aspect specification of a private child package,
    or a package declared immediately within the visible part of a private child 
    package. The expression of such a ``name_value_property`` must denote a state 
    abstraction.
 
-#. If a ``property_list`` contains at least one ``name_value_property`` then 
-   they shall be the final properties in the list. 
+#. If a ``property_list`` contains one or more ``name_value_property`` items 
+   then they shall be the final properties in the list. 
    [This eliminates the possibility of a positional
    association following a named association in the property list.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR If property_list has Integrity it must be the final property in the list
+      :Trace Unit: 7.1.2 LR any name_value_properties must be the final properties in the list
 
 #. A package_declaration or generic_package_declaration shall have a completion
    [(a body)] if it contains a non-null Abstract State aspect specification.
@@ -238,8 +237,7 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 #. The visible state and state abstractions of a package P consist of:
 
-   * any non-manifest objects, types, or subtypes declared immediately
-     within the visible part of P; and
+   * variables declared immediately within the visible part of P; and
    * any state abstractions declared by the Abstract State aspect
      specification (if any) of package P; and
    * the visible state and state abstractions of any packages declared
@@ -247,7 +245,7 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 #. The hidden state of a package P consists of:
 
-   * any non-manifest objects, types, or subtypes declared immediately
+   * variables declared immediately
      within the private part or body of P;
    * the state abstractions of any packages declared immediately within the 
      visible part of P; and
@@ -284,31 +282,27 @@ must follow the grammar of ``abstract_state_list`` given below.
 #. A *volatile* state abstraction is one declared with a ``property_list``
    that includes the Volatile ``property``, and either Input or Output.
    
-#. A state abstraction which is declared with a ``property_list`` that includes 
-   the Integrity ``name_value_property`` is said to have an *integrity level* 
-   specified by the Integer expression of the ``name_value_property``.
-   
 #. A state abstraction which is declared with a ``property_list`` that includes
-   a Constituent_Of ``name_value_property``  indicates that it is a 
+   a Part_Of ``name_value_property``  indicates that it is a 
    constituent (see :ref:`state_refinement`) of the state abstraction denoted 
    by the expression of the ``name_value_property`` and only that state 
    abstraction.
    
 #. A state abstraction declared in the ``aspect_specification`` of a private 
    child package, Q, or a package declared immediately within the visible part
-   of Q, without a Constituent_Of ``property`` is considered to be a 
+   of Q, without a Part_Of ``property`` is considered to be a 
    constituent of one of Q's parent's state abstractions and no other state 
    abstraction.
 
 .. centered:: **Verification Rules**
 
 #. A state abstraction which is declared with a ``property_list`` that includes
-   a Constituent_Of ``name_value_property`` shall be a constituent of the 
+   a Part_Of ``name_value_property`` shall be a constituent of the 
    state abstraction denoted by the expression of the ``name_value_property``.
    
 #. A state abstraction declared in the ``aspect_specification`` of a private 
    child package, Q, or a package immediatly within the visible part of Q,
-   without a Constituent_Of ``property`` shall be a constituent of one of Q's 
+   without a Part_Of ``property`` shall be a constituent of one of Q's 
    parent's state abstractions.
    
 .. centered:: **Dynamic Semantics**
@@ -355,114 +349,49 @@ aspect.
    private package Sensor.Raw
    with
       Abstract_State => (Port_22 with Volatile, Input, 
-                         Constituent_Of => Sensor.Port)
+                         Part_Of => Sensor.Port)
    is
       
       ...
    end Sensor.Raw;
 
-.. todo:: 
-     Further semantic detail regarding Volatile state and integrity levels
-     needs to be added, in particular in relation to specifying these
-     properties for variables which are declared directly within the
-     visible part of a package specification.
-     To be completed in the Milestone 3 version of this document.
 
-Integrity Levels
-^^^^^^^^^^^^^^^^
-.. todo:: Integrity levels are still under discussion so that the
-   following description should be considered provisional.
- 
-An abstract state may be assigned an *integrity level* which indicates
-that the state has a particular integrity.  *Integrity levels* are
-used in information flow analysis to monitor or prohibit the flow of
-information (data) of different *integrity levels* between abstract
-states.
+Input, Output, Part_Of Aspects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. centered:: **Static Semantics**
-
-#. A state abstraction which is declared with an ``Integrity``
-   property is deemed to have an *integrity level* as specified by the
-   integer expression of the ``name_value`` property.  The *integrity
-   level* of an abstract state is used monitor or prohibit information
-   flow from a higher *integrity level* to a lower one or vice-versa
-   depending on the options selected for the analysis.  A state
-   abstraction which is not declared with an Integrity property is
-   considered to have a lower *integrity level* than any declared with
-   one. [Information flow integrity checks are performed as part of
-   the verification rules.]
-
-#. A state abstraction which requires a particular *integrity level*
-   must be explicitly declared. *Integrity levels* cannot be
-   synthesized.
-
-.. centered:: **Verification Rules**
-
-#. An abstract state declared with an *integrity level* shall not be
-   used in determining the value of an output of a subprogram with a
-   higher or lower *integrity level* depending on the mode of analysis.
-   [Checked during information flow analysis.]
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with the integrity levels.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   package MILS -- a package that manages distinct state of differing Integrities
-      with Abstract_State => ((Top_Secret   with Integrity => 4),
-                              (Unclassified with Integrity => 0));
-   is
-      ...
-   end MILS;
-
-
-Input, Output, Constituent_Of  and Integrity Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For variables which are declared directly within the visible part of a
-package specification, the Volatile, Input, Output, Constituent_Of
-and Integrity aspects may be specified directly as part of the
-variable's declaration.
+For variables which are declared directly within the visible part of a package
+specification, the Volatile, Input, Output and Part_Of aspects may be
+specified directly as part of the variable's declaration.
 
 .. centered:: **Legality Rules**
 
 #. Input and Output are Boolean aspects, so have no
    ``aspect_definition`` part.
 
-#. Integrity requires an ``aspect_definition`` which is a static
-   expression of any integer type.
-
-#. The Input, Output and Integrity aspects may only be applied to a
+#. The Input and Output aspects may only be applied to a
    variable declaration that appears in the visible part of a package
    specification.
 
 #. If a variable has the Volatile aspect, then it must also have
    exactly one of the Input or Output aspects.
 
-#. The Constituent_Of aspect requires an ``aspect_definition`` which denotes
+#. The Part_Of aspect requires an ``aspect_definition`` which denotes
    a state abstraction.
 
-#. A Constituent_Of aspect can only appear in the ``aspect_specification`` of a
+#. A Part_Of aspect can only appear in the ``aspect_specification`` of a
    variable declared in the visible part of a private child package or
    the visible part of a package declared within the visible part of the 
    private child package..
    
 .. centered:: **Static Semantics**
 
-# An Integrity aspect in the ``aspect_specification`` of variable declaration
-  defines the integrity level of the variable to be as given by the Integer
-  expression given by its ``aspect_definition``.
-
-# A Constituent_Of aspect in the ``aspect_specification`` of a variable 
+# A Part_Of aspect in the ``aspect_specification`` of a variable 
   declaration indicates that the variable is a constituent of the state
   abstraction denoted by its ``aspect_definition``.
 
 #. A variable that is declared in the visible part of a private child package
    or within the visible part of a package declared within the visible part of
-   a private child package which does not have a Constituent_Of aspect is 
+   a private child package which does not have a Part_Of aspect is 
    considered to be a constituent of one of the state abstractions of the
    parent of the private child packages.
 
@@ -470,15 +399,15 @@ variable's declaration.
 
 .. code-block:: ada
 
+   with System.Storage_Units;
    private package Input_Port.Raw
    is
 
       Sensor : Integer
          with Volatile,
               Input,
-              Address => 16#DEADBEEF#,
-              Integrity => 4
-              Constituent_Of => Input_Port.Pressure_Input;
+              Address => System.Storage_Units.To_Address (16#DEADBEEF#),
+              Part_Of => Input_Port.Pressure_Input;
 
    end Input_Port.Raw_Input_Port;
 
@@ -922,10 +851,6 @@ High-level requirements
     * See also section :ref:`generic_hlrs`.
 
 
-.. todo:: The consistency rules will be updated as the
-          models for volatile variables and integrity levels are defined.
-          To be completed in the Milestone 3 version of this document.
-
 .. todo:: Consider whether it should be possible to refine null abstract state onto hidden state.
           *Rationale: this would allow the modeling of programs that - for example - use caches
           to improve performance.*
@@ -1050,19 +975,6 @@ where
 
       :Trace Unit: TBD
 
-#. The ``identifier`` of a ``name_value_property`` shall be
-   "Integrity".
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The ``expression`` of an "Integrity" property shall be a static
-   expression of any integer type.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 #. The same identifier shall not appear more than once in a property
    list.
@@ -1102,11 +1014,6 @@ where
      Volatile and this ``simple_property`` must be supplemented by one
      of the ``simple_properties`` Input or Output indicating whether
      the ``constituent`` is a Volatile Input or a Volatile Output.
-   * The ``name_value_property`` Integrity is used to specify an
-     integrity level for the ``constituent``.  Integrity levels may be
-     used in information flow analysis to control the flow of
-     information from a less critical to a more critical object or
-     ``state_name``.
 
 #. A ``state_name`` declared in the Abstract State Aspect which
    has not designated as Volatile may be refined on to one or more
