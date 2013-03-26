@@ -371,54 +371,6 @@ where
 
 .. centered:: **Static Semantics**
 
-#. [As part of defining which entities are allowed as inputs, outputs,
-   and state constituents, the term "manifest" is defined as a generalization of
-   the Ada's notion of staticness.] A type is said to be *manifest* if the
-   elaboration of its declaration does not include the evaluation of any
-   non-static scalar expression and each of its non-manifest component subtypes
-   (if any) is subject to a per-object constraint and is a subtype of a manifest
-   type. A subtype is said to be *manifest* if its type is manifest, its
-   constraint, if any, is a static constraint, and no Dynamic_Predicate aspect
-   specification applies to the subtype. A scalar expression is said to be
-   *manifest* if it is static. A composite expression is said to be *manifest*
-   if its evaluation does not include the evaluation of any non-static scalar
-   expression and it is
-
-   - a static expression; or
-   
-   - a parenthesized manifest expression; or
-
-   - a qualified expression or type conversion whose subtype mark
-     designates a manifest subtype and whose operand is a manifest
-     expression; or
-
-   - a name denoting a component of a manifest object; or
-
-   - a name denoting a slice of a manifest object having static bounds; or
-
-   - an aggregate whose applicable index constraint (if any) is static, whose
-     component expressions are all manifest, and for which the evaluation of each
-     "<>" component value (if any) fully initializes the associated component and
-     does not involve the evaluation of any non-manifest expressions; or
-
-   - an extension aggregate which meets the above conditions for an aggregate
-     and whose ancestor_part is either a manifest expression or a subtype_mark
-     denoting a manifest subtype; or
-
-   - a conditional expression all of whose dependent expressions are
-     manifest and whose selected dependent expression is known statically 
-     (i.e., for a case expression, the selecting expression is static; for an if 
-     expression, either all conditions are static or the first N-1 conditions 
-     are statically False (for some value of N) and the Nth condition is 
-     statically True); or
-
-   - a call with no non-manifest parameters to a function with global inputs.
-
-   A constant object declared by an object_declaration or an
-   ``extended_return_object_declaration`` is manifest if its subtype is manifest
-   and its initialization expression is manifest. The result object for the
-   evaluation of a manifest composite expression is manifest [; this rule is
-   needed because such an object can be renamed].
 
 #. A ``global_specification`` that is a ``global_list`` is shorthand for a
    ``moded_global_list`` with the ``mode_selector`` Input.
@@ -440,8 +392,7 @@ where
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` shall denote an entire object, a type, a subtype,
-   or a state abstraction.
+#. A ``global_item`` shall denote an entire object or a state abstraction.
 
 #. The rule that a ``global_item``
    shall not denote a function or a function call [(which is already
@@ -449,8 +400,6 @@ where
    [In particular, a ``global_item`` can unambiguously denote a
    state abstraction even if a function having the same fully qualified
    name is also present].
-
-#. A ``global_item`` shall not denote a manifest object, type, or subtype.
 
 #. A ``global_item`` shall not denote a state abstraction whose refinement
    is visible [(a state abstraction cannot be named within its enclosing
@@ -474,13 +423,6 @@ where
    
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
-#. A ``global_item`` with a ``mode_selector`` of
-   ``Output`` or ``In_Out`` shall not denote a constant, type or subtype.
-
-   .. ifconfig:: Display_Trace_Units
-   
-      :Trace Unit: 6.1.4 LR Constants, types and subtypes  cannot have Output or In_Out as mode_selector
-      
 #. The ``global_items`` in a single Global aspect specification shall denote
    distinct entities.
 
@@ -680,12 +622,12 @@ where
 #. The *input set* of a subprogram is the set of formal parameters of the 
    subprogram of mode **in** and **in out** along with the entities denoted by 
    ``global_items`` of the Global aspect of the subprogram with a 
-   ``mode_selector`` of Input or In_Out.   
+   ``mode_selector`` of Input and In_Out.   
    
 #. The *output set* of a subprogram is the set of formal parameters of the 
    subprogram of mode **in out** and **out** along with the entities denoted by 
    ``global_items`` of the Global aspect of the subprogram with a 
-   ``mode_selector`` of In_Out or Output and (for a function) the 
+   ``mode_selector`` of In_Out and Output and (for a function) the 
    ``function_result``.
    
 #. The entity denoted by each ``input`` of a ``dependency_relation`` of a 
@@ -782,19 +724,6 @@ where
    ``dependency_relation`` that each member of the output set is dependent on 
    every member of the input set.]
    
-.. todo::
-   Add rules relating to volatile state.
-   To be completed in the Milestone 3 version of this document.
-
-.. For purposes of flow analysis, a read of a volatile object is
-   always considered to include a self-dependent update
-   of the object. [This implies that a ``global_item`` with ``mode_selector``
-   Input must not denote a volatile object (this rule is enforced during
-   flow analysis). This in turn implies that a function cannot read a
-   volatile object declared global to the function. All of this is consistent
-   with Ada's rule that a read of a volatile object is an external effect
-   (see Ada LRM C.6(20)).]
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Depends aspect
