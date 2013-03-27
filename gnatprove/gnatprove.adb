@@ -49,7 +49,7 @@ procedure Gnatprove is
    function Final_Step return Gnatprove_Step is
      (case MMode is
        when GPM_Detect | GPM_Force | GPM_Flow => GS_Gnat2Why,
-       when GPM_Prove => GS_Why);
+       when GPM_Prove | GPM_All => GS_Why);
 
    procedure Call_Gprbuild
       (Project_File  : String;
@@ -614,7 +614,7 @@ procedure Gnatprove is
             Args.Append ("-gnatd.K");
          when GPM_Force =>
             Args.Append ("-gnatd.E");
-         when GPM_Flow =>
+         when GPM_Flow | GPM_All =>
             Args.Append ("-gnatd.Q");
          when GPM_Prove =>
             null;

@@ -271,7 +271,6 @@ package body Gnat2Why.Driver is
 
       if Debug_Flag_Dot_QQ then
          Flow_Analyse_CUnit;
-         return;
       end if;
 
       --  Start the translation to Why

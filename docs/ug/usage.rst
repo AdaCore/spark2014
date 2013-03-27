@@ -36,6 +36,8 @@ Command-line Usage
        detect      Detect and output SPARK information (default)
        force       Output errors for violations of SPARK (warn unimplemented)
        prove       Prove subprogram contracts and absence of run-time errors
+       flow        Prove object initialization and globals and depends contracts
+       all         Both analyses flow and prove are activated
    -q            Be quiet/terse
    --clean       Remove GNATprove intermediate files, and exit
    --report=     Output mode
@@ -128,6 +130,14 @@ output error messages for unproved VCs.
 In mode ``prove`` and report ``all``, |GNATprove| prints on the standard
 output error messages for unproved VCs, and information messages for proved
 VCs.
+
+In mode ``flow``, GNATprove prints on the standard output error messages and
+warnings for incorrect Globals and depends contracts, unitialized error
+messages, and suspicious situations such as unused assignments, missing return
+statements and so on.
+
+In mode ``all``, GNATprove behaves just as if both modes ``prove`` and
+``flow`` were activated.
 
 |GNATprove| always generates :ref:`project statistics` in file
 ``gnatprove.out``.
