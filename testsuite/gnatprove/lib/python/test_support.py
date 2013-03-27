@@ -51,7 +51,12 @@ def xfail_test():
                     return True
     return False
 
-def cat(filename, force_in_quick_mode=False):
+def print_sorted(strlist):
+    strlist.sort()
+    for line in strlist:
+        print line
+
+def cat(filename, force_in_quick_mode=False, sort=False):
     """Dump the content of a file on stdout
 
     PARAMETERS
@@ -61,7 +66,10 @@ def cat(filename, force_in_quick_mode=False):
     if not quick_mode() or force_in_quick_mode:
         if os.path.exists(filename):
             with open(filename, 'r') as f:
-                print f.read()
+                if sort:
+                    print_sorted(f.readlines())
+                else:
+                    print f.read()
 
 def ls(directory=None):
     """ls wrapper for the testsuite
@@ -74,10 +82,7 @@ def ls(directory=None):
     else:
         cmd = ["ls"]
     process = Run(cmd)
-    strlist = str.splitlines(process.out)
-    strlist.sort()
-    for line in strlist:
-        print line
+    print_sorted(str.splitlines(process.out))
 
 def gnat2why(src, opt=None):
     """Invoke gnat2why
