@@ -1,7 +1,7 @@
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
-admin.adb:121:13: info: assertion proved
+admin.adb:121:13: assertion not proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
 admin.adb:137:16: info: loop invariant preservation proved
@@ -62,7 +62,7 @@ auditlog.adb:1852:47: info: range check proved
 auditlog.adb:1859:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1861:47: range check not proved
 auditlog.adb:1861:50: info: overflow check proved
-auditlog.adb:1861:69: info: overflow check proved
+auditlog.adb:1861:69: overflow check not proved
 auditlog.adb:1905:10: info: assertion proved
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:237:39: info: range check proved
@@ -79,7 +79,7 @@ certificatestore.adb:219:31: range check not proved
 certproc.adb:1127:7: range check not proved
 certproc.adb:1129:56: info: range check proved
 certproc.adb:1138:45: range check not proved
-certproc.adb:147:30: info: range check proved
+certproc.adb:147:30: range check not proved
 certproc.adb:151:7: range check not proved
 certproc.adb:154:7: range check not proved
 certproc.adb:189:61: precondition not proved

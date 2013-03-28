@@ -7,7 +7,7 @@ p.adb:18:19: precondition not proved
 p.adb:22:31: info: precondition proved
 p.adb:24:7: info: precondition proved
 p.adb:25:22: info: precondition proved
-p.adb:25:41: precondition not proved
+p.adb:25:41: info: precondition proved
 p.adb:25:7: assertion not proved, requires Element (L, Cu1) = Element (L_In, Cu2)
 p.adb:26:7: precondition not proved
 p.adb:32:7: info: precondition proved
