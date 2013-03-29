@@ -156,16 +156,52 @@ new in SPARK 2014:
 
 \section{Integrated Testing and Proving}
 \label{hilite}
+As mentioned, in the development of the new generation language and
+toolset \newspark, we have targeted the issues of lacking good
+cost-benefit arguments and of reaching non-expert users. The ground
+work of the solution presented here was done in the collaborative
+research project \hilite\ \cite{hiliteERTS2012}. In order to provide a
+good cost-benefit argument we need to understand something about what
+drives the current practises in the industry, and where the main
+problems and costs are. Furthermore, we will incorporate in our
+language design those lessons learned in the programming languages and
+program verification research community.
+
+\subsection{Motivation: Industry Safety Standards}
+\DOB\ is a document that is used as a basis for certification of
+airborne software by institutions such as Federal Aviation
+Administration (FAA) and European Aviation Safety Agency
+(EASA). Though \DOB\ is for avionics, it is often used by other
+industries too and it can be seen as typical for safety verification
+objectives. \DOB\ is regarded as very successful within the avionitcs
+industry itself. Since its introduction in 1992 there has been no
+fatalitites attributed to software faults. 
+
+The standard is non-prescriptive with regards to procedure to be
+followed and template to be used for a certain...
+
+In \DOC\ there is a formal methods supplement. 
+
+\subsection{Executable Contracts}
 
 \begin{itemize}
 \item execution semantics for functional properties $\rightarrow$ debug
   annotations like code
 \item contracts can be tested
+\end{itemize}
+
+\subsection{Mixing Test and Proof}
+\begin{itemize}
 \item same semantics for test and proof (Chalin's work)
 \item methodology for mixing test and proof. compiler inserts additional needed
   checks to verify at run time assumptions made during proof.
 \item target parametrization
 \end{itemize}
+
+\subsection{Compiler Implementation}
+
+\subsection{Benefits of Hybrid Verification}
+
 
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
