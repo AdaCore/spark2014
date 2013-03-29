@@ -239,17 +239,19 @@ package body Why.Gen.Expr is
       end if;
    end Cur_Subp_Sloc;
 
-   -------------------
-   -- Cur_Subp_Name --
-   -------------------
+   -------------------------
+   -- Cur_Subp_Name_Label --
+   -------------------------
 
-   function Cur_Subp_Name return W_Identifier_Id is
+   function Cur_Subp_Name_Label
+     (Prefix : String := "")
+      return W_Identifier_Id is
    begin
       return
         New_Identifier
-          (Name => To_String (WNE_Pretty_Ada) & ":" &
+          (Name => To_String (WNE_Pretty_Ada) & ":" & Prefix &
              Subprogram_Full_Source_Name (Current_Subp));
-   end Cur_Subp_Name;
+   end Cur_Subp_Name_Label;
    -----------------------
    -- Insert_Conversion --
    -----------------------

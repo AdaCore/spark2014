@@ -129,8 +129,9 @@ package Why.Gen.Expr is
    function Cur_Subp_Sloc return W_Identifier_Id;
    --  Return a label that identifies the current subprogram
 
-   function Cur_Subp_Name return W_Identifier_Id;
-   --  Return a label that contains the name of the current subprogram
+   function Cur_Subp_Name_Label (Prefix : String := "") return W_Identifier_Id;
+   --  Return a label that contains the name of the current subprogram. The
+   --  prefix argument can be used to prefix that name.
 
    function New_Range_Expr
      (Domain    : EW_Domain;

@@ -973,7 +973,7 @@ package body Gnat2Why.Subprograms is
            Binders => (1 => Unit_Param),
            Labels  =>
              (1 => Cur_Subp_Sloc,
-              2 => Cur_Subp_Name),
+              2 => Cur_Subp_Name_Label),
            Pre     => Pre,
            Post    =>
              +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
@@ -1050,7 +1050,7 @@ package body Gnat2Why.Subprograms is
             Binders => Binders,
             Labels  =>
               (1 => Cur_Subp_Sloc,
-               2 => Cur_Subp_Name),
+               2 => Cur_Subp_Name_Label (Prefix => "precondition for ")),
             Def     => +Prog,
             Post    => True_Pred));
       Close_Theory (File, Filter_Entity => E);
