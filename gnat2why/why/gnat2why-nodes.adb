@@ -592,6 +592,24 @@ package body Gnat2Why.Nodes is
       return Node_To_String (N, "");
    end String_Of_Node;
 
+   ---------------------------------
+   -- Subprogram_Full_Source_Name --
+   ---------------------------------
+
+   function Subprogram_Full_Source_Name (E : Entity_Id) return String
+   is
+      Name : constant String := Source_Name (E);
+   begin
+      if Has_Fully_Qualified_Name (E)
+        or else Scope (E) = Standard_Standard
+      then
+         return Name;
+      else
+         return Subprogram_Full_Source_Name (Unique_Entity (Scope (E))) &
+           "." & Name;
+      end if;
+   end Subprogram_Full_Source_Name;
+
    ------------------
    -- Type_Of_Node --
    ------------------

@@ -243,4 +243,15 @@ package Gnat2Why.Nodes is
    --  Append a "__" whenever S is equal to a Why3 keyword.
    --  also, lowercase the argument.
 
+   function Subprogram_Full_Source_Name (E : Entity_Id) return String;
+   --  For a subprogram entity, return its scoped name, e.g. for subprogram
+   --  Nested in
+   --
+   --    package body P is
+   --       procedure Lib_Level is
+   --          procedure Nested is
+   --     ....
+   --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
+   --  source.
+
 end Gnat2Why.Nodes;

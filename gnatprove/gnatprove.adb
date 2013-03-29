@@ -227,6 +227,8 @@ procedure Gnatprove is
       end if;
       if Verbose then
          Args.Append ("--verbose");
+      elsif Quiet then
+         Args.Append ("--quiet");
       end if;
       Args.Append ("--report");
       case Report is
