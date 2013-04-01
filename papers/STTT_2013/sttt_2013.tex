@@ -80,7 +80,7 @@ competition is the VerifyThis competition, which is the context of
 this very report.
 
 Great strides have been made in proof automation. At present, static
-so called ``push-button'' program verification is achieveable for some
+so called ``push-button'' program verification is achievable for some
 substantial classes of industrial programs. New programming language
 features for program verification have been explored and theoretical
 models of complex existing language features have been devised to
@@ -91,7 +91,7 @@ are still some remaining challenges before we can expect verifying
 compilers to be as widely used as testing.
 
 There are some notable exceptions where formal software verification
-has been succesfully used and scaled to large industrial projects. For
+has been successfully used and scaled to large industrial projects. For
 example the \oldspark\ language and toolset for static verification
 has been applied for many years in on-board aircraft systems, control
 systems, cryptographic systems, and rail systems
@@ -140,7 +140,7 @@ programs, many of which were inspired from the corresponding features in SPARK
 we used in the solutions for challenge 1 and challenge 2.
 
 The most useful of these new features is without the preconditions and
-postconditions popularized by the Design-by-Contract approach (ref to
+postconditions popularised by the Design-by-Contract approach (ref to
 Meyer). In challenge 1, we can for example specify that function \verb|LCP|
 expects arguments within bounds, and that it returns a bounded result. Note the
 use of the new \textit{aspect} syntax in Ada 2012, in which the declaration of
@@ -221,7 +221,7 @@ matters is the program point where the loop variant appears in the code.
 
 Subprogram contracts can become quite large, even with the use of (expression)
 functions to abstract common parts of contracts. Therefore, SPARK 2014 allows
-the definition of contracts by cases, similar to behaviors in JML (ref?). For
+the definition of contracts by cases, similar to behaviours in JML (ref?). For
 example, the contract of \verb|LCP| can state separately sub-contracts for the
 cases where the array is of length zero, or the elements at \verb|X| and
 \verb|Y| are different, or \verb|X| and \verb|Y| are equal. This contract may
@@ -239,59 +239,149 @@ function LCP (A : Text; X, Y : Integer) return Natural with
 
 Note that the cases above are disjoint and complete, as expected in SPARK: one
 and only one case should be applicable at every call. The presence of the
-\verb|others| case ensures the completness here.
+\verb|others| case ensures the completeness here.
 
 \section{Integrated Testing and Proving}
 \label{hilite}
-As mentioned, in the development of the new generation language and
-toolset \newspark, we have targeted the issues of lacking good
-cost-benefit arguments and of reaching non-expert users. The ground
-work of the solution presented here was done in the collaborative
-research project \hilite\ \cite{hiliteERTS2012}. In order to provide a
-good cost-benefit argument we need to understand something about what
-drives the current practises in the industry, and where the main
-problems and costs are. Furthermore, we will incorporate in our
-language design those lessons learned in the programming languages and
-program verification research community.
+As we have mentioned, in the development of the new generation
+language and toolset \newspark, we have a particular focus on
+providing a good cost-benefit argument and on reaching non-expert
+users. The ground work of the solution presented here was done in the
+collaborative research project \hilite\ \cite{hiliteERTS2012} with
+Altran, AdaCore, and INRIA.
 
-\subsection{Motivation: Industry Safety Standards}
-\DOB\ is a document that is used as a basis for certification of
-airborne software by institutions such as Federal Aviation
-Administration (FAA) and European Aviation Safety Agency
-(EASA). Though \DOB\ is for avionics, it is often used by other
-industries too and it can be seen as typical for safety verification
-objectives. \DOB\ is regarded as very successful within the avionitcs
-industry itself. Since its introduction in 1992 there has been no
-fatalitites attributed to software faults. 
+We will describe a few observations of what drives the current
+practises in the industry, in order to help us with the cost-benefit
+argument. We will also see how progress in the research of behavioural
+interface specification languages \cite{HatcliffLLMP12} enables an
+approach where test and proof can be nicely integrated.
 
-The standard is non-prescriptive with regards to procedure to be
-followed and template to be used for a certain...
+\subsection{Motivation: Industry Safety Standards and Testing}
+Industry standards and certification documents highly influence the
+state-of-practise in the development of safety-critical
+software. \DOB\ \cite{do178b} is a document that is used as a basis
+for certification of airborne software by institutions such as Federal
+Aviation Administration (FAA) and European Aviation Safety Agency
+(EASA). Though \DOB\ is for avionics, it is often used in other
+safety-critical sectors as well. It is regarded as very successful
+within the avionics industry itself; since its introduction in 1992 no
+commercial aircraft fatality has been attributed to \DOB-certified
+software. The majority of objectives in \DOB\ consider
+verification. DO-178C is non-prescriptive with regards to programming
+languages, software tools, particular development processes etc. The
+development of requirements-based tests is mandatory, including normal
+range tests cases and robustness (abnormal range) test cases. The
+standard requires verification of both high-level requirements and
+low-level requirements. Three levels of testing are defined in \DOB:
+hardware/software integration testing, software integration testing,
+and low-level testing - all based on requirements. The test cases must
+fully cover the code and all exercised code should be traceable to
+requirements. The standard requires coverage analysis such as
+MC/DC. Such structural low-level testing, together with robustness
+testing is expensive. For example, a large cost is associated just for
+collecting and verifying output of these tests. Our goal here is to
+reduce this cost, while still meeting the objectives prescribed by the
+standard.
 
-In \DOC\ there is a formal methods supplement. 
+Formal methods can help to verify that no anomalous behaviour will
+occur, for example it can be used prove the absence of run-time
+errors. Formal methods can also be used to show compliance between a
+program's actual and intended behaviour. Furthermore, a proof of
+program correctness is comparable to exhaustive analysis achieving
+100\% coverage. Though formal methods and other kinds of verification
+are recognised as beneficial, they do not contribute to \DOB\
+certification credit, and their use has had to be justified by other
+means. However, \DOC\ \cite{do178c}, the recently released successor and
+replacement of \DOB, allows to replace some of the prescribed testing
+activities by formal methods. From RTCA \cite{do178c}:
+%
+\begin{quote}
+  The use of formal methods is motivated by the expectation that, as
+  in other engineering disciplines, performing appropriate
+  mathematical analyses can contribute to establishing the correctness
+  and robustness of a design.
+\end{quote}
+%
+Formal methods are complementary to testing, and may find faults that
+are not detected by testing, but they cannot establish verification
+evidence for the target hardware. Therefore testing on the target is
+still required. However, formal analysis of source code can be used to
+show compliance with the low-level requirements. \DOC\ requires an
+argument for property preservation between the source code and the
+object code for those properties that have been verified formally at
+the source level. Since formal program verification and testing are
+complementary, we would like to use each method where it is most
+efficient. For this we need to make sure that the combination is at
+least as strong as testing alone.
 
 \subsection{Executable Contracts}
+Programming using contracts is a way to organise your code. By stating
+a precondition and a postcondition of a subprogram as for example in
+Sect. \ref{langfeatures}, we assign responsibilities. The subprogram
+is responsible for the postcondition to be met, as long as it is
+called under the assumptions of its precondition, which it relies
+upon. Similarly, a caller of this subprogram is responsible for that
+the precondition of the subprogram holds, before calling it. It can
+then rely on the postcondition of the called program upon return. This
+programming discipline encourages a modular design of the
+software. Furthermore when verification is concerned, this can be done
+in a modular fashion as well. Modularity gives the flexibility to
+perform verification during development, rather than waiting until
+after integration.
 
+Also implicit contracts...
+
+The notion of preconditions and postconditions was first introduced by
+Hoare \cite{}, and later reinvented as \emph{Design by Contract} by
+Meyer \cite{}. Traditionally, contracts have been interpreted quite
+differently depending on whether used for formal program verification
+or for run-time assertion checking. For formal program verification,
+assertions have typically been interpreted as formulae in classical
+first-order logic. This is not consistent with the run-time assertion
+checking (RAC) semantics.
+
+Much effort has been spent the last decades to popularise formal
+program verification. \cite{tseChalin10} did something as unusual as
+surveying practitioners, to find that they prefer RAC
+semantics. Furthermore he developed a semantics to allow formal
+executable contracts, i.e. RAC compatible, in the hope that those
+users who are already annotating their code with assert statements,
+could more easily be convinced to start writing contracts. \adatwtw\
+and thus \newspark has such semantics.
+
+Some of the benefits of being able to execute a contract:
 \begin{itemize}
 \item execution semantics for functional properties $\rightarrow$ debug
   annotations like code
 \item contracts can be tested
 \end{itemize}
+If the contract is also formal, the entry barrier to formal program
+verification can be lowered by making it available to those who would
+write executable contracts.
 
 \subsection{Mixing Test and Proof}
+
+Low-level requirements are typically expressed in natural language on
+subprogram or unit level.
+
+global correctness
+remember this is no difference to modular verification
+make sure as good as testing
 \begin{itemize}
 \item same semantics for test and proof (Chalin's work)
 \item methodology for mixing test and proof. compiler inserts additional needed
   checks to verify at run time assumptions made during proof.
-\item target parametrization
+\item target parametrisation
 \end{itemize}
 
 \subsection{Compiler Implementation}
+Link to \cite{ksd2012}.
 
-\subsection{Benefits of Hybrid Verification}
-
+Something about target parameterisation?
 
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
+\cite{jotChalin04}
 
 example of problem:
 \begin{itemize}
@@ -370,10 +460,20 @@ annotations, to avoid useless rework.
 
 \section{VerifyThis Competition}
 \label{verifythis}
+In this section we will describe our solutions to two of the
+challenges from the 2012 VerifyThis competition. The first challenge
+is the longest common prefix problem, \verb|LCP|. The second challenge
+is a tree sum, \verb|PrefixSum|, which is a binary tree summation
+algorithm implemented in-place on an array. For the latter we have one
+complete fixed-size solution suitable for automatic verification using
+the current prototype version of \newspark\ and
+\gnatprove. Furthermore, we have specified a general version of the
+\verb|Upsweep| procedure of the second challenge initially using
+\oldspark\ as a reference, then translated into \newspark,
+experiencing the benefits of executable annotations.
+\subsection{Solution to Challenge 1: Longest Common Prefix}
 
-\subsection{Solution to Challenge 1}
-
-The longest common prefix solution can be readily coded in \adatwtw as follows:
+The longest common prefix solution can be readily coded in \newspark as follows:
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -457,7 +557,7 @@ is proved by \gnatprove.
 The final version of \verb|LCP| is proved in 6s on a DELL laptop with 4G RAM
 and 3GHz processor.
 
-\subsection{Solution to Challenge 2}
+\subsection{Solution to Challenge 2: Tree Sum}
 
 We have chosen to implement an imperative version of prefix sum instead of a
 recursive one, which better matches the constraints commonly found in critical
@@ -614,6 +714,155 @@ These 8 unproved VCs are either loop invariants or postconditions, which are
 not proved automatically due to the use of the \verb|mod| operator, currently
 not well handled in the underlying automatic prover. We have checked all of
 them manually.
+
+\subsection{General  Tree Sum}
+As mentioned, we chose to implement an imperative version of
+\verb|PrefixSum| to fit for critical embedded software; we are happy
+with that. Though the presented complete solution makes automatic
+proof possible with the prototype version of our tools, which we are
+also happy with, the specification could be improved. Here we present
+a general specification for the simple property of the \verb|Upsweep|
+procedure.  The downside is that it does not yet verify with the
+current version of \gnatprove..
+
+This solution: Uses a general fix size, but not explcitly size 8.
+Avoids explicit listing of intermediate state in the contract, because
+it is too detailed and hard to judge whether it is correct, and it
+does not scale, if you would like to change the size to four times for
+example
+
+replace the
+
+\begin{footnotesize}
+\begin{verbatim}
+
+package Types is
+   subtype Index is Natural range 0 .. 7;
+   type Input is array (Index) of Integer;
+end Types;
+
+with Types; use Types;
+
+package PrefixSum_General is
+
+   Tree_Depth : constant := 3;
+   Maximum    : constant := Integer'Last / (Index'Last + 1);
+
+   function Is_Even (K : Integer) return Boolean is (K mod 2 = 0);
+
+   function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer
+   with
+     Pre => Start_Pos <= End_Pos;
+
+   function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer is
+      (if Start_Pos = End_Pos then A (Start_Pos)
+       else A (End_Pos) + Summation (A, Start_Pos, End_Pos - 1));
+
+   procedure Upsweep (A : in out Input; Output_Space : out Positive) with
+     Pre  => (for all K in A'Range => A (K) in -Maximum .. Maximum),
+     Post => (for all K in A'Range => (if Is_Even (K) then A (K) = A'Old (K)))
+       and then A (A'Last) = Summation (A'Old, 0, A'Last);
+
+end PrefixSum_General;
+
+\end{verbatim}
+\end{footnotesize}
+%
+(AW: double check: the pre-condition that I had in the \oldspark\
+version: \verb|--# pre A'Length = 2 ** Tree_Depth| has not made it
+into the \newspark\ version. I would like to state this even if it is
+currently not used for proof(?), because it is an important part of
+the specification, the algorithm won't work for inputs that don't
+fulfill this. Furthermore, it is a good example of various typical
+practical non-trivial stuff: 1) non-linear arithmetic, 2) how to avoid
+complications for underlying solver a) avoid existential
+quantification ala $\exists n: Integer. A'Length = 2^n$), 2 b) avoid
+extra proof functions (for the binlog version to avoid the existential
+quantification), solution: ask the user for input up-front
+\verb|Tree_Depth|, this is not bogging the user down but rather
+encourages thinking about the underlying app, and is quite elegant,
+and will generate distinct false VCs if not true)
+%
+\begin{footnotesize}
+\begin{verbatim}
+package body PrefixSum_General is
+
+   procedure Upsweep (A : in out Input; Output_Space : out Positive) is
+      Space : Positive := 1;
+      Left  : Natural;
+      Right : Natural;
+      A_Old : constant Input := A;
+   begin
+      while Space < A'Length loop
+         Left := Space - 1;
+
+         pragma Loop_Invariant
+           (A'Length mod Space = 0
+              and then
+            2 * Space <= A'Length
+              and then
+            not Is_Even (Left + Space)
+              and then
+            Left < Space
+              and then
+            (Left + 1) mod Space = 0
+              and then
+            (for all K in A'Range =>
+              A (K) in -Maximum * Space .. Maximum * Space)
+              and then
+            (for all K in A'Range =>
+              (if Is_Even (K) then A (K) = A'Loop_Entry (K)))
+              and then
+            (for all K in A'Range =>
+              (if (K + 1) mod Space = 0 then
+                A (K) = Summation (A'Loop_Entry, K + 1 - Space, K))));
+         pragma Loop_Variant (Increases => Space);
+
+         while Left + Space < A'Length loop
+            pragma Loop_Invariant
+              (Left + Space < A'Length
+                 and then
+               A'Length mod Space = 0
+                 and then
+               2 * Space <= A'Length
+                 and then
+               not Is_Even (Left + Space)
+                 and then
+               (Left + 1) mod Space = 0
+                 and then
+               (for all K in A'Range =>
+                 (if K < Left then
+                   A (K) in -Maximum * Space * 2 .. Maximum * Space * 2
+                  else
+                   A (K) in -Maximum * Space .. Maximum * Space))
+                 and then
+               (for all K in A'Range =>
+                 (if Is_Even (K) then A (K) = A'Loop_Entry (K)))
+                 and then
+               (for all K in A'Range =>
+                 (if K < Left and (K + 1) mod (Space * 2) = 0 then
+                   A (K) = Summation (A_Old, K + 1 - Space * 2, K)
+                 elsif Left <= K and (K + 1) mod Space = 0 then
+                   A (K) = Summation (A_Old, K + 1 - Space, K)))
+                 and then
+               A (Left) = Summation (A_Old, Left + 1 - Space, Left)
+                 and then
+               A (Left + Space) = Summation (A_Old, Left + 1, Left + Space));
+            pragma Loop_Variant (Increases => Left);
+
+            Right     := Left + Space;
+            A (Right) := A (Left) + A (Right);
+            Left      := Left + Space * 2;
+         end loop;
+         Space := Space * 2;
+      end loop;
+      Output_Space := Space;
+   end Upsweep;
+
+end PrefixSum_General;
+
+\end{verbatim}
+\end{footnotesize}
 
 \subsection{Useful Tool Features}
 
