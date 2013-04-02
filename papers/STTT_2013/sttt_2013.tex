@@ -329,7 +329,29 @@ in a modular fashion as well. Modularity gives the flexibility to
 perform verification during development, rather than waiting until
 after integration.
 
-Also implicit contracts...
+In addition to user-defined contracts we also have implicit contracts
+given for example by a strong type system such as Ada's and the
+signatures of subprograms. For example there is an implicit
+precondition that subprogram parameters have values within their types
+and likewise an implicit postcondition that guarantees that output
+parameters and function results have values allowed by their type. As
+an example, consider what difference it makes to the user-supplied
+contract, if you would use the type \verb|Natural| instead of
+\verb|Integer| for the \verb|Input| parameter:
+\begin{footnotesize}
+\begin{verbatim}
+    procedure Sqrt (Input : Integer; Res: out Natural)
+    with 
+       pre  => Input >= 0,
+       post => (Res * Res) <= Input and
+               (Res + 1) * (Res + 1) > Input;
+\end{verbatim}
+\end{footnotesize}
+In this case the implicit precondition would be sufficient and a
+user-supplied precondition would not be necessary. Since there is a
+cost associated with users writing contracts, there is a benefit in
+designing the language so that the basic language features already
+provide a rich default contract.
 
 The notion of preconditions and postconditions was first introduced by
 Hoare \cite{}, and later reinvented as \emph{Design by Contract} by
@@ -356,7 +378,7 @@ Some of the benefits of being able to execute a contract:
   annotations like code
 \item contracts can be tested
 \end{itemize}
-Furthermore, there is an advantage in keeping the annotaion language
+Furthermore, there is an advantage in keeping the annotation language
 the same, or almost the same, as the programming language: the users
 don't have to learn one more language. If the contract is also formal,
 the entry barrier to formal program verification can be lowered by
@@ -415,7 +437,7 @@ precondition of \verb|P|. In the second case, the correctness of
 \verb|P| relies on that after having verified the precondition of and
 then called \verb|T|, then \verb|T| should return in a state where the
 postcondition holds. This assumption on \verb|T| should be verified
-when testing \verb|T| by executing the assertion that its postcondiion
+when testing \verb|T| by executing the assertion that its postcondition
 holds. Both of these verification cases are only possible because we
 have executable contracts.
 
@@ -470,18 +492,18 @@ mathematical integers in assertions and executable semantics for the
 program. Another user wants the same executable semantics in
 assertions and program code, and want to leave the assertions in the
 shipped code. Many users could not have executed code that uses a
-library for unbounded integers becuase of certification and
+library for unbounded integers because of certification and
 performance reasons, etc. Because of these strong needs, we provide
 three alternative overflow checking modes in GNAT and \gnatprove:
 \begin{enumerate}
 \item Strict mode: normal overflow checks
-\item Minimized mode: larger base type (64bits) used when needed
+\item Minimised mode: larger base type (64bits) used when needed
 \item Eliminated mode: use bignum library in the remaining cases
 \end{enumerate}
 This gives a flexible solution, where the user chooses between 3
 modes. The choice is independent for assertions and code. However, the
 same choice for execution and formal verification is required for our
-hybrid verification with test and prooof to be sound.
+hybrid verification with test and proof to be sound.
 \section{Making Automatic Verification Work}
 \label{automation}
 
@@ -518,15 +540,15 @@ example, one can choose to produce fewer but more complex VCs: the default in
 \gnatprove is that a VC accounts for all paths leading to an assertion, using
 an efficient computation~\cite{leino2005ipl}, instead of generating one VC for
 each path leading to an assertion (also available in \gnatprove on option). The
-choice of axiomatization of Ada data types (integer types, enumeration types,
+choice of axiomatisation of Ada data types (integer types, enumeration types,
 record types, array types, \etc) in Why3 also has a determinant effect on the
-provability of VCs. We have changed various times these axiomatizations to
+provability of VCs. We have changed various times these axiomatisations to
 better suit the mechanisms inside SMT provers like Alt-Ergo. Similarly, we have
-tailored the axiomatization for a generic library of
+tailored the axiomatisation for a generic library of
 containers~\cite{dross:2011:tap} to SMT provers.
 
 Finally, modular verification based on pre- and postconditions can very easily
-exploit multicore architectures, as the generation of VCs for different units,
+exploit multi-core architectures, as the generation of VCs for different units,
 or the proof of different VCs, can both be run in parallel. Typically, project
 contain hundreds of units, and lead to the generation of thousands of VCs,
 which can be run by \gnatprove on as many cores as available. Note also that
@@ -642,7 +664,7 @@ embedded software where recursion is usually not allowed. In order to make
 automatic proof possible, we fix the length of the array to 8. The complete
 solution is quite long (186 loc, not counting empty lines), so we only show
 here selected parts. The initial solution without annotations is
-straighforward, and only 50 lines long. As an example, here is the
+straightforward, and only 50 lines long. As an example, here is the
 implementation of procedure \verb|Upsweep|:
 
 \begin{footnotesize}
@@ -799,20 +821,37 @@ with that. Though the presented complete solution makes automatic
 proof possible with the prototype version of our tools, which we are
 also happy with, the specification could be improved. Here we present
 a general specification for the simple property of the \verb|Upsweep|
-procedure.  The downside is that it does not yet verify with the
-current version of \gnatprove..
+procedure. This solution avoids explicit listing of intermediate state in the
+contract, because it is too detailed and hard to judge whether it is
+correct, and it would be impossible to use that specification scheme
+for a larger array.
 
-This solution: Uses a general fix size, but not explcitly size 8.
-Avoids explicit listing of intermediate state in the contract, because
-it is too detailed and hard to judge whether it is correct, and it
-does not scale, if you would like to change the size to four times for
-example
+The \verb|Upsweep| precondition consists of two parts: 1) the starting
+values in the array are within a certain \verb|Maximum|, which is
+specified here to be as large as it can be without causing overflows,
+and 2) the length of the array is a power of two. The postcondition
+state two observations about the algorithm: 1) the even positions are
+left unchanged during the upwseep, and 2) upon completion of
+\verb|Upsweep|, the last element holds the sum of all the elements in
+the array.
 
-replace the
+We have added a constant \verb|Tree_Depth| for the size of the tree
+that fit in the input array. This is to be able to neatly specify an
+important precondition on \verb|Upsweep| that the size of the array is
+a power of 2. Otherwise the binary tree algorithm is not guaranteed to
+work, so we want to be explicit about this precondition. By adding
+this constant and precondition we ask the user to effectively fix the
+size, but it is done in a general fashion. It is worth noting that
+this precondition could have been stated without asking the user to fix
+the size, and perhaps more naturally as $\exists n: Integer. A'Length
+= 2^n$, but it is our experience that existential quantification is
+difficult for the automatic provers that we have available.
 
+We have added a couple of functions to make the specification
+intuitive: \verb|Is_Even|, and more importantly \verb|Summation|, the
+mathematical operation for adding a sequence of numbers.
 \begin{footnotesize}
 \begin{verbatim}
-
 package Types is
    subtype Index is Natural range 0 .. 7;
    type Input is array (Index) of Integer;
@@ -836,7 +875,8 @@ package PrefixSum_General is
        else A (End_Pos) + Summation (A, Start_Pos, End_Pos - 1));
 
    procedure Upsweep (A : in out Input; Output_Space : out Positive) with
-     Pre  => (for all K in A'Range => A (K) in -Maximum .. Maximum),
+     Pre  => (for all K in A'Range => A (K) in -Maximum .. Maximum) 
+       and then A'Length = 2 ** Tree_Depth,
      Post => (for all K in A'Range => (if Is_Even (K) then A (K) = A'Old (K)))
        and then A (A'Last) = Summation (A'Old, 0, A'Last);
 
@@ -845,20 +885,21 @@ end PrefixSum_General;
 \end{verbatim}
 \end{footnotesize}
 %
-(AW: double check: the pre-condition that I had in the \oldspark\
-version: \verb|--# pre A'Length = 2 ** Tree_Depth| has not made it
-into the \newspark\ version. I would like to state this even if it is
-currently not used for proof(?), because it is an important part of
-the specification, the algorithm won't work for inputs that don't
-fulfill this. Furthermore, it is a good example of various typical
-practical non-trivial stuff: 1) non-linear arithmetic, 2) how to avoid
-complications for underlying solver a) avoid existential
-quantification ala $\exists n: Integer. A'Length = 2^n$), 2 b) avoid
-extra proof functions (for the binlog version to avoid the existential
-quantification), solution: ask the user for input up-front
-\verb|Tree_Depth|, this is not bogging the user down but rather
-encourages thinking about the underlying app, and is quite elegant,
-and will generate distinct false VCs if not true)
+The downside is that this improved specification does not yet verify
+with the current version of \gnatprove. This general specification was
+initially developed using \oldspark\ and the existing verification
+tools, as a reference example in our development of \newspark\ and
+\gnatprove. Using the \oldspark\ verification tools, we could add the
+necessary axiom on the summation proof function that the summation of
+two adjacent intervals of the array is equal to the summation of the
+combined interval. Ideally we would add support for the summation
+operation including axioms to \gnatprove\ in the future.
+
+Even though we could not currently prove this using \gnatprove, we had
+a very rewarding experience in moving the example from \oldspark\ to
+\newspark. Consider the following lengthy two loop invariants. They
+are longer than they need to be in \newspark\ (due to legacy reasons
+the loop invariant need to repeat some of the loop conditions).
 %
 \begin{footnotesize}
 \begin{verbatim}
@@ -937,20 +978,28 @@ package body PrefixSum_General is
    end Upsweep;
 
 end PrefixSum_General;
-
 \end{verbatim}
 \end{footnotesize}
-
+%
+After adding the necessary summation axiom, there would still be two
+verification conditions remaining unproved. At that point it was very
+helpful that the loop assertions are also executable. This meant that
+after running some tests with run-time checking turned on, we could
+get some confidence in the correctness of the long and complicated
+loop invariant. This is very valuable since it decreases the time
+spent on debugging failed proof attempts while finding the correct
+loop invariant and then to write user rules (axioms) to cover for the
+incompleteness of the prover. 
 \subsection{Useful Tool Features}
 
-The format of the competition exercized useful features of \gnatprove, which
+The format of the competition exercised useful features of \gnatprove, which
 helped finding errors early in the code or in the annotations. The most useful
 of these features is certainly the ability to execute annotations, which allows
 testing and debugging annotations as if they were code. It was used during the
 competition to quickly locate the reason for an unprovable VC on challenge 1:
 the loop test was using a strict comparison operator instead of the correct
 non-strict one. To locate the problem, the participating author simply wrote a
-test exercizing \verb|LCP| on an input, compiled it with run-time checks, and
+test exercising \verb|LCP| on an input, compiled it with run-time checks, and
 run it. The run-time error raised precisely located the failing loop
 invariant. Although this example was simple enough to immediately understand
 the underlying problem, it would have been possible to use the debugger to
@@ -1004,7 +1053,7 @@ requires that the user annotates programs with data dependence contracts, they
 are optional in \newspark, and \gnatprove generates them when not present. A
 minimal flow analysis is always required for the soundness of proofs, while a
 more complete flow analysis is optional. The minimal flow analysis ensures that
-all variables are initialized prior to being read.
+all variables are initialised prior to being read.
 
 Facilitating the investigation of unproved VCs is key to making formal program
 verification cost-effective in industry. \gnatprove currently provides various
@@ -1017,7 +1066,7 @@ provers~\cite{CVC3,Z3model}.
 
 We have been exploring two promising ways to improve the results of the
 Alt-Ergo SMT prover on the VCs generated in \gnatprove: handling selected
-axiomatizations as decision procedures~\cite{dross:2012:smt}, and incrementally
+axiomatisations as decision procedures~\cite{dross:2012:smt}, and incrementally
 selecting axioms~\cite{cgs09:ipo,kuhlwein:2012:ijcar}. More work is needed to
 make these modes the default inside \gnatprove.
 
@@ -1025,8 +1074,8 @@ mention the following?
 
 \begin{itemize}
 \item proof of code containing containers
-\item visualization of assumptions made for proof
-\item Coq formalization of AST produced by frontend. possible verification of
+\item visualisation of assumptions made for proof
+\item Coq formalisation of AST produced by frontend. possible verification of
   the consistency of the generated AST with checks.
 \item adaptation for non-executable annotations and proof assistants
 \end{itemize}
