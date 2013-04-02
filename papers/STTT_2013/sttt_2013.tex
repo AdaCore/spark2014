@@ -338,16 +338,17 @@ differently depending on whether used for formal program verification
 or for run-time assertion checking. For formal program verification,
 assertions have typically been interpreted as formulae in classical
 first-order logic. This is not consistent with the run-time assertion
-checking (RAC) semantics.
+checking semantics.
 
 Much effort has been spent the last decades to popularise formal
 program verification. \cite{tseChalin10} did something as unusual as
-surveying practitioners, to find that they prefer RAC
-semantics. Furthermore he developed a semantics to allow formal
-executable contracts, i.e. RAC compatible, in the hope that those
-users who are already annotating their code with assert statements,
-could more easily be convinced to start writing contracts. \adatwtw\
-and thus \newspark has such semantics.
+surveying practitioners, to find that they prefer run-time assertion
+checking semantics. Furthermore he developed a semantics to allow
+formal executable contracts, i.e. compatible with run-time assertion
+checking, in the hope that those users who are already annotating
+their code with assert statements, could more easily be convinced to
+start writing contracts. \adatwtw\ and thus \newspark has such
+semantics.
 
 Some of the benefits of being able to execute a contract:
 \begin{itemize}
@@ -355,41 +356,105 @@ Some of the benefits of being able to execute a contract:
   annotations like code
 \item contracts can be tested
 \end{itemize}
-If the contract is also formal, the entry barrier to formal program
-verification can be lowered by making it available to those who would
-write executable contracts.
+Furthermore, there is an advantage in keeping the annotaion language
+the same, or almost the same, as the programming language: the users
+don't have to learn one more language. If the contract is also formal,
+the entry barrier to formal program verification can be lowered by
+making it available to those who would write executable contracts.
 
 \subsection{Mixing Test and Proof}
 
-Low-level requirements are typically expressed in natural language on
-subprogram or unit level.
-
-global correctness
-remember this is no difference to modular verification
-make sure as good as testing
+Low-level requirements, in \DO\ terms, are typically expressed in
+natural language on subprogram or unit level. Formal executable
+contracts, can be used to express those requirements on the
+subprogram level. Thanks to the same semantics for test and proof as
+we have just discussed, we can use either (or both) of test and proof
+to verify a subprogram. Thanks to modular verification, it is then
+possible to mix test and proof to use the verification method that is
+most cost effective for each module. If the chosen method is testing
+the benefits of formal executable contracts are:
 \begin{itemize}
-\item same semantics for test and proof (Chalin's work)
-\item methodology for mixing test and proof. compiler inserts additional needed
-  checks to verify at run time assumptions made during proof.
-\item target parametrisation
+\item Low-level requirements expressed as contracts
+\item Successful execution of postcondition $\rightarrow$ test successful
+\item No need to collect and verify output
+\item More run-time checks gives better robustness testing
+\end{itemize}
+If the chosen verification method for a subprogram is proof, the
+benefits of formal executable contracts are:  
+\begin{itemize}
+\item Low-level requirements expressed as contracts
+\item Successful proof of postcondition $\rightarrow$ low-level
+  requirement verified for all input
+\item Approach allowed by \DOC\ formal methods supplement
+\item Proof of absence of some run-time exceptions provides for some
+  robustness testing
+\item Proving process faster when annotations can be executed (debug failed proof attempts is very time-consuming)
 \end{itemize}
 
-\subsection{Compiler Implementation}
-Link to \cite{ksd2012}.
+But what about soundness of the mixed approach? When some low-level
+requirements are tested and and some are proved, remember in
+\DOC-terms the combination needs to be as good as if all low-level
+requirements were tested.
 
-Something about target parameterisation?
+Central to modular verification is the statement of assumptions and
+guarantees. For global correctness, \emph{all} subprograms must
+establish their postconditions (under the assumption of their
+preconditions), and for \emph{all} calls to a subprogram, its
+precondition must be verified by the caller before the call.
+
+In our mixed approach of test and proof, we have these same global
+correctness requirements as usual for modular verification. The
+difference is that some subprograms may be tested and some be proved,
+and we must still make sure that all assumptions are verified. Let us
+consider the two cases: 1) a tested subprogram \verb|T| calls a proved
+subprogram \verb|P|, and 2) a proved subprogram \verb|P| calls a
+tested subprogram \verb|T|. In the first case, when verifying \verb|T|
+we must make sure that the precondition of \verb|P| is
+established. When testing \verb|T|, this can be done by executing the
+precondition of \verb|P|. In the second case, the correctness of
+\verb|P| relies on that after having verified the precondition of and
+then called \verb|T|, then \verb|T| should return in a state where the
+postcondition holds. This assumption on \verb|T| should be verified
+when testing \verb|T| by executing the assertion that its postcondiion
+holds. Both of these verification cases are only possible because we
+have executable contracts.
+
+\subsection{Compiler Implementation}
+For \newspark\ we are building the verification tools using the GNAT
+compiler, see \cite{ksd2012} for a description and discussion of this
+architecture. One advantage here is that the compiler inserts these
+additional checks needed to verify at run time assumptions made during
+proof.
+
+Yannick: Something about target parameterisation?
 
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
-\cite{jotChalin04}
+As mentioned, there has traditionally been a difference in
+interpretation of contracts depending on whether used for formal
+verification, or for run-time assertion checking. One area where this
+difference is of practical significance is in the semantics for
+integers. An effect of having the same semantics in assertions as in
+the program code, is that run-time exceptions must be considered, and
+avoided, in the assertions as well as in the program. As an example,
+consider a programmer who wants to state a pre-condition that the
+addition of two number fits in a desired integer type:
+\verb|with Pre => X + Y in SomeIntegerType|. The problem is that
+\verb|X + Y| itself can cause an arithmetic overflow, and worse this
+is not relevant to the correctness of neither the program nor the
+specification. When executable semantics are used for integer
+operations in assertions, there will therefore in practical formal
+verification be a large number of extra proof obligations that do not
+point to real issues neither in the program code nor the code. In
+traditional assertion languages aimed for formal verification,
+mathematical universal integers are used for such operation and proof
+can safely proceed without involving the user. Furthermore, user
+studies \cite{jotChalin04} show that users who are otherwise happy
+with run-time assertion checking semantics, still prefer mathematical
+semantics for intermediate integer operations in assertions.
 
-example of problem:
-\begin{itemize}
-\item user wants to add two numbers: \verb|X + Y|
-\item user wants to assert that addition cannot overflow:\\
-  \verb|with Pre => X + Y in Integer|
-\item but this expression may overflow itself!
-\end{itemize}
+In order to solve this problems we must overcome the somewhat
+conflicting requirements:
 
 3 overflow checking modes:
 \begin{itemize}
