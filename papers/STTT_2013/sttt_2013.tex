@@ -453,23 +453,35 @@ studies \cite{jotChalin04} show that users who are otherwise happy
 with run-time assertion checking semantics, still prefer mathematical
 semantics for intermediate integer operations in assertions.
 
-In order to solve this problems we must overcome the somewhat
-conflicting requirements:
+From a user perspective mathematical semantics for integer operations
+in assertions is a good solution. However, for our hybrid verification
+argument described in the previous section to work, it is mandatory to
+have the same semantics for test and proof. Fortunately, we here have
+the option to implement a solution for this in the compiler GNAT,
+which we re building our verification tools on. Also, the Ada standard
+does not require the compiler to issue an overflow error when an
+intermediate value does not fit into the base type. 
 
-3 overflow checking modes:
-\begin{itemize}
-\item strict mode: normal overflow checks
-\item minimized mode: larger base type (64bits) used when needed
-\item eliminated mode: use bignum library in the remaining cases
-\end{itemize}
-
-flexible solution:
-\begin{itemize}
-\item user chooses between 3 modes
-\item independent choice for assertions and code
-\item same choice for execution and formal verification
-\end{itemize}
-
+Existing users of \oldspark\ and potential new users of \newspark\
+together cover a wide spectrum of strong preferences regarding this
+issue. Existing users of \oldspark\ who perform formal verification of
+absence of run-time errors for their programs want the traditional
+mathematical integers in assertions and executable semantics for the
+program. Another user wants the same executable semantics in
+assertions and program code, and want to leave the assertions in the
+shipped code. Many users could not have executed code that uses a
+library for unbounded integers becuase of certification and
+performance reasons, etc. Because of these strong needs, we provide
+three alternative overflow checking modes in GNAT and \gnatprove:
+\begin{enumerate}
+\item Strict mode: normal overflow checks
+\item Minimized mode: larger base type (64bits) used when needed
+\item Eliminated mode: use bignum library in the remaining cases
+\end{enumerate}
+This gives a flexible solution, where the user chooses between 3
+modes. The choice is independent for assertions and code. However, the
+same choice for execution and formal verification is required for our
+hybrid verification with test and prooof to be sound.
 \section{Making Automatic Verification Work}
 \label{automation}
 
