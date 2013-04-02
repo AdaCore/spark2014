@@ -3,9 +3,12 @@ DOC=sttt_2013
 
 all: doc
 
-clean: 
+clean:
 	rm -f *.bbl *.aux *.log *.dvi *.blg *.pdf
 doc:
+	pdflatex $(DOC)
+	bibtex $(DOC)
+	pdflatex $(DOC)
 	pdflatex $(DOC)
 
 bib:

@@ -36,9 +36,10 @@
 %
 \title{\newspark\ and \gnatprove}
 \subtitle{A Competition Report from Builders of an Industrial-Strength Verifying Compiler}
-\author{Duc Hoang\inst{1} \and Yannick Moy\inst{1} \and Angela Wallenburg\inst{2}
+\author{Duc Hoang\inst{1} \and Yannick Moy\inst{2} \and Angela Wallenburg\inst{3}
 }                     % Do not remove
-\institute{AdaCore, \email{\{duc.hoang, yannick.moy\}@adacore.com}
+\institute{Ecole Polytechnique Fédérale de Lausanne, \email{duc.hoang@epfl.ch}
+  \and AdaCore, \email{yannick.moy@adacore.com}
   \and Altran, \email{angela.wallenburg@altran.com}}
 
 \date{Received: date / Revised version: date}
@@ -73,9 +74,9 @@ the grand challenge of (building) \emph{the verifying compiler}
   correctness of its more critical components.
 \end{quote}
 
-As predicted in \cite{Hoare03theverifying} this grand challenge has
-called for for co-operation among research teams and it has encouraged
-and benefitted from competition. An example of such beneficial
+As predicted in \cite{Hoare03theverifying}, this grand challenge has
+called for co-operation among research teams and it has encouraged
+and benefited from competition. An example of such beneficial
 competition is the VerifyThis competition, which is the context of
 this very report.
 
@@ -119,7 +120,7 @@ from experiences in industrial use of \oldspark. Then in
 Sect. \ref{hilite} we describe our unique integration of testing and
 proving. This was developed in the collaborative research project
 \hilite\ \cite{hiliteERTS2012} with Altran, AdaCore, and INRIA, to
-create a new tool architecture compiler and verifier based on same the
+create a new tool architecture where the compiler and verifier are based on same the
 same front-end \cite{ksd2012}. In Sect. \ref{overflowsemantics} we
 describe specific language features to be able to allow naturally
 writing specifications. We present in Sect. \ref{automation}
@@ -130,21 +131,24 @@ prototype, and in Sect \ref{verifythis} its results in the VerifyThis
 \section{Key Language Features for Verification}
 \label{langfeatures}
 
-explain more the dynamic semantics of these features???
+All the functional specification features in \newspark are executable. This
+means that their verification can be performed either dynamically, by running
+the program, or statically with a dedicated formal verification tool.
 
 \subsection{Ada 2012}
 
 Ada 2012 introduced new language features for facilitating the specification of
-programs, many of which were inspired from the corresponding features in SPARK
-(ref to John Barnes rational). In the following, we describe some of these that
-we used in the solutions for challenge 1 and challenge 2.
+programs~\cite{ada2012rationale}, many of which were inspired from the
+corresponding features in SPARK. In the following, we describe some of these
+that we used in the solutions for challenge~1 and challenge~2.
 
-The most useful of these new features is without the preconditions and
-postconditions popularised by the Design-by-Contract approach (ref to
-Meyer). In challenge 1, we can for example specify that function \verb|LCP|
-expects arguments within bounds, and that it returns a bounded result. Note the
-use of the new \textit{aspect} syntax in Ada 2012, in which the declaration of
-\verb|LCP| is followed by keyword \verb|with| and a list of aspects.
+The most useful of these new features is without doubts the preconditions and
+postconditions popularised by the Design-by-Contract
+approach~\cite{meyer:1988:OSC}. In challenge~1, we can for example specify that
+function \verb|LCP| expects arguments within bounds, and that it returns a
+bounded result. Note the use of the new \textit{aspect} syntax in Ada 2012, in
+which the declaration of \verb|LCP| is followed by keyword \verb|with| and a
+list of aspects.
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -174,25 +178,27 @@ preferred way to abstract complex parts of specifications.
 \subsection{SPARK 2014}
 
 The new version of SPARK is based on the features of Ada 2012, to which it adds
-new ones, some of which inspired from the SPARK 2005.
+new ones, some of which inspired from \oldspark.
 
 Like preconditions and postconditions are the most useful new features of Ada
 2012 for specification, the loop invariant pragma is the most useful one in
-SPARK 2014. A loop invariant can be expressed anywhere in the main list of
+SPARK 2014. A loop invariant can be inserted anywhere in the main list of
 statements in a loop, and it expresses the cumulated effect of the loop up to
-that point. For example, here is the loop invariant used in challenge 1:
+that point. For example, here is the loop invariant used in challenge~1:
 
 \begin{footnotesize}
 \begin{verbatim}
-pragma Loop_Invariant (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
+pragma Loop_Invariant
+  (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
 \end{verbatim}
 \end{footnotesize}
 
 Note that a loop invariant in SPARK does not have the same semantics as the
-loop invariant introduces by Hoare (ref?). The latter has to hold when reaching
-the loop, at each start of iteration of the loop, and when exiting the
-loop. The former only has to hold when execution reaches the corresponding
-program point. The SPARK semantics is much easier to work with for programmers.
+loop invariant introduced by Hoare \cite{hoare69cacm}. The latter has to hold
+when reaching the loop, at the start of each iteration of the loop, and when
+exiting the loop. The former only has to hold when execution reaches the
+corresponding program point. The SPARK semantics is much easier to work with
+for programmers.
 
 In formal verification, it is very common that loop invariants compare the
 value of a variable at loop entry and at the n$^{th}$ iteration of the loop. To
@@ -214,18 +220,18 @@ pragma Loop_Variant (Increases => L);
 Note that this variant does not take the usual non-negative decreasing
 argument. Instead, it takes a list of increasing or decreasing integer values,
 bounded by their type in Ada, and the overall order over this list is the
-lexicographic order combined with individual directions. In the example below,
-there is only one element in the lists, so it should increase at each run
+lexicographic order combined with individual directions. In the example above,
+there is only one element in the list, so it should increase at each run
 through the loop. Like for loop invariants, the point where this increase
 matters is the program point where the loop variant appears in the code.
 
 Subprogram contracts can become quite large, even with the use of (expression)
 functions to abstract common parts of contracts. Therefore, SPARK 2014 allows
-the definition of contracts by cases, similar to behaviours in JML (ref?). For
-example, the contract of \verb|LCP| can state separately sub-contracts for the
-cases where the array is of length zero, or the elements at \verb|X| and
-\verb|Y| are different, or \verb|X| and \verb|Y| are equal. This contract may
-be used instead of or in addition to a precondition and a postcondition.
+the definition of contracts by cases, similar to behaviours in
+JML\cite{JML}. For example, the contract of \verb|LCP| can state separately
+sub-contracts for the cases where the elements at \verb|X| and \verb|Y| are
+different, or \verb|X| and \verb|Y| are equal. This contract may be used
+instead of or in addition to a precondition and a postcondition.
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -246,9 +252,7 @@ and only one case should be applicable at every call. The presence of the
 As we have mentioned, in the development of the new generation
 language and toolset \newspark, we have a particular focus on
 providing a good cost-benefit argument and on reaching non-expert
-users. The ground work of the solution presented here was done in the
-collaborative research project \hilite\ \cite{hiliteERTS2012} with
-Altran, AdaCore, and INRIA.
+users.
 
 We will describe a few observations of what drives the current
 practises in the industry, in order to help us with the cost-benefit
@@ -267,7 +271,7 @@ safety-critical sectors as well. It is regarded as very successful
 within the avionics industry itself; since its introduction in 1992 no
 commercial aircraft fatality has been attributed to \DOB-certified
 software. The majority of objectives in \DOB\ consider
-verification. DO-178C is non-prescriptive with regards to programming
+verification. \DOB is non-prescriptive with regards to programming
 languages, software tools, particular development processes etc. The
 development of requirements-based tests is mandatory, including normal
 range tests cases and robustness (abnormal range) test cases. The
@@ -320,7 +324,7 @@ a precondition and a postcondition of a subprogram as for example in
 Sect. \ref{langfeatures}, we assign responsibilities. The subprogram
 is responsible for the postcondition to be met, as long as it is
 called under the assumptions of its precondition, which it relies
-upon. Similarly, a caller of this subprogram is responsible for that
+upon. Similarly, a caller of this subprogram is responsible for ensuring that
 the precondition of the subprogram holds, before calling it. It can
 then rely on the postcondition of the called program upon return. This
 programming discipline encourages a modular design of the
@@ -337,14 +341,14 @@ and likewise an implicit postcondition that guarantees that output
 parameters and function results have values allowed by their type. As
 an example, consider what difference it makes to the user-supplied
 contract, if you would use the type \verb|Natural| instead of
-\verb|Integer| for the \verb|Input| parameter:
+\verb|Integer| for the \verb|Input| parameter of procedure \verb|Sqrt|:
+
 \begin{footnotesize}
 \begin{verbatim}
-    procedure Sqrt (Input : Integer; Res: out Natural)
-    with 
-       pre  => Input >= 0,
-       post => (Res * Res) <= Input and
-               (Res + 1) * (Res + 1) > Input;
+procedure Sqrt (Input : Integer; Res: out Natural) with
+  Pre  => Input >= 0,
+  Post => (Res * Res) <= Input and then
+          (Res + 1) * (Res + 1) > Input;
 \end{verbatim}
 \end{footnotesize}
 In this case the implicit precondition would be sufficient and a
@@ -353,14 +357,13 @@ cost associated with users writing contracts, there is a benefit in
 designing the language so that the basic language features already
 provide a rich default contract.
 
-The notion of preconditions and postconditions was first introduced by
-Hoare \cite{}, and later reinvented as \emph{Design by Contract} by
-Meyer \cite{}. Traditionally, contracts have been interpreted quite
-differently depending on whether used for formal program verification
-or for run-time assertion checking. For formal program verification,
-assertions have typically been interpreted as formulae in classical
-first-order logic. This is not consistent with the run-time assertion
-checking semantics.
+The notion of preconditions and postconditions was first introduced by Hoare
+\cite{hoare69cacm}, and later reinvented as Design-by-Contract by Meyer
+\cite{meyer:1988:OSC}. Traditionally, contracts have been interpreted quite
+differently depending on whether used for formal program verification or for
+run-time assertion checking. For formal program verification, assertions have
+typically been interpreted as formulae in classical first-order logic. This is
+not consistent with the run-time assertion checking semantics.
 
 Much effort has been spent the last decades to popularise formal
 program verification. \cite{tseChalin10} did something as unusual as
@@ -372,14 +375,10 @@ their code with assert statements, could more easily be convinced to
 start writing contracts. \adatwtw\ and thus \newspark has such
 semantics.
 
-Some of the benefits of being able to execute a contract:
-\begin{itemize}
-\item execution semantics for functional properties $\rightarrow$ debug
-  annotations like code
-\item contracts can be tested
-\end{itemize}
+As users can execute contracts, they can also debug them like code, and test
+them when formal verification is too difficult to achieve.
 Furthermore, there is an advantage in keeping the annotation language
-the same, or almost the same, as the programming language: the users
+the same, or almost the same, as the programming language: users
 don't have to learn one more language. If the contract is also formal,
 the entry barrier to formal program verification can be lowered by
 making it available to those who would write executable contracts.
@@ -387,8 +386,8 @@ making it available to those who would write executable contracts.
 \subsection{Mixing Test and Proof}
 
 Low-level requirements, in \DO\ terms, are typically expressed in
-natural language on subprogram or unit level. Formal executable
-contracts, can be used to express those requirements on the
+natural language at subprogram or unit level. Formal executable
+contracts can be used to express those requirements at the
 subprogram level. Thanks to the same semantics for test and proof as
 we have just discussed, we can use either (or both) of test and proof
 to verify a subprogram. Thanks to modular verification, it is then
@@ -402,7 +401,7 @@ the benefits of formal executable contracts are:
 \item More run-time checks gives better robustness testing
 \end{itemize}
 If the chosen verification method for a subprogram is proof, the
-benefits of formal executable contracts are:  
+benefits of formal executable contracts are:
 \begin{itemize}
 \item Low-level requirements expressed as contracts
 \item Successful proof of postcondition $\rightarrow$ low-level
@@ -410,11 +409,11 @@ benefits of formal executable contracts are:
 \item Approach allowed by \DOC\ formal methods supplement
 \item Proof of absence of some run-time exceptions provides for some
   robustness testing
-\item Proving process faster when annotations can be executed (debug failed proof attempts is very time-consuming)
+\item Proving process faster when annotations can be executed (debugging failed proof attempts is very time-consuming)
 \end{itemize}
 
 But what about soundness of the mixed approach? When some low-level
-requirements are tested and and some are proved, remember in
+requirements are tested and some are proved, remember in
 \DOC-terms the combination needs to be as good as if all low-level
 requirements were tested.
 
@@ -441,18 +440,24 @@ when testing \verb|T| by executing the assertion that its postcondition
 holds. Both of these verification cases are only possible because we
 have executable contracts.
 
-\subsection{Compiler Implementation}
-For \newspark\ we are building the verification tools using the GNAT
-compiler, see \cite{ksd2012} for a description and discussion of this
-architecture. One advantage here is that the compiler inserts these
-additional checks needed to verify at run time assumptions made during
-proof.
+Although we don't describe it here, the same verification by testing of
+assumptions made during formal verification needs to be done for implicit
+contracts, related to initialization of in-type values and non-aliasing. We
+have implemented these additional verifications in the GNAT compiler through
+dedicated switches that the user can set~\cite{hiliteERTS2012}.
 
-Yannick: Something about target parameterisation?
+\subsection{Compiler Implementation}
+For \newspark\ we are building the verification tools using the GNAT compiler,
+see \cite{ksd2012} for a description and discussion of this architecture. One
+advantage here is that the compiler inserts these additional checks needed to
+verify at run time assumptions made during proof. Another advantage is that
+formal verification has access to the precise configuration of the target
+platform used for compilation (size of integers, endianness, \etc), which
+facilitates performing proofs that depend on the target.
 
 \section{Choosing the Right Semantics for Integers}
 \label{overflowsemantics}
-As mentioned, there has traditionally been a difference in
+As already mentioned, there has traditionally been a difference in
 interpretation of contracts depending on whether used for formal
 verification, or for run-time assertion checking. One area where this
 difference is of practical significance is in the semantics for
@@ -461,28 +466,36 @@ the program code, is that run-time exceptions must be considered, and
 avoided, in the assertions as well as in the program. As an example,
 consider a programmer who wants to state a pre-condition that the
 addition of two number fits in a desired integer type:
-\verb|with Pre => X + Y in SomeIntegerType|. The problem is that
+
+\begin{footnotesize}
+\begin{verbatim}
+  Pre => X + Y in SomeIntegerType
+\end{verbatim}
+\end{footnotesize}
+
+\noindent
+The problem is that
 \verb|X + Y| itself can cause an arithmetic overflow, and worse this
 is not relevant to the correctness of neither the program nor the
 specification. When executable semantics are used for integer
 operations in assertions, there will therefore in practical formal
-verification be a large number of extra proof obligations that do not
-point to real issues neither in the program code nor the code. In
+verification tools be a large number of extra proof obligations that do not
+point to real issues neither in the program code nor the assertions. In
 traditional assertion languages aimed for formal verification,
-mathematical universal integers are used for such operation and proof
+mathematical universal integers are used for such operations and proof
 can safely proceed without involving the user. Furthermore, user
 studies \cite{jotChalin04} show that users who are otherwise happy
 with run-time assertion checking semantics, still prefer mathematical
 semantics for intermediate integer operations in assertions.
 
-From a user perspective mathematical semantics for integer operations
-in assertions is a good solution. However, for our hybrid verification
-argument described in the previous section to work, it is mandatory to
-have the same semantics for test and proof. Fortunately, we here have
-the option to implement a solution for this in the compiler GNAT,
-which we re building our verification tools on. Also, the Ada standard
-does not require the compiler to issue an overflow error when an
-intermediate value does not fit into the base type. 
+From a user perspective, mathematical semantics for integer operations in
+assertions is a good solution. However, for our hybrid verification argument
+described in the previous section to work, it is mandatory to have the same
+semantics for test and proof. Fortunately, we here have the option to implement
+a solution for this in the compiler GNAT, which we are building our
+verification tools on. Also, the Ada standard supports this approach by not
+requiring that the program issues an overflow error when an intermediate value
+does not fit into the base type, providing the correct result is computed.
 
 Existing users of \oldspark\ and potential new users of \newspark\
 together cover a wide spectrum of strong preferences regarding this
@@ -490,14 +503,14 @@ issue. Existing users of \oldspark\ who perform formal verification of
 absence of run-time errors for their programs want the traditional
 mathematical integers in assertions and executable semantics for the
 program. Another user wants the same executable semantics in
-assertions and program code, and want to leave the assertions in the
+assertions and program code, and wants to leave the assertions in the
 shipped code. Many users could not have executed code that uses a
 library for unbounded integers because of certification and
-performance reasons, etc. Because of these strong needs, we provide
+performance reasons, \etc Because of these strong needs, we provide
 three alternative overflow checking modes in GNAT and \gnatprove:
 \begin{enumerate}
 \item Strict mode: normal overflow checks
-\item Minimised mode: larger base type (64bits) used when needed
+\item Minimized mode: larger base type (64bits) used when needed
 \item Eliminated mode: use bignum library in the remaining cases
 \end{enumerate}
 This gives a flexible solution, where the user chooses between 3
@@ -514,18 +527,18 @@ through the use of the SMT prover Alt-Ergo~\cite{altergo} which is included in
 \gnatprove distribution. There are two steps to make automatic verification
 work: first make it possible, then make it efficient.
 
-The choice of programming language is essential to make automatic verification
-possible. On the one hand, it should proscribe those features which render
-automatic verification impossible or very hard, and on the other hand, it
-should contain enough features which facilitate the expression of
+The choice of source programming language is essential to make automatic
+verification possible. On the one hand, it should proscribe those features
+which render automatic verification impossible or very hard, and on the other
+hand, it should contain enough features which facilitate the expression of
 specifications. The former is obtained by restricting \newspark to a subset of
-\adatwtw without pointers and exceptions. The later is obtained by the features
-introduced in \adatwtw and \newspark. \adatwtw was specifically designed to
-include preconditions, postcondition, type invariants, \etc so that a user can
-specify arbitrarily complex invariant properties on the data and control of her
-program, and test these properties at run time. \newspark further adds loop
-invariants, loop variants, \etc so that a user can formally prove these
-properties.
+\adatwtw without pointers, exceptions, aliasing, and effects in
+expressions. The later is obtained by the features introduced in \adatwtw and
+\newspark. \adatwtw was specifically designed to include preconditions,
+postcondition, type invariants, \etc so that a user can specify arbitrarily
+complex invariant properties on the data and control of her program, and test
+these properties at run time. \newspark further adds loop invariants, loop
+variants, \etc so that a user can formally prove these properties.
 
 Efficient formal verification relies on a subtle coordination between the VC
 generator and the prover, so that the VCs produced can be efficiently
@@ -549,7 +562,7 @@ containers~\cite{dross:2011:tap} to SMT provers.
 
 Finally, modular verification based on pre- and postconditions can very easily
 exploit multi-core architectures, as the generation of VCs for different units,
-or the proof of different VCs, can both be run in parallel. Typically, project
+or the proof of different VCs, can both be run in parallel. Typically, projects
 contain hundreds of units, and lead to the generation of thousands of VCs,
 which can be run by \gnatprove on as many cores as available. Note also that
 \gnatprove uses file timestamps to avoid re-generating VCs for units which have
@@ -559,7 +572,7 @@ annotations, to avoid useless rework.
 
 \section{VerifyThis Competition}
 \label{verifythis}
-In this section we will describe our solutions to two of the
+In this section, we will describe our solutions to two of the
 challenges from the 2012 VerifyThis competition. The first challenge
 is the longest common prefix problem, \verb|LCP|. The second challenge
 is a tree sum, \verb|PrefixSum|, which is a binary tree summation
@@ -582,7 +595,8 @@ type Text is array (Index range <>) of Integer;
 function LCP (A : Text; X, Y : Integer) return Natural with
   Pre  => X in A'Range and then Y in A'Range,
   Post =>
-    (for all K in 0 .. LCP'Result - 1 => A (X + K) = A (Y + K))
+    (for all K in 0 .. LCP'Result - 1 =>
+      A (X + K) = A (Y + K))
       and then
     (X + LCP'Result = A'Last + 1
       or else Y + LCP'Result = A'Last + 1
@@ -597,7 +611,8 @@ begin
      and then A (X + L) = A (Y + L)
    loop
       pragma Loop_Invariant
-        (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
+        (for all K in 0 .. L - 1 =>
+          A (X + K) = A (Y + K));
       pragma Loop_Variant (Increases => L);
       L := L + 1;
    end loop;
@@ -621,7 +636,7 @@ result:
   reaches the end of array \verb|A|, or the elements following the two
   subarrays in \verb|A| are different. Note here that the use of the lazy
   boolean connective \verb|or else| is compulsory to make sure that
-  \verb|X + LCP'Result| and \verb|Y + LCP'Result| are without bounds when
+  \verb|X + LCP'Result| and \verb|Y + LCP'Result| are within bounds when
   accessing \verb|A| in the last line of the postcondition.
 \end{itemize}
 
@@ -669,7 +684,8 @@ implementation of procedure \verb|Upsweep|:
 
 \begin{footnotesize}
 \begin{verbatim}
-procedure Upsweep (A : in out Input; Output_Space : out Positive) is
+procedure Upsweep (A : in out Input;
+                   Output_Space : out Positive) is
    Space : Positive := 1;
    Left  : Natural;
    Right : Natural;
@@ -702,14 +718,16 @@ parameters, which are only used for proofs, this is here the role of parameter
 
 \begin{footnotesize}
 \begin{verbatim}
-procedure Upsweep (A : in out Input; Output_Space : out Positive) with
+procedure Upsweep (A : in out Input;
+                   Output_Space : out Positive) with
   Pre  => All_Elements_In (A, Maximum),
   Post => All_Elements_In (A, 8 * Maximum)
     and then Output_Space = 8
     and then Intermediate_Form (A, A'Old);
 
 procedure Downsweep
-  (Ghost : Input; A : in out Input; Input_Space : in Positive)
+  (Ghost : Input; A : in out Input;
+   Input_Space : in Positive)
 with
   Pre => All_Elements_In (Ghost, Maximum)
     and then All_Elements_In (A, 8 * Maximum)
@@ -726,13 +744,14 @@ with
       and then
     A (4) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
       and then
-    A (5) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
+    A (5) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
+          + Ghost (4)
       and then
-    A (6) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
-          + Ghost (5)
+    A (6) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
+          + Ghost (4) + Ghost (5)
       and then
-    A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3) + Ghost (4)
-          + Ghost (5) + Ghost (6);
+    A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
+          + Ghost (4) + Ghost (5) + Ghost (6);
 \end{verbatim}
 \end{footnotesize}
 
@@ -772,7 +791,8 @@ expression function:
 
 \begin{footnotesize}
 \begin{verbatim}
-function All_Elements_In (A : Input; Max : Positive) return Boolean is
+function All_Elements_In (A : Input; Max : Positive)
+return Boolean is
    (for all K in A'Range => A (K) in -Max .. Max);
 \end{verbatim}
 \end{footnotesize}
@@ -808,15 +828,18 @@ pragma Loop_Variant (Increases => Left);
 \end{footnotesize}
 
 The final version of prefix sum is partially proved (78 VCs proved, 8 VCs
-unproved) in 138s on a DELL laptop with 24G RAM and 24 processors at 2.4GHz.
-These 8 unproved VCs are either loop invariants or postconditions, which are
-not proved automatically due to the use of the \verb|mod| operator, currently
-not well handled in the underlying automatic prover. We have checked all of
-them manually.
+unproved) in 138s on a DELL laptop with 24G RAM and 24 processors at 2.4GHz (to
+be able to prove VCs in parallel).  These 8 unproved VCs are either loop
+invariants or postconditions, which are not proved automatically due to the use
+of the \verb|mod| operator, currently not well handled in the underlying
+automatic prover. We have checked all of them manually, and written an expanded
+version of loop invariants and intermediate function where all occurrences of
+the \verb|mod| operator are replaced by an explicit enumeration of the possible
+cases for all indexes, which \gnatprove is able to fully prove automatically.
 
 \subsection{General  Tree Sum}
 As mentioned, we chose to implement an imperative version of
-\verb|PrefixSum| to fit for critical embedded software; we are happy
+\verb|PrefixSum| better fit for critical embedded software; we are happy
 with that. Though the presented complete solution makes automatic
 proof possible with the prototype version of our tools, which we are
 also happy with, the specification could be improved. Here we present
@@ -836,55 +859,54 @@ left unchanged during the upwseep, and 2) upon completion of
 the array.
 
 We have added a constant \verb|Tree_Depth| for the size of the tree
-that fit in the input array. This is to be able to neatly specify an
+that fits in the input array. This is to be able to neatly specify an
 important precondition on \verb|Upsweep| that the size of the array is
 a power of 2. Otherwise the binary tree algorithm is not guaranteed to
 work, so we want to be explicit about this precondition. By adding
 this constant and precondition we ask the user to effectively fix the
 size, but it is done in a general fashion. It is worth noting that
 this precondition could have been stated without asking the user to fix
-the size, and perhaps more naturally as $\exists n: Integer. A'Length
-= 2^n$, but it is our experience that existential quantification is
+the size, and perhaps more naturally as $\exists n: \mathit{Integer}.~ A'\mathit{Length} = 2^n$, but it is our experience that existential quantification is
 difficult for the automatic provers that we have available.
 
 We have added a couple of functions to make the specification
 intuitive: \verb|Is_Even|, and more importantly \verb|Summation|, the
 mathematical operation for adding a sequence of numbers.
+
 \begin{footnotesize}
 \begin{verbatim}
-package Types is
-   subtype Index is Natural range 0 .. 7;
-   type Input is array (Index) of Integer;
-end Types;
+Tree_Depth : constant := 3;
+Maximum    : constant := Integer'Last / (Index'Last + 1);
 
-with Types; use Types;
+function Is_Even (K : Integer) return Boolean is
+  (K mod 2 = 0);
 
-package PrefixSum_General is
+function Summation (A : Input; Start_Pos, End_Pos : Index)
+return Integer with
+  Pre => Start_Pos <= End_Pos;
 
-   Tree_Depth : constant := 3;
-   Maximum    : constant := Integer'Last / (Index'Last + 1);
+function Summation (A : Input; Start_Pos, End_Pos : Index)
+return Integer is
+  (if Start_Pos = End_Pos then
+     A (Start_Pos)
+   else
+     A (End_Pos) + Summation (A, Start_Pos, End_Pos - 1));
 
-   function Is_Even (K : Integer) return Boolean is (K mod 2 = 0);
-
-   function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer
-   with
-     Pre => Start_Pos <= End_Pos;
-
-   function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer is
-      (if Start_Pos = End_Pos then A (Start_Pos)
-       else A (End_Pos) + Summation (A, Start_Pos, End_Pos - 1));
-
-   procedure Upsweep (A : in out Input; Output_Space : out Positive) with
-     Pre  => (for all K in A'Range => A (K) in -Maximum .. Maximum) 
-       and then A'Length = 2 ** Tree_Depth,
-     Post => (for all K in A'Range => (if Is_Even (K) then A (K) = A'Old (K)))
-       and then A (A'Last) = Summation (A'Old, 0, A'Last);
-
-end PrefixSum_General;
-
+procedure Upsweep (A : in out Input;
+                   Output_Space : out Positive) with
+  Pre  =>
+   (for all K in A'Range => A (K) in -Maximum .. Maximum)
+      and then
+   A'Length = 2 ** Tree_Depth,
+  Post =>
+   (for all K in A'Range =>
+     (if Is_Even (K) then A (K) = A'Old (K)))
+    and then
+   A (A'Last) = Summation (A'Old, 0, A'Last);
 \end{verbatim}
 \end{footnotesize}
-%
+
+
 The downside is that this improved specification does not yet verify
 with the current version of \gnatprove. This general specification was
 initially developed using \oldspark\ and the existing verification
@@ -895,101 +917,102 @@ two adjacent intervals of the array is equal to the summation of the
 combined interval. Ideally we would add support for the summation
 operation including axioms to \gnatprove\ in the future.
 
-Even though we could not currently prove this using \gnatprove, we had
-a very rewarding experience in moving the example from \oldspark\ to
-\newspark. Consider the following lengthy two loop invariants. They
-are longer than they need to be in \newspark\ (due to legacy reasons
-the loop invariant need to repeat some of the loop conditions).
-%
-\begin{footnotesize}
-\begin{verbatim}
-package body PrefixSum_General is
+%% Even though we could not currently prove this using \gnatprove, we had
+%% a very rewarding experience in moving the example from \oldspark\ to
+%% \newspark. Consider the following lengthy two loop invariants. They
+%% are longer than they need to be in \newspark\ (due to legacy reasons
+%% the loop invariant need to repeat some of the loop conditions).
+%% %
+%% \begin{footnotesize}
+%% \begin{verbatim}
+%% package body PrefixSum_General is
 
-   procedure Upsweep (A : in out Input; Output_Space : out Positive) is
-      Space : Positive := 1;
-      Left  : Natural;
-      Right : Natural;
-      A_Old : constant Input := A;
-   begin
-      while Space < A'Length loop
-         Left := Space - 1;
+%%    procedure Upsweep (A : in out Input; Output_Space : out Positive) is
+%%       Space : Positive := 1;
+%%       Left  : Natural;
+%%       Right : Natural;
+%%       A_Old : constant Input := A;
+%%    begin
+%%       while Space < A'Length loop
+%%          Left := Space - 1;
 
-         pragma Loop_Invariant
-           (A'Length mod Space = 0
-              and then
-            2 * Space <= A'Length
-              and then
-            not Is_Even (Left + Space)
-              and then
-            Left < Space
-              and then
-            (Left + 1) mod Space = 0
-              and then
-            (for all K in A'Range =>
-              A (K) in -Maximum * Space .. Maximum * Space)
-              and then
-            (for all K in A'Range =>
-              (if Is_Even (K) then A (K) = A'Loop_Entry (K)))
-              and then
-            (for all K in A'Range =>
-              (if (K + 1) mod Space = 0 then
-                A (K) = Summation (A'Loop_Entry, K + 1 - Space, K))));
-         pragma Loop_Variant (Increases => Space);
+%%          pragma Loop_Invariant
+%%            (A'Length mod Space = 0
+%%               and then
+%%             2 * Space <= A'Length
+%%               and then
+%%             not Is_Even (Left + Space)
+%%               and then
+%%             Left < Space
+%%               and then
+%%             (Left + 1) mod Space = 0
+%%               and then
+%%             (for all K in A'Range =>
+%%               A (K) in -Maximum * Space .. Maximum * Space)
+%%               and then
+%%             (for all K in A'Range =>
+%%               (if Is_Even (K) then A (K) = A'Loop_Entry (K)))
+%%               and then
+%%             (for all K in A'Range =>
+%%               (if (K + 1) mod Space = 0 then
+%%                 A (K) = Summation (A'Loop_Entry, K + 1 - Space, K))));
+%%          pragma Loop_Variant (Increases => Space);
 
-         while Left + Space < A'Length loop
-            pragma Loop_Invariant
-              (Left + Space < A'Length
-                 and then
-               A'Length mod Space = 0
-                 and then
-               2 * Space <= A'Length
-                 and then
-               not Is_Even (Left + Space)
-                 and then
-               (Left + 1) mod Space = 0
-                 and then
-               (for all K in A'Range =>
-                 (if K < Left then
-                   A (K) in -Maximum * Space * 2 .. Maximum * Space * 2
-                  else
-                   A (K) in -Maximum * Space .. Maximum * Space))
-                 and then
-               (for all K in A'Range =>
-                 (if Is_Even (K) then A (K) = A'Loop_Entry (K)))
-                 and then
-               (for all K in A'Range =>
-                 (if K < Left and (K + 1) mod (Space * 2) = 0 then
-                   A (K) = Summation (A_Old, K + 1 - Space * 2, K)
-                 elsif Left <= K and (K + 1) mod Space = 0 then
-                   A (K) = Summation (A_Old, K + 1 - Space, K)))
-                 and then
-               A (Left) = Summation (A_Old, Left + 1 - Space, Left)
-                 and then
-               A (Left + Space) = Summation (A_Old, Left + 1, Left + Space));
-            pragma Loop_Variant (Increases => Left);
+%%          while Left + Space < A'Length loop
+%%             pragma Loop_Invariant
+%%               (Left + Space < A'Length
+%%                  and then
+%%                A'Length mod Space = 0
+%%                  and then
+%%                2 * Space <= A'Length
+%%                  and then
+%%                not Is_Even (Left + Space)
+%%                  and then
+%%                (Left + 1) mod Space = 0
+%%                  and then
+%%                (for all K in A'Range =>
+%%                  (if K < Left then
+%%                    A (K) in -Maximum * Space * 2 .. Maximum * Space * 2
+%%                   else
+%%                    A (K) in -Maximum * Space .. Maximum * Space))
+%%                  and then
+%%                (for all K in A'Range =>
+%%                  (if Is_Even (K) then A (K) = A'Loop_Entry (K)))
+%%                  and then
+%%                (for all K in A'Range =>
+%%                  (if K < Left and (K + 1) mod (Space * 2) = 0 then
+%%                    A (K) = Summation (A_Old, K + 1 - Space * 2, K)
+%%                  elsif Left <= K and (K + 1) mod Space = 0 then
+%%                    A (K) = Summation (A_Old, K + 1 - Space, K)))
+%%                  and then
+%%                A (Left) = Summation (A_Old, Left + 1 - Space, Left)
+%%                  and then
+%%                A (Left + Space) = Summation (A_Old, Left + 1, Left + Space));
+%%             pragma Loop_Variant (Increases => Left);
 
-            Right     := Left + Space;
-            A (Right) := A (Left) + A (Right);
-            Left      := Left + Space * 2;
-         end loop;
-         Space := Space * 2;
-      end loop;
-      Output_Space := Space;
-   end Upsweep;
+%%             Right     := Left + Space;
+%%             A (Right) := A (Left) + A (Right);
+%%             Left      := Left + Space * 2;
+%%          end loop;
+%%          Space := Space * 2;
+%%       end loop;
+%%       Output_Space := Space;
+%%    end Upsweep;
 
-end PrefixSum_General;
-\end{verbatim}
-\end{footnotesize}
-%
-After adding the necessary summation axiom, there would still be two
-verification conditions remaining unproved. At that point it was very
-helpful that the loop assertions are also executable. This meant that
-after running some tests with run-time checking turned on, we could
-get some confidence in the correctness of the long and complicated
-loop invariant. This is very valuable since it decreases the time
-spent on debugging failed proof attempts while finding the correct
-loop invariant and then to write user rules (axioms) to cover for the
-incompleteness of the prover. 
+%% end PrefixSum_General;
+%% \end{verbatim}
+%% \end{footnotesize}
+%% %
+%% After adding the necessary summation axiom, there would still be two
+%% verification conditions remaining unproved. At that point it was very
+%% helpful that the loop assertions are also executable. This meant that
+%% after running some tests with run-time checking turned on, we could
+%% get some confidence in the correctness of the long and complicated
+%% loop invariant. This is very valuable since it decreases the time
+%% spent on debugging failed proof attempts while finding the correct
+%% loop invariant and then to write user rules (axioms) to cover for the
+%% incompleteness of the prover.
+
 \subsection{Useful Tool Features}
 
 The format of the competition exercised useful features of \gnatprove, which
@@ -1011,12 +1034,13 @@ awarded by the jury of the VerifyThis competition.
 
 Another very useful feature for these challenges was the ability to eliminate
 completely all possibilities of numeric overflows in annotations, as described
-in Section~\ref{???}. While using this feature results in only 10 more overflow
-VCs in challenge 1, which are all proved with the current annotations, it adds
-60 overflow VCs in challenge 2, most of which require modifications of
-annotations, or addition of new annotations, to be proved. Note that this
-feature is compatible with the execution of annotations, as compilation also
-takes into account the overflow mode when compiling arithmetic expressions.
+in Section~\ref{overflowsemantics}. While using this feature results in only 10
+more overflow VCs in challenge 1, which are all proved with the current
+annotations, it adds 60 overflow VCs in challenge 2, most of which require
+modifications of annotations, or addition of new annotations, to be
+proved. Note that this feature is compatible with the execution of annotations,
+as compilation also takes into account the overflow mode when compiling
+arithmetic expressions.
 
 Various features of \gnatprove make it very convenient to use inside an
 Integrated Development Environment (currently GPS, the GNAT Programming
@@ -1040,7 +1064,7 @@ special attributes \verb|'Result|, \verb|'Old| and \verb|'Loop_Entry|.
 \label{ongoing}
 
 \gnatprove is the result of a complete redesign of the SPARK language and
-associated tools, which started in 2010 with project \hilite.\cite{Hi-Lite}
+associated tools, which started in 2010 with project \hilite \cite{Hi-Lite}.
 Altran and AdaCore are collaborating to complete this new version of SPARK by
 the start of 2014. On the tool side, current work focuses on flow analysis,
 support for investigating unproved VCs, and improvements of the SMT prover.
@@ -1053,7 +1077,7 @@ requires that the user annotates programs with data dependence contracts, they
 are optional in \newspark, and \gnatprove generates them when not present. A
 minimal flow analysis is always required for the soundness of proofs, while a
 more complete flow analysis is optional. The minimal flow analysis ensures that
-all variables are initialised prior to being read.
+all variables are initialized prior to being read.
 
 Facilitating the investigation of unproved VCs is key to making formal program
 verification cost-effective in industry. \gnatprove currently provides various
@@ -1070,20 +1094,18 @@ axiomatisations as decision procedures~\cite{dross:2012:smt}, and incrementally
 selecting axioms~\cite{cgs09:ipo,kuhlwein:2012:ijcar}. More work is needed to
 make these modes the default inside \gnatprove.
 
-mention the following?
+%% mention the following?
 
-\begin{itemize}
-\item proof of code containing containers
-\item visualisation of assumptions made for proof
-\item Coq formalisation of AST produced by frontend. possible verification of
-  the consistency of the generated AST with checks.
-\item adaptation for non-executable annotations and proof assistants
-\end{itemize}
+%% \begin{itemize}
+%% \item proof of code containing containers
+%% \item visualisation of assumptions made for proof
+%% \item Coq formalisation of AST produced by frontend. possible verification of
+%%   the consistency of the generated AST with checks.
+%% \item adaptation for non-executable annotations and proof assistants
+%% \end{itemize}
 
 %
 \bibliographystyle{alpha}
 \bibliography{sttt_2013}
 
 \end{document}
-
-
