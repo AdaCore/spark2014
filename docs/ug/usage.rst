@@ -598,7 +598,7 @@ Known Limitations
 |GNATprove| analyzes floating-point values and operations as if they were over
 real numbers, with no rounding. The only rounding that occurs is for static
 values (for example ``1.0``) which get rounded to their closest representable
-floating-point value, depdending on the type used in the code.
+floating-point value, depending on the type used in the code.
 
 In mode ``prove``, the current version has the following limitations:
 
