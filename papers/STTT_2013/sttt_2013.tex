@@ -1,8 +1,8 @@
-\documentclass[sttt,draft]{svjour}
+\documentclass[sttt,final]{svjour}
 % relevant options: draft, referee, final
 %
 %\usepackage{latexsym}
-\usepackage{graphics}
+\usepackage{graphicx}
 %\usepackage{amssymb}
 %\usepackage{amsfonts,amsmath}
 \usepackage[T1]{fontenc}
@@ -1043,12 +1043,12 @@ as compilation also takes into account the overflow mode when compiling
 arithmetic expressions.
 
 Various features of \gnatprove make it very convenient to use inside an
-Integrated Development Environment (currently GPS, the GNAT Programming
-Studio). The user can choose to call \gnatprove on a selected file, an
-individual subprogram, or even a single line of code. This was key to speed up
-the modify/verify loop during the competition. When a VC is not proved, the IDE
-can also display the corresponding statements in the code, to help figure out
-why some assertions do not hold on some paths.
+Integrated Development Environment (currently GPS, the GNAT Programming Studio,
+see Fig.~\ref{fig:snapshot}). The user can choose to call \gnatprove on a
+selected file, an individual subprogram, or even a single line of code. This
+was key to speed up the modify/verify loop during the competition. When a VC is
+not proved, the IDE can also display the corresponding statements in the code,
+to help figure out why some assertions do not hold on some paths.
 
 More generally, these small challenges already make use of numerous language
 features in \adatwtw and \newspark that facilitate the expression of
@@ -1057,7 +1057,9 @@ variants, expression functions, quantified expressions and if expressions,
 special attributes \verb|'Result|, \verb|'Old| and \verb|'Loop_Entry|.
 
 \begin{figure*}
-\includegraphics{gnatprove.png}
+\includegraphics[width=\linewidth]{gnatprove.png}
+\caption{Snapshot of GNATprove results on challenge 1 inside GPS}
+\label{fig:snapshot}
 \end{figure*}
 
 %% \caption Snapshot of GNATprove results on challenge 1 in GPS
