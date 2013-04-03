@@ -66,6 +66,16 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs
 
+   procedure Sanitize_File_List (Tree : Project_Tree);
+   --  Apply the following rules to each file in [File_List]:
+   --    if the file is a body, do nothing;
+   --    if the file is a spec, and a body exists, replace by filename of body
+   --    if the file is a separate, replace with filename of body/spec as
+   --      appropriate
+   --  This is required to avoid calling gnat2why on a separate body (will
+   --  crash) or on a spec when there is a body (gnat2why will incorrectly
+   --  assume that there is no body)
+
    Usage_Message : constant String :=
       "-Pproj [files] [switches] [-cargs switches]";
 
@@ -558,54 +568,71 @@ ASCII.LF &
                   Abort_With_Message
                     ("limit-line: incorrect line specification - missing ':'");
                end if;
-               declare
-                  Limit_File : constant String :=
-                    Limit_String.all (Limit_String.all'First .. Index - 1);
-                  Limit_VF : Virtual_File :=
-                    Create_From_Base (Filesystem_String (Limit_File));
-                  Info     : constant File_Info := Tree.Info (Limit_VF);
-               begin
-                  case Unit_Part (Info) is
-                  when Unit_Body =>
-                     null;
-                  when Unit_Spec =>
-                     declare
-                        Other_VF : constant Virtual_File :=
-                          Tree.Other_File (Limit_VF);
-                     begin
-                        if Is_Regular_File (Other_VF) then
-                           Limit_VF := Other_VF;
-                        end if;
-                     end;
-                  when Unit_Separate =>
-                     declare
-                        Ptype : constant Project_Type := Tree.Root_Project;
-                     begin
-                        Limit_VF :=
-                          Create_From_Base
-                            (Ptype.File_From_Unit (Unit_Name (Info),
-                                                   Unit_Body,
-                                                   "Ada"));
-                        if not Is_Regular_File (Limit_VF) then
-                           Limit_VF :=
-                             Create_From_Base
-                               (Ptype.File_From_Unit (Unit_Name (Info),
-                                                      Unit_Spec,
-                                                      "Ada"));
-                        end if;
-                     end;
-                  end case;
-                  File_List.Append (String (Base_Name (Limit_VF)));
-               end;
+               File_List.Append
+                 (Limit_String.all (Limit_String.all'First .. Index - 1));
             end;
             Only_Given := True;
          end if;
       end;
+      Sanitize_File_List (Tree);
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
       when Invalid_Parameter =>
          Abort_With_Help ("No parameter given to switch -" & Full_Switch);
    end Read_Command_Line;
+
+   ------------------------
+   -- Sanitize_File_List --
+   ------------------------
+
+   procedure Sanitize_File_List (Tree : Project_Tree) is
+      use String_Lists;
+   begin
+      for Cursor in File_List.Iterate loop
+         declare
+            File_VF : constant Virtual_File :=
+              Create_From_Base (Filesystem_String (Element (Cursor)));
+            Info    : constant File_Info := Tree.Info (File_VF);
+         begin
+            case Unit_Part (Info) is
+            when Unit_Body =>
+               null;
+            when Unit_Spec =>
+               declare
+                  Other_VF : constant Virtual_File :=
+                    Tree.Other_File (File_VF);
+               begin
+                  if Is_Regular_File (Other_VF) then
+                     File_List.Replace_Element
+                       (Cursor,
+                        String (Base_Name (Other_VF)));
+                  end if;
+               end;
+               when Unit_Separate =>
+                  declare
+                     Ptype : constant Project_Type := Tree.Root_Project;
+                     Other_VF : Virtual_File;
+                  begin
+                     Other_VF :=
+                       Create_From_Base
+                         (Ptype.File_From_Unit (Unit_Name (Info),
+                          Unit_Body,
+                          "Ada"));
+                     if not Is_Regular_File (Other_VF) then
+                        Other_VF :=
+                          Create_From_Base
+                            (Ptype.File_From_Unit (Unit_Name (Info),
+                             Unit_Spec,
+                             "Ada"));
+                     end if;
+                     File_List.Replace_Element
+                       (Cursor,
+                        String (Base_Name (Other_VF)));
+                  end;
+            end case;
+         end;
+      end loop;
+   end Sanitize_File_List;
 
 end Configuration;
