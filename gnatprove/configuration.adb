@@ -70,8 +70,7 @@ package body Configuration is
    --  Apply the following rules to each file in [File_List]:
    --    if the file is a body, do nothing;
    --    if the file is a spec, and a body exists, replace by filename of body
-   --    if the file is a separate, replace with filename of body/spec as
-   --      appropriate
+   --    if the file is a separate, replace with filename of body
    --  This is required to avoid calling gnat2why on a separate body (will
    --  crash) or on a spec when there is a body (gnat2why will incorrectly
    --  assume that there is no body)
@@ -619,13 +618,6 @@ ASCII.LF &
                          (Ptype.File_From_Unit (Unit_Name (Info),
                           Unit_Body,
                           "Ada"));
-                     if not Is_Regular_File (Other_VF) then
-                        Other_VF :=
-                          Create_From_Base
-                            (Ptype.File_From_Unit (Unit_Name (Info),
-                             Unit_Spec,
-                             "Ada"));
-                     end if;
                      File_List.Replace_Element
                        (Cursor,
                         String (Base_Name (Other_VF)));
