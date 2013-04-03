@@ -4539,70 +4539,141 @@ package body Gnat2Why.Expr is
       Expr   : Node_Id)
      return W_Expr_Id
    is
-      Subdomain : constant EW_Domain :=
-        (if Domain = EW_Pred then EW_Term else Domain);
-      Var       : constant Node_Id := Left_Opnd (Expr);
-      In_Expr   : constant Node_Id := Right_Opnd (Expr);
-      Bool_True : constant W_Expr_Id :=
-        New_Literal (Domain => EW_Term,
-                     Value => EW_True);
-      Check_Expr : constant W_Expr_Id :=
-        Transform_Expr (Var,
-                        Base_Why_Type (Var),
-                        Subdomain,
-                        Params);
-   begin
+      function Transform_Alternative (Var, Alt : Node_Id) return W_Expr_Id;
+      --  If the alternative Alt is a subtype mark, transform it as a simple
+      --  membership test "Var in Alt". Otherwise transform it as an equality
+      --  test "Var = Alt".
 
-      --  First handle the case where there is a subtype mark of a record type
-      --  on the right
+      function Transform_Simple_Membership_Expression
+        (Var, In_Expr : Node_Id) return W_Expr_Id;
+      --  Transform a simple membership test "Var in In_Expr"
 
-      if Nkind (In_Expr) in N_Identifier | N_Expanded_Name
-        and then Ekind (Entity (In_Expr)) in Type_Kind
-        and then Ekind (Unique_Entity (Entity (In_Expr))) in Record_Kind
-      then
-         declare
-            Ty   : constant Entity_Id :=
-              Unique_Entity (Entity (In_Expr));
-         begin
+      ---------------------------
+      -- Transform_Alternative --
+      ---------------------------
 
-            --  eliminate trivial cases first, the membership test is always
-            --  true here.
-
-            if Root_Type (Ty) = Ty or else
-              not Has_Discriminants (Ty) or else
-              not Is_Constrained (Ty)
-            then
-               return Bool_True;
-            end if;
-
+      function Transform_Alternative (Var, Alt : Node_Id) return W_Expr_Id is
+         Result : W_Expr_Id;
+      begin
+         if (Is_Entity_Name (Alt) and then Is_Type (Entity (Alt)))
+           or else Nkind (Alt) = N_Range
+         then
+            Result := Transform_Simple_Membership_Expression (Var, Alt);
+         else
             declare
-               Call : constant W_Expr_Id :=
-                 New_Call (Domain => Domain,
-                           Name =>
-                             Prefix (S        => Full_Name (Ty),
-                                     W        => WNE_Range_Pred,
-                                     Ada_Node => Ty),
-                           Args =>
-                             Prepare_Args_For_Subtype_Check (Ty, Check_Expr));
+               BT : constant W_Base_Type_Id := Base_Why_Type (Var, Alt);
             begin
-               return
-                 New_Conditional
-                   (Domain    => Domain,
-                    Condition => Call,
-                    Then_Part => Bool_True,
-                      Else_Part =>
-                        New_Literal (Domain => EW_Term,
-                                     Value => EW_False));
+               Result := New_Comparison
+                 (Cmp       => EW_Eq,
+                  Left      => Transform_Expr (Var, Domain, Params),
+                  Right     => Transform_Expr (Alt, Domain, Params),
+                  Arg_Types => BT,
+                  Domain    => Domain);
             end;
+         end if;
+
+         return Result;
+      end Transform_Alternative;
+
+      --------------------------------------------
+      -- Transform_Simple_Membership_Expression --
+      --------------------------------------------
+
+      function Transform_Simple_Membership_Expression
+        (Var, In_Expr : Node_Id) return W_Expr_Id
+      is
+         Subdomain  : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
+         Bool_True  : constant W_Expr_Id :=
+           New_Literal (Domain => EW_Term,
+                        Value  => EW_True);
+         Check_Expr : constant W_Expr_Id :=
+           Transform_Expr (Var,
+                           Base_Why_Type (Var),
+                           Subdomain,
+                           Params);
+      begin
+
+         --  First handle the case where there is a subtype mark of a record
+         --  type on the right.
+
+         if Nkind (In_Expr) in N_Identifier | N_Expanded_Name
+           and then Ekind (Entity (In_Expr)) in Type_Kind
+           and then Ekind (Unique_Entity (Entity (In_Expr))) in Record_Kind
+         then
+            declare
+               Ty   : constant Entity_Id :=
+                 Unique_Entity (Entity (In_Expr));
+            begin
+
+               --  eliminate trivial cases first, the membership test is always
+               --  true here.
+
+               if Root_Type (Ty) = Ty or else
+                 not Has_Discriminants (Ty) or else
+                 not Is_Constrained (Ty)
+               then
+                  return Bool_True;
+               end if;
+
+               declare
+                  Call : constant W_Expr_Id :=
+                    New_Call (Domain => Domain,
+                              Name =>
+                                Prefix (S        => Full_Name (Ty),
+                                        W        => WNE_Range_Pred,
+                                        Ada_Node => Ty),
+                              Args =>
+                                Prepare_Args_For_Subtype_Check
+                                  (Ty, Check_Expr));
+               begin
+                  return
+                    New_Conditional
+                      (Domain    => Domain,
+                       Condition => Call,
+                       Then_Part => Bool_True,
+                         Else_Part =>
+                           New_Literal (Domain => EW_Term,
+                                        Value => EW_False));
+               end;
+            end;
+         else
+            return Range_Expr (In_Expr,
+                               Check_Expr,
+                               Domain,
+                               Params);
+         end if;
+      end Transform_Simple_Membership_Expression;
+
+      Var     : constant Node_Id := Left_Opnd (Expr);
+      Result  : W_Expr_Id;
+
+   --  Start of processing for Transform_Membership_Expression
+
+   begin
+      if Present (Alternatives (Expr)) then
+         declare
+            Alt : Node_Id;
+         begin
+            Alt := Last (Alternatives (Expr));
+            Result := Transform_Alternative (Var, Alt);
+
+            Prev (Alt);
+            while Present (Alt) loop
+               Result :=
+                 New_Or_Else_Expr (Left   => Transform_Alternative (Var, Alt),
+                                   Right  => Result,
+                                   Domain => Domain);
+               Prev (Alt);
+            end loop;
          end;
+
       else
-         return
-           Range_Expr
-             (In_Expr,
-              Check_Expr,
-              Domain,
-              Params);
+         Result :=
+           Transform_Simple_Membership_Expression (Var, Right_Opnd (Expr));
       end if;
+
+      return Result;
    end Transform_Membership_Expression;
 
    ----------------------------

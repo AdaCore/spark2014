@@ -50,12 +50,8 @@ package Why.Gen.Expr is
        Domain      : EW_Domain) return W_Expr_Id;
 
    function New_And_Expr
-      (Conjuncts : W_Expr_Array;
-       Domain    : EW_Domain) return W_Expr_Id
-   with
-     Pre => Domain = EW_Pred;
-   --  Special version that takes a list of conjuncts in argument. This should
-   --  only be called with Domain = EW_Pred currently.
+     (Conjuncts : W_Expr_Array;
+      Domain    : EW_Domain) return W_Expr_Id;
 
    function New_And_Then_Expr
       (Left, Right : W_Expr_Id;
@@ -69,8 +65,12 @@ package Why.Gen.Expr is
       return W_Expr_Id;
 
    function New_Or_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain) return W_Expr_Id;
+
+   function New_Or_Expr
+     (Conjuncts : W_Expr_Array;
+      Domain    : EW_Domain) return W_Expr_Id;
 
    function New_Or_Else_Expr
      (Left, Right : W_Expr_Id;

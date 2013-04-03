@@ -778,16 +778,17 @@ package body SPARK_Definition is
             Mark_List (Statements (N));
             Pop_Scope (Entity (Identifier (N)));
 
-         --  Expansion rewrites complex membership tests into simpler ones
-
          when N_Membership_Test =>
-            pragma Assert (No (Alternatives (N)));
             if Is_Array_Type (Etype (Left_Opnd (N))) then
                Mark_Violation
                  ("membership on array type", N, NYI_Array_Operation);
             end if;
             Mark (Left_Opnd (N));
-            Mark (Right_Opnd (N));
+            if Present (Alternatives (N)) then
+               Mark_List (Alternatives (N));
+            else
+               Mark (Right_Opnd (N));
+            end if;
 
          when N_Null =>
             Mark_Violation ("null", N, NIR_Access);

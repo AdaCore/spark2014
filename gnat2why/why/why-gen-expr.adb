@@ -570,20 +570,15 @@ package body Why.Gen.Expr is
       elsif Is_True_Boolean (+Right) then
          return Left;
 
+      elsif Domain = EW_Pred then
+         return New_Connection (Domain => Domain,
+                                Op     => EW_And,
+                                Left   => +Left,
+                                Right  => +Right);
       else
-         if Domain = EW_Pred then
-            return New_Connection
-              (Domain => Domain,
-               Op     => EW_And,
-               Left   => +Left,
-               Right  => +Right);
-         else
-            return
-              New_Call
-                (Domain => Domain,
-                 Name   => To_Ident (WNE_Bool_And),
-                 Args   => (1 => +Left, 2 => +Right));
-         end if;
+         return New_Call (Domain => Domain,
+                          Name   => To_Ident (WNE_Bool_And),
+                          Args   => (1 => +Left, 2 => +Right));
       end if;
    end New_And_Expr;
 
@@ -597,13 +592,31 @@ package body Why.Gen.Expr is
       elsif Conjuncts'Length = 1 then
          return Conjuncts (Conjuncts'First);
 
-      else
+      elsif Domain = EW_Pred then
          return New_Connection
            (Domain     => Domain,
             Op         => EW_And,
             Left       => +Conjuncts (Conjuncts'First),
             Right      => +Conjuncts (Conjuncts'First + 1),
             More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
+
+      else
+         declare
+            Result : W_Expr_Id :=
+              New_Call (Domain => Domain,
+                        Name   => To_Ident (WNE_Bool_And),
+                        Args   => (1 => +Conjuncts (Conjuncts'First),
+                                   2 => +Conjuncts (Conjuncts'First + 1)));
+         begin
+            for K in Conjuncts'First + 2 .. Conjuncts'Last loop
+               Result := New_Call (Domain => Domain,
+                                   Name   => To_Ident (WNE_Bool_And),
+                                   Args   => (1 => Result,
+                                              2 => +Conjuncts (K)));
+            end loop;
+
+            return Result;
+         end;
       end if;
    end New_And_Expr;
 
@@ -778,26 +791,62 @@ package body Why.Gen.Expr is
    -----------------
 
    function New_Or_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain) return W_Expr_Id is
    begin
       if Is_False_Boolean (Left) then
          return Right;
+
       elsif Is_False_Boolean (Right) then
          return Left;
+
+      elsif Domain = EW_Pred then
+         return New_Connection (Op     => EW_Or,
+                                Left   => +Left,
+                                Right  => +Right,
+                                Domain => Domain);
       else
-         if Domain = EW_Pred then
-            return New_Connection
-              (Op     => EW_Or,
-               Left   => +Left,
-               Right  => +Right,
-               Domain => Domain);
-         else
-            return New_Call
-              (Domain => Domain,
-               Name => To_Ident (WNE_Bool_Or),
-               Args => (1 => +Left, 2 => +Right));
-         end if;
+         return New_Call (Domain => Domain,
+                          Name   => To_Ident (WNE_Bool_Or),
+                          Args   => (1 => +Left, 2 => +Right));
+      end if;
+   end New_Or_Expr;
+
+   function New_Or_Expr
+     (Conjuncts : W_Expr_Array;
+      Domain    : EW_Domain) return W_Expr_Id is
+   begin
+      if Conjuncts'Length = 0 then
+         return +True_Pred;
+
+      elsif Conjuncts'Length = 1 then
+         return Conjuncts (Conjuncts'First);
+
+      elsif Domain = EW_Pred then
+         return New_Connection
+           (Domain     => Domain,
+            Op         => EW_Or,
+            Left       => +Conjuncts (Conjuncts'First),
+            Right      => +Conjuncts (Conjuncts'First + 1),
+            More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
+
+      else
+         declare
+            Result : W_Expr_Id :=
+              New_Call (Domain => Domain,
+                        Name   => To_Ident (WNE_Bool_Or),
+                        Args   => (1 => +Conjuncts (Conjuncts'First),
+                                   2 => +Conjuncts (Conjuncts'First + 1)));
+         begin
+            for K in Conjuncts'First + 2 .. Conjuncts'Last loop
+               Result := New_Call (Domain => Domain,
+                                   Name   => To_Ident (WNE_Bool_Or),
+                                   Args   => (1 => Result,
+                                              2 => +Conjuncts (K)));
+            end loop;
+
+            return Result;
+         end;
       end if;
    end New_Or_Expr;
 
