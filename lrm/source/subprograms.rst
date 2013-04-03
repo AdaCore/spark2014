@@ -372,6 +372,55 @@ where
 .. centered:: **Static Semantics**
 
 
+#. [As part of defining which entities are allowed as inputs, outputs,
+   and state constituents, the term "manifest" is defined as a generalization of
+   the Ada's notion of staticness.] A type is said to be *manifest* if the
+   elaboration of its declaration does not include the evaluation of any
+   non-static scalar expression and each of its non-manifest component subtypes
+   (if any) is subject to a per-object constraint and is a subtype of a manifest
+   type. A subtype is said to be *manifest* if its type is manifest, its
+   constraint, if any, is a static constraint, and no Dynamic_Predicate aspect
+   specification applies to the subtype. A scalar expression is said to be
+   *manifest* if it is static. A composite expression is said to be *manifest*
+   if its evaluation does not include the evaluation of any non-static scalar
+   expression and it is
+
+   - a static expression; or
+   
+   - a parenthesized manifest expression; or
+
+   - a qualified expression or type conversion whose subtype mark
+     designates a manifest subtype and whose operand is a manifest
+     expression; or
+
+   - a name denoting a component of a manifest object; or
+
+   - a name denoting a slice of a manifest object having static bounds; or
+
+   - an aggregate whose applicable index constraint (if any) is static, whose
+     component expressions are all manifest, and for which the evaluation of each
+     "<>" component value (if any) fully initializes the associated component and
+     does not involve the evaluation of any non-manifest expressions; or
+
+   - an extension aggregate which meets the above conditions for an aggregate
+     and whose ancestor_part is either a manifest expression or a subtype_mark
+     denoting a manifest subtype; or
+
+   - a conditional expression all of whose dependent expressions are
+     manifest and whose selected dependent expression is known statically 
+     (i.e., for a case expression, the selecting expression is static; for an if 
+     expression, either all conditions are static or the first N-1 conditions 
+     are statically False (for some value of N) and the Nth condition is 
+     statically True); or
+
+   - a call with no non-manifest parameters to a function with global inputs.
+
+   A constant object declared by an object_declaration or an
+   ``extended_return_object_declaration`` is manifest if its subtype is manifest
+   and its initialization expression is manifest. The result object for the
+   evaluation of a manifest composite expression is manifest [; this rule is
+   needed because such an object can be renamed].
+
 #. A ``global_specification`` that is a ``global_list`` is shorthand for a
    ``moded_global_list`` with the ``mode_selector`` Input.
 
@@ -392,7 +441,7 @@ where
 
 .. centered:: **Legality Rules**
 
-#. A ``global_item`` shall denote an entire object, that is a variable, or a 
+#. A ``global_item`` shall denote an entire object, a type, a subtype, or a 
    state abstraction.
 
 #. The rule that a ``global_item``
@@ -408,7 +457,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
    
-      :Trace Unit: 6.1.4 LR global_item shall denote an entire  or a state abstraction
+      :Trace Unit: 6.1.4 LR global_item shall denote an entire entity
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
@@ -424,6 +473,13 @@ where
    
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
+#. A ``global_item`` with a ``mode_selector`` of
+   ``Output`` or ``In_Out`` shall not denote a constant, type or subtype.
+
+   .. ifconfig:: Display_Trace_Units
+   
+      :Trace Unit: 6.1.4 LR Constants, types and subtypes  cannot have Output or In_Out as mode_selector
+      
 #. The ``global_items`` in a single Global aspect specification shall denote
    distinct entities.
 

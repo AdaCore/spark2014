@@ -53,45 +53,40 @@ being volatile, usually representing an external input or output. A volatile
 variable is designated as volatile using a Volatile aspect possibly with a
 further designation of whether it is an input or an output.
 
-The read or update of a volatile variable or state abstraction is considered to
-be both a read and an update of the entity. In Global and Depends aspects this
-means that volatile entities will be regarded as being both an input and an
-output and this fact may be stated explicitly in those aspects, for example by
-using the ``In_Out`` mode in the Global aspect.
-However if a variable or abstract state
-is explicitly designated as being a Volatile Input or a Volatile Output, an
-abbreviated form of the Global and Depends aspect is permitted which gives a
-more intuitive view of the globals and the dependency relation.
 
-If the variable or state abstraction is designated as Volatile Input, then it 
-may only appear as an Input in the Global aspect.  There is an implicit
-declaration that it is also an Output. In a Depends aspect it need not
-appear as an output as an implicit self dependency of the entity will be declared.
+.. centered:: **Static Semantics**
 
-If the variable or state abstraction is designated as Volatile Output, then it
-may only appear as an Output in the Global aspect. There is an implicit 
-declaration that it is also an Input.  In a Depends aspect it need not appear
-as an input as an implicit self dependency of the entity will be declared.
+#. The read or update of a volatile variable or state abstraction is considered 
+   to be both a read and an update of the entity. In Global and Depends aspects
+   this means that volatile entities will be regarded as being both an input and
+   an output and this fact may be stated explicitly in those aspects [, for
+   example by using the ``In_Out`` mode in the Global aspect]. 
+   
+   
+#. However if a variable or abstract state is explicitly designated as being a
+   Volatile Input or a Volatile Output, an abbreviated form of the Global and
+   Depends aspect is permitted [which gives a more intuitive view of the global
+   and the dependency relation]:
 
-A volatile variable or volatile state abstraction cannot be mentioned directly in an
-assertion expression as the reading of a volatile may affect its value.
+   * If the variable or state abstraction is designated as a Volatile Input,
+     then it may appear just as an Input in the Global aspect. Implicitly it is
+     declared with a ``mode_selector`` of In_Out. In a Depends aspect it need
+     not appear as an output as an implicit self dependency of the volatile
+     entity will be declared.
 
-.. todo:: More details on volatile variables and definition of a complete
-          model. At the very least, if V is a Volatile Input variable should not
-          have the following assertion provable:
-          T1 := V;
-          T2 := V;
-          pragma Assert (T1 = T2);
-          To be completed in the Milestone 3 version of this document.
-          
-.. todo:: Need to describe the conditions under which a volatile variable
-          can be a parameter of a subprogram.
-          To be completed in the Milestone 3 version of this document.
+   * If the variable or state abstraction is designated as Volatile Output, then
+     it may appear just as an Output in the Global aspect. Immplicitly it is
+     declared wit a ``mode_selector`` of In_Out. In a Depends aspect it need not
+     appear as an input as an implicit self dependency of the entity will be
+     declared.    
+     
+.. centered:: **Legality Rules**
 
-.. todo:: Consider more than just simple Volatile Inputs and Outputs;
-          Latched outputs, In_Out volatiles, etc.
-          To be completed in the Milestone 4 version of this document.
+#. As a Volatile entity always has a ``mode_selector`` of In_Out, either given
+   explicitly or implicitly, it follows that a Volatile state abstraction
+   cannot be a ``global_item`` of a function Global ``aspect_specification``.
 
+     
 .. _abstract-state-aspect:
 
 Abstract State Aspect
@@ -237,7 +232,8 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 #. The visible state and state abstractions of a package P consist of:
 
-   * variables declared immediately within the visible part of P; and
+   * any non-manifest objects, types, or subtypes declared immediately
+     within the visible part of P; and
    * any state abstractions declared by the Abstract State aspect
      specification (if any) of package P; and
    * the visible state and state abstractions of any packages declared
@@ -245,7 +241,7 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 #. The hidden state of a package P consists of:
 
-   * variables declared immediately
+   * any non-manifest objects, types, or subtypes declared immediately
      within the private part or body of P;
    * the state abstractions of any packages declared immediately within the 
      visible part of P; and
@@ -356,12 +352,14 @@ aspect.
    end Sensor.Raw;
 
 
-Input, Output, Part_Of Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Volatile, Input, Output, Part_Of Aspects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. todo: This section in the process of being updated by TJJ
 
 For variables which are declared directly within the visible part of a package
 specification, the Volatile, Input, Output and Part_Of aspects may be
 specified directly as part of the variable's declaration.
+
 
 .. centered:: **Legality Rules**
 
@@ -395,6 +393,45 @@ specified directly as part of the variable's declaration.
    considered to be a constituent of one of the state abstractions of the
    parent of the private child packages.
 
+A Volatile Input variable cannot be updated directly.
+     
+A Volatile Output variable cannot be read directly.
+
+
+A volatile variable or volatile state abstraction cannot be mentioned directly 
+in an assertion expression as the reading of a volatile may affect its value.
+
+The read of a Volatile Input variable IP in a simple assignment, X := IP;
+can be considered as a procedure call of the form Read_Volatile (X) where the
+specification of the procedure is:
+
+procedure Read_Volatile (X : out T)
+with Global => (In_Out => IP);
+
+Similarly the update of a Volatile Output variable OP, would be represented by 
+a call to a procedure of the form:
+
+procedure Update_Volatile (Y : in T)
+with Global => (In_Out => OP);
+
+From the representation for a read of a volatile variable it is clear that it
+cannot be regarded as an expression in |SPARK|.  In |SPARK| the only place where
+a read of a volatile variable may be used in place of an ``expression`` is as a
+``name`` denoting the variable on the right hand side of an 
+``assignment_statement``.
+
+As a function cannot have a side-effect in |SPARK| a function cannot return
+a value dependent on the read of a volatile variable.
+
+A volatile variable may be the parameter of a procedure provided
+the formal parameter is a volatile type.  Regardless of the mode of the formal 
+parameter given in the subprogram specification it is considered to behave as
+mode **in out**.
+
+
+.. todo:: Consider more than just simple Volatile Inputs and Outputs;
+          Latched outputs, In_Out volatiles, etc.
+          To be completed in the Milestone 4 version of this document.
 .. centered:: **Examples**
 
 .. code-block:: ada
