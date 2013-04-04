@@ -220,6 +220,9 @@ to get as many automatic proofs as possible.
 Subprogram Contracts
 ^^^^^^^^^^^^^^^^^^^^
 
+Preconditions and Postconditions
+""""""""""""""""""""""""""""""""
+
 The proof of each subprogram is carried over independently of the
 implementation of other subprograms, so the contract of a subprogram should be
 strong enough to prove its callers. The contract of a subprogram can be
@@ -294,6 +297,16 @@ The compiler checks the validity of this pragma or aspect, and, depending on
 the assertion policy at the point of declaration of the pragma, it may insert
 checks in the executable. See the SPARK Reference Manual for more
 details.
+
+Expression Functions
+""""""""""""""""""""
+
+Expression functions that do not have a user-defined postcondition are treated
+specially by |GNATprove|, which generates a postcondition stating that their
+result is equal to the expression that defines them (this postcondition is
+always satisfied!). Expression functions that have a user-defined postcondition
+are treated like regular functions.
+
 
 Function Calls in Annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
