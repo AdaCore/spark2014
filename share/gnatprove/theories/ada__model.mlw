@@ -43,9 +43,8 @@ module Discrete_Base
     forall x : t [to_int x].
     of_int (to_int (x)) = x
 
-   val bool_eq_ (n : t) (m : t) : bool
-    requires { true }
-    ensures { if result = True then n = m else n <> m }
+   function bool_eq (x : int) (y : int) : bool =
+    if x = y then True else False
 
    function dummy : t
 end
@@ -106,9 +105,8 @@ module Floating_Point
    forall x : t [to_real x].
     of_real ( to_real(x) ) = x
 
-  val bool_eq_ (n : t) (m : t)  :bool
-   requires { true }
-   ensures { if result = True then n = m else n <> m }
+  function bool_eq (x : real) (y : real) : bool =
+    if x = y then True else False
 
    function attr__ATTRIBUTE_IMAGE real : __image
 
@@ -203,6 +201,8 @@ module Unconstr_Array
    }
    ensures { result = a }
 
+ function bool_eq (x y : Array__1.t component_type) : bool = Array__1.bool_eq x y
+
  function dummy : __t
 end
 
@@ -268,6 +268,8 @@ module Unconstr_Array_2
       I2.range_check a.Array__2.first_2 a.Array__2.last_2
    }
    ensures { result = a }
+
+ function bool_eq (x y : Array__2.t component_type) : bool = Array__2.bool_eq x y
 
  function dummy : __t
 end
@@ -354,6 +356,9 @@ module Unconstr_Array_3
    }
 
    ensures { result = a }
+
+ function bool_eq (x y : Array__3.t component_type) : bool = Array__3.bool_eq x y
+
  function dummy : __t
 end
 
@@ -457,6 +462,8 @@ module Unconstr_Array_4
       I4.range_check a.Array__4.first_4 a.Array__4.last_4
    }
 
+ function bool_eq (x y : Array__4.t component_type) : bool = Array__4.bool_eq x y
+
  function dummy : __t
 end
 
@@ -485,6 +492,8 @@ module Constr_Array
   { elts     = a.Array__1.elts;
     offset   = a.Array__1.offset;
   }
+
+ function bool_eq (x y : Array__1.t component_type) : bool = Array__1.bool_eq x y
 
  function dummy : __t
 
@@ -535,6 +544,8 @@ module Constr_Array_2
         (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
     }
     ensures { result = a }
+
+ function bool_eq (x y : Array__2.t component_type) : bool = Array__2.bool_eq x y
 
  function dummy : __t
 end
@@ -593,6 +604,8 @@ module Constr_Array_3
         (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
     }
     ensures { result = a }
+
+ function bool_eq (x y : Array__3.t component_type) : bool = Array__3.bool_eq x y
 
  function dummy : __t
 end
@@ -662,6 +675,8 @@ module Constr_Array_4
         (if attr__ATTRIBUTE_LAST_4 >= attr__ATTRIBUTE_FIRST_4 then attr__ATTRIBUTE_LAST_4 - attr__ATTRIBUTE_FIRST_4 + 1 else 0)
     }
     ensures { result = a }
+
+ function bool_eq (x y : Array__4.t component_type) : bool = Array__4.bool_eq x y
 
  function dummy : __t
 end

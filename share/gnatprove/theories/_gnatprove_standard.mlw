@@ -173,6 +173,8 @@ module Boolean
     requires { in_range n }
     ensures { result = n }
 
+   function bool_eq (x : bool) (y : bool) : bool =
+    if x = y then True else False
 end
 
 theory Array__1
