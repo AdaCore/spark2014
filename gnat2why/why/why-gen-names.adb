@@ -648,6 +648,7 @@ package body Why.Gen.Names is
          when WNE_Bool_And     => return "andb";
          when WNE_Bool_Or      => return "orb";
          when WNE_Bool_Xor     => return "xorb";
+         when WNE_Bool_Not     => return "notb";
          when WNE_Integer_Div  => return "Integer.computer_div";
          when WNE_Integer_Exp  => return "Integer.power";
          when WNE_Integer_Rem  => return "Integer.computer_mod";

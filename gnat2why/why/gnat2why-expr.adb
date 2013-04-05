@@ -3803,6 +3803,11 @@ package body Gnat2Why.Expr is
                                                   Value  => EW_True),
                         Arg_Types => EW_Bool_Type,
                         Domain    => Domain);
+                  elsif Nkind (Expr) = N_Op_Ne then
+                     T :=
+                       New_Call (Domain => Domain,
+                                 Name   => To_Ident (WNE_Bool_Not),
+                                 Args   => (1 => T));
                   end if;
                elsif Is_Record_Type (Etype (Left)) then
                   pragma Assert (Root_Record_Type (Etype (Left)) =
@@ -3821,12 +3826,17 @@ package body Gnat2Why.Expr is
                                     2 => Right_Arg));
                   if Domain = EW_Pred then
                      T := New_Comparison
-                       (Cmp       => EW_Eq,
+                       (Cmp       => Transform_Compare_Op (Nkind (Expr)),
                         Left      => T,
                         Right     => New_Literal (Domain => Subdomain,
                                                   Value  => EW_True),
                         Arg_Types => EW_Bool_Type,
                         Domain    => Domain);
+                  elsif Nkind (Expr) = N_Op_Ne then
+                     T :=
+                       New_Call (Domain => Domain,
+                                 Name   => To_Ident (WNE_Bool_Not),
+                                 Args   => (1 => T));
                   end if;
                else
                   T := New_Comparison

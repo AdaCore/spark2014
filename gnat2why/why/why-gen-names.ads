@@ -162,6 +162,7 @@ package Why.Gen.Names is
       WNE_Bool_Ne,
       WNE_Bool_Or,
       WNE_Bool_Xor,
+      WNE_Bool_Not,
       WNE_Char_Type,
       WNE_Coerce,
       WNE_Def,
