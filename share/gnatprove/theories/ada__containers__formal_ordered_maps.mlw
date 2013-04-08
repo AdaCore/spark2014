@@ -1,0 +1,819 @@
+module Main
+  use import real.Real
+  use "a-contai__types_in_spec".Ada__containers__count_type
+  use import int.Int
+  use import ref.Ref
+  
+  (*** TO BE INSTANTIATED ***)
+  
+  type key_type
+
+  type element_type
+
+  function oeq element_type element_type : bool
+
+  axiom equal_refl :
+  forall e : element_type [oeq e e].
+	oeq e e = True
+
+  axiom equal_sym :
+  forall e1 : element_type, e2 : element_type [oeq e1 e2].
+	oeq e1 e2 = oeq e2 e1
+
+  axiom equal_trans :
+  forall e1 : element_type, e2 : element_type, e3 : element_type [oeq e1 e2, oeq e1 e3 | oeq e1 e2, oeq e2 e3].
+	oeq e1 e2 = True -> oeq e2 e3 = True -> oeq e1 e3 = True
+
+  function olt key_type key_type : bool
+
+  (**************************)
+  
+  type cursor
+  
+  type map
+  
+  function no_element : cursor
+  
+  function empty_  : map
+
+  function capacity map : int
+  
+  function length map : int
+  
+  axiom Length_gte_zero:
+    forall co:map [length co]. 0 <= length co <= capacity co
+  
+  function witness key_type : real
+  
+  axiom olt_witness:
+    forall k1 k2:key_type [olt k1 k2 : bool].
+        olt k1 k2 = True <->
+         Real.(<) (witness k1) (witness k2)
+  
+  function position_ map cursor : int
+  
+  function position_inv map int : cursor
+  
+  axiom Position_gte_zero:
+    forall co:map, cu:cursor. 0 <= position_ co cu <= length co
+  
+  axiom Position_no_element:
+    forall co:map. position_ co (no_element) = 0
+
+  axiom position_eq1:
+   forall co:map, i :int [position_ co (position_inv co i)]. 0<i<=length co -> 
+              position_ co (position_inv co i)=i
+
+  axiom position_eq2:
+    forall co:map, cu:cursor [position_ co cu].
+          position_ co cu > 0 -> position_inv co (position_ co cu) = cu
+  
+  predicate is_empty_ (co : map) =
+    forall cu:cursor. position_ co cu = 0
+  
+  axiom Length_is_empty:
+    forall co:map. is_empty_ co -> length co = 0
+  
+  axiom Empty_is_empty: is_empty_ empty_
+  
+  function previous_ map cursor : cursor
+
+  axiom previous_in:
+    forall co:map, cu:cursor [previous_ co cu].
+	(position_ co cu >= 1 \/ position_ co (previous_ co cu) > 0) ->
+	position_ co (previous_ co cu) = position_ co cu - 1
+
+  axiom previous_ext:
+    forall co:map, cu:cursor [previous_ co cu].
+        (position_ co cu = 1 \/ cu = no_element) -> previous_ co cu = no_element
+  
+  function next_ map cursor : cursor
+
+  axiom next_in:
+    forall co:map, cu:cursor [next_ co cu].
+	(length co > position_ co cu > 0 \/ position_ co (next_ co cu) > 0) ->
+	position_ co (next_ co cu) = position_ co cu + 1
+
+  axiom next_ext:
+    forall co:map, cu:cursor [next_ co cu].
+        (position_ co cu = length co \/ cu = no_element) -> next_ co cu = no_element
+  
+  function last map : cursor
+
+  axiom last_empty:
+    forall co:map [last co]. length co = 0 <-> last co = no_element
+
+  axiom last_gen:
+    forall co:map [last co]. length co = position_ co (last co)
+  
+  function first map : cursor
+
+  axiom first_empty:
+    forall co:map [first co]. length co = 0 <-> first co = no_element
+
+  axiom first_gen:
+    forall co:map [first co]. length co > 0 -> position_ co (first co) = 1
+  
+  function key_ map cursor : key_type
+  
+  function find_ map real : cursor
+
+  axiom find_range:
+    forall co:map, e:real [find_ co e].
+	find_ co e = no_element \/ position_ co (find_ co e) > 0
+
+  axiom find_not:
+    forall co:map, e:real, cu : cursor [find_ co e, key_ co cu].
+	find_ co e = no_element -> position_ co cu > 0 ->
+	witness (key_ co cu) <> e
+
+  axiom find_yes:
+    forall co:map, e:real, cu : cursor [find_ co e, key_ co cu].
+	0 < position_ co cu -> cu <> find_ co e ->
+	witness (key_ co cu) <> e
+
+  axiom find_element:
+    forall co:map, e:real [find_ co e].
+	0 < position_ co (find_ co e) ->
+	witness (key_ co (find_ co e)) = e
+  
+  axiom Ordered:
+    (forall s:map.
+      (forall cu1:cursor.
+        (forall cu2:cursor.
+          (((Int.(>) (position_ s cu1 : int) 0) /\
+            (Int.(>) (position_ s cu2 : int) 0)) ->
+           ((Int.(>) (position_ s cu2 : int) (position_ s cu1 : int)) <->
+            (Real.(>) (witness (key_ s cu2 : key_type) : real) (witness (key_ s cu1 : key_type) : real)))))))
+  
+  function element_ map cursor : element_type
+  
+  function element__ (m : map) (i : real) : element_type =
+    (element_ m (find_ m i : cursor) : element_type)
+  
+  predicate left_pos (co : map) (i : int) (col : map) =
+    (forall cu:cursor.
+       Int.(>=) (position_ co cu : int) i ->
+         position_ col cu = 0) /\
+    (forall cu:cursor.
+        Int.(<) (position_ co cu : int) i ->
+          position_ col cu = position_ co cu) /\
+    (forall cu:cursor.
+         Int.(>) (position_ col cu : int) 0 ->
+          (position_ co cu : int) = (position_ col cu : int)) /\
+     (forall cu:cursor.
+       Int.(>) (position_ col cu : int) 0 ->
+        (element_ col cu : element_type) = (element_ co cu : element_type)) /\
+     (forall cu:cursor.
+        Int.(>) (position_ col cu : int) 0 ->
+         (key_ col cu : key_type) = (key_ co cu : key_type))
+  
+  predicate left_find (co : map) (cu : cursor) (col : map) =
+	(forall w:real [key_ co cu, find_ col w | key_ co cu, find_ co w].
+		Real.(>) (witness (key_ co cu)) w -> find_ col w = find_ co w /\
+		position_ col (find_ col w) = position_ co (find_ co w)) /\
+	(forall w:real [key_ co cu, find_ col w].
+		Real.(<=) (witness (key_ co cu)) w -> find_ col w = no_element) /\
+	(forall w:real [find_ col w | find_ co w]. 
+	 	position_ col (find_ col w) > 0 \/ position_ co cu > position_ co (find_ co w)
+		-> find_ col w = find_ co w)
+  
+  predicate left__ (co : map) (cu : cursor) (col : map) =
+    (((cu = (no_element  : cursor)) -> (col = co)) /\
+     ((Int.(>) (position_ co cu : int) 0) ->
+      (((length col : int) = (Int.(-) (position_ co cu : int) 1 : int)) /\
+       ((left_pos co (position_ co cu : int) col) /\
+        (left_find co cu col)))))
+  
+  function left_ map cursor : map
+  
+  axiom Left_left:
+    (forall co:map.
+      (forall cu:cursor [(left_ co cu : map)].
+        (left__ co cu (left_ co cu : map))))
+  
+  predicate right_pos (co : map) (i : int) (cor : map) =
+    ((forall cu:cursor.
+       (((Int.(>) i (position_ co cu : int)) ->
+         ((position_ cor cu : int) = 0)) /\
+        (((Int.(<=) i (position_ co cu : int)) ->
+          ((position_ cor cu : int) = (Int.(+) (Int.(-) (position_ co cu : int) i : int) 1 : int))) /\
+         ((Int.(>) (position_ cor cu : int) 0) ->
+          ((position_ co cu : int) = (Int.(-) (Int.(+) (position_ cor cu : int) i : int) 1 : int)))))) /\
+     ((forall cu:cursor.
+        ((Int.(>) (position_ cor cu : int) 0) ->
+         ((key_ cor cu : key_type) = (key_ co cu : key_type)))) /\
+      (forall cu:cursor.
+        ((Int.(>) (position_ cor cu : int) 0) ->
+         ((element_ cor cu : element_type) = (element_ co cu : element_type))))))
+  
+  predicate right_find (co : map) (i : int) (cor : map) =
+    (forall w:real.
+      ((((Int.(>) i 0) /\
+         (Int.(<=) i (position_ co (find_ co w : cursor) : int))) \/
+        (Int.(>) (position_ cor (find_ cor w : cursor) : int) 0)) ->
+       ((find_ co w : cursor) = (find_ cor w : cursor))))
+  
+  predicate right__ (co : map) (cu : cursor) (cor : map) =
+    (((cu = (no_element  : cursor)) -> (cor = (empty_  : map))) /\
+     (((Int.(>) (position_ co cu : int) 0) ->
+       (((length cor : int) = (Int.(+) (Int.(-) (length co : int) (position_ co cu : int) : int) 1 : int)) /\
+        ((right_pos co (position_ co cu : int) cor) /\
+         (right_find co (position_ co cu : int) cor)))) /\
+      (forall cun:cursor.
+        ((Int.(>) (position_ cor cun : int) 0) ->
+         (Int.(>) (position_ co cun : int) 0)))))
+  
+  function right_ map cursor : map
+  
+  axiom Right_right:
+    (forall co:map.
+      (forall cu:cursor [(right_ co cu : map)].
+        (right__ co cu (right_ co cu : map))))
+  
+  predicate replace_ (co1 : map) (k : key_type) (e : element_type) (co2 : map) =
+    ((Int.(>) (position_ co1 (find_ co1 (witness k : real) : cursor) : int) 0) /\
+     (((length co1 : int) = (length co2 : int)) /\
+      (((key_ co2 (find_ co1 (witness k : real) : cursor) : key_type) = k) /\
+       (((element_ co2 (find_ co1 (witness k : real) : cursor) : element_type) = e) /\
+        ((forall cun:cursor.
+           ((position_ co2 cun : int) = (position_ co1 cun : int))) /\
+         ((forall cun:cursor.
+            (((Int.(>) (position_ co1 cun : int) 0) /\
+              (not (cun = (find_ co1 (witness k : real) : cursor)))) ->
+             ((key_ co2 cun : key_type) = (key_ co1 cun : key_type)))) /\
+          ((forall cun:cursor.
+             (((Int.(>) (position_ co1 cun : int) 0) /\
+               (not (cun = (find_ co1 (witness k : real) : cursor)))) ->
+              ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))) /\
+           (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor))))))))))
+  
+  predicate replace_element_ (co1 : map) (cu : cursor) (e : element_type) (co2 : map) =
+    ((Int.(>) (position_ co1 cu : int) 0) /\
+     (((element_ co2 cu : element_type) = e) /\
+      (((length co1 : int) = (length co2 : int)) /\
+       ((forall cun:cursor.
+          ((position_ co1 cun : int) = (position_ co2 cun : int))) /\
+        ((forall cun:cursor.
+           ((Int.(>) (position_ co1 cun : int) 0) ->
+            ((key_ co2 cun : key_type) = (key_ co1 cun : key_type)))) /\
+         ((forall cun:cursor.
+            (((Int.(>) (position_ co1 cun : int) 0) /\ (cu <> cun)) ->
+             ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))) /\
+          (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor)))))))))
+  
+  function ceiling map real : cursor
+  
+  predicate is_ceiling (s : map) (i : real) (cu : cursor) =
+     (cu = no_element  /\
+       (is_empty_ s \/
+        Real.(>) i (witness (key_ s (last s : cursor))))) \/
+      (Int.(>) (position_ s cu : int) 0 /\
+       Real.(<=) i (witness (key_ s cu) : real) /\
+	(forall cun : cursor. 0 < position_ s cun < position_ s cu
+	 -> Real.(>) i (witness (key_ s cun))))
+  
+  axiom Ceiling_is_ceiling:
+    (forall s:map.
+      (forall i:real [(ceiling s i : cursor)].
+        (is_ceiling s i (ceiling s i : cursor))))
+  
+  function floor map real : cursor
+  
+  predicate is_floor (s : map) (i : real) (cu : cursor) =
+     (cu = no_element  /\
+       (is_empty_ s \/
+         Real.(<) i (witness (key_ s (first s : cursor))))) \/
+      (Int.(>) (position_ s cu) 0 /\
+       Real.(>=) i (witness (key_ s cu)) /\
+	(forall cun : cursor. position_ s cu < position_ s cun
+	 ->  Real.(<) i (witness (key_ s cun))))
+  
+  axiom floor_is_floor:
+    (forall s:map.
+      (forall i:real [(floor s i : cursor)].
+        (is_floor s i (floor s i : cursor))))
+
+  predicate insert_ map key_type element_type map
+
+  axiom insert_range:
+    forall co1 co2:map, k:key_type, e:element_type [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> find_ co1 (witness k) = no_element
+
+  axiom insert_length:
+    forall co1 co2:map, k:key_type, e:element_type
+      [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> length co1 + 1 = length co2
+
+  axiom insert_capacity:
+    forall co1 co2:map, k:key_type, e:element_type
+      [insert_ co1 k e co2, capacity co1|insert_ co1 k e co2, capacity co2].
+      insert_ co1 k e co2 -> capacity co1 = capacity co2
+(*
+  axiom insert_new:
+    forall co1 co2:map, k:key_type, e:element_type [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k)) > 0 ->
+      position_ co1 (previous_ co2 (ceiling co1 (witness k))) = 0
+*)
+  axiom insert_new_element :
+    forall co1 co2:map, k:key_type, e:element_type [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> element__ co2 (witness k) = e
+(*
+  axiom insert_new_key:
+    forall co1 co2:map, k:key_type, e:element_type [key_ co2 (previous_ co2 (ceiling co1 (witness k)))].
+      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k)) > 0 ->
+      key_ co2 (previous_ co2 (ceiling co1 (witness k))) = k
+
+  axiom insert_new_no_element:
+    forall co1 co2:map,k:key_type,  e:element_type [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> ceiling co1 (witness k) = no_element ->
+        position_ co1 (last co2) = 0
+
+  axiom insert_new_no_element_key:
+    forall co1 co2:map, k:key_type, e:element_type [key_ co2 (last co2)].
+      insert_ co1 k e co2 -> ceiling co1 (witness k) = no_element ->
+      key_ co2 (last co2) = k
+*)
+  axiom insert_position_before:
+    forall co1 co2:map, cun:cursor, k:key_type, e:element_type
+      [insert_ co1 k e co2,  position_ co1 cun
+     | insert_ co1 k e co2,  position_ co2 cun].
+      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k)) > 0 ->
+      (position_ co1 (ceiling co1 (witness k)) > position_ co1 cun > 0 \/ position_ co2 cun < position_ co1 (ceiling co1 (witness k))) ->
+        position_ co1 cun = position_ co2 cun
+
+  axiom insert_position_after:
+    forall co1 co2:map, cun:cursor, k:key_type, e:element_type
+      [insert_ co1 k e co2,  position_ co1 cun
+     | insert_ co1 k e co2,  position_ co2 cun].
+      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k)) > 0 ->
+      (position_ co1 cun >= position_ co1 (ceiling co1 (witness k)) \/ position_ co2 cun > position_ co1 (ceiling co1 (witness k))) ->
+        position_ co1 cun + 1 = position_ co2 cun
+
+  axiom insert_position_no_element:
+    forall co1 co2:map, cun:cursor, k:key_type, e:element_type
+      [insert_ co1 k e co2,  position_ co1 cun
+     | insert_ co1 k e co2,  position_ co2 cun].
+      insert_ co1 k e co2 -> 
+      (position_ co1 cun > 0 \/ position_ co2 cun < length co2) ->
+        position_ co1 cun = position_ co2 cun
+
+  axiom insert_key:
+    forall co1 co2:map, cun:cursor, k:key_type, e:element_type
+      [insert_ co1 k e co2,  key_ co1 cun
+     | insert_ co1 k e co2,  key_ co2 cun].
+      insert_ co1 k e co2 ->
+      position_ co1 cun > 0 ->
+        key_ co1 cun = key_ co2 cun
+
+  axiom insert_element:
+    forall co1 co2:map, cun:cursor, k:key_type, e:element_type
+      [insert_ co1 k e co2,  element_ co1 cun
+     | insert_ co1 k e co2,  element_ co2 cun].
+      insert_ co1 k e co2 ->
+      position_ co1 cun > 0 ->
+        element_ co1 cun = element_ co2 cun
+
+  axiom insert_element_:
+    forall co1 co2:map, k:key_type, e:element_type, w : real
+      [insert_ co1 k e co2,  element__ co1 w
+     | insert_ co1 k e co2,  element__ co2 w].
+      insert_ co1 k e co2 -> witness k <> w -> find_ co1 w <> no_element ->
+        element__ co1 w = element__ co2 w
+
+  axiom insert_find_in_gen:
+    forall co1 co2:map, k:key_type, e:element_type
+      [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> position_ co2 (find_ co2 (witness k)) > 0 /\
+      element__ co2 (witness k) = e
+
+  axiom insert_find_in:
+    forall co1 co2:map, k:key_type, e:element_type
+      [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k))>0 ->
+        find_ co2 (witness k) = previous_ co2 (ceiling co1 (witness k))
+
+  axiom insert_find_no_element_in:
+    forall co1 co2:map, k:key_type, e:element_type
+      [insert_ co1 k e co2].
+      insert_ co1 k e co2 -> ceiling co1 (witness k) = no_element ->
+        find_ co2 (witness k) = last co2
+
+  axiom insert_find_ext:
+    forall co1 co2:map, k:key_type, e:element_type, w : real
+      [insert_ co1 k e co2,  find_ co1 w
+     | insert_ co1 k e co2,  find_ co2 w].
+      insert_ co1 k e co2 -> witness k <> w ->
+        find_ co1 w = find_ co2 w
+
+  predicate first_inserted (co1:map) (k:key_type) (co2:map) (p:cursor) =
+     ceiling co1 (witness k) = no_element /\ p = last co2 \/
+             position_ co1 (ceiling co1 (witness k)) > 0 /\
+             p = previous_ co2 (ceiling co1 (witness k))
+
+  predicate delete_ map cursor map
+
+  axiom delete_capacity:
+    forall co1 co2:map, cu:cursor
+      [delete_ co1 cu co2, capacity co1|delete_ co1 cu co2, capacity co2].
+      delete_ co1 cu co2 -> capacity co1 = capacity co2
+
+  axiom delete_length:
+    forall co1 co2:map, cu:cursor
+      [delete_ co1 cu co2].
+      delete_ co1 cu co2 -> length co1 = length co2 + 1
+
+  axiom delete_find_out:
+    forall co1 co2 : map, cu : cursor, w : real 
+      [delete_ co1 cu co2, find_ co1 w | delete_ co1 cu co2, find_ co2 w].
+      delete_ co1 cu co2 -> witness (key_ co1 cu) <> w ->
+        find_ co1 w = find_ co2 w
+
+  axiom delete_find_in:
+    forall co1 co2 : map, cu : cursor 
+      [delete_ co1 cu co2].
+      delete_ co1 cu co2 -> find_ co2 (witness (key_ co1 cu)) = no_element
+
+  axiom delete_position_before:
+    forall co1 co2:map, cu cun:cursor
+      [delete_ co1 cu co2,  position_ co1 cun
+     | delete_ co1 cu co2,  position_ co2 cun].
+      delete_ co1 cu co2 ->
+      (position_ co1 cu > position_ co1 cun \/ 0 < position_ co2 cun < position_ co1 cu) ->
+        position_ co1 cun = position_ co2 cun
+
+  axiom delete_position_after:
+    forall co1 co2:map, cu cun:cursor
+      [delete_ co1 cu co2,  position_ co1 cun | delete_ co1 cu co2,  position_ co2 cun].
+      delete_ co1 cu co2 ->
+      (position_ co1 cun > position_ co1 cu \/ position_ co2 cun >= position_ co1 cu) ->
+        position_ co1 cun = position_ co2 cun + 1
+
+  axiom delete_position_range:
+    forall co1 co2:map, cu:cursor [delete_ co1 cu co2].
+      delete_ co1 cu co2 -> position_ co2 cu = 0 /\ 0 < position_ co1 cu
+
+  axiom delete_element:
+    forall co1 co2:map, cu cun:cursor
+      [delete_ co1 cu co2,  element_ co1 cun
+     | delete_ co1 cu co2,  element_ co2 cun].
+      delete_ co1 cu co2 ->
+      0 < position_ co2 cun ->
+        element_ co1 cun = element_ co2 cun
+
+  axiom delete_element_:
+    forall co1 co2:map, w:real, k:key_type
+      [delete_ co1 (find_ co1 (witness k)) co2,  element__ co1 w
+     | delete_ co1 (find_ co1 (witness k)) co2,  element__ co2 w].
+      delete_ co1 (find_ co1 (witness k)) co2 ->
+      w <> witness k /\ find_ co1 w <> no_element ->
+        element__ co1 w = element__ co2 w
+
+  axiom delete_key:
+    forall co1 co2:map, cu cun:cursor
+      [delete_ co1 cu co2,  key_ co1 cun
+     | delete_ co1 cu co2,  key_ co2 cun].
+      delete_ co1 cu co2 ->
+      0 < position_ co2 cun ->
+        key_ co1 cun = key_ co2 cun
+  
+  predicate include__ (co1 : map) (k : key_type) (e : element_type) (co2 : map) =
+    (((Int.(>) (position_ co1 (find_ co1 (witness k : real) : cursor) : int) 0) ->
+      (replace_ co1 k e co2)) /\
+     (((find_ co1 (witness k : real) : cursor) = (no_element  : cursor)) ->
+      (insert_ co1 k e co2)))
+  
+  predicate exclude_ (co1 : map) (k : key_type) (co2 : map) =
+    (((Int.(>) (position_ co1 (find_ co1 (witness k : real) : cursor) : int) 0) ->
+      (delete_ co1 (find_ co1 (witness k : real) : cursor) co2)) /\
+     (((find_ co1 (witness k : real) : cursor) = (no_element  : cursor)) ->
+      (co1 = co2)))
+  
+  predicate has_element (co : map) (cu : cursor) =
+    (Int.(>) (position_ co cu : int) 0)
+  
+  predicate contains (co : map) (i : real) =
+    (Int.(>) (position_ co (find_ co i : cursor) : int) 0)
+  
+  axiom Empty_contains:
+    (forall s:map [(is_empty_ s)].
+      ((forall i:real. (not (contains s i))) -> (is_empty_ s)))
+
+  predicate strict_equal map map
+
+  axiom strict_equal_a:
+    forall co1 co2 : map [strict_equal co1 co2].
+    ((forall cu:cursor [position_ co1 cu | position_ co2 cu].
+       position_ co1 cu = position_ co2 cu) /\
+     (forall cu:cursor [element_ co1 cu | element_ co2 cu]. 
+        position_ co1 cu > 0 -> element_ co1 cu = element_ co2 cu)/\
+     (forall cu:cursor [key_ co1 cu | key_ co2 cu]. position_ co1 cu > 0 ->
+        key_ co1 cu = key_ co2 cu)) <->  strict_equal co1 co2
+
+  axiom strict_equal_length:
+    forall co1 co2 : map [strict_equal co1 co2, length co1 | strict_equal co1 co2, length co2].
+     strict_equal co1 co2 -> length co1 = length co2
+
+  predicate equal_ map map
+
+  axiom equal_length:
+   forall co1 co2 : map [equal_ co1 co2, length co1 | equal_ co1 co2, length co2].
+   equal_ co1 co2 -> length co1 = length co2
+
+  axiom equal_element:
+   forall co1 co2 : map [equal_ co1 co2]. equal_ co1 co2 ->
+   forall w : real [element__ co1 w]. contains co1 w ->
+	oeq (element__ co2 w) (element__ co1 w) = True
+
+  axiom equal_key:
+   forall co1 co2 : map [equal_ co1 co2]. equal_ co1 co2 ->
+   forall w : real [find_ co1 w | find_ co2 w]. contains co1 w <->
+	contains co2 w
+
+  axiom equal_inv:
+   forall co1 co2 : map [equal_ co1 co2]. not equal_ co1 co2 ->
+   (length co1 <> length co2 \/
+   exists w : real. (contains co1 w /\ not contains co2 w) \/
+   contains co1 w /\ contains co2 w /\ 
+   oeq (element__ co2 w) (element__ co1 w) = False)
+
+  axiom equal__sym :
+  forall e1 e2 : map [equal_ e1 e2].
+	equal_ e1 e2 -> equal_ e2 e1
+
+  axiom equal__trans :
+  forall e1 e2 e3 : map [equal_ e1 e2, equal_ e1 e3 | equal_ e1 e2, equal_ e2 e3].
+	equal_ e1 e2 -> equal_ e2 e3 -> equal_ e1 e3
+  
+  predicate no_overlaping (co1 : map) (co2 : map) =
+    (forall i:real. ((not (contains co1 i)) \/ (not (contains co2 i))))
+
+  predicate cap_is_max map map int
+
+ axiom cap_is_max_def:
+   forall co1 co2:map, max:int 
+                  [cap_is_max co1 co2 max, capacity co1 | cap_is_max co1 co2 max, capacity co2].
+   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
+
+(*******************************  API  ********************************)
+ function empty_map__object : map = empty_
+
+ function no_element__object : cursor = no_element
+
+ function map__capacity__record (co : map) : Ada__containers__count_type.count_type = 
+    Ada__containers__count_type.of_int (capacity co)
+
+ function equivalent_keys__logic (k1 k2 : key_type) : bool =
+  if witness k1 = witness k2 then True else False
+
+ predicate equivalent_keys__pre  (k1 k2 : key_type) = true
+ predicate equivalent_keys__post (k1 k2 : key_type) (result : bool) =
+	result = True <-> witness k1 = witness k2
+
+ function oeq__2__logic (co1:map) (co2:map) : bool =
+    if equal_ co1 co2 then True else False
+
+  predicate oeq__2__pre (co1:map) (co2:map) = true
+  predicate oeq__2__post (co1:map) (co2:map) (result:bool) = 
+         result  = True <-> equal_ co1 co2
+
+  function length__logic (co : map) : Ada__containers__count_type.count_type = Ada__containers__count_type.of_int (length co)
+
+  predicate length__pre (co : map) = true
+  predicate length__post (co : map) (result :  Ada__containers__count_type.count_type) =
+     result = Ada__containers__count_type.of_int (length co)
+
+  function is_empty__logic map : bool 
+
+  axiom is_empty__logic_def:
+    forall co : map [is_empty__logic co ].
+      is_empty__logic co = True <-> is_empty_ co
+
+  predicate is_empty__pre (co:map) = true
+  predicate is_empty__post (co:map) (result:bool)=
+     result = True <-> is_empty_ co
+
+  predicate clear__pre (co:map) = true
+  predicate clear__post (co oldco: map) =
+     is_empty_ co /\ capacity co = capacity oldco
+
+  predicate assign__pre (target:map) (source:map) =
+     capacity target >= length source
+  predicate assign__post (target oldtarget:map) (source:map) =
+     equal_ target source /\ capacity target = capacity oldtarget 
+
+  function copy__logic map Ada__containers__count_type.count_type : map
+
+  axiom copy__logic_def:
+    forall co:map, cap:Ada__containers__count_type.count_type [copy__logic co cap].
+          strict_equal co (copy__logic co cap) 
+                       /\ cap_is_max co (copy__logic co cap) (Ada__containers__count_type.to_int cap)
+
+  predicate copy__pre (co:map) (cap:Ada__containers__count_type.count_type) = true
+  predicate copy__post (co:map) (cap:Ada__containers__count_type.count_type) 
+              (result: map) =
+     strict_equal co (result) /\ cap_is_max co result (Ada__containers__count_type.to_int cap)
+
+  function key__logic (co:map) (cu:cursor) : key_type = key_ co cu
+
+  predicate key__pre (co:map) (cu:cursor) =
+     has_element co cu
+  predicate key__post (co:map) (cu:cursor) (result : key_type) =
+     result = key_ co cu
+
+  function element__logic (co:map) (cu:cursor) : element_type = element_ co cu
+
+  predicate element__pre (co:map) (cu:cursor) =
+     has_element co cu
+  predicate element__post (co:map) (cu:cursor) (result : element_type) =
+     result = element_ co cu
+
+  function element__2__logic (co:map) (k:key_type) : element_type = element__ co (witness k)
+
+  predicate element__2__pre (co:map) (k:key_type) =
+     contains co (witness k)
+  predicate element__2__post (co:map) (k:key_type) (result : element_type) =
+     result = element__ co (witness k)
+
+  predicate replace_element__pre (co: map) (cu:cursor) (e:element_type)=
+     has_element co cu
+  predicate replace_element__post (co oldco: map) (cu:cursor) (e:element_type)=
+     replace_element_ oldco cu e co
+
+  predicate move__pre (target:map) (source:map) =
+     capacity target >= length source
+  predicate move__post (target oldtarget:map) (source oldsource:map) =
+     equal_ target oldsource /\ is_empty_ source
+
+  predicate insert__pre (co :map) (k:key_type) (e:element_type) 
+                                             (p : cursor) (inserted : bool)=
+     length co  < capacity co \/ contains co (witness k)
+  predicate insert__post (co oldco: map) (k:key_type) (e:element_type) 
+                                             (p oldp : cursor) (inserted oldinserted : bool) =
+     (if inserted = True then contains oldco (witness k) 
+      else not (contains oldco (witness k))) /\ 
+       (if contains oldco (witness k) then 
+      (p = find_ oldco (witness k) /\ co = oldco /\ inserted = False)
+       else (first_inserted oldco k co p /\ insert_ oldco k e co /\ inserted = True))
+
+  predicate insert__2__pre (co :map) (k:key_type) (e:element_type) =
+     length co  < capacity co /\ not contains co (witness k)
+  predicate insert__2__post (co oldco: map) (k:key_type) (e:element_type) =
+     insert_ oldco k e co
+
+  predicate include__pre (co :map) (k:key_type) (e:element_type) =
+     length co  < capacity co \/ contains co (witness k)
+  predicate include__post (co oldco: map) (k:key_type) (e:element_type) =
+     include__ oldco k e co
+
+  predicate replace__pre (co :map) (k:key_type) (e:element_type) =
+     contains co (witness k)
+  predicate replace__post (co oldco: map) (k:key_type) (e:element_type) =
+     replace_ oldco k e co
+
+  predicate exclude__pre (co :map) (k:key_type) = true
+  predicate exclude__post (co oldco: map) (k:key_type) =
+     exclude_ oldco k co
+
+  predicate delete__pre (co :map) (k:key_type) = contains co (witness k)
+  predicate delete__post (co oldco: map) (k:key_type) =
+     delete_ oldco (find_ oldco (witness k)) co
+
+  predicate delete__2__pre (co :map) (cu:cursor) = has_element co cu
+  predicate delete__2__post (co oldco: map) (cu oldcu:cursor) =
+     delete_ oldco oldcu co /\ cu = no_element
+
+  predicate delete_first__pre (co :map) = length co > 0
+  predicate delete_first__post (co oldco: map) =
+     delete_ oldco (first oldco) co
+
+  predicate delete_last__pre (co :map) = length co > 0
+  predicate delete_last__post (co oldco: map) =
+     delete_ oldco (last oldco) co
+
+  function previous__logic (co:map) (cu:cursor) : cursor = previous_ co cu
+
+  predicate previous__pre (co:map) (cu:cursor) = cu = no_element \/ has_element co cu
+  predicate previous__post (co:map) (cu:cursor) (result: cursor) =
+     result = previous_ co cu
+
+  function next__logic (co:map) (cu:cursor) : cursor = next_ co cu
+
+  predicate next__pre (co:map) (cu:cursor)= cu = no_element \/ has_element co cu 
+  predicate next__post (co:map) (cu:cursor) (result : cursor) =
+     result = next_ co cu
+
+  predicate previous__2__pre (co:map) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate previous__2__post (co:map) (cu oldcu:cursor) =
+     cu = previous_ co oldcu
+
+  predicate next__2__pre (co:map) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate next__2__post (co:map) (cu oldcu:cursor) =
+     cu = next_ co oldcu
+
+  function first__logic (co:map) : cursor = first co
+
+  predicate first__pre (co:map) = true
+  predicate first__post (co:map) (result:cursor) =
+     result = first co
+
+  function last__logic (co:map) : cursor = last co
+
+  predicate last__pre (co:map) = true
+  predicate last__post (co:map) (result:cursor) =
+     result = last co
+
+  function first_element__logic (co:map) : element_type = element_ co (first co)
+
+  predicate first_element__pre (co:map) = length co > 0
+  predicate first_element__post (co:map) (result:element_type) =
+     result = element_ co (first co)
+
+  function last_element__logic (co:map) : element_type = element_ co (last co)
+
+  predicate last_element__pre (co:map) = length co > 0
+  predicate last_element__post (co:map) (result:element_type) =
+     result = element_ co (last co)
+
+  function first_key__logic (co:map) : key_type = key_ co (first co)
+
+  predicate first_key__pre (co:map) = length co > 0
+  predicate first_key__post (co:map) (result:key_type) =
+     result = key_ co (first co)
+
+  function last_key__logic (co:map) : key_type = key_ co (last co)
+
+  predicate last_key__pre (co:map) = length co > 0
+  predicate last_key__post (co:map) (result:key_type) =
+     result = key_ co (last co)
+
+  function find__logic (co:map) (e:key_type) : cursor = find_ co (witness e)
+
+  predicate find__pre (co:map) (e:key_type) = true
+  predicate find__post (co:map) (e:key_type) (result:cursor) =
+     result = find_ co (witness e)
+
+  function floor__logic (co:map) (e:key_type) : cursor = floor co (witness e)
+
+  predicate floor__pre (co:map) (e:key_type) = true
+  predicate floor__post (co:map) (e:key_type) (result:cursor) =
+     result = floor co (witness e)
+
+  function ceiling__logic (co:map) (e:key_type) : cursor = ceiling co (witness e)
+
+  predicate ceiling__pre (co:map) (e:key_type) = true
+  predicate ceiling__post (co:map) (e:key_type) (result:cursor) =
+     result = ceiling co (witness e)
+
+  function contains__logic map key_type: bool
+
+  axiom contains__logic_def:
+    forall co : map, e : key_type [contains__logic co e].
+      contains co (witness e) <-> contains__logic co e = True
+
+  predicate contains__pre (co:map) (e:key_type) = true
+  predicate contains__post (co:map) (e:key_type) (result: bool) =
+     contains co (witness e) <-> result = True
+
+  function has_element__logic map cursor : bool
+
+  axiom has_element__logic_def:
+    forall co : map, cu : cursor [has_element__logic co cu].
+      has_element co cu <-> has_element__logic co cu = True
+
+  predicate has_element__pre (co:map) (cu:cursor) = true
+  predicate has_element__post (co:map) (cu:cursor) (result: bool) =
+     has_element co cu <-> result = True
+
+  function strict_equal__logic (co1 co2 : map) : bool =
+    if strict_equal co1 co2 then True else False
+
+  predicate strict_equal__pre (co1:map) (co2:map) = true
+  predicate strict_equal__post (co1:map) (co2:map) (result:bool) =
+     result  = True <-> strict_equal co1 co2
+
+  function left__logic (co:map) (cu:cursor) : map = left_ co cu
+
+  predicate left__pre (co:map) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate left__post (co:map) (cu:cursor) (result:map) =
+     result = left_ co cu
+
+  function right__logic (co:map) (cu:cursor) : map = right_ co cu
+
+  predicate right__pre (co:map) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate right__post (co:map) (cu:cursor)(result : map) =
+     result = right_ co cu
+
+  function overlap__logic (co1 co2:map) : bool = 
+   if no_overlaping co1 co2 then True else False
+
+  predicate overlap__pre (co1 co2:map) = true
+  predicate overlap__post (co1 co2:map)(result : bool) =
+     result = True <-> no_overlaping co1 co2
+     
+end
+
