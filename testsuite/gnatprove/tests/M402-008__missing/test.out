@@ -1,1 +1,3 @@
-some output expected
+
+foo.adb:10:12: division check not proved, in instantiation at foo.adb:19
+foo.adb:10:12: overflow check not proved, in instantiation at foo.adb:19
