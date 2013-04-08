@@ -2,13 +2,11 @@ Getting started with |GNATprove|
 ================================
 
 This chapter describes some simple ways of using |GNATprove| to formally prove
-properties on programs. A more detailed description of |GNATprove|'s
-capabilities should follow in the next sections; here, only a taste of them
-will be given. We will be running |GNATprove| on a simple program that computes
-how much money is left after paying an income tax. The rate is a percentage, so
-it should be inferior to 100. One may also want to check that such a function
-does decrease the original amount of money (sadly). So the specification of
-this function may be:
+properties on programs. We will be running |GNATprove| on a simple program that
+computes how much money is left after paying an income tax. The rate is a
+percentage, so it should be inferior to 100. One may also want to check that
+such a function does decrease the original amount of money (sadly). So the
+specification of this function may be:
 
 .. code-block:: ada
    :linenos:
@@ -59,31 +57,8 @@ You can then invoke |GNATprove| on this project::
 
     $ gnatprove -P taxes.gpr
 
-By default, |GNATprove| is in ``detect`` mode, which consists in detecting which
-parts of the application it can handle. It generates a file ``gnatprove.out``
-that contains project statistics; this information also shows up on the
-standard output. It shows here that the subprogram is supported::
-
-    Subprograms in SPARK      : 100% (1/1)
-      ... already supported   : 100% (1/1)
-      ... not yet supported   :   0% (0/1)
-    Subprograms not in SPARK  :   0% (0/1)
-
-As the specification of ``After_Tax`` is in |SPARK|, |GNATprove| can check that its
-precondition is complete. This is given by the ``check`` mode::
-
-    gnatprove --mode=check -P taxes.gpr
-
-No error will be returned in this case; so this precondition cannot
-raise a run-time error (for more information about the ``check`` mode,
-please consult the section :ref:`completeness of preconditions`).
-
-As the body of ``After_Tax`` is in |SPARK|, |GNATprove| can also check that its
+As the body of ``After_Tax`` is in |SPARK|, |GNATprove| can checks that its
 implementation is free from run-time errors and fulfills its contract.
-This is given by the ``prove`` mode::
-
-    gnatprove --mode=prove -P taxes.gpr
-
 Here, it reports that the only possible run-time error is an overflow on the
 multiplication::
 
@@ -92,7 +67,7 @@ multiplication::
 To get a complete report including all checks that could be proved, one should
 run |GNATprove| in ``all`` report mode::
 
-    gnatprove --mode=prove --report=all -P taxes.gpr
+    gnatprove --report=all -P taxes.gpr
 
 Here is the complete report::
 
@@ -105,7 +80,7 @@ Here is the complete report::
 
 Notice in particular that the postcondition of ``After_Tax`` was proved.
 The contract or implementation of ``After_Tax`` should be modified to correct
-the possible overflow (for more information about the ``prove`` mode,
+the possible overflow (for more information about proof,
 please consult the sections :ref:`absence of run-time errors` and
 :ref:`functional verification`).
 
@@ -114,4 +89,3 @@ will detail further |SPARK|, |GNATprove|, GNATtest and the functionalities
 that these tools provides, making a clear separation between what
 is already available, what will be implemented in a near future, and what
 is outside the scope of this technology.
-

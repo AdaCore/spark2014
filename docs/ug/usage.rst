@@ -33,9 +33,9 @@ Command-line Usage
    -f            Force recompilation/proving of all units and all VCs
    -jnnn         Use nnn parallel processes (default: 1)
    --mode=       Proof mode
-       detect      Detect and output SPARK information (default)
+       detect      Detect and output SPARK information
        force       Output errors for violations of SPARK (warn unimplemented)
-       prove       Prove subprogram contracts and absence of run-time errors
+       prove       Prove subprogram contracts and absence of run-time errors (default)
        flow        Prove object initialization and globals and depends contracts
        all         Both analyses flow and prove are activated
    -q            Be quiet/terse
@@ -71,11 +71,11 @@ Command-line Usage
 In modes ``detect`` and ``force``, |GNATprove| does not compute an accurate set
 of global variables read and written in each subprogram. Hence, its detection
 of subprograms in |SPARK| might be slightly more optimistic than the
-reality. When using mode ``prove`` on the contrary, the detection
-is accurate.
+reality. When using mode ``prove``, ``flow`` or ``all`` on the contrary, the
+detection is accurate.
 
-Although ``--report`` has only some effect in mode ``prove``,
-all combinations of options are allowed.
+Although ``--report`` has only some effect in modes ``prove`` and ``all``, all
+combinations of options are allowed.
 
 When given a list of files, |GNATprove| will consider them as entry points of
 the program and prove these units and all units on which they depend. With
@@ -225,8 +225,8 @@ Preconditions and Postconditions
 
 The proof of each subprogram is carried over independently of the
 implementation of other subprograms, so the contract of a subprogram should be
-strong enough to prove its callers. The contract of a subprogram can be
-expressed either as a pair of a precondition and a postcondition:
+strong enough to prove its callers. The contract of a subprogram is usually
+expressed as a pair of a precondition and a postcondition:
 
 .. code-block:: ada
    :linenos:
@@ -235,31 +235,60 @@ expressed either as a pair of a precondition and a postcondition:
       Pre  => X >= 0,
       Post => X = Integer'Min (X'Old + 1, Threshold);
 
-or as a set of disjoint and complete contract cases:
+The precondition states the obligation on the caller of the subprogram. For
+example, all callers of ``Incr_Threshold`` should ensure that the value passed
+in parameter is non-negative before calling ``Incr_Threshold``. The
+postcondition states the obligation on the subprogram when it returns. For
+example, ``Incr_Threshold`` should always return in a state where the value of
+its parameter is the minimum between its value at entry (``X'Old``) incremented
+by one, and a given threshold value. This expresses precisely the property of
+incrementing until a threshold is reached.
+
+|GNATprove| analyzes the behavior of a subprogram in all possible contexts
+allowed by its precondition. It is in this context that it attempts to prove
+that the implementation of the subprogram is free of run-time errors and
+fulfills its postcondition.
+
+At every call site, |GNATprove| replaces the called subprogram by its
+contract. Therefore, it requires that the precondition of the called subprogram
+is satisfied, and the only information available when the subprogram returns is
+its postcondition.
+
+Note that direct recursive subprograms or mutually recursive subprograms are
+treated in this respect exactly like non-recursive ones. Provided the execution
+of these subprograms always terminates (a property that is not verified by
+|GNATprove|), then it is sound to use their contract at call-site to prove that
+their contract hold.
+
+Contract Cases
+""""""""""""""
+
+The contract of a subprogram can alternatively be specified as a set of
+disjoint and complete contract cases:
 
 .. code-block:: ada
    :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
-      Contract_Cases => (X < Threshold => X = X'Old + 1,
-                         X = Threshold => X = X'Old);
+      Contract_Cases => (X < Threshold  => X = X'Old + 1,
+                         X >= Threshold => X = X'Old);
 
-or, finally, as a combination of both (where the contract cases should cover
-the cases allowed by the precondition):
+Each case in the list consists in a guard and a consequence separated by the
+symbol ``=>``. All guards are evaluated on entry to the subprogram. For each
+input, only one guard should evaluate to ``True``. The corresponding
+consequence should evaluate to ``True`` when returning from the subprogram. For
+example, the contract cases of ``Incr_Threshold`` expresses that the subprogram
+should be called in two distinct cases only:
 
-.. code-block:: ada
-   :linenos:
+* on inputs that are strictly less than the value of a given threshold, in
+  which case ``Incr_Threshold`` increments this value.
+* on inputs whose value is equal to the given threshold, in which case
+  ``Incr_Threshold`` does not modify this value.
 
-    procedure Incr_Threshold (X : in out Integer) with
-      Pre  => X >= 0,
-      Post => X >= X'Old,
-      Contract_Cases => (X < Threshold => X = X'Old + 1,
-                         X = Threshold => X = X'Old);
-
-Note that contract cases provide a convenient way to express complex
-contracts, which would be cumbersome to express with a precondition and
-a postcondition. For example, the contract cases above are equivalent to
-the following precondition and postcondition:
+Contract cases provide a convenient way to express complex contracts, which
+would be cumbersome to express with a precondition and a postcondition. For
+example, the contract cases of ``Incr_Threshold`` are equivalent to the
+following precondition and postcondition:
 
 .. code-block:: ada
    :linenos:
@@ -270,43 +299,50 @@ the following precondition and postcondition:
       Post => (if X'Old < Threshold'Old then X = X'Old + 1
                elsif X'Old = Threshold'Old then X = X'Old);
 
-Note that these two declarations do not lead to the same proofs. Indeed, with
-contract-cases, the fact that the contract cases are disjoint and cover the cases
-allowed by the precondition is proven once and for all. On the other hand, with
-the precondition and the postcondition, it is assumed by the prover and must
-be verified at each call.
+Note that using contract cases or the equivalent (for run-time checking)
+preconditions and postconditions is not equivalent for proof with |GNATprove|.
+If contract cases are used, |GNATprove| attempts to prove that they are
+disjoint and complete once and for all. If preconditions and postconditions are
+used, |GNATprove| treats these properties as any other precondition, so they
+must be verified at each call.
 
-Contract cases can be expressed both as pragmas and aspects. The syntax of
-contract case pragmas is the following:
+Contract cases can also be used in addition to preconditions and
+postconditions. In that case, the cases should cover all inputs allowed by the
+precondition. For example, the contract of ``Incr_Threshold`` can be written:
 
 .. code-block:: ada
+   :linenos:
 
-   pragma Contract_Cases (
-     Condition1 => Consequence1,
-     Condition2 => Consequence2,
-     ...
-     ConditionN => ConsequenceN);
+    procedure Incr_Threshold (X : in out Integer) with
+      Pre  => X in 0 .. Threshold,
+      Post => X >= X'Old,
+      Contract_Cases => (X < Threshold => X = X'Old + 1,
+                         X = Threshold => X = X'Old);
 
-where ConditionN can be ``others``, meaning any case which is not captured
-by any of the other conditions. One and only one condition should be true
-when calling the subprogram. The corresponding consequence is then checked
-at subprogram exit. Attributes ``'Old`` and ``'Result`` can only be
-used within the consequence expressions.
-
-The compiler checks the validity of this pragma or aspect, and, depending on
-the assertion policy at the point of declaration of the pragma, it may insert
-checks in the executable. See the SPARK Reference Manual for more
-details.
+Note that the completeness is automatically reached when the last guard is
+``others``, denoting all cases not captured by any of the other guard.
 
 Expression Functions
 """"""""""""""""""""
 
 Expression functions that do not have a user-defined postcondition are treated
-specially by |GNATprove|, which generates a postcondition stating that their
-result is equal to the expression that defines them (this postcondition is
-always satisfied!). Expression functions that have a user-defined postcondition
-are treated like regular functions.
+specially by |GNATprove|, which generates an implicit postcondition stating
+that their result is equal to the expression that defines them. For example,
+the function ``Increment`` defined as an expression function:
 
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer is (X + 1);
+
+is treated by |GNATprove| as if it had a postcondition:
+
+.. code-block:: ada
+
+   Post => Increment'Result = X + 1;
+
+This postcondition is automatically satisfied, so |GNATprove| does not generate
+VCs to check it. Expression functions that have a user-defined postcondition
+are treated like regular functions.
 
 Function Calls in Annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
