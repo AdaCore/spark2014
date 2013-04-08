@@ -872,15 +872,22 @@ package body Why.Gen.Records is
          begin
             Add_Use_For_Entity (P, Clone, EW_Export);
 
+            --  if the copy has the same name as the original, do not redefine
+            --  the type name.
+
+            if Short_Name (E) /= Short_Name (Clone) then
+               Emit (Theory,
+                     New_Type (Name => Ty_Ident,
+                               Alias =>
+                                 New_Abstract_Type
+                                   (Name =>
+                                        To_Why_Id (Clone, Local => True))));
+            end if;
+
             --  if the cloned type is a root type, we need to define the
             --  conversion functions; in all other cases, they are already
             --  there.
 
-            Emit (Theory,
-                  New_Type (Name => Ty_Ident,
-                            Alias =>
-                              New_Abstract_Type
-                                (Name => To_Why_Id (Clone, Local => True))));
             if Root_Record_Type (Clone) = Clone then
                Emit
                  (Theory,
