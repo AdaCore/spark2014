@@ -146,8 +146,9 @@ package body Flow is
          when Direct_Mapping =>
             return Ada.Strings.Hash (Unique_Name (N.Node));
          when Record_Field =>
-            --  ??? We should also hash the components, but we can do
-            --  this later.
+            --  ??? We could also hash the components in order to
+            --  avoid collisions between the entire variable and each
+            --  record field.
             return Ada.Strings.Hash (Unique_Name (N.Node));
          when Magic_String =>
             return Ada.Strings.Hash (N.Name.all);
