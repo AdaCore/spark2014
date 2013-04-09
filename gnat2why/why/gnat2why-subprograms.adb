@@ -511,7 +511,7 @@ package body Gnat2Why.Subprograms is
       while Present (Contract_Case) loop
          Case_Guard := First (Choices (Contract_Case));
 
-         --  The "others" choice requires special processing
+         --  The OTHERS choice requires special processing
 
          if Nkind (Case_Guard) = N_Others_Choice then
             Has_Others := True;
@@ -529,7 +529,7 @@ package body Gnat2Why.Subprograms is
                    (Ada_Node    => Case_Guard,
                     Domain      => EW_Term,
                     Condition   =>
-                      New_Relation (Domain   => EW_Term,
+                      New_Relation (Domain   => EW_Pred,
                                     Op_Type  => EW_Bool,
                                     Left     => +Guard_Ident,
                                     Op       => EW_Eq,
@@ -561,15 +561,16 @@ package body Gnat2Why.Subprograms is
          Result := Sequence
            (Result,
             New_Assert
-              (Pred => +New_VC_Expr (Prag,
-               New_Relation (Domain   => EW_Pred,
-                             Op_Type  => EW_Int,
-                             Left     => +Count,
-                             Op       => EW_Le,
-                             Right    =>
-                               New_Integer_Constant (Value => Uint_1)),
-               VC_Disjoint_Contract_Cases,
-               EW_Pred)));
+              (Pred => +New_VC_Expr
+                 (Prag,
+                  New_Relation (Domain   => EW_Pred,
+                                Op_Type  => EW_Int,
+                                Left     => +Count,
+                                Op       => EW_Le,
+                                Right    =>
+                                  New_Integer_Constant (Value => Uint_1)),
+                  VC_Disjoint_Contract_Cases,
+                  EW_Pred)));
       end if;
 
       --  A check that contract cases are complete is generated only when there
@@ -579,15 +580,16 @@ package body Gnat2Why.Subprograms is
          Result := Sequence
            (Result,
             New_Assert
-              (Pred => +New_VC_Expr (Prag,
-               New_Relation (Domain   => EW_Pred,
-                             Op_Type  => EW_Int,
-                             Left     => +Count,
-                             Op       => EW_Ge,
-                             Right    =>
-                               New_Integer_Constant (Value => Uint_1)),
-               VC_Complete_Contract_Cases,
-               EW_Pred)));
+              (Pred => +New_VC_Expr
+                 (Prag,
+                  New_Relation (Domain   => EW_Pred,
+                                Op_Type  => EW_Int,
+                                Left     => +Count,
+                                Op       => EW_Ge,
+                                Right    =>
+                                  New_Integer_Constant (Value => Uint_1)),
+                  VC_Complete_Contract_Cases,
+                  EW_Pred)));
       end if;
 
       --  Bind value of guard expressions
@@ -648,13 +650,24 @@ package body Gnat2Why.Subprograms is
         (Contract_Case : Node_Id;
          Enabled       : W_Expr_Id) return W_Prog_Id;
       --  Returns the Why program checking absence of run-time errors and
-      --  function verification of the given Contract_Case.
+      --  function verification of the given Contract_Case. Enabled is a
+      --  boolean term.
 
       function Do_One_Contract_Case
         (Contract_Case : Node_Id;
          Enabled       : W_Expr_Id) return W_Prog_Id
       is
-         Consequence : constant Node_Id := Expression (Contract_Case);
+         Consequence  : constant Node_Id := Expression (Contract_Case);
+
+         --  Enabled must be converted to a predicate to be used as the
+         --  condition in an if-expr inside a predicate.
+         Enabled_Pred : constant W_Expr_Id :=
+           New_Relation (Domain   => EW_Pred,
+                         Op_Type  => EW_Bool,
+                         Left     => +Enabled,
+                         Op       => EW_Eq,
+                         Right    => New_Literal (Domain => EW_Term,
+                                                  Value  => EW_True));
       begin
          return Sequence
            (New_Ignore
@@ -674,9 +687,9 @@ package body Gnat2Why.Subprograms is
                   New_Conditional
                     (Ada_Node    => Contract_Case,
                      Domain      => EW_Pred,
-                     Condition   => Enabled,
+                     Condition   => Enabled_Pred,
                      Then_Part   =>
-                     +Transform_Expr (Consequence, EW_Pred, Params)),
+                       +Transform_Expr (Consequence, EW_Pred, Params)),
                   VC_Contract_Case,
                   EW_Pred)));
       end Do_One_Contract_Case;
@@ -699,7 +712,7 @@ package body Gnat2Why.Subprograms is
       while Present (Contract_Case) loop
          Case_Guard := First (Choices (Contract_Case));
 
-         --  The "others" choice requires special processing
+         --  The OTHERS choice requires special processing
 
          if Nkind (Case_Guard) = N_Others_Choice then
             Others_Contract_Case := Contract_Case;
@@ -708,23 +721,17 @@ package body Gnat2Why.Subprograms is
 
          else
             declare
-               Guard_Ident : constant W_Identifier_Id := New_Temp_Identifier;
                --  Temporary Why name for the current guard
+               Guard_Ident : constant W_Identifier_Id := New_Temp_Identifier;
 
                --  Whether the current guard is enabled
-               Enabled     : constant W_Expr_Id :=
-                 New_Relation (Domain   => EW_Term,
-                               Op_Type  => EW_Bool,
-                               Left     => +Guard_Ident,
-                               Op       => EW_Eq,
-                               Right    =>
-                                 New_Literal (Domain => EW_Term,
-                                              Value  => EW_True));
+               Enabled     : constant W_Expr_Id := +Guard_Ident;
+
             begin
                Guard_Map.Include (Case_Guard, Guard_Ident);
                Others_Guard := New_Or_Expr (Left   => Others_Guard,
                                             Right  => Enabled,
-                                            Domain => EW_Pred);
+                                            Domain => EW_Term);
                Result := Sequence
                  (Result, Do_One_Contract_Case (Contract_Case, Enabled));
             end;
@@ -733,8 +740,8 @@ package body Gnat2Why.Subprograms is
          Next (Contract_Case);
       end loop;
 
-      --  A check that contract cases are complete is generated only when there
-      --  is no OTHER guard.
+      --  When there is an OTHERS guard, check that the corresponding
+      --  consequence holds when no other guard is enabled.
 
       if Present (Others_Contract_Case) then
          declare
