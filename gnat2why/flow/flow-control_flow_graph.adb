@@ -1038,6 +1038,8 @@ package body Flow.Control_Flow_Graph is
       --       |
       --       v
       --
+      --  This will produce flow errors, which is what we want.
+      --
       --  For the "unknown" case we have a construct similar to a
       --  while loop:
       --
@@ -1049,6 +1051,10 @@ package body Flow.Control_Flow_Graph is
       --   |  BODY     |
       --   |   |       |
       --   \---/       v
+      --
+      --  This means the loop body may not be executed, so any
+      --  initializations in the loop which subsequent code depends on
+      --  will be flagged up.
       --
       --  Finally, for the "definitely non-empty" case we employ a
       --  creative hack. We move the parameter definition behind the
@@ -1070,6 +1076,10 @@ package body Flow.Control_Flow_Graph is
       --  The PARAMETER block defines the loop parameter (which is
       --  also flagged as Is_Initialised and Is_Loop_Parameter so that
       --  it can be suitably ignored by subsequent analysis).
+      --
+      --  We distinguish this case (non-empty range) from the previous
+      --  one (unknown range) as subsequent code may rely on any
+      --  initializations in the loop body.
 
       procedure Do_Loop is
          Contains_Return : Boolean := False;
