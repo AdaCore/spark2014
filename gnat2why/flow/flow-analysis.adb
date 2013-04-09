@@ -283,7 +283,6 @@ package body Flow.Analysis is
             FA.PDG.Get_Attributes (V).Is_Export);
       --  Checks if the given vertex V is a final-use vertex.
 
-      Ineffective_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Effective_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Entire_Ids      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -329,7 +328,7 @@ package body Flow.Analysis is
                else
                   --  We cannot reach any final use vertex, hence the
                   --  import of V is ineffective.
-                  Ineffective_Ids.Include (V);
+                  null;
                end if;
             end if;
          end;
@@ -769,7 +768,6 @@ package body Flow.Analysis is
 
    procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs)
    is
-      Unused_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Used_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Entire_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
@@ -814,9 +812,7 @@ package body Flow.Analysis is
                end;
 
                --  Flag up records used.
-               if Is_Unused then
-                  Unused_Ids.Include (V_Initial);
-               else
+               if not Is_Unused then
                   declare
                      P : Flow_Graphs.Vertex_Id := V_Initial;
                   begin

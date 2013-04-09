@@ -116,6 +116,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Callsite     := True;
       A.Error_Location  := E_Loc;
 
+      --  ??? The below is the logic for doing IPFA within a
+      --  compilation unit. To be enabled by M227-027.
+
       --  case Nkind (Parent (Procedure_Spec)) is
       --     when N_Subprogram_Body =>
       --        A.Perform_IPFA := True;

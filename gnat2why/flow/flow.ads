@@ -374,7 +374,23 @@ package Flow is
                    Dependency_Maps.Key (C) /= Empty and
                    (for all D of Dependency_Maps.Element (C) =>
                       D /= Empty));
-   --  Return the dependency relation of the given subprogram.
+   --  Return the dependency relation of the given subprogram. The
+   --  dependency relation is represented as a map from entities to
+   --  sets of entities.
+   --
+   --  For example (X, Y) =>* Z would be represented as:
+   --     x -> {x, z}
+   --     y -> {y, z}
+   --
+   --  This procedure can deal with all forms the depends
+   --  annotation. For each item in the dependency annotation, the LHS
+   --  and RHS can be any of the following:
+   --     * (x, y, z)     (an aggregate)
+   --     * x             (a variable)
+   --     * null          (keyword null)
+   --
+   --  The * shorthand to mean "itself" is expanded away by the
+   --  front-end and this procedure does not have to deal with it.
 
    procedure Print_Graph
      (Filename     : String;

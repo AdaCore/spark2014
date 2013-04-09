@@ -28,7 +28,7 @@ package Flow.Analysis is
 
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
                            Sane : out Boolean);
-   --  Check basic things, such as:
+   --  Check the following basic properties:
    --     - are all global variables used declared as such?
    --
    --  Complexity is O(N)
