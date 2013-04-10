@@ -1269,6 +1269,9 @@ package body Graph is
    begin
       Create (FD, Out_File, Filename & ".dot");
 
+      Put (FD, "// ");
+      Put_Line (FD, Filename);
+
       Put_Line (FD, "digraph G {");
       Put_Line (FD, "   graph [splines=True];");
 

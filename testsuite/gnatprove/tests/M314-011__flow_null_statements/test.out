@@ -1,3 +1,4 @@
+// null_statement_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -8,6 +9,7 @@ digraph G {
     4 ->  2 [arrowType="normal"];
 }
 
+// null_statement_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

@@ -3,6 +3,7 @@ uninitialized.adb:6:07: use of uninitialized variable "B" [uninitialized]
 
 gnatprove: error during translation to intermediate language, aborting.
 
+// compare_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -23,6 +24,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
+// compare_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -41,6 +43,7 @@ digraph G {
     8 ->  9 [arrowType="normal",color="red"];
 }
 
+// halt_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -89,6 +92,7 @@ digraph G {
     22 ->  8 [arrowType="normal"];
 }
 
+// halt_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -172,6 +176,7 @@ digraph G {
     22 ->  22 [arrowType="normal"];
 }
 
+// speed_is_valid_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -194,6 +199,7 @@ digraph G {
     10 ->  2 [arrowType="normal"];
 }
 
+// speed_is_valid_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -213,6 +219,7 @@ digraph G {
     10 ->  8 [arrowType="normal",color="red"];
 }
 
+// state_update_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -264,6 +271,7 @@ digraph G {
     21 ->  2 [arrowType="normal"];
 }
 
+// state_update_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

@@ -1,3 +1,4 @@
+// case_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -35,6 +36,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
+// case_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -69,6 +71,7 @@ digraph G {
     16 ->  6 [arrowType="normal",color="red"];
 }
 
+// if_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -98,6 +101,7 @@ digraph G {
     12 ->  2 [arrowType="normal"];
 }
 
+// if_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -127,6 +131,7 @@ digraph G {
     12 ->  4 [arrowType="normal",color="red"];
 }
 
+// if_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -149,6 +154,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
+// if_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -170,6 +176,7 @@ digraph G {
     9 ->  4 [arrowType="normal",color="red"];
 }
 
+// if_3_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -189,6 +196,7 @@ digraph G {
     8 ->  2 [arrowType="normal"];
 }
 
+// if_3_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -206,6 +214,7 @@ digraph G {
     8 ->  4 [arrowType="normal",color="red"];
 }
 
+// if_4_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -223,6 +232,7 @@ digraph G {
     7 ->  2 [arrowType="normal"];
 }
 
+// if_4_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

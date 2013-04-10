@@ -5,6 +5,7 @@ test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized]
 
 gnatprove: error during translation to intermediate language, aborting.
 
+// qe_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -41,6 +42,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
+// qe_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -81,6 +83,7 @@ digraph G {
     16 ->  16 [arrowType="normal",color="red"];
 }
 
+// qe_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -118,6 +121,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
+// qe_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
