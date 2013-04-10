@@ -69,6 +69,13 @@ package body Flow is
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
+   function Calculate_Magic_Mapping (N : Node_Id)
+                                     return Magic_String_To_Node_Sets.Map;
+   --  Traverse the tree rooted at N, making a note of each function
+   --  and procedure call which introduces a Magic_String
+   --  Flow_Id. This is used for emitting more helpful error messages
+   --  if a Magic_String Flow_Id is concerened.
+
    function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs
      with Pre => (Ekind (E) in Subprogram_Kind and then Body_In_SPARK (E));
    --  Flow analyse the given entity. This subprogram does nothing for
@@ -84,6 +91,57 @@ package body Flow is
         (Temp_String,
          Trim (To_Unbounded_String (S), Whitespace, Whitespace));
    end Add_To_Temp_String;
+
+   -----------------------------
+   -- Calculate_Magic_Mapping --
+   -----------------------------
+
+   function Calculate_Magic_Mapping (N : Node_Id)
+                                    return Magic_String_To_Node_Sets.Map
+   is
+      use type Flow_Id_Sets.Set;
+
+      RV : Magic_String_To_Node_Sets.Map;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Update mapping if N is a function or procedure call.
+
+      function Proc (N : Node_Id) return Traverse_Result is
+         Global_Reads  : Flow_Id_Sets.Set;
+         Global_Writes : Flow_Id_Sets.Set;
+         Tmp           : Flow_Id;
+         Globals       : Flow_Id_Sets.Set;
+      begin
+         case Nkind (N) is
+            when N_Function_Call | N_Procedure_Call_Statement =>
+               Get_Globals (Subprogram => Entity (Name (N)),
+                            Reads      => Global_Reads,
+                            Writes     => Global_Writes);
+               Globals := Global_Reads or Global_Writes;
+               for F of Globals loop
+                  if F.Kind = Magic_String then
+                     Tmp := Change_Variant (F, Normal_Use);
+                     if RV.Contains (Tmp.Name) then
+                        RV (Tmp.Name).Include (Entity (Name (N)));
+                     else
+                        RV.Include (Tmp.Name,
+                                    Node_Sets.To_Set (Entity (Name (N))));
+                     end if;
+                  end if;
+               end loop;
+
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc;
+
+      procedure Traverse is new Traverse_Proc (Proc);
+   begin
+      RV := Magic_String_To_Node_Sets.Empty_Map;
+      Traverse (N);
+      return RV;
+   end Calculate_Magic_Mapping;
 
    -----------------------
    -- Flow_Id operators --
@@ -122,12 +180,6 @@ package body Flow is
          else
             return False;
          end if;
-
-      elsif Left.Kind = Direct_Mapping and Right.Kind = Magic_String then
-         raise Why.Not_Implemented;
-
-      elsif Left.Kind = Magic_String and Right.Kind = Direct_Mapping then
-         raise Why.Not_Implemented;
 
       else
          return False;
@@ -173,7 +225,7 @@ package body Flow is
                Sprint_Node (Comp);
             end loop;
          when Magic_String =>
-            raise Why.Not_Implemented;
+            Output.Write_Str (F.Name.all);
       end case;
    end Sprint_Flow_Id;
 
@@ -279,6 +331,23 @@ package body Flow is
       F.Component.Reverse_Elements;
       return F;
    end Record_Field_Id;
+
+   ---------------------
+   -- Magic_String_Id --
+   ---------------------
+
+   function Magic_String_Id
+     (S       : Entity_Name;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id
+   is
+   begin
+      return Flow_Id'(Kind      => Magic_String,
+                      Variant   => Variant,
+                      Node      => Empty,
+                      Name      => S,
+                      Component => Entity_Lists.Empty_Vector);
+   end Magic_String_Id;
 
    --------------------
    -- Change_Variant --
@@ -469,36 +538,40 @@ package body Flow is
             ALI_Reads  : constant Name_Set.Set := Get_Reads (Subprogram);
             ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
 
-            function Get_Flow_Id (Name : String;
+            function Get_Flow_Id (Name : Entity_Name;
                                   View : Parameter_Variant)
                                   return Flow_Id;
             --  Return a suitable flow id for the unique_name of an
             --  entity. We try our best to get a direct mapping,
             --  resorting to the magic string only as a last resort.
 
-            function Get_Flow_Id (Name : String;
+            function Get_Flow_Id (Name : Entity_Name;
                                   View : Parameter_Variant)
                                   return Flow_Id
             is
             begin
+               --  Look for a direct mapping first.
                for E of All_Entities loop
-                  if Unique_Name (E) = Name then
+                  if Unique_Name (E) = Name.all then
                      return Direct_Mapping_Id (E, View);
                   end if;
                end loop;
-               raise Why.Not_Implemented;
+
+               --  If none can be found, we fall back to the magic
+               --  string.
+               return Magic_String_Id (Name, View);
             end Get_Flow_Id;
 
          begin
             for R of ALI_Reads loop
-               Reads.Include (Get_Flow_Id (R.all, In_View));
+               Reads.Include (Get_Flow_Id (R, In_View));
             end loop;
             for W of ALI_Writes loop
                --  This is not a mistake, we must assume that all
                --  values written may also not change or that they are
                --  only partially updated.
-               Reads.Include (Get_Flow_Id (W.all, In_View));
-               Writes.Include (Get_Flow_Id (W.all, Out_View));
+               Reads.Include (Get_Flow_Id (W, In_View));
+               Writes.Include (Get_Flow_Id (W, Out_View));
             end loop;
          end;
 
@@ -530,7 +603,7 @@ package body Flow is
         First (Pragma_Argument_Associations (Pragma_Depends));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-      CA : constant List_Id := Component_Associations (Expression (PAA));
+      CA : List_Id;
 
       Row : Node_Id;
       LHS : Node_Id;
@@ -541,6 +614,16 @@ package body Flow is
 
    begin
       Depends := Dependency_Maps.Empty_Map;
+
+      case Nkind (Expression (PAA)) is
+         when N_Null =>
+            --  Depends => null
+            return;
+         when N_Aggregate =>
+            CA := Component_Associations (Expression (PAA));
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
 
       if Ekind (Subprogram) = E_Function then
          raise Why.Not_Implemented;
@@ -750,7 +833,7 @@ package body Flow is
                      end case;
                   end;
 
-               when Record_Field =>
+               when Record_Field | Magic_String =>
                   Sprint_Flow_Id (F);
 
                when others =>
@@ -876,7 +959,22 @@ package body Flow is
          TDG          => Create,
          PDG          => Create,
          All_Vars     => Flow_Id_Sets.Empty_Set,
-         Loops        => Node_Sets.Empty_Set);
+         Loops        => Node_Sets.Empty_Set,
+         Magic_Source => Calculate_Magic_Mapping (Body_N));
+
+      --  Uncomment this to visualise the magic_source set.
+      --
+      --  for C in FA.Magic_Source.Iterate loop
+      --     Output.Write_Str (Magic_String_To_Node_Sets.Key (C).all);
+      --     Output.Write_Eol;
+      --
+      --     Output.Indent;
+      --     for E of Magic_String_To_Node_Sets.Element (C) loop
+      --        Sprint_Node (E);
+      --        Output.Write_Eol;
+      --     end loop;
+      --     Output.Outdent;
+      --  end loop;
 
       if Debug_Flag_Dot_ZZ then
          Output.Write_Str (Character'Val (8#33#) & "[32m" &

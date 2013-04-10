@@ -76,7 +76,11 @@ package body Flow.Interprocedural is
                         return V;
                      end if;
                   when Magic_String =>
-                     raise Why.Not_Implemented;
+                     if Parameter.Kind = Magic_String and then
+                       A.Parameter_Formal.Variant = Parameter.Variant and then
+                       Parameter.Name.all = A.Parameter_Formal.Name.all then
+                        return V;
+                     end if;
                   when others =>
                      raise Program_Error;
                end case;

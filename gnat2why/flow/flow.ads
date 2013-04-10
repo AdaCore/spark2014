@@ -159,6 +159,12 @@ package Flow is
       with Pre => N /= Empty and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
 
+   function Magic_String_Id
+     (S       : Entity_Name;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id;
+   --  Create a Flow_Id for the given magic string.
+
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;
@@ -316,17 +322,38 @@ package Flow is
       Element_Type => Flow_Graphs.Vertex_Id,
       "="          => Flow_Graphs."=");
 
+   package Magic_String_To_Node_Sets is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Node_Sets.Set,
+      Hash            => Name_Hash,
+      Equivalent_Keys => Name_Equal,
+      "="             => Node_Sets."=");
+
    type Flow_Analysis_Graphs is record
       Subprogram   : Entity_Id;
+      --  The entity of the analysed subprogram.
+
       Start_Vertex : Flow_Graphs.Vertex_Id;
       End_Vertex   : Flow_Graphs.Vertex_Id;
+      --  The start and end vertices in the graphs.
+
       CFG          : Flow_Graphs.T;
       DDG          : Flow_Graphs.T;
       CDG          : Flow_Graphs.T;
       TDG          : Flow_Graphs.T;
       PDG          : Flow_Graphs.T;
+      --  The graphs.
+
       All_Vars     : Flow_Id_Sets.Set;
+      --  A set of all variables used.
+
       Loops        : Node_Sets.Set;
+      --  A set of all loops (identified by label).
+
+      Magic_Source : Magic_String_To_Node_Sets.Map;
+      --  A mapping of any magic string to entities of the
+      --  subprogram(s) they originate from. We need this to print
+      --  more helpful error messages.
    end record;
 
    package Analysis_Maps is new Ada.Containers.Hashed_Maps
@@ -388,6 +415,7 @@ package Flow is
    --     * (x, y, z)     (an aggregate)
    --     * x             (a variable)
    --     * null          (keyword null)
+   --  One final form which is supported is the null dependency.
    --
    --  The * shorthand to mean "itself" is expanded away by the
    --  front-end and this procedure does not have to deal with it.

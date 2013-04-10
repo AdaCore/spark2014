@@ -74,6 +74,13 @@ package body Flow.Analysis is
       Tag   : String);
    --  Write a trace file for GPS.
 
+   procedure Global_Required
+     (FA  : Flow_Analysis_Graphs;
+      Var : Flow_Id)
+      with Pre => Var.Kind = Magic_String;
+   --  Emit an error message that (the first call) introducing the
+   --  global Var requires a global annotation.
+
    --------------------
    -- Error_Location --
    --------------------
@@ -158,6 +165,36 @@ package body Flow.Analysis is
             end;
             Error_Msg_N (To_String (M), L);
 
+         when Magic_String =>
+            declare
+               Tmp   : Unbounded_String := Null_Unbounded_String;
+               Index : Positive := 1;
+            begin
+               --  Replace __ with . in the magic string.
+               Append (Tmp, """");
+               while Index <= F.Name.all'Length loop
+                  case F.Name.all (Index) is
+                     when '_' =>
+                        if Index < F.Name.all'Length and then
+                          F.Name.all (Index) = '_' then
+                           Append (Tmp, ".");
+                           Index := Index + 2;
+                        else
+                           Append (Tmp, '_');
+                           Index := Index + 1;
+                        end if;
+                     when others =>
+                        Append (Tmp, F.Name.all (Index));
+                        Index := Index + 1;
+                  end case;
+               end loop;
+               Append (Tmp, """");
+
+               Error_Msg_String (1 .. Length (Tmp)) := To_String (Tmp);
+               Error_Msg_Strlen := Length (Tmp);
+               Error_Msg_N (To_String (M), L);
+            end;
+
          when others =>
             Print_Flow_Id (F);
             raise Why.Not_Implemented;
@@ -227,6 +264,102 @@ package body Flow.Analysis is
       Ada.Text_IO.Close (FD);
    end Write_Vertex_Set;
 
+   ---------------------
+   -- Global_Required --
+   ---------------------
+
+   procedure Global_Required
+     (FA  : Flow_Analysis_Graphs;
+      Var : Flow_Id)
+   is
+      Offending_Subprograms : constant Node_Sets.Set :=
+        FA.Magic_Source (Var.Name);
+
+      Error_Issued : Boolean := False;
+
+      function Find_First_Call_With_Global (F : Flow_Id) return Node_Id;
+      --  Find the first statement which defines or depends on Var.
+
+      function Proc_Issue_Errors (N : Node_Id) return Traverse_Result;
+      --  Issue errors on each offending subprogram call.
+
+      function Find_First_Call_With_Global (F : Flow_Id) return Node_Id is
+         RV    : Node_Id;
+         Found : Boolean := False;
+
+         procedure Are_We_There_Yet
+           (V      : Flow_Graphs.Vertex_Id;
+            Origin : Flow_Graphs.Vertex_Id;
+            Depth  : Natural;
+            T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Check if we have found a call with F as a global.
+
+         procedure Are_We_There_Yet
+           (V      : Flow_Graphs.Vertex_Id;
+            Origin : Flow_Graphs.Vertex_Id;
+            Depth  : Natural;
+            T_Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+            pragma Unreferenced (Depth, Origin);
+
+            A : constant V_Attributes := FA.CFG.Get_Attributes (V);
+         begin
+            if A.Is_Global_Parameter and then
+              Change_Variant (F, Normal_Use) =
+              Change_Variant (A.Parameter_Formal, Normal_Use)
+            then
+               --  We have found a procedure call where F is a global.
+               T_Ins := Flow_Graphs.Abort_Traversal;
+               RV    := Get_Direct_Mapping_Id (A.Call_Vertex);
+               Found := True;
+
+            elsif A.Variables_Used.Contains
+              (Change_Variant (F, Normal_Use))
+            then
+               --  We have found an expression which directly depends
+               --  on the global.
+               T_Ins := Flow_Graphs.Abort_Traversal;
+               RV    := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
+               Found := True;
+
+            else
+               T_Ins := Flow_Graphs.Continue;
+            end if;
+         end Are_We_There_Yet;
+
+      begin
+         FA.CFG.BFS (Start         => FA.Start_Vertex,
+                     Include_Start => False,
+                     Visitor       => Are_We_There_Yet'Access);
+         pragma Assert (Found);
+         return RV;
+      end Find_First_Call_With_Global;
+
+      function Proc_Issue_Errors (N : Node_Id) return Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Procedure_Call_Statement | N_Function_Call =>
+               if Offending_Subprograms.Contains (Entity (Name (N))) then
+                  Error_Msg_NE ("called subprogram & requires GLOBAL aspect" &
+                                  " to make state visible",
+                                N,
+                                Entity (Name (N)));
+                  Error_Issued := True;
+               end if;
+
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc_Issue_Errors;
+
+      procedure Traverse is new Traverse_Proc (Process => Proc_Issue_Errors);
+
+   begin
+      Traverse (Find_First_Call_With_Global (Var));
+      pragma Assert (Error_Issued);
+   end Global_Required;
+
    ------------------
    -- Sanity_Check --
    ------------------
@@ -253,9 +386,18 @@ package body Flow.Analysis is
                     Change_Variant (Var, Normal_Use);
                begin
                   if not FA.All_Vars.Contains (Neutral) then
-                     Error_Msg_Flow
-                       ("& must be listed in the Global aspect",
-                        FA.CFG, V, Var);
+                     case Neutral.Kind is
+                        when Direct_Mapping =>
+                           Error_Msg_Flow
+                             ("& must be listed in the Global aspect",
+                              FA.CFG, V, Var);
+
+                        when Magic_String =>
+                           Global_Required (FA, Var);
+
+                        when others =>
+                           raise Why.Unexpected_Node;
+                     end case;
                      Sane := False;
                   end if;
                end;
@@ -867,6 +1009,10 @@ package body Flow.Analysis is
       --  Show the dependency of initial_var on final_var. The error
       --  is attached to Final_Var.
 
+      -----------------
+      -- Find_Export --
+      -----------------
+
       function Find_Export (E : Entity_Id) return Node_Id
       is
          Pragma_Depends : constant Node_Id :=
@@ -911,6 +1057,10 @@ package body Flow.Analysis is
          raise Why.Unexpected_Node;
       end Find_Export;
 
+      ---------------------
+      -- Show_Dependency --
+      ---------------------
+
       procedure Show_Dependency (Error_Loc   : Node_Id;
                                  Initial_Var : Entity_Id;
                                  Final_Var   : Entity_Id)
@@ -938,6 +1088,10 @@ package body Flow.Analysis is
            (V : Flow_Graphs.Vertex_Id);
          --  Step procedure for Shortest_Path.
 
+         ----------------------
+         -- Are_We_There_Yet --
+         ----------------------
+
          procedure Are_We_There_Yet
            (V           : Flow_Graphs.Vertex_Id;
             Instruction : out Flow_Graphs.Traversal_Instruction) is
@@ -949,6 +1103,10 @@ package body Flow.Analysis is
                Instruction := Flow_Graphs.Continue;
             end if;
          end Are_We_There_Yet;
+
+         -------------
+         -- Add_Loc --
+         -------------
 
          procedure Add_Loc
            (V : Flow_Graphs.Vertex_Id) is
@@ -1024,6 +1182,9 @@ package body Flow.Analysis is
                               when Direct_Mapping =>
                                  S_E.Include (Get_Direct_Mapping_Id (Var));
 
+                              when Magic_String =>
+                                 Global_Required (FA, Var);
+
                               when others =>
                                  raise Why.Unexpected_Node;
                            end case;
@@ -1062,7 +1223,7 @@ package body Flow.Analysis is
                      --  We have a dependency on something in another
                      --  package, it is not possible to write a valid
                      --  depends aspect for this subprogram.
-                     raise Why.Not_Implemented;
+                     Global_Required (FA, F_F);
 
                   when others =>
                      raise Why.Unexpected_Node;
