@@ -254,6 +254,7 @@ package Flow is
       Error_Location      : Node_Or_Entity_Id;
       --  If we have an error involving this vertex, raise it here.
    end record;
+   pragma Pack (V_Attributes);
 
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node        => False,
