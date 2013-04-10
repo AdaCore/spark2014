@@ -166,6 +166,7 @@ package body Flow.Analysis is
             Error_Msg_N (To_String (M), L);
 
          when Magic_String =>
+            --  ??? we may want to use __gnat_decode() here instead
             declare
                Tmp   : Unbounded_String := Null_Unbounded_String;
                Index : Positive := 1;
@@ -340,10 +341,11 @@ package body Flow.Analysis is
          case Nkind (N) is
             when N_Procedure_Call_Statement | N_Function_Call =>
                if Offending_Subprograms.Contains (Entity (Name (N))) then
-                  Error_Msg_NE ("called subprogram & requires GLOBAL aspect" &
-                                  " to make state visible",
-                                N,
-                                Entity (Name (N)));
+                  Error_Msg_NE
+                    ("called subprogram & requires GLOBAL aspect" &
+                       " to make state visible",
+                     N,
+                     Entity (Name (N)));
                   Error_Issued := True;
                end if;
 
