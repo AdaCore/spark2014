@@ -8,9 +8,6 @@ In |SPARK| a declaration or statement occurring immediately within the package
 shall only read -- whether directly or indirectly -- values derived only from 
 compile-time constants.
 
-Among other things this restriction avoids the need to have dependency relations 
-applied to packages.
-
 Package Specifications and Declarations
 ---------------------------------------
 
@@ -32,9 +29,9 @@ The variable declarations are only visible to clients of Q if they
 are declared in the visible part of Q.  The
 declarations of all other variables are *hidden* from a client of Q.
 Though the variables are hidden they still form part (or all) of the
-state of Q and this *hidden state* cannot be ignored for static analyses
+state of Q and this *hidden state* cannot be ignored for static analysis
 and proof.  *State abstraction* is the means by which this hidden state
-is managed for static analyses and proof.
+is managed for static analysis and proof.
 
 |SPARK| extends the concept of state abstraction to provide
 hierarchical data abstraction whereby the hidden state of a package Q
@@ -57,16 +54,18 @@ further designation of whether it is an input or an output.
 .. centered:: **Static Semantics**
 
 #. The read or update of a volatile variable or state abstraction is considered 
-   to be both a read and an update of the entity. In Global and Depends aspects
-   this means that volatile entities will be regarded as being both an input and
-   an output and this fact may be stated explicitly in those aspects [, for
-   example by using the ``In_Out`` mode in the Global aspect]. 
+   for analysis purposes to be both a read and an update of the entity. 
+   [Thus, a read always has a side effect and a write is never ineffective]
    
+#. In Global and Depends aspects this means that volatile entities will be 
+   regarded as being both an input and an output and this fact may be stated 
+   explicitly in those aspects [, for example by using the ``In_Out`` mode in 
+   the Global aspect]. 
    
 #. However if a variable or abstract state is explicitly designated as being a
    Volatile Input or a Volatile Output, an abbreviated form of the Global and
-   Depends aspect is permitted [which gives a more intuitive view of the global
-   and the dependency relation]:
+   Depends aspect is permitted [which gives a more intuitive view of the Global
+   and Depends aspects]:
 
    * If the variable or state abstraction is designated as a Volatile Input,
      then it may appear just as an Input in the Global aspect. Implicitly it is
@@ -75,18 +74,120 @@ further designation of whether it is an input or an output.
      entity will be declared.
 
    * If the variable or state abstraction is designated as Volatile Output, then
-     it may appear just as an Output in the Global aspect. Immplicitly it is
-     declared wit a ``mode_selector`` of In_Out. In a Depends aspect it need not
-     appear as an input as an implicit self dependency of the entity will be
-     declared.    
+     it may appear just as an Output in the Global aspect. Implicitly it is
+     not appear as an input as an implicit self dependency of the entity will be
+     declared.
      
+#. [The read of a Volatile Input variable IP in a simple assignment, X := IP;
+   behaves as a procedure call of the form Read_Volatile (X) where the
+   specification of the procedure is:
+
+   procedure Read_Volatile (X : out T)
+   with Global => (In_Out => IP);
+
+   Similarly the update of a Volatile Output variable OP, behaves as a call to a 
+   procedure of the form:
+
+   procedure Update_Volatile (Y : in T)
+   with Global => (In_Out => OP);]
+
+  
 .. centered:: **Legality Rules**
 
 #. As a Volatile entity always has a ``mode_selector`` of In_Out, either given
    explicitly or implicitly, it follows that a Volatile state abstraction
-   cannot be a ``global_item`` of a function Global ``aspect_specification``.
+   cannot be a ``global_item`` of a function Global ``aspect_specification``
+   [which in turn means that a function cannot, directly or indirectly, 
+   read or update a volatile variable].
 
+#. A variable with Volatile and Input aspects cannot be updated directly.
      
+#. A variable with Volatile and Output aspects cannot be read directly.
+
+#. [The general |SPARK| rule that an expression evaluation cannot
+   have a side effect means that a read of a volatile variable is not an
+   ordinary expression.] The value of a volatile variable may only be read 
+   directly as a``name`` denoting the variable occurring as:
+
+   * the expression of the right hand side of an assignment statement;
+   
+   * the expression of an initialization expression of an object declaration;
+   
+   * an actual parameter in a call to an instance of Unchecked_Conversion
+     which is the right hand side of an assignment statement; or
+     
+   * an actual parameter in a call to an instance of Unchecked_Conversion
+     which is renamed.
+
+   
+Volatiles:
+
+  An explicit read of a volatile is considered (for purposes of flow
+  analysis) to be preceded by an implicit assignment.
+  Similarly, an explicit write to a volatile is considered (for purposes
+  of flow analysis) to be followed by an implicit read,
+  Thus, a read always has a side effect and a write is never ineffective.
+
+  However, this is reflected implicitly, not explicitly, in global
+  annotations.  A volatile global can be of mode In. This means only that
+  it cannot be explicitly assigned to. For a procedure with
+  an In-mode volatile global (which it only reads) this is ok.
+  On the other hand, the rule that a function cannot have a
+  side-effect applies even to these implicit assignments - a
+  function cannot read a volatile.
+
+  Similarly, a volatile global can be of mode Out; this means that
+  the volatile cannot be explicitly read.
+
+  Because of the general rule that expression evaluation cannot
+  have side effects, we need to spell out exactly when it is ok to read
+  a volatile:
+
+      Rhs of assignment (either assignment stmt or declaration initial value)
+      Operand of call to U_C instance which is rhs of assignment.
+      Operand of call to U_C instance which is renamed.
+
+  The Unchecked_Conversion cases are allowed
+
+  Nonvolatile abstraction can have a volatile component. Problems
+  (e.g., a function calling a procedure which reads a volatile) will
+  be caught at the point of the refinement. A volatile in-mode abstraction
+  allows reading volatile constituents; a non-volatile in-mode abstraction
+  does not.
+
+The read of a Volatile Input variable IP in a simple assignment, X := IP;
+can be considered as a procedure call of the form Read_Volatile (X) where the
+specification of the procedure is:
+
+procedure Read_Volatile (X : out T)
+with Global => (In_Out => IP);
+
+Similarly the update of a Volatile Output variable OP, would be represented by 
+a call to a procedure of the form:
+
+procedure Update_Volatile (Y : in T)
+with Global => (In_Out => OP);
+
+From the representation for a read of a volatile variable it is clear that it
+cannot be regarded as an expression in |SPARK|.  In |SPARK| the only place where
+a read of a volatile variable may be used in place of an ``expression`` is as a
+``name`` denoting the variable on the right hand side of an 
+``assignment_statement``.
+
+As a function cannot have a side-effect in |SPARK| a function cannot return
+a value dependent on the read of a volatile variable.
+
+A volatile variable may be the parameter of a procedure provided
+the formal parameter is a volatile type.  Regardless of the mode of the formal 
+parameter given in the subprogram specification it is considered to behave as
+mode **in out**.
+
+
+#. A ``state_name`` which is designated as ``Volatile`` must not
+   appear in an Initializes aspect.
+
+
+
 .. _abstract-state-aspect:
 
 Abstract State Aspect
@@ -346,23 +447,16 @@ aspect.
    end Sensor.Raw;
 
 
-Volatile, Input, Output, Part_Of Aspects
+Input, Output, Part_Of Aspects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. todo: This section in the process of being updated by TJJ
 
-For variables which are declared directly within the visible part of a package
-specification, the Volatile, Input, Output and Part_Of aspects may be
-specified directly as part of the variable's declaration.
+Variable declarations may have the Input, Output and Part_Of aspects
+specified directly as part of declaration.
 
 
 .. centered:: **Legality Rules**
 
-#. Input and Output are Boolean aspects, so have no
-   ``aspect_definition`` part.
-
-#. The Input and Output aspects may only be applied to a
-   variable declaration that appears in the visible part of a package
-   specification.
+#. Input and Output are Boolean aspects.
 
 #. If a variable has the Volatile aspect, then it must also have
    exactly one of the Input or Output aspects.
@@ -370,57 +464,22 @@ specified directly as part of the variable's declaration.
 #. The Part_Of aspect requires an ``aspect_definition`` which denotes
    a state abstraction.
 
-#. A Part_Of aspect can only appear in the ``aspect_specification`` of a
-   variable declared in the visible part of a private child package or
-   the visible part of a package declared within the visible part of the 
-   private child package..
-   
+#. A Part_Of aspect may only appear in the ``aspect_specification`` of a
+   variable declared in the visible part of a private descendant package or
+   the visible part of a package declared therein.
+     
+
 .. centered:: **Static Semantics**
 
 # A Part_Of aspect in the ``aspect_specification`` of a variable 
   declaration indicates that the variable is a constituent of the state
   abstraction denoted by its ``aspect_definition``.
 
-#. A variable that is declared in the visible part of a private child package
-   or within the visible part of a package declared within the visible part of
-   a private child package which does not have a Part_Of aspect is 
-   considered to be a constituent of one of the state abstractions of the
-   parent of the private child packages.
+#. A variable that is declared in the visible part of a private descendant 
+   package or within the visible part of a package declared therein which does 
+   not have a Part_Of aspect shall be a constituent of its parent's one and only
+   state abstraction.
 
-A Volatile Input variable cannot be updated directly.
-     
-A Volatile Output variable cannot be read directly.
-
-
-A volatile variable or volatile state abstraction cannot be mentioned directly 
-in an assertion expression as the reading of a volatile may affect its value.
-
-The read of a Volatile Input variable IP in a simple assignment, X := IP;
-can be considered as a procedure call of the form Read_Volatile (X) where the
-specification of the procedure is:
-
-procedure Read_Volatile (X : out T)
-with Global => (In_Out => IP);
-
-Similarly the update of a Volatile Output variable OP, would be represented by 
-a call to a procedure of the form:
-
-procedure Update_Volatile (Y : in T)
-with Global => (In_Out => OP);
-
-From the representation for a read of a volatile variable it is clear that it
-cannot be regarded as an expression in |SPARK|.  In |SPARK| the only place where
-a read of a volatile variable may be used in place of an ``expression`` is as a
-``name`` denoting the variable on the right hand side of an 
-``assignment_statement``.
-
-As a function cannot have a side-effect in |SPARK| a function cannot return
-a value dependent on the read of a volatile variable.
-
-A volatile variable may be the parameter of a procedure provided
-the formal parameter is a volatile type.  Regardless of the mode of the formal 
-parameter given in the subprogram specification it is considered to behave as
-mode **in out**.
 
 
 .. todo:: Consider more than just simple Volatile Inputs and Outputs;
@@ -437,7 +496,7 @@ mode **in out**.
       Sensor : Integer
          with Volatile,
               Input,
-              Address => System.Storage_Units.To_Address (16#DEADBEEF#),
+              Address => System.Storage_Units.To_Address (16#ACECAFE#),
               Part_Of => Input_Port.Pressure_Input;
 
    end Input_Port.Raw_Input_Port;
@@ -500,105 +559,70 @@ grammar of ``initialization_spec`` given below.
   initialization_list ::= initialization_item
                         | (initialization_item {, initialization_item})
 
-  initialization_item ::= name
+  initialization_item ::= name [ => input_list]
 
-.. todo:: Complete language definition for Initializes aspect. Note that the text
-          given immediately below this ToDo is out of date and doesn't necessarily match
-          with the syntax given here.
-          To be completed in the Milestone 3 version of this document.
-
-.. centered:: **Syntax**
-
-::
-
-  initialization_list   ::= output_list
-
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: 7.1.4 Syntax
 
 .. centered:: **Legality Rules**
 
-#. Every ``output`` of an ``initialization_list`` of an Initializes
-   aspect of a package specification is a state abstraction.
+#. An Initializes aspect may only appear in the ``aspect_specification`` of a 
+   ``package_specification``.
+   
+#. The Initializes aspect must follow the Abstract State aspect if one is 
+   present.
+   
+#. The Initializes aspect of a package has visibility of the declarations
+   occuring immediately within the visible part of the package.
 
-   .. ifconfig:: Display_Trace_Units
+#. The ``name`` of each ``initialization_item`` denotes a state abstraction 
+   declared in the same ``aspect_specification`` of a package or an entire 
+   variable declared in the visible part of the package.
 
-      :Trace Unit: TBD
 
-#. An Initializes aspect may only appear in the
-   ``aspect_specification`` of a package specification.
+#. The entity denoted by the ``name`` of an ``initialization_item`` shall be 
+   distinct from every other entity denoted in the ``initialization_list``.
 
-   .. ifconfig:: Display_Trace_Units
+#. Each ``name`` in the ``input_list`` denotes an entire variable or a state 
+   abstraction but shall not denote an entity declared in the package with the
+   ``aspect_specification`` containing the Initializes aspect.
+   
+# Each entity in a single ``input_list`` shall be distinct.
 
-      :Trace Unit: TBD
-
-#. The Initializes aspect must follow the
-   Abstract State aspect if one is present.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. An ``aspect_specification`` shall not have an
-   Initializes Aspect if it has a Depends aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. The object denoted by a given ``output`` in an Initializes aspect shall
-   not be denoted by any other ``output`` in that Initializes aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. A variable appearing in an Initializes aspect must be entire,
-   it cannot be a subcomponent of a containing object.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. A ``state_name`` which is designated as ``Volatile`` must not
-   appear in an Initializes aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. An Initializes aspect shall not allow ``function_result`` as an ``output``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-.. centered:: **Static Semantics**
-
-#. An Initializes Aspect is a shorthand notation for a
-   Depends aspect of the form:
-
-   ::
-
-     Depends => (S1 => null,
-                 S2 => null,
-                 ...
-                 Sn => null)
-
-     where
-
-       each S1 .. Sn is a variable or state abstraction initialized
-       during the elaboration of the package.
-
-#. A **null** ``initialization_list`` is equivalent to a **null**
-   ``dependency_relation``.
+   .. centered:: **Static Semantics**
+   
+#. The Initializes aspect of a package specification asserts which 
+   state abstractions and visible variables of the package are initialized
+   by the elaboration of the package, both its specification and body, and
+   its private descendants.  
+   
+#. If a state abstraction or variable declared in the visible part of a package 
+   is not denoted by a ``name`` of an ``initialization_item``, then it should 
+   not be initialized during the elaboration of the package.
+   
+#. A package with a **null** ``initialization_list`` does not initialize any
+   of its state abstractions or variables.
+   
+#. If an ``initialization_item`` has an ``input_list`` then the ``names`` in the
+   list denote entities which are used in determining the initial value of the
+   entity denoted by the ``name`` of the ``initialization_item``
 
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with the
-Initializes Aspect as the rules are checked by static analysis.
+There are no dynamic semantics associated with the Initializes Aspect.
 
+.. centered:: **Verification Rules**
+
+#. For a Initialization aspect of a package every entity denoted by a ``name`` 
+   of an ``initialization_item`` shall be initialized explicitly, or implicitly 
+   during the elaboration of the package and its private descendants.
+   
+#. The state abstractions and variables declared in the visible part of a 
+   package and not denoted by a ``name`` of an ``initialization_item`` shall not
+   be explicitly initialized during the elaboration of the package and its 
+   private descendants.
+   
+#. If an ``initialization_item`` has a ``input_list`` then the entities denoted
+   in the input list shall be used in determining initailized value of the
+   entity denoted by the ``name`` of the ``initialization_item``
 
 .. centered:: **Examples**
 
@@ -810,7 +834,7 @@ In the body of a package the constituents of the refined
 abstract view of the ``state_name``.  Refined global, depends, pre
 and post aspects are provided to express the refined view.
 
-In the refined view the constituents of each ``state_name`` have to be
+In the refined view the constituents of each ``state_name`` has to be
 initialized consistently with their appearance or omission from the
 Package Depends or Initializes aspect of the package.
 
@@ -882,23 +906,6 @@ High-level requirements
     * See also section :ref:`generic_hlrs`.
 
 
-.. todo:: Consider whether it should be possible to refine null abstract state onto hidden state.
-          *Rationale: this would allow the modeling of programs that - for example - use caches
-          to improve performance.*
-          To be completed in the Milestone 3 version of this document.
-
-.. todo:: Consider whether it should be possible to refine abstract onto hidden state without any restrictions,
-          although the refinement would be checked and potential issues flagged up to the user.
-     
-          **Rationale:** there are a number of different possible models of mapping abstract
-          to concrete state - especially when volatile state is being used - and it might
-          be useful to provide greater flexibility to the user. In addition, if a facility is
-          provided to allow users to step outside of the language when refining depends, for example, then it may be
-          necessary to relax the abstraction model as well as relaxing the language feature
-          of direct relevance.*
-
-          To be completed in the Milestone 3 version of this document.
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -910,86 +917,73 @@ the grammar of ``state_and_category_list`` given below.
 
 ::
 
-  state_and_category_list          ::= (state_and_category {, state_and_category})
-  state_and_category               ::= abstract_state_name => constituent_with_property_list
-  abstract_state_name              ::= state_name
-                                       | null
-  constituent_with_property_list   ::= constituent_with_property
-                                     | (constituent_with_property {, constituent_with_property})
-  constituent_with_property        ::= constituent
-                                     | (constituent_list with property_list)
-  constituent_list                 ::= constituent
-                                     | (constituent {, constituent})
+  state_and_constituent_list     ::= (state_and_constituents {, state_and_constituents})
+  state_and_constituents         ::= state_name => constituent_with_property_list
+  constituent_with_property_list ::= constituent_with_property
+                                   | (constituent_with_property {, constituent_with_property})
+  constituent_with_property      ::= constituent
+                                   | (constituent_list with property_list)
+  constituent_list               ::= constituent
+                                   | (constituent {, constituent})
 
 where
 
-  ``constituent ::=`` *variable_*\ ``name | state_name``
+  ``constituent ::=`` *object_*\ ``name | state_name``
 
-.. todo:: Complete language definition for Refined_State aspect.
-          To be completed in the Milestone 3 version of this document.
-
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: 7.2.2 Syntax
 
 .. centered:: **Legality Rules**
 
-#. A Refined State Aspect may only appear in ``package_body``. [The use
-   of ``package_body`` rather than package body allows this aspect to be specified
-   for generic package bodies.]
+#. A Refined_State Aspect may only appear in the ``aspect_specification`` of a
+   ``package_body``. [The use of ``package_body`` rather than package body 
+   allows this aspect to be specified for generic package bodies.]
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. If a package declaration has an Abstract State Aspect its body
-   must have a Refined State Aspect.
+#. If a ``package_specification``  has an Abstract_State aspect its body
+   must have a Refined_State aspect.
+
+.. Note: We may want to be able to override this error.
+
+.. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
+#. If a ``package_specification``  does not have an Abstract_State aspect,
+   then the corresponding ``package_body`` shall not have a Refined_State 
+   aspect.
+  
+.. Note: We may want to be able to override this error.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. If a package declaration does not have an Abstract State Aspect,
-   then the corresponding package body *may* have a Refined State Aspect
-   with exactly one ``state_and_category`` where the ``abstract_state_name`` is **null**.
+#. A Refined_State Aspect of a ``package_body`` has visibility extended to  the 
+   ``declarative_part`` of the body.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. A Refined State Aspect of a package body has extended
-   visibility; it is able to refer to a *variable* declared in the
-   package body, or a ``state_name`` or *variable* declared in the
-   visible part of a package, declared immediately within the package
-   body.
+#. A ``constituent`` denotes an entity of the hidden state of a package.
 
-   .. ifconfig:: Display_Trace_Units
+#. Every entity of the hidden state of a package must be denoted as a
+   ``constituent`` in its Refined_State aspect.
 
-      :Trace Unit: TBD
+.. Note: We may want to be able to override this error.
 
-#. Every item of the package's hidden state must appear as a
-   ``constituent`` in its Refined State aspect.
-
-   .. ifconfig:: Display_Trace_Units
+#. Every entity of the hidden state of a package must be denoted as a
+   ``constituent`` exactly one *abstract_*\ ``state_name`` in its Refined_State
+   aspect.
+   
+.. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. Each ``state_name`` declared in a package specification must appear
-   exactly once as an ``abstract_state_name`` in the
-   Refined State Aspect of the body of the package.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. If a ``constituent`` has the same name as an
-   ``abstract_state_name`` it can only be a ``constituent`` of that
-   ``abstract_state_name`` and it must be the only ``constituent`` of
-   the ``abstract_state_name``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
+#. A ``property_list`` shall not contain a ``name_value`` property.
 
 #. The ``identifier`` of a ``simple_property`` shall be "Volatile",
    "Input", or "Output".
@@ -1013,20 +1007,14 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
-
-#. There should be at most one **null** ``abstract_state_name`` and,
-   if it is present it must be non-volatile and the last entry of the
-   ``state_and_category_list``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
+      
 
 .. centered:: **Static Semantics**
 
-#. A Refined State Aspect defines the *variables* and each
-   subordinate ``state_name`` which are the constituents that comprise
-   the hidden state represented by the ``state_name`` declared in the
+#. A Refined_State aspect of a ``package_body`` defines the objects and each 
+   subordinate ``state_name`` which are the ``constituents`` of each of the 
+   *abstract_*\ ``state_names`` declared in the that comprise the hidden state 
+   of a package represented by the ``state_name`` declared in the
    Abstract State Aspect.
 
 #. Each ``constituent`` of the hidden state of must appear exactly
