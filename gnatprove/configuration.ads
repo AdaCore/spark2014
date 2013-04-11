@@ -79,13 +79,12 @@ package Configuration is
    --  * GPM_Flow   : Check validity of Globals, Depends
    --  * GPM_All    : Union of GPM_Prove and GPM_Flow
 
-   type Report_Mode is (GPR_Fail, GPR_Verbose, GPR_Detailed);
+   type Report_Mode is (GPR_Fail, GPR_Verbose, GPR_Statistics);
    --  The modes for reporting of VCs.
    --    GPR_Fail means that only unproved VCs will be reported.
    --    GPR_Verbose means that all VCs will be reported
-   --    GPR_Detailed means that all VCs will be reported, including a reason
-   --    for unproved VCs (timeout, max steps)
-   --
+   --    GPR_Statistics means that all VCs will be reported, plus steps and
+   --    timing information.
 
    type Proof_Mode is (Then_Split, No_WP, All_Split, Path_WP, No_Split);
    --  This is a debug option of GNATprove. This option is simply passed to

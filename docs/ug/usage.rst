@@ -43,8 +43,8 @@ Command-line Usage
    --report=     Output mode
        fail        Report failures to prove VCs (default)
        all         Report all results of proving VCs
-       detailed    Report all results of proving VCs, including a reason when
-                   not proved
+       statistics  Report all results of proving VCs, including timing and
+                   steps information
    -u            Unique compilation, only prove the given files
    -U            Prove all files of all projects
    -v, --verbose Output extra verbose information
@@ -127,9 +127,9 @@ In mode ``force``, |GNATprove| prints on the standard output error messages for
 In mode ``prove`` and report ``fail``, |GNATprove| prints on the standard
 output error messages for unproved VCs.
 
-In mode ``prove`` and report ``all``, |GNATprove| prints on the standard
-output error messages for unproved VCs, and information messages for proved
-VCs.
+In mode ``prove`` and report ``all`` or ``statistics``, |GNATprove| prints on
+the standard output error messages for unproved VCs, and information messages
+for proved VCs.
 
 In mode ``flow``, GNATprove prints on the standard output error messages and
 warnings for incorrect Globals and depends contracts, unitialized error

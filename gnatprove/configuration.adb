@@ -99,7 +99,8 @@ ASCII.LF &
 ASCII.LF &
 "     --clean        Remove GNATprove intermediate files, and exit" &
 ASCII.LF &
-"     --report=r     Set the report mode of GNATprove (r=fail*, all, detailed)"
+"     --report=r     Set the report mode of GNATprove " &
+"(r=fail*, all, statistics)"
 &
 ASCII.LF &
 " -u                 Unique compilation, only prove the given files" &
@@ -388,8 +389,7 @@ ASCII.LF &
       Define_Switch
         (Config,
          Report_Input'Access,
-         Long_Switch => "--report=",
-         Help => "Set the report mode of GNATprove (fail| all| detailed)");
+         Long_Switch => "--report=");
 
       Define_Switch
          (Config, Steps'Access,
@@ -504,11 +504,11 @@ ASCII.LF &
          Report := GPR_Fail;
       elsif Report_Input.all = "all" then
          Report := GPR_Verbose;
-      elsif Report_Input.all = "detailed" then
-         Report := GPR_Detailed;
+      elsif Report_Input.all = "statistics" then
+         Report := GPR_Statistics;
       else
          Abort_With_Help
-           ("report should be one of (fail | all | detailed)");
+           ("report should be one of (fail | all | statistics)");
       end if;
 
       if Proof_Input.all = "then_split" then

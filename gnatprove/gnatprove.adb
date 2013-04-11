@@ -238,8 +238,8 @@ procedure Gnatprove is
          when GPR_Verbose =>
             Args.Append ("all");
 
-         when GPR_Detailed =>
-            Args.Append ("detailed");
+         when GPR_Statistics =>
+            Args.Append ("statistics");
 
       end case;
       if Debug then
