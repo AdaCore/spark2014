@@ -5,11 +5,39 @@
 \usepackage{graphicx}
 %\usepackage{amssymb}
 %\usepackage{amsfonts,amsmath}
+\usepackage{amsbsy}
 \usepackage[T1]{fontenc}
 \usepackage{url}
 \usepackage{xspace}
 \usepackage{listings}
-\lstset{language=Ada}
+\usepackage{xcolor}
+
+\definecolor{darkgrey}{RGB}{64,64,64}
+\lstdefinelanguage{SPARK}{
+  language = [95]Ada,
+  morekeywords = {
+    pre,post,assert,
+    pragma,
+    loop_variant,loop_invariant,contract_cases,
+    increases},
+  comment=[l][commentstyle]{--\ },
+  texcl=true,
+  showstringspaces=false
+}
+\lstdefinestyle{tinystyle}
+   {basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\scriptsize\color{darkgrey}\pmb,
+    commentstyle=\rmfamily\it,
+    captionpos=b,
+    caption={},label={},
+    numbers=none,
+    escapeinside={(*}{*)},
+    columns=fixed,
+    basewidth=0.5em,
+  }
+
+\lstset{language=SPARK}
+\lstset{style=tinystyle}
 
 %
 \newcommand{\DO}{\textsc{do-178}}
@@ -150,13 +178,11 @@ bounded result. Note the use of the new \textit{aspect} syntax in Ada 2012, in
 which the declaration of \verb|LCP| is followed by keyword \verb|with| and a
 list of aspects.
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 function LCP (A : Text; X, Y : Integer) return Natural with
   Pre  => X in A'Range and then Y in A'Range,
   Post => LCP'Result in 0 .. Index'Last;
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 In the postcondition of a function, the new attribute \verb|Result| is used to
 refer to the result of the function. Another attribute \verb|Old| is used to
@@ -186,12 +212,10 @@ SPARK 2014. A loop invariant can be inserted anywhere in the main list of
 statements in a loop, and it expresses the cumulated effect of the loop up to
 that point. For example, here is the loop invariant used in challenge~1:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 pragma Loop_Invariant
   (for all K in 0 .. L - 1 => A (X + K) = A (Y + K));
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 Note that a loop invariant in SPARK does not have the same semantics as the
 loop invariant introduced by Hoare \cite{hoare69cacm}. The latter has to hold
@@ -211,11 +235,9 @@ quantity varying monotonically at each iteration of the loop. Like loop
 invariants, a loop variant can appear anywhere in the main list of statements
 in a loop. For example, here is the loop variant used in challenge 1:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 pragma Loop_Variant (Increases => L);
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 Note that this variant does not take the usual non-negative decreasing
 argument. Instead, it takes a list of increasing or decreasing integer values,
@@ -233,15 +255,13 @@ sub-contracts for the cases where the elements at \verb|X| and \verb|Y| are
 different, or \verb|X| and \verb|Y| are equal. This contract may be used
 instead of or in addition to a precondition and a postcondition.
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 function LCP (A : Text; X, Y : Integer) return Natural with
   Contract_Cases =>
     (A (X) /= A (Y) => LCP'Result = 0,
      X = Y          => LCP'Result = A'Last - X + 1,
      others         => LCP'Result > 0);
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 Note that the cases above are disjoint and complete, as expected in SPARK: one
 and only one case should be applicable at every call. The presence of the
@@ -343,14 +363,13 @@ an example, consider what difference it makes to the user-supplied
 contract, if you would use the type \verb|Natural| instead of
 \verb|Integer| for the \verb|Input| parameter of procedure \verb|Sqrt|:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 procedure Sqrt (Input : Integer; Res: out Natural) with
   Pre  => Input >= 0,
   Post => (Res * Res) <= Input and then
           (Res + 1) * (Res + 1) > Input;
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
+
 In this case the implicit precondition would be sufficient and a
 user-supplied precondition would not be necessary. Since there is a
 cost associated with users writing contracts, there is a benefit in
@@ -467,11 +486,9 @@ avoided, in the assertions as well as in the program. As an example,
 consider a programmer who wants to state a pre-condition that the
 addition of two number fits in a desired integer type:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
   Pre => X + Y in SomeIntegerType
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 \noindent
 The problem is that
@@ -587,8 +604,7 @@ experiencing the benefits of executable annotations.
 
 The longest common prefix solution can be readily coded in \newspark as follows:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 subtype Index is Positive range 1 .. 1_000_000;
 type Text is array (Index range <>) of Integer;
 
@@ -618,8 +634,7 @@ begin
    end loop;
    return L;
 end LCP;
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 The type \verb|Text| is an array of integers with unknown bounds. The input
 specification that parameters \verb|X| and \verb|Y| are indices in the array
@@ -682,8 +697,7 @@ here selected parts. The initial solution without annotations is
 straightforward, and only 50 lines long. As an example, here is the
 implementation of procedure \verb|Upsweep|:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 procedure Upsweep (A : in out Input;
                    Output_Space : out Positive) is
    Space : Positive := 1;
@@ -701,8 +715,7 @@ begin
    end loop;
    Output_Space := Space;
 end Upsweep;
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 The postcondition of procedure \verb|Upsweep| states that the array parameter
 \verb|A| is put in an intermediate form \wrt its initial value (denoted
@@ -716,8 +729,7 @@ modification of \verb|A|. Although \newspark does not support yet ghost
 parameters, which are only used for proofs, this is here the role of parameter
 \verb|Ghost|, hence its name.
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 procedure Upsweep (A : in out Input;
                    Output_Space : out Positive) with
   Pre  => All_Elements_In (A, Maximum),
@@ -752,8 +764,7 @@ with
       and then
     A (7) = Ghost (0) + Ghost (1) + Ghost (2) + Ghost (3)
           + Ghost (4) + Ghost (5) + Ghost (6);
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 The function \verb|Intermediate_Form| gives the exact relationship between the
 initial value of the array (parameter \verb|B| below) and its intermediate
@@ -764,8 +775,7 @@ the benefit that \gnatprove automatically generates a postcondition for
 \verb|Intermediate_Form| to prove that its evaluation cannot fail run-time
 checks (overflow checks and index checks here).
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 function Intermediate_Form (A, B : Input) return Boolean with
   Pre => All_Elements_In (A, Maximum * 8)
     and then All_Elements_In (B, Maximum);
@@ -781,21 +791,18 @@ function Intermediate_Form (A, B : Input) return Boolean is
         A (K) = B (K) + B (K-1)
      else
         A (K) = B (K)));
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 Note that the contracts of all previous procedure and functions contain calls
 to function \verb|All_Elements_In|, which returns \verb|True| if all elements
 of an array are bounded in absolute value, which we also define as an
 expression function:
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 function All_Elements_In (A : Input; Max : Positive)
 return Boolean is
    (for all K in A'Range => A (K) in -Max .. Max);
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 These specifications add 62 lines to the initial 50 lines for the solution. To
 prove them with \gnatprove, we add 84 more lines for loop invariants and loop
@@ -803,8 +810,7 @@ variants. As an example, here are the loop invariant and loop variant for the
 inner loop of procedure \verb|Upsweep|. Inside the loop invariant,
 \verb|A'Loop_Entry| denotes the value of \verb|A| on entry to the loop.
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 pragma Loop_Invariant (
   (Left + 1) mod Space = 0
     and then
@@ -824,8 +830,7 @@ pragma Loop_Invariant (
      else
         A (K) = A'Loop_Entry (K))));
 pragma Loop_Variant (Increases => Left);
-\end{verbatim}
-\end{footnotesize}
+\end{lstlisting}
 
 The final version of prefix sum is partially proved (78 VCs proved, 8 VCs
 unproved) in 138s on a DELL laptop with 24G RAM and 24 processors at 2.4GHz (to
@@ -873,8 +878,7 @@ We have added a couple of functions to make the specification
 intuitive: \verb|Is_Even|, and more importantly \verb|Summation|, the
 mathematical operation for adding a sequence of numbers.
 
-\begin{footnotesize}
-\begin{verbatim}
+\begin{lstlisting}
 Tree_Depth : constant := 3;
 Maximum    : constant := Integer'Last / (Index'Last + 1);
 
@@ -903,9 +907,7 @@ procedure Upsweep (A : in out Input;
      (if Is_Even (K) then A (K) = A'Old (K)))
     and then
    A (A'Last) = Summation (A'Old, 0, A'Last);
-\end{verbatim}
-\end{footnotesize}
-
+\end{lstlisting}
 
 The downside is that this improved specification does not yet verify
 with the current version of \gnatprove. This general specification was
@@ -923,8 +925,7 @@ operation including axioms to \gnatprove\ in the future.
 %% are longer than they need to be in \newspark\ (due to legacy reasons
 %% the loop invariant need to repeat some of the loop conditions).
 %% %
-%% \begin{footnotesize}
-%% \begin{verbatim}
+%% \begin{lstlisting}
 %% package body PrefixSum_General is
 
 %%    procedure Upsweep (A : in out Input; Output_Space : out Positive) is
@@ -1000,8 +1001,7 @@ operation including axioms to \gnatprove\ in the future.
 %%    end Upsweep;
 
 %% end PrefixSum_General;
-%% \end{verbatim}
-%% \end{footnotesize}
+%% \end{lstlisting}
 %% %
 %% After adding the necessary summation axiom, there would still be two
 %% verification conditions remaining unproved. At that point it was very
