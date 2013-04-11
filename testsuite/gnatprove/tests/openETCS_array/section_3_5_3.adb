@@ -30,7 +30,7 @@ package body Section_3_5_3 is
                                             phone : Telephone_Number_t) is
       connection_attemps : Natural := 0;
    begin
-      -- §3.5.3.7.a
+      -- SUBSET-026-3.5.3.7.a
       if Start_Of_Mission then
          while connection_attemps
            <= Appendix_A_3_1.number_of_times_try_establish_safe_radio_connection
@@ -61,10 +61,10 @@ package body Section_3_5_3 is
          end loop;
       end if;
 
-      -- §3.5.3.7.b
+      -- SUBSET-026-3.5.3.7.b
       Safe_Radio.Send_Message(Safe_Radio.Initiation_Of_Communication);
 
-      -- §3.5.3.7.c not formalized (trackside)
+      -- SUBSET-026-3.5.3.7.c not formalized (trackside)
    end;
 
    procedure Contact_RBC(RBC_identity : RBC_RIU_ID_t;

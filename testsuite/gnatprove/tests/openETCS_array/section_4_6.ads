@@ -28,7 +28,7 @@ with Section_4_3_2;
 use Section_4_3_2;
 
 Package Section_4_6 is
-   -- §4.6.3 Transitions Conditions Table
+   -- SUBSET-026-4.6.3 Transitions Conditions Table
    -- WARNING: not all conditions are modeled
 
    -- Individual condition elements
@@ -77,7 +77,7 @@ Package Section_4_6 is
       AND driver_acknowledges
       AND note_5_conditions_for_shunting_mode);
 
-   -- §4.6.2 Transitions Table
+   -- SUBSET-026-4.6.2 Transitions Table
    type priority_t is range 1..7;
    priority : priority_t;
 
@@ -90,7 +90,7 @@ Package Section_4_6 is
    function condition_transition_SB_to_IS return Boolean is
      (condition_1 AND priority = 1);
 
-   -- §4.6.1.5
+   -- SUBSET-026-4.6.1.5
    function disjoint_condition_transitions return Boolean is
      (NOT(condition_transition_SB_to_SH = True
           AND condition_transition_SB_to_FS = True)

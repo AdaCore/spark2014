@@ -18,17 +18,32 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
+-- Commented out because not supported in GNAT GPL 2012
+--- with Ada.Containers.Formal_Hashed_Maps;
+--- with Ada.Containers; use Ada.Containers;
+
 with Data_Types; use Data_Types;
 
 package Com_Map is
+-- Commented out because not supported in GNAT GPL 2012
+--     function RBC_RIU_ID_Hash(id : RBC_RIU_ID_t) return Hash_Type is
+--       (Hash_Type(id));
+--
+--     package Com_To_RBC_Map is new Ada.Containers.Formal_Hashed_Maps
+--       (Key_Type        => RBC_RIU_ID_t,
+--        Element_Type    => Boolean, -- False: com being established
+--                                    -- True : com established
+--        Hash            => RBC_RIU_ID_Hash,
+--        Equivalent_Keys => "=",
+--        "="             => "=");
    type Com_Element is record
-      Used  : Boolean := False; -- False: element not used
-      Value : Boolean := False; -- False: com being established
-                                -- True : com established
+      Used            : Boolean := False; -- False: element not used
+      Com_Established : Boolean := False; -- False: com being established
+                                          -- True : com established
    end record;
 
    type Com_To_RBC_Map is array (RBC_RIU_ID_T) of Com_Element;
 
    function Contains (Map : Com_To_RBC_Map; Id : RBC_RIU_ID_T) return Boolean
-   is (Map (Id).Used and Map(Id).Value);
+   is (Map (Id).Used and Map(Id).Com_Established);
 end;
