@@ -1,12 +1,28 @@
 package body Single_Compilation_Unit is
+   --  This package checks that the IFA produces correct
+   --  CFGs and PDGs for subroutines that call other
+   --  subroutines of the same compilation unit.
+
    Condition: Boolean;
    X, Y: Integer;
 
+   --  Function Double_Max calls procedure Max.
+   --  Since a contract has been supplied for
+   --  Max, it will be used by Double_Max.
+
    function Double_Max return Integer;
+
+   --  Procedure Max returns the maximum of two
+   --  global parameters.
 
    procedure Max (Maximum: out Integer)
       with Global  => (X, Y),
            Depends => (Maximum => (X, Y));
+
+
+   --  Procedures Mutual_Recursion_A and Mutual_Recursion_B
+   --  call each other. Their respective PDGs contain each
+   --  others's contracts. 
 
    procedure Mutual_Recursion_A
       with Global  => (In_Out => (X, Y, Condition)),

@@ -1,12 +1,8 @@
-across_compilation_units-child.ads:6:24: missing dependency on "X"
-across_compilation_units-child.ads:6:24: missing dependency on "Y"
-across_compilation_units-child.ads:7:24: missing dependency on "Y"
-across_compilation_units-child.ads:8:24: missing dependency on "X"
-across_compilation_units-child.ads:8:24: missing dependency on "Z"
+across_compilation_units-child.ads:27:24: "X" depends on "X" [flow]
+across_compilation_units-child.ads:28:24: "Y" depends on "Y" [flow]
+across_compilation_units-child.ads:29:24: "Z" depends on "Z" [flow]
 
-   compilation of across_compilation_units-child.adb failed
 
-gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
 
 digraph G {
