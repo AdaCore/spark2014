@@ -697,6 +697,8 @@ package body Why.Gen.Names is
          when WNE_Pretty_Ada   => return "GP_Pretty_Ada";
          when WNE_Expr_Fun_Axiom   => return "__expr_fun_axiom";
          when WNE_Expr_Fun_Closure => return "__expr_fun_closure";
+         when WNE_Constant_Axiom => return "__constant_axiom";
+         when WNE_Constant_Closure => return "__constant_closure";
 
          when WNE_Attr_First   =>
             return "attr__" & Attribute_Id'Image (Attribute_First);

@@ -178,6 +178,14 @@ package Why.Gen.Names is
       --  other expression functions
       WNE_Expr_Fun_Closure,
 
+      --  suffix for the name of the theory defining the axiom for a deferred
+      --  constant.
+      WNE_Constant_Axiom,
+
+      --  suffix for the name of the theory importing all necessary axioms from
+      --  expression functions for a constant
+      WNE_Constant_Closure,
+
       WNE_First_Static,
       WNE_Func,
       WNE_Ignore,

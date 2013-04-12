@@ -101,11 +101,13 @@
 --     . Constant (IN parameter, named number and constant object)
 --         A logic function is created in the corresponding context file. For a
 --         named number, or a constant object, a defining axiom is created in
---         the same file. For a deferred constant, the logic function and its
---         defining axiom are defined in separate theories, so that the value
---         of the completion is only available for proofs on code inside the
---         unit that has visibility over the completion. Otherwise, the logic
---         function and its defining axiom are defined in the same theory.
+--         the same file. For a deferred constant, the logic function is
+--         defined in a theory when translating the partial view, and its
+--         defining axiom is defined in a separate theory when translating the
+--         complete view. Otherwise, the logic function and its defining axiom
+--         are defined in the same theory. For all constant objects, a closure
+--         theory is defined which includes all axioms for relevant functions
+--         defining the constant.
 
 --     . Variable (non-constant object)
 --         A ref is created in the variable file, in its own module. A type

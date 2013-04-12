@@ -43,6 +43,14 @@ package Gnat2Why.Decls is
       E      : Entity_Id);
    --  Called for IN parameters, named numbers and constant objects
 
+   procedure Complete_Constant_Translation
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean);
+   --  Generates a theory that completes the base theory for a constant
+   --  declaration. In_Body is True if the subprogram is declared in the
+   --  body of the current unit.
+
    procedure Translate_Container_Package (Package_Entity : Entity_Id);
    --  Translate a package with a Why3 axiomatization
 

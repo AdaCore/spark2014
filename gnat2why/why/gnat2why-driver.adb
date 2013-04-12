@@ -102,13 +102,23 @@ package body Gnat2Why.Driver is
 
    begin
       case Ekind (E) is
+         --  Always generate a module for SPARK subprogram declarations, so
+         --  that units which depend on this one can rely on the presence of
+         --  the completion.
+
          when Subprogram_Kind =>
             if In_SPARK (E) then
-               --  Always generate a module for SPARK subprogram declarations,
-               --  so that units which depend on this one can rely on the
-               --  presence of the completion.
-
                Complete_Subprogram_Spec_Translation
+                 (File, E, In_Body => In_Main_Unit_Body (E));
+            end if;
+
+         --  Always generate a module for SPARK constant declarations, so
+         --  that units which depend on this one can rely on the presence of
+         --  the completion.
+
+         when E_Constant =>
+            if In_SPARK (E) and then not Is_Full_View (E) then
+               Complete_Constant_Translation
                  (File, E, In_Body => In_Main_Unit_Body (E));
             end if;
 
@@ -325,25 +335,50 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
    begin
-      --  For all subprograms from other units, make their definition available
-      --  for proofs by declaring a completion of their base theory. We only
-      --  declare the "closure" theory as a completion, as it already includes
-      --  the "axiom" theory if there is one (for expression functions). This
-      --  does not distinguish definitions which are visible at this point from
-      --  those that are not. (To be distinguished later ???)
-
       for E of All_Entities loop
-         if Ekind (E) in E_Function | E_Procedure
-           and then not Is_In_Current_Unit (E)
-         then
-            declare
-               Base_Name : constant String := Full_Name (E);
-               Name      : constant String :=
-                 Base_Name & To_String (WNE_Expr_Fun_Closure);
-            begin
-               Add_Completion
-                 (Base_Name, Name, Dispatch_Entity (E, Is_Completion => True));
-            end;
+         if In_SPARK (E) and then not Is_In_Current_Unit (E) then
+            case Ekind (E) is
+               --  For all subprograms from other units, make their definition
+               --  available for proofs by declaring a completion of their base
+               --  theory. We only declare the "closure" theory as a
+               --  completion, as it already includes the "axiom" theory if
+               --  there is one (for expression functions). This does not
+               --  distinguish definitions which are visible at this point
+               --  from those that are not.
+
+               when E_Function | E_Procedure =>
+                  declare
+                     Base_Name : constant String := Full_Name (E);
+                     Name      : constant String :=
+                       Base_Name & To_String (WNE_Expr_Fun_Closure);
+                  begin
+                     Add_Completion
+                       (Base_Name, Name,
+                        Dispatch_Entity (E, Is_Completion => True));
+                  end;
+
+               --  For all constants from other units, make their definition
+               --  available for proofs by declaring a completion of their base
+               --  theory. We only declare the "closure" theory as a
+               --  completion, as it already includes the "axiom" theory if
+               --  there is one.
+
+               when E_Constant =>
+                  if not Is_Full_View (E) then
+                     declare
+                        Base_Name : constant String := Full_Name (E);
+                        Name      : constant String :=
+                          Base_Name & To_String (WNE_Constant_Closure);
+                     begin
+                        Add_Completion
+                          (Base_Name, Name,
+                           Dispatch_Entity (E, Is_Completion => True));
+                     end;
+                  end if;
+
+               when others =>
+                  null;
+            end case;
          end if;
       end loop;
 

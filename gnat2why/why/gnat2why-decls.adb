@@ -58,6 +58,46 @@ with Why.Gen.Terms;        use Why.Gen.Terms;
 
 package body Gnat2Why.Decls is
 
+   -----------------------------------
+   -- Complete_Constant_Translation --
+   -----------------------------------
+
+   procedure Complete_Constant_Translation
+     (File    : in out Why_File;
+      E       : Entity_Id;
+      In_Body : Boolean)
+   is
+      Base_Name : constant String := Full_Name (E);
+      Name      : constant String :=
+        Base_Name & To_String (WNE_Constant_Closure);
+
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module including all necessary axioms for the "
+                       & "constant "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " declared at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  No filtering is necessary here, as the theory should on the contrary
+      --  use the previously defined theory for the constant.
+      --  Attach the newly created theory as a completion of the existing one.
+
+      Close_Theory (File,
+                    Filter_Entity  => Empty,
+                    Defined_Entity => E,
+                    Do_Closure     => True);
+
+      if In_Body then
+         Add_Completion (Base_Name, Name, WF_Context_In_Body);
+      else
+         Add_Completion (Base_Name, Name, WF_Context_In_Spec);
+      end if;
+   end Complete_Constant_Translation;
+
    ----------------
    -- Is_Mutable --
    ----------------
@@ -167,7 +207,7 @@ package body Gnat2Why.Decls is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
                     (if Is_Full_View (E) then
-                       Base_Name & "__full_view"
+                       Base_Name & To_String (WNE_Constant_Axiom)
                      else
                        Base_Name);
       Typ  : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
@@ -244,7 +284,10 @@ package body Gnat2Why.Decls is
             --  view. Attach the newly created theory as a completion of the
             --  existing one.
 
-            Close_Theory (File, Filter_Entity => Empty);
+            Close_Theory (File,
+                          Filter_Entity  => Empty,
+                          Defined_Entity => Partial_View (E));
+
             if In_Main_Unit_Body (E) then
                Add_Completion (Base_Name, Name, WF_Context_In_Body);
             else
@@ -275,7 +318,9 @@ package body Gnat2Why.Decls is
                   Def         => Def));
          end if;
 
-         Close_Theory (File, Filter_Entity => E);
+         Close_Theory (File,
+                       Filter_Entity  => E,
+                       Defined_Entity => E);
       end if;
    end Translate_Constant;
 
