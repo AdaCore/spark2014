@@ -127,7 +127,7 @@ package body Flow.Control_Flow_Graph.Utility is
       --          Corresponding_Body (Parent (Procedure_Spec)) /= Empty;
       --     when others =>
       --        Print_Node_Subtree (Parent (Procedure_Spec));
-      --        raise Why.Not_Implemented;
+      --        raise Why.Unexpected_Node;
       --  end case;
 
       return A;

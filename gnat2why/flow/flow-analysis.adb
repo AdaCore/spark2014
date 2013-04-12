@@ -101,7 +101,7 @@ package body Flow.Analysis is
                return Get_Direct_Mapping_Id (K);
 
             when others =>
-               raise Why.Not_Implemented;
+               raise Why.Unexpected_Node;
          end case;
       end if;
    end Error_Location;
@@ -198,7 +198,7 @@ package body Flow.Analysis is
 
          when others =>
             Print_Flow_Id (F);
-            raise Why.Not_Implemented;
+            raise Why.Unexpected_Node;
 
       end case;
    end Error_Msg_Flow;
@@ -540,7 +540,7 @@ package body Flow.Analysis is
          else
             --  It *has* to be a global. The compiler would catch any
             --  updates to in parameters and loop parameters...
-            raise Why.Not_Implemented;
+            raise Why.Unexpected_Node;
          end if;
       end Print_Error;
    begin
@@ -1051,7 +1051,7 @@ package body Flow.Analysis is
                   null;
                when others =>
                   Print_Node_Subtree (LHS);
-                  raise Why.Not_Implemented;
+                  raise Why.Unexpected_Node;
             end case;
 
             Row := Next (Row);

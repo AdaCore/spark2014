@@ -847,6 +847,7 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
    begin
+      --  ??? To be resolved by M214-008 (flow analysis - declarative parts)
       raise Why.Not_Implemented;
    end Do_Full_Type_Declaration;
 
@@ -1173,13 +1174,13 @@ package body Flow.Control_Flow_Graph is
                   when N_Range_Constraint =>
                      R := Range_Expression (Constraint (DSD));
                   when others =>
-                     raise Why.Not_Implemented;
+                     raise Why.Unexpected_Node;
                end case;
             when N_Range =>
                R := DSD;
             when others =>
                Print_Node_Subtree (DSD);
-               raise Why.Not_Implemented;
+               raise Why.Unexpected_Node;
          end case;
 
          --  We have a new variable here which we have not picked up
@@ -1276,7 +1277,7 @@ package body Flow.Control_Flow_Graph is
 
          elsif Iterator_Specification (Iteration_Scheme (N)) /= Empty then
             --  N_Iterator_Specification is not in SPARK2014
-            raise Why.Not_Implemented;
+            raise Why.Not_SPARK;
 
          else
             --  We have a for loop. Make sure we don't have an
@@ -1403,7 +1404,9 @@ package body Flow.Control_Flow_Graph is
             raise Why.Not_SPARK;
 
          when others =>
-            raise Why.Not_Implemented;
+            --  If we find another pragma which got past the "in
+            --  SPARK" check we should do one of the above.
+            raise Why.Unexpected_Node;
       end case;
    end Do_Pragma;
 
@@ -1843,6 +1846,9 @@ package body Flow.Control_Flow_Graph is
             raise Program_Error;
          when others =>
             Print_Node_Subtree (N);
+            --  ??? To be added by various future tickets. Eventually
+            --  we will replace this with a Why.Unexpected_Node
+            --  exception.
             raise Why.Not_Implemented;
       end case;
    end Process_Statement;
@@ -2029,7 +2035,7 @@ package body Flow.Control_Flow_Graph is
 
          when others =>
             Print_Node_Briefly (Etype (E));
-            raise Why.Not_Implemented;
+            raise Why.Unexpected_Node;
       end case;
    end Flatten_Variable;
 
@@ -2169,7 +2175,7 @@ package body Flow.Control_Flow_Graph is
                  (Bottom_Node)));
             end if;
          when others =>
-            raise Why.Not_Implemented;
+            raise Why.Unexpected_Node;
       end case;
    end Untangle_Assignment_Target;
 

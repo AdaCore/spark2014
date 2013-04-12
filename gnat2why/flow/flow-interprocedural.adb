@@ -185,7 +185,7 @@ package body Flow.Interprocedural is
                                                         Out_View));
 
                   when others =>
-                     raise Why.Not_Implemented;
+                     raise Why.Unexpected_Node;
                end case;
                E := Next_Formal (E);
             end loop;

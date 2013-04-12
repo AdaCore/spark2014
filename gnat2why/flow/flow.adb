@@ -488,7 +488,7 @@ package body Flow is
                      when N_Identifier | N_Expanded_Name =>
                         Process (Name_Input, Entity (RHS));
                      when others =>
-                        raise Why.Not_Implemented;
+                        raise Why.Unexpected_Node;
                   end case;
                   RHS := Next (RHS);
                end loop;
@@ -522,7 +522,7 @@ package body Flow is
                            null;
                         when others =>
                            Print_Node_Subtree (RHS);
-                           raise Why.Not_Implemented;
+                           raise Why.Unexpected_Node;
                      end case;
 
                      Row := Next (Row);
@@ -530,7 +530,7 @@ package body Flow is
                end;
 
             else
-               raise Why.Not_Implemented;
+               raise Why.Unexpected_Node;
             end if;
          end;
       else
@@ -631,6 +631,7 @@ package body Flow is
       end case;
 
       if Ekind (Subprogram) = E_Function then
+         --  ??? To be implemented by M412-008
          raise Why.Not_Implemented;
       end if;
 
@@ -655,7 +656,7 @@ package body Flow is
                null;
             when others =>
                Print_Node_Subtree (LHS);
-               raise Why.Not_Implemented;
+               raise Why.Unexpected_Node;
          end case;
 
          RHS := Expression (Row);
@@ -674,7 +675,7 @@ package body Flow is
                null;
             when others =>
                Print_Node_Subtree (RHS);
-               raise Why.Not_Implemented;
+               raise Why.Unexpected_Node;
          end case;
 
          for Output of Outputs loop
@@ -842,7 +843,7 @@ package body Flow is
                   Sprint_Flow_Id (F);
 
                when others =>
-                  raise Why.Not_Implemented;
+                  raise Why.Unexpected_Node;
             end case;
 
             case F.Variant is
