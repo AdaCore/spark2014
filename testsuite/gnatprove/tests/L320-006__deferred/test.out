@@ -1,8 +1,9 @@
+
 pack.adb:10:34: info: postcondition proved
 pack.adb:5:34: info: postcondition proved
 pack.ads:10:30: info: postcondition proved
 pack.ads:13:30: info: postcondition proved
 user.adb:5:7: info: assertion proved
-user.adb:6:7: assertion not proved, requires X2 = 3
+user.adb:6:7: info: assertion proved
 user.adb:8:7: info: assertion proved
 user.adb:9:7: assertion not proved, requires Query_X2 = 3

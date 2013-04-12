@@ -96,7 +96,7 @@ step_function.adb:51:31: info: index check proved
 step_function.adb:53:34: info: index check proved
 step_function.adb:78:17: info: range check proved
 step_function.adb:95:7: info: assertion proved
-step_function.adb:98:10: info: loop invariant initialization proved
+step_function.adb:98:10: loop invariant initialization not proved
 step_function.adb:98:10: loop invariant preservation not proved
 step_function.ads:106:30: info: index check proved
 step_function.ads:106:56: info: index check proved
