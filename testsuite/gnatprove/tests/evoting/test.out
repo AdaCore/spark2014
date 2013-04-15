@@ -9,7 +9,7 @@ evoting.adb:175:13: info: precondition proved
 evoting.adb:178:63: info: range check proved
 evoting.adb:179:51: info: overflow check proved
 evoting.adb:208:10: info: loop invariant initialization proved
-evoting.adb:215:21: loop invariant preservation not proved, requires Counters(Latest_Highest_Score) > Counters(J)
+evoting.adb:209:13: loop invariant preservation not proved, requires winners(Candidate_Number_t'First) = false
 evoting.adb:215:64: info: index check proved
 evoting.adb:219:30: info: index check proved
 evoting.adb:220:61: info: index check proved

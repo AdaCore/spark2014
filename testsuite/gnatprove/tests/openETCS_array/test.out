@@ -62,28 +62,51 @@ sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:77:15: postcondition not proved, requires Contains(Connections, destination)
 section_4_6.ads:104:46: postcondition not proved, requires disjoint_condition_transitions = true
-step_function.adb:113:39: info: index check proved
-step_function.adb:113:66: info: index check proved
-step_function.adb:120:30: index check not proved
-step_function.adb:120:56: info: index check proved
-step_function.adb:124:30: index check not proved
-step_function.adb:124:56: info: index check proved
-step_function.adb:129:26: info: index check proved
-step_function.adb:130:19: info: precondition proved
-step_function.adb:130:47: info: index check proved
-step_function.adb:131:17: info: precondition proved
-step_function.adb:131:45: info: index check proved
-step_function.adb:138:22: info: precondition proved
-step_function.adb:139:22: info: precondition proved
-step_function.adb:145:22: info: precondition proved
-step_function.adb:146:22: info: precondition proved
-step_function.adb:152:22: info: precondition proved
-step_function.adb:153:22: info: precondition proved
-step_function.adb:161:19: info: precondition proved
-step_function.adb:162:19: info: precondition proved
-step_function.adb:168:22: info: precondition proved
-step_function.adb:169:22: info: precondition proved
-step_function.adb:175:22: range check not proved
+step.adb:12:47: info: index check proved
+step.adb:12:74: info: index check proved
+step.adb:15:29: info: index check proved
+step.adb:18:22: info: range check proved
+step.adb:19:13: info: assertion proved
+step.adb:20:42: info: index check proved
+step.adb:20:69: info: index check proved
+step.adb:22:16: info: assertion proved
+step.adb:22:44: info: index check proved
+step.adb:22:73: info: index check proved
+step.adb:7:10: info: loop invariant initialization proved
+step.adb:7:10: info: loop invariant preservation proved
+step.ads:21:22: info: index check proved
+step.ads:21:22: info: overflow check proved
+step.ads:21:48: info: index check proved
+step_function.adb:118:47: info: index check proved
+step_function.adb:118:74: info: index check proved
+step_function.adb:121:49: info: index check proved
+step_function.adb:123:49: info: index check proved
+step_function.adb:130:30: index check not proved
+step_function.adb:130:56: info: index check proved
+step_function.adb:134:30: index check not proved
+step_function.adb:134:56: info: index check proved
+step_function.adb:139:26: info: index check proved
+step_function.adb:140:19: info: precondition proved
+step_function.adb:140:47: info: index check proved
+step_function.adb:141:17: info: precondition proved
+step_function.adb:141:45: info: index check proved
+step_function.adb:148:22: info: precondition proved
+step_function.adb:149:22: info: precondition proved
+step_function.adb:155:22: info: precondition proved
+step_function.adb:156:22: info: precondition proved
+step_function.adb:162:22: info: precondition proved
+step_function.adb:163:22: info: precondition proved
+step_function.adb:171:19: info: precondition proved
+step_function.adb:172:19: info: precondition proved
+step_function.adb:178:22: info: precondition proved
+step_function.adb:179:22: info: precondition proved
+step_function.adb:185:22: range check not proved
+step_function.adb:187:30: assertion not proved, requires Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter
+step_function.adb:187:42: index check not proved
+step_function.adb:187:69: index check not proved
+step_function.adb:189:16: assertion not proved, requires Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter
+step_function.adb:189:44: index check not proved
+step_function.adb:189:73: index check not proved
 step_function.adb:31:27: assertion not proved, requires X >= SFun.Step(j).Delimiter
 step_function.adb:31:42: info: index check proved
 step_function.adb:32:61: info: index check proved

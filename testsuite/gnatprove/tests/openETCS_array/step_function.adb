@@ -103,14 +103,24 @@ package body Step_Function is
          Pragma Loop_Invariant
           ((I1 = 0 and I2 = 0 and Im = 0)
              or else
-           (Scan_SFun1 and Scan_SFun2 and Im <= i1 + I2 - 1)
+           (I1 >= 1 and I2 >= 1 and Im >= 1 and
+                Scan_SFun1 and Scan_SFun2 and Im <= I1 + I2 - 1)
              or else
-           (not (Scan_SFun1 and Scan_SFun2) and Im <= i1 + I2));
+           (I2 >= 1 and Im >= 1 and
+              not Scan_SFun1 and Scan_SFun2 and Im <= i1 + I2)
+             or else
+           (I1 >= 1 and Im >= 1 and
+              Scan_SFun1 and not Scan_SFun2 and Im <= i1 + I2));
          Pragma Loop_Invariant (Scan_Sfun1 or Scan_Sfun2);
 
          -- Merge is a valid step function until im
          Pragma Loop_Invariant (for all i in 1..im-1 =>
-                          Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter);
+                                  Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter);
+         Pragma Loop_Invariant
+           (if Im > 0 then
+              ((if Scan_Sfun1 then Merge.Step(Im-1).Delimiter < SFun1.Step(I1).Delimiter)
+                 and then
+               (if Scan_Sfun2 then Merge.Step(Im-1).Delimiter < SFun2.Step(I2).Delimiter)));
 
          -- All merged delimiters are coming from valid delimiter in SFun1 or
          -- SFun2
@@ -171,8 +181,13 @@ package body Step_Function is
          end if;
 
          -- Pragma Assert (if scan_sfun1 or scan_sfun2 then im < i1 + i2);
-         if scan_sfun1 or scan_sfun2 then
+         if Scan_Sfun1 or Scan_Sfun2 then
             im := im + 1;
+            pragma Assert (for all I in 1..Im-2 =>
+                             Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter);
+            if Im > 1 then
+               pragma Assert (Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter);
+            end if;
          else
             exit;
          end if;
