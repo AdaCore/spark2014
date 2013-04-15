@@ -1197,7 +1197,7 @@ package body Flow.Analysis is
                         for Var_Missed of Tmp loop
                            Error_Msg_Node_1 := F_E;
                            Error_Msg_Node_2 := Var_Missed;
-                           Error_Msg_N ("& depends on &! [flow]",
+                           Error_Msg_N ("& depends on & [flow]!",
                                         Find_Export (F_E));
                            Show_Dependency (Error_Loc   => Find_Export (F_E),
                                             Initial_Var => Var_Missed,

@@ -1,6 +1,8 @@
 across_compilation_units-child.ads:27:24: "X" depends on "X" [flow]
+across_compilation_units-child.ads:27:24: "X" depends on "Y" [flow]
 across_compilation_units-child.ads:28:24: "Y" depends on "Y" [flow]
 across_compilation_units-child.ads:29:24: "Z" depends on "Z" [flow]
+across_compilation_units-child.ads:29:24: "Z" depends on "X" [flow]
 
 
 gnatprove: error during translation to intermediate language, aborting.
