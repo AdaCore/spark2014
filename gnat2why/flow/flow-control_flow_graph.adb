@@ -864,7 +864,7 @@ package body Flow.Control_Flow_Graph is
       Stmts : constant List_Id := Statements (N);
    begin
       Process_Statement_List (Stmts, FA, CM, Ctx);
-      --  !!! Workaround
+      --  !!! Workaround for stdlib bug
       CM.Include (Union_Id (N), CM.Element (Union_Id (Stmts)));
    end Do_Handled_Sequence_Of_Statements;
 
@@ -1128,7 +1128,7 @@ package body Flow.Control_Flow_Graph is
          else
             --  We have neither return nor exit, so we simulate an
             --  "exit when false" at the end of the loop.
-            --  !!! workaround
+            --  !!! Workaround for stdlib bug
             CM (Union_Id (N)).Standard_Exits.Union
               (CM.Element (Union_Id (Statements (N))).Standard_Exits);
          end if;
@@ -1542,7 +1542,7 @@ package body Flow.Control_Flow_Graph is
               CM (Union_Id (Declarations (N))).Standard_Exits,
               CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
 
-      --  !!! workaround
+      --  !!! Workaround for stdlib bug
       CM.Include
         (Union_Id (N),
          Graph_Connections'
