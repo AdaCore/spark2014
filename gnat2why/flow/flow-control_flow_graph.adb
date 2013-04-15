@@ -250,7 +250,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre  => Nkind (N) = N_Loop_Statement and then
-                   Identifier (N) /= Empty,
+                   Present (Identifier (N)),
            Post => Ctx.Current_Loops.Length = Ctx.Current_Loops'Old.Length;
    --  Deals with all three kinds of loops SPARK supports:
    --
@@ -649,7 +649,7 @@ package body Flow.Control_Flow_Graph is
          --  Make a vertex for each subcomponent, unless its a
          --  record. If we have a record we recurse instead.
          C := First_Component (R_Type);
-         while C /= Empty loop
+         while Present (C) loop
             declare
                Tmp : Entity_Lists.Vector := Comp;
             begin
@@ -792,7 +792,7 @@ package body Flow.Control_Flow_Graph is
       L : Node_Id := N;
    begin
       --  Go up the tree until we find the loop we are exiting from.
-      if Name (N) = Empty then
+      if not Present (Name (N)) then
          --  We just need to find the enclosing loop.
          loop
             L := Parent (L);
@@ -809,7 +809,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
-      if Condition (N) = Empty then
+      if not Present (Condition (N)) then
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                             Null_Node_Attributes,
                             V);
@@ -1262,7 +1262,7 @@ package body Flow.Control_Flow_Graph is
       Process_Statement_List (Statements (N), FA, CM, Ctx);
       Ctx.Current_Loops.Delete (Entity (Identifier (N)));
 
-      if Iteration_Scheme (N) = Empty then
+      if not Present (Iteration_Scheme (N)) then
          --  We have a loop.
          Do_Loop;
 
@@ -1271,19 +1271,19 @@ package body Flow.Control_Flow_Graph is
 
          --  We have a vertex for the loop condition, depending on its
          --  iteration scheme.
-         if Condition (Iteration_Scheme (N)) /= Empty then
+         if Present (Condition (Iteration_Scheme (N))) then
             --  We have a while loop.
             Do_While_Loop;
 
-         elsif Iterator_Specification (Iteration_Scheme (N)) /= Empty then
+         elsif Present (Iterator_Specification (Iteration_Scheme (N))) then
             --  N_Iterator_Specification is not in SPARK2014
             raise Why.Not_SPARK;
 
          else
             --  We have a for loop. Make sure we don't have an
             --  iterator, but a normal range.
-            pragma Assert (Loop_Parameter_Specification (Iteration_Scheme (N))
-                             /= Empty);
+            pragma Assert (Present (Loop_Parameter_Specification (
+                             Iteration_Scheme (N))));
 
             Do_For_Loop;
          end if;
@@ -1329,7 +1329,7 @@ package body Flow.Control_Flow_Graph is
       --  First, we need a 'initial and 'final vertex for this object.
       Create_Initial_And_Final_Vertices (Defining_Identifier (N), FA);
 
-      if Expression (N) = Empty then
+      if not Present (Expression (N)) then
          --  Just a null vertex.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                             Null_Node_Attributes,
@@ -1496,7 +1496,7 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
    begin
-      if Expression (N) = Empty then
+      if not Present (Expression (N)) then
          --  We have a return for a procedure.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                             Make_Aux_Vertex_Attributes (E_Loc => N),
@@ -1586,7 +1586,7 @@ package body Flow.Control_Flow_Graph is
             when N_Quantified_Expression =>
                --  Sanity check: Iterator_Specification is not in
                --  SPARK so it should always be empty.
-               pragma Assert (No (Iterator_Specification (N)));
+               pragma Assert (not Present (Iterator_Specification (N)));
 
                Create_Initial_And_Final_Vertices
                  (Defining_Identifier (Loop_Parameter_Specification (N)),
@@ -1680,7 +1680,7 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Create initial nodes for the statements.
       P    := First (L);
-      while P /= Empty loop
+      while Present (P) loop
          case Nkind (P) is
             when N_Parameter_Association =>
                --  F (A => B)
@@ -2011,7 +2011,7 @@ package body Flow.Control_Flow_Graph is
       P  : Node_Id;
    begin
       P := First (L);
-      while P /= Empty loop
+      while Present (P) loop
          VS.Union (Get_Variable_Set (P));
 
          P := Next (P);
@@ -2218,7 +2218,7 @@ package body Flow.Control_Flow_Graph is
          E : Entity_Id;
       begin
          E := First_Formal (Subprogram_Spec);
-         while E /= Empty loop
+         while Present (E) loop
             Create_Initial_And_Final_Vertices (E, FA);
             E := Next_Formal (E);
          end loop;

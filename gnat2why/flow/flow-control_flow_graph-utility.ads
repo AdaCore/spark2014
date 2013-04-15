@@ -68,7 +68,7 @@ package Flow.Control_Flow_Graph.Utility is
       Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc    : Node_Or_Entity_Id := Empty)
       return V_Attributes
-      with Pre  => Callsite /= Empty,
+      with Pre  => Present (Callsite),
            Post => not Make_Call_Attributes'Result.Is_Null_Node and
                    Make_Call_Attributes'Result.Is_Program_Node and
                    Make_Call_Attributes'Result.Is_Callsite;

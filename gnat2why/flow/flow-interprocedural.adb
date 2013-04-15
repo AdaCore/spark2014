@@ -168,7 +168,7 @@ package body Flow.Interprocedural is
 
             --  Add parameters.
             E := First_Formal (Called_Procedure);
-            while E /= Empty loop
+            while Present (E) loop
                case Ekind (E) is
                   when E_In_Parameter =>
                      Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),

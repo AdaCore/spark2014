@@ -92,7 +92,7 @@ package body Flow.Analysis is
       K : constant Flow_Id      := G.Get_Key (V);
       A : constant V_Attributes := G.Get_Attributes (V);
    begin
-      if A.Error_Location /= Empty then
+      if Present (A.Error_Location) then
          return A.Error_Location;
 
       else
@@ -867,7 +867,7 @@ package body Flow.Analysis is
 
                      --  We start by checking if the used variables
                      --  contain the loop parameter for our loop.
-                     if Loop_Parameter_From_Loop (Loop_Id) /= Empty then
+                     if Present (Loop_Parameter_From_Loop (Loop_Id)) then
                         Is_Stable := not Atr.Variables_Used.Contains
                           (Direct_Mapping_Id
                              (Loop_Parameter_From_Loop (Loop_Id)));
@@ -1032,12 +1032,12 @@ package body Flow.Analysis is
          LHS : Node_Id;
       begin
          Row := First (CA);
-         while Row /= Empty loop
+         while Present (Row) loop
             LHS := First (Choices (Row));
             case Nkind (LHS) is
                when N_Aggregate =>
                   LHS := First (Expressions (LHS));
-                  while LHS /= Empty loop
+                  while Present (LHS) loop
                      if Entity (LHS) = E then
                         return LHS;
                      end if;

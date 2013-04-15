@@ -141,14 +141,14 @@ package Flow is
      (N       : Node_Or_Entity_Id;
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id
-      with Pre => N /= Empty;
+      with Pre => Present (N);
    --  Create a Flow_Id for the given node or entity.
 
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
       return Node_Id
       with Pre  => (F.Kind in Direct_Mapping | Record_Field),
-           Post => (Get_Direct_Mapping_Id'Result /= Empty);
+           Post => (Present (Get_Direct_Mapping_Id'Result));
    --  Given a direct mapping Flow_Id, return the associated node or
    --  entity. In case of a record field, return the entire variable.
 
@@ -156,7 +156,7 @@ package Flow is
      (N       : Node_Id;
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id
-      with Pre => N /= Empty and then Nkind (N) = N_Selected_Component;
+      with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
 
    function Magic_String_Id
@@ -373,7 +373,7 @@ package Flow is
 
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) = E_Loop,
-          Post => Loop_Parameter_From_Loop'Result = Empty or else
+          Post => not Present (Loop_Parameter_From_Loop'Result) or else
                   Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
@@ -399,9 +399,9 @@ package Flow is
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function and
                 Has_Depends (Subprogram),
         Post => (for all C in Depends.Iterate =>
-                   Dependency_Maps.Key (C) /= Empty and
+                   Present (Dependency_Maps.Key (C)) and
                    (for all D of Dependency_Maps.Element (C) =>
-                      D /= Empty));
+                      Present (D)));
    --  Return the dependency relation of the given subprogram. The
    --  dependency relation is represented as a map from entities to
    --  sets of entities.

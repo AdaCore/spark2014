@@ -124,7 +124,7 @@ package body Flow.Control_Flow_Graph.Utility is
       --        A.Perform_IPFA := True;
       --     when N_Subprogram_Declaration =>
       --        A.Perform_IPFA :=
-      --          Corresponding_Body (Parent (Procedure_Spec)) /= Empty;
+      --          Present (Corresponding_Body (Parent (Procedure_Spec)));
       --     when others =>
       --        Print_Node_Subtree (Parent (Procedure_Spec));
       --        raise Why.Unexpected_Node;

@@ -399,13 +399,13 @@ package body Flow is
       pragma Assert (Nkind (N) = N_Loop_Statement);
 
       N := Iteration_Scheme (N);
-      if N = Empty then
+      if not Present (N) then
          return Empty;
       end if;
       pragma Assert (Nkind (N) = N_Iteration_Scheme);
 
       N := Loop_Parameter_Specification (N);
-      if N = Empty then
+      if not Present (N) then
          return Empty;
       end if;
       pragma Assert (Nkind (N) = N_Loop_Parameter_Specification);
@@ -483,7 +483,7 @@ package body Flow is
                --  global => (foo, bar)
                --  Inputs
                RHS := First (Expressions (Expression (PAA)));
-               while RHS /= Empty loop
+               while Present (RHS) loop
                   case Nkind (RHS) is
                      when N_Identifier | N_Expanded_Name =>
                         Process (Name_Input, Entity (RHS));
@@ -504,7 +504,7 @@ package body Flow is
                     Component_Associations (Expression (PAA));
                begin
                   Row := First (CA);
-                  while Row /= Empty loop
+                  while Present (Row) loop
                      pragma Assert (List_Length (Choices (Row)) = 1);
                      The_Mode := Chars (First (Choices (Row)));
 
@@ -512,7 +512,7 @@ package body Flow is
                      case Nkind (RHS) is
                         when N_Aggregate =>
                            RHS := First (Expressions (RHS));
-                           while RHS /= Empty loop
+                           while Present (RHS) loop
                               Process (The_Mode, Entity (RHS));
                               RHS := Next (RHS);
                            end loop;
@@ -636,7 +636,7 @@ package body Flow is
       end if;
 
       Row := First (CA);
-      while Row /= Empty loop
+      while Present (Row) loop
          Inputs  := Node_Sets.Empty_Set;
          Outputs := Node_Sets.Empty_Set;
 
@@ -644,13 +644,13 @@ package body Flow is
          case Nkind (LHS) is
             when N_Aggregate =>
                LHS := First (Expressions (LHS));
-               while LHS /= Empty loop
-                  pragma Assert (Entity (LHS) /= Empty);
+               while Present (LHS) loop
+                  pragma Assert (Present (Entity (LHS)));
                   Outputs.Include (Entity (LHS));
                   LHS := Next (LHS);
                end loop;
             when N_Identifier | N_Expanded_Name =>
-               pragma Assert (Entity (LHS) /= Empty);
+               pragma Assert (Present (Entity (LHS)));
                Outputs.Include (Entity (LHS));
             when N_Null =>
                null;
@@ -663,13 +663,13 @@ package body Flow is
          case Nkind (RHS) is
             when N_Aggregate =>
                RHS := First (Expressions (RHS));
-               while RHS /= Empty loop
-                  pragma Assert (Entity (RHS) /= Empty);
+               while Present (RHS) loop
+                  pragma Assert (Present (Entity (RHS)));
                   Inputs.Include (Entity (RHS));
                   RHS := Next (RHS);
                end loop;
             when N_Identifier | N_Expanded_Name =>
-               pragma Assert (Entity (RHS) /= Empty);
+               pragma Assert (Present (Entity (RHS)));
                Inputs.Include (Entity (RHS));
             when N_Null =>
                null;
@@ -813,13 +813,14 @@ package body Flow is
 
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
-                           if Iteration_Scheme (N) = Empty then
+                           if not Present (Iteration_Scheme (N)) then
                               --  Basic loop. Should never
                               --  appear as a vertex in the
                               --  graph.
                               pragma Assert (False);
-                           elsif Condition (Iteration_Scheme (N)) /=
-                             Empty then
+                           elsif Present
+                             (Condition (Iteration_Scheme (N)))
+                           then
                               --  While loop.
                               Output.Write_Str ("while ");
                               Sprint_Node
