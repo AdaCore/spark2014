@@ -709,10 +709,12 @@ package body Flow.Control_Flow_Graph is
                                   Vars_Used    => V_Used_LHS,
                                   Vars_Defined => V_Def_LHS);
 
-      --  Print the node and its def-use effect
-      --  Print_Node_Subtree (N);
-      --  Print_Node_Set (V_Def_LHS);
-      --  Print_Node_Set (V_Used_LHS or V_Used_RHS or V_Also_Used);
+      --  Enable this to debug print the node and its def-use effect
+      if False then
+         Print_Node_Subtree (N);
+         Print_Node_Set (V_Def_LHS);
+         Print_Node_Set (V_Used_LHS or V_Used_RHS);
+      end if;
 
       --  We have a vertex
       FA.CFG.Add_Vertex
