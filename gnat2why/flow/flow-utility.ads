@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---              F L O W . C O N T R O L _ F L O W _ G R A P H               --
+--                         F L O W . U T I L I T Y                          --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -21,15 +21,42 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package will look at a given bit of parse tree and produce
---  the control flow graph (which will then be further processed by
---  other packages under Flow).
+--  This package contains a bunch of helpful procedures used
+--  throughout flow analysis.
 
-package Flow.Control_Flow_Graph is
+with Ada.Containers;
 
-   procedure Create
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs);
-   --  Produce the control flow graph for the given subprogram body.
+use type Ada.Containers.Count_Type;
 
-end Flow.Control_Flow_Graph;
+package Flow.Utility is
+
+   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
+   --  Obtain all variables used in an expression.
+
+   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
+   --  As above, but operating on a list.
+
+   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
+   --  Returns a set of flow_ids for all parts of the unique entity
+   --  for E. For records this includes all subcomponents, for
+   --  everything else this is just the variable E.
+
+   function Flatten_Variable (F : Flow_Id) return Flow_Id_Sets.Set
+     with Pre => F.Kind in Direct_Mapping | Magic_String;
+   --  As above, but for flow ids.
+
+   procedure Untangle_Assignment_Target
+     (N            : Node_Id;
+      Vars_Defined : out Flow_Id_Sets.Set;
+      Vars_Used    : out Flow_Id_Sets.Set)
+      with Pre => Nkind (N) in N_Identifier |
+                               N_Selected_Component |
+                               N_Indexed_Component,
+           Post => Vars_Defined.Length >= 1;
+   --  Given the target of an assignment (perhaps the left-hand-side
+   --  of an assignment statement or an out vertex in a procedure
+   --  call), work out which variables are actually set and which
+   --  variables are used to determine what is set (in the case of
+   --  arrays).
+
+end Flow.Utility;

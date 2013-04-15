@@ -23,6 +23,8 @@
 
 with Why;
 
+with Flow.Utility; use Flow.Utility;
+
 package body Flow.Control_Flow_Graph.Utility is
 
    ---------------------------
