@@ -24,16 +24,18 @@ package Across_Compilation_Units.Child is
 
    procedure Round_Swap_With_Depends_1
       with Global  => (In_Out => (X, Y, Z)),
-           Depends => (X => Z,   --  This will raise an "'X' depends on 'X'" flow error
-                       Y => X,   --  This will raise an "'Y' depends on 'Y'" flow error
-                       Z => Y);  --  This will raise an "'Z' depends on 'Z'" flow error
+           Depends => (X => Z,   --  This will raise a "'X' depends on 'X'" flow error
+                                 --  and a "'X' depends on 'Y'" flow error.
+                       Y => X,   --  This will raise a "'Y' depends on 'Y'" flow error
+                       Z => Y);  --  This will raise a "'Z' depends on 'Z'" flow error
+                                 --  and a "'Z' depends on 'X'" flow error.
    --  The previous errors are expected. The contracts on Round_Swap_With_Depends_1
    --  are technically correct but due to the fact that the called procedure Swap
    --  has computed derives (which are an overestimation of the real derives) this
    --  depends annotation should have been:
-   --      DependsX => (X =>+ Z,
-   --                   Y =>+ X,
-   --                   Z =>+ Y)
+   --      Depends => (X =>+ (Z, Y),
+   --                  Y =>+ X,
+   --                  Z =>+ (Y, X))
 
    procedure Round_Swap_With_Depends_2
       with Global  => (In_Out => (X, Y, Z)),
