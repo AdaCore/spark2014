@@ -241,9 +241,12 @@ package body Why.Inter is
          Unb_Name := Why_File_Completion (Kind).Element (Unb_Name);
       end loop;
 
-      --  Make Completion_Name a completion of the previous last one
+      --  Make Completion_Name a completion of the previous last one, if not
+      --  already the case
 
-      Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
+      if Unb_Name /= Unb_Comp then
+         Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
+      end if;
    end Add_Completion;
 
    ---------------------
