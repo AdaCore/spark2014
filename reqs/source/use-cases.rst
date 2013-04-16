@@ -191,7 +191,10 @@ The Use Cases
 .. include:: ../use-cases/check-subset.rst    
 
 .. _uc-analyse-data-flow:
-.. include:: ../use-cases/analyse-data-flow.rst    
+.. include:: ../use-cases/analyse-data-flow.rst
+
+.. _uc-analyse-multiple-models:
+.. include:: ../use-cases/analyse-multiple-models.rst
 
 .. _uc-internally-generate-aspects:
 .. include:: ../use-cases/internally-generate-aspects.rst
@@ -213,4 +216,7 @@ The Use Cases
 
 .. _uc-combine-test-and-proof:
 .. include:: ../use-cases/combine-test-and-proof.rst
+
+.. _uc-alternative-compiler:
+.. include:: ../use-cases/alternative-compiler.rst
 
