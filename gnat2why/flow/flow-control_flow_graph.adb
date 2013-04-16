@@ -47,6 +47,12 @@ package body Flow.Control_Flow_Graph is
    use type Node_Sets.Set;
 
    ------------------------------------------------------------
+   --  Debug
+   ------------------------------------------------------------
+
+   Debug_Print_Assignment_Def_Use_Sets_And_Tree : constant Boolean := False;
+
+   ------------------------------------------------------------
    --  Local types
    ------------------------------------------------------------
 
@@ -600,7 +606,7 @@ package body Flow.Control_Flow_Graph is
                                   Vars_Defined => V_Def_LHS);
 
       --  Enable this to debug print the node and its def-use effect
-      if False then
+      if Debug_Print_Assignment_Def_Use_Sets_And_Tree then
          Print_Node_Subtree (N);
          Print_Node_Set (V_Def_LHS);
          Print_Node_Set (V_Used_LHS or V_Used_RHS);

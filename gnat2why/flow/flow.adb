@@ -53,9 +53,18 @@ use type Ada.Containers.Count_Type;
 
 package body Flow is
 
+   --  These debug options control which graphs to output.
+
    Debug_Print_CFG           : constant Boolean := True;
    Debug_Print_Intermediates : constant Boolean := False;
    Debug_Print_PDG           : constant Boolean := True;
+
+   --  These debug options print certain bits of the datastructures
+   --  calculated.
+
+   Debug_Print_Magic_Source_Set : constant Boolean := False;
+
+   ------------------------------------------------------------
 
    use Flow_Graphs;
 
@@ -969,7 +978,7 @@ package body Flow is
          Loops        => Node_Sets.Empty_Set,
          Magic_Source => Calculate_Magic_Mapping (Body_N));
 
-      if False then
+      if Debug_Print_Magic_Source_Set then
          --  Enable this to visualise the magic_source set.
          for C in FA.Magic_Source.Iterate loop
             Output.Write_Str (Magic_String_To_Node_Sets.Key (C).all);
