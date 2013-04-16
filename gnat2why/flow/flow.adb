@@ -63,6 +63,7 @@ package body Flow is
    --  calculated.
 
    Debug_Print_Magic_Source_Set : constant Boolean := False;
+   --  Enable this to visualise the magic_source set.
 
    ------------------------------------------------------------
 
@@ -979,7 +980,6 @@ package body Flow is
          Magic_Source => Calculate_Magic_Mapping (Body_N));
 
       if Debug_Print_Magic_Source_Set then
-         --  Enable this to visualise the magic_source set.
          for C in FA.Magic_Source.Iterate loop
             Output.Write_Str (Magic_String_To_Node_Sets.Key (C).all);
             Output.Write_Eol;
