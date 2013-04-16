@@ -29,6 +29,11 @@ For a type or subtype to be in |SPARK|, all predicate specifications that apply
 to the (sub)type must be in |SPARK|.  Notwithstanding any rule to the contrary,
 a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
 
+An expression occuring in a constraint which has a variable input
+is not in |SPARK|. [In other words, such an expression cannot read
+a variable nor can it call a function which (directly or indirectly)
+reads a variable.]
+
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -37,9 +42,14 @@ No restrictions or extensions.
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
-.. todo:: It is intended to support subtype predicates.  Analysis is required
-          to determine if any subset rules need to be applied and also regarding
-          any extra proof rules that might need to be applied.
+The Static_Predicate aspect is in |SPARK|.
+The Dynamic_Predicate aspect is not in |SPARK|.
+
+[Eventually |SPARK| may include uses of the Dynamic_Predicate aspect,
+subject to the restriction that the predicate expression cannot take
+any variables as inputs. This is needed to ensure that if a value
+belonged to a subtype in the past, then the value will still belong
+to the subtype in the future.]
 
 Objects and Named Numbers
 -------------------------
@@ -72,8 +82,11 @@ components are in |SPARK| and default initialization is in |SPARK|.
 Discriminants
 -------------
 
-A ``discriminant_part`` is in |SPARK| if it is not an access type and its
-default initialization, if any, is in |SPARK|
+A ``discriminant_specification`` is in |SPARK| if its type is
+discrete and it does not occur as part of a derived type declaration
+whose parent type is discriminated. [In other words, inherited
+discriminants shall not be hidden.]
+
 
 Record Types
 ------------
@@ -85,15 +98,19 @@ A default initialization, if present must also be in |SPARK|.
 
 |SPARK| does not permit partial default initialization of record objects.
 
+An expression occuring in the default_expression of a
+discriminant_specification or component_declaration which has a
+variable input is not in |SPARK|. [In other words, such an expression
+cannot read a variable nor can it call a function which (directly or indirectly)
+reads a variable.]
+
 Tagged Types and Type Extensions
 --------------------------------
 
-No extensions or restrictions currently identified, though see ToDo.
+A type extension declared within a subprogram body,
+block statement, or generic body which does not also enclose the
+declaration of each of its ancestor types is not in |SPARK|.
 
-.. todo::
-   RCC comment: This will need to describe any global restrictions on tagged types (if any)
-   and any additional Restrictions that we may feel users need.
-   To be completed in the Milestone 4 version of this document.
 
 Access Types
 ------------

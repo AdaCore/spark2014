@@ -1803,7 +1803,11 @@ There is no additional syntax associated with type invariants.
 
 .. centered:: **Legality Rules**
 
-There are no additional legality rules associated with type invariants.
+An expression occuring in a Type_Invariant or Type_Invariant'Class
+aspect specification which has a variable input
+is not in |SPARK|. [In other words, such an expression cannot read
+a variable nor can it call a function which (directly or indirectly)
+reads a variable.]
 
 .. centered:: **Static Semantics**
 
