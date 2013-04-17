@@ -1,6 +1,7 @@
 test.adb:14:24: "Y" depends on "Y" [flow]
 test.adb:14:24: "Y" does not depend on "X"
 test.adb:29:47: formal parameter "Par2" might not be set [uninitialized]
+test.adb:32:24: "Par2" depends on "Par2" [flow]
 test.adb:33:24: "X" depends on "Par1" [flow]
 test.adb:49:04: ineffective global import "X"
 test.adb:53:07: ineffective statement
