@@ -4,21 +4,18 @@ Analyse Multiple Models
 
 :ID: UC.AnalyseMultipleModels
 :Overview: In certain situations, it is useful to define dual abstract views on the state provided by a given module: one of those views provides an abstraction that makes sense to calling code, while the other is more implementation-focused.
-:Target Rel: |rel 1|
+:Target Rel: |rel1|
 :Priority: Required
 :Part of: Base Product
-:Current users:
-:Future users:
+:Current users: All
+:Future users:  All
 
 Precondition
 ^^^^^^^^^^^^
 
 #. All preconditions hold from :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
-   and ''TBD'' (ref for proof use case).
+   and :ref:`uc-formally-verify`.
 
-#. TBD: decide if we want to forbid this use case in retrospective/generative mode and so
-   need to impose a restriction to stop that.
-   
 #. Code base contains packages where it would be useful to define multiple abstract views of the hidden
    state contained within those packages.
 
@@ -33,13 +30,13 @@ Scenario
 #. Define and record what code files are to be analysed under what view.
 
 #. For each type of abstract view, perform :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
-   and ''TBD'' (ref for proof use case). Is there any other analysis to be performed?
+   and :ref:`uc-formally-verify`.
 
 #. Manually review corresponding abstract views against each other for consistency.
 
 #. Developer fixes all errors.
 
-#. Repeat steps 3, 4 and 5 until the post-conditions are met.
+#. Repeat steps 3, 4, 5 and 6 until the post-conditions are met.
 
 Scenario Notes
 ^^^^^^^^^^^^^^
@@ -73,17 +70,17 @@ Postcondition
 #. The corresponding abstract views are consistent with each other.
 
 #. The postconditions are met for :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
-   and ''TBD'' (ref for proof use case).
+   and :ref:`uc-formally-verify` for each of the abstract views.
 
 Exceptions and alternative flows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. All exceptions and alternative flows are covered by those under the use cases
    :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
-   and ''TBD'' (ref for proof use case).
+   and :ref:`uc-formally-verify`.
 
 Special Requirements
 ^^^^^^^^^^^^^^^^^^^^
 None
 
-
+.. todo:: decide if we want to forbid this use case in retrospective/generative mode.

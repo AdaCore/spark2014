@@ -193,6 +193,9 @@ The Use Cases
 .. _uc-analyse-data-flow:
 .. include:: ../use-cases/analyse-data-flow.rst
 
+.. _uc-formally-verify:
+.. include:: ../use-cases/formally-verify.rst
+
 .. _uc-analyse-multiple-models:
 .. include:: ../use-cases/analyse-multiple-models.rst
 

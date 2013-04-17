@@ -21,8 +21,8 @@ Scenario
 ^^^^^^^^
 
 #. The |SPARK tools| identifies VCs that have not been discharged.
-#. For each such VC it provides hypotheses and goals in human-readable form, and in form that
-   can be imported into manual proof tool.
+#. For each such VC it provides hypotheses and goals in human-readable form, and in a form that
+   can be imported into a manual proof tool.
 #. User considers VCs to be provable given the hypotheses available.
 #. User uses external manual proof tool to discharge VCs.
 

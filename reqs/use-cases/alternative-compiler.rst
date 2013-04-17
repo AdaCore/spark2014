@@ -4,7 +4,7 @@ Use Alternative Compiler
 
 :ID: UC.Compiler.UseAlternative
 :Overview: Although customers may want to analyse their code using the SPARK 2014 flow analysis and formal verification features, they may not want or be able to compile that code using GNAT.
-:Target Rel: |rel 1|
+:Target Rel: |rel1|
 :Priority: Required
 :Part of: Base Product
 :Current users:
@@ -16,8 +16,7 @@ Precondition
 #. Chosen compiler does not support SPARK 2014.
 
 #. Code can be (transformed such that it can be) subjected to flow analysis and/or formal verification using the
-   GNAT toolset (or some other tool that implements SPARK 2014). '''NB Add a use case to cover this
-   transformation?'''
+   GNAT toolset (or some other tool that implements SPARK 2014).
 
 #. Code can be compiled and built using GNAT toolset.
 
@@ -53,7 +52,7 @@ Postcondition
 
 #. Code has been successfully compiled.
 
-#. Executable or executables generated as necessray.
+#. Executable or executables generated as necessary.
 
 Exceptions and alternative flows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,7 +60,7 @@ Exceptions and alternative flows
 #. Code contains SPARK 2014 features within behaviour-affecting code. In this case, it is not
    possible to transform the code base while preserving behaviour.
 
-#. Any other alternative flows are then be covered by the alternative compiler itself. This includes
+#. Any other alternative flows will then be covered by the alternative compiler itself. This includes
    the case that the code on which compilation is attempted still contains SPARK 2014 language features.
 
 Special Requirements

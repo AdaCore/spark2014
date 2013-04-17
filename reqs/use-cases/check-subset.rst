@@ -31,6 +31,8 @@ Scenario Notes
 The |SPARK tools| will carry out flow analysis automatically but this is excluded from this scenario.
 
 
+.. _uc-check-subset_ postcondition:
+
 Postcondition
 ^^^^^^^^^^^^^
 

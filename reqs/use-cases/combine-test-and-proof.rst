@@ -31,7 +31,7 @@ Scenario
 #. Formally verify the remaining units.
 #. SPARK 2014 framework identifies undischarged VCs and assertions (including preconditions and
    postconditions) that failed test.
-#. Confirm that each assertion (including preconditions and poostconditions) that is not formally
+#. Confirm that each assertion (including preconditions and postconditions) that is not formally
    verified is executed during testing and that it is sufficiently covered.
 #. Developer fixes all errors, including coverage errors.
 #. Repeat until all tests pass and formal verification completes successfully.
@@ -60,7 +60,7 @@ Exceptions and alternative flows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #. The user is given an error message if contracts intended to be executable contain non-executable
    proof functions.
-#. The code to be tested violates one or more of the assumptions on which formal verification depends. 
+#. The code to be tested violates one or more of the assumptions on which formal verification depends.
 
 Special Requirements
 ^^^^^^^^^^^^^^^^^^^^
