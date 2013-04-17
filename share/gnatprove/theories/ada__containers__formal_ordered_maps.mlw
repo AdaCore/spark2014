@@ -309,31 +309,11 @@ module Main
     forall co1 co2:map, k:key_type, e:element_type
       [insert_ co1 k e co2, capacity co1|insert_ co1 k e co2, capacity co2].
       insert_ co1 k e co2 -> capacity co1 = capacity co2
-(*
-  axiom insert_new:
-    forall co1 co2:map, k:key_type, e:element_type [insert_ co1 k e co2].
-      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k)) > 0 ->
-      position_ co1 (previous_ co2 (ceiling co1 (witness k))) = 0
-*)
+
   axiom insert_new_element :
     forall co1 co2:map, k:key_type, e:element_type [insert_ co1 k e co2].
       insert_ co1 k e co2 -> element__ co2 (witness k) = e
-(*
-  axiom insert_new_key:
-    forall co1 co2:map, k:key_type, e:element_type [key_ co2 (previous_ co2 (ceiling co1 (witness k)))].
-      insert_ co1 k e co2 -> position_ co1 (ceiling co1 (witness k)) > 0 ->
-      key_ co2 (previous_ co2 (ceiling co1 (witness k))) = k
 
-  axiom insert_new_no_element:
-    forall co1 co2:map,k:key_type,  e:element_type [insert_ co1 k e co2].
-      insert_ co1 k e co2 -> ceiling co1 (witness k) = no_element ->
-        position_ co1 (last co2) = 0
-
-  axiom insert_new_no_element_key:
-    forall co1 co2:map, k:key_type, e:element_type [key_ co2 (last co2)].
-      insert_ co1 k e co2 -> ceiling co1 (witness k) = no_element ->
-      key_ co2 (last co2) = k
-*)
   axiom insert_position_before:
     forall co1 co2:map, cun:cursor, k:key_type, e:element_type
       [insert_ co1 k e co2,  position_ co1 cun
