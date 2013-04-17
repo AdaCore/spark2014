@@ -235,18 +235,18 @@ package body Why.Inter is
       Unb_Comp : constant Unbounded_String :=
                    To_Unbounded_String (Completion_Name);
    begin
+      pragma Assert (Unb_Name /= Unb_Comp);
+
       --  Find the last completion for Name
 
       while Why_File_Completion (Kind).Contains (Unb_Name) loop
          Unb_Name := Why_File_Completion (Kind).Element (Unb_Name);
+         pragma Assert (Unb_Name /= Unb_Comp);
       end loop;
 
-      --  Make Completion_Name a completion of the previous last one, if not
-      --  already the case
+      --  Make Completion_Name a completion of the previous last one
 
-      if Unb_Name /= Unb_Comp then
-         Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
-      end if;
+      Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
    end Add_Completion;
 
    ---------------------

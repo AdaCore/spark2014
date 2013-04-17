@@ -186,6 +186,14 @@ package body Gnat2Why.Driver is
          return;
       end if;
 
+      --  We do nothing for generic units currently. If this get revised at
+      --  some point to provide proof of generics, then the special SPARK
+      --  expansion in the frontend should be applied to generic units as well.
+
+      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+         return;
+      end if;
+
       --  All temporaries created for this unit should be different from
       --  temporaries created for other units. To that end, use the unit name
       --  as a suffix for creating temporary names.
