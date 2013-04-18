@@ -191,14 +191,6 @@ package body Flow.Control_Flow_Graph is
    --  unique as all others Do_XYZ procedures only ever deal with
    --  things pertaining to their given node.
 
-   procedure Do_Full_Type_Declaration
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-      with Pre => Nkind (N) = N_Full_Type_Declaration;
-   --  ??? to be implemented
-
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -509,6 +501,11 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
       A : V_Attributes;
    begin
+      if Ekind (E) = E_Constant then
+         --  We ignore constants (for now).
+         return;
+      end if;
+
       for F of Flatten_Variable (E) loop
          --  Setup the n'initial vertex. Note that initialisation for
          --  variables is detected (and set) when building the flow graph
@@ -733,21 +730,6 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (L)).Standard_Exits.Include (V);
       end if;
    end Do_Exit_Statement;
-
-   --------------------------------
-   --  Do_Full_Type_Declaration  --
-   --------------------------------
-
-   procedure Do_Full_Type_Declaration
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   is
-   begin
-      --  ??? To be resolved by M214-008 (flow analysis - declarative parts)
-      raise Why.Not_Implemented;
-   end Do_Full_Type_Declaration;
 
    -----------------------------------------
    --  Do_Handled_Sequence_Of_Statements  --
@@ -1228,12 +1210,23 @@ package body Flow.Control_Flow_Graph is
       Create_Initial_And_Final_Vertices (Defining_Identifier (N), FA);
 
       if not Present (Expression (N)) then
-         --  Just a null vertex.
+         --  Just a null vertex as we don't have an initializing
+         --  expression.
          FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
                             Null_Node_Attributes,
                             V);
+      elsif Constant_Present (N) then
+         --  We have a sink vertex as we have a constant declaration
+         --  (so we need to check for uninitialized variables) but
+         --  otherwise have no flow.
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (N),
+            Make_Sink_Vertex_Attributes
+              (Var_Use => Get_Variable_Set (Expression (N)),
+               E_Loc   => N),
+            V);
       else
-         --  We have a vertex
+         --  We have a variable declaration with an initialization.
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
@@ -1655,17 +1648,21 @@ package body Flow.Control_Flow_Graph is
       Prev := Empty;
       while Present (P) loop
          case Nkind (P) is
-            when N_Freeze_Entity                   |
-                 N_Implicit_Label_Declaration      |
-                 N_Subprogram_Body                 |
-                 N_Subprogram_Declaration          |
-                 N_Representation_Clause           |
-                 N_Package_Body_Stub               |
-                 N_Subprogram_Body_Stub            |
-                 N_Use_Package_Clause              |
-                 N_Use_Type_Clause                 |
-                 N_Object_Renaming_Declaration     |
-                 N_Subprogram_Renaming_Declaration =>
+            when N_Freeze_Entity                |
+              N_Implicit_Label_Declaration      |
+              N_Subprogram_Body                 |
+              N_Subprogram_Declaration          |
+              N_Representation_Clause           |
+              N_Package_Body_Stub               |
+              N_Subprogram_Body_Stub            |
+              N_Use_Package_Clause              |
+              N_Use_Type_Clause                 |
+              N_Object_Renaming_Declaration     |
+              N_Subprogram_Renaming_Declaration |
+              N_Full_Type_Declaration           |
+              N_Subtype_Declaration             |
+              N_Private_Type_Declaration        |
+              N_Number_Declaration =>
                --  We completely skip these.
                P := Next (P);
 
@@ -1724,8 +1721,6 @@ package body Flow.Control_Flow_Graph is
             Do_Case_Statement (N, FA, CM, Ctx);
          when N_Exit_Statement =>
             Do_Exit_Statement (N, FA, CM, Ctx);
-         when N_Full_Type_Declaration =>
-            Do_Full_Type_Declaration (N, FA, CM, Ctx);
          when N_If_Statement =>
             Do_If_Statement (N, FA, CM, Ctx);
          when N_Loop_Statement =>

@@ -221,8 +221,7 @@ package body Flow.Utility is
                        E_Loop_Parameter |
                        E_Out_Parameter |
                        E_In_Parameter |
-                       E_In_Out_Parameter |
-                       E_Constant =>
+                       E_In_Out_Parameter =>
                         VS.Union (Flatten_Variable (Entity (N)));
                      when others =>
                         null;
@@ -235,8 +234,7 @@ package body Flow.Utility is
                     E_Loop_Parameter |
                     E_Out_Parameter |
                     E_In_Parameter |
-                    E_In_Out_Parameter |
-                    E_Constant =>
+                    E_In_Out_Parameter =>
                      VS.Union (Flatten_Variable (N));
                   when others =>
                      null;
