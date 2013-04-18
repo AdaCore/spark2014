@@ -35,7 +35,8 @@ SPARK 2014 Operational Requirements and Use Cases
    :maxdepth: 1
 
    A. Decision Rationales <dar>
-   B. ToDo Summary <todo-summary>
+   B. Code Profiles <code-profiles>
+   C. ToDo Summary <todo-summary>
 
 Indices and tables
 ==================

@@ -12,9 +12,6 @@ Note that these requirements do not necessarily imply the need for a new languag
 feature or features. However, the term Policy is used so as not to imply that Policies
 *have* to be implemented via pragma Restriction.
 
-Note also that these requirements will be removed from the LRM once the
-implementation approach has been defined.
-
 Example
 -------
 
@@ -138,7 +135,32 @@ Applying Profiles
    of a particular non-functional property then it should not be possible to
    step outside of the Profile at all.
 
+Non-Language Requirements
+-------------------------
 
+#. **Requirement**: It shall be possible to record the goal or goals that a given Profile is
+   intended to meet.
 
+   **Rationale**: This provides the rationale for the existence and use of the Profile. The
+   goals associated with the Profile are to to be met by the Policies that make
+   up the Profile, by the properties of the code that is outside of the
+   Profile and by the set of compiler switches used when building the code. Hence, it may
+   be necessary to impose certain restrictions on the code
+   outside of the Profile in order to meet the goals. In addition, the goal
+   to be met may restrict the places where we can step outside of a given Profile.
+
+#. **Requirement**: It shall be possible to impose constraints to be met that hold at the
+   boundary between the application areas of two Profiles (or between the application areas
+   of a Profile and SPARK 2014, or between the application areas of SPARK 2014 and Ada 2012).
+
+   **Rationale**: This is necessary, for example, in the case that we have code in |SPARK|
+   that is formally verified and code in Ada 2012 that is tested. In more general terms,
+   it may be necessary to meet the goal or goals associated with the Profiles.
+
+#. **Requirement**: It shall be possible to record the compiler switch or switches that must be
+   used in association with a given Profile.
+
+   **Rationale**: In order to meet the goal/s associated with a given Profile, it may be
+   necessary to require the use of certain switches.
 
 
