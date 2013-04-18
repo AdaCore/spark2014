@@ -1,0 +1,13 @@
+test.adb:10:29: ineffective import "N"
+test.adb:54:24: ineffective import "A"
+test.adb:57:21: "B" does not depend on "A"
+test.adb:66:24: ineffective import "A"
+test.adb:66:24: "A" is not used
+test.adb:69:21: "B" does not depend on "A"
+test.adb:89:07: use of uninitialized variable "A" [uninitialized]
+test.adb:99:36: use of uninitialized variable "A" [uninitialized]
+test.adb:99:41: use of uninitialized variable "A" [uninitialized]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+
