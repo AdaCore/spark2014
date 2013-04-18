@@ -3,7 +3,7 @@ with Other;
 package body Test
 is
 
-   Y : Integer;
+   Z : Integer;
 
    --  OK
    procedure Test_01
@@ -22,25 +22,26 @@ is
 
    --  Bad for several reasons
    procedure Test_03
-     with Depends => (Y => Y)
+     with Depends => (Z => Z)
    is
    begin
       Other.Initialise;
    end Test_03;
 
-   --  OK
+   --  OK, with the exception of the flow error on the computed global
+   --  Z (its treated as an in-out)
    procedure Test_04
    is
    begin
-      Y := Other.Get_X;
+      Z := Other.Get_X;
    end Test_04;
 
    --  Bad
    procedure Test_05
-     with Depends => (Y => null)
+     with Depends => (Z => null)
    is
    begin
-      Y := Other.Get_X;
+      Z := Other.Get_X;
    end Test_05;
 
    --  Bad
@@ -53,10 +54,10 @@ is
 
    --  Bad
    procedure Test_07
-     with Global => (Output => Y)
+     with Global => (Output => Z)
    is
    begin
-      Y := Other.Get_X + Other.Get_X * 2;
+      Z := Other.Get_X + Other.Get_X * 2;
    end Test_07;
 
 end Test;
