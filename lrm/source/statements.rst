@@ -67,7 +67,7 @@ High-Level Requirements
 
       **Rationale:** To aid detection of a serious programming error.
 
-    * **Requirement:** |SPARK| shall include feature/s to support proof of partial correctness
+    * **Requirement:** |SPARK| shall include feature/s to support proof of correctness
       of code containing loops.
 
       **Rationale:** To support proof.

@@ -156,7 +156,7 @@ Formal Analysis
 |SPARK| will be amenable to a range of formal analyses, including but not limited to:
 
 - Data-flow analysis, which considers the initialization of variables and the
-  data dependences of subprograms (which parameters and variables get read or
+  data dependencies of subprograms (which parameters and variables get read or
   written).
 
 - Information-flow analysis, which also considers the coupling between the
@@ -633,7 +633,7 @@ Ghost Entities
 Often extra entities, such as types, variables and functions may be required
 only for test and verification purposes. Such entities are termed *ghost*
 entities and their use should be restricted to places where they do not affect
-the functionality of the program. In principle such entities could be completely
+the functionality of the program. They could be completely
 removed from the program without any functional impact.
 
 |SPARK| supports ghost functions which may be executable or
