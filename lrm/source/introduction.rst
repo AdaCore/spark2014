@@ -484,7 +484,8 @@ in the remaining chapters of this document, the most notable restrictions are:
 - Tasking is not currently permitted (it is intended that this will be included
   in Release 2 of the |SPARK| language and tools).
 
-- Raising and handling of exceptions is not permitted.
+- Raising and handling of exceptions is not permitted (exceptions can be included in
+  a program but proof must be used to show that they cannot be raised).
 
 
 .. _test_and_proof:
@@ -714,10 +715,11 @@ that may be necessary:
 
 - An annotation of the boundary between the |SPARK| and non-|SPARK| code with
   suitable |SPARK| compatible contracts. If this is not done then the analysis
-  would have to assume some suitably conservative contract.
+  would have to assume some suitably pessimistic contract, for example where
+  everything is derived from everything.
 
 Note that when language features are presented and defined in the remainder of
-this document, it is assumed that analysis and verification is being performed
+this document, it is assumed that analysis and verification are being performed
 constructively and no explicit detail is given on generative or retrospective
 analysis.
 
