@@ -186,6 +186,9 @@ mode **in out**.
 #. A ``state_name`` which is designated as ``Volatile`` must not
    appear in an Initializes aspect.
 
+.. todo:: Consider more than just simple Volatile Inputs and Outputs;
+          Latched outputs, In_Out volatiles, etc.
+          To be completed in the Milestone 4 version of this document.
 
 
 .. _abstract-state-aspect:
@@ -225,18 +228,18 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 State abstraction provides a mechanism for naming, in a package's
-``visible_part``, state (typically a collection of variables) that will be
-declared within the package's body, ``private_part``, packages nested within
+visible part, state (typically a collection of variables) that will be
+declared within the package's body, private part, packages nested within
 these, or within private descendants of the package. For example, a package
 declares a visible procedure and we wish to specify the set of global variables
 that the procedure reads and writes as part of the specification of the
 subprogram. Those variables cannot be named directly in the package
 specification. Instead, we introduce a state abstraction which is visible in the
 package specification and later, when the package body is declared, we specify
-the set of variables that *constitute* or *implement* that state abstraction. If
-a package body contains, for example, a nested package, then a state abstraction
-of the inner package may also be part of the implementation of the given state
-abstraction of the outer package.
+the set of variables that *constitute* or *implement* the state abstraction. If
+immediately within a package body, for example, a nested_package is declared, 
+then a state abstraction of the inner package may also be part of the 
+implementation of the given state abstraction of the outer package.
 
 The hidden state of a package may be represented by one or more state
 abstractions, with each pair of state abstractions representing disjoint sets of
@@ -244,10 +247,10 @@ hidden variables.
 
 If a subprogram P with a Global aspect is declared in the
 visible part of a package and P reads or updates any of the hidden
-state of the package then P must include in its Global aspect the
-abstract state names with the correct mode that represent the hidden
-state referenced by P.  If P has a Depends aspect then the abstract
-state names must appear as inputs and outputs of P, as appropriate, in
+state of the package then P must denote in its Global aspect the
+state abstractions with the correct mode that represent the hidden
+state referenced by P.  If P has a Depends aspect then the state abstractions
+state names must be denoted as inputs and outputs of P, as appropriate, in
 the ``dependency_relation`` of the Depends aspect.
 
 The Abstract State aspect is introduced by an ``aspect_specification``
@@ -311,10 +314,18 @@ must follow the grammar of ``abstract_state_list`` given below.
 
       :Trace Unit: 7.1.2 LR name_value_property identifier must be Part_Of
       
-#. A ``name_value_property`` with an ``identifier`` of Part_Of may
-   only appear in an aspect specification of a private child package,
-   or a package declared immediately within the visible part of a private child 
-   package. The expression of such a ``name_value_property`` must denote a state 
+#. A ``name_value_property`` with an ``identifier`` of Part_Of shall only
+   but always appear in a non-null Abstract_State aspect of:
+     
+   * a private child unit and its descendants;
+   
+   * a package declared within the visible part or nested packages declared 
+     therein of a private child unit and its descendants; or
+     
+   * a package declared in the private part of a package or packages declared 
+     therein. 
+     
+   The expression of such a ``name_value_property`` must denote a state 
    abstraction.
 
 #. If a ``property_list`` contains one or more ``name_value_property`` items 
@@ -342,11 +353,11 @@ must follow the grammar of ``abstract_state_list`` given below.
 
    * the visible state and state abstractions of any packages declared
      immediately within the private part or body of P, and of any
-     private child units of P or of their public descendants.
+     private child units of P and of their descendants.
 
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
-   declaration of a *state abstraction* entity. This implicit
+   declaration of a state abstraction entity. This implicit
    declaration occurs at the beginning of the visible part of P. This
    implicit declaration shall have a completion and is overloadable.
 
@@ -370,7 +381,7 @@ must follow the grammar of ``abstract_state_list`` given below.
    hidden state.
    [The specification is checked when the package is analyzed.]
 
-#. A *volatile* state abstraction is one declared with a ``property_list``
+#. A volatile state abstraction is one declared with a ``property_list``
    that includes the Volatile ``property``, and either Input or Output.
    
 #. A state abstraction which is declared with a ``property_list`` that includes
@@ -379,27 +390,14 @@ must follow the grammar of ``abstract_state_list`` given below.
    by the expression of the ``name_value_property`` and only that state 
    abstraction.
    
-#. A state abstraction declared in the ``aspect_specification`` of a private 
-   child package, Q, or a package declared immediately within the visible part
-   of Q, without a Part_Of ``property`` is considered to be a 
-   constituent of one of Q's parent's state abstractions and no other state 
-   abstraction.
-
+      
 .. centered:: **Verification Rules**
 
-#. A state abstraction which is declared with a ``property_list`` that includes
-   a Part_Of ``name_value_property`` shall be a constituent of the 
-   state abstraction denoted by the expression of the ``name_value_property``.
-   
-#. A state abstraction declared in the ``aspect_specification`` of a private 
-   child package, Q, or a package immediatly within the visible part of Q,
-   without a Part_Of ``property`` shall be a constituent of one of Q's 
-   parent's state abstractions.
-   
+There are no verification rules associated with the Abstract_State aspect.
+
 .. centered:: **Dynamic Semantics**
 
-There are no Dynamic Semantics associated with the Abstract State
-aspect.
+There are no Dynamic Semantics associated with the Abstract_State aspect.
 
 .. centered:: **Examples**
 
@@ -447,8 +445,8 @@ aspect.
    end Sensor.Raw;
 
 
-Input, Output, Part_Of Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Input, Output and Part_Of Aspects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Variable declarations may have the Input, Output and Part_Of aspects
 specified directly as part of declaration.
@@ -464,27 +462,23 @@ specified directly as part of declaration.
 #. The Part_Of aspect requires an ``aspect_definition`` which denotes
    a state abstraction.
 
-#. A Part_Of aspect may only appear in the ``aspect_specification`` of a
-   variable declared in the visible part of a private descendant package or
-   the visible part of a package declared therein.
-     
+#. A Part_Of aspect shall only but must appear in the ``aspect_specification`` 
+   of a variable declared in:
+   
+   * the private part of a package; and 
 
+   * the visible part of a package declared in the private part of a package and
+     package declarations nested therein; or
+   
+   * the visible part of a private descendant package or the visible part of a 
+     package declared therein.
+     
 .. centered:: **Static Semantics**
 
-# A Part_Of aspect in the ``aspect_specification`` of a variable 
-  declaration indicates that the variable is a constituent of the state
-  abstraction denoted by its ``aspect_definition``.
+#. A Part_Of aspect in the ``aspect_specification`` of a variable 
+   declaration indicates that the variable is a constituent of the state
+   abstraction denoted by its ``aspect_definition``.
 
-#. A variable that is declared in the visible part of a private descendant 
-   package or within the visible part of a package declared therein which does 
-   not have a Part_Of aspect shall be a constituent of its parent's one and only
-   state abstraction.
-
-
-
-.. todo:: Consider more than just simple Volatile Inputs and Outputs;
-          Latched outputs, In_Out volatiles, etc.
-          To be completed in the Milestone 4 version of this document.
 .. centered:: **Examples**
 
 .. code-block:: ada
@@ -803,7 +797,6 @@ an ``expression``.
      --
     end X;
 
-
 Package Bodies
 --------------
 
@@ -823,20 +816,20 @@ State Refinement
 ~~~~~~~~~~~~~~~~
 
 A ``state_name`` declared by an Abstract State aspect in the specification of a
-package is an abstraction representing its hidden state. The declaration must be
-completed in the package body by a Refined State aspect. The Refined State
-aspect is used to show for each ``state_name`` which variables and subordinate
-abstract states are represented by the ``state_name`` and are known as its 
-*constituents*.
+package denotes an abstraction representing all or part of its hidden state. The
+declaration must be completed in the package body by a Refined State aspect. The
+Refined_State aspect is used to show for each ``state_name`` which variables and
+subordinate abstract states are represented by the ``state_name`` and are known
+as its *constituents*.
 
-In the body of a package the constituents of the refined
-``state_name``, the refined view, have to be used rather than the
-abstract view of the ``state_name``.  Refined global, depends, pre
-and post aspects are provided to express the refined view.
+In the body of a package the constituents of the refined ``state_name``, the
+*refined view*, have to be used rather than the *abstract view* of the
+``state_name``. Refined Global, Depends, Pre and Post aspects are provided to
+express the refined view.
 
 In the refined view the constituents of each ``state_name`` has to be
-initialized consistently with their appearance or omission from the
-Package Depends or Initializes aspect of the package.
+initialized consistently with their appearance or omission from the Initializes
+aspect of the package.
 
 .. _refinement-rationale:
 
@@ -969,19 +962,23 @@ where
 
 #. A ``constituent`` denotes an entity of the hidden state of a package.
 
-#. Every entity of the hidden state of a package must be denoted as a
-   ``constituent`` in its Refined_State aspect.
+#. Each *abstract_*\ ``state_name`` declared in the package specification must
+   be denoted as the ``state_name`` of a ``state_and_constituents`` in the
+   Refined_State aspect of the body of the package.
 
 .. Note: We may want to be able to override this error.
 
 #. Every entity of the hidden state of a package must be denoted as a
-   ``constituent`` exactly one *abstract_*\ ``state_name`` in its Refined_State
-   aspect.
+   ``constituent`` of exactly one *abstract_*\ ``state_name`` in the
+   Refined_State aspect of the package.
    
+.. Note: We may want to be able to override this error.
+
+#. Each constituent is either a variable or a state abstraction.
+
 .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
-
 
 #. A ``property_list`` shall not contain a ``name_value`` property.
 
@@ -1012,56 +1009,21 @@ where
 .. centered:: **Static Semantics**
 
 #. A Refined_State aspect of a ``package_body`` defines the objects and each 
-   subordinate ``state_name`` which are the ``constituents`` of each of the 
-   *abstract_*\ ``state_names`` declared in the that comprise the hidden state 
+   subordinate ``state_name`` that are the ``constituents`` of the 
+   *abstract_*\ ``state_names`` declared in the ``package_specification``.
+   [The ``constituents`` comprise the hidden state 
    of a package represented by the ``state_name`` declared in the
-   Abstract State Aspect.
+   Abstract State Aspect.]
 
-#. Each ``constituent`` of the hidden state of must appear exactly
-   once in a ``constituent_list`` of exactly one
-   ``state_and_category``; that is each ``constituent`` must
-   be a constituent of one and only one ``state_name``.
-#. A *variable* which is a ``constituent`` is an *entire variable*; it
-   is not a component of a containing object.
-#. If an ``abstract_state_name`` and its ``constituent`` have the same
-   name this represents the simple mapping of an abstract
-   ``state_name`` on to a concrete *variable* of the same name.
-#. A ``constituent`` with a ``property_list`` assumes the properties
-   given in the list:
+#. An object which is a ``constituent`` shall be an entire object.
 
-   * The property Volatile indicates that the ``constituent`` is
-     Volatile and this ``simple_property`` must be supplemented by one
-     of the ``simple_properties`` Input or Output indicating whether
-     the ``constituent`` is a Volatile Input or a Volatile Output.
+#. A ``constituent`` with a ``property_list`` is used to indicate the
+   ``properties`` that apply to the constituent.
 
-#. A ``state_name`` declared in the Abstract State Aspect which
-   has not designated as Volatile may be refined on to one or more
-   Volatile Input or Output ``constituents`` as well as non-volatile
-   ``constituents``.
-#. If a ``state_name`` declared in the Abstract State Aspect has been
-   designated as Volatile with a ``property`` of Input (Output) then
-   at least one ``constituent`` of the ``state_name`` must also be
-   designated as Volatile with a ``property`` of Input (Output) in
-   the Refined State Aspect.
-#. A **null** ``abstract_state_name`` represents a hidden state
-   component of a package which has no logical effect on the view of
-   the package visible to a user.  An example would be a cache used to
-   speed up an operation but does not have an effect on the result of
-   the operation.
-#. A non-volatile ``constituent`` of a **null** ``abstract_state_name``
-   must be initialized by package elaboration.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Flow Analysis*
-
-#. If a package has no Abstract State Aspect or no Pure aspect or
-   pragma it may have internal state.  First an implicit
-   Refined State Aspect is synthesized using the predefined
-   categories of state, Non_Volatile_Initialized,
-   Non_Volatile_Uninitialized, Volatile_Input and Volatile_Output.  An
-   implicit Abstract State Aspect is synthesized from the
-   synthesized Refined State Aspect.
+There are no verification rules associated with Refined_State aspects.
 
 .. centered:: **Dynamic Semantics**
 
@@ -1105,15 +1067,143 @@ There are no dynamic semantics associated with state abstraction and refinement.
    end Q;
 
 
-Abstract State and Package Hierarchy
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. todo:: We need to consider the interactions between package hierarchy and abstract state.
-          Do we need to have rules restricting access between parent and child packages?
-          Can we ensure abstract state encapsulation?
-          To be completed in the Milestone 3 version of this document.
+Abstract State, Package Hierarchy and Part_Of
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+Each item of visible global state (either abstract or associated with a visible
+global variable) of a private library unit (and any public descendants thereof)
+must be connected, directly or indirectly, to a *specific state abstraction* of 
+some public library unit. This is done using the Part_Of ``property`` or aspect, 
+present at the point where each item of global state of the private unit is 
+declared.
+
+The unit declaring the state abstraction identified by this ``property`` or
+aspect need not be its parent, but it must be a unit whose body has visibility
+on the private library unit, while being *more visible* than the original unit,
+as # defined by the number of private ancestors that it has. Furthermore, the
+specified unit must refine the corresponding abstract state variable to indicate
+that it includes this part of the global state of the private unit. That is, the
+two specifications, one in the private unit, and one in the body of the
+(typically) public unit, must match one another.
+
+The ``property`` or aspect Part_Of is used to specify state abstraction of the 
+(typically) public unit with which a private unit's global state item is 
+associated.
+
+To support multi-level hierarchies of private units, a private unit may connect
+its state to another private unit, so long as eventually the state gets
+connected to a public unit through a chain of connections. However, as indicated
+above, the unit through which the state is *exposed* must be more visible.
+
+If a private library unit has global state, this state might be read or updated
+as a side effect of calling a visible operation of a public library unit. This
+global state may be referenced, either separately or as part of the abstract
+state of some other public library unit. Rules are required to resolve aliasing
+and prevent a potential covert channel between state abstractions when:
+  
+   * a state abstraction is visible; and
+   
+   * an object (or another state abstraction) is visible which is a constituent
+     of the state abstraction; and
+    
+   * it is not apparent that the object (or other state) is a constituent
+     of the state abstraction - there are effectively two entities representing
+     part or all of the state abstraction.
+    
+
+.. centered:: **Legality Rules**
+
+#. A package specification with a state abstraction or variable declaration,
+   in its visible part, which has a Part_Of ``property`` or aspect shall have a 
+   ``limited_with_clause`` denoting the unit declaring the specific state 
+   abstraction denoted in the Part_Of ``property`` or aspect.
+   
+#. A unit with a declaration in its visible part with a Part_Of ``property`` 
+   or aspect denoting a specific state abstraction shall appear in a  
+   ``limited_with_clause`` of the unit declaring the specific state abstraction.
+    
+#. A variable or state abstraction declared within the private part of a unit
+   has a Part_Of ``property`` or aspect and the specific state abstraction 
+   denoted by this must be a state abstraction declared by the unit.
+    
+#. Every global state item that has a Part_Of ``property`` or aspect denoting
+   a specific state abstraction must be denoted as a constituent of the
+   specific state abstraction in the Refined_State aspect of the package body
+   of the unit declaring the specific state abstraction.  It shall not be 
+   denoted as a constituent of any other state abstraction. [The units denoting 
+   each specific state abstraction in a Part_Of ``property`` or aspect is
+   known from the ``limited_with_clause`` required on the specification of the 
+   unit declaring the specific state abstraction. The global state items 
+   declared in the private part of the unit are directly visible.]
+   
+#. Other than in the body of a unit that contains the State_Refinement aspect
+   which defines the constituents of a state abstraction, where both a state
+   abstraction and one or more of its constituents are visible, only the
+   state abstraction may be denoted in Global and Depends aspects of a 
+   subprogram or the Initializes or Initial_Condition aspects of a package. 
+   
+
+.. centered:: **Static Semantics**
+
+#. A ``limited_with_clause`` is required on the unit denoting the specific
+   state abstraction in a Part_Of ``property`` or aspect to give visibility of 
+   the state abstraction.
+   
+#. A unit declaring a state abstraction requires a ``limited_with_clause`` 
+   naming each unit which denotes the state abstraction as specific state
+   abstraction in a Part_Of ``property`` or aspect so that the unit is *aware* 
+   of all of the global state items that are part of (constituents of) its 
+   declared state abstraction.
+
+#.  The state declared in the private part of a package must be part of a 
+    state abstraction of that package.
+
+#. The legality rule that restricts the denotation of the state abstraction 
+   rather than its constituents in Global, Depends, Initializes and 
+   Initial_Condition aspects permits the denotation of either or both
+   the state abstraction and its constituents in the implementation of the 
+   subprogram or package. The Part_Of ``property`` or aspect of the constituent 
+   facilitates resolution of the
+   two views.
+    
+    
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    --  Abstract state variables of P.Priv, A and B, plus
+    --  the concrete global variable X, are split up among
+    --  two abstract state variables within P.Pub, R and S
+    package P.Pub --  public unit
+      with Abstract_State => (R, S)
+    is
+       ...
+    end P.Pub;
+
+    limited with P.Pub;
+    private package P.Priv --  private unit
+      with Abstract_State =>
+        ((A with Part_Of => P.Pub.R), (B with Part_Of => P.Pub.S))
+    is
+        X : T  -- visible global variable
+          with Part_Of => P.Pub.R;
+    end P.Priv;
+
+    limited with P.Priv;
+    package body P.Pub
+      with Refined_State =>
+        (R => (P.Priv.A, P.Priv.X, Y),
+         S => (P.Priv.B, Z))
+    is
+       Y : T2;  -- hidden global state
+       Z : T3;  -- hidden global state
+       ...
+    end P.Pub;
+
+Wording:
+
+TBD
 Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1244,7 +1334,7 @@ Refined Global aspect applied to its body or body stub.
 A Refined Global Aspect of a subprogram defines a *refinement*
 of the Global Aspect of the subprogram; that is, the Refined Global aspect
 repeats the Global aspect of he subprogram except that references to
-state abstractions whose refinments are visible at the point of the
+state abstractions whose refinements are visible at the point of the
 subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
@@ -1310,7 +1400,7 @@ TBD: Interactions with volatiles.
 * If the declaration of a subprogram P in the visible part of package
   Q has a Global Aspect which mentions a ``state_name`` of Q, but
   P does not have a Refined Global Aspect then an implicit
-  Refined Global Aspect will be synthesized from the body of P.`
+  Refined Global Aspect will be synthesized from the body of P.
 
 * if the declaration of a subprogram P declared in the visible part of
   a package Q does not have a Global Aspect, first an implicit
@@ -1482,7 +1572,7 @@ the grammar of ``dependency_relation``.
 * If the declaration of a subprogram P in the visible part of package
   Q has a Depends aspect which mentions a ``state_name`` of Q,
   but P does not have a Refined Depends aspect then an implicit
-  Refined Depends aspect will be synthesized from the body of P.`
+  Refined Depends aspect will be synthesized from the body of P.
 
 * if the declaration of a subprogram P declared in the visible part of
   a package Q does not have a Depends aspect, an implicit one is
