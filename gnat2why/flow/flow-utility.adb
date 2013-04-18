@@ -23,6 +23,7 @@
 
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
+with Snames;   use Snames;
 
 with Treepr;   use Treepr;
 
@@ -251,6 +252,15 @@ package body Flow.Utility is
                   VS.Union (U);
                end;
                return Skip;
+
+            when N_Attribute_Reference =>
+               case Attribute_Name (N) is
+                  when Name_First | Name_Last | Name_Length | Name_Range =>
+                     --  Ignore anything to do with ranges.
+                     return Skip;
+                  when others =>
+                     null;
+               end case;
 
             when others =>
                null;

@@ -101,5 +101,43 @@ is
       A := Tmp'First;
    end Issue_05;
 
+   ----------------------------------------------------------------------
+
+   --  The next three procedures should all have the same dependency
+   --  on B. It's an interesting question as to what it should be.
+
+   procedure Issue_06 (A : out String;
+                       B : out Integer)
+   with Global => null,
+        Depends => (A => null,
+                    B => null)
+   is
+   begin
+      B := A'Last;
+      A := (others => ' ');
+   end Issue_06;
+
+   procedure Issue_07 (A : in out String;
+                       B : out Integer)
+   with Global => null,
+        Depends => (A => null,
+                    B => null)
+   is
+   begin
+      B := A'Last;
+      A := (others => ' ');
+   end Issue_07;
+
+   procedure Issue_08 (A : in out String;
+                       B : out Integer)
+   with Global => null,
+        Depends => (A => null,
+                    B => null)
+   is
+   begin
+      A := (others => ' ');
+      B := A'Last;
+   end Issue_08;
+
 
 end Test;
