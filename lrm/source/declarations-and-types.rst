@@ -49,7 +49,11 @@ The Dynamic_Predicate aspect is not in |SPARK|.
 subject to the restriction that the predicate expression cannot take
 any variables as inputs. This is needed to ensure that if a value
 belonged to a subtype in the past, then the value will still belong
-to the subtype in the future.]
+to the subtype in the future. Predicates for composite types might also
+be restricted to disallow dependencies on non-discriminant components
+(but allow dependencies on discriminants and array bounds) in order to
+avoid cases where modifying a subcomponent can violate the subtype
+predicate of an enclosing object.]
 
 Objects and Named Numbers
 -------------------------
