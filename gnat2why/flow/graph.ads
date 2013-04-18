@@ -332,21 +332,35 @@ package Graph is
    ----------------------------------------------------------------------
 
    function Non_Trivial_Path_Exists
-     (G : T'Class;
-      A : Vertex_Id;
-      B : Vertex_Id) return Boolean;
+     (G        : T'Class;
+      A        : Vertex_Id;
+      B        : Vertex_Id;
+      Reversed : Boolean := False)
+      return Boolean;
    --  Checks if there is a non-trivial path from A to B. A trivial
    --  path, which is not allowed by this function, is for the special
    --  case where A = B and there is no edge from A to A.
    --
+   --  If reversed is given then we operate on the reversed graph
+   --  without actually reversing it. In particular this is much more
+   --  efficient than first calling Invert and then calling this
+   --  procedure on the reversed graph.
+   --
    --  Complexity is O(N).
 
    function Non_Trivial_Path_Exists
-     (G : T'Class;
-      A : Vertex_Id;
-      F : access function (V : Vertex_Id) return Boolean) return Boolean;
+     (G        : T'Class;
+      A        : Vertex_Id;
+      F        : access function (V : Vertex_Id) return Boolean;
+      Reversed : Boolean := False)
+      return Boolean;
    --  Checks if there is a non-trivial path from A to another vertex
    --  B for which F(B) holds.
+   --
+   --  If reversed is given then we operate on the reversed graph
+   --  without actually reversing it. In particular this is much more
+   --  efficient than first calling Invert and then calling this
+   --  procedure on the reversed graph.
    --
    --  Complexity is O(N), assuming the complexity of F is O(1).
 

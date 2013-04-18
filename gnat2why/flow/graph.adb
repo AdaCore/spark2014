@@ -496,9 +496,11 @@ package body Graph is
    -------------------------------
 
    function Non_Trivial_Path_Exists
-     (G : T'Class;
-      A : Vertex_Id;
-      B : Vertex_Id) return Boolean
+     (G        : T'Class;
+      A        : Vertex_Id;
+      B        : Vertex_Id;
+      Reversed : Boolean := False)
+      return Boolean
    is
       Path_Exists : Boolean := False;
 
@@ -523,14 +525,16 @@ package body Graph is
    begin
       G.DFS (Start         => A,
              Include_Start => False,
-             Visitor       => Are_We_There_Yet'Access);
+             Visitor       => Are_We_There_Yet'Access,
+             Reversed      => Reversed);
       return Path_Exists;
    end Non_Trivial_Path_Exists;
 
    function Non_Trivial_Path_Exists
-     (G : T'Class;
-      A : Vertex_Id;
-      F : access function (V : Vertex_Id) return Boolean)
+     (G        : T'Class;
+      A        : Vertex_Id;
+      F        : access function (V : Vertex_Id) return Boolean;
+      Reversed : Boolean := False)
       return Boolean
    is
       Path_Exists : Boolean := False;
@@ -555,7 +559,8 @@ package body Graph is
    begin
       G.DFS (Start         => A,
              Include_Start => False,
-             Visitor       => Are_We_There_Yet'Access);
+             Visitor       => Are_We_There_Yet'Access,
+             Reversed      => Reversed);
       return Path_Exists;
    end Non_Trivial_Path_Exists;
 
