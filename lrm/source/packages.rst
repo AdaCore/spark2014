@@ -1803,11 +1803,12 @@ There is no additional syntax associated with type invariants.
 
 .. centered:: **Legality Rules**
 
-An expression occuring in a Type_Invariant or Type_Invariant'Class
-aspect specification which has a variable input
-is not in |SPARK|. [In other words, such an expression cannot read
-a variable nor can it call a function which (directly or indirectly)
-reads a variable.]
+There are no additional legality rules associated with type invariants.
+
+.. note::
+   (SB) This isn't quite right: there is a rule that invariant
+   expressions can't read variables, but it isn't stated here.
+   Fixup needed.
 
 .. centered:: **Static Semantics**
 

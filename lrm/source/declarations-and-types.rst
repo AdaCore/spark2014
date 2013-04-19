@@ -29,11 +29,6 @@ For a type or subtype to be in |SPARK|, all predicate specifications that apply
 to the (sub)type must be in |SPARK|.  Notwithstanding any rule to the contrary,
 a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
 
-An expression occuring in a constraint which has a variable input
-is not in |SPARK|. [In other words, such an expression cannot read
-a variable nor can it call a function which (directly or indirectly)
-reads a variable.]
-
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -101,12 +96,6 @@ all of the components must have a default initialization.
 A default initialization, if present must also be in |SPARK|.
 
 |SPARK| does not permit partial default initialization of record objects.
-
-An expression occuring in the default_expression of a
-discriminant_specification or component_declaration which has a
-variable input is not in |SPARK|. [In other words, such an expression
-cannot read a variable nor can it call a function which (directly or indirectly)
-reads a variable.]
 
 Tagged Types and Type Extensions
 --------------------------------
