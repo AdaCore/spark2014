@@ -1,3 +1,5 @@
+other.adb:7:04: ineffective global import "X"
+other.adb:7:04: ineffective global import "Y"
 test.adb:20:12: called subprogram "Initialise" requires "global" aspect to make state visible
 test.adb:24:04: ineffective global import "Z"
 test.adb:24:04: global "Z" is not used
@@ -10,9 +12,6 @@ test.adb:52:12: called subprogram "Initialise" requires "global" aspect to make 
 test.adb:56:04: flow analysis of "Test_07" abandoned due to inconsistent graph
 test.adb:60:17: called subprogram "Get_X" requires "global" aspect to make state visible
 test.adb:60:31: called subprogram "Get_X" requires "global" aspect to make state visible
-other.adb:7:04: ineffective global import "X"
-other.adb:7:04: ineffective global import "Y"
 
 
 gnatprove: error during translation to intermediate language, aborting.
-
