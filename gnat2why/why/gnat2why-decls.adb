@@ -55,6 +55,7 @@ with Nlists;               use Nlists;
 with Sem_Util;             use Sem_Util;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Why.Gen.Terms;        use Why.Gen.Terms;
+with Ada.Text_IO;
 
 package body Gnat2Why.Decls is
 
@@ -408,6 +409,47 @@ package body Gnat2Why.Decls is
                                    (Domain          => EW_Term,
                                     Type_Definition => Corresponding_Type)));
 
+                  if Ekind (E) in Integer_Kind then
+                     Ada.Text_IO.Put_Line (Get_Name_String (Chars (E)));
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Function_Def
+                          (Domain      => EW_Term,
+                           Name        => To_Ident (WNE_To_Int),
+                           Binders     => (1 .. 1 => Binder),
+                           Return_Type => New_Base_Type (Base_Type => EW_Int),
+                           Def         =>
+                             New_Call
+                               (Domain   => EW_Term,
+                                Binders  => (1 .. 1 => Binder),
+                                Name     =>
+                                  New_Identifier (Name => Type_Name & "__" &
+                                                    To_String (WNE_To_Int),
+                                                  Context => Clone_Name))));
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Function_Def
+                          (Domain      => EW_Term,
+                           Name        => To_Ident (WNE_Of_Int),
+                           Binders     =>
+                             (1 .. 1 =>
+                                Binder_Type'(
+                                  B_Name => New_Identifier
+                                    (Name => Type_Name & "__x"),
+                                  B_Type => New_Base_Type
+                                    (Base_Type => EW_Int),
+                                  others => <>)),
+                           Return_Type => Corresponding_Type,
+                           Def         =>
+                             New_Call
+                               (Domain   => EW_Term,
+                                Binders  => (1 .. 1 => Binder),
+                                Name     =>
+                                  New_Identifier (Name => Type_Name & "__" &
+                                                    To_String (WNE_Of_Int),
+                                                  Context => Clone_Name))));
+                  end if;
+
                   if Nkind (Node) = N_Private_Type_Declaration
                     and then Present (Discriminant_Specifications (Node))
                   then
@@ -687,6 +729,9 @@ package body Gnat2Why.Decls is
            (CurAssoc : Node_Id;
             CurLabs  : Node_Id) return Node_Id;
 
+         function Subst_Length (Assoc : List_Id;
+                                Labs  : List_Id) return Integer;
+
          function Get_Assoc_From_Param
            (CurAssoc : Node_Id;
             CurLabs  : Node_Id) return Node_Id is
@@ -694,28 +739,38 @@ package body Gnat2Why.Decls is
               Selector_Name (CurAssoc);
          begin
             if Present (Potential_Assoc) then
-               --  Get_Unqualified_Name_String (Chars (Potential_Assoc));
-               --  Ada.Text_IO.Put_Line
-               --    ("Param : " & Ada.Strings.Fixed.Translate
-               --       (Name_Buffer (1 .. Name_Len),
-               --        Ada.Strings.Maps.Constants.Lower_Case_Map));
                return Entity (Potential_Assoc);
             else
-               --  Get_Unqualified_Name_String
-               --    (Chars (Defining_Identifier (CurLabs)));
-               --  Ada.Text_IO.Put_Line
-               --    ("Param : " & Ada.Strings.Fixed.Translate
-               --       (Name_Buffer (1 .. Name_Len),
-               --        Ada.Strings.Maps.Constants.Lower_Case_Map));
                return Defining_Entity (CurLabs);
             end if;
          end Get_Assoc_From_Param;
+
+         function Subst_Length (Assoc : List_Id;
+                                Labs  : List_Id) return Integer is
+            Current  : Integer := 0;
+            CurAssoc : Node_Id := First (Assoc);
+            CurLabs  : Node_Id := First (Labs);
+         begin
+            while Present (CurAssoc) loop
+               case Ekind (Get_Assoc_From_Param (CurAssoc, CurLabs)) is
+                  when Integer_Kind => Current := Current + 5;
+                  when others => Current := Current + 1;
+               end case;
+               Next (CurAssoc);
+               Next (CurLabs);
+            end loop;
+            while Present (CurLabs) loop
+               Current := Current + 1;
+               Next (CurLabs);
+            end loop;
+            return Current;
+         end Subst_Length;
 
          CurAssoc : Node_Id;
          CurLabs  : Node_Id;
          Current  : Integer := 1;
          Reps : W_Clone_Substitution_Array :=
-           (1 .. (Standard.Integer (List_Length (Assoc))) => <>);
+           (1 .. Subst_Length (Assoc, Labs) => <>);
       begin
          Current := 1;
          CurAssoc := First (Assoc);
@@ -737,11 +792,53 @@ package body Gnat2Why.Decls is
             begin
                case Ekind (Formal) is
                   when Type_Kind =>
-                     Reps (Current) := New_Clone_Substitution
-                       (Kind      => EW_Type_Subst,
-                        Orig_Name => New_Identifier
-                          (Name => Short_Name (Formal)),
-                        Image     => Actual);
+                     if Ekind (Formal) in Integer_Kind then
+                        Reps (Current) := New_Clone_Substitution
+                          (Kind      => EW_Type_Subst,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal)),
+                           Image     => Actual);
+                        Reps (Current + 1) := New_Clone_Substitution
+                          (Kind      => EW_Function,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal) &  "__" &
+                                To_String (WNE_To_Int)),
+                           Image     => New_Identifier
+                             (Context => Full_Name (Entity (Param)),
+                              Name => To_String (WNE_To_Int)));
+                        Reps (Current + 2) := New_Clone_Substitution
+                          (Kind      => EW_Function,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal) &  "__" &
+                                To_String (WNE_Of_Int)),
+                           Image     => New_Identifier
+                             (Context => Full_Name (Entity (Param)),
+                              Name => To_String (WNE_Of_Int)));
+                        Reps (Current + 3) := New_Clone_Substitution
+                          (Kind      => EW_Function,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal) &  "__" &
+                                To_String (WNE_Attr_First)),
+                           Image     => New_Identifier
+                             (Context => Full_Name (Entity (Param)),
+                              Name => To_String (WNE_Attr_First)));
+                        Reps (Current + 4) := New_Clone_Substitution
+                          (Kind      => EW_Function,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal) &  "__" &
+                                To_String (WNE_Attr_Last)),
+                           Image     => New_Identifier
+                             (Context => Full_Name (Entity (Param)),
+                              Name => To_String (WNE_Attr_Last)));
+                        Current := Current + 5;
+                     else
+                        Reps (Current) := New_Clone_Substitution
+                          (Kind      => EW_Type_Subst,
+                           Orig_Name => New_Identifier
+                             (Name => Short_Name (Formal)),
+                           Image     => Actual);
+                        Current := Current + 1;
+                     end if;
                      Open_Theory
                        (TFile, Theory_Name,
                         Comment => "Formal Parameter");
@@ -771,13 +868,13 @@ package body Gnat2Why.Decls is
                         Orig_Name => New_Identifier
                           (Name => Short_Name (Formal)),
                         Image     => Actual);
+                     Current := Current + 1;
                   when others =>
                      raise Program_Error;
                end case;
             end;
             Next (CurAssoc);
             Next (CurLabs);
-            Current := Current + 1;
          end loop;
          return Reps;
       end Parse_Parameters;
@@ -795,7 +892,7 @@ package body Gnat2Why.Decls is
         (Parent (Generic_Parent (Parent (Package_Entity))))));
       TFile : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
    begin
-      --  Ada.Text_IO.Put_Line ("--------- + --------");
+      Ada.Text_IO.Put_Line ("--------- + --------");
       Open_Theory (TFile, Clone_Name,
                    Comment => "Clone of " & Generic_Name & ".mlw");
 
@@ -814,7 +911,7 @@ package body Gnat2Why.Decls is
                     Defined_Entity => Package_Entity);
 
       Parse_Declarations (Decls, Clone_Name);
-      --  Ada.Text_IO.Put_Line ("--------- - --------");
+      Ada.Text_IO.Put_Line ("--------- - --------");
    end Translate_Container_Package;
 
    ---------------------------
