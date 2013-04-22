@@ -636,12 +636,12 @@ Ghost Entities
 Often extra entities, such as types, variables and functions may be required
 only for test and verification purposes. Such entities are termed *ghost*
 entities and their use should be restricted to places where they do not affect
-the functionality of the program. They could be completely
+the functionality of the program, which means they could be completely
 removed from the program without any functional impact.
 
 |SPARK| supports ghost functions which may be executable or
 non-executable. Non-executable ghost functions have no implementation and can be
-used for the purposes of formal verification only. Such functions have to be
+used for the purposes of formal verification only. Such functions may
 defined within an external proof tool to facilitate formal verification.
 
 Any function, ghost or otherwise, may have its specification defined within an
@@ -668,43 +668,42 @@ Constructive, Generative and Retrospective Analysis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SPARK 2005 strongly favored the *constructive* analysis style where all
-program units required contracts to be provided on their specifications.  The
-contracts are needed to perform in-depth static analysis and formal verification.
-These contracts had to be designed and added at an early stage to assist modular
+program units required contracts to be provided on their specifications.  Under
+this constructive analysis style,
+these contracts had to be designed and added at an early stage to assist modular
 analysis and verification, and then maintained by the user as a program evolved.
 When the body is implemented (or modified) it is checked that it conforms to its
-contract.
+contract. However, SPARK 2005 also provided the facility to implicitly synthesize
+dependency relations -- if they are not explicitly provided -- for a subprogram from
+its body (provided the contracts of any subprograms it calls are specified or have already been generated). The synthesized dependency relations can then be used in the analysis of calling subprograms and so on.
 
-However, some of these contracts -- if they are not explicitly provided -- can be implicitly
-synthesized for a subprogram from its body (provided the contracts of any subprograms it calls
-are specified or have already been generated).
-The contracts can then be used in the analysis of calling subprograms and so on.
-In |SPARK| the contracts which may be synthesized from an implemented subprogram
-body are the global specification and the dependency relation.
-It may be possible to generate some of the package contracts also once the
-package body and its private dependents have been implemented.
-
-Unlike the Global and Depends aspects used in flow analysis, the |SPARK| tools
+In |SPARK| both the global specification and the dependency relation may be synthesized from an implemented subprogram body.
+It may also be possible to generate some of the package contracts once the
+package body and its private dependents have been implemented. However, the |SPARK| tools
 will not attempt to automatically synthesize for a given subprogram body the
 other aspects (i.e. Pre and Post), which define the subprogram's contract for
-the purpose of formal verification.
+the purpose of formal verification. In addition, |SPARK| obviously also supports the
+constructive analysis style.
 
-There are three main use cases where generation of contracts are required:
+There are three main use cases where generation of contracts is likely to be required:
 
 - Code has been developed as |SPARK| but in order to reduce costs not all
-  the contracts are included on all subprograms by the developer.
+  the contracts are included on all subprograms by the developer. This is regarded
+  as *generative* analysis, where the code was written with the intention that
+  it would be analyzed but not all contracts are present.
 
 - Code is in maintenance phase, it may or may not have complete contracts.
   If the contracts are complete, the generated contracts may be compared with
   the given contracts and auto correction used to update the contracts if the
   changes are acceptable.
   If the contracts are incomplete they are automatically generated for analysis
-  purposes.
+  purposes. This is regarded
+  as *generative* analysis, where the code was written with the intention that
+  it would be analyzed but not all contracts are present.
 
-- Legacy code is analyzed which has no or incomplete contracts.
-
-Hence, as well as still fully supporting the constructive development mode,
-|SPARK| is designed to facilitate the generation of contracts, which supports retrospective analysis.
+- Legacy code is analyzed which has no or incomplete contracts. This is regarded
+  as *retrospective* analysis, where code is being analyzed that was not originally
+  written with analysis in mind.
 
 Note that in the case where legacy code is being analyzed there may be a mix of
 |SPARK| and non-|SPARK| code (and so there is an interaction with the detail
