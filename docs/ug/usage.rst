@@ -193,10 +193,12 @@ which can be obtained by a right click:
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in
 ``Project --> Edit Project Properties --> Switches``).
 
-For unproved VCs, you can see in GPS a path for which |GNATprove| does not
-manage to prove the VC. This can be achieved by right-clicking on the message
-for the unproved VC in the location view, and choosing ``Prove --> Show
-Path``.
+In some proof modes (``--proof=then_split`` or ``--proof=all_split``),
+|GNATprove| attempts to prove checks separately for the possible paths leading to
+a check. If the proof fails on a specific path, the user can display this path
+in GPS by clicking on the icon to the left of the failed proof message, or to
+the left of the corresponding line in the editor. The path is hidden again when
+re-clicking on the same icon.
 
 We recommend that you enable the option ``Draw current line as a thin line``
 (in ``Edit --> Preferences --> Editor --> Fonts & Colors``) so that GPS does not
