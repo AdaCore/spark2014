@@ -55,7 +55,6 @@ with Nlists;               use Nlists;
 with Sem_Util;             use Sem_Util;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Why.Gen.Terms;        use Why.Gen.Terms;
-with Ada.Text_IO;
 
 package body Gnat2Why.Decls is
 
@@ -410,7 +409,6 @@ package body Gnat2Why.Decls is
                                     Type_Definition => Corresponding_Type)));
 
                   if Ekind (E) in Integer_Kind then
-                     Ada.Text_IO.Put_Line (Get_Name_String (Chars (E)));
                      Emit
                        (TFile.Cur_Theory,
                         New_Function_Def
@@ -892,7 +890,7 @@ package body Gnat2Why.Decls is
         (Parent (Generic_Parent (Parent (Package_Entity))))));
       TFile : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
    begin
-      Ada.Text_IO.Put_Line ("--------- + --------");
+      --  Ada.Text_IO.Put_Line ("--------- + --------");
       Open_Theory (TFile, Clone_Name,
                    Comment => "Clone of " & Generic_Name & ".mlw");
 
@@ -911,7 +909,7 @@ package body Gnat2Why.Decls is
                     Defined_Entity => Package_Entity);
 
       Parse_Declarations (Decls, Clone_Name);
-      Ada.Text_IO.Put_Line ("--------- - --------");
+      --  Ada.Text_IO.Put_Line ("--------- - --------");
    end Translate_Container_Package;
 
    ---------------------------
