@@ -639,22 +639,23 @@ entities and their use should be restricted to places where they do not affect
 the functionality of the program, which means they could be completely
 removed from the program without any functional impact.
 
-|SPARK| supports ghost functions which may be executable or
+|SPARK| supports ghost functions that may be executable or
 non-executable. Non-executable ghost functions have no implementation and can be
-used for the purposes of formal verification only. Such functions may
-defined within an external proof tool to facilitate formal verification.
-
-Any function, ghost or otherwise, may have its specification defined within an
-external proof tool for formal verification purposes. The specification is
+used for the purposes of formal verification only. Such functions may have their
+specification defined within an external proof tool to facilitate formal verification.
+This specification is
 outside of the |SPARK| language and toolset and therefore cannot be checked by
-these. An unsound definition may lead to an unsound proof which is of no use.
+the tools. An unsound definition may lead to an unsound proof which is of no use.
 Ideally any definition will be checked for soundness by the external proof
 tools.
 
 If a function can be specified in |SPARK|, then its specification can be recast
-as the expression of an expression function without further implementation.
-This may not give the most efficient implementation but if the function is a
-ghost function it may be sufficient.
+as the expression of an expression function, without needing to provide
+an implementation for that specification.
+This means the use of ghost functions can avoid the need to provide implementations
+for functions used only in proof contexts:
+the use of an expression function in this way may not give the most efficient
+implementation but if the function is a ghost function it should not matter.
 
 *Further Ghost entities are to be added in future drafts of this document.*
 
