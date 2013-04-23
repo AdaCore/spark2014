@@ -328,15 +328,15 @@ package body Flow.Utility is
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
    is
-      Bottom_Node   : Node_Id;
-      End_Of_Record : Node_Id;
-
       procedure Find_Bottom_Node (N             : Node_Id;
                                   Bottom_Node   : out Node_Id;
-                                  End_Of_Record : out Node_Id);
+                                  End_Of_Record : out Node_Id;
+                                  Partial_Use   : out Boolean);
       --  This procedure returns the bottom node of the subtree and
-      --  finds the end of the outermost record node.
-
+      --  finds the end of the outermost record node. We also detect
+      --  if the end of record node is a partial use (array indexing)
+      --  or entire use.
+      --
       --  Let's consider the parse tree for P.R.A (I).A (J).X
       --  In the following parse tree 'i' represents an indexed
       --  component and s represents a selected component.
@@ -355,6 +355,9 @@ package body Flow.Utility is
       --                          s   A
       --                         / \
       --      Bottom_Node --->  P   R
+      --
+      --  In this example Partial_Use would be True. If we had been
+      --  given only P.R.A Partial_Use would be False.
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Traverses a subtree and adds each variable found inside
@@ -365,49 +368,25 @@ package body Flow.Utility is
       -- Find_Top_Node --
       -------------------
 
-      procedure Find_Bottom_Node (N             : Node_Id;
-                                  Bottom_Node   : out Node_Id;
-                                  End_Of_Record : out Node_Id)
-      is
-         Temp_Node : Node_Id := N;
-
-         function Has_Prefix (N : Node_Id) return Boolean;
-         --  Return True if N has attribute Prefix
-
-         ----------------
-         -- Has_Prefix --
-         ----------------
-
-         function Has_Prefix (N : Node_Id) return Boolean is
-         begin
-            return
-              Nkind_In (N,
-                N_Indexed_Component,
-                N_Selected_Component);
-         end Has_Prefix;
+      procedure Find_Bottom_Node
+        (N             : Node_Id;
+         Bottom_Node   : out Node_Id;
+         End_Of_Record : out Node_Id;
+         Partial_Use   : out Boolean) is
       begin
+         Bottom_Node   := N;
          End_Of_Record := N;
-         --  Initially we set First_Non_Record to N
+         Partial_Use   := False;
 
-         while Has_Prefix (Temp_Node) loop
-            if Nkind (Temp_Node) = N_Indexed_Component then
-               End_Of_Record := Temp_Node;
+         while Nkind (Bottom_Node) in
+           N_Indexed_Component | N_Selected_Component
+         loop
+            if Nkind (Bottom_Node) = N_Indexed_Component then
+               End_Of_Record := Prefix (Bottom_Node);
+               Partial_Use   := True;
             end if;
-            --  If we find a node that is an array, we update
-            --  End_Of_Record with it.
-
-            Temp_Node := Prefix (Temp_Node);
+            Bottom_Node := Prefix (Bottom_Node);
          end loop;
-
-         if End_Of_Record /= N then
-            End_Of_Record := Prefix (End_Of_Record);
-         end if;
-         --  If we did actually find a node that is an array then
-         --  we need to go one level further down.
-
-         Bottom_Node := Temp_Node;
-         --  Bottom_Node now holds the leftmost item of the
-         --  declaration.
       end Find_Bottom_Node;
 
       ----------
@@ -418,30 +397,84 @@ package body Flow.Utility is
       begin
          if Nkind (N) = N_Indexed_Component then
             Vars_Used.Union (Get_Variable_Set (Expressions (N)));
+            return Skip;
+         else
+            return OK;
          end if;
-         return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_Proc (Proc);
+      procedure Merge_Index_Expressions is new Traverse_Proc (Proc);
+
+      Bottom_Node   : Node_Id;
+      End_Of_Record : Node_Id;
+      Partial_Use   : Boolean;
+
    begin
+      Vars_Used    := Flow_Id_Sets.Empty_Set;
+      Vars_Defined := Flow_Id_Sets.Empty_Set;
+
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
             --  X :=
             Vars_Defined := Get_Variable_Set (N);
+
          when N_Selected_Component | N_Indexed_Component =>
             --  R.A :=
             --  A (...) :=
-            Traverse (N);
-            Find_Bottom_Node (N, Bottom_Node, End_Of_Record);
-            if Nkind (Parent (Bottom_Node)) = N_Selected_Component then
-               Vars_Defined.Union (All_Record_Components
-                 (Record_Field_Id (End_Of_Record)));
-            else
-               Vars_Defined.Insert (Direct_Mapping_Id (Entity
-                 (Bottom_Node)));
-               Vars_Used.Insert (Direct_Mapping_Id (Entity
-                 (Bottom_Node)));
-            end if;
+
+            --  First we collect all variables used in any index
+            --  expression, as they are always used.
+            --
+            --  So out of A (X + B (Y)).B (I) we call Get_Variable_Set
+            --  on X + B (Y) and I and add this to Vars_Used.
+
+            Merge_Index_Expressions (N);
+
+            --  We now need to work out what we're ultimately dealing
+            --  with. Bottom_Node is the entire variable and
+            --  End_Of_Record points to either the entire variable or
+            --  the last N_Selected_Component flow analysis will care
+            --  about.
+
+            Find_Bottom_Node (N, Bottom_Node, End_Of_Record, Partial_Use);
+
+            --  We may be dealing with some record field. For example:
+            --
+            --     R.A
+            --     R.A (12)
+            --     R.A (12).Specific_Field
+            --
+            --  In all of these End_Of_Record will point to R.A.
+            --
+            --  There is the possibility that we are still dealing
+            --  with more than one variable, for example if R.X.A and
+            --  R.X.B exist then R.X will deal with both of the above.
+            --
+            --  We are interested it what comes next. For example with
+            --  R.A we just define R.A, but with R.A (12) we define
+            --  and use it. The Partial_Use flag keeps track of this.
+
+            case Nkind (End_Of_Record) is
+               when N_Selected_Component =>
+                  Vars_Defined.Union (All_Record_Components
+                                        (Record_Field_Id (End_Of_Record)));
+                  if Partial_Use then
+                     Vars_Used.Union (All_Record_Components
+                                        (Record_Field_Id (End_Of_Record)));
+                  end if;
+
+               when N_Indexed_Component =>
+                  raise Program_Error;
+
+               when others =>
+                  Vars_Defined.Insert
+                    (Direct_Mapping_Id (Entity (End_Of_Record)));
+                  if Partial_Use then
+                     Vars_Used.Insert
+                       (Direct_Mapping_Id (Entity (End_Of_Record)));
+                  end if;
+            end case;
+
          when others =>
             raise Why.Unexpected_Node;
       end case;
