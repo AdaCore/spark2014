@@ -1,0 +1,8 @@
+
+parse.adb:12:20: info: precondition proved
+parse.adb:47:18: info: precondition proved
+parse.adb:50:42: info: range check proved
+parse.adb:57:16: info: precondition proved
+parse.adb:63:16: info: precondition proved
+parse.adb:69:16: info: precondition proved
+util.adb:7:36: info: index check proved
