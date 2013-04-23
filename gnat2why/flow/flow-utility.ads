@@ -51,7 +51,8 @@ package Flow.Utility is
       Vars_Used    : out Flow_Id_Sets.Set)
       with Pre => Nkind (N) in N_Identifier |
                                N_Selected_Component |
-                               N_Indexed_Component,
+                               N_Indexed_Component |
+                               N_Slice,
            Post => Vars_Defined.Length >= 1;
    --  Given the target of an assignment (perhaps the left-hand-side
    --  of an assignment statement or an out vertex in a procedure

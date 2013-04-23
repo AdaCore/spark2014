@@ -397,9 +397,9 @@ package body Flow.Utility is
          Partial_Use   := False;
 
          while Nkind (Bottom_Node) in
-           N_Indexed_Component | N_Selected_Component
+           N_Indexed_Component | N_Selected_Component | N_Slice
          loop
-            if Nkind (Bottom_Node) = N_Indexed_Component then
+            if Nkind (Bottom_Node) in N_Indexed_Component | N_Slice then
                End_Of_Record := Prefix (Bottom_Node);
                Partial_Use   := True;
             end if;
@@ -413,15 +413,19 @@ package body Flow.Utility is
 
       function Proc (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) = N_Indexed_Component then
-            Vars_Used.Union (Get_Variable_Set (Expressions (N)));
-            return Skip;
-         else
-            return OK;
-         end if;
+         case Nkind (N) is
+            when N_Indexed_Component =>
+               Vars_Used.Union (Get_Variable_Set (Expressions (N)));
+               return Skip;
+            when N_Slice =>
+               Vars_Used.Union (Get_Variable_Set (Discrete_Range (N)));
+               return Skip;
+            when others =>
+               return OK;
+         end case;
       end Proc;
 
-      procedure Merge_Index_Expressions is new Traverse_Proc (Proc);
+      procedure Merge_Array_Expressions is new Traverse_Proc (Proc);
 
       Bottom_Node   : Node_Id;
       End_Of_Record : Node_Id;
@@ -440,17 +444,17 @@ package body Flow.Utility is
             --  X :=
             Vars_Defined := Get_Variable_Set (N);
 
-         when N_Selected_Component | N_Indexed_Component =>
+         when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
             --  A (...) :=
 
             --  First we collect all variables used in any index
-            --  expression, as they are always used.
+            --  expression or a slice range, as they are always used.
             --
             --  So out of A (X + B (Y)).B (I) we call Get_Variable_Set
             --  on X + B (Y) and I and add this to Vars_Used.
 
-            Merge_Index_Expressions (N);
+            Merge_Array_Expressions (N);
 
             --  We now need to work out what we're ultimately dealing
             --  with. Bottom_Node is the entire variable and
@@ -485,7 +489,7 @@ package body Flow.Utility is
                                         (Record_Field_Id (End_Of_Record)));
                   end if;
 
-               when N_Indexed_Component =>
+               when N_Indexed_Component | N_Slice =>
                   raise Program_Error;
 
                when others =>
