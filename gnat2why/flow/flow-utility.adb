@@ -29,9 +29,23 @@ with Treepr;   use Treepr;
 
 with Why;
 
+with Flow.Debug; use Flow.Debug;
+
 package body Flow.Utility is
 
    use type Flow_Id_Sets.Set;
+
+   ----------------------------------------------------------------------
+   --  Debug
+   ----------------------------------------------------------------------
+
+   Debug_Trace_Untangle : constant Boolean := False;
+   --  Enable this to print the tree and def/use sets in each call of
+   --  Untangle_Assignment_Target.
+
+   ----------------------------------------------------------------------
+   --  Local
+   ----------------------------------------------------------------------
 
    function All_Record_Components
      (Entire_Var : Entity_Id)
@@ -144,6 +158,10 @@ package body Flow.Utility is
                       Entity_Lists.Empty_Vector);
       return All_Comp;
    end All_Record_Components;
+
+   ----------------------------------------------------------------------
+   --  Package
+   ----------------------------------------------------------------------
 
    ------------------------
    --  Get_Variable_Set  --
@@ -413,6 +431,10 @@ package body Flow.Utility is
       Vars_Used    := Flow_Id_Sets.Empty_Set;
       Vars_Defined := Flow_Id_Sets.Empty_Set;
 
+      if Debug_Trace_Untangle then
+         Print_Node_Subtree (N);
+      end if;
+
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
             --  X :=
@@ -478,6 +500,11 @@ package body Flow.Utility is
          when others =>
             raise Why.Unexpected_Node;
       end case;
+
+      if Debug_Trace_Untangle then
+         Print_Node_Set (Vars_Used);
+         Print_Node_Set (Vars_Defined);
+      end if;
    end Untangle_Assignment_Target;
 
 end Flow.Utility;
