@@ -31,8 +31,9 @@ with Treepr;   use Treepr;
 with Flow.Debug; use Flow.Debug;
 pragma Unreferenced (Flow.Debug);
 
-with Flow.Utility;                    use Flow.Utility;
+with Flow.Antialiasing;               use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility; use Flow.Control_Flow_Graph.Utility;
+with Flow.Utility;                    use Flow.Utility;
 
 with Why;
 
@@ -1732,6 +1733,10 @@ package body Flow.Control_Flow_Graph is
          when N_Pragma =>
             Do_Pragma (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>
+            --  Check for aliasing first
+            Check_Procedure_Call (N, FA.Aliasing_Present);
+
+            --  Then process the procedure call
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);

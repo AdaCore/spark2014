@@ -375,6 +375,7 @@ package body Flow.Analysis is
 
       --  Sanity check all vertices if they mention a flow id that we
       --  do not know about.
+
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             A : constant V_Attributes := FA.CFG.Get_Attributes (V);
@@ -410,10 +411,25 @@ package body Flow.Analysis is
       if not Sane then
          Error_Msg_Flow
            ("flow analysis of & abandoned due to inconsistent graph",
+            FA.Start_Vertex,
+            Direct_Mapping_Id (FA.Subprogram));
+         return;
+      end if;
+
+      --  Sanity check for aliasing.
+
+      pragma Assert (Sane);
+
+      if FA.Aliasing_Present then
+         Error_Msg_Flow
+           ("flow analysis of & abandoned due aliasing",
             FA.CFG,
             FA.Start_Vertex,
             Direct_Mapping_Id (FA.Subprogram));
+         Sane := False;
+         return;
       end if;
+
    end Sanity_Check;
 
    ------------------------------

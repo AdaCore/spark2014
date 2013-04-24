@@ -967,17 +967,18 @@ package body Flow is
       FA     : Flow_Analysis_Graphs;
    begin
       FA := Flow_Analysis_Graphs'
-        (Subprogram   => E,
-         Start_Vertex => Null_Vertex,
-         End_Vertex   => Null_Vertex,
-         CFG          => Create,
-         DDG          => Create,
-         CDG          => Create,
-         TDG          => Create,
-         PDG          => Create,
-         All_Vars     => Flow_Id_Sets.Empty_Set,
-         Loops        => Node_Sets.Empty_Set,
-         Magic_Source => Calculate_Magic_Mapping (Body_N));
+        (Subprogram       => E,
+         Start_Vertex     => Null_Vertex,
+         End_Vertex       => Null_Vertex,
+         CFG              => Create,
+         DDG              => Create,
+         CDG              => Create,
+         TDG              => Create,
+         PDG              => Create,
+         All_Vars         => Flow_Id_Sets.Empty_Set,
+         Loops            => Node_Sets.Empty_Set,
+         Magic_Source     => Calculate_Magic_Mapping (Body_N),
+         Aliasing_Present => False);
 
       if Debug_Print_Magic_Source_Set then
          for C in FA.Magic_Source.Iterate loop
