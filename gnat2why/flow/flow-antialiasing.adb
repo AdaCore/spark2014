@@ -132,6 +132,23 @@ package body Flow.Antialiasing is
       Find_Actual (Actual, Formal, Call);
       Is_Out := Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter;
 
+      --  The general idea here is to make sure none of the globals
+      --  and parameters overlap. If we have a procedure with
+      --  parameters X, Y and Z and globals A and B, then we check the
+      --  following:
+      --
+      --     X v.s. (Y, Z, A, B)
+      --     Y v.s. (   Z, A, B)
+      --     Z v.s. (      A, B)
+      --
+      --  In particular we do not check the globals against each other
+      --  and we do not check combinations of parameters which we have
+      --  already seen. This is implemented by this procedure having
+      --  the same loop as
+      --  Check_Parameter_Against_Parameters_And_Globals and by only
+      --  checking parameters once we have seen our parameter we
+      --  compare against.
+
       --  Check against parameters.
 
       declare
