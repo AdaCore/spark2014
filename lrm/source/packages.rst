@@ -22,23 +22,25 @@ Package Specifications and Declarations
 Abstraction of State
 ~~~~~~~~~~~~~~~~~~~~
 
-The variables declared immediately within a package Q, its embedded
-packages and its private descendants constitute the state of Q.
+The variables declared immediately within a package and package declarations
+nested immediately therein constitute the *global state* of a package. Only part
+of the global state of a package may be visible to a client of a package;
+specifically the variables which are declared in the visible part of the
+package. The declarations of all other variables of the global state of the
+package are *hidden* from a client. 
 
-The variable declarations are only visible to clients of Q if they
-are declared in the visible part of Q.  The
-declarations of all other variables are *hidden* from a client of Q.
-Though the variables are hidden they still form part (or all) of the
-state of Q and this *hidden state* cannot be ignored for static analysis
-and proof.  *State abstraction* is the means by which this hidden state
-is managed for static analysis and proof.
+Though the variables are hidden they still form part (or all) of the global
+state of the package and this *hidden state* cannot be ignored for flow analysis
+and proof.
 
-|SPARK| extends the concept of state abstraction to provide
-hierarchical data abstraction whereby the hidden state of a package Q
-may be refined over a tree of private descendants or embedded packages
-of Q.  This provides data refinement similar to the refinement
-available to types whereby a record may contain fields which are
-themselves records.
+State abstraction is the means by which this hidden state is managed for flow
+analysis and proof. |SPARK| extends the concept of state abstraction to
+provide hierarchical data abstraction whereby the state abstraction declared in
+a package may contain the global state of other packages given certain
+restrictions described in (). This provides data refinement similar to the
+refinement available to types whereby a record may contain fields which are
+themselves records. 
+
 
 Volatile State
 ~~~~~~~~~~~~~~
@@ -227,31 +229,36 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-State abstraction provides a mechanism for naming, in a package's
-visible part, state (typically a collection of variables) that will be
-declared within the package's body, private part, packages nested within
-these, or within private descendants of the package. For example, a package
-declares a visible procedure and we wish to specify the set of global variables
-that the procedure reads and writes as part of the specification of the
-subprogram. Those variables cannot be named directly in the package
+State abstraction provides a mechanism for naming, in a package’s visible part,
+state (typically a collection of variables) that will be declared within the
+package’s body (its hidden state). For example, a package declares a visible
+procedure and we wish to specify the set of global variables that the procedure
+reads and writes as part of the specification of the subprogram. The variables
+declared in the package body cannot be named directly in the package
 specification. Instead, we introduce a state abstraction which is visible in the
 package specification and later, when the package body is declared, we specify
-the set of variables that *constitute* or *implement* the state abstraction. If
-immediately within a package body, for example, a nested_package is declared, 
-then a state abstraction of the inner package may also be part of the 
+the set of variables that *constitute* or *implement* the state abstraction.
+
+If immediately within a package body, for example, a nested_package is declared,
+then a state abstraction of the inner package may also be part of the
 implementation of the given state abstraction of the outer package.
 
 The hidden state of a package may be represented by one or more state
 abstractions, with each pair of state abstractions representing disjoint sets of
-hidden variables.
+hidden variables. 
 
-If a subprogram P with a Global aspect is declared in the
-visible part of a package and P reads or updates any of the hidden
-state of the package then P must denote in its Global aspect the
-state abstractions with the correct mode that represent the hidden
-state referenced by P.  If P has a Depends aspect then the state abstractions
-state names must be denoted as inputs and outputs of P, as appropriate, in
-the ``dependency_relation`` of the Depends aspect.
+If a subprogram P with a Global aspect is declared in the visible part of a
+package and P reads or updates any of the hidden state of the package then P
+must denote in its Global aspect the state abstractions with the correct mode
+that represent the hidden state referenced by P. If P has a Depends aspect then
+the state abstractions state names must be denoted as inputs and outputs of P,
+as appropriate, in the ``dependency_relation`` of the Depends aspect.
+
+|SPARK| facilitates the specification of a hierarchy of state abstractions by
+allowing a single state abstraction to contain visible state of private child
+units and descendants thereof. Each state abstraction or visible variable of a
+private child or descendant thereof has to be designated as being *part of* a
+state abstraction of a unit which is more visible than itself.
 
 The Abstract State aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the ``aspect_definition`` 
@@ -314,16 +321,16 @@ must follow the grammar of ``abstract_state_list`` given below.
 
       :Trace Unit: 7.1.2 LR name_value_property identifier must be Part_Of
       
-#. A ``name_value_property`` with an ``identifier`` of Part_Of shall only
-   but always appear in a non-null Abstract_State aspect of:
+#. A ``name_value_property`` with an ``identifier`` of Part_Of shall appear in
+   a non-null Abstract_State aspect if and only if it is declared in:
      
-   * a private child unit and its descendants;
+   * a private child unit or a descendant of a private child unit;
    
-   * a package declared within the visible part or nested packages declared 
-     therein of a private child unit and its descendants; or
+   * a package declared within the visible part or a nested package declared 
+     therein of a private child unit or one of its descendants; or
      
-   * a package declared in the private part of a package or packages declared 
-     therein. 
+   * a package declared in the private part of a package or a nested package 
+     declared therein. 
      
    The expression of such a ``name_value_property`` must denote a state 
    abstraction.
@@ -342,18 +349,22 @@ must follow the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Static Semantics**
 
-#. The visible state and state abstractions of a package P consist of:
 
-   * any state abstractions declared by the Abstract State aspect
-     specification (if any) of package P; and
-   * the visible state and state abstractions of any packages declared
+#. The visible state of a package P consists of:
+   
+   * the variables declared in the visible part of package P, the 
+     state abstractions declared by the Abstract State aspect specification
+     (if any) of package P; and
+     
+   * the visible state and state abstractions of any nested packages declared 
      immediately within the visible part of P.
-
+     
 #. The hidden state of a package P consists of:
 
-   * the visible state and state abstractions of any packages declared
-     immediately within the private part or body of P, and of any
-     private child units of P and of their descendants.
+   * the variables declared in the private part or body of P; and 
+   
+   * the visible state and state abstractions of any nested packages declared
+     immediately within the private part or body of P.
 
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
@@ -385,10 +396,9 @@ must follow the grammar of ``abstract_state_list`` given below.
    that includes the Volatile ``property``, and either Input or Output.
    
 #. A state abstraction which is declared with a ``property_list`` that includes
-   a Part_Of ``name_value_property``  indicates that it is a 
-   constituent (see :ref:`state_refinement`) of the state abstraction denoted 
-   by the expression of the ``name_value_property`` and only that state 
-   abstraction.
+   a Part_Of ``name_value_property`` indicates that it is a constituent (see
+   :ref:`state_refinement`) exclusively of the state abstraction denoted by the
+   expression of the ``name_value_property``.
    
       
 .. centered:: **Verification Rules**
@@ -462,10 +472,10 @@ specified directly as part of declaration.
 #. The Part_Of aspect requires an ``aspect_definition`` which denotes
    a state abstraction.
 
-#. A Part_Of aspect shall only but must appear in the ``aspect_specification`` 
-   of a variable declared in:
+#. A Part_Of aspect shall appear in the ``aspect_specification`` of a variable
+   if and only if it is declared in:
    
-   * the private part of a package; and 
+   * the private part of a package; or 
 
    * the visible part of a package declared in the private part of a package and
      package declarations nested therein; or
@@ -565,7 +575,7 @@ grammar of ``initialization_spec`` given below.
    present.
    
 #. The Initializes aspect of a package has visibility of the declarations
-   occuring immediately within the visible part of the package.
+   occurring immediately within the visible part of the package.
 
 #. The ``name`` of each ``initialization_item`` denotes a state abstraction 
    declared in the same ``aspect_specification`` of a package or an entire 
@@ -615,7 +625,7 @@ There are no dynamic semantics associated with the Initializes Aspect.
    private descendants.
    
 #. If an ``initialization_item`` has a ``input_list`` then the entities denoted
-   in the input list shall be used in determining initailized value of the
+   in the input list shall be used in determining initialized value of the
    entity denoted by the ``name`` of the ``initialization_item``
 
 .. centered:: **Examples**
@@ -1070,37 +1080,40 @@ There are no dynamic semantics associated with state abstraction and refinement.
 Abstract State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Each item of visible state of a private library unit (and any descendants
+thereof) must be connected, directly or indirectly, to a 
+*specific state abstraction* of some public library unit. This is done using the
+Part_Of ``property`` or aspect, present at the point where each item of visible
+global state of the private unit is declared.
 
-Each item of visible global state (either abstract or associated with a visible
-global variable) of a private library unit (and any public descendants thereof)
-must be connected, directly or indirectly, to a *specific state abstraction* of 
-some public library unit. This is done using the Part_Of ``property`` or aspect, 
-present at the point where each item of global state of the private unit is 
-declared.
+The unit declaring the specific state abstraction identified by the Part_Of
+``property`` or aspect need not be its parent, but it must be a unit whose body
+has visibility on the private library unit, while being *more visible* than the
+original unit. Furthermore, the unit declaring the specific state abstraction
+must denote the the corresponding item of visible state in its Refined_State
+aspect to indicate that it includes this part of the visible state of the
+private unit. That is, the two specifications, one in the private unit, and one
+in the body of the (typically) public unit, must match one another.
 
-The unit declaring the state abstraction identified by this ``property`` or
-aspect need not be its parent, but it must be a unit whose body has visibility
-on the private library unit, while being *more visible* than the original unit,
-as # defined by the number of private ancestors that it has. Furthermore, the
-specified unit must refine the corresponding abstract state variable to indicate
-that it includes this part of the global state of the private unit. That is, the
-two specifications, one in the private unit, and one in the body of the
-(typically) public unit, must match one another.
+Hidden state declared in the private part of a unit also requires a Part_Of
+``property`` or aspect, but it must be connected to a specific state abstraction 
+of the same unit.
 
-The ``property`` or aspect Part_Of is used to specify state abstraction of the 
-(typically) public unit with which a private unit's global state item is 
+The ``property`` or aspect Part_Of is used to specify specific state abstraction 
+of the (typically) public unit with which a private unit's visible state item is 
 associated.
 
 To support multi-level hierarchies of private units, a private unit may connect
-its state to another private unit, so long as eventually the state gets
-connected to a public unit through a chain of connections. However, as indicated
-above, the unit through which the state is *exposed* must be more visible.
+its visible state to the state abstraction of another private unit, so long as 
+eventually the state gets connected to the state abstraction of a public unit 
+through a chain of connections. However, as indicated above, the unit through 
+which the state is *exposed* must be more visible.
 
-If a private library unit has global state, this state might be read or updated
+If a private library unit has visible state, this state might be read or updated
 as a side effect of calling a visible operation of a public library unit. This
-global state may be referenced, either separately or as part of the abstract
-state of some other public library unit. Rules are required to resolve aliasing
-and prevent a potential covert channel between state abstractions when:
+visible state may be referenced, either separately or as part of the state
+abstraction of some other public library unit. Rules are required to resolve 
+aliasing and prevent a potential covert channel between state abstractions when:
   
    * a state abstraction is visible; and
    
@@ -1111,63 +1124,70 @@ and prevent a potential covert channel between state abstractions when:
      of the state abstraction - there are effectively two entities representing
      part or all of the state abstraction.
     
+A variable or state abstraction declared in the private part of a unit is also
+required to be part of a state abstraction but in this case it may only be a
+part of a state abstraction declared by the same unit.
+
+.. centered:: **Static Semantics**
+
+#. A *Part_Of indicator* is a Part_Of ``property`` of a state abstraction 
+   declaration in an Abstract_State aspect or a Part_Of aspect applied to a 
+   variable declaration.  The Part_Of indicator denotes the specific state 
+   abstraction of which the declaration is a constituent. 
+   
+#. A unit is more visible than another if it has less private ancestors.
 
 .. centered:: **Legality Rules**
 
-#. A package specification with a state abstraction or variable declaration,
-   in its visible part, which has a Part_Of ``property`` or aspect shall have a 
-   ``limited_with_clause`` denoting the unit declaring the specific state 
-   abstraction denoted in the Part_Of ``property`` or aspect.
+#. Every private unit and each of its descendants that have visible state shall
+   for each declaration in the visible state:
+
+   * connect the declaration to a specific state abstraction by associating a
+     Part_Of indicator with the declaration;
    
-#. A unit with a declaration in its visible part with a Part_Of ``property`` 
-   or aspect denoting a specific state abstraction shall appear in a  
-   ``limited_with_clause`` of the unit declaring the specific state abstraction.
-    
-#. A variable or state abstraction declared within the private part of a unit
-   has a Part_Of ``property`` or aspect and the specific state abstraction 
-   denoted by this must be a state abstraction declared by the unit.
-    
-#. Every global state item that has a Part_Of ``property`` or aspect denoting
-   a specific state abstraction must be denoted as a constituent of the
-   specific state abstraction in the Refined_State aspect of the package body
-   of the unit declaring the specific state abstraction.  It shall not be 
-   denoted as a constituent of any other state abstraction. [The units denoting 
-   each specific state abstraction in a Part_Of ``property`` or aspect is
-   known from the ``limited_with_clause`` required on the specification of the 
-   unit declaring the specific state abstraction. The global state items 
-   declared in the private part of the unit are directly visible.]
+   * name a specific state abstraction in its Part_Of indicator if and only if 
+     the unit declaring the state abstraction is strictly more visible than the
+     unit containing the declaration; and
    
+   * require a ``limited_with_clause``, naming the unit containing the 
+     declaration, on the unit which declares the specific state abstraction
+     named in the Part_Of indicator associated with the declaration.
+     [It follows from the visibility rules that the unit containing the 
+     Part_Of indicator must name the unit declaring the specific state 
+     abstraction in a ``with_clause`` or ``limited_with_clause``.  This 
+     facilitates the checking of the presence of the complementary required
+     ``limited_with_clause``.]
+     
+#. Each item of hidden state declared in the private part of a unit shall have
+   a Part_Of indicator associated with the declaration which denotes a 
+   specific state abstraction of the same unit.
+   
+#. No other declarations shall have a Part_Of indicator.
+     
+#. The body of a unit whose specification declares a state abstraction named
+   as a specific state abstraction of a Part_Of indicator shall have
+   
+   * have a ``with_clause`` naming each unit, excluding itself, containing such
+     a Part_Of indicator; and
+     
+   * in its Refined_State aspect denote each declaration associated with such a
+     Part_Of indicator as a ``constituent`` exclusively of the specific state 
+     abstraction.
+   
+   [The units that need to be withed is known from the ``limited_with_clauses``
+   on its specification and from this it is known which declarations have a
+   Part_Of indicator for a specific state abstraction.]
+
 #. Other than in the body of a unit that contains the State_Refinement aspect
    which defines the constituents of a state abstraction, where both a state
    abstraction and one or more of its constituents are visible, only the
    state abstraction may be denoted in Global and Depends aspects of a 
    subprogram or the Initializes or Initial_Condition aspects of a package. 
+   [This rule still permits the denotation of either or both the state
+   abstraction and its constituents in the implementation of the subprogram or
+   package. The Part_Of indicator of the declaration of the constituent
+   facilitates resolution of the two views.]
    
-
-.. centered:: **Static Semantics**
-
-#. A ``limited_with_clause`` is required on the unit denoting the specific
-   state abstraction in a Part_Of ``property`` or aspect to give visibility of 
-   the state abstraction.
-   
-#. A unit declaring a state abstraction requires a ``limited_with_clause`` 
-   naming each unit which denotes the state abstraction as specific state
-   abstraction in a Part_Of ``property`` or aspect so that the unit is *aware* 
-   of all of the global state items that are part of (constituents of) its 
-   declared state abstraction.
-
-#.  The state declared in the private part of a package must be part of a 
-    state abstraction of that package.
-
-#. The legality rule that restricts the denotation of the state abstraction 
-   rather than its constituents in Global, Depends, Initializes and 
-   Initial_Condition aspects permits the denotation of either or both
-   the state abstraction and its constituents in the implementation of the 
-   subprogram or package. The Part_Of ``property`` or aspect of the constituent 
-   facilitates resolution of the
-   two views.
-    
-    
 .. centered:: **Examples**
 
 .. code-block:: ada
