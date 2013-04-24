@@ -411,6 +411,7 @@ package body Flow.Analysis is
       if not Sane then
          Error_Msg_Flow
            ("flow analysis of & abandoned due to inconsistent graph",
+            FA.CFG,
             FA.Start_Vertex,
             Direct_Mapping_Id (FA.Subprogram));
          return;
