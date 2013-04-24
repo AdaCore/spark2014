@@ -26,7 +26,6 @@
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Strings.Hash;
-with Uintp;                      use Uintp;
 
 package String_Utils is
    package String_Lists is new
@@ -57,8 +56,6 @@ package String_Utils is
 
    function Int_Image (N : Integer) return String;
    --  Generate a string from an Integer, without the leading space.
-
-   function Uint_Image (U : Uint) return String;
 
    function Is_Blank (C : Character) return Boolean;
    --  Determines if C is a blank (space or tab)

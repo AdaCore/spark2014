@@ -116,18 +116,4 @@ package body String_Utils is
       return True;
    end Starts_With;
 
-   ----------------
-   -- Uint_Image --
-   ----------------
-
-   function Uint_Image (U : Uint) return String is
-   begin
-      UI_Image (U);
-      declare
-         Arg_Buf : constant String := UI_Image_Buffer (1 .. UI_Image_Length);
-      begin
-         return Arg_Buf;
-      end;
-   end Uint_Image;
-
 end String_Utils;
