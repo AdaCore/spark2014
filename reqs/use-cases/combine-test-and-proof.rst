@@ -14,11 +14,10 @@ Combine Test and Proof
 Precondition
 ^^^^^^^^^^^^
 
-#. :ref:`uc-check-subset` postcondition holds for a program that contains units
-   intended to be verified through test and for units intended to be verified through formal proof.
+#. :ref:`uc-check-subset` postcondition holds for units intended to be verified through formal proof.
 #. In order for formal verification to be a substitute for conventional testing via this approach,
-   the preconditions and postconditions of the code must express the expected outcomes that would
-   be defined as part of a conventional testing approach.
+   the preconditions and postconditions of the code must specify the complete functional
+   behaviour of the program.
 
 Scenario
 ^^^^^^^^

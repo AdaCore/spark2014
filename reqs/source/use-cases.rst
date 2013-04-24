@@ -206,7 +206,10 @@ The Use Cases
 .. include:: ../use-cases/internally-generate-aspects-and-bless.rst
 
 .. _uc-discharge-vcs-manually:
-.. include:: ../use-cases/discharge-vcs-manually.rst    
+.. include:: ../use-cases/discharge-vcs-manually.rst
+
+.. _uc-use-prv-files:
+.. include:: ../use-cases/use-prv-files.rst
 
 .. _uc-prove-no-rte:
 .. include:: ../use-cases/prove-no-rte.rst    

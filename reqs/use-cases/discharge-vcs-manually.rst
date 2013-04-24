@@ -24,7 +24,13 @@ Scenario
 #. For each such VC it provides hypotheses and goals in human-readable form, and in a form that
    can be imported into a manual proof tool.
 #. User considers VCs to be provable given the hypotheses available.
-#. User uses external manual proof tool to discharge VCs.
+#. If the user can identify proof rules that would allow some of these VCs to be proved by the |SPARK tools|
+   then those rules are supplied as input to the |SPARK tools| and use case
+   :ref:`uc-formally-verify` is executed again.
+#. If the user can identify VCs that are provable and are safe to be discharged by review, then
+   use case :ref:`uc-use-prv-files` is executed.
+#. If there are any remaining undischarged VCs then the user uses an external manual proof tool
+   to discharge them.
 
 Scenario Notes
 ^^^^^^^^^^^^^^
@@ -35,7 +41,7 @@ Postcondition
 ^^^^^^^^^^^^^
 
 #. Undischarged VCs proven.
-#. Record of undischarged VCs updated to remove manually proven VCs.
+#. Record of undischarged VCs updated to remove manually proven VCs (including VCs proved by review).
 #. List of manually-proven VCs maintained, so that they don't need to be reproven every time.
 
 Exceptions and alternative flows

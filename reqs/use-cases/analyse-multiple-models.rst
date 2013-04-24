@@ -3,7 +3,7 @@ Analyse Multiple Models
 -----------------------
 
 :ID: UC.AnalyseMultipleModels
-:Overview: In certain situations, it is useful to define dual abstract views on the state provided by a given module: one of those views provides an abstraction that makes sense to calling code, while the other is more implementation-focused.
+:Overview: In certain situations, it is useful to define dual abstract views on the state provided by a given module: one of those views provides an abstraction that makes sense to calling code, while the other is more implementation-focused. An example is where multiple types of data item are received down the same physical channel. The client-focused abstract view could define one item of state per logical type of data, while the implementation-focused abstraction would make clear the implementation was a single channel, though without giving details on how that channel was implemented.
 :Target Rel: |rel1|
 :Priority: Required
 :Part of: Base Product
@@ -23,14 +23,19 @@ Scenario
 ^^^^^^^^
 
 #. Identify packages where it would be useful to define multiple abstract views of the hidden state
-   declared within the package.
+   declared within the package (i.e. where it would be useful to differentiate between the client-focused
+   view from the calling code and the corresponding implementation-focused view).
 
-#. Define and record multiple abstract views of the same state in tool-readable form and location.
+#. Define and record multiple abstract views of the same state in tool-readable form and location
+   (i.e. define client-focused and corresponding implementation-focused views).
 
 #. Define and record what code files are to be analysed under what view.
 
-#. For each type of abstract view, perform :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
-   and :ref:`uc-formally-verify`.
+#. For the client-focused view, perform :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
+   and :ref:`uc-formally-verify` on all relevant code files.
+
+#. For the implementation-focused view, perform :ref:`uc-analyse-data-flow`, :ref:`uc-analyse-information-flow`
+   and :ref:`uc-formally-verify` on all relevant code files.
 
 #. Manually review corresponding abstract views against each other for consistency.
 
