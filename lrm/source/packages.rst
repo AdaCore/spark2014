@@ -1617,25 +1617,22 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-A subprogram declared in the visible part of a package may have a
-Refined Precondition aspect applied to its body or body stub.  The
-Refined Precondition may be used to restate a precondition given on
-the declaration of a subprogram in terms of the full view of a private
-type or the ``constituents`` of a refined ``state_name``.
+A subprogram declared in the visible part of a package may have a Refined
+Precondition aspect applied to its body or body stub. The Refined Precondition
+may be used to restate a precondition given on the declaration of a subprogram
+in terms of the full view of a private type or the ``constituents`` of a refined
+``state_name``.
 
-The Refined Precondition aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition`` must be
-a Boolean ``expression``.
-
-.. todo:: Complete language definition for Refined_Pre aspect.
-          To be completed in the Milestone 3 version of this document.
+The Refined Precondition aspect is introduced by an ``aspect_specification``
+where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition`` shall
+be a Boolean ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. A Refined Precondition may only appear on the body or body stub
-   of a subprogram P in a package whose ``visible_part`` contains the
-   declaration of P.
-
+#. A Refined_Pre aspect may only appear on a body_stub (if one is 
+   present) or the body (if no stub is present) of a subprogram which is 
+   declared in the visible part of a package.
+   
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
@@ -1651,17 +1648,17 @@ a Boolean ``expression``.
 
 #. A Refined Precondition of a subprogram defines a *refinement*
    of the precondition of the subprogram.
+   
 #. Logically, the precondition of a subprogram must imply its
    Refined Precondition which in turn means that this relation
    cannot be achieved with a default precondition (True) and therefore
    a subprogram with a Refined Precondition will require a
    precondition also in order to perform proofs.
-#. The static semantics are otherwise as for a precondition.
+
+   #. The static semantics are otherwise as for a precondition.
 
 
 .. centered:: **Verification Rules**
-
-.. centered:: *Checked by Proof*
 
 #. The precondition of a subprogram declaration shall imply the the
    Refined Precondition
@@ -1709,24 +1706,22 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-A subprogram declared in the visible part of a package may have a
-Refined Postcondition aspect applied to its body or body stub.  The
-Refined Postcondition may be used to restate a postcondition given
-on the declaration of a subprogram in terms the full view of a private
-type or the ``constituents`` of a refined ``state_name``.
+A subprogram declared in the visible part of a package may have a Refined
+Postcondition aspect applied to its body or body stub. The Refined Postcondition
+may be used to restate a postcondition given on the declaration of a subprogram
+in terms the full view of a private type or the ``constituents`` of a refined
+``state_name``.
 
-The Refined Precondition aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Post" and the ``aspect_definition`` must be
-a Boolean ``expression``.
-
-.. todo:: Complete language definition for Refined_Post aspect.
-          To be completed in the Milestone 3 version of this document.
+The Refined Postcondition aspect is introduced by an ``aspect_specification``
+where the ``aspect_mark`` is "Refined_Post" and the ``aspect_definition`` shall
+be a Boolean ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. A Refined Postcondition may only appear on the body or body stub
-   of a subprogram P in a package whose ``visible_part`` contains the
-   declaration of P.
+#. A Refined_Post aspect may only appear on a body_stub (if one is 
+   present) or the body (if no stub is present) of a subprogram which is 
+   declared in the visible part of a package.
+   
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1743,17 +1738,17 @@ a Boolean ``expression``.
 
 #. A Refined Postcondition of a subprogram defines a *refinement*
    of the postcondition of the subprogram.
+   
 #. Logically, the Refined Postcondition of a subprogram must imply
    its postcondition.  This means that it is perfectly logical for the
    declaration not to have a postcondition (which in its absence
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
-#. The static semantics are otherwise as for a postcondition.
+
+   #. The static semantics are otherwise as for a postcondition.
 
 
 .. centered:: **Verification Rules**
-
-.. centered:: *Checked by Proof*
 
 #. The precondition of a subprogram declaration with the
    Refined Precondition of its body or body stub and its
