@@ -3,8 +3,8 @@
 
 .. centered:: **Verification Rules**
 
-#. In |SPARK| the elaboration of a package shall only update variables declared 
-   immediately within the package.
+#. In |SPARK| the elaboration of a package shall only update, directly or
+   indirectly, variables declared immediately within the package.
 
 Package Specifications and Declarations
 ---------------------------------------
@@ -1249,51 +1249,28 @@ is part of and a state abstraction always knows all of its constituents.
 Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: Complete Verification Rules for Initializes aspect in the presence
-          of state abstraction. The text given below is unlikely to be consistent
-          with current usage of terminology in this document. We will also likely
-          need to remove references to volatile state.
-          To be completed in the Milestone 3 version of this document.
-
-If a package has an
-Initializes Aspect which contains an ``export`` which is a
-``state_name`` then each ``constituent`` of the ``state_name`` must be
-initialized during package elaboration or be designated as Volatile,
-in which case they are implicitly initialized.  A ``constituent`` of a
-non-volatile ``state_name`` of a package which does not appear in the
-Initializes Aspect of the package must not be initialized during
-package elaboration.  A ``constituent`` of a Volatile ``state_name``
-which is non-volatile must be initialized during package elaboration.
+Every state abstraction designated as being initialized in the Initializes 
+aspect of a package has to have all of its constituents initialized.  This
+may be achieved by initialization within the package, by
+assumed pre-initialization (in the case of volatile variables or state 
+abstractions) or, for constituents which reside in another package, 
+initialization by their declaring package.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Flow Analysis*
-
-#. For each ``export`` that appears in an
-   Initializes aspect of a package declaration the following must
-   be satisfied:
-
-   * Each ``export`` that is a *variable* must be initialized at its
-     point of declaration, initialized by the sequence of statements
-     of the package, or by an embedded package or a private child
-     package which names the ``export`` in its Depends aspect
-     or Initializes aspect;
-   * For an ``export`` which is a ``state_name``, each ``constituent``
-     of the ``export`` that is a *variable* must be initialized at
-     its point of declaration, initialized by the sequence of
-     statements of the package, or by an embedded package or a private
-     child package which names the ``export`` in its
-     Depends aspect or Initializes aspect;
-   * For an ``export`` which is a ``state_name`` each ``constituent``
-     of the ``export`` that is a ``state_name`` must appear in the
-     Depends aspect or Initializes aspect of an embedded
-     package or private child package.
-
-#. A non-volatile ``constituent`` of a Volatile ``state_name`` must be
-   initialized during package elaboration.
-#. Each ``constituent`` of a **null** ``abstract_state_name`` must be
-   initialized implicitly or during package elaboration.
-
+#. For each state abstraction denoted by the ``name`` of an 
+   ``initialization_item`` of an Initializes aspect of a package, all the 
+   ``constituents`` of the state abstraction must be initialized by:
+   
+   * initialization within the package; or
+   
+   * assumed pre-initialization (in the case of volatile variables); or
+   
+   * for constituents which reside in another unit [and have a Part_Of 
+     indicator associated with their declaration] by their declaring 
+     package. [It follows that such constituents will appear in the 
+     initialization clause of the declaring unit unless they are volatile.]
+     
 .. _refined-global-aspect:
 
 Refined Global Aspect
