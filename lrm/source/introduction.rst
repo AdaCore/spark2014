@@ -355,7 +355,8 @@ Some are expanded in subsequent sections within this chapter.
   code written outside of the core |SPARK| language, including
   legacy Ada code, or code written in the |SPARK| subset for which
   verification evidence could not be generated]. See section :ref:`test_and_proof`
-  for further details.
+  for further details. Note, however, that 100% proven programs are a core goal
+  of |SPARK|, as indicated by the previous point.
 
 - |SPARK| shall provide support for constructive, generative and retrospective
   analysis as follows (see section :ref:`verific_modes` for further details):
