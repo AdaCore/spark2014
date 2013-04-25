@@ -49,11 +49,12 @@ package Flow.Utility is
      (N            : Node_Id;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
-      with Pre => Nkind (N) in N_Identifier |
-                               N_Selected_Component |
-                               N_Indexed_Component |
-                               N_Slice,
-           Post => Vars_Defined.Length >= 1;
+   with Pre => Nkind (N) in N_Identifier |
+                            N_Expanded_Name |
+                            N_Selected_Component |
+                            N_Indexed_Component |
+                            N_Slice,
+        Post => Vars_Defined.Length >= 1;
    --  Given the target of an assignment (perhaps the left-hand-side
    --  of an assignment statement or an out vertex in a procedure
    --  call), work out which variables are actually set and which
