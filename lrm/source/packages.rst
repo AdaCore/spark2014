@@ -1276,11 +1276,6 @@ initialization by their declaring package.
 Refined Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: The subject of refined Global, Depends, Pre and Post aspects is still
-          under discussion (and their need questioned) and so the subsections covering
-          these aspects is subject to change.  To be resolved and completed by
-          Milestone 3 version of this document.
-  
 High-level requirements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1348,85 +1343,59 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-A subprogram declared in the visible part of a package may have a
-Refined Global aspect applied to its body or body stub.
-A Refined Global Aspect of a subprogram defines a *refinement*
-of the Global Aspect of the subprogram; that is, the Refined Global aspect
-repeats the Global aspect of he subprogram except that references to
-state abstractions whose refinements are visible at the point of the
-subprogram_body are replaced with references to [some or all of the]
+A subprogram declared in the visible part of a package may have a Refined Global
+aspect applied to its body or body stub. A Refined Global Aspect of a subprogram
+defines a *refinement* of the Global Aspect of the subprogram; that is, the
+Refined Global aspect repeats the Global aspect of the subprogram except that
+references to state abstractions refinements that are visible at the point of
+the subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
 The Refined Global aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Global" and the ``aspect_definition``
-must follow the grammar of ``global_specification`` in :ref:`global-aspects`.
+the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
+shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 .. centered:: **Legality Rules**
 
-A Refined_Global Aspect may only appear on body_stub (if one is present)
-or the body (if no stub is present) of a subprogram P which is declared
-in the visible part of a package and whose Global aspect is specified
-(either explicitly or implicitly).
+#. A Refined_Global Aspect may only appear on a body_stub (if one is present)
+   or the body (if no stub is present) of a subprogram which is declared
+   in the visible part of a package and whose Global aspect denotes one or more
+   state abstractions declared in the Abstract_State aspect of the package.
+   
+#. A Refined_Global aspect specification shall *refine* the subprogram's
+   Global aspect as follows:
 
-A Refined_Global aspect specification shall "refine" the subprogram's
-Global aspect as follows:
-
-   - For each global_item in the Global aspect which denotes
+   * For each ``global_item`` in the Global aspect which denotes
      a state abstraction whose refinement is visible at the point
      of the Refined_Global aspect specification, the Refined_Global
-     specification shall include one or more global_items which
-     denote constituents (direct or indirect) of that state abstraction.
+     specification shall include one or more ``global_items`` which
+     denote constituents of that state abstraction.
 
-   - For each global_item in the Global aspect which does not
+   * For each ``global_item`` in the Global aspect which does not
      denote such a state abstraction, the Refined_Global specification
-     shall include exactly one global_item which denotes the same entity as
-     the global_item in the Global aspect.
+     shall include exactly one ``global_item`` which denotes the same entity as
+     the ``global_item`` in the Global aspect.
 
-   - A global_item denoting a declaration which is referenced in a (visible)
-     **null** state refinement may be referenced with mode **in out**.
-
-     TBD: do we still need null state refinements if we have ghost variables?
-     This rule was copied from existing text, but I (SB) don't
-     have a clear picture of how null statement refinements work.
-
-   - No other global_items shall be included in the Refined_Global
-     aspect specification. Global_items in the a Refined_Global
+   * No other ``global_items`` shall be included in the Refined_Global
+     aspect specification. ``Global_items`` in the a Refined_Global
      aspect specification shall denote distinct entities.
 
-The mode of each global_item in a Refined_Global aspect shall match
-that of the corresponding global_item in the Global aspect unless
-the mode specified in the Global aspect is **in out** and the
-corresponding global_item of Global aspect denotes a state abstraction
-whose refinement is visible.
+#. The mode of each ``global_item`` in a Refined_Global aspect shall match
+   that of the corresponding ``global_item`` in the Global aspect unless
+   the ``mode_selector`` specified in the Global aspect is In_Out and the
+   corresponding ``global_item`` of Global aspect denotes a state abstraction
+   whose refinement is visible and the ``global_item`` in the Refined_Global
+   aspect is a ``constituent`` of the state abstraction.
 
-If the Global aspect specification references a state abstraction with
-mode **out** whose refinement is visible, then every constituent of that
-state abstraction shall be
-referenced in the Refined_Global aspect specification. This rule is
-applied recursively if one of those constituents is itself a state
-abstraction whoe refinement is visible.
-
-TBD: Interactions with volatiles.
+#. If the Global aspect specification references a state abstraction. with a
+   ``mode_selector`` of Output whose refinement is visible, then every 
+   ``constituent`` of that state abstraction shall be referenced in the 
+   Refined_Global aspect specification.
 
 .. centered:: **Verification Rules**
 
-.. centered:: *Checked by Flow-Analysis*
-
-#. If a subprogram has a Refined Global Aspect which satisfies the
-   flow analysis checks, it is used in the analysis of the subprogram
-   body rather than its Global Aspect.
-
-* If the declaration of a subprogram P in the visible part of package
-  Q has a Global Aspect which mentions a ``state_name`` of Q, but
-  P does not have a Refined Global Aspect then an implicit
-  Refined Global Aspect will be synthesized from the body of P.
-
-* if the declaration of a subprogram P declared in the visible part of
-  a package Q does not have a Global Aspect, first an implicit
-  Refined Global Aspect is synthesized from the body of P, then an
-  implicit Global Aspect is synthesized from the synthesized
-  Refined Global Aspect and the Refined State Aspect (which may also
-  have been synthesized).
+#. If a subprogram has a Refined Global Aspect it is used in the analysis of the
+   subprogram body rather than its Global Aspect.
 
 .. _refined-depends-aspect:
 
