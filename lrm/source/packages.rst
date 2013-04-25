@@ -604,7 +604,7 @@ grammar of ``initialization_spec`` given below.
    abstraction but shall not denote an entity declared in the package with the
    ``aspect_specification`` containing the Initializes aspect.
    
-# Each entity in a single ``input_list`` shall be distinct.
+#. Each entity in a single ``input_list`` shall be distinct.
 
    .. centered:: **Static Semantics**
    
@@ -1344,7 +1344,7 @@ Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a Refined Global
-aspect applied to its body or body stub. A Refined Global Aspect of a subprogram
+aspect applied to its body or body stub. A Refined Global aspect of a subprogram
 defines a *refinement* of the Global Aspect of the subprogram; that is, the
 Refined Global aspect repeats the Global aspect of the subprogram except that
 references to state abstractions refinements that are visible at the point of
@@ -1354,6 +1354,11 @@ constituents of those abstractions.
 The Refined Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
 shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
+
+.. centered:: **Static Semantics**
+
+The static semantics are equivalent to those given for the Global aspect in
+:ref:`global-aspects`.
 
 .. centered:: **Legality Rules**
 
@@ -1396,6 +1401,9 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 #. If a subprogram has a Refined Global Aspect it is used in the analysis of the
    subprogram body rather than its Global Aspect.
+   
+#. The verification rules given for :ref:`global-aspects` also apply.
+
 
 .. _refined-depends-aspect:
 
@@ -1469,108 +1477,109 @@ High-level requirements
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
-A subprogram declared in the visible part of a package may have a
-Refined Depends aspect applied to its body or body stub. The
-Refined Depends aspect defines the ``dependency_relation`` of the
-subprogram in terms of the ``constituents`` of a ``state_name`` of the
-package rather than the ``state_name``.
+A subprogram declared in the visible part of a package may have a Refined
+Depends aspect applied to its body or body stub. A Refined Depends aspect of a
+subprogram defines a *refinement* of the Depends aspect of the subprogram; that
+is, the Refined Depends aspect repeats the Depends aspect of the subprogram
+except that references to state abstractions refinements that are visible at the
+point of the subprogram_body are replaced with references to [some or all of
+the] constituents of those abstractions.
 
 The Refined Depends aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Refined_Depends" and the ``aspect_definition`` must follow
-the grammar of ``dependency_relation``.
-
-.. todo:: Complete language definition for Refined_Depends aspect.
-          To be completed in the Milestone 3 version of this document.
-
-.. centered:: **Legality Rules**
-
-#. A Refined Depends aspect may only appear on the body or body
-   stub of a subprogram P in a package whose ``visible_part`` contains
-   the declaration of a subprogram P.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. A Refined Depends aspect on the body or body stub of a
-   subprogram P may only mention a formal parameter of P,
-   ``constituents`` of a ``state_name`` of the enclosing package given
-   in the Depends aspect in the declaration of P, a *global*
-   item that is not a ``state_name`` of the enclosing package or a
-   ``constituent`` of a **null** ``abstract_state_name``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
+the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
+shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 
 .. centered:: **Static Semantics**
 
-#. A Refined Depends aspect of a subprogram defines a *refinement*
-   of the Depends aspect of the subprogram.
+The static semantics are equivalent to those given for the Depends aspect in
+:ref:`depends-aspects`.
 
-.. centered:: **Verification Rules**
+.. centered:: **Legality Rules**
 
-.. centered:: *Checked by Flow-Analysis*
+#. A Refined_Depends Aspect may only appear on a body_stub (if one is present)
+   or the body (if no stub is present) of a subprogram which is declared
+   in the visible part of a package and whose Depends aspect denotes one or more
+   state abstractions declared in the Abstract_State aspect of the package.
+   
+   .. ifconfig:: Display_Trace_Units
 
-#. If the subprogram declaration declared in the visible part of
-   package Q has a Depends aspect D then the
-   Refined Depends aspect defines a *refinement* D' of D
-   then it shall satisfy the following rules:
+      :Trace Unit: TBD
 
-   * For each ``export`` in D which is not a ``state_name`` of Q,
+#. A Refined_Depends aspect specification shall *refine* the subprogram's
+   Depends aspect as follows:
 
-     * the same item must appear as an ``export`` in D';
-     * its ``dependency_list`` will be unchanged except that an
-       ``import`` which is a ``state_name`` of Q will be replaced in
-       D' by at least one ``constituent`` of the ``state_name`` and a
-       ``constituent`` of a **null** , ``abstract_state_name`` may be
-       an additional ``import``.
+   * For each ``output`` and ``input`` in the Depends aspect which denotes
+     a state abstraction whose refinement is visible at the point
+     of the Refined_Depends aspect specification, the Refined_Depends
+     specification shall include one or more ``outputs`` and ``inputs`` which
+     denote constituents of that state abstraction.
 
-   * for each ``export`` in D which is a ``state_name`` S declared in
-     Q,
+   * For each ``output`` or ``input`` in the Depends aspect which does not
+     denote such a state abstraction, the Refined_Depends specification
+     shall include exactly one ``ouput`` or ``input`` which denotes 
+     the same entity as the ``output`` or ``input``, respectively, in the 
+     Depends aspect.
+     
+   * Each **null** identifier in the Depends aspect is replicated in the 
+     Refined_Depends aspect.
 
-     * the item is replaced in D' by at least one ``export`` which is a
-       ``constituent`` of S,
-     * its ``dependency_list`` will be unchanged except that an
-       ``import`` which is a ``state_name`` of Q will be replaced in
-       D' by at least one ``constituent`` of the ``state_name`` and a
-       ``constituent`` of a **null** , ``abstract_state_name`` may be
-       an additional ``import``.
-     * the union of every ``import`` from the ``dependency_list`` of
-       each ``export`` which is a ``constituent`` of S in D', with
-       every ``import`` which is a ``constituent`` of a ``state_name``
-       of Q replaced by its ``state_name`` (a ``constituent`` of a
-       **null** ``abstract_state_name`` is ignored) should give the
-       same set as the set of obtained by the union of every
-       ``import`` in the ``dependency_list`` of S in D.
+   * No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
+     aspect specification. ``Outputs`` in the a Refined_Depends aspect 
+     specification shall denote distinct entities. ``Inputs`` in an 
+     ``input_list`` denote distinct entities.
+     
+#. If state abstraction is denoted as an ``output`` but not as an ``input`` in
+   the Depends aspect and the refinement of the state abstraction is visible at
+   the place of the Refined_Depends, then each ``constituent`` of the state 
+   abstraction shall be denoted as an ``output`` and shall not be denoted as an 
+   ``input`` of the Refined_Depends aspect.   
 
-   * function may have a Refined Depends aspect D' which
-     mentions a ``constituent`` of a **null** ``abstract_name`` but
-     the constituent must appear as both an ``import`` and an
-     ``export`` in D'.
-   * A ``constituent`` of a **null** ``abstract_state_name`` is
-     ignored in showing conformance between the Depends aspect
-     and the Refined Depends aspect according to the rules
-     given for a Depends aspect.
+#. If a state abstraction is denoted as an ``input`` in the Depends aspect and 
+   the refinement of the state abstraction is visible at the place of the 
+   Refined_Depends, then for each ``input_list`` in the Depends
+   aspect where the state abstraction is denoted, at least one ``constituent``
+   of the state abstraction shall be denoted as an ``input`` in the
+   corresponding ``input_list`` in the Refined_Depends. If the state abstraction
+   is also denoted as an ``output`` in the Depends aspect, then at least one
+   ``constituent`` of the state abstraction must be denoted as an ``output``.
+   
+#. When a state abstraction denoted as an ``output`` in the Depends aspect is
+   refined on to more than one ``constituent``, then the following two
+   *sets of inputs* are defined [both sets are initially empty]:
+   
+   * from the Refined_Depends aspect the ``input_list`` associated with 
+     each ``constituent`` of the state abstraction that is denoted as an 
+     ``output`` is examined and from each ``input_list`` select each ``input``:
+     
+     - if it denotes a ``constituent`` of a state abstraction whose refinement 
+       is visible then add the state abstraction to the first set; and
+     
+     - for all other ``inputs`` add the entity denoted directly to the 
+       first set.
+     
+   * from the Depends aspect select each ``input`` from the ``input_list`` 
+     associated with the ``output`` that denotes the state abstraction and
+     add the entity denoted by each ``input`` to the second set.
+     
+   The two sets shall be equal.
+   [Essentially this check ensures that the Depends aspect and its refinment,
+   the Refined_Depends aspect are consistent in that every entity that a
+   a state abstraction depends on is reflected in the Refined_Depends aspect.]
 
-#. If a subprogram has a Refined Depends aspect which satisfies
-   the flow analysis rules, it is used in the analysis of the
-   subprogram body rather than its Depends aspect.
+   .. ifconfig:: Display_Trace_Units
 
-* If the declaration of a subprogram P in the visible part of package
-  Q has a Depends aspect which mentions a ``state_name`` of Q,
-  but P does not have a Refined Depends aspect then an implicit
-  Refined Depends aspect will be synthesized from the body of P.
-
-* if the declaration of a subprogram P declared in the visible part of
-  a package Q does not have a Depends aspect, an implicit one is
-  synthesized from the Refined Depends aspect and the
-  Refined State aspect (both of which which may also have been
-  synthesized).
+      :Trace Unit: TBD
 
 .. centered:: **Dynamic Semantics**
 
 Abstractions do not have dynamic semantics.
+
+.. centered:: **Verification Rules**
+
+#. If a subprogram has a Refined Depends Aspect it is used in the analysis of 
+   the subprogram body rather than its Depends Aspect.
+   
+#. The verification rules given for :ref:`depends-aspects` also apply.
 
 
 Refined Precondition Aspect
