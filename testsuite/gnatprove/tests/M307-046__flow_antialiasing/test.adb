@@ -18,6 +18,15 @@ is
 
    Global_RA : Record_A;
 
+   procedure Swap (X : in out Boolean;
+                   Y : in out Boolean)
+   is
+   begin
+      X := X xor Y;
+      Y := X xor Y;
+      X := X xor Y;
+   end Swap;
+
    procedure Op_R1 (X : in out Record_A;
                     Y : in out Record_A)
    is
@@ -68,12 +77,22 @@ is
    end Op_R4;
 
    procedure Op_String_IO_I (X : in out String;
-                        Y : String)
+                             Y : String)
    is
    begin
       X (1) := Y (Y'Last);
    end Op_String_IO_I;
 
+   procedure Op_String_Char (X : in out String;
+                                Y : Character)
+   is
+   begin
+      X (X'First) := Y;
+   end Op_String_Char;
+
+   ----------------------------------------------------------------------
+   --  Records and arrays
+   ----------------------------------------------------------------------
 
    procedure Test_01 (X : in out Record_A)
    is
@@ -158,6 +177,12 @@ is
       Op_R1 (X.A (I), X.A (J)); --  Needs proof
    end Test_13;
 
+   procedure Test_14 (X : in out Record_B)
+   is
+   begin
+      Swap (X.A (12).A, X.D.C); --  OK
+   end Test_14;
+
    ----------------------------------------------------------------------
    --  Slices
    ----------------------------------------------------------------------
@@ -186,7 +211,7 @@ is
                        N : Positive)
    is
    begin
-      Op_String_IO_I (A (1 .. N), A (N + 1 .. A'Last)); --  OK
+      Op_String_IO_I (A (1 .. N), A (N + 1 .. A'Last)); --  Needs proof
    end Slice_04;
 
    procedure Slice_05 (A : in out String;
@@ -194,8 +219,32 @@ is
                        M : Positive)
    is
    begin
-      Op_String_IO_I (A (N .. N), A (M .. M)); --  OK
+      Op_String_IO_I (A (N .. N), A (M .. M)); --  Needs proof
    end Slice_05;
+
+   procedure Slice_06 (A : in out String)
+   is
+   begin
+      Op_String_IO_I (A (1 .. 5), A (2 .. 3)); --  Illegal
+   end Slice_06;
+
+   procedure Slice_07 (A : in out String)
+   is
+   begin
+      Op_String_Char (A (3 .. 12), A (2));   --  OK
+      Op_String_Char (A (3 .. 12), A (5));   --  illegal
+      Op_String_Char (A (3 .. 12), A (20));  --  OK
+      Op_String_Char (A (3 .. 12), 'x');     --  OK
+
+      Op_String_Char (A (3 .. 12) (8 .. 10), A (5));   --  OK
+   end Slice_07;
+
+   procedure Slice_08 (A : in out String;
+                       N : Positive)
+   is
+   begin
+      Op_String_Char (A (3 .. 12), A (N));  -- needs proof
+   end Slice_08;
 
    --  TODO: Unchecked conversion "renaming"
 
