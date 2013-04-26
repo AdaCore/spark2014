@@ -1,3 +1,5 @@
+with Ada.Unchecked_Conversion;
+
 package body Test
 is
 
@@ -6,6 +8,13 @@ is
       B : Boolean;
       C : Boolean;
    end record;
+
+   type Record_A2 is record
+      X, Y, Z : Boolean;
+   end record;
+
+   function To_A2 is new Ada.Unchecked_Conversion (Source => Record_A,
+                                                   Target => Record_A2);
 
    type Array_T is array (Natural) of Record_A;
 
@@ -76,6 +85,13 @@ is
       Y := X.B;
    end Op_R4;
 
+   procedure Op_R5 (X : in out Record_A;
+                    Y : Record_A2)
+   is
+   begin
+      X.A := Y.Y;
+   end Op_R5;
+
    procedure Op_String_IO_I (X : in out String;
                              Y : String)
    is
@@ -84,7 +100,7 @@ is
    end Op_String_IO_I;
 
    procedure Op_String_Char (X : in out String;
-                                Y : Character)
+                             Y : Character)
    is
    begin
       X (X'First) := Y;
@@ -246,7 +262,35 @@ is
       Op_String_Char (A (3 .. 12), A (N));  -- needs proof
    end Slice_08;
 
-   --  TODO: Unchecked conversion "renaming"
+   ----------------------------------------------------------------------
+   --  Unchecked conversions
+   ----------------------------------------------------------------------
+
+   procedure UCC_01 (A : in out Record_A)
+   is
+   begin
+      Op_R5 (A, To_A2 (A));  -- illegal
+   end UCC_01;
+
+   procedure UCC_02 (A : in out Record_B)
+   is
+   begin
+      Op_R5 (A.A (3), To_A2 (A.A (3)));  -- illegal
+   end UCC_02;
+
+   procedure UCC_03 (A : in out Record_B)
+   is
+   begin
+      Op_R5 (A.A (3), To_A2 (A.A (4)));  -- ok
+   end UCC_03;
+
+   procedure UCC_04 (A : in out Record_B)
+   is
+   begin
+      Op_R5 (A.D, To_A2 (A.A (4)));  -- ok
+   end UCC_04;
+
+
 
    --  TODO: Type/view conversion
 
