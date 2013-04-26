@@ -1,3 +1,4 @@
+
 prefixsum.adb:101:10: loop variant not proved
 prefixsum.adb:103:25: overflow check not proved
 prefixsum.adb:103:29: overflow check not proved
@@ -195,9 +196,9 @@ prefixsum_general.adb:70:25: overflow check not proved
 prefixsum_general.adb:70:25: range check not proved
 prefixsum_general.adb:84:27: info: division check proved
 prefixsum_general.adb:87:10: loop variant not proved
-prefixsum_general.adb:89:25: overflow check not proved
-prefixsum_general.adb:89:29: overflow check not proved
-prefixsum_general.adb:89:29: range check not proved
+prefixsum_general.adb:89:25: info: overflow check proved
+prefixsum_general.adb:89:29: info: overflow check proved
+prefixsum_general.adb:89:29: info: range check proved
 prefixsum_general.adb:91:13: loop variant not proved
 prefixsum_general.adb:93:32: overflow check not proved
 prefixsum_general.adb:93:32: range check not proved

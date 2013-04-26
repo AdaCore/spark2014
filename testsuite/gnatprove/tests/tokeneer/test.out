@@ -1,3 +1,4 @@
+
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
@@ -160,9 +161,9 @@ configdata.adb:237:44: info: overflow check proved
 configdata.adb:237:44: info: range check proved
 configdata.adb:276:51: info: overflow check proved
 configdata.adb:276:51: info: range check proved
-configdata.adb:323:20: info: range check proved
-configdata.adb:331:48: index check not proved
-configdata.adb:331:63: index check not proved
+configdata.adb:323:20: range check not proved
+configdata.adb:331:48: info: index check proved
+configdata.adb:331:63: info: index check proved
 configdata.adb:379:35: info: overflow check proved
 configdata.adb:379:35: info: range check proved
 configdata.adb:380:35: info: range check proved
@@ -171,8 +172,8 @@ configdata.adb:380:50: info: overflow check proved
 configdata.adb:380:68: info: range check proved
 configdata.adb:416:38: info: range check proved
 configdata.adb:723:23: range check not proved
-configdata.adb:729:53: index check not proved
-configdata.adb:729:75: index check not proved
+configdata.adb:729:53: info: index check proved
+configdata.adb:729:75: info: index check proved
 crypto.adb:331:24: range check not proved
 crypto.adb:669:38: info: range check proved
 display.adb:128:11: info: range check proved
@@ -237,7 +238,7 @@ msgproc.adb:106:49: overflow check not proved
 msgproc.adb:110:20: index check not proved
 msgproc.adb:114:49: info: range check proved
 msgproc.adb:127:52: overflow check not proved
-msgproc.adb:130:26: range check not proved
+msgproc.adb:130:26: info: range check proved
 msgproc.adb:130:52: overflow check not proved
 msgproc.adb:34:13: info: range check proved
 msgproc.adb:38:7: info: range check proved
