@@ -1256,14 +1256,16 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
    begin
       case Get_Pragma_Id (Pragma_Name (N)) is
-         when Pragma_Annotate     |
-              Pragma_Depends      |
-              Pragma_Export       |
-              Pragma_Global       |
-              Pragma_Import       |
-              Pragma_Preelaborate |
-              Pragma_Pure         |
-              Pragma_Warnings     =>
+         when Pragma_Annotate      |
+              Pragma_Depends       |
+              Pragma_Export        |
+              Pragma_Global        |
+              Pragma_Import        |
+              Pragma_Preelaborate  |
+              Pragma_Pure          |
+              Pragma_Warnings      |
+              Pragma_Precondition  |
+              Pragma_Postcondition =>
 
             --  We create a null vertex for the pragma.
             FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
@@ -1274,9 +1276,7 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (N)).Standard_Exits := To_Set (V);
 
          when Pragma_Check         |
-              Pragma_Loop_Variant  |
-              Pragma_Precondition  |
-              Pragma_Postcondition =>
+              Pragma_Loop_Variant  =>
 
             --  We create a sink vertex for the pragma (which we just
             --  use to check for uninitialized variables).
@@ -1474,6 +1474,35 @@ package body Flow.Control_Flow_Graph is
                --  If we ever get one of these we skip the rest of the
                --  nodes that hang under them.
                return Skip;
+
+            when N_Pragma =>
+
+               case Get_Pragma_Id (Pragma_Name (N)) is
+                  when Pragma_Annotate   |
+                    Pragma_Depends       |
+                    Pragma_Export        |
+                    Pragma_Global        |
+                    Pragma_Import        |
+                    Pragma_Preelaborate  |
+                    Pragma_Pure          |
+                    Pragma_Warnings      |
+                    Pragma_Precondition  |
+                    Pragma_Postcondition =>
+                     return Skip;
+
+                  when Pragma_Check      |
+                    Pragma_Loop_Variant  =>
+                     return OK;
+
+                  when Unknown_Pragma =>
+                     --  If we find an Unknown_Pragma we raise Why.Not_SPARK
+                     raise Why.Not_SPARK;
+
+                  when others =>
+                     --  If we find another pragma which got past the "in
+                     --  SPARK" check we should do one of the above.
+                     raise Why.Unexpected_Node;
+               end case;
 
             when N_Quantified_Expression =>
                --  Sanity check: Iterator_Specification is not in
