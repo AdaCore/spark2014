@@ -81,42 +81,19 @@ Constant_Indexing and Variable_Indexing are not in |SPARK|.
 Literals
 --------
 
-The literal **null** representing an access type is not allowed in |SPARK|.
+The literal **null** representing an access value is not allowed in |SPARK|.
 
 Aggregates
 ----------
 
-The box symbol, <>, may only be used in an aggregate if the type of the 
-component(s) to which it pertains has a default initialization.  This
-restriction is covered in more detail in the following subsections.
+.. centered:: **Legality Rules**
 
-Record Aggregates
-~~~~~~~~~~~~~~~~~
+The box symbol, <>, may only be used in an aggregate if the type(s) of the 
+corresponding component(s) define full default initialization.
 
-.. centered:: **Verification Rules**
-
-#. A ``record_component_association`` may only use the option
-   ``component_choice_list => <>`` if the type denoted by each
-   *component_*\ ``selector_name`` has a default initialization.
-
-
-Extension Aggregates
-~~~~~~~~~~~~~~~~~~~~
-
-No extensions or restrictions.
-
-Array Aggregates
-~~~~~~~~~~~~~~~~
-
-.. centered:: **Verification Rules**
-
-#. The symbol ``<>`` may only be used after an **others** symbol in a 
-   ``positional_array_aggregate`` if the component type of the array has a
-   default initialization.
-   
-#. The symbol ``<>`` may only be used in a ``array_component_association`` of
-   a ``named_array_aggregate`` if the component type of the array has a default 
-   initialization.
+[The box symbol cannot be used in an aggregate to produce an uninitialized
+scalar value or a composite value having an uninitialized scalar value as a
+subcomponent.]
 
 Update Expressions
 ~~~~~~~~~~~~~~~~~~

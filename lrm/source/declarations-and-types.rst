@@ -11,12 +11,29 @@ The view of an entity is in |SPARK| if and only if the corresponding
 declaration is in |SPARK|. When clear from the context, we say *entity* instead
 of using the more formal term *view of an entity*.
 
-Certain type and subtype declarations can specify a default value to be given to 
-declared objects of the (sub)type.  There are several syntatic names and schemes
-for defining the default value: the ``default_expression`` of discriminants and 
-record components, Default_Value aspect of scalar types and 
-Default_Component_Value aspect for an array-of-scalar subtype.  
-These are collectively known as *default initialization*.
+A type is said to "define full default initialization" if it is
+
+  * a scalar type with a specified Default_Value; or
+
+  * an array-of-scalar type with a specified Default_Component_Value; or
+
+  * an array type whose element type defines default initialization; or
+
+  * a record type or type extension each of whose component_declarations
+    either includes a default_value or has a type which defines full
+    default initialization and, in the case of a type extension, is
+    an extension of a type which defines default initialization; or
+ 
+  * a private type which lacks unknown discriminants.
+
+[The discriminants of a discriminated type play no role in determining
+whether the type defines full default initialization.]
+
+[A rule is given later in this document requiring that the full view
+of a private type which lacks unknown discriminants shall
+define full default initialization. That makes possible the above definition
+for a private type (which does not refer to the type's full view).]
+
 
 Types and Subtypes
 ------------------
@@ -68,8 +85,8 @@ or a ``record_part`` these must also contain entities that are in |SPARK|.
 Scalar Types
 ------------
 
-A scalar type declaration is in |SPARK| unless it has a default initialization
-that is not in |SPARK|.
+No extensions or restrictions.
+
 
 Array Types
 -----------
@@ -90,12 +107,13 @@ discriminants shall not be hidden.]
 Record Types
 ------------
 
-An entity declared by a ``record_type_definition`` is in |SPARK| if all of its 
-components are in |SPARK| and if a component has a default initialization then
-all of the components must have a default initialization.  
-A default initialization, if present must also be in |SPARK|.
-
 |SPARK| does not permit partial default initialization of record objects.
+More specifically, if at least one non-discriminant component (either
+explicitly declared or inherited) of a record type or type extension either
+is of a type which defines default initialization or is declared by
+a component_declaration which includes a default_value, then the record type
+or type extension shall define full default initialization.
+
 
 Tagged Types and Type Extensions
 --------------------------------

@@ -1781,6 +1781,12 @@ applies here, so a private type without discriminants is in
 |SPARK|, while a private type with discriminants is in |SPARK| only
 if its discriminants are in |SPARK|.
 
+If a private type or private extension lacks unknown discriminants,
+then the full view shall define full default initialization. [In other
+words, if a client seeing the private view can declare an object of the
+type without explicitly initializing it,  then the resulting object shall
+be fully initialized.]
+
 Private Operations
 ~~~~~~~~~~~~~~~~~~
 
