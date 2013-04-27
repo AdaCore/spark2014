@@ -262,12 +262,18 @@ These contexts include:
 
   * a Type_Invariant or Type_Invariant'Class aspect specification;
 
+  * a Dynamic_Predicate aspect specification;
+
   * an indexing expresssion of an indexed_component or the discrete_range
     of a slice in an object renaming declaration which renames
     part of that index or slice.
 
 [An expression in one of these contexts may read a constant
 which is initialized with the value of a variable.]
+
+[The Dynamic_Predicate rule is redundant because no use of the
+Dynamic_Predicate is currently in |SPARK|. This rule is added
+in anticipation of the possible relaxation of that restriction.]
 
 Operators and Expression Evaluation
 -----------------------------------
