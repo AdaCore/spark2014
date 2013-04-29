@@ -350,6 +350,15 @@ package body Flow.Control_Flow_Graph is
    --  a block statement. The declarations and sequence of statements
    --  is processed and linked.
 
+   procedure Do_Type_Declaration
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
+   --  This ignores type declarations (but creates a sink vertex so we
+   --  can check for use of uninitialized variables).
+
    procedure Process_Quantified_Expressions
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1444,6 +1453,31 @@ package body Flow.Control_Flow_Graph is
               (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
    end Do_Subprogram_Or_Block;
 
+   -------------------------
+   -- Do_Type_Declaration --
+   -------------------------
+
+   procedure Do_Type_Declaration
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      pragma Unreferenced (Ctx);
+
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (N),
+         Make_Sink_Vertex_Attributes
+           (Var_Use => Get_Variable_Set (N),
+            E_Loc   => N),
+         V);
+      CM.Include (Union_Id (N),
+                  Graph_Connections'(Standard_Entry => V,
+                                     Standard_Exits => To_Set (V)));
+   end Do_Type_Declaration;
+
    ------------------------------------
    -- Process_Quantified_Expressions --
    ------------------------------------
@@ -1689,8 +1723,6 @@ package body Flow.Control_Flow_Graph is
               N_Use_Type_Clause                 |
               N_Object_Renaming_Declaration     |
               N_Subprogram_Renaming_Declaration |
-              N_Full_Type_Declaration           |
-              N_Subtype_Declaration             |
               N_Private_Type_Declaration        |
               N_Number_Declaration =>
                --  We completely skip these.
@@ -1769,6 +1801,8 @@ package body Flow.Control_Flow_Graph is
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
+         when N_Full_Type_Declaration | N_Subtype_Declaration =>
+            Do_Type_Declaration (N, FA, CM, Ctx);
          when N_Validate_Unchecked_Conversion =>
             raise Program_Error;
          when others =>
