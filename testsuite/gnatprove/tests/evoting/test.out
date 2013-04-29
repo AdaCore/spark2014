@@ -38,7 +38,7 @@ evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
 evoting.ads:104:57: index check not proved
 evoting.ads:105:22: postcondition not proved, requires counters(winner) > counters(i)
-evoting.ads:105:50: index check not proved
+evoting.ads:105:50: info: index check proved
 evoting.ads:107:55: info: index check proved
 evoting.ads:108:52: info: index check proved
 evoting.ads:112:27: info: index check proved
