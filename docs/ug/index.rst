@@ -1,12 +1,12 @@
-.. GNATprove User's Guide documentation master file, created by
+.. SPARK 2014 Toolset User's Guide documentation master file, created by
    sphinx-quickstart on Mon Apr  4 14:49:11 2011.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-GNATprove User's Guide
-======================
+SPARK 2014 Toolset User's Guide
+===============================
 
-   Copyright (C) 2011-2012, AdaCore
+   Copyright (C) 2011-2013, AdaCore
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
@@ -32,4 +32,3 @@ GNATprove User's Guide
 .. * :ref:`genindex`
 .. * :ref:`modindex`
 .. * :ref:`search`
-

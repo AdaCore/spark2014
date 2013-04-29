@@ -1,5 +1,18 @@
-Verification Goals
-==================
+.. _usage scenarios for formal verification:
+
+Usage Scenarios for Formal Verification
+=======================================
+
+..  Note that, in many cases, ad-hoc data structures based on pointers can be
+    replaced by the use of standard Ada containers (vectors, lists, sets, maps,
+    etc.) Although the implementation of standard containers is not in |SPARK|,
+    we have defined a slightly modified version of these targeted at formal
+    verification. These formal containers are implemented in the GNAT standard
+    library. These alternative containers are typical of the tradeoffs implicit
+    in |SPARK|: favor automatic formal verification as much as possible, at the
+    cost of minor adaptations to the code.
+
+To be completed
 
 |GNATprove| generates Verification Conditions (VCs) whose proof ensures that some
 property holds on the source program. Such VCs are generated for functional
@@ -266,4 +279,3 @@ acceleration is set to zero, but not that the breaks are activated. Said
 otherwise, it only mentions the modification of the ``Accel`` variable,
 but not the one of ``Breaks``. Again, a warning will be issued to the
 programmer.
-

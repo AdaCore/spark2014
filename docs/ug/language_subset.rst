@@ -1,11 +1,10 @@
-Analyzable Language Subset
-==========================
+.. _introduction to spark:
+
+Introduction to |SPARK|
+=======================
 
 .. A lot of the material in this chapter is copied from the Introduction of
    SPARK 2014 RM.
-
-|SPARK|
--------
 
 |SPARK| is a programming language and a set of verification tools designed to
 meet the needs of high-assurance software development.  |SPARK| is based on Ada

@@ -1,23 +1,11 @@
-Using |GNATprove|
-=================
+.. _formal verification with gnatprove:
+
+Formal Verification with |GNATprove|
+====================================
 
 The |GNATprove| tool is packaged as an executable called ``gnatprove``. Like
 other tools in |GNAT Pro| Toolsuite, |GNATprove| is based on the structure of
 GNAT projects, defined in ``.gpr`` files.
-
-|GNATprove| Usage Scenarios
----------------------------
-
-..  Note that, in many cases, ad-hoc data structures based on pointers can be
-    replaced by the use of standard Ada containers (vectors, lists, sets, maps,
-    etc.) Although the implementation of standard containers is not in |SPARK|,
-    we have defined a slightly modified version of these targeted at formal
-    verification. These formal containers are implemented in the GNAT standard
-    library. These alternative containers are typical of the tradeoffs implicit
-    in |SPARK|: favor automatic formal verification as much as possible, at the
-    cost of minor adaptations to the code.
-
-To be completed
 
 .. _command line:
 

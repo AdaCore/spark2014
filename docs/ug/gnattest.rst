@@ -1,7 +1,7 @@
 .. _proof and test:
 
-Combining |GNATprove| with GNATtest
-===================================
+Combining Formal Verification and Testing
+=========================================
 
 Not all subprograms can be verified formally. Subprograms that cannot be
 verified formally must be either verified by manual review, or by testing. The
@@ -112,4 +112,3 @@ precondition is not fulfilled. During all runs of both ``Nominal`` and
 ``Robustness`` contract cases and test cases, run-time checks are performed to
 detect potential run-time errors. Such errors are reported as failed tests in
 the final report.
-

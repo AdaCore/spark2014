@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# GNATprove User's Guide documentation build configuration file, created by
-# sphinx-quickstart on Mon Apr  4 14:49:11 2011.
+# SPARK 2014 Toolset User's Guide documentation build configuration file,
+# created by sphinx-quickstart on Mon Apr 4 14:49:11 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -53,7 +53,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'GNATprove User\'s Guide'
+project = u'SPARK 2014 Toolset User\'s Guide'
 copyright = u'2011, AdaCore'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -183,7 +183,7 @@ html_static_path = []
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GNATproveUsersGuidedoc'
+htmlhelp_basename = 'SPARK2014ToolsetUsersGuidedoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -197,7 +197,7 @@ htmlhelp_basename = 'GNATproveUsersGuidedoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'gnatprove_ug.tex', u'GNATprove User\'s Guide',
+  ('index', 'gnatprove_ug.tex', u'SPARK 2014 Toolset User\'s Guide',
    u'AdaCore', 'manual'),
 ]
 
@@ -230,6 +230,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'gnatproveusersguide', u'GNATprove User\'s Guide',
+    ('index', 'spark2014toolsetusersguide', u'SPARK 2014 Toolset User\'s Guide',
      [u'AdaCore'], 1)
 ]
