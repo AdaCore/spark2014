@@ -201,6 +201,21 @@ package body Flow is
       end if;
    end "=";
 
+   function "<" (Left, Right : Flow_Id) return Boolean is
+   begin
+      return Flow_Id_To_String (Left) < Flow_Id_To_String (Right);
+   end "<";
+
+   --------------------------------
+   -- Lexicographic_Entity_Order --
+   --------------------------------
+
+   function Lexicographic_Entity_Order (Left, Right : Node_Id)
+                                        return Boolean is
+   begin
+      return Unique_Name (Left) < Unique_Name (Right);
+   end Lexicographic_Entity_Order;
+
    ----------
    -- Hash --
    ----------
@@ -394,6 +409,37 @@ package body Flow is
          end if;
       end return;
    end Parent_Record;
+
+   ---------------------------
+   -- To_Ordered_Entity_Set --
+   ---------------------------
+
+   function To_Ordered_Entity_Set (S : Node_Sets.Set)
+                                   return Ordered_Entity_Sets.Set
+   is
+      OS : Ordered_Entity_Sets.Set;
+   begin
+      for X of S loop
+         pragma Assert (Nkind (X) in N_Entity);
+         OS.Include (X);
+      end loop;
+      return OS;
+   end To_Ordered_Entity_Set;
+
+   ----------------------------
+   -- To_Ordered_Flow_Id_Set --
+   ----------------------------
+
+   function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
+                                    return Ordered_Flow_Id_Sets.Set
+   is
+      OS : Ordered_Flow_Id_Sets.Set;
+   begin
+      for X of S loop
+         OS.Include (X);
+      end loop;
+      return OS;
+   end To_Ordered_Flow_Id_Set;
 
    -------------------------------
    -- Loop_Parameter_From_Loop  --

@@ -380,8 +380,8 @@ package body Flow.Analysis is
          declare
             A : constant V_Attributes := FA.CFG.Get_Attributes (V);
 
-            All_Vars : constant Flow_Id_Sets.Set :=
-              A.Variables_Used or A.Variables_Defined;
+            All_Vars : constant Ordered_Flow_Id_Sets.Set :=
+              To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
          begin
             for Var of All_Vars loop
                declare
@@ -1176,7 +1176,7 @@ package body Flow.Analysis is
             --  This captures the set of things F_E actually depends
             --  on.
 
-            Tmp : Node_Sets.Set;
+            Tmp : Ordered_Entity_Sets.Set;
          begin
             --  We need to check all exports.
             if F_F.Variant = Final_Value and then F_A.Is_Export then
@@ -1210,7 +1210,7 @@ package body Flow.Analysis is
                         end loop;
 
                         --  Check if we have missed something.
-                        Tmp := S_E - User_Deps (F_E);
+                        Tmp := To_Ordered_Entity_Set (S_E - User_Deps (F_E));
                         for Var_Missed of Tmp loop
                            Error_Msg_Node_1 := F_E;
                            Error_Msg_Node_2 := Var_Missed;
@@ -1222,7 +1222,7 @@ package body Flow.Analysis is
                         end loop;
 
                         --  Check if we have said something wrong.
-                        Tmp := User_Deps (F_E) - S_E;
+                        Tmp := To_Ordered_Entity_Set (User_Deps (F_E) - S_E);
                         for Var_Wrong of Tmp loop
                            Error_Msg_Node_1 := F_E;
                            Error_Msg_Node_2 := Var_Wrong;

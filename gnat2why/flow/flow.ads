@@ -22,8 +22,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
-with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 
 with Atree; use Atree;
@@ -113,6 +114,13 @@ package Flow is
    function "=" (Left, Right : Flow_Id) return Boolean;
    --  Equality function for flow id.
 
+   function "<" (Left, Right : Flow_Id) return Boolean;
+   --  Ordering for flow id.
+
+   function Lexicographic_Entity_Order (Left, Right : Entity_Id)
+                                        return Boolean;
+   --  Ordering for normal nodes.
+
    Null_Flow_Id : constant Flow_Id :=
      Flow_Id'(Kind      => Null_Value,
               Variant   => Normal_Use,
@@ -181,6 +189,24 @@ package Flow is
       Hash                => Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
+
+   package Ordered_Flow_Id_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Flow_Id,
+      "<"          => "<",
+      "="          => "=");
+
+   package Ordered_Entity_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Entity_Id,
+      "<"          => Lexicographic_Entity_Order,
+      "="          => "=");
+
+   function To_Ordered_Entity_Set (S : Node_Sets.Set)
+                                   return Ordered_Entity_Sets.Set;
+   --  Convert a hashed node set into an ordered node set.
+
+   function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
+                                    return Ordered_Flow_Id_Sets.Set;
+   --  Convert a hashed flow id set into an ordered node set.
 
    type V_Attributes is record
       Is_Null_Node        : Boolean;
