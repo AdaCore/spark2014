@@ -13,6 +13,19 @@
 
 import sys, os
 
+# AdaCore specific Ada/SPARK highlighter, that does not crash
+
+try:
+  import gnatpython.ada_pygments
+  use_adacore_parser = True
+
+except ImportError:
+  use_adacore_parser = False
+
+def setup(app):
+    if use_adacore_parser:
+    	app.add_lexer('ada', gnatpython.ada_pygments.AdaLexer())
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
