@@ -1270,6 +1270,29 @@ package body Graph is
                                    Colour : Edge_Colours)
                                    return Edge_Display_Info)
    is
+      function Escape (S : Unbounded_String) return String;
+      --  Convert the unbounded string to a string and escape " to \"
+
+      function Escape (S : Unbounded_String) return String
+      is
+         R : Unbounded_String := Null_Unbounded_String;
+      begin
+         for P in Positive range 1 .. Length (S) loop
+            declare
+               C : constant Character := Element (S, P);
+            begin
+               case C is
+                  when '"' =>
+                     Append (R, "\");
+                     Append (R, C);
+                  when others =>
+                     Append (R, C);
+               end case;
+            end;
+         end loop;
+         return To_String (R);
+      end Escape;
+
       FD : File_Type;
    begin
       Create (FD, Out_File, Filename & ".dot");
@@ -1288,7 +1311,7 @@ package body Graph is
                Put (FD, "   ");
                Put (FD, Valid_Vertex_Id'Image (J));
                Put (FD, " [label=""");
-               Put (FD, To_String (Info.Label));
+               Put (FD, Escape (Info.Label));
                Put (FD, """");
                case Info.Shape is
                   when Shape_Oval =>
@@ -1333,7 +1356,7 @@ package body Graph is
                      Put (FD, ",color=""" & To_String (Info.Colour) & """");
                   end if;
                   if Info.Label /=  Null_Unbounded_String then
-                     Put (FD, ",label=""" & To_String (Info.Label) & """");
+                     Put (FD, ",label=""" & Escape (Info.Label) & """");
                   end if;
                   Put (FD, "]");
                   Put (FD, ";");
