@@ -1,5 +1,6 @@
+***************
 Getting Started
-===============
+***************
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
 completely in |SPARK|. Other chapters give a more complete overview of the
@@ -19,7 +20,7 @@ integrated development environment. The same functionalities are available in
 command-line as well, see :ref:`command line`.
 
 Writing |SPARK| Programs
-------------------------
+========================
 
 A |SPARK| program is a valid Ada program, which can be compiled by the |GNAT
 Pro| compiler, edited in the GPS or GNATbench editors, and
@@ -227,7 +228,7 @@ In the first case, we want to state that the index returned is 1. In the second
 case, we want to state that the search succeeds. In the third case, we want to
 state that the search fails. We use a helper function ``Value_Found_In_Range``
 to express that a value ``Val`` is found in an array ``A`` within given bounds
-``Low``and ``Up``:
+``Low`` and ``Up``:
 
 .. code-block:: ada
    :linenos:
@@ -275,7 +276,7 @@ The program obtained so far is a valid |SPARK| program, which |GNAT Pro|
 analyzes semantically without errors or warnings.
 
 Compiling |SPARK| Programs
---------------------------
+==========================
 
 We can compile the above program, and test it on a set of selected inputs. The
 following testing program exercizes both the case where the searched value is
@@ -398,7 +399,7 @@ impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
 Verifying Formally |SPARK| Programs
------------------------------------
+===================================
 
 Formal verification of |SPARK| programs is a two-step process:
 
@@ -530,7 +531,7 @@ unproved:
 
 .. image:: static/search_loopinv.png
 
-The new unproved check may seem odd, since all we did was dding information in
+The new unproved check may seem odd, since all we did was adding information in
 the form of a loop invariant. The reason is that we also removed information at
 the same time. By adding a loop invariant, we require |GNATprove| to prove
 iterations around the (virtual) loop formed by the following steps:
@@ -598,7 +599,7 @@ prover. Its default of 1s is voluntarily low, to facilitate interaction with
 |GNATprove| during the development of annotations, but it is not sufficient to
 prove the more complex checks. Let's increase it to 10s, and rerun |GNATprove|:
 
-.. image:: static/search_loopinv_not_proved.png
+.. image:: static/search_loopinv_proved.png
 
 The loop invariant preservation was proved! One unproved check remains, in the
 contract cases of ``Linear_Search``. We need to check that the loop invariant

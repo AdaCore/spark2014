@@ -1,7 +1,8 @@
 .. _usage scenarios for formal verification:
 
+***************************************
 Usage Scenarios for Formal Verification
-=======================================
+***************************************
 
 ..  Note that, in many cases, ad-hoc data structures based on pointers can be
     replaced by the use of standard Ada containers (vectors, lists, sets, maps,

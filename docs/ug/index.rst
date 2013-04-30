@@ -17,13 +17,14 @@ SPARK 2014 Toolset User's Guide
    Free Documentation License'.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    getting_started
    language_subset
    usage
    goals
    gnattest
+   appendix
    gfdl
 
 .. Indices and tables

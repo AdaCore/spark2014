@@ -34,7 +34,16 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
 clean:
+	(cd gnatprove_by_example; make -f Makefile.examples clean)
 	-rm -rf $(BUILDDIR)/*
+
+generate:
+	@echo "Generating GNATprove results..."
+	(cd gnatprove_by_example; make -f Makefile.examples gnatprove results)
+
+generate-nightly:
+	@echo "Generating GNATprove results..."
+	(cd gnatprove_by_example; make -f Makefile.examples gnatprove results clean)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html

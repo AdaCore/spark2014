@@ -1,0 +1,32 @@
+DUMMY:=$(shell mkdir -p flow prove)
+
+.PHONY: codepeer flow prove results clean force
+
+RESULTS=$(PWD)/results
+ALL=$(wildcard examples/*.adb)
+ALL_FLOW_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.flow,$(ALL)) 
+ALL_PROVE_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL)) 
+
+gnatprove: flow prove
+
+flow:
+	cp examples/intro.gpr flow
+	cd flow && gnatprove -q -P intro.gpr --report=all --mode=flow \
+	  > flow.results
+
+prove:
+	cp examples/intro.gpr prove
+	cd prove && gnatprove -q -P intro.gpr --report=all --mode=prove \
+	  > prove.results
+
+results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
+
+# Apparently useless use of 'cat' to ignore empty result of 'grep'
+$(RESULTS)/%.flow: force
+	cd $(RESULTS) && grep -e '^$*.ad' ../flow/flow.results | cat > $@
+
+$(RESULTS)/%.prove: force
+	cd $(RESULTS) && grep -e '^$*.ad' ../prove/prove.results | cat > $@
+
+clean:
+	rm -rf flow prove

@@ -1,7 +1,8 @@
 .. _proof and test:
 
+*****************************************
 Combining Formal Verification and Testing
-=========================================
+*****************************************
 
 Not all subprograms can be verified formally. Subprograms that cannot be
 verified formally must be either verified by manual review, or by testing. The
