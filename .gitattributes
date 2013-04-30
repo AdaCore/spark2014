@@ -13,3 +13,4 @@ gnat2why/design/* no-precommit-check
 gnat2why/design/*/* no-precommit-check
 gnat2why/design/*/*/* no-precommit-check
 gnat2why/design/*/*/*/* no-precommit-check
+docs/ug/gnatprove_by_example/examples no-precommit-check
