@@ -14,6 +14,10 @@ different parts of the |SPARK| technology:
 * Chapter :ref:`proof and test` explains how to combine the results of formal
   verification and classical verification by testing.
 
+In this chapter, we use the integration of the |SPARK| toolset in the GPS
+integrated development environment. The same functionalities are available in
+command-line as well, see :ref:`command line`.
+
 Writing |SPARK| Programs
 ------------------------
 
@@ -21,7 +25,7 @@ A |SPARK| program is a valid Ada program, which can be compiled by the |GNAT
 Pro| compiler, edited in the GPS or GNATbench editors, and
 debugged/analyzed/modified with the associated |GNAT Pro| toolset.
 
-All kinds of data types defined in Ada can be defined in |SPARK|, expect access
+All kinds of data types defined in Ada can be defined in |SPARK|, except access
 types. The main restriction on expressions in |SPARK| is that they should not
 contain calls to functions which modify the value of non-local variables. Most
 statements in Ada are allowed in |SPARK|, at the notable exception of goto
@@ -34,8 +38,27 @@ collection of elements. The algorithm returns whether the collection contains
 the desired value, and if so, at which index. The collection is implemented
 here as an array. We start on purpose with an incorrect program for package
 ``Search``, in order to explain how the |SPARK| toolset can help correcting
-these errors. The obvious specification of ``Search`` is given in file
-``search.ads``:
+these errors. 
+
+We start with creating a GNAT project file in ``search.gpr``:
+
+.. code-block:: ada
+
+    project Search is
+       for Source_Dirs use (".");
+
+       package Compiler is
+          for Default_Switches ("Ada") use ("-gnatwa");
+       end Compiler;
+    end Search;
+
+It specifies that the source code to inspect is in the current directory, and
+that the code should be compiled at maximum warning level (switch
+``-gnatwa``). GNAT projects are used by most tools in the |GNAT Pro| toolsuite;
+for an in-depth documentation of this technology, you may consult |GNAT Pro|
+User's Guide.
+
+The obvious specification of ``Search`` is given in file ``search.ads``:
 
 .. code-block:: ada
    :linenos:
@@ -87,15 +110,10 @@ is such an index:
 
    end Search;
 
-We can check that the above code is valid Ada code by calling the |GNAT Pro|
-compiler with switch ``-gnatc`` (semantic verification only, no code
-generation), with the maximum warning level (switch ``-gnatwa``). It does not
-generate any errors nor warnings:
+We can check that the above code is valid Ada code by using the ``Build::Check
+Semantic`` menu, which completes without any errors or warnings:
 
-.. code-block:: bash
-
-   $ gnatmake -gnatc -gnatwa search.adb
-   > <no error nor warning>
+.. image:: static/search_check_semantic.png
 
 To state that this code should be valid |SPARK| code, we can add the
 ``SPARK_Mode`` pragma in the sources as a local pragma, or in a configuration
@@ -500,7 +518,6 @@ cumulated effect of loop iterations, so that the contract cases of
 searched was not previously found:
 
 .. code-block:: ada
-         :linenos:
 
          pragma Loop_Invariant
            (not Value_Found_In_Range (A, Val, A'First, Pos));
@@ -530,191 +547,195 @@ maximal index at step 2 (the increment), so the range check cannot be
 proved. It was previously proved because, in absence of a loop invariant,
 |GNATprove| proves iterations around the source loop, and then we get the
 information that, since the loop did not exit, its test ``Pos < A'Last`` is
-false, so the range check can be proved. So we need to add the range
-information for ``Pos`` in the loop invariant:
+false, so the range check can be proved. 
+
+We solve this issue by setting the type of ``Pos`` to the base type of
+``Index``, which ranges past the last value of ``Index``:
 
 .. code-block:: ada
-         :linenos:
+
+      Pos : Index'Base := A'First;
+
+And we add the range information for ``Pos`` in the loop invariant:
+
+.. code-block:: ada
 
          pragma Loop_Invariant
            (Pos in A'Range
               and then
             not Value_Found_In_Range (A, Val, A'First, Pos));
 
-Even with this range information, the range check remains not proved. Looking
-at the type of ``Pos`` shows indeed a problem: since ``Pos`` has type
-``Index``, it cannot be incremented past the last value of ``Index``. We
-correct this bug by setting the type of ``Pos`` to the base type of ``Index``,
-which ranges past the last value of ``Index``:
-
-.. code-block:: ada
-      :linenos:
-
-      Pos : Index'Base := A'First;
-
 This allows to prove the range check on line 21, but the loop invariant
 preservation becomes unproved:
 
 .. image:: static/search_loopinv_not_proved.png
 
-This is actually progress!
+This is actually progress! Indeed, the loop invariant should be strong enough
+to:
 
-.. todo:: Complete description above until final version below.
+#. prove the absence of run-time errors in the loop and after the loop
+#. prove that it is preserved from iteration to iteration
+#. prove the postcondition and contract cases of the subprogram
+
+So we have just achieved goal 1 above! And the currently unproved preservation
+of the loop invariant is goal 2.
+
+As we have modified the code and annotations, it is a good time to compile and
+run our test program, before doing any more formal verification work. This
+helps catching bugs early, and it's easy to do! In particular, the loop
+invariant will be dynamically checked at each iteration through the loop.
+Here, testing does not show any problems:
+
+.. code-block:: bash
+
+   $ gnatmake -gnata test_search.adb
+   $ test_search
+   > OK: Found existing value at first index
+   > OK: Did not find non-existing value
+
+The next easy thing to do is to increase the timeout of the automatic
+prover. Its default of 1s is voluntarily low, to facilitate interaction with
+|GNATprove| during the development of annotations, but it is not sufficient to
+prove the more complex checks. Let's increase it to 10s, and rerun |GNATprove|:
+
+.. image:: static/search_loopinv_not_proved.png
+
+The loop invariant preservation was proved! One unproved check remains, in the
+contract cases of ``Linear_Search``. We need to check that the loop invariant
+is strong enough to prove the unproved contract case (goal 3 above). To help
+with this assessment, we use the ``Prove Line`` contextual menu available on
+line 35:
+
+.. image:: static/search_prove_line.png
+
+This runs |GNATprove| only on the checks that originate from line 35, in a
+special mode which considers separately individual execution path if
+needed. The check is still not proved, but GPS now displays an icon, either on
+the left of the message, or on line 35 in file ``search.ads``, to show the path
+on which the contract case is not proved:
+
+.. image:: static/search_path_info.png
+
+This corresponds to a case where the implementation of ``Loop_Search`` does not
+find the searched value, but the guard of the second contract case holds,
+meaning that the value is present in the range 2 to 10. Looking more closely at
+the path highlighted, we can see that the loop exits when ``Pos = A'Last``, so
+the value 10 is never considered! We correct this bug by changing the loop test
+from a strict to a non-strict comparison operation:
 
 .. code-block:: ada
-   :linenos:
 
-   package Search is
-
-      type Index is range 1 .. 10;
-      type Element is new Integer;
-
-      type Arr is array (Index) of Element;
-
-      type Search_Result (Found : Boolean := False) is record
-         case Found is
-            when True =>
-               At_Index : Index;
-            when False =>
-               null;
-         end case;
-      end record;
-
-      function Value_Found_In_Range
-        (A       : Arr;
-         Val     : Element;
-         Low, Up : Index) return Boolean
-      is (for some J in Low .. Up => A(J) = Val);
-
-      function Linear_Search (A : Arr; Val : Element) return Search_Result with
-        Pre  => Arr'Length > 0,
-        Post => (if Linear_Search'Result.Found then
-                   A (Linear_Search'Result.At_Index) = Val),
-        Contract_Cases =>
-          (A(1) = Val =>
-             Linear_Search'Result.At_Index = 1,
-           A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-             Linear_Search'Result.Found,
-           (for all J in Arr'Range => A(J) /= Val) =>
-             not Linear_Search'Result.Found);
-
-   end Search;
-
-.. code-block:: ada
-   :linenos:
-
-   package body Search is
-
-      function Linear_Search (A : Arr; Val : Element) return Search_Result is
-         Pos : Index'Base := A'First;
-      begin
          while Pos <= A'Last loop
-            if A(Pos) = Val then
-               return Search_Result'(Found    => True,
-                                     At_Index => Pos);
-            end if;
 
-            pragma Loop_Invariant
-              (Pos in A'Range
-                 and then
-               not Value_Found_In_Range (A, Val, A'First, Pos));
-            pragma Loop_Variant (Increases => Pos);
+On this modified code, we rerun |GNATprove| on line 35, checking the box
+``Report Proved VCs`` to get information even when a check is proved. The
+reassuring green color (and the accompanying info message) show that the check
+was proved this time:
 
-            Pos := Pos + 1;
-         end loop;
+.. image:: static/search_case_proved.png
 
-         return Search_Result'(Found => False);
-      end Linear_Search;
+Like usual after code changes, we rerun the test program, which shows no
+errors. Rerunning |GNATprove| on the complete file shows no more unproved
+checks. The ``Search`` unit has been fully proved. To see all the checks that
+were proved, we can rerun the tool with box ``Report Proved VCs`` checked,
+which displays the results previously computed:
 
-   end Search;
+.. image:: static/search_all_proved.png
 
-.. todo:: Remove old description below
-
-This chapter describes some simple ways of using |GNATprove| to formally prove
-properties on programs. We will be running |GNATprove| on a simple program that
-computes how much money is left after paying an income tax. The rate is a
-percentage, so it should be inferior to 100. One may also want to check that
-such a function does decrease the original amount of money (sadly). So the
-specification of this function may be:
-
-.. code-block:: ada
-   :linenos:
-
-    function After_Tax
-      (Before_Tax : Natural;
-       Rate       : Natural) return Natural
-    with
-      Pre  => (Rate <= 100),
-      Post => (After_Tax'Result <= Before_Tax);
-
-This specification should be in a file named ``after_tax.ads``. This function
-can then be implemented as follow:
-
-.. code-block:: ada
-   :linenos:
-
-    function After_Tax
-      (Before_Tax : Natural;
-       Rate       : Natural) return Natural is
-    begin
-       return Before_Tax - (Before_Tax * Rate) / 100;
-    end After_Tax;
-
-The body of this function should be in a file named
-``after_tax.adb``. Once these two files are created, one may want to
-prove that its contract and implementation are consistent. To do so,
-a GNAT project should be created:
+Note that one thing that was not proved is that ``Linear_Search``
+terminates. As it contains a while-loop, it could loop forever. To prove that
+it is not the case, we add a loop variant, which specifies a quantity varying
+monotonically with each iteration. Since this quantity is bounded by its type,
+and we have proved absence of run-time errors in ``Linear_Search``, proving
+this monotonicity property also shows that there cannot be an infinite number
+of iterations of the loop. The natural loop invariant for ``Linear_Search`` is
+the index ``Pos``, which increases at each loop iteration:
 
 .. code-block:: ada
 
-    project Taxes is
-       for Source_Dirs use (".");
+         pragma Loop_Variant (Increases => Pos);
 
-       package Compiler is
-          for Default_Switches ("Ada") use ("-gnat12");
-       end Compiler;
-    end Taxes;
+With this last modification, the test program still runs without errors (it
+checks dynamically that the loop variant is respected), and the program is
+still fully proved. Here is the final version of ``Search``, with the complete
+annotations:
 
-This project should be in file ``taxes.gpr``. It specifies that the source code
-to inspect is in the current directory; as this particular example uses an Ada
-2012 feature (aspects), it is also necessary to use the compiler switch
-``-gnat12``. GNAT projects are used by most tools in the |GNAT Pro| toolsuite;
-for an in-depth documentation of this technology, you may consult |GNAT Pro|
-User's Guide.
+.. code-block:: ada
+    :linenos:
 
-You can then invoke |GNATprove| on this project::
+    pragma SPARK_Mode;
 
-    $ gnatprove -P taxes.gpr
+    package Search is
 
-As the body of ``After_Tax`` is in |SPARK|, |GNATprove| can checks that its
-implementation is free from run-time errors and fulfills its contract.
-Here, it reports that the only possible run-time error is an overflow on the
-multiplication::
+       type Index is range 1 .. 10;
+       type Element is new Integer;
 
-    after_tax.adb:5:36: overflow check not proved
+       type Arr is array (Index) of Element;
 
-To get a complete report including all checks that could be proved, one should
-run |GNATprove| in ``all`` report mode::
+       type Search_Result (Found : Boolean := False) is record
+          case Found is
+             when True =>
+                At_Index : Index;
+             when False =>
+                null;
+          end case;
+       end record;
 
-    gnatprove --report=all -P taxes.gpr
+       function Value_Found_In_Range
+         (A       : Arr;
+          Val     : Element;
+          Low, Up : Index) return Boolean
+       is (for some J in Low .. Up => A(J) = Val);
 
-Here is the complete report::
+       function Linear_Search
+         (A   : Arr;
+          Val : Element) return Search_Result
+       with
+         Pre  => Val >= 0,
+         Post => (if Linear_Search'Result.Found then
+                    A (Linear_Search'Result.At_Index) = Val),
+         Contract_Cases =>
+           (A(1) = Val =>
+              Linear_Search'Result.At_Index = 1,
+            A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+              Linear_Search'Result.Found,
+            (for all J in Arr'Range => A(J) /= Val) =>
+              not Linear_Search'Result.Found);
 
-    after_tax.adb:5:22: info: overflow check proved
-    after_tax.adb:5:22: info: range check proved
-    after_tax.adb:5:36: overflow check not proved
-    after_tax.adb:5:44: info: overflow check proved
-    after_tax.adb:5:44: info: division check proved
-    after_tax.ads:6:29: info: postcondition proved
+    end Search;
 
-Notice in particular that the postcondition of ``After_Tax`` was proved.
-The contract or implementation of ``After_Tax`` should be modified to correct
-the possible overflow (for more information about proof,
-please consult the sections :ref:`absence of run-time errors` and
-:ref:`functional verification`).
+.. code-block:: ada
+    :linenos:
 
-This concludes our quick tour of |GNATprove|; the following chapters
-will detail further |SPARK|, |GNATprove|, GNATtest and the functionalities
-that these tools provides, making a clear separation between what
-is already available, what will be implemented in a near future, and what
-is outside the scope of this technology.
+    package body Search is
+
+       function Linear_Search
+         (A   : Arr;
+          Val : Element) return Search_Result
+       is
+          Pos : Index'Base := A'First;
+          Res : Search_Result;
+       begin
+          while Pos <= A'Last loop
+             if A(Pos) = Val then
+                Res := (Found    => True,
+                        At_Index => Pos);
+                return Res;
+             end if;
+
+             pragma Loop_Invariant
+               (Pos in A'Range
+                  and then
+                not Value_Found_In_Range (A, Val, A'First, Pos));
+             pragma Loop_Variant (Increases => Pos);
+
+             Pos := Pos + 1;
+          end loop;
+
+          Res := (Found => False);
+          return Res;
+       end Linear_Search;
+
+    end Search;
+
+This concludes our initial tour of the |SPARK| toolset!
