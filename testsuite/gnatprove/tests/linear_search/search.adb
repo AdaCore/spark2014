@@ -1,8 +1,7 @@
 package body Search is
 
    function Linear_Search (A : Arr; Val : Element) return Search_Result is
-      Pos    : Index'Base := A'First;
-      Result : Search_Result;
+      Pos : Index'Base := A'First;
    begin
       while Pos <= A'Last loop
          if A(Pos) = Val then
@@ -21,4 +20,5 @@ package body Search is
 
       return Search_Result'(Found => False);
    end Linear_Search;
+
 end Search;

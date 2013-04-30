@@ -1,11 +1,11 @@
 
-search.adb:10:47: info: range check proved
-search.adb:13:10: info: loop invariant initialization proved
-search.adb:13:10: info: loop invariant preservation proved
-search.adb:16:56: info: range check proved
-search.adb:17:10: info: loop variant proved
-search.adb:19:21: info: overflow check proved
-search.adb:8:15: info: index check proved
+search.adb:12:10: info: loop invariant initialization proved
+search.adb:12:10: info: loop invariant preservation proved
+search.adb:15:56: info: range check proved
+search.adb:16:10: info: loop variant proved
+search.adb:18:21: info: overflow check proved
+search.adb:7:15: info: index check proved
+search.adb:9:47: info: range check proved
 search.ads:21:37: info: index check proved
 search.ads:25:15: info: postcondition proved
 search.ads:26:40: info: discriminant check proved

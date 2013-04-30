@@ -21,15 +21,15 @@ package Search is
    is (for some J in Low .. Up => A(J) = Val);
 
    function Linear_Search (A : Arr; Val : Element) return Search_Result with
-     Pre  => Arr'Length > 0,
+     Pre  => Val >= 0,
      Post => (if Linear_Search'Result.Found then
                 A (Linear_Search'Result.At_Index) = Val),
      Contract_Cases =>
        (A(1) = Val =>
           Linear_Search'Result.At_Index = 1,
         A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-          Linear_Search'Result.Found = True,
+          Linear_Search'Result.Found,
         (for all J in Arr'Range => A(J) /= Val) =>
-          Linear_Search'Result.Found = False);
+          not Linear_Search'Result.Found);
 
 end Search;
