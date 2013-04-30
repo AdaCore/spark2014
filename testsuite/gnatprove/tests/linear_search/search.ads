@@ -1,3 +1,5 @@
+pragma SPARK_Mode;
+
 package Search is
 
    type Index is range 1 .. 10;
@@ -20,7 +22,10 @@ package Search is
       Low, Up : Index) return Boolean
    is (for some J in Low .. Up => A(J) = Val);
 
-   function Linear_Search (A : Arr; Val : Element) return Search_Result with
+   function Linear_Search
+     (A   : Arr;
+      Val : Element) return Search_Result
+   with
      Pre  => Val >= 0,
      Post => (if Linear_Search'Result.Found then
                 A (Linear_Search'Result.At_Index) = Val),

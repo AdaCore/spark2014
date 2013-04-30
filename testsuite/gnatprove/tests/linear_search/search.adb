@@ -1,12 +1,17 @@
 package body Search is
 
-   function Linear_Search (A : Arr; Val : Element) return Search_Result is
+   function Linear_Search
+     (A   : Arr;
+      Val : Element) return Search_Result
+   is
       Pos : Index'Base := A'First;
+      Res : Search_Result;
    begin
       while Pos <= A'Last loop
          if A(Pos) = Val then
-            return Search_Result'(Found    => True,
-                                  At_Index => Pos);
+            Res := (Found    => True,
+                    At_Index => Pos);
+            return Res;
          end if;
 
          pragma Loop_Invariant
@@ -18,7 +23,8 @@ package body Search is
          Pos := Pos + 1;
       end loop;
 
-      return Search_Result'(Found => False);
+      Res := (Found => False);
+      return Res;
    end Linear_Search;
 
 end Search;
