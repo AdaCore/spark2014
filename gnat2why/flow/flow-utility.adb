@@ -73,6 +73,7 @@ package body Flow.Utility is
      with Pre => Ekind (E) in Subprogram_Kind;
    --  Walk the Contract node attached to E and return the pragma
    --  matching Name.
+   pragma Unreferenced (Find_Contract);
 
    ---------------------------
    -- All_Record_Components --
@@ -558,8 +559,14 @@ package body Flow.Utility is
    function Get_Precondition (E : Entity_Id)
                               return Node_Id
    is
+      pragma Unreferenced (E);
    begin
-      return Find_Contract (E, Name_Precondition);
+      --  !!! Workaround for the GPL release - this requires a
+      --  frontend change to work. This we don't analyse
+      --  precondition. To be removed after the code freeze.
+
+      --  return Find_Contract (E, Name_Precondition);
+      return Empty;
    end Get_Precondition;
 
    ---------------------------
