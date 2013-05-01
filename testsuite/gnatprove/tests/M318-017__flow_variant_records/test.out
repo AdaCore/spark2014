@@ -1,0 +1,5 @@
+test.adb:41:09: use of uninitialized variable "v.z" [uninitialized]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

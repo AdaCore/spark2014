@@ -56,8 +56,7 @@ package Flow.Utility is
                             N_Expanded_Name |
                             N_Selected_Component |
                             N_Indexed_Component |
-                            N_Slice,
-        Post => Vars_Defined.Length >= 1;
+                            N_Slice;
    --  Given the target of an assignment (perhaps the left-hand-side
    --  of an assignment statement or an out vertex in a procedure
    --  call), work out which variables are actually set and which

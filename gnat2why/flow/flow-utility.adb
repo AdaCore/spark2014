@@ -49,7 +49,8 @@ package body Flow.Utility is
    function All_Record_Components
      (Entire_Var : Entity_Id)
       return Flow_Id_Sets.Set
-      with Pre => Ekind (Etype (Entire_Var)) = E_Record_Type;
+      with Pre => Ekind (Etype (Entire_Var)) in
+        E_Record_Type | E_Record_Subtype;
    --  Given the record Entire_Var, return a set with all components.
    --  So, for example we might return:
    --     * p.x
@@ -62,7 +63,8 @@ package body Flow.Utility is
       with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
                   and then Ekind (Etype
                                     (Get_Direct_Mapping_Id
-                                       (The_Record_Field))) = E_Record_Type;
+                                       (The_Record_Field))) in
+                                     E_Record_Type | E_Record_Subtype;
    --  As above but only include fields that are equal to Record_Field or are
    --  nested under it. For example if Record_Field = p.r for the above
    --  record, then we will get the following set:
@@ -102,7 +104,7 @@ package body Flow.Utility is
 
       procedure Process_Record (R_Type : Entity_Id;
                                 Comp   : Entity_Lists.Vector)
-      with Pre => Ekind (R_Type) = E_Record_Type;
+      with Pre => Ekind (R_Type) in E_Record_Type | E_Record_Subtype;
       --  Recursively go through the record's components, adding
       --  everything to All_Comp.
 
@@ -357,11 +359,11 @@ package body Flow.Utility is
          when Elementary_Kind | Array_Kind =>
             return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
 
-         when E_Record_Type =>
+         when E_Record_Type | E_Record_Subtype =>
             return All_Record_Components (Entire_Var => U);
 
          when others =>
-            Print_Node_Briefly (Etype (E));
+            Print_Node_Subtree (E);
             raise Why.Unexpected_Node;
       end case;
    end Flatten_Variable;
