@@ -51,8 +51,6 @@ package Flow.Analysis is
    procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs);
    --  Find all instances where uninitialised variables are used. Two
    --  separate checks are performed.
-   --     - analysis of the graph (i.e. variables in the body)
-   --     - analysis of the precondition
    --
    --  Complexity is O(N)
 

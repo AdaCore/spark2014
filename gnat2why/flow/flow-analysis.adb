@@ -81,14 +81,6 @@ package body Flow.Analysis is
    --  Emit an error message that (the first call) introducing the
    --  global Var requires a global annotation.
 
-   procedure Find_Use_Of_Uninitialised_Variables_In_Graph
-     (FA : Flow_Analysis_Graphs);
-   --  The first half of Find_Use_Of_Uninitialised_Variables
-
-   procedure Find_Use_Of_Uninitialised_Variables_In_Precondition
-     (FA : Flow_Analysis_Graphs);
-   --  The second half of Find_Use_Of_Uninitialised_Variables
-
    --------------------
    -- Error_Location --
    --------------------
@@ -702,11 +694,11 @@ package body Flow.Analysis is
       end loop;
    end Find_Ineffective_Statements;
 
-   --------------------------------------------------
-   -- Find_Use_Of_Uninitialised_Variables_In_Graph --
-   --------------------------------------------------
+   -----------------------------------------
+   -- Find_Use_Of_Uninitialised_Variables --
+   -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialised_Variables_In_Graph
+   procedure Find_Use_Of_Uninitialised_Variables
      (FA : Flow_Analysis_Graphs)
    is
       procedure Mark_Definition_Free_Path
@@ -869,33 +861,6 @@ package body Flow.Analysis is
             end if;
          end;
       end loop;
-   end Find_Use_Of_Uninitialised_Variables_In_Graph;
-
-   ---------------------------------------------------------
-   -- Find_Use_Of_Uninitialised_Variables_In_Precondition --
-   ---------------------------------------------------------
-
-   procedure Find_Use_Of_Uninitialised_Variables_In_Precondition
-     (FA : Flow_Analysis_Graphs)
-   is
-      --  Pre : constant Node_Id := Get_Pragma (FA.Subprogram,
-      --  Pragma_Precondition);
-
-   begin
-      --  !!! once M429-015 is fixed we can implement this
-      null;
-   end Find_Use_Of_Uninitialised_Variables_In_Precondition;
-
-   -----------------------------------------
-   -- Find_Use_Of_Uninitialised_Variables --
-   -----------------------------------------
-
-   procedure Find_Use_Of_Uninitialised_Variables
-     (FA : Flow_Analysis_Graphs)
-   is
-   begin
-      Find_Use_Of_Uninitialised_Variables_In_Graph (FA);
-      Find_Use_Of_Uninitialised_Variables_In_Precondition (FA);
    end Find_Use_Of_Uninitialised_Variables;
 
    --------------------------
