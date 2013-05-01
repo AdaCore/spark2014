@@ -841,6 +841,11 @@ package body Flow is
             end case;
 
          else
+            if A.Is_Precondition then
+               Rv.Shape := Shape_None;
+               Output.Write_Str ("precondition ");
+            end if;
+
             case F.Kind is
                when Direct_Mapping =>
                   declare

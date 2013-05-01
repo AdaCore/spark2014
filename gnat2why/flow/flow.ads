@@ -225,6 +225,9 @@ package Flow is
       --  It should be noted that most vertices we construct will have
       --  this set to true.
 
+      Is_Precondition     : Boolean;
+      --  True if this vertex represents the precondition.
+
       Is_Initialised      : Boolean;
       --  True if an initial value is either imported (in or in out)
       --  or otherwise initialised.
@@ -285,6 +288,7 @@ package Flow is
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node        => False,
                    Is_Program_Node     => False,
+                   Is_Precondition     => False,
                    Is_Initialised      => False,
                    Is_Function_Return  => False,
                    Is_Global           => False,
@@ -306,6 +310,7 @@ package Flow is
    Null_Node_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node        => True,
                    Is_Program_Node     => True,
+                   Is_Precondition     => False,
                    Is_Initialised      => False,
                    Is_Function_Return  => False,
                    Is_Global           => False,
