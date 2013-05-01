@@ -270,23 +270,15 @@ package body Flow.Control_Flow_Graph is
    --  do not check for ineffective statements since all pragmas ought to
    --  be ineffective by definition.
    --
-   --  The following pragmas are simply ignored:
-   --    Pragma_Annotate
-   --    Pragma_Depends       (we deal with this separately)
-   --    Pragma_Export
-   --    Pragma_Global        (we deal with this separately)
-   --    Pragma_Import
-   --    Pragma_Preelaborate
-   --    Pragma_Pure
-   --    Pragma_Warnings
+   --  Please also see Pragma_Relevant_To_Flow which decides which
+   --  pragmas are important.
 
-   --  The following pragmas are checked for uninitialized variables:
-   --    Pragma_Check
-   --    Pragma_Loop_Variant
-   --    Pragma_Precondition
-   --    Pragma_Postcondition
-   --
-   --  Any other pragmas will raise Why.Not_Implemented.
+   procedure Do_Precondition
+     (Pre : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context);
+   --  Deals with the given precondition expression.
 
    procedure Do_Procedure_Call_Statement
      (N   : Node_Id;
@@ -369,6 +361,13 @@ package body Flow.Control_Flow_Graph is
    --  'final vertices for symbols introduced by quantified
    --  expressions. We do not descend into nested subprograms.
 
+   procedure Process_Quantified_Expressions
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context);
+   --  As above but operates on a single node.
+
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
       In_List           : in out Vertex_Vectors.Vector;
@@ -414,6 +413,10 @@ package body Flow.Control_Flow_Graph is
    procedure Simplify
      (G : in out Flow_Graphs.T'Class);
    --  Remove all null vertices from the graph.
+
+   function Pragma_Relevant_To_Flow (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Pragma;
+   --  Check if we flow analysis cares about this particular pragma.
 
    ------------------------------------------------------------
    --  Local procedures and functions
@@ -1264,52 +1267,55 @@ package body Flow.Control_Flow_Graph is
       pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
    begin
-      case Get_Pragma_Id (Pragma_Name (N)) is
-         when Pragma_Annotate      |
-              Pragma_Depends       |
-              Pragma_Export        |
-              Pragma_Global        |
-              Pragma_Import        |
-              Pragma_Preelaborate  |
-              Pragma_Pure          |
-              Pragma_Warnings      |
-              Pragma_Precondition  |
-              Pragma_Postcondition =>
+      if Pragma_Relevant_To_Flow (N) then
+         --  If we care, we create a sink vertex to check for
+         --  uninitialised variables.
+         FA.CFG.Add_Vertex
+           (Direct_Mapping_Id (N),
+            Make_Sink_Vertex_Attributes
+              (Var_Use => Get_Variable_Set (Pragma_Argument_Associations (N)),
+               E_Loc   => N),
+            V);
 
-            --  We create a null vertex for the pragma.
-            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                               Null_Node_Attributes,
-                               V);
-            CM.Include (Union_Id (N), No_Connections);
-            CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits := To_Set (V);
+      else
+         --  Otherwise we produce a null vertex.
+         FA.CFG.Add_Vertex (Null_Node_Attributes,
+                            V);
+      end if;
 
-         when Pragma_Check         |
-              Pragma_Loop_Variant  =>
+      CM.Include (Union_Id (N), No_Connections);
+      CM (Union_Id (N)).Standard_Entry := V;
+      CM (Union_Id (N)).Standard_Exits := To_Set (V);
 
-            --  We create a sink vertex for the pragma (which we just
-            --  use to check for uninitialized variables).
-            FA.CFG.Add_Vertex
-              (Direct_Mapping_Id (N),
-               Make_Sink_Vertex_Attributes
-                 (Var_Use => Get_Variable_Set
-                    (Pragma_Argument_Associations (N)),
-                  E_Loc   => N),
-               V);
-            CM.Include (Union_Id (N), No_Connections);
-            CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits := To_Set (V);
-
-         when Unknown_Pragma =>
-            --  If we find an Unknown_Pragma we raise Why.Not_SPARK
-            raise Why.Not_SPARK;
-
-         when others =>
-            --  If we find another pragma which got past the "in
-            --  SPARK" check we should do one of the above.
-            raise Why.Unexpected_Node;
-      end case;
    end Do_Pragma;
+
+   ---------------------
+   -- Do_Precondition --
+   ---------------------
+
+   procedure Do_Precondition
+     (Pre : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      pragma Unreferenced (Ctx);
+
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  We just need to check for uninitialised variables.
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (Pre),
+         Make_Sink_Vertex_Attributes
+           (Var_Use         => Get_Variable_Set (Pre),
+            Is_Precondition => True,
+            E_Loc           => Pre),
+         V);
+
+      CM.Include (Union_Id (Pre), No_Connections);
+      CM (Union_Id (Pre)).Standard_Entry := V;
+      CM (Union_Id (Pre)).Standard_Exits := To_Set (V);
+   end Do_Precondition;
 
    -----------------------------------
    --  Do_Procedure_Call_Statement  --
@@ -1483,7 +1489,7 @@ package body Flow.Control_Flow_Graph is
    ------------------------------------
 
    procedure Process_Quantified_Expressions
-     (L   : List_Id;
+     (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
@@ -1510,33 +1516,11 @@ package body Flow.Control_Flow_Graph is
                return Skip;
 
             when N_Pragma =>
-
-               case Get_Pragma_Id (Pragma_Name (N)) is
-                  when Pragma_Annotate   |
-                    Pragma_Depends       |
-                    Pragma_Export        |
-                    Pragma_Global        |
-                    Pragma_Import        |
-                    Pragma_Preelaborate  |
-                    Pragma_Pure          |
-                    Pragma_Warnings      |
-                    Pragma_Precondition  |
-                    Pragma_Postcondition =>
-                     return Skip;
-
-                  when Pragma_Check      |
-                    Pragma_Loop_Variant  =>
-                     return OK;
-
-                  when Unknown_Pragma =>
-                     --  If we find an Unknown_Pragma we raise Why.Not_SPARK
-                     raise Why.Not_SPARK;
-
-                  when others =>
-                     --  If we find another pragma which got past the "in
-                     --  SPARK" check we should do one of the above.
-                     raise Why.Unexpected_Node;
-               end case;
+               if Pragma_Relevant_To_Flow (N) then
+                  return OK;
+               else
+                  return Skip;
+               end if;
 
             when N_Quantified_Expression =>
                --  Sanity check: Iterator_Specification is not in
@@ -1555,11 +1539,20 @@ package body Flow.Control_Flow_Graph is
       end Proc;
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
+   begin
+      Traverse (N);
+   end Process_Quantified_Expressions;
 
+   procedure Process_Quantified_Expressions
+     (L   : List_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
       N : Node_Id := First (L);
    begin
       while Present (N) loop
-         Traverse (N);
+         Process_Quantified_Expressions (N, FA, CM, Ctx);
          Next (N);
       end loop;
    end Process_Quantified_Expressions;
@@ -1841,6 +1834,50 @@ package body Flow.Control_Flow_Graph is
       end loop;
    end Simplify;
 
+   -----------------------------
+   -- Pragma_Relevant_To_Flow --
+   -----------------------------
+
+   function Pragma_Relevant_To_Flow (N : Node_Id) return Boolean
+   is
+   begin
+      case Get_Pragma_Id (N) is
+         when Pragma_Annotate      |
+              Pragma_Depends       |
+              Pragma_Export        |
+              Pragma_Global        |
+              Pragma_Import        |
+              Pragma_Preelaborate  |
+              Pragma_Pure          |
+              Pragma_Warnings      |
+              Pragma_Precondition  |
+              Pragma_Postcondition =>
+
+            return False;
+
+         when Pragma_Check         |
+              Pragma_Loop_Variant  =>
+
+            if Get_Pragma_Id (N) = Pragma_Check and then
+              Is_Precondition_Check (N)
+            then
+               return False;
+            else
+               return True;
+            end if;
+
+         when Unknown_Pragma =>
+            --  If we find an Unknown_Pragma we raise Why.Not_SPARK
+            raise Why.Not_SPARK;
+
+         when others =>
+            --  If we find another pragma which got past the "in
+            --  SPARK" check we should do one of the above.
+            raise Why.Unexpected_Node;
+      end case;
+
+   end Pragma_Relevant_To_Flow;
+
    ------------------------------------------------------------
    --  Package functions and procedures
    ------------------------------------------------------------
@@ -1856,6 +1893,7 @@ package body Flow.Control_Flow_Graph is
       Connection_Map  : Connection_Maps.Map;
       The_Context     : Context              := No_Context;
       Subprogram_Spec : Entity_Id;
+      Precondition    : constant Node_Id := Get_Precondition (FA.Subprogram);
    begin
       if Acts_As_Spec (N) then
          Subprogram_Spec := Defining_Unit_Name (Specification (N));
@@ -1954,7 +1992,15 @@ package body Flow.Control_Flow_Graph is
          end loop;
       end;
 
-      --  Collect variables introduced by quantified expressions.
+      --  Collect variables introduced by quantified expressions. We
+      --  need to look at the following parts:
+      --     - precondition
+      --     - declarative part
+      --     - body
+      if Present (Precondition) then
+         Process_Quantified_Expressions
+           (Precondition, FA, Connection_Map, The_Context);
+      end if;
       Process_Quantified_Expressions
         (Declarations (N), FA, Connection_Map, The_Context);
       Process_Quantified_Expressions
@@ -1972,15 +2018,27 @@ package body Flow.Control_Flow_Graph is
       --  objects; we deal with them as they are encountered. See
       --  Do_N_Object_Declaration for enlightenment.
 
+      --  Produce flowgraph for the precondition, if any.
+      if Present (Precondition) then
+         Do_Precondition (Precondition, FA, Connection_Map, The_Context);
+      end if;
+
       --  Produce flowgraph for the body
       Do_Subprogram_Or_Block (N, FA, Connection_Map, The_Context);
 
-      --  Print_Node_Set (FA.All_Vars);
-
-      --  Connect up the start and end vertices.
-      Linkup (FA.CFG,
-              FA.Start_Vertex,
-              Connection_Map (Union_Id (N)).Standard_Entry);
+      --  Connect up all the dots...
+      if Present (Precondition) then
+         Linkup (FA.CFG,
+                 FA.Start_Vertex,
+                 Connection_Map (Union_Id (Precondition)).Standard_Entry);
+         Linkup (FA.CFG,
+                 Connection_Map (Union_Id (Precondition)).Standard_Exits,
+                 Connection_Map (Union_Id (N)).Standard_Entry);
+      else
+         Linkup (FA.CFG,
+                 FA.Start_Vertex,
+                 Connection_Map (Union_Id (N)).Standard_Entry);
+      end if;
       Linkup (FA.CFG,
               Connection_Map (Union_Id (N)).Standard_Exits,
               FA.End_Vertex);

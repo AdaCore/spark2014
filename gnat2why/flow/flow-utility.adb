@@ -22,8 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Nlists;   use Nlists;
-with Sem_Util; use Sem_Util;
-with Snames;   use Snames;
+with Namet;    use Namet;
 
 with Treepr;   use Treepr;
 
@@ -69,6 +68,11 @@ package body Flow.Utility is
    --  record, then we will get the following set:
    --     * p.r.a
    --     * p.r.b
+
+   function Find_Contract (E : Entity_Id; Name : Name_Id) return Node_Id
+     with Pre => Ekind (E) in Subprogram_Kind;
+   --  Walk the Contract node attached to E and return the pragma
+   --  matching Name.
 
    ---------------------------
    -- All_Record_Components --
@@ -158,6 +162,42 @@ package body Flow.Utility is
                       Entity_Lists.Empty_Vector);
       return All_Comp;
    end All_Record_Components;
+
+   -------------------
+   -- Find_Contract --
+   -------------------
+
+   function Find_Contract (E : Entity_Id; Name : Name_Id) return Node_Id
+   is
+      C : constant Node_Id := Contract (E);
+      P : Node_Id;
+   begin
+      case Name is
+         when Name_Precondition | Name_Postcondition =>
+            P := Pre_Post_Conditions (C);
+            while Present (P) and then
+              Chars (Pragma_Identifier (P)) /= Name
+            loop
+               P := Next_Pragma (P);
+            end loop;
+
+            if Present (P) then
+               pragma Assert (Nkind (P) = N_Pragma);
+               P := Expression (First (Pragma_Argument_Associations (P)));
+            end if;
+
+            return P;
+
+         when Name_Global | Name_Depends =>
+            raise Why.Not_Implemented;
+
+         when Name_Contract_Cases =>
+            raise Why.Not_Implemented;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Find_Contract;
 
    ----------------------------------------------------------------------
    --  Package
@@ -510,5 +550,28 @@ package body Flow.Utility is
          Print_Node_Set (Vars_Defined);
       end if;
    end Untangle_Assignment_Target;
+
+   ----------------------
+   -- Get_Precondition --
+   ----------------------
+
+   function Get_Precondition (E : Entity_Id)
+                              return Node_Id
+   is
+   begin
+      return Find_Contract (E, Name_Precondition);
+   end Get_Precondition;
+
+   ---------------------------
+   -- Is_Precondition_Check --
+   ---------------------------
+
+   function Is_Precondition_Check (N : Node_Id) return Boolean
+   is
+      A : constant Node_Id := First (Pragma_Argument_Associations (N));
+   begin
+      pragma Assert (Nkind (Expression (A)) = N_Identifier);
+      return Chars (Expression (A)) = Name_Pre;
+   end Is_Precondition_Check;
 
 end Flow.Utility;

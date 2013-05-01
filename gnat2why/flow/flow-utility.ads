@@ -26,6 +26,9 @@
 
 with Ada.Containers;
 
+with Sem_Util;       use Sem_Util;
+with Snames;         use Snames;
+
 use type Ada.Containers.Count_Type;
 
 package Flow.Utility is
@@ -60,5 +63,15 @@ package Flow.Utility is
    --  call), work out which variables are actually set and which
    --  variables are used to determine what is set (in the case of
    --  arrays).
+
+   function Get_Precondition (E : Entity_Id) return Node_Id
+     with Pre => Ekind (E) in Subprogram_Kind;
+   --  Given the entity for a subprogram, return the expression for
+   --  its precondition (or Empty).
+
+   function Is_Precondition_Check (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Pragma and then
+                 Get_Pragma_Id (N) = Pragma_Check;
+   --  Given a check pragma, return if this is a precondition check.
 
 end Flow.Utility;
