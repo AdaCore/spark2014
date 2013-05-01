@@ -1,1 +1,9 @@
-NOT IMPLEMENTED YET
+test.adb:43:23: use of uninitialized variable "V" [uninitialized]
+test.adb:46:27: formal parameter "X" might not be set [uninitialized]
+test.adb:47:18: use of uninitialized variable "X" [uninitialized]
+test.adb:57:04: global "G" might not be set [uninitialized]
+test.adb:59:18: use of uninitialized variable "G" [uninitialized]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

@@ -35,9 +35,8 @@ is
       null;
    end T_In_Out_Param;
 
-   procedure Detect_Uninitialised_In_Out
+   procedure Detect_Uninitialised_In_Out (V : out Integer)
    is
-      V : Integer;
    begin
       --  This picks up that X > 0 in the contracts will refer to an
       --  uninitialized variable. (use of uninitialized variable "V").
