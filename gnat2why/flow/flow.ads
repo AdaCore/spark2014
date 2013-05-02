@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
@@ -198,6 +199,10 @@ package Flow is
    package Ordered_Entity_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Entity_Id,
       "<"          => Lexicographic_Entity_Order,
+      "="          => "=");
+
+   package Node_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Node_Or_Entity_Id,
       "="          => "=");
 
    function To_Ordered_Entity_Set (S : Node_Sets.Set)

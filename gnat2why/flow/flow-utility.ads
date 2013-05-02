@@ -63,10 +63,10 @@ package Flow.Utility is
    --  variables are used to determine what is set (in the case of
    --  arrays).
 
-   function Get_Precondition (E : Entity_Id) return Node_Id
+   function Get_Preconditions (E : Entity_Id) return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind;
-   --  Given the entity for a subprogram, return the expression for
-   --  its precondition (or Empty).
+   --  Given the entity for a subprogram, return the expression(s) for
+   --  its precondition (or the empty list).
 
    function Is_Precondition_Check (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma and then

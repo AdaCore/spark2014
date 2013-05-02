@@ -66,4 +66,12 @@ is
       null;
    end T_Out_Global;
 
+   procedure Multiple_Preconditions (X, Y, Z : Integer)
+   with Pre => X >= 0 and then Y >= 0
+   is
+      pragma Precondition (Z >= 0);
+   begin
+      null;
+   end Multiple_Preconditions;
+
 end Test;

@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
+
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;
 with Sem_Util; use Sem_Util;
@@ -46,6 +48,10 @@ package body Flow.Control_Flow_Graph is
    use Vertex_Sets;
    use type Flow_Id_Sets.Set;
    use type Node_Sets.Set;
+
+   package Union_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Union_Id,
+      "="          => "=");
 
    ------------------------------------------------------------
    --  Debug
@@ -110,6 +116,15 @@ package body Flow.Control_Flow_Graph is
       with Pre => From /= Flow_Graphs.Null_Vertex and
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
+
+   procedure Join
+     (CFG   : in out Flow_Graphs.T;
+      CM    : in out Connection_Maps.Map;
+      Nodes : Union_Lists.List;
+      Block : out Graph_Connections);
+   --  Join up the standard entry and standard exits of the given
+   --  nodes. Block contains the combined standard entry and exits of
+   --  the joined up sequence.
 
    procedure Create_Record_Tree
      (F        : Flow_Id;
@@ -443,6 +458,50 @@ package body Flow.Control_Flow_Graph is
    begin
       CFG.Add_Edge (From, To, EC_Default);
    end Linkup;
+
+   ----------
+   -- Join --
+   ----------
+
+   procedure Join
+     (CFG   : in out Flow_Graphs.T;
+      CM    : in out Connection_Maps.Map;
+      Nodes : Union_Lists.List;
+      Block : out Graph_Connections)
+   is
+      Prev : Union_Id;
+      V    : Flow_Graphs.Vertex_Id;
+   begin
+      Block := No_Connections;
+
+      Prev := Union_Id (Empty);
+      for P of Nodes loop
+         if Present (Node_Id (Prev)) then
+            --  Connect this statement to the previous one.
+            Linkup (CFG,
+                    CM (Prev).Standard_Exits,
+                    CM (P).Standard_Entry);
+         else
+            --  This is the first vertex, so set the standard entry of
+            --  the list.
+            Block.Standard_Entry := CM (P).Standard_Entry;
+         end if;
+
+         Prev := P;
+      end loop;
+
+      if Present (Node_Id (Prev)) then
+         --  Set the standard exits of the list, if we processed at
+         --  least one element.
+         Block.Standard_Exits := CM (Prev).Standard_Exits;
+      else
+         --  We had a null sequence so we need to produce a null node.
+         CFG.Add_Vertex (Null_Node_Attributes,
+                         V);
+         Block.Standard_Entry := V;
+         Block.Standard_Exits := To_Set (V);
+      end if;
+   end Join;
 
    ------------------------
    -- Create_Record_Tree --
@@ -1695,16 +1754,12 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      P    : Node_Or_Entity_Id;
-      Prev : Node_Or_Entity_Id;
-      V    : Flow_Graphs.Vertex_Id;
+      P              : Node_Or_Entity_Id;
+      Statement_List : Union_Lists.List := Union_Lists.Empty_List;
+      Block          : Graph_Connections;
    begin
-      --  We need a connection map for this sequence.
-      CM.Include (Union_Id (L), No_Connections);
-
       --  Create initial nodes for the statements.
       P    := First (L);
-      Prev := Empty;
       while Present (P) loop
          case Nkind (P) is
             when N_Freeze_Entity                |
@@ -1721,41 +1776,23 @@ package body Flow.Control_Flow_Graph is
               N_Private_Type_Declaration        |
               N_Number_Declaration =>
                --  We completely skip these.
-               P := Next (P);
+               null;
 
             when others =>
                Process_Statement (P, FA, CM, Ctx);
+               Statement_List.Append (Union_Id (P));
 
-               --  Connect this statement to the previous one.
-               if Present (Prev) then
-                  Linkup (FA.CFG,
-                          CM (Union_Id (Prev)).Standard_Exits,
-                          CM (Union_Id (P)).Standard_Entry);
-               else
-                  --  This is the first vertex, so set the standard entry
-                  --  of the list.
-                  CM (Union_Id (L)).Standard_Entry :=
-                    CM (Union_Id (P)).Standard_Entry;
-               end if;
-
-               --  Go to the next statement
-               Prev := P;
-               P    := Next (P);
          end case;
+         P := Next (P);
       end loop;
 
-      if Present (Prev) then
-         --  Set the standard exits of the list, if we processed at
-         --  least one element.
-         CM (Union_Id (L)).Standard_Exits :=
-           CM (Union_Id (Prev)).Standard_Exits;
-      else
-         --  We had a null sequence so we need to produce a null node.
-         FA.CFG.Add_Vertex (Null_Node_Attributes,
-                            V);
-         CM (Union_Id (L)).Standard_Entry := V;
-         CM (Union_Id (L)).Standard_Exits := To_Set (V);
-      end if;
+      --  Produce the joined up list.
+      Join (CFG   => FA.CFG,
+            CM    => CM,
+            Nodes => Statement_List,
+            Block => Block);
+      CM.Include (Union_Id (L), Block);
+
    end Process_Statement_List;
 
    -------------------------
@@ -1895,7 +1932,9 @@ package body Flow.Control_Flow_Graph is
       Connection_Map  : Connection_Maps.Map;
       The_Context     : Context              := No_Context;
       Subprogram_Spec : Entity_Id;
-      Precondition    : constant Node_Id := Get_Precondition (FA.Subprogram);
+      Preconditions   : constant Node_Lists.List :=
+        Get_Preconditions (FA.Subprogram);
+      Precon_Block    : Graph_Connections;
    begin
       if Acts_As_Spec (N) then
          Subprogram_Spec := Defining_Unit_Name (Specification (N));
@@ -1999,10 +2038,10 @@ package body Flow.Control_Flow_Graph is
       --     - precondition
       --     - declarative part
       --     - body
-      if Present (Precondition) then
+      for Precondition of Preconditions loop
          Process_Quantified_Expressions
            (Precondition, FA, Connection_Map, The_Context);
-      end if;
+      end loop;
       Process_Quantified_Expressions
         (Declarations (N), FA, Connection_Map, The_Context);
       Process_Quantified_Expressions
@@ -2021,26 +2060,29 @@ package body Flow.Control_Flow_Graph is
       --  Do_N_Object_Declaration for enlightenment.
 
       --  Produce flowgraph for the precondition, if any.
-      if Present (Precondition) then
-         Do_Precondition (Precondition, FA, Connection_Map, The_Context);
-      end if;
+      declare
+         NL : Union_Lists.List := Union_Lists.Empty_List;
+      begin
+         for Precondition of Preconditions loop
+            Do_Precondition (Precondition, FA, Connection_Map, The_Context);
+            NL.Append (Union_Id (Precondition));
+         end loop;
+         Join (CFG   => FA.CFG,
+               CM    => Connection_Map,
+               Nodes => NL,
+               Block => Precon_Block);
+      end;
 
       --  Produce flowgraph for the body
       Do_Subprogram_Or_Block (N, FA, Connection_Map, The_Context);
 
       --  Connect up all the dots...
-      if Present (Precondition) then
-         Linkup (FA.CFG,
-                 FA.Start_Vertex,
-                 Connection_Map (Union_Id (Precondition)).Standard_Entry);
-         Linkup (FA.CFG,
-                 Connection_Map (Union_Id (Precondition)).Standard_Exits,
-                 Connection_Map (Union_Id (N)).Standard_Entry);
-      else
-         Linkup (FA.CFG,
-                 FA.Start_Vertex,
-                 Connection_Map (Union_Id (N)).Standard_Entry);
-      end if;
+      Linkup (FA.CFG,
+              FA.Start_Vertex,
+              Precon_Block.Standard_Entry);
+      Linkup (FA.CFG,
+              Precon_Block.Standard_Exits,
+              Connection_Map (Union_Id (N)).Standard_Entry);
       Linkup (FA.CFG,
               Connection_Map (Union_Id (N)).Standard_Exits,
               FA.End_Vertex);

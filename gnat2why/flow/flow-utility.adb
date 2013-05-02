@@ -35,6 +35,19 @@ package body Flow.Utility is
    use type Flow_Id_Sets.Set;
 
    ----------------------------------------------------------------------
+   --  Workarounds
+   ----------------------------------------------------------------------
+
+   Workaround_Pre_30_Apr_2013 : constant Boolean := True;
+   --  !!! To be removed once the GPL release is made. We have this
+   --  workaround in place as the fix for M429-015 is not in the
+   --  corresponding gnat GPL release.
+   --
+   --  When enabled we do not analyse preconditions as the method for
+   --  obtaining preconditions was not working consistently and did
+   --  not always return an analysed tree.
+
+   ----------------------------------------------------------------------
    --  Debug
    ----------------------------------------------------------------------
 
@@ -71,11 +84,12 @@ package body Flow.Utility is
    --     * p.r.a
    --     * p.r.b
 
-   function Find_Contract (E : Entity_Id; Name : Name_Id) return Node_Id
+   function Find_Contracts (E    : Entity_Id;
+                            Name : Name_Id)
+                            return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind;
    --  Walk the Contract node attached to E and return the pragma
    --  matching Name.
-   pragma Unreferenced (Find_Contract);
 
    ---------------------------
    -- All_Record_Components --
@@ -166,30 +180,38 @@ package body Flow.Utility is
       return All_Comp;
    end All_Record_Components;
 
-   -------------------
-   -- Find_Contract --
-   -------------------
+   --------------------
+   -- Find_Contracts --
+   --------------------
 
-   function Find_Contract (E : Entity_Id; Name : Name_Id) return Node_Id
+   function Find_Contracts (E    : Entity_Id;
+                            Name : Name_Id)
+                            return Node_Lists.List
    is
-      C : constant Node_Id := Contract (E);
-      P : Node_Id;
+      C          : constant Node_Id := Contract (E);
+      P          : Node_Id;
+      Contracts  : Node_Lists.List := Node_Lists.Empty_List;
+      Other_Name : Name_Id;
    begin
       case Name is
          when Name_Precondition | Name_Postcondition =>
+            if Name = Name_Precondition then
+               Other_Name := Name_Pre;
+            else
+               Other_Name := Name_Post;
+            end if;
+
             P := Pre_Post_Conditions (C);
-            while Present (P) and then
-              Chars (Pragma_Identifier (P)) /= Name
-            loop
+            while Present (P) loop
+               if Chars (Pragma_Identifier (P)) in Name | Other_Name then
+                  Contracts.Append
+                    (Expression (First (Pragma_Argument_Associations (P))));
+               end if;
+
                P := Next_Pragma (P);
             end loop;
 
-            if Present (P) then
-               pragma Assert (Nkind (P) = N_Pragma);
-               P := Expression (First (Pragma_Argument_Associations (P)));
-            end if;
-
-            return P;
+            return Contracts;
 
          when Name_Global | Name_Depends =>
             raise Why.Not_Implemented;
@@ -200,7 +222,7 @@ package body Flow.Utility is
          when others =>
             raise Program_Error;
       end case;
-   end Find_Contract;
+   end Find_Contracts;
 
    ----------------------------------------------------------------------
    --  Package
@@ -554,22 +576,20 @@ package body Flow.Utility is
       end if;
    end Untangle_Assignment_Target;
 
-   ----------------------
-   -- Get_Precondition --
-   ----------------------
+   -----------------------
+   -- Get_Preconditions --
+   -----------------------
 
-   function Get_Precondition (E : Entity_Id)
-                              return Node_Id
+   function Get_Preconditions (E : Entity_Id)
+                               return Node_Lists.List
    is
-      pragma Unreferenced (E);
    begin
-      --  !!! Workaround for the GPL release - this requires a
-      --  frontend change to work. This we don't analyse
-      --  precondition. To be removed after the code freeze.
-
-      --  return Find_Contract (E, Name_Precondition);
-      return Empty;
-   end Get_Precondition;
+      if Workaround_Pre_30_Apr_2013 then
+         return Node_Lists.Empty_List;
+      else
+         return Find_Contracts (E, Name_Precondition);
+      end if;
+   end Get_Preconditions;
 
    ---------------------------
    -- Is_Precondition_Check --
