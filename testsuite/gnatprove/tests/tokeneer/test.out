@@ -1,4 +1,3 @@
-
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
@@ -21,25 +20,37 @@ admintoken.ads:79:44: info: postcondition proved
 alarm-interfac.ads:54:26: postcondition not proved, requires (IsAlarming)
 alarm-interfac.ads:70:26: postcondition not proved, requires not (IsAlarming)
 alarm.ads:82:49: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
-auditlog.adb:1000:50: range check not proved
-auditlog.adb:1002:44: range check not proved
+auditlog.adb:1000:50: info: range check proved
+auditlog.adb:1002:44: info: range check proved
+auditlog.adb:1066:47: range check not proved
+auditlog.adb:1066:50: info: overflow check proved
+auditlog.adb:1066:69: info: overflow check proved
+auditlog.adb:1069:27: info: postcondition proved
+auditlog.adb:1070:47: range check not proved
+auditlog.adb:1070:50: overflow check not proved
+auditlog.adb:1070:69: overflow check not proved
+auditlog.adb:1078:10: info: precondition proved
 auditlog.adb:1085:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
-auditlog.adb:1087:50: range check not proved
+auditlog.adb:1087:50: info: range check proved
 auditlog.adb:1087:53: info: overflow check proved
 auditlog.adb:1087:72: info: overflow check proved
-auditlog.adb:1089:10: assertion not proved, requires LogFileEntries(CurrentLogFile) = MaxLogFileEntries
-auditlog.adb:1090:10: assertion not proved, requires UsedLogFiles.Length = LogFileCountT'Last - 1
-auditlog.adb:1103:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1089:10: info: assertion proved
+auditlog.adb:1090:10: info: assertion proved
+auditlog.adb:1092:10: info: precondition proved
+auditlog.adb:1103:10: info: assertion proved
 auditlog.adb:1105:50: range check not proved
-auditlog.adb:1105:53: info: overflow check proved
+auditlog.adb:1105:53: overflow check not proved
 auditlog.adb:1105:72: info: overflow check proved
 auditlog.adb:1107:10: assertion not proved, requires LogFileEntries(CurrentLogFile) = 1
-auditlog.adb:1108:10: assertion not proved, requires UsedLogFiles.Length = LogFileCountT'last
+auditlog.adb:1108:10: info: assertion proved
 auditlog.adb:1117:7: assertion not proved
 auditlog.adb:1119:47: range check not proved
-auditlog.adb:1119:50: overflow check not proved
+auditlog.adb:1119:50: info: overflow check proved
 auditlog.adb:1119:69: overflow check not proved
+auditlog.adb:1124:7: precondition not proved
 auditlog.adb:1494:14: info: range check proved
+auditlog.adb:1557:7: precondition not proved
+auditlog.adb:1567:10: info: precondition proved
 auditlog.adb:1649:22: precondition not proved
 auditlog.adb:1688:13: assertion not proved
 auditlog.adb:1693:53: range check not proved
@@ -68,11 +79,25 @@ auditlog.adb:1905:10: info: assertion proved
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:237:39: info: range check proved
 auditlog.adb:491:22: precondition not proved
-auditlog.adb:813:75: range check not proved
+auditlog.adb:745:47: range check not proved
+auditlog.adb:745:50: info: overflow check proved
+auditlog.adb:745:69: info: overflow check proved
+auditlog.adb:750:47: info: range check proved
+auditlog.adb:750:50: info: overflow check proved
+auditlog.adb:750:69: overflow check not proved
+auditlog.adb:755:68: postcondition not proved
+auditlog.adb:800:44: postcondition not proved, requires LogFileEntries(CurrentLogFile) = LogFileEntries(CurrentLogFile)'Old + 1
+auditlog.adb:813:75: info: range check proved
+auditlog.adb:860:63: postcondition not proved
 auditlog.adb:873:16: info: assertion proved
-auditlog.adb:891:53: range check not proved
+auditlog.adb:891:53: info: range check proved
+auditlog.adb:916:10: info: precondition proved
 auditlog.adb:925:10: info: assertion proved
-auditlog.adb:934:44: range check not proved
+auditlog.adb:927:10: info: precondition proved
+auditlog.adb:934:44: info: range check proved
+auditlog.adb:976:47: info: overflow check proved
+auditlog.adb:978:55: info: postcondition proved
+auditlog.adb:980:47: info: overflow check proved
 bio-interfac.adb:78:38: range check not proved
 bio.adb:126:10: assertion not proved, requires Result = InternalError
 certificatestore.adb:216:10: info: range check proved
@@ -125,24 +150,35 @@ clock.adb:280:41: info: range check proved
 clock.adb:281:44: info: division check proved
 clock.adb:282:25: info: division check proved
 clock.adb:282:25: info: range check proved
+clock.adb:328:7: precondition not proved
 clock.adb:329:44: info: division check proved
+clock.adb:333:7: precondition not proved
 clock.adb:334:45: info: division check proved
 clock.adb:335:32: info: division check proved
+clock.adb:339:7: precondition not proved
 clock.adb:340:45: info: division check proved
 clock.adb:341:32: info: division check proved
+clock.adb:345:7: precondition not proved
 clock.adb:346:44: info: division check proved
 clock.adb:387:7: info: assertion proved
+clock.adb:391:7: precondition not proved
+clock.adb:396:7: precondition not proved
+clock.adb:401:7: precondition not proved
+clock.adb:406:7: precondition not proved
 clock.adb:407:49: info: division check proved
+clock.adb:411:7: precondition not proved
 clock.adb:412:50: info: division check proved
 clock.adb:413:32: info: division check proved
+clock.adb:417:7: precondition not proved
 clock.adb:418:50: info: division check proved
 clock.adb:419:32: info: division check proved
+clock.adb:423:7: precondition not proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
 clock.adb:58:8: info: range check proved
 clock.adb:74:11: info: range check proved
 clock.adb:78:10: assertion not proved
-clock.adb:82:12: index check not proved
+clock.adb:82:12: info: index check proved
 clock.adb:82:56: info: division check proved
 clock.adb:83:20: info: division check proved
 configdata.adb:1062:30: info: division check proved
@@ -185,19 +221,82 @@ display.adb:143:11: info: range check proved
 display.adb:148:33: index check not proved
 display.adb:148:33: overflow check not proved
 display.adb:150:32: range check not proved
+door.adb:102:28: postcondition not proved, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
 door.ads:160:32: postcondition not proved
 door.ads:219:50: postcondition not proved
 door.ads:274:45: postcondition not proved
-enclave.adb:1046:15: precondition not proved
+enclave.adb:1000:43: info: postcondition proved
+enclave.adb:1046:15: info: precondition proved
+enclave.adb:1055:10: info: precondition proved
+enclave.adb:1057:10: info: precondition proved
 enclave.adb:109:18: info: precondition proved
-enclave.adb:1189:15: precondition not proved
+enclave.adb:1138:15: info: precondition proved
+enclave.adb:1148:19: info: precondition proved
+enclave.adb:1151:46: postcondition not proved
+enclave.adb:1189:15: info: precondition proved
+enclave.adb:1302:15: info: precondition proved
+enclave.adb:1311:19: info: precondition proved
+enclave.adb:1316:24: info: precondition proved
+enclave.adb:1344:19: precondition not proved
+enclave.adb:1349:24: precondition not proved
+enclave.adb:1350:50: postcondition not proved
+enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: precondition not proved
-enclave.adb:1885:17: precondition not proved
-enclave.adb:288:16: precondition not proved
-enclave.adb:2956:27: precondition not proved
-enclave.adb:2965:21: precondition not proved
-enclave.adb:2966:42: info: range check proved
+enclave.adb:1508:15: info: precondition proved
+enclave.adb:1523:24: info: precondition proved
+enclave.adb:1537:17: precondition not proved
+enclave.adb:1545:19: info: precondition proved
+enclave.adb:1568:19: precondition not proved
+enclave.adb:1569:65: postcondition not proved
+enclave.adb:1573:24: precondition not proved
+enclave.adb:1800:19: info: precondition proved
+enclave.adb:1818:19: info: precondition proved
+enclave.adb:1823:24: info: precondition proved
+enclave.adb:1850:19: precondition not proved
+enclave.adb:1873:19: precondition not proved
+enclave.adb:1878:24: precondition not proved
+enclave.adb:1879:50: postcondition not proved
+enclave.adb:1883:22: info: precondition proved
+enclave.adb:1885:17: info: precondition proved
+enclave.adb:1887:13: info: precondition proved
+enclave.adb:1890:13: info: precondition proved
+enclave.adb:1893:13: precondition not proved
+enclave.adb:1896:13: precondition not proved
+enclave.adb:2079:13: precondition not proved
+enclave.adb:207:36: info: postcondition proved
+enclave.adb:2082:13: info: precondition proved
+enclave.adb:2085:13: precondition not proved
+enclave.adb:2531:13: precondition not proved
+enclave.adb:2536:13: precondition not proved
+enclave.adb:277:38: postcondition not proved, requires Status = EnclaveQuiescent and then KeyStore.PrivateKeyPresent) or else (Status = WaitingEndEnrol and then not KeyStore(KeyStore.privatekeypresent)
+enclave.adb:288:16: info: precondition proved
+enclave.adb:2902:22: info: precondition proved
+enclave.adb:2907:27: info: precondition proved
+enclave.adb:2920:22: info: precondition proved
+enclave.adb:2925:27: info: precondition proved
+enclave.adb:2929:22: info: precondition proved
+enclave.adb:2942:57: postcondition not proved
+enclave.adb:2956:27: info: precondition proved
+enclave.adb:2965:21: info: precondition proved
+enclave.adb:2966:42: range check not proved
+enclave.adb:2997:10: precondition not proved
+enclave.adb:362:54: info: postcondition proved
+enclave.adb:441:36: info: postcondition proved
+enclave.adb:570:19: precondition not proved
+enclave.adb:575:24: info: precondition proved
+enclave.adb:593:19: info: precondition proved
+enclave.adb:594:65: postcondition not proved
+enclave.adb:598:24: info: precondition proved
 enclave.adb:638:48: precondition not proved
+enclave.adb:697:36: info: postcondition proved
+enclave.adb:829:15: info: precondition proved
+enclave.adb:837:19: info: precondition proved
+enclave.adb:842:24: info: precondition proved
+enclave.adb:856:19: info: precondition proved
+enclave.adb:867:19: info: precondition proved
+enclave.adb:872:24: info: precondition proved
+enclave.adb:873:50: postcondition not proved
+enclave.adb:924:42: info: postcondition proved
 enclave.ads:119:35: postcondition not proved
 enclave.ads:227:35: postcondition not proved
 enclave.ads:291:34: postcondition not proved
@@ -220,12 +319,16 @@ file.adb:584:14: info: range check proved
 file.adb:832:14: info: range check proved
 keyboard-interfac.adb:199:19: info: range check proved
 keyboard-interfac.adb:24:22: warning: tasking is ignored in formal verification
+keystore.adb:192:30: info: range check proved
+keystore.adb:192:41: info: overflow check proved
+keystore.adb:192:57: info: overflow check proved
 keystore.adb:196:14: info: range check proved
 keystore.adb:203:33: index check not proved
-keystore.adb:203:33: overflow check not proved
-keystore.adb:203:49: overflow check not proved
+keystore.adb:203:33: info: overflow check proved
+keystore.adb:203:49: info: overflow check proved
 keystore.adb:220:52: info: division check proved
 keystore.adb:223:14: range check not proved
+keystore.adb:239:22: precondition not proved
 keystore.adb:250:36: range check not proved
 keystore.ads:255:65: postcondition not proved
 keystore.ads:275:26: postcondition not proved, requires not (PrivateKeyPresent)
@@ -270,6 +373,15 @@ stats.adb:87:53: info: overflow check proved
 tcpip.adb:118:26: info: range check proved
 tcpip.adb:326:60: overflow check not proved
 tcpip.adb:326:60: range check not proved
+tismain.adb:1333:13: precondition not proved
+tismain.adb:258:41: postcondition not proved
+tismain.adb:707:21: info: precondition proved
+tismain.adb:712:26: info: precondition proved
+tismain.adb:718:21: info: precondition proved
+tismain.adb:757:21: precondition not proved
+tismain.adb:762:26: precondition not proved
+tismain.adb:768:21: precondition not proved
+tismain.adb:786:69: postcondition not proved
 tismain.adb:836:17: precondition not proved
 tismain.adb:839:17: precondition not proved
 tismain.adb:847:17: precondition not proved
@@ -284,5 +396,9 @@ tokenreader.adb:311:48: info: range check proved
 tokenreader.adb:751:43: info: range check proved
 updates.ads:189:31: info: postcondition proved
 updates.ads:97:31: info: postcondition proved
-userentry.adb:683:19: precondition not proved
+userentry.adb:1299:13: precondition not proved
+userentry.adb:1303:13: precondition not proved
+userentry.adb:1307:13: precondition not proved
+userentry.adb:683:19: info: precondition proved
+userentry.adb:920:61: postcondition not proved, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
 usertoken.adb:706:33: info: range check proved

@@ -1,2 +1,3 @@
+cursor_location.adb:17:35: postcondition not proved
 cursor_location.ads:18:30: postcondition not proved
 cursor_location.ads:27:60: info: postcondition proved
