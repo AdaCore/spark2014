@@ -385,7 +385,8 @@ package body Flow.Utility is
             return All_Record_Components (Entire_Var => U);
 
          when others =>
-            Print_Node_Subtree (E);
+            Print_Tree_Node (U);
+            Print_Tree_Node (Etype (U));
             raise Why.Unexpected_Node;
       end case;
    end Flatten_Variable;
