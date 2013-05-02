@@ -580,7 +580,7 @@ package body Flow.Utility is
       A : constant Node_Id := First (Pragma_Argument_Associations (N));
    begin
       pragma Assert (Nkind (Expression (A)) = N_Identifier);
-      return Chars (Expression (A)) = Name_Pre;
+      return Chars (Expression (A)) in Name_Pre | Name_Precondition;
    end Is_Precondition_Check;
 
 end Flow.Utility;
