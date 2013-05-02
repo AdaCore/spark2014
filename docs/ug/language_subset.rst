@@ -143,7 +143,7 @@ subprogram specifies that formal proof should not be done on this subprogram.
 |SPARK| contains many features for specifying the intended behavior of
 programs. Some of these features come from Ada 2012 (preconditions and
 postconditions for example). Other features are specific to |SPARK| (loop
-ivariants and variants for example). In this section, we describe these
+invariants and variants for example). In this section, we describe these
 features and their impact on execution and formal verification.
 
 Subprogram Contracts
@@ -152,8 +152,8 @@ Subprogram Contracts
 Preconditions and Postconditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Preconditions and postconditions specify the contract of a subprogram in
-Ada 2012. For example:
+Preconditions and postconditions are the most important annotations in
+|SPARK|. They specify the contract of a subprogram. For example:
 
 .. code-block:: ada
    :linenos:
@@ -177,35 +177,80 @@ result of a function, and the value of an object on subprogram entry.
 
 When compiling with assertions (switch ``-gnata`` in |GNAT Pro|), the resulting
 program contains run-time checks that the precondition evaluates to ``True`` on
-subprogram entry, and that the postcondition evaluates to ``False`` on
-subprogram exit.
+subprogram entry, and that the postcondition evaluates to ``True`` on
+subprogram exit. Their evaluation should also not raise a run-time error, for
+example when accessing an array element, or doing arithmetic computations.
 
-.. todo:: Continue from here
+When proving a subprogram with |GNATprove|, its precondition is assumed to
+hold, and its postcondition is proved. |GNATprove| also generate checks to
+prove that the precondition can never raise a run-time error, whatever the
+calling context. For example:
 
-A correct contract 
+.. code-block:: ada
+   :linenos:
 
-The proof of each subprogram is carried over independently of the
-implementation of other subprograms, so the contract of a subprogram should be
-strong enough to prove its callers. The contract of a subprogram is usually
-expressed as a pair of a precondition and a postcondition:
+    function Add (X, Y : Integer) return Integer with
+      Pre  => X + Y in Integer,
+      Post => Add'Result = X + Y;
 
-|GNATprove| analyzes the behavior of a subprogram in all possible contexts
-allowed by its precondition. It is in this context that it attempts to prove
-that the implementation of the subprogram is free of run-time errors and
-fulfills its postcondition.
+    function Access (A : My_Array; J : Index) return Element with
+      Pre  => A(J) /= No_Element,
+      Post => Add'Result = A(J);
 
-At every call site, |GNATprove| replaces the called subprogram by its
-contract. Therefore, it requires that the precondition of the called subprogram
-is satisfied, and the only information available when the subprogram returns is
-its postcondition.
+|GNATprove| generates checks to show that ``X + Y`` in the precondition of
+``Add`` can never overflow, and that ``A(J)`` in the precondition of ``Access``
+can never access ``A`` outside its bounds. These checks cannot be proved. One
+can usually rewrite the precondition so that it cannot raise a run-time error,
+either by adding a guard in the precondition, or by using a different
+formulation that cannot raise a run-time error. For example:
 
-Note that direct recursive subprograms or mutually recursive subprograms are
-treated in this respect exactly like non-recursive ones. Provided the execution
-of these subprograms always terminates (a property that is not verified by
-|GNATprove|), then it is sound to use their contract at call-site to prove that
-their contract hold.
+.. code-block:: ada
+   :linenos:
 
-.. _contract cases:
+    function Add (X, Y : Integer) return Integer with
+      Pre  => (if X > 0 and Y > 0 then X <= Integer'Last - Y)
+                and then (if X < 0 and Y < 0 then X >= Integer'First - Y),
+      Post => Add'Result = X + Y;
+
+    function Access (A : My_Array; J : Index) return Element with
+      Pre  => J in A'Range and then A(J) /= No_Element,
+      Post => Add'Result = A(J);
+
+For overflow checks, an alternate solution exists to avoid them altogether in
+annotations, by using unbounded arithmetic in annotations, see :ref:`Overflow
+Modes`.
+
+A correct contract may not be sufficient for proof: even if the precondition
+and postcondition always evaluate to ``True``, and never raise a run-time
+error, they might not be strong enough:
+
+* |GNATprove| analyzes the body of a subprogram in all possible contexts
+  allowed by its precondition. The precondition should be strong enough to
+  prove that the body is free from run-time errors.
+
+* |GNATprove| proves the postcondition of a subprogram in the context of its
+  precondition and body. The precondition should be strong enough to prove the
+  postcondition.
+
+* |GNATprove| replaces a call to a subprogram by its contract, asserting its
+  precondition and assuming its postcondition. The only information available
+  about the call is the callee's postcondition. This postcondition should be
+  strong enough to prove the desired properties in the caller.
+
+One can strengthen a contract by making its precondition more restrictive
+(accepting less calling contexts) and making its postcondition more precise
+(giving more information to prove its callers).
+
+Note that the default precondition (resp. postcondition) of ``True`` used by
+|GNATprove| when no explicit one is given may not be strong enough.
+
+Note also that direct recursive subprograms or mutually recursive subprograms
+are treated in this respect exactly like non-recursive ones. Provided the
+execution of these subprograms always terminates (a property that is not
+verified by |GNATprove|), then it is sound to use their contracts at call-site
+to prove the same contracts.
+
+.. _Contract Cases:
 
 Contract Cases
 ^^^^^^^^^^^^^^
@@ -266,8 +311,24 @@ precondition. For example, the contract of ``Incr_Threshold`` can be written:
       Contract_Cases => (X < Threshold => X = X'Old + 1,
                          X = Threshold => X = X'Old);
 
+|GNATprove| is able to prove that the contract cases of ``Incr_Threshold`` are
+disjoint and complete, even if the case of ``X`` greater than ``Threshold`` is
+not considered, because this case is ruled out by the precondition of
+``Incr_Threshold``.
+
 Note that the completeness is automatically reached when the last guard is
-``others``, denoting all cases not captured by any of the other guard.
+``others``, denoting all cases not captured by any of the other guard. For
+example:
+
+.. code-block:: ada
+   :linenos:
+
+    procedure Incr_Threshold (X : in out Integer) with
+      Contract_Cases => (X >= 0 and X < Threshold  => X = X'Old + 1,
+                         X = Threshold             => X = X'Old,
+                         others                    => X = -1;
+
+.. _Expression Functions:
 
 Expression Functions
 ^^^^^^^^^^^^^^^^^^^^
@@ -288,7 +349,7 @@ is treated by |GNATprove| as if it had a postcondition:
    Post => Increment'Result = X + 1;
 
 This postcondition is automatically satisfied, so |GNATprove| does not generate
-VCs to check it. Expression functions that have a user-defined postcondition
+checks for it. Expression functions that have a user-defined postcondition
 are treated like regular functions.
 
 Function Calls in Annotations
@@ -316,8 +377,9 @@ such as ``Is_Even``, ``Is_Odd`` and ``Is_Prime`` below.
 Calls to Standard Library Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The standard library for the selected target is pre-analyzed, so that user code
-can freely call standard library subprograms.
+The standard library for the host is pre-analyzed, and ``Global`` contracts are
+generated for these subprograms, so that user code can call standard library
+subprograms.
 
 Loop Invariants
 ---------------
@@ -330,11 +392,13 @@ loop at each iteration. Loop invariants in |SPARK| are expressed with the
 statements in a loop body, or directly in a chain of nested block statements in
 this main list of statements. Only the first ``Loop_Invariant`` pragmas are
 used by |GNATprove| as a loop invariant during proof (they should be next to
-each other, or separated only by ``Loop_Variant`` pragmas). Other
-``Loop_Invariant`` pragmas are proved like regular assertions. Loop invariants
-may have to be precise enough to prove the property of interest. For example,
-in order to prove the postcondition of function ``Contains`` below, one has to
-write a precise loop invariant such as the one given below:
+each other, or separated only by ``Loop_Variant`` pragmas). |GNATprove|
+considers internally the virtual loop formed around these loop invariants to
+prove the subprogram. Other ``Loop_Invariant`` pragmas are proved like regular
+assertions. Loop invariants may have to be precise enough to prove the property
+of interest. For example, in order to prove the postcondition of function
+``Contains`` below, one has to write a precise loop invariant such as the one
+given below:
 
 .. code-block:: ada
    :linenos:
@@ -361,7 +425,7 @@ write a precise loop invariant such as the one given below:
 
 When the loop involves modifying a variable, it may be necessary to refer to
 the value of the variable at loop entry. This can be done using the GNAT
-attribute ``'Loop_Entry``. For example, in order to prove the postcondition of
+attribute ``Loop_Entry``. For example, in order to prove the postcondition of
 function ``Move`` below, one has to write a loop invariant referring to
 ``Src'Loop_Entry`` such as the one given below:
 
@@ -375,7 +439,8 @@ function ``Move`` below, one has to write a loop invariant referring to
    begin
       for Index in Dest'Range loop
          pragma Loop_Invariant ((for all J in Dest'First .. Index - 1 =>
-                                  Dest (J) = Src'Loop_Entry (J)) and
+                                  Dest (J) = Src'Loop_Entry (J)) 
+                                    and then
                                 (for all J in Index .. Dest'Last =>
                                   Src (J) = Src'Loop_Entry (J)));
 
@@ -383,6 +448,14 @@ function ``Move`` below, one has to write a loop invariant referring to
          Src (Index) := 0;
       end loop;
    end Move;
+
+Note in particular the second conjunct in the loop invariant, which states that
+the ``Src`` array has not been modified between indexes ``Index`` and
+``Dest'Last``. This part of an invariant or contract stating what has not been
+modified, called in the literature the *frame condition*, is essential for
+|GNATprove| to work effectively. Special care should be taken to write adequate
+frame conditions, as they usually look obvious to programmers, and so it is
+very common to forget to write them.
 
 Loop Variants
 -------------
@@ -402,13 +475,13 @@ not necessarily exit.
 The ``Loop_Variant`` pragmas that appear next to the first group of
 ``Loop_Invariant`` pragmas (or at the start of the loop body if there are no
 ``Loop_Invariant`` pragmas in the loop) are handled with the most precision by
-|GNATprove|, as they become loop variants of the underlying intermediate
-representation in Why3. Other ``Loop_Variant`` pragmas are proved by showing
-that the quantity that should progress monotonically does so between the
-program point where the first group of ``Loop_Invariant`` pragmas appears (or
-the start of the loop if there is no such group) and the program point where
-the ``Loop_Variant`` pragma appears, and that this quantity either stays the
-same or progresses on the rest of the loop.
+|GNATprove|, as they become loop variants of the underlying virtual loop. Other
+``Loop_Variant`` pragmas are proved by showing that the quantity that should
+progress monotonically does so between the program point where the first group
+of ``Loop_Invariant`` pragmas appears (or the start of the loop if there is no
+such group) and the program point where the ``Loop_Variant`` pragma appears,
+and that this quantity either stays the same or progresses on the rest of the
+loop.
 
 Quantified Expressions
 ----------------------
@@ -456,3 +529,15 @@ of the procedure, hence many fewer paths.
       pragma Assert_And_Cut (X > 0);
       --  complex computation that uses X
    end P;
+
+.. _Overflow Modes:
+
+Overflow Modes
+--------------
+
+.. code-block:: ada
+   :linenos:
+
+    function Add (X, Y : Integer) return Integer with
+      Pre  => X + Y in Integer,
+      Post => Add'Result = X + Y;
