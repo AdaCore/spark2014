@@ -56,6 +56,7 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Sink_Vertex_Attributes
      (Var_Use         : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Is_Precondition : Boolean           := False;
+      Is_Loop_Entry   : Boolean           := False;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
@@ -63,6 +64,7 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Variables_Used  := Var_Use;
       A.Is_Precondition := Is_Precondition;
+      A.Is_Loop_Entry   := Is_Loop_Entry;
       A.Error_Location  := E_Loc;
 
       return A;

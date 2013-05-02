@@ -228,6 +228,11 @@ package Flow is
       Is_Precondition     : Boolean;
       --  True if this vertex represents the precondition.
 
+      Is_Loop_Entry       : Boolean;
+      --  True if this vertex represents a loop entry assignment. For
+      --  each variable where we use 'Loop_Entry we have one of these
+      --  at the top of the actual loop.
+
       Is_Initialised      : Boolean;
       --  True if an initial value is either imported (in or in out)
       --  or otherwise initialised.
@@ -289,6 +294,7 @@ package Flow is
      V_Attributes'(Is_Null_Node        => False,
                    Is_Program_Node     => False,
                    Is_Precondition     => False,
+                   Is_Loop_Entry       => False,
                    Is_Initialised      => False,
                    Is_Function_Return  => False,
                    Is_Global           => False,
@@ -311,6 +317,7 @@ package Flow is
      V_Attributes'(Is_Null_Node        => True,
                    Is_Program_Node     => True,
                    Is_Precondition     => False,
+                   Is_Loop_Entry       => False,
                    Is_Initialised      => False,
                    Is_Function_Return  => False,
                    Is_Global           => False,

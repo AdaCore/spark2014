@@ -844,6 +844,9 @@ package body Flow is
             if A.Is_Precondition then
                Rv.Shape := Shape_None;
                Output.Write_Str ("precondition ");
+            elsif A.Is_Loop_Entry then
+               Rv.Shape := Shape_None;
+               Output.Write_Str ("loop entry ");
             end if;
 
             case F.Kind is

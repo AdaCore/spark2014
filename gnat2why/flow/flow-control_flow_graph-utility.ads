@@ -39,6 +39,7 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Sink_Vertex_Attributes
      (Var_Use         : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Is_Precondition : Boolean           := False;
+      Is_Loop_Entry   : Boolean           := False;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and

@@ -1152,7 +1152,9 @@ package body Flow.Control_Flow_Graph is
       --  is here as well.
       FA.Loops.Insert (Entity (Identifier (N)));
       Ctx.Current_Loops.Insert (Entity (Identifier (N)));
+
       Process_Statement_List (Statements (N), FA, CM, Ctx);
+
       Ctx.Current_Loops.Delete (Entity (Identifier (N)));
 
       if not Present (Iteration_Scheme (N)) then
