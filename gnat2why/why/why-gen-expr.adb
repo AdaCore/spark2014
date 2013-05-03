@@ -741,9 +741,12 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label (N : Node_Id; Is_VC : Boolean)
-                               return W_Identifier_Id is
-
+   function New_Located_Label
+     (N         : Node_Id;
+      Is_VC     : Boolean;
+      Left_Most : Boolean := False)
+      return W_Identifier_Id
+   is
       Slc    : Source_Ptr;
       Buf    : Unbounded_String := Null_Unbounded_String;
       Prefix : constant String :=
@@ -758,7 +761,7 @@ package body Why.Gen.Expr is
       --  are rewritten in a strange manner, so we do not do this optimization
       --  in that case. See also [New_Pretty_Label].
 
-      if Is_VC or else
+      if (not Left_Most and then Is_VC) or else
         (Comes_From_Source (N) and then Original_Node (N) /= N and then
         Nkind (Original_Node (N)) = N_And_Then) then
          Slc := Sloc (N);
@@ -1037,7 +1040,11 @@ package body Why.Gen.Expr is
       return
         (1 => New_Identifier
            (Name => "GP_Reason:" & VC_Kind'Image (Reason)),
-         2 => New_Located_Label (N, Is_VC => True),
+         2 =>
+           New_Located_Label
+             (N,
+              Is_VC => True,
+              Left_Most => Is_Assertion_Kind (Reason)),
          3 => To_Ident (WNE_Keep_On_Simp));
    end New_VC_Labels;
 

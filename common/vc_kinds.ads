@@ -60,4 +60,10 @@ package VC_Kinds is
       VC_Loop_Variant,
       VC_Assert);
 
+   function Is_Assertion_Kind (V : VC_Kind) return Boolean is
+     (V in
+        VC_Postcondition |
+        VC_Loop_Invariant |
+        VC_Assert);
+
 end VC_Kinds;

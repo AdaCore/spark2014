@@ -91,8 +91,11 @@ package Why.Gen.Expr is
        Domain    : EW_Domain) return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
 
-   function New_Located_Label (N : Node_Id; Is_VC : Boolean)
-                               return W_Identifier_Id;
+   function New_Located_Label
+     (N         : Node_Id;
+      Is_VC     : Boolean;
+      Left_Most : Boolean := False)
+      return W_Identifier_Id;
    --  Return a label that contains the Ada Sloc of the node
 
    function New_Pretty_Label (N : Node_Id) return W_Identifier_Id;
