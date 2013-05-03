@@ -1,5 +1,6 @@
+
 pack.adb:27:22: info: division check proved
-pack.ads:10:33: info: postcondition proved
-pack.ads:14:35: info: postcondition proved
-pack.ads:18:33: info: postcondition proved
-pack.ads:6:32: info: postcondition proved
+pack.ads:10:19: info: postcondition proved
+pack.ads:14:19: info: postcondition proved
+pack.ads:18:19: info: postcondition proved
+pack.ads:6:19: info: postcondition proved

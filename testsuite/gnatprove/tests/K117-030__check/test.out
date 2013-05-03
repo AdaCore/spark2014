@@ -1,5 +1,6 @@
+
 check.ads:3:37: info: division check proved
 check.ads:3:37: info: overflow check proved
 check.ads:3:70: info: division check proved
 check.ads:3:70: info: overflow check proved
-check.ads:4:32: info: postcondition proved
+check.ads:4:20: info: postcondition proved

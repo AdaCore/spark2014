@@ -1,6 +1,7 @@
-main.adb:12:29: info: postcondition proved
-main.adb:15:29: info: postcondition proved
-main.adb:18:15: info: postcondition proved
+
+main.adb:12:14: info: postcondition proved
+main.adb:15:14: info: postcondition proved
+main.adb:18:14: info: postcondition proved
 main.adb:58:32: overflow check not proved
 main.adb:69:4: assertion not proved, requires Obj_1.Comp = 9012
 main.adb:70:4: assertion not proved, requires Obj_2.Comp = 9012

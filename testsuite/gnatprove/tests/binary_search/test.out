@@ -1,3 +1,4 @@
+
 binary_search.adb:20:10: loop invariant initialization not proved
 binary_search.adb:20:10: loop invariant preservation not proved
 binary_search.adb:21:53: info: index check proved
@@ -6,5 +7,5 @@ binary_search.adb:23:10: loop variant not proved
 binary_search.adb:24:22: range check not proved
 binary_search.adb:24:39: info: division check proved
 binary_search.ads:11:33: info: index check proved
-binary_search.ads:12:15: postcondition not proved
+binary_search.ads:12:14: postcondition not proved
 binary_search.ads:12:57: info: index check proved

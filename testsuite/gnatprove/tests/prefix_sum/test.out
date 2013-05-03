@@ -84,7 +84,7 @@ prefixsum.ads:32:34: index check not proved
 prefixsum.ads:38:14: postcondition not proved
 prefixsum.ads:40:17: info: precondition proved
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:50:14: postcondition not proved
+prefixsum.ads:50:8: postcondition not proved
 prefixsum_expanded.adb:116:27: info: division check proved
 prefixsum_expanded.adb:118:7: assertion not proved
 prefixsum_expanded.adb:11:10: loop invariant initialization not proved
@@ -155,7 +155,7 @@ prefixsum_expanded.ads:31:23: overflow check not proved
 prefixsum_expanded.ads:43:14: postcondition not proved
 prefixsum_expanded.ads:45:17: precondition not proved
 prefixsum_expanded.ads:53:17: info: precondition proved
-prefixsum_expanded.ads:55:14: postcondition not proved
+prefixsum_expanded.ads:55:8: postcondition not proved
 prefixsum_general.adb:12:10: loop invariant initialization not proved
 prefixsum_general.adb:12:10: loop invariant preservation not proved
 prefixsum_general.adb:13:22: division check not proved
@@ -215,6 +215,6 @@ prefixsum_general.adb:99:25: division check not proved
 prefixsum_general.ads:16:25: overflow check not proved
 prefixsum_general.ads:16:27: precondition not proved
 prefixsum_general.ads:16:60: range check not proved
-prefixsum_general.ads:20:15: postcondition not proved
+prefixsum_general.ads:20:14: postcondition not proved
 prefixsum_general.ads:21:30: precondition not proved
 prefixsum_general.ads:8:56: info: division check proved

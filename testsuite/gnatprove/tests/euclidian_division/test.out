@@ -1,4 +1,5 @@
-linear_div.adb:13:13: info: postcondition proved
+
+linear_div.adb:10:11: info: postcondition proved
 linear_div.adb:20:7: info: loop invariant initialization proved
 linear_div.adb:20:7: info: loop invariant preservation proved
 linear_div.adb:24:28: info: overflow check proved

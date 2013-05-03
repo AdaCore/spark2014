@@ -1,2 +1,3 @@
-casing.ads:17:20: info: postcondition proved
-casing.ads:6:20: info: postcondition proved
+
+casing.ads:17:10: info: postcondition proved
+casing.ads:6:10: info: postcondition proved

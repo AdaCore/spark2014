@@ -1,7 +1,8 @@
+
 search.adb:7:10: info: loop invariant initialization proved
 search.adb:7:10: info: loop invariant preservation proved
 search.adb:8:62: info: index check proved
 search.ads:10:54: overflow check not proved
 search.ads:10:63: index check not proved
-search.ads:6:12: postcondition not proved
+search.ads:6:11: postcondition not proved
 search.ads:9:24: index check not proved

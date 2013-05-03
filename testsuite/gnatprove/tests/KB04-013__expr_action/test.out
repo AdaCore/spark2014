@@ -1,3 +1,4 @@
+
 search.adb:10:66: info: index check proved
 search.adb:12:18: index check not proved
 search.adb:13:61: overflow check not proved
@@ -8,4 +9,4 @@ search.ads:10:21: index check not proved
 search.ads:11:54: overflow check not proved
 search.ads:11:54: range check not proved
 search.ads:5:55: info: index check proved
-search.ads:9:10: postcondition not proved, requires Search'Result = 0 and then No_V_In_Range(T,V,T'First,T'Last)) or else (T(Search'Result) = V and then No_V_In_Range(T,V,T'First,Search'Result-1)
+search.ads:8:9: postcondition not proved, requires Search'Result = 0 and then No_V_In_Range(T,V,T'First,T'Last)) or else (T(Search'Result) = V and then No_V_In_Range(T,V,T'First,Search'Result-1)

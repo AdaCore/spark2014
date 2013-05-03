@@ -1,11 +1,12 @@
+
 pricing.adb:10:10: info: loop invariant initialization proved
 pricing.adb:10:10: info: loop invariant preservation proved
 pricing.adb:11:56: info: overflow check proved
 pricing.adb:12:44: info: index check proved
 pricing.adb:6:13: info: range check proved
 pricing.adb:9:11: info: range check proved
-pricing.ads:11:35: info: postcondition proved
-pricing.ads:16:15: info: postcondition proved
+pricing.ads:11:14: info: postcondition proved
+pricing.ads:16:14: info: postcondition proved
 pricing.ads:17:62: info: index check proved
 sat.adb:10:12: info: overflow check proved
 sat.adb:11:12: info: overflow check proved

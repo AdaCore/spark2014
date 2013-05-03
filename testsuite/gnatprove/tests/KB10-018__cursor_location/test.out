@@ -1,3 +1,4 @@
-cursor_location.adb:17:35: postcondition not proved
-cursor_location.ads:18:30: postcondition not proved
-cursor_location.ads:27:60: info: postcondition proved
+
+cursor_location.adb:17:11: postcondition not proved
+cursor_location.ads:18:9: postcondition not proved
+cursor_location.ads:27:9: info: postcondition proved

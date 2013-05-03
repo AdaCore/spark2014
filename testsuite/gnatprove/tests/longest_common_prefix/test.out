@@ -20,6 +20,6 @@ lcp.ads:12:22: info: contract case proved
 lcp.ads:13:22: info: contract case proved
 lcp.ads:6:47: info: index check proved
 lcp.ads:6:59: info: index check proved
-lcp.ads:6:6: postcondition not proved
+lcp.ads:6:5: postcondition not proved
 lcp.ads:9:32: info: index check proved
 lcp.ads:9:54: info: index check proved

@@ -1,3 +1,4 @@
+
 tab.adb:11:22: info: index check proved
 tab.adb:12:53: info: overflow check proved
 tab.adb:12:62: index check not proved
@@ -7,4 +8,4 @@ tab.adb:15:24: overflow check not proved
 tab.adb:6:49: range check not proved
 tab.adb:9:10: loop invariant initialization not proved
 tab.adb:9:10: loop invariant preservation not proved
-tab.ads:6:18: postcondition not proved
+tab.ads:6:17: postcondition not proved

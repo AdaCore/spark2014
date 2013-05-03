@@ -1,3 +1,4 @@
+
 simple_unc_arrays.adb:124:19: info: discriminant check proved
 simple_unc_arrays.adb:124:25: index check not proved
 simple_unc_arrays.adb:124:25: overflow check not proved
@@ -42,14 +43,14 @@ simple_unc_arrays.adb:39:22: overflow check not proved
 simple_unc_arrays.adb:40:23: range check not proved
 simple_unc_arrays.ads:112:57: info: discriminant check proved
 simple_unc_arrays.ads:112:61: index check not proved
-simple_unc_arrays.ads:116:20: info: postcondition proved
+simple_unc_arrays.ads:116:18: info: postcondition proved
 simple_unc_arrays.ads:30:20: postcondition not proved, requires A.V (J) = A.V'old
 simple_unc_arrays.ads:30:22: info: discriminant check proved
 simple_unc_arrays.ads:30:26: index check not proved
 simple_unc_arrays.ads:30:32: info: discriminant check proved
 simple_unc_arrays.ads:30:51: index check not proved
 simple_unc_arrays.ads:30:51: overflow check not proved
-simple_unc_arrays.ads:84:18: postcondition not proved
+simple_unc_arrays.ads:84:17: postcondition not proved
 simple_unc_arrays.ads:85:34: info: discriminant check proved
 simple_unc_arrays.ads:85:38: index check not proved
 simple_unc_arrays.ads:85:62: info: discriminant check proved
@@ -59,7 +60,7 @@ simple_unc_arrays.ads:88:22: info: discriminant check proved
 simple_unc_arrays.ads:88:26: index check not proved
 simple_unc_arrays.ads:88:49: info: discriminant check proved
 simple_unc_arrays.ads:88:53: index check not proved
-simple_unc_arrays.ads:96:18: postcondition not proved
+simple_unc_arrays.ads:96:17: postcondition not proved
 simple_unc_arrays.ads:96:52: info: discriminant check proved
 simple_unc_arrays.ads:96:56: index check not proved
 simple_unc_arrays.ads:96:63: info: discriminant check proved

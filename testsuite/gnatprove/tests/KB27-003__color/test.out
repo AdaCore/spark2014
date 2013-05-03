@@ -1,3 +1,4 @@
-p.ads:10:15: postcondition not proved
-p.ads:15:30: postcondition not proved, requires P'Result = 8
-p.ads:20:30: info: postcondition proved
+
+p.ads:10:14: postcondition not proved
+p.ads:15:20: postcondition not proved, requires P'Result = 8
+p.ads:20:20: info: postcondition proved

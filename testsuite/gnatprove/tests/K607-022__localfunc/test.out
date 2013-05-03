@@ -1,2 +1,3 @@
-locfunc.adb:6:26: info: postcondition proved
-locfunc.ads:3:23: info: postcondition proved
+
+locfunc.adb:6:24: info: postcondition proved
+locfunc.ads:3:20: info: postcondition proved

@@ -1,3 +1,4 @@
+
 divide.adb:11:17: info: overflow check proved
 divide.adb:12:17: info: overflow check proved
 divide.adb:8:10: info: loop invariant initialization proved
@@ -5,6 +6,6 @@ divide.adb:8:10: info: loop invariant preservation proved
 divide.adb:8:40: info: overflow check proved
 divide.adb:9:50: info: overflow check proved
 divide.adb:9:54: info: overflow check proved
-divide.ads:4:23: info: postcondition proved
+divide.ads:4:21: info: postcondition proved
 divide.ads:4:27: info: overflow check proved
 divide.ads:4:31: info: overflow check proved

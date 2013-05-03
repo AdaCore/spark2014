@@ -1,2 +1,3 @@
+
 const.adb:5:17: info: range check proved
-const.ads:7:23: info: postcondition proved
+const.ads:7:20: info: postcondition proved

@@ -1,5 +1,6 @@
+
 maxandsum.adb:10:21: info: overflow check proved
 maxandsum.adb:14:10: loop invariant not proved, requires Sum <= I*Max
 maxandsum.adb:9:10: info: loop invariant initialization proved
 maxandsum.adb:9:10: info: loop invariant preservation proved
-maxandsum.ads:8:21: info: postcondition proved
+maxandsum.ads:8:17: info: postcondition proved

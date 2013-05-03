@@ -1,3 +1,4 @@
+
 nested.adb:12:13: info: loop invariant initialization proved
 nested.adb:12:13: info: loop invariant preservation proved
 nested.adb:12:42: info: overflow check proved
@@ -5,4 +6,4 @@ nested.adb:13:20: info: overflow check proved
 nested.adb:9:10: info: loop invariant initialization proved
 nested.adb:9:10: info: loop invariant preservation proved
 nested.adb:9:45: info: overflow check proved
-nested.ads:4:35: info: postcondition proved
+nested.ads:4:20: info: postcondition proved

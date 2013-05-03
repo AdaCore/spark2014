@@ -1,1 +1,2 @@
-enum.ads:6:35: info: postcondition proved
+
+enum.ads:6:20: info: postcondition proved

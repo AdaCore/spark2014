@@ -1,3 +1,4 @@
+
 flight_manager.adb:13:13: postcondition not proved, requires F = (F'Old * Distance_To_Target) / 
 flight_manager.adb:13:24: overflow check not proved
 flight_manager.adb:13:46: info: division check proved
@@ -9,10 +10,10 @@ flight_manager.adb:36:37: overflow check not proved
 flight_manager.adb:36:53: overflow check not proved
 flight_manager.adb:37:37: overflow check not proved
 flight_manager.adb:37:53: overflow check not proved
+flight_manager.ads:10:17: postcondition not proved
 flight_manager.ads:10:30: overflow check not proved
 flight_manager.ads:10:65: overflow check not proved
 flight_manager.ads:11:18: overflow check not proved
 flight_manager.ads:12:23: overflow check not proved
 flight_manager.ads:12:58: overflow check not proved
-flight_manager.ads:12:6: postcondition not proved
 flight_manager.ads:13:18: overflow check not proved

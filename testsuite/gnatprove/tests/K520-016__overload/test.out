@@ -1,2 +1,3 @@
+
 over.adb:18:7: info: assertion proved
-over.ads:4:30: info: postcondition proved
+over.ads:4:20: info: postcondition proved

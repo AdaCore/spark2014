@@ -1,2 +1,3 @@
-a.ads:3:38: info: postcondition proved
-b.ads:3:30: info: postcondition proved
+
+a.ads:3:29: info: postcondition proved
+b.ads:3:20: info: postcondition proved

@@ -1,3 +1,4 @@
+
 a.adb:12:25: info: overflow check proved
 a.adb:12:35: info: overflow check proved
 a.adb:12:49: info: overflow check proved
@@ -18,13 +19,13 @@ a.adb:9:10: info: loop invariant initialization proved
 a.adb:9:10: loop invariant preservation not proved
 a.ads:14:25: info: overflow check proved
 a.ads:14:47: info: overflow check proved
+a.ads:17:7: postcondition not proved, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
 a.ads:18:29: info: overflow check proved
 a.ads:18:38: info: overflow check proved
 a.ads:18:45: info: overflow check proved
 a.ads:19:29: info: overflow check proved
 a.ads:19:38: info: overflow check proved
 a.ads:19:45: info: overflow check proved
-a.ads:19:6: postcondition not proved, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
+a.ads:7:7: postcondition not proved, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B
 a.ads:8:34: info: overflow check proved
 a.ads:9:34: overflow check not proved
-a.ads:9:6: postcondition not proved, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B

@@ -1,5 +1,6 @@
+
 add.adb:5:16: info: overflow check proved
 add.ads:3:47: overflow check not proved
 add.ads:3:62: overflow check not proved
-add.ads:4:43: info: postcondition proved
+add.ads:4:29: info: postcondition proved
 add.ads:4:47: info: overflow check proved

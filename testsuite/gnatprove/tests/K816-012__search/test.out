@@ -1,3 +1,4 @@
+
 search.adb:19:10: info: range check proved
 search.adb:20:9: assertion not proved, requires Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2
 search.adb:23:9: assertion not proved, requires Found1 = False or else Found2 = false
@@ -16,9 +17,9 @@ search.adb:3:13: info: range check proved
 search.adb:45:12: info: range check proved
 search.adb:53:19: info: index check proved
 search.adb:53:51: info: index check proved
-search.ads:13:36: postcondition not proved
+search.ads:13:25: postcondition not proved
 search.ads:13:50: index check not proved
 search.ads:14:50: index check not proved
-search.ads:24:44: info: postcondition proved
+search.ads:24:25: info: postcondition proved
 search.ads:24:53: info: index check proved
 search.ads:25:55: info: index check proved

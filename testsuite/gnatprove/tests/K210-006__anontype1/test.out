@@ -1,4 +1,5 @@
+
 anon_type.adb:33:26: overflow check not proved
 anon_type.adb:33:26: range check not proved
-anon_type.ads:7:36: postcondition not proved, requires Increment'Result = Var_In + 1
+anon_type.ads:7:19: postcondition not proved, requires Increment'Result = Var_In + 1
 anon_type.ads:7:45: overflow check not proved

@@ -1,9 +1,10 @@
+
 basic.adb:13:17: discriminant check not proved
 basic.adb:17:17: info: discriminant check proved
 basic.adb:18:22: info: discriminant check proved
 basic.adb:8:17: info: discriminant check proved
 conv.adb:19:7: info: assertion proved
-conv.adb:6:30: info: postcondition proved
+conv.adb:6:20: info: postcondition proved
 special.adb:14:7: info: assertion proved
 special.adb:15:8: info: discriminant check proved
 special.adb:7:7: assertion not proved, requires V.X = A

@@ -1,1 +1,2 @@
-expr.ads:3:30: info: postcondition proved
+
+expr.ads:3:17: info: postcondition proved

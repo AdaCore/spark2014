@@ -1,1 +1,2 @@
-p.ads:2:13: postcondition not proved, requires X = 1
+
+p.ads:2:11: postcondition not proved, requires X = 1

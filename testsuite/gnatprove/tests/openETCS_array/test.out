@@ -34,18 +34,18 @@ deceleration_curve_test.adb:17:4: info: precondition proved
 deceleration_curve_test.adb:6:31: info: precondition proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
-example.ads:5:15: info: postcondition proved
+example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:184:9: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:200:9: info: postcondition proved
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
+sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: precondition not proved
 sec_3_13_6_deceleration.ads:40:37: range check not proved
-sec_3_13_6_deceleration.ads:40:7: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:45:23: precondition not proved
 sec_3_13_6_deceleration.ads:46:23: overflow check not proved
 sec_3_13_6_deceleration.ads:46:26: precondition not proved
@@ -60,8 +60,8 @@ sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
 sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
 section_3_5_3.adb:41:54: info: overflow check proved
-section_3_5_3.ads:77:15: postcondition not proved, requires Contains(Connections, destination)
-section_4_6.ads:104:46: postcondition not proved, requires disjoint_condition_transitions = true
+section_3_5_3.ads:77:14: postcondition not proved, requires Contains(Connections, destination)
+section_4_6.ads:104:14: postcondition not proved, requires disjoint_condition_transitions = true
 step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved
 step_function.adb:121:49: info: index check proved
@@ -106,32 +106,32 @@ step_function.adb:78:17: info: range check proved
 step_function.adb:95:7: info: assertion proved
 step_function.adb:98:10: loop invariant initialization not proved
 step_function.adb:98:10: loop invariant preservation not proved
+step_function.ads:101:4: postcondition not proved
 step_function.ads:106:30: info: index check proved
 step_function.ads:106:56: info: index check proved
 step_function.ads:111:30: info: index check proved
 step_function.ads:111:56: info: index check proved
-step_function.ads:113:6: postcondition not proved
 step_function.ads:114:25: info: index check proved
 step_function.ads:114:40: info: precondition proved
 step_function.ads:115:61: info: index check proved
 step_function.ads:116:40: info: precondition proved
 step_function.ads:117:61: info: index check proved
-step_function.ads:40:18: info: postcondition proved
+step_function.ads:40:17: info: postcondition proved
 step_function.ads:46:24: info: index check proved
 step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:50: info: index check proved
 step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: info: index check proved
+step_function.ads:56:12: info: postcondition proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
-step_function.ads:61:13: info: postcondition proved
+step_function.ads:72:6: postcondition not proved
 step_function.ads:73:28: info: index check proved
 step_function.ads:74:50: info: index check proved
-step_function.ads:75:6: postcondition not proved
 step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved
-step_function.ads:86:7: info: postcondition proved
+step_function.ads:86:6: info: postcondition proved
 step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
 step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)

@@ -1,9 +1,10 @@
+
 inrange.adb:14:14: info: range check proved
 inrange.adb:21:7: info: precondition proved
 inrange.adb:21:7: range check not proved
 inrange.adb:8:16: info: overflow check proved
 inrange.adb:8:18: info: precondition proved
-inrange.ads:10:28: info: postcondition proved
-inrange.ads:14:23: info: postcondition proved
-inrange.ads:17:34: info: postcondition proved
-inrange.ads:7:24: info: postcondition proved
+inrange.ads:10:17: info: postcondition proved
+inrange.ads:14:20: info: postcondition proved
+inrange.ads:17:20: info: postcondition proved
+inrange.ads:7:12: info: postcondition proved

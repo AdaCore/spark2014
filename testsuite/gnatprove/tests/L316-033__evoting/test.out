@@ -1,3 +1,4 @@
+
 evoting.adb:150:10: info: loop invariant initialization proved
 evoting.adb:150:10: info: loop invariant preservation proved
 evoting.adb:150:50: info: overflow check proved
@@ -18,9 +19,9 @@ evoting.adb:276:7: info: precondition proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
-evoting.ads:109:13: postcondition not proved
+evoting.ads:102:12: postcondition not proved
 evoting.ads:111:27: info: index check proved
 evoting.ads:56:28: postcondition not proved, requires candidates(i)(j) = ' '
-evoting.ads:56:40: index check not proved
+evoting.ads:56:40: info: index check proved
+evoting.ads:92:6: postcondition not proved
 evoting.ads:93:20: info: index check proved
-evoting.ads:94:7: postcondition not proved

@@ -1,3 +1,4 @@
+
 p.adb:12:27: info: precondition proved
 p.adb:13:23: info: precondition proved
 p.adb:15:7: info: precondition proved
@@ -19,10 +20,10 @@ p.adb:8:7: precondition not proved
 p.ads:15:13: info: precondition proved
 p.ads:16:7: info: precondition proved
 p.ads:17:14: info: precondition proved
-p.ads:17:38: postcondition not proved
+p.ads:17:14: postcondition not proved
 p.ads:20:13: info: precondition proved
+p.ads:21:14: postcondition not proved
 p.ads:21:16: info: precondition proved
-p.ads:21:24: postcondition not proved
 p.ads:22:27: info: precondition proved
 p.ads:25:13: info: precondition proved
 p.ads:25:38: info: precondition proved

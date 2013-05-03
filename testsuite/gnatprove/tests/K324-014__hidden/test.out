@@ -1,1 +1,2 @@
-qack.adb:12:21: postcondition not proved, requires X = X'old
+
+qack.adb:12:19: postcondition not proved, requires X = X'old

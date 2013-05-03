@@ -1,2 +1,3 @@
+
 sat.adb:5:12: info: range check proved
-sat.ads:6:54: info: postcondition proved
+sat.ads:6:14: info: postcondition proved

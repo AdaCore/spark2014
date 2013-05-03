@@ -1,7 +1,8 @@
+
 pack.adb:6:25: info: overflow check proved
 pack.adb:6:25: info: range check proved
 pack.adb:7:27: info: overflow check proved
 pack.adb:7:27: range check not proved
+pack.ads:18:19: postcondition not proved, requires Stash + Pocket = Stash'Old + Pocket'old
 pack.ads:18:26: info: overflow check proved
-pack.ads:18:35: postcondition not proved, requires Stash + Pocket = Stash'Old + Pocket'old
 pack.ads:18:47: info: overflow check proved

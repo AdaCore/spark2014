@@ -1,3 +1,4 @@
+
 p.adb:3:21: overflow check not proved
 p.adb:3:4: info: assertion proved
-p.ads:3:25: info: postcondition proved
+p.ads:3:16: info: postcondition proved
