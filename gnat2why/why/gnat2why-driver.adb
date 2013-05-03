@@ -92,6 +92,11 @@ package body Gnat2Why.Driver is
    procedure Print_Why_File (File : in out Why_File);
    --  Print the input Why3 file on disk
 
+   procedure Touch_Main_File (Prefix : String);
+   --  This procedure is used when there is nothing to do, but it should be
+   --  signalled that everything went fine. This is done by creating the main
+   --  output file of gnat2why, the main Why file.
+
    ---------------------------------
    -- Complete_Entity_Translation --
    ---------------------------------
@@ -190,7 +195,11 @@ package body Gnat2Why.Driver is
       --  some point to provide proof of generics, then the special SPARK
       --  expansion in the frontend should be applied to generic units as well.
 
+      --  We still need to create the Why files to indicate that everything
+      --  went OK.
+
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+         Touch_Main_File (File_Name_Without_Suffix (Sloc (N)));
          return;
       end if;
 
@@ -336,6 +345,17 @@ package body Gnat2Why.Driver is
       Sprint_Why_Node (Why_Node_Id (File.File), Current_File);
       Close_Current_File;
    end Print_Why_File;
+
+   ---------------------
+   -- Touch_Main_File --
+   ---------------------
+
+   procedure Touch_Main_File (Prefix : String) is
+      Filename : constant String := Prefix & Why_File_Suffix (WF_Main);
+   begin
+      Open_Current_File (Filename & ".mlw");
+      Close_Current_File;
+   end Touch_Main_File;
 
    ---------------------
    -- Translate_CUnit --
