@@ -23,33 +23,493 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-with Ada.Text_IO;            use Ada.Text_IO;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
+with Ada.Text_IO;                        use Ada.Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
+with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
+with Ada.Containers.Hashed_Maps;
 
-with AA_Util;                use AA_Util;
-with Alloc;                  use Alloc;
-with Atree;                  use Atree;
+with AA_Util;                            use AA_Util;
+with Alloc;                              use Alloc;
+with Atree;                              use Atree;
 with Debug;
-with Einfo;                  use Einfo;
-with Errout;                 use Errout;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
+with Einfo;                              use Einfo;
+with Errout;                             use Errout;
+with Lib;
+with Namet;                              use Namet;
+with Nlists;                             use Nlists;
 with Opt;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Sinput;                 use Sinput;
-with Snames;                 use Snames;
-with Stand;                  use Stand;
+with Sem_Prag;
+with Sem_Util;                           use Sem_Util;
+with Sinfo;                              use Sinfo;
+with Sinput;                             use Sinput;
+with Snames;                             use Snames;
+with Stand;                              use Stand;
 with Table;
 
-with SPARK_Violations;       use all type SPARK_Violations.Vkind;
+with SPARK_Violations;                   use all type SPARK_Violations.Vkind;
 
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
+with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
+with SPARK_Util;                         use SPARK_Util;
 
 package body SPARK_Definition is
+
+   -----------------------------------
+   -- Handling of SPARK_Mode Pragma --
+   -----------------------------------
+
+   --  The SPARK_Mode pragma may be used as a configuration pragma or a local
+   --  pragma in the source. The frontend rejects all invalid placements of
+   --  this pragma, and stores them in the attribute "SPARK_Mode_Pragmas" of
+   --  the relevant entities:
+
+   --      E_Function
+   --      E_Generic_Function
+   --      E_Generic_Procedure
+   --      E_Procedure
+   --      E_Subprogram_Body
+   --      E_Generic_Package
+   --      E_Package
+   --      E_Package_Body
+
+   --  [Generic] package specs and bodies may have two pragmas. Those are
+   --  linked using the Next_Pragma field. To distinguish between pragmas that
+   --  apply to the visible or private part of a spec, one can use function
+   --
+   --      sem_prag.Is_Private_SPARK_Mode
+   --
+   --  To distinguish between pragmas that apply to the declarative and
+   --  statement part of a body, one can use function
+   --
+   --      sem_prag.Is_Elaboration_SPARK_Mode
+   --
+   --  The unit-wide configuration version of the pragma is associated
+   --  with the unit itself. See the facilities in lib.ads and function
+   --  SPARK_Mode_Pragma.
+   --
+   --  The compilation-wide configuration mode of the pragma is retained in
+   --  opt.ads. See opt.ads.
+   --
+   --  There is a special type called SPARK_Mode_Id which defines the various
+   --  modes. There is a useful function in sem_prag to extract the Mode_Id
+   --  from a pragma
+   --
+   --      sem_prag.Get_SPARK_Mode_Id
+   --
+   --  The idea is that one should compare SPARK_Mode_Id values rather than
+   --  Name_Ids.
+
+   package Applicable_SPARK_Mode is new
+     Hashed_Maps (Key_Type     => Entity_Id,
+                  Hash         => Node_Hash,
+                  Element_Type => Node_Id,
+                  Equivalent_Keys => "=",
+                  "="             => "=");
+   --  Mapping from entities to the applicable SPARK_Mode pragma, if any
+
+   Applicable_SPARK_Mode_For_Spec : Applicable_SPARK_Mode.Map;
+   Applicable_SPARK_Mode_For_Body : Applicable_SPARK_Mode.Map;
+   --  SPARK_Mode pragma applicable to the "spec" and "body" views of an
+   --  entity, if any.
+
+   package SPARK_Mode_Stack is new
+     Doubly_Linked_Lists (Element_Type => Node_Id,
+                          "="          => "=");
+   --  Stack of SPARK_Mode pragmas for the currently opened scopes. If the list
+   --  is not empty, its first element is the currently applicable pragma.
+
+   SPARK_Mode_Pragmas_Stack : SPARK_Mode_Stack.List;
+   --  The global stack of SPARK_Mode pragmas
+
+   procedure Get_Scope_Info (N : Node_Id);
+   --  Initial recursive traversal of the AST to store for each entity or node
+   --  the relevant scope information:
+   --  . for each entity, the applicable SPARK_Mode pragma, if any
+   --  . for each node, the applicable Overflow_Mode pragma, if any (not done
+   --    yet)
+
+   procedure Get_Scope_Info (N : Node_Id) is
+
+      procedure Do_List (L : List_Id);
+      --  Apply Get_Scope_Info to every element of list L
+
+      procedure Push_SPARK_Pragma (Prag : Node_Id);
+      --  If Prag is not Empty, push it on the stack of SPARK_Mode pragmas
+
+      procedure Pop_SPARK_Pragma (Prag : Node_Id);
+      --  If Prag is not Empty, pop it from the stack of SPARK_Mode pragmas
+
+      procedure Store_Applicable_SPARK_Pragma
+        (E       : Entity_Id;
+         Is_Body : Boolean := False)
+      with Pre => Unique_Entity (E) = E;
+      --  If SPARK_Mode_Pragmas_Stack is not empty, store its first element as
+      --  the applicable SPARK_Mode pragma for E. If Is_Body is False, this
+      --  applies to the spec view of entity E. If Is_Body is True, this
+      --  applies to the body view of entity E. E should be a unique entity.
+
+      -------------
+      -- Do_List --
+      -------------
+
+      procedure Do_List (L : List_Id) is
+         N : Node_Id;
+      begin
+         N := First (L);
+         while Present (N) loop
+            Get_Scope_Info (N);
+            Next (N);
+         end loop;
+      end Do_List;
+
+      ----------------------
+      -- Pop_SPARK_Pragma --
+      ----------------------
+
+      procedure Pop_SPARK_Pragma (Prag : Node_Id) is
+      begin
+         if Present (Prag) then
+            pragma Assert (SPARK_Mode_Pragmas_Stack.First_Element = Prag);
+            SPARK_Mode_Pragmas_Stack.Delete_First;
+         end if;
+      end Pop_SPARK_Pragma;
+
+      -----------------------
+      -- Push_SPARK_Pragma --
+      -----------------------
+
+      procedure Push_SPARK_Pragma (Prag : Node_Id) is
+      begin
+         if Present (Prag) then
+            SPARK_Mode_Pragmas_Stack.Prepend (Prag);
+         end if;
+      end Push_SPARK_Pragma;
+
+      -----------------------------------
+      -- Store_Applicable_SPARK_Pragma --
+      -----------------------------------
+
+      procedure Store_Applicable_SPARK_Pragma
+        (E       : Entity_Id;
+         Is_Body : Boolean := False) is
+      begin
+         if not SPARK_Mode_Pragmas_Stack.Is_Empty then
+            if Is_Body then
+               Applicable_SPARK_Mode_For_Body.Insert
+                 (E, SPARK_Mode_Pragmas_Stack.First_Element);
+            else
+               Applicable_SPARK_Mode_For_Spec.Insert
+                 (E, SPARK_Mode_Pragmas_Stack.First_Element);
+            end if;
+         end if;
+      end Store_Applicable_SPARK_Pragma;
+
+      E        : Entity_Id;
+      Unique_E : Entity_Id;
+      Prag     : Node_Id;
+
+   --  Start of Get_Scope_Info
+
+   begin
+      --  Get the applicable SPARK_Mode pragma for this unit, if any
+
+      if Nkind (Parent (N)) = N_Compilation_Unit then
+
+         --  ??? After Opt.Global_SPARK_Mode is changed to a Node_Id, this is
+         --  the place to push it on the stack.
+
+         Push_SPARK_Pragma
+           (Lib.SPARK_Mode_Pragma (Lib.Get_Cunit_Unit_Number (Parent (N))));
+      end if;
+
+      --  Traversal currently stops at non-declarations (except
+      --  N_Handled_Sequence_Of_Statements which may contain declarations)
+      --  which is sufficient to get the applicable SPARK_Mode pragma for
+      --  each source entity.
+
+      if Nkind (N) not in N_Declaration                    |
+                          N_Later_Decl_Item                |
+                          N_Handled_Sequence_Of_Statements
+      then
+         return;
+      end if;
+
+      --  ??? Currently ignore the exception handlers of the handled sequence
+      --  of statements, which may contain declarations, and SPARK_Mode pragmas
+      --  which should be checked. Change that when these declarations are
+      --  marked for translation into Why.
+
+      if Nkind (N) = N_Handled_Sequence_Of_Statements then
+         Do_List (Statements (N));
+         return;
+      end if;
+
+      --  Declarations which have no impact on SPARK_Mode stack
+
+      if Nkind (N) in N_Renaming_Declaration        |
+                      N_Implicit_Label_Declaration  |
+                      N_Incomplete_Type_Declaration |
+                      N_Use_Package_Clause
+      then
+         return;
+      end if;
+
+      --  ??? Currently ignore these declarations that are not in SPARK, even
+      --  though they may contain declarations, and SPARK_Mode pragmas which
+      --  should be checked. Change that when marking of these declarations
+      --  takes place.
+
+      if Nkind (N) in N_Entry_Declaration               |
+                      N_Protected_Type_Declaration      |
+                      N_Access_To_Subprogram_Definition |
+                      N_Task_Type_Declaration           |
+                      N_Body_Stub                       |
+                      N_Generic_Instantiation           |
+                      N_Protected_Body                  |
+                      N_Task_Body                       |
+                      N_Single_Task_Declaration         |
+                      N_Generic_Package_Declaration     |
+                      N_Generic_Subprogram_Declaration
+      then
+         return;
+      end if;
+
+      --  At this point, N is a declaration with an associated entity E. Note
+      --  that E is not the unique entity here, as we are interested in
+      --  information that may differ between the two views of a unique
+      --  entity (package spec and package body for example). The corresponding
+      --  unique entity is stored in Unique_E.
+
+      E := Defining_Entity (N);
+      Unique_E := Unique_Entity (E);
+
+      --  Store the first applicable pragma in Prag, for every relevant entity
+
+      if Ekind (E) in E_Function          |
+                      E_Generic_Function  |
+                      E_Generic_Procedure |
+                      E_Procedure         |
+                      E_Subprogram_Body   |
+                      E_Generic_Package   |
+                      E_Package           |
+                      E_Package_Body
+      then
+         Prag := SPARK_Mode_Pragmas (E);
+      end if;
+
+      case Nkind (N) is
+      when N_Package_Declaration =>
+         declare
+            Vis_Decls  : constant List_Id :=
+              Visible_Declarations (Specification (N));
+            Priv_Decls : constant List_Id :=
+              Private_Declarations (Specification (N));
+            Vis_Prag   : Node_Id := Empty;
+            Priv_Prag  : Node_Id := Empty;
+
+         begin
+            --  Retrieve the SPARK_Mode pragmas on the visible and private
+            --  parts of the package, if any.
+
+            if Present (Prag)
+              and then not Sem_Prag.Is_Private_SPARK_Mode (Prag)
+            then
+               Vis_Prag := Prag;
+               Prag := Next_Pragma (Prag);
+            end if;
+
+            if Present (Prag) then
+               pragma Assert (Sem_Prag.Is_Private_SPARK_Mode (Prag));
+               Priv_Prag := Prag;
+            end if;
+
+            --  Do the package entity itself and its visible part
+
+            Push_SPARK_Pragma (Vis_Prag);
+            Store_Applicable_SPARK_Pragma (E);
+            Do_List (Vis_Decls);
+
+            --  Do the private part
+
+            Push_SPARK_Pragma (Priv_Prag);
+            Do_List (Priv_Decls);
+
+            --  Pop the context
+
+            Pop_SPARK_Pragma (Priv_Prag);
+            Pop_SPARK_Pragma (Vis_Prag);
+         end;
+
+      when N_Package_Body =>
+         declare
+            Decls     : constant List_Id := Declarations (N);
+            Stats     : constant Node_Id := Handled_Statement_Sequence (N);
+            Decl_Prag : Node_Id := Empty;
+            Stat_Prag : Node_Id := Empty;
+
+         begin
+            --  Do not analyze generic bodies
+
+            if Ekind (Unique_E) = E_Generic_Package then
+               return;
+            end if;
+
+            --  Retrieve the SPARK_Mode pragmas on the declarative and
+            --  statement parts of the package body, if any.
+
+            if Present (Prag)
+              and then not Sem_Prag.Is_Elaboration_SPARK_Mode (Prag)
+            then
+               Decl_Prag := Prag;
+               Prag := Next_Pragma (Prag);
+            end if;
+
+            if Present (Prag) then
+               pragma Assert (Sem_Prag.Is_Elaboration_SPARK_Mode (Prag));
+               Stat_Prag := Prag;
+            end if;
+
+            --  Do the package body entity itself and its declarative part
+
+            Push_SPARK_Pragma (Decl_Prag);
+            Store_Applicable_SPARK_Pragma (Unique_E, Is_Body => True);
+            Do_List (Decls);
+
+            --  Do the statement part
+
+            Push_SPARK_Pragma (Stat_Prag);
+            Get_Scope_Info (Stats);
+
+            --  Pop the context
+
+            Pop_SPARK_Pragma (Stat_Prag);
+            Pop_SPARK_Pragma (Decl_Prag);
+         end;
+
+      when N_Subprogram_Declaration =>
+         --  Do not analyze generics
+
+         if Ekind (Unique_E) in Generic_Subprogram_Kind then
+            return;
+         end if;
+
+         --  Do the subprogram declaration
+
+         Push_SPARK_Pragma (Prag);
+         Store_Applicable_SPARK_Pragma (E);
+
+         --  For expression functions that have a unique declaration, treat the
+         --  body here. See the case for N_Subprogram_Body below for details.
+
+         if Present (Get_Expression_Function (E))
+           and then not
+             Comes_From_Source
+               (Original_Node (SPARK_Util.Get_Subprogram_Body (E)))
+         then
+            Store_Applicable_SPARK_Pragma (E, Is_Body => True);
+         end if;
+
+         --  Pop the context
+
+         Pop_SPARK_Pragma (Prag);
+
+      when N_Subprogram_Body =>
+         declare
+            Decls : constant List_Id := Declarations (N);
+            Stats : constant Node_Id := Handled_Statement_Sequence (N);
+
+         begin
+            --  Do not analyze generic bodies
+
+            if Ekind (Unique_E) in Generic_Subprogram_Kind then
+               return;
+            end if;
+
+            --  For expression functions that have a unique declaration, the
+            --  body inserted by the frontend may be far from the original
+            --  point of declaration, after the private declarations of the
+            --  package (to avoid premature freezing.) In those cases, the
+            --  subprogram body should be treated at the same point as the
+            --  subprogram declaration, to avoid taking into account the
+            --  SPARK_Mode set for the private part.
+
+            if Present (Get_Expression_Function (Unique_E))
+              and then not Comes_From_Source (Original_Node (N))
+            then
+               return;
+            end if;
+
+            --  Do the subprogram declaration if the body acts as spec
+
+            Push_SPARK_Pragma (Prag);
+
+            if Acts_As_Spec (N) then
+               Store_Applicable_SPARK_Pragma (Unique_E);
+            end if;
+
+            --  Do the subprogram body itself, its declarations and statements
+
+            Store_Applicable_SPARK_Pragma (Unique_E, Is_Body => True);
+            Do_List (Decls);
+            Get_Scope_Info (Stats);
+
+            --  Pop the context
+
+            Pop_SPARK_Pragma (Prag);
+         end;
+
+      when N_Object_Declaration =>
+         declare
+            Is_Body : constant Boolean := Is_Full_View (E);
+
+         begin
+            --  Store correspondance from completions of deferred constants,
+            --  so that Is_Full_View can be used for dealing correctly with
+            --  deferred constants, when the public part of the package is
+            --  marked as SPARK_Mode On, and the private part of the package
+            --  is marked as SPARK_Mode Off. This is also used later during
+            --  generation of Why.
+
+            if Ekind (E) = E_Constant
+              and then Present (Full_View (E))
+            then
+               Add_Full_And_Partial_View (Full_View (E), E);
+            end if;
+
+            Store_Applicable_SPARK_Pragma (Unique_E, Is_Body => Is_Body);
+         end;
+
+      when N_Subtype_Declaration           |
+           N_Full_Type_Declaration         |
+           N_Private_Type_Declaration      |
+           N_Private_Extension_Declaration =>
+         declare
+            Is_Body : constant Boolean := Is_Full_View (E);
+
+         begin
+            --  Store correspondance from completions of private types, so that
+            --  Is_Full_View can be used for dealing correctly with private
+            --  types, when the public part of the package is marked as
+            --  SPARK_Mode On, and the private part of the package is marked
+            --  as SPARK_Mode Off. This is also used later during generation
+            --  of Why.
+
+            if Ekind (E) in Private_Kind
+              and then Present (Full_View (E))
+            then
+               Add_Full_And_Partial_View (Full_View (E), E);
+            end if;
+
+            Store_Applicable_SPARK_Pragma (Unique_E, Is_Body => Is_Body);
+         end;
+
+      when others =>
+         Ada.Text_IO.Put_Line ("[Get_Scope_Info] kind ="
+                                & Node_Kind'Image (Nkind (N)));
+         raise Program_Error;
+      end case;
+   end Get_Scope_Info;
 
    ---------------------
    -- Local Constants --
@@ -1364,6 +1824,12 @@ package body SPARK_Definition is
          return;
       end if;
 
+      --  Store scope information
+
+      Get_Scope_Info (N);
+
+      --  Mark entities in SPARK or not
+
       Push_Scope (Standard_Standard);
 
       Current_Unit_Is_Main_Body := In_Main_Unit_Body (N);
@@ -1709,17 +2175,7 @@ package body SPARK_Definition is
       Expr : constant Node_Id   := Expression (N);
       T    : constant Entity_Id := Etype (Id);
 
-      Deferred_Constant : constant Boolean :=
-                            Ekind (Id) = E_Constant
-                              and then Present (Full_View (Id));
    begin
-      --  Mark completions of deferred constants, so that generation of Why can
-      --  use this information.
-
-      if Deferred_Constant then
-         Add_Full_And_Partial_View (Full_View (Id), Id);
-      end if;
-
       --  The object is in SPARK if-and-only-if its type is in SPARK, it is not
       --  aliased, and its initialization expression, if any, is in SPARK.
 
@@ -2631,13 +3087,6 @@ package body SPARK_Definition is
             Mark_Violation ("tasking", Id, NIR_Tasking);
 
          when Private_Kind =>
-
-            --  Store correspondance between full and partial view, so that
-            --  generation of Why can use this information.
-
-            if Present (Full_View (Id)) then
-               Add_Full_And_Partial_View (Full_View (Id), Id);
-            end if;
 
             --  Private types that are not a record type or subtype are in
             --  SPARK.
