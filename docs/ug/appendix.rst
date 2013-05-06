@@ -6,47 +6,10 @@
 Appendix
 ********
 
-.. _Command_Line_Invocation:
-
-Command Line Invocation
-=======================
-
-Analysis may be run from IDEs, or from the command line. |GNATprove| is invoked
-on the command line as follows::
-
-    Usage: gnatprove -Pproj [files] [switches] [-cargs switches]
-    proj is a GNAT project file
-    files is one or more file names
-    -cargs switches are passed to gcc
-
-    gnatprove basic switches:
-     -f                 Force recompilation/proving of all units and all VCs
-     -jnnn              Use nnn parallel processes (default: 1)
-         --mode=m       Set the mode of GNATprove (m=detect, force, flow, prove*, all)
-     -q, --quiet        Be quiet/terse
-         --clean        Remove GNATprove intermediate files, and exit
-         --report=r     Set the report mode of GNATprove (r=fail*, all, statistics)
-     -u                 Unique compilation, only prove the given files
-     -U                 Prove all files of all projects
-     -v, --verbose      Output extra verbose information
-         --version      Output version of the tool and exit
-     -h, --help         Display this usage information
-
-    gnatprove advanced switches:
-     -d, --debug        Debug mode
-         --proof=p      Set the proof mode (p=normal*, no_wp, all_split, path_wp, no_split)
-         --show-tag     Append a unique tag to each error message
-         --pedantic     Use a strict interpretation of the Ada standard
-         --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo
-         --timeout=s    Set the prover timeout in seconds (default: 1)
-         --limit-line=s Limit proofs to given file and line
-         --limit-subp=s Limit proofs to subprogram defined by file and line
-         --prover=s     Use given prover instead of default Alt-Ergo prover
-
 .. _command line:
 
-Command-line Usage
-------------------
+Command-line Options
+--------------------
 
 |GNATprove| is executed with the following command line::
 
@@ -57,8 +20,6 @@ Command-line Usage
    -f            Force recompilation/proving of all units and all VCs
    -jnnn         Use nnn parallel processes (default: 1)
    --mode=       Proof mode
-       detect      Detect and output SPARK information
-       force       Output errors for violations of SPARK (warn unimplemented)
        prove       Prove subprogram contracts and absence of run-time errors (default)
        flow        Prove object initialization and globals and depends contracts
        all         Both analyses flow and prove are activated
@@ -92,12 +53,6 @@ Command-line Usage
                           the location given by file and line
    --prover=s             Use given prover instead of default Alt-Ergo prover
 
-
-.. _Advanced_Command_Line_Options:
-
-Advanced Command Line Options
-=============================
-
 .. _Project_Attributes:
 
 Project Attributes
@@ -126,15 +81,6 @@ real numbers, with no rounding. The only rounding that occurs is for static
 values (for example ``1.0``) which get rounded to their closest representable
 floating-point value, depending on the type used in the code.
 
-In mode ``prove``, the current version has the following limitations:
-
-   * It only accepts projects with a single object directory; it will stop
-     with an error message if run on projects with more than one object
-     directory.
-
-   * It uses the location of the top-level instantiation for all VCs in
-     instances of generics.
-
 Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a project file is
 not supported. Instead, use ``for Local_Configuration_Pragmas use
 "pragmas.adc";``.
@@ -151,9 +97,8 @@ The major features not yet supported are:
 * formal containers
 * invariants on types (invariants and predicates)
 
-The prototype version of |GNATprove| outputs in the :ref:`summary file` which
-features from |SPARK| are not yet supported and used in the program [using
-brackets]:
+|GNATprove| outputs in the :ref:`summary file` which features from |SPARK| are
+not yet supported and used in the program [using brackets]:
 
 * aggregate: aggregate extension;
 * arithmetic operation: not yet implemented arithmetic operation;
@@ -162,7 +107,7 @@ brackets]:
 * container: formal container;
 * dispatch: dispatching;
 * expression with action: expression with action;
-* multi dim array: multi-dimensional array of dimention > 4;
+* multi dim array: multi-dimensional array of dimension > 4;
 * pragma: not yet implemented pragma;
 * representation clause: representation clause;
 * tagged type: tagged type;
@@ -174,8 +119,3 @@ brackets]:
 * class wide types: class wide types;
 * interfaces: interfaces;
 * not yet implemented: any other not yet implemented construct.
-
-The purpose of the additional information on features not yet supported is to
-allow users to experiment and see which features are more beneficial in their
-context, in order to prioritize efficiently their implementation.
-

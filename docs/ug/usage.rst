@@ -14,41 +14,28 @@ How to Run |GNATprove|
 Running |GNATprove| from the Command Line
 -----------------------------------------
 
-In modes ``detect`` and ``force``, |GNATprove| does not compute an accurate set
-of global variables read and written in each subprogram. Hence, its detection
-of subprograms in |SPARK| might be slightly more optimistic than the
-reality. When using mode ``prove``, ``flow`` or ``all`` on the contrary, the
-detection is accurate.
+|GNATprove| can be run from the command line as follows::
 
-Although ``--report`` has only some effect in modes ``prove`` and ``all``, all
-combinations of options are allowed.
+    gnatprove -P <project-file.gpr>
+
+In the appendix, section :ref:`command line`, you can find an exhaustive list
+of switches; here we only give an overview over the most common uses. Note that
+|GNATprove| cannot be run without a project file.
 
 When given a list of files, |GNATprove| will consider them as entry points of
-the program and prove these units and all units on which they depend. With
+the program and analyze these units and all units on which they depend. With
 option ``-u``, the dependencies are not considered, only the given files
-themselves are proved. With option ``-U``, all files of all projects are
+themselves are analyzed. With option ``-U``, all files of all projects are
 proved.
 
-With option ``--pedantic``, some compiler choices are forced to a worst-case
-interpretation of the Ada standard. For example, ranges for integer base types
-are reduced to the minimum guaranteed, not to the matching machine
-integer type as done in practice on all compilers.
-
-The options ``--steps`` and ``--timeout`` can be used to influence the behavior
-of the prover Alt-Ergo. The option ``-j`` activates parallel compilation and
-parallel proofs.  The option ``proof`` is intended for debug use and influences
-the work that is actually done by |GNATprove|. If this option is set to
-``no_split`` (default unless ``--limit-line`` is used), one VC is generated for
-each check, which will make |GNATprove| run faster, and avoid any possible
-combinatorial explosion of the number of VCs. If this option is set to
-``then_split`` (default when ``--limit-line`` is used), |GNATprove| will start
-by computing a single VC for each check like for ``no_split``, but then each
-unproved VC is splitted if possible, which is slower but more precise. If this
-option is set to ``no_wp``, the VCs are not computed, and no prover is
-called. If this option is set to ``all_split`` the VCs are computed, but no
-prover is called. If this option is set to ``path_wp``, one VC is generated for
-each path. With the option ``-q``, |GNATprove| does give the minimum of
-messages, while with option ``-v``, on the contrary, all details are given.
+|GNATprove| consists of two distinct analyses, flow analysis and proof. Flow
+analysis checks the correctness of ``Globals`` and ``Depends`` aspects, and
+verifies the initialization of variables. Proof verifies the absence of runtime
+errors and the correctness of assertions such as ``Pre`` and ``Post`` aspects.
+Using the switch ``--mode=<mode>``, whose possible values are ``prove``,
+``flow`` and ``all``, you can choose to perform only one or both of these
+analyses. Today, flow analysis is experimental, so ``prove`` is the default. In
+the future, ``all`` will be the default.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only the file 12 of
@@ -56,8 +43,31 @@ file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
 the call to |GNATprove|. Using the option ``--limit-subp=`` one can limit proofs
 to a subprogram declared in a particular file at a particular line.
 
-By default, |GNATprove| avoids recompiling/reproving unchanged files, on a
+A number of options exist to influence the behavior for proof. Internally, the
+prover Alt-Ergo is called repeatedly for each check or assertion. Using the
+option ``--timeout``, one can change the maximal time that is allocated to prove
+each check or assertion (default: 1s). Using the option ``--steps`` (default:
+not used), one can set the maximum number of reasoning steps that Alt-Ergo is
+allowed to perform before giving up. The ``steps`` option should be used when
+predictable results are required, because the results with a timeout may differ
+depending on the computing power or current load of the machine. The option
+``-j`` activates parallel compilation and parallel proofs. 
+
+The way checks are passed to Alt-Ergo can also be influenced using the option
+``--proof``. By default, Alt-Ergo is invoked a single time for each check or
+assertion (mode ``no_split``). This can be changed using mode ``path_wp`` to
+invoke Alt-Ergo for each *path* that leads to the check. This option usually
+takes much longer, because Alt-Ergo is invoked much more often, but may give
+better proof results. Using mode ``all-split``, in addition, conjunctions (such
+as ``and`` and ``and then``) in assertions are split and passed seperately to
+Alt-Ergo. Finally, in mode ``then-split``, invoking Alt-Ergo a single time on
+the entire check is tried, and only if the check is not proved, the other
+techniques (splitting conjunctions and trying each path separately) are tried.
+
+By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
+
+.. _implementation_defined:
 
 Implementation-Defined Behavior
 -------------------------------
@@ -70,6 +80,11 @@ switches:
 
 * ``-gnateT`` for specifying the target configuration
 * ``--pedantic`` for warning about possible implementation-defined behavior
+
+With option ``--pedantic``, some compiler choices are forced to a worst-case
+interpretation of the Ada standard. For example, ranges for integer base types
+are reduced to the minimum guaranteed, not to the matching machine
+integer type as done in practice on all compilers.
 
 Target Parametrization
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -141,7 +156,6 @@ entries:
    "Prove All", "This runs |GNATprove| on all files in the project."
    "Prove Root Project", "This runs |GNATprove| on the entire project."
    "Prove File", "This runs |GNATprove| on the current unit."
-   "Show Unprovable Code", "This runs |GNATprove| on the entire project in mode ``detect``."
 
 When editing an Ada file, |GNATprove| can also be run from the context menu,
 which can be obtained by a right click:
