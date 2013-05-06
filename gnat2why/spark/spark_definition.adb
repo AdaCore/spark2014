@@ -224,13 +224,14 @@ package body SPARK_Definition is
       end if;
 
       --  Traversal currently stops at non-declarations (except
-      --  N_Handled_Sequence_Of_Statements which may contain declarations)
-      --  which is sufficient to get the applicable SPARK_Mode pragma for
-      --  each source entity.
+      --  N_Handled_Sequence_Of_Statements and N_Block_Statement which may
+      --  contain declarations) which is sufficient to get the applicable
+      --  SPARK_Mode pragma for each source entity.
 
       if Nkind (N) not in N_Declaration                    |
                           N_Later_Decl_Item                |
-                          N_Handled_Sequence_Of_Statements
+                          N_Handled_Sequence_Of_Statements |
+                          N_Block_Statement
       then
          return;
       end if;
@@ -242,6 +243,12 @@ package body SPARK_Definition is
 
       if Nkind (N) = N_Handled_Sequence_Of_Statements then
          Do_List (Statements (N));
+         return;
+      end if;
+
+      if Nkind (N) = N_Block_Statement then
+         Do_List (Declarations (N));
+         Get_Scope_Info (Handled_Statement_Sequence (N));
          return;
       end if;
 
