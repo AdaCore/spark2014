@@ -319,6 +319,53 @@ is in |SPARK|.
 Error Messages
 ==============
 
+This section lists the different error messages and warnings which |GNATprove|
+may output. Each message points to a very specific place in the source code.
+For example, if a source file ``file.adb`` contains a division as follows::
+
+      if X / Y > Z then ...
+
+|GNATprove| may output a message such as::
+
+   file.adb:12:37: division check not proved
+
+where the division sign ``/`` is precisely on line 12, column 37. Looking at
+the explanation in the first table below, which states that a division check
+verifies that the divisor is different from zero, it is clear that the message
+is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
+zero. The explanations in the table below should be read with the context that
+is given by the source location.
+
+The left column of the table contains the *tag* for each error message. Using
+option ``--show-tag``, |GNATprove| prints the tag for each error message at the
+end of the message, in brackets.
+
+The following table shows the proof messages.
+
+.. csv-table::
+   :header: "Message Tag", "Explanation"
+   :widths: 1, 4
+
+   "division_check", "Check that the second operand of the division, mod or rem operation is different from zero."
+   "index_check", "Check that the given index is within the bounds of the array."
+   "overflow_check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
+   "range_check", "Check that the given value is within the bounds of the expected scalar subtype."
+   "length_check", "Check that the given array is of the length of the expected array subtype."
+   "discriminant_check", "Check that the discriminant of the given discriminant record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
+   "precondition", "Check that the precondition aspect of the given call evaluates to True."
+   "postcondition", "Check that the postcondition aspect of the subprogram evaluates to True."
+   "contract_case", "Check that all cases of the contract case evaluate to true at the end of the subprogram."
+   "disjoint_contract_cases", "Check that the cases of the contract cases aspect are all mutually disjoint."
+   "complete_contract_cases", "Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect."
+   "loop_invariant_initialization", "Check that the loop invariant evaluates to True on the first iteration of the loop."
+   "loop_invariant_preservation", "Check that the loop invariant evaluates to True at each further iteration of the loop."
+   "loop_variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
+   "assertion", "Check that the given assertion evaluates to True."
+
+The following table shows the flow messages.
+
+TODO
+
 Investigating Unproved Checks
 =============================
 
