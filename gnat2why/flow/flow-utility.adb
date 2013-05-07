@@ -62,7 +62,7 @@ package body Flow.Utility is
    function All_Record_Components
      (Entire_Var : Entity_Id)
       return Flow_Id_Sets.Set
-      with Pre => Ekind (Etype (Entire_Var)) in
+      with Pre => Ekind (Get_Full_Type (Entire_Var)) in
         E_Record_Type | E_Record_Subtype;
    --  Given the record Entire_Var, return a set with all components.
    --  So, for example we might return:
@@ -74,7 +74,7 @@ package body Flow.Utility is
      (The_Record_Field : Flow_Id)
       return Flow_Id_Sets.Set
       with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
-                  and then Ekind (Etype
+                  and then Ekind (Get_Full_Type
                                     (Get_Direct_Mapping_Id
                                        (The_Record_Field))) in
                                      E_Record_Type | E_Record_Subtype;
@@ -156,9 +156,9 @@ package body Flow.Utility is
             begin
                Tmp.Append (C);
 
-               case Ekind (Etype (C)) is
+               case Ekind (Get_Full_Type (C)) is
                   when E_Record_Type =>
-                     Process_Record (Etype (C), Tmp);
+                     Process_Record (Get_Full_Type (C), Tmp);
 
                   when others =>
                      F := Flow_Id'(Kind      => Record_Field,
@@ -175,7 +175,7 @@ package body Flow.Utility is
       end Process_Record;
 
    begin
-      Process_Record (Etype (Entire_Var),
+      Process_Record (Get_Full_Type (Entire_Var),
                       Entity_Lists.Empty_Vector);
       return All_Comp;
    end All_Record_Components;
@@ -377,7 +377,7 @@ package body Flow.Utility is
    function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set is
       U : constant Entity_Id := Unique_Entity (E);
    begin
-      case Ekind (Etype (U)) is
+      case Ekind (Get_Full_Type (U)) is
          when Elementary_Kind | Array_Kind =>
             return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
 
@@ -402,6 +402,22 @@ package body Flow.Utility is
             raise Program_Error;
       end case;
    end Flatten_Variable;
+
+   -------------------
+   -- Get_Full_Type --
+   -------------------
+
+   function Get_Full_Type (E : Entity_Id) return Entity_Id
+   is
+      T : constant Entity_Id := Etype (E);
+   begin
+      pragma Assert (Is_Type (T));
+      if Present (Full_View (T)) then
+         return Full_View (T);
+      else
+         return T;
+      end if;
+   end Get_Full_Type;
 
    --------------------------------
    -- Untangle_Assignment_Target --
