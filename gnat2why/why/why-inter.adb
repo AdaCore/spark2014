@@ -1082,7 +1082,7 @@ package body Why.Inter is
             Field : constant String :=
               "rec__" & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
-              (if Rec = Empty then Scope (E) else Rec);
+              (if Rec = Empty then Unique_Entity (Scope (E)) else Rec);
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
