@@ -55,10 +55,10 @@ $(WHY_STANDARD):
 	rm $(DUMMYFILE)
 
 %.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
-	why3 -L ../share/gnatprove/theories --type-only -L . $< > /dev/null
-	why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_body.mlw > /dev/null
-	why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_spec.mlw > /dev/null
-	why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_body.mlw > /dev/null
-	why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_spec.mlw > /dev/null
+	if [ -f $*__types_in_spec.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_spec.mlw > /dev/null ; fi
+	if [ -f $*__types_in_body.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_body.mlw > /dev/null ; fi
+	if [ -f $*__variables.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__variables.mlw > /dev/null ; fi
+	if [ -f $*__context_in_spec.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_spec.mlw > /dev/null ; fi
+	if [ -f $*__context_in_body.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_body.mlw > /dev/null ; fi
 	why3 -L ../share/gnatprove/theories --type-only -L . $*__package.mlw > /dev/null
 	touch $@
