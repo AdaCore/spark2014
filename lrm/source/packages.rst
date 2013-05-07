@@ -1955,3 +1955,337 @@ Assignment and Finalization
 ---------------------------
 
 Controlled types are not permitted in |SPARK|.
+
+Elaboration Issues
+------------------
+
+|SPARK| imposes a set of restrictions which ensure that a
+call to a subprogram cannot occur before the body of the
+subprogram has been elaborated. The success of the runtime
+elaboration check associated with a call is guaranteed by
+these restrictions and so the proof obligation associated with
+such a check is trivially discharged. Similar restrictions
+are imposed to prevent the reading of uninitialized library-level
+variables during library unit elaboration, and to prevent
+instantiation of a generic before its body has been elaborated.
+Finally, restrictions are imposed in order to ensure that the
+Initial_Condition (and Initializes aspect) of a library level package
+can be meaningfully used.
+
+These restrictions are described in this section. Because all of these
+elaboration-related issues are treated similarly, they are
+discussed together in one section.
+
+Note that throughout this section an implicit call
+(e.g., one associated with default initialization of an
+object or with a defaulted parameter in a call) is treated
+in the same way as an explicit call, and an explicit call
+which is unevaluated at the point where it (textually) occurs is
+ignored at that point (but is not ignored later at a point
+where it is evaluated). This is similar to the treatment of
+expression evaluation in Ada's freezing rules.
+This same principle applies to the rules about reading
+global variables discussed later in this section.
+
+.. centered:: **Static Semantics**
+
+A call which occurs within the same compilation_unit as the subprogram_body
+of the callee is said to be an "intra-compilation_unit call".
+
+A construct (specifically, a call to a subprogram or a read or write
+of a variable) which occurs in elaboration code for a library level
+package is said to be "executable during elaboration". If a subprogram
+call is executable during elaboration and the callee's body
+occurs in the same compilation_unit as the call, then any
+constructs occurring within that body are also "executable during
+elaboration". [If a construct is "executable during elaboration",
+this means that it could be executed during the elaboration of the
+enclosing library unit and is subject to certain restrictions
+described below.]
+
+.. centered:: **Language Design Principles / Legality Rules**
+
+|SPARK| requires that an intra-compilation_unit call which is
+executable during elaboration shall occur after a certain point in
+the unit where the subprogram_body is known to have been elaborated.
+
+Roughly speaking, the start of the region in which such a call is permitted
+is obtained by starting at the subprogram_body and then "backing up" (in
+reverse elaboration order) until a non-preelaborable
+statement/declarative_item/pragma is encountered.
+The region starts immediately after this non-preelaborable
+construct (or at the beginning of the enclosing block (or library unit
+package spec or body) if no such non-preelaborable construct is found).
+
+The idea here is that once elaboration reaches this point, there will
+be no further expression evaluation or statement execution (and, in
+particular, no further calls) before the subprogram_body has been
+elaborated because all elaborable constructs that will be elaborated
+in that interval will be preelaborable. Hence, any calls that occur
+statically after this point cannot occur dynamically before the
+elaboration of the subprogram body.
+
+These rules allow this example
+
+.. code-block:: ada
+
+  package Pkg is
+     ...
+     procedure P;
+     procedure Q;
+     X : Integer := Some_Function_Call; -- not preelaborable
+     procedure P is ... if Blap then Q; end if; ... end P;
+     procedure Q is ... if Blaq then P; end if; ... end Q;
+   begin
+     P;
+   end;
+
+even though the call to Q precedes the body of Q. The allowed region
+for calls to either P or Q begins immediately after the declaration of X.
+Note that because the call to P is executable during elaboration, so
+is the call to Q.
+
+[TBD: it would be possible to relax this rule by defining
+a less-restrictive notion of preelaborability which allows, for example,
+
+.. code-block:: ada
+
+   type Rec is record F1, F2 : Integer; end record;
+   X : constant Rec := (123, 456);  -- not preelaborable
+
+while still disallowing the things that need to be disallowed and
+then defining the above rules in terms of this new notion instead of
+preelaborability. The only disadvantage of this is the added complexity
+of defining this new notion.]
+
+If an instance of a generic occurs in the same compilation_unit as the
+body of the generic, the body must precede the instance. [If this rule
+were only needed in order to avoid elaboration check failures, a similar
+rule to the rule for calls could be defined. This stricter rule is used
+in order to avoid having to cope with use-before-definition, as in
+
+.. code-block:: ada
+
+   generic
+   package G is
+     ...
+   end G;
+
+   procedure Proc is
+     package I is new G; -- expansion of I includes references to X
+   begin ... ; end;
+
+   X : Integer;
+
+   package body G is
+     ... <uses of X> ...
+   end G;
+
+This stricter rule applies even if the declaration of the instantiation
+is not "executable during elaboration"].
+
+In the case of a dispatching call, the subprogram_body mentioned
+in the above rules is that (if any) of the statically denoted callee.
+
+In order to ensure that dispatching calls do not fail elaboration
+checks, the freezing point of a tagged type must meet the same restrictions
+as would be required for a call to each of its overriding primitive operations.
+The idea here is that after the freezing point it would be possible to
+declare an object of the type and then use it as a controlling operand
+in a dispatching call to a primitive operation of an ancestor type.
+No analysis is performed to identify scenarios where this is not the case,
+so conservative rules are adopted. [TBD: Replace freezing point in this rule
+rule with declaration of full view? Removing all references to freezing
+would make the rule simpler, but it would be slightly more restrictive;
+Perhaps use the later of either the full view declaration or the declaration of
+the last overriding primitive? Getting rid of freezing point dependency
+seems desirable. On the other hand, the other alternatives are
+unnecessarily restrictive.]
+
+For purposes of defining the region described above, the spec and body
+of a library unit package which has an Elaborate_Body pragma
+are treated as if they both belonged to
+some enclosing declaration list with the body immediately
+following the spec. This means that the "region" in which a call
+is permitted can span the spec/body boundary. This is important for
+tagged type declarations. This example is in SPARK, but would not be
+without the Elaborate_Body pragma (because of the notional calls
+associated with the tagged type declaration).
+
+.. code-block:: ada
+
+   with Other_Pkg;
+   package Pkg is
+     pragma Elaborate_Body;
+     type T is new Other_Pkg.Some_Tagged_Type with null record;
+     overriding procedure Op (X : T);
+     -- freezing point of T is here
+   end;
+
+   package body Pkg is
+     ... ; -- only preelaborable constructs here
+     procedure Op (X : T) is ... ;
+   end Pkg;
+  
+An elaboration check failure would be possible if a call to Op (simple
+or via a dispatching call to an ancestor) were attempted between the
+elaboration of the spec and body of Pkg. The Elaborate_Body pragma
+prevents this from occurring. A library unit package spec which
+declares a tagged type will typically require an Elaborate_Body
+pragma.
+
+For the inter-compilation_unit case, SPARK enforces the GNAT static
+elaboration order rule. The GNAT Pro User's Guide says:
+
+   If a unit has elaboration code that can directly or indirectly make a call
+   to a subprogram in a with'ed unit, or instantiate a generic package in a
+   with'ed unit, then if the with'ed unit does not have pragma Pure or
+   Preelaborate, then the client should have a pragma Elaborate_All for the
+   with'ed unit. ... For generic subprogram instantiations, the rule can be
+   relaxed to require only a pragma Elaborate.
+
+For each call that is executable during elaboration for a given library unit
+package spec or body, there are two cases: it is (statically) a call
+to a subprogram whose body is in the current compilation_unit, or it
+is not. In the latter case, we require an Elaborate_All pragma as
+described above (the pragma must be given explicitly; it is not
+supplied implicitly).
+
+Corner case notes:
+  These rules correctly prohibit the following example:
+
+.. code-block:: ada
+
+    package P is
+       function F return Boolean;
+       Flag : Boolean := F; -- would fail elab check
+    end;
+
+  The following dispatching-call-during-elaboration example would
+  be problematic if the Elaborate_Body pragma were not required;
+  with the pragma, the problem is solved because the elaboration
+  order constraints are unsatisfiable:
+
+.. code-block:: ada
+
+    package Pkg1 is
+       type T1 is abstract tagged null record;
+       function Op (X1 : T1) return Boolean is abstract;
+    end Pkg1;
+
+    with Pkg1;
+    package Pkg2 is
+       pragma Elaborate_Body;
+       type T2 is new Pkg1.T1 with null record;
+       function Op (X2 : T2) return Boolean;
+    end Pkg2;
+
+    with Pkg1, Pkg2;
+    package Pkg3 is
+       X : Pkg2.T2;
+       Flag : Boolean := Pkg1.Op (Pkg1.T1'Class (X));
+         -- dispatching call during elaboration fails check
+    end Pkg3;
+
+    with Pkg3;
+    package body Pkg2 is
+       function Op (X2 : T2) return Boolean is
+       begin return True; end;
+    end Pkg2;
+
+For an instantiation of a generic which does not occur in the same
+compilation unit as the generic body, the rules are as described
+in the GNAT RM passage quoted above.
+
+[TBD: this whole section needs to be reformulated more precisely. Still,
+perfect is an enemy of good and this is good enough to get started with.]
+
+Use of Initial_Condition and Initializes Aspects
+------------------------------------------------
+
+.. centered:: **Language Design Principles**
+
+Language restrictions (described below) are imposed which have the
+following consequences:
+
+   - During the elaboration of a library unit package (spec or body),
+     library-level variables declared outside of that package
+     cannot be modified and library-level variables declared
+     outside of that package can only be read if
+
+       * the variable (or its state abstraction) is mentioned in the
+         Initializes aspect of its enclosing package; and
+
+       * an Elaborate (not necessarily an Elaborate_All) pragma
+         ensures that the body of that package has been elaborated.
+
+   - From the end of the elaboration of a library package's body to the
+     invocation of the main program (i.e., during subsequent library
+     unit elaboration), variables declared in the package (and
+     constituents of state abstractions declared in the package)
+     remain unchanged.
+     The Initial_Condition aspect is an assertion which is checked at the
+     end of the elaboration of a package body (but occurs textually
+     in the package spec). The initial condition of
+     a library level package will remain true from this point until
+     the invocation of the main subprogram (because none of the inputs
+     used in computing the condition can change during this interval).
+     This means that a package's initial condition can be assumed
+     to be true both upon entry to the main subprogram itself and during
+     elaboration of any other unit which applies an Elaborate pragma
+     to the library unit in question (note: an Initial_Condition which
+     depends on no variable inputs can also be assumed to be true throughout
+     the execution of the main subprogram).
+
+   - If a package's Initializes aspect mentions a state abstraction whose
+     refinement includes constituents declared outside of that package,
+     then the elaboration of bodies of the enclosing packages of those
+     constituents will precede the elaboration of the body of the package
+     declaring the abstraction. The idea here is that all constituents
+     of a state abstraction whose initialization has been promised are
+     in fact initialized by the end of the elaboration of the body of
+     the abstraction's unit - we don't have to wait for the elaboration
+     of other units (e.g., private children) which contribute to
+     the abstraction.
+
+.. centered:: **Verification Rules**
+
+If a read of a variable (or state abstraction, in the case of a
+call to a subprogram which takes an abstraction as in input)
+declared in another library unit is "executable during elaboration"
+(as defined above), then the compilation unit containing the read shall
+apply an Elaborate (not necessarily Elaborate_All) pragma to the
+unit declaring the variable or state abstraction. The variable or
+state abstraction shall be specified as being initialized in the
+Initializes aspect of the declaring package.
+[This is needed to ensure that the variable has been initialized
+at the time of the read.]
+
+A write to a variable (or state abstraction, in the case of a
+call to a procedure which takes an abstraction as in output)
+declared in another library unit shall not be "executable during
+elaboration" (as defined above). The implicit write associated
+with a read of a volatile variable is permitted.
+
+[At some point in the future, the variable reads and writes that occur
+during a package's elaboration might be identified by specifying a
+Global aspect for a package. The above rule could then be defined in
+terms of the package's Global aspect instead of the package's elaboration
+code; flow analysis would then, as usual, verify the correctness of the
+Global aspect.]
+
+An Initial_Condition expression shall not depend on the value
+of a volatile object or state abstraction. [This is needed to
+ensure that initial conditions remain invariant during subsequent
+library unit elaboration. Note that an initial condition expression
+may be depend on a variable declared in another package, but an
+Elaborate pragma would then be required as described above.]
+
+.. centered:: **Legality Rules**
+
+A package body shall include Elaborate pragmas for all of the
+other library units [(typically private children)] which provide
+constituents for state abstraction refinements occurring
+in the given package body. [This rule could be relaxed to apply
+only to constituents of an abstraction which is mentioned in
+an Initializes aspect.]
