@@ -223,6 +223,29 @@ package body Gnat2Why.Nodes is
       end if;
    end Avoid_Why3_Keyword;
 
+   -----------------------------------
+   -- Body_File_Name_Without_Suffix --
+   -----------------------------------
+
+   function Body_File_Name_Without_Suffix (N : Node_Id) return String
+   is
+      CU       : Node_Id := Enclosing_Comp_Unit_Node (N);
+      Switch   : Boolean := False;
+   begin
+      case Nkind (Unit (CU)) is
+         when N_Package_Body    |
+              N_Subprogram_Body |
+              N_Subunit         =>
+            null;
+         when others =>
+            Switch := True;
+      end case;
+      if Switch and then Present (Library_Unit (CU)) then
+         CU := Library_Unit (CU);
+      end if;
+      return File_Name_Without_Suffix (Sloc (CU));
+   end Body_File_Name_Without_Suffix;
+
    -----------------------
    -- Get_Graph_Closure --
    -----------------------
@@ -525,6 +548,23 @@ package body Gnat2Why.Nodes is
    begin
       return Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
    end Short_Name;
+
+   -----------------------------------
+   -- Spec_File_Name_Without_Suffix --
+   -----------------------------------
+
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String
+   is
+      CU       : Node_Id := Enclosing_Comp_Unit_Node (N);
+   begin
+      case Nkind (Unit (CU)) is
+         when N_Package_Body | N_Subunit =>
+            CU := Library_Unit (CU);
+         when others =>
+            null;
+      end case;
+      return File_Name_Without_Suffix (Sloc (CU));
+   end Spec_File_Name_Without_Suffix;
 
    --------------------
    -- String_Of_Node --

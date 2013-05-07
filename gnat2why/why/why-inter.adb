@@ -364,7 +364,7 @@ package body Why.Inter is
          while Nkind (Unit (U)) = N_Subunit loop
             U := Library_Unit (U);
          end loop;
-         return File_Name_Without_Suffix (Sloc (U));
+         return Spec_File_Name_Without_Suffix (U);
       end File_Base_Name_Of_Entity;
 
       ---------------------------
@@ -957,6 +957,19 @@ package body Why.Inter is
    --------------------
    -- Init_Why_Files --
    --------------------
+
+   procedure Init_Why_Files (Unit : Node_Id)
+   is
+      Spec_Prefix : constant String := Spec_File_Name_Without_Suffix (Unit);
+      Body_Prefix : constant String := Body_File_Name_Without_Suffix (Unit);
+   begin
+      for Kind in WF_Types_In_Spec .. WF_Context_In_Body loop
+         Why_Files (Kind) :=
+           Make_Empty_Why_File (Spec_Prefix & Why_File_Suffix (Kind));
+      end loop;
+      Why_Files (WF_Main) :=
+        Make_Empty_Why_File (Body_Prefix & Why_File_Suffix (WF_Main));
+   end Init_Why_Files;
 
    procedure Init_Why_Files (Prefix : String)
    is

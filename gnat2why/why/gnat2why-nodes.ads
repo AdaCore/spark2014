@@ -201,16 +201,23 @@ package Gnat2Why.Nodes is
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name
                        (Get_Source_File_Index (Loc))));
-
    --  This function returns the file name of the source pointer (will return
    --  the file of the generic in case of instances)
 
    function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
      (File_Name_Without_Suffix (File_Name (Translate_Location (Loc))));
-
    --  This function will return the file name of the source pointer of the
    --  suffix. Contrary to the File_Name function, this one returns the file
    --  name of the instance.
+
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
+   --  This function will return the file name in which the node appears, with
+   --  a twist: we always return the file name of the spec, if there is one.
+   --  Also, we return the file name of the instance, not the generic.
+
+   function Body_File_Name_Without_Suffix (N : Node_Id) return String;
+   --  Same as [Spec_File_Name_Without_Suffix], but always return the file name
+   --  of the body, if there is one.
 
    function Source_Name (E : Entity_Id) return String;
 

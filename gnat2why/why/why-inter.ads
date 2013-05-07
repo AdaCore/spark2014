@@ -98,8 +98,11 @@ package Why.Inter is
 
    Standard_Why_Package_Name : constant String := "_standard";
 
+   procedure Init_Why_Files (Unit : Node_Id);
    procedure Init_Why_Files (Prefix : String);
    --  Call this procedure to initialize the predefined Why_Files
+   --  The "String" variant uses the same prefix for all files. The other one
+   --  uses the spec or body prefix as appropriate.
 
    function Make_Empty_Why_File (S : String) return Why_File
      with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);

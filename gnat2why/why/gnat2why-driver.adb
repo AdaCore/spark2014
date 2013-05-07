@@ -172,7 +172,7 @@ package body Gnat2Why.Driver is
       Main_Lib_Id   : ALI_Id;
 
       N         : constant Node_Id := Unit (GNAT_Root);
-      Base_Name : constant String := File_Name_Without_Suffix (Sloc (N));
+      Base_Name : constant String := Body_File_Name_Without_Suffix (N);
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
@@ -199,7 +199,7 @@ package body Gnat2Why.Driver is
       --  went OK.
 
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
-         Touch_Main_File (File_Name_Without_Suffix (Sloc (N)));
+         Touch_Main_File (Base_Name);
          return;
       end if;
 
@@ -302,7 +302,7 @@ package body Gnat2Why.Driver is
 
       --  Start the translation to Why
 
-      Init_Why_Files (File_Name_Without_Suffix (Sloc (N)));
+      Init_Why_Files (GNAT_Root);
       Translate_CUnit;
    end GNAT_To_Why;
 
