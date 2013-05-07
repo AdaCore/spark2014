@@ -235,6 +235,11 @@ package body Flow.Control_Flow_Graph.Utility is
                  E_In_Parameter |
                  E_Loop_Parameter;
 
+            if F_Ent.Kind = Record_Field and then Is_Discriminant (F_Ent) then
+               --  Discriminants are *always* initialized.
+               A.Is_Initialised := True;
+            end if;
+
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 
             A.Variables_Defined := Flow_Id_Sets.To_Set (Change_Variant

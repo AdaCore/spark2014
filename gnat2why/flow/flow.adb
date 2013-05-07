@@ -42,12 +42,13 @@ with Why;
 with SPARK_Definition;      use SPARK_Definition;
 with SPARK_Util;
 
+with Flow.Analysis;
+with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
-with Flow.Control_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
-with Flow.Analysis;
+with Flow.Utility;
 
 use type Ada.Containers.Count_Type;
 
@@ -926,6 +927,10 @@ package body Flow is
 
                   if not A.Is_Initialised then
                      Rv.Colour := To_Unbounded_String ("red");
+                  elsif F.Kind = Record_Field and then
+                    Flow.Utility.Is_Discriminant (F)
+                  then
+                     Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 
                when Final_Value =>

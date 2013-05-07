@@ -523,6 +523,11 @@ package body Flow.Control_Flow_Graph is
                when Direct_Mapping =>
                   null;
                when Record_Field =>
+                  if Is_Discriminant (F) then
+                     --  The discriminants do not live in the tree.
+                     return;
+                  end if;
+
                   declare
                      P : constant Flow_Id :=
                        Change_Variant (Parent_Record (F),

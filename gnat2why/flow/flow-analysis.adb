@@ -35,6 +35,7 @@ with Treepr;                use Treepr;
 with Why;
 
 with Flow.Slice;            use Flow.Slice;
+with Flow.Utility;          use Flow.Utility;
 
 package body Flow.Analysis is
 
@@ -503,7 +504,10 @@ package body Flow.Analysis is
                F : constant Flow_Id      := FA.PDG.Get_Key (V);
                A : constant V_Attributes := FA.PDG.Get_Attributes (V);
             begin
-               if A.Is_Global then
+               if F.Kind = Record_Field and then Is_Discriminant (F) then
+                  --  Discriminants are never ineffective imports.
+                  null;
+               elsif A.Is_Global then
                   Error_Msg_Flow ("ineffective global import &",
                                   FA.PDG, FA.Start_Vertex, F);
                else
@@ -997,7 +1001,10 @@ package body Flow.Analysis is
                F : constant Flow_Id      := FA.PDG.Get_Key (V);
                A : constant V_Attributes := FA.PDG.Get_Attributes (V);
             begin
-               if A.Is_Global then
+               if F.Kind = Record_Field and then Is_Discriminant (F) then
+                  --  Discriminants can never not be used.
+                  null;
+               elsif A.Is_Global then
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
                   --  global.

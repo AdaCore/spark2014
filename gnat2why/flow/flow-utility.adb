@@ -149,7 +149,7 @@ package body Flow.Utility is
       begin
          --  Make a vertex for each subcomponent, unless its a
          --  record. If we have a record we recurse instead.
-         C := First_Component (R_Type);
+         C := First_Component_Or_Discriminant (R_Type);
          while Present (C) loop
             declare
                Tmp : Entity_Lists.Vector := Comp;
@@ -170,7 +170,7 @@ package body Flow.Utility is
                end case;
             end;
 
-            C := Next_Component (C);
+            C := Next_Component_Or_Discriminant (C);
          end loop;
       end Process_Record;
 
@@ -619,5 +619,16 @@ package body Flow.Utility is
       pragma Assert (Nkind (Expression (A)) = N_Identifier);
       return Chars (Expression (A)) in Name_Pre | Name_Precondition;
    end Is_Precondition_Check;
+
+   ---------------------
+   -- Is_Discriminant --
+   ---------------------
+
+   function Is_Discriminant (F : Flow_Id) return Boolean
+   is
+      C : constant Entity_Id := F.Component.Last_Element;
+   begin
+      return Ekind (C) = E_Discriminant;
+   end Is_Discriminant;
 
 end Flow.Utility;
