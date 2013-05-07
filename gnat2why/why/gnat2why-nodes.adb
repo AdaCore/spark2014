@@ -61,16 +61,16 @@ package body Gnat2Why.Nodes is
       -------------
 
       function Element (M : Map; E : Entity_Id)
-                            return Why_Node_Id is
+                            return Binder_Type is
       begin
          return M.Entity_Ids.Element (E);
       end Element;
 
-      function Element (C : Cursor) return Why_Node_Id is
+      function Element (C : Cursor) return Binder_Type is
       begin
          case C.Kind is
             when CK_Ent =>
-               return Ada_To_Why.Element (C.Ent_Cursor);
+               return Ent_To_Why.Element (C.Ent_Cursor);
             when CK_Str =>
                return Name_To_Why_Map.Element (C.Name_Cursor);
          end case;
@@ -81,9 +81,9 @@ package body Gnat2Why.Nodes is
       ----------
 
       function Find (M : Map; E : Entity_Id) return Cursor is
-         C : constant Ada_To_Why.Cursor := M.Entity_Ids.Find (E);
+         C : constant Ent_To_Why.Cursor := M.Entity_Ids.Find (E);
       begin
-         if Ada_To_Why.Has_Element (C) then
+         if Ent_To_Why.Has_Element (C) then
             return Cursor'(CK_Ent,
                            M.Entity_Ids.Find (E),
                            Name_To_Why_Map.No_Element);
@@ -95,12 +95,12 @@ package body Gnat2Why.Nodes is
 
                --  The dummy cursor
 
-               return Cursor'(CK_Ent, Ada_To_Why.No_Element,
+               return Cursor'(CK_Ent, Ent_To_Why.No_Element,
                               Name_To_Why_Map.No_Element);
          else
             declare
                S   : Entity_Name := new String'(Unique_Name (E));
-               Res : constant Cursor := Cursor'(CK_Str, Ada_To_Why.No_Element,
+               Res : constant Cursor := Cursor'(CK_Str, Ent_To_Why.No_Element,
                                                 M.Entity_Names.Find (S));
             begin
                Free (S);
@@ -118,12 +118,12 @@ package body Gnat2Why.Nodes is
 
                --  The dummy cursor
 
-               return Cursor'(CK_Ent, Ada_To_Why.No_Element,
+               return Cursor'(CK_Ent, Ent_To_Why.No_Element,
                               Name_To_Why_Map.No_Element);
          else
             declare
                S   : Entity_Name := new String'(E);
-               Res : constant Cursor := Cursor'(CK_Str, Ada_To_Why.No_Element,
+               Res : constant Cursor := Cursor'(CK_Str, Ent_To_Why.No_Element,
                                                 M.Entity_Names.Find (S));
             begin
                Free (S);
@@ -147,7 +147,7 @@ package body Gnat2Why.Nodes is
       begin
          case C.Kind is
             when CK_Ent =>
-               return Ada_To_Why.Has_Element (C.Ent_Cursor);
+               return Ent_To_Why.Has_Element (C.Ent_Cursor);
             when CK_Str =>
                return Name_To_Why_Map.Has_Element (C.Name_Cursor);
          end case;
@@ -159,14 +159,14 @@ package body Gnat2Why.Nodes is
 
       procedure Insert (M : in out Map;
                         E : Entity_Id;
-                        W : Why_Node_Id) is
+                        W : Binder_Type) is
       begin
          M.Entity_Ids.Insert (E, W);
       end Insert;
 
       procedure Insert (M : in out Map;
                         E : String;
-                        W : Why_Node_Id) is
+                        W : Binder_Type) is
       begin
          M.Entity_Names.Insert (new String'(E), W);
       end Insert;

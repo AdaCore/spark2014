@@ -39,6 +39,7 @@ with Sinput;                 use Sinput;
 with Stand;                  use Stand;
 with Types;                  use Types;
 
+with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Ids;                use Why.Ids;
 with Why.Types;              use Why.Types;
 
@@ -96,8 +97,8 @@ package Gnat2Why.Nodes is
 
    package Ada_Ent_To_Why is
 
-      --  This package is a map from Ada names to Why nodes. Ada names can have
-      --  the form of Entity_Ids or Entity_Names.
+      --  This package is a map from Ada names to a Why node, possibly with a
+      --  type. Ada names can have the form of Entity_Ids or Entity_Names.
 
       type Map is private;
       type Cursor is private;
@@ -106,14 +107,14 @@ package Gnat2Why.Nodes is
 
       procedure Insert (M : in out Map;
                         E : Entity_Id;
-                        W : Why_Node_Id);
+                        W : Binder_Type);
 
       procedure Insert (M : in out Map;
                         E : String;
-                        W : Why_Node_Id);
+                        W : Binder_Type);
 
-      function Element (M : Map; E : Entity_Id) return Why_Node_Id;
-      function Element (C : Cursor) return Why_Node_Id;
+      function Element (M : Map; E : Entity_Id) return Binder_Type;
+      function Element (C : Cursor) return Binder_Type;
 
       function Find (M : Map; E : Entity_Id) return Cursor;
       function Find (M : Map; E : String) return Cursor;
@@ -125,18 +126,25 @@ package Gnat2Why.Nodes is
 
       package Name_To_Why_Map is new Ada.Containers.Hashed_Maps
         (Key_Type => Entity_Name,
-         Element_Type    => Why_Node_Id,
+         Element_Type    => Binder_Type,
          Hash            => Name_Hash,
          Equivalent_Keys => Name_Equal,
          "="             => "=");
 
+      package Ent_To_Why is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => Binder_Type,
+         Hash            => Node_Hash,
+         Equivalent_Keys => "=",
+         "="             => "=");
+
       type Map is record
-         Entity_Ids   : Ada_To_Why.Map;
+         Entity_Ids   : Ent_To_Why.Map;
          Entity_Names : Name_To_Why_Map.Map;
       end record;
 
       Empty_Map : constant Map :=
-        Map'(Entity_Ids    => Ada_To_Why.Empty_Map,
+        Map'(Entity_Ids    => Ent_To_Why.Empty_Map,
              Entity_Names => Name_To_Why_Map.Empty_Map);
 
       type Cursor_Kind is (CK_Ent, CK_Str);
@@ -149,7 +157,7 @@ package Gnat2Why.Nodes is
          --  otherwise, Name_Cursor is valid.
 
          Kind        : Cursor_Kind;
-         Ent_Cursor  : Ada_To_Why.Cursor;
+         Ent_Cursor  : Ent_To_Why.Cursor;
          Name_Cursor : Name_To_Why_Map.Cursor;
       end record;
 

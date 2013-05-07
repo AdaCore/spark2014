@@ -1129,7 +1129,7 @@ package body Gnat2Why.Subprograms is
             if Present (A) then
                Ada_Ent_To_Why.Insert (Params.Name_Map,
                                       Unique_Entity (A),
-                                      +Binder.B_Name);
+                                      Binder);
             else
 
                --  if there is no Ada_Node, this in a binder generated from
@@ -1139,7 +1139,7 @@ package body Gnat2Why.Subprograms is
                Ada_Ent_To_Why.Insert
                  (Params.Name_Map,
                   Get_Name_String (Get_Symbol (Binder.B_Name)),
-                  +Binder.B_Name);
+                  Binder);
             end if;
          end;
       end loop;
@@ -1243,7 +1243,7 @@ package body Gnat2Why.Subprograms is
             if Present (A) then
                Ada_Ent_To_Why.Insert (Params.Name_Map,
                                       Unique_Entity (A),
-                                      +Binder.B_Name);
+                                      Binder);
             end if;
          end;
       end loop;
