@@ -963,6 +963,13 @@ package body Why.Inter is
       Spec_Prefix : constant String := Spec_File_Name_Without_Suffix (Unit);
       Body_Prefix : constant String := Body_File_Name_Without_Suffix (Unit);
    begin
+
+      --  We cannot assume that spec and body use the same file basename. So we
+      --  force to use the spec filename everywhere. The "main" Why3 file is
+      --  special: the builder expects it to have the basename of the body.
+      --  That's not a problem, we can use the body name because this file will
+      --  never be referenced by other Why3 files.
+
       for Kind in WF_Types_In_Spec .. WF_Context_In_Body loop
          Why_Files (Kind) :=
            Make_Empty_Why_File (Spec_Prefix & Why_File_Suffix (Kind));
