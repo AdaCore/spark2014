@@ -68,27 +68,32 @@ Volatile State
 Volatile state is a volatile variable object (as described in the Ada RM Annex
 C.6) or a volatile state abstraction. A volatile state abstraction represents at
 least one volatile variable or volatile state abstraction of another package.
+A volatile object must be an entire variable in |SPARK|.
 
-Volatile state is treated specially for static analysis because an update of
-volatile state is not ineffective even if it is not read by the program.
-Similarly, the values obtained from two successive reads without an intervening 
-update of a volatile state are not necessarily equal.
+Volatile state is treated specially for static analysis because an assignment to
+a volatile state is not ineffective even if it's value is not read by the
+program [The assignment could be to an external device and has no logical effect
+on the program]. Similarly, a read of a volatile variable is never ineffective;
+it is considered to have a side-effect. [The values obtained from two successive
+reads without an intervening update of a volatile state are not necessarily
+equal.]
 
-In |SPARK| a volatile variable is regarded either as an input or an output, but
-not both, to some external component. In Ada terminology this is viewed as a
-volatile input variable has at least one external writer but no external readers
-and a volatile output variable has at least one external reader but no external
-writers. A volatile state abstraction has the same restriction that it can only
-be an input or an output but not both. It follows that a volatile input state
-abstraction can only represent volatile input variables or volatile input state
-abstractions of other packages, and similarly volatile output state abstractions
-can only represent volatile output states.
+In |SPARK| a volatile variable is regarded either as an input only or an output
+only, but not both, to some external component. In Ada terminology this is
+viewed as a volatile input only variable has at least one external writer but no
+external readers and a volatile output only variable has at least one external
+reader but no external writers. A volatile state abstraction has the same
+restriction that it can be an input only or an output only but not both. It
+follows that a volatile input state abstraction can only represent volatile
+input only variables or volatile input only state abstractions of other
+packages, and similarly volatile output only state abstractions can only
+represent volatile output only states.
 
-|SPARK| aspects are defined for designating a volatile variable, type or subtype
-declaration as an input or an output 
-(see :ref:`volatile_input_and_output_aspects`) and a state abstraction is 
-designated as volatile and either an input or an output when it is declared by 
-an Abstract_State aspect (see :ref:`abstract-state-aspect`).
+|SPARK| aspects are defined for designating a volatile variable or type
+declaration as an input only or an output only (see
+:ref:`volatile_input_and_output_only_aspects`) and a state abstraction is
+designated as volatile and either an input only or an output only when it is
+declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`).
 
 
 .. centered:: **Static Semantics**
@@ -99,36 +104,22 @@ an Abstract_State aspect (see :ref:`abstract-state-aspect`).
    of a volatile state is followed by an implicit read of the state.
    [Thus, a read always has a side effect and an update is never ineffective.]
    
-#. It follows from the semantics of reading and updating of volatile state
-   that such state does not require initialization.
+#. It follows from the semantics of reading and updating of volatile state that
+such a state does not require initialization for static analysis purposes
+[Indeed, it is not possible to initialize a volatile input only variable because
+the SPARK rules forbid it to be updated explicitly] and so volatile states are
+not the subject of an initialization item in an Initializes aspect (see
+:ref:`initializes_aspect`).
    
-#. In Global and Depends aspects this means that volatile state will be 
-   regarded as being both an input and an output and this fact may be stated 
-   explicitly in those aspects [, for example by using the ``In_Out`` mode in 
-   the Global aspect]. 
+#. Global and Depends aspects of a subprogram represent the explicit reads and
+   updates performed by a subprogram and the implicit reads and updates 
+   described above are not recorded in these aspects.[....]
    
-#. However for volatile states an abbreviated form of the Global and Depends 
-   aspect is permitted [which gives a more intuitive view the volatile state]:
-
-   * If the volatile state is designated as an Input, then it may be denoted 
-     just  as an Input in the Global aspect. Implicitly it is declared with a 
-     ``mode_selector`` of In_Out. In a Depends aspect it need not be designated
-     as an output as an implicit self dependency of the volatile state will be 
-     declared.
-
-   * If the volatile state is designated as an Output, then it may be denoted 
-     just as an Output in the Global aspect. Implicitly it is declared with a 
-     ``mode_selector`` of In_Out. In a Depends aspect it need  not be designated
-     as an input as an implicit self dependency of the entity will be declared.
-     
-  
 .. centered:: **Legality Rules**
 
-#. As a volatile state always has a ``mode_selector`` of In_Out in a Global 
-   aspect, either given explicitly or implicitly, it follows that a volatile 
-   state cannot be a ``global_item`` of a function Global 
-   ``aspect_specification`` [which in turn means that a function cannot, 
-   directly or indirectly, read a volatile state].
+#. As a read of a volatile state always has a side-effect a ``global_item`` of a
+   function cannot denote a volatile state [which in turn means that a function
+   cannot, directly or indirectly, read a volatile state].
 
 #. A volatile state shall not be denoted by a ``name`` of an 
    ``initialization_item`` of an Initializes aspect 
@@ -140,95 +131,85 @@ an Abstract_State aspect (see :ref:`abstract-state-aspect`).
           To be completed in the Milestone 4 version of this document.
 
 
-.. _volatile_input_and_output_aspects:
+.. _volatile_input_and_output_only_aspects:
 
-Volatile Input and Output Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Volatile Input and Output Only Aspects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A volatile variable has to be designated as either an input or an output in 
-|SPARK|.  This may be achieved by specifying an Input or Output aspect directly
-in its declaration.  If the variable is volatile because its subtype is volatile
-then it may designated as an input or an output by specifying an Input or Output
-aspect in its type declaration or subtype declaration.
+A volatile variable has to be designated as either input only or output only in
+|SPARK|. This may be achieved by specifying an Input_Only or Output_Only aspect
+directly in its declaration. If the variable is volatile because its type is
+volatile then it may designated as input only or output only by specifying an
+Input_Only or Output_Only aspect in its type declaration.
 
 .. centered:: **Legality Rules**
 
-#. Input and Output are Boolean aspects. 
+#. For an ``object_declaration`` or a ``full_type_declaration`` the following
+   Boolean representation aspects may be specified: Input_Only and Output_Only. 
 
-#. An Input or an Output aspect, but not both, may be specified in a volatile
-   type declaration.
+#. An Input_Only or an Output_Only aspect, but not both, may be specified in a 
+   volatile type declaration.
    
-#. If a volatile type declaration does not specify an Input or Output aspect
-   then a subtype declaration of the type may specify an Input or Output 
-   aspect, but not both.
+#. If a volatile type declaration specifies an Input_Only aspect, then all 
+   variables of that type shall be input only.  The declaration of 
+   such an object may specify an Input_Only aspect but not an Output_Only aspect.
    
-#. If a volatile type declaration, T, does specify an Input or Output aspect
-   then a subtype declaration of T is a volatile subtype with the same
-   Input or Output aspect specification as T.  The subtype declaration may
-   specify the same Input or Output aspect as T.
+#. If a volatile type declaration specifies an Output_Only aspect, then all 
+   variables of that type shall be output only.  The declaration of 
+   such an object may specify an Output_Only aspect but not an Input_Only aspect.
    
-#. If a volatile (sub)type declaration specifies an Input aspect, then all 
-   variables of that (sub)type shall be volatile inputs.  The declaration of 
-   such an object may specify an Input aspect but not an Output aspect.
-   
-#. If a volatile (sub)type declaration specifies an Output aspect, then all 
-   variables of that (sub)type shall be volatile outputs.  The declaration of 
-   such an object may specify an Output aspect but not an Input aspect.
-   
-#. A variable declaration may be specified as volatile if its (sub)type is not 
+#. A variable declaration may be specified as volatile if its type is not
    volatile and, if a variable is specified as volatile in this way, then it
-   shall specify exactly one of an Input or an Output aspect. If the declaration 
-   specifies an Input aspect, then the declaration is of a volatile input,
-   otherwise it specifies an Output aspect and is a volatile output.
+   shall specify exactly one of an Input_Only or an Output_Only aspect. If the
+   declaration specifies an Input_Only aspect, then the declaration is of a
+   volatile input only, otherwise it specifies an Output_Only aspect and is a
+   volatile output only. 
    
-#. A volatile input variable cannot be updated directly.
-     
-#. A volatile output variable cannot be read directly.
+   
+.. centered:: **Verification Rules**
+
+   
+#. A volatile representation aspect may only be applied to an 
+   ``object_declaration`` or a ``full_type_declaration``.
+   
+#. A component of an ``array_type_declaration`` or a ``record_type_declaration`` 
+   shall not be of a volatile type.
+   
+A volatile input only variable shall not be updated other than by the
+   implicit update associated with reading from it.  A volatile input only
+   variable shall not be passed as a part of an actual parameter in a procedure
+   call if the mode of the corresponding formal parameter is not **in**.
+   
+#. A volatile output only variable shall not be read other than by the implicit
+   read associated with updating it.  A volatile output only variable shall not
+   be passed as part of actual parameter in a procedure call if the mode of the 
+   corresponding formal parameter is not *out*.
 
 #. [The general |SPARK| rule that an expression evaluation cannot
    have a side effect means that a read of a volatile variable is not an
-   ordinary expression.] The value of a volatile variable may only be read 
-   directly as a``name`` denoting the variable occurring as:
+   ordinary expression.] An expression which is the name denoting a volatile 
+   object shall only occur in the following contexts:
 
-   * the expression of the right hand side of an assignment statement;
+   * as the [right hand side] expression of an assignment statement;
    
-   * the expression of an initialization expression of an object declaration;
+   * as the expression of an initialization expression of an object declaration;
    
-   * an actual parameter in a call to an instance of Unchecked_Conversion
-     which is the right hand side of an assignment statement; or
+   * as an actual parameter in a call to an instance of Unchecked_Conversion
+     which is the right hand side of an assignment statement;
      
-   * an actual parameter in a call to an instance of Unchecked_Conversion
-     which is renamed.
+   * as an actual parameter in a call to an instance of Unchecked_Conversion
+     whose result is renamed [in an object renaming declaration]; or
+     
+   * as an actual parameter of a procedure whose corresponding formal parameter
+     is of a volatile type.
 
-#. A volatile variable may be the actual parameter in a procedure call if and
-   only if the corresponding formal parameter is of a subtype declared as 
-   volatile and the subtype declaration specifies an Input or Output aspect.  
-   If the subtype specifies in Input aspect then the formal parameter is a 
-   volatile input and the actual parameter shall also be a volatile input, 
-   otherwise the subtype specifies an Output aspect and the formal parameter is
-   a volatile output and the actual parameter shall be a volatile output.
-     
 .. centered:: **Static Semantics**
 
-#. [The read of a Volatile Input variable IP in a simple assignment, X := IP;
-   behaves as a procedure call of the form Read_Volatile (X) where the
-   specification of the procedure is:
+There are no extra static semantics associated with these aspects.
 
-   procedure Read_Volatile (X : out T)
-   with Global => (In_Out => IP);
+.. centered:: **Dynamic Semantics**
 
-   Similarly the update of a Volatile Output variable OP, behaves as a call to a 
-   procedure of the form:
-
-   procedure Update_Volatile (Y : in T)
-   with Global => (In_Out => OP);]
-
-#. A parameter which is of a volatile type is considered, for flow 
-   analysis, to behave as mode *in out*  regardless of the mode of the formal 
-   parameter given in the subprogram specification.  This applies whether
-   considering the formal parameter in the subprogram body or the actual
-   parameter in a subprogram call.
-
+There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Examples**
 
@@ -240,7 +221,7 @@ aspect in its type declaration or subtype declaration.
 
       Sensor : Integer
          with Volatile,
-              Input,
+              Input_Only,
               Address => System.Storage_Units.To_Address (16#ACECAFE#);
 
    end Input_Port;
@@ -251,41 +232,41 @@ aspect in its type declaration or subtype declaration.
    is
       type Volatile_Type : Integer with Volatile;
    
-      subtype Volatile_Input  is Volatile_Type with Input;
-      subtype Volatile_Output is Volatile_Type with Output;
+      type Volatile_Input  is new Volatile_Type with Input_Only;
+      type Volatile_Output is new Volatile_Type with Output_Only;
       
       -- Read_Port may only be called with an actual parameter for Port
-      -- which is a volatile input
-      procedure Read_Port (Port : in Volatile_Input; Value : out Integer)
+      -- which is a volatile input only
+      procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
       with
-         Depends => ((Value, Port => Port)); -- Port is volatile and behaves as mode in out
+         Depends => (Value => Port); -- Port is volatile input only
      
      
       -- Write_Port may only be called with an actual parameter for Port
-      -- which is a volatile output
-      procedure Write_Port (Port : out Volatile_Output; Value : in Integer)
+      -- which is a volatile output only
+      procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
       with
-         Depends => (Port => (Port, Value)); -- Port is volatile and behaves as mode in out
+         Depends => (Port => Value); -- Port is volatile output only
      
-      -- The following declarations are all volatile inputs
+      -- The following declarations are all volatile input only variables
       V_In_1 : Volatile_Type 
       with 
-         Input,
+         Input_Only,
          Address => System.Storage_Units.To_Address (16#A1CAFE#);
       
       V_In_2 : Volatile_Input with Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
-      -- The following declarations are all volatile outputs      
+      -- The following declarations are all volatile output only variables      
       V_Out_1 : Volatile_Type 
       with 
-         Output,
+         Output_Only,
          Address => System.Storage_Units.To_Address (16#BBCCAFE#);
       
       V_Out_2 : Volatile_Output with Address => System.Storage_Units.To_Address (16#ADACAFE#);
 
    end Multiple_Ports;
-      
-      
+            
+
 .. _abstract-state-aspect:
 
 Abstract State Aspect
@@ -381,32 +362,31 @@ shall follow the grammar of ``abstract_state_list`` given below.
 .. centered:: **Legality Rules**
 
 #. The ``identifier`` of a ``simple_property`` shall be Volatile,
-   Input, or Output.
+   Input_Only, or Output_Only.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 7.1.2 LR identifier of simple_property shall be Volatile, Input or Output
 
-#. There shall be at most one occurrence of the ``identifiers``
-   Volatile, Input and Output in a single ``property_list``.
+#. An identifier shall not be repeated within a single property list.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR At most one occurrence of Volatile, Input and Output in single property_list
+      :Trace Unit: 7.1.2 LR An identifier shall not be repeated within a single property list.
 
 #. If a ``property_list`` includes Volatile, then it shall also
-   include exactly one of Input or Output.
+   include exactly one of Input_Only or Output_Only.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR If property_list includes Volatile, then it shall also include exactly one of Input or Output
+      :Trace Unit: 7.1.2 LR If property_list includes Volatile, then it shall also include exactly one of Input_Only or Output_Only
 
-#. If a ``property_list`` includes either Input or Output,
+#. If a ``property_list`` includes either Input_Only or Output_Only,
    then it shall also include Volatile.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR If property_list includes Input or Output, it shall also include Volatile
+      :Trace Unit: 7.1.2 LR If property_list includes Input_Only or Output_Only, it shall also include Volatile
 
 #. The ``identifier`` of a ``name_value_property`` shall be
    Part_Of and at most one may appear in the ``property_list``.
@@ -415,20 +395,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
       :Trace Unit: 7.1.2 LR name_value_property identifier must be Part_Of
       
-#. A ``name_value_property`` with an ``identifier`` of Part_Of shall appear in
-   a non-null Abstract_State aspect if and only if it is declared in:
-     
-   * a private child unit or a descendant of a private child unit;
-   
-   * a package declared within the visible part or a nested package declared 
-     therein of a private child unit or one of its descendants; or
-     
-   * a package declared in the private part of a package or a nested package 
-     declared therein. 
-     
-   The expression of such a ``name_value_property`` shall denote a state 
-   abstraction.
-
 #. If a ``property_list`` contains one or more ``name_value_property`` items 
    then they shall be the final properties in the list. 
    [This eliminates the possibility of a positional
@@ -444,28 +410,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Static Semantics**
 
-
-#. The visible state of a package P consists of:
-   
-   * the variables declared in the visible part of package P, the 
-     state abstractions declared by the Abstract State aspect specification
-     (if any) of package P;
-     
-   * the visible state and state abstractions of any nested packages declared 
-     immediately within the visible part of P; and
-     
-   * the visible state introduced by a generic package instantiated immediately
-     within the visible part of P.
-     
-#. The hidden state of a package P consists of:
-
-   * the variables declared in the private part or body of P; 
-   
-   * the visible state and state abstractions of any nested packages declared
-     immediately within the private part or body of P; and
-     
-   * the visible state introduced by a generic package instantiated immediately
-     within the private part or body of P.
 
 #. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
@@ -494,12 +438,13 @@ shall follow the grammar of ``abstract_state_list`` given below.
    [The specification is checked when the package is analyzed.]
 
 #. A volatile state abstraction is one declared with a ``property_list``
-   that includes the Volatile ``property``, and either Input or Output.
+   that includes the Volatile ``property``, and either Input_Only or 
+   Output_Only.
    
 #. A state abstraction which is declared with a ``property_list`` that includes
    a Part_Of ``name_value_property`` indicates that it is a constituent (see
-   :ref:`state_refinement`) exclusively of the state abstraction denoted by the
-   expression of the ``name_value_property``.
+   :ref:`state_refinement` and _package_) exclusively of the state abstraction 
+   denoted by the expression of the ``name_value_property``.
    
       
 .. centered:: **Verification Rules**
@@ -533,89 +478,11 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
 
    package X
    with  
-      Abstract_State => (A, B, (C with Volatile, Input))
+      Abstract_State => (A, B, (C with Volatile, Input_Only))
    is                     -- Three abstract state names are declared A, B & C.
                           -- A and B are non-volatile abstract states
-      ...                 -- C is designated as a volatile input.
+      ...                 -- C is designated as a volatile input only.
    end X;
-
-   limited with Sensor.Raw;
-   package Sensor -- simple volatile, input device driver
-   with 
-      Abstract_State => (Port with Volatile, Input);
-   is
-      ...
-   end Sensor;
-   
-   private package Sensor.Raw
-   with
-      Abstract_State => (Port_22 with Volatile, Input, 
-                         Part_Of => Sensor.Port)
-   is
-      
-      ...
-   end Sensor.Raw;
-
-
-.. _input_output_and_part_of_aspects:
-
-Input, Output and Part_Of Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Variable declarations may have the Input, Output and Part_Of aspects
-specified directly as part of declaration.  A generic package instantiation
-may have a Part_Of aspect.
-
-
-.. centered:: **Legality Rules**
-
-#. Input and Output are Boolean aspects.
-
-#. If a variable has the Volatile aspect, then it shall also have
-   exactly one of the Input or Output aspects.
-
-#. The Part_Of aspect requires an ``aspect_definition`` which denotes
-   a state abstraction.
-
-#. A Part_Of aspect shall appear in the ``aspect_specification`` of a variable
-   if and only if it is declared in:
-   
-   * the private part of a package; or 
-
-   * the visible part of a package declared in the private part of a package and
-     package declarations nested therein; or
-   
-   * the visible part of a private descendant package or the visible part of a 
-     package declarations nested therein.
-     
-#. A Part_Of aspect shall appear in the ``aspect_specification`` of a
-   generic package instantiation if and only if:
-   
-   * the generic package has visible state; and 
-
-   * it is instantiated in private part of a package.
-     
-.. centered:: **Static Semantics**
-
-#. A Part_Of aspect in the ``aspect_specification`` of a variable 
-   declaration indicates that the variable is a constituent of the state
-   abstraction denoted by its ``aspect_definition``.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   with System.Storage_Units;
-   private package Input_Port.Raw
-   is
-
-      Sensor : Integer
-         with Volatile,
-              Input,
-              Address => System.Storage_Units.To_Address (16#ACECAFE#),
-              Part_Of => Input_Port.Pressure_Input;
-
-   end Input_Port.Raw_Input_Port;
 
 .. _initializes_aspect: 
 
@@ -689,13 +556,14 @@ grammar of ``initialization_spec`` given below.
 #. The Initializes aspect of a package has visibility of the declarations
    occurring immediately within the visible part of the package.
 
-#. The ``name`` of each ``initialization_item`` denotes a state abstraction 
-   declared in the same ``aspect_specification`` of a package or an entire 
-   variable declared in the visible part of the package.
+#. The ``name`` of each ``initialization_item`` in the Initializes aspect 
+   definition for a package shall denote a state abstraction of the package or 
+   an entire variable declared immediately within the visible part of the
+   package.
 
-
-#. The entity denoted by the ``name`` of an ``initialization_item`` shall be 
-   distinct from every other entity denoted in the ``initialization_list``.
+#. The entity denoted by the ``name`` of an Initializes aspect definition for a
+   a package shall denote an entire variable or state abstraction other than 
+   those declared immediately within the package.
 
 #. Each ``name`` in the ``input_list`` denotes an entire variable or a state 
    abstraction but shall not denote an entity declared in the package with the
@@ -710,13 +578,8 @@ grammar of ``initialization_spec`` given below.
    by the elaboration of the package, both its specification and body, and
    any units which have state abstractions or variable declarations that are
    part of (constituents) of a state abstraction declared by the package.  
-   
-#. If a state abstraction or variable declared in the visible part of a package 
-   is not denoted by a ``name`` of an ``initialization_item``, then it should 
-   not be initialized during the elaboration of the package.
-   
-#. A package with a **null** ``initialization_list`` does not initialize any
-   of its state abstractions or variables.
+   [A package with a **null** ``initialization_list`` does not initialize any
+   of its state abstractions or variables.]
    
 #. If an ``initialization_item`` has an ``input_list`` then the ``names`` in the
    list denote entities which are used in determining the initial value of the
@@ -729,17 +592,17 @@ There are no dynamic semantics associated with the Initializes Aspect.
 
 .. centered:: **Verification Rules**
 
-#. For a Initialization aspect of a package every state abstraction or variable
-   denoted by a ``name`` of an ``initialization_item`` shall be initialized
-   explicitly, or implicitly during the elaboration of the package and the units
-   which declare entities that are part of (constituents) of the state
+#. If the Initializes aspect is specified for a package, then after the body
+   (if it exists) has completed its elaboration, every (entire) variable and
+   state abstraction denoted by a ``name`` in the Initializes aspect shall be 
+   initialized (explicitly or implicitly).  A state abstraction is said to
+   be initialized if all of its constituents are initialized.  An entire
+   variable is initialized if all of its components are initialized.
+   Other parts of the visible state shall not be initialized.
    abstraction.
    
-#. The state abstractions and variables declared in the visible part of a 
-   package and not denoted by a ``name`` of an ``initialization_item`` shall not
-   be explicitly initialized during the elaboration of the package or any units
-   which declare entities that are part of (constituents) of such state
-   abstractions.
+#. Partial initialization, initializing some but not all of the constituents of 
+   a state abstraction or components of a entire variable, is not permitted.
    
 #. If an ``initialization_item`` has a ``input_list`` then the entities denoted
    in the input list shall be used in determining initialized value of the
@@ -757,35 +620,14 @@ There are no dynamic semantics associated with the Initializes Aspect.
       ...
     end Q;
 
-    limited with X.PC;
-    package X
-    with
-       Abstract_State =>  A,    -- Declares an abstract state name A.
-       Initializes    => (A, B) -- Visible variable B is initialized
-                                -- during the elaboration of X.
-                                -- Abstract_State A is initialized during
-                                -- the elaboration of X and X.PC.
-    is
-      ...
-      B : Integer;
-     --
-    end X;
-    
-    private package X.PC
-    with
-       Abstract_State => (S with Part_Of => X.A)
-    is
-       ...
-    end X.PC;
-
     package Y
     with
-       Abstract_State => (A, B, (C with Volatile, Input)),
+       Abstract_State => (A, B, (C with Volatile, Input_Only)),
        Initializes    => A
     is                          -- Three abstract state names are declared A, B & C.
                                 -- A is initialized during the elaboration of Y.
-       ...                      -- C is designated as a volatile input and cannot appear
-				-- in an initializes aspect.
+       ...                      -- C is designated as a volatile input only
+				-- and cannot appear in an initializes aspect.
                                 -- B is not initialized.
     end Y;
 
@@ -1117,16 +959,16 @@ where
 
 #. A ``property_list`` shall not contain a ``name_value`` property.
 
-#. The ``identifier`` of a ``simple_property`` shall be "Volatile",
-   "Input", or "Output".
+#. The ``identifier`` of a ``simple_property`` shall be Volatile,
+   Input_Only, or Output_Only.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. If a ``property_list`` includes the ``simple_property`` "Volatile",
+#. If a ``property_list`` includes the ``simple_property`` Volatile,
    then the same ``property_list`` shall also include exactly one of
-   ``Input`` or ``Output``.
+   Input_Only or Output_Only.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1169,7 +1011,7 @@ There are no dynamic semantics associated with state abstraction and refinement.
 
    -- Here, we present a package Q that declares three abstract states:
    package Q
-      with Abstract_State => (A, B, (C with Volatile, Input)),
+      with Abstract_State => (A, B, (C with Volatile, Input_Only)),
            Initializes    => (A, B)
    is
       ...
@@ -1182,12 +1024,12 @@ There are no dynamic semantics associated with state abstraction and refinement.
    package body Q
       with Refined_State => (A => (F, G, H),
                              B => R.State,
-                             C => (Port with Volatile, Input))
+                             C => (Port with Volatile, Input_Only))
    is
       F, G, H : Integer := 0; -- all initialized as required
 
       Port : Integer
-         with Volatile, Input;
+         with Volatile, Input_Only;
 
       package R
          with Abstract_State => State,
@@ -1287,12 +1129,12 @@ is part of and a state abstraction always knows all of its constituents.
 #. No other declarations shall have a Part_Of indicator.
      
 #. The body of a unit whose specification declares a state abstraction named
-   as a specific state abstraction of a Part_Of indicator shall have
+   as a specific state abstraction of a Part_Of indicator shall:
    
    * have a ``with_clause`` naming each unit, excluding itself, containing such
      a Part_Of indicator; and
      
-   * in its Refined_State aspect denote each declaration associated with such a
+   * in its Refined_State aspect, denote each declaration associated with such a
      Part_Of indicator as a ``constituent`` exclusively of the specific state 
      abstraction.
    
