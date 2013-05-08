@@ -513,5 +513,5 @@ simple code examples.
 
 .. _basic_examples:
 
-.. include:: /gnatprove_by_example/basic.rst
+.. include:: gnatprove_by_example/basic.rst
 

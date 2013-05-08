@@ -1,7 +1,7 @@
 Basic Examples
 --------------
 
-This section presents the results of running CodePeer on simple subprograms
+This section presents the results of running |GNATprove| on simple subprograms
 composed of assignments, branchings and calls.
 
 Scalar Assignment
@@ -15,18 +15,18 @@ Scalar Assignment
 throughout the program. Take a very simple program ``Assign`` that assigns the
 value ``Y+1`` to the variable ``X``:
 
-.. literalinclude:: /gnatprove_by_example/examples/t1q1.adb
+.. literalinclude:: gnatprove_by_example/examples/t1q1.adb
    :language: ada
    :linenos:
 
 On this subprogram, |GNATprove| generates the following flow errors:
 
-.. literalinclude:: /gnatprove_by_example/results/t1q1.flow
+.. literalinclude:: gnatprove_by_example/results/t1q1.flow
    :language: none
    :linenos:
 
 and the following proof results:
 
-.. literalinclude:: /gnatprove_by_example/results/t1q1.prove
+.. literalinclude:: gnatprove_by_example/results/t1q1.prove
    :language: none
    :linenos:
