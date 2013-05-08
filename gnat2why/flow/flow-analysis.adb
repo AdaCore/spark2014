@@ -504,7 +504,7 @@ package body Flow.Analysis is
                F : constant Flow_Id      := FA.PDG.Get_Key (V);
                A : constant V_Attributes := FA.PDG.Get_Attributes (V);
             begin
-               if F.Kind = Record_Field and then Is_Discriminant (F) then
+               if Is_Discriminant (F) then
                   --  Discriminants are never ineffective imports.
                   null;
                elsif A.Is_Global then
@@ -1001,7 +1001,7 @@ package body Flow.Analysis is
                F : constant Flow_Id      := FA.PDG.Get_Key (V);
                A : constant V_Attributes := FA.PDG.Get_Attributes (V);
             begin
-               if F.Kind = Record_Field and then Is_Discriminant (F) then
+               if Is_Discriminant (F) then
                   --  Discriminants can never not be used.
                   null;
                elsif A.Is_Global then

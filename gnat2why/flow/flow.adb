@@ -927,9 +927,7 @@ package body Flow is
 
                   if not A.Is_Initialised then
                      Rv.Colour := To_Unbounded_String ("red");
-                  elsif F.Kind = Record_Field and then
-                    Flow.Utility.Is_Discriminant (F)
-                  then
+                  elsif Flow.Utility.Is_Discriminant (F) then
                      Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 

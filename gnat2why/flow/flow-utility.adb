@@ -626,9 +626,15 @@ package body Flow.Utility is
 
    function Is_Discriminant (F : Flow_Id) return Boolean
    is
-      C : constant Entity_Id := F.Component.Last_Element;
    begin
-      return Ekind (C) = E_Discriminant;
+      case F.Kind is
+         when Record_Field =>
+            return Ekind (F.Component.Last_Element) = E_Discriminant;
+         when Direct_Mapping | Magic_String =>
+            return False;
+         when Null_Value =>
+            raise Why.Unexpected_Node;
+      end case;
    end Is_Discriminant;
 
 end Flow.Utility;

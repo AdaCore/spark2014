@@ -77,8 +77,8 @@ package Flow.Utility is
                  Get_Pragma_Id (N) = Pragma_Check;
    --  Given a check pragma, return if this is a precondition check.
 
-   function Is_Discriminant (F : Flow_Id) return Boolean
-     with Pre => F.Kind = Record_Field;
-   --  Returns true if the given record field is a discriminant.
+   function Is_Discriminant (F : Flow_Id) return Boolean;
+   --  Returns true if the given flow id is a record field
+   --  representing a discriminant.
 
 end Flow.Utility;
