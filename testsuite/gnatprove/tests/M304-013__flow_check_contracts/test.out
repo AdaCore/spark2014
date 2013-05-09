@@ -3,7 +3,7 @@ test.adb:6:11: "X" missing from null dependency
 test.adb:7:23: "Y" depends on "Y"
 test.adb:7:23: "Y" does not depend on "X"
 test.adb:27:23: "G" depends on "G"
-test.adb:30:04: global "G" might not be set [uninitialized]
+test.adb:30:04: global "G" might not be set [uninitialized__g]
 test.adb:30:04: global "G" is not used
 test.adb:41:04: ineffective global import "G"
 test.adb:41:04: global "G" is not used
