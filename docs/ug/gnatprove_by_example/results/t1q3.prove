@@ -1,0 +1,5 @@
+t1q3.ads:7:31: info: postcondition proved
+t1q3.ads:12:33: info: postcondition proved
+t1q3.adb:26:28: info: range check proved
+t1q3.ads:21:50: info: postcondition proved
+t1q3.ads:30:50: info: postcondition proved
