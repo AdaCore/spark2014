@@ -2028,10 +2028,10 @@ Corner case notes:
        Flag : Boolean := F; -- would fail elab check
     end;
 
-  The following dispatching-call-during-elaboration example would
-  be problematic if the Elaborate_Body pragma were not required;
-  with the pragma, the problem is solved because the elaboration
-  order constraints are unsatisfiable:
+The following dispatching-call-during-elaboration example would
+be problematic if the Elaborate_Body pragma were not required;
+with the pragma, the problem is solved because the elaboration
+order constraints are unsatisfiable:
 
 .. code-block:: ada
 
@@ -2128,25 +2128,15 @@ Initializes aspect of the declaring package.
 [This is needed to ensure that the variable has been initialized
 at the time of the read.]
 
-A write to a variable (or state abstraction, in the case of a
+The elaboration of a package's specification and body shall not write
+to a variable (or state abstraction, in the case of a
 call to a procedure which takes an abstraction as in output)
-declared in another library unit shall not be "executable during
-elaboration" (as defined above). The implicit write associated
-with a read of a volatile variable is permitted.
-
-[At some point in the future, the variable reads and writes that occur
-during a package's elaboration might be identified by specifying a
-Global aspect for a package. The above rule could then be defined in
-terms of the package's Global aspect instead of the package's elaboration
-code; flow analysis would then, as usual, verify the correctness of the
-Global aspect.]
-
-An Initial_Condition expression shall not depend on the value
-of a volatile object or state abstraction. [This is needed to
-ensure that initial conditions remain invariant during subsequent
-library unit elaboration. Note that an initial condition expression
-may be depend on a variable declared in another package, but an
-Elaborate pragma would then be required as described above.]
+declared outside of the package. The implicit write associated
+with a read of a volatile variable is permitted. [This rule
+applies to all packages: library level or not, instantations or not.]
+The inputs and outputs of a package's elaboration (including the
+elaboration of any private descendants of a library unit package)
+shall be as described in the Initializes aspect of the package.
 
 .. centered:: **Legality Rules**
 
