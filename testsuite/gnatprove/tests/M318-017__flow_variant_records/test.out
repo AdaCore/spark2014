@@ -1,8 +1,12 @@
-test.adb:41:09: use of uninitialized variable "v.z" [uninitialized]
-test.adb:89:32: component "x.reason" of formal parameter might not be set [uninitialized]
-test.adb:97:32: component "x.reason" of formal parameter might not be set [uninitialized]
-test.adb:97:32: component "x.index" of formal parameter might not be set [uninitialized]
-test.adb:132:09: use of uninitialized variable "r.reason" [uninitialized]
+test.adb:41:09: use of uninitialized variable "V.Z" [uninitialized]
+test.adb:89:32: component "X.Reason" of formal parameter might not be set [uninitialized]
+test.adb:97:32: component "X.Reason" of formal parameter might not be set [uninitialized]
+test.adb:97:32: component "X.Index" of formal parameter might not be set [uninitialized]
+test.adb:132:09: use of uninitialized variable "R.Reason" [uninitialized]
+test.adb:153:09: expected to see "X.Found" on the left-hand-side of a dependency relation
+test.adb:154:21: "Y" depends on "X.Found"
+test.adb:167:09: "X.Found" missing from null dependency
+test.adb:167:09: expected to see "X.Found" on the left-hand-side of a dependency relation
 
 
 gnatprove: error during translation to intermediate language, aborting.

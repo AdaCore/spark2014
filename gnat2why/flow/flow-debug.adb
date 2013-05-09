@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Output; use Output;
-with Sprint; use Sprint;
 
 package body Flow.Debug is
 
@@ -54,15 +53,15 @@ package body Flow.Debug is
       Indent;
       for C in M.Iterate loop
          declare
-            A : constant Entity_Id     := Dependency_Maps.Key (C);
-            D : constant Node_Sets.Set := Dependency_Maps.Element (C);
+            A : constant Flow_Id          := Dependency_Maps.Key (C);
+            D : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
          begin
-            Sprint_Node (A);
+            Sprint_Flow_Id (A);
             Write_Str (" depends on:");
             Write_Eol;
             Indent;
             for B of D loop
-               Sprint_Node (B);
+               Sprint_Flow_Id (B);
                Write_Eol;
             end loop;
             Outdent;

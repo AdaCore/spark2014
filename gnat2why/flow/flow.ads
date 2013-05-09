@@ -146,6 +146,10 @@ package Flow is
    --  Convert a flow id to a human readable string. This is used for
    --  emitting error messages.
 
+   function Present (F : Flow_Id) return Boolean
+   is (F.Kind /= Null_Value);
+   --  Returns true if F is not null.
+
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
       Variant : Flow_Id_Variant := Normal_Use)
@@ -252,6 +256,10 @@ package Flow is
       --  True for loop parameters so they can be ignored in
       --  ineffective-import analysis.
 
+      Is_Import           : Boolean;
+      --  True if the given initial value is a parameter or global of
+      --  the analysed subprogram.
+
       Is_Export           : Boolean;
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
@@ -304,6 +312,7 @@ package Flow is
                    Is_Function_Return  => False,
                    Is_Global           => False,
                    Is_Loop_Parameter   => False,
+                   Is_Import           => False,
                    Is_Export           => False,
                    Is_Constant         => False,
                    Is_Callsite         => False,
@@ -327,6 +336,7 @@ package Flow is
                    Is_Function_Return  => False,
                    Is_Global           => False,
                    Is_Loop_Parameter   => False,
+                   Is_Import           => False,
                    Is_Export           => False,
                    Is_Constant         => False,
                    Is_Callsite         => False,
@@ -412,11 +422,11 @@ package Flow is
       "="             => "=");
 
    package Dependency_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Node_Sets.Set,
-      Hash            => Node_Hash,
+     (Key_Type        => Flow_Id,
+      Element_Type    => Flow_Id_Sets.Set,
+      Hash            => Hash,
       Equivalent_Keys => "=",
-      "="             => Node_Sets."=");
+      "="             => Flow_Id_Sets."=");
 
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) = E_Loop,
@@ -446,7 +456,6 @@ package Flow is
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function and
                 Has_Depends (Subprogram),
         Post => (for all C in Depends.Iterate =>
-                   Present (Dependency_Maps.Key (C)) and
                    (for all D of Dependency_Maps.Element (C) =>
                       Present (D)));
    --  Return the dependency relation of the given subprogram. The

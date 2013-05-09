@@ -28,6 +28,20 @@ is
       Other.Initialise;
    end Test_03;
 
+   procedure Test_03_B
+     with Depends => (Z => Z)
+   is
+   begin
+      null;
+   end Test_03_B;
+
+   procedure Test_03_C
+     with Depends => (null => Z)
+   is
+   begin
+      null;
+   end Test_03_C;
+
    --  OK, with the exception of the flow error on the computed global
    --  Z (its treated as an in-out)
    procedure Test_04

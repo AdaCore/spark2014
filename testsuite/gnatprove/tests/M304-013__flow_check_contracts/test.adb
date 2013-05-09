@@ -2,27 +2,15 @@ package body Test is
 
    G : Integer;
 
-   --  procedure Swap_01_A (X, Y : in out Integer)
-   --    with Depends => (X => Y,
-   --                     Y => X)
-   --  is
-   --  begin
-   --     X := Y;
-   --     Y := X;
-   --     --  Well, of course this won't work.
-   --  end Swap_01_A;
-
-   procedure Swap_01_B (X, Y : in out Integer)
+   procedure Swap_01 (X, Y : in out Integer)
      with Depends => (X => Y,
-                      Y => X);
-
-   procedure Swap_01_B (X, Y : in out Integer)
+                      Y => X)
    is
    begin
       X := Y;
       Y := X;
       --  Well, of course this won't work.
-   end Swap_01_B;
+   end Swap_01;
 
    procedure Test_01
      with Global  => (Output => G),
@@ -47,7 +35,7 @@ package body Test is
 
    procedure Test_03 (X : in out Integer)
      with Global  => (Input => G),
-          Depends => (X => X,
+          Depends => (X    => X,
                       null => G);
 
    procedure Test_03 (X : in out Integer)
@@ -57,7 +45,7 @@ package body Test is
    end Test_03;
 
    procedure Test_04 (X : in out Integer)
-     with Depends => (X => X,
+     with Depends => (X    => X,
                       null => G);
 
    procedure Test_04 (X : in out Integer)

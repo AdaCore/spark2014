@@ -147,4 +147,32 @@ is
       X := (False, Dont_Care);
    end Test_Definite_06;
 
+   procedure Test_Definite_07 (X : out Search_Result;
+                               Y : out Boolean)
+   with Global => null,
+        Depends => (X => null,
+                    Y => null);
+
+   procedure Test_Definite_07 (X : out Search_Result;
+                               Y : out Boolean)
+   is
+   begin
+      Y := X.Found;
+      X := (False, Dont_Care);
+   end Test_Definite_07;
+
+   procedure Test_Definite_08 (X : out Search_Result;
+                               Y : out Boolean)
+   with Global => null,
+        Depends => (X => null,
+                    Y => null);
+
+   procedure Test_Definite_08 (X : out Search_Result;
+                               Y : out Boolean)
+   is
+   begin
+      Y := False;
+      X := (False, Dont_Care);
+   end Test_Definite_08;
+
 end Test;

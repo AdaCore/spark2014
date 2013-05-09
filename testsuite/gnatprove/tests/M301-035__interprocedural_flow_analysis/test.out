@@ -1,8 +1,8 @@
-across_compilation_units-child.ads:27:24: "X" depends on "X" [flow]
-across_compilation_units-child.ads:27:24: "X" depends on "Y" [flow]
-across_compilation_units-child.ads:29:24: "Y" depends on "Y" [flow]
-across_compilation_units-child.ads:30:24: "Z" depends on "X" [flow]
-across_compilation_units-child.ads:30:24: "Z" depends on "Z" [flow]
+across_compilation_units-child.ads:27:24: "X" depends on "X"
+across_compilation_units-child.ads:27:24: "X" depends on "Y"
+across_compilation_units-child.ads:29:24: "Y" depends on "Y"
+across_compilation_units-child.ads:30:24: "Z" depends on "X"
+across_compilation_units-child.ads:30:24: "Z" depends on "Z"
 
 
 gnatprove: error during translation to intermediate language, aborting.
@@ -107,8 +107,8 @@ digraph G {
     11 [label="temp'final",shape="plaintext"];
     13 [label="call max",shape="box"];
     14 [label="temp&nbsp;:=&nbsp;maximum'out",shape="plaintext"];
-    15 [label="global&nbsp;x'in",shape="plaintext"];
-    16 [label="global&nbsp;y'in",shape="plaintext"];
+    15 [label="global&nbsp;X'in",shape="plaintext"];
+    16 [label="global&nbsp;Y'in",shape="plaintext"];
     17 [label="return 2 {*} temp<<<integer(2 {*} temp)>>>;"];
 
     1 ->  13 [arrowType="normal"];
@@ -141,8 +141,8 @@ digraph G {
     11 [label="temp'final",shape="plaintext"];
     13 [label="call max",shape="box"];
     14 [label="temp&nbsp;:=&nbsp;maximum'out",shape="plaintext"];
-    15 [label="global&nbsp;x'in",shape="plaintext"];
-    16 [label="global&nbsp;y'in",shape="plaintext"];
+    15 [label="global&nbsp;X'in",shape="plaintext"];
+    16 [label="global&nbsp;Y'in",shape="plaintext"];
     17 [label="return 2 {*} temp<<<integer(2 {*} temp)>>>;"];
 
     1 ->  13 [arrowType="normal"];
@@ -398,12 +398,12 @@ digraph G {
     12 [label="condition := false;"];
     13 [label="x := 2 {*} x;"];
     14 [label="call mutual_recursion_b",shape="box"];
-    15 [label="global&nbsp;condition'in",shape="plaintext"];
-    16 [label="global&nbsp;x'in",shape="plaintext"];
-    17 [label="global&nbsp;y'in",shape="plaintext"];
-    18 [label="global&nbsp;condition'out",shape="plaintext"];
-    19 [label="global&nbsp;x'out",shape="plaintext"];
-    20 [label="global&nbsp;y'out",shape="plaintext"];
+    15 [label="global&nbsp;Condition'in",shape="plaintext"];
+    16 [label="global&nbsp;X'in",shape="plaintext"];
+    17 [label="global&nbsp;Y'in",shape="plaintext"];
+    18 [label="global&nbsp;Condition'out",shape="plaintext"];
+    19 [label="global&nbsp;X'out",shape="plaintext"];
+    20 [label="global&nbsp;Y'out",shape="plaintext"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -439,12 +439,12 @@ digraph G {
     12 [label="condition := false;"];
     13 [label="x := 2 {*} x;"];
     14 [label="call mutual_recursion_b",shape="box"];
-    15 [label="global&nbsp;condition'in",shape="plaintext"];
-    16 [label="global&nbsp;x'in",shape="plaintext"];
-    17 [label="global&nbsp;y'in",shape="plaintext"];
-    18 [label="global&nbsp;condition'out",shape="plaintext"];
-    19 [label="global&nbsp;x'out",shape="plaintext"];
-    20 [label="global&nbsp;y'out",shape="plaintext"];
+    15 [label="global&nbsp;Condition'in",shape="plaintext"];
+    16 [label="global&nbsp;X'in",shape="plaintext"];
+    17 [label="global&nbsp;Y'in",shape="plaintext"];
+    18 [label="global&nbsp;Condition'out",shape="plaintext"];
+    19 [label="global&nbsp;X'out",shape="plaintext"];
+    20 [label="global&nbsp;Y'out",shape="plaintext"];
 
     1 ->  11 [arrowType="normal"];
     3 ->  11 [arrowType="normal",color="red"];
@@ -490,12 +490,12 @@ digraph G {
     12 [label="condition := false;"];
     13 [label="y := 2 {*} y;"];
     14 [label="call mutual_recursion_a",shape="box"];
-    15 [label="global&nbsp;condition'in",shape="plaintext"];
-    16 [label="global&nbsp;x'in",shape="plaintext"];
-    17 [label="global&nbsp;y'in",shape="plaintext"];
-    18 [label="global&nbsp;condition'out",shape="plaintext"];
-    19 [label="global&nbsp;x'out",shape="plaintext"];
-    20 [label="global&nbsp;y'out",shape="plaintext"];
+    15 [label="global&nbsp;Condition'in",shape="plaintext"];
+    16 [label="global&nbsp;X'in",shape="plaintext"];
+    17 [label="global&nbsp;Y'in",shape="plaintext"];
+    18 [label="global&nbsp;Condition'out",shape="plaintext"];
+    19 [label="global&nbsp;X'out",shape="plaintext"];
+    20 [label="global&nbsp;Y'out",shape="plaintext"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -531,12 +531,12 @@ digraph G {
     12 [label="condition := false;"];
     13 [label="y := 2 {*} y;"];
     14 [label="call mutual_recursion_a",shape="box"];
-    15 [label="global&nbsp;condition'in",shape="plaintext"];
-    16 [label="global&nbsp;x'in",shape="plaintext"];
-    17 [label="global&nbsp;y'in",shape="plaintext"];
-    18 [label="global&nbsp;condition'out",shape="plaintext"];
-    19 [label="global&nbsp;x'out",shape="plaintext"];
-    20 [label="global&nbsp;y'out",shape="plaintext"];
+    15 [label="global&nbsp;Condition'in",shape="plaintext"];
+    16 [label="global&nbsp;X'in",shape="plaintext"];
+    17 [label="global&nbsp;Y'in",shape="plaintext"];
+    18 [label="global&nbsp;Condition'out",shape="plaintext"];
+    19 [label="global&nbsp;X'out",shape="plaintext"];
+    20 [label="global&nbsp;Y'out",shape="plaintext"];
 
     1 ->  11 [arrowType="normal"];
     3 ->  11 [arrowType="normal",color="red"];

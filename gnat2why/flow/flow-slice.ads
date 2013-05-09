@@ -44,4 +44,12 @@ package Flow.Slice is
    --
    --  Complexity is O(N).
 
+   function Compute_Dependency_Relation
+     (FA : Flow_Analysis_Graphs)
+      return Dependency_Maps.Map;
+   --  Computes the actual dependency relation of the given
+   --  subprogram.
+   --
+   --  Complexity is O(N^2)
+
 end Flow.Slice;

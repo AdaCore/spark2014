@@ -113,22 +113,22 @@ package body Flow.Interprocedural is
 
       Called_Procedure : constant Entity_Id := Entity (Name (N));
 
-      procedure Add_TD_Edge (A, B : Entity_Id);
+      procedure Add_TD_Edge (A, B : Flow_Id);
       --  Add a parameter dependency edge from the input A to the
       --  output B.
 
-      procedure Add_TD_Edge (A, B : Entity_Id) is
+      procedure Add_TD_Edge (A, B : Flow_Id) is
          V_A, V_B : Flow_Graphs.Vertex_Id;
       begin
          V_A := Find_Parameter_Vertex
            (FA.CDG,
             V,
-            Direct_Mapping_Id (Unique_Entity (A), In_View));
+            Change_Variant (A, In_View));
 
          V_B := Find_Parameter_Vertex
            (FA.CDG,
             V,
-            Direct_Mapping_Id (Unique_Entity (B), Out_View));
+            Change_Variant (B, Out_View));
 
          FA.TDG.Add_Edge (V_A, V_B, EC_TD);
       end Add_TD_Edge;
@@ -142,8 +142,8 @@ package body Flow.Interprocedural is
             Get_Depends (Called_Procedure, Deps);
             for C in Deps.Iterate loop
                declare
-                  Output : constant Entity_Id     := Dependency_Maps.Key (C);
-                  Inputs : constant Node_Sets.Set :=
+                  Output : constant Flow_Id := Dependency_Maps.Key (C);
+                  Inputs : constant Flow_Id_Sets.Set :=
                     Dependency_Maps.Element (C);
                begin
                   for Input of Inputs loop

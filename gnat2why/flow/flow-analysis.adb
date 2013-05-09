@@ -42,6 +42,7 @@ package body Flow.Analysis is
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
    use type Node_Sets.Set;
+   use type Flow_Id_Sets.Set;
 
    function Error_Location (G : Flow_Graphs.T'Class;
                             V : Flow_Graphs.Vertex_Id)
@@ -61,6 +62,20 @@ package body Flow.Analysis is
                              Tag : String := "");
    --  Output an error message attaced to the given vertex with a
    --  substitution using F. Use & as the substitution character.
+
+   procedure Error_Msg_Flow (Msg : String;
+                             N   : Node_Id;
+                             F1  : Flow_Id;
+                             Tag : String := "");
+   --  Output an error message attaced to the given node with a
+   --  substitution using F1. Use & as the substitution character.
+
+   procedure Error_Msg_Flow (Msg : String;
+                             N   : Node_Id;
+                             F1  : Flow_Id;
+                             F2  : Flow_Id;
+                             Tag : String := "");
+   --  As above with two nodes to substitute.
 
    function Get_Line (G   : Flow_Graphs.T'Class;
                       V   : Flow_Graphs.Vertex_Id;
@@ -123,6 +138,110 @@ package body Flow.Analysis is
       end if;
    end Error_Msg_Flow;
 
+   function Substitute (S : Unbounded_String;
+                        F : Flow_Id)
+                        return Unbounded_String;
+   --  Find the first & and substitute with the given flow id.
+
+   function Substitute (S : Unbounded_String;
+                        F : Flow_Id)
+                        return Unbounded_String
+   is
+      R      : Unbounded_String := Null_Unbounded_String;
+      Do_Sub : Boolean          := True;
+   begin
+      for Index in Positive range 1 .. Length (S) loop
+         if Do_Sub and then Element (S, Index) = '&' then
+            case  F.Kind is
+               when Null_Value =>
+                  Append (R, "NULL");
+
+               when Direct_Mapping | Record_Field =>
+                  Append (R, """");
+                  Append (R, Flow_Id_To_String (F));
+                  Append (R, """");
+
+               when Magic_String =>
+                  --  ??? we may want to use __gnat_decode() here instead
+                  Append (R, """");
+                  declare
+                     Index : Positive := 1;
+                  begin
+                     --  Replace __ with . in the magic string.
+                     while Index <= F.Name.all'Length loop
+                        case F.Name.all (Index) is
+                           when '_' =>
+                              if Index < F.Name.all'Length and then
+                                F.Name.all (Index) = '_' then
+                                 Append (R, ".");
+                                 Index := Index + 2;
+                              else
+                                 Append (R, '_');
+                                 Index := Index + 1;
+                              end if;
+
+                           when others =>
+                              Append (R, F.Name.all (Index));
+                              Index := Index + 1;
+                        end case;
+                     end loop;
+                  end;
+                  Append (R, """");
+
+            end case;
+            Do_Sub := False;
+
+         else
+            Append (R, Element (S, Index));
+         end if;
+      end loop;
+      return R;
+   end Substitute;
+
+   procedure Error_Msg_Flow (Msg : String;
+                             N   : Node_Id;
+                             F1  : Flow_Id;
+                             Tag : String := "")
+   is
+      M : Unbounded_String;
+   begin
+
+      --  Assemble message string to be passed to Error_Msg_N
+      M := Substitute (To_Unbounded_String (Msg),
+                       F1);
+      if Tag'Length >= 1 then
+         Append (M, " [" & Tag & "]");
+      end if;
+      Append (M, '!');
+
+      --  Issue error message
+      Error_Msg_N (To_String (M), N);
+
+   end Error_Msg_Flow;
+
+   procedure Error_Msg_Flow (Msg : String;
+                             N   : Node_Id;
+                             F1  : Flow_Id;
+                             F2  : Flow_Id;
+                             Tag : String := "")
+   is
+      M : Unbounded_String;
+   begin
+
+      --  Assemble message string to be passed to Error_Msg_N
+      M := Substitute (Substitute (To_Unbounded_String (Msg),
+                                   F1),
+                       F2);
+      if Tag'Length >= 1 then
+         Append (M, " [" & Tag & "]");
+      end if;
+      Append (M, '!');
+
+      --  Issue error message
+      Error_Msg_N (To_String (M), N);
+
+   end Error_Msg_Flow;
+
    procedure Error_Msg_Flow (Msg : String;
                              G   : Flow_Graphs.T'Class;
                              Loc : Flow_Graphs.Vertex_Id;
@@ -130,78 +249,11 @@ package body Flow.Analysis is
                              Tag : String := "")
    is
       L : constant Node_Or_Entity_Id := Error_Location (G, Loc);
-      M : Unbounded_String := Null_Unbounded_String;
    begin
-      --  Assemble message string to be passed to Error_Msg_{N,NE}
-      for J in Msg'Range loop
-         if Msg (J) = '&' then
-            case F.Kind is
-               when Direct_Mapping =>
-                  Append (M, '&');
-               when others =>
-                  Append (M, '~');
-            end case;
-         else
-            Append (M, Msg (J));
-         end if;
-      end loop;
-      if Tag'Length >= 1 then
-         Append (M, " [" & Tag & "]");
-      end if;
-      Append (M, '!');
-
-      --  Issue error based on the kind of substituted flow_id.
-      case F.Kind is
-         when Direct_Mapping =>
-            Error_Msg_NE (To_String (M),
-                          L,
-                          Get_Direct_Mapping_Id (F));
-
-         when Record_Field =>
-            declare
-               S : constant String := Flow_Id_To_String (F);
-            begin
-               Error_Msg_String (1 .. S'Length + 2) := """" & S & """";
-               Error_Msg_Strlen := S'Length + 2;
-            end;
-            Error_Msg_N (To_String (M), L);
-
-         when Magic_String =>
-            --  ??? we may want to use __gnat_decode() here instead
-            declare
-               Tmp   : Unbounded_String := Null_Unbounded_String;
-               Index : Positive := 1;
-            begin
-               --  Replace __ with . in the magic string.
-               Append (Tmp, """");
-               while Index <= F.Name.all'Length loop
-                  case F.Name.all (Index) is
-                     when '_' =>
-                        if Index < F.Name.all'Length and then
-                          F.Name.all (Index) = '_' then
-                           Append (Tmp, ".");
-                           Index := Index + 2;
-                        else
-                           Append (Tmp, '_');
-                           Index := Index + 1;
-                        end if;
-                     when others =>
-                        Append (Tmp, F.Name.all (Index));
-                        Index := Index + 1;
-                  end case;
-               end loop;
-               Append (Tmp, """");
-
-               Error_Msg_String (1 .. Length (Tmp)) := To_String (Tmp);
-               Error_Msg_Strlen := Length (Tmp);
-               Error_Msg_N (To_String (M), L);
-            end;
-
-         when others =>
-            Print_Flow_Id (F);
-            raise Why.Unexpected_Node;
-
-      end case;
+      Error_Msg_Flow (Msg => Msg,
+                      N   => L,
+                      F1  => F,
+                      Tag => Tag);
    end Error_Msg_Flow;
 
    --------------
@@ -368,8 +420,8 @@ package body Flow.Analysis is
    ------------------
 
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
-                           Sane : out Boolean) is
-      use type Flow_Id_Sets.Set;
+                           Sane : out Boolean)
+   is
    begin
       --  Innocent until proven guilty.
       Sane := True;
@@ -639,8 +691,6 @@ package body Flow.Analysis is
            (V  : Flow_Graphs.Vertex_Id;
             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
-            use type Flow_Id_Sets.Set;
-
             Intersection : constant Flow_Id_Sets.Set :=
               Vars_Defined and
               (FA.CFG.Get_Attributes (V).Variables_Defined -
@@ -1023,18 +1073,11 @@ package body Flow.Analysis is
    -- Check_Contracts --
    ---------------------
 
-   procedure Check_Contracts (FA : Flow_Analysis_Graphs) is
-      User_Deps : Dependency_Maps.Map;
-
+   procedure Check_Contracts (FA : Flow_Analysis_Graphs)
+   is
       function Find_Export (E : Entity_Id) return Node_Id;
       --  Looks through the depends aspect on FA.Subprogram and
       --  returns the node which represents E in the dependency for E.
-
-      procedure Show_Dependency (Error_Loc   : Node_Id;
-                                 Initial_Var : Entity_Id;
-                                 Final_Var   : Entity_Id);
-      --  Show the dependency of initial_var on final_var. The error
-      --  is attached to Final_Var.
 
       -----------------
       -- Find_Export --
@@ -1084,83 +1127,11 @@ package body Flow.Analysis is
          raise Why.Unexpected_Node;
       end Find_Export;
 
-      ---------------------
-      -- Show_Dependency --
-      ---------------------
+      User_Deps   : Dependency_Maps.Map;
+      Actual_Deps : Dependency_Maps.Map;
 
-      procedure Show_Dependency (Error_Loc   : Node_Id;
-                                 Initial_Var : Entity_Id;
-                                 Final_Var   : Entity_Id)
-      is
+   begin --  Check_Contracts
 
-         F_Initial  : constant Flow_Id := Direct_Mapping_Id (Initial_Var,
-                                                             Initial_Value);
-         F_Final    : constant Flow_Id := Direct_Mapping_Id (Final_Var,
-                                                             Final_Value);
-
-         V_Initial  : constant Flow_Graphs.Vertex_Id :=
-           FA.PDG.Get_Vertex (F_Initial);
-         V_Final    : constant Flow_Graphs.Vertex_Id :=
-           FA.PDG.Get_Vertex (F_Final);
-
-         Path_Found : Boolean         := False;
-         Slice      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-
-         procedure Are_We_There_Yet
-           (V           : Flow_Graphs.Vertex_Id;
-            Instruction : out Flow_Graphs.Traversal_Instruction);
-         --  Visitor procedure for Shortest_Path.
-
-         procedure Add_Loc
-           (V : Flow_Graphs.Vertex_Id);
-         --  Step procedure for Shortest_Path.
-
-         ----------------------
-         -- Are_We_There_Yet --
-         ----------------------
-
-         procedure Are_We_There_Yet
-           (V           : Flow_Graphs.Vertex_Id;
-            Instruction : out Flow_Graphs.Traversal_Instruction) is
-         begin
-            if V = V_Final then
-               Instruction := Flow_Graphs.Found_Destination;
-               Path_Found  := True;
-            else
-               Instruction := Flow_Graphs.Continue;
-            end if;
-         end Are_We_There_Yet;
-
-         -------------
-         -- Add_Loc --
-         -------------
-
-         procedure Add_Loc
-           (V : Flow_Graphs.Vertex_Id) is
-         begin
-            if V /= V_Initial and V /= V_Final then
-               Slice.Include (V);
-            end if;
-         end Add_Loc;
-
-      begin
-
-         FA.PDG.Shortest_Path (Start => V_Initial,
-                               Allow_Trivial => False,
-                               Search        => Are_We_There_Yet'Access,
-                               Step          => Add_Loc'Access);
-
-         --  A sanity check.
-         pragma Assert (Path_Found);
-
-         Write_Vertex_Set (G     => FA.PDG,
-                           E_Loc => Error_Loc,
-                           Set   => Slice,
-                           Tag   => "flow");
-
-      end Show_Dependency;
-
-   begin
       if not Has_Depends (FA.Subprogram) then
          --  If the user has not specified a dependency relation we
          --  have no work to do.
@@ -1170,92 +1141,121 @@ package body Flow.Analysis is
       --  Obtain the dependency relation specified by the user.
       Get_Depends (FA.Subprogram,
                    User_Deps);
+      Actual_Deps := Compute_Dependency_Relation (FA);
 
-      --  Check that we are consistent.
-      for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      --  If the user depds do not include something we have in the
+      --  actual deps we will raise an appropriate error. We should
+      --  however also sanity check there is nothing in the user
+      --  dependencies which is *not* in the actual dependencies.
+
+      for C in User_Deps.Iterate loop
          declare
-            F_F : constant Flow_Id      := FA.PDG.Get_Key (V_Final);
-            F_A : constant V_Attributes := FA.PDG.Get_Attributes (V_Final);
-            F_E : Entity_Id;
-            --  This captures the variable we are checking.
-
-            S_F : Flow_Id_Sets.Set;
-            S_E : Node_Sets.Set;
-            --  This captures the set of things F_E actually depends
-            --  on.
-
-            Tmp : Ordered_Entity_Sets.Set;
+            F_Out : constant Flow_Id := Dependency_Maps.Key (C);
          begin
-            --  We need to check all exports.
-            if F_F.Variant = Final_Value and then F_A.Is_Export then
-               case F_F.Kind is
-                  when Direct_Mapping =>
-                     F_E := Get_Direct_Mapping_Id (F_F);
-
-                     if User_Deps.Contains (F_E) then
-                        --  The user has specified this as an output,
-                        --  and so have we. Check the deps match.
-
-                        --  First make a set of just entity
-                        --  ids. Anything that isn't we can raise an
-                        --  error for.
-                        S_F := Dependency (FA, V_Final);
-                        S_E := Node_Sets.Empty_Set;
-                        for Var of S_F loop
-                           --  Everything the user has written must
-                           --  necessarily appear in the AST, so we
-                           --  always will have an entity for it.
-                           case Var.Kind is
-                              when Direct_Mapping =>
-                                 S_E.Include (Get_Direct_Mapping_Id (Var));
-
-                              when Magic_String =>
-                                 Global_Required (FA, Var);
-
-                              when others =>
-                                 raise Why.Unexpected_Node;
-                           end case;
-                        end loop;
-
-                        --  Check if we have missed something.
-                        Tmp := To_Ordered_Entity_Set (S_E - User_Deps (F_E));
-                        for Var_Missed of Tmp loop
-                           Error_Msg_Node_1 := F_E;
-                           Error_Msg_Node_2 := Var_Missed;
-                           Error_Msg_N ("& depends on & [flow]!",
-                                        Find_Export (F_E));
-                           Show_Dependency (Error_Loc   => Find_Export (F_E),
-                                            Initial_Var => Var_Missed,
-                                            Final_Var   => F_E);
-                        end loop;
-
-                        --  Check if we have said something wrong.
-                        Tmp := To_Ordered_Entity_Set (User_Deps (F_E) - S_E);
-                        for Var_Wrong of Tmp loop
-                           Error_Msg_Node_1 := F_E;
-                           Error_Msg_Node_2 := Var_Wrong;
-                           Error_Msg_N ("& does not depend on &!",
-                                        Find_Export (F_E));
-                        end loop;
-                     else
-                        --  We have this as an output, but the user
-                        --  does not. We complain.
-                        Error_Msg_NE ("missing dependency for &!",
-                                      Find_Aspect (FA.Subprogram,
-                                                   Aspect_Depends),
-                                      F_E);
-                     end if;
-
-                  when Magic_String =>
-                     --  We have a dependency on something in another
-                     --  package, it is not possible to write a valid
-                     --  depends aspect for this subprogram.
-                     Global_Required (FA, F_F);
-
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
+            if not Actual_Deps.Contains (F_Out) then
+               Error_Msg_Flow
+                 (Msg => "& missing from null dependency",
+                  N   => Find_Aspect (FA.Subprogram, Aspect_Depends),
+                  F1  => F_Out);
             end if;
+         end;
+      end loop;
+
+      --  We go through the actual dependencies because they are
+      --  always complete.
+
+      for C in Actual_Deps.Iterate loop
+         declare
+            F_Out  : constant Flow_Id          := Dependency_Maps.Key (C);
+            A_Deps : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
+            U_Deps : Flow_Id_Sets.Set;
+
+            Missing_Deps : Ordered_Flow_Id_Sets.Set;
+            Wrong_Deps   : Ordered_Flow_Id_Sets.Set;
+
+            Proceed_With_Analysis : Boolean := True;
+         begin
+            if F_Out = Null_Flow_Id then
+               --  The null dependency is special: it may not be
+               --  present in the user dependency because null => null
+               --  would be super tedious to write.
+               if User_Deps.Contains (Null_Flow_Id) then
+                  U_Deps := User_Deps (Null_Flow_Id);
+               else
+                  U_Deps := Flow_Id_Sets.Empty_Set;
+               end if;
+            elsif User_Deps.Contains (F_Out) then
+               U_Deps := User_Deps (F_Out);
+            else
+               if F_Out.Kind = Magic_String then
+                  Global_Required (FA, F_Out);
+               else
+                  Error_Msg_Flow
+                    ("expected to see & on the left-hand-side of" &
+                       " a dependency relation",
+                     Find_Aspect (FA.Subprogram, Aspect_Depends),
+                     F_Out);
+               end if;
+               Proceed_With_Analysis := False;
+            end if;
+
+            --  If we mention magic strings anywhere, there is no
+            --  point in proceeding as the dependency relation
+            --  *cannot* be correct.
+
+            if Proceed_With_Analysis then
+               for Var of A_Deps loop
+                  if Var.Kind = Magic_String then
+                     Global_Required (FA, Var);
+                     Proceed_With_Analysis := False;
+                  end if;
+               end loop;
+            end if;
+
+            --  If all is still well we now do a consistency check.
+
+            if Proceed_With_Analysis then
+               Missing_Deps := To_Ordered_Flow_Id_Set (A_Deps - U_Deps);
+               Wrong_Deps   := To_Ordered_Flow_Id_Set (U_Deps - A_Deps);
+
+               for Missing_Var of Missing_Deps loop
+                  --  Something that the user dependency fails to
+                  --  mention.
+                  if F_Out = Null_Flow_Id then
+                     Error_Msg_Flow
+                       (Msg => "& missing from null dependency",
+                        N   => Find_Aspect (FA.Subprogram, Aspect_Depends),
+                        F1  => Missing_Var);
+                  else
+                     Error_Msg_Flow
+                       (Msg => "& depends on &",
+                        N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
+                        F1  => F_Out,
+                        F2  => Missing_Var);
+                     --  !!! show path
+                  end if;
+               end loop;
+
+               for Wrong_Var of Wrong_Deps loop
+                  --  Something the user dependency claims, but does
+                  --  not happen in reality.
+                  if F_Out = Null_Flow_Id then
+                     Error_Msg_Flow
+                       (Msg => "& incorrectly included in null dependency",
+                        N   => Find_Aspect (FA.Subprogram, Aspect_Depends),
+                        F1  => Wrong_Var);
+                     --  ??? show a path?
+                  else
+                     Error_Msg_Flow
+                       (Msg => "& does not depend on &",
+                        N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
+                        F1  => F_Out,
+                        F2  => Wrong_Var);
+                  end if;
+               end loop;
+
+            end if;
+
          end;
       end loop;
    end Check_Contracts;

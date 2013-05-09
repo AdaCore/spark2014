@@ -28,6 +28,7 @@ with Ada.Strings.Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Aspects;               use Aspects;
+with Casing;                use Casing;
 with Debug;                 use Debug;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
@@ -247,14 +248,23 @@ package body Flow is
       case F.Kind is
          when Null_Value =>
             Output.Write_Str ("<null>");
+
          when Direct_Mapping =>
-            Sprint_Node (F.Node);
+            Get_Name_String (Chars (F.Node));
+            Set_Casing (Mixed_Case);
+            Output.Write_Str (Name_Buffer (1 .. Name_Len));
+
          when Record_Field =>
-            Sprint_Node (F.Node);
+            Get_Name_String (Chars (F.Node));
+            Set_Casing (Mixed_Case);
+            Output.Write_Str (Name_Buffer (1 .. Name_Len));
             for Comp of F.Component loop
                Output.Write_Str (".");
-               Sprint_Node (Comp);
+               Get_Name_String (Chars (Comp));
+               Set_Casing (Mixed_Case);
+               Output.Write_Str (Name_Buffer (1 .. Name_Len));
             end loop;
+
          when Magic_String =>
             Output.Write_Str (F.Name.all);
       end case;
@@ -671,11 +681,16 @@ package body Flow is
       LHS : Node_Id;
       RHS : Node_Id;
 
-      Inputs  : Node_Sets.Set;
-      Outputs : Node_Sets.Set;
+      Inputs  : Flow_Id_Sets.Set;
+      Outputs : Flow_Id_Sets.Set;
 
    begin
       Depends := Dependency_Maps.Empty_Map;
+
+      if Ekind (Subprogram) = E_Function then
+         --  ??? To be implemented by M412-008
+         raise Why.Not_Implemented;
+      end if;
 
       case Nkind (Expression (PAA)) is
          when N_Null =>
@@ -687,15 +702,10 @@ package body Flow is
             raise Why.Unexpected_Node;
       end case;
 
-      if Ekind (Subprogram) = E_Function then
-         --  ??? To be implemented by M412-008
-         raise Why.Not_Implemented;
-      end if;
-
       Row := First (CA);
       while Present (Row) loop
-         Inputs  := Node_Sets.Empty_Set;
-         Outputs := Node_Sets.Empty_Set;
+         Inputs  := Flow_Id_Sets.Empty_Set;
+         Outputs := Flow_Id_Sets.Empty_Set;
 
          LHS := First (Choices (Row));
          case Nkind (LHS) is
@@ -703,12 +713,14 @@ package body Flow is
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
                   pragma Assert (Present (Entity (LHS)));
-                  Outputs.Include (Entity (LHS));
+                  Outputs.Include
+                    (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
                   LHS := Next (LHS);
                end loop;
             when N_Identifier | N_Expanded_Name =>
                pragma Assert (Present (Entity (LHS)));
-               Outputs.Include (Entity (LHS));
+               Outputs.Include
+                 (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
             when N_Null =>
                null;
             when others =>
@@ -722,12 +734,14 @@ package body Flow is
                RHS := First (Expressions (RHS));
                while Present (RHS) loop
                   pragma Assert (Present (Entity (RHS)));
-                  Inputs.Include (Entity (RHS));
+                  Inputs.Include
+                    (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
                   RHS := Next (RHS);
                end loop;
             when N_Identifier | N_Expanded_Name =>
                pragma Assert (Present (Entity (RHS)));
-               Inputs.Include (Entity (RHS));
+               Inputs.Include
+                 (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
             when N_Null =>
                null;
             when others =>
@@ -735,12 +749,21 @@ package body Flow is
                raise Why.Unexpected_Node;
          end case;
 
-         for Output of Outputs loop
-            Depends.Include (Output, Node_Sets.Empty_Set);
+         if Outputs.Length = 0 and then Inputs.Length >= 1 then
+            --  The inser is on purpose - we want this to fail if we
+            --  manage to obtain more than one null derives.
+            Depends.Insert (Null_Flow_Id, Flow_Id_Sets.Empty_Set);
             for Input of Inputs loop
-               Depends (Output).Include (Input);
+               Depends (Null_Flow_Id).Include (Input);
             end loop;
-         end loop;
+         else
+            for Output of Outputs loop
+               Depends.Include (Output, Flow_Id_Sets.Empty_Set);
+               for Input of Inputs loop
+                  Depends (Output).Include (Input);
+               end loop;
+            end loop;
+         end if;
 
          Row := Next (Row);
       end loop;
@@ -810,15 +833,19 @@ package body Flow is
 
             case F.Variant is
                when In_View =>
-                  Sprint_Flow_Id (A.Parameter_Formal);
+                  pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
+                  pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
+                  Sprint_Node (A.Parameter_Formal.Node);
                   Output.Write_Str ("'in");
                   Output.Write_Str ("&nbsp;:=&nbsp;");
-                  Sprint_Flow_Id (A.Parameter_Actual);
+                  Sprint_Node (A.Parameter_Actual.Node);
 
                when Out_View =>
-                  Sprint_Flow_Id (A.Parameter_Actual);
+                  pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
+                  pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
+                  Sprint_Node (A.Parameter_Actual.Node);
                   Output.Write_Str ("&nbsp;:=&nbsp;");
-                  Sprint_Flow_Id (A.Parameter_Formal);
+                  Sprint_Node (A.Parameter_Formal.Node);
                   Output.Write_Str ("'out");
 
                when others =>
