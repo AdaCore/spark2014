@@ -62,6 +62,8 @@ themselves records.
    * the visible state of any packages declared immediately within the private 
      part or body of P.
 
+.. _volatile_state:
+
 Volatile State
 ~~~~~~~~~~~~~~
 
@@ -105,18 +107,26 @@ declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`).
    [Thus, a read always has a side effect and an update is never ineffective.]
    
 #. It follows from the semantics of reading and updating of volatile state that
-such a state does not require initialization for static analysis purposes
-[Indeed, it is not possible to initialize a volatile input only variable because
-the SPARK rules forbid it to be updated explicitly] and so volatile states are
-not the subject of an initialization item in an Initializes aspect (see
-:ref:`initializes_aspect`).
+   such a state does not require initialization for static analysis purposes
+   [Indeed, it is not possible to initialize a volatile input only variable
+   because the SPARK rules forbid it to be updated explicitly] and so volatile
+   states are not the subject of an initialization item in an Initializes aspect
+   (see :ref:`initializes_aspect`).
    
 #. Global and Depends aspects of a subprogram represent the explicit reads and
    updates performed by a subprogram and the implicit reads and updates 
-   described above are not recorded in these aspects.[....]
+   described above are not recorded in these aspects.
    
 .. centered:: **Legality Rules**
 
+#. A volatile input only state shall not be denoted in a Global aspect with a
+   ``mode_selector`` of In_Out or Output.  Nor shall not be denoted as an 
+   ``output`` of a Depends aspect.
+   
+#. A volatile output only state shall not be denoted in a Global aspect with a
+   ``mode_selector`` of Input or In_Out.  Nor shall not be denoted as an 
+   ``input`` of a Depends aspect.
+   
 #. As a read of a volatile state always has a side-effect a ``global_item`` of a
    function cannot denote a volatile state [which in turn means that a function
    cannot, directly or indirectly, read a volatile state].
@@ -125,6 +135,7 @@ not the subject of an initialization item in an Initializes aspect (see
    ``initialization_item`` of an Initializes aspect 
    (see :ref:`initializes_aspect`).
    
+.. todo:: Refinment of volatile state
      
 .. todo:: Consider more than just simple Volatile Inputs and Outputs;
           Latched outputs, In_Out volatiles, etc.
@@ -134,8 +145,11 @@ not the subject of an initialization item in an Initializes aspect (see
 .. _volatile_input_and_output_only_aspects:
 
 Volatile Input and Output Only Aspects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. todo:: Steve has a proposal for volatile components in a limited type
+   declaration.
+   
 A volatile variable has to be designated as either input only or output only in
 |SPARK|. This may be achieved by specifying an Input_Only or Output_Only aspect
 directly in its declaration. If the variable is volatile because its type is
@@ -173,9 +187,16 @@ Input_Only or Output_Only aspect in its type declaration.
    ``object_declaration`` or a ``full_type_declaration``.
    
 #. A component of an ``array_type_declaration`` or a ``record_type_declaration`` 
-   shall not be of a volatile type.
+   shall not be of a volatile type. [This may require determining whether a
+   private type is volatile.]
    
-A volatile input only variable shall not be updated other than by the
+#. A discriminant shall not be of a volatile type.
+
+#. A discriminated type shall not be volatile.
+
+#. A tagged type shall not be volatile.
+   
+#. A volatile input only variable shall not be updated other than by the
    implicit update associated with reading from it.  A volatile input only
    variable shall not be passed as a part of an actual parameter in a procedure
    call if the mode of the corresponding formal parameter is not **in**.
@@ -184,24 +205,29 @@ A volatile input only variable shall not be updated other than by the
    read associated with updating it.  A volatile output only variable shall not
    be passed as part of actual parameter in a procedure call if the mode of the 
    corresponding formal parameter is not *out*.
+   
+#. A volatile object shall only be denoted as a whole object.
+
+#. A volatile object shall only appear on the left-hand side of an assignment 
+   statement or within an expression according to the rules given below. 
 
 #. [The general |SPARK| rule that an expression evaluation cannot
    have a side effect means that a read of a volatile variable is not an
-   ordinary expression.] An expression which is the name denoting a volatile 
-   object shall only occur in the following contexts:
+   ordinary expression.] An expression which is the name denoting an entire 
+   volatile object shall only occur in the following contexts:
 
-   * as the [right hand side] expression of an assignment statement;
+   * as the [right hand side] expression of an assignment statement provided
+     the left hand side is not also a volatile object;
    
-   * as the expression of an initialization expression of an object declaration;
+   * as the expression of an initialization expression of an object declaration
+     that is not volatile;
    
-   * as an actual parameter in a call to an instance of Unchecked_Conversion
-     which is the right hand side of an assignment statement;
-     
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
      
    * as an actual parameter of a procedure whose corresponding formal parameter
-     is of a volatile type.
+     is of a non-scalar volatile type.
+     
 
 .. centered:: **Static Semantics**
 
@@ -593,13 +619,12 @@ There are no dynamic semantics associated with the Initializes Aspect.
 .. centered:: **Verification Rules**
 
 #. If the Initializes aspect is specified for a package, then after the body
-   (if it exists) has completed its elaboration, every (entire) variable and
-   state abstraction denoted by a ``name`` in the Initializes aspect shall be 
-   initialized (explicitly or implicitly).  A state abstraction is said to
-   be initialized if all of its constituents are initialized.  An entire
-   variable is initialized if all of its components are initialized.
-   Other parts of the visible state shall not be initialized.
-   abstraction.
+   (which may be implicit if the package has no explicit body) has completed its
+   elaboration, every (entire) variable and state abstraction denoted by a
+   ``name`` in the Initializes aspect shall be initialized. A state abstraction
+   is said to be initialized if all of its constituents are initialized. An
+   entire variable is initialized if all of its components are initialized.
+   Other parts of the visible state of the package shall not be initialized.
    
 #. Partial initialization, initializing some but not all of the constituents of 
    a state abstraction or components of a entire variable, is not permitted.
@@ -679,6 +704,7 @@ High-level requirements
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
+.. todo:: The section on Initial_Condition aspect has to be rewritten
 
 The Initial Condition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` shall be
@@ -870,7 +896,7 @@ Language Definition
 
 The Refined State aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` shall follow
-the grammar of ``state_and_category_list`` given below.
+the grammar of ``state_and_constituent_list`` given below.
 
 .. centered:: **Syntax**
 
@@ -882,7 +908,8 @@ the grammar of ``state_and_category_list`` given below.
                                    | (constituent_with_property {, constituent_with_property})
   constituent_with_property      ::= constituent
                                    | (constituent_list with property_list)
-  constituent_list               ::= constituent
+  constituent_list               ::= null
+                                   | constituent
                                    | (constituent {, constituent})
 
 where
@@ -900,10 +927,8 @@ where
 
       :Trace Unit: TBD
 
-#. If a ``package_specification``  has an Abstract_State aspect its body
+#. If a ``package_specification``  has a non-null Abstract_State aspect its body
    shall have a Refined_State aspect.
-
-   .. note:: We may want to be able to override this error.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -960,7 +985,7 @@ where
 #. A ``property_list`` shall not contain a ``name_value`` property.
 
 #. The ``identifier`` of a ``simple_property`` shall be Volatile,
-   Input_Only, or Output_Only.
+   Input_Only, or Output_Only (see :ref:`volatile_state`).
 
    .. ifconfig:: Display_Trace_Units
 
@@ -995,6 +1020,12 @@ where
    
 #. A ``constituent`` with a ``property_list`` is used to indicate the
    ``properties`` that apply to the constituent.
+   
+#. A **null** ``constituent_list`` indicates that the named absract state has no 
+   constituents.  The state abstraction does not represent any actual state at
+   all. [This feature may be useful to minimise changes to Global and Depends 
+   aspects if it is believed that a package may have some extra state in the 
+   future, or if hidden state is removed.]
 
 
 .. centered:: **Verification Rules**
@@ -1049,24 +1080,24 @@ Abstract State, Package Hierarchy and Part_Of
 
 Each item of visible state of a private library unit (and any descendants
 thereof) must be connected, directly or indirectly, to a 
-*specific state abstraction* of some public library unit. This is done using the
-Part_Of ``property`` or aspect, associated with each declaration of the 
-visible state of the private unit.
+*encapsulating* state abstraction of some public library unit. This is done 
+using the Part_Of ``property`` or aspect, associated with each declaration of 
+the visible state of the private unit.
 
-The unit declaring the specific state abstraction identified by the Part_Of
+The unit declaring the encapsulating state abstraction identified by the Part_Of
 ``property`` or aspect need not be its parent, but it must be a unit whose body
 has visibility on the private library unit, while being *more visible* than the
-original unit. Furthermore, the unit declaring the specific state abstraction
-must denote the the corresponding item of visible state in its Refined_State
-aspect to indicate that it includes this part of the visible state of the
-private unit. That is, the two specifications, one in the private unit, and one
-in the body of the (typically) public unit, must match one another.
+original unit. Furthermore, the unit declaring the encapsulating state
+abstraction must denote the the corresponding item of visible state in its
+Refined_State aspect to indicate that it includes this part of the visible state
+of the private unit. That is, the two specifications, one in the private unit,
+and one in the body of the (typically) public unit, must match one another.
 
 Hidden state declared in the private part of a unit also requires a Part_Of
-``property`` or aspect, but it must be connected to a specific state abstraction 
-of the same unit.
+``property`` or aspect, but it must be connected to an encapsulating state
+abstraction of the same unit.
 
-The ``property`` or aspect Part_Of is used to specify the specific state
+The ``property`` or aspect Part_Of is used to specify the encapsulating state
 abstraction of the (typically) public unit with which a private unit's visible
 state item is associated.
 
@@ -1101,46 +1132,46 @@ is part of and a state abstraction always knows all of its constituents.
 #. A *Part_Of indicator* is a Part_Of ``property`` of a state abstraction 
    declaration in an Abstract_State aspect, a Part_Of aspect applied to a 
    variable declaration or a Part_Of aspect applied to a generic package
-   instantiation.  The Part_Of indicator denotes the specific state 
+   instantiation.  The Part_Of indicator denotes the encapsulating state 
    abstraction of which the declaration is a constituent. 
    
 #. A unit is more visible than another if it has less private ancestors.
 
 .. centered:: **Legality Rules**
 
-#. Every private unit and each of its descendants that have visible state shall
-   for each declaration in the visible state:
+#. Every private unit and each of its descendants, P, that have visible state 
+   shall for each declaration in the visible state:
 
-   * connect the declaration to a specific state abstraction by associating a
-     Part_Of indicator with the declaration;
+   * connect the declaration to an encapsulating state abstraction by 
+     associating a Part_Of indicator with the declaration;
    
-   * name a specific state abstraction in its Part_Of indicator if and only if 
-     the unit declaring the state abstraction is strictly more visible than the
-     unit containing the declaration; and
+   * name an encapsulating state abstraction in its Part_Of indicator if and 
+     only if the unit declaring the state abstraction is strictly more visible 
+     than the unit containing the declaration; and
    
-   * require a ``limited_with_clause`` on the unit which declares the specific
-     state abstraction named in the Part_Of indicator associated with the 
-     declaration.[This rule is checked as part of checking the Part_Of aspect.]
+   * require a ``limited_with_clause`` naming P on the unit which declares the 
+     encapsulating state abstraction. 
+     [This rule is checked as part of checking the Part_Of aspect.]
      
 #. Each item of hidden state declared in the private part of a unit shall have
    a Part_Of indicator associated with the declaration which denotes a 
-   specific state abstraction of the same unit.
+   encapsulating state abstraction of the same unit.
    
 #. No other declarations shall have a Part_Of indicator.
      
 #. The body of a unit whose specification declares a state abstraction named
-   as a specific state abstraction of a Part_Of indicator shall:
+   as a encapsulating state abstraction of a Part_Of indicator shall:
    
    * have a ``with_clause`` naming each unit, excluding itself, containing such
      a Part_Of indicator; and
      
    * in its Refined_State aspect, denote each declaration associated with such a
-     Part_Of indicator as a ``constituent`` exclusively of the specific state 
+     Part_Of indicator as a ``constituent`` exclusively of the encapsulating state 
      abstraction.
    
    [The units that need to be withed is known from the ``limited_with_clauses``
    on its specification and from this it is known which declarations have a
-   Part_Of indicator for a specific state abstraction.]
+   Part_Of indicator for a encapsulating state abstraction.]
 
 #. Other than in the body of a unit that contains the State_Refinement aspect
    which defines the constituents of a state abstraction, where both a state
@@ -1501,9 +1532,9 @@ The static semantics are equivalent to those given for the Depends aspect in
      add the entity denoted by each ``input`` to the second set.
      
    The two sets shall be equal.
-   [Essentially this check ensures that the Depends aspect and its refinment,
-   the Refined_Depends aspect are consistent in that every entity that a
-   a state abstraction depends on is reflected in the Refined_Depends aspect.]
+   [Essentially this check ensures that the Depends aspect and its refinement,
+   the Refined_Depends aspect, are consistent in that every entity that a
+   state abstraction depends on is reflected in the Refined_Depends aspect.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1588,12 +1619,6 @@ be a Boolean ``expression``.
 #. A Refined Precondition of a subprogram defines a *refinement*
    of the precondition of the subprogram.
    
-#. Logically, the precondition of a subprogram must imply its
-   Refined Precondition which in turn means that this relation
-   cannot be achieved with a default precondition (True) and therefore
-   a subprogram with a Refined Precondition will require a
-   precondition also in order to perform proofs.
-
    #. The static semantics are otherwise as for a precondition.
 
 
