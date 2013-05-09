@@ -218,7 +218,9 @@ package body Flow.Slice is
                                    V_Final => V_Out,
                                    IPFA    => False);
          begin
-            DM.Include (F_Out, Flow_Id_Sets.Empty_Set);
+            if not DM.Contains (F_Out) then
+               DM.Include (F_Out, Flow_Id_Sets.Empty_Set);
+            end if;
 
             for V_In of Deps loop
                F_In := Flow_Equivalent (FA.PDG.Get_Key (V_In));

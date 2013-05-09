@@ -175,4 +175,46 @@ is
       X := (False, Dont_Care);
    end Test_Definite_08;
 
+   ----------------------------------------------------------------------
+
+   --  A few tests involving non-discriminated record types in order
+   --  to make sure the rewritten contract checking is OK.
+
+   type ND_Record is record
+      A : Integer;
+      B : Integer;
+      C : Integer;
+   end record;
+
+   procedure Test_ND_Record_01 (X, Y : Integer;
+                                R    : out ND_Record)
+   with Global  => null,
+        Depends => (R => (X, Y))
+   is
+   begin
+      R.A := X;
+      R.B := 12;
+      R.C := Y;
+   end Test_ND_Record_01;
+
+   procedure Test_ND_Record_02 (X, Y : Integer;
+                                R    : in out ND_Record)
+   with Global  => null,
+        Depends => (R => (X, Y)) --  R depends on R
+   is
+   begin
+      R.A := X;
+      R.C := Y;
+   end Test_ND_Record_02;
+
+   procedure Test_ND_Record_03 (X, Y : Integer;
+                                R    : in out ND_Record)
+   with Global  => null,
+        Depends => (R =>+ (X, Y))
+   is
+   begin
+      R.A := X;
+      R.C := Y;
+   end Test_ND_Record_03;
+
 end Test;

@@ -7,6 +7,7 @@ test.adb:153:09: expected to see "X.Found" on the left-hand-side of a dependency
 test.adb:154:21: "Y" depends on "X.Found"
 test.adb:167:09: "X.Found" missing from null dependency
 test.adb:167:09: expected to see "X.Found" on the left-hand-side of a dependency relation
+test.adb:203:21: "R" depends on "R"
 
 
 gnatprove: error during translation to intermediate language, aborting.
