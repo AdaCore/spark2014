@@ -1,0 +1,32 @@
+(* Module for defining the value of constant "x" defined at t1q5.ads:4, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q5__bounded_add__x
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function x 
+   :Standard__integer.integer
+end
+
+(* Module for defining the value of constant "y" defined at t1q5.ads:4, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q5__bounded_add__y
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function y 
+   :Standard__integer.integer
+end
+
+(* Module including all necessary axioms for the subprogram "bounded_add" declared at t1q5.ads:4, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q5__bounded_add__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        "t1q5__types_in_spec".T1q5__bounded_add
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end

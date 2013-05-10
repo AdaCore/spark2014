@@ -15,84 +15,33 @@ Scalar Assignment
 throughout the program. Take a very simple program ``Increment`` that assigns the
 value ``X+1`` to the variable ``X``:
 
-.. literalinclude:: gnatprove_by_example/examples/t1q1.adb
+.. literalinclude:: gnatprove_by_example/examples/t1q1a.adb
    :language: ada
    :linenos:
 
-.. RPM: I think we should delete all the flow analysis sections which
-.. don't show anything interesting, such as this one.
+The proof results show that |GNATprove| is unable to prove the overflow
+check on line 7, where ``X`` is incremented. This is not surprising, given
+that the initial value of ``X`` could be ``Integer'Last`` and incrementing
+it would indeed cause an overflow in this case.
 
-On this subprogram, |GNATprove| generates the following flow errors:
-
-.. literalinclude:: gnatprove_by_example/results/t1q1.flow
+.. literalinclude:: gnatprove_by_example/results/t1q1a.prove
    :language: none
    :linenos:
 
-and the following proof results:
+We can guard against this possibility by adding a suitable precondition
+to the specification of ``Increment``. This states that that ``X``
+must always be strictly less than ``Integer'Last`` at the point where
+the subprogram is called.
 
-.. literalinclude:: gnatprove_by_example/results/t1q1.prove
-   :language: none
-   :linenos:
-
-You may be wondering how |GNATprove| managed to prove that ``X + 1`` does
-not overflow, given that ``X`` is an Integer. The answer lies in the 
-specification of ``Increment`` which states the precondition that ``X``
-must be strictly less than ``Integer'Last``.
-
-.. literalinclude:: gnatprove_by_example/examples/t1q1.ads
+.. literalinclude:: gnatprove_by_example/examples/t1q1b.ads
    :language: ada
    :linenos:
 
 |GNATprove| assumes that the precondition holds when it performs the proof
 of ``Increment``. For any subprogram which calls ``Increment``, |GNATprove|
-will check that the precondition holds at the point of the call. Note also
-the postcondition which states that ``Increment`` does indeed add one to ``X``.
-As you would expect, |GNATprove| is able to prove this easily as shown by
-the proof results.
+will check that the precondition holds at the point of the call. 
 
-Assert and Cut
-^^^^^^^^^^^^^^
-
-.. _assert_and_cut:
-
-.. rubric:: Assert_And_Cut
-
-Here we have a similar example ``Increment2`` which takes two parameters ``X``
-and ``Y``. The postcondition on the specification states that both parameters
-will be incremented. The precondition guards against overflow, and must be
-shown to hold for any subprogram which calls ``Increment2``.
-
-.. literalinclude:: gnatprove_by_example/examples/t1q2.ads
-   :language: ada
-   :linenos:
-
-Here is the body. Note the use of the pragma
-``Assert_And_Cut`` which splits the subprogram into two paths for proof
-purposes. |GNATprove| must show that the assertion is true for the path
-from the beginning of the subprogram to the pragma. The assertion is then
-known to be true for the path from the pragma to the end of the subprogram
-(for which the postcondition must be shown to hold).
-
-.. literalinclude:: gnatprove_by_example/examples/t1q2.adb
-   :language: ada
-   :linenos:
-
-On this subprogram, |GNATprove| generates the following flow errors:
-
-.. literalinclude:: gnatprove_by_example/results/t1q2.flow
-   :language: none
-   :linenos:
-
-The flow errors relate to the constants ``X_Old`` and ``Y_Old`` which have
-been introduced to capture the initial values of ``X`` and ``Y`` so that they
-can be referred to in the pragma. (The attribute ``'Old`` may only be used
-in postconditions.) In future, a more elegant solution will be to use ghost
-variables but these have not yet been implemented in |GNATprove|.
-*Flow errors are not appearing at present*
-
-The proof results show that all checks are proved:
-
-.. literalinclude:: gnatprove_by_example/results/t1q2.prove
+.. literalinclude:: gnatprove_by_example/results/t1q1b.prove
    :language: none
    :linenos:
 
@@ -103,9 +52,19 @@ Swap
 
 .. rubric:: Swap
 
-As another illustration of postconditions, condsider the subprogram ``Swap``
-which exchanges the values of its two parameters. Note the use of the
-``'Old`` attribute to refer to the initial values of the parameters.
+In the previous example |GNATprove| was able to prove that the subprogram
+was free from runtime exceptions but it did not help us with the question
+of whether the subprogram performed its intended function. Why not? Because
+we did not provide any specification of what the subprogram is supposed to
+do. We can specify properties about the required results of subprograms by
+adding postconditions to them, then using |GNATprove| to check that those
+postconditions hold.
+
+To illustrate the use of postconditions, condsider the subprogram ``Swap``
+which exchanges the values of its two parameters ``X`` and ``Y``. The ``Post``
+aspect states that the new value of ``X`` will be the initial value of ``Y``
+and vice-versa. Note the use of the ``'Old`` attribute to refer to the initial
+values of the parameters.
 
 .. literalinclude:: gnatprove_by_example/examples/t1q3a.ads
    :language: ada
@@ -116,12 +75,6 @@ values of ``X`` and ``Y`` in the standard way.
 
 .. literalinclude:: gnatprove_by_example/examples/t1q3a.adb
    :language: ada
-   :linenos:
-
-On this subprogram, |GNATprove| generates the following flow errors:
-
-.. literalinclude:: gnatprove_by_example/results/t1q3a.flow
-   :language: none
    :linenos:
 
 The proof results show that |GNATprove| is able to prove that the postcondition
@@ -139,9 +92,20 @@ NAND
 .. rubric:: Nand
 
 Now we turn to a procedure ``Nandgate`` which calculates the NAND
-of two Boolean values. The postcondition on the specification 
-enumerates all four possible input conditions and specifies the
-required output for each one.
+of two Boolean values. Here the programmer has decided to specify
+the postcondition by enumerating all the entries in the truth
+table for a NAND function. This could have been written using the
+``Post`` aspect like this:
+
+.. code-block:: ada
+
+   with Post => ((if ((not P) and (not Q)) then R) and
+                 (if ((not P) and Q) then R) and
+                 (if (P and (not Q)) then R) and
+                 (if (P and Q) then (not R)));
+
+However, the ``Contract_Cases`` aspect provides a convenient way
+to write this type of postcondition, as shown below:
 
 .. literalinclude:: gnatprove_by_example/examples/t1q3b.ads
    :language: ada
@@ -149,7 +113,7 @@ required output for each one.
 
 The implementation is much simpler than the specification. This
 simplified expression for NAND could have been used in the specification
-as they are equivalent, but perhaps the programmer wanted to use the
+as they are equivalent, but our programmer wanted to use the
 more efficient form in the implementation whilst keeping the more 
 explicit version in the specification.
 
@@ -157,15 +121,10 @@ explicit version in the specification.
    :language: ada
    :linenos:
 
-On this subprogram, |GNATprove| generates the following flow errors:
-
-.. literalinclude:: gnatprove_by_example/results/t1q3b.flow
-   :language: none
-   :linenos:
-
 The proof results show that |GNATprove| is able to prove that the postcondition
 holds, thus demonstrating that the simple expression in the body does indeed
-implement a NAND function.
+implement a NAND function. Note how the results show that each individual contract
+case was proved and that the overall contract was proved.
 
 .. literalinclude:: gnatprove_by_example/results/t1q3b.prove
    :language: none
@@ -192,17 +151,10 @@ The bodies of the two subprograms illustrate two alternative implementations
 of the next day functionality. The first one uses the ``'Succ`` attribute to
 get the next day, with a special case for Sunday as it is the last value in
 the type. The second version uses a case statement to state explicitly what
-the output should be for each input. This is almost identical to the specification
-so it might be easier to prove.
+the output should be for each input. 
 
 .. literalinclude:: gnatprove_by_example/examples/t1q3c.adb
    :language: ada
-   :linenos:
-
-On this subprogram, |GNATprove| generates the following flow errors:
-
-.. literalinclude:: gnatprove_by_example/results/t1q3c.flow
-   :language: none
    :linenos:
 
 The proof results show that |GNATprove| is able to prove that both implementations
@@ -214,6 +166,57 @@ the check is proved.
 .. literalinclude:: gnatprove_by_example/results/t1q3c.prove
    :language: none
    :linenos:
+
+Bounded_Addition
+^^^^^^^^^^^^^^^^
+
+.. _boundedadd:
+
+.. rubric:: BoundedAdd
+
+The procedure ``Bounded_Add`` takes two Integer values and calculates their
+sum. If the result would exceed the bounds of the Integer type then it should
+saturate at the maximum or minimum Integer value. The ``Contract_Cases`` aspect
+gives a natural way to express this specification.
+
+.. literalinclude:: gnatprove_by_example/examples/t1q5.ads
+   :language: ada
+   :linenos:
+
+The tricky part is to implement this in the body without making use of a
+type that is larger than Integer. (If the implementation simply added the
+two values together to see if the result exceeded the bounds of Integer
+then it would obviously need a larger type to store the result.)
+
+.. literalinclude:: gnatprove_by_example/examples/t1q5.adb
+   :language: ada
+   :linenos:
+
+The proof results show that |GNATprove| is able to prove all the checks
+for this subprogram, so it satisifes its postcondition and there are 
+no runtime errors. You may be wondering how it is that the postcondition
+in the subprogram specification contains an expression which simply
+adds together the two Integers, yet this does not overflow. This is
+because the project file specifies the compiler switch ``-gnato13``
+to define the semantics when calculating intermediate expressions.
+The first digit specifies the semantics for general code, with ``1``
+meaning that the normal Ada type system semantics should be used. The
+second digit specifies the semantics for use in proof (preconditions,
+postconditions, assertions, invariants), with ``3`` meaning that mathematical
+semantics are used so there is no possibility of overflow. If this
+option were changed to ``-gnato11`` then the normal Ada type system
+semantics would be used in proof expressions and |GNATprove| would
+(quite rightly) not be able to prove that there was no possibility
+of overflow in the postcondition. This is an important option and we
+recommend that users read the documentation carefully in order to 
+understand how it behaves.
+
+.. literalinclude:: gnatprove_by_example/results/t1q5.prove
+   :language: none
+   :linenos:
+
+Loop Examples
+-------------
 
 Integer Square Root
 ^^^^^^^^^^^^^^^^^^^
@@ -248,18 +251,49 @@ is no need for invariants to be placed right at the top of loops.
    :language: ada
    :linenos:
 
-On this subprogram, |GNATprove| generates the following flow errors:
-
-.. literalinclude:: gnatprove_by_example/results/t1q4.flow
-   :language: none
-   :linenos:
-
 The proof results show that |GNATprove| is able to prove all the checks for the
 loop invariant (which must be shown to hold for the path leading into the loop,
 and for the path back around the loop), the postcondition, and for overflow and
 range checks.
 
 .. literalinclude:: gnatprove_by_example/results/t1q4.prove
+   :language: none
+   :linenos:
+
+
+Advanced Examples
+-----------------
+
+Assert and Cut
+^^^^^^^^^^^^^^
+
+.. _assert_and_cut:
+
+.. rubric:: Assert_And_Cut
+
+In this example the procedure ``Increment2`` which takes two parameters ``X``
+and ``Y``. The postcondition on the specification states that both parameters
+will be incremented. The precondition guards against overflow, and must be
+shown to hold for any subprogram which calls ``Increment2``.
+
+.. literalinclude:: gnatprove_by_example/examples/t1q2.ads
+   :language: ada
+   :linenos:
+
+Here is the body. Note the use of the pragma
+``Assert_And_Cut`` which splits the subprogram into two paths for proof
+purposes. |GNATprove| must show that the assertion is true for the path
+from the beginning of the subprogram to the pragma. The assertion is then
+known to be true for the path from the pragma to the end of the subprogram
+(for which the postcondition must be shown to hold).
+
+.. literalinclude:: gnatprove_by_example/examples/t1q2.adb
+   :language: ada
+   :linenos:
+
+The proof results show that all checks are proved:
+
+.. literalinclude:: gnatprove_by_example/results/t1q2.prove
    :language: none
    :linenos:
 

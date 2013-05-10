@@ -1,0 +1,10 @@
+(* Module for defining a ref holding the value of variable "z" defined at t1q5.ads:4, created in Gnat2Why.Decls.Translate_Variable *)
+module T1q5__bounded_add__z
+ use        "_standard__types_in_spec".Standard__integer
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  Standard__integer.integer
+ 
+ val z  : ref t
+end

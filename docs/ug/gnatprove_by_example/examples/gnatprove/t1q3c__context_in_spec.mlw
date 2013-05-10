@@ -1,0 +1,71 @@
+(* Module for defining the value of constant "today" defined at t1q3c.ads:6, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q3c__nextday_a__today
+ use import "_gnatprove_standard".Main
+ use        "t1q3c__types_in_spec".T1q3c__day
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function today 
+   :T1q3c__day.day
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "nextday_a" defined at t1q3c.ads:6, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T1q3c__nextday_a
+ use import "_gnatprove_standard".Main
+ use        "t1q3c__types_in_spec".T1q3c__day
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ val func
+   (t1q3c__nextday_a__today : T1q3c__day.day) (t1q3c__nextday_a__tomorrow : ref T1q3c__day.day)  :unit
+  requires { true }
+  ensures { ( ( ( ( ( ( ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 0 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 1 ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 1 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 2 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 2 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 3 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 3 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 4 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 4 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 5 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 5 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 6 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_a__today) = 6 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_a__tomorrow) = 0 ) ) ) }
+  writes {t1q3c__nextday_a__tomorrow }
+
+end
+
+(* Module for defining the value of constant "today" defined at t1q3c.ads:15, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q3c__nextday_b__today
+ use import "_gnatprove_standard".Main
+ use        "t1q3c__types_in_spec".T1q3c__day
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function today 
+   :T1q3c__day.day
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "nextday_b" defined at t1q3c.ads:15, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T1q3c__nextday_b
+ use import "_gnatprove_standard".Main
+ use        "t1q3c__types_in_spec".T1q3c__day
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ val func
+   (t1q3c__nextday_b__today : T1q3c__day.day) (t1q3c__nextday_b__tomorrow : ref T1q3c__day.day)  :unit
+  requires { true }
+  ensures { ( ( ( ( ( ( ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 0 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 1 ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 1 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 2 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 2 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 3 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 3 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 4 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 4 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 5 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 5 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 6 ) ) ) \/ ( ( (T1q3c__day.to_int t1q3c__nextday_b__today) = 6 ) /\ ( (T1q3c__day.to_int !t1q3c__nextday_b__tomorrow) = 0 ) ) ) }
+  writes {t1q3c__nextday_b__tomorrow }
+
+end
+
+(* Module including all necessary axioms for the subprogram "nextday_a" declared at t1q3c.ads:6, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q3c__nextday_a__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        T1q3c__nextday_a
+ use        "t1q3c__types_in_spec".T1q3c__day
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end
+
+(* Module including all necessary axioms for the subprogram "nextday_b" declared at t1q3c.ads:15, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q3c__nextday_b__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        "t1q3c__types_in_spec".T1q3c__day
+ use        T1q3c__nextday_b
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end

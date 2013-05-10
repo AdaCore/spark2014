@@ -2,9 +2,9 @@ package T1Q3B
 is
 
   procedure NandGate(P,Q: in Boolean; R: out Boolean)
-    with Post => ((if ((not P) and (not Q)) then R) and
-    (if ((not P) and Q) then R) and
-    (if (P and (not Q)) then R) and
-    (if (P and Q) then (not R)));
+    with Contract_Cases => (not P and not Q => R,
+                            not P and     Q => R,
+                                P and not Q => R,
+                                P and     Q => not R);
 
 end T1Q3B;

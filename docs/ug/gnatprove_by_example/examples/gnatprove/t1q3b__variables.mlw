@@ -1,0 +1,9 @@
+(* Module for defining a ref holding the value of variable "r" defined at t1q3b.ads:4, created in Gnat2Why.Decls.Translate_Variable *)
+module T1q3b__nandgate__r
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  bool
+ 
+ val r  : ref t
+end

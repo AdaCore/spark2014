@@ -1,0 +1,28 @@
+(* Module for defining the value of constant "p" defined at t1q3b.ads:4, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q3b__nandgate__p
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ function p 
+   :bool
+end
+
+(* Module for defining the value of constant "q" defined at t1q3b.ads:4, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q3b__nandgate__q
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ function q 
+   :bool
+end
+
+(* Module including all necessary axioms for the subprogram "nandgate" declared at t1q3b.ads:4, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q3b__nandgate__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        "t1q3b__types_in_spec".T1q3b__nandgate
+
+end

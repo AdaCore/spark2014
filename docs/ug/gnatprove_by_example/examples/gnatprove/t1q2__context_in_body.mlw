@@ -1,0 +1,41 @@
+(* Module for defining the value of constant "x_old" defined at t1q2.adb:6, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q2__increment2__x_old
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function x_old 
+   :Standard__integer.integer
+end
+
+(* Module for defining the value of constant "y_old" defined at t1q2.adb:7, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q2__increment2__y_old
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function y_old 
+   :Standard__integer.integer
+end
+
+(* Module including all necessary axioms for the constant "x_old" declared at t1q2.adb:6, created in Gnat2Why.Decls.Complete_Constant_Translation *)
+module T1q2__increment2__x_old__constant_closure
+ use import "_gnatprove_standard".Main
+ use        T1q2__increment2__x_old
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end
+
+(* Module including all necessary axioms for the constant "y_old" declared at t1q2.adb:7, created in Gnat2Why.Decls.Complete_Constant_Translation *)
+module T1q2__increment2__y_old__constant_closure
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        T1q2__increment2__y_old
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end

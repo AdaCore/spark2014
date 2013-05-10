@@ -1,0 +1,47 @@
+(* Module for checking absence of run-time errors and contract cases in the subprogram spec of "increment" defined at t1q1.ads:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Spec *)
+module T1q1__increment__pre
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t1q1__variables".T1q1__increment__x
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let pre_check "GP_Subp:t1q1.ads:4" "GP_Pretty_Ada:precondition for T1Q1.Increment"  (t1q1__increment__x : ref Standard__integer.integer) 
+ requires { true }
+ ensures { true }
+  = 
+  ( abstract (___ignore(( (Standard__integer.to_int(!T1q1__increment__x.x)) < 2147483647 ))) ensures {true};
+  (any unit
+  requires {true} 
+  ensures {( (Standard__integer.to_int !T1q1__increment__x.x) < 2147483647 )} 
+
+  ) )
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "increment" defined at t1q1.ads:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q1__increment__def
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t1q1__variables".T1q1__increment__x
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q1.ads:4" "GP_Pretty_Ada:T1Q1.Increment"  (__void_param : unit) 
+ requires { ( (Standard__integer.to_int !T1q1__increment__x.x) < 2147483647 ) }
+ ensures { ( "GP_Reason:VC_POSTCONDITION" "GP_Sloc_VC:t1q1.ads:6:18" "keep_on_simp" ( "GP_Pretty_Ada:X = X'Old + 1" "GP_Sloc:t1q1.ads:6:18" ( (Standard__integer.to_int !T1q1__increment__x.x) = ( (Standard__integer.to_int (old !T1q1__increment__x.x )) + 1 ) ) ) ) }
+  = 
+  ( abstract (___ignore(!T1q1__increment__x.x)) ensures {true};
+  (let _temp_standard__t1q1_0 = (any Standard__integer.integer
+  ensures {( result = !T1q1__increment__x.x )} 
+
+  ) in (
+   try
+    ( ( "GP_Sloc:t1q1.adb:7:7" T1q1__increment__x.x := ( (Standard__integer.of_int(( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t1q1.adb:7:12" "keep_on_simp" (Standard__integer.range_check_(( (Standard__integer.to_int(!T1q1__increment__x.x)) + 1 ))) ))) ) );
+    raise Return__exc )
+   with
+    Return__exc -> abstract (___ignore(( (Standard__integer.to_int(!T1q1__increment__x.x)) = ( (Standard__integer.to_int(_temp_standard__t1q1_0)) + 1 ) ))) ensures {true}
+   end))
+   )
+end

@@ -1,0 +1,35 @@
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "swap" defined at t1q3a.ads:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q3a__swap__def
+ use import "_gnatprove_standard".Main
+ use        "t1q3a__variables".T1q3a__swap__x
+ use        "t1q3a__variables".T1q3a__swap__y
+ use        "t1q3a__variables".T1q3a__swap__temp
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q3a.ads:4" "GP_Pretty_Ada:T1Q3A.Swap"  (__void_param : unit) 
+ requires { true }
+ ensures { ( "GP_Reason:VC_POSTCONDITION" "GP_Sloc_VC:t1q3a.ads:5:17" "keep_on_simp" ( ( "GP_Pretty_Ada:X = Y'old" "GP_Sloc:t1q3a.ads:5:17" ( (Standard__integer.to_int !T1q3a__swap__x.x) = (Standard__integer.to_int (old !T1q3a__swap__y.y )) ) ) /\ ( "GP_Pretty_Ada:Y = X'old" "GP_Sloc:t1q3a.ads:6:31" ( (Standard__integer.to_int !T1q3a__swap__y.y) = (Standard__integer.to_int (old !T1q3a__swap__x.x )) ) ) ) ) }
+  = 
+  ( abstract (___ignore(!T1q3a__swap__x.x)) ensures {true};
+  (let _temp_standard__t1q3a_0 = (any Standard__integer.integer
+  ensures {( result = !T1q3a__swap__x.x )} 
+
+  ) in (
+   ( abstract (___ignore(!T1q3a__swap__y.y)) ensures {true};
+   (let _temp_standard__t1q3a_1 = (any Standard__integer.integer
+   ensures {( result = !T1q3a__swap__y.y )} 
+
+   ) in (
+    try
+     ( ( "GP_Sloc:t1q3a.adb:8:11" T1q3a__swap__temp.temp := ( !T1q3a__swap__x.x ) );
+     ( "GP_Sloc:t1q3a.adb:9:8" T1q3a__swap__x.x := ( !T1q3a__swap__y.y ) );
+     ( "GP_Sloc:t1q3a.adb:10:8" T1q3a__swap__y.y := ( !T1q3a__swap__temp.temp ) );
+     raise Return__exc )
+    with
+     Return__exc -> abstract (___ignore(( ( (Standard__integer.to_int(!T1q3a__swap__x.x)) = (Standard__integer.to_int(_temp_standard__t1q3a_1)) ) && ( (Standard__integer.to_int(!T1q3a__swap__y.y)) = (Standard__integer.to_int(_temp_standard__t1q3a_0)) ) ))) ensures {true}
+    end))
+    )))
+   )
+end

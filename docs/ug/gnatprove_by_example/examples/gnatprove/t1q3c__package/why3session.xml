@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v2//EN" "http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="2">
+ <prover
+  id="0"
+  name="Alt-Ergo"
+  version="0.94"/>
+ <file
+  name="../t1q3c__package.mlw"
+  verified="true"
+  expanded="true">
+  <theory
+   name="T1q3c__nextday_a__def"
+   locfile="../t1q3c__package.mlw"
+   loclnum="2" loccnumb="7" loccnume="28"
+   verified="true"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t1q3c__package.mlw"
+    loclnum="10" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="b372327752d281d99c7f4f6e3ee09b3f"
+    proved="true"
+    expanded="true"
+    shape="ainfix =ato_intV0c0Aainfix =ato_intatodayc6Oainfix =ato_intV0c6Aainfix =ato_intatodayc5Oainfix =ato_intV0c5Aainfix =ato_intatodayc4Oainfix =ato_intV0c4Aainfix =ato_intatodayc3Oainfix =ato_intV0c3Aainfix =ato_intatodayc2Oainfix =ato_intV0c2Aainfix =ato_intatodayc1Oainfix =ato_intV0c1Aainfix =ato_intatodayc0Iiainfix =ato_intatodayc6ainfix =V0aof_intc0ainfix =V0V1Aainfix =V1aof_intainfix +ato_intatodayc1Aain_rangeato_intatodayIainfix =ato_intatodayc6NF">
+    <label
+     name="GP_Subp:t1q3c.ads:6"/>
+    <label
+     name="GP_Pretty_Ada:T1Q3C.NextDay_A"/>
+    <label
+     name="expl:VC for def"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t1q3c__package.mlw"
+      loclnum="10" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="2e05d89f9e4c687e6b3b47dda745d394"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeato_intatodayIainfix =ato_intatodayc6NF">
+      <label
+       name="GP_Subp:t1q3c.ads:6"/>
+      <label
+       name="GP_Pretty_Ada:T1Q3C.NextDay_A"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.2"
+      locfile="../t1q3c__package.mlw"
+      loclnum="10" loccnumb="5" loccnume="8"
+      expl="2."
+      sum="c2976231ee9d21378c5de09513f9e2b8"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ato_intV0c0Aainfix =ato_intatodayc6Oainfix =ato_intV0c6Aainfix =ato_intatodayc5Oainfix =ato_intV0c5Aainfix =ato_intatodayc4Oainfix =ato_intV0c4Aainfix =ato_intatodayc3Oainfix =ato_intV0c3Aainfix =ato_intatodayc2Oainfix =ato_intV0c2Aainfix =ato_intatodayc1Oainfix =ato_intV0c1Aainfix =ato_intatodayc0Iiainfix =ato_intatodayc6ainfix =V0aof_intc0ainfix =V0V1Aainfix =V1aof_intainfix +ato_intatodayc1F">
+      <label
+       name="GP_Subp:t1q3c.ads:6"/>
+      <label
+       name="GP_Pretty_Ada:T1Q3C.NextDay_A"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+  <theory
+   name="T1q3c__nextday_b__def"
+   locfile="../t1q3c__package.mlw"
+   loclnum="25" loccnumb="7" loccnume="28"
+   verified="true"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t1q3c__package.mlw"
+    loclnum="33" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="11bf410ecc9454573ddf60c0a5834f9a"
+    proved="true"
+    expanded="true"
+    shape="ainfix =ato_intV0c0Aainfix =ato_intatodayc6Oainfix =ato_intV0c6Aainfix =ato_intatodayc5Oainfix =ato_intV0c5Aainfix =ato_intatodayc4Oainfix =ato_intV0c4Aainfix =ato_intatodayc3Oainfix =ato_intV0c3Aainfix =ato_intatodayc2Oainfix =ato_intV0c2Aainfix =ato_intatodayc1Oainfix =ato_intV0c1Aainfix =ato_intatodayc0Iiainfix =ato_intatodayc0ainfix =V0aof_intc1ainfix =V0V1Aiainfix =ato_intatodayc1ainfix =V1aof_intc2ainfix =V1V2Aiainfix =ato_intatodayc2ainfix =V2aof_intc3ainfix =V2V3Aiainfix =ato_intatodayc3ainfix =V3aof_intc4ainfix =V3V4Aiainfix =ato_intatodayc4ainfix =V4aof_intc5ainfix =V4V5Aiainfix =ato_intatodayc5ainfix =V5aof_intc6ainfix =V5V6Aainfix =V6aof_intc0F">
+    <label
+     name="expl:VC for def"/>
+    <label
+     name="GP_Subp:t1q3c.ads:15"/>
+    <label
+     name="GP_Pretty_Ada:T1Q3C.NextDay_B"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t1q3c__package.mlw"
+      loclnum="33" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="11bf410ecc9454573ddf60c0a5834f9a"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ato_intV0c0Aainfix =ato_intatodayc6Oainfix =ato_intV0c6Aainfix =ato_intatodayc5Oainfix =ato_intV0c5Aainfix =ato_intatodayc4Oainfix =ato_intV0c4Aainfix =ato_intatodayc3Oainfix =ato_intV0c3Aainfix =ato_intatodayc2Oainfix =ato_intV0c2Aainfix =ato_intatodayc1Oainfix =ato_intV0c1Aainfix =ato_intatodayc0Iiainfix =ato_intatodayc0ainfix =V0aof_intc1ainfix =V0V1Aiainfix =ato_intatodayc1ainfix =V1aof_intc2ainfix =V1V2Aiainfix =ato_intatodayc2ainfix =V2aof_intc3ainfix =V2V3Aiainfix =ato_intatodayc3ainfix =V3aof_intc4ainfix =V3V4Aiainfix =ato_intatodayc4ainfix =V4aof_intc5ainfix =V4V5Aiainfix =ato_intatodayc5ainfix =V5aof_intc6ainfix =V5V6Aainfix =V6aof_intc0F">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t1q3c.ads:15"/>
+      <label
+       name="GP_Pretty_Ada:T1Q3C.NextDay_B"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+ </file>
+</why3session>

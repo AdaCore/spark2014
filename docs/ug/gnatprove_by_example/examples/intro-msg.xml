@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<messages >
+  <project>
+    <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/intro.gpr</vfs_file>
+    <category name="gnatprove" >
+      <file>
+        <vfs_name>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q5.adb</vfs_name>
+        <message text="info: overflow check proved" column="30" line="9" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: overflow check proved" column="19" line="12" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: overflow check proved" column="29" line="17" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: overflow check proved" column="19" line="20" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: overflow check proved" column="16" line="25" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+      </file>
+      <file>
+        <vfs_name>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q5.ads</vfs_name>
+        <message text="info: contract case proved" column="79" line="5" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: contract case proved" column="52" line="6" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: contract case proved" column="51" line="7" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: disjoint contract cases proved" column="11" line="5" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: complete contract cases proved" column="11" line="5" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+      </file>
+    </category>
+  </project>
+</messages>

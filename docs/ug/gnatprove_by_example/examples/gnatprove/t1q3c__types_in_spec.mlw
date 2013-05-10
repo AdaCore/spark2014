@@ -1,0 +1,22 @@
+(* Module for axiomatizing type "day" defined at t1q3c.ads:4, created in Gnat2Why.Types.Translate_Type *)
+module T1q3c__day
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type day 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  0
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  6
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = day, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
