@@ -1539,7 +1539,7 @@ package body SPARK_Definition is
          --  Start of Mark_Subprogram_Entity
 
       begin
-         Mark_Subprogram_Specification (Parent (E));
+         Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
 
          Prag := Pre_Post_Conditions (Contract (E));
          while Present (Prag) loop
@@ -1783,6 +1783,17 @@ package body SPARK_Definition is
          return;
       end if;
 
+      --  ??? In rare cases, like renaming of imported C functions, the code
+      --  may refer to toplevel entities which have not been marked. Currently
+      --  raise a violation in that case instead of failing inside Push_Entity.
+
+      if In_Toplevel_Subprogram_Body
+        and then Is_Toplevel_Entity (E)
+      then
+         Mark_Violation ("entity", E, NIR_Forward_Reference);
+         goto After_Violations;
+      end if;
+
       --  Push entity E on the entity stack, to detect recursion and report
       --  violations.
 
@@ -1799,6 +1810,15 @@ package body SPARK_Definition is
                case Nkind (Parent (E)) is
                   when N_Object_Declaration     => Mark_Object_Entity (E);
                   when N_Iterator_Specification => Mark_Parameter_Entity (E);
+
+                  --  ??? This should not happen, as the frontend should be
+                  --  rewriting all renamings to refer to the renamed variable.
+                  --  Currently raise a violation instead of failing, which
+                  --  occurs on the standard library.
+
+                  when N_Object_Renaming_Declaration =>
+                     Mark_Violation ("entity", E, NIR_Forward_Reference);
+
                   when others                   => raise Program_Error;
                end case;
             end;
@@ -1820,6 +1840,8 @@ package body SPARK_Definition is
       --  Pop entity E from the entity stack
 
       Pop_Entity (E);
+
+      <<After_Violations>>
 
       --  Mark entity E as being in SPARK if no violation was detected
 

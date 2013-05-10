@@ -26,6 +26,7 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 with Unchecked_Deallocation;
 
+with Einfo;                  use Einfo;
 with Get_SPARK_Xrefs;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
@@ -503,7 +504,15 @@ package body SPARK_Frame_Conditions is
       E_Name : constant Entity_Name    :=
                  Make_Entity_Name (Name'Unrestricted_Access);
       E_Id   : Id;
+
    begin
+      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, which do not have effects, instead return the empty set.
+
+      if Is_Abstract_Subprogram (E) then
+         return Name_Set.Empty_Set;
+      end if;
+
       E_Id := Entity_Ids.Element (E_Name);
       return To_Names (Reads.Element (E_Id) - Defines.Element (E_Id));
    exception
@@ -526,6 +535,13 @@ package body SPARK_Frame_Conditions is
                  Make_Entity_Name (Name'Unrestricted_Access);
       E_Id   : Id;
    begin
+      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, which do not have effects, instead return the empty set.
+
+      if Is_Abstract_Subprogram (E) then
+         return Name_Set.Empty_Set;
+      end if;
+
       E_Id := Entity_Ids.Element (E_Name);
       return To_Names (Writes.Element (E_Id) - Defines.Element (E_Id));
    exception
