@@ -73,69 +73,68 @@ traditional testing (see :ref:`proof and test`).
 Specifying the Boundary with Pragma ``SPARK_Mode``
 --------------------------------------------------
 
-.. todo:: Adapt following to new pragma SPARK_Mode
-
-The user may require that the project only contains code in |SPARK|, by using
-option ``--mode=force``. Any violation of |SPARK| is then reported as an error,
-and any construct in |SPARK| not yet implemented is reported as a warning.
-
-For a finer-grain control, the user may require that some subprograms are in
-|SPARK| by inserting a specific pragma ``Annotate`` in the body of the
-subprogram. He may also insert this pragma inside or before a package
-declaration (spec or body) to require that all subprogram declarations in this
-package are in |SPARK|.
-
-On the following example:
+This pragma is used to designate whether a contract and its implementation must
+follow the |SPARK| programming language syntactic and semantic rules. The
+pragma is intended for use with formal verification tools and has no effect on
+the generated code. Its syntax is:
 
 .. code-block:: ada
-   :linenos:
 
-    package P is
-       pragma Annotate (gnatprove, Force);
-       X : access Boolean;
-       procedure P0;
-    end P;
+   pragma SPARK_Mode [ (On | Off | Auto) ] ;
 
-.. code-block:: ada
-   :linenos:
+When used as a configuration pragma over a whole compilation or in a particular
+compilation unit, it sets the mode of the units involved, in particular:
 
-    package body P is
-       procedure Set is
-       begin
-	  X.all := True;
-       end Set;
+* ``On``: All entities in the units must follow the |SPARK| language, and
+  an error will be generated if not, unless locally overridden by a local
+  ``SPARK_Mode`` pragma or aspect. ``On`` is the default mode when pragma
+  ``SPARK_Mode`` is used without an argument.
 
-       procedure P0 is
-	  Y : Boolean;
+* ``Off``: The units are considered to be in Ada by default and therefore not
+  part of |SPARK| unless overridden locally. These units may be called by
+  |SPARK| units.
 
-	  function Get return Boolean is
-	     pragma Annotate (gnatprove, Ignore);
-	  begin
-	     return X.all;
-	  end Get;
+* ``Auto``: The formal verification tools will automatically detect whether
+  each entity is in |SPARK| or in Ada.
 
-	  procedure P1 is
-	  begin
-	     if not Get then
-		return;
-	     end if;
-	     Y := True;
-	  end P1;
-       begin
-	  Set;
-	  P1;
-       end P0;
-    end P;
+Pragma ``SPARK_Mode`` can be used as a local pragma with the following
+semantics:
 
-|GNATprove| outputs the following errors::
+* ``Auto`` cannot be used as a mode argument.
 
-    p.adb:4:07: explicit dereference is not in SPARK
-    p.ads:3:08: access type is not in SPARK
+* When the pragma at the start of the visible declarations (preceded only
+  by other pragmas) of a package declaration, it marks the whole package
+  (declaration and body) in or out of |SPARK|.
 
-The error messages distinguish constructs not in |SPARK| (like a pointer
-dereference) from constructs not yet implemented. Notice that no error is given
-for the dereference in ``Get``, as another pragma ``Annotate`` in that
-subprogram specifies that formal proof should not be done on this subprogram.
+* When the pragma appears at the start of the private declarations of a
+  package (only other pragmas can appear between the @code{private} keyword
+  and the ``SPARK_Mode`` pragma), it marks the private part in or
+  out of |SPARK| (overriding the default mode of the visible part).
+
+* When the pragma appears immediately at the start of the declarations of a
+  package body (preceded only by other pragmas),
+  it marks the whole body in or out of |SPARK| (overriding the default
+  mode set by the declaration).
+
+* When the pragma appears at the start of the elaboration statements of
+  a package body (only other pragmas can appear between the @code{begin}
+  keyword and the ``SPARK_Mode`` pragma),
+  it marks the elaboration statements in or out of |SPARK| (overriding
+  the default mode of the package body).
+
+* When the pragma appears after a subprogram declaration (with only other
+  pragmas intervening), it marks the whole
+  subprogram (spec and body) in or out of |SPARK|.
+
+* When the pragma appears at the start of the declarations of a subprogram
+  body (preceded only by other pragmas), it marks the whole body in or out
+  of |SPARK| (overriding the default mode set by the declaration).
+
+* Any other use of the pragma is illegal.
+
+In code where ``SPARK_Mode`` applies, any violation of |SPARK| is reported by
+|GNATprove| as an error, and any construct in |SPARK| not yet implemented is
+reported as a warning.
 
 |SPARK| Features
 ================
