@@ -84,7 +84,7 @@ auditlog.adb:745:47: range check not proved
 auditlog.adb:745:50: info: overflow check proved
 auditlog.adb:745:69: info: overflow check proved
 auditlog.adb:749:10: postcondition not proved
-auditlog.adb:750:47: range check not proved
+auditlog.adb:750:47: info: range check proved
 auditlog.adb:750:50: info: overflow check proved
 auditlog.adb:750:69: overflow check not proved
 auditlog.adb:800:13: postcondition not proved, requires LogFileEntries(CurrentLogFile) = LogFileEntries(CurrentLogFile)'Old + 1
