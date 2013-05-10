@@ -153,8 +153,8 @@ is short hand for
 
  procedure P (...) with
       Pre  => General_Precondition,
-      Post => General_Postcondition
                 and then Exactly_One_Of(A1,A2...An)
+      Post => General_Postcondition
                 and then (if A1'Old then B1)
                 and then (if A2'Old then B2)
                 and then ...
