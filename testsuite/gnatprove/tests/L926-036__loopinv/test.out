@@ -22,6 +22,3 @@ counters.adb:31:14: info: discriminant check proved
 counters.adb:31:21: info: discriminant check proved
 counters.adb:31:24: overflow check not proved
 counters.adb:42:15: info: discriminant check proved
-main.adb:17:32: range check not proved
-main.adb:17:37: overflow check not proved
-main.adb:17:37: range check not proved

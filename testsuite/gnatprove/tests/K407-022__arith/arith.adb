@@ -1,5 +1,5 @@
 function Arith (X, Y, Z : Integer) return Integer is
-   pragma Annotate (gnatprove, Force);
+
    Tmp1, Tmp2 : Integer;
 
 begin

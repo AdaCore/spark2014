@@ -1,4 +1,4 @@
 from test_support import *
 
-gnatprove(["-P", "test.gpr", "--mode=force"])
+gnatprove(["-P", "test.gpr"])
 

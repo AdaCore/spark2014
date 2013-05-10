@@ -1,10 +1,4 @@
--+ p3 pack.adb:4 (access)
-++ p0_ok pack.adb:10
 -+ p0 pack.ads:13 (access)
-++ p4 pack.adb:19
-++ p1_ok pack.adb:25
 -- p1 pack.ads:15 (access)
-++ p5 pack.adb:38
-++ p2_ok pack.adb:47
 ++ p2 pack.ads:17
 

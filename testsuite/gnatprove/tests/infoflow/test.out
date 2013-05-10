@@ -14,7 +14,7 @@ infoflow.adb:108:39: overflow check not proved
 infoflow.adb:109:24: index check not proved
 infoflow.adb:109:24: overflow check not proved
 infoflow.adb:113:7: info: assertion proved
-infoflow.adb:121:28: info: division check proved
+infoflow.adb:121:28: division check not proved
 infoflow.adb:123:13: loop invariant initialization not proved
 infoflow.adb:123:13: loop invariant preservation not proved
 infoflow.adb:125:40: index check not proved
@@ -113,7 +113,7 @@ infoflow.adb:80:42: loop invariant preservation not proved, requires OutKeys_V1 
 infoflow.adb:87:10: info: loop invariant initialization proved
 infoflow.adb:88:42: loop invariant preservation not proved, requires OutKeys_V2 (K) = InKeys_V2 (K)
 infoflow.adb:93:14: range check not proved
-infoflow.adb:99:28: info: division check proved
+infoflow.adb:99:28: division check not proved
 infoflow.ads:101:39: info: division check proved
 infoflow.ads:102:34: index check not proved
 infoflow.ads:102:45: info: division check proved

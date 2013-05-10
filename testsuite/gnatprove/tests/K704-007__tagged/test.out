@@ -3,10 +3,10 @@
 Phase 1 of 2: frame condition computation ...
 Phase 2 of 2: detection of SPARK subprograms ...
 Statistics logged in gnatprove.out
-stacks.ads:13:53: warning: object is not yet supported
+stacks.ads:5:13: warning: type is not yet supported
+stacks.ads:9:09: warning: tagged type is not yet supported
+stacks.ads:13:13: warning: base type is not yet supported
+stacks.ads:13:13: warning: tagged type is not yet supported
 stacks.ads:13:53: warning: type is not yet supported
 stacks.ads:13:53: warning: type used is not yet supported
-stacks.ads:3:09: warning: tagged type is not yet supported
-stacks.ads:3:09: warning: type definition is not yet supported
-stacks.ads:5:23: warning: type of formal is not yet supported
-stacks.ads:9:09: warning: tagged type is not yet supported
+stacks.ads:13:53: warning: object is not yet supported

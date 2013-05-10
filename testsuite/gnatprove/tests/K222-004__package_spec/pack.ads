@@ -1,5 +1,5 @@
 package Pack is
-   pragma Annotate (gnatprove, Force);
+   pragma SPARK_Mode (On);
 
    G : access Boolean := new Boolean;
 

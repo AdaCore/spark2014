@@ -5,10 +5,11 @@ package body P is
    end Set;
 
    procedure P0 is
+      pragma SPARK_Mode (Off);
+
       Y : Boolean;
 
       function Get return Boolean is
-         pragma Annotate (gnatprove, Ignore);
       begin
          return X.all;
       end Get;

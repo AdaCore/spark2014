@@ -1,4 +1,4 @@
 from test_support import *
 
-prove(mode="force")
+prove_all()
 

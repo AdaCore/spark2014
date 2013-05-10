@@ -1,5 +1,5 @@
 package P is
-   pragma Annotate (gnatprove, Force);
+   pragma SPARK_Mode (On);
    X : access Boolean;
    procedure P0;
 end P;

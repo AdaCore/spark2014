@@ -1,6 +1,6 @@
 package body Sub is
    function F return Boolean is
-      pragma Annotate (gnatprove, Force);
+      pragma SPARK_Mode (On);
       B : access Boolean;
    begin
       B := new Boolean;
@@ -9,8 +9,8 @@ package body Sub is
    end F;
 
    procedure P is
+      pragma SPARK_Mode (On);
    begin
-      pragma Annotate (gnatprove, Force);
       declare
          B : access Boolean;
       begin

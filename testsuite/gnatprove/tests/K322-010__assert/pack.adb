@@ -4,7 +4,7 @@ package body Pack is
       pragma Assert (X > 0);
    begin
       pragma Assert (X = 10);
-      pragma Annotate (gnatprove, Force);
+
       return True;
    end F;
 

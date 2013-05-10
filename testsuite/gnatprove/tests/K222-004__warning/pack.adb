@@ -1,8 +1,8 @@
 package body Pack is
-   pragma Annotate (gnatprove, Force);
+   pragma SPARK_Mode (On);
 
    function F return Boolean is
-      pragma Annotate (gnatprove, Force);
+      pragma SPARK_Mode (On);
       B : Boolean;
    begin
       B := True;
@@ -10,7 +10,7 @@ package body Pack is
    end F;
 
    procedure P is
-      pragma Annotate (gnatprove, Force);
+      pragma SPARK_Mode (On);
       B : Boolean;
    begin
       B := False;

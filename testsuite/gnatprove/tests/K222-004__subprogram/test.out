@@ -1,12 +1,6 @@
-sub.adb:3:07: annotation is placed after violation of SPARK
-sub.adb:4:11: type is not in SPARK
-sub.adb:6:07: type used is not in SPARK
-sub.adb:6:12: type used is not in SPARK
+sub.adb:4:07: access type is not in SPARK
 sub.adb:7:07: explicit dereference is not in SPARK
 sub.adb:8:14: explicit dereference is not in SPARK
-sub.adb:15:14: type is not in SPARK
-sub.adb:17:10: type used is not in SPARK
-sub.adb:17:15: type used is not in SPARK
+sub.adb:15:10: access type is not in SPARK
 sub.adb:18:10: explicit dereference is not in SPARK
 sub.adb:19:13: explicit dereference is not in SPARK
-

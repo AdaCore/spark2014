@@ -1,9 +1,0 @@
-misplaced.adb:8:07: wrong number of arguments for annotation
-misplaced.adb:9:35: second argument for annotation must be Force or Ignore
-misplaced.adb:10:07: wrong number of arguments for annotation
-misplaced.adb:11:07: wrong number of arguments for annotation
-misplaced.adb:14:07: warning: formal proof already forced
-misplaced.adb:16:12: access type is not in SPARK
-misplaced.adb:20:07: formal proof already forced for entity
-misplaced.adb:22:07: explicit dereference is not in SPARK
-

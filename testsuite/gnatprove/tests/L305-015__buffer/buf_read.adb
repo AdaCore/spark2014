@@ -47,7 +47,7 @@ package body Buf_Read is
       else
          Pointer := Pointer + 1;
       end if;
-      
+
       --  assertion not provable, only to test translation
       pragma Assert (Pointer <= Max_Read and then
          (for all Index in Buffer'First .. Max_Read =>
