@@ -1,0 +1,4 @@
+t1q1d.adb:7:13: info: overflow check proved
+t1q1d.adb:13:6: info: precondition proved
+t1q1d.adb:14:6: precondition not proved
+t1q1d.ads:9:18: postcondition not proved, requires X = X'Old + 2

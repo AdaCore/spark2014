@@ -1,7 +1,7 @@
-Subprograms in SPARK      : 100% (8/8)
-  ... already supported   : 100% (8/8)
-  ... not yet supported   :   0% (0/8)
-Subprograms not in SPARK  :   0% (0/8)
+Subprograms in SPARK      : 100% (10/10)
+  ... already supported   : 100% (10/10)
+  ... not yet supported   :   0% ( 0/10)
+Subprograms not in SPARK  :   0% ( 0/10)
 
 Subprograms not in SPARK due to (possibly more than one reason):
  (none)
@@ -10,13 +10,14 @@ Subprograms not yet supported due to (possibly more than one reason):
  (none)
 
 Units with the largest number of subprograms in SPARK:
+ t1q1d                    : 100% (2/2)
  t1q3c                    : 100% (2/2)
- t1q1b                    : 100% (1/1)
- t1q3a                    : 100% (1/1)
- t1q2                     : 100% (1/1)
  t1q3b                    : 100% (1/1)
+ t1q3a                    : 100% (1/1)
+ t1q1b                    : 100% (1/1)
  t1q5                     : 100% (1/1)
  t1q1                     : 100% (1/1)
+ t1q2                     : 100% (1/1)
 
 Units with the largest number of subprograms not in SPARK:
  (none)
