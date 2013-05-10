@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 ---------------------------------
--- Detection of SPARK entities --
+-- Detection of SPARK Entities --
 ---------------------------------
 
 --  All entities from the program are marked as being in SPARK or not in SPARK,
@@ -32,61 +32,12 @@
 --  on its status. The order of definition in Why3 follows the order in which
 --  marking is applied to entities.
 
---  All entities except types are marked at the point where they are declared.
---  Forward references to an entity (such as a call to a subprogram in a
---  contract before this subprogram is declared) are not in SPARK. Types are
---  treated differently for two reasons:
---    * Itypes (implicit types introduced by the frontend) and class-wide types
---      may not have an explicit declaration, or one that is not attached to
---      the AST.
---    * Type definitions may refer to private types whose full view has not
---      been declared yet. It is this full view declaration which is translated
---      into Why3 when the type is in SPARK.
---  Therefore, to avoid forward references to types not yet defined in Why3:
---    * Itypes and class-wide types are marked the first time they are
---      referenced.
---    * All necessary types for a type definition (e.g. components of a record
---      type) are marked before the type itself.
+--  An error is issued if an entity which should be in SPARK, according to the
+--  applicable SPARK_Mode pragma, is not in SPARK.
 
---  Marking of an entity works as follows:
---    * A scope for the entity is pushed on a stack, and the definition of the
---      entity is marked. Any violation of SPARK during marking is recorded as
---      a violation for all entities on the stack. For example, the use of a
---      feature not in SPARK in the body of a local subprogram results in the
---      violation being attached to both subprograms.
---    * After marking, if no violation is attached to the entity, it is marked
---      as in SPARK. In any case, it is marked as being treated from now on, so
---      that future references are not counted as forward references.
---    * If the entity is defined in the spec or the body of the current
---      compiled unit, it is added to one of the list of entities Spec_Entities
---      or Body_Entities, which will be translated to Why3. The translation
---      will depend on the status (in SPARK or not) of each entity.
-
---  Subprogram specs and subprogram bodies are treated as two different scopes,
---  so that a subprogram spec can be in SPARK even if its body is not in SPARK.
-
---  Except for private types and deferred constants, a unique entity is used
---  for multiple views of the same entity. For example, the entity attached to
---  a subprogram body or a body stub is not used.
-
---  Private types are always in SPARK (except currently record (sub)type with
---  private part), even if the underlying type is not in SPARK. This allows
---  operations which do not depend on the underlying type to be in SPARK, which
---  is the case in client code that does not have access to the underlying
---  type. Since only the partial view of a private type is used in the AST
---  (except at the point of declaration of the full view), even when visibility
---  over the full view is needed, the nodes that need this full view are
---  treated specially, so that they are in SPARK only if the most underlying
---  type is in SPARK. This most underlying type is the last type obtained by
---  taking:
---  . for a private type, its underlying type
---  . for a record subtype, its base type
---  . for all other types, itself
---  until reaching a non-private type that is not a record subtype.
-
---  Partial views of deferred constants may be in SPARK even if their full view
---  is not in SPARK. This is the case if the type of the constant is in SPARK,
---  while its initializing expression is not.
+--  All entities declared locally to a toplevel subprogram body are either all
+--  in SPARK, and listed for translation, or not listed for translation if a
+--  violation was detected in the body.
 
 with Types;          use Types;
 
@@ -108,12 +59,10 @@ package SPARK_Definition is
 
    procedure Before_Marking (Filename : String);
    --  Create a file to store detailed information about the SPARK status of
-   --  subprograms (spec/body in SPARK or not). Set a flag that allows marking
-   --  of entities.
+   --  toplevel subprograms (spec/body in SPARK or not).
 
    procedure After_Marking;
-   --  Close the file created by Before_Marking and unset the flag that allows
-   --  marking of entities.
+   --  Close the file created by Before_Marking.
 
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all
@@ -122,10 +71,11 @@ package SPARK_Definition is
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 
-   function In_SPARK (Id : Entity_Id) return Boolean;
-   --  Return whether the entity Id is in SPARK
+   function Entity_In_SPARK (E : Entity_Id) return Boolean;
+   --  Return whether the entity E is in SPARK. Note that a subprogram E can be
+   --  in SPARK without its body being in SPARK.
 
-   function Body_In_SPARK (Id : Entity_Id) return Boolean;
-   --  Return whether the body of subprogram Id is in SPARK
+   function Subprogram_Body_In_SPARK (E : Entity_Id) return Boolean;
+   --  Return whether the body of subprogram E is in SPARK
 
 end SPARK_Definition;

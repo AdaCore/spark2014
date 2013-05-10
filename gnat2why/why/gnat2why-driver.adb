@@ -112,7 +112,7 @@ package body Gnat2Why.Driver is
          --  the completion.
 
          when Subprogram_Kind =>
-            if In_SPARK (E) then
+            if Entity_In_SPARK (E) then
                Complete_Subprogram_Spec_Translation
                  (File, E, In_Body => In_Main_Unit_Body (E));
             end if;
@@ -122,7 +122,7 @@ package body Gnat2Why.Driver is
          --  the completion.
 
          when E_Constant =>
-            if In_SPARK (E) and then not Is_Full_View (E) then
+            if Entity_In_SPARK (E) and then not Is_Full_View (E) then
                Complete_Constant_Translation
                  (File, E, In_Body => In_Main_Unit_Body (E));
             end if;
@@ -140,7 +140,9 @@ package body Gnat2Why.Driver is
    begin
       --  Currently generate VCs only on subprograms in SPARK
 
-      if not (Ekind (E) in Subprogram_Kind and then In_SPARK (E)) then
+      if not (Ekind (E) in Subprogram_Kind
+               and then Entity_In_SPARK (E))
+      then
          return;
       end if;
 
@@ -157,7 +159,7 @@ package body Gnat2Why.Driver is
       --  errors in the body of a subprogram, and to check that a subprogram
       --  body implements its contract.
 
-      if Body_In_SPARK (E) then
+      if Subprogram_Body_In_SPARK (E) then
          Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
       end if;
    end Do_Generate_VCs;
@@ -364,7 +366,7 @@ package body Gnat2Why.Driver is
    procedure Translate_CUnit is
    begin
       for E of All_Entities loop
-         if In_SPARK (E) and then not Is_In_Current_Unit (E) then
+         if Entity_In_SPARK (E) and then not Is_In_Current_Unit (E) then
             case Ekind (E) is
                --  For all subprograms from other units, make their definition
                --  available for proofs by declaring a completion of their base
@@ -468,20 +470,20 @@ package body Gnat2Why.Driver is
 
             --  Private types not translated in Why3
 
-            if In_SPARK (E)
+            if Entity_In_SPARK (E)
               and then Ekind (E) not in Private_Kind
             then
                Translate_Type (File, E);
             end if;
 
          when Named_Kind =>
-            if In_SPARK (E) then
+            if Entity_In_SPARK (E) then
                Translate_Constant (File, E);
             end if;
 
          when Object_Kind =>
             if not Is_Mutable_In_Why (E) then
-               if In_SPARK (E) then
+               if Entity_In_SPARK (E) then
                   Translate_Constant (File, E);
                end if;
             else
@@ -489,7 +491,7 @@ package body Gnat2Why.Driver is
             end if;
 
          when Subprogram_Kind =>
-            if In_SPARK (E) then
+            if Entity_In_SPARK (E) then
                Translate_Subprogram_Spec (File, E);
             end if;
 

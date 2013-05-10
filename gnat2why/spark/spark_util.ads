@@ -202,4 +202,8 @@ package SPARK_Util is
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
    --  Returns the innermost loop enclosing N, if any, and Empty otherwise
 
+   function Is_Toplevel_Entity (E : Entity_Id) return Boolean;
+   --  Returns True if E is a toplevel entity, only enclosed in package specs
+   --  or in the declaration part of package bodies.
+
 end SPARK_Util;

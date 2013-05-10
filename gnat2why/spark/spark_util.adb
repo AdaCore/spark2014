@@ -546,6 +546,38 @@ package body SPARK_Util is
       Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
       = Name);
 
+   ------------------------
+   -- Is_Toplevel_Entity --
+   ------------------------
+
+   function Is_Toplevel_Entity (E : Entity_Id) return Boolean is
+      P : Entity_Id;
+
+   begin
+      P := Scope (E);
+
+      --  Itypes and class-wide types may not have a declaration, or a
+      --  declaration which is not inserted in the AST. Do not consider these
+      --  as toplevel entities.
+
+      if Is_Itype (E) or else Ekind (E) = E_Class_Wide_Type then
+         return False;
+      end if;
+
+      while Present (P) loop
+         if Ekind (P) not in E_Generic_Package |
+                             E_Package         |
+                             E_Package_Body
+         then
+            return False;
+         end if;
+
+         P := Scope (P);
+      end loop;
+
+      return True;
+   end Is_Toplevel_Entity;
+
    -----------------------------------
    -- Location_In_Formal_Containers --
    -----------------------------------

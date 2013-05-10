@@ -131,7 +131,7 @@ package body Gnat2Why.Decls is
    is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
-        (if In_SPARK (E) then
+        (if Entity_In_SPARK (E) then
             New_Type
               (Name  => To_Ident (WNE_Type),
                Alias => +Why_Logic_Type_Of_Ada_Obj (E))
@@ -158,7 +158,7 @@ package body Gnat2Why.Decls is
          then
             return E;
          end if;
-         if In_SPARK (Most_Underlying_Type (E)) then
+         if Entity_In_SPARK (Most_Underlying_Type (E)) then
             return Normalize_Type (Most_Underlying_Type (E));
          end if;
          return E;
@@ -181,7 +181,7 @@ package body Gnat2Why.Decls is
 
       Emit (File.Cur_Theory, Decl);
 
-      if In_SPARK (Most_Underlying_Type (Etype (E))) then
+      if Entity_In_SPARK (Most_Underlying_Type (Etype (E))) then
          Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
       end if;
 
@@ -382,7 +382,7 @@ package body Gnat2Why.Decls is
                                  B_Type => Corresponding_Type,
                                  others => <>);
                begin
-                  if not In_SPARK (E) then
+                  if not Entity_In_SPARK (E) then
                      return;
                   end if;
                   --  Ada.Text_IO.Put_Line ("New type : " & Type_Name);
@@ -675,7 +675,7 @@ package body Gnat2Why.Decls is
                   TFile : Why_File :=
                     Why_Files (Dispatch_Entity (E));
                begin
-                  if not In_SPARK (E) then
+                  if not Entity_In_SPARK (E) then
                      return;
                   end if;
 
