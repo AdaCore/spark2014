@@ -181,7 +181,15 @@ package body Why.Inter is
                   Set_SI (Etype (UE));
 
                when Subprogram_Kind =>
-                  null;
+                  declare
+                     Formal : Node_Id :=
+                       First_Formal (UE);
+                  begin
+                     while Present (Formal) loop
+                        Set_SI_Internal (Etype (Formal));
+                        Next_Formal (Formal);
+                     end loop;
+                  end;
 
                when E_Loop =>
                   null;
