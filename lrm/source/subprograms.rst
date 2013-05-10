@@ -152,7 +152,7 @@ is short hand for
 .. code-block:: ada
 
  procedure P (...) with
-      Pre  => General_Precondition,
+      Pre  => General_Precondition
                 and then Exactly_One_Of(A1,A2...An)
       Post => General_Postcondition
                 and then (if A1'Old then B1)
