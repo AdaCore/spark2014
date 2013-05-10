@@ -859,11 +859,16 @@ package body Gnat2Why.Expr is
                   end if;
 
                when others =>
-                  --  No special treatment for parameters that are
-                  --  not "out"
+
+                  --  When the formal is an "in" scalar, we actually use "int"
+                  --  as a type.
+
                   Why_Args (Cnt) :=
                     Transform_Expr (Actual,
-                                    Type_Of_Node (Formal),
+                                    (if Use_Why_Base_Type (Formal) then
+                                     EW_Int_Type
+                                     else
+                                     Type_Of_Node (Formal)),
                                     Domain,
                                     Params);
             end case;

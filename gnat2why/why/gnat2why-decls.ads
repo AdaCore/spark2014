@@ -32,6 +32,10 @@ package Gnat2Why.Decls is
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
    --  the Why translation
 
+   function Use_Why_Base_Type (E : Entity_Id) return Boolean;
+   --  Decide whether for function declarations, the Why base type should be
+   --  used instead of the Ada type
+
    procedure Translate_Variable
      (File : in out Why_File;
       E    : Entity_Id);

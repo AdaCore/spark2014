@@ -926,4 +926,17 @@ package body Gnat2Why.Decls is
       Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Loop_Entity;
 
+   -----------------------
+   -- Use_Why_Base_Type --
+   -----------------------
+
+   function Use_Why_Base_Type (E : Entity_Id) return Boolean
+   is
+      Ty : constant Entity_Id := Etype (E);
+   begin
+      return not Is_Mutable_In_Why (E) and then
+        Is_Discrete_Type (Ty) and then
+        not Is_Boolean_Type (Ty);
+   end Use_Why_Base_Type;
+
 end Gnat2Why.Decls;

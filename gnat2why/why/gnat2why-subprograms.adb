@@ -360,7 +360,11 @@ package body Gnat2Why.Subprograms is
                B_Name   => Name,
                Modifier =>
                  (if Is_Mutable_In_Why (Id) then Ref_Modifier else None),
-               B_Type   => +Why_Prog_Type_Of_Ada_Obj (Id, True));
+               B_Type   =>
+                 (if Use_Why_Base_Type (Id) then
+                  +EW_Int_Type
+                  else
+                  +Why_Prog_Type_Of_Ada_Obj (Id, True)));
             Next (Param);
             Count := Count + 1;
          end;
