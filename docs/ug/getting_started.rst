@@ -163,9 +163,22 @@ following line is added on the first line of ``search.ads``:
 
     pragma SPARK_Mode;
 
-.. todo::
-   Describe result of running GNATprove with the future mode 'check' that
-   detects here that function with OUT parameter is not in SPARK
+Then, we run |GNATprove| in mode ``check``, using the ``Prove::Prove File``
+menu, so that it issues errors on code that has ``SPARK_Mode=On`` but is not in
+SPARK:
+
+.. image:: static/search_check.png
+
+It detects here that function ``Linear_Search`` is not in SPARK, because it has
+an ``out`` parameter:
+
+.. image:: static/search_not_spark.png
+
+This recent permission in Ada to have ``out`` parameters in functions is not
+allowed in |SPARK|, because it causes calls to have side-effects (assigning to
+their ``out`` parameters), which means that various calls in the same
+expression may be conflicting, yielding different results depending on the
+order of evaluation of the expression.
 
 We correct this problem by defining a record type ``Search_Result`` holding
 both the boolean result and the index for cases when the value is found, and
@@ -467,11 +480,11 @@ independently, so the more the number of available cores, the faster it
 completes.
 
 We start with the flow analysis of ``Search``, using the yet experimental mode
-``flow`` of |GNATprove|. Here, it issues an error message:
+``flow`` of |GNATprove| reached through the ``Prove::Prove File`` menu:
 
-.. todo::
-   Have a way to run gnatprove in flow mode from within GPS, for
-   example with a submenu 'Analyze Flow (experimental)'
+.. image:: static/search_flow.png
+
+Here, it issues an error message:
 
 .. code-block:: bash
 
@@ -534,8 +547,9 @@ discriminant depending on the success of the search:
 there are no reads of uninitialized data.
 
 We continue with the proof of contracts and absence of run-time errors, using
-the main mode ``prove`` of |GNATprove|. It completes in a few seconds, with
-messages stating that 3 checks could not be proved:
+the main mode ``prove`` of |GNATprove|, in the ``Prove::Prove File`` menu. It
+completes in a few seconds, with messages stating that 3 checks could not be
+proved:
 
 .. image:: static/search_not_proved.png
 

@@ -22,8 +22,8 @@ Command-line Options
    --mode=       Proof mode
        check       Check SPARK restrictions for code where SPARK_Mode=On
        prove       Prove subprogram contracts and absence of run-time errors (default)
-       flow        Prove object initialization and globals and depends contracts
-       all         Both analyses flow and prove are activated
+       flow        Prove object initialization, globals and depends contracts
+       all         Activates all modes
    -q            Be quiet/terse
    --clean       Remove GNATprove intermediate files, and exit
    --report=     Output mode
@@ -43,9 +43,9 @@ Command-line Options
    --proof=               Proof mode
       no_wp                 Do not compute VCs, do not call prover
       all_split             Compute all VCs, save them to file, do not call prover
-      path_wp               Use traditional way of computing VCs, one for each path
-      no_split              Compute one VC per check
-      then_split            Start with one VC per check, then split
+      path_wp               Generate one formula per path for each check
+      no_split              Generate one formula per check
+      then_split            Start with one formula per check, then split into paths when needed
    --pedantic             Use a strict interpretation of the Ada standard
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
    --timeout=s            Set the prover timeout in seconds (default: 1)
