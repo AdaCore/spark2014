@@ -292,7 +292,7 @@ package body Gnat2Why.Driver is
       Mark_All_Compilation_Units;
       After_Marking;
 
-      if Compilation_Errors or else In_Detect_Mode_Only then
+      if Compilation_Errors or else In_Check_Mode then
          return;
       end if;
 

@@ -69,12 +69,9 @@ package Configuration is
    Alter_Prover : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --prover= was given
 
-   type GP_Mode is (GPM_Detect, GPM_Force, GPM_Flow, GPM_Prove, GPM_All);
+   type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:
-   --  * GPM_Detect : SPARK Detection only
-   --  * GPM_Force  : SPARK Detection only, output errors for violations
-   --  * GPM_Check  : Check consistency of contracts, no proof of subprogram
-   --                 bodies
+   --  * GPM_Check  : Check SPARK rules
    --  * GPM_Prove  : Check validity of contracts, proof of subprogram bodies
    --  * GPM_Flow   : Check validity of Globals, Depends
    --  * GPM_All    : Union of GPM_Prove and GPM_Flow
@@ -95,8 +92,6 @@ package Configuration is
    --  All_Split: compute VCs, split all VCs, do not call prover
    --  Path_WP: use the "normal" (exponential) WP
    --  No_Split: only use fast WP, no split of VCs at all
-
-   subtype GP_SPARK_Detection_Mode is GP_Mode range GPM_Detect .. GPM_Force;
 
    MMode        : GP_Mode := GPM_Prove;
    Report       : Report_Mode := GPR_Fail;

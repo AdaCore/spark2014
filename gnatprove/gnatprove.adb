@@ -48,7 +48,7 @@ procedure Gnatprove is
 
    function Final_Step return Gnatprove_Step is
      (case MMode is
-       when GPM_Detect | GPM_Force | GPM_Flow => GS_Gnat2Why,
+       when GPM_Check | GPM_Flow => GS_Gnat2Why,
        when GPM_Prove | GPM_All => GS_Why);
 
    procedure Call_Gprbuild
@@ -170,9 +170,9 @@ procedure Gnatprove is
          Args.Append (Arg);
       end loop;
 
-      --  Keep going after a compilation error in 'detect' and 'force' modes
+      --  Keep going after a compilation error in 'check' mode
 
-      if MMode in GP_SPARK_Detection_Mode then
+      if MMode = GPM_Check then
          Args.Append ("-k");
       end if;
 
@@ -322,7 +322,7 @@ procedure Gnatprove is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Status);
             if Status /= 0
-              and then MMode in GP_SPARK_Detection_Mode
+              and then MMode = GPM_Check
             then
                Status := 0;
             end if;
@@ -330,7 +330,7 @@ procedure Gnatprove is
          when GS_Gnat2Why =>
             Translate_To_Why (Project_File, Status);
             if Status /= 0
-              and then MMode in GP_SPARK_Detection_Mode
+              and then MMode = GPM_Check
             then
                Status := 0;
             end if;
@@ -407,16 +407,7 @@ procedure Gnatprove is
       end if;
 
       if not Quiet then
-         if MMode = GPM_Detect then
-            Put_Line ("**********************************");
-            Cat (File                  => SPARK_Report_File,
-                 Cut_Non_Blank_Line_At => Max_Non_Blank_Lines);
-            Put_Line ("**********************************");
-            Put_Line ("Statistics above are logged in " & SPARK_Report_File);
-         else
-            Put_Line ("Statistics logged in " & SPARK_Report_File);
-         end if;
-
+         Put_Line ("Statistics logged in " & SPARK_Report_File);
          Put_Line
             ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
       end if;
@@ -569,9 +560,7 @@ procedure Gnatprove is
             return "frame condition computation";
 
          when GS_Gnat2Why =>
-            if MMode = GPM_Detect
-              or else MMode = GPM_Force
-            then
+            if MMode = GPM_Check then
                return "detection of SPARK subprograms";
             else
                return "translation to intermediate language";
@@ -612,10 +601,8 @@ procedure Gnatprove is
          Args.Append ("-gnatd.Z");
       end if;
       case MMode is
-         when GPM_Detect =>
+         when GPM_Check =>
             Args.Append ("-gnatd.K");
-         when GPM_Force =>
-            Args.Append ("-gnatd.E");
          when GPM_Flow | GPM_All =>
             Args.Append ("-gnatd.Q");
          when GPM_Prove =>
@@ -651,7 +638,7 @@ begin
 
       Generate_SPARK_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
 
-      if MMode in GPM_Detect | GPM_Force | GPM_Flow then
+      if MMode in GPM_Check | GPM_Flow then
          GNAT.OS_Lib.OS_Exit (0);
       end if;
       Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);

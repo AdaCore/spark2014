@@ -186,13 +186,9 @@ otherwise in red). This is the default on recent versions of GPS.
 How to View |GNATprove| Output
 ==============================
 
-In mode ``detect``, |GNATprove| prints on the standard output warning messages
-for |SPARK| subset violations, and information messages for unimplemented
-features, as well as the :ref:`project statistics`. Detection information is
-also to be found in the ``<name>.alfa`` files mentioned below.
-
-In mode ``force``, |GNATprove| prints on the standard output error messages for
-|SPARK| subset violations, and warning messages for unimplemented features.
+In mode ``check``, |GNATprove| prints on the standard output error messages
+for |SPARK| subset violations, and warning messages for unimplemented
+features, on all the code for which ``SPARK_Mode`` is ``On``.
 
 In mode ``prove`` and report ``fail``, |GNATprove| prints on the standard
 output error messages for unproved VCs.

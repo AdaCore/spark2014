@@ -47,7 +47,7 @@ package SPARK_Util is
    function Translate_Standard_Only return Boolean is
      (Debug.Debug_Flag_Dot_HH);
 
-   function In_Detect_Mode_Only return Boolean is (Debug.Debug_Flag_Dot_KK);
+   function In_Check_Mode return Boolean is (Debug.Debug_Flag_Dot_KK);
 
    function In_Frame_Condition_Mode return Boolean is
      (Debug.Debug_Flag_Dot_GG);

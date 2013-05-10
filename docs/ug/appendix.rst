@@ -20,6 +20,7 @@ Command-line Options
    -f            Force recompilation/proving of all units and all VCs
    -jnnn         Use nnn parallel processes (default: 1)
    --mode=       Proof mode
+       check       Check SPARK restrictions for code where SPARK_Mode=On
        prove       Prove subprogram contracts and absence of run-time errors (default)
        flow        Prove object initialization and globals and depends contracts
        all         Both analyses flow and prove are activated
