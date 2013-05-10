@@ -1,0 +1,6 @@
+(* Module for defining the loop exit exception for the loop"L_1" defined at t2q6.adb:8, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q6__sumarray__L_1
+ use import "_gnatprove_standard".Main
+
+ exception L_1
+end

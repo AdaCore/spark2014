@@ -1,0 +1,26 @@
+// increment2_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="blue"];
+    8 [label="x_old : constant integer := x;"];
+    9 [label="y_old : constant integer := y;"];
+    10 [label="x := x {+} 1;"];
+    11 [label="pragma assert_and_cut ((x = x_old {+} 1) and (y = y_old));<<<pragma check (assert_and_cut, (x = x_old {+} 1) and (y = y_old));>>>"];
+    12 [label="y := y {+} 1;"];
+
+    1 ->  8 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+}

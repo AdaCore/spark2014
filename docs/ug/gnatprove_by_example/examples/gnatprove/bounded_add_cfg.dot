@@ -1,0 +1,42 @@
+// bounded_add_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="red"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="red"];
+    7 [label="z'initial",shape="plaintext",fontcolor="red"];
+    8 [label="z'final",shape="plaintext",fontcolor="blue"];
+    11 [label="if x < 0 and y < 0",shape="diamond"];
+    12 [label="if x < integer'first<<<-16#8000_0000#>>> {-} y",shape="diamond"];
+    13 [label="z := integer'first<<<-16#8000_0000#>>>;"];
+    14 [label="z := x {+} y;"];
+    15 [label="elsif x > 0 and y > 0",shape="diamond"];
+    16 [label="if x > integer'last<<<16#7FFF_FFFF#>>> {-} y",shape="diamond"];
+    17 [label="z := integer'last<<<16#7FFF_FFFF#>>>;"];
+    18 [label="z := x {+} y;"];
+    19 [label="z := x {+} y;"];
+
+    1 ->  11 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    11 ->  15 [arrowType="normal"];
+    12 ->  13 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  2 [arrowType="normal"];
+    14 ->  2 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    15 ->  19 [arrowType="normal"];
+    16 ->  17 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    17 ->  2 [arrowType="normal"];
+    18 ->  2 [arrowType="normal"];
+    19 ->  2 [arrowType="normal"];
+}

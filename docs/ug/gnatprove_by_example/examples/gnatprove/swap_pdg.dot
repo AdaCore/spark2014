@@ -1,0 +1,24 @@
+// swap_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial",shape="plaintext"];
+    6 [label="y'final",shape="plaintext",fontcolor="blue"];
+    8 [label="temp'initial",shape="plaintext",fontcolor="red"];
+    9 [label="temp'final",shape="plaintext"];
+    11 [label="temp := x;"];
+    12 [label="x := y;"];
+    13 [label="y := temp;"];
+
+    1 ->  11 [arrowType="normal"];
+    1 ->  12 [arrowType="normal"];
+    1 ->  13 [arrowType="normal"];
+    3 ->  11 [arrowType="normal",color="red"];
+    5 ->  12 [arrowType="normal",color="red"];
+    11 ->  9 [arrowType="normal",color="red"];
+    11 ->  13 [arrowType="normal",color="red"];
+    12 ->  4 [arrowType="normal",color="red"];
+    13 ->  6 [arrowType="normal",color="red"];
+}

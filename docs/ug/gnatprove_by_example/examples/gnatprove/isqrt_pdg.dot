@@ -1,0 +1,38 @@
+// isqrt_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="n'initial",shape="plaintext"];
+    4 [label="n'final",shape="plaintext",fontcolor="red"];
+    5 [label="root'initial",shape="plaintext",fontcolor="red"];
+    6 [label="root'final",shape="plaintext",fontcolor="blue"];
+    8 [label="subtype big_natural is long_long_integer range 0 .. long_long_integer'last<<<16#7FFF_FFFF_FFFF_FFFF#>>>;"];
+    9 [label="local_root'initial",shape="plaintext",fontcolor="red"];
+    10 [label="local_root'final",shape="plaintext"];
+    12 [label="local_root := 0;"];
+    13 [label="exit when (local_root {+} 1) {*} (local_root {+} 1) > big_natural(n);\nLoops:&nbsp;L_1"];
+    14 [label="local_root := local_root {+} 1;\nLoops:&nbsp;L_1"];
+    15 [label="pragma loop_invariant (local_root {*} local_root <= big_natural(n) and thenlocal_root <= big_natural(natural'last<<<16#7FFF_FFFF#>>>)<<<16#7FFF_FFFF#>>>);<<<pragma check (loop_invariant, local_root {*} local_root <= big_natural(n) and then local_root <= big_natural(natural'last<<<16#7FFF_FFFF#>>>)<<<16#7FFF_FFFF#>>>);>>>"];
+    17 [label="root := natural({local_root});"];
+
+    1 ->  8 [arrowType="normal"];
+    1 ->  12 [arrowType="normal"];
+    1 ->  13 [arrowType="normal"];
+    1 ->  17 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  13 [arrowType="normal",color="red"];
+    3 ->  15 [arrowType="normal",color="red"];
+    12 ->  10 [arrowType="normal",color="red"];
+    12 ->  13 [arrowType="normal",color="red"];
+    12 ->  14 [arrowType="normal",color="red"];
+    12 ->  17 [arrowType="normal",color="red"];
+    13 ->  13 [arrowType="normal"];
+    13 ->  14 [arrowType="normal"];
+    13 ->  15 [arrowType="normal"];
+    14 ->  10 [arrowType="normal",color="red"];
+    14 ->  13 [arrowType="normal",color="red"];
+    14 ->  14 [arrowType="normal",color="red"];
+    14 ->  15 [arrowType="normal",color="red"];
+    14 ->  17 [arrowType="normal",color="red"];
+    17 ->  6 [arrowType="normal",color="red"];
+}

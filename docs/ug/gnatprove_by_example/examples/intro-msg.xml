@@ -4,14 +4,20 @@
     <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/intro.gpr</vfs_file>
     <category name="gnatprove" >
       <file>
-        <vfs_name>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1d.adb</vfs_name>
-        <message text="info: overflow check proved" column="13" line="7" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
-        <message text="info: precondition proved" column="6" line="13" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
-        <message text="precondition not proved" column="6" line="14" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <vfs_name>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t2q6.ads</vfs_name>
+        <message text="info: index check proved" column="26" line="13" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: range check proved" column="48" line="14" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: index check proved" column="58" line="14" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: overflow check proved" column="30" line="15" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: range check proved" column="30" line="15" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="range check not proved" column="53" line="14" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: postcondition proved" column="19" line="18" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
       </file>
       <file>
-        <vfs_name>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1d.ads</vfs_name>
-        <message text="postcondition not proved, requires X = X&apos;Old + 2" column="18" line="9" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <vfs_name>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t2q6.adb</vfs_name>
+        <message text="info: loop invariant initialization proved" column="10" line="9" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: loop invariant preservation proved" column="10" line="9" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
+        <message text="info: range check proved" column="21" line="12" class="GPS.KERNEL.MESSAGES.MARKUP.MARKUP_MESSAGE"  />
       </file>
     </category>
   </project>

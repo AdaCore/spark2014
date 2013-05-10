@@ -1,0 +1,21 @@
+// nextday_a_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="today'initial",shape="plaintext"];
+    4 [label="today'final",shape="plaintext",fontcolor="red"];
+    5 [label="tomorrow'initial",shape="plaintext",fontcolor="red"];
+    6 [label="tomorrow'final",shape="plaintext",fontcolor="blue"];
+    9 [label="if today = sun",shape="diamond"];
+    10 [label="tomorrow := mon;"];
+    11 [label="tomorrow := day'succ({today});"];
+
+    1 ->  9 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    3 ->  9 [arrowType="normal",color="red"];
+    3 ->  11 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal"];
+    9 ->  11 [arrowType="normal"];
+    10 ->  6 [arrowType="normal",color="red"];
+    11 ->  6 [arrowType="normal",color="red"];
+}

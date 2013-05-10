@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v2//EN" "http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="2">
+ <prover
+  id="0"
+  name="Alt-Ergo"
+  version="0.94"/>
+ <file
+  name="../t2q6__package.mlw"
+  verified="false"
+  expanded="true">
+  <theory
+   name="T2q6__sum_between__def"
+   locfile="../t2q6__package.mlw"
+   loclnum="2" loccnumb="7" loccnume="29"
+   verified="false"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t2q6__package.mlw"
+    loclnum="22" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="bf7117c9c71293feb679979bbf217de5"
+    proved="false"
+    expanded="true"
+    shape="iainfix =ato_intalato_intauain_rangeato_intauiainfix &lt;ato_intalato_intauain_rangeainfix +ato_intasum_betweenaaalaof_intainfix -ato_intauc1ato_intagetaeltsaaainfix -ainfix +ato_intauaoffsetaaaattr__ATTRIBUTE_FIRSTAain_rangeainfix -ato_intauc1Aain_rangeato_intauain_rangeainfix *c1000ainfix -ato_intalato_intauAain_rangeainfix *c1000ainfix -ato_intalato_intau">
+    <label
+     name="GP_Subp:t2q6.ads:10"/>
+    <label
+     name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+    <label
+     name="expl:VC for def"/>
+    <transf
+     name="split_goal"
+     proved="false"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t2q6__package.mlw"
+      loclnum="22" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="a0d64291b0d1c3ca4e87e7c041bdf032"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeato_intauIainfix =ato_intalato_intau">
+      <label
+       name="GP_Subp:t2q6.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.2"
+      locfile="../t2q6__package.mlw"
+      loclnum="22" loccnumb="5" loccnume="8"
+      expl="2."
+      sum="7e8ad0ae4bded6c00b1e03fe3f69047a"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeato_intauIainfix &lt;ato_intalato_intauIainfix =ato_intalato_intauN">
+      <label
+       name="GP_Subp:t2q6.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.3"
+      locfile="../t2q6__package.mlw"
+      loclnum="22" loccnumb="5" loccnume="8"
+      expl="3."
+      sum="7c49b74f5800a56aa84aec9aa22df7a4"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix -ato_intauc1Iainfix &lt;ato_intalato_intauIainfix =ato_intalato_intauN">
+      <label
+       name="GP_Subp:t2q6.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.4"
+      locfile="../t2q6__package.mlw"
+      loclnum="22" loccnumb="5" loccnume="8"
+      expl="4."
+      sum="2cf20cbcc8bb24bea04f0b602001c178"
+      proved="false"
+      expanded="false"
+      shape="ain_rangeainfix +ato_intasum_betweenaaalaof_intainfix -ato_intauc1ato_intagetaeltsaaainfix -ainfix +ato_intauaoffsetaaaattr__ATTRIBUTE_FIRSTIainfix &lt;ato_intalato_intauIainfix =ato_intalato_intauN">
+      <label
+       name="GP_Subp:t2q6.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="60"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="timeout" time="60.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.5"
+      locfile="../t2q6__package.mlw"
+      loclnum="22" loccnumb="5" loccnume="8"
+      expl="5."
+      sum="2205e1182ab52929fd5bc88abbe195e2"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix *c1000ainfix -ato_intalato_intauIainfix &lt;ato_intalato_intauNIainfix =ato_intalato_intauN">
+      <label
+       name="GP_Subp:t2q6.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.6"
+      locfile="../t2q6__package.mlw"
+      loclnum="22" loccnumb="5" loccnume="8"
+      expl="6."
+      sum="eb9dedd58545f5ac3b4d83736707ebc5"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix *c1000ainfix -ato_intalato_intauIainfix &lt;ato_intalato_intauNIainfix =ato_intalato_intauN">
+      <label
+       name="GP_Subp:t2q6.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.Sum_Between"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+  <theory
+   name="T2q6__sumarray__def"
+   locfile="../t2q6__package.mlw"
+   loclnum="40" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t2q6__package.mlw"
+    loclnum="60" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="40a5b9371a6967b3f1b61cfab1132018"
+    proved="true"
+    expanded="true"
+    shape="ainfix =ato_intV4ato_intasum_betweenaaaof_intc1aof_intc100Iiainfix &lt;=V1c100Aainfix &lt;=c1V1ainfix &lt;=V5c100NAainfix =V5ainfix +V3c1Aainfix =V4aof_intainfix +ato_intV2ato_intagetaeltsaaainfix -ainfix +V3aoffsetaaaattr__ATTRIBUTE_FIRSTAainfix &lt;=V3c100Aainfix &lt;=c1V3Aainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1NOainfix =V4V2Aainfix =V5V3AfAainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1Nainfix =V4V0Aainfix =V5V1Aainfix =V1c1Aainfix =V0aof_intc0Aainfix &lt;=ato_intV4ainfix *c1000ainfix -V5c1Aainfix &lt;=c0ato_intV4Aainfix =ato_intV4ato_intasum_betweenaaaof_intc1aof_intainfix -V5c1Iainfix =V5c1NIainfix &lt;=V5c100Aainfix =V5ainfix +V3c1Aainfix =V4aof_intainfix +ato_intV2ato_intagetaeltsaaainfix -ainfix +V3aoffsetaaaattr__ATTRIBUTE_FIRSTAainfix &lt;=V3c100Aainfix &lt;=c1V3Aain_rangeainfix +ato_intV2ato_intagetaeltsaaainfix -ainfix +V3aoffsetaaaattr__ATTRIBUTE_FIRSTIainfix &lt;=V3c100Aainfix &lt;=c1V3Iainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1NAainfix &lt;=ato_intV0ainfix *c1000ainfix -V1c1Aainfix &lt;=c0ato_intV0Aainfix =ato_intV0ato_intasum_betweenaaaof_intc1aof_intainfix -V1c1Iainfix =V1c1NIainfix &lt;=V1c100Aainfix &lt;=c1V1Iainfix =V1c1Iainfix =V0aof_intc0F">
+    <label
+     name="expl:VC for def"/>
+    <label
+     name="GP_Subp:t2q6.ads:17"/>
+    <label
+     name="GP_Pretty_Ada:T2Q6.SumArray"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t2q6__package.mlw"
+      loclnum="60" loccnumb="5" loccnume="8"
+      expl="1. loop invariant init"
+      sum="168dae3096c1609e68f2021459714b01"
+      proved="true"
+      expanded="false"
+      shape="ainfix &lt;=ato_intV0ainfix *c1000ainfix -V1c1Aainfix &lt;=c0ato_intV0Aainfix =ato_intV0ato_intasum_betweenaaaof_intc1aof_intainfix -V1c1Iainfix =V1c1NIainfix &lt;=V1c100Aainfix &lt;=c1V1Iainfix =V1c1Iainfix =V0aof_intc0F">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t2q6.ads:17"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.SumArray"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.2"
+      locfile="../t2q6__package.mlw"
+      loclnum="60" loccnumb="5" loccnume="8"
+      expl="2."
+      sum="84a4847e767007cc270eeec7dfa98c61"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix +ato_intV2ato_intagetaeltsaaainfix -ainfix +V3aoffsetaaaattr__ATTRIBUTE_FIRSTIainfix &lt;=V3c100Aainfix &lt;=c1V3Iainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1NIainfix &lt;=V1c100Aainfix &lt;=c1V1Iainfix =V1c1Iainfix =V0aof_intc0F">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t2q6.ads:17"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.SumArray"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.3"
+      locfile="../t2q6__package.mlw"
+      loclnum="60" loccnumb="5" loccnume="8"
+      expl="3. loop invariant preservation"
+      sum="e3ca4d861b410df9834b56ff6e25658c"
+      proved="true"
+      expanded="false"
+      shape="ainfix &lt;=ato_intV4ainfix *c1000ainfix -V5c1Aainfix &lt;=c0ato_intV4Aainfix =ato_intV4ato_intasum_betweenaaaof_intc1aof_intainfix -V5c1Iainfix =V5c1NIainfix &lt;=V5c100Aainfix =V5ainfix +V3c1Aainfix =V4aof_intainfix +ato_intV2ato_intagetaeltsaaainfix -ainfix +V3aoffsetaaaattr__ATTRIBUTE_FIRSTAainfix &lt;=V3c100Aainfix &lt;=c1V3Iainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1NIainfix &lt;=V1c100Aainfix &lt;=c1V1Iainfix =V1c1Iainfix =V0aof_intc0F">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t2q6.ads:17"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.SumArray"/>
+      <proof
+       prover="0"
+       timelimit="10"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="7.46"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.4"
+      locfile="../t2q6__package.mlw"
+      loclnum="60" loccnumb="5" loccnume="8"
+      expl="4."
+      sum="0f0c1760cee9869372b932b8f26aa8ba"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ato_intV4ato_intasum_betweenaaaof_intc1aof_intc100Iiainfix &lt;=V1c100Aainfix &lt;=c1V1ainfix &lt;=V5c100NAainfix =V5ainfix +V3c1Aainfix =V4aof_intainfix +ato_intV2ato_intagetaeltsaaainfix -ainfix +V3aoffsetaaaattr__ATTRIBUTE_FIRSTAainfix &lt;=V3c100Aainfix &lt;=c1V3Aainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1NOainfix =V4V2Aainfix =V5V3AfAainfix &lt;=ato_intV2ainfix *c1000ainfix -V3c1Aainfix &lt;=c0ato_intV2Aainfix =ato_intV2ato_intasum_betweenaaaof_intc1aof_intainfix -V3c1Iainfix =V3c1Nainfix =V4V0Aainfix =V5V1Aainfix =V1c1Aainfix =V0aof_intc0F">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t2q6.ads:17"/>
+      <label
+       name="GP_Pretty_Ada:T2Q6.SumArray"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.62"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+ </file>
+</why3session>

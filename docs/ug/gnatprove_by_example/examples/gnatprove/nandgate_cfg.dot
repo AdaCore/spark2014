@@ -1,0 +1,22 @@
+// nandgate_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="p'initial",shape="plaintext"];
+    4 [label="p'final",shape="plaintext",fontcolor="red"];
+    5 [label="q'initial",shape="plaintext"];
+    6 [label="q'final",shape="plaintext",fontcolor="red"];
+    7 [label="r'initial",shape="plaintext",fontcolor="red"];
+    8 [label="r'final",shape="plaintext",fontcolor="blue"];
+    11 [label="r := not (p and q);"];
+
+    1 ->  11 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    11 ->  2 [arrowType="normal"];
+}

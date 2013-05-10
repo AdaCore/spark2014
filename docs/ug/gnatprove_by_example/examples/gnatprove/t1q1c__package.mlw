@@ -1,0 +1,67 @@
+(* Module for checking absence of run-time errors and contract cases in the subprogram spec of "increment" defined at t1q1c.ads:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Spec *)
+module T1q1c__increment__pre
+ use import "_gnatprove_standard".Main
+ use        "t1q1c__variables".T1q1c__increment__x
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let pre_check "GP_Subp:t1q1c.ads:4" "GP_Pretty_Ada:precondition for T1Q1C.Increment"  (t1q1c__increment__x : ref Standard__integer.integer) 
+ requires { true }
+ ensures { true }
+  = 
+  ( abstract (___ignore(( (Standard__integer.to_int(!T1q1c__increment__x.x)) < 2147483647 ))) ensures {true};
+  (any unit
+  requires {true} 
+  ensures {( (Standard__integer.to_int !T1q1c__increment__x.x) < 2147483647 )} 
+
+  ) )
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "increment" defined at t1q1c.ads:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q1c__increment__def
+ use import "_gnatprove_standard".Main
+ use        "t1q1c__variables".T1q1c__increment__x
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q1c.ads:4" "GP_Pretty_Ada:T1Q1C.Increment"  (__void_param : unit) 
+ requires { ( (Standard__integer.to_int !T1q1c__increment__x.x) < 2147483647 ) }
+ ensures { true }
+  = 
+  try
+   ( ( "GP_Sloc:t1q1c.adb:7:8" T1q1c__increment__x.x := ( (Standard__integer.of_int(( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t1q1c.adb:7:13" "keep_on_simp" (Standard__integer.range_check_(( (Standard__integer.to_int(!T1q1c__increment__x.x)) + 1 ))) ))) ) );
+   raise Return__exc )
+  with
+   Return__exc -> abstract (___ignore(True)) ensures {true}
+  end
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "add2" defined at t1q1c.adb:10, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q1c__add2__def
+ use import "_gnatprove_standard".Main
+ use        "t1q1c__context_in_spec".T1q1c__increment
+ use        "t1q1c__context_in_spec".T1q1c__increment__expr_fun_closure
+ use        "t1q1c__variables".T1q1c__add2__x
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q1c.adb:10" "GP_Pretty_Ada:T1Q1C.Add2"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  try
+   ( ( "GP_Sloc:t1q1c.adb:13:6" let t1q1c__increment__x  = ref (!T1q1c__add2__x.x) in 
+    ( ( "GP_Reason:VC_PRECONDITION" "GP_Sloc_VC:t1q1c.adb:13:6" "keep_on_simp" (T1q1c__increment.func(t1q1c__increment__x)) );
+    T1q1c__add2__x.x := ( !t1q1c__increment__x ) ) );
+   ( "GP_Sloc:t1q1c.adb:14:6" let t1q1c__increment__x  = ref (!T1q1c__add2__x.x) in 
+    ( ( "GP_Reason:VC_PRECONDITION" "GP_Sloc_VC:t1q1c.adb:14:6" "keep_on_simp" (T1q1c__increment.func(t1q1c__increment__x)) );
+    T1q1c__add2__x.x := ( !t1q1c__increment__x ) ) );
+   raise Return__exc )
+  with
+   Return__exc -> abstract (___ignore(True)) ensures {true}
+  end
+end

@@ -1,0 +1,55 @@
+(* Module for defining the loop exit exception for the loop"L_1" defined at t2q5.adb:8, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__the_max__L_1
+ use import "_gnatprove_standard".Main
+
+ exception L_1
+end
+
+(* Module for defining the loop exit exception for the loop"L_2" defined at t2q5.adb:19, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p1b1__L_2
+ use import "_gnatprove_standard".Main
+
+ exception L_2
+end
+
+(* Module for defining the loop exit exception for the loop"L_3" defined at t2q5.adb:34, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p2b1__L_3
+ use import "_gnatprove_standard".Main
+
+ exception L_3
+end
+
+(* Module for defining the loop exit exception for the loop"L_4" defined at t2q5.adb:47, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p3b1__L_4
+ use import "_gnatprove_standard".Main
+
+ exception L_4
+end
+
+(* Module for defining the loop exit exception for the loop"L_5" defined at t2q5.adb:58, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p1b2__L_5
+ use import "_gnatprove_standard".Main
+
+ exception L_5
+end
+
+(* Module for defining the loop exit exception for the loop"L_6" defined at t2q5.adb:73, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p2b2__L_6
+ use import "_gnatprove_standard".Main
+
+ exception L_6
+end
+
+(* Module for defining the loop exit exception for the loop"L_7" defined at t2q5.adb:86, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p3b2__L_7
+ use import "_gnatprove_standard".Main
+
+ exception L_7
+end
+
+(* Module for defining the loop exit exception for the loop"L_8" defined at t2q5.adb:98, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T2q5__maxelement_p1b3__L_8
+ use import "_gnatprove_standard".Main
+
+ exception L_8
+end

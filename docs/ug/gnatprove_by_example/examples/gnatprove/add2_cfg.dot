@@ -1,0 +1,24 @@
+// add2_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="blue"];
+    7 [label="call increment",shape="box"];
+    8 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    9 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    10 [label="call increment",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+
+    1 ->  7 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    7 ->  8 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+}

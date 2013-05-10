@@ -2,50 +2,64 @@
 <Locations >
   <Project>
     <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/intro.gpr</vfs_file>
-    <file_marker column=" 12" line=" 7" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 21" line=" 5" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1.ads</vfs_file>
-    </file_marker>
     <file_marker column=" 1" line=" 1" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1a.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 33" line=" 5" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1b.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 13" line=" 7" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1b.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 12" line=" 9" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q2.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 17" line=" 7" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q2.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 17" line=" 5" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3a.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 1" line=" 1" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3b.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 18" line=" 7" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3c.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 30" line=" 11" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3c.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 1" line=" 1" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q4.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 1" line=" 8" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q5.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 1" line=" 1" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1d.adb</vfs_file>
+      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t2q6.adb</vfs_file>
     </file_marker>
     <file_marker current="true" column=" 1" line=" 1" >
-      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1d.ads</vfs_file>
+      <vfs_file>/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t2q6.ads</vfs_file>
+    </file_marker>
+  </Project>
+  <Project >
+    <file_marker column=" 12" line=" 7">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 21" line=" 5">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1a.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 33" line=" 5">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1b.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 13" line=" 7">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1b.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 12" line=" 9">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q2.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 17" line=" 7">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q2.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 17" line=" 5">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3a.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3b.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 18" line=" 7">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3c.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 30" line=" 11">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q3c.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q4.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 8">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q5.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1d.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t1q1d.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t2q4.ads</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1">
+      <vfs_file >/home/robinm/git/hi-lite/docs/ug/gnatprove_by_example/examples/t2q4.adb</vfs_file>
     </file_marker>
   </Project>
   <Project >

@@ -1,0 +1,10 @@
+t2q6.ads:13:26: info: index check proved
+t2q6.ads:14:48: info: range check proved
+t2q6.ads:14:58: info: index check proved
+t2q6.ads:15:30: info: overflow check proved
+t2q6.ads:15:30: info: range check proved
+t2q6.ads:14:53: range check not proved
+t2q6.adb:9:10: info: loop invariant initialization proved
+t2q6.adb:12:21: info: range check proved
+t2q6.ads:18:19: info: postcondition proved
+t2q6.adb:9:10: loop invariant preservation not proved

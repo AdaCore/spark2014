@@ -1,0 +1,22 @@
+(* Module for axiomatizing type "long_long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_long_integer 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  ( -9223372036854775808 )
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  9223372036854775807
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = long_long_integer, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end

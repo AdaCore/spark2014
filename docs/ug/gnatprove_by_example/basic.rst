@@ -322,6 +322,34 @@ range checks.
    :language: none
    :linenos:
 
+SumArray
+^^^^^^^^
+
+Here is a more complex loop example, this time using a ``for`` loop. The function
+``SumArray`` calculates the sum of the values of the elements of an array. The
+array has 100 elements, each of which may be in the range 0 to 1000. A suitable
+subtype has been defined to store the result. 
+
+.. literalinclude:: gnatprove_by_example/examples/t3q4.ads
+   :language: ada
+   :linenos:
+
+The loop invariant states that the current value of the sum is equal to the sum
+of the elements that have been iterated over so far, and cannot be more than
+1000 times the number of elements iterated over so far. The expression function
+``Summed_Between`` has been defined to help with this and is needed for proof
+purposes only as it only appears in the loop invariant.
+
+.. literalinclude:: gnatprove_by_example/examples/t3q4.adb
+   :language: ada
+   :linenos:
+
+The proof results show that |GNATprove| is able to prove all checks for this
+example.
+
+.. literalinclude:: gnatprove_by_example/results/t3q4.prove
+   :language: none
+   :linenos:
 
 Advanced Examples
 -----------------

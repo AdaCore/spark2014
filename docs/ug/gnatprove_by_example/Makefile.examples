@@ -16,7 +16,7 @@ flow:
 
 prove:
 	cp examples/intro.gpr prove
-	cd prove && gnatprove -q -P intro.gpr --report=all --mode=prove \
+	cd prove && gnatprove -q -P intro.gpr --report=all --mode=prove --timeout=5 \
 	  > prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)

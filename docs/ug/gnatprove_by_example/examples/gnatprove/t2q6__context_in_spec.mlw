@@ -1,0 +1,127 @@
+(* Module for defining the value of constant "a" defined at t2q6.ads:10, created in Gnat2Why.Decls.Translate_Constant *)
+module T2q6__sum_between__a
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function a 
+   :T2q6__arraytype.arraytype
+end
+
+(* Module for defining the value of constant "l" defined at t2q6.ads:11, created in Gnat2Why.Decls.Translate_Constant *)
+module T2q6__sum_between__l
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function l 
+   :T2q6__indextype.indextype
+end
+
+(* Module for defining the value of constant "u" defined at t2q6.ads:12, created in Gnat2Why.Decls.Translate_Constant *)
+module T2q6__sum_between__u
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function u 
+   :T2q6__counttype.counttype
+end
+
+(* Module giving a defining axiom for the expression function "sum_between" defined at t2q6.ads:10, created in Gnat2Why.Subprograms.Translate_Expression_Function_Body *)
+module T2q6__sum_between__expr_fun_axiom
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__elementtype
+ use        "t2q6__types_in_spec".T2q6__sumtype
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "t2q6__types_in_spec".T2q6__sum_between
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ axiom def_axiom :
+  (forall t2q6__sum_between__a  : T2q6__arraytype.arraytype.
+  (forall t2q6__sum_between__l  : T2q6__indextype.indextype.
+  (forall t2q6__sum_between__u  : T2q6__counttype.counttype [(T2q6__sum_between.sum_between t2q6__sum_between__a t2q6__sum_between__l t2q6__sum_between__u)].
+   ( (T2q6__sum_between.sum_between t2q6__sum_between__a t2q6__sum_between__l t2q6__sum_between__u) = (if (( (T2q6__indextype.to_int t2q6__sum_between__l) = (T2q6__counttype.to_int t2q6__sum_between__u) )) then (
+    (T2q6__sumtype.of_int (T2q6__elementtype.to_int (Array__1.access (T2q6__counttype.to_int t2q6__sum_between__u) (T2q6__arraytype.to_array t2q6__sum_between__a))))) else ((if (( (T2q6__indextype.to_int t2q6__sum_between__l) < (T2q6__counttype.to_int t2q6__sum_between__u) )) then (
+    (T2q6__sumtype.of_int ( (T2q6__sumtype.to_int (T2q6__sum_between.sum_between t2q6__sum_between__a t2q6__sum_between__l (T2q6__counttype.of_int ( (T2q6__counttype.to_int t2q6__sum_between__u) - 1 )))) + (T2q6__elementtype.to_int (Array__1.access (T2q6__counttype.to_int t2q6__sum_between__u) (T2q6__arraytype.to_array t2q6__sum_between__a))) ))) else (
+    (T2q6__sumtype.of_int ( 1000 * ( (T2q6__indextype.to_int t2q6__sum_between__l) - (T2q6__counttype.to_int t2q6__sum_between__u) ) )))))) ))))
+end
+
+(* Module for defining the value of constant "a" defined at t2q6.ads:17, created in Gnat2Why.Decls.Translate_Constant *)
+module T2q6__sumarray__a
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function a 
+   :T2q6__arraytype.arraytype
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "sumarray" defined at t2q6.ads:17, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T2q6__sumarray
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__sumtype
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "t2q6__types_in_spec".T2q6__sum_between
+ use        T2q6__sum_between__expr_fun_axiom
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ val func
+   (t2q6__sumarray__a : T2q6__arraytype.arraytype) (t2q6__sumarray__sum : ref T2q6__sumtype.sumtype)  :unit
+  requires { true }
+  ensures { ( (T2q6__sumtype.to_int !t2q6__sumarray__sum) = (T2q6__sumtype.to_int (T2q6__sum_between.sum_between t2q6__sumarray__a (T2q6__indextype.of_int 1) (T2q6__counttype.of_int 100))) ) }
+  writes {t2q6__sumarray__sum }
+
+end
+
+(* Module including all necessary axioms for the subprogram "sum_between" declared at t2q6.ads:10, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T2q6__sum_between__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__elementtype
+ use        "t2q6__types_in_spec".T2q6__sumtype
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "t2q6__types_in_spec".T2q6__sum_between
+ use        T2q6__sum_between__expr_fun_axiom
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+end
+
+(* Module including all necessary axioms for the subprogram "sumarray" declared at t2q6.ads:17, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T2q6__sumarray__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__elementtype
+ use        "t2q6__types_in_spec".T2q6__sumtype
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "t2q6__types_in_spec".T2q6__sum_between
+ use        T2q6__sum_between__expr_fun_axiom
+ use        T2q6__sum_between__expr_fun_closure
+ use        T2q6__sumarray
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+end

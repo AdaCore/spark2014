@@ -1,0 +1,20 @@
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "increment" defined at t1q1a.ads:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q1a__increment__def
+ use import "_gnatprove_standard".Main
+ use        "_standard__types_in_spec".Standard__integer
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t1q1a__variables".T1q1a__increment__x
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q1a.ads:4" "GP_Pretty_Ada:T1Q1A.Increment"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  try
+   ( ( "GP_Sloc:t1q1a.adb:7:7" T1q1a__increment__x.x := ( (Standard__integer.of_int(( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t1q1a.adb:7:12" "keep_on_simp" (Standard__integer.range_check_(( (Standard__integer.to_int(!T1q1a__increment__x.x)) + 1 ))) ))) ) );
+   raise Return__exc )
+  with
+   Return__exc -> abstract (___ignore(True)) ensures {true}
+  end
+end

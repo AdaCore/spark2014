@@ -1,0 +1,179 @@
+(* Module for axiomatizing type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  ( -2147483648 )
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  2147483647
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = integer, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "elementtype" defined at t2q6.ads:4, created in Gnat2Why.Types.Translate_Type *)
+module T2q6__elementtype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type elementtype 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  0
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  1000
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = elementtype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "counttype" defined at t2q6.ads:5, created in Gnat2Why.Types.Translate_Type *)
+module T2q6__counttype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type counttype 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  0
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  100
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = counttype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "indextype" defined at t2q6.ads:6, created in Gnat2Why.Types.Translate_Type *)
+module T2q6__indextype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type indextype 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  1
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  100
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = indextype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "TarraytypeB" defined at t2q6.ads:7, created in Gnat2Why.Types.Translate_Type *)
+module T2q6__TarraytypeB
+ use import "_gnatprove_standard".Main
+ use        T2q6__elementtype
+ use        "_standard__types_in_spec".Standard__integer
+ use        T2q6__indextype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = T2q6__elementtype.elementtype, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = T2q6__indextype.in_range
+ 
+ type tarraytypeB  = 
+  __t
+end
+
+(* Module for axiomatizing type "arraytype" defined at t2q6.ads:7, created in Gnat2Why.Types.Translate_Type *)
+module T2q6__arraytype
+ use import "_gnatprove_standard".Main
+ use        T2q6__elementtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function attr__ATTRIBUTE_FIRST  : int =
+  1
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  100
+ 
+ clone export "ada__model".Constr_Array with
+ type component_type = T2q6__elementtype.elementtype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+ 
+ type arraytype  = 
+  __t
+end
+
+(* Module for axiomatizing type "sumtype" defined at t2q6.ads:8, created in Gnat2Why.Types.Translate_Type *)
+module T2q6__sumtype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type sumtype 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  0
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  100000
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = sumtype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "sum_between" defined at t2q6.ads:10, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T2q6__sum_between
+ use import "_gnatprove_standard".Main
+ use        T2q6__sumtype
+ use        T2q6__counttype
+ use        T2q6__indextype
+ use        T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function sum_between 
+   (t2q6__sum_between__a : T2q6__arraytype.arraytype) (t2q6__sum_between__l : T2q6__indextype.indextype) (t2q6__sum_between__u : T2q6__counttype.counttype)  :T2q6__sumtype.sumtype
+ 
+ val func
+   (t2q6__sum_between__a : T2q6__arraytype.arraytype) (t2q6__sum_between__l : T2q6__indextype.indextype) (t2q6__sum_between__u : T2q6__counttype.counttype)  :T2q6__sumtype.sumtype
+  requires { true }
+  ensures { ( result = (sum_between t2q6__sum_between__a t2q6__sum_between__l t2q6__sum_between__u) ) }
+
+end

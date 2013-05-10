@@ -1,0 +1,25 @@
+// add2_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext"];
+    4 [label="x'final",shape="plaintext",fontcolor="blue"];
+    7 [label="call increment",shape="box"];
+    8 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    9 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    10 [label="call increment",shape="box"];
+    11 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    12 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+
+    1 ->  7 [arrowType="normal"];
+    1 ->  10 [arrowType="normal"];
+    3 ->  8 [arrowType="normal",color="red"];
+    7 ->  8 [arrowType="normal"];
+    7 ->  9 [arrowType="normal"];
+    8 ->  9 [arrowType="normal",color="cornflowerblue"];
+    9 ->  11 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    11 ->  12 [arrowType="normal",color="cornflowerblue"];
+    12 ->  4 [arrowType="normal",color="red"];
+}

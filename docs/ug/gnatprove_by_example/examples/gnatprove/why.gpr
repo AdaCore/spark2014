@@ -2,9 +2,14 @@ project Why is
 for Source_Files use (
    "t1q1__package.mlw",
    "t1q3c__package.mlw",
+   "t2q6__package.mlw",
    "t1q1b__package.mlw",
+   "t1q4__package.mlw",
    "t1q3a__package.mlw",
    "t1q1d__package.mlw",
+   "t1q1c__package.mlw",
+   "t1q1a__package.mlw",
+   "t1q1e__package.mlw",
    "t1q5__package.mlw",
    "t1q2__package.mlw",
    "t1q3b__package.mlw");

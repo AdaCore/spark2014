@@ -1,0 +1,68 @@
+(* Module for axiomatizing type "T1b" defined at t2q4.adb:7, created in Gnat2Why.Types.Translate_Type *)
+module T2q4__clear__L_1__T1b
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type t1b 
+ 
+ function attr__ATTRIBUTE_FIRST 
+   :int
+ 
+ function attr__ATTRIBUTE_LAST 
+   :int
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = t1b, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "T6b" defined at t2q4.adb:8, created in Gnat2Why.Types.Translate_Type *)
+module T2q4__clear__L_1__L5b__T6b
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type t6b 
+ 
+ function attr__ATTRIBUTE_FIRST 
+   :int
+ 
+ function attr__ATTRIBUTE_LAST 
+   :int
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = t6b, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "T3b" defined at t2q4.adb:8, created in Gnat2Why.Types.Translate_Type *)
+module T2q4__clear__L_1__L2b__T3b
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type t3b 
+ 
+ function attr__ATTRIBUTE_FIRST 
+   :int
+ 
+ function attr__ATTRIBUTE_LAST 
+   :int
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = t3b, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end

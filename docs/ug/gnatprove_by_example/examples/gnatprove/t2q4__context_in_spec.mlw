@@ -1,0 +1,60 @@
+(* Module for defining the value of constant "l" defined at t2q4.ads:8, created in Gnat2Why.Decls.Translate_Constant *)
+module T2q4__clear__l
+ use import "_gnatprove_standard".Main
+ use        "t2q4__types_in_spec".T2q4__indextype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function l 
+   :T2q4__indextype.indextype
+end
+
+(* Module for defining the value of constant "u" defined at t2q4.ads:8, created in Gnat2Why.Decls.Translate_Constant *)
+module T2q4__clear__u
+ use import "_gnatprove_standard".Main
+ use        "t2q4__types_in_spec".T2q4__indextype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function u 
+   :T2q4__indextype.indextype
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "clear" defined at t2q4.ads:8, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T2q4__clear
+ use import "_gnatprove_standard".Main
+ use        "t2q4__types_in_spec".T2q4__elementtype
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q4__types_in_spec".T2q4__indextype
+ use        "t2q4__types_in_spec".T2q4__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+ use        "_gnatprove_standard".Array__1
+
+ val func
+   (t2q4__clear__a : ref T2q4__arraytype.arraytype) (t2q4__clear__l : T2q4__indextype.indextype) (t2q4__clear__u : T2q4__indextype.indextype)  :unit
+  requires { true }
+  ensures { ( (forall t2q4__clear__L4s__n  : int.
+   ( ( ( (T2q4__indextype.to_int t2q4__clear__l) <= t2q4__clear__L4s__n ) /\ ( t2q4__clear__L4s__n <= (T2q4__indextype.to_int t2q4__clear__u) ) ) -> ( (T2q4__elementtype.to_int (Array__1.access t2q4__clear__L4s__n (T2q4__arraytype.to_array !t2q4__clear__a))) = 0 ) )) /\ (forall t2q4__clear__L6s__n  : int.
+   ( ( ( 1 <= t2q4__clear__L6s__n ) /\ ( t2q4__clear__L6s__n <= 100 ) ) -> (if (( ( t2q4__clear__L6s__n < (T2q4__indextype.to_int t2q4__clear__l) ) \/ ( t2q4__clear__L6s__n > (T2q4__indextype.to_int t2q4__clear__u) ) )) then (
+    ( (T2q4__elementtype.to_int (Array__1.access t2q4__clear__L6s__n (T2q4__arraytype.to_array !t2q4__clear__a))) = (T2q4__elementtype.to_int (Array__1.access t2q4__clear__L6s__n (T2q4__arraytype.to_array (old !t2q4__clear__a )))) )) else (
+    true)) )) ) }
+  writes {t2q4__clear__a }
+
+end
+
+(* Module including all necessary axioms for the subprogram "clear" declared at t2q4.ads:8, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T2q4__clear__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use        T2q4__clear
+ use        "t2q4__types_in_spec".T2q4__elementtype
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q4__types_in_spec".T2q4__indextype
+ use        "t2q4__types_in_spec".T2q4__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+ use        "_gnatprove_standard".Array__1
+
+end

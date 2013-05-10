@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v2//EN" "http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="2">
+ <prover
+  id="0"
+  name="Alt-Ergo"
+  version="0.94"/>
+ <file
+  name="../t2q4__package.mlw"
+  verified="true"
+  expanded="true">
+  <theory
+   name="T2q4__clear__def"
+   locfile="../t2q4__package.mlw"
+   loclnum="2" loccnumb="7" loccnume="23"
+   verified="true"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t2q4__package.mlw"
+    loclnum="19" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="46c22b1599a2dfb704cab23c0b416f44"
+    proved="true"
+    expanded="true"
+    shape="ainfix =ato_intagetV14ainfix -ainfix +V20V15aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTIainfix &gt;V20ato_intauOainfix &lt;V20ato_intalIainfix &lt;=V20c100Aainfix &lt;=c1V20FAainfix =ato_intagetV14ainfix -ainfix +V21V15aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V21ato_intauAainfix &lt;=ato_intalV21FIiainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10ainfix &lt;=V16ato_intauNAainfix =V16ainfix +V13c1Aainfix =aoffsetaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V15Aainfix =aeltsaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V14Aainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Aainfix =ato_intagetV11ainfix -ainfix +V22V12aattr__ATTRIBUTE_FIRSTato_intagetV2ainfix -ainfix +V22V3aattr__ATTRIBUTE_FIRSTIainfix &gt;=V22V13Oainfix &lt;V22ato_intalIainfix &lt;=V22c100Aainfix &lt;=c1V22FAainfix =ato_intagetV11ainfix -ainfix +V23V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V23ainfix -V13c1Aainfix &lt;=ato_intalV23FAainfix =V1V3Aainfix =V0V2Oainfix =V17V18Aainfix =V16V13AfAainfix =ato_intagetV11ainfix -ainfix +V24V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V24V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V24V13Oainfix &lt;V24ato_intalIainfix &lt;=V24c100Aainfix &lt;=c1V24FAainfix =ato_intagetV11ainfix -ainfix +V25V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V25ainfix -V13c1Aainfix &lt;=ato_intalV25Fainfix =V17V19Aainfix =V16V10Aainfix =V1V15Aainfix =V0V14Aainfix =V16V10Aainfix =V10ato_intalAainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTAain_rangeV6Iainfix &lt;=V6ato_intauAainfix &lt;=ato_intalV6Iainfix =ato_intagetV14ainfix -ainfix +V26V15aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V26V1aattr__ATTRIBUTE_FIRSTIainfix &gt;V26ato_intauOainfix &lt;V26ato_intalIainfix &lt;=V26c100Aainfix &lt;=c1V26Fqainfix =V7aTrueIiainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10ainfix &lt;=V16ato_intauNAainfix =V16ainfix +V13c1Aainfix =aoffsetaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V15Aainfix =aeltsaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V14Aainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Aainfix =ato_intagetV11ainfix -ainfix +V27V12aattr__ATTRIBUTE_FIRSTato_intagetV2ainfix -ainfix +V27V3aattr__ATTRIBUTE_FIRSTIainfix &gt;=V27V13Oainfix &lt;V27ato_intalIainfix &lt;=V27c100Aainfix &lt;=c1V27FAainfix =ato_intagetV11ainfix -ainfix +V28V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V28ainfix -V13c1Aainfix &lt;=ato_intalV28FAainfix =V1V3Aainfix =V0V2Oainfix =V17V18Aainfix =V16V13AfAainfix =ato_intagetV11ainfix -ainfix +V29V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V29V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V29V13Oainfix &lt;V29ato_intalIainfix &lt;=V29c100Aainfix &lt;=c1V29FAainfix =ato_intagetV11ainfix -ainfix +V30V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V30ainfix -V13c1Aainfix &lt;=ato_intalV30Fainfix =V17V19Aainfix =V16V10Aainfix =V1V15Aainfix =V0V14Aainfix =V16V10Aainfix =V10ato_intalAainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTAainfix =ato_intagetV14ainfix -ainfix +V31V15aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V31V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V31V16Oainfix &lt;V31ato_intalIainfix &lt;=V31c100Aainfix &lt;=c1V31FAainfix =ato_intagetV14ainfix -ainfix +V32V15aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V32ainfix -V16c1Aainfix &lt;=ato_intalV32FIainfix &lt;=V16ato_intauAainfix =V16ainfix +V13c1Aainfix =aoffsetaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V15Aainfix =aeltsaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V14Aainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Aain_rangeV4Iainfix &lt;=V4ainfix -V13c1Aainfix &lt;=ato_intalV4Iainfix =ato_intagetV11ainfix -ainfix +V33V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V33V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V33V13Oainfix &lt;V33ato_intalIainfix &lt;=V33c100Aainfix &lt;=c1V33Fqainfix =V5aTrueIainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Iainfix =ato_intagetV11ainfix -ainfix +V34V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V34V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V34V13Oainfix &lt;V34ato_intalIainfix &lt;=V34c100Aainfix &lt;=c1V34FAainfix =ato_intagetV11ainfix -ainfix +V35V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V35ainfix -V13c1Aainfix &lt;=ato_intalV35FAainfix =ato_intagetV0ainfix -ainfix +V36V1aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V36V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V36V10Oainfix &lt;V36ato_intalIainfix &lt;=V36c100Aainfix &lt;=c1V36FAainfix =ato_intagetV0ainfix -ainfix +V37V1aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V37ainfix -V10c1Aainfix &lt;=ato_intalV37FIainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10Iainfix =V10ato_intalIainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTAainfix &lt;=ato_intauaattr__ATTRIBUTE_LASTAainfix &gt;=ato_intalaattr__ATTRIBUTE_FIRSTIainfix &lt;=ato_intalato_intauLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+    <label
+     name="GP_Subp:t2q4.ads:8"/>
+    <label
+     name="GP_Pretty_Ada:T2Q4.Clear"/>
+    <label
+     name="expl:VC for def"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t2q4__package.mlw"
+      loclnum="19" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="507efb23f803390746845d4599e1ef81"
+      proved="true"
+      expanded="false"
+      shape="ainfix &lt;=ato_intauaattr__ATTRIBUTE_LASTAainfix &gt;=ato_intalaattr__ATTRIBUTE_FIRSTIainfix &lt;=ato_intalato_intauLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+      <label
+       name="GP_Subp:t2q4.ads:8"/>
+      <label
+       name="GP_Pretty_Ada:T2Q4.Clear"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.2"
+      locfile="../t2q4__package.mlw"
+      loclnum="19" loccnumb="5" loccnume="8"
+      expl="2. loop invariant init"
+      sum="910d4e971ab8d5fd529b730322e8bf65"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V20V10Oainfix &lt;V20ato_intalIainfix &lt;=V20c100Aainfix &lt;=c1V20FAainfix =ato_intagetV0ainfix -ainfix +V21V1aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V21ainfix -V10c1Aainfix &lt;=ato_intalV21FIainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10Iainfix =V10ato_intalIainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+      <label
+       name="GP_Subp:t2q4.ads:8"/>
+      <label
+       name="GP_Pretty_Ada:T2Q4.Clear"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.3"
+      locfile="../t2q4__package.mlw"
+      loclnum="19" loccnumb="5" loccnume="8"
+      expl="3."
+      sum="bd3f091d62ff39aeb4286c4a96ab93f1"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeV4Iainfix &lt;=V4ainfix -V13c1Aainfix &lt;=ato_intalV4Iainfix =ato_intagetV11ainfix -ainfix +V20V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V20V13Oainfix &lt;V20ato_intalIainfix &lt;=V20c100Aainfix &lt;=c1V20Fqainfix =V5aTrueIainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Iainfix =ato_intagetV11ainfix -ainfix +V21V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V21V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V21V13Oainfix &lt;V21ato_intalIainfix &lt;=V21c100Aainfix &lt;=c1V21FAainfix =ato_intagetV11ainfix -ainfix +V22V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V22ainfix -V13c1Aainfix &lt;=ato_intalV22FIainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10Iainfix =V10ato_intalIainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+      <label
+       name="GP_Subp:t2q4.ads:8"/>
+      <label
+       name="GP_Pretty_Ada:T2Q4.Clear"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.4"
+      locfile="../t2q4__package.mlw"
+      loclnum="19" loccnumb="5" loccnume="8"
+      expl="4. loop invariant preservation"
+      sum="7ae8186fa95c992dca53d727d797bd43"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ato_intagetV14ainfix -ainfix +V20V15aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V20V16Oainfix &lt;V20ato_intalIainfix &lt;=V20c100Aainfix &lt;=c1V20FAainfix =ato_intagetV14ainfix -ainfix +V21V15aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V21ainfix -V16c1Aainfix &lt;=ato_intalV21FIainfix &lt;=V16ato_intauAainfix =V16ainfix +V13c1Aainfix =aoffsetaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V15Aainfix =aeltsaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V14Aainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Iainfix =ato_intagetV11ainfix -ainfix +V22V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V22V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V22V13Oainfix &lt;V22ato_intalIainfix &lt;=V22c100Aainfix &lt;=c1V22FAainfix =ato_intagetV11ainfix -ainfix +V23V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V23ainfix -V13c1Aainfix &lt;=ato_intalV23FIainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10Iainfix =V10ato_intalIainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+      <label
+       name="GP_Subp:t2q4.ads:8"/>
+      <label
+       name="GP_Pretty_Ada:T2Q4.Clear"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="1.52"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.5"
+      locfile="../t2q4__package.mlw"
+      loclnum="19" loccnumb="5" loccnume="8"
+      expl="5."
+      sum="dc639f679541d9b2f99b621ed2f4f9f0"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeV6Iainfix &lt;=V6ato_intauAainfix &lt;=ato_intalV6Iainfix =ato_intagetV14ainfix -ainfix +V20V15aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTIainfix &gt;V20ato_intauOainfix &lt;V20ato_intalIainfix &lt;=V20c100Aainfix &lt;=c1V20Fqainfix =V7aTrueIiainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10ainfix &lt;=V16ato_intauNAainfix =V16ainfix +V13c1Aainfix =aoffsetaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V15Aainfix =aeltsaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V14Aainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Aainfix =ato_intagetV11ainfix -ainfix +V21V12aattr__ATTRIBUTE_FIRSTato_intagetV2ainfix -ainfix +V21V3aattr__ATTRIBUTE_FIRSTIainfix &gt;=V21V13Oainfix &lt;V21ato_intalIainfix &lt;=V21c100Aainfix &lt;=c1V21FAainfix =ato_intagetV11ainfix -ainfix +V22V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V22ainfix -V13c1Aainfix &lt;=ato_intalV22FAainfix =V1V3Aainfix =V0V2Oainfix =V17V18Aainfix =V16V13AfAainfix =ato_intagetV11ainfix -ainfix +V23V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V23V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V23V13Oainfix &lt;V23ato_intalIainfix &lt;=V23c100Aainfix &lt;=c1V23FAainfix =ato_intagetV11ainfix -ainfix +V24V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V24ainfix -V13c1Aainfix &lt;=ato_intalV24Fainfix =V17V19Aainfix =V16V10Aainfix =V1V15Aainfix =V0V14Aainfix =V16V10Aainfix =V10ato_intalAainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+      <label
+       name="GP_Subp:t2q4.ads:8"/>
+      <label
+       name="GP_Pretty_Ada:T2Q4.Clear"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.11"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.6"
+      locfile="../t2q4__package.mlw"
+      loclnum="19" loccnumb="5" loccnume="8"
+      expl="6."
+      sum="71cc7ad624a218f9329de1ac8dad8451"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ato_intagetV14ainfix -ainfix +V20V15aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V20V1aattr__ATTRIBUTE_FIRSTIainfix &gt;V20ato_intauOainfix &lt;V20ato_intalIainfix &lt;=V20c100Aainfix &lt;=c1V20FAainfix =ato_intagetV14ainfix -ainfix +V21V15aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V21ato_intauAainfix &lt;=ato_intalV21FIiainfix &lt;=V10ato_intauAainfix &lt;=ato_intalV10ainfix &lt;=V16ato_intauNAainfix =V16ainfix +V13c1Aainfix =aoffsetaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V15Aainfix =aeltsaupdateV13amk tV11V12aattr__ATTRIBUTE_FIRSTaattr__ATTRIBUTE_LASTaof_intc0V14Aainfix &lt;=V13ato_intauAainfix &lt;=ato_intalV13Aainfix =ato_intagetV11ainfix -ainfix +V22V12aattr__ATTRIBUTE_FIRSTato_intagetV2ainfix -ainfix +V22V3aattr__ATTRIBUTE_FIRSTIainfix &gt;=V22V13Oainfix &lt;V22ato_intalIainfix &lt;=V22c100Aainfix &lt;=c1V22FAainfix =ato_intagetV11ainfix -ainfix +V23V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V23ainfix -V13c1Aainfix &lt;=ato_intalV23FAainfix =V1V3Aainfix =V0V2Oainfix =V17V18Aainfix =V16V13AfAainfix =ato_intagetV11ainfix -ainfix +V24V12aattr__ATTRIBUTE_FIRSTato_intagetV0ainfix -ainfix +V24V1aattr__ATTRIBUTE_FIRSTIainfix &gt;=V24V13Oainfix &lt;V24ato_intalIainfix &lt;=V24c100Aainfix &lt;=c1V24FAainfix =ato_intagetV11ainfix -ainfix +V25V12aattr__ATTRIBUTE_FIRSTc0Iainfix &lt;=V25ainfix -V13c1Aainfix &lt;=ato_intalV25Fainfix =V17V19Aainfix =V16V10Aainfix =V1V15Aainfix =V0V14Aainfix =V16V10Aainfix =V10ato_intalAainfix =ato_intauaattr__ATTRIBUTE_LASTAainfix =ato_intalaattr__ATTRIBUTE_FIRSTLamk __tV8V9Lamk __tV11V12Lamk __tV14V15F">
+      <label
+       name="GP_Subp:t2q4.ads:8"/>
+      <label
+       name="GP_Pretty_Ada:T2Q4.Clear"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="1"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.26"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+ </file>
+</why3session>

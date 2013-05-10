@@ -1,0 +1,192 @@
+(* Module for axiomatizing type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  ( -2147483648 )
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  2147483647
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = integer, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "elementtype" defined at t2q5.ads:4, created in Gnat2Why.Types.Translate_Type *)
+module T2q5__elementtype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type elementtype 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  0
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  1000
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = elementtype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "indextype" defined at t2q5.ads:5, created in Gnat2Why.Types.Translate_Type *)
+module T2q5__indextype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type indextype 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  1
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  100
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = indextype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "TarraytypeB" defined at t2q5.ads:6, created in Gnat2Why.Types.Translate_Type *)
+module T2q5__TarraytypeB
+ use import "_gnatprove_standard".Main
+ use        T2q5__indextype
+ use        "_standard__types_in_spec".Standard__integer
+ use        T2q5__elementtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = T2q5__elementtype.elementtype, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = T2q5__indextype.in_range
+ 
+ type tarraytypeB  = 
+  __t
+end
+
+(* Module for axiomatizing type "arraytype" defined at t2q5.ads:6, created in Gnat2Why.Types.Translate_Type *)
+module T2q5__arraytype
+ use import "_gnatprove_standard".Main
+ use        T2q5__elementtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function attr__ATTRIBUTE_FIRST  : int =
+  1
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  100
+ 
+ clone export "ada__model".Constr_Array with
+ type component_type = T2q5__elementtype.elementtype, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+ 
+ type arraytype  = 
+  __t
+end
+
+(* Module for axiomatizing type "T10s" defined at t2q5.ads:15, created in Gnat2Why.Types.Translate_Type *)
+module T2q5__the_max__L9s__T10s
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type t10s 
+ 
+ function attr__ATTRIBUTE_FIRST 
+   :int
+ 
+ function attr__ATTRIBUTE_LAST 
+   :int
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = t10s, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for axiomatizing type "T12s" defined at t2q5.ads:16, created in Gnat2Why.Types.Translate_Type *)
+module T2q5__the_max__L11s__T12s
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type t12s 
+ 
+ function attr__ATTRIBUTE_FIRST 
+   :int
+ 
+ function attr__ATTRIBUTE_LAST 
+   :int
+ 
+ function attr__ATTRIBUTE_MODULUS 
+   :int
+ 
+ clone export "ada__model".Discrete with
+ type t = t12s, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "maxelement_p3b1" defined at t2q5.ads:47, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T2q5__maxelement_p3b1
+ use import "_gnatprove_standard".Main
+ use        T2q5__arraytype
+ use        T2q5__elementtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ val func
+   (t2q5__maxelement_p3b1__a : T2q5__arraytype.arraytype) (t2q5__maxelement_p3b1__max : ref T2q5__elementtype.elementtype)  :unit
+  requires { true }
+  ensures { true }
+  writes {t2q5__maxelement_p3b1__max }
+
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "maxelement_p3b2" defined at t2q5.ads:62, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T2q5__maxelement_p3b2
+ use import "_gnatprove_standard".Main
+ use        T2q5__arraytype
+ use        T2q5__elementtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ val func
+   (t2q5__maxelement_p3b2__a : T2q5__arraytype.arraytype) (t2q5__maxelement_p3b2__max : ref T2q5__elementtype.elementtype)  :unit
+  requires { true }
+  ensures { true }
+  writes {t2q5__maxelement_p3b2__max }
+
+end

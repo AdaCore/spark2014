@@ -1,0 +1,100 @@
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "sum_between" defined at t2q6.ads:10, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T2q6__sum_between__def
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__elementtype
+ use        "t2q6__types_in_spec".T2q6__sumtype
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "t2q6__types_in_spec".T2q6__sum_between
+ use        "t2q6__context_in_spec".T2q6__sum_between__expr_fun_axiom
+ use        "t2q6__context_in_spec".T2q6__sum_between__expr_fun_closure
+ use        "t2q6__context_in_spec".T2q6__sum_between__a
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "t2q6__context_in_spec".T2q6__sum_between__l
+ use        "t2q6__context_in_spec".T2q6__sum_between__u
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ val t2q6__sum_between___result "GP_Ada_Name:Sum_Between'Result" : ref T2q6__sumtype.sumtype
+ 
+ let def "GP_Subp:t2q6.ads:10" "GP_Pretty_Ada:T2Q6.Sum_Between"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  try
+   ( ( "GP_Sloc:t2q6.ads:13:8" ( t2q6__sum_between___result := ( (if (( (T2q6__indextype.to_int(T2q6__sum_between__l.l)) = (T2q6__counttype.to_int(T2q6__sum_between__u.u)) )) then (
+    (T2q6__sumtype.of_int((T2q6__elementtype.to_int((Array__1.access(( "GP_Reason:VC_INDEX_CHECK" "GP_Sloc_VC:t2q6.ads:13:26" "keep_on_simp" (T2q6__indextype.range_check_((T2q6__counttype.to_int(T2q6__sum_between__u.u)))) )) ((T2q6__arraytype.to_array(T2q6__sum_between__a.a))))))))) else ((if (( (T2q6__indextype.to_int(T2q6__sum_between__l.l)) < (T2q6__counttype.to_int(T2q6__sum_between__u.u)) )) then (
+    (T2q6__sumtype.of_int(( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t2q6.ads:14:53" "keep_on_simp" (T2q6__sumtype.range_check_(( (T2q6__sumtype.to_int((T2q6__sum_between.func(T2q6__sum_between__a.a) (T2q6__sum_between__l.l) ((T2q6__counttype.of_int(( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t2q6.ads:14:48" "keep_on_simp" (T2q6__counttype.range_check_(( (T2q6__counttype.to_int(T2q6__sum_between__u.u)) - 1 ))) ))))))) + (T2q6__elementtype.to_int((Array__1.access(( "GP_Reason:VC_INDEX_CHECK" "GP_Sloc_VC:t2q6.ads:14:58" "keep_on_simp" (T2q6__indextype.range_check_((T2q6__counttype.to_int(T2q6__sum_between__u.u)))) )) ((T2q6__arraytype.to_array(T2q6__sum_between__a.a)))))) ))) )))) else (
+    (T2q6__sumtype.of_int(( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t2q6.ads:15:30" "keep_on_simp" (T2q6__sumtype.range_check_(( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t2q6.ads:15:30" "keep_on_simp" (Standard__integer.range_check_(( 1000 * ( (T2q6__indextype.to_int(T2q6__sum_between__l.l)) - (T2q6__counttype.to_int(T2q6__sum_between__u.u)) ) ))) ))) ))))))) );
+   raise Return__exc ) );
+   raise Return__exc )
+  with
+   Return__exc -> ( abstract (___ignore(True)) ensures {true};
+   !t2q6__sum_between___result )
+  end
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "sumarray" defined at t2q6.ads:17, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T2q6__sumarray__def
+ use import "_gnatprove_standard".Main
+ use        "t2q6__types_in_spec".T2q6__elementtype
+ use        "t2q6__types_in_spec".T2q6__sumtype
+ use        "t2q6__types_in_spec".T2q6__counttype
+ use        "t2q6__types_in_spec".T2q6__sum_between
+ use        "t2q6__context_in_spec".T2q6__sum_between__expr_fun_axiom
+ use        "t2q6__context_in_spec".T2q6__sum_between__expr_fun_closure
+ use        "_standard__types_in_spec".Standard__integer
+ use        "t2q6__types_in_spec".T2q6__indextype
+ use        "t2q6__variables".T2q6__sumarray__L_1__i
+ use        "t2q6__context_in_spec".T2q6__sumarray__a
+ use        "t2q6__context_in_body".T2q6__sumarray__L_1
+ use        "t2q6__variables".T2q6__sumarray__sum
+ use        "t2q6__types_in_spec".T2q6__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+ use        "_gnatprove_standard".Array__1
+
+ let def "GP_Subp:t2q6.ads:17" "GP_Pretty_Ada:T2Q6.SumArray"  (__void_param : unit) 
+ requires { true }
+ ensures { ( "GP_Reason:VC_POSTCONDITION" "GP_Sloc_VC:t2q6.ads:18:19" "keep_on_simp" ( "GP_Pretty_Ada:Sum = Sum_Between(A, IndexType'First, IndexType'last)" "GP_Sloc:t2q6.ads:18:19" ( (T2q6__sumtype.to_int !T2q6__sumarray__sum.sum) = (T2q6__sumtype.to_int (T2q6__sum_between.sum_between T2q6__sumarray__a.a (T2q6__indextype.of_int 1) (T2q6__counttype.of_int 100))) ) ) ) }
+  = 
+  try
+   ( ( "GP_Sloc:t2q6.adb:7:11" T2q6__sumarray__sum.sum := ( (T2q6__sumtype.of_int(0)) ) );
+   ( "GP_Sloc:t2q6.adb:8:26" (let _temp_standard__t2q6_0 = 1 in (
+   (let _temp_standard__t2q6_1 = 100 in (
+    ( T2q6__sumarray__L_1__i.i := ( _temp_standard__t2q6_0 );
+    (if ((andb(( _temp_standard__t2q6_0 <= !T2q6__sumarray__L_1__i.i )) (( !T2q6__sumarray__L_1__i.i <= _temp_standard__t2q6_1 )))) then (
+     try
+      while True do
+       invariant { 
+        ( "GP_Reason:VC_LOOP_INVARIANT" "GP_Sloc_VC:t2q6.adb:9:10" "keep_on_simp" ( ( (if (( !T2q6__sumarray__L_1__i.i <> 1 )) then (
+         ( "GP_Pretty_Ada:Sum = Sum_Between(A, IndexType'First, I-1)" "GP_Sloc:t2q6.adb:9:65" ( (T2q6__sumtype.to_int !T2q6__sumarray__sum.sum) = (T2q6__sumtype.to_int (T2q6__sum_between.sum_between T2q6__sumarray__a.a (T2q6__indextype.of_int 1) (T2q6__counttype.of_int ( !T2q6__sumarray__L_1__i.i - 1 )))) ) )) else (
+         ( "GP_Pretty_Ada:true" "GP_Sloc:t2q6.adb:9:34" true ))) /\ ( "GP_Pretty_Ada:0 <= Sum" "GP_Sloc:t2q6.adb:10:34" ( 0 <= (T2q6__sumtype.to_int !T2q6__sumarray__sum.sum) ) ) ) /\ ( "GP_Pretty_Ada:Sum <= ElementType'Last * (I - IndexType'first" "GP_Sloc:t2q6.adb:11:34" ( (T2q6__sumtype.to_int !T2q6__sumarray__sum.sum) <= ( 1000 * ( !T2q6__sumarray__L_1__i.i - 1 ) ) ) ) ) )
+        }
+       ( ( (any unit
+       requires {true} 
+       ensures {( ( 1 <= !T2q6__sumarray__L_1__i.i ) /\ ( !T2q6__sumarray__L_1__i.i <= 100 ) )} 
+
+       );
+       abstract (___ignore((andb((andb((if (( !T2q6__sumarray__L_1__i.i <> 1 )) then (
+        ( (T2q6__sumtype.to_int(!T2q6__sumarray__sum.sum)) = (T2q6__sumtype.to_int((T2q6__sum_between.func(T2q6__sumarray__a.a) ((T2q6__indextype.of_int(1))) ((T2q6__counttype.of_int(( !T2q6__sumarray__L_1__i.i - 1 ))))))) )) else (
+        (Boolean.of_int(1))))) (( 0 <= (T2q6__sumtype.to_int(!T2q6__sumarray__sum.sum)) )))) (( (T2q6__sumtype.to_int(!T2q6__sumarray__sum.sum)) <= ( 1000 * ( !T2q6__sumarray__L_1__i.i - 1 ) ) ))))) ensures {true} );
+       ( ( "GP_Sloc:t2q6.adb:12:14" T2q6__sumarray__sum.sum := ( (T2q6__sumtype.of_int(( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t2q6.adb:12:21" "keep_on_simp" (T2q6__sumtype.range_check_(( (T2q6__sumtype.to_int(!T2q6__sumarray__sum.sum)) + (T2q6__elementtype.to_int((Array__1.access(!T2q6__sumarray__L_1__i.i) ((T2q6__arraytype.to_array(T2q6__sumarray__a.a)))))) ))) ))) ) );
+       T2q6__sumarray__L_1__i.i := ( ( !T2q6__sumarray__L_1__i.i + 1 ) );
+       (if (( !T2q6__sumarray__L_1__i.i <= _temp_standard__t2q6_1 )) then (
+        ()) else (
+        raise T2q6__sumarray__L_1.L_1)) ) )
+      done
+     with
+      T2q6__sumarray__L_1.L_1 -> ()
+     end)) )))
+   ))
+    );
+   raise Return__exc )
+  with
+   Return__exc -> abstract (___ignore(( (T2q6__sumtype.to_int(!T2q6__sumarray__sum.sum)) = (T2q6__sumtype.to_int((T2q6__sum_between.func(T2q6__sumarray__a.a) ((T2q6__indextype.of_int(1))) ((T2q6__counttype.of_int(100)))))) ))) ensures {true}
+  end
+end
