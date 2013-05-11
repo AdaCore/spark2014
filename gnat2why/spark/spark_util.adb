@@ -652,6 +652,9 @@ package body SPARK_Util is
 
          return Component = Assoc
            or else
+             Original_Record_Component (Component) =
+             Original_Record_Component (Assoc)
+           or else
              Root_Record_Component (Component) =
              Root_Record_Component (Assoc);
       end;
