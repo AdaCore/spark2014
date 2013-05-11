@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 with Gen;
 procedure P is
    package Q is new Gen(Integer);

@@ -1,0 +1,4 @@
+
+p.adb:4:14: overflow check not proved
+p.ads:3:14: info: postcondition proved
+p.ads:5:56: overflow check not proved

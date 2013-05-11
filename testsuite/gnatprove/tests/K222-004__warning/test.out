@@ -1,3 +1,1 @@
-pack.adb:13:07: warning: formal proof already forced
-pack.adb:5:07: warning: formal proof already forced
 pack.ads:3:19: postcondition not proved, requires not F'result

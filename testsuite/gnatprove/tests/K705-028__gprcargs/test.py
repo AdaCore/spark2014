@@ -1,3 +1,3 @@
 from test_support import *
 
-gnatprove(opt=["-P", "test.gpr", "--mode=detect", "-cargs", "-gnat2012"])
+gnatprove(opt=["-P", "test.gpr", "--mode=check", "-q", "-cargs", "-gnat2012"])

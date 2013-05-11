@@ -15,7 +15,6 @@ admin.ads:163:26: info: postcondition proved
 admin.ads:190:7: postcondition not proved
 admin.ads:191:7: info: precondition proved
 admin.ads:215:26: info: postcondition proved
-admintoken.adb:268:33: info: range check proved
 admintoken.ads:124:7: info: postcondition proved
 admintoken.ads:78:26: info: postcondition proved
 alarm-interfac.ads:54:26: postcondition not proved, requires (IsAlarming)
@@ -182,15 +181,6 @@ clock.adb:78:10: assertion not proved
 clock.adb:82:12: info: index check proved
 clock.adb:82:56: info: division check proved
 clock.adb:83:20: info: division check proved
-configdata.adb:1062:30: info: division check proved
-configdata.adb:1064:59: range check not proved
-configdata.adb:1064:72: info: division check proved
-configdata.adb:1065:72: info: division check proved
-configdata.adb:1068:31: info: division check proved
-configdata.adb:1068:42: info: division check proved
-configdata.adb:1069:59: range check not proved
-configdata.adb:1069:72: info: division check proved
-configdata.adb:1070:72: info: division check proved
 configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: info: range check proved
@@ -211,7 +201,6 @@ configdata.adb:416:38: info: range check proved
 configdata.adb:723:23: range check not proved
 configdata.adb:729:53: info: index check proved
 configdata.adb:729:75: info: index check proved
-crypto.adb:331:24: range check not proved
 crypto.adb:669:38: info: range check proved
 display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
@@ -353,12 +342,6 @@ msgproc.adb:91:17: index check not proved
 msgproc.adb:97:45: overflow check not proved
 poll.ads:132:11: postcondition not proved
 screen-interfac.adb:7:14: info: range check proved
-screen.adb:455:10: info: range check proved
-screen.adb:457:37: index check not proved
-screen.adb:461:46: overflow check not proved
-screen.adb:519:10: info: range check proved
-screen.adb:540:10: info: range check proved
-screen.adb:561:10: info: range check proved
 screen.adb:813:10: info: range check proved
 spark_io.adb:440:13: info: range check proved
 spark_io.adb:447:26: overflow check not proved
@@ -402,4 +385,3 @@ userentry.adb:1303:13: precondition not proved
 userentry.adb:1307:13: precondition not proved
 userentry.adb:683:19: info: precondition proved
 userentry.adb:917:12: postcondition not proved, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
-usertoken.adb:706:33: info: range check proved
