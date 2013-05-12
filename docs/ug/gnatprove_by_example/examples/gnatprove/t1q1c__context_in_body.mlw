@@ -1,9 +1,0 @@
-(* Module including all necessary axioms for the subprogram "add2" declared at t1q1c.adb:10, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
-module T1q1c__add2__expr_fun_closure
- use import "_gnatprove_standard".Main
- use        "t1q1c__types_in_body".T1q1c__add2
- use        "_standard__types_in_spec".Standard__integer
- use        "_gnatprove_standard".Integer
- use import "int".Int
-
-end

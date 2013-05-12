@@ -1,9 +1,0 @@
-(* Module including all necessary axioms for the subprogram "increment" declared at t1q1a.ads:4, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
-module T1q1a__increment__expr_fun_closure
- use import "_gnatprove_standard".Main
- use        "_standard__types_in_spec".Standard__integer
- use        "t1q1a__types_in_spec".T1q1a__increment
- use        "_gnatprove_standard".Integer
- use import "int".Int
-
-end
