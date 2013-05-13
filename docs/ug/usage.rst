@@ -511,3 +511,15 @@ simple code examples.
 
 .. include:: gnatprove_by_example/basic.rst
 
+.. _call_examples:
+
+.. include:: gnatprove_by_example/call.rst
+
+.. _loop_examples:
+
+.. include:: gnatprove_by_example/loop.rst
+
+.. .. _advanced_examples:
+
+.. .. include:: gnatprove_by_example/advanced.rst
+
