@@ -624,4 +624,16 @@ ASCII.LF &
       end loop;
    end Sanitize_File_List;
 
+   -----------------------
+   -- SPARK_Report_File --
+   -----------------------
+
+   function SPARK_Report_File return String is
+   begin
+      return Ada.Directories.Compose
+        (Ada.Directories.Compose
+           (Proj_Type.Object_Dir.Display_Full_Name, "gnatprove"),
+         "gnatprove.out");
+   end SPARK_Report_File;
+
 end Configuration;

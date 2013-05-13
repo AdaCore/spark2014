@@ -546,9 +546,6 @@ procedure Gnatprove is
       Close (File);
    end Generate_Why3_Conf_File;
 
-   Tree      : Project_Tree;
-   Proj_Type : Project_Type;
-
    ------------------
    -- Text_Of_Step --
    ------------------
