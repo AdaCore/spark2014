@@ -4195,12 +4195,17 @@ package body Gnat2Why.Expr is
                Subp       : constant Entity_Id := Entity (Name (Expr));
                --  Retrieve type of function result from function called
                Name       : constant W_Identifier_Id :=
-                 To_Why_Id (Subp, Domain, Local => False);
+                 W_Identifier_Id
+                   (Transform_Identifier (Params       => Local_Params,
+                                          Expr         => Expr,
+                                          Ent          => Subp,
+                                          Domain       => Domain,
+                                          Current_Type => Current_Type));
                Nb_Of_Refs : Natural;
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
+
             begin
-               Current_Type := Type_Of_Node (Etype (Subp));
                if Why_Subp_Has_Precondition (Subp) then
                   T :=
                     +New_VC_Call
@@ -4516,26 +4521,34 @@ package body Gnat2Why.Expr is
 
       if Ada_Ent_To_Why.Has_Element (C) then
          T := +Ada_Ent_To_Why.Element (C);
+
       elsif Ekind (Ent) = E_Enumeration_Literal then
          T := Transform_Enum_Literal (Expr, Ent, Current_Type, Domain);
+
       elsif Sloc (Ent) = Standard_ASCII_Location then
          T :=
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
          Current_Type := EW_Int_Type;
+
       elsif Ekind (Ent) = E_Loop_Parameter and then
         Is_Quantified_Loop_Param (Ent) then
          T := +New_Identifier (Name => Full_Name (Ent));
+
       else
          T := +To_Why_Id (Ent, Domain);
       end if;
+
       if Ekind (Ent) = E_Loop_Parameter and then
-        not Type_In_Formal_Container (Etype (Ent)) then
+        not Type_In_Formal_Container (Etype (Ent))
+      then
          Current_Type := EW_Int_Type;
       end if;
+
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
          T := New_Deref (Ada_Node => Expr, Right => +T);
       end if;
+
       return T;
    end Transform_Identifier;
 

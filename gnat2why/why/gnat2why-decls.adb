@@ -102,8 +102,7 @@ package body Gnat2Why.Decls is
    -- Is_Mutable --
    ----------------
 
-   function Is_Mutable_In_Why (N : Node_Id) return Boolean
-   is
+   function Is_Mutable_In_Why (N : Node_Id) return Boolean is
    begin
 
       --  A variable is translated as mutable in Why if it is not constant on
@@ -112,10 +111,15 @@ package body Gnat2Why.Decls is
 
       if Ekind (N) = E_Loop_Parameter then
          return not (Is_Quantified_Loop_Param (N));
-      elsif Ekind (N) = E_Enumeration_Literal or else
-        Is_Constant_Object (N) or else
-        Ekind (N) in Named_Kind then
+
+      elsif Ekind (N) in E_Enumeration_Literal |
+                         Named_Kind |
+                         Subprogram_Kind
+              or else
+            Is_Constant_Object (N)
+      then
          return False;
+
       else
          return True;
       end if;

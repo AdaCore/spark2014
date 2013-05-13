@@ -1276,6 +1276,17 @@ package body Gnat2Why.Subprograms is
          end;
       end loop;
 
+      --  The name of the function is added to the name map, so that, for
+      --  recursive functions, the local name F is used instead of the global
+      --  one P.F
+
+      if Ekind (E) = E_Function then
+         Ada_Ent_To_Why.Insert (Params.Name_Map, E,
+                                +To_Why_Id (E      => E,
+                                            Domain => EW_Term,
+                                            Local  => True));
+      end if;
+
       Effects := Compute_Effects (File, E);
 
       Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
