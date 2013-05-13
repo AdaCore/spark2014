@@ -84,8 +84,8 @@ procedure SPARK_Report is
    procedure Handle_Source_Dir (Dir : String);
    --  Parse all .alfa files of this directory.
 
-   procedure Print_Report;
-   --  Print the final SPARK report
+   procedure Print_Report (Out_Dir : String);
+   --  Print the final SPARK report in directory Out_Dir
 
    procedure Print_Statistics
      (Handle      : Ada.Text_IO.File_Type;
@@ -260,8 +260,7 @@ procedure SPARK_Report is
    -- Print_Report --
    ------------------
 
-   procedure Print_Report
-   is
+   procedure Print_Report (Out_Dir : String) is
       use Ada.Text_IO;
       Handle : File_Type;
 
@@ -427,7 +426,7 @@ procedure SPARK_Report is
    begin
       --  global statistics
 
-      Create (Handle, Out_File, Configuration.SPARK_Report_File);
+      Create (Handle, Out_File, Configuration.SPARK_Report_File (Out_Dir));
       Print_Statistics (Handle      => Handle,
                         Label       => "Subprograms in SPARK",
                         Label_Len   => Label_Length,
@@ -609,5 +608,6 @@ begin
    end if;
    Source_Directories_File := new String'(Ada.Command_Line.Argument (1));
    Iterate_Source_Dirs (Source_Directories_File.all);
-   Print_Report;
+   Print_Report
+     (GNAT.Directory_Operations.Dir_Name (Source_Directories_File.all));
 end SPARK_Report;

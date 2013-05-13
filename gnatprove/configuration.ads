@@ -157,17 +157,9 @@ package Configuration is
    Gpr_Why_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
 
-   Tree      : Project_Tree;
-   --  GNAT project tree
-
-   Proj_Type : Project_Type;
-   --  GNAT project
-
-   function SPARK_Report_File return String;
+   function SPARK_Report_File (Out_Dir : String) return String;
    --  The name of the file in which the SPARK report is generated:
-   --    <obj_dir>/gnatprove/gnatprove.out
-   --  This is a function so that it can read the name of the object directory
-   --  from Proj_Type.
+   --    Out_Dir/gnatprove.out
 
    SPARK_Suffix : constant String := ".alfa";
    --  Suffix for raw SPARK information files

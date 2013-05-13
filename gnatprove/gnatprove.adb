@@ -351,8 +351,8 @@ procedure Gnatprove is
    ---------------------------
 
    procedure Generate_SPARK_Report
-     (Obj_Dir : String;
-      Obj_Path  : File_Array)
+     (Obj_Dir  : String;
+      Obj_Path : File_Array)
    is
       Obj_Dir_File : File_Type;
       Obj_Dir_Fn   : constant String :=
@@ -407,9 +407,14 @@ procedure Gnatprove is
       end if;
 
       if not Quiet then
-         Put_Line ("Statistics logged in " & SPARK_Report_File);
-         Put_Line
-            ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
+         declare
+            Out_Dir : constant String :=
+              Ada.Directories.Compose (Obj_Dir, "gnatprove");
+         begin
+            Put_Line ("Statistics logged in " & SPARK_Report_File (Out_Dir));
+            Put_Line
+              ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
+         end;
       end if;
    end Generate_SPARK_Report;
 
@@ -619,7 +624,13 @@ procedure Gnatprove is
                      Status);
    end Translate_To_Why;
 
-   --  begin processing for Gnatprove
+   Tree      : Project_Tree;
+   --  GNAT project tree
+
+   Proj_Type : Project_Type;
+   --  GNAT project
+
+--  Start processing for Gnatprove
 
 begin
    Read_Command_Line (Tree);
