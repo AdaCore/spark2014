@@ -1,39 +1,102 @@
 module Main
   use import int.Int
-  use import module ref.Ref
+  use "a-contai__types_in_spec".Ada__containers__count_type
+  use import ref.Ref
   
   (*** TO BE INSTANTIATED ***)
 
-  type element_t
+  type index_type
 
-  function equal_elements element_t element_t : bool
+  function index_type__to_int index_type : int
+
+  function index_type__of_int int : index_type
+
+  function index_type__attr__ATTRIBUTE_FIRST : int
+
+  function index_type__attr__ATTRIBUTE_LAST : int
+
+  type element_type
+
+  function oeq element_type element_type : bool
 
   axiom equal_refl :
-  forall e : element_t [equal_elements e e].
-	equal_elements e e = True
+  forall e : element_type [oeq e e].
+	oeq e e = True
 
   axiom equal_sym :
-  forall e1 : element_t, e2 : element_t [equal_elements e1 e2].
-	equal_elements e1 e2 = equal_elements e2 e1
+  forall e1 : element_type, e2 : element_type [oeq e1 e2].
+	oeq e1 e2 = oeq e2 e1
 
   axiom equal_trans :
-  forall e1 : element_t, e2 : element_t, e3 : element_t [equal_elements e1 e2, equal_elements e1 e3 | equal_elements e1 e2, equal_elements e2 e3].
-	equal_elements e1 e2 = True -> equal_elements e2 e3 = True -> equal_elements e1 e3 = True
+  forall e1 : element_type, e2 : element_type, e3 : element_type [oeq e1 e2, oeq e1 e3 | oeq e1 e2, oeq e2 e3].
+	oeq e1 e2 = True -> oeq e2 e3 = True -> oeq e1 e3 = True
 
   (**************************)
+
+  function index_type_length : int =
+      index_type__attr__ATTRIBUTE_LAST - index_type__attr__ATTRIBUTE_FIRST + 1
+
+  axiom index_type_length:
+      Ada__containers__count_type.in_range (index_type_length)
+
+  function index_type__to_index (i : index_type) : int =
+      index_type__to_int (i) - index_type__attr__ATTRIBUTE_FIRST + 1
+
+  function index_type__of_index (i : int) : index_type =
+      index_type__of_int (i + index_type__attr__ATTRIBUTE_FIRST - 1)
+
+  type extended_index
+ 
+  function extended_index__attr__ATTRIBUTE_FIRST  : int = 
+      index_type__attr__ATTRIBUTE_FIRST - 1
+ 
+  function extended_index__attr__ATTRIBUTE_LAST  : int = 
+      index_type__attr__ATTRIBUTE_LAST
+
+  function extended_index__to_int extended_index : int
+
+  function extended_index__of_int int : extended_index
+
+  axiom extended_index_in_range_axiom:
+    forall x : extended_index [extended_index__to_int (x)]. 
+      index_type__attr__ATTRIBUTE_FIRST - 1 <= extended_index__to_int (x)
+             <= index_type__attr__ATTRIBUTE_LAST
+
+  axiom extended_index1:
+    forall i : extended_index [extended_index__to_int i].
+       extended_index__of_int (extended_index__to_int i) = i
+
+  axiom extended_index2:
+    forall i : int [extended_index__to_int (extended_index__of_int i)].
+     index_type__attr__ATTRIBUTE_FIRST - 1 <= i
+             <= index_type__attr__ATTRIBUTE_LAST -> 
+       extended_index__to_int (extended_index__of_int i) = i
+
+  function extended_index__to_index (i : extended_index) : int =
+      extended_index__to_int (i) - extended_index__attr__ATTRIBUTE_FIRST
+
+  function extended_index__of_index (i : int) : extended_index =
+      extended_index__of_int (i + extended_index__attr__ATTRIBUTE_FIRST)
   
   type cursor
   
   type vector
+
+  function capacity vector : int
+
+(****** Should be enforced by typing, to do: modify ads file accordingly *******)
+  axiom capacity_range:
+    forall co : vector [capacity co].
+      0 <= capacity co <= index_type_length
   
   function no_element  : cursor
   
   function empty_  : vector
   
   function length vector : int
-  
-  axiom Length_gte_zero:
-    (forall co:vector [(length co : int)]. (Int.(>=) (length co : int) 0))
+
+  axiom length_range:
+    forall co:vector [length co]. 0 <= length co <= capacity co
   
   function to_index_ vector cursor : int
   
@@ -85,210 +148,719 @@ module Main
   
   function first (co : vector) : cursor = (to_cursor_ co 1 : cursor)
   
-  function element_ vector int : element_t
+  function element_ vector int : element_type
   
-  function element_curs_ (v : vector) (cu : cursor) : element_t =
-    (element_ v (to_index_ v cu : int) : element_t)
+  function element_curs_ (v : vector) (cu : cursor) : element_type =
+    (element_ v (to_index_ v cu : int) : element_type)
   
-  function find_ vector element_t int : int
+  function find vector element_type int : int
+
+  axiom find_range:
+    forall v:vector, e:element_type, n:int [find v e n].
+      n > 0 /\ n <= find v e n <= length v \/ find v e n = 0
+
+  axiom find_no:
+    forall v:vector, e:element_type, n:int [find v e n].
+      find v e n = 0 -> 
+      forall i : int [element_ v i]. n <= i <= length v -> oeq (element_ v i) e = False
+
+  axiom find_ex:
+    forall v:vector, e:element_type, n:int [find v e n].
+      find v e n > 0 -> oeq (element_ v (find v e n)) e = True
+
+  axiom find_oth:
+    forall v:vector, e:element_type, n:int [find v e n].
+      find v e n > 0 -> 
+      forall i : int [element_ v i]. n <= i <= find v e n -> oeq (element_ v i) e = False
+
+  function find_ (v:vector) (e:element_type) (n:int) : int =
+    if n = 0 then find v e 1 else find v e n
   
-  predicate find__ (co : vector) (e : element_t) (i : int) (j : int) =
-    (((Int.(>=) (length co : int) i) /\ (Int.(>) i 0)) /\
-     (((j = 0) /\
-       (forall k:int.
-         (((Int.(>=) (length co : int) k) /\ (Int.(>=) k i)) ->
-          (equal_elements (element_ co k) e = False)))) \/
-      (((Int.(>=) (length co : int) j) /\ (Int.(>=) j i)) /\
-       ((equal_elements (element_ co j : element_t) e = True) /\
-        (forall k:int.
-          (((Int.(>) j k) /\ (Int.(>=) k i)) ->
-           (equal_elements (element_ co k : element_t) e = False)))))))
-  
-  axiom find_find_val:
-    (forall co:vector.
-      (forall e:element_t.
-        (forall i:int.
-          ((((Int.(>=) (length co : int) i) /\ (Int.(>) i 0)) ->
-            (find__ co e i (find_ co e i : int))) /\
-           (((length co : int) = 0) -> ((find_ co e i : int) = 0))))))
+  function rfind vector element_type int : int
+
+  axiom rfind_range:
+    forall v:vector, e:element_type, n:int [rfind v e n].
+      0 < rfind v e n <= n /\  rfind v e n <= length v \/ rfind v e n = 0
+
+  axiom rfind_no:
+    forall v:vector, e:element_type, n:int [rfind v e n].
+      rfind v e n = 0 -> 
+      forall i : int [element_ v i]. 0 <= i <= n /\ i <= length v -> oeq (element_ v i) e = False
+
+  axiom rfind_ex:
+    forall v:vector, e:element_type, n:int [rfind v e n].
+      rfind v e n > 0 -> oeq (element_ v (rfind v e n)) e = True
+
+  axiom rfind_oth:
+    forall v:vector, e:element_type, n:int [rfind v e n].
+      rfind v e n > 0 -> 
+      forall i : int [element_ v i]. rfind v e n <= i <= n /\ i <= length v -> oeq (element_ v i) e = False
+
+  function rfind_ (v:vector) (e:element_type) (n:int) : int =
+    if n = 0 then rfind v e (length v) else find v e n
   
   predicate equal_ (co1 : vector) (co2 : vector) =
     (((length co1 : int) = (length co2 : int)) /\
      (forall i:int.
        (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) ->
-        (equal_elements (element_ co1 i : element_t) (element_ co2 i : element_t) = True))))
+        (oeq (element_ co1 i : element_type) (element_ co2 i : element_type) = True))))
   
   predicate strict_equal (co1 : vector) (co2 : vector) =
     (((length co1 : int) = (length co2 : int)) /\
      (forall i:int.
        (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) ->
-        ((element_ co1 i : element_t) = (element_ co2 i : element_t)))))
+        ((element_ co1 i : element_type) = (element_ co2 i : element_type)))))
   
-  predicate replace_element_ (co1 : vector) (i : int) (e : element_t) (co2 : vector) =
+  predicate replace_element_ (co1 : vector) (i : int) (e : element_type) (co2 : vector) =
     (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) /\
      (((length co1 : int) = (length co2 : int)) /\
-      (((element_ co2 i : element_t) = e) /\
+      (((element_ co2 i : element_type) = e) /\
        ((forall j:int.
           (((Int.(>=) (length co1 : int) j) /\ (Int.(>) j 0)) ->
            ((i <> j) ->
-            ((element_ co2 j : element_t) = (element_ co1 j : element_t))))) /\
+            ((element_ co2 j : element_type) = (element_ co1 j : element_type))))) /\
         (forall cu:cursor.
           ((to_index_ co1 cu : int) = (to_index_ co2 cu : int)))))))
   
-  predicate left__ (co : vector) (i : int) (col : vector) =
-    ((length co) + 1 = i -> col = co) /\
-    (((Int.(>=) (length co : int) i) /\ (Int.(>) i 0)) ->
-     (((length col : int) = (Int.(-) i 1 : int)) /\
-      ((forall j:int.
-         (((Int.(<) 0 j) /\ (Int.(<) j i)) ->
-          ((element_ col j : element_t) = (element_ co j : element_t)))) /\
-       (forall cu:cursor.
-         ((((Int.(<) 0 (to_index_ co cu : int)) /\
-            (Int.(<) (to_index_ co cu : int) i)) \/
-           (Int.(<) 0 (to_index_ col cu : int))) ->
-          ((to_index_ col cu : int) = (to_index_ co cu : int)))))))
-  
   function left_ vector int : vector
-  
-  axiom left_left:
-    (forall co:vector.
-      (forall i:int [(left_ co i : vector)].
-        (left__ co i (left_ co i : vector))))
-  
-  predicate right__ (co : vector) (i : int) (cor : vector) =
-    (((Int.(>=) (Int.(+) (length co : int) 1 : int) i) /\ (Int.(>) i 0)) ->
-     (((length cor : int) = (Int.(+) (Int.(-) (length co : int) i : int) 1 : int)) /\
-      (forall j:int.
-        (((Int.(<) 0 j) /\ (Int.(<=) j (length cor : int))) ->
-         ((element_ cor j : element_t) = (element_ co (Int.(-) (Int.(+) j i : int) 1 : int) : element_t))))))
+
+  axiom left_lgth:
+    forall co:vector, i:int [left_ co i].
+       0 < i <= length co + 1 -> length (left_ co i) = i - 1
+
+  axiom left_elt:
+    forall co:vector, i j:int [left_ co i, element_ co j|element_ (left_ co i) j].
+       0 < i <= length co + 1 -> 0 < j < i -> element_ co j = element_ (left_ co i) j
+
+  axiom left_curs:
+    forall co:vector, i :int, cu : cursor [left_ co i, to_index_ co cu|to_index_ (left_ co i) cu].
+      0 < i <= length co + 1 ->  (to_index_ co cu < i \/ to_index_ (left_ co i) cu > 0) -> to_index_ co cu = to_index_ (left_ co i) cu
+
+  axiom left_curs_out:
+    forall co:vector, i :int, cu : cursor [left_ co i, to_index_ co cu|to_index_ (left_ co i) cu].
+       0 < i <= length co + 1 -> (to_index_ co cu >= i) -> to_index_ (left_ co i) cu = 0
+
+  axiom left_eq:
+    forall co:vector, i:int [left_ co i].
+      i = length co + 1 -> left_ co i = co
   
   function right_ vector int : vector
+
+  axiom right_lgth:
+    forall co:vector, i:int [right_ co i].
+      0 < i <= length co + 1 -> length (right_ co i) = length co - i + 1
+
+  axiom right_elt:
+    forall co:vector, i j:int [right_ co i, element_ co j|element_ (right_ co i) j].
+      0 < i <= length co + 1 ->  i <= j <= length co -> element_ co j = element_ (right_ co i) j
+
+  predicate insert_ vector int element_type vector
+
+  axiom insert_range:
+    forall co1 co2 : vector, i : int, e : element_type [insert_ co1 i e co2].
+      insert_ co1 i e co2 -> 0 < i <= length co1 + 1 
+
+  axiom insert_length:
+    forall co1 co2 : vector, i : int, e : element_type [insert_ co1 i e co2].
+      insert_ co1 i e co2 -> length co1 + 1 = length co2
+
+  axiom insert_capacity:
+    forall co1 co2 : vector, i : int, e : element_type [insert_ co1 i e co2].
+      insert_ co1 i e co2 -> capacity co1 = capacity co2
   
-  axiom right_right:
-    (forall co:vector.
-      (forall i:int [(right_ co i : vector)].
-        (right__ co i (right_ co i : vector))))
+  axiom insert_elmt:
+    forall co1 co2 : vector, i : int, e : element_type [insert_ co1 i e co2].
+    insert_ co1 i e co2 ->
+    element_ co2 i = e /\
+    (forall j:int [element_ co1 j | element_ co2 j].
+        0 < j < i -> element_ co1 j = element_ co2 j) /\
+    (forall j:int [element_ co1 j].
+        i <= j <= length co1 -> element_ co1 j = element_ co2 (j + 1)) /\
+    (forall j:int [element_ co2 j].
+        i < j <= length co2 -> element_ co1 (j - 1) = element_ co2 j)
   
-  predicate insert_elmt (co1 : vector) (i : int) (e : element_t) (co2 : vector) =
-    (((element_ co2 i : element_t) = e) /\
-     (forall j:int.
-       ((((Int.(<) 0 j) /\ (Int.(<) j i)) ->
-         ((element_ co1 j : element_t) = (element_ co2 j : element_t))) /\
-        (((Int.(<) i j) /\
-          (Int.(<=) j (Int.(+) (length co1 : int) 1 : int))) ->
-         ((element_ co1 (Int.(-) j 1 : int) : element_t) = (element_ co2 j : element_t))))))
+  axiom insert_curs:
+    forall co1 co2 : vector, i : int, e : element_type, cu : cursor 
+   [insert_ co1 i e co2, to_index_ co1 cu | insert_ co1 i e co2, to_index_ co2 cu ].
+    insert_ co1 i e co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
+    to_index_ co1 cu = to_index_ co2 cu
+
+  predicate concat vector vector vector
+
+  axiom concat_length:
+    forall v1 v2 r : vector [concat v1 v2 r].
+      concat v1 v2 r -> length r = length v1 + length v2
+
+  axiom concat_element1:
+    forall v1 v2 r : vector, i : int [concat v1 v2 r, element_ r i | concat v1 v2 r, element_ v1 i].
+     concat v1 v2 r -> 0 < i <= length v1 -> element_ r i = element_ v1 i
+
+  axiom concat_element2:
+    forall v1 v2 r : vector, i : int [concat v1 v2 r | concat v1 v2 r, element_ v2 i].
+     concat v1 v2 r -> 0 < i <= length v2 -> element_ r (length v1 + i) = element_ v2 i
+
+  axiom concat_element2bis:
+    forall v1 v2 r : vector, i : int [concat v1 v2 r | concat v1 v2 r, element_ r i].
+     concat v1 v2 r -> length v1 < i <= length r -> element_ r i = element_ v2 (i - length v1)
+
+  predicate swap vector int int vector
+
+  axiom swap_lgth_cap:
+    forall v1 v2 : vector, i1 i2 : int [swap v1 i1 i2 v2 ].
+      swap v1 i1 i2 v2 -> length v1 = length v2 /\ capacity v1 = capacity v2
+
+  axiom swap_curs:
+    forall v1 v2 : vector, i1 i2 : int, cu : cursor [swap v1 i1 i2 v2, to_index_ v1 cu|swap v1 i1 i2 v2, to_index_ v2 cu ].
+      swap v1 i1 i2 v2 -> to_index_ v1 cu = to_index_ v2 cu
+
+  axiom swap_elt:
+    forall v1 v2 : vector, i1 i2 : int, i:int [swap v1 i1 i2 v2, element_ v1 i|swap v1 i1 i2 v2, element_ v2 i ].
+      swap v1 i1 i2 v2 -> 0 < i <= length v1 -> i <> i1 /\ i <> i2 -> element_ v1 i = element_ v2 i
+
+  axiom swap_range:
+    forall v1 v2 : vector, i1 i2 : int [swap v1 i1 i2 v2 ].
+      swap v1 i1 i2 v2 -> 0 < i1 <= length v1 /\ element_ v1 i1 = element_ v2 i2 /\
+					     0 < i2 <= length v1 /\ element_ v1 i2 = element_ v2 i1
+
+  predicate  insert_vect vector int vector vector
+
+  axiom insert_vect_length:
+    forall li1 li2 nv : vector, i : int [insert_vect li1 i nv li2].
+	insert_vect li1 i nv li2 -> length li2 = length li1 + length nv
+
+  axiom insert_vect_capacity:
+    forall co1 co2 nv : vector, i : int [insert_vect co1 i nv co2].
+      insert_vect co1 i nv co2 -> capacity co1 = capacity co2
+
+  axiom insert_vect_element1:
+    forall li1 li2 nv : vector, i j : int [insert_vect li1 i nv li2, element_ li1 j | insert_vect li1 i nv li2, element_ li2 j].
+	insert_vect li1 i nv li2 -> 0 < j < i -> element_ li1 j = element_ li2 j
+
+  axiom insert_vect_element2:
+    forall li1 li2 nv : vector, i j : int [insert_vect li1 i nv li2, element_ nv j].
+	insert_vect li1 i nv li2 -> 0 < j <= length nv -> element_ nv j = element_ li2 (i + j - 1)
+
+  axiom insert_vect_element2bis:
+    forall li1 li2 nv : vector, i j : int [insert_vect li1 i nv li2, element_ li2 j].
+	insert_vect li1 i nv li2 -> i <= j <= i + length nv - 1 -> element_ nv (j - i + 1) = element_ li2 j
+
+  axiom insert_vect_element3:
+    forall li1 li2 nv : vector, i j : int [insert_vect li1 i nv li2, element_ li1 j].
+	insert_vect li1 i nv li2 -> i <= j <= length li1 -> element_ li1 j = element_ li2 (j + length nv)
+
+  axiom insert_vect_element3bis:
+    forall li1 li2 nv : vector, i j : int [insert_vect li1 i nv li2, element_ li2 j].
+	insert_vect li1 i nv li2 -> i + length nv <= j <= length li2 -> element_ li1 (j - length nv) = element_ li2 j
   
-  predicate insert_curs (co1 : vector) (i : int) (co2 : vector) =
-    (forall cu:cursor.
-      ((((Int.(<) 0 (to_index_ co1 cu : int)) /\
-         (Int.(<) (to_index_ co1 cu : int) i)) \/
-        ((Int.(<) 0 (to_index_ co2 cu : int)) /\
-         (Int.(<) (to_index_ co2 cu : int) i))) ->
-       ((to_index_ co1 cu : int) = (to_index_ co2 cu : int))))
+  axiom insert_vect_curs:
+    forall co1 co2 nv: vector, i : int, cu : cursor 
+   [insert_vect co1 i nv co2, to_index_ co1 cu | insert_vect co1 i nv co2, to_index_ co2 cu ].
+    insert_vect co1 i nv co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
+    to_index_ co1 cu = to_index_ co2 cu
+
+  predicate delete_ vector int int vector
+
+  axiom delete_range:
+    forall co1 co2 : vector, i l : int [delete_ co1 i l co2].
+      delete_ co1 i l co2 -> 0 < i <= length co1 + 1
+
+  axiom delete_length:
+    forall co1 co2 : vector, i l : int [delete_ co1 i l co2].
+      delete_ co1 i l co2 -> length co1 = length co2 + l
+
+  axiom delete_capacity:
+    forall co1 co2 : vector, i l : int [delete_ co1 i l co2].
+      delete_ co1 i l co2 -> capacity co1 = capacity co2
   
-  predicate insert_ (co1 : vector) (i : int) (e : element_t) (co2 : vector) =
-    (((Int.(>=) (Int.(+) (length co1 : int) 1 : int) i) /\ (Int.(>) i 0)) /\
-     (((length co2 : int) = (Int.(+) (length co1 : int) 1 : int)) /\
-      ((insert_elmt co1 i e co2) /\ (insert_curs co1 i co2))))
+  axiom delete_elmt1 :
+    forall li1 li2 : vector, i l j : int [delete_ li1 i l li2, element_ li1 j |  delete_ li1 i l li2, element_ li2 j].
+    delete_ li1 i l li2 -> 0 < j < i -> element_ li1 j = element_ li2 j
   
-  predicate delete_elmt (co1 : vector) (i : int) (co2 : vector) =
-    (forall j:int.
-      ((((Int.(>) (length co1 : int) j) /\ (Int.(>=) j i)) ->
-        ((element_ co1 (Int.(+) j 1 : int) : element_t) = (element_ co2 j : element_t))) /\
-       (((Int.(<) 0 j) /\ (Int.(<) j i)) ->
-        ((element_ co2 j : element_t) = (element_ co1 j : element_t)))))
+  axiom delete_elmt2 :
+    forall li1 li2 : vector, i l j : int [delete_ li1 i l li2, element_ li1 j].
+    delete_ li1 i l li2 -> i + l <= j <= length li1 -> element_ li1 j = element_ li2 (j - l)
   
-  predicate delete_curs (co1 : vector) (i : int) (co2 : vector) =
-    (forall cu:cursor.
-      ((((Int.(<) 0 (to_index_ co1 cu : int)) /\
-         (Int.(<) (to_index_ co1 cu : int) i)) \/
-        ((Int.(<) 0 (to_index_ co2 cu : int)) /\
-         (Int.(<) (to_index_ co2 cu : int) i))) ->
-       ((to_index_ co1 cu : int) = (to_index_ co2 cu : int))))
+  axiom delete_elmt2bis :
+    forall li1 li2 : vector, i l j : int [delete_ li1 i l li2, element_ li2 j].
+    delete_ li1 i l li2 -> i <= j <= length li2 -> element_ li1 (j+l) = element_ li2 j
   
-  predicate delete_ (co1 : vector) (i : int) (co2 : vector) =
-    (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) /\
-     (((length co2 : int) = (Int.(-) (length co1 : int) 1 : int)) /\
-      ((delete_elmt co1 i co2) /\ (delete_curs co1 i co2))))
+  axiom delete_curs:
+    forall co1 co2 : vector, i l : int, cu : cursor [delete_ co1 i l co2, to_index_ co1 cu |
+                                                                                       delete_ co1 i l co2, to_index_ co2 cu ].
+    delete_ co1 i l co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
+    to_index_ co1 cu = to_index_ co2 cu
+
+  predicate delete_mult vector int int vector
+
+  axiom delete_mult_out1 :
+    forall li1 li2 : vector, i : int [delete_mult li1 i 0 li2].
+	delete_mult li1 i 0 li2 -> li1 = li2
+
+  axiom delete_mult_out2 :
+    forall li1 li2 : vector, i c : int [delete_mult li1 i c li2].
+	delete_mult li1 i c li2 -> i > length li1 -> li1 = li2
+
+  axiom delete_mult_gen :
+    forall li1 li2 : vector, i c : int [delete_mult li1 i c li2].
+	delete_mult li1 i c li2 -> delete_ li1 i c li2
+
+  predicate reverse_elements vector vector
+
+  axiom reverse_elements_length:
+    forall co1 co2:vector
+      [reverse_elements co1 co2].
+      reverse_elements co1 co2 -> length co1 = length co2
+
+  axiom reverse_elements_capacity:
+    forall co1 co2:vector
+      [reverse_elements co1 co2, capacity co1|reverse_elements co1 co2, capacity co2].
+      reverse_elements co1 co2 -> capacity co1 = capacity co2
+
+  axiom reverse_elements_element:
+    forall co1 co2:vector, i:int
+      [reverse_elements co1 co2, element_ co2 i].
+      reverse_elements co1 co2 -> 0 < i <= length co2 ->
+        element_ co2 i = element_ co1 (length co2 - i)
+
+  axiom reverse_elements_element_bis:
+    forall co1 co2:vector, i:int
+      [reverse_elements co1 co2, element_ co1 i].
+      reverse_elements co1 co2 -> 0 < i <= length co1 ->
+        element_ co1 i = element_ co2 (length co1 - i)
   
-  predicate contains (co : vector) (e : element_t) =
+  predicate contains (co : vector) (e : element_type) =
     ((Int.(>=) (length co : int) (find_ co e 1 : int)) /\
      (Int.(>) (find_ co e 1 : int) 0))
 
-(*** PARAMETERS ***)
+  predicate cap_is_max vector vector int
 
-val element :
-	  co:vector -> i:int ->
-	  { 0 < i <= length co }
-	  element_t
-	  { result = element_ co i }
+ axiom cap_is_max_def:
+   forall co1 co2:vector, max:int 
+                  [cap_is_max co1 co2 max, capacity co1 | cap_is_max co1 co2 max, capacity co2].
+   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
 
-val element_curs :
-	  co:vector -> cu:cursor ->
-	  { has_element co cu }
-	  element_t
-	  { result = element_curs_ co cu }
+(************************************** API *************************************)
 
-val replace_element :
-	  co:ref vector -> i:int -> e:element_t ->
-	  { 0 < i <= length !co }
-	  unit writes co
-	  { replace_element_ (old !co) i e !co }
+  function empty_vector__object : vector = empty_
+  function no_element__object : cursor = no_element
+  function no_index__object : extended_index = extended_index__of_index 0
 
-val replace_element_curs :
-	  co:ref vector -> cu:cursor -> e:element_t ->
-	  { has_element !co cu }
-	  unit writes co
-	  { replace_element_ (old !co) (to_index_ (old !co) cu) e !co }
+  function vector__capacity__record (co : vector) : Ada__containers__count_type.count_type =
+          Ada__containers__count_type.of_int (capacity co)
 
-val insert :
-	  co:ref vector -> i:int -> e:element_t ->
-	  { (length !co) + 1 >= i >0 }
-	  unit reads co writes co
-	  { insert_ (old !co) i e !co }
+  function capacity__logic (co : vector) : Ada__containers__count_type.count_type =
+          Ada__containers__count_type.of_int (capacity co)
 
-val insert_curs :
-	  co:ref vector -> cu:cursor -> e:element_t ->
-	  { has_element !co cu \/ cu = no_element }
-	  unit reads co writes co
-	  { (has_element (old !co) cu -> insert_ (old !co) (to_index_ (old !co) cu) e !co)
-	    /\ (cu = no_element -> insert_ (old !co) ((length (old !co))+1) e !co) }
+  predicate capacity__pre (co : vector) = true
+  predicate capacity__post (co : vector) (result :  Ada__containers__count_type.count_type) =
+     result = Ada__containers__count_type.of_int (capacity co)
 
-val prepend :
-	  co:ref vector -> e:element_t ->
-	  { }
-	  unit reads co writes co
-	  { insert_ (old !co) 1 e !co }
+  predicate reserve_capacity__pre (co : vector) (c :  Ada__containers__count_type.count_type) = capacity co >= Ada__containers__count_type.to_int c
+  predicate reserve_capacity__post (co oldco: vector) (c :  Ada__containers__count_type.count_type) =
+     co = oldco
 
-val append :
-	  co:ref vector -> e:element_t ->
-	  { }
-	  unit reads co writes co
-	  { insert_ (old !co) ((length(old !co)) + 1) e !co }
+  function to_vector__logic (e:element_type) (lgth:Ada__containers__count_type.count_type) : vector
+  axiom to_vector__logic_def:
+    forall e:element_type, 
+                lgth:Ada__containers__count_type.count_type [to_vector__logic e lgth].
+    length (to_vector__logic e lgth) = Ada__containers__count_type.to_int (lgth) /\
+    forall i:int [element_ (to_vector__logic e lgth) i].
+      0 < i <= Ada__containers__count_type.to_int (lgth) ->
+          element_ (to_vector__logic e lgth) i = e
 
-val delete :
-	  co:ref vector -> i:int ->
-	  { length !co >= i > 0 }
-	  unit reads co writes co
-	  { delete_ (old !co) i !co }
+  function length__logic (co : vector) : Ada__containers__count_type.count_type =
+         Ada__containers__count_type.of_int (length co)
 
-val delete_curs :
-	  co:ref vector -> cu:cursor ->
-	  { has_element !co cu }
-	  unit reads co writes co
-	  { delete_ (old !co) (to_index_ (old !co) cu) !co }
+  predicate length__pre (co : vector) = true
+  predicate length__post (co : vector) (result :  Ada__containers__count_type.count_type) =
+     result = Ada__containers__count_type.of_int (length co)
 
-val previous :
-	  co:vector -> cu:cursor ->
-	  { has_element co cu }
-	  cursor
-	  { result = previous_ co cu }
+  function element__logic (co:vector) (i : index_type) : element_type = element_ co (index_type__to_index i)
 
-val next :
-	  co:vector -> cu:cursor ->
-	  { has_element co cu }
-	  cursor 
-	  { result = next_ co cu }
+  predicate element__pre (co:vector) (i : index_type) =
+    0 < (index_type__to_index i) <= length co
+  predicate element__post (co:vector) (i : index_type) (result : element_type) =
+     result = element_ co (index_type__to_index i)
+
+  function element__2__logic (co:vector) (cu:cursor) : element_type = element_curs_ co cu
+
+  predicate element__2__pre (co:vector) (cu:cursor) =
+     has_element co cu
+  predicate element__2__post (co:vector) (cu:cursor) (result : element_type) =
+     result = element_curs_ co cu
+
+  function has_element__logic vector cursor : bool
+
+  axiom has_element__logic_def:
+    forall co : vector, cu : cursor [has_element__logic co cu].
+      has_element co cu <-> has_element__logic co cu = True
+
+  predicate has_element__pre (co:vector) (cu:cursor) = true
+  predicate has_element__post (co:vector) (cu:cursor) (result: bool) =
+     has_element co cu <-> result = True
+
+  function is_empty__logic vector : bool 
+
+  axiom is_empty__logic_def:
+    forall co : vector [is_empty__logic co ].
+      is_empty__logic co = True <-> is_empty_ co
+
+  predicate is_empty__pre (co:vector) = true
+  predicate is_empty__post (co:vector) (result:bool)=
+     result = True <-> is_empty_ co
+
+  predicate clear__pre (co:vector) = true
+  predicate clear__post (co oldco: vector) =
+     is_empty_ co /\ capacity co = capacity oldco
+  val clear__program (co:ref vector) : unit
+     writes     { co }
+     ensures { is_empty_ !co /\ capacity !co = capacity (old !co) }
+
+  predicate assign__pre (target:vector) (source:vector) =
+     capacity target >= length source
+  predicate assign__post (target oldtarget:vector) (source:vector) =
+     equal_ target source
+
+  predicate move__pre (target:vector) (source:vector) =
+     capacity target >= length source
+  predicate move__post (target oldtarget:vector) (source oldsource:vector) =
+     equal_ target oldsource /\ is_empty_ source
+
+  predicate copy__pre (co: vector) (cap:Ada__containers__count_type.count_type) = true
+  predicate copy__post (co: vector) (cap:Ada__containers__count_type.count_type) 
+              (result: vector) =
+     strict_equal co (result) /\ cap_is_max co result (Ada__containers__count_type.to_int cap)
+
+  function copy__logic vector Ada__containers__count_type.count_type : vector
+
+  axiom copy__logic_def:
+    forall co:vector, cap:Ada__containers__count_type.count_type [copy__logic co cap].
+          strict_equal co (copy__logic co cap) 
+                       /\ cap_is_max co (copy__logic co cap) (Ada__containers__count_type.to_int cap)
+
+  function contains__logic vector element_type: bool
+
+  axiom contains__logic_def:
+    forall co : vector, e : element_type [contains__logic co e].
+      contains co e <-> contains__logic co e = True
+
+  predicate contains__pre (co:vector) (e:element_type) = true
+  predicate contains__post (co:vector) (e:element_type) (result: bool) =
+     contains co e <-> result = True
+
+  predicate delete__pre (co:vector) (i : extended_index)
+                                             (c : Ada__containers__count_type.count_type) =
+     0 < extended_index__to_index i <= length co + 1
+  predicate delete__post (co oldco:vector) (i : extended_index)
+                                             (c : Ada__containers__count_type.count_type) =
+     delete_mult oldco (extended_index__to_index i) (Ada__containers__count_type.to_int c) co
+
+  predicate delete__2__pre (co:vector) (cu : cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     has_element co cu
+  predicate delete__2__post (co oldco:vector) (cu oldcu : cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     delete_mult oldco (to_index_ oldco oldcu) (Ada__containers__count_type.to_int c) co /\ cu = no_element
+
+  predicate delete_first__pre (co:vector)
+                                             (c : Ada__containers__count_type.count_type)=true
+  predicate delete_first__post (co oldco:vector)
+                                             (c : Ada__containers__count_type.count_type)=
+     delete_mult oldco 1  (Ada__containers__count_type.to_int c) co
+
+  predicate delete_last__pre (co:vector)
+                                             (c : Ada__containers__count_type.count_type) =true
+  predicate delete_last__post (co oldco:vector)
+                                             (c : Ada__containers__count_type.count_type) =
+      delete_mult oldco (length oldco - Ada__containers__count_type.to_int c) 
+                             (Ada__containers__count_type.to_int c) co
+
+  predicate replace_element__pre (co: vector) (i:index_type) (e:element_type)=
+    0 < index_type__to_index i <= length co
+  predicate replace_element__post (co oldco: vector) (i:index_type) (e:element_type)=
+     replace_element_ oldco ( index_type__to_index i) e co
+
+  predicate replace_element__2__pre (co: vector) (cu:cursor) (e:element_type)=
+     has_element co cu
+  predicate replace_element__2__post (co oldco: vector) (cu:cursor) (e:element_type)=
+     replace_element_ oldco (to_index_ oldco cu) e co
+
+  predicate reverse_elements__pre (co:vector) = true
+  predicate reverse_elements__post (co oldco:vector) =
+     reverse_elements co oldco
+
+  function previous__logic (co:vector) (cu:cursor) : cursor = previous_ co cu
+
+  predicate previous__pre (co:vector) (cu:cursor) = cu = no_element \/ has_element co cu
+  predicate previous__post (co:vector) (cu:cursor) (result: cursor) =
+     result = previous_ co cu
+
+  function next__logic (co:vector) (cu:cursor) : cursor = next_ co cu
+
+  predicate next__pre (co:vector) (cu:cursor)= cu = no_element \/ has_element co cu 
+  predicate next__post (co:vector) (cu:cursor) (result : cursor) =
+     result = next_ co cu
+
+  predicate previous__2__pre (co:vector) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate previous__2__post (co:vector) (cu oldcu:cursor) =
+     cu = previous_ co oldcu
+
+  predicate next__2__pre (co:vector) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate next__2__post (co:vector) (cu oldcu:cursor) =
+     cu = next_ co oldcu
+
+  function first__logic (co:vector) : cursor = first co
+
+  predicate first__pre (co:vector) = true
+  predicate first__post (co:vector) (result:cursor) =
+     result = first co
+
+  function last__logic (co:vector) : cursor = last co
+
+  predicate last__pre (co:vector) = true
+  predicate last__post (co:vector) (result:cursor) =
+     result = last co
+
+  function find_index__logic (co:vector) (e:element_type) (i:index_type) : extended_index =
+    extended_index__of_index (find_ co e (index_type__to_index i))
+
+  predicate find_index__pre (co:vector) (e:element_type) (i:index_type) = true
+  predicate find_index__post(co:vector)(e:element_type)(i:index_type)(result:extended_index) =
+     result = find_index__logic co e i
+
+  function find__logic (co:vector) (e:element_type) (cu:cursor) : cursor =
+    to_cursor_ co (find_ co e (to_index_ co cu))
+
+  predicate find__pre (co:vector) (e:element_type) (cu:cursor) =
+    has_element co cu \/ cu = no_element
+  predicate find__post (co:vector) (e:element_type) (cu:cursor) (result:cursor) =
+     result = find__logic co e cu
+
+  function reverse_find_index__logic (co:vector) (e:element_type) (i:index_type) : extended_index =
+    extended_index__of_index (rfind_ co e (index_type__to_index i))
+
+  predicate reverse_find_index__pre (co:vector) (e:element_type) (i:index_type) = true
+  predicate reverse_find_index__post(co:vector)(e:element_type)(i:index_type)(result:extended_index) =
+     result = reverse_find_index__logic co e i
+
+  function reverse_find__logic (co:vector) (e:element_type) (cu:cursor) : cursor = 
+	to_cursor_ co (rfind co e (to_index_ co cu))
+
+  predicate reverse_find__pre (co:vector) (e:element_type) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate reverse_find__post (co:vector) (e:element_type) (cu:cursor) (result:cursor) =
+     result = reverse_find__logic co e cu
+
+  predicate set_length__pre (co:vector) (l:Ada__containers__count_type.count_type) =
+	Ada__containers__count_type.to_int l <= length co
+  predicate set_length__post (co oldco:vector) 
+							    (l:Ada__containers__count_type.count_type) =
+    length co =  Ada__containers__count_type.to_int l /\ co = oldco \/
+    delete_mult oldco (length oldco) 
+                             (length co - (Ada__containers__count_type.to_int l)) co
+
+  predicate insert__pre (co :vector) (i:extended_index) (new_item : vector) =
+     0 < extended_index__to_index i <= length co + 1 /\ length co + length new_item <= capacity co
+  predicate insert__post (co oldco: vector)  (i:extended_index) (new_item : vector)=
+     insert_vect oldco (extended_index__to_index i) new_item co
+
+  predicate insert__2__pre (co :vector) (cu : cursor) (new_item : vector) =
+     (has_element co cu \/ cu = no_element) /\ length co + length new_item <= capacity co
+  predicate insert__2__post (co oldco: vector)  (cu : cursor) (new_item : vector)=
+     if cu = no_element then insert_vect oldco (length co + 1) new_item co
+     else insert_vect oldco (to_index_ co cu) new_item co
+
+  predicate insert__3__pre (co :vector) (cu : cursor) (new_item : vector) (p : cursor) =
+     (has_element co cu \/ cu = no_element) /\ length co + length new_item <= capacity co
+  predicate insert__3__post (co oldco: vector)  (cu : cursor) (new_item : vector) (p oldp: cursor)=
+     let i = if cu = no_element then length co + 1 else to_index_ oldco cu in
+        p = to_cursor_ co i /\ insert_vect oldco i new_item co
+
+  predicate insert__4__pre (co :vector) (i:extended_index) (e : element_type) 
+	(c:Ada__containers__count_type.count_type) =
+     0 < extended_index__to_index i <= length co + 1 /\
+     length co + Ada__containers__count_type.to_int c <= capacity co
+  predicate insert__4__post (co oldco: vector)  (i:extended_index) (e : element_type) 
+	(c:Ada__containers__count_type.count_type) =
+     if Ada__containers__count_type.to_int c = 1 then  insert_ oldco (extended_index__to_index i) e co
+     else insert_vect oldco (extended_index__to_index i) (to_vector__logic e c) co
+
+  predicate insert__5__pre (co :vector) (cu : cursor) (e : element_type) 
+	(c:Ada__containers__count_type.count_type) =
+     (has_element co cu \/ cu = no_element)  /\
+     length co + Ada__containers__count_type.to_int c <= capacity co
+  predicate insert__5__post (co oldco: vector)  (cu : cursor) (e : element_type) 
+	(c:Ada__containers__count_type.count_type) =
+     let i = if cu = no_element then length co + 1 else to_index_ oldco cu in
+     if Ada__containers__count_type.to_int c = 1 then  insert_ oldco i e co
+     else insert_vect oldco i (to_vector__logic e c) co
+
+  predicate insert__6__pre (co :vector) (cu : cursor) (e : element_type) (p : cursor)
+	(c:Ada__containers__count_type.count_type) =
+     (has_element co cu \/ cu = no_element)  /\
+     length co + Ada__containers__count_type.to_int c <= capacity co
+  predicate insert__6__post (co oldco: vector)  (cu : cursor) (e : element_type)  (p oldp: cursor)
+	(c:Ada__containers__count_type.count_type) =
+     let i = if cu = no_element then length co + 1 else to_index_ oldco cu in
+      p = to_cursor_ co i /\ if Ada__containers__count_type.to_int c = 1 then  insert_ oldco i e co
+                                                    else insert_vect oldco i (to_vector__logic e c) co
+
+  predicate prepend__pre (co nv:vector) =
+     length co + length nv <= capacity co
+  predicate prepend__post (co oldco:vector) (nv : vector)  =
+     insert_vect oldco 1 nv co
+
+  predicate prepend__2__pre (co:vector) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+  predicate prepend__2__post (co oldco:vector) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     if Ada__containers__count_type.to_int c = 1 then  insert_ oldco 1 e co
+     else insert_vect oldco 1 (to_vector__logic e c) co
+
+  predicate append__pre (co nv:vector) =
+     length co + length nv <= capacity co
+  predicate append__post (co oldco:vector) (nv : vector)  =
+     insert_vect oldco (length oldco + 1) nv co
+
+  predicate append__2__pre (co:vector) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+  predicate append__2__post (co oldco:vector) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     if Ada__containers__count_type.to_int c = 1 then  insert_ oldco (length oldco + 1) e co
+     else insert_vect oldco (length oldco + 1) (to_vector__logic e c) co
+
+  predicate swap__pre (co:vector) (i1 i2 : index_type) =
+    0 < index_type__to_index i1 <= length co /\ 0 < index_type__to_index i2 <= length co
+  predicate swap__post (co oldco:vector) (i1 i2 : index_type) =
+    (i1 = i2 /\ co = oldco) \/ (i1 <> i2 /\ swap oldco (index_type__to_index i1) (index_type__to_index i2) co)
+
+  predicate swap__2__pre (co:vector) (cu1 cu2 : cursor) =
+    has_element co cu1 /\ has_element co cu2
+  predicate swap__2__post (co oldco:vector) (cu1 cu2 : cursor) =
+    (cu1 = cu2 /\ co = oldco) \/ (cu1 <> cu2 /\ swap oldco (to_index_ oldco cu1) (to_index_ oldco cu2) co)
+
+  function first_element__logic (co:vector) : element_type = element_ co 1
+
+  predicate first_element__pre (co:vector) = length co > 0
+  predicate first_element__post (co:vector) (result:element_type) =
+     result = element_ co 1
+
+  function last_element__logic (co:vector) : element_type = element_ co (length co)
+
+  predicate last_element__pre (co:vector) = length co > 0 
+  predicate last_element__post (co:vector) (result:element_type) =
+     result = element_ co (length co)
+
+  function left__logic (co:vector) (cu : cursor) : vector = 
+     let i = if cu = no_element then length co + 1 else to_index_ co cu in
+       left_ co i
+
+  predicate left__pre (co:vector) (cu : cursor) =
+     cu = no_element \/ has_element co cu
+  predicate left__post (co:vector) (cu : cursor) (result:vector) =
+     result = left__logic co cu
+
+  function right__logic (co:vector) (cu : cursor) : vector = 
+     let i = if cu = no_element then length co + 1 else to_index_ co cu in
+       right_ co i
+
+  predicate right__pre (co:vector) (cu : cursor) =
+     cu = no_element \/ has_element co cu
+  predicate right__post (co:vector) (cu : cursor)(result : vector) =
+     result = right__logic co cu
+
+(* Should be added to Vector.ads *)
+  function strict_equal__logic (co1 co2 : vector) : bool =
+    if strict_equal co1 co2 then True else False
+
+  predicate strict_equal__pre (co1:vector) (co2:vector) = true
+  predicate strict_equal__post (co1:vector) (co2:vector) (result:bool) =
+     result  = True <-> strict_equal co1 co2
+  val strict_equal__program (co1:vector) (co2:vector) : bool
+     ensures  { result  = True <-> strict_equal co1 co2 }
+
+  predicate to_vector__pre (e:element_type) (lgth:Ada__containers__count_type.count_type) = true
+  predicate to_vector__post (e:element_type) (lgth:Ada__containers__count_type.count_type) (result:vector) = 
+    length result = Ada__containers__count_type.to_int (lgth) /\
+    forall i:int [element_ (result) i].
+      0 < i <= Ada__containers__count_type.to_int (lgth) ->
+          element_ (result) i = e
+
+  function oeq__2__logic (co1:vector) (co2:vector) : bool =
+    if equal_ co1 co2 then True else False
+
+  predicate oeq__2__pre (co1:vector) (co2:vector) = true
+  predicate oeq__2__post (co1:vector) (co2:vector) (result:bool) = 
+         result  = True <-> equal_ co1 co2
+  val oeq__2__program (co1:vector) (co2:vector) : bool
+     ensures  { result  = True <-> equal_ co1 co2 }
+
+  function oconcat__logic vector vector : vector
+  axiom oconcat__logic_def:
+    forall v1 v2 : vector [oconcat__logic v1 v2].
+    length v1 + length v2 <= index_type_length -> concat v1 v2 (oconcat__logic v1 v2)
+  predicate oconcat__pre (co1:vector) (co2:vector) =
+    length co1 + length co2 <= index_type_length
+  predicate oconcat__post (co1:vector) (co2:vector) (r:vector) =
+    r = oconcat__logic co1 co2
+
+  function oconcat__2__logic vector element_type : vector
+  axiom oconcat__2__logic_def:
+    forall v : vector, e : element_type [oconcat__2__logic v e].
+    length v < index_type_length -> insert_ v 1 e (oconcat__2__logic v e)
+  predicate oconcat__2__pre (co:vector) (e:element_type) =
+    length co < index_type_length
+  predicate oconcat__2__post (co:vector) (e:element_type) (r:vector) =
+    r = oconcat__2__logic co e
+
+  function oconcat__3__logic element_type vector : vector
+  axiom oconcat__3__logic_def:
+    forall v : vector, e : element_type [oconcat__3__logic e v].
+    length v < index_type_length -> insert_ v (length v + 1) e (oconcat__3__logic e v)
+  predicate oconcat__3__pre (e:element_type) (co:vector) =
+    length co < index_type_length
+  predicate oconcat__3__post (e:element_type) (co:vector) (r:vector) =
+    r = oconcat__3__logic e co
+
+  function oconcat__4__logic element_type element_type : vector
+  axiom oconcat__4__logic_def:
+    forall e1 e2 : element_type [oconcat__4__logic e1 e2].
+    index_type_length >= 2 -> length (oconcat__4__logic e1 e2) = 2 /\
+    element_ (oconcat__4__logic e1 e2) 1 = e1 /\
+    element_ (oconcat__4__logic e1 e2) 2 = e2
+  predicate oconcat__4__pre (e1 e2:element_type) =
+    index_type_length >= 2
+  predicate oconcat__4__post (e1 e2 :element_type) (r:vector) =
+    r = oconcat__4__logic e1 e2
+
+  function to_cursor__logic (co : vector) (i : extended_index) : cursor =
+        to_cursor_ co (extended_index__to_index i)
+  predicate to_cursor__pre (co : vector) (i : extended_index) = true
+  predicate to_cursor__post (co : vector) (i : extended_index) (r : cursor) = 
+      r = to_cursor_ co (extended_index__to_index i)
+
+  function to_index__logic (cu : cursor) : extended_index
+  axiom to_index__logic_def:
+        to_index__logic no_element = extended_index__of_index 0 /\
+        forall co : vector, cu : cursor [to_index_ co cu, to_index__logic cu].
+          to_index_ co cu > 0 -> extended_index__of_index (to_index_ co cu) = to_index__logic cu
+  predicate to_index__pre (cu : cursor) = true
+  predicate to_index__post (cu : cursor) (r : extended_index) = 
+      r = to_index__logic cu
+
+  function first_index__logic (co:vector) : index_type = index_type__of_index 1
+  predicate first_index__pre (co:vector) = true
+  predicate first_index__post (co:vector) (r : index_type) = 
+      r = first_index__logic co
+
+  function last_index__logic (co:vector) : extended_index = extended_index__of_index (length co)
+  predicate last_index__pre (co:vector) = true
+  predicate last_index__post (co:vector) (r : extended_index) = 
+      r = last_index__logic co
 
 end
 

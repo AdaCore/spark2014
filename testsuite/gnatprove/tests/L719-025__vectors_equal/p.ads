@@ -13,17 +13,18 @@ package P is
      (Index_Type, Element_Type, My_Eq);
    use My_Vectors;
 
-   procedure Identity_1 (L : in out Vector; Cu : in out Cursor) with
+   procedure Nearly_Identity_1 (L : in out Vector; I : Extended_Index) with
      Pre => Length (L) < L.Capacity and
-     (Has_Element (L, Cu) or Cu = No_Element),
-     Post => L = L'Old and Cu = No_Element;
-
-   procedure Identity_2 (L : in out Vector; Cu : in out Cursor) with
-     Pre => Has_Element (L, Cu),
+     First_Index (L) <= I and I <= Last_Index (L) + 1,
      Post => L = L'Old;
 
-   procedure Identity_Swap (L : in out Vector; Cu1 : Cursor; Cu2 : Cursor) with
-     Pre => Has_Element (L, Cu1) and Has_Element (L, Cu2),
+   procedure Nearly_Identity_2 (L : in out Vector; I : Index_Type) with
+     Pre => First_Index (L) <= I and I <= Last_Index (L),
+     Post => L = L'Old;
+
+   procedure Identity_Swap (L : in out Vector; I1, I2 : Index_Type) with
+     Pre => First_Index (L) <= I1 and I1 <= Last_Index (L) and
+        First_Index (L) <= I2 and I2 <= Last_Index (L),
      Post => L = L'Old;
 
 end P;

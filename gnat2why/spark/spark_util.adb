@@ -860,6 +860,8 @@ package body SPARK_Util is
                   Name_Ends_With (Name, "map") or else
                   Name_Ends_With (Name, "key_type") or else
                   Name_Ends_With (Name, "element_type") or else
+                  Name_Ends_With (Name, "index_type") or else
+                  Name_Ends_With (Name, "extended_index") or else
                   Name_Ends_With (Name, "cursor"));
    end Type_In_Formal_Container;
 
