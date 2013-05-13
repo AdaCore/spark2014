@@ -1,0 +1,4 @@
+
+p.ads:3:15: info: postcondition proved
+p.ads:3:53: info: range check proved
+p.ads:3:56: info: overflow check proved
