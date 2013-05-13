@@ -1070,7 +1070,7 @@ package body Flow.Analysis is
                            G   => FA.PDG,
                            Loc => V_Use,
                            F   => Key_I,
-                           Tag => Create_Tag ("uninitialized"));
+                           Tag => Create_Tag ("uninitialized", Key_I));
                         Mark_Definition_Free_Path
                           (E_Loc => V_Use,
                            From  => FA.Start_Vertex,
