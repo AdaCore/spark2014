@@ -523,7 +523,7 @@ package body Flow.Analysis is
 
       if FA.Aliasing_Present then
          Error_Msg_Flow
-           ("flow analysis of & abandoned due aliasing",
+           ("flow analysis of & abandoned due to aliasing",
             FA.CFG,
             FA.Start_Vertex,
             Direct_Mapping_Id (FA.Subprogram));
