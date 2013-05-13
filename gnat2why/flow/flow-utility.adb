@@ -35,19 +35,6 @@ package body Flow.Utility is
    use type Flow_Id_Sets.Set;
 
    ----------------------------------------------------------------------
-   --  Workarounds
-   ----------------------------------------------------------------------
-
-   Workaround_Pre_30_Apr_2013 : constant Boolean := True;
-   --  !!! To be removed once the GPL release is made. We have this
-   --  workaround in place as the fix for M429-015 is not in the
-   --  corresponding gnat GPL release.
-   --
-   --  When enabled we do not analyse preconditions as the method for
-   --  obtaining preconditions was not working consistently and did
-   --  not always return an analysed tree.
-
-   ----------------------------------------------------------------------
    --  Debug
    ----------------------------------------------------------------------
 

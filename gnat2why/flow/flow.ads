@@ -43,6 +43,23 @@ with Graph;
 
 package Flow is
 
+   ----------------------------------------------------------------------
+   --  Workarounds
+   ----------------------------------------------------------------------
+
+   Workaround_Pre_30_Apr_2013 : constant Boolean := True;
+   --  !!! To be removed once the GPL release is made. We have this
+   --  workaround in place as the fix for M429-015 is not in the
+   --  corresponding gnat GPL release.
+   --
+   --  When enabled we do not analyse preconditions as the method for
+   --  obtaining preconditions was not working consistently and did
+   --  not always return an analysed tree.
+
+   ----------------------------------------------------------------------
+   --  Flow_Id
+   ----------------------------------------------------------------------
+
    type Global_Modes is (Global_Mode_In,
                          Global_Mode_Proof,
                          Global_Mode_In_Out,
@@ -217,6 +234,10 @@ package Flow is
                                     return Ordered_Flow_Id_Sets.Set;
    --  Convert a hashed flow id set into an ordered node set.
 
+   ----------------------------------------------------------------------
+   --  V_Attributes
+   ----------------------------------------------------------------------
+
    type V_Attributes is record
       Is_Null_Node        : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early
@@ -351,12 +372,20 @@ package Flow is
                    Loops               => Node_Sets.Empty_Set,
                    Error_Location      => Empty);
 
+   ----------------------------------------------------------------------
+   --  Flow_Graphs
+   ----------------------------------------------------------------------
+
    package Flow_Graphs is new Graph
      (Vertex_Key        => Flow_Id,
       Vertex_Attributes => V_Attributes,
       Edge_Colours      => Edge_Colours,
       Null_Key          => Null_Flow_Id,
       Test_Key          => "=");
+
+   ----------------------------------------------------------------------
+   --  Utility packages
+   ----------------------------------------------------------------------
 
    package Node_To_Vertex_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
@@ -382,6 +411,10 @@ package Flow is
       Hash            => Name_Hash,
       Equivalent_Keys => Name_Equal,
       "="             => Node_Sets."=");
+
+   ----------------------------------------------------------------------
+   --  Flow_Analysis_Graphs
+   ----------------------------------------------------------------------
 
    type Flow_Analysis_Graphs is record
       Subprogram       : Entity_Id;
@@ -427,6 +460,10 @@ package Flow is
       Hash            => Hash,
       Equivalent_Keys => "=",
       "="             => Flow_Id_Sets."=");
+
+   ----------------------------------------------------------------------
+   --  Utilities
+   ----------------------------------------------------------------------
 
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) = E_Loop,
@@ -477,12 +514,20 @@ package Flow is
    --  The * shorthand to mean "itself" is expanded away by the
    --  front-end and this procedure does not have to deal with it.
 
+   ----------------------------------------------------------------------
+   --  Debug
+   ----------------------------------------------------------------------
+
    procedure Print_Graph
      (Filename     : String;
       G            : Flow_Graphs.T;
       Start_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       End_Vertex   : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
    --  Write a dot and pdf file for the given graph.
+
+   ----------------------------------------------------------------------
+   --  Main entry to flo analysis
+   ----------------------------------------------------------------------
 
    procedure Flow_Analyse_CUnit;
    --  Flow analyses the current compilation unit

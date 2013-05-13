@@ -31,6 +31,8 @@ with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sinput;                use Sinput;
+with Sem_Util;              use Sem_Util;
+with Snames;                use Snames;
 
 with Treepr;                use Treepr;
 
@@ -112,6 +114,13 @@ package body Flow.Analysis is
       with Pre => Var.Kind = Magic_String;
    --  Emit an error message that (the first call) introducing the
    --  global Var requires a global annotation.
+
+   function Find_Global (S : Entity_Id;
+                         F : Flow_Id)
+                         return Node_Id;
+   --  Find the given global F in the subprogram declaration of S. If
+   --  we can't find it (perhaps because of computed globals) we just
+   --  return S which is a useful fallback place to raise an error.
 
    --------------------
    -- Error_Location --
@@ -462,6 +471,68 @@ package body Flow.Analysis is
       pragma Assert (Error_Issued);
    end Global_Required;
 
+   -----------------
+   -- Find_Global --
+   -----------------
+
+   function Find_Global (S : Entity_Id;
+                         F : Flow_Id)
+                         return Node_Id
+   is
+      Needle     : Entity_Id;
+      Haystack   : Node_Id;
+      The_Global : Node_Id := Empty;
+
+      function Find_It (N : Node_Id) return Traverse_Result;
+      --  Checks if N refers to Needle and sets The_Global to N if
+      --  that is the case.
+
+      function Find_It (N : Node_Id) return Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               if Present (Entity (N)) and then
+                 Nkind (Entity (N)) in N_Entity and then  -- !!! workaround
+                 Unique_Entity (Entity (N)) = Needle
+               then
+                  The_Global := N;
+                  return Abandon;
+               else
+                  return OK;
+               end if;
+            when others =>
+               return OK;
+         end case;
+      end Find_It;
+
+      procedure Look_For_Global is new Traverse_Proc (Find_It);
+   begin
+      if Workaround_Pre_30_Apr_2013 then
+         Haystack := Find_Aspect (S, Aspect_Global);
+      else
+         --  Get_Pragma only works reliably in recent front-end
+         --  versions.
+         Haystack := Get_Pragma (S, Pragma_Global);
+      end if;
+
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            Needle := Get_Direct_Mapping_Id (F);
+            Look_For_Global (Haystack);
+            if Present (The_Global) then
+               return The_Global;
+            else
+               return S;
+            end if;
+
+         when Magic_String =>
+            return S;
+
+         when Null_Value =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Find_Global;
+
    ------------------
    -- Sanity_Check --
    ------------------
@@ -492,8 +563,10 @@ package body Flow.Analysis is
                      case Neutral.Kind is
                         when Direct_Mapping =>
                            Error_Msg_Flow
-                             ("& must be listed in the Global aspect",
-                              FA.CFG, V, Var);
+                             (Msg => "& must be listed in the Global aspect",
+                              G   => FA.CFG,
+                              Loc => V,
+                              F   => Var);
 
                         when Magic_String =>
                            Global_Required (FA, Var);
@@ -509,11 +582,10 @@ package body Flow.Analysis is
       end loop;
 
       if not Sane then
-         Error_Msg_Flow
+         Error_Msg_NE
            ("flow analysis of & abandoned due to inconsistent graph",
-            FA.CFG,
-            FA.Start_Vertex,
-            Direct_Mapping_Id (FA.Subprogram));
+            FA.Subprogram,
+            FA.Subprogram);
          return;
       end if;
 
@@ -522,11 +594,10 @@ package body Flow.Analysis is
       pragma Assert (Sane);
 
       if FA.Aliasing_Present then
-         Error_Msg_Flow
+         Error_Msg_NE
            ("flow analysis of & abandoned due to aliasing",
-            FA.CFG,
-            FA.Start_Vertex,
-            Direct_Mapping_Id (FA.Subprogram));
+            FA.Subprogram,
+            FA.Subprogram);
          Sane := False;
          return;
       end if;
@@ -607,11 +678,14 @@ package body Flow.Analysis is
                   --  Discriminants are never ineffective imports.
                   null;
                elsif A.Is_Global then
-                  Error_Msg_Flow ("ineffective global import &",
-                                  FA.PDG, FA.Start_Vertex, F);
+                  Error_Msg_Flow (Msg => "ineffective global import &",
+                                  N   => Find_Global (FA.Subprogram, F),
+                                  F1  => F);
                else
-                  Error_Msg_Flow ("ineffective import &",
-                                  FA.PDG, V, F);
+                  Error_Msg_Flow (Msg => "ineffective import &",
+                                  G   => FA.PDG,  --  !!! find_import
+                                  Loc => V,
+                                  F   => F);
                end if;
             end;
          end if;
@@ -638,24 +712,27 @@ package body Flow.Analysis is
          if The_Global_Atr.Is_Global then
             if Illegal_Use_Atr.Is_Parameter then
                --  foo (bar);
-               Error_Msg_Flow ("actual for & cannot be a global input",
-                               FA.PDG,
-                               Illegal_Use_Loc,
-                               Illegal_Use_Atr.Parameter_Formal);
+               Error_Msg_Flow
+                 (Msg => "actual for & cannot be a global input",
+                  G   => FA.PDG,
+                  Loc => Illegal_Use_Loc,
+                  F   => Illegal_Use_Atr.Parameter_Formal);
 
             elsif Illegal_Use_Atr.Is_Global_Parameter then
                --  foo;
-               Error_Msg_Flow ("global item & must denote a global output",
-                               FA.PDG,
-                               Illegal_Use_Loc,
-                               The_Global_Id);
+               Error_Msg_Flow
+                 (Msg => "global item & must denote a global output",
+                  G   => FA.PDG,
+                  Loc => Illegal_Use_Loc,
+                  F   => The_Global_Id);
 
             else
                --  bar := 12;
-               Error_Msg_Flow ("assignment to global in & not allowed",
-                               FA.PDG,
-                               Illegal_Use_Loc,
-                               The_Global_Id);
+               Error_Msg_Flow
+                 (Msg => "assignment to global in & not allowed",
+                  G   => FA.PDG,
+                  Loc => Illegal_Use_Loc,
+                  F   => The_Global_Id);
             end if;
          else
             --  It *has* to be a global. The compiler would catch any
@@ -774,9 +851,11 @@ package body Flow.Analysis is
 
                   if Mask.Length >= 1 then
                      --  We have a useful path we can show.
-                     Error_Msg_Flow ("ineffective statement",
-                                     FA.PDG, V,
-                                     Create_Tag ("ineffective"));
+                     Error_Msg_Flow
+                       (Msg => "ineffective statement",
+                        G   => FA.PDG,
+                        Loc => V,
+                        Tag => Create_Tag ("ineffective"));
                      Write_Vertex_Set
                        (G     => FA.PDG,
                         E_Loc => Error_Location (FA.PDG, V),
@@ -786,8 +865,9 @@ package body Flow.Analysis is
                   else
                      --  The variables defined by this statement are
                      --  just not used; no useful path can be show.
-                     Error_Msg_Flow ("ineffective statement",
-                                     FA.PDG, V);
+                     Error_Msg_Flow (Msg => "ineffective statement",
+                                     G   => FA.PDG,
+                                     Loc => V);
                   end if;
                end if;
             end if;
@@ -813,7 +893,20 @@ package body Flow.Analysis is
       --  does not define Var.
 
       procedure Mark_Definition_Free_Path
-        (E_Loc : Flow_Graphs.Vertex_Id;
+        (E_Loc : Node_Id;
+         From  : Flow_Graphs.Vertex_Id;
+         To    : Flow_Graphs.Vertex_Id;
+         Var   : Flow_Id;
+         Tag   : String);
+      --  As above but allows a node to specify where the trace is
+      --  attached.
+
+      -------------------------------
+      -- Mark_Definition_Free_Path --
+      -------------------------------
+
+      procedure Mark_Definition_Free_Path
+        (E_Loc : Node_Id;
          From  : Flow_Graphs.Vertex_Id;
          To    : Flow_Graphs.Vertex_Id;
          Var   : Flow_Id;
@@ -867,9 +960,24 @@ package body Flow.Analysis is
          pragma Assert (Path_Found);
 
          Write_Vertex_Set (G     => FA.CFG,
-                           E_Loc => Error_Location (FA.CFG, E_Loc),
+                           E_Loc => E_Loc,
                            Set   => Path,
                            Tag   => Tag);
+      end Mark_Definition_Free_Path;
+
+      procedure Mark_Definition_Free_Path
+        (E_Loc : Flow_Graphs.Vertex_Id;
+         From  : Flow_Graphs.Vertex_Id;
+         To    : Flow_Graphs.Vertex_Id;
+         Var   : Flow_Id;
+         Tag   : String)
+      is
+      begin
+         Mark_Definition_Free_Path (E_Loc => Error_Location (FA.CFG, E_Loc),
+                                    From  => From,
+                                    To    => To,
+                                    Var   => Var,
+                                    Tag   => Tag);
       end Mark_Definition_Free_Path;
 
    begin
@@ -891,12 +999,11 @@ package body Flow.Analysis is
                         if Atr_U.Is_Global then
                            Error_Msg_Flow
                              (Msg => "global & might not be set",
-                              G   => FA.PDG,
-                              Loc => FA.Start_Vertex,
-                              F   => Key_I,
+                              N   => Find_Global (FA.Subprogram, Key_I),
+                              F1  => Key_I,
                               Tag => Create_Tag ("uninitialized", Key_I));
                            Mark_Definition_Free_Path
-                             (E_Loc => FA.Start_Vertex,
+                             (E_Loc => Find_Global (FA.Subprogram, Key_I),
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
                               Var   => Change_Variant (Key_I, Normal_Use),
@@ -1026,7 +1133,9 @@ package body Flow.Analysis is
                         Tmp.Set_Attributes (N_Loop, Atr);
 
                         --  Complain
-                        Error_Msg_Flow ("stable", FA.PDG, N_Loop);
+                        Error_Msg_Flow (Msg => "stable",
+                                        G   => FA.PDG,
+                                        Loc => N_Loop);
 
                         --  There might be other stable elements now.
                         Done := False;
@@ -1118,11 +1227,14 @@ package body Flow.Analysis is
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
                   --  global.
-                  Error_Msg_Flow ("global & is not used",
-                                  FA.PDG, FA.Start_Vertex, F);
+                  Error_Msg_Flow (Msg => "global & is not used",
+                                  N   => Find_Global (FA.Subprogram, F),
+                                  F1  => F);
                else
-                  Error_Msg_Flow ("& is not used",
-                                  FA.PDG, V, F);
+                  Error_Msg_Flow (Msg => "& is not used",
+                                  G   => FA.PDG,
+                                  Loc => V,
+                                  F   => F);
                end if;
             end;
          end if;

@@ -1,5 +1,5 @@
-parameter_tests.adb:35:04: global "G.Y" might not be set [uninitialized__g_y]
-parameter_tests.adb:49:04: ineffective global import "G"
+parameter_tests.adb:36:32: global "G.Y" might not be set [uninitialized__g_y]
+parameter_tests.adb:50:33: ineffective global import "G"
 message_tests.adb:40:33: ineffective import "C"
 message_tests.adb:40:33: "C" is not used
 message_tests.adb:48:32: component "C.Flags.B" of formal parameter might not be set [uninitialized__c_flags_b]
