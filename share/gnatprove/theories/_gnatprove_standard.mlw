@@ -69,7 +69,7 @@ module Floating
       real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
 
   axiom Round_int :
-    forall i:int. round (real_of_int i) = i
+    forall i:int [round (real_of_int i)]. round (real_of_int i) = i
 
   axiom Round_near_int :
     forall i:int. forall x:real.

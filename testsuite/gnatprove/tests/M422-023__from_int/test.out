@@ -10,4 +10,4 @@ sgs.adb:21:7: info: assertion proved
 sgs.adb:22:7: info: assertion proved
 sgs.adb:9:7: assertion not proved, requires A (X1) >= 
 sgs.ads:13:17: postcondition not proved
-sgs.ads:5:53: range check not proved
+sgs.ads:5:53: info: range check proved
