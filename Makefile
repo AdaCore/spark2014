@@ -34,7 +34,7 @@
 #	export PATH=<path_to_hilite_repo>/install/bin:$PATH
 
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
-	install-all gnatmerge why3 alt-ergo all setup all-nightly
+	install-all gnatmerge why3 alt-ergo all setup all-nightly doc-nightly
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
@@ -92,6 +92,9 @@ install: install-stdlib
 	$(CP) share/gnatprove/theories/*mlw $(THEORIESDIR)
 
 doc: $(DOC)
+
+doc-nightly: doc
+	cd docs/ug; $(MAKE) generate-nightly
 
 $(DOC):
 	$(MAKE) -C docs/$@ latexpdf
