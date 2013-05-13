@@ -404,9 +404,9 @@ package body Gnat2Why.Expr is
    function Transform_Membership_Expression
      (Params : Transformation_Params;
       Domain : EW_Domain;
-      Expr   : Node_Id)
-      return W_Expr_Id;
-   --  Convert a membership expression (N_In) into a boolean Why expression
+      Expr   : Node_Id) return W_Expr_Id;
+   --  Convert a membership expression (N_In or N_Not_In) into a boolean Why
+   --  expression.
 
    -------------------
    -- Apply_Modulus --
@@ -4130,7 +4130,7 @@ package body Gnat2Why.Expr is
                Current_Type := EW_Bool_Type;
             end Short_Circuit;
 
-         when N_In =>
+         when N_Membership_Test =>
             T := Transform_Membership_Expression (Local_Params, Domain, Expr);
 
          when N_Quantified_Expression =>
@@ -4559,8 +4559,7 @@ package body Gnat2Why.Expr is
    function Transform_Membership_Expression
      (Params : Transformation_Params;
       Domain : EW_Domain;
-      Expr   : Node_Id)
-     return W_Expr_Id
+      Expr   : Node_Id) return W_Expr_Id
    is
       function Transform_Alternative (Var, Alt : Node_Id) return W_Expr_Id;
       --  If the alternative Alt is a subtype mark, transform it as a simple
@@ -4583,16 +4582,18 @@ package body Gnat2Why.Expr is
          then
             Result := Transform_Simple_Membership_Expression (Var, Alt);
          else
-            declare
-               BT : constant W_Base_Type_Id := Base_Why_Type (Var, Alt);
-            begin
-               Result := New_Comparison
-                 (Cmp       => EW_Eq,
-                  Left      => Transform_Expr (Var, Domain, Params),
-                  Right     => Transform_Expr (Alt, Domain, Params),
-                  Arg_Types => BT,
-                  Domain    => Domain);
-            end;
+            Result := New_Comparison
+              (Cmp       => EW_Eq,
+               Left      => Transform_Expr (Expr          => Var,
+                                            Expected_Type => EW_Int_Type,
+                                            Domain        => EW_Term,
+                                            Params        => Params),
+               Right     => Transform_Expr (Expr          => Alt,
+                                            Expected_Type => EW_Int_Type,
+                                            Domain        => EW_Term,
+                                            Params        => Params),
+               Arg_Types => EW_Int_Type,
+               Domain    => Domain);
          end if;
 
          return Result;
@@ -4694,6 +4695,20 @@ package body Gnat2Why.Expr is
       else
          Result :=
            Transform_Simple_Membership_Expression (Var, Right_Opnd (Expr));
+      end if;
+
+      --  Inverse the result if the operator is NOT IN
+
+      if Nkind (Expr) = N_Not_In then
+         if Domain = EW_Term then
+            Result := New_Call (Ada_Node => Expr,
+                                Domain   => Domain,
+                                Name     => New_Identifier (Name => "notb"),
+                                Args     => (1 => Result));
+         else
+            Result := New_Not (Right  => Result,
+                               Domain => Domain);
+         end if;
       end if;
 
       return Result;
