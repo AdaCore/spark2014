@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sinfo; use Sinfo;
+
 with Why;
 
 with Flow.Utility; use Flow.Utility;

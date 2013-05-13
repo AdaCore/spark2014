@@ -30,8 +30,9 @@ with Aspects;               use Aspects;
 with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
-with Sinput;                use Sinput;
 with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
 with Snames;                use Snames;
 
 with Treepr;                use Treepr;

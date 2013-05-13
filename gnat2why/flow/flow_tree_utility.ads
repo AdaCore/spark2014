@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                    F L O W . A N T I A L I A S I N G                     --
+--                    F L O W _ T R E E _ U T I L I T Y                     --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -21,31 +21,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with the detection of aliasing.
+--  This package contains utilities related to the gnat tree.
 
-with Sinfo; use Sinfo;
+with Types; use Types;
 
-package Flow.Antialiasing is
+package Flow_Tree_Utility is
 
-   procedure Check_Procedure_Call
-     (N                   : Node_Id;
-      Introduces_Aliasing : in out Boolean)
-   with Pre => Nkind (N) = N_Procedure_Call_Statement;
-   --  This procedure looks at a procedure call statement and
-   --  determines if it introduces aliasing that matters: for example
-   --  aliasing between in parameters is OK, but aliasing between two
-   --  out parameters is not.
-   --
-   --  If aliasing is detected two actions are taken:
-   --     * A flow error is emitted
-   --     * The flag Introduces_Aliasing is set to True (otherwise its
-   --       value is not changed)
-   --
-   --  This procedure is aware of globals, both computed by gnat2why
-   --  and specified. The following checks are performed:
-   --     * Is there aliasing between any two parameters
-   --     * Is there aliasing between a parameter and a global
-   --     * Is there potential aliasing between a computed global and
-   --       abstract state
+   function Lexicographic_Entity_Order (Left, Right : Entity_Id)
+                                        return Boolean;
+   --  Ordering for entities based on their unique name. Returns true
+   --  if Left is considered to be "less than" Right.
 
-end Flow.Antialiasing;
+end Flow_Tree_Utility;

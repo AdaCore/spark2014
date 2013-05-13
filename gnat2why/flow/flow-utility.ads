@@ -28,6 +28,7 @@ with Ada.Containers;
 
 with Sem_Util;       use Sem_Util;
 with Snames;         use Snames;
+with Sinfo;          use Sinfo;
 
 use type Ada.Containers.Count_Type;
 

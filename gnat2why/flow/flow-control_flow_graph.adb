@@ -26,6 +26,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;
 with Sem_Util; use Sem_Util;
+with Sinfo;    use Sinfo;
 with Snames;   use Snames;
 
 with Treepr;   use Treepr;

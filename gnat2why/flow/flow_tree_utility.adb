@@ -2,9 +2,9 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                    F L O W . A N T I A L I A S I N G                     --
+--                    F L O W _ T R E E _ U T I L I T Y                     --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                  Copyright (C) 2013, Altran UK Limited                   --
 --                                                                          --
@@ -21,31 +21,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with the detection of aliasing.
+with Sem_Util; use Sem_Util;
 
-with Sinfo; use Sinfo;
+package body Flow_Tree_Utility is
 
-package Flow.Antialiasing is
+   --------------------------------
+   -- Lexicographic_Entity_Order --
+   --------------------------------
 
-   procedure Check_Procedure_Call
-     (N                   : Node_Id;
-      Introduces_Aliasing : in out Boolean)
-   with Pre => Nkind (N) = N_Procedure_Call_Statement;
-   --  This procedure looks at a procedure call statement and
-   --  determines if it introduces aliasing that matters: for example
-   --  aliasing between in parameters is OK, but aliasing between two
-   --  out parameters is not.
-   --
-   --  If aliasing is detected two actions are taken:
-   --     * A flow error is emitted
-   --     * The flag Introduces_Aliasing is set to True (otherwise its
-   --       value is not changed)
-   --
-   --  This procedure is aware of globals, both computed by gnat2why
-   --  and specified. The following checks are performed:
-   --     * Is there aliasing between any two parameters
-   --     * Is there aliasing between a parameter and a global
-   --     * Is there potential aliasing between a computed global and
-   --       abstract state
+   function Lexicographic_Entity_Order (Left, Right : Node_Id)
+                                        return Boolean is
+   begin
+      return Unique_Name (Left) < Unique_Name (Right);
+   end Lexicographic_Entity_Order;
 
-end Flow.Antialiasing;
+end Flow_Tree_Utility;
