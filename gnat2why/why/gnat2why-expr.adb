@@ -4575,7 +4575,7 @@ package body Gnat2Why.Expr is
             Why_Ent : constant Binder_Type := Ada_Ent_To_Why.Element (C);
          begin
             T := +Why_Ent.B_Name;
-            if Why_Ent.B_Type /= Why_Empty and
+            if Why_Ent.B_Type /= Why_Empty and then
               Get_EW_Type (Why_Ent.B_Type) /= EW_Abstract then
                Current_Type := +Why_Ent.B_Type;
             end if;

@@ -1258,9 +1258,13 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          Ada_Ent_To_Why.Insert (Params.Name_Map, E,
-                                +To_Why_Id (E      => E,
-                                            Domain => EW_Term,
-                                            Local  => True));
+                                Binder_Type'(
+                                  B_Name =>
+                                    +To_Why_Id (E      => E,
+                                                Domain => EW_Term,
+                                                Local  => True),
+                                  B_Type => Why_Empty,
+                                  others => <>));
       end if;
 
       Effects := Compute_Effects (File, E);
