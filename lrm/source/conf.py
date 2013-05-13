@@ -13,6 +13,20 @@
 
 import sys, os
 
+# AdaCore specific Ada/SPARK highlighter, that does not crash
+
+try:
+    import gnatpython.ada_pygments
+    use_adacore_parser = True
+
+except ImportError:
+    use_adacore_parser = False
+
+def setup(app):
+    app.add_config_value('Display_Trace_Units','',True)
+    if use_adacore_parser:
+    	app.add_lexer('ada', gnatpython.ada_pygments.AdaLexer())
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -26,10 +40,6 @@ import sys, os
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.todo','sphinx.ext.ifconfig']
-
-def setup(app):
-    app.add_config_value('Display_Trace_Units','',True)
-    return
 
 Display_Trace_Units = False
 
