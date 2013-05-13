@@ -32,7 +32,6 @@ with Ada.Containers.Hashed_Maps;
 
 with AA_Util;                            use AA_Util;
 with Atree;                              use Atree;
-with Debug;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
 with Lib;
@@ -937,26 +936,10 @@ package body SPARK_Definition is
    begin
       case V is
          when SPARK_Violations.Not_In_Roadmap =>
-
-            --  In mode 'detect', only issue a warning when a construct is not
-            --  in SPARK.
-
-            if Debug.Debug_Flag_Dot_KK then
-               return Use_Msg & "? is not in 'S'P'A'R'K";
-            else
-               return Use_Msg & " is not in 'S'P'A'R'K";
-            end if;
+            return Use_Msg & " is not in 'S'P'A'R'K";
 
          when SPARK_Violations.Not_Yet_Implemented =>
-
-            --  In mode 'detect', only issue an info message when a construct
-            --  is not yet supported.
-
-            if Debug.Debug_Flag_Dot_KK then
-               return "?info: " & Use_Msg & " is not yet supported";
-            else
-               return Use_Msg & "? is not yet supported";
-            end if;
+            return Use_Msg & "? is not yet supported";
       end case;
    end Complete_Error_Msg;
 
