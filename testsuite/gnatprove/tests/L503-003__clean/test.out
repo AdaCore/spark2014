@@ -18,7 +18,6 @@ natural_set.ads:47:18: info: index check proved
 natural_set.ads:52:47: info: index check proved
 natural_set.ali
 natural_set.o
-gnatprove.out
 natural_set.adb
 natural_set.ads
 obj
