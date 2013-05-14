@@ -1961,13 +1961,13 @@ The idea here is that after the freezing point it would be possible to
 declare an object of the type and then use it as a controlling operand
 in a dispatching call to a primitive operation of an ancestor type.
 No analysis is performed to identify scenarios where this is not the case,
-so conservative rules are adopted. [TBD: Replace freezing point in this rule
-rule with declaration of full view? Removing all references to freezing
-would make the rule simpler, but it would be slightly more restrictive;
-Perhaps use the later of either the full view declaration or the declaration of
-the last overriding primitive? Getting rid of freezing point dependency
-seems desirable. On the other hand, the other alternatives are
-unnecessarily restrictive.]
+so conservative rules are adopted.
+
+[Ada ensures that the freezing point of a tagged type
+will always occur after both the completion of the type and the
+declarations of each of its primitive subprograms. This is typically all
+that one needs to know about freezing points in order to understand
+the above rule.]
 
 For purposes of defining the region described above, the spec and body
 of a library unit package which has an Elaborate_Body pragma
@@ -2118,7 +2118,7 @@ following consequences:
 .. centered:: **Verification Rules**
 
 If a read of a variable (or state abstraction, in the case of a
-call to a subprogram which takes an abstraction as in input)
+call to a subprogram which takes an abstraction as an input)
 declared in another library unit is "executable during elaboration"
 (as defined above), then the compilation unit containing the read shall
 apply an Elaborate (not necessarily Elaborate_All) pragma to the
