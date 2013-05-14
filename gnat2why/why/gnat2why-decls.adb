@@ -522,8 +522,7 @@ package body Gnat2Why.Decls is
                                 Defined_Entity => E);
                end;
 
-            when N_Subprogram_Declaration
-               | N_Subprogram_Renaming_Declaration =>
+            when N_Subprogram_Declaration =>
                if not Comes_From_Source (Node) then
                   return;
                end if;
