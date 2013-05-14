@@ -592,7 +592,7 @@ module Main
   predicate copy__pre (co:map) (cap:Ada__containers__count_type.count_type) = true
   predicate copy__post (co:map) (cap:Ada__containers__count_type.count_type) 
               (result: map) =
-     strict_equal co (result) /\ cap_is_max co result (Ada__containers__count_type.to_int cap)
+     result = copy__logic co cap
 
   function key__logic (co:map) (cu:cursor) : key_type = key_ co cu
 
@@ -789,11 +789,11 @@ module Main
      result = right_ co cu
 
   function overlap__logic (co1 co2:map) : bool = 
-   if no_overlaping co1 co2 then True else False
+   if no_overlaping co1 co2 then False else True
 
   predicate overlap__pre (co1 co2:map) = true
   predicate overlap__post (co1 co2:map)(result : bool) =
-     result = True <-> no_overlaping co1 co2
+     result = False <-> no_overlaping co1 co2
      
 end
 

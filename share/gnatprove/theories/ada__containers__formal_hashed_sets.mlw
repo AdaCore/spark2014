@@ -524,7 +524,7 @@ function equivalent_elements__4__logic (k1 : element_type) (co2:set) (cu2:cursor
   predicate copy__pre (co:set) (cap:Ada__containers__count_type.count_type) = true
   predicate copy__post (co:set) (cap:Ada__containers__count_type.count_type) 
               (result: set) =
-     strict_equal co (result) /\ cap_is_max co result (Ada__containers__count_type.to_int cap)
+     result = copy__logic co cap
 
   function element__logic (co:set) (cu:cursor) : element_type = element_ co cu
 
