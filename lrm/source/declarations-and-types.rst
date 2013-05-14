@@ -118,6 +118,12 @@ or type extension shall define full default initialization.
 Tagged Types and Type Extensions
 --------------------------------
 
+Use of the 'Class attribute of an object or of a type is not in |SPARK|.
+
+[This restriction may be relaxed at some point in the future.
+Use of attributes such as Pre'Class are unaffected by this rule.
+As a consequence of this restriction, dispatching calls are not in |SPARK|.]
+
 A type extension declared within a subprogram body,
 block statement, or generic body which does not also enclose the
 declaration of each of its ancestor types is not in |SPARK|.
