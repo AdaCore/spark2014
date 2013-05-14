@@ -290,7 +290,32 @@ is
       Op_R5 (A.D, To_A2 (A.A (4)));  -- ok
    end UCC_04;
 
+   ----------------------------------------------------------------------
+   --  Graph issues
+   ----------------------------------------------------------------------
 
+   procedure Wibble (A, B : in out Record_A;
+                     X, Y : Boolean)
+   with Global  => null,
+        Depends => (A => (A, X),
+                    B => (B, Y));
+
+   procedure Wibble (A, B : in out Record_A;
+                     X, Y : Boolean)
+   is
+   begin
+      A.A := X;
+      B.A := Y;
+   end Wibble;
+
+   procedure Overlay (A    : in out Array_T;
+                      X, Y : Boolean)
+   with Depends => (A => (A, X, Y))
+   is
+   begin
+      Wibble (A (5), A (3),
+              X,     Y);
+   end Overlay;
 
    --  TODO: Type/view conversion
 
