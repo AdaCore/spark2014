@@ -217,7 +217,8 @@ module Main
              (((Int.(>) (position_ co1 cun : int) 0) /\
                (not (cun = (find_ co1 (witness k : real) : cursor)))) ->
               ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))) /\
-           (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor))))))))))
+           (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor))))))))))/\
+     capacity co1 = capacity co2
   
   predicate replace_element_ (co1 : map) (cu : cursor) (e : element_type) (co2 : map) =
     ((Int.(>) (position_ co1 cu : int) 0) /\
@@ -232,7 +233,8 @@ module Main
             ((Int.(>) (position_ co1 cun : int) 0) ->
              ((cu <> cun) ->
               ((element_ co2 cun : element_type) = (element_ co1 cun : element_type))))) /\
-          (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor)))))))))
+          (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor)))))))))/\
+     capacity co1 = capacity co2
   
   predicate insert_find (co1 : map) (k : key_type) (e : element_type) (co2 : map) =
     (forall w:real [(find_ co1 w : cursor)| (find_ co2 w : cursor)].
@@ -267,7 +269,8 @@ module Main
     (((find_ co1 (witness k : real) : cursor) = (no_element  : cursor)) /\
      ((Int.(>) (position_ co2 (find_ co2 (witness k : real) : cursor) : int) 0) /\
       (((length co2 : int) = (Int.(+) (length co1 : int) 1 : int)) /\
-       ((insert_pos co1 k e co2) /\ (insert_find co1 k e co2)))))
+       ((insert_pos co1 k e co2) /\ (insert_find co1 k e co2)))))/\
+     capacity co1 = capacity co2
 
   predicate first_inserted (co1:map) (k : key_type) (e : element_type) (co2:map) (p:cursor) =
 	    position_ co1 p = 0 /\ position_ co2 p > 0 /\ key_ co2 p = k /\ element_ co2 p = e
@@ -311,7 +314,8 @@ module Main
       (((length co2 : int) = (Int.(-) (length co1 : int) 1 : int)) /\
        ((delete_pos co1 (position_ co1 cu : int) co2) /\
         ((delete_inv co1 (position_ co1 cu : int) co2) /\
-         (delete_find co1 (key_ co1 cu : key_type) co2))))))
+         (delete_find co1 (key_ co1 cu : key_type) co2))))))/\
+     capacity co1 = capacity co2
   
   predicate include__ (co1 : map) (k : key_type) (e : element_type) (co2 : map) =
     (((Int.(>) (position_ co1 (find_ co1 (witness k : real) : cursor) : int) 0) ->
@@ -497,7 +501,7 @@ function equivalent_keys__4__logic (k1 : key_type) (co2:map) (cu2:cursor) : bool
   predicate move__pre (target:map) (source:map) =
      capacity target >= length source
   predicate move__post (target oldtarget:map) (source oldsource:map) =
-     equal_ target oldsource /\ is_empty_ source
+     equal_ target oldsource /\ is_empty_ source /\ capacity target = capacity oldtarget
 
   predicate insert__pre (co :map) (k:key_type) (e:element_type) 
                                              (p : cursor) (inserted : bool)=
@@ -618,11 +622,11 @@ function equivalent_keys__4__logic (k1 : key_type) (co2:map) (cu2:cursor) : bool
      result = right_ co cu
 
   function overlap__logic (co1 co2:map) : bool = 
-   if no_overlaping co1 co2 then True else False
+   if no_overlaping co1 co2 then False else True
 
   predicate overlap__pre (co1 co2:map) = true
   predicate overlap__post (co1 co2:map)(result : bool) =
-     result = True <-> no_overlaping co1 co2
+     result = False <-> no_overlaping co1 co2
      
 end
 
