@@ -1,4 +1,4 @@
-uninitialized.adb:6:07: use of uninitialized variable "B" [uninitialized]
+uninitialized.adb:6:07: use of uninitialized variable "B" [uninitialized__b]
 
 
 gnatprove: error during translation to intermediate language, aborting.

@@ -5,7 +5,7 @@ message_tests.adb:40:33: "C" is not used
 message_tests.adb:48:32: component "C.Flags.B" of formal parameter might not be set [uninitialized__c_flags_b]
 message_tests.adb:48:32: component "C.Flags.A" of formal parameter might not be set [uninitialized__c_flags_a]
 message_tests.adb:48:32: component "C.W" of formal parameter might not be set [uninitialized__c_w]
-message_tests.adb:66:15: use of uninitialized variable "F.B" [uninitialized]
+message_tests.adb:66:15: use of uninitialized variable "F.B" [uninitialized__f_b]
 
 
 gnatprove: error during translation to intermediate language, aborting.

@@ -7,9 +7,9 @@ test.adb:57:21: "B" does not depend on "A"
 test.adb:66:24: ineffective import "A"
 test.adb:69:09: "A" missing from null dependency
 test.adb:69:21: "B" does not depend on "A"
-test.adb:89:07: use of uninitialized variable "A" [uninitialized]
-test.adb:99:36: use of uninitialized variable "A" [uninitialized]
-test.adb:99:41: use of uninitialized variable "A" [uninitialized]
+test.adb:89:07: use of uninitialized variable "A" [uninitialized__a]
+test.adb:99:36: use of uninitialized variable "A" [uninitialized__a]
+test.adb:99:41: use of uninitialized variable "A" [uninitialized__a]
 test.adb:120:24: ineffective import "A"
 test.adb:123:09: "A" missing from null dependency
 test.adb:131:24: ineffective import "A"
