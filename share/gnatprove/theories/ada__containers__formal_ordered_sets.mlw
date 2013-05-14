@@ -335,9 +335,9 @@ module Main
        ((insert_inv co1 e co2) /\ (insert_find co1 e co2))))) /\ capacity co1 = capacity co2
 
   predicate first_inserted (co1:set) (k:element_type) (co2:set) (p:cursor) =
-     ceiling co1 (witness k) = no_element /\ p = last co2 \/
+     position_ co2 p > 0 /\ (ceiling co1 (witness k) = no_element /\ p = last co2 \/
              position_ co1 (ceiling co1 (witness k)) > 0 /\
-             p = previous_ co2 (ceiling co1 (witness k))
+             p = previous_ co2 (ceiling co1 (witness k)))
   
   predicate delete_find (co1 : set) (e : element_type) (co2 : set) =
     (forall w:real.
@@ -588,8 +588,8 @@ module Main
      length co  < capacity co \/ contains co (witness k)
   predicate insert__post (co oldco: set) (k:element_type)
                                              (p oldp : cursor) (inserted oldinserted : bool) =
-     (if inserted = True then contains oldco (witness k) 
-      else not (contains oldco (witness k))) /\ 
+     (if inserted = True then not (contains oldco (witness k)) 
+      else contains oldco (witness k)) /\ 
        (if contains oldco (witness k) then 
       (p = find_ oldco (witness k) /\ co = oldco /\ inserted = False)
        else (first_inserted oldco k co p /\ insert_ oldco k co /\ inserted = True))

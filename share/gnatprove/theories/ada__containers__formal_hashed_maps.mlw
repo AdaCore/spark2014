@@ -508,7 +508,7 @@ function equivalent_keys__4__logic (k1 : key_type) (co2:map) (cu2:cursor) : bool
      length co  < capacity co \/ contains co (witness k)
   predicate insert__post (co oldco: map) (k:key_type) (e:element_type) 
                                              (p oldp : cursor) (inserted oldinserted : bool) =
-     (if inserted = True then contains oldco (witness k) 
+     (if inserted = False then contains oldco (witness k) 
       else not (contains oldco (witness k))) /\ 
        (if contains oldco (witness k) then 
       (p = find_ oldco (witness k) /\ co = oldco /\ inserted = False)

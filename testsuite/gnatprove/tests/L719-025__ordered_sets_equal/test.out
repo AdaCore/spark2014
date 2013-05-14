@@ -15,9 +15,9 @@ p.ads:19:14: postcondition not proved, requires Element (L, Find (L, E)) = E
 p.ads:19:26: info: precondition proved
 p.ads:22:13: info: precondition proved
 p.ads:22:45: info: precondition proved
-p.ads:23:14: info: postcondition proved
 p.ads:23:14: info: precondition proved
+p.ads:23:14: postcondition not proved, requires Strict_Equal (L, L'old)
 p.ads:26:13: info: precondition proved
-p.ads:27:14: info: postcondition proved
+p.ads:27:14: postcondition not proved
 p.ads:27:16: info: precondition proved
 p.ads:28:27: info: precondition proved
