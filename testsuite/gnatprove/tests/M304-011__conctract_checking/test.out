@@ -1,14 +1,14 @@
+test.adb:4:13: ineffective global import "X"
 test.adb:14:24: "Y" depends on "Y"
 test.adb:14:24: "Y" does not depend on "X"
 test.adb:29:47: formal parameter "Par2" might not be set [uninitialized__par2]
 test.adb:32:24: "Par2" depends on "Par2"
 test.adb:33:24: "X" depends on "Par1"
-test.adb:49:04: ineffective global import "X"
+test.adb:35:13: flow analysis of "Check_Contract_7" abandoned due to inconsistent graph
+test.adb:39:14: flow analysis of "Check_Contract_8" abandoned due to inconsistent graph
 test.adb:53:07: ineffective statement
 test.adb:54:15: ineffective statement [ineffective]
-test.adb:134:04: flow analysis of "Check_Contract_7" abandoned due to inconsistent graph
 test.adb:137:07: "Z" must be listed in the Global aspect
-test.adb:144:04: flow analysis of "Check_Contract_8" abandoned due to inconsistent graph
 test.adb:147:09: "Z" must be listed in the Global aspect
 
 
