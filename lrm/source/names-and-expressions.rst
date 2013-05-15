@@ -278,8 +278,18 @@ in anticipation of the possible relaxation of that restriction.]
 Operators and Expression Evaluation
 -----------------------------------
 
-No extensions or restrictions.
+Ada grants implementations the freedom to reassociated a sequence
+of predefined operators of the same precedence level even if this
+changes the behavior of the program with respect to intermediate
+overflow (see Ada 2012 RM 4.5). |SPARK| assumes that an implementation
+does not take advantage of this permission; in particular,
+a proof of the absence of intermediate overflow in this situation
+may depend on this assumption.
 
+[The GNAT Ada 2012 compiler does not take advantage of this permission.
+The GNAT compiler also provides an option for rejecting constructs to
+which this permission would apply. Explicit parenthesization can
+always be used to force a particular association in this situation.]
 
 Type Conversions
 ----------------
