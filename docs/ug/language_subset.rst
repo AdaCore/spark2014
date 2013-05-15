@@ -540,3 +540,102 @@ Overflow Modes
     function Add (X, Y : Integer) return Integer with
       Pre  => X + Y in Integer,
       Post => Add'Result = X + Y;
+
+|SPARK| Libraries
+=================
+
+Formal Containers Library
+-------------------------
+
+Containers are generic data structures offering a high-level view of
+collections of objects, while guaranteeing fast access to their
+content to retrieve or modify it. The most common containers are
+lists, vectors, sets and maps, which are defined in Ada Standard
+Libraries. In critical software where verification objectives
+severely restrict the use of pointers, containers offer an attractive 
+alternative to pointer-intensive data structures.
+
+There are 6 formal containers: ``Formal_Vectors``, 
+``Formal_Doubly_Linked_Lists``, ``Formal_Hashed_Sets``,
+``Formal_Ordered_Sets``, ``Formal_Hashed_Maps``, and
+``Formal_Ordered_Maps``. They are adapted to critical software
+development. They are bounded, so that there can be no dynamic
+allocation and they have preconditions that can be used to ensure that
+there is no error at run-time. They are experimental, and, as such,
+should be used with care. In particular, the examples below can be
+compiled and fed to |GNATprove| but not everything is proved about them in a
+reasonable amount of time.
+
+Specification of formal containers is in |SPARK|. As a consequence,
+there is no procedure that take a procedure as an argument such that
+``Update_Element`` or ``Query_Element`` in Ada Standard container
+library. What is more, the Ada 2012 iteration mechanism that allows
+the use of ``for all`` and ``for some`` on Ada Standard containers is
+not available on formal containers.
+
+Formal containers are adapted to the specification process. First of all,
+cursors no longer have a reference to underlying container. Indeed, in
+Ada Standard container library, cursor contain a pointer to their
+underlying container. As a consequence, if a container is modified
+then so are every cursor of this container. This modification also
+allows to use the same cursor inside different containers. In
+particular, it is useful to link elements associated to a list before
+and after a modification. Formal containers also provide three new
+functions per container type. ``Right (C : Container; Cu : Cursor) 
+returns Container`` and ``Left (C : Container; Cu : Cursor) returns 
+Container`` can be used to write loop invariant. They return the right
+(resp. the left) part of the container ``C`` starting before
+(resp. stopping before) the cursor ``Cu``.
+
+For example, in the function ``My_Find`` below, ``Left`` is used in the
+loop-invariant to state that the element ``E`` has not been found in
+the part of the list that as been analyzed yet.
+
+.. code-block:: ada
+   :linenos:
+
+   function My_Find (L : List; E : Element_Type) return Cursor with
+     Post => (if My_Find'Result = No_Element then
+                not Contains (L, E)
+              else Has_Element (L, My_Find'Result) and then
+              Element (L, My_Find'Result) = E);
+
+.. code-block:: ada
+   :linenos:
+
+   function My_Find (L : List; E : Element_Type) return Cursor is
+      Cu : Cursor := First (L);
+   begin
+      while Has_Element (L, Cu) loop
+         pragma Loop_Invariant (not Contains (Left (L, Cu), E));
+         if Element (L, Cu) = E then
+            return Cu;
+         end if;
+         Next (L, Cu);
+      end loop;
+      return No_Element;
+   end My_Find;
+
+The third new function,
+``Strict_Equal (C1, C2 : Container)`` checks whether ``C1`` and ``C2``
+really are equal with respect to everything that can impact existing
+functions of the library. On lists for example, it does not only check
+that ``C1`` and ``C2`` contain the same elements in the same order but
+also that ``C1`` and ``C2`` share the same cursors. This function is
+generaly used for writing frame-conditions.
+
+For example, in the function ``My_Preppend`` below, ``Strict_Equal`` is
+used to state that ``My_Preppend`` does not modify the tail of the
+list. Note that we use ``First (L1'Old)`` to refer to the first
+element of the tail in the output of preppend, which would not have
+been possible is cursors still had an internal reference to the list
+they come from.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure My_Preppend (L1 : in out List; E : Element_Type) with
+     Pre => L1.Capacity > Length (L1),
+     Post => Length (L1) = 1 + Length (L1'Old) and then
+             First_Element (L1) = E and then
+             Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
