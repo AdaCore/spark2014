@@ -36,6 +36,7 @@ SPARK 2014 Reference Manual
    exceptions
    generic-units
    representation-issues
+   shared-variable-control
    the-standard-library
 
 .. raw:: latex

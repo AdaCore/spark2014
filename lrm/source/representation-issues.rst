@@ -4,24 +4,44 @@ Representation Issues
 .. todo:: Provide full detail on Representation Issues.
           To be completed in the Milestone 4 version of this document.
           
-Representation Clauses
-----------------------
+.. todo:: This statement was originally in this chapter 
+     "Pragma or aspect ``Unchecked_Union`` is not in |SPARK|" this needs to be 
+     recorded in the list of unsupported aspects and pragmas.
+          
+Operational and Representation Aspects
+---------------------------------------
 
-Representation clauses are in |SPARK|, except for ``'Address`` representation
-clauses.
+No restrictions or additions.
 
-As aspects specifications are elaborated at the freezing point of the
-associated entity, this allows forward references in the expression associated
-to the aspect specification, as in:
 
-.. code-block:: ada
+Packed Types
+------------
 
-   procedure Incr (X : in out Integer) with
-     Post => X = Add_One (X'Old);
+No restrictions or additions.
 
-   function Add_One (X : Integer) return Integer is (X + 1);
+Operational and Representation Attributes
+-----------------------------------------
 
-No such forward references are allowed in |SPARK|.
+No restrictions or additions.
+
+Enumeration Representation Clauses
+----------------------------------
+
+No restrictions or additions.
+
+Record Layout
+-------------
+
+Change of Representation
+------------------------
+
+No restrictions or additions.
+
+The Package System
+------------------
+
+The use of the operators defined for type Address are not permitted in |SPARK| 
+except for use within representation clauses. 
 
 Machine Code Insertions
 -----------------------
@@ -31,14 +51,42 @@ Machine code insertions are not in |SPARK|.
 Unchecked Type Conversions
 --------------------------
 
-Unchecked type conversions are not in |SPARK|.
+An instantiation of an Unchecked_Conversion may have Refined_Pre and
+Refined_Post aspects specified.
+
+Data Validity
+^^^^^^^^^^^^^
+
+Currently |SPARK| does not check for data validity although SPARK 2005 did.
+
+.. todo:: Need to put some words in here to describe the precautions that may
+   be taken to avoid invalid data.
+   
+Unchecked Access Value Creation
+-------------------------------
+
+As access types are not supported in |SPARK|, neither is this attribute.
+
+Storage Management
+------------------
+
+These features are related to access types and not in |SPARK|.
+
+Pragma Restrictions and Pragma Profile
+--------------------------------------
+
+Restrictions and Priofiles will be available with |SPARK| to provide profiles 
+suitable for different application environments.
 
 Streams
 -------
 
-Stream ``Read`` and ``Write`` operations are not in |SPARK|.
+Stream types and operations are not in |SPARK|.
 
-Interfacing to Other Languages
-------------------------------
+Freezing Rules
+--------------
 
-Pragma or aspect ``Unchecked_Union`` is not in |SPARK|.
+No restrictions or additions.
+
+
+

@@ -62,53 +62,77 @@ themselves records.
    * the visible state of any packages declared immediately within the private 
      part or body of P.
 
-.. _volatile_state:
+.. _external_state:
 
-Volatile State
+External State
 ~~~~~~~~~~~~~~
 
-Volatile state is a volatile variable object (as described in the Ada RM Annex
-C.6) or a volatile state abstraction. A volatile state abstraction represents at
-least one volatile variable or volatile state abstraction of another package.
-A volatile object must be an entire variable in |SPARK|.
+External state is a state abstraction or variable representing something 
+external to a program.  For instance, an input or output device, or a 
+communication channel to another subsystem, for example another |SPARK| program.
 
-Volatile state is treated specially for static analysis because an assignment to
-a volatile state is not ineffective even if it's value is not read by the
+An external state may be *volatile state* in the sense that an assignment to an
+external state is not ineffective even if it's value is not read by the
 program [The assignment could be to an external device and has no logical effect
-on the program]. Similarly, a read of a volatile variable is never ineffective;
-it is considered to have a side-effect. [The values obtained from two successive
-reads without an intervening update of a volatile state are not necessarily
-equal.]
+on the program]. Similarly, a read of an external may not be ineffective;
+it may have a side-effect. [The values obtained from two successive
+reads without an intervening update of an external state may not be equal.]
 
-In |SPARK| a volatile variable is regarded either as an input only or an output
-only, but not both, to some external component. In Ada terminology this is
-viewed as a volatile input only variable has at least one external writer but no
-external readers and a volatile output only variable has at least one external
-reader but no external writers. A volatile state abstraction has the same
-restriction that it can be an input only or an output only but not both. It
-follows that a volatile input state abstraction can only represent volatile
-input only variables or volatile input only state abstractions of other
-packages, and similarly volatile output only state abstractions can only
-represent volatile output only states.
+An external state abstraction is considered to be a volatile state unless it is
+explicitly designated as non-volatile.  An external variable is a volatile
+state if it is an Ada volatile object (as described in the Ada RM Annex
+C.6).  In |SPARK| an Ada volatile object must be an an entire variable.
 
-|SPARK| aspects are defined for designating a volatile variable or type
-declaration as an input only or an output only (see
-:ref:`volatile_input_and_output_only_aspects`) and a state abstraction is
-designated as volatile and either an input only or an output only when it is
-declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`).
+In |SPARK| an external variable designated as volatile using Ada aspects or 
+pragmas is designated as input only or an output only not both.  The variable is 
+the means of communication with some external input or output.
+
+An volatile state that is a state abstraction may be designated as input only 
+or output only or may be left undesignated in terms of whether it is an input or
+output. [The lack of an input only or output only designator indicates that the 
+state abstraction may represent a hidden state that may have non-volatile and, 
+or, both input only and output only states. Such a state abstraction may be 
+representing some complex external communication channel.]
+
+An external state that is designated as non-volatile is assumed to be both an 
+input and an output and may not be designated as an input or output only.
+
+It follows that a external state that is designated as input only or output only
+is a volatile state.
+
+|SPARK| aspects are defined for designating a variable or type declaration as
+external and input only or an output only (see :ref:`external_aspects`) and a
+state abstraction may be designated as external and, either input only or output
+only, or non-volatile when it is declared by an Abstract_State aspect (see
+:ref:`abstract-state-aspect`).
 
 
 .. centered:: **Static Semantics**
 
-#. The read or update of a volatile state is considered, for static analysis 
-   purposes, to be both a read and an update of the entity.  A read of a 
-   volatile state is preceded by an implicit update of the state and an update
-   of a volatile state is followed by an implicit read of the state.
-   [Thus, a read always has a side effect and an update is never ineffective.]
+#. A variable or state abstraction may be designated as an external state.
+   This indicates that it has some form of interaction with a device or 
+   subsystem external to the program.
+   
+#. An external state abstraction may be designated as being a non-volatile 
+   state; without this designation it is a volatile state.
+   
+#. A variable is designated as volatile state using the aspects (or progmas) 
+   defined in the Ada RM Annex C6  (or J15).  A variable which is not designated 
+   as volatile is non-volatile state.
+   
+#. A state abstraction denoted as an external non-volatile state cannot be 
+   designated as an input only or output only state.  All external states that
+   are designated as input only or output only are volatile states.
+
+#. The read or update of a volatile state is considered to be both a read and an 
+   update of the state. A read of a volatile state is preceded by an implicit
+   update of the state and an update of a volatile state is followed by an
+   implicit read of the state. [Thus, a read of a volatile state always has a
+   side effect and an update of a volatile state is never ineffective.]
    
 #. It follows from the semantics of reading and updating of volatile state that
    such a state does not require initialization for static analysis purposes
-   [Indeed, it is not possible to initialize a volatile input only variable
+   [Indeed, it is not possible to initialize an external input only variable
    because the SPARK rules forbid it to be updated explicitly] and so volatile
    states are not the subject of an initialization item in an Initializes aspect
    (see :ref:`initializes_aspect`).
@@ -119,14 +143,14 @@ declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`).
    
 .. centered:: **Legality Rules**
 
-#. A volatile input only state shall not be denoted in a Global aspect with a
-   ``mode_selector`` of In_Out or Output.  Nor shall not be denoted as an 
-   ``output`` of a Depends aspect.
+#. A volatile state which is designated as input only shall not be denoted in a 
+   Global aspect with a ``mode_selector`` of In_Out or Output.  Nor shall it be 
+   denoted as an ``output`` of a Depends aspect.
    
-#. A volatile output only state shall not be denoted in a Global aspect with a
-   ``mode_selector`` of Input or In_Out.  Nor shall not be denoted as an 
-   ``input`` of a Depends aspect.
-   
+#. A volatile state which is designated as output only shall not be denoted in a 
+    Global aspect with a ``mode_selector`` of Input or In_Out. Nor shall not be
+    denoted as an ``input`` of a Depends aspect.
+    
 #. As a read of a volatile state always has a side-effect a ``global_item`` of a
    function cannot denote a volatile state [which in turn means that a function
    cannot, directly or indirectly, read a volatile state].
@@ -142,92 +166,67 @@ declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`).
           To be completed in the Milestone 4 version of this document.
 
 
-.. _volatile_input_and_output_only_aspects:
+.. _external_aspects:
 
-Volatile Input and Output Only Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+External Aspects
+~~~~~~~~~~~~~~~~
 
-.. todo:: Steve has a proposal for volatile components in a limited type
-   declaration.
-   
-A volatile variable has to be designated as either input only or output only in
-|SPARK|. This may be achieved by specifying an Input_Only or Output_Only aspect
-directly in its declaration. If the variable is volatile because its type is
-volatile then it may designated as input only or output only by specifying an
-Input_Only or Output_Only aspect in its type declaration.
+A variable which represents a communication channel with an external entity,
+for instance a transducer, subsystem, or program may be designated as an
+external state. If it is a volatile variable it has to be designated as an
+external state which is an input only or an output only. These designations are
+established with an External_Aspect.
+
+The External aspect is introduced by an ``aspect_specification`` where the
+``aspect_mark`` is External and the ``aspect_definition`` shall follow the
+grammar of ``external_state`` given below.
+
+.. centered:: **Syntax**
+
+::
+
+  external_state ::= Non_Volatile | 
+                     Input_Only   | Output_Only
+
 
 .. centered:: **Legality Rules**
 
-#. For an ``object_declaration`` or a ``full_type_declaration`` the following
-   Boolean representation aspects may be specified: Input_Only and Output_Only. 
+#. An External aspect may only be specified for an``object_declaration``.
 
-#. An Input_Only or an Output_Only aspect, but not both, may be specified in a 
-   volatile type declaration.
+#. An External aspect shall be specified for a volatile object declaration
+   and the value of the aspect definition shall be Input_Only or Output_Only.
    
-#. If a volatile type declaration specifies an Input_Only aspect, then all 
-   variables of that type shall be input only.  The declaration of 
-   such an object may specify an Input_Only aspect but not an Output_Only aspect.
+#. If an External aspect is specified for an object which is not volatile,
+   then the value of the aspect definition shall be Non_Volatile.
    
-#. If a volatile type declaration specifies an Output_Only aspect, then all 
-   variables of that type shall be output only.  The declaration of 
-   such an object may specify an Output_Only aspect but not an Input_Only aspect.
-   
-#. A variable declaration may be specified as volatile if its type is not
-   volatile and, if a variable is specified as volatile in this way, then it
-   shall specify exactly one of an Input_Only or an Output_Only aspect. If the
-   declaration specifies an Input_Only aspect, then the declaration is of a
-   volatile input only, otherwise it specifies an Output_Only aspect and is a
-   volatile output only. 
-   
-   
-.. centered:: **Verification Rules**
-
-   
-#. A volatile representation aspect may only be applied to an 
-   ``object_declaration`` or a ``full_type_declaration``.
-   
-#. A component of an ``array_type_declaration`` or a ``record_type_declaration`` 
-   shall not be of a volatile type. [This may require determining whether a
-   private type is volatile.]
-   
-#. A discriminant shall not be of a volatile type.
-
-#. A discriminated type shall not be volatile.
-
-#. A tagged type shall not be volatile.
-   
-#. A volatile input only variable shall not be updated other than by the
-   implicit update associated with reading from it.  A volatile input only
-   variable shall not be passed as a part of an actual parameter in a procedure
-   call if the mode of the corresponding formal parameter is not **in**.
-   
-#. A volatile output only variable shall not be read other than by the implicit
-   read associated with updating it.  A volatile output only variable shall not
-   be passed as part of actual parameter in a procedure call if the mode of the 
-   corresponding formal parameter is not *out*.
-   
-#. A volatile object shall only be denoted as a whole object.
-
-#. A volatile object shall only appear on the left-hand side of an assignment 
-   statement or within an expression according to the rules given below. 
-
 #. [The general |SPARK| rule that an expression evaluation cannot
-   have a side effect means that a read of a volatile variable is not an
-   ordinary expression.] An expression which is the name denoting an entire 
-   volatile object shall only occur in the following contexts:
+   have a side effect means that a read of a variable designated as an input
+   only state is not an ordinary expression.] An expression which is the name 
+   denoting a variable designated as an external input only state shall only 
+   occur in the following contexts:
 
-   * as the [right hand side] expression of an assignment statement provided
-     the left hand side is not also a volatile object;
+   * as the [right hand side] expression of an assignment statement;
    
    * as the expression of an initialization expression of an object declaration
-     that is not volatile;
+     that is not designated as volatile;
    
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
      
-   * as an actual parameter of a procedure whose corresponding formal parameter
-     is of a non-scalar volatile type.
-     
+   * as an actual parameter in a procedure call of which the corresponding 
+     formal parameter is mode **in** and is of a non-scalar volatile type.
+
+#. A variable designated as an external output only state shall only 
+   appear on the left-hand side of an assignment statement or passed as an
+   actual parameter in a procedure call of which the mode of the corresponding 
+   formal parameter is **out** and is of a volatile, non-scalar type.
+   
+#. See section on volatile variables for rules concerning their use in |SPARK|
+   (:ref:`shared_variable_control`).
+
+.. centered:: **Verification Rules**
+  
+There are no extra verification rules.
 
 .. centered:: **Static Semantics**
 
@@ -247,7 +246,7 @@ There are no dynamic semantics associated with these aspects.
 
       Sensor : Integer
          with Volatile,
-              Input_Only,
+              External => Input_Only,
               Address => System.Storage_Units.To_Address (16#ACECAFE#);
 
    end Input_Port;
@@ -258,37 +257,42 @@ There are no dynamic semantics associated with these aspects.
    is
       type Volatile_Type : Integer with Volatile;
    
-      type Volatile_Input  is new Volatile_Type with Input_Only;
-      type Volatile_Output is new Volatile_Type with Output_Only;
-      
       -- Read_Port may only be called with an actual parameter for Port
-      -- which is a volatile input only
+      -- which is an external input only
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
       with
-         Depends => (Value => Port); -- Port is volatile input only
+         Depends => (Value => Port); -- Port is an external input only
      
      
       -- Write_Port may only be called with an actual parameter for Port
-      -- which is a volatile output only
+      -- which is a external output only
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
       with
-         Depends => (Port => Value); -- Port is volatile output only
+         Depends => (Port => Value); -- Port is external output only
      
-      -- The following declarations are all volatile input only variables
+      -- The following declarations are all external input only variables
       V_In_1 : Volatile_Type 
       with 
-         Input_Only,
+         External => Input_Only,
          Address => System.Storage_Units.To_Address (16#A1CAFE#);
       
-      V_In_2 : Volatile_Input with Address => System.Storage_Units.To_Address (16#ABCCAFE#);
+      V_In_2 : Integer
+      with
+         Volatile,
+         External => Input_Only,
+         Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
       -- The following declarations are all volatile output only variables      
       V_Out_1 : Volatile_Type 
       with 
-         Output_Only,
+         External => Output_Only,
          Address => System.Storage_Units.To_Address (16#BBCCAFE#);
       
-      V_Out_2 : Volatile_Output with Address => System.Storage_Units.To_Address (16#ADACAFE#);
+      V_Out_2 : Integer
+      with
+         Volatile,
+         External => Output_Only,
+         Address => System.Storage_Units.To_Address (16#ADACAFE#);
 
    end Multiple_Ports;
             
@@ -745,7 +749,7 @@ be a *Boolean_*\ ``expression``.
 
 #. An Initial_Condition aspect is a sort of postcondition for the elaboration
    of both the specification and body of a package. If present on a package, the 
-   its *Boolean_\* ``expression`` defines properties (a predicate) of the state 
+   its *Boolean_*\ ``expression`` defines properties (a predicate) of the state 
    of the package which can be assumed to be true immediately following the 
    elaboration of the package. [The expression of the Initial_Condition may only
    refer to names that are visible.  This means that to express properties of
@@ -990,7 +994,7 @@ where
 #. A ``property_list`` shall not contain a ``name_value`` property.
 
 #. The ``identifier`` of a ``simple_property`` shall be Volatile,
-   Input_Only, or Output_Only (see :ref:`volatile_state`).
+   Input_Only, or Output_Only (see :ref:`external_state`).
 
    .. ifconfig:: Display_Trace_Units
 
