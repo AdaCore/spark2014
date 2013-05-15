@@ -8,6 +8,8 @@ test.adb:28:41: use of uninitialized variable "X" [uninitialized__x]
 test.adb:38:12: stable
 test.adb:39:27: ineffective statement
 test.adb:43:38: use of uninitialized variable "X" [uninitialized__x]
+test.adb:51:12: stable
+test.adb:52:45: use of uninitialized variable "X" [uninitialized__x]
 
 
 gnatprove: error during translation to intermediate language, aborting.

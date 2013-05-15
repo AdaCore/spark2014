@@ -1453,9 +1453,13 @@ package body Flow.Control_Flow_Graph is
       CM (Union_Id (N)).Standard_Exits := To_Set (V);
 
       --  We make a note of 'Loop_Entry uses.
-      if Get_Pragma_Id (N) = Pragma_Check then
-         Add_Loop_Entry_References (N);
-      end if;
+      case Get_Pragma_Id (N) is
+         when Pragma_Check | Pragma_Loop_Variant | Pragma_Loop_Invariant =>
+            Add_Loop_Entry_References (N);
+
+         when others =>
+            null;
+      end case;
 
    end Do_Pragma;
 

@@ -44,4 +44,13 @@ is
       end loop Wibble;
    end Test_04;
 
+   procedure Test_05 (X : out Integer)
+   is
+   begin
+      for I in Integer range 1 .. 10 loop
+         X := 0;
+         pragma Loop_Variant (Increases => X'Loop_Entry);  --  uninitialized
+      end loop;
+   end Test_05;
+
 end Test;
