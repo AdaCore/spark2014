@@ -704,27 +704,38 @@ High-level requirements
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
-.. todo:: The section on Initial_Condition aspect has to be rewritten
 
 The Initial Condition aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` shall be
-an ``expression``.
-
-.. todo:: Complete language definition for Initial Condition aspect.
-          To be completed in the Milestone 3 version of this document.
+the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` shall
+be a *Boolean_*\ ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. An Initial Condition Aspect may only be placed in an
-   ``aspect_specification`` of a ``package_specification``.
+#. An Initial_Condition aspect may only be placed in an ``aspect_specification`` 
+   of a ``package_specification``.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. The Initial Condition Aspect shall follow the
-   Abstract State Aspect, Depends aspect and
+#. The Initial_Condition aspect shall follow the Abstract_State aspect and 
    Initializes aspect if they are present.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
+#. Each variable or state abstraction appearing in an Initial Condition Aspect 
+   of a package Q which is declared in the visible part of Q shall be
+   initialized during the elaboration of Q and be denoted by a ``name`` of
+   an ``initialization_item`` of the Initializes aspect of Q.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
+#. Each ``state_name`` referenced in Initial Condition Aspect shall
+   be initialized during package elaboration.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -732,36 +743,30 @@ an ``expression``.
 
 .. centered:: **Static Semantics**
 
-#. The predicate of an Initial Condition Aspect of a package
-   defines the initial state of the package after its elaboration and
-   the elaboration of its private descendants.
-
-.. centered:: **Verification Rules**
-
-.. centered:: *Checked by Flow Analysis*
-
-#. Each *variable* appearing in an Initial Condition Aspect of a
-   package Q which is declared in the visible part of Q shall be
-   initialized during the elaboration of Q and its private descendants.
-#. A ``state_name`` cannot appear directly in
-   an Initial Condition Aspect but it may be indirectly referenced
-   through a function call.
-#. Each ``state_name`` referenced in Initial Condition Aspect shall
-   be initialized during package elaboration.
-
-.. centered:: *Checked by Proof*
-
-#. Verification conditions are generated which have to be proven to
-   demonstrate that the implementation of a package Q and its private
-   descendants satisfy the predicate given in the
-   Initial Condition Aspect of Q.
-
+#. An Initial_Condition aspect is a sort of postcondition for the elaboration
+   of both the specification and body of a package. If present on a package, the 
+   its *Boolean_\* ``expression`` defines properties (a predicate) of the state 
+   of the package which can be assumed to be true immediately following the 
+   elaboration of the package. [The expression of the Initial_Condition may only
+   refer to names that are visible.  This means that to express properties of
+   hidden state, functions declared in the visible part acting and on the
+   state abstractions of the package must be used.]
+   
 .. centered:: **Dynamic Semantics**
 
-#. An Initial Condition Aspect is like a postcondition.  It
-   should be evaluated following the elaboration of Q and its private
-   descendants.  If it does not evaluate to True, then an exception
-   should be raised.
+#. For a non-library level package the *Boolean_*\ ``expression`` 
+   Initial_Condition aspect acts as the Boolean parameter of an assume pragma 
+   placed immediately after the declaration of the package.  For library level
+   packages see :ref:`elaboration_issues`.
+   
+   .. centered:: **Verification Rules**
+
+#. The Initial_Condition aspect gives a proof obligation to show that the 
+   implementation of the ``package_specification`` and its body satisfy the 
+   predicate given in the Initial_Condition aspect. [The Boolean expression of 
+   the Initial_Condition aspect of a package may only predicate properties of 
+   the visible state of package otherwise it will not be possible to discharge
+   the proof obligation by analysis of the package alone.] 
 
 .. centered:: **Examples**
 
@@ -1822,6 +1827,8 @@ Assignment and Finalization
 ---------------------------
 
 Controlled types are not permitted in |SPARK|.
+
+.. _elaboration_issues:
 
 Elaboration Issues
 ------------------
