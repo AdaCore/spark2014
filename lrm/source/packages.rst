@@ -116,7 +116,7 @@ only, or non-volatile when it is declared by an Abstract_State aspect (see
 #. An external state abstraction may be designated as being a non-volatile 
    state; without this designation it is a volatile state.
    
-#. A variable is designated as volatile state using the aspects (or progmas) 
+#. A variable is designated as volatile state using the aspects (or pragmas) 
    defined in the Ada RM Annex C6  (or J15).  A variable which is not designated 
    as volatile is non-volatile state.
    
@@ -159,10 +159,8 @@ only, or non-volatile when it is declared by an Abstract_State aspect (see
    ``initialization_item`` of an Initializes aspect 
    (see :ref:`initializes_aspect`).
    
-.. todo:: Refinment of volatile state
-     
-.. todo:: Consider more than just simple Volatile Inputs and Outputs;
-          Latched outputs, In_Out volatiles, etc.
+.. todo:: Consider more than just simple External Inputs and Outputs;
+          Latched outputs, In_Out Externals, etc.
           To be completed in the Milestone 4 version of this document.
 
 
@@ -374,16 +372,20 @@ shall follow the grammar of ``abstract_state_list`` given below.
 ::
 
   abstract_state_list        ::= null
-                               | state_name_with_properties
-                               | (state_name_with_properties { , state_name_with_properties } )
-  state_name_with_properties ::= state_name
-                               | ( state_name with property_list )
-  property_list              ::= property { , property }
-  property                   ::= simple_property
-                               | name_value_property
-  simple_property            ::= identifier
-  name_value_property        ::= identifier => expression
+                               | state_name_with_options
+                               | (state_name_with_ { , state_name_with_options } )
+  state_name_with_options    ::= state_name
+                               | ( state_name with option_list )
+  option_list                ::= option { , option }
+  option                     ::= simple_option
+                               | name_value_option
+  simple_option              ::= External
+  name_value_option          ::= External => Non_Volatile
+                               | External => Input_Only
+                               | External => Output_Only
+                               | Part_Of  => abstract_state
   state_name                 ::= defining_identifier
+  abstract_state             ::= name
 
 .. ifconfig:: Display_Trace_Units
 
@@ -391,42 +393,14 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Legality Rules**
 
-#. The ``identifier`` of a ``simple_property`` shall be Volatile,
-   Input_Only, or Output_Only.
+#. An ``option`` shall not be repeated within a single ``option_list``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR identifier of simple_property shall be Volatile, Input or Output
+      :Trace Unit: 7.1.2 LR An option shall not be repeated within a single option list.
 
-#. An identifier shall not be repeated within a single property list.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 7.1.2 LR An identifier shall not be repeated within a single property list.
-
-#. If a ``property_list`` includes Volatile, then it shall also
-   include exactly one of Input_Only or Output_Only.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 7.1.2 LR If property_list includes Volatile, then it shall also include exactly one of Input_Only or Output_Only
-
-#. If a ``property_list`` includes either Input_Only or Output_Only,
-   then it shall also include Volatile.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 7.1.2 LR If property_list includes Input_Only or Output_Only, it shall also include Volatile
-
-#. The ``identifier`` of a ``name_value_property`` shall be
-   Part_Of and at most one may appear in the ``property_list``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 7.1.2 LR name_value_property identifier must be Part_Of
-      
-#. If a ``property_list`` contains one or more ``name_value_property`` items 
-   then they shall be the final properties in the list. 
+#. If a ``option_list`` contains one or more ``name_value_option`` items 
+   then they shall be the final options in the list. 
    [This eliminates the possibility of a positional
    association following a named association in the property list.]
 
@@ -467,14 +441,14 @@ shall follow the grammar of ``abstract_state_list`` given below.
    hidden state.
    [The specification is checked when the package is analyzed.]
 
-#. A volatile state abstraction is one declared with a ``property_list``
-   that includes the Volatile ``property``, and either Input_Only or 
-   Output_Only.
+#. An External state abstraction is one declared with a ``option_list``
+   that includes one of the  External ``options``.
    
-#. A state abstraction which is declared with a ``property_list`` that includes
-   a Part_Of ``name_value_property`` indicates that it is a constituent (see
-   :ref:`state_refinement` and _package_) exclusively of the state abstraction 
-   denoted by the expression of the ``name_value_property``.
+#. A state abstraction which is declared with a ``option_list`` that includes
+   a Part_Of ``name_value_option`` indicates that it is a constituent (see
+   :ref:`state_refinement`) exclusively of the state abstraction 
+   denoted by the ``abstract_state`` of the ``name_value_option`` (see
+   :ref:`package_hierarchy`).
    
       
 .. centered:: **Verification Rules**
@@ -508,10 +482,10 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
 
    package X
    with  
-      Abstract_State => (A, B, (C with Volatile, Input_Only))
+      Abstract_State => (A, B, (C with External => Input_Only))
    is                     -- Three abstract state names are declared A, B & C.
-                          -- A and B are non-volatile abstract states
-      ...                 -- C is designated as a volatile input only.
+                          -- A and B are internal abstract states
+      ...                 -- C is designated as an external state which is input only.
    end X;
 
 .. _initializes_aspect: 
@@ -651,11 +625,11 @@ There are no dynamic semantics associated with the Initializes Aspect.
 
     package Y
     with
-       Abstract_State => (A, B, (C with Volatile, Input_Only)),
+       Abstract_State => (A, B, (C with External => Input_Only)),
        Initializes    => A
     is                          -- Three abstract state names are declared A, B & C.
                                 -- A is initialized during the elaboration of Y.
-       ...                      -- C is designated as a volatile input only
+       ...                      -- C is designated as an external input only state
 				-- and cannot appear in an initializes aspect.
                                 -- B is not initialized.
     end Y;
@@ -911,15 +885,15 @@ the grammar of ``state_and_constituent_list`` given below.
 
 ::
 
-  state_and_constituent_list     ::= (state_and_constituents {, state_and_constituents})
-  state_and_constituents         ::= state_name => constituent_with_property_list
-  constituent_with_property_list ::= constituent_with_property
-                                   | (constituent_with_property {, constituent_with_property})
-  constituent_with_property      ::= constituent
-                                   | (constituent_list with property_list)
-  constituent_list               ::= null
-                                   | constituent
-                                   | (constituent {, constituent})
+  state_and_constituent_list   ::= (state_and_constituents {, state_and_constituents})
+  state_and_constituents       ::= state_name => constituent_with_option_list
+  constituent_with_option_list ::= constituent_with_option
+                                 | (constituent_with_option {, constituent_with_option})
+  constituent_with_option      ::= constituent
+                                 | (constituent_list with option_list)
+  constituent_list             ::= null
+                                 | constituent
+                                 | (constituent {, constituent})
 
 where
 
@@ -991,26 +965,9 @@ where
    
    .. note:: We may want to be able to override this error.
 
-#. A ``property_list`` shall not contain a ``name_value`` property.
+#. An ``option_list`` shall not contain the ``name_value_option`` Part_Of.
 
-#. The ``identifier`` of a ``simple_property`` shall be Volatile,
-   Input_Only, or Output_Only (see :ref:`external_state`).
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. If a ``property_list`` includes the ``simple_property`` Volatile,
-   then the same ``property_list`` shall also include exactly one of
-   Input_Only or Output_Only.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-
-#. The same identifier shall not appear more than once in a property
-   list.
+#. The same ``option`` shall not appear more than once in a ``option_list``.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1027,13 +984,13 @@ where
    ``constituents`` of the *abstract_*\ ``state_names`` declared in the
    ``package_specification``.
    
-#. A ``constituent`` with a ``property_list`` is used to indicate the
-   ``properties`` that apply to the constituent.
+#. A ``constituent`` with an ``option_list`` is used to indicate the
+   ``options`` that apply to the constituent.
    
-#. A **null** ``constituent_list`` indicates that the named absract state has no 
-   constituents.  The state abstraction does not represent any actual state at
-   all. [This feature may be useful to minimise changes to Global and Depends 
-   aspects if it is believed that a package may have some extra state in the 
+#. A **null** ``constituent_list`` indicates that the named abstract state has 
+   no constituents. The state abstraction does not represent any actual state at
+   all. [This feature may be useful to minimize changes to Global and Depends
+   aspects if it is believed that a package may have some extra state in the
    future, or if hidden state is removed.]
 
 
@@ -1051,7 +1008,7 @@ There are no dynamic semantics associated with state abstraction and refinement.
 
    -- Here, we present a package Q that declares three abstract states:
    package Q
-      with Abstract_State => (A, B, (C with Volatile, Input_Only)),
+      with Abstract_State => (A, B, (C with External => Input_Only)),
            Initializes    => (A, B)
    is
       ...
@@ -1064,12 +1021,14 @@ There are no dynamic semantics associated with state abstraction and refinement.
    package body Q
       with Refined_State => (A => (F, G, H),
                              B => R.State,
-                             C => (Port with Volatile, Input_Only))
+                             C => (Port with External => Input_Only))
    is
       F, G, H : Integer := 0; -- all initialized as required
 
       Port : Integer
-         with Volatile, Input_Only;
+         with 
+            Volatile, 
+            External => Input_Only;
 
       package R
          with Abstract_State => State,
@@ -1231,9 +1190,8 @@ Initialization Refinement
 Every state abstraction designated as being initialized in the Initializes 
 aspect of a package has to have all of its constituents initialized.  This
 may be achieved by initialization within the package, by
-assumed pre-initialization (in the case of volatile variables or state 
-abstractions) or, for constituents which reside in another package, 
-initialization by their declaring package.
+assumed pre-initialization (in the case of volatile state) or, for constituents 
+which reside in another package, initialization by their declaring package.
 
 .. centered:: **Verification Rules**
 
@@ -1243,12 +1201,13 @@ initialization by their declaring package.
    
    * initialization within the package; or
    
-   * assumed pre-initialization (in the case of volatile variables); or
+   * assumed pre-initialization (in the case of volatile states); or
    
    * for constituents which reside in another unit [and have a Part_Of 
      indicator associated with their declaration] by their declaring 
      package. [It follows that such constituents will appear in the 
-     initialization clause of the declaring unit unless they are volatile.]
+     initialization clause of the declaring unit unless they are volatile 
+     states.]
      
 .. _refined-global-aspect:
 
@@ -1744,7 +1703,51 @@ be a Boolean ``expression``.
 .. todo:: refined contract_cases.
           To be completed in the Milestone 3 version of this document.
 
+Refined External States
+~~~~~~~~~~~~~~~~~~~~~~~
 
+An external state which is a state abstraction requires a refinement as does any
+state abstraction. There are rules which govern refinement of an state 
+abstraction on to external states which are given in this section.
+
+.. centered:: **Legality Rules**
+
+#. A state abstraction that is not designated as External shall not be refined 
+   on to ``constituents`` which are designated as External states.
+   
+#. A state abstraction which is designated as an External => Non_Volatile state 
+   shall only be refined on to a **null** ``constituent_list`` or to 
+   ``constituents`` that are designated as External => Non_Volatile states and, 
+   or, ``constituents`` that are not external states.
+
+#. A state abstraction which is designated as External => Input_Only state 
+   shall only be refined on to a **null** ``constituent_list`` or to 
+   ``constituents`` that are designated as External => Input_Only states. 
+
+#. A state abstraction which is designated as External => Output_Only state 
+   shall only be refined on to a **null** ``constituent_list`` or to
+   constituents that are designated as External => Output_Only states. 
+
+#. A state abstraction which is designated as just External state, referred to 
+   as a *plain External state* may be refined on to a **null** 
+   ``constituent_list`` or to ``constituents`` of any sort of external state 
+   and, or, non external states.
+   
+#. A subprogram declaration that has a Global aspect denoting a state 
+   abstraction, which is designated as a plain External state, with a 
+   ``mode_selector`` of Input shall in its Refined_Global aspect only denote 
+   ``constituents`` that are non-volatile External states or ``constituents``
+   that are not external states.
+   
+#. A subprogram declaration that has a Global aspect denoting a state 
+   abstraction, which is designated as a plain External state, and the
+   Refined_Global aspect of the subprogram denotes one or more ``constituents``
+   that are volatile states, then the ``mode_selector`` of the state abstraction
+   in the Global_Aspect of the subprogram declaration shall be In_Out. 
+
+#. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
+   also apply.
+   
 Private Types and Private Extensions
 ------------------------------------
 
@@ -2143,7 +2146,7 @@ The elaboration of a package's specification and body shall not write
 to a variable (or state abstraction, in the case of a
 call to a procedure which takes an abstraction as in output)
 declared outside of the package. The implicit write associated
-with a read of a volatile variable is permitted. [This rule
+with a read of a external input only state is permitted. [This rule
 applies to all packages: library level or not, instantations or not.]
 The inputs and outputs of a package's elaboration (including the
 elaboration of any private descendants of a library unit package)

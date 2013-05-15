@@ -55,7 +55,7 @@ An instantiation of an Unchecked_Conversion may have Refined_Pre and
 Refined_Post aspects specified.
 
 Data Validity
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 Currently |SPARK| does not check for data validity although SPARK 2005 did.
 
