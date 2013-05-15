@@ -21,7 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;    use Atree;
 with Sem_Util; use Sem_Util;
+with Sinfo;    use Sinfo;
+with Snames;   use Snames;
 
 package body Flow_Tree_Utility is
 
@@ -34,5 +37,42 @@ package body Flow_Tree_Utility is
    begin
       return Unique_Name (Left) < Unique_Name (Right);
    end Lexicographic_Entity_Order;
+
+   -----------------------------------
+   -- Contains_Loop_Entry_Reference --
+   -----------------------------------
+
+   function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean
+   is
+      Found_Loop_Entry : Boolean := False;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Sets found_loop_entry if the N is a loop_entry attribute
+      --  reference.
+
+      function Proc (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Attribute_Reference =>
+               if Get_Attribute_Id (Attribute_Name (N)) =
+                 Attribute_Loop_Entry
+               then
+                  Found_Loop_Entry := True;
+                  return Abandon;
+               else
+                  return OK;
+               end if;
+
+            when others =>
+               return OK;
+         end case;
+      end Proc;
+
+      procedure Search_For_Loop_Entry is new Traverse_Proc (Proc);
+   begin
+      Search_For_Loop_Entry (N);
+      return Found_Loop_Entry;
+   end Contains_Loop_Entry_Reference;
 
 end Flow_Tree_Utility;

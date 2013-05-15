@@ -93,11 +93,22 @@ package body Flow.Control_Flow_Graph is
    --------------
 
    type Context is record
-      Current_Loops : Node_Sets.Set;
+      Current_Loops    : Node_Sets.Set;
+      --  The set of loops currently processed. The innermost loop
+      --  currently processed is Active_Loop.
+
+      Active_Loop      : Entity_Id;
+      --  The currently processed loop. This is always a member of
+      --  Current_Loops, unless no loop is currently processed.
+
+      Entry_References : Node_Graphs.Map;
+      --  A map from loops -> 'loop_entry references.
    end record;
 
    No_Context : constant Context :=
-     Context'(Current_Loops => Node_Sets.Empty_Set);
+     Context'(Current_Loops    => Node_Sets.Empty_Set,
+              Active_Loop      => Empty,
+              Entry_References => Node_Graphs.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -285,6 +296,9 @@ package body Flow.Control_Flow_Graph is
    --  Deals with pragmas. We only check for uninitialised variables. We
    --  do not check for ineffective statements since all pragmas ought to
    --  be ineffective by definition.
+   --
+   --  We also make a note of any 'Loop_Entry references and store
+   --  them in Ctx.Entry_References.
    --
    --  Please also see Pragma_Relevant_To_Flow which decides which
    --  pragmas are important.
@@ -938,8 +952,6 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V : Flow_Graphs.Vertex_Id;
-
       procedure Do_Loop;
       --  Helper procedure to deal with normal loops.
       --
@@ -1060,6 +1072,9 @@ package body Flow.Control_Flow_Graph is
          end Proc;
 
          procedure Find_Return is new Traverse_Proc (Process => Proc);
+
+         V : Flow_Graphs.Vertex_Id;
+
       begin
          --  Check if we have a return statement.
          Find_Return (N);
@@ -1096,7 +1111,9 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_Loop;
 
-      procedure Do_While_Loop is
+      procedure Do_While_Loop
+      is
+         V : Flow_Graphs.Vertex_Id;
       begin
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
@@ -1116,7 +1133,8 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_While_Loop;
 
-      procedure Do_For_Loop is
+      procedure Do_For_Loop
+      is
          LPS : constant Node_Id :=
            Loop_Parameter_Specification (Iteration_Scheme (N));
 
@@ -1125,6 +1143,7 @@ package body Flow.Control_Flow_Graph is
          DSD : constant Node_Id := Discrete_Subtype_Definition (LPS);
 
          R : Node_Id;
+         V : Flow_Graphs.Vertex_Id;
       begin
          case Nkind (DSD) is
             when N_Subtype_Indication =>
@@ -1203,6 +1222,9 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
          end if;
       end Do_For_Loop;
+
+      Previous_Loop  : constant Entity_Id := Ctx.Active_Loop;
+
    begin
       --  Start with a blank slate for the loops entry and exit.
       CM.Include (Union_Id (N), No_Connections);
@@ -1217,10 +1239,13 @@ package body Flow.Control_Flow_Graph is
       --  is here as well.
       FA.Loops.Insert (Entity (Identifier (N)));
       Ctx.Current_Loops.Insert (Entity (Identifier (N)));
+      Ctx.Active_Loop := Entity (Identifier (N));
+      Ctx.Entry_References.Include (Ctx.Active_Loop, Node_Sets.Empty_Set);
 
       Process_Statement_List (Statements (N), FA, CM, Ctx);
 
       Ctx.Current_Loops.Delete (Entity (Identifier (N)));
+      Ctx.Active_Loop := Previous_Loop;
 
       if not Present (Iteration_Scheme (N)) then
          --  We have a loop.
@@ -1248,6 +1273,43 @@ package body Flow.Control_Flow_Graph is
             Do_For_Loop;
          end if;
       end if;
+
+      --  Now we need to glue the loop entry checks to the front of
+      --  the loop.
+      declare
+         Augmented_Loop : Union_Lists.List := Union_Lists.Empty_List;
+         V              : Flow_Graphs.Vertex_Id;
+         Block          : Graph_Connections;
+      begin
+         --  We stick all loop entry references on a list of nodes.
+         for Reference of Ctx.Entry_References (Entity (Identifier (N))) loop
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (Reference),
+               Make_Sink_Vertex_Attributes
+                 (Var_Use       => Get_Variable_Set (Prefix (Reference)),
+                  Is_Loop_Entry => True),
+               V);
+
+            CM.Include
+              (Union_Id (Reference),
+               Graph_Connections'(Standard_Entry => V,
+                                  Standard_Exits => Vertex_Sets.To_Set (V)));
+
+            Augmented_Loop.Append (Union_Id (Reference));
+         end loop;
+
+         --  Then we stick the actual loop at the end.
+         Augmented_Loop.Append (Union_Id (N));
+
+         --  And conenct up the dots, and finally replacing the
+         --  connection map we have for N with the new augmented one.
+         Join (CFG   => FA.CFG,
+               CM    => CM,
+               Nodes => Augmented_Loop,
+               Block => Block);
+         CM (Union_Id (N)) := Block;
+      end;
+
    end Do_Loop_Statement;
 
    -------------------------
@@ -1331,7 +1393,43 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      pragma Unreferenced (Ctx);
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Adds N to the appropriate entry references of the current
+      --  context, if N is a loop_entry reference.
+
+      function Proc (N : Node_Id) return Traverse_Result
+      is
+         Loop_Name : Node_Id;
+      begin
+         case Nkind (N) is
+            when N_Attribute_Reference =>
+               case Get_Attribute_Id (Attribute_Name (N)) is
+                  when Attribute_Loop_Entry =>
+                     pragma Assert (Present (Ctx.Active_Loop));
+
+                     if Present (Expressions (N)) then
+                        --  This is a named loop entry reference
+                        --  (i.e. X'Loop_Entry (Foo))
+                        pragma Assert (List_Length (Expressions (N)) = 1);
+                        Loop_Name := First (Expressions (N));
+                        pragma Assert (Nkind (Loop_Name) = N_Identifier);
+                        Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+
+                     else
+                        Ctx.Entry_References (Ctx.Active_Loop).Include (N);
+                     end if;
+                  when others =>
+                     null;
+               end case;
+
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc;
+
+      procedure Add_Loop_Entry_References is new Traverse_Proc (Proc);
+
       V : Flow_Graphs.Vertex_Id;
    begin
       if Pragma_Relevant_To_Flow (N) then
@@ -1353,6 +1451,11 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
       CM (Union_Id (N)).Standard_Exits := To_Set (V);
+
+      --  We make a note of 'Loop_Entry uses.
+      if Get_Pragma_Id (N) = Pragma_Check then
+         Add_Loop_Entry_References (N);
+      end if;
 
    end Do_Pragma;
 

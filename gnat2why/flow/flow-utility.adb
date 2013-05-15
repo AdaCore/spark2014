@@ -28,7 +28,8 @@ with Treepr;   use Treepr;
 
 with Why;
 
-with Flow.Debug; use Flow.Debug;
+with Flow_Tree_Utility; use Flow_Tree_Utility;
+with Flow.Debug;        use Flow.Debug;
 
 package body Flow.Utility is
 
@@ -312,22 +313,37 @@ package body Flow.Utility is
                end case;
 
             when N_Selected_Component | N_Indexed_Component =>
-               declare
-                  D, U : Flow_Id_Sets.Set;
-               begin
-                  Untangle_Assignment_Target (N            => N,
-                                              Vars_Defined => D,
-                                              Vars_Used    => U);
-                  VS.Union (D);
-                  VS.Union (U);
-               end;
+               --  We strip out loop entry references as they are
+               --  dealt with by Do_Pragma and Do_Loop_Statement in
+               --  the CFG construction.
+               if not Contains_Loop_Entry_Reference (N) then
+                  declare
+                     D, U : Flow_Id_Sets.Set;
+                  begin
+                     Untangle_Assignment_Target (N            => N,
+                                                 Vars_Defined => D,
+                                                 Vars_Used    => U);
+                     VS.Union (D);
+                     VS.Union (U);
+                  end;
+               end if;
                return Skip;
 
             when N_Attribute_Reference =>
-               case Attribute_Name (N) is
-                  when Name_First | Name_Last | Name_Length | Name_Range =>
+               case Get_Attribute_Id (Attribute_Name (N)) is
+                  when Attribute_First |
+                    Attribute_Last |
+                    Attribute_Length |
+                    Attribute_Range =>
                      --  Ignore anything to do with ranges.
                      return Skip;
+
+                  when Attribute_Loop_Entry =>
+                     --  Again, we ignore loop entry references, these
+                     --  are dealt with by Do_Pragma and
+                     --  Do_Loop_Statement in the CFG construction.
+                     return Skip;
+
                   when others =>
                      null;
                end case;
