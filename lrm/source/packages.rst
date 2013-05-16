@@ -912,17 +912,18 @@ Language Definition
 
 The Refined State aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` shall follow
-the grammar of ``state_and_constituent_list`` given below.
+the grammar of ``refinement_list`` given below.
 
 .. centered:: **Syntax**
 
 ::
 
-  state_and_constituent_list ::= (state_and_constituents {, state_and_constituents})
-  state_and_constituents     ::= state_name => constituent_list
-  constituent_list             ::= null
-                                 | constituent
-                                 | (constituent {, constituent})
+  refinement_list   ::= refinement_clause
+                      | (refinement_clause {, refinement_clause})
+  refinement_clause ::= state_name => constituent_list
+  constituent_list  ::= null
+                      | constituent
+                      | (constituent {, constituent})
 
 where
 
@@ -980,7 +981,7 @@ where
    declaration.
 
 #. Each *abstract_*\ ``state_name`` declared in the package specification shall
-   be denoted as the ``state_name`` of a ``state_and_constituents`` in the
+   be denoted as the ``state_name`` of a ``refinement_clause`` in the
    Refined_State aspect of the body of the package.
 
    .. note:: We may want to be able to override this error.
@@ -1342,7 +1343,7 @@ The static semantics are equivalent to those given for the Global aspect in
      a state abstraction whose refinement is visible at the point
      of the Refined_Global aspect specification, the Refined_Global
      specification shall include one or more ``global_items`` which
-     denote constituents of that state abstraction.
+     denote ``constituents`` of that state abstraction.
 
    * For each ``global_item`` in the Global aspect which does not
      denote such a state abstraction, the Refined_Global specification
@@ -1358,12 +1359,34 @@ The static semantics are equivalent to those given for the Global aspect in
    the ``mode_selector`` specified in the Global aspect is In_Out and the
    corresponding ``global_item`` of Global aspect denotes a state abstraction
    whose refinement is visible and the ``global_item`` in the Refined_Global
-   aspect is a ``constituent`` of the state abstraction.
-
+   aspect is a ``constituent`` of the state abstraction.  In this case the
+   Refined_Global aspect may denote individual ``constituents`` of the state
+   abstraction as Input, Output, or In_Out (given that the constituent itself
+   may have any of these ``mode_selectors``) so long as one or more of the 
+   following conditions are satisfied:
+   
+   * at least one of the ``constituents`` has a ``mode_selector`` of In_Out; or
+   
+   * there is at least one of each of a ``constituent`` with a ``mode_selector``
+     of Input and of Output; or
+     
+   * the Refined_Global aspect does not denote all of the ``constituents`` of
+     the state abstraction and at least one of them has the ``mode_selector``
+     of Output.
+     
+   [This rule ensures that a state abstraction with the ``mode_selector``  
+   In_Out cannot be refined onto a set of ``constituents`` that are Output or 
+   Input only.  The last condition satisfies this requirement because not all of 
+   the ``constituents`` are updated, some are preserved, that is the state
+   abstraction has a self-dependency.]
+    
 #. If the Global aspect specification references a state abstraction. with a
    ``mode_selector`` of Output whose refinement is visible, then every 
    ``constituent`` of that state abstraction shall be referenced in the 
    Refined_Global aspect specification.
+
+#. The legality rules for External states described in 
+   :ref:`refined_external_states `also apply.
 
 .. centered:: **Verification Rules**
 
@@ -1478,13 +1501,13 @@ The static semantics are equivalent to those given for the Depends aspect in
 
    * For each ``output`` and ``input`` in the Depends aspect which denotes
      a state abstraction whose refinement is visible at the point
-     of the Refined_Depends aspect specification, the Refined_Depends
-     specification shall include one or more ``outputs`` and ``inputs`` which
-     denote constituents of that state abstraction.
+     of the Refined_Depends aspect definition, the Refined_Depends
+     definition shall include one or more ``outputs`` and ``inputs`` which
+     denote ``constituents`` of that state abstraction.
 
    * For each ``output`` or ``input`` in the Depends aspect which does not
      denote such a state abstraction, the Refined_Depends specification
-     shall include exactly one ``ouput`` or ``input`` which denotes 
+     shall include exactly one ``output`` or ``input`` which denotes 
      the same entity as the ``output`` or ``input``, respectively, in the 
      Depends aspect.
      
@@ -1537,7 +1560,7 @@ The static semantics are equivalent to those given for the Depends aspect in
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
-
+      
 .. centered:: **Dynamic Semantics**
 
 Abstractions do not have dynamic semantics.
@@ -1732,6 +1755,8 @@ be a Boolean ``expression``.
 
 .. todo:: refined contract_cases.
           To be completed in the Milestone 3 version of this document.
+
+.. _refined_external_states:
 
 Refined External States
 ~~~~~~~~~~~~~~~~~~~~~~~
