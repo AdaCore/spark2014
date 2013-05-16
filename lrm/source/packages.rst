@@ -918,12 +918,8 @@ the grammar of ``state_and_constituent_list`` given below.
 
 ::
 
-  state_and_constituent_list   ::= (state_and_constituents {, state_and_constituents})
-  state_and_constituents       ::= state_name => constituent_with_option_list
-  constituent_with_option_list ::= constituent_with_option
-                                 | (constituent_with_option {, constituent_with_option})
-  constituent_with_option      ::= constituent
-                                 | (constituent_list with option_list)
+  state_and_constituent_list ::= (state_and_constituents {, state_and_constituents})
+  state_and_constituents     ::= state_name => constituent_list
   constituent_list             ::= null
                                  | constituent
                                  | (constituent {, constituent})
@@ -980,7 +976,7 @@ where
       :Trace Unit: TBD
 
 #. A ``constituent`` denotes an entity of the hidden state of a package or an
-   entity which has a Part_Of ``property`` or aspect associated with its
+   entity which has a Part_Of ``option`` or aspect associated with its
    declaration.
 
 #. Each *abstract_*\ ``state_name`` declared in the package specification shall
@@ -997,10 +993,6 @@ where
    nested packages declared immediately therein.]
    
    .. note:: We may want to be able to override this error.
-
-#. An ``option_list`` shall not contain the ``name_value_option`` Part_Of.
-
-#. The same ``option`` shall not appear more than once in a ``option_list``.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1039,9 +1031,9 @@ There are no dynamic semantics associated with state abstraction and refinement.
 
 .. code-block:: ada
 
-   -- Here, we present a package Q that declares three abstract states:
+   -- Here, we present a package Q that declares two abstract states:
    package Q
-      with Abstract_State => (A, B, (C with External => Input_Only)),
+      with Abstract_State => (A, B),
            Initializes    => (A, B)
    is
       ...
@@ -1050,18 +1042,11 @@ There are no dynamic semantics associated with state abstraction and refinement.
    -- The package body refines
    --   A onto three concrete variables declared in the package body
    --   B onto the abstract state of a nested package
-   --   C onto a raw port in the package body
    package body Q
       with Refined_State => (A => (F, G, H),
-                             B => R.State,
-                             C => (Port with External => Input_Only))
+                             B => R.State)
    is
       F, G, H : Integer := 0; -- all initialized as required
-
-      Port : Integer
-         with 
-            Volatile, 
-            External => Input_Only;
 
       package R
          with Abstract_State => State,
@@ -1188,32 +1173,44 @@ is part of and a state abstraction always knows all of its constituents.
 
 .. code-block:: ada
 
-    --  State abstractions of P.Priv, A and B, plus
-    --  the concrete global variable X, are split up among
-    --  two state abstractions within P.Pub, R and S
-    limited with P.Priv;
+
+    package P
+    is
+        -- P has no state abstraction
+    end P;
+   
+    -- P.Pub is the visible that declares the state abstraction
+  
+    limited with P.Priv;   -- Indicates to P.Pub that the visible (to P.Pub)
+                           -- state may be P.Priv constituents of P.Pub's
+                           -- state abstractions.
     package P.Pub --  public unit
       with Abstract_State => (R, S)
     is
        ...
     end P.Pub;
 
+    --  State abstractions of P.Priv, A and B, plus
+    --  the concrete variable X, are split up among
+    --  two state abstractions within P.Pub, R and S
+
     private package P.Priv --  private unit
       with Abstract_State =>
         ((A with Part_Of => P.Pub.R), (B with Part_Of => P.Pub.S))
     is
-        X : T  -- visible global variable
+        X : T  -- visible variable which is part of state abstraction P.Pub.R.
           with Part_Of => P.Pub.R;
     end P.Priv;
 
-    with P.Priv;
+    with P.Priv; -- P.Priv has to be with'd because its state is part of the
+                 -- refined state.
     package body P.Pub
       with Refined_State =>
         (R => (P.Priv.A, P.Priv.X, Y),
          S => (P.Priv.B, Z))
     is
-       Y : T2;  -- hidden global state
-       Z : T3;  -- hidden global state
+       Y : T2;  -- hidden state
+       Z : T3;  -- hidden state
        ...
     end P.Pub;
 
@@ -1740,7 +1737,7 @@ Refined External States
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 An external state which is a state abstraction requires a refinement as does any
-state abstraction. There are rules which govern refinement of an state 
+state abstraction. There are rules which govern refinement of a state 
 abstraction on to external states which are given in this section.
 
 .. centered:: **Legality Rules**
@@ -1781,6 +1778,167 @@ abstraction on to external states which are given in this section.
 #. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
    also apply.
    
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+
+    package Externals
+    with
+       Abstract_State => ((Combined_Inputs with External => Input_Only),
+                          (Displays with External => Output_Only),
+                          (Complex_Device => External),
+       Initializes => Complex_Device
+    is
+       procedure Read (Combined_Value : out Integer)
+       with
+          Global  => Combined_Inputs,  -- Combined_Inputs is an Input_Only
+                                       -- External state it can only be an 
+                                       -- Input in Global and Depends aspects.
+          Depends => (Combined_Value => Combined_Inputs);
+       
+       procedure Display (D_Main, D_Secondary : in String)
+       with
+          Global  => Displays,         -- Displays is an Output_Only
+                                       -- External state it can only be an 
+                                       -- Output in Global and Depends aspects.
+          Depends => (Displays => (D_Main, D_Secondary));
+
+       function Last_Value_Sent return Integer
+       with
+          Global => Complex_Device;    -- Complex_Device is a Plain External
+                                       -- state.  It can be an Input and
+                                       -- be a global to a function
+                                       -- provided the Refined Global aspect only
+                                       -- refers to non-volatile or non-external
+                                       -- constituents.
+          
+       procedure Output_Value (Value : in Integer)
+       with
+          Global  => (In_Out => Complex_Device),
+          Depends => (Complex_Device => (Complex_Device, Value));
+          -- If the refined Global Aspect refers to constituents which
+          -- are volatile state then the mode_selector for Complex_Device must 
+          -- be In_Out and it is both and an output.  The subprogram must be
+          -- a procedure.
+ 
+    end Externals;
+    
+    limited with Externals;
+    private package Externals.Temperature
+    with
+       Abstract_State => 
+          (State with External => Input_Only,
+                      Part_Of  => Externals.Combined_Inputs)
+    is
+      ...
+    end Externals.Temperature;
+    
+    limited with Externals;
+    private package Externals.Pressure
+    with
+       Abstract_State => 
+          (State with External => Input_Only,
+                      Part_Of  => Externals.Combined_Inputs)
+    is
+      ...
+    end Externals.Pressure;
+    
+    limited with Externals;
+    private package Externals.Main_Display
+    with
+       Abstract_State => 
+          (State with External => Output_Only,
+                      Part_Of  => Externals.Displays)
+    is
+      ...
+    end Externals.Main_Display;
+    
+    limited with Externals;
+    private package Externals.Secondary_Display
+    with
+       Abstract_State => 
+          (State with External => Output_Only,
+                      Part_Of  => Externals.Displays)
+    is
+      ...
+    end Externals.Secondary_Display;
+ 
+    
+    with 
+      Externals.Temperature,
+      Externals.Pressure;
+    package body Externals
+    with
+       Refined_State => (Combined_Inputs =>         -- Input_Only external state
+                           (Externals.Temperature,  -- so both Temperature and
+                            Externals.Pressure      -- Pressure must be Input_Only
+                           ),
+                         Displays =>                    -- Output_Only external state 
+                           (Externals.Main_Display,     -- so both Main_Display and 
+                            Externals.Secondary_Display -- Secondary_Display must be
+                           ),                           -- Output_Only.
+                           
+                         Complex_Device =>              -- Complex_Device is a Plain 
+                           (Saved_Value,                -- External and may be mapped
+                            Out_Reg,                    -- to any sort of constituent
+                            In_Reg
+                           )
+    is
+       Saved_Value : Integer := 0;  -- Initialized as required.
+       
+       Out_Reg : Integer
+       with
+          Volatile,
+          External => Output_Only,
+          Address  => System.Storage_Units.To_Address (16#ACECAFE#);
+                           
+       In_Reg : Integer
+       with
+          Volatile,
+          External => Input_Only,
+          Address  => System.Storage_Units.To_Address (16#A11CAFE#);
+                           
+       function Last_Value_Sent return Integer
+       with
+          Refined_Global => Saved_Value -- Refined_Global aspect only refers to non
+                                        -- external state as an Input.
+       is
+       begin
+          return Saved_Value;
+       end Last_Value_Sent;
+          
+       procedure Output_Value (Value : in Integer)
+       with
+          Refined_Global  => ((Input  => In_Reg),  -- Refined_Global aspect
+                              (Output => Out_Reg), -- refers to both volatile
+                              (In_Out => Saved_Value)), state and non external state.
+                              
+          Refined_Depends => (((Out_Reg, Saved_Value) => (Saved_Value, Value)),
+                                null => In_Reg)
+       is
+         Ready : constant := 42;
+         Status : Integer;
+       begin
+          if Saved_Value /= Value then
+             loop
+                Status := In_Reg;   -- In_Reg is Input_Only external state
+                                    -- and may appear on RHS of assignment
+                                    -- but not in a condition.
+                exit when Status = Ready;
+             end loop;
+            
+             Out_Reg := Value;       -- Out_Reg is an Output_Only external
+                                     -- state.  Its value cannot be read.
+             Saved_Value := Value;
+          end if;
+       end Output_Value; 
+
+       ...
+       
+    end Externals;                     
+
+       
 Private Types and Private Extensions
 ------------------------------------
 
