@@ -42,19 +42,6 @@ with Flow_Types; use Flow_Types;
 package Flow is
 
    ----------------------------------------------------------------------
-   --  Workarounds
-   ----------------------------------------------------------------------
-
-   Workaround_Pre_30_Apr_2013 : constant Boolean := True;
-   --  !!! To be removed once the GPL release is made. We have this
-   --  workaround in place as the fix for M429-015 is not in the
-   --  corresponding gnat GPL release.
-   --
-   --  When enabled we do not analyse preconditions as the method for
-   --  obtaining preconditions was not working consistently and did
-   --  not always return an analysed tree.
-
-   ----------------------------------------------------------------------
    --  Flow_Graphs
    ----------------------------------------------------------------------
 

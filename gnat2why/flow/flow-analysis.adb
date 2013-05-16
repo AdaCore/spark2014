@@ -26,7 +26,6 @@ with Ada.Strings.Maps;        use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-with Aspects;               use Aspects;
 with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
@@ -508,13 +507,7 @@ package body Flow.Analysis is
 
       procedure Look_For_Global is new Traverse_Proc (Find_It);
    begin
-      if Workaround_Pre_30_Apr_2013 then
-         Haystack := Find_Aspect (S, Aspect_Global);
-      else
-         --  Get_Pragma only works reliably in recent front-end
-         --  versions.
-         Haystack := Get_Pragma (S, Pragma_Global);
-      end if;
+      Haystack := Get_Pragma (S, Pragma_Global);
 
       case F.Kind is
          when Direct_Mapping | Record_Field =>
@@ -1258,13 +1251,13 @@ package body Flow.Analysis is
 
       function Find_Export (E : Entity_Id) return Node_Id
       is
-         Pragma_Depends : constant Node_Id :=
-           Aspect_Rep_Item (Find_Aspect (FA.Subprogram, Aspect_Depends));
+         Depends_Contract : constant Node_Id :=
+           Get_Pragma (FA.Subprogram, Pragma_Depends);
          pragma Assert
-           (List_Length (Pragma_Argument_Associations (Pragma_Depends)) = 1);
+           (List_Length (Pragma_Argument_Associations (Depends_Contract)) = 1);
 
          PAA : constant Node_Id :=
-           First (Pragma_Argument_Associations (Pragma_Depends));
+           First (Pragma_Argument_Associations (Depends_Contract));
          pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
          CA : constant List_Id := Component_Associations (Expression (PAA));
@@ -1328,7 +1321,7 @@ package body Flow.Analysis is
             if not Actual_Deps.Contains (F_Out) then
                Error_Msg_Flow
                  (Msg => "& missing from null dependency",
-                  N   => Find_Aspect (FA.Subprogram, Aspect_Depends),
+                  N   => Get_Pragma (FA.Subprogram, Pragma_Depends),
                   F1  => F_Out);
             end if;
          end;
@@ -1366,7 +1359,7 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     ("expected to see & on the left-hand-side of" &
                        " a dependency relation",
-                     Find_Aspect (FA.Subprogram, Aspect_Depends),
+                     Get_Pragma (FA.Subprogram, Pragma_Depends),
                      F_Out);
                end if;
                Proceed_With_Analysis := False;
@@ -1397,7 +1390,7 @@ package body Flow.Analysis is
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg => "& missing from null dependency",
-                        N   => Find_Aspect (FA.Subprogram, Aspect_Depends),
+                        N   => Get_Pragma (FA.Subprogram, Pragma_Depends),
                         F1  => Missing_Var);
                   else
                      Error_Msg_Flow
@@ -1415,7 +1408,7 @@ package body Flow.Analysis is
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg => "& incorrectly included in null dependency",
-                        N   => Find_Aspect (FA.Subprogram, Aspect_Depends),
+                        N   => Get_Pragma (FA.Subprogram, Pragma_Depends),
                         F1  => Wrong_Var);
                      --  ??? show a path?
                   else

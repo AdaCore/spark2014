@@ -203,7 +203,7 @@ package body Flow is
       if Has_Aspect (Subprogram, Aspect_Global) then
          declare
             Global : constant Node_Id :=
-              Aspect_Rep_Item (Find_Aspect (Subprogram, Aspect_Global));
+              Get_Pragma (Subprogram, Pragma_Global);
             pragma Assert
               (List_Length (Pragma_Argument_Associations (Global)) = 1);
 
@@ -374,13 +374,13 @@ package body Flow is
 
    procedure Get_Depends (Subprogram : Entity_Id;
                           Depends    : out Dependency_Maps.Map) is
-      Pragma_Depends : constant Node_Id :=
-        Aspect_Rep_Item (Find_Aspect (Subprogram, Aspect_Depends));
+      Depends_Contract : constant Node_Id :=
+        Get_Pragma (Subprogram, Pragma_Depends);
       pragma Assert
-        (List_Length (Pragma_Argument_Associations (Pragma_Depends)) = 1);
+        (List_Length (Pragma_Argument_Associations (Depends_Contract)) = 1);
 
       PAA : constant Node_Id :=
-        First (Pragma_Argument_Associations (Pragma_Depends));
+        First (Pragma_Argument_Associations (Depends_Contract));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
       CA : List_Id;

@@ -604,11 +604,7 @@ package body Flow.Utility is
                                return Node_Lists.List
    is
    begin
-      if Workaround_Pre_30_Apr_2013 then
-         return Node_Lists.Empty_List;
-      else
-         return Find_Contracts (E, Name_Precondition);
-      end if;
+      return Find_Contracts (E, Name_Precondition);
    end Get_Preconditions;
 
    ---------------------------

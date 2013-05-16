@@ -52,6 +52,7 @@ digraph G {
     4 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
     5 [label="speed'initial\n(global)",shape="plaintext"];
     6 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="precondition speed_is_valid",shape="plaintext"];
     9 [label="pragma loop_invariant (speed_is_valid);<<<pragma check (loop_invariant, speed_is_valid);>>>"];
     10 [label="if speed > 0\nLoops:&nbsp;L_1",shape="diamond"];
     11 [label="call state_update\nLoops:&nbsp;L_1",shape="box"];
@@ -68,11 +69,12 @@ digraph G {
     22 [label="global&nbsp;Speed'out",shape="plaintext"];
     23 [label="while state /= still",shape="diamond"];
 
-    1 ->  23 [arrowType="normal"];
+    1 ->  7 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
     3 ->  1 [arrowType="normal"];
     5 ->  1 [arrowType="normal"];
+    7 ->  23 [arrowType="normal"];
     9 ->  10 [arrowType="normal"];
     10 ->  11 [arrowType="normal"];
     10 ->  17 [arrowType="normal"];
@@ -100,6 +102,7 @@ digraph G {
     4 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
     5 [label="speed'initial\n(global)",shape="plaintext"];
     6 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="precondition speed_is_valid",shape="plaintext"];
     9 [label="pragma loop_invariant (speed_is_valid);<<<pragma check (loop_invariant, speed_is_valid);>>>"];
     10 [label="if speed > 0\nLoops:&nbsp;L_1",shape="diamond"];
     11 [label="call state_update\nLoops:&nbsp;L_1",shape="box"];
@@ -116,13 +119,16 @@ digraph G {
     22 [label="global&nbsp;Speed'out",shape="plaintext"];
     23 [label="while state /= still",shape="diamond"];
 
+    1 ->  7 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];
+    3 ->  7 [arrowType="normal",color="red"];
     3 ->  9 [arrowType="normal",color="red"];
     3 ->  13 [arrowType="normal",color="red"];
     3 ->  19 [arrowType="normal",color="red"];
     3 ->  23 [arrowType="normal",color="red"];
     5 ->  6 [arrowType="normal",color="red"];
+    5 ->  7 [arrowType="normal",color="red"];
     5 ->  9 [arrowType="normal",color="red"];
     5 ->  10 [arrowType="normal",color="red"];
     5 ->  14 [arrowType="normal",color="red"];
@@ -230,6 +236,7 @@ digraph G {
     6 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
     7 [label="speed'initial\n(global)",shape="plaintext"];
     8 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
+    9 [label="precondition speed_is_valid",shape="plaintext"];
     11 [label="if i = accelerate",shape="diamond"];
     12 [label="if speed < speed_type'last<<<100>>>",shape="diamond"];
     13 [label="speed := {speed + 1};"];
@@ -243,13 +250,14 @@ digraph G {
     21 [label="elsif speed = -1<<<-1>>> and then i = accelerate",shape="diamond"];
     22 [label="state := backward;"];
 
-    1 ->  11 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
     2 ->  6 [arrowType="normal"];
     2 ->  8 [arrowType="normal"];
     3 ->  1 [arrowType="normal"];
     5 ->  1 [arrowType="normal"];
     7 ->  1 [arrowType="normal"];
+    9 ->  11 [arrowType="normal"];
     11 ->  12 [arrowType="normal"];
     11 ->  14 [arrowType="normal"];
     12 ->  13 [arrowType="normal"];
@@ -281,6 +289,7 @@ digraph G {
     6 [label="state'final\n(global)",shape="plaintext",fontcolor="blue"];
     7 [label="speed'initial\n(global)",shape="plaintext"];
     8 [label="speed'final\n(global)",shape="plaintext",fontcolor="blue"];
+    9 [label="precondition speed_is_valid",shape="plaintext"];
     11 [label="if i = accelerate",shape="diamond"];
     12 [label="if speed < speed_type'last<<<100>>>",shape="diamond"];
     13 [label="speed := {speed + 1};"];
@@ -294,6 +303,7 @@ digraph G {
     21 [label="elsif speed = -1<<<-1>>> and then i = accelerate",shape="diamond"];
     22 [label="state := backward;"];
 
+    1 ->  9 [arrowType="normal"];
     1 ->  11 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];
@@ -302,7 +312,9 @@ digraph G {
     3 ->  19 [arrowType="normal",color="red"];
     3 ->  21 [arrowType="normal",color="red"];
     5 ->  6 [arrowType="normal",color="red"];
+    5 ->  9 [arrowType="normal",color="red"];
     7 ->  8 [arrowType="normal",color="red"];
+    7 ->  9 [arrowType="normal",color="red"];
     7 ->  12 [arrowType="normal",color="red"];
     7 ->  13 [arrowType="normal",color="red"];
     7 ->  15 [arrowType="normal",color="red"];
