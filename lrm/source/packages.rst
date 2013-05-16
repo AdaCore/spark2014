@@ -411,6 +411,12 @@ shall follow the grammar of ``abstract_state_list`` given below.
 #. A ``package_declaration`` or ``generic_package_declaration`` shall have a
    completion [(a body)] if it contains a non-null Abstract State aspect
    specification.
+   
+#. A subprogram declaration that overloads a state abstraction has an implicit
+   Global aspect denoting the state abstraction with a ``mode_selector`` of
+   Input.  An explicit Global aspect may be specified which replaces the 
+   implicit one.
+   
 
 .. centered:: **Static Semantics**
 
@@ -487,6 +493,33 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
                           -- A and B are internal abstract states
       ...                 -- C is designated as an external state which is input only.
    end X;
+
+package Mileage
+with 
+   Abstract_State => 
+     (Trip,     -- number of miles so far on this trip (can be reset to 0).
+      Total,    -- total mileage of vehicle since the last factory-reset.
+     )
+is
+    function Trip  return Natural;  -- Has an implicit Global => Trip.
+    function Total return Natural;  -- Has an implicit Global => Total.
+    
+    procedure Zero_Trip
+    with
+      Global  => (Output => Trip),  -- In the Global and Depends aspects
+      Depends => (Trip => null),    -- Trip denotes the state abstraction.
+      Post    => Trip = 0;          -- In the Post condition Trip denotes
+                                    -- the function.      
+    procedure Inc
+    with
+      Global  => (In_Out => (Trip, Total)),
+      Depends => ((Trip, Total =>+ null)),
+      Post    => (Trip = Trip'Old + 1) and (Total = Total'Old + 1);
+
+      -- Trip and Old in the Post conditions denote functions but these 
+      -- represent the state abstractions in expressions.
+
+end Mileage;
 
 .. _initializes_aspect: 
 
@@ -1757,11 +1790,17 @@ applies here, so a private type without discriminants is in
 |SPARK|, while a private type with discriminants is in |SPARK| only
 if its discriminants are in |SPARK|.
 
-If a private type or private extension lacks unknown discriminants,
-then the full view shall define full default initialization. [In other
-words, if a client seeing the private view can declare an object of the
-type without explicitly initializing it,  then the resulting object shall
-be fully initialized.]
+
+.. centered:: **Legality Rules**
+
+#. If a private type or private extension lacks unknown discriminants,
+   then the full view shall define full default initialization. [In other words,
+   if a client seeing the private view can declare an object of the type without
+   explicitly initializing it, then the resulting object shall be fully
+   initialized.]
+
+#. The full type declaration of a private type declaration shall not be 
+   specified as Volatile either by an Volatile aspect or by pragma Volatile.
 
 Private Operations
 ~~~~~~~~~~~~~~~~~~
@@ -1770,6 +1809,8 @@ No extensions or restrictions.
 
 Type Invariants
 ~~~~~~~~~~~~~~~
+
+.. todo:: Type Invariants may not be supported in the first release
 
 .. centered:: **Syntax**
 
