@@ -1386,7 +1386,7 @@ The static semantics are equivalent to those given for the Global aspect in
    Refined_Global aspect specification.
 
 #. The legality rules for External states described in 
-   :ref:`refined_external_states `also apply.
+   :ref:`refined_external_states` also apply.
 
 .. centered:: **Verification Rules**
 
