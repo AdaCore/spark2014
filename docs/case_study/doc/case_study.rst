@@ -1384,6 +1384,9 @@ so an alternative method for specifying the postcondition in SPARK 2005 is:
    --# derives A from A, I, J;
    --# post A = A~[I => A~(J); J => A~(I)];
 
+There is also such a notation in SPARK 2014, the 'Update attribute, but it is not yet
+supported by GNATprove.
+
 Clear Array
 -----------
 This subprogram loops over the elements of an array, setting each one
@@ -2530,10 +2533,10 @@ Having made these modifications GNATprove gave the following analysis results.
 ====================    ======   ==========   =====
 VCs associated with:    Proved   Not Proved   Total
 ====================    ======   ==========   =====
-Pre/Post-conditions     8        8            16
+Pre/Post-conditions     10       6            16
 Assertions/Checks       12       3            15
-Runtime Checks          61       0            61
-Total                   81       11           92
+Runtime Checks          52       9            61
+Total                   74       18           92
 ====================    ======   ==========   =====
 
 There were 9 RTEF (runtime exception freedom) VCs left unproven from the previous stage. All of
