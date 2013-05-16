@@ -494,32 +494,32 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
       ...                 -- C is designated as an external state which is input only.
    end X;
 
-package Mileage
-with 
-   Abstract_State => 
-     (Trip,     -- number of miles so far on this trip (can be reset to 0).
-      Total,    -- total mileage of vehicle since the last factory-reset.
-     )
-is
-    function Trip  return Natural;  -- Has an implicit Global => Trip.
-    function Total return Natural;  -- Has an implicit Global => Total.
+   package Mileage
+   with 
+      Abstract_State => 
+         (Trip,     -- number of miles so far on this trip (can be reset to 0).
+          Total,    -- total mileage of vehicle since the last factory-reset.
+         )
+   is
+     function Trip  return Natural;  -- Has an implicit Global => Trip.
+     function Total return Natural;  -- Has an implicit Global => Total.
     
-    procedure Zero_Trip
-    with
-      Global  => (Output => Trip),  -- In the Global and Depends aspects
-      Depends => (Trip => null),    -- Trip denotes the state abstraction.
-      Post    => Trip = 0;          -- In the Post condition Trip denotes
+     procedure Zero_Trip
+     with
+       Global  => (Output => Trip),  -- In the Global and Depends aspects
+       Depends => (Trip => null),    -- Trip denotes the state abstraction.
+       Post    => Trip = 0;          -- In the Post condition Trip denotes
                                     -- the function.      
-    procedure Inc
-    with
-      Global  => (In_Out => (Trip, Total)),
-      Depends => ((Trip, Total =>+ null)),
-      Post    => (Trip = Trip'Old + 1) and (Total = Total'Old + 1);
+     procedure Inc
+     with
+       Global  => (In_Out => (Trip, Total)),
+       Depends => ((Trip, Total =>+ null)),
+       Post    => (Trip = Trip'Old + 1) and (Total = Total'Old + 1);
 
-      -- Trip and Old in the Post conditions denote functions but these 
-      -- represent the state abstractions in expressions.
+       -- Trip and Old in the Post conditions denote functions but these 
+       -- represent the state abstractions in expressions.
 
-end Mileage;
+   end Mileage;
 
 .. _initializes_aspect: 
 
