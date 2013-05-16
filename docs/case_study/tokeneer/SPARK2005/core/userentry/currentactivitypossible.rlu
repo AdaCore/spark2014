@@ -1,0 +1,79 @@
+/*----------------------------------------------------------------------
+--  User rules for procedure UserEntry.CurrentActivityPossible.
+--
+--  File name: currentactivitypossible.rlu
+--
+--  Description:
+--    Procedure rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--    First show that B1 or B2 -> B3 or B4:
+--      By cases on the LHS of the expression:
+--        if B1 is True then by (1) B3 is True
+--        if B2 is True then by (2) B4 is True.
+--    An equivalent argument shows that B3 or B4 -> B1 or B2
+--      and the conclusion follows.
+----------------------------------------------------------------------*/
+currentactivitypossible_user(1): B1 or B2 <-> B3 or B4
+                                   may_be_deduced_from
+                                 [ B1 <-> B3,            /* (1) */
+                                   B2 <-> B4 ] .         /* (2) */
+
+
+/*----------------------------------------------------------------------
+--  Rule 2
+--
+--  Justification:
+--    B3 is True if either B1 is True (by (1)) or B2 is True (by (2)).
+----------------------------------------------------------------------*/
+currentactivitypossible_user(2): B1 or B2 -> B3
+                                   may_be_deduced_from
+                                 [ B1 <-> B3 and B4,      /* (1) */
+                                   B2 <-> B3 and B5 ] .   /* (2) */
+
+
+/*----------------------------------------------------------------------
+--  Rule 3
+--
+--  Justification:
+--    If B1 is True then St < St_1 by (1) and the LHS of the implication is False.
+--    If B2 is True then the RHS of the implication is True by (2).
+----------------------------------------------------------------------*/
+currentactivitypossible_user(3): (B1 or B2) and St = St_1 -> B3
+                                   may_be_deduced_from
+                                 [ B1 <-> B4 and St < St_1,      /* (1) */
+                                   B2 <-> B4 and B3 ] .          /* (2) */
+

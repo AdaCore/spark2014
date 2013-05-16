@@ -1,0 +1,12 @@
+actuator specification is in actuator.ads
+advancebutton specification is in advancebutton.ads
+advancebutton components are 
+   advancebutton.raw
+advancebutton body is in advancebutton.adb
+advancebutton.raw specification is in advancebutton-raw.ads
+clock specification is in clock.ads
+display specification is in display.ads
+indicator specification is in indicator.ads
+modeswitch specification is in modeswitch.ads
+programswitch specification is in programswitch.ads
+thermostat specification is in thermostat.ads

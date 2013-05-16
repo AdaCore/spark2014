@@ -1,0 +1,692 @@
+Phase 1 of 3: frame condition computation ...
+Phase 2 of 3: translation to intermediate language ...
+keyboard-interfac.adb:24:22: warning: tasking is ignored in formal verification
+Statistics logged in gnatprove.out
+(detailed info can be found in /home/pavlos/Desktop/TestsToBeConverted/tis/Converted/gnatprove/*.alfa)
+Phase 3 of 3: generation and proof of VCs ...
+analyzing Spark_IO.Is_In, 0 checks
+analyzing Spark_IO.Is_Out, 0 checks
+analyzing Spark_IO.P_To_PC, 0 checks
+analyzing Spark_IO.PC_To_P, 0 checks
+analyzing Spark_IO.Mode, 0 checks
+analyzing Spark_IO.Is_Open, 0 checks
+analyzing Spark_IO.End_Of_Line, 0 checks
+analyzing Spark_IO.End_Of_File, 0 checks
+analyzing Spark_IO.Set_In_File_Col, 0 checks
+analyzing precondition for Spark_IO.Set_In_File_Col, 0 checks
+analyzing Spark_IO.Set_Out_File_Col, 0 checks
+analyzing precondition for Spark_IO.Set_Out_File_Col, 0 checks
+analyzing Spark_IO.In_File_Col, 0 checks
+analyzing precondition for Spark_IO.In_File_Col, 0 checks
+analyzing Spark_IO.Out_File_Col, 0 checks
+analyzing precondition for Spark_IO.Out_File_Col, 0 checks
+analyzing Spark_IO.In_File_Line, 0 checks
+analyzing precondition for Spark_IO.In_File_Line, 0 checks
+analyzing Spark_IO.Out_File_Line, 0 checks
+analyzing precondition for Spark_IO.Out_File_Line, 0 checks
+analyzing Spark_IO.Get_String, 7 checks
+spark_io.adb:440:13: info: range check proved
+spark_io.adb:447:26: info: overflow check proved
+spark_io.adb:447:26: range check not proved
+spark_io.adb:450:22: overflow check not proved
+spark_io.adb:451:30: index check not proved
+spark_io.adb:456:26: info: overflow check proved
+spark_io.adb:456:26: range check not proved
+analyzing Clock.SetStringSegment, 7 checks
+clock.adb:58:8: info: range check proved
+clock.adb:74:11: info: range check proved
+clock.adb:78:10: loop invariant initialization not proved
+clock.adb:78:10: loop invariant preservation not proved
+clock.adb:82:12: index check not proved
+clock.adb:82:56: info: division check proved
+clock.adb:83:20: info: division check proved
+analyzing Clock.Poll, 0 checks
+analyzing Clock.TheCurrentTime, 0 checks
+analyzing Clock.GetNow, 0 checks
+analyzing Clock.GreaterThan, 0 checks
+analyzing Clock.LessThan, 0 checks
+analyzing Clock.GreaterThanOrEqual, 0 checks
+analyzing Clock.LessThanOrEqual, 0 checks
+analyzing Clock.ConstructTime, 9 checks
+clock.adb:245:36: info: range check proved
+clock.adb:245:42: info: overflow check proved
+clock.adb:246:25: info: overflow check proved
+clock.adb:246:25: info: range check proved
+clock.adb:246:38: info: range check proved
+clock.adb:246:43: info: overflow check proved
+clock.adb:242:28: info: range check proved
+clock.adb:243:30: info: range check proved
+clock.adb:244:26: info: range check proved
+analyzing Clock.SplitTime, 5 checks
+clock.adb:280:41: info: division check proved
+clock.adb:280:41: info: range check proved
+clock.adb:281:44: info: division check proved
+clock.adb:282:25: info: division check proved
+clock.adb:282:25: info: range check proved
+analyzing Clock.StartOfDay, 0 checks
+analyzing Clock.PrintDuration, 6 checks
+clock.adb:329:44: info: division check proved
+clock.adb:334:45: info: division check proved
+clock.adb:335:32: info: division check proved
+clock.adb:340:45: info: division check proved
+clock.adb:341:32: info: division check proved
+clock.adb:346:44: info: division check proved
+analyzing Clock.PrintTime, 8 checks
+clock.adb:387:7: info: assertion proved
+clock.adb:407:49: info: division check proved
+clock.adb:412:50: info: division check proved
+clock.adb:413:32: info: division check proved
+clock.adb:418:50: info: division check proved
+clock.adb:419:32: info: division check proved
+clock.adb:424:50: info: division check proved
+clock.adb:425:32: info: division check proved
+analyzing Clock.AddDuration, 0 checks
+analyzing Latch.LatchIsLocked, 0 checks
+analyzing Latch.Latch_Timeout, 0 checks
+analyzing Latch.Init, 0 checks
+analyzing Latch.IsLocked, 0 checks
+analyzing Latch.UpdateInternalLatch, 1 checks
+latch.ads:109:53: postcondition not proved
+analyzing Latch.UpdateDevice, 1 checks
+latch.ads:143:10: postcondition not proved, requires IsLocked = LatchisLocked or SystemFault
+analyzing Latch.SetTimeout, 1 checks
+latch.ads:162:40: postcondition not proved, requires Latch_Timeout = Time
+analyzing Latch.Failure, 0 checks
+analyzing AdminToken.Interfac.Init, 0 checks
+analyzing AdminToken.Interfac.Poll, 0 checks
+analyzing AdminToken.Interfac.TheTokenPresence, 0 checks
+analyzing AdminToken.Interfac.TheTokenID, 0 checks
+analyzing AdminToken.Interfac.TheTokenTry, 0 checks
+analyzing AdminToken.Interfac.GetCertificate, 0 checks
+analyzing Clock.Interfac.Convert, 4 checks
+clock-interfac.adb:52:21: info: overflow check proved
+clock-interfac.adb:56:36: range check not proved
+clock-interfac.adb:59:45: overflow check not proved
+clock-interfac.adb:59:45: range check not proved
+analyzing Clock.Interfac.TheTime, 0 checks
+analyzing Keyboard.Init, 0 checks
+analyzing Keyboard.Finalise, 0 checks
+analyzing Keyboard.Read, 0 checks
+analyzing Keyboard.Poll, 0 checks
+analyzing LatchAPI.Unlock, 0 checks
+analyzing LatchAPI.Lock, 0 checks
+analyzing AlarmAPI.Activate, 0 checks
+analyzing AlarmAPI.Deactivate, 0 checks
+analyzing TISMain, 0 checks
+analyzing TISMain.Init, 0 checks
+analyzing TISMain.Processing, 3 checks
+tismain.adb:836:17: precondition not proved
+tismain.adb:839:17: precondition not proved
+tismain.adb:847:17: precondition not proved
+analyzing TISMain.Processing.ResetScreenMessage, 0 checks
+analyzing TISMain.MainLoopBody, 0 checks
+analyzing TISMain.ShutdownDoorLatchFailure, 0 checks
+analyzing TISMain.ShutdownAuditLogFailure, 0 checks
+analyzing File.SkipLine.SkipOneLine, 0 checks
+analyzing precondition for File.Construct, 0 checks
+analyzing File.PutInteger, 6 checks
+file.adb:412:7: info: range check proved
+file.adb:413:39: overflow check not proved
+file.adb:414:30: range check not proved
+file.adb:417:39: overflow check not proved
+file.adb:418:25: overflow check not proved
+file.adb:422:39: info: overflow check proved
+analyzing File.NewLine, 1 checks
+file.adb:554:14: info: range check proved
+analyzing File.SkipLine, 1 checks
+file.adb:584:14: info: range check proved
+analyzing File.Copy, 0 checks
+analyzing File.CreateDirectory, 1 checks
+file.adb:832:14: info: range check proved
+analyzing Crypto.Create, 0 checks
+analyzing Crypto.OpenForAppending, 0 checks
+analyzing Crypto.OpenForReading, 0 checks
+analyzing Crypto.Close, 0 checks
+analyzing Crypto.ToString, 0 checks
+analyzing Crypto.Initialize.UpdateLocalStore.ReadOwnerText, 1 checks
+crypto.adb:331:24: range check not proved
+analyzing Crypto.Initialize.UpdateLocalStore.ReadIsPublic, 0 checks
+analyzing Crypto.CreateObject.AddOwner, 0 checks
+analyzing Crypto.CreateObject.AddKey, 0 checks
+analyzing Crypto.CreateObject.AddIsPublic, 0 checks
+analyzing Crypto.Finalize, 0 checks
+analyzing Crypto.CreateObject, 1 checks
+crypto.adb:669:38: info: range check proved
+analyzing Crypto.FindObjectsInit, 0 checks
+analyzing Crypto.FindObjectsFinal, 0 checks
+analyzing Crypto.DigestInit, 0 checks
+analyzing Crypto.ClearStore, 0 checks
+analyzing Updates.EarlyActivity, 1 checks
+updates.ads:97:31: info: postcondition proved
+analyzing Updates.Activity, 1 checks
+updates.ads:189:31: info: postcondition proved
+analyzing CertProcessing.ExtractIDCertData, 0 checks
+analyzing CertProcessing.ExtractPrivCertData, 0 checks
+analyzing CertProcessing.ExtractIACertData, 0 checks
+analyzing CertProcessing.ExtractAuthCertData, 0 checks
+analyzing CertProcessing.ObtainRawData, 0 checks
+analyzing CertProcessing.ObtainSignatureData, 0 checks
+analyzing CertProcessing.ConstructAuthCert, 0 checks
+analyzing CertProcessing.AddAuthSignature, 0 checks
+analyzing Configuration.Init, 0 checks
+analyzing TokenReader.GetResponseCode, 1 checks
+tokenreader.adb:101:47: info: range check proved
+analyzing TokenReader.GetReaderState, 1 checks
+tokenreader.adb:127:46: info: range check proved
+analyzing TokenReader.GetCardState, 1 checks
+tokenreader.adb:153:44: info: range check proved
+analyzing TokenReader.Init.SetReaderName, 0 checks
+analyzing TokenReader.Init.ClearReaders, 0 checks
+analyzing TokenReader.Poll.DisconnectToken, 0 checks
+analyzing TokenReader.Poll.MarkTokenBad, 0 checks
+analyzing TokenReader.Poll.MarkTokenAbsent, 0 checks
+analyzing TokenReader.Poll.ProcessReaderStateChange, 0 checks
+analyzing TokenReader.Poll.ProcessReaderStateChange.MarkTokenConnected, 0 checks
+analyzing TokenReader.Poll.CheckCardState, 0 checks
+analyzing TokenReader.Poll.CheckCardState.MarkTokenGood, 0 checks
+analyzing TokenReader.Poll.SetCurrentStatus, 0 checks
+analyzing TokenReader.Poll.SetLastFault, 0 checks
+analyzing TokenReader.Init, 2 checks
+tokenreader.adb:310:17: info: range check proved
+tokenreader.adb:311:48: info: range check proved
+analyzing TokenReader.Poll, 1 checks
+tokenreader.adb:751:43: info: range check proved
+analyzing TokenReader.TheTokenPresence, 0 checks
+analyzing TokenReader.TheTokenID, 0 checks
+analyzing TokenReader.TheTokenTry, 0 checks
+analyzing TokenReader.GetCertificate, 0 checks
+analyzing TokenReader.WriteAuthCertificate, 0 checks
+analyzing AdminToken.ReadAndCheck.MakeDescription, 1 checks
+admintoken.adb:268:33: info: range check proved
+analyzing AdminToken.Init, 1 checks
+admintoken.ads:79:44: info: postcondition proved
+analyzing AdminToken.Poll, 1 checks
+admintoken.ads:125:45: info: postcondition proved
+analyzing AdminToken.IsPresent, 0 checks
+analyzing precondition for AdminToken.GetRole, 0 checks
+analyzing Alarm.Interfac.IsAlarming, 0 checks
+analyzing Alarm.Interfac.Activate, 1 checks
+alarm-interfac.ads:54:26: postcondition not proved, requires (IsAlarming)
+analyzing Alarm.Interfac.Deactivate, 1 checks
+alarm-interfac.ads:70:26: postcondition not proved, requires not (IsAlarming)
+analyzing Bio.GetReturnCode, 2 checks
+bio.adb:126:10: info: loop invariant initialization proved
+bio.adb:126:10: info: loop invariant preservation proved
+analyzing Bio.Verify, 0 checks
+analyzing Bio.Flush, 0 checks
+analyzing MsgProc.GetStringByPos, 2 checks
+msgproc.adb:34:13: info: range check proved
+msgproc.adb:38:7: info: range check proved
+analyzing MsgProc.GetDictionary, 11 checks
+msgproc.adb:76:13: info: range check proved
+msgproc.adb:84:7: info: range check proved
+msgproc.adb:89:11: info: range check proved
+msgproc.adb:91:17: index check not proved
+msgproc.adb:97:45: overflow check not proved
+msgproc.adb:106:49: overflow check not proved
+msgproc.adb:110:20: index check not proved
+msgproc.adb:114:49: info: range check proved
+msgproc.adb:127:52: overflow check not proved
+msgproc.adb:130:26: info: range check proved
+msgproc.adb:130:52: info: overflow check proved
+analyzing MsgProc.StringFrom32, 0 checks
+analyzing MsgProc.StringFromInt, 0 checks
+analyzing AuditLog.NextListIndex, 1 checks
+auditlog.adb:194:26: info: range check proved
+analyzing AuditLog.CheckLogAlarm, 0 checks
+analyzing AuditLog.ConvertToAuditDescription, 1 checks
+auditlog.adb:237:39: info: range check proved
+analyzing AuditLog.DeleteArchiveFile, 1 checks
+auditlog.adb:491:22: precondition not proved
+analyzing AuditLog.DeleteLogFile, 0 checks
+analyzing AuditLog.AddElementToFile, 0 checks
+analyzing AuditLog.AddElementToFile.NameOfType, 0 checks
+analyzing AuditLog.AddElementToLogFile, 2 checks
+auditlog.adb:934:44: range check not proved
+auditlog.adb:925:10: info: assertion proved
+analyzing AuditLog.AddElementToLogFile.AddElementToCurrentFile, 1 checks
+auditlog.adb:813:75: range check not proved
+analyzing AuditLog.AddElementToLogFile.AddElementToNextFile, 1 checks
+auditlog.adb:891:53: range check not proved
+analyzing AuditLog.AddElementToLogFile.AddElementToNextFile.SetCurrentFileToNextFreeFile, 2 checks
+auditlog.adb:873:16: info: loop invariant initialization proved
+auditlog.adb:873:16: info: loop invariant preservation proved
+analyzing AuditLog.TruncateLog, 2 checks
+auditlog.adb:1000:50: range check not proved
+auditlog.adb:1002:44: range check not proved
+analyzing AuditLog.AddElementToLogFileWithTruncateChecks, 12 checks
+auditlog.adb:1085:10: assertion not proved
+auditlog.adb:1087:50: range check not proved
+auditlog.adb:1087:53: info: overflow check proved
+auditlog.adb:1087:72: info: overflow check proved
+auditlog.adb:1103:10: assertion not proved
+auditlog.adb:1105:50: range check not proved
+auditlog.adb:1105:53: info: overflow check proved
+auditlog.adb:1105:72: info: overflow check proved
+auditlog.adb:1117:7: assertion not proved
+auditlog.adb:1119:47: range check not proved
+auditlog.adb:1119:50: info: overflow check proved
+auditlog.adb:1119:69: info: overflow check proved
+analyzing AuditLog.AddElementToLog, 1 checks
+auditlog.adb:1498:14: info: range check proved
+analyzing AuditLog.ArchiveLog, 11 checks
+auditlog.adb:1653:22: precondition not proved
+auditlog.adb:1692:13: loop invariant initialization not proved
+auditlog.adb:1692:13: info: loop invariant preservation proved
+auditlog.adb:1697:53: info: range check proved
+auditlog.adb:1697:56: info: overflow check proved
+auditlog.adb:1697:75: info: overflow check proved
+auditlog.adb:1727:52: info: range check proved
+auditlog.adb:1737:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1739:47: range check not proved
+auditlog.adb:1739:50: info: overflow check proved
+auditlog.adb:1739:69: info: overflow check proved
+analyzing AuditLog.ClearLogEntries, 15 checks
+auditlog.adb:1829:10: loop invariant initialization not proved
+auditlog.adb:1829:10: loop invariant preservation not proved
+auditlog.adb:1832:52: info: range check proved
+auditlog.adb:1832:55: info: overflow check proved
+auditlog.adb:1832:74: info: overflow check proved
+auditlog.adb:1842:10: info: loop invariant proved
+auditlog.adb:1847:50: info: range check proved
+auditlog.adb:1847:53: info: overflow check proved
+auditlog.adb:1847:72: info: overflow check proved
+auditlog.adb:1853:53: info: range check proved
+auditlog.adb:1856:47: info: range check proved
+auditlog.adb:1863:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1865:47: range check not proved
+auditlog.adb:1865:50: info: overflow check proved
+auditlog.adb:1865:69: info: overflow check proved
+analyzing AuditLog.CancelArchive, 2 checks
+auditlog.adb:1909:10: info: loop invariant initialization proved
+auditlog.adb:1909:10: info: loop invariant preservation proved
+analyzing AuditLog.TheAuditAlarm, 0 checks
+analyzing AuditLog.SystemFaultOccurred, 0 checks
+analyzing UserToken.Interfac.Init, 0 checks
+analyzing UserToken.Interfac.Poll, 0 checks
+analyzing UserToken.Interfac.TheTokenPresence, 0 checks
+analyzing UserToken.Interfac.TheTokenID, 0 checks
+analyzing UserToken.Interfac.TheTokenTry, 0 checks
+analyzing UserToken.Interfac.GetCertificate, 0 checks
+analyzing UserToken.Interfac.WriteAuthCertificate, 0 checks
+analyzing Screen.WriteMessage, 0 checks
+analyzing Screen.WriteAlarms, 0 checks
+analyzing Screen.ClearConfigData, 0 checks
+analyzing Screen.WriteConfigLabels, 0 checks
+analyzing Screen.WriteConfigData.SecondsString, 3 checks
+screen.adb:455:10: info: range check proved
+screen.adb:457:37: index check not proved
+screen.adb:461:46: overflow check not proved
+analyzing Screen.WriteConfigData.HrsMinsString, 0 checks
+analyzing Screen.WriteConfigData.AccessPolicyString, 1 checks
+screen.adb:519:10: info: range check proved
+analyzing Screen.WriteConfigData.ClassString, 1 checks
+screen.adb:540:10: info: range check proved
+analyzing Screen.WriteConfigData.FARString, 1 checks
+screen.adb:561:10: info: range check proved
+analyzing Screen.ClearStats, 0 checks
+analyzing Screen.WriteStatsLabels, 0 checks
+analyzing Screen.WriteStatsData, 0 checks
+analyzing Screen.WriteStatsData.StatsCountString, 1 checks
+screen.adb:813:10: info: range check proved
+analyzing Screen.WriteCurrentTime, 0 checks
+analyzing Screen.SetMessage, 0 checks
+analyzing Screen.UpdateScreen, 0 checks
+analyzing Screen.Init, 0 checks
+analyzing precondition for Enrolment.Validate, 0 checks
+analyzing Bio.Interfac.Verify, 1 checks
+bio-interfac.adb:78:38: range check not proved
+analyzing Bio.Interfac.Flush, 0 checks
+analyzing CertProc.ExtractValidity, 23 checks
+certproc.adb:147:30: info: range check proved
+certproc.adb:151:7: info: range check proved
+certproc.adb:154:7: info: range check proved
+certproc.adb:189:61: range check not proved
+certproc.adb:189:61: precondition not proved
+certproc.adb:193:61: range check not proved
+certproc.adb:193:61: precondition not proved
+certproc.adb:197:61: range check not proved
+certproc.adb:197:61: precondition not proved
+certproc.adb:201:61: range check not proved
+certproc.adb:201:61: precondition not proved
+certproc.adb:205:61: range check not proved
+certproc.adb:205:61: precondition not proved
+certproc.adb:210:60: range check not proved
+certproc.adb:210:60: precondition not proved
+certproc.adb:214:60: range check not proved
+certproc.adb:214:60: precondition not proved
+certproc.adb:218:60: range check not proved
+certproc.adb:218:60: precondition not proved
+certproc.adb:222:60: range check not proved
+certproc.adb:222:60: precondition not proved
+certproc.adb:226:60: range check not proved
+certproc.adb:226:60: precondition not proved
+analyzing CertProc.ExtractValidity.DateNotInType, 0 checks
+analyzing CertProc.GetName, 4 checks
+certproc.adb:460:13: info: range check proved
+certproc.adb:469:13: info: range check proved
+certproc.adb:462:64: info: range check proved
+certproc.adb:471:64: info: range check proved
+analyzing CertProc.ExtractIDCertData, 0 checks
+analyzing CertProc.ExtractPrivCertData, 0 checks
+analyzing CertProc.ExtractIACertData, 0 checks
+analyzing CertProc.ExtractAuthCertData, 0 checks
+analyzing CertProc.ObtainSignatureData, 3 checks
+certproc.adb:1127:7: info: range check proved
+certproc.adb:1138:45: range check not proved
+certproc.adb:1129:56: info: range check proved
+analyzing TokenReader.Interfac.ConvertToTISRawCert, 0 checks
+analyzing TokenReader.Interfac.ConvertFromTISRawCert, 1 checks
+tokenreader-interfac.adb:55:7: info: range check proved
+analyzing TokenReader.Interfac.ListReaders, 0 checks
+analyzing TokenReader.Interfac.GetStatusChange, 1 checks
+tokenreader-interfac.adb:120:43: range check not proved
+analyzing TokenReader.Interfac.Connect, 0 checks
+analyzing TokenReader.Interfac.Status, 0 checks
+analyzing TokenReader.Interfac.Disconnect, 0 checks
+analyzing TokenReader.Interfac.GetIDCert, 0 checks
+analyzing TokenReader.Interfac.GetPrivCert, 0 checks
+analyzing TokenReader.Interfac.GetIACert, 0 checks
+analyzing TokenReader.Interfac.GetAuthCert, 0 checks
+analyzing TokenReader.Interfac.UpdateAuthCert, 0 checks
+analyzing UserToken.ReadAndCheck.MakeDescription, 1 checks
+usertoken.adb:706:33: info: range check proved
+analyzing UserToken.Init, 0 checks
+analyzing UserToken.Poll, 0 checks
+analyzing UserToken.IsPresent, 0 checks
+analyzing precondition for UserToken.AddAuthCert, 0 checks
+analyzing CertificateStore.GetNextSerialNumber.StringIsOverflowed, 0 checks
+analyzing CertificateStore.PutNextSerialNumber, 0 checks
+analyzing CertificateStore.PutNextSerialNumber.ConvertFrom32, 2 checks
+certificatestore.adb:216:10: info: range check proved
+certificatestore.adb:219:31: range check not proved
+analyzing CertificateStore.SerialNumberHasOverflowed, 0 checks
+analyzing CertificateStore.SerialNumber, 0 checks
+analyzing precondition for CertificateStore.SerialNumber, 0 checks
+analyzing Admin.RolePresent, 0 checks
+analyzing Admin.IsDoingOp, 0 checks
+analyzing Admin.TheCurrentOp, 1 checks
+admin.adb:253:16: info: range check proved
+analyzing precondition for Admin.TheCurrentOp, 0 checks
+analyzing Admin.IsPresent, 0 checks
+analyzing Admin.Init, 1 checks
+admin.ads:103:50: info: postcondition proved
+analyzing Admin.OpIsAvailable, 9 checks
+admin.adb:103:7: info: assertion proved
+admin.adb:110:10: info: loop invariant initialization proved
+admin.adb:110:10: info: loop invariant preservation proved
+admin.adb:121:13: info: assertion proved
+admin.adb:129:17: info: range check proved
+admin.adb:137:16: info: loop invariant initialization proved
+admin.adb:137:16: info: loop invariant preservation proved
+admin.adb:144:38: info: index check proved
+admin.adb:156:36: info: index check proved
+analyzing precondition for Admin.OpIsAvailable, 0 checks
+analyzing Admin.Logon, 1 checks
+admin.ads:145:31: info: postcondition proved
+analyzing Admin.Logout, 1 checks
+admin.ads:163:50: info: postcondition proved
+analyzing Admin.StartOp, 2 checks
+admin.ads:191:7: info: precondition proved
+admin.ads:193:57: postcondition not proved
+analyzing precondition for Admin.StartOp, 0 checks
+analyzing Admin.FinishOp, 1 checks
+admin.ads:217:26: info: postcondition proved
+analyzing precondition for Admin.FinishOp, 0 checks
+analyzing Admin.SecurityOfficerIsPresent, 0 checks
+analyzing UserEntry.UserHasDeparted, 0 checks
+analyzing UserEntry.UserTokenTorn, 0 checks
+analyzing UserEntry.ValidateUserToken, 0 checks
+analyzing UserEntry.ReadFinger, 0 checks
+analyzing UserEntry.UpdateToken, 1 checks
+userentry.adb:683:19: precondition not proved
+analyzing UserEntry.ValidateEntry, 0 checks
+analyzing UserEntry.UnlockDoor, 0 checks
+analyzing UserEntry.FailedAccessTokenRemoved, 0 checks
+analyzing UserEntry.CurrentActivityPossible, 0 checks
+analyzing UserEntry.CanStart, 0 checks
+analyzing UserEntry.InProgress, 0 checks
+analyzing UserEntry.DisplayPollUpdate, 0 checks
+analyzing UserEntry.Progress, 0 checks
+analyzing UserEntry.StartEntry, 0 checks
+analyzing Alarm.IsAlarming, 0 checks
+analyzing Alarm.UpdateDevice, 1 checks
+alarm.ads:82:49: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
+analyzing Poll.Activity, 1 checks
+poll.ads:151:51: info: postcondition proved
+analyzing TIS, 0 checks
+analyzing TIS.InitTestDevices, 0 checks
+analyzing TIS.FinaliseTestDevices, 0 checks
+analyzing ConfigData.ValidateFile.ReadDuration, 2 checks
+configdata.adb:237:44: info: overflow check proved
+configdata.adb:237:44: info: range check proved
+analyzing ConfigData.ValidateFile.ReadFileSize, 2 checks
+configdata.adb:276:51: info: overflow check proved
+configdata.adb:276:51: info: range check proved
+analyzing ConfigData.ValidateFile.ReadClass, 3 checks
+configdata.adb:323:20: info: range check proved
+configdata.adb:331:48: info: index check proved
+configdata.adb:331:63: info: index check proved
+analyzing ConfigData.ValidateFile.ReadWorkingHours, 6 checks
+configdata.adb:379:35: info: overflow check proved
+configdata.adb:379:35: info: range check proved
+configdata.adb:380:35: info: range check proved
+configdata.adb:380:45: info: overflow check proved
+configdata.adb:380:50: info: overflow check proved
+configdata.adb:380:68: info: range check proved
+analyzing ConfigData.ValidateFile.ReadFar, 1 checks
+configdata.adb:416:38: info: range check proved
+analyzing ConfigData.ValidateFile.ReadAlarmSilent, 0 checks
+analyzing ConfigData.ValidateFile.ReadLatchUnlock, 0 checks
+analyzing ConfigData.ValidateFile.ReadFingerWait, 0 checks
+analyzing ConfigData.ValidateFile.ReadTokenRemoval, 0 checks
+analyzing ConfigData.ValidateFile.ReadClearance, 0 checks
+analyzing ConfigData.ValidateFile.ReadWorkingStart, 0 checks
+analyzing ConfigData.ValidateFile.ReadWorkingEnd, 0 checks
+analyzing ConfigData.ValidateFile.ReadAuthDuration, 0 checks
+analyzing ConfigData.ValidateFile.ReadAccessPolicy, 3 checks
+configdata.adb:723:23: info: range check proved
+configdata.adb:729:53: info: index check proved
+configdata.adb:729:75: info: index check proved
+analyzing ConfigData.ValidateFile.ReadMinEntryClass, 0 checks
+analyzing ConfigData.ValidateFile.ReadMinPreservedLog, 0 checks
+analyzing ConfigData.ValidateFile.ReadAlarmThreshold, 0 checks
+analyzing ConfigData.ValidateFile.ReadSystemMaxFar, 0 checks
+analyzing ConfigData.WriteFile.WorkingHoursText, 9 checks
+configdata.adb:1062:30: info: division check proved
+configdata.adb:1064:59: info: range check proved
+configdata.adb:1064:72: info: division check proved
+configdata.adb:1065:72: info: division check proved
+configdata.adb:1068:31: info: division check proved
+configdata.adb:1068:42: info: division check proved
+configdata.adb:1069:59: range check not proved
+configdata.adb:1069:72: info: division check proved
+configdata.adb:1070:72: info: division check proved
+analyzing ConfigData.Init.SetDefaults, 0 checks
+analyzing ConfigData.UpdateData, 0 checks
+analyzing ConfigData.TheDisplayFields, 0 checks
+analyzing ConfigData.ValidateFile, 0 checks
+analyzing ConfigData.AuthPeriodIsEmpty, 0 checks
+analyzing ConfigData.GetAuthPeriod, 1 checks
+configdata.adb:1599:70: info: range check proved
+analyzing ConfigData.IsInEntryPeriod, 0 checks
+analyzing ConfigData.TheLatchUnlockDuration, 0 checks
+analyzing ConfigData.TheAlarmSilentDuration, 0 checks
+analyzing ConfigData.TheFingerWaitDuration, 0 checks
+analyzing ConfigData.TheTokenRemovalDuration, 0 checks
+analyzing ConfigData.TheEnclaveClearance, 0 checks
+analyzing ConfigData.TheSystemMaxFar, 0 checks
+analyzing ConfigData.TheAlarmThresholdEntries, 2 checks
+configdata.adb:1767:17: info: division check proved
+configdata.adb:1767:17: info: range check proved
+analyzing Display.Interfac.SetTopText, 0 checks
+analyzing Display.Interfac.SetBottomText, 0 checks
+analyzing Display.Interfac.SetTopTextScrollable, 0 checks
+analyzing Display.Interfac.Reset, 0 checks
+analyzing TokenAPI.GetStringHandle, 1 checks
+tokenapi.adb:73:8: info: range check proved
+analyzing DisplayAPI.Reset, 0 checks
+analyzing Door.UpdateDoorAlarm, 0 checks
+analyzing Door.Alarm_Timeout, 0 checks
+analyzing Door.TheCurrentDoor, 0 checks
+analyzing Door.TheDoorAlarm, 0 checks
+analyzing Door.Poll, 1 checks
+door.ads:160:32: postcondition not proved
+analyzing Door.UnlockDoor, 1 checks
+door.ads:219:50: postcondition not proved
+analyzing Door.LockDoor, 1 checks
+door.ads:274:45: postcondition not proved
+analyzing Door.Init, 0 checks
+analyzing Door.Failure, 0 checks
+analyzing Stats.Init, 0 checks
+analyzing Stats.AddSuccessfulEntry, 1 checks
+stats.adb:53:57: info: overflow check proved
+analyzing Stats.AddFailedEntry, 1 checks
+stats.adb:70:51: info: overflow check proved
+analyzing Stats.AddSuccessfulBio, 1 checks
+stats.adb:87:53: info: overflow check proved
+analyzing Stats.AddFailedBio, 1 checks
+stats.adb:104:47: info: overflow check proved
+analyzing Stats.DisplayStats, 0 checks
+analyzing Floppy.IsPresent, 0 checks
+analyzing Floppy.Write, 0 checks
+analyzing Floppy.Read, 0 checks
+analyzing Floppy.CheckWrite, 0 checks
+analyzing Floppy.CurrentFloppy, 0 checks
+analyzing Floppy.Init, 0 checks
+analyzing Screen.Interfac.Write, 1 checks
+screen-interfac.adb:7:14: info: range check proved
+analyzing Screen.Interfac.ClearRegion, 0 checks
+analyzing Screen.Interfac.Init, 0 checks
+analyzing KeyStore.Interfac.GetKeystoreReturn, 0 checks
+analyzing KeyStore.Interfac.GetCryptoReturn, 0 checks
+analyzing KeyStore.Interfac.Initialize, 0 checks
+analyzing KeyStore.Interfac.Finalize, 0 checks
+analyzing KeyStore.Interfac.CreateObject, 0 checks
+analyzing KeyStore.Interfac.FindObjectsInit, 0 checks
+analyzing KeyStore.Interfac.FindObjects, 0 checks
+analyzing KeyStore.Interfac.FindObjectsFinal, 0 checks
+analyzing KeyStore.Interfac.DigestInit, 0 checks
+analyzing KeyStore.Interfac.DigestUpdate, 0 checks
+analyzing KeyStore.Interfac.DigestFinal, 0 checks
+analyzing KeyStore.Interfac.Sign, 0 checks
+analyzing KeyStore.Interfac.Verify, 0 checks
+analyzing KeyStore.Interfac.GetAttributeValue, 0 checks
+analyzing KeyStore.Interfac.Delete, 0 checks
+analyzing Display.CombineLines, 9 checks
+display.adb:128:11: info: range check proved
+display.adb:137:30: info: index check proved
+display.adb:138:30: info: index check proved
+display.adb:139:30: info: index check proved
+display.adb:140:32: info: range check proved
+display.adb:143:11: info: range check proved
+display.adb:148:33: index check not proved
+display.adb:148:33: info: overflow check proved
+display.adb:150:32: range check not proved
+analyzing Display.SetValue, 0 checks
+analyzing Display.ChangeDoorUnlockedMsg, 0 checks
+analyzing Display.UpdateDevice, 0 checks
+analyzing Latch.Interfac.isLocked, 0 checks
+analyzing Latch.Interfac.Lock, 1 checks
+latch-interfac.ads:45:35: postcondition not proved, requires isLocked or Fault
+analyzing Latch.Interfac.Unlock, 1 checks
+latch-interfac.ads:61:39: postcondition not proved, requires not isLocked or Fault
+analyzing Cert.GetData, 0 checks
+analyzing Cert.GetSignature, 0 checks
+analyzing Keyboard.Interfac.Read, 1 checks
+keyboard-interfac.adb:199:19: info: range check proved
+analyzing Enclave.PresentAdminHasDeparted, 1 checks
+enclave.adb:109:18: info: precondition proved
+analyzing Enclave.AdminTokenHasExpired, 0 checks
+analyzing Enclave.AdminHasDeparted, 0 checks
+analyzing Enclave.ReadEnrolmentData, 0 checks
+analyzing Enclave.ValidateEnrolmentData, 1 checks
+enclave.adb:288:16: precondition not proved
+analyzing Enclave.CompleteFailedEnrolment, 0 checks
+analyzing Enclave.AdminTokenTear, 0 checks
+analyzing Enclave.BadAdminTokenTear, 0 checks
+analyzing Enclave.ValidateAdminToken, 1 checks
+enclave.adb:638:48: info: precondition proved
+analyzing Enclave.CompleteFailedAdminLogon, 0 checks
+analyzing Enclave.ArchiveLogOp, 0 checks
+analyzing Enclave.ArchiveLogOp.StartArchiveLog, 0 checks
+analyzing Enclave.ArchiveLogOp.FinishArchiveLog, 1 checks
+enclave.adb:1046:15: precondition not proved
+analyzing Enclave.UpdateConfigDataOp, 1 checks
+enclave.adb:1189:15: precondition not proved
+analyzing Enclave.OverrideDoorLockOp, 1 checks
+enclave.adb:1368:12: precondition not proved
+analyzing Enclave.ShutdownOp, 0 checks
+analyzing Enclave.AdminOp, 1 checks
+enclave.adb:1885:17: precondition not proved
+analyzing Enclave.CurrentAdminActivityPossible.AdminActivityInProgress, 0 checks
+analyzing Enclave.StartAdminActivity.AdminLogonCanStart, 0 checks
+analyzing Enclave.StartAdminActivity.AdminOpCanStart, 0 checks
+analyzing Enclave.StartAdminActivity.StartAdminOp, 3 checks
+enclave.adb:2956:27: precondition not proved
+enclave.adb:2965:21: precondition not proved
+enclave.adb:2966:42: info: range check proved
+analyzing Enclave.statusIsGotAdminToken, 0 checks
+analyzing Enclave.statusIsWaitingRemoveAdminTokenFail, 0 checks
+analyzing Enclave.statusIsWaitingStartAdminOp, 0 checks
+analyzing Enclave.statusIsWaitingFinishAdminOp, 0 checks
+analyzing Enclave.statusIsEnclaveQuiescent, 0 checks
+analyzing Enclave.statusIsShutdown, 0 checks
+analyzing Enclave.EnrolmentIsInProgress, 0 checks
+analyzing Enclave.Init, 1 checks
+enclave.ads:119:35: postcondition not proved
+analyzing Enclave.AdminMustLogout, 0 checks
+analyzing Enclave.CurrentAdminActivityPossible, 0 checks
+analyzing Enclave.HasShutdown, 0 checks
+analyzing Enclave.EnrolOp, 1 checks
+enclave.ads:227:35: postcondition not proved
+analyzing precondition for Enclave.EnrolOp, 0 checks
+analyzing Enclave.AdminLogout, 1 checks
+enclave.ads:291:34: postcondition not proved
+analyzing precondition for Enclave.AdminLogout, 0 checks
+analyzing Enclave.ProgressAdminActivity, 5 checks
+enclave.ads:621:19: info: precondition proved
+enclave.ads:630:19: info: precondition proved
+enclave.ads:635:24: info: precondition proved
+enclave.ads:648:12: postcondition not proved
+enclave.ads:652:23: precondition not proved
+analyzing precondition for Enclave.ProgressAdminActivity, 3 checks
+enclave.ads:576:19: info: precondition proved
+enclave.ads:585:19: info: precondition proved
+enclave.ads:590:24: info: precondition proved
+analyzing Enclave.StartAdminActivity, 0 checks
+analyzing Enclave.ResetScreenMessage, 0 checks
+analyzing BioAPI.Reset, 0 checks
+analyzing Cert.Attr.Auth.Construct.ConvertTISTime, 0 checks
+analyzing KeyStore.Digest, 3 checks
+keystore.adb:220:52: info: division check proved
+keystore.adb:223:14: info: range check proved
+keystore.adb:250:36: range check not proved
+analyzing KeyStore.Digest.GetBlock, 4 checks
+keystore.adb:196:14: info: range check proved
+keystore.adb:203:33: index check not proved
+keystore.adb:203:33: overflow check not proved
+keystore.adb:203:49: overflow check not proved
+analyzing KeyStore.DoFind, 0 checks
+analyzing KeyStore.KeyMatchingIssuer, 0 checks
+analyzing KeyStore.PrivateKey, 0 checks
+analyzing KeyStore.Init, 0 checks
+analyzing KeyStore.KeyMatchingIssuerPresent, 0 checks
+analyzing KeyStore.PrivateKeyPresent, 0 checks
+analyzing KeyStore.IssuerIsThisTIS, 0 checks
+analyzing KeyStore.ThisTIS, 0 checks
+analyzing KeyStore.IsVerifiedBy, 0 checks
+analyzing KeyStore.Sign, 0 checks
+analyzing KeyStore.AddKey, 1 checks
+keystore.ads:255:65: postcondition not proved
+analyzing KeyStore.Delete, 1 checks
+keystore.ads:275:26: postcondition not proved, requires not (PrivateKeyPresent)
+analyzing TcpIp.StartDebug, 0 checks
+analyzing TcpIp.DebugOutput, 1 checks
+tcpip.adb:118:26: info: range check proved
+analyzing TcpIp.CommsIsOK, 2 checks
+tcpip.adb:326:60: overflow check not proved
+tcpip.adb:326:60: range check not proved
+analyzing TcpIp.OpenAll, 0 checks
+analyzing TcpIp.CloseAll, 0 checks
+

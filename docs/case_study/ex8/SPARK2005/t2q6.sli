@@ -1,0 +1,49 @@
+V "SPARK 11.0.0"
+A -index_file=tut2.idx
+A -warning_file=all.wrn
+A -notarget_compiler_data
+A -config_file=gnat.cfg
+A -source_extension=ada
+A -listing_extension=ls_
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -vcg
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=auto
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=lazy
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=.
+A -output_directory (actual)=/home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/
+P
+R
+
+U T2Q6%b t2q6.adb
+U T2Q6%s t2q6.ads
+
+D t2q6.ads 00000000000000 00000000
+D t2q6.adb 00000000000000 00000000
+
+X 1 t2q6.ads
+4I11 ElementType 15r41 2|12r25 25r53 33r25
+6I11 IndexType 19r33 19r50 23r33 23r50 2|10r39 12r49 21r25 21r67 22r24
+. 23r40 25r25 25r77 31r39 33r49
+10V16 Sum_Between 14r40 19r18 23r18 2|10r24 21r52 23r25 31r24
+10a28 A 13r38 14r53 14r68
+11i28 L 13r23 14r25 14r56 15r25 15r61
+12i28 U 13r27 13r40 14r29 14r59 14r71 15r29 15r65
+13i14 Sum 13r32 14r34 15r34
+17a23 A 18r24 19r30 2|10r36
+17i40 Sum 18m15 19r12 2|10r18 11r23 12r18
+21a29 A 22r24 23r30 2|21r64 23r37 31r36
+21i46 Shift 22r27 2|22r51
+21i70 Sum 22m15 23r12 2|21r46 22r45 23r18 24r23 25r46 31r18 32r23
+. 33r18
+X 2 t2q6.adb
+8H9 I 10r56 12r45
+20H9 I 21r20 21r84 22r20 23r57 25r20 25r73 31r56 33r45

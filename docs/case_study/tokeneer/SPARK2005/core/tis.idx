@@ -1,0 +1,79 @@
+Alarm                components are         Alarm.Interface
+Latch                components are         Latch.Interface
+Display              components are         Display.Interface
+Door                 components are         Door.Interface
+Clock                components are         Clock.Interface
+Bio                  components are         Bio.Interface
+Cert                 components are         Cert.Attr, Cert.ID, Cert.Attr.Priv, Cert.Attr.IandA, Cert.Attr.Auth
+Cert.Attr            components are         Cert.Attr.Priv, Cert.Attr.IandA, Cert.Attr.Auth
+Keyboard             components are         Keyboard.Interface
+Keystore             components are         Keystore.Interface
+UserToken            components are         UserToken.Interface
+AdminToken           components are         AdminToken.Interface
+Screen               components are         Screen.Interface
+TokenReader          components are         TokenReader.Interface
+--------------------
+Admin                 spec is in    admin.ads
+Admin                 body is in    admin.adb
+AdminToken            spec is in    admintoken.ads
+AdminToken.Interface  spec is in    admintoken-interface.ads
+Alarm                 spec is in    alarm.ads
+Alarm.Interface       spec is in    alarm-interface.ads
+AlarmTypes            spec is in    alarmtypes.ads
+AuditLog              spec is in    auditlog.ads
+AuditTypes            spec is in    audittypes.ads
+BasicTypes            spec is in    basictypes.ads
+Bio                   spec is in    bio.ads
+Bio.Interface         spec is in    bio-interface.ads
+Cert                  spec is in    cert.ads
+Cert.Attr             spec is in    cert-attr.ads
+Cert.Attr.Auth        spec is in    cert-attr-auth.ads
+Cert.Attr.IandA       spec is in    cert-attr-ianda.ads
+Cert.Attr.Priv        spec is in    cert-attr-priv.ads
+Cert.ID               spec is in    cert-id.ads
+CertificateStore      spec is in    certificatestore.ads
+CertProcessing        spec is in    certprocessing.ads
+CertTypes             spec is in    certtypes.ads
+Clock                 spec is in    clock.ads
+Clock.Interface       spec is in    clock-interface.ads
+ConfigData            spec is in    configdata.ads
+Configuration         spec is in    configuration.ads
+CryptoTypes           spec is in    cryptotypes.ads
+Display               spec is in    display.ads
+Display.Interface     spec is in    display-interface.ads
+Door                  spec is in    door.ads
+Door                  body is in    door.adb
+Door.Interface        spec is in    door-interface.ads
+Enclave               spec is in    enclave.ads
+Enrolment             spec is in    enrolment.ads
+Enrolment             body is in    enrolment.adb
+File                  spec is in    file.ads
+Floppy                spec is in    floppy.ads
+IandATypes            spec is in    iandatypes.ads
+Keyboard              spec is in    keyboard.ads
+Keyboard.Interface    spec is in    keyboard-interface.ads
+KeyStore              spec is in    keystore.ads
+KeyStore              body is in    keystore.adb
+KeyStore.Interface    spec is in    keystore-interface.ads
+Latch                 spec is in    latch.ads
+Latch                 body is in    latch.adb
+Latch.Interface       spec is in    latch-interface.ads
+Poll                  spec is in    poll.ads
+Poll                  body is in    poll.adb
+PrivTypes             spec is in    privtypes.ads
+Screen                spec is in    screen.ads
+Screen.Interface      spec is in    screen-interface.ads
+Stats                 spec is in    stats.ads
+Stats                 body is in    stats.adb
+TokenReader           spec is in    tokenreader.ads
+TokenReader.Interface spec is in    tokenreader-interface.ads
+TokenTypes            spec is in    tokentypes.ads
+Updates               spec is in    updates.ads
+UserToken             spec is in    usertoken.ads
+UserToken.Interface   spec is in    usertoken-interface.ads
+UserEntry             spec is in    userentry.ads
+SPARK_IO              spec is in    ../support/spark95_io.ads
+SPARK_IO              body is in    ../support/spark95_io.adb
+
+
+

@@ -1,0 +1,130 @@
+/*----------------------------------------------------------------------
+--  User rules for procedure Enclave.AdminOp.
+--
+--  File name: adminop.rlu
+--
+--  Description:
+--    Procedure rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--    The value of B4 is irrelevant.
+----------------------------------------------------------------------*/
+adminop_user(1): B1 or (B2 or B3 or B4) may_be_deduced_from
+                 [ B1 or (B2 or B3) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 2
+--
+--  Justification:
+--    The values of B2 and B3 are irrelevant.
+----------------------------------------------------------------------*/
+adminop_user(2): B1 or (B2 or B3 or B4) may_be_deduced_from
+                 [ B4 or B1 ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 3
+--
+--  Justification:
+--    Either R2 = G or R2 <> G.
+--    If R2 = G then, by (1), R = G and there are two cases for (2):
+--      Case 1: B2 and Op = Op_1: this is False by (4) and (5).
+--      Case 2: not B2: this is False by (3).
+--    The sideconditions therefore require R2 <> G and this makes the
+--    LHS of the conclusion False.
+----------------------------------------------------------------------*/
+adminop_user(3): R2 = G -> B1 and Op2 = Op_1 or not B1
+                   may_be_deduced_from
+                 [ R2 = R,                                    /* (1) */
+                   R = G -> B2 and Op = Op_1 or not B2,       /* (2) */
+                   B2,                                        /* (3) */
+                   Op = Op_2,                                 /* (4) */
+                   Op_1 <> Op_2 ] .                           /* (5) */
+
+
+/*----------------------------------------------------------------------
+--  Rule 4
+--
+--  Justification:
+--    For each case in (1):
+--      If St = St_3 the LHS of the conclusion is False.
+--      If St = St_1 the RHS of the conclusion is True.
+----------------------------------------------------------------------*/
+adminop_user(4): St = St_1 or St = St_2 -> B1 and (B2 and B3)
+                   may_be_deduced_from
+                 [ St = St_3 or St = St_1,           /* (1) */
+                   St_1 <> St_2,
+                   St_1 <> St_3,
+                   St_2 <> St_3,
+                   St = St_1 -> B3 and (B2 and B1 and B4 and B5) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 5
+--
+--  Justification:
+--    For all three cases in (1), the LHS of the implication in the
+--    conclusion can be shown to be False:
+--      If St = St_1 or St = St_2 then Op = Op_2 <> Op_1.
+--      If St = St_3 then not B1.
+----------------------------------------------------------------------*/
+adminop_user(5): B1 and Op = Op_1 -> B2
+                   may_be_deduced_from
+                 [ St = St_1 or (St = St_2 or St = St_3),      /* (1) */
+                   St_1 <> St_2,
+                   St_1 <> St_3,
+                   St_2 <> St_3,
+                   St = St_1 or St = St_2 -> B1 and (B3 and Op = Op_2),
+                   Op_1 <> Op_2,
+                   St = S_3 -> not B1 ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 6
+--
+--  Justification:
+--    For both cases in (1), the LHS of the implication in the
+--    conclusion can be shown to be False.
+----------------------------------------------------------------------*/
+adminop_user(6): not latch__islocked(S2) and latch__islocked(S) -> B1 and B2
+                   may_be_deduced_from
+                 [ St = St_1 or St = St_2,                     /* (1) */
+                   St_1 <> St_2,
+                   St = St_1 -> B3 and (latch__islocked(S2) and B4),
+                   St = St_2 -> B5 and (B6 and S2 = S and B7) ] .
+
+

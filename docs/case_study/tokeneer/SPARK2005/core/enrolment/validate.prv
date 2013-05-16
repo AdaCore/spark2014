@@ -1,0 +1,11 @@
+-------------------------------------------
+-- Proof Review File for Enrolment.Validate
+-------------------------------------------
+
+-- VC9:
+-- Required to prove that the number of certificates held in the enrolment file is
+-- less than 2*31 - 2.
+-- This follows from the memory size of a floppy and the size of each certificate
+-- (in the region of 2**10 characters)
+9
+

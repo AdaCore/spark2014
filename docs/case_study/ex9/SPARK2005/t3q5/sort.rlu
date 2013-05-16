@@ -1,0 +1,8 @@
+permutation_is_transitive(1):
+        permutation(A, C)
+        may_be_deduced_from
+        [permutation(A, B),
+         permutation(B, C),
+         goal(checktype(A, array_type)),
+         goal(checktype(B, array_type)),
+         goal(checktype(C, array_type))].

@@ -1,0 +1,105 @@
+/*----------------------------------------------------------------------
+--  User rules for procedure Keystore.Digest.
+--
+--  File name: digest.rlu
+--
+--  Description:
+--    Procedure rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--    If Y < 41 then X + (Y - 1) * 100 <= 100 + 39 * 100 = 4000
+--    If Y = 41 then X + (Y - 1) * 100 <=  96 + 40 * 100 = 4096.
+----------------------------------------------------------------------*/
+digest_user(1): X + (Y - 1) * 100 <= 4096
+                  may_be_deduced_from
+                [ X <= 100,
+                  Y <= 41,
+                  Y = 41 -> X <= 96,
+                  goal(checktype(Y, integer)) ] .
+
+/*----------------------------------------------------------------------
+--  Rule 2
+--
+--  Justification:
+--    X - 1 is in the range [0, 99] and the conclusion follows.
+----------------------------------------------------------------------*/
+digest_user(2): X <= 100 -> (X - 1) div 100 = 0
+                  may_be_deduced_from
+                [ X >= 1 ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 3
+--
+--  Justification:
+--    From (1):
+--      Y * 100 < X
+--      Y * 100 <= X - 1
+--      Y <= (X - 1) div 100
+--    From the LHS of the conclusion:
+--      Y * 100 + 100 >= X
+--      Y * 100 +  99 >= X - 1
+--      Y >= (X - 1) div 100
+--    Combining these gives:
+--      Y = (X - 1) div 100
+--    and the RHS of the conclusion follows.
+----------------------------------------------------------------------*/
+digest_user(3): X - (Y - 1) * 100 <= 200 -> Y + 1 = (X - 1) div 100 + 1
+                  may_be_deduced_from
+                [ 100 < X - (Y - 1) * 100,          /* (1) */
+                  goal(checktype(X, integer)),
+                  goal(checktype(Y, integer)) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 4
+--
+--  Justification:
+--    By contradiction:
+--    Assume X - (Y - 1) * 100 = 100, then
+--      X = (Y - 1) * 100 + 100
+--    Substituting in (1) gives:
+--      Y < ((Y - 1) * 100 + 99) div 100 + 1
+--      Y <  (Y - 1) + 1
+--      Y <   Y
+--    which is the required contradiction.
+----------------------------------------------------------------------*/
+digest_user(4): X - (Y - 1) * 100 <> 100
+                  may_be_deduced_from
+                [ Y < (X - 1) div 100 + 1,          /* (1) */
+                  goal(checktype(Y, integer)),
+                  Y >= 1 ] .
+

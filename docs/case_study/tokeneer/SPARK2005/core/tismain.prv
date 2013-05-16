@@ -1,0 +1,27 @@
+----------------------------------------------
+-- Proof Review file for the TIS main program
+----------------------------------------------
+
+-- In order to show that (the admin part of) security 
+-- property 1 holds, the changes to Latch.State and
+-- Latch.Output need to be recorded.
+-- Two proof functions prf_preLatchState and
+-- prf_preLatchOutput have been introduced to model
+-- the values of Latch.State and Latch.Output at the
+-- start of the main loop. These are then used in
+-- assertions further down the loop.
+-- VC1 and VC2 both have conclusions C1 and C2 that show
+-- this.
+--
+-- VC1 (which represents the path from the start to the
+-- first assertion) also has a conclusion C3 which is not
+-- actually true. Latch.Output is not defined until the first
+-- call to Update, which is within MainLoopBody. This is
+-- acceptable though, since the Latch will not be updated on the
+-- first iteration of the loop. For the latch to be altered,
+-- Either a guard is present, or a user entry is in progress.
+-- For these conditions to be true, at least one iteration must
+-- have taken place.
+--
+1
+2

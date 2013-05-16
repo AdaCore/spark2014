@@ -1,0 +1,13 @@
+-- Proof Review file for 
+--    procedure AuditLog.AddElementToLog
+
+-- VC 6
+-- C1:    fld_numberlogentries(state) = (fld_length(fld_usedlogfiles(state)) - 1) 
+--           * 1024 + element(fld_logfileentries(state), [fld_currentlogfile(state)
+--           ]) .
+-- C1 is a package state invariant.
+-- proof shows that all public routines that modify NumberLogEntries, UsedLogFiles.Length,
+-- CurrentLogFile or LogFileEntries(CurrentLogFile) maintain this invariant.
+-- This invariant has not been propogated to the specification since it would unecessarily 
+-- complicate proof of compenents that use the facilities from this package.
+6

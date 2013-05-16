@@ -1,0 +1,62 @@
+           *******************************************************
+                            Listing of SPARK Text
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 17-APR-2013 11:14:52.99
+
+Line
+   1  package body T2Q6
+   2  is
+   3  
+   4    procedure SumArray (A: in ArrayType; Sum: out SumType)
+   5    is
+   6    begin
+   7      Sum := 0;
+   8      for I in IndexType loop
+   9        Sum := Sum + A(I);
+  10        --# assert Sum = Sum_Between(A, IndexType'First, I)
+  11        --#   and  0 <= Sum
+  12        --#   and  Sum <= ElementType'Last * (I - IndexType'First + 1);
+  13      end loop;
+  14    end SumArray;
+
++++        Flow analysis of subprogram SumArray performed 
+           (information-flow mode): no errors found.
+
+  15  
+  16    procedure SumArray_Shift (A: in ArrayType; Shift : in ElementType; Sum: out SumType)
+  17    is
+  18    begin
+  19      Sum := Shift;
+  20      for I in IndexType loop
+  21        --# assert ((I /= IndexType'First) -> (Sum = Sum_Between(A, IndexType'First, I-1)))
+  22        --#   and  ((I = IndexType'First) -> (Sum = Shift))
+  23        --#   and  Sum <= Sum_Between(A, IndexType'First, I-1)
+  24        --#   and  0 <= Sum
+  25        --#   and  ((I /= IndexType'First) -> (Sum <= ElementType'Last * (I - IndexType'First)));
+  26         if I = IndexType'First then
+  27            Sum := (Sum - Shift) + A(I);
+  28         else
+  29            Sum := Sum + A(I);
+  30         end if;
+  31        --# assert Sum = Sum_Between(A, IndexType'First, I)
+  32        --#   and  0 <= Sum
+  33        --#   and  Sum <= ElementType'Last * (I - IndexType'First + 1);
+  34      end loop;
+  35    end SumArray_Shift;
+
++++        Flow analysis of subprogram Sumarray_Shift 
+           performed (information-flow mode): no errors found.
+
+  36  
+  37  end T2Q6;
+No summarized warnings
+
+
+Note: Flow analysis mode is automatic
+
+
+--End of file--------------------------------------------------

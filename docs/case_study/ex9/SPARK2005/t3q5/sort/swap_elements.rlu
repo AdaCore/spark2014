@@ -1,0 +1,1 @@
+swap_elements(1): perm(update(update(INITIAL_STATE, [I], element(INITIAL_STATE, [J])), [J], element(INITIAL_STATE, [I])), INITIAL_STATE) may_be_deduced.

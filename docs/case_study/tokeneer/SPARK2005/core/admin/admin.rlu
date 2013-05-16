@@ -1,0 +1,213 @@
+/*----------------------------------------------------------------------
+--  User rules for package Admin.
+--
+--  File name: admin.rlu
+--
+--  Description:
+--    Package rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--    The code of function IsDoingOp (TheAdmin : T) is:
+--      return TheAdmin.CurrentOp /= NullOp;
+----------------------------------------------------------------------*/
+admin_user(1): isdoingop(A) may_be_replaced_by fld_currentop(A) <> nullop .
+
+
+/*----------------------------------------------------------------------
+--  Rule 2
+--
+--  Justification:
+--    A.CurrentOp >= OpAndNullT'First = NullOp, but
+--    A.CurrentOp /= NullOp (by the code of IsDoingOp), therefore
+--    A.CurrentOp >= OpAndNullT'Succ(NullOp).
+----------------------------------------------------------------------*/
+admin_user(2): succ(nullop) <= fld_currentop(A) may_be_deduced_from
+               [ isdoingop(A),
+                 nullop = opandnullt__first,
+                 fld_currentop(A) >= opandnullt__first,
+                 fld_currentop(A) <= opandnullt__last ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 3
+--
+--  Justification:
+--    The code of TheCurrentOp (TheAdmin : T) is:
+--      return TheAdmin.CurrentOp;
+----------------------------------------------------------------------*/
+admin_user(3): thecurrentop(upf_currentop(A, Op)) may_be_replaced_by Op .
+
+
+/*----------------------------------------------------------------------
+--  Rule 4, 5, 6
+--
+--  Justification:
+--    The code of IsPresent (TheAdmin : T) is
+--      return TheAdmin.RolePresent /= PrivTypes.UserOnly;
+----------------------------------------------------------------------*/
+admin_user(4): ispresent(upf_rolepresent(A, R)) may_be_deduced_from
+               [ R <> privtypes__useronly ] .
+
+admin_user(5): ispresent(mk__t(rolepresent := privtypes__useronly, currentop := X))
+                 may_be_replaced_by
+               false .
+
+admin_user(6): ispresent(upf_currentop(A, Op)) may_be_replaced_by ispresent(A) .
+
+
+/*----------------------------------------------------------------------
+--  Rule 7
+--
+--  Justification:
+--    A.RolePresent >= PrivTypes.PrivilegeT'First = UserOnly, but
+--    A.RolePresent /= UserOnly (by the code of IsPresent), therefore
+--    A.RolePresent >= PrivTypes.PrivilegeT'Succ(UserOnly).
+----------------------------------------------------------------------*/
+admin_user(7): succ(privtypes__useronly) <= fld_rolepresent(A)
+                 may_be_deduced_from
+               [ ispresent(A),
+                 privtypes__useronly = privtypes__privileget__first,
+                 fld_rolepresent(A) >= privtypes__privileget__first,
+                 fld_rolepresent(A) <= privtypes__privileget__last ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 8
+--
+--  Justification:
+--    The proof function prf_rolePresent is an access proof function
+--    to the RolePresent element of an object (A) of type T.
+----------------------------------------------------------------------*/
+admin_user(8): prf_rolepresent(A) may_be_replaced_by fld_rolepresent(A)
+                 if [ goal(checktype(A, t)) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 9
+--
+--  Justification:
+--    A change to the CurrentOp component of A does not
+--    change the value of the RolePresent component, accessed by
+--    the prf_rolePresent access proof function.
+----------------------------------------------------------------------*/
+admin_user(9): prf_rolepresent(upf_currentop(A, Op)) may_be_replaced_by
+                 prf_rolepresent(A) .
+
+
+/*----------------------------------------------------------------------
+--  Rule 10, 11
+--
+--  Justification:
+--    For each possible value of I, the indexed element of mk__optokeyedt
+--    has minmatchlength >= 1 and length <= 18.
+----------------------------------------------------------------------*/
+admin_user(10):
+   fld_length(keyedop) >= 1
+     may_be_deduced_from
+   [ fld_length(keyedop) >=
+       fld_minmatchlength(
+         element(mk__optokeyedt([archivelog]       := mk__datat(length := X1,
+                                                                minmatchlength := 7,
+                                                                text := Y1),
+                                [updateconfigdata] := mk__datat(length := X2,
+                                                                minmatchlength := 6,
+                                                                text := Y2),
+                                [overridelock]     := mk__datat(length := X3,
+                                                                minmatchlength := 8,
+                                                                text := Y3),
+                                [shutdownop]       := mk__datat(length := X4,
+                                                                minmatchlength := 8,
+                                                                text := Y4)),
+                 [I])),
+     I >= archivelog,
+     I <= shutdownop ] .
+
+
+admin_user(11):
+   fld_length(keyedop) <= 18
+     may_be_deduced_from
+   [ fld_length(keyedop) <=
+       fld_length(element(mk__optokeyedt([archivelog]       := mk__datat(length := 11,
+                                                                         minmatchlength := X1,
+                                                                         text := Y1),
+                                         [updateconfigdata] := mk__datat(length := 18,
+                                                                         minmatchlength := X2,
+                                                                         text := Y2),
+                                         [overridelock]     := mk__datat(length := 13,
+                                                                         minmatchlength := X3,
+                                                                         text := Y3),
+                                         [shutdownop]       := mk__datat(length := 8,
+                                                                         minmatchlength := X4,
+                                                                         text := Y4)),
+                          [I])),
+     I >= archivelog,
+     I <= shutdownop ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 12
+--
+--  Justification:
+--    If the LHS of the implication is False then the rule follows.
+--    If the LHS of the implication is True then the only possible
+--      combinations of Op and R are:
+--      Op = overridelock,     R = privtypes__guard
+--      Op = archivelog,       R = privtypes__auditmanager
+--      Op = updateconfigdata, R = privtypes__securityofficer
+--      Op = shutdownop,       R = privtypes__securityofficer
+----------------------------------------------------------------------*/
+admin_user(12): element(
+                  element(
+                    mk__privtoavailopst([privtypes__guard] :=
+                                          mk__availopst(false,
+                                                        [overridelock] := true),
+                                        [privtypes__auditmanager] :=
+                                          mk__availopst(false,
+                                                        [archivelog] := true),
+                                        [privtypes__securityofficer] :=
+                                           mk__availopst(false,
+                                                         [updateconfigdata] := true,
+                                                         [shutdownop] := true)),
+                    [R]),
+                  [Op])
+                ->
+                (Op = overridelock <-> R = privtypes__guard)
+                  may_be_deduced_from
+                [ Op >= opt__first,
+                  Op <= opt__last,
+                  R  >= privtypes__adminprivileget__first,
+                  R  <= privtypes__adminprivileget__last ] .
+

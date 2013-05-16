@@ -1,0 +1,179 @@
+-------------------------------------------------------------------------------
+                          Semantic Analysis Summary                            
+     POGS Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178        
+            Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.               
+-------------------------------------------------------------------------------
+
+Summary of:
+
+Verification Condition files (.vcg)
+Simplified Verification Condition files (.siv)
+Victor result files (.vct)
+Riposte result files (.rsm)
+Proof Logs (.plg)
+Dead Path Conjecture files (.dpc)
+Summary Dead Path files (.sdp)
+
+"status" column keys:
+    1st character:
+        '-' - No VC
+        'S' - No SIV
+        'U' - Undischarged
+        'E' - Proved by Examiner
+        'I' - Proved by Simplifier by inference
+        'X' - Proved by Simplifier by contradiction
+        'P' - Proved by Simplifier using user defined proof rules
+        'V' - Proved by Victor
+        'R' - Proved by Riposte
+        'C' - Proved by Checker
+        'M' - Proved by manual review
+        'F' - VC is False
+    2nd character:
+        '-' - No DPC
+        'S' - No SDP
+        'U' - Unchecked
+        'D' - Dead path
+        'L' - Live path
+
+in the directory:
+/home/robinm/trunk/hi-lite/case_studies/ex8/SPARK
+
+Summary produced: 27-MAR-2013 10:45:56.06
+
+File /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/t2q6/sumarray.vcg
+procedure T2Q6.SumArray
+
+VCs generated 27-MAR-2013 10:45:47
+
+VCs simplified 27-MAR-2013 10:45:53
+
+VCs for procedure_sumarray :
+ -----------------------------------------------------------------------------
+| #   | From  | To                  | Proved By          | Dead Path | Status |
+|-----------------------------------------------------------------------------
+| 1   | start | rtc check @ 7       | Inference          | No DPC    |   I-   |
+| 2   | start | rtc check @ 9       | Inference          | No DPC    |   I-   |
+| 3   | 10    | rtc check @ 9       | Undischarged       | No DPC    |   U-   |
+| 4   | start |    assert @ 10      | Inference          | No DPC    |   I-   |
+| 5   | 10    |    assert @ 10      | Undischarged       | No DPC    |   U-   |
+| 6   | 10    |    assert @ finish  | Inference          | No DPC    |   I-   |
+ -----------------------------------------------------------------------------
+
+
+File /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/t2q6/sumarray_shift.vcg
+procedure T2Q6.Sumarray_Shift
+
+VCs generated 27-MAR-2013 10:45:47
+
+VCs simplified 27-MAR-2013 10:45:53
+
+VCs for procedure_sumarray_shift :
+ -----------------------------------------------------------------------------
+| #   | From  | To                  | Proved By          | Dead Path | Status |
+|-----------------------------------------------------------------------------
+| 1   | start | rtc check @ 19      | Inference          | No DPC    |   I-   |
+| 2   | start |    assert @ 21      | Inference          | No DPC    |   I-   |
+| 3   | 31    |    assert @ 21      | Inference          | No DPC    |   I-   |
+| 4   | 21    | rtc check @ 27      | Inference          | No DPC    |   I-   |
+| 5   | 21    | rtc check @ 29      | Undischarged       | No DPC    |   U-   |
+| 6   | 21    |    assert @ 31      | Inference          | No DPC    |   I-   |
+| 7   | 21    |    assert @ 31      | Undischarged       | No DPC    |   U-   |
+| 8   | 31    |    assert @ finish  | Inference          | No DPC    |   I-   |
+ -----------------------------------------------------------------------------
+
+
+File /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/t2q6__body.vcg
+package_body T2Q6
+
+VCs generated 27-MAR-2013 10:45:47
+
+VCs simplified 27-MAR-2013 10:45:53
+
+VCs for package_body_t2q6 :
+ -----------------------------------------------------------------------------
+| #   | From  | To                  | Proved By          | Dead Path | Status |
+|-----------------------------------------------------------------------------
+| 1   | start |    assert @ finish  | Examiner           | No DPC    |   E-   |
+ -----------------------------------------------------------------------------
+
+
+File /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/t2q6__spec.vcg
+package_spec T2Q6
+
+VCs generated 27-MAR-2013 10:45:47
+
+VCs simplified 27-MAR-2013 10:45:54
+
+VCs for package_spec_t2q6 :
+ -----------------------------------------------------------------------------
+| #   | From  | To                  | Proved By          | Dead Path | Status |
+|-----------------------------------------------------------------------------
+| 1   | start |    assert @ finish  | Examiner           | No DPC    |   E-   |
+ -----------------------------------------------------------------------------
+
+
+===============================================================================
+Summary:
+
+The following subprograms have undischarged VCs (excluding those proved false):
+
+   2  /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/t2q6/sumarray.vcg
+   2  /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK/t2q6/sumarray_shift.vcg
+
+Proof strategies used by subprograms
+-------------------------------------------------------------------------
+Total subprograms with at least one VC proved by Examiner:              2
+Total subprograms with at least one VC proved by Simplifier:            2
+Total subprograms with at least one VC proved by contradiction:         0
+Total subprograms with at least one VC proved with user proof rule:     0
+Total subprograms with at least one VC proved by Victor:                0
+Total subprograms with at least one VC proved by Riposte:               0
+Total subprograms with at least one VC proved using Checker:            0
+Total subprograms with at least one VC discharged by review:            0
+
+Maximum extent of strategies used for fully proved subprograms:
+-------------------------------------------------------------------------
+Total subprograms with proof completed by Examiner:                     2
+Total subprograms with proof completed by Simplifier:                   0
+Total subprograms with proof completed with user defined rules:         0
+Total subprograms with proof completed by Victor:                       0
+Total subprograms with proof completed by Riposte:                      0
+Total subprograms with proof completed by Checker:                      0
+Total subprograms with VCs discharged by review:                        0
+
+Overall subprogram summary:
+-------------------------------------------------------------------------
+Total subprograms fully proved:                                         2
+Total subprograms with at least one undischarged VC:                    2  <<<
+Total subprograms with at least one false VC:                           0
+                                                                    -----
+Total subprograms for which VCs have been generated:                    4
+
+
+ZombieScope Summary:
+-------------------------------------------------------------------------
+Total subprograms for which DPCs have been generated:                   0
+Total number subprograms with dead paths found:                         0
+Total number of dead paths found:                                       0
+
+
+VC summary:
+-------------------------------------------------------------------------
+Note: (User) denotes where the Simplifier has proved VCs using one or
+      more user-defined proof rules.
+
+Total VCs by type:
+------------------
+                    Total   Examiner Simplifier    Undisc.
+Assert/Post            10          2          6          2
+Precondition            0          0          0          0
+Check stmnt.            0          0          0          0
+Runtime check           6          0          4          2
+Inst. check             0          0          0          0
+Refinem. VCs            0          0          0          0
+Inherit. VCs            0          0          0          0
+==========================================================
+Totals:                16          2         10          4 <<<
+%Totals:                         13%        63%        25%
+
+===================== End of Semantic Analysis Summary ========================

@@ -1,0 +1,128 @@
+/*----------------------------------------------------------------------
+--  User rules for main procedure TISMain.
+--
+--  File name: tismain.rlu
+--
+--  Description:
+--    Nested procedures rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1, 2, 3, 4, 5, 6
+--
+--  Justification:
+--    The code of Enclave.EnrolmentIsInProgress is:
+--      return Status in EnrolmentStates;
+--    where EnrolmentsStates is a subtype of Enclave.StatusT with range:
+--      NotEnrolled .. WaitingEndEnrol.
+--
+--    Status is the refinement of the own package variable State.
+--
+--    The three proof functions:
+--      Enclave.prf_statusIsWaitingStartAdminOp(State)
+--      Enclave.prf_statusIsWaitingFinishAdminOp(State)
+--      Enclave.prf_statusIsShutdown(State)
+--    represent three values for Status that are not in the subtype
+--      EnrolmentStates.
+--    These three functions must therefore all be False if
+--      Enclave.EnrolmentIsInProgress(Status) is True.
+--
+--    They must also be false if Enclave.prf_statusIsEnclaveQuiescent(S)
+--    is True since this represents a further, distinct value for Status.
+----------------------------------------------------------------------*/
+
+tismain_user(1): not enclave__prf_statusiswaitingstartadminop(S)
+                   may_be_deduced_from
+                 [ enclave__enrolmentisinprogress(S) ] .
+
+tismain_user(2): not enclave__prf_statusiswaitingstartadminop(S)
+                   may_be_deduced_from
+                 [ enclave__enrolmentisinprogress(S) or
+                     enclave__prf_statusisenclavequiescent(S) ] .
+
+tismain_user(3): not enclave__prf_statusiswaitingfinishadminop(S)
+                   may_be_deduced_from
+                 [ enclave__enrolmentisinprogress(S) ] .
+
+tismain_user(4): not enclave__prf_statusiswaitingfinishadminop(S)
+                   may_be_deduced_from
+                 [ enclave__enrolmentisinprogress(S) or
+                     enclave__prf_statusisenclavequiescent(S) ] .
+
+tismain_user(5): not enclave__prf_statusisshutdown(S)
+                   may_be_deduced_from
+                 [ enclave__enrolmentisinprogress(S) ] .
+
+tismain_user(6): not enclave__prf_statusisshutdown(S)
+                   may_be_deduced_from
+                 [ enclave__enrolmentisinprogress(S) or
+                     enclave__prf_statusisenclavequiescent(S) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 7, 8, 9
+--
+--  Justification:
+--      Enclave.prf_statusIsEnclaveQuiescent
+--      Enclave.prf_statusIsWaitingStartAdminOp
+--      Enclave.prf_statusIsWaitingFinishAdminOp
+--      Enclave.prf_statusIsShutdown
+--    represent four different values of the same enumerated type and
+--    are therefore distinct values.
+----------------------------------------------------------------------*/
+
+tismain_user(7): not enclave__prf_statusiswaitingstartadminop(S)
+                   may_be_deduced_from
+                 [ enclave__prf_statusisenclavequiescent(S) ] .
+
+tismain_user(8): not enclave__prf_statusiswaitingfinishadminop(S)
+                   may_be_deduced_from
+                 [ enclave__prf_statusisenclavequiescent(S) ] .
+
+tismain_user(9): not enclave__prf_statusisshutdown(S)
+                   may_be_deduced_from
+                 [ enclave__prf_statusisenclavequiescent(S) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 10
+--
+--  Justification:
+--    The code of Admin_IsPresent is:
+--      return TheAdmin.RolePresent /= PrivTypes.UserOnly;
+--    and the proof function admin__prf_rolepresent(A) is an
+--    access proof function to the RolePresent component.
+----------------------------------------------------------------------*/
+tismain_user(10): not admin__ispresent(A)
+                    may_be_replaced_by
+                  admin__prf_rolepresent(A) = privtypes__useronly .
+

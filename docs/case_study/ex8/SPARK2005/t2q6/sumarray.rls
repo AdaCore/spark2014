@@ -1,0 +1,42 @@
+           /*********************************************************/
+                           /*Proof Rule Declarations*/
+   /*Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 */
+             /*Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.*/
+           /*********************************************************/
+
+
+                        /*DATE : 27-MAR-2013 10:45:47.05*/
+
+                          /*procedure T2Q6.SumArray*/
+
+
+rule_family sumarray_rules:
+     X      requires [X:any] &
+     X <= Y requires [X:ire, Y:ire] &
+     X >= Y requires [X:ire, Y:ire].
+
+sumarray_rules(1): integer__size >= 0 may_be_deduced.
+sumarray_rules(2): integer__first may_be_replaced_by -2147483648.
+sumarray_rules(3): integer__last may_be_replaced_by 2147483647.
+sumarray_rules(4): integer__base__first may_be_replaced_by -2147483648.
+sumarray_rules(5): integer__base__last may_be_replaced_by 2147483647.
+sumarray_rules(6): elementtype__size >= 0 may_be_deduced.
+sumarray_rules(7): elementtype__first may_be_replaced_by 0.
+sumarray_rules(8): elementtype__last may_be_replaced_by 1000.
+sumarray_rules(9): elementtype__base__first may_be_replaced_by -2147483648.
+sumarray_rules(10): elementtype__base__last may_be_replaced_by 2147483647.
+sumarray_rules(11): counttype__size >= 0 may_be_deduced.
+sumarray_rules(12): counttype__first may_be_replaced_by 0.
+sumarray_rules(13): counttype__last may_be_replaced_by 100.
+sumarray_rules(14): counttype__base__first may_be_replaced_by -2147483648.
+sumarray_rules(15): counttype__base__last may_be_replaced_by 2147483647.
+sumarray_rules(16): indextype__size >= 0 may_be_deduced.
+sumarray_rules(17): indextype__first may_be_replaced_by 1.
+sumarray_rules(18): indextype__last may_be_replaced_by 100.
+sumarray_rules(19): indextype__base__first may_be_replaced_by -2147483648.
+sumarray_rules(20): indextype__base__last may_be_replaced_by 2147483647.
+sumarray_rules(21): sumtype__size >= 0 may_be_deduced.
+sumarray_rules(22): sumtype__first may_be_replaced_by 0.
+sumarray_rules(23): sumtype__last may_be_replaced_by 100000.
+sumarray_rules(24): sumtype__base__first may_be_replaced_by -2147483648.
+sumarray_rules(25): sumtype__base__last may_be_replaced_by 2147483647.

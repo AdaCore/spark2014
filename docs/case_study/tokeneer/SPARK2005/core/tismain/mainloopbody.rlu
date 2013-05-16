@@ -1,0 +1,136 @@
+/*----------------------------------------------------------------------
+--  User rules for procedure TISMain.MainLoopBody.
+--
+--  File name: mainloopbody.rlu
+--
+--  Description:
+--    Procedure rule file with Proof Checker justification.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--    See VC mainloopbody_user_1 below.
+----------------------------------------------------------------------*/
+mainloopbody_user(1): (B1 and (B2 and B3 and (B4 <-> B1)) ->
+                         B5 or B6 and (B7 and B8)) or B9
+                      may_be_deduced_from
+                      [ B4 -> B10 and B11,
+                        B3 and B11 -> B5 or B6 and (B7 and B8) ] .
+
+
+
+
+/*               Start of Comment Section containing rule proof
+
+
+The proof rule mainloopbody_user(1) is justified by the proof of
+the VC mainloopbody_user_1.
+
+To confirm that the rule is valid:
+1. Check that the conclusion of the VC is the same as the formula
+   deduced by the rule and that the hypotheses of the VC are the
+   same formulae as the sideconditions of the rule.
+2. Extract the three indicated sections below into three files:
+     mainloopbody_user.vcg
+     mainloopbody_user.fdl
+     mainloopbody_user.cmd
+3. Run the SPADE Proof Checker with the command:
+     checker mainloopbody_user/exe=mainloopbody_user
+4. Check that the proof log file (mainloopbody_user.plg) output by the
+   Checker contains the following line immediately before the exit:
+     "There are no more VCs left to prove."
+
+
+
+--! Start: mainloopbody_user.vcg
+
+
+
+
+
+
+
+
+
+
+
+
+
+mainloopbody_user_1.
+H1:   b4 -> b10 and b11 .
+H2:   b3 and b11 -> b5 or b6 and (b7 and b8) .
+      ->
+C1:   (b1 and (b2 and b3 and (b4 <-> b1)) ->
+         b5 or b6 and (b7 and b8)) or b9 .
+
+
+--! End: mainloopbody_user.vcg
+
+
+
+--! Start: mainloopbody_user.fdl
+title procedure mainloopbody_user;
+
+  var b1 : boolean;
+  var b2 : boolean;
+  var b3 : boolean;
+  var b4 : boolean;
+  var b5 : boolean;
+  var b6 : boolean;
+  var b7 : boolean;
+  var b8 : boolean;
+  var b9 : boolean;
+  var b10 : boolean;
+  var b11 : boolean;
+
+end;
+--! End: mainloopbody_user.fdl
+
+
+--! Start: mainloopbody_user.cmd
+1.
+prove A where c#1=(A or B) by impl.
+forw h#6.
+y
+forw h#1.
+simp
+forw h#2.
+done
+done
+exit
+--! End: mainloopbody_user.cmd
+
+
+
+                 End of Comment Section containing rule proof           */

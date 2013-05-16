@@ -1,0 +1,17 @@
+           {*******************************************************}
+                               {FDL Declarations}
+   {Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 }
+             {Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 27-MAR-2013 10:45:47.08}
+
+                             {package_body T2Q6}
+
+
+title package t2q6;
+
+  function round__(real) : integer;
+
+end;

@@ -1,0 +1,5 @@
+QueueOperations specification is in queueoperations.ads
+QueueOperations body          is in queueoperations.adb
+Queues          specification is in queues.ads
+Stacks          specification is in stacks.ads
+Stacks          body          is in stacks.adb

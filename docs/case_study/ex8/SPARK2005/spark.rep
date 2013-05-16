@@ -1,0 +1,121 @@
+           *******************************************************
+                         Report of SPARK Examination
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 29-APR-2013 14:59:47.81
+
+Options:
+    index_file=tut2.idx
+    warning_file=all.wrn
+    notarget_compiler_data
+    config_file=gnat.cfg
+    source_extension=ada
+    listing_extension=ls_
+    nodictionary_file
+    report_file=spark.rep
+    nohtml
+    vcg
+    nostatistics
+    fdl_identifiers=accept
+    flow_analysis=auto
+    language=95
+    profile=sequential
+    annotation_character=#
+    rules=lazy
+    error_explanations=off
+    justification_option=full
+    output_directory=.
+    output_directory (actual)=/home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/
+
+Selected files:
+   t2q8.adb
+
+
+Index Filename(s) used were: 
+   /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/tut2.idx
+
+
+No Meta Files used
+
+
+Summary warning reporting selected for:
+   Hidden parts
+   Representation clauses
+   Unexpected address clauses
+   Direct updates of own variable(s) of non-enclosing packages
+   Unnecessary type conversions
+   Notes
+   All pragmas
+
+
+
+Target configuration file:
+Line
+   1  -- Auto-generated SPARK target configuration file
+   2  -- Target claims to be 'SYSTEM_NAME_GNAT'
+   3  
+   4  -- This package Standard is used for Examiner self-analysis,
+   5  -- following CFR 1018.  It is valid for both GNAT 3.14a1 and later
+   6  -- on SPARC/Solaris and IA32/Win32
+   7  
+   8  package Standard is
+   9     type Integer is range -2147483648 ..  2147483647;
+  10     type Float is digits  6 range -3.40282E+38 ..  3.40282E+38;
+  11     type Short_Short_Integer is range -128 ..  127;
+  12     type Short_Integer is range -32768 ..  32767;
+  13     type Long_Integer is range -2147483648 ..  2147483647;
+  14     type Long_Long_Integer is range -9223372036854775808 ..  9223372036854775807;
+  15     type Short_Float is digits  6 range -3.40282E+38 ..  3.40282E+38;
+  16  end Standard;
+No summarized warnings
+
+
+
+Source Filename(s) used were:
+   /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/t2q8.adb
+   /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/t2q8.ads
+
+
+
+Source Filename:   /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/t2q8.ads
+No Listing File
+
+   Unit name:  T2Q8
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+2 error(s) or warning(s)
+
+Line
+   7    --# function fib (I: IndexType) return Positive;
+                     ^1
+--- (  1)  Warning           :320: The proof function fib has a non-boolean return 
+           and a return annotation. Please make sure that the return is always 
+           in-type.
+
+   8    --# return Result => ((I <= 2 -> Result = 1) and
+                   ^2
+--- (  2)  Warning           :321: The proof function fib has an implicit return 
+           annotation. Please be careful not to introduce unsoundness.
+
+No summarized warnings
+
+
+Source Filename:   /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/t2q8.adb
+Listing Filename:  /home/robinm/trunk/hi-lite/case_studies/ex8/SPARK2005/t2q8.lsb
+
+   Unit name:  T2Q8
+   Unit type:  package body
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+No summarized warnings
+
+Note: Automatic flow analysis mode selected
+
+
+--End of file--------------------------------------------------

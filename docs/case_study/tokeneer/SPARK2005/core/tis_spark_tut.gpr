@@ -1,0 +1,19 @@
+with "../common.gpr";
+
+project tis_spark_tut is
+
+   for Source_Dirs use ("./**", "../support");
+   for Main use ("tis");
+   for Languages use ("Ada", "Index", "Listing", "Metafile", "Siv", "Vcg");
+
+   package Compiler renames Common.Compiler;
+
+   package Builder renames Common.Builder;
+
+   package Ide is
+      for Default_Switches ("examiner") use ("-index_file=tis", "-listing=ls_", "-config=config.adb", "-warning_file=tis", "-noswitch", "-vcg", "-rules=lazy");
+      for Default_Switches ("sparksimp") use ("-a", "-l", "-p=2");
+   end Ide;
+
+end tis_spark_tut;
+

@@ -1,0 +1,22 @@
+-- Proof Review File for
+-- procedure AuditLog.AddElementToLogFileWithTruncateChecks
+
+
+-- VC 3
+-- H10:   for_all(i___1 : logfilecountt, 1 <= i___1 and i___1 <= 17 -> 0 <= 
+--           element(logfileentries, [i___1]) and element(logfileentries, [i___1]) 
+--           <= 1024) .
+-- H18:   fld_length(usedlogfiles) = 17 .
+-- H19:   (fld_length(usedlogfiles) - 1) * 1024 + element(logfileentries, [
+--           currentlogfile]) = fld_length(usedlogfiles) * 1024 .
+-- H20:   fld_length(usedlogfiles__1) = 16 .
+--        ->
+-- C1:    - element(logfileentries__1, [currentlogfile]) = - 1024 .
+-- C2:    element(logfileentries__1, [currentlogfile]) = 1024 .
+-- C1 and C2 are equivalent.
+-- from H19 we know that    element(logfileentries, [currentlogfile]) = 1024 .
+-- We need to observe that when the log is truncated the currentlogfile is not
+-- the head of the usedlogfiles list. Truncation only changes the value of logfileentries 
+-- for the head of the list so the result follows.
+3
+

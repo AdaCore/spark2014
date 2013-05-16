@@ -1,0 +1,124 @@
+Phase 1 of 3: frame condition computation ...
+Phase 2 of 3: translation to intermediate language ...
+Statistics logged in gnatprove.out
+(detailed info can be found in /home/pavlos/Documents/Versioning_systems/Subversion/hi-lite/case_studies/tokeneer/gnatprove/*.alfa)
+Phase 3 of 3: generation and proof of VCs ...
+analyzing AuditLog.NextListIndex, 1 checks
+auditlog.adb:57:26: info: range check proved
+analyzing AuditLog.CheckLogAlarm, 0 checks
+analyzing AuditLog.ConvertToAuditDescription, 1 checks
+auditlog.adb:100:39: info: range check proved
+analyzing AuditLog.DeleteArchiveFile, 1 checks
+auditlog.adb:354:22: precondition not proved
+analyzing AuditLog.DeleteLogFile, 0 checks
+analyzing AuditLog.AddElementToFile, 0 checks
+analyzing AuditLog.AddElementToFile.NameOfType, 0 checks
+analyzing AuditLog.AddElementToLogFile, 8 checks
+auditlog.adb:570:44: info: range check proved
+auditlog.adb:570:47: info: overflow check proved
+auditlog.adb:570:66: info: overflow check proved
+auditlog.adb:575:65: postcondition not proved
+auditlog.adb:826:10: info: precondition proved
+auditlog.adb:835:10: info: assertion proved
+auditlog.adb:837:10: info: precondition proved
+auditlog.adb:844:44: info: range check proved
+analyzing precondition for AuditLog.AddElementToLogFile, 3 checks
+auditlog.adb:566:44: info: range check proved
+auditlog.adb:566:47: info: overflow check proved
+auditlog.adb:566:66: info: overflow check proved
+analyzing AuditLog.AddElementToLogFile.AddElementToCurrentFile, 2 checks
+auditlog.adb:668:41: info: postcondition proved
+auditlog.adb:713:75: info: range check proved
+analyzing precondition for AuditLog.AddElementToLogFile.AddElementToCurrentFile, 0 checks
+analyzing AuditLog.AddElementToLogFile.AddElementToNextFile, 2 checks
+auditlog.adb:733:60: info: postcondition proved
+auditlog.adb:801:53: info: range check proved
+analyzing precondition for AuditLog.AddElementToLogFile.AddElementToNextFile, 0 checks
+analyzing AuditLog.AddElementToLogFile.AddElementToNextFile.SetCurrentFileToNextFreeFile, 2 checks
+auditlog.adb:783:16: info: loop invariant initialization proved
+auditlog.adb:783:16: info: loop invariant preservation proved
+analyzing AuditLog.TruncateLog, 4 checks
+auditlog.adb:864:52: info: postcondition proved
+auditlog.adb:866:44: info: overflow check proved
+auditlog.adb:920:50: info: range check proved
+auditlog.adb:922:44: info: range check proved
+analyzing precondition for AuditLog.TruncateLog, 1 checks
+auditlog.adb:862:44: info: overflow check proved
+analyzing AuditLog.AddElementToLogFileWithTruncateChecks, 19 checks
+auditlog.adb:952:24: info: postcondition proved
+auditlog.adb:953:44: info: range check proved
+auditlog.adb:953:47: info: overflow check proved
+auditlog.adb:953:66: info: overflow check proved
+auditlog.adb:1013:10: info: precondition proved
+auditlog.adb:1020:10: assertion not proved
+auditlog.adb:1022:50: info: range check proved
+auditlog.adb:1022:53: info: overflow check proved
+auditlog.adb:1022:72: info: overflow check proved
+auditlog.adb:1027:10: info: precondition proved
+auditlog.adb:1038:10: info: assertion proved
+auditlog.adb:1040:50: info: range check proved
+auditlog.adb:1040:53: info: overflow check proved
+auditlog.adb:1040:72: info: overflow check proved
+auditlog.adb:1052:7: info: assertion proved
+auditlog.adb:1054:47: info: range check proved
+auditlog.adb:1054:50: info: overflow check proved
+auditlog.adb:1054:69: info: overflow check proved
+auditlog.adb:1059:7: precondition not proved
+analyzing precondition for AuditLog.AddElementToLogFileWithTruncateChecks, 3 checks
+auditlog.adb:949:44: info: range check proved
+auditlog.adb:949:47: info: overflow check proved
+auditlog.adb:949:66: info: overflow check proved
+analyzing AuditLog.AddElementToLog, 3 checks
+auditlog.adb:1433:14: info: range check proved
+auditlog.adb:1496:7: precondition not proved
+auditlog.adb:1506:10: precondition not proved
+analyzing AuditLog.ArchiveLog, 15 checks
+auditlog.adb:1587:22: precondition not proved
+auditlog.adb:1626:13: info: loop invariant initialization proved
+auditlog.adb:1626:13: info: loop invariant preservation proved
+auditlog.adb:1631:53: info: range check proved
+auditlog.adb:1631:56: info: overflow check proved
+auditlog.adb:1631:75: info: overflow check proved
+auditlog.adb:1661:52: info: range check proved
+auditlog.adb:1671:7: info: assertion proved
+auditlog.adb:1673:47: info: range check proved
+auditlog.adb:1673:50: info: overflow check proved
+auditlog.adb:1673:69: info: overflow check proved
+auditlog.ads:256:32: postcondition not proved
+auditlog.ads:258:44: info: range check proved
+auditlog.ads:258:47: info: overflow check proved
+auditlog.ads:258:66: info: overflow check proved
+analyzing precondition for AuditLog.ArchiveLog, 3 checks
+auditlog.ads:253:44: info: range check proved
+auditlog.ads:253:47: info: overflow check proved
+auditlog.ads:253:66: info: overflow check proved
+analyzing AuditLog.ClearLogEntries, 19 checks
+auditlog.adb:1762:10: info: loop invariant initialization proved
+auditlog.adb:1762:10: loop invariant preservation not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1764:52: info: range check proved
+auditlog.adb:1764:55: info: overflow check proved
+auditlog.adb:1764:74: info: overflow check proved
+auditlog.adb:1774:10: info: loop invariant proved
+auditlog.adb:1779:50: info: range check proved
+auditlog.adb:1779:53: info: overflow check proved
+auditlog.adb:1779:72: info: overflow check proved
+auditlog.adb:1785:53: info: range check proved
+auditlog.adb:1788:47: info: range check proved
+auditlog.adb:1795:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1797:47: info: range check proved
+auditlog.adb:1797:50: info: overflow check proved
+auditlog.adb:1797:69: info: overflow check proved
+auditlog.ads:290:32: postcondition not proved
+auditlog.ads:292:44: info: range check proved
+auditlog.ads:292:47: info: overflow check proved
+auditlog.ads:292:66: info: overflow check proved
+analyzing precondition for AuditLog.ClearLogEntries, 3 checks
+auditlog.ads:287:44: info: range check proved
+auditlog.ads:287:47: info: overflow check proved
+auditlog.ads:287:66: info: overflow check proved
+analyzing AuditLog.CancelArchive, 2 checks
+auditlog.adb:1841:10: info: loop invariant initialization proved
+auditlog.adb:1841:10: info: loop invariant preservation proved
+analyzing AuditLog.TheAuditAlarm, 0 checks
+analyzing AuditLog.SystemFaultOccurred, 0 checks
+

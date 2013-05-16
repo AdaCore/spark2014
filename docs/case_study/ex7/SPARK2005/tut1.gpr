@@ -1,0 +1,12 @@
+project Tut1 is
+
+   for Languages use ("Ada", "Index", "Listing", "Siv", "Vcg");
+   for Source_Dirs use (".\**");
+
+   package Ide is
+      for Default_Switches ("examiner") use ("-index_file=tut1.idx", "-config=gnat.cfg", "-warning_file=all.wrn", "-noswitch", "-vcg", "-error_explanations=first", "-listing=ls_");
+      for Default_Switches ("sparkformat") use ("-add_modes", "-noswitch", "-order=alphabetic", "-d=i");
+   end Ide;
+
+end Tut1;
+

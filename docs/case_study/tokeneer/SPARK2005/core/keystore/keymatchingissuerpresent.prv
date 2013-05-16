@@ -1,0 +1,23 @@
+----------------------------------------------------------
+-- Proof Review File for KeyStore.KeyMatchingIssuerPresent
+----------------------------------------------------------
+
+-- procedure_keymatchingissuerpresent_4.
+-- H1:    fld_keystore__interface__store(store~) = fld_keystore__interface__store(
+--           store) .
+-- H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 40 -> 0 <= element(
+--           fld_name(issuer), [i___1]) and element(fld_name(issuer), [i___1]) <=
+--           255) .
+-- H3:    fld_namelength(issuer) >= 0 .
+-- H4:    fld_namelength(issuer) <= 40 .
+-- H5:    fld_id(issuer) >= 0 .
+-- H6:    fld_id(issuer) <= 4294967295 .
+--        ->
+-- C1:    ispresent <-> prf_issuerkeynotnull(issuer, store) .
+--
+--
+-- This is effectively the definition of the proof function prf_issuerKeyNotNull.
+-- This is used to ensure that IsVerifiedBy meets its precondition that there is
+-- an issuer key present.
+4
+

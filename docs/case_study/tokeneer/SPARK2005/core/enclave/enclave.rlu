@@ -1,0 +1,228 @@
+/*----------------------------------------------------------------------
+--  User rules for package Enclave.
+--
+--  File name: enclave.rlu
+--
+--  Description:
+--    Package rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1, 2, 3
+--
+--  Justification:
+--    The code of Admin.IsPresent is:
+--      return TheAdmin.RolePresent /= PrivTypes.UserOnly;
+--    
+--    The proof function Admin.prf_rolePresent models the value of
+--    TheAdmin.RolePresent
+----------------------------------------------------------------------*/
+enclave_user(1): admin__prf_rolepresent(A) = privtypes__useronly
+                   may_be_deduced_from
+                 [ not admin__ispresent(A) ] .
+
+enclave_user(2): admin__prf_rolepresent(A) <> privtypes__guard
+                    may_be_deduced_from
+                  [ not admin__ispresent(A) ] .
+
+enclave_user(3): admin__ispresent(A) may_be_deduced_from
+                  [ admin__prf_rolepresent(A) = R,
+                    R <> privtypes__useronly ] .
+
+/*----------------------------------------------------------------------
+--  Rule 4, 5, 6
+--
+--  Justification:
+--    The code of EnrolmentIsInProgress is:
+--      return Status in EnrolmentStates;
+--    where EnrolmentStates is a subtype of StatusT with range:
+--      NotEnrolled .. WaitingEndEnrol
+----------------------------------------------------------------------*/
+enclave_user(4): enrolmentisinprogress(S) may_be_replaced_by
+                 S >= notenrolled and S <= waitingendenrol .
+
+enclave_user(5): S <= waitingendenrol may_be_deduced_from [ enrolmentisinprogress(S) ] .
+
+enclave_user(6): not enrolmentisinprogress(S) may_be_deduced_from
+                 [ S > waitingendenrol ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 7, 8, 9, 10, 11, 12
+--
+--  Justification:
+--    The proof functions prf_statusis<value> model the setting of the
+--    concrete variable Status to <value>.
+--    Status is the refinement of the package own variable State.
+----------------------------------------------------------------------*/
+enclave_user(7): prf_statusisgotadmintoken(S) &
+                   fld_status(S) = gotadmintoken
+                 are_interchangeable if
+                 [ goal(checktype(S, statetype)) ] .
+
+enclave_user(8): prf_statusiswaitingremoveadmintokenfail(S) &
+                   fld_status(S) = waitingremoveadmintokenfail
+                 are_interchangeable if
+                 [ goal(checktype(S, statetype)) ] .
+
+enclave_user(9): prf_statusiswaitingstartadminop(S) &
+                   fld_status(S) = waitingstartadminop
+                 are_interchangeable if
+                 [ goal(checktype(S, statetype)) ] .
+
+enclave_user(10): prf_statusiswaitingfinishadminop(S) &
+                    fld_status(S) = waitingfinishadminop
+                  are_interchangeable if
+                  [ goal(checktype(S, statetype)) ] .
+
+enclave_user(11): prf_statusisenclavequiescent(S) &
+                    fld_status(S) = enclavequiescent
+                  are_interchangeable if
+                  [ goal(checktype(S, statetype)) ] .
+
+enclave_user(12): prf_statusisshutdown(S) &
+                    fld_status(S) = shutdown
+                  are_interchangeable if
+                  [ goal(checktype(S, statetype)) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 13
+--
+--  Justification:
+--    Enclave.EnrolmentIsInProgress(State) and
+--            EnrolmentIsInProgress(Status)
+--    are the external and internal views of the same proof function.
+--    Status is the refinement of the package own variable State.
+----------------------------------------------------------------------*/
+enclave_user(13): enclave__enrolmentisinprogress(S) &
+                     enrolmentisinprogress(fld_status(S))
+                  are_interchangeable if
+                  [ goal(checktype(S, statetype)) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 14
+--
+--  Justification:
+--    The code of AdminToken.Get_Role is:
+--      return Cert.Attr.Auth.TheRole(Contents => AuthCert.Contents);
+--    which is the value modelled by the proof function
+--      AdminToken.TheAuthCertRole.
+----------------------------------------------------------------------*/
+enclave_user(14): admintoken__getrole(S) &
+                    admintoken__theauthcertrole(S)
+                  are_interchangeable if
+                  [ goal(checktype(S, admintoken__statetype)) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 15
+--
+--  Justification:
+--    The return annotation on AdminHasDeparted is:
+--      --# return R => (R -> Status in NonQuiescentStates);
+--    where NonQuiescentStates is a subtype of StatusT with range:
+--      WaitingRemoveAdminTokenFail .. Shutdown
+--
+--    The code of AdminActivityInProgress is
+--      return Status in NonQuiescentStates ;
+--    where NonQuiescentStates is a subtype of StatusT with range:
+--      GotAdminToken .. Shutdown
+--    and WaitingRemoveAdminTokenFail < GotAdminToken
+----------------------------------------------------------------------*/
+enclave_user(15): adminhasdeparted(S, St) or adminactivityinprogress(St) ->
+                    waitingremoveadmintokenfail <= St and St <= shutdown
+                  may_be_deduced .
+
+
+/*----------------------------------------------------------------------
+--  Rule 16
+--
+--  Justification:
+--    Enclave.CurrentAdminActivityPossible(State, AdminToken.State) and
+--            CurrentAdminActivityPossible(AdminToken.State, Status)
+--    are the external and internal views of the same function.
+--    Status is the refinement of the package own variable State.
+----------------------------------------------------------------------*/
+enclave_user(16):  enclave__currentadminactivitypossible(S, ATS)
+                     & currentadminactivitypossible(ATS, fld_status(S))
+                   are_interchangeable .
+
+
+/*----------------------------------------------------------------------
+--  Rule 17, 18
+--
+--  Justification:
+--    The return annotation on AdminOpCanStart(AdminToken.State, Status, TheAdmin) is
+--      --# return R => ((R -> Status = EnclaveQuiescent) and
+--      --#              (R -> Admin.IsPresent(TheAdmin)));
+----------------------------------------------------------------------*/
+enclave_user(17):  St = enclavequiescent
+                     may_be_deduced_from
+                   [ adminopcanstart(ATS, St, A) ] .
+
+enclave_user(18):  admin__ispresent(A)
+                     may_be_deduced_from
+                   [ adminopcanstart(ATS, St, A) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 19
+--
+--  Justification:
+--    The return annotation on AdminLogonCanStart(AdminToken.State, Status, TheAdmin) is
+--      --# return R => (R -> not Admin.IsPresent(TheAdmin);
+----------------------------------------------------------------------*/
+enclave_user(19):  not admin__ispresent(A)
+                     may_be_deduced_from
+                   [ adminlogoncanstart(ATS, St, A) ] .
+
+
+/*----------------------------------------------------------------------
+--  Rule 20
+--
+--  Justification:
+--    The specification of CurrentAdminActivityPossible is:
+--      function CurrentAdminActivityPossible return Boolean
+--      --# global AdminToken.State,
+--      --#        Status;
+--      --# return R => (R -> Status in NonQuiescentStates);
+--    where NonQuiescentStates is a subtype of StatusT with range:
+--      WaitingRemoveAdminTokenFail .. Shutdown.
+----------------------------------------------------------------------*/
+enclave_user(20): waitingremoveadmintokenfail <= St
+                    may_be_deduced_from
+                  [ currentadminactivitypossible(S, St) ] .
+
+
+

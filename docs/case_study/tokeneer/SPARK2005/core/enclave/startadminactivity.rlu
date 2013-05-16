@@ -1,0 +1,77 @@
+/*----------------------------------------------------------------------
+--  User rules for procedure Enclave.StartAdminActivity.
+--
+--  File name: startadminactivity.rlu
+--
+--  Description:
+--    Procedure rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--  The conclusion follows for both cases in (1).
+----------------------------------------------------------------------*/
+startadminactivity_user(1): St_1 < St may_be_deduced_from
+                            [ St = St_2 or St = St_3,           /* (1) */
+                              St_1 < St_2,
+                              St_1 < St_3 ] .
+
+/*----------------------------------------------------------------------
+--  Rule 2
+--
+--  Justification:
+--    Case 1: The RHS of the conclusion is True by (2).
+--    Case 2: The LHS of the conclusion is False by (3).
+----------------------------------------------------------------------*/
+startadminactivity_user(2): not B1 -> not B2 may_be_deduced_from
+                            [ St = St_1 or                                     /* Case 1 */
+                              St = St_2,                                       /* Case 2 */
+                              St = St_1 -> not B2 and B3,                      /*  (2)   */
+                              St = St_2 or St = St_3 -> B2 and (B1 and B4) ] . /*  (3)   */
+
+
+/*----------------------------------------------------------------------
+--  Rule 3
+--
+--  Justification:
+--    The LHS of the implication is False for both cases in (1).
+----------------------------------------------------------------------*/
+startadminactivity_user(3): St = St_1 or St = St_2 -> B1
+                              may_be_deduced_from
+                            [ St = St_3 or St = St_4,         /* (1) */
+                              St_1 <> St_3,
+                              St_1 <> St_4,
+                              St_2 <> St_3,
+                              St_2 <> St_4 ] .
+

@@ -1,0 +1,2 @@
+-index=spark.idx
+-vcg

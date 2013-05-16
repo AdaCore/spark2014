@@ -1,0 +1,64 @@
+/*----------------------------------------------------------------------
+--  User rules for procedure Enclave.AdminLogout.
+--
+--  File name: adminlogout.rlu
+--
+--  Description:
+--    Procedure rule file.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1, 2
+--
+--  Justification:
+--    See individual replacement rules for the proof functions and for
+--    fld_status in enclave.rlu.
+----------------------------------------------------------------------*/
+adminlogout_user(1):
+   prf_statusisenclavequiescent(S2) or
+   (prf_statusiswaitingremoveadmintokenfail(S2) or
+    S2 = S)
+   may_be_deduced_from
+   [ fld_status(S2) = enclavequiescent or
+     (fld_status(S2) = waitingremoveadmintokenfail or
+      fld_status(S2) = Status),
+     Status = fld_status(S),
+     goal(checktype(S, statetype)) ] .
+
+
+adminlogout_user(2): not (prf_statusiswaitingstartadminop(S) or 
+                          prf_statusiswaitingfinishadminop(S))
+                     may_be_deduced_from
+                     [ fld_status(S) <> waitingstartadminop,
+                       fld_status(S) <> waitingfinishadminop,
+                       goal(checktype(S, statetype)) ] .
+

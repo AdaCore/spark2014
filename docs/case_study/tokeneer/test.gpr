@@ -1,0 +1,10 @@
+project Test is
+
+   for Main use ("tis.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat12", "-gnatd.V");
+   end Compiler;
+
+end Test;
+

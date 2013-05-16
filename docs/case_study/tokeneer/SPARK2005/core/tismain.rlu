@@ -1,0 +1,135 @@
+/*----------------------------------------------------------------------
+--  User rules for main procedure TISMain.
+--
+--  File name: tismain.rlu
+--
+--  Description:
+--    Procedure rule file with Proof Checker justification.
+--
+--  Author: Phil Thornley, April 2009.  See www.sparksure.com
+--
+-- Copyright (c) 2009, Phil Thornley
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright
+--    notice, this list of conditions and the following disclaimer in
+--    the documentation and/or other materials provided with the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------
+--  Rule 1
+--
+--  Justification:
+--    See VC tismain_user_1 below.
+----------------------------------------------------------------------*/
+main_tismain_user(1): (B1 and (not B2 and B3) -> B4) or B5
+                        may_be_deduced_from
+                      [ (B1 and (not B2 and not B6 and B3) -> B4) or B5,
+                        (B6 <-> B2) or B5 ] .
+
+
+
+
+/*               Start of Comment Section containing rule proof
+
+
+The proof rule main_tismain_user(1) is justified by the proof of
+the VC main_tismain_user_1.
+
+To confirm that the rule is valid:
+1. Check that the conclusion of the VC is the same as the formula
+   deduced by the rule and that the hypotheses of the VC are the
+   same formulae as the sideconditions of the rule.
+2. Extract the three indicated sections below into three files:
+     main_tismain_user.vcg
+     main_tismain_user.fdl
+     main_tismain_user.cmd
+3. Run the SPADE Proof Checker with the command:
+     checker main_tismain_user/exe=main_tismain_user
+4. Check that the proof log file (main_tismain_user.plg) output by the
+   Checker contains the following line immediately before the exit:
+     "There are no more VCs left to prove."
+
+
+
+--! Start: main_tismain_user.vcg
+
+
+
+
+
+
+
+
+
+
+
+
+
+main_tismain_user_1.
+H1:   (b1 and (not b2 and not b6 and b3) -> b4) or b5 .
+H2:   (b6 <-> b2) or b5 .
+      ->
+C1:   (b1 and (not b2 and b3) -> b4) or b5 .
+
+
+--! End: main_tismain_user.vcg
+
+
+
+--! Start: main_tismain_user.fdl
+title procedure main_tismain_user;
+
+  var b1 : boolean;
+  var b2 : boolean;
+  var b3 : boolean;
+  var b4 : boolean;
+  var b5 : boolean;
+  var b6 : boolean;
+
+end;
+--! End: main_tismain_user.fdl
+
+
+--! Start: main_tismain_user.cmd
+1.
+prove c#1 by cases on b5 or not b5.
+done
+replace all: b5 by false using equiv.
+y
+stand h#1.
+y
+stand h#2.
+y
+stand c#1.
+y
+prove c#1 by impl.
+simp
+forw h#1.
+done
+exit
+--! End: main_tismain_user.cmd
+
+
+
+                 End of Comment Section containing rule proof           */

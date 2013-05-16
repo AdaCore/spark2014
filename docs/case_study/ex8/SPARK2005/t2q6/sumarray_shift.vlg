@@ -1,0 +1,81 @@
+Date: 27-Mar-2013, 10:47:31
+Host: sparkdev05
+Non-option args: 
+    sumarray_shift
+Option args: 
+    -prover-command=/usr/local/gnat/bin/alt-ergo -steps  5000   \
+    -fuse-concls   \
+    -siv   \
+    -elim-enums   \
+    -report=sumarray_shift   \
+    -decls=/home/robinm/11.0.0/bin/../share/spark/prelude.fdl   \
+    -rules=/home/robinm/11.0.0/bin/../share/spark/prelude.rul   \
+    -rules=/home/robinm/11.0.0/bin/../share/spark/divmod.rul   \
+    -ground-eval-exp   \
+    -expand-exp-const   \
+    -abstract-exp   \
+    -abstract-divmod   \
+    -gstime   \
+    -utick   \
+    -gtick   \
+    -longtick   \
+    -delete-rules-failing-typecheck   \
+    -read-unit-rlu-files   \
+    -read-directory-rlu-files   \
+    -expect-dir-user-rules-with-undeclared-ids   \
+    -warn-about-speculative-overload-resolution   \
+    -use-alt-solver-driver   \
+    -echo-final-stats   \
+    -level=warning   \
+    -gstime-inc-setup   \
+    -csv-reports-include-unit-kind   \
+    -unique-working-files   \
+    -delete-working-files   \
+    -bit-type   \
+    -bit-type-bool-eq-to-iff   \
+    -refine-types   \
+    -refine-int-subrange-type   \
+    -elim-array-constructors   \
+    -add-array-select-box-update-axioms   \
+    -abstract-array-box-updates   \
+    -add-array-select-update-axioms   \
+    -abstract-array-select-updates   \
+    -abstract-array-types   \
+    -abstract-record-types   \
+    -abstract-bit-ops   \
+    -abstract-bit-valued-eqs   \
+    -abstract-bit-valued-int-le   \
+    -elim-bit-type-and-consts   \
+    -abstract-reals   \
+    -lift-quants   \
+    -strip-quantifier-patterns   \
+    -elim-type-aliases   \
+    -interface-mode=smtlib   \
+    -smtlib-hyps-as-assums   \
+    -refine-bit-type-as-int-subtype   \
+    -refine-bit-eq-equiv   \
+    -abstract-arrays-records-late   \
+    -elim-record-constructors   \
+    -add-record-select-update-axioms   \
+    -abstract-record-selects-updates   \
+    -logic=AUFNIRA   \
+
+
+
+Total ERROR   messages: 0
+Total WARNING messages: 0
+
+Summary Stats: 
+
+   trivial:     0  ( 0.0%)
+      true:     2  (100.0%)
+  unproven:     0  ( 0.0%)  [timeout:     0  ( 0.0%)  false:     0  ( 0.0%) ]
+     error:     0  ( 0.0%)
+     total:     2
+
+Times: 
+      total true:   0.16s  (average true: 0.078s  max true: 0.128s)
+  total unproven:   0.00s
+    vct overhead:   0.02s  (13% of total true)
+           total:   0.18s  (u: 0.02s, s: 0.00s, cu: 0.14s, cs: 0.01s,  86.4% ch, 4.5% sys)
+

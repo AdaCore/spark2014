@@ -1,0 +1,74 @@
+----------------------------------------
+-- Proof Review File for Door.Poll
+----------------------------------------
+
+-- VC9
+-- H7:    latch__islocked(latch__state__4) <-> clock__greaterthanorequal(
+--           clock__thecurrenttime(clock__currenttime), latch__prf_latchtimeout(
+--           latch__state__4)) .
+-- H8:    latch__prf_latchtimeout(latch__state__4) = latch__prf_latchtimeout(
+--           latch__state) .
+--        ->
+-- C1:    latch__islocked(latch__state) -> latch__state__4 = latch__state and
+--           latch__islocked(latch__state__4) .
+--
+-- Inspection of the Latch package (and those that call Latch.UpdateInternalLatch)
+-- shows that if Latch is initially Locked, then TheCurrentTime > LatchTimeout~
+--
+-- H8 gives that LatchTimeout is unchanged, so from H7, we have that the Latch is
+-- still locked. Both elements of Latch.State are unchanged, so C1 follows.
+9
+
+
+-- VC10.
+-- H6:    latch__islocked(latch__state__4) <-> clock__greaterthanorequal(
+--           clock__thecurrenttime(clock__currenttime), latch__prf_latchtimeout(
+--           latch__state__4)) .
+-- H7:    latch__prf_latchtimeout(latch__state__4) = latch__prf_latchtimeout(
+--           latch__state) .
+--        ->
+-- C1:    latch__islocked(latch__state) -> latch__state__4 = latch__state and
+--           latch__islocked(latch__state__4) .
+--
+-- Inspection of the Latch package (and those that call Latch.UpdateInternalLatch)
+-- shows that if Latch is initially Locked, then TheCurrentTime > LatchTimeout~
+--
+-- H7 gives that LatchTimeout is unchanged, so from H6, we have that the Latch is
+-- still locked. Both elements of Latch.State are unchanged, so C1 follows.
+10
+
+
+-- VC11.
+-- H8:    latch__islocked(latch__state__4) <-> clock__greaterthanorequal(
+--           clock__thecurrenttime(clock__currenttime), latch__prf_latchtimeout(
+--           latch__state__4)) .
+-- H9:    latch__prf_latchtimeout(latch__state__4) = latch__prf_latchtimeout(
+--           latch__state) .
+--        ->
+-- C1:    latch__islocked(latch__state) -> latch__state__4 = latch__state and
+--           latch__islocked(latch__state__4) .
+--
+-- Inspection of the Latch package (and those that call Latch.UpdateInternalLatch)
+-- shows that if Latch is initially Locked, then TheCurrentTime > LatchTimeout~
+--
+-- H7 gives that LatchTimeout is unchanged, so from H6, we have that the Latch is
+-- still locked. Both elements of Latch.State are unchanged, so C1 follows.
+11
+
+-- VC12.
+-- H7:    latch__islocked(latch__state__4) <-> clock__greaterthanorequal(
+--           clock__thecurrenttime(clock__currenttime), latch__prf_latchtimeout(
+--           latch__state__4)) .
+-- H8:    latch__prf_latchtimeout(latch__state__4) = latch__prf_latchtimeout(
+--           latch__state) .
+--        ->
+-- C1:    latch__islocked(latch__state) -> latch__state__4 = latch__state and
+--           latch__islocked(latch__state__4) .
+--
+-- Inspection of the Latch package (and those that call Latch.UpdateInternalLatch)
+-- shows that if Latch is initially Locked, then TheCurrentTime > LatchTimeout~
+--
+-- H8 gives that LatchTimeout is unchanged, so from H7, we have that the Latch is
+-- still locked. Both elements of Latch.State are unchanged, so C1 follows.
+12
+

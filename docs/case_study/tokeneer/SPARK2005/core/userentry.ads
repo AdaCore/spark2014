@@ -1,0 +1,308 @@
+------------------------------------------------------------------
+-- Tokeneer ID Station Core Software
+--
+-- Copyright (2003) United States Government, as represented
+-- by the Director, National Security Agency. All rights reserved.
+--
+-- This material was originally developed by Praxis High Integrity
+-- Systems Ltd. under contract to the National Security Agency.
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+-- UserEntry
+--
+-- Description:
+--    Manages the user entry operation.
+--
+------------------------------------------------------------------
+with Stats;
+--# inherit
+--#    AlarmTypes,
+--#    AuditLog,
+--#    AuditTypes,
+--#    BasicTypes,
+--#    Bio,
+--#    CertificateStore,
+--#    Clock,
+--#    ConfigData,
+--#    Display,
+--#    Door,
+--#    IandATypes,
+--#    KeyStore,
+--#    Latch,
+--#    Stats,
+--#    UserToken;
+
+package UserEntry
+--# own State : Prf_StateT;
+--# initializes State;
+is
+
+
+   ------------------------------------------------------------------
+   -- Types
+   --
+   ------------------------------------------------------------------
+
+   --# type Prf_StateT is abstract;
+   --# ---------------------------------------------------------
+   --# -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 1           --
+   --# --=====================================================--
+   --# -- Proof function to act as a holder for the           --
+   --# -- annotations of the User Entry part of property 1 -  --
+   --# -- if the door is unlocked, then either a guard is     --
+   --# -- present, or a user entry operation is in progress.  --
+   --# ---------------------------------------------------------
+   --# function prf_UserEntryUnlockDoor return Boolean;
+
+   ------------------------------------------------------------------
+   -- CurrentActivityPossible
+   --
+   -- Description:
+   --    Returns true if and only if the system is in a state where
+   --    it can progress a current user entry operation.
+   --
+   -- traceunit : C.UserEntry.CurrentActivityPossible
+   -- traceto : FD.UserEntry.CurrentUserEntryActivityPossible
+   ------------------------------------------------------------------
+   function CurrentActivityPossible return Boolean;
+   --# global State,
+   --#        UserToken.State;
+
+   ------------------------------------------------------------------
+   -- CanStart
+   --
+   -- Description:
+   --    Returns true if and only if the system is in a state where
+   --    it can start a new user entry operation.
+   --
+   -- traceunit : C.UserEntry.CanStart
+   -- traceto : FD.UserEntry.UserEntryCanStart
+   ------------------------------------------------------------------
+   function CanStart return Boolean;
+   --# global State,
+   --#        UserToken.State;
+
+   ------------------------------------------------------------------
+   -- InProgress
+   --
+   -- Description:
+   --    Determines whether user entry is in progress.
+   --
+   -- Traceunit : C.UserEntry.InProgress
+   -- Traceto : FD.UserEntry.UserEntryInProgress
+   ------------------------------------------------------------------
+   function InProgress return Boolean;
+   --# global State;
+
+   ------------------------------------------------------------------
+   -- DisplayPollUpdate
+   --
+   -- Description:
+   --    Progresses a user entry that has already started.
+   --
+   -- traceunit : C.UserEntry.DisplayPollUpdate
+   -- traceto : FD.Interface.DisplayPollUpdate
+   ------------------------------------------------------------------
+   procedure DisplayPollUpdate;
+   --# global in     State;
+   --#        in     Latch.State;
+   --#        in     ConfigData.State;
+   --#        in     Clock.Now;
+   --#        in out Display.State;
+   --#        in out AuditLog.State;
+   --#        in out AuditLog.FileState;
+   --# derives Display.State      from *,
+   --#                                 State,
+   --#                                 Latch.State &
+   --#         AuditLog.State     from *,
+   --#                                 State,
+   --#                                 Display.State,
+   --#                                 Latch.State,
+   --#                                 AuditLog.FileState,
+   --#                                 ConfigData.State,
+   --#                                 Clock.Now &
+   --#         AuditLog.FileState from *,
+   --#                                 State,
+   --#                                 Display.State,
+   --#                                 Latch.State,
+   --#                                 AuditLog.State,
+   --#                                 ConfigData.State,
+   --#                                 Clock.Now;
+
+   ------------------------------------------------------------------
+   -- Progress
+   --
+   -- Description:
+   --    Progresses a user entry that has already started.
+   --
+   -- traceunit : C.UserEntry.Progress
+   -- traceto : FD.UserEntry.ProgressUserEntry
+   ------------------------------------------------------------------
+   procedure Progress
+     (TheStats : in out Stats.T);
+   --# global in     ConfigData.State;
+   --#        in     Clock.Now;
+   --#        in     Clock.CurrentTime;
+   --#        in     UserToken.Input;
+   --#        in     Bio.Input;
+   --#        in     KeyStore.State;
+   --#        in     KeyStore.Store;
+   --#        in out State;
+   --#        in out UserToken.State;
+   --#        in out Display.State;
+   --#        in out Latch.State;
+   --#        in out AuditLog.State;
+   --#        in out AuditLog.FileState;
+   --#        in out Door.State;
+   --#        in out UserToken.Status;
+   --#        in out CertificateStore.State;
+   --#        in out CertificateStore.FileState;
+   --#           out UserToken.Output;
+   --# derives UserToken.State,
+   --#         UserToken.Status           from State,
+   --#                                         UserToken.State,
+   --#                                         ConfigData.State,
+   --#                                         Clock.CurrentTime,
+   --#                                         UserToken.Status,
+   --#                                         UserToken.Input,
+   --#                                         KeyStore.State,
+   --#                                         KeyStore.Store,
+   --#                                         CertificateStore.State &
+   --#         Latch.State,
+   --#         Door.State                 from *,
+   --#                                         State,
+   --#                                         UserToken.State,
+   --#                                         Latch.State,
+   --#                                         ConfigData.State,
+   --#                                         Clock.CurrentTime &
+   --#         AuditLog.State,
+   --#         AuditLog.FileState         from State,
+   --#                                         UserToken.State,
+   --#                                         Display.State,
+   --#                                         Latch.State,
+   --#                                         AuditLog.State,
+   --#                                         AuditLog.FileState,
+   --#                                         ConfigData.State,
+   --#                                         Clock.Now,
+   --#                                         Door.State,
+   --#                                         Clock.CurrentTime,
+   --#                                         UserToken.Status,
+   --#                                         UserToken.Input,
+   --#                                         Bio.Input,
+   --#                                         KeyStore.State,
+   --#                                         KeyStore.Store,
+   --#                                         CertificateStore.State,
+   --#                                         CertificateStore.FileState &
+   --#         CertificateStore.State,
+   --#         CertificateStore.FileState from *,
+   --#                                         State,
+   --#                                         UserToken.State,
+   --#                                         ConfigData.State,
+   --#                                         Clock.CurrentTime,
+   --#                                         UserToken.Status,
+   --#                                         KeyStore.State,
+   --#                                         KeyStore.Store,
+   --#                                         CertificateStore.State &
+   --#         State                      from *,
+   --#                                         UserToken.State,
+   --#                                         ConfigData.State,
+   --#                                         Clock.CurrentTime,
+   --#                                         UserToken.Status,
+   --#                                         UserToken.Input,
+   --#                                         Bio.Input,
+   --#                                         KeyStore.State,
+   --#                                         KeyStore.Store &
+   --#         Display.State              from *,
+   --#                                         State,
+   --#                                         UserToken.State,
+   --#                                         ConfigData.State,
+   --#                                         Clock.CurrentTime,
+   --#                                         UserToken.Status,
+   --#                                         UserToken.Input,
+   --#                                         Bio.Input,
+   --#                                         KeyStore.State,
+   --#                                         KeyStore.Store,
+   --#                                         CertificateStore.State &
+   --#         TheStats                   from *,
+   --#                                         State,
+   --#                                         UserToken.State,
+   --#                                         ConfigData.State,
+   --#                                         Bio.Input &
+   --#         UserToken.Output           from State,
+   --#                                         UserToken.State,
+   --#                                         ConfigData.State,
+   --#                                         Clock.CurrentTime,
+   --#                                         UserToken.Status,
+   --#                                         KeyStore.State,
+   --#                                         KeyStore.Store,
+   --#                                         CertificateStore.State;
+   --# pre CurrentActivityPossible(State, UserToken.State) and
+   --#     KeyStore.PrivateKeyPresent(KeyStore.State) and
+   --#      --------------------------------------------------------
+   --#      -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+   --#      --====================================================--
+   --#      -- Before each call to Progress, the security         --
+   --#      -- property holds.                                    --
+   --#      --------------------------------------------------------
+   --#      ( ( Latch.IsLocked(Latch.State) and
+   --#          Door.TheCurrentDoor(Door.State) = Door.Open and
+   --#          Clock.GreaterThanOrEqual(Clock.TheCurrentTime(Clock.CurrentTime),
+   --#                                   Door.prf_alarmTimeout(Door.State)) ) <->
+   --#        Door.TheDoorAlarm(Door.State) = AlarmTypes.Alarming );
+   --#
+   --# post
+   --#      --------------------------------------------------------
+   --#      -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
+   --#      --====================================================--
+   --#      -- After each call to Progress, the security property --
+   --#      -- holds.                                             --
+   --#      --------------------------------------------------------
+   --#      ( ( Latch.IsLocked(Latch.State) and
+   --#          Door.TheCurrentDoor(Door.State) = Door.Open and
+   --#          Clock.GreaterThanOrEqual(Clock.TheCurrentTime(Clock.CurrentTime),
+   --#                                   Door.prf_alarmTimeout(Door.State)) ) <->
+   --#        Door.TheDoorAlarm(Door.State) = AlarmTypes.Alarming ) and
+   --#
+   --#      ---------------------------------------------------------
+   --#      -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 1           --
+   --#      --=====================================================--
+   --#      -- Holding place for the user entry part of property 1 --
+   --#      ---------------------------------------------------------
+   --#      ( ( Latch.IsLocked(Latch.State~) and
+   --#          not Latch.IsLocked(Latch.State) )
+   --#            <-> prf_UserEntryUnlockDoor );
+
+
+
+   ------------------------------------------------------------------
+   -- StartEntry
+   --
+   -- Description:
+   --    Starts a new user entry operation.
+   --
+   -- traceunit : C.UserEntry.StartEntry
+   -- traceto : FD.UserEntry.TISReadUserToken
+   ------------------------------------------------------------------
+   procedure StartEntry;
+   --# global in     ConfigData.State;
+   --#        in     Clock.Now;
+   --#        in out State;
+   --#        in out Display.State;
+   --#        in out AuditLog.State;
+   --#        in out AuditLog.FileState;
+   --# derives State,
+   --#         Display.State      from * &
+   --#         AuditLog.State     from *,
+   --#                                 Display.State,
+   --#                                 AuditLog.FileState,
+   --#                                 ConfigData.State,
+   --#                                 Clock.Now &
+   --#         AuditLog.FileState from *,
+   --#                                 Display.State,
+   --#                                 AuditLog.State,
+   --#                                 ConfigData.State,
+   --#                                 Clock.Now;
+
+
+end UserEntry;

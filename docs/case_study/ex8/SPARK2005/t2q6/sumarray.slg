@@ -1,0 +1,1029 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+   Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+             Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAR-2013, 10:45:47  SIMPLIFIED 27-MAR-2013, 10:45:53
+
+SPARK Simplifier Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 
+Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.
+
+procedure T2Q6.SumArray
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_sumarray_1.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+-S-  Applied substitution rule sumarray_rules(22).
+     This was achieved by replacing all occurrences of sumtype__first by:
+          0.
+<S>  New C1:  true
+-S-  Applied substitution rule sumarray_rules(23).
+     This was achieved by replacing all occurrences of sumtype__last by:
+          100000.
+<S>  New C2:  true
+***  Proved C1:  true
+***  Proved C2:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_sumarray_2.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+---  Hypothesis H4 has been replaced by "true".  (It is already present, as H2).
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  element(a, [indextype__first]) >= sumtype__first
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  element(a, [indextype__first]) <= sumtype__last
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  true
+***  Proved C3:  true
+-S-  Applied substitution rule sumarray_rules(22).
+     This was achieved by replacing all occurrences of sumtype__first by:
+          0.
+<S>  New H2:  true
+<S>  New C1:  element(a, [indextype__first]) >= 0
+-S-  Applied substitution rule sumarray_rules(23).
+     This was achieved by replacing all occurrences of sumtype__last by:
+          100000.
+<S>  New H3:  true
+<S>  New C2:  element(a, [indextype__first]) <= 100000
+-S-  Applied substitution rule sumarray_rules(17).
+     This was achieved by replacing all occurrences of indextype__first by:
+          1.
+<S>  New H1:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> elementtype__first <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last)
+<S>  New C4:  1 <= indextype__last
+<S>  New C1:  element(a, [1]) >= 0
+<S>  New C2:  element(a, [1]) <= 100000
+-S-  Applied substitution rule sumarray_rules(18).
+     This was achieved by replacing all occurrences of indextype__last by:
+          100.
+<S>  New H1:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 
+          elementtype__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          elementtype__last)
+<S>  New C4:  true
+***  Proved C4:  true
+-S-  Applied substitution rule sumarray_rules(7).
+     This was achieved by replacing all occurrences of elementtype__first by:
+          0.
+<S>  New H1:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= elementtype__last)
+-S-  Applied substitution rule sumarray_rules(8).
+     This was achieved by replacing all occurrences of elementtype__last by:
+          1000.
+<S>  New H1:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000)
+***  Proved C1:  element(a, [1]) >= 0
+     using hypothesis H1.
+***  Proved C2:  element(a, [1]) <= 100000
+     using hypothesis H1.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_sumarray_3.  @@@@@@@@@@
+%%%  Simplified H4 on reading formula in, to give:
+     %%%  H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 
+          elementtype__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          elementtype__last) -> (indextype__first = loop__1__i -> sum_between(
+          a, indextype__first, loop__1__i) = element(a, [loop__1__i])) and ((
+          indextype__first < loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = sum_between(a, indextype__first, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (indextype__first > loop__1__i -> 
+          sum_between(a, indextype__first, loop__1__i) >= elementtype__last * (
+          indextype__first - loop__1__i)))
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H9)
+          .
+***  Proved C3:  loop__1__i + 1 >= indextype__first
+     using hypothesis H8.
+-S-  Applied substitution rule sumarray_rules(22).
+     This was achieved by replacing all occurrences of sumtype__first by:
+          0.
+<S>  New H6:  sum_between(a, indextype__first, loop__1__i) >= 0
+<S>  New H13:  sum >= 0
+<S>  New C1:  sum + element(a, [loop__1__i + 1]) >= 0
+-S-  Applied substitution rule sumarray_rules(23).
+     This was achieved by replacing all occurrences of sumtype__last by:
+          100000.
+<S>  New H7:  sum_between(a, indextype__first, loop__1__i) <= 100000
+<S>  New H14:  sum <= 100000
+<S>  New C2:  sum + element(a, [loop__1__i + 1]) <= 100000
+-S-  Applied substitution rule sumarray_rules(18).
+     This was achieved by replacing all occurrences of indextype__last by:
+          100.
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          100 -> elementtype__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= elementtype__last)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= 100 and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= 100 -> elementtype__first <= 
+          element(a, [i___1]) and element(a, [i___1]) <= elementtype__last) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= elementtype__last * (
+          indextype__first - loop__1__i)))
+<S>  New H9:  loop__1__i <= 100
+<S>  New H12:  not loop__1__i = 100
+<S>  New C4:  loop__1__i <= 99
+***  Proved C4:  loop__1__i <= 99
+     using hypotheses H9 & H12.
+>>>  Restructured hypothesis H12 into:
+     >>>  H12:  loop__1__i <> 100
+-S-  Applied substitution rule sumarray_rules(7).
+     This was achieved by replacing all occurrences of elementtype__first by:
+          0.
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          100 -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          elementtype__last)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= 100 and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1])
+           and element(a, [i___1]) <= elementtype__last) -> (indextype__first = 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = element(
+          a, [loop__1__i])) and ((indextype__first < loop__1__i -> sum_between(
+          a, indextype__first, loop__1__i) = sum_between(a, indextype__first, 
+          loop__1__i - 1) + element(a, [loop__1__i])) and (indextype__first > 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) >= 
+          elementtype__last * (indextype__first - loop__1__i)))
+-S-  Applied substitution rule sumarray_rules(8).
+     This was achieved by replacing all occurrences of elementtype__last by:
+          1000.
+<S>  New H3:  sum <= 1000 * (loop__1__i - indextype__first + 1)
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          100 -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= 100 and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1])
+           and element(a, [i___1]) <= 1000) -> (indextype__first = loop__1__i 
+          -> sum_between(a, indextype__first, loop__1__i) = element(a, [
+          loop__1__i])) and ((indextype__first < loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) = sum_between(a, indextype__first, 
+          loop__1__i - 1) + element(a, [loop__1__i])) and (indextype__first > 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) >= 1000 * (
+          indextype__first - loop__1__i)))
+-S-  Applied substitution rule sumarray_rules(12).
+     This was achieved by replacing all occurrences of counttype__first by:
+          0.
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= counttype__last and 
+          indextype__first <= 100 and for_all(i___1 : integer, indextype__first 
+          <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 1000) -> (indextype__first = loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) = element(a, [loop__1__i])) and ((
+          indextype__first < loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = sum_between(a, indextype__first, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (indextype__first > loop__1__i -> 
+          sum_between(a, indextype__first, loop__1__i) >= 1000 * (
+          indextype__first - loop__1__i)))
+-S-  Applied substitution rule sumarray_rules(13).
+     This was achieved by replacing all occurrences of counttype__last by:
+          100.
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and indextype__first <= 100 
+          and for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          100 -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= 1000 * (indextype__first - 
+          loop__1__i)))
+-S-  Applied substitution rule sumarray_rules(17).
+     This was achieved by replacing all occurrences of indextype__first by:
+          1.
+<S>  New H1:  sum = sum_between(a, 1, loop__1__i)
+<S>  New H6:  sum_between(a, 1, loop__1__i) >= 0
+<S>  New H7:  sum_between(a, 1, loop__1__i) <= 100000
+<S>  New H8:  loop__1__i >= 1
+<S>  New H3:  sum <= 1000 * loop__1__i
+<S>  New H4:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and for_all(i___1 : 
+          integer, 1 <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (1 = loop__1__i -> sum_between(a, 1, 
+          loop__1__i) = element(a, [loop__1__i])) and ((1 < loop__1__i -> 
+          sum_between(a, 1, loop__1__i) = sum_between(a, 1, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (1 > loop__1__i -> sum_between(a, 1, 
+          loop__1__i) >= 1000 * (1 - loop__1__i)))
+%%%  Hypotheses H9 & H12 together imply that
+          loop__1__i < 100.
+     H9 & H12 have therefore been deleted and a new H15 added to this effect.
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H13 (duplicate of H2).
+>>>  Using "A->B, A |- B" on H5, given H4, H8 & H15, we simplify the former to:
+     >>>  H5:  (1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [
+          loop__1__i])) and ((1 < loop__1__i -> sum_between(a, 1, loop__1__i) = 
+          sum_between(a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 
+          > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+          loop__1__i)))
+---  Eliminated hypothesis H7 (redundant, given H1, H3 & H15).
+---  Eliminated hypothesis H14 (redundant, given H3 & H15).
+-S-  Eliminated hypothesis H1.
+     This was achieved by replacing all occurrences of sum by:
+          sum_between(a, 1, loop__1__i).
+<S>  New H2:  0 <= sum_between(a, 1, loop__1__i)
+<S>  New H3:  sum_between(a, 1, loop__1__i) <= 1000 * loop__1__i
+<S>  New C1:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) >= 0
+<S>  New C2:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) <= 
+          100000
+***  Proved C1:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) 
+          >= 0
+     using hypotheses H4, H6, H8 & H15.
+>>>  Hypothesis H5 has now been split into two, giving:
+     >>>  H16:  1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [
+          loop__1__i])
+     >>>  H17:  (1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(
+          a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 > loop__1__i 
+          -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - loop__1__i))
+>>>  Hypothesis H17 has now been split into two, giving:
+     >>>  H18:  1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(
+          a, 1, loop__1__i - 1) + element(a, [loop__1__i])
+     >>>  H19:  1 > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+          loop__1__i)
+     +++  New H20:  integer__size >= 0
+     +++  New H21:  elementtype__size >= 0
+     +++  New H22:  counttype__size >= 0
+     +++  New H23:  indextype__size >= 0
+     +++  New H24:  sumtype__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_sumarray_4.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+---  Hypothesis H4 has been replaced by "true".  (It is already present, as H2).
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+%%%  Simplified H6 on reading formula in, to give:
+     %%%  H6:  element(a, [indextype__first]) >= sumtype__first
+%%%  Simplified H7 on reading formula in, to give:
+     %%%  H7:  element(a, [indextype__first]) <= sumtype__last
+%%%  Simplified H8 on reading formula in, to give:
+     %%%  H8:  true
+%%%  Simplified H10 on reading formula in, to give:
+     %%%  H10:  indextype__first >= counttype__first and indextype__first <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> sum_between(a, 
+          indextype__first, indextype__first) = element(a, [indextype__first]) 
+          and ((indextype__first < indextype__first -> sum_between(a, 
+          indextype__first, indextype__first) = sum_between(a, 
+          indextype__first, indextype__first - 1) + element(a, [
+          indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  element(a, [indextype__first]) = sum_between(a, 
+          indextype__first, indextype__first)
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  0 <= element(a, [indextype__first])
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  element(a, [indextype__first]) <= elementtype__last
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  indextype__first >= counttype__first and indextype__first <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> sum_between(a, 
+          indextype__first, indextype__first) = element(a, [indextype__first]) 
+          and ((indextype__first < indextype__first -> sum_between(a, 
+          indextype__first, indextype__first) = sum_between(a, 
+          indextype__first, indextype__first - 1) + element(a, [
+          indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+%%%  Simplified C8 on reading formula in, to give:
+     %%%  C8:  true
+%%%  Simplified C10 on reading formula in, to give:
+     %%%  C10:  true
+***  Proved C3:  element(a, [indextype__first]) <= elementtype__last
+     using hypotheses H1 & H9.
+***  Proved C4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 
+          <= indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+     using hypothesis H1.
+***  Proved C5:  indextype__first >= counttype__first and indextype__first <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> sum_between(a, 
+          indextype__first, indextype__first) = element(a, [indextype__first]) 
+          and ((indextype__first < indextype__first -> sum_between(a, 
+          indextype__first, indextype__first) = sum_between(a, 
+          indextype__first, indextype__first - 1) + element(a, [
+          indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+     using hypothesis H10.
+***  Proved C6:  sum_between(a, indextype__first, indextype__first) >= 
+          sumtype__first
+     using hypothesis H11.
+***  Proved C7:  sum_between(a, indextype__first, indextype__first) <= 
+          sumtype__last
+     using hypothesis H12.
+***  Proved C8:  true
+***  Proved C9:  indextype__first <= indextype__last
+     using hypothesis H9.
+***  Proved C10:  true
+***  Proved C11:  indextype__first <= indextype__last
+     using hypothesis H9.
+-S-  Applied substitution rule sumarray_rules(7).
+     This was achieved by replacing all occurrences of elementtype__first by:
+          0.
+<S>  New H1:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last)
+<S>  New H10:  indextype__first >= counttype__first and indextype__first <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last) -> sum_between(a, indextype__first, 
+          indextype__first) = element(a, [indextype__first]) and ((
+          indextype__first < indextype__first -> sum_between(a, 
+          indextype__first, indextype__first) = sum_between(a, 
+          indextype__first, indextype__first - 1) + element(a, [
+          indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+-S-  Applied substitution rule sumarray_rules(8).
+     This was achieved by replacing all occurrences of elementtype__last by:
+          1000.
+<S>  New H1:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000)
+<S>  New H10:  indextype__first >= counttype__first and indextype__first <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000) -> sum_between(a, indextype__first, indextype__first) = 
+          element(a, [indextype__first]) and ((indextype__first < 
+          indextype__first -> sum_between(a, indextype__first, indextype__first)
+           = sum_between(a, indextype__first, indextype__first - 1) + element(
+          a, [indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+-S-  Applied substitution rule sumarray_rules(12).
+     This was achieved by replacing all occurrences of counttype__first by:
+          0.
+<S>  New H10:  indextype__first >= 0 and indextype__first <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> sum_between(
+          a, indextype__first, indextype__first) = element(a, [indextype__first]
+          ) and ((indextype__first < indextype__first -> sum_between(a, 
+          indextype__first, indextype__first) = sum_between(a, 
+          indextype__first, indextype__first - 1) + element(a, [
+          indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+-S-  Applied substitution rule sumarray_rules(13).
+     This was achieved by replacing all occurrences of counttype__last by:
+          100.
+<S>  New H10:  indextype__first >= 0 and indextype__first <= 100 and 
+          indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> sum_between(
+          a, indextype__first, indextype__first) = element(a, [indextype__first]
+          ) and ((indextype__first < indextype__first -> sum_between(a, 
+          indextype__first, indextype__first) = sum_between(a, 
+          indextype__first, indextype__first - 1) + element(a, [
+          indextype__first])) and (indextype__first > indextype__first -> 
+          sum_between(a, indextype__first, indextype__first) >= 0))
+-S-  Applied substitution rule sumarray_rules(17).
+     This was achieved by replacing all occurrences of indextype__first by:
+          1.
+<S>  New H6:  element(a, [1]) >= sumtype__first
+<S>  New H7:  element(a, [1]) <= sumtype__last
+<S>  New H9:  1 <= indextype__last
+<S>  New H11:  sum_between(a, 1, 1) >= sumtype__first
+<S>  New H12:  sum_between(a, 1, 1) <= sumtype__last
+<S>  New H1:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H10:  1 <= indextype__last and for_all(i___1 : integer, 1 <= i___1 and 
+          i___1 <= indextype__last -> 0 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 1000) -> sum_between(a, 1, 1) = element(a, [1])
+<S>  New C1:  element(a, [1]) = sum_between(a, 1, 1)
+<S>  New C2:  0 <= element(a, [1])
+-S-  Applied substitution rule sumarray_rules(18).
+     This was achieved by replacing all occurrences of indextype__last by:
+          100.
+<S>  New H9:  true
+<S>  New H1:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H10:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> sum_between(
+          a, 1, 1) = element(a, [1])
+-S-  Applied substitution rule sumarray_rules(22).
+     This was achieved by replacing all occurrences of sumtype__first by:
+          0.
+<S>  New H2:  true
+<S>  New H6:  element(a, [1]) >= 0
+<S>  New H11:  sum_between(a, 1, 1) >= 0
+-S-  Applied substitution rule sumarray_rules(23).
+     This was achieved by replacing all occurrences of sumtype__last by:
+          100000.
+<S>  New H3:  true
+<S>  New H7:  element(a, [1]) <= 100000
+<S>  New H12:  sum_between(a, 1, 1) <= 100000
+***  Proved C2:  0 <= element(a, [1])
+     using hypothesis H6.
+---  Eliminated hypothesis H4 (true-hypothesis).
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H2 (true-hypothesis).
+---  Eliminated hypothesis H3 (true-hypothesis).
+>>>  Using "A->B, A |- B" on H10, given H1, we simplify the former to:
+     >>>  H10:  sum_between(a, 1, 1) = element(a, [1])
+***  Proved C1:  element(a, [1]) = sum_between(a, 1, 1)
+     using hypothesis H10.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_sumarray_5.  @@@@@@@@@@
+%%%  Simplified H4 on reading formula in, to give:
+     %%%  H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 
+          elementtype__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          elementtype__last) -> (indextype__first = loop__1__i -> sum_between(
+          a, indextype__first, loop__1__i) = element(a, [loop__1__i])) and ((
+          indextype__first < loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = sum_between(a, indextype__first, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (indextype__first > loop__1__i -> 
+          sum_between(a, indextype__first, loop__1__i) >= elementtype__last * (
+          indextype__first - loop__1__i)))
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H9)
+          .
+%%%  Simplified H19 on reading formula in, to give:
+     %%%  H19:  loop__1__i + 1 >= counttype__first and loop__1__i + 1 <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> (indextype__first = 
+          loop__1__i + 1 -> sum_between(a, indextype__first, loop__1__i + 1) = 
+          element(a, [loop__1__i + 1])) and ((indextype__first < loop__1__i + 1 
+          -> sum_between(a, indextype__first, loop__1__i + 1) = sum_between(a, 
+          indextype__first, loop__1__i) + element(a, [loop__1__i + 1])) and (
+          indextype__first > loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) >= elementtype__last * (indextype__first - (
+          loop__1__i + 1))))
+%%%  Simplified C4 on reading formula in, to give:
+     %%%  C4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  loop__1__i + 1 >= counttype__first and loop__1__i + 1 <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> (indextype__first = 
+          loop__1__i + 1 -> sum_between(a, indextype__first, loop__1__i + 1) = 
+          element(a, [loop__1__i + 1])) and ((indextype__first < loop__1__i + 1 
+          -> sum_between(a, indextype__first, loop__1__i + 1) = sum_between(a, 
+          indextype__first, loop__1__i) + element(a, [loop__1__i + 1])) and (
+          indextype__first > loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) >= elementtype__last * (indextype__first - (
+          loop__1__i + 1))))
+***  Proved C4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 
+          <= indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+     using hypothesis H4.
+***  Proved C5:  loop__1__i + 1 >= counttype__first and loop__1__i + 1 <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> (indextype__first = 
+          loop__1__i + 1 -> sum_between(a, indextype__first, loop__1__i + 1) = 
+          element(a, [loop__1__i + 1])) and ((indextype__first < loop__1__i + 1 
+          -> sum_between(a, indextype__first, loop__1__i + 1) = sum_between(a, 
+          indextype__first, loop__1__i) + element(a, [loop__1__i + 1])) and (
+          indextype__first > loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) >= elementtype__last * (indextype__first - (
+          loop__1__i + 1))))
+     using hypothesis H19.
+***  Proved C6:  sum_between(a, indextype__first, loop__1__i + 1) >= 
+          sumtype__first
+     using hypothesis H20.
+***  Proved C7:  sum_between(a, indextype__first, loop__1__i + 1) <= 
+          sumtype__last
+     using hypothesis H21.
+***  Proved C8:  loop__1__i + 1 >= indextype__first
+     using hypothesis H17.
+***  Proved C9:  loop__1__i + 1 <= indextype__last
+     using hypothesis H18.
+***  Proved C10:  loop__1__i + 1 >= indextype__first
+     using hypothesis H17.
+***  Proved C11:  loop__1__i + 1 <= indextype__last
+     using hypothesis H18.
+>>>  Restructured hypothesis H12 into:
+     >>>  H12:  loop__1__i <> indextype__last
+-S-  Applied substitution rule sumarray_rules(7).
+     This was achieved by replacing all occurrences of elementtype__first by:
+          0.
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= elementtype__last) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= elementtype__last * (
+          indextype__first - loop__1__i)))
+<S>  New H19:  loop__1__i + 1 >= counttype__first and loop__1__i + 1 <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last) -> (indextype__first = loop__1__i + 1 -> 
+          sum_between(a, indextype__first, loop__1__i + 1) = element(a, [
+          loop__1__i + 1])) and ((indextype__first < loop__1__i + 1 -> 
+          sum_between(a, indextype__first, loop__1__i + 1) = sum_between(a, 
+          indextype__first, loop__1__i) + element(a, [loop__1__i + 1])) and (
+          indextype__first > loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) >= elementtype__last * (indextype__first - (
+          loop__1__i + 1))))
+-S-  Applied substitution rule sumarray_rules(8).
+     This was achieved by replacing all occurrences of elementtype__last by:
+          1000.
+<S>  New H3:  sum <= 1000 * (loop__1__i - indextype__first + 1)
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= 1000 * (indextype__first - 
+          loop__1__i)))
+<S>  New H19:  loop__1__i + 1 >= counttype__first and loop__1__i + 1 <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000) -> (indextype__first = loop__1__i + 1 -> sum_between(a, 
+          indextype__first, loop__1__i + 1) = element(a, [loop__1__i + 1])) and 
+          ((indextype__first < loop__1__i + 1 -> sum_between(a, 
+          indextype__first, loop__1__i + 1) = sum_between(a, indextype__first, 
+          loop__1__i) + element(a, [loop__1__i + 1])) and (indextype__first > 
+          loop__1__i + 1 -> sum_between(a, indextype__first, loop__1__i + 1) >= 
+          1000 * (indextype__first - (loop__1__i + 1))))
+<S>  New C3:  sum + element(a, [loop__1__i + 1]) <= 1000 * (loop__1__i + 1 - 
+          indextype__first + 1)
+-S-  Applied substitution rule sumarray_rules(12).
+     This was achieved by replacing all occurrences of counttype__first by:
+          0.
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= counttype__last and 
+          indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= 1000 * (indextype__first - 
+          loop__1__i)))
+<S>  New H19:  loop__1__i >= - 1 and loop__1__i + 1 <= counttype__last and 
+          indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) = element(a, [loop__1__i + 1])) and ((
+          indextype__first < loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) = sum_between(a, indextype__first, loop__1__i) + 
+          element(a, [loop__1__i + 1])) and (indextype__first > loop__1__i + 1 
+          -> sum_between(a, indextype__first, loop__1__i + 1) >= 1000 * (
+          indextype__first - (loop__1__i + 1))))
+-S-  Applied substitution rule sumarray_rules(13).
+     This was achieved by replacing all occurrences of counttype__last by:
+          100.
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and indextype__first <= 
+          indextype__last and for_all(i___1 : integer, indextype__first <= 
+          i___1 and i___1 <= indextype__last -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (indextype__first = loop__1__i -> 
+          sum_between(a, indextype__first, loop__1__i) = element(a, [loop__1__i]
+          )) and ((indextype__first < loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) = sum_between(a, indextype__first, 
+          loop__1__i - 1) + element(a, [loop__1__i])) and (indextype__first > 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) >= 1000 * (
+          indextype__first - loop__1__i)))
+<S>  New H19:  loop__1__i >= - 1 and loop__1__i <= 99 and indextype__first <= 
+          indextype__last and for_all(i___1 : integer, indextype__first <= 
+          i___1 and i___1 <= indextype__last -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (indextype__first = loop__1__i + 1 -> 
+          sum_between(a, indextype__first, loop__1__i + 1) = element(a, [
+          loop__1__i + 1])) and ((indextype__first < loop__1__i + 1 -> 
+          sum_between(a, indextype__first, loop__1__i + 1) = sum_between(a, 
+          indextype__first, loop__1__i) + element(a, [loop__1__i + 1])) and (
+          indextype__first > loop__1__i + 1 -> sum_between(a, indextype__first, 
+          loop__1__i + 1) >= 1000 * (indextype__first - (loop__1__i + 1))))
+-S-  Applied substitution rule sumarray_rules(17).
+     This was achieved by replacing all occurrences of indextype__first by:
+          1.
+<S>  New H1:  sum = sum_between(a, 1, loop__1__i)
+<S>  New H6:  sum_between(a, 1, loop__1__i) >= sumtype__first
+<S>  New H7:  sum_between(a, 1, loop__1__i) <= sumtype__last
+<S>  New H8:  loop__1__i >= 1
+<S>  New H17:  loop__1__i >= 0
+<S>  New H20:  sum_between(a, 1, loop__1__i + 1) >= sumtype__first
+<S>  New H21:  sum_between(a, 1, loop__1__i + 1) <= sumtype__last
+<S>  New H3:  sum <= 1000 * loop__1__i
+<S>  New H4:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and 1 <= indextype__last 
+          and for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (1 = 
+          loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [loop__1__i])
+          ) and ((1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(
+          a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 > loop__1__i 
+          -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - loop__1__i)))
+<S>  New H19:  loop__1__i >= - 1 and loop__1__i <= 99 and 1 <= indextype__last 
+          and for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          loop__1__i = 0 -> sum_between(a, 1, loop__1__i + 1) = element(a, [
+          loop__1__i + 1])) and ((loop__1__i > 0 -> sum_between(a, 1, 
+          loop__1__i + 1) = sum_between(a, 1, loop__1__i) + element(a, [
+          loop__1__i + 1])) and (loop__1__i < 0 -> sum_between(a, 1, loop__1__i 
+          + 1) >= 1000 * (1 - (loop__1__i + 1))))
+<S>  New C1:  sum + element(a, [loop__1__i + 1]) = sum_between(a, 1, loop__1__i 
+          + 1)
+<S>  New C3:  sum + element(a, [loop__1__i + 1]) <= 1000 * (loop__1__i + 1)
+-S-  Applied substitution rule sumarray_rules(18).
+     This was achieved by replacing all occurrences of indextype__last by:
+          100.
+<S>  New H9:  loop__1__i <= 100
+<S>  New H12:  loop__1__i <> 100
+<S>  New H18:  loop__1__i <= 99
+<S>  New H4:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and for_all(i___1 : 
+          integer, 1 <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (1 = loop__1__i -> sum_between(a, 1, 
+          loop__1__i) = element(a, [loop__1__i])) and ((1 < loop__1__i -> 
+          sum_between(a, 1, loop__1__i) = sum_between(a, 1, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (1 > loop__1__i -> sum_between(a, 1, 
+          loop__1__i) >= 1000 * (1 - loop__1__i)))
+<S>  New H19:  loop__1__i >= - 1 and loop__1__i <= 99 and for_all(i___1 : 
+          integer, 1 <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (loop__1__i = 0 -> sum_between(a, 1, 
+          loop__1__i + 1) = element(a, [loop__1__i + 1])) and ((loop__1__i > 0 
+          -> sum_between(a, 1, loop__1__i + 1) = sum_between(a, 1, loop__1__i) 
+          + element(a, [loop__1__i + 1])) and (loop__1__i < 0 -> sum_between(a, 
+          1, loop__1__i + 1) >= 1000 * (1 - (loop__1__i + 1))))
+-S-  Applied substitution rule sumarray_rules(22).
+     This was achieved by replacing all occurrences of sumtype__first by:
+          0.
+<S>  New H13:  sum >= 0
+<S>  New H15:  sum + element(a, [loop__1__i + 1]) >= 0
+<S>  New H6:  sum_between(a, 1, loop__1__i) >= 0
+<S>  New H20:  sum_between(a, 1, loop__1__i + 1) >= 0
+-S-  Applied substitution rule sumarray_rules(23).
+     This was achieved by replacing all occurrences of sumtype__last by:
+          100000.
+<S>  New H14:  sum <= 100000
+<S>  New H16:  sum + element(a, [loop__1__i + 1]) <= 100000
+<S>  New H7:  sum_between(a, 1, loop__1__i) <= 100000
+<S>  New H21:  sum_between(a, 1, loop__1__i + 1) <= 100000
+%%%  Hypotheses H9 & H12 together imply that
+          loop__1__i < 100.
+     H9 & H12 have therefore been deleted and a new H22 added to this effect.
+***  Proved C2:  0 <= sum + element(a, [loop__1__i + 1])
+     using hypothesis H15.
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H13 (duplicate of H2).
+---  Eliminated hypothesis H22 (duplicate of H18).
+>>>  Using "A->B, A |- B" on H5, given H4, H17 & H22, we simplify the former to:
+     >>>  H5:  (1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [
+          loop__1__i])) and ((1 < loop__1__i -> sum_between(a, 1, loop__1__i) = 
+          sum_between(a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 
+          > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+          loop__1__i)))
+>>>  Using "A->B, A |- B" on H19, given H4, H8 & H18, we simplify the former to:
+     >>>  H19:  (loop__1__i = 0 -> sum_between(a, 1, loop__1__i + 1) = element(
+          a, [loop__1__i + 1])) and ((loop__1__i > 0 -> sum_between(a, 1, 
+          loop__1__i + 1) = sum_between(a, 1, loop__1__i) + element(a, [
+          loop__1__i + 1])) and (loop__1__i < 0 -> sum_between(a, 1, loop__1__i 
+          + 1) >= 1000 * (1 - (loop__1__i + 1))))
+---  Eliminated hypothesis H7 (redundant, given H1, H3 & H18).
+---  Eliminated hypothesis H14 (redundant, given H3 & H18).
+---  Eliminated hypothesis H17 (redundant, given H8).
+-S-  Eliminated hypothesis H1.
+     This was achieved by replacing all occurrences of sum by:
+          sum_between(a, 1, loop__1__i).
+<S>  New H2:  0 <= sum_between(a, 1, loop__1__i)
+<S>  New H3:  sum_between(a, 1, loop__1__i) <= 1000 * loop__1__i
+<S>  New H15:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) >= 0
+<S>  New H16:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) <= 
+          100000
+<S>  New C1:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) = 
+          sum_between(a, 1, loop__1__i + 1)
+<S>  New C3:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) <= 
+          1000 * (loop__1__i + 1)
+***  Proved C3:  sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1]) 
+          <= 1000 * (loop__1__i + 1)
+     via its standard form, which is:
+     Std.Fm C3:  element(a, [1 + loop__1__i]) + sum_between(a, 1, loop__1__i) 
+          <= 1000 + 1000 * loop__1__i
+     using hypotheses H3, H4, H17 & H18.
+>>>  Hypothesis H5 has now been split into two, giving:
+     >>>  H23:  1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [
+          loop__1__i])
+     >>>  H24:  (1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(
+          a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 > loop__1__i 
+          -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - loop__1__i))
+>>>  Hypothesis H19 has now been split into two, giving:
+     >>>  H25:  loop__1__i = 0 -> sum_between(a, 1, loop__1__i + 1) = element(
+          a, [loop__1__i + 1])
+     >>>  H26:  (loop__1__i > 0 -> sum_between(a, 1, loop__1__i + 1) = 
+          sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1])) and (
+          loop__1__i < 0 -> sum_between(a, 1, loop__1__i + 1) >= 1000 * (1 - (
+          loop__1__i + 1)))
+>>>  Hypothesis H24 has now been split into two, giving:
+     >>>  H27:  1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(
+          a, 1, loop__1__i - 1) + element(a, [loop__1__i])
+     >>>  H28:  1 > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+          loop__1__i)
+>>>  Hypothesis H26 has now been split into two, giving:
+     >>>  H29:  loop__1__i > 0 -> sum_between(a, 1, loop__1__i + 1) = 
+          sum_between(a, 1, loop__1__i) + element(a, [loop__1__i + 1])
+     >>>  H30:  loop__1__i < 0 -> sum_between(a, 1, loop__1__i + 1) >= 1000 * (
+          1 - (loop__1__i + 1))
+     +++  New H31:  integer__size >= 0
+     +++  New H32:  elementtype__size >= 0
+     +++  New H33:  counttype__size >= 0
+     +++  New H34:  indextype__size >= 0
+     +++  New H35:  sumtype__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_sumarray_6.  @@@@@@@@@@
+%%%  Simplified H4 on reading formula in, to give:
+     %%%  H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last)
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 
+          elementtype__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          elementtype__last) -> (indextype__first = loop__1__i -> sum_between(
+          a, indextype__first, loop__1__i) = element(a, [loop__1__i])) and ((
+          indextype__first < loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = sum_between(a, indextype__first, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (indextype__first > loop__1__i -> 
+          sum_between(a, indextype__first, loop__1__i) >= elementtype__last * (
+          indextype__first - loop__1__i)))
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H8)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H9)
+          .
+%%%  Simplified H13 on reading formula in, to give:
+     %%%  H13:  indextype__last >= counttype__first and indextype__last <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> elementtype__first <= element(a, [i___1]) and 
+          element(a, [i___1]) <= elementtype__last) -> (indextype__first = 
+          indextype__last -> sum_between(a, indextype__first, indextype__last) 
+          = element(a, [indextype__last])) and ((indextype__first < 
+          indextype__last -> sum_between(a, indextype__first, indextype__last) 
+          = sum_between(a, indextype__first, indextype__last - 1) + element(a, [
+          indextype__last])) and (indextype__first > indextype__last -> 
+          sum_between(a, indextype__first, indextype__last) >= 
+          elementtype__last * (indextype__first - indextype__last)))
+-S-  Applied substitution rule sumarray_rules(7).
+     This was achieved by replacing all occurrences of elementtype__first by:
+          0.
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= elementtype__last) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= elementtype__last * (
+          indextype__first - loop__1__i)))
+<S>  New H13:  indextype__last >= counttype__first and indextype__last <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= elementtype__last) -> (indextype__first = indextype__last -> 
+          sum_between(a, indextype__first, indextype__last) = element(a, [
+          indextype__last])) and ((indextype__first < indextype__last -> 
+          sum_between(a, indextype__first, indextype__last) = sum_between(a, 
+          indextype__first, indextype__last - 1) + element(a, [indextype__last])
+          ) and (indextype__first > indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) >= elementtype__last * (
+          indextype__first - indextype__last)))
+-S-  Applied substitution rule sumarray_rules(8).
+     This was achieved by replacing all occurrences of elementtype__last by:
+          1000.
+<S>  New H3:  sum <= 1000 * (loop__1__i - indextype__first + 1)
+<S>  New H4:  for_all(i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000)
+<S>  New H5:  loop__1__i >= counttype__first and loop__1__i <= counttype__last 
+          and indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= 1000 * (indextype__first - 
+          loop__1__i)))
+<S>  New H13:  indextype__last >= counttype__first and indextype__last <= 
+          counttype__last and indextype__first <= indextype__last and for_all(
+          i___1 : integer, indextype__first <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000) -> (indextype__first = indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) = element(a, [indextype__last])) 
+          and ((indextype__first < indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) = sum_between(a, indextype__first, 
+          indextype__last - 1) + element(a, [indextype__last])) and (
+          indextype__first > indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) >= 1000 * (indextype__first - 
+          indextype__last)))
+-S-  Applied substitution rule sumarray_rules(12).
+     This was achieved by replacing all occurrences of counttype__first by:
+          0.
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= counttype__last and 
+          indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = loop__1__i -> sum_between(a, indextype__first, 
+          loop__1__i) = element(a, [loop__1__i])) and ((indextype__first < 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) = 
+          sum_between(a, indextype__first, loop__1__i - 1) + element(a, [
+          loop__1__i])) and (indextype__first > loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) >= 1000 * (indextype__first - 
+          loop__1__i)))
+<S>  New H13:  indextype__last >= 0 and indextype__last <= counttype__last and 
+          indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) = element(a, [indextype__last])) 
+          and ((indextype__first < indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) = sum_between(a, indextype__first, 
+          indextype__last - 1) + element(a, [indextype__last])) and (
+          indextype__first > indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) >= 1000 * (indextype__first - 
+          indextype__last)))
+-S-  Applied substitution rule sumarray_rules(13).
+     This was achieved by replacing all occurrences of counttype__last by:
+          100.
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and indextype__first <= 
+          indextype__last and for_all(i___1 : integer, indextype__first <= 
+          i___1 and i___1 <= indextype__last -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (indextype__first = loop__1__i -> 
+          sum_between(a, indextype__first, loop__1__i) = element(a, [loop__1__i]
+          )) and ((indextype__first < loop__1__i -> sum_between(a, 
+          indextype__first, loop__1__i) = sum_between(a, indextype__first, 
+          loop__1__i - 1) + element(a, [loop__1__i])) and (indextype__first > 
+          loop__1__i -> sum_between(a, indextype__first, loop__1__i) >= 1000 * (
+          indextype__first - loop__1__i)))
+<S>  New H13:  indextype__last >= 0 and indextype__last <= 100 and 
+          indextype__first <= indextype__last and for_all(i___1 : integer, 
+          indextype__first <= i___1 and i___1 <= indextype__last -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (
+          indextype__first = indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) = element(a, [indextype__last])) 
+          and ((indextype__first < indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) = sum_between(a, indextype__first, 
+          indextype__last - 1) + element(a, [indextype__last])) and (
+          indextype__first > indextype__last -> sum_between(a, 
+          indextype__first, indextype__last) >= 1000 * (indextype__first - 
+          indextype__last)))
+-S-  Applied substitution rule sumarray_rules(17).
+     This was achieved by replacing all occurrences of indextype__first by:
+          1.
+<S>  New H1:  sum = sum_between(a, 1, loop__1__i)
+<S>  New H6:  sum_between(a, 1, loop__1__i) >= sumtype__first
+<S>  New H7:  sum_between(a, 1, loop__1__i) <= sumtype__last
+<S>  New H8:  loop__1__i >= 1
+<S>  New H14:  sum_between(a, 1, indextype__last) >= sumtype__first
+<S>  New H15:  sum_between(a, 1, indextype__last) <= sumtype__last
+<S>  New H3:  sum <= 1000 * loop__1__i
+<S>  New H4:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and 1 <= indextype__last 
+          and for_all(i___1 : integer, 1 <= i___1 and i___1 <= indextype__last 
+          -> 0 <= element(a, [i___1]) and element(a, [i___1]) <= 1000) -> (1 = 
+          loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [loop__1__i])
+          ) and ((1 < loop__1__i -> sum_between(a, 1, loop__1__i) = sum_between(
+          a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 > loop__1__i 
+          -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - loop__1__i)))
+<S>  New H13:  indextype__last >= 0 and indextype__last <= 100 and 1 <= 
+          indextype__last and for_all(i___1 : integer, 1 <= i___1 and i___1 <= 
+          indextype__last -> 0 <= element(a, [i___1]) and element(a, [i___1]) 
+          <= 1000) -> (1 = indextype__last -> sum_between(a, 1, indextype__last)
+           = element(a, [indextype__last])) and ((1 < indextype__last -> 
+          sum_between(a, 1, indextype__last) = sum_between(a, 1, 
+          indextype__last - 1) + element(a, [indextype__last])) and (1 > 
+          indextype__last -> sum_between(a, 1, indextype__last) >= 1000 * (1 - 
+          indextype__last)))
+<S>  New C1:  sum = sum_between(a, 1, indextype__last)
+-S-  Applied substitution rule sumarray_rules(18).
+     This was achieved by replacing all occurrences of indextype__last by:
+          100.
+<S>  New H9:  loop__1__i <= 100
+<S>  New H12:  loop__1__i = 100
+<S>  New H14:  sum_between(a, 1, 100) >= sumtype__first
+<S>  New H15:  sum_between(a, 1, 100) <= sumtype__last
+<S>  New H4:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000)
+<S>  New H5:  loop__1__i >= 0 and loop__1__i <= 100 and for_all(i___1 : 
+          integer, 1 <= i___1 and i___1 <= 100 -> 0 <= element(a, [i___1]) and 
+          element(a, [i___1]) <= 1000) -> (1 = loop__1__i -> sum_between(a, 1, 
+          loop__1__i) = element(a, [loop__1__i])) and ((1 < loop__1__i -> 
+          sum_between(a, 1, loop__1__i) = sum_between(a, 1, loop__1__i - 1) + 
+          element(a, [loop__1__i])) and (1 > loop__1__i -> sum_between(a, 1, 
+          loop__1__i) >= 1000 * (1 - loop__1__i)))
+<S>  New H13:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 100 -> 0 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 1000) -> sum_between(
+          a, 1, 100) = sum_between(a, 1, 99) + element(a, [100])
+<S>  New C1:  sum = sum_between(a, 1, 100)
+-S-  Applied substitution rule sumarray_rules(22).
+     This was achieved by replacing all occurrences of sumtype__first by:
+          0.
+<S>  New H6:  sum_between(a, 1, loop__1__i) >= 0
+<S>  New H14:  sum_between(a, 1, 100) >= 0
+-S-  Applied substitution rule sumarray_rules(23).
+     This was achieved by replacing all occurrences of sumtype__last by:
+          100000.
+<S>  New H7:  sum_between(a, 1, loop__1__i) <= 100000
+<S>  New H15:  sum_between(a, 1, 100) <= 100000
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+>>>  Using "A->B, A |- B" on H5, given H4, H8 & H9, we simplify the former to:
+     >>>  H5:  (1 = loop__1__i -> sum_between(a, 1, loop__1__i) = element(a, [
+          loop__1__i])) and ((1 < loop__1__i -> sum_between(a, 1, loop__1__i) = 
+          sum_between(a, 1, loop__1__i - 1) + element(a, [loop__1__i])) and (1 
+          > loop__1__i -> sum_between(a, 1, loop__1__i) >= 1000 * (1 - 
+          loop__1__i)))
+>>>  Using "A->B, A |- B" on H13, given H4, we simplify the former to:
+     >>>  H13:  sum_between(a, 1, 100) = sum_between(a, 1, 99) + element(a, [
+          100])
+---  Eliminated hypothesis H8 (redundant, given H12).
+---  Eliminated hypothesis H9 (redundant, given H12).
+-S-  Eliminated hypothesis H1.
+     This was achieved by replacing all occurrences of sum by:
+          sum_between(a, 1, loop__1__i).
+<S>  New H2:  0 <= sum_between(a, 1, loop__1__i)
+<S>  New H3:  sum_between(a, 1, loop__1__i) <= 1000 * loop__1__i
+<S>  New C1:  sum_between(a, 1, loop__1__i) = sum_between(a, 1, 100)
+-S-  Eliminated hypothesis H12.
+     This was achieved by replacing all occurrences of loop__1__i by:
+          100.
+<S>  New H6:  sum_between(a, 1, 100) >= 0
+<S>  New H7:  sum_between(a, 1, 100) <= 100000
+<S>  New H5:  sum_between(a, 1, 100) = sum_between(a, 1, 99) + element(a, [100])
+<S>  New H2:  0 <= sum_between(a, 1, 100)
+<S>  New H3:  sum_between(a, 1, 100) <= 100000
+<S>  New C1:  true
+***  Proved C1:  true
+***  PROVED VC.
+

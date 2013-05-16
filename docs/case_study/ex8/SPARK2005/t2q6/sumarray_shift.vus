@@ -1,0 +1,2 @@
+unit num,unit,ERRORs,WARNINGs,total,trivial,true,unproven,timeout,false,error,urules,exc. dir urules,exc. unit urules,exc. sys rules,parse tree,tx tree,alloced nodes,total time,proven time,av. proven time,max proven time,unproven time,av. unproven time,incon wo urules,incon w urules,incon urules,deriv urules,interdep urules,remarks
+1,sumarray_shift,0,0,2,0,2,0,0,0,0,0,0,0,0,1502,2170,14412,0.176,0.156,0.078,0.128,0.000,,,,,,,""

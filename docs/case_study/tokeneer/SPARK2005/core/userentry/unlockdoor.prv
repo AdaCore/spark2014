@@ -1,0 +1,21 @@
+---------------------------------------------
+-- Proof Review file for UserEntry.UnlockDoor
+---------------------------------------------
+
+-- procedure_unlockdoor_6.
+-- C1:    latch__islocked(latch__state) and not latch__islocked(latch__state__1)
+--           <-> prf_userentryunlockdoor .
+--
+-- procedure_unlockdoor_7.
+-- C1:    not prf_userentryunlockdoor .
+--
+-- procedure_unlockdoor_8.
+-- C1:    not prf_userentryunlockdoor .
+--
+-- These conclusions are effectively the definition of prf_userentryunlockdoor.
+-- It is true iff the latch state has just moved from locked to unlocked.
+-- Note that for VCs 7 and 8, the latch state has not changed, so the LHS has 
+-- simplified to false, leaving "not RHS".
+6
+7
+8

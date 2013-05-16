@@ -1,0 +1,17 @@
+           /*********************************************************/
+                           /*Proof Rule Declarations*/
+   /*Examiner Pro Edition, Version 11.0.0, Build Date 20120914, Build 25178 */
+             /*Copyright (C) 2012 Altran Praxis Limited, Bath, U.K.*/
+           /*********************************************************/
+
+
+                        /*DATE : 27-MAR-2013 10:45:47.05*/
+
+                             /*package_spec T2Q6*/
+
+
+rule_family t2q6_rules:
+     X      requires [X:any] &
+     X <= Y requires [X:ire, Y:ire] &
+     X >= Y requires [X:ire, Y:ire].
+
