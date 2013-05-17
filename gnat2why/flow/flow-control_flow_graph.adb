@@ -1507,7 +1507,6 @@ package body Flow.Control_Flow_Graph is
 
       In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
-
    begin
       --  A vertex for the actual call.
       FA.CFG.Add_Vertex
@@ -1532,8 +1531,8 @@ package body Flow.Control_Flow_Graph is
       --  We now build the connection map for this sequence.
       declare
          use Vertex_Vectors;
-         L             : constant List_Id := Parameter_Associations (N);
-         Combined_List : constant Vertex_Vectors.Vector := In_List & Out_List;
+         Combined_List : constant Vertex_Vectors.Vector :=
+           Vertex_Vectors.To_Vector (V, 1) & In_List & Out_List;
          Prev          : Flow_Graphs.Vertex_Id;
       begin
          Prev := Flow_Graphs.Null_Vertex;
@@ -1546,23 +1545,10 @@ package body Flow.Control_Flow_Graph is
          end loop;
 
          CM.Include
-           (Union_Id (L),
-            Graph_Connections'(Standard_Entry => Combined_List.First_Element,
-                               Standard_Exits => Vertex_Sets.To_Set
-                                 (Combined_List.Last_Element)));
+           (Union_Id (N),
+            Graph_Connections'(Standard_Entry => V,
+                               Standard_Exits => Vertex_Sets.To_Set (Prev)));
       end;
-
-      CM.Include
-        (Union_Id (N),
-         Graph_Connections'(Standard_Entry => V,
-                            Standard_Exits => CM.Element
-                              (Union_Id
-                                 (Parameter_Associations
-                                    (N))).Standard_Exits));
-
-      Linkup (FA.CFG,
-              V,
-              CM (Union_Id (Parameter_Associations (N))).Standard_Entry);
    end Do_Procedure_Call_Statement;
 
    ----------------------------------

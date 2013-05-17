@@ -1,0 +1,5 @@
+a73001i.adb:5:04: ineffective statement
+
+
+gnatprove: error during translation to intermediate language, aborting.
+
