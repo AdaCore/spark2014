@@ -1,72 +1,72 @@
 module Discrete_Base
   (* The module that is used as basis for all discrete types. It contains the
-     whole discrete theory, except the coerce_axiom which differs between
-     modular and non-modular types. *)
+    whole discrete theory, except the coerce_axiom which differs between
+    modular and non-modular types. *)
 
-   use import "int".Int
-   use import "_gnatprove_standard".Main
-   use        "_gnatprove_standard".Integer
+  use import "int".Int
+  use import "_gnatprove_standard".Main
+  use        "_gnatprove_standard".Integer
 
-   type t
+  type t
 
-   function attr__ATTRIBUTE_FIRST : int
+  function attr__ATTRIBUTE_FIRST : int
 
-   function attr__ATTRIBUTE_LAST : int
+  function attr__ATTRIBUTE_LAST : int
 
-   function attr__ATTRIBUTE_IMAGE int : __image
+  function attr__ATTRIBUTE_IMAGE int : __image
 
-   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-   function attr__ATTRIBUTE_VALUE __image : int
+  function attr__ATTRIBUTE_VALUE __image : int
 
-   val attr__ATTRIBUTE_VALUE_ (x : __image)  :int
+  val attr__ATTRIBUTE_VALUE_ (x : __image)  :int
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-   predicate in_range  (x : int) =
+  predicate in_range  (x : int) =
     ( attr__ATTRIBUTE_FIRST <= x <= attr__ATTRIBUTE_LAST )
 
-   function to_int t : int
+  function to_int t : int
 
-   function of_int int : t
+  function of_int int : t
 
-   val range_check_ (n : int) : int
+  val range_check_ (n : int) : int
     requires { in_range n }
     ensures { result = n }
 
-   predicate eq (x : t) (y : t) = ( to_int x = to_int y )
+  predicate eq (x : t) (y : t) = ( to_int x = to_int y )
 
-   axiom range_axiom :
+  axiom range_axiom :
     forall x : t. in_range (to_int x)
 
-   axiom inversion_axiom :
+  axiom inversion_axiom :
     forall x : t [to_int x].
     of_int (to_int (x)) = x
 
-   function bool_eq (x : int) (y : int) : bool =
+  function bool_eq (x : int) (y : int) : bool =
     if x = y then True else False
 
-   function dummy : t
+  function dummy : t
 end
 
 module Discrete
-   use import "int".Int
-   clone export Discrete_Base
+  use import "int".Int
+  clone export Discrete_Base
 
-   axiom coerce_axiom :
+  axiom coerce_axiom :
     forall x  : int [to_int (of_int x) | in_range x, of_int x].
-     in_range x -> to_int (of_int x) = x
+      in_range x -> to_int (of_int x) = x
 
 end
 
 module Modular
-   clone export Discrete_Base
+  clone export Discrete_Base
 
-   function attr__ATTRIBUTE_MODULUS : int
+  function attr__ATTRIBUTE_MODULUS : int
 
-   axiom coerce_axiom :
+  axiom coerce_axiom :
     forall x  : int [to_int (of_int x)].
-     to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
+      to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
 
 end
 
@@ -89,32 +89,32 @@ module Floating_Point
   function of_real real : t
 
   val range_check_ (n : real)  :real
-   requires { in_range n }
-   ensures { result = n }
+    requires { in_range n }
+    ensures { result = n }
 
   predicate eq  (x : t) (y : t) = (to_real x = to_real y)
 
   axiom range_axiom :
-   forall x  : t.  in_range (to_real x)
+    forall x  : t.  in_range (to_real x)
 
   axiom coerce_axiom :
-   forall x  : real [to_real (of_real x) | in_range x, of_real x].
-    in_range x -> to_real (of_real x) = x
+    forall x  : real [to_real (of_real x) | in_range x, of_real x].
+      in_range x -> to_real (of_real x) = x
 
   axiom inversion_axiom :
-   forall x : t [to_real x].
-    of_real ( to_real(x) ) = x
+    forall x : t [to_real x].
+      of_real ( to_real(x) ) = x
 
   function bool_eq (x : real) (y : real) : bool =
     if x = y then True else False
 
-   function attr__ATTRIBUTE_IMAGE real : __image
+  function attr__ATTRIBUTE_IMAGE real : __image
 
-   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-   function attr__ATTRIBUTE_VALUE __image : real
+  function attr__ATTRIBUTE_VALUE __image : real
 
-   val attr__ATTRIBUTE_VALUE_ (x : __image) : real
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : real
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
@@ -143,19 +143,19 @@ module Index_Type
   function mk int int : t
 
   axiom range_axiom_first :
-   forall a : t [first a].
-    to_int (first a) <= to_int (last a) ->
-      in_range (to_int (first a))
+    forall a : t [first a].
+      to_int (first a) <= to_int (last a) ->
+        in_range (to_int (first a))
 
   axiom range_axiom_last :
-   forall a : t [last a].
-    to_int (first a) <= to_int (last a) ->
-      in_range (to_int (last a))
+    forall a : t [last a].
+      to_int (first a) <= to_int (last a) ->
+        in_range (to_int (last a))
 
   (* The range check that is required by conversion to an unconstrained array.
      See RM 3.6.2(4-6) and 4.6(38) *)
   predicate range_check (low : int) (high : int) =
-       in_range_base low /\ in_range_base high /\
+    in_range_base low /\ in_range_base high /\
        (high >= low -> (in_range low /\ in_range high))
 
 end
@@ -182,28 +182,26 @@ module Unconstr_Array
   type __t =
     { elts : (Array__1.map component_type); offset : int; rt : I1.t }
 
- function to_array (a : __t) : (Array__1.t component_type) =
-  { Array__1.elts   = a.elts;
-    Array__1.first  = to_int (I1.first a.rt);
-    Array__1.last   = to_int (I1.last a.rt);
-    Array__1.offset = a.offset;
-  }
+  function to_array (a : __t) : (Array__1.t component_type) =
+    { Array__1.elts   = a.elts;
+      Array__1.first  = to_int (I1.first a.rt);
+      Array__1.last   = to_int (I1.last a.rt);
+      Array__1.offset = a.offset;
+    }
 
- function of_array (a : Array__1.t component_type) : __t =
-  { elts   = a.Array__1.elts;
-    offset = a.Array__1.offset;
-    rt     = I1.mk a.Array__1.first a.Array__1.last
-  }
+  function of_array (a : Array__1.t component_type) : __t =
+    { elts   = a.Array__1.elts;
+      offset = a.Array__1.offset;
+      rt     = I1.mk a.Array__1.first a.Array__1.last
+    }
 
   val range_check_ (a : Array__1.t component_type) : Array__1.t component_type
-   requires {
-    I1.range_check a.Array__1.first a.Array__1.last
-   }
-   ensures { result = a }
+    requires { I1.range_check a.Array__1.first a.Array__1.last }
+    ensures { result = a }
 
- function bool_eq (x y : Array__1.t component_type) : bool = Array__1.bool_eq x y
+  function bool_eq (x y : Array__1.t component_type) : bool = Array__1.bool_eq x y
 
- function dummy : __t
+  function dummy : __t
 end
 
 
@@ -244,34 +242,34 @@ module Unconstr_Array_2
       rt_2     : I2.t
     }
 
- function to_array (a : __t) : (Array__2.t component_type) =
-  { Array__2.elts     = a.elts;
-    Array__2.first    = to_int (I1.first a.rt);
-    Array__2.last     = to_int (I1.last a.rt);
-    Array__2.offset   = a.offset;
-    Array__2.first_2  = to_int_2 (I2.first a.rt_2);
-    Array__2.last_2   = to_int_2 (I2.last a.rt_2);
-    Array__2.offset_2 = a.offset_2;
-  }
+  function to_array (a : __t) : (Array__2.t component_type) =
+    { Array__2.elts     = a.elts;
+     Array__2.first    = to_int (I1.first a.rt);
+     Array__2.last     = to_int (I1.last a.rt);
+     Array__2.offset   = a.offset;
+     Array__2.first_2  = to_int_2 (I2.first a.rt_2);
+     Array__2.last_2   = to_int_2 (I2.last a.rt_2);
+     Array__2.offset_2 = a.offset_2;
+    }
 
- function of_array (a : Array__2.t component_type) : __t =
-  { elts     = a.Array__2.elts;
-    offset   = a.Array__2.offset;
-    rt       = I1.mk a.Array__2.first a.Array__2.last;
-    offset_2 = a.Array__2.offset_2;
-    rt_2     = I2.mk a.Array__2.first_2 a.Array__2.last_2
-  }
+  function of_array (a : Array__2.t component_type) : __t =
+    { elts     = a.Array__2.elts;
+      offset   = a.Array__2.offset;
+      rt       = I1.mk a.Array__2.first a.Array__2.last;
+      offset_2 = a.Array__2.offset_2;
+      rt_2     = I2.mk a.Array__2.first_2 a.Array__2.last_2
+    }
 
   val range_check_ (a : Array__2.t component_type) : Array__2.t component_type
-   requires {
+    requires {
       I1.range_check a.Array__2.first a.Array__2.last /\
       I2.range_check a.Array__2.first_2 a.Array__2.last_2
-   }
-   ensures { result = a }
+    }
+    ensures { result = a }
 
- function bool_eq (x y : Array__2.t component_type) : bool = Array__2.bool_eq x y
+  function bool_eq (x y : Array__2.t component_type) : bool = Array__2.bool_eq x y
 
- function dummy : __t
+  function dummy : __t
 end
 
 module Unconstr_Array_3
@@ -325,28 +323,28 @@ module Unconstr_Array_3
       rt_3     : I3.t
     }
 
- function to_array (a : __t) : (Array__3.t component_type) =
-  { Array__3.elts     = a.elts;
-    Array__3.first    = to_int (I1.first a.rt);
-    Array__3.last     = to_int (I1.last a.rt);
-    Array__3.offset   = a.offset;
-    Array__3.first_2  = to_int_2 (I2.first a.rt_2);
-    Array__3.last_2   = to_int_2 (I2.last a.rt_2);
-    Array__3.offset_2 = a.offset_2;
-    Array__3.first_3  = to_int_3 (I3.first a.rt_3);
-    Array__3.last_3   = to_int_3 (I3.last a.rt_3);
-    Array__3.offset_3 = a.offset_3;
-  }
+  function to_array (a : __t) : (Array__3.t component_type) =
+    { Array__3.elts     = a.elts;
+      Array__3.first    = to_int (I1.first a.rt);
+      Array__3.last     = to_int (I1.last a.rt);
+      Array__3.offset   = a.offset;
+      Array__3.first_2  = to_int_2 (I2.first a.rt_2);
+      Array__3.last_2   = to_int_2 (I2.last a.rt_2);
+      Array__3.offset_2 = a.offset_2;
+      Array__3.first_3  = to_int_3 (I3.first a.rt_3);
+      Array__3.last_3   = to_int_3 (I3.last a.rt_3);
+      Array__3.offset_3 = a.offset_3;
+    }
 
- function of_array (a : Array__3.t component_type) : __t =
-  { elts     = a.Array__3.elts;
-    offset   = a.Array__3.offset;
-    rt       = I1.mk a.Array__3.first a.Array__3.last;
-    offset_2 = a.Array__3.offset_2;
-    rt_2     = I2.mk a.Array__3.first_2 a.Array__3.last_2;
-    offset_3 = a.Array__3.offset_3;
-    rt_3     = I3.mk a.Array__3.first_3 a.Array__3.last_3
-  }
+  function of_array (a : Array__3.t component_type) : __t =
+    { elts     = a.Array__3.elts;
+      offset   = a.Array__3.offset;
+      rt       = I1.mk a.Array__3.first a.Array__3.last;
+      offset_2 = a.Array__3.offset_2;
+      rt_2     = I2.mk a.Array__3.first_2 a.Array__3.last_2;
+      offset_3 = a.Array__3.offset_3;
+      rt_3     = I3.mk a.Array__3.first_3 a.Array__3.last_3
+    }
 
   val range_check_ (a : Array__3.t component_type) : Array__3.t component_type
    requires {
@@ -355,11 +353,11 @@ module Unconstr_Array_3
       I3.range_check a.Array__3.first_3 a.Array__3.last_3
    }
 
-   ensures { result = a }
+  ensures { result = a }
 
- function bool_eq (x y : Array__3.t component_type) : bool = Array__3.bool_eq x y
+  function bool_eq (x y : Array__3.t component_type) : bool = Array__3.bool_eq x y
 
- function dummy : __t
+  function dummy : __t
 end
 
 module Unconstr_Array_4
@@ -426,78 +424,78 @@ module Unconstr_Array_4
       rt_4     : I4.t
     }
 
- function to_array (a : __t) : (Array__4.t component_type) =
-  { Array__4.elts     = a.elts;
-    Array__4.first    = to_int (I1.first a.rt);
-    Array__4.last     = to_int (I1.last a.rt);
-    Array__4.offset   = a.offset;
-    Array__4.first_2  = to_int_2 (I2.first a.rt_2);
-    Array__4.last_2   = to_int_2 (I2.last a.rt_2);
-    Array__4.offset_2 = a.offset_2;
-    Array__4.first_3  = to_int_3 (I3.first a.rt_3);
-    Array__4.last_3   = to_int_3 (I3.last a.rt_3);
-    Array__4.offset_3 = a.offset_3;
-    Array__4.first_4  = to_int_4 (I4.first a.rt_4);
-    Array__4.last_4   = to_int_4 (I4.last a.rt_4);
-    Array__4.offset_4 = a.offset_4;
-  }
+  function to_array (a : __t) : (Array__4.t component_type) =
+    { Array__4.elts     = a.elts;
+      Array__4.first    = to_int (I1.first a.rt);
+      Array__4.last     = to_int (I1.last a.rt);
+      Array__4.offset   = a.offset;
+      Array__4.first_2  = to_int_2 (I2.first a.rt_2);
+      Array__4.last_2   = to_int_2 (I2.last a.rt_2);
+      Array__4.offset_2 = a.offset_2;
+      Array__4.first_3  = to_int_3 (I3.first a.rt_3);
+      Array__4.last_3   = to_int_3 (I3.last a.rt_3);
+      Array__4.offset_3 = a.offset_3;
+      Array__4.first_4  = to_int_4 (I4.first a.rt_4);
+      Array__4.last_4   = to_int_4 (I4.last a.rt_4);
+      Array__4.offset_4 = a.offset_4;
+    }
 
- function of_array (a : Array__4.t component_type) : __t =
-  { elts     = a.Array__4.elts;
-    offset   = a.Array__4.offset;
-    rt       = I1.mk a.Array__4.first a.Array__4.last;
-    offset_2 = a.Array__4.offset_2;
-    rt_2     = I2.mk a.Array__4.first_2 a.Array__4.last_2;
-    offset_3 = a.Array__4.offset_3;
-    rt_3     = I3.mk a.Array__4.first_3 a.Array__4.last_3;
-    offset_4 = a.Array__4.offset_4;
-    rt_4     = I4.mk a.Array__4.first_4 a.Array__4.last_4;
-  }
+  function of_array (a : Array__4.t component_type) : __t =
+    { elts     = a.Array__4.elts;
+      offset   = a.Array__4.offset;
+      rt       = I1.mk a.Array__4.first a.Array__4.last;
+      offset_2 = a.Array__4.offset_2;
+      rt_2     = I2.mk a.Array__4.first_2 a.Array__4.last_2;
+      offset_3 = a.Array__4.offset_3;
+      rt_3     = I3.mk a.Array__4.first_3 a.Array__4.last_3;
+      offset_4 = a.Array__4.offset_4;
+      rt_4     = I4.mk a.Array__4.first_4 a.Array__4.last_4;
+    }
 
   val range_check_ (a : Array__4.t component_type) : Array__4.t component_type
-   requires {
-      I1.range_check a.Array__4.first a.Array__4.last /\
-      I2.range_check a.Array__4.first_2 a.Array__4.last_2 /\
-      I3.range_check a.Array__4.first_3 a.Array__4.last_3 /\
-      I4.range_check a.Array__4.first_4 a.Array__4.last_4
-   }
+    requires {
+       I1.range_check a.Array__4.first a.Array__4.last /\
+       I2.range_check a.Array__4.first_2 a.Array__4.last_2 /\
+       I3.range_check a.Array__4.first_3 a.Array__4.last_3 /\
+       I4.range_check a.Array__4.first_4 a.Array__4.last_4
+    }
 
- function bool_eq (x y : Array__4.t component_type) : bool = Array__4.bool_eq x y
+  function bool_eq (x y : Array__4.t component_type) : bool = Array__4.bool_eq x y
 
- function dummy : __t
+  function dummy : __t
 end
 
 module Constr_Array
   use import int.Int
   use "_gnatprove_standard".Array__1
 
- type component_type
+  type component_type
 
- function attr__ATTRIBUTE_FIRST : int
- function attr__ATTRIBUTE_LAST  : int
+  function attr__ATTRIBUTE_FIRST : int
+  function attr__ATTRIBUTE_LAST  : int
 
- type __t = {
-   elts   : Array__1.map component_type;
-   offset : int;
- }
-
- function to_array  (a : __t) : Array__1.t component_type =
-  { Array__1.elts = a.elts;
-    Array__1.first = attr__ATTRIBUTE_FIRST;
-    Array__1.last = attr__ATTRIBUTE_LAST;
-    Array__1.offset = a.offset;
+  type __t = {
+    elts   : Array__1.map component_type;
+    offset : int;
   }
 
- function of_array  (a : Array__1.t component_type) : __t =
-  { elts     = a.Array__1.elts;
-    offset   = a.Array__1.offset;
-  }
+  function to_array  (a : __t) : Array__1.t component_type =
+    { Array__1.elts = a.elts;
+      Array__1.first = attr__ATTRIBUTE_FIRST;
+      Array__1.last = attr__ATTRIBUTE_LAST;
+      Array__1.offset = a.offset;
+    }
 
- function bool_eq (x y : Array__1.t component_type) : bool = Array__1.bool_eq x y
+  function of_array  (a : Array__1.t component_type) : __t =
+    { elts     = a.Array__1.elts;
+      offset   = a.Array__1.offset;
+    }
 
- function dummy : __t
+  function bool_eq (x y : Array__1.t component_type) : bool = Array__1.bool_eq x y
 
- val range_check_ (a : Array__1.t component_type) : Array__1.t component_type
+  function dummy : __t
+
+  val range_check_ (a : Array__1.t component_type) : Array__1.t component_type
     requires {
       Array__1.attr__ATTRIBUTE_LENGTH a =
         (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
@@ -509,174 +507,174 @@ module Constr_Array_2
   use import int.Int
   use "_gnatprove_standard".Array__2
 
- type component_type
+  type component_type
 
- function attr__ATTRIBUTE_FIRST : int
- function attr__ATTRIBUTE_LAST  : int
+  function attr__ATTRIBUTE_FIRST : int
+  function attr__ATTRIBUTE_LAST  : int
 
- function attr__ATTRIBUTE_FIRST_2 : int
- function attr__ATTRIBUTE_LAST_2  : int
+  function attr__ATTRIBUTE_FIRST_2 : int
+  function attr__ATTRIBUTE_LAST_2  : int
 
- type __t = { elts : Array__2.map component_type; offset : int; offset_2 : int }
+  type __t = { elts : Array__2.map component_type; offset : int; offset_2 : int }
 
- function to_array  (a : __t) : Array__2.t component_type =
-  { Array__2.elts = a.elts;
-    Array__2.first = attr__ATTRIBUTE_FIRST;
-    Array__2.last = attr__ATTRIBUTE_LAST;
-    Array__2.offset = a.offset;
-    Array__2.first_2 = attr__ATTRIBUTE_FIRST_2;
-    Array__2.last_2 = attr__ATTRIBUTE_LAST_2;
-    Array__2.offset_2 = a.offset_2
-  }
-
- function of_array  (a : Array__2.t component_type) : __t =
-  { elts     = a.Array__2.elts;
-    offset   = a.Array__2.offset;
-    offset_2 = a.Array__2.offset_2
-  }
-
- val range_check_ (a : Array__2.t component_type) : Array__2.t component_type
-    requires {
-      Array__2.attr__ATTRIBUTE_LENGTH a =
-        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
-      /\
-      Array__2.attr__ATTRIBUTE_LENGTH_2 a =
-        (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+  function to_array  (a : __t) : Array__2.t component_type =
+    { Array__2.elts = a.elts;
+      Array__2.first = attr__ATTRIBUTE_FIRST;
+      Array__2.last = attr__ATTRIBUTE_LAST;
+      Array__2.offset = a.offset;
+      Array__2.first_2 = attr__ATTRIBUTE_FIRST_2;
+      Array__2.last_2 = attr__ATTRIBUTE_LAST_2;
+      Array__2.offset_2 = a.offset_2
     }
-    ensures { result = a }
 
- function bool_eq (x y : Array__2.t component_type) : bool = Array__2.bool_eq x y
+  function of_array  (a : Array__2.t component_type) : __t =
+    { elts     = a.Array__2.elts;
+      offset   = a.Array__2.offset;
+      offset_2 = a.Array__2.offset_2
+    }
 
- function dummy : __t
+  val range_check_ (a : Array__2.t component_type) : Array__2.t component_type
+     requires {
+       Array__2.attr__ATTRIBUTE_LENGTH a =
+         (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+       /\
+       Array__2.attr__ATTRIBUTE_LENGTH_2 a =
+         (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+     }
+     ensures { result = a }
+
+  function bool_eq (x y : Array__2.t component_type) : bool = Array__2.bool_eq x y
+
+  function dummy : __t
 end
 
 module Constr_Array_3
   use import int.Int
   use "_gnatprove_standard".Array__3
 
- type component_type
+  type component_type
 
- function attr__ATTRIBUTE_FIRST : int
- function attr__ATTRIBUTE_LAST  : int
+  function attr__ATTRIBUTE_FIRST : int
+  function attr__ATTRIBUTE_LAST  : int
 
- function attr__ATTRIBUTE_FIRST_2 : int
- function attr__ATTRIBUTE_LAST_2  : int
+  function attr__ATTRIBUTE_FIRST_2 : int
+  function attr__ATTRIBUTE_LAST_2  : int
 
- function attr__ATTRIBUTE_FIRST_3 : int
- function attr__ATTRIBUTE_LAST_3  : int
+  function attr__ATTRIBUTE_FIRST_3 : int
+  function attr__ATTRIBUTE_LAST_3  : int
 
- type __t = {
-    elts     : Array__3.map component_type;
-    offset   : int;
-    offset_2 : int;
-    offset_3 : int
- }
-
- function to_array  (a : __t) : Array__3.t component_type =
-  { Array__3.elts = a.elts;
-    Array__3.first = attr__ATTRIBUTE_FIRST;
-    Array__3.last = attr__ATTRIBUTE_LAST;
-    Array__3.offset = a.offset;
-    Array__3.first_2 = attr__ATTRIBUTE_FIRST_2;
-    Array__3.last_2 = attr__ATTRIBUTE_LAST_2;
-    Array__3.offset_2 = a.offset_2;
-    Array__3.first_3 = attr__ATTRIBUTE_FIRST_3;
-    Array__3.last_3 = attr__ATTRIBUTE_LAST_3;
-    Array__3.offset_3 = a.offset_3
+  type __t = {
+     elts     : Array__3.map component_type;
+     offset   : int;
+     offset_2 : int;
+     offset_3 : int
   }
 
- function of_array  (a : Array__3.t component_type) : __t =
-  { elts     = a.Array__3.elts;
-    offset   = a.Array__3.offset;
-    offset_2 = a.Array__3.offset_2;
-    offset_3 = a.Array__3.offset_3
-  }
-
- val range_check_ (a : Array__3.t component_type) : Array__3.t component_type
-    requires {
-      Array__3.attr__ATTRIBUTE_LENGTH a =
-        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
-      /\
-      Array__3.attr__ATTRIBUTE_LENGTH_2 a =
-        (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
-      /\
-      Array__3.attr__ATTRIBUTE_LENGTH_3 a =
-        (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
+  function to_array  (a : __t) : Array__3.t component_type =
+    { Array__3.elts = a.elts;
+      Array__3.first = attr__ATTRIBUTE_FIRST;
+      Array__3.last = attr__ATTRIBUTE_LAST;
+      Array__3.offset = a.offset;
+      Array__3.first_2 = attr__ATTRIBUTE_FIRST_2;
+      Array__3.last_2 = attr__ATTRIBUTE_LAST_2;
+      Array__3.offset_2 = a.offset_2;
+      Array__3.first_3 = attr__ATTRIBUTE_FIRST_3;
+      Array__3.last_3 = attr__ATTRIBUTE_LAST_3;
+      Array__3.offset_3 = a.offset_3
     }
-    ensures { result = a }
 
- function bool_eq (x y : Array__3.t component_type) : bool = Array__3.bool_eq x y
+  function of_array  (a : Array__3.t component_type) : __t =
+    { elts     = a.Array__3.elts;
+      offset   = a.Array__3.offset;
+      offset_2 = a.Array__3.offset_2;
+      offset_3 = a.Array__3.offset_3
+    }
 
- function dummy : __t
+  val range_check_ (a : Array__3.t component_type) : Array__3.t component_type
+     requires {
+       Array__3.attr__ATTRIBUTE_LENGTH a =
+         (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+       /\
+       Array__3.attr__ATTRIBUTE_LENGTH_2 a =
+         (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+       /\
+       Array__3.attr__ATTRIBUTE_LENGTH_3 a =
+         (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
+     }
+     ensures { result = a }
+
+  function bool_eq (x y : Array__3.t component_type) : bool = Array__3.bool_eq x y
+
+  function dummy : __t
 end
 
 module Constr_Array_4
   use import int.Int
   use "_gnatprove_standard".Array__4
 
- type component_type
+  type component_type
 
- function attr__ATTRIBUTE_FIRST : int
- function attr__ATTRIBUTE_LAST  : int
+  function attr__ATTRIBUTE_FIRST : int
+  function attr__ATTRIBUTE_LAST  : int
 
- function attr__ATTRIBUTE_FIRST_2 : int
- function attr__ATTRIBUTE_LAST_2  : int
+  function attr__ATTRIBUTE_FIRST_2 : int
+  function attr__ATTRIBUTE_LAST_2  : int
 
- function attr__ATTRIBUTE_FIRST_3 : int
- function attr__ATTRIBUTE_LAST_3  : int
+  function attr__ATTRIBUTE_FIRST_3 : int
+  function attr__ATTRIBUTE_LAST_3  : int
 
- function attr__ATTRIBUTE_FIRST_4 : int
- function attr__ATTRIBUTE_LAST_4  : int
+  function attr__ATTRIBUTE_FIRST_4 : int
+  function attr__ATTRIBUTE_LAST_4  : int
 
- type __t = {
-    elts     : Array__4.map component_type;
-    offset   : int;
-    offset_2 : int;
-    offset_3 : int;
-    offset_4 : int
- }
-
- function to_array  (a : __t) : Array__4.t component_type =
-  { Array__4.elts = a.elts;
-    Array__4.first = attr__ATTRIBUTE_FIRST;
-    Array__4.last = attr__ATTRIBUTE_LAST;
-    Array__4.offset = a.offset;
-    Array__4.first_2 = attr__ATTRIBUTE_FIRST_2;
-    Array__4.last_2 = attr__ATTRIBUTE_LAST_2;
-    Array__4.offset_2 = a.offset_2;
-    Array__4.first_3 = attr__ATTRIBUTE_FIRST_3;
-    Array__4.last_3 = attr__ATTRIBUTE_LAST_3;
-    Array__4.offset_3 = a.offset_3;
-    Array__4.first_4 = attr__ATTRIBUTE_FIRST_4;
-    Array__4.last_4 = attr__ATTRIBUTE_LAST_4;
-    Array__4.offset_4 = a.offset_4
+  type __t = {
+     elts     : Array__4.map component_type;
+     offset   : int;
+     offset_2 : int;
+     offset_3 : int;
+     offset_4 : int
   }
 
- function of_array  (a : Array__4.t component_type) : __t =
-  { elts     = a.Array__4.elts;
-    offset   = a.Array__4.offset;
-    offset_2 = a.Array__4.offset_2;
-    offset_3 = a.Array__4.offset_3;
-    offset_4 = a.Array__4.offset_4
-  }
-
- val range_check_ (a : Array__4.t component_type) : Array__4.t component_type
-    requires {
-      Array__4.attr__ATTRIBUTE_LENGTH a =
-        (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
-      /\
-      Array__4.attr__ATTRIBUTE_LENGTH_2 a =
-        (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
-      /\
-      Array__4.attr__ATTRIBUTE_LENGTH_3 a =
-        (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
-      /\
-      Array__4.attr__ATTRIBUTE_LENGTH_4 a =
-        (if attr__ATTRIBUTE_LAST_4 >= attr__ATTRIBUTE_FIRST_4 then attr__ATTRIBUTE_LAST_4 - attr__ATTRIBUTE_FIRST_4 + 1 else 0)
+  function to_array  (a : __t) : Array__4.t component_type =
+    { Array__4.elts = a.elts;
+      Array__4.first = attr__ATTRIBUTE_FIRST;
+      Array__4.last = attr__ATTRIBUTE_LAST;
+      Array__4.offset = a.offset;
+      Array__4.first_2 = attr__ATTRIBUTE_FIRST_2;
+      Array__4.last_2 = attr__ATTRIBUTE_LAST_2;
+      Array__4.offset_2 = a.offset_2;
+      Array__4.first_3 = attr__ATTRIBUTE_FIRST_3;
+      Array__4.last_3 = attr__ATTRIBUTE_LAST_3;
+      Array__4.offset_3 = a.offset_3;
+      Array__4.first_4 = attr__ATTRIBUTE_FIRST_4;
+      Array__4.last_4 = attr__ATTRIBUTE_LAST_4;
+      Array__4.offset_4 = a.offset_4
     }
-    ensures { result = a }
 
- function bool_eq (x y : Array__4.t component_type) : bool = Array__4.bool_eq x y
+  function of_array  (a : Array__4.t component_type) : __t =
+    { elts     = a.Array__4.elts;
+      offset   = a.Array__4.offset;
+      offset_2 = a.Array__4.offset_2;
+      offset_3 = a.Array__4.offset_3;
+      offset_4 = a.Array__4.offset_4
+    }
 
- function dummy : __t
+  val range_check_ (a : Array__4.t component_type) : Array__4.t component_type
+     requires {
+       Array__4.attr__ATTRIBUTE_LENGTH a =
+         (if attr__ATTRIBUTE_LAST >= attr__ATTRIBUTE_FIRST then attr__ATTRIBUTE_LAST - attr__ATTRIBUTE_FIRST + 1 else 0)
+       /\
+       Array__4.attr__ATTRIBUTE_LENGTH_2 a =
+         (if attr__ATTRIBUTE_LAST_2 >= attr__ATTRIBUTE_FIRST_2 then attr__ATTRIBUTE_LAST_2 - attr__ATTRIBUTE_FIRST_2 + 1 else 0)
+       /\
+       Array__4.attr__ATTRIBUTE_LENGTH_3 a =
+         (if attr__ATTRIBUTE_LAST_3 >= attr__ATTRIBUTE_FIRST_3 then attr__ATTRIBUTE_LAST_3 - attr__ATTRIBUTE_FIRST_3 + 1 else 0)
+       /\
+       Array__4.attr__ATTRIBUTE_LENGTH_4 a =
+         (if attr__ATTRIBUTE_LAST_4 >= attr__ATTRIBUTE_FIRST_4 then attr__ATTRIBUTE_LAST_4 - attr__ATTRIBUTE_FIRST_4 + 1 else 0)
+     }
+     ensures { result = a }
+
+  function bool_eq (x y : Array__4.t component_type) : bool = Array__4.bool_eq x y
+
+  function dummy : __t
 end
