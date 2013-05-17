@@ -1,0 +1,5 @@
+c43209a.adb:13:04: ineffective statement
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

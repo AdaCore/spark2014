@@ -79,6 +79,10 @@ package body Flow.Utility is
    --  Walk the Contract node attached to E and return the pragma
    --  matching Name.
 
+   function Filter_Out_Constants (S : Flow_Id_Sets.Set)
+                                  return Flow_Id_Sets.Set;
+   --  Remove all flow_ids referencing constants from the set.
+
    ---------------------------
    -- All_Record_Components --
    ---------------------------
@@ -211,6 +215,32 @@ package body Flow.Utility is
             raise Program_Error;
       end case;
    end Find_Contracts;
+
+   --------------------------
+   -- Filter_Out_Constants --
+   --------------------------
+
+   function Filter_Out_Constants (S : Flow_Id_Sets.Set)
+                                  return Flow_Id_Sets.Set
+   is
+      R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for F of S loop
+         case F.Kind is
+            when Direct_Mapping | Record_Field =>
+               pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
+               if Ekind (Get_Direct_Mapping_Id (F)) = E_Constant then
+                  null;
+               else
+                  R.Include (F);
+               end if;
+
+            when Magic_String | Null_Value =>
+               R.Include (F);
+         end case;
+      end loop;
+      return R;
+   end Filter_Out_Constants;
 
    ----------------------------------------------------------------------
    --  Package
@@ -357,7 +387,7 @@ package body Flow.Utility is
       procedure Traverse is new Traverse_Proc (Process => Proc);
    begin
       Traverse (N);
-      return VS;
+      return Filter_Out_Constants (VS);
    end Get_Variable_Set;
 
    function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set is
