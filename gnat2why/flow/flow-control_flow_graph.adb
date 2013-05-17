@@ -1879,6 +1879,9 @@ package body Flow.Control_Flow_Graph is
               N_Implicit_Label_Declaration      |
               N_Subprogram_Body                 |
               N_Subprogram_Declaration          |
+              N_Package_Declaration             |  -- !!! remove in M314-014
+              N_Generic_Subprogram_Declaration  |
+              N_Generic_Package_Declaration     |
               N_Representation_Clause           |
               N_Package_Body_Stub               |
               N_Subprogram_Body_Stub            |
