@@ -650,13 +650,12 @@ the tools. An unsound definition may lead to an unsound proof which is of no use
 Ideally any definition will be checked for soundness by the external proof
 tools.
 
-If a function can be specified in |SPARK|, then its specification can be recast
-as the expression of an expression function, without needing to provide
-an implementation for that specification.
-This means the use of ghost functions can avoid the need to provide implementations
-for functions used only in proof contexts:
-the use of an expression function in this way may not give the most efficient
-implementation but if the function is a ghost function it should not matter.
+If the postcondition of a function can be specified in |SPARK|, then the
+postcondition may be recast as the expression of an expression function making
+it both the postcondition and the implementation of the function. This is
+useful, particularly for ghost functions, as the expression which acts as the
+postcondition may not give the most efficient implementation but if the function
+is a ghost function this may not matter.
 
 *Further Ghost entities are to be added in future drafts of this document.*
 

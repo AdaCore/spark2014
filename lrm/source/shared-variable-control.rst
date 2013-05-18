@@ -20,5 +20,8 @@ and objects in |SPARK|:
 #. Neither a discriminated type nor an object of such a type shall be volatile.
 
 #. Neither a tagged type nor an object of such a type shall be volatile.
+
+#. A volatile variable shall not be declared within the body of a function,
+   not even within subprograms and blocks nested inside the function.
    
 

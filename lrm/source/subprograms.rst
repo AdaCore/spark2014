@@ -77,6 +77,9 @@ are in |SPARK|.
 
 .. todo:: Think about Pre'Class and Post'Class.
           To be completed in the Milestone 3 version of this document.
+          
+For an ``expression_function_declaration`` without an explicit postcondition the
+expression implmenting the function acts as its postcondition.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
