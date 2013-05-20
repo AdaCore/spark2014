@@ -4193,8 +4193,7 @@ package body Gnat2Why.Expr is
          when N_Function_Call =>
             declare
                Subp       : constant Entity_Id := Entity (Name (Expr));
-               --  Retrieve type of function result from function called
-               Name       : constant W_Identifier_Id :=
+               Why_Name   : constant W_Identifier_Id :=
                  W_Identifier_Id
                    (Transform_Identifier (Params       => Local_Params,
                                           Expr         => Expr,
@@ -4206,10 +4205,19 @@ package body Gnat2Why.Expr is
                  Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
 
             begin
+
+               --  For functions, the Etype of the Name is not always the type
+               --  returned by the function. Examples are primitive operations
+               --  of a derived type: The Etype of the Name is the derived
+               --  type, but the return type of the function is the original
+               --  type.
+
+               Current_Type := Type_Of_Node (Etype (Subp));
+
                if Why_Subp_Has_Precondition (Subp) then
                   T :=
                     +New_VC_Call
-                    (Name     => Name,
+                    (Name     => Why_Name,
                      Progs    => Args,
                      Ada_Node => Expr,
                      Domain   => Domain,
@@ -4217,7 +4225,7 @@ package body Gnat2Why.Expr is
                else
                   T :=
                     New_Call
-                      (Name     => Name,
+                      (Name     => Why_Name,
                        Args     => Args,
                        Ada_Node => Expr,
                        Domain   => Domain);
