@@ -148,7 +148,11 @@ package body Flow.Interprocedural is
                     Dependency_Maps.Element (C);
                begin
                   for Input of Inputs loop
-                     Add_TD_Edge (Input, Output);
+                     --  Output could be a null node, in which case we
+                     --  do not add any edges.
+                     if Present (Output) then
+                        Add_TD_Edge (Input, Output);
+                     end if;
                   end loop;
                end;
             end loop;
