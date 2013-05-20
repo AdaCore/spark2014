@@ -128,22 +128,35 @@ package body Flow is
       begin
          case Nkind (N) is
             when N_Function_Call | N_Procedure_Call_Statement =>
-               Get_Globals (Subprogram => Entity (Name (N)),
-                            Reads      => Global_Reads,
-                            Writes     => Global_Writes);
-               Globals := Global_Reads or Global_Writes;
+               declare
+                  Subprogram : constant Entity_Id := Entity (Name (N));
+               begin
+                  case Ekind (Subprogram) is
+                     when E_Procedure | E_Function =>
+                        Get_Globals (Subprogram => Subprogram,
+                                     Reads      => Global_Reads,
+                                     Writes     => Global_Writes);
+                        Globals := Global_Reads or Global_Writes;
 
-               for F of Globals loop
-                  if F.Kind = Magic_String then
-                     Tmp := Change_Variant (F, Normal_Use);
-                     if RV.Contains (Tmp.Name) then
-                        RV (Tmp.Name).Include (Entity (Name (N)));
-                     else
-                        RV.Include (Tmp.Name,
-                                    Node_Sets.To_Set (Entity (Name (N))));
-                     end if;
-                  end if;
-               end loop;
+                        for F of Globals loop
+                           if F.Kind = Magic_String then
+                              Tmp := Change_Variant (F, Normal_Use);
+                              if RV.Contains (Tmp.Name) then
+                                 RV (Tmp.Name).Include (Subprogram);
+                              else
+                                 RV.Include (Tmp.Name,
+                                             Node_Sets.To_Set (Subprogram));
+                              end if;
+                           end if;
+                        end loop;
+
+                     when E_Generic_Procedure | E_Generic_Function =>
+                        return Skip;
+
+                     when others =>
+                        raise Why.Unexpected_Node;
+                  end case;
+               end;
 
             when others =>
                null;
