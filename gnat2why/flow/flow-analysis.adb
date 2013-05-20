@@ -452,7 +452,7 @@ package body Flow.Analysis is
                if Offending_Subprograms.Contains (Entity (Name (N))) then
                   Error_Msg_NE
                     ("called subprogram & requires GLOBAL aspect" &
-                       " to make state visible",
+                       " to make state visible!",
                      N,
                      Entity (Name (N)));
                   Error_Issued := True;
@@ -577,7 +577,7 @@ package body Flow.Analysis is
 
       if not Sane then
          Error_Msg_NE
-           ("flow analysis of & abandoned due to inconsistent graph",
+           ("flow analysis of & abandoned due to inconsistent graph!",
             FA.Subprogram,
             FA.Subprogram);
          return;
@@ -589,7 +589,7 @@ package body Flow.Analysis is
 
       if FA.Aliasing_Present then
          Error_Msg_NE
-           ("flow analysis of & abandoned due to aliasing",
+           ("flow analysis of & abandoned due to aliasing!",
             FA.Subprogram,
             FA.Subprogram);
          Sane := False;
