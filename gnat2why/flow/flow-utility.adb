@@ -444,11 +444,15 @@ package body Flow.Utility is
    is
       T : constant Entity_Id := Etype (E);
    begin
-      pragma Assert (Is_Type (T));
-      if Present (Full_View (T)) then
-         return Full_View (T);
-      else
+      if Ekind (T) = E_Abstract_State then
          return T;
+      else
+         pragma Assert (Is_Type (T));
+         if Present (Full_View (T)) then
+            return Full_View (T);
+         else
+            return T;
+         end if;
       end if;
    end Get_Full_Type;
 
