@@ -615,6 +615,11 @@ package body Flow.Utility is
                when N_Indexed_Component | N_Slice =>
                   raise Program_Error;
 
+               when N_Function_Call =>
+                  --  Not strictly right, but this will satisfy the
+                  --  postcondition.
+                  Vars_Defined.Union (Get_Variable_Set (End_Of_Record));
+
                when others =>
                   Vars_Defined.Insert
                     (Direct_Mapping_Id (Entity (End_Of_Record)));
