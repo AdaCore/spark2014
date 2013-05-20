@@ -230,6 +230,7 @@ package body Flow_Types is
    is
    begin
       return R : Flow_Id := F do
+         R.Kind := Direct_Mapping;
          R.Component.Clear;
       end return;
    end Entire_Variable;
