@@ -21,9 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;    use Atree;
 with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
 with Snames;   use Snames;
 
 package body Flow_Tree_Utility is
@@ -74,5 +72,24 @@ package body Flow_Tree_Utility is
       Search_For_Loop_Entry (N);
       return Found_Loop_Entry;
    end Contains_Loop_Entry_Reference;
+
+   ---------------------------------
+   -- Get_Procedure_Specification --
+   ---------------------------------
+
+   function Get_Procedure_Specification (E : Entity_Id) return Node_Id
+   is
+      N : Node_Id;
+   begin
+      N := Parent (E);
+      case Nkind (N) is
+         when N_Defining_Program_Unit_Name =>
+            return Parent (N);
+         when N_Procedure_Specification =>
+            return N;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Procedure_Specification;
 
 end Flow_Tree_Utility;

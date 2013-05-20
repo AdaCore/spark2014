@@ -26,6 +26,7 @@ with Sinfo; use Sinfo;
 with Why;
 
 with Flow.Utility; use Flow.Utility;
+with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -115,7 +116,8 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes := Null_Attributes;
 
       Called_Procedure : constant Entity_Id := Entity (Name (Callsite));
-      Procedure_Spec   : constant Node_Id   := Parent (Called_Procedure);
+      Procedure_Spec   : constant Node_Id   :=
+        Get_Procedure_Specification (Called_Procedure);
    begin
       pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
 
