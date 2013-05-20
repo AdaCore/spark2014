@@ -555,12 +555,12 @@ package body Flow.Analysis is
                begin
                   if not FA.All_Vars.Contains (Neutral) then
                      case Neutral.Kind is
-                        when Direct_Mapping =>
+                        when Direct_Mapping | Record_Field =>
                            Error_Msg_Flow
                              (Msg => "& must be listed in the Global aspect",
                               G   => FA.CFG,
                               Loc => V,
-                              F   => Var);
+                              F   => Entire_Variable (Var));
 
                         when Magic_String =>
                            Global_Required (FA, Var);

@@ -195,6 +195,11 @@ package Flow_Types is
           Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
    --  Return the parent record for the given record field.
 
+   function Entire_Variable (F : Flow_Id) return Flow_Id
+     with Pre  => F.Kind in Direct_Mapping | Record_Field,
+          Post => Entire_Variable'Result.Kind = Direct_Mapping;
+   --  Returns the entire variable represented by F.
+
    procedure Sprint_Flow_Id (F : Flow_Id);
    --  Debug procedure to print the given flow id, similar to
    --  Sprint_Node.

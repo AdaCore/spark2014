@@ -222,6 +222,18 @@ package body Flow_Types is
       end return;
    end Parent_Record;
 
+   ---------------------
+   -- Entire_Variable --
+   ---------------------
+
+   function Entire_Variable (F : Flow_Id) return Flow_Id
+   is
+   begin
+      return R : Flow_Id := F do
+         R.Component.Clear;
+      end return;
+   end Entire_Variable;
+
    --------------------
    -- Sprint_Flow_Id --
    --------------------
