@@ -417,6 +417,10 @@ package body Flow.Utility is
          when E_Record_Type | E_Record_Subtype =>
             return All_Record_Components (Entire_Var => U);
 
+         when E_Void =>
+            pragma Assert (Ekind (E) = E_Abstract_State);
+            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
+
          when others =>
             Print_Tree_Node (U);
             Print_Tree_Node (Etype (U));
@@ -444,7 +448,7 @@ package body Flow.Utility is
    is
       T : constant Entity_Id := Etype (E);
    begin
-      if Ekind (T) = E_Abstract_State then
+      if Ekind (E) = E_Abstract_State then
          return T;
       else
          pragma Assert (Is_Type (T));
