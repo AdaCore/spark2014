@@ -167,7 +167,7 @@ package body Flow_Types is
          F.Component.Append (Entity (Selector_Name (P)));
          P := Prefix (P);
       end loop;
-      pragma Assert (Nkind (P) = N_Identifier);
+      pragma Assert (Nkind (P) in N_Identifier | N_Expanded_Name);
       F.Node := Unique_Entity (Entity (P));
       F.Component.Reverse_Elements;
       return F;
