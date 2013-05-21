@@ -1,7 +1,9 @@
+pragma SPARK_Mode (On);
+
 package body Search is
-   
-   function Linear_Search 
-     (A   : Arr; 
+
+   function Linear_Search
+     (A   : Arr;
       Val : Element) return Search_Result
    is
       Pos : Index := A'First;
@@ -20,5 +22,5 @@ package body Search is
       Res.Found := False;
       return Res;
    end Linear_Search;
-   
+
 end Search;

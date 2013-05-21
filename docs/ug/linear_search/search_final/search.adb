@@ -1,3 +1,5 @@
+pragma SPARK_Mode (On);
+
 package body Search is
 
    function Linear_Search
