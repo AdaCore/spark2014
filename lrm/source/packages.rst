@@ -309,34 +309,6 @@ There are no dynamic semantics associated with these aspects.
 Abstract State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-    * **Requirement:** It shall be possible to provide an abstracted view of hidden state that can be referred to
-      in specifications of program behavior.
-
-      **Rationale:** this allows modular analysis, since modular analysis is performed
-      before all package bodies are available and so before all hidden state is known.
-      Abstraction also allows the management of complexity.
-
-#. Constraints:
-
-   * No further abstract state-specific requirements.
-
-#. Consistency:
-
-    * No further abstract state-specific requirements.
-
-#. Semantics:
-
-    * No further abstract state-specific requirements.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -540,42 +512,6 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
 Initializes Aspect
 ~~~~~~~~~~~~~~~~~~
 
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-    * **Requirement:** Flow analysis requires the knowledge of whether each
-      variable has been initialized.  It should be possible to determine this
-      from the specification of a unit.
-
-      **Rationale:** Variables and state abstractions may be initialized within
-      a package body as well as a package specification.  It follows not all
-      initializations are visible from the specification.  An Initializes aspect
-      is applied to a package specification to indicate which variables and
-      state abstractions are initialized by the package.  This facilitates
-      modular analysis.
-      
-#. Constraints:
-
-   * No further Initializes-specific requirements.
-
-#. Consistency:
-
-    * No further Initializes-specific requirements.
-
-#. Semantics:
-
-    * **Requirement:** The set of data items listed in an Initializes aspect shall be fully initialized
-      during elaboration of this package.
-
-      **Rationale:** To ensure that listed data items are always initialized before use.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -699,37 +635,6 @@ There are no dynamic semantics associated with the Initializes Aspect.
 
 Initial Condition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~
-
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-    * **Requirement:** It shall be possible to formally specify the result of performing package elaboration.
-
-      **Rationale:** This specification behaves as a postcondition for the result of package elaboration
-      and so establishes the "pre-condition" that holds at the point of beginning execution of the program proper.
-      Giving an explicit postcondition supports modular analysis.
-
-#. Constraints:
-
-   * No further Initial Condition-specific requirements.
-
-#. Consistency:
-
-    * No further Initial Condition-specific requirements.
-
-#. Semantics:
-
-    * **Requirement:** The predicate given by the Initial Condition aspect should evaluate to
-      True at the point at which elaboration of the package, its embedded packages and its private descendants has completed.
-
-      **Rationale:** By definition.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
@@ -858,6 +763,8 @@ In the refined view the constituents of each ``state_name`` has to be
 initialized consistently with their appearance or omission from the Initializes
 aspect of the package.
 
+.. todo:: Check if the following section should be removed (it has already been copied to the HLR parking lot)
+
 .. _refinement-rationale:
 
 Common Rationale for Refined Aspects
@@ -881,50 +788,6 @@ The rationale for this is as follows:
 
 Refined State Aspect
 ~~~~~~~~~~~~~~~~~~~~
-
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** For each state abstraction, it shall be possible to define the set of hidden
-     state items that implement or *refine* that abstract state (where the
-     hidden state items can either be concrete state or further state abstractions).
-     
-     **Rationale**: see section :ref:`refinement-rationale`.
-
-#. Constraints:
-
-   * **Requirement:** Each item of hidden state must map to exactly one state abstraction.
-
-     **Rationale:** all hidden state must be covered since otherwise specifications referring to abstract state may
-     be incomplete; each item of that hidden state must map to exactly one abstraction to give a clean and easily understandable
-     abstraction, and for the purposes of simplicity of analysis.
-
-   * **Requirement:** Each item of abstract state covered by the package shall be mapped to at least one
-     item of hidden state (either concrete state or a further state abstraction).
-
-     **Rationale:** the semantics of properties defined in terms of abstract state
-     can only be precisely defined in terms of the corresponding concrete state.
-
-   * **Requirement:** Each item of hidden state should appear in at least one global data list
-     within the package body.
-
-     **Rationale:** If this is not the case, then there is at least one hidden state item that is not
-     used by any subprogram.
-
-#. Consistency:
-
-   * No further Refined state-specific requirements needed.
-
-#. Semantics:
-
-   * No further Refined state-specific requirements needed.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
@@ -1262,61 +1125,6 @@ which reside in another package, initialization by their declaring package.
 Refined Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** Where a global data list referring to abstract state has been specified for a subprogram,
-     it shall be possible to provide a refined global data list that takes account of the
-     refinement of that abstract state.
-
-     **Rationale:** see section :ref:`refinement-rationale`.
-
-#. Constraints:
-
-   * No further Refined Global-specific requirements needed.
-
-#. Consistency:
-
-   * Let *Abstract* be the abstraction function defined by state refinement (such that
-     *Abstract* is the identity function when applied to visible state).
-     Let *G* be the global data list and *RG* be the refined global data list. Then:
-
-     * **Requirement:** If *X* appears in *RG* but not all constituents of *Abstract (X)* appear in *RG*
-       then *Abstract (X)* must appear in *G* with at least input mode.
-
-       **Rationale:** In this case, *Abstract (X)* is not fully initialized by the
-       subprogram and the relevant components must be intialized prior to calling
-       the subprogram.
-
-     * **Requirement:** If *Y* appears in *G*, then at least one *X* such that *Abstract (X) = Y*
-       must appear in *RG*.
-
-       **Rationale:** By definition of abstraction.
-     
-     * **Requirement:** Refinement of modes:
-
-          * If the mode of *X* in *RG* indicates it is **not** used in a
-            proof context, then that mode must be a mode of *Abstract (X)* in *G*.
-
-          * If the mode of *X* in *RG* indicates it **is** used in a proof context and
-            *Abstract(X)* does not have another mode according to the above rules, then the
-            mode of *Abstract(X)* shall indicate it is only used in proof contexts.
-
-       **Rationale:** In general, modes should be preserved by refinement. However,
-       if one refinement constituent of a state abstraction has an input and/or output mode, then
-       it is no longer of interest whether another constituent is only used in a
-       proof context.
-
-#. Semantics:
-
-   * As per Global aspect.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 .. todo:: The consistency rules will be updated as the
           model for volatile variables is defined.
           To be completed in the Milestone 3 version of this document.
@@ -1424,60 +1232,6 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 Refined Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~
 
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** Where a dependency relation referring to abstract state has been given,
-     it shall be possible to specify a refined dependency relation that takes account
-     of the refinement of that abstract state.
-
-     **Rationale:** see section :ref:`refinement-rationale`.
-
-#. Constraints:
-
-   * No further Refined depends-specific requirements needed.
-
-#. Consistency: 
-
-    * **Requirement:** The refined dependency relation defines an alternative view of the inputs and outputs
-      of the subprogram and that view must be equivalent to the refined list of global
-      data items and formal parameters and their modes (ignoring data items used only in proof contexts).
-
-      **Rationale:** this provides a useful early consistency check.
-
-
-    * Let *Abstract* be the abstraction function defined by state refinement (such that
-      *Abstract* is the identity function when applied to visible state).
-      Let *D* be a dependency relation and *RD* be the corresponding
-      refined dependency relation. Then:
-
-      * **Requirement:** If *(X,Y)* is in *RD* - i.e. *X* depends on *Y* -
-        then *(Abstract(X), Abstract(Y))* is in *D*.
-
-        **Rationale:** dependencies must be preserved after abstraction.
-
-      * **Requirement:** If *(X,Y)* is in *RD* and there is *A* such that *Abstract(A)=Abstract(X)* but
-        there is no *B* such that *(A,B)* is in *RD*, then *(Abstract(X),Abstract(X))* is in *D*.
-
-        **Rationale:** In this case, *Abstract (X)* is not fully initialized by the
-        subprogram and the relevant components must be initialized prior to calling
-        the subprogram.
-
-      * **Requirement:** If *(S,T)* is in *D* then there shall exist *(V,W)* in *RD* such that
-        *Abstract(V)=S* and *Abstract(W)=T*.
-
-        **Rationale:** By definition of abstraction.
-
-#. Semantics:
-
-   * As per Depends aspect.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 .. todo:: The consistency rules will be updated as the
           model for volatile variables is defined.
           To be completed in the Milestone 3 version of this document.
@@ -1576,35 +1330,6 @@ as it is used purely for static analysis purposes and is not executed.
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** Where a precondition has been provided for a subprogram declaration, it shall be
-     possible to state a refined precondition that refers to concrete rather than abstract state
-     and/or concrete rather than abstract type detail.
-
-     **Rationale:** See section :ref:`refinement-rationale`.
-
-#. Constraints:
-
-   * No further Refined precondition-specific requirements needed.
-
-#. Consistency: 
-
-   * **Requirement:** The refined precondition of the subprogram must be implied by the precondition.
-
-     **Rationale:** standard definition of proof refinement.
-
-#. Semantics:
-
-   * As per the semantics of the Precondition aspect.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -1658,35 +1383,6 @@ be a Boolean ``expression``.
 
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** Where a post-condition has been provided for a subprogram declaration, it shall be
-     possible to state a refined post-condition that refers to concrete rather than abstract state
-     and/or concrete rather than abstract type detail.
-
-     **Rationale:** See section :ref:`refinement-rationale`.   
-
-#. Constraints:
-
-   * No further Refined post-condition-specific requirements needed.
-
-#. Consistency: 
-
-   * **Requirement:** The post-condition of the subprogram must be implied by the refined post-condition.
-
-     **Rationale:** standard definition of proof refinement.
-
-#. Semantics:
-
-   * As per the semantics of the Post-condition aspect.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^

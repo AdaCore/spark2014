@@ -1,22 +1,6 @@
 Program Structure and Compilation Issues
 ========================================
 
-**High-Level Requirements**
-
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** The ability to analyze incomplete programs.
-
-     **Rationale:** In order to support incremental development and analysis.
-     To facilitate the use of flow analysis and formal verification as early as
-     possible in the software life-cycle.
-
-#. Constraints, Consistency, Semantics, General requirements:
-
-   * Interface specifications have to be provided for all modules.  In analysis
-     the module is represented by its interface specification.
-
 **Language Definition**
 
 |SPARK| supports constructive, modular analysis. This means that analysis may be
@@ -48,23 +32,6 @@ No restrictions or extensions.
 
 Context Clauses - With Clauses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-High-Level Requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** State abstractions and visible variable declarations shall
-     be visible in the limited view of a package.
-
-     **Rationale:** This allows the flow analysis specifications of a package P1
-     to refer to the state of P2 in the case that P1 only has a limited
-     view of P2.
-
-#. Constraints, Consistency, Semantics, General requirements:
-
-   * Not applicable.
-
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^

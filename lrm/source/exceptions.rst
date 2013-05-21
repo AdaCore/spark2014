@@ -1,35 +1,6 @@
 Exceptions
 ==========
 
-High-Level Requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * Not applicable.
-
-#. Constraints:
-
-   * **Requirement:** Most explicit uses of exceptions are excluded from |SPARK| as described below.
-     Exceptions can be raised implicitly (for example, by the failure of a language-defined check),
-     but only in the case of a program with an undischarged (or incorrectly discharged, perhaps via an incorrect
-     Assume pragma) proof obligation. Explicit raising of exceptions is dealt with similarly.
-
-     **Rationale:** Raising and handling of exceptions allow forms of control flow that complicate
-     both specification and verification of a program's behavior.
-
-#. Consistency:
-
-   * Not applicable.
-
-#. Semantics:
-
-   * Not applicable.
-
-#. General requirements:
-
-    * Not applicable.
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
