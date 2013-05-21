@@ -58,29 +58,6 @@ Generalized Loop Iteration
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-High-Level Requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language features:
-
-    * **Requirement:** |SPARK| shall include feature/s to support proof of loop termination.
-
-      **Rationale:** To aid detection of a serious programming error.
-
-    * **Requirement:** |SPARK| shall include feature/s to support proof of correctness
-      of code containing loops.
-
-      **Rationale:** To support proof.
-
-   * **Requirement:** Within a loop, it shall be possible to refer to the value of a given
-     variable on entry to that loop.
-
-     **Rationale:** To support proof.
-
-#. Constraints, Consistency, Semantics, General requirements:
-
-    * Not applicable
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -326,29 +303,6 @@ Proof Statements
 ----------------
 
 This section discusses the pragmas Assert_And_Cut and Assume.
-
-High-Level Requirements
-~~~~~~~~~~~~~~~~~~~~~~~
-
-#. Goals to be met by language feature:
-
-    * **Requirement:** It shall be possible for users to explicitly state assumptions
-      within the text of a subprogram to support the formal verification of that subprogram.
-
-      **Rationale:** This allows facts about the domain to be used in a proof in a clean
-      and explicit way.
-
-   * **Requirement:** It shall be possible for users to assert at a given point within
-     a subprogram the minimum set of facts required to complete formal verification
-     of that subprogram.
-
-     **Rationale:** This allows an explicit statement of what is necessary to complete
-     formal verification and also assists the efficiency of that verification.
-
-#. Constraints, Consistency, Semantics, General requirements:
-
-    * Not applicable
-
 
 Language Definition
 ~~~~~~~~~~~~~~~~~~~
