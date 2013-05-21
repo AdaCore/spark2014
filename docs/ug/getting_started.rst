@@ -77,7 +77,7 @@ collection of elements. The algorithm returns whether the collection contains
 the desired value, and if so, at which index. The collection is implemented
 here as an array. We start on purpose with an incorrect program for package
 ``Search``, in order to explain how the |SPARK| toolset can help correcting
-these errors. 
+these errors.
 
 We start with creating a GNAT project file in ``search.gpr``:
 
@@ -161,7 +161,7 @@ following line is added on the first line of ``search.ads``:
 
 .. code-block:: ada
 
-    pragma SPARK_Mode;
+    pragma SPARK_Mode (On);
 
 Then, we run |GNATprove| in mode ``check``, using the ``Prove::Prove File``
 menu, so that it issues errors on code that has ``SPARK_Mode=On`` but is not in
@@ -187,7 +187,7 @@ making ``Linear_Search`` return this type:
 .. code-block:: ada
    :linenos:
 
-    pragma SPARK_Mode;
+    pragma SPARK_Mode (On);
 
     package Search is
 
@@ -211,6 +211,8 @@ The implementation of ``Linear_Search`` is modified to use this type:
 
 .. code-block:: ada
    :linenos:
+
+    pragma SPARK_Mode (On);
 
     package body Search is
 
@@ -600,7 +602,7 @@ maximal index at step 2 (the increment), so the range check cannot be
 proved. It was previously proved because, in absence of a loop invariant,
 |GNATprove| proves iterations around the source loop, and then we get the
 information that, since the loop did not exit, its test ``Pos < A'Last`` is
-false, so the range check can be proved. 
+false, so the range check can be proved.
 
 We solve this issue by setting the type of ``Pos`` to the base type of
 ``Index``, which ranges past the last value of ``Index``:
@@ -716,7 +718,7 @@ annotations:
 .. code-block:: ada
     :linenos:
 
-    pragma SPARK_Mode;
+    pragma SPARK_Mode (On);
 
     package Search is
 
@@ -759,6 +761,8 @@ annotations:
 
 .. code-block:: ada
     :linenos:
+
+    pragma SPARK_Mode (On);
 
     package body Search is
 
