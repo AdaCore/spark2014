@@ -54,9 +54,6 @@ This introduction contains the following sections:
 
 - Section :ref:`explain_sprs` provides expanded detail on the main strategic requirements.
 
-- Section :ref:`generic_hlrs` presents language-independent requirements that are common to
-  a number of the language features described in this document.
-
 - Section :ref:`notes` provides some brief detail on the current status and contents
   of this document.
 
@@ -285,54 +282,7 @@ following structure:
 #. Strategic requirements to be met by the |SPARK| language and its associated
    toolset (given in this chapter).
 
-#. Requirements to provide particular language features.
-
-#. For each such language feature, requirements are given to define how
-   that feature should work in a way that is - as much as possible - language
-   independent. [This means that language features may be understood independently
-   of the low-level details needed to make them work.]
-
-Where relevant, a rationale will be given to explain why the requirement is
-levied. Further narrative detail is given on each of the strategic requirements.
-
-Since this detail does not strictly belong in this document in future it
-will be extracted and included in a new requirements document.
-
-
-Presentation of Language Feature Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For each language feature, higher-level requirements are given under the following
-headings:
-
-#. *Goals to be met by language feature*: this defines the broad need behind
-   a given language feature, along with requirements on the capabilities that
-   the feature needs to support.
-
-#. *Constraints*: this defines any ways in which we need to restrict the nature of
-   the language feature, typically to serve the needs of analysis or verification.
-
-#. *Consistency*: here, we consider the other language features being implemented
-   and consider what the relationship should be between this and those features.
-
-#. *Semantics*: here we define what the language feature means and hence
-   what it means for the program to be correct against any specification given
-   using this feature.
-
-Reading these Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The higher-level requirements are naturally given in language that is less precise
-than would be expected of rules in a language reference manual. Where greater
-precision is required, this will be given in the language definition rules
-themselves.
-
-Generic Requirements
-~~~~~~~~~~~~~~~~~~~~
-
-A number of requirements apply to multiple language features and they are given
-at the end of this chapter in section :ref:`generic_hlrs`.
-
+#. Requirements to provide particular language features. At the current draft such requirements have been removed. They will either be re-introduced once updated or more likely placed in a separate document which can be referred to from here.
 
 .. _sprs:
 
@@ -844,8 +794,7 @@ and nothing further is given on how it should be used.*
 Volatile State
 ~~~~~~~~~~~~~~
 
-A variable or a state abstraction
-(see :ref:`state_abstraction_and_hidden_state`) may be designated as volatile. A
+A variable or a state abstraction may be designated as volatile. A
 volatile variable or state abstraction need not have the same value between two
 reads without an intervening update. Similarly an update of a volatile variable
 (or state abstraction) may not have any effect on the internal operation of a
@@ -862,98 +811,6 @@ such that an update of a volatile variable also has a side effect of reading the
 variable.  |SPARK| further extends these principles to apply to
 state abstractions also.
 
-.. _generic_hlrs:
-
-Generic Language-Independent Requirements
------------------------------------------
-
-The following detail relates to higher-level requirements but applies to multiple
-language features. Hence, it is given in a single place to ease readability.
-
-Definition of Terms for Higher-Level Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The following terms are used in the presentation of the higher-level requirements;
-each is intended to have a definition consistent with that when used in
-language definition rules.
-
-#. *Hidden state*: state declared within a package but that is not directly accessible
-   by users of that package.
-
-#. *Inputs and outputs of a subprogram*: the set of data items
-   that may be read or written - either directly or indirectly - on a call
-   to that subprogram.
-
-#. *Global data of a subprogram*: the inputs and outputs of a subprogram minus the formal
-   parameters.
-
-#. *Entire variable*: a variable that is not a subcomponent of a larger containing variable.
-
-#. *Entity*: the semantic object that represents a given declaration.
-
-.. _state_abstraction_and_hidden_state:
-
-State Abstraction, Hidden State and Refinement
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#. **Requirement:** When specifying properties of a subprogram, it shall be possible
-   to refer to (an abstraction of) hidden state without knowing the details of that hidden state.
-
-   **Rationale:** allows modular verification and also allows the management of
-   complexity.
-
-#. **Requirement:** It shall be possible to manage hierarchies of data abstraction [i.e. it shall be possible
-   to manage a hierarchical organization of hidden state].
-
-   **Rationale:** to allow modular verification and the management of complexity in the presence
-   of programs that have a hierarchical representation of data.
-
-Naming
-~~~~~~
-
-#. **Requirement:** Variable names in a global specification of a subprogram are
-   distinct from the formal parameter names of the subprogram .
-
-   **Rationale:** A variable cannot be both a formal parameter and a global
-   variable simultaneously.
-
-#. **Requirement:** Names used in the new flow analysis specifications
-   shall refer to entire variables.  Within a subprogram body flow analysis will 
-   operate at an individual subcomponent level for objects of a record type.
-
-   **Rationale:** For the flow analysis model at the inter-subprogram level, 
-   updating part of a variable is regarded as updating all of it.
-   Within a subprogram body the subcomponents of a record type object
-   are tracked individually.
-
-#. **Requirement:** Where distinct names are referenced within a given flow 
-   analysis specification, then those names shall refer to distinct entities.
-
-   **Rationale:** to support flow analysis and to aid clarity of the interface definition.
-
-
-Properties of Specifications
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#. **Requirement:** When specifying program behavior in terms of a relation or a set, it shall be
-   possible to explicitly provide a null relation or an empty set.
-
-   **Rationale:** to explicitly identify programs that - for example - do not reference
-   global data. This is especially needed in the presence of retrospective analysis,
-   where absence of a specification cannot mean presence of a null specification.
-
-#. **Requirement:** It shall be possible to designate - both visible and hidden - state items that are Volatile
-   and for each to give a mode of either in or out.
-
-   **Rationale:** to model programs that refer to external state, since that state
-   is modeled differently to internal state.
-
-#. **Requirement:** When specifying subprogram behavior other than via proof statements
-   -- such as global data -- it shall be necessary to provide a complete specification.
-
-   **Rationale:** To allow provision of at least the same functionality and
-   error detection as SPARK 2005 and to allow modular analysis.
-   This is also necessary for security analysis.
 
 .. _notes:
 

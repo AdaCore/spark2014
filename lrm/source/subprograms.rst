@@ -105,22 +105,6 @@ for further detail on Depends aspects.
 Contract Cases 
 ~~~~~~~~~~~~~~
 
-High-Level Requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** It shall be possible to specify pre- and post-conditions
-     in a concise way in the case that subprogram behaviour is specified in
-     terms of what behaviour should be in each of a series of mutually-independent cases.
-
-     **Rationale:** To provide a more structured way of specifying subprogram behaviour.
-
-#. Constraints, Consistency, Semantics, General requirements:
-
-    * Not applicable
-
-
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -259,72 +243,6 @@ where
 
 Global Aspects
 ~~~~~~~~~~~~~~
-
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** It shall be possible to specify the list of global data read and updated
-     when the subprogram is called. [Note that the data read can include data
-     used in proof contexts, including assertions.]
-
-     **Rationale:** to allow provision of at
-     least the same functionality as SPARK 2005 and to allow modular analysis.
-
-   * **Requirement:** It shall be possible to specify the mode (input, output or both)
-     for each global data item.
-
-     **Rationale:** This matches the presentation of
-     formal parameters, and the information is used by both flow analysis and proof.
-
-   * **Requirement:** It shall be possible to identify globals that are used only in proof contexts.
-     
-     **Rationale:** since the list of global data items constrains the data that can be read
-     and updated when the subprogram is called, then the global data list needs to cover
-     data items that are read in proof contexts.
-
-#. Constraints:
-
-   * No further Global-specific requirements needed.
-
-#. Consistency:
-
-   * **Requirement:** The mode associated with a formal parameter [of an enclosing subprogram]
-     or volatile variable in a global data list
-     shall be consistent with the mode associated with it at the point of its declaration.
-     
-     **Rationale:** this provides an early basic consistency check.
-
-#. Semantics: 
-
-   * **Requirement:** A global data item with an input mode is read on at least one
-     executable path.
-
-     **Rationale:** by definition.
-
-   * **Requirement:** A global data item with an output mode is written on at least one
-     executable path.
- 
-     **Rationale:** by definition.
-
-   * **Requirement:** A global data item with an output mode but no input mode is written
-     on all executable paths.
-
-     **Rationale:** to ensure that data items with output mode are always initialized
-     on completion of a call to the subprogram.
-
-   * **Requirement:** A global data item that is only read in a proof context shall not have
-     an input or output mode.
-
-     **Rationale:** the effect of reading data items in a proof context is fundamentally
-     different from the reading of data items outside of a proof context, since the
-     former does not contribute to information flow relations.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 
 Language definition
 ^^^^^^^^^^^^^^^^^^^
@@ -492,54 +410,6 @@ There are no dynamic semantics associated with a Global aspect.
 
 Depends Aspects
 ~~~~~~~~~~~~~~~
-
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** It shall be possible to specify the dependency relation - that is, which outputs
-     are dependent on which inputs - that is met by a given subprogram.
-
-     **Rationale:** To allow provision of at least the same functionality as SPARK 2005
-     and to allow modular analysis.
-
-   * **Requirement:** It shall be possible to refer to both global data and formal parameters
-     in the dependency relation.
-
-     **Rationale:** The inputs and outputs are given by both the global data and the
-     formal parameters.
-
-   * **Requirement:** It shall be possible to assume an implicit dependency relation on functions
-     and so an explicit statement shall not be required.
-
-     **Rationale:** this is typical usage and saves effort.
-
-#. Constraints:
-
-   * No further Depends-specific requirements needed.
-
-#. Semantics: 
-
-   * **Requirement:** That (X,Y) is in the dependency relation for a given subprogram
-     (i.e. X depends on Y) means that X is an output of the subprogram
-     such that the entry value of the input Y is used to set the exit value of X on
-     at least one executable path.
-
-     **Rationale:** by definition.
-
-#. Consistency:
-
-    * **Requirement:** The dependency relation defines an alternative view of the inputs and outputs
-      of the subprogram and that view must be equivalent to the list of global
-      data items and formal parameters and their modes (ignoring data items used only in proof contexts).
-
-      **Rationale:** this provides a useful early consistency check.
-
-#. General requirements:
-
-    * See also section :ref:`generic_hlrs`.
-
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
@@ -780,50 +650,6 @@ as it is used purely for static analysis purposes and is not executed.
 Ghost Functions
 ~~~~~~~~~~~~~~~
 
-High-level requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * **Requirement:** It shall be possible to specify functions which are used
-     for testing and verification only.  Their presence should have no effect on
-     the functionality of program execution which terminates normally 
-     (without exception).
-
-     **Rationale:**   In principle such functions could be removed from the
-     code (possibly automatically by the compiler) on completion of testing 
-     and verification and have no effect on the functionality of the program.
-
-   * **Requirement:** It shall be possible to specify functions which are used
-     for formal verification only which have no implementation.
-
-     **Rationale:** A function used for formal verification purposes may be
-     difficult (or impossible) to specify or implement in |SPARK|. A function
-     without an implementation will be defined, for proof purposes, in an 
-     external proof tool.
-
-#. Constraints:
-
-   * In order to be removed they can only be applied in places where it can be
-     ascertained that they will not be called during normal execution of the
-     program (that is with test and verification constructs disabled).
-    
-   * A function without an implementation cannot be called during execution of
-     a program.
-
-#. Consistency:
-
-   Not applicable.
-
-#. Semantics: 
-
-   Not applicable.
-
-#. General requirements:
-
-    * See also section :ref:`ghost_entities`.
-
-
 Language definition
 ^^^^^^^^^^^^^^^^^^^
 
@@ -1052,34 +878,6 @@ side-effects and cannot update an actual parameter or global
 variable.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 calls.
-
-High-Level Requirements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Goals to be met by language feature:
-
-   * Not applicable.
-
-#. Constraints:
-
-   * **Requirement:** An entity that may be updated on a call to a subprogram
-     may not be referred to by distinct names within that subprogram.
-
-     **Rationale:** Flow analysis specifications are presented and analyzed in
-     terms of names rather than the entities to which those names refer.
-
-#. Semantics: 
-
-   * Not applicable.
-
-#. Consistency:
-
-    * Not applicable.
-
-#. General requirements:
-
-    * Not applicable.
-
 
 Language Definition
 ^^^^^^^^^^^^^^^^^^^
