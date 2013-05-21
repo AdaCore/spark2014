@@ -11,7 +11,7 @@ The view of an entity is in |SPARK| if and only if the corresponding
 declaration is in |SPARK|. When clear from the context, we say *entity* instead
 of using the more formal term *view of an entity*.
 
-A type is said to "define full default initialization" if it is
+A type is said to *define full default initialization* if it is
 
   * a scalar type with a specified Default_Value; or
 
