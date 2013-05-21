@@ -107,7 +107,7 @@ semantics:
   (declaration and body) in or out of |SPARK|.
 
 * When the pragma appears at the start of the private declarations of a
-  package (only other pragmas can appear between the @code{private} keyword
+  package (only other pragmas can appear between the ``private`` keyword
   and the ``SPARK_Mode`` pragma), it marks the private part in or
   out of |SPARK| (overriding the default mode of the visible part).
 
@@ -117,7 +117,7 @@ semantics:
   mode set by the declaration).
 
 * When the pragma appears at the start of the elaboration statements of
-  a package body (only other pragmas can appear between the @code{begin}
+  a package body (only other pragmas can appear between the ``begin``
   keyword and the ``SPARK_Mode`` pragma),
   it marks the elaboration statements in or out of |SPARK| (overriding
   the default mode of the package body).
@@ -438,7 +438,7 @@ function ``Move`` below, one has to write a loop invariant referring to
    begin
       for Index in Dest'Range loop
          pragma Loop_Invariant ((for all J in Dest'First .. Index - 1 =>
-                                  Dest (J) = Src'Loop_Entry (J)) 
+                                  Dest (J) = Src'Loop_Entry (J))
                                     and then
                                 (for all J in Index .. Dest'Last =>
                                   Src (J) = Src'Loop_Entry (J)));
@@ -552,10 +552,10 @@ collections of objects, while guaranteeing fast access to their
 content to retrieve or modify it. The most common containers are
 lists, vectors, sets and maps, which are defined in Ada Standard
 Libraries. In critical software where verification objectives
-severely restrict the use of pointers, containers offer an attractive 
+severely restrict the use of pointers, containers offer an attractive
 alternative to pointer-intensive data structures.
 
-There are 6 formal containers: ``Formal_Vectors``, 
+There are 6 formal containers: ``Formal_Vectors``,
 ``Formal_Doubly_Linked_Lists``, ``Formal_Hashed_Sets``,
 ``Formal_Ordered_Sets``, ``Formal_Hashed_Maps``, and
 ``Formal_Ordered_Maps``. They are adapted to critical software
@@ -581,8 +581,8 @@ then so are every cursor of this container. This modification also
 allows to use the same cursor inside different containers. In
 particular, it is useful to link elements associated to a list before
 and after a modification. Formal containers also provide three new
-functions per container type. ``Right (C : Container; Cu : Cursor) 
-returns Container`` and ``Left (C : Container; Cu : Cursor) returns 
+functions per container type. ``Right (C : Container; Cu : Cursor)
+returns Container`` and ``Left (C : Container; Cu : Cursor) returns
 Container`` can be used to write loop invariant. They return the right
 (resp. the left) part of the container ``C`` starting before
 (resp. stopping before) the cursor ``Cu``.
