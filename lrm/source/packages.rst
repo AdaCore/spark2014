@@ -178,16 +178,26 @@ aspects External, Input_Only and Output_Only are used for this specification.
 
 .. centered:: **Legality Rules**
 
-#. An External, Input_Only or Output_Only aspect may only be specified for an
-   ``object_declaration``.
+#. An External, Non_Volatile, Input_Only or Output_Only aspect may only be 
+   specified for an ``object_declaration`` or a ``full_type_declaration``.
+   
+#. If an External, Non_Volatile, Input_Only or Output_Only aspect is applied
+   to a type declaration, it applies to object declarations of that type and
+   such a declaration cannot override these aspects when they are specified for 
+   the type.  
 
 #. One of an Input_Only or an Output_Only aspect shall be specified for a 
    volatile object declaration. A variable with an Input_Only specification is
    an *external input*; a variable with an Output_Only specification is an
    *external output*.
    
-#. If an External aspect is specified for an object which is not volatile,
-   then the Non_Volatile aspect may also be specified but is not required.
+#. If an External aspect is specified for a type or  object declaration which is 
+   not volatile, then the Non_Volatile aspect may also be specified but is not 
+   required.
+   
+#. An object whose declaration specifies it as External shall only be used as
+   an actual parameter in a subprogram call if the corresponding formal 
+   parameter has a type which is specified as External.
     
 #. Contrary to the general SPARK 2014 rule that expression evaluation
    cannot have side effects, a read of a volatile variable is considered to have
@@ -203,7 +213,8 @@ aspects External, Input_Only and Output_Only are used for this specification.
      whose result is renamed [in an object renaming declaration]; or
      
    * as an actual parameter in a procedure call of which the corresponding 
-     formal parameter is mode **in** and is of a non-scalar volatile type.
+     formal parameter is mode **in** and is of an External non-scalar volatile 
+     type.
 
 #. A name denoting an external output shall only occur in the following
    contexts:
@@ -211,8 +222,8 @@ aspects External, Input_Only and Output_Only are used for this specification.
    * as the name on the left-hand side of an assignment statement; or
    
    * as an actual parameter in a procedure call of which the mode of the 
-     corresponding formal parameter is **out** and is of a volatile, 
-     non-scalar type.
+     corresponding formal parameter is **out** and is of an External, 
+     non-scalar, Volatile type.
    
 #. See section on volatile variables for rules concerning their use in |SPARK|
    (:ref:`shared_variable_control`).
@@ -249,7 +260,7 @@ There are no dynamic semantics associated with these aspects.
    with System.Storage_Units;
    package Multiple_Ports
    is
-      type Volatile_Type : Integer with Volatile;
+      type Volatile_Type is new Integer with External, Volatile;
    
       -- Read_Port may only be called with an actual parameter for Port
       -- which is an external input only
@@ -267,28 +278,26 @@ There are no dynamic semantics associated with these aspects.
       -- The following declarations are all external input only variables
       V_In_1 : Volatile_Type 
       with 
-         External,
          Input_Only,
          Address => System.Storage_Units.To_Address (16#A1CAFE#);
       
       V_In_2 : Integer
       with
-         Volatile,
          External,
+         Volatile,
          Input_Only,
          Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
       -- The following declarations are all volatile output only variables      
       V_Out_1 : Volatile_Type 
       with 
-         External,
          Output_Only,
          Address => System.Storage_Units.To_Address (16#BBCCAFE#);
       
       V_Out_2 : Integer
       with
-         Volatile,
          External,
+         Volatile,
          Output_Only,
          Address => System.Storage_Units.To_Address (16#ADACAFE#);
 
