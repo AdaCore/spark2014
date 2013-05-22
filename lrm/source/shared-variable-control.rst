@@ -11,9 +11,12 @@ and objects in |SPARK|:
 #. A volatile representation aspect may only be applied to an 
    ``object_declaration`` or a ``full_type_declaration``.
    
-#. A component of an ``array_type_declaration`` or a ``record_type_declaration`` 
-   shall not be of a volatile type. [This may require determining whether a
-   private type is volatile.]
+#. A component of a ``record_type_declaration``  or an 
+   ``array_type_declaration`` shall not be of a volatile type or explicitly
+   specified as volatile. 
+   [This may require determining whether a private type is volatile.]
+   
+   [The above two rules may be relaxed in a future version.]
    
 #. A discriminant shall not be of a volatile type.
 

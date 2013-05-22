@@ -167,33 +167,59 @@ non-volatile when it is declared by an Abstract_State aspect (see
 
 .. _external_aspects:
 
-External, Non_Volatile, Input_Only and Output_Only Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+External, Input_Only and Output_Only Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A variable which represents a communication channel with an external entity,
 for instance a transducer, subsystem, or program may be specified as an
 external state. If it is a volatile variable it has to be specified as an
 external state which is an input only or an output only. The Boolean 
 aspects External, Input_Only and Output_Only are used for this specification.
+There is no aspect to indicate a non-volatile object.  The absence of the
+Ada Volatile specification implies that the object is non-volatile.
+Alternatively, it may be specified explicitly using Volatile => False.
 
 .. centered:: **Legality Rules**
 
-#. An External, Non_Volatile, Input_Only or Output_Only aspect may only be 
-   specified for an ``object_declaration`` or a ``full_type_declaration``.
-   
-#. If an External, Non_Volatile, Input_Only or Output_Only aspect is applied
-   to a type declaration, it applies to object declarations of that type and
-   such a declaration cannot override these aspects when they are specified for 
-   the type.  
+#. An External, Input_Only or Output_Only aspect may only be specified for an 
+   ``object_declaration``, a ``full_type_declaration`` or a 
+   ``private_type_declaration``.
 
-#. One of an Input_Only or an Output_Only aspect shall be specified for a 
-   volatile object declaration. A variable with an Input_Only specification is
-   an *external input*; a variable with an Output_Only specification is an
-   *external output*.
+#. The Boolean expression of the aspect definitions of the External, Input_Only 
+   or Output_Only aspects shall be a static.
+
+#. If a type declaration is specified with the aspect External True it may
+   specify at most one of the aspects Input_Only or Output_Only as True.  If 
+   and only if one of these aspects is True, then it, or if it is a
+   ``private_type_declaration`` its ``full_type_declaration``, shall also be 
+   specified with the aspect Volatile True.
+
+#. If an External, Input_Only or Output_Only aspect is applied to a type 
+   declaration, it applies to object declarations of that type and such a
+   declaration shall not override these aspects when they are specified for the
+   type. Similarly the aspects specified for a ``private_type_declaration``
+   shall not be override by aspect specifications on its
+   ``full_type_declaration``.
+
+#. In |SPARK| an individual component of a record or components of an array 
+   shall not be of a volatile type or specified as Volatile (see
+   shared_variable_control) this in turn means that an individual components of
+   a record or array shall not be specified as Input_Only or Output_Only True.
+   This rule is extended to include the aspect External which also shall not be
+   specified for an individual components of records or arrays. [This rule may
+   be relaxed in a future version of SPARK.]
    
-#. If an External aspect is specified for a type or  object declaration which is 
-   not volatile, then the Non_Volatile aspect may also be specified but is not 
-   required.
+#. An object declared with an External True specification, either explicitly
+   on the declaration or implicitly through the declaration of the object's type
+   shall also have at least one of the following aspects specified Import, 
+   Export, Address.
+   
+#. If the Volatile aspect of an object declared by an object_declaration
+   is True, then exactly one of the Input_Only and Output_Only aspects
+   of the object shall be True.  [This rule may be relaxed in a future version
+   of SPARK.] A variable with a True Input_Only specification is an 
+   *external input*; a variable with a True Output_Only specification is an 
+   *external output*.
    
 #. An object whose declaration specifies it as External shall only be used as
    an actual parameter in a subprogram call if the corresponding formal 
@@ -591,9 +617,6 @@ There are no dynamic semantics associated with the Initializes Aspect.
    entire variable is initialized if all of its components are initialized.
    Other parts of the visible state of the package shall not be initialized.
    
-#. Partial initialization, initializing some but not all of the constituents of 
-   a state abstraction or components of a entire variable, is not permitted.
-   
 #. If an ``initialization_item`` has a ``input_list`` then the entities denoted
    in the input list shall be used in determining initialized value of the
    entity denoted by the ``name`` of the ``initialization_item``
@@ -688,12 +711,17 @@ be a *Boolean_*\ ``expression``.
    
 .. centered:: **Dynamic Semantics**
 
-#. For a non-library level package the *Boolean_*\ ``expression`` 
-   Initial_Condition aspect acts as the Boolean parameter of an assume pragma 
-   placed immediately after the declaration of the package.  For library level
-   packages see :ref:`elaboration_issues`.
+#. With respect to dynamic semantics, specifying a given expression
+   as the Initial_Condition aspect of a package is equivalent to specifying that
+   expression as the argument of an Assert pragma occurring at the end of the
+   (possibly implicit) statement list of the (possibly implicit) body of the
+   package. [This equivalence includes all interactions with pragma
+   Assertion_Policy. This equivalence does not extend to matters of static
+   semantics, such as name resolution.] An Initial_Condition expression does not
+   cause freezing until the point where it is evaluated [, at which point
+   everything that it might freeze has already been frozen].
    
-   .. centered:: **Verification Rules**
+.. centered:: **Verification Rules**
 
 #. The Initial_Condition aspect gives a proof obligation to show that the 
    implementation of the ``package_specification`` and its body satisfy the 
@@ -1165,10 +1193,16 @@ The static semantics are equivalent to those given for the Global aspect in
    Global aspect as follows:
 
    * For each ``global_item`` in the Global aspect which denotes
-     a state abstraction whose refinement is visible at the point
+     a state abstraction whose non-**null** refinement is visible at the point
      of the Refined_Global aspect specification, the Refined_Global
-     specification shall include one or more ``global_items`` which
-     denote ``constituents`` of that state abstraction.
+     specification shall include one or more ``global_items`` which denote
+     ``constituents`` of that state abstraction.
+     
+   * For each ``global_item`` in the Global aspect which denotes
+     a state abstraction whose **null** refinement is visible at the point
+     of the Refined_Global aspect specification, shall be omitted, or if
+     required by the syntax of a ``global_specification`` replaced by a **null**
+     in the the Refined_Global aspect.     
 
    * For each ``global_item`` in the Global aspect which does not
      denote such a state abstraction, the Refined_Global specification
@@ -1178,6 +1212,7 @@ The static semantics are equivalent to those given for the Global aspect in
    * No other ``global_items`` shall be included in the Refined_Global
      aspect specification. ``Global_items`` in the a Refined_Global
      aspect specification shall denote distinct entities.
+      
 
 #. The mode of each ``global_item`` in a Refined_Global aspect shall match
    that of the corresponding ``global_item`` in the Global aspect unless:
@@ -1273,14 +1308,13 @@ The static semantics are equivalent to those given for the Depends aspect in
 
       :Trace Unit: TBD
 
-#. A Refined_Depends aspect shall only refine state abstractions whose
-   refinement is visible at the point of the Refined_Depends aspect.  All other
-   variables and state abstractions are simply replicated in the Refined_Depends
-   aspect by names that denote the same entities.
+#. A Refined_Depends aspect specification is, in effect, a copy of
+   the corresponding Depends aspect specification except that any references in
+   the Depends aspect to a state abstraction whose refinement is visible at the
+   point of the Refined_Depends specification are replaced (as described below)
+   with references to one or more (or possibly zero, if a null refinement is
+   somehow involved) direct or indirect constituents of that state abstraction.
    
-#.  Each **null** identifier in the Depends aspect is replicated in the 
-    Refined_Depends aspect.
-
 #. Each state abstraction denoted in the Depends aspect whose non-**null**
    refinement is visible at the point of the Refined_Depends aspect shall be 
    refined in the Refined_Depends aspect as follows:
@@ -1302,6 +1336,11 @@ The static semantics are equivalent to those given for the Depends aspect in
      ``input_list`` for the state abstraction denoted as the ``output`` in the
      Depends aspect with its ``inputs`` replaced as required by the above rule
      for refinement of ``inputs``.
+     
+#. Each state abstraction denoted in the Depends aspect whose **null** 
+   refinement is visible at the point of the Refined_Depends aspect shall be
+   omitted, or replaced by **null** if required by the syntax of a
+   ``dependency_relation``, in the Refined_Depends aspect.
 
 #. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
    aspect specification. ``Outputs`` in the a Refined_Depends aspect
@@ -1469,39 +1508,35 @@ abstraction on to external states which are given in this section.
 
 .. centered:: **Legality Rules**
 
-#. A state abstraction that is not specified as External shall not be refined 
-   on to ``constituents`` which are specified as External states.
+#. An state abstraction that is not specified as External shall not have 
+   ``constituents`` which are specified as External states.
    
-#. A state abstraction which is specified as an External, Non_Volatile state 
-   shall only be refined on to a **null** ``constituent_list`` or to 
-   ``constituents`` that are specified as External, Non_Volatile states and, 
-   or, ``constituents`` that are not external states.
+#. An External, Non_Volatile state abstraction shall only have ``constituents``
+   that are External, Non_Volatile states and, or, non External states.
+   
+#. An External, Input_Only state shall only have ``constituents``  that are
+   External, Input_Only states. 
 
-#. A state abstraction which is specified as External, Input_Only state 
-   shall only be refined on to a **null** ``constituent_list`` or to 
-   ``constituents`` that are specified as External, Input_Only states. 
-
-#. A state abstraction which is specified as External, Output_Only state 
-   shall only be refined on to a **null** ``constituent_list`` or to
-   constituents that are specified as External, Output_Only states. 
+#. An External, Output_Only state abstraction shall only have ``constituents``
+   that are External, Output_Only states. 
 
 #. A state abstraction which is specified as just External state, referred to 
-   as a *plain External state* may be refined on to a **null** 
-   ``constituent_list`` or to ``constituents`` of any sort of external state 
-   and, or, non external states.
+   as a *plain External state* and may have ``constituents`` of any sort of 
+   External state and, or, non External states.
    
-#. A subprogram declaration that has a Global aspect denoting a state 
-   abstraction, which is specified as a plain External state, with a 
-   ``mode_selector`` of Input shall in its Refined_Global aspect only denote 
-   ``constituents`` that are non-volatile External states or ``constituents``
-   that are not external states.
+#. A subprogram declaration that has a Global aspect denoting a plain External
+   state abstraction with a ``mode_selector`` Input, and the refinement of the
+   state abstraction is visible at the point of the Refined_Global aspect,
+   shall only denote ``constituents`` of the state abstraction that are 
+   non-volatile External states or are not External states in the Refined_Global
+   aspect.
    
-#. A subprogram declaration that has a Global aspect denoting a state 
-   abstraction, which is specified as a plain External state, and the
-   Refined_Global aspect of the subprogram denotes one or more ``constituents``
-   that are volatile states, then the ``mode_selector`` of the state abstraction
-   in the Global_Aspect of the subprogram declaration shall be In_Out. 
-
+#. A subprogram declaration that has a Global aspect denoting a plain External
+   state abstraction and the Refined_Global aspect of the subprogram denotes one
+   or more ``constituents`` of the state abstraction that are volatile states, 
+   then the ``mode_selector`` of the state abstraction in the Global_Aspect of 
+   the subprogram declaration shall be In_Out.
+   
 #. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
    also apply.
    
