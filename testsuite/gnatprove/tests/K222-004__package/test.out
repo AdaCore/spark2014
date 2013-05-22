@@ -1,4 +1,5 @@
 pack.adb:5:07: access type is not in SPARK
+pack.adb:5:11: type is not in SPARK
 pack.adb:8:07: explicit dereference is not in SPARK
 pack.adb:9:14: explicit dereference is not in SPARK
 
