@@ -882,37 +882,60 @@ package body Gnat2Why.Decls is
 
       Decls : constant List_Id :=
         Visible_Declarations (Parent (Package_Entity));
-      Clone_Name : constant String :=
+      New_Name : constant String :=
         Capitalize_First (Full_Name (Package_Entity));
-      Generic_Name : constant String :=
-        Full_Name (Generic_Parent (Parent (Package_Entity)));
-      Assoc : constant List_Id := Generic_Associations
-        (Get_Package_Instantiation_Node (Package_Entity));
-      --  use Parent field to reach N_Generic_Package_Declaration
-      Labs : constant List_Id := Generic_Formal_Declarations (Parent (Parent
-        (Parent (Generic_Parent (Parent (Package_Entity))))));
+      G_Node : constant Node_Id :=
+        Generic_Parent (Parent (Package_Entity));
       TFile : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
    begin
-      --  Ada.Text_IO.Put_Line ("--------- + --------");
-      Open_Theory (TFile, Clone_Name,
-                   Comment => "Clone of " & Generic_Name & ".mlw");
+      if Present (G_Node) then
+         declare
+            Generic_Name : constant String :=
+              Full_Name (G_Node);
+            Assoc : constant List_Id := Generic_Associations
+              (Get_Package_Instantiation_Node (Package_Entity));
+            --  use Parent field to reach N_Generic_Package_Declaration
+            Labs : constant List_Id :=
+              Generic_Formal_Declarations (Parent (Parent (Parent (G_Node))));
+         begin
+            Open_Theory (TFile, New_Name,
+                         Comment => "Clone of associated theory in "
+                         & Generic_Name & ".mlw");
 
-      Emit
-        (TFile.Cur_Theory,
-         New_Clone_Declaration
-           (Origin        =>
-              New_Identifier (Name => """" & Generic_Name
-                              & """.Main"),
-            Clone_Kind    => EW_Export,
-            Substitutions => Parse_Parameters (Assoc, Labs, Clone_Name),
-            Theory_Kind   => EW_Module));
+            Emit
+              (TFile.Cur_Theory,
+               New_Clone_Declaration
+                 (Origin        =>
+                    New_Identifier (Name => """" & Generic_Name
+                                    & """.Main"),
+                  Clone_Kind    => EW_Export,
+                  Substitutions => Parse_Parameters (Assoc, Labs, New_Name),
+                  Theory_Kind   => EW_Module));
 
-      Close_Theory (TFile, Filter_Entity => Empty,
-                    With_Completion => False,
-                    Defined_Entity => Package_Entity);
+            Close_Theory (TFile, Filter_Entity => Empty,
+                          With_Completion => False,
+                          Defined_Entity => Package_Entity);
+         end;
+      else
+         Open_Theory (TFile, New_Name,
+                      Comment => "Export of associated theory in "
+                      & Full_Name (Package_Entity) & ".mlw");
 
-      Parse_Declarations (Decls, Clone_Name);
-      --  Ada.Text_IO.Put_Line ("--------- - --------");
+         Emit
+           (TFile.Cur_Theory,
+            New_Include_Declaration
+              (T_Name    =>
+                 New_Identifier (Name => """" & Full_Name (Package_Entity)
+                                 & """.Main"),
+               Use_Kind => EW_Export,
+               Kind     => EW_Module));
+
+         Close_Theory (TFile, Filter_Entity => Empty,
+                       With_Completion => False,
+                       Defined_Entity => Package_Entity);
+      end if;
+
+      Parse_Declarations (Decls, New_Name);
    end Translate_Container_Package;
 
    ---------------------------
