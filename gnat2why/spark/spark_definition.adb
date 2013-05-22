@@ -666,6 +666,9 @@ package body SPARK_Definition is
    --  Flag set when making the body of a toplevel subprogram
 
    function Current_Entity return Entity_Id;
+   --  Returns the current entity on which to attach violations of SPARK.
+
+   function Current_Toplevel_Entity return Entity_Id;
    --  Returns the current "visible" entity on which to attach violations of
    --  SPARK.
 
@@ -691,6 +694,16 @@ package body SPARK_Definition is
    --------------------
 
    function Current_Entity return Entity_Id is
+     (if not Entity_Stack.Is_Empty then
+        Entity_Stack.First_Element
+      else
+        Empty);
+
+   -----------------------------
+   -- Current_Toplevel_Entity --
+   -----------------------------
+
+   function Current_Toplevel_Entity return Entity_Id is
      (if not Visible_Entity_Stack.Is_Empty then
         Visible_Entity_Stack.First_Element
       else
@@ -995,7 +1008,7 @@ package body SPARK_Definition is
       N      : Node_Id;
       V      : SPARK_Violations.Vkind)
    is
-      E       : constant Entity_Id := Current_Entity;
+      E       : constant Entity_Id := Current_Toplevel_Entity;
       Is_Body : constant Boolean := In_Toplevel_Subprogram_Body;
 
    begin
@@ -1015,6 +1028,15 @@ package body SPARK_Definition is
       else
          Spec_Violations (V).Include (E);
       end if;
+
+      --  Also record that the current entity is not in SPARK. This is in
+      --  particular needed for class-wide types, which may be seen in the
+      --  context of different toplevel entities. So marking the first toplevel
+      --  entity as not SPARK is not sufficient, as the class-wide type has now
+      --  been marked as seen, but it is also visible in the context of other
+      --  toplevel entities, where it should be known to be not in SPARK.
+
+      Spec_Violations (V).Include (Current_Entity);
    end Mark_Violation;
 
    procedure Mark_Violation
@@ -1022,7 +1044,7 @@ package body SPARK_Definition is
       N    : Node_Id;
       From : Entity_Id)
    is
-      E       : constant Entity_Id := Current_Entity;
+      E       : constant Entity_Id := Current_Toplevel_Entity;
       Is_Body : constant Boolean := In_Toplevel_Subprogram_Body;
 
    begin
@@ -1068,6 +1090,15 @@ package body SPARK_Definition is
       else
          Inherit_Violations (Spec_Violations, From => From, To => E);
       end if;
+
+      --  Also record that the current entity is not in SPARK. This is in
+      --  particular needed for class-wide types, which may be seen in the
+      --  context of different toplevel entities. So marking the first toplevel
+      --  entity as not SPARK is not sufficient, as the class-wide type has now
+      --  been marked as seen, but it is also visible in the context of other
+      --  toplevel entities, where it should be known to be not in SPARK.
+
+      Inherit_Violations (Spec_Violations, From => From, To => Current_Entity);
    end Mark_Violation;
 
    ------------------------------
