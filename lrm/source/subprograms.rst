@@ -938,4 +938,4 @@ Expression Functions
 Contract_Cases, Global and Depends aspects may be applied to an expression
 function as for any other function declaration if it does not have a separate
 declaration.  If it has a separate declaration then the aspects are applied to
-that.  It may have refined aspects applied (see :ref:`refinement-rationale`).
+that.  It may have refined aspects applied (see :ref:`state_refinement`).
