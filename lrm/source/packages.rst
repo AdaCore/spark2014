@@ -335,9 +335,6 @@ There are no dynamic semantics associated with these aspects.
 Abstract State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-Language Definition
-^^^^^^^^^^^^^^^^^^^
-
 State abstraction provides a mechanism for naming, in a package’s visible part,
 state (typically a collection of variables) that will be declared within the
 package’s body (its hidden state). For example, a package declares a visible
@@ -538,9 +535,6 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
 Initializes Aspect
 ~~~~~~~~~~~~~~~~~~
 
-Language Definition
-^^^^^^^^^^^^^^^^^^^
-
 The Initializes aspect specifies the visible variables and state abstractions of
 a package that are initialized by the elaboration of the package.  In |SPARK|
 a package may only initialize variables declared immediately within the package.
@@ -659,9 +653,6 @@ There are no dynamic semantics associated with the Initializes Aspect.
 Initial Condition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Language Definition
-^^^^^^^^^^^^^^^^^^^
-
 The Initial Condition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` shall
 be a *Boolean_*\ ``expression``.
@@ -778,9 +769,9 @@ State Refinement
 A ``state_name`` declared by an Abstract State aspect in the specification of a
 package denotes an abstraction representing all or part of its hidden state. The
 declaration must be completed in the package body by a Refined State aspect. The
-Refined_State aspect is used to show for each ``state_name`` which variables and
-subordinate state abstractions are represented by the ``state_name`` and are 
-known as its *constituents*.
+Refined_State aspect defines a *refinement* for each ``state_name`` which 
+denotes the variables and subordinate state abstractions are represented by the 
+``state_name`` and are known as its *constituents*.
 
 In the body of a package the constituents of the refined ``state_name``, the
 *refined view*, have to be used rather than the *abstract view* of the
@@ -791,34 +782,9 @@ In the refined view the constituents of each ``state_name`` has to be
 initialized consistently with their appearance or omission from the Initializes
 aspect of the package.
 
-.. todo:: Check if the following section should be removed (it has already been copied to the HLR parking lot)
-
-.. _refinement-rationale:
-
-Common Rationale for Refined Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Where it is possible to specify subprogram behavior using a language feature that
-refers to abstract state, it should be possible to define a corresponding *refined*
-version of the language feature that refers to the decomposition of that abstract state.
-
-The rationale for this is as follows:
-
-#. The semantics of properties defined in terms of abstract state
-   can only be precisely defined in terms of the corresponding concrete state,
-   though nested abstraction is also necessary to manage hierarchies of data.
-
-#. There may be multiple possible refinements for a given abstract specification
-   and so the user should be able to specify what they actually want.
-
-#. This is necessary to support development via stepwise refinement.
-
 
 Refined State Aspect
 ~~~~~~~~~~~~~~~~~~~~
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 The Refined State aspect is introduced by an ``aspect_specification`` where the
 ``aspect_mark`` is "Refined_State" and the ``aspect_definition`` shall follow
@@ -1153,18 +1119,6 @@ which reside in another package, initialization by their declaring package.
 Refined Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: The consistency rules will be updated as the
-          model for volatile variables is defined.
-          To be completed in the Milestone 3 version of this document.
-
-.. todo:: If it ends up being possible to refine null abstract state, then refinements of such
-          state could appear in refined globals statements, though they would need
-          to have mode in out.
-          To be completed in the Milestone 3 version of this document.
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
-
 A subprogram declared in the visible part of a package may have a Refined Global
 aspect applied to its body or body stub. A Refined Global aspect of a subprogram
 defines a *refinement* of the Global Aspect of the subprogram; that is, the
@@ -1267,19 +1221,6 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 Refined Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: The consistency rules will be updated as the
-          model for volatile variables is defined.
-          To be completed in the Milestone 3 version of this document.
-
-.. todo:: If it is possible to refine null abstract state, then refinements of such
-          state could appear in refined depends statements, but wouldn't map to
-          anything in the depends relation itself and would need to have mode in/out
-          in the refined depends.
-          To be completed in the Milestone 3 version of this document.
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
-
 A subprogram declared in the visible part of a package may have a Refined
 Depends aspect applied to its body or body stub. A Refined Depends aspect of a
 subprogram defines a *refinement* of the Depends aspect of the subprogram; that
@@ -1369,9 +1310,6 @@ as it is used purely for static analysis purposes and is not executed.
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Language Definition
-^^^^^^^^^^^^^^^^^^^
-
 A subprogram declared in the visible part of a package may have a Refined
 Precondition aspect applied to its body or body stub. The Refined Precondition
 may be used to restate a precondition given on the declaration of a subprogram
@@ -1422,9 +1360,6 @@ be a Boolean ``expression``.
 
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 A subprogram declared in the visible part of a package may have a Refined
 Postcondition aspect applied to its body or body stub. The Refined Postcondition
