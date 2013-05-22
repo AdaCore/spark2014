@@ -1714,17 +1714,6 @@ applies here, so a private type without discriminants is in
 if its discriminants are in |SPARK|.
 
 
-.. centered:: **Legality Rules**
-
-#. If a private type or private extension lacks unknown discriminants,
-   then the full view shall define full default initialization. [In other words,
-   if a client seeing the private view can declare an object of the type without
-   explicitly initializing it, then the resulting object shall be fully
-   initialized.]
-
-#. The full type declaration of a private type declaration shall not be 
-   specified as Volatile either by an Volatile aspect or by pragma Volatile.
-
 Private Operations
 ~~~~~~~~~~~~~~~~~~
 

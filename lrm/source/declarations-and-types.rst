@@ -22,17 +22,15 @@ A type is said to *define full default initialization* if it is
   * a record type or type extension each of whose component_declarations
     either includes a default_value or has a type which defines full
     default initialization and, in the case of a type extension, is
-    an extension of a type which defines default initialization; or
- 
-  * a private type which lacks unknown discriminants.
+    an extension of a type which defines default initialization.
+    [The enforcement of this rule requires looking at the 
+    ``full_type_declaration`` of a ``private_type`` declaration to determine
+    whether the private type has a default initialization.  A future version of
+    |SPARK| may introduce extra features to avoid having to do this.]
+
 
 [The discriminants of a discriminated type play no role in determining
 whether the type defines full default initialization.]
-
-[A rule is given later in this document requiring that the full view
-of a private type which lacks unknown discriminants shall
-define full default initialization. That makes possible the above definition
-for a private type (which does not refer to the type's full view).]
 
 
 Types and Subtypes
