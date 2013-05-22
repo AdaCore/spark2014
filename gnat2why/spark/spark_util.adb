@@ -57,6 +57,25 @@ package body SPARK_Util is
    ------------------------------------
 
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean is
+
+      procedure Skip_Generated_Components (Component : in out Entity_Id);
+      --  If Component is a compiler generated component, skip it and the
+      --  following compiler generated components, until a component coming
+      --  from source is reached. Otherwise, set Component to Empty.
+
+      -------------------------------
+      -- Skip_Generated_Components --
+      -------------------------------
+
+      procedure Skip_Generated_Components (Component : in out Entity_Id) is
+      begin
+         while Present (Component)
+           and then not Comes_From_Source (Component)
+         loop
+            Component := Next_Component_Or_Discriminant (Component);
+         end loop;
+      end Skip_Generated_Components;
+
       Typ         : constant Entity_Id := Underlying_Type (Etype (N));
       Assocs      : List_Id;
       Component   : Entity_Id;
@@ -72,7 +91,9 @@ package body SPARK_Util is
          Component   := First_Component_Or_Discriminant (Typ);
          Association := First (Assocs);
 
-         while Component /= Empty loop
+         Skip_Generated_Components (Component);
+
+         while Present (Component) loop
             if Present (Association)
               and then Matching_Component_Association (Component, Association)
             then
@@ -83,7 +104,9 @@ package body SPARK_Util is
             else
                return False;
             end if;
+
             Component := Next_Component_Or_Discriminant (Component);
+            Skip_Generated_Components (Component);
          end loop;
 
       else
