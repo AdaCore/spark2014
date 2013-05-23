@@ -581,8 +581,8 @@ from a collection of guidelines.
 
 .. _ghost_entities:
 
-Ghost Entities
-~~~~~~~~~~~~~~
+Ghost Functions
+~~~~~~~~~~~~~~~
 
 Often extra entities, such as types, variables and functions may be required
 only for test and verification purposes. Such entities are termed *ghost*
@@ -590,8 +590,8 @@ entities and their use should be restricted to places where they do not affect
 the functionality of the program, which means they could be completely
 removed from the program without any functional impact.
 
-|SPARK| supports ghost functions that may be executable or
-non-executable. Non-executable ghost functions have no implementation and can be
+|SPARK| currently supports ghost functions - though not ghost types or variables -
+which functions may be executable or non-executable. Non-executable ghost functions have no implementation and can be
 used for the purposes of formal verification only. Such functions may have their
 specification defined within an external proof tool to facilitate formal verification.
 This specification is
@@ -606,12 +606,6 @@ it both the postcondition and the implementation of the function. This is
 useful, particularly for ghost functions, as the expression which acts as the
 postcondition may not give the most efficient implementation but if the function
 is a ghost function this may not matter.
-
-*Further Ghost entities are to be added in future drafts of this document.*
-
-.. todo::
-   Complete detail on Ghost Entities.
-   To be completed in the Milestone 3 version of this document.
 
 .. _verific_modes:
 
