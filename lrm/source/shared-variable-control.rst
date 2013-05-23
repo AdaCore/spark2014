@@ -11,9 +11,8 @@ and objects in |SPARK|:
 #. A volatile representation aspect may only be applied to an 
    ``object_declaration`` or a ``full_type_declaration``.
    
-#. A component of a ``record_type_declaration``  or an 
-   ``array_type_declaration`` shall not be of a volatile type or explicitly
-   specified as volatile. 
+#. A component of a non-volatile type declaration shall not be volatile.
+   
    [This may require determining whether a private type is volatile.]
    
    [The above two rules may be relaxed in a future version.]
@@ -24,7 +23,7 @@ and objects in |SPARK|:
 
 #. Neither a tagged type nor an object of such a type shall be volatile.
 
-#. A volatile variable shall not be declared within the body of a function,
-   not even within subprograms and blocks nested inside the function.
+#. A volatile variable shall not be declared within the body of a function, 
+   directly or indirectly.
    
 

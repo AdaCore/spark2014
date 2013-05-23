@@ -105,12 +105,13 @@ updating the value of the variable. Similarly, if it is Output_Only it is
 expected that there are external readers to be consuming the output values. 
 Either of these require external agents of some kind, which implies volatility.]
 
-|SPARK| aspects are defined for specifying a variable as an external input only
-or an external output only (see :ref:`external_aspects`) and a state abstraction
-may be specified as external and, either input only or output only, or
-non-volatile when it is declared by an Abstract_State aspect (see
-:ref:`abstract-state-aspect`).
-
+|SPARK| aspects are defined for specifying a variable as an input only
+or an output only [Ada aspects are used for specifying volatility and whether
+the variable is external] see :ref:`external_aspects`).  When a state 
+abstraction is declared by an Abstract_State aspect (see
+:ref:`abstract-state-aspect`) it may be specified as external, in which it may 
+be also specified as either input only or output only, or it may be specified as 
+non-volatile.
 
 .. centered:: **Static Semantics**
 
@@ -167,64 +168,34 @@ non-volatile when it is declared by an Abstract_State aspect (see
 
 .. _external_aspects:
 
-External, Input_Only and Output_Only Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Input_Only and Output_Only Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A variable which represents a communication channel with an external entity,
-for instance a transducer, subsystem, or program may be specified as an
-external state. If it is a volatile variable it has to be specified as an
-external state which is an input only or an output only. The Boolean 
-aspects External, Input_Only and Output_Only are used for this specification.
-There is no aspect to indicate a non-volatile object.  The absence of the
-Ada Volatile specification implies that the object is non-volatile.
-Alternatively, it may be specified explicitly using Volatile => False.
+for instance a transducer, subsystem, or program is considered to an 
+*external variable* if it is Volatile or is declared with an Ada Address,
+Import, or Export specification (either using an aspect or a pragma).
+
+An external variable is an external volatile state if it is specified with 
+volatile True otherwise it is an external non-volatile state.
+
+if If it is a volatile variable it has to be specified as an an input only or 
+an output only external state. The Boolean Input_Only and Output_Only are used 
+for this specification.
 
 .. centered:: **Legality Rules**
 
-#. An External, Input_Only or Output_Only aspect may only be specified for an 
-   ``object_declaration``, a ``full_type_declaration`` or a 
-   ``private_type_declaration``.
-
-#. The Boolean expression of the aspect definitions of the External, Input_Only 
-   or Output_Only aspects shall be a static.
-
-#. If a type declaration is specified with the aspect External True it may
-   specify at most one of the aspects Input_Only or Output_Only as True.  If 
-   and only if one of these aspects is True, then it, or if it is a
-   ``private_type_declaration`` its ``full_type_declaration``, shall also be 
-   specified with the aspect Volatile True.
-
-#. If an External, Input_Only or Output_Only aspect is applied to a type 
-   declaration, it applies to object declarations of that type and such a
-   declaration shall not override these aspects when they are specified for the
-   type. Similarly the aspects specified for a ``private_type_declaration``
-   shall not be override by aspect specifications on its
-   ``full_type_declaration``.
-
-#. In |SPARK| an individual component of a record or components of an array 
-   shall not be of a volatile type or specified as Volatile (see
-   shared_variable_control) this in turn means that an individual components of
-   a record or array shall not be specified as Input_Only or Output_Only True.
-   This rule is extended to include the aspect External which also shall not be
-   specified for an individual components of records or arrays. [This rule may
-   be relaxed in a future version of SPARK.]
-   
-#. An object declared with an External True specification, either explicitly
-   on the declaration or implicitly through the declaration of the object's type
-   shall also have at least one of the following aspects specified Import, 
-   Export, Address.
-   
-#. If the Volatile aspect of an object declared by an object_declaration
-   is True, then exactly one of the Input_Only and Output_Only aspects
-   of the object shall be True.  [This rule may be relaxed in a future version
-   of SPARK.] A variable with a True Input_Only specification is an 
+#. Exactly one of an Input_Only or Output_Only aspect shall be specified as True
+   in an ``object_declaration`` which is of a volatile type or specified as 
+   volatile. A variable with a True Input_Only specification is an 
    *external input*; a variable with a True Output_Only specification is an 
    *external output*.
+   [The rule that a volatile variable shall be either an input or an output
+   only may be relaxed in a future version of SPARK.]
    
-#. An object whose declaration specifies it as External shall only be used as
-   an actual parameter in a subprogram call if the corresponding formal 
-   parameter has a type which is specified as External.
-    
+#. The Boolean expression of the aspect definitions of the Input_Only 
+   or Output_Only aspects shall be static.
+
 #. Contrary to the general SPARK 2014 rule that expression evaluation
    cannot have side effects, a read of a volatile variable is considered to have
    side effects. To reconcile this discrepancy, a name denoting an external
@@ -239,8 +210,7 @@ Alternatively, it may be specified explicitly using Volatile => False.
      whose result is renamed [in an object renaming declaration]; or
      
    * as an actual parameter in a procedure call of which the corresponding 
-     formal parameter is mode **in** and is of an External non-scalar volatile 
-     type.
+     formal parameter is mode **in** and is of a non-scalar volatile type.
 
 #. A name denoting an external output shall only occur in the following
    contexts:
@@ -248,8 +218,8 @@ Alternatively, it may be specified explicitly using Volatile => False.
    * as the name on the left-hand side of an assignment statement; or
    
    * as an actual parameter in a procedure call of which the mode of the 
-     corresponding formal parameter is **out** and is of an External, 
-     non-scalar, Volatile type.
+     corresponding formal parameter is **out** and is of a non-scalar, volatile 
+     type.
    
 #. See section on volatile variables for rules concerning their use in |SPARK|
    (:ref:`shared_variable_control`).
@@ -276,7 +246,6 @@ There are no dynamic semantics associated with these aspects.
 
       Sensor : Integer
          with Volatile,
-              External,
               Input_Only,
               Address => System.Storage_Units.To_Address (16#ACECAFE#);
 
@@ -286,7 +255,7 @@ There are no dynamic semantics associated with these aspects.
    with System.Storage_Units;
    package Multiple_Ports
    is
-      type Volatile_Type is new Integer with External, Volatile;
+      type Volatile_Type is new Integer with Volatile;
    
       -- Read_Port may only be called with an actual parameter for Port
       -- which is an external input only
@@ -309,12 +278,11 @@ There are no dynamic semantics associated with these aspects.
       
       V_In_2 : Integer
       with
-         External,
          Volatile,
          Input_Only,
          Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
-      -- The following declarations are all volatile output only variables      
+      -- The following declarations are all external output only variables      
       V_Out_1 : Volatile_Type 
       with 
          Output_Only,
@@ -322,10 +290,15 @@ There are no dynamic semantics associated with these aspects.
       
       V_Out_2 : Integer
       with
-         External,
          Volatile,
          Output_Only,
          Address => System.Storage_Units.To_Address (16#ADACAFE#);
+        
+      -- The following is a declaration of a non-volatile external variable
+      V_Non_Volatile : Integer
+      with
+         Address => System.Storage_Units.To_Address (16#BEECAFE#);
+        
 
    end Multiple_Ports;
             
@@ -1027,23 +1000,32 @@ is part of and a state abstraction always knows all of its constituents.
      a Part_Of indicator; and
      
    * in its Refined_State aspect, denote each declaration associated with such a
-     Part_Of indicator as a ``constituent`` exclusively of the encapsulating state 
-     abstraction.
+     Part_Of indicator as a ``constituent`` exclusively of the encapsulating 
+     state abstraction.
    
    [The units that need to be with'd is known from the ``limited_with_clauses``
    on its specification and from this it is known which declarations have a
    Part_Of indicator for a encapsulating state abstraction.]
 
-#. Other than in the body of a unit that contains the State_Refinement aspect
-   which defines the constituents of a state abstraction, where both a state
-   abstraction and one or more of its constituents are visible, only the
-   state abstraction may be denoted in Global and Depends aspects of a 
-   subprogram or the Initializes or Initial_Condition aspects of a package. 
-   [This rule still permits the denotation of either or both the state
-   abstraction and its constituents in the implementation of the subprogram or
-   package. The Part_Of indicator of the declaration of the constituent
-   facilitates resolution of the two views.]
+#. A state abstraction or variable declared with a Part_Of indicator shall not 
+   be denoted in the visible or private part of a package specification other
+   than in the package specification containing the declaration.
    
+#. A package specification declaring a state abstraction or variable with a 
+   Part_Of indicator shall not, in its visible or private part, denote
+   the encapsulating state abstraction apart from where it is specified in the 
+   Part_Of indicator.
+   
+#. A state abstraction shall not be denoted in the private part of the package
+   in which it is declared except for where it is denoted as an encapsulating
+   state abstraction in a Part_Of indicator.
+   
+#. In a package body where both a state abstraction and some or all of its
+   ``constituents`` are visible [via the Part_Of_Indicator] and the refinement
+   of the state abstraction is not visible, either the state abstraction or its
+   constituents may be denoted. [The Part_Of indicator is used to determine
+   which state abstraction a ``constituent`` is a part of.]
+
 .. centered:: **Examples**
 
 .. code-block:: ada
@@ -1088,6 +1070,90 @@ is part of and a state abstraction always knows all of its constituents.
        Z : T3;  -- hidden state
        ...
     end P.Pub;
+
+    
+    package Outer 
+    with 
+       State_Abstraction => A1, A2 
+    is
+      procedure Init_A1
+      with
+         Global  => (Output => A1),
+         Depends => (A1 => null);
+         
+      procedure Init_A2
+      with
+         Global  => (Output => A2),
+         Depends => (A2 => null);
+              
+    private
+       -- A variable declared in the private part must have a Part_Of aspect
+       Hidden_State : Integer with Part_Of => A2;
+       
+       package Inner 
+       with 
+          State_Abstraction => (B1 => (with Part_Of => Outer.A1)) 
+       is                    -- package specification of Inner we cannot denote
+                             -- A1 in the declarations of Inner as B1 is a part of A1.
+          procedure Init_B1 
+          with 
+             Global  => (Output => B1), 
+             Depends => (B1 => null);
+            
+          procedure Init_A2  -- A2 cannot be denoted in the private part but
+          with               -- Outer.Hidden_State may be denoted which is Part_Of A2
+             Global  => (Output => Outer.Hidden_State),
+             Depends => (Outer.Hidden_State => null);            
+       end Inner;
+    end Outer;
+    
+   package body Outer 
+   with 
+      Refined_State => ((A1 => Inner.B1),
+                         A2 => Hidden_State))
+   is                        -- Outer.A1 and Outer.A2 cannot be denoted in the
+                             -- body of Outer because their refinements are visible      
+      package body Inner 
+      with          
+         Refined_State => (B1 => null)
+      is                     -- Oh - there isn't any state after all
+      procedure Init_B1 
+         with                -- Refined Globals and Depends of a null refinement
+            Refined_Global  => null,
+            Refined_Depends => null
+         is
+         begin
+            null;
+         end Init_B1;
+         
+         procedure Init_A2
+         is                   -- Refined Global and Depends aspects not required
+         begin                -- because there is no refinement of Outer.Hidden_State
+            Outer.Hidden_State := 0;
+         end Init_A2;
+         
+      end Inner;
+      
+      procedure Init_A1
+      with 
+         Refined_Global  => (Output => B1),
+         Refined_Depends => (B1 => null)
+      is
+      begin
+         Inner.Init_B1;
+      end Init_A1;
+
+      procedure Init_A2 
+      with
+         Refined_Global  => (Output => Hidden_State),
+         Refined_Depends => (Hidden_State => null)
+      is
+      begin
+         Inner.Init_A2;
+      end Init_A2;
+
+    end Outer;
+
 
 Initialization Refinement
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1444,7 +1510,7 @@ abstraction on to external states which are given in this section.
 .. centered:: **Legality Rules**
 
 #. An state abstraction that is not specified as External shall not have 
-   ``constituents`` which are specified as External states.
+   ``constituents`` which are External states.
    
 #. An External, Non_Volatile state abstraction shall only have ``constituents``
    that are External, Non_Volatile states and, or, non External states.
@@ -1462,9 +1528,9 @@ abstraction on to external states which are given in this section.
 #. A subprogram declaration that has a Global aspect denoting a plain External
    state abstraction with a ``mode_selector`` Input, and the refinement of the
    state abstraction is visible at the point of the Refined_Global aspect,
-   shall only denote ``constituents`` of the state abstraction that are 
-   non-volatile External states or are not External states in the Refined_Global
-   aspect.
+   shall denote, in the Refined_Global aspect, only ``constituents`` of the 
+   state abstraction that are non-volatile External states or are not External 
+   states.
    
 #. A subprogram declaration that has a Global aspect denoting a plain External
    state abstraction and the Refined_Global aspect of the subprogram denotes one
@@ -1588,14 +1654,12 @@ abstraction on to external states which are given in this section.
       Out_Reg : Integer
       with
          Volatile,
-         External,
          Output_Only,
          Address  => System.Storage_Units.To_Address (16#ACECAFE#);
                            
       In_Reg : Integer
       with
          Volatile,
-         External,
          Input_Only,
          Address  => System.Storage_Units.To_Address (16#A11CAFE#);
                            
