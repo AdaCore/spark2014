@@ -697,7 +697,7 @@ Hence, it must be possible within the language to indicate what parts are
 (intended to be) in and what parts are (intended to be) out, of |SPARK|.
 
 The default is to assume all of the program text is in |SPARK|, although this
-could be overridden. A new aspect is provided, which may be applied to a unit
+could be overridden. A new aspect  -- SPARK_Mode -- is provided, which may be applied to a unit
 declaration or a unit body, to indicate when a unit declaration or just its body
 is not in SPARK and should not be analyzed. If just the body is not in |SPARK| a
 |SPARK| compatible contract may be supplied on the declaration which facilitates
@@ -764,10 +764,7 @@ only part of a program is formally verified.  Thus, combining these results
 with other verification results depends on the verification of global and local
 assumptions made during formal verification.
 
-*No further detail is given in the current draft of this document on
-mixing code that is in and out of SPARK 2014. Although there are a number of places where
-a statement is given on what is in or out of SPARK 2014, that information is not yet complete
-and nothing further is given on how it should be used.*
+Full details on the SPARK_Mode aspect are given in the SPARK Toolset User Guide (reference TBD).
 
 .. todo::
    We need to consider what might need to be levied on the non-|SPARK| code in order for flow
