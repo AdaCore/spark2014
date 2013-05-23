@@ -1007,24 +1007,20 @@ is part of and a state abstraction always knows all of its constituents.
    on its specification and from this it is known which declarations have a
    Part_Of indicator for a encapsulating state abstraction.]
 
-#. A state abstraction or variable declared with a Part_Of indicator shall not 
-   be denoted in the visible or private part of a package specification other
-   than in the package specification containing the declaration.
+#. If both a state abstraction and one or more of its ``constituents`` are 
+   visible in a private package specification or in the package specification of
+   a non-private descendant of a a private package, then only the
+   ``constituents`` and not the state abstraction may be denoted in the
+   declarations of the package specification.
+
+#. In a public package specification only state abstractions may be denoted,
+   not their ``constituents``. The exclusion to this rule is that for
+   private parts of a package given below.
    
-#. A package specification declaring a state abstraction or variable with a 
-   Part_Of indicator shall not, in its visible or private part, denote
-   the encapsulating state abstraction apart from where it is specified in the 
-   Part_Of indicator.
-   
-#. A state abstraction shall not be denoted in the private part of the package
-   in which it is declared except for where it is denoted as an encapsulating
-   state abstraction in a Part_Of indicator.
-   
-#. In a package body where both a state abstraction and some or all of its
-   ``constituents`` are visible [via the Part_Of_Indicator] and the refinement
-   of the state abstraction is not visible, either the state abstraction or its
-   constituents may be denoted. [The Part_Of indicator is used to determine
-   which state abstraction a ``constituent`` is a part of.]
+#. In the private part of a package a state abstraction declared by the
+   package shall not be denoted other than for specifying it as the 
+   encapsulating state in the Part_Of indicator. The state abstraction's
+   ``constituents`` declared in the private part may be denoted.
 
 .. centered:: **Examples**
 
@@ -1074,7 +1070,7 @@ is part of and a state abstraction always knows all of its constituents.
     
     package Outer 
     with 
-       State_Abstraction => A1, A2 
+       Abstract_State => A1, A2 
     is
       procedure Init_A1
       with
@@ -1091,10 +1087,10 @@ is part of and a state abstraction always knows all of its constituents.
        Hidden_State : Integer with Part_Of => A2;
        
        package Inner 
-       with 
-          State_Abstraction => (B1 => (with Part_Of => Outer.A1)) 
-       is                    -- package specification of Inner we cannot denote
-                             -- A1 in the declarations of Inner as B1 is a part of A1.
+       with                  -- State abstraction declared in the private part 
+                             -- must have a Part_Of option
+          Abstract_state => (B1 => (with Part_Of => Outer.A1)) 
+       is                    -- A1 cannot be denoted in the private part
           procedure Init_B1 
           with 
              Global  => (Output => B1), 
@@ -1153,6 +1149,98 @@ is part of and a state abstraction always knows all of its constituents.
       end Init_A2;
 
     end Outer;
+
+    package Q
+    with 
+       Abstract_State => Q1, Q2
+    is
+       -- Q1 and Q2 may be denoted here
+       procedure Init_Q1
+       with
+       Global  => (Output => Q1),
+       Depends => (Q1 => null);
+   
+       procedure Init_Q2
+       with
+       Global  => (Output => Q2),
+       Depends => (Q2 => null);
+   
+   private
+      -- Q1 and Q2 may only be denoted as the encapsulating state abstraction
+      Hidden_State : Integer with Part_Of => Q2;
+   end Q;
+
+   limited with Q;
+   private package Q.Child
+   with
+      Abstract_State => (C1 with Part_Of => Q.Q1)
+   is
+      -- Only constituents of Q1 and Q2 may be denoted here
+      procedure Init_Q1
+      with
+         Global  => (Output => C1),
+         Depends => (C1 => null);
+   
+      procedure Init_Q2
+      with
+         Global  => (Output => Q.Hidden_State),
+         Depends => (Q.Hidden_State => null);
+   end Q.Child;
+
+   with Q;
+   package body Q.Child
+   with
+      Refined_State => (C1 => Actual_State)
+   is
+      -- C1 may not be denoted here - only Actual_State
+      -- but Q.Hidden_State may be denoted 
+      Actual_State : Integer;
+      
+      procedure Init_Q1
+      with
+        Refined_Global  => (Output => Actual_State),
+        Refined_Depends => (Actual_State => null);
+      is
+      begin
+         Actual_State := 0;
+      end Init_Q1;
+   
+      procedure Init_Q2
+      is
+      begin
+         Q.Hidden_State := 0;
+      end Init_Q2;
+     
+   end Q.Child;
+
+   with Q.Child;
+   package body Q
+   with 
+      Refined_State => (Q1 => Q.Child.C1, Q2 => Hidden_State)
+   is
+      -- Q1 and Q2 may not be denoted here but the constituents
+      -- Q.Child.C1 and Hidden_State may be
+      
+      procedure Init_Q1
+      with
+         Refined_Global  => (Output => Q.Child.C1),
+         Refined_Depends => (Q.Child.C1 => null)
+      is
+      begin
+         Q.Child.Init_Q1;
+      end Init_Q1;
+   
+      procedure Init_Q2
+      with
+        Refined_Global  => (Output => Hidden_State),
+        Refined_Depends => (Hidden_State => null)
+      is
+      begin
+         Q.Child.Init_Q2;
+      end Init_Q2;
+   
+   end Q;
+
 
 
 Initialization Refinement
