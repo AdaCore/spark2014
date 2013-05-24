@@ -3766,88 +3766,115 @@ package body Gnat2Why.Expr is
                                        Domain, Current_Type);
 
          when N_Op_Compare =>
-            declare
-               Left      : constant Node_Id := Left_Opnd (Expr);
-               Right     : constant Node_Id := Right_Opnd (Expr);
-               BT        : constant W_Base_Type_Id :=
-                             Base_Why_Type (Left, Right);
-               Subdomain : constant EW_Domain :=
-                             (if Domain = EW_Pred then EW_Term else Domain);
-               Left_Arg  : constant W_Expr_Id :=
-                             Transform_Expr (Left, BT, Subdomain,
-                                             Local_Params);
-               Right_Arg : constant W_Expr_Id :=
-                             Transform_Expr (Right, BT, Subdomain,
-                                             Local_Params);
-            begin
-               if Is_Array_Type (Etype (Left)) then
-                  T := New_Call
-                    (Ada_Node => Expr,
-                     Domain   => Subdomain,
-                     Name     =>
-                       Prefix
-                         (Ada_Node => Etype (Left),
-                          S        =>
-                            To_String
-                              (Ada_Array_Name
-                                   (Number_Dimensions (Type_Of_Node (Left)))),
-                          W        => WNE_Bool_Eq),
-                                 Args     =>
-                                   (1 => Left_Arg,
-                                    2 => Right_Arg));
-                  if Domain = EW_Pred then
-                     T := New_Comparison
-                       (Cmp       => Transform_Compare_Op (Nkind (Expr)),
-                        Left      => T,
-                        Right     => New_Literal (Domain => Subdomain,
-                                                  Value  => EW_True),
-                        Arg_Types => EW_Bool_Type,
-                        Domain    => Domain);
-                  elsif Nkind (Expr) = N_Op_Ne then
-                     T :=
-                       New_Call (Domain => Domain,
-                                 Name   => To_Ident (WNE_Bool_Not),
-                                 Args   => (1 => T));
-                  end if;
-               elsif Is_Record_Type (Etype (Left)) then
-                  pragma Assert (Root_Record_Type (Etype (Left)) =
-                                   Root_Record_Type (Etype (Right)));
-                  pragma Assert (Root_Record_Type (Etype (Left)) =
-                                   Get_Ada_Node (+BT));
-                  T :=
-                    New_Call
-                      (Ada_Node => Expr,
-                       Domain   => Subdomain,
-                       Name     =>
-                         Prefix (Ada_Node => Get_Ada_Node (+BT),
-                                 S        => Full_Name (Get_Ada_Node (+BT)),
-                                 W        => WNE_Bool_Eq),
-                       Args     => (1 => Left_Arg,
-                                    2 => Right_Arg));
-                  if Domain = EW_Pred then
-                     T := New_Comparison
-                       (Cmp       => Transform_Compare_Op (Nkind (Expr)),
-                        Left      => T,
-                        Right     => New_Literal (Domain => Subdomain,
-                                                  Value  => EW_True),
-                        Arg_Types => EW_Bool_Type,
-                        Domain    => Domain);
-                  elsif Nkind (Expr) = N_Op_Ne then
-                     T :=
-                       New_Call (Domain => Domain,
-                                 Name   => To_Ident (WNE_Bool_Not),
-                                 Args   => (1 => T));
-                  end if;
-               else
-                  T := New_Comparison
-                    (Cmp       => Transform_Compare_Op (Nkind (Expr)),
-                     Left      => Left_Arg,
-                     Right     => Right_Arg,
-                     Arg_Types => BT,
-                     Domain    => Domain);
-               end if;
+
+            --  special case for equality between Booleans in predicates
+
+            if Domain = EW_Pred and then
+              Nkind (Expr) = N_Op_Eq and then
+              Etype (Left_Opnd (Expr)) = Standard_Boolean then
+               T :=
+                 New_Connection
+                   (Domain => EW_Pred,
+                    Left   =>
+                      Transform_Expr
+                        (Left_Opnd (Expr),
+                         EW_Bool_Type,
+                         EW_Pred,
+                         Local_Params),
+                    Right  =>
+                      Transform_Expr
+                        (Right_Opnd (Expr),
+                         EW_Bool_Type,
+                         EW_Pred,
+                         Local_Params),
+                    Op     => EW_Equivalent);
                Current_Type := EW_Bool_Type;
-            end;
+            else
+               declare
+                  Left      : constant Node_Id := Left_Opnd (Expr);
+                  Right     : constant Node_Id := Right_Opnd (Expr);
+
+                  BT        : constant W_Base_Type_Id :=
+                    Base_Why_Type (Left, Right);
+                  Subdomain : constant EW_Domain :=
+                    (if Domain = EW_Pred then EW_Term else Domain);
+                  Left_Arg  : constant W_Expr_Id :=
+                    Transform_Expr (Left, BT, Subdomain,
+                                    Local_Params);
+                  Right_Arg : constant W_Expr_Id :=
+                    Transform_Expr (Right, BT, Subdomain,
+                                    Local_Params);
+               begin
+                  if Is_Array_Type (Etype (Left)) then
+                     T := New_Call
+                       (Ada_Node => Expr,
+                        Domain   => Subdomain,
+                        Name     =>
+                          Prefix
+                            (Ada_Node => Etype (Left),
+                             S        =>
+                               To_String
+                                 (Ada_Array_Name
+                                      (Number_Dimensions
+                                           (Type_Of_Node (Left)))),
+                             W        => WNE_Bool_Eq),
+                        Args     =>
+                          (1 => Left_Arg,
+                           2 => Right_Arg));
+                     if Domain = EW_Pred then
+                        T := New_Comparison
+                          (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+                           Left      => T,
+                           Right     => New_Literal (Domain => Subdomain,
+                                                     Value  => EW_True),
+                           Arg_Types => EW_Bool_Type,
+                           Domain    => Domain);
+                     elsif Nkind (Expr) = N_Op_Ne then
+                        T :=
+                          New_Call (Domain => Domain,
+                                    Name   => To_Ident (WNE_Bool_Not),
+                                    Args   => (1 => T));
+                     end if;
+                  elsif Is_Record_Type (Etype (Left)) then
+                     pragma Assert (Root_Record_Type (Etype (Left)) =
+                                      Root_Record_Type (Etype (Right)));
+                     pragma Assert (Root_Record_Type (Etype (Left)) =
+                                      Get_Ada_Node (+BT));
+                     T :=
+                       New_Call
+                         (Ada_Node => Expr,
+                          Domain   => Subdomain,
+                          Name     =>
+                            Prefix (Ada_Node => Get_Ada_Node (+BT),
+                                    S        => Full_Name (Get_Ada_Node (+BT)),
+                                    W        => WNE_Bool_Eq),
+                          Args     => (1 => Left_Arg,
+                                       2 => Right_Arg));
+                     if Domain = EW_Pred then
+                        T := New_Comparison
+                          (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+                           Left      => T,
+                           Right     => New_Literal (Domain => Subdomain,
+                                                     Value  => EW_True),
+                           Arg_Types => EW_Bool_Type,
+                           Domain    => Domain);
+                     elsif Nkind (Expr) = N_Op_Ne then
+                        T :=
+                          New_Call (Domain => Domain,
+                                    Name   => To_Ident (WNE_Bool_Not),
+                                    Args   => (1 => T));
+                     end if;
+                  else
+                     T := New_Comparison
+                       (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+                        Left      => Left_Arg,
+                        Right     => Right_Arg,
+                        Arg_Types => BT,
+                        Domain    => Domain);
+                  end if;
+                  Current_Type := EW_Bool_Type;
+               end;
+            end if;
 
          when N_Op_Minus =>
             --  unary minus
