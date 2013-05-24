@@ -47,6 +47,7 @@ ALI_DIR=$(INSTALLDIR)/lib/gnatprove
 GNATLIBDIR=$(GNATPROVEDIR)/stdlib
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
+GPS_PLUGIN_DIR=$(SHAREDIR)/gps/plug-ins
 STDLIB_TMP=stdlib_tmp
 DOC=ug alfa
 
@@ -87,9 +88,11 @@ install-all:
 install: install-stdlib
 	mkdir -p $(CONFIGDIR)
 	mkdir -p $(THEORIESDIR)
+	mkdir -p $(GPS_PLUGIN_DIR)
 	$(CP) share/gnatprove/config/*cgpr $(CONFIGDIR)
 	$(CP) share/gnatprove/theories/*why $(THEORIESDIR)
 	$(CP) share/gnatprove/theories/*mlw $(THEORIESDIR)
+	$(CP) gnatprove.py $(GPS_PLUGIN_DIR)
 
 doc: $(DOC)
 
