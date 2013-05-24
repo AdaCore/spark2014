@@ -478,9 +478,17 @@ takes 10 times the compilation time to complete. The automatic proof of logical
 formulas may take very long, or never terminate, hence the use of a timeout
 (default=1s) for each call to the automatic prover. It is this last step which
 takes the most time when calling |GNATprove| on a program, but it is also a
-step which can be completely parallelized: each logical formula can be proved
+step which can be completely parallelized (using switch ``-j`` to specify the
+number of parallel processes): each logical formula can be proved
 independently, so the more the number of available cores, the faster it
 completes.
+
+.. note::
+
+   The proof results presented in this tutorial may slightly vary from
+   the results you obtain on your machine, as the automatic prover may take
+   more or less time to complete a proof depending on the platform and machine
+   used.
 
 We start with the flow analysis of ``Search``, using the yet experimental mode
 ``flow`` of |GNATprove| reached through the ``Prove::Prove File`` menu:
@@ -498,6 +506,13 @@ message, or on line 21 in file ``search.adb``, to show the path on which
 ``Res.At_Index`` is not initialized:
 
 .. image:: static/search_flow_error.png
+
+.. note::
+
+   If you use the SPARK-HiLite GPL 2013 release, the way to display a path
+   in GPS is slightly different. Instead of clicking on an icon, you need
+   to right-click on the error message in the Location View, and select
+   ``Prove::Show Path`` in the contextual menu that is raised.
 
 This shows that, when the value is not found, indeed the component ``At_Index``
 of the value returned is not initialized. Although that's allowed in Ada,
@@ -671,6 +686,13 @@ the left of the message, or on line 35 in file ``search.ads``, to show the path
 on which the contract case is not proved:
 
 .. image:: static/search_path_info.png
+
+.. note::
+
+   If you use the SPARK-HiLite GPL 2013 release, the way to display a path
+   in GPS is slightly different. Instead of clicking on an icon, you need
+   to right-click on the error message in the Location View, and select
+   ``Prove::Show Path`` in the contextual menu that is raised.
 
 This corresponds to a case where the implementation of ``Loop_Search`` does not
 find the searched value, but the guard of the second contract case holds,
