@@ -377,7 +377,8 @@ compiling and running the test program:
 
 But only part of the program was really tested, as the contract was not checked
 during execution. To check the contract at run time, we recompile with the
-switch ``-gnata`` (``a`` for assertions):
+switch ``-gnata`` (``a`` for assertions, plus switch ``-f`` to force
+recompilation of sources that have not changed):
 
 * a check is inserted that the precondition holds on subprogram entry
 * a check is inserted that the postcondition holds on subprogram exit
@@ -394,7 +395,7 @@ run-time checks, an error is reported when running the test program:
 
 .. code-block:: bash
 
-   $ gnatmake -gnata test_search.adb
+   $ gnatmake -gnata -f test_search.adb
    $ test_search
    > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram linear_search
 
@@ -404,7 +405,7 @@ compiler with the switch ``-gnateE``:
 
 .. code-block:: bash
 
-   $ gnatmake -gnata -gnateE test_search.adb
+   $ gnatmake -gnata -gnateE -f test_search.adb
    $ test_search
    > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram linear_search
    >   case guard at search.ads:29 evaluates to True
