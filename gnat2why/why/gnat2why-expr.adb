@@ -1910,6 +1910,14 @@ package body Gnat2Why.Expr is
          Base_Type := Base_Why_Type (T_Type, Base_Type);
       end if;
 
+      --  Another special case for booleans: The above base type computations
+      --  return "bool" for Standard_Boolean, but in fact for a boolean range
+      --  we still want to have "int" here.
+
+      if Base_Type = EW_Bool_Type then
+         Base_Type := EW_Int_Type;
+      end if;
+
       return
         New_Range_Expr
           (Domain    => Domain,
@@ -4646,12 +4654,20 @@ package body Gnat2Why.Expr is
          Bool_True  : constant W_Expr_Id :=
            New_Literal (Domain => EW_Term,
                         Value  => EW_True);
-         Check_Expr : constant W_Expr_Id :=
+         Base_Type  : W_Base_Type_Id := Base_Why_Type (Var);
+         Check_Expr : W_Expr_Id;
+      begin
+
+         --  For ranges and membership, "bool" should be mapped to "int".
+
+         if Base_Type = EW_Bool_Type then
+            Base_Type := EW_Int_Type;
+         end if;
+         Check_Expr :=
            Transform_Expr (Var,
-                           Base_Why_Type (Var),
+                           Base_Type,
                            Subdomain,
                            Params);
-      begin
 
          --  First handle the case where there is a subtype mark of a record
          --  type on the right.
