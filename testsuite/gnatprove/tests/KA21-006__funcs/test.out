@@ -4,7 +4,7 @@ funcs.adb:102:20: info: assertion proved
 funcs.adb:105:7: info: assertion proved
 funcs.adb:106:20: info: assertion proved
 funcs.adb:107:7: info: assertion proved
-funcs.adb:108:20: info: assertion proved
+funcs.adb:108:20: assertion not proved, requires Y = Q5 (3)
 funcs.adb:53:58: info: postcondition proved
 funcs.adb:64:7: info: assertion proved
 funcs.adb:65:20: info: assertion proved

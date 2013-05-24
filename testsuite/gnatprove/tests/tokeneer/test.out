@@ -2,7 +2,7 @@
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
-admin.adb:121:13: assertion not proved
+admin.adb:121:13: info: assertion proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
 admin.adb:137:16: info: loop invariant preservation proved
@@ -227,29 +227,29 @@ enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
 enclave.adb:1316:24: info: precondition proved
 enclave.adb:1320:10: postcondition not proved
-enclave.adb:1344:19: precondition not proved
-enclave.adb:1349:24: precondition not proved
+enclave.adb:1344:19: info: precondition proved
+enclave.adb:1349:24: info: precondition proved
 enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: precondition not proved
 enclave.adb:1508:15: info: precondition proved
 enclave.adb:1523:24: info: precondition proved
 enclave.adb:1527:10: postcondition not proved
-enclave.adb:1537:17: precondition not proved
+enclave.adb:1537:17: info: precondition proved
 enclave.adb:1545:19: info: precondition proved
-enclave.adb:1568:19: precondition not proved
-enclave.adb:1573:24: precondition not proved
+enclave.adb:1568:19: info: precondition proved
+enclave.adb:1573:24: info: precondition proved
 enclave.adb:1800:19: info: precondition proved
 enclave.adb:1818:19: info: precondition proved
 enclave.adb:1823:24: info: precondition proved
 enclave.adb:1827:11: postcondition not proved
-enclave.adb:1850:19: precondition not proved
-enclave.adb:1873:19: precondition not proved
-enclave.adb:1878:24: precondition not proved
+enclave.adb:1850:19: info: precondition proved
+enclave.adb:1873:19: info: precondition proved
+enclave.adb:1878:24: info: precondition proved
 enclave.adb:1883:22: info: precondition proved
 enclave.adb:1885:17: info: precondition proved
 enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
-enclave.adb:1893:13: precondition not proved
+enclave.adb:1893:13: info: precondition proved
 enclave.adb:1896:13: precondition not proved
 enclave.adb:2079:13: precondition not proved
 enclave.adb:207:29: info: postcondition proved
@@ -276,7 +276,7 @@ enclave.adb:575:24: info: precondition proved
 enclave.adb:579:10: postcondition not proved
 enclave.adb:593:19: info: precondition proved
 enclave.adb:598:24: info: precondition proved
-enclave.adb:638:48: precondition not proved
+enclave.adb:638:48: info: precondition proved
 enclave.adb:697:29: info: postcondition proved
 enclave.adb:829:15: info: precondition proved
 enclave.adb:837:19: info: precondition proved
@@ -294,9 +294,9 @@ enclave.ads:576:19: info: precondition proved
 enclave.ads:585:19: info: precondition proved
 enclave.ads:590:24: info: precondition proved
 enclave.ads:594:7: postcondition not proved
-enclave.ads:621:19: precondition not proved
-enclave.ads:630:19: precondition not proved
-enclave.ads:635:24: precondition not proved
+enclave.ads:621:19: info: precondition proved
+enclave.ads:630:19: info: precondition proved
+enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
 file.adb:413:39: overflow check not proved
@@ -340,7 +340,7 @@ msgproc.adb:84:7: info: range check proved
 msgproc.adb:89:11: info: range check proved
 msgproc.adb:91:17: index check not proved
 msgproc.adb:97:45: overflow check not proved
-poll.ads:132:11: postcondition not proved
+poll.ads:132:11: info: postcondition proved
 screen-interfac.adb:7:14: info: range check proved
 screen.adb:813:10: info: range check proved
 spark_io.adb:440:13: info: range check proved
@@ -363,12 +363,12 @@ tismain.adb:707:21: info: precondition proved
 tismain.adb:712:26: info: precondition proved
 tismain.adb:718:21: info: precondition proved
 tismain.adb:742:10: postcondition not proved
-tismain.adb:757:21: precondition not proved
-tismain.adb:762:26: precondition not proved
-tismain.adb:768:21: precondition not proved
-tismain.adb:836:17: precondition not proved
+tismain.adb:757:21: info: precondition proved
+tismain.adb:762:26: info: precondition proved
+tismain.adb:768:21: info: precondition proved
+tismain.adb:836:17: info: precondition proved
 tismain.adb:839:17: precondition not proved
-tismain.adb:847:17: precondition not proved
+tismain.adb:847:17: info: precondition proved
 tokenapi.adb:73:8: range check not proved
 tokenreader-interfac.adb:120:43: range check not proved
 tokenreader-interfac.adb:55:7: range check not proved
@@ -384,4 +384,4 @@ userentry.adb:1299:13: precondition not proved
 userentry.adb:1303:13: precondition not proved
 userentry.adb:1307:13: precondition not proved
 userentry.adb:683:19: info: precondition proved
-userentry.adb:917:12: postcondition not proved, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
+userentry.adb:917:12: info: postcondition proved
