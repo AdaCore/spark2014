@@ -5,7 +5,9 @@ module Main
 
 (****************************** Generic Parameters ******************************)
 
-  type element_type
+  namespace import Element_type
+    type element_type
+  end 
 
   function oeq element_type element_type : bool
 

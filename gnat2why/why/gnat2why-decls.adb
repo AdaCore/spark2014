@@ -345,7 +345,9 @@ package body Gnat2Why.Decls is
       function Parse_Parameters
         (Assoc      : List_Id;
          Labs       : List_Id;
-         Clone_Name : String) return W_Clone_Substitution_Array;
+         Clone_Name : String;
+         Base_Th    : W_Theory_Declaration_Id)
+         return W_Clone_Substitution_Array;
       --  Creates the substitution for the generic parameter
       --  The substitution is then used to clone the axiomatization
 
@@ -724,7 +726,9 @@ package body Gnat2Why.Decls is
       function Parse_Parameters
         (Assoc      : List_Id;
          Labs       : List_Id;
-         Clone_Name : String) return W_Clone_Substitution_Array is
+         Clone_Name : String;
+         Base_Th    : W_Theory_Declaration_Id)
+         return W_Clone_Substitution_Array is
 
          function Get_Assoc_From_Param
            (CurAssoc : Node_Id;
@@ -753,10 +757,7 @@ package body Gnat2Why.Decls is
             CurLabs  : Node_Id := First (Labs);
          begin
             while Present (CurAssoc) loop
-               case Ekind (Get_Assoc_From_Param (CurAssoc, CurLabs)) is
-                  when Integer_Kind => Current := Current + 5;
-                  when others => Current := Current + 1;
-               end case;
+               Current := Current + 1;
                Next (CurAssoc);
                Next (CurLabs);
             end loop;
@@ -787,71 +788,20 @@ package body Gnat2Why.Decls is
                Actual_Type : constant W_Primitive_Type_Id :=
                  +Why_Logic_Type_Of_Ada_Type (Entity (Param));
                Theory_Name : constant String :=
-                  Clone_Name & "__" & Short_Name (Formal);
+                 Clone_Name & "__" & Short_Name (Formal);
                TFile : Why_File :=
                  Why_Files (Dispatch_Entity (Package_Entity));
             begin
                case Ekind (Formal) is
                   when Type_Kind =>
-                     if Ekind (Formal) in Integer_Kind then
-                        Reps (Current) := New_Clone_Substitution
-                          (Kind      => EW_Type_Subst,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal)),
-                           Image     => Actual);
-                        Reps (Current + 1) := New_Clone_Substitution
-                          (Kind      => EW_Function,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal) &  "__" &
-                                To_String (WNE_To_Int)),
-                           Image     => New_Identifier
-                             (Context => Full_Name (Entity (Param)),
-                              Name => To_String (WNE_To_Int)));
-                        Reps (Current + 2) := New_Clone_Substitution
-                          (Kind      => EW_Function,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal) &  "__" &
-                                To_String (WNE_Of_Int)),
-                           Image     => New_Identifier
-                             (Context => Full_Name (Entity (Param)),
-                              Name => To_String (WNE_Of_Int)));
-                        Reps (Current + 3) := New_Clone_Substitution
-                          (Kind      => EW_Function,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal) &  "__" &
-                                To_String (WNE_Attr_First)),
-                           Image     => New_Identifier
-                             (Context => Full_Name (Entity (Param)),
-                              Name => To_String (WNE_Attr_First)));
-                        Reps (Current + 4) := New_Clone_Substitution
-                          (Kind      => EW_Function,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal) &  "__" &
-                                To_String (WNE_Attr_Last)),
-                           Image     => New_Identifier
-                             (Context => Full_Name (Entity (Param)),
-                              Name => To_String (WNE_Attr_Last)));
-                        Current := Current + 5;
-                     else
-                        Reps (Current) := New_Clone_Substitution
-                          (Kind      => EW_Type_Subst,
-                           Orig_Name => New_Identifier
-                             (Name => Short_Name (Formal)),
-                           Image     => Actual);
-                        Current := Current + 1;
-                     end if;
                      Open_Theory
                        (TFile, Theory_Name,
                         Comment => "Formal Parameter");
-                     Emit
-                       (TFile.Cur_Theory,
-                        New_Include_Declaration
-                          (T_Name   =>
-                           New_Identifier
-                             (Name => Capitalize_First
-                                (Full_Name (Entity (Param)))),
-                           Kind     => EW_Module,
-                           Use_Kind => EW_Export));
+                     Add_Use_For_Entity
+                       (P               => TFile,
+                        N               => Entity (Param),
+                        Use_Kind        => EW_Export,
+                        With_Completion => False);
                      if Short_Name (Formal) /= Short_Name (Entity (Param)) then
                         Emit
                           (TFile.Cur_Theory,
@@ -863,6 +813,17 @@ package body Gnat2Why.Decls is
                                           Type_Definition => Actual_Type)));
                      end if;
                      Close_Theory (TFile, Filter_Entity => Empty);
+                     Reps (Current) := New_Clone_Substitution
+                       (Kind      => EW_Namepace,
+                        Orig_Name => New_Identifier
+                          (Name => Capitalize_First (Short_Name (Formal))),
+                        Image     => New_Identifier
+                          (Name => Theory_Name));
+                     Add_With_Clause (T        => Base_Th,
+                                      File     => "",
+                                      T_Name   => Theory_Name,
+                                      Use_Kind => EW_Import);
+                     Current := Current + 1;
                   when Subprogram_Kind | Object_Kind | Named_Kind =>
                      Reps (Current) := New_Clone_Substitution
                        (Kind      => EW_Function,
@@ -909,7 +870,8 @@ package body Gnat2Why.Decls is
                     New_Identifier (Name => """" & Generic_Name
                                     & """.Main"),
                   Clone_Kind    => EW_Export,
-                  Substitutions => Parse_Parameters (Assoc, Labs, New_Name),
+                  Substitutions => Parse_Parameters (Assoc, Labs, New_Name,
+                    TFile.Cur_Theory),
                   Theory_Kind   => EW_Module));
 
             Close_Theory (TFile, Filter_Entity => Empty,

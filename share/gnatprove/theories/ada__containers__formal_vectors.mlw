@@ -5,17 +5,21 @@ module Main
   
   (*** TO BE INSTANTIATED ***)
 
-  type index_type
+  namespace Index_type
+    type index_type
 
-  function index_type__to_int index_type : int
+    function to_int index_type : int
 
-  function index_type__of_int int : index_type
+    function of_int int : index_type
 
-  function index_type__attr__ATTRIBUTE_FIRST : int
+    function attr__ATTRIBUTE_FIRST : int
 
-  function index_type__attr__ATTRIBUTE_LAST : int
+    function attr__ATTRIBUTE_LAST : int
+  end
 
-  type element_type
+  namespace import Element_type
+    type element_type
+  end
 
   function oeq element_type element_type : bool
 
@@ -34,24 +38,24 @@ module Main
   (**************************)
 
   function index_type_length : int =
-      index_type__attr__ATTRIBUTE_LAST - index_type__attr__ATTRIBUTE_FIRST + 1
+      Index_type.attr__ATTRIBUTE_LAST - Index_type.attr__ATTRIBUTE_FIRST + 1
 
   axiom index_type_length:
       Ada__containers__count_type.in_range (index_type_length)
 
-  function index_type__to_index (i : index_type) : int =
-      index_type__to_int (i) - index_type__attr__ATTRIBUTE_FIRST + 1
+  function index_type__to_index (i : Index_type.index_type) : int =
+      Index_type.to_int (i) - Index_type.attr__ATTRIBUTE_FIRST + 1
 
-  function index_type__of_index (i : int) : index_type =
-      index_type__of_int (i + index_type__attr__ATTRIBUTE_FIRST - 1)
+  function index_type__of_index (i : int) : Index_type.index_type =
+      Index_type.of_int (i + Index_type.attr__ATTRIBUTE_FIRST - 1)
 
   type extended_index
  
   function extended_index__attr__ATTRIBUTE_FIRST  : int = 
-      index_type__attr__ATTRIBUTE_FIRST - 1
+      Index_type.attr__ATTRIBUTE_FIRST - 1
  
   function extended_index__attr__ATTRIBUTE_LAST  : int = 
-      index_type__attr__ATTRIBUTE_LAST
+      Index_type.attr__ATTRIBUTE_LAST
 
   function extended_index__to_int extended_index : int
 
@@ -59,8 +63,8 @@ module Main
 
   axiom extended_index_in_range_axiom:
     forall x : extended_index [extended_index__to_int (x)]. 
-      index_type__attr__ATTRIBUTE_FIRST - 1 <= extended_index__to_int (x)
-             <= index_type__attr__ATTRIBUTE_LAST
+      Index_type.attr__ATTRIBUTE_FIRST - 1 <= extended_index__to_int (x)
+             <= Index_type.attr__ATTRIBUTE_LAST
 
   axiom extended_index1:
     forall i : extended_index [extended_index__to_int i].
@@ -68,8 +72,8 @@ module Main
 
   axiom extended_index2:
     forall i : int [extended_index__to_int (extended_index__of_int i)].
-     index_type__attr__ATTRIBUTE_FIRST - 1 <= i
-             <= index_type__attr__ATTRIBUTE_LAST -> 
+     Index_type.attr__ATTRIBUTE_FIRST - 1 <= i
+             <= Index_type.attr__ATTRIBUTE_LAST -> 
        extended_index__to_int (extended_index__of_int i) = i
 
   function extended_index__to_index (i : extended_index) : int =
@@ -475,11 +479,11 @@ module Main
   predicate length__post (co : vector) (result :  Ada__containers__count_type.count_type) =
      result = Ada__containers__count_type.of_int (length co)
 
-  function element__logic (co:vector) (i : index_type) : element_type = element_ co (index_type__to_index i)
+  function element__logic (co:vector) (i : Index_type.index_type) : element_type = element_ co (index_type__to_index i)
 
-  predicate element__pre (co:vector) (i : index_type) =
+  predicate element__pre (co:vector) (i : Index_type.index_type) =
     0 < (index_type__to_index i) <= length co
-  predicate element__post (co:vector) (i : index_type) (result : element_type) =
+  predicate element__post (co:vector) (i : Index_type.index_type) (result : element_type) =
      result = element_ co (index_type__to_index i)
 
   function element__2__logic (co:vector) (cu:cursor) : element_type = element_curs_ co cu
@@ -575,9 +579,9 @@ module Main
       delete_mult oldco (length oldco - Ada__containers__count_type.to_int c) 
                              (Ada__containers__count_type.to_int c) co
 
-  predicate replace_element__pre (co: vector) (i:index_type) (e:element_type)=
+  predicate replace_element__pre (co: vector) (i:Index_type.index_type) (e:element_type)=
     0 < index_type__to_index i <= length co
-  predicate replace_element__post (co oldco: vector) (i:index_type) (e:element_type)=
+  predicate replace_element__post (co oldco: vector) (i:Index_type.index_type) (e:element_type)=
      replace_element_ oldco ( index_type__to_index i) e co
 
   predicate replace_element__2__pre (co: vector) (cu:cursor) (e:element_type)=
@@ -623,11 +627,11 @@ module Main
   predicate last__post (co:vector) (result:cursor) =
      result = last co
 
-  function find_index__logic (co:vector) (e:element_type) (i:index_type) : extended_index =
+  function find_index__logic (co:vector) (e:element_type) (i:Index_type.index_type) : extended_index =
     extended_index__of_index (find_ co e (index_type__to_index i))
 
-  predicate find_index__pre (co:vector) (e:element_type) (i:index_type) = true
-  predicate find_index__post(co:vector)(e:element_type)(i:index_type)(result:extended_index) =
+  predicate find_index__pre (co:vector) (e:element_type) (i:Index_type.index_type) = true
+  predicate find_index__post(co:vector)(e:element_type)(i:Index_type.index_type)(result:extended_index) =
      result = find_index__logic co e i
 
   function find__logic (co:vector) (e:element_type) (cu:cursor) : cursor =
@@ -638,11 +642,11 @@ module Main
   predicate find__post (co:vector) (e:element_type) (cu:cursor) (result:cursor) =
      result = find__logic co e cu
 
-  function reverse_find_index__logic (co:vector) (e:element_type) (i:index_type) : extended_index =
+  function reverse_find_index__logic (co:vector) (e:element_type) (i:Index_type.index_type) : extended_index =
     extended_index__of_index (rfind_ co e (index_type__to_index i))
 
-  predicate reverse_find_index__pre (co:vector) (e:element_type) (i:index_type) = true
-  predicate reverse_find_index__post(co:vector)(e:element_type)(i:index_type)(result:extended_index) =
+  predicate reverse_find_index__pre (co:vector) (e:element_type) (i:Index_type.index_type) = true
+  predicate reverse_find_index__post(co:vector)(e:element_type)(i:Index_type.index_type)(result:extended_index) =
      result = reverse_find_index__logic co e i
 
   function reverse_find__logic (co:vector) (e:element_type) (cu:cursor) : cursor = 
@@ -733,9 +737,9 @@ module Main
      if Ada__containers__count_type.to_int c = 1 then  insert_ oldco (length oldco + 1) e co
      else insert_vect oldco (length oldco + 1) (to_vector__logic e c) co
 
-  predicate swap__pre (co:vector) (i1 i2 : index_type) =
+  predicate swap__pre (co:vector) (i1 i2 : Index_type.index_type) =
     0 < index_type__to_index i1 <= length co /\ 0 < index_type__to_index i2 <= length co
-  predicate swap__post (co oldco:vector) (i1 i2 : index_type) =
+  predicate swap__post (co oldco:vector) (i1 i2 : Index_type.index_type) =
     (i1 = i2 /\ co = oldco) \/ (i1 <> i2 /\ swap oldco (index_type__to_index i1) (index_type__to_index i2) co)
 
   predicate swap__2__pre (co:vector) (cu1 cu2 : cursor) =
@@ -852,9 +856,9 @@ module Main
   predicate to_index__post (cu : cursor) (r : extended_index) = 
       r = to_index__logic cu
 
-  function first_index__logic (co:vector) : index_type = index_type__of_index 1
+  function first_index__logic (co:vector) : Index_type.index_type = index_type__of_index 1
   predicate first_index__pre (co:vector) = true
-  predicate first_index__post (co:vector) (r : index_type) = 
+  predicate first_index__post (co:vector) (r : Index_type.index_type) = 
       r = first_index__logic co
 
   function last_index__logic (co:vector) : extended_index = extended_index__of_index (length co)

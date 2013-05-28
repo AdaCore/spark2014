@@ -6,9 +6,13 @@ module Main
   
   (*** TO BE INSTANTIATED ***)
   
-  type key_type
+  namespace import Key_type
+    type key_type
+  end
 
-  type element_type
+  namespace import Element_type
+    type element_type
+  end
 
   function oeq element_type element_type : bool
 
