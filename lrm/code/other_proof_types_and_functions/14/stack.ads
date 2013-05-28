@@ -3,13 +3,16 @@ package Stack
 is
    -- We have to turn the proof functions into actual functions
    function Is_Empty return Boolean
-      with Global => (Input => State);
+      with Global     => (Input => State),
+           Convention => Ghost;
 
    function Is_Full return Boolean
-      with Global => (Input => State);
-      
+      with Global     => (Input => State),
+           Convention => Ghost;
+
    function Count return Natural
-      with Global => (Input => State);
+      with Global     => (Input => State),
+           Convention => Ghost;
 
    --  Post-condition indicates that the stack will be
    --  non-empty after pushing an item on to it, while the pre-condition
@@ -41,7 +44,7 @@ private
          S : Vector;
          Pointer : Pointer_Range;
       end record;
-      
+
    Initial_Stack : constant Stack_Type :=
       Stack_Type'(S       => Vector'(others => 0),
                   Pointer => 0);

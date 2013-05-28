@@ -387,6 +387,8 @@ Initialized by declaration
 
 The example that follows presents a way of initializing a concrete state (a state that
 cannot be refined) at the point of the declaration of the variables that compose it.
+This can only be done in SPARK 2005. In |SPARK| state abstractions cannot share names
+with variables and concequently cannot be implicitly refined.
 
 Specification in SPARK 2005:
 
@@ -408,7 +410,9 @@ Specification in |SPARK|:
 
 Body in |SPARK|:
 
-As per SPARK 2005.
+   .. literalinclude:: ../code/asm_visible_concrete_initialized_by_declaration/14/stack_14.adb
+      :language: ada
+      :linenos:
 
 .. _ms-asm_visible_concrete_initialized_by_elaboration-label:
 
@@ -434,9 +438,9 @@ As per SPARK 2005.
 Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example demonstrates how variables, that need to be hidden from the users of
-a package, can be placed on the package's private section. The bodies of the packages have
-not been included since they contain no annotation.
+The following example demonstrates how variables, that need to be hidden from the users
+of a package, can be placed on the package's private section. The SPARK 2005 body has
+not been included since it does not contain any annotations.
 
 Specification in SPARK 2005:
 
@@ -447,6 +451,12 @@ Specification in SPARK 2005:
 Specification in |SPARK|:
 
    .. literalinclude:: ../code/asm_private_concrete/14/stack_14.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/asm_private_concrete/14/stack_14.adb
       :language: ada
       :linenos:
 
@@ -656,7 +666,13 @@ Specifications of Private Children in |SPARK|:
 
 Bodies of Private Children in |SPARK|:
 
-As per SPARK 2005
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_a_14.adb
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: ../code/asm_abstract_state_refined_in_private_child/14/power_14_source_b_14.adb
+      :language: ada
+      :linenos:
 
 .. _ms-asm_abstract_state_refined_in_embedded_package-label:
 
@@ -966,7 +982,7 @@ The following example illustrates indirect access to the state of one package
 by another via an intermediary. Raw_Data stores some data, which has preprocessing
 performed on it by Processing and on which Calculate performs some further processing
 (although the corresponding bodies are not given, Read_Calculated_Value in Calculate
-calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data.
+calls through to Read_Processed_Data in Processing, which calls through to Read in Raw_Data).
 
 Specifications in SPARK 2005:
 
@@ -1193,8 +1209,8 @@ The SPARK 2005 `check` annotation is replaced by `pragma assert` in |SPARK|. Thi
 annotation adds a new hypothesis to the list of existing hypotheses. The code is
 not presented but can be found under "code\\check_contract".
 
-Assert used to control path explostion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Assert used to control path explosion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example will be added in future, based on the Tutorial 5, Exercise 1 example from
 the advanced SPARK course.

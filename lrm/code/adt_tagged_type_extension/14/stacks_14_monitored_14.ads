@@ -1,5 +1,3 @@
--- Confirm that no inherit clause in SPARK 2014.
-
 package Stacks_14.Monitored_14 is
 
    type Monitored_Stack is new Stacks_14.Stack with private;

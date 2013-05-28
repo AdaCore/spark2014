@@ -2,9 +2,11 @@ with Switch.Val1;
 with Switch.Val2;
 with Switch.Val3;
 package body Switch
-   -- State is refined onto three states, each of which has properties Volatile and Input
-   with Refined_State => (State =>
-      ((Switch.Val1.State, Switch.Val2.State, Switch.Val3.State) with Volatile, Input))
+   --  State is refined onto three states, each of which has properties
+   --  Volatile and Input.
+   with Refined_State => (State => (Switch.Val1.State,
+                                    Switch.Val2.State,
+                                    Switch.Val3.State))
 is
    subtype Value is Integer range -1 .. 1;
    subtype Score is Integer range -3 .. 3;
@@ -35,7 +37,7 @@ is
          ConvertToReading : constant ConvertToReadingArray :=
                                       ConvertToReadingArray'(-3 .. -2 => Switch.off,
                                                              -1 .. 1  => Switch.unknown,
-                                                             2 ..3    => Switch.on);
+                                                             2  .. 3  => Switch.on);
 
          function Convert_To_Reading
             (Val_A : Switch.Reading;
@@ -44,17 +46,17 @@ is
          is
          begin
             return ConvertToReading (ConvertToValue (Val_A) +
-                   ConvertToValue (Val_B) + ConvertToValue (Val_C));
+                     ConvertToValue (Val_B) + ConvertToValue (Val_C));
          end Convert_To_Reading;
 
       end Conversion;
-   begin  -- begin statement of ReadValue function
-       A := Val1.Read;
-       B := Val2.Read;
-       C := Val3.Read;
-       return Conversion.Convert_To_Reading
-                (Val_A => A,
-                 Val_B => B,
-                 Val_C => C);
+   begin  --  begin statement of ReadValue function
+      A := Val1.Read;
+      B := Val2.Read;
+      C := Val3.Read;
+      return Conversion.Convert_To_Reading
+               (Val_A => A,
+                Val_B => B,
+                Val_C => C);
    end ReadValue;
 end Switch;

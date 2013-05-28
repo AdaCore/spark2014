@@ -1,6 +1,9 @@
 package body Stack_14
+   with Refined_State => (S_State       => S,
+                          Pointer_State => Pointer)
 is
    procedure Push(X : in Integer)
+      with Refined_Global => (In_Out => (S, Pointer))
    is
    begin
       Pointer := Pointer + 1;
@@ -8,6 +11,8 @@ is
    end Push;
 
    procedure Pop(X : out Integer)
+      with Refined_Global => (Input  => S,
+                              In_Out => Pointer)
    is
    begin
       X := S(Pointer);

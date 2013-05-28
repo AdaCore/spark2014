@@ -3,8 +3,9 @@ with Switch.Val2;
 with Switch.Val3;
 package body Switch
    -- State is refined onto three states, each of which has properties Volatile and Input
-   with Refined_State => (State =>
-      ((Switch.Val1.State, Switch.Val2.State, Switch.Val2.State) with Volatile, Input))
+   with Refined_State => (State => (Switch.Val1.State,
+                                    Switch.Val2.State,
+                                    Switch.Val2.State))
 is
 
    subtype Value is Integer range -1 .. 1;
@@ -25,11 +26,11 @@ is
    is
       A, B, C : Reading;
    begin
-       A := Val1.Read;
-       B := Val2.Read;
-       C := Val3.Read;
-       return ConvertToReading (ConvertToValue (A) +
-          ConvertToValue (B) + ConvertToValue (C));
+      A := Val1.Read;
+      B := Val2.Read;
+      C := Val3.Read;
+      return ConvertToReading (ConvertToValue (A) +
+        ConvertToValue (B) + ConvertToValue (C));
    end ReadValue;
 
 end Switch;

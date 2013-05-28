@@ -53,9 +53,6 @@ is
       with Refined_Global => (Output => My_Stack),
            Refined_Post   => My_Stack.Pointer = 0
    is
-      --  Note that a rule declaration annotation is included at this
-      --  point in the SPARK 2005 code. The corresponding SPARK 2014
-      --  syntax is TBD.
    begin
       My_Stack := Initial_Stack;
    end Initialize;

@@ -1,12 +1,12 @@
 package Stack_14
-   with Abstract_State => (S, Pointer)
+   with Abstract_State => (S_State, Pointer_State)
 is
    procedure Push(X : in Integer)
-      with Global => (In_Out => (S, Pointer));
+      with Global => (In_Out => (S_State, Pointer_State));
 
    procedure Pop(X : out Integer)
-      with Global => (Input  => S,
-                      In_Out => Pointer);
+      with Global => (Input  => S_State,
+                      In_Out => Pointer_State);
 
 private
    Stack_Size : constant := 100;
@@ -14,6 +14,8 @@ private
    subtype Index_Range   is Pointer_Range range 1..Stack_Size;
    type    Vector        is array(Index_Range) of Integer;
 
-   S : Vector;
-   Pointer : Pointer_Range;
+   S : Vector
+      with Part_Of => S_State;
+   Pointer : Pointer_Range
+      with Part_Of => Pointer_State;
 end Stack_14;

@@ -12,7 +12,7 @@ is
       with Depends => (S =>+ X);
 
    procedure Pop(S : in out Stack; X : out Integer)
-      with Depends => ((S,X) => S);
+      with Depends => ((S, X) => S);
 private
    Stack_Size : constant := 100;
    type Pointer_Range is range 0 .. Stack_Size;

@@ -1,5 +1,5 @@
 package Output_Port_14
-   with Abstract_State => (Output_State with Volatile, Output)
+   with Abstract_State => (Output_State with External, Output_Only)
 is
    procedure Write_To_Port(Output_Value : in Integer)
       with Global  => (Output => Output_State),

@@ -1,5 +1,5 @@
 package Input_Port_14
-   with Abstract_State => (Input_State with Volatile, Input)
+   with Abstract_State => (Input_State with External, Input_Only)
 is
    procedure Read_From_Port(Input_Value : out Integer)
       with Global  => (Input => Input_State),
