@@ -83,12 +83,7 @@ package body Gnat2Why.Subprograms is
       Initial_Body : W_Prog_Id;
       Post_Check   : W_Prog_Id;
       Guard_Map    : Ada_To_Why_Ident.Map) return W_Prog_Id;
-   --  Deal with object declarations at the beginning of the function.
-   --  For local variables that originate from the source, simply assign
-   --  the new value to the variable; Such variables have been declared
-   --  globally.
-   --  For local variables that are introduced by the compiler, add a "let"
-   --  binding to Why body for each local variable of the procedure.
+   --  Deal with declarations at the beginning of the function.
 
    function Compute_Contract_Cases_Entry_Checks
      (Params : Transformation_Params;
