@@ -43,6 +43,12 @@ with Flow.Utility;          use Flow.Utility;
 
 package body Flow.Analysis is
 
+   Debug_Depends_Required : constant Boolean := False;
+   --  Enable this to always check the dependency relation, even if
+   --  not specified. This may later be a configurable restriction
+   --  (requires_depends or similar); but it is quite useful for
+   --  debugging anywya.
+
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
    use type Node_Sets.Set;
@@ -1241,15 +1247,20 @@ package body Flow.Analysis is
 
    procedure Check_Contracts (FA : Flow_Analysis_Graphs)
    is
-      function Find_Export (E : Entity_Id) return Node_Id;
+      function Find_Existing_Export (E : Entity_Id) return Node_Id
+        with Pre => Has_Depends (FA.Subprogram);
       --  Looks through the depends aspect on FA.Subprogram and
       --  returns the node which represents E in the dependency for E.
 
-      -----------------
-      -- Find_Export --
-      -----------------
+      function Find_Export (E : Entity_Id) return Node_Id;
+      --  As above, but returns FA.Subprogram as a fallback if the
+      --  subprogram does not have a dependency relation.
 
-      function Find_Export (E : Entity_Id) return Node_Id
+      --------------------------
+      -- Find_Export_Existing --
+      --------------------------
+
+      function Find_Existing_Export (E : Entity_Id) return Node_Id
       is
          Depends_Contract : constant Node_Id :=
            Get_Pragma (FA.Subprogram, Pragma_Depends);
@@ -1291,22 +1302,47 @@ package body Flow.Analysis is
             Row := Next (Row);
          end loop;
          raise Why.Unexpected_Node;
+      end Find_Existing_Export;
+
+      -----------------
+      -- Find_Export --
+      -----------------
+
+      function Find_Export (E : Entity_Id) return Node_Id
+      is
+      begin
+         if Has_Depends (FA.Subprogram) then
+            return Find_Existing_Export (E);
+         else
+            return FA.Subprogram;
+         end if;
       end Find_Export;
 
       User_Deps   : Dependency_Maps.Map;
       Actual_Deps : Dependency_Maps.Map;
 
+      Depends_Location : constant Node_Id :=
+        (if Has_Depends (FA.Subprogram) then
+            Get_Pragma (FA.Subprogram, Pragma_Depends)
+         else
+            FA.Subprogram);
+
    begin --  Check_Contracts
 
-      if not Has_Depends (FA.Subprogram) then
+      if Has_Depends (FA.Subprogram) then
+         --  Obtain the dependency relation specified by the user.
+         Get_Depends (FA.Subprogram,
+                      User_Deps);
+
+      elsif Debug_Depends_Required then
+         User_Deps := Dependency_Maps.Empty_Map;
+
+      else
          --  If the user has not specified a dependency relation we
          --  have no work to do.
          return;
       end if;
 
-      --  Obtain the dependency relation specified by the user.
-      Get_Depends (FA.Subprogram,
-                   User_Deps);
       Actual_Deps := Compute_Dependency_Relation (FA);
 
       --  If the user depds do not include something we have in the
@@ -1321,7 +1357,7 @@ package body Flow.Analysis is
             if not Actual_Deps.Contains (F_Out) then
                Error_Msg_Flow
                  (Msg => "& missing from null dependency",
-                  N   => Get_Pragma (FA.Subprogram, Pragma_Depends),
+                  N   => Depends_Location,
                   F1  => F_Out);
             end if;
          end;
@@ -1352,17 +1388,16 @@ package body Flow.Analysis is
                end if;
             elsif User_Deps.Contains (F_Out) then
                U_Deps := User_Deps (F_Out);
-            else
-               if F_Out.Kind = Magic_String then
-                  Global_Required (FA, F_Out);
-               else
-                  Error_Msg_Flow
-                    ("expected to see & on the left-hand-side of" &
-                       " a dependency relation",
-                     Get_Pragma (FA.Subprogram, Pragma_Depends),
-                     F_Out);
-               end if;
+            elsif F_Out.Kind = Magic_String then
+               Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
+            else
+               Error_Msg_Flow
+                 ("expected to see & on the left-hand-side of" &
+                    " a dependency relation",
+                  Depends_Location,
+                  F_Out);
+               U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
             --  If we mention magic strings anywhere, there is no
@@ -1390,7 +1425,7 @@ package body Flow.Analysis is
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg => "& missing from null dependency",
-                        N   => Get_Pragma (FA.Subprogram, Pragma_Depends),
+                        N   => Depends_Location,
                         F1  => Missing_Var);
                   else
                      Error_Msg_Flow
@@ -1408,7 +1443,7 @@ package body Flow.Analysis is
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg => "& incorrectly included in null dependency",
-                        N   => Get_Pragma (FA.Subprogram, Pragma_Depends),
+                        N   => Depends_Location,
                         F1  => Wrong_Var);
                      --  ??? show a path?
                   else
