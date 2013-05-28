@@ -1004,7 +1004,6 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Name    : constant String := Full_Name (E);
-      Binders : constant Binder_Array := Compute_Binders (E);
       Params  : Transformation_Params;
 
       Prog    : W_Prog_Id;
@@ -1049,7 +1048,7 @@ package body Gnat2Why.Subprograms is
          New_Function_Def
            (Domain  => EW_Prog,
             Name    => To_Ident (WNE_Pre_Check),
-            Binders => Binders,
+            Binders => (1 => Unit_Param),
             Labels  =>
               (1 => Cur_Subp_Sloc,
                2 => Cur_Subp_Name_Label (Prefix => "precondition for ")),
