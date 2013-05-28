@@ -77,14 +77,6 @@ package body Gnat2Why.Subprograms is
    --  because of effects. Note that these effect variables are not bound here,
    --  they refer to the global variables
 
-   function Compute_Context
-     (Params       : Transformation_Params;
-      E            : Entity_Id;
-      Initial_Body : W_Prog_Id;
-      Post_Check   : W_Prog_Id;
-      Guard_Map    : Ada_To_Why_Ident.Map) return W_Prog_Id;
-   --  Deal with declarations at the beginning of the function.
-
    function Compute_Contract_Cases_Entry_Checks
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id;
@@ -230,61 +222,6 @@ package body Gnat2Why.Subprograms is
          return Binders;
       end if;
    end Compute_Binders;
-
-   ---------------------
-   -- Compute_Context --
-   ---------------------
-
-   function Compute_Context
-     (Params       : Transformation_Params;
-      E            : Entity_Id;
-      Initial_Body : W_Prog_Id;
-      Post_Check   : W_Prog_Id;
-      Guard_Map    : Ada_To_Why_Ident.Map) return W_Prog_Id
-   is
-      R    : W_Prog_Id        := Initial_Body;
-      Node : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-   begin
-      R := Transform_Declarations_Block (Declarations (Node), R);
-
-      --  Enclose the subprogram body in a try-block, so that return
-      --  statements can be translated as raising exceptions.
-
-      declare
-         Raise_Stmt : constant W_Prog_Id :=
-                        New_Raise
-                          (Ada_Node => Node,
-                           Name     => To_Ident (WNE_Result_Exc));
-         Result_Var : constant W_Prog_Id :=
-                        (if Ekind (E) = E_Function then
-                         New_Deref
-                           (Ada_Node => Node,
-                            Right    => Result_Name)
-                         else New_Void);
-      begin
-         R :=
-           New_Try_Block
-             (Prog    => Sequence (R, Raise_Stmt),
-              Handler =>
-                (1 =>
-                   New_Handler
-                     (Name => To_Ident (WNE_Result_Exc),
-                      Def  => Sequence (Post_Check, Result_Var))));
-      end;
-
-      R := Bind_From_Mapping_In_Expr (Params, Map_For_Old, R);
-
-      --  Bind value of guard expressions. We do not generate checks for
-      --  run-time errors here, as they are already generated in
-      --  Compute_Contract_Cases_Entry_Checks.
-
-      R := Bind_From_Mapping_In_Expr (Params => Params,
-                                      Map    => Guard_Map,
-                                      Expr   => R,
-                                      Do_Runtime_Error_Check => False);
-
-      return R;
-   end Compute_Context;
 
    ---------------------
    -- Compute_Effects --
@@ -891,6 +828,7 @@ package body Gnat2Why.Subprograms is
       Guard_Map      : Ada_To_Why_Ident.Map;
       Contract_Check : W_Prog_Id;
 
+      Why_Body   : W_Prog_Id;
    begin
       --  We open a new theory, so that the context is fresh for that
       --  subprogram
@@ -966,7 +904,55 @@ package body Gnat2Why.Subprograms is
                Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
       end if;
 
-      --  Generate code to detect possible run-time errors in body
+      --  Translate statements in the body of the subp
+
+      Why_Body :=
+        Transform_Statements_And_Declarations
+          (Statements
+               (Handled_Statement_Sequence (Body_N)));
+
+      --  Translate statements in declaration block
+
+      Why_Body :=
+        Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+
+      --  Enclose the subprogram body in a try-block, so that return
+      --  statements can be translated as raising exceptions.
+
+      declare
+         Raise_Stmt : constant W_Prog_Id :=
+                        New_Raise
+                          (Ada_Node => Body_N,
+                           Name     => To_Ident (WNE_Result_Exc));
+         Result_Var : constant W_Prog_Id :=
+                        (if Ekind (E) = E_Function then
+                         New_Deref
+                           (Ada_Node => Body_N,
+                            Right    => Result_Name)
+                         else New_Void);
+      begin
+         Why_Body :=
+           New_Try_Block
+             (Prog    => Sequence (Why_Body, Raise_Stmt),
+              Handler =>
+                (1 =>
+                   New_Handler
+                     (Name => To_Ident (WNE_Result_Exc),
+                      Def  => Sequence (Post_Check, Result_Var))));
+      end;
+
+      --  add declarations for 'Old variables
+
+      Why_Body := Bind_From_Mapping_In_Expr (Params, Map_For_Old, Why_Body);
+
+      --  Bind value of guard expressions. We do not generate checks for
+      --  run-time errors here, as they are already generated in
+      --  Compute_Contract_Cases_Entry_Checks.
+
+      Why_Body := Bind_From_Mapping_In_Expr (Params => Params,
+                                      Map    => Guard_Map,
+                                      Expr   => Why_Body,
+                                      Do_Runtime_Error_Check => False);
 
       Emit (File.Cur_Theory,
         New_Function_Def
@@ -979,15 +965,7 @@ package body Gnat2Why.Subprograms is
            Pre     => Pre,
            Post    =>
              +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
-           Def     =>
-             +Compute_Context
-               (Params,
-                E,
-                Transform_Statements_And_Declarations
-                  (Statements
-                     (Handled_Statement_Sequence (Body_N))),
-              Post_Check,
-              Guard_Map)));
+           Def     => +Why_Body));
 
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls
