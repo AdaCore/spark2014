@@ -1,0 +1,129 @@
+!Implementer: TJJ
+!Reviewer: AH, STT
+!Revision reviewed: 
+!TN Description: Review of LRM 0.3 Dra
+!Check messages under this TN - Are all issues addressed?:
+!Review completed: 
+!TN marked dead:
+
+!Label: 
+!Location: 
+!Description: 
+!Action Taken: 
+!Checked By: 
+
+!Label: STT001, 
+!Location: 1.8, 8/2 (also 1.9.5, 12/6):
+!Description: We indicate that Pre and Post cannot possibly be generated, but we do know how to infer some Pre/Postconditions from the code (cf. CodePeer).  So perhaps we should say that we don't support that currently, but might at some later date.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT002, 
+!Location: 1.8, 8/11:
+!Description: Do we still call the section on external inputs and outputs "Volatile State"?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT003 
+!Location: 1.9.6, 13/10 (also 14/10):
+!Description: Formatting glitch: "SPARK_Mode" came out as "SPARKSUBSCRIBTINBMode."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT004 
+!Location: 1.9.6, 13/14:
+!Description: Avoid use of "may not" -- use "might not" instead.  "May not" tends to be ambiguous between "must not" and "might not", and is not permitted in ISO standards.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT005 
+!Location: 1.9.6, 14/2:
+!Description: This starts out "It is the *use* of a construct no in SPARK 2014..."  This is somewhat hard to understand, and is not parallel in construction with the prior paragraph, and is hard to distinguish from the prior paragraph.  What exactly does "use" mean as opposed to "appear".  Is "use" supposed to mean "call" as opposed to "appear directly"?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT006 
+!Location: 3.9 27/5:
+!Description: 
+Is is worth supporting Pre'Class, etc., if we aren't supporting dispatching calls?  The class-wide aspects seem relevant only in the presence of dispatching calls.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT007 
+!Location: 5.1 29/3:
+!Description: Once we support tasking, presumably entry_call_statement, requeue_statement, and delay_statement will be "in SPARK."  Shouldn't we somehow distinguish temporary restrictions and long-term restrictions?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT008 
+!Location: 5.5.3 30/4:
+!Description: "... for an legality rule ..." -> "... for a legality rule ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT009 
+!Location: 5.5.3 30/5:
+!Description: 
+Loop_Variant is claimed to be similar to pragma Assert, but in fact has little or nothing in common with pragma Assert.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT010 
+!Location: 5.5.3 33/15:
+!Description: 
+I could not understand this sentence:
+"The prefix of a Loop_Entry attribute_Reference shall not contain a use of an entity declared within the loop_statement but not within the prefix itself."
+What sort of prefix includes declarations?  Did you mean "within the enclosing invariant or variant expression"?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT011 
+!Location: 5.5.3 33/16:
+!Description: 
+I don't understand why the rule about statically denoting an entity or an object_renaming_declaration "if the attrib_ref is potentially unevaluated or the attrib_ref does not apply to the innermost enclosing loop_statement." A hint of a rationale for this rule would help! 
+
+Should we reverse the description of this rule, such as:
+Under the following circumstances:
+  ...
+the prefix of the Loop_Entry shall statically denote an entity...
+!Action Taken: 
+!Checked By: 
+
+
+
+!Label: AH/1
+!Location: 1.9.4 Paragraph 2, Sentence 1, Page 11
+!Description: Poor grammar in the first sentence, the use of "which" seems clumsy.
+!Action Taken: 
+!Checked By: 
+
+!Label: AH/2
+!Location: 1.9.7 Final sentence
+!Description: I was expecting more description of the abstraction of volatile variables here. Could we at least add a forward reference to the section on externals?
+!Action Taken: 
+!Checked By: 
+
+!Label: AH/3
+!Location: 1.10 Pg 16
+!Description: The aims of this issue of the RM are different. The aim is to fully define the main SPARK 2014 language features. Subsequent updates for R1 are only expected to fix problems arising during implementation of the tools.
+!Action Taken: 
+!Checked By: 
+
+!Label: AH/4
+!Location: 5.5.3 Page 30
+!Description: There are a number of ToDos in here targeted for the Milestone 3 version of this document but this is the Milestone 3 vesion. It looks like these ToDos are complete.
+!Action Taken: 
+!Checked By: 
+
+!Label: AH/5
+!Location: 6.1.6 Page 48
+!Description: This section contains several todos that a) don't have a target milestone and b) do not use the standard ToDo syntax.
+!Action Taken: 
+!Checked By: 
+
+!Label: AH/6
+!Location: General
+!Description: Need to ensure that all ToDos have a milestone associated with them. 
+!Action Taken: 
+!Checked By: 
+
