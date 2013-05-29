@@ -15,13 +15,13 @@
 !Label: STT001, 
 !Location: 1.8, 8/2 (also 1.9.5, 12/6):
 !Description: We indicate that Pre and Post cannot possibly be generated, but we do know how to infer some Pre/Postconditions from the code (cf. CodePeer).  So perhaps we should say that we don't support that currently, but might at some later date.
-!Action Taken: 
+!Action Taken: I want to rewrite the section on synthesis of annotations because it is essentially a tool issue.  However we should put some minimum requirements. STILL TO DO!
 !Checked By: 
 
 !Label: STT002, 
 !Location: 1.8, 8/11:
 !Description: Do we still call the section on external inputs and outputs "Volatile State"?
-!Action Taken: 
+!Action Taken: Changed the title to External State and added a few words to indicate that an external state need not be Volatile.  Used the term Volatile state to refer to both variables and state abstractions.
 !Checked By: 
 
 !Label: STT003 
