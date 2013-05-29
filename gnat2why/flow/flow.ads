@@ -37,7 +37,7 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 --  Entity_Name
 
 with Graph;
-with Flow_Types; use Flow_Types;
+with Flow_Types;        use Flow_Types;
 
 package Flow is
 
@@ -114,6 +114,11 @@ package Flow is
       Aliasing_Present : Boolean;
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
+
+      Is_Main          : Boolean;
+      --  True if this is the main program. In order to be the main
+      --  it has to be a library level subprogram without formal
+      --  parameters (global parameters are allowed).
    end record;
 
    package Analysis_Maps is new Ada.Containers.Hashed_Maps

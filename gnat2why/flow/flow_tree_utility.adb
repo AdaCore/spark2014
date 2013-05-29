@@ -23,6 +23,7 @@
 
 with Sem_Util; use Sem_Util;
 with Snames;   use Snames;
+with Uintp;    use Uintp;
 
 package body Flow_Tree_Utility is
 
@@ -91,5 +92,18 @@ package body Flow_Tree_Utility is
             raise Program_Error;
       end case;
    end Get_Procedure_Specification;
+
+   -------------------
+   -- Might_Be_Main --
+   -------------------
+
+   function Might_Be_Main (E : Entity_Id) return Boolean
+   is
+   begin
+      return (Scope_Depth_Value (E) = Uint_1 or else
+                (Is_Generic_Instance (E) and then
+                   Scope_Depth_Value (E) = Uint_2))
+        and then No (First_Formal (E));
+   end Might_Be_Main;
 
 end Flow_Tree_Utility;

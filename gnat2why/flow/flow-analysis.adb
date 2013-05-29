@@ -534,6 +534,21 @@ package body Flow.Analysis is
    end Find_Global;
 
    ------------------
+   -- Analyse_Main --
+   ------------------
+
+   procedure Analyse_Main (FA : Flow_Analysis_Graphs)
+   is
+   begin
+      if FA.Is_Main then
+         Error_Msg_NE
+           ("flow analysis of main program & has not yet been implemented!",
+            FA.Subprogram,
+            FA.Subprogram);
+      end if;
+   end Analyse_Main;
+
+   ------------------
    -- Sanity_Check --
    ------------------
 

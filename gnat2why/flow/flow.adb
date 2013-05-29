@@ -48,6 +48,7 @@ with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
+with Flow_Tree_Utility;
 with Flow.Utility;
 
 use type Ada.Containers.Count_Type;
@@ -783,7 +784,8 @@ package body Flow is
          All_Vars         => Flow_Id_Sets.Empty_Set,
          Loops            => Node_Sets.Empty_Set,
          Magic_Source     => Calculate_Magic_Mapping (Body_N),
-         Aliasing_Present => False);
+         Aliasing_Present => False,
+         Is_Main          => Flow_Tree_Utility.Might_Be_Main (E));
 
       if Debug_Print_Magic_Source_Set then
          for C in FA.Magic_Source.Iterate loop
@@ -892,6 +894,7 @@ package body Flow is
             Analysis.Find_Stable_Elements (FA);
             Analysis.Find_Unused_Objects (FA);
             Analysis.Check_Contracts (FA);
+            Analysis.Analyse_Main (FA);
          end if;
       end loop;
 

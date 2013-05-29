@@ -39,8 +39,12 @@ package Flow_Tree_Utility is
    --  Check for 'Loop_Entry in the given tree.
 
    function Get_Procedure_Specification (E : Entity_Id) return Node_Id
-     with Pre  => Ekind (E) = E_Procedure,
-          Post => Nkind (Get_Procedure_Specification'Result) =
-            N_Procedure_Specification;
+      with Pre  => Ekind (E) = E_Procedure,
+           Post => Nkind (Get_Procedure_Specification'Result) =
+             N_Procedure_Specification;
 
+   function Might_Be_Main (E : Entity_Id) return Boolean
+      with Pre => Ekind (E) in Subprogram_Kind;
+   --  Returns True if E is a library level subprogram without formal
+   --  parameters (E is allowed to have global parameters).
 end Flow_Tree_Utility;
