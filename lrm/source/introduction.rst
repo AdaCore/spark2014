@@ -601,11 +601,12 @@ Ideally any definition will be checked for soundness by the external proof
 tools.
 
 If the postcondition of a function can be specified in |SPARK|, then the
-postcondition may be recast as the expression of an expression function making
-it both the postcondition and the implementation of the function. This is
-useful, particularly for ghost functions, as the expression which acts as the
-postcondition may not give the most efficient implementation but if the function
-is a ghost function this may not matter.
+postcondition may be recast as the expression of an
+``expression_function_declaration`` making it both the postcondition and the
+implementation of the function. This is useful, particularly for ghost
+functions, as the expression which acts as the postcondition may not give the
+most efficient implementation but if the function is a ghost function this may
+not matter.
 
 .. _verific_modes:
 

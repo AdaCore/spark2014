@@ -75,7 +75,7 @@ These features are related to access types and not in |SPARK|.
 Pragma Restrictions and Pragma Profile
 --------------------------------------
 
-Restrictions and Priofiles will be available with |SPARK| to provide profiles 
+Restrictions and Profiles will be available with |SPARK| to provide profiles 
 suitable for different application environments.
 
 Streams

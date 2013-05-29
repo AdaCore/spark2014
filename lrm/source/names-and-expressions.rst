@@ -278,7 +278,7 @@ in anticipation of the possible relaxation of that restriction.]
 Operators and Expression Evaluation
 -----------------------------------
 
-Ada grants implementations the freedom to reassociated a sequence
+Ada grants implementations the freedom to reassociate a sequence
 of predefined operators of the same precedence level even if this
 changes the behavior of the program with respect to intermediate
 overflow (see Ada 2012 RM 4.5). |SPARK| assumes that an implementation

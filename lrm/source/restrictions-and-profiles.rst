@@ -128,7 +128,7 @@ A list of restrictions by section and their effect:
 .. note:: RCC. Is End_Designators_Required really ever going to be used? It was only
    required in S95 to facilitate the implementation of the hide
    anno really. This feels more like a rule for GNATCheck that
-   users might choose to emply, but I don't think it makes
+   users might choose to employ, but I don't think it makes
    any difference to verifiability, so no business of |SPARK|?
 
 6.3.2 Global Aspects
@@ -190,7 +190,7 @@ A list of restrictions by section and their effect:
    declared in its visible part are initialized during the elaboration
    of the package, then the initializes state components must appear
    in an ``initializes_aspect``.  If this restriction is in force the
-   absence of an ``initializes_aspect`` implies Inititalizes =>
+   absence of an ``initializes_aspect`` implies Initializes =>
    **null**.
 
 #. ``Package_Elaboration_Initializes_Local_State_Only``

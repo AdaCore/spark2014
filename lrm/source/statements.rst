@@ -70,9 +70,9 @@ expression had upon entry to a given loop in much the same way that the ``Old``
 attribute in a subprogram postcondition can be used to refer to the value an
 expression had upon entry to the subprogram.
 
-Loop_Invariant is just like pragma Assert with respect to syntax, 
-name resolution, legality rules, dynamic semantics, and
-assertion policy, except for an legality rule given below.
+Loop_Invariant is just like pragma Assert with respect to syntax, name
+resolution, legality rules, dynamic semantics, and assertion policy [controlled
+by the Ada Assertion_Policy pragma], except for an legality rule given below.
 
 Loop_Variant has an expected actual parameter which is a specialization of an
 Ada expression. In all other respects it has the same syntax, name resolution,
@@ -115,7 +115,7 @@ immediately within either:
   ``block_statement``.
 
 [Roughly speaking, a ``Loop_Invariant`` or ``Loop_Variant`` pragma
-must occur immediately within a loop statement except that intervening
+shall only occur immediately within a loop statement except that intervening
 block statements are ignored for purposes of this rule.]
 
 The expression of a ``loop_variant_item`` is expected to be of any
@@ -134,9 +134,9 @@ pragma ``Assert``.
 Pragma ``Loop_Variant`` is an assertion (as defined in RM
 11.4.2(1.1/3)) and is governed in the same way as pragma ``Assert``
 by the ``Assert`` assertion aspect. In particular, the elaboration of
-a disabled ``Loop_Variant`` pragma has no effect.
+an Ignored ``Loop_Variant`` pragma has no effect.
 
-The elaboration of an enabled ``Loop_Variant`` pragma begins by
+The elaboration of an Checked ``Loop_Variant`` pragma begins by
 evaluating the ``discrete_expressions`` in textual order.
 For the first elaboration of the pragma within a given execution
 of the enclosing loop statement, no further action is taken.
@@ -176,6 +176,8 @@ Proving this property implies the termination of the loop.
 Attribute ``Loop_Entry``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. _todo: Add a rule to say you cannot have X'Loop_Entry'Loop_Entry.
+
 For a prefix ``X`` that denotes an object of a nonlimited type, the
 following attribute is defined
 
@@ -189,7 +191,7 @@ about ``exit_statements`` in the Name Resolution Rules and Legality Rules
 sections of RM 5.7, a corresponding rule applies to ``Loop_Entry``
 ``attribute_references``.
 
-For each ``X'Loop_Entry`` other than one occurring within a disabled
+For each ``X'Loop_Entry`` other than one occurring within an Ignored
 assertion expression, a constant is implicitly declared at the
 beginning of the associated loop statement. The constant is of the
 type of ``X`` and is initialized to the result of evaluating ``X`` (as an
@@ -261,7 +263,7 @@ with "Loop_Entry" substituted for "Old". These include:
 Note: The following rules are not included in the
 above list; corresponding rules are instead stated explicitly below:
 
-* the requirement that an ``Old`` ``attribute_reference`` must occur in a
+* the requirement that an ``Old`` ``attribute_reference`` shall only occur in a
   postcondition expression;
 * the rule disallowing a use of an entity declared within the
   postcondition expression;

@@ -26,12 +26,12 @@ in an instance body would cause the instantiation to not be in |SPARK|.]
 [Consider the problem of correctly specifying the Global and Depends
 aspects of a subprogram declared within an instance body which contains
 a call to a generic formal subprogram (more strictly speaking, to the
-corresponding actual subprogram of the instantation in question).
+corresponding actual subprogram of the instantiation in question).
 These aspects are simply copied from the corresponding aspect specification
 in the generic, so this implies that we have to "get them right" in the generic
 (where "right" means "right for all instantiations"). One way to do this
 is to assume that a generic formal subprogram references no globals
-(or, more generally, reference any fixed set of globals)
+(or, more generally, references any fixed set of globals)
 and to only instantiate the generic with actual subprograms that
 meet this requirement. Other solutions involving "generative mode"
 (where flow-related aspect specifications are omitted in the source

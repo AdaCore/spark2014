@@ -172,16 +172,16 @@ Input_Only and Output_Only Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A variable which represents a communication channel with an external entity,
-for instance a transducer, subsystem, or program is considered to an 
+for instance a transducer, subsystem, or program is considered an 
 *external variable* if it is Volatile or is declared with an Ada Address,
 Import, or Export specification (either using an aspect or a pragma).
 
 An external variable is an external volatile state if it is specified with 
 volatile True otherwise it is an external non-volatile state.
 
-if If it is a volatile variable it has to be specified as an an input only or 
-an output only external state. The Boolean Input_Only and Output_Only are used 
-for this specification.
+If it is a volatile variable it has to be specified as an input only or an
+output only external state. The Boolean Input_Only and Output_Only are used for
+this specification.
 
 .. centered:: **Legality Rules**
 
@@ -255,7 +255,9 @@ There are no dynamic semantics associated with these aspects.
    with System.Storage_Units;
    package Multiple_Ports
    is
-      type Volatile_Type is new Integer with Volatile;
+      type Volatile_Type is record
+         I : Integer 
+      end record with Volatile;
    
       -- Read_Port may only be called with an actual parameter for Port
       -- which is an external input only
@@ -350,7 +352,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
   abstract_state_list        ::= null
                                | state_name_with_options
-                               | (state_name_with_ { , state_name_with_options } )
+                               | (state_name_with_options { , state_name_with_options } )
   state_name_with_options    ::= state_name
                                | ( state_name with option_list )
   option_list                ::= option { , option }
@@ -377,7 +379,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.2 LR An option shall not be repeated within a single option list.
       
 #. If External is specified in an ``option_list`` then at most one of Input_Only
-   or Output_Only ``options`` may be specified in the``option_list``.  The
+   or Output_Only ``options`` may be specified in the ``option_list``.  The
    Input_Only and Output_Only options shall not be specified in an 
    ``option_list`` without an External ``option``. 
    
@@ -646,7 +648,7 @@ be a *Boolean_*\ ``expression``.
 
       :Trace Unit: TBD
 
-#. Each variable or state abstraction appearing in an Initial Condition Aspect 
+#. Each variable or state abstraction appearing in an Initial_Condition aspect 
    of a package Q which is declared immediately within the visible part of Q 
    shall be initialized during the elaboration of Q and be denoted by a ``name`` 
    of an ``initialization_item`` of the Initializes aspect of Q.
@@ -739,22 +741,28 @@ Package Bodies
 State Refinement
 ~~~~~~~~~~~~~~~~
 
-A ``state_name`` declared by an Abstract State aspect in the specification of a
+A ``state_name`` declared by an Abstract_State aspect in the specification of a
 package denotes an abstraction representing all or part of its hidden state. The
-declaration must be completed in the package body by a Refined State aspect. The
-Refined_State aspect defines a *refinement* for each ``state_name`` which 
-denotes the variables and subordinate state abstractions are represented by the 
-``state_name`` and are known as its *constituents*.
+declaration must be completed in the package body by a Refined_State aspect. The
+Refined_State aspect defines a *refinement* for each ``state_name``. The
+refinement denotes the variables and subordinate state abstractions represented
+by the ``state_name`` and these are known as its *constituents*.
 
-In the body of a package the constituents of the refined ``state_name``, the
-*refined view*, have to be used rather than the *abstract view* of the
-``state_name``. Refined Global, Depends, Pre and Post aspects are provided to
-express the refined view.
+Constituents of each ``state_name`` have to be initialized consistently
+with that of their representative ``state_name`` as determined by its denotation 
+or absence in the Initializes aspect of the package.
 
-In the refined view the constituents of each ``state_name`` has to be
-initialized consistently with their appearance or omission from the Initializes
-aspect of the package.
+A subprogram may have an *abstract view* and a *refined view*.  The abstract
+view is a subprogram declaration in the visible part of a package where a
+subprogram may refer to private types and state abstractions whose details are
+not visible.  A refined view of a subprogram is the body or body stub of the 
+subprogram in the package body whose visible part declares its abstract view.
 
+In a refined view a subprogram has visibility of the full type declarations of
+any private types declared by the enclosing package and visibilty of the
+refinements of state abstractions declared by the package. Refined Global,
+Depends, Pre and Post aspects are provided to express the contracts of a refined
+view of a subprogram.
 
 Refined State Aspect
 ~~~~~~~~~~~~~~~~~~~~
@@ -920,9 +928,9 @@ the visible state of the private unit.
 
 The unit declaring the encapsulating state abstraction identified by the Part_Of
 ``option`` or aspect need not be its parent, but it must be a unit whose body
-has visibility on the private library unit, while being *more visible* than the
+has visibility of the private library unit, while being *more visible* than the
 original unit. Furthermore, the unit declaring the encapsulating state
-abstraction must denote the the corresponding item of visible state in its
+abstraction must denote the corresponding item of visible state in its
 Refined_State aspect to indicate that it includes this part of the visible state
 of the private unit. That is, the two specifications, one in the private unit,
 and one in the body of the (typically) public unit, must match one another.
@@ -957,7 +965,7 @@ abstraction of some other public library unit. The following scenario:
      
 gives rise to aliasing between the state abstraction and its constituents.  
 
-To resolve such aliasing rules are imposed to ensure such a scenario can never
+To resolve such aliasing, rules are imposed to ensure such a scenario can never
 occur. In particular, it is always known what state abstraction a constituent
 is part of and a state abstraction always knows all of its constituents.
     
@@ -994,7 +1002,7 @@ is part of and a state abstraction always knows all of its constituents.
 #. No other declarations shall have a Part_Of indicator.
      
 #. The body of a unit whose specification declares a state abstraction named
-   as a encapsulating state abstraction of a Part_Of indicator shall:
+   as an encapsulating state abstraction of a Part_Of indicator shall:
    
    * have a ``with_clause`` naming each unit, excluding itself, containing such
      a Part_Of indicator; and
@@ -1003,16 +1011,16 @@ is part of and a state abstraction always knows all of its constituents.
      Part_Of indicator as a ``constituent`` exclusively of the encapsulating 
      state abstraction.
    
-   [The units that need to be with'd is known from the ``limited_with_clauses``
+   [The units that need to be with'd are known from the ``limited_with_clauses``
    on its specification and from this it is known which declarations have a
    Part_Of indicator for a encapsulating state abstraction.]
 
 #. If both a state abstraction and one or more of its ``constituents`` are 
    visible in a private package specification or in the package specification of
-   a non-private descendant of a a private package, then only the
-   ``constituents`` and not the state abstraction may be denoted in the
-   declarations of the package specification.
-
+   a non-private descendant of a private package, then only the ``constituents``
+   and not the state abstraction may be denoted in the declarations of the
+   package specification.
+   
 #. In a public package specification only state abstractions may be denoted,
    not their ``constituents``. The exclusion to this rule is that for
    private parts of a package given below.
@@ -1243,8 +1251,8 @@ is part of and a state abstraction always knows all of its constituents.
 
 
 
-Initialization Refinement
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Initialization Issues
+~~~~~~~~~~~~~~~~~~~~~
 
 Every state abstraction specified as being initialized in the Initializes 
 aspect of a package has to have all of its constituents initialized.  This
@@ -1318,8 +1326,10 @@ The static semantics are equivalent to those given for the Global aspect in
      the ``global_item`` in the Global aspect.
 
    * No other ``global_items`` shall be included in the Refined_Global
-     aspect specification. ``Global_items`` in the a Refined_Global
-     aspect specification shall denote distinct entities.
+     aspect specification. 
+     
+#. ``Global_items`` in the a Refined_Global aspect specification shall denote 
+   distinct entities.
       
 
 #. The mode of each ``global_item`` in a Refined_Global aspect shall match
@@ -1405,42 +1415,75 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 #. A Refined_Depends aspect specification is, in effect, a copy of
    the corresponding Depends aspect specification except that any references in
-   the Depends aspect to a state abstraction whose refinement is visible at the
-   point of the Refined_Depends specification are replaced (as described below)
-   with references to one or more (or possibly zero, if a null refinement is
-   somehow involved) direct or indirect constituents of that state abstraction.
+   the Depends aspect to a state abstraction whose refinement is 
+   visible at the point of the Refined_Depends specification are replaced with 
+   references to zero or more direct or indirect constituents of that state 
+   abstraction.  A Refined_Depends aspect is defined by creating a new
+   ``dependency_relation`` from the original given in the Depends aspect as
+   follows:
    
-#. Each state abstraction denoted in the Depends aspect whose non-**null**
-   refinement is visible at the point of the Refined_Depends aspect shall be 
-   refined in the Refined_Depends aspect as follows:
-
-   * Each ``input`` in the Depends aspect shall be replaced, in the 
-     Refined_Depends aspect, by one or more ``inputs`` each of which shall 
-     denote a ``constituent`` of the state abstraction in the Refined_Depends 
-     aspect ``constituent``.
-
-   * Each ``output`` in the Depends aspect shall be replaced, in the 
-     Refined_Depends aspect, by one or more ``outputs`` each of which shall 
-     denote a ``constituent`` of the state abstraction.  If the ``output``
-     in the Depends_Aspect denotes a state abstraction which is not also an 
-     ``input``, then all of the ``constituents`` of the state abstraction shall
-     be denoted as ``outputs`` of the Refined_Depends aspect. These rules may
-     introduce extra ``outputs`` in the Refined_Depends and each of these extra
-     ``outputs`` has a corresponding ``input_list``. The union of the ``inputs``
-     in the extra ``input_lists`` shall denote the same ``inputs`` as the
-     ``input_list`` for the state abstraction denoted as the ``output`` in the
-     Depends aspect with its ``inputs`` replaced as required by the above rule
-     for refinement of ``inputs``.
+   * A *partially refined dependency relation* is created by first copying, from
+     the Depends aspect, each ``output`` that is not state abstraction whose
+     refinement is visible at the point of the Refined_Depends aspect, along
+     with its ``input_list``, to the partially refined dependency relation as an
+     ``output`` denoting the same entity with an ``input_list`` denoting the
+     same entities as the original. [The order of the ``outputs`` and the order
+     of ``inputs`` within the ``input_list`` is insignificant.]
      
-#. Each state abstraction denoted in the Depends aspect whose **null** 
-   refinement is visible at the point of the Refined_Depends aspect shall be
-   omitted, or replaced by **null** if required by the syntax of a
-   ``dependency_relation``, in the Refined_Depends aspect.
-
+   * The partially refined dependency relation is then extended by replacing 
+     each ``output`` in the Depends aspect that is a state abstraction whose
+     refinement is visible at the point of the Refined_Depends by zero or more
+     ``outputs`` in the partially refined dependency relation. It shall be zero
+     only for a **null** refinement, otherwise all of the ``outputs`` shall
+     denote a ``constituent`` of the state abstraction. 
+     
+     If the ``output`` in the Depends_Aspect denotes a state abstraction which
+     is not also an ``input``, then all of the ``constituents`` [for a
+     non-**null** refinement] of the state abstraction shall be denoted as
+     ``outputs`` of the partially refined dependency relation.
+     
+     These rules may, for each ``output`` in the Depends aspect, introduce more
+     than one ``output`` in the partially refined dependency relation. Each of
+     these ``outputs`` has an ``input_list`` that has zero or more of the
+     ``inputs`` from the ``input_list`` of the original ``output``. The union of
+     the these ``inputs`` shall denote the same ``inputs`` that appear in the
+     ``input_list`` of the original ``output``.
+     
+   * If the Depends aspect has a ``null_dependency_clause``, then the partially 
+     refined dependency relation has a ``null_dependency_clause`` added with an
+     ``input_list`` denoting the same ``inputs`` as the original.
+     
+   * The partially refined dependency relation is completed by replacing the 
+     ``inputs`` which are state abstractions whose refinements are visible at
+     the point of the Refined_Depends aspect by zero or more ``inputs``. It
+     shall be zero only for a **null** refinement, otherwise each of the
+     ``inputs`` shall denote a ``constituent`` of the state abstraction. The
+     completed dependency relation is the ``dependency_relation`` of the
+     Refined_Depends aspect.
+     
+#. These rules result in omitting each state abstraction whose **null** 
+   refinement is visible at the point of the Refined_Depends. If and only if
+   required by the syntax, the state abstraction shall be replaced by a **null** 
+   symbol rather than being omitted.
+  
 #. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
    aspect specification. ``Outputs`` in the a Refined_Depends aspect
    specification shall denote distinct entities. ``Inputs`` in an ``input_list``
    denote distinct entities.
+   
+#. [The above rules may be viewed from the perspective of checking the
+   consistency of a Refined_Depends aspect with its corresponding Depends
+   aspect.  In this view,  each ``input`` in the Refined_Depends aspect that
+   is a ``constituent`` of a state abstraction, whose refinement is visible at
+   the point of the Refined_Depends aspect, is replaced by its representative
+   state abstraction with duplicate ``inputs`` removed. 
+   
+   Each ``output`` in the Refined_Depends aspect which is a ``constituent`` of
+   the same state abstraction whose refinement is visible at the point of the
+   Refined_Depends aspect, is merged along with its ``input_list`` into a single
+   ``dependency_clause`` whose ``output`` denotes the state abstraction and
+   ``input_list`` is the union of all of the ``inputs`` from the original
+   ``input_lists``.]
    
 #. The rules for :ref:`depends-aspects` also apply.
 
@@ -1476,9 +1519,11 @@ be a Boolean ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Pre aspect may only appear on a body_stub (if one is 
-   present) or the body (if no stub is present) of a subprogram which is 
-   declared in the visible part of a package.
+#. A Refined_Pre aspect may appear only on a body_stub (if one is present) or 
+   the body (if no stub is present) of subprogram if the subprogram is declared
+   in the visible part of a package, its abstract view. If the subprogram
+   declaration in the visible part has no explicit precondition, a precondition
+   of True is assumed for its abstract view.
    
    .. ifconfig:: Display_Trace_Units
 
@@ -1496,13 +1541,13 @@ be a Boolean ``expression``.
 #. A Refined Precondition of a subprogram defines a *refinement*
    of the precondition of the subprogram.
    
-   #. The static semantics are otherwise as for a precondition.
+#. The static semantics are otherwise as for a precondition.
 
 
 .. centered:: **Verification Rules**
 
-#. The precondition of a subprogram declaration shall imply the the
-   Refined Precondition
+#. The precondition of the abstract view of the subprogram shall imply its 
+   Refined_Precondition.
 
 .. centered:: **Dynamic Semantics**
 
@@ -1529,7 +1574,9 @@ be a Boolean ``expression``.
 
 #. A Refined_Post aspect may only appear on a body_stub (if one is 
    present) or the body (if no stub is present) of a subprogram which is 
-   declared in the visible part of a package.
+   declared in the visible part of a package, its abstract view.  If the
+   subprogram declaration in the visible part has no explicit postcondition, a
+   postcondition of True is assumed for the abstract view. 
    
 
    .. ifconfig:: Display_Trace_Units
@@ -1610,21 +1657,14 @@ abstraction on to external states which are given in this section.
    that are External, Output_Only states. 
 
 #. A state abstraction which is specified as just External state, referred to 
-   as a *plain External state* and may have ``constituents`` of any sort of 
-   External state and, or, non External states.
+   as a *plain External state* may have ``constituents`` of any sort of External
+   state and, or, non External states.
    
 #. A subprogram declaration that has a Global aspect denoting a plain External
-   state abstraction with a ``mode_selector`` Input, and the refinement of the
-   state abstraction is visible at the point of the Refined_Global aspect,
-   shall denote, in the Refined_Global aspect, only ``constituents`` of the 
-   state abstraction that are non-volatile External states or are not External 
-   states.
-   
-#. A subprogram declaration that has a Global aspect denoting a plain External
-   state abstraction and the Refined_Global aspect of the subprogram denotes one
-   or more ``constituents`` of the state abstraction that are volatile states, 
-   then the ``mode_selector`` of the state abstraction in the Global_Aspect of 
-   the subprogram declaration shall be In_Out.
+   state abstraction with a ``mode_selector`` other than In_Out, and the 
+   refinement of the state abstraction is visible at the point of the 
+   Refined_Global aspect, shall not denote a Volatile ``constituent`` of the
+   state abstraction, in its Refined_Global aspect.
    
 #. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
    also apply.
@@ -1671,8 +1711,8 @@ abstraction on to external states which are given in this section.
          Depends => (Complex_Device => (Complex_Device, Value));
          -- If the refined Global Aspect refers to constituents which
          -- are volatile state then the mode_selector for Complex_Device must 
-         -- be In_Out and it is both and an output.  The subprogram must be
-         -- a procedure.
+         -- be In_Out and it is both an input and an output.  
+         -- The subprogram must be a procedure.
  
    end Externals;
     
@@ -1942,7 +1982,7 @@ global variables discussed later in this section.
    body.
    
    [The idea here is that once elaboration reaches the start of the early call
-   region of, there will be no further expression evaluation or statement
+   region, there will be no further expression evaluation or statement
    execution (and, in particular, no further calls) before the subprogram_body
    has been elaborated because all elaborable constructs that will be elaborated
    in that interval will be preelaborable. Hence, any calls that occur
@@ -1964,7 +2004,7 @@ global variables discussed later in this section.
        P;
     end;
 
-   even though the call to Q precedes the body of Q. The earl call region
+   even though the call to Q precedes the body of Q. The early call region
    for calls to either P or Q begins immediately after the declaration of X.
    Note that because the call to P is executable during elaboration, so
    is the call to Q.

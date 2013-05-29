@@ -19,10 +19,10 @@ A type is said to *define full default initialization* if it is
 
   * an array type whose element type defines default initialization; or
 
-  * a record type or type extension each of whose component_declarations
-    either includes a default_value or has a type which defines full
+  * a record type or type extension each of whose ``component_declarations``
+    either includes a ``default_expression`` or has a type which defines full
     default initialization and, in the case of a type extension, is
-    an extension of a type which defines default initialization.
+    an extension of a type which defines full default initialization.
 
 [The discriminants of a discriminated type play no role in determining
 whether the type defines full default initialization.]

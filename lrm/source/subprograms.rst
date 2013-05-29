@@ -79,7 +79,7 @@ are in |SPARK|.
           To be completed in the Milestone 3 version of this document.
           
 For an ``expression_function_declaration`` without an explicit postcondition the
-expression implmenting the function acts as its postcondition.
+expression implementing the function acts as its postcondition.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
@@ -104,9 +104,6 @@ for further detail on Depends aspects.
 
 Contract Cases 
 ~~~~~~~~~~~~~~
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 The Contract_Cases aspect provides a structured way of defining a subprogram
 contract using mutually exclusive subcontract cases. The final case in the
@@ -244,11 +241,17 @@ where
 Global Aspects
 ~~~~~~~~~~~~~~
 
-Language definition
-^^^^^^^^^^^^^^^^^^^
-
 A Global aspect of a subprogram lists the global items whose values
 are used or affected by a call of the subprogram.
+
+The Global aspect may only be specified for the initial declaration of a
+subprogram (which may be a declaration, a body or a body stub).
+The implementation of a subprogram body must be consistent with the
+subprogram's Global Aspect.
+
+Note that a Refined Global aspect may be applied to a subprogram body when 
+using state abstraction; see section :ref:`refined-global-aspect` for further 
+details.
 
 The Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Global and the ``aspect_definition`` must
@@ -296,6 +299,9 @@ where
 
 
 .. centered:: **Legality Rules**
+
+#. The Global aspect may only be specified for the initial declaration of a
+   subprogram (which may be a declaration, a body or a body stub).
 
 #. A ``global_item`` shall denote an entire object [which must be a variable] or
    a state abstraction.
@@ -358,7 +364,7 @@ There are no dynamic semantics associated with a Global aspect.
 
 .. centered:: **Verification Rules**
 
-#. A``global_item`` shall occur in a Global aspect of a 
+#. A ``global_item`` shall occur in a Global aspect of a 
    subprogram if and only if it denotes an entity that is referenced by the 
    subprogram.
    
@@ -370,9 +376,9 @@ There are no dynamic semantics associated with a Global aspect.
    * a ``global_item`` that denotes an input but not an output is mode **in** 
      and has a ``mode_selector`` of Input; 
    
-   * a ``global_item`` that denotes an output but not an input is always fully 
-     initialized on every call of the subprogram, is mode **out** and has a 
-     ``mode_selector`` of Output;
+   * a ``global_item`` that denotes an output but not an input and is always 
+     fully initialized on every call of the subprogram, is mode **out** and has 
+     a ``mode_selector`` of Output;
      
    * otherwise the ``global_item`` denotes both an input and an output, is
      mode **in out** and has a ``mode_selector`` of In_Out.
@@ -384,9 +390,9 @@ There are no dynamic semantics associated with a Global aspect.
 
 .. centered:: **Examples**
 
-.. code-block:: ada
+.. code-block:: ada                                                    
 
-   with Global => null; -- Indicates that the subprogram does reference 
+   with Global => null; -- Indicates that the subprogram does not reference 
                         -- any global items.
    with Global => V;    -- Indicates that V is an input of the subprogram.
    with Global => (X, Y, Z);  -- X, Y and Z are inputs of the subprogram.
@@ -410,9 +416,6 @@ There are no dynamic semantics associated with a Global aspect.
 
 Depends Aspects
 ~~~~~~~~~~~~~~~
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 A Depends aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
@@ -476,6 +479,9 @@ where
    :Trace Unit: 6.1.5 Syntax
 
 .. centered:: **Legality Rules**
+
+#. The Depends aspect may only be specified for the initial declaration of a
+   subprogram (which may be a declaration, a body or a body stub).
 
 #. The *input set* of a subprogram is the set of formal parameters of the 
    subprogram of mode **in** and **in out** along with the entities denoted by 
@@ -557,9 +563,9 @@ where
    (other than itself, if the ``output_list`` =>+ **null** self-dependency 
    syntax is used).
 
-#. The ``inputs`` in the ``input_list`` a ``null_dependency_clause`` may be read
-   by the subprogram but play no role in determining the values of any outputs
-   of the subprogram.
+#. The ``inputs`` in the ``input_list`` of a ``null_dependency_clause`` may be 
+   read by the subprogram but play no role in determining the values of any 
+   outputs of the subprogram.
 
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
    indicates that the subprogram has no ``inputs`` or ``outputs``.  
@@ -578,7 +584,7 @@ where
    
 #. [A subprogram which has an explicit Global aspect specification
    but lacks an explicit Depends aspect specification and, as yet, has no 
-   implmentation of its body is assumed to have the conservative 
+   implementation of its body is assumed to have the conservative 
    ``dependency_relation`` that each member of the output set is dependent on 
    every member of the input set.]
    
@@ -650,9 +656,6 @@ as it is used purely for static analysis purposes and is not executed.
 Ghost Functions
 ~~~~~~~~~~~~~~~
 
-Language definition
-^^^^^^^^^^^^^^^^^^^
-
 Ghost functions are intended for use in discharging proof obligations and
 in making it easier to express assertions about a program.
 The essential property of ghost functions is that they have no
@@ -717,11 +720,11 @@ the outcome of a membership test].
 All subcomponents of a ghost object shall be initialized by the
 elaboration of the declaration of the object.
 
-..todo::
+.. todo::
    Make worst-case assumptions about private types for this rule,
    or blast through privacy?
 
-A ghost instantiation shall not be an instantation of a non-ghost
+A ghost instantiation shall not be an instantiation of a non-ghost
 generic package. [This is a conservative rule until we have more precise rules
 about the side effects of elaborating an instance of a generic package.
 We will need the general rule that the elaboration of a
@@ -745,14 +748,14 @@ Adding a ghost variable, for example, could change the freezing point
 of a non-ghost type. It appears that this is ok; that is, this does
 not violate the ghosts-have-no-effect-on-program-behavior rule.]
 
-..todo::
+.. todo::
    Can a ghost variable be a constituent of a non-ghost state
    abstraction, or would this somehow allow unwanted dependencies?
    If not, then we presumably need to allow ghost state abstractions
    or else it would illegal for a library level package body to
    declare a ghost variable.
 
-..todo::
+.. todo::
    Do we want an implicit Ghost convention for an entity declared
    within a statement whose execution depends on a ghost value?
 
@@ -888,9 +891,6 @@ side-effects and cannot update an actual parameter or global
 variable.  Therefore, function calls cannot introduce aliasing and
 are excluded from the anti-aliasing rules given below for procedure
 calls.
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 .. centered:: **Syntax**
 
