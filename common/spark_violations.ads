@@ -55,6 +55,7 @@ package SPARK_Violations is
       NYI_Interface,        --  interfaces
       NYI_Class_Wide,       --  class wide types
       NYI_Unchecked,        --  unchecked expressions
+      NYI_Composite_Conv,   --  conversion between composite types
       NYI_Extended_Return,  --  extended return
 
       --  NIR: Not In Roadmap
@@ -116,6 +117,7 @@ package SPARK_Violations is
       NYI_Class_Wide       => To_Unbounded_String ("class wide types"),
       NYI_Interface        => To_Unbounded_String ("interfaces"),
       NYI_Unchecked        => To_Unbounded_String ("unchecked expressions"),
+      NYI_Composite_Conv   => To_Unbounded_String ("conversion of composite"),
       NYI_Extended_Return  => To_Unbounded_String ("extended return"),
 
       NIR_Access           => To_Unbounded_String ("access"),
