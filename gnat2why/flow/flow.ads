@@ -146,9 +146,10 @@ package Flow is
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
 
-   procedure Get_Globals (Subprogram : Entity_Id;
-                          Reads      : out Flow_Id_Sets.Set;
-                          Writes     : out Flow_Id_Sets.Set)
+   procedure Get_Globals (Subprogram             : Entity_Id;
+                          Reads                  : out Flow_Id_Sets.Set;
+                          Writes                 : out Flow_Id_Sets.Set;
+                          Consider_Discriminants : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
         Post => (for all G of Reads  => G.Variant = In_View) and
                 (for all G of Writes => G.Variant = Out_View);
@@ -156,6 +157,10 @@ package Flow is
    --  aspect or the computed globals. The sets returned will contain
    --  Flow_Id with the variant set to Global_In_View and
    --  Global_Out_View.
+   --
+   --  If Consider_Discriminants is provided then an out global will
+   --  include a corresponding read if the global includes at least
+   --  one discriminant.
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
    with Pre => Ekind (Subprogram) in E_Procedure | E_Function;

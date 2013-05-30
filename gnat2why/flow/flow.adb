@@ -206,9 +206,10 @@ package body Flow is
    -- Get_Globals --
    -----------------
 
-   procedure Get_Globals (Subprogram : Entity_Id;
-                          Reads      : out Flow_Id_Sets.Set;
-                          Writes     : out Flow_Id_Sets.Set)
+   procedure Get_Globals (Subprogram             : Entity_Id;
+                          Reads                  : out Flow_Id_Sets.Set;
+                          Writes                 : out Flow_Id_Sets.Set;
+                          Consider_Discriminants : Boolean := False)
    is
    begin
       Reads  := Flow_Id_Sets.Empty_Set;
@@ -248,6 +249,13 @@ package body Flow is
                      Writes.Insert (Direct_Mapping_Id
                                       (The_Global, Out_View));
                   when Name_Output =>
+                     if Consider_Discriminants and then
+                       Flow.Utility.Contains_Discriminants
+                       (Direct_Mapping_Id (The_Global, In_View))
+                     then
+                        Reads.Insert (Direct_Mapping_Id
+                                        (The_Global, In_View));
+                     end if;
                      Writes.Insert (Direct_Mapping_Id
                                       (The_Global, Out_View));
                   when others =>
@@ -364,6 +372,9 @@ package body Flow is
                --  This is not a mistake, we must assume that all
                --  values written may also not change or that they are
                --  only partially updated.
+               --
+               --  This also takes care of discriminants as every out
+               --  is really an in out.
                Reads.Include (Get_Flow_Id (W, In_View));
                Writes.Include (Get_Flow_Id (W, Out_View));
             end loop;
@@ -561,10 +572,14 @@ package body Flow is
                   Output.Write_Str ("'in");
                   Output.Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Node (A.Parameter_Actual.Node);
+                  if A.Is_Discriminants_Only_Parameter then
+                     Output.Write_Str ("'discriminants");
+                  end if;
 
                when Out_View =>
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
+                  pragma Assert (not A.Is_Discriminants_Only_Parameter);
                   Sprint_Node (A.Parameter_Actual.Node);
                   Output.Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Node (A.Parameter_Formal.Node);
@@ -581,9 +596,13 @@ package body Flow is
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
+                  if A.Is_Discriminants_Only_Parameter then
+                     Output.Write_Str ("'discriminants");
+                  end if;
                   Output.Write_Str ("'in");
 
                when Out_View =>
+                  pragma Assert (not A.Is_Discriminants_Only_Parameter);
                   Output.Write_Str ("'out");
 
                when others =>

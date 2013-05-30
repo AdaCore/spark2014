@@ -26,6 +26,8 @@ with Sinfo;    use Sinfo;
 
 with Why;
 
+with Flow.Utility; use Flow.Utility;
+
 package body Flow.Interprocedural is
 
    use type Flow_Graphs.Vertex_Id;
@@ -137,6 +139,9 @@ package body Flow.Interprocedural is
    begin
       if Has_Depends (Called_Procedure) then
          --  We have a dependency aspect, so we should use it.
+
+         --  !!! M318-017 (variant records) will need to change this
+         --  !!! to deal with the hidden ins in out parameters.
          declare
             Deps : Dependency_Maps.Map;
          begin
@@ -167,9 +172,10 @@ package body Flow.Interprocedural is
             E       : Entity_Id;
          begin
             --  Collect all the globals first.
-            Get_Globals (Subprogram => Called_Procedure,
-                         Reads      => Inputs,
-                         Writes     => Outputs);
+            Get_Globals (Subprogram             => Called_Procedure,
+                         Reads                  => Inputs,
+                         Writes                 => Outputs,
+                         Consider_Discriminants => True);
 
             --  Add parameters.
             E := First_Formal (Called_Procedure);
@@ -186,6 +192,12 @@ package body Flow.Interprocedural is
                                                         Out_View));
 
                   when E_Out_Parameter =>
+                     if Contains_Discriminants
+                       (Direct_Mapping_Id (Unique_Entity (E), In_View))
+                     then
+                        Inputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
+                                                          In_View));
+                     end if;
                      Outputs.Insert (Direct_Mapping_Id (Unique_Entity (E),
                                                         Out_View));
 

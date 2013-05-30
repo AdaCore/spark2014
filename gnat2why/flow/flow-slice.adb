@@ -21,8 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow.Utility; use Flow.Utility;
-
 with Why;
 
 package body Flow.Slice is
@@ -152,11 +150,7 @@ package body Flow.Slice is
                return Change_Variant (F, Normal_Use);
 
             when Record_Field =>
-               if Is_Discriminant (F) then
-                  return Change_Variant (F, Normal_Use);
-               else
-                  return Direct_Mapping_Id (Get_Direct_Mapping_Id (F));
-               end if;
+               return Change_Variant (Entire_Variable (F), Normal_Use);
 
             when Null_Value =>
                raise Why.Unexpected_Node;

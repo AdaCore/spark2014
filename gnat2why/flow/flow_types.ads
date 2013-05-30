@@ -291,6 +291,9 @@ package Flow_Types is
       Is_Parameter        : Boolean;
       --  True if this vertex models an argument to a procedure call.
 
+      Is_Discriminants_Only_Parameter : Boolean;
+      --  If true this only captures the discriminants.
+
       Is_Global_Parameter : Boolean;
       --  True if this vertex models a global for a procedure or
       --  function call.
@@ -322,51 +325,53 @@ package Flow_Types is
    pragma Pack (V_Attributes);
 
    Null_Attributes : constant V_Attributes :=
-     V_Attributes'(Is_Null_Node        => False,
-                   Is_Program_Node     => False,
-                   Is_Precondition     => False,
-                   Is_Loop_Entry       => False,
-                   Is_Initialised      => False,
-                   Is_Function_Return  => False,
-                   Is_Global           => False,
-                   Is_Loop_Parameter   => False,
-                   Is_Import           => False,
-                   Is_Export           => False,
-                   Is_Constant         => False,
-                   Is_Callsite         => False,
-                   Is_Parameter        => False,
-                   Is_Global_Parameter => False,
-                   Perform_IPFA        => False,
-                   Call_Vertex         => Null_Flow_Id,
-                   Parameter_Actual    => Null_Flow_Id,
-                   Parameter_Formal    => Null_Flow_Id,
-                   Variables_Defined   => Flow_Id_Sets.Empty_Set,
-                   Variables_Used      => Flow_Id_Sets.Empty_Set,
-                   Loops               => Node_Sets.Empty_Set,
-                   Error_Location      => Empty);
+     V_Attributes'(Is_Null_Node                    => False,
+                   Is_Program_Node                 => False,
+                   Is_Precondition                 => False,
+                   Is_Loop_Entry                   => False,
+                   Is_Initialised                  => False,
+                   Is_Function_Return              => False,
+                   Is_Global                       => False,
+                   Is_Loop_Parameter               => False,
+                   Is_Import                       => False,
+                   Is_Export                       => False,
+                   Is_Constant                     => False,
+                   Is_Callsite                     => False,
+                   Is_Parameter                    => False,
+                   Is_Discriminants_Only_Parameter => False,
+                   Is_Global_Parameter             => False,
+                   Perform_IPFA                    => False,
+                   Call_Vertex                     => Null_Flow_Id,
+                   Parameter_Actual                => Null_Flow_Id,
+                   Parameter_Formal                => Null_Flow_Id,
+                   Variables_Defined               => Flow_Id_Sets.Empty_Set,
+                   Variables_Used                  => Flow_Id_Sets.Empty_Set,
+                   Loops                           => Node_Sets.Empty_Set,
+                   Error_Location                  => Empty);
 
    Null_Node_Attributes : constant V_Attributes :=
-     V_Attributes'(Is_Null_Node        => True,
-                   Is_Program_Node     => True,
-                   Is_Precondition     => False,
-                   Is_Loop_Entry       => False,
-                   Is_Initialised      => False,
-                   Is_Function_Return  => False,
-                   Is_Global           => False,
-                   Is_Loop_Parameter   => False,
-                   Is_Import           => False,
-                   Is_Export           => False,
-                   Is_Constant         => False,
-                   Is_Callsite         => False,
-                   Is_Parameter        => False,
-                   Is_Global_Parameter => False,
-                   Perform_IPFA        => False,
-                   Call_Vertex         => Null_Flow_Id,
-                   Parameter_Actual    => Null_Flow_Id,
-                   Parameter_Formal    => Null_Flow_Id,
-                   Variables_Defined   => Flow_Id_Sets.Empty_Set,
-                   Variables_Used      => Flow_Id_Sets.Empty_Set,
-                   Loops               => Node_Sets.Empty_Set,
-                   Error_Location      => Empty);
+     V_Attributes'(Is_Null_Node                    => True,
+                   Is_Program_Node                 => True,
+                   Is_Precondition                 => False,
+                   Is_Loop_Entry                   => False,
+                   Is_Initialised                  => False,
+                   Is_Function_Return              => False,
+                   Is_Global                       => False,
+                   Is_Loop_Parameter               => False,
+                   Is_Import                       => False,
+                   Is_Export                       => False,
+                   Is_Constant                     => False,
+                   Is_Callsite                     => False,
+                   Is_Parameter                    => False,
+                   Is_Discriminants_Only_Parameter => False,
+                   Is_Global_Parameter             => False,
+                   Perform_IPFA                    => False,
+                   Call_Vertex                     => Null_Flow_Id,
+                   Parameter_Actual                => Null_Flow_Id,
+                   Parameter_Formal                => Null_Flow_Id,
+                   Variables_Defined               => Flow_Id_Sets.Empty_Set,
+                   Variables_Used                  => Flow_Id_Sets.Empty_Set,
+                   Loops                           => Node_Sets.Empty_Set,
+                   Error_Location                  => Empty);
 
 end Flow_Types;

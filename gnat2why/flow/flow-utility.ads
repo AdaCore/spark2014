@@ -82,4 +82,10 @@ package Flow.Utility is
    --  Returns true if the given flow id is a record field
    --  representing a discriminant.
 
+   function Contains_Discriminants (F : Flow_Id) return Boolean
+     is (for some X of Flatten_Variable (F) => Is_Discriminant (X))
+     with Pre => F.Kind in Direct_Mapping | Magic_String;
+   --  Returns true if the flattened variable for F contains at least
+   --  one discriminant.
+
 end Flow.Utility;

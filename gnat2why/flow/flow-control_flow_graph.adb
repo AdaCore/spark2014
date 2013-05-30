@@ -1734,6 +1734,7 @@ package body Flow.Control_Flow_Graph is
       Reads  : Flow_Id_Sets.Set;
       Writes : Flow_Id_Sets.Set;
       V      : Flow_Graphs.Vertex_Id;
+      Atr    : V_Attributes;
    begin
       --  Obtain globals (either from contracts or the computerd
       --  stuff).
@@ -1743,20 +1744,34 @@ package body Flow.Control_Flow_Graph is
 
       for R of Reads loop
          FA.CFG.Add_Vertex (Make_Global_Attributes
-                              (Call_Vertex => Callsite,
-                               Global      => R,
-                               Loops       => Ctx.Current_Loops,
-                               E_Loc       => Callsite),
+                              (Call_Vertex        => Callsite,
+                               Global             => R,
+                               Discriminants_Only => False,
+                               Loops              => Ctx.Current_Loops,
+                               E_Loc              => Callsite),
                             V);
          In_List.Append (V);
       end loop;
 
       for W of Writes loop
+         if not Reads.Contains (W) then
+            Atr := Make_Global_Attributes
+              (Call_Vertex        => Callsite,
+               Global             => Change_Variant (W, In_View),
+               Discriminants_Only => True,
+               Loops              => Ctx.Current_Loops,
+               E_Loc              => Callsite);
+            if Atr.Variables_Used.Length >= 1 then
+               FA.CFG.Add_Vertex (Atr, V);
+               In_List.Append (V);
+            end if;
+         end if;
          FA.CFG.Add_Vertex (Make_Global_Attributes
-                              (Call_Vertex => Callsite,
-                               Global      => W,
-                               Loops       => Ctx.Current_Loops,
-                               E_Loc       => Callsite),
+                              (Call_Vertex        => Callsite,
+                               Global             => W,
+                               Discriminants_Only => False,
+                               Loops              => Ctx.Current_Loops,
+                               E_Loc              => Callsite),
                             V);
          Out_List.Append (V);
       end loop;
@@ -1785,9 +1800,10 @@ package body Flow.Control_Flow_Graph is
       Actual : Node_Id;
       Formal : Node_Id;
       Call   : Node_Id;
+      Atr    : V_Attributes;
    begin
       --  Create initial nodes for the statements.
-      P    := First (L);
+      P := First (L);
       while Present (P) loop
          case Nkind (P) is
             when N_Parameter_Association =>
@@ -1807,34 +1823,50 @@ package body Flow.Control_Flow_Graph is
                           Ekind (Formal) = E_In_Out_Parameter or
                           Ekind (Formal) = E_Out_Parameter);
 
+         --  Build an in vertex.
          if Ekind (Formal) = E_In_Parameter or
            Ekind (Formal) = E_In_Out_Parameter then
-            --  Build an in vertex.
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (P, In_View),
                Make_Parameter_Attributes
-                 (Call_Vertex => Parent (L),
-                  Actual      => Actual,
-                  Formal      => Formal,
-                  In_Vertex   => True,
-                  Loops       => Ctx.Current_Loops,
-                  E_Loc       => P),
+                 (Call_Vertex        => Parent (L),
+                  Actual             => Actual,
+                  Formal             => Formal,
+                  In_Vertex          => True,
+                  Discriminants_Only => False,
+                  Loops              => Ctx.Current_Loops,
+                  E_Loc              => P),
                V);
             In_List.Append (V);
+         elsif Ekind (Formal) = E_Out_Parameter then
+            Atr := Make_Parameter_Attributes
+              (Call_Vertex        => Parent (L),
+               Actual             => Actual,
+               Formal             => Formal,
+               In_Vertex          => True,
+               Discriminants_Only => True,
+               Loops              => Ctx.Current_Loops,
+               E_Loc              => P);
+            if Atr.Variables_Used.Length >= 1 then
+               FA.CFG.Add_Vertex
+                 (Direct_Mapping_Id (P, In_View), Atr, V);
+               In_List.Append (V);
+            end if;
          end if;
 
+         --  Build an out vertex.
          if Ekind (Formal) = E_In_Out_Parameter or
            Ekind (Formal) = E_Out_Parameter then
-            --  Build an out vertex.
             FA.CFG.Add_Vertex
               (Direct_Mapping_Id (P, Out_View),
                Make_Parameter_Attributes
-                 (Call_Vertex => Parent (L),
-                  Actual      => Actual,
-                  Formal      => Formal,
-                  In_Vertex   => False,
-                  Loops       => Ctx.Current_Loops,
-                  E_Loc       => P),
+                 (Call_Vertex        => Parent (L),
+                  Actual             => Actual,
+                  Formal             => Formal,
+                  In_Vertex          => False,
+                  Discriminants_Only => False,
+                  Loops              => Ctx.Current_Loops,
+                  E_Loc              => P),
                V);
             Out_List.Append (V);
          end if;

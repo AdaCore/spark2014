@@ -148,17 +148,20 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------
 
    function Make_Parameter_Attributes
-     (Call_Vertex : Node_Id;
-      Actual      : Node_Id;
-      Formal      : Node_Id;
-      In_Vertex   : Boolean;
-      Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id := Empty)
-     return V_Attributes
+     (Call_Vertex        : Node_Id;
+      Actual             : Node_Id;
+      Formal             : Node_Id;
+      In_Vertex          : Boolean;
+      Discriminants_Only : Boolean;
+      Loops              : Node_Sets.Set;
+      E_Loc              : Node_Or_Entity_Id := Empty)
+      return V_Attributes
    is
-      A : V_Attributes := Null_Attributes;
+      A        : V_Attributes     := Null_Attributes;
+      Tmp_Used : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
-      A.Is_Parameter     := True;
+      A.Is_Parameter                    := True;
+      A.Is_Discriminants_Only_Parameter := Discriminants_Only;
       A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Actual := Direct_Mapping_Id (Actual);
       A.Parameter_Formal := Direct_Mapping_Id (Formal);
@@ -167,11 +170,19 @@ package body Flow.Control_Flow_Graph.Utility is
 
       if In_Vertex then
          pragma Assert
-           (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter);
-         A.Variables_Used := Get_Variable_Set (Actual);
+           (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
+              Discriminants_Only);
+
+         Tmp_Used := Get_Variable_Set (Actual);
+         for F of Tmp_Used loop
+            if not Discriminants_Only or else Is_Discriminant (F) then
+               A.Variables_Used.Include (F);
+            end if;
+         end loop;
       else
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
+         pragma Assert (not Discriminants_Only);
          Untangle_Assignment_Target (N            => Actual,
                                      Vars_Defined => A.Variables_Defined,
                                      Vars_Used    => A.Variables_Used);
@@ -185,15 +196,17 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Call_Vertex : Node_Id;
-      Global      : Flow_Id;
-      Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id := Empty)
+     (Call_Vertex        : Node_Id;
+      Global             : Flow_Id;
+      Discriminants_Only : Boolean;
+      Loops              : Node_Sets.Set;
+      E_Loc              : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Global_Parameter := True;
+      A.Is_Global_Parameter             := True;
+      A.Is_Discriminants_Only_Parameter := Discriminants_Only;
       A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Formal    := Global;
       A.Loops               := Loops;
@@ -201,13 +214,20 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Global.Variant is
          when In_View =>
-            A.Variables_Used :=
-              Flatten_Variable (Change_Variant (Global, Normal_Use));
+            for F of Flatten_Variable
+              (Change_Variant (Global, Normal_Use))
+            loop
+               if not Discriminants_Only or else Is_Discriminant (F) then
+                  A.Variables_Used.Include (F);
+               end if;
+            end loop;
+
          when Out_View =>
             --  We do not need untangle_assignment_target as we only
             --  ever update the entire global.
-            A.Variables_Defined :=
-              Flatten_Variable (Change_Variant (Global, Normal_Use));
+            A.Variables_Defined := Flatten_Variable
+              (Change_Variant (Global, Normal_Use));
+
          when others =>
             raise Program_Error;
       end case;
