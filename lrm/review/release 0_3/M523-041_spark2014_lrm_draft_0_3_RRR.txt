@@ -962,7 +962,8 @@ Page/Para:  General
 !Label: AH/7
 !Location: A.1.3
 !Description:  The ToDo in this section about “false alarm management” needs resolving. “pragma Warning(…)” will be used.
-!Action Taken:
+!Action Taken: Mentioned that depending on the outcome of M423-014 either pragma Annotate or pragma Warning will
+               be utilised to accept warnings/errors.
 !Checked By:
 
 !Label:  AH/8
@@ -984,7 +985,7 @@ Page/Para:  General
                be resolved automatically. We simply say where the file is located in
                the repository.
 AH: most readers of this document will not have access to the repository. We need to come up with another solution. I suggest we just delete this sentence.
-!Checked By: 
+!Checked By:
 
 !Label: AH/11
 !Location: A.2.3
@@ -1014,8 +1015,9 @@ AH: most readers of this document will not have access to the repository. We nee
 
 !Label: AH/15
 !Location: General (within the mapping spec)
-!Description: There are still ToDos that mention milestone 3. As this doc is the Milestone 3 doc we need to either complete the work or change the milestone. NB todos containing : syntax is not yet defined" need to be implemented as the syntax should be fully defined now.
-!Action Taken: Applied the same ToDo as in AH/11.
+!Description: There are still ToDos that mention milestone 3. As this doc is the Milestone 3 doc we need to
+              either complete the work or change the milestone. NB todos containing : syntax is not yet defined" need to be implemented as the syntax should be fully defined now.
+!Action Taken: Mapping-spec's ToDos now mention Milestone 4 and reference their relevant TN's (if possible).
 !Checked By:
 
 

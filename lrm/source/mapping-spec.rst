@@ -90,10 +90,9 @@ Specification in |SPARK|:
       :linenos:
 
 .. todo::
-   Note that the details of false alarm management are still TBD and so
-   there is currently no equivalent of the accept annotation
-   in the SPARK 2005 body.
-   To be completed in the Milestone 3 version of this document.
+   Depending on the outcome of M423-014, either pragma Annotate or pragma Warning
+   will be utilized to accept warnings/errors in |SPARK|.
+   To be completed in the Milestone 4 version of this document.
 
 Body in |SPARK|:
 
@@ -829,9 +828,9 @@ This example uses the Output package from section `Basic Input and Output Device
 and adds a contract using the 'Append attribute.
 
 .. todo::
-   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-   syntax is not yet defined.*
-   To be completed in the Milestone 3 version of this document.
+   There will not be an equivalent of \'Append and \'Tail in |SPARK|. However, we will be
+   able to achieve the same functionality using generics. To be completed in the Milestone 4
+   version of this document.
 
 Specification in SPARK 2005:
 
@@ -1231,20 +1230,10 @@ Always_Valid assertion
 See section `Input driver using \'Append and \'Tail contracts`_ for use of an assertion involving
 the Always_Valid attribute.
 
-.. todo::
-   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-   syntax is not yet defined.*
-   To be completed in the Milestone 3 version of this document.
-
 Rule declaration annotation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See section `Proof types and proof functions`_.
-
-.. todo::
-   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-   syntax is not yet defined.*
-   To be completed in the Milestone 3 version of this document.
 
 .. _ms-proof_types_and_proof_functions-label:
 
@@ -1259,8 +1248,8 @@ to introduce a rule related to the components of a constant record value.
 
 .. todo::
    *Note that the* |SPARK| *version of the rule declaration annotation has not yet been
-   defined - note that it may not even be needed, though this is to be determined - and
-   so there is no equivalent included in the* |SPARK| *code.*
+   defined [M520-006] - note that it may not even be needed, though this is to be determined -
+   and so there is no equivalent included in the* |SPARK| *code.*
    To be completed in the Milestone 4 version of this document.
 
 Specification in SPARK 2005:
