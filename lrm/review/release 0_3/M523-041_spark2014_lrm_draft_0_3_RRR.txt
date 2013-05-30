@@ -27,45 +27,54 @@
 !Label: STT003 
 !Location: 1.9.6, 13/10 (also 14/10):
 !Description: Formatting glitch: "SPARK_Mode" came out as "SPARKSUBSCRIBTINBMode."
-!Action Taken: 
+!Action Taken: This is a artifact of the diff.  The method used for the diff has been updated and should resolve this problem.
 !Checked By: 
 
 !Label: STT004 
 !Location: 1.9.6, 13/14:
 !Description: Avoid use of "may not" -- use "might not" instead.  "May not" tends to be ambiguous between "must not" and "might not", and is not permitted in ISO standards.
-!Action Taken: 
+!Action Taken:  Replace may not by might not or shall not as appropriate throughout the document. 
 !Checked By: 
 
 !Label: STT005 
 !Location: 1.9.6, 14/2:
 !Description: This starts out "It is the *use* of a construct no in SPARK 2014..."  This is somewhat hard to understand, and is not parallel in construction with the prior paragraph, and is hard to distinguish from the prior paragraph.  What exactly does "use" mean as opposed to "appear".  Is "use" supposed to mean "call" as opposed to "appear directly"?
-!Action Taken: 
+!Action Taken: The wording is not clear but the intention is that a declaration of an entity, although not in SPARK may not be a problem, e.g., the declaration of an access type or a subprogram that is not in SPARK.  It is only when an object of the unsupported type is declared or there is a call to the unsupported subprogram that they become something that affects the analysis.  The idea is that we could ignore certain declarations, increase the number of non-SPARK units (package specs I guess) that could be accepted, and reduce the number of places where the SPARK_Mode aspect has to be used.  I do not think this idea has been accepted and if this is the case the questionable paragraph should be deleted and the preceding one updated.  STILL TO BE DONE.  
 !Checked By: 
 
 !Label: STT006 
 !Location: 3.9 27/5:
 !Description: 
 Is is worth supporting Pre'Class, etc., if we aren't supporting dispatching calls?  The class-wide aspects seem relevant only in the presence of dispatching calls.
-!Action Taken: 
+!Action Taken: I have changed the text to say that the attribute 'Class is not currently supported. THIS NEEDS TO BE DISCUSSED AT NEXT LANGUAGE TELE-CONF
 !Checked By: 
 
 !Label: STT007 
 !Location: 5.1 29/3:
 !Description: Once we support tasking, presumably entry_call_statement, requeue_statement, and delay_statement will be "in SPARK."  Shouldn't we somehow distinguish temporary restrictions and long-term restrictions?
-!Action Taken: 
+!Action Taken: Added the following note:
+[A future release of |SPARK| is planned to support the Ravenscar multi-tasking 
+profile and then some of the tasking statements such as ``entry_call_statement``, and ``delay_statement`` will be permitted.]
+The requeue statement is not in the Ravenscar profile.
+I think we need to go through the SPARK RM and make sure we note where future enhancements are likely.]  TO BE COMPLETED.
 !Checked By: 
 
 !Label: STT008 
 !Location: 5.5.3 30/4:
 !Description: "... for an legality rule ..." -> "... for a legality rule ..."
-!Action Taken: 
+!Action Taken: Done.
 !Checked By: 
 
 !Label: STT009 
 !Location: 5.5.3 30/5:
 !Description: 
 Loop_Variant is claimed to be similar to pragma Assert, but in fact has little or nothing in common with pragma Assert.
-!Action Taken: 
+!Action Taken: I think it was trying to make use of the existing rules for assert.  I have reworded it to make it less of a comparison with Assert as follows:
+Loop_Variant has an expected actual parameter which is a specialization of an
+Ada expression. Otherwise, it has the same syntax, name resolution,
+legality rules, and assertion policy as pragma Assert; furthermore it has the
+extra static semantics and legality rules given below.
+I have an action from another review comment to format this section consistently with the rest of the RM.  I will further review the wording then. 
 !Checked By: 
 
 !Label: STT010 
@@ -74,7 +83,7 @@ Loop_Variant is claimed to be similar to pragma Assert, but in fact has little o
 I could not understand this sentence:
 "The prefix of a Loop_Entry attribute_Reference shall not contain a use of an entity declared within the loop_statement but not within the prefix itself."
 What sort of prefix includes declarations?  Did you mean "within the enclosing invariant or variant expression"?
-!Action Taken: 
+!Action Taken: I do not know the answer to this I defer to SBB. I have sent an email to SBB.
 !Checked By: 
 
 !Label: STT011 
@@ -87,9 +96,384 @@ Under the following circumstances:
   ...
 the prefix of the Loop_Entry shall statically denote an entity...
 !Action Taken: 
+Comment from SBB:
+This follows the corresponding Ada RM rule for 'Old
+  The prefix of an Old attribute_reference that is potentially
+  unevaluated shall statically denote an entity.
+
+and has the same rationale. If we allowed
+
+    procedure P (X : in out String; Idx : Positive) is
+    begin
+        Outer :
+          loop
+            if Idx in X'Range then
+              loop
+                 pragma Loop_Invariant (X(Idx) >
+                                        X(Idx)'Loop_Entry(Outer));
+
+this would introduce an exception in the case where Idx is not
+in X'Range. Sounds like you are saying that adding words to this
+effect as a note would be helpful. 
+
+!Checked By: 
+
+!Label: STT012 
+!Location: 6.1.4 42/8:
+!Description: This note indicating that the rule disallowing function calls is a name resolution rule seems odd.  Better would be to make rule 1. into a name resolution rule, and then make this second rule be a NOTE immediately following it, explaining why it is a name resolution rule.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT013 
+!Location: 6.1.4 42/4:
+!Description: "...with a mode_selector of In_Out or Out{put}."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT014 
+!Location: 6.1.4 43/3:
+!Description: Are we defining "mode in" = "mode_selector Input"?  That seems confusing.  Why not just talk about mode "Input"?  Ditto for "mode out" and "mode in out".  Also, there seems no "mode" corresponding to the "mode_selector Proof_In".
+!Action Taken: 
+!Checked By: 
+
+!Label: STT015 
+!Location: 6.1.4 43/4:
+!Description: 
+The wording "... is always fully initialized on every call..." is a bit confusing, as it could mean must be initialized before the call.  It would be clearer if it said "... is always fully initialized as a result of any successful execution of a call..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT016 
+!Location: 6.1.4 43/7:
+!Description: Comment is missing "not": "... the subprogram does {not} reference any global items."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT017 
+!Location: 6.1.5 44/1:
+!Description: What does it mean to say "... are simple specifications"?  Did you define "simple" specifications somewhere?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT018 
+!Location: 6.1.5 45/5:
+!Description: "dentoed" => "denoted"
+!Action Taken: 
+!Checked By: 
+
+!Label: STT019 
+!Location: 6.1.5 45/7:
+!Description: 
+As with STT012, this note indicating that the (implicit) rule disallowing function calls is a name resolution rule, should be altered by putting the rules which are name-resolution rules in a name-resolution section, and then including this explanation as a note below them.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT020 
+!Location: 6.1.5 45/9:
+!Description: 
+This paragraph talks about "output_list which is a null symbol" but that is not permitted by the syntax.  I believe this should be restated in terms of the "null_dependency_clause".
+!Action Taken: 
+!Checked By: 
+
+!Label: STT021 
+!Location: 6.1.5 45/(last):
+!Description: 
+Is there a reason we allow "A =>+ A"?  This seems likely to have been an error of some sort.  It also violates the rule requiring distinct entities in the input_list after expanding it into its equivalent "A => (A, A)".  If we do allow this, we should probably change the equivalence to indicate that each member of the output list is union'ed with the input list to produce the equivalent input list for that output.  Not clear this is a good idea in my mind! (note that some of the later examples, such as "(A, B) =>+ (A, X, Y)", will need to be modified if we do disallow this).
+!Action Taken: 
+!Checked By: 
+
+!Label: STT022 
+!Location: 6.1.5 46/2:
+!Description: Missing "of"?   "... the input_list {of} a null_dependency_clause ..."
+!Action Taken: 
 !Checked By: 
 
 
+!Label: STT023 
+!Location: 6.1.6 47/(second to last):
+!Description: 
+It is a bit subtle to claim that erasing ghost functions and assertions that use them has no effect on the dynamic semantics of a valid SPARK program, when viewed as an Ada program.  The Ada program will have fewer assertions in it, and presuming they are executed, that seems like a change, but I guess we could say "(other than evaluating fewer known-to-be-true assertion expressions)."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT024 
+!Location: 6.1.6 49/3:
+!Description: "... an External [state] entity shall ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT025 
+!Location: 6.1.6 49/(last):
+!Description: "... a[n] non-ghost-updating assignment statement is [is] handled by ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT026 
+!Location: 6.2 50/(second to last):
+!Description: 
+"... and give [a]rise to flow errors..."
+"... if it is different [to] {from} the specified ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT027 
+!Location: 7.1.2 56/2(and following):
+!Description: 
+"[An external]{External} state may be *volatile state* ..."
+"... an assignment to [a] volatile state is not ..."
+"... read of [a] volatile state ..."
+"... intervening update of [a] volatile state ..."
+(In general, "an external state" should be simply "external state" or "an external variable" or "an external object" or "an external state abstraction".  Similarly, "a volatile state" or "a hidden state" should be reworded somehow.  In general these paragraphs have a number of grammar problems, presumably due to a global replacement of "volatile" with "external."  E.g., "a external" occurs at least once.)
+!Action Taken: 
+!Checked By: 
+
+!Label: STT028 
+!Location: 7.1.2 56/9:
+!Description: "... it may be specified as external, in which {case} it may be also ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT029 
+!Location: 7.1.2 56/10:
+!Description: 
+For me, it is weird to be required to specify "non-volatile" rather than that being the default.  Making "volatile" the default for abstract state seems counter intuitive, given that for normal objects, "non-volatile" is the default, and the notion of "volatile" seems pretty low-level, rather than being "abstract."  In general I am not very comfortable with this section.  My sense is that most external communication will be via calls to imported subprograms (through I/O APIs), and using the term "volatile" for most of that sounds much too low level.  The point of introducing the term "external" was to lift up the level of abstraction.  Instead we seem to have intermixed the notion of external communication and the low-level notion of volatile objects.  That doesn't seem like an improvement to me! And I have no good understanding of why external state that is input or output only is necessarily volatile.  Do we actually care how external communication is accomplished at the low level?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT030 
+!Location: 7.1.3 57/9-58/2:
+!Description: This all feels a bit complex.  Is there some way to simplify this set of rules (as well as the earlier discussion of external/volatile)?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT031 
+!Location: 7.1.4 59/9:
+!Description: 
+"... shall denote, in its Global aspect, the state abstraction[s]{(s)} with ..."
+"... then the state abstraction[s]{(s)} shall be denoted ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT032 
+!Location: 7.1.4 59/(last):
+!Description: "(state_name_with_{options} { , state_name_with_options } )"
+!Action Taken: 
+!Checked By: 
+
+!Label: STT033 
+!Location: 7.1.4 60/1:
+!Description: It would be nice if reserved words (e.g. "with") were in bold or somehow otherwise clearly distinguished from syntactic categories.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT034 
+!Location: 7.1.4 60/1 (and following):
+!Description: As mentioned above, it seems odd to make "Volatile" the default, and have a "Non_Volatile" aspect.  In any case, it seems we ought to mention the Non_Volatile (or Volatile) aspect in the Legality or Static Semantics rules.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT035 
+!Location: 7.1.4 61/2:
+!Description: Indentation is goofed up.  Presumably procedure Init and Op_1 should be at same indent level as Is_Ready.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT036 
+!Location: 7.1.4 61/(last):
+!Description: "... represent the state abstractions in [expressions]{Global and Depends specifications}."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT037 
+!Location: 7.1.5 62/8,10,12:
+!Description: 
+Each of these legality rules needs a "shall" somewhere, or should be moved to Name Resolution or Static Semantics:
+"1. An Initializes aspect [may] {shall} only appear in ..."
+"3. ..." => Move to Name Resolution
+"5. Each name in the input_list [denotes] {shall denote} an entire ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT038 
+!Location: 7.1.6 62/14:
+!Description: 
+If a visible variable is initialized at its point of declaration, does it need to appear in the Initializes list as well?  This talks about "the elaboration of the package."  Does this include the elaboration of visible declarations?  That seems a bit redundant.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT039 
+!Location: 7.1.5 63/2:
+!Description: "... [a] {an} input_list then ... in determining {the} initialized value ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT040 
+!Location: 7.1.6 63/(third from last):
+!Description: 
+"1. An Initial_Condition aspect [may] {shall} only be placed ..."
+(This "may only ..." usage appears many times in the LRM.  I won't mention it further, but it should be fixed systematically, if at all.)
+!Action Taken: 
+!Checked By: 
+
+!Label: STT041 
+!Location: 7.1.6 63/(last):
+!Description: Related to STT038 -- If a visible declaration is initialized at its point of declaration, can it appear in Initial_Condition but not in Initializes?  Does it need to appear in Initial_Condition if it is initialized at its declaration point and not in Initializes, and would that mean it still has the value it was given at its declaration?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT042 
+!Location: 7.1.6 64/4:
+!Description: You use "predicate" as a verb here.  Perhaps "... may only [predicate] {depend on} properties of the state ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT043 
+!Location: 7.2.1 65/4:
+!Description: "... the constituents of each state_name [has] {have} to be initialized ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT044 
+!Location: 7.2.1 65/12,13:
+!Description: Rules 4 and 5 don't read like "Legality Rules."  Should rule 4 be a Name Resolution rule, and should rule 5 be restated with a "shall"?
+!Action Taken: 
+!Checked By: 
+
+!Label: STT045 
+!Location: 7.2.1 66/2:
+!Description: "7. A constituent [denotes] {shall denote} ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT046 
+!Location: 7.2.3 68/3:
+!Description: Why is the limited_with_clause needed going from the encapsulating package spec back to the private child?  Isn't it adequate to have a "with" clause on the body of the encapsulating package?  Couldn't we just do a post-compilation check that the body of the encapsulating package has such a "with" clause?  If we decide it is cleaner to have the limited_with from the spec, it should probably be a "limited private" with clause, since I think a normal "limited with" would be illegal.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT047 
+!Location: 7.2.3 68/4,6:
+!Description: 
+"... associated with the declaration which denotes a{n} encapsulating ..."
+"... a state abstraction named as a{n} encapsulating state ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT048 
+!Location: 7.2.3 68/15:
+!Description: As mentioned in STT046, this should probably be a "limited private with P.Priv;" if it is needed at all.
+!Action Taken: 
+!Checked By: 
+
+
+!Label: STT049 
+!Location: 7.2.3 70/3:
+!Description: Procedure Init_B1 should be indented relative to its enclosing package Inner.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT050 
+!Location: 7.2.5 73/9:
+!Description: "* No other global_items ... in the [a] Refined_Global aspect ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT051 
+!Location: 7.2.5 73/11:
+!Description: This is a bit confusing.  It would be helpful if you reiterated that this paragraph and the three that follow only apply when the original Global mode was In_Out (rather than simply saying "When all of these conditions are satisfied" perhaps say "For this special case of Global mode In_Out ...").
+!Action Taken: 
+!Checked By: 
+
+
+!Label: STT052 
+!Location: 7.2.6 74/(second to last):
+!Description: 
+"Outputs in the [a] Refined_Depends aspect ..."
+"Inputs in an input_list {shall} denote distinct entities."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT053 
+!Location: 7.2.8 76/2:
+!Description: 
+The default Refined_Post for an expression function is presumably:
+Func'Result = <expr>.  This is not what this paragraph says.  Similarly, the statement in 1.9.4 about "a postcondition may be recast as the expression of an expression function" is a bit confusing, and perhaps should be more explicit. Note that the statement in 1.9.4 should probably be repeated in section 6.1.1 (and rephrased as appropriate).
+!Action Taken: 
+!Checked By: 
+
+!Label: STT054 
+!Location: 7.2.9 76/9:
+!Description: "1. A[n] state abstraction ..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT055 
+!Location: 7.2.9 76/13:
+!Description: "5. A state abstraction [which] {that} is specified as just External state, referred to as a *plain External state* [and] {,} may have constituents ..."
+!Action Taken: 
+!Checked By: 
+
+
+!Label: STT056 
+!Location: 7.2.9 77/1:
+!Description: Don't we need "limited private with Externals.{Temperature, Pressure, Main_Display, Secondary_Display}" according to 7.2.3?
+!Action Taken: 
+!Checked By: 
+
+
+!Label: STT057 
+!Location: 7.2.9 77/2:
+!Description: 
+"procedure Display ... with Global => {(}Displays {=> Output)}"
+Displays is Output_Only, so it needs to be used as an output.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT058 
+!Location: 7.2.9 77/4:
+!Description: 
+Typo in the comment:
+"-- be In_Out and it is both {input} and an output. ...."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT059 
+!Location: 7.2.9 77/6-78/3:
+!Description: Why do we have "limited with Externals"?  These are children of Externals, so the "limited with" is redundant.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT060 
+!Location: 7.7 81/9:
+!Description: Static Semantics rule 3 seems to be a legality rule, while Legality Rule 1 seems to be a Static Semantics rule.
+!Action Taken: 
+!Checked By: 
+
+
+!Label: STT061 
+!Location: 7.7 83/2:
+!Description: What do you mean by "the freezing point of a tagged type must meet the same restrictions as would be required for a call to each of tis overriding primitive operations"?  I can't quite imagine how that works.
+!Action Taken: 
+!Checked By: 
+
+!Label: STT062 
+!Location: 7.7 83/9, 84/6:
+!Description: It seems a bit weird to have a reference from the SPARK lrm to the GNAT Pro user's guide.  Why don't we just incorporate the rules rather than reference them (we could add a NOTE to say where the rules came from)?
+!Action Taken: 
+!Checked By: 
+
+
+!Label: STT063 
+!Location: 7.7.1 85/3:
+!Description: "... The implicit write associated with a read of [an] external input{-}only state is permitted..."
+!Action Taken: 
+!Checked By: 
+
+!Label: STT064 
+!Location: 7.7.1 85/(last):
+!Description: The extended example in 7.2.9 may need to be revised to conform to these rules about pragma Elaborate of library units providing constituents of a state abstraction. 
+!Action Taken: 
+!Checked By: 
 
 !Label: AH/1
 !Location: 1.9.4 Paragraph 2, Sentence 1, Page 11
@@ -126,4 +510,454 @@ the prefix of the Loop_Entry shall statically denote an entity...
 !Description: Need to ensure that all ToDos have a milestone associated with them. 
 !Action Taken: 
 !Checked By: 
+
+
+!Label: SM/1
+!Location: General
+!Description: We need to fix the problem with diff'ing & subscripts if we are going to issue this to the AP. If this turns out to be too hard then the alternative is to issue a change description.
+!Action Taken: 
+!Checked By: 
+
+!Label: SM/2
+!Location: 1.8 Page/para:  Page 7, second bullet from bottom
+!Description: The added sentence at the end of the second bullet is confusing: the previous point isn't about achieving 100% proof - its about having the largest possible subset, and anyway 100% proof isn't always achievable. So I think this needs to be something like "maximising the percentage of VCs that can be automatically proved is a core goal ...". I even wonder if the note is needed at all, but it is presumably there as a result of an action from the previous review.
+!Action Taken: 
+!Checked By: 
+
+!Label: SM/3
+!Location: 6.1.3 - 6.1.6 Page/para: 39, 41, etc.
+!Description: I think Trevor said he didn't want the Language definition subheading in sections where High-Level Requirements had been removed, but this has not been applied consistently, see eg. 6.1.3, 6.1.4, 6.1.5, 6.1.6.
+!Action Taken: 
+!Checked By: 
+
+
+!Label: SBB_01
+!Location: NA
+!Description: 
+In
+   "an legality rule given below"
+
+"An" => "a".
+   -- Steve
+
+!Action Taken: 
+!Checked By: 
+
+
+!Label: SBB_02
+!Location: NA
+!Description: 
+We've got:
+   Apart from the legality rule that restricts the use of
+   Loop_Invariant to a loop (see Loop Invariants, Variants and Entry
+   Values).
+
+I think that was supposed to be parenthesized and tacked onto the end of the preceding sentence as a modifier.
+!Action Taken: 
+!Checked By: 
+
+!Label: SBB_03
+!Location: NA
+!Description: 
+Typo in the following sentence:
+if If it is a volatile variable it has to be specified as an an input only or an output only external state.
+!Action Taken: 
+!Checked By: 
+
+
+!Label: SBB_04
+!Location: source/subprograms.rst
+!Description: 
+Typo in the following:
+    specification of the outer subprogram has an entity deonted by a
+!Action Taken: 
+!Checked By: 
+
+
+
+
+
+!Label: JEB/01
+!Location: General
+Page/Para:
+!Description: Desirable: Generally should legality riles be numbered, some are not such as loops (5.5.3) or ghost functions (6.1.6).
+!Action Taken: 
+!Checked By: 
+ 
+!Label: JEB/02
+!Location: 1.8
+Page/Para: page 7, final sub-bullet of bullet 3
+!Description: Mandatory: Worth making clear that the final sentence is referring to the user supplying a contract, rather than a contract being generated, as is being described in the penultimate sentence. At first reading it appears that the tools might be able to generate shadow annotations.
+!Action Taken: 
+I am generally unhappy about the description of "retrospective" and "generative" modes in Chapter 1 generally as the LRM just assumes that the annotations are present.  There is no mention other than in Chapter 1 of these modes.  I think Chapter 1 should not talk about these modes and only say that approximations of the annotations may be synthesized by an analysis tool, in particular the Depends and Globals ....
+I will take your comment into account when I address this. 
+!Checked By: 
+ 
+!Label: JEB/03
+!Location: 1.9.4
+Page/Para: page 11, para 3
+!Description:  Desirable: is it possible to reword to remove the double use of the word "expression" in "expression of an expression function"
+!Action Taken: Highlighted expression_function_declaration as a syntactic term. Expression of an expression function declaration is Ada terminology.  
+!Checked By: 
+ 
+!Label: JEB/04
+!Location: 1.9.5
+Page/Para: page 12, bullet 3
+!Description: Mandatory:  It could be clearer at this point that legacy code may not all be SPARK 2014. Otherwise it seems little different from the first case.
+!Action Taken: 
+!Checked By: 
+ 
+!Label: JEB/05
+!Location: 1.9.5
+Page/Para: page 12, final bullet
+!Description: Desirable: make it cleared whether this is manual or automatic. I suspect manual.
+!Action Taken: 
+!Checked By: 
+ 
+!Label: JEB/06
+!Location: 3.1
+Page/Para: page 17
+!Description: Typo: please keep capitalisation of, for example Default_Value / default_value consistent. 
+!Action Taken: 
+Default_Value is the correct Ada capitalisation.  I have made all references to Default_Value consistent with this.  Additionally, component_declarations should be emphasised as a syntactic term and a record component has a default_expression (again a syntactic term) rather than a Default_Value as originally stated. 
+!Checked By: 
+ 
+!Label: JEB/07
+!Location: 4.5
+Page/Para: page 25, para 1
+!Description: Typo: "to reassociated" -> "to reassociate"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/08
+!Location: 4.5
+Page/Para: page 25, para 1
+!Description: Typo: are we using US or UK English for spelling of behaviour?
+!Action Taken: US spelling is used throughout the document as in the Ada RM. 
+!Checked By: 
+ 
+!Label: JEB/09
+!Location: 5.5.3
+Page/Para: page29, para 2
+!Description: Desirable: I find the wording of the first sentence confusing, the LRM refers to Assertion policy not Assertion aspect.
+!Action Taken: 
+Assertion policy is an Ada term which applies to all types of assertions (which includes pre and post conditions).  I have tried to make this clearer by adding the following note after assertion policy: [controlled by the Ada Assertion_Policy pragma].
+!Checked By: 
+ 
+!Label: JEB/10
+!Location: 5.5.3
+Page/Para: page 29, para 2/3
+!Description: Desirable: could you use "ignored/checked" in place of "disabled/enabled" to match the policy identifier values.
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/11
+!Location: 5.5.3
+Page/Para: page 31, first bullet
+!Description: Desirable: replace "must" with "shall only", currently it reads as if a post condition has to include and Old attribute.
+!Action Taken: 
+Good point I have changed the test as you have suggested and also replaced a must by a shall only in the note:
+[Roughly speaking, a ``Loop_Invariant`` or ``Loop_Variant`` pragma
+shall only occur immediately within a loop statement except that intervening block statements are ignored for purposes of this rule.]
+
+!Checked By: 
+ 
+!Label: JEB/12
+!Location: 5.5.3
+Page/Para: page 31
+!Description: Mandatory: Is a Loop_Entry attribute reference permitted within the prefix of a Loop_Entry attribute? (c.f. Old not permitted in Old) but not explicitly covered by adopting rules for old attribute. 
+!Action Taken: 
+Well spotted.  I hope to rewrite this section to have rule numberings. I will add an extra rule to prevent X'Loop_Entry'Loop_Entry. 
+!Checked By: 
+ 
+!Label: JEB/13
+!Location: 6.1.1
+Page/Para: page34, para 3
+!Description: Typo: implmenting
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/14
+!Location:  6.1.4
+Page/Para: page36, Language Definition
+!Description: Mandatory: Add comment about only specified for initial declaration and reference to refined global aspect (c.f. depends).
+!Action Taken: 
+Done.  I have also made it a legality rule for both Global and Depends aspects as the implementer of these aspects did not realise that they could be applied to a body stub if this is the initial declaration.
+It was only mentioned in the text not as a rule. 
+
+!Checked By: 
+ 
+!Label: JEB/15
+!Location: 6.1.3
+Page/Para: page 36, Note
+!Description: Observation: At what point are the notes to be closed off? As this is not a ToDo will it be tracked?
+!Action Taken: 
+I think it is possible to track notes but I will address this note (along with the todo regarding refined contract cases). 
+!Checked By: 
+ 
+!Label: JEB/16
+!Location:  6.1.4
+Page/Para: page 37, Verification rule 1
+!Description: Typo: why is global_item in quotes? Formatting problem?
+!Action Taken: A missing space after the "A" - corrected. 
+!Checked By: 
+ 
+!Label: JEB/17
+!Location: 6.1.4
+Page/Para: page37, Verification rule 2 bullet 2
+!Description: Mandatory: This needs to be reworded somehow, currently it reads as if "is always fully initialised" is a consequence not a determinator of mode. Perhaps it just needs the word "and" to be inserted: "not an input and is always fully"
+!Action Taken: Changed as suggested. 
+!Checked By: 
+ 
+!Label: JEB/18
+!Location: 6.1.4
+Page/Para: page 38, first line code comment
+!Description: Mandatory: "does reference" should read "does not reference"
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/19
+!Location: 6.1.5
+Page/Para: page 40, Static Semantics item 4
+!Description: Typo: "is the input_list of a null_dependency_clause"  word "of" is missing.
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/20
+!Location: 6.1.5
+Page/Para: page 40, Static Semantics item 8
+!Description: Typo: implmentation.
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/21
+!Location: 6.1.6
+Page/Para: page 42
+!Description: Typo: Something odd has happened to format of todo blocks on this page.
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/22
+!Location: 6.1.6,
+Page/Para: page 42, 2nd todo
+!Description: Observation: I don't think this should be allowed as it could modify the depends relation.
+!Action Taken: 
+At the moment we do not support the direct declaration of ghost variables.  They can only occur as a local variable declared within a ghost function.
+When we do support ghost variables we need to consider carefully whether they should be part of the dependency relations.  My feeling is that they should not as they are not supposed to play any part in determining the unexceptional operation of the program.  Whether we wish to allow them to be part of an non-ghost state abstraction is another thing to ponder.  My first thoughts are that one would want ghost variables to be visible so they can be used in assertion expressions and having them as state abstractions would not be very useful. 
+
+!Checked By: 
+ 
+!Label: JEB/23
+!Location: 6.1.6
+Page/Para: page 41, 3rd todo
+!Description: Observation: It is not clear to me that this would be permitted other than in the context of the completion of a ghost entity.
+!Action Taken: 
+I am against using ghost entities in non-ghost code other than in assertion expressions.  I will raise this again in the next language conference call. 
+!Checked By: 
+ 
+!Label: JEB/24
+!Location: 7.1.3
+Page/Para: page 49, para 1
+!Description: Typo: "considered to an" -> considered an"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/25
+!Location: 7.1.3
+Page/Para: page 49, para 3
+!Description: Typo: "if If" -> "If" and "an an" -> "an"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/26
+!Location: 7.1.3
+Page/Para: page 49, legality rules 3 and 4
+!Description: Mandatory: the restriction of the formal parameter to a non-scalar seems contrary to the examples on page 50.
+!Action Taken: Yes the examples were not updated properly - now corrected.
+!Checked By: 
+ 
+!Label: JEB/27
+!Location: 7.1.4
+Page/Para: page 51, Syntax.
+!Description: Typo? : should "state_name_with_" be "state_name_with_options"?
+!Action Taken: Yes - corrected.  
+!Checked By: 
+ 
+!Label: JEB/28
+!Location: 7.1.4
+Page/Para: page 52, Legality rule 2
+!Description: Typo: why is option_list in quotes here?
+!Action Taken: Space missing after "the" - corrected. 
+!Checked By: 
+ 
+!Label: JEB/29
+!Location: 7.1.6
+Page/Para: page 55, Legality rules
+!Description: Typo: inconsistent use of underscore and capitalisation "Initial_Condition aspect" and Initial Condition Aspect" I prefer the former so correct item 4.
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/30
+!Location: 7.2.1
+Page/Para: page 56, para 1
+!Description: Typo: inconsistent use of underscore "Refined_State" and "Refined State".
+!Action Taken: 
+I'm not sure about this one.  In general we have introduced the aspects without underscores but then, once having defined the aspect mark, used the aspect mark.  The Ada RM seems to use the underscore version of a pragma/aspect in headings and generally.  Perhaps we should do the same?
+In the mean time I have made the first reference to Refined_State aspect in the section headed State Refinement with the underscore. 
+
+!Checked By: 
+ 
+!Label: JEB/31
+!Location: 7.2.1
+Page/Para: page 56, para 1
+!Description: Desirable: final sentence is hard to read. Could this be split into two distinct statements.
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/32
+!Location: 7.2.1
+Page/Para: page 57, para 1
+!Description: Typo : has -> have
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/33
+!Location: 7.2.3
+Page/Para: page 58, para 2
+!Description: Typos : "visibility on the" -> "visibility of the" and "the the" -> "the".
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/34
+!Location: 7.2.3
+Page/Para: page 59, para before Static Semantics
+!Description: Desirable: add comma after "aliasing". Otherwise it reads as "To resolve such aliasing rules".
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/35
+!Location: 7.2.3
+Page/Para: page 59, Legality Rule 4 
+!Description: Typo: "as a encapsulating" -> "as an encapsulating"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/36
+!Location: 7.2.3
+Page/Para: page 60, para 1
+!Description: Typo: "is known as" -> "are known as"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/37
+!Location: 7.2.3
+Page/Para: page 60,  para 2
+!Description: Typo: "a a " -> "a"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/38
+!Location: 7.2.5
+Page/Para: page 64, Legality rule 2, final bullet
+!Description:  Desirable: should the final sentence be a bullet point in its own right. It is applicable more widely than to the remainder of this bullet point.
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/39
+!Location: 7.2.6
+Page/Para: page 65, Legality Rules 2
+!Description: Desirable: is this really a rule in its own right. It seems to summarise the next rule.
+!Action Taken:  I agree the rule mas been merged with the next. 
+!Checked By: 
+ 
+!Label: JEB/40
+!Location: 7.2.6
+Page/Para: page 66, para 1
+!Description: Mandatory: The wording here very confusing I suggest rewording. There are two key points that are misleading.
+1)      The wording suggests that there is a unique result from the input list refinement, this is not necessarily the case.
+2)      The discussion of the union of "extra input_lists" could easily be interpreted as not including the first refined input list, ie the one that is not "extra".
+!Action Taken: Rewording attempted.
+!Checked By: 
+ 
+!LabelJEB/41
+!Location: 7.2.7
+Page/Para: page 66, Legality rule 1 
+!Description: Mandatory: Do you permit a refined precondition on a body/body stub where there is no precondition on the subprogram spec, noting that the verification rules would require that the precondition is in fact True.
+!Action Taken: 
+Agreed - text updated to say default precondition is True.
+Added similar text to refined post condition. 
+!Checked By: 
+ 
+!Label: JEB/42
+!Location: 7.2.9
+Page/Para: page 68, Dynamic Semantics 5
+!Description: Typo: "as plain External state and may" -> "as plain External state, may"
+!Action Taken:Done.  
+!Checked By: 
+ 
+!Label: JEB/43
+!Location: 7.2.9
+Page/Para: page 68, Dynamic Semantics 7
+!Description: Desirable: This is a rule on Global Aspect that can only be checked when analysing Refined_Global Aspect. Could it be reworded so that Global Aspect with plain External that is not In_Out cannot be refined in Refined_Gobal aspect to volatile state components.
+!Action Taken: Yes that's better it covers the following rule too.  I have removed the now redundant rule. 
+!Checked By: 
+ 
+!Label: JEB/44
+!Location: 7.2.9
+Page/Para: page 68, final comment in code
+!Description: Typo: "is both and an" -> "is both an input and an"
+!Action Taken: Done.
+!Checked By: 
+ 
+!Label: JEB/45
+!Location: 7.7
+Page/Para: page 73, Legality rules para 2
+!Description: Mandatory: "early call region of," There is something missing here. I don't understand the first sentence.
+!Action Taken: The "of" is superfluous and has been deleted.  The sentence is still complex and is heavily couched in Ada speak, but without the superflous "of" I think it make sense. 
+!Checked By: 
+ 
+!Label: JEB/46
+!Location: 7.7
+Page/Para: page 73, para 6
+!Description: Typo: "earl" -> "early"
+!Action Taken:Done. 
+!Checked By: 
+ 
+!Label: JEB/47
+!Location: 7.7
+Page/Para: General
+!Description: Observation: I am not familiar with the Ada preelaboration rules so have found this hard to review. 
+!Action Taken: Yes they are complex.  Steve wrote this bit and he is an expert and they seem to make sense to me. 
+!Checked By: 
+ 
+!Label: JEB/48
+!Location: Chapter 12
+Page/Para: page 87, para 5
+!Description: Typo : "reference any fixed" -> "references any fixed"
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/49
+!Location:  13.12
+Page/Para:  page 90, para 1
+!Description: Typo : "Priofiles"!
+!Action Taken: Done. 
+!Checked By: 
+ 
+!Label: JEB/50
+!Location:  15.1.2
+Page/Para:  page 95, Todo
+!Description:  Observation: Yes please say which packages are supported in SPARK 2014.
+!Action Taken: This is still to be decided.  Some such as Standard are included but others may require SPARK 2014 versions of some sort.
+!Checked By: 
+ 
+!Label: JEB/51
+!Location:  Appendix A
+Page/Para:  General
+!Description: Observation : I have not reviewed this section this time around.
+!Action Taken: Ok. AH will review this.
+!Checked By:  AH
+
+
+
 
