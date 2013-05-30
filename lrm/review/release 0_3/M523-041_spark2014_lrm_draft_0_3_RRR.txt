@@ -959,5 +959,55 @@ Page/Para:  General
 !Checked By:  AH
 
 
+!Label: AH/7
+!Location: A.1.3
+!Description:  The ToDo in this section about “false alarm management” needs resolving. “pragma Warning(…)” will be used.
+!Action Taken: 
+!Checked By:
+
+!Label:  AH/8
+!Location: Pairs_14.Additional_14
+!Description: Code contains “TBD: confirm that no inherits clause” which can be removed.
+!Action Taken: 
+!Checked By:
+
+!Label: AH/8
+!Location: A.2 Private/Public child visibility
+!Description: ToDo in this section can be completed, we should discuss how to handle this – I think we can just create SPARK 2014 equivalents with addition of “limited with” clauses.
+!Action Taken: 
+!Checked By:
+
+!Label: AH/9
+!Location: A.2 Private, abstract state, refining onto mixture of the above
+!Description: Last sentence “However, it is available under the “codeasm_abstract_state_refined_in_embedded_and_private_child”.” contains an unresolved link.
+!Action Taken: 
+!Checked By:
+
+!Label: AH/10
+!Location: A.2.3
+!Description: ToDo starting " Note that the syntax for identifying the main program" is now redundant.
+!Action Taken: 
+!Checked By:
+
+!Label: AH/11
+!Location: Input driver using ‘Append and ‘Tail contracts
+!Description: There will not be an equivalent of 'Tail in SPARK 2014, however, we will be able to demonstrate how something equivalent to it can be constructed using generics. Please set the ToDo Milestone to M4. 
+!Action Taken: 
+!Checked By:
+
+!Label: AH/12
+!Location: Complex I/O Device
+!Description: I'm not sure why this section hasn't been completed. Please discuss.
+!Action Taken: 
+!Checked By:
+
+!Label: AH/13
+!Location: Increasing values in input stream
+!Description: Comment AH/11 applies here also.
+!Action Taken: 
+!Checked By:
+ 
+
+
 
 
