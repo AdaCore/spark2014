@@ -969,48 +969,53 @@ Page/Para:  General
 !Location: Pairs_14.Additional_14
 !Description: Code contains “TBD: confirm that no inherits clause” which can be removed.
 !Action Taken: Comment inside code has been removed!
-!Checked By: PE
+!Checked By: AH
 
-!Label: AH/8
+!Label: AH/9
 !Location: A.2 Private/Public child visibility
 !Description: ToDo in this section can be completed, we should discuss how to handle this – I think we can just create SPARK 2014 equivalents with addition of “limited with” clauses.
 !Action Taken: Removed ToDo and mentioned that SPARK 2014 introduces no visibility restrictions.
-!Checked By: PE
+!Checked By: AH
 
-!Label: AH/9
+!Label: AH/10
 !Location: A.2 Private, abstract state, refining onto mixture of the above
 !Description: Last sentence “However, it is available under the “codeasm_abstract_state_refined_in_embedded_and_private_child”.” contains an unresolved link.
 !Action Taken: Added a missing '\'. This isn't an actual link. We don't expect it to
                be resolved automatically. We simply say where the file is located in
                the repository.
-!Checked By: PE
+AH: most readers of this document will not have access to the repository. We need to come up with another solution. I suggest we just delete this sentence.
+!Checked By: 
 
-!Label: AH/10
+!Label: AH/11
 !Location: A.2.3
 !Description: ToDo starting " Note that the syntax for identifying the main program" is now redundant.
 !Action Taken: Deleted ToDo.
-!Checked By: PE
+!Checked By: AH
 
-!Label: AH/11
+!Label: AH/12
 !Location: Input driver using ‘Append and ‘Tail contracts
 !Description: There will not be an equivalent of 'Tail in SPARK 2014, however, we will be able to demonstrate how something equivalent to it can be constructed using generics. Please set the ToDo Milestone to M4.
 !Action Taken: Updated ToDo's text and set it to Milestone 4.
-!Checked By: PE
+!Checked By: AH
 
-!Label: AH/12
+!Label: AH/13
 !Location: Complex I/O Device
 !Description: I'm not sure why this section hasn't been completed. Please discuss.
 !Action Taken: I thought that there was syntax missing. But that actually was no
                longer the case. This section has now been completed.
-!Checked By: PE
+!Checked By: AH
 
-!Label: AH/13
+!Label: AH/14
 !Location: Increasing values in input stream
 !Description: Comment AH/11 applies here also.
 !Action Taken: Applied the same ToDo as in AH/11.
-!Checked By: PE
+!Checked By:  AH
 
 
-
+!Label: AH/15
+!Location: General (within the mapping spec)
+!Description: There are still ToDos that mention milestone 3. As this doc is the Milestone 3 doc we need to either complete the work or change the milestone. NB todos containing : syntax is not yet defined" need to be implemented as the syntax should be fully defined now.
+!Action Taken: Applied the same ToDo as in AH/11.
+!Checked By:
 
 
