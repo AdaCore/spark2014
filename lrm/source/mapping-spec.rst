@@ -327,10 +327,8 @@ private children and their parent in SPARK 2005. More specifically, it shows tha
 Applying the SPARK tools on the following files will produce certain errors. This was
 intentionally done in order to illustrate both legal and illegal access attempts.
 
-.. todo::
-   The |SPARK| version of the code is not provided since the restrictions that are to be
-   applied in terms of package visibility are yet to be determined.
-   To be completed in the Milestone 3 version of this document.
+|SPARK| shares Ada2012's visibility rules. No restrictions have been applied
+in terms of visibility and thus no |SPARK| code is provided in this section.
 
 Specification of parent in SPARK 2005:
 
@@ -717,7 +715,7 @@ refining onto concrete state of private child`_
 and `Private, abstract state, refining onto concrete state of embedded package`_.
 Source_A is an embedded package, while Source_B is a private child. In order to
 avoid repetition, the code of this example is not being presented. However, it is
-available under the "code\asm_abstract_state_refined_in_embedded_and_private_child".
+available under the "code\\asm_abstract_state_refined_in_embedded_and_private_child".
 
 External Variables
 ~~~~~~~~~~~~~~~~~~
@@ -761,11 +759,6 @@ Body of output port in SPARK 2005:
    .. literalinclude:: ../code/external_variables_input_output/05/output_port_05.adb
       :language: ada
       :linenos:
-
-.. todo::
-   *Note that the syntax for identifying the main program in* |SPARK| *is still
-   TBD.*
-   To be completed in the Milestone 3 version of this document.
 
 Specification of main program in |SPARK|:
    .. literalinclude:: ../code/external_variables_input_output/14/copy_14.adb
@@ -811,9 +804,9 @@ in order to allow proof to succeed (otherwise, there is no guarantee in the proo
 that the value read from the port is of the correct type).
 
 .. todo::
-   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-   syntax is not yet defined. Note that this also applies to the use of the Always_Valid annotation.*
-   To be completed in the Milestone 3 version of this document.
+   There will not be an equivalent of \'Append and \'Tail in |SPARK|. However, we will be
+   able to achieve the same functionality using generics. To be completed in the Milestone 4
+   version of this document.
 
 Specification in SPARK 2005:
 
@@ -923,12 +916,6 @@ stores the last value written to avoid writes that would just re-send the same v
 The own variable is then refined into a normal variable, an input external variable
 ad an output external variable.
 
-.. todo::
-   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-   syntax is not yet defined.*
-   To be completed in the Milestone 3 version of this document.
-
-
 Specification in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_complex_io_device/05/device.ads
@@ -938,6 +925,18 @@ Specification in SPARK 2005:
 Body in SPARK 2005:
 
    .. literalinclude:: ../code/external_variables_complex_io_device/05/device.adb
+      :language: ada
+      :linenos:
+
+Specification in |SPARK|:
+
+   .. literalinclude:: ../code/external_variables_complex_io_device/14/device.ads
+      :language: ada
+      :linenos:
+
+Body in |SPARK|:
+
+   .. literalinclude:: ../code/external_variables_complex_io_device/14/device.adb
       :language: ada
       :linenos:
 
@@ -953,9 +952,9 @@ shows that postconditions can refer to multiple individual elements of the
 input stream.
 
 .. todo::
-   *Note that the* |SPARK| *versions of this example are currently TBD, as the relevant
-   syntax is not yet defined.*
-   To be completed in the Milestone 3 version of this document.
+   There will not be an equivalent of \'Append and \'Tail in |SPARK|. However, we will be
+   able to achieve the same functionality using generics. To be completed in the Milestone 4
+   version of this document.
 
 Specification in SPARK 2005:
 

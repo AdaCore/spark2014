@@ -1,6 +1,3 @@
---  TBD: confirm that no inherits clause and check
---  whether anything needed in its place.
-
 package Pairs_14.Additional_14
 is
 
