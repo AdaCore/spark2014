@@ -283,7 +283,7 @@ program, when viewed as an Ada program.  The Ada program will have fewer
 assertions in it, and presuming they are executed, that seems like a
 change, but I guess we could say "(other than evaluating fewer
 known-to-be-true assertion expressions)."
-!Action Taken: Adde this caveat.
+!Action Taken: Added this caveat.
 !Checked By:
 
 !Label: STT024
@@ -330,7 +330,7 @@ either removed or corrected each instance.
 !Location: 7.1.2 56/9:
 !Description: "... it may be specified as external, in which {case} it
 may be also ..."
-!Action Taken:
+!Action Taken:Done.
 !Checked By:
 
 !Label: STT029
