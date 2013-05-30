@@ -1248,7 +1248,7 @@ to introduce a rule related to the components of a constant record value.
 
 .. todo::
    *Note that the* |SPARK| *version of the rule declaration annotation has not yet been
-   defined [M520-006] - note that it may not even be needed, though this is to be determined -
+   defined [M520-006] - note that it might not even be needed, though this is to be determined -
    and so there is no equivalent included in the* |SPARK| *code.*
    To be completed in the Milestone 4 version of this document.
 

@@ -115,11 +115,11 @@ to avoid having to do this.]
 Tagged Types and Type Extensions
 --------------------------------
 
-Use of the 'Class attribute of an object or of a type is not in |SPARK|.
+Use of the 'Class attribute is not permitted in |SPARK|.
 
 [This restriction may be relaxed at some point in the future.
-Use of attributes such as Pre'Class are unaffected by this rule.
-As a consequence of this restriction, dispatching calls are not in |SPARK|.]
+As a consequence of this restriction, dispatching calls are not currently in 
+|SPARK| but are planned for a future release.]
 
 A type extension declared within a subprogram body,
 block statement, or generic body which does not also enclose the

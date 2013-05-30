@@ -71,20 +71,20 @@ External state is a state abstraction or variable representing something
 external to a program.  For instance, an input or output device, or a 
 communication channel to another subsystem such as another |SPARK| program.
 
-An external state may be *volatile state* in the sense that an assignment to 
-a volatile state is not ineffective even if it's value is not read by the
+External state may be *volatile state* in the sense that an assignment to 
+volatile state is not ineffective even if it's value is not read by the
 program [The assignment could be to an external device and has no logical effect
-on the program]. Similarly, a read of a volatile state may not be ineffective;
+on the program]. Similarly, a read of volatile state might not be ineffective;
 it may have a side-effect. The values obtained from two successive
-reads without an intervening update of a volatile state may not be equal.
+reads without an intervening update of volatile state might not be equal.
 
 An external state abstraction is considered to be volatile state unless it is
-explicitly specified as non-volatile.  An external state which is a variable is 
+explicitly specified as non-volatile.  External state which is a variable is 
 volatile state if it is an Ada volatile object (as described in the Ada RM 
 Annex C.6).  In |SPARK| individual components of an object cannot be specified 
 as volatile.
 
-In |SPARK| an external state which is a variable specified as volatile using 
+In |SPARK| external state which is a variable specified as volatile using 
 Ada aspects or pragmas is specified as input only or an output only not both.
 [This restriction may be relaxed at some point in the future.]
 The variable is the means of communication with some external input or output.
@@ -92,26 +92,25 @@ The variable is the means of communication with some external input or output.
 A state abstraction that is volatile state may be specified as input only 
 or output only or may be left unspecified in terms of whether it is an input or
 output. [The lack of an input only or output only designator indicates that the 
-state abstraction may represent a hidden state that may have non-volatile and, 
+state abstraction may represent hidden state that may have non-volatile and, 
 or, both input only and output only states. Such a state abstraction may be 
 representing some complex external communication channel.]
 
-An external state that is specified as non-volatile is assumed to be both an 
-input and an output and may not be specified as an input or output only.
+External state that is specified as non-volatile is assumed to be both an 
+input and an output and shall not be specified as an input or output only.
 
-It follows that a external state that is specified as input only or output only
+It follows that external state that is specified as input only or output only
 is volatile state. [If it is Input_Only then some external writer needs to be
 updating the value of the variable. Similarly, if it is Output_Only it is 
 expected that there are external readers to be consuming the output values. 
 Either of these require external agents of some kind, which implies volatility.]
 
-|SPARK| aspects are defined for specifying a variable as an input only
-or an output only [Ada aspects are used for specifying volatility and whether
-the variable is external] see :ref:`external_aspects`).  When a state 
-abstraction is declared by an Abstract_State aspect (see
-:ref:`abstract-state-aspect`) it may be specified as external, in which it may 
-be also specified as either input only or output only, or it may be specified as 
-non-volatile.
+|SPARK| aspects are defined for specifying a variable as an input only or an
+output only [Ada aspects are used for specifying volatility and whether the
+variable is external] see :ref:`external_aspects`). When a state abstraction is
+declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`) it may
+be specified as external, in which case it may be also specified as either input
+only or output only, or it may be specified as non-volatile.
 
 .. centered:: **Static Semantics**
 
@@ -122,7 +121,7 @@ non-volatile.
    defined in the Ada RM Annex C6  (or J15).  A variable which is not specified 
    as volatile is non-volatile state.
    
-#. A state abstraction denoted as an external non-volatile state cannot be 
+#. A state abstraction denoted as external non-volatile state cannot be 
    specified as an input only or output only state.  All external states that
    are specified as input only or output only are volatile states.
 
@@ -145,19 +144,19 @@ non-volatile.
    
 .. centered:: **Legality Rules**
 
-#. An External state which is specified as Input_Only shall not be denoted in a 
+#. External state which is specified as Input_Only shall not be denoted in a 
    Global aspect with a ``mode_selector`` of In_Out or Output.  Nor shall it be 
    denoted as an ``output`` of a Depends aspect.
    
-#. An External state which is specified as Output_Only shall not be denoted in
+#. External state which is specified as Output_Only shall not be denoted in
    a Global aspect with a ``mode_selector`` of Input or In_Out. Nor shall not be
    denoted as an ``input`` of a Depends aspect.
     
-#. As a read of a volatile state always has a side-effect a ``global_item`` of a
-   function cannot denote a volatile state [which in turn means that a function
-   cannot, directly or indirectly, read a volatile state].
+#. As a read of volatile state always has a side-effect a ``global_item`` of a
+   function cannot denote volatile state [which in turn means that a function
+   cannot, directly or indirectly, read volatile state].
 
-#. A volatile state shall not be denoted by a ``name`` of an 
+#. Volatile state shall not be denoted by a ``name`` of an 
    ``initialization_item`` of an Initializes aspect 
    (see :ref:`initializes_aspect`).
    
@@ -176,8 +175,8 @@ for instance a transducer, subsystem, or program is considered an
 *external variable* if it is Volatile or is declared with an Ada Address,
 Import, or Export specification (either using an aspect or a pragma).
 
-An external variable is an external volatile state if it is specified with 
-volatile True otherwise it is an external non-volatile state.
+An external variable is external volatile state if it is specified with 
+volatile True otherwise it is external non-volatile state.
 
 If it is a volatile variable it has to be specified as an input only or an
 output only external state. The Boolean Input_Only and Output_Only are used for
@@ -267,7 +266,7 @@ There are no dynamic semantics associated with these aspects.
      
      
       -- Write_Port may only be called with an actual parameter for Port
-      -- which is a external output only
+      -- which is an external output only
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
       with
          Depends => (Port => Value); -- Port is external output only
@@ -378,12 +377,11 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
       :Trace Unit: 7.1.2 LR An option shall not be repeated within a single option list.
       
-#. If External is specified in an ``option_list`` then at most one of Input_Only
-   or Output_Only ``options`` may be specified in the ``option_list``.  The
-   Input_Only and Output_Only options shall not be specified in an 
-   ``option_list`` without an External ``option``. 
+#. If External is specified in an ``option_list`` then at most one of 
+   Input_Only, Output_Only or Non_Volatile``options`` may be specified in the
+   ``option_list``. The Input_Only, Output_Only Non_Volatile options shall not
+   be specified in an ``option_list`` without an External ``option``.
    
-
 #. If a ``option_list`` contains one or more ``name_value_option`` items 
    then they shall be the final options in the list. 
    [This eliminates the possibility of a positional
@@ -432,7 +430,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
    hidden state.
 
 #. An External state abstraction is one declared with a ``option_list``
-   that includes the  External ``option``.
+   that includes the  External ``option`` (see :ref:`external_state`).
    
 #. A state abstraction which is declared with a ``option_list`` that includes
    a Part_Of ``name_value_option`` indicates that it is a constituent (see
@@ -475,7 +473,7 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
       Abstract_State => (A, B, (C with External, Input_Only))
    is                     -- Three abstract state names are declared A, B & C.
                           -- A and B are internal abstract states
-      ...                 -- C is specified as an external state which is input only.
+      ...                 -- C is specified as external state which is input only.
    end X;
 
    package Mileage
@@ -608,7 +606,7 @@ There are no dynamic semantics associated with the Initializes Aspect.
        Initializes    => A
     is                          -- Three abstract state names are declared A, B & C.
                                 -- A is initialized during the elaboration of Y.
-       ...                      -- C is specified as an external input only state
+       ...                      -- C is specified as external input only state
 				-- and cannot appear in an initializes aspect.
                                 -- B is not initialized.
     end Y;
@@ -1200,7 +1198,7 @@ is part of and a state abstraction always knows all of its constituents.
    with
       Refined_State => (C1 => Actual_State)
    is
-      -- C1 may not be denoted here - only Actual_State
+      -- C1 shall not be denoted here - only Actual_State
       -- but Q.Hidden_State may be denoted 
       Actual_State : Integer;
       
@@ -1226,7 +1224,7 @@ is part of and a state abstraction always knows all of its constituents.
    with 
       Refined_State => (Q1 => Q.Child.C1, Q2 => Hidden_State)
    is
-      -- Q1 and Q2 may not be denoted here but the constituents
+      -- Q1 and Q2 shall not be denoted here but the constituents
       -- Q.Child.C1 and Hidden_State may be
       
       procedure Init_Q1
@@ -1638,7 +1636,7 @@ be a Boolean ``expression``.
 Refined External States
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-An external state which is a state abstraction requires a refinement as does any
+External state which is a state abstraction requires a refinement as does any
 state abstraction. There are rules which govern refinement of a state 
 abstraction on to external states which are given in this section.
 
@@ -1650,8 +1648,8 @@ abstraction on to external states which are given in this section.
 #. An External, Non_Volatile state abstraction shall only have ``constituents``
    that are External, Non_Volatile states and, or, non External states.
    
-#. An External, Input_Only state shall only have ``constituents``  that are
-   External, Input_Only states. 
+#. An External, Input_Only state abstraction shall only have ``constituents``
+   that are External, Input_Only states.
 
 #. An External, Output_Only state abstraction shall only have ``constituents``
    that are External, Output_Only states. 
@@ -1849,7 +1847,7 @@ No extensions or restrictions.
 Type Invariants
 ~~~~~~~~~~~~~~~
 
-.. todo:: Type Invariants may not be supported in the first release
+.. todo:: Type Invariants might not be supported in the first release
 
 .. centered:: **Syntax**
 
@@ -2221,7 +2219,7 @@ are imposed in |SPARK| which have the following consequences:
 #. The elaboration of a package's specification and body shall not write
    to a variable (or state abstraction, in the case of a call to a procedure
    which takes an abstraction as in output) declared outside of the package. The
-   implicit write associated with a read of a external input only state is
+   implicit write associated with a read of external input only state is
    permitted. [This rule applies to all packages: library level or not,
    instantiations or not.] The inputs and outputs of a package's elaboration
    (including the elaboration of any private descendants of a library unit

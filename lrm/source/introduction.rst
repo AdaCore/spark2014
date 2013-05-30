@@ -138,6 +138,10 @@ additional text may be provided in square brackets [ ].
 This text is redundant in terms of defining the rules themselves and simply provides
 explanatory detail.
 
+In a small number of places there are Name Resolution Rules sections used in a
+similar way as in the Ada 2012 RM. They are infrequently required in this
+document and so are only included as needed.
+
 In addition, examples of the use of the new features are given along with the
 language definition detail.
 
@@ -171,9 +175,9 @@ Formal Analysis
   is used to mean formal verification of robustness properties and formal verification of
   functional properties taken together.
 
-Data and information-flow analysis is not valid and may not be possible if the
+Data and information-flow analysis is not valid and might not be possible if the
 legality rules of Ada 2012 and those presented in this document are not met.  
-Similarly, a formal verification may not be possible if the legality rules are 
+Similarly, a formal verification might not be possible if the legality rules are 
 not met and may be unsound if data-flow errors are present.
 
 
@@ -348,7 +352,7 @@ Some are expanded in subsequent sections within this chapter.
   language, for instance, full Ada or C. |SPARK| compatible contracts at unit
   level will form the boundary interface between the |SPARK| and other parts of
   the program. Many systems are not written in a single programming language and
-  when retrospectively analyzing pre-existing code it may well not all conform to
+  when retrospectively analyzing pre-existing code it might not all conform to
   the |SPARK| subset. *No further detail is given in the current draft of this document on
   mixing SPARK 2014 code with non-Ada code.*
 
@@ -604,8 +608,8 @@ If the postcondition of a function can be specified in |SPARK|, then the
 postcondition may be recast as the expression of an
 ``expression_function_declaration`` making it both the postcondition and the
 implementation of the function. This is useful, particularly for ghost
-functions, as the expression which acts as the postcondition may not give the
-most efficient implementation but if the function is a ghost function this may
+functions, as the expression which acts as the postcondition might not give the
+most efficient implementation but if the function is a ghost function this might
 not matter.
 
 .. _verific_modes:
@@ -638,7 +642,7 @@ There are three main use cases where generation of contracts is likely to be req
   as *generative* analysis, where the code was written with the intention that
   it would be analyzed but not all contracts are present.
 
-- Code is in maintenance phase, it may or may not have complete contracts.
+- Code is in maintenance phase, it might or might not have complete contracts.
   If the contracts are complete, the generated contracts may be compared with
   the given contracts and auto correction used to update the contracts if the
   changes are acceptable.
@@ -718,7 +722,7 @@ unsuppressible errors.
 
 Examples of this are:
 
-- A construct appearing in a unit may not be in, or may depend on features not in, the
+- A construct appearing in a unit might not be in, or might depend on features not in, the
   |SPARK| subset. The construct may generate a warning or an error which may be
   justifiable. This does not necessarily render the whole of the unit as not in
   |SPARK|.  If the construct generates a warning, or if the error is justified,
@@ -783,21 +787,23 @@ Full details on the SPARK_Mode aspect are given in the SPARK Toolset User Guide 
 
 .. _volatile:
 
-Volatile State
+External State
 ~~~~~~~~~~~~~~
 
-A variable or a state abstraction may be designated as volatile. A
-volatile variable or state abstraction need not have the same value between two
-reads without an intervening update. Similarly an update of a volatile variable
-(or state abstraction) may not have any effect on the internal operation of a
-program, its only effects are external to the program. These properties require
-special treatment of volatile variables during flow analysis.
+A variable or a state abstraction may be specified as External state to
+indicate that it represents an external communication channel, for instance, to
+a device or another subsystem. External state may be specified as volatile.
+Volatile state need not have the same value between two reads without an
+intervening update. Similarly an update of volatile state might not have any
+effect on the internal operation of a program, its only effects are external to
+the program. These properties require special treatment of volatile variables
+during flow analysis.
 
-In formal verification a series of reads and updates of a volatile variable
-or state abstraction may be modeled by a sequence or a trace.
+In formal verification a series of reads and updates of volatile state may be
+modeled by a sequence or a trace.
 
 In both flow analysis and formal verification |SPARK| follows the Ada convention
-that a read of a volatile variable has a possible side effect of updating the
+that a read of volatile variable has a possible side effect of updating the
 variable.  |SPARK| extends this notion to cover updates of a volatile variable
 such that an update of a volatile variable also has a side effect of reading the
 variable.  |SPARK| further extends these principles to apply to
