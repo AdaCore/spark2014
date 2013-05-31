@@ -13,7 +13,7 @@ deceleration_curve.adb:47:39: info: division check proved
 deceleration_curve.adb:49:48: info: division check proved
 deceleration_curve.adb:49:48: info: overflow check proved
 deceleration_curve.adb:50:12: info: overflow check proved
-deceleration_curve.adb:52:10: assertion not proved
+deceleration_curve.adb:52:10: info: assertion proved
 deceleration_curve.adb:58:25: info: overflow check proved
 deceleration_curve.adb:60:31: overflow check not proved
 deceleration_curve.adb:69:36: info: division check proved
@@ -26,8 +26,8 @@ deceleration_curve.adb:90:29: overflow check not proved
 deceleration_curve.adb:91:13: overflow check not proved
 deceleration_curve.adb:91:46: info: division check proved
 deceleration_curve.adb:91:46: overflow check not proved
-deceleration_curve.adb:96:36: overflow check not proved
-deceleration_curve.adb:96:36: range check not proved
+deceleration_curve.adb:96:36: info: overflow check proved
+deceleration_curve.adb:96:36: info: range check proved
 deceleration_curve_test.adb:15:19: precondition not proved
 deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:17:4: info: precondition proved
@@ -43,9 +43,9 @@ sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
-sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
+sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
+sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: precondition not proved
-sec_3_13_6_deceleration.ads:40:37: range check not proved
 sec_3_13_6_deceleration.ads:45:23: precondition not proved
 sec_3_13_6_deceleration.ads:46:23: overflow check not proved
 sec_3_13_6_deceleration.ads:46:26: precondition not proved
