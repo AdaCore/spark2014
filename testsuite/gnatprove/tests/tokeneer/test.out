@@ -2,7 +2,7 @@
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
-admin.adb:121:13: info: assertion proved
+admin.adb:121:13: assertion not proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
 admin.adb:137:16: info: loop invariant preservation proved
