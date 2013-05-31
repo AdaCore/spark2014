@@ -866,9 +866,10 @@ package body Gnat2Why.Expr is
                   Why_Args (Cnt) :=
                     Transform_Expr (Actual,
                                     (if Use_Why_Base_Type (Formal) then
-                                     EW_Int_Type
+                                        Base_Why_Type
+                                       (Unique_Entity (Etype (Formal)))
                                      else
-                                     Type_Of_Node (Formal)),
+                                        Type_Of_Node (Formal)),
                                     Domain,
                                     Params);
             end case;

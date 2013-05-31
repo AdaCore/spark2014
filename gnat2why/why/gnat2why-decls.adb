@@ -935,7 +935,7 @@ package body Gnat2Why.Decls is
       Ty : constant Entity_Id := Etype (E);
    begin
       return not Is_Mutable_In_Why (E) and then
-        Is_Discrete_Type (Ty) and then
+        Is_Scalar_Type (Ty) and then
         not Is_Boolean_Type (Ty);
    end Use_Why_Base_Type;
 

@@ -362,7 +362,7 @@ package body Gnat2Why.Subprograms is
                  (if Is_Mutable_In_Why (Id) then Ref_Modifier else None),
                B_Type   =>
                  (if Use_Why_Base_Type (Id) then
-                  +EW_Int_Type
+                     +Base_Why_Type (Unique_Entity (Etype (Id)))
                   else
                   +Why_Prog_Type_Of_Ada_Obj (Id, True)));
             Next (Param);
