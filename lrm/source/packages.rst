@@ -5,7 +5,7 @@
 
 #. In |SPARK| the elaboration of a package shall only update, directly or
    indirectly, variables declared immediately within the package.
-   
+
 .. note:: TJJ asks: Is this a verification rule or a legality rule?
    Ideally it should be a legality rule but the front end can probably
    only detect direct updates. The globals of called subprograms are needed
@@ -26,7 +26,7 @@ state* and *hidden state*. If a declaration that is part a package's persistent
 state is visible outside of the package, then it is a constituent of the
 package's visible state; otherwise it is a constituent of the package's hidden
 state.
-    
+
 Though the variables may be hidden they still form part (or all) of the
 persistent state of the package and the hidden state cannot be ignored for flow
 analysis and proof. *State abstraction* is the means by which this hidden state
@@ -44,22 +44,22 @@ themselves records.
 
 
 #. The visible state of a package P consists of:
-   
-   * any variables declared in immediately within the visible part of 
+
+   * any variables declared in immediately within the visible part of
      package P; and
-      
-   * the state abstractions declared by the Abstract State aspect specification 
+
+   * the state abstractions declared by the Abstract State aspect specification
      (if any) of package P; and
-      
+
    * the visible state any packages declared immediately within the visible part
      of package P.
 
-     
+
 #. The hidden state of a package P consists of:
 
    * any variables declared immediately in the private part or body of P; and
-     
-   * the visible state of any packages declared immediately within the private 
+
+   * the visible state of any packages declared immediately within the private
      part or body of P.
 
 .. _external_state:
@@ -67,11 +67,11 @@ themselves records.
 External State
 ~~~~~~~~~~~~~~
 
-External state is a state abstraction or variable representing something 
-external to a program.  For instance, an input or output device, or a 
+External state is a state abstraction or variable representing something
+external to a program.  For instance, an input or output device, or a
 communication channel to another subsystem such as another |SPARK| program.
 
-External state may be *volatile state* in the sense that an assignment to 
+External state may be *volatile state* in the sense that an assignment to
 volatile state is not ineffective even if it's value is not read by the
 program [The assignment could be to an external device and has no logical effect
 on the program]. Similarly, a read of volatile state might not be ineffective;
@@ -79,30 +79,30 @@ it may have a side-effect. The values obtained from two successive
 reads without an intervening update of volatile state might not be equal.
 
 An external state abstraction is considered to be volatile state unless it is
-explicitly specified as non-volatile.  External state which is a variable is 
-volatile state if it is an Ada volatile object (as described in the Ada RM 
-Annex C.6).  In |SPARK| individual components of an object cannot be specified 
+explicitly specified as non-volatile.  External state which is a variable is
+volatile state if it is an Ada volatile object (as described in the Ada RM
+Annex C.6).  In |SPARK| individual components of an object cannot be specified
 as volatile.
 
-In |SPARK| external state which is a variable specified as volatile using 
+In |SPARK| external state which is a variable specified as volatile using
 Ada aspects or pragmas is specified as input only or an output only not both.
 [This restriction may be relaxed at some point in the future.]
 The variable is the means of communication with some external input or output.
 
-A state abstraction that is volatile state may be specified as input only 
+A state abstraction that is volatile state may be specified as input only
 or output only or may be left unspecified in terms of whether it is an input or
-output. [The lack of an input only or output only designator indicates that the 
-state abstraction may represent hidden state that may have non-volatile and, 
-or, both input only and output only states. Such a state abstraction may be 
+output. [The lack of an input only or output only designator indicates that the
+state abstraction may represent hidden state that may have non-volatile and,
+or, both input only and output only states. Such a state abstraction may be
 representing some complex external communication channel.]
 
-External state that is specified as non-volatile is assumed to be both an 
+External state that is specified as non-volatile is assumed to be both an
 input and an output and shall not be specified as an input or output only.
 
 It follows that external state that is specified as input only or output only
 is volatile state. [If it is Input_Only then some external writer needs to be
-updating the value of the variable. Similarly, if it is Output_Only it is 
-expected that there are external readers to be consuming the output values. 
+updating the value of the variable. Similarly, if it is Output_Only it is
+expected that there are external readers to be consuming the output values.
 Either of these require external agents of some kind, which implies volatility.]
 
 |SPARK| aspects are defined for specifying a variable as an input only or an
@@ -114,52 +114,52 @@ only or output only, or it may be specified as non-volatile.
 
 .. centered:: **Static Semantics**
 
-#. An external state abstraction may be specified as being non-volatile 
+#. An external state abstraction may be specified as being non-volatile
    state; without this designation it is volatile state.
-   
-#. A variable is specified as volatile state using the aspects (or pragmas) 
-   defined in the Ada RM Annex C6  (or J15).  A variable which is not specified 
+
+#. A variable is specified as volatile state using the aspects (or pragmas)
+   defined in the Ada RM Annex C6  (or J15).  A variable which is not specified
    as volatile is non-volatile state.
-   
-#. A state abstraction denoted as external non-volatile state cannot be 
+
+#. A state abstraction denoted as external non-volatile state cannot be
    specified as an input only or output only state.  All external states that
    are specified as input only or output only are volatile states.
 
-#. The read or update of volatile state is considered to be both a read and an 
+#. The read or update of volatile state is considered to be both a read and an
    update of the state. A read of volatile state is preceded by an implicit
    update of the state and an update of volatile state is followed by an
    implicit read of the state. [Thus, a read of volatile state always has a
    side effect and an update of volatile state is never ineffective.]
-   
+
 #. It follows from the semantics of reading and updating of volatile state that
    such state does not require initialization for static analysis purposes
    [Indeed, it is not possible to initialize an external input only variable
    because the SPARK rules forbid it to be updated explicitly] and so volatile
    states are not the subject of an initialization item in an Initializes aspect
    (see :ref:`initializes_aspect`).
-   
+
 #. Global and Depends aspects of a subprogram represent the explicit reads and
-   updates performed by a subprogram and the implicit reads and updates 
+   updates performed by a subprogram and the implicit reads and updates
    described above are not recorded in these aspects.
-   
+
 .. centered:: **Legality Rules**
 
-#. External state which is specified as Input_Only shall not be denoted in a 
-   Global aspect with a ``mode_selector`` of In_Out or Output.  Nor shall it be 
+#. External state which is specified as Input_Only shall not be denoted in a
+   Global aspect with a ``mode_selector`` of In_Out or Output.  Nor shall it be
    denoted as an ``output`` of a Depends aspect.
-   
+
 #. External state which is specified as Output_Only shall not be denoted in
    a Global aspect with a ``mode_selector`` of Input or In_Out. Nor shall not be
    denoted as an ``input`` of a Depends aspect.
-    
+
 #. As a read of volatile state always has a side-effect a ``global_item`` of a
    function cannot denote volatile state [which in turn means that a function
    cannot, directly or indirectly, read volatile state].
 
-#. Volatile state shall not be denoted by a ``name`` of an 
-   ``initialization_item`` of an Initializes aspect 
+#. Volatile state shall not be denoted by a ``name`` of an
+   ``initialization_item`` of an Initializes aspect
    (see :ref:`initializes_aspect`).
-   
+
 .. todo:: Consider more than just simple External Inputs and Outputs;
           Latched outputs, In_Out Externals, etc.
           To be completed in the Milestone 4 version of this document.
@@ -171,11 +171,11 @@ Input_Only and Output_Only Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A variable which represents a communication channel with an external entity,
-for instance a transducer, subsystem, or program is considered an 
+for instance a transducer, subsystem, or program is considered an
 *external variable* if it is Volatile or is declared with an Ada Address,
 Import, or Export specification (either using an aspect or a pragma).
 
-An external variable is external volatile state if it is specified with 
+An external variable is external volatile state if it is specified with
 volatile True otherwise it is external non-volatile state.
 
 If it is a volatile variable it has to be specified as an input only or an
@@ -185,46 +185,46 @@ this specification.
 .. centered:: **Legality Rules**
 
 #. Exactly one of an Input_Only or Output_Only aspect shall be specified as True
-   in an ``object_declaration`` which is of a volatile type or specified as 
-   volatile. A variable with a True Input_Only specification is an 
-   *external input*; a variable with a True Output_Only specification is an 
+   in an ``object_declaration`` which is of a volatile type or specified as
+   volatile. A variable with a True Input_Only specification is an
+   *external input*; a variable with a True Output_Only specification is an
    *external output*.
    [The rule that a volatile variable shall be either an input or an output
    only may be relaxed in a future version of SPARK.]
-   
-#. The Boolean expression of the aspect definitions of the Input_Only 
+
+#. The Boolean expression of the aspect definitions of the Input_Only
    or Output_Only aspects shall be static.
 
 #. Contrary to the general SPARK 2014 rule that expression evaluation
    cannot have side effects, a read of a volatile variable is considered to have
    side effects. To reconcile this discrepancy, a name denoting an external
    input shall only occur in the following contexts:
-   
+
    * as the [right hand side] expression of an assignment statement;
-   
+
    * as the expression of an initialization expression of an object declaration
      that is not specified as volatile;
-   
+
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
-     
-   * as an actual parameter in a procedure call of which the corresponding 
+
+   * as an actual parameter in a procedure call of which the corresponding
      formal parameter is mode **in** and is of a non-scalar volatile type.
 
 #. A name denoting an external output shall only occur in the following
    contexts:
-   
+
    * as the name on the left-hand side of an assignment statement; or
-   
-   * as an actual parameter in a procedure call of which the mode of the 
-     corresponding formal parameter is **out** and is of a non-scalar, volatile 
+
+   * as an actual parameter in a procedure call of which the mode of the
+     corresponding formal parameter is **out** and is of a non-scalar, volatile
      type.
-   
+
 #. See section on volatile variables for rules concerning their use in |SPARK|
    (:ref:`shared_variable_control`).
 
 .. centered:: **Verification Rules**
-  
+
 There are no extra verification rules.
 
 .. centered:: **Static Semantics**
@@ -250,59 +250,59 @@ There are no dynamic semantics associated with these aspects.
 
    end Input_Port;
 
-   
+
    with System.Storage_Units;
    package Multiple_Ports
    is
       type Volatile_Type is record
-         I : Integer 
+         I : Integer
       end record with Volatile;
-   
+
       -- Read_Port may only be called with an actual parameter for Port
       -- which is an external input only
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
       with
          Depends => (Value => Port); -- Port is an external input only
-     
-     
+
+
       -- Write_Port may only be called with an actual parameter for Port
       -- which is an external output only
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
       with
          Depends => (Port => Value); -- Port is external output only
-     
+
       -- The following declarations are all external input only variables
-      V_In_1 : Volatile_Type 
-      with 
+      V_In_1 : Volatile_Type
+      with
          Input_Only,
          Address => System.Storage_Units.To_Address (16#A1CAFE#);
-      
+
       V_In_2 : Integer
       with
          Volatile,
          Input_Only,
          Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
-      -- The following declarations are all external output only variables      
-      V_Out_1 : Volatile_Type 
-      with 
+      -- The following declarations are all external output only variables
+      V_Out_1 : Volatile_Type
+      with
          Output_Only,
          Address => System.Storage_Units.To_Address (16#BBCCAFE#);
-      
+
       V_Out_2 : Integer
       with
          Volatile,
          Output_Only,
          Address => System.Storage_Units.To_Address (16#ADACAFE#);
-        
+
       -- The following is a declaration of a non-volatile external variable
       V_Non_Volatile : Integer
       with
          Address => System.Storage_Units.To_Address (16#BEECAFE#);
-        
+
 
    end Multiple_Ports;
-            
+
 
 .. _abstract-state-aspect:
 
@@ -325,12 +325,11 @@ implementation of the given state abstraction of the outer package.
 
 The hidden state of a package may be represented by one or more state
 abstractions, with each pair of state abstractions representing disjoint sets of
-hidden variables. 
+hidden variables.
 
 If a subprogram P with a Global aspect is declared in the visible part of a
-package and P reads or updates any of the hidden state of the package then P
-shall denote, in its Global aspect, the state abstractions with the correct mode
-that represent the hidden state referenced by P. If P has a Depends aspect then
+package and P reads or updates any of the hidden state of the package then
+the state abstractions shall be denoted by P. If P has a Depends aspect then
 the state abstractions shall be denoted as inputs and outputs of P, as
 appropriate, in the ``dependency_relation`` of the Depends aspect.
 
@@ -342,7 +341,7 @@ variable of a private child or descendant thereof has to be specified as being
 *part of* a state abstraction of a unit which is more visible than itself.
 
 The Abstract State aspect is introduced by an ``aspect_specification``
-where the ``aspect_mark`` is Abstract_State and the ``aspect_definition`` 
+where the ``aspect_mark`` is Abstract_State and the ``aspect_definition``
 shall follow the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Syntax**
@@ -357,8 +356,8 @@ shall follow the grammar of ``abstract_state_list`` given below.
   option_list                ::= option { , option }
   option                     ::= simple_option
                                | name_value_option
-  simple_option              ::= External 
-                               | Non_Volatile 
+  simple_option              ::= External
+                               | Non_Volatile
                                | Input_Only
                                | Output_Only
   name_value_option          ::= Part_Of  => abstract_state
@@ -376,14 +375,14 @@ shall follow the grammar of ``abstract_state_list`` given below.
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 7.1.2 LR An option shall not be repeated within a single option list.
-      
-#. If External is specified in an ``option_list`` then at most one of 
+
+#. If External is specified in an ``option_list`` then at most one of
    Input_Only, Output_Only or Non_Volatile``options`` may be specified in the
    ``option_list``. The Input_Only, Output_Only Non_Volatile options shall not
    be specified in an ``option_list`` without an External ``option``.
-   
-#. If a ``option_list`` contains one or more ``name_value_option`` items 
-   then they shall be the final options in the list. 
+
+#. If a ``option_list`` contains one or more ``name_value_option`` items
+   then they shall be the final options in the list.
    [This eliminates the possibility of a positional
    association following a named association in the property list.]
 
@@ -394,12 +393,12 @@ shall follow the grammar of ``abstract_state_list`` given below.
 #. A ``package_declaration`` or ``generic_package_declaration`` shall have a
    completion [(a body)] if it contains a non-null Abstract State aspect
    specification.
-   
+
 #. A subprogram declaration that overloads a state abstraction has an implicit
    Global aspect denoting the state abstraction with a ``mode_selector`` of
-   Input.  An explicit Global aspect may be specified which replaces the 
+   Input.  An explicit Global aspect may be specified which replaces the
    implicit one.
-   
+
 
 .. centered:: **Static Semantics**
 
@@ -425,20 +424,20 @@ shall follow the grammar of ``abstract_state_list`` given below.
    completion of a state abstraction declared in a package
    aspect_specification can only be provided as part of a
    Refined_State aspect specification within the body of the package.]
-   
-#. A **null** ``abstract_state_list`` specifies that a package contains no 
+
+#. A **null** ``abstract_state_list`` specifies that a package contains no
    hidden state.
 
 #. An External state abstraction is one declared with a ``option_list``
    that includes the  External ``option`` (see :ref:`external_state`).
-   
+
 #. A state abstraction which is declared with a ``option_list`` that includes
    a Part_Of ``name_value_option`` indicates that it is a constituent (see
-   :ref:`state_refinement`) exclusively of the state abstraction 
+   :ref:`state_refinement`) exclusively of the state abstraction
    denoted by the ``abstract_state`` of the ``name_value_option`` (see
    :ref:`package_hierarchy`).
-   
-      
+
+
 .. centered:: **Verification Rules**
 
 There are no verification rules associated with the Abstract_State aspect.
@@ -452,58 +451,56 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
 .. code-block:: ada
 
    package Q
-   with
-      Abstract_State => State           -- Declaration of abstract state named State
-   is                                   -- representing internal state of Q.
-     function Is_Ready return Boolean   -- Function checking some property of the State.
-        with Global => State;           -- State may be used in a global aspect.
+      with Abstract_State => State          -- Declaration of abstract state named State
+                                            -- representing internal state of Q.
+   is
+      function Is_Ready return Boolean      -- Function checking some property of the State.
+         with Global => State;              -- State may be used in a global aspect.
 
-        procedure Init                    -- Procedure to initialize the internal state of Q.
-        with Global => (Output => State), -- State may be used in a global aspect.
-	     Post   => Is_Ready;
+      procedure Init                        -- Procedure to initialize the internal state of Q.
+         with Global => (Output => State),  -- State may be used in a global aspect.
+	      Post   => Is_Ready;
 
-        procedure Op_1 (V : Integer)    -- Another procedure providing some operation on State
-           with Global => (In_Out => State),
-  	        Pre    => Is_Ready,
-	        Post   => Is_Ready;
+      procedure Op_1 (V : Integer)          -- Another procedure providing some operation on State
+         with Global => (In_Out => State),
+              Pre    => Is_Ready,
+              Post   => Is_Ready;
    end Q;
 
    package X
-   with  
+   with
       Abstract_State => (A, B, (C with External, Input_Only))
-   is                     -- Three abstract state names are declared A, B & C.
+                          -- Three abstract state names are declared A, B & C.
                           -- A and B are internal abstract states
-      ...                 -- C is specified as external state which is input only.
+                          -- C is specified as external state which is input only.
+   is
+      ...
    end X;
 
    package Mileage
-   with 
-      Abstract_State => 
-         (Trip,     -- number of miles so far on this trip (can be reset to 0).
-          Total,    -- total mileage of vehicle since the last factory-reset.
-         )
+      with Abstract_State => (Trip,  -- number of miles so far on this trip
+                                     -- (can be reset to 0).
+                              Total) -- total mileage of vehicle since last factory-reset.
    is
      function Trip  return Natural;  -- Has an implicit Global => Trip.
      function Total return Natural;  -- Has an implicit Global => Total.
-    
-     procedure Zero_Trip
-     with
-       Global  => (Output => Trip),  -- In the Global and Depends aspects
-       Depends => (Trip => null),    -- Trip denotes the state abstraction.
-       Post    => Trip = 0;          -- In the Post condition Trip denotes
-                                    -- the function.      
-     procedure Inc
-     with
-       Global  => (In_Out => (Trip, Total)),
-       Depends => ((Trip, Total =>+ null)),
-       Post    => (Trip = Trip'Old + 1) and (Total = Total'Old + 1);
 
-       -- Trip and Old in the Post conditions denote functions but these 
-       -- represent the state abstractions in expressions.
+     procedure Zero_Trip
+        with Global  => (Output => Trip),  -- In the Global and Depends aspects
+             Depends => (Trip => null),    -- Trip denotes the state abstraction.
+             Post    => Trip = 0;          -- In the Post condition Trip denotes
+                                           -- the function.
+     procedure Inc
+        with Global  => (In_Out => (Trip, Total)),
+             Depends => ((Trip, Total) =>+ null),
+             Post    => Trip = Trip'Old + 1 and Total = Total'Old + 1;
+
+     -- Trip and Old in the Post conditions denote functions but these
+     -- represent the state abstractions in Global and Depends specifications.
 
    end Mileage;
 
-.. _initializes_aspect: 
+.. _initializes_aspect:
 
 Initializes Aspect
 ~~~~~~~~~~~~~~~~~~
@@ -517,8 +514,8 @@ elaboration of a package, P, is dependent on the value of a visible variable or
 state abstraction from another package, then this entity shall be denoted in
 the input list associated with V in the Initialization aspect of P.
 
-The Initializes aspect is introduced by an ``aspect_specification`` where the 
-``aspect_mark`` is Initializes and the ``aspect_definition`` shall follow the 
+The Initializes aspect is introduced by an ``aspect_specification`` where the
+``aspect_mark`` is Initializes and the ``aspect_definition`` shall follow the
 grammar of ``initialization_spec`` given below.
 
 .. centered:: **Syntax**
@@ -532,43 +529,43 @@ grammar of ``initialization_spec`` given below.
                         | (initialization_item {, initialization_item})
 
   initialization_item ::= name [ => input_list]
-  
-.. centered:: **Legality Rules**
-   
-#. An Initializes aspect may only appear in the ``aspect_specification`` of a 
-   ``package_specification``.
-   
-#. The Initializes aspect shall follow the Abstract_State aspect if one is 
-   present.
-   
-#. The Initializes aspect of a package has visibility of the declarations
-   occurring immediately within the visible part of the package.
 
-#. The ``name`` of each ``initialization_item`` in the Initializes aspect 
-   definition for a package shall denote a state abstraction of the package or 
+.. centered:: **Legality Rules**
+
+#. An Initializes aspect shall only appear in the ``aspect_specification`` of a
+   ``package_specification``.
+
+#. The Initializes aspect shall follow the Abstract_State aspect if one is
+   present.
+
+#. The ``name`` of each ``initialization_item`` in the Initializes aspect
+   definition for a package shall denote a state abstraction of the package or
    an entire variable declared immediately within the visible part of the
    package.
 
-#. Each ``name`` in the ``input_list`` denotes an entire variable or a state 
+#. Each ``name`` in the ``input_list`` shall denote an entire variable or a state
    abstraction but shall not denote an entity declared in the package with the
    ``aspect_specification`` containing the Initializes aspect.
-   
+
 #. Each entity in a single ``input_list`` shall be distinct.
 
    .. centered:: **Static Semantics**
-   
-#. The Initializes aspect of a package specification asserts which 
+
+#. The Initializes aspect of a package has visibility of the declarations
+   occurring immediately within the visible part of the package.
+
+#. The Initializes aspect of a package specification asserts which
    state abstractions and visible variables of the package are initialized
    by the elaboration of the package, both its specification and body, and
    any units which have state abstractions or variable declarations that are
-   part of (constituents) of a state abstraction declared by the package.  
+   part of (constituents) of a state abstraction declared by the package.
    [A package with a **null** ``initialization_list``, or no Initializes aspect
    does not initialize any of its state abstractions or variables.]
-   
+
 #. If an ``initialization_item`` has an ``input_list`` then the ``names`` in the
    list denote entities which are used in determining the initial value of the
-   state abstraction or variable denoted by the ``name`` of the 
-   ``initialization_item`` but are not constituents of the state abstraction.   
+   state abstraction or variable denoted by the ``name`` of the
+   ``initialization_item`` but are not constituents of the state abstraction.
 
 .. centered:: **Dynamic Semantics**
 
@@ -583,10 +580,10 @@ There are no dynamic semantics associated with the Initializes Aspect.
    is said to be initialized if all of its constituents are initialized. An
    entire variable is initialized if all of its components are initialized.
    Other parts of the visible state of the package shall not be initialized.
-   
-#. If an ``initialization_item`` has a ``input_list`` then the entities denoted
-   in the input list shall be used in determining initialized value of the
-   entity denoted by the ``name`` of the ``initialization_item``
+
+#. If an ``initialization_item`` has an ``input_list`` then the entities denoted
+   in the input list shall be used in determining the initialized value of the
+   entity denoted by the ``name`` of the ``initialization_item``.
 
 .. centered:: **Examples**
 
@@ -632,23 +629,23 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. An Initial_Condition aspect may only be placed in an ``aspect_specification`` 
+#. An Initial_Condition aspect shall only be placed in an ``aspect_specification``
    of a ``package_specification``.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. The Initial_Condition aspect shall follow the Abstract_State aspect and 
+#. The Initial_Condition aspect shall follow the Abstract_State aspect and
    Initializes aspect if they are present.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. Each variable or state abstraction appearing in an Initial_Condition aspect 
-   of a package Q which is declared immediately within the visible part of Q 
-   shall be initialized during the elaboration of Q and be denoted by a ``name`` 
+#. Each variable or state abstraction appearing in an Initial_Condition aspect
+   of a package Q which is declared immediately within the visible part of Q
+   shall be initialized during the elaboration of Q and be denoted by a ``name``
    of an ``initialization_item`` of the Initializes aspect of Q.
 
    .. ifconfig:: Display_Trace_Units
@@ -668,11 +665,11 @@ be a *Boolean_*\ ``expression``.
    of both the specification and body of a package. If present on a package, the
    its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
    of the package which can be assumed to be true immediately following the
-   elaboration of the package. [The expression of the Initial_Condition may only
+   elaboration of the package. [The expression of the Initial_Condition shall only
    refer to names that are visible. This means that to express properties of
    hidden state, functions declared in the visible part acting on the state
    abstractions of the package must be used.]
-   
+
 .. centered:: **Dynamic Semantics**
 
 #. With respect to dynamic semantics, specifying a given expression
@@ -684,16 +681,16 @@ be a *Boolean_*\ ``expression``.
    semantics, such as name resolution.] An Initial_Condition expression does not
    cause freezing until the point where it is evaluated [, at which point
    everything that it might freeze has already been frozen].
-   
+
 .. centered:: **Verification Rules**
 
-#. The Initial_Condition aspect gives a proof obligation to show that the 
-   implementation of the ``package_specification`` and its body satisfy the 
-   predicate given in the Initial_Condition aspect. [The Boolean expression of 
-   the Initial_Condition aspect of a package may only predicate properties of 
-   the state of the package specifying the Initial_Condition aspect otherwise 
-   it will not be possible to discharge the proof obligation by analysis of the 
-   package alone.] 
+#. The Initial_Condition aspect gives a proof obligation to show that the
+   implementation of the ``package_specification`` and its body satisfy the
+   predicate given in the Initial_Condition aspect. [The Boolean expression of
+   the Initial_Condition aspect of a package shall only depend on properties of
+   the state of the package specifying the Initial_Condition aspect otherwise
+   it will not be possible to discharge the proof obligation by analysis of the
+   package alone.]
 
 .. centered:: **Examples**
 
@@ -733,27 +730,27 @@ be a *Boolean_*\ ``expression``.
 
 Package Bodies
 --------------
-   
+
 .. _state_refinement:
 
 State Refinement
 ~~~~~~~~~~~~~~~~
 
 A ``state_name`` declared by an Abstract_State aspect in the specification of a
-package denotes an abstraction representing all or part of its hidden state. The
+package shall denote an abstraction representing all or part of its hidden state. The
 declaration must be completed in the package body by a Refined_State aspect. The
 Refined_State aspect defines a *refinement* for each ``state_name``. The
-refinement denotes the variables and subordinate state abstractions represented
+refinement shall denote the variables and subordinate state abstractions represented
 by the ``state_name`` and these are known as its *constituents*.
 
 Constituents of each ``state_name`` have to be initialized consistently
-with that of their representative ``state_name`` as determined by its denotation 
+with that of their representative ``state_name`` as determined by its denotation
 or absence in the Initializes aspect of the package.
 
 A subprogram may have an *abstract view* and a *refined view*.  The abstract
 view is a subprogram declaration in the visible part of a package where a
 subprogram may refer to private types and state abstractions whose details are
-not visible.  A refined view of a subprogram is the body or body stub of the 
+not visible.  A refined view of a subprogram is the body or body stub of the
 subprogram in the package body whose visible part declares its abstract view.
 
 In a refined view a subprogram has visibility of the full type declarations of
@@ -787,8 +784,8 @@ where
 
 .. centered:: **Legality Rules**
 
-#. A Refined_State Aspect may only appear in the ``aspect_specification`` of a
-   ``package_body``. [The use of ``package_body`` rather than package body 
+#. A Refined_State Aspect shall only appear in the ``aspect_specification`` of a
+   ``package_body``. [The use of ``package_body`` rather than package body
    allows this aspect to be specified for generic package bodies.]
 
    .. ifconfig:: Display_Trace_Units
@@ -803,16 +800,16 @@ where
       :Trace Unit: TBD
 
 #. If a ``package_specification``  does not have an Abstract_State aspect,
-   then the corresponding ``package_body`` shall not have a Refined_State 
+   then the corresponding ``package_body`` shall not have a Refined_State
    aspect.
-  
+
    .. note:: We may want to be able to override this error.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. A Refined_State Aspect of a ``package_body`` has visibility extended to  the 
+#. A Refined_State Aspect of a ``package_body`` has visibility extended to  the
    ``declarative_part`` of the body.
 
    .. ifconfig:: Display_Trace_Units
@@ -824,14 +821,14 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
-      
+
 #. An object which is a ``constituent`` shall be an entire object.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
-#. A ``constituent`` denotes an entity of the hidden state of a package or an
+#. A ``constituent`` shall denote an entity of the hidden state of a package or an
    entity which has a Part_Of ``option`` or aspect associated with its
    declaration.
 
@@ -843,18 +840,18 @@ where
    ``constituent`` of exactly one *abstract_*\ ``state_name`` in the
    Refined_State aspect of the package and shall not be denoted more than once.
    [These ``constituents`` are either variables declared in the private part or
-   body of the package, or the declarations from the visible part of 
+   body of the package, or the declarations from the visible part of
    nested packages declared immediately therein.]
-   
+
    .. note:: We may want to be able to override this error.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
-      
+
 #. The legality rules related to a Refined_State aspect given in
    :ref:`package_hierarchy` also apply.
-   
+
 .. centered:: **Static Semantics**
 
 #. A Refined_State aspect of a ``package_body`` completes the declaration of the
@@ -862,11 +859,11 @@ where
    and defines the objects and each subordinate state abstraction that are the
    ``constituents`` of the *abstract_*\ ``state_names`` declared in the
    ``package_specification``.
-   
+
 #. A ``constituent`` with an ``option_list`` is used to indicate the
    ``options`` that apply to the constituent.
-   
-#. A **null** ``constituent_list`` indicates that the named abstract state has 
+
+#. A **null** ``constituent_list`` indicates that the named abstract state has
    no constituents. The state abstraction does not represent any actual state at
    all. [This feature may be useful to minimize changes to Global and Depends
    aspects if it is believed that a package may have some extra state in the
@@ -920,8 +917,8 @@ Abstract State, Package Hierarchy and Part_Of
 
 Each item of visible state of a private library unit (and any descendants
 thereof) must be connected, directly or indirectly, to an
-*encapsulating* state abstraction of some public library unit. This is done 
-using the Part_Of ``option`` or aspect, associated with each declaration of 
+*encapsulating* state abstraction of some public library unit. This is done
+using the Part_Of ``option`` or aspect, associated with each declaration of
 the visible state of the private unit.
 
 The unit declaring the encapsulating state abstraction identified by the Part_Of
@@ -942,91 +939,91 @@ abstraction of the (typically) public unit with which a private unit's visible
 state item is associated.
 
 To support multi-level hierarchies of private units, a private unit may connect
-its visible state to the state abstraction of another private unit, so long as 
-eventually the state gets connected to the state abstraction of a public unit 
-through a chain of connections. However, as indicated above, the unit through 
+its visible state to the state abstraction of another private unit, so long as
+eventually the state gets connected to the state abstraction of a public unit
+through a chain of connections. However, as indicated above, the unit through
 which the state is *exposed* must be more visible.
 
 If a private library unit has visible state, this state might be read or updated
 as a side effect of calling a visible operation of a public library unit. This
 visible state may be referenced, either separately or as part of the state
-abstraction of some other public library unit. The following scenario: 
-  
+abstraction of some other public library unit. The following scenario:
+
    * a state abstraction is visible; and
-   
+
    * an object (or another state abstraction) is visible which is a constituent
      of the state abstraction; and
-    
+
    * it is not apparent that the object (or other state) is a constituent
      of the state abstraction - there are effectively two entities representing
      part or all of the state abstraction.
-     
-gives rise to aliasing between the state abstraction and its constituents.  
+
+gives rise to aliasing between the state abstraction and its constituents.
 
 To resolve such aliasing, rules are imposed to ensure such a scenario can never
 occur. In particular, it is always known what state abstraction a constituent
 is part of and a state abstraction always knows all of its constituents.
-    
+
 .. centered:: **Static Semantics**
 
-#. A *Part_Of indicator* is a Part_Of ``option`` of a state abstraction 
-   declaration in an Abstract_State aspect, a Part_Of aspect applied to a 
+#. A *Part_Of indicator* is a Part_Of ``option`` of a state abstraction
+   declaration in an Abstract_State aspect, a Part_Of aspect applied to a
    variable declaration or a Part_Of aspect applied to a generic package
-   instantiation.  The Part_Of indicator denotes the encapsulating state 
-   abstraction of which the declaration is a constituent. 
-   
+   instantiation.  The Part_Of indicator shall denote the encapsulating state
+   abstraction of which the declaration is a constituent.
+
 #. A unit is more visible than another if it has less private ancestors.
 
 .. centered:: **Legality Rules**
 
-#. Every private unit and each of its descendants, P, that have visible state 
+#. Every private unit and each of its descendants, P, that have visible state
    shall for each declaration in the visible state:
 
-   * connect the declaration to an encapsulating state abstraction by 
+   * connect the declaration to an encapsulating state abstraction by
      associating a Part_Of indicator with the declaration;
-   
-   * name an encapsulating state abstraction in its Part_Of indicator if and 
-     only if the unit declaring the state abstraction is strictly more visible 
+
+   * name an encapsulating state abstraction in its Part_Of indicator if and
+     only if the unit declaring the state abstraction is strictly more visible
      than the unit containing the declaration; and
-   
-   * require a ``limited_with_clause`` naming P on the unit which declares the 
-     encapsulating state abstraction. 
+
+   * require a ``limited_with_clause`` naming P on the unit which declares the
+     encapsulating state abstraction.
      [This rule is checked as part of checking the Part_Of aspect.]
-     
+
 #. Each item of hidden state declared in the private part of a unit shall have
-   a Part_Of indicator associated with the declaration which denotes a 
+   a Part_Of indicator associated with the declaration which shall denote an
    encapsulating state abstraction of the same unit.
-   
+
 #. No other declarations shall have a Part_Of indicator.
-     
+
 #. The body of a unit whose specification declares a state abstraction named
    as an encapsulating state abstraction of a Part_Of indicator shall:
-   
+
    * have a ``with_clause`` naming each unit, excluding itself, containing such
      a Part_Of indicator; and
-     
+
    * in its Refined_State aspect, denote each declaration associated with such a
-     Part_Of indicator as a ``constituent`` exclusively of the encapsulating 
+     Part_Of indicator as a ``constituent`` exclusively of the encapsulating
      state abstraction.
-   
+
    [The units that need to be with'd are known from the ``limited_with_clauses``
    on its specification and from this it is known which declarations have a
-   Part_Of indicator for a encapsulating state abstraction.]
+   Part_Of indicator for an encapsulating state abstraction.]
 
-#. If both a state abstraction and one or more of its ``constituents`` are 
+#. If both a state abstraction and one or more of its ``constituents`` are
    visible in a private package specification or in the package specification of
    a non-private descendant of a private package, then only the ``constituents``
-   and not the state abstraction may be denoted in the declarations of the
+   and not the state abstraction shall be denoted in the declarations of the
    package specification.
-   
-#. In a public package specification only state abstractions may be denoted,
+
+#. In a public package specification only state abstractions shall be denoted,
    not their ``constituents``. The exclusion to this rule is that for
    private parts of a package given below.
-   
+
 #. In the private part of a package a state abstraction declared by the
-   package shall not be denoted other than for specifying it as the 
+   package shall not be denoted other than for specifying it as the
    encapsulating state in the Part_Of indicator. The state abstraction's
-   ``constituents`` declared in the private part may be denoted.
+   ``constituents`` declared in the private part shall be denoted.
 
 .. centered:: **Examples**
 
@@ -1037,14 +1034,14 @@ is part of and a state abstraction always knows all of its constituents.
     is
         -- P has no state abstraction
     end P;
-   
+
     -- P.Pub is the public package that declares the state abstraction
-  
+
     limited with P.Priv;   -- Indicates to P.Pub that the visible (to P.Pub)
                            -- state of P.Priv may be constituents of P.Pub's
                            -- state abstractions.
     package P.Pub --  public unit
-      with Abstract_State => (R, S)
+       with Abstract_State => (R, S)
     is
        ...
     end P.Pub;
@@ -1054,101 +1051,98 @@ is part of and a state abstraction always knows all of its constituents.
     --  two state abstractions within P.Pub, R and S
 
     private package P.Priv --  private unit
-      with Abstract_State =>
-        ((A with Part_Of => P.Pub.R), (B with Part_Of => P.Pub.S))
+       with Abstract_State => ((A with Part_Of => P.Pub.R),
+                               (B with Part_Of => P.Pub.S))
     is
-        X : T  -- visible variable which is part of state abstraction P.Pub.R.
-           with Part_Of => P.Pub.R;
+       X : T  -- visible variable which is part of state abstraction P.Pub.R.
+          with Part_Of => P.Pub.R;
     end P.Priv;
 
     with P.Priv; -- P.Priv has to be with'd because its state is part of the
                  -- refined state.
     package body P.Pub
-      with Refined_State =>
-        (R => (P.Priv.A, P.Priv.X, Y),
-         S => (P.Priv.B, Z))
+       with Refined_State => (R => (P.Priv.A, P.Priv.X, Y),
+                              S => (P.Priv.B, Z))
     is
        Y : T2;  -- hidden state
        Z : T3;  -- hidden state
        ...
     end P.Pub;
 
-    
-    package Outer 
-    with 
-       Abstract_State => A1, A2 
+
+    package Outer
+       with Abstract_State => (A1, A2)
     is
-      procedure Init_A1
-      with
-         Global  => (Output => A1),
-         Depends => (A1 => null);
-         
-      procedure Init_A2
-      with
-         Global  => (Output => A2),
-         Depends => (A2 => null);
-              
+       procedure Init_A1
+          with Global  => (Output => A1),
+               Depends => (A1 => null);
+
+       procedure Init_A2
+          with Global  => (Output => A2),
+               Depends => (A2 => null);
+
     private
        -- A variable declared in the private part must have a Part_Of aspect
-       Hidden_State : Integer with Part_Of => A2;
-       
-       package Inner 
-       with                  -- State abstraction declared in the private part 
-                             -- must have a Part_Of option
-          Abstract_state => (B1 => (with Part_Of => Outer.A1)) 
-       is                    -- A1 cannot be denoted in the private part
-          procedure Init_B1 
-          with 
-             Global  => (Output => B1), 
-             Depends => (B1 => null);
-            
-          procedure Init_A2  -- A2 cannot be denoted in the private part but
-          with               -- Outer.Hidden_State may be denoted which is Part_Of A2
-             Global  => (Output => Outer.Hidden_State),
-             Depends => (Outer.Hidden_State => null);            
+       Hidden_State : Integer
+          with Part_Of => A2;
+
+       package Inner
+          with Abstract_state => (B1 with Part_Of => Outer.A1))
+                        -- State abstraction declared in the private
+                        -- part must have a Part_Of option
+                        -- A1 cannot be denoted in the private part.
+       is
+          procedure Init_B1
+             with Global  => (Output => B1),
+                  Depends => (B1 => null);
+
+          procedure Init_A2
+             -- A2 cannot be denoted in the private part but
+             -- Outer.Hidden_State, which is Part_Of A2, may be denoted.
+             with Global  => (Output => Outer.Hidden_State),
+                  Depends => (Outer.Hidden_State => null);
+
        end Inner;
     end Outer;
-    
-   package body Outer 
-   with 
-      Refined_State => ((A1 => Inner.B1),
-                         A2 => Hidden_State))
-   is                        -- Outer.A1 and Outer.A2 cannot be denoted in the
-                             -- body of Outer because their refinements are visible      
-      package body Inner 
-      with          
-         Refined_State => (B1 => null)
-      is                     -- Oh - there isn't any state after all
-      procedure Init_B1 
-         with                -- Refined Globals and Depends of a null refinement
-            Refined_Global  => null,
-            Refined_Depends => null
+
+   package body Outer
+      with Refined_State => (A1 => Inner.B1,
+                             A2 => Hidden_State)
+                             -- Outer.A1 and Outer.A2 cannot be denoted in the
+                             -- body of Outer because their refinements are visible.
+   is
+      package body Inner
+         with Refined_State => (B1 => null)  -- Oh, there isn't any state after all
+      is
+         procedure Init_B1
+            with Refined_Global  => null,  -- Refined Globals and Depends of a null refinement
+                 Refined_Depends => null
          is
          begin
             null;
          end Init_B1;
-         
+
          procedure Init_A2
-         is                   -- Refined Global and Depends aspects not required
-         begin                -- because there is no refinement of Outer.Hidden_State
+            -- Refined Global and Depends aspects not required
+            -- because there is no refinement of Outer.Hidden_State.
+         is
+         begin
             Outer.Hidden_State := 0;
          end Init_A2;
-         
+
       end Inner;
-      
+
       procedure Init_A1
-      with 
-         Refined_Global  => (Output => B1),
-         Refined_Depends => (B1 => null)
+         with Refined_Global  => (Output => B1),
+              Refined_Depends => (B1 => null)
       is
       begin
          Inner.Init_B1;
       end Init_A1;
 
-      procedure Init_A2 
-      with
-         Refined_Global  => (Output => Hidden_State),
-         Refined_Depends => (Hidden_State => null)
+      procedure Init_A2
+         with Refined_Global  => (Output => Hidden_State),
+              Refined_Depends => (Hidden_State => null)
       is
       begin
          Inner.Init_A2;
@@ -1157,94 +1151,85 @@ is part of and a state abstraction always knows all of its constituents.
     end Outer;
 
     package Q
-    with 
-       Abstract_State => Q1, Q2
+       with Abstract_State => (Q1, Q2)
     is
        -- Q1 and Q2 may be denoted here
        procedure Init_Q1
-       with
-       Global  => (Output => Q1),
-       Depends => (Q1 => null);
-   
+          with Global  => (Output => Q1),
+               Depends => (Q1 => null);
+
        procedure Init_Q2
-       with
-       Global  => (Output => Q2),
-       Depends => (Q2 => null);
-   
+          with Global  => (Output => Q2),
+               Depends => (Q2 => null);
+
    private
       -- Q1 and Q2 may only be denoted as the encapsulating state abstraction
-      Hidden_State : Integer with Part_Of => Q2;
+      Hidden_State : Integer
+         with Part_Of => Q2;
    end Q;
 
    limited with Q;
    private package Q.Child
-   with
-      Abstract_State => (C1 with Part_Of => Q.Q1)
+      with Abstract_State => (C1 with Part_Of => Q.Q1)
    is
       -- Only constituents of Q1 and Q2 may be denoted here
       procedure Init_Q1
-      with
-         Global  => (Output => C1),
-         Depends => (C1 => null);
-   
+         with Global  => (Output => C1),
+              Depends => (C1 => null);
+
       procedure Init_Q2
-      with
-         Global  => (Output => Q.Hidden_State),
-         Depends => (Q.Hidden_State => null);
+         with Global  => (Output => Q.Hidden_State),
+              Depends => (Q.Hidden_State => null);
    end Q.Child;
 
    with Q;
    package body Q.Child
-   with
-      Refined_State => (C1 => Actual_State)
+      with Refined_State => (C1 => Actual_State)
    is
       -- C1 shall not be denoted here - only Actual_State
-      -- but Q.Hidden_State may be denoted 
+      -- but Q.Hidden_State may be denoted.
       Actual_State : Integer;
-      
+
       procedure Init_Q1
-      with
-        Refined_Global  => (Output => Actual_State),
-        Refined_Depends => (Actual_State => null);
+         with Refined_Global  => (Output => Actual_State),
+              Refined_Depends => (Actual_State => null);
       is
       begin
          Actual_State := 0;
       end Init_Q1;
-   
+
       procedure Init_Q2
       is
       begin
          Q.Hidden_State := 0;
       end Init_Q2;
-     
+
    end Q.Child;
 
    with Q.Child;
    package body Q
-   with 
-      Refined_State => (Q1 => Q.Child.C1, Q2 => Hidden_State)
+      with Refined_State => (Q1 => Q.Child.C1,
+                             Q2 => Hidden_State)
    is
       -- Q1 and Q2 shall not be denoted here but the constituents
-      -- Q.Child.C1 and Hidden_State may be
-      
+      -- Q.Child.C1 and Hidden_State may be.
+
       procedure Init_Q1
-      with
-         Refined_Global  => (Output => Q.Child.C1),
-         Refined_Depends => (Q.Child.C1 => null)
+         with Refined_Global  => (Output => Q.Child.C1),
+              Refined_Depends => (Q.Child.C1 => null)
       is
       begin
          Q.Child.Init_Q1;
       end Init_Q1;
-   
+
       procedure Init_Q2
-      with
-        Refined_Global  => (Output => Hidden_State),
-        Refined_Depends => (Hidden_State => null)
+         with Refined_Global  => (Output => Hidden_State),
+              Refined_Depends => (Hidden_State => null)
       is
       begin
          Q.Child.Init_Q2;
       end Init_Q2;
-   
+
    end Q;
 
 
@@ -1252,28 +1237,28 @@ is part of and a state abstraction always knows all of its constituents.
 Initialization Issues
 ~~~~~~~~~~~~~~~~~~~~~
 
-Every state abstraction specified as being initialized in the Initializes 
+Every state abstraction specified as being initialized in the Initializes
 aspect of a package has to have all of its constituents initialized.  This
 may be achieved by initialization within the package, by
-assumed pre-initialization (in the case of volatile state) or, for constituents 
+assumed pre-initialization (in the case of volatile state) or, for constituents
 which reside in another package, initialization by their declaring package.
 
 .. centered:: **Verification Rules**
 
-#. For each state abstraction denoted by the ``name`` of an 
-   ``initialization_item`` of an Initializes aspect of a package, all the 
+#. For each state abstraction denoted by the ``name`` of an
+   ``initialization_item`` of an Initializes aspect of a package, all the
    ``constituents`` of the state abstraction must be initialized by:
-   
+
    * initialization within the package; or
-   
+
    * assumed pre-initialization (in the case of volatile states); or
-   
-   * for constituents which reside in another unit [and have a Part_Of 
-     indicator associated with their declaration] by their declaring 
-     package. [It follows that such constituents will appear in the 
-     initialization clause of the declaring unit unless they are volatile 
+
+   * for constituents which reside in another unit [and have a Part_Of
+     indicator associated with their declaration] by their declaring
+     package. [It follows that such constituents will appear in the
+     initialization clause of the declaring unit unless they are volatile
      states.]
-     
+
 .. _refined-global-aspect:
 
 Refined Global Aspect
@@ -1283,7 +1268,7 @@ A subprogram declared in the visible part of a package may have a Refined Global
 aspect applied to its body or body stub. A Refined Global aspect of a subprogram
 defines a *refinement* of the Global Aspect of the subprogram; that is, the
 Refined Global aspect repeats the Global aspect of the subprogram except that
-references to state abstractions whose refinements that are visible at the point 
+references to state abstractions whose refinements that are visible at the point
 of the subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
@@ -1302,7 +1287,7 @@ The static semantics are equivalent to those given for the Global aspect in
    or the body (if no stub is present) of a subprogram which is declared
    in the visible part of a package and whose Global aspect denotes one or more
    state abstractions declared in the Abstract_State aspect of the package.
-   
+
 #. A Refined_Global aspect specification shall *refine* the subprogram's
    Global aspect as follows:
 
@@ -1311,12 +1296,12 @@ The static semantics are equivalent to those given for the Global aspect in
      of the Refined_Global aspect specification, the Refined_Global
      specification shall include one or more ``global_items`` which denote
      ``constituents`` of that state abstraction.
-     
+
    * For each ``global_item`` in the Global aspect which denotes
      a state abstraction whose **null** refinement is visible at the point
      of the Refined_Global aspect specification, shall be omitted, or if
      required by the syntax of a ``global_specification`` replaced by a **null**
-     in the the Refined_Global aspect.     
+     in the the Refined_Global aspect.
 
    * For each ``global_item`` in the Global aspect which does not
      denote such a state abstraction, the Refined_Global specification
@@ -1324,54 +1309,53 @@ The static semantics are equivalent to those given for the Global aspect in
      the ``global_item`` in the Global aspect.
 
    * No other ``global_items`` shall be included in the Refined_Global
-     aspect specification. 
-     
-#. ``Global_items`` in the a Refined_Global aspect specification shall denote 
+     aspect specification.
+
+#. ``Global_items`` in the a Refined_Global aspect specification shall denote
    distinct entities.
-      
+
 
 #. The mode of each ``global_item`` in a Refined_Global aspect shall match
    that of the corresponding ``global_item`` in the Global aspect unless:
    the ``mode_selector`` specified in the Global aspect is In_Out;
-   the corresponding ``global_item`` of Global aspect denotes a state 
-   abstraction whose refinement is visible; and 
-   the ``global_item`` in the Refined_Global aspect is a ``constituent`` of 
-   the state abstraction.  
-     
-   When all of these conditions are satisfied the Refined_Global aspect may 
-   denote individual ``constituents`` of the state abstraction as Input, Output, 
-   or In_Out (given that the constituent itself may have any of these 
-   ``mode_selectors``) so long as one or more of the 
-   following conditions are satisfied:
-   
+   the corresponding ``global_item`` of Global aspect shall denote a state
+   abstraction whose refinement is visible; and the ``global_item`` in the
+   Refined_Global aspect is a ``constituent`` of the state abstraction.
+
+   When all of these conditions are satisfied the Refined_Global aspect may
+   denote individual ``constituents`` of the state abstraction as Input, Output,
+   or In_Out (given that the constituent itself may have any of these
+   ``mode_selectors``) so long as one or more of the following conditions are
+   satisfied:
+
    * at least one of the ``constituents`` has a ``mode_selector`` of In_Out; or
-   
+
    * there is at least one of each of a ``constituent`` with a ``mode_selector``
      of Input and of Output; or
-     
+
    * the Refined_Global aspect does not denote all of the ``constituents`` of
      the state abstraction and at least one of them has the ``mode_selector``
      of Output.
-     
-   [This rule ensures that a state abstraction with the ``mode_selector``  
-   In_Out cannot be refined onto a set of ``constituents`` that are Output or 
-   Input only.  The last condition satisfies this requirement because not all of 
+
+   [This rule ensures that a state abstraction with the ``mode_selector``
+   In_Out cannot be refined onto a set of ``constituents`` that are Output or
+   Input only.  The last condition satisfies this requirement because not all of
    the ``constituents`` are updated, some are preserved, that is the state
    abstraction has a self-dependency.]
-    
+
 #. If the Global aspect specification references a state abstraction. with a
-   ``mode_selector`` of Output whose refinement is visible, then every 
-   ``constituent`` of that state abstraction shall be referenced in the 
+   ``mode_selector`` of Output whose refinement is visible, then every
+   ``constituent`` of that state abstraction shall be referenced in the
    Refined_Global aspect specification.
 
-#. The legality rules for :ref:`global-aspects` and External states described in 
+#. The legality rules for :ref:`global-aspects` and External states described in
    :ref:`refined_external_states` also apply.
 
 .. centered:: **Verification Rules**
 
 #. If a subprogram has a Refined Global Aspect it is used in the analysis of the
    subprogram body rather than its Global Aspect.
-   
+
 #. The verification rules given for :ref:`global-aspects` also apply.
 
 .. centered:: **Dynamic Semantics**
@@ -1387,7 +1371,7 @@ A subprogram declared in the visible part of a package may have a Refined
 Depends aspect applied to its body or body stub. A Refined Depends aspect of a
 subprogram defines a *refinement* of the Depends aspect of the subprogram; that
 is, the Refined Depends aspect repeats the Depends aspect of the subprogram
-except that references to state abstractions whose refinements are visible at 
+except that references to state abstractions whose refinements are visible at
 the point of the subprogram_body are replaced with references to [some or all of
 the] constituents of those abstractions.
 
@@ -1406,20 +1390,20 @@ The static semantics are equivalent to those given for the Depends aspect in
    or the body (if no stub is present) of a subprogram which is declared
    in the visible part of a package and whose Depends aspect denotes one or more
    state abstractions declared in the Abstract_State aspect of the package.
-   
+
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
 
 #. A Refined_Depends aspect specification is, in effect, a copy of
    the corresponding Depends aspect specification except that any references in
-   the Depends aspect to a state abstraction whose refinement is 
-   visible at the point of the Refined_Depends specification are replaced with 
-   references to zero or more direct or indirect constituents of that state 
+   the Depends aspect to a state abstraction whose refinement is
+   visible at the point of the Refined_Depends specification are replaced with
+   references to zero or more direct or indirect constituents of that state
    abstraction.  A Refined_Depends aspect is defined by creating a new
    ``dependency_relation`` from the original given in the Depends aspect as
    follows:
-   
+
    * A *partially refined dependency relation* is created by first copying, from
      the Depends aspect, each ``output`` that is not state abstraction whose
      refinement is visible at the point of the Refined_Depends aspect, along
@@ -1427,73 +1411,73 @@ The static semantics are equivalent to those given for the Depends aspect in
      ``output`` denoting the same entity with an ``input_list`` denoting the
      same entities as the original. [The order of the ``outputs`` and the order
      of ``inputs`` within the ``input_list`` is insignificant.]
-     
-   * The partially refined dependency relation is then extended by replacing 
+
+   * The partially refined dependency relation is then extended by replacing
      each ``output`` in the Depends aspect that is a state abstraction whose
      refinement is visible at the point of the Refined_Depends by zero or more
      ``outputs`` in the partially refined dependency relation. It shall be zero
      only for a **null** refinement, otherwise all of the ``outputs`` shall
-     denote a ``constituent`` of the state abstraction. 
-     
+     denote a ``constituent`` of the state abstraction.
+
      If the ``output`` in the Depends_Aspect denotes a state abstraction which
      is not also an ``input``, then all of the ``constituents`` [for a
      non-**null** refinement] of the state abstraction shall be denoted as
      ``outputs`` of the partially refined dependency relation.
-     
+
      These rules may, for each ``output`` in the Depends aspect, introduce more
      than one ``output`` in the partially refined dependency relation. Each of
      these ``outputs`` has an ``input_list`` that has zero or more of the
      ``inputs`` from the ``input_list`` of the original ``output``. The union of
      the these ``inputs`` shall denote the same ``inputs`` that appear in the
      ``input_list`` of the original ``output``.
-     
-   * If the Depends aspect has a ``null_dependency_clause``, then the partially 
+
+   * If the Depends aspect has a ``null_dependency_clause``, then the partially
      refined dependency relation has a ``null_dependency_clause`` added with an
      ``input_list`` denoting the same ``inputs`` as the original.
-     
-   * The partially refined dependency relation is completed by replacing the 
+
+   * The partially refined dependency relation is completed by replacing the
      ``inputs`` which are state abstractions whose refinements are visible at
      the point of the Refined_Depends aspect by zero or more ``inputs``. It
      shall be zero only for a **null** refinement, otherwise each of the
      ``inputs`` shall denote a ``constituent`` of the state abstraction. The
      completed dependency relation is the ``dependency_relation`` of the
      Refined_Depends aspect.
-     
-#. These rules result in omitting each state abstraction whose **null** 
+
+#. These rules result in omitting each state abstraction whose **null**
    refinement is visible at the point of the Refined_Depends. If and only if
-   required by the syntax, the state abstraction shall be replaced by a **null** 
+   required by the syntax, the state abstraction shall be replaced by a **null**
    symbol rather than being omitted.
-  
+
 #. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
-   aspect specification. ``Outputs`` in the a Refined_Depends aspect
+   aspect specification. ``Outputs`` in the Refined_Depends aspect
    specification shall denote distinct entities. ``Inputs`` in an ``input_list``
-   denote distinct entities.
-   
+   shall denote distinct entities.
+
 #. [The above rules may be viewed from the perspective of checking the
    consistency of a Refined_Depends aspect with its corresponding Depends
    aspect.  In this view,  each ``input`` in the Refined_Depends aspect that
    is a ``constituent`` of a state abstraction, whose refinement is visible at
    the point of the Refined_Depends aspect, is replaced by its representative
-   state abstraction with duplicate ``inputs`` removed. 
-   
+   state abstraction with duplicate ``inputs`` removed.
+
    Each ``output`` in the Refined_Depends aspect which is a ``constituent`` of
    the same state abstraction whose refinement is visible at the point of the
    Refined_Depends aspect, is merged along with its ``input_list`` into a single
    ``dependency_clause`` whose ``output`` denotes the state abstraction and
    ``input_list`` is the union of all of the ``inputs`` from the original
    ``input_lists``.]
-   
+
 #. The rules for :ref:`depends-aspects` also apply.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
-      
+
 .. centered:: **Verification Rules**
 
-#. If a subprogram has a Refined Depends Aspect it is used in the analysis of 
+#. If a subprogram has a Refined Depends Aspect it is used in the analysis of
    the subprogram body rather than its Depends Aspect.
-   
+
 #. The verification rules given for :ref:`depends-aspects` also apply.
 
 .. centered:: **Dynamic Semantics**
@@ -1517,12 +1501,12 @@ be a Boolean ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Pre aspect may appear only on a body_stub (if one is present) or 
+#. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
    the body (if no stub is present) of subprogram if the subprogram is declared
    in the visible part of a package, its abstract view. If the subprogram
    declaration in the visible part has no explicit precondition, a precondition
    of True is assumed for its abstract view.
-   
+
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
@@ -1538,13 +1522,13 @@ be a Boolean ``expression``.
 
 #. A Refined Precondition of a subprogram defines a *refinement*
    of the precondition of the subprogram.
-   
+
 #. The static semantics are otherwise as for a precondition.
 
 
 .. centered:: **Verification Rules**
 
-#. The precondition of the abstract view of the subprogram shall imply its 
+#. The precondition of the abstract view of the subprogram shall imply its
    Refined_Precondition.
 
 .. centered:: **Dynamic Semantics**
@@ -1570,12 +1554,12 @@ be a Boolean ``expression``.
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Post aspect may only appear on a body_stub (if one is 
-   present) or the body (if no stub is present) of a subprogram which is 
+#. A Refined_Post aspect may only appear on a body_stub (if one is
+   present) or the body (if no stub is present) of a subprogram which is
    declared in the visible part of a package, its abstract view.  If the
    subprogram declaration in the visible part has no explicit postcondition, a
-   postcondition of True is assumed for the abstract view. 
-   
+   postcondition of True is assumed for the abstract view.
+
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1592,13 +1576,13 @@ be a Boolean ``expression``.
 
 #. A Refined Postcondition of a subprogram defines a *refinement*
    of the postcondition of the subprogram.
-   
+
 #. Logically, the Refined Postcondition of a subprogram must imply
    its postcondition.  This means that it is perfectly logical for the
    declaration not to have a postcondition (which in its absence
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
-   
+
 #. For an ``expression_function`` without an explicit Refined Postcondition
    the expression implementing the function acts as its Refined Postcondition.
 
@@ -1620,12 +1604,12 @@ be a Boolean ``expression``.
 
 #. When a subprogram with a Refined Postcondition is called; first
    the subprogram is evaluated. The Refined Postcondition is evaluated
-   immediately before the evaluation of the postcondition or, if there is no 
-   postcondition, immediately before the point at which a postcondition would 
+   immediately before the evaluation of the postcondition or, if there is no
+   postcondition, immediately before the point at which a postcondition would
    have been evaluated.  If the Refined Postcondition evaluates to
    True then the postcondition is evaluated as described in the Ada
    RM.  If either the Refined Postcondition or the postcondition
-   do not evaluate to True then the exception Assertions.Assertion_Error is 
+   do not evaluate to True then the exception Assertions.Assertion_Error is
    raised.
 
 .. todo:: refined contract_cases.
@@ -1637,36 +1621,36 @@ Refined External States
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 External state which is a state abstraction requires a refinement as does any
-state abstraction. There are rules which govern refinement of a state 
+state abstraction. There are rules which govern refinement of a state
 abstraction on to external states which are given in this section.
 
 .. centered:: **Legality Rules**
 
-#. An state abstraction that is not specified as External shall not have 
+#. A state abstraction that is not specified as External shall not have
    ``constituents`` which are External states.
-   
+
 #. An External, Non_Volatile state abstraction shall only have ``constituents``
    that are External, Non_Volatile states and, or, non External states.
-   
+
 #. An External, Input_Only state abstraction shall only have ``constituents``
    that are External, Input_Only states.
 
 #. An External, Output_Only state abstraction shall only have ``constituents``
-   that are External, Output_Only states. 
+   that are External, Output_Only states.
 
-#. A state abstraction which is specified as just External state, referred to 
+#. A state abstraction that is specified as just External state, referred to
    as a *plain External state* may have ``constituents`` of any sort of External
    state and, or, non External states.
-   
+
 #. A subprogram declaration that has a Global aspect denoting a plain External
-   state abstraction with a ``mode_selector`` other than In_Out, and the 
-   refinement of the state abstraction is visible at the point of the 
+   state abstraction with a ``mode_selector`` other than In_Out, and the
+   refinement of the state abstraction is visible at the point of the
    Refined_Global aspect, shall not denote a Volatile ``constituent`` of the
    state abstraction, in its Refined_Global aspect.
-   
+
 #. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
    also apply.
-   
+
 .. centered:: **Examples**
 
 
@@ -1674,161 +1658,150 @@ abstraction on to external states which are given in this section.
 
 
    package Externals
-   with
-      Abstract_State => ((Combined_Inputs with External, Input_Only),
-                         (Displays with External, Output_Only),
-                         (Complex_Device with External),
-      Initializes => Complex_Device
+      with Abstract_State => ((Combined_Inputs with External, Input_Only),
+                              (Displays with External, Output_Only),
+                              (Complex_Device with External)),
+           Initializes => Complex_Device
    is
       procedure Read (Combined_Value : out Integer)
-      with
-         Global  => Combined_Inputs,  -- Combined_Inputs is an Input_Only
-                                      -- External state it can only be an 
-                                      -- Input in Global and Depends aspects.
-         Depends => (Combined_Value => Combined_Inputs);
-      
+         with Global  => Combined_Inputs,  -- Combined_Inputs is an Input_Only
+                                           -- External state it can only be an
+                                           -- Input in Global and Depends aspects.
+              Depends => (Combined_Value => Combined_Inputs);
+
       procedure Display (D_Main, D_Secondary : in String)
-      with
-         Global  => Displays,         -- Displays is an Output_Only
-                                      -- External state it can only be an 
-                                      -- Output in Global and Depends aspects.
-         Depends => (Displays => (D_Main, D_Secondary));
+         with Global  => (Output => Displays), -- Displays is an Output_Only
+                                               -- External state it can only be an
+                                               -- Output in Global and Depends
+                                               -- aspects.
+              Depends => (Displays => (D_Main, D_Secondary));
 
       function Last_Value_Sent return Integer
-      with
-         Global => Complex_Device;    -- Complex_Device is a Plain External
-                                      -- state.  It can be an Input and
-                                      -- be a global to a function
-                                      -- provided the Refined Global aspect only
-                                      -- refers to non-volatile or non-external
-                                      -- constituents.
-          
+         with Global => Complex_Device;  -- Complex_Device is a Plain External
+                                         -- state.  It can be an Input and
+                                         -- be a global to a function provided
+                                         -- the Refined Global aspect only
+                                         -- refers to non-volatile or non-external
+                                         -- constituents.
+
       procedure Output_Value (Value : in Integer)
-      with
-         Global  => (In_Out => Complex_Device),
-         Depends => (Complex_Device => (Complex_Device, Value));
+         with Global  => (In_Out => Complex_Device),
+              Depends => (Complex_Device => (Complex_Device, Value));
          -- If the refined Global Aspect refers to constituents which
-         -- are volatile state then the mode_selector for Complex_Device must 
-         -- be In_Out and it is both an input and an output.  
+         -- are volatile state then the mode_selector for Complex_Device must
+         -- be In_Out and it is both an input and an output.
          -- The subprogram must be a procedure.
- 
+
    end Externals;
-    
+
    limited with Externals;
    private package Externals.Temperature
-   with
-      Abstract_State => 
-         (State with External, Input_Only,
-                     Part_Of  => Externals.Combined_Inputs)
+      with Abstract_State => (State with External, Input_Only,
+                              Part_Of => Externals.Combined_Inputs)
    is
      ...
    end Externals.Temperature;
-    
+
    limited with Externals;
    private package Externals.Pressure
-   with
-      Abstract_State => 
-         (State with External, Input_Only,
-                     Part_Of  => Externals.Combined_Inputs)
+      with Abstract_State => (State with External, Input_Only,
+                              Part_Of => Externals.Combined_Inputs)
    is
      ...
    end Externals.Pressure;
-   
+
    limited with Externals;
    private package Externals.Main_Display
-   with
-      Abstract_State => 
-         (State with External, Output_Only,
-                     Part_Of  => Externals.Displays)
+      with Abstract_State => (State with External, Output_Only,
+                              Part_Of => Externals.Displays)
    is
       ...
    end Externals.Main_Display;
-    
+
    limited with Externals;
    private package Externals.Secondary_Display
-   with
-      Abstract_State => 
-         (State with External, Output_Only,
-                     Part_Of  => Externals.Displays)
+      with Abstract_State => (State with External, Output_Only,
+                              Part_Of => Externals.Displays)
    is
      ...
    end Externals.Secondary_Display;
- 
-    
-   with 
+
+
+   with
      Externals.Temperature,
      Externals.Pressure;
    package body Externals
-   with
-      Refined_State => (Combined_Inputs =>         -- Input_Only external state
-                          (Externals.Temperature,  -- so both Temperature and
-                           Externals.Pressure      -- Pressure must be Input_Only
-                          ),
-                        Displays =>                    -- Output_Only external state 
-                          (Externals.Main_Display,     -- so both Main_Display and 
-                           Externals.Secondary_Display -- Secondary_Display must be
-                          ),                           -- Output_Only.
-                           
-                        Complex_Device =>              -- Complex_Device is a Plain 
-                          (Saved_Value,                -- External and may be mapped
-                           Out_Reg,                    -- to any sort of constituent
-                           In_Reg
-                          )
+      with Refined_State => (Combined_Inputs => (Externals.Temperature,
+                                                 Externals.Pressure),
+                          -- Input_Only external state so both Temperature and
+                          -- Pressure must be Input_Only.
+
+                             Displays => (Externals.Main_Display,
+                                          Externals.Secondary_Display),
+                          -- Output_Only external state so both Main_Display and
+                          -- Secondary_Display must be Output_Only.
+
+                             Complex_Device => (Saved_Value,
+                                                Out_Reg,
+                                                In_Reg))
+                          -- Complex_Device is a Plain External and may be
+                          -- mapped to any sort of constituent.
    is
       Saved_Value : Integer := 0;  -- Initialized as required.
-       
+
       Out_Reg : Integer
-      with
-         Volatile,
-         Output_Only,
-         Address  => System.Storage_Units.To_Address (16#ACECAFE#);
-                           
+         with Volatile,
+              Output_Only,
+              Address  => System.Storage_Units.To_Address (16#ACECAFE#);
+
       In_Reg : Integer
-      with
-         Volatile,
-         Input_Only,
-         Address  => System.Storage_Units.To_Address (16#A11CAFE#);
-                           
+         with Volatile,
+              Input_Only,
+              Address  => System.Storage_Units.To_Address (16#A11CAFE#);
+
       function Last_Value_Sent return Integer
-      with
-         Refined_Global => Saved_Value -- Refined_Global aspect only refers to non
-                                       -- external state as an Input.
+         with Refined_Global => Saved_Value -- Refined_Global aspect only
+                                            -- refers to non external state
+                                            -- as an Input.
       is
       begin
          return Saved_Value;
       end Last_Value_Sent;
-          
+
       procedure Output_Value (Value : in Integer)
-      with
-         Refined_Global  => ((Input  => In_Reg),  -- Refined_Global aspect
-                             (Output => Out_Reg), -- refers to both volatile
-                             (In_Out => Saved_Value)), state and non external state.
-                              
-         Refined_Depends => (((Out_Reg, Saved_Value) => (Saved_Value, Value)),
-                               null => In_Reg)
+         with Refined_Global  => (Input  => In_Reg,
+                                  Output => Out_Reg,
+                                  In_Out => Saved_Value),
+              -- Refined_Global aspect refers to both volatile
+              -- state and non external state.
+
+              Refined_Depends => ((Out_Reg,
+                                   Saved_Value) => (Saved_Value,
+                                                    Value),
+                                  null => In_Reg)
       is
-        Ready : constant := 42;
-        Status : Integer;
+         Ready : constant := 42;
+         Status : Integer;
       begin
          if Saved_Value /= Value then
             loop
-               Status := In_Reg;   -- In_Reg is Input_Only external state
-                                   -- and may appear on RHS of assignment
-                                   -- but not in a condition.
+               Status := In_Reg;  -- In_Reg is Input_Only external state
+                                  -- and may appear on RHS of assignment
+                                  -- but not in a condition.
                exit when Status = Ready;
             end loop;
-            
-            Out_Reg := Value;       -- Out_Reg is an Output_Only external
-                                    -- state.  Its value cannot be read.
+
+            Out_Reg := Value;  -- Out_Reg is an Output_Only external
+                               -- state. Its value cannot be read.
             Saved_Value := Value;
          end if;
-      end Output_Value; 
+      end Output_Value;
 
       ...
-       
-   end Externals;                     
 
-       
+   end Externals;
+
+
 Private Types and Private Extensions
 ------------------------------------
 
@@ -1892,7 +1865,7 @@ There are no additional dynamic semantics associated with type invariants.
      the check is performed on each such part of type T.
      [Note that these checks are only performed statically, and this does not create an
      obligation to extend the run-time checks performed in relation to type invariants.]
-     
+
 .. todo:: The support for type invariants needs to be considered further and will
           be completed for Milestone 3 version of this document.
 
@@ -1960,25 +1933,25 @@ global variables discussed later in this section.
    elaboration, this means that it could be executed during the elaboration of
    the enclosing library unit and is subject to certain restrictions described
    below.]
-   
+
 #. |SPARK| requires that an intra-compilation_unit call which is
    executable during elaboration shall occur after a certain point in the unit
    where the subprogram_body is known to have been elaborated. This point may
-   precede the declaration of the subprogram body and starts at the 
+   precede the declaration of the subprogram body and starts at the
    *early call region* in which such a call is permitted prior to the
    elaboration of the body of the subprogram.
-   
+
 .. centered:: **Legality Rules**
 
-#. The start of the early call region is obtained by starting at the 
+#. The start of the early call region is obtained by starting at the
    subprogram_body and then looking at the preceding declarations in reverse
    elaboration order until a non-preelaborable statement/declarative_item/pragma
-   is encountered. The early call region starts immediately after this 
+   is encountered. The early call region starts immediately after this
    non-preelaborable construct (or at the beginning of the enclosing block
    (or library unit package spec or body) if no such non-preelaborable construct
    is found).  The early call region ends at the declaration of the subprogram
    body.
-   
+
    [The idea here is that once elaboration reaches the start of the early call
    region, there will be no further expression evaluation or statement
    execution (and, in particular, no further calls) before the subprogram_body
@@ -2007,7 +1980,7 @@ global variables discussed later in this section.
    Note that because the call to P is executable during elaboration, so
    is the call to Q.
 
-   [TBD: 
+   [TBD:
    it would be possible to relax this rule by defining
    a less-restrictive notion of preelaborability which allows, for example,
 
@@ -2052,27 +2025,27 @@ global variables discussed later in this section.
 
 #. In order to ensure that dispatching calls do not fail elaboration
    checks, the freezing point of a tagged type must meet the same restrictions
-   as would be required for a call to each of its overriding primitive 
-   operations. [The idea here is that after the freezing point it would be 
-   possible to declare an object of the type and then use it as a controlling 
+   as would be required for a call to each of its overriding primitive
+   operations. [The idea here is that after the freezing point it would be
+   possible to declare an object of the type and then use it as a controlling
    operand in a dispatching call to a primitive operation of an ancestor type.
    No analysis is performed to identify scenarios where this is not the case,
    so conservative rules are adopted.
 
-   Ada ensures that the freezing point of a tagged type will always occur after 
-   both the completion of the type and the declarations of each of its primitive 
-   subprograms. This is typically all that one needs to know about freezing 
+   Ada ensures that the freezing point of a tagged type will always occur after
+   both the completion of the type and the declarations of each of its primitive
+   subprograms. This is typically all that one needs to know about freezing
    points in order to understand the above rule.]
 
-#. For purposes of defining the early call region, the spec and body of a 
-   library unit package which has an Elaborate_Body pragma are treated as if 
-   they both belonged to some enclosing declaration list with the body 
-   immediately following the specification. This means that the early call 
-   region in which a call is permitted can span the specification/body boundary. 
-   This is important for tagged type declarations. 
-   
-   [This example is in |SPARK|, but would not be without the Elaborate_Body 
-   pragma (because of the notional calls associated with the tagged type 
+#. For purposes of defining the early call region, the spec and body of a
+   library unit package which has an Elaborate_Body pragma are treated as if
+   they both belonged to some enclosing declaration list with the body
+   immediately following the specification. This means that the early call
+   region in which a call is permitted can span the specification/body boundary.
+   This is important for tagged type declarations.
+
+   [This example is in |SPARK|, but would not be without the Elaborate_Body
+   pragma (because of the notional calls associated with the tagged type
    declaration).
 
    .. code-block:: ada
@@ -2089,13 +2062,13 @@ global variables discussed later in this section.
        ... ; -- only preelaborable constructs here
        procedure Op (X : T) is ... ;
      end Pkg;
-  
+
    An elaboration check failure would be possible if a call to Op (simple or via
    a dispatching call to an ancestor) were attempted between the elaboration of
    the spec and body of Pkg. The Elaborate_Body pragma prevents this from
    occurring. A library unit package spec which declares a tagged type will
    typically require an Elaborate_Body pragma.]
-   
+
 #. For the inter-compilation_unit case, |SPARK| enforces the GNAT static
    elaboration order rule. The GNAT Pro User's Guide says:
 
@@ -2162,8 +2135,8 @@ global variables discussed later in this section.
 Use of Initial_Condition and Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To ensure the correct semantics of the Initializes and Initial_Condition 
-aspects, when applied to library units, language restrictions (described below) 
+To ensure the correct semantics of the Initializes and Initial_Condition
+aspects, when applied to library units, language restrictions (described below)
 are imposed in |SPARK| which have the following consequences:
 
    - During the elaboration of a library unit package (spec or body),
@@ -2192,7 +2165,7 @@ are imposed in |SPARK| which have the following consequences:
      question (note: an Initial_Condition which depends on no variable inputs
      can also be assumed to be true throughout the execution of the main
      subprogram).
-     
+
    - If a package's Initializes aspect mentions a state abstraction whose
      refinement includes constituents declared outside of that package,
      then the elaboration of bodies of the enclosing packages of those
@@ -2215,11 +2188,11 @@ are imposed in |SPARK| which have the following consequences:
    initialized in the Initializes aspect of the declaring package. [This is
    needed to ensure that the variable has been initialized at the time of the
    read.]
-   
+
 #. The elaboration of a package's specification and body shall not write
    to a variable (or state abstraction, in the case of a call to a procedure
    which takes an abstraction as in output) declared outside of the package. The
-   implicit write associated with a read of external input only state is
+   implicit write associated with a read of an external input only state is
    permitted. [This rule applies to all packages: library level or not,
    instantiations or not.] The inputs and outputs of a package's elaboration
    (including the elaboration of any private descendants of a library unit
@@ -2232,4 +2205,4 @@ are imposed in |SPARK| which have the following consequences:
    for state abstraction refinements occurring in the given package body. [This
    rule could be relaxed to apply only to constituents of an abstraction which
    is mentioned in an Initializes aspect.]
-   
+

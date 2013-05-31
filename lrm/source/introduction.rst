@@ -176,8 +176,8 @@ Formal Analysis
   functional properties taken together.
 
 Data and information-flow analysis is not valid and might not be possible if the
-legality rules of Ada 2012 and those presented in this document are not met.  
-Similarly, a formal verification might not be possible if the legality rules are 
+legality rules of Ada 2012 and those presented in this document are not met.
+Similarly, a formal verification might not be possible if the legality rules are
 not met and may be unsound if data-flow errors are present.
 
 
@@ -591,8 +591,8 @@ Ghost Functions
 Often extra entities, such as types, variables and functions may be required
 only for test and verification purposes. Such entities are termed *ghost*
 entities and their use should be restricted to places where they do not affect
-the functionality of the program, which means they could be completely
-removed from the program without any functional impact.
+the functionality of the program. Complete removal of *ghost* entities has no
+functional impact on the program.
 
 |SPARK| currently supports ghost functions - though not ghost types or variables -
 which functions may be executable or non-executable. Non-executable ghost functions have no implementation and can be

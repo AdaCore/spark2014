@@ -16,9 +16,9 @@ Global and Derives
 ~~~~~~~~~~~~~~~~~~
 
 This example demonstrates how global variables can be accessed through
-procedures/functions and presents how the SPARK 2005 `derives` annotation maps 
-over to `depends` in |SPARK|. The example consists of one procedure (`Swap`) and 
-one function (`Add`). `Swap` accesses two global variables and swaps their contents 
+procedures/functions and presents how the SPARK 2005 `derives` annotation maps
+over to `depends` in |SPARK|. The example consists of one procedure (`Swap`) and
+one function (`Add`). `Swap` accesses two global variables and swaps their contents
 while `Add` returns their sum.
 
 Specification in SPARK 2005:
@@ -713,8 +713,7 @@ This example is based around the packages from sections `Private, abstract state
 refining onto concrete state of private child`_
 and `Private, abstract state, refining onto concrete state of embedded package`_.
 Source_A is an embedded package, while Source_B is a private child. In order to
-avoid repetition, the code of this example is not being presented. However, it is
-available under the "code\\asm_abstract_state_refined_in_embedded_and_private_child".
+avoid repetition, the code of this example is not being presented.
 
 External Variables
 ~~~~~~~~~~~~~~~~~~

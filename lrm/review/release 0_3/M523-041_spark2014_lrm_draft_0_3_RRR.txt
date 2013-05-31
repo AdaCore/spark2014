@@ -478,13 +478,13 @@ external/volatile)?
 "... shall denote, in its Global aspect, the state abstraction[s]{(s)}
 with ..."
 "... then the state abstraction[s]{(s)} shall be denoted ..."
-!Action Taken:
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT032
 !Location: 7.1.4 59/(last):
 !Description: "(state_name_with_{options} { , state_name_with_options } )"
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT033
@@ -507,14 +507,14 @@ or Static Semantics rules.
 !Location: 7.1.4 61/2:
 !Description: Indentation is goofed up.  Presumably procedure Init and
 Op_1 should be at same indent level as Is_Ready.
-!Action Taken:
+!Action Taken: Corrected indentation.
 !Checked By:
 
 !Label: STT036
 !Location: 7.1.4 61/(last):
 !Description: "... represent the state abstractions in
 [expressions]{Global and Depends specifications}."
-!Action Taken:
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT037
@@ -525,7 +525,7 @@ moved to Name Resolution or Static Semantics:
 "1. An Initializes aspect [may] {shall} only appear in ..."
 "3. ..." => Move to Name Resolution
 "5. Each name in the input_list [denotes] {shall denote} an entire ..."
-!Action Taken:
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT038
@@ -542,7 +542,7 @@ visible declarations?  That seems a bit redundant.
 !Location: 7.1.5 63/2:
 !Description: "... [a] {an} input_list then ... in determining {the}
 initialized value ..."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT040
@@ -551,7 +551,7 @@ initialized value ..."
 "1. An Initial_Condition aspect [may] {shall} only be placed ..."
 (This "may only ..." usage appears many times in the LRM.  I won't
 mention it further, but it should be fixed systematically, if at all.)
-!Action Taken:
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT041
@@ -569,14 +569,14 @@ at its declaration?
 !Location: 7.1.6 64/4:
 !Description: You use "predicate" as a verb here.  Perhaps "... may only
 [predicate] {depend on} properties of the state ..."
-!Action Taken:
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT043
 !Location: 7.2.1 65/4:
 !Description: "... the constituents of each state_name [has] {have} to
 be initialized ..."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT044
@@ -590,7 +590,7 @@ rule 4 be a Name Resolution rule, and should rule 5 be restated with a
 !Label: STT045
 !Location: 7.2.1 66/2:
 !Description: "7. A constituent [denotes] {shall denote} ..."
-!Action Taken:
+!Action Taken: Replaces as suggested.
 !Checked By:
 
 !Label: STT046
@@ -611,7 +611,7 @@ would be illegal.
 !Description:
 "... associated with the declaration which denotes a{n} encapsulating ..."
 "... a state abstraction named as a{n} encapsulating state ..."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT048
@@ -626,14 +626,14 @@ private with P.Priv;" if it is needed at all.
 !Location: 7.2.3 70/3:
 !Description: Procedure Init_B1 should be indented relative to its
 enclosing package Inner.
-!Action Taken:
+!Action Taken: Indentation corrected.
 !Checked By:
 
 !Label: STT050
 !Location: 7.2.5 73/9:
 !Description: "* No other global_items ... in the [a] Refined_Global
 aspect ..."
-!Action Taken:
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT051
@@ -652,7 +652,7 @@ Global mode In_Out ...").
 !Description:
 "Outputs in the [a] Refined_Depends aspect ..."
 "Inputs in an input_list {shall} denote distinct entities."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT053
@@ -670,7 +670,7 @@ probably be repeated in section 6.1.1 (and rephrased as appropriate).
 !Label: STT054
 !Location: 7.2.9 76/9:
 !Description: "1. A[n] state abstraction ..."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT055
@@ -678,7 +678,7 @@ probably be repeated in section 6.1.1 (and rephrased as appropriate).
 !Description: "5. A state abstraction [which] {that} is specified as
 just External state, referred to as a *plain External state* [and] {,}
 may have constituents ..."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 
@@ -696,7 +696,7 @@ according to 7.2.3?
 !Description:
 "procedure Display ... with Global => {(}Displays {=> Output)}"
 Displays is Output_Only, so it needs to be used as an output.
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT058
@@ -704,7 +704,7 @@ Displays is Output_Only, so it needs to be used as an output.
 !Description:
 Typo in the comment:
 "-- be In_Out and it is both {input} and an output. ...."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT059
@@ -745,7 +745,7 @@ rules came from)?
 !Location: 7.7.1 85/3:
 !Description: "... The implicit write associated with a read of [an]
 external input{-}only state is permitted..."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: STT064
@@ -760,7 +760,7 @@ constituents of a state abstraction.
 !Location: 1.9.4 Paragraph 2, Sentence 1, Page 11
 !Description: Poor grammar in the first sentence, the use of "which"
 seems clumsy.
-!Action Taken:
+!Action Taken: Sentence has now been rephrased.
 !Checked By:
 
 !Label: AH/2
@@ -842,7 +842,7 @@ In
 "An" => "a".
     -- Steve
 
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 
@@ -865,7 +865,7 @@ the preceding sentence as a modifier.
 Typo in the following sentence:
 if If it is a volatile variable it has to be specified as an an input
 only or an output only external state.
-!Action Taken:
+!Action Taken: Corrected.
 !Checked By:
 
 
@@ -874,7 +874,7 @@ only or an output only external state.
 !Description:
 Typo in the following:
     specification of the outer subprogram has an entity deonted by a
-!Action Taken:
+!Action Taken: Corrected.
 !Checked By:
 
 
@@ -884,7 +884,7 @@ Typo in the following:
 !Label: JEB/01
 !Location: General
 Page/Para:
-!Description: Desirable: Generally should legality riles be numbered,
+!Description: Desirable: Generally should legality rules be numbered,
 some are not such as loops (5.5.3) or ghost functions (6.1.6).
 !Action Taken:
 !Checked By:
@@ -1413,8 +1413,7 @@ can be constructed using generics. Please set the ToDo Milestone to M4.
 !Description: I'm not sure why this section hasn't been completed.
 Please discuss.
 !Action Taken: I thought that there was syntax missing. But that
-actually was no
-                longer the case. This section has now been completed.
+               actually was no longer the case. This section has now been completed.
 !Checked By: AH
 
 !Label: AH/14
@@ -1427,12 +1426,11 @@ actually was no
 !Label: AH/15
 !Location: General (within the mapping spec)
 !Description: There are still ToDos that mention milestone 3. As this
-doc is the Milestone 3 doc we need to
-              either complete the work or change the milestone. NB
+doc is the Milestone 3 doc we need to either complete the work or change the milestone. NB
 todos containing : syntax is not yet defined" need to be implemented as
 the syntax should be fully defined now.
 !Action Taken: Mapping-spec's ToDos now mention Milestone 4 and
-reference their relevant TN's (if possible).
+               reference their relevant TN's (if possible).
 !Checked By:
 
 
