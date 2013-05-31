@@ -12,7 +12,7 @@ s.adb:37:54: info: index check proved
 s.adb:39:32: info: index check proved
 s.adb:39:53: info: index check proved
 s.adb:49:10: info: loop invariant initialization proved
-s.adb:49:10: info: loop invariant preservation proved
+s.adb:49:10: loop invariant preservation not proved
 s.adb:50:33: info: index check proved
 s.adb:50:54: info: index check proved
 s.adb:52:32: info: index check proved

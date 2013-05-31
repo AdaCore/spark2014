@@ -36,7 +36,7 @@ simple_unc_arrays.adb:171:34: range check not proved
 simple_unc_arrays.adb:176:34: range check not proved
 simple_unc_arrays.adb:26:36: info: discriminant check proved
 simple_unc_arrays.adb:26:36: info: range check proved
-simple_unc_arrays.adb:33:44: loop invariant initialization not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
+simple_unc_arrays.adb:32:10: info: loop invariant initialization proved
 simple_unc_arrays.adb:33:44: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:46: info: discriminant check proved
 simple_unc_arrays.adb:33:50: index check not proved

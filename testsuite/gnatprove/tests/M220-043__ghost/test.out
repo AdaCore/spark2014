@@ -2,10 +2,10 @@
 semantics.adb:10:29: overflow check not proved
 semantics.adb:10:7: info: assertion proved
 semantics.adb:13:27: overflow check not proved
+semantics.adb:15:10: info: loop invariant initialization proved
 semantics.adb:15:10: info: loop invariant preservation proved
-semantics.adb:15:10: loop invariant initialization not proved, requires Formal + Ghost_Func > 0
 semantics.adb:15:40: overflow check not proved
-semantics.adb:16:10: loop variant not proved
+semantics.adb:16:10: info: loop variant proved
 semantics.adb:16:53: overflow check not proved
 semantics.adb:33:40: overflow check not proved
 semantics.adb:33:53: overflow check not proved

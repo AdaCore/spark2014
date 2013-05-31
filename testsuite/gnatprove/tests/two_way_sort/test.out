@@ -7,8 +7,8 @@ p1.adb:14:9: info: index check proved
 p1.adb:17:14: info: range check proved
 p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
-p1.adb:28:10: loop variant not proved
-p1.adb:29:10: loop invariant initialization not proved
+p1.adb:28:10: info: loop variant proved
+p1.adb:29:10: info: loop invariant initialization proved
 p1.adb:29:10: loop invariant preservation not proved
 p1.adb:32:62: index check not proved
 p1.adb:33:57: index check not proved

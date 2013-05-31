@@ -14,8 +14,8 @@ subty.adb:11:30: overflow check not proved
 subty.adb:11:8: info: discriminant check proved
 subty.adb:12:23: info: discriminant check proved
 subty.adb:12:35: info: discriminant check proved
-subty.adb:12:44: overflow check not proved
-subty.adb:12:7: assertion not proved, requires Z.A_Field = V.A_Field + 1
+subty.adb:12:44: info: overflow check proved
+subty.adb:12:7: info: assertion proved
 subty.adb:13:7: info: assertion proved
 subty.adb:6:7: info: assertion proved
 subty.adb:7:23: info: discriminant check proved

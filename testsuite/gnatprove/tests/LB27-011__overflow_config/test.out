@@ -1,3 +1,4 @@
+
 p.adb:5:7: info: loop invariant initialization proved
-p.adb:5:7: loop invariant preservation not proved, requires Result = N ** J
+p.adb:5:7: info: loop invariant preservation proved
 p.adb:6:24: overflow check not proved

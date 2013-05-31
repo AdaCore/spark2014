@@ -78,7 +78,7 @@ fib.adb:76:38: precondition not proved
 fib.adb:77:18: overflow check not proved
 fib.adb:77:18: range check not proved
 fib.adb:7:11: info: range check proved
-fib.adb:80:11: info: range check proved
+fib.adb:80:11: range check not proved
 fib.adb:81:10: loop invariant initialization not proved, requires p2 = Factorial(i - 1)
 fib.adb:81:10: loop invariant preservation not proved, requires p2 = Factorial(i - 1)
 fib.adb:81:38: precondition not proved

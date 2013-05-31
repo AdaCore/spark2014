@@ -1,2 +1,2 @@
 
-chars.ads:3:20: postcondition not proved, requires DoIt'result
+chars.ads:3:20: info: postcondition proved

@@ -1,9 +1,10 @@
+
 minmax.adb:28:7: info: assertion proved
 minmax.adb:29:7: info: assertion proved
 minmax.adb:39:7: info: assertion proved
 minmax.adb:40:7: info: assertion proved
 minmax.adb:44:7: info: assertion proved
-minmax.adb:45:7: assertion not proved, requires Max = X + Y
+minmax.adb:45:7: info: assertion proved
 minmax.adb:53:16: info: range check proved
 minmax.adb:54:16: info: range check proved
 minmax.adb:55:7: info: assertion proved
@@ -12,9 +13,9 @@ minmax.adb:61:16: info: range check proved
 minmax.adb:61:27: overflow check not proved
 minmax.adb:62:16: range check not proved
 minmax.adb:62:24: overflow check not proved
-minmax.adb:63:7: assertion not proved, requires MinT = X
-minmax.adb:64:31: overflow check not proved
-minmax.adb:64:7: assertion not proved, requires MaxT = X + Y
+minmax.adb:63:7: info: assertion proved
+minmax.adb:64:31: info: overflow check proved
+minmax.adb:64:7: info: assertion proved
 minmax.adb:74:7: info: assertion proved
 minmax.adb:75:7: info: assertion proved
 minmax.adb:79:4: info: precondition proved

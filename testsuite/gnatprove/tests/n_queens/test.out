@@ -15,7 +15,7 @@ queen.ads:15:39: info: range check proved
 queen.ads:20:48: info: index check proved
 queen.ads:20:55: info: index check proved
 queen.ads:21:63: info: range check proved
-queen.ads:22:17: postcondition not proved
+queen.ads:22:17: info: postcondition proved
 queen.ads:24:48: info: index check proved
 queen.ads:24:60: info: index check proved
 queen.ads:26:58: info: range check proved
