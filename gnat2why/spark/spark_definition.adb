@@ -2205,13 +2205,14 @@ package body SPARK_Definition is
             Mark_Subtype_Indication (N);
 
          when N_Type_Conversion =>
-            if Is_Composite_Type (Entity (Subtype_Mark (N))) then
-               if Etype (Expression (N)) = Entity (Subtype_Mark (N)) then
-                  Mark (Expression (N));
-               else
-                  Mark_Violation ("conversion between composite types", N,
-                                  NYI_Composite_Conv);
-               end if;
+            if Etype (Expression (N)) /= Entity (Subtype_Mark (N)) and then
+              Is_Composite_Type (Entity (Subtype_Mark (N))) and then
+              (not Is_Array_Type (Entity (Subtype_Mark (N))) or else
+               Component_Type (Entity (Subtype_Mark (N))) /=
+                 Component_Type (Etype (Expression (N)))) then
+
+               Mark_Violation ("conversion between composite types", N,
+                               NYI_Composite_Conv);
             else
                Mark (Expression (N));
             end if;
