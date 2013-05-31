@@ -7,8 +7,8 @@ semantics.adb:15:10: info: loop invariant preservation proved
 semantics.adb:15:40: overflow check not proved
 semantics.adb:16:10: info: loop variant proved
 semantics.adb:16:53: overflow check not proved
-semantics.adb:33:40: overflow check not proved
-semantics.adb:33:53: overflow check not proved
+semantics.adb:33:40: info: overflow check proved
+semantics.adb:33:53: info: overflow check proved
 semantics.adb:9:29: overflow check not proved
 semantics.adb:9:7: assertion not proved, requires Formal + Ghost_Func > 0
 semantics.ads:12:19: info: postcondition proved

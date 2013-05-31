@@ -102,7 +102,7 @@ bio-interfac.adb:78:38: range check not proved
 bio.adb:126:10: assertion not proved, requires Result = InternalError
 certificatestore.adb:216:10: info: range check proved
 certificatestore.adb:219:31: range check not proved
-certproc.adb:1127:7: range check not proved
+certproc.adb:1127:7: info: range check proved
 certproc.adb:1129:56: info: range check proved
 certproc.adb:1138:45: range check not proved
 certproc.adb:147:30: range check not proved
@@ -369,9 +369,9 @@ tismain.adb:768:21: info: precondition proved
 tismain.adb:836:17: info: precondition proved
 tismain.adb:839:17: precondition not proved
 tismain.adb:847:17: info: precondition proved
-tokenapi.adb:73:8: range check not proved
+tokenapi.adb:73:8: info: range check proved
 tokenreader-interfac.adb:120:43: range check not proved
-tokenreader-interfac.adb:55:7: range check not proved
+tokenreader-interfac.adb:55:7: info: range check proved
 tokenreader.adb:101:47: info: range check proved
 tokenreader.adb:127:46: info: range check proved
 tokenreader.adb:153:44: info: range check proved

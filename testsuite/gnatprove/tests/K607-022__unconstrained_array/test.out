@@ -50,7 +50,7 @@ simple_unc_arrays.adb:39:22: overflow check not proved
 simple_unc_arrays.adb:40:23: range check not proved
 simple_unc_arrays.adb:49:22: info: discriminant check proved
 simple_unc_arrays.adb:49:26: index check not proved
-simple_unc_arrays.adb:52:10: info: loop invariant initialization proved
+simple_unc_arrays.adb:52:60: loop invariant initialization not proved, requires Res <= A.V (J)
 simple_unc_arrays.adb:52:60: loop invariant preservation not proved, requires Res <= A.V (J)
 simple_unc_arrays.adb:52:68: info: discriminant check proved
 simple_unc_arrays.adb:52:72: index check not proved
