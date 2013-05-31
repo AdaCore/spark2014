@@ -30,6 +30,10 @@ module Discrete_Base
 
   function of_int int : t
 
+  val of_int (x : int) : t
+    requires { true }
+    ensures { to_int(result) = x }
+
   val range_check_ (n : int) : int
     requires { in_range n }
     ensures { result = n }
