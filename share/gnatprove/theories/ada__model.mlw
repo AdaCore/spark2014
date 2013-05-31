@@ -92,6 +92,10 @@ module Floating_Point
 
   function of_real real : t
 
+  val of_real (x : real) : t
+    requires { true }
+    ensures  { to_real (result) = x }
+
   val range_check_ (n : real)  :real
     requires { in_range n }
     ensures { result = n }
