@@ -1164,18 +1164,27 @@ package body Gnat2Why.Subprograms is
                                            Params)));
 
       else
-         Emit
-           (File.Cur_Theory,
-            New_Defining_Axiom
-              (Name        => Logic_Id,
-               Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
-               Binders     => Logic_Func_Binders,
-               Def         =>
-               +Transform_Expr
-                 (Expression (Expr_Fun_N),
-                  Expected_Type => EW_Abstract (Etype (E)),
-                  Domain        => EW_Term,
-                  Params        => Params)));
+         declare
+            Ty_Ent  : constant Entity_Id :=
+              Unique_Entity (Etype (E));
+            Equ_Ty  : constant W_Base_Type_Id :=
+              (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent)
+                 else EW_Abstract (Ty_Ent));
+         begin
+            Emit
+              (File.Cur_Theory,
+               New_Defining_Axiom
+                 (Name        => Logic_Id,
+                  Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
+                  Ada_Type    => Ty_Ent,
+                  Binders     => Logic_Func_Binders,
+                  Def         =>
+                  +Transform_Expr
+                    (Expression (Expr_Fun_N),
+                     Expected_Type => Equ_Ty,
+                     Domain        => EW_Term,
+                     Params        => Params)));
+         end;
       end if;
 
       --  No filtering is necessary here, as the theory should on the contrary

@@ -214,9 +214,13 @@ package body Gnat2Why.Decls is
                        Base_Name & To_String (WNE_Constant_Axiom)
                      else
                        Base_Name);
-      Typ  : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
-      Decl : constant Node_Id := Parent (E);
-      Def  : W_Term_Id;
+      Typ    : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
+      Decl   : constant Node_Id := Parent (E);
+      Def    : W_Term_Id;
+      Ty_Ent : constant Entity_Id := Unique_Entity (Etype (E));
+      Use_Ty : constant W_Base_Type_Id :=
+        (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent) else
+            Type_Of_Node (E));
 
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -239,7 +243,7 @@ package body Gnat2Why.Decls is
         and then Present (Expression (Decl))
       then
          Def := Get_Pure_Logic_Term_If_Possible
-           (File, Expression (Decl), Type_Of_Node (E));
+           (File, Expression (Decl), Use_Ty);
       else
          Def := Why_Empty;
       end if;
@@ -270,7 +274,7 @@ package body Gnat2Why.Decls is
                         (Domain   => EW_Term,
                          Ada_Node => Expression (Decl),
                          Expr     => W_Expr_Id (Def),
-                         From     => Type_Of_Node (E),
+                         From     => Use_Ty,
                          To       => Type_Of_Node (Partial_View (E))));
             end if;
 
@@ -280,6 +284,7 @@ package body Gnat2Why.Decls is
                  (Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
+                  Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 
@@ -318,6 +323,7 @@ package body Gnat2Why.Decls is
                  (Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => True),
                   Return_Type => Get_EW_Type (Typ),
+                  Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
          end if;
