@@ -51,7 +51,7 @@ not used), one can set the maximum number of reasoning steps that Alt-Ergo is
 allowed to perform before giving up. The ``steps`` option should be used when
 predictable results are required, because the results with a timeout may differ
 depending on the computing power or current load of the machine. The option
-``-j`` activates parallel compilation and parallel proofs. 
+``-j`` activates parallel compilation and parallel proofs.
 
 The way checks are passed to Alt-Ergo can also be influenced using the option
 ``--proof``. By default, Alt-Ergo is invoked a single time for each check or
@@ -360,10 +360,15 @@ The following table shows the proof messages.
 
 The following table shows the flow messages.
 
-TODO
+.. todo:: Add table with flow messages
 
-Investigating Unproved Checks
-=============================
+How to Write Loop Invariants
+============================
+
+.. todo:: Add section on how to write loop invariants
+
+How to Investigate Unproved Checks
+==================================
 
 One of the most challenging aspects of formal verification is the analysis of
 failed proofs. If |GNATprove| fails to prove automatically that a run-time
@@ -522,4 +527,3 @@ simple code examples.
 .. .. _advanced_examples:
 
 .. .. include:: gnatprove_by_example/advanced.rst
-
