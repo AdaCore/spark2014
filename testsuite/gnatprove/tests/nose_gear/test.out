@@ -1,8 +1,8 @@
 
 ng.adb:34:17: postcondition not proved, requires Result = 207 * ThisCount - PrevCount + 207 * ThisCount - PrevCount * CurrTime - ThisTime / ... - ... * ... / ...
-ng.adb:36:27: info: overflow check proved
+ng.adb:36:27: overflow check not proved
 ng.adb:36:62: overflow check not proved
-ng.adb:37:29: info: overflow check proved
+ng.adb:37:29: overflow check not proved
 ng.adb:38:22: overflow check not proved
 ng.adb:39:22: division check not proved
 ng.adb:39:22: overflow check not proved

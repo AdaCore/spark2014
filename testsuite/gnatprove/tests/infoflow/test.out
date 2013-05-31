@@ -34,10 +34,10 @@ infoflow.adb:139:17: postcondition not proved
 infoflow.adb:140:35: info: division check proved
 infoflow.adb:140:46: index check not proved
 infoflow.adb:140:60: index check not proved
-infoflow.adb:140:68: info: division check proved
+infoflow.adb:140:68: division check not proved
 infoflow.adb:141:29: index check not proved
 infoflow.adb:141:43: index check not proved
-infoflow.adb:141:51: info: division check proved
+infoflow.adb:141:51: division check not proved
 infoflow.adb:143:17: range check not proved
 infoflow.adb:147:22: info: division check proved
 infoflow.adb:149:13: loop invariant initialization not proved
