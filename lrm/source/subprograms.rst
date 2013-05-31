@@ -71,13 +71,8 @@ Preconditions and Postconditions
 
 As indicated by the ``aspect_specification`` being part of a
 ``subprogram_declaration``, a subprogram is in |SPARK| only if its specific
-contract expressions (introduced by Pre and Post) and class-wide
-contract expressions (introduced by Pre'Class and Post'Class), if any,
-are in |SPARK|.
+contract expressions (introduced by Pre and Post), if any, are in |SPARK|.
 
-.. todo:: Think about Pre'Class and Post'Class.
-          To be completed in the Milestone 3 version of this document.
-          
 For an ``expression_function_declaration`` without an explicit postcondition the
 expression implementing the function acts as its postcondition.
 
@@ -298,20 +293,19 @@ where
    reference any ``global_item`` directly or indirectly.
 
 
+.. centered:: **Name Resolution Rules**
+
+#. A ``global_item`` shall denote an entire object [which must be a variable] or
+   a state abstraction.
+   [This is a name resolution rule because a ``global_item`` can unambiguously 
+   denote a state abstraction even if a function having the same fully qualified
+   name is also present].
+
 .. centered:: **Legality Rules**
 
 #. The Global aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
-#. A ``global_item`` shall denote an entire object [which must be a variable] or
-   a state abstraction.
-
-#. The rule that a ``global_item``
-   shall not denote a function or a function call [(which is already
-   implied by the preceding rule)] is a name resolution rule.
-   [In particular, a ``global_item`` can unambiguously denote a
-   state abstraction even if a function having the same fully qualified
-   name is also present].
 
 #. A ``global_item`` shall not denote a state abstraction whose refinement
    is visible [(a state abstraction cannot be named within its enclosing
@@ -328,7 +322,7 @@ where
    
       :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once in a single Global aspect
 
-#. A function subprogram may not have a ``mode_selector`` of
+#. A function subprogram shall not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its Global aspect.
 
    .. ifconfig:: Display_Trace_Units
@@ -350,14 +344,12 @@ where
       :Trace Unit: 6.1.4 LR a global_item of a subprogram shall not be a 
         formal parameter of the same subprogram.
       
-#. If a subprogram is nested within another and if the Global aspect 
-   specification of the outer subprogram has an entity deonted by a
-   ``global_item`` with a ``mode_specification`` of Input, then a 
-   ``global_item`` of the Glpbal aspect specification of the inner
-   subprogram shall not denote the same entity with a ``mode_selector`` of 
-   In_Out or Out.
-
-
+#. If a subprogram is nested within another and if the ``global_specification`` 
+   of the outer subprogram has an entity denoted by a ``global_item`` with a
+   ``mode_specification`` of Input, then a ``global_item`` of the
+   ``global_specification`` of the inner subprogram shall not denote the same
+   entity with a ``mode_selector`` of In_Out or Output.
+   
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Global aspect.
@@ -368,20 +360,20 @@ There are no dynamic semantics associated with a Global aspect.
    subprogram if and only if it denotes an entity that is referenced by the 
    subprogram.
    
-#. Each entity denoted by a ``global_item`` in a Global aspect of a subprogram 
-   that is an input or output of the subprogram shall satisfy the following mode
-   specification rules 
-   [which are checked during analysis of the subprogram body]:
-
-   * a ``global_item`` that denotes an input but not an output is mode **in** 
-     and has a ``mode_selector`` of Input; 
+#. Each entity denoted by a ``global_item`` in a ``global_specification``  of a 
+   subprogram that is an input or output of the subprogram shall satisfy the
+   following mode specification rules [which are checked during analysis of the
+   subprogram body]:
+   
+   * a ``global_item`` that denotes an input but not an output 
+     has a ``mode_selector`` of Input; 
    
    * a ``global_item`` that denotes an output but not an input and is always 
-     fully initialized on every call of the subprogram, is mode **out** and has 
-     a ``mode_selector`` of Output;
+     fully initialized as a result of any successful execution of a call of the 
+     subprogram has a ``mode_selector`` of Output;
      
    * otherwise the ``global_item`` denotes both an input and an output, is
-     mode **in out** and has a ``mode_selector`` of In_Out.
+     has a ``mode_selector`` of In_Out.
 
 #. An entity that is denoted by a ``global_item`` which is referenced by a 
    subprogram but is neither an input nor an output but is only referenced
@@ -420,7 +412,7 @@ Depends Aspects
 A Depends aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The dependency relation is used in information flow
-analysis. Depends aspects are simple specifications.
+analysis.
 
 A Depends aspect for a subprogram specifies for each output every input on
 which it depends. The meaning of X depends on Y in this context is that the
@@ -478,11 +470,23 @@ where
 
    :Trace Unit: 6.1.5 Syntax
 
+.. centered:: **Name Resolution Rules**
+
+#. An ``input`` or ``output`` of a ``dependency_relation`` of may denote only 
+   an entire variable or a state abstraction. [This is a name resolution rule
+   because an ``input`` or ``output`` can unambiguously denote a state
+   abstraction even if a function having the same fully qualified name is also
+   present.]
+   
 .. centered:: **Legality Rules**
 
 #. The Depends aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
+#. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a 
+   state abstraction whose refinement is visible [a state abstraction cannot be
+   named within its enclosing package's body other than in its refinement].
+   
 #. The *input set* of a subprogram is the set of formal parameters of the 
    subprogram of mode **in** and **in out** along with the entities denoted by 
    ``global_items`` of the Global aspect of the subprogram with a 
@@ -503,21 +507,9 @@ where
 #. The entity denoted by each ``output`` of a ``dependency_relation`` of a 
    subprogram shall be a member of the output set of the subprogram.
 
-#. Every member of the output set of a subprogram shall be dentoed by exactly 
+#. Every member of the output set of a subprogram shall be denoted by exactly 
    one ``output`` in the ``dependency_relation`` of the subprogram.
       
-#. An ``input`` or ``output`` of a ``dependency_relation`` of a Depends
-   aspect shall not denote a state abstraction whose refinement
-   is visible [(a state abstraction cannot be named within its enclosing
-   package's body other than in its refinement)].
-
-#. The rule that an ``input`` or ``output`` of a ``dependency_relation``
-   shall not denote a function or a function call [(which is already
-   implied by the preceding rules)] is a name resolution rule.
-   [In particular, an ``input`` or ``output`` can unambiguously denote a
-   state abstraction even if a function having the same fully qualified
-   name is also present].
-
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
    a postcondition of the function to which the enclosing
@@ -527,12 +519,12 @@ where
 
       :Trace Unit: TBD
 
-#. There can be at most one ``output_list`` which is a **null** symbol
-   and if it exists it must be the ``output_list`` of the last
-   ``dependency_clause`` in the ``dependency_relation``.  
+#. In a ``dependency_relation`` there can be at most one ``dependency_clause`` 
+   which is a ``null_dependency_clause`` and if it exists it must be the 
+   last ``dependency_clause`` in the ``dependency_relation``.  
    
 #. An entity denoted by an ``input`` which is in an ``input_list`` of a 
-   **null** ``output_list`` may not be denoted by an ``input`` in another 
+   **null** ``output_list`` shall not be denoted by an ``input`` in another 
    ``input_list`` of the same ``dependency_relation``.
 
    .. ifconfig:: Display_Trace_Units
@@ -556,6 +548,8 @@ where
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
    
 #. A ``dependency_clause`` of the form A =>+ A has the same meaning as A => A.
+   [The reason for this rule is to allow the short hand:
+   ((A, B) =>+ (A, C)) which is equivalent to (A => (A, C), B => (A, B, C)).]
 
 #. A ``dependency_clause`` with a **null** ``input_list`` means that the final
    value of the entity denoted by each ``output`` in the ``output_list`` does 
@@ -656,17 +650,18 @@ as it is used purely for static analysis purposes and is not executed.
 Ghost Functions
 ~~~~~~~~~~~~~~~
 
-Ghost functions are intended for use in discharging proof obligations and
-in making it easier to express assertions about a program.
-The essential property of ghost functions is that they have no
-effect on the dynamic behavior of a valid SPARK program. More specifically,
-if one were to take a valid SPARK program and remove all
-ghost function declarations from it and all assertions containing
-references to those functions, then the resulting program might
-no longer be a valid SPARK program (e.g., it might no longer
-be possible to discharge all the program's proof obligations)
-but its dynamic semantics (when viewed as an Ada program) should
-be unaffected by this transformation.
+Ghost functions are intended for use in discharging proof obligations and in
+making it easier to express assertions about a program. The essential property
+of ghost functions is that they have no effect on the dynamic behavior of a
+valid SPARK program other than, depending on the assertion policy, the execution
+of known to be true assertion expressions. More specifically, if one were to
+take a valid SPARK program and remove all ghost function declarations from it
+and all assertions containing references to those functions, then the resulting
+program might no longer be a valid SPARK program (e.g., it might no longer be
+possible to discharge all the program's proof obligations) but its dynamic
+semantics (when viewed as an Ada program) should be unaffected by this
+transformation other than evaluating fewer known to be true assertion
+expressions.
 
 The rules below are in given in general terms in relation to ''ghost entities''
 since in future it is intended that ghost types and ghost variables
@@ -741,7 +736,7 @@ behavior of Ada.Tags operations. Note overriding is not a problem because
 Convention participates in
 conformance checks (so ghost can't override non-ghost and vice versa).]
 
-The Convention aspect of an External state entity shall not be Ghost.
+The Convention aspect of an External entity shall not be Ghost.
 
 [We are ignoring interactions between ghostliness and freezing.
 Adding a ghost variable, for example, could change the freezing point
@@ -789,8 +784,8 @@ A ghost entity shall not be referenced
 - within a control flow expression (e.g., the condition of an
   if statement, the selecting expression of a case statement, the
   bounds of a for loop) of a compound statement which contains
-  such a procedure call. [The case of an non-ghost-updating
-  assignment statement is is handled by a legality rule; this rule is
+  such a procedure call. [The case of a non-ghost-updating
+  assignment statement is handled by a legality rule; this rule is
   needed to prevent a call to a procedure which updates a
   non-ghost via an up-level reference, as opposed to updating a parameter.]
 
@@ -837,10 +832,10 @@ No extensions or restrictions.
    For instance in Ada a formal parameter of mode out of a composite type need
    only be partially updated, but in flow analysis this would have mode in out.
    Similarly an Ada formal parameter may have mode in out but not be an input.
-   In flow analysis it would be regarded as an input and give arise to 
+   In flow analysis it would be regarded as an input and give rise to 
    flow errors.
    Perhaps we need an aspect to describe the strict view of a parameter
-   if it is different to the specified Ada mode of the formal parameter?
+   if it is different from the specified Ada mode of the formal parameter?
    To be completed in the Milestone 3 version of this document.
 
 

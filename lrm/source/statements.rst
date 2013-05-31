@@ -21,6 +21,10 @@ related to tasking and synchronization.
 A statement is only in |SPARK| if all the constructs used in the statement are
 in |SPARK|.
 
+[A future release of |SPARK| is planned to support the Ravenscar multi-tasking 
+profile and then some of the tasking statements such as 
+``entry_call_statement``, and ``delay_statement`` will be permitted.]
+
 Assignment Statements
 ---------------------
 
@@ -72,14 +76,12 @@ expression had upon entry to the subprogram.
 
 Loop_Invariant is just like pragma Assert with respect to syntax, name
 resolution, legality rules, dynamic semantics, and assertion policy [controlled
-by the Ada Assertion_Policy pragma], except for an legality rule given below.
+by the Ada Assertion_Policy pragma], except for a legality rule given below.
 
 Loop_Variant has an expected actual parameter which is a specialization of an
-Ada expression. In all other respects it has the same syntax, name resolution,
-legality rules, and assertion policy as pragma Assert except for extra legality
-rules given below.
-
-Loop_Variant has different dynamic semantics as detailed below.
+Ada expression. Otherwise, it has the same syntax, name resolution,
+legality rules, and assertion policy as pragma Assert; furthermore it has the
+extra static semantics and legality rules given below.
 
 .. centered:: **Syntax**
   
@@ -283,6 +285,26 @@ an entity, or shall denote an ``object_renaming_declaration``, if
 * the ``attribute_reference`` is potentially unevaluated; or
 * the ``attribute_reference`` does not apply to the innermost
   enclosing ``loop_statement``.
+  
+[These rules follow the corresponding Ada RM rule for 'Old
+ The prefix of an Old attribute_reference that is potentially
+ unevaluated shall statically denote an entity and have the same rationale.
+ If the following was allowed:
+
+.. code-block:: ada
+
+
+    procedure P (X : in out String; Idx : Positive) is
+    begin
+        Outer :
+          loop
+            if Idx in X'Range then
+              loop
+                 pragma Loop_Invariant (X(Idx) >
+                                        X(Idx)'Loop_Entry(Outer));
+
+this would introduce an exception in the case where Idx is not
+in X'Range.]
 
 Block Statements
 ----------------
