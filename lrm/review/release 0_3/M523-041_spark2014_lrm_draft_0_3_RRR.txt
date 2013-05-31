@@ -30,7 +30,7 @@ outputs "Volatile State"?
 !Action Taken: Changed the title to External State and added a few words
 to indicate that an external state need not be Volatile.  Used the term
 Volatile state to refer to both variables and state abstractions.
-!Checked By:
+!Checked By: AH
 
 !Label: STT003
 !Location: 1.9.6, 13/10 (also 14/10):
@@ -38,7 +38,7 @@ Volatile state to refer to both variables and state abstractions.
 "SPARKSUBSCRIBTINBMode."
 !Action Taken: This is a artifact of the diff.  The method used for the
 diff has been updated and should resolve this problem.
-!Checked By:
+!Checked By: AH
 
 !Label: STT004
 !Location: 1.9.6, 13/14:
@@ -47,7 +47,7 @@ not" tends to be ambiguous between "must not" and "might not", and is
 not permitted in ISO standards.
 !Action Taken:  Replace may not by might not or shall not as appropriate
 throughout the document.
-!Checked By:
+!Checked By: AH
 
 !Label: STT005
 !Location: 1.9.6, 14/2:
@@ -100,7 +100,7 @@ future enhancements are likely.]  TO BE COMPLETED.
 !Description: "... for an legality rule ..." -> "... for a legality rule
 ..."
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT009
 !Location: 5.5.3 30/5:
@@ -119,7 +119,7 @@ extra static semantics and legality rules given below.
 I have an action from another review comment to format this section
 consistently with the rest of the RM.  I will further review the wording
 then.
-!Checked By:
+!Checked By: 
 
 !Label: STT010
 !Location: 5.5.3 33/15:
@@ -167,7 +167,7 @@ this would introduce an exception in the case where Idx is not
 in X'Range. Sounds like you are saying that adding words to this
 effect as a note would be helpful.
 TJJ added note.
-!Checked By:
+!Checked By: AH
 
 !Label: STT012
 !Location: 6.1.4 42/8:
@@ -177,13 +177,13 @@ calls is a name resolution rule seems odd.  Better would be to make rule
 immediately following it, explaining why it is a name resolution rule.
 !Action Taken: Moved it a name resoultion rule section.  Also update
 introduction to state that name resoultion rules may be present
-!Checked By:
+!Checked By: AH
 
 !Label: STT013
 !Location: 6.1.4 42/4:
 !Description: "...with a mode_selector of In_Out or Out{put}."
 !Action Taken: Done.
-!Checked By:
+!Checked By:AH
 
 !Label: STT014
 !Location: 6.1.4 43/3:
@@ -192,7 +192,7 @@ seems confusing.  Why not just talk about mode "Input"?  Ditto for "mode
 out" and "mode in out".  Also, there seems no "mode" corresponding to
 the "mode_selector Proof_In".
 !Action Taken: I agree - removed reference to mode in or out.
-!Checked By:
+!Checked By: AH
 
 !Label: STT015
 !Location: 6.1.4 43/4:
@@ -202,14 +202,14 @@ confusing, as it could mean must be initialized before the call.  It
 would be clearer if it said "... is always fully initialized as a result
 of any successful execution of a call..."
 !Action Taken: Changed the text as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT016
 !Location: 6.1.4 43/7:
 !Description: Comment is missing "not": "... the subprogram does {not}
 reference any global items."
 !Action Taken: See JEB/18
-!Checked By:
+!Checked By: AH
 
 !Label: STT017
 !Location: 6.1.5 44/1:
@@ -217,13 +217,13 @@ reference any global items."
   Did you define "simple" specifications somewhere?
 !Action Taken: I meant they are a simpler form of formal specification.
   I have removed the throw away remark.
-!Checked By:
+!Checked By: AH
 
 !Label: STT018
 !Location: 6.1.5 45/5:
 !Description: "dentoed" => "denoted"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT019
 !Location: 6.1.5 45/7:
@@ -234,7 +234,7 @@ by putting the rules which are name-resolution rules in a
 name-resolution section, and then including this explanation as a note
 below them.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT020
 !Location: 6.1.5 45/9:
@@ -243,7 +243,7 @@ This paragraph talks about "output_list which is a null symbol" but that
 is not permitted by the syntax.  I believe this should be restated in
 terms of the "null_dependency_clause".
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT021
 !Location: 6.1.5 45/(last):
@@ -264,14 +264,14 @@ SPARK 2005:
     B => (A, B, D, E),
     C => (A, C, D, E))
 I will add this explanation as a note.
-!Checked By:
+!Checked By: AH
 
 !Label: STT022
 !Location: 6.1.5 46/2:
 !Description: Missing "of"?  "... the input_list {of} a
 null_dependency_clause ..."
 !Action Taken: See JEB/19
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT023
@@ -284,20 +284,20 @@ assertions in it, and presuming they are executed, that seems like a
 change, but I guess we could say "(other than evaluating fewer
 known-to-be-true assertion expressions)."
 !Action Taken: Added this caveat.
-!Checked By:
+!Checked By: AH
 
 !Label: STT024
 !Location: 6.1.6 49/3:
 !Description: "... an External [state] entity shall ..."
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT025
 !Location: 6.1.6 49/(last):
 !Description: "... a[n] non-ghost-updating assignment statement is [is]
 handled by ..."
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT026
 !Location: 6.2 50/(second to last):
@@ -305,7 +305,7 @@ handled by ..."
 "... and give [a]rise to flow errors..."
 "... if it is different [to] {from} the specified ..."
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT027
 !Location: 7.1.2 56/2(and following):
@@ -323,7 +323,7 @@ with "external."  E.g., "a external" occurs at least once.)
 !Action Taken: Replaced an external state, etc by External state, etc
 throughout the document.  Also checked for occurences of a external and
 either removed or corrected each instance.
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT028
@@ -331,7 +331,7 @@ either removed or corrected each instance.
 !Description: "... it may be specified as external, in which {case} it
 may be also ..."
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: STT029
 !Location: 7.1.2 56/10:
@@ -463,8 +463,9 @@ begin
 end Get_2_In;
 
 
-!Checked By:
+!Checked By: AH
 
+!Label: STT030
 !Location: 7.1.3 57/9-58/2:
 !Description: This all feels a bit complex.  Is there some way to
 simplify this set of rules (as well as the earlier discussion of
@@ -915,7 +916,7 @@ use of the word "expression" in "expression of an expression function"
 !Action Taken: Highlighted expression_function_declaration as a
 syntactic term. Expression of an expression function declaration is Ada
 terminology.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/04
 !Location: 1.9.5
@@ -945,6 +946,8 @@ references to Default_Value consistent with this.  Additionally,
 component_declarations should be emphasised as a syntactic term and a
 record component has a default_expression (again a syntactic term)
 rather than a Default_Value as originally stated.
+
+AH there is a default_value in section 3.8 Record Types
 !Checked By:
 
 !Label: JEB/07
@@ -952,14 +955,14 @@ rather than a Default_Value as originally stated.
 Page/Para: page 25, para 1
 !Description: Typo: "to reassociated" -> "to reassociate"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/08
 !Location: 4.5
 Page/Para: page 25, para 1
 !Description: Typo: are we using US or UK English for spelling of behaviour?
 !Action Taken: US spelling is used throughout the document as in the Ada RM.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/09
 !Location: 5.5.3
@@ -979,7 +982,7 @@ Page/Para: page 29, para 2/3
 !Description: Desirable: could you use "ignored/checked" in place of
 "disabled/enabled" to match the policy identifier values.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/11
 !Location: 5.5.3
@@ -993,7 +996,7 @@ replaced a must by a shall only in the note:
 shall only occur immediately within a loop statement except that
 intervening block statements are ignored for purposes of this rule.]
 
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/12
 !Location: 5.5.3
@@ -1011,7 +1014,7 @@ will add an extra rule to prevent X'Loop_Entry'Loop_Entry.
 Page/Para: page34, para 3
 !Description: Typo: implmenting
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/14
 !Location:  6.1.4
@@ -1024,7 +1027,7 @@ aspects as the implementer of these aspects did not realise that they
 could be applied to a body stub if this is the initial declaration.
 It was only mentioned in the text not as a rule.
 
-!Checked By:
+!Checked By:  AH
 
 !Label: JEB/15
 !Location: 6.1.3
@@ -1034,6 +1037,8 @@ As this is not a ToDo will it be tracked?
 !Action Taken:
 I think it is possible to track notes but I will address this note
 (along with the todo regarding refined contract cases).
+
+AH note not yet resolved.
 !Checked By:
 
 !Label: JEB/16
@@ -1041,7 +1046,7 @@ I think it is possible to track notes but I will address this note
 Page/Para: page 37, Verification rule 1
 !Description: Typo: why is global_item in quotes? Formatting problem?
 !Action Taken: A missing space after the "A" - corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/17
 !Location: 6.1.4
@@ -1051,14 +1056,14 @@ reads as if "is always fully initialised" is a consequence not a
 determinator of mode. Perhaps it just needs the word "and" to be
 inserted: "not an input and is always fully"
 !Action Taken: Changed as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/18
 !Location: 6.1.4
 Page/Para: page 38, first line code comment
 !Description: Mandatory: "does reference" should read "does not reference"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/19
 !Location: 6.1.5
@@ -1066,14 +1071,14 @@ Page/Para: page 40, Static Semantics item 4
 !Description: Typo: "is the input_list of a null_dependency_clause"
 word "of" is missing.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/20
 !Location: 6.1.5
 Page/Para: page 40, Static Semantics item 8
 !Description: Typo: implmentation.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/21
 !Location: 6.1.6
@@ -1081,7 +1086,7 @@ Page/Para: page 42
 !Description: Typo: Something odd has happened to format of todo blocks
 on this page.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/22
 !Location: 6.1.6,
@@ -1101,7 +1106,7 @@ ponder.  My first thoughts are that one would want ghost variables to be
 visible so they can be used in assertion expressions and having them as
 state abstractions would not be very useful.
 
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/23
 !Location: 6.1.6
@@ -1119,14 +1124,14 @@ conference call.
 Page/Para: page 49, para 1
 !Description: Typo: "considered to an" -> considered an"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/25
 !Location: 7.1.3
 Page/Para: page 49, para 3
 !Description: Typo: "if If" -> "If" and "an an" -> "an"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/26
 !Location: 7.1.3
@@ -1142,14 +1147,14 @@ Page/Para: page 51, Syntax.
 !Description: Typo? : should "state_name_with_" be
 "state_name_with_options"?
 !Action Taken: Yes - corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/28
 !Location: 7.1.4
 Page/Para: page 52, Legality rule 2
 !Description: Typo: why is option_list in quotes here?
 !Action Taken: Space missing after "the" - corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/29
 !Location: 7.1.6
@@ -1158,6 +1163,7 @@ Page/Para: page 55, Legality rules
 "Initial_Condition aspect" and Initial Condition Aspect" I prefer the
 former so correct item 4.
 !Action Taken: Done.
+AH NOT DONE
 !Checked By:
 
 !Label: JEB/30
@@ -1173,7 +1179,7 @@ pragma/aspect in headings and generally.  Perhaps we should do the same?
 In the mean time I have made the first reference to Refined_State aspect
 in the section headed State Refinement with the underscore.
 
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/31
 !Location: 7.2.1
@@ -1196,7 +1202,7 @@ Page/Para: page 58, para 2
 !Description: Typos : "visibility on the" -> "visibility of the" and
 "the the" -> "the".
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/34
 !Location: 7.2.3
@@ -1204,13 +1210,14 @@ Page/Para: page 59, para before Static Semantics
 !Description: Desirable: add comma after "aliasing". Otherwise it reads
 as "To resolve such aliasing rules".
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/35
 !Location: 7.2.3
 Page/Para: page 59, Legality Rule 4
 !Description: Typo: "as a encapsulating" -> "as an encapsulating"
 !Action Taken: Done.
+AH NOT DONE two examples of "a encapsulating"
 !Checked By:
 
 !Label: JEB/36
@@ -1218,14 +1225,14 @@ Page/Para: page 59, Legality Rule 4
 Page/Para: page 60, para 1
 !Description: Typo: "is known as" -> "are known as"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/37
 !Location: 7.2.3
 Page/Para: page 60,  para 2
 !Description: Typo: "a a " -> "a"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/38
 !Location: 7.2.5
@@ -1242,7 +1249,7 @@ Page/Para: page 65, Legality Rules 2
 !Description: Desirable: is this really a rule in its own right. It
 seems to summarise the next rule.
 !Action Taken:  I agree the rule mas been merged with the next.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/40
 !Location: 7.2.6
@@ -1257,7 +1264,7 @@ that is not "extra".
 !Action Taken: Rewording attempted.
 !Checked By:
 
-!LabelJEB/41
+!Label: JEB/41
 !Location: 7.2.7
 Page/Para: page 66, Legality rule 1
 !Description: Mandatory: Do you permit a refined precondition on a
@@ -1267,7 +1274,7 @@ is in fact True.
 !Action Taken:
 Agreed - text updated to say default precondition is True.
 Added similar text to refined post condition.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/42
 !Location: 7.2.9
@@ -1275,7 +1282,7 @@ Page/Para: page 68, Dynamic Semantics 5
 !Description: Typo: "as plain External state and may" -> "as plain
 External state, may"
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/43
 !Location: 7.2.9
@@ -1286,14 +1293,14 @@ that Global Aspect with plain External that is not In_Out cannot be
 refined in Refined_Gobal aspect to volatile state components.
 !Action Taken: Yes that's better it covers the following rule too.  I
 have removed the now redundant rule.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/44
 !Location: 7.2.9
 Page/Para: page 68, final comment in code
 !Description: Typo: "is both and an" -> "is both an input and an"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/45
 !Location: 7.7
@@ -1303,14 +1310,14 @@ missing here. I don't understand the first sentence.
 !Action Taken: The "of" is superfluous and has been deleted.  The
 sentence is still complex and is heavily couched in Ada speak, but
 without the superflous "of" I think it make sense.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/46
 !Location: 7.7
 Page/Para: page 73, para 6
 !Description: Typo: "earl" -> "early"
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/47
 !Location: 7.7
@@ -1319,21 +1326,21 @@ Page/Para: General
 rules so have found this hard to review.
 !Action Taken: Yes they are complex.  Steve wrote this bit and he is an
 expert and they seem to make sense to me.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/48
 !Location: Chapter 12
 Page/Para: page 87, para 5
 !Description: Typo : "reference any fixed" -> "references any fixed"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/49
 !Location:  13.12
 Page/Para:  page 90, para 1
 !Description: Typo : "Priofiles"!
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/50
 !Location:  15.1.2
@@ -1342,7 +1349,7 @@ Page/Para:  page 95, Todo
 in SPARK 2014.
 !Action Taken: This is still to be decided.  Some such as Standard are
 included but others may require SPARK 2014 versions of some sort.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/51
 !Location:  Appendix A
@@ -1360,7 +1367,7 @@ needs resolving. pragma Warning() will be used.
 !Action Taken: Mentioned that depending on the outcome of M423-014
 either pragma Annotate or pragma Warning will
                 be utilised to accept warnings/errors.
-!Checked By:
+!Checked By: AH
 
 !Label:  AH/8
 !Location: Pairs_14.Additional_14
@@ -1430,7 +1437,7 @@ doc is the Milestone 3 doc we need to either complete the work or change the mil
 todos containing : syntax is not yet defined" need to be implemented as
 the syntax should be fully defined now.
 !Action Taken: Mapping-spec's ToDos now mention Milestone 4 and
-               reference their relevant TN's (if possible).
-!Checked By:
+reference their relevant TN's (if possible).
+!Checked By: AH
 
 
