@@ -1,0 +1,9 @@
+project Test is
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat12");
+   end Compiler;
+
+   package Naming is
+     for Body ("P") use "p_body.adb";
+   end Naming;
+end Test;

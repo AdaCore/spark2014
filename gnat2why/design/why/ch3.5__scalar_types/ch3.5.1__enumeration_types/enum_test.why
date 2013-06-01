@@ -1,0 +1,42 @@
+
+(*******************)
+(* succ___enum_day *)
+(*******************)
+
+(* Given a enum__day, returns its successor *)
+
+(* OK *)
+
+let succ___enum_day =
+ fun (x : enum__day) ->
+  { le___enum__day (x, enum__sat) }
+   enum__day___of_integer_ (integer_of___enum__day (x) + 1)
+  { integer_of___enum__day (x) + 1 = integer_of___enum__day (result) }
+
+(**************)
+(* Unit tests *)
+(**************)
+
+(* OK *)
+
+let succ__enum_day___test_mon =
+ fun (x : enum__day) ->
+  { x = enum__mon }
+   (succ___enum_day (x))
+  { result = enum__tue }
+
+(* OK *)
+
+let succ__enum_day___test_thu =
+ fun (x : enum__day) ->
+  { x = enum__thu }
+   (succ___enum_day (x))
+  { result = enum__fri }
+
+(* Invalid *) (* Range check fails *)
+
+let succ__enum_day___test_sun =
+ fun (x : enum__day) ->
+  { x = enum__sun }
+   (succ___enum_day (x))
+  { result = enum__mon }

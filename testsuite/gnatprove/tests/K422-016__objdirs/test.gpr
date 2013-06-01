@@ -1,0 +1,4 @@
+project Test extends "first.gpr" is
+   for Source_Files use ("b.adb");
+   for Object_Dir use "b";
+end Test;

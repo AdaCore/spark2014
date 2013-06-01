@@ -1,0 +1,1 @@
+ALL XFAIL lost information about array bounds on unconstr array

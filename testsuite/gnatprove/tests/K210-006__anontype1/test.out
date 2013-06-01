@@ -1,0 +1,5 @@
+
+anon_type.adb:33:26: overflow check not proved
+anon_type.adb:33:26: range check not proved
+anon_type.ads:7:19: info: postcondition proved
+anon_type.ads:7:45: info: overflow check proved

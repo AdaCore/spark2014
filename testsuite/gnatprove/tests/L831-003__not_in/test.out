@@ -1,0 +1,20 @@
+
+lcp.adb:13:15: info: index check proved
+lcp.adb:13:15: info: overflow check proved
+lcp.adb:13:28: info: index check proved
+lcp.adb:13:28: info: overflow check proved
+lcp.adb:17:14: info: overflow check proved
+lcp.adb:3:10: info: range check proved
+lcp.adb:7:12: overflow check not proved
+lcp.adb:8:19: info: overflow check proved
+lcp.ads:6:43: index check not proved
+lcp.ads:6:43: overflow check not proved
+lcp.ads:6:55: index check not proved
+lcp.ads:6:55: overflow check not proved
+lcp.ads:6:5: postcondition not proved
+lcp.ads:7:19: overflow check not proved
+lcp.ads:8:29: info: overflow check proved
+lcp.ads:9:32: info: index check proved
+lcp.ads:9:32: info: overflow check proved
+lcp.ads:9:54: info: index check proved
+lcp.ads:9:54: info: overflow check proved

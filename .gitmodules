@@ -1,0 +1,6 @@
+[submodule "why3"]
+	path = why3
+        url  = https://forge.open-do.org/anonscm/git/why3/why3.git
+[submodule "alt-ergo"]
+	path = alt-ergo
+        url  = https://forge.open-do.org/anonscm/git/alt-ergo/alt-ergo.git

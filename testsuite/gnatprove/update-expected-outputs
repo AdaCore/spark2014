@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+"""
+This script will update the expected output of all failed tests.
+"""
+
+import os
+from glob import glob
+
+def get_result(result_file):
+    fd = open(result_file, "rU")
+    tmp = fd.read().strip()
+    fd.close()
+
+    return tmp.split(":")[0]
+
+for result_file in glob("out/*.result"):
+    if get_result(result_file) == "DIFF":
+        new_out_file = result_file.replace(".result", ".out")
+        old_out_file = result_file\
+            .replace("out/", "tests/")\
+            .replace(".result", "/test.out")
+        if os.path.exists(new_out_file) and os.path.exists(old_out_file):
+            os.rename(new_out_file, old_out_file)
+            print "Updated output %s" % old_out_file

@@ -1,0 +1,14 @@
+with "test_naming.gpr";
+
+project Test is
+
+   for Source_List_File use "test_source_list.txt";
+   for Source_Dirs use (".");
+
+   package Naming renames Test_Naming.Naming;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat12");
+   end Compiler;
+
+end Test;

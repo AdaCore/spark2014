@@ -1,0 +1,68 @@
+theory Main
+
+  (* ignore blocks of code *)
+  function ___ignore 'a : ()
+
+  (* special private type *)
+  type __private
+
+end
+
+theory Integer_Func
+  use import int.Int
+  use import bool.Bool
+  use int.MinMax
+  use int.ComputerDivision
+  use int.EuclideanDivision
+
+  function bool_eq int int : bool
+  function bool_ne int int : bool
+  function bool_lt int int : bool
+  function bool_le int int : bool
+  function bool_gt int int : bool
+  function bool_ge int int : bool
+
+  function int_max (x y : int) : int = MinMax.max x y
+
+  function int_min (x y : int) : int = MinMax.min x y
+
+  function computer_div (x y : int) : int = ComputerDivision.div x y
+
+  function computer_mod (x y : int) : int = ComputerDivision.mod x y
+
+  function math_div (x y : int) : int = EuclideanDivision.div x y
+
+  function math_mod (x y : int) : int = EuclideanDivision.mod x y
+
+  axiom bool_eq_axiom:
+    forall x:int.
+    forall y:int.
+      bool_eq x y = True <-> x = y
+
+  axiom bool_ne_axiom:
+    forall x:int.
+    forall y:int.
+      bool_ne x y = True <-> x <> y
+
+  axiom bool_lt_axiom:
+    forall x:int.
+    forall y:int.
+      bool_lt x y = True <-> x < y
+
+  axiom Bool_int__le_axiom:
+    forall x:int.
+    forall y:int.
+      bool_le x y = True <-> x <= y
+
+  axiom bool_gt_axiom:
+    forall x:int.
+    forall y:int.
+        bool_gt x y = True <-> x > y
+
+  axiom bool_ge_axiom:
+    forall x:int.
+    forall y:int.
+        bool_ge x y = True <-> x >= y
+
+end
+

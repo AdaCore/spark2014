@@ -1,0 +1,10 @@
+project Test_Obj is
+
+   for Object_Dir use "obj";
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat12");
+   end Compiler;
+
+end Test_Obj;
+

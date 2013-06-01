@@ -1,0 +1,8 @@
+project Test is
+   for Languages use ("Ada", "C");
+   for Source_Files use ("base-annex.adb", "base-annex.ads", "base.adb",
+      "base.adb", "main.c");
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2012");
+   end Compiler;
+end Test;

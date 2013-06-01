@@ -1,0 +1,907 @@
+\documentclass[]{easychair}
+\usepackage[english]{babel}
+\usepackage{mathpartir}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumerate}
+%\usepackage{mathptmx}
+%\usepackage[scaled=.82]{beramono} % for typewriter font
+
+\newcounter{tmp}
+
+\newcommand{\terms}{\mathcal{T}}
+\newcommand{\Fm}[1]{\llb #1 \rrb^-}
+\newcommand{\Fp}[1]{\llb #1 \rrb^+}
+\newcommand{\Lift}{{\mathcal{L}\mathit{ift}(\mathbf{S})}}
+\newcommand{\GS}{\mathbf{S}}
+\newcommand{\K}{\mathit{known}}
+\newcommand{\reach}{\mathit{reach}}
+\newcommand{\next}{\mathit{next}}
+\newcommand{\update}{\mathit{update}}
+\newcommand{\access}{\mathit{access}}
+\newcommand{\uncyclic}{\mathit{acyclic}}
+\newcommand{\option}{\mathit{option}}
+\newcommand{\farray}{\mathit{array}}
+\newcommand{\Some}{\mathit{Some}\ }
+\newcommand{\None}{\mathit{None}}
+\newcommand{\bb}{\omega}
+
+\newcommand{\FOL}{\mathrm{FOL}}
+\newcommand{\FOLT}{\mathrm{FOL}^\star}
+\newcommand{\bp}{\mathbf{BP}}
+
+\newcommand{\iFOLT}{\vdash^\star}
+\newcommand{\iFOL}{\vdash}
+\newcommand{\cls}{\mathcal{C}\mathit{ls}}
+\newcommand{\sko}{\mathcal{S}\mathit{ko}}
+\newcommand{\mgu}{\mathrm{mgu}}
+
+\newcommand{\limp}{\supset} \newcommand{\lequ}{\equiv}
+\newcommand{\la}{\langle} \newcommand{\ra}{\rangle}
+\newcommand{\llb}{\llbracket} \newcommand{\rrb}{\rrbracket}
+\newcommand{\eqdef}{\:\triangleq\:}
+\newcommand{\sep}{\;|\;}
+\newcommand{\ie}{{\em i.e.},\xspace}
+\renewcommand{\Im}{\mathit{Image}}
+
+\newcommand{\beforesec}{\vspace{0cm}}
+\newcommand{\aftersec}{\vspace{0cm}}
+\newcommand{\beforesub}{\vspace{0cm}}
+\newcommand{\aftersub}{\vspace{0cm}}
+
+
+\makeatletter  % makes '@' an ordinary character
+\renewcommand{\verbatim@font}{\ttfamily\small}
+\makeatother   % makes '@' a special symbol again
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+
+%opening
+\title{Reasoning with Triggers}
+\titlerunning{Reasoning with Triggers}
+% \author{
+% Claire Dross \and
+% Sylvain Conchon\inst{1,2} \and
+% Johannes Kanig\inst{3} \and
+% \mbox{Andrei Paskevich\inst{1,2}}}
+\author{
+Claire Dross\\
+\affiliation{LRI, Universit\'e Paris-Sud 11,}\\
+\affiliation{CNRS, Orsay F-91405}\\
+\affiliation{INRIA Saclay-\^Ile de France,}\\
+\affiliation{ProVal, Orsay F-91893}\\
+\affiliation{AdaCore, Paris F-75009}
+\and
+Sylvain Conchon\\
+\affiliation{LRI, Universit\'e Paris-Sud 11,}\\
+\affiliation{CNRS, Orsay F-91405}\\
+\affiliation{INRIA Saclay-\^Ile de France,}\\
+\affiliation{ProVal, Orsay F-91893}\and
+Johannes Kanig\\
+\affiliation{AdaCore, Paris F-75009} \and
+Andrei Paskevich\\
+\affiliation{LRI, Universit\'e Paris-Sud 11,}\\
+\affiliation{CNRS, Orsay F-91405}\\
+\affiliation{INRIA Saclay-\^Ile de France,}\\
+\affiliation{ProVal, Orsay F-91893}}
+
+\authorrunning{C. Dross \and S. Conchon \and J. Kanig \and A. Paskevich}
+
+% \institute{
+% LRI, Universit\'e Paris-Sud 11, CNRS, Orsay F-91405 \and
+% INRIA Saclay-\^Ile de France, ProVal, Orsay F-91893 \and
+% AdaCore, Paris F-75009
+% }
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+SMT solvers can decide the satisfiability of ground formulas
+modulo a combination of built-in theories. Adding a built-in theory to a given
+SMT solver is a complex and time consuming task that requires internal
+knowledge of the solver. However, many theories (arrays~\cite{nelson-arrays},
+reachability~\cite{lahiri2008back}), can be easily expressed using
+first-order formulas. Unfortunately,
+since universal quantifiers are not handled in a complete way by SMT solvers,
+these axiomatics cannot be used as decision procedures.
+
+In this paper, we show how to extend a generic SMT solver to accept a
+custom theory description and behave as a decision procedure for that
+theory, provided that the described theory is complete and terminating
+in a precise sense. The description language consists of first-order
+axioms with triggers, an instantiation mechanism that is found in many
+SMT solvers. This mechanism, which usually lacks a clear semantics in
+existing languages and tools, is rigorously defined here; this
+definition can be used to prove completeness and termination of the
+theory. We demonstrate using the theory of arrays, how such proofs can
+be achieved in our formalism.
+\end{abstract}
+
+% \begin{abstract}
+%   Instantiation patterns, also known as triggers, are a commonly used
+%   heuristic to guide quantifier handling in SMT solvers. Being a
+%   heuristic, they have no commonly accepted formal semantics. This
+%   makes it difficult for a user to find good triggers and be sure that
+%   the chosen SMT solver works as intended. For some
+%   axiomatic theories, carefully chosen triggers can make an SMT solver
+%   behave as a decision procedure. Thus, it is particularly important
+%   to have full control over instantiation.
+% 
+%   In this paper, we promote triggers from a heuristic to a construct with
+%   formal semantics, by introducing a first-order logic which includes
+%   triggers. Our formalism gives a precise meaning to the notion of
+%   ``known term'', \ie~a term that enables an instantiation.
+%   We prove that instantiation restricted to known terms has
+%   the same deductive power in classical first-order logic with
+%   equality as the unrestricted instantiation.
+%   Then we show how to extend a generic ground SMT solver to
+%   our logic with triggers, and we study an example of axiomatic theory with
+%   triggers on which this abstract solver behaves as a decision procedure.
+% \end{abstract}
+
+\beforesec
+\section{Introduction}
+\aftersec
+
+SMT solvers are sound, complete, and efficient tools for deciding the
+satisfiability of ground formulas modulo combinations of built-in
+theories such as linear arithmetic, arrays, bit-vectors etc. Usually, they work
+on top of a SAT solver which handles propositional formulas. Assumed literals
+are then handed to dedicated solvers for theory reasoning. These solvers are
+complete. Adding a new theory to the framework is a complex and time consuming
+task that requires internal knowledge of the solver. For some theories however,
+it is possible to give a first-order axiomatization. Unfortunately, even if a
+few SMT solvers also handle first-order formulas, for example,
+Simplify~\cite{Simplify}, CVC3~\cite{CVC3}, Z3~\cite{Z3} and
+Alt-Ergo~\cite{altergo}, these axiomatizations cannot be used as theories.
+Indeed, these solvers are not complete when quantifiers are involved, even in
+the absence of theory reasoning.
+
+SMT solvers handle universal quantifiers through an
+instantiation mechanism. They maintain a set of ground formulas (without
+quantifiers) on
+which theory reasoning is done. This set is periodically augmented by
+heuristically chosen instances of universally quantified formulas.
+
+The heuristics for choosing new instances differ between SMT
+solvers.
+Nevertheless, it is commonly admitted that user guidance is
+useful in this matter~\cite{Simplify,moskal-2009}. The choice of instances can
+be influenced by manually adding instantiation
+patterns, also known as \emph{triggers}. These patterns are used to restrict
+instantiation to \emph{known} terms that have a given form.
+Here is an example of a universally quantified formula with
+a trigger in SMT-LIB~\cite{smtlib} notation:
+\begin{verbatim}
+      (forall ((x Int)) (! (= (f x) c) :pattern ((g x))))
+\end{verbatim}
+The syntax for triggers includes a bang (a general syntax for annotating
+formulas) before the restricted formula \texttt{(=
+(f x) c)} and the keyword \texttt{:pattern} to introduce the trigger
+\texttt{(g x)}.
+  The commonly agreed meaning of the above formula can be stated as
+  follows:
+
+  \begin{quote}
+    \emph{Assume} \texttt{(= (f t) c)} \emph{only for terms}
+    \texttt{t} \emph{such that} \texttt{(g t)} \emph{is known}.
+  \end{quote}
+%
+  Intuitively, a term is \emph{known} when it appears in a ground fact
+  assumed by the solver. However, that rule is quite vague and does not include
+answers to the
+following questions: when does a term become known? Is that notion to be
+considered modulo equality and modulo the built-in theories, and
+finally, when is this rule applied exactly, and to which formulas?
+Different provers have found different answers to these questions,
+consequence of the fact that triggers are considered a heuristics and
+not a language feature with precise semantics.
+
+We give a proper semantics for first-order formulas with
+triggers. In this semantics, instantiation of universally quantified
+formulas is restricted to known terms. This makes it possible to extend a
+generic SMT solver so that it behaves as a decision procedure on an
+axiomatization representing a custom theory, provided the theory is complete in
+our framework. This enables non-expert users to add their own decision
+procedure to SMT solvers. Unlike first-order axiomatization in SMT solvers
+handling quantifiers, a proof of completeness and termination of the decision
+procedure can be attempted and, unlike manual implementation of decision
+procedures inside SMT solvers, it does not require internal knowledge of the
+solver.
+
+  In Sect.~\ref{labeled-calculus}, we introduce a formal semantics for
+  first-order logic with a notation for instantiation patterns that
+  restrict instantiation. It formalizes both the notion of
+  trigger and the dual notion of known term. We show that this extension
+  of first-order logic is conservative: formulas without triggers
+  preserve their satisfiability under this semantics. We present in
+  Sect.~\ref{prover} a theoretical way of extending a
+  generic ground SMT solver so that it can turn an axiomatization T with
+triggers into a decision procedure, provided that T has
+some additional properties.
+  Finally, in Sect.~\ref{case-study}, we
+  demonstrate on the non-extensional theory of arrays how our framework can be
+  used to demonstrate that an axiomatization with triggers indeed fulfills its
+  requirements.
+
+\paragraph{Related Work.}
+
+Triggers are a commonly used heuristic in SMT solvers that handle
+quantifiers. User manuals usually
+explain how they should be used to achieve the best
+performance~\cite{Simplify,moskal-2009,CVC3}. Triggers can be automatically
+computed by the solvers. A lot of work has also been
+done on defining an efficient mechanism for finding the instances
+allowed by a trigger. These techniques, called $E$-matching, are
+described in~\cite{Simplify,nelson-arrays} for Simplify,
+in \cite{Z3-e-matching} for Z3, and in \cite{CVC3} for CVC3.
+% For review 1
+Other heuristics for generating instances include model-based quantifier
+instantiation~\cite{MBQI} and saturation processes closed to the superposition
+calculus~\cite{saturation}.
+%
+
+In this paper, triggers are not handled in the usual manner. On the one
+hand, since SMT solvers are not complete in general when quantifiers are
+involved, they favor efficiency over completeness in the treatment of
+triggers. For example, they usually do not attempt to match triggers modulo
+underlying theories. On the other hand, in our framework, triggers are used
+to define theories, and they need therefore to be handled in a complete way.
+
+Triggers can also be used in complete first-order theorem provers to guide 
+the proof search and improve the solver's efficiency. This is done on a
+complete solver for a subset of first-order logic with linear arithmetics
+based on a sequent calculus in~\cite{rummer2012matching}. 
+
+As for using an SMT solver as a decision procedure, the related idea that a
+set of first-order formulas can be saturated with
+a finite set of ground instances has been explored previously.
+For example, in~\cite{kuncak}, decision procedures for
+universally quantified properties of functional programs are designed
+using local model reasoning.
+% review 3: a comparison to the "complete instantiation" method by
+% Ge and de Moura should be given
+In the same way, Ge and de Moura describe
+fragments of first-order logic that can be decided modulo theory 
+by saturation \cite{MBQI}. Both of these works define a restricted class of
+universally quantified formulas that can be finitely instantiated. We do not
+impose such restrictions a priori but rather require a dedicated proof of
+completeness.
+
+
+%
+
+% \beforesec
+% \section{\label{section-ex}Motivating Examples}
+% \aftersec
+% 
+% In this section, we give examples to emphasize the need for a
+% formal framework for reasoning about triggers. We show that the
+% current (under-specified) practice of determining known terms in SMT
+% solvers makes them behave non-intuitively.
+% 
+% \beforesub
+% \subsection{Known Terms}
+% \aftersub
+% 
+% Let us repeat: a term is known by a solver when it \emph{appears} in a ground
+% fact \emph{assumed} by the solver. In this subsection, we show what makes
+% these concepts non-trivial, using a hypothetical solver whose handling of
+% triggers is representative of existing SMT solvers. Similar behavior can be
+% observed in several of the existing SMT solvers with support for quantifiers
+% % review 1 : The hypothetical solver described on Section 2.1 is not
+% %representative of existing SMT solvers.
+% \footnote{This behavior can only be observed if triggers are the only
+% heuristic used by the solver. To reproduce with Z3 for example, model-based
+% quantifier instantiation has to be disabled with \texttt{(set-option :mbqi
+% false)}.}.
+% %
+% 
+% Firstly, the asymmetric treatment of disjunctions in DPLL-based solvers
+% makes it difficult to predict the evolution of the set of known
+% terms. Our hypothetical solver interprets $A\vee B$ as the propositionally
+% equivalent formula $A\vee(\neg A\wedge B)$, thus \emph{assuming} $\neg
+% A$ in the second branch. For example, consider:
+% \begin{verbatim}
+%   (or (= (g c) b) (= (f c) b))
+%   (not (= (f c) c))
+%   (forall ((x Int)) (! (= (f x) c) :pattern ((g x))))
+% \end{verbatim}
+% The term \texttt{(g c)} is known in both branches of the disjunction,
+% once in the fact \texttt{(= (g c) b)} and once in \texttt{(not (= (g
+%   c) b))}. Therefore, the trigger \texttt{(g x)} allows the
+% instantiation of the universally quantified formula with \texttt{c} in
+% both branches. The solver deduces that this set of formulas is
+% unsatisfiable.
+% 
+% Let us now consider the case where the formulas of the disjunction are
+% exchanged: \texttt{(or (= (f c) b) (= (g c) b))}. Neither \texttt{(= (g
+%   c) b)}, nor its negation is assumed in the first branch.
+% Thus, the term \texttt{(g c)} is not known and the quantified
+% formula cannot be instantiated. As a consequence, the solver
+% terminates and returns a candidate model for the set of formulas.
+% 
+% Secondly, equalities are taken into account to determine which terms
+% \emph{appear} in a given set of facts. The following set of formulas,
+% for example, is detected as unsatisfiable, because the term \texttt{(f (g 0))}
+% can be constructed by replacing \texttt{c} by \texttt{(g 0)} in the known term
+% \texttt{(f c)}:
+% \begin{verbatim}
+%   (forall ((x Int)) (! (= (f (g x)) 0) :pattern ((f (g x)))))
+%   (not (= (f c) 0))
+%   (= (g 0) c)
+% \end{verbatim}
+% 
+% Not every deducible equality is taken into account though. For example,
+% equalities implied by the theory of arithmetics are not used. On the following
+% set of formulas, the solver cannot deduce the unsatisfiability:
+% \begin{verbatim}
+%   (forall ((x Int)) (! (= (f (+ x 1)) (+ (f x) 1))
+%                             :pattern ((f (+ x 1)))))
+%   (= (f 0) 0)
+%   (not (= (f 1) 1))
+% \end{verbatim}
+% The term \texttt{(f (+ 0 1))} is not known here, even though the term
+% \texttt{(f 1)} is known and the equality
+% between \texttt{1} and \texttt{(+ 0 1)} can be deduced by the solver.
+% 
+% Finally, given a formula $F$, a solver may not be able to deduce that
+% $\{F,\neg F\}$ is unsatisfiable. Indeed, in the formulas
+% \begin{verbatim}
+%   (forall ((x Int)) (! (= (f x) c) :pattern ((g x))))
+%   (not (forall ((x Int)) (! (= (f x) c) :pattern ((g x)))))
+% \end{verbatim}
+% the solver drops the trigger \texttt{(g x)} under the existential
+% quantifier introduced by the negation in the second formula and no term
+% \texttt{(g a)} becomes known when this formula is assumed. As a consequence,
+% the first formula cannot be instantiated.
+% 
+% \beforesub
+% \subsection{Over-restrictive and Over-permissive Triggers}
+% \aftersub
+% 
+% Given a universally quantified formula, its triggers should be one or
+% several terms that contain all the quantified variables. Usually,
+% triggers are chosen among the sub-terms of the formula. Consider for
+% instance the following formula $F$:
+% \begin{verbatim}
+%   (forall ((x Int) (y Int)) (= (g (f x) y) (g x y)))
+% \end{verbatim}
+% The set of its potential triggers contains the terms \texttt{(g (f
+% x) y)} and \texttt{(g x y)}. Even for this tiny formula, it is difficult to
+% find a suitable trigger.
+% 
+% We can show that \texttt{(g (f x) y)} is too restrictive by exhibiting
+% a ground formula whose unsatisfiability cannot be proved if we take
+% this trigger. Let $R$ be the following conjunction of ground
+% equalities:
+% \begin{verbatim}
+%   (and (= (f 1) (f 0)) (not (= (g 1 0) (g 0 0))))
+% \end{verbatim}
+% If we erase the trigger, we can show that
+% $\{R,F\}$ is unsatisfiable by instantiating $F$ with the substitutions
+% $\{ x \mapsto 1, y\mapsto 0\}$ and $\{ x \mapsto 0, y\mapsto 0 \}$.
+% Unfortunately, the trigger \texttt{(g (f x) y)} prevents these
+% instantiations since neither \texttt{(g (f 1) 0)} nor \texttt{(g (f 0)
+%   0)} are known from $R$.
+% 
+% We can show that \texttt{(g x y)} is too permissive by exhibiting a
+% \emph{matching loop}, \ie an infinite chain of instantiations. As
+% soon as a term \texttt{(g t1 t2)} is known, the trigger \texttt{(g x
+%   y)} allows $F$ to be instantiated and to produce the term \texttt{(g
+%   (f t1) t2)}, then \texttt{(g (f (f t1)) t2)} etc.
+% 
+% A good trigger for $F$ could be the two terms \texttt{(g x y)} and
+% \texttt{(f x)} together. Demonstrating that such a trigger is neither too
+% permissive nor too restrictive requires a proper framework.
+
+\beforesec
+\section{\label{labeled-calculus}First-Order Logic with Triggers and Witnesses}
+\aftersec
+
+In this section, we extend classical first-order logic, denoted
+$\FOL$, with constructions to specify instantiation patterns and
+known terms. The semantics of this extension, denoted $\FOLT$,
+is defined through an encoding into usual first-order logic.
+In the rest of the article, we write formulas in standard
+mathematical notation.
+
+\beforesub
+\subsection{\label{syntax} Syntax}
+\aftersub
+Informally, a trigger is a guard that prevents the usage of a formula until
+the requested term is known. We write it $[t]\,F$, which should be read
+\emph{if the term $t$ and all its sub-terms are known then assume $F$}.
+Note that we do not require a trigger
+to be tied to a quantifier. We separate the actual instantiation of a
+universal formula from the decision to use its result.
+
+A dual construct for $[t]~F$, which we call \emph{witness}, is written
+$\langle t\rangle~F$ and is read \emph{assume that the term $t$ and all
+its sub-terms are known and assume $F$}.
+This new construction explicitly updates the set of known terms,
+something for which there is no proper syntax in existing languages.
+
+The extended syntax of formulas can be summarized as follows:
+\begin{equation*}
+   F ::= A \sep F_1\land F_2 \sep F_1\lor F_2 \sep \forall x.~F \sep \exists
+   x.~F \sep \langle t\rangle~F \sep [t]~F\sep\neg F
+\end{equation*}
+We treat implication ($\to$) and equivalence ($\leftrightarrow$) as
+abbreviations, in a standard fashion.
+
+\beforesub
+\subsection{\label{semantics}Denotational Semantics}
+\aftersub
+
+We define the semantics of our language via two encodings $\Fp{~}$ and
+$\Fm{~}$ into first-order language, given in Fig.~\ref{fig-sem}.
+The notation $\llb~\rrb^\pm$ is used when the rule is the same for
+both polarities and the polarity of the sub-formulas does not change.
+We introduce a fresh unary predicate symbol $\K$ which denotes the
+fact that a term is known.
+Given a term $t$ or an atomic formula $A$, we denote with $\terms(t)$
+(respectively, $\terms(A)$) the set of all the non-variable sub-terms of $t$
+(resp.~$A$). The expression $\K(\terms(t))$ stands for the conjunction
+$\bigwedge_{t'\in\terms(t)}\K(t')$.
+
+\begin{figure}[tb]
+\begin{align*}
+ \llb F_1\land F_2\rrb^\pm &\eqdef \llb F_1\rrb^\pm\land \llb F_2\rrb^\pm &
+ \llb \langle t\rangle~F\rrb^\pm &\eqdef \K(\terms(t))\land\llb F\rrb^\pm\\
+ \llb F_1\lor F_2\rrb^\pm &\eqdef \llb F_1\rrb^\pm\lor\llb F_2\rrb^\pm &
+ \llb [t]~F\rrb^\pm &\eqdef \K(\terms(t)) \to\llb F\rrb^\pm\\
+ \llb \forall x.~F\rrb^\pm &\eqdef \forall x.~\K(x)\to\llb F\rrb^\pm &
+ \llb \exists x.~F\rrb^\pm &\eqdef \exists x.~\K(x)\land\llb F\rrb^\pm\\
+ \Fp{\neg F} &\eqdef\neg \Fm{F}& \Fm{\neg F} &\eqdef \neg \Fp{F}\\
+ \Fp{A} &\eqdef \K(\terms(A))\to A &
+ \Fm{A} &\eqdef \K(\terms(A))\land A
+\end{align*}
+\caption{\label{fig-sem}Semantics of $\FOLT$-formulas
+($\llb\,\rrb^\pm$ denotes either $\Fp{\,}$ or $\Fm{\,}$)}
+\end{figure}
+
+We require universally quantified formulas to be instantiated
+with known terms. This is consistent with the standard use of triggers:
+indeed, SMT solvers require (or compute) a trigger containing each
+quantified variable for every universal quantifier.
+Then every term that replaces a universally quantified variable is
+necessarily known, since sub-terms of a known term are known, too.
+Dually, every existentially quantified variable is assumed to be
+known. This is necessary in order to allow instantiation
+with a witness from an existential formula.
+
+To maintain the invariant that the sub-terms of a known term are
+also known, our interpretation of $\la t\ra~F$ implies the presence
+of every non-variable sub-term of $t$ (the presence of variables
+is assured by interpretation of the quantifiers). Dually, $[t]~F$
+requires the presence of every non-variable sub-term of $t$;
+due to the mentioned invariant, this is not a restriction.
+
+Finally, whenever we encounter an atomic formula, regardless
+of its polarity, we assume the presence of its sub-terms.
+This is also in agreement with the standard use of triggers.
+
+We define entailment in $\FOLT$ as follows:
+$$F \iFOLT G \quad \eqdef \quad \K(\bb),\,\Fm{F}\iFOL\Fp{G}$$
+where $\bb$ is an arbitrary fresh constant supposed to be known
+\emph{a priori}, and $\iFOL$ stands for entailment in $\FOL$.
+
+A peculiar aspect of $\FOLT$ is the cut rule is not admissible in it.
+Indeed, one cannot prove
+$\forall x\,.\,[f(x)]\:P(f(x)),\,
+\forall x\,.\,[f(g(x))]\:(P(f(g(x))) \to Q(x)) \,\iFOLT\, Q(c)$,
+since the term $f(g(c))$ is not known and neither of the premises
+can be instantiated.
+However, $Q(c)$ is provable via an intermediate lemma
+$P(f(g(c))) \to Q(c)$.
+
+\beforesub
+\subsection{\label{ssec:example} Example}
+\aftersub
+
+Consider the following set of formulas $R$ from the previous section:
+\[R=\left\{\ f(0) \approx 0,\quad f(1) \not\approx 1,\quad \forall
+x.[f(x+1)]~f(x+1) \approx f(x)+1\ \right\}\]
+
+We want to show that $R$ is unsatisfiable in $\FOLT$, that is to say,
+$R\iFOLT\bot$. By definition, we have to prove that
+$\K(\bb),\,\Fm{R}\iFOL\bot$.
+\[
+\Fm{R} =
+\left\{\begin{array}{l}
+    \K(\terms(f(0)\approx 0)) \wedge f(0)\approx 0, \\[0.3em]
+    \K(\terms(f(1)\not\approx 1)) \wedge f(1) \not\approx 1, \\[0.3em]
+    \forall x.~ \K(x) \to \K(\terms(f(x+1))) \to {} \\
+    \qquad  \K(\terms(f(x+1)\approx f(x)+1)) \wedge f(x+1)
+\approx f(x)+1\end{array}\ \right\}\]
+
+The set of formulas $\Fm{R}$ is unsatisfiable in first-order logic with
+arithmetic. Therefore, in our framework, the initial set $R$ is
+unsatisfiable.
+
+\beforesub
+\subsection{The Extension of First-Order Logic is Conservative}
+\aftersub
+
+Even if a formula does not contain triggers or witnesses,
+our encoding modifies it to restrict instantiation of universal formulas.
+However, it preserves satisfiability
+of formulas in classical first-order logic with equality.
+
+\begin{theorem}[Soundness]
+For every first-order formula $F$, if
+we have $F\iFOLT\bot$, then we also have $F\iFOL\bot$.
+\end{theorem}
+\begin{proof}
+ Since $\K$ is a fresh predicate symbol, for every model $M$ of $F$, there is a
+model $M'$ of $F$ such that $M'$ only differs from $M$ in the interpretation of
+$\K$ and $M'\iFOL\forall x.\K(x)$. By immediate induction, $(\forall
+x.\K(x))\land
+F\iFOL\Fm{F}$. As a consequence, $M'$ is a model of $\Fm{F}$ and
+$F\not\iFOLT\bot$. Thus, by contra-position, if $F\iFOLT\bot$ then there is no
+model of $F$ and $F\iFOL\bot$.
+\end{proof}
+
+\begin{theorem}[Completeness]\label{thm-folt}
+For any first-order formula $F$, if $F\iFOL\bot$ then $F\iFOLT\bot$.
+\end{theorem}
+
+The proof, based on inference trees in a certain paramodulation calculus, can
+be found in the technical report~\cite{tech-report}.
+
+\beforesec
+\section{\label{prover}Adding a Customizable Theory to a SMT Solver for Ground
+Formulas}
+\aftersec
+
+In this section, we define a wrapper over a generic SMT solver for ground
+formulas that accepts a theory written as a set of formulas with triggers. This
+solver is a theoretical model
+and it is not meant to be efficient. We prove it sound with respect to our
+framework.
+
+It is easy to
+show that conversion to NNF does not change the semantics of a $\FOLT$-formula.
+
+\begin{definition} We define a \emph{skolemization transformation} $\sko_T$
+for $\FOLT$-for\-mu\-las in negative normal form.
+Given a formula $F=\exists x.\,G$, we have
+$\sko_T(F)\eqdef\la c(\overline y)\ra~\sko_T(G[x\leftarrow c(\overline y)])$,
+where $\overline y$ is the set of free variables of $F$, and $c$ is a fresh
+function symbol.
+\end{definition}
+We put the witness $\la c(\overline y)\ra$ to
+preserve satisfiability. Indeed, $\sko(\exists x.\,[x]\,\bot)$
+is $[c]\,\bot$ which is satisfiable, while $\exists x.\,[x]\,\bot$ is not.
+In the following, we work with $\FOLT$-formulas in Skolem negative normal form.
+
+\beforesub
+\subsection{A Solver for Ground Formulas}
+\aftersub
+
+To reason about $\FOLT$-formulas, we use a solver $\GS$ for ground formulas.
+\begin{definition} We denote implication over ground formulas with theories
+$\vdash_o$ to distinguish it from implication in first-order logic with theories
+$\iFOL$.
+\end{definition}
+
+We make a few assumptions about the interface of the ground solver $\GS$:
+\begin{itemize}
+ \item It returns \emph{Unsat$(U)$} when called on an unsatisfiable set of
+ground
+formulas $R$ where $U$ is an unsatisfiable core of $R$. We assume that $U$ is a
+set of formulas that occur in $R$ such that $R\vdash_o U$
+and $U\vdash_o\bot$.
+ \item It returns \emph{Sat$(M)$} when called on a satisfiable set of ground
+formulas $R$ where $M$ is a model of $R$. We assume that $M$ is a set of
+literals of $R$ such that $M\vdash_o R$.
+\end{itemize}
+We write $R\rightsquigarrow_\GS\mathit{Unsat}(U)$
+(resp.~$R\rightsquigarrow_\GS \mathit{Sat}(M)$)
+to express that the solver $\GS$ returns
+\emph{Unsat$(U)$} (resp.~\emph{Sat$(M)$})
+when launched on a set of ground formulas $R$.
+
+\beforesub
+\subsection{Deduction Rules for First-Order Formulas with Triggers}
+\aftersub
+
+The solver $\Lift$ takes a set of formulas with triggers $T$ and a
+set of ground formulas $S$ as input and decides whether $S$ is satisfiable
+modulo $T$. It is constructed on top of a
+solver for ground formulas $\GS$ and works on a set of ground formulas $R$
+that is augmented incrementally. While the solver $\GS$ returns a model $M$
+of $R$, new facts are deduced from $M$ and added to $R$.
+
+The set $R$ initially contains the formulas from the input $S$ as well as those
+from the theory $T$ where literals,
+quantified formulas, and formulas with triggers or witnesses are replaced
+by fresh atoms. The atom
+replacing a formula $F$ is written $\boxed{F}$ and is called a
+\emph{protected formula.}
+\begin{definition} We say that a model $M$ \emph{produces} a pair $F,t$ of a
+formula $F$ and a term $t$ if either $F$ is the atom $\top$ and there is a
+literal $L$ in $M$ from $S$ such that $t\in\terms(L)$, $F$ is a protected
+witness $\boxed{\langle s\rangle~G}\in M$ and $t\in\terms(s)$, or
+$F$ a protected literal $\boxed{L}\in M$ and $t\in\terms(L)$. We write it
+$M\uparrow F,t$.
+\end{definition}
+The following deduction rules are used to retrieve information from
+the protected formulas of a model $M$:
+
+\begin{small}
+\[\begin{array}{c}
+ \inferrule[Pos Unfold]{\boxed{\langle t\rangle~F}\in M}
+{\boxed{\langle t\rangle~F}\to F}\hspace{2cm}
+ \inferrule[Lit Unfold]{\boxed{L}\in M}
+{\boxed{L}\to L}
+\\[1em]
+ \inferrule[Neg Unfold]{\boxed{[t]~F}\in M\\ M\uparrow G,t'\\
+M\cup\{t\not\approx
+t'\}\rightsquigarrow_\GS\mathit{Unsat}(U\cup\{t\not\approx t'\})}
+{\boxed{[t]~F}\wedge G\wedge U\to F}\\[1em]
+ \inferrule[Inst]{\boxed{\forall x.~F}\in M\\ M\uparrow G,t\\
+M\cup\{\neg F[x\leftarrow t]\}\rightsquigarrow_\GS\mathit{Sat}(M')
+}
+{\boxed{\forall x.~F}\wedge G\to F[x\leftarrow
+t]}\end{array}
+\]
+\end{small}
+
+Rule {\sc Inst} adds to $R$ an instantiation of a universal
+formula with a known term. It is restricted by the premise $M\cup\{\neg
+F[x\leftarrow t]\}\rightsquigarrow_\GS\mathit{Sat}(M')$ so that it does not
+instantiate a quantified formula if the result of the instantiation is already
+known. Rule {\sc Pos Unfold} (resp.~{\sc Lit Unfold}) unfolds
+formulas with witnesses (resp.~literals).
+Rule {\sc Neg Unfold} removes a trigger when it is equal to a
+known term. Note that every deduction rule returns an implication: in a model
+where, say, $\la t\ra~F$ is not true, $F$ does not need to be true either.
+
+The solver for $\FOLT$-formulas $\Lift$ returns \emph{Unsat} on $R$, as
+soon as $\GS$ returns \emph{Unsat} on the current set of formulas.
+It returns \emph{Sat} on $R$ if the ground solver $\GS$ returns a model $M$
+from which nothing new can be deduced by the above deduction rules.
+
+Here is an example of execution of the solver $\Lift$ on the set of ground
+formulas $S$ modulo the theory $T$:
+\[S =\{f(0)\approx 0,\ f(1)\not\approx 1\}\]
+\[T =\{\forall x.[f(x+1)]~f(x+1)\approx f(x)+1\}\]
+Let us show how the solver $\Lift$ can deduce that
+\[R_0 = \left\{\begin{array}{l}
+               f(0)\approx 0,\ f(1)\not\approx 1,\\
+               \boxed{\forall x.[f(x+1)]~f(x+1)\approx f(x)+1}
+              \end{array}\right\}
+\]
+is unsatisfiable.
+\begin{enumerate}
+ \item The ground solver returns the only possible model $M_0$ of $R_0$, namely
+$R_0$ itself. Since $f(0)\approx 0\in M_0$, $M_0$ produces the pair $\top,0$. As
+a consequence, the rule {\sc Inst} can instantiate $x$ with $0$ in the universal
+formula:
+\[R_1 = R_0\cup\left\{\begin{array}{l}
+\boxed{\forall
+x.~[f(x+1)]~f(x+1)\approx f(x)+1}\wedge\top\to {}\\
+\hspace{1cm}\boxed{[f(0+1)]~f(0+1)\approx f(0)+1}
+\end{array}\right\}\]
+ \item The solver returns the model $M_1 =
+M_0\cup\{\boxed{[f(0+1)]~f(0+1)\approx f(0)+1}\}$ of $R_1$. Since
+$f(1)\not\approx 1\in M_1$, $M_1$ produces the pair $\top,f(1)$.
+Based on results from the
+theory of arithmetics, the ground solver can
+deduce that $f(0+1)\not\approx f(1)$ is unsatisfiable. Thus the rule
+{\sc Neg Unfold} can add another formula to $R_1$:
+\[R_2 = R_1\cup\left\{\begin{array}{l}
+\boxed{[f(0+1)]~f(0+1)\approx f(0)+1}\wedge\top\to {}\\
+\hspace{1cm}\boxed{f(0+1)\approx f(0)+1}
+\end{array}\right\}\]
+ \item The ground solver returns the model
+$M_2 =M_1\cup\{\boxed{f(0+1)\approx f(0)+1}\}$ of $R_2$. The rule {\sc
+Lit Unfold} can
+now unfold the protected literal $\boxed{f(0+1)\approx f(0)+1}$:
+\[R_3 = R_2\cup\{\boxed{f(0+1)\approx f(0)+1}\to f(0+1)\approx f(0)+1
+\}\]
+ \item Any model of
+$R_3$ contains $f(0+1)\approx f(0)+1$, $f(0)\approx 0$ and $f(1)\not\approx 1$.
+The ground solver
+returns \emph{Unsat$($\_$)$} on $R_3$. As expected, the initial set $S$ is
+reported to be unsatisfiable modulo $T$.
+\end{enumerate}
+
+\beforesub
+\subsection{Properties}
+\aftersub
+
+In this section, we prove that our solver is sound and complete on a particular
+class of axiomatics. In the following section, we demonstrate on an example how
+our framework can be used to check that a given axiomatics is in this class.
+\begin{description}
+\item[Completeness] We say that a set of formulas with triggers $T$ is
+\emph{complete} if, for every finite set of literals $G$,
+$\Fm{G\cup T}$ and  $G\cup T$, triggers being ignored, are equisatisfiable in
+$FOL$.
+\item[Termination] We say that a set of formulas with triggers $T$ is
+\emph{terminating} if, from every finite set of literals $G$,
+there can only be a finite number of instances of formulas of $T$. In our
+framework, we enforce three rules to enable reasoning about termination:
+\begin{itemize}
+ \item instantiation is always done with known terms
+ \item new known terms cannot be deduced if they are protected by a trigger
+ \item an instance of a formula $F$ with a term $t$ is not generated if an
+instance of $F$ has already been generated with $t'$ equal to $t$.
+\end{itemize}
+\end{description}
+Our solver is sound and complete if it works modulo a complete and terminating
+theory $T$:
+\begin{theorem} \label{unsat}
+If $\Lift$ returns \emph{Unsat} on a set of ground
+formulas $S$ modulo a theory $T$ then $S\cup T$, triggers being
+ignored, is unsatisfiable in $\FOL$.
+\end{theorem}
+\begin{theorem} \label{sat}
+If $\Lift$ returns \emph{Sat} on a set of ground
+formulas $S$ modulo a complete theory $T$ then $S\cup T$, triggers being
+ignored, is satisfiable in $\FOL$.
+\end{theorem}
+\begin{theorem} \label{termination}
+If the theory $T$ is terminating, then the solver $\Lift$ will terminate on
+any set of ground literal $S$.
+\end{theorem}
+The proofs of these three theorems may be found in the technical
+report~\cite{tech-report}.
+
+\beforesec
+\section{\label{case-study}Completeness and Termination of a theory}
+\aftersec
+
+Within our framework, we can reason about a theory $T$ written as a set of
+formulas with triggers and demonstrate that it has the requested properties for
+our solver $\Lift$ to be sound and complete. This section demonstrates how it
+can be done on an axiomatization of the non-extensional theory of arrays.
+
+\setcounter{equation}{0}
+% review 3 :The usefulness of the array case study is a bit questionable, since
+% it mostly rephrases proofs that have already been given in other contexts.
+We show that Greg Nelson's
+proof of completeness for his decision procedure for
+arrays~\cite{nelson-arrays} can be turned into a proof of completeness of our
+solver on an axiomatization with carefully chosen triggers.
+%
+Another example is given in the technical
+report~\cite{tech-report}.
+For terms $a$, $x$ and $v$,
+we write $\access(a,x)$ the $\access$ in the array $a$ at the index $x$ and
+$\update(a,x,v)$ the $\update$ of the array $a$ by the element $v$
+at the index $x$. The following set of first-order formulas $T$ is an
+axiomatization of the classical theory from McCarthy:
+\begin{eqnarray}
+&&\forall a, x, v.~[\update(a,x,v)]~\access(\update(a,x,v),x)\approx v\\
+&&\forall a, x_1, x_2, v.~[\access(\update(a,x_1,v),x_2)]~x_1\not\approx
+x_2\to\nonumber \\
+&&\hspace{4cm}\access(\update(a,x_1,v),x_2)\approx \access(a,x_2)\\
+&&\forall a, x_1,
+x_2, v.~[\access(a,x_2)]~[\update(a,x_1,v)]~x_1\not\approx
+x_2\to\nonumber \\
+&&\hspace{4cm}\access(\update(a,x_1,v),x_2)\approx \access(a,x_2)
+\end{eqnarray}
+Note that (2) and (3) are in fact duplications of the same first order
+formula with different triggers\footnote{Most provers have a dedicated syntax
+for using several triggers for the same axiom.}. Both of them are needed for
+completeness.
+For example, without (2) (resp.~(3)), the set of formulas
+$\{y\not\approx x,\ \access(\update(a,y,v_1),x)\not\approx
+\access(\update(a,y,v_2),x)\}$ (resp. the set of
+formulas $\{y\not\approx x,\ \access(a_1,x)\not\approx\access(a_2,x),\
+\update(a_1, y,v)=\update(a_2,y,v)\}$) cannot
+be proven unsatisfiable.
+
+We prove that this axiomatics is complete and terminating.
+\paragraph{Termination:}
+If $G$ is a set of ground literals, there can only be a finite number of
+instances from $G$ and $T$. From (1), at most
+one $\access$ term $\access(\update(a,x,v),x)$ can be created per
+\emph{update} term $\update(a,x,v)$ of $G$. No new $\update$ term
+can be created, so there will be only one instantiation of (1) per $\update$
+term of $G$. Equations (2) and (3) can create at
+most one $\access$ term per couple comprising an index term (sub-term of an
+\emph{access} term at the rightmost position) and an $\update$ term. We deduce
+that at most one term per couple comprising the equality classes of an index
+term and an $\update$ term of $G$ can be deduced.
+\paragraph{Completeness:}
+The set of formulas $T$ gives a complete axiomatics. We prove that for every
+set of ground formulas $G$ such that $\Fm{G\cup T}$
+is satisfiable, $\Fm{G\cup T}\cup\forall t.\K(t)$ is also satisfiable. Since
+assuming $\K(t)$
+for every term $t$ removes triggers and witnesses, this shows that $G\cup T$
+is satisfiable, triggers being ignored.
+
+The proof is similar to the proof of Greg Nelson's decision procedure for
+arrays~\cite{nelson-arrays}. We first define the set of every array term $a'$
+such that $\access(a',x)$ is equated to a given term $\access(a,x)$ by (2) or
+(3):
+\begin{definition} For a set of formulas $S$ and two terms $a$ and $x$ known in
+$S$, we define the set $S_{a,x}$ to be the smallest set of terms
+containing $a$ and closed by
+\begin{enumerate}[(i)]
+ \item if $a'\in S_{a,x}$ then every known term
+$\update(a',y,v)$ such that $S\nvdash y \approx x$ is in $S_{a,x}$ and
+ \item for
+every term $\update(a',y,\_)\in S_{a,x}$,
+if $S\nvdash y \approx x$ then $a'$ is in $S_{a,x}$.
+\end{enumerate}
+\end{definition}
+
+We now prove that, for every $\access$ or $\update$ term $t$, if $S$ is a
+satisfiable set of ground formulas saturated by $T$ then it can be
+extended to another satisfiable set $S'$ saturated by $T$ that contains $t=t$.
+Since, by definition of $\Fm{\,}$, $\Fm{t=t}$ is equivalent to
+$\bigwedge_{t'\in\terms(t)}\K(t)$, this is enough to have the completeness of
+$T$.
+
+This proof is an induction over the size of $t$. We assume that every
+sub-term of $t$ has already been added. If $\K(t)$ is already implied by
+$\Fm{S}$, then we are done. If $t$ is neither an $\access$ nor an $\update$
+term, then assuming the presence of $t$ does not allow any new deduction.
+
+Assume $t$ is an $\update$ term $\update(a,x,v)$. With the presence of $t$,
+(1) deduces the literal $\access(t, x)\approx v$. This
+cannot lead to an inconsistency since nothing can be known about $t$ otherwise
+$t$ would be known in $\Fm{S}$.
+Equations (2) and (3) deduce $\access(t, y)=\access(a', y)$ for all terms $a'$
+and $y$ such that $\Fm{S}\vdash\K(\access(a',y))$ and $t\in S_{a',y}$. Like the
+first one, this
+deductions cannot cause an inconsistency. The new set $S'$ obtained by adding
+these literals to $S$ is saturated by $T$. Indeed, if it is not, one of the
+formulas of $T$ can deduce something that is not in $S'$. It cannot be (1) since
+we have applied it to the only new $\update$ term of $S'$. If it is (2) or (3)
+then it comes from a term $\access(a',y)\in S'$ and $S'_{t,y}=S'_{a',y}$. By
+construction of $S'$, the result is in $S'$.
+
+Assume $t$ is an $\access$ term $\access(a,x)$. With the presence of $t$,~(2)
+and~(3) deduce $t=\access(a', x)$ for every $a'\in S_{a,x}$. This
+deduction cannot cause an inconsistency. Indeed, nothing can be known about
+$\access(a',x)$ otherwise $t$ would have been known in $S$ by~(2) and~(3). The
+new set
+$S'$ obtained by adding these literals to $S$ is saturated by $T$. Indeed, if it
+is not, one of the formulas of $R$ can deduce something that is not in $S'$. It
+cannot be (1) since there is no new $\update$ term in $S'$. If it is (2) or (3)
+then it comes from a term $\access(a',y)\in S'$ and $S'_{a,y}=S'_{a',y}$. By
+construction of $S'$, the result is in $S'$.
+
+\beforesec
+\section{Conclusion}
+\aftersec
+
+We have presented a new first-order logic with a syntax for triggers and given
+it a clear semantics. We have shown that a solver accepting a theory written as
+a set of formulas with triggers $T$ can be implemented on top of an
+off-the-shelf SMT solver, and we have identified properties requested from $T$
+for the resulting solver to be sound and complete on ground formulas. Finally,
+we have demonstrated, on the
+non-extensional theory of arrays, that our framework can be used to
+prove that a theory expressed as a set of first-order formulas with triggers
+indeed has the requested properties.
+
+In future work, we would like to integrate our technique of quantifier
+handling directly inside a DPLL(T)-based solver. Once a solver implementing our
+semantics exists, a
+static analysis could be done to detect too restrictive or too
+permissive axiomatizations, and matching loops. We believe that such an
+analysis will help theory designers avoid common pitfalls when writing
+axiomatizations.
+
+
+\beforesec
+\bibliographystyle{plain}
+\bibliography{triggers_SMT_2012}
+\end{document}

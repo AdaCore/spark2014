@@ -1,0 +1,6 @@
+project Test is
+   for Source_Dirs use (".");
+   package Builder is
+      for Default_Switches ("Ada") use ("-gnat05");
+   end Builder;
+end Test;

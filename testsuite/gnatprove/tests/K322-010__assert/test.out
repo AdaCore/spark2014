@@ -1,0 +1,9 @@
+
+pack.adb:16:7: assertion not proved, requires X = 10
+pack.adb:6:7: assertion not proved, requires X = 10
+pack.ads:13:19: postcondition not proved, requires 1 / X > 0
+pack.ads:13:21: info: division check proved
+pack.ads:13:21: info: overflow check proved
+pack.ads:9:19: postcondition not proved, requires 1 / X > 0
+pack.ads:9:21: info: division check proved
+pack.ads:9:21: info: overflow check proved

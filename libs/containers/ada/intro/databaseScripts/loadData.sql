@@ -1,0 +1,27 @@
+--EXECUTE COMMAND: db2 -tvf loadData.sql 
+--/*This script just be executed the first time*/
+--/*please, check the source directory*/
+CONNECT TO MIGRATION;
+LOAD FROM countries.cvs OF DEL 
+   MESSAGES messages.log 
+   REPLACE INTO COUNTRY (ID,NAME) 
+   STATISTICS YES WITH DISTRIBUTION AND DETAILED INDEXES ALL ;
+
+LOAD FROM cities.cvs OF DEL 
+   MESSAGES messages.log 
+   REPLACE INTO CITY (COUNTRY_ID, ID, NAME) 
+   STATISTICS YES WITH DISTRIBUTION AND DETAILED INDEXES ALL ;
+
+LOAD FROM dialingCodes.cvs OF DEL 
+   MESSAGES messages.log 
+   REPLACE INTO DIALING_CODE (COUNTRY,CODE) 
+   STATISTICS YES WITH DISTRIBUTION AND DETAILED INDEXES ALL ;
+
+
+--/*This part should been executed one time per month, to update cells database*/
+LOAD FROM cells.cvs OF DEL 
+   MESSAGES messages.log 
+   REPLACE INTO CELL (LAT,LON,MCC,MNC,LAC,CELL_ID) 
+   STATISTICS YES WITH DISTRIBUTION AND DETAILED INDEXES ALL ;
+
+DELETE FROM COUNTRY WHERE ID  NOT IN (SELECT DISTINCT(COUNTRY_ID) FROM CITY);

@@ -1,0 +1,489 @@
+module Main
+  (* the module of references is needed in all modules *)
+  use export ref.Ref
+  (* dito for boolean functions *)
+  use export bool.Bool
+  use export "_gnatprove_standard_th".Main
+
+  (* exception used to simulate return statements *)
+  exception Return__exc
+
+  (* The type for the heap, and the heap variable. This variable represents
+     all effects that we cannot describe more precisely, and that do not
+     interfere with other variables, i.e., writes through pointers, aliased
+     variables etc. *)
+  type __type_of_heap
+  val __HEAP : ref __type_of_heap
+
+  (* the return type for the functions that correspond to 'Image *)
+  type __image
+
+end
+
+module Integer
+  use import int.Int
+  use export int.Abs
+  use export int.Power
+
+  use export _gnatprove_standard_th.Integer_Func
+
+  val computer_div_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures { result = computer_div x y }
+
+  val computer_mod_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures{ result = computer_mod x y }
+
+  val math_mod_ (x:int) (y:int) : int
+     requires { y<>0 }
+     ensures { result = math_mod x y }
+
+end
+
+module Floating
+  use real.Real
+  use import real.RealInfix
+  use real.Abs as AbsReal
+  use export real.Truncate
+  use export real.PowerInt
+
+  use real.FromInt
+
+  function real_of_int (x : int) : real = FromInt.from_int x
+
+  function round real : int
+
+  axiom Round_down:
+    forall x:real. x -. real_of_int (floor x) <. 0.5 -> round (x) = floor (x)
+
+  axiom Round_up:
+    forall x:real. real_of_int (ceil x) -. x <. 0.5 -> round (x) = ceil (x)
+
+  axiom Round_neg_tie:
+    forall x:real.
+      x -. real_of_int (floor x) = 0.5 /\ x <. 0.0 -> round (x) = floor (x)
+
+  axiom Round_pos_tie:
+    forall x:real.
+      real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
+
+  axiom Round_int :
+    forall i:int [round (real_of_int i)]. round (real_of_int i) = i
+
+  axiom Round_near_int :
+    forall i:int. forall x:real.
+      -.0.5 <. x /\ x <. 0.5 -> (round(real_of_int(i) +. x) = i)
+
+  axiom Round_monotonic:
+    forall x y:real. x <=. y -> Int.(<=) (round x) (round y)
+
+  axiom Round_monotonic_int1:
+    forall x:real, i:int. x <=. real_of_int i -> Int.(<=) (round x) i
+
+  axiom Round_monotonic_int2:
+    forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
+
+  axiom Round_bound:
+    forall x:real.
+      x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
+
+  (* Boolean comparison functions for reals *)
+
+  function bool_lt real real : bool
+
+  function bool_le real real : bool
+
+  function bool_gt real real : bool
+
+  function bool_ge real real : bool
+
+  function bool_eq real real : bool
+
+  function bool_neq real real : bool
+
+  axiom Bool_real__lt_axiom:
+    forall x:real.
+    forall y:real.
+      bool_lt x y = True <-> x <. y
+
+  axiom Bool_real__le_axiom:
+    forall x:real.
+    forall y:real.
+      bool_le x y = True <-> x <=. y
+
+  axiom Bool_real__gt_axiom:
+    forall x:real.
+    forall y:real.
+        bool_gt x y = True <-> x >. y
+
+  axiom Bool_real__ge_axiom:
+    forall x:real.
+    forall y:real.
+      bool_ge x y = True <-> x >=. y
+
+  axiom Bool_real__eq_axiom:
+    forall x:real.
+    forall y:real.
+      bool_eq x y = True <-> x = y
+
+  axiom Bool_real__neq_axiom:
+    forall x:real.
+    forall y:real.
+       bool_neq x y = True <-> x <> y
+
+  function div_real (x : real) (y : real) : real = x /. y
+
+  val div_real_ (x:real) (y:real) : real
+    requires { y<>0.0 }
+    ensures { result = div_real x y }
+
+end
+
+module Boolean
+  use import bool.Bool
+  use export bool.Ite
+  use import int.Int
+  use import Main
+
+  (* Boolean logical connectors, functions for conversion of booleans, etc *)
+
+  function to_int (b : bool) : int =
+   if b = True then 1 else 0
+
+  function of_int (i : int) : bool =
+   if i = 0 then False else True
+
+  function attr__ATTRIBUTE_LAST : int = 1
+  function attr__ATTRIBUTE_FIRST : int = 0
+
+  predicate in_range (x : int) = x = 0 \/ x = 1
+
+  function attr__ATTRIBUTE_IMAGE bool : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : bool
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image)  : bool
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+  val range_check_ (n : int) : int
+    requires { in_range n }
+    ensures { result = n }
+
+   function bool_eq (x : bool) (y : bool) : bool =
+    if x = y then True else False
+end
+
+theory Array__1
+  use import int.Int
+  use import bool.Bool
+
+  type map 'a
+
+  type t 'a =
+   { elts   : map 'a;
+     offset : int;
+     first  : int;
+     last   : int }
+
+  function get (map 'a) int : 'a
+  function set (map 'a) int 'a : map 'a
+
+  axiom Select_eq :
+    forall m : map 'a. forall i : int.
+    forall a : 'a [set m i a].  get (set m i a) i = a
+
+  axiom Select_neq :
+    forall m : map 'a. forall i j : int.
+    forall a : 'a [get (set m i a) j| set m i a, get m j].
+    i <> j -> get (set m i a) j = get m j
+
+  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
+      if x.last >= x.first then x.last - x.first + 1 else 0
+
+  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
+  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
+
+  function access "inline" (i : int) (x : t 'a) : 'a =
+     get x.elts (i + x.offset - x.first)
+  function update "inline" (i : int) (x : t 'a) (v : 'a) : (t 'a) =
+   { x with elts = set x.elts (i + x.offset - x.first) v }
+
+  function bool_eq (t 'a) (t 'a) : bool
+
+   axiom T__ada_array___equal_def:
+     forall a:t 'a.
+     forall b:t 'a [bool_eq a b].
+         ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
+          /\ (forall i:int[access i a].
+                (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
+                 ->
+                (access i a = access (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i) b)))
+         <-> bool_eq a b = True
+end
+
+theory Array__2
+
+  use import int.Int
+  use import bool.Bool
+  (* The theory of Ada arrays of two dimensions *)
+
+  type map 'a
+
+  function get int int (map 'a) : 'a
+
+  function set int int (map 'a) 'a : (map 'a)
+
+  axiom accupd_eq:
+    forall a:map 'a.
+    forall i:int. forall j :int.
+    forall v:'a [set i j a v].
+       get i j (set i j a v) = v
+
+  axiom accupd_neq:
+    forall a:map 'a.
+    forall i1:int.
+    forall i2:int.
+    forall j1:int.
+    forall j2:int.
+    forall v:'a [get i2 j2 (set i1 j1 a v ) | set i1 j1 a v, get i2 j2 a].
+      (i1 <> i2 \/ j1 <> j2) ->
+       get i2 j2 (set i1 j1 a v ) = get i2 j2 a
+
+  type t 'a =
+   { elts     : map 'a;
+     offset   : int;
+     offset_2 : int;
+     first    : int;
+     last     : int;
+     first_2  : int;
+     last_2   : int;
+   }
+
+  function access (i : int) (j : int) (x : t 'a) : 'a =
+     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts
+  function update (i : int) (j : int) (x : t 'a) (v : 'a) : (t 'a) =
+   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts v }
+
+  function bool_eq (t 'a) (t 'a) : bool
+
+  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
+      if x.last >= x.first then x.last - x.first + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
+      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
+
+  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
+  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
+
+  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
+  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
+
+  axiom T__ada_array_2___equal_def:
+    forall a:t 'a.
+    forall b:t 'a [bool_eq a b].
+        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
+         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
+         /\
+         (forall i:int. forall j : int [access i j a].
+               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
+                ->
+               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
+                ->
+               (access i j a = access
+                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
+                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
+                  b)))
+        <-> bool_eq a b = True
+end
+
+theory Array__3
+
+  use import int.Int
+  use import bool.Bool
+  (* The theory of Ada arrays of two dimensions *)
+
+  type map 'a
+
+  function get int int int (map 'a) : 'a
+
+  function set int int int (map 'a) 'a : (map 'a)
+
+  axiom accupd_eq:
+    forall a:map 'a.
+    forall i:int. forall j :int. forall k : int.
+    forall v:'a [set i j k a v].
+       get i j k (set i j k a v) = v
+
+  axiom accupd_neq:
+    forall a:map 'a.
+    forall i1:int.
+    forall i2:int.
+    forall j1:int.
+    forall j2:int.
+    forall k1:int.
+    forall k2:int.
+    forall v:'a [get i2 j2 k2 (set i1 j1 k1 a v ) | set i1 j1 k1 a v, get i2 j2 k2 a].
+      (i1 <> i2 \/ j1 <> j2 \/ k1 <> k2) ->
+       get i2 j2 k2 (set i1 j1 k1 a v ) = get i2 j2 k2 a
+
+  type t 'a =
+   { elts     : map 'a;
+     offset   : int;
+     offset_2 : int;
+     offset_3 : int;
+     first    : int;
+     last     : int;
+     first_2  : int;
+     last_2   : int;
+     first_3  : int;
+     last_3   : int;
+   }
+
+  function access (i : int) (j : int) (k : int) (x : t 'a) : 'a =
+     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts
+
+  function update (i : int) (j : int) (k : int) (x : t 'a) (v : 'a) : (t 'a) =
+   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts v }
+
+  function bool_eq (t 'a) (t 'a) : bool
+
+  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
+      if x.last >= x.first then x.last - x.first + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
+      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_3 (x : t 'a) : int =
+      if x.last_3 >= x.first_3 then x.last_3 - x.first_3 + 1 else 0
+
+  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
+  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
+  function attr__ATTRIBUTE_FIRST_3 (x : t 'a) : int = x.first_3
+
+  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
+  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
+  function attr__ATTRIBUTE_LAST_3 (x : t 'a) : int = x.last_3
+
+  axiom T__ada_array_2___equal_def:
+    forall a:t 'a.
+    forall b:t 'a [bool_eq a b].
+        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
+         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
+         /\ (attr__ATTRIBUTE_LENGTH_3 a = attr__ATTRIBUTE_LENGTH_3 b)
+         /\
+         (forall i:int. forall j : int . forall k : int [access i j k a].
+               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
+                ->
+               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
+                ->
+               (attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a)
+                ->
+               (access i j k a = access
+                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
+                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
+                  (attr__ATTRIBUTE_FIRST_3 b - attr__ATTRIBUTE_FIRST_3 a + k)
+                  b)))
+        <-> bool_eq a b = True
+end
+
+theory Array__4
+
+  use import int.Int
+  use import bool.Bool
+  (* The theory of Ada arrays of two dimensions *)
+
+  type map 'a
+
+  function get int int int int (map 'a) : 'a
+
+  function set int int int int (map 'a) 'a : (map 'a)
+
+  axiom accupd_eq:
+    forall a:map 'a.
+    forall i:int. forall j :int. forall k : int. forall l : int.
+    forall v:'a [set i j k l a v].
+       get i j k l (set i j k l a v) = v
+
+  axiom accupd_neq:
+    forall a:map 'a.
+    forall i1:int.
+    forall i2:int.
+    forall j1:int.
+    forall j2:int.
+    forall k1:int.
+    forall k2:int.
+    forall l1:int.
+    forall l2:int.
+    forall v:'a [get i2 j2 k2 l2 (set i1 j1 k1 l1 a v ) | set i1 j1 k1 l1 a v, get i2 j2 k2 l2 a].
+      (i1 <> i2 \/ j1 <> j2 \/ k1 <> k2 \/ l1 <> l2) ->
+       get i2 j2 k2 l2 (set i1 j1 k1 l1 a v ) = get i2 j2 k2 l2 a
+
+  type t 'a =
+   { elts     : map 'a;
+     offset   : int;
+     offset_2 : int;
+     offset_3 : int;
+     offset_4 : int;
+     first    : int;
+     last     : int;
+     first_2  : int;
+     last_2   : int;
+     first_3  : int;
+     last_3   : int;
+     first_4  : int;
+     last_4   : int;
+   }
+
+  function access (i : int) (j : int) (k : int) (l : int) (x : t 'a) : 'a =
+     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts
+
+  function update (i : int) (j : int) (k : int) (l : int) (x : t 'a) (v : 'a) : (t 'a) =
+   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts v }
+
+  function bool_eq (t 'a) (t 'a) : bool
+
+  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
+      if x.last >= x.first then x.last - x.first + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
+      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_3 (x : t 'a) : int =
+      if x.last_3 >= x.first_3 then x.last_3 - x.first_3 + 1 else 0
+  function attr__ATTRIBUTE_LENGTH_4 (x : t 'a) : int =
+      if x.last_4 >= x.first_4 then x.last_4 - x.first_4 + 1 else 0
+
+  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
+  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
+  function attr__ATTRIBUTE_FIRST_3 (x : t 'a) : int = x.first_3
+  function attr__ATTRIBUTE_FIRST_4 (x : t 'a) : int = x.first_4
+
+  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
+  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
+  function attr__ATTRIBUTE_LAST_3 (x : t 'a) : int = x.last_3
+  function attr__ATTRIBUTE_LAST_4 (x : t 'a) : int = x.last_4
+
+  axiom T__ada_array_2___equal_def:
+    forall a:t 'a.
+    forall b:t 'a [bool_eq a b].
+        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
+         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
+         /\ (attr__ATTRIBUTE_LENGTH_3 a = attr__ATTRIBUTE_LENGTH_3 b)
+         /\ (attr__ATTRIBUTE_LENGTH_4 a = attr__ATTRIBUTE_LENGTH_4 b)
+         /\
+         (forall i:int. forall j : int . forall k : int. forall l : int [access i j k l a].
+               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
+                ->
+               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
+                ->
+               (attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a)
+                ->
+               (attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a)
+                ->
+               (access i j k l a = access
+                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
+                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
+                  (attr__ATTRIBUTE_FIRST_3 b - attr__ATTRIBUTE_FIRST_3 a + k)
+                  (attr__ATTRIBUTE_FIRST_4 b - attr__ATTRIBUTE_FIRST_4 a + l)
+                  b)))
+        <-> bool_eq a b = True
+end

@@ -1,0 +1,5 @@
+t3q5.adb:46:10: ineffective statement
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

@@ -1,0 +1,294 @@
+module Main
+  use import int.Int
+  use import module ref.Ref
+  
+  (*** TO BE INSTANTIATED ***)
+
+  type element_t
+
+  function equal_elements element_t element_t : bool
+
+  axiom equal_refl :
+  forall e : element_t [equal_elements e e].
+	equal_elements e e = True
+
+  axiom equal_sym :
+  forall e1 : element_t, e2 : element_t [equal_elements e1 e2].
+	equal_elements e1 e2 = equal_elements e2 e1
+
+  axiom equal_trans :
+  forall e1 : element_t, e2 : element_t, e3 : element_t [equal_elements e1 e2, equal_elements e1 e3 | equal_elements e1 e2, equal_elements e2 e3].
+	equal_elements e1 e2 = True -> equal_elements e2 e3 = True -> equal_elements e1 e3 = True
+
+  (**************************)
+  
+  type cursor
+  
+  type vector
+  
+  function no_element  : cursor
+  
+  function empty_  : vector
+  
+  function length vector : int
+  
+  axiom Length_gte_zero:
+    (forall co:vector [(length co : int)]. (Int.(>=) (length co : int) 0))
+  
+  function to_index_ vector cursor : int
+  
+  axiom To_index_gte_zero:
+    (forall cu:cursor.
+      (forall v:vector.
+        ((Int.(>=) (length v : int) (to_index_ v cu : int)) /\
+         (Int.(>=) (to_index_ v cu : int) 0))))
+  
+  axiom To_index_eq:
+    (forall cu1:cursor.
+      (forall cu2:cursor.
+        (forall v:vector.
+          ((((to_index_ v cu1 : int) = (to_index_ v cu2 : int)) /\
+            (Int.(>) (to_index_ v cu2 : int) 0)) ->
+           (cu1 = cu2)))))
+  
+  axiom To_index_no_element:
+    (forall v:vector. ((to_index_ v (no_element  : cursor) : int) = 0))
+  
+  function to_cursor_ vector int : cursor
+  
+  predicate to_cursor__ (co : vector) (i : int) (cu : cursor) =
+    ((((to_index_ co cu : int) = i) /\
+      ((Int.(>=) (length co : int) i) /\ (Int.(>) i 0))) \/
+     ((cu = (no_element  : cursor)) /\
+      ((Int.(<=) i 0) \/ (Int.(>) i (length co : int)))))
+  
+  axiom to_cursor_to_cursor:
+    (forall co:vector.
+      (forall i:int [(to_cursor_ co i : cursor)].
+        (to_cursor__ co i (to_cursor_ co i : cursor))))
+  
+  predicate is_empty_ (co : vector) = ((length co : int) = 0)
+  
+  axiom empty_is_empty: (is_empty_ (empty_  : vector))
+  
+  predicate has_element (v : vector) (cu : cursor) =
+    (Int.(<) 0 (to_index_ v cu : int))
+  
+  function previous_ (v : vector) (cu : cursor) : cursor =
+    (to_cursor_ v (Int.(-) (to_index_ v cu : int) 1 : int) : cursor)
+  
+  function next_ (v : vector) (cu : cursor) : cursor =
+    (to_cursor_ v (Int.(+) (to_index_ v cu : int) 1 : int) : cursor)
+  
+  function last (co : vector) : cursor =
+    (to_cursor_ co (length co : int) : cursor)
+  
+  function first (co : vector) : cursor = (to_cursor_ co 1 : cursor)
+  
+  function element_ vector int : element_t
+  
+  function element_curs_ (v : vector) (cu : cursor) : element_t =
+    (element_ v (to_index_ v cu : int) : element_t)
+  
+  function find_ vector element_t int : int
+  
+  predicate find__ (co : vector) (e : element_t) (i : int) (j : int) =
+    (((Int.(>=) (length co : int) i) /\ (Int.(>) i 0)) /\
+     (((j = 0) /\
+       (forall k:int.
+         (((Int.(>=) (length co : int) k) /\ (Int.(>=) k i)) ->
+          (equal_elements (element_ co k) e = False)))) \/
+      (((Int.(>=) (length co : int) j) /\ (Int.(>=) j i)) /\
+       ((equal_elements (element_ co j : element_t) e = True) /\
+        (forall k:int.
+          (((Int.(>) j k) /\ (Int.(>=) k i)) ->
+           (equal_elements (element_ co k : element_t) e = False)))))))
+  
+  axiom find_find_val:
+    (forall co:vector.
+      (forall e:element_t.
+        (forall i:int.
+          ((((Int.(>=) (length co : int) i) /\ (Int.(>) i 0)) ->
+            (find__ co e i (find_ co e i : int))) /\
+           (((length co : int) = 0) -> ((find_ co e i : int) = 0))))))
+  
+  predicate equal_ (co1 : vector) (co2 : vector) =
+    (((length co1 : int) = (length co2 : int)) /\
+     (forall i:int.
+       (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) ->
+        (equal_elements (element_ co1 i : element_t) (element_ co2 i : element_t) = True))))
+  
+  predicate strict_equal (co1 : vector) (co2 : vector) =
+    (((length co1 : int) = (length co2 : int)) /\
+     (forall i:int.
+       (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) ->
+        ((element_ co1 i : element_t) = (element_ co2 i : element_t)))))
+  
+  predicate replace_element_ (co1 : vector) (i : int) (e : element_t) (co2 : vector) =
+    (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) /\
+     (((length co1 : int) = (length co2 : int)) /\
+      (((element_ co2 i : element_t) = e) /\
+       ((forall j:int.
+          (((Int.(>=) (length co1 : int) j) /\ (Int.(>) j 0)) ->
+           ((i <> j) ->
+            ((element_ co2 j : element_t) = (element_ co1 j : element_t))))) /\
+        (forall cu:cursor.
+          ((to_index_ co1 cu : int) = (to_index_ co2 cu : int)))))))
+  
+  predicate left__ (co : vector) (i : int) (col : vector) =
+    ((length co) + 1 = i -> col = co) /\
+    (((Int.(>=) (length co : int) i) /\ (Int.(>) i 0)) ->
+     (((length col : int) = (Int.(-) i 1 : int)) /\
+      ((forall j:int.
+         (((Int.(<) 0 j) /\ (Int.(<) j i)) ->
+          ((element_ col j : element_t) = (element_ co j : element_t)))) /\
+       (forall cu:cursor.
+         ((((Int.(<) 0 (to_index_ co cu : int)) /\
+            (Int.(<) (to_index_ co cu : int) i)) \/
+           (Int.(<) 0 (to_index_ col cu : int))) ->
+          ((to_index_ col cu : int) = (to_index_ co cu : int)))))))
+  
+  function left_ vector int : vector
+  
+  axiom left_left:
+    (forall co:vector.
+      (forall i:int [(left_ co i : vector)].
+        (left__ co i (left_ co i : vector))))
+  
+  predicate right__ (co : vector) (i : int) (cor : vector) =
+    (((Int.(>=) (Int.(+) (length co : int) 1 : int) i) /\ (Int.(>) i 0)) ->
+     (((length cor : int) = (Int.(+) (Int.(-) (length co : int) i : int) 1 : int)) /\
+      (forall j:int.
+        (((Int.(<) 0 j) /\ (Int.(<=) j (length cor : int))) ->
+         ((element_ cor j : element_t) = (element_ co (Int.(-) (Int.(+) j i : int) 1 : int) : element_t))))))
+  
+  function right_ vector int : vector
+  
+  axiom right_right:
+    (forall co:vector.
+      (forall i:int [(right_ co i : vector)].
+        (right__ co i (right_ co i : vector))))
+  
+  predicate insert_elmt (co1 : vector) (i : int) (e : element_t) (co2 : vector) =
+    (((element_ co2 i : element_t) = e) /\
+     (forall j:int.
+       ((((Int.(<) 0 j) /\ (Int.(<) j i)) ->
+         ((element_ co1 j : element_t) = (element_ co2 j : element_t))) /\
+        (((Int.(<) i j) /\
+          (Int.(<=) j (Int.(+) (length co1 : int) 1 : int))) ->
+         ((element_ co1 (Int.(-) j 1 : int) : element_t) = (element_ co2 j : element_t))))))
+  
+  predicate insert_curs (co1 : vector) (i : int) (co2 : vector) =
+    (forall cu:cursor.
+      ((((Int.(<) 0 (to_index_ co1 cu : int)) /\
+         (Int.(<) (to_index_ co1 cu : int) i)) \/
+        ((Int.(<) 0 (to_index_ co2 cu : int)) /\
+         (Int.(<) (to_index_ co2 cu : int) i))) ->
+       ((to_index_ co1 cu : int) = (to_index_ co2 cu : int))))
+  
+  predicate insert_ (co1 : vector) (i : int) (e : element_t) (co2 : vector) =
+    (((Int.(>=) (Int.(+) (length co1 : int) 1 : int) i) /\ (Int.(>) i 0)) /\
+     (((length co2 : int) = (Int.(+) (length co1 : int) 1 : int)) /\
+      ((insert_elmt co1 i e co2) /\ (insert_curs co1 i co2))))
+  
+  predicate delete_elmt (co1 : vector) (i : int) (co2 : vector) =
+    (forall j:int.
+      ((((Int.(>) (length co1 : int) j) /\ (Int.(>=) j i)) ->
+        ((element_ co1 (Int.(+) j 1 : int) : element_t) = (element_ co2 j : element_t))) /\
+       (((Int.(<) 0 j) /\ (Int.(<) j i)) ->
+        ((element_ co2 j : element_t) = (element_ co1 j : element_t)))))
+  
+  predicate delete_curs (co1 : vector) (i : int) (co2 : vector) =
+    (forall cu:cursor.
+      ((((Int.(<) 0 (to_index_ co1 cu : int)) /\
+         (Int.(<) (to_index_ co1 cu : int) i)) \/
+        ((Int.(<) 0 (to_index_ co2 cu : int)) /\
+         (Int.(<) (to_index_ co2 cu : int) i))) ->
+       ((to_index_ co1 cu : int) = (to_index_ co2 cu : int))))
+  
+  predicate delete_ (co1 : vector) (i : int) (co2 : vector) =
+    (((Int.(>=) (length co1 : int) i) /\ (Int.(>) i 0)) /\
+     (((length co2 : int) = (Int.(-) (length co1 : int) 1 : int)) /\
+      ((delete_elmt co1 i co2) /\ (delete_curs co1 i co2))))
+  
+  predicate contains (co : vector) (e : element_t) =
+    ((Int.(>=) (length co : int) (find_ co e 1 : int)) /\
+     (Int.(>) (find_ co e 1 : int) 0))
+
+(*** PARAMETERS ***)
+
+val element :
+	  co:vector -> i:int ->
+	  { 0 < i <= length co }
+	  element_t
+	  { result = element_ co i }
+
+val element_curs :
+	  co:vector -> cu:cursor ->
+	  { has_element co cu }
+	  element_t
+	  { result = element_curs_ co cu }
+
+val replace_element :
+	  co:ref vector -> i:int -> e:element_t ->
+	  { 0 < i <= length !co }
+	  unit writes co
+	  { replace_element_ (old !co) i e !co }
+
+val replace_element_curs :
+	  co:ref vector -> cu:cursor -> e:element_t ->
+	  { has_element !co cu }
+	  unit writes co
+	  { replace_element_ (old !co) (to_index_ (old !co) cu) e !co }
+
+val insert :
+	  co:ref vector -> i:int -> e:element_t ->
+	  { (length !co) + 1 >= i >0 }
+	  unit reads co writes co
+	  { insert_ (old !co) i e !co }
+
+val insert_curs :
+	  co:ref vector -> cu:cursor -> e:element_t ->
+	  { has_element !co cu \/ cu = no_element }
+	  unit reads co writes co
+	  { (has_element (old !co) cu -> insert_ (old !co) (to_index_ (old !co) cu) e !co)
+	    /\ (cu = no_element -> insert_ (old !co) ((length (old !co))+1) e !co) }
+
+val prepend :
+	  co:ref vector -> e:element_t ->
+	  { }
+	  unit reads co writes co
+	  { insert_ (old !co) 1 e !co }
+
+val append :
+	  co:ref vector -> e:element_t ->
+	  { }
+	  unit reads co writes co
+	  { insert_ (old !co) ((length(old !co)) + 1) e !co }
+
+val delete :
+	  co:ref vector -> i:int ->
+	  { length !co >= i > 0 }
+	  unit reads co writes co
+	  { delete_ (old !co) i !co }
+
+val delete_curs :
+	  co:ref vector -> cu:cursor ->
+	  { has_element !co cu }
+	  unit reads co writes co
+	  { delete_ (old !co) (to_index_ (old !co) cu) !co }
+
+val previous :
+	  co:vector -> cu:cursor ->
+	  { has_element co cu }
+	  cursor
+	  { result = previous_ co cu }
+
+val next :
+	  co:vector -> cu:cursor ->
+	  { has_element co cu }
+	  cursor 
+	  { result = next_ co cu }
+
+end
+

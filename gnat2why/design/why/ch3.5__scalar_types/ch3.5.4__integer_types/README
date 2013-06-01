@@ -1,0 +1,45 @@
+
+This describes how Ada integer types can be represented in Why.
+
+Signed integer types:
+---------------------
+
+In signed.ads, proposal in signed.why. signed_test.why is an example
+in why of the use of this signed integer type.  For a consistency
+check, a model in Alloy can be found in signed.als.
+
+Modular types:
+--------------
+
+In modular.ads, proposal in modular.why. For a modular type Byte, the generated
+entities are roughly the same as for a signed type; the main difference being
+the "coerce" axiom, which states that results of a convertion from int to
+a mod type, then back to int is equivalent to a modulus operation.
+
+In addition, a function is defined in the program space to represent
+the attribute 'Mod (3.5.4 (16)).
+
+modular_test.why is an example in why of the use of these modular types.
+For a consistancy check, a model in Alloy can be found in modular.als.
+
+Various remarks:
+----------------
+
+3.5.4 (6) and (7) states that the simple expression used in the integer
+types definition shall be static, which means that we can suppose that
+we always know the actual bounds of each type when generating Why
+code.  The compiler already checks for validity of these static bounds
+(against System.Min_Int, System.Max_Int, System.Max_Binary_Modulus,
+System.Max_Nonbinary_Modulus), so we won't duplicate this check at the
+Why level.
+
+3.5.4 (16): Attribute 'Modulus should have been expanded already; no
+need to do anything on the Why side (a priori). As for S'Mod (Arg), it
+is expanded to a call to "Arg mod S'Modulus". Two tests illustrates
+that fact in test.cmd.
+
+3.5.4 (19) refers to 4.5 for predefined operators. This will be dealt with
+in the corresponding directory (ch4.5__operators_and_expression_evaluation).
+Look out for implementation permission (24) that allows to not raise
+Constraint_Error with predefined operators if the correct result is produced.
+

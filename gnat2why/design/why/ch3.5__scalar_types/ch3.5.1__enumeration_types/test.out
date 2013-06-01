@@ -1,0 +1,13 @@
+
+----------------
+-- ENUM TYPES --
+----------------
+
+File "why_out/enum_test_why.why", line 273, characters 1-139:Valid (0.0520)
+File "why_out/enum_test_why.why", line 278, characters 1-310:Valid (0.0560)
+File "why_out/enum_test_why.why", line 286, characters 1-124:Valid (0.0760)
+File "why_out/enum_test_why.why", line 291, characters 1-262:Valid (0.1520)
+File "why_out/enum_test_why.why", line 299, characters 1-124:Valid (0.1720)
+File "why_out/enum_test_why.why", line 304, characters 1-262:Valid (0.2440)
+File "why_out/enum_test_why.why", line 312, characters 1-124:I don't know
+File "why_out/enum_test_why.why", line 317, characters 1-262:Valid (0.3640)

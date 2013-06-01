@@ -1,0 +1,17 @@
+
+logic bw_and : int, int -> int
+
+logic modular__byte___and : modular__byte, modular__byte -> modular__byte
+
+axiom modular__byte___and_ax :
+ forall left, right : modular__byte.
+  (integer_of___modular__byte (modular__byte___and (left, right)) =
+	  bw_and (integer_of___modular__byte (left),
+                  integer_of___modular__byte (right)))
+
+parameter modular__byte___and_ :
+ left : modular__byte -> right : modular__byte ->
+ { }
+  modular__byte
+ { result = modular__byte___and (left, right) }
+

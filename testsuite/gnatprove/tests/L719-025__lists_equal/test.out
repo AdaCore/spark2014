@@ -1,0 +1,35 @@
+
+p.adb:12:27: info: precondition proved
+p.adb:13:23: info: precondition proved
+p.adb:15:7: info: precondition proved
+p.adb:16:7: precondition not proved
+p.adb:17:39: info: precondition proved
+p.adb:18:19: precondition not proved
+p.adb:22:31: info: precondition proved
+p.adb:24:7: info: precondition proved
+p.adb:25:22: info: precondition proved
+p.adb:25:41: info: precondition proved
+p.adb:25:7: assertion not proved, requires Element (L, Cu1) = Element (L_In, Cu2)
+p.adb:26:7: precondition not proved
+p.adb:32:7: info: precondition proved
+p.adb:33:7: info: precondition proved
+p.adb:5:7: info: precondition proved
+p.adb:6:38: info: precondition proved
+p.adb:7:19: info: precondition proved
+p.adb:8:7: precondition not proved
+p.ads:15:13: info: precondition proved
+p.ads:16:7: info: precondition proved
+p.ads:17:14: info: precondition proved
+p.ads:17:14: postcondition not proved
+p.ads:20:13: info: precondition proved
+p.ads:21:14: postcondition not proved
+p.ads:21:16: info: precondition proved
+p.ads:22:27: info: precondition proved
+p.ads:25:13: info: precondition proved
+p.ads:25:38: info: precondition proved
+p.ads:26:14: info: precondition proved
+p.ads:26:14: postcondition not proved, requires Strict_Equal (L, L'old)
+p.ads:30:13: info: precondition proved
+p.ads:30:38: info: precondition proved
+p.ads:31:14: info: precondition proved
+p.ads:31:14: postcondition not proved, requires Strict_Equal (L, L'old)

@@ -1,0 +1,3 @@
+sccs.adb:22:4: assertion not proved, requires B
+sccs.adb:24:4: assertion not proved, requires B
+sccs.adb:26:4: assertion not proved, requires B

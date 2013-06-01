@@ -1,0 +1,5 @@
+
+sub.adb:25:18: info: range check proved
+sub.adb:32:18: info: range check proved
+sub.ads:12:10: info: postcondition proved
+sub.ads:8:10: info: postcondition proved

@@ -1,0 +1,13 @@
+(* we may wish to verify that if some monitoring detects failure, then the
+   recovery with the highest priority is triggered *)
+
+include "ordered_set.why"
+ 
+predicate recovery_has_higher_priority (co:set, e:element_t) =
+    forall cu:cursor.
+        has_element_(co,cu) -> not (witness(e) < witness(element_(co,cu)))
+
+let test_recovery_highest (co:set) =
+    { not is_empty_(co) }
+    element co (last co)
+    { recovery_has_higher_priority(co,result) }

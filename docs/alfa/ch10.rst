@@ -1,0 +1,6 @@
+Program Structure and Verification Issues
+=========================================
+
+Because functions and expressions in Alfa are pure, it is necessary to analyze
+the bodies of all subprograms called to determine if a function or an
+expression is in Alfa.

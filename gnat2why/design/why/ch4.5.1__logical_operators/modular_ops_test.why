@@ -1,0 +1,13 @@
+
+let modular_ops__my_and (left : modular__byte) (right : modular__byte) =
+  { }
+   (modular__byte___and_ (left) (right))
+  { result = modular__byte___and (left, right) }
+
+let modular_ops__my_and___test125X33
+ (left : modular__byte) (right : modular__byte) =
+  { (integer_of___modular__byte (left) = 125)
+    and (integer_of___modular__byte (left) = 102) }
+   modular__byte___and_ (left) (right)
+  { integer_of___modular__byte (result) = 100 }
+

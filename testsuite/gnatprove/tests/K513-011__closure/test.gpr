@@ -1,0 +1,9 @@
+project Test is
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat12");
+   end Compiler;
+
+   for Source_Dirs use (".");
+
+   for Main use ("a.adb");
+end Test;

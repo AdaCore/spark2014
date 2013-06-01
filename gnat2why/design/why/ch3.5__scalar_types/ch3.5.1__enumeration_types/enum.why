@@ -1,0 +1,125 @@
+
+type enum__day =
+  | enum__mon
+  | enum__tue
+  | enum__wed
+  | enum__thu
+  | enum__fri
+  | enum__sat
+  | enum__sun
+
+function integer_of___enum__day (x : enum__day) : int =
+ (match x with
+  | enum__mon -> 0
+  | enum__tue -> 1
+  | enum__wed -> 2
+  | enum__thu -> 3
+  | enum__fri -> 4
+  | enum__sat -> 5
+  | enum__sun -> 6
+ end)
+
+predicate eq___enum__day (left : enum__day, right : enum__day) =
+ integer_of___enum__day (left) = integer_of___enum__day (right)
+
+predicate le___enum__day (left : enum__day, right : enum__day) =
+ integer_of___enum__day (left) <= integer_of___enum__day (right)
+
+(* YM: why have a special eq___enum__day and le___enum__day instead of 
+   doing directly the operations on integers?
+
+   JG: no particular reason. It might be easier to generate, would make it
+   easier to read the generated code, may not make the prover's work harder.
+   Lots of modals here... I'll experiment both possibilities.
+ *)
+
+predicate enum__day___in_range (x : int) =
+ let first = 0 in
+ let last = 6 in
+  first <= x <= last
+
+logic enum__day___of_integer : int -> enum__day
+
+axiom enum__day___coerce :
+ (forall x : int.
+   enum__day___in_range (x) ->
+    integer_of___enum__day (enum__day___of_integer (x)) = x)
+
+parameter any___enum__day : unit -> { } enum__day { true }
+
+parameter enum__day___of_integer_ :
+ x : int ->
+  { enum__day___in_range (x) }
+   enum__day
+  { integer_of___enum__day (result) = x }
+
+parameter safe___enum__day___of_integer_ :
+ x : int ->
+  { }
+   enum__day
+  { integer_of___enum__day (result) = x }
+
+parameter eq___enum__day_ :
+ left : enum__day -> right : enum__day ->
+{ }
+ bool
+{ result = true <-> eq___enum__day (left, right) }
+
+
+type enum__some_a =
+  | enum__QU41
+  | enum__a
+
+(* ... snip axioms, predicates, parameters: similar to enum__day... *)
+
+type enum__name_clash =
+  | enum__mon__2
+  | enum__a__2
+
+(* ... snip axioms, predicates, parameters, for the same reason... *)
+
+type enum__weekday
+
+logic enum__day___of___enum__weekday : enum__weekday -> enum__day
+
+predicate eq___enum__weekday (left : enum__weekday, right : enum__weekday) =
+ eq___enum__day (enum__day___of___enum__weekday (left),
+                 enum__day___of___enum__weekday (right))
+
+predicate le___enum__weekday (left : enum__weekday, right : enum__weekday) =
+ le___enum__day (enum__day___of___enum__weekday (left),
+                 enum__day___of___enum__weekday (right))
+
+predicate enum__weekday___in_range (s : enum__day) =
+ (le___enum__day (enum__mon, s) and le___enum__day (s, enum__fri))
+
+logic enum__weekday___of___enum__day : enum__day -> enum__weekday
+
+(* YM: beware of possible inconsistencies here in the model. 
+       Why only deals with total logic functions, so that 
+       enum__weekday___of___enum__day should be defined for any day, so
+       refrain from using this function directly. It should only be used
+       in axiom enum__weekday___coerce below.
+
+   JG: actually, it would also be used in the corresponding parameter
+       in the program space (in the postcondition; with a precondition that
+       would assert that we are in the defined range). See
+       enum__day___of_integer_.
+*)
+
+axiom enum__weekday___coerce :
+ (forall x : enum__day.
+  (enum__weekday___in_range (x)) ->
+   eq___enum__day (enum__day___of___enum__weekday
+                   (enum__weekday___of___enum__day (x)), x))
+
+axiom enum__weekday___range :
+ (forall x : enum__weekday.
+  enum__weekday___in_range (enum__day___of___enum__weekday (x)))
+
+axiom enum__weekday___unicity :
+ forall x, y : enum__weekday.
+  enum__day___of___enum__weekday (x) = enum__day___of___enum__weekday (y)
+   -> x = y
+
+(* ...snip parameters, similar to enum__day... *)

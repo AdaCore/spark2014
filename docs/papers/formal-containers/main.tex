@@ -1,0 +1,1505 @@
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{mathpartir}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\usepackage{url}
+\newcommand{\resp}{resp.\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\vs}{\textit{vs.}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\newcommand{\envL}{\ensuremath{\Gamma_L}\xspace}
+\newcommand{\envC}{\ensuremath{\Gamma_C}\xspace}
+\newcommand{\eval}{\envL, \envC \vdash}
+\newcommand{\where}{\mathit{where}~}
+\newcommand{\other}{\mathit{else}}
+\newcommand{\somespace}{\vspace{10pt}}
+\newcommand{\Fv}{\ensuremath{\mathit{F}_{\varnothing}}\xspace}
+\newcommand{\Fc}{\ensuremath{\mathit{Fc}}\xspace}
+\newcommand{\FcInv}{\ensuremath{\mathit{Fc}^{-1}}\xspace}
+\newcommand{\Fe}{\ensuremath{\mathit{Fe}}\xspace}
+\newcommand{\typL}{\ensuremath{\{\Len,\Fc,\Fe\}}\xspace}
+\newcommand{\ImFcPrime}{\ensuremath{\mathit{Im}(\Fc')}\xspace}
+\newcommand{\ImFc}{\ensuremath{\mathit{Im}(\Fc)}\xspace}
+\newcommand{\Img}{\ensuremath{\mathit{Im}}\xspace}
+\newcommand{\TypL}{\ensuremath{\mathbb{L}}\xspace}
+\newcommand{\TypE}{\ensuremath{\mathbb{E}}\xspace}
+\newcommand{\TypD}{\ensuremath{\mathbb{D}}\xspace}
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}\xspace}
+\newcommand{\Int}{\ensuremath{\mathbb{Z}}\xspace}
+\newcommand{\Bool}{\ensuremath{\mathbb{B}}\xspace}
+\newcommand{\Elt}{\ensuremath{\mathit{Elt}}\xspace}
+\newcommand{\Insert}{\ensuremath{\mathit{Insert}}\xspace}
+\newcommand{\Delete}{\ensuremath{\mathit{Delete}}\xspace}
+\newcommand{\Replace}{\ensuremath{\mathit{Replace\_Element}}\xspace}
+\newcommand{\Copy}{\ensuremath{\mathit{Copy}}\xspace}
+\newcommand{\Next}{\ensuremath{\mathit{Next}}\xspace}
+\newcommand{\Previous}{\ensuremath{\mathit{Previous}}\xspace}
+\newcommand{\First}{\ensuremath{\mathit{First}}\xspace}
+\newcommand{\Last}{\ensuremath{\mathit{Last}}\xspace}
+\newcommand{\Left}{\ensuremath{\mathit{Left}}\xspace}
+\newcommand{\Right}{\ensuremath{\mathit{Right}}\xspace}
+\newcommand{\Element}{\ensuremath{\mathit{Element}}\xspace}
+\newcommand{\HasElement}{\ensuremath{\mathit{Has\_Element}}\xspace}
+\newcommand{\StrictEqual}{\ensuremath{\mathit{Strict\_Equal}}\xspace}
+\newcommand{\Empty}{\ensuremath{\mathit{Empty}}\xspace}
+\newcommand{\NoElement}{\ensuremath{\mathit{No\_Element}}\xspace}
+\newcommand{\Length}{\ensuremath{\mathit{Length}}\xspace}
+\newcommand{\Len}{\ensuremath{\mathit{Len}}\xspace}
+\newcommand{\Pre}{\ensuremath{\mathit{Pre}}\xspace}
+\newcommand{\Post}{\ensuremath{\mathit{Post}}\xspace}
+
+\newcommand{\beforesec}{\vspace{-0.2cm}}
+\newcommand{\aftersec}{\vspace{-0.2cm}}
+\newcommand{\beforesub}{\vspace{-0.2cm}}
+\newcommand{\aftersub}{\vspace{-0.1cm}}
+
+\newcommand{\yannick}[1]{{\color{red}#1}}
+
+\sloppy
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+\title{Correct Code Containing Containers}
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Correct Code Containing Containers}
+
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+\author{Claire Dross\inst{1}\and Jean-Christophe Filli\^ atre\inst{2}\and Yannick Moy\inst{1}}
+
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+\institute{AdaCore, 46 rue d'Amsterdam, F-75009 Paris (France)\\
+\texttt{\{dross,moy\}@adacore.com}
+\and 
+CNRS, INRIA Saclay Île-de-France, Université Paris-Sud 11\\
+\texttt{filliatr@lri.fr}}
+
+\maketitle
+
+\begin{abstract}
+
+  For critical software development, containers such as lists, vectors, sets or
+  maps are an attractive alternative to ad-hoc data structures based on
+  pointers. 
+  As standards like DO-178C put formal verification and testing on an equal
+  footing, it is important to give users the ability to apply both to the
+  verification of code using containers.
+  In this paper,
+  we present a definition of containers whose aim is to facilitate their
+  use in certified software, using modern proof technology and novel
+  specification languages. Correct usage of containers and user-provided
+  correctness properties can be checked either by execution during testing
+  or by formal proof with an automatic prover.
+  We present a formal semantics for containers and an axiomatization of this 
+  semantics targeted at automatic provers. We have proved in Coq that the
+  formal semantics is consistent and that the axiomatization thereof is correct.
+
+  \keywords{containers, iterators, verification by contracts, annotations,
+    axiomatization, API usage verification, SMT, automatic provers}
+\end{abstract}
+
+\vspace{-0.5cm}
+\section{Introduction}
+\aftersec
+
+Containers
+%REVIEW 1
+%\footnote{We use the word container as a synonym for a homogeneous
+%  collection, not to mean an aggregate containing heterogeneous objects as in
+%  component architectures.}
+are generic data structures offering a high-level
+view of collections of objects, while guaranteeing fast access to their content
+to retrieve or modify it. The most common containers are lists, vectors, sets
+and maps, which are usually defined in the standard library of languages, like
+in C++ STL, Ada Standard Libraries or Java JCL, and sometimes even as language
+elements, like sets in SETL~\cite{schwartz:1986} or maps in Perl.
+In critical software where
+verification objectives severely restrict the use of pointers, containers offer
+an attractive alternative to pointer-intensive data structures. 
+Containers offer both a better defense against errors than low-level code 
+manipulating pointers, and a rich high-level API to express properties over 
+data. 
+This is
+particularly evident when the implementation of containers themselves obeys the
+coding standards of critical software, with no dynamic allocation and few
+pointers, as is the case for the bounded containers defined in the proposed Ada
+2012 standard~\cite{ada2012}.
+
+Standards for critical software development define comprehensive verification
+objectives to guarantee the high levels of dependability we expect of
+life-critical and mission-critical software. All requirements must be shown to
+be satisfied by the software, which is a costly activity. In particular,
+verification of low-level requirements is usually demonstrated by developing
+unit tests, from which high levels of confidence are only obtained at a high
+cost. This is the driving force for the adoption of formal verification on an
+equal footing with testing to satisfy verification objectives. The upcoming
+DO-178C avionics standard states: \textit{Formal methods [..] might
+  be the primary source of evidence for the satisfaction of many of the
+  objectives concerned with development and verification}.
+
+Although there are some areas where formal verification can be applied
+independently~\cite{souyris:2009:fm}, most areas where testing is the main
+source of evidence today would benefit from an integration of formal
+verification with existing testing practice. At the simplest, this
+combination should be provably sound and it should guarantee a coverage of
+atomic verifications through formal verification and testing. This is the goal
+of project Hi-Lite~\cite{hilite}, a project aiming at combined unit testing and unit proof of
+C and Ada programs.
+% The core feature enabling this combination is a common
+% language of specification (different in C and Ada) that can be both executed
+% and formally analyzed. In this paper, we consider exclusively formal deductive
+% verification: 1) a program is annotated with preconditions, postconditions, and
+% loop invariants; 2) a tool generates verification conditions (VCs), which are
+% formulas that must hold for the program to respect its specification; 3) an
+% automatic prover discharges these VCs.
+
+In the context of project Hi-Lite, this paper deals with the definition of
+suitable containers in Ada, based on Ada standard containers, whose properties
+can be both tested dynamically and proved automatically. Properties
+over containers offer a high level description of the code,
+suitable for expressing partial correctness in the form of code contracts. Therefore, we
+are not only interested in correct usage of container APIs, but also in partial
+correctness of functional properties of interest to users.
+% Common properties
+% include invariants over the container content (\textit{\eg all elements satisfy
+%   property P}), presence/absence of designated elements, value of maximal
+% elements, aggregated value of the container (\textit{\eg the total power
+%   consumed by activated devices}).
+
+Before they can be used in the context of avionics (or similar) safety-critical
+software, the new library of \textit{formal} containers will need to be certified
+and the verification tools we present will have to undergo
+qualification~\cite{standard:do-178b}. We present in this paper: (a) a formal
+proof of correctness of an implementation of the new library in Coq~\cite{coq}, a
+well-known formal programming language; and (b) a formal proof of the new
+library properties used in our verification tools, expressed in the Why
+language~\cite{why} for formal verification. Thus, this work can be seen as a contribution
+to the argument-based approach to certification~\cite{rushby:2010:sss}.
+
+In Section~\ref{sec:formal-containers}, we detail the changes that we introduce
+in formal containers \wrt containers as defined in language standards. In the following
+sections, we describe in detail formal containers for doubly linked lists, and
+we sketch formal containers for vectors, sets and maps: formal semantics in
+Section~\ref{sec:description}, formal specification in the Why language in
+Section~\ref{sec:axiomatization}, formal proof of correctness in Coq in
+Section~\ref{sec:validation}. We finally give a survey of related works in
+Section~\ref{sec:related-works}.
+
+%REVIEW 3
+A longer version of this article with more details and proofs is available on
+the web~\cite{dross:2011:fc-long}.  A web page gives an introduction to the
+code for containers' implementation and proofs~\cite{dross:2011:fc-code}, and
+instructions to anonymously access the git repository where all the source code
+is stored.
+
+% This paper focuses on containers, ie complex mutable data-structures such as
+% lists, vectors, sets or maps. It describes the way these containers,
+% described in the Ada API, have been adapted to be usable for formal proof and
+% the set of axioms that were needed to get SMT automatic provers to carry
+% simple proof over programs using them.
+
+\beforesec
+\section{Formal Containers}
+\label{sec:formal-containers}
+\aftersec
+
+We will use the following Ada code as a running example throughout the
+section. Procedure \verb|Map_F|
+%REVIEW 2
+\footnote{Note that \texttt{Map\_F} is client code, not part of the API.}
+%
+modifies a list in place, by replacing each
+element initially contained in the list by its image through function \verb|F|.
+\lstset{language=Ada, basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
+procedure Map_F (L : in out List) is
+   Current : Cursor := First (L);
+begin
+   while Current /= No_Element loop
+      Replace_Element (L, Current, F (Element (Current)));
+      Next (Current);
+   end loop;
+end Map_F;
+\end{lstlisting}
+
+\beforesub
+\subsection{Contracts in Ada 2012}
+\aftersub
+
+The forthcoming version of the Ada standard, called Ada 2012~\cite{ada2012}, offers a variety of new
+features to express properties of programs. New checks are defined as
+\emph{aspects} of program entities, for which the standard defines precisely
+the various points at which the check is performed during execution. The most
+prominent of these new checks are the \emph{Pre} and \emph{Post} aspects which
+define respectively the precondition and postcondition of a subprogram. These
+are defined as Boolean expressions over program variables and
+functions. 
+\ifdefined\longversion
+Additionally, the expression in a postcondition can refer to the
+value returned by a function \verb|F| as \verb|F'Result|, and to the value in
+the pre-state (before the call) of any variable \verb|V| as
+\verb|V'Old|.
+\fi
+% Finally, expressing such properties is greatly facilitated by the
+% extended language of expressions in Ada 2012, which comprises if-expressions,
+% case-expressions, quantified-expressions and expression-functions, which all
+% together define a small Turing-complete purely functional language.
+For example, a simple contract on function \verb|Map_F| could specify that its
+parameter list should not be empty, and that the call does not modify its
+length:
+\begin{lstlisting}
+procedure Map_F (L : in out List) with 
+  Pre  => Length (L) /= 0,
+  Post => Length (L) = Length (L'Old);
+\end{lstlisting}
+
+Notice that, in the precondition, \verb|L| refers to the list in the pre-state
+while, in the postcondition, \verb|L| refers to the list in the post-state, hence
+the need to refer to the special attribute \verb|L'Old| in the postcondition, 
+which designates the
+value of \verb|L| before the call.
+\footnote{More
+  precisely, attribute \texttt{'Old} can be applied to all \emph{names}
+(as defined in Ada standard), so
+  that we could use \texttt{Length (L)'Old} instead of \texttt{Length
+    (L'Old)}.}  
+\ifdefined\longversion
+When compiled with checks on, any
+failure from the caller to respect the precondition of \verb|Map_F| or from
+\verb|Map_F| to respect its postcondition will be detected at run-time and
+reported as an error.
+\fi
+The execution model for these aspects is simply to insert assertions at
+appropriate locations, which raise exceptions when violated. For each variable
+\verb|V| whose pre-state value may be read in the postcondition (\verb|V'Old|),
+the compiler inserts a shallow copy of the variable's value at the beginning of the
+subprogram body. It is this copy which is read to give the value of
+\verb|V'Old|. 
+
+Expressing properties in contracts is greatly facilitated by the use of
+if-expressions, case-expressions, quantified-expressions and expression-functions, 
+all defined in Ada 2012. The main objective of these \emph{logic} features is
+verification by testing, based on their executable semantics.
+In particular, quantified-expressions are always
+expressed over finite ranges or (obviously finite) containers, with a loop
+through the range or container as execution model:
+\verb|for all J in 0 .. 10 => P (J)| is true if-and-only-if the subprogram
+\verb|P| returns \verb|True| for every argument, starting from 0 up to 10.
+
+\beforesub
+\subsection{Ada Standard Containers}
+\aftersub
+
+Like in many other languages, Ada standard containers define two mutually
+dependent data structures: containers proper which hold the data, and iterators
+(or cursors) which provide handles to individual pieces of data. In function
+\verb|Map_F|, the container has type \verb|List| and the iterator has type
+\verb|Cursor|, which are both defined by the standard Ada lists. A cursor is
+implicitly associated with a container (implemented as a pointer field in the
+cursor structure), in which it designates an element. An important feature of Ada
+containers is that cursors remain valid as long as the container
+exists and the element referenced is not deleted, like
+many iterators in other languages (for example those in C++ STL and Java JCL).
+This allows modifying a container while iterating over its content with
+cursors, without risk of invalidating these cursors.
+
+\ifdefined\longversion
+As seen in the example, a cursor \verb|Cu| can be used for three different purposes:
+accessing a designated element of the container through \verb|Element (Cu)|;
+iterating over the content of a container \verb|L|,
+by starting at the first cursor in the container, given by \verb|First (L)|,
+and repeatedly reaching to the next cursor, given by \verb|Next (Cu)|;
+modifying a container like in the call to \verb|Replace_Element| in the example.
+A designated cursor called \verb|No_Element| is the default invalid cursor (it
+designates no element).
+\fi
+
+\beforesub
+\subsection{API Modification: Independent Cursors}
+\label{sec:independent-cursor}
+\aftersub
+
+\subsubsection{Problem.}
+
+A useful postcondition for \verb|Map_F| is to state how elements are
+modified by the call. All cursors are preserved through replacement of an
+element in a list. Thus, for every cursor \verb|Cu| that designates an element
+\verb|E| in \verb|L| before the call, \verb|Cu| designates \verb|F (E)| in
+\verb|L| after the call. It seems like we could express it with a
+quantified-expression:
+\begin{lstlisting}
+procedure Map_F (L : in out List) with 
+  Post => (for all Cu in L => Element (Cu) = ???);
+\end{lstlisting}
+
+The expression denoted by \verb|???| should designate the value obtained by calling
+\verb|F (Element (Cu))| in the pre-state, which could be intuitively written as
+\verb|F (Element (Cu))'Old|. Unfortunately, this expression is not valid
+because it refers to the value in the pre-state of \verb|Cu|, which is not
+defined in the pre-state
+%REVIEW 2
+since it is quantified.
+%
+As a side note, notice that, even for a cursor
+\verb|Cu| defined outside of the \verb|Map_F| function, \verb|Cu'Old| would be the same as
+\verb|Cu| in our example, because the semantics of attribute \verb|'Old| is to
+perform a shallow copy, so it does not copy the implicit container in a cursor.
+
+% In order to express such a quantified property over containers, we
+% need to be able to refer to the same value for the cursor in the post-state and
+% in the pre-state.
+
+\subsubsection{Approach.}
+To solve the previous two problems,
+we break the implicit link between cursors and containers, so that the same cursor can be used both in
+the pre-state and in the post-state. Then, the previous postcondition can be
+expressed easily:
+\begin{lstlisting}
+procedure Map_F (L : in out List) with 
+  Post => 
+   (for all Cu in L =>
+      Element (L, Cu) = F (Element (L'Old, Cu)));
+\end{lstlisting}
+
+Notice that we passed an additional argument to function \verb|Element|, to
+indicate the container from which the element at cursor \verb|Cu| should be
+retrieved. This is true for every function in the API of containers which
+previously accessed implicitly the container through a cursor, such as 
+\verb|Next| in the example of Section~\ref{sec:formal-containers}.
+
+% so that
+% procedure \verb|Map_F| needs to be rewritten as:
+% \begin{verbatim}
+% procedure Map_F (L : in out List) is
+%    Current : Cursor := First (L);
+% begin
+%    while Current /= No_Element loop
+%       Replace_Element (L, Current, F (Element (L, Current)));
+%       Next (L, Current);
+%    end loop;
+% end Map_F;
+% \end{verbatim}
+
+This is the only modification to the API of containers that we introduce. The
+alternative of using existing containers both greatly complicates the execution
+model and the formal verification.
+
+Using existing containers would require a different semantics for the \verb|'Old|
+attribute, which would reach to the complete pre-state including the stack and
+heap, similar to the work by Kosiuczenko on Java
+programs~\cite{kosiuczenko:2010:mpc} that builds a complete history of updates
+alongside execution. Our solution has the benefits of sticking to the standard
+semantics for \verb|'Old| in Ada 2012, leading to a simple and efficient execution model.
+
+The semantics of standard cursors also leads to more complex verification
+conditions to check the correct use of containers' API: each access through
+cursor \verb|Cu| to container \verb|Co| is valid only if 1) \verb|Co| is alive,
+which can be hard to know if \verb|Co| is implicit, and 2) \verb|Cu| is
+associated to container \verb|Co|, which amounts to deciding whether \verb|Co|
+is the same as the implicit container in \verb|Cu|. With the semantics of
+formal containers, both verification conditions above disappear.
+
+\ifdefined\longversion
+As seen from the example, the impact on user code is minimal, easy to automate,
+leading to more readable programs. Assuming the constraint that a cursor is
+never used to index two different containers, which is almost always true in
+code (but not in annotations, as shown in our example), it will be possible to
+translate automatically programs that use formal containers into programs that
+use standard containers, should the need arise. This translation would require
+computing the container associated to each cursor by static analysis.
+\fi
+
+\beforesub
+\subsection{API Addition: Parts of Containers}
+\label{sec:container-parts}
+\aftersub
+
+\subsubsection{Problem.}
+
+In order to prove the postcondition of \verb|Map_F| stated above, we need to
+annotate the loop in \verb|Map_F| with a loop invariant, which states the
+accumulated effect of N iterations through the loop. We would like to state
+that \emph{list elements already scanned} have been modified by \verb|F| (as in
+the postcondition) and that \emph{list elements not yet scanned} are
+unchanged. This pattern of loop invariant, consisting of two parts for the
+elements scanned and the elements not yet scanned, is typical of loops that
+iterate over a container.
+
+\subsubsection{Approach.}
+
+We introduce two new functions, called \verb|Left| and \verb|Right|, which
+return the containers holding respectively the elements preceding (exclusively) or
+following (inclusively) a given cursor in the container. With these functions, the effect of
+the loop on the elements already scanned resembles the postcondition:
+\begin{lstlisting}
+pragma Assert 
+  (for all Cu in Left (L, Current) => 
+    Element (L, Cu) = F (Element (L'Old, Cu)));
+\end{lstlisting}
+The effect of the loop on the elements not yet scanned is not simply the
+equality of right containers. Indeed, equality of lists \verb|L1| and \verb|L2|
+only implies that, while iterating separately through each of the lists, the
+same elements are encountered in the same order. Here, we also need to be able
+to iterate on both lists with the same cursor, so that the first cursors of
+\verb|L1| and \verb|L2| should be equal and then each call to \verb|Next|
+should return the same cursor on both lists
+%REVIEW 2
+which is not implied by equality.
+% which would be expressed as:
+% \begin{verbatim}
+% pragma Assert (Right (L, Current) = Right (L'Old, Current));
+% \end{verbatim}
+% Indeed, the equality operator of the container API defines structural equality,
+% which is not enough here. We need to know that the right containers contain the
+% same elements \emph{and the same cursors}.
+This is expressed with a new
+function, called \verb|Strict_Equal|:
+\begin{lstlisting}
+pragma Assert 
+  (Strict_Equal (Right (L, Current), Right (L'Old, Current)));
+\end{lstlisting}
+
+% Notice that the operations \verb|Left| and \verb|Right| need to copy the argument
+% container, so they should be used only in annotations for efficiency reasons.
+
+% The implementation of \verb|Left| and \verb|Right| simply copies the argument
+% container (which preserves cursors, thanks to the modification presented in
+% Section~\ref{sec:independent-cursor}), and removes those elements that should
+% not be present in the part considered. 
+
+% Yannick: I commented out the following, to save space.
+
+% What is important is that the iteration order over the container should be
+% preserved, even in containers such as non ordered sets where the iteration
+% order is not always preserved by deletion. Efficiency is not an issue here,
+% as these functions are meant to be used in annotations only, and not kept in
+% the final executable. The implementation of \verb|Strict_Equal| simply loops
+% through the container, so it has the same cost as the equality operator.
+
+\beforesec
+\section{Formal Semantics}
+\label{sec:description}
+\aftersec
+
+In this section, we present a formal semantics for lists. We show
+briefly how the formal semantics of other containers compares to the one of
+lists in the last subsection.
+% We define a formal semantics for doubly linked lists from the Ada standard,
+% with the API changes described in Sections~\ref{sec:independent-cursor}
+% and~\ref{sec:container-parts}.
+
+\beforesub
+\subsection{Syntax of Lists}
+\aftersub
+
+A program is a sequence of variable declarations for lists (in \texttt{Lvar})
+and cursors (in \texttt{Cvar}) followed by a sequence of instructions (in
+\texttt{Instr}). Procedures $\Insert$, $\Delete$ and $\Replace$ modify their
+first argument, which must be therefore a variable, and have no return
+value. The remaining instructions are assignments. Notice that list assignment
+makes an explicit copy of its argument, which prevents aliasing between
+lists. \texttt{LExpr} is the set of list expressions. $\Empty$ is the empty
+list constant. Functions $\Left$ and $\Right$ return parts of containers as
+defined in Section~\ref{sec:container-parts}. \texttt{CExpr} is the set of
+cursor expressions. \NoElement is the constant invalid cursor.  Functions
+$\First$, $\Last$, $\Next$ and $\Previous$ are used for iterating over
+lists. \texttt{EExpr} is the set of element expressions. Function $\Element$
+accesses the element designated by a cursor in a list. \texttt{BExpr} is the
+set of Boolean expressions. $\HasElement$ checks for the validity of a cursor
+in a given container, $=$ is the structural equality and $\StrictEqual$ is the
+more constraining equality described in
+Section~\ref{sec:container-parts}. Finally, \texttt{IExpr} is the set of
+integer expressions. Function $\Length$ returns the length of a list.
+
+\small
+\hspace*{-0.8cm}
+\begin{minipage}[t]{0.5\linewidth}
+  \begin{eqnarray*}
+    & \texttt{Instr} := & \Insert (\texttt{LVar},\texttt{CExpr},\texttt{EExpr})\\
+    & | & \Delete (\texttt{LVar},\texttt{CVar})\\
+    & | & \Replace \\
+    &   & \qquad (\texttt{LVar},\texttt{CExpr},\texttt{EExpr})\\
+    & | & \texttt{Cvar} := \texttt{CExpr}\\
+    & | & \texttt{Lvar} := \Copy(\texttt{LExpr})\\
+    & | & \dots\\
+    & \texttt{LExpr} := & \texttt{Lvar}\\
+    & | & \Empty\\
+    & | & \Left (\texttt{LExpr},\texttt{CExpr})\\
+    & | & \Right (\texttt{LExpr},\texttt{CExpr})\\
+    & \texttt{IExpr} := & \Length (\texttt{LExpr})\\
+    & | & \dots
+  \end{eqnarray*}
+\end{minipage}
+\begin{minipage}[t]{0.5\linewidth}
+  \begin{eqnarray*}
+    & \texttt{CExpr} := & \texttt{Cvar}\\
+    & | & \NoElement\\
+    & | & \First (\texttt{LExpr})\\
+    & | & \Last (\texttt{LExpr})\\
+    & | & \Next (\texttt{LExpr},\texttt{CExpr})\\
+    & | & \Previous (\texttt{LExpr},\texttt{CExpr})\\
+    & \texttt{EExpr} := & \Element (\texttt{LExpr},\texttt{CExpr})\\
+    & | & \dots\\
+    & \texttt{BExpr} := & \HasElement (\texttt{LExpr},\texttt{CExpr})\\
+    & | & \texttt{LExpr}=\texttt{LExpr}\\
+    & | & \texttt{CExpr}=\texttt{CExpr}\\
+    & | & \StrictEqual (\texttt{LExpr},\texttt{LExpr})\\
+    & | & \dots\\
+  \end{eqnarray*}
+\end{minipage}
+\normalsize
+
+For the sake of simplicity, we only list instructions and expressions that are
+specific to containers. Thus, we have not included loops or branching
+statements in the set of instructions, or arithmetic operations in the set of
+integer expressions.
+
+\beforesub
+\subsection{Operational Semantics of Lists}
+\aftersub
+
+Since lists are generic in the kind of element they contain, the type \TypE of
+elements is left unspecified. The type \TypD of cursors can be any countably infinite type.
+We add a specific element $\bot$ to this set, $\TypD\cup\bot$ is written $\TypD^\bot$.
+There is an environment for lists \envL, and an
+environment for cursors \envC:
+
+\begin{eqnarray*}
+&&\envL : \texttt{Lvar} \rightarrow \TypL = \{\Len
+: \Nat, \Fc : [1 .. \Len] \hookrightarrow \TypD, \Fe : \ImFc
+\rightarrow \TypE\} \\
+&&\envC : \texttt{Cvar} \rightarrow \TypD^\bot
+\end{eqnarray*}
+Intuitively, lists can be seen as an array $\Fc$ of cursors with a mapping
+$\Fe$ from cursors to elements. \Fc is injective, so \Fc restricted to \ImFc is
+bijective, and $\FcInv:\ImFc \rightarrow[1 .. \Len]$ is its inverse. We
+extend \FcInv to $\FcInv_+: \ImFc\cup \{\bot\} \rightarrow [1 .. \Len+1]$
+with $\FcInv_+(\bot)=\Len+1$.
+Given an instruction $I$ in \texttt{Instr}, a list $l$ in \texttt{LExpr}, a
+cursor $c$ in \texttt{CExpr}, an expression $e$ in \texttt{EExpr}, a Boolean
+expression $b$ in \texttt{BExpr} and an integer expression $i$ in
+\texttt{IExpr}, judgments take the following form:
+\begin{eqnarray*}
+&\eval I \Rightarrow \envL',\envC' 
+\qquad \eval l \Rightarrow \TypL
+\qquad \eval c \Rightarrow \TypD^\bot\\
+&\eval e \Rightarrow \TypE
+\qquad \eval b \Rightarrow\Bool
+\qquad \eval i \Rightarrow\Int
+\end{eqnarray*}
+%REVIEW 1
+If $\mathit{expr}$ is an expression, $\eval \mathit{expr} \Rightarrow \mathit{val}$
+means that $\mathit{expr}$ evaluates in environments $\envL$ and $\envC$ to a
+value represented by $\mathit{val}$ in the semantics. 
+If $\mathit{instr}$ is an instruction, $\eval \mathit{instr} \Rightarrow \envL',\envC'$
+means that $instr$ change the environments $\envL$ and $\envC$ into $\envL'$ and $\envC'$.
+
+Below are the description of the semantics of integer, element and boolean expressions.
+The result of function \Length on a list evaluating to \typL
+is \Len. Similarly, function \Element returns the value of \Fe on $d$,
+where cursor argument $c$ evaluates to $d$. Notice that $\Element(l,c)$ is
+defined only when $d\in \ImFc$, which is expressed in the informal semantics as
+\emph{$c$ designates an element in $l$}. Indeed, the associated Ada function
+will raise a run-time error otherwise. $\HasElement(l,c)$ checks if $c$
+effectively designates an element in $l$. Equality over lists ($=$) is the
+structural equality. It only implies that the elements in its two list
+arguments appear in the same order, \ie the equality of $\Fe\circ\Fc :
+[1..\Len] \rightarrow \TypE$. \StrictEqual is stronger than $=$, as expected,
+since it also implies the equality of \Fc and \Fe. Equality
+of cursors is simply equality of their evaluations.
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+\eval l \Rightarrow \typL
+}{
+\eval \Length(l)\Rightarrow\Len
+}\\
+&
+\inferrule{
+\eval l \Rightarrow \typL \\
+\eval c \Rightarrow d \\
+d\in \ImFc
+}{
+\eval \Element(l,c)\Rightarrow\Fe(d)
+} \\
+&
+\inferrule{
+\eval l \Rightarrow \typL \\
+\eval c \Rightarrow d
+}{
+\eval \HasElement(l,c)\Rightarrow d\in \ImFc
+}\\
+&
+\inferrule{
+\eval l_1 \Rightarrow \{\Len_1,\Fc_1,\Fe_1\} \\
+\eval l_2 \Rightarrow \{\Len_2,\Fc_2,\Fe_2\} \\
+}{
+\eval l_1=l_2\Rightarrow\Len_1=\Len_2 \And \Fe_1\circ\Fc_1=\Fe_2\circ\Fc_2
+}\\
+&
+\inferrule{
+\eval l_1 \Rightarrow \{\Len_1,\Fc_1,\Fe_1\} \\
+\eval l_2 \Rightarrow \{\Len_2,\Fc_2,\Fe_2\} \\
+}{
+\eval \StrictEqual(l_1,l_2)\Rightarrow\Len_1=\Len_2 \And \Fc_1=\Fc_2 \And \Fe_1=\Fe_2
+}\\
+&
+\inferrule{
+\eval c_1 \Rightarrow d_1 \\
+\eval c_2 \Rightarrow d_2 \\
+}{
+\eval c_1=c_2\Rightarrow d_1=d_2
+}
+\end{eqnarray*}
+}%
+Below are the description of the semantics of cursor expressions. The special
+invalid cursor \NoElement evaluates to $\bot$. This is possible because $\bot$ cannot
+appear in \ImFc, as $\Fc : [1..\Len] \rightarrow \TypD$. Therefore $\bot$ is
+not a \emph{valid} cursor, \ie it designates no element, in any list. Function \Next is defined
+for both valid cursors and \NoElement. It returns \NoElement when applied to a
+cursor which has no valid successor (\ie for \NoElement and the last
+cursor). \Previous is similar. Function \First is defined on every list. It
+returns \NoElement when called on an empty list. \Last is similar.
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+}{
+\eval \NoElement\Rightarrow\bot
+} \\
+&
+\inferrule{
+\eval l \Rightarrow \typL \\
+\eval c \Rightarrow d_1 \\
+d_1\in \ImFc\cup \{\bot\}
+}{
+\eval \Next(l,c)\Rightarrow d_2 \\
+\where d_2 = \{\Len \neq 0 \And d_1\in \ImFc\backslash \{\Fc(\Len)\} \rightarrow \Fc(\FcInv(d_1)+1),
+\other \rightarrow \bot\}
+} \\
+&
+\inferrule{
+\eval l \Rightarrow \typL \\
+\eval c \Rightarrow d_1 \\
+d_1\in \ImFc\cup \{\bot\}
+}{
+\eval \Previous(l,c)\Rightarrow d_2 \\
+\where d_2 = \{\Len \neq 0 \And d_1\in \ImFc\backslash \{\Fc(1)\} \rightarrow \Fc(\FcInv(d_1)-1),
+\other \rightarrow \bot\}
+} \\
+&
+\inferrule{
+\eval l \Rightarrow \typL
+}{
+\eval \First(l) \Rightarrow d \\
+\where d = \{\Len = 0 \rightarrow \bot, \Len > 0 \rightarrow \Fc(1)\}
+} \\
+&
+\inferrule{
+\eval l \Rightarrow \typL
+}{
+\eval \Last(l) \Rightarrow d \\
+\where d = \{\Len = 0 \rightarrow \bot, \Len > 0 \rightarrow \Fc(\Len)\}
+}
+\end{eqnarray*}
+}%
+Below are the description of the semantics of list expressions.  The empty
+list, returned by $\Empty$, is the only list whose length is null
+($\Fv$ is the only function that is defined on the empty set
+$\varnothing$).  $\Left$ is defined for both valid cursors and
+$\NoElement$. Its evaluation yields a list whose valid cursors are the valid
+cursors of the list argument which precede cursor argument $c$ (when $c$ is
+\NoElement, that means all cursors). \Right is similar.
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+}{
+\eval \Empty \Rightarrow \{0,\Fv,\Fv\}
+}\\
+&
+\inferrule{
+\eval l \Rightarrow \typL \\
+\eval c \Rightarrow d \\
+d\in \ImFc\cup \{\bot\} \\
+n=\FcInv_+(d)-1
+}{
+\eval \Left(l,c) \Rightarrow \{n,\Fc',\Fe'\} \\
+\where \Fc'=\Fc|_{[1..n]} \\ 
+       \Fe'=\Fe|_{\ImFcPrime}
+} \\
+&
+\inferrule{
+\eval l \Rightarrow \typL \\
+\eval c \Rightarrow d \\
+d\in \ImFc\cup \{\bot\} \\
+n=\FcInv_+(d)-1
+}{
+\eval \Right(l,c) \Rightarrow \{\Len-n,\Fc',\Fe'\} \\
+\where \Fc'=\lambda i : [1.. \Len-n]. \Fc(n+i) \\ 
+       \Fe'=\Fe|_{\ImFcPrime}
+}
+\end{eqnarray*}
+}%
+The rules below describe the semantics of instructions.  Rules concerning reads
+or assignment of variables are omitted (they are the usual ones). \Insert
+modifies the environment so that its list variable argument designates, after
+the call, a list where a cursor and an element have been inserted at the proper
+place. The cursor argument, which can be either a valid cursor or \NoElement,
+encodes the place the new element is inserted. The newly created cursor is not
+specified. It should be different from \NoElement and from every valid cursor
+in the argument list. \Delete modifies the environment so that its cursor
+variable argument (which must reference a valid cursor before the call) is
+deleted from the list referenced by its list variable argument. The cursor
+variable references the special invalid cursor \NoElement after the call.
+\Replace modifies the environment so that, after the call, its cursor argument
+(which must be valid) designates its element argument in the list referenced by
+its list variable argument.
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+\envL(l) = \typL \\
+\eval c \Rightarrow d_1 \\
+d_1\in \ImFc\cup \{\bot\} \\
+n=\FcInv_+(d_1) \\
+d_2 \notin \ImFc\cup \{\bot\} \\
+\eval e \Rightarrow \Elt
+}{
+\eval \Insert(l,c,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
+\where \Fc' = \lambda i : [1 .. \Len+1]. \\
+\{ i\in [1..n-1] \rightarrow \Fc(i), i=n \rightarrow d_2, i \in [n+1..\Len+1] 
+\rightarrow \Fc(i-1)\}\\
+\Fe' = \lambda d : \ImFcPrime. \{ d\in \ImFc \rightarrow \Fe(d), d = d_2
+\rightarrow \Elt\}
+} \\
+&
+\inferrule{
+\envL(l) = \typL \\
+\envC(c) = d \\
+d\in \ImFc \\
+n=\FcInv(d)
+}{
+\eval \Delete(l,c) \Rightarrow \envL[l\mapsto \{\Len-1,\Fc',\Fe'\}], \envC[c\mapsto \bot] \\
+\where \Fc' = \lambda i : [1 .. \Len-1].
+\{ i\in [1..n-1] \rightarrow \Fc(i), i \in [n..\Len-1] \rightarrow \Fc(i+1)\}\\
+\Fe' = \Fe|_{\ImFcPrime}
+} \\
+&
+\inferrule{
+\envL(l) = \typL \\
+\eval c \Rightarrow d_1 \\
+d_1\in \ImFc \\
+\eval e \Rightarrow \Elt
+}{
+\eval \Replace(l,c,e) \Rightarrow \envL[l\mapsto \{\Len,\Fc,\Fe'\}], \envC \\
+\where \Fe' = \lambda d : \ImFc.
+\{ d=d_1 \rightarrow \Elt, d\neq d_1 \rightarrow \Fe(d)\}
+}
+\end{eqnarray*}
+}%
+
+% Yannick: I commented the 2 lines below, as I don't think they add much.
+
+% Notice that elements in a list cannot be
+% aliased, as it is copied when inserted or retrieved from the list.
+
+\beforesub
+\subsection{Vectors, Sets and Maps}
+\aftersub
+
+\subsubsection{Sets.}
+
+Sets do not allow duplication of elements, the order of iteration in a set is
+not user-defined and the link between cursors and elements is preserved in most cases.
+In the semantics, sets can be modeled as the same
+tuples as lists where $\Fe$ is injective: $\{\Len: \Nat, \Fc : [1 .. \Len]
+\hookrightarrow \TypD, \Fe : \ImFc \hookrightarrow \TypE\}$.
+For non ordered sets, the order of iteration is not specified.
+\ifdefined\longversion
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+\envL(l) = \typL \\
+d_1 \notin \ImFc\cup \{\bot\} \\
+\eval e \Rightarrow \Elt \\
+\Elt \notin \Img(\Fe)\\
+\Fc' : [1 .. \Len+1] \hookrightarrow \ImFc\cup \{ d_1\}
+}{
+\eval \Insert(l,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
+\where \Fe' = \lambda d : \ImFcPrime. \{ d\in \ImFc \rightarrow \Fe(d), d = d_1
+\rightarrow \Elt\}
+}
+\end{eqnarray*}
+}
+\fi
+If the set is
+ordered, the order of iteration is constrained by the order over elements.
+As a consequence, function $\Fe\circ\Fc$ has to preserve order.
+\ifdefined\longversion
+
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+\envL(l) = \typL \\
+d_1 \notin \ImFc\cup \{\bot\} \\
+\eval e \Rightarrow \Elt\\
+\Elt \notin \Img(\Fe)\\
+n = (max (\{i\in [1..\Len] | \Fe(\Fc(i))<\Elt\}\cup\{0\})) + 1
+}{
+\eval \Insert(l,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
+\where \Fc' = \lambda i : [1 .. \Len+1]. \\
+\{ i\in [1..n-1] \rightarrow \Fc(i), i=n \rightarrow d_1, i \in [n+1..\Len+1] 
+\rightarrow \Fc(i-1)\}\\
+\Fe' = \lambda d : \ImFcPrime. \{ d\in \ImFc \rightarrow \Fe(d), d = d_1
+\rightarrow \Elt\}
+}
+\end{eqnarray*}
+}
+\else
+The longer version of this article presents the modified inference rule for 
+$\Insert$ for each container.
+\fi
+\subsubsection{Maps.}
+
+Maps behave just like sets of pairs key/element except that they only constrain
+keys: $(k_1,e_1)<(k_2,e_2)\leftrightarrow k_1<k_2$ and
+$(k_1,e_1)=(k_2,e_2)\leftrightarrow k_1=k_2$.
+
+\subsubsection{Vectors.}
+
+Vectors do not expect cursors to keep designating the same element in every
+case. Instead, as for arrays, elements can be accessed through their position
+(an index). As a consequence, we model vectors as tuples $\{\Len : \Nat, \Fc :
+[1 .. \Len] \hookrightarrow \TypD, \Fe : [1 .. \Len] \rightarrow \TypE\}$
+where $\Fc$ is injective. When an element is inserted or deleted from a vector,
+nothing can be said for the cursors that follow the place of insertion/deletion.
+
+\ifdefined\longversion
+{\small
+\begin{eqnarray*}
+&
+\inferrule{
+\envL(l) = \typL \\
+\eval i \Rightarrow n\\
+n\in [0..\Len] \\
+\eval e \Rightarrow \Elt\\
+\Fc_{S} \Rightarrow [n+1..\Len+1] \hookrightarrow \TypD \backslash \Img(\Fc|_{[1..n]})
+}{
+\eval \Insert(l,i,e) \Rightarrow \envL[l\mapsto \{\Len+1,\Fc',\Fe'\}], \envC \\
+\where \Fc' = \lambda j : [1 .. \Len+1]. \\
+\{ j\in [1..n] \rightarrow \Fc(j), j \in [n+1..\Len+1] 
+\rightarrow \Fc_{S}(j)\}\\
+\Fe' = \lambda j : [1 .. \Len+1]. \\
+\{ j\in [1..n] \rightarrow \Fe(j), j = n+1
+\rightarrow \Elt, j\in [n+2..\Len+1] \rightarrow \Fe(j-1)\}
+}
+\end{eqnarray*}
+}
+\fi
+
+\beforesec
+\section{Axiomatization}
+\label{sec:axiomatization}
+\aftersec
+
+In this section, we present an axiomatization of lists in the language Why,
+targeted at automatic provers.  We show that this axiomatization is correct
+\wrt the formal semantics we gave in
+Section~\ref{sec:description}.  We will formally prove it is correct \wrt
+formal semantics in Coq in Section~\ref{sec:validation}.
+
+% We define an axiomatization of lists in the language Why. For each construct
+% $\inferrule{\Pre_S}{\Post_S}$ in the axiomatic semantics presented in
+% Section~\ref{sec:description}, we define propositions $\Pre_A$ and $\Post_A$ in
+% Why such that $\Pre_A \Rightarrow \Pre_S$ and $\Post_S \Rightarrow \Post_A$.
+% This axiomatic should not be the exact translation of our semantics, but rather
+% facilitate the verification of programs with the automatic prover Alt-Ergo.
+
+\beforesub
+\subsection{Presentation of Why}
+\label{subsec:why}
+\aftersub
+
+The Why platform~\cite{why} is a set of tools for deductive program
+verification. The first feature of Why is to provide a common
+frontend to a wide set of automated and interactive theorem provers. 
+Why implements a total, polymorphic, first-order logic, in which the user can
+declare types, symbols, axioms and goals. These goals are then
+translated to the native input languages of the various supported
+provers. In our case, we are using the backends for the Coq proof
+assistant~\cite{coq} and the three SMT solvers Alt-Ergo~\cite{alt-ergo},
+Z3~\cite{Z3} and Simplify~\cite{Simplify}.
+%
+For example, here is some Why syntax that declares a
+modulo operation over integers, together with some possible axiomatization:
+\lstset{language={}, morekeywords={let, logic, axiom, goal, parameter, forall, exists},
+ basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
+logic mod_ : int, int -> int
+axiom mod__ : forall a, b : int. 0 < b -> 
+  exists q : int. a = b * q + mod_(a, b)
+    and 0 <= mod_(a, b) < b 
+goal test : mod_(7, 2) = 1
+\end{lstlisting}
+The second feature of Why we use here is to provide a
+verification condition generator for an idealized, alias-free,
+Hoare-logic-like programming language. The user declares and
+implements programs, which are annotated with pre- and postconditions,
+and local assertions such as loop invariants. Verification conditions
+are then generated and transmitted to the theorem provers.
+Here is for instance the declaration of a program function
+\begin{lstlisting}
+parameter mod : a : int -> b : int ->
+  {0 < b} int {result = mod_(a, b)}
+\end{lstlisting}
+which takes two integers \texttt{a} and \texttt{b} as arguments, has
+precondition \texttt{0 < b}, returns a result of type \texttt{int} and
+has postcondition \verb|result = mod_(a, b)|. When used inside programs,
+this function will trigger verification conditions (namely, that
+its second argument is positive). This is one way to express that
+modulo is a partial operation.
+
+% Note: on n'a pas la place de donner un exemple de programme, mais ce*)
+% n'est pas la peine car la suite de l'article n'en montre pas
+
+\beforesub
+\subsection{Axiomatization of Lists}
+\aftersub
+
+Note that this axiomatic is not meant to be the exact translation of our
+semantics, but rather is written to facilitate the verification of programs
+with automatic provers.
+
+\subsubsection{Types.}
+
+The type of elements is irrelevant, and so it is defined as an abstract
+type \verb|element_t|. Cursors and lists are described respectively with abstract types 
+\verb|cursor| and \verb|list|, further axiomatized in the following.
+
+\subsubsection{Properties.}
+
+To encode the semantics defined in Section~\ref{sec:description}, we introduce
+three logic functions:
+\begin{lstlisting}
+logic length_   : list -> int
+logic position_ : list, cursor -> int
+logic element_  : list, cursor -> element_t
+\end{lstlisting}
+Logic functions \verb|length_| and \verb|element_| define accessors to the
+fields \Len and \Fe of a list. The encoding is more complex for the field \Fc,
+due to the fact that \Fc is used in three different ways in the specification:
+1) directly, 2) through its inverse \FcInv, and 3) through its domain
+\ImFc. Function \verb|position_| is the extension of \FcInv to cursors not in
+\ImFc, whose image is set to 0. It gives access to both \ImFc ($c\in \ImFc$
+$\Leftrightarrow$ \verb|position_(l, c) > 0|) and \FcInv.
+We rewrite almost all rules of the semantics to remove
+occurrences of \Fc.  For example, in the rule for \Next, $d_2=\Fc(\FcInv(d_1)+1)$
+can be rewritten as $\FcInv(d_2)=\FcInv(d_1)+1$. The only rule that cannot be
+translated that way is $=$. For this one rule, we can use an
+existential quantification, $\forall~ d_1 : \Img(\Fc_1). \exists~ d_2 :
+\Img(\Fc_2). \Fc_1^{-1}(d_1)=\Fc_2^{-1}(d_2) \And \Fe_1(d_1)=\Fe_2(d_2)$.
+Why functions \verb|length_|, \verb|element_| and \verb|position_|
+are related to the semantics as follows:
+{\small
+\begin{eqnarray*}
+  \forall\ \verb|l|,\ \verb|i|,\ \verb|length_(l) = i| &~\Leftrightarrow~& \exists\ \Len,\ \Fc,\ \Fe,\\
+  &&\eval \verb|l| \Rightarrow \typL \And \Len = \verb|i|\\
+  \forall\ \verb|l|,\ \verb|c|,\ \verb|i|,\ \verb|position_(l, c) = i| &~\Leftrightarrow~& \exists\ \Len,\ \Fc,\ \Fe,\ d,\\
+   &&\eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow d\\
+  &&  \And \verb|i|\geq 0 \And (\verb|i|=0 \rightarrow d \notin \ImFc) \\
+  && \And (\verb|i|>0 \rightarrow d \in \ImFc \And \FcInv(d)=\verb|i|)\\
+  \forall\ \verb|l|,\ \verb|c|,\ \verb|e|, \ \verb|position_(l, c) > 0| & \rightarrow &\\
+\verb|element_(l, c) = e| &~\Leftrightarrow~&\exists\ \Len,\ \Fc,\ \Fe,\ d,\ \Elt,\\
+ && \eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow d\\
+ &&  \And \eval \verb|e| \Rightarrow \Elt\\
+ && \And (d\in\ImFc\rightarrow\Fe(d)=\Elt)
+\end{eqnarray*}
+}
+
+\subsubsection{Axioms.}
+
+We encode the semantic properties of functions \verb|length_|
+and \verb|position_| into axioms, while ensuring that the axiomatic is not
+unnecessarily restrictive (all semantic lists should be also axiomatic lists).
+We have four axioms:
+
+{\small
+\begin{enumerate}
+\item $\forall$ \verb|l, length_(l) >= 0|
+\item $\forall$ \verb|l, c, length_(l) >= position_(l, c) >= 0|
+\item $\forall$ \verb|l, position_(l, no_element) = 0|
+\item $\forall$ \verb|l, c1, c2, position_(l,c1) = position_(l,c2) > 0 |$\rightarrow$\verb| c1 = c2|
+\end{enumerate}
+}
+
+It is rather straightforward to check that these axioms are implied by the
+semantics.
+\ifdefined\longversion
+We show this translation for the second axiom.
+
+We start with rewriting the axiom to introduce a fresh variable for each
+application:
+{\small
+\begin{center}
+$\forall$~\verb|l, c, il, ip, length_(l) = il &  position_(l, c) = ip |$\rightarrow$ \verb| il >= ip >= 0|.
+\end{center}
+}
+We can then translate the two equalities thanks to the equivalences:
+{\small
+\begin{eqnarray*}
+  &&\forall\ \verb|l|,\ \verb|c|,\ \verb|il|,\ \verb|ip|,\\
+  &&\quad(\exists\ \Len,\ \Fc,\ \Fe, \quad\eval \verb|l| \Rightarrow \typL \And \Len = \verb|il|) \And \\
+  &&\quad(\exists\ \Len,\ \Fc,\ \Fe,\ d, \quad\eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow d\\
+  &&\quad\quad \And \verb|ip|\geq0 \And (\verb|ip|=0 \rightarrow d \notin \ImFc) \\
+  &&\quad\quad \And (\verb|ip|>0 \rightarrow d \in \ImFc \And \FcInv(d)=\verb|ip|)) \quad \rightarrow\\
+  &&\quad\quad\quad \verb|il| \geq \verb|ip| \geq 0
+\end{eqnarray*}
+}
+This can be simplified, by splitting $\verb|ip|\geq0$ into $\verb|ip|=0$ and $\verb|ip|>0$:
+{\small
+\begin{eqnarray*}
+  &&\forall\ \verb|l|,\ \verb|c|,\\
+  &&\quad(\exists\ \Len,\ \Fc,\ \Fe,\ d, \quad\eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow d\And\\
+  &&\quad\quad\Len \geq 0 \geq 0 \And (d \in \ImFc\rightarrow \Len \geq \FcInv(d) \geq 0)
+\end{eqnarray*}
+}
+The three other axioms may be translated in the same way. Here are the results:
+{\small
+\begin{enumerate}
+\item $\forall\ \verb|l|,\ \exists\ \Len,\ \Fc,\ \Fe, \quad\eval \verb|l| \Rightarrow \typL \And \Len\geq0$
+\item $\forall\ \verb|l|,\ \verb|c|,\ \exists\ \Len,\ \Fc,\ \Fe, \ d, \quad\eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow d \And
+(d \in \ImFc \rightarrow \Len\geq\FcInv(d)\geq0)$
+\item $\forall\ \verb|l|,\ \exists\ \Len,\ \Fc,\ \Fe, \quad\eval \verb|l| \Rightarrow \typL \And \bot \notin \ImFc$
+\item $\forall\ \verb|l|,\ \verb|c1|,\ \verb|c2|, \ \exists\ \Len,\ \Fc,\ \Fe,\ d_1,\ d_2, \quad\eval \verb|l| \Rightarrow \typL
+\And \eval \verb|c1| \Rightarrow d_1 \And \eval \verb|c2| \Rightarrow d_2 \And
+d_1 \in \ImFc \And d_2 \in \ImFc \And \FcInv(d_1)=\FcInv(d_2) \rightarrow d_1 = d_2$
+\end{enumerate}
+} 
+\else
+These proofs can be found in the longer version of
+this article.
+\fi
+
+% Notice that the four axioms described do not imply that there is a cursor for
+% each position included in $[1..\Len]$. Rather, this property is implicit in the
+% definition of \Next and \First.
+
+\subsubsection{Semantic Rules.}
+
+Each Ada function represented in the semantics is translated into a Why
+program. Given the semantic rule $\inferrule{\Pre_S}{\Post_S}$ defining this
+function, we define a precondition $\Pre_A$ and a postcondition $\Post_A$ on
+the Why program, so that $\Pre_A \Rightarrow \Pre_S$ and $\Post_S \Rightarrow
+\Post_A$. In fact, since preconditions are quite simple, we usually have
+$\Pre_A = \Pre_S$. We illustrate the general pattern that we applied with function
+\Next, which we translate into program \verb|next| in Why:
+\begin{lstlisting}
+parameter next :
+  l:list -> c:cursor ->
+  { c = no_element or position_(l, c) > 0 }
+  cursor 
+  { result = next_(l, c) }
+\end{lstlisting}
+
+The precondition of this function states that either the argument cursor
+\verb|c| is valid in the argument list \verb|l| (because
+\verb|position_(l, c) > 0| $\Leftrightarrow c\in \ImFc$) or the argument
+cursor is equal to \NoElement.  This precondition is exactly the condition for
+the application of the semantic rule for \Next.
+
+An axiom \verb|next__| defines the behavior of logic function \verb|next_|
+over the allowed cases only, leaving the
+value of other applications of \verb|next_| unspecified, as
+seen in Section~\ref{subsec:why}:
+
+\begin{lstlisting}
+axiom next__ :
+  forall l:list. forall c:cursor. forall nxt:cursor.
+    (length_(l) > position_(l,c) > 0 ->
+      position_(l, nxt) = position_(l, c) + 1)
+    and (length_(l) > 0 and position_(l, c) = length_(l)
+      or c = no_element ->
+        nxt = no_element)
+\end{lstlisting}
+
+Axiom \verb|next__| is defined as two implications: in the first case, the next
+cursor of the cursor argument is valid and we define its position; in the
+second case, the result is \NoElement. Intuitively, this is the same as the
+semantic rule for \Next. Using the same equivalences as above, we can rewrite
+axiom \verb|next__| into a logic formula that is exactly the semantics of
+\Next, rewritten to use only \FcInv.
+\ifdefined\longversion
+Like in the previous paragraph, we start by introducing one fresh
+variable per function application and we then use the translations
+of each construct to obtain :
+\begin{eqnarray*}
+  &&\forall \ \verb|il|,\ \verb|ic|,\ \verb|in|,\\
+  &&\quad(\exists\ \Len,\ \Fc,\ \Fe, \quad\eval \verb|l| \Rightarrow \typL \And \Len = \verb|il|) \And \\
+  &&\quad(\exists\ \Len,\ \Fc,\ \Fe,\ dc, \quad\eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow dc\\
+  &&\quad\quad \And \verb|ic|\geq0 \And (\verb|ic|=0 \rightarrow dc \notin \ImFc) \\
+  &&\quad\quad \And (\verb|ic|>0 \rightarrow dc \in \ImFc \And \FcInv(dc)=\verb|ic|)) \And\\
+  &&\quad(\exists\ \Len,\ \Fc,\ \Fe,\ dn, \quad\eval \verb|l| \Rightarrow \typL \And \eval \verb|nxt| \Rightarrow dn\\
+  &&\quad\quad \And \verb|in|\geq0 \And (\verb|in|=0 \rightarrow dn \notin \ImFc) \\
+  &&\quad\quad \And (\verb|in|>0 \rightarrow dn \in \ImFc \And \FcInv(dn)=\verb|in|)) \rightarrow\\
+  &&\quad\quad\quad\exists\ \Len,\ \Fc,\ \Fe,\ dc,\ dn \quad\eval \verb|l| \Rightarrow \typL\\
+  &&\quad\quad\quad\quad\And \eval \verb|c| \Rightarrow dc \And \eval \verb|nxt| \Rightarrow dn \And\\
+  &&\quad\quad\quad\quad\quad (\verb|il| > \verb|ic| > 0 \rightarrow \verb|in| = \verb|ic| + 1) \And\\
+  &&\quad\quad\quad\quad\quad (\verb|il| > 0 \And \verb|ic| = \verb|il| \ || \ dc = 0 \rightarrow dn = 0)
+\end{eqnarray*}
+
+It can be rewritten as:
+{\small
+\begin{eqnarray*}
+  &&\exists\ \Len,\ \Fc,\ \Fe,\ dc,\ dn, \quad\eval \verb|l| \Rightarrow \typL\\
+  && \And \eval \verb|c| \Rightarrow dc \And \eval \verb|nxt| \Rightarrow dn \And\\
+  &&\quad\quad\quad (dc \in \ImFc \And \Len > \FcInv(dc) \rightarrow\\
+  &&\quad\quad\quad\quad\quad\quad dn \in \ImFc \And\FcInv(dn) = \FcInv(dc) + 1) \And\\
+  &&\quad\quad\quad (dc \in \ImFc \And \FcInv(dc)=\Len \ ||\ dc = 0\rightarrow dn = 0)
+\end{eqnarray*}
+}
+\else
+This proof is presented in the longer version of this article.
+\fi
+
+\beforesub
+\subsection{Effectiveness}
+\aftersub
+
+It is worth noting that the main difficulty we faced, when developing the
+axiomatization presented above, was to match the somewhat fuzzy expectations of
+SMT automatic provers: some work best with large predicates and few axioms,
+some work best with many smaller axioms, \etc
+\ifdefined\longversion
+ As a point of comparison,
+developing the axiomatization took us three times more efforts than the formal
+proof of correctness in Coq presented in Section~\ref{sec:validation}.
+\fi
+
+We wrote a number of tests (30) to convince ourselves that the axiomatization
+of lists presented is effective. With a combination of provers we managed to
+prove all the generated verification conditions. Our running example is proved
+rather quickly (less than 1s per VC). To facilitate proofs, which impacts both
+provability and speed, we defined 15 lemmas. These are not a burden in the
+maintainability of the axiomatic and cannot introduce inconsistencies since
+they are also automatically proved.
+
+%REVIEW 3
+% In Section 4.3 (and Section 4.4) I would like to suggest to add a
+%   brief description of the properties that you used as test cases for
+%   your axiomatization and, if possible, a brief motivation why you
+%   have choosen them. 
+Most of the tests correspond to unit-tests for specific properties of list
+expressions (especially for complex ones, such as $\Left$) and instructions.
+For example, there is a test to check that after replacing the value of an
+element in the list, the list indeed contains this value at this position after
+the call:
+\begin{lstlisting}
+let test_replace_element
+  (co : list ref) (cu : cursor) (e : element_t) =
+    { has_element_ (co, cu) }
+    replace_element co cu e
+    { element_ (co, cu) = e }
+\end{lstlisting}
+A few tests, such as our running example, combine expressions and instructions
+to validate more complex behaviors of the API. All tests were proved
+automatically.
+
+\beforesub
+\subsection{Vectors, Sets and Maps}
+\aftersub
+
+Here is a table referencing the work done for each container. It contains the
+size of its Why file (its number of lines), the number of lemmas given and the
+number of tests passed. The code and tests are available
+on the web.\\
+~\\
+\begin{tabular}{|l|c|c|c||}
+\hline
+~Container & ~Lines~ & ~Lemmas~ & ~Tests~ \\
+\hline
+~List & 352 & 15 & 30 \\
+\hline
+~Vectors & 298 & 0 & 22 \\
+\hline
+~Hashed Sets & 429 & 24 & 35 \\
+\hline
+\end{tabular}\begin{tabular}{|l|c|c|c|}
+\hline
+~Container & ~Lines~ & ~Lemmas~ & ~Tests~ \\
+\hline
+~Ordered Sets & 506 & 30 & 38 \\
+\hline
+~Hashed Maps & 394 & 27 & 22 \\
+\hline
+~Ordered Maps~ & 476 & 35 & 25 \\
+\hline
+\end{tabular}\\
+
+\beforesec
+\section{Validation of the Axiomatization}
+\label{sec:validation}
+\aftersec
+
+We have presented a formal semantics for containers in
+Section~\ref{sec:description} and its axiomatization in Why in
+Section~\ref{sec:axiomatization}. We have shown a pen-and-paper proof that the
+axiomatization presented is correct \wrt formal semantics. Given the size of
+the axiomatization, such a manual proof may easily contain errors. In this
+section, we describe an implementation in Coq of the formal semantics of
+containers, and a formal proof of correctness of the Why axiomatization of
+lists \wrt the Coq implementation, (which also implies
+the consistency of the axiomatization).
+
+\beforesub
+\subsection{Coq Implementation and Proof for Lists}
+\aftersub
+
+\subsubsection{Types.}
+
+Our proofs are generic in the element type. For the representation of cursors, we use positive natural
+numbers to which we add 0 to model the special cursor $\bot$.
+For lists, we model the tuple with a functional list of pairs cursor-element (if \verb|a| is an element of this list, \verb|fst a| refers to the associated cursor
+and \verb|snd a| to the element). The field $\Len$ is the length of the
+functional list, the field $\Fc$ is the function that, for an integer $i\in[1..\Len]$, returns the cursor of the pair at the $i^{th}$ position
+in the list and $\Fe$ returns, for each cursor in $\ImFc$, its first association in the list. Therefore, a list of this kind always defines one and only one
+tuple $\typL$.
+\lstset{language={}, morekeywords={Definition, Fixpoint, Record, match, end, if, then, else, with},
+basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
+Definition cursor : Set := nat.
+Definition Rlist : Set := List.list (cursor*element_t).
+\end{lstlisting}
+To keep only tuples where $\Fc$ is injective and has value in $\TypD$, we constrain the functional lists with a predicate.
+This predicate states that every cursor that appears in a list is different from $\bot$ (positive) and does not appear again in the same list. 
+\begin{lstlisting}
+Fixpoint well_formed (l : Rlist) : Prop :=
+   match l with
+        nil => True
+      | a :: ls =>    fst a > 0
+                   /\ has_element ls (fst a) = false
+                   /\ well_formed (ls)
+   end.
+Record list := {this :> Rlist; wf : well_formed this}.
+\end{lstlisting}
+The property of well formedness has to be preserved through every modification of the list. With the Coq lists restricted that
+way, there is one and only one list per tuple $\{\Len: \Nat, \Fc : [1 .. \Len] \hookrightarrow \TypD, \Fe : \ImFc
+\rightarrow \TypE\}$. The two representations are equivalent.
+
+\subsubsection{Axioms.}
+Thanks to the \texttt{-coq} option of Why, we translate automatically our Why
+axioms into Coq. They can then be proved valid formally.
+
+\subsubsection{Semantic Rules.}
+
+We have written an implementation for each construct of our language. Since Coq
+is a pure functional language, the instructions that modify their list
+argument, such as \Insert, are modeled by a function that returns a new list.
+The implementations are as close as possible to the semantic of their
+corresponding construct. Since they are Coq functions, these implementations
+have to be total, so we complete them for the cases that are not described in
+the semantics. For example, the semantics of \Next is only defined when the
+cursor that designates the element to be replaced is valid in the list or equal
+to \NoElement\footnote{Using it elsewhere reflects a mistake and is reported as
+an error when executed.}. In the Coq implementation below, it returns \NoElement if we are
+not in that case (we could have chosen any other return value).
+\begin{lstlisting}
+Fixpoint next (l : Rlist) (cu : cursor) :=
+   match l with
+        nil => no_element
+      | a :: ls =>
+          if beq_nat (fst a) cu then first ls
+          else next ls cu
+   end.
+\end{lstlisting}
+The result of the semantic rule for $\Next$ is completely defined. It is easy
+to be convinced that, when the cursor given as a parameter is indeed valid in
+the list or equal to $\NoElement$, the Coq function \texttt{next}
+returns the appropriate cursor. We use this representation to prove formally
+that the contracts in our axiomatic are indeed implied by the semantics.
+
+For nearly every rule of the semantics of lists, the result of the modification
+is completely defined in terms of the value of the arguments. The only rule
+that is not completely determined is $\Insert$, since the value of the new
+cursor is not given. For the implementation, we define a function \texttt{new}
+that returns a valid cursor. To keep our proofs as general as possible, we
+took care to use only the properties of \texttt{new} that were defined in the
+semantic (\ie that the result of \texttt{new} $\notin \ImFc\cup \bot$) by
+enforcing it thanks to Coq's module system.
+
+\beforesub
+\subsection{Vectors, Sets and Maps}
+\aftersub
+
+All containers have the same Coq representation. Therefore, some parts of the
+proofs are shared. Sets and maps (ordered or not) share the same lemmas and
+heavily rely on those of lists. Vectors also rely on the lemmas of lists but
+less heavily (they are quite different).
+%REVIEW 1
+To make the proofs more reliable, general lemmas, which will not be affected
+by a slight change in the API, are collected in a separate file named ``Raw''.
+%
+Here are the size of the files
+(the number of lemmas in each file) and the architecture.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{Raw Lists (154)}\\
+\hline
+& ~Raw Vectors (108)~ & \multicolumn{4}{|c|}{Raw Sets (139)}\\
+\cline{2-6}
+~Lists~ & Vectors & Hashed & Ordered & Hashed & Ordered \\
+(21) & (29) & ~Sets (64)~ & ~Sets (69)~ & ~Maps (64)~ & ~Maps (70)~\\
+\hline
+\end{tabular}
+\end{center}
+Like for the $\Insert$ rule for lists, every unspecified part of the semantic
+of every container is kept as general as possible thanks to a sealed Coq module
+that only allows proofs to use the specified parts. The whole proof is 16,000+
+lines of Coq. All of it plus commented excerpts can be found
+on the web.
+
+\beforesec
+\section{Related Work}
+\label{sec:related-works}
+\aftersec
+
+Formal proof over containers is an active area of research.  There are two
+important, complementary areas in this domain: certifying user code that uses
+containers while assuming that their implementation complies with their
+specification (what we are doing) and certifying that an implementation of
+containers indeed complies with its specifications.
+
+On the one hand, Bouillaguet \etal~\cite{bouillaguet:2007:vmcai} focus on
+verifying that a container's implementation indeed complies with its
+specifications. They use resolution based first-order theorem provers to verify
+that the invariants of data structures such as sets and maps are preserved when
+considering operations on their encodings as arrays and trees.  Zee
+\etal~\cite{zee:2008:pldi} even presented the first verification of full
+functional correctness for some linked data structure implementations. Unlike
+Bouillaget \etal, they use interactive theorem provers as well to discharge
+their verification conditions. Since they aim at certifying an implementation
+once, it does not seem to be too heavy a burden.
+% define the Jahob system, a combined approach to
+% verify invariants of linked data structures such as lists and trees, where VCs
+% are discharged by a combination of specialized decision procedures, first-order
+% theorem provers and interactive theorem provers.
+
+On the other hand, Gregor and Schupp~\cite{gregor:2006:spe} focus, like we do,
+on the certification of user programs. They present an unsound static analysis
+of C++ programs using STL containers. They generate partially executable
+assertions in C++ to express the constraints over containers' usage, in
+particular a non-executable \texttt{foreach} quantifier to iterate over all objects of a given
+type in the current memory state.  Blanc \etal~\cite{blanc:2007:ase} also work
+on certifying user code using the C++ STL
+containers. Just as we did in this work, they axiomatize the containers and
+then construct some preconditions (\resp postconditions) that are more (\resp
+less) constraining than those of the semantics. Their work is still
+substantially different from what we did since they only check that the
+containers are properly used and they have no annotation language to allow the
+user to express other properties.
+% axiomatize containers from the C++ Standard
+% Template Library, translate this axiomatization back in C++ and apply model
+% checking to the combination of user code + axiomatization. They do not provide
+% an annotation language for the user, and it is not clear what bounds are used
+% for the maximum size of containers and their elements, as they use bounded
+% model checking with SatAbs.
+Dillig \etal~\cite{dillig:2011:popl} present a static analysis for reasoning
+precisely over the content of containers. While they assume that we can analyze
+the code that fills the containers to provide constraints over the
+containers' content, we rely instead on user annotations. This gives 
+us the possibility to verify user properties expressed in the same 
+annotation language.
+
+% A bit farther from what we have done,
+% Suter \etal~\cite{suter:2010:popl} define decision procedures for the
+% underlying algebraic data types inside functional containers, which supports
+% the addition of abstraction functions over these data types provided they are
+% suitably restricted. They use executable annotation to enable users to debug
+% their annotations using testing approaches.
+
+% The use of SMT solvers to reason about containers has also be done before.  For
+% example, Kawaguchi \etal~\cite{kawaguchi:2009:pldi} present a mixed approach to
+% prove that refinements of basic data structures in a functional language
+% satisfy additional invariants, using both rich typing and an SMT solver.
+
+\beforesec
+\section{Conclusion}
+\label{sec:conclusion}
+\aftersec
+
+We have presented a library of \textit{formal containers}, a slightly modified
+version of the standard Ada containers. The aim was to make them usable in
+programs annotated with properties of interest to the user, that can be both
+tested and formally proved automatically.  Although we have limited experience
+with using this library, our experiments so far indicate that most user-defined
+annotations can now be expressed with few quantifiers, leading to automatic proofs of
+rich properties with SMT provers. We are now looking forward to working
+with our industrial partners in project Hi-Lite to develop large use-cases with
+formal containers.
+
+We have given a formal semantics for these containers, and we have proved that
+this semantics is consistent by implementing it in Coq. We have developed an
+axiomatization of these containers in the language Why, targeted at automatic
+proofs with SMT provers, and we have proved in Coq that this axiomatization is
+correct \wrt the formal semantics of containers. On the one hand, this
+formalization is an essential step towards an argument-based certification of
+the library of formal containers, for their use in safety-critical software
+development. On the other hand, the proof of correctness of the axiomatization
+used in automatic provers is a very strong assurance against inconsistencies in
+proofs, which are a sour point of formal methods in industry.
+
+Formal containers have been implemented in Ada, and could be included in any Ada
+compiler's library.
+%REVIEW 3
+They have been included in the standard library of the not yet released GNAT
+6.5 Ada compiler.
+%REVIEW 1
+Theoretically, the Why axiomatization could be reused to model containers in
+other languages, with a few modifications to comply with the particularities of
+their respective APIs.
+%
+The implementation we provide for Ada containers should be correct \wrt the
+formal semantics in Coq, but we have not proved it formally. This is an
+interesting (but difficult) problem for the future.
+
+\subsubsection*{Acknowledgement}
+We would like to thank Ed Schonberg, David Lesens and the anonymous referees
+for their useful reviews of this paper.
+
+\beforesec
+\bibliographystyle{plain}
+\bibliography{main}
+
+% \begin{thebibliography}{4}
+
+% \end{thebibliography}
+
+\end{document}

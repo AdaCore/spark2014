@@ -1,0 +1,3 @@
+
+div.adb:6:14: info: division check proved
+div.adb:6:14: info: overflow check proved

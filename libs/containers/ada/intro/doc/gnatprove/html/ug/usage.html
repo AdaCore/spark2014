@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usage &mdash; GNATprove User&#39;s Guide 0.2w documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2w',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="GNATprove User&#39;s Guide 0.2w documentation" href="index.html" />
+    <link rel="next" title="Verification Goals" href="goals.html" />
+    <link rel="prev" title="Definition of Alfa" href="alfa.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="goals.html" title="Verification Goals"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="alfa.html" title="Definition of Alfa"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">GNATprove User&#39;s Guide 0.2w documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>The GNATprove tool is packaged as an executable called &#8220;gnatprove&#8221;. Like other
+tools in GNAT Pro Toolsuite, GNATprove is based on the structure of GNAT
+projects, defined in <tt class="docutils literal"><span class="pre">.gpr</span></tt> files.</p>
+<div class="section" id="command-line-usage">
+<h2>Command-line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>GNATprove is executed with the following command line:</p>
+<div class="highlight-python"><pre>gnatprove -P &lt;project_file&gt;.gpr &lt;switches&gt; &lt;optional_list_of_files&gt;</pre>
+</div>
+<p>GNATprove accepts the following options:</p>
+<div class="highlight-python"><pre>--mode=       Main mode
+    detect      Detect and output Alfa information (default)
+    force       Output errors for violations of Alfa (warn unimplemented)
+    check       Check consistency of contracts
+    prove       Prove subprogram contracts and absence of run-time errors
+
+--report=     Control reporting
+    fail        Report failures to prove VCs (default)
+    all         Report all results of proving VCs
+    detailed    Report all results of proving VCs, including a reason when
+                not proved
+
+-u            Unique compilation, only prove the given files
+-U            Prove all files of all projects
+-q            Be quiet/terse
+-f            Fore recompilation/proving of all units and all VCs
+-jnnn         Use nnn parallel processes (default: 1)
+-v, --verbose Output extra verbose information
+
+--pedantic             Use a strict interpretation of the Ada standard
+--no-proof             Disable proof of VCs, only generate VCs
+--steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
+--timeout=s            Set the timeout for Alt-Ergo in seconds (default: 10)
+--help                 Display the list of options
+--limit-line=file:line Limit proofs to the specified file and line
+--limit-subp=file:line Limit proofs to the specified subprogram declared at
+                       the location given by file and line</pre>
+</div>
+<p>In modes <tt class="docutils literal"><span class="pre">detect</span></tt> and <tt class="docutils literal"><span class="pre">force</span></tt>, GNATprove does not compute an accurate set
+of global variables read and written in each subprogram. Hence, its detection
+of subprograms in Alfa might be slightly more optimistic than the reality. When
+using mode <tt class="docutils literal"><span class="pre">check</span></tt> or <tt class="docutils literal"><span class="pre">prove</span></tt> on the contrary, the detection is accurate.</p>
+<p>Although <tt class="docutils literal"><span class="pre">--report</span></tt> has only some effect in modes <tt class="docutils literal"><span class="pre">check</span></tt> and <tt class="docutils literal"><span class="pre">prove</span></tt>,
+all combinations of options are allowed.</p>
+<p>When given a list of files, GNATprove will consider them as entry points of
+the program and prove these units and all units on which they depend. With
+option <tt class="docutils literal"><span class="pre">-u</span></tt>, the dependencies are not considered, only the given files
+themselves are proved. With option <tt class="docutils literal"><span class="pre">-U</span></tt>, all files of all projects are
+proved.</p>
+<p>With option <tt class="docutils literal"><span class="pre">--pedantic</span></tt>, some compiler choices are forced to a worst-case
+interpretation of the Ada standard. For example, ranges for integer base types
+are reduced to the minimum guaranteed, not to the matching machine
+integer type as done in practice on all compilers.</p>
+<p>The options <tt class="docutils literal"><span class="pre">--steps</span></tt> and <tt class="docutils literal"><span class="pre">--timeout</span></tt> can be used to influence the behavior
+of the prover Alt-Ergo. The option <tt class="docutils literal"><span class="pre">-j</span></tt> activates parallel compilation and
+parallel proofs.  With the option <tt class="docutils literal"><span class="pre">--no-proof</span></tt>, the prover is not actually
+called, and gnatprove reports that it has skipped the <a href="goals.html" 
+title="GNATprove generates Verification  Conditions (VCs) whose proof ensures 
+that some property holds on the source program">VC</a>s. With the option
+<tt class="docutils literal"><span class="pre">-q</span></tt>, gnatprove does give the minimum of messages, while with option <tt class="docutils literal"><span class="pre">-v</span></tt>,
+on the contrary, all details are given.</p>
+<p>Using the option <tt class="docutils literal"><span class="pre">--limit-line=</span></tt> one can limit proofs to a particular file
+and line of an Ada file. For example, if you want to prove only the file 12 of
+file <tt class="docutils literal"><span class="pre">example.adb</span></tt>, you can add the option <tt class="docutils literal"><span class="pre">--limit-line=example.adb:12</span></tt> to
+the call to GNATprove. Using the option <tt class="docutils literal"><span class="pre">--limit-subp=</span></tt> one can limit proofs
+to a subprogram declared in a particular file at a particular line.</p>
+<p>By default, gnatprove avoids recompiling/reproving unchanged files, on a
+per-unit basis. This mechanism can be disabled with the option <tt class="docutils literal"><span class="pre">-f</span></tt>.</p>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>In mode <tt class="docutils literal"><span class="pre">detect</span></tt>, GNATprove prints on the standard output warning messages
+for Alfa subset violations, and information messages for unimplemented
+features, as well as the <a class="reference internal" href="alfa.html#project-statistics"><em>Project Statistics</em></a>. Detection information is
+also to be found in the <tt class="docutils literal"><span class="pre">&lt;name&gt;.alfa</span></tt> files mentioned below.</p>
+<p>In mode <tt class="docutils literal"><span class="pre">force</span></tt>, GNATprove prints on the standard output error messages for
+Alfa subset violations, and warning messages for unimplemented features.</p>
+<p>In modes <tt class="docutils literal"><span class="pre">check</span></tt> or <tt class="docutils literal"><span class="pre">prove</span></tt> and report <tt class="docutils literal"><span class="pre">fail</span></tt>, GNATprove prints on the
+standard output error messages for unproved VCs.</p>
+<p>In modes <tt class="docutils literal"><span class="pre">check</span></tt> or <tt class="docutils literal"><span class="pre">prove</span></tt> and report <tt class="docutils literal"><span class="pre">all</span></tt>, GNATprove prints on the
+standard output error messages for unproved VCs, and information messages for
+proved VCs.</p>
+<p>GNATprove always generates <a class="reference internal" href="alfa.html#project-statistics"><em>Project Statistics</em></a> in file <tt class="docutils literal"><span class="pre">gnatprove.out</span></tt>.</p>
+<p>For each unit <tt class="docutils literal"><span class="pre">&lt;name&gt;</span></tt>, GNATprove generates a <a class="reference internal" href="alfa.html#summary-file"><em>Summary File</em></a>
+<tt class="docutils literal"><span class="pre">&lt;name&gt;.alfa</span></tt> in the sub-directory <tt class="docutils literal"><span class="pre">gnatprove</span></tt> of the corresponding
+object directory.</p>
+</div>
+<div class="section" id="package-in-project-files">
+<h2>Package in Project Files<a class="headerlink" href="#package-in-project-files" title="Permalink to this headline">¶</a></h2>
+<p>GNATprove reads the package <tt class="docutils literal"><span class="pre">Prove</span></tt> in the given project file. This package
+is allowed to contain an attribute <tt class="docutils literal"><span class="pre">Switches</span></tt>, which defines additional
+command line switches that are used for the invokation of GNATprove. As an
+example, the following package in the project file sets the default mode of
+GNATprove to <tt class="docutils literal"><span class="pre">prove</span></tt>:</p>
+<div class="highlight-python"><pre>package Prove is
+   for Switches use ("--mode=prove");
+end Prove;</pre>
+</div>
+<p>Switches given on the command line have priority over switches given in the
+project file.</p>
+</div>
+<div class="section" id="integration-in-gps">
+<h2>Integration in GPS<a class="headerlink" href="#integration-in-gps" title="Permalink to this headline">¶</a></h2>
+<p>GNATprove can be run from GPS. There is a menu <tt class="docutils literal"><span class="pre">Prove</span></tt> with the following
+entries:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Prove All:            This runs GNATprove on all files in the project.</li>
+<li>Prove Root Project:   This runs GNATprove on the entire project.</li>
+<li>Prove File:           This runs GNATprove on the current unit.</li>
+<li>Show Unprovable Code: This runs GNATprove on the entire project in mode <tt class="docutils literal"><span class="pre">detect</span></tt>.</li>
+</ul>
+</div></blockquote>
+<p>When editing an Ada file, GNATprove can also be run from the context menu,
+which can be obtained by a right click:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Prove File:           This runs GNATprove on the current unit.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Prove Line:           This runs proofs on the VCs of the current line of</dt>
+<dd><p class="first last">the current file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Prove Subprogram:     This runs proofs on the VCs of the current</dt>
+<dd><p class="first last">subprogram whose declaration is pointed to.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>GNATprove project switches can be edited from the panel <tt class="docutils literal"><span class="pre">GNATprove</span></tt> (in
+<tt class="docutils literal"><span class="pre">Project</span> <span class="pre">--&gt;</span> <span class="pre">Edit</span> <span class="pre">Project</span> <span class="pre">Properties</span> <span class="pre">--&gt;</span> <span class="pre">Switches</span></tt>).</p>
+<p>For unproved <a href="goals.html" title="GNATprove generates Verification
+ Conditions (VCs) whose proof ensures that some property holds on the source 
+program">VC</a>s, you can see in GPS a path for which gnatprove does not
+manage to prove the VC. This can be achieved by right-clicking on the message
+for the unproved VC in the location view, and choosing <tt class="docutils literal"><span class="pre">Prove</span> <span class="pre">--&gt;</span> <span class="pre">Show</span>
+<span class="pre">Path</span></tt>.</p>
+<p>We recommend that you enable the option <tt class="docutils literal"><span class="pre">Draw</span> <span class="pre">current</span> <span class="pre">line</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">thin</span> <span class="pre">line</span></tt>
+(in <tt class="docutils literal"><span class="pre">Edit</span> <span class="pre">--&gt;</span> <span class="pre">Preferences</span> <span class="pre">--&gt;</span> <span class="pre">Editor</span> <span class="pre">--&gt;</span> <span class="pre">Fonts</span> <span class="pre">&amp;</span> <span class="pre">Colors</span></tt>) so that GPS does not
+hide the status of the checks on the current line (all proved in green /
+otherwise in red). This is the default on recent versions of GPS.</p>
+</div>
+<div class="section" id="integration-in-gnatbench">
+<h2>Integration in GNATbench<a class="headerlink" href="#integration-in-gnatbench" title="Permalink to this headline">¶</a></h2>
+<p>The current version is not integrated with GNATbench.</p>
+</div>
+<div class="section" id="known-limitations">
+<h2>Known Limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline">¶</a></h2>
+<p>In modes <tt class="docutils literal"><span class="pre">check</span></tt> and <tt class="docutils literal"><span class="pre">prove</span></tt>, the current version has the following
+limitations:</p>
+<blockquote>
+<div><ul class="simple">
+<li>It only accepts projects with a single object directory; it will stop
+with an error message if run on projects with more than one object
+directory.</li>
+<li>It uses the location of the top-level instantiation for all VCs in
+instances of generics.</li>
+</ul>
+</div></blockquote>
+<p>Using the option <tt class="docutils literal"><span class="pre">-gnatec=pragmas.adc</span></tt> as Default_Switch in a project file is
+not supported. Instead, use <tt class="docutils literal"><span class="pre">for</span> <span class="pre">Local_Configuration_Pragmas</span> <span class="pre">use</span>
+<span class="pre">&quot;pragmas.adc&quot;;</span></tt>.</p>
+<p>Defining multiple units in the same file is not supported. Instead, define each
+unit in a separate file.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#command-line-usage">Command-line Usage</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+<li><a class="reference internal" href="#package-in-project-files">Package in Project Files</a></li>
+<li><a class="reference internal" href="#integration-in-gps">Integration in GPS</a></li>
+<li><a class="reference internal" href="#integration-in-gnatbench">Integration in GNATbench</a></li>
+<li><a class="reference internal" href="#known-limitations">Known Limitations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="alfa.html"
+                        title="previous chapter">Definition of Alfa</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="goals.html"
+                        title="next chapter">Verification Goals</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/usage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="goals.html" title="Verification Goals"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="alfa.html" title="Definition of Alfa"
+             >previous</a> |</li>
+        <li><a href="index.html">GNATprove User&#39;s Guide 0.2w documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, AdaCore.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

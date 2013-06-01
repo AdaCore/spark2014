@@ -1,0 +1,12 @@
+test.adb:43:23: use of uninitialized variable "V" [uninitialized__v]
+test.adb:46:27: formal parameter "X" might not be set [uninitialized__x]
+test.adb:47:18: use of uninitialized variable "X" [uninitialized__x]
+test.adb:58:30: global "G" might not be set [uninitialized__g]
+test.adb:59:18: use of uninitialized variable "G" [uninitialized__g]
+test.adb:69:38: ineffective import "X"
+test.adb:69:41: ineffective import "Y"
+test.adb:69:44: ineffective import "Z"
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

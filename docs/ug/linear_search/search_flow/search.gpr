@@ -1,0 +1,8 @@
+project Search is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnata", "-g", "-O0");
+   end Compiler;
+
+end Search;
+

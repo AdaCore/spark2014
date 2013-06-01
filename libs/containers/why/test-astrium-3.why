@@ -1,0 +1,35 @@
+(* we may need to verify that in a list at most n elements are in 
+   a given state *)
+
+include "list.why"
+include "bool.why"
+
+logic is_active: element_t -> bool
+
+parameter activate: e:element_t -> { } element_t { is_active(result) = true }
+
+function weight_ (e : element_t) : int =
+	 if is_active(e) then 1 else 0
+
+logic sum_of_weight : list -> int
+
+axiom sum_of_weight_replace_element :
+      forall v1:list. forall v2:list. forall cu:cursor. forall e:element_t[sum_of_weight(v2),replace_element_(v1,cu,e,v2)].
+      	     replace_element_(v1,cu,e,v2) -> sum_of_weight(v2)=sum_of_weight(v1)-weight_(element_(v1,cu))+weight_(e)
+
+function num_of_active (co:list) : int = sum_of_weight(co)
+
+exception Exit_Loop
+
+let activate_first_non_active (co:list ref) =
+    let cu = ref (first !co) in
+    try
+    while has_element !co !cu do
+        if not is_active (element !co !cu) then
+	    raise Exit_Loop;
+        cu := next !co !cu
+    done
+    with Exit_Loop -> void end;
+    if has_element !co !cu then
+        replace_element co !cu (activate (element !co !cu))
+    { num_of_active(co) <= num_of_active(co@) + 1 }

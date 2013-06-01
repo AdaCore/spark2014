@@ -1,0 +1,5 @@
+Changes on gnattest.html 
+
+cancel
+a with word on line 66
+

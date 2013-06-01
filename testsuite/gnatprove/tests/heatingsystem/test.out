@@ -1,0 +1,22 @@
+
+actuator.ads:13:19: info: postcondition proved
+actuator.ads:21:19: info: postcondition proved
+advancebutton.adb:83:34: info: range check proved
+clock.ads:11:18: info: postcondition proved
+display.ads:13:19: info: postcondition proved
+heatingsystem_dfa.adb:108:31: info: division check proved
+heatingsystem_dfa.adb:137:33: info: index check proved
+heatingsystem_dfa.adb:139:24: info: index check proved
+heatingsystem_dfa.adb:54:21: info: division check proved
+heatingsystem_dfa.adb:55:24: info: division check proved
+heatingsystem_dfa.adb:55:43: info: division check proved
+heatingsystem_dfa.adb:57:45: info: division check proved
+heatingsystem_dfa.adb:58:45: info: division check proved
+heatingsystem_dfa.adb:59:47: info: division check proved
+heatingsystem_dfa.adb:60:47: info: division check proved
+heatingsystem_dfa.adb:80:47: info: division check proved
+heatingsystem_dfa.adb:91:55: info: division check proved
+indicator.ads:16:19: info: postcondition proved
+indicator.ads:8:19: info: postcondition proved
+modeswitch.ads:9:19: info: postcondition proved
+thermostat.ads:20:21: info: postcondition proved

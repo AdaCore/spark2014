@@ -1,0 +1,5 @@
+project Test is
+  package Builder is
+    for Global_Configuration_Pragmas use "p.adc";
+  end Builder;
+end Test;

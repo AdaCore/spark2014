@@ -1,0 +1,19 @@
+project ALFA is
+
+   for Object_Dir use "obj";
+   for Source_Dirs use (".", "../gnat_src");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-O0", "-gnata", "-gnat12", "-gnatg");
+   end Compiler;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-I..", "-I../gnat_src");
+      for Executable ("alfa-compute_frame_conditions.adb") use "compute_fc";
+   end Builder;
+
+   for Main use ("alfa-compute_frame_conditions.adb");
+   for Exec_Dir use "../../install/bin";
+
+end ALFA;
+

@@ -1,0 +1,7 @@
+
+count.adb:7:10: info: loop invariant initialization proved
+count.adb:7:10: info: loop invariant preservation proved
+count.adb:8:21: info: overflow check proved
+count.ads:4:63: info: overflow check proved
+count.ads:5:14: info: postcondition proved
+count.ads:5:55: info: overflow check proved

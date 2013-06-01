@@ -1,0 +1,10 @@
+project Intro is
+
+   for Source_Dirs use ("../examples");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat12", "-gnato13");
+   end Compiler;
+
+end Intro;
+

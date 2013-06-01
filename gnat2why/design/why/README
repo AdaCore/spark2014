@@ -1,0 +1,45 @@
+
+These directories describe how we would generate Why from SPARK, or from
+Ada under the spark profile. Each is about a specific feature of the
+source langage; its name is formed from the corresponding section in the
+Ada reference manual and the title of this section.
+
+Each feature has been designed by first looking at what Jessie generates
+for C in a similar case; then evaluating if Jessie's choices are
+relevant in Ada as well in each specific case. Some general design
+choices of Jessie have been kept, namely:
+
+* naming convention:
+  - if a logical function 'f' has to have an equivalent function in the
+  program space, it will be named 'f_'.
+  - if 'f' is a function in program space, 'safe_f' will stand for the
+  same function assuming that absence of overflows has been proved already
+  (see below).
+  - if 'p' is a procedure/function in the source code, p_ensures_default
+  will be used for proving conformity, whereas p_safety will be used to
+  prove absence of run-time errors.
+  
+* "modular" approach:
+  - absence of run-time errors is proved before conformity with contract;
+  and the second one assumes the first one. This means that
+  several conversion functions in program space have two versions, one (say,
+  t1_of_t2) that has preconditions for overflows, and the other one
+  (say, safe_t1_of_t2) that has no preconditions for overflows; and, for
+  each procedure/function in source code, two why function will be generated
+  in why's program space; one that has no postcondition, and uses the
+  "fully-preconditioned" version of conversions (say, p_safety);
+  and the second one that has postconditions but uses the "safe" version
+  of conversions (say, p_ensures_default); the first one will only prove that
+  no run-time errors are possible, given the function precondition; the
+  second one will assume that the first one has been proven already, and
+  will prove conformity with contract.
+
+Appart from that, we will use the same naming convention as the one used in 
+the expanded code. Say, procedure p in package pack will be named pack__p.
+Logic encodings are separated from Ada identifiers using "___" to avoid
+name clashes. These conventions are subject to modifications, depending on
+what the expander actually generates.
+
+
+
+

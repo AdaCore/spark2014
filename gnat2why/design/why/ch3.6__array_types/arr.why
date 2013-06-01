@@ -1,0 +1,165 @@
+include "arrays.why"
+include "standard.why"
+
+(*************)
+(* Arr.Index *)
+(*************)
+
+(* How such a scalar type is encoded in detailed in chapter 3.5.4. Here
+   we just gives the necessary axioms for Arr.Index in order to use this
+   abstract in the definition of the array type (Arr.Table) afterwards. *)
+
+type arr__index
+
+logic integer_of___arr__index : arr__index -> int
+
+predicate eq___arr__index
+(x : arr__index,
+ y : arr__index) =
+ integer_of___arr__index (x) = integer_of___arr__index (y)
+
+axiom arr__index___unicity :
+ forall x, y : arr__index.
+  integer_of___arr__index (x) = integer_of___arr__index (y) -> x = y
+
+predicate arr__index___in_range (x : int) =
+ let first = 1 in
+ let last = 10 in
+  first <= x <= last
+
+logic arr__index___of_integer : int -> arr__index
+
+axiom arr__index___coerce :
+ (forall x : int.
+  arr__index___in_range (x) ->
+   integer_of___arr__index (arr__index___of_integer (x)) = x)
+
+axiom arr__index___range :
+ (forall x : arr__index.
+  arr__index___in_range (integer_of___arr__index (x)))
+
+parameter arr__index___of_integer_ :
+ x : int ->
+  { arr__index___in_range (x) }
+   arr__index
+  { integer_of___arr__index (result) = x }
+
+
+(*************)
+(* Arr.Table *)
+(*************)
+
+type arr__table
+
+logic array_of___arr__table : arr__table -> standard__integer farray
+
+logic arr__table___of_array : standard__integer farray -> arr__table
+
+predicate arr__table___in_range (x : standard__integer farray) =
+ array_length (x) = 10
+
+predicate eq___arr__table (x : arr__table, y : arr__table) =
+ array_of___arr__table (x) = array_of___arr__table (y)
+
+axiom arr__table___unicity :
+ forall x, y : arr__table.
+  array_of___arr__table (x) = array_of___arr__table (y) -> x = y
+
+axiom arr__table___coerce :
+ forall x : standard__integer farray.
+  arr__table___in_range (x) ->
+   array_of___arr__table (arr__table___of_array (x)) = x
+
+axiom arr__table___range :
+ forall x : arr__table.
+  arr__table___in_range (array_of___arr__table (x))
+
+logic arr__table___first : arr__table -> arr__index
+
+logic arr__table___last : arr__table -> arr__index
+
+predicate arr__table___range_eq (x : arr__table, y : arr__table) =
+ (integer_of___arr__index (arr__table___first (x))
+  = integer_of___arr__index (arr__table___first (y)))
+ and (integer_of___arr__index (arr__table___last (x))
+      = integer_of___arr__index (arr__table___last (y)))
+
+predicate eq___arr__table___strict (x : arr__table, y : arr__table) =
+ array_of___arr__table (x) = array_of___arr__table (y)
+ and arr__table___range_eq (x, y)
+
+predicate arr__table___index_check (a : arr__table, i : arr__index) =
+ integer_of___arr__index (arr__table___first (a))
+  <= integer_of___arr__index (i) <=
+ integer_of___arr__index (arr__table___last (a))
+
+axiom arr__table___first_value :
+ forall x : arr__table.
+  arr__table___first (x) = arr__index___of_integer (1)
+
+axiom arr__table___last_value :
+ forall x : arr__table.
+  arr__table___last (x) = arr__index___of_integer (10)
+
+function arr__table___get
+ (x : arr__table,
+  y : arr__index)
+ : standard__integer =
+ access (array_of___arr__table (x), integer_of___arr__index (y))
+
+logic arr__table___set :
+ arr__table, arr__index, standard__integer -> arr__table
+
+axiom arr__table___set_definition :
+ forall x : arr__table.
+  forall y : arr__index.
+   forall z : standard__integer.
+    let result = arr__table___set (x, y, z) in
+     array_of___arr__table (result) = update (array_of___arr__table (x),
+                                              integer_of___arr__index (y),
+                                              z)
+     and arr__table___range_eq (x, result)
+
+parameter arr__table___get_ :
+ a : arr__table -> i : arr__index ->
+  { arr__table___index_check (a, i) }
+   standard__integer
+  { eq___standard__integer (result,
+                            arr__table___get (a, i)) }
+
+parameter arr__table___set_ : 
+ a : arr__table ref -> i : arr__index -> v : standard__integer -> 
+  { arr__table___index_check (a, i) }
+   unit writes a
+  { eq___arr__table___strict (a, arr__table___set (a@, i, v)) }
+
+parameter safe___arr__table___get_ :
+ a : arr__table -> i : arr__index ->
+  { }
+   standard__integer
+  { eq___standard__integer (result,
+                            arr__table___get (a, i)) }
+
+parameter safe___arr__table___set_ : 
+ a : arr__table ref -> i : arr__index -> v : standard__integer -> 
+  { }
+   unit writes a
+  { eq___arr__table___strict (a, arr__table___set (a@, i, v)) }
+
+parameter arr__table___first_ :
+ a : arr__table ->
+  { }
+   arr__index
+  { result = arr__table___first (a) }
+
+parameter arr__table___last_ :
+ a : arr__table ->
+  { }
+   arr__index
+  { result = arr__table___last (a) }
+
+parameter eq___arr__table_ :
+ left : arr__table -> right : arr__table ->
+{ }
+ bool
+{ result = true <-> eq___arr__table (left, right) }

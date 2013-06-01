@@ -1,0 +1,2 @@
+prepost.adb:16:7: assertion not proved, requires Z = 0
+prepost.adb:5:7: info: assertion proved

@@ -1,0 +1,754 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Definition of Alfa &mdash; GNATprove User&#39;s Guide 0.2w documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2w',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="GNATprove User&#39;s Guide 0.2w documentation" href="index.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Getting started with GNATprove" href="getting_started.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started with GNATprove"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">GNATprove User&#39;s Guide 0.2w documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="definition-of-alfa">
+<h1>Definition of Alfa<a class="headerlink" href="#definition-of-alfa" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rationale">
+<h2>Rationale<a class="headerlink" href="#rationale" title="Permalink to this headline">¶</a></h2>
+<p>Alfa is a subset of Ada 2012 described in the Alfa Reference Manual. It is
+intended to be the largest possible subset of Ada amenable to automatic
+proving.</p>
+<p>In the context of Ada 2012, aspects are natural means of expressing important
+features such as subprogram contracts or test case definitions, so Alfa is
+defined in terms of these Ada 2012 features. For legacy applications, GNATprove
+and GNATtest also support other Ada versions (83, 95, 2005), where specific
+GNAT pragmas can be used to replace the important features mentioned above.</p>
+<p>Alfa is meant to facilitate the expression of functional properties on Ada
+programs, so that these properties can be verified either by testing or by
+formal proof or by a combination thereof. Compared to the existing <a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-1.html#I1155" 
+title="SPARK is, as many readers will be aware, a subset of Ada with annotations
+ providing assertions regarding state embedded as Ada comments."  >SPARK</a>
+annotated subset of Ada, Alfa is less constraining, but it does not
+allow specifying and verifying data-and-control coupling properties. In
+the absence of functional property definitions, the parts of an Ada program
+that are in the Alfa subset can still be proven free of run-time errors.</p>
+<p>Alfa is supported in the GNAT compiler, as well as tools GNATtest and
+GNATprove, aiming respectively at unit testing and unit proof of Ada
+subprograms.  Annotations that specify the functional behavior of the program
+can be executed, or not, during a run of the program, and a failure to match
+the expected behavior results then in an error being reported at run time
+through the exception mechanism. The tool GNATtest automates the generation of
+a test harness and the verification that a user-provided test procedure
+implements a specified formal test-case. The same annotations can be analyzed
+statically with GNATprove to show that the program is free from run-time errors
+and that it follows its expected behavior. A crucial feature of GNATprove is
+that it interprets annotations exactly like they are interpreted at run time
+during tests. In particular, their executable semantics includes the
+verification of run-time checks, which can be verified statically with
+GNATprove.  GNATprove can perform additional verifications on the specification
+of the expected behavior itself, and its correspondence to the code.</p>
+<p>Currently, Alfa is only concerned with sequential execution of subprograms. A
+future version of Alfa could include support of tasking with restrictions
+similar to the ones found in <a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-1-3-4.html#I1083" 
+title="A profile is a set of restrictions imposed on a program so that it meets 
+certain criteria. A restriction is specified using the configuration pragma 
+Restrictions. The Ravenscar profile is equivalent to a large set of restrictions
+ and also certain scheduling pragmas. The purpose of the Ravenscar profile is to
+ restrict the use of many tasking facilities so that the effect of the program 
+is predictable."  >Ravenscar</a> or <a 
+href="http://www.altran-praxis.com/downloads/SPARK/technicalReferences/examiner_ravenscar.pdf" 
+title="RavenSPARK is constructed in exactly the same way as the sequential SPARK
+ language and with exactlythe same objectives. A combination of language 
+restrictions (RavenSPARK subsets the Ravenscar subset!) and additional 
+annotations allows the construction of programs which comply with the Ravenscar 
+Profile but which also have the property that it is possible to show, statically
+, without requiring a complete program closure"  >RavenSPARK</a>. 
+The main features from
+Ada absent from Alfa are: exceptions, pointers (access types) and controlled
+types. Each of these features has the potential to make automatic
+formal verification very difficult, hence their rejection. Note that, in many
+cases, ad-hoc data structures based on pointers can be replaced by the use
+of standard Ada containers (vectors, lists, sets, maps, etc.) Although the
+implementation of standard containers is not in Alfa, we have defined a
+slightly modified version of these targeted at formal verification. These formal
+containers are implemented in the GNAT standard library. These alternative
+containers are typical of the tradeoffs implicit in Alfa: favor automatic formal
+verification as much as possible, at the cost of minor adaptations to the code.</p>
+<p>Alfa is still evolving, so that features not yet supported could be so in the
+future. However, the definition and evolution of Alfa should respect the
+following principles:</p>
+<ol class="arabic simple">
+<li><a href="goals.html" title="A logical annotation (precondition, 
+postcondition, assertion)"  >Annotations</a> are free of side effects</li>
+</ol>
+<p>No writes to global variables are allowed in annotations (contracts,
+assertions, etc.). The possibility of run-time errors in annotations should be
+detected in formal proofs.</p>
+<ol class="arabic simple" start="2">
+<li>Code is unambiguous</li>
+</ol>
+<p>No behavior should depend on compiler choices (parameter passing, order of
+evaluation of expressions, etc.)</p>
+<ol class="arabic simple" start="3">
+<li>Global effects of subprograms are generated</li>
+</ol>
+<p>No manual annotations are needed for variables read and written by subprograms,
+contrary to <a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-1.html#I1155" 
+title="SPARK is, as many readers will be aware, a subset of Ada with annotations
+ providing assertions regarding state embedded as Ada comments."  >SPARK</a>, 
+<a href="http://www.eecs.ucf.edu/~leavens/JML//index.shtml" 
+title="The Java Modeling Language (JML) is a behavioral interface specification 
+language that can be used to specify the behavior of Java modules. It combines 
+the design by contract approach of Eiffel and the model-based specification 
+approach of the Larch family of interface specification languages, with some 
+elements of the refinement calculus."  >JML</a>, <a 
+href="http://frama-c.com/acsl.html" title="The ANSI/ISO C Specification Langage 
+(ACSL) is a behavioral specification language for C programs. ACSL can express a
+ wide range of functional properties. The paramount notion in ACSL is the 
+function contract."  >ACSL</a>, <a 
+href="http://research.microsoft.com/en-us/projects/specsharp/" 
+title="Spec# is a formal language for API contracts (influenced by JML, AsmL, 
+and Eiffel), which extends C# with constructs for non-null types, preconditions,
+ postconditions, and object invariants. Spec# comes with a sound programming 
+methodology that permits specification and reasoning about object invariants 
+even in the presence of callbacks and multi-threading. Spec# is a research 
+vehicle that has been used to explore specifications and the dynamic/static 
+tools that make use of them."  >Spec#</a>. This requires all subprograms called 
+to be implemented.</p>
+<ol class="arabic simple" start="4">
+<li>Subprograms in Alfa / not in Alfa can be mixed</li>
+</ol>
+<p>Provable and unprovable code can be combined at a fine-grain level. Provable
+code can call unprovable code, and vice-versa.</p>
+<p>Features of Ada for object-oriented programming and generic programming are
+included in Alfa: tagged types, dispatching, generics. Restrictions in Alfa do
+not target increase in readability, so use-clause, overloading and renamings
+are allowed for example. Also restrictions in Alfa do not constrain control
+flow, so arbitrary exits from loops and returns in subprograms are
+allowed. Note that, if desired, these restrictions can be detected with a
+coding style checker like GNATcheck.</p>
+</div>
+<div class="section" id="combining-alfa-and-full-ada-code">
+<h2>Combining Alfa and Full Ada Code<a class="headerlink" href="#combining-alfa-and-full-ada-code" title="Permalink to this headline">¶</a></h2>
+<p>A subprogram is either:</p>
+<ul class="simple">
+<li>not in Alfa, when its specification is not in Alfa;</li>
+<li>fully in Alfa, when its specification and implementation are in Alfa (in Alfa for short);</li>
+<li>partially in Alfa, when its specification is in Alfa and its implementation is not in Alfa.</li>
+</ul>
+<p>For a subprogram specification to be in Alfa, all the types of its parameters
+(and result for a function) must be in Alfa, and all expressions mentioned in
+its contract must be in Alfa. For a subprogram implementation to be in Alfa,
+its specification must be in Alfa, all local declarations must be in Alfa
+(types, variables, subprograms, etc.), all expressions and statements mentioned
+in its body must be in Alfa, and finally all calls in its body must be to
+subprograms at least partially in Alfa.</p>
+<p>A consequence of this definition is that a subprogram fully in Alfa can only
+call subprograms that are themselves partially or fully in Alfa. A subprogram
+partially or not in Alfa can call any kind of subprogram.</p>
+<p>Most formal verification activities performed with GNATprove address
+subprograms that are fully in Alfa. Some activities, which apply to the
+contract of the subprogram only, also address subprograms that are partially in
+Alfa.</p>
+</div>
+<div class="section" id="automatic-detection-of-subprograms-in-alfa">
+<h2>Automatic Detection of Subprograms in Alfa<a class="headerlink" href="#automatic-detection-of-subprograms-in-alfa" title="Permalink to this headline">¶</a></h2>
+<p>GNATprove automatically detects which subprograms are fully in Alfa, and which
+subprograms are either not in Alfa or only partially in Alfa. Thus, the user
+does not have to annotate the code to provide this information. However, the
+user can review the results of this automatic detection, and require that some
+subprograms are fully in Alfa (leading to an error if not).</p>
+<div class="section" id="summary-file">
+<span id="id1"></span><h3>Summary File<a class="headerlink" href="#summary-file" title="Permalink to this headline">¶</a></h3>
+<p>The information of which subprograms are fully in Alfa and which are not, as
+well as whether the features used in subprograms are already implemented or not,
+is stored in a file with extension .alfa for review by the user, and to produce
+global <a class="reference internal" href="#project-statistics"><em>Project Statistics</em></a>.</p>
+<p>GNATprove outputs which features not in Alfa are used (using parentheses):</p>
+<ul class="simple">
+<li>access: access types and dereferences;</li>
+<li>assembly language: assembly language;</li>
+<li>deallocation: unchecked deallocation;</li>
+<li>dynamic allocation: dynamic allocation;</li>
+<li>exception: raising and catching exceptions;</li>
+<li>forward reference: forward reference to an entity;</li>
+<li>goto: goto;</li>
+<li>indirect call: indirect call;</li>
+<li>tasking: tasking;</li>
+<li>unchecked conversion: unchecked conversion;</li>
+<li>impure function: functions which write to variables other than parameters;</li>
+<li>recursive call: forbidden types of recursive calls, e.g. in contracts;</li>
+<li>uninitialized logic expr: expression which should be fully initialized;</li>
+<li>unsupported construct: any other unsupported construct.</li>
+</ul>
+<p>GNATprove outputs which features in Alfa but not yet implemented are used
+[using brackets]:</p>
+<ul class="simple">
+<li>aggregate: aggregate extension;</li>
+<li>arithmetic operation: not yet implemented arithmetic operation;</li>
+<li>attribute: not yet implemented attribute;</li>
+<li>concatenation: array concatenation;</li>
+<li>conversion: not yet implemented type conversion;</li>
+<li>container: formal container;</li>
+<li>discriminant: discriminant record;</li>
+<li>dispatch: dispatching;</li>
+<li>expression with action: expression with action;</li>
+<li>multi dim array: multi-dimensional array of dimention &gt; 2;</li>
+<li>pragma: not yet implemented pragma;</li>
+<li>representation clause: representation clause;</li>
+<li>slice: array slice;</li>
+<li>tagged type: tagged type;</li>
+<li>type invariant;</li>
+<li>type predicate;</li>
+<li>operation on arrays: rarely used operation on arrays, such as boolean operators;</li>
+<li>iterators: loops with iterators;</li>
+<li>class wide types: class wide types;</li>
+<li>interfaces: interfaces;</li>
+<li>not yet implemented: any other not yet implemented construct.</li>
+</ul>
+<p>As an example, consider the following code:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">package</span> <span class="nc">P</span> <span class="kr">is</span>
+   <span class="n">X</span> <span class="p">:</span> <span class="kr">access</span> <span class="n">Boolean</span><span class="p">;</span>
+   <span class="kd">procedure</span> <span class="nf">P0</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nf">P</span><span class="p">;</span>
+
+<span class="kd">package</span> <span class="kd">body</span> <span class="nc">P</span> <span class="kr">is</span>
+   <span class="kd">procedure</span> <span class="nf">Set</span> <span class="kr">is</span>
+   <span class="kr">begin</span>
+      <span class="n">X</span><span class="p">.</span><span class="kr">all</span> <span class="p">:=</span> <span class="kc">True</span><span class="p">;</span>
+   <span class="kr">end</span> <span class="nf">Set</span><span class="p">;</span>
+
+   <span class="kd">procedure</span> <span class="nf">P0</span> <span class="kr">is</span>
+      <span class="n">Y</span> <span class="p">:</span> <span class="n">Boolean</span><span class="p">;</span>
+
+      <span class="kd">function</span> <span class="nf">Get</span> <span class="nf">return</span> <span class="nf">Boolean</span> <span class="kr">is</span>
+      <span class="kr">begin</span>
+         <span class="kr">return</span> <span class="n">X</span><span class="p">.</span><span class="kr">all</span><span class="p">;</span>
+      <span class="kr">end</span> <span class="nf">Get</span><span class="p">;</span>
+
+      <span class="kd">procedure</span> <span class="nf">P1</span> <span class="kr">is</span>
+      <span class="kr">begin</span>
+         <span class="kr">if</span> <span class="ow">not</span> <span class="n">Get</span> <span class="kr">then</span>
+            <span class="kr">return</span><span class="p">;</span>
+         <span class="kr">end</span> <span class="kr">if</span><span class="p">;</span>
+         <span class="n">Y</span> <span class="p">:=</span> <span class="kc">True</span><span class="p">;</span>
+      <span class="kr">end</span> <span class="nf">P1</span><span class="p">;</span>
+   <span class="kr">begin</span>
+      <span class="n">Set</span><span class="p">;</span>
+      <span class="n">P1</span><span class="p">;</span>
+   <span class="kr">end</span> <span class="nf">P0</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nf">P</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>On this code, GNATprove outputs the following information in file p.alfa:</p>
+<div class="highlight-python"><pre>-+ p__set p.adb:2 (access)
+-+ p__p0__get p.adb:10 (access)
+++ p__p0__p1 p.adb:15
+-+ p__p0 p.ads:3 (access)</pre>
+</div>
+<p>The first character denotes whether the subprogram body is fully in Alfa (+),
+not in Alfa (-) or not yet implemented in Alfa (*). The second character
+follows the same categories for the subprogram spec. The name that follows is a
+unique name for the subprogram. The location of the subprogram is given next
+with its file and line. Subprograms not in Alfa may be followed by a set of
+features used that make it not Alfa, given in parentheses. Subprograms not in
+Alfa or not yet implemented in Alfa may be followed by a set of features not
+yet implemented, given in brackets, whose implementation would make the
+subprogram in Alfa.</p>
+<p>In the example above, P.Set (unique name: p__set) and P.P0.Get (unique name:
+p__p0__get) are both partially in Alfa because their body both contain pointer
+dereferences. P.P0.P1 (unique name: p__p0__p1) is fully in Alfa. Since P.Set is
+partially in Alfa and defined as a local subprogram of P.P0, P.P0 is partially
+in Alfa.</p>
+<p>The purpose of the additional information on features not yet implemented is to
+allow users to experiment and see which features are more beneficial in their
+context, in order to prioritize efficiently their implementation.</p>
+</div>
+<div class="section" id="user-specified-compliance">
+<h3>User-specified Compliance<a class="headerlink" href="#user-specified-compliance" title="Permalink to this headline">¶</a></h3>
+<p>The user may require that the project only contains code in Alfa, by using
+option <tt class="docutils literal"><span class="pre">--mode=force</span></tt>. Any violation of Alfa is then reported as an error,
+and any construct in Alfa not yet implemented is reported as a warning.</p>
+<p>For a finer-grain control, the user may require that some subprograms are in
+Alfa by inserting a specific <a 
+href="http://gcc.gnu.org/onlinedocs/gnat_rm/Pragma-Annotate.html" 
+title="This pragma is used to annotate programs. identifier identifies the type 
+of annotation."  >pragma</a> <tt class="docutils literal">
+<span class="pre">Annotate</span></tt> in the body of the
+subprogram. He may also insert this pragma inside or before a package
+declaration (spec or body) to require that all subprogram declarations in this
+package are in Alfa.</p>
+<p>On the following example:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">package</span> <span class="nc">P</span> <span class="kr">is</span>
+   <span class="kr">pragma</span> <span class="cp">Annotate</span> <span class="p">(</span><span class="n">gnatprove</span><span class="p">,</span> <span class="n">Force</span><span class="p">);</span>
+   <span class="n">X</span> <span class="p">:</span> <span class="kr">access</span> <span class="n">Boolean</span><span class="p">;</span>
+   <span class="kd">procedure</span> <span class="nf">P0</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nf">P</span><span class="p">;</span>
+
+<span class="kd">package</span> <span class="kd">body</span> <span class="nc">P</span> <span class="kr">is</span>
+   <span class="kd">procedure</span> <span class="nf">Set</span> <span class="kr">is</span>
+   <span class="kr">begin</span>
+      <span class="n">X</span><span class="p">.</span><span class="kr">all</span> <span class="p">:=</span> <span class="kc">True</span><span class="p">;</span>
+   <span class="kr">end</span> <span class="nf">Set</span><span class="p">;</span>
+
+   <span class="kd">procedure</span> <span class="nf">P0</span> <span class="kr">is</span>
+      <span class="n">Y</span> <span class="p">:</span> <span class="n">Boolean</span><span class="p">;</span>
+
+      <span class="kd">function</span> <span class="nf">Get</span> <span class="nf">return</span> <span class="nf">Boolean</span> <span class="kr">is</span>
+         <span class="kr">pragma</span> <span class="cp">Annotate</span> <span class="p">(</span><span class="n">gnatprove</span><span class="p">,</span> <span class="n">Ignore</span><span class="p">);</span>
+      <span class="kr">begin</span>
+         <span class="kr">return</span> <span class="n">X</span><span class="p">.</span><span class="kr">all</span><span class="p">;</span>
+      <span class="kr">end</span> <span class="nf">Get</span><span class="p">;</span>
+
+      <span class="kd">procedure</span> <span class="nf">P1</span> <span class="kr">is</span>
+      <span class="kr">begin</span>
+         <span class="kr">if</span> <span class="ow">not</span> <span class="n">Get</span> <span class="kr">then</span>
+            <span class="kr">return</span><span class="p">;</span>
+         <span class="kr">end</span> <span class="kr">if</span><span class="p">;</span>
+         <span class="n">Y</span> <span class="p">:=</span> <span class="kc">True</span><span class="p">;</span>
+      <span class="kr">end</span> <span class="nf">P1</span><span class="p">;</span>
+   <span class="kr">begin</span>
+      <span class="n">Set</span><span class="p">;</span>
+      <span class="n">P1</span><span class="p">;</span>
+   <span class="kr">end</span> <span class="nf">P0</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nf">P</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>GNATprove outputs the following errors:</p>
+<div class="highlight-python"><pre>p.adb:4:07: explicit dereference is not in Alfa
+p.ads:3:08: access type is not in Alfa</pre>
+</div>
+<p>The error messages distinguish constructs not in Alfa (like a pointer
+dereference) from constructs not yet implemented. Notice that no error is given
+for the dereference in P.P0.Get, as another pragma Annotate in that subprogram
+specifies that formal proof should not be done on this subprogram.</p>
+</div>
+</div>
+<div class="section" id="project-statistics">
+<span id="id2"></span><h2>Project Statistics<a class="headerlink" href="#project-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Based on the generated <a class="reference internal" href="#summary-file"><em>Summary File</em></a> for each source unit, GNATprove
+generates global project statistics in file <tt class="docutils literal"><span class="pre">gnatprove.out</span></tt>. The statistics
+describe:</p>
+<ul class="simple">
+<li>what percentage and number of subprograms are in Alfa</li>
+<li>what percentage and number of Alfa subprograms are not yet supported</li>
+<li>what are the main reasons for subprograms not to be in Alfa</li>
+<li>what are the main reasons for subprograms not to be yet supported in Alfa</li>
+<li>units with the largest number of subprograms in Alfa</li>
+<li>units with the largest number of subprograms not in Alfa</li>
+</ul>
+</div>
+<div class="section" id="a-non-ambiguous-subset-of-ada">
+<h2>A Non-ambiguous Subset of Ada<a class="headerlink" href="#a-non-ambiguous-subset-of-ada" title="Permalink to this headline">¶</a></h2>
+<p>The behaviour of a program in Alfa should be unique, both in order to
+facilitate formal verification of properties over these programs, and to get
+the additional guarantee that a formally verified Alfa program always behaves
+the same.</p>
+<p>Sources of ambiguity in sequential Ada programs are:</p>
+<ul class="simple">
+<li>order of evaluation of sub-expressions, which may interact with writes to
+globals through calls;</li>
+<li>evaluation strategy for arithmetic expressions, which may result in an
+<a href="http://www.embedded.com/design/military-aerospace-design/4218480/High-integrity-object-oriented-programming-with-Ada---Part-3" 
+title="a signed integer arithmetic operation yielding a result that would exceed
+ the largest integer value will raise a run-time exception rather than 'wrapping
+ around' to produce a negative value with large magnitude. Operations that 
+produce a result lower than the most negative integer value received analogous 
+treatment. This check prevents errors that can lead to vulnerabilities."  >
+overflow check</a> passing or failing;</li>
+<li>bounds of base scalar types;</li>
+<li>compiler permissions, such as the permission for the compiler to compute the
+right result of an arithmetic expression even if a naive computation would
+raise an exception due to overflow.</li>
+</ul>
+<p>In Alfa, none of these sources of ambiguity is possible.</p>
+<div class="section" id="no-writes-to-globals-in-functions">
+<h3>No Writes to Globals in Functions<a class="headerlink" href="#no-writes-to-globals-in-functions" title="Permalink to this headline">¶</a></h3>
+<p>In Ada, a sub-expression can write to a global variable through a call. As the
+order of evaluation of sub-expressions in an expression (for example, operands
+of an arithmetic operation or arguments of a call) is not specified in Ada, the
+time of this write may have an influence on the value of the expression. In
+Alfa, functions cannot write to globals, which removes this source of
+ambiguity.</p>
+</div>
+<div class="section" id="parenthesized-arithmetic-operations">
+<h3>Parenthesized Arithmetic Operations<a class="headerlink" href="#parenthesized-arithmetic-operations" title="Permalink to this headline">¶</a></h3>
+<p>In Ada, non-parenthesized arithmetic operations can be re-ordered by the
+compiler, which may result in a failing computation (due to <a href="http://www.embedded.com/design/military-aerospace-design/4218480/High-integrity-object-oriented-programming-with-Ada---Part-3" 
+title="a signed integer arithmetic operation yielding a result that would exceed
+ the largest integer value will raise a run-time exception rather than 'wrapping
+ around' to produce a negative value with large magnitude. Operations that 
+produce a result lower than the most negative integer value received analogous 
+treatment. This check prevents errors that can lead to vulnerabilities."  >
+overflow checking</a>)
+becoming a successful one, and vice-versa. In Alfa, all such operations should
+be parenthesized, otherwise a warning is emitted.</p>
+<p>More specifically:</p>
+<ul class="simple">
+<li>any operand of a binary adding operation (+,-) that is itself a binary adding
+operation must be parenthesized;</li>
+<li>any operand of a binary multiplying operation (*,/,mod,rem) that is itself a
+binary multiplying operation must be parenthesized.</li>
+</ul>
+</div>
+<div class="section" id="compiler-permissions">
+<h3>Compiler Permissions<a class="headerlink" href="#compiler-permissions" title="Permalink to this headline">¶</a></h3>
+<p>Ada standard defines various ways in which a compiler is allowed to compute a
+correct result for a computation instead of raising a run-time error. In Alfa,
+we adopt by default the choices made by GNAT on the platform, except when
+option <tt class="docutils literal"><span class="pre">--pedantic</span></tt> is used, in which case we reject all such permissions
+and interpret all computations with the strictest meaning.</p>
+<p>For example, the bounds of base types for user-defined types, which define
+which computations overflow, may vary depending on the compiler and host/target
+architectures. With option <tt class="docutils literal"><span class="pre">--pedantic</span></tt>, all bounds should be set to their
+minimum range
+guaranteed by the Ada standard (worst case). For example, the following type
+should have a base type ranging from -10 to 10 (standard requires a symmetric
+range with a possible extra negative value):</p>
+<div class="highlight-python"><pre>type T is 1 .. 10;</pre>
+</div>
+<p>This other type should have a base type ranging from -10 to 9:</p>
+<div class="highlight-python"><pre>type T is -10 .. 1;</pre>
+</div>
+<p>The bounds of standard scalar types are still defined by the GNAT compiler
+for every host/target architecture, even with option <tt class="docutils literal"><span class="pre">--pedantic</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="pure-contract-specifications">
+<h2>Pure Contract Specifications<a class="headerlink" href="#pure-contract-specifications" title="Permalink to this headline">¶</a></h2>
+<p>Contract specifications and other assertions should have a pure logical meaning
+and no visible effect on the computation, aside from possibly raising an
+exception at run time when ill-defined (run-time error) or invalid (assertion
+violation). This is guaranteed in Alfa by the restriction that functions should
+not perform writes to global variables since a function call is the only
+possible way of generating side effects within an expression.</p>
+</div>
+<div class="section" id="recommended-use">
+<h2>Recommended Use<a class="headerlink" href="#recommended-use" title="Permalink to this headline">¶</a></h2>
+<p>Formal verification can be greatly facilitated by the way the program and its
+desired properties are expressed. In the following section, we give some advice
+to get as many automatic proofs as possible.</p>
+<div class="section" id="subprogram-contracts">
+<span id="contract-cases"></span><h3>Subprogram Contracts<a class="headerlink" href="#subprogram-contracts" title="Permalink to this headline">¶</a></h3>
+<p>The proof of each subprogram is carried over independently of the
+implementation of other subprograms, so the contract of a subprogram should be
+strong enough to prove its callers. The contract of a subprogram can be
+expressed either as a pair of a precondition and a postcondition:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">procedure</span> <span class="nf">Incr_Threshold</span> <span class="p">(</span><span class="nv">X</span> <span class="p">: </span><span class="kr">in</span> <span class="kr">out</span> <span class="kt">Integer</span><span class="p">)</span> <span class="kn">with</span>
+  <span class="nn">Pre</span>  <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="n">Post</span> <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="kt">Integer</span><span class="p">&#39;</span><span class="na">Min</span> <span class="p">(</span><span class="n">X</span><span class="p">&#39;</span><span class="na">Old</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Threshold</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>or as a set of contract cases:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">procedure</span> <span class="nf">Incr_Threshold</span> <span class="p">(</span><span class="nv">X</span> <span class="p">: </span><span class="kr">in</span> <span class="kr">out</span> <span class="kt">Integer</span><span class="p">)</span> <span class="kn">with</span>
+  <span class="nn">Contract_Case</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">Name</span>     <span class="p">=&gt;</span> <span class="s">&quot;increment&quot;</span><span class="p">,</span>
+                    <span class="n">Mode</span>     <span class="p">=&gt;</span> <span class="n">Nominal</span><span class="p">,</span>
+                    <span class="n">Requires</span> <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and then</span> <span class="n">X</span> <span class="o">&lt;</span> <span class="n">Threshold</span><span class="p">,</span>
+                    <span class="n">Ensures</span>  <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">&#39;</span><span class="na">Old</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+  <span class="n">Contract_Case</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">Name</span>     <span class="p">=&gt;</span> <span class="s">&quot;saturate&quot;</span><span class="p">,</span>
+                    <span class="n">Mode</span>     <span class="p">=&gt;</span> <span class="n">Nominal</span><span class="p">,</span>
+                    <span class="n">Requires</span> <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and then</span> <span class="n">X</span> <span class="o">=</span> <span class="n">Threshold</span><span class="p">,</span>
+                    <span class="n">Ensures</span>  <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">&#39;</span><span class="na">Old</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>or, finally, as a combination of both:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">procedure</span> <span class="nf">Incr_Threshold</span> <span class="p">(</span><span class="nv">X</span> <span class="p">: </span><span class="kr">in</span> <span class="kr">out</span> <span class="kt">Integer</span><span class="p">)</span> <span class="kn">with</span>
+  <span class="nn">Pre</span>  <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="n">Post</span> <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="n">X</span><span class="p">&#39;</span><span class="na">Old</span><span class="p">,</span>
+  <span class="n">Contract_Case</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">Name</span>     <span class="p">=&gt;</span> <span class="s">&quot;increment&quot;</span><span class="p">,</span>
+                    <span class="n">Mode</span>     <span class="p">=&gt;</span> <span class="n">Nominal</span><span class="p">,</span>
+                    <span class="n">Requires</span> <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">&lt;</span> <span class="n">Threshold</span><span class="p">,</span>
+                    <span class="n">Ensures</span>  <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">&#39;</span><span class="na">Old</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+  <span class="n">Contract_Case</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">Name</span>     <span class="p">=&gt;</span> <span class="s">&quot;saturate&quot;</span><span class="p">,</span>
+                    <span class="n">Mode</span>     <span class="p">=&gt;</span> <span class="n">Nominal</span><span class="p">,</span>
+                    <span class="n">Requires</span> <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="n">Threshold</span><span class="p">,</span>
+                    <span class="n">Ensures</span>  <span class="p">=&gt;</span> <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">&#39;</span><span class="na">Old</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that these are not equivalent: contract cases only provide a convenient
+way to express complex postconditions, but they do not restrict the calling
+context of the subprogram (the precondition).</p>
+<p>Contract cases can be expressed both as pragmas and <a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-2.html#I1157" 
+title="An aspect clause is used to specify a representation item or an 
+operational item. A representation item is used to specify an object’s run-time 
+representation, such as the size, alignment and placing of the object.">aspects
+</a>. The syntax of contract case pragmas is the following:</p>
+<div class="highlight-ada"><pre>pragma Contract_Case (
+   [Name     =&gt;] static_string_Expression
+  ,[Mode     =&gt;] (Nominal | Robustness)
+ [, Requires =&gt;  Boolean_Expression]
+ [, Ensures  =&gt;  Boolean_Expression]);</pre>
+</div>
+<p>The compiler checks the validity of this pragma or <a 
+href="http://www.ada-auth.org/standards/12rat/html/Rat12-2-2.html#I1157" 
+title="An aspect clause is used to specify a representation item or an 
+operational item. A representation item is used to specify an object’s run-time 
+representation, such as the size, alignment and placing of the object.">aspects
+</a>, and, depending on
+the assertion policy at the point of declaration of the pragma, it may insert a
+check in the executable, corresponding informally to the postcondition <tt class="docutils literal"><span class="pre">if</span>
+<span class="pre">Requires'Old</span> <span class="pre">then</span> <span class="pre">Ensures</span></tt>. Attributes <tt class="docutils literal"><span class="pre">'Old</span></tt> and <tt class="docutils literal"><span class="pre">'Result</span></tt> can only be
+used within the <tt class="docutils literal"><span class="pre">Ensures</span></tt> expression.  See the GNAT Reference Manual for more
+details.</p>
+</div>
+<div class="section" id="function-calls-in-annotations">
+<h3>Function Calls in Annotations<a class="headerlink" href="#function-calls-in-annotations" title="Permalink to this headline">¶</a></h3>
+<p>The contracts of functions called in <a href="goals.html" 
+title="A logical annotation (precondition, postcondition, assertion)"  >
+annotations</a> are essential for automatic
+proofs. Currently, the knowledge that a function call in an annotation respects
+its postcondition (when called in a context where the precondition is
+satisfied) is only available for expression functions. Thus, expression
+functions should be used whenever possible for these functions called in
+annotations.  The syntax of expression functions, introduced in Ada 2012,
+allows defining functions whose implementation simply returns an expression,
+such as <tt class="docutils literal"><span class="pre">Is_Even</span></tt>, <tt class="docutils literal"><span class="pre">Is_Odd</span></tt> and <tt class="docutils literal"><span class="pre">Is_Prime</span></tt> below.</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">function</span> <span class="nf">Is_Even</span> <span class="p">(</span><span class="nv">X</span> <span class="p">: </span><span class="kt">Integer</span><span class="p">)</span> <span class="kr">return</span> <span class="n">Boolean</span> <span class="kr">is</span> <span class="p">(</span><span class="n">X</span> <span class="ow">mod</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nf">Is_Odd</span> <span class="p">(</span><span class="nv">X</span> <span class="p">: </span><span class="kt">Integer</span><span class="p">)</span> <span class="kr">return</span> <span class="n">Boolean</span> <span class="kr">is</span> <span class="p">(</span><span class="ow">not</span> <span class="n">Even</span> <span class="p">(</span><span class="n">X</span><span class="p">));</span>
+
+<span class="kd">function</span> <span class="nf">Is_Prime</span> <span class="p">(</span><span class="nv">X</span> <span class="p">: </span><span class="kt">Integer</span><span class="p">)</span> <span class="kn">with</span>
+  <span class="nn">Pre</span> <span class="p">=&gt;</span> <span class="n">Is_Odd</span> <span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="calls-to-standard-library-functions">
+<h3>Calls to Standard Library Functions<a class="headerlink" href="#calls-to-standard-library-functions" title="Permalink to this headline">¶</a></h3>
+<p>The standard library for the selected target is pre-analyzed, so that user code
+can freely call standard library subprograms.</p>
+</div>
+<div class="section" id="loop-invariants">
+<h3>Loop Invariants<a class="headerlink" href="#loop-invariants" title="Permalink to this headline">¶</a></h3>
+<p>In order for GNATprove to prove formally the properties of interest on
+subprograms with loops, the user should annotate these loops with loop
+invariants. A loop invariant gives information on the state at entry to the
+loop at each iteration. Loop invariants in Alfa consist in the conjunction of
+all assertions that appear at the beginning of the loop body. Loop invariants
+may have to be precise enough to prove the property of interest. For example,
+in order to prove the postcondition of function <tt class="docutils literal"><span class="pre">Contains</span></tt> below, one has to
+write a precise loop invariant such as the one given below:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">function</span> <span class="nf">Contains</span> <span class="p">(</span><span class="nv">Table</span> <span class="p">: </span><span class="n">IntArray</span><span class="p">;</span> <span class="nv">Value</span> <span class="p">: </span><span class="kt">Integer</span><span class="p">)</span> <span class="kr">return</span> <span class="n">Boolean</span> <span class="kn">with</span>
+  <span class="nn">Post</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="kr">if</span> <span class="n">Contains</span><span class="p">&#39;</span><span class="na">Result</span> <span class="kr">then</span>
+             <span class="p">(</span><span class="kr">for</span> <span class="n">some</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">Table</span><span class="p">&#39;</span><span class="na">Range</span> <span class="p">=&gt;</span> <span class="n">Table</span> <span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">=</span> <span class="n">Value</span><span class="p">)</span>
+           <span class="kr">else</span>
+             <span class="p">(</span><span class="kr">for</span> <span class="kr">all</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">Table</span><span class="p">&#39;</span><span class="na">Range</span> <span class="p">=&gt;</span> <span class="n">Table</span> <span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">/=</span> <span class="n">Value</span><span class="p">));</span>
+
+<span class="kd">function</span> <span class="nf">Contains</span> <span class="p">(</span><span class="nv">Table</span> <span class="p">: </span><span class="n">IntArray</span><span class="p">;</span> <span class="nv">Value</span> <span class="p">: </span><span class="kt">Integer</span><span class="p">)</span> <span class="kr">return</span> <span class="n">Boolean</span> <span class="kr">is</span>
+<span class="kr">begin</span>
+   <span class="kr">for</span> <span class="n">Index</span> <span class="ow">in</span> <span class="n">Table</span><span class="p">&#39;</span><span class="na">Range</span> <span class="kr">loop</span>
+      <span class="kr">pragma</span> <span class="cp">Assert</span> <span class="p">(</span><span class="kr">for</span> <span class="kr">all</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">Table</span><span class="p">&#39;</span><span class="na">First</span> <span class="p">..</span> <span class="n">Index</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">=&gt;</span>
+                       <span class="n">Table</span> <span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">/=</span> <span class="n">Value</span><span class="p">);</span>
+
+      <span class="kr">if</span> <span class="n">Table</span><span class="p">(</span><span class="n">Index</span><span class="p">)</span> <span class="o">=</span> <span class="n">Value</span> <span class="kr">then</span>
+         <span class="kr">return</span> <span class="kc">True</span><span class="p">;</span>
+      <span class="kr">end</span> <span class="kr">if</span><span class="p">;</span>
+   <span class="kr">end</span> <span class="kr">loop</span><span class="p">;</span>
+
+   <span class="kr">return</span> <span class="kc">False</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nf">Contains</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>When the loop involves modifying a variable, it may be necessary to refer to
+the value of the variable at loop entry. This can be done using the GNAT
+attribute <tt class="docutils literal"><span class="pre">'Loop_Entry</span></tt>. For example, in order to prove the postcondition of
+function <tt class="docutils literal"><span class="pre">Move</span></tt> below, one has to write a loop invariant referring to
+<tt class="docutils literal"><span class="pre">Src'Loop_Entry</span></tt> such as the one given below:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kd">procedure</span> <span class="nf">Move</span> <span class="p">(</span><span class="nv">Dest</span><span class="p">,</span> <span class="nv">Src</span> <span class="p">: </span><span class="kr">out</span> <span class="n">IntArray</span><span class="p">)</span> <span class="kn">with</span>
+  <span class="nn">Post</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="kr">for</span> <span class="kr">all</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">Dest</span><span class="p">&#39;</span><span class="na">Range</span> <span class="p">=&gt;</span> <span class="n">Dest</span> <span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">=</span> <span class="n">Src</span><span class="p">&#39;</span><span class="na">Old</span> <span class="p">(</span><span class="n">J</span><span class="p">));</span>
+
+<span class="kd">procedure</span> <span class="nf">Move</span> <span class="p">(</span><span class="nv">Dest</span><span class="p">,</span> <span class="nv">Src</span> <span class="p">: </span><span class="kr">out</span> <span class="n">IntArray</span><span class="p">)</span> <span class="kr">is</span>
+<span class="kr">begin</span>
+   <span class="kr">for</span> <span class="n">Index</span> <span class="ow">in</span> <span class="n">Dest</span><span class="p">&#39;</span><span class="na">Range</span> <span class="kr">loop</span>
+      <span class="kr">pragma</span> <span class="cp">Assert</span> <span class="p">((</span><span class="kr">for</span> <span class="kr">all</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">Dest</span><span class="p">&#39;</span><span class="na">First</span> <span class="p">..</span> <span class="n">Index</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">=&gt;</span>
+                       <span class="n">Dest</span> <span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">=</span> <span class="n">Src</span><span class="p">&#39;</span><span class="na">Loop_Entry</span> <span class="p">(</span><span class="n">J</span><span class="p">))</span> <span class="ow">and</span>
+                     <span class="p">(</span><span class="kr">for</span> <span class="kr">all</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">Index</span> <span class="p">..</span> <span class="n">Dest</span><span class="p">&#39;</span><span class="na">Last</span> <span class="p">=&gt;</span>
+                       <span class="n">Src</span> <span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">=</span> <span class="n">Src</span><span class="p">&#39;</span><span class="na">Loop_Entry</span> <span class="p">(</span><span class="n">J</span><span class="p">)));</span>
+
+      <span class="n">Dest</span> <span class="p">(</span><span class="n">Index</span><span class="p">)</span> <span class="p">:=</span> <span class="n">Src</span> <span class="p">(</span><span class="n">Index</span><span class="p">);</span>
+      <span class="n">Src</span> <span class="p">(</span><span class="n">Index</span><span class="p">)</span> <span class="p">:=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kr">end</span> <span class="kr">loop</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nf">Move</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that GNATprove does not yet support the use of attribute <tt class="docutils literal"><span class="pre">'Loop_Entry</span></tt>,
+which can be replaced sometimes by the use of attribute <tt class="docutils literal"><span class="pre">'Old</span></tt> referring to
+the value of a variable at subprogram entry. Ultimately, uses of <tt class="docutils literal"><span class="pre">'Old</span></tt>
+outside of postconditions will be deprecated, once attribute <tt class="docutils literal"><span class="pre">'Loop_Entry</span></tt> is
+supported.</p>
+</div>
+<div class="section" id="quantified-expressions">
+<h3>Quantified Expressions<a class="headerlink" href="#quantified-expressions" title="Permalink to this headline">¶</a></h3>
+<p>Ada 2012 <a href="http://www.ada-auth.org/standards/12rm/html/RM-4-5-8.html" 
+title="Wherever the Syntax Rules allow an expression, a quantified_expression 
+may be used in place of the expression, so long as it is immediately surrounded 
+by parentheses. The expected type of a quantified_expression is any Boolean type
+. The predicate in a quantified_expression is expected to be of the same type.">
+quantified expressions</a> are a special case with respect to run-time
+errors: the enclosed expression must be run-time error free over the <em>entire
+range</em> of the quantification, not only at points that would actually be
+reached at execution. As an example, consider the following expression:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="p">(</span><span class="kr">for</span> <span class="kr">all</span> <span class="n">I</span> <span class="ow">in</span> <span class="mi">1</span> <span class="p">..</span> <span class="mi">10</span> <span class="p">=&gt;</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This <a href="http://www.ada-auth.org/standards/12rm/html/RM-4-5-8.html" 
+title="Wherever the Syntax Rules allow an expression, a quantified_expression 
+may be used in place of the expression, so long as it is immediately surrounded 
+by parentheses. The expected type of a quantified_expression is any Boolean type
+. The predicate in a quantified_expression is expected to be of the same type.">
+quantified expressions</a> will never raise a run-time error, because the
+test is already false for the first value of the range, <tt class="docutils literal"><span class="pre">I</span> <span class="pre">=</span> <span class="pre">1</span></tt>, and the
+execution will stop, with the result value <tt class="docutils literal"><span class="pre">False</span></tt>. However, GNATprove
+requires the expression to be run-time error free over the entire range,
+including <tt class="docutils literal"><span class="pre">I</span> <span class="pre">=</span> <span class="pre">3</span></tt>, so there will be an unproved <a href="goals.html" title="GNATprove generates Verification
+ Conditions (VCs) whose proof ensures that some property holds on the source 
+program">VC</a> for this case.</p>
+</div>
+</div>
+<div class="section" id="features-not-yet-implemented">
+<h2>Features Not Yet Implemented<a class="headerlink" href="#features-not-yet-implemented" title="Permalink to this headline">¶</a></h2>
+<p>The major features not yet implemented are:</p>
+<ul class="simple">
+<li>OO programming: tagged types, dispatching</li>
+<li>formal containers</li>
+<li>invariants on types (invariants and predicates)</li>
+</ul>
+<p>Other important features not yet implemented are:</p>
+<ul class="simple">
+<li>discriminant / variant records</li>
+<li>array slices</li>
+<li>elaboration code</li>
+<li>attribute <tt class="docutils literal"><span class="pre">'Loop_Entry</span></tt></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Definition of Alfa</a><ul>
+<li><a class="reference internal" href="#rationale">Rationale</a></li>
+<li><a class="reference internal" href="#combining-alfa-and-full-ada-code">Combining Alfa and Full Ada Code</a></li>
+<li><a class="reference internal" href="#automatic-detection-of-subprograms-in-alfa">Automatic Detection of Subprograms in Alfa</a><ul>
+<li><a class="reference internal" href="#summary-file">Summary File</a></li>
+<li><a class="reference internal" href="#user-specified-compliance">User-specified Compliance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#project-statistics">Project Statistics</a></li>
+<li><a class="reference internal" href="#a-non-ambiguous-subset-of-ada">A Non-ambiguous Subset of Ada</a><ul>
+<li><a class="reference internal" href="#no-writes-to-globals-in-functions">No Writes to Globals in Functions</a></li>
+<li><a class="reference internal" href="#parenthesized-arithmetic-operations">Parenthesized Arithmetic Operations</a></li>
+<li><a class="reference internal" href="#compiler-permissions">Compiler Permissions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pure-contract-specifications">Pure Contract Specifications</a></li>
+<li><a class="reference internal" href="#recommended-use">Recommended Use</a><ul>
+<li><a class="reference internal" href="#subprogram-contracts">Subprogram Contracts</a></li>
+<li><a class="reference internal" href="#function-calls-in-annotations">Function Calls in Annotations</a></li>
+<li><a class="reference internal" href="#calls-to-standard-library-functions">Calls to Standard Library Functions</a></li>
+<li><a class="reference internal" href="#loop-invariants">Loop Invariants</a></li>
+<li><a class="reference internal" href="#quantified-expressions">Quantified Expressions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#features-not-yet-implemented">Features Not Yet Implemented</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="previous chapter">Getting started with GNATprove</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="next chapter">Usage</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/alfa.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started with GNATprove"
+             >previous</a> |</li>
+        <li><a href="index.html">GNATprove User&#39;s Guide 0.2w documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, AdaCore.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

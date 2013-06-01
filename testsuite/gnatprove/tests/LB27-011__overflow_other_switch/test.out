@@ -1,0 +1,4 @@
+
+p.adb:5:41: info: overflow check proved
+p.adb:5:7: info: loop invariant initialization proved
+p.adb:5:7: info: loop invariant preservation proved

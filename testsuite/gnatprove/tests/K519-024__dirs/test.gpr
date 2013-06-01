@@ -1,0 +1,4 @@
+project Test is
+   for Source_Dirs use (".", "./lib");
+   for Main use ("p");
+end Test;

@@ -1,0 +1,3 @@
+
+base-annex.adb:4:16: info: overflow check proved
+base.adb:6:19: info: precondition proved

@@ -1,0 +1,3 @@
+
+subnat.adb:11:14: info: range check proved
+subnat.ads:3:20: info: postcondition proved

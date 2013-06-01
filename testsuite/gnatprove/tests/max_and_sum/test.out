@@ -1,0 +1,6 @@
+
+maxandsum.adb:10:21: info: overflow check proved
+maxandsum.adb:14:10: info: loop invariant proved
+maxandsum.adb:9:10: info: loop invariant initialization proved
+maxandsum.adb:9:10: info: loop invariant preservation proved
+maxandsum.ads:8:17: info: postcondition proved

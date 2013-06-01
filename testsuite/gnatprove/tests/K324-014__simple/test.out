@@ -1,0 +1,2 @@
+
+qack.ads:6:19: postcondition not proved, requires X = X'old

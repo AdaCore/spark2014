@@ -1,0 +1,23 @@
+p.adb:13:27: info: precondition proved
+p.adb:16:7: info: precondition proved
+p.adb:17:7: info: precondition proved
+p.adb:18:7: info: assertion proved
+p.adb:23:10: info: precondition proved
+p.adb:24:10: info: precondition proved
+p.adb:26:10: info: precondition proved
+p.adb:7:7: info: precondition proved
+p.adb:8:7: info: assertion proved
+p.adb:9:7: info: precondition proved
+p.ads:17:13: info: precondition proved
+p.ads:17:32: info: precondition proved
+p.ads:18:14: info: precondition proved
+p.ads:18:14: postcondition not proved, requires Element (L, Find (L, E)) = E
+p.ads:18:26: info: precondition proved
+p.ads:21:13: info: precondition proved
+p.ads:21:45: info: precondition proved
+p.ads:22:14: info: precondition proved
+p.ads:22:14: postcondition not proved, requires Strict_Equal (L, L'old)
+p.ads:25:13: info: precondition proved
+p.ads:26:14: postcondition not proved
+p.ads:26:16: info: precondition proved
+p.ads:27:27: info: precondition proved

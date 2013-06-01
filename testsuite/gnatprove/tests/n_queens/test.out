@@ -1,0 +1,28 @@
+
+queen.adb:11:13: info: precondition proved
+queen.adb:11:27: info: range check proved
+queen.adb:15:10: assertion not proved, requires not Consistent (C, I)
+queen.adb:16:10: info: assertion proved
+queen.adb:16:68: info: range check proved
+queen.adb:25:10: info: loop invariant initialization proved
+queen.adb:25:10: loop invariant preservation not proved
+queen.adb:27:46: info: index check proved
+queen.adb:27:65: info: index check proved
+queen.adb:29:60: info: range check proved
+queen.adb:33:13: precondition not proved
+queen.adb:34:15: precondition not proved
+queen.ads:15:39: info: range check proved
+queen.ads:20:48: info: index check proved
+queen.ads:20:55: info: index check proved
+queen.ads:21:63: info: range check proved
+queen.ads:22:17: info: postcondition proved
+queen.ads:24:48: info: index check proved
+queen.ads:24:60: info: index check proved
+queen.ads:26:58: info: range check proved
+queen.ads:32:50: info: index check proved
+queen.ads:32:57: info: index check proved
+queen.ads:33:63: info: range check proved
+queen.ads:34:17: postcondition not proved
+queen.ads:36:50: info: index check proved
+queen.ads:36:62: info: index check proved
+queen.ads:38:58: info: range check proved

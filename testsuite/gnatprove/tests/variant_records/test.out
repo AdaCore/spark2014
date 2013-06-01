@@ -1,0 +1,13 @@
+
+var_test.adb:14:39: info: discriminant check proved
+var_test.adb:16:27: info: precondition proved
+var_test.adb:16:43: info: discriminant check proved
+var_test.adb:18:26: info: precondition proved
+var_test.adb:18:42: info: discriminant check proved
+var_test.adb:18:50: info: precondition proved
+var_test.adb:18:66: info: discriminant check proved
+var_test.adb:20:27: info: precondition proved
+var_test.adb:20:43: info: discriminant check proved
+var_test.adb:20:51: info: precondition proved
+var_test.adb:20:67: info: discriminant check proved
+var_test.ads:14:19: info: postcondition proved

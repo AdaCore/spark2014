@@ -1,0 +1,3 @@
+++ next lili.ads:6 instantiated at user.adb:5
+-- finalize lili.adb:10 instantiated at user.adb:5 (access)
+++ p user.ads:3

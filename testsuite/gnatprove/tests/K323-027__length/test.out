@@ -1,0 +1,5 @@
+
+length.adb:21:14: info: range check proved
+length.ads:16:20: info: postcondition proved
+length.ads:6:20: info: postcondition proved
+length.ads:9:20: info: postcondition proved

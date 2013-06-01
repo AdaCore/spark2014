@@ -1,0 +1,69 @@
+
+(* Several simple tests that illustrate how signed__int8 could be used
+   in why. *)
+
+let check_eq_integer
+(a : signed__int8)
+(b : signed__int8) =
+ { }
+  integer_of___signed__int8 (a) = integer_of___signed__int8 (b)
+ { result = true <-> a = b }
+
+(*************)
+(* succ_int8 *)
+(*************)
+
+(* Given a signed__int8, returns its successor *)
+
+(* OK *)
+
+let succ___signed__int8 =
+ fun (x : signed__int8) ->
+  { integer_of___signed__int8 (x) <= 126 }
+   signed__int8___of_integer_ (integer_of___signed__int8 (x) + 1)
+  { integer_of___signed__int8 (result) = integer_of___signed__int8 (x) + 1 }
+
+(* Same as succ_int8, but save the result into an intermediate variable *)
+
+(* OK *)
+
+let succ2___signed__int8 =
+ fun (x : signed__int8) ->
+  { integer_of___signed__int8 (x) <= 126 }
+   (
+    let retval = ref (any___signed__int8 void) in (
+    retval := signed__int8___of_integer_ (integer_of___signed__int8 (x) + 1)
+    ); !retval
+   )
+  { integer_of___signed__int8 (result) = integer_of___signed__int8 (x) + 1 }
+
+
+(**************)
+(* Unit tests *)
+(**************)
+
+(* OK *)
+
+let succ___signed__int8___test0 =
+ fun (x : signed__int8) ->
+  { integer_of___signed__int8 (x) = 0 }
+   succ___signed__int8 (x)
+  { integer_of___signed__int8 (result) = 1 }
+
+(* OK *)
+
+let succ___signed__int8___test15 =
+ fun (x : signed__int8) ->
+  { integer_of___signed__int8 (x) = 15 }
+   succ___signed__int8 (x)
+  { integer_of___signed__int8 (result) = 16 }
+
+
+(* Invalid *) (* Range check fails *)
+
+let succ___signed__int8___test127 =
+ fun (x : signed__int8) ->
+  { integer_of___signed__int8 (x) = 127 }
+   succ___signed__int8 (x)
+  { integer_of___signed__int8 (result) = 128 }
+

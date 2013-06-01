@@ -1,0 +1,4 @@
+test.adb:13:5: info: precondition proved
+test.adb:14:5: assertion not proved, requires X = 0
+test.adb:13:5: info: precondition proved
+test.adb:14:5: assertion not proved, requires X = 0

@@ -1,0 +1,2752 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{fullpage}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+\usepackage{pgflibraryshapes} % for ellipse shape
+
+\newcommand{\version}{0.1}
+
+\title{ALFA \version:\\Annotated Language of Functions in Ada}
+
+\usepackage{color}
+
+\newlength\sidebar
+\newlength\envrule
+\newlength\envborder
+
+\setlength\sidebar{1.5mm}
+\setlength\envrule{0.4pt}
+\setlength\envborder{2.5mm}
+
+\definecolor{exampleborder}{rgb}{0,0,.7}
+\definecolor{examplebg}{rgb}{.9,.9,1}
+\definecolor{statementborder}{rgb}{.9,0,0}
+\definecolor{statementbg}{rgb}{1,.9,.9}
+
+\newsavebox\envbox
+
+\newcounter{example}
+
+\newenvironment{example}[1][EXAMPLE \theexample]{%
+\par
+\refstepcounter{example}%
+\SpecialEnv{#1}{exampleborder}{examplebg}{}{\theexample}%
+}{%
+\endSpecialEnv
+}
+
+\newenvironment{statement}[1][]{% Default statement has no title
+\par
+\SpecialEnv{#1}{statementborder}{statementbg}{statementborder}{}%
+}{%
+\endSpecialEnv
+}
+
+\def\Empty{}
+
+% #1 title (if any)
+% #2 sidebar (and title bg) color
+% #3 background color
+% #4 border color (or null for no border)
+% #5 Counter, if any.
+\newenvironment{SpecialEnv}[5]{%
+\par
+\def\EnvSideC{#2}% To use later (in end)
+\def\EnvBackgroundC{#3}%
+\def\EnvFrameC{#4}%
+\flushleft
+\setlength\leftskip{-\sidebar}%
+\addtolength\leftskip{-\envborder}%
+\noindent \nobreak
+% Check if title is null:
+\ifx\delimiter#1\delimiter\else
+% If a title is specified, then typeset it in reverse color
+\colorbox{\EnvSideC}{%
+\hspace{-\leftskip}% usually positive
+\hspace{-\fboxsep}%
+\footnotesize\sffamily\bfseries\textcolor{white}{#1}%
+\hspace{\envborder}}%
+\par\nobreak
+\setlength\parskip{-0.2pt}% Tiny overlap to counter pixel round-off errors
+\nointerlineskip
+\fi
+% Make side-bar
+\textcolor{\EnvSideC}{\vrule width\sidebar}%
+% collect body in \envbox:
+\begin{lrbox}\envbox
+\begin{minipage}{\hsize}%
+% insert counter, if any:
+\ifx\delimiter#5\delimiter\else
+% \theexample. Yannick: i don't like it.
+\enspace
+\fi
+\ignorespaces
+}{\par
+\end{minipage}\end{lrbox}%
+% body is collected. Add background color
+\setlength\fboxsep\envborder
+\ifx\EnvFrameC\Empty % no frame
+\colorbox{\EnvBackgroundC}{\usebox\envbox}%
+\else % frame
+\setlength\fboxrule\envrule
+\addtolength\fboxsep{-\envrule}%
+\fcolorbox{\EnvFrameC}{\EnvBackgroundC}{
+\usebox\envbox}%
+\fi
+\nobreak \hspace{-2\envborder}\null
+\endflushleft
+}
+
+\newcommand{\rationale}{\fbox{rationale}~}
+\newcommand{\bnf}[1]{$\mathit{#1}$}
+\newcommand{\kw}[1]{\textbf{#1}}
+\newcommand{\spark}{$\tau_S$}
+\newcommand{\why}{$\tau_W$}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\heap}{\code{Heap}\xspace}
+\newcommand{\pred}[1]{\ensuremath{\mathit{pred}(#1)}\xspace}
+\newcommand{\allwrites}{$\mathcal{W^+}$\xspace}
+\newcommand{\Outallwrites}{\ensuremath{\mathcal{W}^{+out}}\xspace}
+\newcommand{\Inallwrites}{\ensuremath{\mathcal{W}^{+in}}\xspace}
+\newcommand{\inallwrites}[1]{\ensuremath{\mathcal{W}^{+in}(#1)}\xspace}
+\newcommand{\outallwrites}[1]{\ensuremath{\mathcal{W}^{+out}(#1)}\xspace}
+\newcommand{\writes}{$\mathcal{W}$\xspace}
+\newcommand{\Outwrites}{\ensuremath{\mathcal{W}^{out}}\xspace}
+\newcommand{\Inwrites}{\ensuremath{\mathcal{W}^{in}}\xspace}
+\newcommand{\inwrites}[1]{\ensuremath{\mathcal{W}^{in}(#1)}\xspace}
+\newcommand{\outwrites}[1]{\ensuremath{\mathcal{W}^{out}(#1)}\xspace}
+\newcommand{\allreads}{$\mathcal{R^+}$\xspace}
+\newcommand{\Outallreads}{\ensuremath{\mathcal{R}^{+out}}\xspace}
+\newcommand{\Inallreads}{\ensuremath{\mathcal{R}^{+in}}\xspace}
+\newcommand{\inallreads}[1]{\ensuremath{\mathcal{R}^{+in}(#1)}\xspace}
+\newcommand{\outallreads}[1]{\ensuremath{\mathcal{R}^{+out}(#1)}\xspace}
+\newcommand{\reads}{$\mathcal{R}$\xspace}
+\newcommand{\Inreads}{\ensuremath{\mathcal{R}^{in}}\xspace}
+\newcommand{\Outreads}{\ensuremath{\mathcal{R}^{out}}\xspace}
+\newcommand{\inreads}[1]{\ensuremath{\mathcal{R}^{in}(#1)}\xspace}
+\newcommand{\outreads}[1]{\ensuremath{\mathcal{R}^{out}(#1)}\xspace}
+\newcommand{\union}{~\cup~}
+\newcommand{\bigunion}{~\bigcup~}
+\newcommand{\inter}{~\cap~}
+\newcommand{\biginter}{~\bigcap~}
+\newcommand{\minus}{~\backslash~}
+
+\newcommand{\vpath}[1]{\ensuremath{\pi(#1)}\xspace}
+\newcommand{\sel}{\ensuremath{\sigma}\xspace}
+
+\newcommand{\etc}{\textit{etc.}\xspace}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.1in}
+
+\begin{document}
+
+\maketitle
+\sloppy
+
+\newpage
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+
+\section{Ada 2012}
+
+Ada 2012 is the next version of the Ada standard, expected to be finalized in
+2012. It contains many extensions that facilitate the expression of
+specifications, for either dynamic or static checking. Its Reference Manual
+(RM) in progress is online at
+\url{http://www.ada-auth.org/standards/12rm/html/RM-TOC.html}.
+
+\subsection{Introduction to Ada}
+
+\subsubsection{Module System}
+
+Programs in Ada are structured in packages, which consist in:
+\begin{itemize}
+\item a package specification, which defines the external API of the package,
+  consisting of types, variables and subprogram declarations whose lifetime and
+  visibility are the same as the one of the package itself;
+\item an optional package body, which defines the entities declared in the
+  package specification, plus additional entities which are not part of the
+  external API of the package.
+\end{itemize}
+
+The package specification may be divided in a public part and a private part,
+so that the private part is visible to the compiler, for use in separate
+compilation, but not visible to the external program. Thus, a type may be
+declared as having a private definition, so that the compiler knows its precise
+definition (size, initialization, etc.) but the program cannot depend on this
+definition outside the package.
+
+Packages may be defined in any declarative section: at the outermost level as
+library-level compilation units, or inside other packages and subprogram
+bodies. Subprograms too can be defined either as library-level compilation
+units, or in local declarative sections. Variables and types can only be
+defined in local declarative sections.
+
+Child packages are derived from their parent package with which they have
+special visibility relations, which depends on the public/private status of the
+child package.
+
+\subsubsection{Type System}
+
+Ada enforces a strong type system by default, although it can be circumvented
+by using specific conversion functions (e.g. on addresses), for example to
+connect the program to external sensors/actuators.
+
+Integers come in a variety of flavors. New integer types can be defined which
+are incompatible, so that type checking uncovers mistakes where different
+integer types are mixed, and a subprogram can be overloaded for different
+integer types. Subtypes of existing integer types can define a range constraint
+which should hold for all initialized values of this subtype, and the compiler
+inserts a run-time check anywhere the constraint could be violated. Given a
+subtype S of a type T, there exists a base machine type B for both T and S such
+that all arithmetic operations on S and/or T are performed in B.  After the
+result is computed, it is stored back in a variable of type S or T and the
+corresponding range check is performed.
+
+Enumerations define named enumerators which are the only values of this
+type. Although pattern-matching is available for all discrete types, it is
+mostly used for enumerations. As part of type checking, the compiler checks
+that pattern-matching is complete and that no case is redundant.
+
+In GNAT, floating-point types follow the IEEE-754 standard, although this is
+not part of the Ada language definition. Fixed-point types limit the precision
+of values.
+
+Aggregate types come in two flavors: records aggregate heterogeneous data
+components, while arrays aggregate homogeneous data components. Records may
+have one or more discriminants: discriminants of enumerated type are used to
+provide a form of algebraic datatypes, as the discriminant is used to provide a
+variant distinction between different sets of components; discriminants of
+integer type are used to provide dependent types, as the discriminant is used
+to give the size of some array component.
+
+Pointer types, a.k.a. access types in Ada, follow a set of somewhat complex
+rules to prevent dangling pointer references. In the following, we will mostly
+ignore pointers.
+
+A non-aggregate type is called an elementary type.
+
+\subsubsection{Metaprogramming}
+
+Generic packages and generic subprograms define template entities that are
+instantiated at compile-time. They come with a set of formal parameters for
+types, variables, values, subprograms and packages. There are individual
+constraints on individual formal parameters and relational constraints between
+formal parameters, so that once the compiler has checked a generic entity, any
+instantiation with correct arguments will generate a compilable entity.
+
+\subsubsection{Object-Oriented Programming}
+
+Classes are known in Ada as tagged (record) types. Objects are values of tagged
+types. Methods are known as primitive operations, which can take their
+dispatching type in any position. When the first operand is the dispatching
+one, the usual object-dot-method notation is allowed for calls.
+
+An object can be considered either of type T, in which case there is no
+dispatching involved when calling a primitive operation of T, or of type
+T'Class, in which case all primitive operations on this object are dispatching.
+
+Interfaces can be defined which only introduce primitive operations and no
+components.
+
+\subsubsection{Calling Conventions}
+
+Parameters of elementary types are passed by copy.  Parameters of tagged type
+are passed by reference. For most other parameters, the compiler is free to
+choose between by-reference and by-copy.
+
+Parameters have a mode, which can be by default \emph{in} or else \emph{out}
+and \emph{in out}:
+\begin{itemize}
+\item parameters of mode \emph{in} can only be read;
+\item parameters of mode \emph{out} can be both read and written: although the
+  user indicates by not making them \emph{in out} that he does not intend to
+  read their initial values, he should still be able to read their value after
+  writing them, so the compiler cannot check in general this data-flow
+  property;
+\item parameters of mode \emph{in out} can be both read and written.
+\end{itemize}
+
+The Ada standard does not rule out aliasing between parameters or between
+parameters and global variables accessed directly in general. However, the
+standard rules out any possible different behaviors which could arise from the
+compiler choosing to pass some parameters by-reference or by-copy, which would
+lead to an ambiguous definition of a program. This is a theoretical rule that
+the compiler does not try to enforce, although GNAT will generate warnings for
+overlapping exported parameters, following the adoption of ``in out'' formal
+parameters for functions in Ada 2012.
+
+\subsection{New in Ada 2012}
+
+The standard defines the following extensions to Ada 2005, which facilitate the
+expression of specifications as subprogram contracts or type invariants:
+
+\begin{itemize}
+\item AI05-0001: bounded containers
+\item AI05-0183: aspect specifications
+\item AI05-0147: conditional expressions
+\item AI05-0188: case expressions
+\item AI05-0177: parameterized expressions
+\item AI05-0176: quantified expressions
+\item AI05-0146: type invariants
+\item AI05-0153: subtype predicates
+\end{itemize}
+
+While the ARG website is the final authority on these extensions
+(http://www.ada-auth.org/AI05-SUMMARY.HTML), we sketch in the following the
+semantics and interest of each one.
+
+Bounded containers introduce bounded versions of the existing generic
+containers in Ada 2005 container library (vector, list, hashed set, ordered
+set, hashed map, ordered map). The bound on the size of the container is used
+to preallocate an array of the desired size, so that dynamic allocation is not
+used for these containers. This opens up the possibility to perform proofs on
+programs using containers, as the validity of cursors is far simpler in this
+new model.
+
+Aspect specifications allow defining contracts for subprograms, a contract
+being a pair of a precondition (\verb|Pre|) and a postcondition
+(\verb|Post|). Special contracts can also be issued for overriding, so that an
+overriding subprogram can only weaken the inherited precondition and strengthen
+the inherited postcondition. The standard defines a general syntax for aspects
+which allows the definition of compiler-specific aspects, like the test-case
+aspect in GNAT described below. In the postcondition, attribute \verb|'Old|
+applied on a name indicates the value attached to this name at subprogram
+entry, and attribute \verb|'Result| applied to the name of the current function
+indicates the result returned by this function. Preconditions and
+postconditions may be compiled into executable assertions if the right option
+is given to the compiler (-gnata in GNAT).
+
+\begin{example}
+  A contract for an integer square-root function, where the rounding is
+  performed towards zero, is:
+\begin{verbatim}
+function Sqrt (X : Integer) return Integer with
+  Pre  => X >= 0,
+  Post => Sqrt'Result >= 0 and then
+          Sqrt'Result ** 2 <= X and then
+          (Sqrt'Result + 1) ** 2 > X;
+\end{verbatim}
+\end{example}
+
+Conditional expressions and case expressions allow the use of ``if'' and
+``case'' in expressions, which simplifies specifications.
+
+Parameterized expressions are a simple form of function definitions (or lambda
+expressions) allowed in the specification part of a package. In particular,
+simple boolean predicates on accessors to a (private) type, which are typically
+the predicates one needs to write subprogram contracts, can be defined as
+parameterized expressions. This has the advantage for proofs that parameterized
+expressions (contrary to functions) 1) cannot have write side-effects if they
+do not contain a function call, 2) have a much simpler form than the usual
+functions, which makes them easier to translate into proof predicates, 3) can
+be defined in a package specification which makes them available for proof even
+if the package body is not.
+
+Quantified expressions allow the expression of predicates which hold for all
+elements in a range or a container, or for some element in a range or a
+container.
+
+Type invariants express invariant properties of private types, which should be
+typically observed for any value of the type outside its package. However, the
+Ada 2012 standard only defines specific points at which this property is
+checked on a value of the type, like entry and exit points of a
+subprogram. This does not enforce by itself that the property always holds.
+
+Subtype predicates express fine-grain properties of subtypes, like the various
+enumeration values allowed for the discriminant of a record. Like for type
+invariants, the standard only defines specific points at which this property is
+checked.
+
+\subsection{GNAT-Specific Extensions}
+\label{sub:formal-containers}
+
+GNAT defines an aspect called \verb|Test_Case|, which applies to subprograms
+exactly like the standard \verb|Pre| and \verb|Post|. A test-case is an
+aggregate with exactly four components, all of which are compulsory:
+\begin{enumerate}
+\item a \verb|Name| component, of type string, which gives the name of the
+  test-case;
+\item a \verb|Mode| component, of a predefined enumerated type, which set the
+  mode for executing the test-case (\verb|Nominal| or \verb|Robustness|);
+\item a \verb|Requires| component, of type boolean, which defines the entry
+  condition for the test-case;
+\item an \verb|Ensures| component, of type boolean, which defines the exit
+  condition for the test-case.
+\end{enumerate}
+
+A test-case (N,Req,Ens) is a part of the specification which indicates that
+under entry condition Req, the subprogram terminates with condition Ens. Thus,
+the \verb|Requires| component bears much resemblance with the precondition, and
+the \verb|Ensures| component bears much resemblance with the
+postcondition. Indeed, they share the same semantic restrictions
+(w.r.t. \verb|'Old| and \verb|'Result|).  More than one test-case can be
+defined for a subprogram. No two test-cases on a subprogram should have the
+same name.
+
+Contrary to preconditions and postconditions, test-cases are not compiled into
+executable assertions by the compiler. GNAT only checks that test-cases are
+properly defined. Test-cases should be used by the verification toolkit either
+for unit testing or for unit proof.
+
+For unit testing, it is sufficient to write a test procedure which exercises a
+test-case to consider this test-case successful. To exercise a test-case, a
+test procedure must in order:
+\begin{enumerate}
+\item generate suitable arguments, by calling one or more subprograms
+  called \textit{fixtures};
+\item check that the requires is satisfied on these arguments;
+\item if the mode is \verb|Nominal|, check that the precondition is satisfied on
+  these arguments;
+\item call the subprogram tested on these arguments;
+\item if the mode is \verb|Nominal|, check that the postconditions is satisfied
+  on these arguments;
+\item check that the ensures is satisfied.
+\end{enumerate}
+
+Note that the test may not execute its ensures or postcondition due to some
+exception being raised. A predefined exception raised should count as a failure
+(for example \verb|Constraint_Error|) while a user-defined exeption raised
+should count as a sucess, as the ensures/postcondition in this case does not
+apply.
+
+The part about checking the contract of the subprogram is optional because some
+test-cases may correspond to cases beyond the normal behavior of the subprogram
+described in its contract. Typically, robustness tests deal with such abnormal
+behavior. So that in Example~\ref{ex:test-case}, the robustness test case
+requires that \verb|X = -1| while the precondition for function \verb|Sqrt| is
+\verb|X >= 0|.
+
+For unit proof, it is sufficient to prove that the subprogram implements a
+special contract, with 1) the requires, optionally and'ed with the original
+precondition, as precondition and 2) the ensures as postcondition.  The
+original precondition should be and'ed with the requires for those test-cases
+which correspond to normal behavior, and the requires should be the only
+precondition for those test-cases which correspond to abnormal behavior.
+
+\begin{example}
+\label{ex:test-case}
+  A contract with test-cases for an integer square-root function is:
+\begin{verbatim}
+function Sqrt (X : Integer) return Integer with
+  Pre  => X >= 0,
+  Post => Sqrt'Result >= 0 and then
+          Sqrt'Result ** 2 <= X and then
+          (Sqrt'Result + 1) ** 2 > X,
+  Test_Case => (Name     => "test case 1",
+                Mode     => Nominal,
+                Requires => X = 100, 
+                Ensures  => Sqrt'Result = 10),
+  Test_Case => (Name     => "test case 2",
+                Mode     => Nominal,
+                Requires => X < 100, 
+                Ensures  => Sqrt'Result >= 0 and then 
+                            Sqrt'Result < 10),
+  Test_Case => (Name     => "robustness test case",
+                Mode     => Robustness,
+                Requires => X = -1, 
+                Ensures  => Sqrt'Result = 0);
+\end{verbatim}
+\end{example}
+
+GNAT introduces a new form of containers called the formal containers, to be
+used for proof of programs which manipulate containers. These are variants of
+Ada 2012 bounded containers, with a different API meant to facilitate proofs.
+
+\section{ALFA}
+
+ALFA is a sub-language of Ada 2012 which identifies which subprograms are fit
+for formal verification. ALFA is not a profile, as defined in the Ada standard,
+as the complete program does not need to be in ALFA for individual subprograms
+to be in ALFA. Rather, subprograms are in ALFA or not depending exclusively on
+their specification and body. In particular, the location in the source where a
+subprogram is defined (inside a package or another subprogram, in the public or
+private part, \etc) should not influence whether it is in ALFA.
+
+ALFA is expected to evolve to support more Ada programs, the current version
+described in this document is version \version. The following notes describe
+the evolution of ALFA.
+
+\paragraph{Verification Profile} 
+
+This document~\cite{Sango2010RR} written by Marc Sango as part of an internship
+describes a possible Ada profile suitable for formal verification by
+translation to SPARK. The viewpoint taken implies that the set of features
+considered as part of the profile is quite large, as using any feature outside
+the profile would abort the possibility of formal verification for the program
+(or at least the package). As a result, many translations from Ada to SPARK are
+left for a future SPARK roadmap (that is, the SPARK language and toolset should
+be extended).
+
+The document outlines the differences between Ada and SPARK, and it
+offers a head-to-head comparison of BNF grammars in appendix.
+
+A prototype translation from Ada to SPARK was created to experiment with some
+of the translations described in the verification profile. This ASIS-based tool
+called Sparkify is available from the Hi-Lite public forge on Open-DO website.
+
+\paragraph{Version \version}
+
+The initial version of ALFA departs from the profile point-of-view, in that
+subprograms should be inside or outside ALFA by themselves, which offers a much
+finer grain of verification. Translations are described in much more details
+than in the verification profile, and they target not only SPARK but also
+Why. A sequence of translation passes is defined. All features that were pushed
+on the SPARK roadmap in the verification profile are now either in ALFA and a
+translation to SPARK/Why is given, or outside ALFA. Practical considerations
+also lead to some features excluded from ALFA because not enough beneficial at
+this stage, although they could be added later (for example fixed-point types).
+
+\subsection{ALFA Overview}
+\label{sec:ALFA-overview}
+
+The high-level goals of ALFA are to:
+\begin{enumerate}
+\item \label{it:alfa-verif} enable verification of the absence of run-time
+  errors and contract verification on individual subprograms;
+\item \label{it:alfa-combine} make it possible to combine unit testing and unit
+  proof;
+\item \label{it:alfa-annot} reduce the annotation burden on the programmer;
+\item \label{it:alfa-auto} lead to 100\% automatic proof on subprograms
+  whenever it is possible.
+\end{enumerate}
+
+Following the approach of SPARK, we aim at proving the absence of reads of
+uninitialized data (a part of goal (\ref{it:alfa-verif})) by enforcing and
+checking stricter data-flow properties than required in Ada. However, we depart
+from SPARK in requiring that the analysis follows initialization at the level
+of variable subcomponents instead of entire variables. In ALFA, all syntactic
+program paths through a subprogram should initialize individual variable
+subcomponents before a subcomponent is read, while other subcomponents of the
+same variable may remain uninitialized. Likewise, parameter modes do not impose
+initialization of entire variables. Instead, an analysis computes the set of
+variable subcomponents only read, only written and both read and written in a
+subprogram, which are treated like the ``in'', ``out'' and ``in out''
+parameters in a SPARK data-flow analysis:
+\begin{itemize}
+\item variable subcomponents only read and those both read and written should
+  be completely initialized at subprogram entry;
+\item variable subcomponents only written should be completely initialized at
+  subprogram exit.
+\end{itemize}
+
+\begin{example}
+  The following subprograms are incorrect in SPARK, both because components
+  \verb|X| and \verb|Y| of parameter \verb|P| are initialized separately, and
+  because out-parameter \verb|P| is not completely initialized by
+  \verb|Init_X|. They are correct in ALFA.
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  
+  procedure Init_X (P : out Point) is begin 
+     P.X := 0; 
+  end Init_X;
+  
+  procedure Init (P : out Point) is begin 
+     Init_X (P);
+     P.Y := 0; 
+  end Init;
+\end{verbatim}
+\end{example}
+
+To achieve goal (\ref{it:alfa-annot}), we do not require any user annotations
+(a.k.a. frame condition) related to parameters and global variables read or
+written, as in SPARK or Why.  Instead, we provide an analysis to compute these
+annotations from the source program. This analysis requires that the code of
+the subprograms called by the subprograms analyzed is available. This
+corresponds to the code which is needed to perform unit testing on a unit,
+which is required anyway to achieve goal (\ref{it:alfa-combine}).
+
+In contract-based verification (a part of goal (\ref{it:alfa-verif})), a
+subprogram body is verified independently from other subprograms, by relying on
+subprogram contracts only to assess the effect of calls. Thus, it is crucial
+that subprogram contracts are precise. In particular, the frame condition needs
+to be generated as precisely as possible, which is partly achieved by
+distinguishing between variable components in the frame condition.
+
+\begin{example}
+Consider a procedure which sets a field of an element of an array of points:
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+
+  procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) with
+     Post => P(N).X = V;
+\end{verbatim}
+
+The postcondition of \verb|Set_X_Of_Nth| only says something about the value of
+\verb|P(N).X| in the post-state. It says nothing about the value of
+\verb|P(N).Y|, or the value of \verb|P(M).X| and \verb|P(M).Y| for some
+\verb|M| different from \verb|N|.\\
+
+The only way to add this information in Ada is to explicitly state in the
+postcondition that these other values have not changed:
+\begin{verbatim}
+  Post => P(N).X = V and then P(N).Y = P(N).Y'Old and then
+          (for all M in Index => (if M /= N then P(M).X = P'Old(M).X)) and then
+          (for all M in Index => (if M /= N then P(M).Y = P'Old(M).Y));
+\end{verbatim}
+
+This detailed postcondition is needed if we generate in SPARK/Why an imprecise
+frame condition which only says that array \verb|P| is written. But if we
+generate a more precise frame condition saying that only field \verb|X| of an
+element of \verb|P| is written, then the postcondition is Ada can be reduced,
+because it is known in SPARK/Why that no field \verb|Y| has changed:
+\begin{verbatim}
+  Post => P(N).X = V and then
+          (for all M in Index => (if M /= N then P(M).X = P'Old(M).X));
+\end{verbatim}
+\end{example}
+
+ALFA allows mutual dependencies between packages and (direct or indirect)
+recursive calls. Although these should be handled with care to ensure program
+termination, the user should deal with termination separately as ALFA does not
+target proof of termination.
+
+ALFA does not deal with concurrency at this stage, which means that the
+verification results are only valid for sequential programs, or for concurrent
+programs if it can be shown that the results are the same as for the underlying
+sequential programs (for example, when there is no communication between
+threads). The RavenSPARK profile of SPARK, based on the Ravenscar profile of
+Ada, suggests restrictions that make formal verification of concurrent programs
+feasible using the SPARK toolset. Similar restrictions could be added to ALFA
+in a later version to allow dealing with concurrency.
+
+ALFA allows analyzing formally many more constructs than SPARK does, but it
+inherits some of its limitations from SPARK, for lack of a simple translation
+into SPARK (for example, restrictions on the form of exit statements in loops).
+
+\subsection{Computing the Frame Condition}
+\label{sub:data-flow}
+
+In order to define which entities are in ALFA and which are not, we need to
+compute the set of components of parameters and global variables which are
+read/written by each subprogram, a.k.a. the frame condition of each subprogram.
+
+\subsubsection{Variable Paths}
+\label{sub:variable-path}
+
+A variable in ALFA may only have a scalar type (discrete or real) or an
+aggregate type (record or array) such that all sub-components have themselves a
+scalar type or an aggregate type with the same restriction. Given a variable
+$v$ in ALFA, we associate a set of paths \vpath{v} to $v$. More generally, we
+associate a set of paths \vpath{v} to an individual path $v$ (which may be a
+variable) as follows:
+\begin{itemize}
+\item if $v$ has a scalar type, $\vpath{v} = \{v\}$;
+\item if $v$ has a record type with components $c_i$, 
+  $\vpath{v} = \bigunion \vpath{v.c_i}$;
+\item if $v$ has an array type whose element type $t$ is a scalar type,
+  $\vpath{v} = \{v\}$;
+\item if $v$ has an array type whose element type $t$ is a record type with
+  components $c_i$, $\vpath{v} = \bigunion \vpath{v.c_i}$. (Here, we do as if $v$
+  was of type $t$ so that we can refer to its $c_i$ components.)
+\end{itemize}
+
+\begin{example}
+\label{ex:variable_path}
+  On the following code, there are four variable paths associated to variable
+  \verb|X|: \verb|X.B.J|,
+  \verb|X.B.K|, \verb|X.A.J| and \verb|X.A.K|.\\
+
+\begin{minipage}{0.65\linewidth}
+\begin{verbatim}
+type Base is record 
+  J : Integer;
+  K : Integer range 0 .. 5;
+end record;
+
+type Base_Array is array (Boolean) of Base;
+\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+\begin{verbatim}
+type Ext is record 
+  B : Base;
+  A : Base_Array;
+end record;
+
+X : Ext;
+\end{verbatim}
+\end{minipage}
+\end{example}
+
+A path is a sequence of selectors $\sel_1.\sel_2...\sel_n$.  If any selector
+$\sel_i$ on the path refers to an array, we say that the path is an array
+path. Otherwise, we say that the path is a record path. A record path refers to
+a single value of scalar type, while an array path usually refers to more than
+one value of scalar type.
+
+\begin{example}
+  In Example~\ref{ex:variable_path}, \verb|X.B.J|, and \verb|X.B.K| are record
+  paths; \verb|X.A.J| and \verb|X.A.K| are array paths.
+\end{example}
+
+Notice that writing to a record path assigns the new value to the subcomponent
+represented by the record path. Writing to an array path only changes part of
+the value of the subcomponent represented by the array path, which is partially
+written.
+
+\subsubsection{Problem Statement}
+
+For the purpose of data-flow verification, we consider a package body as a
+special form of subprogram, where the body of the subprogram is given by the
+various initializations performed in the declarations of variables, as well as
+the optional sequence of statements.
+
+A data-flow analysis of the source Ada program should associate each subprogram
+with three sets of variables paths:
+\begin{itemize}
+\item the read-set of variable paths possibly read by the subprogram;
+\item the write-set of variable paths alway written by the subprogram;
+\item the read-write-set of variable paths possibly read and written by
+  the subprogram.
+\end{itemize}
+
+Note that a variable path which is always written by the subprogram before
+being read, so that the initial value of the variable path is never read,
+belongs to the write-set, not the read-write-set.
+
+A special global variable called \heap represents all the dynamically allocated
+memory plus all variables whose address is taken. Although subprograms in ALFA
+do not contain pointers and memory allocation, they may call other subprograms
+which do contain pointers and memory allocation, so that their frame condition
+may end up mentioning \heap.
+
+The algorithm should compute various maps from program points $p$ to sets of
+(local and global) variable paths:
+\begin{itemize}
+\item \writes stores variable paths completely written on all program paths
+  to $p$;
+\item \allwrites stores variable paths partially written on some program
+  path to $p$;
+\item \reads stores variable paths whose initial value at subprogram entry has
+  been partially read on some program path to $p$;
+\item \allreads stores variable paths partially read on some program path to
+  $p$.
+\end{itemize}
+
+As \reads depends on \writes which depends on \allreads, \allreads should be
+computed first, then \writes, then \reads. \allwrites can computed at any time, as it is independent from the other maps.
+
+As \writes, \allwrites, \reads and
+\allreads take program entities as parameters, they are decomposed into
+(\Inwrites,\Outwrites), (\Inallwrites,\Outallwrites), (\Inreads,\Outreads) and
+(\Inallreads,\Outallreads) respectively, where the ``in'' part describes the
+program point immediately before the entity and the ``out'' part describes the
+program point immediately after the entity.
+
+In the following, we give data-flow equations defining each one of \writes,
+\allwrites, \reads and \allreads. These equations provide an algorithm for
+computing the sets, and since the sets only grow, the algorithm necessarily
+reaches a fixpoint and terminates. Note that \writes, \allwrites, \reads and
+\allreads will contain path variables for parameters and global variables but
+also local variables, even when applied to subprograms.
+
+The control-flow graph of a subprogram allows defining for each statement $s$
+the set of its predecessor statements \pred{s}.
+
+\begin{example}
+\label{ex:frame-condition}
+  We will use the following code, which sets a field of an array element, as
+  running example throughout the definition of the algorithms for computing the
+  frame condition.
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+
+  procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) is begin
+     P(N).X := V;
+  end Set_X_Of_Nth;
+\end{verbatim}
+\end{example}
+
+\subsubsection{Computing \allwrites}
+
+There are two sources of partial writes: assignment statements and calls. A
+statement $s$ partially writes a variable path $w$ in the following cases:
+\begin{itemize}
+\item $s$ is an assignment statement to $w$;
+\item $s$ is an assignment statement through a dereference, and $w$ is \heap;
+\item $s$ contains a call to a subprogram $f$, $w$ is not a local variable path
+  of $f$ and $w \in \outallwrites{f}$.
+\end{itemize}
+
+Given a statement $s$ partially writing variable path $w$, the following
+equations define \allwrites:
+\begin{eqnarray*}
+\inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}\\
+\outallwrites{s} &=& \inallwrites{s} \union \{w\}
+\end{eqnarray*}
+
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute \outallwrites{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|P.X| \}.
+\end{example}
+
+\subsubsection{Computing \allreads}
+
+There are two sources of reads: expressions and calls. A statement $s$
+partially reads a variable path $r$ in the following cases:
+\begin{itemize}
+\item $s$ contains an occurence of $r$ that does not count as write, as
+  described above;
+\item $s$ contains a dereference that does not count as write, as described
+  above, and $r$ is \heap;
+\item $s$ contains a call to a subprogram $f$, $r$ is not a local variable path
+  of $f$ and $r \in \outallreads{f}$.
+\end{itemize}
+
+Notice that expressions used in the definition of types, for example dynamic
+bounds of a subtype, are also considered here.
+
+Given a statement $s$ partially reading variable paths $r_i$, the following
+equations define \allreads:
+\begin{eqnarray*}
+\inallreads{s} &=& \bigunion \outallreads{\pred{s}}\\
+\outallreads{s} &=& \inallreads{s} \union \{r_i\}
+\end{eqnarray*}
+
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute
+  \outallreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}.
+\end{example}
+
+\subsubsection{Computing \writes}
+\label{sec:init-array-through-loop}
+
+There are two natural sources of complete writes: assignment statements and
+calls. A statement $s$ completely writes a global variable path $w$ in the
+following cases:
+\begin{itemize}
+\item $s$ is an assignment statement to $w$, and $w$ is a record path;
+\item $s$ contains a call to a subprogram $f$, $w$ is not a local variable path
+  of $f$ and $w \in \outwrites{f}$.
+\end{itemize}
+Additionally, if $l_1$ is a loop and $w$ an array path such that:
+\begin{enumerate}
+\item there is a set of loops $l_1...l_n$ such that each $l_i$ ranges over the
+  set of indexes of an array selector in $w$, and there is one loop for every
+  array selector;
+\item for all $i$, $l_i$ contains
+  $l_{i+1}$ as a statement in its outter sequence of statements;
+\item $l_1$ does not contain any exit statement (even in inner loops);
+\item $w \notin \outallreads{l_1}$ (that is, $w$ is not read in the loop);
+\item $l_n$ contains a statement assigning to $w$, where all indexes used for
+  array accesses are exactly all the loop variables;
+\end{enumerate}
+then loop $l_1$ completely writes variable path $w$.
+
+The aim of this special rule for loops is to allow the initialization of array
+paths through loops, which is both common in user code and which arises as a
+result of expansion, in particular due to default expressions for record
+components.
+
+Given a statement $s$ completely writing variable paths $w$, the following
+equations define \writes:
+\begin{eqnarray*}
+\inwrites{s} &=& \biginter \outwrites{\pred{s}}\\
+\outwrites{s} &=& \inwrites{s} \union \{w\}
+\end{eqnarray*}
+
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute
+ \outwrites{\mathit{Set\_X\_Of\_Nth}} = \{\}.
+\end{example}
+
+\subsubsection{Computing \reads}
+
+\reads is computed similarly as \allreads, except it does not count variable
+paths completely written on all syntactic program paths before reaching the
+current program point. A statement $s$ partially reads the initial value of a
+variable path $r$ if $r$ is not in \writes and:
+\begin{itemize}
+\item $s$ contains an occurence of $r$ that does not count as write, as
+  described above;
+\item $s$ contains a dereference that does not count as write, as described
+  above, and $r$ is \heap;
+\item $s$ contains a call to a subprogram $f$, $r$ is not a local variable path
+  of $f$ and $r \in \outreads{f}$.
+\end{itemize}
+
+Given a statement $s$ partially reading the initial value of variable paths
+$r_i$, the following equations define \reads:
+\begin{eqnarray*}
+\inreads{s} &=& \bigunion \outreads{\pred{s}}\\
+\outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})
+\end{eqnarray*}
+
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute
+ \outreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}.
+\end{example}
+
+\subsubsection{Computing the read-set, write-set and read-write-set}
+\label{sec:frame-sets}
+
+Given subprogram $f$:
+\begin{itemize}
+\item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
+\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$
+  augmented with all local variables of $f$;
+\item the initial read-write-set for $f$ is $\outallwrites{f} \minus
+  \outwrites{f}$.
+\end{itemize}
+
+The read-set is simply the set of variable paths whose initial value may be
+read and which are never written. The write-set if the set of variable paths
+always written on all program paths to the exit of the subprogram, and whose
+initial value is not read. We add all local variables to this set because their
+value should not be read before they are assigned, and it does not matter if
+they are initialized prior to returning from the function. The read-write-set
+is all other variable paths read or written. The frame condition is the
+defined by the value of all three sets.
+
+\begin{example}
+Consider the following code for setting a field of an array element:
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+
+  procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) is begin
+     P(N).X := V;
+  end Set_X_Of_Nth;
+\end{verbatim}
+
+We computed the sets for \verb|Set_X_Of_Nth| as follows:
+\begin{itemize}
+\item \outallwrites{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|P.X| \}
+\item \outallreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}
+\item \outwrites{\mathit{Set\_X\_Of\_Nth}} = \{\}
+\item \outreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}
+\end{itemize}
+
+So that the read-set of \verb|Set_X_Of_Nth| is \{ \verb|V| \}, its write-set is
+ \{\} and its read-write-set is  \{ \verb|P.X| \}.
+\end{example}
+
+\subsection{ALFA Restrictions}
+
+In the following, we describe the restrictions in ALFA with respect to
+packages, types, variables, subprograms, expressions and statements, as well as
+their rationale. A precise description of ALFA restrictions based on Ada BNF is
+given in Appendix~\ref{sec:bnf-alfa}.
+
+\subsubsection{Packages}
+
+Library-level packages, child packages and generic packages are all in ALFA.
+
+Local packages to other packages or subprograms and formal packages for generic
+packages and subprograms are not in ALFA, as they would require quite some work
+for no clear benefit.
+
+\subsubsection{Types}
+
+Access types are not in ALFA, because they create aliasing which makes formal
+verification intractable.
+
+Floating-point and fixed-point types are not in ALFA, although they could be in
+a future version. Floating-point are particularly difficult to translate
+accurately, because the IEEE-754 standard is quite complex, but a simpler
+(safe) model bounding floating-point values by reals would be possible. Notice
+that the current treatment of floating-point numbers as reals in SPARK is plain
+incorrect, and identified as such. Frama-C provides some support for
+floating-points~\cite{ayad10ijcar}.
+
+Interfaces are not in ALFA also to simplify the work on the first version.
+
+Controlled types in Ada define special subprograms which are called when
+assigning to an object of the type (a controlled object), or when a controlled
+object goes out of scope or is released. Controlled types are not in ALFA both
+because they are not usually used in critical software, and because they may
+lead to the generation of an implicit exception handler, in order to apply
+finalization to the controlled object in the cases where an exception has been
+raised.
+
+\subsubsection{Variables}
+
+Variables whose address is taken are not in ALFA.
+
+\subsubsection{Subprograms}
+
+Library-level subprograms, package subprograms, local subprograms and generic
+subprograms are all in ALFA.
+
+Primitive subprograms of tagged types are in ALFA only if they do not have
+global variables in their frame condition. The reason for this restriction is
+that these subprograms can be subject to dynamic dispatching, which must
+respect the Liskov Substitution Principle to allow formal verification as
+described in Section~\ref{sec:LSP}.
+
+\subsubsection{Calls}
+\label{ALFA:calls}
+
+\paragraph{Dispatching Calls}
+
+Ada 2012 defines two differents types of contracts on primitive subprograms of
+tagged types, that is 
+\begin{enumerate}
+\item regular \verb|Pre| and \verb|Post| aspects only apply to the subprogram
+  on which they are defined;
+\item inherited \verb|Pre'Class| and \verb|Post'Class| aspects are inherited by
+  the overriding subprograms, in a way that ensures (partly) the Liskov
+  Substitution Principle: inherited preconditions are or'ed, which results in a
+  weaker precondition; inherited postconditions are and'ed, which results in a
+  stronger postcondition.
+\end{enumerate}
+
+The or'ing of inherited preconditions does not fit well a user who does not
+want to obey the Liskov Substitution Principle (see Section~\ref{sec:LSP} for
+the definition of LSP). In this case, the standard mandates that none of the
+subprograms in this inheritance hierarchy has a \verb|Pre'Class| aspect. The
+\verb|Pre| aspect should be used instead.
+
+In order to perform formal verification of dipatching calls, we require that
+the program obeys the Liskov Substitution Principle. As a result, a dispatching
+call is in ALFA only if the subprogram associated to the type on which the
+dispatch is performed has a \verb|Pre'Class| aspect, directly or inherited.
+
+\subsubsection{Expressions}
+
+All expressions involving pointers (access types, addresses) are not in ALFA.
+
+Quantified expressions are in ALFA only if they appear in predicate position,
+that is, at the top-level of the boolean structure of an expression used in
+assertions.
+
+\subsubsection{Statements}
+
+Exception handlers are not in ALFA, because they are not a priority for the
+target programs (Krakatoa/Why do treat exception handling). However, defining
+exceptions and raising exceptions are in ALFA. As far as formal verification of
+data-flow, run-time errors and contracts is concerned, raising an exception is
+similar to removing the program path from consideration.
+
+Exit statements for loops follow the same restrictions in ALFA as in SPARK.
+
+\subsection{ALFA Extensions}
+
+In ALFA, the pragma Assert immediately at the start of a loop body has a
+special meaning. It defines a loop-invariant for this loop, which is used for
+unit proof.
+
+\begin{example}
+  The following implementation of the integer square-root function has a
+  loop-invariant:
+\begin{verbatim}
+function Sqrt (X : Integer) return Integer is
+   Res, Two_Res, Res_Square : Integer := 0;
+begin
+   while Res_Square <= X loop
+      pragma Assert (Res >= 0 and then
+                     Two_Res = 2 * Res and then
+                     Res_Square = Res * Res);
+      Res_Square := Res_Square + Two_Res + 1;
+      Two_Res    := Two_Res + 2;
+      Res        := Res + 1;
+  end loop;
+  return Res - 1;
+end Sqrt;
+\end{verbatim}
+\end{example}
+
+The loop-invariant to be used for unit proof should be 1) true the first time
+the loop is entered and 2) provable from assuming it at some previous iteration
+through the loop and examining the effect of the loop body.
+
+\section{Formal Verification}
+\label{sec:formal-verification}
+
+We target three types of formal verification goals:
+\begin{enumerate}
+\item Data-flow verification (DFV) ensures that there are no reads of
+  uninitialized data, and that there is no possible unintended aliasing.
+\item Contract verification (CV) ensures that subprograms respect their
+  contract.
+\item Verification of absence of run-time errors (RTE) ensures that subprograms
+  are free from most types of run-time errors.
+\end{enumerate}
+
+Verification of Liskov Substitution Principle (LSP), for primitive subprograms
+of tagged types and dispatching calls, is part of both DFV and CV.
+
+All of data-flow verification, contract verification and verification of
+absence of run-time errors can be performed independently. However, there is a
+natural ordering which arises from the logical dependencies between them: 
+\begin{center}
+  DFV $<$ CV $<$ RTE
+\end{center}
+
+Indeed, the results of CV are valid only if DFV is verified, and the results of
+RTE are valid only if DFV and CV are verified. In practice, this means that
+DFV, CV and RTE should be usually performed in this order.
+
+On the one hand, both CV and RTE depend on contracts and intermediate
+assertions (loop-invariants and other assertions). For example, loop-invariants
+usually contain information on the range of values, which are both used for
+proving absence of run-time error and functional properties. Thus, contracts
+and intermediate assertions should be assumed for RTE. On the other hand,
+proving contracts and intermediate assertions can be performed without assuming
+absence of run-time errors. Indeed, what is proved in this case is that,
+provided there are no run-time errors, the contracts and intermediate
+assertions hold.
+
+It should be possible to perform CV and RTE independently, first because the
+user may be interested in only one of these, second because we will aim at CV
+principally through Why and RTE principally through SPARK.
+
+\subsection{Data-Flow Verification (DFV)}
+\label{sub:DFV}
+
+Data-flow verification should be performed as a static analysis, similar to
+what the Examiner does for SPARK code. However, we aim at finer-grain data-flow
+verification than the one provided in SPARK. Instead of tracking the
+initialization of entire variables, we track the initialization of variable
+subcomponents.
+
+Reads of variable subcomponents are only allowed if all syntactic paths through
+the subprogram before reaching the read do initialize completely the
+corresponding variable subcomponent. This restriction is similar to the SPARK
+one, except that it applies to variable subcomponents instead of entire
+variables.
+
+Aliasing between parameter subcomponents and global subcomponents accessed by
+a subprogram is forbidden, unless all aliasing parameters and globals are
+read. This restriction is similar to the SPARK one, except that it applies to
+variable subcomponents instead of entire variables.
+
+\subsection{Contract Verification (CV)}
+
+The contract of a subprogram in ALFA is verified by assuming that the
+subprograms it calls do respect their contracts, which includes a possible
+recursive call (in which case the assumption is made only for the recursive
+call). For the purpose of contract verification, possible run-time errors are
+ignored, both in the program and in the contracts. Thus, the results of
+contract verification hold for all executions which do not raise a run-time
+error.
+
+As part of CV, all intermediate assertions and loop-invariants are also
+proved. This includes the contracts, intermediate assertions and
+loop-invariants that are useful to prove absence of run-time errors, if RTE is
+also an objective.
+
+\subsection{Liskov Substitution Principle Verification (LSP)}
+\label{sec:LSP}
+
+Dynamic dispatching on tagged types makes it impossible to know the complete
+set of subprograms called at a dispatching call site. A solution would be to
+require all overriding subprograms to be known to analyze a dispatching
+call. This solution is not modular, as it requires re-verifying a program
+whenever a type is derived and new overriding subprograms are defined. Instead,
+we restrict the behavior of overriding subprograms so that verification results
+are valid for any extension of the types which respect the said restrictions.
+
+These restrictions are known as the Liskov Substitution Principle:
+\begin{enumerate}
+\item \label{it:lsp-pre} The precondition of an overriding subprogram must be
+  weaker than (be implied by, include) the precondition of the subprogram
+  they override.
+\item \label{it:lsp-post} The postcondition of an overriding subprogram must be
+  stronger than (imply, be included in) the postcondition of the subprogram
+  they override.
+\item \label{it:lsp-read} The frame condition of an overriding subprogram
+  should put less constraints on the calling context than the frame condition
+  of the subprogram they override.
+\item \label{it:lsp-write} The frame condition of an overriding subprogram
+  should give more guarantees to a caller, after the call, than the frame
+  condition of the subprogram they override.
+\end{enumerate}
+
+Conditions~\ref{it:lsp-pre} and~\ref{it:lsp-post} are automatically ensured by
+the conditions enforced on calls in ALFA, as described in
+Section~\ref{ALFA:calls}. These contracts should be verified as part of doing
+CV.
+
+Conditions~\ref{it:lsp-read} and~\ref{it:lsp-write} are verified by:
+\begin{itemize}
+\item checking that the computed frame condition of a primitive subprogram of a
+  tagged type both puts less constraints on the calling context and gives more
+  guarantees to a caller than the frame condition suggested by its
+  specification (``in'', ``out'' and ``in out'' parameters);
+\item assuming that each dispatching call has the frame condition suggested by
+  the specification of the subprogram on which it dispatches. This implicitly
+  defines a datagroup~\cite{Leino-datagroups, tafat10rr} for each object of
+  primitive type, comprising all fields of the type.
+\end{itemize}
+
+\begin{example}
+  Consider types \verb|T| and \verb|S| derived from \verb|T|, with primitive
+  subprogram \verb|F| being overriden for \verb|S|:~\\
+
+\begin{minipage}{0.5\linewidth}
+\begin{verbatim}
+type T is tagged record 
+   X : Integer; 
+end record;
+
+type S is new T with record 
+   Y : Integer; 
+end record;
+\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\begin{verbatim}
+procedure F (A : in out T) is
+begin
+   A.X := 0;
+end F;
+
+procedure F (A : in out S) is
+begin
+   A.Y := A.X + 1;
+end F;
+\end{verbatim}
+\end{minipage}~\\
+
+The frame condition suggested by the specification of the subprogram \verb|F|
+applied to type \verb|T| is the read-write-set \{ \verb|A.X| \}.  The computed
+frame condition for \verb|F| applied to type \verb|T| is the write-set \{
+\verb|A.X| \}.  Since it does not require \verb|A.X| to be initialized at
+function call, it puts less constraint on the calling context than its
+specification suggests. Since it does not write any variable path not written
+in its specification, it provides as much guarantees to the caller as is
+specification suggests.\\
+
+The frame condition suggested by the specification of the subprogram \verb|F|
+applied to type \verb|S| is the read-write-set \{ \verb|A.X|, \verb|A.Y| \}.
+The computed frame condition for \verb|F| applied to type \verb|S| is the
+read-set \{ \verb|A.X| \} and the write-set \{ \verb|A.Y| \}. Since it does not
+require \verb|A.Y| to be initialized at function call, it puts less constraint
+on the calling context than its specification suggests. Since it does not write
+any variable path not written in its specification, it provides as much
+guarantees to the caller as is specification suggests.~\\
+
+When analyzing a dispatching call to \verb|F| on static type \verb|T'Class|, it
+will be assumed that the subprogram called has the frame condition suggested by
+\verb|F|'s specification: the read-write-set \{ \verb|A.X|, \verb|A.?| \} where
+\verb|A.?| is the component of type \verb|T'Class| denoting all components of
+derived types, like \verb|A.Y| for type \verb|S|.
+\end{example}
+
+\subsection{Verification of Absence of Run-Time Errors (RTE)}
+
+The fact that a subprogram in ALFA is free from run-time errors is verified by
+assuming that the subprograms it calls do respect their contracts and that they
+are free from run-time errors, which includes a possible recursive call (in
+which case the assumption is made only for the recursive call).
+
+RTE includes proving that the evaluation of assertions (including contracts and
+loop-invariants) does not lead to run-time errors. To that end, the checks
+inserted by the compiler to prove absence of runt-time error should be proved.
+
+\begin{example}
+  Proving RTE on the procedure \verb|Do_Something_On_Array| involves proving
+  that evaluating its postcondition cannot lead to a run-time error:
+  \verb|I + J| and \verb|A(I) + A(J)| should not overflow; \verb|I|, \verb|J|
+  and \verb|I + J| should be allowed indexes for \verb|A|. Proving RTE on a
+  caller of procedure \verb|Do_Something_On_Array| involves proving that
+  evaluating its precondition cannot lead to a run-time error: \verb|I| and
+  \verb|J| should be allowed indexes for \verb|A|.
+\begin{verbatim}
+procedure Do_Something_On_Array (A : My_Array; I, J : Index) with
+   Pre  => A(I) /= A(J),
+   Post => A(I + J) = A(I) + A(J);
+\end{verbatim}
+\end{example}
+
+Although the Examiner already generates VCs for absence of run-time errors on
+the SPARK subset of Ada, we will not use these capabilities directly. Instead,
+we will rely on the compiler to insert the proper checks, which will be
+translate into assertions in SPARK, for which the Examiner also generate
+VCs. The benefits of this approach are that 1) the compiler controls which
+run-time checks should be proved, which can be modified on option, and reduced
+to fewer checks if the compiler is able to prove some of them (typically for
+checks that deal with type checking constraints); 2) the same process applies
+to checks that the Examiner would generate and checks that the Examiner does
+not know about, because they originate in language constructs that are not in
+SPARK; 3) the same checks are generated whatever the proof chain used, through
+SPARK or through Why.
+
+\subsection{Verification Modes}
+
+CV and RTE require different (although compatible) choices during the
+translation.  Therefore, we define three modes for the translation:
+\begin{enumerate}
+\item mode CV for contract verification;
+\item mode RTE for verification of absence of run-time errors;
+\item mode CV+RTE for combined contract verification and verification of
+  absence of run-time errors.
+\end{enumerate}
+
+In all three modes, the only part of the program which is translated
+differently is the logic part, having to do with the translation of
+assertions. Modes CV and RTE both insert different assertions, which means that
+more reads are performed, thus putting more constraints on the data-flow in
+terms of non-aliasing and initialization. Thus, it is sufficient to prove DFV
+in mode CV+RTE for data-flow to be verified in both modes CV and RTE. Hence DFV
+should be performed in mode CV+RTE.
+
+\section{Translation to SPARK/Why}
+
+A subprogram in ALFA should be translated into an intermediate representation
+in SPARK or in Why. From this representation, the Examiner or Why tools can
+generated Verification Conditions (VCs) to prove using an automatic prover.  In
+order to facilitate fine-grain modular proof, each subprogram should lead to
+the generation of a separate unit (package in SPARK, module in Why), which can
+be proved independently. Notice that the generated SPARK is not executable, and
+does not match in general the structure of the source Ada program, even if this
+program is written in the SPARK subset of Ada. Ideally, the generated SPARK
+should correspond to a simple subset of SPARK (for example no need for
+visibility rules in this subset as everything is public). Thus, it should be
+easier to formalize this subset and prove the correctness of transformations or
+analyses on this subset if needed.
+
+\subsection{Introduction to SPARK/Why}
+
+\subsubsection{Common Basis of SPARK and Why}
+
+SPARK and Why are both programming languages designed for deductive
+verification, more than execution. They both mix coding constructs with logic
+constructs whose aim is to state invariant properties of the program.
+
+The central logic construct is the contract, which serves to fully describe the
+effect of calling a subprogram, for the purpose of separate verification. Each
+subprogram in SPARK/Why must be defined with a proper contract:
+\begin{enumerate}
+\item a precondition describes constraints on the calling context;
+\item a frame condition describes both the variables on which the result of the
+  subprogram depends (variables read) and the variables which may be modified
+  as a result of the call (variables written);
+\item a postcondition describes constraints on the result of the subprogram.
+\end{enumerate}
+
+Both SPARK and Why define references which are used to pass parameters to
+subprogram calls. None defines pointer types. Both SPARK and Why define static
+rules to check that the only parameters and globals (mentioned in the frame
+condition) which may be aliased are those which are only read.
+
+Both languages come equipped with a verification condition generator (VCGen)
+which produces formulas which should be proved (automatically or manually) for
+the contracts expressed on the SPARK or Why code to hold. The VCGen for Why is
+the Why tool; it can produce VCs in a variety of languages, among which Why
+itself and SMTLIB format.  The VCGen for SPARK is the Examiner; it produces VCs
+in FDL, which can be translated by the ViCToR tool into a variety of languages,
+among which SMTLIB format.
+
+\subsubsection{SPARK Specificities}
+
+SPARK code, when stripped from its logic constructs, is a subset of
+Ada. Thus, SPARK inherits many constructs of Ada, and it is of course
+executable.
+
+SPARK enforces strict data-flow properties, that are checked statically by the
+Examiner tool:
+\begin{itemize}
+\item to read any part of a variable, the entire variable must be initialized
+  on all syntactic program paths from the start of the current subprogram to
+  the program point where the read is performed;
+\item a parameter of mode ``in'' or ``in out'' in a call counts as a read;
+\item every parameter of mode ``out'' in the current subprogram must be
+  initialized on all syntactic program paths from the start of the subprogram
+  to the end of the subprogram;
+\item every parameter of mode ``in'' or ``in out'' in the current subprogram
+  must be partially read on at least one syntactic program path from the start
+  of the subprogram to the end of the subprogram;
+\item global variables mentioned in the frame condition must respect the same
+  constraints as parameters.
+\end{itemize}
+
+Essentially, these data-flow properties enforce a programming discipline which
+ensures that there is no read of an uninitialized value anywhere in the
+program, and which the Examiner checks statically.  As part of the same static
+analysis, the Examiner also issues errors if some variables or statements are
+unused.
+
+As SPARK is a subset of Ada, it knows all about the possible run-time errors in
+this subset, and it generates VCs guarding against such errors.
+
+\subsubsection{Why Specificities}
+
+Why is a functional language with imperative features, of an OCaml flavor. Why
+allows mixing freely axiomatized entities and defined entities, which means
+that Why programs cannot be executed.
+
+Why defines four primitive types:
+\begin{itemize}
+\item \emph{int} for mathematical integers;
+\item \emph{bool} for Booleans;
+\item \emph{real} for mathematical real numbers;
+\item \emph{unit} for the type of statements.
+\end{itemize}
+
+There are no predefined aggregate types (records and arrays) in Why. In
+general, these should be defined as abstract types and axiomatized. In this
+respect, Why is closer to the translation in FDL of SPARK data structures than
+to SPARK itself. However, Why provides a definition for functional arrays and a
+predefined type array acting as a mutable reference on functional arrays. This
+type is polymorphic, so that it can be instantiated to define arrays over
+whatever element type.
+
+Why also provides algebraic types which allow defining enumerations, LISP-like
+lists, discriminated unions, \etc, together with pattern-matching expressions
+(the equivalent of Ada case-statements and case-expressions) on algebraic
+types~\cite{Paskevich09RR}.
+
+Why distinguishes between logic and programs, and between terms and predicates
+in the logic. For example, a quantification is of type \verb|prop| which is
+different from the Boolean type for terms \verb|bool|.
+
+\subsection{From Ada to Unambiguous Ada}
+\label{sub:slicing-function}
+
+Ada functions may write global variables, so that the compiler choice of
+evaluation order for expressions may influence the result. Whatever it is, this
+choice should be the same for execution and verification, which is obtained by
+lifting function calls outside of expressions in the specified order of
+evaluation. This consists in a simple walk through the AST following the order
+of evaluation, and introducing temporary variables for every function
+call. 
+
+\begin{example}
+  With a left-to-right evaluation order, the statement
+\begin{verbatim}
+X := F(X) + G(H(Y),K(Z));
+\end{verbatim}
+  should be translated into:
+\begin{verbatim}
+Tmp1 := F(X);
+Tmp2 := H(Y);
+Tmp3 := K(Z);
+Tmp4 := G(Tmp2,Tmp3);
+X := Tmp1 + Tmp4;
+\end{verbatim}
+\end{example}
+
+To simplify further passes, array concatenation \verb|&| should be replaced at
+this stage by equivalent concatenation functions, and treated as
+such. Similarly, slices used in expressions should be replaced by equivalent
+slicing functions, and treated as such.
+
+Likewise, Ada arithmetic expressions may be reordered by the compiler when not
+enough parenthesized, so the translation should introduce the necessary
+parentheses which force the natural evaluation order given by operators
+associativity. 
+
+\begin{example}
+  The expression \verb|X + Y + Z| should be translated into \verb|(X + Y) + Z|.
+\end{example}
+
+\subsection{From Unambiguous Ada to Expanded Ada}
+\label{UnambigAda2ExpandedAda}
+
+This translation should be different for CV and RTE. It is based on the
+expansion phase in the GNAT front-end which will simplify the work needed in
+subsequent phases:
+\begin{itemize}
+\item it unfolds all aggregate initializations;
+\item it makes all checks for run-time errors explicit;
+\item it explicits default expressions for parameters in calls;
+\item it removes renamings;
+\item it add a tag component to tagged types;
+\item \etc [add other expansions here]
+\end{itemize}
+
+In particular, types which depend on some dynamic bounds should be translated
+into types with static bounds, by creating additional variables to hold the
+dynamic bounds. Then, the run-time checks should mention these dynamic bounds.
+This concerns discrete subtypes with dynamic bounds and array types with
+dynamic bounds. Parameters of array type with dynamic bounds should be
+translated into three parameters: one for the array and two for the bounds.
+
+Whenever a subprogram has an in-variable of such a type with dynamic bounds, an
+additional precondition should be generated stating that the variable is within
+bounds.  Whenever a subprogram has an out-variable of such a type with dynamic
+bounds, an additional postcondition should be generated stating that the
+variable is within bounds.
+
+Each discriminant of a record type should be translated into a normal
+component. When this discriminant controls a variant, all components of the
+different cases should be added as components of the record. When this
+discriminant controls the size of an array, this array component should be
+translated like an array with dynamic bounds.
+
+Declarations of generic entities should be instantiated for each generic
+instantiation in the program. Bodies of generic entities should be kept not
+instantiated, so that each generic body is verified only once.
+
+A quantified expression over formal containers should be translated into a
+quantification over the corresponding cursor type, inserting a guard that the
+cursor belongs to the container. This is possible because cursors of formal
+containers are simply integer types.
+
+\begin{example}
+The quantified expresssion:
+\begin{verbatim}
+for all X of My_Set => Prop (X)
+\end{verbatim}
+should be translated into:
+\begin{verbatim}
+for all C in Cursor => if Has_Element (My_Set, C) then Prop (Element (My_Set, C))
+\end{verbatim}
+\end{example}
+
+Contracts (precondition and postcondition) in SPARK/Why have a slightly
+different semantics than contracts in Ada 2012, because contracts in SPARK/Why
+completely ignore the possibility of a run-time error being raised while
+evaluating the contract. When checking for absence of run-time errors (which
+can be separated from contract checking), the absence of run-time errors in
+contracts should also be proved, which requires the extension of contracts with
+additional conjuncts in SPARK/Why. This expansion should be performed at this
+stage.
+
+\begin{example}
+  The following contract in Ada:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element
+   with Pre => A (X) /= Nil_Element;
+\end{verbatim}
+
+is equivalent to the following contract in SPARK:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element;
+--# pre X in My_Array'Range and then A (X) /= Nil_Element;
+\end{verbatim}
+\end{example}
+
+\subsection{From Expanded Ada to Extended SPARK}
+
+As a general remark, the translation should be allowed to introduce copies of
+any values (for example to translate extended returns), which should not have
+any effect on the validity of the proofs.
+
+\subsubsection{Packages}
+\label{Ada2SPARK:packages}
+
+\paragraph{Specification and Body}
+
+Packages in Ada are mutually dependent, as package bodies can refer to visible
+types, variables and subprograms of any other package. Only package
+specifications must respect a partial ordering so that there is no circular
+dependencies between package specifications. But circular dependencies between
+package specifications become apparent once we express frame conditions on the
+subprograms declared in the package: subprogram \verb|P.F| may read variable
+\verb|Q.Y| while subprogram \verb|Q.G| reads variable \verb|P.X|.  As SPARK/Why
+do not allow expressing circular dependencies (SPARK rules prevent mutual
+dependencies between package specifications or bodies; Why prevents circular
+inclusion), a package in Ada should be translated into more than one unit in
+SPARK/Why. A unit is a package in SPARK and a module in Why.
+
+Visibility should be completely ignored in the translation, so that entities
+which are declared public/private in the package specification and entities
+which are declared in the package body are treated alike. A package \verb|P| in
+Ada (specification+body if present) should be translated into three package
+specifications in SPARK: a package specification \verb|P_Type| for its types, a
+package specification \verb|P_Data| for its variables and a package
+specification \verb|P_Spec| for its subprogram specifications.
+
+\begin{example}
+\tikzstyle{arrow}=[->, thick]
+The mutual dependence in:
+\begin{tikzpicture}[baseline=(current bounding box.west)]
+  \node at (0.5,1.2) {\verb|P|};
+  \node at (0.5,0.5) (X) {\verb|X|};
+  \node at (0.5,0) (F) {\verb|F|};
+  \draw (0,-0.5) -- (0,1) -- (1,1) -- (1,-0.5) -- (0,-0.5);
+
+  \node at (2.5,1.2) {\verb|Q|};
+  \node at (2.5,0.5) (Y) {\verb|Y|};
+  \node at (2.5,0) (G) {\verb|G|};
+  \draw (2,-0.5) -- (2,1) -- (3,1) -- (3,-0.5) -- (2,-0.5);
+
+  \draw[arrow] (F) -- (Y);
+  \draw[arrow] (G) -- (X);
+\end{tikzpicture}
+should be translated into: 
+\begin{tikzpicture}[baseline=(current bounding box.west)]
+  \node at (0.5,1.2) {\verb|P_Data|};
+  \node at (0.5,0.5) (X) {\verb|X|};
+  \draw (0,0) -- (0,1) -- (1,1) -- (1,0) -- (0,0);
+
+  \node at (0.5,-0.8) {\verb|P_Spec|};
+  \node at (0.5,-1.5) (F) {\verb|F|};
+  \draw (0,-2) -- (0,-1) -- (1,-1) -- (1,-2) -- (0,-2);
+
+  \node at (2.5,1.2) {\verb|Q_Data|};
+  \node at (2.5,0.5) (Y) {\verb|Y|};
+  \draw (2,0) -- (2,1) -- (3,1) -- (3,0) -- (2,0);
+
+  \node at (2.5,-0.8) {\verb|Q_Spec|};
+  \node at (2.5,-1.5) (G) {\verb|G|};
+  \draw (2,-2) -- (2,-1) -- (3,-1) -- (3,-2) -- (2,-2);
+
+  \draw[arrow] (F) -- (Y);
+  \draw[arrow] (G) -- (X);
+\end{tikzpicture}
+\end{example}
+
+Hierarchical relations between packages (child packages, local packages), which
+govern special visibility rules, should disappear during the translation, so
+that all packages are generated in SPARK at library-level, without any
+hierarchical relations between them.
+
+\paragraph{Elaboration}
+
+All initializations and statements which are executed during package
+elaboration should be treated like the body of a special elaboration
+subprogram, and translated like other subprograms as described in
+Section~\ref{Ada2SPARK:subprograms}.
+
+\paragraph{Generics}
+
+Instantiations of generic packages produced during expansion (see
+Section~\ref{UnambigAda2ExpandedAda}) should be translated like non-generic
+packages, except no subprogram is generated for elaboration.
+
+The generic package itself should be translated specially, so that verification
+of the subprogram bodies it defines (including the elaboration subprogram) is
+performed only once, instead of being performed for each instantation
+separately. A generic package \verb|P| in Ada (specification+body if present)
+should be translated into four package specifications in SPARK: package
+specifications \verb|P_Type|, \verb|P_Data| and \verb|P_Spec| like previously,
+plus a package specification \verb|P_Formal| for its formal part.
+
+Formal parameters should be translated into special entities of
+\verb|P_Formal|:
+\begin{itemize}
+\item A formal object declaration should be translated like an object
+  declaration.
+\item A formal private type definition should be translated into a private type
+  with no definition.
+\item A formal derived type definition from a record type should be translated
+  into a private derived type from this same record type with no definition.
+\item A formal derived type definition from a scalar type should be translated
+  into a new derived type from this scalar type.
+\item A formal signed integer type definition should be translated into a
+  signed integer type with unknown (dynamic) bounds.
+\item A formal modular type definition should be translated into a modular type
+  with unknown (dynamic) upper bound.
+\item A formal floating-point or fixed-point definition is not in ALFA.
+\item A formal discrete type definition should be translated into a private
+  type with no definition.
+\item A formal array type definition should be translated into an array type
+  definition.
+\item A formal subprogram should be translated into a subprogram specification.
+\item A formal package is not in ALFA.
+\end{itemize}
+
+See Sections~\ref{Ada2SPARK:types}, \ref{Ada2SPARK:variables}
+and~\ref{Ada2SPARK:subprograms} for the precise translation of these formal
+parameters.
+
+A generic package instantiation should be translated into a call to a special
+procedure, whose parameters are the formal object declarations of the generic,
+with the same modes: ``in'' or ``in out''.
+
+\subsubsection{Variables}
+\label{Ada2SPARK:variables}
+
+\paragraph{Splitting Subcomponents}
+
+As mentioned in Section~\ref{sec:ALFA-overview}, we aim at using the data-flow
+analysis in SPARK to prove the absence of reads of uninitialized data, and the
+absence of unintended aliasing. Since we aim at analyze the initialization of
+variable subcomponents instead, and since SPARK only analyzes the
+initialization of entire variables, we need to split all variables into their
+individual subcomponents.
+
+For each variable path as defined in Section~\ref{sub:data-flow}, we introduce
+a new path-variable, so that each variable in the source Ada program is
+translated into a set of path-variables of elementary or array type (over
+elements which have elementary or array types, recursively).
+
+\begin{example}
+  Consider the various types and variables below, where \verb|Val| is an
+  elementary type:
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+  J : Val; A : Point; B : Points;
+\end{verbatim}
+The variables above should be split into individual subcomponents as follows:
+\begin{verbatim}
+  type Val_Array is array (Index) of Val;
+  J, A_X, A_Y : Val; B_X, B_Y : Val_Array;
+\end{verbatim}
+\end{example}
+
+\paragraph{Array Variables}
+
+As described in Section~\ref{Ada2SPARK:types} below, array types with dynamic
+bounds should be translated into array types with static bounds. In order to
+still allow expressing the value of the \verb|'First| and \verb|'Last|
+attribute applied to this array, two new variables should be generated for
+every dimension of every path-variable of array type, which hold the value of
+\verb|'First| and \verb|'Last| applied to this path-variable and this
+dimension.
+
+\paragraph{Initialization}
+
+The initialization part of a variable declaration should be translated into an
+assignment in the body of the elaboration subprogram (for global variables) or
+in the body of the subprogram (for local variables).
+
+\paragraph{Named Numbers and Constants}
+
+Named numbers, which simply provide a proxy name for a literal, should be
+inlined.
+
+Constants with a static value, which could be as well named numbers, should be
+inlined too.
+
+Constants with a non-static value should be split like variables into
+path-variables.
+
+\subsubsection{Types}
+\label{Ada2SPARK:types}
+
+\paragraph{Discrete Types}
+
+Enumeration types should be kept unchanged. Character types should be
+translated into normal enumeration types, by inserting calls to suitable
+conversion functions between characters and the new enumeration types. Boolean
+types should be kept unchanged.
+
+Integer types with static bounds should be kept unchanged.
+
+Integer types with dynamic bounds should be translated into the closest
+enclosing subtype with static bounds, together with a type invariant to be
+asserted in preconditions and postconditions. See
+Example~\ref{ex:dynamic-bounds} below. The type invariant states that a value
+is within the allowed dynamic bounds.
+
+The type invariant should be asserted:
+\begin{itemize}
+\item in the precondition of subprogram \verb|F| (the version used for
+  verifying the body of \verb|F|) for all path-variables of mode ``in'' and
+  ``in out'' in the frame condition of \verb|F|;
+\item in the postcondition of subprogram \verb|F| (the version used for
+  verifying the body of callers of \verb|F|) for all path-variables of mode
+  ``out'' and ``in out'' in the frame condition of \verb|F|;
+\end{itemize}
+
+Derived scalar types should be kept (translation into SPARK subtypes is delayed
+until Section~\ref{SPARK2SPARK:types}).
+
+\paragraph{Array Types}
+
+One-dimensional array types with static bounds should be kept unchanged.
+
+One-dimensional array types with dynamic bounds should be translated into
+arrays types with static bounds by taking the closest enclosing subtype with
+static bounds of its index type as new index type, together with special
+variables holding the \verb|'First| and \verb|'Last| attributes applied to this
+variable (as presented in Section~\ref{Ada2SPARK:variables}).
+
+Multi-dimensional array types should be translated like arrays of arrays, each
+array having dimension one only.
+
+\paragraph{Record Types}
+
+As shown in Section~\ref{Ada2SPARK:variables}, record types should disappear
+as a result of splitting every composite variable into path-variables.
+
+The discriminants of a discriminant record should be treated like normal
+components. Discriminants used to bound array components should be used in
+place of the special variables holding the \verb|'First| and \verb|'Last|
+attributes applied to this component (as presented in
+Section~\ref{Ada2SPARK:variables}). 
+
+\paragraph{Tagged Types}
+
+The type of a tagged type is stored in a tag component, which is inserted by
+expansion (see Section~\ref{UnambigAda2ExpandedAda}). This tag component is
+required to translate class-wide assignment (there is a check that the source
+and destination objects have the same dynamic type) and class-wide structural
+equality (objects must be of the same type and their components must be equal
+for the objects to be equal). The tag component should be translated like a
+mathematical integer (and not an enumerated value, because it would bound the
+number of derived types from a type).
+
+\paragraph{Class-wide Types}
+
+A class-wide type \verb|T'Class| denotes type \verb|T| and all types derived
+from \verb|T|. It should be translated away like record types into the same set
+of components as the underlying record type, plus a special component to denote
+all the unknown components of derived types. This special component will not be
+accessed directly by the code, but used in frame conditions for dispatching
+calls, as described in Section~\ref{sec:LSP}.
+
+\paragraph{Anonymous Types}
+
+All anonymous types should be explicitly named for SPARK/Why. This concerns:
+\begin{itemize}
+\item anonymous subtypes in type definitions (for example, the bounds in an
+  array);
+\item anonymous subtypes in object and component declarations;
+\item anonymous array types in object declarations.
+\end{itemize}
+
+\paragraph{Incomplete Types}
+
+Incomplete type declarations should be dropped, as they are redundant with the
+corresponding complete type declarations.
+
+\subsubsection{Subprograms}
+\label{Ada2SPARK:subprograms}
+
+ In ALFA, all syntactic
+program paths through a subprogram should initialize individual variable
+subcomponents before a subcomponent is read, while other subcomponents of the
+same variable may remain uninitialized. Likewise, parameter modes do not impose
+initialization of entire variables. Instead, an analysis computes the set of
+variable subcomponents only read, only written and both read and written in a
+subprogram, which are treated like the ``in'', ``out'' and ``in out''
+parameters in a SPARK data-flow analysis.
+
+\paragraph{Declarative Sections}
+
+In Ada, subprograms may define several local declarative sections, either at
+the start of the subprogram body, or inside a local block-statement. Local
+subprograms defined inside these declarative blocks may introduce mutual
+dependencies with other packages as seen in
+Section~\ref{Ada2SPARK:packages}. Given a subprogram \verb|F| defined in
+package \verb|P|, we should extend the solution described in
+Section~\ref{Ada2SPARK:packages}, by adding local types to \verb|P_Type|, local
+variables to \verb|P_Data| and local subprograms to \verb|P_Spec|. Notice in
+particular that local variables are translated into global variables for the
+purpose of verification. This translation is correct for deductive
+verification, in the sense that every assertion proved on the generated code by
+deductive verification is true of the original code too.
+
+\paragraph{Library-level}
+
+Contrary to Ada, SPARK only allows the definition of one library-level
+subprogram, which should be the main entry point for the program. In order to
+prepare the translation to SPARK, and to provide a uniform solution to the
+problem of declarative sections mentioned above, we should translate
+library-level subprograms as if they were defined in their own library-level
+package.
+
+\paragraph{Body}
+
+The body of a subprogram \verb|F| defined in package \verb|P| should be
+translated in its own package \verb|F_Body|, with a package specification
+containing the subprogram specification for \verb|F|, and a package body
+containing the subprogram body for \verb|F|. Thus, the original subprogram
+specification for \verb|F| is split in the generated SPARK code into two
+subprogram specifications: one in \verb|P_Spec| and one in \verb|F_Body|. This
+separation is necessary to 1) apply deductive verification in SPARK/Why to the
+body of function \verb|F| only, in order to get modularity without relying on
+specific features of SPARK/Why tools; 2) break dependencies which may arise
+from recursion between subprograms, including self and mutual recursion.  Thus,
+all calls to \verb|V| in the Ada program should be translated into calls to
+\verb|P_Spec.F|, including possible recursive calls in \verb|F_Body.F|.
+
+\paragraph{Overloading}
+
+All names should be made unique in their package. This takes care of
+overloading, which is allowed in Ada but not in SPARK or Why. In particular,
+operator symbols should be renamed so that operators become regular functions.
+
+\paragraph{Abstract and Null}
+
+An abstract subprogram declaration should be translated into a normal
+subprogram declaration, as the constraint that such subprograms are not defined
+is a compile-time constraint checked by the compiler.
+
+A null subprogram declaration should be translated into a normal subprogram
+declaration and a body with a single null statement. [unless SPARK defines null
+procedures as a way to specify axioms or lemmas at the source level, see
+J925-004]
+
+\paragraph{Parameters} 
+
+Like shown in Section~\ref{Ada2SPARK:variables} for variables,
+each subprogram parameter should be split into a set of path-variables
+too. However, only those path-variables which correspond to variable paths in
+the frame condition of the subprogram should be added as parameters:
+\begin{enumerate}
+\item path-variables corresponding to (parameter) variable paths in the
+  read-set of subprogram \verb|F| should be added as ``in'' parameters of
+  \verb|F|;
+\item path-variables corresponding to (parameter) variable paths in the
+  write-set of subprogram \verb|F| should be added as ``out'' parameters of
+  \verb|F|;
+\item path-variables corresponding to (parameter) variable paths in the
+  read-write-set of subprogram \verb|F| should be added as ``in out''
+  parameters of \verb|F|.
+\end{enumerate}
+
+Likewise, globals in the frame condition of subprogram \verb|F| should be
+split in those path-variables which correspond to variable paths in
+the frame condition of \verb|F|:
+\begin{enumerate}
+\item path-variables corresponding to (global) variable paths in the
+  read-set of subprogram \verb|F| should be added as ``in'' globals of
+  \verb|F|;
+\item path-variables corresponding to (global and local) variable paths in the
+  write-set of subprogram \verb|F| should be added as ``out'' globals of
+  \verb|F|;
+\item path-variables corresponding to (global) variable paths in the
+  read-write-set of subprogram \verb|F| should be added as ``in out''
+  globals of \verb|F|.
+\end{enumerate}
+
+\begin{example}
+  Take a procedure \verb|Set| which only initializes part of its \verb|Point|
+  parameter:
+\begin{verbatim}
+type Point is record X, Y : Val; end record;
+procedure Set (P : out Point) is begin P.X := 0; end Set;
+\end{verbatim}
+
+  It should be translated into a subprogram which only takes as parameters
+  those path-variables that are part of its frame condition:
+\begin{verbatim}
+procedure Set (P_X : out Val) is begin P_X := 0; end Set;
+\end{verbatim}
+\end{example}
+
+For each path-variable of mode ``in'' or ``in out'' in the frame condition of
+\verb|F| (see Section~\ref{Ada2SPARK:variables}) whose type defines a dynamic
+invariant (see Section~\ref{Ada2SPARK:types}), the corresponding dynamic
+invariant should be stated in the precondition of \verb|F_Body.F|, so that it
+will be assumed during formal verification of the body of~\verb|F|.
+
+For each path-variable of mode ``out'' or ``in out'' in the frame condition of
+\verb|F| (see Section~\ref{Ada2SPARK:variables}) whose type defines a dynamic
+invariant (see Section~\ref{Ada2SPARK:types}), the corresponding dynamic
+invariant should be stated in the postcondition of \verb|P_Spec.F|, so that it
+will be assumed during formal verification of the callers of~\verb|F|.
+
+\begin{example}
+\label{ex:dynamic-bounds}
+The parameters \verb|X| and \verb|Y| below have a type with dynamic bounds:
+\begin{verbatim}
+subtype Index is Integer range Index_First .. Index_Last;
+procedure F (X : in Index; Y : out Index);
+\end{verbatim}
+
+They should be translated into parameters of the underlying static subtype,
+plus a precondition on \verb|F_Body.F| and a postcondition on \verb|P_Spec.F|:
+\begin{verbatim}
+procedure F_Body.F (X : in Integer; Y : out Integer);
+--# pre X in Index_First .. Index_Last;
+
+procedure P_Spec.F (X : in Integer; Y : out Integer);
+--# post Y in Index_First .. Index_Last;
+\end{verbatim}
+\end{example}
+
+Any parameter of a definite array type should be translated into a parameter of
+the corresponding indefinite array type in \verb|P_Spec|, so that it is easier
+to translate calls that take slices as actual parameters. Any parameter of an
+indefinite array type in the original Ada code should lead to the generation of
+two additional parameters to hold the value of the \verb|'First| and
+\verb|'Last| attributes applied to this parameter.
+
+\paragraph{Generics} Similarly to what is done for generic packages,
+instantiations should be translated like normal subprogram specifications, and
+a special package should be generated for the analysis of the generic
+subprogram body.
+
+\paragraph{Overriding}
+
+As seen in Section~\ref{Ada2SPARK:subprograms}, inheritance relations disappear
+during the translation of subprograms. As indicated in
+Section~\ref{sec:LSP}, Liskov Substitution Principle is verified as part of
+normal contract verification, so nothing special is required for LSP.
+
+\subsubsection{Calls}
+
+\paragraph{Dispatching Calls}
+
+As indicated in Section~\ref{sec:LSP}, a dispatching call should be analyzed as
+a call to the subprogram on which it is dispatching, with the frame condition
+suggested by the specification of the subprogram.
+
+\subsubsection{Expressions}
+
+\paragraph{Slices}
+
+The calls to slicing functions introduced in Section~\ref{sub:slicing-function}
+for slices in expressions should be translated in calls to procedures
+\verb|Create_Slice_T| where \verb|T| is the type of array element. This
+procedure takes the following parameters:
+\begin{enumerate}
+\item a destination array \verb|Dest|;
+\item a destination integer variable \verb|Dest_First| for the lower bound of
+  \verb|Dest|;
+\item a destination integer variable \verb|Dest_Last| for the upper bound of
+  \verb|Dest|;
+\item a source array \verb|Src|;
+\item an integer value \verb|Src_First| for the lower bound of the slice;
+\item an integer value \verb|Src_Last| for the upper bound of the slice.
+\end{enumerate}
+
+The postcondition of \verb|Create_Slice_T| would ensure that the proper copy is
+made:
+\begin{verbatim}
+type Arr_T is array (Integer range <>) of T;
+procedure Create_Slice_T (Dest : out Arr_T; Dest_First, Dest_Last : out Integer;
+                          Src  : Arr_T;     Src_First, Src_Last   : Integer);
+--# post (for all J in Integer => (Src_First <= J and J <= Src_Last) ->
+--#                                  Dest (J) = Src (J)) and
+--#      Dest_First = Src_First and Dest_Last = Src_Last;
+\end{verbatim}
+
+\begin{example}
+The simple slice of array Arr below:
+\begin{verbatim}
+X := Arr (1 .. 10);
+\end{verbatim}
+
+should be translated into a call of \verb|Create_Slice_T| like the following:
+\begin{verbatim}
+Create_Slice_T (Dest => Tmp, Dest_First => Tmp_First, Dest_Last => Tmp_Last, 
+                Src  => Arr, Src_First  => 1,         Src_Last  => 10);
+X := Tmp;
+\end{verbatim}
+\end{example}
+
+Direct writes into a slice should be translated into calls to procedures
+\verb|Copy_Slice_T| where \verb|T| is the type of array element. This
+procedure takes the following parameters:
+\begin{enumerate}
+\item a destination array \verb|Dest|;
+\item a source array \verb|Src|;
+\item an integer value \verb|Src_First| for the lower bound of the slice;
+\item an integer value \verb|Src_Last| for the upper bound of the slice.
+\end{enumerate}
+
+The postcondition of \verb|Copy_Slice_T| would ensure that the proper copy is
+made:
+\begin{verbatim}
+type Arr_T is array (Integer range <>) of T;
+procedure Copy_Slice_T (Dest : out Arr_T; Src : Arr_T; Src_First, Src_Last : Integer);
+--# post for all J in Integer => (Src_First <= J and J <= Src_Last) ->
+--#                                 Dest (J) = Src (J);
+\end{verbatim}
+
+\begin{example}
+The simple slice of array Arr below:
+\begin{verbatim}
+Arr (1 .. 10) := X;
+\end{verbatim}
+
+should be translated into a call of \verb|Copy_Slice_T| like the following:
+\begin{verbatim}
+Copy_Slice_T (Dest => Arr, Src  => X, Src_First  => 1, Src_Last  => 10);
+\end{verbatim}
+\end{example}
+
+Slices passed in parameters should be translated differently if the parameter
+is of a definite or an indefinite array type. If the parameter is of a definite
+type, the bounds are known so the entire array should be passed as
+parameter. If the parameter is of an indefinite type, the bounds of the slice
+should be passed as additional parameters to the call.
+
+\paragraph{Quantified Expressions} 
+
+A quantified expression in Ada should be translated into the corresponding
+logic annotation in SPARK (\verb|for all| in Ada becomes \verb|for all| in
+SPARK; \verb|for some| in Ada becomes \verb|for some| in SPARK). All quantified
+expressions should be over integer ranges at this point. They should be
+translated into a quantification over the corresponding static type in SPARK,
+inserting a guard that the value respects the dynamic types for the integer
+range.
+
+\begin{example}
+  The quantified expression over type \verb|Index| with dynamic bounds \verb|A|
+  and \verb|B|:
+\begin{verbatim}
+for all X in Index => Prop (X)
+\end{verbatim}
+should be translated into:
+\begin{verbatim}
+for all X : Index range A .. B => Prop (X)
+\end{verbatim}
+\end{example}
+
+
+\subsubsection{Statements}
+
+Block statements should be trimmed from their declarative part after the
+translation described in Section~\ref{Ada2SPARK:subprograms}.
+
+\subsection{From Extended SPARK to SPARK}
+
+\subsubsection{Packages}
+\label{SPARK2SPARK:packages}
+
+\paragraph{SPARK Annotations}
+
+As described in Section~\ref{Ada2SPARK:packages}, a package \verb|P| in Ada may
+be translated into three package specifications in SPARK: a package
+specification \verb|P_Type| for its types, a package specification
+\verb|P_Data| for its variables and a package specification \verb|P_Spec| for
+its subprogram specifications. Additional SPARK annotations should be generated
+in each package for visibility and data-flow analysis.
+
+First, each package should start with SPARK inherit annotations for all
+generated packages from which is refers entities. These should reflect 1) the
+with-clauses in the original package; 2) the separation between generated
+packages; 3) the data dependencies in the generated frame conditions; 4) the
+new location of previously inherited primitive subprograms due to the
+translation of derived scalar types into subtypes (see
+Section~\ref{SPARK2SPARK:types}). Thus, it will probably be more convenient to
+recompute the set of packages which should be inherited.
+
+Second, each data package \verb|P_Data| should include a SPARK own annotation
+for all the variables it defines, and a SPARK initialization annotation for
+those variables which were initialized at elaboration. In order to detect
+elaboration order dependencies, a package \verb|P_Data_Uninit| should be
+defined which duplicates \verb|P_Data| without any initialization annotation,
+to be referred to from elaboration subprograms. The elaboration subprogram for
+package \verb|P| should have all variables initialized at elaboration in its
+out global annotation.
+
+\paragraph{Use Clauses}
+
+Use-type-clauses should be generated to restore visibility of predefined
+primitive operations for 1) original use-clauses in package \verb|P| which are
+removed in SPARK; 2) the new location of previously inherited primitive
+operations due to the translation of derived scalar types into subtypes (see
+Section~\ref{SPARK2SPARK:types}).
+
+\subsubsection{Variables}
+\label{SPARK2SPARK:variables}
+
+Nothing special.
+
+\subsubsection{Types}
+\label{SPARK2SPARK:types}
+
+Ada derived scalar types should be translated into SPARK subtypes. Indeed,
+after the front-end has checked that derived types are properly used and after
+overloading has been resolved, the constraints respected by a derived type are
+the same as those respected by a subtype with the same bounds. Notice that this
+may require that new packages are withed to make inherited primitive operations
+for the parent type available.
+
+\subsubsection{Subprograms}
+
+\paragraph{SPARK Annotations}
+
+SPARK global annotations should be generated from the sets of variable paths
+computed in Section~\ref{sub:data-flow}:
+\begin{itemize}
+\item the global ``in'' annotation should be the read-set;
+\item the global ``out'' annotation should be the write-set;
+\item the global ``in out'' annotation should be the read-write-set.
+\end{itemize}
+
+As local variables were added to the write-set in Section~\ref{sec:frame-sets},
+the translation should prevent warnings to be issued because some of these
+variable paths may not be written on some path before returning. So an
+initialization subprogram should be declared, which takes all local variable
+paths in its ``in out'' annotation. This initialization subprogram should be
+called prior to returning from the subprogram, which ensures the translated
+subprogram respects its data-flow contracts for local variable paths. Only the
+absence of any read to some local variable path could be detected and displayed
+as an error, which is safe to do.
+
+As said before, a special global variable called \heap represents all the
+dynamically allocated memory plus all variables whose address is taken, so that
+reads and writes to dynamically allocated memory show in SPARK contracts
+as reads and writes to \heap. Notice that without this \heap variable,
+contracts would be wrong and break the consistency of the proof system.
+
+\begin{example}
+  If reads and writes to \heap were not computed, it would be possible to prove
+  that \verb|Problem| below always returns \verb|True|, because \verb|Set|
+  would be seen as a noop, and \verb|Get| would be seen as a constant function:
+
+\begin{verbatim}
+X : access Integer;
+
+procedure Set is begin X.all := 0; end Set;
+function Get return Integer is (X.all);
+
+function Problem return Boolean is
+   X1 : Integer := Get;
+begin
+   Set;
+   return X1 = Get;
+end Problem;
+\end{verbatim}
+\end{example}
+
+Ada functions may write global variables, which is not allowed in SPARK. Thus,
+functions should be translated into procedures by introducing an additional
+``out'' parameter.
+
+\paragraph{Array Initialization Through Loops}
+
+In Section~\ref{sec:init-array-through-loop}, we have described how we can
+detect that a loop $l$ completely initializes an array path $w$, without any
+reads (direct or indirect) of this array path in the loop. The Examiner does
+not perform this kind of fine-grain analysis, and thus it will issue wrong
+warnings about the corresponding path-variable not being properly
+initialized. To prevent the generation of these warnings, the translation
+should insert before the loop a call to a special procedure which has a single
+out-global: the path-variable corresponding to $w$.
+
+\subsubsection{Calls}
+
+Nothing special.
+
+\subsubsection{Expressions}
+
+Nothing special.
+
+\subsubsection{Statements}
+
+\paragraph{Return Statements} 
+
+SPARK mandates that procedures do not contain return statements, and that
+functions contain a single return statement as last statement. 
+
+Thus, all return
+statements of a procedure \verb|P| should be translated into calls to a local
+procedure \verb|P_Return| which:
+\begin{enumerate}
+\item \label{it:no-param} takes no parameters;
+\item \label{it:in-globals} has the out-parameters and out-globals of \verb|P|
+  as in-globals;
+\item \label{it:out-globals} has the local variables of \verb|P| as out-globals;
+\item \label{it:pre} has the postcondition of \verb|P| as precondition;
+\item \label{it:in-globals-more} has all variables mentioned in the
+  postcondition of \verb|P| as in-globals;
+\item \label{it:post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:in-globals}) ensures that at the calling point of \verb|P_Return|, all
+out-variables of \verb|P| are initialized. (\ref{it:out-globals}) ensures that
+no flow error will be generated due to some (locally dead) path through this
+call not initializing some local variables. (\ref{it:pre}) ensures that at the
+calling point of \verb|P_Return|, the postcondition of \verb|P|
+holds. (\ref{it:in-globals-more}) adds the variables mentioned in the
+precondition of \verb|P_Return| as in-globals, which is compulsory in SPARK.
+(\ref{it:post}) ensures that any path through this call is considered as a dead
+path when proving VCs.
+
+\begin{example}
+  Take procedure \verb|P| with local variable V, which should be declared in
+  SPARK as:
+\begin{verbatim}
+procedure P (X : in T; Y : out T; Z : in out T);
+--# global in     A;
+--#           out B;
+--#        in out C;
+--# post Prop (X, Z~, B);
+\end{verbatim}
+Any return statement in \verb|P| should be translated into a call to local
+procedure \verb|P_Return|, declared as:
+\begin{verbatim}
+procedure P_Return;
+--# global in     Y, B,      --  out-variables of P
+--#               X, Z_Old;  --  added because used in the pre
+--#           out V;
+--# pre  Prop (X, Z_Old, B);
+--# post False;
+\end{verbatim}
+where \verb|Z_Old| is a variable declared to hold the value of \verb|Z| at the
+entry to \verb|P|.
+\end{example}
+
+Likewise, a return statement of a function \verb|F| which is not the final
+return statement should be translated into an assignment of the returned value
+to a new local variable \verb|F_Result| followed by a call to a local procedure
+\verb|F_Return| which:
+\begin{enumerate}
+\item \label{it:fn-no-param} takes no parameters;
+\item \label{it:fn-in-globals} has the out-parameters and out-globals of
+  \verb|F| as in-globals;
+\item \label{it:fn-out-globals} has the local variables of \verb|F| as
+  out-globals;
+\item \label{it:fn-pre} has the postcondition of \verb|F| as precondition;
+\item \label{it:fn-in-globals-more} has all variables mentioned in the
+  postcondition of \verb|P| as in-globals;
+\item \label{it:fn-post} has \verb|False| as postcondition.
+\end{enumerate}
+These conditions provide the same guarantees than in the procedure
+case. Additionally, a statement returning \verb|F_Result| should be inserted as
+final statement if no final return statement is present. This will lead to a
+flow error if-and-only-if there is a path which can reach the exit of the
+function without a return statement.
+
+\begin{example}
+  Take function \verb|F| with local variable V, which would be declared in
+  pseudo-SPARK as:
+\begin{verbatim}
+function F (X : in T; Y : out T; Z : in out T) return Integer;
+--# global in     A;
+--#           out B;
+--#        in out C;
+--# return Res => Prop (X, Z~, B, Res);
+\end{verbatim}
+  Any non-terminal return statement in \verb|F| should be translated into an
+  assignment to \verb|F_Result| followed by a call to local procedure
+  \verb|F_Return|, declared as:
+\begin{verbatim}
+procedure F_Return;
+--# global in     Y, B,                --  out-variables of P
+--#               F_Result, X, Z_Old;  --  used in the pre
+--#           out V;
+--# pre  Prop (X, Z_Old, B, Res);
+--# post False;
+\end{verbatim}
+\end{example}
+
+\paragraph{Raise Statements} 
+
+Raising an exception is very similar to returning from a subprogram, except the
+postcondition and data-flow contract do not have to be respected in this case.
+
+Thus, all raise statements in a subprogram \verb|S| should be translated into
+calls to a local procedure \verb|S_Raise| which:
+\begin{enumerate}
+\item \label{it:exc-no-param} takes no parameters;
+\item \label{it:exc-out-globals} has the local variables of \verb|S| as
+  out-globals;
+\item \label{it:exc-post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:exc-out-globals}) ensures that no flow error will be generated due to
+some (locally dead) path through this call not initializing some local
+variables. (\ref{it:exc-post}) ensures that any path through this call is
+considered as a dead path when proving VCs.
+
+\subsection{From Extended SPARK to Why}
+
+\subsubsection{Packages}
+
+Each package in SPARK should be translated into a module in Why, with
+(non-cyclic) visibility relations between packages being translated into
+inclusion between modules in Why. 
+
+\subsubsection{Variables}
+
+All local variables in Why should be given an initial value. As usual in this
+case, we should declare a function returning a value of the appropriate type,
+which is used to initialize the variable to any value of the type.
+
+\subsubsection{Types}
+
+\paragraph{Integer Types}
+
+Ada integer types (signed and modular) should be translated into Why abstract
+types. Convertion functions in Why between such an abstract type and type
+\verb|int|, suitably axiomatized, will provide:
+\begin{itemize}
+\item a way to enforce the static type range;
+\item a representation for the usual arithmetic operations;
+\item a representation giving the expected order.
+\end{itemize}
+
+Ada integer subtypes (signed and modular) should be translated into Why
+abstract types. Convertion functions in Why between such an abstract type and
+type \verb|int| provide a way to translate all allowed type conversions in Ada.
+ 
+\paragraph{Enumeration Types}
+
+Ada enumeration types should be translated into Why enumeration
+types. Convertions to and from Why \verb|int| type provide a way to get an
+order on the enumeration, as well as positions (Ada \verb|'Pos|
+attribute). Subtypes of enumerations in Ada should be translated into abstract
+types in Why, with suitable conversion functions, to and from their underlying
+enumeration type.
+
+The Ada \verb|Boolean| type should be translated into Why predefined
+\verb|bool| type in all cases where the features of \verb|Boolean| as an
+enumeration type are not used. In the remaining cases, for example to range
+over values of type \verb|Boolean|, an enumeration type
+\verb|standard__boolean| should be defined in Why.
+
+\paragraph{Array Types}
+
+Ada array types should be translated into instances of the Why array type. 
+
+\subsubsection{Subprograms}
+
+Each subprogram in Extended SPARK should be translated into a corresponding
+subprogram in Why.
+
+Why frame conditions should be generated from the sets of variable paths
+computed in Section~\ref{sub:data-flow}:
+\begin{itemize}
+\item the ``reads'' annotation should be the union of the read-set and the
+  read-write-set;
+\item the ``writes'' annotation should be the union of the write-set and the
+  read-write-set.
+\end{itemize}
+
+\subsubsection{Calls}
+
+Actual parameters in calls should be given in the order of the definition of
+the corresponding formal parameters, as use of parameter associations in the
+Ada code may give them outside of their definition order.
+
+\subsubsection{Expressions}
+
+\paragraph{Indexed Components} 
+
+Simple reads and writes of array elements should be translated in the
+corresponding calls to \verb|access| and \verb|update| from the prelude of Why,
+which encode the usual theory of functional arrays.
+
+\begin{example}
+  The following Ada code increments array element \verb|A(I)| through a
+  temporary:
+\begin{verbatim}
+Tmp := A(I); A(I) := Tmp + 1;
+\end{verbatim}
+
+Here is its translation in Why:
+\begin{verbatim}
+Tmp := access (!A, I); A := update (!A, I, Tmp + 1)
+\end{verbatim}
+\end{example}
+
+Indexed components passed as ``in'' parameters should be translated like simple
+reads. Indexed components passed as ``out'' or ``in out'' parameters should be
+copied back after the call from a local reference passed in
+parameter. Additionally, the local reference should be initialized from the
+indexed component before the call for an ``in out'' parameter.
+
+\begin{example}
+  The following Ada code sets all elements of an array to 1 through repeated
+  calls to \verb|One|:
+\begin{verbatim}
+procedure One (X : out Integer) is begin X := 1; end One;
+
+procedure All_One (A : in out Arr) is
+begin
+   for J in Index loop
+      One (A(J));
+   end loop;
+end All_One;
+\end{verbatim}
+
+Here is the translation of the loop body in Why:
+\begin{verbatim}
+let tmp = ref any_integer() in
+One (tmp);
+A := update (!A, J, !tmp);
+\end{verbatim}
+
+given the procedure One also translated in Why:
+\begin{verbatim}
+parameter One : (x:int ref) -> {} unit writes x { !x = 1 }
+\end{verbatim}
+\end{example}
+
+\paragraph{Slices}
+
+Since the translation to Why does not have to worry about detecting possible
+aliasing, slices should be translated similarly as indexed components, by
+making the appropriate copies for passing a slice in parameter to a call.
+
+\paragraph{If and Case Expressions} 
+
+Ada if-expressions should be translated into Why if-expressions.
+
+Ada case-expressions over an enumerated type should be translated into Why
+pattern-matching expressions. Ada case-expressions over a discrete type which
+is not enumerated should be translated as a series of if-expressions.
+
+\paragraph{Quantified Expressions} 
+
+A quantified expression in Ada should be translated into the corresponding
+logic proposition in Why (\verb|for all| in Ada becomes \verb|forall| in Why;
+\verb|for some| in Ada becomes \verb|exists| in Why). All quantified
+expressions should be over integer ranges at this point. They should be
+translated into a quantification over the corresponding type in Why, inserting
+a guard that the value respects the dynamic types for the integer range.
+
+\begin{example}
+The quantified expresssion:
+\begin{verbatim}
+for all X in Index range A .. B => Prop (X)
+\end{verbatim}
+should be translated into the following predicate:
+\begin{verbatim}
+forall X : Index. A <= X <= B -> Prop (X)
+\end{verbatim}
+and the quantified expresssion:
+\begin{verbatim}
+for some X in Index range A .. B => Prop (X)
+\end{verbatim}
+should be translated into the following predicate:
+\begin{verbatim}
+exists X : Index. A <= X <= B and Prop (X)
+\end{verbatim}
+\end{example}
+
+\subsubsection{Statements}
+
+\paragraph{If and Case Statements} 
+
+Alternative parts starting with \verb|elsif| in Ada should be translated into
+embedded if-statements in Why. 
+
+Ada case-statements over an enumerated type should be translated into Why
+pattern-matching expressions. Ada case-statements over a discrete type which is
+not enumerated should be translated as a series of embedded if-expressions.
+
+\paragraph{Return and Raise Statements} 
+
+Both should be translated as raising exceptions in Why, with a suitable
+exception handler to catch the exception for returns at the end of the
+subprogram, before actually returning the value if any.
+
+\paragraph{Loop Statements} 
+
+Loop-invariants in Why have a different semantics than in Ada and SPARK:
+instead of being true at the place where they are inserted in the toplevel
+sequence of statements in a loop body, loop-invariants in Why must be true at
+loop entry \emph{and} at loop exit. In order to account for this difference,
+the translation should do the following:
+\begin{itemize}
+\item generate an infinite loop in Why for the loop body, taking as
+  loop-invariant the translation of the Ada loop-invariant;
+\item terminate the loop body with an if-expression testing the condition for
+  exiting the loop, and raising an exception if this is the case;
+\item enclose the loop in a try-expression to catch exits from the loop;
+\item put the try-expression in the then-branch of an if-expression testing the
+  condition for entering the loop.
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{alfa}
+
+\newpage
+\appendix
+
+\section{BNF-Based Definition of ALFA}
+\label{sec:bnf-alfa}
+
+In the following, we refer to entities in the program with the name of the
+corresponding non-terminal in the Ada BNF, like \bnf{subprogram\_body} for a
+subprogram body. As a general rule, an entity is in ALFA only if all the
+sub-entities which define it are in ALFA. As an example, a
+\bnf{subprogram\_body} is defined in Ada BNF as:
+
+\hspace*{1cm}\bnf{subprogram\_body} ::=\\
+\hspace*{2cm}\lbrack\bnf{overriding\_indicator}\rbrack\\
+\hspace*{2cm}\bnf{subprogram\_specification} is\\
+\hspace*{3cm}  \bnf{declarative\_part}\\
+\hspace*{2cm}  begin\\
+\hspace*{3cm}    \bnf{handled\_sequence\_of\_statements}\\
+\hspace*{2cm}  end \lbrack\bnf{designator}\rbrack;\\
+
+Thus, a \bnf{subprogram\_body} is in ALFA only if the following are in ALFA:
+\begin{itemize}
+\item its \bnf{overriding\_indicator} (if present);
+\item its \bnf{subprogram\_specification};
+\item its \bnf{declarative\_part};
+\item its \bnf{handled\_sequence\_of\_statements};
+\item its \bnf{designator} (if present).
+\end{itemize}
+
+This general rule applies individually to all production rules in the BNF
+which define program entities. Thus, some production rules defining a
+non-terminal may be in ALFA while others for the same non-terminal are not in
+ALFA.
+
+The additional rules below further restrict which entities are in ALFA. 
+
+\subsubsection{Lexical Elements}
+
+ALFA only supports the Latin-1 Character Set, not the full Universal Character
+Set (ISO/IEC 10646:2003) supported by Ada.
+
+Based forms of real literals are not in ALFA.
+
+[what about pragmas?]
+
+\subsubsection{Declarations}
+
+All entities related to access types are not in ALFA:
+\begin{itemize}
+\item the \bnf{aliased} keyword, wherever it appears;
+\item \bnf{access\_type\_definition};
+\item \bnf{access\_to\_object\_definition};
+\item \bnf{general\_access\_modifier};
+\item \bnf{access\_to\_subprogram\_definition};
+\item \bnf{null\_exclusion};
+\item \bnf{access\_definition}.
+\end{itemize}
+
+Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
+containers, as it contains a pointer to the underlying container. The formal
+containers as described in Section~\ref{sub:formal-containers} define cursors
+that are in ALFA.
+
+All entities related to fixed-point types are not in ALFA:
+\begin{itemize}
+\item \bnf{fixed\_point\_definition};
+\item \bnf{ordinary\_fixed\_point\_definition};
+\item \bnf{decimal\_fixed\_point\_definition};
+\item \bnf{digits\_constraint};
+\item \bnf{delta\_constraint}.
+\end{itemize}
+
+All entities related to interfaces are not in ALFA:
+\begin{itemize}
+\item \bnf{interface\_type\_definition};
+\item \bnf{interface\_list}.
+\end{itemize}
+
+[what about \bnf{aspect\_clause} in \bnf{component\_item}?]\\
+
+Note in particular that a \bnf{default\_expression} in a
+\bnf{component\_declaration} is allowed, as well as a \bnf{variant\_part} in
+a \bnf{component\_list}.
+
+\subsubsection{Names and Expressions}
+
+An \bnf{identifier} or a \bnf{name} which has a corresponding declaration is in
+ALFA if-and-only-if its declaration is in ALFA. As a consequence, a call is in
+ALFA only if the declaration of the subprogram called is in ALFA. 
+
+[what about \bnf{aspect\_clause} in \bnf{basic\_declarative\_item}?]
+
+All entities related to access types are not in ALFA:
+\begin{itemize}
+\item \bnf{explicit\_dereference};
+\item \bnf{implicit\_dereference};
+\item the \bnf{Access} terminal defining an \bnf{attribute\_designator};
+\item the \bnf{null} terminal defining a \bnf{primary};
+\item \bnf{allocator}.
+\end{itemize}
+
+Operations \bnf{and}, \bnf{or} and \bnf{xor} on Boolean arguments are not in
+ALFA. The same operations on arrays of Boolean elements are in ALFA.  Only the
+lazy operations \bnf{and\ then} and \bnf{or\ else} on Boolean arguments are 
+in ALFA.
+
+Quantified expressions are in ALFA only if they appear in predicate position,
+that is, at the top-level of the boolean structure of an expression used in
+assertions.
+
+\begin{example}
+\label{ex:alfa-quantifiers}
+The following quantified expression appearing in predicate position is in ALFA:
+\begin{verbatim}
+procedure P with Pre => (for all X in Index => Prop (X));
+\end{verbatim}
+
+The following quantified expression appearing in term position is not in ALFA:
+\begin{verbatim}
+procedure P with Pre => if (for all X in Index => Prop (X)) then Y;
+\end{verbatim}
+
+The following quantified expression appearing in program position is not in
+ALFA:
+\begin{verbatim}
+B : Boolean := (for all X in Index => Prop (X));
+\end{verbatim}
+\end{example}
+
+Additionally, an expression in ALFA which appears as part of an assertion
+cannot contain calls to functions which write global variables. A syntactic way
+to make sure it is the case if to call only parameterized expressions, but
+calls to functions which do not write global variables are also in ALFA. A
+precondition, a postcondition, a type invariant or a subtype predicate count as
+assertions.
+
+\subsubsection{Statements}
+
+\bnf{goto\_statement} is not in ALFA.
+
+In order to be in ALFA, an exit-statement must follow the same restrictions as
+in SPARK:
+\begin{enumerate}
+\item Exit-statements always apply to their innermost enclosing loops.
+\item If an exit-statement contains a when clause then its closest-containing
+  compound statement must be a loop-statement.
+\item If an exit-statement does not contain a when clause then its
+  closest-containing compound statement must be an if-statement without an else
+  or elsif clause, whose closest-containing compound statement is a
+  loop-statement.
+\end{enumerate}
+
+\begin{example}
+  The following exit-statements from Ada RM are in ALFA:
+\begin{verbatim}
+for N in 1 .. Max_Num_Items loop
+   Get_New_Item(New_Item);
+   Merge_Item(New_Item, Storage_File);
+   exit when New_Item = Terminal_Item;
+end loop;
+
+Main_Cycle:
+   loop
+      --  initial statements
+      exit Main_Cycle when Found;
+      --  final statements
+   end loop Main_Cycle;
+\end{verbatim}
+\end{example}
+
+\subsubsection{Subprograms}
+
+A subprogram may have both a \bnf{subprogram\_declaration} and a
+\bnf{subprogram\_body}. Such a subprogram is in ALFA only if both its
+declaration and body are in ALFA. Additionally, the subprogram should have a
+postcondition attached to its declaration. 
+
+\bnf{extended\_return\_statement} is not in ALFA.
+
+\subsubsection{Package Specifications and Declarations}
+
+No special rules. In particular, renamings and the optional statements in a
+package body are in ALFA.
+
+\subsubsection{Use Clauses}
+
+No special rules.
+
+\subsubsection{Tasks and Synchronisation}
+
+Most probably, the same restrictions as in RavenSPARK should be enforced for
+the sequential verification results to apply to concurrent code.
+
+\subsubsection{Program Structure and Compilation Issues}
+
+No special rules.
+
+\subsubsection{Exceptions}
+
+All entities related to exception handling are not in ALFA:
+\begin{itemize}
+\item \bnf{exception\_handler};
+\item \bnf{choice\_parameter\_specification};
+\item \bnf{exception\_choice}.
+\end{itemize}
+
+However, defining exceptions and raising exceptions are in ALFA.
+
+\subsubsection{Generic Units}
+
+Generic formal object parameters of mode ``in out'' are not in ALFA.
+
+Generic formal type definitions for fixed-point types are not in ALFA.
+
+Subprograms passed in argument to a generic instantiation as formal subprograms
+should write only global variables that none of the generic entity subprograms
+writes, neither directy nor indirectly.
+
+\subsubsection{Representation Issues}
+
+[To be discussed.]
+
+\end{document}

@@ -1,0 +1,49 @@
+type standard__character
+
+logic integer_of___standard__character : standard__character -> int
+
+predicate eq___standard__character
+(x : standard__character,
+ y : standard__character) =
+ integer_of___standard__character (x) = integer_of___standard__character (y)
+
+predicate standard__character___in_range (x : int) =
+ let first = 0 in
+ let last = 255 in
+  first <= x <= last
+
+logic standard__character___of_integer : int -> standard__character
+
+axiom standard__character___coerce :
+ (forall x : int.
+  standard__character___in_range (x) ->
+   integer_of___standard__character (standard__character___of_integer (x)) = x)
+
+axiom standard__character___range :
+ (forall x : standard__character.
+  standard__character___in_range (integer_of___standard__character (x)))
+
+axiom standard__character___unicity :
+ forall x, y : standard__character.
+  integer_of___standard__character (x) = integer_of___standard__character (y)
+   -> x = y
+
+parameter any___standard__character : unit -> { } standard__character { true }
+
+parameter standard__character___of_integer_ :
+ x : int ->
+  { standard__character___in_range (x) }
+   standard__character
+  { integer_of___standard__character (result) = x }
+
+parameter safe___standard__character___of_integer_ :
+ x : int ->
+  { }
+   standard__character
+  { integer_of___standard__character (result) = x }
+
+parameter eq___standard__character_ :
+ left : standard__character -> right : standard__character ->
+{ }
+ bool
+{ result = true <-> eq___standard__character (left, right) }

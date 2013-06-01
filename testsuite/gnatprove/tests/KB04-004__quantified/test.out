@@ -1,0 +1,10 @@
+
+data.adb:18:10: info: loop invariant initialization proved
+data.adb:18:10: info: loop invariant preservation proved
+data.adb:18:67: info: index check proved
+data.adb:18:82: info: index check proved
+data.adb:20:60: info: index check proved
+data.adb:20:71: info: index check proved
+data.ads:14:14: info: postcondition proved
+data.ads:7:39: postcondition not proved, requires X(I) = not X'old
+data.ads:9:39: postcondition not proved, requires X(I) = not X'old

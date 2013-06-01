@@ -1,0 +1,429 @@
+A Gentle Introduction to Hi-Lite
+
+Hi-Lite is based on powerful industrial tools that have been developed by the
+different partners for the last 10 to 25 years. In order to show you how
+Hi-Lite can improve on the existing state-of-the-art by creating new
+communications between these tools, we describe in the following the
+application of the various tools and techniques that are part of Hi-Lite to a
+very simple program.
+
+------------------------------------------------------------------------------
+
+Alice and Bob* are web software developers, and they have been tasked with the
+creation of a program to compute the total price of a customer's basket for
+GOSSIP.COM, which provides gossip on the rich and famous at very fair prices.
+
+This job reminded them of a similar project where their friend Carter got
+fired. He had used machine integers to compute the price of baskets of sweets,
+which allowed a 6-year old hacker in some remote country to both get a dozen
+tons of sweets and half a million Euro. He ordered so many sweets that the
+price of his basket overflew the capacity of machine integers and became
+negative. So instead of having to pay a huge amount of money, the boy got rich
+instead.
+
+Learning from this lesson, Alice and Bob have decided to use saturating
+integers to compute the price of their baskets of gossip. One of the
+requirements they have received from their contact point at GOSSIP.COM
+stipulates that no individual sell should exceed 9,999 Euro. So that integers
+which range from 0 to 10,000 provide an adequate representation of both valid
+and invalid baskets: the price of a valid basket ranges from 0 to 9,999 Euro,
+while an invalid basket has a fixed saturating price of 10,000 Euro.
+
+As good software engineering mandates, they have split the problem in smaller
+tasks that will be implemented either by Bob or Alice. For a start, Alice has
+proposed to implement basic arithmetic operations on saturating integers while
+Bob implements how to compute the price of a gossip, taking into account how
+many times the customer wants to repeat it (the gossips are using DRM so that
+you can only repeat a gossip once) and the total price of a basket.
+
+Before they delve into their IDEs, Alice and Bob have agreed on an interface
+for the operations on saturating integers. As they don't know whether their
+management will not suddenly impose on them Ada or C, they have decided to do
+the job in both languages.
+
+Here is the Ada code for the interface:
+
+<code>
+type My_Int is range 0 .. 10_000;
+
+function Add (X , Y : My_Int) return My_Int;
+function Mult (X , Y : My_Int) return My_Int;
+</code>
+
+and the C code for the same interface:
+
+<code>
+int add (int x, int y);
+int mult (int x, int y);
+</code>
+
+Alice and Bob work separately for a few days and meet again when they are done.
+They put their code together and start testing it. Alas, none of the tests
+works! For example, for a basket with a single gossip which costs 10 Euro, they
+compute a price of 6,418 Euro in Ada and 10,000 Euro in C!
+
+Here is Alice's code in Ada:
+
+<code>
+function Add (X , Y : My_Int) return My_Int is
+begin
+   if X + Y < 10_000 then 
+      return X + Y;
+   else
+      return 10_000;
+   end if;
+end Add;
+
+function Mult (X , Y : My_Int) return My_Int is
+begin
+   if X * Y < 10_000 then 
+      return X + Y;
+   else
+      return 10_000;
+   end if;
+end Mult;
+</code>
+
+and in C:
+
+<code>
+int add (int x, int y) {
+   if (x + y < 10000)
+      return x + y;
+   else
+      return 10000;
+}
+
+int mult (int x, int y) {
+   if (x * y < 10000)
+      return x + y;
+   else
+      return 10000;
+}
+</code>
+
+Here is Bob's code in Ada:
+
+<code>
+type Item is record
+   Price  : My_Int;
+   Number : My_Int;
+end record;
+
+function Price_Of_Item (It : Item) return My_Int is
+begin
+   return Mult (It.Price, It.Number);
+end Price_Of_Item;
+
+type Basket is array (Positive range <>) of Item;
+
+function Price_Of_Basket (Bk : Basket) return My_Int is
+   Total : My_Int;
+begin
+   for It in Bk'Range loop
+      Total := Add (Total, Price_Of_Item (Bk (It)));
+   end loop;
+   return Total;
+end Price_Of_Basket;
+</code>
+
+and in C:
+
+<code>
+typedef struct _Item {
+   int price;
+   int number;
+} Item;
+
+int price_of_item (Item it) {
+   return mult (it.price, it.number);
+}
+
+typedef Item* Basket;
+
+int price_of_basket (Basket bk, int len) {
+   int total;
+   int it;
+   for (it = 0; it < len; it++) {
+      total = add (total, price_of_item (bk[it]));
+   }
+   return total;
+}
+</code>
+
+Moreover, by repeating the test in Ada, they get different results: 10,000
+Euro, 9,257 Euro and even a run-time error because a range check failed. All
+these results strongly suggest that their program must be unintentionally
+reading some uninitialized memory.
+
+As they realize one of them must have made such a mistake, Alice asks Bob if he
+has compiled his code with all the warnings of the Ada and C compilers, to
+which Bob confesses that he has not! So they call 'gcc -c -gnatwa' on the Ada
+code and 'gcc -c -Wall' on the C code.
+
+The Ada compiler gives them the answer:
+
+<pre>
+warning: "Total" may be referenced before it has a value
+</pre>
+
+Indeed, variable Total is only assigned based on its previous value in function
+Price_Of_Basket, and it is not initialized! So the first value read from Total
+is completely random. Total should be instead initialized with the value
+zero. So they correct Bob's Ada and C code to reflect that.
+
+The answers of the Ada and C programs are now consistent and repeatable,
+although still incorrect! For the above basket of one gossip costing 10 Euro,
+both programs return a price of 11 Euro.
+
+It's Bob's turn to ask Alice if she has properly unit tested her module, to
+which she admits she has not! So they devise a set of inputs for testing the
+saturating addition and multiplication. For the addition, all tests run
+fine. For the multiplication, nearly all tests fail. Alice then proposes to use
+a static analyzer she knows of for Ada programs, CodePeer. She ran it on her
+code with no warnings being reported, but she has not looked at the contracts
+that CodePeer generated. She thinks that the contract of the multiplication may
+give a clue of what's going on. So they run the tool, which generates the
+following contract for the multiplication:
+
+<pre>
+--
+--  Subprogram: sat.mult
+--
+--  Preconditions:
+--    (soft) X + Y in 0..10_000
+--    (soft) X*Y in 0..99_980_001
+--
+--  Postconditions:
+--    sat.mult'Result = One-of{X + Y, 10_000}
+--    possibly_init'ed(sat.mult'Result)
+--
+--  Test Vectors:
+--    X*Y: {0..9_999}, {10_000..99_980_001}
+--
+</pre>
+
+The result of the multiplication is either 10_000 in case it saturates, or
+... X + Y! Clearly there must be a mistake in the code. 
+To check this on their test, Bob proposes to add a postcondition to the Mult
+function in Ada, using the appropriate GNAT pragma:
+
+<code>
+function Mult (X , Y : My_Int) return My_Int;
+pragma Postcondition (Mult'Result = X * Y or else Mult'Result = 10_000);
+</code>
+
+When compiling the Ada code with "gcc -c -gnata", assertions are kept in the
+generated excutable, and running it on their example yields a run-time error:
+
+<pre>
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Postcondition failed at sat.ads:7
+</pre>
+
+So there is for sure a problem in function Mult. By reviewing it carefully, 
+they discover that the function
+Mult is returning X + Y instead of X * Y, which is a left-over of the Add
+function that Alice copy-pasted to write the Mult function. So they correct
+this second mistake in both Ada and C.
+
+Finally, they get correct results for all the unit tests they have written. So
+they rerun their complete test with the simple basket and it returns the
+correct result this time: 10 Euro. To increase their confidence, they write a
+few more tests which run fine, but they are still unsure that there is no
+mistake left. After all, they found two mistakes already, on both parts they
+worked on.
+
+So Alice proposes to use the test vectors generated by CodePeer. These
+partition the possible values of inputs into sets, so that two inputs in the
+same set will follow the same execution path in the function. With their
+current code, the test vectors of the addition are:
+
+<pre>
+--  Test Vectors:
+--    X + Y: {0..9_999}, {10_000..20_000}
+</pre>
+
+which indicate that by choosing X and Y so that X + Y is below or above 10,000,
+they will follow two different paths in function Add. They look at the unit
+tests that they wrote for function Add, and they all correspond to the first
+case, which means they only tested part of the function so far. So they add one
+test that falls in the second case, and it runs fine too.
+
+When they are done adding tests to cover all test vectors, Bob suggests that
+they check if these tests actually cover all the code they have written. All
+statements should be executed at least once with the testsuite they have put in
+place. Using gcov, they check that it is indeed the case.
+
+Bob would like to add contracts using GNAT pragmas to all functions, but Alice
+has heard about existing tools for actually proving statically that your code
+does what it is supposed to do, based on slightly different contracts. Instead
+of executing the contracts at run-time on an existing testsuite, which can be
+incomplete, these tools analyze mathematical contracts together with the code
+and can guarantee that all executions of the code will respect the given
+contracts. This seems impressive so Bob accepts to give it a try.
+
+Here are the contracts in SPARK, a subset of Ada with additional logical
+constructs in stylized Ada comments:
+
+<code>
+function Add (X , Y : My_Int) return My_Int;
+--# return Sum => (X + Y < 10_000 and Sum = X + Y) or
+--#               (X + Y >= 10_000 and Sum = 10_000);
+
+function Mult (X , Y : My_Int) return My_Int;
+--# return Prod => (X * Y < 10_000 and Prod = X * Y) or
+--#                (X * Y >= 10_000 and Prod = 10_000);
+
+function Price_Of_Item (It : Item) return Sat.My_Int;
+--# return Sat.Mult (It.Price, It.Number);
+
+function Price_Of_Basket (Bk : Basket) return Sat.My_Int;
+--# return Price => for all It in Positive range Bk'Range =>
+--#                   (Price >= Price_Of_Item (Bk (It)));
+</code>
+
+Here are the contracts in ACSL, a logical language for C code, also in stylized
+C comments:
+
+<code>
+/*@ requires 0 <= x <= 10000 && 0 <= y <= 10000;
+    ensures (x + y < 10000 && \result == x + y) ||
+            (x + y >= 10000 && \result == 10000); 
+ */
+int add (int x, int y);
+
+/*@ requires 0 <= x <= 10000 && 0 <= y <= 10000;
+    ensures (x * y < 10000 && \result == x * y) ||
+            (x * y >= 10000 && \result == 10000); 
+ */
+int mult (int x, int y);
+
+/*@ predicate type_item{S} (Item* it) =
+       0 <= it->price <= 10000 && 0 <= it->number <= 10000;
+ */
+
+/*@ logic integer mult (integer x, integer y) = 
+       x * y <= 10000 ? x * y : 10000;
+ */
+
+/*@ requires type_item (&it);
+    ensures \result == mult (it.price, it.number);
+ */
+int price_of_item (Item it);
+
+/*@ logic integer price_of_item{S} (Item* it) = 
+       mult (it->price, it->number);
+ */
+
+/*@ predicate type_basket{S} (Basket bk, integer len) =
+       \forall int it; 0 <= it < len ==> type_item (&bk[it]);
+ */
+
+/*@ requires \valid_range(bk, 0, len - 1) && type_basket (bk, len);
+    ensures \forall int it; 0 <= it < len ==> 
+                               \result >= price_of_item (&bk[it]);
+ */
+int price_of_basket (Basket bk, int len);
+</code>
+
+The contracts in SPARK are slightly simpler because the stronger typing rules
+of Ada and SPARK give more guarantees than the typing rules in C. So that SPARK
+contracts consist here of only postconditions, while ACSL contracts also need
+preconditions here. In SPARK, contracts can call functions, which are
+guaranteed in SPARK not to have any side-effect. In C, this is not the case, so
+contracts must call logic functions, which the user must define. Here, Alice
+and Bob have defined logic functions mult and price_of_item to represent in the
+logic the effect of calling the corresponding functions in the code.
+
+The bodies of Ada functions required small adjustments to be legal SPARK code,
+while the bodies of C functions were kept untouched. Only one annotation was
+needed in the body of Price_Of_Basket (SPARK) and price_of_basket (C) to give
+the loop invariant, i.e. the predicate that the loop maintains which allows to
+prove the function postcondition. 
+
+Although this was quite some work compared to the initial coding, Alice and Bob
+finally run the proof tools of each technology (Simplifier, Alt-Ergo) and
+manage to prove that their implementation does not raise any run-time
+exceptions when called in an appropriate context (given by the preconditions),
+and that the functions implement the desired functionality. Note that for the
+price of a basket, they did not express the complete functionality in the
+postcondition, but only a weaker property that the computed price is greater
+than the price of any given gossip in the basket.
+
+So finally they can submit their work with the assurance that everybody will
+pay for the gossip they repeat, for which they get amazing FREE gossip on the
+sexual life of their past 5 presidents. While reading through these and sipping
+a caipirinha, Bob still has some doubts about the process they followed, which 
+he confesses to Alice:
+
+Bob   - I know we did the right thing, but that was painful, right?
+Alice - Yes, I know. But look at what we started from: two nasty bugs in the 
+        code that we trusted...
+Bob   - I must confess I am not very proud of this...
+	But still, there must be a better way, using the same technology!
+        Look, we have expressed the correction of our functions in THREE 
+        different ways: as tests, as contracts in GNAT pragma syntax, and as
+        contracts in some logic languages!
+Alice - Wait... I think I have heard about a project where they aim at having
+        a single language for all these... Hi-Lite maybe...
+
+------------------------------------------------------------------------------
+
+Epilogue: 
+---------
+
+Three years later, the project Hi-Lite has reached all its goals. For the fun
+of it, Alice and Bob return to their old code and rewrite an Ada interface
+with proper contracts and tests in the annotation language ALFA defined by
+Hi-Lite:
+
+<code>
+function Add (X , Y : My_Int) return My_Int
+   with Post => (if X + Y < 10_000 then Add'Result = X + Y
+                                   else Add'Result = 10_000),
+        Test_1 => (if X = 10 and Y < 9_990 then Add'Result = X + Y),
+        Test_2 => (if X = 11 and Y = 9_990 then Add'Result = 10_000);
+
+function Mult (X , Y : My_Int) return My_Int
+   with Post => (if X * Y < 10_000 then Mult'Result = X * Y
+                                   else Mult'Result = 10_000),
+        Test_1 => (if X = 10 and Y < 1_000 then Add'Result = X * Y),
+        Test_2 => (if X = 11 and Y = 1_000 then Add'Result = 10_000);
+
+function Price_Of_Item (It : Item) return My_Int
+   with Post => Price_Of_Item'Result = Mult (It.Price, It.Number),
+        Test_1 => (if It.Price = 10 and It.Number < 1_000 then 
+                      Price_Of_Item'Result = 10 * It.Number),
+        Test_2 => (if It.Price = 11 and It.Number = 1_000 then 
+                      Price_Of_Item'Result = 10_000);
+
+function Price_Of_Basket (Bk : Basket) return My_Int
+   with Post => for all It in Bk'Range : (Price >= Price_Of_Item (Bk (It))),
+        Test_1 => (if Bk(1).Price = 10 and Bk(1).Number < 1_000 then 
+                      Price_Of_Basket'Result >= 10 * It.Number),
+        Test_2 => (if Bk(1).Price = 11 and Bk(1).Number = 1_000 then 
+                      Price_Of_Basket'Result = 10_000);
+</code>
+
+Alice then implements her part in C, starting from the interfaces
+automatically generated from the ones she has wrote with Bob in Ada, with
+annotations in ALFA translated in E-ACSL. She can formally verify that her
+code implements the contracts she has agreed upon with Bob using the
+Frama-C/Why/Alt-Ergo toolset. All with a click in her editor.
+
+Bob implements his part in the Spark profile of Ada, richer than SPARK but more
+restricted than full Ada. This allows him to also prove his implementation
+cannot raise run-time errors and respects the given contracts, provided the
+functions that Alice provides him do the same. This is much easier than what he
+recalls from three years before, as he could execute the contracts in the
+debugger, and automatically generate thousands of tests from the Test aspects
+attached to the functions. So that each function was indeed correctly
+implementing its contract even before he tried to prove it formally.
+
+------------------------------------------------------------------------------
+
+* Note: Alice and Bob used to work as healthy volunteers in experiences for the
+cryptographic industry, but they have switched to the web industry when
+cryptographers got interested in quantum computing and they saw what occured to
+Schrödinger's cat.
+

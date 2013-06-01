@@ -1,0 +1,58 @@
+
+--------------------------
+-- SIGNED INTEGER TYPES --
+--------------------------
+
+File "why_out/signed_test_why.why", line 55, characters 1-161:Valid (0.0080)
+File "why_out/signed_test_why.why", line 60, characters 1-347:Valid (0.0080)
+File "why_out/signed_test_why.why", line 68, characters 1-162:Valid (0.0080)
+File "why_out/signed_test_why.why", line 73, characters 1-401:Valid (0.0080)
+File "why_out/signed_test_why.why", line 83, characters 1-144:Valid (0.0080)
+File "why_out/signed_test_why.why", line 88, characters 1-297:Valid (0.0080)
+File "why_out/signed_test_why.why", line 96, characters 1-146:Valid (0.0080)
+File "why_out/signed_test_why.why", line 101, characters 1-300:Valid (0.0120)
+File "why_out/signed_test_why.why", line 109, characters 1-148:I don't know
+File "why_out/signed_test_why.why", line 114, characters 1-303:Valid (0.0120)
+
+-------------------
+-- MODULAR TYPES --
+-------------------
+
+File "why_out/modular_test_why.why", line 59, characters 1-67:I don't know
+File "why_out/modular_test_why.why", line 63, characters 1-198:Valid (0.0040)
+File "why_out/modular_test_why.why", line 70, characters 1-198:Valid (0.0040)
+File "why_out/modular_test_why.why", line 77, characters 1-394:Valid (0.0120)
+File "why_out/modular_test_why.why", line 84, characters 1-399:Valid (0.0120)
+File "why_out/modular_test_why.why", line 94, characters 1-399:Valid (0.0120)
+File "why_out/modular_test_why.why", line 104, characters 1-405:Valid (0.0120)
+File "why_out/modular_test_why.why", line 114, characters 1-403:Valid (0.0120)
+
+=> This shows how 'Mod is expanded by the frontend:
+
+Source recreated from tree for Modular_Mod (body)
+-------------------------------------------------
+
+with modular;
+use modular;
+
+function modular_mod (a : integer) return modular.modular__byte is
+   m : modular.modular__byte := modular__byte((a + 4) mod 256);
+begin
+   return m;
+end modular_mod;
+
+
+=> This shows how 'Modulus is expanded by the frontend:
+
+Source recreated from tree for Modular_Modulus (body)
+-----------------------------------------------------
+
+with modular;
+use modular;
+
+function modular_modulus (a : integer) return integer is
+   n : integer := a + 256;
+begin
+   return n;
+end modular_modulus;
+

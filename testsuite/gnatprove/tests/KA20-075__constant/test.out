@@ -1,0 +1,24 @@
+const.adb:10:7: info: assertion proved
+const.adb:11:7: info: assertion proved
+const.adb:12:7: info: assertion proved
+const.adb:13:7: info: assertion proved
+const.adb:16:7: info: assertion proved
+const.adb:17:7: info: assertion proved
+const.adb:18:7: info: assertion proved
+const.adb:19:7: info: assertion proved
+const.adb:23:7: info: assertion proved
+const.adb:24:7: info: assertion proved
+const.adb:25:7: info: assertion proved
+const.adb:26:7: info: assertion proved
+const.adb:27:7: info: assertion proved
+const.adb:28:7: info: assertion proved
+const.adb:32:7: info: assertion proved
+const.adb:33:7: info: assertion proved
+const.adb:34:7: info: assertion proved
+const.adb:35:7: info: assertion proved
+const.adb:36:7: info: assertion proved
+const.adb:37:7: info: assertion proved
+const.adb:41:7: assertion not proved, requires O = 1
+const.adb:42:7: assertion not proved, requires P = 1
+const.adb:7:7: info: assertion proved
+const.adb:8:7: info: assertion proved

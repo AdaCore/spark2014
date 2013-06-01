@@ -1,0 +1,1036 @@
+module Main
+  use import int.Int
+  use "a-contai__types_in_spec".Ada__containers__count_type
+  use import ref.Ref
+
+(****************************** Generic Parameters ******************************)
+
+  namespace import Element_type
+    type element_type
+  end 
+
+  function oeq element_type element_type : bool
+
+(******************************** Axiomatization ********************************)
+
+  type list
+
+  type cursor
+
+  function capacity list : int
+
+  axiom capacity_range:
+    forall co : list [capacity co].
+      Ada__containers__count_type.in_range (capacity co)
+
+  function no_element : cursor
+
+  function empty_list : list
+
+  function length list : int
+
+  axiom length_range:
+    forall co:list [length co]. 0 <= length co <= capacity co
+
+  function position list cursor : int
+
+  axiom position_gte_zero:
+    forall co:list, cu:cursor [position co cu].
+        length co >= position co cu /\ position co cu >= 0
+
+  axiom position_no_element:
+    forall co:list [position co no_element]. position co no_element = 0
+
+  function position_inv list int : cursor
+
+  axiom position_eq1:
+   forall co:list, i :int [position co (position_inv co i)]. 0<i<=length co -> 
+              position co (position_inv co i)=i
+
+  axiom position_eq2:
+    forall co:list, cu:cursor [position co cu].
+          position co cu > 0 -> position_inv co (position co cu) = cu
+
+  predicate is_empty list
+
+  axiom is_empty:
+    forall co:list [is_empty (co)]. 
+          is_empty (co) <-> length co = 0
+
+  axiom Empty_is_empty: is_empty empty_list
+
+  function previous list cursor : cursor
+
+  axiom previous_in:
+    forall co:list, cu:cursor [previous co cu].
+	(position co cu > 1 \/ position co (previous co cu) > 0) ->
+	position co (previous co cu) = position co cu - 1
+
+  axiom previous_ext:
+    forall co:list, cu:cursor [previous co cu].
+        (position co cu = 1 \/ cu = no_element) -> previous co cu = no_element
+
+  function next list cursor : cursor
+
+  axiom next_in:
+    forall co:list, cu:cursor [next co cu].
+	(length co > position co cu > 0 \/ position co (next co cu) > 0) ->
+	position co (next co cu) = position co cu + 1
+
+  axiom next_ext:
+    forall co:list, cu:cursor [next co cu].
+        (position co cu = length co \/ cu = no_element) -> next co cu = no_element
+
+  function last list : cursor
+
+  axiom last_empty:
+    forall co:list [last co]. length co = 0 <-> last co = no_element
+
+  axiom last_gen:
+    forall co:list [last co]. length co = position co (last co)
+
+  function first list : cursor
+
+  axiom first_empty:
+    forall co:list [first co]. length co = 0 <-> first co = no_element
+
+  axiom first_gen:
+    forall co:list [first co]. length co > 0 -> position co (first co) = 1
+
+  function element list cursor : element_type
+
+  function left list cursor : list
+
+  axiom left_no_element:
+    forall co:list [left co no_element]. left co no_element = co
+
+  axiom left_length:
+    forall co:list, cu:cursor [left co cu].
+	position co cu > 0 -> length (left co cu) = position co cu - 1
+
+  axiom left_position_in:
+    forall co:list, cu cun:cursor [position (left co cu) cun | left co cu, position co cun].
+	(position (left co cu) cun > 0 \/ position co cun < position co cu) ->
+	position (left co cu) cun = position co cun
+
+  axiom left_position_ext:
+    forall co:list, cu cun:cursor [position (left co cu) cun].
+	position co cun >= position co cu > 0 ->
+	position (left co cu) cun = 0
+
+  axiom left_element:
+    forall co:list, cu cun:cursor [element (left co cu) cun | left co cu, element co cun].
+	(position (left co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	element (left co cu) cun = element co cun
+
+  function inleft list cursor : list
+
+  axiom inleft_no_element:
+    forall co:list [inleft co no_element]. inleft co no_element = empty_list
+
+  axiom inleft_length:
+    forall co:list, cu:cursor [inleft co cu].
+	position co cu > 0 -> length (inleft co cu) = position co cu
+
+  axiom inleft_position_in:
+    forall co:list, cu cun:cursor [position (inleft co cu) cun | inleft co cu, position co cun].
+	(position (inleft co cu) cun > 0 \/ position co cun <= position co cu) ->
+	position (inleft co cu) cun = position co cun
+
+  axiom inleft_position_ext:
+    forall co:list, cu cun:cursor [position (inleft co cu) cun].
+	position co cun > position co cu > 0 ->
+	position (inleft co cu) cun = 0
+
+  axiom inleft_element:
+    forall co:list, cu cun:cursor [element (inleft co cu) cun | inleft co cu, element co cun].
+	(position (inleft co cu) cun > 0 \/ 0 < position co cun <= position co cu) ->
+	element (inleft co cu) cun = element co cun
+
+  function right list cursor : list
+
+  axiom right_no_element:
+    forall co:list [right co no_element]. right co no_element = empty_list
+
+  axiom right_length:
+    forall co:list, cu:cursor [length (right co cu) ].
+	position co cu > 0 -> length (right co cu) = (length co) - (position co cu) + 1
+
+  axiom right_position_in:
+    forall co:list, cu cun:cursor [position (right co cu) cun | right co cu, position co cun].
+	(position (right co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
+	position (right co cu) cun = (position co cun) - (position co cu) + 1
+
+  axiom right_position_ext:
+    forall co:list, cu cun:cursor [position (right co cu) cun].
+	position co cun < position co cu -> position (right co cu) cun = 0
+
+  axiom right_element:
+    forall co:list, cu cun:cursor [element (right co cu) cun | right co cu, element co cun].
+	(position (right co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	element (right co cu) cun = element co cun
+
+  function findfirst list element_type : cursor
+
+  axiom find_range:
+    forall co:list, e:element_type [findfirst co e].
+	findfirst co e = no_element \/ position co (findfirst co e) > 0
+
+  axiom find_not:
+    forall co:list, e:element_type, cu : cursor [findfirst co e, element co cu].
+	findfirst co e = no_element -> position co cu > 0 ->
+	oeq (element co cu) e = False
+
+  axiom find_yes:
+    forall co:list, e:element_type, cu : cursor [findfirst co e, element co cu].
+	0 < position co cu < position co (findfirst co e) ->
+	oeq (element co cu) e = False
+
+  axiom find_element:
+    forall co:list, e:element_type [findfirst co e].
+	0 < position co (findfirst co e) ->
+	oeq (element co (findfirst co e)) e = True
+
+  function find (l : list) (e : element_type) (cu : cursor) : cursor =
+    if cu = no_element then (findfirst l e) else (findfirst (right l cu) e)
+
+function findlast list element_type : cursor
+
+  axiom rev_find_range:
+    forall co:list, e:element_type [findfirst co e].
+	findlast co e = no_element \/ position co (findlast co e) > 0
+
+  axiom rev_find_not:
+    forall co:list, e:element_type, cu : cursor [findfirst co e, element co cu].
+	findlast co e = no_element -> position co cu > 0 ->
+	oeq (element co cu) e = False
+
+  axiom rev_find_yes:
+    forall co:list, e:element_type, cu : cursor [findfirst co e, element co cu].
+	position co (findlast co e) < position co cu <= length co ->
+	oeq (element co cu) e = False
+
+  axiom rev_find_element:
+    forall co:list, e:element_type [findfirst co e].
+	0 < position co (findlast co e) ->
+	oeq (element co (findlast co e)) e = True
+
+  function rev_find (l : list) (e : element_type) (cu : cursor) : cursor =
+    if cu = no_element then (findlast l e) else (findlast (inleft l cu) e)
+
+  predicate strict_equal list list
+
+  axiom strict_equal_a:
+    forall co1 co2 : list [strict_equal co1 co2].
+    ((forall cu:cursor [position co1 cu | position co2 cu].
+       position co1 cu = position co2 cu) /\
+     (forall cu:cursor [element co1 cu | element co2 cu]. position co1 cu > 0 ->
+        element co1 cu = element co2 cu)) <->  strict_equal co1 co2
+
+  axiom strict_equal_length:
+    forall co1 co2 : list [strict_equal co1 co2, length co1 | strict_equal co1 co2, length co2].
+     strict_equal co1 co2 -> length co1 = length co2
+
+  predicate equal list list
+
+  axiom equal_length:
+   forall co1 co2 : list [equal co1 co2, length co1 | equal co1 co2, length co2].
+   equal co1 co2 -> length co1 = length co2
+
+  axiom equal_element:
+   forall co1 co2 : list [equal co1 co2]. equal co1 co2 ->
+   forall cu1 : cursor [element co1 cu1]. position co1 cu1 > 0 ->
+	exists cu2 : cursor. position co2 cu2 = position co1 cu1 /\ 
+          oeq (element co2 cu2) (element co1 cu1) = True
+
+  axiom equal_inv:
+   forall co1 co2 : list [equal co1 co2]. not equal co1 co2 ->
+   (length co1 <> length co2 \/
+   exists i : int. 0<i<=length co1 /\ oeq (element co1 (position_inv co1 i))
+       (element co2 (position_inv co2 i))=False)
+
+  axiom equal_sym :
+  forall e1 e2 : list [equal e1 e2].
+	equal e1 e2 -> equal e2 e1
+
+  axiom equal_trans :
+  forall e1 e2 e3 : list [equal e1 e2, equal e1 e3 | equal e1 e2, equal e2 e3].
+	equal e1 e2 -> equal e2 e3 -> equal e1 e3
+
+  predicate replace_element list cursor element_type list
+
+  axiom replace_element_length:
+    forall co1 co2:list, cu:cursor, e:element_type
+      [replace_element co1 cu e co2].
+      replace_element co1 cu e co2 -> length co1 = length co2
+
+  axiom replace_element_capacity:
+    forall co1 co2:list, cu:cursor, e:element_type
+      [replace_element co1 cu e co2, capacity co1|replace_element co1 cu e co2, capacity co2].
+      replace_element co1 cu e co2 -> capacity co1 = capacity co2
+
+  axiom replace_element_position_ext:
+    forall co1 co2:list, cu cun:cursor, e:element_type
+      [replace_element co1 cu e co2, position co2 cun
+     | replace_element co1 cu e co2, position co1 cun].
+      replace_element co1 cu e co2 -> position co2 cun = position co1 cun
+
+  axiom replace_element_position_in:
+    forall co1 co2:list, cu:cursor, e:element_type
+      [replace_element co1 cu e co2].
+      replace_element co1 cu e co2 -> position co2 cu > 0
+
+  axiom replace_element_element_in:
+    forall co1 co2:list, cu:cursor, e:element_type
+      [replace_element co1 cu e co2].
+      replace_element co1 cu e co2 -> element co2 cu = e
+
+  axiom replace_element_element_ext:
+    forall co1 co2:list, cu cun:cursor, e:element_type
+      [replace_element co1 cu e co2, element co2 cun
+     | replace_element co1 cu e co2, element co1 cun].
+      replace_element co1 cu e co2 -> cu <> cun -> position co1 cun > 0 ->
+        element co2 cun = element co1 cun
+
+  predicate reverse_elements list list
+
+  axiom reverse_elements_length:
+    forall co1 co2:list
+      [reverse_elements co1 co2].
+      reverse_elements co1 co2 -> length co1 = length co2
+
+  axiom reverse_elements_capacity:
+    forall co1 co2:list
+      [reverse_elements co1 co2, capacity co1|reverse_elements co1 co2, capacity co2].
+      reverse_elements co1 co2 -> capacity co1 = capacity co2
+
+  axiom reverse_elements_position:
+    forall co1 co2:list, cun:cursor
+      [reverse_elements co1 co2, position co2 cun
+     | reverse_elements co1 co2, position co1 cun].
+      reverse_elements co1 co2 -> position co2 cun = (length co1) - (position co1 cun) + 1
+
+  axiom reverse_elements_element:
+    forall co1 co2:list, cun:cursor
+      [reverse_elements co1 co2, element co2 cun
+     | reverse_elements co1 co2, element co1 cun].
+      reverse_elements co1 co2 -> position co1 cun > 0 ->
+        element co2 cun = element co1 cun
+
+  predicate insert list cursor element_type list
+
+  axiom insert_range:
+    forall co1 co2:list, cu:cursor, e:element_type [insert co1 cu e co2].
+      insert co1 cu e co2 -> cu = no_element \/ position co1 cu > 0
+
+  axiom insert_length:
+    forall co1 co2:list, cu:cursor, e:element_type
+      [insert co1 cu e co2].
+      insert co1 cu e co2 -> length co1 + 1 = length co2
+
+  axiom insert_capacity:
+    forall co1 co2:list, cu:cursor, e:element_type
+      [insert co1 cu e co2, capacity co1|insert co1 cu e co2, capacity co2].
+      insert co1 cu e co2 -> capacity co1 = capacity co2
+
+  axiom insert_new:
+    forall co1 co2:list, cu:cursor, e:element_type [insert co1 cu e co2].
+      insert co1 cu e co2 -> position co1 cu > 0 ->
+      (position co1 (previous co2 cu) = 0 /\ element co2 (previous co2 cu) = e)
+
+  axiom insert_new_no_element:
+    forall co1 co2:list, e:element_type [insert co1 no_element e co2].
+      insert co1 no_element e co2 ->
+        position co1 (last co2) = 0 /\ element co2 (last co2) = e
+
+  axiom insert_position_before:
+    forall co1 co2:list, cu cun:cursor, e:element_type
+      [insert co1 cu e co2,  position co1 cun
+     | insert co1 cu e co2,  position co2 cun].
+      insert co1 cu e co2 -> position co1 cu > 0 ->
+      (position co1 cu > position co1 cun > 0 \/ position co2 cun < position co1 cu) ->
+        position co1 cun = position co2 cun
+
+  axiom insert_position_after:
+    forall co1 co2:list, cu cun:cursor, e:element_type
+      [insert co1 cu e co2,  position co1 cun
+     | insert co1 cu e co2,  position co2 cun].
+      insert co1 cu e co2 -> position co1 cu > 0 ->
+      (position co1 cun >= position co1 cu \/ position co2 cun > position co1 cu) ->
+        position co1 cun + 1 = position co2 cun
+
+  axiom insert_position_no_element:
+    forall co1 co2:list, cun:cursor, e:element_type
+      [insert co1 no_element e co2,  position co1 cun
+     | insert co1 no_element e co2,  position co2 cun].
+      insert co1 no_element e co2 -> (position co1 cun > 0 \/ position co2 cun < length co2) ->
+        position co1 cun = position co2 cun
+
+  axiom insert_element:
+    forall co1 co2:list, cu cun:cursor, e:element_type
+      [insert co1 cu e co2,  element co1 cun
+     | insert co1 cu e co2,  element co2 cun].
+      insert co1 cu e co2 -> position co1 cu > 0 ->
+      position co1 cun > 0 ->
+        element co1 cun = element co2 cun
+
+  axiom insert_element_no_element:
+    forall co1 co2:list, cun:cursor, e:element_type
+      [insert co1 no_element e co2,  element co1 cun
+     | insert co1 no_element e co2,  element co2 cun].
+      insert co1 no_element e co2 ->
+      (position co1 cun > 0 \/ 0 < position co2 cun < length co2) ->
+        element co1 cun = element co2 cun
+
+  predicate insert_mult list cursor element_type int list
+
+  axiom insert_mult_0 :
+    forall li1 li2 : list, cu : cursor, e : element_type [insert_mult li1 cu e 0 li2].
+	insert_mult li1 cu e 0 li2 -> li1 = li2
+
+  axiom insert_mult_1 :
+    forall li1 li2 : list, cu : cursor, e : element_type [insert_mult li1 cu e 1 li2].
+	insert_mult li1 cu e 1 li2 -> insert li1 cu e li2
+
+  axiom insert_mult_n :
+    forall li1 li2 : list, cu : cursor, e : element_type, c : int [insert_mult li1 cu e c li2].
+	insert_mult li1 cu e c li2 -> c > 1 ->
+	 exists nl : list [insert li1 cu e nl].
+    		(insert li1 cu e nl /\ insert_mult nl cu e (c - 1) li2)
+
+  predicate insert_3_mult list cursor int list
+
+  axiom insert_3_mult_0 :
+    forall li1 li2 : list, cu : cursor [insert_3_mult li1 cu 0 li2].
+	insert_3_mult li1 cu 0 li2 -> li1 = li2
+
+  axiom insert_3_mult_1 :
+    forall li1 li2 : list, cu : cursor [insert_3_mult li1 cu 1 li2].
+	insert_3_mult li1 cu 1 li2 -> 
+        exists e : element_type.insert li1 cu e li2
+
+  axiom insert_3_mult_n :
+    forall li1 li2 : list, cu : cursor, c : int [insert_3_mult li1 cu c li2].
+	insert_3_mult li1 cu c li2 -> c > 1 ->
+	 exists nl : list , e : element_type [insert li1 cu e nl].
+    		(insert li1 cu e nl /\ insert_3_mult nl cu (c - 1) li2) 
+
+  predicate first_inserted (co1:list) (cu:cursor) (co2:list) (p:cursor) =
+	    cu = no_element /\ length co1 > 0 /\
+               p = next co2 (last co1) \/
+             length co1 = 0 /\ p = first co2 \/
+             position co1 cu = 1 /\ p = first co2 \/
+             position co1 cu > 1 /\ p = next co2 (previous co1 cu)
+
+  predicate delete list cursor list
+
+  axiom delete_capacity:
+    forall co1 co2:list, cu:cursor
+      [delete co1 cu co2, capacity co1|delete co1 cu co2, capacity co2].
+      delete co1 cu co2 -> capacity co1 = capacity co2
+
+  axiom delete_length:
+    forall co1 co2:list, cu:cursor
+      [delete co1 cu co2].
+      delete co1 cu co2 -> length co1 = length co2 + 1
+
+  axiom delete_position_before:
+    forall co1 co2:list, cu cun:cursor
+      [delete co1 cu co2,  position co1 cun
+     | delete co1 cu co2,  position co2 cun].
+      delete co1 cu co2 ->
+      (position co1 cu > position co1 cun \/ 0 < position co2 cun < position co1 cu) ->
+        position co1 cun = position co2 cun
+
+  axiom delete_position_after:
+    forall co1 co2:list, cu cun:cursor
+      [delete co1 cu co2,  position co1 cun | delete co1 cu co2,  position co2 cun].
+      delete co1 cu co2 ->
+      (position co1 cun > position co1 cu \/ position co2 cun >= position co1 cu) ->
+        position co1 cun = position co2 cun + 1
+
+  axiom delete_position_range:
+    forall co1 co2:list, cu:cursor [delete co1 cu co2].
+      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu
+
+  axiom delete_position_next:
+    forall co1 co2:list, cu:cursor [delete co1 cu co2].
+      delete co1 cu co2 -> position co1 (next co1 cu) >= 0
+
+  axiom delete_element:
+    forall co1 co2:list, cu cun:cursor
+      [delete co1 cu co2,  element co1 cun
+     | delete co1 cu co2,  element co2 cun].
+      delete co1 cu co2 ->
+      0 < position co2 cun ->
+        element co1 cun = element co2 cun
+
+  predicate delete_mult list cursor int list
+
+  axiom delete_mult_0 :
+    forall li1 li2 : list, cu : cursor [delete_mult li1 cu 0 li2].
+	delete_mult li1 cu 0 li2 -> li1 = li2
+
+  axiom delete_mult_1 :
+    forall li1 li2 : list, cu : cursor [delete_mult li1 cu 1 li2].
+	delete_mult li1 cu 1 li2 -> delete li1 cu li2
+
+  axiom delete_mult_n :
+    forall li1 li2 : list, cu : cursor, c : int [delete_mult li1 cu c li2].
+	delete_mult li1 cu c li2 -> c > 1 ->
+	 exists nl : list [delete li1 cu nl].
+    		(delete li1 cu nl /\
+                  (position li1 cu = length li1 \/
+                    position li1 cu < length li1 /\ delete_mult nl (next li1 cu) (c - 1) li2))
+
+  predicate swap_links list cursor cursor list
+
+  axiom swap_links_elements:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, element co1 cu | 
+               swap_links co1 cu1 cu2 co2, element co2 cu].
+    swap_links co1 cu1 cu2 co2 -> position co1 cu > 0 ->
+    element co1 cu = element co2 cu
+
+  axiom swap_links_length:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, length co1].
+    swap_links co1 cu1 cu2 co2 -> length co1 = length co2
+
+  axiom swap_links_capacity:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, capacity co1
+             | swap_links co1 cu1 cu2 co2, capacity co2].
+    swap_links co1 cu1 cu2 co2 -> capacity co1 = capacity co2
+
+  axiom swap_links_position_ext:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2, position co1 cu | 
+               swap_links co1 cu1 cu2 co2, position co2 cu].
+    swap_links co1 cu1 cu2 co2 -> 
+     cu <> cu1 -> cu <> cu2 -> position co1 cu = position co2 cu
+
+  axiom swap_links_position_in:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap_links co1 cu1 cu2 co2].
+    swap_links co1 cu1 cu2 co2 -> 
+     position co1 cu1 = position co2 cu2 /\
+     position co1 cu2 = position co2 cu1 /\
+     position co1 cu1 > 0 /\ position co1 cu2 > 0
+
+  predicate swap list cursor cursor list
+
+  axiom swap_position:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, position co1 cu | 
+               swap co1 cu1 cu2 co2, position co2 cu].
+    swap co1 cu1 cu2 co2 -> position co1 cu = position co2 cu
+
+  axiom swap_length:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, length co1].
+    swap co1 cu1 cu2 co2 -> length co1 = length co2
+
+  axiom swap_capacity:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, capacity co1
+             | swap co1 cu1 cu2 co2, capacity co2].
+    swap co1 cu1 cu2 co2 -> capacity co1 = capacity co2
+
+  axiom swap_element_ext:
+    forall co1 co2 : list, cu cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2, element co1 cu | 
+               swap co1 cu1 cu2 co2, element co2 cu].
+    swap co1 cu1 cu2 co2 -> position co1 cu > 0 ->
+     cu <> cu1 -> cu <> cu2 -> element co1 cu = element co2 cu
+
+  axiom swap_element_in:
+    forall co1 co2 : list, cu1 cu2 : cursor 
+             [swap co1 cu1 cu2 co2].
+    swap co1 cu1 cu2 co2 -> 
+     element co1 cu1 = element co2 cu2 /\
+     element co1 cu2 = element co2 cu1 /\
+     position co1 cu1 > 0 /\ position co1 cu2 > 0
+
+  predicate has_element list cursor
+
+  axiom has_element_pos:
+    forall co:list, cu:cursor [has_element co cu].
+    has_element co cu -> 0 < position co cu
+
+  axiom has_element_neg:
+    forall co:list, cu:cursor [has_element co cu].
+    not (has_element co cu) -> position co cu = 0
+
+  predicate contains list element_type
+
+  axiom contains_c:
+  forall co : list, e : element_type [contains co e].
+    contains co e <-> 0 < position co (findfirst co e)
+
+  predicate cap_is_max list list int
+
+ axiom cap_is_max_def:
+   forall co1 co2:list, max:int 
+                  [cap_is_max co1 co2 max, capacity co1 | cap_is_max co1 co2 max, capacity co2].
+   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
+
+(************************************** API *************************************)
+
+  function empty_list__object : list = empty_list
+  function no_element__object : cursor = no_element
+
+  function list__capacity__record (co : list) : Ada__containers__count_type.count_type =
+          Ada__containers__count_type.of_int (capacity co)
+
+  function not_no_element__logic (cu : cursor) : bool
+
+  axiom not_no_element__logic_def:
+    forall cu : cursor [not_no_element__logic cu ].
+      not_no_element__logic cu = True <-> cu <> no_element
+
+  predicate not_no_element__pre (cu : cursor) = true
+  predicate not_no_element__post (cu : cursor) (result : bool) =
+    result = True <->  cu <> no_element
+  val not_no_element__program (cu : cursor) : bool
+    ensures { result = True <->  cu <> no_element }
+
+  function length__logic (co : list) : Ada__containers__count_type.count_type =
+         Ada__containers__count_type.of_int (length co)
+
+  predicate length__pre (co : list) = true
+  predicate length__post (co : list) (result :  Ada__containers__count_type.count_type) =
+     result = Ada__containers__count_type.of_int (length co)
+  val length__program (co : list) :  Ada__containers__count_type.count_type
+     ensures { result = Ada__containers__count_type.of_int (length co) }
+
+  function element__logic (co:list) (cu:cursor) : element_type = element co cu
+
+  predicate element__pre (co:list) (cu:cursor) =
+     has_element co cu
+  predicate element__post (co:list) (cu:cursor) (result : element_type) =
+     result = element co cu
+  val element__program (co:list) (cu:cursor) : element_type
+     requires { has_element co cu }
+     ensures  { result = element co cu }
+
+  function has_element__logic list cursor : bool
+
+  axiom has_element__logic_def:
+    forall co : list, cu : cursor [has_element__logic co cu].
+      has_element co cu <-> has_element__logic co cu = True
+
+  predicate has_element__pre (co:list) (cu:cursor) = true
+  predicate has_element__post (co:list) (cu:cursor) (result: bool) =
+     has_element co cu <-> result = True
+  val has_element__program (co:list) (cu:cursor) : bool
+     ensures { has_element co cu <-> result = True }
+
+  function contains__logic list element_type: bool
+
+  axiom contains__logic_def:
+    forall co : list, e : element_type [contains__logic co e].
+      contains co e <-> contains__logic co e = True
+
+  predicate contains__pre (co:list) (e:element_type) = true
+  predicate contains__post (co:list) (e:element_type) (result: bool) =
+     contains co e <-> result = True
+  val contains__program (co:list) (e:element_type) : bool
+     ensures { contains co e <-> result = True }
+
+  predicate replace_element__pre (co: list) (cu:cursor) (e:element_type)=
+     has_element co cu
+  predicate replace_element__post (co oldco: list) (cu:cursor) (e:element_type)=
+     replace_element oldco cu e co
+  val replace_element__program (co:ref list) (cu:cursor) (e:element_type) : unit
+     requires { has_element !co cu }
+     writes     { co }
+     reads      { co }
+     ensures { replace_element (old !co) cu e !co }
+
+  predicate insert__pre (co :list) (cu:cursor) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type)=
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+                         /\ (has_element co cu \/ cu = no_element) 
+  predicate insert__post (co oldco: list) (cu:cursor) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type)=
+     insert_mult oldco cu e (Ada__containers__count_type.to_int c) co
+  val insert__program (co:ref list) (cu:cursor) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co
+                         /\ (has_element !co cu \/ cu = no_element) }
+     writes     { co }
+     reads      { co }
+     ensures { insert_mult (old !co) cu e (Ada__containers__count_type.to_int c) !co }
+
+  predicate insert__2__pre (co:list) (cu:cursor) (e:element_type) (p:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+                         /\ (has_element co cu \/ cu = no_element)
+  predicate insert__2__post (co oldco: list) (cu:cursor) (e:element_type) 
+                 (p oldp: cursor) (c : Ada__containers__count_type.count_type) =
+     insert_mult oldco cu e (Ada__containers__count_type.to_int c) co /\
+            first_inserted oldco cu co p
+  val insert__2__program (co:ref list) (cu:cursor) (e:element_type) (p:ref cursor)
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co
+                         /\ (has_element !co cu \/ cu = no_element) }
+     writes     { co, p }
+     reads      { co }
+     ensures { insert_mult (old !co) cu e (Ada__containers__count_type.to_int c) !co /\
+            first_inserted (old !co) cu !co !p }
+
+  predicate insert__3__pre (co:list) (cu:cursor)  (p:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+                         /\ (has_element co cu \/ cu = no_element)
+  predicate insert__3__post (co oldco:list) (cu:cursor)  (p oldp:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     insert_3_mult oldco cu (Ada__containers__count_type.to_int c) co /\
+            first_inserted oldco cu co p
+  val insert__3__program (co:ref list) (cu:cursor)  (p:ref cursor)
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co
+                         /\ (has_element !co cu \/ cu = no_element) }
+     writes     { co, p }
+     reads      { co }
+     ensures { insert_3_mult (old !co) cu (Ada__containers__count_type.to_int c) !co /\
+            first_inserted (old !co) cu !co !p }
+
+  predicate prepend__pre (co:list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+  predicate prepend__post (co oldco:list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     insert_mult oldco (first oldco) e
+                             (Ada__containers__count_type.to_int c) co
+  val prepend__program (co:ref list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co }
+     writes     { co }
+     reads      { co }
+     ensures { insert_mult (old !co) (first (old !co)) e
+                             (Ada__containers__count_type.to_int c) !co }
+
+  predicate append__pre (co: list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type)=
+     length co + (Ada__containers__count_type.to_int c) <= capacity co
+  predicate append__post (co oldco:list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) =
+     insert_mult oldco no_element e
+                             (Ada__containers__count_type.to_int c) co
+  val append__program (co:ref list) (e:element_type) 
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { length !co + (Ada__containers__count_type.to_int c) <= capacity !co }
+     writes     { co }
+     reads      { co }
+     ensures { insert_mult (old !co) no_element e
+                             (Ada__containers__count_type.to_int c) !co }
+
+  predicate delete__pre (co:list) (cu:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     has_element co cu
+  predicate delete__post (co oldco:list) (cu oldcu:cursor)
+                                             (c : Ada__containers__count_type.count_type) =
+     delete_mult oldco oldcu (Ada__containers__count_type.to_int c) co /\ cu = no_element
+  val delete__program (co:ref list) (cu:ref cursor)
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { has_element !co !cu }
+     writes     { co }
+     reads      { co }
+     ensures { delete_mult (old !co) (old !cu) (Ada__containers__count_type.to_int c) !co}
+
+  predicate delete_first__pre (co:list)
+                                             (c : Ada__containers__count_type.count_type)=
+     not (is_empty co)
+  predicate delete_first__post (co oldco:list)
+                                             (c : Ada__containers__count_type.count_type)=
+     delete_mult oldco (first oldco) 
+                             (Ada__containers__count_type.to_int c) co
+  val delete_first__program (co:ref list)
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { not (is_empty !co) }
+     writes     { co }
+     reads      { co }
+     ensures { delete_mult (old !co) (first (old !co)) 
+                             (Ada__containers__count_type.to_int c) !co }
+
+  predicate delete_last__pre (co:list)
+                                             (c : Ada__containers__count_type.count_type) =
+     not (is_empty co)
+  predicate delete_last__post (co oldco:list)
+                                             (c : Ada__containers__count_type.count_type) =
+     delete_mult oldco (last oldco) 
+                             (Ada__containers__count_type.to_int c) co
+  val delete_last__program (co:ref list)
+                                             (c : Ada__containers__count_type.count_type) : unit
+     requires { not (is_empty !co) }
+     writes     { co }
+     reads      { co }
+     ensures { delete_mult (old !co) (last (old !co)) 
+                             (Ada__containers__count_type.to_int c) !co }
+
+  predicate swap__pre (co:list) (cu1 cu2 : cursor) =
+    has_element co cu1 /\ has_element co cu2
+  predicate swap__post (co oldco:list) (cu1 cu2 : cursor) =
+    (cu1 = cu2 /\ co = oldco) \/ (cu1 <> cu2 /\ swap oldco cu1 cu2 co)
+  val swap__program (co:ref list) (cu1 cu2 : cursor) : unit
+    requires { has_element !co cu1 /\ has_element !co cu2 }
+     writes     { co }
+     ensures { (cu1 = cu2 /\ !co = old !co) \/
+                         (cu1 <> cu2 /\ swap (old !co) cu1 cu2 !co) }
+
+  predicate swap_links__pre (co:list) (cu1 cu2 : cursor) =
+    has_element co cu1 /\ has_element co cu2
+  predicate swap_links__post (co oldco:list) (cu1 cu2 : cursor) =
+    (cu1 = cu2 /\ co = oldco) \/ (cu1 <> cu2 /\
+    swap_links oldco cu1 cu2 co)
+  val swap_links__program (co:ref list) (cu1 cu2 : cursor) : unit
+    requires { has_element !co cu1 /\ has_element !co cu2 }
+     writes     { co }
+     ensures { (cu1 = cu2 /\ !co = old !co) \/
+                         (cu1 <> cu2 /\ swap_links (old !co) cu1 cu2 !co) }
+
+  predicate splice__pre (target:list) (cu:cursor) (source:list) =
+     capacity target >= (length target) + (length source) 
+                           /\ (has_element target cu \/ cu = no_element)
+  predicate splice__post (target oldtarget:list) (cu:cursor) (source oldsource: list) =
+     length target = (length oldtarget) + (length oldsource) /\
+                         length source = 0 /\ strict_equal (right target cu) (right oldtarget cu) /\
+                         strict_equal (left oldtarget cu) (inleft target (previous oldtarget cu)) /\
+                         equal oldsource (right (left target cu) (next target (previous oldtarget cu)))
+  val splice__program (target:ref list) (cu:cursor) (source:ref list) : unit
+     requires { capacity !target >= (length !target) + (length !source) 
+                           /\ (has_element !target cu \/ cu = no_element)}
+     writes     { target, source }
+     reads      { target, source }
+     ensures {length !target = (length (old !target)) + (length (old !source)) /\
+                         length !source = 0 /\ strict_equal (right !target cu) (right (old !target) cu) /\
+                         strict_equal (left (old !target) cu) (inleft !target (previous (old !target) cu)) /\
+                         equal (old !source) (right (left !target cu) (next !target (previous (old !target) cu))) }
+
+  predicate splice__2__pre (target:list) (cu:cursor) (source:list)
+                                (p:cursor) =
+     capacity target >= (length target) + (length source)
+                           /\ (has_element target cu \/ cu = no_element)
+                           /\ has_element source p
+  predicate splice__2__post (target oldtarget: list) (cu:cursor) (source oldsource: list)
+                                (p oldp: cursor) =
+     insert oldtarget cu (element oldsource oldp) target /\
+                         delete oldsource oldp source /\ 
+                        first_inserted oldtarget cu target p
+  val splice__2__program (target:ref list) (cu:cursor) (source:ref list)
+                                (p:ref cursor) : unit
+     requires { capacity !target >= (length !target) + (length !source)
+                           /\ (has_element !target cu \/ cu = no_element)
+                           /\ has_element !source !p}
+     writes     { target, source, p }
+     reads      { target, source, p }
+     ensures { insert (old !target) cu (element (old !source) (old !p)) !target /\
+                         delete (old !source) (old !p) !source /\ 
+                        first_inserted (old !target) cu !target !p  }
+
+  predicate splice__3__pre (co:list) (before:cursor) (p:cursor) =
+     capacity co >= 2*(length co)
+                           /\ (has_element co before \/ before = no_element)
+  predicate splice__3__post (co oldco: list) (before:cursor) (p: cursor) =
+     exists interm : list. 
+                       delete oldco p  interm /\
+                       insert interm before (element oldco p) co
+  val splice__3__program (co:ref list) (before:cursor) (p:cursor) : unit
+     requires { capacity !co >= 2*(length !co)
+                           /\ (has_element !co before \/ before = no_element) }
+     writes     { co }
+     reads      { co }
+     ensures { exists interm : list. 
+                       delete (old !co) p  interm /\
+                       insert interm before (element (old !co) p) !co }
+
+  predicate reverse_elements__pre (co:list) = true
+  predicate reverse_elements__post (co oldco:list) =
+     reverse_elements co oldco
+  val reverse_elements__program (co:ref list) : unit
+     writes     { co }
+     ensures { reverse_elements !co (old !co) }
+
+  predicate clear__pre (co:list) = true
+  predicate clear__post (co oldco: list) =
+     is_empty co /\ capacity co = capacity oldco
+  val clear__program (co:ref list) : unit
+     writes     { co }
+     ensures { is_empty !co /\ capacity !co = capacity (old !co) }
+
+  predicate assign__pre (target:list) (source:list) =
+     capacity target >= length source
+  predicate assign__post (target oldtarget:list) (source:list) =
+     equal target source
+  val assign__program (target:ref list) (source:list) : unit
+     requires { capacity !target >= length source }
+     writes     { target }
+     reads      { target }
+     ensures { equal !target source }
+
+  predicate move__pre (target:list) (source:list) =
+     capacity target >= length source
+  predicate move__post (target oldtarget:list) (source oldsource:list) =
+     equal target oldsource /\ is_empty source
+  val move__program (target:ref list) (source:ref list) : unit
+     requires { capacity !target >= length !source }
+     writes     { target, source }
+     reads      { target, source }
+     ensures { equal !target (old !source) /\ is_empty !source }
+
+  predicate copy__pre (co: list) (cap:Ada__containers__count_type.count_type) = true
+  predicate copy__post (co: list) (cap:Ada__containers__count_type.count_type) 
+              (result: list) =
+     strict_equal co (result) /\ cap_is_max co result (Ada__containers__count_type.to_int cap)
+  val copy__program (co: list) (cap:Ada__containers__count_type.count_type) : list
+     ensures { strict_equal co (result) /\ 
+                      cap_is_max co result (Ada__containers__count_type.to_int cap) }
+
+  function copy__logic list Ada__containers__count_type.count_type : list
+
+  axiom copy__logic_def:
+    forall co:list, cap:Ada__containers__count_type.count_type [copy__logic co cap].
+          strict_equal co (copy__logic co cap) 
+                       /\ cap_is_max co (copy__logic co cap) (Ada__containers__count_type.to_int cap)
+
+  function previous__logic (co:list) (cu:cursor) : cursor = previous co cu
+
+  predicate previous__pre (co:list) (cu:cursor) = cu = no_element \/ has_element co cu
+  predicate previous__post (co:list) (cu:cursor) (result: cursor) =
+     result = previous co cu
+  val previous__program (co:list) (cu:cursor) : cursor
+     requires { cu = no_element \/ has_element co cu }
+     ensures  { result = previous co cu }
+
+  function next__logic (co:list) (cu:cursor) : cursor = next co cu
+
+  predicate next__pre (co:list) (cu:cursor)= cu = no_element \/ has_element co cu 
+  predicate next__post (co:list) (cu:cursor) (result : cursor) =
+     result = next co cu
+  val next__program (co:list) (cu:cursor) : cursor
+     requires { cu = no_element \/ has_element co cu }
+     ensures  { result = next co cu }
+
+  predicate previous__2__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate previous__2__post (co:list) (cu oldcu:cursor) =
+     cu = previous co oldcu
+  val previous__2__program (co:list) (cu:ref cursor) : unit
+     requires { !cu = no_element \/ has_element co !cu }
+     ensures  { !cu = previous co (old !cu) }
+
+  predicate next__2__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate next__2__post (co:list) (cu oldcu:cursor) =
+     cu = next co oldcu
+  val next__2__program (co:list) (cu:ref cursor) : unit
+     requires { !cu = no_element \/ has_element co !cu }
+     ensures  { !cu = next co (old !cu) }
+
+  function first__logic (co:list) : cursor = first co
+
+  predicate first__pre (co:list) = true
+  predicate first__post (co:list) (result:cursor) =
+     result = first co
+  val first__program (co:list) : cursor
+     ensures  { result = first co }
+
+  function last__logic (co:list) : cursor = last co
+
+  predicate last__pre (co:list) = true
+  predicate last__post (co:list) (result:cursor) =
+     result = last co
+  val last__program (co:list) : cursor
+     ensures  { result = last co }
+
+  function first_element__logic (co:list) : element_type = element co (first co)
+
+  predicate first_element__pre (co:list) = not (is_empty co)
+  predicate first_element__post (co:list) (result:element_type) =
+     result = element co (first co)
+  val first_element__program (co:list) : element_type
+     requires { not (is_empty co) }
+     ensures  { result = element co (first co) }
+
+  function last_element__logic (co:list) : element_type = element co (last co)
+
+  predicate last_element__pre (co:list) = not (is_empty co) 
+  predicate last_element__post (co:list) (result:element_type) =
+     result = element co (last co)
+  val last_element__program (co:list) : element_type
+     requires { not (is_empty co) }
+     ensures  { result = element co (last co) }
+
+  function is_empty__logic list : bool 
+
+  axiom is_empty__logic_def:
+    forall co : list [is_empty__logic co ].
+      is_empty__logic co = True <-> is_empty co
+
+  predicate is_empty__pre (co:list) = true
+  predicate is_empty__post (co:list) (result:bool)=
+     result = True <-> is_empty co
+  val is_empty__program (co:list) : bool
+     ensures  { result = True <-> is_empty co }
+
+  function find__logic (co:list) (e:element_type) (cu:cursor) : cursor = find co e cu
+
+  predicate find__pre (co:list) (e:element_type) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate find__post (co:list) (e:element_type) (cu:cursor) (result:cursor) =
+     result = find co e cu
+  val find__program (co:list) (e:element_type) (cu:cursor) : cursor
+     requires { cu = no_element \/ has_element co cu }
+     ensures  { result = find co e cu }
+
+  function reverse_find__logic (co:list) (e:element_type) (cu:cursor) : cursor = rev_find co e cu
+
+  predicate reverse_find__pre (co:list) (e:element_type) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate reverse_find__post (co:list) (e:element_type) (cu:cursor) (result:cursor) =
+     result = rev_find co e cu
+  val reverse_find__program (co:list) (e:element_type) (cu:cursor) : cursor
+     requires { cu = no_element \/ has_element co cu }
+     ensures  { result = rev_find co e cu }
+
+  function left__logic (co:list) (cu:cursor) : list = left co cu
+
+  predicate left__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate left__post (co:list) (cu:cursor) (result:list) =
+     result = left co cu
+  val left__program (co:list) (cu:cursor) : list
+     requires { cu = no_element \/ has_element co cu }
+     ensures  { result = left co cu }
+
+  function right__logic (co:list) (cu:cursor) : list = right co cu
+
+  predicate right__pre (co:list) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate right__post (co:list) (cu:cursor)(result : list) =
+     result = right co cu
+  val right__program (co:list) (cu:cursor) : list
+     requires { cu = no_element \/ has_element co cu }
+     ensures  { result = right co cu }
+
+  function strict_equal__logic (co1 co2 : list) : bool =
+    if strict_equal co1 co2 then True else False
+
+  predicate strict_equal__pre (co1:list) (co2:list) = true
+  predicate strict_equal__post (co1:list) (co2:list) (result:bool) =
+     result  = True <-> strict_equal co1 co2
+  val strict_equal__program (co1:list) (co2:list) : bool
+     ensures  { result  = True <-> strict_equal co1 co2 }
+
+  function oeq__2__logic (co1:list) (co2:list) : bool =
+    if equal co1 co2 then True else False
+
+  predicate oeq__2__pre (co1:list) (co2:list) = true
+  predicate oeq__2__post (co1:list) (co2:list) (result:bool) = 
+         result  = True <-> equal co1 co2
+  val oeq__2__program (co1:list) (co2:list) : bool
+     ensures  { result  = True <-> equal co1 co2 }
+
+ end

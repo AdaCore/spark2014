@@ -1,0 +1,6 @@
+
+loc.adb:4:24: info: division check proved
+loc.adb:4:24: info: overflow check proved
+loc.adb:5:24: info: division check proved
+loc.adb:5:24: info: overflow check proved
+loc.ads:4:20: info: postcondition proved

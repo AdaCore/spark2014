@@ -1,0 +1,11 @@
+Changes on usage.html
+
+<a href="goals.html" 
+title="GNATprove generates Verification  Conditions (VCs) whose proof ensures 
+that some property holds on the source program">VC</a>
+
+<a href="goals.html" title="GNATprove generates Verification
+ Conditions (VCs) whose proof ensures that some property holds on the source 
+program">VC</a>
+
+

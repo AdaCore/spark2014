@@ -1,0 +1,2015 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v2//EN" "http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="2">
+ <prover
+  id="0"
+  name="Alt-Ergo"
+  version="0.95-dev"/>
+ <file
+  name="../list-test.mlw"
+  verified="false"
+  expanded="true">
+  <theory
+   name="Main"
+   locfile="../list-test.mlw"
+   loclnum="1" loccnumb="7" loccnume="11"
+   verified="false"
+   expanded="true">
+   <goal
+    name="test_comp1"
+    locfile="../list-test.mlw"
+    loclnum="9" loccnumb="5" loccnume="15"
+    sum="834bda561dae6cd4f2d61ad5b51f8416"
+    proved="true"
+    expanded="false"
+    shape="fAainfix =aposition_V3alastV0aprefix -c1Iainfix &gt;alengthV0c1Iainfix =aright_V3aprevious_V1afirstV0V2Iainfix =aleft_V3aprevious_V1afirstV0V0Iainfix &gt;aposition_V3aprevious_V1afirstV0c0Iadelete_V1afirstV0V2Iainsert_V0afirstV0V4V1FF">
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.42"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_replace_element1"
+    locfile="../list-test.mlw"
+    loclnum="27" loccnumb="4" loccnume="25"
+    expl="VC for test_replace_element1"
+    sum="c628fa98d573c2edbd1663d589085a5b"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aposition_V4V1aposition_V3V1Aahas_elementV4V1Aainfix =aelement_V4V1aelement_V3V1Aainfix =aelement_V4V0V2Iareplace_element_V3V0V2V4FAahas_elementV3V0Iainfix =V0V1NAahas_elementV3V1Aahas_elementV3V0FF">
+    <label
+     name="expl:VC for test_replace_element1"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.02"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_replace_element2"
+    locfile="../list-test.mlw"
+    loclnum="33" loccnumb="4" loccnume="25"
+    expl="VC for test_replace_element2"
+    sum="eab317d3aa7d4b721166cb8a1ed42769"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementV3V0Aainfix =aelement_V3V0V1Aap_forall_contV3Iareplace_element_V2V0V1V3FAahas_elementV2V0Iap_forall_contV2AapV1Aahas_elementV2V0FF">
+    <label
+     name="expl:VC for test_replace_element2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.03"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_insert1"
+    locfile="../list-test.mlw"
+    loclnum="38" loccnumb="4" loccnume="16"
+    expl="VC for test_insert1"
+    sum="40f12bdc30ba9c43edc3447316c485b4"
+    proved="true"
+    expanded="false"
+    shape="ainfix =alengthV4ainfix +alengthV3c1Aahas_elementV4V2Aainfix =aelement_V4V2aelement_V3V2Aainfix =aelement_V4aprevious_V4V0V1Aainfix =aposition_V4V0ainfix +c1aposition_V3V0Aap_forall_contV4Iainsert_V3V0V1V4FAainfix =V0ano_elementOahas_elementV3V0Iahas_elementV3V2Aap_forall_contV3AapV1Aahas_elementV3V0FF">
+    <label
+     name="expl:VC for test_insert1"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.10"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_insert2"
+    locfile="../list-test.mlw"
+    loclnum="46" loccnumb="4" loccnume="16"
+    expl="VC for test_insert2"
+    sum="fb6636808023ca00f612296fbd154fae"
+    proved="true"
+    expanded="false"
+    shape="ahas_elementV3V1Aainfix =alengthV3ainfix +alengthV2c1Aapaelement_V3V1Aapaelement_V2V1Aainfix =aelement_V3V1aelement_V2V1Aainfix =aelement_V3alastV3V0AacontainsV3V0Aap_forall_contV3Iainsert_V2ano_elementV0V3FAainfix =ano_elementano_elementOahas_elementV2ano_elementIahas_elementV2V1Aap_forall_contV2AapV0FF">
+    <label
+     name="expl:VC for test_insert2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.37"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_delete"
+    locfile="../list-test.mlw"
+    loclnum="54" loccnumb="4" loccnume="15"
+    expl="VC for test_delete"
+    sum="73a37eea497f1e2ded9d78528ec6687a"
+    proved="true"
+    expanded="false"
+    shape="ainfix =alengthV3ainfix -alengthV2c1Aainfix =aelement_V3V1aelement_V2V1Aahas_elementV3V1Aainfix =aposition_V3aprevious_V2V0aposition_V2aprevious_V2V0Aainfix =aposition_V3anext_V2V0ainfix -aposition_V2anext_V2V0c1Aahas_elementV3V0NAap_forall_contV3Iadelete_V2V0V3FAahas_elementV2V0Iainfix =V1V0NAahas_elementV2V1Aahas_elementV2aprevious_V2V0Aahas_elementV2anext_V2V0Aap_forall_contV2Aahas_elementV2V0FF">
+    <label
+     name="expl:VC for test_delete"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.36"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_insert_delete1"
+    locfile="../list-test.mlw"
+    loclnum="64" loccnumb="4" loccnume="23"
+    expl="VC for test_insert_delete1"
+    sum="4f08d3d56bb43784fb0a962c2fd095e4"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement_V6V1aelement_V3V1Aap_forall_contV6Iadelete_V4V5V6FAahas_elementV4V5Laprevious_V4V0Aahas_elementV4V0Oainfix =V0ano_elementIainsert_V3V0V2V4FAainfix =V0ano_elementOahas_elementV3V0Iahas_elementV3V1Aap_forall_contV3Aahas_elementV3V0FF">
+    <label
+     name="expl:VC for test_insert_delete1"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.89"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_insert_delete2"
+    locfile="../list-test.mlw"
+    loclnum="70" loccnumb="4" loccnume="23"
+    expl="VC for test_insert_delete2"
+    sum="fd268686c02b7737afd79385b78cb377"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement_V4V0aelement_V2V0Aap_forall_contV4Iadelete_V3alastV3V4FAahas_elementV3alastV3Iainsert_V2ano_elementV1V3FAainfix =ano_elementano_elementOahas_elementV2ano_elementIahas_elementV2V0Aap_forall_contV2FF">
+    <label
+     name="expl:VC for test_insert_delete2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.64"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_left1"
+    locfile="../list-test.mlw"
+    loclnum="76" loccnumb="4" loccnume="14"
+    expl="VC for test_left1"
+    sum="6d145c55e15dbce45b4a49668cab2aec"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aprevious_V0V1alastaleft_V0V1Aainfix =V0aleft_V0ano_elementAais_empty_aleft_V0afirstV0Iainfix &gt;aposition_V0V1c1F">
+    <label
+     name="expl:VC for test_left1"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.39"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_left2"
+    locfile="../list-test.mlw"
+    loclnum="83" loccnumb="4" loccnume="14"
+    expl="VC for test_left2"
+    sum="bd91aa79ee0e25d7119746d71f3bbd7f"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aposition_V0V2aposition_V1V2Iainfix =alengthaleft_V0V2alengthaleft_V1V2Aahas_elementV1V2Aahas_elementV0V2F">
+    <label
+     name="expl:VC for test_left2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.02"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_left3"
+    locfile="../list-test.mlw"
+    loclnum="88" loccnumb="4" loccnume="14"
+    expl="VC for test_left3"
+    sum="96d5c16796593147958d79473799591e"
+    proved="true"
+    expanded="false"
+    shape="ainfix =alengthaleft_V0V2alengthaleft_V1V2Iainfix =aposition_V0V2aposition_V1V2Aahas_elementV1V2Aahas_elementV0V2F">
+    <label
+     name="expl:VC for test_left3"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.02"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_right1"
+    locfile="../list-test.mlw"
+    loclnum="94" loccnumb="4" loccnume="15"
+    expl="VC for test_right1"
+    sum="f31b3dd382500809be7411d8e1f258fd"
+    proved="true"
+    expanded="false"
+    shape="ainfix =anext_V0V1anext_V2V1Aastrict_equalV0aright_V0afirstV0Aainfix =afirstaright_V0V1V1Aais_empty_aright_V0ano_elementIainfix =aright_V0V1V2Aahas_elementV0V1F">
+    <label
+     name="expl:VC for test_right1"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="14.12"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_right2"
+    locfile="../list-test.mlw"
+    loclnum="102" loccnumb="4" loccnume="15"
+    expl="VC for test_right2"
+    sum="fbbd6892f00eea556126fdccddcac114"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V2ano_elementNIainfix =aright_V0V2aright_V1V2Aahas_elementV1V2F">
+    <label
+     name="expl:VC for test_right2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.01"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_find"
+    locfile="../list-test.mlw"
+    loclnum="107" loccnumb="4" loccnume="13"
+    expl="VC for test_find"
+    sum="8bc1908c2a7a707932efe33aeae9fa2a"
+    proved="true"
+    expanded="false"
+    shape="acontainsV0V2Iainfix =aelement_V0V1V2Aahas_elementV0V1F">
+    <label
+     name="expl:VC for test_find"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.02"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_false"
+    locfile="../list-test.mlw"
+    loclnum="112" loccnumb="4" loccnume="14"
+    expl="VC for test_false"
+    sum="7ad647de42706c406074a4997b775307"
+    proved="false"
+    expanded="false"
+    shape="ais_empty_V0F">
+    <label
+     name="expl:VC for test_false"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="unknown" time="0.00"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter conditional_insert"
+    locfile="../list-test.mlw"
+    loclnum="120" loccnumb="4" loccnume="22"
+    expl="VC for conditional_insert"
+    sum="d1f9e9972ce6e4d4b16b3ffabf156938"
+    proved="true"
+    expanded="false"
+    shape="iacontainsV1V0NacontainsV2V0Iainsert_V1ano_elementV0V2FacontainsV1V0FF">
+    <label
+     name="expl:VC for conditional_insert"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.22"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test1"
+    locfile="../list-test.mlw"
+    loclnum="126" loccnumb="4" loccnume="9"
+    expl="VC for test1"
+    sum="2c3b26b9b7123117e84c5c3b324b9205"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV1V2ainfix =alengthV3ainfix -alengthV1c1Iadelete_V1V2V3FAahas_elementV1V2ainfix =alengthV4ainfix -alengthV1c1Iadelete_V1V0V4FAahas_elementV1V0Lanext_V1V0Aahas_elementV1V0Oainfix =V0ano_elementIahas_elementV1V0FF">
+    <label
+     name="expl:VC for test1"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.03"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test2"
+    locfile="../list-test.mlw"
+    loclnum="137" loccnumb="4" loccnume="9"
+    expl="VC for test2"
+    sum="9d2a05d89ef5938769101614bc8ed13f"
+    proved="true"
+    expanded="false"
+    shape="ainfix =aelement_V11alastV11V0Aahas_elementV11alastV11Iadelete_V9V10V11FAahas_elementV9V10Iainfix =V10alastV9FIadelete_V7V8V9FAahas_elementV7V8Iainfix =V8alastV7FIadelete_V4V6V7FAahas_elementV4V6Iainfix =V6anext_V4afirstV4FAahas_elementV4afirstV4Oainfix =afirstV4ano_elementIainfix =V5afirstV4FIadelete_V2V3V4FAahas_elementV2V3LalastV2Iainsert_V1afirstV1V0V2FIainfix =alengthV1c4FF">
+    <label
+     name="expl:VC for test2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="7.66"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test3"
+    locfile="../list-test.mlw"
+    loclnum="153" loccnumb="4" loccnume="9"
+    expl="VC for test3"
+    sum="6ec6043c108b4325a0e1875818960a32"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV8V1iainfix &gt;alengthV10c5iainfix =V3anext_V10V0ahas_elementV11V0Iainsert_V10V3V5V11FAainfix =V3ano_elementOahas_elementV10V3ahas_elementV12V0Iainsert_V10V4V5V12FAainfix =V4ano_elementOahas_elementV10V4Aahas_elementV10V0Oainfix =V0ano_elementahas_elementV10V0Iainsert_V9V2V5V10FAainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FAainfix =V1ano_elementOahas_elementV8V1iainfix &gt;alengthV13c5iainfix =V3anext_V13V0ahas_elementV14V0Iainsert_V13V3V5V14FAainfix =V3ano_elementOahas_elementV13V3ahas_elementV15V0Iainsert_V13V4V5V15FAainfix =V4ano_elementOahas_elementV13V4Aahas_elementV13V0Oainfix =V0ano_elementahas_elementV13V0Iainsert_V8V2V5V13FAainfix =V2ano_elementOahas_elementV8V2Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FAainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+    <label
+     name="expl:VC for test3"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test3.1"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="1. precondition"
+      sum="a2f26641d53a2e6fcea665bc887877dc"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.2"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="2. precondition"
+      sum="aef7e57dfcad4141c03147f97006e6cd"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.3"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="3. precondition"
+      sum="78f27621d7d9f8d4527d4fe82051aa21"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.38"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.4"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="4. precondition"
+      sum="3a64f9e96886485c18a269d1e21cd2fd"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV10V0Oainfix =V0ano_elementIainfix &gt;alengthV10c5Iainsert_V9V2V5V10FIainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="1.56"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.5"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="5. precondition"
+      sum="a4ffa74cbc6531da8ac9fd05e991a41a"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V3ano_elementOahas_elementV10V3Iainfix =V3anext_V10V0Iahas_elementV10V0Oainfix =V0ano_elementIainfix &gt;alengthV10c5Iainsert_V9V2V5V10FIainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.40"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.6"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="6. postcondition"
+      sum="adee9c1c49649f30f961544a78f9cd29"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV11V0Iainsert_V10V3V5V11FIainfix =V3ano_elementOahas_elementV10V3Iainfix =V3anext_V10V0Iahas_elementV10V0Oainfix =V0ano_elementIainfix &gt;alengthV10c5Iainsert_V9V2V5V10FIainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.22"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.7"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="7. precondition"
+      sum="5d17a696f7eaa0c0e4c78e6b1c6c4d40"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V4ano_elementOahas_elementV10V4Iainfix =V3anext_V10V0NIahas_elementV10V0Oainfix =V0ano_elementIainfix &gt;alengthV10c5Iainsert_V9V2V5V10FIainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="30.44"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.8"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="8. postcondition"
+      sum="25831713466ab8551e2d9ea27c166390"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV11V0Iainsert_V10V4V5V11FIainfix =V4ano_elementOahas_elementV10V4Iainfix =V3anext_V10V0NIahas_elementV10V0Oainfix =V0ano_elementIainfix &gt;alengthV10c5Iainsert_V9V2V5V10FIainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.36"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.9"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="9. postcondition"
+      sum="976abfe143e77e8501975e902bb40006"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV10V0Iainfix &gt;alengthV10c5NIainsert_V9V2V5V10FIainfix =V2ano_elementOahas_elementV9V2Iainsert_V8V1V5V9FIainfix =V1ano_elementOahas_elementV8V1Iahas_elementV8V1Iainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.10"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="10. precondition"
+      sum="a368c32d897885903082c4279b515c63"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.15"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.11"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="11. precondition"
+      sum="0d3521957d79f5db1c5f0b0743f9bc64"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV9V0Oainfix =V0ano_elementIainfix &gt;alengthV9c5Iainsert_V8V2V5V9FIainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.30"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.12"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="12. precondition"
+      sum="067a781a2eb41ddb28f4edc44c4f6a7a"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V3ano_elementOahas_elementV9V3Iainfix =V3anext_V9V0Iahas_elementV9V0Oainfix =V0ano_elementIainfix &gt;alengthV9c5Iainsert_V8V2V5V9FIainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.28"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.13"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="13. postcondition"
+      sum="4f431a12d1eac851efce9d7738c815e2"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV10V0Iainsert_V9V3V5V10FIainfix =V3ano_elementOahas_elementV9V3Iainfix =V3anext_V9V0Iahas_elementV9V0Oainfix =V0ano_elementIainfix &gt;alengthV9c5Iainsert_V8V2V5V9FIainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.30"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.14"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="14. precondition"
+      sum="08bce01d1cbed9fd1674853eaaf5f70b"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V4ano_elementOahas_elementV9V4Iainfix =V3anext_V9V0NIahas_elementV9V0Oainfix =V0ano_elementIainfix &gt;alengthV9c5Iainsert_V8V2V5V9FIainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="3.10"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.15"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="15. postcondition"
+      sum="b70cd4df06a57c45dfdf7a627007c944"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV10V0Iainsert_V9V4V5V10FIainfix =V4ano_elementOahas_elementV9V4Iainfix =V3anext_V9V0NIahas_elementV9V0Oainfix =V0ano_elementIainfix &gt;alengthV9c5Iainsert_V8V2V5V9FIainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.28"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test3.16"
+      locfile="../list-test.mlw"
+      loclnum="153" loccnumb="4" loccnume="9"
+      expl="16. postcondition"
+      sum="90e01cc1551ce5a8dc913fc1f06016a3"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV9V0Iainfix &gt;alengthV9c5NIainsert_V8V2V5V9FIainfix =V2ano_elementOahas_elementV8V2Iahas_elementV8V1NIainsert_V7ano_elementV5V8FIainsert_V6V0V5V7FIainfix =V0ano_elementOahas_elementV6V0Iahas_elementV6V4Aahas_elementV6V2Aainfix =aposition_V6V0c4FF">
+      <label
+       name="expl:VC for test3"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test4"
+    locfile="../list-test.mlw"
+    loclnum="169" loccnumb="4" loccnume="9"
+    expl="VC for test4"
+    sum="90b4714921606d0b4148552c453891c9"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0V1ainfix =V3alengthaleft_V0V4Aainfix =V4ano_elementOahas_elementV0V4Iainfix =V4anext_V0V1FAahas_elementV0V1Oainfix =V1ano_elementIainfix =V3ainfix +V2c1Fainfix =V2alengthV0Iainfix =V2alengthaleft_V0V1Aainfix =V1ano_elementOahas_elementV0V1FAainfix =c0alengthaleft_V0afirstV0Aainfix =afirstV0ano_elementOahas_elementV0afirstV0F">
+    <label
+     name="expl:VC for test4"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.14"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test5"
+    locfile="../list-test.mlw"
+    loclnum="185" loccnumb="4" loccnume="9"
+    expl="VC for test5"
+    sum="68ff12aca74858781364bd541c6b924d"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV3V2astrict_equalaright_V4V5aright_V1V5Aainfix =alengthaleft_V4V5ainfix *c2alengthaleft_V1V5Aainfix =V5ano_elementOahas_elementV4V5Aahas_elementV1V5Iainfix =V5anext_V4V2FAahas_elementV4V2Oainfix =V2ano_elementIainsert_V3V2V0V4FAainfix =V2ano_elementOahas_elementV3V2ainfix =alengthV3ainfix *c2alengthV1Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FAastrict_equalaright_V1afirstV1aright_V1afirstV1Aainfix =alengthaleft_V1afirstV1ainfix *c2alengthaleft_V1afirstV1Aainfix =afirstV1ano_elementOahas_elementV1afirstV1Aahas_elementV1afirstV1Iais_empty_V1NFF">
+    <label
+     name="expl:VC for test5"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test5.1"
+      locfile="../list-test.mlw"
+      loclnum="185" loccnumb="4" loccnume="9"
+      expl="1. loop invariant init"
+      sum="0d7af519fa32648326a1db96b3355081"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V1afirstV1aright_V1afirstV1Aainfix =alengthaleft_V1afirstV1ainfix *c2alengthaleft_V1afirstV1Aainfix =afirstV1ano_elementOahas_elementV1afirstV1Aahas_elementV1afirstV1Iais_empty_V1NFF">
+      <label
+       name="expl:VC for test5"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test5.1.1"
+        locfile="../list-test.mlw"
+        loclnum="185" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="c643cbda482978ff4077a689aee1eb4d"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afirstV1ano_elementOahas_elementV1afirstV1Aahas_elementV1afirstV1Iais_empty_V1NFF">
+        <label
+         name="expl:VC for test5"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.01"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test5.1.2"
+        locfile="../list-test.mlw"
+        loclnum="185" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="2d2b41782be6362b628f1b17d246efce"
+        proved="true"
+        expanded="false"
+        shape="ainfix =alengthaleft_V1afirstV1ainfix *c2alengthaleft_V1afirstV1Iais_empty_V1NFF">
+        <label
+         name="expl:VC for test5"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.02"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test5.1.3"
+        locfile="../list-test.mlw"
+        loclnum="185" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="30d56a66971403db26663cc0b882d98b"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V1afirstV1aright_V1afirstV1Iais_empty_V1NFF">
+        <label
+         name="expl:VC for test5"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.01"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test5.2"
+      locfile="../list-test.mlw"
+      loclnum="185" loccnumb="4" loccnume="9"
+      expl="2. precondition"
+      sum="d926bc31ceee270479e1fa7beba05723"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V2ano_elementOahas_elementV3V2Iahas_elementV3V2Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+      <label
+       name="expl:VC for test5"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test5.3"
+      locfile="../list-test.mlw"
+      loclnum="185" loccnumb="4" loccnume="9"
+      expl="3. precondition"
+      sum="eba4ec7906bd7394b08119e260d8ee5c"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV4V2Oainfix =V2ano_elementIainsert_V3V2V0V4FIainfix =V2ano_elementOahas_elementV3V2Iahas_elementV3V2Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+      <label
+       name="expl:VC for test5"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test5.4"
+      locfile="../list-test.mlw"
+      loclnum="185" loccnumb="4" loccnume="9"
+      expl="4. loop invariant preservation"
+      sum="79b524796aa015452102d6ed63542a47"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V4V5aright_V1V5Aainfix =alengthaleft_V4V5ainfix *c2alengthaleft_V1V5Aainfix =V5ano_elementOahas_elementV4V5Aahas_elementV1V5Iainfix =V5anext_V4V2FIahas_elementV4V2Oainfix =V2ano_elementIainsert_V3V2V0V4FIainfix =V2ano_elementOahas_elementV3V2Iahas_elementV3V2Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+      <label
+       name="expl:VC for test5"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test5.4.1"
+        locfile="../list-test.mlw"
+        loclnum="185" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="f3141fce1f79919e32b6ce2d3f0e60f4"
+        proved="true"
+        expanded="false"
+        shape="ainfix =V5ano_elementOahas_elementV4V5Aahas_elementV1V5Iainfix =V5anext_V4V2FIahas_elementV4V2Oainfix =V2ano_elementIainsert_V3V2V0V4FIainfix =V2ano_elementOahas_elementV3V2Iahas_elementV3V2Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+        <label
+         name="expl:VC for test5"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.34"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test5.4.2"
+        locfile="../list-test.mlw"
+        loclnum="185" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="1e61dc9705a51efc6358eb0ae516746c"
+        proved="true"
+        expanded="false"
+        shape="ainfix =alengthaleft_V4V5ainfix *c2alengthaleft_V1V5Iainfix =V5anext_V4V2FIahas_elementV4V2Oainfix =V2ano_elementIainsert_V3V2V0V4FIainfix =V2ano_elementOahas_elementV3V2Iahas_elementV3V2Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+        <label
+         name="expl:VC for test5"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="6.87"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test5.4.3"
+        locfile="../list-test.mlw"
+        loclnum="185" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="6e144ea5e978c30868088ffce49ceb8b"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V4V5aright_V1V5Iainfix =V5anext_V4V2FIahas_elementV4V2Oainfix =V2ano_elementIainsert_V3V2V0V4FIainfix =V2ano_elementOahas_elementV3V2Iahas_elementV3V2Iastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+        <label
+         name="expl:VC for test5"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="35.53"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test5.5"
+      locfile="../list-test.mlw"
+      loclnum="185" loccnumb="4" loccnume="9"
+      expl="5. postcondition"
+      sum="6b8b51113d8fb9c82178db8a86b18d0c"
+      proved="true"
+      expanded="false"
+      shape="ainfix =alengthV3ainfix *c2alengthV1Iahas_elementV3V2NIastrict_equalaright_V3V2aright_V1V2Aainfix =alengthaleft_V3V2ainfix *c2alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV3V2Aahas_elementV1V2FIais_empty_V1NFF">
+      <label
+       name="expl:VC for test5"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter interm6"
+    locfile="../list-test.mlw"
+    loclnum="203" loccnumb="4" loccnume="11"
+    expl="VC for interm6"
+    sum="c07c251e84a869c1294c15b442b12df7"
+    proved="true"
+    expanded="false"
+    shape="ainfix =V5anext_V2V0Aastrict_equalaright_V4V5aright_V2V5Aainfix =ainfix +alengthaleft_V4V5alengthV3ainfix +alengthaleft_V2V5alengthV1Aainfix =V5ano_elementOahas_elementV4V5Aahas_elementV2V5Iainfix =V5anext_V2V0FIadelete_V2V0V4FAahas_elementV2V0Iainsert_V1ano_elementaelement_V2V0V3FAahas_elementV2V0Aahas_elementV2V0Oainfix =V0ano_elementIahas_elementV2V0F">
+    <label
+     name="expl:VC for interm6"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="2.50"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test6"
+    locfile="../list-test.mlw"
+    loclnum="214" loccnumb="4" loccnume="9"
+    expl="VC for test6"
+    sum="2f5b039d768870e8dc7fea38bb4f9fb4"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV4V2iainfix =afun_testaelement_V4V2aTrueastrict_equalaright_V7V5aright_V1V5Aainfix =ainfix +alengthaleft_V7V5alengthV6alengthaleft_V1V5Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV1V5Iainfix =V5anext_V4V2Aastrict_equalaright_V7V5aright_V4V5Aainfix =ainfix +alengthaleft_V7V5alengthV6ainfix +alengthaleft_V4V5alengthV3Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV4V5FAahas_elementV4V2astrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2Aahas_elementV4V2ainfix =ainfix +alengthV4alengthV3alengthV1Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FAastrict_equalaright_V1afirstV1aright_V1afirstV1Aainfix =ainfix +alengthaleft_V1afirstV1alengthV0alengthaleft_V1afirstV1Aainfix =afirstV1ano_elementOahas_elementV1afirstV1Aahas_elementV1afirstV1Iais_empty_V0Aais_empty_V1NF">
+    <label
+     name="expl:VC for test6"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter test6.1"
+      locfile="../list-test.mlw"
+      loclnum="214" loccnumb="4" loccnume="9"
+      expl="1. loop invariant init"
+      sum="86337878964b7fafda0384a5f36af0d0"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V1afirstV1aright_V1afirstV1Aainfix =ainfix +alengthaleft_V1afirstV1alengthV0alengthaleft_V1afirstV1Aainfix =afirstV1ano_elementOahas_elementV1afirstV1Aahas_elementV1afirstV1Iais_empty_V0Aais_empty_V1NF">
+      <label
+       name="expl:VC for test6"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test6.1.1"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="5df20a3723f4e976dda7ec01219b8e53"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afirstV1ano_elementOahas_elementV1afirstV1Aahas_elementV1afirstV1Iais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.01"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test6.1.2"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="505a9aa649d85c41827bb957fdef6057"
+        proved="true"
+        expanded="false"
+        shape="ainfix =ainfix +alengthaleft_V1afirstV1alengthV0alengthaleft_V1afirstV1Iais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.02"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test6.1.3"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="ba20702ed324ce43adace61b8da2d111"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V1afirstV1aright_V1afirstV1Iais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.01"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test6.2"
+      locfile="../list-test.mlw"
+      loclnum="214" loccnumb="4" loccnume="9"
+      expl="2. precondition"
+      sum="91050f8bf4d181095ed79fff52699158"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+      <label
+       name="expl:VC for test6"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test6.3"
+      locfile="../list-test.mlw"
+      loclnum="214" loccnumb="4" loccnume="9"
+      expl="3. precondition"
+      sum="6b6719d24cd6d48eeaf0df59bdec7729"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV4V2Iainfix =afun_testaelement_V4V2aTrueIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+      <label
+       name="expl:VC for test6"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test6.4"
+      locfile="../list-test.mlw"
+      loclnum="214" loccnumb="4" loccnume="9"
+      expl="4. loop invariant preservation"
+      sum="b1d64acd79672961b3c2a7fd9be49503"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V7V5aright_V1V5Aainfix =ainfix +alengthaleft_V7V5alengthV6alengthaleft_V1V5Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV1V5Iainfix =V5anext_V4V2Aastrict_equalaright_V7V5aright_V4V5Aainfix =ainfix +alengthaleft_V7V5alengthV6ainfix +alengthaleft_V4V5alengthV3Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV4V5FIahas_elementV4V2Iainfix =afun_testaelement_V4V2aTrueIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+      <label
+       name="expl:VC for test6"/>
+      <transf
+       name="split_goal_wp"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test6.4.1"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="83bdd7dfbb3d6967d39050e0354fb0e0"
+        proved="true"
+        expanded="false"
+        shape="ainfix =V5ano_elementOahas_elementV7V5Aahas_elementV1V5Iainfix =V5anext_V4V2Aastrict_equalaright_V7V5aright_V4V5Aainfix =ainfix +alengthaleft_V7V5alengthV6ainfix +alengthaleft_V4V5alengthV3Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV4V5FIahas_elementV4V2Iainfix =afun_testaelement_V4V2aTrueIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.25"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test6.4.2"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="fa0ef1c2cf7409d27545d38d7a8d40ed"
+        proved="true"
+        expanded="false"
+        shape="ainfix =ainfix +alengthaleft_V7V5alengthV6alengthaleft_V1V5Iainfix =V5anext_V4V2Aastrict_equalaright_V7V5aright_V4V5Aainfix =ainfix +alengthaleft_V7V5alengthV6ainfix +alengthaleft_V4V5alengthV3Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV4V5FIahas_elementV4V2Iainfix =afun_testaelement_V4V2aTrueIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="6.76"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test6.4.3"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="79d2e45847a24979580b2e8976c6b0d1"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V7V5aright_V1V5Iainfix =V5anext_V4V2Aastrict_equalaright_V7V5aright_V4V5Aainfix =ainfix +alengthaleft_V7V5alengthV6ainfix +alengthaleft_V4V5alengthV3Aainfix =V5ano_elementOahas_elementV7V5Aahas_elementV4V5FIahas_elementV4V2Iainfix =afun_testaelement_V4V2aTrueIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="18.14"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test6.5"
+      locfile="../list-test.mlw"
+      loclnum="214" loccnumb="4" loccnume="9"
+      expl="5. loop invariant preservation"
+      sum="fd52c34223b7362506f882159ecff711"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2Iainfix =afun_testaelement_V4V2aTrueNIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+      <label
+       name="expl:VC for test6"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter test6.5.1"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="a5d9f62b11f6f6e9ebc475c76dc26ac6"
+        proved="true"
+        expanded="false"
+        shape="ainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2Iainfix =afun_testaelement_V4V2aTrueNIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.01"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test6.5.2"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="00ce719c5da9ead98793f384f783a161"
+        proved="true"
+        expanded="false"
+        shape="ainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Iainfix =afun_testaelement_V4V2aTrueNIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.02"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter test6.5.3"
+        locfile="../list-test.mlw"
+        loclnum="214" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="caafd250813ddc49cf9acd9177804288"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V4V2aright_V1V2Iainfix =afun_testaelement_V4V2aTrueNIahas_elementV4V2Iahas_elementV4V2Iastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+        <label
+         name="expl:VC for test6"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.01"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter test6.6"
+      locfile="../list-test.mlw"
+      loclnum="214" loccnumb="4" loccnume="9"
+      expl="6. postcondition"
+      sum="73ed8926103740b2b3c65e27801a7f97"
+      proved="true"
+      expanded="false"
+      shape="ainfix =ainfix +alengthV4alengthV3alengthV1Iahas_elementV4V2NIastrict_equalaright_V4V2aright_V1V2Aainfix =ainfix +alengthaleft_V4V2alengthV3alengthaleft_V1V2Aainfix =V2ano_elementOahas_elementV4V2Aahas_elementV1V2FIais_empty_V0Aais_empty_V1NF">
+      <label
+       name="expl:VC for test6"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter my_contain"
+    locfile="../list-test.mlw"
+    loclnum="234" loccnumb="4" loccnume="14"
+    expl="VC for my_contain"
+    sum="227c7904cb16789a43b5d7882652aed0"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0V2iainfix =aequal_elementsV1aelement_V0V2aTrueacontainsV0V1qainfix =V3aTrueIainfix =V3aTrueFacontainsaleft_V0V4V1NAainfix =V4ano_elementOahas_elementV0V4Iainfix =V4anext_V0V2FAahas_elementV0V2Oainfix =V2ano_elementAahas_elementV0V2acontainsV0V1NIacontainsaleft_V0V2V1NAainfix =V2ano_elementOahas_elementV0V2FAacontainsaleft_V0afirstV0V1NAainfix =afirstV0ano_elementOahas_elementV0afirstV0F">
+    <label
+     name="expl:VC for my_contain"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="10.12"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter my_find"
+    locfile="../list-test.mlw"
+    loclnum="251" loccnumb="4" loccnume="11"
+    expl="VC for my_find"
+    sum="6438d0542c9634253bdd3337bbdb99b0"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0V3iainfix =aequal_elementsV1aelement_V0V3aTrueainfix =V3afindV0V1V2ainfix =afindaleft_aright_V0V2V4V1ano_elementano_elementAainfix =V4ano_elementOahas_elementaright_V0V2V4Iainfix =V4anext_V0V3FAahas_elementV0V3Oainfix =V3ano_elementAahas_elementV0V3ainfix =V3afindV0V1V2Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FAainfix =afindaleft_aright_V0V2V2V1ano_elementano_elementAainfix =V2ano_elementOahas_elementaright_V0V2V2Iahas_elementV0V2F">
+    <label
+     name="expl:VC for my_find"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter my_find.1"
+      locfile="../list-test.mlw"
+      loclnum="251" loccnumb="4" loccnume="11"
+      expl="1. loop invariant init"
+      sum="2d412dfc5f76f44b0e0c826db5c3d658"
+      proved="true"
+      expanded="false"
+      shape="ainfix =afindaleft_aright_V0V2V2V1ano_elementano_elementAainfix =V2ano_elementOahas_elementaright_V0V2V2Iahas_elementV0V2F">
+      <label
+       name="expl:VC for my_find"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter my_find.2"
+      locfile="../list-test.mlw"
+      loclnum="251" loccnumb="4" loccnume="11"
+      expl="2. precondition"
+      sum="d9cfb8fd14e615fc580ad624b69c8ddc"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V3Iahas_elementV0V3Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+      <label
+       name="expl:VC for my_find"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter my_find.3"
+      locfile="../list-test.mlw"
+      loclnum="251" loccnumb="4" loccnume="11"
+      expl="3. postcondition"
+      sum="4eb8420d4b4891967054ba27037eb136"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V3afindV0V1V2Iainfix =aequal_elementsV1aelement_V0V3aTrueIahas_elementV0V3Iahas_elementV0V3Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+      <label
+       name="expl:VC for my_find"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="1.67"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter my_find.4"
+      locfile="../list-test.mlw"
+      loclnum="251" loccnumb="4" loccnume="11"
+      expl="4. precondition"
+      sum="7eaa7bb25a795dcf51828252e2322f39"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV0V3Oainfix =V3ano_elementIainfix =aequal_elementsV1aelement_V0V3aTrueNIahas_elementV0V3Iahas_elementV0V3Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+      <label
+       name="expl:VC for my_find"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter my_find.5"
+      locfile="../list-test.mlw"
+      loclnum="251" loccnumb="4" loccnume="11"
+      expl="5. loop invariant preservation"
+      sum="099b419e3c021ed8fbe33214c19fe7ad"
+      proved="true"
+      expanded="false"
+      shape="ainfix =afindaleft_aright_V0V2V4V1ano_elementano_elementAainfix =V4ano_elementOahas_elementaright_V0V2V4Iainfix =V4anext_V0V3FIahas_elementV0V3Oainfix =V3ano_elementIainfix =aequal_elementsV1aelement_V0V3aTrueNIahas_elementV0V3Iahas_elementV0V3Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+      <label
+       name="expl:VC for my_find"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter my_find.5.1"
+        locfile="../list-test.mlw"
+        loclnum="251" loccnumb="4" loccnume="11"
+        expl="1."
+        sum="086097d8cd0c50ae02d6182961d3ca22"
+        proved="true"
+        expanded="false"
+        shape="ainfix =V4ano_elementOahas_elementaright_V0V2V4Iainfix =V4anext_V0V3FIahas_elementV0V3Oainfix =V3ano_elementIainfix =aequal_elementsV1aelement_V0V3aTrueNIahas_elementV0V3Iahas_elementV0V3Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+        <label
+         name="expl:VC for my_find"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.20"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter my_find.5.2"
+        locfile="../list-test.mlw"
+        loclnum="251" loccnumb="4" loccnume="11"
+        expl="2."
+        sum="577c384b7f053c9a845dcd5cee6f53b3"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afindaleft_aright_V0V2V4V1ano_elementano_elementIainfix =V4anext_V0V3FIahas_elementV0V3Oainfix =V3ano_elementIainfix =aequal_elementsV1aelement_V0V3aTrueNIahas_elementV0V3Iahas_elementV0V3Iainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+        <label
+         name="expl:VC for my_find"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="26.51"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter my_find.6"
+      locfile="../list-test.mlw"
+      loclnum="251" loccnumb="4" loccnume="11"
+      expl="6. postcondition"
+      sum="cef6c79fffd3cb1e4c3f23b1ec9947c1"
+      proved="true"
+      expanded="false"
+      shape="ainfix =V3afindV0V1V2Iahas_elementV0V3NIainfix =afindaleft_aright_V0V2V3V1ano_elementano_elementAainfix =V3ano_elementOahas_elementaright_V0V2V3FIahas_elementV0V2F">
+      <label
+       name="expl:VC for my_find"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.82"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter map_f"
+    locfile="../list-test.mlw"
+    loclnum="271" loccnumb="4" loccnume="9"
+    expl="VC for map_f"
+    sum="744195f043464a57d2a368cb2966a0d6"
+    proved="true"
+    expanded="false"
+    shape="iainfix =V1ano_elementNastrict_equalaright_V0V4aright_V3V4Aainfix =aelement_V3V5afaelement_V0V5Iahas_elementaleft_V3V4V5FAainfix =V4ano_elementOahas_elementV0V4Aahas_elementV3V4Iainfix =V4anext_V3V1FAahas_elementV3V1Oainfix =V1ano_elementIareplace_element_V2V1afaelement_V2V1V3FAahas_elementV2V1Aahas_elementV2V1ainfix =aelement_V2V6afaelement_V0V6Iahas_elementV2V6FIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V7afaelement_V0V7Iahas_elementaleft_V2V1V7FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FAastrict_equalaright_V0afirstV0aright_V0afirstV0Aainfix =aelement_V0V8afaelement_V0V8Iahas_elementaleft_V0afirstV0V8FAainfix =afirstV0ano_elementOahas_elementV0afirstV0Aahas_elementV0afirstV0F">
+    <label
+     name="expl:VC for map_f"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="false">
+     <goal
+      name="WP_parameter map_f.1"
+      locfile="../list-test.mlw"
+      loclnum="271" loccnumb="4" loccnume="9"
+      expl="1. loop invariant init"
+      sum="316e30d31a1f1b3de15f8d0f566aa377"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V0afirstV0aright_V0afirstV0Aainfix =aelement_V0V1afaelement_V0V1Iahas_elementaleft_V0afirstV0V1FAainfix =afirstV0ano_elementOahas_elementV0afirstV0Aahas_elementV0afirstV0F">
+      <label
+       name="expl:VC for map_f"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter map_f.1.1"
+        locfile="../list-test.mlw"
+        loclnum="271" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="85bb2f8dd941b1e97d83f9a54c0afafb"
+        proved="true"
+        expanded="false"
+        shape="ainfix =afirstV0ano_elementOahas_elementV0afirstV0Aahas_elementV0afirstV0F">
+        <label
+         name="expl:VC for map_f"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.02"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter map_f.1.2"
+        locfile="../list-test.mlw"
+        loclnum="271" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="eb4e31ada63fa6753475ca410e013775"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement_V0V1afaelement_V0V1Iahas_elementaleft_V0afirstV0V1FF">
+        <label
+         name="expl:VC for map_f"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.04"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter map_f.1.3"
+        locfile="../list-test.mlw"
+        loclnum="271" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="290c9d2c862d0d257de0fb43b3cdba9d"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V0afirstV0aright_V0afirstV0F">
+        <label
+         name="expl:VC for map_f"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.02"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter map_f.2"
+      locfile="../list-test.mlw"
+      loclnum="271" loccnumb="4" loccnume="9"
+      expl="2. precondition"
+      sum="83aaa0137a777b116af3dad57ac750dc"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V3afaelement_V0V3Iahas_elementaleft_V2V1V3FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+      <label
+       name="expl:VC for map_f"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter map_f.3"
+      locfile="../list-test.mlw"
+      loclnum="271" loccnumb="4" loccnume="9"
+      expl="3. precondition"
+      sum="8d0e0fa688b0f37d9d9e63ba5836df1a"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV2V1Iahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V3afaelement_V0V3Iahas_elementaleft_V2V1V3FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+      <label
+       name="expl:VC for map_f"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter map_f.4"
+      locfile="../list-test.mlw"
+      loclnum="271" loccnumb="4" loccnume="9"
+      expl="4. precondition"
+      sum="236617ccbe6fe5e4fc5506121ada8e77"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV3V1Oainfix =V1ano_elementIareplace_element_V2V1afaelement_V2V1V3FIahas_elementV2V1Iahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V4afaelement_V0V4Iahas_elementaleft_V2V1V4FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+      <label
+       name="expl:VC for map_f"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter map_f.5"
+      locfile="../list-test.mlw"
+      loclnum="271" loccnumb="4" loccnume="9"
+      expl="5. loop invariant preservation"
+      sum="ef40381e4a8d2d846c50b0242b3f6bc2"
+      proved="true"
+      expanded="false"
+      shape="astrict_equalaright_V0V4aright_V3V4Aainfix =aelement_V3V5afaelement_V0V5Iahas_elementaleft_V3V4V5FAainfix =V4ano_elementOahas_elementV0V4Aahas_elementV3V4Iainfix =V4anext_V3V1FIahas_elementV3V1Oainfix =V1ano_elementIareplace_element_V2V1afaelement_V2V1V3FIahas_elementV2V1Iahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V6afaelement_V0V6Iahas_elementaleft_V2V1V6FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+      <label
+       name="expl:VC for map_f"/>
+      <transf
+       name="split_goal"
+       proved="true"
+       expanded="false">
+       <goal
+        name="WP_parameter map_f.5.1"
+        locfile="../list-test.mlw"
+        loclnum="271" loccnumb="4" loccnume="9"
+        expl="1."
+        sum="2f7d722bb1264c664e8f95f6e8f74186"
+        proved="true"
+        expanded="false"
+        shape="ainfix =V4ano_elementOahas_elementV0V4Aahas_elementV3V4Iainfix =V4anext_V3V1FIahas_elementV3V1Oainfix =V1ano_elementIareplace_element_V2V1afaelement_V2V1V3FIahas_elementV2V1Iahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V5afaelement_V0V5Iahas_elementaleft_V2V1V5FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+        <label
+         name="expl:VC for map_f"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.20"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter map_f.5.2"
+        locfile="../list-test.mlw"
+        loclnum="271" loccnumb="4" loccnume="9"
+        expl="2."
+        sum="2b20be8146334ce3bf46446afe898b91"
+        proved="true"
+        expanded="false"
+        shape="ainfix =aelement_V3V5afaelement_V0V5Iahas_elementaleft_V3V4V5FIainfix =V4anext_V3V1FIahas_elementV3V1Oainfix =V1ano_elementIareplace_element_V2V1afaelement_V2V1V3FIahas_elementV2V1Iahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V6afaelement_V0V6Iahas_elementaleft_V2V1V6FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+        <label
+         name="expl:VC for map_f"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="0.34"/>
+        </proof>
+       </goal>
+       <goal
+        name="WP_parameter map_f.5.3"
+        locfile="../list-test.mlw"
+        loclnum="271" loccnumb="4" loccnume="9"
+        expl="3."
+        sum="1af71ba8144eda652f9faa88890e90f7"
+        proved="true"
+        expanded="false"
+        shape="astrict_equalaright_V0V4aright_V3V4Iainfix =V4anext_V3V1FIahas_elementV3V1Oainfix =V1ano_elementIareplace_element_V2V1afaelement_V2V1V3FIahas_elementV2V1Iahas_elementV2V1Iainfix =V1ano_elementNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V5afaelement_V0V5Iahas_elementaleft_V2V1V5FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+        <label
+         name="expl:VC for map_f"/>
+        <proof
+         prover="0"
+         timelimit="200"
+         memlimit="1000"
+         obsolete="false"
+         archived="false">
+         <result status="valid" time="6.11"/>
+        </proof>
+       </goal>
+      </transf>
+     </goal>
+     <goal
+      name="WP_parameter map_f.6"
+      locfile="../list-test.mlw"
+      loclnum="271" loccnumb="4" loccnume="9"
+      expl="6. postcondition"
+      sum="ff599658725bf07a95147f20c662bfed"
+      proved="true"
+      expanded="false"
+      shape="ainfix =aelement_V2V3afaelement_V0V3Iahas_elementV2V3FIainfix =V1ano_elementNNIastrict_equalaright_V0V1aright_V2V1Aainfix =aelement_V2V4afaelement_V0V4Iahas_elementaleft_V2V1V4FAainfix =V1ano_elementOahas_elementV0V1Aahas_elementV2V1FF">
+      <label
+       name="expl:VC for map_f"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.10"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_max"
+    locfile="../list-test.mlw"
+    loclnum="309" loccnumb="4" loccnume="12"
+    expl="VC for test_max"
+    sum="2b25137c8fae18555d69276a2eeb39e8"
+    proved="true"
+    expanded="false"
+    shape="iainfix &lt;=c1V0iainfix &lt;=V3V0ainfix &gt;=acompare_aelement_V6V10aelement_V8V11c0Iahas_elementV8V11Iahas_elementV6V10FFAainfix =alengthV8ainfix +ainfix -alengthV1V9c1Iainfix =V9ainfix +V3c1FIadelete_V4V7V8FAahas_elementV4V7Lamax_V4Aais_empty_V4NIainsert_V2ano_elementaelement_V4V5V6FAahas_elementV4V5Lamax_V4Aais_empty_V4Nainfix &gt;=acompare_aelement_V2V12aelement_V4V13c0Iahas_elementV4V13Iahas_elementV2V12FFIainfix &gt;=acompare_aelement_V2V14aelement_V4V15c0Iahas_elementV4V15Iahas_elementV2V14FFAainfix =alengthV4ainfix +ainfix -alengthV1V3c1FAainfix &gt;=acompare_aelement_aempty_V16aelement_V1V17c0Iahas_elementV1V17Iahas_elementaempty_V16FFAainfix =alengthV1ainfix +ainfix -alengthV1c1c1ainfix &gt;=acompare_aelement_V18V19aelement_V1V20c0Iahas_elementV1V20Iahas_elementV18V19FFLaempty_Iainfix &gt;=alengthV1V0FF">
+    <label
+     name="expl:VC for test_max"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.60"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_max2"
+    locfile="../list-test.mlw"
+    loclnum="331" loccnumb="4" loccnume="13"
+    expl="VC for test_max2"
+    sum="38e613960625c6612818b9869dec2f26"
+    proved="true"
+    expanded="false"
+    shape="iainfix &lt;=c1V0iainfix &lt;=V3V0ainfix &gt;=acompare_V10V11c0IacontainsV8V11IacontainsV6V10FFAainfix =alengthV8ainfix +ainfix -alengthV1V9c1Iainfix =V9ainfix +V3c1FIadelete_V4V7V8FAahas_elementV4V7Lamax_V4Aais_empty_V4NIainsert_V2ano_elementaelement_V4V5V6FAahas_elementV4V5Lamax_V4Aais_empty_V4Nainfix &gt;=acompare_V12V13c0IacontainsV4V13IacontainsV2V12FFIainfix &gt;=acompare_V14V15c0IacontainsV4V15IacontainsV2V14FFAainfix =alengthV4ainfix +ainfix -alengthV1V3c1FAainfix &gt;=acompare_V16V17c0IacontainsV1V17Iacontainsaempty_V16FFAainfix =alengthV1ainfix +ainfix -alengthV1c1c1ainfix &gt;=acompare_V18V19c0IacontainsV1V19Iacontainsaempty_V18FFIainfix &gt;=alengthV1V0Aainfix =acompare_V22V20acompare_V22V21Iainfix =aequal_elementsV20V21aTrueFacompare_V21V22aequal_elementsV20V21Aainfix =acompare_V23V25acompare_V24V25Iainfix =aequal_elementsV23V24aTrueFacompare_V24V25aequal_elementsV23V24FF">
+    <label
+     name="expl:VC for test_max2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="2.55"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_sum_of"
+    locfile="../list-test.mlw"
+    loclnum="397" loccnumb="4" loccnume="15"
+    expl="VC for test_sum_of"
+    sum="4b7c69802effb724f4e7ff6197bb1b06"
+    proved="false"
+    expanded="false"
+    shape="iahas_elementV5V3iainfix =V6aTrueainfix =asum_of_weightV8ainfix -asum_of_weightV1V7Iadelete_V5V3V8FAahas_elementV5V3Iainfix =V7ainfix +V4aweight_aelement_V5V3FAahas_elementV5V3ainfix =asum_of_weightV5ainfix -asum_of_weightV1V4Iainfix =V9anext_V5V3FAahas_elementV5V3Oainfix =V3ano_elementIacheckk_aelement_V5V3qainfix =V6aTrueFAahas_elementV5V3ainfix =asum_of_weightV10asum_of_weightV1Iainsert_V5ano_elementV0V10FAainfix =aweight_V0V4Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FAainfix =asum_of_weightV1ainfix -asum_of_weightV1V2Iainfix =V2c0FFF">
+    <label
+     name="expl:VC for test_sum_of"/>
+    <transf
+     name="split_goal"
+     proved="false"
+     expanded="false">
+     <goal
+      name="WP_parameter test_sum_of.1"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="1. loop invariant init"
+      sum="f9e9fa4f1d67a2f471121dbd069b523f"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV1ainfix -asum_of_weightV1V2Iainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.2"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="2. precondition"
+      sum="872bc26f74e67ea10350706b2775ede3"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV5V3Iahas_elementV5V3Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.3"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="3. precondition"
+      sum="075cd95b2baa8afec76fa2424b04c104"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV5V3Iainfix =V6aTrueIacheckk_aelement_V5V3qainfix =V6aTrueFIahas_elementV5V3Iahas_elementV5V3Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.4"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="4. precondition"
+      sum="a44c5337c0738b9bd6c96e6d2fc0b481"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV5V3Iainfix =V7ainfix +V4aweight_aelement_V5V3FIahas_elementV5V3Iainfix =V6aTrueIacheckk_aelement_V5V3qainfix =V6aTrueFIahas_elementV5V3Iahas_elementV5V3Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.5"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="5. loop invariant preservation"
+      sum="abc7a10a428c7c4e6449ceebef4cf4ac"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV8ainfix -asum_of_weightV1V7Iadelete_V5V3V8FIahas_elementV5V3Iainfix =V7ainfix +V4aweight_aelement_V5V3FIahas_elementV5V3Iainfix =V6aTrueIacheckk_aelement_V5V3qainfix =V6aTrueFIahas_elementV5V3Iahas_elementV5V3Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.6"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="6. precondition"
+      sum="d986a64b074bc17eca32ef5bcc7d16b6"
+      proved="true"
+      expanded="false"
+      shape="ahas_elementV5V3Oainfix =V3ano_elementIainfix =V6aTrueNIacheckk_aelement_V5V3qainfix =V6aTrueFIahas_elementV5V3Iahas_elementV5V3Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.7"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="7. loop invariant preservation"
+      sum="76c261893fe79ff1c3bef6174391783a"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV5ainfix -asum_of_weightV1V4Iainfix =V7anext_V5V3FIahas_elementV5V3Oainfix =V3ano_elementIainfix =V6aTrueNIacheckk_aelement_V5V3qainfix =V6aTrueFIahas_elementV5V3Iahas_elementV5V3Iainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.8"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="8. assertion"
+      sum="91e4d0fde24f78cd71cb64ca9ee8ed63"
+      proved="false"
+      expanded="false"
+      shape="ainfix =aweight_V0V4Iahas_elementV5V3NIainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="unknown" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter test_sum_of.9"
+      locfile="../list-test.mlw"
+      loclnum="397" loccnumb="4" loccnume="15"
+      expl="9. postcondition"
+      sum="87fad31cd0e54f1545c8eec2ba9cd6c7"
+      proved="true"
+      expanded="false"
+      shape="ainfix =asum_of_weightV6asum_of_weightV1Iainsert_V5ano_elementV0V6FIainfix =aweight_V0V4Iahas_elementV5V3NIainfix =asum_of_weightV5ainfix -asum_of_weightV1V4FIainfix =V2c0FFF">
+      <label
+       name="expl:VC for test_sum_of"/>
+      <proof
+       prover="0"
+       timelimit="200"
+       memlimit="1000"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+   <goal
+    name="WP_parameter test_sum_of2"
+    locfile="../list-test.mlw"
+    loclnum="415" loccnumb="4" loccnume="16"
+    expl="VC for test_sum_of2"
+    sum="de7b330fdede33d3604d93b0bec16e69"
+    proved="true"
+    expanded="false"
+    shape="iainfix &lt;V2V0iainfix &lt;V3V0ainfix =asum_of_weightV6ainfix -asum_of_weightV1V5Iadelete_V4afirstV4V6FAahas_elementV4afirstV4Iainfix =V5ainfix +V3aweight_aelement_V4afirstV4FAahas_elementV4afirstV4ainfix &gt;=V3V0Aainfix =asum_of_weightV4ainfix -asum_of_weightV1V3Iainfix =asum_of_weightV4ainfix -asum_of_weightV1V3FAainfix =asum_of_weightV1ainfix -asum_of_weightV1V2ainfix &gt;=V2V0Aainfix =asum_of_weightV1ainfix -asum_of_weightV1V2Iainfix =V2c0FIainfix &lt;=V0asum_of_weightV1FF">
+    <label
+     name="expl:VC for test_sum_of2"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.02"/>
+    </proof>
+   </goal>
+   <goal
+    name="WP_parameter test_sum_of3"
+    locfile="../list-test.mlw"
+    loclnum="430" loccnumb="4" loccnume="16"
+    expl="VC for test_sum_of3"
+    sum="5172d2ae842c84fcb18d3f6629318907"
+    proved="true"
+    expanded="false"
+    shape="iahas_elementV0afirstV0iahas_elementV0V1ainfix =V4ano_elementOahas_elementV0V4Aainfix =V3asum_of_weightaleft_V0V4Iainfix =V4anext_V0V1FAahas_elementV0V1Oainfix =V1ano_elementIainfix =V3ainfix +V2aweight_aelement_V0V1FAahas_elementV0V1ainfix =asum_of_weightV0V2Iainfix =V1ano_elementOahas_elementV0V1Aainfix =V2asum_of_weightaleft_V0V1FAainfix =afirstV0ano_elementOahas_elementV0afirstV0Aainfix =c0asum_of_weightaleft_V0afirstV0ainfix =asum_of_weightV0c0F">
+    <label
+     name="expl:VC for test_sum_of3"/>
+    <proof
+     prover="0"
+     timelimit="200"
+     memlimit="1000"
+     obsolete="false"
+     archived="false">
+     <result status="valid" time="0.19"/>
+    </proof>
+   </goal>
+  </theory>
+ </file>
+</why3session>

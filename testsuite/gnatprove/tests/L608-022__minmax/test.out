@@ -1,0 +1,26 @@
+
+minmax.adb:28:7: info: assertion proved
+minmax.adb:29:7: info: assertion proved
+minmax.adb:39:7: info: assertion proved
+minmax.adb:40:7: info: assertion proved
+minmax.adb:44:7: info: assertion proved
+minmax.adb:45:7: info: assertion proved
+minmax.adb:53:16: info: range check proved
+minmax.adb:54:16: info: range check proved
+minmax.adb:55:7: info: assertion proved
+minmax.adb:56:7: info: assertion proved
+minmax.adb:61:16: info: range check proved
+minmax.adb:61:27: overflow check not proved
+minmax.adb:62:16: range check not proved
+minmax.adb:62:24: overflow check not proved
+minmax.adb:63:7: info: assertion proved
+minmax.adb:64:31: info: overflow check proved
+minmax.adb:64:7: info: assertion proved
+minmax.adb:74:7: info: assertion proved
+minmax.adb:75:7: info: assertion proved
+minmax.adb:79:4: info: precondition proved
+minmax.adb:80:12: info: range check proved
+minmax.adb:80:4: info: precondition proved
+minmax.adb:80:9: info: range check proved
+minmax.adb:81:4: info: precondition proved
+minmax.adb:82:4: info: precondition proved

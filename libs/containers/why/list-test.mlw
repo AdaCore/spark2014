@@ -1,0 +1,445 @@
+module Main
+
+  use import int.Int
+  use import ref.Ref
+  use import "list".Main
+
+(*** UNIT-TESTS ***)
+
+goal test_comp1:
+forall l1 l2 l3 l4 : list. forall e : element_t.
+insert_ l1 (first l1) e l2 ->
+delete_ l2 (first l1) l3 ->
+position_ l4 (previous_ l2 (first l1)) > 0 ->
+left_ l4 (previous_ l2 (first l1)) = l1 ->
+right_ l4 (previous_ l2 (first l1)) = l3 ->
+length l1 > 1 -> position_ l4 (last l1) = -1 /\ false
+
+predicate p element_t
+
+predicate p_forall_cont list
+
+axiom p_forall_cont_c:
+forall co:list [p_forall_cont co]. p_forall_cont co <->
+	  (forall cu:cursor [has_element co cu | element_ co cu].
+	  	 has_element co cu -> p (element_ co cu))
+
+let test_replace_element1 (co:ref list) (cu:cursor) (cun:cursor) (e:element_t) =
+   requires { has_element !co cu /\ has_element !co cun /\ not cu = cun }
+   ensures { element_ !co cu = e /\ element_ !co cun = element_ (old !co) cun /\ has_element !co cun
+    /\ position_ !co cun = position_ (old !co) cun }
+    replace_element co cu e
+
+let test_replace_element2 (co:ref list) (cu:cursor) (e:element_t) =
+    requires { has_element !co cu /\ p e /\ p_forall_cont !co }
+    ensures { p_forall_cont !co /\ element_ !co cu = e /\ has_element !co cu }
+    replace_element co cu e
+
+let test_insert1 (co:ref list) (cu:cursor) (e:element_t) (cu2:cursor) =
+    requires { has_element !co cu /\ p e /\ p_forall_cont !co /\ has_element !co cu2 }
+    ensures { p_forall_cont !co /\ position_ !co cu = 1 + (position_ (old !co) cu) /\ 
+    element_ !co (previous_ !co cu) = e /\ 
+    element_ !co cu2 = element_ (old !co) cu2 /\ has_element !co cu2
+    /\ length !co = (length (old !co)) + 1 }
+    insert co cu e
+
+let test_insert2 (co:ref list) (e:element_t) (cu2:cursor) =
+    requires { p e /\ p_forall_cont !co /\ has_element !co cu2 }
+    ensures { p_forall_cont !co  /\ contains !co e /\ element_ !co (last !co) = e /\
+    element_ !co cu2 = element_ (old !co) cu2 /\
+    p (element_ (old !co) cu2) /\
+    p (element_ !co cu2) /\ length !co = (length (old !co)) + 1 /\ has_element !co cu2 }
+    insert co no_element e
+
+let test_delete (co:ref list) (cu:cursor) (cun:cursor) =
+    requires { has_element !co cu /\ p_forall_cont !co /\ has_element !co (next_ !co cu) /\ 
+    has_element !co (previous_ !co cu) /\ has_element !co cun /\ not cun = cu }
+    ensures { p_forall_cont !co /\ not (has_element !co cu) /\ 
+     position_ !co (next_ (old !co) cu) = (position_ (old !co) (next_ (old !co) cu)) - 1 /\
+     position_ !co (previous_ (old !co) cu) = position_ (old !co) (previous_ (old !co) cu) /\
+     has_element !co cun /\ element_ !co cun = element_ (old !co) cun
+     /\ length !co = (length (old !co)) - 1 }
+    delete co cu
+
+let test_insert_delete1 (co:ref list) (cu:cursor) (cun:cursor) (e:element_t) =
+    requires { has_element !co cu /\ p_forall_cont !co /\ has_element !co cun }
+    ensures { p_forall_cont !co /\ element_ !co cun = element_ (old !co) cun }
+    insert co cu e;
+    delete co (previous !co cu)
+
+let test_insert_delete2 (co:ref list) (cun:cursor) (e:element_t) =
+    requires {p_forall_cont !co /\ has_element !co cun }
+    ensures { p_forall_cont !co /\ element_ !co cun = element_ (old !co) cun }
+    insert co no_element e;
+    delete co (last !co)
+
+let test_left1 (co:list) (cu:cursor) =
+    requires { position_ co cu > 1 }
+    ensures { is_empty_ (left_ co (first co)) /\
+      co = left_ co no_element /\
+      previous_ co cu = last (left_ co cu) }
+    ()
+
+let test_left2 (co1:list) (co2:list) (cu:cursor) =
+    requires { has_element co1 cu /\ has_element co2 cu /\ length (left_ co1 cu) = length (left_ co2 cu) }
+    ensures { position_ co1 cu = position_ co2 cu }
+    ()
+
+let test_left3 (co1:list) (co2:list) (cu:cursor) =
+    requires { has_element co1 cu /\ has_element co2 cu /\ 
+       position_ co1 cu = position_ co2 cu }
+    ensures { length (left_ co1 cu) = length (left_ co2 cu) }
+    ()
+
+let test_right1 (co:list) (cu:cursor) (l:list) =
+    requires { has_element co cu /\ right_ co cu = l }
+    ensures { is_empty_ (right_ co no_element) /\
+      first (right_ co cu) = cu /\
+      strict_equal co (right_ co (first co)) /\
+      next_ co cu = next_ l cu }
+    ()
+
+let test_right2 (co1:list) (co2:list) (cu:cursor) =
+    requires { has_element co2 cu /\ right_ co1 cu = right_ co2 cu }
+    ensures { cu <> no_element }
+    ()
+
+let test_find (co:list) (cu:cursor) (e:element_t) =
+    requires { has_element co cu /\ element_ co cu = e }
+    ensures { contains co e }
+    ()
+
+let test_false (co:ref list) (cu:cursor) =
+    requires { not (is_empty_ !co) }
+    ensures { false }
+    ()
+
+(*** TESTS ***) 
+
+(* inserting an element only if it is not there yet garantees the presence of the element *)
+let conditional_insert (l : ref list) (e : element_t) =
+	ensures { contains !l e }
+	if not (contains !l e) then
+		append l e
+
+(* removing an element from a list decreases its length by one *)
+let test1 (li : ref list) (c : cursor) =
+  requires { has_element !li c }
+  ensures { length !li = (length (old !li)) - 1}
+  let n = next !li c in
+  if has_element !li n then
+    delete li n
+  else
+    delete li c
+
+(* take a list of 4 elements, prepend element e, remove all initial 4 elements
+   /\ take the last element of the list, it is e *)
+let test2 (li : ref list) (e : element_t) =
+  requires { length !li = 4 }
+  ensures { result = e }
+  prepend li e;
+  let c = ref (last !li) in
+  delete li !c;
+  c := first !li;
+  c := next !li (first !li);
+  delete li !c;
+  c := last !li;
+  delete li !c;
+  c := last !li;
+  delete li !c;
+  element !li (last !li)
+
+(* adding elements to a list does not invalidate an existing cursor *)
+let test3 (li : ref list) (c d f g h : cursor) (e : element_t) =
+  requires { position_ !li c = 4 /\ has_element !li f /\ has_element !li h }
+  ensures { has_element !li c }
+  insert li c e;
+  append li e;
+  if has_element !li d then
+    insert li d e;
+  insert li f e;
+  if length !li > 5 then
+    if g = (next !li c) then
+      insert li g e
+    else
+      insert li h e
+
+(* iterate through the list /\ increment a counter, which should equal 
+   the length of the list on exit *)
+let test4 (li : list) =
+  ensures { result = length li }
+  let n = ref 0 in
+  let c = ref (first li) in
+  while has_element li !c do
+    invariant {
+	(has_element li !c \/ !c = no_element) /\ 
+      	!n = length (left_ li !c)
+    }
+    n := !n + 1;
+    c := next li !c
+  done;
+  !n
+
+(* iterate through the list by adding element e at every position. This doubles
+   the size of the list *)
+let test5 (li : ref list) (e : element_t) =
+  requires { not (is_empty_ !li) }
+  ensures { length !li = 2 * (length (old !li)) }
+  let c = ref (first !li) in
+  'Init:
+  while has_element !li !c do
+    invariant {
+	(((has_element (at !li 'Init) !c /\ has_element !li !c) \/ !c = no_element) /\
+	length (left_ !li !c) = 2 * (length (left_ (at !li 'Init) !c)) /\
+      	strict_equal (right_ !li !c) (right_ (at !li 'Init) !c))
+    }
+    insert li !c e;
+    c := next !li !c
+  done
+
+(* Removes some elements from li /\ stores them in removed *)
+function fun_test element_t : bool
+
+let interm6 (li:ref list) (removed:ref list) (c:ref cursor) =
+    requires { has_element !li !c }
+    ensures { ((has_element (old !li) !c /\ has_element !li !c) \/ !c = no_element) /\
+	(length (left_ !li !c)) + (length !removed) = 
+		(length (left_ (old !li) !c)) + (length (old !removed)) /\
+      	strict_equal (right_ !li !c) (right_ (old !li) !c) /\ !c = next_ (old !li) (old !c) }
+    let c_int = next !li !c in
+    append removed (element !li !c);
+    delete li !c;
+    c := c_int
+
+let test6 (li:ref list) (removed:ref list) =
+  requires { not (is_empty_ !li) /\ is_empty_ !removed }
+   ensures { (length !li) + (length !removed) = length (old !li) }
+  let c = ref (first !li) in
+  'Init:
+  while has_element !li !c do
+    invariant {
+	(((has_element (at !li 'Init) !c /\ has_element !li !c) \/ !c = no_element) /\
+	(length (left_ !li !c)) + (length !removed) = length (left_ (at !li 'Init) !c) /\
+      	strict_equal (right_ !li !c) (right_ (at !li 'Init) !c))
+    }
+  'Iloop:
+    if fun_test(element !li !c) then
+    (interm6 li removed c(*;
+     assert {!c = next_ (at !li 'Init) (at !c 'Iloop)}*))
+  done
+
+exception Return
+
+(* the usual implementation of contains indeed computes the awaited result *)
+let my_contain (s:list) (e:element_t) =
+    ensures { result = True <-> contains s e }
+    let c = ref (first s) in
+    let res = ref False in
+    try
+      while has_element s !c do
+    	  invariant {
+	    ((has_element s !c \/ !c = no_element) /\
+	    (not contains (left_ s !c) e)) }
+	    if equal_elements e (element s !c) then
+	       raise Return
+	    else c:=next s !c
+      done
+    with Return -> res := True end;
+    ! res
+
+(* the usual implementation of find indeed computes the awaited result *)
+let my_find (s : list) (e : element_t) (f : cursor) =
+  requires { has_element s f }
+  ensures { result = find s e f }
+  let c = ref f in
+  try
+    while has_element s !c do
+      invariant {
+        (has_element (right_ s f) !c \/ !c = no_element) /\
+        find (left_ (right_ s  f) !c) e no_element = no_element
+      }
+      if equal_elements e (element s !c) then
+        raise Return
+      else c := next s !c
+    done
+  with Return -> () end;
+  !c
+
+function f element_t : element_t
+
+(* after map l s, every element in s has been transformed through f *)
+let map_f (s : ref list) (cu : cursor) =
+  ensures { forall cu : cursor. has_element !s cu -> element_ !s cu = f (element_ (old !s) cu) }
+  'Init :
+  let c = ref (first !s) in
+  while !c <> no_element do
+    invariant {
+     (has_element !s !c /\ has_element (at !s 'Init) !c \/ !c = no_element) /\
+     (forall cu : cursor. has_element (left_ !s !c) cu ->
+                                       element_ !s cu = f (element_ (at !s 'Init) cu)) /\
+     strict_equal (right_ (at !s 'Init) !c) (right_ !s !c)
+    }
+    replace_element s !c (f(element !s !c));
+    c := next !s !c
+  done
+
+(*** MAX TESTS ***)
+
+function compare_ element_t element_t : int
+
+predicate is_max (v:list) (cu:cursor) =
+	  has_element v cu /\
+	  (forall e:element_t.
+		 contains v e -> compare_ (element_ v cu) e >= 0)
+
+function max_ list : cursor
+
+axiom is_max_max :
+      forall v:list [max_ v].
+      	     (not (is_empty_ v) -> has_element v (max_ v) /\
+             (forall e:element_t [contains v e | compare_ (element_ v (max_ v)) e].
+                contains v e -> compare_ (element_ v (max_ v)) e >= 0))
+
+val max (v:list) : cursor
+	  requires { not (is_empty_ v) }
+	  ensures { result = max_ v }
+
+
+(* Heap : all the elements of result are bigger than those still in v_min *)
+let test_max (v_min:ref list) (n:int) =
+    requires { length !v_min >= n }
+    ensures { forall cu1:cursor. forall cu2:cursor. has_element result cu1 ->
+	    has_element !v_min cu2 ->
+	    compare_ (element_ result cu1) (element_ !v_min cu2) >= 0}
+    'Init:
+    let i = ref 1 in
+    let v_max = ref empty_ in
+    if !i <= n then
+    while !i <= n do
+    	  invariant {
+	    (length !v_min = (length (at !v_min 'Init)) - !i + 1 /\
+	    forall cu1:cursor. forall cu2:cursor. has_element !v_max cu1 ->
+	    has_element !v_min cu2 ->
+	    compare_ (element_ !v_max cu1) (element_ !v_min cu2) >= 0)}
+    	  append v_max (element !v_min (max !v_min));
+	  delete v_min (max !v_min);
+	  i := !i+1
+    done;
+    !v_max
+
+(* More user friendly version *)
+let test_max2 (v_min:ref list) (n:int) =
+    requires { 
+  (forall e1 : element_t, e2 :element_t, e3 :element_t [equal_elements e1 e2, compare_ e2 e3].
+	equal_elements e1 e2 = True -> compare_ e1 e3 = compare_ e2 e3) /\
+  (forall e1 : element_t, e2 :element_t, e3 :element_t [equal_elements e1 e2, compare_ e2 e3].
+	equal_elements e1 e2 = True -> compare_ e3 e1 = compare_ e3 e2) /\
+  length !v_min >= n }
+    ensures { forall e1:element_t. forall e2:element_t. contains result e1 ->
+	    contains !v_min e2 ->
+	    compare_ e1 e2 >= 0}
+    'Init:
+    let i = ref 1 in
+    let v_max = ref empty_ in
+    if !i <= n then
+    while !i <= n do
+    	  invariant {
+	    (length !v_min = (length (at !v_min 'Init)) - !i + 1 /\
+	    forall e1:element_t. forall e2:element_t. contains !v_max e1 ->
+	    contains !v_min e2 -> compare_ e1 e2 >= 0)}
+    	  append v_max (element !v_min (max !v_min));
+	  delete v_min (max !v_min);
+	  i := !i+1
+    done;
+    !v_max
+
+(*** SUM_OF TESTS ***)
+
+function weight_ element_t : int
+predicate checkk_ element_t
+
+val weight (e:element_t) : int
+	  ensures {result  =weight_ e}
+
+axiom positive_weight :
+      forall e:element_t.
+      	     weight_ e >= 0
+
+val checkk (e:element_t) : bool
+	  ensures {result = True <-> checkk_ e}
+
+(* Sum_of_weight /\ some axioms *)
+function sum_of_weight list : int
+
+axiom sum_of_weight_delete :
+      forall v1:list. forall v2:list. forall cu:cursor [sum_of_weight v2, delete_ v1 cu v2].
+      	     delete_ v1 cu v2 -> sum_of_weight v2 = (sum_of_weight v1) - (weight_ (element_ v1 cu))
+
+axiom sum_of_weight_insert :
+      forall v1:list. forall v2:list. forall cu:cursor. forall e:element_t[sum_of_weight v2, insert_ v1 cu e v2].
+      	     insert_ v1 cu e v2 -> sum_of_weight v2 = (sum_of_weight v1) + (weight_ e)
+
+axiom sum_of_weight_null :
+      forall v:list[sum_of_weight v].
+      	     is_empty_ v -> sum_of_weight v = 0
+
+axiom sum_of_weight_equal :
+      forall v1:list. forall v2:list[sum_of_weight v1].
+      	     strict_equal v1 v2 -> sum_of_weight v1 = sum_of_weight v2
+
+axiom sum_of_weight_left :
+      forall v:list. forall cu:cursor[sum_of_weight (left_ v (next_ v cu))].
+      	     has_element v cu ->
+	     sum_of_weight (left_ v (next_ v cu)) = 
+		(sum_of_weight (left_ v cu)) + (weight_ (element_ v cu))
+
+(* deletes some elements from v /\ then inserts an equivalent element *)
+let test_sum_of (v:ref list) (w:ref int) (e:element_t) =
+    ensures { sum_of_weight !v = sum_of_weight (old !v) }
+    'Init:
+    w := 0;
+    let c = ref (first !v) in
+    while has_element !v !c do
+    	  invariant {
+	    sum_of_weight !v = (sum_of_weight (at !v 'Init)) - !w
+    	  }
+    	  if (checkk (element !v !c)) then
+	     (w := !w + (weight(element !v !c));
+	     delete v !c)
+	  else c := next !v !c
+    done;
+    assert { weight_ e = !w };(* IMPOSSIBLE TO PROVE *)
+    append v e
+
+(* deletes elements from v until their total weight exceeds wmin *)
+let test_sum_of2 (v:ref list) (w:ref int) (wmin : int) =
+    requires { wmin <= sum_of_weight !v }
+    ensures { sum_of_weight !v = sum_of_weight (old !v) - !w /\ !w >= wmin }
+    'Init:
+    w:=0;
+    if !w < wmin then
+    while !w < wmin do
+    	  invariant {
+	    sum_of_weight !v = (sum_of_weight (at !v 'Init)) - !w
+    	  }
+    	 w := !w + (weight (element !v (first !v)));
+	 delete v (first !v)
+    done
+
+(* computes sum_of_weight(v) *)
+let test_sum_of3 (v:list) =
+    ensures { sum_of_weight v = result }
+    let w = ref 0 in
+    let c = ref (first v) in
+    if has_element v !c then
+    while has_element v !c do
+    	  invariant {
+	    !w = sum_of_weight (left_ v !c) /\
+	    (has_element v !c \/ !c = no_element)
+    	  }
+    	 w := !w + (weight (element v !c));
+	 c := next v !c
+    done;
+    !w
+
+end

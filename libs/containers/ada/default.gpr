@@ -1,0 +1,10 @@
+project Default is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnat12", "-gnata");
+   end Compiler;
+
+   for Main use ("test_astrium.adb");
+
+end Default;
+

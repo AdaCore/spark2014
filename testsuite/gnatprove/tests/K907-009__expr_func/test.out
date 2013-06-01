@@ -1,0 +1,17 @@
+Subprograms in SPARK      : 100% (12/12)
+  ... already supported   : 100% (12/12)
+  ... not yet supported   :   0% ( 0/12)
+Subprograms not in SPARK  :   0% ( 0/12)
+
+Subprograms not in SPARK due to (possibly more than one reason):
+ (none)
+
+Subprograms not yet supported due to (possibly more than one reason):
+ (none)
+
+Units with the largest number of subprograms in SPARK:
+ p                        : 100% (12/12)
+
+Units with the largest number of subprograms not in SPARK:
+ (none)
+

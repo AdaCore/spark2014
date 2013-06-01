@@ -1,0 +1,5 @@
+test.adb:39:04: function "No_Return" might not return [noreturn__no_return]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

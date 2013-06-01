@@ -1,0 +1,4 @@
+
+somebody.adb:6:12: info: precondition proved
+somebody.ads:3:14: info: postcondition proved
+somebody.ads:3:24: info: division check proved

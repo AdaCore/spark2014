@@ -1,0 +1,6 @@
+
+client.adb:10:7: info: assertion proved
+client.adb:6:7: info: assertion proved
+client.adb:8:7: info: assertion proved
+const.ads:3:45: info: postcondition proved
+const.ads:4:46: info: postcondition proved

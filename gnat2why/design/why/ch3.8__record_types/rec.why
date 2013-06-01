@@ -1,0 +1,60 @@
+
+include "arrays.why"
+include "standard.why"
+
+type rec__complex
+
+logic integer_of___rec__complex : rec__complex -> int
+
+logic rec__complex___of_integer : int -> rec__complex
+
+predicate eq___rec__complex (x : rec__complex, y : rec__complex) =
+ integer_of___rec__complex (x) = integer_of___rec__complex (y)
+
+axiom rec__complex___coerce :
+ (forall x : int.
+   integer_of___rec__complex (rec__complex___of_integer (x)) = x)
+
+axiom rec__complex___unicity :
+ forall x, y : rec__complex.
+  integer_of___rec__complex (x) = integer_of___rec__complex (y) -> x = y
+
+logic rec__complex___get : 'a farray, rec__complex -> 'a
+
+axiom rec__complex___get___def :
+ forall field_values : 'a farray.
+ forall x : rec__complex.
+  rec__complex___get (field_values, x) =
+   access (field_values, integer_of___rec__complex (x))
+
+logic rec__complex___set : 'a farray, rec__complex, 'a -> 'a farray
+
+axiom rec__complex___set___def :
+ forall field_values : 'a farray.
+ forall x : rec__complex.
+ forall v : 'a.
+  rec__complex___set (field_values, x, v) =
+   update (field_values, integer_of___rec__complex (x), v)
+
+predicate eq_extension___rec__complex
+(x                : rec__complex,
+ y                : rec__complex,
+ re___values : standard__integer farray,
+ im___values : standard__integer farray) =
+ rec__complex___get (re___values, x) =
+ 	rec__complex___get (re___values, y) and
+ rec__complex___get (im___values, x) =
+ rec__complex___get (im___values, y)
+
+parameter rec__complex___get_ :
+ field__values : 'a array -> x : rec__complex ->
+{ }
+ 'a reads field__values
+{ result = rec__complex___get (field__values, x) }
+
+parameter rec__complex___set_ :
+ field__values : 'a array -> x : rec__complex -> value : 'a ->
+{ }
+ unit writes field__values
+{ field__values = rec__complex___set (field__values, x, value) }
+

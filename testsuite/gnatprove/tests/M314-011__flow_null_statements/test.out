@@ -1,0 +1,20 @@
+// null_statement_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    5 [label="null;"];
+
+    1 ->  5 [arrowType="normal"];
+    5 ->  2 [arrowType="normal"];
+}
+
+// null_statement_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    5 [label="null;"];
+
+    1 ->  5 [arrowType="normal"];
+}
+

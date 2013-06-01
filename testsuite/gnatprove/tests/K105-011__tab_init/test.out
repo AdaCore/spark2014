@@ -1,0 +1,8 @@
+
+tab_init.adb:10:11: info: assertion proved
+tab_init.adb:10:32: info: overflow check proved
+tab_init.adb:7:11: info: loop invariant initialization proved
+tab_init.adb:8:39: loop invariant preservation not proved, requires T(J) = A*J
+tab_init.adb:8:42: info: index check proved
+tab_init.adb:8:48: overflow check not proved
+tab_init.adb:9:20: overflow check not proved

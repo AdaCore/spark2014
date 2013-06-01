@@ -1,0 +1,335 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.1in}
+
+\usepackage{color}
+
+\newlength\sidebar
+\newlength\envrule
+\newlength\envborder
+
+\setlength\sidebar{1.5mm}
+\setlength\envrule{0.4pt}
+\setlength\envborder{2.5mm}
+
+\definecolor{exampleborder}{rgb}{0,0,.7}
+\definecolor{examplebg}{rgb}{.9,.9,1}
+\definecolor{statementborder}{rgb}{.9,0,0}
+\definecolor{statementbg}{rgb}{1,.9,.9}
+
+\newsavebox\envbox
+
+\newcounter{example}
+
+\newenvironment{example}[1][EXAMPLE \theexample]{%
+\par
+\refstepcounter{example}%
+\SpecialEnv{#1}{exampleborder}{examplebg}{}{\theexample}%
+}{%
+\endSpecialEnv
+}
+
+\newenvironment{statement}[1][]{% Default statement has no title
+\par
+\SpecialEnv{#1}{statementborder}{statementbg}{statementborder}{}%
+}{%
+\endSpecialEnv
+}
+
+\def\Empty{}
+
+% #1 title (if any)
+% #2 sidebar (and title bg) color
+% #3 background color
+% #4 border color (or null for no border)
+% #5 Counter, if any.
+\newenvironment{SpecialEnv}[5]{%
+\par
+\def\EnvSideC{#2}% To use later (in end)
+\def\EnvBackgroundC{#3}%
+\def\EnvFrameC{#4}%
+\flushleft
+\setlength\leftskip{-\sidebar}%
+\addtolength\leftskip{-\envborder}%
+\noindent \nobreak
+% Check if title is null:
+\ifx\delimiter#1\delimiter\else
+% If a title is specified, then typeset it in reverse color
+\colorbox{\EnvSideC}{%
+\hspace{-\leftskip}% usually positive
+\hspace{-\fboxsep}%
+\footnotesize\sffamily\bfseries\textcolor{white}{#1}%
+\hspace{\envborder}}%
+\par\nobreak
+\setlength\parskip{-0.2pt}% Tiny overlap to counter pixel round-off errors
+\nointerlineskip
+\fi
+% Make side-bar
+\textcolor{\EnvSideC}{\vrule width\sidebar}%
+% collect body in \envbox:
+\begin{lrbox}\envbox
+\begin{minipage}{\hsize}%
+% insert counter, if any:
+\ifx\delimiter#5\delimiter\else
+% \theexample. Yannick: i don't like it.
+\enspace
+\fi
+\ignorespaces
+}{\par
+\end{minipage}\end{lrbox}%
+% body is collected. Add background color
+\setlength\fboxsep\envborder
+\ifx\EnvFrameC\Empty % no frame
+\colorbox{\EnvBackgroundC}{\usebox\envbox}%
+\else % frame
+\setlength\fboxrule\envrule
+\addtolength\fboxsep{-\envrule}%
+\fcolorbox{\EnvFrameC}{\EnvBackgroundC}{
+\usebox\envbox}%
+\fi
+\nobreak \hspace{-2\envborder}\null
+\endflushleft
+}
+
+\title{A Verification Toolkit\\for Unit Testing and Unit Proof}
+
+\begin{document}
+
+\maketitle
+
+\section{Context}
+
+In this document, we describe the general architecture of the verification
+toolkit which will be the result of project Hi-Lite.
+
+The context of use of this verification toolkit is a software developement
+project in the C or Ada programming language, for which some components require
+a high level of confidence. Traditionally, this is attained by unit
+testing. Here, we propose to combine the usual approach with unit proof where
+applicable. An important departure from traditional formal verification
+literature is that unit proof is only applied here to testable components.  In
+order to apply unit proof to a function $f$, all the functions called by $f$
+directly or indirectly need to be defined, not only declared (downward
+closure). The same is true for unit testing.
+
+Applicability of unit proof is decided on a function by function basis. It
+depends most notably on the features used in a specific function. Typically,
+functions which use machine address manipulations will not be fit for unit
+proof. Although a precise definition of what it means for a function to be fit
+for unit proof will be available to users for both C and Ada, it should be
+automatically detected by the toolset, so that unit proof is applied as much as
+possible, and unit testing can be restricted to the remaining cases, if the
+user says so.
+
+A crucial criteria for a function to be fit for unit proof is that it has a
+contract, which is made up of:
+\begin{itemize}
+\item a precondition, which states the valid inputs to the function;
+\item a postcondition, which states the valid outputs to the function.
+\end{itemize}
+
+A function correctly implements its contract if, on every input it accepts
+(according to the contract), it generates proper output (according to the
+contract). A precondition restricts the contexts in which a function is
+called, which is usually necessary for verifying the absence of run-time errors
+in this function.  A postcondition defines what is expected from a function,
+which defines objectives for contract verification.
+
+\begin{example}
+\label{ex:square-root-spec}
+ A non-formal contract for the integer square-root function is:
+  \begin{itemize}
+  \item precondition: it takes as input any non-negative integer;
+  \item postcondition: it returns the greatest non-negative integer whose
+    square is less than the input value.
+  \end{itemize}
+We describe in the following how to write an equivalent \emph{formal} contract.
+\end{example}
+
+Such contracts are written in a formal language that a program can
+understand. This annotation language is called E-ACSL for C; it is part of the
+ALFA sub-language for Ada.  Both E-ACSL and ALFA are described in details in
+separate documents. In the following, we use the syntax of Ada and ALFA in our
+examples. Throughout, we use \emph{function} to denote functions in C and
+subprograms in Ada (which can be functions or procedures).
+
+\section{Program Specifications}
+
+\subsection{Function Contracts}
+
+A function contract is a pair of a precondition and a postcondition, which
+default to true if not present. 
+
+\begin{example}
+  The contract for the square-root function described in
+  Example~\ref{ex:square-root-spec} can be expressed as:
+\begin{verbatim}
+  function Sqrt (X: Integer) return Integer with
+     Pre  => X >= 0,
+     Post => Sqrt'Result >= 0 and 
+             Sqrt'Result ** 2 <= X and
+             (Sqrt'Result + 1) ** 2 > X;
+\end{verbatim}
+\end{example}
+
+For the sake of clarity and conciseness, common parts of contracts that require
+and ensure the preservation of a property attached to an object can be stated
+only once in a type invariant attached to the type of this object.
+
+\subsection{Function Test Cases}
+
+It is quite common for software developed according to safety standards like
+DO-178B (avionics) and ECSS-E-40 (space) to derive test cases on individual
+functions from low-level requirements. A formal test-case is a pair of
+propositions expressed in the same language as the function contract, which
+make it possible to specify part of a function's behavior.
+
+\begin{example}
+\label{ex:square-root-test-case}
+  A verification plan could say the following for the square-root function of
+  Example~\ref{ex:square-root-test-case}:
+  \begin{itemize}
+  \item test case 1: on input X = -1, the function should return 0;
+  \item test case 2: on input X $<$ 100, the function should return a result
+    between 0 included and 10 excluded.
+  \end{itemize}
+
+  This readily translates into formal test cases:
+\begin{verbatim}
+function Sqrt (X: Integer) return Integer with Pre => ..., Post => ...,
+  Test_Case => (Name     => "test case 1",
+                Mode     => Robustness,
+                Requires => X = -1, 
+                Ensures  => Sqrt'Result = 0),
+  Test_Case => (Name     => "test case 2",
+                Mode     => Nominal,
+                Requires => X < 100, 
+                Ensures  => Sqrt'Result >= 0 and Sqrt'Result < 10);
+\end{verbatim}
+\end{example}
+
+The \emph{mode} of a test-case indicates whether the function contract should
+be checked together with the test-case proper. In \emph{Nominal} mode (a.k.a.
+\emph{normal range} in DO-178B), the contract is checked, whereas in
+\emph{Robustness} mode, it is not.
+
+Thus, in \emph{Nominal} mode, if the postcondition of the function already
+guarantees part of what the test-case must ensure, like here the non-negativity
+of the result, it can be omitted from the test-case, as it will be verified as
+part of the postcondition.
+
+\begin{example}
+The test-cases of Example~\ref{ex:square-root-test-case} could be rewritten:
+\begin{verbatim}
+function Sqrt (X: Integer) return Integer with Pre => ..., Post => ...,
+  Test_Case => (Name     => "test case 1",
+                Mode     => Robustness,
+                Requires => X = -1, 
+                Ensures  => Sqrt'Result = 0),
+  Test_Case => (Name     => "test case 2",
+                Mode     => Nominal,
+                Requires => X < 100, 
+                Ensures  => Sqrt'Result < 10);
+\end{verbatim}
+\end{example}
+
+\section{Unit Testing}
+
+\subsection{Executing Contracts and Test Cases}
+
+In the traditional approach to unit testing, each test case is implemented as
+one or more test functions, which set an appropriate calling context (through
+\emph{fixtures}), call the function on appropriate inputs and check the output
+obtained.
+
+Test functions are collected in a test harness which takes care of dispatching
+a selected set of tests on selected machines, collecting the results of the
+individual tests and presenting the aggregated results to the user. In our
+verification toolkit, this test harness should be automatically generated by
+some tool (AUnit in Ada).
+
+A run of the harness should lead to a clear view of which test cases where
+covered by test procedures, and which test cases succeeded/failed.
+
+\subsection{Generating Test Inputs}
+
+It should be possible to generate test inputs automatically (following a
+QuickCheck-like approach), which could serve to:
+\begin{enumerate}
+\item debug a function implementation;
+\item debug function contracts and test cases;
+\item cover the test cases of a function.
+\end{enumerate}
+
+For each parameter of a function, the input value generated could be:
+\begin{itemize}
+\item chosen at random in the appropriate range of values for its type;
+\item selected among distinguished values (extreme values, zero and one);
+\item generated by a call to some user-provided generator function.
+\end{itemize}
+
+Ideally, a log file containing the inputs generated should be generated for
+manual inspection, and possibly for regression testing by reading the input
+values back.
+
+Contrary to manual test functions which should not fail the precondition or
+the \textit{Requires} part of the corresponding test case, generated inputs
+can:
+\begin{enumerate}
+\item fail the precondition: these are invalid test inputs for this
+  function and thus ignored;
+\item succeed the precondition: these are valid test inputs for this function
+  and thus kept.
+\end{enumerate}
+
+\section{Unit Proof}
+
+\subsection{Proving Contracts and Test Cases}
+
+While a test function typically verifies a contract or a test case for one
+specific set of input values, a proof of a contract or a test case does the
+same for the full set of input values specified in a precondition and the
+\textit{Requires} part of the corresponding test case.
+
+This unit proof operates at the level of a function, hence it is correct only
+if the functions called also implement their contracts and test cases. In
+particular, if a function F verified by unit proof calls a function G
+verified by unit testing, and G violates its contract during execution, then F
+will likely violate its contract too.
+
+It should be possible to prove the completeness of the set of test-cases, as
+required in DO-178C, which amount to showing that:
+\begin{enumerate}
+\item the precondition is included in (is stronger than, implies) the
+  disjunction of all requires parts of nominal test-cases;
+\item the negation of the precondition is included in (is stronger than,
+  implies) the disjunction of all requires parts of robustness test-cases.
+\end{enumerate}
+
+Additionally, it should be possible to prove the mutual exclusion of the set of
+test-cases, which is not required in DO-178C but might be useful in some cases.
+
+\subsection{Proving Absence of Run-Time Errors}
+
+While unit testing automatically performs some verification that there are no
+run-time errors when targeting verification of contracts and test cases, unit
+proof can target either one separately or both at the same time.
+
+\textit{Absence of run-time errors} targets really absence of semantically
+wrong behavior, which can manifest during execution as run-time errors
+(exception raised or segmentation fault) or go unnoticed (reads to
+uninitialized data).
+
+\section{Verification Framework}
+
+Either through a GUI or in batch mode, the verification framework should output
+for which functions unit proof is available or not. It should allow
+performing unit proof and unit testing at various granularity levels, down to
+individual functions. Finally, it should provide an aggregate view of the
+verification results to the user.
+
+\end{document}

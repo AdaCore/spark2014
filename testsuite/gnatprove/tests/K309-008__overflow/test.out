@@ -1,0 +1,2 @@
+over.adb:7:20: overflow check not proved
+over.adb:7:25: info: range check proved

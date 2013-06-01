@@ -1,0 +1,5 @@
+
+test.adb:10:7: info: assertion proved
+test.adb:12:7: info: assertion proved
+test.adb:6:7: info: assertion proved
+test.adb:8:7: info: assertion proved

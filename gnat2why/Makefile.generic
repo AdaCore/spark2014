@@ -1,0 +1,136 @@
+# Generic part of the backend Makefile.
+# This makefile assumes that it executed from the backend directory.
+
+# number of processors
+PROCS=0
+
+# CFLAGS is only used for debugging/development, in targets build and coverage.
+# ADAFLAGS is used for production, in targets gnat1 and gnat2why.
+# -gnatec expects an absolute path, so we assume a compilation started from the
+# top Makefile in hi-lite repository for the value of $(PWD)
+CFLAGS=-O0 -gnata -gnat12 -gnatg -gnatVa -gnatec=$(PWD)/gnat2why/gnat2why.adc
+
+LOCAL_OBJ=obj
+RM=rm -rf
+MV=mv -f
+adainclude:=$(strip $(shell gnatls -v | grep adainclude))
+adalib:=$(strip $(shell gnatls -v | grep adalib))
+uname:=$(shell uname)
+
+.PHONY: setup force clean
+
+all: setup build
+
+setup:
+	mkdir -p $(LOCAL_OBJ) ../install/bin
+	cp -p gnat.adc $(LOCAL_OBJ)
+	sed -e "s^@ADAINCLUDE@^$(adainclude)^" -e "s^@ADALIB@^$(adalib)^" \
+	    sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
+	for f in `cd gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
+	do \
+		cp -p gnat_src/$$f $(LOCAL_OBJ); \
+	done
+	cd $(LOCAL_OBJ) && gnatmake -q xtreeprs xnmake xsnamest
+	cd $(LOCAL_OBJ) && ./xtreeprs && ./xnmake && ./xsnamest
+	mv $(LOCAL_OBJ)/snames.ns $(LOCAL_OBJ)/snames.ads
+	mv $(LOCAL_OBJ)/snames.nb $(LOCAL_OBJ)/snames.adb
+
+COMMON_INCLUDES=-I../why -I. -I../spark -I../utils -I../../common -I../flow
+INCLUDES=$(COMMON_INCLUDES) -I..
+
+build: obj/smissing.o force
+	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
+	  -I$(adainclude)  -I../gnat_src $(MAIN_FILE) \
+	  -o ../../install/bin/$(TOOL_NAME) -largs smissing.o
+
+coverage: obj/smissing.o force
+	cd $(LOCAL_OBJ) && gnatmake -f \
+	   -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
+	  -I$(adainclude)  -I../gnat_src $(MAIN_FILE) \
+	  -o ../../install/bin/$(TOOL_NAME) \
+	  -cargs -fprofile-arcs -ftest-coverage \
+	  -largs smissing.o -fprofile-arcs -ftest-coverage
+
+obj/smissing.o: smissing.c
+	gcc -c smissing.c -o obj/smissing.o
+
+# This target builds a combined gnat1+TOOL_NAME executable.
+# It requires a GNAT_BUILD_DIR env variable which should point to
+# a directory containing the following subdirs:
+#    src: GCC/GNAT source tree
+#    obj: GCC/GNAT object tree
+#    libmpfr/install: libmpfr/gmp install dir
+
+MPFR_LIB_DIR=$(GNAT_BUILD_DIR)/libmpfr/install/lib
+GMP_LIB_DIR=$(MPFR_LIB_DIR)
+MPC_LIB_DIR=$(MPFR_LIB_DIR)
+ELF_LIB_DIR=$(MPFR_LIB_DIR)
+
+# Optional environment variables:
+# ADAFLAGS: additional gnat switches to pass to gnatmake
+# GCCFLAGS: additional gcc switches to pass to gnatmake
+ADAFLAGS=-gnata
+GCCFLAGS=-g -O2
+
+OBJ=$(GNAT_BUILD_DIR)/obj/gcc/ada
+SRC=$(GNAT_BUILD_DIR)/src/gcc/ada
+GNAT1_INCLUDES=-I. $(COMMON_INCLUDES) -I$(OBJ) -I$(SRC)
+GNAT_RTS=$(shell if [ -d $(OBJ)/rts-native ]; then echo $(OBJ)/rts-native; else echo $(OBJ)/rts; fi)
+
+GNAT1_C_OBJS=$(OBJ)/adadecode.o $(OBJ)/adaint.o $(OBJ)/cstreams.o \
+ $(OBJ)/cio.o $(OBJ)/targtyps.o $(OBJ)/decl.o $(OBJ)/misc.o $(OBJ)/utils.o \
+ $(OBJ)/utils2.o $(OBJ)/trans.o $(OBJ)/cuintp.o $(OBJ)/argv.o $(OBJ)/raise.o \
+ $(OBJ)/init.o $(OBJ)/initialize.o $(OBJ)/env.o \
+ $(OBJ)/targext.o $(OBJ)/seh_init.o $(OBJ)/final.o \
+ $(OBJ)/../attribs.o $(OBJ)/../prefix.o $(OBJ)/../main.o
+
+RTS:=$(GNAT_RTS)
+
+GNAT1_RTS_OBJS=$(RTS)/mkdir.o $(RTS)/errno.o $(RTS)/ctrl_c.o \
+  $(RTS)/sysdep.o $(RTS)/exit.o $(RTS)/cal.o $(RTS)/tracebak.o
+
+ifeq ($(filter-out Linux,$(uname)),)
+  EXTRA_LIBS=-rdynamic -ldl -lelf
+endif
+
+ifeq ($(filter-out Darwin,$(uname)),)
+  LDFLAGS=-liconv
+endif
+
+ifeq ($(filter-out SunOS,$(uname)),)
+  EXTRA_LIBS=-ldl -lelf
+  LDFLAGS=
+endif
+
+ifeq ($(filter-out CYGWIN%,$(uname)),)
+  LDFLAGS=-Wl,--stack=0x2000000
+endif
+
+GCC47_LIBS=$(shell if [ -f $(OBJ)/../libcommon-target.a ]; then echo $(OBJ)/../libcommon-target.a $(OBJ)/../libcommon.a; fi)
+
+GNAT1_LIBS=$(OBJ)/../libbackend.a $(GCC47_LIBS) $(OBJ)/../../libcpp/libcpp.a \
+   $(OBJ)/../../libdecnumber/libdecnumber.a $(OBJ)/../../libiberty/libiberty.a \
+   -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -L$(MPC_LIB_DIR) -L$(ELF_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
+   $(OBJ)/../../zlib/libz.a
+
+gnat1: force
+	mkdir -p $(LOCAL_OBJ) ../install/bin
+	cp -p gnat.adc $(LOCAL_OBJ)
+	sed -e 's/Always_Compatible_Rep.*/Always_Compatible_Rep     : constant Boolean := False;/' \
+	    $(SRC)/system.ads > $(LOCAL_OBJ)/system.ads
+	cd $(LOCAL_OBJ) && gnatmake -m -a -j$(PROCS) $(GNAT1_INCLUDES) \
+	  -o ../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
+	  -cargs $(ADAFLAGS) -gnatg $(GCCFLAGS) -gnat12 -gnatyN -gnatws \
+	  -bargs -n -nostdlib \
+	  -largs --GCC="gcc $(GNAT1_INCLUDES)" $(GNAT1_C_OBJS) \
+		$(GNAT1_RTS_OBJS) $(GNAT1_LIBS) $(LDFLAGS)
+
+$(TOOL_NAME): force
+	mkdir -p obj-tools ../install/bin
+	cd obj-tools && gnatmake -j$(PROCS) -gnat12 $(GCCFLAGS) \
+	  ../why/$(TOOL_NAME)_wrapper -o ../../install/bin/$(TOOL_NAME)
+
+force:
+
+clean:
+	-$(RM) $(LOCAL_OBJ)

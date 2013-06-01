@@ -1,0 +1,16 @@
+project Helpers is
+
+   for Source_Dirs use (".", "..");
+
+   for Main use ("xtree");
+
+   for Object_Dir use ".";
+
+   for Exec_Dir use ".";
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat2012", "-g", "-O0", "-gnata",
+                                        "-gnatyg");
+   end Compiler;
+
+end Helpers;

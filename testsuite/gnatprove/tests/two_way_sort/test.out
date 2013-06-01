@@ -1,0 +1,32 @@
+
+p1.adb:10:14: info: range check proved
+p1.adb:11:33: info: index check proved
+p1.adb:13:17: info: index check proved
+p1.adb:13:9: info: index check proved
+p1.adb:14:9: info: index check proved
+p1.adb:17:14: info: range check proved
+p1.adb:25:13: info: range check proved
+p1.adb:26:13: info: range check proved
+p1.adb:28:10: info: loop variant proved
+p1.adb:29:10: info: loop invariant initialization proved
+p1.adb:29:10: loop invariant preservation not proved
+p1.adb:32:62: index check not proved
+p1.adb:33:57: index check not proved
+p1.adb:34:19: index check not proved
+p1.adb:35:19: range check not proved
+p1.adb:36:18: index check not proved
+p1.adb:37:19: range check not proved
+p1.adb:39:13: info: precondition proved
+p1.adb:40:19: info: range check proved
+p1.adb:41:19: info: range check proved
+p1.adb:5:14: postcondition not proved
+p1.adb:5:16: info: index check proved
+p1.adb:5:23: index check not proved
+p1.adb:6:27: info: index check proved
+p1.adb:6:34: index check not proved
+p1.adb:8:57: index check not proved
+p1.adb:8:68: info: index check proved
+p1.ads:5:14: postcondition not proved, requires A'Last < A'First or else (...
+p1.ads:7:63: index check not proved
+p1.ads:8:53: overflow check not proved
+p1.ads:8:71: index check not proved

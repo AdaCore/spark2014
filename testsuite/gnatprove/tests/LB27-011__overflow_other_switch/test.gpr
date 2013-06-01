@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato32");
+   end Compiler;
+end Test;

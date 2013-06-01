@@ -1,0 +1,546 @@
+module Main
+
+  use import real.Real
+  use import int.Int
+  use import module ref.Ref
+  use import module hashed_set.Main
+
+(* REDONDANT AXIOMS (for Alt-Ergo) *)
+
+lemma containsinsert :
+     forall l1:set. forall l2:set. forall e:element_t.
+     forall i:real [insert_ l1 e l2, contains l1 i | insert_ l1 e l2, contains l2 i].
+     	    insert_ l1 e l2 -> contains l2 i -> i = witness e \/ contains l1 i
+
+lemma containsdelete :
+     forall l1:set. forall l2:set. forall cu:cursor.
+     forall i:real [delete_ l1 cu l2, contains l1 i | delete_ l1 cu l2, contains l2 i].
+     	    delete_ l1 cu l2 -> contains l2 i -> contains l1 i /\ i <> witness (element_ l1 cu)
+
+lemma insert_has_element :
+      forall s:set. forall e:element_t. forall si:set. forall cu:cursor [insert_ s e si, has_element si cu].
+      	     insert_ s e si -> has_element si cu -> has_element s cu \/ cu = find_ si (witness e)
+
+lemma delete_has_element :
+      forall s:set. forall c:cursor. forall si:set. forall cu:cursor [delete_ s c si, has_element si cu].
+      	     delete_ s c si -> has_element si cu -> has_element s cu  /\ cu <> c
+
+lemma left_contains :
+      forall s:set. forall cu:cursor. forall i:real [contains (left_ s (next_ s cu)) i].
+      	     has_element s cu ->
+	     contains (left_ s (next_ s cu)) i <-> (contains (left_ s cu) i \/ i = witness (element_ s cu))
+
+lemma containsleft :
+     forall ss:set. forall c:cursor [contains (left_ ss c) (witness (element_ ss c))].
+     	    has_element ss c -> not (contains (left_ ss c) (witness (element_ ss c)))
+
+lemma containselement :
+     forall s:set. forall cu:cursor [contains s (witness (element_ s cu))].
+     	    has_element s cu -> contains s (witness (element_ s cu))
+
+lemma is_empty_inter :
+     forall s1:set. forall s2:set [is_empty_ (inter s1 s2)].
+     	    is_empty_ (inter s1 s2) <-> (forall i:real. not (contains s1 i /\ contains s2 i))
+
+lemma position_next :
+      forall s:set. forall cu:cursor [position_ s (next_ s cu)].
+      	     has_element s (next_ s cu) -> position_ s (next_ s cu) = (position_ s cu) + 1
+
+lemma delete_next :
+      forall s:set. forall c:cursor. forall si:set. forall cu:cursor [delete_ s c si, has_element si (next_ s c)].
+      	     delete_ s c si -> has_element si (next_ s c) \/ next_ s c = no_element
+
+lemma lengthleft :
+      forall s:set. forall c:cursor [length (left_ s c)].
+      	     has_element s c -> length (left_ s c) = (position_ s c) - 1
+
+lemma equal_refl :
+     forall s1:set. forall s2:set [strict_equal s2 s1].
+     	    strict_equal s1 s2 -> strict_equal s2 s1
+
+lemma equal_has_element :
+     forall s1:set. forall s2:set. forall c:cursor [strict_equal s1 s2, has_element s2 c].
+     	    has_element s1 c -> strict_equal s1 s2 -> has_element s2 c
+
+lemma right_equal_next :
+     forall s:set. forall cu:cursor.
+     forall s2:set [strict_equal (right_ s cu) (right_ s2 cu), next_ s cu].
+     	  has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
+	  next_ s cu = next_ s2 cu 
+
+goal interm1 :
+     forall s:set, cu:cursor, s2:set, cun:cursor.
+	has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
+        position_ s cun > position_ s cu ->
+	(position_ (right_ s (next_ s cu)) cun = (position_ (right_ s cu) cun) - 1 /\
+	position_ (right_ s2 (next_ s cu)) cun = (position_ (right_ s2 cu) cun) - 1) ->
+	position_ (right_ s (next_ s cu)) cun = position_ (right_ s2 (next_ s cu)) cun /\
+	element_ (right_ s (next_ s cu)) cun = element_ (right_ s2 (next_ s cu)) cun
+
+goal interm2 :
+     forall s:set, cu:cursor, s2:set, cun:cursor.
+	has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
+        position_ s cun > position_ s cu ->
+	position_ (right_ s (next_ s cu)) cun = (position_ (right_ s cu) cun) - 1
+	/\ position_ (right_ s2 (next_ s cu)) cun = (position_ (right_ s2 cu) cun) - 1
+
+goal interm4 :
+     forall s:set, cu:cursor, s2:set, cun:cursor.
+	has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
+        position_ s cun <= position_ s cu ->
+	position_ (right_ s2 (next_ s cu)) cun = 0 /\ position_ (right_ s (next_ s cu)) cun = 0
+
+goal interm5 :
+     forall s:set, cu:cursor, s2:set, cun:cursor.
+	has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
+	(forall cun : cursor. 
+	(position_ (right_ s2 (next_ s cu)) cun = 0 /\ position_ (right_ s (next_ s cu)) cun = 0) \/
+	position_ (right_ s (next_ s cu)) cun = (position_ (right_ s cu) cun) - 1 /\
+	position_ (right_ s2 (next_ s cu)) cun = (position_ (right_ s2 cu) cun) - 1) ->
+	  strict_equal (right_ s (next_ s cu)) (right_ s2 (next_ s cu))
+
+axiom right_equal :
+     forall s:set. forall cu:cursor. forall s2:set [strict_equal (right_ s (next_ s cu)) (right_ s2 (next_ s cu))].
+     	  has_element s cu -> strict_equal (right_ s cu) (right_ s2 cu) ->
+	  strict_equal (right_ s (next_ s cu)) (right_ s2 (next_ s cu))
+
+lemma equal_trans :
+      forall l1:set. forall l2:set. forall l3:set [strict_equal l2 l3, strict_equal l1 l3 | strict_equal l1 l2, strict_equal l1 l3].
+      	     strict_equal l1 l2 -> strict_equal l2 l3 -> strict_equal l1 l3
+
+lemma has_elementnext_right :
+    forall s:set. forall c:cursor [has_element s (next_ s c), right_ s c | has_element (right_ s c) (next_ s c)].
+    	   has_element s c -> has_element s (next_ s c) -> has_element (right_ s c) (next_ s c)
+
+lemma has_elementright :
+    forall s:set. forall c:cursor. forall cu:cursor [has_element s cu, right_ s c | has_element (right_ s c) cu].
+    	   has_element (right_ s c) cu -> has_element s cu
+
+lemma left_length :
+      forall s:set. forall s1:set. forall cu:cursor. forall e:element_t [length (left_ s (next_ s1 cu))].
+      	     has_element s cu ->
+	     (length (left_ s cu)) + 1 = length (left_ s (next_ s cu))
+
+lemma lengthunion :
+      forall s1:set. forall s2:set [length (union s1 s2)].
+      	     is_empty_ (inter s1 s2) -> length (union s1 s2) = (length s1) + (length s2)
+
+lemma lengthdiff :
+      forall s1:set. forall s2:set [length (diff s1 s2)].
+      	     length (diff s1 s2) = (length s1) - (length (inter s1 s2))
+
+lemma position_right :
+    forall s:set. forall c:cursor. forall cu:cursor [position_ (right_ s c) cu | element_ (right_ s c) cu].
+    	   has_element s c ->
+    	   position_ (right_ s c) cu > 0 -> position_ s cu >= position_ s c /\ element_ s cu = element_ (right_ s c) cu
+
+lemma has_elementleft :
+      forall co:set. forall cu:cursor.
+      forall cun:cursor [has_element (left_ co cu) cun | left_ co cu, has_element co cun].
+      	     (has_element co cu \/ cu=no_element) -> has_element (left_ co cu) cun -> has_element co cun
+
+(*** UNIT-TESTS ***)
+
+let test_replace_element1 (co:ref set) (cu:cursor) (cun:cursor) (e:element_t) (el:element_t)=
+    { has_element !co cu /\ has_element !co cun /\ cu <> cun /\ (not (contains !co (witness e)) \/ find_ !co (witness e) = cu) /\
+    not (find_ !co (witness el)) = cu /\ contains !co (witness el) }
+    replace_element co cu e
+    { element_ !co cu = e /\ element_ !co cun = element_ (old !co) cun /\ has_element !co cun 
+    /\ contains !co (witness e) /\ contains !co (witness el)
+    /\ find_ !co (witness el) = find_ (old !co) (witness el) }
+
+predicate p element_t
+
+predicate p_forall_cont (co:set) =
+	  forall cu:cursor.
+	  	 has_element co cu -> p (element_ co cu)
+
+let test_replace_element2 (co:ref set) (cu:cursor) (e:element_t) (el:element_t) =
+    { has_element !co cu /\ p e /\ p_forall_cont !co /\ (not (contains !co (witness e)) \/ find_ !co (witness e) = cu) /\
+     not (contains !co (witness el)) /\ witness e <> witness el }
+    replace_element co cu e
+    { p_forall_cont !co /\ element_ !co cu = e /\ contains !co (witness e) /\ not (contains !co (witness el)) }
+
+let test_replace_element3 (co:ref set) (cu:cursor) (e:element_t) (el:element_t) =
+    { has_element !co cu /\ find_ !co (witness e) = cu /\ contains !co (witness el) }
+    replace_element co cu e
+    { contains !co (witness (element_ (old !co) cu)) /\ contains !co (witness el) }
+
+let test_insert1 (co:ref set) (e:element_t) (cu2:cursor) (el:element_t) =
+    { p e /\ p_forall_cont !co /\ has_element !co cu2 /\ not (contains !co (witness e)) /\
+    contains !co (witness el) }
+    insert co e
+    { p_forall_cont !co /\
+    contains !co (witness e) /\
+    element_ !co cu2 = element_ (old !co) cu2 /\
+    length !co = (length (old !co)) + 1 /\
+    find_ !co (witness el) = find_ (old !co) (witness el) }
+
+let test_include1 (co:ref set) (e:element_t) (cu2:cursor) (el:element_t) =
+    { p e /\ p_forall_cont !co /\ has_element !co cu2 /\ not (contains !co (witness e)) /\
+    contains !co (witness el) }
+    include_ co e
+    { p_forall_cont !co /\
+    contains !co (witness e) /\
+    element_ !co cu2 = element_ (old !co) cu2 /\
+    length !co = (length (old !co)) + 1 /\
+    find_ !co (witness el) = find_ (old !co) (witness el) }
+
+let test_include2 (co:ref set) (e:element_t) (cu2:cursor) (el:element_t) =
+    { p e /\ p_forall_cont !co /\ has_element !co cu2 /\ contains !co (witness e) /\
+    witness e <> witness el /\ not (find_ !co (witness e) = cu2) }
+    include_ co e
+    { p_forall_cont !co /\ 
+    element_ !co (find_ (old !co) (witness e)) = e /\
+    element_ !co cu2 = element_ (old !co) cu2 /\
+    length!co = length (old !co) /\
+    find_ !co (witness el) = find_ (old !co) (witness el) }
+
+let test_delete (co:ref set) (cu:cursor) (el:element_t) (cun:cursor) =
+    { has_element !co cu /\ p_forall_cont !co /\ not (find_ !co (witness el) = cu) /\ cu <> cun /\
+      has_element !co cun }
+    delete co cu
+    { p_forall_cont !co /\
+     not (has_element !co cu) /\
+     not (contains !co (witness (element_ (old !co) cu))) /\
+     element_ !co cun = element_ (old !co) cun /\
+     find_ !co (witness el) = find_ (old !co) (witness el) /\
+     length !co = (length (old !co)) - 1 }
+
+let test_insert_delete1 (co:ref set) (cun:cursor) (e:element_t) (el:element_t) =
+    { p_forall_cont !co /\ has_element !co cun /\ not (contains !co (witness e)) }
+    insert co e;
+    delete co (find !co e)
+    { p_forall_cont !co /\ element_ !co cun = element_ (old !co) cun /\ find_ !co (witness el) = find_ (old !co) (witness el) }
+
+let test_exclude (co:ref set) (cu:cursor)(cun:cursor) (e:element_t) =
+    { has_element !co cu /\ element_ !co cu = e /\ has_element !co cun /\ cu <> cun }
+    exclude co e
+    { element_ !co cun = element_ (old !co) cun }
+
+let test_left1 (co:set) (cu:cursor) =
+    { p_forall_cont (left_ co no_element)
+     /\ (has_element co cu \/ cu = no_element) }
+    ()
+    { p_forall_cont (left_ co cu) /\
+      is_empty_ (left_ co (first co)) /\
+      strict_equal co (left_ co no_element) }
+
+let test_left2 (co:set) (cu:cursor) (cun:cursor) =
+    { not (has_element co cu) /\ (has_element co cun \/ cun = no_element)}
+    ()
+    { not (has_element (left_ co cun) cu) }
+
+let test_right1 (co:set) (cu:cursor) (e:element_t) =
+    { p_forall_cont co
+      /\ has_element co cu /\
+      position_ co (find_ co (witness e)) >= position_ co cu }
+    ()
+    { p_forall_cont (right_ co cu) /\
+      is_empty_ (right_ co no_element) /\ 
+      strict_equal co (right_ co (first co)) /\
+      contains (right_ co cu) (witness e) }
+
+let test_right2 (co:set) (cu:cursor) (cun:cursor) =
+    { not (has_element co cu) /\ (has_element co cun \/ cun = no_element) }
+    ()
+    { not (has_element (right_ co cun) cu) }
+
+let test_union1 (s1:set) (s2:set) (e:element_t) =
+    { contains (union s1 s2) (witness e) /\ not (contains s2 (witness e)) }
+    ()
+    { contains s1 (witness e) } 
+
+let test_union2 (s1:set) (s2:set) (s3:set) =
+    { is_empty_ (inter s1 s2) /\ is_empty_ (inter s2 s3) /\ is_empty_ (inter s1 s3)}
+    union s1 s2
+    { is_empty_ (inter result s3) /\ equivalent_sets_ (union result s3) (union s1 (union s2 s3)) }
+
+let test_union3 (s1:set) (s2:set) =
+    { length s1 = length s2 = length (union s1 s2) }
+    assert { equivalent_sets_ s1 (union s1 s2) }
+    { equivalent_sets_ s1 s2 }
+
+let test_inter1 (s1:set) (s2:set) (e:element_t) =
+    { not (contains (inter s1 s2) (witness e)) /\ contains s2 (witness e) }
+    ()
+    { not (contains s1 (witness e)) }
+
+let test_inter2 (s1:set) (s2:set) =
+    { length s1 = length s2 = length (inter s1 s2) }
+    assert { equivalent_sets_ s1 (inter s1 s2) }
+    { equivalent_sets_ s1 s2 }
+
+let test_diff1 (s1:set) (s2:set) (e:element_t) =
+    { not (contains (diff s1 s2) (witness e)) /\ contains s1 (witness e) }
+    ()
+    { contains (inter s1 s2) (witness e) }
+
+let test_diff2 (s1:set) (s2:set) (e:element_t) =
+    { contains (union (diff s1 s2) (diff s2 s1)) (witness e) }
+    ()
+    { not (contains (inter s1 s2) (witness e)) /\ contains (union s1 s2) (witness e) }
+
+let test_diff3 (s1:set) (s2:set) (e:element_t) =
+    { not (contains (union (diff s1 s2) (diff s2 s1)) (witness e)) }
+    ()
+    { (contains (inter s1 s2) (witness e) \/ not (contains (union s1 s2) (witness e))) /\
+      is_empty_ (inter (diff s1 s2) (diff s2 s1)) /\
+      length (union (diff s1 s2) (diff s2 s1)) = (length (union s1 s2)) - (length (inter s1 s2)) }
+
+let test_is_subset (s1:ref set) (s2:set) (e:element_t) =
+    { contains s2 (witness e) /\ is_subset_ !s1 s2 }
+    include_ s1 e
+    { is_subset_ !s1 s2 }
+
+let test_false (co:ref set) (cu:cursor) =
+    { position_ !co cu > 0 }
+    ()
+    { false }
+
+(*** TESTS ***)
+
+(* Copys the n first element s of ss into s. *)
+let test11 (s:ref set) (ss:set) (n:int) (c:ref cursor) =
+    { is_empty_ !s /\ length ss > n /\ n > 0 }
+    let i = ref 1 in
+    c := first ss;
+    while !i <= n do
+    	  invariant {
+	    ((forall e:element_t. contains !s (witness e) ->
+               0 < position_ ss (find_ ss (witness e))) /\
+            (forall e:element_t. contains !s (witness e) ->
+               position_ ss (find_ ss (witness e)) < !i) /\
+	    length !s = !i - 1 /\ position_ ss !c = !i /\ !i <= n+1)
+	  }
+    insert s (element ss !c);
+    c := next ss !c;
+    i := !i+1
+    done
+    { equivalent_sets_ !s (left_ ss !c) /\ length !s = n }
+
+let test12 (s:ref set) (ss:set) (n:int) (c:ref cursor) =
+    { is_empty_ !s /\ length ss > n /\ n > 0 }
+    let i = ref 0 in
+    c := first ss;
+    while !i < n do
+    	  invariant {
+	    (has_element ss !c /\
+	    equivalent_sets_ !s (left_ ss !c) /\
+	    length !s = !i /\ !i <= n)
+	  }
+    insert s (element ss !c);
+    c := next ss !c;
+    i := !i + 1
+    done
+    { equivalent_sets_ !s (left_ ss !c) /\ length !s = n }
+
+(* Copys every element in ss into s. *)
+let test2 (s:ref set) (ss:set) =
+    { is_empty_ !s /\ length ss > 0 }
+    let c = ref (first ss) in
+    while has_element ss !c do
+    	  invariant {
+	    ((has_element ss !c \/ !c = no_element) /\
+	    (forall e:element_t. contains !s (witness e) ->
+	       position_ ss (find_ ss (witness e)) <= length !s) /\
+	    (forall e:element_t. contains !s (witness e) ->
+	       0 < position_ ss (find_ ss (witness e))) /\
+	    (has_element ss !c -> length !s = (position_ ss !c) - 1) /\
+	    (!c = no_element -> length !s = length ss))
+	  }
+    insert s (element ss !c);
+    c := next ss !c
+    done
+    { equivalent_sets_ !s ss }
+
+(* A more user friendly version. *)
+let test22 (s:ref set) (ss:set) =
+    { is_empty_ !s /\ length ss > 0 }
+    let c = ref (first ss) in
+    while has_element ss !c do
+    	  invariant {
+	    ((has_element ss !c \/ !c = no_element) /\
+	    equivalent_sets_ !s (left_ ss !c))
+	  }
+    insert s (element ss !c);
+    c := next ss !c
+    done
+    { equivalent_sets_ !s ss }
+
+(* Applys f to every element in s1. *)
+function f element_t : element_t
+
+let test3 (s1:set) (s2:set) =
+    { forall e:element_t. contains s1 (witness e) -> contains s2 (witness (f e)) }
+    let s3 = ref empty_ in
+    let c = ref (first s1) in
+    if has_element s1 !c then
+    while has_element s1 !c do
+    	  invariant {
+    	    is_subset_ !s3 s2
+    	  }
+    include_ s3 (f (element s1 !c));
+    c := next s1 !c
+    done;
+    !s3
+    { is_subset_ result s2 }
+
+let test4 (s:set) (e:element_t) (c:ref cursor) =
+    { }
+    c := first s;
+    let b = ref False in
+    while has_element s !c && not !b do
+    	  invariant {
+	    ((has_element s !c \/ !c = no_element) /\
+	    (!b = True /\ has_element s !c /\ witness e = witness (element_ s !c)
+	    \/ !b = False /\ not (contains (left_ s !c) (witness e)))) }
+	    if equivalent_elements e (element s !c) then
+	       b := True
+	    else c := next s !c
+    done;
+    !b
+    { (result = True <-> contains s (witness e)) /\ !c = find_ s (witness e) }
+
+(*** MAX TESTS ***)
+
+function compare_ element_t element_t : int
+
+predicate is_max (v:set) (cu:cursor) =
+	  has_element v cu /\
+	  (forall cun:cursor.
+		 has_element v cun -> compare_ (element_ v cu) (element_ v cun) >= 0)
+
+function max_ set : cursor
+
+axiom is_max_max :
+      forall v:set.
+      	     (not (is_empty_ v) -> is_max v (max_ v))
+
+val max :
+	  v:set ->
+	  { not (is_empty_ v) }
+	  cursor
+	  { result = max_ v }
+
+(* Heap : all the elements of result are bigger than those still in v_min *)
+let test_max (v_min:ref set) (n:int) =
+    { length !v_min >= n }
+    'Init:
+    let i = ref 1 in
+    let v_max = ref empty_ in
+    if !i <= n then
+    while !i <= n do
+    	  invariant {
+	    (length !v_min = (length (at !v_min 'Init)) - !i + 1 /\
+	    is_empty_ (inter !v_min !v_max) /\
+	    (forall cu1:cursor. forall cu2:cursor. has_element !v_max cu1 -> 
+	    has_element !v_min cu2 ->
+	    compare_ (element_ !v_max cu1) (element_ !v_min cu2) >= 0))}
+    	  insert v_max (element !v_min (max !v_min));
+	  delete v_min (max !v_min);
+	  i := !i + 1
+    done;
+    !v_max
+    { forall cu1:cursor. forall cu2:cursor. has_element result cu1 ->
+	    has_element !v_min cu2 ->
+	    compare_ (element_ result cu1) (element_ !v_min cu2) >= 0 }
+
+(*** SUM_OF TESTS ***)
+
+function weight_ element_t : int
+predicate checkk_ element_t
+
+val weight :
+	  e:element_t ->
+	  { }
+	  int
+	  { result = weight_ e }
+
+axiom positive_weight :
+      forall e:element_t.
+      	     weight_(e)>=0
+
+val checkk :
+	  e:element_t ->
+	  { }
+	  bool
+	  { (result = True /\ checkk_ e) \/ (result = False /\ not (checkk_ e)) }
+
+(* Sum_of_weight /\ some axioms *)
+function sum_of_weight set : int
+
+axiom sum_of_weight_delete :
+      forall v1:set. forall v2:set. forall cu:cursor [delete_ v1 cu v2, sum_of_weight v2 | delete_ v1 cu v2, sum_of_weight v1].
+      	     delete_ v1 cu v2 -> sum_of_weight v2 = (sum_of_weight v1) - (weight_ (element_ v1 cu))
+
+axiom sum_of_weight_insert :
+      forall v1:set. forall v2:set. forall e:element_t [insert_ v1 e v2, sum_of_weight v2 | insert_ v1 e v2, sum_of_weight v1].
+      	     insert_ v1 e v2 -> sum_of_weight v2 = (sum_of_weight v1) + (weight_ e)
+
+axiom sum_of_weight_null :
+      forall v:set [sum_of_weight v].
+      	     is_empty_ v -> sum_of_weight v = 0
+
+axiom sum_of_weight_equal :
+      forall v1:set. forall v2:set [strict_equal v1 v2, sum_of_weight v1].
+      	     strict_equal v1 v2 -> sum_of_weight v1 = sum_of_weight v2
+
+axiom sum_of_weight_left :
+      forall v:set. forall cu:cursor [sum_of_weight (left_ v (next_ v cu)) | sum_of_weight (left_ v cu)].
+      	     has_element v cu ->
+	     sum_of_weight (left_ v (next_ v cu)) = (sum_of_weight (left_ v cu)) + (weight_ (element_ v cu))
+
+(* deletes some elements from v /\ then inserts an equivalent element *)
+let test_sum_of (v:ref set) (w:ref int) (e:element_t) =
+    { not (contains !v (witness e)) }
+    'Init:
+    w := 0;
+    let c = ref (first !v) in
+    while has_element !v !c do
+    	  invariant {
+	    (sum_of_weight !v = (sum_of_weight (at !v 'Init)) - !w) /\
+	    not (contains !v (witness e))
+    	  }
+    	  if (checkk (element !v !c)) then
+	     (w := !w + (weight (element !v !c));
+	     delete v !c)
+	  else c := next !v !c
+    done;
+    assert { weight_ e = !w }; (* IMPOSSIBLE TO PROVE *)
+    insert v e
+    { sum_of_weight !v = sum_of_weight (old !v) }
+
+(* deletes elements from v until their total weight exceeds wmin *)
+let test_sum_of2 (v:ref set) (w:ref int) (wmin : int) =
+    { wmin <= sum_of_weight !v }
+    'Init:
+    w := 0;
+    if !w < wmin then
+    while !w < wmin do
+    	  invariant {
+	    (sum_of_weight !v = (sum_of_weight (at !v 'Init)) - !w)
+    	  }
+    	 w := !w + (weight (element !v (first !v)));
+	 delete v (first !v)
+    done
+    { sum_of_weight !v = (sum_of_weight (old !v)) - !w /\ !w >= wmin }
+
+(* computes sum_of_weight(v) *)
+let test_sum_of3 (v:set) =
+    { }
+    let w = ref 0 in
+    let c = ref (first v) in
+    if has_element v !c then
+    while has_element v !c do
+    	  invariant {
+	    (!w = sum_of_weight (left_ v !c) /\
+	    (has_element v !c \/ !c = no_element))
+    	  }
+    	 w := !w + (weight (element v !c));
+	 c := next v !c
+    done;
+    !w
+    { sum_of_weight v = result }
+
+end

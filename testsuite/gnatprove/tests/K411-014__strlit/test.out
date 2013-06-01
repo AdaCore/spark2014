@@ -1,0 +1,4 @@
+
+strlit.ads:5:20: info: postcondition proved
+++ dosome strlit.ads:4
+

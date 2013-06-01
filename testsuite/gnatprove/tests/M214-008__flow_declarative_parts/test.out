@@ -1,0 +1,20 @@
+test.adb:10:29: ineffective import "N"
+test.adb:43:23: ineffective import "S"
+test.adb:43:23: "S" is not used
+test.adb:54:24: ineffective import "A"
+test.adb:57:09: "A" missing from null dependency
+test.adb:57:21: "B" does not depend on "A"
+test.adb:66:24: ineffective import "A"
+test.adb:69:09: "A" missing from null dependency
+test.adb:69:21: "B" does not depend on "A"
+test.adb:89:07: use of uninitialized variable "A" [uninitialized__a]
+test.adb:99:36: use of uninitialized variable "A" [uninitialized__a]
+test.adb:99:41: use of uninitialized variable "A" [uninitialized__a]
+test.adb:120:24: ineffective import "A"
+test.adb:123:09: "A" missing from null dependency
+test.adb:131:24: ineffective import "A"
+test.adb:134:09: "A" missing from null dependency
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

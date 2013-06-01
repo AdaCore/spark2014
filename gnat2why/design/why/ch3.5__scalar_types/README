@@ -1,0 +1,27 @@
+
+This describes how Ada scalar types can be represented in Why. Each
+directory gives more details about the specificity of each
+kind. Generally speaking, a discrete is represented by an abstract
+type (e.g. signed__int8 in ch3.5.4__integer_types) and a set of 
+declarations to handle conversion to the underlying mathematical
+entity (e.g. int or real). Roughly, this consists of:
+
+* the declaration of this abstract type (e.g. signed__int8);
+* the declaration of two logic functions that are meant to convert the
+underlying mathematical entity to this abstract type and vice versa
+(e.g. integer_of___signed__int8 and signed__int8___of_integer);
+* a predicate that defines equality using mathematical equality
+(e.g. eq___signed__int8);
+* an axiom that states that the conversion from mathematical entities
+to the abstract type and then back to maths is the identity;
+* a second axiom stating that any object of this type that is converted to
+the mathematical domain falls into this type's range (e.g. -128 .. 127).
+
+In the program space, the following functions are defined:
+* a function that returns an initialized instance, and may be used
+to allocate/initialize refs (e.g. any___signed__int8);
+* a counterpart of the maths-to-abstract-type conversion operation
+in the program space (e.g. signed__int8___of_integer_);
+* another one assuming that absence of overflows has already been proved
+(e.g. safe___signed__int8___of_integer_).
+

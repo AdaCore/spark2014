@@ -1,0 +1,327 @@
+module Main
+
+  use import int.Int
+  use import module ref.Ref
+  use import module vector.Main
+
+(*** UNIT-TESTS ***)
+
+(*** INDEX ***)
+
+let test_replace_element1 (co:ref vector) (i:int) (j:int) (e:element_t) =
+    { length !co >= i > 0 /\ length !co >= j > 0 /\ i <> j }
+    replace_element co i e
+    { element_ !co i = e /\ element_ !co j = element_ (old !co) j }
+
+predicate p element_t
+
+predicate p_forall_cont (co:vector) =
+	  forall i:int.
+	  	 length co >= i > 0 -> p (element_ co i)
+
+let test_replace_element2 (co:ref vector) (i:int) (e:element_t) =
+    { length !co >= i > 0 /\ p e /\ p_forall_cont !co }
+    replace_element co i e
+    { p_forall_cont !co /\ element_ !co i = e }
+
+let test_insert (co:ref vector) (i:int) (e:element_t) (j:int) =
+    { (length !co) + 1 >= i > 0 /\ p e /\ p_forall_cont !co /\ (length !co) + 1 >= j > 0 }
+    insert co i e
+    { p_forall_cont !co /\ element_ !co i = e /\ 
+    (j > i -> element_ !co j = element_ (old !co) (j-1)) /\ 
+    (j < i -> element_ !co j = element_ (old !co) j) /\
+    length !co = (length (old !co)) + 1 }
+
+let test_delete (co:ref vector) (i:int) (j:int) =
+    { length !co >= i > 0 /\ p_forall_cont !co /\ length !co > j > 0 /\ i <> j }
+    delete co i
+    { p_forall_cont !co /\
+     (j >= i -> element_ !co j = element_ (old !co) (j+1)) /\ 
+     (j < i -> element_ !co j = element_ (old !co) j) /\
+     length !co = (length (old !co)) - 1 }
+
+let test_insert_delete (co:ref vector) (i:int) (e:element_t) =
+    { (length !co) + 1 >= i > 0 }
+    insert co i e;
+    delete co i
+    { equal_ !co (old !co) }
+
+let test_left1 (co:vector) (i:int) =
+    { length co >= i > 0 }
+    ()
+    { is_empty_ (left_ co 1) /\
+      equal_ co (left_ co ((length co) + 1)) /\
+      length (left_ co i) = i - 1 }
+
+let test_right1 (co:vector) (i:int) =
+    { length co >= i > 1 }
+    ()
+    { is_empty_ (right_ co ((length co) + 1)) /\
+      element_ (right_ co i) 1 = element_ co i /\
+      equal_ co (right_ co 1) }
+
+let test_contains (co:vector) (i:int) (e:element_t) =
+    { length co >= i > 0 /\ element_ co i = e }
+    ()
+    { contains co e }
+
+(*** CURSOR ***)
+(* Same tests but with cursors instead of index *)
+
+let test_replace_element_curs1 (co:ref vector) (cu:cursor) (cun:cursor) (e:element_t) =
+    { has_element !co cu /\ has_element !co cun /\ cu <> cun }
+    replace_element_curs co cu e
+    { element_curs_ !co cu = e /\ 
+     element_curs_ !co cun = element_curs_ (old !co) cun }
+
+let test_replace_element_curs2 (co:ref vector) (cu:cursor) (e:element_t) =
+    { has_element !co cu /\ p e /\ p_forall_cont !co }
+    replace_element_curs co cu e
+    { p_forall_cont !co /\ element_curs_ !co cu = e }
+
+let test_insert_curs1 (co:ref vector) (cu:cursor) (e:element_t) (cun:cursor) =
+    { has_element !co cu /\ has_element !co cun /\ p e /\ p_forall_cont !co /\ 
+	(length !co) + 1 >= to_index_ !co cun > 0 }
+    insert_curs co cu e
+    { p_forall_cont !co /\ 
+    (0 < to_index_ !co cun < to_index_ (old !co) cu -> 
+	element_curs_ !co cun = element_curs_ (old !co) cun) /\
+    length !co = (length (old !co)) + 1 }
+
+let test_insert_curs2 (co:ref vector) (e:element_t) (cun:cursor) =
+    { p e /\ p_forall_cont !co /\ has_element !co cun }
+    insert_curs co no_element e
+    { p_forall_cont !co /\ element_curs_ !co (last !co) = e /\
+     element_curs_ !co cun = element_curs_ (old !co) cun /\
+     length !co = (length (old !co)) + 1 }
+
+let test_delete_curs (co:ref vector) (cu:cursor) (cun:cursor) =
+    { has_element !co cu /\ has_element !co cun /\ p_forall_cont !co /\
+      length !co > to_index_ !co cun > 0 /\ cu <> cun }
+    delete_curs co cu
+    { p_forall_cont !co /\
+     (0 < to_index_ !co cun < to_index_ (old !co) cu ->
+	element_curs_ !co cun = element_curs_ (old !co) cun) /\
+     length !co = (length (old !co)) - 1 }
+
+let test_insert_delete_curs1 (co:ref vector) (cu:cursor) (e:element_t) =
+    {  has_element !co cu }
+    let i = to_index_ !co cu in
+    insert_curs co cu e;
+    delete_curs co (to_cursor_ !co i)
+    { equal_ !co (old !co) }
+
+let test_insert_delete_curs2 (co:ref vector) (e:element_t) =
+    { }
+    insert_curs co no_element e;
+    delete_curs co (last !co)
+    { equal_ !co (old !co) }
+
+let test_containscurs (co:vector) (cu:cursor) (e:element_t) =
+    { has_element co cu /\ element_curs_ co cu = e }
+    ()
+    { contains co e }
+
+let test_false (co:ref vector) (cu:cursor) =
+    { has_element !co cu }
+    ()
+    { false }
+
+let test_find (s:vector) (e:element_t) (i:ref int) =
+    { }
+    i := 1;
+    let b = ref False in
+    while !i <= length(s) && not !b do
+    	  invariant {
+	    0 < !i <= (length s) + 1 /\
+	    (!b = True /\ !i <= length s /\ equal_elements e (element_ s !i) = True
+	    \/ !b = False) /\ not (contains (left_ s !i) e) }
+	    if equal_elements e (element s !i) then
+	       b := True
+	    else i := !i+1
+    done;
+    if !i = (length s) + 1 then
+       i := 0;
+    !b
+    { (result = True <-> contains s e) /\ find_ s e 1 = !i }
+
+(*** SUM_OF TESTS ***)
+
+function weight_ element_t : int
+predicate checkk_ element_t
+
+val weight :
+	  e:element_t ->
+	  { }
+	  int
+	  { result = weight_ e }
+
+axiom positive_weight :
+      forall e:element_t.
+      	     weight_ e >= 0
+
+val checkk :
+	  e:element_t ->
+	  {}
+	  bool
+	  { result = True <-> checkk_ e }
+
+(* Sum_of_weight /\ some axioms *)
+function sum_of_weight vector : int
+
+axiom sum_of_weight_delete :
+      forall v1:vector. forall v2:vector. forall i:int [sum_of_weight v2, delete_ v1 i v2].
+      	     delete_ v1 i v2 -> sum_of_weight v2 = (sum_of_weight v1) - (weight_ (element_ v1 i))
+
+axiom sum_of_weight_insert :
+      forall v1:vector. forall v2:vector. forall i:int. forall e:element_t [sum_of_weight v2, insert_ v1 i e v2].
+      	     insert_ v1 i e v2 -> sum_of_weight v2 = (sum_of_weight v1) + (weight_ e)
+
+axiom sum_of_weight_null :
+      forall v:vector[sum_of_weight v].
+      	     is_empty_ v -> sum_of_weight v = 0
+
+axiom sum_of_weight_equal :
+      forall v1:vector. forall v2:vector[sum_of_weight v1].
+      	     equal_ v1 v2 -> sum_of_weight v1 = sum_of_weight v2
+
+axiom sum_of_weight_left :
+      forall v:vector. forall i:int[sum_of_weight (left_ v i)].
+      	     (length v) + 1 >= i > 1 ->
+	sum_of_weight (left_ v i) = (sum_of_weight (left_ v (i - 1))) + (weight_ (element_ v (i-1)))
+
+(* deletes some elements from v *)
+let test_sum_of (v:ref vector) (w:ref int) (e:element_t)  =
+    { }
+    'Init:
+    w := 0;
+    let c= ref (first !v) in
+    while has_element !v !c do
+    	  invariant {
+	    sum_of_weight !v = (sum_of_weight (at !v 'Init)) - !w
+    	  }
+    	  if (checkk (element_curs !v !c)) then
+	     (w := !w+(weight(element_curs !v !c));
+	     delete_curs v !c)
+	  else c := next !v !c
+    done;
+    assert { weight_ e = !w };(* IMPOSSIBLE TO PROVE *)
+    append v e
+    { sum_of_weight !v = sum_of_weight (old !v) }
+
+(* deletes elements from v until their total weight exceeds wmin *)
+let test_sum_of2 (v:ref vector) (w:ref int) (wmin : int) =
+    { wmin <= sum_of_weight !v }
+    'Init:
+    w := 0;
+    if !w < wmin then
+    while !w < wmin do
+    	  invariant {
+	    (sum_of_weight !v = (sum_of_weight (at !v 'Init)) - !w)
+    	  }
+    	 w := !w + (weight (element !v 1));
+	 delete v 1
+    done
+    { sum_of_weight !v = (sum_of_weight (old !v)) - !w /\ !w >= wmin }
+
+(* computes sum_of_weight(v) *)
+let test_sum_of3 (v:vector) =
+    { }
+    let w = ref 0 in
+    let i = ref 1 in
+    if !i <= length v then
+    while !i <= length v do
+    	  invariant {
+	    !w = sum_of_weight (left_ v !i) /\
+	    (length v) + 1 >= !i > 0
+    	  }
+    	 w := !w + (weight (element v !i));
+	 i := !i + 1
+    done;
+    assert { equal_ v (left_ v !i) };
+    !w
+    { sum_of_weight v = result }
+
+(*** MAX TESTS ***)
+
+function compare_ element_t element_t : int
+
+predicate is_max (v:vector) (j:int) =
+	  0 < j <= length v /\
+	  (forall i:int.
+		 0 < i <= length v -> compare_ (element_ v j) (element_ v i) >= 0)
+
+function max_ vector : int
+
+axiom is_max_max :
+      forall v:vector.
+      	     (not (is_empty_ v) -> is_max v (max_ v))
+
+val max :
+	  v:vector ->
+	  { not (is_empty_ v) }
+	  int
+	  { result = max_ v }
+
+
+(* Heap : all the elements of result are bigger than those still in v_min *)
+let test_max (v_min:ref vector) (n:int) =
+    { length !v_min >= n }
+    'Init:
+    let i = ref 1 in
+    let v_max = ref empty_ in
+    if !i <= n then
+    while !i <= n do
+    	  invariant {
+	    length !v_min = (length (at !v_min 'Init)) - !i + 1 /\
+	    forall i1:int. forall i2:int. 0 < i1 <= length !v_max ->
+	    0 < i2 <= length !v_min ->
+	    compare_ (element_ !v_max i1) (element_ !v_min i2) >= 0}
+    	  append v_max (element !v_min (max !v_min));
+	  delete v_min (max !v_min);
+	  i := !i + 1
+    done;
+    !v_max
+    { (forall i1:int. forall i2:int. 0 < i1 <= length result ->
+	    0 < i2 <= length !v_min ->
+	    compare_ (element_ result i1) (element_ !v_min i2) >= 0)}
+
+
+(* More user friendly version, not easy to prove *)
+let test_max2 (v_min:ref vector) (n:int) =
+    { 
+  (forall e1 : element_t, e2 :element_t, e3 :element_t [equal_elements e1 e2, compare_ e2 e3].
+	equal_elements e1 e2 = True -> compare_ e1 e3 = compare_ e2 e3) /\
+  (forall e1 : element_t, e2 :element_t, e3 :element_t [equal_elements e1 e2, compare_ e2 e3].
+	equal_elements e1 e2 = True -> compare_ e3 e1 = compare_ e3 e2) /\
+	length !v_min >= n }
+    'Init:
+    let i = ref 1 in
+    let v_max = ref empty_ in
+    if !i <= n then
+    while !i <= n do
+    	  invariant {
+	    length !v_min = (length (at !v_min 'Init)) - !i + 1 /\
+	    forall e1:element_t. forall e2:element_t. contains !v_max e1 ->
+	    contains !v_min e2 ->
+	    compare_ e1 e2 >= 0 }
+    	  append v_max (element !v_min (max !v_min));
+	  delete v_min (max !v_min);
+	  i := !i + 1
+    done;
+    !v_max
+    { forall e1:element_t. forall e2:element_t. contains result e1 ->
+	    contains !v_min e2 ->
+	    compare_ e1 e2 >= 0}
+
+(*** GOALS ***)
+
+goal containsinsert :
+     forall l1:vector. forall l2:vector. forall i:int. forall e:element_t. forall el:element_t.
+     	    insert_ l1 i e l2 -> contains l2 el -> equal_elements e el = True \/ contains l1 el
+
+goal containsdelete :
+     forall l1:vector. forall l2:vector. forall i:int. forall el:element_t.
+     	    delete_ l1 i l2 -> contains l2 el -> contains l1 el
+
+end

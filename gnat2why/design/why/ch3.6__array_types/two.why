@@ -1,0 +1,209 @@
+include "arrays.why"
+include "standard.why"
+
+(*************)
+(* Two.Index *)
+(*************)
+
+type two__index
+
+logic integer_of___two__index : two__index -> int
+
+predicate eq___two__index (x : two__index, y : two__index) =
+ integer_of___two__index (x) = integer_of___two__index (y)
+
+axiom two__index___unicity :
+ forall x, y : two__index.
+  integer_of___two__index (x) = integer_of___two__index (y) -> x = y
+
+predicate two__index___in_range (x : int) =
+ let first = 1 in
+ let last = 10 in
+  first <= x <= last
+
+logic two__index___of_integer : int -> two__index
+
+axiom two__index___coerce :
+ forall x : int.
+  two__index___in_range (x) ->
+   integer_of___two__index (two__index___of_integer (x)) = x
+
+axiom two__index___range :
+ forall x : two__index.
+  two__index___in_range (integer_of___two__index (x))
+
+parameter two__index___of_integer_ :
+ x : int ->
+  { two__index___in_range (x) }
+   two__index
+  { integer_of___two__index (result) = x }
+
+
+(*************)
+(* Two.Table *)
+(*************)
+
+type two__table
+
+logic array_of___two__table : two__table -> standard__integer farray farray
+
+logic two__table___of_array : standard__integer farray farray -> two__table
+
+predicate two__table___in_range (x : standard__integer farray farray) =
+ let length_1 = 10 in
+ let length_2 = 10 in
+  array_length (x) = length_1
+  and forall j2 : int.
+       0 <= j2 < length_1 -> array_length (x [j2]) = length_2
+
+predicate eq___two__table (x : two__table, y : two__table) =
+ array_of___two__table (x) = array_of___two__table (y)
+
+axiom two__table___unicity :
+ forall x, y : two__table.
+  array_of___two__table (x) = array_of___two__table (y) -> x = y
+
+axiom two__table___coerce :
+ forall x : standard__integer farray farray.
+  two__table___in_range (x) ->
+   array_of___two__table (two__table___of_array (x)) = x
+
+axiom two__table___range :
+ forall x : two__table.
+  two__table___in_range (array_of___two__table (x))
+
+logic two__table___first1 : two__table -> two__index
+logic two__table___first2 : two__table -> two__index
+
+logic two__table___last1 : two__table -> two__index
+logic two__table___last2 : two__table -> two__index
+
+predicate two__table___range_eq (x : two__table, y : two__table) =
+ (integer_of___two__index (two__table___first1 (x))
+   = integer_of___two__index (two__table___first1 (y)))
+ and (integer_of___two__index (two__table___first2 (x))
+   = integer_of___two__index (two__table___first2 (y)))
+ and (integer_of___two__index (two__table___last1 (x))
+      = integer_of___two__index (two__table___last1 (y)))
+ and (integer_of___two__index (two__table___last2 (x))
+      = integer_of___two__index (two__table___last2 (y)))
+
+predicate eq___two__table___strict (x : two__table, y : two__table) =
+ array_of___two__table (x) = array_of___two__table (y)
+ and two__table___range_eq (x, y)
+
+predicate two__table___index_check1 (a : two__table, i : two__index) =
+ integer_of___two__index (two__table___first1 (a))
+  <= integer_of___two__index (i) <=
+ integer_of___two__index (two__table___last1 (a))
+
+predicate two__table___index_check2 (a : two__table, i : two__index) =
+ integer_of___two__index (two__table___first2 (a))
+  <= integer_of___two__index (i) <=
+ integer_of___two__index (two__table___last2 (a))
+
+axiom two__table___first_value1 :
+ forall x : two__table.
+  two__table___first1 (x) = two__index___of_integer (1)
+
+axiom two__table___first_value2 :
+ forall x : two__table.
+  two__table___first2 (x) = two__index___of_integer (1)
+
+axiom two__table___last_value1 :
+ forall x : two__table.
+  two__table___last1 (x) = two__index___of_integer (10)
+
+axiom two__table___last_value2 :
+ forall x : two__table.
+  two__table___last2 (x) = two__index___of_integer (10)
+
+function two__table___get
+ (a  : two__table,
+  i1 : two__index,
+  i2 : two__index)
+ : standard__integer =
+  access (access (array_of___two__table (a),
+                  integer_of___two__index (i1)),
+          integer_of___two__index (i2))
+
+logic two__table___set :
+ two__table, two__index, two__index, standard__integer -> two__table
+
+axiom two__table___set_definition :
+ forall a  : two__table.
+ forall i1 : two__index.
+ forall i2 : two__index.
+ forall v  : standard__integer.
+  let result = two__table___set (a, i1, i2, v) in
+  let sub1   = access (array_of___two__table (a),
+                       integer_of___two__index (i1)) in
+   array_of___two__table (result) =
+    update (array_of___two__table (a),
+            integer_of___two__index (i1),
+            update (sub1,
+                    integer_of___two__index (i2),
+                    v))
+   and a = result
+
+parameter two__table___get_ :
+ a : two__table -> i1 : two__index -> i2 : two__index ->
+  { two__table___index_check1 (a, i1)
+    and two__table___index_check2 (a, i2) }
+   standard__integer
+  { result = two__table___get (a, i1, i2) }
+
+parameter two__table___set_ : 
+ a  : two__table ref ->
+ i1 : two__index ->
+ i2 : two__index ->
+ v  : standard__integer -> 
+  { two__table___index_check1 (a, i1)
+    and two__table___index_check2 (a, i2) }
+   unit writes a
+  { a = two__table___set (a@, i1, i2, v) }
+
+parameter safe___two__table___get_ :
+ a : two__table -> i1 : two__index -> i2 : two__index ->
+  { }
+   standard__integer
+  { result = two__table___get (a, i1, i2) }
+
+parameter safe___two__table___set_ : 
+ a  : two__table ref ->
+ i1 : two__index ->
+ i2 : two__index ->
+ v  : standard__integer -> 
+  { }
+   unit writes a
+  { a = two__table___set (a@, i1, i2, v) }
+
+parameter two__table___first1_ :
+ a : two__table ->
+  { }
+   two__index
+  { result = two__table___first1 (a) }
+
+parameter two__table___first2_ :
+ a : two__table ->
+  { }
+   two__index
+  { result = two__table___first2 (a) }
+
+parameter two__table___last1_ :
+ a : two__table ->
+  { }
+   two__index
+  { result = two__table___last1 (a) }
+
+parameter two__table___last2_ :
+ a : two__table ->
+  { }
+   two__index
+  { result = two__table___last2 (a) }
+
+parameter eq___two__table_ :
+ left : two__table -> right : two__table ->
+{ }
+ bool
+{ result = true <-> eq___two__table (left, right) }

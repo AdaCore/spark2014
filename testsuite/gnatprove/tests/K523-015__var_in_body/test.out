@@ -1,0 +1,2 @@
+tctouch.adb:8:22: overflow check not proved
+tctouch.adb:9:17: index check not proved

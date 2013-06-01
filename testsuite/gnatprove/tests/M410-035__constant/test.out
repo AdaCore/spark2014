@@ -1,0 +1,6 @@
+
+main.adb:10:4: info: assertion proved
+main.adb:11:4: info: assertion proved
+main.adb:5:7: info: assertion proved
+main.adb:6:7: info: assertion proved
+main.adb:9:4: info: assertion proved

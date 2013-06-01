@@ -1,0 +1,7 @@
+
+s.adb:14:9: info: loop variant proved
+s.adb:15:9: info: loop invariant initialization proved
+s.adb:15:9: info: loop invariant preservation proved
+s.adb:25:24: info: range check proved
+s.ads:12:26: info: postcondition proved
+s.ads:19:26: info: postcondition proved

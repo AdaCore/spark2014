@@ -1,0 +1,3 @@
+
+multi.ads:10:14: postcondition not proved
+multi.ads:10:67: info: index check proved

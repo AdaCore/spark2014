@@ -1,0 +1,2 @@
+p.adb:3:9: info: range check proved
+p.adb:4:13: range check not proved

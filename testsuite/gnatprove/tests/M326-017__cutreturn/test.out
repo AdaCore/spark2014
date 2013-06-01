@@ -1,0 +1,3 @@
+
+test.adb:8:5: info: assertion proved
+test.ads:4:18: info: postcondition proved

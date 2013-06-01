@@ -1,0 +1,16 @@
+search.adb:13:15: info: index check proved
+search.adb:15:33: info: range check proved
+search.adb:19:10: info: loop invariant initialization proved
+search.adb:19:10: info: loop invariant preservation proved
+search.adb:22:56: info: range check proved
+search.adb:23:10: info: loop variant proved
+search.adb:25:21: info: overflow check proved
+search.ads:23:37: info: index check proved
+search.ads:30:14: info: postcondition proved
+search.ads:31:40: info: discriminant check proved
+search.ads:32:6: info: complete contract cases proved
+search.ads:32:6: info: disjoint contract cases proved
+search.ads:33:20: info: contract case proved
+search.ads:34:31: info: discriminant check proved
+search.ads:35:67: info: contract case proved
+search.ads:37:49: info: contract case proved

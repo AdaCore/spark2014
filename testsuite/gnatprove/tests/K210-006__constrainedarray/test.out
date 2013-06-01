@@ -1,0 +1,3 @@
+
+constr.adb:6:24: overflow check not proved
+constr.ads:6:20: postcondition not proved, requires X(1) = 1

@@ -1,0 +1,394 @@
+module Main
+  use import int.Int
+  use import ref.Ref
+  
+  (*** TO BE INSTANTIATED ***)
+
+  type element_t
+
+  function equal_elements element_t element_t : bool
+
+  axiom equal_elements_refl :
+  forall e : element_t [equal_elements e e].
+	equal_elements e e = True
+
+  axiom equal_elements_sym :
+  forall e1 e2 : element_t [equal_elements e1 e2].
+	equal_elements e1 e2 = equal_elements e2 e1
+
+  axiom equal_elements_trans :
+  forall e1 e2 e3 : element_t [equal_elements e1 e2, equal_elements e1 e3 | equal_elements e1 e2, equal_elements e2 e3].
+	equal_elements e1 e2 = True -> equal_elements e2 e3 = True -> equal_elements e1 e3 = True
+
+  (**************************)
+
+  type cursor
+  
+  type list
+  
+  function no_element  : cursor
+  
+  function empty_  : list
+  
+  function length list : int
+  
+  axiom length_gte_zero:
+    forall co:list [length co]. length co >= 0
+  
+  function position_ list cursor : int
+  
+  axiom position_gte_zero:
+    forall co:list, cu:cursor [position_ co cu].
+        length co >= position_ co cu /\ position_ co cu >= 0
+  
+  axiom position_no_element:
+    forall co:list [position_ co no_element]. position_ co no_element = 0
+
+  function position_inv list int : cursor
+  
+  axiom position_eq:
+    forall co:list, cu:cursor [position_ co cu].
+          position_ co cu > 0 -> position_inv co (position_ co cu) = cu
+  
+  predicate is_empty_ list
+
+  axiom is_empty:
+    forall co:list [is_empty_ (co)]. is_empty_ (co) <-> length co = 0
+  
+  axiom Empty_is_empty: is_empty_ empty_
+  
+  function previous_ list cursor : cursor
+  
+  axiom previous_in:
+    forall co:list, cu:cursor [previous_ co cu].
+	(position_ co cu > 1 \/ position_ co (previous_ co cu) > 0) ->
+	position_ co (previous_ co cu) = position_ co cu - 1
+
+  axiom previous_ext:
+    forall co:list, cu:cursor [previous_ co cu].
+        (position_ co cu = 1 \/ cu = no_element) -> previous_ co cu = no_element
+  
+  function next_ list cursor : cursor
+  
+  axiom next_in:
+    forall co:list, cu:cursor [next_ co cu].
+	(length co > position_ co cu > 0 \/ position_ co (next_ co cu) > 0) ->
+	position_ co (next_ co cu) = position_ co cu + 1
+
+  axiom next_ext:
+    forall co:list, cu:cursor [next_ co cu].
+        (position_ co cu = length co \/ cu = no_element) -> next_ co cu = no_element
+  
+  function last list : cursor
+  
+  axiom last_empty:
+    forall co:list [last co]. length co = 0 <-> last co = no_element
+  
+  axiom last_gen:
+    forall co:list [last co]. length co = position_ co (last co)
+  
+  function first list : cursor
+  
+  axiom first_empty:
+    forall co:list [first co]. length co = 0 <-> first co = no_element
+  
+  axiom first_gen:
+    forall co:list [first co]. length co > 0 -> position_ co (first co) = 1
+  
+  function element_ list cursor : element_t
+  
+  function left_ list cursor : list
+
+  axiom left_no_element:
+    forall co:list [left_ co no_element]. left_ co no_element = co
+
+  axiom left_length:
+    forall co:list, cu:cursor [left_ co cu].
+	position_ co cu > 0 -> length (left_ co cu) = position_ co cu - 1
+
+  axiom left_position_in:
+    forall co:list, cu cun:cursor [position_ (left_ co cu) cun | left_ co cu, position_ co cun].
+	(position_ (left_ co cu) cun > 0 \/ position_ co cun < position_ co cu) ->
+	position_ (left_ co cu) cun = position_ co cun
+
+  axiom left_position_ext:
+    forall co:list, cu cun:cursor [position_ (left_ co cu) cun].
+	position_ co cun >= position_ co cu > 0 ->
+	position_ (left_ co cu) cun = 0
+
+  axiom left_element:
+    forall co:list, cu cun:cursor [element_ (left_ co cu) cun | left_ co cu, element_ co cun].
+	(position_ (left_ co cu) cun > 0 \/ 0 < position_ co cun < position_ co cu) ->
+	element_ (left_ co cu) cun = element_ co cun
+  
+  function right_ list cursor : list
+
+  axiom right_no_element:
+    forall co:list [right_ co no_element]. right_ co no_element = empty_
+
+  axiom right_length:
+    forall co:list, cu:cursor [length (right_ co cu) ].
+	position_ co cu > 0 -> length (right_ co cu) = (length co) - (position_ co cu) + 1
+
+  axiom right_position_in:
+    forall co:list, cu cun:cursor [position_ (right_ co cu) cun | right_ co cu, position_ co cun].
+	(position_ (right_ co cu) cun > 0 \/ position_ co cun >= position_ co cu > 0) ->
+	position_ (right_ co cu) cun = (position_ co cun) - (position_ co cu) + 1
+
+  axiom right_position_ext:
+    forall co:list, cu cun:cursor [position_ (right_ co cu) cun].
+	position_ co cun < position_ co cu -> position_ (right_ co cu) cun = 0
+
+  axiom right_element:
+    forall co:list, cu cun:cursor [element_ (right_ co cu) cun | right_ co cu, element_ co cun].
+	(position_ (right_ co cu) cun > 0 \/ 0 < position_ co cu <= position_ co cun) ->
+	element_ (right_ co cu) cun = element_ co cun
+  
+  function findfirst list element_t : cursor
+
+  axiom find_range:
+    forall co:list, e:element_t [findfirst co e].
+	findfirst co e = no_element \/ position_ co (findfirst co e) > 0
+
+  axiom find_not:
+    forall co:list, e:element_t, cu : cursor [findfirst co e, element_ co cu].
+	findfirst co e = no_element -> position_ co cu > 0 ->
+	equal_elements (element_ co cu) e = False
+
+  axiom find_yes:
+    forall co:list, e:element_t, cu : cursor [findfirst co e, element_ co cu].
+	0 < position_ co cu < position_ co (findfirst co e) ->
+	equal_elements (element_ co cu) e = False
+
+  axiom find_element:
+    forall co:list, e:element_t [findfirst co e].
+	0 < position_ co (findfirst co e) ->
+	equal_elements (element_ co (findfirst co e)) e = True
+  
+  function find (l : list) (e : element_t) (cu : cursor) : cursor =
+    if cu = no_element then (findfirst (right_ l (first l)) e) else (findfirst (right_ l cu) e)
+  
+  predicate strict_equal list list
+
+  axiom strict_equal_a:
+    forall co1 co2 : list [strict_equal co1 co2].
+    ((forall cu:cursor [position_ co1 cu | position_ co2 cu].
+       position_ co1 cu = position_ co2 cu) /\
+     (forall cu:cursor [element_ co1 cu | element_ co2 cu]. position_ co1 cu > 0 ->
+        element_ co1 cu = element_ co2 cu)) <->  strict_equal co1 co2
+
+  axiom strict_equal_length:
+    forall co1 co2 : list [strict_equal co1 co2, length co1 | strict_equal co1 co2, length co2].
+     strict_equal co1 co2 -> length co1 = length co2
+
+  predicate equal_ list list
+
+  axiom equal_length:
+   forall co1 co2 : list [equal_ co1 co2, length co1 | equal_ co1 co2, length co2].
+   equal_ co1 co2 -> length co1 = length co2
+
+  axiom equal_element:
+   forall co1 co2 : list [equal_ co1 co2]. equal_ co1 co2 ->
+   forall cu1 : cursor [element_ co1 cu1]. position_ co1 cu1 > 0 -> 
+	exists cu2 : cursor. position_ co2 cu2 = position_ co1 cu1 /\ equal_elements (element_ co2 cu2) (element_ co1 cu1) = True
+
+  axiom equal_inv:
+   forall co1 co2 : list [equal_ co1 co2]. not equal_ co1 co2 ->
+   (length co1 <> length co2 \/
+   exists cu1 cu2 : cursor. position_ co1 cu1 > 0 /\ position_ co2 cu2 = position_ co1 cu1 /\
+	equal_elements (element_ co2 cu2) (element_ co1 cu1) = False)
+
+  axiom equal_sym :
+  forall e1 e2 : list [equal_ e1 e2].
+	equal_ e1 e2 -> equal_ e2 e1
+
+  axiom equal_trans :
+  forall e1 e2 e3 : list [equal_ e1 e2, equal_ e1 e3 | equal_ e1 e2, equal_ e2 e3].
+	equal_ e1 e2 -> equal_ e2 e3 -> equal_ e1 e3
+  
+  predicate replace_element_ list cursor element_t list
+
+  axiom replace_element_length:
+    forall co1 co2:list, cu:cursor, e:element_t
+      [replace_element_ co1 cu e co2].
+      replace_element_ co1 cu e co2 -> length co1 = length co2
+
+  axiom replace_element_position_ext:
+    forall co1 co2:list, cu cun:cursor, e:element_t
+      [replace_element_ co1 cu e co2, position_ co2 cun
+     | replace_element_ co1 cu e co2, position_ co1 cun].
+      replace_element_ co1 cu e co2 -> position_ co2 cun = position_ co1 cun
+
+  axiom replace_element_position_in:
+    forall co1 co2:list, cu:cursor, e:element_t
+      [replace_element_ co1 cu e co2].
+      replace_element_ co1 cu e co2 -> position_ co2 cu > 0
+
+  axiom replace_element_element_in:
+    forall co1 co2:list, cu:cursor, e:element_t
+      [replace_element_ co1 cu e co2].
+      replace_element_ co1 cu e co2 -> element_ co2 cu = e
+
+  axiom replace_element_element_ext:
+    forall co1 co2:list, cu cun:cursor, e:element_t
+      [replace_element_ co1 cu e co2, element_ co2 cun
+     | replace_element_ co1 cu e co2, element_ co1 cun].
+      replace_element_ co1 cu e co2 -> cu <> cun -> position_ co1 cun > 0 ->
+        element_ co2 cun = element_ co1 cun
+  
+  predicate insert_ list cursor element_t list
+
+  axiom insert_range:
+    forall co1 co2:list, cu:cursor, e:element_t [insert_ co1 cu e co2].
+      insert_ co1 cu e co2 -> cu = no_element \/ position_ co1 cu > 0
+
+  axiom insert_length:
+    forall co1 co2:list, cu:cursor, e:element_t
+      [insert_ co1 cu e co2].
+      insert_ co1 cu e co2 -> length co1 + 1 = length co2
+
+  axiom insert_new:
+    forall co1 co2:list, cu:cursor, e:element_t [insert_ co1 cu e co2].
+      insert_ co1 cu e co2 -> position_ co1 cu > 0 ->
+      (position_ co1 (previous_ co2 cu) = 0 /\ element_ co2 (previous_ co2 cu) = e)
+
+  axiom insert_new_no_element:
+    forall co1 co2:list, e:element_t [insert_ co1 no_element e co2].
+      insert_ co1 no_element e co2 ->
+        position_ co1 (last co2) = 0 /\ element_ co2 (last co2) = e
+
+  axiom insert_position_before:
+    forall co1 co2:list, cu cun:cursor, e:element_t
+      [insert_ co1 cu e co2,  position_ co1 cun
+     | insert_ co1 cu e co2,  position_ co2 cun].
+      insert_ co1 cu e co2 -> position_ co1 cu > 0 ->
+      (position_ co1 cu > position_ co1 cun > 0 \/ position_ co2 cun < position_ co1 cu) ->
+        position_ co1 cun = position_ co2 cun
+
+  axiom insert_position_after:
+    forall co1 co2:list, cu cun:cursor, e:element_t
+      [insert_ co1 cu e co2,  position_ co1 cun
+     | insert_ co1 cu e co2,  position_ co2 cun].
+      insert_ co1 cu e co2 -> position_ co1 cu > 0 ->
+      (position_ co1 cun >= position_ co1 cu \/ position_ co2 cun > position_ co1 cu) ->
+        position_ co1 cun + 1 = position_ co2 cun
+
+  axiom insert_position_no_element:
+    forall co1 co2:list, cun:cursor, e:element_t
+      [insert_ co1 no_element e co2,  position_ co1 cun
+     | insert_ co1 no_element e co2,  position_ co2 cun].
+      insert_ co1 no_element e co2 -> (position_ co1 cun > 0 \/ position_ co2 cun < length co2) ->
+        position_ co1 cun = position_ co2 cun
+
+  axiom insert_element:
+    forall co1 co2:list, cu cun:cursor, e:element_t
+      [insert_ co1 cu e co2,  element_ co1 cun
+     | insert_ co1 cu e co2,  element_ co2 cun].
+      insert_ co1 cu e co2 -> position_ co1 cu > 0 ->
+      position_ co1 cun > 0 ->
+        element_ co1 cun = element_ co2 cun
+
+  axiom insert_element_no_element:
+    forall co1 co2:list, cun:cursor, e:element_t
+      [insert_ co1 no_element e co2,  element_ co1 cun
+     | insert_ co1 no_element e co2,  element_ co2 cun].
+      insert_ co1 no_element e co2 -> 
+      (position_ co1 cun > 0 \/ 0 < position_ co2 cun < length co2) ->
+        element_ co1 cun = element_ co2 cun
+
+  predicate delete_ list cursor list
+
+  axiom delete_length:
+    forall co1 co2:list, cu:cursor
+      [delete_ co1 cu co2].
+      delete_ co1 cu co2 -> length co1 = length co2 + 1
+
+  axiom delete_position_before:
+    forall co1 co2:list, cu cun:cursor
+      [delete_ co1 cu co2,  position_ co1 cun
+     | delete_ co1 cu co2,  position_ co2 cun].
+      delete_ co1 cu co2 ->
+      (position_ co1 cu > position_ co1 cun \/ 0 < position_ co2 cun < position_ co1 cu) ->
+        position_ co1 cun = position_ co2 cun
+
+  axiom delete_position_after:
+    forall co1 co2:list, cu cun:cursor
+      [delete_ co1 cu co2,  position_ co1 cun | delete_ co1 cu co2,  position_ co2 cun].
+      delete_ co1 cu co2 ->
+      (position_ co1 cun > position_ co1 cu \/ position_ co2 cun >= position_ co1 cu) ->
+        position_ co1 cun = position_ co2 cun + 1
+
+  axiom delete_position_range:
+    forall co1 co2:list, cu:cursor [delete_ co1 cu co2].
+      delete_ co1 cu co2 -> position_ co2 cu = 0 /\ 0 < position_ co1 cu
+
+(* for completeness (test_comp1), efficiency issues if a lot of delete (see test2). *)
+  axiom delete_position_next:
+    forall co1 co2:list, cu:cursor [delete_ co1 cu co2].
+      delete_ co1 cu co2 -> position_ co1 (next_ co1 cu) >= 0
+
+  axiom delete_element:
+    forall co1 co2:list, cu cun:cursor
+      [delete_ co1 cu co2,  element_ co1 cun
+     | delete_ co1 cu co2,  element_ co2 cun].
+      delete_ co1 cu co2 ->
+      0 < position_ co2 cun ->
+        element_ co1 cun = element_ co2 cun
+
+  predicate has_element list cursor
+
+  axiom has_element_pos:
+    forall co:list, cu:cursor [has_element co cu].
+    has_element co cu -> 0 < position_ co cu
+
+  axiom has_element_neg:
+    forall co:list, cu:cursor [has_element co cu].
+    not (has_element co cu) -> position_ co cu = 0
+  
+  predicate contains list element_t
+
+  axiom contains_c:
+  forall co : list, e : element_t [contains co e].
+    contains co e <-> 0 < position_ co (findfirst co e)
+
+val element (co:list ) (cu:cursor) : element_t
+	  requires { has_element co cu }
+	  ensures { result = element_ co cu }
+
+val replace_element (co:ref list) (cu:cursor) (e:element_t) : unit
+	  requires { has_element !co cu }
+	  writes { co }
+	  ensures { replace_element_ (old !co) cu e !co }
+
+val insert (co:ref list) (cu:cursor) (e:element_t) : unit
+	  requires { has_element !co cu \/ cu = no_element }
+	  reads { co }
+          writes { co }
+	  ensures { insert_ (old !co) cu e !co }
+
+val prepend (co:ref list) (e:element_t) : unit
+	  reads { co }
+          writes { co }
+	  ensures { insert_ (old !co) (first (old !co)) e !co }
+
+val append (co:ref list) (e:element_t) : unit
+	  reads { co }
+          writes { co }
+	  ensures { insert_ (old !co) no_element e !co }
+
+val delete (co:ref list) (cu:cursor) : unit
+	  requires { has_element !co cu }
+	  reads { co }
+          writes { co }
+	  ensures { delete_ (old !co) cu !co }
+
+val previous (co:list) (cu:cursor) : cursor
+	  requires { cu = no_element \/ has_element co cu }
+	  ensures { result = previous_ co cu }
+
+val next (co:list) (cu:cursor) : cursor 
+	  requires { cu = no_element \/ has_element co cu }
+	  ensures { result = next_ co cu }
+
+end
+

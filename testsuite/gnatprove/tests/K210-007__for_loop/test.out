@@ -1,0 +1,25 @@
+
+s.adb:21:10: info: loop invariant initialization proved
+s.adb:21:10: info: loop invariant preservation proved
+s.adb:24:7: info: assertion proved
+s.adb:27:10: info: loop invariant initialization proved
+s.adb:27:10: info: loop invariant preservation proved
+s.adb:30:7: info: assertion proved
+s.adb:36:10: info: loop invariant initialization proved
+s.adb:36:10: loop invariant preservation not proved
+s.adb:37:33: info: index check proved
+s.adb:37:54: info: index check proved
+s.adb:39:32: info: index check proved
+s.adb:39:53: info: index check proved
+s.adb:49:10: info: loop invariant initialization proved
+s.adb:49:10: loop invariant preservation not proved
+s.adb:50:33: info: index check proved
+s.adb:50:54: info: index check proved
+s.adb:52:32: info: index check proved
+s.adb:52:53: info: index check proved
+s.adb:6:10: info: loop invariant initialization proved
+s.adb:6:10: info: loop invariant preservation proved
+s.adb:7:34: info: index check proved
+s.ads:14:14: info: postcondition proved
+s.ads:17:14: info: postcondition proved
+s.ads:8:14: info: postcondition proved

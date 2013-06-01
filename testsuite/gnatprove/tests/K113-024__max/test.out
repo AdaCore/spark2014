@@ -1,0 +1,5 @@
+
+max.adb:5:11: info: range check proved
+max.adb:6:10: info: loop invariant initialization proved
+max.adb:6:10: info: loop invariant preservation proved
+max.ads:4:20: info: postcondition proved

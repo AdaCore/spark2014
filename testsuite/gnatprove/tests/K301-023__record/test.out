@@ -1,0 +1,4 @@
+
+rec.adb:5:22: info: overflow check proved
+rec.ads:9:19: info: postcondition proved
+rec.ads:9:42: info: overflow check proved

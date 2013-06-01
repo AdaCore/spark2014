@@ -1,0 +1,16 @@
+segway.adb:15:10: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:16:19: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:19:10: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:20:19: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:23:16: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:25:07: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:27:07: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.adb:29:07: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.ads:23:16: use of uninitialized variable "State" [uninitialized__state]
+segway.ads:23:16: use of uninitialized variable "Speed" [uninitialized__speed]
+segway.ads:25:31: global "Speed" might not be set [uninitialized__speed]
+segway.ads:25:38: global "State" might not be set [uninitialized__state]
+
+
+gnatprove: error during translation to intermediate language, aborting.
+

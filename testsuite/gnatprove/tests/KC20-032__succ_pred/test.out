@@ -1,0 +1,13 @@
+
+p.adb:10:14: info: postcondition proved
+p.adb:14:21: info: range check proved
+p.adb:14:35: info: range check proved
+p.adb:14:42: info: range check proved
+p.adb:19:14: info: postcondition proved
+p.adb:23:31: info: range check proved
+p.adb:23:38: info: range check proved
+p.adb:28:14: info: postcondition proved
+p.adb:32:18: info: range check proved
+p.adb:37:14: info: postcondition proved
+p.adb:41:19: info: range check proved
+p.adb:46:14: info: postcondition proved

@@ -1,0 +1,11 @@
+
+According to 3.5.2 (1), character types are enumeration types with at
+least one of their enumeration literals being a character literal. The
+description of their generation is (therefore) given in
+ch3.5.1__enumeration_types.
+
+However, in the case of standard character types (Character,
+Wide_Character, Wide_Wide_Character), it is probably not necessary to
+have an explicit (cumbersome) description of all literals. They will
+be better modeled as abstract types with bounds. In chars.why, an
+example for Standard.Character.

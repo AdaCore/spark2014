@@ -1,0 +1,33 @@
+
+This describes how enumeration types can be represented in Why.
+See enum.ads, proposal in enum.why, examples of use in enum_test.why.
+
+Enumeration types:
+------------------
+
+The representation of enumeration types is similar to the one of
+integer types (ch3.5.4__integer_types). Conversions of enumeration
+literals to int respect the default order as defined by 3.5.1 (7),
+whether it has a representation clause or not; this should ease the
+implementation of 'Succ and so; should we support representation
+clause, we would just generate a different implementation for 'Pos and
+we would keep the default ordering for int conversions.
+
+Subtypes:
+---------
+
+Subtypes of enumerations are represented in a similar way. A question
+remains: whether we should always operate on ints or on this enum's
+base type. The second strategy is shown here.
+
+Various remarks:
+----------------
+
+For character literals, expansion should have assigned a usable
+name as well. See Enum.Some_A.
+
+3.5.1 (9) Two enumeration types defined in the same scope may use 
+enumeration literals that have the same name. Enum.Name_Clash is
+an example. This is not a problem in this context, as the expansion
+should already have assigned unambiguous names.
+

@@ -1,0 +1,34 @@
+with "gnatcoll";
+
+project GNATprove is
+
+   for Object_Dir use "obj";
+   for Exec_Dir use "../install/bin";
+
+   type Build_Type is ("Debug", "Production");
+
+   Build : Build_Type := External ("Build", "Debug");
+
+   for Source_Dirs use (".", "..", "../common");
+
+   for Main use ("gnatprove.adb", "spark_report.adb");
+
+   Common_Switches := ("-gnat2012", "-gnatyg", "-g");
+
+   package Builder is
+      for Executable ("gnatprove.adb") use "gnatprove";
+      for Executable ("spark_report.adb") use "spark_report";
+   end Builder;
+
+   package Compiler is
+      case Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+               Common_Switches & ("-O0", "-gnata", "-gnatwae");
+         when "Production" =>
+            for Default_Switches ("Ada") use
+               Common_Switches & ("-O2", "-gnatn");
+      end case;
+   end Compiler;
+
+end GNATprove;

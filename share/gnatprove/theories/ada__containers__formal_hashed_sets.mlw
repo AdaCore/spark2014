@@ -1,0 +1,719 @@
+module Main
+  use import real.Real
+  use "a-contai__types_in_spec".Ada__containers__count_type
+  use "a-contai__types_in_spec".Ada__containers__hash_type
+  use import int.Int
+  use import ref.Ref
+  
+  (*** TO BE INSTANTIATED ***)
+
+  namespace import Element_type
+    type element_type
+  end
+
+  function oeq element_type element_type : bool
+
+  axiom equal_refl :
+  forall e : element_type [oeq e e].
+	oeq e e = True
+
+  axiom equal_sym :
+  forall e1 : element_type, e2 : element_type [oeq e1 e2].
+	oeq e1 e2 = oeq e2 e1
+
+  axiom equal_trans :
+  forall e1 : element_type, e2 : element_type, e3 : element_type [oeq e1 e2, oeq e1 e3 | oeq e1 e2, oeq e2 e3].
+	oeq e1 e2 = True -> oeq e2 e3 = True -> oeq e1 e3 = True
+
+  function equivalent_elements element_type element_type : bool
+  
+  axiom equivalent_equal : 
+  forall e1 : element_type, e2 : element_type [oeq e1 e2].
+	oeq e1 e2 = True -> equivalent_elements e1 e2 = True
+
+  function hash element_type : Ada__containers__hash_type.hash_type
+
+  (**************************)
+  
+  type cursor
+  
+  type set
+  
+  function no_element  : cursor
+  
+  function empty_  : set
+
+  function capacity set : int
+  
+  function length set : int
+  
+  axiom Length_gte_zero:
+    forall co:set [length co]. 0 <= length co  <= capacity co
+  
+  function witness element_type : real
+
+  axiom eq_witness :
+    (forall k1 : element_type, k2 : element_type [equivalent_elements k1 k2].
+	witness k1 = witness k2 -> equivalent_elements k1 k2 = True) /\
+    (forall k1 : element_type, k2 : element_type [equivalent_elements k1 k2].
+	equivalent_elements k1 k2 = True -> witness k1 = witness k2)
+  
+  function position_ set cursor : int
+  
+  axiom Position_gte_zero:
+    (forall co:set.
+      (forall cu:cursor.
+        ((Int.(<=) 0 (position_ co cu : int)) /\
+         (Int.(<=) (position_ co cu : int) (length co : int)))))
+  
+  axiom Position_no_element:
+    (forall co:set. ((position_ co (no_element  : cursor) : int) = 0))
+  
+  axiom Position_eq:
+    (forall co:set.
+      (forall cu1:cursor.
+        (forall cu2:cursor.
+          (((Int.(>) (position_ co cu1 : int) 0) /\
+            ((position_ co cu1 : int) = (position_ co cu2 : int))) ->
+           (cu1 = cu2)))))
+  
+  predicate is_empty_ (co : set) =
+    (forall cu:cursor. ((position_ co cu : int) = 0))
+  
+  axiom Length_is_empty:
+    (forall co:set. ((is_empty_ co) -> ((length co : int) = 0)))
+  
+  axiom Empty_is_empty: (is_empty_ (empty_  : set))
+  
+  predicate next__ (co : set) (cu1 : cursor) (cu2 : cursor) =
+    (((((Int.(>) (length co : int) (position_ co cu1 : int)) /\
+        (Int.(>) (position_ co cu1 : int) 0)) \/
+       (Int.(>) (position_ co cu2 : int) 0)) ->
+      ((position_ co cu2 : int) = (Int.(+) (position_ co cu1 : int) 1 : int))) /\
+     ((((Int.(>) (length co : int) 0) /\
+        ((position_ co cu1 : int) = (length co : int))) \/
+       (cu1 = (no_element  : cursor))) ->
+      (cu2 = (no_element  : cursor))))
+  
+  function next_ set cursor : cursor
+  
+  axiom Next_next:
+    (forall co:set.
+      (forall cu:cursor [(next_ co cu : cursor)].
+        (next__ co cu (next_ co cu : cursor))))
+  
+  predicate first_ (co : set) (cu : cursor) =
+    (((not (is_empty_ co)) -> ((position_ co cu : int) = 1)) /\
+     ((is_empty_ co) -> (cu = (no_element  : cursor))))
+  
+  function first set : cursor
+  
+  axiom First_first:
+    (forall co:set [(first co : cursor)]. (first_ co (first co : cursor)))
+  
+  function element_ set cursor : element_type
+  
+  function find_ set real : cursor
+  
+  predicate find__ (co : set) (i : real) (cu : cursor) =
+    (((cu = (no_element  : cursor)) /\
+      (forall cun:cursor.
+        ((Int.(>) (position_ co cun : int) 0) ->
+         ((witness (element_ co cun : element_type) : real) <> i)))) \/
+     ((Int.(>) (position_ co cu : int) 0) /\
+      (((witness (element_ co cu : element_type) : real) = i) /\
+       (forall cun:cursor.
+         ((Int.(>) (position_ co cun : int) 0) ->
+          ((cu <> cun) ->
+           ((witness (element_ co cun : element_type) : real) <> i)))))))
+  
+  axiom Find_find_val:
+    (forall co:set.
+      (forall i:real.
+        ((find__ co i (find_ co i : cursor)) /\
+         ((is_empty_ co) -> ((find_ co i : cursor) = (no_element  : cursor))))))
+  
+  predicate left_pos (co : set) (i : int) (col : set) =
+    ((forall cu:cursor.
+       (((Int.(<=) i (position_ co cu : int)) ->
+         ((position_ col cu : int) = 0)) /\
+        (((Int.(>) i (position_ co cu : int)) ->
+          ((position_ col cu : int) = (position_ co cu : int))) /\
+         ((Int.(>) (position_ col cu : int) 0) ->
+          ((position_ co cu : int) = (position_ col cu : int)))))) /\
+     (forall cu:cursor.
+       ((Int.(>) i (position_ co cu : int)) ->
+        ((element_ col cu : element_type) = (element_ co cu : element_type)))))
+  
+  predicate left_find (co : set) (i : int) (col : set) =
+    (forall w:real.
+      ((((Int.(>) i (position_ co (find_ co w : cursor) : int)) /\
+         (Int.(>) (position_ co (find_ co w : cursor) : int) 0)) \/
+        (Int.(>) (position_ col (find_ col w : cursor) : int) 0)) ->
+       ((find_ co w : cursor) = (find_ col w : cursor))))
+  
+  predicate left__ (co : set) (cu : cursor) (col : set) =
+    (((cu = (no_element  : cursor)) -> (col = co)) /\
+     ((Int.(>) (position_ co cu : int) 0) ->
+      (((length col : int) = (Int.(-) (position_ co cu : int) 1 : int)) /\
+       ((left_pos co (position_ co cu : int) col) /\
+        (left_find co (position_ co cu : int) col)))))
+  
+  function left_ set cursor : set
+  
+  axiom Left_left:
+    (forall co:set.
+      (forall cu:cursor [(left_ co cu : set)].
+        (left__ co cu (left_ co cu : set))))
+  
+  predicate right_pos (co : set) (i : int) (cor : set) =
+    ((forall cu:cursor.
+       (((Int.(>) i (position_ co cu : int)) ->
+         ((position_ cor cu : int) = 0)) /\
+        (((Int.(<=) i (position_ co cu : int)) ->
+          ((position_ cor cu : int) = (Int.(+) (Int.(-) (position_ co cu : int) i : int) 1 : int))) /\
+         ((Int.(>) (position_ cor cu : int) 0) ->
+          ((position_ co cu : int) = (Int.(-) (Int.(+) (position_ cor cu : int) i : int) 1 : int)))))) /\
+     (forall cu:cursor.
+       ((Int.(<=) i (position_ co cu : int)) ->
+        ((element_ cor cu : element_type) = (element_ co cu : element_type)))))
+  
+  predicate right_find (co : set) (i : int) (cor : set) =
+    (forall w:real.
+      ((((Int.(<=) i (position_ co (find_ co w : cursor) : int)) /\
+         (Int.(>) i 0)) \/
+        (Int.(>) (position_ cor (find_ cor w : cursor) : int) 0)) ->
+       ((find_ co w : cursor) = (find_ cor w : cursor))))
+  
+  predicate right__ (co : set) (cu : cursor) (cor : set) =
+    (((cu = (no_element  : cursor)) -> (cor = (empty_  : set))) /\
+     (((Int.(>) (position_ co cu : int) 0) ->
+       (((length cor : int) = (Int.(+) (Int.(-) (length co : int) (position_ co cu : int) : int) 1 : int)) /\
+        ((right_pos co (position_ co cu : int) cor) /\
+         (right_find co (position_ co cu : int) cor)))) /\
+      (forall cun:cursor.
+        ((Int.(>) (position_ cor cun : int) 0) ->
+         (Int.(>) (position_ co cun : int) 0)))))
+  
+  function right_ set cursor : set
+  
+  axiom Right_right:
+    (forall co:set.
+      (forall cu:cursor [(right_ co cu : set)].
+        (right__ co cu (right_ co cu : set))))
+  
+  predicate replace_ (co1 : set) (e : element_type) (co2 : set) =
+    ((Int.(>) (position_ co1 (find_ co1 (witness e : real) : cursor) : int) 0) /\
+     (((length co1 : int) = (length co2 : int)) /\
+      (((element_ co2 (find_ co1 (witness e : real) : cursor) : element_type) = e) /\
+       ((forall cun:cursor.
+          ((position_ co2 cun : int) = (position_ co1 cun : int))) /\
+        ((forall cun:cursor.
+           (((Int.(>) (position_ co1 cun : int) 0) /\
+             (cun <> (find_ co1 (witness e : real) : cursor))) ->
+            ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))) /\
+         (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor)))))))) /\
+     capacity co1 = capacity co2
+  
+  predicate replace_pos (co1 : set) (co2 : set) =
+    (forall cu:cursor.
+      ((((position_ co1 cu : int) = 0) /\ ((position_ co2 cu : int) = 0)) \/
+       ((Int.(>) (position_ co1 cu : int) 0) /\
+        (Int.(>) (position_ co2 cu : int) 0))))
+  
+  predicate replace_element_ (co1 : set) (cu : cursor) (e : element_type) (co2 : set) =
+    ((Int.(>) (position_ co1 cu : int) 0) /\
+     (((length co1 : int) = (length co2 : int)) /\
+      (((element_ co2 cu : element_type) = e) /\
+       ((replace_pos co1 co2) /\
+        ((forall cun:cursor.
+           (((Int.(>) (position_ co1 cun : int) 0) /\ (cu <> cun)) ->
+            ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))) /\
+         ((forall w:real.
+            ((((witness e : real) <> w) /\
+              (not ((find_ co1 w : cursor) = cu))) ->
+             ((find_ co1 w : cursor) = (find_ co2 w : cursor)))) /\
+          (forall w:real.
+            (((witness e : real) = w) -> ((find_ co2 w : cursor) = cu))))))))) /\
+     capacity co1 = capacity co2
+  
+  predicate insert_find (co1 : set) (e : element_type) (co2 : set) =
+    (forall w:real.
+      ((((witness e : real) <> w) ->
+        ((find_ co1 w : cursor) = (find_ co2 w : cursor))) /\
+       (((witness e : real) = w) ->
+        (((find_ co1 w : cursor) = (no_element  : cursor)) /\
+         (Int.(>) (position_ co2 (find_ co2 w : cursor) : int) 0)))))
+  
+  predicate insert_pos (co1 : set) (e : element_type) (co2 : set) =
+    ((forall cun:cursor [(position_ co1 cun : int),
+       (position_ co2 cun : int)].
+       ((Int.(>) (position_ co1 cun : int) 0) ->
+        (Int.(>) (position_ co2 cun : int) 0))) /\
+     ((forall cun:cursor.
+        ((Int.(>) (position_ co1 cun : int) 0) ->
+         ((element_ co1 cun : element_type) = (element_ co2 cun : element_type)))) /\
+      (forall cun:cursor.
+        (((0 = (position_ co1 cun : int)) /\
+          (Int.(>) (position_ co2 cun : int) 0)) ->
+         ((element_ co2 cun : element_type) = e)))))
+  
+  predicate insert_ (co1 : set) (e : element_type) (co2 : set) =
+    ((Int.(>) (position_ co2 (find_ co2 (witness e : real) : cursor) : int) 0) /\
+     (((length co2 : int) = (Int.(+) (length co1 : int) 1 : int)) /\
+      ((insert_pos co1 e co2) /\ (insert_find co1 e co2)))) /\
+     capacity co1 = capacity co2
+
+  predicate first_inserted (co1:set) (e : element_type) (co2:set) (p:cursor) =
+	    position_ co1 p = 0 /\ position_ co2 p > 0 /\ element_ co2 p = e
+  
+  predicate delete_find (co1 : set) (e : element_type) (co2 : set) =
+    (forall w:real.
+      ((((witness e : real) <> w) ->
+        ((find_ co1 w : cursor) = (find_ co2 w : cursor))) /\
+       (((witness e : real) = w) ->
+        ((find_ co2 w : cursor) = (no_element  : cursor)))))
+  
+  predicate delete_pos (co1 : set) (i : int) (co2 : set) =
+    ((forall cun:cursor.
+       ((((position_ co1 cun : int) = i) -> ((position_ co2 cun : int) = 0)) /\
+        (((Int.(>) (position_ co1 cun : int) 0) /\
+          ((position_ co1 cun : int) <> i)) ->
+         (Int.(>) (position_ co2 cun : int) 0)))) /\
+     (forall cun:cursor.
+       (((Int.(>) (position_ co1 cun : int) 0) /\
+         ((position_ co1 cun : int) <> i)) ->
+        ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))))
+  
+  predicate delete_inv (co1 : set) (i : int) (co2 : set) =
+    (forall cun:cursor.
+      ((Int.(>) (position_ co2 cun : int) 0) ->
+       (Int.(>) (position_ co1 cun : int) 0)))
+  
+  predicate delete_ (co1 : set) (cu : cursor) (co2 : set) =
+    (((find_ co2 (witness (element_ co1 cu : element_type) : real) : cursor) = (no_element  : cursor)) /\
+     ((Int.(>) (position_ co1 cu : int) 0) /\
+      (((length co2 : int) = (Int.(-) (length co1 : int) 1 : int)) /\
+       ((delete_pos co1 (position_ co1 cu : int) co2) /\
+        ((delete_inv co1 (position_ co1 cu : int) co2) /\
+         (delete_find co1 (element_ co1 cu : element_type) co2)))))) /\
+     capacity co1 = capacity co2
+  
+  predicate include__ (co1 : set) (e : element_type) (co2 : set) =
+    (((Int.(>) (position_ co1 (find_ co1 (witness e : real) : cursor) : int) 0) ->
+      (replace_ co1 e co2)) /\
+     (((find_ co1 (witness e : real) : cursor) = (no_element  : cursor)) ->
+      (insert_ co1 e co2)))
+  
+  predicate exclude_ (co1 : set) (e : element_type) (co2 : set) =
+    (((Int.(>) (position_ co1 (find_ co1 (witness e : real) : cursor) : int) 0) ->
+      (delete_ co1 (find_ co1 (witness e : real) : cursor) co2)) /\
+     (((find_ co1 (witness e : real) : cursor) = (no_element  : cursor)) ->
+      (co1 = co2)))
+
+  function singleton element_type : set
+
+  axiom singleton_def:
+  forall e : element_type [singleton e].
+    length (singleton e) = 1 /\ element_ (singleton e) (first (singleton e)) = e
+  
+  predicate has_element (co : set) (cu : cursor) =
+    (Int.(>) (position_ co cu : int) 0)
+  
+  predicate contains (co : set) (i : real) =
+    (Int.(>) (position_ co (find_ co i : cursor) : int) 0)
+  
+  axiom Empty_contains:
+    (forall s:set [(is_empty_ s)].
+      ((forall i:real. (not (contains s i))) -> (is_empty_ s)))
+  
+  predicate equal_ (co1 : set) (co2 : set) =
+    length co1 = length co2 /\
+    forall cu1:cursor. 
+    (position_ co1 cu1 : int) > 0 -> exists cu2:cursor.
+       (position_ co1 cu1 : int) = (position_ co2 cu1 : int) /\
+        (oeq (element_ co1 cu1 : element_type) (element_ co2 cu2 : element_type) = True)
+  
+  predicate strict_equal (co1 : set) (co2 : set) =
+    ((forall cu:cursor.
+       ((position_ co1 cu : int) = (position_ co2 cu : int))) /\
+     (forall cu:cursor.
+       ((Int.(>) (position_ co1 cu : int) 0) ->
+        ((element_ co1 cu : element_type) = (element_ co2 cu : element_type)))))
+  
+  predicate equivalent_sets_ (co1 : set) (co2 : set) =
+    ((forall i:real. ((contains co1 i) -> (contains co2 i))) /\
+     ((length co1 : int) = (length co2 : int)))
+  
+  axiom Equivalent_sym:
+    (forall co1:set.
+      (forall co2:set [(equivalent_sets_ co2 co1)| (equivalent_sets_ co1 co2)].
+        ((equivalent_sets_ co1 co2) -> (equivalent_sets_ co2 co1))))
+  
+  function inter set set : set
+  
+  predicate is_inter (s1 : set) (s2 : set) (i : set) =
+    (forall j:real [(contains s1 j), (contains s2 j)| (contains i j)].
+      ((((contains s1 j) /\ (contains s2 j)) -> (contains i j)) /\
+       (((not (contains s1 j)) \/ (not (contains s2 j))) ->
+        (not (contains i j)))))
+  
+  axiom Inter_is_inter:
+    (forall s1:set.
+      (forall s2:set [(inter s1 s2 : set)].
+        ((is_inter s1 s2 (inter s1 s2 : set)) /\
+         ((length (inter s1 s2 : set) : int) = (length (inter s2 s1 : set) : int)))))
+  
+  function union set set : set
+  
+  predicate is_union (s1 : set) (s2 : set) (u : set) =
+    ((forall i:real [(contains s1 i), (contains s2 i)| (contains u i)].
+       ((((contains s1 i) \/ (contains s2 i)) -> (contains u i)) /\
+        (((not (contains s1 i)) /\ (not (contains s2 i))) ->
+         (not (contains u i))))) /\
+     ((length u : int) = (Int.(-) (Int.(+) (length s1 : int) (length s2 : int) : int) (length (inter s1 s2 : set) : int) : int)))
+  
+  axiom Union_is_union:
+    (forall s1:set.
+      (forall s2:set [(union s1 s2 : set)].
+        (is_union s1 s2 (union s1 s2 : set))))
+  
+  function diff set set : set
+  
+  predicate is_diff (s1 : set) (s2 : set) (d : set) =
+    ((forall i:real [(contains s1 i), (contains s2 i)| (contains d i)].
+       ((((contains s1 i) /\ (not (contains s2 i))) -> (contains d i)) /\
+        (((not (contains s1 i)) \/ (contains s2 i)) ->
+         (not (contains d i))))) /\
+     ((length d : int) = (Int.(-) (length s1 : int) (length (inter s1 s2 : set) : int) : int)))
+  
+  axiom Diff_is_diff:
+    (forall s1:set.
+      (forall s2:set [(diff s1 s2 : set)].
+        (is_diff s1 s2 (diff s1 s2 : set))))
+  
+  function sdiff set set : set
+  
+  predicate is_sdiff (s1 : set) (s2 : set) (d : set) =
+    (forall i:real [(contains s1 i), (contains s2 i)| (contains d i)].
+       (contains s1 i /\ not (contains s2 i) -> contains d i) /\
+       (contains s2 i /\ not (contains s1 i) -> contains d i) /\
+       (not (contains s2 i) /\ not (contains s1 i) -> not (contains d i)) /\
+       (contains s2 i /\ contains s1 i -> not (contains d i))) /\
+     ((length d : int) = length s1 + length s2 - 2 * length (inter s1 s2))
+  
+  axiom sdiff_is_sdiff:
+    (forall s1:set.
+      (forall s2:set [(sdiff s1 s2 : set)].
+        (is_sdiff s1 s2 (sdiff s1 s2 : set))))
+  
+  predicate is_subset_ (s1 : set) (s2 : set) =
+    (forall i:real. ((contains s1 i) -> (contains s2 i)))
+
+  predicate no_overlaping (s1 : set) (s2 : set) =
+    (forall i:real. not (contains s1 i) \/ not (contains s2 i))
+
+  predicate cap_is_max set set int
+
+ axiom cap_is_max_def:
+   forall co1 co2:set, max:int 
+                  [cap_is_max co1 co2 max, capacity co1 | cap_is_max co1 co2 max, capacity co2].
+   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
+
+ 
+(*******************************  API  ********************************)
+
+function empty_set__object : set = empty_
+
+ function no_element__object : cursor = no_element
+
+ function set__capacity__record (co : set) : Ada__containers__count_type.count_type = 
+    Ada__containers__count_type.of_int (capacity co)
+
+ function set__modulus__record (co : set) : Ada__containers__hash_type.hash_type
+
+ function to_set__logic (e:element_type)  : set = singleton e
+ predicate  to_set__pre  (e:element_type) = true
+ predicate  to_set__post (e:element_type) (result : set) =
+	result = singleton e
+
+ function capacity__logic (co : set) : Ada__containers__count_type.count_type = 
+    Ada__containers__count_type.of_int (capacity co)
+ predicate capacity__pre  (co:set) = true
+ predicate capacity__post (co:set) (result : Ada__containers__count_type.count_type) =
+	result = Ada__containers__count_type.of_int (capacity co)
+
+ predicate reserve_capacity__pre  (co:set) 
+                                                                      (cap:Ada__containers__count_type.count_type) =
+     Ada__containers__count_type.to_int cap <= capacity co
+ predicate reserve_capacity__post (co oldco:set) 
+                                                       (cap : Ada__containers__count_type.count_type) =
+	oldco = co
+
+ function default_modulus__logic (cap : Ada__containers__count_type.count_type):
+     Ada__containers__hash_type.hash_type
+ predicate default_modulus__pre  (cap:Ada__containers__count_type.count_type) =
+     true
+ predicate default_modulus__post (cap : Ada__containers__count_type.count_type) (result : Ada__containers__hash_type.hash_type) = result = default_modulus__logic cap
+
+ function equivalent_elements__2__logic (co1:set) (cu1:cursor) (co2:set) (cu2:cursor) : bool =
+  equivalent_elements (element_ co1 cu1)  (element_ co2 cu2)
+
+ predicate equivalent_elements__2__pre  (co1:set) (cu1:cursor) (co2:set) (cu2:cursor) = true
+ predicate equivalent_elements__2__post (co1:set) (cu1:cursor) (co2:set) (cu2:cursor) (result : bool) =
+	result = equivalent_elements (element_ co1 cu1)  (element_ co2 cu2)
+
+function equivalent_elements__3__logic (co1:set) (cu1:cursor) (k2:element_type) : bool =
+  equivalent_elements (element_ co1 cu1) k2
+
+ predicate equivalent_elements__3__pre  (co1:set) (cu1:cursor) (k2:element_type) = true
+ predicate equivalent_elements__3__post (co1:set) (cu1:cursor) (k2:element_type) (result : bool) =
+	result = equivalent_elements (element_ co1 cu1) k2
+
+function equivalent_elements__4__logic (k1 : element_type) (co2:set) (cu2:cursor) : bool =
+	equivalent_elements k1  (element_ co2 cu2)
+
+ predicate equivalent_elements__4__pre  (k1 : element_type) (co2:set) (cu2:cursor) = true
+ predicate equivalent_elements__4__post (k1 : element_type) (co2:set) (cu2:cursor) (result : bool) =
+	result = equivalent_elements k1  (element_ co2 cu2)
+
+ function oeq__2__logic (co1:set) (co2:set) : bool =
+    if equal_ co1 co2 then True else False
+
+  predicate oeq__2__pre (co1:set) (co2:set) = true
+  predicate oeq__2__post (co1:set) (co2:set) (result:bool) = 
+         result  = True <-> equal_ co1 co2
+
+ function equivalent_sets__logic (co1:set) (co2:set) : bool =
+    if equivalent_sets_ co1 co2 then True else False
+
+  predicate equivalent_sets__pre (co1:set) (co2:set) = true
+  predicate equivalent_sets__post (co1:set) (co2:set) (result:bool) = 
+         result  = True <-> equivalent_sets_ co1 co2
+
+  function length__logic (co : set) : Ada__containers__count_type.count_type = Ada__containers__count_type.of_int (length co)
+
+  predicate length__pre (co : set) = true
+  predicate length__post (co : set) (result :  Ada__containers__count_type.count_type) =
+     result = Ada__containers__count_type.of_int (length co)
+
+  function is_empty__logic set : bool 
+
+  axiom is_empty__logic_def:
+    forall co : set [is_empty__logic co ].
+      is_empty__logic co = True <-> is_empty_ co
+
+  predicate is_empty__pre (co:set) = true
+  predicate is_empty__post (co:set) (result:bool)=
+     result = True <-> is_empty_ co
+
+  predicate clear__pre (co:set) = true
+  predicate clear__post (co oldco: set) =
+     is_empty_ co /\ capacity co = capacity oldco
+
+  predicate assign__pre (target:set) (source:set) =
+     capacity target >= length source
+  predicate assign__post (target oldtarget:set) (source:set) =
+     equal_ target source /\ capacity target = capacity oldtarget 
+
+  function copy__logic set Ada__containers__count_type.count_type : set
+
+  axiom copy__logic_def:
+    forall co:set, cap:Ada__containers__count_type.count_type [copy__logic co cap].
+          strict_equal co (copy__logic co cap) 
+                       /\ cap_is_max co (copy__logic co cap) (Ada__containers__count_type.to_int cap)
+
+  predicate copy__pre (co:set) (cap:Ada__containers__count_type.count_type) = true
+  predicate copy__post (co:set) (cap:Ada__containers__count_type.count_type) 
+              (result: set) =
+     result = copy__logic co cap
+
+  function element__logic (co:set) (cu:cursor) : element_type = element_ co cu
+
+  predicate element__pre (co:set) (cu:cursor) =
+     has_element co cu
+  predicate element__post (co:set) (cu:cursor) (result : element_type) =
+     result = element_ co cu
+
+  predicate replace_element__pre (co: set) (cu:cursor) (e:element_type)=
+     has_element co cu
+  predicate replace_element__post (co oldco: set) (cu:cursor) (e:element_type)=
+     replace_element_ oldco cu e co
+
+  predicate move__pre (target:set) (source:set) =
+     capacity target >= length source
+  predicate move__post (target oldtarget:set) (source oldsource:set) =
+     equal_ target oldsource /\ is_empty_ source /\ capacity target = capacity oldtarget
+
+  predicate insert__pre (co :set) (k:element_type)
+                                             (p : cursor) (inserted : bool)=
+     length co  < capacity co \/ contains co (witness k)
+  predicate insert__post (co oldco: set) (k:element_type)
+                                             (p oldp : cursor) (inserted oldinserted : bool) =
+     (if inserted = False then contains oldco (witness k) 
+      else not (contains oldco (witness k))) /\ 
+       (if contains oldco (witness k) then 
+      (p = find_ oldco (witness k) /\ co = oldco /\ inserted = False)
+       else (first_inserted oldco k co p /\ insert_ oldco k co /\ inserted = True))
+
+  predicate insert__2__pre (co :set) (k:element_type) =
+     length co  < capacity co /\ not contains co (witness k)
+  predicate insert__2__post (co oldco: set) (k:element_type) =
+     insert_ oldco k co
+
+  predicate include__pre (co :set) (k:element_type) =
+     length co  < capacity co \/ contains co (witness k)
+  predicate include__post (co oldco: set) (k:element_type) =
+     include__ oldco k co
+
+  predicate replace__pre (co :set) (k:element_type) =
+     contains co (witness k)
+  predicate replace__post (co oldco: set) (k:element_type) =
+     replace_ oldco k co
+
+  predicate exclude__pre (co :set) (k:element_type) = true
+  predicate exclude__post (co oldco: set) (k:element_type) =
+     exclude_ oldco k co
+
+  predicate delete__pre (co :set) (k:element_type) = contains co (witness k)
+  predicate delete__post (co oldco: set) (k:element_type) =
+     delete_ oldco (find_ oldco (witness k)) co
+
+  predicate delete__2__pre (co :set) (cu:cursor) = has_element co cu
+  predicate delete__2__post (co oldco: set) (cu oldcu:cursor) =
+     delete_ oldco oldcu co /\ cu = no_element
+
+  function next__logic (co:set) (cu:cursor) : cursor = next_ co cu
+
+  predicate next__pre (co:set) (cu:cursor)= cu = no_element \/ has_element co cu 
+  predicate next__post (co:set) (cu:cursor) (result : cursor) =
+     result = next_ co cu
+
+  predicate next__2__pre (co:set) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate next__2__post (co:set) (cu oldcu:cursor) =
+     cu = next_ co oldcu
+
+  function first__logic (co:set) : cursor = first co
+
+  predicate first__pre (co:set) = true
+  predicate first__post (co:set) (result:cursor) =
+     result = first co
+
+  function find__logic (co:set) (e:element_type) : cursor = find_ co (witness e)
+
+  predicate find__pre (co:set) (e:element_type) = true
+  predicate find__post (co:set) (e:element_type) (result:cursor) =
+     result = find_ co (witness e)
+
+  function contains__logic set element_type: bool
+
+  axiom contains__logic_def:
+    forall co : set, e : element_type [contains__logic co e].
+      contains co (witness e) <-> contains__logic co e = True
+
+  predicate contains__pre (co:set) (e:element_type) = true
+  predicate contains__post (co:set) (e:element_type) (result: bool) =
+     contains co (witness e) <-> result = True
+
+  function has_element__logic set cursor : bool
+
+  axiom has_element__logic_def:
+    forall co : set, cu : cursor [has_element__logic co cu].
+      has_element co cu <-> has_element__logic co cu = True
+
+  predicate has_element__pre (co:set) (cu:cursor) = true
+  predicate has_element__post (co:set) (cu:cursor) (result: bool) =
+     has_element co cu <-> result = True
+
+  function strict_equal__logic (co1 co2 : set) : bool =
+    if strict_equal co1 co2 then True else False
+
+  predicate strict_equal__pre (co1:set) (co2:set) = true
+  predicate strict_equal__post (co1:set) (co2:set) (result:bool) =
+     result  = True <-> strict_equal co1 co2
+
+  function left__logic (co:set) (cu:cursor) : set = left_ co cu
+
+  predicate left__pre (co:set) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate left__post (co:set) (cu:cursor) (result:set) =
+     result = left_ co cu
+
+  function right__logic (co:set) (cu:cursor) : set = right_ co cu
+
+  predicate right__pre (co:set) (cu:cursor) =
+     cu = no_element \/ has_element co cu
+  predicate right__post (co:set) (cu:cursor)(result : set) =
+     result = right_ co cu
+
+  function overlap__logic (co1 co2:set) : bool = 
+   if no_overlaping co1 co2 then False else True
+
+  predicate overlap__pre (co1 co2:set) = true
+  predicate overlap__post (co1 co2:set)(result : bool) =
+     result = False <-> no_overlaping co1 co2
+  
+  predicate union__pre (co1 co2:set) =
+     length (union co1 co2) <= capacity co1
+  predicate union__post (co1 oldco1 co2:set) =
+     co1 = union oldco1 co2 /\ capacity co1 = capacity oldco1
+
+  function union__2__logic set set : set
+
+  axiom union__2__logic__def :
+     forall co1 co2 : set [union__2__logic co1 co2].
+	  length (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
+          union__2__logic co1 co2 = union co1 co2
+
+  predicate union__2__pre (co1 co2 : set) =  
+    length (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST
+  predicate union__2__post (co1 co2 : set)(result : set) =
+     result = union__2__logic co1 co2
+
+  predicate intersection__pre (co1 co2:set) = true
+  predicate intersection__post (co1 oldco1 co2:set) =
+     co1 = inter oldco1 co2 /\ capacity co1 = capacity oldco1
+
+  function intersection__2__logic (co1 co2 : set) : set = inter co1 co2
+
+  predicate intersection__2__pre (co1 co2 : set) =  true
+  predicate intersection__2__post (co1 co2 : set)(result : set) =
+     result = intersection__2__logic co1 co2
+
+  predicate difference__pre (co1 co2:set) = true
+  predicate difference__post (co1 oldco1 co2:set) =
+     co1 = diff oldco1 co2 /\ capacity co1 = capacity oldco1
+
+  function difference__2__logic (co1 co2 : set) : set = diff co1 co2
+
+  predicate difference__2__pre (co1 co2 : set) =  true
+  predicate difference__2__post (co1 co2 : set)(result : set) =
+     result = difference__2__logic co1 co2
+
+  predicate symmetric_difference__pre (co1 co2:set) = 
+     length (sdiff co1 co2) <= capacity co1
+  predicate symmetric_difference__post (co1 oldco1 co2:set) =
+     co1 = sdiff oldco1 co2 /\ capacity co1 = capacity oldco1
+
+  function symmetric_difference__2__logic set set : set
+
+  axiom symmetric_difference__2__logic__def :
+     forall co1 co2 : set [symmetric_difference__2__logic co1 co2].
+	  length (sdiff co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
+          symmetric_difference__2__logic co1 co2 = sdiff co1 co2
+
+  predicate symmetric_difference__2__pre (co1 co2 : set) =  
+    length (sdiff co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST
+  predicate symmetric_difference__2__post (co1 co2 : set)(result : set) =
+     result = symmetric_difference__2__logic co1 co2
+
+  function is_subset__logic (co1 co2:set) : bool = 
+   if is_subset_ co1 co2 then True else False
+
+  predicate is_subset__pre (co1 co2:set) = true
+  predicate is_subset__post (co1 co2:set)(result : bool) =
+     result = True <-> is_subset_ co1 co2
+  
+end
+

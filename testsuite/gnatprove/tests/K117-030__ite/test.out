@@ -1,0 +1,3 @@
+
+ite.adb:6:17: info: overflow check proved
+ite.ads:3:20: info: postcondition proved

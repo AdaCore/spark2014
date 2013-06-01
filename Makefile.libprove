@@ -1,0 +1,64 @@
+# This Makefile compiles the GNAT standard library to .mlw files for Hi-Lite.
+
+PWD_COMMAND=$${PWDCMD-pwd}
+GNAT2WHY = gnat2why
+CC = gcc
+AR = ar
+
+ifeq ($(strip $(filter-out %sh,$(SHELL))),)
+   GNAT_ROOT = $(shell cd $(ROOT);${PWD_COMMAND})/
+else
+   GNAT_ROOT = $(ROOT)/
+endif
+
+target = $(shell $(CC) -dumpmachine)
+version = $(shell $(CC) -dumpversion)
+ADA_INCLUDE_PATH = $(GNAT_ROOT)lib/gcc/$(target)/$(version)/adainclude
+ADA_OBJECTS_PATH = $(GNAT_ROOT)lib/gcc/$(target)/$(version)/adalib
+
+vpath %.adb $(ADA_INCLUDE_PATH)
+vpath %.ads $(ADA_INCLUDE_PATH)
+
+GNAT_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnat.a))
+GNARL_OBJS:=$(filter-out __% SORTED,$(shell $(AR) t $(ADA_OBJECTS_PATH)/libgnarl.a))
+EXCLUDE_OBJ:= \
+   adaint.o argv.o cio.o cstreams.o ctrl_c.o errno.o exit.o env.o raise.o \
+   sysdep.o aux-io.o init.o initialize.o locales.o seh_init.o cal.o \
+   arit64.o final.o tracebak.o expect.o mkdir.o socket.o \
+   targext.o raise-gcc.o adadecode.o terminals.o thread.o
+
+ALL_OBJS := $(filter-out $(EXCLUDE_OBJ), $(GNARL_OBJS) $(GNAT_OBJS))
+ALL_ALIS:=$(ALL_OBJS:.o=.ali)
+ALL_WHYPACK:=$(ALL_ALIS:.ali=__package.mlw)
+WHY_STANDARD:= _standard__package.mlw
+DUMMYFILE:= dummyfile
+
+all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
+
+check: $(ALL_WHYPACK:__package.mlw=.check)
+
+%__package.mlw: %.adb $(ALL_ALIS)
+	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
+
+%__package.mlw: %.ads $(ALL_ALIS)
+	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
+
+%.ali: %.adb
+	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.G $<
+
+%.ali: %.ads
+	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.G $<
+
+$(WHY_STANDARD):
+	touch $(DUMMYFILE)
+	$(GNAT2WHY) -gnatd.H $(DUMMYFILE)
+	rm $(DUMMYFILE)
+
+%.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
+	if [ -f $*__types_in_spec.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_spec.mlw > /dev/null ; fi
+	if [ -f $*__types_in_body.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_body.mlw > /dev/null ; fi
+	if [ -f $*__variables.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__variables.mlw > /dev/null ; fi
+	if [ -f $*__context_in_spec.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_spec.mlw > /dev/null ; fi
+	if [ -f $*__context_in_body.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__context_in_body.mlw > /dev/null ; fi
+	why3 -L ../share/gnatprove/theories --type-only -L . $*__package.mlw > /dev/null
+	touch $@

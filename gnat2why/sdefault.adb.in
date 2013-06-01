@@ -1,0 +1,77 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                         GNAT COMPILER COMPONENTS                         --
+--                                                                          --
+--                             S D E F A U L T                              --
+--                                                                          --
+--                                 B o d y                                  --
+--                                                                          --
+--                     Copyright (C) 1998-2011, AdaCore                     --
+--                                                                          --
+-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+-- terms of the  GNU General Public License as published  by the Free Soft- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+-- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
+-- for  more details.  You should have  received  a copy of the GNU General --
+-- Public License  distributed with GNAT; see file COPYING3.  If not, go to --
+-- http://www.gnu.org/licenses for a complete copy of the license.          --
+--                                                                          --
+------------------------------------------------------------------------------
+
+--  This is the Hi-Lite target dependent version of package body Sdefault.
+
+--  This package body provides the Hi-Lite implementation of the routines
+--  that locate the Ada library source and object directories.
+
+--  In the case of Hi-Lite, we care both about the location of the adainclude
+--  and adalib directories, so generate them from Makefile.generic, using the
+--  native compiler.
+
+package body Sdefault is
+   pragma Style_Checks (Off);
+
+   ----------------
+   -- Local Data --
+   ----------------
+
+   Target : constant String := "HI-LITE";
+
+   ------------------------------
+   -- Include_Dir_Default_Name --
+   ------------------------------
+
+   function Include_Dir_Default_Name return String_Ptr is
+   begin
+      return new String'("@ADAINCLUDE@");
+   end Include_Dir_Default_Name;
+
+   -----------------------------
+   -- Object_Dir_Default_Name --
+   -----------------------------
+
+   function Object_Dir_Default_Name return String_Ptr is
+   begin
+      return new String'("@ADALIB@");
+   end Object_Dir_Default_Name;
+
+   -----------------
+   -- Target_Name --
+   -----------------
+
+   function Target_Name return String_Ptr is
+   begin
+      return new String'(Target);
+   end Target_Name;
+
+   -----------------------
+   -- Search_Dir_Prefix --
+   -----------------------
+
+   function Search_Dir_Prefix return String_Ptr is
+   begin
+      return new String'("unknown");
+   end Search_Dir_Prefix;
+
+end Sdefault;
