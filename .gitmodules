@@ -1,6 +1,6 @@
 [submodule "why3"]
 	path = why3
-        url  = https://forge.open-do.org/anonscm/git/why3/why3.git
+        url  = https://forge.open-do.org/anonscm/git/spark2014/why3.git
 [submodule "alt-ergo"]
 	path = alt-ergo
-        url  = https://forge.open-do.org/anonscm/git/alt-ergo/alt-ergo.git
+        url  = https://forge.open-do.org/anonscm/git/spark2014/alt-ergo.git
