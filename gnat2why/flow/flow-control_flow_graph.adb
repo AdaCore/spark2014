@@ -1910,6 +1910,7 @@ package body Flow.Control_Flow_Graph is
               N_Use_Type_Clause                 |
               N_Object_Renaming_Declaration     |
               N_Subprogram_Renaming_Declaration |
+              N_Package_Renaming_Declaration    |
               N_Private_Type_Declaration        |
               N_Number_Declaration =>
                --  We completely skip these.
