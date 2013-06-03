@@ -863,40 +863,47 @@ package body Flow.Analysis is
             N    : Node_Id;
             Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
             Mask : Vertex_Sets.Set;
-            Msg  : Unbounded_String := Null_Unbounded_String;
+            Tag  : Unbounded_String := Null_Unbounded_String;
          begin
             if Atr.Is_Program_Node or else Atr.Is_Parameter then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access)
                then
                   Mask := Find_Masking_Code (V);
-                  N    := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
+                  if Mask.Length >= 1 then
+                     Tag := To_Unbounded_String (Create_Tag ("ineffective"));
+                  end if;
+                  N := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
 
                   if Atr.Is_Parameter then
-                     Msg := To_Unbounded_String
-                       ("ineffective assignment to parameter");
+                     Error_Msg_Flow
+                       (Msg => "unused assignment to &",
+                        G   => FA.PDG,
+                        Loc => V,
+                        F   => Atr.Parameter_Actual,
+                        Tag => To_String (Tag));
 
                   elsif Nkind (N) = N_Assignment_Statement then
-                     Msg := To_Unbounded_String ("ineffective assignment");
+                     Error_Msg_Flow
+                       (Msg => "unused assignment",
+                        G   => FA.PDG,
+                        Loc => V,
+                        Tag => To_String (Tag));
 
                   else
-                     Msg := To_Unbounded_String ("ineffective statement");
+                     Error_Msg_Flow
+                       (Msg => "ineffective statement",
+                        G   => FA.PDG,
+                        Loc => V,
+                        Tag => To_String (Tag));
 
                   end if;
-
-                  Error_Msg_Flow
-                    (Msg => To_String (Msg),
-                     G   => FA.PDG,
-                     Loc => V,
-                     Tag => (if Mask.Length >= 1
-                             then Create_Tag ("ineffective")
-                             else ""));
                   if Mask.Length >= 1 then
                      Write_Vertex_Set
                        (G     => FA.PDG,
                         E_Loc => Error_Location (FA.PDG, V),
                         Set   => Mask,
-                        Tag   => Create_Tag ("ineffective"));
+                        Tag   => To_String (Tag));
                   end if;
                end if;
             end if;

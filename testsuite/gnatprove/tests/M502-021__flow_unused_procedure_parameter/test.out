@@ -1,5 +1,5 @@
-test.adb:14:15: ineffective assignment to parameter [ineffective]
-test.adb:24:15: ineffective assignment to parameter
+test.adb:14:15: unused assignment to "Y" [ineffective]
+test.adb:24:15: unused assignment to "Y"
 
 
 gnatprove: error during translation to intermediate language, aborting.
