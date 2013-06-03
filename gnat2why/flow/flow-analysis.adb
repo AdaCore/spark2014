@@ -177,30 +177,35 @@ package body Flow.Analysis is
 
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
-                  Append (R, """");
-                  declare
-                     Index : Positive := 1;
-                  begin
-                     --  Replace __ with . in the magic string.
-                     while Index <= F.Name.all'Length loop
-                        case F.Name.all (Index) is
-                           when '_' =>
-                              if Index < F.Name.all'Length and then
-                                F.Name.all (Index) = '_' then
-                                 Append (R, ".");
-                                 Index := Index + 2;
-                              else
-                                 Append (R, '_');
-                                 Index := Index + 1;
-                              end if;
+                  if F.Name.all = "__HEAP" then
+                     Append (R, """the heap""");
 
-                           when others =>
-                              Append (R, F.Name.all (Index));
-                              Index := Index + 1;
-                        end case;
-                     end loop;
-                  end;
-                  Append (R, """");
+                  else
+                     Append (R, """");
+                     declare
+                        Index : Positive := 1;
+                     begin
+                        --  Replace __ with . in the magic string.
+                        while Index <= F.Name.all'Length loop
+                           case F.Name.all (Index) is
+                              when '_' =>
+                                 if Index < F.Name.all'Length and then
+                                   F.Name.all (Index + 1) = '_' then
+                                    Append (R, ".");
+                                    Index := Index + 2;
+                                 else
+                                    Append (R, '_');
+                                    Index := Index + 1;
+                                 end if;
+
+                              when others =>
+                                 Append (R, F.Name.all (Index));
+                                 Index := Index + 1;
+                           end case;
+                        end loop;
+                     end;
+                     Append (R, """");
+                  end if;
 
             end case;
             Do_Sub := False;
