@@ -21,8 +21,8 @@ related to tasking and synchronization.
 A statement is only in |SPARK| if all the constructs used in the statement are
 in |SPARK|.
 
-[A future release of |SPARK| is planned to support the Ravenscar multi-tasking 
-profile and then some of the tasking statements such as 
+[A future release of |SPARK| is planned to support the Ravenscar multi-tasking
+profile and then some of the tasking statements such as
 ``entry_call_statement``, and ``delay_statement`` will be permitted.]
 
 Assignment Statements
@@ -84,12 +84,12 @@ legality rules, and assertion policy as pragma Assert; furthermore it has the
 extra static semantics and legality rules given below.
 
 .. centered:: **Syntax**
-  
+
 #. Pragma Loop_Variant expects a list of parameters which are a specialization
    of an Ada expression as follows:
-  
+
    ::
-  
+
      loop_variant_parameters ::= loop_variant_item {, loop_variant_item}
      loop_variant_item       ::= change_direction => discrete_expression
      change_direction        ::= Increases | Decreases
@@ -98,7 +98,7 @@ extra static semantics and legality rules given below.
 .. todo::
    Complete detail on pragmas Loop_Invariant and Loop_Variant, and attribute Loop_Entry.
    To be completed in the Milestone 3 version of this document.
-   
+
 .. centered:: **Legality Rules**
 
 
@@ -285,7 +285,7 @@ an entity, or shall denote an ``object_renaming_declaration``, if
 * the ``attribute_reference`` is potentially unevaluated; or
 * the ``attribute_reference`` does not apply to the innermost
   enclosing ``loop_statement``.
-  
+
 [These rules follow the corresponding Ada RM rule for 'Old
  The prefix of an Old attribute_reference that is potentially
  unevaluated shall statically denote an entity and have the same rationale.
@@ -331,30 +331,30 @@ This section discusses the pragmas Assert_And_Cut and Assume.
 Language Definition
 ~~~~~~~~~~~~~~~~~~~
 
-Two |SPARK| pragmas are defined, Assert_And_Cut and Assume.  Each has a 
+Two |SPARK| pragmas are defined, Assert_And_Cut and Assume.  Each has a
 single Boolean parameter and may be used wherever pragma Assert is allowed.
 
-A Boolean expression which is an actual parameter ofpragma ``Assume`` 
-can be assumed to be True for the remainder of the subprogram. No verification 
+A Boolean expression which is an actual parameter ofpragma ``Assume``
+can be assumed to be True for the remainder of the subprogram. No verification
 of the expression is performed and in general it cannot.  It has to be used with
 caution and is used to state axioms.
 
-Pragma Assert_And_Cut and Loop_Invariant are similar to an Assert statement 
-except they also act as a *cut point* in formal verification.  
-A cut point means that a prover is free to forget all information about 
-modified variables that has been established from the statement list before 
+Pragma Assert_And_Cut and Loop_Invariant are similar to an Assert statement
+except they also act as a *cut point* in formal verification.
+A cut point means that a prover is free to forget all information about
+modified variables that has been established from the statement list before
 the cut point. Only the given Boolean expression is carried forward.
 
 Assert_And_Cut, Assume and Loop_Invariant are the same as pragma Assert with
 respect to Syntax, Name Resolution, Legality Rules, Dynamic Semantics, and
-assertion policy. Apart from the legality rule that restricts the use of 
+assertion policy. Apart from the legality rule that restricts the use of
 Loop_Invariant to a loop (see :ref:`loop_invariants`).
 
-.. note:: (TJJ 21-Feb-2013) Loop_Invariant is partially covered in two separate 
-   sections when we re-instate and complete the loop invariant, variant, loop 
+.. note:: (TJJ 21-Feb-2013) Loop_Invariant is partially covered in two separate
+   sections when we re-instate and complete the loop invariant, variant, loop
    entry value text we should rationalize the placement of the description
    of loop invariant to one section.
-   
+
 .. _assertcutinv_proof_semantics:
 
 .. centered:: **Verification Rules**
@@ -366,10 +366,10 @@ Loop_Invariant to a loop (see :ref:`loop_invariants`).
    pragmas introduce cut points: which indicate to a prover that it may, after
    proving the truth of the assertion, dispose of certain other conclusions that
    may have been inferred at that point.
-   
+
 #. The verification rules for pragma Assume are significantly different.
    [It would be difficult to overstate the importance of the difference.]
-   Even though the dynamic semantics of pragma Assume and pragma Assert are 
+   Even though the dynamic semantics of pragma Assume and pragma Assert are
    identical, pragma Assume does not introduce a corresponding proof obligation.
    Instead the prover is given permission to assume the truth of the assertion,
    even though this has not been proven. [A single incorrect Assume pragma can
@@ -399,4 +399,3 @@ The following example illustrates some pragmas of this section
 
 Note that in this example, the loop variant is unnecessarily complex, stating
 that ``I`` increases is enough to prove termination of this simple loop.
-
