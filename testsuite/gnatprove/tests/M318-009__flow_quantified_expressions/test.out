@@ -1,5 +1,5 @@
 test.adb:22:26: ineffective statement
-test.adb:23:28: ineffective statement
+test.adb:23:28: ineffective assignment
 test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized__temp_table]
 
 

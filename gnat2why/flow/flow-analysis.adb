@@ -860,34 +860,43 @@ package body Flow.Analysis is
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
+            N    : Node_Id;
             Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
             Mask : Vertex_Sets.Set;
+            Msg  : Unbounded_String := Null_Unbounded_String;
          begin
-            if Atr.Is_Program_Node then
+            if Atr.Is_Program_Node or else Atr.Is_Parameter then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access)
                then
                   Mask := Find_Masking_Code (V);
+                  N    := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
 
+                  if Atr.Is_Parameter then
+                     Msg := To_Unbounded_String
+                       ("ineffective assignment to parameter");
+
+                  elsif Nkind (N) = N_Assignment_Statement then
+                     Msg := To_Unbounded_String ("ineffective assignment");
+
+                  else
+                     Msg := To_Unbounded_String ("ineffective statement");
+
+                  end if;
+
+                  Error_Msg_Flow
+                    (Msg => To_String (Msg),
+                     G   => FA.PDG,
+                     Loc => V,
+                     Tag => (if Mask.Length >= 1
+                             then Create_Tag ("ineffective")
+                             else ""));
                   if Mask.Length >= 1 then
-                     --  We have a useful path we can show.
-                     Error_Msg_Flow
-                       (Msg => "ineffective statement",
-                        G   => FA.PDG,
-                        Loc => V,
-                        Tag => Create_Tag ("ineffective"));
                      Write_Vertex_Set
                        (G     => FA.PDG,
                         E_Loc => Error_Location (FA.PDG, V),
                         Set   => Mask,
                         Tag   => Create_Tag ("ineffective"));
-
-                  else
-                     --  The variables defined by this statement are
-                     --  just not used; no useful path can be show.
-                     Error_Msg_Flow (Msg => "ineffective statement",
-                                     G   => FA.PDG,
-                                     Loc => V);
                   end if;
                end if;
             end if;
