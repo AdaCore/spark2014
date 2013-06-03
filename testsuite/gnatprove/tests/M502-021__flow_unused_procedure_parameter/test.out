@@ -1,0 +1,6 @@
+test.adb:14:15: ineffective assignment to parameter [ineffective]
+test.adb:24:15: ineffective assignment to parameter
+
+
+gnatprove: error during translation to intermediate language, aborting.
+
