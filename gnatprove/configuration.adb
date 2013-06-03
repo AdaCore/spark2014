@@ -205,8 +205,8 @@ ASCII.LF &
    is
       Config : Command_Line_Configuration;
 
-      procedure Abort_With_Help (Msg : String);
-      pragma No_Return (Abort_With_Help);
+      procedure Abort_With_Help (Msg : String)
+         with No_Return;
       --  Stop the program, output the message and the help message, then exit
 
       function Init return Project_Tree;
