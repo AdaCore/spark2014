@@ -71,76 +71,34 @@ External state is a state abstraction or variable representing something
 external to a program.  For instance, an input or output device, or a
 communication channel to another subsystem such as another |SPARK| program.
 
-External state may be *volatile state* in the sense that an assignment to
-volatile state is not ineffective even if it's value is not read by the
-program [The assignment could be to an external device and has no logical effect
-on the program]. Similarly, a read of volatile state might not be ineffective;
-it may have a side-effect. The values obtained from two successive
-reads without an intervening update of volatile state might not be equal.
+External state may be specified as *output only* or *input only*. The update of
+output only external state is considered to be read by some external reader of
+the state and so the update is not ineffective even though the program itself
+cannot read the updated state. Input only external state is considered to be
+updated by some external writer and so successive reads of the input only
+external state may not give the same value even though the program itself cannot
+update the state. In other words the update of output only and the read of input
+only external state both have a side effect.
 
-An external state abstraction is considered to be volatile state unless it is
-explicitly specified as non-volatile.  External state which is a variable is
-volatile state if it is an Ada volatile object (as described in the Ada RM
-Annex C.6).  In |SPARK| individual components of an object cannot be specified
-as volatile.
+Output only and input only external states are treated specially in Global and
+Depends aspects as described below and cannot be denoted as actual parameters or
+be ``global_items`` of a function as they would introduce side-effects.
 
-In |SPARK| external state which is a variable specified as volatile using
-Ada aspects or pragmas is specified as input only or an output only not both.
-[This restriction may be relaxed at some point in the future.]
-The variable is the means of communication with some external input or output.
-
-A state abstraction that is volatile state may be specified as input only
-or output only or may be left unspecified in terms of whether it is an input or
-output. [The lack of an input only or output only designator indicates that the
-state abstraction may represent hidden state that may have non-volatile and,
-or, both input only and output only states. Such a state abstraction may be
-representing some complex external communication channel.]
-
-External state that is specified as non-volatile is assumed to be both an
-input and an output and shall not be specified as an input or output only.
-
-It follows that external state that is specified as input only or output only
-is volatile state. [If it is Input_Only then some external writer needs to be
-updating the value of the variable. Similarly, if it is Output_Only it is
-expected that there are external readers to be consuming the output values.
-Either of these require external agents of some kind, which implies volatility.]
+External state that is not specified as output only or input only behaves as
+normal (non-volatile) state and may be read or updated by the program and has no
+special treatment for Global and Depends aspects.
 
 |SPARK| aspects are defined for specifying a variable as an input only or an
-output only [Ada aspects are used for specifying volatility and whether the
-variable is external] see :ref:`external_aspects`). When a state abstraction is
-declared by an Abstract_State aspect (see :ref:`abstract-state-aspect`) it may
-be specified as external, in which case it may be also specified as either input
-only or output only, or it may be specified as non-volatile.
+output only [Ada aspects are used for specifying whether a variable is external]
+see :ref:`external_aspects`). When a state abstraction is declared by an
+Abstract_State aspect (see :ref:`abstract-state-aspect`) it may be specified as
+external, in which case it may be also specified as either input only or output
+only.
 
 .. centered:: **Static Semantics**
 
-#. An external state abstraction may be specified as being non-volatile
-   state; without this designation it is volatile state.
-
-#. A variable is specified as volatile state using the aspects (or pragmas)
-   defined in the Ada RM Annex C6  (or J15).  A variable which is not specified
-   as volatile is non-volatile state.
-
-#. A state abstraction denoted as external non-volatile state cannot be
-   specified as an input only or output only state.  All external states that
-   are specified as input only or output only are volatile states.
-
-#. The read or update of volatile state is considered to be both a read and an
-   update of the state. A read of volatile state is preceded by an implicit
-   update of the state and an update of volatile state is followed by an
-   implicit read of the state. [Thus, a read of volatile state always has a
-   side effect and an update of volatile state is never ineffective.]
-
-#. It follows from the semantics of reading and updating of volatile state that
-   such state does not require initialization for static analysis purposes
-   [Indeed, it is not possible to initialize an external input only variable
-   because the SPARK rules forbid it to be updated explicitly] and so volatile
-   states are not the subject of an initialization item in an Initializes aspect
-   (see :ref:`initializes_aspect`).
-
-#. Global and Depends aspects of a subprogram represent the explicit reads and
-   updates performed by a subprogram and the implicit reads and updates
-   described above are not recorded in these aspects.
+Static semantics are given individually for external variables and external
+state abstractions.
 
 .. centered:: **Legality Rules**
 
@@ -152,19 +110,18 @@ only or output only, or it may be specified as non-volatile.
    a Global aspect with a ``mode_selector`` of Input or In_Out. Nor shall not be
    denoted as an ``input`` of a Depends aspect.
 
-#. As a read of volatile state always has a side-effect a ``global_item`` of a
-   function cannot denote volatile state [which in turn means that a function
-   cannot, directly or indirectly, read volatile state].
+#. A ``global_item`` of a function shall not denote input only or output only
+   external state.
+   
+# An actual parameter in a function call shall not denote output only or input
+  only external state.
 
-#. Volatile state shall not be denoted by a ``name`` of an
-   ``initialization_item`` of an Initializes aspect
-   (see :ref:`initializes_aspect`).
-
-.. todo:: Consider more than just simple External Inputs and Outputs;
-          Latched outputs, In_Out Externals, etc.
-          To be completed in the Milestone 4 version of this document.
-
-
+#. Since output only external state shall never be read by the program and 
+   input only external state may never be updated by the program neither of
+   these sorts of external state shall be denoted by a ``name`` of an
+   ``initialization_item`` of an Initializes aspect (see
+   :ref:`initializes_aspect`).
+   
 .. _external_aspects:
 
 Input_Only and Output_Only Aspects
@@ -175,12 +132,15 @@ for instance a transducer, subsystem, or program is considered an
 *external variable* if it is Volatile or is declared with an Ada Address,
 Import, or Export specification (either using an aspect or a pragma).
 
-An external variable is external volatile state if it is specified with
-volatile True otherwise it is external non-volatile state.
+If a variable is volatile it is external and has to be specified as an input
+only or an output only external state. The Boolean Input_Only and Output_Only
+are used for this specification.
 
-If it is a volatile variable it has to be specified as an input only or an
-output only external state. The Boolean Input_Only and Output_Only are used for
-this specification.
+.. centered:: **Static Semantics**
+
+#. A varible which is Volatile or has one of the Ada aspects Import or Export,
+   or the Ada aspect Address specified in its declaration is an external 
+   variable.
 
 .. centered:: **Legality Rules**
 
@@ -191,6 +151,9 @@ this specification.
    *external output*.
    [The rule that a volatile variable shall be either an input or an output
    only may be relaxed in a future version of SPARK.]
+
+#. A variable which is not volatile shall not have an Input_Only or Output_Only
+   aspect specified as True.
 
 #. The Boolean expression of the aspect definitions of the Input_Only
    or Output_Only aspects shall be static.
@@ -210,6 +173,9 @@ this specification.
 
    * as an actual parameter in a procedure call of which the corresponding
      formal parameter is mode **in** and is of a non-scalar volatile type.
+     
+   [This rule means that an external input cannot be updated directly by the
+   program.]
 
 #. A name denoting an external output shall only occur in the following
    contexts:
@@ -219,6 +185,9 @@ this specification.
    * as an actual parameter in a procedure call of which the mode of the
      corresponding formal parameter is **out** and is of a non-scalar, volatile
      type.
+     
+   [This rule meanss that an external output cannot be directly read by the
+   program.]
 
 #. See section on volatile variables for rules concerning their use in |SPARK|
    (:ref:`shared_variable_control`).
@@ -228,10 +197,6 @@ this specification.
 There are no extra verification rules.
 
 .. centered:: **Static Semantics**
-
-There are no extra static semantics associated with these aspects.
-
-.. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with these aspects.
 
@@ -357,7 +322,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
   option                     ::= simple_option
                                | name_value_option
   simple_option              ::= External
-                               | Non_Volatile
                                | Input_Only
                                | Output_Only
   name_value_option          ::= Part_Of  => abstract_state
@@ -377,10 +341,10 @@ shall follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.2 LR An option shall not be repeated within a single option list.
 
 #. If External is specified in an ``option_list`` then at most one of
-   Input_Only, Output_Only or Non_Volatile``options`` may be specified in the
-   ``option_list``. The Input_Only, Output_Only Non_Volatile options shall not
-   be specified in an ``option_list`` without an External ``option``.
-
+   Input_Only or Output_Only ``options`` may be specified in the
+   ``option_list``. The Input_Only and Output options shall not be specified in
+   an ``option_list`` without an External ``option``.
+   
 #. If a ``option_list`` contains one or more ``name_value_option`` items
    then they shall be the final options in the list.
    [This eliminates the possibility of a positional
@@ -1629,13 +1593,10 @@ abstraction on to external states which are given in this section.
 #. A state abstraction that is not specified as External shall not have
    ``constituents`` which are External states.
 
-#. An External, Non_Volatile state abstraction shall only have ``constituents``
-   that are External, Non_Volatile states and, or, non External states.
-
-#. An External, Input_Only state abstraction shall only have ``constituents``
+#. An External, Input_Only state abstraction shall have only ``constituents``
    that are External, Input_Only states.
 
-#. An External, Output_Only state abstraction shall only have ``constituents``
+#. An External, Output_Only state abstraction shall have only ``constituents``
    that are External, Output_Only states.
 
 #. A state abstraction that is specified as just External state, referred to
@@ -1665,13 +1626,13 @@ abstraction on to external states which are given in this section.
    is
       procedure Read (Combined_Value : out Integer)
          with Global  => Combined_Inputs,  -- Combined_Inputs is an Input_Only
-                                           -- External state it can only be an
+                                           -- External state; it can only be an
                                            -- Input in Global and Depends aspects.
               Depends => (Combined_Value => Combined_Inputs);
 
       procedure Display (D_Main, D_Secondary : in String)
          with Global  => (Output => Displays), -- Displays is an Output_Only
-                                               -- External state it can only be an
+                                               -- External state; it can only be an
                                                -- Output in Global and Depends
                                                -- aspects.
               Depends => (Displays => (D_Main, D_Secondary));
@@ -1688,7 +1649,7 @@ abstraction on to external states which are given in this section.
          with Global  => (In_Out => Complex_Device),
               Depends => (Complex_Device => (Complex_Device, Value));
          -- If the refined Global Aspect refers to constituents which
-         -- are volatile state then the mode_selector for Complex_Device must
+         -- are volatile then the mode_selector for Complex_Device must
          -- be In_Out and it is both an input and an output.
          -- The subprogram must be a procedure.
 

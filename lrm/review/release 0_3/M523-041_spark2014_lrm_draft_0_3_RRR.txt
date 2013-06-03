@@ -462,8 +462,9 @@ begin
                               -- V1 = V2.
 end Get_2_In;
 
+I have updated the SPARK RM text to reflect this half-way house.
 
-!Checked By: AH
+!Checked By:
 
 !Label: STT030
 !Location: 7.1.3 57/9-58/2:
