@@ -27,7 +27,7 @@ with Ada.Command_Line;
 with Ada.Text_IO;               use Ada.Text_IO;
 with System.Multiprocessors;
 
-with Hilitevsn;                 use Hilitevsn;
+with SPARK2014VSN;              use SPARK2014VSN;
 
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
@@ -205,8 +205,8 @@ ASCII.LF &
    is
       Config : Command_Line_Configuration;
 
-      procedure Abort_With_Help (Msg : String) with
-        No_Return;
+      procedure Abort_With_Help (Msg : String);
+      pragma No_Return (Abort_With_Help);
       --  Stop the program, output the message and the help message, then exit
 
       function Init return Project_Tree;
@@ -315,7 +315,7 @@ ASCII.LF &
               Concatenate => False);
 
       if Version then
-         Ada.Text_IO.Put_Line (Hilite_Version_String);
+         Ada.Text_IO.Put_Line (SPARK2014_Version_String);
          GNAT.OS_Lib.OS_Exit (0);
       end if;
 
