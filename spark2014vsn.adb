@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                              HILITE COMPONENTS                           --
+--                            SPARK 2014 COMPONENTS                         --
 --                                                                          --
---                              H I L I T E V S N                           --
+--                           S P A R K 2 0 1 4 V S N                        --
 --                                                                          --
 --                                   B o d y                                --
 --                                                                          --
@@ -22,15 +22,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Hilitevsn is
+package body SPARK2014VSN is
 
-   ---------------------------
-   -- Hilite_Version_String --
-   ---------------------------
+   ------------------------------
+   -- SPARK2014_Version_String --
+   ------------------------------
 
-   function Hilite_Version_String return String is
+   function SPARK2014_Version_String return String is
    begin
-      return Hilite_Static_Version_String;
-   end Hilite_Version_String;
+      return SPARK2014_Static_Version_String;
+   end SPARK2014_Version_String;
 
-end Hilitevsn;
+end SPARK2014VSN;

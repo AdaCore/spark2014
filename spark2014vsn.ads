@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                              HILITE COMPONENTS                           --
+--                            SPARK 2014 COMPONENTS                         --
 --                                                                          --
---                              H I L I T E V S N                           --
+--                           S P A R K 2 0 1 4 V S N                        --
 --                                                                          --
 --                                   S p e c                                --
 --                                                                          --
@@ -22,19 +22,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Hilitevsn is
+package SPARK2014VSN is
 
-   Hilite_Static_Version_String : constant String := "0.9.0w";
+   SPARK2014_Static_Version_String : constant String := "0.9.0w";
    --  Static string identifying this version, that can be used as an argument
    --  to e.g. pragma Ident.
    --
    --  WARNING: some scripts rely on the format of this string. Any change
    --  must be coordinated with the scripts requirements. Furthermore, no
    --  other variable in this package may have a name starting with
-   --  Hilite_Static_Version.
+   --  SPARK2014_Static_Version.
 
-   function Hilite_Version_String return String;
-   --  Version output when Hi-Lite related tools are run (with appropriate
+   function SPARK2014_Version_String return String;
+   --  Version output when SPARK 2014 related tools are run (with appropriate
    --  verbose option switch set).
 
-end Hilitevsn;
+end SPARK2014VSN;
