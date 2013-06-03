@@ -138,7 +138,7 @@ are used for this specification.
 
 .. centered:: **Static Semantics**
 
-#. A varible which is Volatile or has one of the Ada aspects Import or Export,
+#. A variable which is Volatile or has one of the Ada aspects Import or Export,
    or the Ada aspect Address specified in its declaration is an external 
    variable.
 
@@ -186,7 +186,7 @@ are used for this specification.
      corresponding formal parameter is **out** and is of a non-scalar, volatile
      type.
      
-   [This rule meanss that an external output cannot be directly read by the
+   [This rule means that an external output cannot be directly read by the
    program.]
 
 #. See section on volatile variables for rules concerning their use in |SPARK|
