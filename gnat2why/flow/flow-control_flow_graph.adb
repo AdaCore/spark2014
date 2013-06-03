@@ -1894,6 +1894,7 @@ package body Flow.Control_Flow_Graph is
       while Present (P) loop
          case Nkind (P) is
             when N_Freeze_Entity                |
+              N_Label                           |
               N_Implicit_Label_Declaration      |
               N_Subprogram_Body                 |
               N_Subprogram_Declaration          |
