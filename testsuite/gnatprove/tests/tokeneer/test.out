@@ -206,10 +206,10 @@ display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
 display.adb:138:30: info: index check proved
 display.adb:139:30: info: index check proved
-display.adb:140:32: info: range check proved
+display.adb:140:32: range check not proved
 display.adb:143:11: info: range check proved
 display.adb:148:33: index check not proved
-display.adb:148:33: info: overflow check proved
+display.adb:148:33: overflow check not proved
 display.adb:150:32: range check not proved
 door.adb:99:10: info: postcondition proved
 door.ads:148:8: postcondition not proved

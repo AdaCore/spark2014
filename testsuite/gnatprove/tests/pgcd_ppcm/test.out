@@ -26,6 +26,6 @@ a.ads:18:45: info: overflow check proved
 a.ads:19:29: info: overflow check proved
 a.ads:19:38: info: overflow check proved
 a.ads:19:45: info: overflow check proved
-a.ads:7:7: info: postcondition proved
+a.ads:7:7: postcondition not proved, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B
 a.ads:8:34: info: overflow check proved
 a.ads:9:34: info: overflow check proved

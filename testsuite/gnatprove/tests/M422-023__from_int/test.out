@@ -1,6 +1,6 @@
 
 sgs.adb:10:7: assertion not proved, requires A (X1) <= 
-sgs.adb:12:7: info: assertion proved
+sgs.adb:12:7: assertion not proved, requires A (X2) <= 
 sgs.adb:13:7: assertion not proved, requires A (X2) >= 
 sgs.adb:15:7: assertion not proved
 sgs.adb:18:13: info: range check proved

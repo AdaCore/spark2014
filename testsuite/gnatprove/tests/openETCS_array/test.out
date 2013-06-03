@@ -26,8 +26,8 @@ deceleration_curve.adb:90:29: overflow check not proved
 deceleration_curve.adb:91:13: overflow check not proved
 deceleration_curve.adb:91:46: info: division check proved
 deceleration_curve.adb:91:46: overflow check not proved
-deceleration_curve.adb:96:36: info: overflow check proved
-deceleration_curve.adb:96:36: info: range check proved
+deceleration_curve.adb:96:36: overflow check not proved
+deceleration_curve.adb:96:36: range check not proved
 deceleration_curve_test.adb:15:19: precondition not proved
 deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:17:4: info: precondition proved
@@ -122,11 +122,11 @@ step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:50: info: index check proved
 step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: info: index check proved
-step_function.ads:56:12: info: postcondition proved
+step_function.ads:56:12: postcondition not proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
-step_function.ads:72:6: info: postcondition proved
+step_function.ads:72:6: postcondition not proved
 step_function.ads:73:28: info: index check proved
 step_function.ads:74:50: info: index check proved
 step_function.ads:78:26: info: index check proved
