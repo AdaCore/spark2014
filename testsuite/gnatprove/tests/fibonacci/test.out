@@ -14,7 +14,7 @@ fib.adb:116:22: overflow check not proved
 fib.adb:118:13: assertion not proved
 fib.adb:120:22: range check not proved
 fib.adb:121:22: overflow check not proved
-fib.adb:130:11: info: range check proved
+fib.adb:130:11: range check not proved
 fib.adb:131:13: index check not proved
 fib.adb:131:22: index check not proved
 fib.adb:133:11: range check not proved
@@ -68,10 +68,10 @@ fib.adb:46:19: overflow check not proved
 fib.adb:46:19: range check not proved
 fib.adb:47:19: range check not proved
 fib.adb:48:17: overflow check not proved
-fib.adb:66:11: info: range check proved
+fib.adb:66:11: range check not proved
 fib.adb:67:17: overflow check not proved
 fib.adb:67:17: range check not proved
-fib.adb:75:11: info: range check proved
+fib.adb:75:11: range check not proved
 fib.adb:76:10: loop invariant initialization not proved, requires p1 = Factorial(i - 1)
 fib.adb:76:10: loop invariant preservation not proved, requires p1 = Factorial(i - 1)
 fib.adb:76:38: precondition not proved

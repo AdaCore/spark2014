@@ -124,9 +124,9 @@ p.adb:70:57: loop invariant preservation not proved, requires Tab (L) = L
 p.adb:70:62: index check not proved
 p.adb:71:7: loop variant not proved
 p.adb:78:50: overflow check not proved
+p.adb:78:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:78:57: loop invariant preservation not proved, requires Tab (L) = L
 p.adb:78:62: index check not proved
-p.adb:78:7: info: loop invariant initialization proved
 p.adb:79:12: index check not proved
 p.adb:80:14: overflow check not proved
 p.adb:81:7: loop variant not proved

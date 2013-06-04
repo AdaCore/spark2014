@@ -13,12 +13,12 @@ ng.adb:41:19: range check not proved
 ng.adb:60:18: overflow check not proved
 ng.adb:60:18: range check not proved
 ng.adb:61:17: overflow check not proved
-ng.adb:61:23: info: division check proved
+ng.adb:61:23: division check not proved
 ng.adb:61:23: overflow check not proved
 ng.adb:61:23: range check not proved
 ng.adb:64:23: overflow check not proved
 ng.adb:64:29: overflow check not proved
-ng.adb:64:37: info: division check proved
+ng.adb:64:37: division check not proved
 ng.adb:64:37: overflow check not proved
 ng.adb:64:37: range check not proved
 ng.adb:64:43: overflow check not proved

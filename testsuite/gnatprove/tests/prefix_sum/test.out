@@ -63,7 +63,7 @@ prefixsum.adb:90:45: index check not proved
 prefixsum.adb:93:49: division check not proved
 prefixsum.adb:9:10: loop invariant initialization not proved
 prefixsum.adb:9:10: loop invariant preservation not proved
-prefixsum.ads:26:23: info: division check proved
+prefixsum.ads:26:23: division check not proved
 prefixsum.ads:27:28: overflow check not proved
 prefixsum.ads:27:36: overflow check not proved
 prefixsum.ads:27:44: overflow check not proved
@@ -71,7 +71,7 @@ prefixsum.ads:27:52: overflow check not proved
 prefixsum.ads:28:28: overflow check not proved
 prefixsum.ads:28:36: overflow check not proved
 prefixsum.ads:28:44: overflow check not proved
-prefixsum.ads:29:25: info: division check proved
+prefixsum.ads:29:25: division check not proved
 prefixsum.ads:30:28: overflow check not proved
 prefixsum.ads:30:34: index check not proved
 prefixsum.ads:30:38: overflow check not proved
@@ -82,7 +82,7 @@ prefixsum.ads:31:25: division check not proved
 prefixsum.ads:32:28: overflow check not proved
 prefixsum.ads:32:34: index check not proved
 prefixsum.ads:38:14: postcondition not proved
-prefixsum.ads:40:17: info: precondition proved
+prefixsum.ads:40:17: precondition not proved
 prefixsum.ads:48:17: info: precondition proved
 prefixsum.ads:50:8: postcondition not proved
 prefixsum_expanded.adb:116:27: division check not proved
@@ -194,7 +194,7 @@ prefixsum_general.adb:68:31: range check not proved
 prefixsum_general.adb:68:39: overflow check not proved
 prefixsum_general.adb:70:25: overflow check not proved
 prefixsum_general.adb:70:25: range check not proved
-prefixsum_general.adb:84:27: info: division check proved
+prefixsum_general.adb:84:27: division check not proved
 prefixsum_general.adb:87:10: loop variant not proved
 prefixsum_general.adb:89:25: overflow check not proved
 prefixsum_general.adb:89:29: overflow check not proved

@@ -36,15 +36,15 @@ simple_unc_arrays.adb:171:34: range check not proved
 simple_unc_arrays.adb:176:34: range check not proved
 simple_unc_arrays.adb:26:36: info: discriminant check proved
 simple_unc_arrays.adb:26:36: info: range check proved
-simple_unc_arrays.adb:32:10: info: loop invariant initialization proved
+simple_unc_arrays.adb:33:44: loop invariant initialization not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:44: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
-simple_unc_arrays.adb:33:46: info: discriminant check proved
+simple_unc_arrays.adb:33:46: discriminant check not proved
 simple_unc_arrays.adb:33:50: index check not proved
 simple_unc_arrays.adb:33:74: index check not proved
 simple_unc_arrays.adb:33:74: overflow check not proved
-simple_unc_arrays.adb:38:17: info: discriminant check proved
+simple_unc_arrays.adb:38:17: discriminant check not proved
 simple_unc_arrays.adb:38:21: index check not proved
-simple_unc_arrays.adb:38:28: info: discriminant check proved
+simple_unc_arrays.adb:38:28: discriminant check not proved
 simple_unc_arrays.adb:38:32: index check not proved
 simple_unc_arrays.adb:39:22: overflow check not proved
 simple_unc_arrays.adb:40:23: range check not proved
@@ -52,11 +52,11 @@ simple_unc_arrays.adb:49:22: info: discriminant check proved
 simple_unc_arrays.adb:49:26: index check not proved
 simple_unc_arrays.adb:52:60: loop invariant initialization not proved, requires Res <= A.V (J)
 simple_unc_arrays.adb:52:60: loop invariant preservation not proved, requires Res <= A.V (J)
-simple_unc_arrays.adb:52:68: info: discriminant check proved
+simple_unc_arrays.adb:52:68: discriminant check not proved
 simple_unc_arrays.adb:52:72: index check not proved
-simple_unc_arrays.adb:54:20: info: discriminant check proved
+simple_unc_arrays.adb:54:20: discriminant check not proved
 simple_unc_arrays.adb:54:24: index check not proved
-simple_unc_arrays.adb:55:21: info: discriminant check proved
+simple_unc_arrays.adb:55:21: discriminant check not proved
 simple_unc_arrays.adb:55:25: index check not proved
 simple_unc_arrays.adb:88:20: overflow check not proved
 simple_unc_arrays.adb:88:23: info: discriminant check proved
@@ -65,7 +65,7 @@ simple_unc_arrays.adb:91:18: division check not proved
 simple_unc_arrays.adb:91:18: overflow check not proved
 simple_unc_arrays.ads:112:57: info: discriminant check proved
 simple_unc_arrays.ads:112:61: index check not proved
-simple_unc_arrays.ads:116:18: info: postcondition proved
+simple_unc_arrays.ads:116:18: postcondition not proved
 simple_unc_arrays.ads:30:20: postcondition not proved, requires A.V (J) = A.V'old
 simple_unc_arrays.ads:30:22: info: discriminant check proved
 simple_unc_arrays.ads:30:26: index check not proved
@@ -77,8 +77,8 @@ simple_unc_arrays.ads:40:60: info: discriminant check proved
 simple_unc_arrays.ads:40:64: index check not proved
 simple_unc_arrays.ads:42:61: info: discriminant check proved
 simple_unc_arrays.ads:42:65: index check not proved
-simple_unc_arrays.ads:64:14: info: precondition proved
 simple_unc_arrays.ads:64:14: postcondition not proved
+simple_unc_arrays.ads:64:14: precondition not proved
 simple_unc_arrays.ads:65:15: precondition not proved
 simple_unc_arrays.ads:74:17: postcondition not proved, requires Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
 simple_unc_arrays.ads:75:16: info: discriminant check proved

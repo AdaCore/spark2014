@@ -66,11 +66,11 @@ step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved
 step_function.adb:121:49: info: index check proved
 step_function.adb:123:49: info: index check proved
-step_function.adb:130:30: info: index check proved
+step_function.adb:130:30: index check not proved
 step_function.adb:130:56: info: index check proved
-step_function.adb:134:30: info: index check proved
+step_function.adb:134:30: index check not proved
 step_function.adb:134:56: info: index check proved
-step_function.adb:139:26: info: index check proved
+step_function.adb:139:26: index check not proved
 step_function.adb:140:19: info: precondition proved
 step_function.adb:140:47: info: index check proved
 step_function.adb:141:17: info: precondition proved

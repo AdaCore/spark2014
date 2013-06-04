@@ -15,8 +15,8 @@ p.adb:34:18: info: division check proved
 p.adb:34:18: overflow check not proved
 p.adb:34:18: range check not proved
 p.adb:35:20: info: division check proved
-p.adb:35:20: info: overflow check proved
-p.adb:35:20: info: range check proved
+p.adb:35:20: overflow check not proved
+p.adb:35:20: range check not proved
 p.adb:36:20: info: division check proved
-p.adb:36:20: info: overflow check proved
-p.adb:36:20: info: range check proved
+p.adb:36:20: overflow check not proved
+p.adb:36:20: range check not proved

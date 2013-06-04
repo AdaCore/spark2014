@@ -1,4 +1,4 @@
 database.adb:121:35: info: index check proved
 database.adb:124:35: info: index check proved
-database.adb:130:44: info: index check proved
+database.adb:130:44: index check not proved
 database.adb:51:17: postcondition not proved
