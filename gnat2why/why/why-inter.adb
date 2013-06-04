@@ -1064,7 +1064,7 @@ package body Why.Inter is
    is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body and then
-         Domain = EW_Prog then To_String (WNE_Func)
+         Domain = EW_Prog then Short_Name (E)
          elsif Ekind (E) in Subprogram_Kind | E_Subprogram_Body |
          Named_Kind | Type_Kind | Object_Kind then
          Short_Name (E)
