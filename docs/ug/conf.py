@@ -54,16 +54,16 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SPARK 2014 Toolset User\'s Guide'
-copyright = u'2011, AdaCore'
+copyright = u'2011-2013, AdaCore'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '0.2w'
+version = '0.9.0w'
 # The full version, including alpha/beta/rc tags.
-release = '0.2w'
+release = '0.9.0w'
 
 # Substitution for the new SPARK name
 rst_prolog = """.. |SPARK| replace:: SPARK 2014
