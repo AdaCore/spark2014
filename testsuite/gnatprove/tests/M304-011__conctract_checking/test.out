@@ -7,10 +7,9 @@ test.adb:33:24: "X" depends on "Par1"
 test.adb:35:13: flow analysis of "Check_Contract_7" abandoned due to inconsistent graph
 test.adb:39:14: flow analysis of "Check_Contract_8" abandoned due to inconsistent graph
 test.adb:53:07: ineffective statement
-test.adb:54:15: ineffective statement [ineffective]
+test.adb:54:15: unused assignment [ineffective]
 test.adb:137:07: "Z" must be listed in the Global aspect
 test.adb:147:09: "Z" must be listed in the Global aspect
 
 
 gnatprove: error during translation to intermediate language, aborting.
-

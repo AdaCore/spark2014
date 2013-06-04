@@ -2,7 +2,7 @@
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
-admin.adb:121:13: info: assertion proved
+admin.adb:121:13: assertion not proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
 admin.adb:137:16: info: loop invariant preservation proved
@@ -70,7 +70,7 @@ auditlog.adb:1843:50: info: range check proved
 auditlog.adb:1843:53: info: overflow check proved
 auditlog.adb:1843:72: info: overflow check proved
 auditlog.adb:1849:53: info: range check proved
-auditlog.adb:1852:47: info: range check proved
+auditlog.adb:1852:47: range check not proved
 auditlog.adb:1859:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1861:47: range check not proved
 auditlog.adb:1861:50: info: overflow check proved
