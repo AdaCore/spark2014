@@ -11,7 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys, os, time
 
 # AdaCore specific Ada/SPARK highlighter, that does not crash
 
@@ -52,18 +52,28 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'index'
 
+def get_copyright():
+    return u'2011-%s, AdaCore' % time.strftime("%Y")
+
 # General information about the project.
 project = u'SPARK 2014 Toolset User\'s Guide'
-copyright = u'2011-2013, AdaCore'
+copyright = get_copyright()
+
+def get_version():
+    """Extract the version from spark2014vsn.ads"""
+    for line in file("../../spark2014vsn.ads").readlines():
+        if line.find("SPARK2014_Static_Version") and ":=" in line:
+            return line.split('"')[1]
+    raise Exception("Cannot find version number")
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '0.9.0w'
+version = get_version()
 # The full version, including alpha/beta/rc tags.
-release = '0.9.0w'
+release = version
 
 # Substitution for the new SPARK name
 rst_prolog = """.. |SPARK| replace:: SPARK 2014
