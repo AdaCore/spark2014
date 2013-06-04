@@ -1,5 +1,27 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{xspace}
+
+\newcommand{\DO}{\textsc{do-178}\xspace}
+\newcommand{\DOB}{\textsc{do-178b}\xspace}
+\newcommand{\DOC}{\textsc{do-178c}\xspace}
+\newcommand{\hilite}{Hi-Lite\xspace}
+\newcommand{\gnatprove}{GNATprove\xspace}
+\newcommand{\oldspark}{SPARK~2005\xspace}
+\newcommand{\newspark}{SPARK~2014\xspace}
+\newcommand{\ada}{Ada\xspace}
+\newcommand{\adatwtw}{Ada~2012\xspace}
+
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\adhoc}{\textit{ad hoc}\xspace}
+\newcommand{\Eg}{\textit{E.g.,}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
 
 \begin{document}
 
@@ -17,12 +39,85 @@ Insert your abstract here.
 
 \section{Introduction}
 
+\newspark is a major evolution of the SPARK language and toolset to address two
+main hurdles previously identified in the take-up of formal verification
+technology:
+%
+\begin{enumerate}
+\item difficulty to reach non-expert users, and
+\item lack of convincing cost-benefit argument.
+\end{enumerate}
+
+In this paper we will describe our approach to solve those two problems in the
+design of the \newspark language and the associated formal verification tool
+\gnatprove. We will use case studies from three different domains developed in
+the context of the \hilite project and discuss the results of using our tools
+on those case studies.
+
 \section{SPARK 2014}
 
 \subsection{SPARK: Past and Present}
+
+SPARK is a programming language subset targeted at safety and security critical
+applications. It is a subset of the Ada programming language, thus building on
+the strengths of Ada for creating highly reliable and long-lived
+software. SPARK restrictions ensure that the behavior of a SPARK program is
+unambiguously defined, and simple enough that formal verification tools can
+perform an automatic diagnostic of conformance between a program specification
+and its implementation. The SPARK language and toolset for static verification
+has been applied for many years in on-board aircraft systems, control systems,
+cryptographic systems, and rail systems~\cite{sparkbook2012,oneill2012}.
+
+SPARK evolution has followed the evolutions of Ada, with a new version of SPARK
+for each new version of Ada: SPARK 83, SPARK 95, SPARK 2005, and now SPARK
+2014. Up to the version \oldspark, the specification of the intended behavior
+of a program was written in special comments, that were ignored by the usual
+development tools (compiler, debugger), but interpreted by the formal
+verification tools. The new version \newspark builds on the new specification
+features added in \adatwtw, so formal specifications are now understood by the
+usual development tools and can be executed.
+
 \subsection{Key Features for Formal Verification}
+
+\adatwtw introduced new language features for facilitating the specification of
+programs~\cite{ada2012rationale}, many of which were inspired from the
+corresponding features in \oldspark. The most useful of these new features is
+without doubts the preconditions and postconditions (which together are
+referred to as a contract) popularised by the Design-by-Contract
+approach~\cite{meyer:1988:OSC}. \newspark is based on the features of \adatwtw,
+to which it adds new ones, some of which inspired from \oldspark. We will
+describe shortly in this subsection the key features defined in \newspark for
+formal verification.
+
 \subsection{Benefits of Executable Contracts}
+
+Traditionally, contracts have been interpreted quite differently depending on
+whether used for formal program verification or for run-time assertion
+checking. For formal program verification, assertions have typically been
+interpreted as formulae in classical first-order logic. This was the situation
+with SPARK until version \oldspark. Practitioners have struggled with this
+interpretation, which was not consistent with the run-time assertion checking
+semantics.\cite{tseChalin10}
+
+\newspark reconciles the logic semantics and executable semantics of contracts,
+so users can now execute contracts, debug them like code, and test them when
+formal verification is too difficult to achieve. Furthermore, there is an
+advantage in keeping the annotation language the same, or almost the same, as
+the programming language: users don't have to learn one more language.
+
 \subsection{Integrating Testing and Formal Verification}
+
+Formal methods are complementary to testing, and may find faults that
+are not detected by testing, but they cannot establish verification
+evidence for the target hardware. Therefore testing on the target is
+still required. However, formal analysis of source code can be used to
+show compliance with the low-level requirements. \DOC requires an
+argument for property preservation between the source code and the
+object code for those properties that have been verified formally at
+the source level. Since formal program verification and testing are
+complementary, we would like to use each method where it is most
+efficient. For this we need to make sure that the combination is at
+least as strong as testing alone.
 
 \section{Train Control Systems}
 
