@@ -109,7 +109,7 @@
 --         theory is defined which includes all axioms for relevant functions
 --         defining the constant.
 
---     . Variable (non-constant object)
+--     . Variable (non-constant object, IN OUT or OUT parameter)
 --         A ref is created in the variable file, in its own module. A type
 --         alias is created in the same module, so that the name of a
 --         variable's type can be deduced from the variable's name. This is
@@ -128,12 +128,18 @@
 --         in the corresponding context file. This program function has effects
 --         corresponding to the frame computed for the subprogram, and a
 --         contract (precondition and postcondition) corresponding to the
---         source Ada contract.
+--         source Ada contract. This program function is used to translate
+--         calls to the Ada subprogram in Why3 program expressions. This
+--         program function has as many parameters as the Ada subprogram and
+--         as many global reads/writes. As an optimization, IN parameters of
+--         discrete types are translated as "int", and floating point
+--         parameters are translated as "float".
 
 --         For an Ada function, a logic function is created before the program
 --         function in the same module.  The logic function is called in the
 --         postcondition of the program function, to give a value to the
---         result.
+--         result. This logic function is also used to translate calls to the
+--         Ada subprogram in Why3 logic expressions (assertions).
 
 --         For a function or procedure without global reads or global writes,
 --         the module above is created in the corresponding type file, instead
@@ -195,15 +201,25 @@
 --         The order of declarations and definitions in p.ads and q.ads should
 --         have no impact.
 
---         A program function with definition is created in its own module, in
---         the main file. VCs generated for this program function correspond to
---         checking the absence of run-time errors on the precondition of the
---         subprogram in any context.
+--         A parameterless program function with definition is created in its
+--         own module, in the main file. The body of this program function is
+--         the translation as a Why3 program expression of the precondition.
+--         This program function has no contract. Accesses to the parameters
+--         of the Ada subprogram are translated as accesses to the
+--         corresponding global declarations. VCs generated for this
+--         program function correspond to checking the absence of run-time
+--         errors on the precondition of the subprogram in any context.
 
---         If the body of the subprogram is in SPARK, a program function with
---         definition is created in its own module, in the main file. VCs
---         generated for this program function correspond to checking the
---         absence of run-time errors and the contract of the subprogram.
+--         If the body of the subprogram is in SPARK, a parameterless program
+--         function with definition is created in its own module, in the main
+--         file. VCs generated for this program function correspond to
+--         checking the absence of run-time errors and the contract of the
+--         subprogram.
+
+--         As described in the section about constants and variables, global
+--         declarations are generated for all subprogram parameters. These
+--         global variables are of the Why3 type that corresponds to the Ada
+--         type.
 
 --  Additionally, some Ada nodes lead to the definition of theories/modules as
 --  follows:
