@@ -1894,12 +1894,13 @@ package body Flow.Control_Flow_Graph is
       while Present (P) loop
          case Nkind (P) is
             when N_Freeze_Entity                |
+              N_Freeze_Generic_Entity           |
               N_Label                           |
               N_Implicit_Label_Declaration      |
               N_Subprogram_Body                 |
               N_Subprogram_Declaration          |
-              N_Package_Declaration             |  -- !!! remove in M314-014
-              N_Package_Body                    |  -- !!! remove in M314-014
+              N_Package_Declaration             |  -- ??? remove in M314-014
+              N_Package_Body                    |  -- ??? remove in M314-014
               N_Generic_Subprogram_Declaration  |
               N_Generic_Package_Declaration     |
               N_Representation_Clause           |
