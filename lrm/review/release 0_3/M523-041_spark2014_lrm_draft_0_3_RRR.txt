@@ -471,7 +471,7 @@ I have updated the SPARK RM text to reflect this half-way house.
 !Description: This all feels a bit complex.  Is there some way to
 simplify this set of rules (as well as the earlier discussion of
 external/volatile)?
-!Action Taken:
+!Action Taken:Changed in accordance with actions from last comment (STT29).
 !Checked By:
 
 !Label: STT031
@@ -481,19 +481,19 @@ external/volatile)?
 with ..."
 "... then the state abstraction[s]{(s)} shall be denoted ..."
 !Action Taken: Replaced as suggested.
-!Checked By:
+!Checked By:TJJ
 
 !Label: STT032
 !Location: 7.1.4 59/(last):
 !Description: "(state_name_with_{options} { , state_name_with_options } )"
-!Action Taken: Corrected as suggested.
+!Action Taken: Corrected as suggested (Repeat of JEB/27).
 !Checked By:
 
 !Label: STT033
 !Location: 7.1.4 60/1:
 !Description: It would be nice if reserved words (e.g. "with") were in
 bold or somehow otherwise clearly distinguished from syntactic categories.
-!Action Taken:
+!Action Taken:Some sort of formatting issue with ResT - Ada language highlighting present in latest version.
 !Checked By:
 
 !Label: STT034
@@ -502,7 +502,7 @@ bold or somehow otherwise clearly distinguished from syntactic categories.
 default, and have a "Non_Volatile" aspect.  In any case, it seems we
 ought to mention the Non_Volatile (or Volatile) aspect in the Legality
 or Static Semantics rules.
-!Action Taken:
+!Action Taken:A state abstraction may now only be specified as External and then may be specified as Input_Only or Output_Only.  There are no longer any Volatile or Non_Volatile options.
 !Checked By:
 
 !Label: STT035
@@ -537,7 +537,7 @@ If a visible variable is initialized at its point of declaration, does
 it need to appear in the Initializes list as well?  This talks about
 "the elaboration of the package."  Does this include the elaboration of
 visible declarations?  That seems a bit redundant.
-!Action Taken:
+!Action Taken:Yes it is but it provides a consistent appoach.  In modular development the Initializes aspect shows the intent - an initialization in the visible part is just one way of implementing that intent. No action taken.
 !Checked By:
 
 !Label: STT039
@@ -564,7 +564,7 @@ Initial_Condition but not in Initializes?  Does it need to appear in
 Initial_Condition if it is initialized at its declaration point and not
 in Initializes, and would that mean it still has the value it was given
 at its declaration?
-!Action Taken:
+!Action Taken:A variable declared in the visible part of a package cannot be denoted in a Initial_Condition if it is not in the Initializes aspect [I know it is redundant but it keeps things simple - I am prepared to be convinced otherwise]. The Initializes aspect onls states that the variable will have a valid value, not what its value will be, so yes, the value could be changed duruing package elaboration and it is the value on completion of package elaboration that is given in the Initial_Condition aspect.  No action taken.
 !Checked By:
 
 !Label: STT042
@@ -586,13 +586,13 @@ be initialized ..."
 !Description: Rules 4 and 5 don't read like "Legality Rules."  Should
 rule 4 be a Name Resolution rule, and should rule 5 be restated with a
 "shall"?
-!Action Taken:
+!Action Taken:Changed as suggested.
 !Checked By:
 
 !Label: STT045
 !Location: 7.2.1 66/2:
 !Description: "7. A constituent [denotes] {shall denote} ..."
-!Action Taken: Replaces as suggested.
+!Action Taken: Replaced as suggested.
 !Checked By:
 
 !Label: STT046
@@ -605,7 +605,8 @@ encapsulating package has such a "with" clause?  If we decide it is
 cleaner to have the limited_with from the spec, it should probably be a
 "limited private" with clause, since I think a normal "limited with"
 would be illegal.
-!Action Taken:
+!Action Taken:For modular, constructive  analysis we cannot use post-compilation checks.  I think the current scheme is easier to check before all the code is written.  An alternative would be to record the information in the front end.  When an Abstract_State aspect has a Part_Of aspect, the package declaring the encapsuating state has to be with'd if it is not its parent, and in the internal representation of the package declaring the encapsulating state we record that the subordinate state is part of the encapsulating state.  I do not think this would be too hard to do and would be prefereble to the limited withs.
+For the moment I have changed to private limited with but we NEED TO DISCUSS THIS AT THE NEXT LANGUAGE CONF_CALL..
 !Checked By:
 
 !Label: STT047
@@ -620,7 +621,7 @@ would be illegal.
 !Location: 7.2.3 68/15:
 !Description: As mentioned in STT046, this should probably be a "limited
 private with P.Priv;" if it is needed at all.
-!Action Taken:
+!Action Taken:Changed to limited with.
 !Checked By:
 
 
@@ -645,7 +646,7 @@ reiterated that this paragraph and the three that follow only apply when
 the original Global mode was In_Out (rather than simply saying "When all
 of these conditions are satisfied" perhaps say "For this special case of
 Global mode In_Out ...").
-!Action Taken:
+!Action Taken:Update along the lines suggested.
 !Checked By:
 
 
@@ -666,7 +667,7 @@ the statement in 1.9.4 about "a postcondition may be recast as the
 expression of an expression function" is a bit confusing, and perhaps
 should be more explicit. Note that the statement in 1.9.4 should
 probably be repeated in section 6.1.1 (and rephrased as appropriate).
-!Action Taken:
+!Action Taken:Updated 1.9.4 text again and noted same in 6.1.1 and made default Refined_Post explicit.
 !Checked By:
 
 !Label: STT054
@@ -689,7 +690,7 @@ may have constituents ..."
 !Description: Don't we need "limited private with
 Externals.{Temperature, Pressure, Main_Display, Secondary_Display}"
 according to 7.2.3?
-!Action Taken:
+!Action Taken:Corrected example.
 !Checked By:
 
 
@@ -713,14 +714,15 @@ Typo in the comment:
 !Location: 7.2.9 77/6-78/3:
 !Description: Why do we have "limited with Externals"?  These are
 children of Externals, so the "limited with" is redundant.
-!Action Taken:
+!Action Taken:Corrected example.
 !Checked By:
 
 !Label: STT060
 !Location: 7.7 81/9:
 !Description: Static Semantics rule 3 seems to be a legality rule, while
 Legality Rule 1 seems to be a Static Semantics rule.
-!Action Taken:
+!Action Taken:I have moved Static semantic rule 3 as the first legatity rule.  I have left the original legality rule 1 as as a second legality rule.  It would require some rewording to make this legality rule a semantic rule.  As it is it needs to follow what was semantic rule 3.  I think it is reasonable to leave the original legality rule 1 as a legality rule as it defines how the early call region is determined.  CHEXCK WITH TUCK that this is OK
+
 !Checked By:
 
 
@@ -730,7 +732,7 @@ Legality Rule 1 seems to be a Static Semantics rule.
 must meet the same restrictions as would be required for a call to each
 of tis overriding primitive operations"?  I can't quite imagine how that
 works.
-!Action Taken:
+!Action Taken:Defer to Steve - DISCUSS at Conf-Call
 !Checked By:
 
 !Label: STT062
@@ -739,7 +741,7 @@ works.
 lrm to the GNAT Pro user's guide.  Why don't we just incorporate the
 rules rather than reference them (we could add a NOTE to say where the
 rules came from)?
-!Action Taken:
+!Action Taken:Done as suggested.
 !Checked By:
 
 

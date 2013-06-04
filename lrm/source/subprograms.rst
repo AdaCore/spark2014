@@ -73,8 +73,14 @@ As indicated by the ``aspect_specification`` being part of a
 ``subprogram_declaration``, a subprogram is in |SPARK| only if its specific
 contract expressions (introduced by Pre and Post), if any, are in |SPARK|.
 
-For an ``expression_function_declaration`` without an explicit postcondition the
-expression implementing the function acts as its postcondition.
+For an ``expression_function_declaration``, F, without an explicit
+Postcondition, the expression, E, implementing the function acts as its
+Postcondition, that is the default postcondition is F'Result = E.
+
+In general the expression, E,  of a postcondition of a function may be used as 
+the expression of an ``expression_function_declaration`` instead making E both
+the implementation of the function and the expression of its [default] 
+postcondition.
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~

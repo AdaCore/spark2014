@@ -127,14 +127,14 @@ state abstractions.
 Input_Only and Output_Only Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A variable which represents a communication channel with an external entity,
-for instance a transducer, subsystem, or program is considered an
-*external variable* if it is Volatile or is declared with an Ada Address,
-Import, or Export specification (either using an aspect or a pragma).
+A variable which represents a communication channel with an external entity, for
+instance a transducer, subsystem, or program is considered an *external
+variable*. A variable is external if it is Volatile or is declared with an Ada
+Address, Import, or Export specification (either using an aspect or a pragma).
 
-If a variable is volatile it is external and has to be specified as an input
-only or an output only external state. The Boolean Input_Only and Output_Only
-are used for this specification.
+If a variable is volatile it has to be specified as an input only or an output
+only external state. The Boolean aspects Input_Only and Output_Only are used for
+this specification.
 
 .. centered:: **Static Semantics**
 
@@ -144,22 +144,21 @@ are used for this specification.
 
 .. centered:: **Legality Rules**
 
-#. Exactly one of an Input_Only or Output_Only aspect shall be specified as True
-   in an ``object_declaration`` which is of a volatile type or specified as
-   volatile. A variable with a True Input_Only specification is an
-   *external input*; a variable with a True Output_Only specification is an
-   *external output*.
-   [The rule that a volatile variable shall be either an input or an output
-   only may be relaxed in a future version of SPARK.]
-
-#. A variable which is not volatile shall not have an Input_Only or Output_Only
+#. The declaration of Volatile variable shall have exactly one of an Input_Only 
+   or Output_Only aspect specified as True. A variable with a True Input_Only
+   specification is an *external input*; a variable with a True Output_Only
+   specification is an *external output*. [The rule that a volatile variable
+   shall be either an input or an output only may be relaxed in a future version
+   of SPARK.]
+   
+#. A variable which is not Volatile shall not have an Input_Only or Output_Only
    aspect specified as True.
 
 #. The Boolean expression of the aspect definitions of the Input_Only
    or Output_Only aspects shall be static.
 
 #. Contrary to the general SPARK 2014 rule that expression evaluation
-   cannot have side effects, a read of a volatile variable is considered to have
+   cannot have side effects, a read of an external input is considered to have
    side effects. To reconcile this discrepancy, a name denoting an external
    input shall only occur in the following contexts:
 
@@ -745,6 +744,14 @@ where
 
   ``constituent ::=`` *object_*\ ``name | state_name``
 
+.. centered:: **Name Resolution Rules**
+
+#. A Refined_State Aspect of a ``package_body`` has visibility extended to  the
+   ``declarative_part`` of the body.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 .. centered:: **Legality Rules**
 
@@ -773,14 +780,7 @@ where
 
       :Trace Unit: TBD
 
-#. A Refined_State Aspect of a ``package_body`` has visibility extended to  the
-   ``declarative_part`` of the body.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
-#. Each ``constituent`` is either a variable or a state abstraction.
+#. Each ``constituent`` shall be either a variable or a state abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -950,8 +950,8 @@ is part of and a state abstraction always knows all of its constituents.
      only if the unit declaring the state abstraction is strictly more visible
      than the unit containing the declaration; and
 
-   * require a ``limited_with_clause`` naming P on the unit which declares the
-     encapsulating state abstraction.
+   * require a private ``limited_with_clause`` naming P on the unit which 
+     declares the encapsulating state abstraction.
      [This rule is checked as part of checking the Part_Of aspect.]
 
 #. Each item of hidden state declared in the private part of a unit shall have
@@ -1001,7 +1001,8 @@ is part of and a state abstraction always knows all of its constituents.
 
     -- P.Pub is the public package that declares the state abstraction
 
-    limited with P.Priv;   -- Indicates to P.Pub that the visible (to P.Pub)
+    limited private with P.Priv;
+                           -- Indicates to P.Pub that the visible (to P.Pub)
                            -- state of P.Priv may be constituents of P.Pub's
                            -- state abstractions.
     package P.Pub --  public unit
@@ -1114,6 +1115,7 @@ is part of and a state abstraction always knows all of its constituents.
 
     end Outer;
 
+   limited private with Q.Child;
     package Q
        with Abstract_State => (Q1, Q2)
     is
@@ -1132,7 +1134,6 @@ is part of and a state abstraction always knows all of its constituents.
          with Part_Of => Q2;
    end Q;
 
-   limited with Q;
    private package Q.Child
       with Abstract_State => (C1 with Part_Of => Q.Q1)
    is
@@ -1286,12 +1287,12 @@ The static semantics are equivalent to those given for the Global aspect in
    abstraction whose refinement is visible; and the ``global_item`` in the
    Refined_Global aspect is a ``constituent`` of the state abstraction.
 
-   When all of these conditions are satisfied the Refined_Global aspect may
-   denote individual ``constituents`` of the state abstraction as Input, Output,
-   or In_Out (given that the constituent itself may have any of these
-   ``mode_selectors``) so long as one or more of the following conditions are
-   satisfied:
-
+   For this special case when the ``mode_selector`` is In_Out, the 
+   Refined_Global aspect may denote individual ``constituents`` of the state
+   abstraction as Input, Output, or In_Out (given that the constituent itself
+   may have any of these ``mode_selectors``) so long as one or more of the
+   following conditions are satisfied:
+   
    * at least one of the ``constituents`` has a ``mode_selector`` of In_Out; or
 
    * there is at least one of each of a ``constituent`` with a ``mode_selector``
@@ -1524,7 +1525,6 @@ be a Boolean ``expression``.
    subprogram declaration in the visible part has no explicit postcondition, a
    postcondition of True is assumed for the abstract view.
 
-
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
@@ -1547,8 +1547,13 @@ be a Boolean ``expression``.
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
 
-#. For an ``expression_function`` without an explicit Refined Postcondition
-   the expression implementing the function acts as its Refined Postcondition.
+#. The default Refined_Post for an expression function, F, is 
+   F'Result = ``expression``, where ``expression`` is the expression defining
+   the body of the function.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
 
 #. The static semantics are otherwise as for a postcondition.
 
@@ -1618,6 +1623,11 @@ abstraction on to external states which are given in this section.
 .. code-block:: ada
 
 
+   limited private with 
+      Externals.Temperature,
+      Externals.Pressure,
+      Externals.Main_Display,
+      Externals.Secondary_Display;
    package Externals
       with Abstract_State => ((Combined_Inputs with External, Input_Only),
                               (Displays with External, Output_Only),
@@ -1655,7 +1665,6 @@ abstraction on to external states which are given in this section.
 
    end Externals;
 
-   limited with Externals;
    private package Externals.Temperature
       with Abstract_State => (State with External, Input_Only,
                               Part_Of => Externals.Combined_Inputs)
@@ -1663,7 +1672,6 @@ abstraction on to external states which are given in this section.
      ...
    end Externals.Temperature;
 
-   limited with Externals;
    private package Externals.Pressure
       with Abstract_State => (State with External, Input_Only,
                               Part_Of => Externals.Combined_Inputs)
@@ -1671,7 +1679,6 @@ abstraction on to external states which are given in this section.
      ...
    end Externals.Pressure;
 
-   limited with Externals;
    private package Externals.Main_Display
       with Abstract_State => (State with External, Output_Only,
                               Part_Of => Externals.Displays)
@@ -1679,7 +1686,6 @@ abstraction on to external states which are given in this section.
       ...
    end Externals.Main_Display;
 
-   limited with Externals;
    private package Externals.Secondary_Display
       with Abstract_State => (State with External, Output_Only,
                               Part_Of => Externals.Displays)
@@ -1690,7 +1696,9 @@ abstraction on to external states which are given in this section.
 
    with
      Externals.Temperature,
-     Externals.Pressure;
+     Externals.Pressure,
+     Externals.Main_Display,
+     Externals.Secondary_Display;
    package body Externals
       with Refined_State => (Combined_Inputs => (Externals.Temperature,
                                                  Externals.Pressure),
@@ -1895,14 +1903,14 @@ global variables discussed later in this section.
    the enclosing library unit and is subject to certain restrictions described
    below.]
 
+.. centered:: **Legality Rules**
+
 #. |SPARK| requires that an intra-compilation_unit call which is
    executable during elaboration shall occur after a certain point in the unit
    where the subprogram_body is known to have been elaborated. This point may
    precede the declaration of the subprogram body and starts at the
    *early call region* in which such a call is permitted prior to the
    elaboration of the body of the subprogram.
-
-.. centered:: **Legality Rules**
 
 #. The start of the early call region is obtained by starting at the
    subprogram_body and then looking at the preceding declarations in reverse
@@ -2030,15 +2038,16 @@ global variables discussed later in this section.
    occurring. A library unit package spec which declares a tagged type will
    typically require an Elaborate_Body pragma.]
 
-#. For the inter-compilation_unit case, |SPARK| enforces the GNAT static
-   elaboration order rule. The GNAT Pro User's Guide says:
+#. For the inter-compilation_unit case, |SPARK| enforces the follwing static
+   elaboration order rule:
 
-     If a unit has elaboration code that can directly or indirectly make a call
-     to a subprogram in a with'ed unit, or instantiate a generic package in a
-     with'ed unit, then if the with'ed unit does not have pragma Pure or
+   * If a unit has elaboration code that can directly or indirectly make a call
+     to a subprogram in a with'd unit, or instantiate a generic package in a
+     with'd unit, then if the with'd unit does not have pragma Pure or
      Preelaborate, then the client should have a pragma Elaborate_All for the
-     with'ed unit. ... For generic subprogram instantiations, the rule can be
-     relaxed to require only a pragma Elaborate.
+     with'd unit. For generic subprogram instantiations, the rule can be
+     relaxed to require only a pragma Elaborate. [This rule is the same as the
+     GNAT static elaboration order rule as given in the GNAT Pro User's Guide.]
 
    For each call that is executable during elaboration for a given library unit
    package spec or body, there are two cases: it is (statically) a call

@@ -604,13 +604,19 @@ the tools. An unsound definition may lead to an unsound proof which is of no use
 Ideally any definition will be checked for soundness by the external proof
 tools.
 
-If the postcondition of a function can be specified in |SPARK|, then the
-postcondition may be recast as the expression of an
-``expression_function_declaration`` making it both the postcondition and the
-implementation of the function. This is useful, particularly for ghost
-functions, as the expression which acts as the postcondition might not give the
-most efficient implementation but if the function is a ghost function this might
-not matter.
+If the postcondition of a function, F, can be specified in |SPARK| as 
+F'Result = E, then the postcondition may be recast as the expression of an
+``expression_function_declaration`` as shown below:
+
+.. code-block:: ada
+
+  function F (V : T) return T1 is (E);
+  
+The default postcondition of an expression function is F'Result = E making E
+both the implementation and the expression defining the postcondition of the
+function. This is useful, particularly for ghost functions, as the expression
+which acts as the postcondition might not give the most efficient implementation
+but if the function is a ghost function this might not matter.
 
 .. _verific_modes:
 
