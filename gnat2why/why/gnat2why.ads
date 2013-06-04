@@ -108,6 +108,9 @@
 --         are defined in the same theory. For all constant objects, a closure
 --         theory is defined which includes all axioms for relevant functions
 --         defining the constant.
+--
+--         For scalar constants, the Why base type (int for float) is used for
+--         the declaration instead of the abstract type.
 
 --     . Variable (non-constant object, IN OUT or OUT parameter)
 --         A ref is created in the variable file, in its own module. A type
