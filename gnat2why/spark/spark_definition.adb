@@ -2300,6 +2300,7 @@ package body SPARK_Definition is
               N_Formal_Subprogram_Declaration          |
               N_Formal_Type_Declaration                |
               N_Freeze_Entity                          |
+              N_Freeze_Generic_Entity                  |
               N_Function_Instantiation                 |
               N_Generic_Function_Renaming_Declaration  |
               N_Generic_Package_Declaration            |
