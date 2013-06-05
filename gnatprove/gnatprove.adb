@@ -407,14 +407,9 @@ procedure Gnatprove is
       end if;
 
       if not Quiet then
-         declare
-            Out_Dir : constant String :=
-              Ada.Directories.Compose (Obj_Dir, "gnatprove");
-         begin
-            Put_Line ("Statistics logged in " & SPARK_Report_File (Out_Dir));
-            Put_Line
-              ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
-         end;
+         Put_Line ("Statistics logged in " & SPARK_Report_File (Obj_Dir));
+         Put_Line
+           ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
       end if;
    end Generate_SPARK_Report;
 
