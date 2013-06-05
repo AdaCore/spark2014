@@ -7,5 +7,5 @@ foo.adb:12:09: use of uninitialized variable "Z" [uninitialized__z]
 foo.adb:15:04: use of uninitialized variable "B" [uninitialized__b]
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

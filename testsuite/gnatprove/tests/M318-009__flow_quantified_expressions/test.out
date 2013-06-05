@@ -3,7 +3,7 @@ test.adb:23:28: unused assignment
 test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized__temp_table]
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 
 // qe_1_cfg
 digraph G {

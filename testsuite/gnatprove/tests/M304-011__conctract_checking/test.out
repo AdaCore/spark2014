@@ -12,4 +12,4 @@ test.adb:137:07: "Z" must be listed in the Global aspect
 test.adb:147:09: "Z" must be listed in the Global aspect
 
 
-gnatprove: error during translation to intermediate language, aborting.
+

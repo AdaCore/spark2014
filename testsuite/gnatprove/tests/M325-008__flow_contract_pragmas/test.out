@@ -8,5 +8,5 @@ test.adb:69:41: ineffective import "Y"
 test.adb:69:44: ineffective import "Z"
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

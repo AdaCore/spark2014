@@ -8,5 +8,5 @@ test.adb:167:09: "X" missing from null dependency
 test.adb:203:21: "R" depends on "R"
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

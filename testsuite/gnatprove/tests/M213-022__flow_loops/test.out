@@ -25,5 +25,5 @@ test.adb:121:12: stable
    compilation of test.adb failed
 
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+
 

@@ -2,5 +2,5 @@ c43209a.adb:1:11: flow analysis of main program "c43209a" has not yet been imple
 c43209a.adb:13:04: ineffective statement
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

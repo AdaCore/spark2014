@@ -10,5 +10,5 @@ test.adb:37:32: global "G" is not used
 test.adb:48:11: "G" incorrectly included in null dependency
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

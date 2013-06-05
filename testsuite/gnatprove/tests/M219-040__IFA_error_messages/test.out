@@ -40,4 +40,4 @@ test.adb:250:07: ineffective statement
    compilation of test.adb failed
 
 gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+

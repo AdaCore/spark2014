@@ -10,5 +10,5 @@ test.adb:52:07: "L" is not used
 test.adb:61:07: ineffective statement
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

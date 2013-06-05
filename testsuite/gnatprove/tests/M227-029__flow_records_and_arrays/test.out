@@ -8,5 +8,5 @@ message_tests.adb:48:32: component "C.W" of formal parameter might not be set [u
 message_tests.adb:66:15: use of uninitialized variable "F.B" [uninitialized__f_b]
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

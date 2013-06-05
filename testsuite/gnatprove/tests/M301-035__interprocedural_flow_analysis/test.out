@@ -5,7 +5,7 @@ across_compilation_units-child.ads:30:24: "Z" depends on "X"
 across_compilation_units-child.ads:30:24: "Z" depends on "Z"
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 
 // coprime_cfg
 digraph G {

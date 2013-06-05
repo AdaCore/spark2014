@@ -1,7 +1,7 @@
 uninitialized.adb:6:07: use of uninitialized variable "B" [uninitialized__b]
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 
 // compare_cfg
 digraph G {

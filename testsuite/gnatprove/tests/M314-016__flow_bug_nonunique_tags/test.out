@@ -12,5 +12,5 @@ segway.ads:25:31: global "Speed" might not be set [uninitialized__speed]
 segway.ads:25:38: global "State" might not be set [uninitialized__state]
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

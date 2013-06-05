@@ -9,7 +9,7 @@ main2.adb:4:48: global "State" is not used
 main3.ads:3:11: flow analysis of main program "Main3" has not yet been implemented
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 
 // add_cfg
 digraph G {

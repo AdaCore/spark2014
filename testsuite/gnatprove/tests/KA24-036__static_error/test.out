@@ -6,5 +6,5 @@ p.adb:10:19: object is not in SPARK
 p.adb:10:22: object is not in SPARK
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

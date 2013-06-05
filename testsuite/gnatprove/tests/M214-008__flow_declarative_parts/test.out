@@ -16,5 +16,5 @@ test.adb:131:24: ineffective import "A"
 test.adb:134:09: "A" missing from null dependency
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 

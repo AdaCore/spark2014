@@ -12,5 +12,5 @@ test.adb:51:12: stable
 test.adb:52:45: use of uninitialized variable "X" [uninitialized__x]
 
 
-gnatprove: error during translation to intermediate language, aborting.
+
 
