@@ -6,8 +6,8 @@ lcp.adb:11:7: info: loop invariant preservation proved
 lcp.adb:12:7: info: loop variant proved
 lcp.adb:14:14: info: overflow check proved
 lcp.adb:3:10: info: range check proved
-lcp.adb:7:12: overflow check not proved
-lcp.adb:8:17: overflow check not proved
+lcp.adb:7:12: info: overflow check proved
+lcp.adb:8:17: info: overflow check proved
 lcp.adb:9:20: info: index check proved
 lcp.adb:9:20: overflow check not proved
 lcp.adb:9:32: info: index check proved
