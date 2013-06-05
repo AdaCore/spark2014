@@ -8,7 +8,7 @@ PROCS=0
 # ADAFLAGS is used for production, in targets gnat1 and gnat2why.
 # -gnatec expects an absolute path, so we assume a compilation started from the
 # top Makefile in hi-lite repository for the value of $(PWD)
-CFLAGS=-O0 -gnata -gnat12 -gnatg -gnatVa -gnatec=$(PWD)/gnat2why/gnat2why.adc -gnatwR
+CFLAGS=-O0 -gnata -gnat12 -gnatg -gnatVa -gnatec=$(PWD)/gnat2why/gnat2why.adc
 
 LOCAL_OBJ=obj
 RM=rm -rf
