@@ -107,12 +107,12 @@ latexpdf:
 # impossible to avoid rebuild when no changes have been done. The target 'pdf'
 # provides a workaround, by rebuild only if html files were updated or if the
 # pdf files are not present.
-pdf: build/latex/spark2014_rm.pdf
+pdf: _build/latex/spark2014_rm.pdf
 
-build/latex/spark2014_rm.pdf: build/html/index.html
+_build/latex/spark2014_rm.pdf: _build/html/index.html
 	$(MAKE) latexpdf
 
-build/html/index.html:
+_build/html/index.html:
 	$(MAKE) html
 
 text:
