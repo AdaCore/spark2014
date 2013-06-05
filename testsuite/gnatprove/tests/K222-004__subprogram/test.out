@@ -1,9 +1,8 @@
-sub.adb:4:07: access type is not in SPARK
-sub.adb:4:11: type is not in SPARK
-sub.adb:7:07: explicit dereference is not in SPARK
-sub.adb:8:14: explicit dereference is not in SPARK
 sub.adb:15:10: access type is not in SPARK
 sub.adb:15:14: type is not in SPARK
 sub.adb:18:10: explicit dereference is not in SPARK
 sub.adb:19:13: explicit dereference is not in SPARK
-
+sub.adb:4:07: access type is not in SPARK
+sub.adb:4:11: type is not in SPARK
+sub.adb:7:07: explicit dereference is not in SPARK
+sub.adb:8:14: explicit dereference is not in SPARK
