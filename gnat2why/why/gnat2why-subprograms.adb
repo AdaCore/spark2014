@@ -126,6 +126,11 @@ package body Gnat2Why.Subprograms is
    --  Kind is Name_Precondition or Name_Postcondition to specify which one is
    --  computed.
 
+   function Compute_Guard_Formula (Binders : Binder_Array) return W_Pred_Id;
+   --  For every scalar object in the binder array, build the formula
+   --    in_range (x)
+   --  and join everything together with a conjunction.
+
    function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id;
    --  Return a node with a proper location for the postcondition of E, if any
 
@@ -279,6 +284,40 @@ package body Gnat2Why.Subprograms is
 
       return +Eff;
    end Compute_Effects;
+
+   ---------------------------
+   -- Compute_Guard_Formula --
+   ---------------------------
+
+   function Compute_Guard_Formula (Binders : Binder_Array) return W_Pred_Id
+   is
+      Pred : W_Pred_Id := True_Pred;
+   begin
+      for B of Binders loop
+         if Present (B.Ada_Node) and then Use_Why_Base_Type (B.Ada_Node) then
+
+            --  The Ada_Node contains the Ada entity for the parameter
+
+            declare
+               Ty    : constant Entity_Id :=
+                 Unique_Entity (Etype (B.Ada_Node));
+               Guard : constant W_Pred_Id :=
+                 New_Call (Name =>
+                              Prefix (S        => Full_Name (Ty),
+                                      W        => WNE_Range_Pred,
+                                      Ada_Node => Ty),
+                            Args => (1 => +B.B_Name));
+            begin
+               Pred :=
+                 +New_And_Then_Expr
+                 (Domain => EW_Pred,
+                  Left   => +Pred,
+                  Right  => +Guard);
+            end;
+         end if;
+      end loop;
+      return Pred;
+   end Compute_Guard_Formula;
 
    ---------------------------
    -- Compute_Logic_Binders --
@@ -1170,6 +1209,8 @@ package body Gnat2Why.Subprograms is
             Equ_Ty  : constant W_Base_Type_Id :=
               (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent)
                  else EW_Abstract (Ty_Ent));
+            Guard   : constant W_Pred_Id :=
+               Compute_Guard_Formula (Logic_Func_Binders);
          begin
             Emit
               (File.Cur_Theory,
@@ -1178,12 +1219,13 @@ package body Gnat2Why.Subprograms is
                   Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
                   Ada_Type    => Ty_Ent,
                   Binders     => Logic_Func_Binders,
+                  Pre         => Guard,
                   Def         =>
-                  +Transform_Expr
-                    (Expression (Expr_Fun_N),
-                     Expected_Type => Equ_Ty,
-                     Domain        => EW_Term,
-                     Params        => Params)));
+                    +Transform_Expr
+                      (Expression (Expr_Fun_N),
+                       Expected_Type => Equ_Ty,
+                       Domain        => EW_Term,
+                       Params        => Params)));
          end;
       end if;
 
