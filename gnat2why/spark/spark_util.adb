@@ -431,9 +431,16 @@ package body SPARK_Util is
          Body_E := Corresponding_Body (N);
       end if;
 
-      --  Retrieve the subprogram body
+      --  If no body is available, return Empty
 
-      return Parent (Get_Subprogram_Spec (Body_E));
+      if No (Body_E) then
+         return Empty;
+
+      --  Otherwise, retrieve the subprogram body
+
+      else
+         return Parent (Get_Subprogram_Spec (Body_E));
+      end if;
    end Get_Subprogram_Body;
 
    -----------------------------------
@@ -464,6 +471,20 @@ package body SPARK_Util is
 
       if Nkind (N) = N_Defining_Program_Unit_Name then
          N := Parent (N);
+      end if;
+
+      --  If the Parent pointer of E is not a subprogram specification node
+      --  (going through an intermediate N_Defining_Program_Unit_Name node
+      --  for subprogram units), then E is an inherited operation. Its parent
+      --  points to the type derivation that produces the inheritance: that's
+      --  the node that generates the subprogram specification. Its alias
+      --  is the parent subprogram, and that one points to a subprogram
+      --  declaration, or to another type declaration if this is a hierarchy
+      --  of derivations.
+
+      if Nkind (N) not in N_Subprogram_Specification then
+         pragma Assert (Present (Alias (E)));
+         N := Get_Subprogram_Spec (Alias (E));
       end if;
 
       return N;

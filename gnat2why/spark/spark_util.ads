@@ -82,7 +82,8 @@ package SPARK_Util is
    --  N_Expression_Function original node. Otherwise, return Empty.
 
    function Get_Subprogram_Body (E : Entity_Id) return Node_Id;
-   --  Return the N_Subprogram_Body node for a subprogram entity E
+   --  Return the N_Subprogram_Body node for a subprogram entity E, if
+   --  available. Otherwise, return Empty.
 
    function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
    --  Return the N_Specification node for a subprogram entity E
