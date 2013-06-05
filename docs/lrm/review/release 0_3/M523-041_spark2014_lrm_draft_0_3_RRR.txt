@@ -76,8 +76,7 @@ Is is worth supporting Pre'Class, etc., if we aren't supporting
 dispatching calls?  The class-wide aspects seem relevant only in the
 presence of dispatching calls.
 !Action Taken: I have changed the text to say that the attribute 'Class
-is not currently supported. THIS NEEDS TO BE DISCUSSED AT NEXT LANGUAGE
-TELE-CONF
+is not currently supported. References to 'Class attributes have either been removed or have been qualified with a note stating that they are not currently supported. 
 !Checked By:
 
 !Label: STT007
@@ -131,7 +130,7 @@ prefix itself."
 What sort of prefix includes declarations?  Did you mean "within the
 enclosing invariant or variant expression"?
 !Action Taken: I do not know the answer to this I defer to SBB. I have
-sent an email to SBB.
+sent an email to SBB. SBB has replied with an example - it is comples like the rule.  I have added the example as a note in the SPARK RM.
 !Checked By:
 
 !Label: STT011
@@ -606,7 +605,7 @@ cleaner to have the limited_with from the spec, it should probably be a
 "limited private" with clause, since I think a normal "limited with"
 would be illegal.
 !Action Taken:For modular, constructive  analysis we cannot use post-compilation checks.  I think the current scheme is easier to check before all the code is written.  An alternative would be to record the information in the front end.  When an Abstract_State aspect has a Part_Of aspect, the package declaring the encapsuating state has to be with'd if it is not its parent, and in the internal representation of the package declaring the encapsulating state we record that the subordinate state is part of the encapsulating state.  I do not think this would be too hard to do and would be prefereble to the limited withs.
-For the moment I have changed to private limited with but we NEED TO DISCUSS THIS AT THE NEXT LANGUAGE CONF_CALL..
+After discussing th the Tele-conf call it has been decided to take the approach outlined above.  Updated the rules and examples and added notes about analysis tools recording declarations containig Part_Of indicators. 
 !Checked By:
 
 !Label: STT047
@@ -621,7 +620,7 @@ For the moment I have changed to private limited with but we NEED TO DISCUSS THI
 !Location: 7.2.3 68/15:
 !Description: As mentioned in STT046, this should probably be a "limited
 private with P.Priv;" if it is needed at all.
-!Action Taken:Changed to limited with.
+!Action Taken:Removed limited with.
 !Checked By:
 
 
@@ -721,8 +720,7 @@ children of Externals, so the "limited with" is redundant.
 !Location: 7.7 81/9:
 !Description: Static Semantics rule 3 seems to be a legality rule, while
 Legality Rule 1 seems to be a Static Semantics rule.
-!Action Taken:I have moved Static semantic rule 3 as the first legatity rule.  I have left the original legality rule 1 as as a second legality rule.  It would require some rewording to make this legality rule a semantic rule.  As it is it needs to follow what was semantic rule 3.  I think it is reasonable to leave the original legality rule 1 as a legality rule as it defines how the early call region is determined.  CHEXCK WITH TUCK that this is OK
-
+!Action Taken:I have moved Static semantic rule 3 as the first legatity rule.  I have left the original legality rule 1 as as a second legality rule.  It would require some rewording to make this legality rule a semantic rule.  As it is it needs to follow what was semantic rule 3.  I think it is reasonable to leave the original legality rule 1 as a legality rule as it defines how the early call region is determined.
 !Checked By:
 
 
@@ -732,7 +730,7 @@ Legality Rule 1 seems to be a Static Semantics rule.
 must meet the same restrictions as would be required for a call to each
 of tis overriding primitive operations"?  I can't quite imagine how that
 works.
-!Action Taken:Defer to Steve - DISCUSS at Conf-Call
+!Action Updated by SBB.
 !Checked By:
 
 !Label: STT062
@@ -833,7 +831,7 @@ presumably there as a result of an action from the previous review.
 subheading in sections where High-Level Requirements had been removed,
 but this has not been applied consistently, see eg. 6.1.3, 6.1.4, 6.1.5,
 6.1.6.
-!Action Taken:
+!Action Taken:Done
 !Checked By:
 
 
@@ -860,7 +858,7 @@ We've got:
 
 I think that was supposed to be parenthesized and tacked onto the end of
 the preceding sentence as a modifier.
-!Action Taken:
+!Action Taken:Done
 !Checked By:
 
 !Label: SBB_03
@@ -882,8 +880,80 @@ Typo in the following:
 !Checked By:
 
 
+!Label: SBB_05
+!Location: source/packages.rst
+!Description:We've got:
+   A Refined_Global Aspect may only appear on a body_stub (if one is
+   present) or the body (if no stub is present)
+   of a subprogram which is declared in the visible part of a package
+   and whose Global aspect denotes one or more
+   state abstractions declared in the Abstract_State aspect of the
+   package.
 
+Hristian asked about the above wording.
 
+Two issues:
+
+    1) "may" makes it sound like a Refined_Global is never required.
+       Is this the intent?
+
+     2) I think "declared in the Abstract_State aspect of the package"
+        should be "whose refinements are visible" and "visible part"
+        should be "specification" (i.e. include private part).
+
+      Consider:
+
+           package Outer with Abstract_State => Foo is
+           private
+              package Inner is
+                 procedure Proc with Global => Foo;
+              end Inner;
+           end Outer;
+
+To make the singular/plural grammar less awkward, perhaps
+     "whose Global aspect denotes at least one state abstraction
+      whose refinement is visible"
+!Action Taken: Changed the wording to the following:
+#. A Refined_Global aspect shall be specified on a body_stub (if one is 
+   present) or subprogram body if and only if it has a declaration in the
+   visible part of an immediately enclosing package, the declaration has a 
+   Global aspect which denotes a state abstraction declared by the package and
+   the refinement of the state abstraction is visible.
+I do not agree with your suggestion of including the private part.  I added a restriction some time ago that a state abstraction cannot be mentioned in the private part of a package because the private part of a package is logically part of the body where the refinement is visible.  I think I discussed this with you. 
+I have also updated the text for Refined_Depends as this was worded similarly:
+#. A Refined_Depends aspect shall be specified on a body_stub (if one is 
+   present) or subprogram body if and only if it has a declaration in the
+   visible part of an immediately enclosing package and the declaration has a 
+   Depends aspect which denotes a state abstraction declared by the package and
+   the refinement of the state abstraction is visible.
+!Checked By:
+
+!Label: SBB_06
+!Location: source/packages.rst
+!Description:I think I identified a problem with my elaboration checking scheme in the case of a dispatching call where the callee that we dispatch to in turn calls anther subp whose body hasn't been elaborated yet.
+I don't remember if this case is handled right - I'll check, but I may need to do something in that area.
+!Action Taken:
+!Checked By:
+
+!Label: SBB_07
+!Location:General
+!Description:Just caught my eye, although you are already aware of this.
+This is just a reminder.
+
+   Pragma Loop_Variant is an assertion (as defined in RM 11.4.2(1.1/3))
+   and is governed in the same way as pragma
+   Assert by the Assert assertion aspect.
+
+We changed our minds on this one and every assertion pragma gets its own assertion aspect. So the above is wrong.
+
+Better would be
+   Pragma Loop_Variant is an assertion (as defined in RM 11.4.2(1.1/3))
+   and is governed
+   Loop_Invariant is an assertion aspect[and
+   may be used in an Assertion_Policy pragma].
+!Action Taken:
+!Checked By:
+   -- Steve
 
 !Label: JEB/01
 !Location: General

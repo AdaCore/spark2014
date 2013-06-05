@@ -944,15 +944,15 @@ is part of and a state abstraction always knows all of its constituents.
    shall for each declaration in the visible state:
 
    * connect the declaration to an encapsulating state abstraction by
-     associating a Part_Of indicator with the declaration;
+     associating a Part_Of indicator with the declaration; and
 
    * name an encapsulating state abstraction in its Part_Of indicator if and
      only if the unit declaring the state abstraction is strictly more visible
-     than the unit containing the declaration; and
-
-   * require a private ``limited_with_clause`` naming P on the unit which 
-     declares the encapsulating state abstraction.
-     [This rule is checked as part of checking the Part_Of aspect.]
+     than the unit containing the declaration.
+     
+   [Each state abstraction which has a Part_Of indicator, the unit in which it 
+   is declared and its encapsulating state is noted by any tool analyzing 
+   SPARK 2014.]
 
 #. Each item of hidden state declared in the private part of a unit shall have
    a Part_Of indicator associated with the declaration which shall denote an
@@ -969,10 +969,10 @@ is part of and a state abstraction always knows all of its constituents.
    * in its Refined_State aspect, denote each declaration associated with such a
      Part_Of indicator as a ``constituent`` exclusively of the encapsulating
      state abstraction.
-
-   [The units that need to be with'd are known from the ``limited_with_clauses``
-   on its specification and from this it is known which declarations have a
-   Part_Of indicator for an encapsulating state abstraction.]
+     
+   [The state abstractions with a Part_Of indicator, the unit in which they have
+   been declared and their encapsulating state have been noted as described
+   previously and these records are used to check this rule.]
 
 #. If both a state abstraction and one or more of its ``constituents`` are
    visible in a private package specification or in the package specification of
@@ -1000,11 +1000,6 @@ is part of and a state abstraction always knows all of its constituents.
     end P;
 
     -- P.Pub is the public package that declares the state abstraction
-
-    limited private with P.Priv;
-                           -- Indicates to P.Pub that the visible (to P.Pub)
-                           -- state of P.Priv may be constituents of P.Pub's
-                           -- state abstractions.
     package P.Pub --  public unit
        with Abstract_State => (R, S)
     is
@@ -1115,7 +1110,6 @@ is part of and a state abstraction always knows all of its constituents.
 
     end Outer;
 
-   limited private with Q.Child;
     package Q
        with Abstract_State => (Q1, Q2)
     is
@@ -1248,10 +1242,11 @@ The static semantics are equivalent to those given for the Global aspect in
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Global Aspect may only appear on a body_stub (if one is present)
-   or the body (if no stub is present) of a subprogram which is declared
-   in the visible part of a package and whose Global aspect denotes one or more
-   state abstractions declared in the Abstract_State aspect of the package.
+#. A Refined_Global aspect shall be specified on a body_stub (if one is 
+   present) or subprogram body if and only if it has a declaration in the
+   visible part of an immediately enclosing package, the declaration has a 
+   Global aspect which denotes a state abstraction declared by the package and
+   the refinement of the state abstraction is visible.
 
 #. A Refined_Global aspect specification shall *refine* the subprogram's
    Global aspect as follows:
@@ -1351,11 +1346,12 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Depends Aspect may only appear on a body_stub (if one is present)
-   or the body (if no stub is present) of a subprogram which is declared
-   in the visible part of a package and whose Depends aspect denotes one or more
-   state abstractions declared in the Abstract_State aspect of the package.
-
+#. A Refined_Depends aspect shall be specified on a body_stub (if one is 
+   present) or subprogram body if and only if it has a declaration in the
+   visible part of an immediately enclosing package and the declaration has a 
+   Depends aspect which denotes a state abstraction declared by the package and
+   the refinement of the state abstraction is visible.
+   
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
@@ -1471,6 +1467,13 @@ be a Boolean ``expression``.
    in the visible part of a package, its abstract view. If the subprogram
    declaration in the visible part has no explicit precondition, a precondition
    of True is assumed for its abstract view.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: TBD
+
+#. At the point of call of a subprogram, both its precondition and the
+   expression of its Refined_Post aspect shall evaluate to True.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1623,11 +1626,6 @@ abstraction on to external states which are given in this section.
 .. code-block:: ada
 
 
-   limited private with 
-      Externals.Temperature,
-      Externals.Pressure,
-      Externals.Main_Display,
-      Externals.Secondary_Display;
    package Externals
       with Abstract_State => ((Combined_Inputs with External, Input_Only),
                               (Displays with External, Output_Only),
@@ -1907,19 +1905,22 @@ global variables discussed later in this section.
 
 #. |SPARK| requires that an intra-compilation_unit call which is
    executable during elaboration shall occur after a certain point in the unit
-   where the subprogram_body is known to have been elaborated. This point may
-   precede the declaration of the subprogram body and starts at the
-   *early call region* in which such a call is permitted prior to the
-   elaboration of the body of the subprogram.
+   (described below) where the subprogram's completion is known to have been
+   elaborated. The portion of the unit following this point and extending
+   to the start of the completion of the subprogram is defined to
+   be the *early call region* for the subprogram. An intra-compilation_unit
+   call which is executable during elaboration and which occurs (statically)
+   before the start of the completion of the callee shall occur within the
+   early call region of the callee.
 
 #. The start of the early call region is obtained by starting at the
-   subprogram_body and then looking at the preceding declarations in reverse
-   elaboration order until a non-preelaborable statement/declarative_item/pragma
+   subprogram's completion (typically a subprogram_body) and then traversing
+   the preceding constructs in reverse elaboration order until
+   a non-preelaborable statement/declarative_item/pragma
    is encountered. The early call region starts immediately after this
    non-preelaborable construct (or at the beginning of the enclosing block
    (or library unit package spec or body) if no such non-preelaborable construct
-   is found).  The early call region ends at the declaration of the subprogram
-   body.
+   is found).
 
    [The idea here is that once elaboration reaches the start of the early call
    region, there will be no further expression evaluation or statement
@@ -1945,7 +1946,7 @@ global variables discussed later in this section.
     end;
 
    even though the call to Q precedes the body of Q. The early call region
-   for calls to either P or Q begins immediately after the declaration of X.
+   for either P or Q begins immediately after the declaration of X.
    Note that because the call to P is executable during elaboration, so
    is the call to Q.
 
@@ -1962,6 +1963,12 @@ global variables discussed later in this section.
    then defining the above rules in terms of this new notion instead of
    preelaborability. The only disadvantage of this is the added complexity
    of defining this new notion.]
+
+#. For purposes of the above rules, a subprogram completed by a
+   renaming-as-body is treated as though it were a wrapper
+   which calls the renamed subprogram (as described in Ada RM 8.5.4(7.1/1)).
+   [The notional "call" occuring in this wrapper is then subject to the
+   above rules, like any other call.]
 
 #. If an instance of a generic occurs in the same compilation_unit as the
    body of the generic, the body must precede the instance. [If this rule
@@ -1992,19 +1999,24 @@ global variables discussed later in this section.
 #. In the case of a dispatching call, the subprogram_body mentioned
    in the above rules is that (if any) of the statically denoted callee.
 
-#. In order to ensure that dispatching calls do not fail elaboration
-   checks, the freezing point of a tagged type must meet the same restrictions
-   as would be required for a call to each of its overriding primitive
-   operations. [The idea here is that after the freezing point it would be
+#. The first freezing point of a tagged type shall occur within the
+   early call region of each of its overriding primitive operations.
+
+   [This rule is needed to prevent a dispatching call before the body
+   of the (dynamic, not static) callee has been elaborated.
+   The idea here is that after the freezing point it would be
    possible to declare an object of the type and then use it as a controlling
    operand in a dispatching call to a primitive operation of an ancestor type.
    No analysis is performed to identify scenarios where this is not the case,
-   so conservative rules are adopted.
+   so conservative rules are adopted.]
 
-   Ada ensures that the freezing point of a tagged type will always occur after
+   [Ada ensures that the freezing point of a tagged type will always occur after
    both the completion of the type and the declarations of each of its primitive
-   subprograms. This is typically all that one needs to know about freezing
-   points in order to understand the above rule.]
+   subprograms; the freezing point of any type will occur before the
+   declaration of any objects of the type or the evaluation of any
+   expressions of the type. This is typically all that one needs to know about
+   freezing points in order to understand how the above rule applies to a
+   particular example.]
 
 #. For purposes of defining the early call region, the spec and body of a
    library unit package which has an Elaborate_Body pragma are treated as if
@@ -2014,8 +2026,7 @@ global variables discussed later in this section.
    This is important for tagged type declarations.
 
    [This example is in |SPARK|, but would not be without the Elaborate_Body
-   pragma (because of the notional calls associated with the tagged type
-   declaration).
+   pragma (because of the tagged type rule).
 
    .. code-block:: ada
 
@@ -2090,6 +2101,7 @@ global variables discussed later in this section.
         X : Pkg2.T2;
         Flag : Boolean := Pkg1.Op (Pkg1.T1'Class (X));
           -- dispatching call during elaboration fails check
+          -- Note 'Class is not currently permitted.
      end Pkg3;
 
      with Pkg3;

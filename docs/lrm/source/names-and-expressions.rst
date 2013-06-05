@@ -261,6 +261,7 @@ These contexts include:
     component_declaration;
 
   * a Type_Invariant or Type_Invariant'Class aspect specification;
+    [The 'Class attribute is not currently permitted in |SPARK|.]
 
   * a Dynamic_Predicate aspect specification;
 

@@ -279,6 +279,19 @@ The prefix of a ``Loop_Entry`` ``attribute_reference`` shall not contain a use
 of an entity declared within the ``loop_statement`` but not within the prefix
 itself.
 
+[This rule is to allow the use of I in the following example:
+
+.. code-block:: ada
+ 
+  loop
+     pragma Assert
+        ((Var > Some_Function
+           (Param => (for all I in T => F (I))))'Loop_Entry);
+
+In this example the value of the inequality ">" that would have been evaluated
+on entry to the loop is obtained even if the value of Var has since changed].
+
+
 The prefix of a ``Loop_Entry`` ``attribute_reference`` shall statically denote
 an entity, or shall denote an ``object_renaming_declaration``, if
 
@@ -347,7 +360,7 @@ the cut point. Only the given Boolean expression is carried forward.
 
 Assert_And_Cut, Assume and Loop_Invariant are the same as pragma Assert with
 respect to Syntax, Name Resolution, Legality Rules, Dynamic Semantics, and
-assertion policy. Apart from the legality rule that restricts the use of
+assertion policy apart from the legality rule that restricts the use of
 Loop_Invariant to a loop (see :ref:`loop_invariants`).
 
 .. note:: (TJJ 21-Feb-2013) Loop_Invariant is partially covered in two separate

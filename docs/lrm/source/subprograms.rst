@@ -86,9 +86,8 @@ Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
 In order to extend Ada's support for specification of subprogram contracts
-(e.g., the Pre, Post, Pre'Class and Post'Class aspects) by providing more
-precise and/or concise contracts, the |SPARK| aspects, Global, Depends,
-and Contract_Cases are defined.
+(e.g., the Pre and Post) by providing more precise and/or concise contracts, the
+|SPARK| aspects, Global, Depends, and Contract_Cases are defined.
 
 .. centered:: **Legality Rules**
 
