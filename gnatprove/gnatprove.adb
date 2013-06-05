@@ -583,7 +583,6 @@ procedure Gnatprove is
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
-      Args.Append ("-k");
       for File of File_List loop
          Args.Append (File);
       end loop;
