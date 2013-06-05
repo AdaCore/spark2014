@@ -1,3 +1,4 @@
-test.adb:6:10: overflow check not proved
-test.adb:6:35: info: range check proved
-test.adb:6:7: info: assertion proved
+misovattr.adb:6:35: info: range check proved
+misovattr.adb:6:7: info: assertion proved
+misovattr.adb:7:35: range check not proved
+misovattr.adb:7:7: info: assertion proved
