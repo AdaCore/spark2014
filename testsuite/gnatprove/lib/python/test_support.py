@@ -99,9 +99,14 @@ def gnat2why(src, opt=None):
     process = Run(cmd)
     if process.status:
         print process.out
+
     elif quick_mode():
         if os.path.exists("test.out"):
             cat("test.out", True)
+
+    # Otherwise, print the command output sorted
+    else:
+        print_sorted(str.splitlines(process.out))
 
 def altergo(src, timeout=10, opt=None):
     """Invoke alt-ergo with why3-cpulimit wrapper
@@ -248,4 +253,3 @@ def check_dot_files(opt=None):
     # Dump the contents of all dot files on stdout
     for dot_file in sorted(dot_files):
         cat(dot_file)
-
