@@ -1,7 +1,0 @@
-GNAT Specificities
-==================
-
-Implementation-Defined Pragmas
-------------------------------
-
-Pragma ``Debug`` is accepted in Alfa, and it has no effect.

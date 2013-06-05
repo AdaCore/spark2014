@@ -1,5 +1,0 @@
-Generic Units
-=============
-
-Generic units are not classified as being Alfa or non-Alfa. Only their
-instantiations are.
