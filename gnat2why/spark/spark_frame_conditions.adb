@@ -26,6 +26,7 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 with Unchecked_Deallocation;
 
+with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Get_SPARK_Xrefs;
 with Output;                 use Output;
@@ -500,16 +501,18 @@ package body SPARK_Frame_Conditions is
    ---------------
 
    function Get_Reads (E : Entity_Id) return Name_Set.Set is
-      Name   : aliased constant String := Unique_Name (E);
-      E_Name : constant Entity_Name    :=
-                 Make_Entity_Name (Name'Unrestricted_Access);
-      E_Id   : Id;
+      E_Alias : constant Entity_Id :=
+        (if Present (Alias (E)) then Alias (E) else E);
+      Name    : aliased constant String := Unique_Name (E_Alias);
+      E_Name  : constant Entity_Name    :=
+        Make_Entity_Name (Name'Unrestricted_Access);
+      E_Id    : Id;
 
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 
-      if Is_Abstract_Subprogram (E) then
+      if Is_Abstract_Subprogram (E_Alias) then
          return Name_Set.Empty_Set;
       end if;
 
@@ -530,15 +533,17 @@ package body SPARK_Frame_Conditions is
    ----------------
 
    function Get_Writes (E : Entity_Id) return Name_Set.Set is
-      Name   : aliased constant String := Unique_Name (E);
-      E_Name : constant Entity_Name    :=
-                 Make_Entity_Name (Name'Unrestricted_Access);
-      E_Id   : Id;
+      E_Alias : constant Entity_Id :=
+        (if Present (Alias (E)) then Alias (E) else E);
+      Name    : aliased constant String := Unique_Name (E_Alias);
+      E_Name  : constant Entity_Name    :=
+        Make_Entity_Name (Name'Unrestricted_Access);
+      E_Id    : Id;
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 
-      if Is_Abstract_Subprogram (E) then
+      if Is_Abstract_Subprogram (E_Alias) then
          return Name_Set.Empty_Set;
       end if;
 
