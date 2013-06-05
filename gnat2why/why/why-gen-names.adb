@@ -664,6 +664,8 @@ package body Why.Gen.Names is
          when WNE_Real_Of_Int  => return "Floating.real_of_int";
          when WNE_Real_Round   => return "Floating.round";
          when WNE_Real_Truncate => return "Floating.truncate";
+         when WNE_Real_Max  => return "Floating.real_max";
+         when WNE_Real_Min  => return "Floating.real_min";
          when WNE_Array_1      => return "Array__1";
          when WNE_Array_2      => return "Array__2";
          when WNE_Array_3      => return "Array__3";

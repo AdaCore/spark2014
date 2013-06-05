@@ -218,6 +218,8 @@ package Why.Gen.Names is
       WNE_Real_Of_Int,
       WNE_Real_Round,
       WNE_Real_Truncate,
+      WNE_Real_Max,
+      WNE_Real_Min,
       WNE_Result,
       WNE_Result_Exc,
       WNE_Sandbox,

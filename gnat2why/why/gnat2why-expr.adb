@@ -3297,27 +3297,32 @@ package body Gnat2Why.Expr is
 
          when Attribute_Min | Attribute_Max =>
             declare
+               Ada_Ty : constant Entity_Id := Etype (Expr);
+               Base : constant W_Base_Type_Id := Base_Why_Type (Ada_Ty);
                Arg1 : constant W_Expr_Id :=
                  Transform_Expr (First (Expressions (Expr)),
-                                 EW_Int_Type,
+                                 Base,
                                  Domain,
                                  Params);
                Arg2 : constant W_Expr_Id :=
                  Transform_Expr (Next (First (Expressions (Expr))),
-                                 EW_Int_Type,
+                                 Base,
                                  Domain,
                                  Params);
                Attr_Name : constant Why_Name_Enum :=
-                             (if Attr_Id = Attribute_Min then
-                                WNE_Integer_Min
-                              else WNE_Integer_Max);
+                 (if Attr_Id = Attribute_Min then
+                    (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Min
+                     else WNE_Real_Min)
+                  else
+                     (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Max
+                      else WNE_Real_Max));
                Func : constant W_Identifier_Id := To_Ident (Attr_Name);
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
                               Name     => Func,
                               Args     => (1 => Arg1, 2 => Arg2));
-               Current_Type := EW_Int_Type;
+               Current_Type := Base;
             end;
 
          when others =>

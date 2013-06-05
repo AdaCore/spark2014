@@ -47,6 +47,7 @@ module Floating
   use real.Abs as AbsReal
   use export real.Truncate
   use export real.PowerInt
+  use real.MinMax
 
   use real.FromInt
 
@@ -138,6 +139,8 @@ module Floating
     requires { y<>0.0 }
     ensures { result = div_real x y }
 
+  function real_max (x y : real) : real = MinMax.max x y
+  function real_min (x y : real) : real = MinMax.min x y
 end
 
 module Boolean
