@@ -1,4 +1,5 @@
-lrm/code/*/*/* no-precommit-check
+docs/lrm/code/*/*/* no-precommit-check
+docs/lrm/code/*/*/*/* no-precommit-check
 docs/case_study/* no-precommit-check
 docs/case_study/*/* no-precommit-check
 docs/case_study/*/*/* no-precommit-check
