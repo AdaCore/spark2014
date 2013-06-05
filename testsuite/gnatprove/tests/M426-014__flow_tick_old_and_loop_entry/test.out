@@ -1,5 +1,3 @@
-test.adb:8:12: stable
-test.adb:9:38: use of uninitialized variable "X" [uninitialized__x]
 test.adb:17:12: stable
 test.adb:18:38: use of uninitialized variable "X" [uninitialized__x]
 test.adb:26:12: stable
@@ -10,7 +8,5 @@ test.adb:39:27: ineffective statement
 test.adb:43:38: use of uninitialized variable "X" [uninitialized__x]
 test.adb:51:12: stable
 test.adb:52:45: use of uninitialized variable "X" [uninitialized__x]
-
-
-
-
+test.adb:8:12: stable
+test.adb:9:38: use of uninitialized variable "X" [uninitialized__x]

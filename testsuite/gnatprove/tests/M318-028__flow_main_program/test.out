@@ -1,16 +1,12 @@
+main.adb:11:27: ineffective statement
+main.adb:12:12: unused assignment
 main.adb:1:11: flow analysis of main program "Main" has not yet been implemented
 main.adb:9:04: ineffective statement
-main.adb:11:27: ineffective statement
-main.adb:12:12: ineffective statement
 main2.adb:3:10: flow analysis of main program "Main2" has not yet been implemented
 main2.adb:4:32: ineffective global import "X"
-main2.adb:4:48: ineffective global import "State"
 main2.adb:4:48: global "State" is not used
+main2.adb:4:48: ineffective global import "State"
 main3.ads:3:11: flow analysis of main program "Main3" has not yet been implemented
-
-
-
-
 // add_cfg
 digraph G {
    graph [splines=True];

@@ -1,14 +1,10 @@
-test.adb:7:23: ineffective import "A"
-test.adb:7:23: "A" is not used
-test.adb:9:23: "C" is not used
-test.adb:19:19: ineffective global import "State"
 test.adb:19:19: global "State" is not used
+test.adb:19:19: ineffective global import "State"
 test.adb:31:30: global "State" is not used
-test.adb:41:23: ineffective import "A"
 test.adb:41:23: "A" is not used
+test.adb:41:23: ineffective import "A"
 test.adb:52:07: "L" is not used
 test.adb:61:07: ineffective statement
-
-
-
-
+test.adb:7:23: "A" is not used
+test.adb:7:23: ineffective import "A"
+test.adb:9:23: "C" is not used

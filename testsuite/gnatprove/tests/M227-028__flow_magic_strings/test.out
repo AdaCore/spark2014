@@ -1,15 +1,15 @@
 other.ads:4:14: ineffective global import "X"
 other.ads:4:14: ineffective global import "Y"
 test.adb:20:12: called subprogram "Initialise" requires "global" aspect to make state visible
-test.adb:24:14: ineffective global import "Z"
 test.adb:24:14: global "Z" is not used
+test.adb:24:14: ineffective global import "Z"
 test.adb:25:11: "Z" missing from null dependency
 test.adb:28:12: called subprogram "Initialise" requires "global" aspect to make state visible
-test.adb:31:14: ineffective global import "Z"
 test.adb:31:14: global "Z" is not used
+test.adb:31:14: ineffective global import "Z"
 test.adb:32:11: "Z" missing from null dependency
-test.adb:38:14: ineffective global import "Z"
 test.adb:38:14: global "Z" is not used
+test.adb:38:14: ineffective global import "Z"
 test.adb:47:14: ineffective global import "Z"
 test.adb:54:14: ineffective global import "Z"
 test.adb:55:11: "Z" missing from null dependency
@@ -19,7 +19,3 @@ test.adb:66:12: called subprogram "Initialise" requires "global" aspect to make 
 test.adb:70:14: flow analysis of "Test_07" abandoned due to inconsistent graph
 test.adb:74:17: called subprogram "Get_X" requires "global" aspect to make state visible
 test.adb:74:31: called subprogram "Get_X" requires "global" aspect to make state visible
-
-
-
-
