@@ -56,7 +56,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'spark2014'
+project = u'spark2014_rm'
 copyright = u'2013, Altran UK Ltd and AdaCore'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -200,7 +200,7 @@ htmlhelp_basename = 'spark2014doc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'spark2014.tex', u'SPARK 2014 LRM',
+  ('index', 'spark2014_rm.tex', u'SPARK 2014 LRM',
    u'Altran and AdaCore', 'manual'),
 ]
 
@@ -233,7 +233,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'spark2014', u'spark2014 Documentation',
+    ('index', 'spark2014_rm', u'SPARK 2014 Reference Manual',
      [u'Altran and AdaCore'], 1)
 ]
 

@@ -5,7 +5,7 @@
 SPHINXOPTS    = -W
 SPHINXBUILD   = sphinx-build
 PAPER         =
-BUILDDIR      = build
+BUILDDIR      = _build
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -72,17 +72,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/spark2014.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/spark2014_rm.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/spark2014.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/spark2014_rm.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/spark2014"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/spark2014"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/spark2014_rm"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/spark2014_rm"
 	@echo "# devhelp"
 
 epub:
@@ -107,9 +107,9 @@ latexpdf:
 # impossible to avoid rebuild when no changes have been done. The target 'pdf'
 # provides a workaround, by rebuild only if html files were updated or if the
 # pdf files are not present.
-pdf: build/latex/spark2014.pdf
+pdf: build/latex/spark2014_rm.pdf
 
-build/latex/spark2014.pdf: build/html/index.html
+build/latex/spark2014_rm.pdf: build/html/index.html
 	$(MAKE) latexpdf
 
 build/html/index.html:
