@@ -48,7 +48,7 @@ GNATLIBDIR=$(GNATPROVEDIR)/stdlib
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
 STDLIB_TMP=stdlib_tmp
-DOC=ug alfa
+DOC=ug lrm
 
 CP=cp -pr
 
@@ -186,6 +186,6 @@ clean:
 	$(MAKE) -C gnat2why clean
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean
-	$(MAKE) -C docs/alfa clean
+	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean
 	$(MAKE) -C alt-ergo clean
