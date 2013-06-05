@@ -229,9 +229,7 @@ package body Flow.Utility is
          case F.Kind is
             when Direct_Mapping | Record_Field =>
                pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
-               if Ekind (Get_Direct_Mapping_Id (F)) = E_Constant then
-                  null;
-               else
+               if not (Ekind (Get_Direct_Mapping_Id (F)) = E_Constant) then
                   R.Include (F);
                end if;
 
