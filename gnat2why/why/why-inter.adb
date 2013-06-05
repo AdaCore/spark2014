@@ -805,14 +805,47 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif N = Universal_Fixed then
          return EW_Real_Type;
-      elsif Ekind (N) in Private_Kind then
+
+      --  Private types that are not in SPARK should be translated at the
+      --  special __private abstract type. Other private types should be
+      --  translated into the most underlying type.
+
+      elsif Ekind (N) in Private_Kind
+        or else Has_Private_Declaration (N)
+      then
          if Type_In_Formal_Container (N) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
-         elsif Entity_In_SPARK (Most_Underlying_Type (N)) then
-            return EW_Abstract (Most_Underlying_Type (N));
          else
-            return New_Base_Type (Base_Type => EW_Private);
+            declare
+               Under_Typ : constant Entity_Id := Most_Underlying_Type (N);
+            begin
+               if Entity_In_SPARK (Under_Typ) then
+
+                  --  Avoid infinite recursion if the private type is its own
+                  --  most underlying type. Return the expected abstract type
+                  --  directly.
+
+                  if Under_Typ = N then
+                     return New_Base_Type (Base_Type => EW_Abstract,
+                                           Ada_Node  => N);
+
+                  --  Recurse with the most underlying type
+
+                  else
+                     return EW_Abstract (Under_Typ);
+                  end if;
+
+               --  The underlying type is not in SPARK, return the special
+               --  __private abstract type.
+
+               else
+                  return New_Base_Type (Base_Type => EW_Private);
+               end if;
+            end;
          end if;
+
+      --  Normal case: the type is translated into its own abstract type
+
       else
          return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
       end if;
