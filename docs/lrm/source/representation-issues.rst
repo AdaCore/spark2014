@@ -60,10 +60,15 @@ Refined_Post aspects specified.
 Data Validity
 ~~~~~~~~~~~~~
 
-Currently |SPARK| does not check for data validity although SPARK 2005 did.
+[Currently |SPARK| does not check for data validity as it analyses code,
+though this may be changed in a future release.
+It is therefore up to users to ensure that data read from external sources
+is valid.]
 
 .. todo:: Need to put some words in here to describe the precautions that may
    be taken to avoid invalid data.
+
+.. todo:: Introduce checks for data validity into the proof model as necessary.
    
 Unchecked Access Value Creation
 -------------------------------
