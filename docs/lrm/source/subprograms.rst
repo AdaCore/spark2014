@@ -929,6 +929,18 @@ No extra dynamic semantics are associated with anti-aliasing.
    denotes an object which overlaps a ``global_item`` of mode 
    **out** or **in out** of the subprogram, unless the corresponding formal
    parameter is of mode **in** and by-copy.
+   
+#. Where one of these rules prohibits the occurrence of an object V or any of its subcomponents
+   as an actual parameter, the following constructs are also prohibited in this context:
+
+   * A type conversion whose operand is a prohibited construct;
+
+   * A call to an instance of Unchecked_Conversion whose operand is a prohibited construct;
+
+   * A qualified expression whose operand is a prohibited construct;
+
+   * A prohibited construct enclosed in parentheses.
+
 
 Return Statements
 -----------------
