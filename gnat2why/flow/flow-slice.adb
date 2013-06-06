@@ -164,6 +164,8 @@ package body Flow.Slice is
 
       DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
+      use type Vertex_Sets.Set;
+
    begin
 
       --  Determine all out vertices.
@@ -207,10 +209,12 @@ package body Flow.Slice is
             F_Out : constant Flow_Id :=
               Flow_Equivalent (FA.PDG.Get_Key (V_Out));
 
+            --  Compute dependencies (and filter out local variables).
             Deps : constant Vertex_Sets.Set :=
               Internal_Dependency (FA      => FA,
                                    V_Final => V_Out,
-                                   IPFA    => False);
+                                   IPFA    => False)
+              and In_Vertices;
          begin
             if not DM.Contains (F_Out) then
                DM.Include (F_Out, Flow_Id_Sets.Empty_Set);
