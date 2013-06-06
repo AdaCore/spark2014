@@ -2,13 +2,13 @@ math.adb:6:18: info: overflow check proved
 math.adb:6:23: overflow check not proved
 math.adb:6:30: info: overflow check proved
 math.adb:7:21: info: overflow check proved
-math.ads:11:25: info: postcondition proved
+math.ads:11:14: info: postcondition proved
 math.ads:12:27: overflow check not proved
 math.ads:12:35: info: contract case proved
 math.ads:12:6: info: complete contract cases proved
 math.ads:12:6: info: disjoint contract cases proved
 math.ads:13:35: contract case not proved
-math.ads:5:26: info: postcondition proved
+math.ads:5:14: info: postcondition proved
 math.ads:6:31: info: contract case proved
 math.ads:6:6: info: complete contract cases proved
 math.ads:6:6: info: disjoint contract cases proved
