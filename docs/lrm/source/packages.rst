@@ -984,16 +984,16 @@ is part of and a state abstraction always knows all of its constituents.
    more of its constituents are visible the following rules apply:
    
    * if a subprogram reads or updates ``constituents`` that are visible but not 
-   other parts of the state abstraction [indirectly via a subprogram call] 
-   that are not visible, then those constituents and not the state abstraction 
-   shall be denoted in the Global and Depends aspects, or their refined counter
-   parts, of the subprogram;
-   
+     other parts of the state abstraction [indirectly via a subprogram call]
+     that are not visible, then those constituents and not the state abstraction
+     shall be denoted in the Global and Depends aspects, or their refined
+     counter parts, of the subprogram;
+     
    * otherwise, if the subprogram reads or updates other parts of the state 
-   abstraction, the  state abstraction shall be denoted and not its 
-   ``constituents``in Global and Depends aspects, or their refined counterparts, 
-   of the subprogram.
-
+     abstraction, the state abstraction shall be denoted and not its
+     ``constituents`` in Global and Depends aspects, or their refined
+     counterparts, of the subprogram.
+     
 .. centered:: **Examples**
 
 .. code-block:: ada
