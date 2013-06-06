@@ -38,7 +38,7 @@
 
 ADAINCLUDE=$(shell gnatls -v | grep adainclude)
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
-INSTALLDIR=$(PWD)/install
+INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
 EXAMPLESDIR=$(SHAREDIR)/examples/gnatprove
 DOCDIR=$(SHAREDIR)/doc/gnatprove
