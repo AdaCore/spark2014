@@ -21,66 +21,9 @@ GENERATED_FILES= \
  why-unchecked_ids.ads
 
 all: $(GENERATED_FILES)
-	cp $(GENERATED_FILES) ../
-
-force:
-
-why-atree.ads: xtree why-atree.ads-tmpl
-	./xtree
-
-why-atree-accessors.ads: xtree why-atree-accessors.ads-tmpl
-	./xtree
-
-why-atree-mutators.ads: xtree why-atree-mutators.ads-tmpl
-	./xtree
-
-why-atree-mutators.adb: xtree why-atree-mutators.adb-tmpl
-	./xtree
-
-why-atree-builders.ads: xtree why-atree-builders.ads-tmpl
-	./xtree
-
-why-atree-builders.adb: xtree why-atree-builders.adb-tmpl
-	./xtree
-
-why-atree-traversal.ads: xtree why-atree-traversal.ads-tmpl
-	./xtree
-
-why-atree-traversal.adb: xtree why-atree-traversal.adb-tmpl
-	./xtree
-
-why-atree-traversal_stub.ads: xtree why-atree-traversal_stub.ads-tmpl
-	./xtree
-
-why-atree-traversal_stub.adb: xtree why-atree-traversal_stub.adb-tmpl
-	./xtree
-
-why-atree-treepr.ads: xtree why-atree-treepr.ads-tmpl
-	./xtree
-
-why-atree-treepr.adb: xtree why-atree-treepr.adb-tmpl
-	./xtree
-
-why-atree-validity.ads: xtree why-atree-validity.ads-tmpl
-	./xtree
-
-why-ids.ads: xtree why-ids.ads-tmpl
-	./xtree
-
-why-kind_validity.ads: xtree why-kind_validity.ads-tmpl
-	./xtree
-
-why-opaque_ids.ads: xtree why-opaque_ids.ads-tmpl
-	./xtree
-
-why-classes.ads: xtree why-classes.ads-tmpl
-	./xtree
-
-why-unchecked_ids.ads: xtree why-unchecked_ids.ads-tmpl
-	./xtree
-
-xtree: force
 	gnatmake -j0 -Phelpers xtree
+	./xtree
+	cp $(GENERATED_FILES) ../
 
 clean:
 	-rm -f *~
