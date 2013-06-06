@@ -902,7 +902,11 @@ No extra legality rules are associated with anti-aliasing.
 
 .. centered:: **Static Semantics**
 
-No extra static semantics are associated with anti-aliasing.
+#. Objects are assumed to have overlapping locations if it cannot be established
+   statically that they do not. [This definition of overlapping is necessary since
+   these anti-aliasing checks will initially be implemented by flow analysis;
+   in a future tool release it is intended that these checks will be implemented by
+   the proof engine and so the static checking may be suppressed.]
 
 .. centered:: **Dynamic Semantics**
 
@@ -929,7 +933,37 @@ No extra dynamic semantics are associated with anti-aliasing.
 Return Statements
 -----------------
 
-No extensions or restrictions.
+Nonreturning Procedures
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. centered:: **Syntax**
+
+There is no additional syntax associated with nonreturning procedures in |SPARK|.
+
+.. centered:: **Legality Rules**
+
+#. For a call to a nonreturning procedure to be in |SPARK|, it must be immediately
+   enclosed by an if statement which encloses no other statement.
+
+.. centered:: **Static Semantics**
+
+There are no additional static semantics associated with nonreturning procedures in |SPARK|.
+
+.. centered:: **Dynamic Semantics**
+
+There are no additional dynamic semantics associated with nonreturning procedures in |SPARK|.
+
+.. centered:: **Verification Rules**
+
+#. A call to a nonreturning procedure introduces an obligation to prove that the statement
+   will not be executed, much like the proof obligation associated with
+
+       ``pragma Assert (False);``
+
+   [In other words, the proof obligations introduced for a call to a nonreturning procedure
+   are the same as those introduced for a runtime check which fails
+   unconditionally. See also section :ref:`exceptions`, where a similar restriction is
+   imposed on ``raise_statements``.]
 
 Overloading of Operators
 ------------------------

@@ -1,8 +1,7 @@
+.. _exceptions:
+
 Exceptions
 ==========
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 .. centered:: **Syntax**
 
