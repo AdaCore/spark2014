@@ -53,7 +53,7 @@ Package Renaming Declarations
 No extensions or restrictions.
 
 Subprogram Renaming Declarations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 .. centered:: **Syntax**
