@@ -178,6 +178,11 @@ package Flow_Types is
       with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
 
+   function Get_Default_Initialization (F : Flow_Id) return Node_Id;
+   --  Get the default initialization expression for the given flow id
+   --  (this only really works for record fields and direct mappings;
+   --  magic strings are assumed to not be default initialised)
+
    function Magic_String_Id
      (S       : Entity_Name;
       Variant : Flow_Id_Variant := Normal_Use)
@@ -255,6 +260,9 @@ package Flow_Types is
       Is_Precondition     : Boolean;
       --  True if this vertex represents the precondition.
 
+      Is_Default_Init     : Boolean;
+      --  True if this vertex represents a default initialization.
+
       Is_Loop_Entry       : Boolean;
       --  True if this vertex represents a loop entry assignment. For
       --  each variable where we use 'Loop_Entry we have one of these
@@ -311,6 +319,12 @@ package Flow_Types is
       --  which parameter this is. This is also quite useful for
       --  pretty-printing.
 
+      Default_Init_Var    : Flow_Id;
+      Default_Init_Val    : Node_Id;
+      --  For default initializations (Is_Default_init) this pair
+      --  records which variable has a default value (Var) and what it
+      --  is (Val).
+
       Variables_Defined   : Flow_Id_Sets.Set;
       Variables_Used      : Flow_Id_Sets.Set;
       --  For producing the DDG.
@@ -328,6 +342,7 @@ package Flow_Types is
      V_Attributes'(Is_Null_Node                    => False,
                    Is_Program_Node                 => False,
                    Is_Precondition                 => False,
+                   Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
                    Is_Initialised                  => False,
                    Is_Function_Return              => False,
@@ -344,6 +359,8 @@ package Flow_Types is
                    Call_Vertex                     => Null_Flow_Id,
                    Parameter_Actual                => Null_Flow_Id,
                    Parameter_Formal                => Null_Flow_Id,
+                   Default_Init_Var                => Null_Flow_Id,
+                   Default_Init_Val                => Empty,
                    Variables_Defined               => Flow_Id_Sets.Empty_Set,
                    Variables_Used                  => Flow_Id_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
@@ -353,6 +370,7 @@ package Flow_Types is
      V_Attributes'(Is_Null_Node                    => True,
                    Is_Program_Node                 => True,
                    Is_Precondition                 => False,
+                   Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
                    Is_Initialised                  => False,
                    Is_Function_Return              => False,
@@ -369,6 +387,8 @@ package Flow_Types is
                    Call_Vertex                     => Null_Flow_Id,
                    Parameter_Actual                => Null_Flow_Id,
                    Parameter_Formal                => Null_Flow_Id,
+                   Default_Init_Var                => Null_Flow_Id,
+                   Default_Init_Val                => Empty,
                    Variables_Defined               => Flow_Id_Sets.Empty_Set,
                    Variables_Used                  => Flow_Id_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,

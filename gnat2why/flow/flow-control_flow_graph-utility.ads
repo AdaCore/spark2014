@@ -152,4 +152,14 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
 
+   function Make_Default_Initialization_Attributes
+     (F       : Flow_Id;
+      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+      with Post =>
+        not Make_Default_Initialization_Attributes'Result.Is_Null_Node and
+        Make_Default_Initialization_Attributes'Result.Is_Default_Init;
+   --  Create attributes for the default initialization vertices.
+
 end Flow.Control_Flow_Graph.Utility;

@@ -609,6 +609,13 @@ package body Flow is
                   raise Program_Error;
             end case;
 
+         elsif A.Is_Default_Init then
+            Rv.Shape := Shape_None;
+
+            Sprint_Flow_Id (A.Default_Init_Var);
+            Output.Write_Str ("&nbsp;is by default&nbsp;");
+            Sprint_Node (A.Default_Init_Val);
+
          else
             if A.Is_Precondition then
                Rv.Shape := Shape_None;

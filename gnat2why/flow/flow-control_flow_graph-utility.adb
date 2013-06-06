@@ -331,4 +331,29 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Global_Variable_Attributes;
 
+   --------------------------------------------
+   -- Make_Default_Initialization_Attributes --
+   --------------------------------------------
+
+   function Make_Default_Initialization_Attributes
+     (F       : Flow_Id;
+      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc   : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+   is
+      A : V_Attributes := Null_Attributes;
+   begin
+      A.Is_Default_Init   := True;
+      A.Loops             := Loops;
+      A.Error_Location    := E_Loc;
+
+      A.Default_Init_Var  := F;
+      A.Default_Init_Val  := Get_Default_Initialization (F);
+
+      A.Variables_Defined := Flow_Id_Sets.To_Set (F);
+      A.Variables_Used    := Get_Variable_Set (A.Default_Init_Val);
+
+      return A;
+   end Make_Default_Initialization_Attributes;
+
 end Flow.Control_Flow_Graph.Utility;

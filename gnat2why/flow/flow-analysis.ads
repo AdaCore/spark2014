@@ -33,6 +33,9 @@ package Flow.Analysis is
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
                            Sane : out Boolean);
    --  Check the following basic properties:
+   --     - is aliasing present (using the flag FA.Aliasing_Present)?
+   --     - do we somehow depend on a record with non-manifest constant
+   --       default initializations?
    --     - are all global variables used declared as such?
    --
    --  Complexity is O(N)

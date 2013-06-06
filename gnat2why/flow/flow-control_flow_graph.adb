@@ -1346,17 +1346,40 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V : Flow_Graphs.Vertex_Id;
+      V     : Flow_Graphs.Vertex_Id;
+      Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
    begin
       --  First, we need a 'initial and 'final vertex for this object.
       Create_Initial_And_Final_Vertices (Defining_Identifier (N), FA);
 
       if not Present (Expression (N)) then
-         --  Just a null vertex as we don't have an initializing
-         --  expression.
-         FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
-                            Null_Node_Attributes,
-                            V);
+         --  No initializing expression, so we fall back to the
+         --  default initialization (if any).
+         for F of Flatten_Variable (Defining_Identifier (N)) loop
+            declare
+               DI : constant Node_Id := Get_Default_Initialization (F);
+            begin
+               if Present (DI) then
+                  FA.CFG.Add_Vertex
+                    (Make_Default_Initialization_Attributes
+                       (F     => F,
+                        Loops => Ctx.Current_Loops,
+                        E_Loc => DI),
+                     V);
+                  Inits.Append (V);
+               end if;
+            end;
+         end loop;
+
+         if Inits.Length = 0 then
+            --  We did not have anything with a default initial value,
+            --  so we just create a null vertex here.
+            FA.CFG.Add_Vertex (Direct_Mapping_Id (N),
+                               Null_Node_Attributes,
+                               V);
+            Inits.Append (V);
+         end if;
+
       elsif Constant_Present (N) then
          --  We have a sink vertex as we have a constant declaration
          --  (so we need to check for uninitialized variables) but
@@ -1367,6 +1390,8 @@ package body Flow.Control_Flow_Graph is
               (Var_Use => Get_Variable_Set (Expression (N)),
                E_Loc   => N),
             V);
+         Inits.Append (V);
+
       else
          --  We have a variable declaration with an initialization.
          FA.CFG.Add_Vertex
@@ -1377,10 +1402,21 @@ package body Flow.Control_Flow_Graph is
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
             V);
+         Inits.Append (V);
       end if;
+
+      V := Flow_Graphs.Null_Vertex;
+      for W of Inits loop
+         if V /= Flow_Graphs.Null_Vertex then
+            Linkup (FA.CFG, V, W);
+         end if;
+         V := W;
+      end loop;
       CM.Include (Union_Id (N),
-                  Graph_Connections'(Standard_Entry => V,
-                                     Standard_Exits => To_Set (V)));
+                  Graph_Connections'
+                    (Standard_Entry => Inits.First_Element,
+                     Standard_Exits => To_Set (Inits.Last_Element)));
+
    end Do_Object_Declaration;
 
    ---------------

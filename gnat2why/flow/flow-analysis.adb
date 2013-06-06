@@ -560,12 +560,74 @@ package body Flow.Analysis is
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
                            Sane : out Boolean)
    is
+      function Proc_Record_Decl (N : Node_Id) return Traverse_Result;
+      --  Check each component declaration for use of non-manifest
+      --  constants.
+
+      function Proc_Record_Decl (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Component_Declaration =>
+               if Present (Expression (N)) then
+                  declare
+                     Deps : constant Ordered_Flow_Id_Sets.Set :=
+                       To_Ordered_Flow_Id_Set (Get_Variable_Set
+                                                 (Expression (N)));
+                  begin
+                     for F of Deps loop
+                        Error_Msg_Flow
+                          (Msg => "default initialization must be a" &
+                             " manifest constant, but it depends on &!",
+                           N   => Expression (N),
+                           F1  => F);
+                        Sane := False;
+                     end loop;
+                  end;
+               end if;
+
+               return Skip;
+            when others =>
+               return OK;
+         end case;
+      end Proc_Record_Decl;
+
+      procedure Check_Record_Declarations is
+        new Traverse_Proc (Proc_Record_Decl);
+
    begin
       --  Innocent until proven guilty.
       Sane := True;
 
+      --  Sanity check for aliasing.
+
+      if FA.Aliasing_Present then
+         Error_Msg_NE
+           ("flow analysis of & abandoned due to aliasing!",
+            FA.Subprogram,
+            FA.Subprogram);
+         Sane := False;
+         return;
+      end if;
+
+      --  Sanity check for bad default initializations.
+
+      pragma Assert (Sane);
+
+      Check_Record_Declarations (Get_Subprogram_Body (FA.Subprogram));
+      if not Sane then
+         Error_Msg_NE
+           ("flow analysis of & abandoned due to records with non-manifest" &
+              " initializations!",
+            FA.Subprogram,
+            FA.Subprogram);
+         return;
+      end if;
+
       --  Sanity check all vertices if they mention a flow id that we
       --  do not know about.
+
+      pragma Assert (Sane);
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -583,10 +645,11 @@ package body Flow.Analysis is
                      case Neutral.Kind is
                         when Direct_Mapping | Record_Field =>
                            Error_Msg_Flow
-                             (Msg => "& must be listed in the Global aspect",
-                              G   => FA.CFG,
-                              Loc => V,
-                              F   => Entire_Variable (Var));
+                             (Msg => "& must be listed in the Global " &
+                                "aspect of &",
+                              N   => FA.Subprogram,
+                              F1  => Entire_Variable (Var),
+                              F2  => Direct_Mapping_Id (FA.Subprogram));
 
                         when Magic_String =>
                            Global_Required (FA, Var);
@@ -606,19 +669,6 @@ package body Flow.Analysis is
            ("flow analysis of & abandoned due to inconsistent graph!",
             FA.Subprogram,
             FA.Subprogram);
-         return;
-      end if;
-
-      --  Sanity check for aliasing.
-
-      pragma Assert (Sane);
-
-      if FA.Aliasing_Present then
-         Error_Msg_NE
-           ("flow analysis of & abandoned due to aliasing!",
-            FA.Subprogram,
-            FA.Subprogram);
-         Sane := False;
          return;
       end if;
 
