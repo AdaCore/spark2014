@@ -22,7 +22,7 @@ We also introduce the notion of a *global item*, which is a name that denotes a
 global variable or a state abstraction (see :ref:`abstract-state`). Global items
 are presented in Global aspects (see :ref:`global-aspects`).
 
-An *entire object* is an object which is not a subcomponent of a larger 
+An *entire object* is an object which is not a subcomponent of a larger
 containing object.  More specifically, an *entire object* is
 an object declared by an object_declaration (as opposed to, for example,
 a slice or the result object of a function call) or a formal parameter of
@@ -30,29 +30,29 @@ a subprogram.
 
 .. centered:: **Static Semantics**
 
-#. The *exit* value of a global item or parameter of a subprogram is its 
+#. The *exit* value of a global item or parameter of a subprogram is its
    value immediately following the successful call of the subprogram.
 
 #. The *entry* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
-   
+
 #. An *output* of a subprogram is a global item or parameter whose final
    value may be updated by a call to the subprogram.  The result of a function
    is also an output.
-   
+
 #. An *input* of a subprogram is a global item or parameter whose initial
-   value may be used in determining the exit value of an output of the 
+   value may be used in determining the exit value of an output of the
    subprogram. As a special case, a global item or parameter is also an input if
-   it is mentioned in a ``null_dependency_clause`` in the Depends 
+   it is mentioned in a ``null_dependency_clause`` in the Depends
    aspect of the subprogram (see :ref:`depends-aspects`).
-   
+
 .. centered:: **Verification Rules**
 
 #. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
    a subprogram_body for a function for which no explicit declaration
    is given.
-   
+
 .. todo::
    In the future we may be able to permit access and aliased formal parameter specs. Target: Release
    2 of |SPARK| language and toolset or later.
@@ -77,9 +77,9 @@ For an ``expression_function_declaration``, F, without an explicit
 Postcondition, the expression, E, implementing the function acts as its
 Postcondition, that is the default postcondition is F'Result = E.
 
-In general the expression, E,  of a postcondition of a function may be used as 
+In general the expression, E,  of a postcondition of a function may be used as
 the expression of an ``expression_function_declaration`` instead making E both
-the implementation of the function and the expression of its [default] 
+the implementation of the function and the expression of its [default]
 postcondition.
 
 Subprogram Contracts
@@ -102,7 +102,7 @@ for further detail on Depends aspects.
 
 .. _contract-cases:
 
-Contract Cases 
+Contract Cases
 ~~~~~~~~~~~~~~
 
 The Contract_Cases aspect provides a structured way of defining a subprogram
@@ -123,26 +123,26 @@ For example:
 
 .. code-block:: ada
 
- procedure P (...) with
-      Pre  => General_Precondition,
-      Post => General_Postcondition,
-      Contract_Cases => (A1 => B1,
-                         A2 => B2,
-                         ...
-                         An => Bn);
+ procedure P (...)
+    with Pre  => General_Precondition,
+         Post => General_Postcondition,
+         Contract_Cases => (A1 => B1,
+                            A2 => B2,
+                            ...
+                            An => Bn);
 
 is short hand for
 
 .. code-block:: ada
 
- procedure P (...) with
-      Pre  => General_Precondition
-                and then Exactly_One_Of(A1,A2...An),
-      Post => General_Postcondition
-                and then (if A1'Old then B1)
-                and then (if A2'Old then B2)
-                and then ...
-                and then (if An'Old then Bn);
+ procedure P (...)
+    with Pre  => General_Precondition
+                   and then Exactly_One_Of(A1,A2...An),
+         Post => General_Postcondition
+                   and then (if A1'Old then B1)
+                   and then (if A2'Old then B2)
+                   and then ...
+                   and then (if An'Old then Bn);
 
 
 where
@@ -249,8 +249,8 @@ subprogram (which may be a declaration, a body or a body stub).
 The implementation of a subprogram body must be consistent with the
 subprogram's Global Aspect.
 
-Note that a Refined Global aspect may be applied to a subprogram body when 
-using state abstraction; see section :ref:`refined-global-aspect` for further 
+Note that a Refined Global aspect may be applied to a subprogram body when
+using state abstraction; see section :ref:`refined-global-aspect` for further
 details.
 
 The Global aspect is introduced by an ``aspect_specification`` where
@@ -269,10 +269,10 @@ follow the grammar of ``global_specification``
                                  | (global_item {, global_item})
    mode_selector               ::= Input | Output | In_Out | Proof_In
    global_item                 ::= name
-   
+
 where
  ``null_global_specification`` ::= **null**
- 
+
 
 .. ifconfig:: Display_Trace_Units
 
@@ -293,7 +293,7 @@ where
    * Its entry value is used to determine the value of an assertion
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
-     
+
 #. A ``null_global_specification`` indicates that the subprogram does not
    reference any ``global_item`` directly or indirectly.
 
@@ -302,7 +302,7 @@ where
 
 #. A ``global_item`` shall denote an entire object [which must be a variable] or
    a state abstraction.
-   [This is a name resolution rule because a ``global_item`` can unambiguously 
+   [This is a name resolution rule because a ``global_item`` can unambiguously
    denote a state abstraction even if a function having the same fully qualified
    name is also present].
 
@@ -317,97 +317,97 @@ where
    package's body other than in its refinement)].
 
    .. ifconfig:: Display_Trace_Units
-   
+
       :Trace Unit: 6.1.4 LR global_item shall denote an entire entity
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
 
    .. ifconfig:: Display_Trace_Units
-   
+
       :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once in a single Global aspect
 
 #. A function subprogram shall not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its Global aspect.
 
    .. ifconfig:: Display_Trace_Units
-   
+
       :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
 
 #. The ``global_items`` in a single Global aspect specification shall denote
    distinct entities.
 
    .. ifconfig:: Display_Trace_Units
-   
+
       :Trace Unit: 6.1.4 LR global_items shall denote distinct objects or state abstractions.
 
 #. A ``global_item`` occurring in a Global aspect specification of a subprogram
    shall not denote a formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
-   
-      :Trace Unit: 6.1.4 LR a global_item of a subprogram shall not be a 
+
+      :Trace Unit: 6.1.4 LR a global_item of a subprogram shall not be a
         formal parameter of the same subprogram.
-      
-#. If a subprogram is nested within another and if the ``global_specification`` 
+
+#. If a subprogram is nested within another and if the ``global_specification``
    of the outer subprogram has an entity denoted by a ``global_item`` with a
    ``mode_specification`` of Input, then a ``global_item`` of the
    ``global_specification`` of the inner subprogram shall not denote the same
    entity with a ``mode_selector`` of In_Out or Output.
-   
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Global aspect.
 
 .. centered:: **Verification Rules**
 
-#. A ``global_item`` shall occur in a Global aspect of a 
-   subprogram if and only if it denotes an entity that is referenced by the 
+#. A ``global_item`` shall occur in a Global aspect of a
+   subprogram if and only if it denotes an entity that is referenced by the
    subprogram.
-   
-#. Each entity denoted by a ``global_item`` in a ``global_specification``  of a 
+
+#. Each entity denoted by a ``global_item`` in a ``global_specification``  of a
    subprogram that is an input or output of the subprogram shall satisfy the
    following mode specification rules [which are checked during analysis of the
    subprogram body]:
-   
-   * a ``global_item`` that denotes an input but not an output 
-     has a ``mode_selector`` of Input; 
-   
-   * a ``global_item`` that denotes an output but not an input and is always 
-     fully initialized as a result of any successful execution of a call of the 
+
+   * a ``global_item`` that denotes an input but not an output
+     has a ``mode_selector`` of Input;
+
+   * a ``global_item`` that denotes an output but not an input and is always
+     fully initialized as a result of any successful execution of a call of the
      subprogram has a ``mode_selector`` of Output;
-     
+
    * otherwise the ``global_item`` denotes both an input and an output, is
      has a ``mode_selector`` of In_Out.
 
-#. An entity that is denoted by a ``global_item`` which is referenced by a 
+#. An entity that is denoted by a ``global_item`` which is referenced by a
    subprogram but is neither an input nor an output but is only referenced
-   directly, or indirectly in assertion expressions has a ``mode_selector`` of 
+   directly, or indirectly in assertion expressions has a ``mode_selector`` of
    Proof_In.
 
 .. centered:: **Examples**
 
-.. code-block:: ada                                                    
+.. code-block:: ada
 
-   with Global => null; -- Indicates that the subprogram does not reference 
+   with Global => null; -- Indicates that the subprogram does not reference
                         -- any global items.
    with Global => V;    -- Indicates that V is an input of the subprogram.
    with Global => (X, Y, Z);  -- X, Y and Z are inputs of the subprogram.
-   with Global => (Input        => V); -- Indicates that V is an input of the subprogram.
-   with Global => (Input        => (X, Y, Z)); -- X, Y and Z are inputs of the subprogram.
-   with Global => (Output       => (A, B, C)); -- A, B and C are outputs of
-                                               -- the subprogram.
-   with Global => (In_Out       => (D, E, F)); -- D, E and F are both inputs and
-                                               -- outputs of the subprogram
-   with Global => (Proof_In     => (G, H));    -- G and H are only used in 
-                                               -- assertion expressions within
-                                               -- the subprogram
-   with Global => (Input        => (X, Y, Z),   
-                   Output       => (A, B, C),
-                   In_Out       => (P, Q, R),  
-                   Proof_In     => (T, U));                                                    
+   with Global => (Input    => V); -- Indicates that V is an input of the subprogram.
+   with Global => (Input    => (X, Y, Z)); -- X, Y and Z are inputs of the subprogram.
+   with Global => (Output   => (A, B, C)); -- A, B and C are outputs of
+                                           -- the subprogram.
+   with Global => (In_Out   => (D, E, F)); -- D, E and F are both inputs and
+                                           -- outputs of the subprogram
+   with Global => (Proof_In => (G, H));    -- G and H are only used in
+                                           -- assertion expressions within
+                                           -- the subprogram
+   with Global => (Input    => (X, Y, Z),
+                   Output   => (A, B, C),
+                   In_Out   => (P, Q, R),
+                   Proof_In => (T, U));
                    -- A global aspect with all types of global specification
-                  
+
 
 .. _depends-aspects:
 
@@ -441,8 +441,8 @@ subprogram (which may be a declaration, a body or a body stub).
 The implementation of a subprogram body must be consistent with the
 subprogram's Depends Aspect.
 
-Note that a Refined Depends aspect may be applied to a subprogram body when 
-using state abstraction; see section :ref:`refined-depends-aspect` for further 
+Note that a Refined Depends aspect may be applied to a subprogram body when
+using state abstraction; see section :ref:`refined-depends-aspect` for further
 details.
 
 The Depends aspect is introduced by an ``aspect_specification`` where
@@ -477,44 +477,44 @@ where
 
 .. centered:: **Name Resolution Rules**
 
-#. An ``input`` or ``output`` of a ``dependency_relation`` of may denote only 
+#. An ``input`` or ``output`` of a ``dependency_relation`` of may denote only
    an entire variable or a state abstraction. [This is a name resolution rule
    because an ``input`` or ``output`` can unambiguously denote a state
    abstraction even if a function having the same fully qualified name is also
    present.]
-   
+
 .. centered:: **Legality Rules**
 
 #. The Depends aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
-#. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a 
+#. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
    named within its enclosing package's body other than in its refinement].
-   
-#. The *input set* of a subprogram is the set of formal parameters of the 
-   subprogram of mode **in** and **in out** along with the entities denoted by 
-   ``global_items`` of the Global aspect of the subprogram with a 
-   ``mode_selector`` of Input and In_Out.   
-   
-#. The *output set* of a subprogram is the set of formal parameters of the 
-   subprogram of mode **in out** and **out** along with the entities denoted by 
-   ``global_items`` of the Global aspect of the subprogram with a 
-   ``mode_selector`` of In_Out and Output and (for a function) the 
+
+#. The *input set* of a subprogram is the set of formal parameters of the
+   subprogram of mode **in** and **in out** along with the entities denoted by
+   ``global_items`` of the Global aspect of the subprogram with a
+   ``mode_selector`` of Input and In_Out.
+
+#. The *output set* of a subprogram is the set of formal parameters of the
+   subprogram of mode **in out** and **out** along with the entities denoted by
+   ``global_items`` of the Global aspect of the subprogram with a
+   ``mode_selector`` of In_Out and Output and (for a function) the
    ``function_result``.
-   
-#. The entity denoted by each ``input`` of a ``dependency_relation`` of a 
+
+#. The entity denoted by each ``input`` of a ``dependency_relation`` of a
    subprogram shall be a member of the input set of the subprogram.
 
-#. Every member of the input set of a subprogram shall be denoted by at least 
+#. Every member of the input set of a subprogram shall be denoted by at least
    one ``input`` of the ``dependency_relation`` of the subprogram.
-   
-#. The entity denoted by each ``output`` of a ``dependency_relation`` of a 
+
+#. The entity denoted by each ``output`` of a ``dependency_relation`` of a
    subprogram shall be a member of the output set of the subprogram.
 
-#. Every member of the output set of a subprogram shall be denoted by exactly 
+#. Every member of the output set of a subprogram shall be denoted by exactly
    one ``output`` in the ``dependency_relation`` of the subprogram.
-      
+
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
    a postcondition of the function to which the enclosing
@@ -524,12 +524,12 @@ where
 
       :Trace Unit: TBD
 
-#. In a ``dependency_relation`` there can be at most one ``dependency_clause`` 
-   which is a ``null_dependency_clause`` and if it exists it must be the 
-   last ``dependency_clause`` in the ``dependency_relation``.  
-   
-#. An entity denoted by an ``input`` which is in an ``input_list`` of a 
-   **null** ``output_list`` shall not be denoted by an ``input`` in another 
+#. In a ``dependency_relation`` there can be at most one ``dependency_clause``
+   which is a ``null_dependency_clause`` and if it exists it must be the
+   last ``dependency_clause`` in the ``dependency_relation``.
+
+#. An entity denoted by an ``input`` which is in an ``input_list`` of a
+   **null** ``output_list`` shall not be denoted by an ``input`` in another
    ``input_list`` of the same ``dependency_relation``.
 
    .. ifconfig:: Display_Trace_Units
@@ -548,45 +548,45 @@ where
 
 #. A ``dependency_clause`` with a "+" symbol in the syntax ``output_list`` =>+
    ``input_list`` means that each ``output`` in the ``output_list`` has a
-   *self-dependency*, that is, it is dependent on itself. 
-   [The text (A, B, C) =>+ Z is shorthand for 
+   *self-dependency*, that is, it is dependent on itself.
+   [The text (A, B, C) =>+ Z is shorthand for
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
-   
+
 #. A ``dependency_clause`` of the form A =>+ A has the same meaning as A => A.
    [The reason for this rule is to allow the short hand:
    ((A, B) =>+ (A, C)) which is equivalent to (A => (A, C), B => (A, B, C)).]
 
 #. A ``dependency_clause`` with a **null** ``input_list`` means that the final
-   value of the entity denoted by each ``output`` in the ``output_list`` does 
-   not depend on any member of the input set of the subrogram 
-   (other than itself, if the ``output_list`` =>+ **null** self-dependency 
+   value of the entity denoted by each ``output`` in the ``output_list`` does
+   not depend on any member of the input set of the subrogram
+   (other than itself, if the ``output_list`` =>+ **null** self-dependency
    syntax is used).
 
-#. The ``inputs`` in the ``input_list`` of a ``null_dependency_clause`` may be 
-   read by the subprogram but play no role in determining the values of any 
+#. The ``inputs`` in the ``input_list`` of a ``null_dependency_clause`` may be
+   read by the subprogram but play no role in determining the values of any
    outputs of the subprogram.
 
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
-   indicates that the subprogram has no ``inputs`` or ``outputs``.  
-   [From an information flow analysis viewpoint it is a 
+   indicates that the subprogram has no ``inputs`` or ``outputs``.
+   [From an information flow analysis viewpoint it is a
    null operation (a no-op).]
-   
+
 #. [A function without an explicit Depends aspect specification
-   is assumed to have the ``dependency_relation`` 
-   that its result is dependent on all of its inputs.  
+   is assumed to have the ``dependency_relation``
+   that its result is dependent on all of its inputs.
    Generally an explicit Depends aspect is not required for functions.]
 
 #. [A subprogram which has an explicit Depends aspect specification
    and lacks an explicit Global aspect specification is assumed to have
    the [unique] Global aspect specification that is consistent with the
    subprogram's Depends aspect.]
-   
+
 #. [A subprogram which has an explicit Global aspect specification
-   but lacks an explicit Depends aspect specification and, as yet, has no 
-   implementation of its body is assumed to have the conservative 
-   ``dependency_relation`` that each member of the output set is dependent on 
+   but lacks an explicit Depends aspect specification and, as yet, has no
+   implementation of its body is assumed to have the conservative
+   ``dependency_relation`` that each member of the output set is dependent on
    every member of the input set.]
-   
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with a Depends aspect
@@ -595,13 +595,13 @@ as it is used purely for static analysis purposes and is not executed.
 .. centered:: **Verification Rules**
 
 #. Each entity denoted by an ``output`` given in the Depends aspect of a
-   subprogram must be an output in the implementation of the subprogram body and 
+   subprogram must be an output in the implementation of the subprogram body and
    the output must depend on all, but only, the entities denoted by the
    ``inputs`` given in the ``input_list`` associated with the ``output``.
-   
-#. Each output of the implementation of the subprogram body is denoted by 
+
+#. Each output of the implementation of the subprogram body is denoted by
    an ``output`` in the Depends aspect of the subprogram.
-   
+
 #. Each input of the implementation of a subprogram body is denoted by an
    ``input`` of the Depends aspect of the subprogram.
 
@@ -610,23 +610,23 @@ as it is used purely for static analysis purposes and is not executed.
 .. code-block:: ada
 
    procedure P (X, Y, Z in : Integer; Result : out Boolean)
-   with Depends => (Result => (X, Y, Z));
+      with Depends => (Result => (X, Y, Z));
    -- The exit value of Result depends on the entry values of X, Y and Z
 
    procedure Q (X, Y, Z in : Integer; A, B, C, D, E : out Integer)
-   with Depends => ((A, B) => (X, Y),
-                     C     => (X, Z),
-                     D     => Y,
-                     E     => null);
+      with Depends => ((A, B) => (X, Y),
+                       C      => (X, Z),
+                       D      => Y,
+                       E      => null);
    -- The exit values of A and B depend on the entry values of X and Y.
    -- The exit value of C depends on the entry values of X and Z.
    -- The exit value of D depends on the entry value of Y.
    -- The exit value of E does not depend on any input value.
 
    procedure R (X, Y, Z : in Integer; A, B, C, D : in out Integer)
-   with Depends => ((A, B) =>+ (A, X, Y),
-                     C     =>+ Z,
-                     D     =>+ null);
+      with Depends => ((A, B) =>+ (A, X, Y),
+                       C      =>+ Z,
+                       D      =>+ null);
    -- The "+" sign attached to the arrow indicates self-dependency, that is
    -- the exit value of A depends on the entry value of A as well as the
    -- entry values of X and Y.
@@ -636,22 +636,22 @@ as it is used purely for static analysis purposes and is not executed.
    -- The exit value of D depends only on the entry value of D.
 
    procedure S
-   with Global  => (Input  => (X, Y, Z),
-                    In_Out => (A, B, C, D)),
-        Depends => ((A, B) =>+ (A, X, Y, Z),
-                     C     =>+ Y,
-                     D     =>+ null);
+      with Global  => (Input  => (X, Y, Z),
+                       In_Out => (A, B, C, D)),
+           Depends => ((A, B) =>+ (A, X, Y, Z),
+                       C      =>+ Y,
+                       D      =>+ null);
    -- Here globals are used rather than parameters and global items may appear
    -- in the Depends aspect as well as formal parameters.
 
    function F (X, Y : Integer) return Integer
-   with Global  => G,
-        Depends => (F'Result => (G, X),
-                    null     => Y);
+      with Global  => G,
+           Depends => (F'Result => (G, X),
+                       null     => Y);
    -- Depends aspects are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
-   
+
 Ghost Functions
 ~~~~~~~~~~~~~~~
 
@@ -762,8 +762,8 @@ not violate the ghosts-have-no-effect-on-program-behavior rule.]
 .. code-block:: ada
 
   if My_Ghost_Counter > 0 then
-    declare
-      X : Integer; -- implicitly Ghost?
+     declare
+        X : Integer; -- implicitly Ghost?
 
 .. centered:: **Dynamic Semantics**
 
@@ -803,26 +803,23 @@ A ghost procedure shall not have a non-ghost output.
 
 .. code-block:: ada
 
-   function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural
-      is (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
-   with
-      Pre  => Lo <= Hi,
-      Post => A_Ghost_Function'Result in Lo .. Hi,
-      Convention => Ghost;
+   function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
+      (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
+      with Pre        => Lo <= Hi,
+           Post       => A_Ghost_Function'Result in Lo .. Hi,
+           Convention => Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
-   with
-      Pre  => Lo <= Hi,
-      Post => A_Ghost_Function'Result in Lo .. Hi,
-      Convention => Ghost;
+      with Pre        => Lo <= Hi,
+           Post       => A_Ghost_Function'Result in Lo .. Hi,
+           Convention => Ghost;
    -- The body of the function is declared elsewhere.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
-   with
-      Pre  => Lo <= Hi,
-      Post => A_Ghost_Function'Result in Lo .. Hi,
-      Convention => Ghost,
-      Import;
+      with Pre        => Lo <= Hi,
+           Post       => A_Ghost_Function'Result in Lo .. Hi,
+           Convention => Ghost,
+           Import;
    -- The body of the function is not declared elsewhere.
 
 
@@ -837,7 +834,7 @@ No extensions or restrictions.
    For instance in Ada a formal parameter of mode out of a composite type need
    only be partially updated, but in flow analysis this would have mode in out.
    Similarly an Ada formal parameter may have mode in out but not be an input.
-   In flow analysis it would be regarded as an input and give rise to 
+   In flow analysis it would be regarded as an input and give rise to
    flow errors.
    Perhaps we need an aspect to describe the strict view of a parameter
    if it is different from the specified Ada mode of the formal parameter?
@@ -914,19 +911,19 @@ No extra dynamic semantics are associated with anti-aliasing.
 
    .. centered:: **Verification Rules**
 
-#. In |SPARK|, a procedure call shall not pass actual parameters 
-   which denote objects with overlapping locations, when at least one of 
+#. In |SPARK|, a procedure call shall not pass actual parameters
+   which denote objects with overlapping locations, when at least one of
    the corresponding formal parameters is of mode **out** or **in out**,
    unless the other corresponding formal parameter is of mode **in**
-   and is of a by-copy type. 
-   
+   and is of a by-copy type.
+
 #. In |SPARK|, a procedure call shall not pass an actual parameter, whose
    corresponding formal parameter is mode **out** or **in out**,
-   that denotes an object which overlaps with any ``global_item`` referenced 
+   that denotes an object which overlaps with any ``global_item`` referenced
    by the subprogram.
-   
+
 #. In |SPARK|, a procedure call shall not pass an actual parameter which
-   denotes an object which overlaps a ``global_item`` of mode 
+   denotes an object which overlaps a ``global_item`` of mode
    **out** or **in out** of the subprogram, unless the corresponding formal
    parameter is of mode **in** and by-copy.
    

@@ -215,7 +215,7 @@ For example, a while loop
 .. code-block:: ada
 
    while <condition> do
-     sequence_of_statements; -- contains Loop_Entry uses
+      sequence_of_statements; -- contains Loop_Entry uses
    end loop;
 
 may be thought of as being transformed into
@@ -223,14 +223,14 @@ may be thought of as being transformed into
 .. code-block:: ada
 
    if <condition> then
-     declare
-       ... implicitly declared Loop_Entry constants
-     begin
-        loop
-           sequence_of_statements;
-           exit when not <condition>;
-        end loop;
-     end;
+      declare
+         ... implicitly declared Loop_Entry constants
+      begin
+         loop
+            sequence_of_statements;
+            exit when not <condition>;
+         end loop;
+      end;
    end if;
 
 This rule prevents the following example from raising ``Constraint_Error``:
@@ -238,16 +238,16 @@ This rule prevents the following example from raising ``Constraint_Error``:
 .. code-block:: ada
 
    declare
-     procedure P (X : in out String) is
-     begin
-       for I in X'Range loop
-         pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
-         ...; -- modify X
-       end loop;
-     end P;
-     Length_Is_Zero : String := "";
+      procedure P (X : in out String) is
+      begin
+         for I in X'Range loop
+            pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
+            ...; -- modify X
+         end loop;
+      end P;
+      Length_Is_Zero : String := "";
    begin
-     P (Length_Is_Zero);
+      P (Length_Is_Zero);
    end;
 
 In many cases, the language rules pertaining to the ``Loop_Entry``
@@ -282,11 +282,10 @@ itself.
 [This rule is to allow the use of I in the following example:
 
 .. code-block:: ada
- 
+
   loop
      pragma Assert
-        ((Var > Some_Function
-           (Param => (for all I in T => F (I))))'Loop_Entry);
+       ((Var > Some_Function (Param => (for all I in T => F (I))))'Loop_Entry);
 
 In this example the value of the inequality ">" that would have been evaluated
 on entry to the loop is obtained even if the value of Var has since changed].
@@ -309,12 +308,11 @@ an entity, or shall denote an ``object_renaming_declaration``, if
 
     procedure P (X : in out String; Idx : Positive) is
     begin
-        Outer :
+       Outer :
           loop
-            if Idx in X'Range then
-              loop
-                 pragma Loop_Invariant (X(Idx) >
-                                        X(Idx)'Loop_Entry(Outer));
+             if Idx in X'Range then
+                loop
+                   pragma Loop_Invariant (X(Idx) > X(Idx)'Loop_Entry(Outer));
 
 this would introduce an exception in the case where Idx is not
 in X'Range.]

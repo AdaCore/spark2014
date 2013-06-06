@@ -206,12 +206,10 @@ There are no dynamic semantics associated with these aspects.
    with System.Storage_Units;
    package Input_Port
    is
-
       Sensor : Integer
          with Volatile,
               Input_Only,
               Address => System.Storage_Units.To_Address (16#ACECAFE#);
-
    end Input_Port;
 
 
@@ -225,45 +223,36 @@ There are no dynamic semantics associated with these aspects.
       -- Read_Port may only be called with an actual parameter for Port
       -- which is an external input only
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
-      with
-         Depends => (Value => Port); -- Port is an external input only
-
+         with Depends => (Value => Port); -- Port is an external input only
 
       -- Write_Port may only be called with an actual parameter for Port
       -- which is an external output only
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
-      with
-         Depends => (Port => Value); -- Port is external output only
+         with Depends => (Port => Value); -- Port is external output only
 
       -- The following declarations are all external input only variables
       V_In_1 : Volatile_Type
-      with
-         Input_Only,
-         Address => System.Storage_Units.To_Address (16#A1CAFE#);
+         with Input_Only,
+              Address => System.Storage_Units.To_Address (16#A1CAFE#);
 
       V_In_2 : Integer
-      with
-         Volatile,
-         Input_Only,
-         Address => System.Storage_Units.To_Address (16#ABCCAFE#);
+         with Volatile,
+              Input_Only,
+              Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
       -- The following declarations are all external output only variables
       V_Out_1 : Volatile_Type
-      with
-         Output_Only,
-         Address => System.Storage_Units.To_Address (16#BBCCAFE#);
+         with Output_Only,
+              Address => System.Storage_Units.To_Address (16#BBCCAFE#);
 
       V_Out_2 : Integer
-      with
-         Volatile,
-         Output_Only,
-         Address => System.Storage_Units.To_Address (16#ADACAFE#);
+         with Volatile,
+              Output_Only,
+              Address => System.Storage_Units.To_Address (16#ADACAFE#);
 
       -- The following is a declaration of a non-volatile external variable
       V_Non_Volatile : Integer
-      with
-         Address => System.Storage_Units.To_Address (16#BEECAFE#);
-
+         with Address => System.Storage_Units.To_Address (16#BEECAFE#);
 
    end Multiple_Ports;
 
@@ -431,11 +420,10 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
    end Q;
 
    package X
-   with
-      Abstract_State => (A, B, (C with External, Input_Only))
-                          -- Three abstract state names are declared A, B & C.
-                          -- A and B are internal abstract states
-                          -- C is specified as external state which is input only.
+      with Abstract_State => (A, B, (C with External, Input_Only))
+           -- Three abstract state names are declared A, B & C.
+           -- A and B are internal abstract states
+           -- C is specified as external state which is input only.
    is
       ...
    end X;
@@ -445,21 +433,21 @@ There are no Dynamic Semantics associated with the Abstract_State aspect.
                                      -- (can be reset to 0).
                               Total) -- total mileage of vehicle since last factory-reset.
    is
-     function Trip  return Natural;  -- Has an implicit Global => Trip.
-     function Total return Natural;  -- Has an implicit Global => Total.
+      function Trip  return Natural;  -- Has an implicit Global => Trip.
+      function Total return Natural;  -- Has an implicit Global => Total.
 
-     procedure Zero_Trip
-        with Global  => (Output => Trip),  -- In the Global and Depends aspects
-             Depends => (Trip => null),    -- Trip denotes the state abstraction.
-             Post    => Trip = 0;          -- In the Post condition Trip denotes
+      procedure Zero_Trip
+         with Global  => (Output => Trip),  -- In the Global and Depends aspects
+              Depends => (Trip => null),    -- Trip denotes the state abstraction.
+              Post    => Trip = 0;          -- In the Post condition Trip denotes
                                            -- the function.
-     procedure Inc
-        with Global  => (In_Out => (Trip, Total)),
-             Depends => ((Trip, Total) =>+ null),
-             Post    => Trip = Trip'Old + 1 and Total = Total'Old + 1;
+      procedure Inc
+         with Global  => (In_Out => (Trip, Total)),
+              Depends => ((Trip, Total) =>+ null),
+              Post    => Trip = Trip'Old + 1 and Total = Total'Old + 1;
 
-     -- Trip and Old in the Post conditions denote functions but these
-     -- represent the state abstractions in Global and Depends specifications.
+      -- Trip and Old in the Post conditions denote functions but these
+      -- represent the state abstractions in Global and Depends specifications.
 
    end Mileage;
 
@@ -553,33 +541,32 @@ There are no dynamic semantics associated with the Initializes Aspect.
 .. code-block:: ada
 
     package Q
-    with
-       Abstract_State => State,  -- Declaration of abstract state name State
-       Initializes    => State   -- Indicates that State will be initialized
-    is                           -- during the elaboration of Q.
-      ...
+       with Abstract_State => State,  -- Declaration of abstract state name State
+            Initializes    => State   -- Indicates that State will be initialized
+                                      -- during the elaboration of Q.
+    is
+       ...
     end Q;
 
     package Y
-    with
-       Abstract_State => (A, B, (C with External, Input_Only)),
-       Initializes    => A
-    is                          -- Three abstract state names are declared A, B & C.
-                                -- A is initialized during the elaboration of Y.
-       ...                      -- C is specified as external input only state
-				-- and cannot appear in an initializes aspect.
-                                -- B is not initialized.
+       with Abstract_State => (A, B, (C with External, Input_Only)),
+            -- Three abstract state names are declared A, B & C.
+            Initializes    => A
+            -- A is initialized during the elaboration of Y.
+            -- C is specified as external input only state
+            -- B is not initialized.
+    is
+       ...
     end Y;
 
     package Z
-    with
-       Abstract_State => A,
-       Initializes    => null
-    is                          -- Package Z has an abstract state name A declared but the
-                                -- elaboration of Z and its private descendants do not
-                                -- perform any initialization during elaboration.
-      ...
-
+       with Abstract_State => A,
+            Initializes    => null
+            -- Package Z has an abstract state name A declared but the
+            -- elaboration of Z and its private descendants do not
+            -- perform any initialization during elaboration.
+    is
+       ...
     end Z;
 
 
@@ -660,35 +647,27 @@ be a *Boolean_*\ ``expression``.
 .. code-block:: ada
 
     package Q
-    with
-       Abstract_State    => State,    -- Declaration of abstract state name State
-       Initializes       => State,    -- State will be initialized during elaboration
-       Initial_Condition => Is_Ready  -- Predicate stating the logical state after
-				      -- initialization.
+       with Abstract_State    => State,    -- Declaration of abstract state name State
+            Initializes       => State,    -- State will be initialized during elaboration
+            Initial_Condition => Is_Ready  -- Predicate stating the logical state after
+	                                   -- initialization.
     is
-
-      function Is_Ready return Boolean
-      with
-	 Global => State;
-
+       function Is_Ready return Boolean
+          with Global => State;
     end Q;
 
     package X
-    with
-       Abstract_State    =>  A,    -- Declares an abstract state name A
-       Initializes       => (A, B) -- A and visible variable B are initialized
-	                           -- during package initialization.
-       Initial_Condition => A_Is_Ready and B = 0
-				   -- The logical conditions after package elaboration.
+       with Abstract_State    => A,     -- Declares an abstract state name A
+            Initializes       => (A, B) -- A and visible variable B are initialized
+	                                -- during package initialization.
+            Initial_Condition => A_Is_Ready and B = 0
+	                                -- The logical conditions after package elaboration.
     is
-      ...
-      B : Integer;
+       ...
+       B : Integer;
 
-      function A_Is_Ready return Boolean
-      with
-	 Global => A;
-
-     --
+       function A_Is_Ready return Boolean
+          with Global => A;
     end X;
 
 Package Bodies
@@ -871,7 +850,6 @@ There are no dynamic semantics associated with state abstraction and refinement.
       end R;
 
       ...
-
    end Q;
 
 .. _package_hierarchy:
@@ -995,8 +973,9 @@ is part of and a state abstraction always knows all of its constituents.
 
 
     package P
+       -- P has no state abstraction
     is
-        -- P has no state abstraction
+       ...
     end P;
 
     -- P.Pub is the public package that declares the state abstraction
@@ -1108,19 +1087,19 @@ is part of and a state abstraction always knows all of its constituents.
          Inner.Init_A2;
       end Init_A2;
 
-    end Outer;
+   end Outer;
 
-    package Q
-       with Abstract_State => (Q1, Q2)
-    is
-       -- Q1 and Q2 may be denoted here
-       procedure Init_Q1
-          with Global  => (Output => Q1),
-               Depends => (Q1 => null);
+   package Q
+      with Abstract_State => (Q1, Q2)
+   is
+      -- Q1 and Q2 may be denoted here
+      procedure Init_Q1
+         with Global  => (Output => Q1),
+              Depends => (Q1 => null);
 
-       procedure Init_Q2
-          with Global  => (Output => Q2),
-               Depends => (Q2 => null);
+      procedure Init_Q2
+         with Global  => (Output => Q2),
+              Depends => (Q2 => null);
 
    private
       -- Q1 and Q2 may only be denoted as the encapsulating state abstraction
@@ -1151,7 +1130,7 @@ is part of and a state abstraction always knows all of its constituents.
 
       procedure Init_Q1
          with Refined_Global  => (Output => Actual_State),
-              Refined_Depends => (Actual_State => null);
+              Refined_Depends => (Actual_State => null)
       is
       begin
          Actual_State := 0;
@@ -1667,14 +1646,14 @@ abstraction on to external states which are given in this section.
       with Abstract_State => (State with External, Input_Only,
                               Part_Of => Externals.Combined_Inputs)
    is
-     ...
+      ...
    end Externals.Temperature;
 
    private package Externals.Pressure
       with Abstract_State => (State with External, Input_Only,
                               Part_Of => Externals.Combined_Inputs)
    is
-     ...
+      ...
    end Externals.Pressure;
 
    private package Externals.Main_Display
@@ -1692,11 +1671,10 @@ abstraction on to external states which are given in this section.
    end Externals.Secondary_Display;
 
 
-   with
-     Externals.Temperature,
-     Externals.Pressure,
-     Externals.Main_Display,
-     Externals.Secondary_Display;
+   with Externals.Temperature,
+        Externals.Pressure,
+        Externals.Main_Display,
+        Externals.Secondary_Display;
    package body Externals
       with Refined_State => (Combined_Inputs => (Externals.Temperature,
                                                  Externals.Pressure),
@@ -1747,7 +1725,7 @@ abstraction on to external states which are given in this section.
                                                     Value),
                                   null => In_Reg)
       is
-         Ready : constant := 42;
+         Ready  : constant Integer := 42;
          Status : Integer;
       begin
          if Saved_Value /= Value then
@@ -1980,17 +1958,17 @@ global variables discussed later in this section.
 
      generic
      package G is
-     ...
+        ...
      end G;
 
      procedure Proc is
-       package I is new G; -- expansion of I includes references to X
+        package I is new G; -- expansion of I includes references to X
      begin ... ; end;
 
      X : Integer;
 
      package body G is
-       ... <uses of X> ...
+        ... <uses of X> ...
      end G;
 
    This stricter rule applies even if the declaration of the instantiation
@@ -2032,15 +2010,15 @@ global variables discussed later in this section.
 
      with Other_Pkg;
      package Pkg is
-       pragma Elaborate_Body;
-       type T is new Other_Pkg.Some_Tagged_Type with null record;
-       overriding procedure Op (X : T);
-       -- freezing point of T is here
+        pragma Elaborate_Body;
+        type T is new Other_Pkg.Some_Tagged_Type with null record;
+        overriding procedure Op (X : T);
+        -- freezing point of T is here
      end;
 
      package body Pkg is
-       ... ; -- only preelaborable constructs here
-       procedure Op (X : T) is ... ;
+        ... ; -- only preelaborable constructs here
+        procedure Op (X : T) is ... ;
      end Pkg;
 
    An elaboration check failure would be possible if a call to Op (simple or via
