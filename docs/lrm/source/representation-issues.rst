@@ -54,6 +54,9 @@ Unchecked Type Conversions
 An instantiation of an Unchecked_Conversion may have Refined_Pre and
 Refined_Post aspects specified.
 
+.. todo::
+   A detailed semantics of these aspects will be provided in a future issue of this document.
+
 Data Validity
 ~~~~~~~~~~~~~
 

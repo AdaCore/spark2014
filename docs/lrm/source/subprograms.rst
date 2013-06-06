@@ -53,19 +53,6 @@ a subprogram.
    a subprogram_body for a function for which no explicit declaration
    is given.
 
-.. todo::
-   In the future we may be able to permit access and aliased formal parameter specs. Target: Release
-   2 of |SPARK| language and toolset or later.
-
-.. todo::
-   What do we do regarding null exclusion parameters?
-   To be completed in the Milestone 3 version of this document.
-
-.. todo::
-   What do we do regarding function access results and function null exclusion results?
-   To be completed in the Milestone 3 version of this document.
-
-
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

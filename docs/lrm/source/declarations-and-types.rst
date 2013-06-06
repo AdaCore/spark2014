@@ -121,9 +121,33 @@ Use of the 'Class attribute is not permitted in |SPARK|.
 As a consequence of this restriction, dispatching calls are not currently in 
 |SPARK| but are planned for a future release.]
 
+
+Type Extensions
+~~~~~~~~~~~~~~~
+
 A type extension declared within a subprogram body,
 block statement, or generic body which does not also enclose the
 declaration of each of its ancestor types is not in |SPARK|.
+
+
+Dispatching Operations of Tagged Types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+
+Abstract Types and Subprograms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+
+Interface Types
+~~~~~~~~~~~~~~~
+
+Use of ``interface_type_definition`` is not permitted in |SPARK|.
+
+.. todo:: Include interface types in SPARK 2014.
 
 
 Access Types

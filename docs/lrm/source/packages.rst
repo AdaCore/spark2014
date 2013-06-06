@@ -1765,35 +1765,40 @@ No extensions or restrictions.
 Type Invariants
 ~~~~~~~~~~~~~~~
 
-.. todo:: Type Invariants might not be supported in the first release
+The ``aspect_specification`` Type_Invariant is not permitted in |SPARK|.
+[Type invariants are not currently supported in |SPARK| but are intended
+to be introduced in a future release.]
 
-.. centered:: **Syntax**
+.. todo:: Add support for type invariants in SPARK 2014.
 
-There is no additional syntax associated with type invariants.
+..
+   .. centered:: **Syntax**
 
-.. centered:: **Legality Rules**
+   There is no additional syntax associated with type invariants.
 
-There are no additional legality rules associated with type invariants.
+   .. centered:: **Legality Rules**
 
-.. note::
-   (SB) This isn't quite right: there is a rule that invariant
-   expressions can't read variables, but it isn't stated here.
-   Fixup needed.
+   There are no additional legality rules associated with type invariants.
 
-.. centered:: **Static Semantics**
+   .. note::
+      (SB) This isn't quite right: there is a rule that invariant
+         expressions can't read variables, but it isn't stated here.
+            Fixup needed.
 
-There are no additional static semantics associated with type invariants.
+   .. centered:: **Static Semantics**
 
-.. centered:: **Dynamic Semantics**
+   There are no additional static semantics associated with type invariants.
 
-There are no additional dynamic semantics associated with type invariants.
+   .. centered:: **Dynamic Semantics**
 
-.. centered:: **Verification Rules**
+   There are no additional dynamic semantics associated with type invariants.
 
-#. The Ada 2012 RM lists places at which an invariant check is performed. In
-   |SPARK|, we add the following places in order to guarantee that an instance
-   of a type always respects its invariant at the point at which it is passed
-   as an input parameter:
+   .. centered:: **Verification Rules**
+
+   #. The Ada 2012 RM lists places at which an invariant check is performed. In
+      |SPARK|, we add the following places in order to guarantee that an instance
+      of a type always respects its invariant at the point at which it is passed
+      as an input parameter:
 
    * Before a call on any subprogram or entry that:
 
@@ -1811,8 +1816,6 @@ There are no additional dynamic semantics associated with type invariants.
      [Note that these checks are only performed statically, and this does not create an
      obligation to extend the run-time checks performed in relation to type invariants.]
 
-.. todo:: The support for type invariants needs to be considered further and will
-          be completed for Milestone 3 version of this document.
 
 Deferred Constants
 ------------------
@@ -2165,4 +2168,3 @@ are imposed in |SPARK| which have the following consequences:
    for state abstraction refinements occurring in the given package body. [This
    rule could be relaxed to apply only to constituents of an abstraction which
    is mentioned in an Initializes aspect.]
-

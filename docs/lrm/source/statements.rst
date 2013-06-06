@@ -55,7 +55,6 @@ Generalized Loop Iteration
 
 .. todo:: Need to consider further the support for iterators and whether
           the application of constant iterators could be supported.
-          To be completed in Milestone.4 version of this document.
 
 .. _loop_invariants:
 
