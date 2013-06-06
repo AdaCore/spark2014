@@ -130,7 +130,7 @@ prefix itself."
 What sort of prefix includes declarations?  Did you mean "within the
 enclosing invariant or variant expression"?
 !Action Taken: I do not know the answer to this I defer to SBB. I have
-sent an email to SBB. SBB has replied with an example - it is comples like the rule.  I have added the example as a note in the SPARK RM.
+sent an email to SBB. SBB has replied with an example - it is complex like the rule.  I have added the example as a note in the SPARK RM.
 !Checked By:
 
 !Label: STT011

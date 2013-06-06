@@ -1244,7 +1244,7 @@ The static semantics are equivalent to those given for the Global aspect in
 
 #. A Refined_Global aspect shall be specified on a body_stub (if one is 
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an immediately enclosing package, the declaration has a 
+   visible part of an enclosing package, the declaration has a 
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
@@ -1348,7 +1348,7 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 #. A Refined_Depends aspect shall be specified on a body_stub (if one is 
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an immediately enclosing package and the declaration has a 
+   visible part of an enclosing package and the declaration has a 
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
    
