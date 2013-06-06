@@ -112,16 +112,16 @@ state abstractions.
 
 #. A ``global_item`` of a function shall not denote input only or output only
    external state.
-   
+
 # An actual parameter in a function call shall not denote output only or input
   only external state.
 
-#. Since output only external state shall never be read by the program and 
+#. Since output only external state shall never be read by the program and
    input only external state may never be updated by the program neither of
    these sorts of external state shall be denoted by a ``name`` of an
    ``initialization_item`` of an Initializes aspect (see
    :ref:`initializes_aspect`).
-   
+
 .. _external_aspects:
 
 Input_Only and Output_Only Aspects
@@ -139,18 +139,18 @@ this specification.
 .. centered:: **Static Semantics**
 
 #. A variable which is Volatile or has one of the Ada aspects Import or Export,
-   or the Ada aspect Address specified in its declaration is an external 
+   or the Ada aspect Address specified in its declaration is an external
    variable.
 
 .. centered:: **Legality Rules**
 
-#. The declaration of Volatile variable shall have exactly one of an Input_Only 
+#. The declaration of Volatile variable shall have exactly one of an Input_Only
    or Output_Only aspect specified as True. A variable with a True Input_Only
    specification is an *external input*; a variable with a True Output_Only
    specification is an *external output*. [The rule that a volatile variable
    shall be either an input or an output only may be relaxed in a future version
    of SPARK.]
-   
+
 #. A variable which is not Volatile shall not have an Input_Only or Output_Only
    aspect specified as True.
 
@@ -172,7 +172,7 @@ this specification.
 
    * as an actual parameter in a procedure call of which the corresponding
      formal parameter is mode **in** and is of a non-scalar volatile type.
-     
+
    [This rule means that an external input cannot be updated directly by the
    program.]
 
@@ -184,7 +184,7 @@ this specification.
    * as an actual parameter in a procedure call of which the mode of the
      corresponding formal parameter is **out** and is of a non-scalar, volatile
      type.
-     
+
    [This rule means that an external output cannot be directly read by the
    program.]
 
@@ -343,7 +343,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
    Input_Only or Output_Only ``options`` may be specified in the
    ``option_list``. The Input_Only and Output options shall not be specified in
    an ``option_list`` without an External ``option``.
-   
+
 #. If a ``option_list`` contains one or more ``name_value_option`` items
    then they shall be the final options in the list.
    [This eliminates the possibility of a positional
@@ -717,7 +717,7 @@ not visible.  A refined view of a subprogram is the body or body stub of the
 subprogram in the package body whose visible part declares its abstract view.
 
 In a refined view a subprogram has visibility of the full type declarations of
-any private types declared by the enclosing package and visibilty of the
+any private types declared by the enclosing package and visibility of the
 refinements of state abstractions declared by the package. Refined Global,
 Depends, Pre and Post aspects are provided to express the contracts of a refined
 view of a subprogram.
@@ -949,9 +949,9 @@ is part of and a state abstraction always knows all of its constituents.
    * name an encapsulating state abstraction in its Part_Of indicator if and
      only if the unit declaring the state abstraction is strictly more visible
      than the unit containing the declaration.
-     
-   [Each state abstraction which has a Part_Of indicator, the unit in which it 
-   is declared and its encapsulating state is noted by any tool analyzing 
+
+   [Each state abstraction which has a Part_Of indicator, the unit in which it
+   is declared and its encapsulating state is noted by any tool analyzing
    SPARK 2014.]
 
 #. Each item of hidden state declared in the private part of a unit shall have
@@ -969,7 +969,7 @@ is part of and a state abstraction always knows all of its constituents.
    * in its Refined_State aspect, denote each declaration associated with such a
      Part_Of indicator as a ``constituent`` exclusively of the encapsulating
      state abstraction.
-     
+
    [The state abstractions with a Part_Of indicator, the unit in which they have
    been declared and their encapsulating state have been noted as described
    previously and these records are used to check this rule.]
@@ -1242,9 +1242,9 @@ The static semantics are equivalent to those given for the Global aspect in
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Global aspect shall be specified on a body_stub (if one is 
+#. A Refined_Global aspect shall be specified on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package, the declaration has a 
+   visible part of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
@@ -1282,12 +1282,12 @@ The static semantics are equivalent to those given for the Global aspect in
    abstraction whose refinement is visible; and the ``global_item`` in the
    Refined_Global aspect is a ``constituent`` of the state abstraction.
 
-   For this special case when the ``mode_selector`` is In_Out, the 
+   For this special case when the ``mode_selector`` is In_Out, the
    Refined_Global aspect may denote individual ``constituents`` of the state
    abstraction as Input, Output, or In_Out (given that the constituent itself
    may have any of these ``mode_selectors``) so long as one or more of the
    following conditions are satisfied:
-   
+
    * at least one of the ``constituents`` has a ``mode_selector`` of In_Out; or
 
    * there is at least one of each of a ``constituent`` with a ``mode_selector``
@@ -1346,12 +1346,12 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Depends aspect shall be specified on a body_stub (if one is 
+#. A Refined_Depends aspect shall be specified on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package and the declaration has a 
+   visible part of an enclosing package and the declaration has a
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
-   
+
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: TBD
@@ -1550,7 +1550,7 @@ be a Boolean ``expression``.
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
 
-#. The default Refined_Post for an expression function, F, is 
+#. The default Refined_Post for an expression function, F, is
    F'Result = ``expression``, where ``expression`` is the expression defining
    the body of the function.
 
