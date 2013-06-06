@@ -723,14 +723,13 @@ Legality Rule 1 seems to be a Static Semantics rule.
 !Action Taken:I have moved Static semantic rule 3 as the first legatity rule.  I have left the original legality rule 1 as as a second legality rule.  It would require some rewording to make this legality rule a semantic rule.  As it is it needs to follow what was semantic rule 3.  I think it is reasonable to leave the original legality rule 1 as a legality rule as it defines how the early call region is determined.
 !Checked By:
 
-
 !Label: STT061
 !Location: 7.7 83/2:
 !Description: What do you mean by "the freezing point of a tagged type
 must meet the same restrictions as would be required for a call to each
 of tis overriding primitive operations"?  I can't quite imagine how that
 works.
-!Action Updated by SBB.
+!Action: Updated by SBB.
 !Checked By:
 
 !Label: STT062
@@ -916,14 +915,14 @@ To make the singular/plural grammar less awkward, perhaps
 !Action Taken: Changed the wording to the following:
 #. A Refined_Global aspect shall be specified on a body_stub (if one is 
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an immediately enclosing package, the declaration has a 
+   visible part of an enclosing package, the declaration has a 
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 I do not agree with your suggestion of including the private part.  I added a restriction some time ago that a state abstraction cannot be mentioned in the private part of a package because the private part of a package is logically part of the body where the refinement is visible.  I think I discussed this with you. 
 I have also updated the text for Refined_Depends as this was worded similarly:
 #. A Refined_Depends aspect shall be specified on a body_stub (if one is 
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an immediately enclosing package and the declaration has a 
+   visible part of an enclosing package and the declaration has a 
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 !Checked By:
@@ -932,8 +931,8 @@ I have also updated the text for Refined_Depends as this was worded similarly:
 !Location: source/packages.rst
 !Description:I think I identified a problem with my elaboration checking scheme in the case of a dispatching call where the callee that we dispatch to in turn calls anther subp whose body hasn't been elaborated yet.
 I don't remember if this case is handled right - I'll check, but I may need to do something in that area.
-!Action Taken:
-!Checked By:
+!Action Taken:Steve looked this and decided there is not a problem.
+!Checked By:AH
 
 !Label: SBB_07
 !Location:General
@@ -953,7 +952,6 @@ Better would be
    may be used in an Assertion_Policy pragma].
 !Action Taken:
 !Checked By:
-   -- Steve
 
 !Label: JEB/01
 !Location: General
