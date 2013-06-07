@@ -929,6 +929,11 @@ No extra dynamic semantics are associated with anti-aliasing.
 Return Statements
 -----------------
 
+Use of ``extended_return_statement`` is not allowed in |SPARK|.
+
+.. todo:: Update LRM to allow extended return statements in a future release.
+
+
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~
 
