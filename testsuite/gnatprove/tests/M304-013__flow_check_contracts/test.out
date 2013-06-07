@@ -1,13 +1,9 @@
+test.adb:26:33: global "G" is not used
+test.adb:26:33: global "G" might not be set [uninitialized__g]
+test.adb:37:32: global "G" is not used
+test.adb:37:32: ineffective global import "G"
+test.adb:48:11: "G" incorrectly included in null dependency
 test.adb:5:23: ineffective import "X"
 test.adb:6:11: "X" missing from null dependency
 test.adb:7:23: "Y" depends on "Y"
 test.adb:7:23: "Y" does not depend on "X"
-test.adb:26:33: global "G" might not be set [uninitialized__g]
-test.adb:26:33: global "G" is not used
-test.adb:37:32: ineffective global import "G"
-test.adb:37:32: global "G" is not used
-test.adb:48:11: "G" incorrectly included in null dependency
-
-
-gnatprove: error during translation to intermediate language, aborting.
-
