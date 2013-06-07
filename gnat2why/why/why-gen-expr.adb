@@ -397,7 +397,7 @@ package body Why.Gen.Expr is
             Up_From : constant W_Base_Type_Id := Up (From, Base);
             Up_To   : constant W_Base_Type_Id := Up (To, Base);
             Range_Type : Entity_Id;
-            Check_Kind : VC_Kind;
+            Check_Kind : Range_Check_Kind;
 
             function Is_Appropriate (Base       : W_Base_Type_Id;
                                      Check_Type : Entity_Id) return Boolean;

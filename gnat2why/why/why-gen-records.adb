@@ -991,7 +991,7 @@ package body Why.Gen.Records is
       return
         +New_VC_Call
         (Ada_Node => Ada_Node,
-         Name     => Range_Check_Name (Check_Ty),
+         Name     => Range_Check_Name (Check_Ty, RCK_Range),
          Progs    => Prepare_Args_For_Subtype_Check (Check_Ty, +Expr),
          Domain   => EW_Prog,
          Reason   => VC_Discriminant_Check);

@@ -34,6 +34,8 @@ with Why.Sinfo;    use Why.Sinfo;
 
 with Why.Gen.Name_Gen;
 
+with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
@@ -56,7 +58,7 @@ package Why.Gen.Names is
    --  Return the name of the "in_range" predicate for the type
 
    function Range_Check_Name
-     (Ty : Entity_Id) return W_Identifier_Id;
+     (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
    --  Return the name of the "range_check_" program function for the type
 
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String;
@@ -164,6 +166,8 @@ package Why.Gen.Names is
       WNE_Bool_Xor,
       WNE_Bool_Not,
       WNE_Char_Type,
+      WNE_Check_Not_First,
+      WNE_Check_Not_Last,
       WNE_Coerce,
       WNE_Def,
       WNE_Def_Axiom,

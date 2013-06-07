@@ -26,7 +26,6 @@
 with Ada.Containers.Hashed_Maps;
 
 with Types;          use Types;
-with VC_Kinds;       use VC_Kinds;
 
 with Why.Types;      use Why.Types;
 with Why.Ids;        use Why.Ids;
@@ -60,17 +59,6 @@ package Gnat2Why.Expr is
       Expected_Type : W_Base_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
-
-   procedure Get_Range_Check_Info
-     (Expr       : Node_Id;
-      Check_Type : out Entity_Id;
-      Check_Kind : out VC_Kind);
-   --  The frontend sets Do_Range_Check flag to True both for range checks and
-   --  for index checks. We distinguish between these by calling this
-   --  procedure, which also sets the bounds against which the value of Expr
-   --  should be checked. Expr should have the flag Do_Range_Check flag set to
-   --  True. Check_Type is set to the entity giving the bounds for the check.
-   --  Check_Kind is set to VC_Range_Check or VC_Index_Check.
 
    function Insert_Range_Check
      (Expr : Node_Id;

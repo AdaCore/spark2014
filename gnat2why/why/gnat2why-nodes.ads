@@ -39,6 +39,8 @@ with Sinput;                 use Sinput;
 with Stand;                  use Stand;
 with Types;                  use Types;
 
+with VC_Kinds;               use VC_Kinds;
+
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Ids;                use Why.Ids;
 with Why.Types;              use Why.Types;
@@ -268,5 +270,42 @@ package Gnat2Why.Nodes is
    --     ....
    --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
    --  source.
+
+   type Range_Check_Kind is
+     (RCK_Overflow,
+      RCK_Range,
+      RCK_Length,
+      RCK_Index,
+      RCK_Not_First,
+      RCK_Not_Last);
+
+   function To_VC_Kind (R : Range_Check_Kind) return VC_Kind
+   is
+     (case R is
+         when RCK_Overflow  => VC_Overflow_Check,
+         when RCK_Range     => VC_Range_Check,
+         when RCK_Length    => VC_Length_Check,
+         when RCK_Index     => VC_Index_Check,
+         when RCK_Not_First => VC_Range_Check,
+         when RCK_Not_Last  => VC_Range_Check);
+   --  to convert a Range_Check_Kind to a VC_Kind
+
+   procedure Get_Range_Check_Info
+     (Expr       : Node_Id;
+      Check_Type : out Entity_Id;
+      Check_Kind : out Range_Check_Kind);
+   --  The frontend sets Do_Range_Check flag to True both for range checks and
+   --  for index checks. We distinguish between these by calling this
+   --  procedure, which also sets the bounds against which the value of Expr
+   --  should be checked. Expr should have the flag Do_Range_Check flag set to
+   --  True. Check_Type is set to the entity giving the bounds for the check.
+   --  Check_Kind is set to VC_Range_Check or VC_Index_Check.
+
+   generic
+      with procedure Handle_Argument (Formal, Actual : Node_Id);
+   procedure Iterate_Call_Arguments (Call : Node_Id);
+   --  Call "Handle_Argument" for each pair Formal/Actual of a function or
+   --  procedure call. The node in argument must have a "Name" field and a
+   --  "Parameter_Associations" field.
 
 end Gnat2Why.Nodes;

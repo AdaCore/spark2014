@@ -49,6 +49,8 @@ with Urealp;                 use Urealp;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
+with VC_Kinds;               use VC_Kinds;
+
 with Why;                    use Why;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -203,13 +205,6 @@ package body Gnat2Why.Expr is
    function Is_Pretty_Node (N : Node_Id) return Boolean;
    --  Decide whether this is a node where we should put a pretty printing
    --  label, or if we should descend further
-
-   generic
-      with procedure Handle_Argument (Formal, Actual : Node_Id);
-   procedure Iterate_Call_Arguments (Call : Node_Id);
-   --  Call "Handle_Argument" for each pair Formal/Actual of a function or
-   --  procedure call. The node in argument must have a "Name" field and a
-   --  "Parameter_Associations" field.
 
    function One_Level_Access
      (N           : Node_Id;
@@ -1010,174 +1005,6 @@ package body Gnat2Why.Expr is
       end if;
    end Get_Pure_Logic_Term_If_Possible;
 
-   --------------------------
-   -- Get_Range_Check_Info --
-   --------------------------
-
-   procedure Get_Range_Check_Info
-     (Expr       : Node_Id;
-      Check_Type : out Entity_Id;
-      Check_Kind : out VC_Kind)
-   is
-      Par : constant Node_Id := Parent (Expr);
-
-   begin
-      --  Set the appropriate entity in Check_Type giving the bounds for the
-      --  check, depending on the parent node Par.
-
-      case Nkind (Par) is
-
-         when N_Assignment_Statement =>
-            Check_Type := Etype (Name (Par));
-
-         --  For an array access, retrieve the type for the corresponding index
-
-         when N_Indexed_Component =>
-
-            Indexed_Component : declare
-               Obj        : constant Node_Id := Prefix (Par);
-               Array_Type : Entity_Id;
-               Act_Cursor : Node_Id;
-               Ty_Cursor  : Node_Id;
-               Found      : Boolean;
-
-            begin
-               --  When present, the Actual_Subtype of the entity should be
-               --  used instead of the Etype of the prefix.
-
-               if Is_Entity_Name (Obj)
-                 and then Present (Actual_Subtype (Entity (Obj)))
-               then
-                  Array_Type := Actual_Subtype (Entity (Obj));
-               else
-                  Array_Type := Etype (Obj);
-               end if;
-
-               --  Find the index type that corresponds to the expression
-
-               Ty_Cursor  := First_Index (Unique_Entity (Array_Type));
-               Act_Cursor := First (Expressions (Par));
-               Found      := False;
-               while Present (Act_Cursor) loop
-                  if Expr = Act_Cursor then
-                     Check_Type := Etype (Ty_Cursor);
-                     Found := True;
-                     exit;
-                  end if;
-
-                  Next (Act_Cursor);
-                  Next_Index (Ty_Cursor);
-               end loop;
-
-               --  The only possible child node of an indexed component with a
-               --  range check should be one of the expressions, so Found
-               --  should always be True at this point.
-
-               if not Found then
-                  raise Program_Error;
-               end if;
-            end Indexed_Component;
-
-         when N_Type_Conversion =>
-            Check_Type := Etype (Par);
-
-         when N_Qualified_Expression =>
-            Check_Type := Etype (Par);
-
-         when N_Simple_Return_Statement =>
-            Check_Type :=
-              Etype (Return_Applies_To (Return_Statement_Entity (Par)));
-
-         --  For a call, retrieve the type for the corresponding argument
-
-         when N_Function_Call            |
-              N_Procedure_Call_Statement |
-              N_Parameter_Association    =>
-
-            Call : declare
-
-               Found : Boolean := False;
-
-               procedure Check_Call_Arg (Formal, Actual : Node_Id);
-               --  If Actual is the right expression, set Check_Type to the
-               --  Etype of Formal.
-
-               --------------------
-               -- Check_Call_Arg --
-               --------------------
-
-               procedure Check_Call_Arg (Formal, Actual : Node_Id) is
-               begin
-                  if Expr = Actual then
-                     Check_Type := Etype (Formal);
-                     Found := True;
-                  end if;
-               end Check_Call_Arg;
-
-               procedure Find_Expr_in_Call_Args is new
-                 Iterate_Call_Arguments (Check_Call_Arg);
-
-            begin
-               if Nkind (Par) = N_Parameter_Association then
-                  Find_Expr_in_Call_Args (Parent (Par));
-               else
-                  Find_Expr_in_Call_Args (Par);
-               end if;
-
-               --  The only possible child node of a call with a range check
-               --  should be one of the arguments, so Found should always be
-               --  True at this point.
-
-               if not Found then
-                  raise Program_Error;
-               end if;
-            end Call;
-
-         when N_Attribute_Reference =>
-            Attribute : declare
-               Aname   : constant Name_Id := Attribute_Name (Par);
-               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-            begin
-               case Attr_Id is
-                  when Attribute_Pred |
-                       Attribute_Succ |
-                       Attribute_Val  =>
-                     Check_Type := Base_Type (Entity (Prefix (Par)));
-
-                  when others =>
-                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
-                                           & Attribute_Id'Image (Attr_Id));
-                     raise Program_Error;
-               end case;
-            end Attribute;
-
-         when N_Object_Declaration =>
-            Check_Type := Etype (Defining_Identifier (Par));
-
-         when others =>
-            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
-                                  & Node_Kind'Image (Nkind (Par)));
-            raise Program_Error;
-      end case;
-
-      --  If the parent expression is an array access, this is an index check
-
-      if Nkind (Par) = N_Indexed_Component then
-         Check_Kind := VC_Index_Check;
-
-         --  If the target type is a constrained array, we have a length check.
-
-      elsif Is_Array_Type (Check_Type) and then
-        Is_Constrained (Check_Type) then
-         Check_Kind := VC_Length_Check;
-      else
-
-         --  Otherwise, this is a range check
-
-         Check_Kind := VC_Range_Check;
-      end if;
-   end Get_Range_Check_Info;
-
    ----------------------
    -- Has_Element_Expr --
    ----------------------
@@ -1243,7 +1070,7 @@ package body Gnat2Why.Expr is
       T    : W_Expr_Id) return W_Expr_Id
    is
       Check_Type : Entity_Id;
-      Check_Kind : VC_Kind;
+      Check_Kind : Range_Check_Kind;
 
    begin
       --  Determine the type Check_Type, whose base type will give the bounds
@@ -1254,9 +1081,10 @@ package body Gnat2Why.Expr is
 
       return New_VC_Call (Domain   => EW_Prog,
                           Ada_Node => Expr,
-                          Name     => Range_Check_Name (Check_Type),
+                          Name     =>
+                            Range_Check_Name (Check_Type, Check_Kind),
                           Progs    => (1 => +T),
-                          Reason   => Check_Kind);
+                          Reason   => To_VC_Kind (Check_Kind));
    end Insert_Range_Check;
 
    ------------------------
@@ -1420,57 +1248,6 @@ package body Gnat2Why.Expr is
          when others => return True;
       end case;
    end Is_Pretty_Node;
-
-   ----------------------------
-   -- Iterate_Call_Arguments --
-   ----------------------------
-
-   procedure Iterate_Call_Arguments (Call : Node_Id)
-   is
-      Params     : constant List_Id := Parameter_Associations (Call);
-      Cur_Formal : Node_Id := First_Entity (Entity (Name (Call)));
-      Cur_Actual : Node_Id := First (Params);
-      In_Named   : Boolean := False;
-   begin
-      --  We have to deal with named arguments, but the frontend has
-      --  done some work for us. All unnamed arguments come first and
-      --  are given as-is, while named arguments are wrapped into a
-      --  N_Parameter_Association. The field First_Named_Actual of the
-      --  function or procedure call points to the first named argument,
-      --  that should be inserted after the last unnamed one. Each
-      --  Named Actual then points to a Next_Named_Actual. These
-      --  pointers point directly to the actual, but Next_Named_Actual
-      --  pointers are attached to the N_Parameter_Association, so to
-      --  get the next actual from the current one, we need to follow
-      --  the Parent pointer.
-      --
-      --  The Boolean In_Named states how to obtain the next actual:
-      --  either follow the Next pointer, or the Next_Named_Actual of
-      --  the parent.
-      --  We start by updating the Cur_Actual and In_Named variables for
-      --  the first parameter.
-
-      if Nkind (Cur_Actual) = N_Parameter_Association then
-         In_Named := True;
-         Cur_Actual := First_Named_Actual (Call);
-      end if;
-
-      while Present (Cur_Formal) and then Present (Cur_Actual) loop
-         Handle_Argument (Cur_Formal, Cur_Actual);
-         Cur_Formal := Next_Formal (Cur_Formal);
-
-         if In_Named then
-            Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
-         else
-            Next (Cur_Actual);
-
-            if Nkind (Cur_Actual) = N_Parameter_Association then
-               In_Named := True;
-               Cur_Actual := First_Named_Actual (Call);
-            end if;
-         end if;
-      end loop;
-   end Iterate_Call_Arguments;
 
    -------------------------
    -- Name_For_Loop_Entry --

@@ -701,7 +701,8 @@ package body Why.Gen.Names is
          when WNE_Expr_Fun_Closure => return "__expr_fun_closure";
          when WNE_Constant_Axiom => return "__constant_axiom";
          when WNE_Constant_Closure => return "__constant_closure";
-
+         when WNE_Check_Not_First => return "check_not_first";
+         when WNE_Check_Not_Last => return "check_not_last";
          when WNE_Attr_First   =>
             return "attr__" & Attribute_Id'Image (Attribute_First);
          when WNE_Attr_Image   =>
@@ -788,16 +789,23 @@ package body Why.Gen.Names is
    ----------------------
 
    function Range_Check_Name
-     (Ty : Entity_Id) return W_Identifier_Id is
+     (Ty : Entity_Id;
+      R  : Range_Check_Kind) return W_Identifier_Id
+   is
+      Name : constant Why_Name_Enum :=
+        (case R is
+            when RCK_Not_First => WNE_Check_Not_First,
+            when RCK_Not_Last  => WNE_Check_Not_Last,
+            when others        => WNE_Range_Check_Fun);
    begin
       if Ty = Standard_Boolean then
          return Prefix (Ada_Node => Standard_Boolean,
                         S        => "Boolean",
-                        W        => WNE_Range_Check_Fun);
+                        W        => Name);
       else
          return Prefix (Ada_Node => Ty,
                         S        => Full_Name (Ty),
-                        W        => WNE_Range_Check_Fun);
+                        W        => Name);
       end if;
    end Range_Check_Name;
 

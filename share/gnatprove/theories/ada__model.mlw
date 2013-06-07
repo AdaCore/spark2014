@@ -38,6 +38,14 @@ module Discrete_Base
     requires { in_range n }
     ensures { result = n }
 
+  val check_not_last (n : int) : int
+    requires { n <> attr__ATTRIBUTE_LAST }
+    ensures { result = n }
+
+  val check_not_first (n : int) : int
+    requires { n <> attr__ATTRIBUTE_FIRST }
+    ensures { result = n }
+
   predicate eq (x : t) (y : t) = ( to_int x = to_int y )
 
   axiom range_axiom :
