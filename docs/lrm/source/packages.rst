@@ -959,9 +959,15 @@ is part of and a state abstraction always knows all of its constituents.
    Global aspect or Depends aspect.  The denotation must also be consistent
    between the Global and Depends aspects of a subprogram. 
    
-#. In a public package specification only state abstractions shall be denoted,
-   not their ``constituents``. The exclusion to this rule is that for
-   private parts of a package given below.
+#. In a public package specification entities that are Part_Of an
+   encapsulating state abstraction shall not be denoted; such entities
+   may be represented by denoting their encapsulating state
+   abstraction which is not Part_Of a more visible state abstraction.
+   [This rule is applied recursively, if an entity is Part_Of a state
+   abstraction which itself a Part_Of another encapsulating state
+   abstraction, then it must be represented by the encapsulating state
+   abstraction].  The exclusion to this rule is that for private parts
+   of a package given below.
 
 #. In the private part of a package a state abstraction declared by the
    package shall not be denoted other than for specifying it as the
@@ -972,28 +978,49 @@ is part of and a state abstraction always knows all of its constituents.
    the state abstraction shall not be denoted except as an encapsulating state 
    in a Part_Of indicator, only its ``constituents`` maybe denoted.
    
-#. Within a package body where a state abstraction is visible, its refinement
-   is not visible, but one or more of its ``constituents`` are visible, then
-   either the state abstraction or its ``constituents`` may be denoted but not
-   within the same Global aspect or Depends aspect. The denotation must also be 
-   consistent between the Global and Depends aspects of a subprogram. 
-   
+#. Within a package body where a state abstraction is visible, its
+   refinement is not visible, but one or more of its ``constituents``
+   are visible, then the following rules apply:
+
+   * either the state abstraction or its ``constituents`` may be
+     denoted but not within the same Global aspect or Depends
+     aspect. The denotation must also be consistent between the Global
+     and Depends aspects of a subprogram.
+
+   * a state abstraction denoted in a Global or Depends aspect is not
+     refined into its constituents in a Refined_Global or
+     Refined_Depends aspect [because the refinement of the state
+     abstraction is not visible].
+    
 .. centered:: *Verification Rules*
 
-#. Where a state abstraction is visible but its refinement is not but one or
-   more of its constituents are visible the following rules apply:
+#. In a package body of a public child when a state abstraction is
+   visible, its refinement is not but one or more of its constituents
+   are visible then if a subprogram declared in the visible part of
+   the package, directly or indirectly:
    
-   * if a subprogram reads or updates ``constituents`` that are visible but not 
-     other parts of the state abstraction [indirectly via a subprogram call]
-     that are not visible, then those constituents and not the state abstraction
-     shall be denoted in the Global and Depends aspects, or their refined
-     counter parts, of the subprogram;
-     
-   * otherwise, if the subprogram reads or updates other parts of the state 
-     abstraction, the state abstraction shall be denoted and not its
-     ``constituents`` in Global and Depends aspects, or their refined
-     counterparts, of the subprogram.
-     
+   * reads a ``constituent`` of a state abstraction then, this
+     shall be regarded as a read of the most visible encapsulating
+     state abstraction of the ``constituent`` and shall be represented
+     by this encapsulating state in the Global and Depends aspects of
+     the subprogram; or
+
+   * updates a ``constituent`` of a state abstraction then, this shall
+     be regarded as an update of the most visible encapsulation state
+     abstraction of the ``constituent`` and shall be represented by
+     this encapsulating state with a ``mode_selector`` of In_Out in
+     the Global aspect of the subprogram and as both and ``input`` and
+     and ``output`` in the Depends aspect of the subprogram.  [The
+     reason for this is that it is not known whether the entire state
+     abstraction is updated or only some of its constituents.] This
+     rule does not apply when the most visible encapsulating state
+     abstraction is External Input_Only or Output_Only.  In this case
+     the state abstraction shall have a ``mode_selector`` of Input for
+     Input_only states and Output for Output_Only states.  Similarly
+     in the Depends aspect Input_Only states shall be denoted only as
+     ``inputs`` and Output_only states shall be denoted only as
+     ``outputs``.
+    
 .. centered:: **Examples**
 
 .. code-block:: ada
