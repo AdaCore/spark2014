@@ -212,9 +212,10 @@ def do_flow(opt=None, procs=parallel_procs):
     opt += ["-j%d"%(procs)]
     gnatprove(opt)
 
-def prove_all(opt=None, steps=max_steps, vc_timeout=vc_timeout()):
+def prove_all(opt=None, steps=max_steps, procs=parallel_procs,\
+              vc_timeout=vc_timeout()):
     """Call gnatprove with standard options to prove all VCs"""
-    prove(opt, steps, vc_timeout)
+    prove(opt, steps, procs, vc_timeout)
 
 def to_list(arg):
     """Convert to list
