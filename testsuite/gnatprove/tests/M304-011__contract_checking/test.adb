@@ -20,7 +20,7 @@ package body Test is
 
    procedure Check_Contract_5
    --  Correct global, correct depends
-      with Global  => (Input  => X, 
+      with Global  => (Input  => X,
                        Output => Y,
                        In_Out => Z),
            Depends => (Y =>  (Z, X),
@@ -124,7 +124,7 @@ package body Test is
          return;
       end if;
 
-      Par2 := X;  --  Par2 depends on Par1, X, Par2 rather than just on Par1 and X.
+      Par2 := X;  --  Formal parameter Par2 might not be set (if Par1 > 0 then we return).
    end Check_Contract_6;
 
    ----------------------
