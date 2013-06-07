@@ -1,3 +1,4 @@
+.PHONY: all
 
 GENERATED_FILES= \
  why-classes.ads              \
@@ -20,7 +21,7 @@ GENERATED_FILES= \
  why-opaque_ids.ads           \
  why-unchecked_ids.ads
 
-all: $(GENERATED_FILES)
+all:
 	gnatmake -j0 -Phelpers xtree
 	./xtree
 	cp $(GENERATED_FILES) ../
@@ -31,3 +32,4 @@ clean:
 	-rm -f *.ali
 	-rm -f b~*
 	-rm -f xtree
+	-rm -f $(GENERATED_FILES)
