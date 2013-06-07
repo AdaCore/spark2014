@@ -1863,12 +1863,9 @@ package body SPARK_Definition is
          Entities_In_SPARK.Include (E);
       end if;
 
-      --  Add entity to appropriate list, except for types defined in formal
-      --  container instances, which should be translated specially to Why.
+      --  Add entity to appropriate list.
 
-      if not (Ekind (E) in Type_Kind
-                and then Type_In_Formal_Container (E))
-      then
+      if not Type_In_Formal_Container (E) then
          Append_Entity_To_List (E);
       end if;
 
@@ -2970,8 +2967,11 @@ package body SPARK_Definition is
                Id := Defining_Entity (Decl);
 
                if Ekind (Id) in Type_Kind then
-                  Mark_Entity (Id);
-
+                  if Type_In_Formal_Container (Id) then
+                     Mark_Entity (Id);
+                  else
+                     All_Entities.Include (Id);
+                  end if;
                elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
                   All_Entities.Include (Id);
                   Entities_In_SPARK.Include (Id);

@@ -781,12 +781,25 @@ package body Xtree_Sinfo is
                  "Comment", "W_Identifier", Id_Lone);
       Set_Domain (W_Theory_Declaration, EW_Prog);
 
+      ---------------------------
+      -- W_Custom_Substitution --
+      ---------------------------
+
+      New_Field (W_Custom_Substitution,
+                 "From", "Name_Id");
+
+      New_Field (W_Custom_Substitution,
+                 "To", "W_Any_Node", Id_One);
+
       --------------------------
       -- W_Custom_Declaration --
       --------------------------
 
       New_Field (W_Custom_Declaration,
-                 "Content", "W_Identifier", Id_One);
+                 "File_Name", "Name_Id");
+
+      New_Field (W_Custom_Declaration,
+                 "Subst", "W_Custom_Substitution", Id_Set);
 
       ------------
       -- W_File --

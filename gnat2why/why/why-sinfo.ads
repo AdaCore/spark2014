@@ -156,6 +156,7 @@ package Why.Sinfo is
       W_Clone_Declaration,
       W_Clone_Substitution,
       W_Theory_Declaration,
+      W_Custom_Substitution,
       W_Custom_Declaration,
 
       -----------------

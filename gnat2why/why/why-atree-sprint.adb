@@ -34,6 +34,13 @@ with Why.Inter;           use Why.Inter;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Ada.Directories;
+with Ada.Direct_IO;
+with GNAT.Regpat;
+with Ada.Command_Line;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 package body Why.Atree.Sprint is
 
@@ -1874,9 +1881,149 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Custom_Declaration_Id)
    is
+      use GNAT.Regpat;
+
+      function Get_Whole_File return String;
+
+      function Get_Regexp return String;
+
+      procedure Apply_Subst (Text : String;
+                             Matches : Match_Array);
+
+      function Locate_File return String;
+
+      function Locate_File return String is
+         use Ada.Command_Line;
+         use Ada.Directories;
+
+         Command   : constant String := Command_Name;
+         File_Name : constant String  :=
+           Get_Name_String (Get_File_Name (Node));
+         From_Command : constant String :=
+           Compose (Compose (Compose (Compose (Containing_Directory
+                    (Containing_Directory (Command)), "share"),
+                    "gnatprove"), "theories"), File_Name);
+      begin
+
+         if Is_Absolute_Path (Command) and then
+           Is_Readable_File (From_Command) then
+            return From_Command;
+         else
+            declare
+               R : String_Access :=
+                 Locate_Exec_On_Path (Exec_Name => "gnatprove");
+            begin
+               pragma Assert (R /= null and then
+                              Is_Readable_File
+                                (Compose (Compose (Compose (
+                                 Compose (Containing_Directory (
+                                   Containing_Directory (R.all)), "share"),
+                                 "gnatprove"), "theories"), File_Name)));
+               declare
+                     S : constant String :=
+                       Compose (Compose (Compose (
+                                Compose (Containing_Directory (
+                                  Containing_Directory (R.all)), "share"),
+                                "gnatprove"), "theories"), File_Name);
+               begin
+                  Free (R);
+                  Ada.Text_IO.Put_Line (S);
+                  return S;
+               end;
+            end;
+         end if;
+      end Locate_File;
+
+      function Get_Whole_File return String is
+         File_Name : constant String  := Locate_File;
+         File_Size : constant Natural :=
+           Natural (Ada.Directories.Size (File_Name));
+
+         subtype File_String    is String (1 .. File_Size);
+         package File_String_IO is new Ada.Direct_IO (File_String);
+
+         File     : File_String_IO.File_Type;
+         Contents : File_String;
+      begin
+         File_String_IO.Open  (File, Mode => File_String_IO.In_File,
+                               Name => File_Name);
+         File_String_IO.Read  (File, Item => Contents);
+         File_String_IO.Close (File);
+         return Contents;
+      end Get_Whole_File;
+
+      function Get_Regexp return String is
+         use Ada.Strings.Unbounded;
+         use Node_Lists;
+
+         Nodes    : constant List := Get_List (+Get_Subst (Node));
+         Position : Cursor := First (Nodes);
+         Result : Unbounded_String := Null_Unbounded_String;
+      begin
+         while Position /= No_Element loop
+            declare
+               Node : constant W_Custom_Substitution_Id :=
+                 W_Custom_Substitution_Id (Element (Position));
+            begin
+               Result := Result & Get_Name_String (Get_From (Node));
+            end;
+
+            Position := Next (Position);
+
+            if Position /= No_Element then
+               Result := Result & "|";
+            end if;
+         end loop;
+         return To_String (Result);
+      end Get_Regexp;
+
+      procedure Apply_Subst (Text : String;
+                             Matches : Match_Array) is
+         use Node_Lists;
+
+         Nodes    : constant List := Get_List (+Get_Subst (Node));
+         Position : Cursor := First (Nodes);
+         Interm_Matches : Match_Array (0 .. 0);
+      begin
+         while Position /= No_Element loop
+            declare
+               Node : constant W_Custom_Substitution_Id :=
+                 W_Custom_Substitution_Id (Element (Position));
+            begin
+               Match (Compile (Get_Name_String (Get_From (Node))), Text,
+                      Interm_Matches, Matches (0).First);
+               if Interm_Matches (0) /= No_Match and then
+                 Interm_Matches (0).Last = Matches (0).Last then
+                  Traverse (State, +Get_To (Node));
+                  return;
+               end if;
+            end;
+            Next (Position);
+         end loop;
+         raise Program_Error;
+      end Apply_Subst;
+
+      Text    : constant String := Get_Whole_File;
    begin
       NL (O);
-      Traverse (State, +Get_Content (Node));
+      if Node_Lists.Is_Empty (Get_List (+Get_Subst (Node))) then
+         P (O, Text);
+      else
+         declare
+            Regexp  : constant Pattern_Matcher := Compile (Get_Regexp);
+            Matches : Match_Array (0 .. 0);
+            Current : Natural := Text'First;
+         begin
+            loop
+               Match (Regexp, Text, Matches, Current);
+               exit when Matches (0) = No_Match;
+               P (O, Text (Current .. Matches (0).First - 1));
+               Apply_Subst (Text, Matches);
+               Current := Matches (0).Last + 1;
+            end loop;
+            P (O, Text (Current .. Text'Last));
+         end;
+      end if;
       NL (O);
       State.Control := Abandon_Children;
    end Custom_Declaration_Pre_Op;

@@ -336,44 +336,8 @@ package body Why.Inter is
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
    is
-      function File_Base_Name_Of_Entity (E : Entity_Id) return String;
-      --  return the base name of the unit in which the entity is
-      --  defined
-
       function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type;
       --  return the import type that is used for such an entity
-
-      function Name_Of_Node (N : Node_Id) return String;
-      --  Return the uncapitalized name which needs to be used to include the
-      --  Why entity for that node (after capitalization).
-
-      ------------------------------
-      -- File_Base_Name_Of_Entity --
-      ------------------------------
-
-      function File_Base_Name_Of_Entity (E : Entity_Id) return String is
-         U : Node_Id;
-      begin
-         if Is_In_Standard_Package (E) then
-            return Standard_Why_Package_Name;
-         end if;
-         U := Enclosing_Comp_Unit_Node (E);
-
-         --  Itypes are not attached to the tree, so we go through the
-         --  associated node
-
-         if not Present (U) and then Is_Itype (E) then
-            U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
-         end if;
-
-         --  Special handling for entities of subunits, we extract the library
-         --  unit
-
-         while Nkind (Unit (U)) = N_Subunit loop
-            U := Library_Unit (U);
-         end loop;
-         return Spec_File_Name_Without_Suffix (U);
-      end File_Base_Name_Of_Entity;
 
       ---------------------------
       -- Import_Type_Of_Entity --
@@ -388,20 +352,6 @@ package body Why.Inter is
          end if;
          return EW_Clone_Default;
       end Import_Type_Of_Entity;
-
-      ------------------
-      -- Name_Of_Node --
-      ------------------
-
-      function Name_Of_Node (N : Node_Id) return String is
-      begin
-         if Nkind (N) = N_String_Literal
-           or else Nkind (N) = N_Aggregate
-           or else Nkind (N) = N_Slice then
-            return New_Str_Lit_Ident (N);
-         end if;
-         return Full_Name (N);
-      end Name_Of_Node;
 
       File_Name   : constant String :=
         File_Base_Name_Of_Entity (N)
@@ -876,6 +826,34 @@ package body Why.Inter is
       end if;
    end Extract_Object_Name;
 
+   ------------------------------
+   -- File_Base_Name_Of_Entity --
+   ------------------------------
+
+   function File_Base_Name_Of_Entity (E : Entity_Id) return String is
+      U : Node_Id;
+   begin
+      if Is_In_Standard_Package (E) then
+         return Standard_Why_Package_Name;
+      end if;
+      U := Enclosing_Comp_Unit_Node (E);
+
+      --  Itypes are not attached to the tree, so we go through the
+      --  associated node
+
+      if not Present (U) and then Is_Itype (E) then
+         U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
+      end if;
+
+      --  Special handling for entities of subunits, we extract the library
+      --  unit
+
+      while Nkind (Unit (U)) = N_Subunit loop
+         U := Library_Unit (U);
+      end loop;
+      return Spec_File_Name_Without_Suffix (U);
+   end File_Base_Name_Of_Entity;
+
    ---------------
    -- Full_Name --
    ---------------
@@ -1069,6 +1047,20 @@ package body Why.Inter is
          Cur_Theory => Why_Empty);
    end Make_Empty_Why_File;
 
+   ------------------
+   -- Name_Of_Node --
+   ------------------
+
+   function Name_Of_Node (N : Node_Id) return String is
+   begin
+      if Nkind (N) = N_String_Literal
+        or else Nkind (N) = N_Aggregate
+        or else Nkind (N) = N_Slice then
+         return New_Str_Lit_Ident (N);
+      end if;
+      return Full_Name (N);
+   end Name_Of_Node;
+
    -----------------
    -- Open_Theory --
    -----------------
@@ -1105,22 +1097,6 @@ package body Why.Inter is
          Capitalize_First (Short_Name (E))
          else "");
    begin
-      --  Treat specially the Capacity component of formal containers, which is
-      --  translated as a function.
-
---        if Ekind (E) = E_Discriminant
---          and then Is_Formal_Container_Capacity (E)
---        then
---           if Local then
---              return New_Identifier
---                (Ada_Node => E,
---                 Name     => Suffix);
---           else
---              return New_Identifier
---                (Ada_Node => E,
---                 Name     => Suffix,
---                 Context  => Full_Name (E));
---           end if;
 
       --  The component case is sufficiently different to treat it
       --  independently

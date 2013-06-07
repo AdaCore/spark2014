@@ -18,6 +18,11 @@ module Main
   (* the return type for the functions that correspond to 'Image *)
   type __image
 
+  (* A predicate symbol that ignores its argument.
+       It is used for instantiation of generic package with a user-defined
+       axiomatization. *)
+  predicate __ignore "inline" (x : 'a) = true 
+
 end
 
 module Integer

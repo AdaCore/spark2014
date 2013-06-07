@@ -162,6 +162,14 @@ package Why.Inter is
    --  Use_Kind, that value is used. With_Completion is True if the completion
    --  theories for N should be added too.
 
+   function File_Base_Name_Of_Entity (E : Entity_Id) return String;
+   --  return the base name of the unit in which the entity is
+   --  defined
+
+   function Name_Of_Node (N : Node_Id) return String;
+   --  Return the uncapitalized name which needs to be used to include the
+   --  Why entity for that node (after capitalization).
+
    procedure Add_Effect_Imports (P : in out Why_File;
                                  S : Name_Set.Set);
 
