@@ -330,7 +330,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 #. If External is specified in an ``option_list`` then at most one of
    Input_Only or Output_Only ``options`` may be specified in the
-   ``option_list``. The Input_Only and Output options shall not be specified in
+   ``option_list``. The Input_Only and Output_only options shall not be specified in
    an ``option_list`` without an External ``option``.
 
 #. If a ``option_list`` contains one or more ``name_value_option`` items
@@ -954,11 +954,11 @@ is part of and a state abstraction always knows all of its constituents.
 
 #. If both a state abstraction and one or more of its ``constituents`` are
    visible in a private package specification or in the package specification of
-   a non-private descendant of a private package, then either the state 
+   a non-private descendant of a private package, then either the state
    abstraction or its ``constituents`` may be denoted but not within the same
    Global aspect or Depends aspect.  The denotation must also be consistent
-   between the Global and Depends aspects of a subprogram. 
-   
+   between the Global and Depends aspects of a subprogram.
+
 #. In a public package specification entities that are Part_Of an
    encapsulating state abstraction shall not be denoted; such entities
    may be represented by denoting their encapsulating state
@@ -973,11 +973,11 @@ is part of and a state abstraction always knows all of its constituents.
    package shall not be denoted other than for specifying it as the
    encapsulating state in the Part_Of indicator. The state abstraction's
    ``constituents`` declared in the private part shall be denoted.
-   
+
 #. In the body of a package a state abstraction whose refinement is visible,
-   the state abstraction shall not be denoted except as an encapsulating state 
+   the state abstraction shall not be denoted except as an encapsulating state
    in a Part_Of indicator, only its ``constituents`` maybe denoted.
-   
+
 #. Within a package body where a state abstraction is visible, its
    refinement is not visible, but one or more of its ``constituents``
    are visible, then the following rules apply:
@@ -991,14 +991,14 @@ is part of and a state abstraction always knows all of its constituents.
      refined into its constituents in a Refined_Global or
      Refined_Depends aspect [because the refinement of the state
      abstraction is not visible].
-    
+
 .. centered:: *Verification Rules*
 
 #. In a package body of a public child when a state abstraction is
    visible, its refinement is not but one or more of its constituents
    are visible then if a subprogram declared in the visible part of
    the package, directly or indirectly:
-   
+
    * reads a ``constituent`` of a state abstraction then, this
      shall be regarded as a read of the most visible encapsulating
      state abstraction of the ``constituent`` and shall be represented
@@ -1020,7 +1020,7 @@ is part of and a state abstraction always knows all of its constituents.
      in the Depends aspect Input_Only states shall be denoted only as
      ``inputs`` and Output_only states shall be denoted only as
      ``outputs``.
-    
+
 .. centered:: **Examples**
 
 .. code-block:: ada
