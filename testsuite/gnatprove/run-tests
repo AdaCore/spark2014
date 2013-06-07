@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 """./run-tests [options] [test name]
 
-Run the HI-LITE testsuite
+Run the gnatprove testsuite
 """
 
-# This is a wrapper to test_hilite.py; it initializes the environment before
+# This is a wrapper to test_gnatprove.py; it initializes the environment before
 # launching the testsuite.
 
-from lib.python.test_hilite import run_testsuite
+from lib.python.test_gnatprove import run_testsuite
 from gnatpython.env import Env
 
 import os
@@ -22,4 +22,3 @@ if __name__ == "__main__":
         run_testsuite(python_lib + '/run-test')
     except AssertionError, e:
         print 'ERROR: %s' % e
-

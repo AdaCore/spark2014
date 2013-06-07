@@ -1,4 +1,4 @@
-"""Run the HI-LITE testsuite
+"""Run the gnatprove testsuite
 
 This module assumes that lib/python has been added to PYTHONPATH.
 """
