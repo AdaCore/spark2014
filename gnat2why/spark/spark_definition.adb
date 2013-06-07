@@ -2206,19 +2206,27 @@ package body SPARK_Definition is
 
          when N_Type_Conversion =>
             declare
-               E1 : constant Entity_Id :=
-                 Get_Full_View (Etype (Expression (N)));
                E2 : constant Entity_Id :=
                  Get_Full_View (Entity (Subtype_Mark (N)));
             begin
-               if E1 /= E2 and then
-                 Is_Composite_Type (E1) and then
-                 (not Is_Array_Type (E1) or else
-                    not Is_Array_Type (E2) or else
-                  Component_Type (E1) /= Component_Type (E2)) then
+               if Is_Composite_Type (E2) then
+                  pragma Assert (Nkind (Expression (N)) in N_Has_Etype);
+                  declare
+                     E1 : constant Entity_Id :=
+                       Get_Full_View (Etype (Expression (N)));
+                  begin
+                     if E1 /= E2 and then
+                       Is_Composite_Type (E1) and then
+                       (not Is_Array_Type (E1) or else
+                          not Is_Array_Type (E2) or else
+                        Component_Type (E1) /= Component_Type (E2)) then
 
-                  Mark_Violation ("conversion between composite types", N,
-                                  NYI_Composite_Conv);
+                        Mark_Violation ("conversion between composite types",
+                                        N, NYI_Composite_Conv);
+                     else
+                        Mark (Expression (N));
+                     end if;
+                  end;
                else
                   Mark (Expression (N));
                end if;
