@@ -1,5 +1,4 @@
-
-p.adb:10:55: info: range check proved
+p.adb:10:55: range check not proved
 p.adb:11:41: loop invariant preservation not proved, requires P.Shadow (J) = D
 p.adb:21:7: precondition not proved
 p.adb:8:10: info: loop invariant initialization proved
