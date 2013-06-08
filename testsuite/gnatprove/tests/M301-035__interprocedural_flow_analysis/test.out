@@ -3,10 +3,6 @@ across_compilation_units-child.ads:27:24: "X" depends on "Y"
 across_compilation_units-child.ads:29:24: "Y" depends on "Y"
 across_compilation_units-child.ads:30:24: "Z" depends on "X"
 across_compilation_units-child.ads:30:24: "Z" depends on "Z"
-
-
-
-
 // coprime_cfg
 digraph G {
    graph [splines=True];
@@ -19,14 +15,14 @@ digraph G {
     7 [label="coprime'initial",shape="plaintext",fontcolor="red"];
     8 [label="coprime'final",shape="plaintext",fontcolor="blue"];
     11 [label="if prime (x) or else prime (y)",shape="diamond"];
-    12 [label="return true<<<true>>>;"];
+    12 [label="return true;"];
     13 [label="<<<R4b : constant natural := min (x, y);>>>"];
     14 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
-    15 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    15 [label="return false;\nLoops:&nbsp;L_1"];
     16 [label="i'initial",shape="plaintext"];
     17 [label="i'final",shape="plaintext",fontcolor="red"];
     18 [label="for i in 2 .. min (x, y)<<<R4b>>>",shape="diamond"];
-    19 [label="return true<<<true>>>;"];
+    19 [label="return true;"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -60,14 +56,14 @@ digraph G {
     7 [label="coprime'initial",shape="plaintext",fontcolor="red"];
     8 [label="coprime'final",shape="plaintext",fontcolor="blue"];
     11 [label="if prime (x) or else prime (y)",shape="diamond"];
-    12 [label="return true<<<true>>>;"];
+    12 [label="return true;"];
     13 [label="<<<R4b : constant natural := min (x, y);>>>"];
     14 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
-    15 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    15 [label="return false;\nLoops:&nbsp;L_1"];
     16 [label="i'initial",shape="plaintext"];
     17 [label="i'final",shape="plaintext",fontcolor="red"];
     18 [label="for i in 2 .. min (x, y)<<<R4b>>>",shape="diamond"];
-    19 [label="return true<<<true>>>;"];
+    19 [label="return true;"];
 
     1 ->  11 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];
@@ -109,7 +105,7 @@ digraph G {
     14 [label="temp&nbsp;:=&nbsp;maximum'out",shape="plaintext"];
     15 [label="global&nbsp;X'in",shape="plaintext"];
     16 [label="global&nbsp;Y'in",shape="plaintext"];
-    17 [label="return 2 {*} temp<<<integer(2 {*} temp)>>>;"];
+    17 [label="return 2 {*} temp;"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -143,7 +139,7 @@ digraph G {
     14 [label="temp&nbsp;:=&nbsp;maximum'out",shape="plaintext"];
     15 [label="global&nbsp;X'in",shape="plaintext"];
     16 [label="global&nbsp;Y'in",shape="plaintext"];
-    17 [label="return 2 {*} temp<<<integer(2 {*} temp)>>>;"];
+    17 [label="return 2 {*} temp;"];
 
     1 ->  13 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
@@ -233,8 +229,8 @@ digraph G {
     5 [label="fibonacci'initial",shape="plaintext",fontcolor="red"];
     6 [label="fibonacci'final",shape="plaintext",fontcolor="blue"];
     9 [label="if n < 3",shape="diamond"];
-    10 [label="return 1<<<1>>>;"];
-    11 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2)<<<integer(fibonacci(n {-} 1) {+} fibonacci (n {-} 2))>>>;"];
+    10 [label="return 1;"];
+    11 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -256,8 +252,8 @@ digraph G {
     5 [label="fibonacci'initial",shape="plaintext",fontcolor="red"];
     6 [label="fibonacci'final",shape="plaintext",fontcolor="blue"];
     9 [label="if n < 3",shape="diamond"];
-    10 [label="return 1<<<1>>>;"];
-    11 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2)<<<integer(fibonacci(n {-} 1) {+} fibonacci (n {-} 2))>>>;"];
+    10 [label="return 1;"];
+    11 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);"];
 
     1 ->  9 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];
@@ -340,8 +336,8 @@ digraph G {
     7 [label="min'initial",shape="plaintext",fontcolor="red"];
     8 [label="min'final",shape="plaintext",fontcolor="blue"];
     11 [label="if x < y",shape="diamond"];
-    12 [label="return x<<<x>>>;"];
-    13 [label="return y<<<y>>>;"];
+    12 [label="return x;"];
+    13 [label="return y;"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -367,8 +363,8 @@ digraph G {
     7 [label="min'initial",shape="plaintext",fontcolor="red"];
     8 [label="min'final",shape="plaintext",fontcolor="blue"];
     11 [label="if x < y",shape="diamond"];
-    12 [label="return x<<<x>>>;"];
-    13 [label="return y<<<y>>>;"];
+    12 [label="return x;"];
+    13 [label="return y;"];
 
     1 ->  11 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];
@@ -577,11 +573,11 @@ digraph G {
     5 [label="prime'initial",shape="plaintext",fontcolor="red"];
     6 [label="prime'final",shape="plaintext",fontcolor="blue"];
     9 [label="if (x mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
-    10 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    10 [label="return false;\nLoops:&nbsp;L_1"];
     11 [label="i'initial",shape="plaintext"];
     12 [label="i'final",shape="plaintext",fontcolor="red"];
     13 [label="for i in 2 .. x / 2",shape="diamond"];
-    14 [label="return true<<<true>>>;"];
+    14 [label="return true;"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -607,11 +603,11 @@ digraph G {
     5 [label="prime'initial",shape="plaintext",fontcolor="red"];
     6 [label="prime'final",shape="plaintext",fontcolor="blue"];
     9 [label="if (x mod i) = 0\nLoops:&nbsp;L_1",shape="diamond"];
-    10 [label="return false<<<false>>>;\nLoops:&nbsp;L_1"];
+    10 [label="return false;\nLoops:&nbsp;L_1"];
     11 [label="i'initial",shape="plaintext"];
     12 [label="i'final",shape="plaintext",fontcolor="red"];
     13 [label="for i in 2 .. x / 2",shape="diamond"];
-    14 [label="return true<<<true>>>;"];
+    14 [label="return true;"];
 
     1 ->  13 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];

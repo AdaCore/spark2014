@@ -1,8 +1,4 @@
 uninitialized.adb:6:07: use of uninitialized variable "B" [uninitialized__b]
-
-
-
-
 // compare_cfg
 digraph G {
    graph [splines=True];
@@ -193,7 +189,7 @@ digraph G {
     6 [label="speed'final\n(global)",shape="plaintext",fontcolor="red"];
     7 [label="speed_is_valid'initial",shape="plaintext",fontcolor="red"];
     8 [label="speed_is_valid'final",shape="plaintext",fontcolor="blue"];
-    11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0)<<<(case state is when still => speed =0, when forward => speed > 0, when backward => speed < 0)>>>;"];
+    11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  4 [arrowType="normal"];
@@ -215,7 +211,7 @@ digraph G {
     6 [label="speed'final\n(global)",shape="plaintext",fontcolor="red"];
     7 [label="speed_is_valid'initial",shape="plaintext",fontcolor="red"];
     8 [label="speed_is_valid'final",shape="plaintext",fontcolor="blue"];
-    11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0)<<<(case state is when still => speed =0, when forward => speed > 0, when backward => speed < 0)>>>;"];
+    11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);"];
 
     1 ->  11 [arrowType="normal"];
     3 ->  4 [arrowType="normal",color="red"];
