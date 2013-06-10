@@ -77,7 +77,7 @@ dispatching calls?  The class-wide aspects seem relevant only in the
 presence of dispatching calls.
 !Action Taken: I have changed the text to say that the attribute 'Class
 is not currently supported. References to 'Class attributes have either been removed or have been qualified with a note stating that they are not currently supported. 
-!Checked By:
+!Checked By: AH
 
 !Label: STT007
 !Location: 5.1 29/3:
@@ -131,7 +131,7 @@ What sort of prefix includes declarations?  Did you mean "within the
 enclosing invariant or variant expression"?
 !Action Taken: I do not know the answer to this I defer to SBB. I have
 sent an email to SBB. SBB has replied with an example - it is complex like the rule.  I have added the example as a note in the SPARK RM.
-!Checked By:
+!Checked By: AH
 
 !Label: STT011
 !Location: 5.5.3 33/16:
@@ -463,7 +463,7 @@ end Get_2_In;
 
 I have updated the SPARK RM text to reflect this half-way house.
 
-!Checked By:
+!Checked By: AH
 
 !Label: STT030
 !Location: 7.1.3 57/9-58/2:
@@ -471,7 +471,7 @@ I have updated the SPARK RM text to reflect this half-way house.
 simplify this set of rules (as well as the earlier discussion of
 external/volatile)?
 !Action Taken:Changed in accordance with actions from last comment (STT29).
-!Checked By:
+!Checked By:AH
 
 !Label: STT031
 !Location: 7.1.4 59/9:
@@ -486,14 +486,14 @@ with ..."
 !Location: 7.1.4 59/(last):
 !Description: "(state_name_with_{options} { , state_name_with_options } )"
 !Action Taken: Corrected as suggested (Repeat of JEB/27).
-!Checked By:
+!Checked By: AH
 
 !Label: STT033
 !Location: 7.1.4 60/1:
 !Description: It would be nice if reserved words (e.g. "with") were in
 bold or somehow otherwise clearly distinguished from syntactic categories.
 !Action Taken:Some sort of formatting issue with ResT - Ada language highlighting present in latest version.
-!Checked By:
+!Checked By: AH
 
 !Label: STT034
 !Location: 7.1.4 60/1 (and following):
@@ -502,21 +502,21 @@ default, and have a "Non_Volatile" aspect.  In any case, it seems we
 ought to mention the Non_Volatile (or Volatile) aspect in the Legality
 or Static Semantics rules.
 !Action Taken:A state abstraction may now only be specified as External and then may be specified as Input_Only or Output_Only.  There are no longer any Volatile or Non_Volatile options.
-!Checked By:
+!Checked By: AH
 
 !Label: STT035
 !Location: 7.1.4 61/2:
 !Description: Indentation is goofed up.  Presumably procedure Init and
 Op_1 should be at same indent level as Is_Ready.
 !Action Taken: Corrected indentation.
-!Checked By:
+!Checked By: AH
 
 !Label: STT036
 !Location: 7.1.4 61/(last):
 !Description: "... represent the state abstractions in
 [expressions]{Global and Depends specifications}."
 !Action Taken: Replaced as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT037
 !Location: 7.1.5 62/8,10,12:
@@ -527,7 +527,7 @@ moved to Name Resolution or Static Semantics:
 "3. ..." => Move to Name Resolution
 "5. Each name in the input_list [denotes] {shall denote} an entire ..."
 !Action Taken: Replaced as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT038
 !Location: 7.1.6 62/14:
@@ -537,14 +537,14 @@ it need to appear in the Initializes list as well?  This talks about
 "the elaboration of the package."  Does this include the elaboration of
 visible declarations?  That seems a bit redundant.
 !Action Taken:Yes it is but it provides a consistent appoach.  In modular development the Initializes aspect shows the intent - an initialization in the visible part is just one way of implementing that intent. No action taken.
-!Checked By:
+!Checked By:  AH
 
 !Label: STT039
 !Location: 7.1.5 63/2:
 !Description: "... [a] {an} input_list then ... in determining {the}
 initialized value ..."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT040
 !Location: 7.1.6 63/(third from last):
@@ -553,7 +553,7 @@ initialized value ..."
 (This "may only ..." usage appears many times in the LRM.  I won't
 mention it further, but it should be fixed systematically, if at all.)
 !Action Taken: Replaced as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT041
 !Location: 7.1.6 63/(last):
@@ -564,21 +564,21 @@ Initial_Condition if it is initialized at its declaration point and not
 in Initializes, and would that mean it still has the value it was given
 at its declaration?
 !Action Taken:A variable declared in the visible part of a package cannot be denoted in a Initial_Condition if it is not in the Initializes aspect [I know it is redundant but it keeps things simple - I am prepared to be convinced otherwise]. The Initializes aspect onls states that the variable will have a valid value, not what its value will be, so yes, the value could be changed duruing package elaboration and it is the value on completion of package elaboration that is given in the Initial_Condition aspect.  No action taken.
-!Checked By:
+!Checked By: AH
 
 !Label: STT042
 !Location: 7.1.6 64/4:
 !Description: You use "predicate" as a verb here.  Perhaps "... may only
 [predicate] {depend on} properties of the state ..."
 !Action Taken: Replaced as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT043
 !Location: 7.2.1 65/4:
 !Description: "... the constituents of each state_name [has] {have} to
 be initialized ..."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT044
 !Location: 7.2.1 65/12,13:
@@ -586,13 +586,13 @@ be initialized ..."
 rule 4 be a Name Resolution rule, and should rule 5 be restated with a
 "shall"?
 !Action Taken:Changed as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT045
 !Location: 7.2.1 66/2:
 !Description: "7. A constituent [denotes] {shall denote} ..."
 !Action Taken: Replaced as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT046
 !Location: 7.2.3 68/3:
@@ -606,7 +606,7 @@ cleaner to have the limited_with from the spec, it should probably be a
 would be illegal.
 !Action Taken:For modular, constructive  analysis we cannot use post-compilation checks.  I think the current scheme is easier to check before all the code is written.  An alternative would be to record the information in the front end.  When an Abstract_State aspect has a Part_Of aspect, the package declaring the encapsuating state has to be with'd if it is not its parent, and in the internal representation of the package declaring the encapsulating state we record that the subordinate state is part of the encapsulating state.  I do not think this would be too hard to do and would be prefereble to the limited withs.
 After discussing th the Tele-conf call it has been decided to take the approach outlined above.  Updated the rules and examples and added notes about analysis tools recording declarations containig Part_Of indicators. 
-!Checked By:
+!Checked By: AH
 
 !Label: STT047
 !Location: 7.2.3 68/4,6:
@@ -614,14 +614,14 @@ After discussing th the Tele-conf call it has been decided to take the approach 
 "... associated with the declaration which denotes a{n} encapsulating ..."
 "... a state abstraction named as a{n} encapsulating state ..."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT048
 !Location: 7.2.3 68/15:
 !Description: As mentioned in STT046, this should probably be a "limited
 private with P.Priv;" if it is needed at all.
 !Action Taken:Removed limited with.
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT049
@@ -629,13 +629,14 @@ private with P.Priv;" if it is needed at all.
 !Description: Procedure Init_B1 should be indented relative to its
 enclosing package Inner.
 !Action Taken: Indentation corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: STT050
 !Location: 7.2.5 73/9:
 !Description: "* No other global_items ... in the [a] Refined_Global
 aspect ..."
 !Action Taken: Replaced as suggested.
+AH action not completed.
 !Checked By:
 
 !Label: STT051
@@ -646,7 +647,7 @@ the original Global mode was In_Out (rather than simply saying "When all
 of these conditions are satisfied" perhaps say "For this special case of
 Global mode In_Out ...").
 !Action Taken:Update along the lines suggested.
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT052
@@ -655,7 +656,7 @@ Global mode In_Out ...").
 "Outputs in the [a] Refined_Depends aspect ..."
 "Inputs in an input_list {shall} denote distinct entities."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT053
 !Location: 7.2.8 76/2:
@@ -667,13 +668,13 @@ expression of an expression function" is a bit confusing, and perhaps
 should be more explicit. Note that the statement in 1.9.4 should
 probably be repeated in section 6.1.1 (and rephrased as appropriate).
 !Action Taken:Updated 1.9.4 text again and noted same in 6.1.1 and made default Refined_Post explicit.
-!Checked By:
+!Checked By: AH
 
 !Label: STT054
 !Location: 7.2.9 76/9:
 !Description: "1. A[n] state abstraction ..."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT055
 !Location: 7.2.9 76/13:
@@ -681,7 +682,7 @@ probably be repeated in section 6.1.1 (and rephrased as appropriate).
 just External state, referred to as a *plain External state* [and] {,}
 may have constituents ..."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT056
@@ -690,7 +691,7 @@ may have constituents ..."
 Externals.{Temperature, Pressure, Main_Display, Secondary_Display}"
 according to 7.2.3?
 !Action Taken:Corrected example.
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT057
@@ -699,7 +700,7 @@ according to 7.2.3?
 "procedure Display ... with Global => {(}Displays {=> Output)}"
 Displays is Output_Only, so it needs to be used as an output.
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT058
 !Location: 7.2.9 77/4:
@@ -707,21 +708,21 @@ Displays is Output_Only, so it needs to be used as an output.
 Typo in the comment:
 "-- be In_Out and it is both {input} and an output. ...."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT059
 !Location: 7.2.9 77/6-78/3:
 !Description: Why do we have "limited with Externals"?  These are
 children of Externals, so the "limited with" is redundant.
 !Action Taken:Corrected example.
-!Checked By:
+!Checked By: AH
 
 !Label: STT060
 !Location: 7.7 81/9:
 !Description: Static Semantics rule 3 seems to be a legality rule, while
 Legality Rule 1 seems to be a Static Semantics rule.
 !Action Taken:I have moved Static semantic rule 3 as the first legatity rule.  I have left the original legality rule 1 as as a second legality rule.  It would require some rewording to make this legality rule a semantic rule.  As it is it needs to follow what was semantic rule 3.  I think it is reasonable to leave the original legality rule 1 as a legality rule as it defines how the early call region is determined.
-!Checked By:
+!Checked By: AH
 
 !Label: STT061
 !Location: 7.7 83/2:
@@ -730,6 +731,7 @@ must meet the same restrictions as would be required for a call to each
 of tis overriding primitive operations"?  I can't quite imagine how that
 works.
 !Action: Updated by SBB.
+TJJ to review
 !Checked By:
 
 !Label: STT062
@@ -739,7 +741,7 @@ lrm to the GNAT Pro user's guide.  Why don't we just incorporate the
 rules rather than reference them (we could add a NOTE to say where the
 rules came from)?
 !Action Taken:Done as suggested.
-!Checked By:
+!Checked By: AH
 
 
 !Label: STT063
@@ -747,7 +749,7 @@ rules came from)?
 !Description: "... The implicit write associated with a read of [an]
 external input{-}only state is permitted..."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: STT064
 !Location: 7.7.1 85/(last):
@@ -762,7 +764,7 @@ constituents of a state abstraction.
 !Description: Poor grammar in the first sentence, the use of "which"
 seems clumsy.
 !Action Taken: Sentence has now been rephrased.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/2
 !Location: 1.9.7 Final sentence
@@ -831,7 +833,7 @@ subheading in sections where High-Level Requirements had been removed,
 but this has not been applied consistently, see eg. 6.1.3, 6.1.4, 6.1.5,
 6.1.6.
 !Action Taken:Done
-!Checked By:
+!Checked By: AH
 
 
 !Label: SBB_01
@@ -844,7 +846,7 @@ In
     -- Steve
 
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 
 !Label: SBB_02
@@ -858,7 +860,7 @@ We've got:
 I think that was supposed to be parenthesized and tacked onto the end of
 the preceding sentence as a modifier.
 !Action Taken:Done
-!Checked By:
+!Checked By: AH
 
 !Label: SBB_03
 !Location: NA
@@ -867,7 +869,7 @@ Typo in the following sentence:
 if If it is a volatile variable it has to be specified as an an input
 only or an output only external state.
 !Action Taken: Corrected.
-!Checked By:
+!Checked By: AH
 
 
 !Label: SBB_04
@@ -876,7 +878,7 @@ only or an output only external state.
 Typo in the following:
     specification of the outer subprogram has an entity deonted by a
 !Action Taken: Corrected.
-!Checked By:
+!Checked By: AH
 
 
 !Label: SBB_05
@@ -925,7 +927,7 @@ I have also updated the text for Refined_Depends as this was worded similarly:
    visible part of an enclosing package and the declaration has a 
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
-!Checked By:
+!Checked By: AH
 
 !Label: SBB_06
 !Location: source/packages.rst
@@ -1045,7 +1047,7 @@ Assertion policy is an Ada term which applies to all types of assertions
 (which includes pre and post conditions).  I have tried to make this
 clearer by adding the following note after assertion policy: [controlled
 by the Ada Assertion_Policy pragma].
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/10
 !Location: 5.5.3
@@ -1210,7 +1212,7 @@ Page/Para: page 49, legality rules 3 and 4
 !Description: Mandatory: the restriction of the formal parameter to a
 non-scalar seems contrary to the examples on page 50.
 !Action Taken: Yes the examples were not updated properly - now corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/27
 !Location: 7.1.4
@@ -1258,14 +1260,14 @@ Page/Para: page 56, para 1
 !Description: Desirable: final sentence is hard to read. Could this be
 split into two distinct statements.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/32
 !Location: 7.2.1
 Page/Para: page 57, para 1
 !Description: Typo : has -> have
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/33
 !Location: 7.2.3
@@ -1312,7 +1314,7 @@ Page/Para: page 64, Legality rule 2, final bullet
 its own right. It is applicable more widely than to the remainder of
 this bullet point.
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/39
 !Location: 7.2.6
@@ -1333,7 +1335,7 @@ input list refinement, this is not necessarily the case.
 be interpreted as not including the first refined input list, ie the one
 that is not "extra".
 !Action Taken: Rewording attempted.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/41
 !Location: 7.2.7
@@ -1469,7 +1471,7 @@ is located in
 AH: most readers of this document will not have access to the
 repository. We need to come up with another solution. I suggest we just
 delete this sentence.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/11
 !Location: A.2.3
@@ -1511,4 +1513,8 @@ the syntax should be fully defined now.
 reference their relevant TN's (if possible).
 !Checked By: AH
 
-
+!Label: AH/16
+!Location: 7.2.3
+!Description: Typo "both and input and and output"
+!Action Taken:
+!Checked By:
