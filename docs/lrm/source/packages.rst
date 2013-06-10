@@ -994,7 +994,7 @@ is part of and a state abstraction always knows all of its constituents.
 
 .. centered:: **Legality Rules**
 
-#. Every private unit and each of its descendants, P, that have visible state
+#. Every private unit and each of its descendants, that have visible state
    shall for each declaration in the visible state:
 
    * connect the declaration to an encapsulating state abstraction by
@@ -1008,11 +1008,28 @@ is part of and a state abstraction always knows all of its constituents.
    is declared and its encapsulating state is noted by any tool analyzing
    SPARK 2014.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR private units and their descendants must connect
+                   their visible states, via Part_Of indicators, to
+                   encapsulating state abstractions of more visible units
+
 #. Each item of hidden state declared in the private part of a unit shall have
    a Part_Of indicator associated with the declaration which shall denote an
    encapsulating state abstraction of the same unit.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR hidden state declared in private part of
+                   a unit must be associated, via a Part_Of indicator, to
+                   an encapsulating state abstraction of the same unit
+
 #. No other declarations shall have a Part_Of indicator.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR Part_Of only applies on hidden state and
+                   private units
 
 #. The body of a unit whose specification declares a state abstraction named
    as an encapsulating state abstraction of a Part_Of indicator shall:
@@ -1028,12 +1045,25 @@ is part of and a state abstraction always knows all of its constituents.
    been declared and their encapsulating state have been noted as described
    previously and these records are used to check this rule.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR unit bodies must with other units that denote
+                   their abstract states in their Part_Of indicators and
+                   each declaration associated with a Part_Of indicator must
+                   be a constituent of the encapsulating state abstraction
+
 #. If both a state abstraction and one or more of its ``constituents`` are
    visible in a private package specification or in the package specification of
    a non-private descendant of a private package, then either the state
    abstraction or its ``constituents`` may be denoted but not within the same
-   Global aspect or Depends aspect.  The denotation must also be consistent
+   Global aspect or Depends aspect. The denotation must also be consistent
    between the Global and Depends aspects of a subprogram.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR if both an abstraction and its constituents are
+                   visible then Global and Depends aspects shall consistently
+                   denote one of them
 
 #. In a public package specification entities that are Part_Of an
    encapsulating state abstraction shall not be denoted; such entities
@@ -1042,17 +1072,34 @@ is part of and a state abstraction always knows all of its constituents.
    [This rule is applied recursively, if an entity is Part_Of a state
    abstraction which itself a Part_Of another encapsulating state
    abstraction, then it must be represented by the encapsulating state
-   abstraction].  The exclusion to this rule is that for private parts
+   abstraction]. The exclusion to this rule is that for private parts
    of a package given below.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR entities in public package specifications that
+                   are Part_Of encapsulating states must not be denoted
 
 #. In the private part of a package a state abstraction declared by the
    package shall not be denoted other than for specifying it as the
    encapsulating state in the Part_Of indicator. The state abstraction's
    ``constituents`` declared in the private part shall be denoted.
 
-#. In the body of a package a state abstraction whose refinement is visible,
-   the state abstraction shall not be denoted except as an encapsulating state
-   in a Part_Of indicator, only its ``constituents`` maybe denoted.
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR a package's state abstraction cannot be denoted
+                   in its private part except for specifying a Part_Of
+                   indicator
+
+#. In the body of a package, a state abstraction whose refinement is visible
+   shall not be denoted except as an encapsulating state in a Part_Of indicator.
+   Only its ``constituents`` maybe denoted.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR when the refinement is visible, the state
+                   abstraction cannot be denoted except as an encapsulating
+                   state in a Part_Of indicator
 
 #. Within a package body where a state abstraction is visible, its
    refinement is not visible, but one or more of its ``constituents``
@@ -1067,6 +1114,13 @@ is part of and a state abstraction always knows all of its constituents.
      refined into its constituents in a Refined_Global or
      Refined_Depends aspect [because the refinement of the state
      abstraction is not visible].
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 LR in a package body, when a state abstraction
+                   and some of its constituents are visible but the refinement
+                   is not then both the Global and Depends aspects have to
+                   consistently mention either of the two
 
 .. centered:: *Verification Rules*
 
@@ -1100,7 +1154,6 @@ is part of and a state abstraction always knows all of its constituents.
 .. centered:: **Examples**
 
 .. code-block:: ada
-
 
     package P
        -- P has no state abstraction
