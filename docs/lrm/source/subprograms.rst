@@ -352,7 +352,7 @@ There are no dynamic semantics associated with a Global aspect.
    subprogram if and only if it denotes an entity that is referenced by the
    subprogram.
 
-#. Each entity denoted by a ``global_item`` in a ``global_specification``  of a
+#. Each entity denoted by a ``global_item`` in a ``global_specification`` of a
    subprogram that is an input or output of the subprogram shall satisfy the
    following mode specification rules [which are checked during analysis of the
    subprogram body]:
@@ -366,6 +366,15 @@ There are no dynamic semantics associated with a Global aspect.
 
    * otherwise the ``global_item`` denotes both an input and an output, is
      has a ``mode_selector`` of In_Out.
+
+For purposes of determining whether an output of a subprogram shall have a
+``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
+or tags of any part of the output are ignored. Similarly, for purposes of
+determining whether an entity is "fully initialized as a result of any
+successful execution of the call", only nondiscriminant parts are considered.
+[This implies that given an output of a discriminated type that is not known
+to be constrained ("known to be constrained" is defined in Ada RM 3.3),
+the discriminants of the output might or might not be updated by the call.]
 
 #. An entity that is denoted by a ``global_item`` which is referenced by a
    subprogram but is neither an input nor an output but is only referenced
@@ -479,11 +488,24 @@ where
    state abstraction whose refinement is visible [a state abstraction cannot be
    named within its enclosing package's body other than in its refinement].
 
-#. The *input set* of a subprogram is the set of formal parameters of the
-   subprogram of mode **in** and **in out** along with the entities denoted by
-   ``global_items`` of the Global aspect of the subprogram with a
+#. The *explicit input set* of a subprogram is the set of formal parameters of
+   the subprogram of mode **in** and **in out** along with the entities denoted
+   by ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of Input and In_Out.
 
+#. The *input set* of a subprogram is the *explicit input set* of the
+   subprogram augmented with those formal parameters of mode **out**
+   having discriminants, array bounds, or a tag which can be read and
+   whose values are not implied by the subtype of the parameter.
+   More specifically, it includes formal parameters of mode **out** which are
+   of an unconstrained array subtype, an unconstrained discriminated subtype,
+   a tagged type, or a type having a subcomponent of an unconstrained
+   discriminated subtype. [Tagged types are mentioned in this rule in
+   anticipation of a later version of ||SPARK|| in which the current
+   restriction on uses of the 'Class attribute is relaxed; currently
+   there is no way to read or otherwise depend on the underlying tag of an
+   **out** mode formal parameter of a tagged type.]
+   
 #. The *output set* of a subprogram is the set of formal parameters of the
    subprogram of mode **in out** and **out** along with the entities denoted by
    ``global_items`` of the Global aspect of the subprogram with a
@@ -493,8 +515,8 @@ where
 #. The entity denoted by each ``input`` of a ``dependency_relation`` of a
    subprogram shall be a member of the input set of the subprogram.
 
-#. Every member of the input set of a subprogram shall be denoted by at least
-   one ``input`` of the ``dependency_relation`` of the subprogram.
+#. Every member of the explicit input set of a subprogram shall be denoted by
+   at least   one ``input`` of the ``dependency_relation`` of the subprogram.
 
 #. The entity denoted by each ``output`` of a ``dependency_relation`` of a
    subprogram shall be a member of the output set of the subprogram.
@@ -823,6 +845,14 @@ No extensions or restrictions.
    Similarly an Ada formal parameter may have mode in out but not be an input.
    In flow analysis it would be regarded as an input and give rise to
    flow errors.
+
+   In deciding whether a parameter is only partially updated, discriminants
+   (including discriminants of subcomponents) are ignored. For example,
+   given an *out* mode parameter of a type with defaulted discriminants,
+   a subprogram might or might not modify those discriminants (if it does,
+   there will of course be an associated proof obligation to show that the
+   parameter's 'Constrained attribute is False in that path).
+
    Perhaps we need an aspect to describe the strict view of a parameter
    if it is different from the specified Ada mode of the formal parameter?
    To be completed in the Milestone 3 version of this document.
