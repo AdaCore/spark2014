@@ -1646,13 +1646,17 @@ package body SPARK_Definition is
          --  marked here.
 
          when Private_Kind =>
+
             --  The underlying type of a private type in a formal container
             --  should not be analyzed.
+
             if Type_In_Formal_Container (E) then
                All_Entities.Insert (Underlying_Type (E));
             elsif Type_Based_On_Formal_Container (E) then
+
                --  The a private type based on a formal container should be in
                --  SPARK.
+
                All_Entities.Insert (Underlying_Type (E));
                Entities_In_SPARK.Include (Underlying_Type (E));
                Append_Entity_To_List (Underlying_Type (E));

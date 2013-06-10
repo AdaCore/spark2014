@@ -371,14 +371,17 @@ package body Gnat2Why.Decls is
             Theory_Name : constant String := Full_Name (E);
             TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
          begin
+
             --  If no theory is needed for Node or if the copy was already in
             --  the appropriate file, there is nothing to do
+
             if not Entity_In_SPARK (E) or else TFile.Name.all = File_Name then
                return;
             end if;
 
             --  Adds a new theory to the appropriate file, containing only a
             --  use export of the theory to be copied
+
             Open_Theory
               (TFile, Theory_Name,
                Comment => "Module for axiomatizing "
@@ -401,6 +404,7 @@ package body Gnat2Why.Decls is
 
          --  Call Parse_Declaration on every element of the list of
          --  declarations that needs a translation.
+
          while Present (Cur) loop
             if Comes_From_Source (Cur) and then
               Nkind (Cur) in N_Subtype_Declaration | N_Private_Type_Declaration
@@ -457,6 +461,7 @@ package body Gnat2Why.Decls is
          --  are used to translate to and from type Base_Type_Name and
          --  the predicate In_Range_Name asserts that an element of type
          --  Base_Type_Name can be translated back to the range type.
+
          Base_Type_Name : constant String := "base_type";
          To_Base_Name   : constant String := "to_base";
          Of_Base_Name   : constant String := "of_base";
@@ -484,6 +489,7 @@ package body Gnat2Why.Decls is
                --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
                --  by: use ("<Actual_File>".)Name_Of_Node (Actual)
                --  No use is generated if Actual doesn't have a unique name
+
                if Full_Name_Is_Not_Unique_Name (Actual) then
                   Reps (Current) := New_Custom_Substitution
                     (Domain   => EW_Prog,
@@ -517,6 +523,7 @@ package body Gnat2Why.Decls is
 
                --  For type parameters, generate a theory that renames the
                --  theory of the actual. Necessary for conversion functions.
+
                if Ekind (Formal) in Type_Kind then
                   Open_Theory
                     (TFile, Capitalize_First (Instance_Name) & "__"
@@ -534,6 +541,7 @@ package body Gnat2Why.Decls is
 
                --  For types, replace: <Generic_Name>__<Formal>.<Formal>
                --  by: Why_Logic_Type_Of_Ada_Type (Actual)
+
                if Ekind (Formal) in Type_Kind then
                   Reps (Current) := New_Custom_Substitution
                     (Domain   => EW_Prog,
@@ -546,6 +554,7 @@ package body Gnat2Why.Decls is
                   --  If the formal has a private kind, Base_Type_Name,
                   --  To_Base_Name, Of_Base_Name, and In_Range_Name must be
                   --  replaced appropriately
+
                   if Ekind (Formal) in Private_Kind then
                      declare
                         Actual_Type : constant W_Primitive_Type_OId :=
@@ -570,6 +579,7 @@ package body Gnat2Why.Decls is
                         --  <Generic_Name>__<To_Base_Name>   =>
                         --  <Generic_Name>__<Of_Base_Name>   =>
                         --  <Generic_Name>__<In_Range_Name>  => __ignore
+
                         if Is_Scalar_Type (Actual) and then
                           not Is_Boolean_Type (Actual) then
                            Reps (Current + 1) := New_Custom_Substitution
@@ -645,6 +655,7 @@ package body Gnat2Why.Decls is
                      --  inside the axiomatization.
                      --  Replace: <Generic_Name>__<Formal>.
                      --  by: Name_Of_Node (Actual).
+
                      Reps (Current + 1) := New_Custom_Substitution
                        (Domain   => EW_Prog,
                         From     => NID (Capitalize_First (Generic_Name)
@@ -658,6 +669,7 @@ package body Gnat2Why.Decls is
                   --  For functions and objects,
                   --  replace: <Generic_Name>__<Formal>.<Formal>
                   --  by: To_Why_Id (Actual)
+
                else
                   Reps (Current) := New_Custom_Substitution
                     (Domain   => EW_Prog,
@@ -676,6 +688,7 @@ package body Gnat2Why.Decls is
          --  A last substitution is needed to rename every module in the copy
          --  so that there is no name clash.
          --  Replace: <Generic_Name>__ by: <Instance_Name>__
+
          Reps (Current) := New_Custom_Substitution
            (Domain   => EW_Prog,
             From     => NID (Capitalize_First (Generic_Name) & "__"),
@@ -701,6 +714,7 @@ package body Gnat2Why.Decls is
               (Get_Package_Instantiation_Node (Package_Entity));
 
             --  use Parent field to reach N_Generic_Package_Declaration
+
             Labs : constant List_Id :=
               Generic_Formal_Declarations (Parent (Parent (Parent (G_Node))));
          begin
