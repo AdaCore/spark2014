@@ -26,7 +26,7 @@ Selected Components
 ~~~~~~~~~~~~~~~~~~~
 
 Some constructs which would unconditionally raise an exception at
-run-time in Ada are rejected as illegal in |SPARK| if this property
+run time in Ada are rejected as illegal in |SPARK| if this property
 can be determined prior to formal program verification.
 
 In particular, if the prefix of a
@@ -48,16 +48,16 @@ The ``attribute_designator`` Access is not allowed in |SPARK|.
       ``X'Valid_Scalars`` is defined in |SPARK|.
       This Boolean-valued attribute is equal to the conjunction of
       the ``Valid`` attributes of all of the scalar parts of X.
-      
+
       [If X has no volatile parts, ``X'Valid_Scalars`` implies that each scalar
       subcomponent of X has a value belonging to its subtype. Unlike the
       Ada-defined ``Valid`` attribute, the ``Valid_Scalars`` attribute is
       defined for all objects, not just scalar objects.]
-      
+
       Perhaps we should list which ones are supported in an appendix?
       Or should they be part of the main language definition?
-      
-      It would be possible to use such attributes in assertion expressions but 
+
+      It would be possible to use such attributes in assertion expressions but
       not generally in Ada code in a non-Gnat compiler.
 
       To be completed in the Milestone 3 version of this document.
@@ -88,7 +88,7 @@ Aggregates
 
 .. centered:: **Legality Rules**
 
-The box symbol, <>, may only be used in an aggregate if the type(s) of the 
+The box symbol, <>, may only be used in an aggregate if the type(s) of the
 corresponding component(s) define full default initialization.
 
 [The box symbol cannot be used in an aggregate to produce an uninitialized
@@ -242,7 +242,7 @@ for which the order of component updates is unspecified.
 Expressions
 -----------
 
-An expression is said to be *side-effect* free if the evaluation of the 
+An expression is said to be *side-effect free* if the evaluation of the
 expression does not update any object.  The evaluation of an expression
 free from side-effects only retrieves or computes a value.
 
@@ -313,4 +313,3 @@ Static Expressions and Static Subtypes
 --------------------------------------
 
 No extensions or restrictions.
-

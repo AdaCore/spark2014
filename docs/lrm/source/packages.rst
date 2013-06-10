@@ -697,7 +697,7 @@ subprogram in the package body whose visible part declares its abstract view.
 
 In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
-refinements of state abstractions declared by the package. Refined Global,
+refinements of state abstractions declared by the package. Refined_Global,
 Depends, Pre and Post aspects are provided to express the contracts of a refined
 view of a subprogram.
 
@@ -1108,7 +1108,7 @@ is part of and a state abstraction always knows all of its constituents.
          with Refined_State => (B1 => null)  -- Oh, there isn't any state after all
       is
          procedure Init_B1
-            with Refined_Global  => null,  -- Refined Globals and Depends of a null refinement
+            with Refined_Global  => null,  -- Refined_Global and Refined_Depends of a null refinement
                  Refined_Depends => null
          is
          begin
@@ -1116,7 +1116,7 @@ is part of and a state abstraction always knows all of its constituents.
          end Init_B1;
 
          procedure Init_A2
-            -- Refined Global and Depends aspects not required
+            -- Refined_Global and Refined_Depends aspects not required
             -- because there is no refinement of Outer.Hidden_State.
          is
          begin
@@ -1253,18 +1253,18 @@ which reside in another package, initialization by their declaring package.
 
 .. _refined-global-aspect:
 
-Refined Global Aspect
+Refined_Global Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
-A subprogram declared in the visible part of a package may have a Refined Global
-aspect applied to its body or body stub. A Refined Global aspect of a subprogram
+A subprogram declared in the visible part of a package may have a Refined_Global
+aspect applied to its body or body stub. A Refined_Global aspect of a subprogram
 defines a *refinement* of the Global Aspect of the subprogram; that is, the
-Refined Global aspect repeats the Global aspect of the subprogram except that
+Refined_Global aspect repeats the Global aspect of the subprogram except that
 references to state abstractions whose refinements that are visible at the point
 of the subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
-The Refined Global aspect is introduced by an ``aspect_specification`` where
+The Refined_Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
 shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
@@ -1346,7 +1346,7 @@ The static semantics are equivalent to those given for the Global aspect in
 
 .. centered:: **Verification Rules**
 
-#. If a subprogram has a Refined Global Aspect it is used in the analysis of the
+#. If a subprogram has a Refined_Global aspect it is used in the analysis of the
    subprogram body rather than its Global Aspect.
 
 #. The verification rules given for :ref:`global-aspects` also apply.
@@ -1357,18 +1357,18 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 
 .. _refined-depends-aspect:
 
-Refined Depends Aspect
+Refined_Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~
 
 A subprogram declared in the visible part of a package may have a Refined
-Depends aspect applied to its body or body stub. A Refined Depends aspect of a
+Depends aspect applied to its body or body stub. A Refined_Depends aspect of a
 subprogram defines a *refinement* of the Depends aspect of the subprogram; that
-is, the Refined Depends aspect repeats the Depends aspect of the subprogram
+is, the Refined_Depends aspect repeats the Depends aspect of the subprogram
 except that references to state abstractions whose refinements are visible at
 the point of the subprogram_body are replaced with references to [some or all of
 the] constituents of those abstractions.
 
-The Refined Depends aspect is introduced by an ``aspect_specification`` where
+The Refined_Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
 shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 
@@ -1469,7 +1469,7 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 .. centered:: **Verification Rules**
 
-#. If a subprogram has a Refined Depends Aspect it is used in the analysis of
+#. If a subprogram has a Refined_Depends aspect it is used in the analysis of
    the subprogram body rather than its Depends Aspect.
 
 #. The verification rules given for :ref:`depends-aspects` also apply.
@@ -1682,7 +1682,7 @@ abstraction on to external states which are given in this section.
          with Global => Complex_Device;  -- Complex_Device is a Plain External
                                          -- state.  It can be an Input and
                                          -- be a global to a function provided
-                                         -- the Refined Global aspect only
+                                         -- the Refined_Global aspect only
                                          -- refers to non-volatile or non-external
                                          -- constituents.
 

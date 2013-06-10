@@ -24,7 +24,7 @@ are presented in Global aspects (see :ref:`global-aspects`).
 
 An *entire object* is an object which is not a subcomponent of a larger
 containing object.  More specifically, an *entire object* is
-an object declared by an object_declaration (as opposed to, for example,
+an object declared by an ``object_declaration`` (as opposed to, for example,
 a slice or the result object of a function call) or a formal parameter of
 a subprogram.
 
@@ -50,7 +50,7 @@ a subprogram.
 
 #. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
-   a subprogram_body for a function for which no explicit declaration
+   a ``subprogram_body`` for a function for which no explicit declaration
    is given.
 
 Preconditions and Postconditions
@@ -98,7 +98,7 @@ Contract_Case aspect may be the keyword **others** which means that, in a
 specific call to the subprogram, if all the ``conditions`` are False this
 ``contract_case`` is taken. If an **others** ``contract_case`` is not specified,
 then in a specific call of the subprogram exactly one of the guarding
-``conditions`` should be True
+``conditions`` should be True.
 
 A Contract_Cases aspect may be used in conjunction with the
 language-defined aspects Pre and Post in which case the precondition
@@ -234,9 +234,9 @@ are used or affected by a call of the subprogram.
 The Global aspect may only be specified for the initial declaration of a
 subprogram (which may be a declaration, a body or a body stub).
 The implementation of a subprogram body must be consistent with the
-subprogram's Global Aspect.
+subprogram's Global aspect.
 
-Note that a Refined Global aspect may be applied to a subprogram body when
+Note that a Refined_Global aspect may be applied to a subprogram body when
 using state abstraction; see section :ref:`refined-global-aspect` for further
 details.
 
@@ -428,7 +428,7 @@ subprogram (which may be a declaration, a body or a body stub).
 The implementation of a subprogram body must be consistent with the
 subprogram's Depends Aspect.
 
-Note that a Refined Depends aspect may be applied to a subprogram body when
+Note that a Refined_Depends aspect may be applied to a subprogram body when
 using state abstraction; see section :ref:`refined-depends-aspect` for further
 details.
 
@@ -913,7 +913,7 @@ No extra dynamic semantics are associated with anti-aliasing.
    denotes an object which overlaps a ``global_item`` of mode
    **out** or **in out** of the subprogram, unless the corresponding formal
    parameter is of mode **in** and by-copy.
-   
+
 #. Where one of these rules prohibits the occurrence of an object V or any of its subcomponents
    as an actual parameter, the following constructs are also prohibited in this context:
 
