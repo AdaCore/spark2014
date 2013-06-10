@@ -225,8 +225,8 @@ where
 
 .. _global-aspects:
 
-Global Aspects
-~~~~~~~~~~~~~~
+Global Aspect
+~~~~~~~~~~~~~
 
 A Global aspect of a subprogram lists the global items whose values
 are used or affected by a call of the subprogram.
@@ -256,10 +256,7 @@ follow the grammar of ``global_specification``
                                  | (global_item {, global_item})
    mode_selector               ::= Input | Output | In_Out | Proof_In
    global_item                 ::= name
-
-where
- ``null_global_specification`` ::= **null**
-
+   null_global_specification   ::= null
 
 .. ifconfig:: Display_Trace_Units
 
@@ -325,7 +322,7 @@ where
       :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once
 
 #. A function subprogram shall not have a ``mode_selector`` of
-   ``Output`` or ``In_Out`` in its Global aspect.
+   Output or In_Out in its Global aspect.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -422,8 +419,8 @@ the discriminants of the output might or might not be updated by the call.]
 
 .. _depends-aspects:
 
-Depends Aspects
-~~~~~~~~~~~~~~~
+Depends Aspect
+~~~~~~~~~~~~~~
 
 A Depends aspect defines a *dependency relation* for a
 subprogram which may be given in the ``aspect_specification`` of the
@@ -431,14 +428,14 @@ subprogram.  The dependency relation is used in information flow
 analysis.
 
 A Depends aspect for a subprogram specifies for each output every input on
-which it depends. The meaning of X depends on Y in this context is that the
+which it depends. The meaning of *X depends on Y* in this context is that the
 exit value of output, X, on the completion of the subprogram is at least partly
-determined from the entry value of input, Y and is written X => Y. As in UML,
-the entity at the tail of the arrow depends on the entity at the head of the
-arrow.
+determined from the entry value of input, *Y* and is written *X => Y*. As in
+UML, the entity at the tail of the arrow depends on the entity at the head of
+the arrow.
 
 If an output does not depend on any input this is indicated
-using a **null**, e.g., X => **null**.  An output may be
+using a **null**, e.g., *X =>* **null**.  An output may be
 self-dependent but not dependent on any other input.  The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
 
@@ -744,18 +741,18 @@ semantics (when viewed as an Ada program) should be unaffected by this
 transformation other than evaluating fewer known to be true assertion
 expressions.
 
-The rules below are in given in general terms in relation to ''ghost entities''
+The rules below are in given in general terms in relation to "ghost entities"
 since in future it is intended that ghost types and ghost variables
 will be allowed. Currently, however, only ghost functions are allowed
 and so an additional legality rule is provided that allows only
 functions to be explicitly declared as a ghost (though entities declared within
-a ghost function are regarded implicitly as ghost entities) . When the full scope of ghost
+a ghost function are regarded implicitly as ghost entities). When the full scope of ghost
 entities is allowed, the rules given in this section may be moved to
 other sections as appropriate, since they will refer to more than just subprograms.
 
 .. centered:: **Static Semantics**
 
-|SPARK| defines the convention_identifier Ghost.
+|SPARK| defines the ``convention_identifier`` Ghost.
 An entity (e.g., a subprogram or an object) whose Convention aspect
 is specified to have the value Ghost is said to be a ghost
 entity (e.g., a ghost function or a ghost variable).

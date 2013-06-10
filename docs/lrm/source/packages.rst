@@ -22,10 +22,10 @@ Abstraction of State
 The variables declared within a package but not within a subprogram body or
 block which does not also enclose the given package constitute the *persistent
 state* of the package. A package's persistent state is divided into *visible
-state* and *hidden state*. If a declaration that is part a package's persistent
-state is visible outside of the package, then it is a constituent of the
-package's visible state; otherwise it is a constituent of the package's hidden
-state.
+state* and *hidden state*. If a declaration that is part of a package's
+persistent state is visible outside of the package, then it is a constituent of
+the package's visible state; otherwise it is a constituent of the package's
+hidden state.
 
 Though the variables may be hidden they still form part (or all) of the
 persistent state of the package and the hidden state cannot be ignored for flow
@@ -45,13 +45,13 @@ themselves records.
 
 #. The visible state of a package P consists of:
 
-   * any variables declared in immediately within the visible part of
+   * any variables declared immediately within the visible part of
      package P; and
 
-   * the state abstractions declared by the Abstract State aspect specification
+   * the state abstractions declared by the Abstract_State aspect specification
      (if any) of package P; and
 
-   * the visible state any packages declared immediately within the visible part
+   * the visible state of any packages declared immediately within the visible part
      of package P.
 
 
@@ -102,11 +102,11 @@ state abstractions.
 
 .. centered:: **Legality Rules**
 
-#. External state which is specified as Input_Only shall not be denoted in a
+#. External state which is specified as input only shall not be denoted in a
    Global aspect with a ``mode_selector`` of In_Out or Output. Nor shall it be
    denoted as an ``output`` of a Depends aspect.
 
-#. External state which is specified as Output_Only shall not be denoted in
+#. External state which is specified as output only shall not be denoted in
    a Global aspect with a ``mode_selector`` of Input or In_Out. Nor shall not be
    denoted as an ``input`` of a Depends aspect.
 
@@ -162,10 +162,10 @@ this specification.
    side effects. To reconcile this discrepancy, a name denoting an external
    input shall only occur in the following contexts:
 
-   * as the [right hand side] expression of an assignment statement;
+   * as the [right hand side] expression of an assignment statement; or
 
    * as the expression of an initialization expression of an object declaration
-     that is not specified as volatile;
+     that is not specified as volatile; or
 
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
@@ -259,7 +259,7 @@ There are no dynamic semantics associated with these aspects.
 
 .. _abstract-state-aspect:
 
-Abstract State Aspect
+Abstract_State Aspect
 ~~~~~~~~~~~~~~~~~~~~~
 
 State abstraction provides a mechanism for naming, in a package’s visible part,
@@ -293,7 +293,7 @@ private sibling units and descendants thereof. Each visible state abstraction or
 variable of a private child or descendant thereof has to be specified as being
 *part of* a state abstraction of a unit which is more visible than itself.
 
-The Abstract State aspect is introduced by an ``aspect_specification``
+The Abstract_State aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the ``aspect_definition``
 shall follow the grammar of ``abstract_state_list`` given below.
 
@@ -348,7 +348,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
                    in the list
 
 #. A ``package_declaration`` or ``generic_package_declaration`` shall have a
-   completion [(a body)] if it contains a non-null Abstract State aspect
+   completion [(a body)] if it contains a non-null Abstract_State aspect
    specification.
 
    .. ifconfig:: Display_Trace_Units
@@ -930,7 +930,7 @@ There are no dynamic semantics associated with state abstraction and refinement.
 
 .. _package_hierarchy:
 
-Abstract State, Package Hierarchy and Part_Of
+Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each item of visible state of a private library unit (and any descendants
