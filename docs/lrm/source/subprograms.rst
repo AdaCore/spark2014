@@ -284,6 +284,9 @@ where
 #. A ``null_global_specification`` indicates that the subprogram does not
    reference any ``global_item`` directly or indirectly.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 SS no global_item referenced when null_global_specification
 
 .. centered:: **Name Resolution Rules**
 
@@ -293,11 +296,18 @@ where
    denote a state abstraction even if a function having the same fully qualified
    name is also present].
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: NRR global_item shall denote entire object
+
 .. centered:: **Legality Rules**
 
 #. The Global aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 LR
 
 #. A ``global_item`` shall not denote a state abstraction whose refinement
    is visible [(a state abstraction cannot be named within its enclosing
@@ -305,42 +315,47 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_item shall denote an entire entity
+      :Trace Unit: 6.1.4 LR global_item shall not denote state abstraction with visible refinement
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once in a single Global aspect
+      :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once
 
 #. A function subprogram shall not have a ``mode_selector`` of
    ``Output`` or ``In_Out`` in its Global aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR Functions cannot have Output or In_Out as mode_selector
+      :Trace Unit: 6.1.4 LR functions cannot have Output or In_Out as mode_selector
 
 #. The ``global_items`` in a single Global aspect specification shall denote
    distinct entities.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_items shall denote distinct objects or state abstractions.
+      :Trace Unit: 6.1.4 LR global_items shall denote distinct entities
 
 #. A ``global_item`` occurring in a Global aspect specification of a subprogram
    shall not denote a formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR a global_item of a subprogram shall not be a
-        formal parameter of the same subprogram.
+      :Trace Unit: 6.1.4 LR global_item shall not denote formal parameter
 
 #. If a subprogram is nested within another and if the ``global_specification``
    of the outer subprogram has an entity denoted by a ``global_item`` with a
    ``mode_specification`` of Input, then a ``global_item`` of the
    ``global_specification`` of the inner subprogram shall not denote the same
    entity with a ``mode_selector`` of In_Out or Output.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 LR nested subprograms cannot have mode_specification
+                   of In_Out or Output if enclosing subprogram's mode_specification
+                   is Input
 
 .. centered:: **Dynamic Semantics**
 
@@ -473,25 +488,44 @@ where
 
 .. centered:: **Name Resolution Rules**
 
-#. An ``input`` or ``output`` of a ``dependency_relation`` of may denote only
+#. An ``input`` or ``output`` of a ``dependency_relation`` shall denote only
    an entire variable or a state abstraction. [This is a name resolution rule
    because an ``input`` or ``output`` can unambiguously denote a state
    abstraction even if a function having the same fully qualified name is also
    present.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 NRR input or outputs of a dependency_relation shall denote
+                   entire variable or state abstraction
+
 .. centered:: **Legality Rules**
 
-#. The Depends aspect may only be specified for the initial declaration of a
+#. The Depends aspect shall only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR Depends aspect shall be on subprogram's declaration
 
 #. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
    named within its enclosing package's body other than in its refinement].
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR dependency_relation shall not denote a state
+                   abstraction with visible refinement
+
 #. The *explicit input set* of a subprogram is the set of formal parameters of
    the subprogram of mode **in** and **in out** along with the entities denoted
    by ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of Input and In_Out.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR The input set consists of formal parameters of mode "in"
+                   and "in out" and global_items with mode_selector Input or In_Out
 
 #. The *input set* of a subprogram is the *explicit input set* of the
    subprogram augmented with those formal parameters of mode **out**
@@ -505,37 +539,63 @@ where
    restriction on uses of the 'Class attribute is relaxed; currently
    there is no way to read or otherwise depend on the underlying tag of an
    **out** mode formal parameter of a tagged type.]
-   
+
 #. The *output set* of a subprogram is the set of formal parameters of the
    subprogram of mode **in out** and **out** along with the entities denoted by
    ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of In_Out and Output and (for a function) the
    ``function_result``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR The output set consists of formal parameters of mode "out"
+                   and "in out" and global_item with mode_selector Output or In_Out
+                   and for a function the function_result
+
 #. The entity denoted by each ``input`` of a ``dependency_relation`` of a
    subprogram shall be a member of the input set of the subprogram.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR Entity denoted by input shall be member of input set
+
 #. Every member of the explicit input set of a subprogram shall be denoted by
-   at least   one ``input`` of the ``dependency_relation`` of the subprogram.
+   at least one ``input`` of the ``dependency_relation`` of the subprogram.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR Every member of the input set shall be denoted by
+                   at least one input of the dependency_relation
 
 #. The entity denoted by each ``output`` of a ``dependency_relation`` of a
    subprogram shall be a member of the output set of the subprogram.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR Entity denoted by output shall be member of output set
+
 #. Every member of the output set of a subprogram shall be denoted by exactly
    one ``output`` in the ``dependency_relation`` of the subprogram.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR Every member of the output set shall be denoted by
+                   at least one output of the dependency_relation
 
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
    a postcondition of the function to which the enclosing
    ``aspect_specification`` applies.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 #. In a ``dependency_relation`` there can be at most one ``dependency_clause``
    which is a ``null_dependency_clause`` and if it exists it must be the
    last ``dependency_clause`` in the ``dependency_relation``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR null_dependency_clause shall be the last
+                   dependency_clause in the dependency_relation
 
 #. An entity denoted by an ``input`` which is in an ``input_list`` of a
    **null** ``output_list`` shall not be denoted by an ``input`` in another
@@ -543,15 +603,22 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR null restrictions in Depends aspect
+      :Trace Unit: 6.1.5 LR an input of a null output_list shall not appear
+                   as an input in another input_list
 
 #. The ``inputs`` in a single ``input_list`` shall denote distinct entities.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Unique input entities
+      :Trace Unit: 6.1.5 LR input entities shall be distinct entities
 
 #. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
+
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR null_dependency_clause shall not have input_list
+                   of null
 
 .. centered:: **Static Semantics**
 
