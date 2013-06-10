@@ -103,7 +103,7 @@ state abstractions.
 .. centered:: **Legality Rules**
 
 #. External state which is specified as Input_Only shall not be denoted in a
-   Global aspect with a ``mode_selector`` of In_Out or Output.  Nor shall it be
+   Global aspect with a ``mode_selector`` of In_Out or Output. Nor shall it be
    denoted as an ``output`` of a Depends aspect.
 
 #. External state which is specified as Output_Only shall not be denoted in
@@ -113,8 +113,8 @@ state abstractions.
 #. A ``global_item`` of a function shall not denote input only or output only
    external state.
 
-# An actual parameter in a function call shall not denote output only or input
-  only external state.
+#. An actual parameter in a function call shall not denote output only or input
+   only external state.
 
 #. Since output only external state shall never be read by the program and
    input only external state may never be updated by the program neither of
@@ -348,7 +348,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 #. A subprogram declaration that overloads a state abstraction has an implicit
    Global aspect denoting the state abstraction with a ``mode_selector`` of
-   Input.  An explicit Global aspect may be specified which replaces the
+   Input. An explicit Global aspect may be specified which replaces the
    implicit one.
 
 
@@ -369,10 +369,10 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 #. [A state abstraction shall only be named in contexts where this is
    explicitly permitted (e.g., as part of a Globals aspect
-   specification), but this is not a name resolution rule.  Thus, the
+   specification), but this is not a name resolution rule. Thus, the
    declaration of a state abstraction has the same visibility as any
    other declaration.
-   A state abstraction is not an object; it does not have a type.  The
+   A state abstraction is not an object; it does not have a type. The
    completion of a state abstraction declared in a package
    aspect_specification can only be provided as part of a
    Refined_State aspect specification within the body of the package.]
