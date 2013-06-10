@@ -535,7 +535,7 @@ where
    of an unconstrained array subtype, an unconstrained discriminated subtype,
    a tagged type, or a type having a subcomponent of an unconstrained
    discriminated subtype. [Tagged types are mentioned in this rule in
-   anticipation of a later version of ||SPARK|| in which the current
+   anticipation of a later version of |SPARK| in which the current
    restriction on uses of the 'Class attribute is relaxed; currently
    there is no way to read or otherwise depend on the underlying tag of an
    **out** mode formal parameter of a tagged type.]
