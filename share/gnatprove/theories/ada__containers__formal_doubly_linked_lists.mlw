@@ -36,11 +36,11 @@ module Ada__containers__formal_doubly_linked_lists__cursor
 
   axiom position_gte_zero:
     forall co:list, cu:cursor [position co cu].
-        length co >= position co cu /\ position co cu >= 0
+        length co >= position co cu >= 0
 
   axiom position_eq1:
-   forall co:list, i :int [position co (position_inv co i)]. 0<i<=length co -> 
-              position co (position_inv co i)=i
+   forall co:list, i :int [position co (position_inv co i)]. 0 < i <= length co -> 
+              position co (position_inv co i) = i
 
   axiom position_eq2:
     forall co:list, cu:cursor [position co cu].
@@ -779,6 +779,7 @@ module Ada__containers__formal_doubly_linked_lists__delete
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__next
+  use import Ada__containers__formal_doubly_linked_lists__no_element
 
   predicate delete list cursor list
 
@@ -843,9 +844,9 @@ module Ada__containers__formal_doubly_linked_lists__delete
 
   val delete (co:ref list) (cu:ref cursor) (c : int) : unit
      requires { position !co !cu > 0 }
-     writes     { co }
+     writes     { co, cu }
      reads      { co }
-     ensures { delete_mult (old !co) (old !cu) c !co}
+     ensures { delete_mult (old !co) (old !cu) c !co /\ !cu = no_element}
 end
 
 module Ada__containers__formal_doubly_linked_lists__delete_first

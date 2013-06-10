@@ -1646,8 +1646,19 @@ package body SPARK_Definition is
          --  marked here.
 
          when Private_Kind =>
-            Mark_Entity (Underlying_Type (E));
-
+            --  The underlying type of a private type in a formal container
+            --  should not be analyzed.
+            if Type_In_Formal_Container (E) then
+               All_Entities.Insert (Underlying_Type (E));
+            elsif Type_Based_On_Formal_Container (E) then
+               --  The a private type based on a formal container should be in
+               --  SPARK.
+               All_Entities.Insert (Underlying_Type (E));
+               Entities_In_SPARK.Include (Underlying_Type (E));
+               Append_Entity_To_List (Underlying_Type (E));
+            else
+               Mark_Entity (Underlying_Type (E));
+            end if;
          when others =>
             null;
          end case;
@@ -1702,17 +1713,9 @@ package body SPARK_Definition is
                   Mark_Violation ("access type", E, NIR_Access);
                end if;
 
-               --  Check that component type is in SPARK. There is a special
-               --  case for component types from formal containers, as
-               --  node_type is not in SPARK, but we still want arrays of these
-               --  to be considered in SPARK, as they are implicitly declared
-               --  by the frontend when declaring a subtype of a formal
-               --  container type.
+               --  Check that component type is in SPARK.
 
-               if not In_SPARK (Component_Typ)
-                 and not
-                   Location_In_Formal_Containers (Sloc (Etype (Component_Typ)))
-               then
+               if not In_SPARK (Component_Typ) then
                   Mark_Violation
                     ("component type", E, From => Component_Typ);
                end if;
@@ -1816,7 +1819,8 @@ package body SPARK_Definition is
       --  Mark differently each kind of entity
 
       case Ekind (E) is
-         when Type_Kind        => Mark_Type_Entity (E);
+         when Type_Kind        =>
+            Mark_Type_Entity (E);
          when Subprogram_Kind  => Mark_Subprogram_Entity (E);
          when E_Constant       |
               E_Variable       =>
@@ -1863,8 +1867,8 @@ package body SPARK_Definition is
          Entities_In_SPARK.Include (E);
       end if;
 
-      --  Add entity to appropriate list.
-
+      --  Add entity to appropriate list. Type from formal containers are
+      --  handled by a specific mechanism and thus should not be translated.
       if not Type_In_Formal_Container (E) then
          Append_Entity_To_List (E);
       end if;
@@ -2968,9 +2972,11 @@ package body SPARK_Definition is
 
                if Ekind (Id) in Type_Kind then
                   if Type_In_Formal_Container (Id) then
+
+                     --  Should only mark types that are public or formals of
+                     --  the generic. Others are simply ignored.
+
                      Mark_Entity (Id);
-                  else
-                     All_Entities.Include (Id);
                   end if;
                elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
                   All_Entities.Include (Id);
@@ -3009,7 +3015,6 @@ package body SPARK_Definition is
          --  as in SPARK or not.
 
          Declare_In_Container (Vis_Decls);
-         Declare_In_Container (Priv_Decls);
 
          return;
       end if;

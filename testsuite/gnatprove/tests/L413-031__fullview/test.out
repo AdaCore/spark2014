@@ -1,18 +1,9 @@
-
-int_list.adb:11:13: info: precondition proved
 int_list.adb:18:10: info: precondition proved
 int_list.adb:18:33: info: precondition proved
 int_list.adb:18:48: range check not proved
 int_list.adb:19:10: info: precondition proved
 int_list.adb:4:7: info: precondition proved
-int_list.adb:9:24: info: precondition proved
-int_list.ads:16:14: info: precondition proved
-int_list.ads:18:20: info: precondition proved
 int_list.ads:18:8: info: precondition proved
 int_list.ads:18:8: postcondition not proved
-int_list.ads:20:21: info: precondition proved
 int_list.ads:20:36: info: overflow check proved
-int_list.ads:20:8: info: precondition proved
-int_list.ads:27:21: info: precondition proved
-int_list.ads:27:8: info: precondition proved
-int_list.ads:27:8: postcondition not proved, requires Length (L) = Length (L'old)
+int_list.ads:27:8: info: postcondition proved

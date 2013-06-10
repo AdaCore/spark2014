@@ -10,12 +10,11 @@ package body P is
 
    procedure Nearly_Identity (L : in out List; Cu : in out Cursor) is
       E : Element_Type := Element (L, Cu);
-      Nxt : Cursor := Next (L, Cu);
+      Prev : constant Cursor := Previous (L, Cu);
+      Nxt : constant Cursor := Next (L, Cu);
    begin
       Delete (L, Cu);
-      Insert (L, Nxt, E);
-      Cu := (if Nxt = No_Element then Last (L)
-             else Previous (L, Nxt));
+      Insert (L, Nxt, E, Cu);
    end Nearly_Identity;
    
    procedure Identity_Swap (L : in out List; Cu1 : Cursor; Cu2 : Cursor) is
