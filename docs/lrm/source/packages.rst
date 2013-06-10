@@ -318,7 +318,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 .. ifconfig:: Display_Trace_Units
 
-   :Trace Unit: 7.1.2 Syntax
+   :Trace Unit: 7.1.4 Syntax
 
 .. centered:: **Legality Rules**
 
@@ -326,31 +326,40 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR An option shall not be repeated within a single option list.
+      :Trace Unit: 7.1.4 LR An option shall not be repeated within an option list.
 
 #. If External is specified in an ``option_list`` then at most one of
-   Input_Only or Output_Only ``options`` may be specified in the
+   Input_Only or Output_Only ``options`` shall be specified in the
    ``option_list``. The Input_Only and Output_only options shall not be specified in
    an ``option_list`` without an External ``option``.
 
-#. If a ``option_list`` contains one or more ``name_value_option`` items
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 LR At most one of Input_Only or Output_Only with External.
+
+#. If an ``option_list`` contains one or more ``name_value_option`` items
    then they shall be the final options in the list.
    [This eliminates the possibility of a positional
    association following a named association in the property list.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.2 LR any name_value_properties must be the final properties in the list
+      :Trace Unit: 7.1.4 LR any name_value_options must be the final options
+                   in the list
 
 #. A ``package_declaration`` or ``generic_package_declaration`` shall have a
    completion [(a body)] if it contains a non-null Abstract State aspect
    specification.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 LR package declarations with non-null Abstract State shall
+                   have bodies
+
 #. A subprogram declaration that overloads a state abstraction has an implicit
    Global aspect denoting the state abstraction with a ``mode_selector`` of
    Input. An explicit Global aspect may be specified which replaces the
    implicit one.
-
 
 .. centered:: **Static Semantics**
 
@@ -380,15 +389,25 @@ shall follow the grammar of ``abstract_state_list`` given below.
 #. A **null** ``abstract_state_list`` specifies that a package contains no
    hidden state.
 
-#. An External state abstraction is one declared with a ``option_list``
-   that includes the  External ``option`` (see :ref:`external_state`).
 
-#. A state abstraction which is declared with a ``option_list`` that includes
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 SS packages with a null abstract_state_list must
+                   contain no hidden state
+
+#. An External state abstraction is one declared with an ``option_list``
+   that includes the External ``option`` (see :ref:`external_state`).
+
+#. A state abstraction which is declared with an ``option_list`` that includes
    a Part_Of ``name_value_option`` indicates that it is a constituent (see
    :ref:`state_refinement`) exclusively of the state abstraction
    denoted by the ``abstract_state`` of the ``name_value_option`` (see
    :ref:`package_hierarchy`).
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 SS a state abstraction that is part_of an abstract
+                   state must be exclusively part of this abstract state
 
 .. centered:: **Verification Rules**
 
@@ -457,8 +476,8 @@ Initializes Aspect
 ~~~~~~~~~~~~~~~~~~
 
 The Initializes aspect specifies the visible variables and state abstractions of
-a package that are initialized by the elaboration of the package.  In |SPARK|
-a package may only initialize variables declared immediately within the package.
+a package that are initialized by the elaboration of the package. In |SPARK|
+a package shall only initialize variables declared immediately within the package.
 
 If the initialization of a variable or state abstraction, V, during the
 elaboration of a package, P, is dependent on the value of a visible variable or
@@ -481,24 +500,52 @@ grammar of ``initialization_spec`` given below.
 
   initialization_item ::= name [ => input_list]
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 7.1.5 Syntax
+
 .. centered:: **Legality Rules**
 
 #. An Initializes aspect shall only appear in the ``aspect_specification`` of a
    ``package_specification``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 LR Initializes aspect must be in package_specification
+
 #. The Initializes aspect shall follow the Abstract_State aspect if one is
    present.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 LR Initializes aspect shall follow Abstract_State
 
 #. The ``name`` of each ``initialization_item`` in the Initializes aspect
    definition for a package shall denote a state abstraction of the package or
    an entire variable declared immediately within the visible part of the
    package.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 LR each initialization_item shall denote a state
+                   abstraction or an entire variable declared immediately
+                   within the visible part of the package
+
 #. Each ``name`` in the ``input_list`` shall denote an entire variable or a state
    abstraction but shall not denote an entity declared in the package with the
    ``aspect_specification`` containing the Initializes aspect.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 LR input_list name shall denote entire variable or state
+                   abstraction but not entities declared in the package containing
+                   the Initializes aspect
+
 #. Each entity in a single ``input_list`` shall be distinct.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 LR Entities in single input_list shall be distinct
 
    .. centered:: **Static Semantics**
 
@@ -513,10 +560,21 @@ grammar of ``initialization_spec`` given below.
    [A package with a **null** ``initialization_list``, or no Initializes aspect
    does not initialize any of its state abstractions or variables.]
 
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 SS a null initialization_list package does not
+                   initialize any state abstractions or variables
+
 #. If an ``initialization_item`` has an ``input_list`` then the ``names`` in the
    list denote entities which are used in determining the initial value of the
    state abstraction or variable denoted by the ``name`` of the
    ``initialization_item`` but are not constituents of the state abstraction.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 SS names in an input_list cannot be constituents of
+                   the state abstraction
 
 .. centered:: **Dynamic Semantics**
 
@@ -584,14 +642,16 @@ be a *Boolean_*\ ``expression``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.1.6 LR Initial_Condition aspect shall be placed on a package's
+                   specification
 
 #. The Initial_Condition aspect shall follow the Abstract_State aspect and
    Initializes aspect if they are present.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.1.6 LR Initial_Condition aspect shall follow Abstract_State
+                   and Initializes aspects
 
 #. Each variable or state abstraction appearing in an Initial_Condition aspect
    of a package Q which is declared immediately within the visible part of Q
@@ -600,19 +660,17 @@ be a *Boolean_*\ ``expression``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.1.6 LR variables and state abstractions in an Initial_Condition
+                   aspect shall be denoted by a name of an initialization_item of
+                   the Initializes aspect
 
 #. Each ``state_name`` referenced in Initial Condition Aspect shall
    be initialized during package elaboration.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
 .. centered:: **Static Semantics**
 
 #. An Initial_Condition aspect is a sort of postcondition for the elaboration
-   of both the specification and body of a package. If present on a package, the
+   of both the specification and body of a package. If present on a package, then
    its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
    of the package which can be assumed to be true immediately following the
    elaboration of the package. [The expression of the Initial_Condition shall only
@@ -689,10 +747,10 @@ Constituents of each ``state_name`` have to be initialized consistently
 with that of their representative ``state_name`` as determined by its denotation
 or absence in the Initializes aspect of the package.
 
-A subprogram may have an *abstract view* and a *refined view*.  The abstract
+A subprogram may have an *abstract view* and a *refined view*. The abstract
 view is a subprogram declaration in the visible part of a package where a
 subprogram may refer to private types and state abstractions whose details are
-not visible.  A refined view of a subprogram is the body or body stub of the
+not visible. A refined view of a subprogram is the body or body stub of the
 subprogram in the package body whose visible part declares its abstract view.
 
 In a refined view a subprogram has visibility of the full type declarations of
@@ -723,14 +781,14 @@ where
 
   ``constituent ::=`` *object_*\ ``name | state_name``
 
+.. ifconfig:: Display_Trace_Units
+
+   :Trace Unit: 7.2.2 Syntax
+
 .. centered:: **Name Resolution Rules**
 
 #. A Refined_State Aspect of a ``package_body`` has visibility extended to  the
    ``declarative_part`` of the body.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 .. centered:: **Legality Rules**
 
@@ -740,16 +798,18 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.2 LR aspect Refined_State must appear in aspect
+                   specification of package_body
 
-#. If a ``package_specification``  has a non-null Abstract_State aspect its body
+#. If a ``package_specification`` has a non-null Abstract_State aspect its body
    shall have a Refined_State aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.2 LR non-null Abstract_State packages must have
+                   Refined_State aspect
 
-#. If a ``package_specification``  does not have an Abstract_State aspect,
+#. If a ``package_specification`` does not have an Abstract_State aspect,
    then the corresponding ``package_body`` shall not have a Refined_State
    aspect.
 
@@ -757,27 +817,38 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.2 LR cannot have Refined_State aspect without
+                   Abstract_State aspect
 
 #. Each ``constituent`` shall be either a variable or a state abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.2 LR constituent must be variable or state abstraction
 
 #. An object which is a ``constituent`` shall be an entire object.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.2 LR constituent must be entire object
 
 #. A ``constituent`` shall denote an entity of the hidden state of a package or an
    entity which has a Part_Of ``option`` or aspect associated with its
    declaration.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.2 LR constituents of hidden state must have
+                   a Part_Of option that associates them with this
+                   state abstraction
+
 #. Each *abstract_*\ ``state_name`` declared in the package specification shall
    be denoted as the ``state_name`` of a ``refinement_clause`` in the
    Refined_State aspect of the body of the package.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.2 LR each abstract state_name shall have a refinement_clause
 
 #. Every entity of the hidden state of a package shall be denoted as a
    ``constituent`` of exactly one *abstract_*\ ``state_name`` in the
@@ -790,7 +861,8 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.2 LR hidden state constituents must be denoted by exactly
+                   one constituents_list
 
 #. The legality rules related to a Refined_State aspect given in
    :ref:`package_hierarchy` also apply.
@@ -812,6 +884,10 @@ where
    aspects if it is believed that a package may have some extra state in the
    future, or if hidden state is removed.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.2 SS null constituent_list indicates the named
+                   abstract state has no constituents
 
 .. centered:: **Verification Rules**
 
