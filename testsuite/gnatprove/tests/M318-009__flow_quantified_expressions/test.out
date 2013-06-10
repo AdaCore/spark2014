@@ -1,10 +1,6 @@
-test.adb:22:26: ineffective statement
-test.adb:23:28: unused assignment
+test.adb:22:26: ineffective statement [ineffective]
+test.adb:23:28: unused assignment [ineffective]
 test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized__temp_table]
-
-
-
-
 // qe_1_cfg
 digraph G {
    graph [splines=True];

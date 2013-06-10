@@ -1,4 +1,4 @@
 test.adb:18:23: formal parameter "B" might not be set [uninitialized__b]
 test.adb:30:23: formal parameter "B" might not be set [uninitialized__b]
-test.adb:31:23: "C" is not used
+test.adb:31:23: "C" is not used [unused]
 test.adb:31:23: formal parameter "C" might not be set [uninitialized__c]

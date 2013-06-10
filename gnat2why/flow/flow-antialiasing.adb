@@ -568,7 +568,7 @@ package body Flow.Antialiasing is
          Append (Msg, " & and global &");
          Error_Msg_Node_2 := B;
       end if;
-      Append (Msg, "!");
+      Append (Msg, " [flow_aliasing]!");
 
       Error_Msg_NE (To_String (Msg), A, A_Formal);
    end Check_Node_Against_Node;

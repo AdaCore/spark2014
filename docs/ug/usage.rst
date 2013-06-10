@@ -220,10 +220,10 @@ In mode ``prove`` and report ``all`` or ``statistics``, |GNATprove| prints on
 the standard output error messages for unproved VCs, and information messages
 for proved VCs.
 
-In mode ``flow``, GNATprove prints on the standard output error messages and
-warnings for incorrect Globals and depends contracts, unitialized error
-messages, and suspicious situations such as unused assignments, missing return
-statements and so on.
+In mode ``flow``, GNATprove prints on the standard output error
+messages and warnings for incorrect ``Globals`` and ``Depends``
+contracts, unitialized variables, and suspicious situations such as
+unused assignments, missing return statements and so on.
 
 In mode ``all``, GNATprove behaves just as if both modes ``prove`` and
 ``flow`` were activated.
@@ -381,9 +381,42 @@ The following table shows the proof messages.
    "loop_variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
    "assertion", "Check that the given assertion evaluates to True."
 
-The following table shows the flow messages.
+The following table shows serious flow messages which prevent the
+further analysis of a subprogram.
 
-.. todo:: Add table with flow messages
+.. csv-table::
+   :header: "Message Tag", "Explanation"
+   :widths: 1, 4
+
+   "flow_aliasing", "Flow analysis has detected aliasing between two or more procedure call parameters or globals."
+   "missing_global", "A subprogram refers to a global which is missing from the ``Globals`` aspect or which the automatic global detection has failed to pick up."
+   "non_manifest_default", "Default initializations for record fields may only be manifest constants."
+
+The following table shows all remaining flow analysis messages, which
+come in three classes: I(nitialization) error are the most serious
+flow errors, not fixing them might result in a program which can raise
+a constraint error at runtime which proof may not be able to
+detect. F(low) errors indicate a serious problem with a dependency
+relation, if such an error is not fixed, the dependency relations
+cannot be relied on. All other unclassified messages are warnings
+about questionable code constructs.
+
+.. csv-table::
+   :header: "Message Tag", "Class", "Explanation"
+   :widths: 1, 1, 6
+
+   "depends_missing", "F", "A dependency is missing from the dependency relation."
+   "depends_missing_clause", "F", "An out parameter or global is missing from the dependency relation."
+   "depends_null", "F", "A variable is missing from the null dependency."
+   "depends_wrong", "F", "A stated dependency is not fulfilled."
+   "illegal_update", "I", "Flow analysis has detected an update of a in mode global."
+   "ineffective",, "Flow analysis has detected an ineffective statement, such as an unused assignment."
+   "ineffective_import",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "stable",, "A questionable loop construct where a variable is assigned the same value on each loop iteration."
+   "uninitialized", "I", "Flow analysis has detected the use of an uninitialized variable."
+   "unused",, "A global or locally declared variable is never used."
+
+
 
 How to Write Loop Invariants
 ============================

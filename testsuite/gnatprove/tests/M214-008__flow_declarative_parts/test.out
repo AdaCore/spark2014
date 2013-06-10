@@ -1,16 +1,16 @@
-test.adb:10:29: ineffective import "N"
-test.adb:120:24: ineffective import "A"
-test.adb:123:09: "A" missing from null dependency
-test.adb:131:24: ineffective import "A"
-test.adb:134:09: "A" missing from null dependency
-test.adb:43:23: "S" is not used
-test.adb:43:23: ineffective import "S"
-test.adb:54:24: ineffective import "A"
-test.adb:57:09: "A" missing from null dependency
-test.adb:57:21: "B" does not depend on "A"
-test.adb:66:24: ineffective import "A"
-test.adb:69:09: "A" missing from null dependency
-test.adb:69:21: "B" does not depend on "A"
+test.adb:10:29: ineffective import "N" [ineffective_import]
+test.adb:120:24: ineffective import "A" [ineffective_import]
+test.adb:123:09: "A" missing from null dependency [depends_null]
+test.adb:131:24: ineffective import "A" [ineffective_import]
+test.adb:134:09: "A" missing from null dependency [depends_null]
+test.adb:43:23: "S" is not used [unused]
+test.adb:43:23: ineffective import "S" [ineffective_import]
+test.adb:54:24: ineffective import "A" [ineffective_import]
+test.adb:57:09: "A" missing from null dependency [depends_null]
+test.adb:57:21: "B" does not depend on "A" [depends_wrong]
+test.adb:66:24: ineffective import "A" [ineffective_import]
+test.adb:69:09: "A" missing from null dependency [depends_null]
+test.adb:69:21: "B" does not depend on "A" [depends_wrong]
 test.adb:89:07: use of uninitialized variable "A" [uninitialized__a]
 test.adb:99:36: use of uninitialized variable "A" [uninitialized__a]
 test.adb:99:41: use of uninitialized variable "A" [uninitialized__a]

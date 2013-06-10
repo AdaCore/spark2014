@@ -1,7 +1,7 @@
 test.adb:132:09: use of uninitialized variable "R.Reason" [uninitialized__r_reason]
-test.adb:154:21: "Y" depends on "X"
-test.adb:167:09: "X" missing from null dependency
-test.adb:203:21: "R" depends on "R"
+test.adb:154:21: "Y" depends on "X" [depends_missing]
+test.adb:167:09: "X" missing from null dependency [depends_null]
+test.adb:203:21: "R" depends on "R" [depends_missing]
 test.adb:41:09: use of uninitialized variable "V.Z" [uninitialized__v_z]
 test.adb:89:32: component "X.Reason" of formal parameter might not be set [uninitialized__x_reason]
 test.adb:97:32: component "X.Index" of formal parameter might not be set [uninitialized__x_index]

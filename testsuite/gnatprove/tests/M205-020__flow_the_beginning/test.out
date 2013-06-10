@@ -2,6 +2,6 @@ foo.adb:10:09: unused assignment [ineffective]
 foo.adb:12:09: unused assignment [ineffective]
 foo.adb:12:09: use of uninitialized variable "Z" [uninitialized__z]
 foo.adb:15:04: use of uninitialized variable "B" [uninitialized__b]
-foo.adb:3:16: ineffective import "Y"
+foo.adb:3:16: ineffective import "Y" [ineffective_import]
 foo.adb:4:16: formal parameter "Z" might not be set [uninitialized__z]
-foo.adb:9:04: ineffective statement
+foo.adb:9:04: ineffective statement [ineffective]

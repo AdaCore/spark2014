@@ -580,7 +580,8 @@ package body Flow.Analysis is
                           (Msg => "default initialization must be a" &
                              " manifest constant, but it depends on &!",
                            N   => Expression (N),
-                           F1  => F);
+                           F1  => F,
+                           Tag => "non_manifest_default");
                         Sane := False;
                      end loop;
                   end;
@@ -649,7 +650,8 @@ package body Flow.Analysis is
                                 "aspect of &",
                               N   => FA.Subprogram,
                               F1  => Entire_Variable (Var),
-                              F2  => Direct_Mapping_Id (FA.Subprogram));
+                              F2  => Direct_Mapping_Id (FA.Subprogram),
+                              Tag => "missing_global");
 
                         when Magic_String =>
                            Global_Required (FA, Var);
@@ -750,12 +752,14 @@ package body Flow.Analysis is
                elsif A.Is_Global then
                   Error_Msg_Flow (Msg => "ineffective global import &",
                                   N   => Find_Global (FA.Subprogram, F),
-                                  F1  => F);
+                                  F1  => F,
+                                  Tag => "ineffective_import");
                else
                   Error_Msg_Flow (Msg => "ineffective import &",
                                   G   => FA.PDG,  --  !!! find_import
                                   Loc => V,
-                                  F   => F);
+                                  F   => F,
+                                  Tag => "ineffective_import");
                end if;
             end;
          end if;
@@ -778,6 +782,7 @@ package body Flow.Analysis is
       is
          Illegal_Use_Atr : constant V_Attributes :=
            FA.PDG.Get_Attributes (Illegal_Use_Loc);
+         Tag : constant String := "illegal_update";
       begin
          if The_Global_Atr.Is_Global then
             if Illegal_Use_Atr.Is_Parameter then
@@ -786,7 +791,8 @@ package body Flow.Analysis is
                  (Msg => "actual for & cannot be a global input",
                   G   => FA.PDG,
                   Loc => Illegal_Use_Loc,
-                  F   => Illegal_Use_Atr.Parameter_Formal);
+                  F   => Illegal_Use_Atr.Parameter_Formal,
+                  Tag => Tag);
 
             elsif Illegal_Use_Atr.Is_Global_Parameter then
                --  foo;
@@ -794,7 +800,8 @@ package body Flow.Analysis is
                  (Msg => "global item & must denote a global output",
                   G   => FA.PDG,
                   Loc => Illegal_Use_Loc,
-                  F   => The_Global_Id);
+                  F   => The_Global_Id,
+                  Tag => Tag);
 
             else
                --  bar := 12;
@@ -802,7 +809,9 @@ package body Flow.Analysis is
                  (Msg => "assignment to global in & not allowed",
                   G   => FA.PDG,
                   Loc => Illegal_Use_Loc,
-                  F   => The_Global_Id);
+                  F   => The_Global_Id,
+                  Tag => Tag);
+
             end if;
          else
             --  It *has* to be a global. The compiler would catch any
@@ -913,16 +922,13 @@ package body Flow.Analysis is
             N    : Node_Id;
             Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
             Mask : Vertex_Sets.Set;
-            Tag  : Unbounded_String := Null_Unbounded_String;
+            Tag  : constant String := Create_Tag ("ineffective");
          begin
             if Atr.Is_Program_Node or else Atr.Is_Parameter then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access)
                then
                   Mask := Find_Masking_Code (V);
-                  if Mask.Length >= 1 then
-                     Tag := To_Unbounded_String (Create_Tag ("ineffective"));
-                  end if;
                   N := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
 
                   if Atr.Is_Parameter then
@@ -931,21 +937,21 @@ package body Flow.Analysis is
                         G   => FA.PDG,
                         Loc => V,
                         F   => Atr.Parameter_Actual,
-                        Tag => To_String (Tag));
+                        Tag => Tag);
 
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow
                        (Msg => "unused assignment",
                         G   => FA.PDG,
                         Loc => V,
-                        Tag => To_String (Tag));
+                        Tag => Tag);
 
                   else
                      Error_Msg_Flow
                        (Msg => "ineffective statement",
                         G   => FA.PDG,
                         Loc => V,
-                        Tag => To_String (Tag));
+                        Tag => Tag);
 
                   end if;
                   if Mask.Length >= 1 then
@@ -953,7 +959,7 @@ package body Flow.Analysis is
                        (G     => FA.PDG,
                         E_Loc => Error_Location (FA.PDG, V),
                         Set   => Mask,
-                        Tag   => To_String (Tag));
+                        Tag   => Tag);
                   end if;
                end if;
             end if;
@@ -1221,7 +1227,8 @@ package body Flow.Analysis is
                         --  Complain
                         Error_Msg_Flow (Msg => "stable",
                                         G   => FA.PDG,
-                                        Loc => N_Loop);
+                                        Loc => N_Loop,
+                                        Tag => "stable");
 
                         --  There might be other stable elements now.
                         Done := False;
@@ -1315,12 +1322,14 @@ package body Flow.Analysis is
                   --  global.
                   Error_Msg_Flow (Msg => "global & is not used",
                                   N   => Find_Global (FA.Subprogram, F),
-                                  F1  => F);
+                                  F1  => F,
+                                  Tag => "unused");
                else
                   Error_Msg_Flow (Msg => "& is not used",
                                   G   => FA.PDG,
                                   Loc => V,
-                                  F   => F);
+                                  F   => F,
+                                  Tag => "unused");
                end if;
             end;
          end if;
@@ -1444,7 +1453,8 @@ package body Flow.Analysis is
                Error_Msg_Flow
                  (Msg => "& missing from null dependency",
                   N   => Depends_Location,
-                  F1  => F_Out);
+                  F1  => F_Out,
+                  Tag => "depends_null");
             end if;
          end;
       end loop;
@@ -1479,10 +1489,11 @@ package body Flow.Analysis is
                Proceed_With_Analysis := False;
             else
                Error_Msg_Flow
-                 ("expected to see & on the left-hand-side of" &
+                 (Msg => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
-                  Depends_Location,
-                  F_Out);
+                  N   => Depends_Location,
+                  F1  => F_Out,
+                  Tag => "depends_misssing_clause");
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
@@ -1512,13 +1523,15 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (Msg => "& missing from null dependency",
                         N   => Depends_Location,
-                        F1  => Missing_Var);
+                        F1  => Missing_Var,
+                        Tag => "depends_null");
                   else
                      Error_Msg_Flow
                        (Msg => "& depends on &",
                         N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
                         F1  => F_Out,
-                        F2  => Missing_Var);
+                        F2  => Missing_Var,
+                        Tag => "depends_missing");
                      --  !!! show path
                   end if;
                end loop;
@@ -1530,14 +1543,16 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (Msg => "& incorrectly included in null dependency",
                         N   => Depends_Location,
-                        F1  => Wrong_Var);
+                        F1  => Wrong_Var,
+                        Tag => "depends_wrong");
                      --  ??? show a path?
                   else
                      Error_Msg_Flow
                        (Msg => "& does not depend on &",
                         N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
                         F1  => F_Out,
-                        F2  => Wrong_Var);
+                        F2  => Wrong_Var,
+                        Tag => "depends_wrong");
                   end if;
                end loop;
 

@@ -1,7 +1,3 @@
-broken.adb:14:10: stable
+broken.adb:14:10: stable [stable]
 broken.adb:18:14: flow analysis of "Test_02" abandoned due to aliasing
-broken.adb:22:20: aliasing between formal parameter "N" and global "I"
-
-
-
-
+broken.adb:22:20: aliasing between formal parameter "N" and global "I" [flow_aliasing]
