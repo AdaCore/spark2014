@@ -604,14 +604,14 @@ the tools. An unsound definition may lead to an unsound proof which is of no use
 Ideally any definition will be checked for soundness by the external proof
 tools.
 
-If the postcondition of a function, F, can be specified in |SPARK| as 
+If the postcondition of a function, F, can be specified in |SPARK| as
 F'Result = E, then the postcondition may be recast as the expression of an
 ``expression_function_declaration`` as shown below:
 
 .. code-block:: ada
 
   function F (V : T) return T1 is (E);
-  
+
 The default postcondition of an expression function is F'Result = E making E
 both the implementation and the expression defining the postcondition of the
 function. This is useful, particularly for ghost functions, as the expression
@@ -775,7 +775,7 @@ only part of a program is formally verified.  Thus, combining these results
 with other verification results depends on the verification of global and local
 assumptions made during formal verification.
 
-Full details on the SPARK_Mode aspect are given in the SPARK Toolset User Guide (reference TBD).
+Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guide (reference TBD).
 
 .. todo::
    We need to consider what might need to be levied on the non-|SPARK| code in order for flow
@@ -796,14 +796,14 @@ Full details on the SPARK_Mode aspect are given in the SPARK Toolset User Guide 
 External State
 ~~~~~~~~~~~~~~
 
-A variable or a state abstraction may be specified as External state to
+A variable or a state abstraction may be specified as external state to
 indicate that it represents an external communication channel, for instance, to
 a device or another subsystem. External state may be specified as volatile.
 Volatile state need not have the same value between two reads without an
 intervening update. Similarly an update of volatile state might not have any
 effect on the internal operation of a program, its only effects are external to
 the program. These properties require special treatment of volatile variables
-during flow analysis.
+during flow analysis and formal verification.
 
 In formal verification a series of reads and updates of volatile state may be
 modeled by a sequence or a trace.
@@ -821,14 +821,13 @@ state abstractions also.
 Notes on the Current Draft
 --------------------------
 
-This document is a draft that covers all language-independent requirements
-for the main language features, provides
-syntax where possible and otherwise provides the detailed rules necessary to
-support implementation of basic flow analysis. Where detail is not relevant to
-meeting these needs then it has typically been removed, though a "ToDo" will indicate
-that there is material still to be provided.
+This document is a draft that covers all language-independent requirements for
+the main language features, provides syntax where possible and otherwise
+provides the detailed rules necessary to support implementation of basic flow
+analysis. Where detail is not relevant to meeting these needs then it has
+typically been removed, though a **Todo** will indicate that there is material
+still to be provided.
 
-Note this means there are certain of the strategic requirements that are currently
-not decomposed into language definition detail. Where this is the case, it will
-have been explicitly indicated in this chapter.
-
+Note this means there are certain of the strategic requirements that are
+currently not decomposed into language definition detail. Where this is the
+case, it will have been explicitly indicated in this chapter.
