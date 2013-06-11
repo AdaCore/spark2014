@@ -47,3 +47,5 @@ instantiation. That is not today's approach.]
 compatibility rules for Global/Depends aspects of a
 subprogram which overrides a dispatching operation. OK, for example,
 if a subprogram reads fewer inputs than it said it would.]
+
+.. todo:: Update SPARK 2014 to allow prove once/use many approach to generics.

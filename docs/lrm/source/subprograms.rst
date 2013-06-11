@@ -750,6 +750,8 @@ a ghost function are regarded implicitly as ghost entities). When the full scope
 entities is allowed, the rules given in this section may be moved to
 other sections as appropriate, since they will refer to more than just subprograms.
 
+.. todo:: Add ghost types and ghost variables to SPARK 2014.
+
 .. centered:: **Static Semantics**
 
 |SPARK| defines the ``convention_identifier`` Ghost.

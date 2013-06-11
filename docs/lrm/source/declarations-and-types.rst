@@ -68,6 +68,8 @@ be restricted to disallow dependencies on non-discriminant components
 avoid cases where modifying a subcomponent can violate the subtype
 predicate of an enclosing object.]
 
+.. todo:: Add the Dynamic_Predicate aspect to SPARK 2014.
+
 Objects and Named Numbers
 -------------------------
 
@@ -146,6 +148,7 @@ Use of the 'Class attribute is not permitted in |SPARK|.
 As a consequence of this restriction, dispatching calls are not currently in 
 |SPARK| but are planned for a future release.]
 
+.. todo:: Add 'Class attribute to SPARK 2014.
 
 Type Extensions
 ~~~~~~~~~~~~~~~

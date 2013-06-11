@@ -256,6 +256,8 @@ There are no dynamic semantics associated with these aspects.
 
    end Multiple_Ports;
 
+.. todo:: Add support for more complex models of external state.
+
 
 .. _abstract-state-aspect:
 
