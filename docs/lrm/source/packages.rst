@@ -664,9 +664,6 @@ be a *Boolean_*\ ``expression``.
                    aspect shall be denoted by a name of an initialization_item of
                    the Initializes aspect
 
-#. Each ``state_name`` referenced in Initial Condition Aspect shall
-   be initialized during package elaboration.
-
 .. centered:: **Static Semantics**
 
 #. An Initial_Condition aspect is a sort of postcondition for the elaboration
@@ -1093,7 +1090,7 @@ is part of and a state abstraction always knows all of its constituents.
 
 #. In the body of a package, a state abstraction whose refinement is visible
    shall not be denoted except as an encapsulating state in a Part_Of indicator.
-   Only its ``constituents`` maybe denoted.
+   Only its ``constituents`` may be denoted.
 
    .. ifconfig:: Display_Trace_Units
 
