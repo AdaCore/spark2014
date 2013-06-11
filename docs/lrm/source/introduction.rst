@@ -348,9 +348,8 @@ Some are expanded in subsequent sections within this chapter.
 
 - *Code Policies* shall be allowed that reduce the subset of Ada 2012 that may
   be used in line with specific goals such as domain needs or certification
-  requirements (these are similar to *Profiles* but may be imposed at a finer
-  granularity and the effect of a breach may also be different). This may also
-  have the effect of simplifying proof or analysis. See section
+  requirements (these are basically similar to *Profiles* and *Restrictions*).
+  This may also have the effect of simplifying proof or analysis. See section
   :ref:`code_policy` for further details.
 
 - |SPARK| shall allow the mixing of code written in the |SPARK| subset
@@ -571,27 +570,19 @@ needs then multiple policies may be enforced. Needs could be driven by:
   compatible with a "zero footprint" run-time library.
 
 As an example, a user developing an air traffic control system against DO-178C
-might impose two code policies, one for the domain of interest and one for the standard
-of interest.
+might impose two code policies, one for the domain of interest and one for the
+standard of interest.
 
-Since it should be possible to apply these policies  at multiple levels
-of granularity - for example at a package level rather than at a library level -
-and since it need not be the case that violation of one of these policies leads
-to a compilation error, then the existing Ada mechanisms of pragma Restriction
-and pragma Profile are not suitable. Hence, pragma Code_Policy will be introduced
-as a counterpart to pragma Profile and pragma Guideline will be introduced
-as a counterpart to pragma Restriction, meaning that a Code_Policy is a grouping
-of Guidelines.
-
-It is intended that code policies can be customised or new policies specified
-from a collection of guidelines.
-
-*No further detail is given in the current draft of this document on Code Policies.*
-
+These capabilities will be handled outside of the language since the need
+is not specific to SPARK, and has already been resolved either by
+Ada 2012 (pragma Restrictions and pragma Profile), or GNAT (pragma
+Restriction_Warnings) or by coding standard checkers (e.g. gnatcheck).
 
 .. todo::
    Complete detail on Code Policies.
    To be completed in the Milestone 4 version of this document.
+   Consider simply removing this whole section out of the refererence
+   manual, and instead add pointers in the User's Guide.
 
 .. _ghost_entities:
 
