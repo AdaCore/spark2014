@@ -7,7 +7,8 @@ to appendices A through H of the Ada RM. The goal is that |SPARK| programs are a
 to use as much as possible of the  the Ada predefined language environment and standard libraries.
 
 .. todo:: Provide detail on Standard Libraries.
-          To be completed in the Milestone 4 version of this document.
+          To be completed in a Release 2+ version of this document. This targeting applies
+          to all ToDos in this chapter.
 
 .. todo:: In particular, it is intended that predefined container generics
           suitable for use in |SPARK| will be provided. These will
@@ -60,7 +61,7 @@ offered by Ada's Annex D.
 .. todo:: RCC: Need to think about Ada.Real_Time.  It's important for all S95 customers, to get
    at monotonic clock, even if not using RavenSPARK.  It does depend on support for external
    variables, though, since Ada.Real_Time.Clock is most definitely Volatile. TN [LB07-024]
-   raised to discuss this. Target: D2.
+   raised to discuss this.
 
 Distributed Systems
 -------------------
