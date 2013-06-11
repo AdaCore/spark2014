@@ -714,11 +714,12 @@ be a *Boolean_*\ ``expression``.
     end Q;
 
     package X
-       with Abstract_State    => A,     -- Declares an abstract state name A
-            Initializes       => (A, B) -- A and visible variable B are initialized
-	                                -- during package initialization.
+       with Abstract_State    => A,      -- Declares an abstract state named A
+            Initializes       => (A, B), -- A and visible variable B are initialized
+	                                 -- during package initialization.
             Initial_Condition => A_Is_Ready and B = 0
-	                                -- The logical conditions after package elaboration.
+	                                 -- The logical conditions that hold
+                                         -- after package elaboration.
     is
        ...
        B : Integer;
