@@ -19,7 +19,7 @@ It follows as a consequence of these rules that the evaluation
 of any |SPARK| expression is side-effect free.
 
 We also introduce the notion of a *global item*, which is a name that denotes a
-global variable or a state abstraction (see :ref:`abstract-state`). Global items
+global object or a state abstraction (see :ref:`abstract-state`). Global items
 are presented in Global aspects (see :ref:`global-aspects`).
 
 An *entire object* is an object which is not a subcomponent of a larger
@@ -135,10 +135,10 @@ is short hand for
 where
 
   A1 .. An are Boolean expressions involving the entry values of
-  formal parameters and global variables and
+  formal parameters and global objects and
 
   B1 .. Bn are Boolean expressions that may also use the exit values of
-  formal parameters, global variables and results.
+  formal parameters, global objects and results.
 
   ``Exactly_One_Of(A1,A2...An)`` evaluates to True if exactly one of its inputs evaluates
   to True and all other of its inputs evaluate to False.
@@ -287,8 +287,7 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Name Resolution Rules**
 
-#. A ``global_item`` shall denote an entire object [which must be a variable] or
-   a state abstraction.
+#. A ``global_item`` shall denote an entire object or a state abstraction.
    [This is a name resolution rule because a ``global_item`` can unambiguously
    denote a state abstraction even if a function having the same fully qualified
    name is also present].
@@ -298,6 +297,10 @@ follow the grammar of ``global_specification``
       :Trace Unit: NRR global_item shall denote entire object
 
 .. centered:: **Legality Rules**
+
+#. A ``global_item`` shall not denote a constant object other than
+   a formal parameter [of an enclosing subprogram] of mode **in**.
+   [This restriction may be relaxed in some way at some point in the future.]
 
 #. The Global aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
@@ -486,7 +489,7 @@ where
 .. centered:: **Name Resolution Rules**
 
 #. An ``input`` or ``output`` of a ``dependency_relation`` shall denote only
-   an entire variable or a state abstraction. [This is a name resolution rule
+   an entire object or a state abstraction. [This is a name resolution rule
    because an ``input`` or ``output`` can unambiguously denote a state
    abstraction even if a function having the same fully qualified name is also
    present.]
@@ -494,7 +497,7 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 6.1.5 NRR input or outputs of a dependency_relation shall denote
-                   entire variable or state abstraction
+                   entire object or state abstraction
 
 .. centered:: **Legality Rules**
 
