@@ -7,7 +7,7 @@ to appendices A through H of the Ada RM. The goal is that |SPARK| programs are a
 to use as much as possible of the  the Ada predefined language environment and standard libraries.
 
 .. todo:: Provide detail on Standard Libraries.
-          To be completed in a Release 2+ version of this document. This targeting applies
+          To be completed in a post-Release 1 version of this document. This targeting applies
           to all ToDos in this chapter.
 
 .. todo:: In particular, it is intended that predefined container generics

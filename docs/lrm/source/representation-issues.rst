@@ -2,11 +2,12 @@ Representation Issues
 =====================
 
 .. todo:: Provide full detail on Representation Issues.
-          To be completed in the Milestone 4 version of this document.
+          To be completed in a post-Release 1 version of this document.
           
 .. todo:: This statement was originally in this chapter 
      "Pragma or aspect ``Unchecked_Union`` is not in |SPARK|" this needs to be 
      recorded in the list of unsupported aspects and pragmas.
+     To be completed in the Milestone 4 version of this document.
           
 Operational and Representation Aspects
 ---------------------------------------
@@ -55,7 +56,8 @@ An instantiation of an Unchecked_Conversion may have Refined_Pre and
 Refined_Post aspects specified.
 
 .. todo::
-   A detailed semantics of these aspects will be provided in a future issue of this document.
+   Provide a detailed semantics for Refined_Pre and Refined_Post aspects on
+   Unchecked_Conversion. To be completed in a post-Release 1 version of this document.
 
 Data Validity
 ~~~~~~~~~~~~~
@@ -66,9 +68,11 @@ It is therefore up to users to ensure that data read from external sources
 is valid.]
 
 .. todo:: Need to put some words in here to describe the precautions that may
-   be taken to avoid invalid data.
+   be taken to avoid invalid data. To be completed in the Milestone 4 version
+   of this document.
 
 .. todo:: Introduce checks for data validity into the proof model as necessary.
+          To be completed in a post-Release 1 version of this document.
    
 Unchecked Access Value Creation
 -------------------------------

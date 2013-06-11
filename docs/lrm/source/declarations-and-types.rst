@@ -45,7 +45,8 @@ subject to formal verification. However, flow analysis will ignore the use
 of such a subtype and will instead raise a warning to indicate that its use has not
 been analysed.]
 
-.. todo:: This restriction will be lifted in a future release of this document.
+.. todo:: Lift restriction that non-preelaborable subtypes are not subject
+          to flow analysis. To be completed in a post-Release 1 version of this document.
 
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,7 +69,8 @@ be restricted to disallow dependencies on non-discriminant components
 avoid cases where modifying a subcomponent can violate the subtype
 predicate of an enclosing object.]
 
-.. todo:: Add the Dynamic_Predicate aspect to SPARK 2014.
+.. todo:: Add the Dynamic_Predicate aspect to SPARK 2014. To be completed
+          in a post-Release 1 version of this document.
 
 Objects and Named Numbers
 -------------------------
@@ -92,7 +94,8 @@ subject to formal verification. However, flow analysis will ignore the use
 of such a constant and will instead raise a warning to indicate that its use has not
 been analysed.]
 
-.. todo:: This restriction will be lifted in a future release of this document.
+.. todo:: Lift restriction that non-preelaborable constants are not subject
+          to flow analysis. To be completed in a post-Release 1 version of this document.
 
 
 Derived Types and Classes
@@ -148,7 +151,8 @@ Use of the 'Class attribute is not permitted in |SPARK|.
 As a consequence of this restriction, dispatching calls are not currently in 
 |SPARK| but are planned for a future release.]
 
-.. todo:: Add 'Class attribute to SPARK 2014.
+.. todo:: Add 'Class attribute to SPARK 2014. To be completed in a post-Release
+          1 version of this document.
 
 Type Extensions
 ~~~~~~~~~~~~~~~
@@ -175,7 +179,8 @@ Interface Types
 
 Use of ``interface_type_definition`` is not permitted in |SPARK|.
 
-.. todo:: Include interface types in SPARK 2014.
+.. todo:: Include interface types in SPARK 2014. To be completed in a post-Release 1
+          version of this document.
 
 
 Access Types
