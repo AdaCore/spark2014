@@ -1,8 +1,6 @@
 Program Structure and Compilation Issues
 ========================================
 
-**Language Definition**
-
 |SPARK| supports constructive, modular analysis. This means that analysis may be
 performed before a program is complete based on unit interfaces. For instance,
 to analyze a subprogram which calls another all that is required is a
@@ -32,9 +30,6 @@ No restrictions or extensions.
 
 Context Clauses - With Clauses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Language Definition
-^^^^^^^^^^^^^^^^^^^
 
 State abstractions are visible in the limited view of packages in |SPARK|. The
 notion of an *abstract view* of a variable declaration is also introduced, and

@@ -966,12 +966,45 @@ Better would be
 !Action Taken:
 !Checked By:
 
+!Label: SBB_08
+!Location:7.2.3
+!Description:No. A public child cannot see the body of its parent.
+Bbb can see the refinement of Aaa_State in Aaa's body.
+
+Are you saying that the following Refined_Global spec is illegal?
+
+   package Aaa with State_Abstraction => Aaa_State,
+                    Initializes => Aaa_State is
+     package Bbb is
+        procedure Ccc with Global => (In_Out => Aaa_State);
+     end Bbb;
+   end Aaa;
+
+   package body Aaa
+     with Refined_State => (Aaa_State => Body_Var) is
+     Body_Var : Integer := 0;
+
+     package Bbb is
+        procedure Ccc with Refined_Global => (In_Out => Body_Var) is
+        begin
+            Body_Var := Body_Var / 2;
+        end Ccc;
+     end Bbb;
+   end Aaa;
+
+
+If so, then I'd like to discuss this.
+
+!Action Taken:I have largely rewritten this section so that the above example is now legal.  This section needs to be carefully re-reviewed.
+!Checked By:
+
+
 !Label: JEB/01
 !Location: General
 Page/Para:
 !Description: Desirable: Generally should legality rules be numbered,
 some are not such as loops (5.5.3) or ghost functions (6.1.6).
-!Action Taken:
+!Action Taken:Ghost Functions, 6.1.6 updated.
 !Checked By:
 
 !Label: JEB/02
@@ -1529,3 +1562,315 @@ reference their relevant TN's (if possible).
 !Description: Typo "both and input and and output"
 !Action Taken:
 !Checked By:
+
+!Label: YM001
+!Location: General
+!Description: general comment: the order between "Dynamic Semantics" and "Verification Rules"
+is sometimes reversed. This should be the same everywhere.
+!Action Taken:
+!Checked By:
+
+!Label: YM002
+!Location: 1.4 Method of Description
+!Description: It says "Syntax: this section gives the format of the SPARK 2014 aspects and
+pragmas." Why new attributes are not mentioned?
+!Action Taken:
+!Checked By:
+
+!Label: YM003
+!Location: 1.4 Method of Description
+!Description:It says: "simply provides explanatory detail." Should the plural be used?
+"details"? (In the following, "detail" or "details" are used interchangeably
+it seems, which one should be used in which case?)
+!Action Taken:
+!Checked By:
+
+!Label: YM004
+!Location: 1.8 SPARK 2014 Strategic Requirements
+!Description:It says "SPARK 2014 shall complete by generation from the body code". I would
+understand better "SPARK 2014 shall support completion of contracts by
+generation from the body code".
+!Action Taken:
+!Checked By:
+
+!Label: YM005
+!Location: 1.8 SPARK 2014 Strategic Requirements
+!Description:The last two strategic requirements are in fact the same.
+!Action Taken:
+!Checked By:
+
+!Label: YM006
+!Location: 1.8 SPARK 2014 Strategic Requirements
+!Description:It says "guarantee that some implementation-dependent choice cannot effect the
+externally-visible behavior of the program", but integer size is such an
+implementation-dependent choice, and it clearly has an effect on program
+behavior. So this paragraph should be rephrased.
+!Action Taken:
+!Checked By:
+
+!Label: YM007
+!Location: 1.9.1 Principal Language Restrictions
+!Description:It says "Aliasing of names is not permitted." It should add "(but renamings are allowed)".
+!Action Taken:
+!Checked By:
+
+!Label: YM008
+!Location:4.4. Expressions 
+!Description:It mentioned Type_Invariant, which will be pushed after Release 1 probably, so should be removed here. 
+!Action Taken:
+!Checked By:
+
+!Label: YM009
+!Location:4.4. Expressions 
+!Description:It also mentions Type_Invariant'Class which should
+definitely be removed. Or they should be mentioned in the note below for
+Dynamic_Predicate that says: 
+!Action Taken:
+!Checked By:
+
+!Label: YM010
+!Location:4.4. Expressions 
+!Description:It also mentions Type_Invariant'Class which should
+definitely be removed. Or they should be mentioned in the note below for
+Dynamic_Predicate that says: "[The Dynamic_Predicate rule is redundant because no use of the Dynamic_Predicate is currently in SPARK 2014. This rule is added in anticipation of the possible relaxation of that restriction.]"
+!Action Taken:
+!Checked By:
+
+!Label: YM011
+!Location:5.5.3.1. 
+!Description:The Verification Rules for Loop_Variant should disappear, as part of the
+general rule that run-time checks lead to proof obligations. And the "Checked
+by Proof" subtitle should not be used anymore.
+!Action Taken:
+!Checked By:
+
+!Label: YM012
+!Location:5.5.3.2. Attribute Loop_Entry 
+!Description:It says: "These rules follow the corresponding Ada RM rule for 'Old" and
+continues with a single rule. Should there be a list of rules here?
+!Action Taken:Changed to singular as it relates to the rule given above.
+!Checked By:
+
+!Label: YM013
+!Location:6.1.2. Subprogram Contracts 
+!Description:It mentions Pre'Class and Post'Class which should not be mentioned for that release.
+!Action Taken:
+!Checked By:
+
+!Label: YM014
+!Location:6.1.3. Contract Cases 
+!Description:It says "Upon a call of a subprogram or entry which is subject to an enabled Contract_Cases aspect", but entries are not in SPARK 2014, so the reference to entry should be removed here.
+!Action Taken:
+!Checked By:
+
+!Label: YM015
+!Location:6.1.4. Global Aspects 
+!Description:There is a special case 7 in the legality rules that either should be removed
+(as it is covered by the verification rules), or should be expanded to other
+similar cases. Right now, it excludes:
+
+   procedure P with Global => (Input => X) is
+     procedure Loc with Global => (Output => X);
+
+but it allows:
+
+   procedure P with Global => null is
+     procedure Loc with Global => (Output => X);
+or
+   procedure P with Global => null is
+     procedure Loc with Global => (Input => X);
+!Action Taken:
+!Checked By:
+
+!Label: YM016
+!Location:6.1.4. Global Aspects 
+!Description:The dynamic semantics part just says: "There are no dynamic semantics
+associated with a Global aspect." It would be better to copy here the rationale
+given for Depends: "as it is used purely for static analysis purposes and is
+not executed."
+!Action Taken:
+!Checked By:
+
+!Label: YM017
+!Location:6.1.5 Depends Aspects 
+!Description:Legality rule 11 mentions a "null output_list" where it should mention instead the null_dependency_clause.
+!Action Taken:
+!Checked By:
+
+!Label: YM018
+!Location:6.1.5 Depends Aspects 
+!Description:Verification rule 3 is a consequence of rules 1 and 2, so should either be
+removed, or given in brackets: "Each input of the implementation of a
+subprogram body is denoted by an input of the Depends aspect of the
+subprogram."
+!Action Taken:
+!Checked By:
+
+!Label: YM019
+!Location:6.1.6. Ghost Functions 
+!Description:I find it very hard to understand because the rules mentions ghost variables,
+ghost procedures and ghost functions, although only ghost functions are
+currently in the language. It would be better to reword it for release 1 to
+only mention ghost functions. (and keep the rest as comments or in a TN)
+!Action Taken:
+!Checked By:
+
+!Label: YM020
+!Location:6.1.6. Ghost Functions 
+!Description:Besides, it says "Within a ghost procedure, a volatile non-global object shall
+not be read.", but what about volatile global objects??? I guess they should
+not be read either.
+!Action Taken:
+!Checked By:
+
+!Label: YM021
+!Location:6.4. Subprogram Calls 
+!Description:The reference to dispatching calls should be removed.
+!Action Taken:
+!Checked By:
+
+!Label: YM022
+!Location:6.4.2. Anti-Aliasing 
+!Description:The verification rules all start with "In SPARK 2014". There is no need for
+such a precision in this document (and it's not given in other verification
+rules).
+!Action Taken:
+!Checked By:
+
+!Label: YM023
+!Location:6.5. Return Statements 
+!Description:Any reason why extended_return_statements are not allowed? Actually, I have a
+TN to implement those in proof! (M301-019)
+!Action Taken:
+!Checked By:
+
+!Label: YM024
+!Location:7.1.1. Abstraction of State 
+!Description:Regarding the definition of the hidden state of a package P, what about the
+hidden state of a package declared immediately within the private part or body
+of P? It is not currently counted in the hidden state of P. It should.
+TN to implement those in proof! (M301-019)
+!Action Taken:
+!Checked By:
+
+!Label: YM025
+!Location:7.1.2. External State 
+!Description:It says "Ada aspects are used for specifying whether a variable is
+external". It does not seem true, as External is not an Ada aspect.
+!Action Taken:
+!Checked By:
+
+!Label: YM026
+!Location:7.1.2. External State 
+!Description:Since the legality rules "Nor shall it be denoted as an output/input of a
+Depends aspect." are consequences of the other legality rules, should they be
+in brackets?
+!Action Taken:
+!Checked By:
+
+!Label: YM027
+!Location:7.1.2. External State 
+!Description:Do Input_Only and Output_Only work well with the future aspects decribed by
+Steve in M509-001?
+  Assume_Unknown_Readers
+  Assume_Unknown_Writers
+  Read_Is_An_External_Effect
+It does not look like it, which is a major problem for evolving the language
+in a direction desired by our customers (Secunet in particular).
+!Action Taken:
+!Checked By:
+
+!Label: YM028
+!Location: 
+!Description:It says in legality rule 4 that "A package_declaration or
+generic_package_declaration shall have a completion [(a body)] if it contains a
+non-null Abstract_State aspect specification." What about the following
+package?
+
+  package P with Abstract_State => State is
+    G : Integer;
+  private
+    L : Integer with Part_Of => State;
+  end P;
+!Action Taken:
+!Checked By:
+
+!Label: YM029
+!Location:7.1.6. Initial Condition Aspect
+!Description:I don't understand what it means for a state_name to "appear" or be
+"referenced" in an Initial_Condition aspect, as alluded to in legality rules 3
+and 4. Does State "appear" or is "referenced" in the following legal example?
+
+  package P
+    with Abstract_State => State,
+         Initial_Condition => Get = 0
+  is
+    function Get return Integer with Global => State;
+  private
+    G : Integer with Part_Of => State;
+    function Get return Integer is (G);
+  end P;
+!Action Taken:
+!Checked By:
+
+!Label: YM030
+!Location:7.1.6. Initial Condition Aspect
+!Description:The verification rule of Initial_Condition derives from its dynamic semantics, so should it be stated?
+!Action Taken:
+!Checked By:
+
+!Label: YM031
+!Location:7.1.6. Initial Condition Aspect
+!Description:The verification rule states: "The Boolean expression of the Initial_Condition
+aspect of a package shall only depend on properties of the state of the package
+specifying the Initial_Condition aspect otherwise it will not be possible to
+discharge the proof obligation by analysis of the package alone." which is
+false. What about relying on other packages Initial_Condition?
+!Action Taken:
+!Checked By:
+
+!Label: YM032
+!Location:7.2.2. Refined State Aspect
+!Description:It says in static semantics rule 2: "A constituent with an option_list is used
+to indicate the options that apply to the constituent." but there are no
+option_list in the grammar for refinement_list.
+!Action Taken:
+!Checked By:
+
+!Label: YM033
+!Location:7.2.4. Initialization Issues
+!Description:It mentions "volatile states" in the verification rule, which does not match
+the otherwise used terminology of "external state".
+!Action Taken:
+!Checked By:
+
+!Label: YM034
+!Location:7.3.2. Type Invariants
+!Description:It says "will be completed for Milestone 3", I don't think we'll have time for
+that, so I'd rather put it after Release 1.
+!Action Taken:
+!Checked By:
+
+!Label: YM035
+!Location:10.1.2.1.
+!Description:The legality rules for where an abstract view of a variable is allowed exclude
+Refined_Global and Refined_Depends. These should be added.
+!Action Taken:
+!Checked By:
+
+!Label: YM036
+!Location:10.1.2.1.
+!Description:Rule 3 in static semantics mentions the "volatile" characteristic of an
+abstract view. Shouldn't it say "external"?
+!Action Taken:
+!Checked By:
+
+!Label: YM037
+!Location:14. Shared Variable Control (Annex C.6)
+!Description:It says "A volatile variable shall not be declared within the body of a
+function, directly or indirectly." Is it the same as saying that a volatile
+variable shall always be library-level?
+!Action Taken:
+!Checked By:
+
+
