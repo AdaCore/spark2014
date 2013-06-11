@@ -257,6 +257,7 @@ There are no dynamic semantics associated with these aspects.
    end Multiple_Ports;
 
 .. todo:: Add support for more complex models of external state.
+          To be completed in a post-Release 1 version of this document.
 
 
 .. _abstract-state-aspect:
@@ -1768,7 +1769,7 @@ be a Boolean ``expression``.
    raised.
 
 .. todo:: refined contract_cases.
-          To be completed in the Milestone 3 version of this document.
+          To be completed in a post-Release 1 version of this document.
 
 .. _refined_external_states:
 
@@ -1974,6 +1975,7 @@ The ``aspect_specification`` Type_Invariant is not permitted in |SPARK|.
 to be introduced in a future release.]
 
 .. todo:: Add support for type invariants in SPARK 2014.
+          To be completed in a post-Release 1 version of this document.
 
 ..
    .. centered:: **Syntax**
