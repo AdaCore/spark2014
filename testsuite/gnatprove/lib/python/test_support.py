@@ -60,14 +60,14 @@ def sort_key_for_errors(line):
          file:line:col:msg
     """
     try:
-        sl = line.split(':')
-        if len(sl) >= 4:
-            rest = ':'.join(sl[3:])
-            return (sl[0],int(sl[1]),int(sl[2]), rest)
-        else:
-            raise Exception()
-    except:
-        return ("",0,0,line)
+        sl = line.split(':', 3)
+        if len(sl) == 4:
+            return (sl[0], int(sl[1]), int(sl[2]), sl[3])
+    except ValueError:
+        pass
+    # We arrive here if the line does not have 3 colons or one of the
+    # integer conversions fails
+    return ("", 0, 0, line)
 
 def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
