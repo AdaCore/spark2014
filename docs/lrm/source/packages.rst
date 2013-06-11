@@ -328,16 +328,16 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.4 LR An option shall not be repeated within an option list.
+      :Trace Unit: 7.1.4 LR an option shall not be repeated within an option list
 
 #. If External is specified in an ``option_list`` then at most one of
    Input_Only or Output_Only ``options`` shall be specified in the
-   ``option_list``. The Input_Only and Output_only options shall not be specified in
+   ``option_list``. The Input_Only and Output_Only options shall not be specified in
    an ``option_list`` without an External ``option``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.4 LR At most one of Input_Only or Output_Only with External.
+      :Trace Unit: 7.1.4 LR at most one of Input_Only or Output_Only with External
 
 #. If an ``option_list`` contains one or more ``name_value_option`` items
    then they shall be the final options in the list.
