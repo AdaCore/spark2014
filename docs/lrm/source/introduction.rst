@@ -64,7 +64,7 @@ Lifecycle of this Document
 --------------------------
 
 This document will be developed incrementally towards a number of milestones
--- this version of the document represents Milestone 2 --
+-- this version of the document represents Milestone 3 --
 culminating in Release 1 of the document that matches the first formal release
 of the toolset. Subsequent releases of the document will follow, associated with
 subsequent formal releases of the toolset. Hence, where inclusion of particular
@@ -101,11 +101,11 @@ with the Ada 2012 RM).
 Readers interested in how SPARK 2005 constructs and idioms map into
 |SPARK| should consult the appendix :ref:`mapping-spec-label`.
 Note that this section does not cover all language features presented in this document
--- although it covers the main features -- and will be updated for the Milestone 3
+-- although it covers the main features -- and will be updated for the Milestone 4
 version of this document.
 
 .. todo:: Update mapping specification section to cover all necessary language features.
-          To be completed in the milestone 3 version of this document.
+          To be completed in the milestone 4 version of this document.
 
 .. _desc_notate:
 
@@ -146,7 +146,7 @@ In addition, examples of the use of the new features are given along with the
 language definition detail.
 
 .. todo::
-     We need to increase the number of examples given. To be completed in the Milestone 3
+     We need to increase the number of examples given. To be completed in the Milestone 4
      version of this document.
 
 .. _formal_analysis:
@@ -183,6 +183,7 @@ not met and may be unsound if data-flow errors are present.
 
 .. todo::
       Consider adding a glossary, defining terms such as flow analysis and formal verification.
+      To be completed in the Milestone 4 version of this document.
 
 Further Detail on Formal Verification
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -256,6 +257,7 @@ the |SPARK| tools will still be able to undertake all their static checks and pr
 
 .. todo::
       The pragmas equivalent to the new aspects need to be added to this document.
+      To be added in the Milestone 4 version of this document.
 
 Main Program
 ------------
@@ -416,7 +418,7 @@ Some are expanded in subsequent sections within this chapter.
 .. todo::
    Where Ada 2012 language features are designated as not in SPARK 2014 in subsequent
    chapters of this document, add tracing back to the strategic requirement that
-   motivates that designation.
+   motivates that designation. To be completed in the Milestone 4 version of this document.
 
 .. _explain_sprs:
 
@@ -589,7 +591,7 @@ from a collection of guidelines.
 
 .. todo::
    Complete detail on Code Policies.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. _ghost_entities:
 
@@ -691,11 +693,11 @@ Constructive, Generative and Retrospective analysis and Verification.*
 
 .. todo::
    Add detail on how retrospective analysis will work when we have a mix of |SPARK| and non-|SPARK|.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. todo::
    Complete detail on constructive, generative and retrospective analysis and verification.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. _in_out:
 
