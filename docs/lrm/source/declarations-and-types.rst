@@ -39,6 +39,14 @@ For a type or subtype to be in |SPARK|, all predicate specifications that apply
 to the (sub)type must be in |SPARK|.  Notwithstanding any rule to the contrary,
 a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
 
+Subtypes that are not preelaborable are not subject to flow analysis.
+[Users may write programs using such subtypes and those programs can be
+subject to formal verification. However, flow analysis will ignore the use
+of such a subtype and will instead raise a warning to indicate that its use has not
+been analysed.]
+
+.. todo:: This restriction will be lifted in a future release of this document.
+
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -67,6 +75,23 @@ The entity declared by an ``object_declaration`` is
 in |SPARK| if its declaration does not contain the reserved word **aliased**,
 its type is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
 |SPARK|.
+
+Object Declarations
+~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+Number Declarations
+~~~~~~~~~~~~~~~~~~~
+
+Constants that are not preelaborable are not subject to flow analysis.
+[Users may write programs using such constants and those programs can be
+subject to formal verification. However, flow analysis will ignore the use
+of such a constant and will instead raise a warning to indicate that its use has not
+been analysed.]
+
+.. todo:: This restriction will be lifted in a future release of this document.
+
 
 Derived Types and Classes
 -------------------------
