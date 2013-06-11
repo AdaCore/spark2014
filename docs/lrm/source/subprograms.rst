@@ -1059,6 +1059,9 @@ There are no additional dynamic semantics associated with nonreturning procedure
    are the same as those introduced for a runtime check which fails
    unconditionally. See also section :ref:`exceptions`, where a similar restriction is
    imposed on ``raise_statements``.]
+   
+#. The body of a non-returning procedure should not be subjected to formal verification or
+   flow analysis.
 
 Overloading of Operators
 ------------------------
