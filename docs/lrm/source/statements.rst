@@ -55,6 +55,7 @@ Generalized Loop Iteration
 
 .. todo:: Need to consider further the support for iterators and whether
           the application of constant iterators could be supported.
+          To be completed in a post-Release 1 version of this document.
 
 .. _loop_invariants:
 
@@ -96,7 +97,7 @@ extra static semantics and legality rules given below.
 
 .. todo::
    Complete detail on pragmas Loop_Invariant and Loop_Variant, and attribute Loop_Entry.
-   To be completed in the Milestone 3 version of this document.
+   To be completed in the Milestone 4 version of this document.
 
 .. centered:: **Legality Rules**
 
@@ -124,8 +125,8 @@ discrete type.
 
 .. centered:: **Static Semantics**
 
-.. todo:: Anything to say here? RCC does not know. Any comment from SB or YM? Target: Milestone 3
-          version of document.
+.. todo:: Anything to say here? RCC does not know. Any comment from SB or YM?
+          To be completed in the Milestone 4 version of this document.
 
 .. centered:: **Dynamic Semantics**
 
@@ -159,8 +160,8 @@ comparisons and checks are performed using predefined operations.
 
 .. centered:: *Checked by Proof*
 
-.. todo:: describe Proof Semantics of pragma Loop_Invariant. Target: Milestone 3
-          version of document.
+.. todo:: describe Proof Semantics of pragma Loop_Invariant.
+          To be completed in the Milestone 4 version of this document.
 
 The pragma Loop_Variant describes a lexicographic order, which must be
 proved to decrease after each iteration of the loop. This means that it is
@@ -178,6 +179,7 @@ Attribute Loop_Entry
 ^^^^^^^^^^^^^^^^^^^^
 
 .. _todo: Add a rule to say you cannot have X'Loop_Entry'Loop_Entry.
+          To be completed in the Milestone 4 version of this document.
 
 For a prefix *X* that denotes an object of a nonlimited type, the
 following attribute is defined
