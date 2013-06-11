@@ -63,7 +63,7 @@ def get_version():
     """Extract the version from spark2014vsn.ads"""
     for line in file("../../spark2014vsn.ads").readlines():
         if line.find("SPARK2014_Static_Version") and ":=" in line:
-            return line.split('"')[1]
+            return line.split('"')[1].split(' ')[0]
     raise Exception("Cannot find version number")
 
 # The version info for the project you're documenting, acts as replacement for
