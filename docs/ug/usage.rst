@@ -580,6 +580,10 @@ simple code examples.
 
 .. include:: gnatprove_by_example/loop.rst
 
+.. _flow_examples:
+
+.. include:: gnatprove_by_example/flow.rst
+
 .. .. _advanced_examples:
 
 .. .. include:: gnatprove_by_example/advanced.rst

@@ -1,0 +1,2 @@
+swap_incorrect_c.adb:7:07: ineffective statement [ineffective]
+swap_incorrect_c.adb:8:07: "Old_Y" is not used [unused]
