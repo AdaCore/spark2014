@@ -1,26 +1,12 @@
 package body Stack is
 
-   ----------
-   -- Push --
-   ----------
+   package body Model is
+      function To (S : Stack) return M is (M(S.Content (1 .. S.Top)));
+      function To_But_Top (S : Stack) return M is (M(S.Content (1 .. S.Top - 1)));
 
-   function Push
-     (S : Stack;
-      X : in Integer)
-      return Stack
-   is
-
-   begin
---      return Res : Stack := Stack'(S.Top + 1, S.Content) do
---         Res.Content (Res.Top) := X;
---      end return;
-      declare
-         Res : Stack := Stack'(S.Top + 1, S.Content);
-      begin
-         Res.Content (Res.Top) := X;
-         return Res;
-      end;
-   end Push;
+      function Is_Full  (S : Stack) return Boolean is (S.Top >= S.Content'Last);
+      function Is_Empty (S : Stack) return Boolean is (S.Top < S.Content'First);
+   end Model;
 
    ----------
    -- Push --
