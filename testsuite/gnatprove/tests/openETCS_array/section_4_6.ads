@@ -101,6 +101,8 @@ Package Section_4_6 is
 
    function transition(mode : etcs_mode_t) return etcs_mode_t
    with
-     Post => (disjoint_condition_transitions = True);
+     --Post => (disjoint_condition_transitions = True);
+     Contract_Cases => (condition_transition_SB_to_SH => True,
+                        condition_transition_SB_to_FS => True,
+                        condition_transition_SB_to_IS => True);
 end;
-
