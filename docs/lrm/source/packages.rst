@@ -182,7 +182,7 @@ this specification.
    * as the name on the left-hand side of an assignment statement; or
 
    * as an actual parameter in a procedure call of which the mode of the
-     corresponding formal parameter is **out** and is of a non-scalar, volatile
+     corresponding formal parameter is **out** and is of a non-scalar volatile
      type.
 
    [This rule means that an external output cannot be directly read by the
@@ -314,7 +314,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
   simple_option              ::= External
                                | Input_Only
                                | Output_Only
-  name_value_option          ::= Part_Of  => abstract_state
+  name_value_option          ::= Part_Of => abstract_state
   state_name                 ::= defining_identifier
   abstract_state             ::= name
 
@@ -379,14 +379,14 @@ shall follow the grammar of ``abstract_state_list`` given below.
       abstraction" need to be name resolution rules, not just legality rules.
 
 #. [A state abstraction shall only be named in contexts where this is
-   explicitly permitted (e.g., as part of a Globals aspect
+   explicitly permitted (e.g., as part of a Global aspect
    specification), but this is not a name resolution rule. Thus, the
    declaration of a state abstraction has the same visibility as any
    other declaration.
    A state abstraction is not an object; it does not have a type. The
    completion of a state abstraction declared in a package
-   aspect_specification can only be provided as part of a
-   Refined_State aspect specification within the body of the package.]
+   ``aspect_specification`` can only be provided as part of a
+   Refined_State ``aspect_specification`` within the body of the package.]
 
 #. A **null** ``abstract_state_list`` specifies that a package contains no
    hidden state.
@@ -417,7 +417,7 @@ There are no verification rules associated with the Abstract_State aspect.
 
 .. centered:: **Dynamic Semantics**
 
-There are no Dynamic Semantics associated with the Abstract_State aspect.
+There are no dynamic semantics associated with the Abstract_State aspect.
 
 .. centered:: **Examples**
 
@@ -481,10 +481,10 @@ The Initializes aspect specifies the visible variables and state abstractions of
 a package that are initialized by the elaboration of the package. In |SPARK|
 a package shall only initialize variables declared immediately within the package.
 
-If the initialization of a variable or state abstraction, V, during the
-elaboration of a package, P, is dependent on the value of a visible variable or
+If the initialization of a variable or state abstraction, *V*, during the
+elaboration of a package, *P*, is dependent on the value of a visible variable or
 state abstraction from another package, then this entity shall be denoted in
-the input list associated with V in the Initialization aspect of P.
+the input list associated with *V* in the Initializes aspect of *P*.
 
 The Initializes aspect is introduced by an ``aspect_specification`` where the
 ``aspect_mark`` is Initializes and the ``aspect_definition`` shall follow the
@@ -498,7 +498,7 @@ grammar of ``initialization_spec`` given below.
                         | null
 
   initialization_list ::= initialization_item
-                        | (initialization_item {, initialization_item})
+                        | ( initialization_item { , initialization_item } )
 
   initialization_item ::= name [ => input_list]
 
@@ -558,7 +558,7 @@ grammar of ``initialization_spec`` given below.
    state abstractions and visible variables of the package are initialized
    by the elaboration of the package, both its specification and body, and
    any units which have state abstractions or variable declarations that are
-   part of (constituents) of a state abstraction declared by the package.
+   part (constituents) of a state abstraction declared by the package.
    [A package with a **null** ``initialization_list``, or no Initializes aspect
    does not initialize any of its state abstractions or variables.]
 
@@ -580,7 +580,7 @@ grammar of ``initialization_spec`` given below.
 
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with the Initializes Aspect.
+There are no dynamic semantics associated with the Initializes aspect.
 
 .. centered:: **Verification Rules**
 
@@ -630,11 +630,11 @@ There are no dynamic semantics associated with the Initializes Aspect.
     end Z;
 
 
-Initial Condition Aspect
+Initial_Condition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Initial Condition aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is "Initial_Condition" and the ``aspect_definition`` shall
+The Initial_Condition aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is Initial_Condition and the ``aspect_definition`` shall
 be a *Boolean_*\ ``expression``.
 
 .. centered:: **Legality Rules**
@@ -656,9 +656,9 @@ be a *Boolean_*\ ``expression``.
                    and Initializes aspects
 
 #. Each variable or state abstraction appearing in an Initial_Condition aspect
-   of a package Q which is declared immediately within the visible part of Q
-   shall be initialized during the elaboration of Q and be denoted by a ``name``
-   of an ``initialization_item`` of the Initializes aspect of Q.
+   of a package *Q* which is declared immediately within the visible part of *Q*
+   shall be initialized during the elaboration of *Q* and be denoted by a ``name``
+   of an ``initialization_item`` of the Initializes aspect of *Q*.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -756,7 +756,7 @@ subprogram in the package body whose visible part declares its abstract view.
 In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
 refinements of state abstractions declared by the package. Refined_Global,
-Depends, Pre and Post aspects are provided to express the contracts of a refined
+Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express the contracts of a refined
 view of a subprogram.
 
 Refined State Aspect
