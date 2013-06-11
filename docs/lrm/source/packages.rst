@@ -363,6 +363,10 @@ shall follow the grammar of ``abstract_state_list`` given below.
    Input. An explicit Global aspect may be specified which replaces the
    implicit one.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 LR state_name shall only be overloaded by subprogram
+
 .. centered:: **Static Semantics**
 
 
