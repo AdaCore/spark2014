@@ -41,7 +41,7 @@ notion of an *abstract view* of a variable declaration is also introduced, and
 the limited view of a package includes the abstract view of any variables
 declared in the visible part of that package. The only allowed uses of an
 abstract view of a variable are where the use of a state abstraction would be
-allowed (for example, in a Global aspect specification).
+allowed (for example, in a Global ``aspect_specification``).
 
 .. centered:: **Syntax**
 
@@ -58,15 +58,15 @@ There is no additional syntax associated with limited package views in |SPARK|.
 
 #. Any state abstractions declared within a given package are present in
    the limited view of the package.
-   [This means that, for example, a Globals aspect specification for a
-   subprogram declared in a library unit package P1 could refer to a state
-   abstraction declared in a package P2 if P1 has a limited with of P2.]
+   [This means that, for example, a Globals ``aspect_specification`` for a
+   subprogram declared in a library unit package *P1* could refer to a state
+   abstraction declared in a package *P2* if *P1* has a limited with of *P2*.]
 
 #. For every variable object declared by an ``object_declaration`` occuring
    immediately within the visible part of a given package, the limited
    view of the package contains an *abstract view* of the object.
 
-#. The abstract view of a volatile variable is volatile. 
+#. The abstract view of a volatile variable is volatile.
 
 .. centered:: **Dynamic Semantics**
 
@@ -123,19 +123,10 @@ Program Execution
 -----------------
 
 |SPARK| analyses do not involve program execution.  However, |SPARK| programs
-are executable including those new language defined aspects and pragmas where 
-they have dynamic semantics given.  
+are executable including those new language defined aspects and pragmas where
+they have dynamic semantics given.
 
 Elaboration Control
 ~~~~~~~~~~~~~~~~~~~
 
 No extenstions or restrictions.
-
-
-
-
-
-
-
-
-  

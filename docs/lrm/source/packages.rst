@@ -755,11 +755,11 @@ refinements of state abstractions declared by the package. Refined_Global,
 Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express the contracts of a refined
 view of a subprogram.
 
-Refined State Aspect
+Refined_State Aspect
 ~~~~~~~~~~~~~~~~~~~~
 
-The Refined State aspect is introduced by an ``aspect_specification`` where the
-``aspect_mark`` is "Refined_State" and the ``aspect_definition`` shall follow
+The Refined_State aspect is introduced by an ``aspect_specification`` where the
+``aspect_mark`` is Refined_State and the ``aspect_definition`` shall follow
 the grammar of ``refinement_list`` given below.
 
 .. centered:: **Syntax**
@@ -767,11 +767,11 @@ the grammar of ``refinement_list`` given below.
 ::
 
   refinement_list   ::= refinement_clause
-                      | (refinement_clause {, refinement_clause})
+                      | ( refinement_clause { , refinement_clause } )
   refinement_clause ::= state_name => constituent_list
   constituent_list  ::= null
                       | constituent
-                      | (constituent {, constituent})
+                      | ( constituent { , constituent } )
 
 where
 
@@ -783,12 +783,12 @@ where
 
 .. centered:: **Name Resolution Rules**
 
-#. A Refined_State Aspect of a ``package_body`` has visibility extended to  the
+#. A Refined_State aspect of a ``package_body`` has visibility extended to  the
    ``declarative_part`` of the body.
 
 .. centered:: **Legality Rules**
 
-#. A Refined_State Aspect shall only appear in the ``aspect_specification`` of a
+#. A Refined_State aspect shall only appear in the ``aspect_specification`` of a
    ``package_body``. [The use of ``package_body`` rather than package body
    allows this aspect to be specified for generic package bodies.]
 
@@ -887,11 +887,11 @@ where
 
 .. centered:: **Verification Rules**
 
-There are no verification rules associated with Refined_State aspects.
+There are no verification rules associated with Refined_State aspect.
 
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with state abstraction and refinement.
+There are no dynamic semantics associated with Refined_State aspect.
 
 .. centered:: **Examples**
 
@@ -936,7 +936,7 @@ using the Part_Of ``option`` or aspect, associated with each declaration of
 the visible state of the private unit.
 
 The unit declaring the encapsulating state abstraction identified by the Part_Of
-``option`` or aspect need not be its parent, but it must be a unit whose body
+``option`` or aspect needs not be its parent, but it must be a unit whose body
 has visibility of the private library unit, while being *more visible* than the
 original unit. Furthermore, the unit declaring the encapsulating state
 abstraction must denote the corresponding item of visible state in its
@@ -1424,9 +1424,10 @@ The static semantics are equivalent to those given for the Global aspect in
 
    * For each ``global_item`` in the Global aspect which denotes
      a state abstraction whose **null** refinement is visible at the point
-     of the Refined_Global aspect specification, shall be omitted, or if
+     of the Refined_Global aspect specification, the Refined_Global
+     specification shall be omitted, or if
      required by the syntax of a ``global_specification`` replaced by a **null**
-     in the the Refined_Global aspect.
+     in the Refined_Global aspect.
 
    * For each ``global_item`` in the Global aspect which does not
      denote such a state abstraction, the Refined_Global specification
@@ -1443,7 +1444,7 @@ The static semantics are equivalent to those given for the Global aspect in
                    or must repeat the state abstraction if its refinement is not
                    visible
 
-#. ``Global_items`` in the a Refined_Global aspect specification shall denote
+#. ``Global_items`` in a Refined_Global ``aspect_specification`` shall denote
    distinct entities.
 
    .. ifconfig:: Display_Trace_Units
@@ -1499,7 +1500,7 @@ The static semantics are equivalent to those given for the Global aspect in
 .. centered:: **Verification Rules**
 
 #. If a subprogram has a Refined_Global aspect it is used in the analysis of the
-   subprogram body rather than its Global Aspect.
+   subprogram body rather than its Global aspect.
 
 #. The verification rules given for :ref:`global-aspects` also apply.
 
