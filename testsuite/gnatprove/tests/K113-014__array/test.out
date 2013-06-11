@@ -1,5 +1,4 @@
-
 ar.adb:12:10: info: index check proved
+ar.ads:6:10: info: postcondition proved
 ar.ads:10:20: info: postcondition proved
 ar.ads:10:24: info: index check proved
-ar.ads:6:10: info: postcondition proved

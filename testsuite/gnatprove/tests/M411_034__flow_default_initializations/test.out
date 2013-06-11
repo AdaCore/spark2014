@@ -1,4 +1,4 @@
-test.adb:100:25: default initialization must be a manifest constant, but it depends on "Tmp" [non_manifest_default]
 test.adb:42:09: use of uninitialized variable "Tmp.A" [uninitialized__tmp_a]
 test.adb:80:09: use of uninitialized variable "Tmp.A.A" [uninitialized__tmp_a_a]
 test.adb:91:14: flow analysis of "Test_06" abandoned due to records with non-manifest initializations
+test.adb:100:25: default initialization must be a manifest constant, but it depends on "Tmp" [non_manifest_default]

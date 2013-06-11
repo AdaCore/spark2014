@@ -1,2 +1,2 @@
-c43209a.adb:13:04: ineffective statement [ineffective]
 c43209a.adb:1:11: flow analysis of main program "c43209a" has not yet been implemented
+c43209a.adb:13:04: ineffective statement [ineffective]

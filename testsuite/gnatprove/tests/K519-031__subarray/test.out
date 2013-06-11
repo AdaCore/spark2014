@@ -1,8 +1,8 @@
-
+subar.adb:5:7: info: assertion proved
 subar.adb:13:7: info: precondition proved
 subar.adb:16:14: info: range check proved
-subar.adb:18:26: index check not proved
 subar.adb:18:7: info: assertion proved
+subar.adb:18:26: index check not proved
 subar.adb:26:7: info: precondition proved
 subar.adb:33:7: info: precondition proved
 subar.adb:37:7: info: range check proved
@@ -12,5 +12,4 @@ subar.adb:51:14: info: overflow check proved
 subar.adb:52:11: info: range check proved
 subar.adb:55:14: info: overflow check proved
 subar.adb:57:11: range check not proved
-subar.adb:5:7: info: assertion proved
 subar.ads:25:24: index check not proved

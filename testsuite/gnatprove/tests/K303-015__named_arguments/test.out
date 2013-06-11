@@ -1,12 +1,11 @@
-
+substract.adb:4:20: overflow check not proved
 substract.adb:10:20: overflow check not proved
 substract.adb:10:29: overflow check not proved
-substract.adb:4:20: overflow check not proved
-substract.ads:12:20: info: postcondition proved
-substract.ads:12:43: info: overflow check proved
 substract.ads:3:20: info: postcondition proved
 substract.ads:3:40: info: overflow check proved
 substract.ads:6:20: info: postcondition proved
 substract.ads:6:44: info: overflow check proved
 substract.ads:9:20: info: postcondition proved
 substract.ads:9:44: info: overflow check proved
+substract.ads:12:20: info: postcondition proved
+substract.ads:12:43: info: overflow check proved

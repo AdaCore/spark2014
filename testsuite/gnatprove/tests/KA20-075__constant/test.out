@@ -1,3 +1,5 @@
+const.adb:7:7: info: assertion proved
+const.adb:8:7: info: assertion proved
 const.adb:10:7: info: assertion proved
 const.adb:11:7: info: assertion proved
 const.adb:12:7: info: assertion proved
@@ -20,5 +22,3 @@ const.adb:36:7: info: assertion proved
 const.adb:37:7: info: assertion proved
 const.adb:41:7: assertion not proved, requires O = 1
 const.adb:42:7: assertion not proved, requires P = 1
-const.adb:7:7: info: assertion proved
-const.adb:8:7: info: assertion proved

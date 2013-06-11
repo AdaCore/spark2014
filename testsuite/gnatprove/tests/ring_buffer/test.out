@@ -1,4 +1,5 @@
-
+harness.adb:8:4: info: precondition proved
+harness.adb:9:4: info: precondition proved
 harness.adb:10:4: info: precondition proved
 harness.adb:11:4: assertion not proved, requires H = X
 harness.adb:12:4: info: precondition proved
@@ -6,8 +7,6 @@ harness.adb:13:4: info: precondition proved
 harness.adb:14:4: assertion not proved, requires H = Y
 harness.adb:15:4: info: precondition proved
 harness.adb:16:4: assertion not proved, requires H = Z
-harness.adb:8:4: info: precondition proved
-harness.adb:9:4: info: precondition proved
 ring_buf.adb:11:36: info: division check proved
 ring_buf.adb:12:28: info: range check proved
 ring_buf.adb:19:32: info: division check proved

@@ -1,6 +1,6 @@
+counters.adb:13:8: info: discriminant check proved
 counters.adb:13:15: info: discriminant check proved
 counters.adb:13:18: overflow check not proved
-counters.adb:13:8: info: discriminant check proved
 counters.adb:18:11: info: discriminant check proved
 counters.adb:18:18: info: discriminant check proved
 counters.adb:18:21: overflow check not proved

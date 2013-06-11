@@ -1,4 +1,9 @@
-
+dynamic.adb:4:33: info: overflow check proved
+dynamic.adb:5:24: info: overflow check proved
+dynamic.adb:6:15: info: range check proved
+dynamic.adb:7:15: info: range check proved
+dynamic.adb:8:15: info: range check proved
+dynamic.adb:9:15: info: range check proved
 dynamic.adb:10:15: info: range check proved
 dynamic.adb:11:15: info: range check proved
 dynamic.adb:12:15: info: range check proved
@@ -13,11 +18,5 @@ dynamic.adb:21:17: range check not proved
 dynamic.adb:22:19: info: overflow check proved
 dynamic.adb:22:19: range check not proved
 dynamic.adb:24:14: info: overflow check proved
-dynamic.adb:4:33: info: overflow check proved
-dynamic.adb:5:24: info: overflow check proved
-dynamic.adb:6:15: info: range check proved
-dynamic.adb:7:15: info: range check proved
-dynamic.adb:8:15: info: range check proved
-dynamic.adb:9:15: info: range check proved
 dynamic.ads:7:21: info: postcondition proved
 dynamic.ads:7:23: info: overflow check proved

@@ -1,4 +1,5 @@
-
+power_and_sum.adb:9:10: loop invariant initialization not proved
+power_and_sum.adb:9:10: loop invariant preservation not proved
 power_and_sum.adb:10:27: overflow check not proved
 power_and_sum.adb:11:17: overflow check not proved
 power_and_sum.adb:20:10: loop invariant initialization not proved, requires 2*TotalSum = I*(I-1
@@ -19,8 +20,6 @@ power_and_sum.adb:48:31: overflow check not proved
 power_and_sum.adb:49:17: overflow check not proved
 power_and_sum.adb:51:7: assertion not proved, requires 6*TotalSum = N*(N+1)*(N+2
 power_and_sum.adb:52:17: range check not proved
-power_and_sum.adb:9:10: loop invariant initialization not proved
-power_and_sum.adb:9:10: loop invariant preservation not proved
 power_and_sum.ads:3:14: postcondition not proved, requires X ** N = Result
 power_and_sum.ads:6:14: postcondition not proved, requires 2 * Result = N * (N+1
 power_and_sum.ads:9:14: postcondition not proved, requires 6 * Result = N * (N+1) * (N+2

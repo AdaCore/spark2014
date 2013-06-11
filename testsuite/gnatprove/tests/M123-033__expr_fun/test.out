@@ -1,3 +1,4 @@
+main.adb:8:10: info: assertion proved
 main.adb:10:10: info: assertion proved
 main.adb:12:10: assertion not proved, requires F3 = 1
 main.adb:14:10: assertion not proved, requires F4 = 1
@@ -5,7 +6,8 @@ main.adb:16:10: info: assertion proved
 main.adb:18:10: assertion not proved, requires G2 = 1
 main.adb:20:10: assertion not proved, requires G3 = 1
 main.adb:22:10: assertion not proved, requires G4 = 1
-main.adb:8:10: info: assertion proved
+p.adb:7:13: info: assertion proved
+p.adb:9:13: info: assertion proved
 p.adb:11:13: info: assertion proved
 p.adb:13:13: assertion not proved, requires F4 = 1
 p.adb:15:13: info: assertion proved
@@ -20,12 +22,11 @@ p.adb:41:13: info: assertion proved
 p.adb:43:13: assertion not proved, requires G2 = 1
 p.adb:45:13: assertion not proved, requires G3 = 1
 p.adb:47:13: assertion not proved, requires G4 = 1
-p.adb:7:13: info: assertion proved
-p.adb:9:13: info: assertion proved
 p.ads:4:38: info: overflow check proved
 p.ads:4:43: info: overflow check proved
 p.ads:6:38: overflow check not proved
 p.ads:6:43: info: overflow check proved
+private_main.adb:8:10: info: assertion proved
 private_main.adb:10:10: info: assertion proved
 private_main.adb:12:10: assertion not proved, requires F3 = 1
 private_main.adb:14:10: assertion not proved, requires F4 = 1
@@ -33,7 +34,8 @@ private_main.adb:16:10: info: assertion proved
 private_main.adb:18:10: assertion not proved, requires G2 = 1
 private_main.adb:20:10: assertion not proved, requires G3 = 1
 private_main.adb:22:10: assertion not proved, requires G4 = 1
-private_main.adb:8:10: info: assertion proved
+private_p.adb:7:13: info: assertion proved
+private_p.adb:9:13: info: assertion proved
 private_p.adb:11:13: info: assertion proved
 private_p.adb:13:13: assertion not proved, requires F4 = 1
 private_p.adb:15:13: info: assertion proved
@@ -48,12 +50,11 @@ private_p.adb:39:13: info: assertion proved
 private_p.adb:41:13: assertion not proved, requires G2 = 1
 private_p.adb:43:13: assertion not proved, requires G3 = 1
 private_p.adb:45:13: assertion not proved, requires G4 = 1
-private_p.adb:7:13: info: assertion proved
-private_p.adb:9:13: info: assertion proved
 private_p.ads:8:38: overflow check not proved
 private_p.ads:8:43: info: overflow check proved
 private_p.ads:9:38: info: overflow check proved
 private_p.ads:9:43: info: overflow check proved
+private_q.adb:8:13: info: assertion proved
 private_q.adb:10:13: info: assertion proved
 private_q.adb:12:13: assertion not proved, requires F3 = 1
 private_q.adb:14:13: assertion not proved, requires F4 = 1
@@ -71,9 +72,9 @@ private_q.adb:44:13: info: assertion proved
 private_q.adb:46:13: info: assertion proved
 private_q.adb:52:38: info: overflow check proved
 private_q.adb:52:43: info: overflow check proved
-private_q.adb:8:13: info: assertion proved
 private_q.ads:7:38: info: overflow check proved
 private_q.ads:7:43: info: overflow check proved
+q.adb:8:13: info: assertion proved
 q.adb:10:13: info: assertion proved
 q.adb:12:13: assertion not proved, requires F3 = 1
 q.adb:14:13: assertion not proved, requires F4 = 1
@@ -91,9 +92,9 @@ q.adb:43:13: info: assertion proved
 q.adb:45:13: info: assertion proved
 q.adb:47:13: info: assertion proved
 q.adb:49:13: info: assertion proved
-q.adb:8:13: info: assertion proved
 q.ads:5:38: info: overflow check proved
 q.ads:5:43: info: overflow check proved
+reorder_main.adb:8:10: info: assertion proved
 reorder_main.adb:10:10: info: assertion proved
 reorder_main.adb:12:10: assertion not proved, requires F3 = 1
 reorder_main.adb:14:10: assertion not proved, requires F4 = 1
@@ -101,7 +102,8 @@ reorder_main.adb:16:10: info: assertion proved
 reorder_main.adb:18:10: assertion not proved, requires G2 = 1
 reorder_main.adb:20:10: assertion not proved, requires G3 = 1
 reorder_main.adb:22:10: assertion not proved, requires G4 = 1
-reorder_main.adb:8:10: info: assertion proved
+reorder_p.adb:7:13: info: assertion proved
+reorder_p.adb:9:13: info: assertion proved
 reorder_p.adb:11:13: info: assertion proved
 reorder_p.adb:13:13: assertion not proved, requires F4 = 1
 reorder_p.adb:15:13: info: assertion proved
@@ -116,12 +118,11 @@ reorder_p.adb:39:13: info: assertion proved
 reorder_p.adb:41:13: assertion not proved, requires G2 = 1
 reorder_p.adb:43:13: assertion not proved, requires G3 = 1
 reorder_p.adb:45:13: assertion not proved, requires G4 = 1
-reorder_p.adb:7:13: info: assertion proved
-reorder_p.adb:9:13: info: assertion proved
 reorder_p.ads:4:38: info: overflow check proved
 reorder_p.ads:4:43: info: overflow check proved
 reorder_p.ads:6:38: overflow check not proved
 reorder_p.ads:6:43: info: overflow check proved
+reorder_q.adb:8:13: info: assertion proved
 reorder_q.adb:10:13: info: assertion proved
 reorder_q.adb:12:13: assertion not proved, requires F3 = 1
 reorder_q.adb:14:13: assertion not proved, requires F4 = 1
@@ -139,6 +140,5 @@ reorder_q.adb:44:13: info: assertion proved
 reorder_q.adb:46:13: info: assertion proved
 reorder_q.adb:52:38: info: overflow check proved
 reorder_q.adb:52:43: info: overflow check proved
-reorder_q.adb:8:13: info: assertion proved
 reorder_q.ads:5:38: info: overflow check proved
 reorder_q.ads:5:43: info: overflow check proved

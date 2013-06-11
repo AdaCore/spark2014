@@ -1,8 +1,8 @@
-p.ads:10:31: info: division check proved
-p.ads:10:31: overflow check not proved
-p.ads:13:15: info: division check proved
-p.ads:13:15: info: overflow check proved
 p.ads:4:15: division check not proved
 p.ads:4:15: overflow check not proved
 p.ads:7:31: info: division check proved
 p.ads:7:31: overflow check not proved
+p.ads:10:31: info: division check proved
+p.ads:10:31: overflow check not proved
+p.ads:13:15: info: division check proved
+p.ads:13:15: info: overflow check proved

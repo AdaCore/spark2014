@@ -1,2 +1,2 @@
-s.adb:21:9: assertion not proved
 s.adb:7:26: assertion not proved, requires Table (J) /= Value
+s.adb:21:9: assertion not proved

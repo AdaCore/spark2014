@@ -1,4 +1,3 @@
-
+pack.ads:8:19: postcondition not proved, requires X = X'old
 pack.ads:11:19: postcondition not proved, requires X = X'old
 pack.ads:16:19: postcondition not proved, requires X = X'old
-pack.ads:8:19: postcondition not proved, requires X = X'old

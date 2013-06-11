@@ -1,6 +1,5 @@
-
-stacks.adb:11:18: info: range check proved
 stacks.adb:5:18: info: range check proved
+stacks.adb:11:18: info: range check proved
 stacks.ads:18:14: info: postcondition proved
 stacks.ads:18:58: info: overflow check proved
 stacks.ads:22:26: info: postcondition proved

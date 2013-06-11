@@ -1,3 +1,2 @@
-
-bool.adb:15:14: info: postcondition proved
 bool.adb:4:14: info: postcondition proved
+bool.adb:15:14: info: postcondition proved

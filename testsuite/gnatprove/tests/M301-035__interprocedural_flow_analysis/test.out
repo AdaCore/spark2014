@@ -1,8 +1,8 @@
-across_compilation_units-child.ads:27:24: "X" depends on "X"
-across_compilation_units-child.ads:27:24: "X" depends on "Y"
-across_compilation_units-child.ads:29:24: "Y" depends on "Y"
-across_compilation_units-child.ads:30:24: "Z" depends on "X"
-across_compilation_units-child.ads:30:24: "Z" depends on "Z"
+across_compilation_units-child.ads:27:24: "X" depends on "X" [depends_missing]
+across_compilation_units-child.ads:27:24: "X" depends on "Y" [depends_missing]
+across_compilation_units-child.ads:29:24: "Y" depends on "Y" [depends_missing]
+across_compilation_units-child.ads:30:24: "Z" depends on "X" [depends_missing]
+across_compilation_units-child.ads:30:24: "Z" depends on "Z" [depends_missing]
 // coprime_cfg
 digraph G {
    graph [splines=True];

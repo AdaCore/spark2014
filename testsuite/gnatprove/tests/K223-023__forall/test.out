@@ -1,3 +1,2 @@
-
-forall.ads:10:20: postcondition not proved, requires Has_Zero'Result = 0
 forall.ads:6:20: info: postcondition proved
+forall.ads:10:20: postcondition not proved, requires Has_Zero'Result = 0

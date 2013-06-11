@@ -1,2 +1,2 @@
-p.adb:5:12: discriminant check not proved
 p.adb:5:6: info: discriminant check proved
+p.adb:5:12: discriminant check not proved
