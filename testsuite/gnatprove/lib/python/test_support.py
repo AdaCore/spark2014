@@ -51,8 +51,26 @@ def xfail_test():
                     return True
     return False
 
+def sort_key_for_errors(line):
+    """given a line of output, return a key that can be used for sorting
+
+       this key will be a tuple (file,line,col,rest), where file and rest are
+       strings, and line and col are integers for correct sorting.
+       A dummy tuple will be returned for lines that are not of the form
+         file:line:col:msg
+    """
+    try:
+        sl = line.split(':')
+        if len(sl) >= 4:
+            rest = ':'.join(sl[3:])
+            return (sl[0],int(sl[1]),int(sl[2]), rest)
+        else:
+            raise Exception()
+    except:
+        return ("",0,0,line)
+
 def print_sorted(strlist):
-    strlist.sort()
+    strlist.sort(key=sort_key_for_errors)
     for line in strlist:
         print line
 
@@ -179,7 +197,7 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     # Otherwise, print the command output sorted
     else:
         strlist = str.splitlines(process.out)
-        strlist.sort()
+        strlist.sort(key=sort_key_for_errors)
         return strlist
 
 def gnatprove(opt=["-P", "test.gpr"]):
