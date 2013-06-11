@@ -179,6 +179,11 @@ which can be obtained by a right click:
 
 .. note::
 
+   Menu ``Prove Line`` should not be used from the Location View, but only
+   from the code panels.
+
+.. note::
+
    If you use the SPARK-HiLite GPL 2013 release, a fourth submenu ``Show Path``
    is present in the contextual menu, that displays a path in the editor
    corresponding to the current error message. This submenu should only be
