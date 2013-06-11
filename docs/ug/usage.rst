@@ -181,7 +181,9 @@ which can be obtained by a right click:
 
    If you use the SPARK-HiLite GPL 2013 release, a fourth submenu ``Show Path``
    is present in the contextual menu, that displays a path in the editor
-   corresponding to the current error message. This highlighting can be removed
+   corresponding to the current error message. This submenu should only be
+   used when displayed after right-clicking in the Location View, not after
+   right-clicking in the code panel. The path highlighting can be removed
    by selecting ``Prove --> Remove Editor Highlighting``.
 
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in

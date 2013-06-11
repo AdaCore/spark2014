@@ -512,7 +512,9 @@ message, or on line 21 in file ``search.adb``, to show the path on which
    If you use the SPARK-HiLite GPL 2013 release, the way to display a path
    in GPS is slightly different. Instead of clicking on an icon, you need
    to right-click on the error message in the Location View, and select
-   ``Prove::Show Path`` in the contextual menu that is raised.
+   ``Prove::Show Path`` in the contextual menu that is raised. The menu
+   ``Prove::Show Path`` displayed when right-clicking in the code panel
+   should not be used.
 
 This shows that, when the value is not found, indeed the component ``At_Index``
 of the value returned is not initialized. Although that's allowed in Ada,
@@ -692,7 +694,9 @@ on which the contract case is not proved:
    If you use the SPARK-HiLite GPL 2013 release, the way to display a path
    in GPS is slightly different. Instead of clicking on an icon, you need
    to right-click on the error message in the Location View, and select
-   ``Prove::Show Path`` in the contextual menu that is raised.
+   ``Prove::Show Path`` in the contextual menu that is raised. The menu
+   ``Prove::Show Path`` displayed when right-clicking in the code panel
+   should not be used.
 
 This corresponds to a case where the implementation of ``Loop_Search`` does not
 find the searched value, but the guard of the second contract case holds,
