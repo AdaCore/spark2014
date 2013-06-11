@@ -1410,6 +1410,13 @@ The static semantics are equivalent to those given for the Global aspect in
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.5 LR Refined_Global must be placed on the body of a
+                   subprogram. Specs of the subprogram must have a Global
+                   aspect and there must be a Refined_State aspect on the
+                   body of the enclosing package
+
 #. A Refined_Global aspect specification shall *refine* the subprogram's
    Global aspect as follows:
 
@@ -1433,9 +1440,19 @@ The static semantics are equivalent to those given for the Global aspect in
    * No other ``global_items`` shall be included in the Refined_Global
      aspect specification.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.5 LR Refined_Global must reference constituents of the
+                   state abstractions denoted in the corresponding Global aspect
+                   or must repeat the state abstraction if its refinement is not
+                   visible
+
 #. ``Global_items`` in the a Refined_Global aspect specification shall denote
    distinct entities.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.5 LR Refined_Global aspect must denote distinct entities
 
 #. The mode of each ``global_item`` in a Refined_Global aspect shall match
    that of the corresponding ``global_item`` in the Global aspect unless:
@@ -1461,14 +1478,24 @@ The static semantics are equivalent to those given for the Global aspect in
 
    [This rule ensures that a state abstraction with the ``mode_selector``
    In_Out cannot be refined onto a set of ``constituents`` that are Output or
-   Input only.  The last condition satisfies this requirement because not all of
+   Input only. The last condition satisfies this requirement because not all of
    the ``constituents`` are updated, some are preserved, that is the state
    abstraction has a self-dependency.]
 
-#. If the Global aspect specification references a state abstraction. with a
-   ``mode_selector`` of Output whose refinement is visible, then every
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.5 LR refinement of an In_Out state abstraction must
+                   have both an Input and an Output mode_selector
+
+#. If the Global aspect specification references a state abstraction with a
+   ``mode_selector`` of Output, whose refinement is visible, then every
    ``constituent`` of that state abstraction shall be referenced in the
    Refined_Global aspect specification.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.5 LR all constituents of an Output state abstraction
+                   must be referenced in the Refined_Global aspect
 
 #. The legality rules for :ref:`global-aspects` and External states described in
    :ref:`refined_external_states` also apply.
@@ -1489,12 +1516,12 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 Refined_Depends Aspect
 ~~~~~~~~~~~~~~~~~~~~~~
 
-A subprogram declared in the visible part of a package may have a Refined
-Depends aspect applied to its body or body stub. A Refined_Depends aspect of a
+A subprogram declared in the visible part of a package may have a Refined_Depends
+aspect applied to its body or body stub. A Refined_Depends aspect of a
 subprogram defines a *refinement* of the Depends aspect of the subprogram; that
 is, the Refined_Depends aspect repeats the Depends aspect of the subprogram
-except that references to state abstractions whose refinements are visible at
-the point of the subprogram_body are replaced with references to [some or all of
+except that references to state abstractions, whose refinements are visible at
+the point of the subprogram_body, are replaced with references to [some or all of
 the] constituents of those abstractions.
 
 The Refined_Depends aspect is introduced by an ``aspect_specification`` where
@@ -1516,14 +1543,16 @@ The static semantics are equivalent to those given for the Depends aspect in
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: TBD
+      :Trace Unit: 7.2.6 LR Refined_Depends must be on the body of a
+                   subprogram that has a spec with a Depends. The enclosing
+                   package must have a visible Refined_State
 
 #. A Refined_Depends aspect specification is, in effect, a copy of
    the corresponding Depends aspect specification except that any references in
-   the Depends aspect to a state abstraction whose refinement is
-   visible at the point of the Refined_Depends specification are replaced with
+   the Depends aspect to a state abstraction, whose refinement is
+   visible at the point of the Refined_Depends specification, are replaced with
    references to zero or more direct or indirect constituents of that state
-   abstraction.  A Refined_Depends aspect is defined by creating a new
+   abstraction. A Refined_Depends aspect is defined by creating a new
    ``dependency_relation`` from the original given in the Depends aspect as
    follows:
 
@@ -1536,8 +1565,8 @@ The static semantics are equivalent to those given for the Depends aspect in
      of ``inputs`` within the ``input_list`` is insignificant.]
 
    * The partially refined dependency relation is then extended by replacing
-     each ``output`` in the Depends aspect that is a state abstraction whose
-     refinement is visible at the point of the Refined_Depends by zero or more
+     each ``output`` in the Depends aspect that is a state abstraction, whose
+     refinement is visible at the point of the Refined_Depends, by zero or more
      ``outputs`` in the partially refined dependency relation. It shall be zero
      only for a **null** refinement, otherwise all of the ``outputs`` shall
      denote a ``constituent`` of the state abstraction.
@@ -1551,7 +1580,7 @@ The static semantics are equivalent to those given for the Depends aspect in
      than one ``output`` in the partially refined dependency relation. Each of
      these ``outputs`` has an ``input_list`` that has zero or more of the
      ``inputs`` from the ``input_list`` of the original ``output``. The union of
-     the these ``inputs`` shall denote the same ``inputs`` that appear in the
+     these ``inputs`` shall denote the same ``inputs`` that appear in the
      ``input_list`` of the original ``output``.
 
    * If the Depends aspect has a ``null_dependency_clause``, then the partially
@@ -1559,31 +1588,47 @@ The static semantics are equivalent to those given for the Depends aspect in
      ``input_list`` denoting the same ``inputs`` as the original.
 
    * The partially refined dependency relation is completed by replacing the
-     ``inputs`` which are state abstractions whose refinements are visible at
-     the point of the Refined_Depends aspect by zero or more ``inputs``. It
+     ``inputs`` which are state abstractions, whose refinements are visible at
+     the point of the Refined_Depends aspect, by zero or more ``inputs``. It
      shall be zero only for a **null** refinement, otherwise each of the
      ``inputs`` shall denote a ``constituent`` of the state abstraction. The
      completed dependency relation is the ``dependency_relation`` of the
      Refined_Depends aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.6 LR Refined_Depends references constituents of the
+                   state abstractions denoted in the corresponding Depends
+                   aspect and repeats everything that is not a refinement.
 
 #. These rules result in omitting each state abstraction whose **null**
    refinement is visible at the point of the Refined_Depends. If and only if
    required by the syntax, the state abstraction shall be replaced by a **null**
    symbol rather than being omitted.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.6 LR state abstractions with null refinement must be
+                   replaced by null if required by the syntax
+
 #. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
    aspect specification. ``Outputs`` in the Refined_Depends aspect
    specification shall denote distinct entities. ``Inputs`` in an ``input_list``
    shall denote distinct entities.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.6 LR Refined_Depends must have no additional outputs
+                   or inputs and must denote distinct entities
+
 #. [The above rules may be viewed from the perspective of checking the
    consistency of a Refined_Depends aspect with its corresponding Depends
-   aspect.  In this view,  each ``input`` in the Refined_Depends aspect that
+   aspect. In this view, each ``input`` in the Refined_Depends aspect that
    is a ``constituent`` of a state abstraction, whose refinement is visible at
    the point of the Refined_Depends aspect, is replaced by its representative
    state abstraction with duplicate ``inputs`` removed.
 
-   Each ``output`` in the Refined_Depends aspect which is a ``constituent`` of
+   Each ``output`` in the Refined_Depends aspect, which is a ``constituent`` of
    the same state abstraction whose refinement is visible at the point of the
    Refined_Depends aspect, is merged along with its ``input_list`` into a single
    ``dependency_clause`` whose ``output`` denotes the state abstraction and
@@ -1591,10 +1636,6 @@ The static semantics are equivalent to those given for the Depends aspect in
    ``input_lists``.]
 
 #. The rules for :ref:`depends-aspects` also apply.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 .. centered:: **Verification Rules**
 
@@ -1630,23 +1671,11 @@ be a Boolean ``expression``.
    declaration in the visible part has no explicit precondition, a precondition
    of True is assumed for its abstract view.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
 #. At the point of call of a subprogram, both its precondition and the
    expression of its Refined_Post aspect shall evaluate to True.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
 #. The same legality rules apply to a Refined Precondition as for
    a precondition.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -1690,16 +1719,8 @@ be a Boolean ``expression``.
    subprogram declaration in the visible part has no explicit postcondition, a
    postcondition of True is assumed for the abstract view.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
-
 #. The same legality rules apply to a Refined Postcondition as for
    a postcondition.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 .. centered:: **Static Semantics**
 
@@ -1715,10 +1736,6 @@ be a Boolean ``expression``.
 #. The default Refined_Post for an expression function, F, is
    F'Result = ``expression``, where ``expression`` is the expression defining
    the body of the function.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: TBD
 
 #. The static semantics are otherwise as for a postcondition.
 
