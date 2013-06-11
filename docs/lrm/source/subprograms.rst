@@ -751,6 +751,7 @@ entities is allowed, the rules given in this section may be moved to
 other sections as appropriate, since they will refer to more than just subprograms.
 
 .. todo:: Add ghost types and ghost variables to SPARK 2014.
+          To be completed in a post-Release 1 version of this document.
 
 .. centered:: **Static Semantics**
 
@@ -797,7 +798,8 @@ elaboration of the declaration of the object.
 
 .. todo::
    Make worst-case assumptions about private types for this rule,
-   or blast through privacy?
+   or blast through privacy? To be completed in the Milestone 4
+   version of this document.
 
 A ghost instantiation shall not be an instantiation of a non-ghost
 generic package. [This is a conservative rule until we have more precise rules
@@ -829,10 +831,12 @@ not violate the ghosts-have-no-effect-on-program-behavior rule.]
    If not, then we presumably need to allow ghost state abstractions
    or else it would illegal for a library level package body to
    declare a ghost variable.
+   To be completed in a post-Release 1 version of this document.
 
 .. todo::
    Do we want an implicit Ghost convention for an entity declared
    within a statement whose execution depends on a ghost value?
+   To be completed in a post-Release 1 version of this document.
 
 .. code-block:: ada
 
@@ -921,7 +925,7 @@ No extensions or restrictions.
 
    Perhaps we need an aspect to describe the strict view of a parameter
    if it is different from the specified Ada mode of the formal parameter?
-   To be completed in the Milestone 3 version of this document.
+   To be completed in a post-Release 1 version of this document.
 
 
 Subprogram Bodies
@@ -1028,6 +1032,7 @@ Return Statements
 Use of ``extended_return_statement`` is not allowed in |SPARK|.
 
 .. todo:: Update LRM to allow extended return statements in a future release.
+          To be completed in a post-Release 1 version of this document.
 
 
 Nonreturning Procedures
