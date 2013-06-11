@@ -22,7 +22,7 @@ A list of restrictions by section and their effect:
 
 .. todo:: access and aliased parameter specs, null exclusion
      parameters.  Function access results function null exclusion
-     results.
+     results. To be completed in the Milestone 4 version of this document.
 
 .. note:: RCC. Should we forbid these thing outrights, or just
    ignore them and/or mark the corresponding declarations as "not SPARK"?
@@ -52,7 +52,8 @@ A list of restrictions by section and their effect:
 .. todo:: In the following restriction, is this the assumption of no
    Global aspect implies Global => null sensible or should we always
    insist on Global => null?? I hope not!!  RCC comment: see discussion
-   under LA11-017 started by RCC on 26/10. Target: D1/CDR.
+   under LA11-017 started by RCC on 26/10.
+   To be completed in the Milestone 4 version of this document.
 
 #. ``Global_Aspects_Required``
 
