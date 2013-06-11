@@ -12,6 +12,17 @@
 !Action Taken:
 !Checked By:
 
+!Label: FS001
+!Location: Section 7.2.3 Legality Rule 4
+!Description: This rule states that a package with a non-null Abstract_State
+              aspect shall have a completion (a body).
+              Effectively, this rule can only be checked at compilation time.
+              If we were to enforce it at the analysis stage, we would be
+              breaking modular analysis (since we would request that bodies
+              are in place before proceeding with the analysis).
+!Action Taken: Deleted rule. Removing it does not cause any analysis problems.
+!Checked By:
+
 !Label: STT001,
 !Location: 1.8, 8/2 (also 1.9.5, 12/6):
 !Description: We indicate that Pre and Post cannot possibly be
@@ -76,7 +87,7 @@ Is is worth supporting Pre'Class, etc., if we aren't supporting
 dispatching calls?  The class-wide aspects seem relevant only in the
 presence of dispatching calls.
 !Action Taken: I have changed the text to say that the attribute 'Class
-is not currently supported. References to 'Class attributes have either been removed or have been qualified with a note stating that they are not currently supported. 
+is not currently supported. References to 'Class attributes have either been removed or have been qualified with a note stating that they are not currently supported.
 !Checked By: AH
 
 !Label: STT007
@@ -118,7 +129,7 @@ extra static semantics and legality rules given below.
 I have an action from another review comment to format this section
 consistently with the rest of the RM.  I will further review the wording
 then.
-!Checked By: 
+!Checked By:
 
 !Label: STT010
 !Location: 5.5.3 33/15:
@@ -605,7 +616,7 @@ cleaner to have the limited_with from the spec, it should probably be a
 "limited private" with clause, since I think a normal "limited with"
 would be illegal.
 !Action Taken:For modular, constructive  analysis we cannot use post-compilation checks.  I think the current scheme is easier to check before all the code is written.  An alternative would be to record the information in the front end.  When an Abstract_State aspect has a Part_Of aspect, the package declaring the encapsuating state has to be with'd if it is not its parent, and in the internal representation of the package declaring the encapsulating state we record that the subordinate state is part of the encapsulating state.  I do not think this would be too hard to do and would be prefereble to the limited withs.
-After discussing th the Tele-conf call it has been decided to take the approach outlined above.  Updated the rules and examples and added notes about analysis tools recording declarations containig Part_Of indicators. 
+After discussing th the Tele-conf call it has been decided to take the approach outlined above.  Updated the rules and examples and added notes about analysis tools recording declarations containig Part_Of indicators.
 !Checked By: AH
 
 !Label: STT047
@@ -915,16 +926,16 @@ To make the singular/plural grammar less awkward, perhaps
      "whose Global aspect denotes at least one state abstraction
       whose refinement is visible"
 !Action Taken: Changed the wording to the following:
-#. A Refined_Global aspect shall be specified on a body_stub (if one is 
+#. A Refined_Global aspect shall be specified on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package, the declaration has a 
+   visible part of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
-I do not agree with your suggestion of including the private part.  I added a restriction some time ago that a state abstraction cannot be mentioned in the private part of a package because the private part of a package is logically part of the body where the refinement is visible.  I think I discussed this with you. 
+I do not agree with your suggestion of including the private part.  I added a restriction some time ago that a state abstraction cannot be mentioned in the private part of a package because the private part of a package is logically part of the body where the refinement is visible.  I think I discussed this with you.
 I have also updated the text for Refined_Depends as this was worded similarly:
-#. A Refined_Depends aspect shall be specified on a body_stub (if one is 
+#. A Refined_Depends aspect shall be specified on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package and the declaration has a 
+   visible part of an enclosing package and the declaration has a
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 !Checked By: AH
