@@ -1209,7 +1209,7 @@ is part of and a state abstraction always knows all of its constituents.
           with Part_Of => A2;
 
        package Inner
-          with Abstract_state => (B1 with Part_Of => Outer.A1))
+          with Abstract_state => (B1 with Part_Of => Outer.A1)
                         -- State abstraction declared in the private
                         -- part must have a Part_Of option
                         -- A1 cannot be denoted in the private part.
@@ -1389,7 +1389,7 @@ A subprogram declared in the visible part of a package may have a Refined_Global
 aspect applied to its body or body stub. A Refined_Global aspect of a subprogram
 defines a *refinement* of the Global Aspect of the subprogram; that is, the
 Refined_Global aspect repeats the Global aspect of the subprogram except that
-references to state abstractions whose refinements that are visible at the point
+references to state abstractions whose refinements are visible at the point
 of the subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
