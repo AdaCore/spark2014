@@ -257,6 +257,14 @@ the |SPARK| tools will still be able to undertake all their static checks and pr
 .. todo::
       The pragmas equivalent to the new aspects need to be added to this document.
 
+Main Program
+------------
+
+In SPARK 2005, a dedicated annotation was used to identify the main program.
+There is no corresponding aspect in |SPARK| and instead it is expected that
+any implementation of |SPARK| will have its own mechanism to allow the tools
+to identify the main program (albeit not within the language itself).
+
 .. _reqts:
 
 Requirements Given in this Document
