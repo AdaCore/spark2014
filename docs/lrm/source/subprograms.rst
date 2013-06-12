@@ -307,7 +307,8 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR
+      :Trace Unit: 6.1.4 LR Global aspect must be on subprogram's
+                   initial declaration
 
 #. A ``global_item`` shall not denote a state abstraction whose refinement
    is visible [(a state abstraction cannot be named within its enclosing
@@ -315,7 +316,8 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_item shall not denote state abstraction with visible refinement
+      :Trace Unit: 6.1.4 LR global_item shall not denote state abstraction
+                   with visible refinement
 
 #. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
