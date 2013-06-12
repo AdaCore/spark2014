@@ -338,21 +338,30 @@ package body Gnat2Why.Decls is
    ---------------------------------
 
    procedure Translate_Container_Package (Package_Entity : Entity_Id) is
+      type Entity_Array is array (Integer range <>) of Entity_Id;
+
+      procedure Compute_Length (Labs         :     List_Id;
+                                Subst_Length : out Natural;
+                                Num_Of_Obj   : out Natural);
+      --  Computes the length of the substitution that has to be computed
+      --  for the parameters of the generic.
 
       procedure Parse_Declarations
         (Decls      : List_Id;
-         File_Name  : String);
+         File_Name  : String;
+         Compl      : Entity_Array := (2 .. 1 => <>));
       --  Dispatches theories of SPARK entities of the package spec in the
       --  appropriate Why3 file. Since the copy of the Why3 axiomatization is
       --  in one single file, a copy of each theory needs to be added to the
       --  appropriate file afterward.
 
-      function Parse_Parameters
-        (Assoc         : List_Id;
-         Labs          : List_Id;
-         Generic_Name  : String;
-         Instance_Name : String)
-         return W_Custom_Substitution_Array;
+      procedure Parse_Parameters
+        (Assoc         :     List_Id;
+         Labs          :     List_Id;
+         Generic_Name  :     String;
+         Instance_Name :     String;
+         Subst         : out W_Custom_Substitution_Array;
+         Compl         : out Entity_Array);
       --  Creates a substitution for the generic parameters of the package
       --  if any. The substitution is a string following the format in
       --  GNAT.Regpat. It is then used to copy the associated Why3
@@ -360,7 +369,8 @@ package body Gnat2Why.Decls is
 
       procedure Parse_Declarations
         (Decls      : List_Id;
-         File_Name  : String) is
+         File_Name  : String;
+         Compl      : Entity_Array := (2 .. 1 => <>)) is
 
          procedure Parse_Declaration
            (Node    : Node_Id);
@@ -396,6 +406,15 @@ package body Gnat2Why.Decls is
                              T_Name   => Capitalize_First (Theory_Name),
                              Use_Kind => EW_Export);
 
+            if not (Ekind (E) in Type_Kind) then
+               for I in Compl'Range loop
+                  Add_Completion (Name            => Full_Name (E),
+                                  Completion_Name => Full_Name (Compl (I)),
+                                  Kind            =>
+                                    Dispatch_Entity (Compl (I)));
+               end loop;
+            end if;
+
             Close_Theory (TFile, Filter_Entity => Empty);
          end Parse_Declaration;
 
@@ -415,38 +434,38 @@ package body Gnat2Why.Decls is
          end loop;
       end Parse_Declarations;
 
-      function Parse_Parameters
-        (Assoc         : List_Id;
-         Labs          : List_Id;
-         Generic_Name  : String;
-         Instance_Name : String)
-         return W_Custom_Substitution_Array is
+      procedure Compute_Length (Labs         :     List_Id;
+                                Subst_Length : out Natural;
+                                Num_Of_Obj   : out Natural) is
+         CurLabs  : Node_Id := First (Labs);
+      begin
+         Subst_Length := 1;
+         Num_Of_Obj   := 0;
+         while Present (CurLabs) loop
+            declare
+               K : constant Entity_Kind :=
+                 Ekind (Defining_Entity (CurLabs));
+            begin
+               if K in Private_Kind then
+                  Subst_Length := Subst_Length + 6;
+               elsif K in Type_Kind then
+                  Subst_Length := Subst_Length + 3;
+               else
+                  Num_Of_Obj   := Num_Of_Obj + 1;
+                  Subst_Length := Subst_Length + 2;
+               end if;
+            end;
+            Next (CurLabs);
+         end loop;
+      end Compute_Length;
 
-         --  Computes the length of the substitution that has to be computed
-         --  for the parameters of the generic.
-         function Subst_Length (Labs  : List_Id) return Integer;
-
-         function Subst_Length (Labs  : List_Id) return Integer is
-            Current  : Integer := 0;
-            CurLabs  : Node_Id := First (Labs);
-         begin
-            while Present (CurLabs) loop
-               declare
-                  K : constant Entity_Kind :=
-                    Ekind (Defining_Entity (CurLabs));
-               begin
-                  if K in Private_Kind then
-                     Current := Current + 6;
-                  elsif K in Type_Kind then
-                     Current := Current + 3;
-                  else
-                     Current := Current + 2;
-                  end if;
-               end;
-               Next (CurLabs);
-            end loop;
-            return Current;
-         end Subst_Length;
+      procedure Parse_Parameters
+        (Assoc         :     List_Id;
+         Labs          :     List_Id;
+         Generic_Name  :     String;
+         Instance_Name :     String;
+         Subst         : out W_Custom_Substitution_Array;
+         Compl         : out Entity_Array) is
 
          --  Names of elements expected in a Why3 theory for a formal of a
          --  private type. Used to comply with the special handling for
@@ -461,13 +480,12 @@ package body Gnat2Why.Decls is
          Of_Base_Name   : constant String := "of_base";
          In_Range_Name  : constant String := "valid";
 
-         TFile : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
+         TFile     : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
          File_Name : constant String := TFile.Name.all;
-         CurAssoc : Node_Id := First (Assoc);
-         CurLabs  : Node_Id := First (Labs);
-         Current  : Integer := 1;
-         Reps     : W_Custom_Substitution_Array :=
-           (1 .. 1 + Subst_Length (Labs) => <>);
+         CurAssoc  : Node_Id := First (Assoc);
+         CurLabs   : Node_Id := First (Labs);
+         Subst_Cur : Integer := 1;
+         Compl_Cur : Integer := 1;
       begin
          while Present (CurAssoc) loop
             declare
@@ -485,7 +503,7 @@ package body Gnat2Why.Decls is
                --  No use is generated if Actual doesn't have a unique name
 
                if Full_Name_Is_Not_Unique_Name (Actual) then
-                  Reps (Current) := New_Custom_Substitution
+                  Subst (Subst_Cur) := New_Custom_Substitution
                     (Domain   => EW_Prog,
                      From     => NID ("use\s+" & """" & Generic_Name &
                          "__args""\." & Capitalize_First (Generic_Name) & "__"
@@ -494,7 +512,7 @@ package body Gnat2Why.Decls is
                        New_Identifier (Name => "" & ASCII.LF)));
 
                elsif Actual_File /= File_Name then
-                  Reps (Current) := New_Custom_Substitution
+                  Subst (Subst_Cur) := New_Custom_Substitution
                     (Domain   => EW_Prog,
                      From     => NID ("use\s+" & """" & Generic_Name &
                          "__args""\." & Capitalize_First (Generic_Name) & "__"
@@ -504,7 +522,7 @@ package body Gnat2Why.Decls is
                           Capitalize_First (Name_Of_Node (Actual))
                         & ASCII.LF)));
                else
-                  Reps (Current) := New_Custom_Substitution
+                  Subst (Subst_Cur) := New_Custom_Substitution
                     (Domain   => EW_Prog,
                      From     => NID ("use\s+" & """" & Generic_Name &
                          "__args""\." & Capitalize_First (Generic_Name) & "__"
@@ -513,7 +531,7 @@ package body Gnat2Why.Decls is
                        (Name => "use " & Capitalize_First
                         (Name_Of_Node (Actual)) & ASCII.LF)));
                end if;
-               Current := Current + 1;
+               Subst_Cur := Subst_Cur + 1;
 
                --  For types, replace: <Generic_Name>__<Formal>.<Formal>
                --  by: Why_Logic_Type_Of_Ada_Type (Actual)
@@ -545,7 +563,7 @@ package body Gnat2Why.Decls is
 
                   Close_Theory (TFile, Filter_Entity => Empty);
 
-                  Reps (Current) := New_Custom_Substitution
+                  Subst (Subst_Cur) := New_Custom_Substitution
                     (Domain   => EW_Prog,
                      From     => NID (Capitalize_First (Generic_Name)
                        & "__" & Short_Name (Formal) & "\." &
@@ -584,14 +602,14 @@ package body Gnat2Why.Decls is
 
                         if Is_Scalar_Type (Actual) and then
                           not Is_Boolean_Type (Actual) then
-                           Reps (Current + 1) := New_Custom_Substitution
+                           Subst (Subst_Cur + 1) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
                                   Base_Type_Name),
                               To       => W_Any_Node_Id (Actual_Base));
 
-                           Reps (Current + 2) := New_Custom_Substitution
+                           Subst (Subst_Cur + 2) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
@@ -600,7 +618,7 @@ package body Gnat2Why.Decls is
                                 (From => +Actual_Type,
                                  To => +Actual_Base)));
 
-                           Reps (Current + 3) := New_Custom_Substitution
+                           Subst (Subst_Cur + 3) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
@@ -609,7 +627,7 @@ package body Gnat2Why.Decls is
                                 (From => +Actual_Base,
                                  To => +Actual_Type)));
 
-                           Reps (Current + 4) := New_Custom_Substitution
+                           Subst (Subst_Cur + 4) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
@@ -617,14 +635,14 @@ package body Gnat2Why.Decls is
                               To       => W_Any_Node_Id
                                 (Range_Pred_Name (Actual)));
                         else
-                           Reps (Current + 1) := New_Custom_Substitution
+                           Subst (Subst_Cur + 1) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
                                   Base_Type_Name),
                               To       => W_Any_Node_Id (Actual_Type));
 
-                           Reps (Current + 2) := New_Custom_Substitution
+                           Subst (Subst_Cur + 2) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
@@ -632,7 +650,7 @@ package body Gnat2Why.Decls is
                               To       => W_Any_Node_Id
                                 (New_Identifier (Name => "")));
 
-                           Reps (Current + 3) := New_Custom_Substitution
+                           Subst (Subst_Cur + 3) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
@@ -640,7 +658,7 @@ package body Gnat2Why.Decls is
                               To       => W_Any_Node_Id
                                 (New_Identifier (Name => "")));
 
-                           Reps (Current + 4) := New_Custom_Substitution
+                           Subst (Subst_Cur + 4) := New_Custom_Substitution
                              (Domain   => EW_Prog,
                               From     => NID (Capitalize_First (Generic_Name)
                                 & "__" & Short_Name (Formal) & "\." &
@@ -649,7 +667,7 @@ package body Gnat2Why.Decls is
                                 (New_Identifier (Name => "__ignore")));
                         end if;
                      end;
-                     Current := Current + 5;
+                     Subst_Cur := Subst_Cur + 5;
                   else
 
                      --  If the formal is not of a private kind, there can be
@@ -658,14 +676,14 @@ package body Gnat2Why.Decls is
                      --  Replace: <Generic_Name>__<Formal>.
                      --  by: Name_Of_Node (Actual).
 
-                     Reps (Current + 1) := New_Custom_Substitution
+                     Subst (Subst_Cur + 1) := New_Custom_Substitution
                        (Domain   => EW_Prog,
                         From     => NID (Capitalize_First (Generic_Name)
                           & "__" & Short_Name (Formal) & "\."),
                         To       => W_Any_Node_Id
                           (New_Identifier (Name => Capitalize_First
                                            (Name_Of_Node (Actual)) & ".")));
-                     Current := Current + 2;
+                     Subst_Cur := Subst_Cur + 2;
                   end if;
 
                   --  For functions and objects,
@@ -673,14 +691,17 @@ package body Gnat2Why.Decls is
                   --  by: To_Why_Id (Actual)
 
                else
-                  Reps (Current) := New_Custom_Substitution
+                  Compl (Compl_Cur) := Actual;
+                  Compl_Cur := Compl_Cur + 1;
+
+                  Subst (Subst_Cur) := New_Custom_Substitution
                     (Domain   => EW_Prog,
                      From     => NID (Capitalize_First (Generic_Name)
                        & "__" & Short_Name (Formal) & "\." &
                          Short_Name (Formal)),
                      To       => W_Any_Node_Id
                        (To_Why_Id (Actual, Domain => EW_Term)));
-                  Current := Current + 1;
+                  Subst_Cur := Subst_Cur + 1;
                end if;
             end;
             Next (CurAssoc);
@@ -691,13 +712,11 @@ package body Gnat2Why.Decls is
          --  so that there is no name clash.
          --  Replace: <Generic_Name>__ by: <Instance_Name>__
 
-         Reps (Current) := New_Custom_Substitution
+         Subst (Subst_Cur) := New_Custom_Substitution
            (Domain   => EW_Prog,
             From     => NID (Capitalize_First (Generic_Name) & "__"),
             To       => W_Any_Node_Id
               (New_Identifier (Name => Instance_Name & "__")));
-
-         return Reps;
       end Parse_Parameters;
 
       Decls : constant List_Id :=
@@ -720,22 +739,34 @@ package body Gnat2Why.Decls is
 
             Labs : constant List_Id :=
               Generic_Formal_Declarations (Parent (Parent (Parent (G_Node))));
+            Subst_Length : Natural;
+            Num_Of_Compl : Natural;
          begin
-            File_Append_To_Theories
-              (TFile.File, New_Custom_Declaration
-                 (Domain    => EW_Prog,
-                  File_Name => NID (Generic_Name & ".mlw"),
-                  Subst     => Parse_Parameters
-                    (Assoc, Labs, Generic_Name, Instance_Name)));
+            Compute_Length (Labs, Subst_Length, Num_Of_Compl);
+            declare
+               Subst : W_Custom_Substitution_Array (1 .. Subst_Length);
+               Compl : Entity_Array (1 .. Num_Of_Compl);
+            begin
+               Parse_Parameters
+                 (Assoc, Labs, Generic_Name, Instance_Name, Subst, Compl);
+
+               File_Append_To_Theories
+                 (TFile.File, New_Custom_Declaration
+                    (Domain    => EW_Prog,
+                     File_Name => NID (Generic_Name & ".mlw"),
+                     Subst     => Subst));
+
+               Parse_Declarations (Decls, TFile.Name.all, Compl);
+            end;
          end;
       else
          File_Append_To_Theories
            (TFile.File, New_Custom_Declaration
               (Domain    => EW_Prog,
                File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
-      end if;
 
-      Parse_Declarations (Decls, TFile.Name.all);
+         Parse_Declarations (Decls, TFile.Name.all);
+      end if;
    end Translate_Container_Package;
 
    ---------------------------

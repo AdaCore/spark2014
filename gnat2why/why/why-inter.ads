@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 
@@ -77,10 +78,20 @@ package Why.Inter is
    --  dependence on this entity is noted, Get_Completions is called to
    --  retrieve the names of the additional modules to include.
 
-   subtype Why_Context_File_Enum is Why_File_Enum range
-     WF_Context_In_Spec .. WF_Context_In_Body;
+   --  This mechanism is also used to trace the dependence between an instance
+   --  of a generic package with a Why axiomatization and the expression
+   --  functions coming from its actuals.
 
-   type Why_Completions is array (Positive range <>) of Unbounded_String;
+   subtype Why_Context_File_Enum is Why_File_Enum range
+     WF_Types_In_Spec .. WF_Context_In_Body;
+
+   type Why_File_Completion_Item is record
+      Name : Unbounded_String;
+      Kind : Why_Context_File_Enum;
+   end record;
+
+   type Why_Completions is array (Positive range <>) of
+     Why_File_Completion_Item;
    --  Return type of Get_Completions, to get all completions of a theory
 
    procedure Add_Completion
@@ -90,8 +101,7 @@ package Why.Inter is
    --  Add the completion Completion_Name to theory Name
 
    function Get_Completions
-     (Name : String;
-      Kind : Why_Context_File_Enum) return Why_Completions;
+     (Name : String) return Why_Completions;
    --  Return the completions for the theory called Name
 
    function Why_File_Suffix (Kind : Why_File_Enum) return String;
@@ -280,21 +290,19 @@ package Why.Inter is
    --  Return True if Left and Right corresponds to the same Why identifier
 
 private
+   package Why_File_Completion_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type    => Why_File_Completion_Item,
+      "="             => "=");
 
    package Why_File_Completions is new Ada.Containers.Hashed_Maps
      (Key_Type        => Unbounded_String,
-      Element_Type    => Unbounded_String,
+      Element_Type    => Why_File_Completion_Lists.List,
       Hash            => Ada.Strings.Unbounded.Hash,
       Equivalent_Keys => "=",
-      "="             => "=");
+      "="             => Why_File_Completion_Lists."=");
    --  Data type storing chained completions of theories
 
-   use Why_File_Completions;
-
-   type Completion_Array is array (Why_Context_File_Enum) of
-     Why_File_Completions.Map;
-
-   Why_File_Completion : Completion_Array;
+   Why_File_Completion : Why_File_Completions.Map;
    --  Global variable storing completions of theories
 
    Entity_Dependencies : Node_Graphs.Map;

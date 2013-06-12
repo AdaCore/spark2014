@@ -239,22 +239,24 @@ package body Why.Inter is
       Completion_Name : String;
       Kind            : Why_Context_File_Enum)
    is
-      Unb_Name : Unbounded_String := To_Unbounded_String (Name);
+      Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
       Unb_Comp : constant Unbounded_String :=
-                   To_Unbounded_String (Completion_Name);
+        To_Unbounded_String (Completion_Name);
+      Completions  : Why_File_Completion_Lists.List;
    begin
       pragma Assert (Unb_Name /= Unb_Comp);
 
-      --  Find the last completion for Name
+      if not Why_File_Completion.Contains (Unb_Name) then
+         Completions := Why_File_Completion_Lists.Empty_List;
+      else
+         Completions := Why_File_Completion.Element (Unb_Name);
+      end if;
 
-      while Why_File_Completion (Kind).Contains (Unb_Name) loop
-         Unb_Name := Why_File_Completion (Kind).Element (Unb_Name);
-         pragma Assert (Unb_Name /= Unb_Comp);
-      end loop;
+      Completions.Append (Why_File_Completion_Item'(Name => Unb_Comp,
+                                                    Kind => Kind));
 
-      --  Make Completion_Name a completion of the previous last one
-
-      Why_File_Completion (Kind).Insert (Unb_Name, Unb_Comp);
+      Why_File_Completion.Include (Key      => Unb_Name,
+                                   New_Item => Completions);
    end Add_Completion;
 
    ---------------------
@@ -262,32 +264,77 @@ package body Why.Inter is
    ---------------------
 
    function Get_Completions
-     (Name : String;
-      Kind : Why_Context_File_Enum) return Why_Completions
+     (Name : String) return Why_Completions
    is
-      Unb_Name : Unbounded_String := To_Unbounded_String (Name);
+      function Num_Compl (L : Why_File_Completion_Lists.List) return Natural;
+      --  Find the number of completions from L
+
+      procedure Get_Compl (L           :        Why_File_Completion_Lists.List;
+                           Position    : in out Natural;
+                           Completions : in out Why_Completions);
+      --  Find all the completions from L
+
+      function Num_Compl (L : Why_File_Completion_Lists.List) return Natural is
+         Count : Natural := 0;
+         Current : Why_File_Completion_Lists.Cursor := L.First;
+      begin
+         while Why_File_Completion_Lists.Has_Element (Current) loop
+            Count    := Count + 1;
+            if Why_File_Completion.Contains
+              (Why_File_Completion_Lists.Element (Current).Name) then
+               Count := Count +
+                 Num_Compl
+                   (Why_File_Completion.Element
+                        (Why_File_Completion_Lists.Element (Current).Name));
+            end if;
+            Why_File_Completion_Lists.Next (Current);
+         end loop;
+         return Count;
+      end Num_Compl;
+
+      procedure Get_Compl (L           :        Why_File_Completion_Lists.List;
+                           Position    : in out Natural;
+                           Completions : in out Why_Completions) is
+
+         Current : Why_File_Completion_Lists.Cursor := L.First;
+      begin
+         while Why_File_Completion_Lists.Has_Element (Current) loop
+            Completions (Position) :=
+              Why_File_Completion_Lists.Element (Current);
+            Position := Position + 1;
+            if Why_File_Completion.Contains
+              (Why_File_Completion_Lists.Element (Current).Name) then
+               Get_Compl
+                 (Why_File_Completion.Element
+                    (Why_File_Completion_Lists.Element (Current).Name),
+                  Position, Completions);
+            end if;
+            Why_File_Completion_Lists.Next (Current);
+         end loop;
+      end Get_Compl;
+
+      Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
       Count : Natural;
    begin
       --  Find the number of completions for Name
 
       Count := 0;
-      while Why_File_Completion (Kind).Contains (Unb_Name) loop
-         Count    := Count + 1;
-         Unb_Name := Why_File_Completion (Kind).Element (Unb_Name);
-      end loop;
+      if Why_File_Completion.Contains (Unb_Name) then
+         Count := Num_Compl (Why_File_Completion.Element (Unb_Name));
+      end if;
 
       --  Return all completions
 
-      Unb_Name := To_Unbounded_String (Name);
       declare
-         Compl : Why_Completions (1 .. Count);
+         Completions : Why_Completions (1 .. Count);
+         Position : Positive := 1;
       begin
-         for J in Compl'Range loop
-            Unb_Name  := Why_File_Completion (Kind).Element (Unb_Name);
-            Compl (J) := Unb_Name;
-         end loop;
+         if Why_File_Completion.Contains (Unb_Name) then
+            Get_Compl (Why_File_Completion.Element (Unb_Name), Position,
+                       Completions);
+         end if;
 
-         return Compl;
+         return Completions;
       end;
    end Get_Completions;
 
@@ -381,29 +428,27 @@ package body Why.Inter is
       end if;
 
       if With_Completion then
-         for Kind in Why_Context_File_Enum loop
-            declare
-               Compl_Fname  : constant String :=
-                 File_Base_Name_Of_Entity (N)
-                 & Why_File_Suffix (Kind);
-               Completions  : constant Why_Completions :=
-                 Get_Completions (Raw_Name, Kind);
-            begin
-               for J in Completions'Range loop
-                  declare
-                     Compl_Name : constant String :=
-                       Capitalize_First (To_String (Completions (J)));
-                  begin
-                     if Compl_Fname /= P.Name.all then
-                        Add_With_Clause
-                          (P, Compl_Fname, Compl_Name, Import);
-                     else
-                        Add_With_Clause (P, "", Compl_Name, Import);
-                     end if;
-                  end;
-               end loop;
-            end;
-         end loop;
+         declare
+            Completions  : constant Why_Completions :=
+              Get_Completions (Raw_Name);
+         begin
+            for J in Completions'Range loop
+               declare
+                  Compl_Fname  : constant String :=
+                    File_Base_Name_Of_Entity (N)
+                    & Why_File_Suffix (Completions (J).Kind);
+                  Compl_Name : constant String :=
+                    Capitalize_First (To_String (Completions (J).Name));
+               begin
+                  if Compl_Fname /= P.Name.all then
+                     Add_With_Clause
+                       (P, Compl_Fname, Compl_Name, Import);
+                  else
+                     Add_With_Clause (P, "", Compl_Name, Import);
+                  end if;
+               end;
+            end loop;
+         end;
       end if;
    end Add_Use_For_Entity;
 
