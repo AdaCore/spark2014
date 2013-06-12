@@ -189,10 +189,253 @@ Use feedback from the tool. Define a proof methodology.
 
 % Astrium case study
 
+
 \subsection{Description of the Software}
+
+A typical space applicative flight program is made up of two parts:
+
+\begin{itemize}
+\item Flight control or more generally numerical control / command algorithm
+\item Mission and Vehicle Management
+\end{itemize}
+
+\subsubsection{Numerical control / command algorithms}
+
+\paragraph{Description of the Software:}
+
+Numerical control / command algorithms take as inputs floating point values, perform some numerical computations (with the classical basic mathematical operators such as additions, subtractions, multiplications, divisions, absolute values, trigonometry or operations on vectors and arrays, etc.) and return floating point results. Such algorithms have generally a retroaction loop, i.e. internal states.
+
+It is generally not possible to define interesting functional contracts for such code. Indeed, the functional contract of the equation:
+
+\begin{verbatim}
+   X := A * Y + Cos(Z)
+\end{verbatim}
+
+is just itself (i.e. it is not possible to specify in a more abstract way this equation). Then, instead of defining functional contracts, the objective on this kind of software is the proof of absence of run-time errors (such as division by zero) and the correctness of variable ranges (such as, for instance, a velocity shall always be between 0 and 25 km/s).
+
+SPARK has been first experimented on a solar wing management Software (for a spacecraft such as the ATV / Automated Transfer Vehicle).
+This piece of code uses a mathematical library which implementation is not in SPARK, implying that it could not be formally proved, but only tested. However, the interface of this mathematical library is in SPARK. The contracts defined on the mathematical library can then be used to prove the application code.
+
+\paragraph{Example of contract in the mathematical library:}
+
+\begin{verbatim}
+   function Sin32 (X : T_Float32) return T_Float32
+   with
+     Pre => ( X >= - C_2Pi32 ) and then
+     ( X <= C_2Pi32 ),
+     Post => ( Sin32'Result >= -1.0 ) and then
+     ( Sin32'Result <= 1.0);
+\end{verbatim}
+
+\subsubsection{Mission and Vehicle Management}
+
+The Mission and Vehicle Management of a spacecraft is described by an ECSS (European Cooperation for Space Standardization) standard:
+
+\begin{center}
+{\bf ECSS-E-ST-70-01C Space engineering - Spacecraft on-board control procedures}
+\end{center}
+
+This standard defines the general principles of a On Board Control Procedure (OBCP). An OBCP is in practice represented by a simplified programming language interpreted onboard the spacecraft. This interpreter is generally at the highest level of criticality of the spacecraft. The implementation of this interpreter in SPARK is table driven and relies greatly on:
+
+\begin{itemize}
+\item Generic packages
+
+	The generic packages allow an easy customization of the code:
+
+	\begin{verbatim}
+     generic
+        -- the list of events
+        type T_Event_Id is (<>);
+     
+     package Mvm.Events is
+	\end{verbatim}
+\item Discriminant
+
+	The discriminants ensures a string typing of the code, even in case of heterogeneous communication between components of the system:
+
+	\begin{verbatim}
+   type T_Monitoring is (No_Window, Window);
+
+   type T_Event_Status (Monitoring : T_Monitoring := No_Window)
+   is record
+         case Monitoring is
+         when No_Window => null;
+         when Window =>
+            Start_Window : T_Float32;
+            End_Window : T_Float32;
+         end case;
+      end record;
+	\end{verbatim}
+\end{itemize}
+
 \subsection{Formalization of Properties}
+
+The contracts defined on algorithmic code are mainly related to the ranges of variables.
+
+\paragraph{Example of contract in algorithmic code:}
+
+\begin{verbatim}
+   subtype T_Angle_180 is T_Float32 range -180 .. 180;
+
+   function Normalise (X : in T_Float32) return T_Angle_180
+   with Pre =>
+     ( X >= -720.0 ) and
+        ( X <= 720.0 );
+\end{verbatim}
+
+The contracts defined on mission and vehicle management code code have (among others) the following objectives:
+
+\begin{itemize}
+\item Ensuring the permanent consistency of the software tables
+\item Ensuring the permanent consistency between the Mission and Vehicle Management function and the other functionalities (such as, for instance, the solar wing management)
+\item Ensuring the respect of some functional properties such as the mutual exclusion of execution of some automated procedures
+\item Ensuring the absence of run-time errors
+\end{itemize}
+
+\paragraph{Example of contract in mission and vehicle management code:}
+
+\begin{verbatim}
+   procedure Reset_Event (Event_Id :        T_Event_Id;
+                          Events   : in out T_Events)
+   with
+     Post =>
+        Get_Status (Event_Id, Events) = Inactive) and then
+          (for all Other_Event_Id in T_Event_Id =>
+             (if Other_Event_Id /= Event_Id then
+              Get_Status (Other_Event_Id, Events) =
+                Get_Status (Other_Event_Id, Events'Old))));
+\end{verbatim}
+
 \subsection{Formal Verification Results}
+
+All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the postconditions defined in the software. Then, gnatprove has been applied.
+
+\subsubsection{Subprograms not in SPARK}
+
+The origins of subprograms not yet in SPARK are mainly the following:
+
+\begin{itemize}
+\item unchecked conversion
+
+The unchecked conversion are used in a library allowing reading external inputs.
+All the concerned subprograms are very small and shall be validated by intensive testin because there are out of the perimeter of HiLite and of SPARK.
+\item tagged type
+
+Tagged type are related to Object Oriented Programming. The analysis of Object Oriented software is foreseen but has not yet been implemented.
+\item access
+
+Accesses are used in the software to store objects in a table.
+This kind of design can not be proved by gnatprove.
+\end{itemize}
+
+\subsubsection{Analysis of the non proved VCs}
+
+Some algorithmic functions are not completely known by gnatprove.
+
+\paragraph{Example:}
+
+\begin{verbatim}
+   function Arctan (X : T_Float32) return T_Float32
+   with
+     Post => (Arctan'Result >= -C_Halfpi32) and then
+     (Arctan'Result <= C_Halfpi32);
+
+   function Arctan (X : T_Float32) return T_Float32
+   is (Num32.Arctan (X));
+\end{verbatim}
+
+The postcondition is not proved by gnatprove.
+The exact behaviour of algorithmic functions depending of the implementation, this behaviour is acceptable.
+Algorithmic functions and their contracts are preferably validated by intensive testing.
+
+gnatprove has some difficulties to take into account rounding.
+In the following example, the second assertion is not proved.
+
+\paragraph{Example:}
+
+\begin{verbatim}
+   function Round_Closest (X : T_Float32) return T_Float32
+   is (T_Float32'Rounding (X));
+
+   pragma Assert(( Y >= -11160.002 ) and (Y <= 11160.002 ));
+   Round_Y := Ml.Round_Closest (Y);
+   pragma Assert(( Round_Y >= -11160.0 ) and (Round_Y <= 11160.0 ));
+\end{verbatim}
+
+gnatprove currently does not prove non linear equation.
+In the following example, the last assertion is not proved.
+
+\paragraph{Example:}
+
+\begin{verbatim}
+   pragma Assert(X >= 0.0 and the x <= 180.0);
+   pragma Assert(Y >= -180.0 and then Y <= 0.0);
+   pragma Assert(Z >= 0.0 and then Z <= 1.0);
+   pragma Assert(X + Y >= 0.0);
+   Result := X + Y * Z;
+   pragma Assert (Result >= 0.0 and then Result <= 360.0);
+\end{verbatim}
+
+Gnatprove is not yet able to verify the index of an array which dimension is defined by a type descriminant
+
+\paragraph{Example:}
+
+\begin{verbatim}
+   subtype R is Integer range 1 .. 100;
+   type T_Array is array (R range <>) of Boolean;
+
+   type T_Record (L : R) is
+      record
+         A : T_Array (1 .. L);
+      end record;
+
+   function G (X : T_Record) return Boolean is
+     (for all I in X.A'Range => X.A (I));
+\end{verbatim}
+
+In function "G", the index check "X.A (I)" is not proved even if "I" is defined in the range of "X.A"
+An improvement of gnatprove is in progress in order to deal with such case.
+
+The remaining non proved VCs are due to too complex subprograms.
+These subprograms shall be split in several smaller subprograms to be proved.
+
 \subsection{Lessons Learned}
+
+Our initial objectives were that SPARK should fulfill the following requirements:
+
+\begin{itemize}
+\item Capability to formalize the test cases
+
+Current assessment: Very good
+\item Verification that all test procedures cover all the test cases
+
+Current assessment: Not implemented. This implies that the formalization of the test cases is today not really interesting
+\item Support to the verification / validation of the absence of run-time errors
+
+Current assessment: Very good
+\item Support to the verification / validation of functional properties
+
+Current assessment: Good. In order to be efficient, it requires some works (definition of contracts, definition of assertions, spliting of complex subprograms in smaller ones)
+\item Verification of the correctness of the access of all global variables
+
+Current assessment: Not yet implemented
+\item Verification of the absence of out of range values
+
+Current assessment: Very good. As for functional properties, it requires some manual works
+\item Internal consistency of software unit. The HiLite tools shall help ensuring that each aggregate satisfies the requirements of the software item. In other words, each caller of a subprogram shall ensures that the pre-conditions of the callee are respected and that the post-condition of the callee is compatible with the caller
+
+Current assessment: Very good
+\item Capability to assess the commandability and observability. In other words, the HiLite tools shall help detecting dead code
+
+Current assessment: No
+\item Help proving that numerical protection mechanisms are correctly implemented
+
+Current assessment: Very good
+\item Prove the correctness of a generic code in a specific context
+
+Current assessment: Very good
+\end{itemize}
+
 
 \section{Biometric Access to a Secure Enclave}
 
