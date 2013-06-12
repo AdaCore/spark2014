@@ -2,47 +2,14 @@
 -- (C) Altran UK Limited
 --=============================================================================
 
--------------------------------------------------------------------------------
---                                                                           --
--- SPARK.Crypto.Hash.Skein                                                   --
---                                                                           --
--- Description                                                               --
---                                                                           --
--- Skein hash function. Derived from the SPARKSkein release originally       --
--- appearing on www.skein-hash.info                                          --
---                                                                           --
--- Currently, this package only implements the main Skein hash function      --
--- with a 512-bit block size                                                 --
---                                                                           --
--- Language                                                                  --
---   Specification : SPARK                                                   --
---   Private Part  : SPARK                                                   --
---   Body          : SPARK                                                   --
---                                                                           --
--- Runtime Requirements and Dependencies                                     --
---   None                                                                    --
---                                                                           --
--- Verification                                                              --
---   Full proof of type-safety with Simplifer and Victor. Clients must       --
--- respect the stated preconditions.                                         --
---                                                                           --
--- Exceptions                                                                --
---   None                                                                    --
--------------------------------------------------------------------------------
-
 with Interfaces;
 with System;
 
 use type Interfaces.Unsigned_64;
 
---# inherit Ada.Unchecked_Conversion,
---#         SPARK,
---#         SPARK.Crypto,
---#         SPARK.Unsigned,
---#         SPARK.Crypto.Hash,
---#         System;
-
 package Skein is
+
+   pragma SPARK_Mode (On);
 
    subtype I3   is Natural range 0 .. 2;
    subtype I4   is Natural range 0 .. 3;
@@ -132,16 +99,16 @@ package Skein is
    -------------------------------------------------------------------
 
    procedure Skein_512_Init (Ctx        :    out Skein_512_Context;
-                             HashBitLen : in     Initialized_Hash_Bit_Length);
-   --# derives Ctx from HashBitLen;
+                             HashBitLen : in     Initialized_Hash_Bit_Length)
+   with Global => null;
    --# post Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
    --#      Hash_Bit_Len_Of (Ctx) = HashBitLen and
    --#      Byte_Count_Of (Ctx) = 0 and
    --#      Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count;
 
    procedure Skein_512_Update (Ctx : in out Skein_512_Context;
-                               Msg : in     Byte_Seq);
-   --# derives Ctx from Ctx, Msg;
+                               Msg : in     Byte_Seq)
+   with Global => null;
    --# pre Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
    --#     Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
    --#     Msg'First = 0 and
@@ -152,8 +119,8 @@ package Skein is
    --#      Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count;
 
    procedure Skein_512_Final (Ctx    : in     Skein_512_Context;
-                              Result :    out Byte_Seq);
-   --# derives Result from Ctx;
+                              Result :    out Byte_Seq)
+   with Global => null;
    --# pre  Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
    --#      Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
    --#      Result'First = 0 and

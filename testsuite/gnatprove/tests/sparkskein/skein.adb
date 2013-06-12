@@ -2,23 +2,14 @@
 -- (C) Altran UK Limited
 --=============================================================================
 
--------------------------------------------------------------------------------
---                                                                           --
--- SPARK.Crypto.Hash.Skein                                                   --
---                                                                           --
--- Implementation Notes                                                      --
---                                                                           --
--- Originally based on the C reference implementation supplied by the Skein  --
--- design team. Performance is very close or better than that of the C code  --
--- at all optimization levels used. See www.skein-hash.info                  --
--------------------------------------------------------------------------------
-
 with Ada.Unchecked_Conversion;
 
 with System;                   use System;
 with GNAT.Byte_Swapping;
 
 package body Skein is
+
+   pragma SPARK_Mode (On);
 
    function To_LittleEndian
      (W : in Interfaces.Unsigned_64)
@@ -39,6 +30,13 @@ package body Skein is
          return LSwap (W);
       end if;
    end To_LittleEndian;
+
+   function Tweak_To_Words
+     --# return R => (for all I in Modifier_Words_Index => (R (I) in Interfaces.Unsigned_64));
+   is new Ada.Unchecked_Conversion (Tweak_Value, Modifier_Words);
+
+   function Skein_512_State_Words_To_Bytes is new
+     Ada.Unchecked_Conversion (Skein_512_State_Words, Skein_512_State_Bytes);
 
    -- Identifiers can't start with a digit in SPARK, so...
    -- type Bit_Size is (S256, S512, S1024);
@@ -90,8 +88,9 @@ package body Skein is
    Skein_Version      : constant := 1;
    Skein_ID_String_LE : constant Interfaces.Unsigned_32 := 16#33414853#; -- "SHA3" (little endian)
 
-   Skein_Schema_Ver   : constant Interfaces.Unsigned_64 := (Interfaces.Unsigned_64 (Skein_Version) * 2**32) +
-                                            Interfaces.Unsigned_64 (Skein_ID_String_LE);
+   Skein_Schema_Ver   : constant Interfaces.Unsigned_64 :=
+     (Interfaces.Unsigned_64 (Skein_Version) * 2**32) +
+      Interfaces.Unsigned_64 (Skein_ID_String_LE);
 
    -- Revised Key Schedule Parity constant "C240" from version 1.3
    -- of the Skein specification.
@@ -275,9 +274,6 @@ package body Skein is
       procedure Inject_Key (R : in Interfaces.Unsigned_64)
       with Global => (Input => (KS, TS),
                       In_Out => X)
-      --# global in     KS;
-      --#        in     TS;
-      --#        in out X;
       --# derives X    from X, R, KS, TS;
       is
          subtype Injection_Range is Natural range 0 .. (WCNT - 1);
@@ -294,8 +290,7 @@ package body Skein is
       --  pragma Inline (Inject_Key);
 
       procedure Round_1
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (0) := X (0) + X (1);
@@ -324,8 +319,7 @@ package body Skein is
       --  pragma Inline (Round_1);
 
       procedure Round_2
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (2) := X (2) + X (1);
@@ -353,10 +347,8 @@ package body Skein is
       end Round_2;
       --  pragma Inline (Round_2);
 
-
       procedure Round_3
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (4) := X (4) + X (1);
@@ -385,8 +377,7 @@ package body Skein is
       --  pragma Inline (Round_3);
 
       procedure Round_4
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (6) := X (6) + X (1);
@@ -415,8 +406,7 @@ package body Skein is
       --  pragma Inline (Round_4);
 
       procedure Round_5
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (0) := X (0) + X (1);
@@ -445,8 +435,7 @@ package body Skein is
       --  pragma Inline (Round_5);
 
       procedure Round_6
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (2) := X (2) + X (1);
@@ -475,8 +464,7 @@ package body Skein is
       --  pragma Inline (Round_6);
 
       procedure Round_7
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (4) := X (4) + X (1);
@@ -505,8 +493,7 @@ package body Skein is
       --  pragma Inline (Round_7);
 
       procedure Round_8
-      --# global in out X;
-      --# derives X from X;
+      with Global => (In_Out => X)
       is
       begin
          X (6) := X (6) + X (1);
@@ -535,11 +522,8 @@ package body Skein is
       --  pragma Inline (Round_8);
 
       procedure Initialize_Key_Schedule
-        --  with Global => (Input => Ctx,
-        --  Output => KS)
-      --# global in     Ctx;
-      --#           out KS;
-      --# derives KS from Ctx;
+      with Global => (Input => Ctx,
+                      Output => KS)
       is
       begin
          -- For speed, we avoid a complete aggregate assignemnt to KS here.
@@ -560,18 +544,12 @@ package body Skein is
       --  pragma Inline (Initialize_Key_Schedule);
 
       procedure Initialize_TS
-        --  with Global => (Input => Ctx,
-        --  Output => TS)
-      --# global in     Ctx;
-      --#           out TS;
-      --# derives TS from Ctx;
+      with Global => (Input => Ctx,
+                      Output => TS)
       is
          W0 : Interfaces.Unsigned_64;
          W1 : Interfaces.Unsigned_64;
 
-         function Tweak_To_Words
-         --# return R => (for all I in Modifier_Words_Index => (R (I) in Interfaces.Unsigned_64));
-         is new Ada.Unchecked_Conversion (Tweak_Value, Modifier_Words);
       begin
          --# accept W, 13, Tweak_To_Words, "Unchecked_Conversion here OK";
          W0 := Tweak_To_Words (Ctx.H.Tweak_Words)(0);
@@ -584,13 +562,8 @@ package body Skein is
       --  pragma Inline (Initialize_TS);
 
       procedure Do_First_Key_Injection
-        with Global => (Input => (W, KS, TS),
-                        Output => X)
-      --# global in     W;
-      --#        in     KS;
-      --#        in     TS;
-      --#           out X;
-      --# derives X from W, KS, TS;
+      with Global => (Input => (W, KS, TS),
+                      Output => X)
       is
       begin
          X := U64_Seq_8'(0 => W (0) + KS (0),
@@ -607,10 +580,8 @@ package body Skein is
       --  pragma Inline (Do_First_Key_Injection);
 
       procedure Threefish_Block
-      --# global in     KS;
-      --#        in     TS;
-      --#        in out X;
-      --# derives X    from X, KS, TS;
+      with Global => (Input => (KS, TS),
+                      In_Out => X)
       is
       begin
          for R in Interfaces.Unsigned_64 range 1 .. (Skein_512_Rounds_Total / 8) loop
@@ -629,10 +600,8 @@ package body Skein is
       --  pragma Inline (Threefish_Block);
 
       procedure Update_Context
-      --# global in out Ctx;
-      --#        in     W;
-      --#        in     X;
-      --# derives Ctx from Ctx, W, X;
+      with Global => (Input => (W, X),
+                      In_Out => Ctx)
       --# post Ctx.H.Hash_Bit_Len = Ctx~.H.Hash_Bit_Len and
       --#      Ctx.H.Byte_Count   = Ctx~.H.Byte_Count;
       is
@@ -704,9 +673,6 @@ package body Skein is
    --#      Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count;
    is
       Cfg : Skein_512_State_Words;
-
-      function Skein_512_State_Words_To_Bytes is new
-        Ada.Unchecked_Conversion (Skein_512_State_Words, Skein_512_State_Bytes);
    begin
       -- Build/Process config block for hashing
       Ctx := Null_Skein_512_Context;
@@ -767,11 +733,8 @@ package body Skein is
 
       procedure Copy_Msg_To_B (Msg_Offset : in Natural;
                                Num_Bytes  : in Natural)
-      --  with Global => (Input => Msg,
-      --  In_Out => Ctx)
-      --# global in out Ctx;
-      --#        in     Msg;
-      --# derives Ctx from Ctx, Msg, Msg_Offset, Num_Bytes;
+      with Global => (Input  => Msg,
+                      In_Out => Ctx)
       --# pre Ctx.H.Hash_Bit_Len > 0 and
       --#     Msg'First = 0 and
       --#     Msg_Offset in Msg'Range and
@@ -891,8 +854,7 @@ package body Skein is
       Tmp_Byte_Count_Add : Natural;
 
       procedure Zero_Pad_B
-      --# global in out Local_Ctx;
-      --# derives Local_Ctx from Local_Ctx;
+      with Global => (In_Out => Local_Ctx)
       --# pre Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
       --#     Local_Ctx.H.Hash_Bit_Len > 0;
       --# post Local_Ctx.H.Hash_Bit_Len = Local_Ctx~.H.Hash_Bit_Len and
@@ -912,8 +874,7 @@ package body Skein is
       --  pragma Inline (Zero_Pad_B);
 
       procedure Set_B_Counter (Counter : in Interfaces.Unsigned_64)
-      --# global in out Local_Ctx;
-      --# derives Local_Ctx from Local_Ctx, Counter;
+      with Global => (In_Out => Local_Ctx)
       --# pre Local_Ctx.H.Hash_Bit_Len > 0;
       --# post Local_Ctx.H.Hash_Bit_Len > 0;
       is
