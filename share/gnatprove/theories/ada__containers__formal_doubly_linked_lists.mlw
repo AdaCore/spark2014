@@ -23,12 +23,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__cursor
   use import int.Int
   use import "_gnatprove_standard".Main
-  use import Ada__containers__formal_doubly_linked_lists__list
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__list
 
   type cursor
-
-  function element list cursor : Ada__containers__formal_doubly_linked_lists__element_type.element_type
 
   function position list cursor : int
 
@@ -62,10 +60,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__length
   use import int.Int
   use import "_gnatprove_standard".Main
-  use import Ada__containers__formal_doubly_linked_lists__list
   use "a-contai__types_in_spec".Ada__containers__count_type
+  use import Ada__containers__formal_doubly_linked_lists__list
 
-  function length (co : list) : Ada__containers__count_type.count_type =
+  function length "inline" (co : list) : Ada__containers__count_type.count_type =
     Ada__containers__count_type.of_int (Ada__containers__formal_doubly_linked_lists__list.length co)
 
   val length (co : list) :  Ada__containers__count_type.count_type
@@ -123,13 +121,15 @@ end
 module Ada__containers__formal_doubly_linked_lists__previous__2
   use import int.Int
   use import "_gnatprove_standard".Main
-  use import Ada__containers__formal_doubly_linked_lists__previous
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__previous
 
   val previous__2 (co:list) (cu:ref cursor) : unit
      requires { !cu = no_element \/ position co !cu > 0 }
+     writes     { cu }
+     reads      { cu }
      ensures  { !cu = previous co (old !cu) }
 end
 
@@ -159,13 +159,15 @@ end
 module Ada__containers__formal_doubly_linked_lists__next__2
   use import int.Int
   use import "_gnatprove_standard".Main
-  use import Ada__containers__formal_doubly_linked_lists__next
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__next
 
   val next__2 (co:list) (cu:ref cursor) : unit
      requires { !cu = no_element \/ position co !cu > 0 }
+     writes     { cu }
+     reads      { cu }
      ensures  { !cu = next co (old !cu) }
 end
 
@@ -210,9 +212,11 @@ end
 module Ada__containers__formal_doubly_linked_lists__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use export Ada__containers__formal_doubly_linked_lists__cursor
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+
+  function element list cursor : Ada__containers__formal_doubly_linked_lists__element_type.element_type
 
   val element (co:list) (cu:cursor) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
      requires { position co cu > 0 }
@@ -222,10 +226,11 @@ end
 module Ada__containers__formal_doubly_linked_lists__first_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__first
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   val first_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
      requires { length co > 0 }
@@ -235,10 +240,11 @@ end
 module Ada__containers__formal_doubly_linked_lists__last_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__last
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   val last_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
      requires { length co > 0 }
@@ -251,6 +257,7 @@ module Ada__containers__formal_doubly_linked_lists__left
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   function left list cursor : list
 
@@ -285,9 +292,10 @@ module Ada__containers__formal_doubly_linked_lists__right
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
+  use import Ada__containers__formal_doubly_linked_lists__empty_list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
-  use import Ada__containers__formal_doubly_linked_lists__empty_list
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   function right list cursor : list
 
@@ -323,6 +331,7 @@ module Ada__containers__formal_doubly_linked_lists__find
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__element
   use import Ada__containers__formal_doubly_linked_lists__right
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
@@ -360,9 +369,10 @@ module Ada__containers__formal_doubly_linked_lists__inleft
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
+  use import Ada__containers__formal_doubly_linked_lists__empty_list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
-  use import Ada__containers__formal_doubly_linked_lists__empty_list
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   function inleft list cursor : list
 
@@ -392,12 +402,13 @@ end
 module Ada__containers__formal_doubly_linked_lists__reverse_find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__element
   use import Ada__containers__formal_doubly_linked_lists__inleft
-  use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
 
   function findlast list Ada__containers__formal_doubly_linked_lists__element_type.base_type : cursor
 
@@ -431,13 +442,14 @@ end
 module Ada__containers__formal_doubly_linked_lists__strict_equal
   use import int.Int
   use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   function strict_equal list list : bool
 
-  axiom strict_equal_a:
+  axiom strict_equal__def:
     forall co1 co2 : list [strict_equal co1 co2].
     ((forall cu:cursor [position co1 cu | position co2 cu].
        position co1 cu = position co2 cu) /\
@@ -445,7 +457,7 @@ module Ada__containers__formal_doubly_linked_lists__strict_equal
         Ada__containers__formal_doubly_linked_lists__element_type.to_base (element co1 cu) = Ada__containers__formal_doubly_linked_lists__element_type.to_base (element co2 cu))) <->  strict_equal co1 co2 = True
 
   lemma strict_equal_length:
-    forall co1 co2 : list [strict_equal co1 co2, length co1 | strict_equal co1 co2, length co2].
+    forall co1 co2 : list [strict_equal co1 co2 | strict_equal co1 co2].
      strict_equal co1 co2 = True -> length co1 = length co2
 
     val strict_equal (co1:list) (co2:list) : bool
@@ -454,15 +466,16 @@ end
 
 module Ada__containers__formal_doubly_linked_lists__Oeq__2
   use import int.Int
-  use import Ada__containers__formal_doubly_linked_lists__list
-  use import Ada__containers__formal_doubly_linked_lists__cursor
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
+  use import Ada__containers__formal_doubly_linked_lists__list
+  use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   function oeq__2 list list : bool
 
   axiom oeq__2_length:
-   forall co1 co2 : list [oeq__2 co1 co2, length co1 | oeq__2 co1 co2, length co2].
+   forall co1 co2 : list [oeq__2 co1 co2].
    oeq__2 co1 co2 = True -> length co1 = length co2
 
   axiom oeq__2_element:
@@ -492,9 +505,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   predicate replace_element list cursor Ada__containers__formal_doubly_linked_lists__element_type.base_type list
 
@@ -543,6 +557,7 @@ module Ada__containers__formal_doubly_linked_lists__reverse_elements
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   predicate reverse_elements list list
 
@@ -577,12 +592,13 @@ end
 module Ada__containers__formal_doubly_linked_lists__insert
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__previous
   use import Ada__containers__formal_doubly_linked_lists__last
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   predicate insert list cursor Ada__containers__formal_doubly_linked_lists__element_type.base_type list
 
@@ -676,13 +692,13 @@ end
 
 module Ada__containers__formal_doubly_linked_lists__insert__2
   use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use import Ada__containers__formal_doubly_linked_lists__insert
-  use import Ada__containers__formal_doubly_linked_lists__first
   use import Ada__containers__formal_doubly_linked_lists__no_element
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
-  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_doubly_linked_lists__first
+  use import Ada__containers__formal_doubly_linked_lists__insert
 
   predicate first_inserted (co1:list) (cu:cursor) (co2:list) (p:cursor) =
 	    cu = no_element /\ length co1 > 0 /\ position co2 p = length co2 \/
@@ -701,13 +717,13 @@ end
 
 module Ada__containers__formal_doubly_linked_lists__insert__3
   use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__insert__2
-  use import Ada__containers__formal_doubly_linked_lists__no_element
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
-  use import "_gnatprove_standard".Main
 
   predicate insert_3_mult list cursor int list
 
@@ -741,11 +757,11 @@ end
 module Ada__containers__formal_doubly_linked_lists__prepend
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__first
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__insert
 
   val prepend (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) 
                                              (c : int) : unit
@@ -758,11 +774,11 @@ end
 module Ada__containers__formal_doubly_linked_lists__append
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__no_element
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import Ada__containers__formal_doubly_linked_lists__insert
 
    val append (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) 
                                              (c : int) : unit
@@ -778,8 +794,9 @@ module Ada__containers__formal_doubly_linked_lists__delete
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use import Ada__containers__formal_doubly_linked_lists__next
   use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__next
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   predicate delete list cursor list
 
@@ -858,10 +875,9 @@ module Ada__containers__formal_doubly_linked_lists__delete_first
   use import Ada__containers__formal_doubly_linked_lists__delete
 
   val delete_first (co:ref list)  (c : int) : unit
-     requires { length !co > 0 }
      writes     { co }
      reads      { co }
-     ensures { delete_mult (old !co) (first (old !co)) c !co }
+     ensures { if length !co > 0 then delete_mult (old !co) (first (old !co)) c !co else !co = (old !co) }
 end
 
 module Ada__containers__formal_doubly_linked_lists__delete_last
@@ -873,10 +889,9 @@ module Ada__containers__formal_doubly_linked_lists__delete_last
   use import Ada__containers__formal_doubly_linked_lists__delete
 
   val delete_last (co:ref list) (c : int) : unit
-     requires { length !co > 0 }
      writes     { co }
      reads      { co }
-     ensures { delete_mult (old !co) (last (old !co)) c !co }
+     ensures { if length !co > 0 then delete_mult (old !co) (last (old !co)) c !co else !co = (old !co) }
 end
 
 module Ada__containers__formal_doubly_linked_lists__swap_links
@@ -884,6 +899,7 @@ module Ada__containers__formal_doubly_linked_lists__swap_links
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   predicate swap_links list cursor cursor list
 
@@ -932,6 +948,7 @@ module Ada__containers__formal_doubly_linked_lists__swap
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__element
 
   predicate swap list cursor cursor list
 
@@ -979,14 +996,14 @@ module Ada__containers__formal_doubly_linked_lists__splice
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
-  use import Ada__containers__formal_doubly_linked_lists__Oeq__2
-  use import Ada__containers__formal_doubly_linked_lists__strict_equal
+  use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__next
+  use import Ada__containers__formal_doubly_linked_lists__previous
   use import Ada__containers__formal_doubly_linked_lists__inleft
   use import Ada__containers__formal_doubly_linked_lists__right
   use import Ada__containers__formal_doubly_linked_lists__left
-  use import Ada__containers__formal_doubly_linked_lists__next
-  use import Ada__containers__formal_doubly_linked_lists__previous
-  use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__Oeq__2
+  use import Ada__containers__formal_doubly_linked_lists__strict_equal
 
   val splice (target:ref list) (cu:cursor) (source:ref list) : unit
      requires { capacity !target >= (length !target) + (length !source) 
@@ -1002,13 +1019,14 @@ end
 module Ada__containers__formal_doubly_linked_lists__splice__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__element
   use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__insert__2
   use import Ada__containers__formal_doubly_linked_lists__delete
-  use import Ada__containers__formal_doubly_linked_lists__no_element
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   
   val splice__2 (target:ref list) (cu:cursor) (source:ref list)
                                 (p:ref cursor) : unit
@@ -1025,12 +1043,13 @@ end
 module Ada__containers__formal_doubly_linked_lists__splice__3
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__no_element
+  use import Ada__containers__formal_doubly_linked_lists__element
   use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__delete
-  use import Ada__containers__formal_doubly_linked_lists__no_element
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
 
   val splice__3 (co:ref list) (before:cursor) (p:cursor) : unit
      requires { capacity !co >= 2*(length !co)
@@ -1065,10 +1084,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__find
-  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
 
   function contains list Ada__containers__formal_doubly_linked_lists__element_type.base_type : bool
 

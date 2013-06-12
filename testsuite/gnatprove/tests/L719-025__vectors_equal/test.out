@@ -1,26 +1,14 @@
-p.adb:10:27: precondition not proved
-p.adb:12:7: precondition not proved
+p.adb:5:7: info: precondition proved
+p.adb:6:7: info: precondition proved
+p.adb:10:27: info: precondition proved
+p.adb:12:7: info: precondition proved
 p.adb:13:7: precondition not proved
 p.adb:17:33: info: precondition proved
-p.adb:19:7: precondition not proved
+p.adb:19:7: info: precondition proved
+p.adb:20:7: assertion not proved, requires Element (L, I1) = Element (L_In, I2)
 p.adb:20:22: precondition not proved
 p.adb:20:40: precondition not proved
-p.adb:20:7: assertion not proved, requires Element (L, I1) = Element (L_In, I2)
 p.adb:21:7: precondition not proved
-p.adb:5:7: precondition not proved
-p.adb:6:7: info: precondition proved
-p.ads:17:13: info: precondition proved
-p.ads:18:36: info: precondition proved
-p.ads:18:6: info: precondition proved
 p.ads:19:14: postcondition not proved, requires L = L'old
-p.ads:19:16: info: precondition proved
-p.ads:22:13: info: precondition proved
-p.ads:22:43: info: precondition proved
 p.ads:23:14: postcondition not proved, requires L = L'old
-p.ads:23:16: info: precondition proved
-p.ads:26:13: info: precondition proved
-p.ads:26:45: info: precondition proved
-p.ads:27:41: info: precondition proved
-p.ads:27:9: info: precondition proved
 p.ads:28:14: postcondition not proved, requires L = L'old
-p.ads:28:16: info: precondition proved

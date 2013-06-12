@@ -424,16 +424,13 @@ package body Gnat2Why.Decls is
 
          --  Computes the length of the substitution that has to be computed
          --  for the parameters of the generic.
-         function Subst_Length (Assoc : List_Id;
-                                Labs  : List_Id) return Integer;
+         function Subst_Length (Labs  : List_Id) return Integer;
 
-         function Subst_Length (Assoc : List_Id;
-                                Labs  : List_Id) return Integer is
+         function Subst_Length (Labs  : List_Id) return Integer is
             Current  : Integer := 0;
-            CurAssoc : Node_Id := First (Assoc);
             CurLabs  : Node_Id := First (Labs);
          begin
-            while Present (CurAssoc) or else Present (CurLabs) loop
+            while Present (CurLabs) loop
                declare
                   K : constant Entity_Kind :=
                     Ekind (Defining_Entity (CurLabs));
@@ -446,9 +443,6 @@ package body Gnat2Why.Decls is
                      Current := Current + 2;
                   end if;
                end;
-               if Present (CurAssoc) then
-                  Next (CurAssoc);
-               end if;
                Next (CurLabs);
             end loop;
             return Current;
@@ -473,7 +467,7 @@ package body Gnat2Why.Decls is
          CurLabs  : Node_Id := First (Labs);
          Current  : Integer := 1;
          Reps     : W_Custom_Substitution_Array :=
-           (1 .. 1 + Subst_Length (Assoc, Labs) => <>);
+           (1 .. 1 + Subst_Length (Labs) => <>);
       begin
          while Present (CurAssoc) loop
             declare
@@ -517,14 +511,18 @@ package body Gnat2Why.Decls is
                        & Short_Name (Formal) & "\s"),
                      To       => W_Any_Node_Id (New_Identifier
                        (Name => "use " & Capitalize_First
-                       (Name_Of_Node (Actual)) & ASCII.LF)));
+                        (Name_Of_Node (Actual)) & ASCII.LF)));
                end if;
                Current := Current + 1;
 
-               --  For type parameters, generate a theory that renames the
-               --  theory of the actual. Necessary for conversion functions.
+               --  For types, replace: <Generic_Name>__<Formal>.<Formal>
+               --  by: Why_Logic_Type_Of_Ada_Type (Actual)
 
                if Ekind (Formal) in Type_Kind then
+
+                  --  For type parameters, generate a theory that renames the
+                  --  theory of the actual. Necessary for conversion functions.
+
                   Open_Theory
                     (TFile, Capitalize_First (Instance_Name) & "__"
                      & Short_Name (Formal),
@@ -536,13 +534,17 @@ package body Gnat2Why.Decls is
                      Use_Kind        => EW_Export,
                      With_Completion => False);
 
+                  if Short_Name (Formal) /= Short_Name (Actual) then
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Type
+                          (Name  =>
+                             New_Identifier (Name => Short_Name (Formal)),
+                           Alias => Why_Logic_Type_Of_Ada_Type (Actual)));
+                  end if;
+
                   Close_Theory (TFile, Filter_Entity => Empty);
-               end if;
 
-               --  For types, replace: <Generic_Name>__<Formal>.<Formal>
-               --  by: Why_Logic_Type_Of_Ada_Type (Actual)
-
-               if Ekind (Formal) in Type_Kind then
                   Reps (Current) := New_Custom_Substitution
                     (Domain   => EW_Prog,
                      From     => NID (Capitalize_First (Generic_Name)
@@ -694,6 +696,7 @@ package body Gnat2Why.Decls is
             From     => NID (Capitalize_First (Generic_Name) & "__"),
             To       => W_Any_Node_Id
               (New_Identifier (Name => Instance_Name & "__")));
+
          return Reps;
       end Parse_Parameters;
 
@@ -729,7 +732,7 @@ package body Gnat2Why.Decls is
          File_Append_To_Theories
            (TFile.File, New_Custom_Declaration
               (Domain    => EW_Prog,
-               File_Name => NID (Full_Name (Package_Entity) & "__main.mlw")));
+               File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
       end if;
 
       Parse_Declarations (Decls, TFile.Name.all);

@@ -1654,7 +1654,7 @@ package body SPARK_Definition is
                All_Entities.Insert (Underlying_Type (E));
             elsif Type_Based_On_Formal_Container (E) then
 
-               --  The a private type based on a formal container should be in
+               --  A private type based on a formal container should be in
                --  SPARK.
 
                All_Entities.Insert (Underlying_Type (E));
