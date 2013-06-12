@@ -39,11 +39,6 @@ package Gnat2Why.Opt is
    -- Options defined in this package --
    -------------------------------------
 
-   --  SPARK strict mode. Interpret compiler permissions as strictly as
-   --  possible in SPARK mode.
-
-   Strict_Mode : Boolean := False;
-
    --  Standard package only mode. In this mode, gnat2why will only generate
    --  Why code for package Standard. Any given input file will be ignored.
 

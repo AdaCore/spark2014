@@ -571,9 +571,6 @@ procedure Gnatprove is
          when GPM_Prove =>
             null;
       end case;
-      if Pedantic then
-         Append (Val, " strict_mode");
-      end if;
       Ada.Environment_Variables.Set (Name  => GNAT2Why_Var,
                                      Value => To_String (Val));
    end Set_Gnat2why_Env_Var;
@@ -624,6 +621,9 @@ procedure Gnatprove is
       Args.Append (Stdlib_ALI_Dir);
       if Show_Tag then
          Args.Append ("-gnatw.d"); -- generation of unique tag
+      end if;
+      if Pedantic then
+         Args.Append ("-gnatd.D");
       end if;
       while Has_Element (Cur) loop
          Args.Append (Element (Cur));

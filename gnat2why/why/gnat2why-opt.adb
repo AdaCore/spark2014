@@ -85,9 +85,7 @@ package body Gnat2Why.Opt is
 
    procedure Interpret_Token (Token : String) is
    begin
-      if Token = "strict_mode" then
-         Strict_Mode := True;
-      elsif Token = "standard_mode" then
+      if Token = "standard_mode" then
          Standard_Mode := True;
       elsif Token = "check_mode" then
          Check_Mode := True;
