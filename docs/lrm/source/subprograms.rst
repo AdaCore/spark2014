@@ -498,8 +498,8 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 NRR input or outputs of a dependency_relation shall denote
-                   entire object or state abstraction
+      :Trace Unit: 6.1.5 NRR inputs and outputs of a dependency_relation shall denote
+                   entire objects or state abstractions
 
 .. centered:: **Legality Rules**
 
@@ -526,8 +526,8 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR The input set consists of formal parameters of mode "in"
-                   and "in out" and global_items with mode_selector Input or In_Out
+      :Trace Unit: 6.1.5 LR The input set consists of formal parameters of mode 'in'
+                   and 'in out' and global_items with mode_selector Input or In_Out
 
 #. The *input set* of a subprogram is the *explicit input set* of the
    subprogram augmented with those formal parameters of mode **out**
@@ -550,8 +550,8 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR The output set consists of formal parameters of mode "out"
-                   and "in out" and global_item with mode_selector Output or In_Out
+      :Trace Unit: 6.1.5 LR The output set consists of formal parameters of mode 'out'
+                   and 'in out' and global_item with mode_selector Output or In_Out
                    and for a function the function_result
 
 #. The entity denoted by each ``input`` of a ``dependency_relation`` of a
