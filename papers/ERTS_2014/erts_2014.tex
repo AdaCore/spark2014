@@ -11,6 +11,7 @@
 \newcommand{\gnatprove}{GNATprove\xspace}
 \newcommand{\oldspark}{SPARK~2005\xspace}
 \newcommand{\newspark}{SPARK~2014\xspace}
+\newcommand{\spark}{SPARK\xspace}
 \newcommand{\ada}{Ada\xspace}
 \newcommand{\adatwtw}{Ada~2012\xspace}
 
@@ -124,10 +125,65 @@ least as strong as testing alone.
 
 % openETCS case study
 
-\subsection{Description of the Software}
+The openETCS\footnote{\url{http://openetcs.org/}} European project
+aims at making an open-sourced, open-proofs reference model of ETCS
+(European Train Control System). ETCS is a radio-based train control
+system aiming at unifying train signaling and control over all
+European countries. Organized in several levels, ETCS can range from,
+at Level 0, a simple ATP (Automatic Train Protection) system
+monitoring train speed to, at Level 3, a fully featured radio-based
+train control system where trains inform a Radio Block Centre about
+their location and receives Movement Authorities, using cab signaling
+instead of track-side signaling.
+
+Within this framework we made some experiments with \newspark to see
+if one could formalize the System Requirement Specification (ERA
+UNISIG SUBSET-026). The first goal of this experiment was to check if
+\newspark was expressive enough to describe the objects of the
+requirements: requirement text, transition tables, breaking curve
+equations, etc. The second goal was to play with proving capabilities
+of \newspark, testing it on some parts of the specification in order
+to evaluate them.
+
+Before detailing our experiments, we should acknowledge that using
+\newspark for formalizing \emph{system requirements} is a bit
+excessive and out of scope for the language. We made nonetheless this
+formalization for two reasons. Firstly we wanted to give a formal
+semantics to this system specification and \newspark first-order logic
+used for contract annotation should be suitable for this task. This
+formalization would allow us to formally verify some properties at the
+specification level.  Secondly, the ETCS' specifications are quite
+low-level in some of its content, therefore not as far from \spark
+language as one would have expected.
+
+\subsection{Description of the Experiment}
+
+Formalization of communication establishment?
+
+Formalization of Mode transition table.
+
+Formalization of Step functions.
+
 \subsection{Formalization of Properties}
+
+SRS excerpts and corresponding \newspark code.
+
 \subsection{Formal Verification Results}
+
+Possible to express most of requirements.
+
+Not so much proofs (time consuming approach).
+
 \subsection{Lessons Learned}
+
+\newspark user defined types useful for contract clarity and helpful
+for proofs.
+
+Design code for proof (e.g. avoid early exit).
+
+Verifiable contract is not always the ``natural'' contract.
+
+Use feedback from the tool. Define a proof methodology.
 
 \section{Flight Control and Vehicle Management in Space}
 
@@ -197,3 +253,5 @@ study are the following:
 \bibliography{erts_2014}
 
 \end{document}
+
+% LocalWords:  openETCS ETCS UNISIG Centre SRS
