@@ -104,6 +104,11 @@ procedure Gnatprove is
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
+   procedure Set_Gnat2why_Env_Var;
+   --  Set the environment variable which passes some options to gnat2why
+
+   procedure Unset_Gnat2why_Env_Var;
+   --  unset the environment variable for gnat2why
    -------------------
    -- Call_Gprbuild --
    -------------------
@@ -546,6 +551,33 @@ procedure Gnatprove is
       Close (File);
    end Generate_Why3_Conf_File;
 
+   --------------------------
+   -- Set_Gnat2why_Env_Var --
+   --------------------------
+
+   procedure Set_Gnat2why_Env_Var
+   is
+      use Ada.Strings.Unbounded;
+      Val : Unbounded_String := Null_Unbounded_String;
+   begin
+      if Debug then
+         Append (Val, " flow_dump_graphs");
+      end if;
+      case MMode is
+         when GPM_Check =>
+            Append (Val, " check_mode");
+         when GPM_Flow | GPM_All =>
+            Append (Val, " flow_analysis_mode");
+         when GPM_Prove =>
+            null;
+      end case;
+      if Pedantic then
+         Append (Val, " strict_mode");
+      end if;
+      Ada.Environment_Variables.Set (Name  => GNAT2Why_Var,
+                                     Value => To_String (Val));
+   end Set_Gnat2why_Env_Var;
+
    ------------------
    -- Text_Of_Step --
    ------------------
@@ -593,30 +625,27 @@ procedure Gnatprove is
       if Show_Tag then
          Args.Append ("-gnatw.d"); -- generation of unique tag
       end if;
-      if Debug then
-         Args.Append ("-gnatd.Z");
-      end if;
-      case MMode is
-         when GPM_Check =>
-            Args.Append ("-gnatd.K");
-         when GPM_Flow | GPM_All =>
-            Args.Append ("-gnatd.Q");
-         when GPM_Prove =>
-            null;
-      end case;
-      if Pedantic then
-         Args.Append ("-gnatd.D");
-      end if;
       while Has_Element (Cur) loop
          Args.Append (Element (Cur));
          Next (Cur);
       end loop;
+      Set_Gnat2why_Env_Var;
       Call_Gprbuild (Project_File,
                      Gpr_Translataion_Cnf_File,
                      Parallel,
                      Args,
                      Status);
+      Unset_Gnat2why_Env_Var;
    end Translate_To_Why;
+
+   ----------------------------
+   -- Unset_Gnat2why_Env_Var --
+   ----------------------------
+
+   procedure Unset_Gnat2why_Env_Var is
+   begin
+      Ada.Environment_Variables.Clear (GNAT2Why_Var);
+   end Unset_Gnat2why_Env_Var;
 
    Tree      : Project_Tree;
    --  GNAT project tree
