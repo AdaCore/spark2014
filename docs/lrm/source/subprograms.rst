@@ -294,7 +294,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: NRR global_item shall denote entire object
+      :Trace Unit: 6.1.4 NRR global_item shall denote entire object
 
 .. centered:: **Legality Rules**
 
@@ -322,7 +322,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR Each mode_selector shall occur at most once
+      :Trace Unit: 6.1.4 LR each mode_selector shall occur at most once
 
 #. A function subprogram shall not have a ``mode_selector`` of
    Output or In_Out in its Global aspect.
@@ -762,7 +762,7 @@ other sections as appropriate, since they will refer to more than just subprogra
    An entity (e.g., a subprogram or an object) whose Convention aspect is
    specified to have the value Ghost is said to be a ghost entity (e.g., a ghost
    function or a ghost variable).
-   
+
 #. The Convention aspect of an entity declared inside of a ghost entity (e.g.,
    within the body of a ghost function) is defined to be Ghost.
 
@@ -778,7 +778,7 @@ other sections as appropriate, since they will refer to more than just subprogra
 #. A ghost entity shall only be referenced:
 
    * from within an assertion expression; or
-   
+
    * within or as part of the declaration or completion of a
      ghost entity (e.g., from within the body of a ghost function); or
 
@@ -786,16 +786,16 @@ other sections as appropriate, since they will refer to more than just subprogra
      assignment statement targeting a non-ghost variable or a procedure call
      which passes a non-ghost variable as an out or in out mode actual
      parameter.
-     
+
 #. Within a ghost procedure, the view of any non-ghost variable is
    a constant view. Within a ghost procedure, a volatile non-global object shall
    not be read. [In a ghost procedure we do not want to allow assignments to
    non-ghosts either via assignment statements or procedure calls.]
-   
-#. A ghost entity shall not be referenced from within the expression of a 
+
+#. A ghost entity shall not be referenced from within the expression of a
    predicate specification of a non-ghost subtype [because such predicates
    participate in determining the outcome of a membership test].
-   
+
 #. All subcomponents of a ghost object shall be initialized by the
    elaboration of the declaration of the object.
 
@@ -808,18 +808,18 @@ other sections as appropriate, since they will refer to more than just subprogra
    rules about the side effects of elaborating an instance of a generic package.
    We will need the general rule that the elaboration of a ghost declaration of
    any kind cannot modify non-ghost state.]
-   
+
 #. The Link_Name or External_Name aspects of an imported ghost
    entity shall not be specified. A Convention aspect specification for an
    entity declared inside of a ghost entity shall be confirming [(in other
    words, the specified Convention shall be Ghost)].
-   
+
 #. Ghost tagged types are disallowed. [This is because just the existence
    of a ghost tagged type (even if it is never referenced) changes the behavior
    of Ada.Tags operations. Note overriding is not a problem because Convention
    participates in conformance checks (so ghost can't override non-ghost and
    vice versa).]
-   
+
 #. The Convention aspect of an External entity shall not be Ghost.
 
 [We are ignoring interactions between ghostliness and freezing. Adding a ghost
@@ -1061,7 +1061,7 @@ There are no additional dynamic semantics associated with nonreturning procedure
    are the same as those introduced for a runtime check which fails
    unconditionally. See also section :ref:`exceptions`, where a similar restriction is
    imposed on ``raise_statements``.]
-   
+
 
 Overloading of Operators
 ------------------------
