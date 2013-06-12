@@ -223,6 +223,9 @@ The Use Cases
 .. _uc-combine-test-and-proof:
 .. include:: ../use-cases/combine-test-and-proof.rst
 
+.. _uc-perform-testing:
+.. include:: ../use-cases/perform-testing.rst
+
 .. _uc-alternative-compiler:
 .. include:: ../use-cases/alternative-compiler.rst
 
