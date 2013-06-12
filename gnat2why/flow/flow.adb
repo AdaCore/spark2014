@@ -27,7 +27,6 @@ with Ada.Strings.Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Aspects;               use Aspects;
-with Debug;                 use Debug;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Util;              use Sem_Util;
@@ -41,6 +40,8 @@ with Treepr;                use Treepr;
 with Why;
 with SPARK_Definition;      use SPARK_Definition;
 with SPARK_Util;
+
+with Gnat2Why.Opt;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -777,7 +778,7 @@ package body Flow is
          return Rv;
       end EDI;
    begin
-      if Debug_Flag_Dot_ZZ then
+      if Gnat2Why.Opt.Flow_Dump_Graphs then
          G.Write_Pdf_File
            (Filename  => Filename,
             Node_Info => NDI'Access,
@@ -827,7 +828,7 @@ package body Flow is
          end loop;
       end if;
 
-      if Debug_Flag_Dot_ZZ then
+      if Gnat2Why.Opt.Flow_Dump_Graphs then
          Output.Write_Str (Character'Val (8#33#) & "[32m" &
                              "Flow analysis (cons) of " &
                              Get_Name_String (Chars (E)) &
@@ -904,7 +905,7 @@ package body Flow is
 
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
-         if Debug_Flag_Dot_ZZ then
+         if Gnat2Why.Opt.Flow_Dump_Graphs then
             Output.Write_Str (Character'Val (8#33#) & "[32m" &
                                 "Flow analysis (errors) for " &
                                 Get_Name_String (Chars (FA.Subprogram)) &

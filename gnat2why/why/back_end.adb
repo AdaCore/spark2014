@@ -32,15 +32,14 @@ with Osint;
 with Stringt;
 with System;
 
-with SPARK_Util;      use SPARK_Util;
-
 with Gnat2Why.Driver;
+with Gnat2Why.Opt;
 
 package body Back_End is
 
    use Gnat2Why.Driver;
 
-   package GNAT2Why is new Adabkend
+   package GNAT2Why_BE is new Adabkend
      (Product_Name       => "GNAT2WHY",
       Copyright_Years    => "2010-2011",
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
@@ -58,11 +57,11 @@ package body Back_End is
       Namet.Unlock;
       Stringt.Unlock;
 
-      if Translate_Standard_Only then
+      if Gnat2Why.Opt.Standard_Mode then
          Translate_Standard_Package;
          Osint.Exit_Program (Osint.E_Success);
       else
-         GNAT2Why.Call_Back_End;
+         GNAT2Why_BE.Call_Back_End;
       end if;
 
       --  Make sure to lock any unlocked tables again before returning
@@ -110,7 +109,8 @@ package body Back_End is
          gnat_argc := save_argc;
       end if;
 
-      GNAT2Why.Scan_Compiler_Arguments;
+      GNAT2Why_BE.Scan_Compiler_Arguments;
+      Gnat2Why.Opt.Init;
    end Scan_Compiler_Arguments;
 
 end Back_End;

@@ -59,6 +59,7 @@ with Why.Types;              use Why.Types;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Gnat2Why.Opt;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with Gnat2Why.Types;         use Gnat2Why.Types;
 
@@ -292,13 +293,13 @@ package body Gnat2Why.Driver is
       Mark_All_Compilation_Units;
       After_Marking;
 
-      if Compilation_Errors or else In_Check_Mode then
+      if Compilation_Errors or else Gnat2Why.Opt.Check_Mode then
          return;
       end if;
 
       --  Do some flow analysis
 
-      if Debug_Flag_Dot_QQ then
+      if Gnat2Why.Opt.Flow_Analysis_Mode then
          Flow_Analyse_CUnit;
       end if;
 

@@ -42,12 +42,7 @@ package SPARK_Util is
    -- Special modes --
    -------------------
 
-   --  These modes are currently set through debug flags
-
-   function Translate_Standard_Only return Boolean is
-     (Debug.Debug_Flag_Dot_HH);
-
-   function In_Check_Mode return Boolean is (Debug.Debug_Flag_Dot_KK);
+   --  This mode is currently set through a debug flag
 
    function In_Frame_Condition_Mode return Boolean is
      (Debug.Debug_Flag_Dot_GG);

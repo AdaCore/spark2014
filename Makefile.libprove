@@ -31,7 +31,7 @@ ALL_OBJS := $(filter-out $(EXCLUDE_OBJ), $(GNARL_OBJS) $(GNAT_OBJS))
 ALL_ALIS:=$(ALL_OBJS:.o=.ali)
 ALL_WHYPACK:=$(ALL_ALIS:.ali=__package.mlw)
 WHY_STANDARD:= _standard__package.mlw
-DUMMYFILE:= dummyfile
+DUMMYFILE:= dummy.adb
 
 all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
 
@@ -50,8 +50,8 @@ check: $(ALL_WHYPACK:__package.mlw=.check)
 	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.G $<
 
 $(WHY_STANDARD):
-	touch $(DUMMYFILE)
-	$(GNAT2WHY) -gnatd.H $(DUMMYFILE)
+	echo "procedure Dummy is begin null end Dummy;" > $(DUMMYFILE)
+	env GNAT2WHY_ARGS="standard_mode" $(GNAT2WHY) $(DUMMYFILE)
 	rm $(DUMMYFILE)
 
 %.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
