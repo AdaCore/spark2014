@@ -1,8 +1,12 @@
 int_list.adb:4:7: info: precondition proved
-int_list.adb:18:10: info: precondition proved
-int_list.adb:18:33: info: precondition proved
-int_list.adb:18:48: range check not proved
-int_list.adb:19:10: info: precondition proved
+int_list.adb:11:10: info: loop invariant initialization proved
+int_list.adb:11:10: loop invariant preservation not proved
+int_list.adb:14:27: info: precondition proved
+int_list.adb:14:41: info: precondition proved
+int_list.adb:21:10: info: precondition proved
+int_list.adb:21:33: info: precondition proved
+int_list.adb:21:48: range check not proved
+int_list.adb:22:10: info: precondition proved
 int_list.ads:18:8: info: precondition proved
 int_list.ads:18:8: postcondition not proved
 int_list.ads:20:36: info: overflow check proved

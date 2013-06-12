@@ -5,10 +5,13 @@ package body Int_List is
    end Add;
 
    procedure Incr (L : in out List) is
-      Copy : List := L;
       C    : Cursor := First (L);
    begin
       while Has_Element (L, C) loop
+         pragma Loop_Invariant
+           (Has_Element (L'Loop_Entry, C) and then
+            Length (L) = Length (L'Loop_Entry) and then
+            Strict_Equal (Right (L, C), Right (L'Loop_Entry, C)));
 --         pragma Assert
 --           (Strict_Equal (Right (L, C),Right (Copy, C))
 --              and then
