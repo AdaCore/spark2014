@@ -130,8 +130,8 @@ the value an expression had upon entry to the subprogram.
 .. centered:: **Dynamic Semantics**
 
 #. Other than the above legality rules, pragma Loop_Invariant is equivalent to
-   pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in RM
-   11.4.2(1.1/3)) and is governed by the Loop_Invariant  assertion aspect
+   pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada 
+   RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant  assertion aspect
    [and may be used in an  Assertion_Policy pragma]. 
    
 #. The elaboration of an Checked Loop_Variant pragma begins by evaluating the 
@@ -148,8 +148,8 @@ the value an expression had upon entry to the subprogram.
    greater (respectively, less) than the value obtained during the preceding
    iteration. The exception Assertions.Assertion_Error is raised if this check
    fails. All comparisons and checks are performed using predefined operations.
-   Pragma Loop_Variant is an assertion (as defined in RM 11.4.2(1.1/3)) and is
-   governed by the Loop_Variant assertion aspect [and may be used in an
+   Pragma Loop_Variant is an assertion (as defined in Ada RM 11.4.2(1.1/3)) and 
+   is governed by the Loop_Variant assertion aspect [and may be used in an
    Assertion_Policy pragma].
    
 .. centered:: **Verification Rules**
@@ -193,14 +193,17 @@ that ``I`` increases is enough to prove termination of this simple loop.
 Attribute Loop_Entry
 ^^^^^^^^^^^^^^^^^^^^
 
-For a prefix *X* that denotes an object of a nonlimited type, the
-following attribute is defined
-
-.. centered:: **Syntax**
+.. centered:: **Static Semantics** 
+    
+#. For a prefix *X* that denotes an object of a nonlimited type, the
+   following attribute is defined:
 
 ::
-
-   X'Loop_Entry [(loop_name)]
+      X'Loop_Entry [(loop_name)]
+   
+#. The value of X'Loop_Entry [(loop_name] is the value of X on entry to the loop
+   that is denoted by ``loop_name``.  If the optional ``loop_name`` parameter is
+   not provided, the closest enclosing loop is the default. 
 
 .. centered:: **Legality Rules**
 
@@ -238,7 +241,10 @@ following attribute is defined
      postcondition expression;
 
    * the rule that a potentially unevaluated Old ``attribute_reference``
-     shall statically denote an entity.
+     shall statically denote an entity;
+     
+   * the prefix of the ``attribute_reference`` shall not contain a Loop_Entry
+     ``attribute_reference.``
 
 #. A Loop_Entry ``attribute_reference`` shall occur within a Loop_Variant or 
    Loop_Invariant pragma.
@@ -285,16 +291,15 @@ following attribute is defined
                       pragma Loop_Invariant (X(Idx) > X(Idx)'Loop_Entry(Outer));
 
    this would introduce an exception in the case where Idx is not in X'Range.]
- 
+
 .. centered:: **Dynamic Semantics**
 
-   
-#. For each *X'Loop_Entry* other than one occurring within an Ignored
+#. For each X'Loop_Entry other than one occurring within an Ignored
    assertion expression, a constant is implicitly declared at the beginning of
-   the associated loop statement. The constant is of the type of *X* and is
-   initialized to the result of evaluating *X* (as an expression) at the point
-   of the constant declaration. The value of *X'Loop_Entry* is the value of this
-   constant; the type of *X'Loop_Entry* is the type of *X*. These implicit
+   the associated loop statement. The constant is of the type of X and is
+   initialized to the result of evaluating X (as an expression) at the point
+   of the constant declaration. The value of X'Loop_Entry is the value of this
+   constant; the type of X'Loop_Entry is the type of X. These implicit
    constant declarations occur in an arbitrary order.
    
 #. The previous paragraph notwithstanding, the implicit constant declaration
