@@ -20,7 +20,7 @@
               If we were to enforce it at the analysis stage, we would be
               breaking modular analysis (since we would request that bodies
               are in place before proceeding with the analysis).
-!Action Taken: Deleted rule. Removing it does not cause any analysis problems.
+!Action Taken: Updated text to clarify the meaning of this rule.
 !Checked By:
 
 !Label: STT001,

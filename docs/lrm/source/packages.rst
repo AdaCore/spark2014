@@ -350,6 +350,18 @@ shall follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.4 LR any name_value_options must be the final options
                    in the list
 
+#. A ``package_declaration`` or ``generic_package_declaration`` shall have a
+   completion [(require a body)] if it contains a non-null Abstract_State aspect
+   specification. If a package declaration has a non-null Abstract_State aspect
+   but in Ada a body is not required, a pragma Elaborate_Body shall be stated
+   within the package declaration to make it required in Ada.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 LR package declarations with non-null Abstract State shall
+                   have bodies
+
+
 #. A subprogram declaration that overloads a state abstraction has an implicit
    Global aspect denoting the state abstraction with a ``mode_selector`` of
    Input. An explicit Global aspect may be specified which replaces the
