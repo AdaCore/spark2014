@@ -27,7 +27,7 @@
 --  Gnat2why. The run-time checks correspond to Ada RM checks, for which the
 --  front-end defines distinct constants in types.ads. Here, we use a new
 --  enumeration instead of these constants, because we are only interested in
---  run-time errors that can happen in Alfa code (e.g. it excludes
+--  run-time errors that can happen in SPARK code (e.g. it excludes
 --  Access_Check), and which GNATprove can detect (it excludes
 --  Storage_Check), plus various assertions that we want to distinguish.
 
