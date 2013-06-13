@@ -1046,7 +1046,7 @@ Page/Para: page 12, bullet 3
 !Description: Mandatory:  It could be clearer at this point that legacy
 code may not all be SPARK 2014. Otherwise it seems little different from
 the first case.
-!Action Taken:
+!Action Taken:Done
 !Checked By:
 
 !Label: JEB/05
@@ -1054,7 +1054,7 @@ the first case.
 Page/Para: page 12, final bullet
 !Description: Desirable: make it cleared whether this is manual or
 automatic. I suspect manual.
-!Action Taken:
+!Action Taken:Done.
 !Checked By:
 
 !Label: JEB/06
@@ -1942,12 +1942,12 @@ may be synthesized.
 !Label: TJJ008
 !Location:1.8 SPARK strategic requirements
 !Description:This section should mention executable semantics and infinite integer arithmetic for assertion expressions.
-!Action Taken:Added bulleted subsection to explain this.
+!Action Taken:Added bulletted subsection to explain this.
 !Checked By:
 
 !Label: TJJ009
 !Location:1.8 SPARK strategic requirements
-!Description:The subsection on generative and retrospective needs rewriting it is not consistent with the rest of the RM.
+!Description:The subsection on generative and retrospective needs rewriting it is not consistent with the rest of the RM.  The strategic requirement and its focus should be the synthesis of aspects rather than methods of analysis.
 !Action Taken:Rewrote this section.
 !Checked By:
 
@@ -1959,17 +1959,15 @@ may be synthesized.
 
 !Label: TJJ011
 !Location:1.8 SPARK strategic requirements
-!Description:The subsection on interfacing wit other languages is a bit of a jumble.  It repeats what is covered by the previous bullet point and what is
+!Description:The subsection on interfacing with other languages is a bit of a jumble.  It repeats what is covered by the previous bullet point and what is
 covered by the retrospective analysis subsection.
 !Action Taken:Rewrote this section to make it specific to interfacing to languages other than Ada.
 !Checked By:
 
 !Label: TJJ012
-!Location:1.9.1 Principal Language Restrictions
-!Description:It is possible that a limited form of controlled types
-could be supported in the future to support the container library. Similarly
-we could extend the model of exceptions.
-!Action Taken:I have added currently to the two relevant bullet points.
+!Location:1.8 SPARK strategic requirements
+!Description:We should note that the security features are not due until after release 1.
+!Action Taken:Done.
 !Checked By:
 
 !Label: TJJ013
@@ -1981,6 +1979,14 @@ we could extend the model of exceptions.
 !Checked By:
 
 !Label: TJJ014
+!Location:1.9.1 Principal Language Restrictions
+!Description:It is possible that a limited form of controlled types
+could be supported in the future to support the container library. Similarly
+we could extend the model of exceptions.
+!Action Taken:I have added currently to the two relevant bullet points.
+!Checked By:
+
+!Label: TJJ015
 !Location:1.9.2 Combining Formal ...
 !Description:Change is only cost-effective to might be ...
 !Action Taken:Done.

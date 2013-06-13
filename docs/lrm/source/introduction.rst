@@ -286,8 +286,8 @@ to identify the main program (albeit not within the language itself).
 The following requirements give the principal goals to be met by |SPARK|.
 Some are expanded in subsequent sections within this chapter.
 
-- The |SPARK| language subset shall embody the largest subset of Ada 2012 to which it is
-  currently practical to apply automatic formal verification, in line with
+- The |SPARK| language subset shall embody the largest subset of Ada 2012 to 
+  which it is currently practical to apply automatic formal verification, in line with
   the goals below. However, future advances in verification research and
   computing power may allow for expansion of the language and the forms of
   verification available. See section :ref:`main_restricts`
@@ -313,42 +313,25 @@ Some are expanded in subsequent sections within this chapter.
   to written in |SPARK| making it potentially entirely provable largely using 
   automatic proof tools.
   
-- |SPARK| shall provide support for constructive, generative and retrospective
-  analysis as follows (see section :ref:`verific_modes` for further details):
-
-   * |SPARK| shall support constructive (modular) specification, analysis and
-     verification of (partially) developed programs, to allow static analysis as
-     early as possible in the development lifecycle. [Hence, package and
-     subprogram bodies need not be present for formal verification to proceed.]
-     This requires |SPARK| specific aspects to be specified on the declarations
-     of packages and subprograms
-     
-   * |SPARK| shall support synthesis of certain aspects from the body code.  As
-     a minimum the conservative synthesis of Global and Depends aspects shall
-     be supported as described in :ref:`verific_modes` .  A particular tool
-     may provide more precise synthesis and the synthesis of more aspects.
-     
-   * Synthesis of |SPARK| aspects facilitates:
-   
-     - a *generative* approach whereby only a limited set of |SPARK| aspects are
-       specified, for instance just on subprogram declarations in the visible
-       part of packages, then the aspects for lower-level subprograms could be
-       synthesized. Alternatively the synthesized aspects may be used to correct
-       existing aspects. The generative approach might shorten development time
-       and should simplify maintenance. The extent to which the synthesis of
-       aspects is possible is tool dependent.
-       
-     - *retrospective* analysis of a program not developed in |SPARK| where 
-       useful forms of verification can be achieved with code that complies with
-       the core |SPARK| restrictions, but otherwise does not have any |SPARK|
-       specific aspects. The aspects are synthesized and used in the analysis of
-       the parts of the program that are in |SPARK|. Parts of the program which
-       are not compliant with |SPARK| subset cannot be fully verified by the
-       tools but units containing such non-compliances may be represented by
-       their declaration supplemented with |SPARK| specific aspects manually
-       specified to give an accurate and truthful contract for the unit
-       (see section :ref:`in_out` for further details).
- 
+- |SPARK| shall support *constructive*, modular development which allows 
+  contracts to be specified on the declaration of program units and allows
+  analysis and verification to be perfomed based on these contracts early as
+  possible in the development lifecycle, even before before the units are
+  implemented. As units are implemented the implementation is verified against
+  its specification given in its contract. The contracts are specified using
+  |SPARK| specific aspects.
+  
+- A |SPARK| analysis tool is required to synthesize at least some of the |SPARK|
+  specific aspects, used to specify the contract of a program unit, if a
+  contract is not explicitly specified, for instance the :ref:``global-aspect``
+  and the :ref:`depends-aspect` from the implementation of the unit if it
+  exists. The minimum requirements are given in :ref:`verific_modes` but a
+  particular tool may provide more precise synthesis and the synthesis of more
+  aspects. The synthesized aspect is used in the analysis of the unit if the
+  aspect is not explicitly specified. The synthesis of |SPARK| specific aspects
+  facilitates different development strategies and the analysis of pre-existing
+  code (see section :ref:`verific_modes`).
+  
 - Although a goal of |SPARK| is to provide a language that supports as many
   Ada 2012 features as practical, there is another goal which is to support good
   programming practice guidelines and coding standards applicable to certain
@@ -382,8 +365,10 @@ Some are expanded in subsequent sections within this chapter.
   modes provided in SPARK 83/95/2005, unless it has been identified that customers
   do not find them useful.
 
-- Support for specifying and verifying properties of secure systems shall be improved
-  over what is available in SPARK 2005.
+- Enhanced support for specifying and verifying properties of secure systems 
+  shall be provided (over what is available in SPARK 2005). [The features to 
+  provide this enhanced support are not yet fully defined and will not be 
+  implemented until after release 1 of the |SPARK| tools.
 
 - |SPARK| shall support the analysis of external communication channels, which 
   might be volatile variables, typically either an input or an output.
@@ -642,42 +627,47 @@ be designed and added at an early stage to assist modular analysis and
 verification, and then maintained by the user as a program evolves. When the 
 body of a unit is implemented (or modified) it is checked that it conforms to 
 its contract. However, it is mandated that a |SPARK| analysis tool shall be able
-to synthesize a conservative approximation of at least a minumum of |SPARK|
+to synthesize a conservative approximation of at least a minimum of |SPARK|
 specific aspects from the source code of a unit.
 
 The synthesis of |SPARK| aspects facilitates a generative approach where,
 for instance, high-level subprograms have explicit aspects specified but 
-lower-level ones are ommitted. The synthesis of aspects also asists in
-maintenance as the synthesized aspects may be used or they are availble to 
+lower-level ones are omitted. The synthesis of aspects also assists in
+maintenance as the synthesized aspects may be used or they are available to 
 correct explicit specified aspects.
 
 Synthesis of |SPARK| aspects is also fundamental for the retrospective analysis 
 of pre-existing code where no |SPARK| specific aspects are provided.
 
 The mandatory requirements of a |SPARK| analysis tool is that it shall be
-capable of synthesizing the Global, Depends, Refined_Global, Refined_Depends, 
-Abstract_State, Refined_State and Initializes aspects from either the 
-implmentaion of a unit or from other |SPARK| aspects as follows:
+capable of synthesizing at a least a basic, conservative :ref:`global-aspects`,
+:ref:`depends-aspects` , :ref:`refined-global-aspect`,
+:ref:`refined-depends-aspect`, :ref:`abstract-state-aspect`,
+:ref:`refined_state_aspect` and :ref:`initializes_aspect` from either the
+implementation code or from other |SPARK| aspects as follows:
 
-  * if subprogram has no Depends aspect but has a Global aspect, an approximation
-    of the Depends aspect is obtained by constructing a dependency relation by
-    assuming that all of the global items that have a mode selector of Output
-    or In_Out are outputs, those that have a mode selector of Input or In_Out
-    are inputs of the dependency relation and that each output is dependent on
-    every input. This is a conservative approximation;
-     
-  * if a subprogram has a Depends aspect but no Global aspect then the Global
-    aspect is determined by taking each input of the dependency relation which
-    is not also an output and adding this to the Global aspect with mode
-    selector of Input. Each output of the dependency relation which is not also
-    an input is added to the Global aspect with a mode selector of Output.
-    Finally, another input and output of the dependency relation which has not
-    been added to the Global aspect is added with a mode selector of In_Out;
+  * if subprogram has no Depends aspect but has a Global aspect, an 
+    approximation of the Depends aspect is obtained by constructing a
+    ``dependency_relation`` by assuming that all of the ``global_items`` that
+    have a ``mode_selector`` of Output or In_Out are ``outputs``, those that
+    have a ``mode_selector`` of Input or In_Out are ``inputs`` of the
+    ``dependency_relation`` and that each ``output`` is dependent on every
+    ``input``. This is a conservative approximation;
     
-  * if neither a Global or Depends aspect is present, then first the globals of a
-    subprogram are determined from an analysis of the entire program code. This
-    analysis is used to synthesize the Global aspects and then from these the
-    Depends aspects are synthesized as described above;
+  * if a subprogram has a Depends aspect but no Global aspect then the Global
+    aspect is determined by taking each ``input`` of the ``dependency_relation``
+    which is not also an ``output`` and adding this to the Global aspect with a
+    ``mode_selector`` of Input. Each ``output`` of the ``dependency_relation``
+    which is not also an ``input`` is added to the Global aspect with a
+    ``mode_selector`` of Output. Finally, any other ``input`` and ``output`` of
+    the ``dependency_relation`` which has not been added to the Global aspect is
+    added with a ``mode_selector`` of In_Out;
+    
+  * if neither a Global or Depends aspect is present, then first the globals of 
+    a subprogram are determined from an analysis of the entire program code.
+    This is achieved in some tool dependent way. The globals of each subprogram
+    determined from this analysis is used to synthesize the Global aspects and
+    then from these the Depends aspects are synthesized as described above;
     
   * if an Abstract_State is specified on a package and a Refined_State aspect is
     specified in its body, then Refined_Global and Refined_Depends aspects shall
@@ -687,23 +677,23 @@ implmentaion of a unit or from other |SPARK| aspects as follows:
     
   * if no abstract state aspect is specified on a package but it contains hidden
     state, then each variable that makes up the hidden state has a
-    Abstract_State sythesized to represent it. At least a crude approximation of
-    a single abstract state for every variable shall be provided. A
-    Refined_State aspect shall be synthesized which shows the variables that are
-    constituents of each state.
+    Abstract_State synthesized to represent it. At least a crude approximation of
+    a single state abstraction for every variable shall be provided. A
+    Refined_State aspect shall be synthesized which shows the constituents of 
+    each state.
     
   * If no Initializes aspect is specified for a package but it declares
     persistent variables which are initialized then an Initializes aspect shall
     be synthesized stating the visible variables that are initialized and the
-    state abstratcions representing the hidden variables that are initialized.   
+    state abstractions representing the hidden variables that are initialized.   
 
-The sytheses described above does not include all of the |SPARK| aspects and nor 
-does the synthesis cover all facits of the aspects in complex programs where 
+The syntheses described above do not include all of the |SPARK| aspects and nor 
+do the syntheses cover all facets of the aspects. In complex programs where 
 extra or more precise aspects are required they might have to be specified 
 manually.
 
 An analysis tool may provide the synthesis of more aspects and more precise
-   synthesis of the mandatory ones.
+synthesis of the mandatory ones.
 
 There are three main use cases where the synthesis of aspects is likely to be 
 required:
@@ -716,7 +706,7 @@ required:
   specific aspects. If the aspects are present, the synthesized aspects may be 
   compared with the explicit ones and auto correction used to update the aspects 
   if the changes are acceptable. If there are aspects missing they are 
-  automatically sythesized for analysis purposes. This is also regarded
+  automatically synthesized for analysis purposes. This is also regarded
   as generative analysis.
 
 - Legacy code is analyzed which has no or incomplete |SPARK| specific aspects 
@@ -731,7 +721,7 @@ that may be necessary:
 - An automatic identification of what code is in |SPARK| and what is not.
 
 - An annotation of the boundary between the |SPARK| and non-|SPARK| code with
-  accurate and truthfull contracts specified by |SPARK| specific aspects.
+  accurate and truthful contracts specified by |SPARK| specific aspects.
 
 Note that when language features are presented and defined in the remainder of
 this document, it is assumed that analysis and verification are being performed

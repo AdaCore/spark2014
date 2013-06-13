@@ -762,6 +762,8 @@ refinements of state abstractions declared by the package. Refined_Global,
 Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express the contracts of a refined
 view of a subprogram.
 
+.. _refined_state_aspect:
+
 Refined_State Aspect
 ~~~~~~~~~~~~~~~~~~~~
 
