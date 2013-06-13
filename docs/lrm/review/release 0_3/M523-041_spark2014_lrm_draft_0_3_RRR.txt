@@ -1880,7 +1880,7 @@ abstract view. Shouldn't it say "external"?
 !Description:It says "A volatile variable shall not be declared within the body of a
 function, directly or indirectly." Is it the same as saying that a volatile
 variable shall always be library-level?
-!Action Taken:
+!Action Taken:No it is saying that a volatile variable cannot be declared within a function body which is a lot less restrictive.  No action taken.
 !Checked By:
 
 !Label: TJJ001
@@ -2016,32 +2016,32 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Label: AH/17
 !Location:7.2.2 legality rule 3 note
 !Description: The note "We may want to be able to override this error" should be removed.
-!Action Taken:
+!Action Taken:Deleted.
 !Checked By:
 
 
 !Label: AH/18
 !Location: 7.2.3 para 1, sentence 1
 !Description: The term "visible state" is potentially ambiguous, please consider expanding.
-!Action Taken:
+!Action Taken:Changed to "Each item of state dclared in the visible part ..."
 !Checked By:
 
 !Label: AH/19
 !Location: 7.2.3 para 1, sentence 2
 !Description: The last comma is unnecessary, please delete.
-!Action Taken:
+!Action Taken:Done.
 !Checked By:
 
 !Label: AH/20
 !Location: 7.2.3 Para 6.
 !Description:  The sentence "The following scenario:" would be easier to read if it was written "The fikkiwung scenario gives rise to ...:. I found myself reading the end of the sentence before reading the bullets.
-!Action Taken:
+!Action Taken:Changed to the following scenario gives rise to ...:
 !Checked By:
 
 !Label: AH/21
-!Location: 7.2.4, Legality rule 4 last bullet
+!Location: 7.2.5, Legality rule 4 last bullet
 !Description:  The use of "them" in "one of them has" is ambiguous as it could be referring to the constituents of the abstract or the global_item.
-!Action Taken:
+!Action Taken:Reworded as "...  but denotes at least one ``constituent`` .."
 !Checked By:
 
 !Label: AH/22

@@ -54,8 +54,8 @@ themselves records.
 
    * any variables declared immediately in the private part or body of P; and
 
-   * the visible state of any packages declared immediately within the private
-     part or body of P.
+   * the state declared in the visible part of any packages declared immediately 
+     within the private part or body of P.
 
 .. _external_state:
 
@@ -84,11 +84,11 @@ normal (non-volatile) state and may be read or updated by the program and has no
 special treatment for Global and Depends aspects.
 
 |SPARK| aspects are defined for specifying a variable as an input only or an
-output only [Ada aspects are used for specifying whether a variable is external]
-see :ref:`external_aspects`). When a state abstraction is declared by an
-Abstract_State aspect (see :ref:`abstract-state-aspect`) it may be specified as
-external, in which case it may be also specified as either input only or output
-only.
+output only [Ada aspects Volatile, Import and Export are used for specifying
+whether a variable is external] see :ref:`external_aspects`). When a state
+abstraction is declared by an Abstract_State aspect (see
+:ref:`abstract-state-aspect`) it may be specified as external, in which case it
+may be also specified as either input only or output only.
 
 .. centered:: **Static Semantics**
 
@@ -658,10 +658,10 @@ be a *Boolean_*\ ``expression``.
       :Trace Unit: 7.1.6 LR Initial_Condition aspect shall follow Abstract_State
                    and Initializes aspects
 
-#. Each variable or state abstraction appearing in an Initial_Condition aspect
-   of a package *Q* which is declared immediately within the visible part of *Q*
-   shall be initialized during the elaboration of *Q* and be denoted by a ``name``
-   of an ``initialization_item`` of the Initializes aspect of *Q*.
+#. Each variable or state abstraction denoted in an Initial_Condition aspect
+   of a package Q which is declared immediately within the visible part of Q
+   shall be initialized during the elaboration of Q and be denoted by a ``name``
+   of an ``initialization_item`` of the Initializes aspect of Q.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -675,8 +675,8 @@ be a *Boolean_*\ ``expression``.
    of both the specification and body of a package. If present on a package, then
    its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
    of the package which can be assumed to be true immediately following the
-   elaboration of the package. [The expression of the Initial_Condition shall only
-   refer to names that are visible. This means that to express properties of
+   elaboration of the package. [The expression of the Initial_Condition cannot
+   denote a state abstraction. This means that to express properties of
    hidden state, functions declared in the visible part acting on the state
    abstractions of the package must be used.]
 
@@ -696,11 +696,7 @@ be a *Boolean_*\ ``expression``.
 
 #. [The Initial_Condition aspect gives a proof obligation to show that the
    implementation of the ``package_specification`` and its body satisfy the
-   predicate given in the Initial_Condition aspect. The Boolean expression of
-   the Initial_Condition aspect of a package shall only depend on properties of
-   the state of the package specifying the Initial_Condition aspect otherwise
-   it will not be possible to discharge the proof obligation by analysis of the
-   package alone.]
+   predicate given in the Initial_Condition aspect.]
 
 .. centered:: **Examples**
 
@@ -818,8 +814,6 @@ where
    then the corresponding ``package_body`` shall not have a Refined_State
    aspect.
 
-   .. note:: We may want to be able to override this error.
-
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 7.2.2 LR cannot have Refined_State aspect without
@@ -935,10 +929,10 @@ There are no verification rules associated with Refined_State aspect.
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Each item of visible state of a private library unit (and any descendants
-thereof) must be connected, directly or indirectly, to an
+Each item of state declared in the visible part of a private library unit 
+(and any descendants thereof) must be connected, directly or indirectly, to an
 *encapsulating* state abstraction of some public library unit. This is done
-using the Part_Of ``option`` or aspect, associated with each declaration of
+using the Part_Of ``option`` or aspect associated with each declaration of
 the visible state of the private unit.
 
 The unit declaring the encapsulating state abstraction identified by the Part_Of
@@ -967,7 +961,8 @@ which the state is *exposed* must be more visible.
 If a private library unit has visible state, this state might be read or updated
 as a side effect of calling a visible operation of a public library unit. This
 visible state may be referenced, either separately or as part of the state
-abstraction of some other public library unit. The following scenario:
+abstraction of some other public library unit. The following scenario gives rise 
+to aliasing between the state abstraction and its constituents:
 
    * a state abstraction is visible; and
 
@@ -978,7 +973,7 @@ abstraction of some other public library unit. The following scenario:
      of the state abstraction - there are effectively two entities representing
      part or all of the state abstraction.
 
-gives rise to aliasing between the state abstraction and its constituents.
+.
 
 To resolve such aliasing, rules are imposed to ensure such a scenario can never
 occur. In particular, it is always known what state abstraction a constituent
@@ -1476,8 +1471,8 @@ The static semantics are equivalent to those given for the Global aspect in
      of Input and of Output; or
 
    * the Refined_Global aspect does not denote all of the ``constituents`` of
-     the state abstraction and at least one of them has the ``mode_selector``
-     of Output.
+     the state abstraction but denotes at least one ``constituent`` that has 
+     a ``mode_selector`` of Output.
 
    [This rule ensures that a state abstraction with the ``mode_selector``
    In_Out cannot be refined onto a set of ``constituents`` that are Output or
