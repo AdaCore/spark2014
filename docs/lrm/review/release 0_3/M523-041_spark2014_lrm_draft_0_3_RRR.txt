@@ -29,9 +29,7 @@
 generated, but we do know how to infer some Pre/Postconditions from the
 code (cf. CodePeer).  So perhaps we should say that we don't support
 that currently, but might at some later date.
-!Action Taken: I want to rewrite the section on synthesis of annotations
-because it is essentially a tool issue.  However we should put some
-minimum requirements. STILL TO DO!
+!Action Taken: These sections have been rewritten the stating that the extent of synthesis is a tool issue but stating that there are minimum requirements.
 !Checked By:
 
 !Label: STT002,
@@ -834,7 +832,10 @@ always achievable. So I think this needs to be something like
 "maximising the percentage of VCs that can be automatically proved is a
 core goal ...". I even wonder if the note is needed at all, but it is
 presumably there as a result of an action from the previous review.
-!Action Taken:
+!Action Taken:Reworded as follows: "Note, however, that a core goal of
+  is to provide a language expressive enough for the whole of a program
+  to written in |SPARK| making it potentially entirely provable largely using 
+  automatic proof tools."
 !Checked By:
 
 !Label: SM/3
@@ -1021,14 +1022,12 @@ referring to the user supplying a contract, rather than a contract being
 generated, as is being described in the penultimate sentence. At first
 reading it appears that the tools might be able to generate shadow
 annotations.
-!Action Taken:
-I am generally unhappy about the description of "retrospective" and
-"generative" modes in Chapter 1 generally as the LRM just assumes that
-the annotations are present.  There is no mention other than in Chapter
-1 of these modes.  I think Chapter 1 should not talk about these modes
-and only say that approximations of the annotations may be synthesized
-by an analysis tool, in particular the Depends and Globals ....
-I will take your comment into account when I address this.
+!Action Taken:Replaced text with "Parts of the program which
+       are not compliant with |SPARK| subset cannot be fully verified by the
+       tools but units containing such non-compliances may be represented by
+       their declaration supplemented with |SPARK| specific aspects manually
+       specified to give an accurate and truthful contract for the unit
+       (see section :ref:`in_out` for further details)"
 !Checked By:
 
 !Label: JEB/03
@@ -1580,7 +1579,7 @@ is sometimes reversed. This should be the same everywhere.
 !Location: 1.4 Method of Description
 !Description: It says "Syntax: this section gives the format of the SPARK 2014 aspects and
 pragmas." Why new attributes are not mentioned?
-!Action Taken:
+!Action Taken:Reworded less specifically: "Syntax: this section gives the format of any |SPARK| specific syntax."
 !Checked By:
 
 !Label: YM003
@@ -1588,7 +1587,9 @@ pragmas." Why new attributes are not mentioned?
 !Description:It says: "simply provides explanatory detail." Should the plural be used?
 "details"? (In the following, "detail" or "details" are used interchangeably
 it seems, which one should be used in which case?)
-!Action Taken:
+!Action Taken:The subtleties of English. I think it is ok.  I will try to be
+consistent elsewhere and in most places where it says further details, which I
+think is fine also, but in a later heading we say Further Detail - will change that to Further Details.
 !Checked By:
 
 !Label: YM004
@@ -1596,13 +1597,13 @@ it seems, which one should be used in which case?)
 !Description:It says "SPARK 2014 shall complete by generation from the body code". I would
 understand better "SPARK 2014 shall support completion of contracts by
 generation from the body code".
-!Action Taken:
+!Action Taken:Reworded as "|SPARK| shall support synthesis of certain aspects from the body code"
 !Checked By:
 
 !Label: YM005
 !Location: 1.8 SPARK 2014 Strategic Requirements
 !Description:The last two strategic requirements are in fact the same.
-!Action Taken:
+!Action Taken:Re order the two subsections and changed wording in DO-333 subsection to indicate that we may go further than an unambiguous language.
 !Checked By:
 
 !Label: YM006
@@ -1611,13 +1612,14 @@ generation from the body code".
 externally-visible behavior of the program", but integer size is such an
 implementation-dependent choice, and it clearly has an effect on program
 behavior. So this paragraph should be rephrased.
-!Action Taken:
+!Action Taken:dded the caveat "other than the fundamental data types and
+  constants" - I hope this is sufficient.
 !Checked By:
 
 !Label: YM007
 !Location: 1.9.1 Principal Language Restrictions
 !Description:It says "Aliasing of names is not permitted." It should add "(but renamings are allowed)".
-!Action Taken:
+!Action Taken:Added.
 !Checked By:
 
 !Label: YM008
@@ -1878,5 +1880,111 @@ function, directly or indirectly." Is it the same as saying that a volatile
 variable shall always be library-level?
 !Action Taken:
 !Checked By:
+
+!Label: TJJ001
+!Location:1 Introduction
+!Description:We have "... compiled and executed by any Ada 2012 implementation"
+It need not be Ada 2012 but must avoiud 'Update, 'Loop_Entry and 'Old cannot
+be used in a pragma.
+!Action Taken:The new text is:
+... "compiled by and executed by any Ada implementation; for 
+instance an Ada 95 compiler provided the use of Ada 2005 and Ada 2012 specific
+features are avoided.  The |SPARK| attributes Update and Loop_Entry can be used
+only if the Ada implementation supports them.  Additionally the attribute Old
+can be used only in a postcondition and not in a pragma."
+!Checked By:
+
+!Label: TJJ002
+!Location:1 Introduction - Requirements given in this document
+!Description:The section does not really contain any information that is not covered elsewhere.  Delete the section.
+!Action Taken:Copied the section to the parked HLR document and then deleted the section from the SPARK RM.
+!Checked By:
+
+!Label: TJJ002
+!Location:1.3 How to Interpret ...
+!Description:Need to add that the language description assumes that all 
+SPARK aspects are present.
+!Action Taken:Added a paragraph to state this but also noted that some aspects
+may be synthesized.
+!Checked By:
+
+!Label: TJJ003
+!Location:1.4 Method of description
+!Description:I do not think we need to put in all sections as stated, rather, we should adopt the scheme used by the Ada 2012 RM where a sections are only present as required.
+!Action Taken:Removed the paragraph stating that they are aalways required.
+!Checked By:
+
+!Label: TJJ004
+!Location:1.5 Formal Analysis
+!Description: I think we should state the formal anlyses listed are static analysis techniques as we use this term elsewhere.
+!Action Taken:Added this statement
+!Checked By:
+
+!Label: TJJ005
+!Location:1.6 Dynamic....
+!Description: I don't think we should use the terms dataflow or annotations.
+!Action Taken:changed words to use flow analysis and drop annotations.
+!Checked By:
+
+!Label: TJJ005
+!Location:1.6 Dynamic....
+!Description:May be compiled and executed by any Ada 2012 implementation.  Why restrict it to Ada 2012
+!Action Taken:changed words to any Ada implementation.
+!Checked By:
+
+!Label: TJJ007
+!Location:1.7 Requirements given in this document
+!Description:The section does not really contain any information that is not covered elsewhere.  Delete the section.
+!Action Taken:Copied the section to the parked HLR document and then deleted the section from the SPARK RM.
+!Checked By:
+
+!Label: TJJ008
+!Location:1.8 SPARK strategic requirements
+!Description:This section should mention executable semantics and infinite integer arithmetic for assertion expressions.
+!Action Taken:Added bulleted subsection to explain this.
+!Checked By:
+
+!Label: TJJ009
+!Location:1.8 SPARK strategic requirements
+!Description:The subsection on generative and retrospective needs rewriting it is not consistent with the rest of the RM.
+!Action Taken:Rewrote this section.
+!Checked By:
+
+!Label: TJJ010
+!Location:1.8 SPARK strategic requirements
+!Description:The subsection on code profiles needs to be more explicit as to why they are needed and when they might be used.
+!Action Taken:Rewrote this section.
+!Checked By:
+
+!Label: TJJ011
+!Location:1.8 SPARK strategic requirements
+!Description:The subsection on interfacing wit other languages is a bit of a jumble.  It repeats what is covered by the previous bullet point and what is
+covered by the retrospective analysis subsection.
+!Action Taken:Rewrote this section to make it specific to interfacing to languages other than Ada.
+!Checked By:
+
+!Label: TJJ012
+!Location:1.9.1 Principal Language Restrictions
+!Description:It is possible that a limited form of controlled types
+could be supported in the future to support the container library. Similarly
+we could extend the model of exceptions. 
+!Action Taken:I have added currently to the two relevant bullet points.
+!Checked By:
+
+!Label: TJJ013
+!Location:1.9.1 Principal Language Restrictions
+!Description:It is possible that a limited form of controlled types
+could be supported in the future to support the container library. Similarly
+we could extend the model of exceptions. 
+!Action Taken:I have added currently to the two relevant bullet points.
+!Checked By:
+
+!Label: TJJ014
+!Location:1.9.2 Combining Formal ...
+!Description:Change is only cost-effective to might be ... 
+!Action Taken:Done.
+!Checked By:
+
+
 
 

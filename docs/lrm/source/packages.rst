@@ -6,11 +6,6 @@
 #. In |SPARK| the elaboration of a package shall only update, directly or
    indirectly, variables declared immediately within the package.
 
-.. note:: TJJ asks: Is this a verification rule or a legality rule?
-   Ideally it should be a legality rule but the front end can probably
-   only detect direct updates. The globals of called subprograms are needed
-   to check indirect calls.
-
 Package Specifications and Declarations
 ---------------------------------------
 

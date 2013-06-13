@@ -9,11 +9,29 @@ Section headings have been left in to preserve the context of the high-level req
 Requirements Given in this Document
 -----------------------------------
 
+Detailed |SPARK| Language Definition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The detailed |SPARK| language definition is given in Ada terminology and
+has two main components.  The first defines extensions to Ada 2012 in terms
+of new aspects, pragmas and attributes to provide |SPARK| features such as
+global specifications for subprograms.  The second defines a subset of Ada 2012
+by excluding certain language features.
+The exclusions, the new aspects, pragmas, attributes and rules specify the
+largest |SPARK| language for which formal analyses are supported.
+
+*Code Policies* may be applied which effectively reduce further the
+language subset which may be analyzed but may make analysis and proof easier,
+more precise and be suitable for some application areas (see :ref:`code_policy`).
+
 Higher-Level Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Higher-level requirements are given in non Ada specific terminology and have the
 following structure:
+
+#. Strategic requirements to be met by the |SPARK| language and its associated
+   toolset (given in this chapter).
 
 #. Requirements to provide particular language features.
 
