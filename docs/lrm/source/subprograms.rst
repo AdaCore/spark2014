@@ -582,8 +582,8 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Every member of the output set shall be denoted by
-                   at least one output of the dependency_relation
+      :Trace Unit: 6.1.5 LR Every member of the output set shall be denoted
+                   by exactly one output of the dependency_relation
 
 #. For the purposes of determining the legality of a Result
    ``attribute_reference``, a ``dependency_relation`` is considered to be
