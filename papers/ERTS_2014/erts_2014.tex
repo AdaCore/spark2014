@@ -29,7 +29,12 @@
 
 \title{Rail, Space, Security: Three Case Studies for SPARK 2014}
 
-\author{Pavlos Efstathopoulos, David Lesens, David Mentré and Yannick Moy}
+\author{%
+\large Pavlos Efstathopoulos$^1$, David Lesens$^2$, David Mentré$^3$ and Yannick Moy$^4$\\
+\normalsize 1: Altran Praxis, 20 Manvers Street, Bath BA1 1PX (United Kingdom),\\
+\normalsize 2: Astrium Space Transportation, 51-61 route de Verneuil F-78130 Les Mureaux (France),\\
+\normalsize 3: Mitsubishi Electric R\&D Centre Europe, F-35708 Rennes (France),\\
+\normalsize 4: AdaCore, 46 rue d'Amsterdam, F-75009 Paris (France)}
 
 \date{}
 
@@ -56,11 +61,10 @@ technology:
 \item lack of convincing cost-benefit argument.
 \end{enumerate}
 
-In this paper we describe our approach to solve those two problems in the
-design of the \newspark language and the associated formal verification tool
-\gnatprove. We use case studies from three different domains developed in the
-context of the \hilite project and discuss the results of using our tools on
-those case studies.
+In this paper, we describe how \newspark addresses these issues, based on
+practical use of the language and associated formal verification tool
+\gnatprove on three industrial case studies developed in the context of the
+\hilite project.
 
 \section{SPARK 2014}
 
@@ -112,8 +116,8 @@ semantics.\cite{tseChalin10}
 \newspark reconciles the logic semantics and executable semantics of contracts,
 so users can now execute contracts, debug them like code, and test them when
 formal verification is too difficult to achieve. Furthermore, there is an
-advantage in keeping the annotation language the same, or almost the same, as
-the programming language: users don't have to learn one more language.
+advantage in keeping the annotation language the same as the programming
+language: users don't have to learn one more language.
 
 \subsection{Integrating Testing and Formal Verification}
 
@@ -253,11 +257,11 @@ The Mission and Vehicle Management of a spacecraft is described by an ECSS (Euro
 {\bf ECSS-E-ST-70-01C Space engineering - Spacecraft on-board control procedures}
 \end{center}
 
-This standard defines the general principles of a On Board Control Procedure (OBCP). An OBCP is in practice represented by a simplified programming language interpreted onboard the spacecraft. This interpreter is generally at the highest level of criticality of the spacecraft. The implementation of this interpreter in \newspark is table driven and relies greatly on:
-
+This standard defines the general principles of a On Board Control Procedure (OBCP). An OBCP is in practice represented by a simplified programming language interpreted onboard the spacecraft. This interpreter is generally at the highest level of criticality of the spacecraft. The implementation of this interpreter in \newspark is table driven and relies greatly
 \ifdefined\abstractonly
-generic packages and discriminants.
+on: generic packages and discriminants.
 \else
+on:
 \begin{itemize}
 \item Generic packages
 
@@ -493,9 +497,7 @@ information held on a network of workstations situated in a physically
 secure enclave. The Tokeneer project was commissioned by the US National
 Security Agency (NSA) to demonstrate the feasibility of developing systems
 to the level of rigour required by the higher assurance levels of the
-Common Criteria. The development artefacts, including all source code,
-are now publicly available. For more details see
-\url{www.adacore.com/sparkpro/tokeneer}.
+Common Criteria\footnote{\url{www.adacore.com/sparkpro/tokeneer}}.
 
 The core system consists of approximately 10,000 lines of \oldspark code
 (declarations and executable lines, excluding blank lines, comments and
@@ -519,9 +521,9 @@ and making the necessary changes to use the new formal verification tool
 
 \subsection{Formal Verification Results}
 
-This study will focus on proving the biggest possible subset of the
-existing verification using the \newspark toolset. Furthermore, partial
-flow analysis will be attempted on a selected subset of files.
+This study will focus on proving the biggest possible subset of Tokeneer using
+the \newspark toolset. Furthermore, partial flow analysis will be attempted on
+a selected subset of files.
 
 \subsection{Lessons Learned}
 
@@ -535,25 +537,25 @@ on the difference between \oldspark and \newspark:
   \item Discover the percentage of the code that can be automatically proven
         and the combination of options/provers that achieve the best results
         for this specific case study.
-  \item Provide feedback and suggesting features/changes that might improve the
+  \item Provide feedback and suggest new features/changes that might improve the
     tools.
 \end {itemize}
 
 \section{Common Findings and Dissimilarities}
 
-We will discuss the common findings between the three case studies, which may
-have an impact on the current development of \newspark, and the
-dissimilarities, which may be explained by differences in domains, backgrounds,
-processes, \etc
+We will discuss the common findings between the three case studies, denoting
+instrinsic properties of \newspark, and the dissimilarities, which may be
+explained by differences in domains, backgrounds, processes, \etc
 
 \section{Conclusion}
 
-We will summarize the outcome of the three case studies, and present the
-planned future evolutions of \newspark.
+We will summarize the three case studies, and present the planned future
+evolutions of \newspark.
 
 \bibliographystyle{plain}
 \bibliography{erts_2014}
 
 \end{document}
+
 
 % LocalWords:  openETCS ETCS UNISIG Centre SRS
