@@ -5,7 +5,7 @@ all: doc
 clean:
 	rm -f *.bbl *.aux *.log *.dvi *.blg *.pdf
 doc:
-	pdflatex $(DOC)
+	pdflatex "\def\abstractonly{}\input{$(DOC)}"
 
 bib:
 	bibtex $(DOC)

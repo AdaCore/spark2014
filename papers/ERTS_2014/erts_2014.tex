@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[10pt,a4paper,twocolumn]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{url}
 \usepackage{xspace}
@@ -36,7 +36,13 @@
 \maketitle
 
 \begin{abstract}
-Insert your abstract here.
+SPARK is a subset of the Ada programming language targeted at safety and
+security critical applications. \newspark is a major evolution of the SPARK
+language and toolset, that integrates formal program verification in the
+existing development and verification processes, in order to decrease the cost
+of verification for software submitted to certification constraints. We present
+industrial case studies in three different certification domains that show the
+benefits of using formal verification with \newspark.
 \end{abstract}
 
 \section{Introduction}
@@ -50,11 +56,11 @@ technology:
 \item lack of convincing cost-benefit argument.
 \end{enumerate}
 
-In this paper we will describe our approach to solve those two problems in the
+In this paper we describe our approach to solve those two problems in the
 design of the \newspark language and the associated formal verification tool
-\gnatprove. We will use case studies from three different domains developed in
-the context of the \hilite project and discuss the results of using our tools
-on those case studies.
+\gnatprove. We use case studies from three different domains developed in the
+context of the \hilite project and discuss the results of using our tools on
+those case studies.
 
 \section{SPARK 2014}
 
@@ -86,8 +92,10 @@ programs~\cite{ada2012rationale}, many of which were inspired from the
 corresponding features in \oldspark. The most useful of these new features is
 without doubts the preconditions and postconditions (which together are
 referred to as a contract) popularised by the Design-by-Contract
-approach~\cite{meyer:1988:OSC}. \newspark is based on the features of \adatwtw,
-to which it adds new ones, some of which inspired from \oldspark. We will
+approach~\cite{meyer:1988:OSC}.
+%% \newspark is based on the features of \adatwtw,
+%% to which it adds new ones, some of which inspired from \oldspark.
+We will
 describe shortly in this subsection the key features defined in \newspark for
 formal verification.
 
@@ -109,6 +117,12 @@ the programming language: users don't have to learn one more language.
 
 \subsection{Integrating Testing and Formal Verification}
 
+\ifdefined\abstractonly
+
+We will present how \newspark supports a combination of formal verification and
+testing~\cite{hiliteERTS2012}.
+
+\else
 Formal methods are complementary to testing, and may find faults that
 are not detected by testing, but they cannot establish verification
 evidence for the target hardware. Therefore testing on the target is
@@ -120,6 +134,7 @@ the source level. Since formal program verification and testing are
 complementary, we would like to use each method where it is most
 efficient. For this we need to make sure that the combination is at
 least as strong as testing alone.
+\fi
 
 \section{Train Control Systems}
 
@@ -133,57 +148,50 @@ European countries. Organized in several levels, ETCS can range from,
 at Level 0, a simple ATP (Automatic Train Protection) system
 monitoring train speed to, at Level 3, a fully featured radio-based
 train control system where trains inform a Radio Block Centre about
-their location and receives Movement Authorities, using cab signaling
+their location and receive Movement Authorities, using cab signaling
 instead of track-side signaling.
 
-Within this framework we made some experiments with \newspark to see
-if one could formalize the System Requirement Specification (ERA
-UNISIG SUBSET-026). The first goal of this experiment was to check if
-\newspark was expressive enough to describe the objects of the
-requirements: requirement text, transition tables, breaking curve
-equations, etc. The second goal was to play with proving capabilities
-of \newspark, testing it on some parts of the specification in order
-to evaluate them.
+\subsection{Description of the Software}
 
-Before detailing our experiments, we should acknowledge that using
-\newspark for formalizing \emph{system requirements} is a bit
-excessive and out of scope for the language. We made nonetheless this
-formalization for two reasons. Firstly we wanted to give a formal
-semantics to this system specification and \newspark first-order logic
-used for contract annotation should be suitable for this task. This
-formalization would allow us to formally verify some properties at the
-specification level.  Secondly, the ETCS' specifications are quite
-low-level in some of its content, therefore not as far from \spark
-language as one would have expected.
-
-\subsection{Description of the Experiment}
-
-Formalization of communication establishment?
-
-Formalization of Mode transition table.
-
-Formalization of Step functions.
+We will describe the establishment of communication, the mode transition table
+and the step functions.
 
 \subsection{Formalization of Properties}
 
-SRS excerpts and corresponding \newspark code.
+We made some experiments with \newspark to see if one could formalize the
+System Requirement Specification (ERA UNISIG SUBSET-026).
+
+We should acknowledge that using \newspark for formalizing \emph{system
+  requirements} (and not only software requirements) is a bit excessive and out
+of scope for the language. We made nonetheless this formalization for two
+reasons. Firstly we wanted to give a formal semantics to this system
+specification and \newspark first-order logic used for contract annotation
+should be suitable for this task. This formalization would allow us to formally
+verify some properties at the specification level.  Secondly, the ETCS'
+specifications are quite low-level in some of its content, therefore not as far
+from software requirements as one would have expected.
+
+We will present SRS excerpts and corresponding \newspark contracts.
 
 \subsection{Formal Verification Results}
 
-Possible to express most of requirements.
-
-Not so much proofs (time consuming approach).
+Our main results is that it is possible to express most of the requirements,
+which can then be checked during testing. We will probably present partial
+proof of results, due to the time needed to achieve full proof.
 
 \subsection{Lessons Learned}
 
-\newspark user defined types useful for contract clarity and helpful
-for proofs.
+The first goal of this experiment was to check if \newspark was expressive
+enough to describe the objects of the requirements: requirement text,
+transition tables, breaking curve equations, \etc The second goal was to
+evaluate the proving capabilities of \newspark on some parts of the
+specification.
 
-Design code for proof (e.g. avoid early exit).
-
-Verifiable contract is not always the ``natural'' contract.
-
-Use feedback from the tool. Define a proof methodology.
+Our findings are the following. Support for rich types in \newspark is useful
+for clarity of contracts and helps with automatic proofs. The code needs to be
+designed with proof in mind (\eg avoid early exit). Verifiable contracts are
+not always the most natural contracts. It is essential to use feedback from the
+tool and to define a proof methodology.
 
 \section{Flight Control and Vehicle Management in Space}
 
@@ -193,17 +201,22 @@ Use feedback from the tool. Define a proof methodology.
 \subsection{Description of the Software}
 
 A typical space applicative flight program is made up of two parts:
+\ifdefined\abstractonly
+Flight control or more generally numerical control / command algorithm, and Mission and Vehicle Management.
+
+\else
 
 \begin{itemize}
 \item Flight control or more generally numerical control / command algorithm
 \item Mission and Vehicle Management
 \end{itemize}
+\fi
 
 \subsubsection{Numerical control / command algorithms}
 
-\paragraph{Description of the Software:}
-
-Numerical control / command algorithms take as inputs floating point values, perform some numerical computations (with the classical basic mathematical operators such as additions, subtractions, multiplications, divisions, absolute values, trigonometry or operations on vectors and arrays, etc.) and return floating point results. Such algorithms have generally a retroaction loop, i.e. internal states.
+\ifdefined\abstractonly
+\else
+Numerical control / command algorithms take as inputs floating point values, perform some numerical computations (with the classical basic mathematical operators such as additions, subtractions, multiplications, divisions, absolute values, trigonometry or operations on vectors and arrays, \etc) and return floating point results. Such algorithms have generally a retroaction loop, \ie internal states.
 
 It is generally not possible to define interesting functional contracts for such code. Indeed, the functional contract of the equation:
 
@@ -211,11 +224,15 @@ It is generally not possible to define interesting functional contracts for such
    X := A * Y + Cos(Z)
 \end{verbatim}
 
-is just itself (i.e. it is not possible to specify in a more abstract way this equation). Then, instead of defining functional contracts, the objective on this kind of software is the proof of absence of run-time errors (such as division by zero) and the correctness of variable ranges (such as, for instance, a velocity shall always be between 0 and 25 km/s).
+\noindent
+is just itself (\ie it is not possible to specify in a more abstract way this equation). Then, instead of defining functional contracts, the objective on this kind of software is the proof of absence of run-time errors (such as division by zero) and the correctness of variable ranges (such as, for instance, a velocity shall always be between 0 and 25 km/s).
+\fi
 
-SPARK has been first experimented on a solar wing management Software (for a spacecraft such as the ATV / Automated Transfer Vehicle).
-This piece of code uses a mathematical library which implementation is not in SPARK, implying that it could not be formally proved, but only tested. However, the interface of this mathematical library is in SPARK. The contracts defined on the mathematical library can then be used to prove the application code.
+\newspark has been first experimented on a solar wing management software (for a spacecraft such as the ATV / Automated Transfer Vehicle).
+This piece of code uses a mathematical library which implementation is not in \newspark, implying that it could not be formally proved, but only tested. However, the interface of this mathematical library is in \newspark. The contracts defined on the mathematical library can then be used to prove the application code.
 
+\ifdefined\abstractonly
+\else
 \paragraph{Example of contract in the mathematical library:}
 
 \begin{verbatim}
@@ -226,6 +243,7 @@ This piece of code uses a mathematical library which implementation is not in SP
      Post => ( Sin32'Result >= -1.0 ) and then
      ( Sin32'Result <= 1.0);
 \end{verbatim}
+\fi
 
 \subsubsection{Mission and Vehicle Management}
 
@@ -235,8 +253,11 @@ The Mission and Vehicle Management of a spacecraft is described by an ECSS (Euro
 {\bf ECSS-E-ST-70-01C Space engineering - Spacecraft on-board control procedures}
 \end{center}
 
-This standard defines the general principles of a On Board Control Procedure (OBCP). An OBCP is in practice represented by a simplified programming language interpreted onboard the spacecraft. This interpreter is generally at the highest level of criticality of the spacecraft. The implementation of this interpreter in SPARK is table driven and relies greatly on:
+This standard defines the general principles of a On Board Control Procedure (OBCP). An OBCP is in practice represented by a simplified programming language interpreted onboard the spacecraft. This interpreter is generally at the highest level of criticality of the spacecraft. The implementation of this interpreter in \newspark is table driven and relies greatly on:
 
+\ifdefined\abstractonly
+generic packages and discriminants.
+\else
 \begin{itemize}
 \item Generic packages
 
@@ -246,9 +267,10 @@ This standard defines the general principles of a On Board Control Procedure (OB
      generic
         -- the list of events
         type T_Event_Id is (<>);
-     
+
      package Mvm.Events is
 	\end{verbatim}
+
 \item Discriminant
 
 	The discriminants ensures a string typing of the code, even in case of heterogeneous communication between components of the system:
@@ -267,11 +289,14 @@ This standard defines the general principles of a On Board Control Procedure (OB
       end record;
 	\end{verbatim}
 \end{itemize}
+\fi
 
 \subsection{Formalization of Properties}
 
 The contracts defined on algorithmic code are mainly related to the ranges of variables.
 
+\ifdefined\abstractonly
+\else
 \paragraph{Example of contract in algorithmic code:}
 
 \begin{verbatim}
@@ -282,6 +307,7 @@ The contracts defined on algorithmic code are mainly related to the ranges of va
      ( X >= -720.0 ) and
         ( X <= 720.0 );
 \end{verbatim}
+\fi
 
 The contracts defined on mission and vehicle management code code have (among others) the following objectives:
 
@@ -292,6 +318,8 @@ The contracts defined on mission and vehicle management code code have (among ot
 \item Ensuring the absence of run-time errors
 \end{itemize}
 
+\ifdefined\abstractonly
+\else
 \paragraph{Example of contract in mission and vehicle management code:}
 
 \begin{verbatim}
@@ -305,32 +333,35 @@ The contracts defined on mission and vehicle management code code have (among ot
               Get_Status (Other_Event_Id, Events) =
                 Get_Status (Other_Event_Id, Events'Old))));
 \end{verbatim}
+\fi
 
 \subsection{Formal Verification Results}
 
-All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the postconditions defined in the software. Then, gnatprove has been applied.
+All the contracts have been checked by dynamic testing. This phase is quite classical, except for the fact that the testing includes the preconditions and the postconditions defined in the software. Then, \gnatprove has been applied.
 
-\subsubsection{Subprograms not in SPARK}
+\ifdefined\abstractonly
+\else
+\subsubsection{Subprograms not in \newspark}
 
-The origins of subprograms not yet in SPARK are mainly the following:
+The origins of subprograms not yet in \newspark are mainly the following:
 
 \begin{itemize}
 \item unchecked conversion
 
 The unchecked conversion are used in a library allowing reading external inputs.
-All the concerned subprograms are very small and shall be validated by intensive testin because there are out of the perimeter of HiLite and of SPARK.
+All the concerned subprograms are very small and shall be validated by intensive testin because there are out of the perimeter of HiLite and of \newspark.
 \item tagged type
 
 Tagged type are related to Object Oriented Programming. The analysis of Object Oriented software is foreseen but has not yet been implemented.
 \item access
 
 Accesses are used in the software to store objects in a table.
-This kind of design can not be proved by gnatprove.
+This kind of design can not be proved by \gnatprove.
 \end{itemize}
 
 \subsubsection{Analysis of the non proved VCs}
 
-Some algorithmic functions are not completely known by gnatprove.
+Some algorithmic functions are not completely known by \gnatprove.
 
 \paragraph{Example:}
 
@@ -344,11 +375,11 @@ Some algorithmic functions are not completely known by gnatprove.
    is (Num32.Arctan (X));
 \end{verbatim}
 
-The postcondition is not proved by gnatprove.
+The postcondition is not proved by \gnatprove.
 The exact behaviour of algorithmic functions depending of the implementation, this behaviour is acceptable.
 Algorithmic functions and their contracts are preferably validated by intensive testing.
 
-gnatprove has some difficulties to take into account rounding.
+\gnatprove has some difficulties to take into account rounding.
 In the following example, the second assertion is not proved.
 
 \paragraph{Example:}
@@ -362,7 +393,7 @@ In the following example, the second assertion is not proved.
    pragma Assert(( Round_Y >= -11160.0 ) and (Round_Y <= 11160.0 ));
 \end{verbatim}
 
-gnatprove currently does not prove non linear equation.
+\gnatprove currently does not prove non linear equation.
 In the following example, the last assertion is not proved.
 
 \paragraph{Example:}
@@ -376,7 +407,7 @@ In the following example, the last assertion is not proved.
    pragma Assert (Result >= 0.0 and then Result <= 360.0);
 \end{verbatim}
 
-Gnatprove is not yet able to verify the index of an array which dimension is defined by a type descriminant
+\gnatprove is not yet able to verify the index of an array which dimension is defined by a type descriminant
 
 \paragraph{Example:}
 
@@ -394,14 +425,27 @@ Gnatprove is not yet able to verify the index of an array which dimension is def
 \end{verbatim}
 
 In function "G", the index check "X.A (I)" is not proved even if "I" is defined in the range of "X.A"
-An improvement of gnatprove is in progress in order to deal with such case.
+An improvement of \gnatprove is in progress in order to deal with such case.
 
 The remaining non proved VCs are due to too complex subprograms.
 These subprograms shall be split in several smaller subprograms to be proved.
+\fi
 
 \subsection{Lessons Learned}
 
-Our initial objectives were that SPARK should fulfill the following requirements:
+\ifdefined\abstractonly
+We will present how \newspark fulfilled the initial objectives that we set:
+capability to formalize the test cases, verification that all test procedures
+cover all the test cases, support to the verification / validation of the
+absence of run-time errors, support to the verification / validation of
+functional properties, verification of the correctness of the access of all
+global variables, verification of the absence of out of range values, internal
+consistency of software unit, capability to assess the commandability and
+observability, help proving that numerical protection mechanisms are correctly
+implemented, prove the correctness of a generic code in a specific context.
+
+\else
+Our initial objectives were that \newspark should fulfill the following requirements:
 
 \begin{itemize}
 \item Capability to formalize the test cases
@@ -435,13 +479,13 @@ Current assessment: Very good
 
 Current assessment: Very good
 \end{itemize}
-
+\fi
 
 \section{Biometric Access to a Secure Enclave}
 
 % Tokeneer case study
 
-\subsection{Initial Case Study}
+\subsection{Description of the Software}
 
 Tokeneer is a highly secure biometric software system that was originally
 developed by Altran in \oldspark. The system provides protection to secure
@@ -455,44 +499,59 @@ are now publicly available. For more details see
 
 The core system consists of approximately 10,000 lines of \oldspark code
 (declarations and executable lines, excluding blank lines, comments and
-SPARK annotations). There are also approximately 3,700 lines of supporting
+\oldspark annotations). There are also approximately 3,700 lines of supporting
 code written in Ada which mimicked the drivers to peripherals connected
-to the core system. Achieving a full conversion of the entire code base
-to \newspark and making the necessary changes to discharge all the VCs
-with GNATprove is outside the scope of this study.
+to the core system.
 
-The source code of Tokeneer was proven to be free of runtime exceptions
+%% Achieving a full conversion of the entire code base
+%% to \newspark and making the necessary changes to discharge all the VCs
+%% with GNATprove is outside the scope of this study.
+
+The source code of Tokeneer was proven to be free of run-time exceptions
 and some key security properties were proven to hold but full functional
-proof was not performed on the entirety of the code. This study will
-focus on proving the biggest possible subset of the aforementioned
-attributes using the \newspark toolset. Furthermore, partial flow analysis
-will be attempted on a selected subset of files. Some additional aims of this
-study are the following:
+proof was not performed on the entirety of the code.
+
+\subsection{Formalization of Properties}
+
+This study consists in converting part of the Tokeneer code base to \newspark
+and making the necessary changes to use the new formal verification tool
+\gnatprove.
+
+\subsection{Formal Verification Results}
+
+This study will focus on proving the biggest possible subset of the
+existing verification using the \newspark toolset. Furthermore, partial
+flow analysis will be attempted on a selected subset of files.
+
+\subsection{Lessons Learned}
+
+We will present our findinds concerning the following issues, which concentrate
+on the difference between \oldspark and \newspark:
+
 \begin {itemize}
   \item Evaluate how easy is it to convert programs from \oldspark to \newspark.
   \item Investigate how executable semantics affect the way code has to be written
         and what advantages/disadvantages they introduce.
   \item Discover the percentage of the code that can be automatically proven
         and the combination of options/provers that achieve the best results
-        for this specific test case.
-  \item Since \newspark is actively under development, providing feedback and
-        suggesting features/changes that might improve the tools, is considered
-        to be a side-benefit of this study.
+        for this specific case study.
+  \item Provide feedback and suggesting features/changes that might improve the
+    tools.
 \end {itemize}
-
-
-
-
-
-\subsection{Description of the Software}
-\subsection{Formalization of Properties}
-\subsection{Formal Verification Results}
-\subsection{Lessons Learned}
 
 \section{Common Findings and Dissimilarities}
 
+We will discuss the common findings between the three case studies, which may
+have an impact on the current development of \newspark, and the
+dissimilarities, which may be explained by differences in domains, backgrounds,
+processes, \etc
+
 \section{Conclusion}
 
+We will summarize the outcome of the three case studies, and present the
+planned future evolutions of \newspark.
+
+\bibliographystyle{plain}
 \bibliography{erts_2014}
 
 \end{document}
