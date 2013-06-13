@@ -46,8 +46,11 @@ There is no additional syntax associated with limited package views in |SPARK|.
 
 #. A name denoting the abstract view of a variable shall occur only:
 
-   * as a ``global_item`` in a Global aspect specification; or
-   * as an ``input`` or ``output`` in a Depends aspect specification.
+   * as a ``global_item`` in a Global or Refined_Global aspect
+     specification; or
+
+   * as an ``input`` or ``output`` in a Depends or Refined_Depends
+     aspect specification.
 
 .. centered:: **Static Semantics**
 
@@ -57,11 +60,11 @@ There is no additional syntax associated with limited package views in |SPARK|.
    subprogram declared in a library unit package *P1* could refer to a state
    abstraction declared in a package *P2* if *P1* has a limited with of *P2*.]
 
-#. For every variable object declared by an ``object_declaration`` occuring
+#. For every variable object declared by an ``object_declaration`` occurring
    immediately within the visible part of a given package, the limited
    view of the package contains an *abstract view* of the object.
 
-#. The abstract view of a volatile variable is volatile.
+#. The abstract view of a volatile variable is external.
 
 .. centered:: **Dynamic Semantics**
 

@@ -260,9 +260,6 @@ These contexts include:
   * the default_expression of a discriminant_specification or
     component_declaration;
 
-  * a Type_Invariant or Type_Invariant'Class aspect specification;
-    [The 'Class attribute is not currently permitted in |SPARK|.]
-
   * a Dynamic_Predicate aspect specification;
 
   * an indexing expresssion of an indexed_component or the discrete_range

@@ -81,22 +81,22 @@ the value an expression had upon entry to the subprogram.
 
 .. centered:: **Static Semantics**
 
-#. Pragma Loop_Invariant is like a pragma Assert except it also acts 
+#. Pragma Loop_Invariant is like a pragma Assert except it also acts
    as a *cut point* in formal verification. A cut point means that a prover is
    free to forget all information about modified variables that has been
-   established within the loop. Only the given Boolean expression is carried 
+   established within the loop. Only the given Boolean expression is carried
    forward..
-   
+
 #. Pragma Loop_Variant is used to demonstrate that a loop will terminate by
    specifying expressions that will increase or decrease as the loop is
    executed.
-   
+
 .. centered:: **Legality Rules**
 
 #. Loop_Invariant is just like pragma Assert with respect to syntax of its
-   Boolean actual parameter, name resolution, legality rules and dynamic 
+   Boolean actual parameter, name resolution, legality rules and dynamic
    semantics, except for extra legality rules given below.
-   
+
 #. Loop_Variant has an expected actual parameter which is a specialization of an
    Ada expression. Otherwise, it has the same name resolution and legality
    rules as pragma Assert, except for extra legality rules given below.
@@ -111,12 +111,12 @@ the value an expression had upon entry to the subprogram.
    * A ``block_statement`` whose ``sequence_of_statements`` or
      ``declarative_part`` immediately includes a construct which is restricted
      to loops.
-     
-#. A construct which is restricted to loops shall occur immediately within 
+
+#. A construct which is restricted to loops shall occur immediately within
    either:
 
    * the ``sequence_of_statements`` of a ``loop_statement``; or
-   
+
    * the ``sequence_of_statements`` or ``declarative_part`` of a
      ``block_statement``.
 
@@ -130,11 +130,11 @@ the value an expression had upon entry to the subprogram.
 .. centered:: **Dynamic Semantics**
 
 #. Other than the above legality rules, pragma Loop_Invariant is equivalent to
-   pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada 
+   pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada
    RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant  assertion aspect
-   [and may be used in an  Assertion_Policy pragma]. 
-   
-#. The elaboration of an Checked Loop_Variant pragma begins by evaluating the 
+   [and may be used in an  Assertion_Policy pragma].
+
+#. The elaboration of an Checked Loop_Variant pragma begins by evaluating the
    ``discrete_expressions`` in textual order. For the first elaboration of the
    pragma within a given execution of the enclosing loop statement, no further
    action is taken. For subsequent elaborations of the pragma, one or more of
@@ -148,23 +148,9 @@ the value an expression had upon entry to the subprogram.
    greater (respectively, less) than the value obtained during the preceding
    iteration. The exception Assertions.Assertion_Error is raised if this check
    fails. All comparisons and checks are performed using predefined operations.
-   Pragma Loop_Variant is an assertion (as defined in Ada RM 11.4.2(1.1/3)) and 
+   Pragma Loop_Variant is an assertion (as defined in Ada RM 11.4.2(1.1/3)) and
    is governed by the Loop_Variant assertion aspect [and may be used in an
    Assertion_Policy pragma].
-   
-.. centered:: **Verification Rules**
-
-#. The pragma Loop_Variant describes a lexicographic order, which must be
-   proved to decrease after each iteration of the loop. This means that it is
-   checked, in the order of appearance in the variant list, that each component
-   behaves as described. If the component does indeed decrease (or increase,
-   depending on the chosen keyword), we stop and the variant is proved. If the
-   component does the opposite (decrease while it was specified to increase, and
-   vice versa), the variant is invalid. If the component stays the same, we move
-   on to the next component. If all components stay the same, the variant is not
-   proved.
-   
-   Proving this property implies the termination of the loop.
 
 .. centered:: **Examples**
 
@@ -193,17 +179,17 @@ that ``I`` increases is enough to prove termination of this simple loop.
 Attribute Loop_Entry
 ^^^^^^^^^^^^^^^^^^^^
 
-.. centered:: **Static Semantics** 
-    
+.. centered:: **Static Semantics**
+
 #. For a prefix *X* that denotes an object of a nonlimited type, the
    following attribute is defined:
 
 ::
       X'Loop_Entry [(loop_name)]
-   
+
 #. The value of X'Loop_Entry [(loop_name] is the value of X on entry to the loop
    that is denoted by ``loop_name``.  If the optional ``loop_name`` parameter is
-   not provided, the closest enclosing loop is the default. 
+   not provided, the closest enclosing loop is the default.
 
 .. centered:: **Legality Rules**
 
@@ -212,11 +198,11 @@ Attribute Loop_Entry
    about ``exit_statements`` in the Name Resolution Rules and Legality Rules
    sections of Ada RM 5.7, a corresponding rule applies to Loop_Entry
    ``attribute_references``.
-   
+
 #. In many cases, the language rules pertaining to the Loop_Entry
    attribute match those pertaining to the Old attribute (see Ada LRM 6.1.1),
    except with "Loop_Entry" substituted for "Old". These include:
-   
+
    * prefix name resolution rules (including expected type definition)
 
    * nominal subtype definition
@@ -231,28 +217,28 @@ Attribute Loop_Entry
 
    * forbidden attribute uses in the prefix of the ``attribute_reference``.
 
-   The following rules are not included in the above list; 
+   The following rules are not included in the above list;
    corresponding rules are instead stated explicitly below:
 
    * the requirement that an Old ``attribute_reference`` shall only occur in a
      postcondition expression;
-     
+
    * the rule disallowing a use of an entity declared within the
      postcondition expression;
 
    * the rule that a potentially unevaluated Old ``attribute_reference``
      shall statically denote an entity;
-     
+
    * the prefix of the ``attribute_reference`` shall not contain a Loop_Entry
      ``attribute_reference.``
 
-#. A Loop_Entry ``attribute_reference`` shall occur within a Loop_Variant or 
+#. A Loop_Entry ``attribute_reference`` shall occur within a Loop_Variant or
    Loop_Invariant pragma.
 
 #. The prefix of a Loop_Entry ``attribute_reference`` shall not contain a use
    of an entity declared within the ``loop_statement`` but not within the prefix
    itself.
-   
+
    [This rule is to allow the use of I in the following example:
 
    .. code-block:: ada
@@ -278,7 +264,7 @@ Attribute Loop_Entry
     The prefix of an Old attribute_reference that is potentially unevaluated
     shall statically denote an entity and have the same rationale. If the
     following was allowed:
-    
+
    .. code-block:: ada
 
 
@@ -301,7 +287,7 @@ Attribute Loop_Entry
    of the constant declaration. The value of X'Loop_Entry is the value of this
    constant; the type of X'Loop_Entry is the type of X. These implicit
    constant declarations occur in an arbitrary order.
-   
+
 #. The previous paragraph notwithstanding, the implicit constant declaration
    is not elaborated if the ``loop_statement`` has an ``iteration_scheme`` whose
    evaluation yields the result that the ``sequence_of_statements`` of the
@@ -377,43 +363,43 @@ Two |SPARK| pragmas are defined, Assert_And_Cut and Assume.  Each has a
 single Boolean parameter and may be used wherever pragma Assert is allowed.
 
 A Boolean expression which is an actual parameter of pragma Assume
-can be assumed to be True for the remainder of the subprogram. If the 
+can be assumed to be True for the remainder of the subprogram. If the
 Assertion_Policy is Check for pragma Assume and the Boolean expression does not
 evaluate to True, the exception Assertions.Assertion_Error will be raised.
-However, in proof, no verification of the expression is performed and in general 
+However, in proof, no verification of the expression is performed and in general
 it cannot.  It has to be used with caution and is used to state axioms.
 
 
 .. centered:: **Static Semantics**
 
-#. Pragma Assert_And_Cut is the same as a pragma Assert except it also acts 
+#. Pragma Assert_And_Cut is the same as a pragma Assert except it also acts
    as a cut point in formal verification. The cut point means that a prover is
    free to forget all information about modified variables that has been
    established from the statement list before the cut point. Only the given
    Boolean expression is carried forward.
-   
+
 #. Pragma Assume is the same as a pragma Assert except that there is no
-   proof obligation to prove the truth of the Boolean expression that is its 
-   actual parameter.  [Pragma Assume indicates to proof tools that the 
+   proof obligation to prove the truth of the Boolean expression that is its
+   actual parameter.  [Pragma Assume indicates to proof tools that the
    expression can be assumed to be True].
 
 .. centered:: **Legality Rules**
 
 #. Pragmas Assert_And_Cut and Assume have the same syntax for their Boolean
-   actual parameter, name resolution rules and dynamic semantics as pragma 
+   actual parameter, name resolution rules and dynamic semantics as pragma
    Assert.
 
 .. _assertcutinv_proof_semantics:
 
 .. centered:: **Verification Rules**
 
-#. The verification rules for pragma Assume are significantly different to that 
-   pragma Assert. [It would be difficult to overstate the importance of the 
+#. The verification rules for pragma Assume are significantly different to that
+   pragma Assert. [It would be difficult to overstate the importance of the
    difference.] Even though the dynamic semantics of pragma Assume and pragma
    Assert are identical, pragma Assume does not introduce a corresponding proof
    obligation. Instead the prover is given permission to assume the truth of the
    assertion, even though this has not been proven. [A single incorrect Assume
    pragma can invalidate an arbitrarily large number of proofs - the
    responsibility for ensuring correctness rests entirely upon the user.]
-   
+
 

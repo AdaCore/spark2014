@@ -121,7 +121,7 @@ Assert as follows: Under static semantics:
 #. Pragma Loop_Variant is used to demonstrate that a loop will terminate by
    specifying expressions that will increase or decrease as the loop is
    executed.
-   
+
 Under Legality Rules:
 #. Loop_Variant has an expected actual parameter which is a specialization of an
    Ada expression. Otherwise, it has the same name resolution and legality
@@ -834,7 +834,7 @@ core goal ...". I even wonder if the note is needed at all, but it is
 presumably there as a result of an action from the previous review.
 !Action Taken:Reworded as follows: "Note, however, that a core goal of
   is to provide a language expressive enough for the whole of a program
-  to written in |SPARK| making it potentially entirely provable largely using 
+  to written in |SPARK| making it potentially entirely provable largely using
   automatic proof tools."
 !Checked By:
 
@@ -968,7 +968,7 @@ Better would be
 ...  Pragma Loop_Variant is an assertion (as defined in Ada RM 11.4.2(1.1/3)) and is governed by the Loop_Variant assertion aspect [and may be used in an Assertion_Policy pragma].
 
 Similarly for Loop_Invariant:
-Pragma Loop_Invariant is an assertion (as defined in Ada 
+Pragma Loop_Invariant is an assertion (as defined in Ada
    RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant  assertion aspect
    [and may be used in an  Assertion_Policy pragma].
 !Checked By:
@@ -1572,7 +1572,7 @@ reference their relevant TN's (if possible).
 !Location: General
 !Description: general comment: the order between "Dynamic Semantics" and "Verification Rules"
 is sometimes reversed. This should be the same everywhere.
-!Action Taken:
+!Action Taken: "Verification Rules" now always come after "Dynamic Semantics".
 !Checked By:
 
 !Label: YM002
@@ -1612,7 +1612,7 @@ generation from the body code".
 externally-visible behavior of the program", but integer size is such an
 implementation-dependent choice, and it clearly has an effect on program
 behavior. So this paragraph should be rephrased.
-!Action Taken:dded the caveat "other than the fundamental data types and
+!Action Taken: Added the caveat "other than the fundamental data types and
   constants" - I hope this is sufficient.
 !Checked By:
 
@@ -1623,56 +1623,56 @@ behavior. So this paragraph should be rephrased.
 !Checked By:
 
 !Label: YM008
-!Location:4.4. Expressions 
-!Description:It mentioned Type_Invariant, which will be pushed after Release 1 probably, so should be removed here. 
-!Action Taken:
+!Location:4.4. Expressions
+!Description:It mentioned Type_Invariant, which will be pushed after Release 1 probably, so should be removed here.
+!Action Taken: Removed relevant bullet point.
 !Checked By:
 
 !Label: YM009
-!Location:4.4. Expressions 
+!Location:4.4. Expressions
 !Description:It also mentions Type_Invariant'Class which should
 definitely be removed. Or they should be mentioned in the note below for
-Dynamic_Predicate that says: 
-!Action Taken:
+Dynamic_Predicate that says:
+!Action Taken: Covered by action taken for YM008.
 !Checked By:
 
 !Label: YM010
-!Location:4.4. Expressions 
+!Location:4.4. Expressions
 !Description:It also mentions Type_Invariant'Class which should
 definitely be removed. Or they should be mentioned in the note below for
 Dynamic_Predicate that says: "[The Dynamic_Predicate rule is redundant because no use of the Dynamic_Predicate is currently in SPARK 2014. This rule is added in anticipation of the possible relaxation of that restriction.]"
-!Action Taken:
+!Action Taken: Duplicate of YM008 and YM009.
 !Checked By:
 
 !Label: YM011
-!Location:5.5.3.1. 
+!Location:5.5.3.1.
 !Description:The Verification Rules for Loop_Variant should disappear, as part of the
 general rule that run-time checks lead to proof obligations. And the "Checked
 by Proof" subtitle should not be used anymore.
-!Action Taken:
+!Action Taken: Removed verification rule.
 !Checked By:
 
 !Label: YM012
-!Location:5.5.3.2. Attribute Loop_Entry 
+!Location:5.5.3.2. Attribute Loop_Entry
 !Description:It says: "These rules follow the corresponding Ada RM rule for 'Old" and
 continues with a single rule. Should there be a list of rules here?
 !Action Taken:Changed to singular as it relates to the rule given above.
 !Checked By:
 
 !Label: YM013
-!Location:6.1.2. Subprogram Contracts 
+!Location:6.1.2. Subprogram Contracts
 !Description:It mentions Pre'Class and Post'Class which should not be mentioned for that release.
-!Action Taken:
+!Action Taken: 'Class is no longer mentioned.
 !Checked By:
 
 !Label: YM014
-!Location:6.1.3. Contract Cases 
+!Location:6.1.3. Contract Cases
 !Description:It says "Upon a call of a subprogram or entry which is subject to an enabled Contract_Cases aspect", but entries are not in SPARK 2014, so the reference to entry should be removed here.
-!Action Taken:
+!Action Taken: Removed "or entry".
 !Checked By:
 
 !Label: YM015
-!Location:6.1.4. Global Aspects 
+!Location:6.1.4. Global Aspects
 !Description:There is a special case 7 in the legality rules that either should be removed
 (as it is covered by the verification rules), or should be expanded to other
 similar cases. Right now, it excludes:
@@ -1691,40 +1691,41 @@ or
 !Checked By:
 
 !Label: YM016
-!Location:6.1.4. Global Aspects 
+!Location:6.1.4. Global Aspects
 !Description:The dynamic semantics part just says: "There are no dynamic semantics
 associated with a Global aspect." It would be better to copy here the rationale
 given for Depends: "as it is used purely for static analysis purposes and is
 not executed."
-!Action Taken:
+!Action Taken: Appended suggested rationale.
 !Checked By:
 
 !Label: YM017
-!Location:6.1.5 Depends Aspects 
+!Location:6.1.5 Depends Aspects
 !Description:Legality rule 11 mentions a "null output_list" where it should mention instead the null_dependency_clause.
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: YM018
-!Location:6.1.5 Depends Aspects 
+!Location:6.1.5 Depends Aspects
 !Description:Verification rule 3 is a consequence of rules 1 and 2, so should either be
 removed, or given in brackets: "Each input of the implementation of a
 subprogram body is denoted by an input of the Depends aspect of the
 subprogram."
-!Action Taken:
+!Action Taken: Surrounded the rule in brackets.
 !Checked By:
 
 !Label: YM019
-!Location:6.1.6. Ghost Functions 
+!Location:6.1.6. Ghost Functions
 !Description:I find it very hard to understand because the rules mentions ghost variables,
 ghost procedures and ghost functions, although only ghost functions are
 currently in the language. It would be better to reword it for release 1 to
 only mention ghost functions. (and keep the rest as comments or in a TN)
-!Action Taken:
+!Action Taken: Legality rule 1 explains that even thought the more general term "ghost entities"
+               is used, it should be regarded as "ghost functions" for now.
 !Checked By:
 
 !Label: YM020
-!Location:6.1.6. Ghost Functions 
+!Location:6.1.6. Ghost Functions
 !Description:Besides, it says "Within a ghost procedure, a volatile non-global object shall
 not be read.", but what about volatile global objects??? I guess they should
 not be read either.
@@ -1732,28 +1733,28 @@ not be read either.
 !Checked By:
 
 !Label: YM021
-!Location:6.4. Subprogram Calls 
+!Location:6.4. Subprogram Calls
 !Description:The reference to dispatching calls should be removed.
-!Action Taken:
+!Action Taken: Reference removed.
 !Checked By:
 
 !Label: YM022
-!Location:6.4.2. Anti-Aliasing 
+!Location:6.4.2. Anti-Aliasing
 !Description:The verification rules all start with "In SPARK 2014". There is no need for
 such a precision in this document (and it's not given in other verification
 rules).
-!Action Taken:
+!Action Taken: Deleted "In SPARK 2014".
 !Checked By:
 
 !Label: YM023
-!Location:6.5. Return Statements 
+!Location:6.5. Return Statements
 !Description:Any reason why extended_return_statements are not allowed? Actually, I have a
 TN to implement those in proof! (M301-019)
-!Action Taken:
+!Action Taken: Changed to "No extensions or restrictions."
 !Checked By:
 
 !Label: YM024
-!Location:7.1.1. Abstraction of State 
+!Location:7.1.1. Abstraction of State
 !Description:Regarding the definition of the hidden state of a package P, what about the
 hidden state of a package declared immediately within the private part or body
 of P? It is not currently counted in the hidden state of P. It should.
@@ -1762,22 +1763,22 @@ TN to implement those in proof! (M301-019)
 !Checked By:
 
 !Label: YM025
-!Location:7.1.2. External State 
+!Location:7.1.2. External State
 !Description:It says "Ada aspects are used for specifying whether a variable is
 external". It does not seem true, as External is not an Ada aspect.
 !Action Taken:
 !Checked By:
 
 !Label: YM026
-!Location:7.1.2. External State 
+!Location:7.1.2. External State
 !Description:Since the legality rules "Nor shall it be denoted as an output/input of a
 Depends aspect." are consequences of the other legality rules, should they be
 in brackets?
-!Action Taken:
+!Action Taken: Added brackets.
 !Checked By:
 
 !Label: YM027
-!Location:7.1.2. External State 
+!Location:7.1.2. External State
 !Description:Do Input_Only and Output_Only work well with the future aspects decribed by
 Steve in M509-001?
   Assume_Unknown_Readers
@@ -1789,7 +1790,7 @@ in a direction desired by our customers (Secunet in particular).
 !Checked By:
 
 !Label: YM028
-!Location: 
+!Location:
 !Description:It says in legality rule 4 that "A package_declaration or
 generic_package_declaration shall have a completion [(a body)] if it contains a
 non-null Abstract_State aspect specification." What about the following
@@ -1800,7 +1801,7 @@ package?
   private
     L : Integer with Part_Of => State;
   end P;
-!Action Taken:
+!Action Taken: Rule has been updated. The new version addresses this issue.
 !Checked By:
 
 !Label: YM029
@@ -1824,7 +1825,7 @@ and 4. Does State "appear" or is "referenced" in the following legal example?
 !Label: YM030
 !Location:7.1.6. Initial Condition Aspect
 !Description:The verification rule of Initial_Condition derives from its dynamic semantics, so should it be stated?
-!Action Taken:
+!Action Taken: Added brackets around the entire verification rule.
 !Checked By:
 
 !Label: YM031
@@ -1842,35 +1843,35 @@ false. What about relying on other packages Initial_Condition?
 !Description:It says in static semantics rule 2: "A constituent with an option_list is used
 to indicate the options that apply to the constituent." but there are no
 option_list in the grammar for refinement_list.
-!Action Taken:
+!Action Taken: Removed rule (was out of synch with the syntax).
 !Checked By:
 
 !Label: YM033
 !Location:7.2.4. Initialization Issues
 !Description:It mentions "volatile states" in the verification rule, which does not match
 the otherwise used terminology of "external state".
-!Action Taken:
+!Action Taken: Changed "volatile state" into "external state".
 !Checked By:
 
 !Label: YM034
 !Location:7.3.2. Type Invariants
 !Description:It says "will be completed for Milestone 3", I don't think we'll have time for
 that, so I'd rather put it after Release 1.
-!Action Taken:
+!Action Taken: Updated as suggested.
 !Checked By:
 
 !Label: YM035
 !Location:10.1.2.1.
 !Description:The legality rules for where an abstract view of a variable is allowed exclude
 Refined_Global and Refined_Depends. These should be added.
-!Action Taken:
+!Action Taken: Added Refined_Global and Refined_Depends as suggested.
 !Checked By:
 
 !Label: YM036
 !Location:10.1.2.1.
 !Description:Rule 3 in static semantics mentions the "volatile" characteristic of an
 abstract view. Shouldn't it say "external"?
-!Action Taken:
+!Action Taken: Changed second "volatile" into "external".
 !Checked By:
 
 !Label: YM037
@@ -1887,7 +1888,7 @@ variable shall always be library-level?
 It need not be Ada 2012 but must avoiud 'Update, 'Loop_Entry and 'Old cannot
 be used in a pragma.
 !Action Taken:The new text is:
-... "compiled by and executed by any Ada implementation; for 
+... "compiled by and executed by any Ada implementation; for
 instance an Ada 95 compiler provided the use of Ada 2005 and Ada 2012 specific
 features are avoided.  The |SPARK| attributes Update and Loop_Entry can be used
 only if the Ada implementation supports them.  Additionally the attribute Old
@@ -1902,7 +1903,7 @@ can be used only in a postcondition and not in a pragma."
 
 !Label: TJJ002
 !Location:1.3 How to Interpret ...
-!Description:Need to add that the language description assumes that all 
+!Description:Need to add that the language description assumes that all
 SPARK aspects are present.
 !Action Taken:Added a paragraph to state this but also noted that some aspects
 may be synthesized.
@@ -1967,7 +1968,7 @@ covered by the retrospective analysis subsection.
 !Location:1.9.1 Principal Language Restrictions
 !Description:It is possible that a limited form of controlled types
 could be supported in the future to support the container library. Similarly
-we could extend the model of exceptions. 
+we could extend the model of exceptions.
 !Action Taken:I have added currently to the two relevant bullet points.
 !Checked By:
 
@@ -1975,13 +1976,13 @@ we could extend the model of exceptions.
 !Location:1.9.1 Principal Language Restrictions
 !Description:It is possible that a limited form of controlled types
 could be supported in the future to support the container library. Similarly
-we could extend the model of exceptions. 
+we could extend the model of exceptions.
 !Action Taken:I have added currently to the two relevant bullet points.
 !Checked By:
 
 !Label: TJJ014
 !Location:1.9.2 Combining Formal ...
-!Description:Change is only cost-effective to might be ... 
+!Description:Change is only cost-effective to might be ...
 !Action Taken:Done.
 !Checked By:
 

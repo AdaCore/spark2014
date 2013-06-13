@@ -179,7 +179,7 @@ where
 
 .. centered:: **Dynamic Semantics**
 
-#. Upon a call of a subprogram or entry which is subject to an enabled
+#. Upon a call of a subprogram which is subject to an enabled
    Contract_Cases aspect, Contract_Cases checks are
    performed as follows:
 
@@ -361,7 +361,8 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with a Global aspect.
+There are no dynamic semantics associated with a Global aspect as it
+is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
@@ -680,8 +681,8 @@ as it is used purely for static analysis purposes and is not executed.
 #. Each output of the implementation of the subprogram body is denoted by
    an ``output`` in the Depends aspect of the subprogram.
 
-#. Each input of the implementation of a subprogram body is denoted by an
-   ``input`` of the Depends aspect of the subprogram.
+#. [Each input of the implementation of a subprogram body is denoted by an
+   ``input`` of the Depends aspect of the subprogram.]
 
 .. centered:: **Examples**
 
@@ -945,7 +946,7 @@ Subprogram Calls
 ----------------
 
 A call is in |SPARK| only if it resolves statically to a subprogram whose
-declaration view is in |SPARK| (whether the call is dispatching or not).
+declaration view is in |SPARK|.
 
 Parameter Associations
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -995,21 +996,18 @@ No extra dynamic semantics are associated with anti-aliasing.
 
    .. centered:: **Verification Rules**
 
-#. In |SPARK|, a procedure call shall not pass actual parameters
-   which denote objects with overlapping locations, when at least one of
-   the corresponding formal parameters is of mode **out** or **in out**,
-   unless the other corresponding formal parameter is of mode **in**
-   and is of a by-copy type.
+#. A procedure call shall not pass actual parameters which denote objects
+   with overlapping locations, when at least one of the corresponding formal
+   parameters is of mode **out** or **in out**, unless the other corresponding
+   formal parameter is of mode **in** and is of a by-copy type.
 
-#. In |SPARK|, a procedure call shall not pass an actual parameter, whose
-   corresponding formal parameter is mode **out** or **in out**,
-   that denotes an object which overlaps with any ``global_item`` referenced
-   by the subprogram.
+#. A procedure call shall not pass an actual parameter, whose corresponding
+   formal parameter is mode **out** or **in out**, that denotes an object which
+   overlaps with any ``global_item`` referenced by the subprogram.
 
-#. In |SPARK|, a procedure call shall not pass an actual parameter which
-   denotes an object which overlaps a ``global_item`` of mode
-   **out** or **in out** of the subprogram, unless the corresponding formal
-   parameter is of mode **in** and by-copy.
+#. A procedure call shall not pass an actual parameter which denotes an object
+   which overlaps a ``global_item`` of mode **out** or **in out** of the subprogram,
+   unless the corresponding formal parameter is of mode **in** and by-copy.
 
 #. Where one of these rules prohibits the occurrence of an object V or any of its subcomponents
    as an actual parameter, the following constructs are also prohibited in this context:
@@ -1026,11 +1024,7 @@ No extra dynamic semantics are associated with anti-aliasing.
 Return Statements
 -----------------
 
-Use of ``extended_return_statement`` is not allowed in |SPARK|.
-
-.. todo:: Update LRM to allow extended return statements in a future release.
-          To be completed in a post-Release 1 version of this document.
-
+No extensions or restrictions.
 
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~

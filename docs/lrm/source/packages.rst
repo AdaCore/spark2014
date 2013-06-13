@@ -98,12 +98,12 @@ state abstractions.
 .. centered:: **Legality Rules**
 
 #. External state which is specified as input only shall not be denoted in a
-   Global aspect with a ``mode_selector`` of In_Out or Output. Nor shall it be
-   denoted as an ``output`` of a Depends aspect.
+   Global aspect with a ``mode_selector`` of In_Out or Output. [Nor shall it be
+   denoted as an ``output`` of a Depends aspect.]
 
 #. External state which is specified as output only shall not be denoted in
-   a Global aspect with a ``mode_selector`` of Input or In_Out. Nor shall not be
-   denoted as an ``input`` of a Depends aspect.
+   a Global aspect with a ``mode_selector`` of Input or In_Out. [Nor shall not be
+   denoted as an ``input`` of a Depends aspect.]
 
 #. A ``global_item`` of a function shall not denote input only or output only
    external state.
@@ -186,13 +186,13 @@ this specification.
 #. See section on volatile variables for rules concerning their use in |SPARK|
    (:ref:`shared_variable_control`).
 
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with these aspects.
+
 .. centered:: **Verification Rules**
 
 There are no extra verification rules.
-
-.. centered:: **Static Semantics**
-
-There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Examples**
 
@@ -414,13 +414,13 @@ shall follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.4 SS a state abstraction that is part_of an abstract
                    state must be exclusively part of this abstract state
 
-.. centered:: **Verification Rules**
-
-There are no verification rules associated with the Abstract_State aspect.
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with the Abstract_State aspect.
+
+.. centered:: **Verification Rules**
+
+There are no verification rules associated with the Abstract_State aspect.
 
 .. centered:: **Examples**
 
@@ -464,7 +464,7 @@ There are no dynamic semantics associated with the Abstract_State aspect.
          with Global  => (Output => Trip),  -- In the Global and Depends aspects
               Depends => (Trip => null),    -- Trip denotes the state abstraction.
               Post    => Trip = 0;          -- In the Post condition Trip denotes
-                                           -- the function.
+                                            -- the function.
       procedure Inc
          with Global  => (In_Out => (Trip, Total)),
               Depends => ((Trip, Total) =>+ null),
@@ -694,9 +694,9 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Verification Rules**
 
-#. The Initial_Condition aspect gives a proof obligation to show that the
+#. [The Initial_Condition aspect gives a proof obligation to show that the
    implementation of the ``package_specification`` and its body satisfy the
-   predicate given in the Initial_Condition aspect. [The Boolean expression of
+   predicate given in the Initial_Condition aspect. The Boolean expression of
    the Initial_Condition aspect of a package shall only depend on properties of
    the state of the package specifying the Initial_Condition aspect otherwise
    it will not be possible to discharge the proof obligation by analysis of the
@@ -878,9 +878,6 @@ where
    ``constituents`` of the *abstract_*\ ``state_names`` declared in the
    ``package_specification``.
 
-#. A ``constituent`` with an ``option_list`` is used to indicate the
-   ``options`` that apply to the constituent.
-
 #. A **null** ``constituent_list`` indicates that the named abstract state has
    no constituents. The state abstraction does not represent any actual state at
    all. [This feature may be useful to minimize changes to Global and Depends
@@ -892,13 +889,13 @@ where
       :Trace Unit: 7.2.2 SS null constituent_list indicates the named
                    abstract state has no constituents
 
-.. centered:: **Verification Rules**
-
-There are no verification rules associated with Refined_State aspect.
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with Refined_State aspect.
+
+.. centered:: **Verification Rules**
+
+There are no verification rules associated with Refined_State aspect.
 
 .. centered:: **Examples**
 
@@ -1363,8 +1360,8 @@ Initialization Issues
 
 Every state abstraction specified as being initialized in the Initializes
 aspect of a package has to have all of its constituents initialized.  This
-may be achieved by initialization within the package, by
-assumed pre-initialization (in the case of volatile state) or, for constituents
+may be achieved by initialization within the package, by assumed
+pre-initialization (in the case of external state) or, for constituents
 which reside in another package, initialization by their declaring package.
 
 .. centered:: **Verification Rules**
@@ -1380,7 +1377,7 @@ which reside in another package, initialization by their declaring package.
    * for constituents which reside in another unit [and have a Part_Of
      indicator associated with their declaration] by their declaring
      package. [It follows that such constituents will appear in the
-     initialization clause of the declaring unit unless they are volatile
+     initialization clause of the declaring unit unless they are external
      states.]
 
 .. _refined-global-aspect:
@@ -1504,16 +1501,16 @@ The static semantics are equivalent to those given for the Global aspect in
 #. The legality rules for :ref:`global-aspects` and External states described in
    :ref:`refined_external_states` also apply.
 
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with a Refined_Global aspect.
+
 .. centered:: **Verification Rules**
 
 #. If a subprogram has a Refined_Global aspect it is used in the analysis of the
    subprogram body rather than its Global aspect.
 
 #. The verification rules given for :ref:`global-aspects` also apply.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with a Refined_Global aspect.
 
 .. _refined-depends-aspect:
 
@@ -1641,17 +1638,17 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 #. The rules for :ref:`depends-aspects` also apply.
 
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with a Refined_Depends aspect
+as it is used purely for static analysis purposes and is not executed.
+
 .. centered:: **Verification Rules**
 
 #. If a subprogram has a Refined_Depends aspect it is used in the analysis of
    the subprogram body rather than its Depends Aspect.
 
 #. The verification rules given for :ref:`depends-aspects` also apply.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with a Refined_Depends aspect
-as it is used purely for static analysis purposes and is not executed.
 
 
 Refined Precondition Aspect
@@ -1688,12 +1685,6 @@ be a Boolean ``expression``.
 
 #. The static semantics are otherwise as for a precondition.
 
-
-.. centered:: **Verification Rules**
-
-#. The precondition of the abstract view of the subprogram shall imply its
-   Refined_Precondition.
-
 .. centered:: **Dynamic Semantics**
 
 #. When a subprogram with a Refined Precondition is called; first
@@ -1701,6 +1692,12 @@ be a Boolean ``expression``.
    precondition evaluates to True, then the Refined Precondition
    is evaluated.  If either precondition or Refined Precondition
    do not evaluate to True an exception is raised.
+
+.. centered:: **Verification Rules**
+
+#. The precondition of the abstract view of the subprogram shall imply its
+   Refined_Precondition.
+
 
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
