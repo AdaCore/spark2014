@@ -323,7 +323,7 @@ Some are expanded in subsequent sections within this chapter.
   
 - A |SPARK| analysis tool is required to synthesize at least some of the |SPARK|
   specific aspects, used to specify the contract of a program unit, if a
-  contract is not explicitly specified, for instance the :ref:``global-aspect``
+  contract is not explicitly specified, for instance the :ref:`global-aspects`
   and the :ref:`depends-aspects` from the implementation of the unit if it
   exists. The minimum requirements are given in :ref:`verific_modes` but a
   particular tool may provide more precise synthesis and the synthesis of more
@@ -577,8 +577,7 @@ Restriction_Warnings) or by coding standard checkers (e.g. gnatcheck).
 .. todo::
    Complete detail on Code Policies.
    To be completed in the Milestone 4 version of this document.
-   Consider simply removing this whole section out of the refererence
-   manual, and instead add pointers in the User's Guide.
+   Consider referencing the User's Guide for details of the various profiles.
 
 .. _ghost_entities:
 
@@ -591,14 +590,14 @@ entities and their use should be restricted to places where they do not affect
 the functionality of the program. Complete removal of *ghost* entities has no
 functional impact on the program.
 
-|SPARK| currently supports ghost functions - though not ghost types or variables -
-which functions may be executable or non-executable. Non-executable ghost functions have no implementation and can be
-used for the purposes of formal verification only. Such functions may have their
-specification defined within an external proof tool to facilitate formal verification.
-This specification is
+|SPARK| currently supports ghost functions but not ghost types or variables.
+Ghost functions may be executable or non-executable. Non-executable ghost
+functions have no implementation and can be used for the purposes of formal
+verification only. Such functions may have their specification defined within an
+external proof tool to facilitate formal verification. This specification is
 outside of the |SPARK| language and toolset and therefore cannot be checked by
-the tools. An unsound definition may lead to an unsound proof which is of no use.
-Ideally any definition will be checked for soundness by the external proof
+the tools. An unsound definition may lead to an unsound proof which is of no
+use. Ideally any definition will be checked for soundness by the external proof
 tools.
 
 If the postcondition of a function, F, can be specified in |SPARK| as
@@ -689,11 +688,10 @@ manually.
 An analysis tool may provide the synthesis of more aspects and more precise
 synthesis of the mandatory ones.
 
-There are three main use cases where the synthesis of aspects is likely to be 
-required:
+Some use cases where the synthesis of aspects is likely to be required are:
 
 - Code has been developed as |SPARK| but not all the aspects are included on all 
-  subprograms by the developer. This is regarded as generative analysis, where
+  subprograms by the developer. This is regarded as *generative analysis*, where
   the code was written with the intention that it would be analyzed.
   
 - Code is in maintenance phase, it might or might not have all of the |SPARK|
@@ -704,34 +702,17 @@ required:
   as generative analysis.
 
 - Legacy code is analyzed which has no or incomplete |SPARK| specific aspects 
-  This is regarded as retrospective analysis, where code is being analyzed that
-  was not originally written with analysis in mind.
+  This is regarded as *retrospective analysis*, where code is being analyzed 
+  that was not originally written with analysis in mind. Legacy code will
+  typically have a a mix of |SPARK| and non-|SPARK| code (and so there is an 
+  interaction with the detail presented in section :ref:`in_out`). 
+  This leads to two additional process steps that might be necessary:
 
-Note that in the case where legacy code is being analyzed there may be a mix of
-|SPARK| and non-|SPARK| code (and so there is an interaction with the detail
-presented in section :ref:`in_out`). This leads to two additional process steps
-that may be necessary:
+  * An automatic identification of what code is in |SPARK| and what is not.
 
-- An automatic identification of what code is in |SPARK| and what is not.
-
-- An annotation of the boundary between the |SPARK| and non-|SPARK| code with
-  accurate and truthful contracts specified by |SPARK| specific aspects.
-
-Note that when language features are presented and defined in the remainder of
-this document, it is assumed that analysis and verification are being performed
-constructively and no explicit detail is given on generative or retrospective
-analysis.
-
-*No further detail is given in the current draft of this document on
-Constructive, Generative and Retrospective analysis and Verification.*
-
-.. todo::
-   Add detail on how retrospective analysis will work when we have a mix of |SPARK| and non-|SPARK|.
-   To be completed in the Milestone 4 version of this document.
-
-.. todo::
-   Complete detail on constructive, generative and retrospective analysis and verification.
-   To be completed in the Milestone 4 version of this document.
+  * Manual definition of the boundary between the |SPARK| and non-|SPARK| code 
+    by explicitly specifying accurate and truthful contracts using |SPARK| 
+    specific aspects on the declarations of non-|SPARK| program units.
 
 .. _in_out:
 
@@ -772,17 +753,20 @@ unsuppressible errors.
 
 Examples of this are:
 
-- A construct appearing in a unit might not be in, or might depend on features not in, the
-  |SPARK| subset. The construct may generate a warning or an error which may be
-  justifiable. This does not necessarily render the whole of the unit as not in
-  |SPARK|.  If the construct generates a warning, or if the error is justified,
-  then the unit is considered to be in |SPARK| except for the errant construct.
+- A declaration occurring immediately within a unit might not be in, or might 
+  depend on features not in, the |SPARK| subset. The declaration might generate 
+  a warning or an error which may be justifiable. This does not necessarily 
+  render the whole of the program unit not in |SPARK|.  If the declaration 
+  generates a warning, or if the error is justified, then the unit is considered 
+  to be in |SPARK| except for the errant declaration.
 
-- It is the *use* of a construct not in |SPARK| (generally within the statements of a body) that
-  potentially moves the code outside of the |SPARK| subset. An unsuppressible error will be generated
-  in such a case and the body containing the code will need to be marked as not in |SPARK| to
+- It is the use of the entity declared by the errant declaration, for instance 
+  a call of a subprogram or the denoting of an object in an expression
+  (generally within the statements of a body) that will result in an
+  unsupressible error. The body of a unit causing the unsuppressible (or
+  declaration if this is the cause) will need to be marked as not in |SPARK| to
   prevent its future analysis.
-
+  
 Hence, |SPARK| and non-|SPARK| code may mix at a fine level of granularity.
 The following combinations may be typical:
 
@@ -796,8 +780,8 @@ The following combinations may be typical:
 - Package specification in |SPARK|, with all bodies imported from another language.
 
 - Package specification contains a mixture of declarations which are in |SPARK|
-  and not in |SPARK|.  A client of the package may be in SPARK 2014 if it only
-  references SPARK 2014 declarations; the presence of non-SPARK 2014 constructs
+  and not in |SPARK|.  A client of the package may be in |SPARK| if it only
+  references |SPARK| declarations; the presence of non-|SPARK| constructs
   in a referenced package specification does not by itself mean that
   a client is not in SPARK 2014.
 
@@ -842,22 +826,20 @@ External State
 
 A variable or a state abstraction may be specified as external state to
 indicate that it represents an external communication channel, for instance, to
-a device or another subsystem. External state may be specified as volatile.
-Volatile state need not have the same value between two reads without an
-intervening update. Similarly an update of volatile state might not have any
+a device or another subsystem. An external variable may be specified as volatile.
+A volatile state need not have the same value between two reads without an
+intervening update. Similarly an update of volatile variable might not have any
 effect on the internal operation of a program, its only effects are external to
 the program. These properties require special treatment of volatile variables
 during flow analysis and formal verification.
 
-In formal verification a series of reads and updates of volatile state may be
-modeled by a sequence or a trace.
-
-In both flow analysis and formal verification |SPARK| follows the Ada convention
-that a read of volatile variable has a possible side effect of updating the
-variable.  |SPARK| extends this notion to cover updates of a volatile variable
+|SPARK| follows the Ada convention that a read of volatile variable has a 
+possible side effect of updating the variable. 
+|SPARK| extends this notion to cover updates of a volatile variable
 such that an update of a volatile variable also has a side effect of reading the
 variable.  |SPARK| further extends these principles to apply to
-state abstractions also.
+state abstractions also using The Input_Only and Output_Only options in the 
+declaration of a state abstraction (see section :ref:`external_state`).
 
 
 .. _notes:
@@ -865,13 +847,9 @@ state abstractions also.
 Notes on the Current Draft
 --------------------------
 
-This document is a draft that covers all language-independent requirements for
-the main language features, provides syntax where possible and otherwise
-provides the detailed rules necessary to support implementation of basic flow
-analysis. Where detail is not relevant to meeting these needs then it has
-typically been removed, though a **Todo** will indicate that there is material
-still to be provided.
+The aim of this draft of the document is to fully define the main features of
+the |SPARK| language.  Subsequent updates for release 1 of the tools are only
+expected to fix problems arising during implementation of the tools and correct
+any errors in the document.
 
-Note this means there are certain of the strategic requirements that are
-currently not decomposed into language definition detail. Where this is the
-case, it will have been explicitly indicated in this chapter.
+

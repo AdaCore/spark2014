@@ -75,7 +75,8 @@ declarations, increase the number of non-SPARK units (package specs I
 guess) that could be accepted, and reduce the number of places where the
 SPARK_Mode aspect has to be used.  I do not think this idea has been
 accepted and if this is the case the questionable paragraph should be
-deleted and the preceding one updated.  STILL TO BE DONE.
+deleted and the preceding one updated.
+Reworded in terms of declarations and the use of those declarations 
 !Checked By:
 
 !Label: STT006
@@ -780,7 +781,7 @@ seems clumsy.
 !Description: I was expecting more description of the abstraction of
 volatile variables here. Could we at least add a forward reference to
 the section on externals?
-!Action Taken:
+!Action Taken:Added reference to external state.  Changed the discussion of volatility to just variables - this is current but it looks like it will change again.
 !Checked By:
 
 !Label: AH/3
@@ -789,7 +790,7 @@ the section on externals?
 to fully define the main SPARK 2014 language features. Subsequent
 updates for R1 are only expected to fix problems arising during
 implementation of the tools.
-!Action Taken:
+!Action Taken: Replaced existing text with a paragraph modelled around your text.
 !Checked By:
 
 !Label: AH/4
@@ -1992,6 +1993,25 @@ we could extend the model of exceptions.
 !Action Taken:Done.
 !Checked By:
 
+!Label: TJJ016
+!Location:1.9.3 Code profiles
+!Description:In the Todo I think removing profies from the SPARK RM altogether
+is a bad idea as they are an important feature - just as important as synthesis.
+!Action Taken:Replace remove ... by Consider referencing ...
+!Checked By:
+
+!Label: TJJ017
+!Location:1.9.4 Ghost Functions
+!Description: Typo "|SPARK| currently supports ghost functions - though not ghost types or variables- which functions .."
+!Action Taken:Corrected.
+!Checked By:
+
+!Label: TJJ018
+!Location:1.9.5 Constructive, Generative, and ...
+!Description:Change this section to be a section on synthesis of aspects.
+Only introduce generative and retrospective analysis as way of using synthesized aspects.
+!Action Taken:Done.
+!Checked By:
 
 !Label: AH/17
 !Location:7.2.2 legality rule 3 note
