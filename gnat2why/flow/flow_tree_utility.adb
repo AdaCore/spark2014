@@ -135,18 +135,32 @@ package body Flow_Tree_Utility is
       P := Expression (P);
       case Nkind (P) is
          when N_Aggregate =>
-            P := First (Expressions (P));
-            while Present (P) loop
-               case Nkind (P) is
-                  when N_Identifier | N_Expanded_Name =>
-                     if Entity (P) = E then
-                        return P;
-                     end if;
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-               P := Next (P);
-            end loop;
+            if Present (Expressions (P)) then
+               P := First (Expressions (P));
+               while Present (P) loop
+                  case Nkind (P) is
+                     when N_Identifier | N_Expanded_Name =>
+                        if Entity (P) = E then
+                           return P;
+                        end if;
+                     when others =>
+                        raise Why.Unexpected_Node;
+                  end case;
+                  P := Next (P);
+               end loop;
+            elsif Present (Component_Associations (P)) then
+               P := First (Component_Associations (P));
+               while Present (P) loop
+                  pragma Assert (List_Length (Choices (P)) = 1);
+                  if Entity (First (Choices (P))) = E then
+                     return First (Choices (P));
+                  end if;
+                  P := Next (P);
+               end loop;
+            else
+               raise Why.Unexpected_Node;
+            end if;
+
             return Empty;
 
          when N_Identifier | N_Expanded_Name =>
