@@ -2044,3 +2044,75 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Action Taken:
 !Checked By:
 
+!Label: AH/22
+!Location: Introduction
+!Description: I'd recommend para 6 "The new aspects support ..." follows para 1
+!Action Taken:
+!Checked By:
+
+!Label: AH/23
+!Location: Introduction para 4
+!Description: Typo: "program to {be} compiled"
+!Action Taken:
+!Checked By:
+
+!Label: AH/24
+!Location: Section 1.3, Todo and last sentence
+!Description: I think the mapping spec has been updated. It certainly covers all of the aspects.
+!Action Taken:
+!Checked By:
+
+!Label: AH/25
+!Location: Section 1.6 first para
+!Description: Suggest the second sentence is reworded along the lines of: "The SPARK 2014 dynamic semantics are the same as Ada 2012 with the exception of the new aspects which have dynamic semantics. Additionally, the new dynamic semantics only affect aspects that represent contracts so if the execution of contracts is turned off then the dynamic semantics of an Ada 2012 program are the same as a SPARK 2014 program."
+!Action Taken:
+!Checked By:
+
+!Label: AH/26
+!Location: Section 1.6 second para
+!Description: Typo: "with, say [with]"
+!Action Taken:
+!Checked By:
+
+!Label: AH/27
+!Location: Section 1.8, 4th bullet
+!Description: typo: on these contracts {as} early as
+!Action Taken:
+!Checked By:
+
+!Label: AH/28
+!Location: Section 1.8 bullet 6
+!Description: Typo: "code profile" -> "code policy"
+!Action Taken:
+!Checked By:
+
+!Label: AH/29
+!Location:  Section 1.8 bullet beginning "Enhanced support for specifying ..."
+!Description: Missing closing square bracket ].
+!Action Taken:
+!Checked By:
+
+!Label: AH/30
+!Location: Section 1.8 last bullet
+!Description: Typo: "of {a} property is sound."
+!Action Taken:
+!Checked By:
+
+!Label: AH/31
+!Location: Section 1.9.5
+!Description:  "a [a]"
+!Action Taken:
+!Checked By:
+
+!Label: AH/32
+!Location: Section 1.9.7
+!Description:  "read of {a} volatile variable"
+!Action Taken:
+!Checked By:
+
+!Label: AH/33
+!Location: Section 1.10
+!Description:  Please state that there are some areas where there is currently significant discussion, e.g. "External" and refined pre/post.
+!Action Taken:
+!Checked By:
+
