@@ -324,7 +324,7 @@ Some are expanded in subsequent sections within this chapter.
 - A |SPARK| analysis tool is required to synthesize at least some of the |SPARK|
   specific aspects, used to specify the contract of a program unit, if a
   contract is not explicitly specified, for instance the :ref:``global-aspect``
-  and the :ref:`depends-aspect` from the implementation of the unit if it
+  and the :ref:`depends-aspects` from the implementation of the unit if it
   exists. The minimum requirements are given in :ref:`verific_modes` but a
   particular tool may provide more precise synthesis and the synthesis of more
   aspects. The synthesized aspect is used in the analysis of the unit if the
@@ -630,13 +630,7 @@ its contract. However, it is mandated that a |SPARK| analysis tool shall be able
 to synthesize a conservative approximation of at least a minimum of |SPARK|
 specific aspects from the source code of a unit.
 
-The synthesis of |SPARK| aspects facilitates a generative approach where,
-for instance, high-level subprograms have explicit aspects specified but 
-lower-level ones are omitted. The synthesis of aspects also assists in
-maintenance as the synthesized aspects may be used or they are available to 
-correct explicit specified aspects.
-
-Synthesis of |SPARK| aspects is also fundamental for the retrospective analysis 
+Synthesis of |SPARK| aspects is fundamental to the analysis 
 of pre-existing code where no |SPARK| specific aspects are provided.
 
 The mandatory requirements of a |SPARK| analysis tool is that it shall be
