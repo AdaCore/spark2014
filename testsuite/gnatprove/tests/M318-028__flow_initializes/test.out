@@ -1,0 +1,5 @@
+pkg_b.ads:3:26: ineffective initialization of "State" (is global output in main program "Test_04") [ineffective]
+test_01.adb:4:32: global input "State" is not initialized [uninitialized]
+test_02.adb:7:09: use of uninitialized variable "State" [uninitialized__state]
+test_05.adb:4:32: ineffective global import "State" [ineffective_import]
+test_07.adb:4:32: global input "State" is not initialized [uninitialized]

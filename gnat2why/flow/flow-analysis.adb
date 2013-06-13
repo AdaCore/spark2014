@@ -40,6 +40,7 @@ with Why;
 
 with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
+with Flow_Tree_Utility;     use Flow_Tree_Utility;
 
 package body Flow.Analysis is
 
@@ -544,13 +545,76 @@ package body Flow.Analysis is
 
    procedure Analyse_Main (FA : Flow_Analysis_Graphs)
    is
+      Reads  : Flow_Id_Sets.Set;
+      Writes : Flow_Id_Sets.Set;
    begin
-      if FA.Is_Main then
-         Error_Msg_NE
-           ("flow analysis of main program & has not yet been implemented!",
-            FA.Subprogram,
-            FA.Subprogram);
+      if not FA.Is_Main then
+         --  Nothing to see here, move along.
+         return;
       end if;
+
+      --  We need to make sure all global inputs are initialized. This
+      --  means the following needs to hold:
+      --     Input   ->   State must be initialized
+      --     In_Out  ->   State must be initialized
+      --     Output  ->   Always OK
+      Get_Globals (Subprogram => FA.Subprogram,
+                   Reads      => Reads,
+                   Writes     => Writes);
+      Reads  := To_Entire_Variables (Reads);
+      Writes := To_Entire_Variables (Writes);
+
+      for R of Reads loop
+         case R.Kind is
+            when Direct_Mapping =>
+               if not Is_Initialized_At_Elaboration
+                 (Get_Direct_Mapping_Id (R))
+               then
+                  Error_Msg_Flow
+                    (Msg => "global input & is not initialized",
+                     N   => Find_Global (FA.Subprogram, R),
+                     F1  => R,
+                     Tag => "uninitialized");
+               end if;
+
+            when Magic_String =>
+               Error_Msg_Flow
+                 (Msg => "analysis of main program impossible in the "&
+                    "presence of computed global &",
+                  N   => Find_Global (FA.Subprogram, R),
+                  F1  => R,
+                  Tag => "uninitialized");
+
+            when Null_Value | Record_Field =>
+               raise Why.Unexpected_Node;
+         end case;
+      end loop;
+
+      for W of Writes loop
+         case W.Kind is
+            when Direct_Mapping =>
+               if Is_Initialized_At_Elaboration
+                 (Get_Direct_Mapping_Id (W))
+               then
+                  if not Reads.Contains (Change_Variant (W, In_View)) then
+                     Error_Msg_Flow
+                       (Msg => "ineffective initialization of & " &
+                          "(is global output in main program &)",
+                        N   => Find_Node_In_Initializes
+                          (Get_Direct_Mapping_Id (W)),
+                        F1  => W,
+                        F2  => Direct_Mapping_Id (FA.Subprogram),
+                        Tag => "ineffective");
+                  end if;
+               end if;
+
+            when Magic_String =>
+               null;
+
+            when Null_Value | Record_Field =>
+               raise Why.Unexpected_Node;
+         end case;
+      end loop;
    end Analyse_Main;
 
    ------------------

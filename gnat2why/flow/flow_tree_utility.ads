@@ -47,4 +47,14 @@ package Flow_Tree_Utility is
       with Pre => Ekind (E) in Subprogram_Kind;
    --  Returns True if E is a library level subprogram without formal
    --  parameters (E is allowed to have global parameters).
+
+   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
+   with Post => not Present (Find_Node_In_Initializes'Result) or else
+                Entity (Find_Node_In_Initializes'Result) = E;
+   --  Returns the node representing E in an initializes aspect or Empty.
+
+   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean
+     is (Present (Find_Node_In_Initializes (E)));
+   --  Returns true if E is covered by an initializes aspect.
+
 end Flow_Tree_Utility;

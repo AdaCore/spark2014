@@ -24,6 +24,9 @@
 with Sem_Util; use Sem_Util;
 with Snames;   use Snames;
 with Uintp;    use Uintp;
+with Nlists;   use Nlists;
+
+with Why;
 
 package body Flow_Tree_Utility is
 
@@ -105,5 +108,57 @@ package body Flow_Tree_Utility is
                    Scope_Depth_Value (E) = Uint_2))
         and then No (First_Formal (E));
    end Might_Be_Main;
+
+   ------------------------------
+   -- Find_Node_In_Initializes --
+   ------------------------------
+
+   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
+   is
+      P : Entity_Id := E;
+   begin
+      while Ekind (P) /= E_Package loop
+         case Ekind (P) is
+            when E_Package_Body =>
+               raise Why.Not_Implemented;
+            when others =>
+               P := Scope (P);
+         end case;
+      end loop;
+      P := Get_Pragma (P, Pragma_Initializes);
+      if not Present (P) then
+         return Empty;
+      end if;
+
+      pragma Assert (List_Length (Pragma_Argument_Associations (P)) = 1);
+      P := First (Pragma_Argument_Associations (P));
+      P := Expression (P);
+      case Nkind (P) is
+         when N_Aggregate =>
+            P := First (Expressions (P));
+            while Present (P) loop
+               case Nkind (P) is
+                  when N_Identifier | N_Expanded_Name =>
+                     if Entity (P) = E then
+                        return P;
+                     end if;
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
+               P := Next (P);
+            end loop;
+            return Empty;
+
+         when N_Identifier | N_Expanded_Name =>
+            if Entity (P) = E then
+               return P;
+            else
+               return Empty;
+            end if;
+
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Find_Node_In_Initializes;
 
 end Flow_Tree_Utility;

@@ -236,6 +236,13 @@ package Flow_Types is
                                     return Ordered_Flow_Id_Sets.Set;
    --  Convert a hashed flow id set into an ordered node set.
 
+   function To_Entire_Variables (S : Flow_Id_Sets.Set)
+                                 return Flow_Id_Sets.Set
+     with Post => (for all X of To_Entire_Variables'Result =>
+                     X.Kind /= Record_Field);
+   --  Convert a set containing flattened records into a set
+   --  containing only entire variables.
+
    ----------------------------------------------------------------------
    --  V_Attributes
    ----------------------------------------------------------------------

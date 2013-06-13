@@ -442,4 +442,24 @@ package body Flow_Types is
       return OS;
    end To_Ordered_Flow_Id_Set;
 
+   -------------------------
+   -- To_Entire_Variables --
+   -------------------------
+
+   function To_Entire_Variables (S : Flow_Id_Sets.Set)
+                                 return Flow_Id_Sets.Set
+   is
+      R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for X of S loop
+         case X.Kind is
+            when Null_Value | Direct_Mapping | Magic_String =>
+               R.Include (X);
+            when Record_Field =>
+               R.Include (Entire_Variable (X));
+         end case;
+      end loop;
+      return R;
+   end To_Entire_Variables;
+
 end Flow_Types;
