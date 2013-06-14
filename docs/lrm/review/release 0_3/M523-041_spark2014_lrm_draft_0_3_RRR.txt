@@ -2108,21 +2108,19 @@ TODO last sentence also needs to change
 !Label: AH/31
 !Location: Section 1.9.5
 !Description:  "a [a]"
-!Action Taken: Corrected!
-TODO not done
+!Action Taken: Corrected
 !Checked By:
 
 !Label: AH/32
 !Location: Section 1.9.7
 !Description:  "read of {a} volatile variable"
 !Action Taken: Corrected
-TODO not done
 !Checked By:
 
 !Label: AH/33
 !Location: Section 1.10
 !Description:  Please state that there are some areas where there is currently significant discussion, e.g. "External" and refined pre/post.
+Description 2, please reword to "There are two areas of the language where there is on-going significant discussion and so are likely to change. These areas are "Externals" and "Refined_Pre and Refined_Post."
 !Action Taken: Done.
-Please reword to "There are two areas of the language where there is on-going significant discussion and so are likely to change. These areas are "Externals" and "Refined_Pre and Refined_Post."
 !Checked By:
 

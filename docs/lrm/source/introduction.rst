@@ -704,7 +704,7 @@ Some use cases where the synthesis of aspects is likely to be required are:
 - Legacy code is analyzed which has no or incomplete |SPARK| specific aspects
   This is regarded as *retrospective analysis*, where code is being analyzed
   that was not originally written with analysis in mind. Legacy code will
-  typically have a a mix of |SPARK| and non-|SPARK| code (and so there is an
+  typically have a mix of |SPARK| and non-|SPARK| code (and so there is an
   interaction with the detail presented in section :ref:`in_out`).
   This leads to two additional process steps that might be necessary:
 
@@ -833,14 +833,13 @@ effect on the internal operation of a program, its only effects are external to
 the program. These properties require special treatment of volatile variables
 during flow analysis and formal verification.
 
-|SPARK| follows the Ada convention that a read of volatile variable has a
-possible side effect of updating the variable.
-|SPARK| extends this notion to cover updates of a volatile variable
-such that an update of a volatile variable also has a side effect of reading the
-variable.  |SPARK| further extends these principles to apply to
-state abstractions also using The Input_Only and Output_Only options in the
-declaration of a state abstraction (see section :ref:`external_state`).
-
+|SPARK| follows the Ada convention that a read of a volatile variable has a
+possible side effect of updating the variable. |SPARK| extends this notion
+to cover updates of a volatile variable such that an update of a volatile
+variable also has a side effect of reading the variable. |SPARK| further extends
+these principles to apply to state abstractions also using the Input_Only and
+Output_Only options in the declaration of a state abstraction
+(see section :ref:`external_state`).
 
 .. _notes:
 
@@ -848,11 +847,9 @@ Notes on the Current Draft
 --------------------------
 
 The aim of this draft of the document is to fully define the main features of
-the |SPARK| language.  Subsequent updates for release 1 of the tools are only
+the |SPARK| language. Subsequent updates for release 1 of the tools are only
 expected to fix problems arising during implementation of the tools and correct
 any errors in the document.
 
-There are some areas where there is currently significant discussion (i.e.
-"External" and refined pre/post).
-
-
+There are two areas of the language where there is on-going significant discussion
+and so are likely to change. These areas are "Externals" and "Refined_Pre and Refined_Post".
