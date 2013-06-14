@@ -202,4 +202,7 @@ package SPARK_Util is
    --  Returns True if E is a toplevel entity, only enclosed in package specs
    --  or in the declaration part of package bodies.
 
+   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
+   --  Returns whether E is an instance of Ada.Unchecked_Conversion
+
 end SPARK_Util;

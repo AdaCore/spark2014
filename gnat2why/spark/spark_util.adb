@@ -937,4 +937,16 @@ package body SPARK_Util is
       end loop;
    end Underlying_Formal_Container_Type;
 
+   --------------------------------------
+   -- Is_Unchecked_Conversion_Instance --
+   --------------------------------------
+
+   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean is
+   begin
+      return Present (Associated_Node (E))
+        and then Present (Parent (Associated_Node (E)))
+        and then Chars (Generic_Parent (Parent (Associated_Node (E))))
+        = Name_Unchecked_Conversion;
+   end Is_Unchecked_Conversion_Instance;
+
 end SPARK_Util;
