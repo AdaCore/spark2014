@@ -1574,6 +1574,8 @@ reference their relevant TN's (if possible).
 !Description: general comment: the order between "Dynamic Semantics" and "Verification Rules"
 is sometimes reversed. This should be the same everywhere.
 !Action Taken: "Verification Rules" now always come after "Dynamic Semantics".
+
+NOT DONE - section 7.2.8 and 7.7.1
 !Checked By:
 
 !Label: YM002
@@ -1581,7 +1583,7 @@ is sometimes reversed. This should be the same everywhere.
 !Description: It says "Syntax: this section gives the format of the SPARK 2014 aspects and
 pragmas." Why new attributes are not mentioned?
 !Action Taken:Reworded less specifically: "Syntax: this section gives the format of any |SPARK| specific syntax."
-!Checked By:
+!Checked By: AH
 
 !Label: YM003
 !Location: 1.4 Method of Description
@@ -1591,7 +1593,7 @@ it seems, which one should be used in which case?)
 !Action Taken:The subtleties of English. I think it is ok.  I will try to be
 consistent elsewhere and in most places where it says further details, which I
 think is fine also, but in a later heading we say Further Detail - will change that to Further Details.
-!Checked By:
+!Checked By: AH
 
 !Label: YM004
 !Location: 1.8 SPARK 2014 Strategic Requirements
@@ -1599,13 +1601,13 @@ think is fine also, but in a later heading we say Further Detail - will change t
 understand better "SPARK 2014 shall support completion of contracts by
 generation from the body code".
 !Action Taken:Reworded as "|SPARK| shall support synthesis of certain aspects from the body code"
-!Checked By:
+!Checked By: AH
 
 !Label: YM005
 !Location: 1.8 SPARK 2014 Strategic Requirements
 !Description:The last two strategic requirements are in fact the same.
 !Action Taken:Re order the two subsections and changed wording in DO-333 subsection to indicate that we may go further than an unambiguous language.
-!Checked By:
+!Checked By: AH
 
 !Label: YM006
 !Location: 1.8 SPARK 2014 Strategic Requirements
@@ -1615,19 +1617,19 @@ implementation-dependent choice, and it clearly has an effect on program
 behavior. So this paragraph should be rephrased.
 !Action Taken: Added the caveat "other than the fundamental data types and
   constants" - I hope this is sufficient.
-!Checked By:
+!Checked By: AH
 
 !Label: YM007
 !Location: 1.9.1 Principal Language Restrictions
 !Description:It says "Aliasing of names is not permitted." It should add "(but renamings are allowed)".
 !Action Taken:Added.
-!Checked By:
+!Checked By: AH
 
 !Label: YM008
 !Location:4.4. Expressions
 !Description:It mentioned Type_Invariant, which will be pushed after Release 1 probably, so should be removed here.
 !Action Taken: Removed relevant bullet point.
-!Checked By:
+!Checked By: AH
 
 !Label: YM009
 !Location:4.4. Expressions
@@ -1635,7 +1637,7 @@ behavior. So this paragraph should be rephrased.
 definitely be removed. Or they should be mentioned in the note below for
 Dynamic_Predicate that says:
 !Action Taken: Covered by action taken for YM008.
-!Checked By:
+!Checked By: AH
 
 !Label: YM010
 !Location:4.4. Expressions
@@ -1643,7 +1645,7 @@ Dynamic_Predicate that says:
 definitely be removed. Or they should be mentioned in the note below for
 Dynamic_Predicate that says: "[The Dynamic_Predicate rule is redundant because no use of the Dynamic_Predicate is currently in SPARK 2014. This rule is added in anticipation of the possible relaxation of that restriction.]"
 !Action Taken: Duplicate of YM008 and YM009.
-!Checked By:
+!Checked By: AH
 
 !Label: YM011
 !Location:5.5.3.1.
@@ -1651,14 +1653,14 @@ Dynamic_Predicate that says: "[The Dynamic_Predicate rule is redundant because n
 general rule that run-time checks lead to proof obligations. And the "Checked
 by Proof" subtitle should not be used anymore.
 !Action Taken: Removed verification rule.
-!Checked By:
+!Checked By: AH
 
 !Label: YM012
 !Location:5.5.3.2. Attribute Loop_Entry
 !Description:It says: "These rules follow the corresponding Ada RM rule for 'Old" and
 continues with a single rule. Should there be a list of rules here?
 !Action Taken:Changed to singular as it relates to the rule given above.
-!Checked By:
+!Checked By: 
 
 !Label: YM013
 !Location:6.1.2. Subprogram Contracts
@@ -1835,8 +1837,8 @@ aspect of a package shall only depend on properties of the state of the package
 specifying the Initial_Condition aspect otherwise it will not be possible to
 discharge the proof obligation by analysis of the package alone." which is
 false. What about relying on other packages Initial_Condition?
-!Action Taken:
-!Checked By:
+!Action Taken: This text has been removed.
+!Checked By: AH
 
 !Label: YM032
 !Location:7.2.2. Refined State Aspect
