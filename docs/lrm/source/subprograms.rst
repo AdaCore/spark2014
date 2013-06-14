@@ -298,6 +298,15 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Legality Rules**
 
+#. For a subprogram that has a ``global_specification``, an entire object that
+   is outside the subprogram, can only be referenced within if it is a
+   ``global_item`` in the ``global_specification``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 LR if Global aspect does not mention a variable, it
+                   cannot appear within the subprogram
+
 #. A ``global_item`` shall not denote a constant object other than
    a formal parameter [of an enclosing subprogram] of mode **in**.
    [This restriction may be relaxed in some way at some point in the future.]

@@ -76,7 +76,7 @@ guess) that could be accepted, and reduce the number of places where the
 SPARK_Mode aspect has to be used.  I do not think this idea has been
 accepted and if this is the case the questionable paragraph should be
 deleted and the preceding one updated.
-Reworded in terms of declarations and the use of those declarations 
+Reworded in terms of declarations and the use of those declarations
 !Checked By:
 
 !Label: STT006
@@ -1689,7 +1689,6 @@ or
    procedure P with Global => null is
      procedure Loc with Global => (Input => X);
 !Action Taken: These examples may be allowed if X is state declared within P but shouldn't be allowed if X is declared outside of P. Added new legality rule to cover this.
-!Checked By:
 
 !Label: YM016
 !Location:6.1.4. Global Aspects
