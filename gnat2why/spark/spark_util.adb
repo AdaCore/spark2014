@@ -26,6 +26,8 @@
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
 
+with Fname;    use Fname;
+with Lib;      use Lib;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
@@ -942,11 +944,19 @@ package body SPARK_Util is
    --------------------------------------
 
    function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean is
+      Conv : Entity_Id;
    begin
-      return Present (Associated_Node (E))
+      if Present (Associated_Node (E))
         and then Present (Parent (Associated_Node (E)))
-        and then Chars (Generic_Parent (Parent (Associated_Node (E))))
-        = Name_Unchecked_Conversion;
+      then
+         Conv := Generic_Parent (Parent (Associated_Node (E)));
+      end if;
+
+      return Present (Conv)
+        and then Chars (Conv) = Name_Unchecked_Conversion
+        and then Is_Predefined_File_Name
+          (Unit_File_Name (Get_Source_Unit (Conv)))
+        and then Is_Intrinsic_Subprogram (Conv);
    end Is_Unchecked_Conversion_Instance;
 
 end SPARK_Util;
