@@ -1681,9 +1681,9 @@ be a Boolean ``expression``.
 .. centered:: **Dynamic Semantics**
 
 #. When a subprogram with a Refined Precondition is called; first
-   the precondition is evaluated as defined in the Ada RM.  If the
+   the precondition is evaluated as defined in the Ada RM. If the
    precondition evaluates to True, then the Refined Precondition
-   is evaluated.  If either precondition or Refined Precondition
+   is evaluated. If either precondition or Refined Precondition
    do not evaluate to True an exception is raised.
 
 .. centered:: **Verification Rules**
@@ -1733,29 +1733,25 @@ be a Boolean ``expression``.
 
 #. The static semantics are otherwise as for a postcondition.
 
-
-.. centered:: **Verification Rules**
-
-#. The precondition of a subprogram declaration with the
-   Refined Precondition of its body or body stub and its
-   Refined Postcondition together imply the postcondition of the
-   declaration, that is:
-
-   ::
-     (Precondition and Refined Precondition and Refined Postcondition) -> Postcondition
-
-
 .. centered:: **Dynamic Semantics**
 
 #. When a subprogram with a Refined Postcondition is called; first
    the subprogram is evaluated. The Refined Postcondition is evaluated
    immediately before the evaluation of the postcondition or, if there is no
    postcondition, immediately before the point at which a postcondition would
-   have been evaluated.  If the Refined Postcondition evaluates to
+   have been evaluated. If the Refined Postcondition evaluates to
    True then the postcondition is evaluated as described in the Ada
-   RM.  If either the Refined Postcondition or the postcondition
+   RM. If either the Refined Postcondition or the postcondition
    do not evaluate to True then the exception Assertions.Assertion_Error is
    raised.
+
+.. centered:: **Verification Rules**
+
+#. The precondition of a subprogram declaration with the Refined Precondition
+   of its body or body stub and its Refined Postcondition together imply the
+   postcondition of the declaration, that is:
+
+   (Precondition and Refined Precondition and Refined Postcondition) -> Postcondition
 
 .. todo:: refined contract_cases.
           To be completed in a post-Release 1 version of this document.

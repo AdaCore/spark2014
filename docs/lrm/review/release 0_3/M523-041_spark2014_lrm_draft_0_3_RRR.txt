@@ -1568,9 +1568,9 @@ reference their relevant TN's (if possible).
 !Location: General
 !Description: general comment: the order between "Dynamic Semantics" and "Verification Rules"
 is sometimes reversed. This should be the same everywhere.
-!Action Taken: "Verification Rules" now always come after "Dynamic Semantics".
-
-NOT DONE - section 7.2.8 and 7.7.1
+!Action Taken: "Verification Rules" now always come after "Dynamic Semantics". (section 7.7.1
+               has 'Verification rules' before 'Legality Rules' but it has to be like this in
+               order to make sense.)
 !Checked By:
 
 !Label: YM002
