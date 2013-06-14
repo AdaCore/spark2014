@@ -1688,7 +1688,7 @@ but it allows:
 or
    procedure P with Global => null is
      procedure Loc with Global => (Input => X);
-!Action Taken:
+!Action Taken: These examples may be allowed if X is state declared within P but shouldn't be allowed if X is declared outside of P. Added new legality rule to cover this.
 !Checked By:
 
 !Label: YM016
@@ -1760,15 +1760,15 @@ TN to implement those in proof! (M301-019)
 hidden state of a package declared immediately within the private part or body
 of P? It is not currently counted in the hidden state of P. It should.
 TN to implement those in proof! (M301-019)
-!Action Taken:
-!Checked By:
+!Action Taken: Last bullet re-written.
+!Checked By: AH
 
 !Label: YM025
 !Location:7.1.2. External State
 !Description:It says "Ada aspects are used for specifying whether a variable is
 external". It does not seem true, as External is not an Ada aspect.
-!Action Taken:
-!Checked By:
+!Action Taken: Added clarification of the actual ada aspects.
+!Checked By: AH
 
 !Label: YM026
 !Location:7.1.2. External State
@@ -1787,7 +1787,7 @@ Steve in M509-001?
   Read_Is_An_External_Effect
 It does not look like it, which is a major problem for evolving the language
 in a direction desired by our customers (Secunet in particular).
-!Action Taken:
+!Action Taken: This is part of the on-going discussion on Externals. Leave action open for draft 0.3.
 !Checked By:
 
 !Label: YM028
@@ -1820,8 +1820,8 @@ and 4. Does State "appear" or is "referenced" in the following legal example?
     G : Integer with Part_Of => State;
     function Get return Integer is (G);
   end P;
-!Action Taken:
-!Checked By:
+!Action Taken: Wording changed to make this more clear.
+!Checked By: AH
 
 !Label: YM030
 !Location:7.1.6. Initial Condition Aspect
@@ -2064,7 +2064,7 @@ Only introduce generative and retrospective analysis as way of using synthesized
 
 !Label: AH/25
 !Location: Section 1.6 first para
-!Description: Suggest the second sentence is reworded along the lines of: "The SPARK 2014 dynamic semantics are the same as Ada 2012 with the exception of the new aspects which have dynamic semantics. Additionally, the new dynamic semantics only affect aspects that represent contracts so if the execution of contracts is turned off then the dynamic semantics of an Ada 2012 program are the same as a SPARK 2014 program."
+!Description: Suggest the second sentence is reworded along the lines of: "The SPARK 2014 dynamic semantics are the same as Ada 2012 with the exception of some new aspects, pragmas and attributes which have dynamic semantics. Additionally, the new dynamic semantics only affect assertion expressions so if assertion expressions are ignored then the dynamic semantics of an Ada 2012 program are the same as a SPARK 2014 program."
 !Action Taken:
 !Checked By:
 
