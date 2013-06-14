@@ -944,7 +944,7 @@ package body SPARK_Util is
    --------------------------------------
 
    function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean is
-      Conv : Entity_Id;
+      Conv : Entity_Id := Empty;
    begin
       if Present (Associated_Node (E))
         and then Present (Parent (Associated_Node (E)))
