@@ -1159,7 +1159,7 @@ Page/Para: page 36, Note
 !Description: Observation: At what point are the notes to be closed off?
 As this is not a ToDo will it be tracked?
 !Action Taken: Changed from a "note" into a "todo".
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/16
 !Location:  6.1.4
@@ -1571,7 +1571,7 @@ is sometimes reversed. This should be the same everywhere.
 !Action Taken: "Verification Rules" now always come after "Dynamic Semantics". (section 7.7.1
                has 'Verification rules' before 'Legality Rules' but it has to be like this in
                order to make sense.)
-!Checked By:
+!Checked By: AH
 
 !Label: YM002
 !Location: 1.4 Method of Description
@@ -1849,7 +1849,7 @@ option_list in the grammar for refinement_list.
 !Description:It mentions "volatile states" in the verification rule, which does not match
 the otherwise used terminology of "external state".
 !Action Taken: Changed "volatile state" into "external state".
-!Checked By:
+!Checked By: AH
 
 !Label: YM034
 !Location:7.3.2. Type Invariants
@@ -2014,7 +2014,7 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Location:7.2.2 legality rule 3 note
 !Description: The note "We may want to be able to override this error" should be removed.
 !Action Taken:Deleted.
-!Checked By:
+!Checked By: AH
 
 
 !Label: AH/18
@@ -2033,7 +2033,7 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Location: 7.2.3 Para 6.
 !Description:  The sentence "The following scenario:" would be easier to read if it was written "The fikkiwung scenario gives rise to ...:. I found myself reading the end of the sentence before reading the bullets.
 !Action Taken:Changed to the following scenario gives rise to ...:
-!Checked By:
+!Checked By: AH
 
 !Label: AH/21
 !Location: 7.2.5, Legality rule 4 last bullet
@@ -2057,7 +2057,7 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Location: Section 1.3, Todo and last sentence
 !Description: I think the mapping spec has been updated. It certainly covers all of the aspects.
 !Action Taken: Mapping spec has been updated. Removed the ToDo and the last sentence of the final paragraph.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/25
 !Location: Section 1.6 first para
@@ -2099,18 +2099,18 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Location: Section 1.9.5
 !Description:  "a [a]"
 !Action Taken: Corrected
-!Checked By:
+!Checked By: AH
 
 !Label: AH/32
 !Location: Section 1.9.7
 !Description:  "read of {a} volatile variable"
 !Action Taken: Corrected
-!Checked By:
+!Checked By: AH
 
 !Label: AH/33
 !Location: Section 1.10
 !Description:  Please state that there are some areas where there is currently significant discussion, e.g. "External" and refined pre/post.
 Description 2, please reword to "There are two areas of the language where there is on-going significant discussion and so are likely to change. These areas are "Externals" and "Refined_Pre and Refined_Post."
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
