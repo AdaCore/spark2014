@@ -856,8 +856,6 @@ where
    body of the package, or the declarations from the visible part of
    nested packages declared immediately therein.]
 
-   .. note:: We may want to be able to override this error.
-
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 7.2.2 LR hidden state constituents must be denoted by exactly
@@ -972,8 +970,6 @@ to aliasing between the state abstraction and its constituents:
    * it is not apparent that the object (or other state) is a constituent
      of the state abstraction - there are effectively two entities representing
      part or all of the state abstraction.
-
-.
 
 To resolve such aliasing, rules are imposed to ensure such a scenario can never
 occur. In particular, it is always known what state abstraction a constituent
@@ -1369,7 +1365,7 @@ which reside in another package, initialization by their declaring package.
 
    * initialization within the package; or
 
-   * assumed pre-initialization (in the case of volatile states); or
+   * assumed pre-initialization (in the case of external states); or
 
    * for constituents which reside in another unit [and have a Part_Of
      indicator associated with their declaration] by their declaring

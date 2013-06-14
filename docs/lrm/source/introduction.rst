@@ -112,9 +112,6 @@ explicitly in the language rules either.
 
 Readers interested in how SPARK 2005 constructs and idioms map into
 |SPARK| should consult the appendix :ref:`mapping-spec-label`.
-Note that this section does not cover all language features presented in this document
--- although it covers the main features -- and will be updated for the Milestone 4
-version of this document.
 
 .. _desc_notate:
 

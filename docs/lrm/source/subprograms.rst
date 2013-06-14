@@ -220,8 +220,10 @@ where
    the implementation of the body of the subprogram must be proven to
    satisfy the ``consequence`` of the ``contract_case``.
 
-.. note:: (TJJ 29/11/12) Do we need this verification rule?  Could it
-   be captured as part of the general statement about proof?
+.. todo::
+   (TJJ 29/11/12) Do we need this verification rule? Could it
+   be captured as part of the general statement about proof? To be
+   completed in milestone 4 version of this document.
 
 .. _global-aspects:
 

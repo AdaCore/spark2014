@@ -1158,11 +1158,7 @@ It was only mentioned in the text not as a rule.
 Page/Para: page 36, Note
 !Description: Observation: At what point are the notes to be closed off?
 As this is not a ToDo will it be tracked?
-!Action Taken:
-I think it is possible to track notes but I will address this note
-(along with the todo regarding refined contract cases).
-
-AH note not yet resolved, resolve post issue 0.3
+!Action Taken: Changed from a "note" into a "todo".
 !Checked By:
 
 !Label: JEB/16
@@ -1853,8 +1849,6 @@ option_list in the grammar for refinement_list.
 !Description:It mentions "volatile states" in the verification rule, which does not match
 the otherwise used terminology of "external state".
 !Action Taken: Changed "volatile state" into "external state".
-
-TODO still one usage of volatile states.
 !Checked By:
 
 !Label: YM034
@@ -2020,8 +2014,6 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Location:7.2.2 legality rule 3 note
 !Description: The note "We may want to be able to override this error" should be removed.
 !Action Taken:Deleted.
-
-TODO not done
 !Checked By:
 
 
@@ -2041,8 +2033,6 @@ TODO not done
 !Location: 7.2.3 Para 6.
 !Description:  The sentence "The following scenario:" would be easier to read if it was written "The fikkiwung scenario gives rise to ...:. I found myself reading the end of the sentence before reading the bullets.
 !Action Taken:Changed to the following scenario gives rise to ...:
-
-TODO superfluous full stop on the line folowing the bullets.
 !Checked By:
 
 !Label: AH/21
@@ -2066,8 +2056,7 @@ TODO superfluous full stop on the line folowing the bullets.
 !Label: AH/24
 !Location: Section 1.3, Todo and last sentence
 !Description: I think the mapping spec has been updated. It certainly covers all of the aspects.
-!Action Taken: Mapping spec has been updated. Removed the ToDo.
-TODO last sentence also needs to change
+!Action Taken: Mapping spec has been updated. Removed the ToDo and the last sentence of the final paragraph.
 !Checked By:
 
 !Label: AH/25
