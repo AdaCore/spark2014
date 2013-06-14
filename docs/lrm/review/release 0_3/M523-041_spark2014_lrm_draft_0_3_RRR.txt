@@ -21,7 +21,7 @@
               breaking modular analysis (since we would request that bodies
               are in place before proceeding with the analysis).
 !Action Taken: Updated text to clarify the meaning of this rule.
-!Checked By:
+!Checked By: AH
 
 !Label: STT001,
 !Location: 1.8, 8/2 (also 1.9.5, 12/6):
@@ -30,7 +30,7 @@ generated, but we do know how to infer some Pre/Postconditions from the
 code (cf. CodePeer).  So perhaps we should say that we don't support
 that currently, but might at some later date.
 !Action Taken: These sections have been rewritten the stating that the extent of synthesis is a tool issue but stating that there are minimum requirements.
-!Checked By:
+!Checked By: AH
 
 !Label: STT002,
 !Location: 1.8, 8/11:
@@ -77,7 +77,7 @@ SPARK_Mode aspect has to be used.  I do not think this idea has been
 accepted and if this is the case the questionable paragraph should be
 deleted and the preceding one updated.
 Reworded in terms of declarations and the use of those declarations
-!Checked By:
+!Checked By: AH
 
 !Label: STT006
 !Location: 3.9 27/5:
@@ -102,7 +102,7 @@ profile and then some of the tasking statements such as
 The requeue statement is not in the Ravenscar profile.
 I think we need to go through the SPARK RM and make sure we note where
 future enhancements are likely.]  TO BE COMPLETED.
-!Checked By:
+!Checked By: AH
 
 !Label: STT008
 !Location: 5.5.3 30/4:
@@ -128,7 +128,7 @@ Under Legality Rules:
    Ada expression. Otherwise, it has the same name resolution and legality
    rules as pragma Assert, except for extra legality rules given below.
 
-!Checked By:
+!Checked By: AH
 
 !Label: STT010
 !Location: 5.5.3 33/15:
@@ -647,7 +647,7 @@ enclosing package Inner.
 aspect ..."
 !Action Taken: Replaced as suggested.
 AH action not completed.
-!Checked By:
+!Checked By: AH
 
 !Label: STT051
 !Location: 7.2.5 73/11:
@@ -765,9 +765,8 @@ external input{-}only state is permitted..."
 !Description: The extended example in 7.2.9 may need to be revised to
 conform to these rules about pragma Elaborate of library units providing
 constituents of a state abstraction.
-!Action Taken: None. The code is not complete (has ... in some places).
-Depending on how the actual implementation is, it might or might not need
-pragma Elaborate.
+!Action Taken:
+Action to be completed after release to the advisory panel.
 !Checked By:
 
 !Label: AH/1
@@ -783,7 +782,7 @@ seems clumsy.
 volatile variables here. Could we at least add a forward reference to
 the section on externals?
 !Action Taken:Added reference to external state.  Changed the discussion of volatility to just variables - this is current but it looks like it will change again.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/3
 !Location: 1.10 Pg 16
@@ -792,15 +791,15 @@ to fully define the main SPARK 2014 language features. Subsequent
 updates for R1 are only expected to fix problems arising during
 implementation of the tools.
 !Action Taken: Replaced existing text with a paragraph modelled around your text.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/4
 !Location: 5.5.3 Page 30
 !Description: There are a number of ToDos in here targeted for the
 Milestone 3 version of this document but this is the Milestone 3 version.
 It looks like these ToDos are complete.
-!Action Taken: None (could not find any ToDos).
-!Checked By:
+!Action Taken: Done by Jon
+!Checked By: AH
 
 !Label: AH/5
 !Location: 6.1.6 Page 48
@@ -1671,7 +1670,7 @@ continues with a single rule. Should there be a list of rules here?
 !Location:6.1.3. Contract Cases
 !Description:It says "Upon a call of a subprogram or entry which is subject to an enabled Contract_Cases aspect", but entries are not in SPARK 2014, so the reference to entry should be removed here.
 !Action Taken: Removed "or entry".
-!Checked By:
+!Checked By: AH
 
 !Label: YM015
 !Location:6.1.4. Global Aspects
@@ -1690,6 +1689,7 @@ or
    procedure P with Global => null is
      procedure Loc with Global => (Input => X);
 !Action Taken: These examples may be allowed if X is state declared within P but shouldn't be allowed if X is declared outside of P. Added new legality rule to cover this.
+!Checked By: AH
 
 !Label: YM016
 !Location:6.1.4. Global Aspects
@@ -1698,13 +1698,13 @@ associated with a Global aspect." It would be better to copy here the rationale
 given for Depends: "as it is used purely for static analysis purposes and is
 not executed."
 !Action Taken: Appended suggested rationale.
-!Checked By:
+!Checked By: AH
 
 !Label: YM017
 !Location:6.1.5 Depends Aspects
 !Description:Legality rule 11 mentions a "null output_list" where it should mention instead the null_dependency_clause.
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: YM018
 !Location:6.1.5 Depends Aspects
@@ -1713,7 +1713,7 @@ removed, or given in brackets: "Each input of the implementation of a
 subprogram body is denoted by an input of the Depends aspect of the
 subprogram."
 !Action Taken: Surrounded the rule in brackets.
-!Checked By:
+!Checked By: AH
 
 !Label: YM019
 !Location:6.1.6. Ghost Functions
@@ -1723,7 +1723,7 @@ currently in the language. It would be better to reword it for release 1 to
 only mention ghost functions. (and keep the rest as comments or in a TN)
 !Action Taken: Legality rule 1 explains that even thought the more general term "ghost entities"
                is used, it should be regarded as "ghost functions" for now.
-!Checked By:
+!Checked By: AH
 
 !Label: YM020
 !Location:6.1.6. Ghost Functions
@@ -1731,13 +1731,13 @@ only mention ghost functions. (and keep the rest as comments or in a TN)
 not be read.", but what about volatile global objects??? I guess they should
 not be read either.
 !Action Taken: Updated rule to disallow all volatile objects in general.
-!Checked By:
+!Checked By: AH
 
 !Label: YM021
 !Location:6.4. Subprogram Calls
 !Description:The reference to dispatching calls should be removed.
 !Action Taken: Reference removed.
-!Checked By:
+!Checked By: AH
 
 !Label: YM022
 !Location:6.4.2. Anti-Aliasing
@@ -1745,14 +1745,14 @@ not be read either.
 such a precision in this document (and it's not given in other verification
 rules).
 !Action Taken: Deleted "In SPARK 2014".
-!Checked By:
+!Checked By: AH
 
 !Label: YM023
 !Location:6.5. Return Statements
 !Description:Any reason why extended_return_statements are not allowed? Actually, I have a
 TN to implement those in proof! (M301-019)
 !Action Taken: Changed to "No extensions or restrictions."
-!Checked By:
+!Checked By: AH
 
 !Label: YM024
 !Location:7.1.1. Abstraction of State
@@ -1776,7 +1776,7 @@ external". It does not seem true, as External is not an Ada aspect.
 Depends aspect." are consequences of the other legality rules, should they be
 in brackets?
 !Action Taken: Added brackets.
-!Checked By:
+!Checked By: AH
 
 !Label: YM027
 !Location:7.1.2. External State
@@ -1787,7 +1787,7 @@ Steve in M509-001?
   Read_Is_An_External_Effect
 It does not look like it, which is a major problem for evolving the language
 in a direction desired by our customers (Secunet in particular).
-!Action Taken: This is part of the on-going discussion on Externals. Leave action open for draft 0.3.
+!Action Taken: This is part of the on-going discussion on Externals. Leave action open for draft 0.3. Section 1.10 updated to reflect this.
 !Checked By:
 
 !Label: YM028
@@ -1803,7 +1803,7 @@ package?
     L : Integer with Part_Of => State;
   end P;
 !Action Taken: Rule has been updated. The new version addresses this issue.
-!Checked By:
+!Checked By: AH
 
 !Label: YM029
 !Location:7.1.6. Initial Condition Aspect
@@ -1827,7 +1827,7 @@ and 4. Does State "appear" or is "referenced" in the following legal example?
 !Location:7.1.6. Initial Condition Aspect
 !Description:The verification rule of Initial_Condition derives from its dynamic semantics, so should it be stated?
 !Action Taken: Added brackets around the entire verification rule.
-!Checked By:
+!Checked By: AH
 
 !Label: YM031
 !Location:7.1.6. Initial Condition Aspect
@@ -1837,6 +1837,7 @@ specifying the Initial_Condition aspect otherwise it will not be possible to
 discharge the proof obligation by analysis of the package alone." which is
 false. What about relying on other packages Initial_Condition?
 !Action Taken: This text has been removed.
+!Checked By: AH
 
 !Label: YM032
 !Location:7.2.2. Refined State Aspect
@@ -1844,13 +1845,15 @@ false. What about relying on other packages Initial_Condition?
 to indicate the options that apply to the constituent." but there are no
 option_list in the grammar for refinement_list.
 !Action Taken: Removed rule (was out of synch with the syntax).
-!Checked By:
+!Checked By: AH
 
 !Label: YM033
 !Location:7.2.4. Initialization Issues
 !Description:It mentions "volatile states" in the verification rule, which does not match
 the otherwise used terminology of "external state".
 !Action Taken: Changed "volatile state" into "external state".
+
+TODO still one usage of volatile states.
 !Checked By:
 
 !Label: YM034
@@ -1865,14 +1868,14 @@ that, so I'd rather put it after Release 1.
 !Description:The legality rules for where an abstract view of a variable is allowed exclude
 Refined_Global and Refined_Depends. These should be added.
 !Action Taken: Added Refined_Global and Refined_Depends as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: YM036
 !Location:10.1.2.1.
 !Description:Rule 3 in static semantics mentions the "volatile" characteristic of an
 abstract view. Shouldn't it say "external"?
 !Action Taken: Changed second "volatile" into "external".
-!Checked By:
+!Checked By: AH
 
 !Label: YM037
 !Location:14. Shared Variable Control (Annex C.6)
@@ -1880,7 +1883,7 @@ abstract view. Shouldn't it say "external"?
 function, directly or indirectly." Is it the same as saying that a volatile
 variable shall always be library-level?
 !Action Taken:No it is saying that a volatile variable cannot be declared within a function body which is a lot less restrictive.  No action taken.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ001
 !Location:1 Introduction
@@ -1893,13 +1896,13 @@ instance an Ada 95 compiler provided the use of Ada 2005 and Ada 2012 specific
 features are avoided.  The |SPARK| attributes Update and Loop_Entry can be used
 only if the Ada implementation supports them.  Additionally the attribute Old
 can be used only in a postcondition and not in a pragma."
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ002
 !Location:1 Introduction - Requirements given in this document
 !Description:The section does not really contain any information that is not covered elsewhere.  Delete the section.
 !Action Taken:Copied the section to the parked HLR document and then deleted the section from the SPARK RM.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ002
 !Location:1.3 How to Interpret ...
@@ -1907,68 +1910,68 @@ can be used only in a postcondition and not in a pragma."
 SPARK aspects are present.
 !Action Taken:Added a paragraph to state this but also noted that some aspects
 may be synthesized.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ003
 !Location:1.4 Method of description
 !Description:I do not think we need to put in all sections as stated, rather, we should adopt the scheme used by the Ada 2012 RM where a sections are only present as required.
 !Action Taken:Removed the paragraph stating that they are aalways required.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ004
 !Location:1.5 Formal Analysis
 !Description: I think we should state the formal anlyses listed are static analysis techniques as we use this term elsewhere.
 !Action Taken:Added this statement
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ005
 !Location:1.6 Dynamic....
 !Description: I don't think we should use the terms dataflow or annotations.
 !Action Taken:changed words to use flow analysis and drop annotations.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ005
 !Location:1.6 Dynamic....
 !Description:May be compiled and executed by any Ada 2012 implementation.  Why restrict it to Ada 2012
 !Action Taken:changed words to any Ada implementation.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ007
 !Location:1.7 Requirements given in this document
 !Description:The section does not really contain any information that is not covered elsewhere.  Delete the section.
 !Action Taken:Copied the section to the parked HLR document and then deleted the section from the SPARK RM.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ008
 !Location:1.8 SPARK strategic requirements
 !Description:This section should mention executable semantics and infinite integer arithmetic for assertion expressions.
 !Action Taken:Added bulletted subsection to explain this.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ009
 !Location:1.8 SPARK strategic requirements
 !Description:The subsection on generative and retrospective needs rewriting it is not consistent with the rest of the RM.  The strategic requirement and its focus should be the synthesis of aspects rather than methods of analysis.
 !Action Taken:Rewrote this section.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ010
 !Location:1.8 SPARK strategic requirements
 !Description:The subsection on code profiles needs to be more explicit as to why they are needed and when they might be used.
 !Action Taken:Rewrote this section.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ011
 !Location:1.8 SPARK strategic requirements
 !Description:The subsection on interfacing with other languages is a bit of a jumble.  It repeats what is covered by the previous bullet point and what is
 covered by the retrospective analysis subsection.
 !Action Taken:Rewrote this section to make it specific to interfacing to languages other than Ada.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ012
 !Location:1.8 SPARK strategic requirements
 !Description:We should note that the security features are not due until after release 1.
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ013
 !Location:1.9.1 Principal Language Restrictions
@@ -1976,7 +1979,7 @@ covered by the retrospective analysis subsection.
 could be supported in the future to support the container library. Similarly
 we could extend the model of exceptions.
 !Action Taken:I have added currently to the two relevant bullet points.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ014
 !Location:1.9.1 Principal Language Restrictions
@@ -1984,38 +1987,40 @@ we could extend the model of exceptions.
 could be supported in the future to support the container library. Similarly
 we could extend the model of exceptions.
 !Action Taken:I have added currently to the two relevant bullet points.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ015
 !Location:1.9.2 Combining Formal ...
 !Description:Change is only cost-effective to might be ...
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ016
 !Location:1.9.3 Code profiles
 !Description:In the Todo I think removing profies from the SPARK RM altogether
 is a bad idea as they are an important feature - just as important as synthesis.
 !Action Taken:Replace remove ... by Consider referencing ...
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ017
 !Location:1.9.4 Ghost Functions
 !Description: Typo "|SPARK| currently supports ghost functions - though not ghost types or variables- which functions .."
 !Action Taken:Corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: TJJ018
 !Location:1.9.5 Constructive, Generative, and ...
 !Description:Change this section to be a section on synthesis of aspects.
 Only introduce generative and retrospective analysis as way of using synthesized aspects.
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/17
 !Location:7.2.2 legality rule 3 note
 !Description: The note "We may want to be able to override this error" should be removed.
 !Action Taken:Deleted.
+
+TODO not done
 !Checked By:
 
 
@@ -2023,95 +2028,101 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Location: 7.2.3 para 1, sentence 1
 !Description: The term "visible state" is potentially ambiguous, please consider expanding.
 !Action Taken:Changed to "Each item of state dclared in the visible part ..."
-!Checked By:
+!Checked By: AH
 
 !Label: AH/19
 !Location: 7.2.3 para 1, sentence 2
 !Description: The last comma is unnecessary, please delete.
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/20
 !Location: 7.2.3 Para 6.
 !Description:  The sentence "The following scenario:" would be easier to read if it was written "The fikkiwung scenario gives rise to ...:. I found myself reading the end of the sentence before reading the bullets.
 !Action Taken:Changed to the following scenario gives rise to ...:
+
+TODO superfluous full stop on the line folowing the bullets.
 !Checked By:
 
 !Label: AH/21
 !Location: 7.2.5, Legality rule 4 last bullet
 !Description:  The use of "them" in "one of them has" is ambiguous as it could be referring to the constituents of the abstract or the global_item.
 !Action Taken:Reworded as "...  but denotes at least one ``constituent`` .."
-!Checked By:
+!Checked By: AH
 
 !Label: AH/22
 !Location: Introduction
 !Description: I'd recommend para 6 "The new aspects support ..." follows para 1
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/23
 !Location: Introduction para 4
 !Description: Typo: "program to {be} compiled"
 !Action Taken: Corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/24
 !Location: Section 1.3, Todo and last sentence
 !Description: I think the mapping spec has been updated. It certainly covers all of the aspects.
 !Action Taken: Mapping spec has been updated. Removed the ToDo.
+TODO last sentence also needs to change
 !Checked By:
 
 !Label: AH/25
 !Location: Section 1.6 first para
 !Description: Suggest the second sentence is reworded along the lines of: "The SPARK 2014 dynamic semantics are the same as Ada 2012 with the exception of some new aspects, pragmas and attributes which have dynamic semantics. Additionally, the new dynamic semantics only affect assertion expressions so if assertion expressions are ignored then the dynamic semantics of an Ada 2012 program are the same as a SPARK 2014 program."
 !Action Taken: Replaced second sentence as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/26
 !Location: Section 1.6 second para
 !Description: Typo: "with, say [with]"
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/27
 !Location: Section 1.8, 4th bullet
 !Description: typo: on these contracts {as} early as
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/28
 !Location: Section 1.8 bullet 6
 !Description: Typo: "code profile" -> "code policy"
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/29
 !Location:  Section 1.8 bullet beginning "Enhanced support for specifying ..."
 !Description: Missing closing square bracket ].
 !Action Taken: Added closing bracket.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/30
 !Location: Section 1.8 last bullet
 !Description: Typo: "of {a} property is sound."
 !Action Taken: Corrected as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: AH/31
 !Location: Section 1.9.5
 !Description:  "a [a]"
 !Action Taken: Corrected!
+TODO not done
 !Checked By:
 
 !Label: AH/32
 !Location: Section 1.9.7
 !Description:  "read of {a} volatile variable"
 !Action Taken: Corrected
+TODO not done
 !Checked By:
 
 !Label: AH/33
 !Location: Section 1.10
 !Description:  Please state that there are some areas where there is currently significant discussion, e.g. "External" and refined pre/post.
 !Action Taken: Done.
+Please reword to "There are two areas of the language where there is on-going significant discussion and so are likely to change. These areas are "Externals" and "Refined_Pre and Refined_Post."
 !Checked By:
 
