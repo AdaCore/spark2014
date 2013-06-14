@@ -1,0 +1,2 @@
+no_return.adb:14:7: precondition not proved
+no_return.ads:5:7: postcondition not proved
