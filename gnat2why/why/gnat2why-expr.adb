@@ -5241,7 +5241,8 @@ package body Gnat2Why.Expr is
    function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean is
    begin
       return Has_Precondition (E) or else
-        Entity_Is_Instance_Of_Formal_Container (E);
+        Entity_Is_Instance_Of_Formal_Container (E) or else
+        No_Return (E);
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;

@@ -118,10 +118,10 @@ package body Gnat2Why.Subprograms is
    --  empty if E has no parameters.
 
    function Compute_Spec
-     (Params : Transformation_Params;
-      E      : Entity_Id;
-      Kind   : Name_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+     (Params    : Transformation_Params;
+      E         : Entity_Id;
+      Kind      : Name_Id;
+      Domain    : EW_Domain) return W_Expr_Id;
    --  Compute the precondition or postcondition of the generated Why function.
    --  Kind is Name_Precondition or Name_Postcondition to specify which one is
    --  computed.
@@ -919,13 +919,17 @@ package body Gnat2Why.Subprograms is
 
       Params.Phase := Generate_Contract_For_Body;
 
-      --  Translate contract of E
+      --  Translate contract of E. A No_Return subprogram, from the inside, has
+      --  postcondition false, but the precondition is unchanged
 
       Pre  := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-
-      Params.Gen_Image := True;
-      Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
-      Params.Gen_Image := False;
+      if No_Return (E) then
+         Post := False_Pred;
+      else
+         Params.Gen_Image := True;
+         Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+         Params.Gen_Image := False;
+      end if;
 
       --  Set the phase to Generate_VCs_For_Body from now on, so that
       --  occurrences of X'Old are properly translated as reference to the
@@ -1087,6 +1091,14 @@ package body Gnat2Why.Subprograms is
       Post : Node_Id := Empty;
 
    begin
+
+      --  In the case of a No_Return Subprogram, there is no real location for
+      --  the postcondition; simply return the subp entity node.
+
+      if No_Return (E) then
+         return E;
+      end if;
+
       --  Pre- and postconditions are stored in reverse order in
       --  Pre_Post_Conditions, hence retrieve the last postcondition in this
       --  list to get the first one in source code.
@@ -1320,12 +1332,20 @@ package body Gnat2Why.Subprograms is
 
       Effects := Compute_Effects (File, E);
 
-      Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-      Post :=
-        +New_And_Expr
-          (Left   => +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
-           Right  => +Compute_Contract_Cases_Postcondition (Params, E),
-           Domain => EW_Pred);
+      --  From the outside, a No_Return subprogram has both Pre and Post set to
+      --  "False".
+
+      if No_Return (E) then
+         Pre := False_Pred;
+         Post := False_Pred;
+      else
+         Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+         Post :=
+           +New_And_Expr
+           (Left   => +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
+            Right  => +Compute_Contract_Cases_Postcondition (Params, E),
+            Domain => EW_Pred);
+      end if;
 
       if Ekind (E) = E_Function then
          declare
