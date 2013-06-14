@@ -765,8 +765,9 @@ a ghost function are regarded implicitly as ghost entities). When the full scope
 entities is allowed, the rules given in this section may be moved to
 other sections as appropriate, since they will refer to more than just subprograms.
 
-.. todo:: Add ghost types and ghost variables to SPARK 2014.
-          To be completed in a post-Release 1 version of this document.
+.. todo::
+   Add ghost types and ghost variables to |SPARK|. To be completed in
+   a post-Release 1 version of this document.
 
 .. centered:: **Static Semantics**
 
@@ -800,7 +801,7 @@ other sections as appropriate, since they will refer to more than just subprogra
      parameter.
 
 #. Within a ghost procedure, the view of any non-ghost variable is
-   a constant view. Within a ghost procedure, a volatile non-global object shall
+   a constant view. Within a ghost procedure, a volatile object shall
    not be read. [In a ghost procedure we do not want to allow assignments to
    non-ghosts either via assignment statements or procedure calls.]
 
@@ -813,7 +814,8 @@ other sections as appropriate, since they will refer to more than just subprogra
 
    .. todo::
       Make worst-case assumptions about private types for this rule,
-      or blast through privacy?
+      or blast through privacy? To be completed in milestone 4 version
+      of this document.
 
 #. A ghost instantiation shall not be an instantiation of a non-ghost
    generic package. [This is a conservative rule until we have more precise
@@ -837,19 +839,20 @@ other sections as appropriate, since they will refer to more than just subprogra
 [We are ignoring interactions between ghostliness and freezing. Adding a ghost
 variable, for example, could change the freezing point of a non-ghost type. It
 appears that this is ok; that is, this does not violate the
-ghosts-have-no-effect-on-program-behavior rule.]
+ghosts-have-no-effect-on-program-behavior rule.
 
 .. todo::
    Can a ghost variable be a constituent of a non-ghost state
    abstraction, or would this somehow allow unwanted dependencies?
    If not, then we presumably need to allow ghost state abstractions
-   or else it would illegal for a library level package body to
-   declare a ghost variable.
-   To be completed in a post-Release 1 version of this document.
+   or else it would be illegal for a library level package body to
+   declare a ghost variable. To be completed in a post-Release 1
+   version of this document.
 
 .. todo::
    Do we want an implicit Ghost convention for an entity declared
    within a statement whose execution depends on a ghost value?
+   To be completed in a post-Release 1 version of this document.
 
 .. centered:: **Dynamic Semantics**
 

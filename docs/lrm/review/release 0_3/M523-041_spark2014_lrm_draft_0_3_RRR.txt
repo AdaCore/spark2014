@@ -740,8 +740,7 @@ Legality Rule 1 seems to be a Static Semantics rule.
 must meet the same restrictions as would be required for a call to each
 of tis overriding primitive operations"?  I can't quite imagine how that
 works.
-!Action: Updated by SBB.
-TJJ to review
+!Action Taken: Updated by SBB. TJJ to review
 !Checked By:
 
 !Label: STT062
@@ -766,7 +765,9 @@ external input{-}only state is permitted..."
 !Description: The extended example in 7.2.9 may need to be revised to
 conform to these rules about pragma Elaborate of library units providing
 constituents of a state abstraction.
-!Action Taken:
+!Action Taken: None. The code is not complete (has ... in some places).
+Depending on how the actual implementation is, it might or might not need
+pragma Elaborate.
 !Checked By:
 
 !Label: AH/1
@@ -796,23 +797,23 @@ implementation of the tools.
 !Label: AH/4
 !Location: 5.5.3 Page 30
 !Description: There are a number of ToDos in here targeted for the
-Milestone 3 version of this document but this is the Milestone 3 vesion.
+Milestone 3 version of this document but this is the Milestone 3 version.
 It looks like these ToDos are complete.
-!Action Taken:
+!Action Taken: None (could not find any ToDos).
 !Checked By:
 
 !Label: AH/5
 !Location: 6.1.6 Page 48
 !Description: This section contains several todos that a) don't have a
 target milestone and b) do not use the standard ToDo syntax.
-!Action Taken:
+!Action Taken: Standard ToDo syntax used everywhere. Added target milestones (these need be reviewed).
 !Checked By:
 
 !Label: AH/6
 !Location: General
 !Description: Need to ensure that all ToDos have a milestone associated
 with them.
-!Action Taken:
+!Action Taken: Confirmed. All ToDos have associated milestones (not sure if these are correct though).
 !Checked By:
 
 
@@ -821,7 +822,9 @@ with them.
 !Description: We need to fix the problem with diff'ing & subscripts if
 we are going to issue this to the AP. If this turns out to be too hard
 then the alternative is to issue a change description.
-!Action Taken:
+!Action Taken: None. Unfortunately we don't know if it will be possible
+               to generate a Diff pdf of the two revisions until we try
+               and we need the final version of the LRM to do that.
 !Checked By:
 
 !Label: SM/2
@@ -1069,8 +1072,6 @@ references to Default_Value consistent with this.  Additionally,
 component_declarations should be emphasised as a syntactic term and a
 record component has a default_expression (again a syntactic term)
 rather than a Default_Value as originally stated.
-
-AH there is a default_value in section 3.8 Record Types
 !Checked By:
 
 !Label: JEB/07
@@ -1285,8 +1286,7 @@ Page/Para: page 55, Legality rules
 !Description: Typo: inconsistent use of underscore and capitalisation
 "Initial_Condition aspect" and Initial Condition Aspect" I prefer the
 former so correct item 4.
-!Action Taken: Done.
-AH NOT DONE
+!Action Taken: Done (legality rule 4 no longer exists).
 !Checked By:
 
 !Label: JEB/30
@@ -1340,7 +1340,6 @@ as "To resolve such aliasing rules".
 Page/Para: page 59, Legality Rule 4
 !Description: Typo: "as a encapsulating" -> "as an encapsulating"
 !Action Taken: Done.
-AH NOT DONE two examples of "a encapsulating"
 !Checked By:
 
 !Label: JEB/36
@@ -1566,7 +1565,7 @@ reference their relevant TN's (if possible).
 !Label: AH/16
 !Location: 7.2.3
 !Description: Typo "both and input and and output"
-!Action Taken:
+!Action Taken: Corrected.
 !Checked By:
 
 !Label: YM001
@@ -1660,7 +1659,7 @@ by Proof" subtitle should not be used anymore.
 !Description:It says: "These rules follow the corresponding Ada RM rule for 'Old" and
 continues with a single rule. Should there be a list of rules here?
 !Action Taken:Changed to singular as it relates to the rule given above.
-!Checked By: 
+!Checked By:
 
 !Label: YM013
 !Location:6.1.2. Subprogram Contracts
@@ -1731,7 +1730,7 @@ only mention ghost functions. (and keep the rest as comments or in a TN)
 !Description:Besides, it says "Within a ghost procedure, a volatile non-global object shall
 not be read.", but what about volatile global objects??? I guess they should
 not be read either.
-!Action Taken:
+!Action Taken: Updated rule to disallow all volatile objects in general.
 !Checked By:
 
 !Label: YM021
@@ -1838,7 +1837,6 @@ specifying the Initial_Condition aspect otherwise it will not be possible to
 discharge the proof obligation by analysis of the package alone." which is
 false. What about relying on other packages Initial_Condition?
 !Action Taken: This text has been removed.
-!Checked By: AH
 
 !Label: YM032
 !Location:7.2.2. Refined State Aspect
@@ -2048,72 +2046,72 @@ Only introduce generative and retrospective analysis as way of using synthesized
 !Label: AH/22
 !Location: Introduction
 !Description: I'd recommend para 6 "The new aspects support ..." follows para 1
-!Action Taken:
+!Action Taken: Done.
 !Checked By:
 
 !Label: AH/23
 !Location: Introduction para 4
 !Description: Typo: "program to {be} compiled"
-!Action Taken:
+!Action Taken: Corrected.
 !Checked By:
 
 !Label: AH/24
 !Location: Section 1.3, Todo and last sentence
 !Description: I think the mapping spec has been updated. It certainly covers all of the aspects.
-!Action Taken:
+!Action Taken: Mapping spec has been updated. Removed the ToDo.
 !Checked By:
 
 !Label: AH/25
 !Location: Section 1.6 first para
 !Description: Suggest the second sentence is reworded along the lines of: "The SPARK 2014 dynamic semantics are the same as Ada 2012 with the exception of some new aspects, pragmas and attributes which have dynamic semantics. Additionally, the new dynamic semantics only affect assertion expressions so if assertion expressions are ignored then the dynamic semantics of an Ada 2012 program are the same as a SPARK 2014 program."
-!Action Taken:
+!Action Taken: Replaced second sentence as suggested.
 !Checked By:
 
 !Label: AH/26
 !Location: Section 1.6 second para
 !Description: Typo: "with, say [with]"
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: AH/27
 !Location: Section 1.8, 4th bullet
 !Description: typo: on these contracts {as} early as
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: AH/28
 !Location: Section 1.8 bullet 6
 !Description: Typo: "code profile" -> "code policy"
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: AH/29
 !Location:  Section 1.8 bullet beginning "Enhanced support for specifying ..."
 !Description: Missing closing square bracket ].
-!Action Taken:
+!Action Taken: Added closing bracket.
 !Checked By:
 
 !Label: AH/30
 !Location: Section 1.8 last bullet
 !Description: Typo: "of {a} property is sound."
-!Action Taken:
+!Action Taken: Corrected as suggested.
 !Checked By:
 
 !Label: AH/31
 !Location: Section 1.9.5
 !Description:  "a [a]"
-!Action Taken:
+!Action Taken: Corrected!
 !Checked By:
 
 !Label: AH/32
 !Location: Section 1.9.7
 !Description:  "read of {a} volatile variable"
-!Action Taken:
+!Action Taken: Corrected
 !Checked By:
 
 !Label: AH/33
 !Location: Section 1.10
 !Description:  Please state that there are some areas where there is currently significant discussion, e.g. "External" and refined pre/post.
-!Action Taken:
+!Action Taken: Done.
 !Checked By:
 

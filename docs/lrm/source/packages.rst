@@ -54,7 +54,7 @@ themselves records.
 
    * any variables declared immediately in the private part or body of P; and
 
-   * the state declared in the visible part of any packages declared immediately 
+   * the state declared in the visible part of any packages declared immediately
      within the private part or body of P.
 
 .. _external_state:
@@ -929,7 +929,7 @@ There are no verification rules associated with Refined_State aspect.
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Each item of state declared in the visible part of a private library unit 
+Each item of state declared in the visible part of a private library unit
 (and any descendants thereof) must be connected, directly or indirectly, to an
 *encapsulating* state abstraction of some public library unit. This is done
 using the Part_Of ``option`` or aspect associated with each declaration of
@@ -961,7 +961,7 @@ which the state is *exposed* must be more visible.
 If a private library unit has visible state, this state might be read or updated
 as a side effect of calling a visible operation of a public library unit. This
 visible state may be referenced, either separately or as part of the state
-abstraction of some other public library unit. The following scenario gives rise 
+abstraction of some other public library unit. The following scenario gives rise
 to aliasing between the state abstraction and its constituents:
 
    * a state abstraction is visible; and
@@ -1136,16 +1136,16 @@ is part of and a state abstraction always knows all of its constituents.
      be regarded as an update of the most visible encapsulation state
      abstraction of the ``constituent`` and shall be represented by
      this encapsulating state with a ``mode_selector`` of In_Out in
-     the Global aspect of the subprogram and as both and ``input`` and
-     and ``output`` in the Depends aspect of the subprogram.  [The
+     the Global aspect of the subprogram and as both an ``input`` and
+     an ``output`` in the Depends aspect of the subprogram. [The
      reason for this is that it is not known whether the entire state
      abstraction is updated or only some of its constituents.] This
      rule does not apply when the most visible encapsulating state
-     abstraction is External Input_Only or Output_Only.  In this case
+     abstraction is External Input_Only or Output_Only. In this case
      the state abstraction shall have a ``mode_selector`` of Input for
-     Input_only states and Output for Output_Only states.  Similarly
+     Input_Only states and Output for Output_Only states. Similarly
      in the Depends aspect Input_Only states shall be denoted only as
-     ``inputs`` and Output_only states shall be denoted only as
+     ``inputs`` and Output_Only states shall be denoted only as
      ``outputs``.
 
 .. centered:: **Examples**
@@ -1471,7 +1471,7 @@ The static semantics are equivalent to those given for the Global aspect in
      of Input and of Output; or
 
    * the Refined_Global aspect does not denote all of the ``constituents`` of
-     the state abstraction but denotes at least one ``constituent`` that has 
+     the state abstraction but denotes at least one ``constituent`` that has
      a ``mode_selector`` of Output.
 
    [This rule ensures that a state abstraction with the ``mode_selector``

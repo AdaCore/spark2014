@@ -101,8 +101,8 @@ been analysed.]
 Derived Types and Classes
 -------------------------
 
-An entity declared by a ``derived_type`` declaration is in |SPARK| if its 
-parent type is in |SPARK|, and if the declaration contains an ``interface_list`` 
+An entity declared by a ``derived_type`` declaration is in |SPARK| if its
+parent type is in |SPARK|, and if the declaration contains an ``interface_list``
 or a ``record_part`` these must also contain entities that are in |SPARK|.
 
 Scalar Types
@@ -114,7 +114,7 @@ No extensions or restrictions.
 Array Types
 -----------
 
-An entity declared by a ``array_type_definition`` is in |SPARK| if its 
+An entity declared by a ``array_type_definition`` is in |SPARK| if its
 components are in |SPARK| and default initialization is in |SPARK|.
 
 
@@ -134,7 +134,7 @@ Record Types
 More specifically, if at least one non-discriminant component (either
 explicitly declared or inherited) of a record type or type extension either
 is of a type which defines default initialization or is declared by
-a component_declaration which includes a default_value, then the record type
+a component_declaration which includes a Default_Value, then the record type
 or type extension shall define full default initialization.
 
 [The enforcement of this rule requires looking at the ``full_type_declaration``
@@ -148,7 +148,7 @@ Tagged Types and Type Extensions
 Use of the 'Class attribute is not permitted in |SPARK|.
 
 [This restriction may be relaxed at some point in the future.
-As a consequence of this restriction, dispatching calls are not currently in 
+As a consequence of this restriction, dispatching calls are not currently in
 |SPARK| but are planned for a future release.]
 
 .. todo:: Add 'Class attribute to SPARK 2014. To be completed in a post-Release
