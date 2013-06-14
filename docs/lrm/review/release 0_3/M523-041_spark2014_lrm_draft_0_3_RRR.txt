@@ -806,14 +806,14 @@ It looks like these ToDos are complete.
 !Description: This section contains several todos that a) don't have a
 target milestone and b) do not use the standard ToDo syntax.
 !Action Taken: Standard ToDo syntax used everywhere. Added target milestones (these need be reviewed).
-!Checked By:
+!Checked By: AH
 
 !Label: AH/6
 !Location: General
 !Description: Need to ensure that all ToDos have a milestone associated
 with them.
 !Action Taken: Confirmed. All ToDos have associated milestones (not sure if these are correct though).
-!Checked By:
+!Checked By: AH
 
 
 !Label: SM/1
@@ -821,10 +821,11 @@ with them.
 !Description: We need to fix the problem with diff'ing & subscripts if
 we are going to issue this to the AP. If this turns out to be too hard
 then the alternative is to issue a change description.
-!Action Taken: None. Unfortunately we don't know if it will be possible
+!Action Taken: This problem has been solved however others may occur.
+               Unfortunately we don't know if it will be possible
                to generate a Diff pdf of the two revisions until we try
                and we need the final version of the LRM to do that.
-!Checked By:
+!Checked By: AH
 
 !Label: SM/2
 !Location: 1.8 Page/para:  Page 7, second bullet from bottom
@@ -839,7 +840,7 @@ presumably there as a result of an action from the previous review.
   is to provide a language expressive enough for the whole of a program
   to written in |SPARK| making it potentially entirely provable largely using
   automatic proof tools."
-!Checked By:
+!Checked By: AH
 
 !Label: SM/3
 !Location: 6.1.3 - 6.1.6 Page/para: 39, 41, etc.
@@ -974,7 +975,7 @@ Similarly for Loop_Invariant:
 Pragma Loop_Invariant is an assertion (as defined in Ada
    RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant  assertion aspect
    [and may be used in an  Assertion_Policy pragma].
-!Checked By:
+!Checked By: AH
 
 !Label: SBB_08
 !Location:7.2.3
@@ -1006,7 +1007,7 @@ Are you saying that the following Refined_Global spec is illegal?
 If so, then I'd like to discuss this.
 
 !Action Taken:I have largely rewritten this section so that the above example is now legal.  This section needs to be carefully re-reviewed.
-!Checked By:
+!Checked By: AH
 
 
 !Label: JEB/01
@@ -1015,7 +1016,7 @@ Page/Para:
 !Description: Desirable: Generally should legality rules be numbered,
 some are not such as loops (5.5.3) or ghost functions (6.1.6).
 !Action Taken:Ghost Functions, 6.1.6 updated; Section 5.5 Loops updated.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/02
 !Location: 1.8
@@ -1031,7 +1032,7 @@ annotations.
        their declaration supplemented with |SPARK| specific aspects manually
        specified to give an accurate and truthful contract for the unit
        (see section :ref:`in_out` for further details)"
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/03
 !Location: 1.9.4
@@ -1050,7 +1051,7 @@ Page/Para: page 12, bullet 3
 code may not all be SPARK 2014. Otherwise it seems little different from
 the first case.
 !Action Taken:Done
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/05
 !Location: 1.9.5
@@ -1058,7 +1059,7 @@ Page/Para: page 12, final bullet
 !Description: Desirable: make it cleared whether this is manual or
 automatic. I suspect manual.
 !Action Taken:Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/06
 !Location: 3.1
@@ -1071,7 +1072,7 @@ references to Default_Value consistent with this.  Additionally,
 component_declarations should be emphasised as a syntactic term and a
 record component has a default_expression (again a syntactic term)
 rather than a Default_Value as originally stated.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/07
 !Location: 4.5
@@ -1130,7 +1131,7 @@ Old) but not explicitly covered by adopting rules for old attribute.
 !Action Taken:
 Well spotted.  I hope to rewrite this section to have rule numberings. I
 will add an extra rule to prevent X'Loop_Entry'Loop_Entry.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/13
 !Location: 6.1.1
@@ -1161,7 +1162,7 @@ As this is not a ToDo will it be tracked?
 I think it is possible to track notes but I will address this note
 (along with the todo regarding refined contract cases).
 
-AH note not yet resolved.
+AH note not yet resolved, resolve post issue 0.3
 !Checked By:
 
 !Label: JEB/16
@@ -1240,7 +1241,7 @@ permitted other than in the context of the completion of a ghost entity.
 I am against using ghost entities in non-ghost code other than in
 assertion expressions.  I will raise this again in the next language
 conference call.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/24
 !Location: 7.1.3
@@ -1286,7 +1287,7 @@ Page/Para: page 55, Legality rules
 "Initial_Condition aspect" and Initial Condition Aspect" I prefer the
 former so correct item 4.
 !Action Taken: Done (legality rule 4 no longer exists).
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/30
 !Location: 7.2.1
@@ -1339,7 +1340,7 @@ as "To resolve such aliasing rules".
 Page/Para: page 59, Legality Rule 4
 !Description: Typo: "as a encapsulating" -> "as an encapsulating"
 !Action Taken: Done.
-!Checked By:
+!Checked By: AH
 
 !Label: JEB/36
 !Location: 7.2.3
@@ -1565,7 +1566,7 @@ reference their relevant TN's (if possible).
 !Location: 7.2.3
 !Description: Typo "both and input and and output"
 !Action Taken: Corrected.
-!Checked By:
+!Checked By: AH
 
 !Label: YM001
 !Location: General
@@ -1658,13 +1659,13 @@ by Proof" subtitle should not be used anymore.
 !Description:It says: "These rules follow the corresponding Ada RM rule for 'Old" and
 continues with a single rule. Should there be a list of rules here?
 !Action Taken:Changed to singular as it relates to the rule given above.
-!Checked By:
+!Checked By: AH
 
 !Label: YM013
 !Location:6.1.2. Subprogram Contracts
 !Description:It mentions Pre'Class and Post'Class which should not be mentioned for that release.
 !Action Taken: 'Class is no longer mentioned.
-!Checked By:
+!Checked By: AH
 
 !Label: YM014
 !Location:6.1.3. Contract Cases
@@ -1861,7 +1862,7 @@ TODO still one usage of volatile states.
 !Description:It says "will be completed for Milestone 3", I don't think we'll have time for
 that, so I'd rather put it after Release 1.
 !Action Taken: Updated as suggested.
-!Checked By:
+!Checked By: AH
 
 !Label: YM035
 !Location:10.1.2.1.
