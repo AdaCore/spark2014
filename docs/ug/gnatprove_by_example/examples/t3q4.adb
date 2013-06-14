@@ -18,8 +18,10 @@ is
       Sum : SumType := 0;
    begin
       for I in IndexType loop
-        pragma Loop_Invariant ((if I /= IndexType'First then Sum = Summed_Between(A, IndexType'First, I - 1)) and
-          Sum <= 1000 * (I - IndexType'First));
+        pragma Loop_Invariant
+          ((if I /= IndexType'First then
+             Sum = Summed_Between(A, IndexType'First, I - 1)) and
+           Sum <= 1000 * (I - IndexType'First));
         Sum := Sum + A (I);
      end loop;
      return Sum;
