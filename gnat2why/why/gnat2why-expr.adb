@@ -805,7 +805,7 @@ package body Gnat2Why.Expr is
       end if;
 
       declare
-         Why_Args : W_Expr_Array := (1 .. Integer (Len) => <>);
+         Why_Args : W_Expr_Array (1 .. Integer (Len));
          Cnt      : Positive := 1;
 
          procedure Compute_Arg (Formal, Actual : Node_Id);
@@ -1508,8 +1508,7 @@ package body Gnat2Why.Expr is
                Ar      : constant Node_Id := Prefix (N);
                Dim     : constant Pos := Number_Dimensions (Type_Of_Node (Ar));
                T_Name  : constant Entity_Id := Type_Of_Node (Ar);
-               Indices : W_Expr_Array :=
-                  (1 .. Integer (Dim) => <>);
+               Indices : W_Expr_Array (1 .. Integer (Dim));
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
@@ -1574,7 +1573,7 @@ package body Gnat2Why.Expr is
             declare
                Dim     : constant Pos :=
                   Number_Dimensions (Type_Of_Node (Prefix (N)));
-               Indices : W_Expr_Array := (1 .. Integer (Dim) => <>);
+               Indices : W_Expr_Array (1 .. Integer (Dim));
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
