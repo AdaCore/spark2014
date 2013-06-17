@@ -1927,7 +1927,6 @@ package body Why.Atree.Sprint is
                                 "gnatprove"), "theories"), File_Name);
                begin
                   Free (R);
-                  Ada.Text_IO.Put_Line (S);
                   return S;
                end;
             end;
