@@ -40,7 +40,6 @@ with GNAT.Regpat;
 with Ada.Command_Line;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Ada.Strings.Unbounded;
-with Ada.Text_IO;
 
 package body Why.Atree.Sprint is
 
