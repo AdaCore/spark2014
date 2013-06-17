@@ -20,12 +20,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This is the Hi-Lite target dependent version of package body Sdefault.
+--  This is the SPARK2014 target dependent version of package body Sdefault.
 
---  This package body provides the Hi-Lite implementation of the routines
+--  This package body provides the SPARK2014 implementation of the routines
 --  that locate the Ada library source and object directories.
 
---  In the case of Hi-Lite, we care both about the location of the adainclude
+--  In the case of SPARK2014, we care both about the location of the adainclude
 --  and adalib directories, so generate them from Makefile.generic, using the
 --  native compiler.
 
@@ -36,7 +36,7 @@ package body Sdefault is
    -- Local Data --
    ----------------
 
-   Target : constant String := "HI-LITE";
+   Target : constant String := "SPARK2014";
 
    ------------------------------
    -- Include_Dir_Default_Name --

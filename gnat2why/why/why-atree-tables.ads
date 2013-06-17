@@ -121,8 +121,8 @@ package Why.Atree.Tables is
 private
    --  These tables are used as storage pools for nodes and lists.
    --  They could ultimately be implemented using the containers
-   --  that will be defined in the context of Hi-Lite; for now,
-   --  use Standard Ada 05 containers, in the hope that Hi-Lite
+   --  that will be defined in the context of SPARK 2014; for now,
+   --  use Standard Ada 05 containers, in the hope that SPARK 2014
    --  containers will be similar enough.
 
    package Node_Tables is

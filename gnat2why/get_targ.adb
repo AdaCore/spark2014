@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This is the Hi-Lite specific body for this package
+--  This is the SPARK2014 specific body for this package
 
 package body Get_Targ is
 
