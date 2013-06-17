@@ -381,6 +381,11 @@ shall follow the grammar of ``abstract_state_list`` given below.
       to make this scenario work, rules of the form "... shall denote a state
       abstraction" need to be name resolution rules, not just legality rules.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 SS state_name shall have completion and is
+                   overloadable. Covered by another TU
+
 #. [A state abstraction shall only be named in contexts where this is
    explicitly permitted (e.g., as part of a Global aspect
    specification), but this is not a name resolution rule. Thus, the
@@ -391,9 +396,13 @@ shall follow the grammar of ``abstract_state_list`` given below.
    ``aspect_specification`` can only be provided as part of a
    Refined_State ``aspect_specification`` within the body of the package.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 SS State abstraction shall be named in explicitly
+                   permitted contexts. Covered by another TU
+
 #. A **null** ``abstract_state_list`` specifies that a package contains no
    hidden state.
-
 
    .. ifconfig:: Display_Trace_Units
 

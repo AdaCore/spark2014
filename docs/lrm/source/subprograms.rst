@@ -269,6 +269,10 @@ follow the grammar of ``global_specification``
 #. A ``global_specification`` that is a ``global_list`` is shorthand for a
    ``moded_global_list`` with the ``mode_selector`` Input.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 SS an unmoded global_list is shorthand for Input
+
 #. A ``global_item`` is *referenced* by a subprogram if:
 
    * It denotes an input or an output of the subprogram, or;
@@ -279,6 +283,13 @@ follow the grammar of ``global_specification``
    * Its entry value is used to determine the value of an assertion
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 SS global_item is referenced by subprogram when it
+                   denotes an input/output, its entry value is used in an
+                   assertion expresson or it is used by another subprogram
+                   that is called by this subprogram. Covered by another TU
 
 #. A ``null_global_specification`` indicates that the subprogram does not
    reference any ``global_item`` directly or indirectly.
@@ -554,6 +565,11 @@ where
    there is no way to read or otherwise depend on the underlying tag of an
    **out** mode formal parameter of a tagged type.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR discriminants, array bounds and tags of out formal
+                   parameters and output globals, are part of the input set
+
 #. The *output set* of a subprogram is the set of formal parameters of the
    subprogram of mode **in out** and **out** along with the entities denoted by
    ``global_items`` of the Global aspect of the subprogram with a
@@ -601,6 +617,10 @@ where
    a postcondition of the function to which the enclosing
    ``aspect_specification`` applies.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR 'Result on Depends aspect is checked as a
+                   postcondition of the function
 
 #. In a ``dependency_relation`` there can be at most one ``dependency_clause``
    which is a ``null_dependency_clause`` and if it exists it must be the
@@ -628,7 +648,6 @@ where
 
 #. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
 
-
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 6.1.5 LR null_dependency_clause shall not have input_list
@@ -642,9 +661,17 @@ where
    [The text (A, B, C) =>+ Z is shorthand for
    (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS '+' introduces self dependence
+
 #. A ``dependency_clause`` of the form A =>+ A has the same meaning as A => A.
    [The reason for this rule is to allow the short hand:
    ((A, B) =>+ (A, C)) which is equivalent to (A => (A, C), B => (A, B, C)).]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS A =>+ A means A => A. Covered by another TU
 
 #. A ``dependency_clause`` with a **null** ``input_list`` means that the final
    value of the entity denoted by each ``output`` in the ``output_list`` does
@@ -652,30 +679,63 @@ where
    (other than itself, if the ``output_list`` =>+ **null** self-dependency
    syntax is used).
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 LR dependency_clause with null input_list means that
+                   each output in the output_list does not depend on anything
+
 #. The ``inputs`` in the ``input_list`` of a ``null_dependency_clause`` may be
    read by the subprogram but play no role in determining the values of any
    outputs of the subprogram.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS inputs in the input_list of a null_dependency_clause
+                   play no role in determining outputs of the subprogram
 
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
    indicates that the subprogram has no ``inputs`` or ``outputs``.
    [From an information flow analysis viewpoint it is a
    null operation (a no-op).]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS null dependency_relation means subprogram has
+                   no inputs or outputs
+
 #. [A function without an explicit Depends aspect specification
    is assumed to have the ``dependency_relation``
    that its result is dependent on all of its inputs.
    Generally an explicit Depends aspect is not required for functions.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS functions need no Depends aspect. Functions
+                   have implicit dependency_relation that result depends
+                   on all inputs. Checked by another TU
 
 #. [A subprogram which has an explicit Depends aspect specification
    and lacks an explicit Global aspect specification is assumed to have
    the [unique] Global aspect specification that is consistent with the
    subprogram's Depends aspect.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS subprogram with explicit Depends and implicit
+                   Global has the unique global aspect that is consistent
+                   with the Depends aspect.
+
 #. [A subprogram which has an explicit Global aspect specification
    but lacks an explicit Depends aspect specification and, as yet, has no
    implementation of its body is assumed to have the conservative
    ``dependency_relation`` that each member of the output set is dependent on
    every member of the input set.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 SS a subprogram with an explicit Global aspect
+                   and no Depends or body has an implicit dependency_relation
+                   where each output is dependent on every input
 
 .. centered:: **Dynamic Semantics**
 
