@@ -681,7 +681,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR dependency_clause with null input_list means that
+      :Trace Unit: 6.1.5 SS dependency_clause with null input_list means that
                    each output in the output_list does not depend on anything
 
 #. The ``inputs`` in the ``input_list`` of a ``null_dependency_clause`` may be
