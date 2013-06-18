@@ -90,7 +90,8 @@ package body Flow is
    --  Flow_Id. This is used for emitting more helpful error messages
    --  if a Magic_String Flow_Id is concerened.
 
-   function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs
+   function Flow_Analyse_Subprogram_Entity (E : Entity_Id)
+                                            return Flow_Analysis_Graphs
    with Pre =>
      (Ekind (E) in Subprogram_Kind and then Subprogram_Body_In_SPARK (E));
    --  Flow analyse the given entity. This subprogram does nothing for
@@ -791,11 +792,12 @@ package body Flow is
       end if;
    end Print_Graph;
 
-   -------------------------
-   -- Flow_Analyse_Entity --
-   -------------------------
+   ------------------------------------
+   -- Flow_Analyse_Subprogram_Entity --
+   ------------------------------------
 
-   function Flow_Analyse_Entity (E : Entity_Id) return Flow_Analysis_Graphs is
+   function Flow_Analyse_Subprogram_Entity (E : Entity_Id)
+                                            return Flow_Analysis_Graphs is
       Body_N : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
       FA     : Flow_Analysis_Graphs;
    begin
@@ -874,7 +876,7 @@ package body Flow is
       end if;
 
       return FA;
-   end Flow_Analyse_Entity;
+   end Flow_Analyse_Subprogram_Entity;
 
    ------------------------
    -- Flow_Analyse_CUnit --
@@ -889,7 +891,7 @@ package body Flow is
          if Ekind (E) in Subprogram_Kind
            and then Subprogram_Body_In_SPARK (E)
          then
-            FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+            FA_Graphs.Include (E, Flow_Analyse_Subprogram_Entity (E));
          end if;
       end loop;
 
@@ -897,7 +899,7 @@ package body Flow is
          if Ekind (E) in Subprogram_Kind
            and then Subprogram_Body_In_SPARK (E)
          then
-            FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+            FA_Graphs.Include (E, Flow_Analyse_Subprogram_Entity (E));
          end if;
       end loop;
 
