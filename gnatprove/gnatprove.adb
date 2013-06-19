@@ -571,8 +571,18 @@ procedure Gnatprove is
          when GPM_Prove =>
             null;
       end case;
-      Ada.Environment_Variables.Set (Name  => GNAT2Why_Var,
-                                     Value => To_String (Val));
+      if Val /= "" then
+         declare
+            Val_Str : constant String := To_String (Val);
+         begin
+            if Debug then
+               Ada.Text_IO.Put_Line ("Setting " & GNAT2Why_Var & " to """ &
+                                     Val_Str & """");
+            end if;
+            Ada.Environment_Variables.Set (Name  => GNAT2Why_Var,
+                                           Value => Val_Str);
+         end;
+      end if;
    end Set_Gnat2why_Env_Var;
 
    ------------------
