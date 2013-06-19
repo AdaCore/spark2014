@@ -1557,7 +1557,7 @@ package body Flow.Analysis is
                     " a dependency relation",
                   N   => Depends_Location,
                   F1  => F_Out,
-                  Tag => "depends_misssing_clause");
+                  Tag => "depends_missing_clause");
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
