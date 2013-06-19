@@ -712,7 +712,7 @@ where
 
       :Trace Unit: 6.1.5 SS functions need no Depends aspect. Functions
                    have implicit dependency_relation that result depends
-                   on all inputs. Checked by another TU
+                   on all inputs. Covered by another TU
 
 #. [A subprogram which has an explicit Depends aspect specification
    and lacks an explicit Global aspect specification is assumed to have
