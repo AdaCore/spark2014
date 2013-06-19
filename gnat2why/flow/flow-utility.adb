@@ -537,10 +537,10 @@ package body Flow.Utility is
          case Nkind (N) is
             when N_Indexed_Component =>
                Vars_Used.Union (Get_Variable_Set (Expressions (N)));
-               return Skip;
+               return OK;
             when N_Slice =>
                Vars_Used.Union (Get_Variable_Set (Discrete_Range (N)));
-               return Skip;
+               return OK;
             when others =>
                return OK;
          end case;
