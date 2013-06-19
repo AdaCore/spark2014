@@ -37,6 +37,7 @@ pragma Unreferenced (Flow.Debug);
 with Flow.Antialiasing;               use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility; use Flow.Control_Flow_Graph.Utility;
 with Flow.Utility;                    use Flow.Utility;
+with Flow_Tree_Utility;               use Flow_Tree_Utility;
 
 with Why;
 
@@ -400,6 +401,7 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
+      Refined_View      : Boolean;
       In_List           : in out Vertex_Vectors.Vector;
       Out_List          : in out Vertex_Vectors.Vector;
       FA                : in out Flow_Analysis_Graphs;
@@ -1543,13 +1545,16 @@ package body Flow.Control_Flow_Graph is
 
       In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+
+      Refined_View : constant Boolean := Should_Use_Refined_View (N);
    begin
       --  A vertex for the actual call.
       FA.CFG.Add_Vertex
         (Direct_Mapping_Id (N),
-         Make_Call_Attributes (Callsite => N,
-                               Loops    => Ctx.Current_Loops,
-                               E_Loc    => N),
+         Make_Call_Attributes (Callsite     => N,
+                               Refined_View => Refined_View,
+                               Loops        => Ctx.Current_Loops,
+                               E_Loc        => N),
          V);
 
       --  Deal with the procedures parameters.
@@ -1561,6 +1566,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Process globals.
       Process_Subprogram_Globals (N,
+                                  Refined_View,
                                   In_List, Out_List,
                                   FA, CM, Ctx);
 
@@ -1759,6 +1765,7 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite          : Node_Id;
+      Refined_View      : Boolean;
       In_List           : in out Vertex_Vectors.Vector;
       Out_List          : in out Vertex_Vectors.Vector;
       FA                : in out Flow_Analysis_Graphs;
@@ -1772,11 +1779,12 @@ package body Flow.Control_Flow_Graph is
       V      : Flow_Graphs.Vertex_Id;
       Atr    : V_Attributes;
    begin
-      --  Obtain globals (either from contracts or the computerd
+      --  Obtain globals (either from contracts or the computed
       --  stuff).
-      Get_Globals (Subprogram => Entity (Name (Callsite)),
-                   Reads      => Reads,
-                   Writes     => Writes);
+      Get_Globals (Subprogram   => Entity (Name (Callsite)),
+                   Reads        => Reads,
+                   Writes       => Writes,
+                   Refined_View => Refined_View);
 
       for R of Reads loop
          FA.CFG.Add_Vertex (Make_Global_Attributes
@@ -2165,9 +2173,10 @@ package body Flow.Control_Flow_Graph is
          Writes  : Flow_Id_Sets.Set;
          Globals : Global_Maps.Map := Global_Maps.Empty_Map;
       begin
-         Get_Globals (Subprogram => Subprogram_Spec,
-                      Reads      => Reads,
-                      Writes     => Writes);
+         Get_Globals (Subprogram   => Subprogram_Spec,
+                      Reads        => Reads,
+                      Writes       => Writes,
+                      Refined_View => True);
          for G of Reads loop
             Globals.Include (Change_Variant (G, Normal_Use),
                              G_Prop'(Is_Read  => True,

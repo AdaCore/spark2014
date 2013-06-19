@@ -108,9 +108,10 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (Callsite : Node_Id           := Empty;
-      Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc    : Node_Or_Entity_Id := Empty)
+     (Callsite     : Node_Id           := Empty;
+      Refined_View : Boolean           := False;
+      Loops        : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -121,10 +122,11 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
 
-      A.Is_Program_Node := True;
-      A.Loops           := Loops;
-      A.Is_Callsite     := True;
-      A.Error_Location  := E_Loc;
+      A.Is_Program_Node  := True;
+      A.Loops            := Loops;
+      A.Is_Callsite      := True;
+      A.Use_Refined_View := Refined_View;
+      A.Error_Location   := E_Loc;
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.

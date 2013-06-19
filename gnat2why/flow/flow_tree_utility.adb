@@ -175,4 +175,37 @@ package body Flow_Tree_Utility is
       end case;
    end Find_Node_In_Initializes;
 
+   --------------
+   -- Get_Body --
+   --------------
+
+   function Get_Body (E : Entity_Id) return Entity_Id
+   is
+      P : constant Node_Id := Parent (Parent (E));
+   begin
+      case Nkind (P) is
+         when N_Subprogram_Body =>
+            pragma Assert (Acts_As_Spec (P));
+            return Empty;
+
+         when N_Subprogram_Declaration =>
+            return Corresponding_Body (P);
+
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Get_Body;
+
+   -----------------------------
+   -- Should_Use_Refined_View --
+   -----------------------------
+
+   function Should_Use_Refined_View (N : Node_Id) return Boolean
+   is
+      pragma Unreferenced (N);
+   begin
+      --  !!! To be resolved in M314-012 once M619-012 is answered.
+      return True;
+   end Should_Use_Refined_View;
+
 end Flow_Tree_Utility;

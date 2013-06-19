@@ -558,9 +558,10 @@ package body Flow.Analysis is
       --     Input   ->   State must be initialized
       --     In_Out  ->   State must be initialized
       --     Output  ->   Always OK
-      Get_Globals (Subprogram => FA.Subprogram,
-                   Reads      => Reads,
-                   Writes     => Writes);
+      Get_Globals (Subprogram   => FA.Subprogram,
+                   Reads        => Reads,
+                   Writes       => Writes,
+                   Refined_View => True);
       Reads  := To_Entire_Variables (Reads);
       Writes := To_Entire_Variables (Writes);
 

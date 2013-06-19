@@ -2,6 +2,8 @@ package Stack_ASM
   with Abstract_State => State
 is
 
+  pragma SPARK_Mode (On);
+
   function Is_Empty return Boolean
     with Global => State;
 
@@ -15,6 +17,10 @@ is
 
   procedure Clear
     with Global => (Output => State),
+         Post   => Is_Empty;
+
+  procedure Partial_Update
+    with Global => (In_Out => State),
          Post   => Is_Empty;
 
 end Stack_ASM;

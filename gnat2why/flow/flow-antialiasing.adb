@@ -31,6 +31,8 @@ with Sem_Util; use Sem_Util;
 with Output; use Output;
 with Sprint; use Sprint;
 
+with Flow_Tree_Utility; use Flow_Tree_Utility;
+
 with Why;
 
 package body Flow.Antialiasing is
@@ -661,9 +663,10 @@ package body Flow.Antialiasing is
          Reads  : Flow_Id_Sets.Set;
          Writes : Flow_Id_Sets.Set;
       begin
-         Get_Globals (Subprogram => Entity (Name (Call)),
-                      Reads      => Reads,
-                      Writes     => Writes);
+         Get_Globals (Subprogram   => Entity (Name (Call)),
+                      Reads        => Reads,
+                      Writes       => Writes,
+                      Refined_View => Should_Use_Refined_View (Call));
          if Is_Out then
             for R of Reads loop
                --  No use in checking both the read and the write of

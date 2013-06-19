@@ -57,4 +57,18 @@ package Flow_Tree_Utility is
      is (Present (Find_Node_In_Initializes (E)));
    --  Returns true if E is covered by an initializes aspect.
 
+   function Get_Body (E : Entity_Id) return Entity_Id
+     with Pre => Ekind (E) in E_Function | E_Procedure,
+          Post => (not Present (Get_Body'Result)) or else
+                  Ekind (Get_Body'Result) = E_Subprogram_Body;
+   --  Fetches the body entity for a subprogram with a spec and a body.
+
+   function Should_Use_Refined_View (N : Node_Id) return Boolean
+     with Pre => Nkind (N) in N_Subprogram_Call;
+   --  For a given function or procedure call N, this function returns
+   --  true if we should use the Refined_Global and Refined_Depends
+   --  aspects or the Global and Depends aspects.
+   --
+   --  !!! This currently always returns true.
+
 end Flow_Tree_Utility;

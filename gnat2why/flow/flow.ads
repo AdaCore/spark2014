@@ -149,6 +149,7 @@ package Flow is
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
+                          Refined_View           : Boolean;
                           Consider_Discriminants : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
         Post => (for all G of Reads  => G.Variant = In_View) and
@@ -157,6 +158,9 @@ package Flow is
    --  aspect or the computed globals. The sets returned will contain
    --  Flow_Id with the variant set to Global_In_View and
    --  Global_Out_View.
+   --
+   --  If refined_view is false, then the global are returned. If
+   --  true, the refined globals are returned instead.
    --
    --  If Consider_Discriminants is provided then an out global will
    --  include a corresponding read if the global includes at least

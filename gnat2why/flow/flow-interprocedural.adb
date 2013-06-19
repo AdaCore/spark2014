@@ -115,6 +115,7 @@ package body Flow.Interprocedural is
       pragma Assert (not A.Perform_IPFA);
 
       Called_Procedure : constant Entity_Id := Entity (Name (N));
+      Use_Refined_View : constant Boolean   := A.Use_Refined_View;
 
       procedure Add_TD_Edge (A, B : Flow_Id);
       --  Add a parameter dependency edge from the input A to the
@@ -175,6 +176,7 @@ package body Flow.Interprocedural is
             Get_Globals (Subprogram             => Called_Procedure,
                          Reads                  => Inputs,
                          Writes                 => Outputs,
+                         Refined_View           => Use_Refined_View,
                          Consider_Discriminants => True);
 
             --  Add parameters.

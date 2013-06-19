@@ -136,21 +136,24 @@ package body Flow is
                begin
                   case Ekind (Subprogram) is
                      when E_Procedure | E_Function =>
-                        Get_Globals (Subprogram => Subprogram,
-                                     Reads      => Global_Reads,
-                                     Writes     => Global_Writes);
-                        Globals := Global_Reads or Global_Writes;
+                        for View in Boolean loop
+                           Get_Globals (Subprogram   => Subprogram,
+                                        Reads        => Global_Reads,
+                                        Writes       => Global_Writes,
+                                        Refined_View => View);
+                           Globals := Global_Reads or Global_Writes;
 
-                        for F of Globals loop
-                           if F.Kind = Magic_String then
-                              Tmp := Change_Variant (F, Normal_Use);
-                              if RV.Contains (Tmp.Name) then
-                                 RV (Tmp.Name).Include (Subprogram);
-                              else
-                                 RV.Include (Tmp.Name,
-                                             Node_Sets.To_Set (Subprogram));
+                           for F of Globals loop
+                              if F.Kind = Magic_String then
+                                 Tmp := Change_Variant (F, Normal_Use);
+                                 if RV.Contains (Tmp.Name) then
+                                    RV (Tmp.Name).Include (Subprogram);
+                                 else
+                                    RV.Include (Tmp.Name,
+                                                Node_Sets.To_Set (Subprogram));
+                                 end if;
                               end if;
-                           end if;
+                           end loop;
                         end loop;
 
                      when E_Generic_Procedure | E_Generic_Function =>
@@ -211,21 +214,36 @@ package body Flow is
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
+                          Refined_View           : Boolean;
                           Consider_Discriminants : Boolean := False)
    is
+      Has_Global_Aspect : Boolean;
+      Global_Node       : Node_Id;
+      Body_E            : constant Entity_Id :=
+        Flow_Tree_Utility.Get_Body (Subprogram);
    begin
       Reads  := Flow_Id_Sets.Empty_Set;
       Writes := Flow_Id_Sets.Empty_Set;
 
-      if Has_Aspect (Subprogram, Aspect_Global) then
+      if Refined_View and then Present (Body_E) and then
+        Has_Aspect (Body_E, Aspect_Refined_Global)
+      then
+         Has_Global_Aspect := True;
+         Global_Node       := Get_Pragma (Body_E, Pragma_Refined_Global);
+      elsif Has_Aspect (Subprogram, Aspect_Global) then
+         Has_Global_Aspect := True;
+         Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
+      else
+         Has_Global_Aspect := False;
+      end if;
+
+      if Has_Global_Aspect then
          declare
-            Global : constant Node_Id :=
-              Get_Pragma (Subprogram, Pragma_Global);
             pragma Assert
-              (List_Length (Pragma_Argument_Associations (Global)) = 1);
+              (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
 
             PAA : constant Node_Id :=
-              First (Pragma_Argument_Associations (Global));
+              First (Pragma_Argument_Associations (Global_Node));
             pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
             Row      : Node_Id;

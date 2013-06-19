@@ -280,9 +280,10 @@ package body Flow.Utility is
          Global_Writes : Flow_Id_Sets.Set;
 
       begin
-         Get_Globals (Subprogram => Subprogram,
-                      Reads      => Global_Reads,
-                      Writes     => Global_Writes);
+         Get_Globals (Subprogram   => Subprogram,
+                      Reads        => Global_Reads,
+                      Writes       => Global_Writes,
+                      Refined_View => Should_Use_Refined_View (Callsite));
          pragma Assert (Flow_Id_Sets.Length (Global_Writes) = 0);
 
          Used_Variables :=

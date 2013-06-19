@@ -303,6 +303,10 @@ package Flow_Types is
       Is_Callsite         : Boolean;
       --  True if the vertex represents a subprogram call.
 
+      Use_Refined_View    : Boolean;
+      --  Should we use the abstract or refined view for this
+      --  callsite?
+
       Is_Parameter        : Boolean;
       --  True if this vertex models an argument to a procedure call.
 
@@ -359,6 +363,7 @@ package Flow_Types is
                    Is_Export                       => False,
                    Is_Constant                     => False,
                    Is_Callsite                     => False,
+                   Use_Refined_View                => False,
                    Is_Parameter                    => False,
                    Is_Discriminants_Only_Parameter => False,
                    Is_Global_Parameter             => False,
@@ -387,6 +392,7 @@ package Flow_Types is
                    Is_Export                       => False,
                    Is_Constant                     => False,
                    Is_Callsite                     => False,
+                   Use_Refined_View                => False,
                    Is_Parameter                    => False,
                    Is_Discriminants_Only_Parameter => False,
                    Is_Global_Parameter             => False,
