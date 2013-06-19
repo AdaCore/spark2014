@@ -2056,16 +2056,18 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       case Get_Pragma_Id (N) is
-         when Pragma_Annotate      |
-              Pragma_Depends       |
-              Pragma_Export        |
-              Pragma_Global        |
-              Pragma_Import        |
-              Pragma_Preelaborate  |
-              Pragma_Pure          |
-              Pragma_Warnings      |
-              Pragma_Precondition  |
-              Pragma_Postcondition =>
+         when Pragma_Annotate        |
+              Pragma_Depends         |
+              Pragma_Export          |
+              Pragma_Global          |
+              Pragma_Import          |
+              Pragma_Postcondition   |
+              Pragma_Precondition    |
+              Pragma_Preelaborate    |
+              Pragma_Pure            |
+              Pragma_Refined_Depends |
+              Pragma_Refined_Global  |
+              Pragma_Warnings        =>
 
             return False;
 

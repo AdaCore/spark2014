@@ -3095,7 +3095,9 @@ package body SPARK_Definition is
          --  SPARK pragmas
 
          when Pragma_Global  |
-              Pragma_Depends =>
+              Pragma_Refined_Global |
+              Pragma_Depends |
+              Pragma_Refined_Depends =>
             null;
 
          --  Ignored pragmas, either because they are already taken into
