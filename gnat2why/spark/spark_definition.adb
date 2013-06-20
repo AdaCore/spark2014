@@ -1853,6 +1853,12 @@ package body SPARK_Definition is
 
          when E_Loop           => null;
 
+         --  ??? We should detect when during package elaboration non-SPARK
+         --  constructs are needed. Currently this is only detected when SPARK
+         --  mode is set manually.
+
+         when E_Package        => null;
+
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
                                   & Entity_Kind'Image (Ekind (E)));
@@ -2942,6 +2948,8 @@ package body SPARK_Definition is
       end if;
 
       Mark_List (Declarations (N));
+
+      Mark_Entity (Id);
    end Mark_Package_Body;
 
    ------------------------------
@@ -3030,6 +3038,9 @@ package body SPARK_Definition is
       if Present (Priv_Decls) then
          Mark_List (Priv_Decls);
       end if;
+
+      Mark_Entity (Id);
+
    end Mark_Package_Declaration;
 
    -----------------

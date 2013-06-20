@@ -515,8 +515,18 @@ package body Gnat2Why.Driver is
                  (File, Decl_E, In_Body => In_Main_Unit_Body (E));
             end;
 
-            --  Given to the handler for packages with an associated theory
-         when E_Package => Translate_Container_Package (E);
+         --  Given to the handler for packages with an associated theory
+
+         when E_Package =>
+            if Is_Instantiation_Of_Formal_Container (E) then
+               Translate_Container_Package (E);
+            else
+
+               --  ??? We should deal with elaboration at this point
+               --  See M618-019
+
+               null;
+            end if;
 
          when E_Loop =>
             Translate_Loop_Entity (File, E);
