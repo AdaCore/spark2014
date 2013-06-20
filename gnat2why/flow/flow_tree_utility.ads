@@ -30,6 +30,23 @@ with Types; use Types;
 
 package Flow_Tree_Utility is
 
+   ----------------------------------------------------------------------
+   --  Types
+   ----------------------------------------------------------------------
+
+   subtype Scope_Ptr is Node_Id
+     with Dynamic_Predicate =>
+     Nkind (Scope_Ptr) in N_Function_Specification |
+                          N_Procedure_Specification |
+                          N_Package_Specification |
+                          N_Subprogram_Body |
+                          N_Package_Body
+     or else Scope_Ptr = Empty;
+
+   ----------------------------------------------------------------------
+   --  Functions
+   ----------------------------------------------------------------------
+
    function Lexicographic_Entity_Order (Left, Right : Entity_Id)
                                         return Boolean;
    --  Ordering for entities based on their unique name. Returns true
@@ -63,7 +80,11 @@ package Flow_Tree_Utility is
                   Ekind (Get_Body'Result) = E_Subprogram_Body;
    --  Fetches the body entity for a subprogram with a spec and a body.
 
-   function Should_Use_Refined_View (N : Node_Id) return Boolean
+   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr;
+
+   function Should_Use_Refined_View (Scope : Scope_Ptr;
+                                     N     : Node_Id)
+                                     return Boolean
      with Pre => Nkind (N) in N_Subprogram_Call;
    --  For a given function or procedure call N, this function returns
    --  true if we should use the Refined_Global and Refined_Depends

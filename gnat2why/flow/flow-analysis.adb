@@ -40,7 +40,6 @@ with Why;
 
 with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
-with Flow_Tree_Utility;     use Flow_Tree_Utility;
 
 package body Flow.Analysis is
 
@@ -492,7 +491,8 @@ package body Flow.Analysis is
                          return Node_Id
    is
       Needle     : Entity_Id;
-      Haystack   : Node_Id;
+      Haystack_A : Node_Id;
+      Haystack_B : Node_Id;
       The_Global : Node_Id := Empty;
 
       function Find_It (N : Node_Id) return Traverse_Result;
@@ -519,12 +519,22 @@ package body Flow.Analysis is
 
       procedure Look_For_Global is new Traverse_Proc (Find_It);
    begin
-      Haystack := Get_Pragma (S, Pragma_Global);
+      if Present (Get_Body (S)) then
+         Haystack_A := Get_Pragma (Get_Body (S), Pragma_Refined_Global);
+      else
+         Haystack_A := Empty;
+      end if;
+      Haystack_B := Get_Pragma (S, Pragma_Global);
 
       case F.Kind is
          when Direct_Mapping | Record_Field =>
             Needle := Get_Direct_Mapping_Id (F);
-            Look_For_Global (Haystack);
+            Look_For_Global (Haystack_A);
+            if Present (The_Global) then
+               return The_Global;
+            end if;
+
+            Look_For_Global (Haystack_B);
             if Present (The_Global) then
                return The_Global;
             else
@@ -638,7 +648,8 @@ package body Flow.Analysis is
                   declare
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
                        To_Ordered_Flow_Id_Set (Get_Variable_Set
-                                                 (Expression (N)));
+                                                 (Get_Enclosing_Scope (N),
+                                                  Expression (N)));
                   begin
                      for F of Deps loop
                         Error_Msg_Flow

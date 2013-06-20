@@ -28,7 +28,6 @@ with Treepr;   use Treepr;
 
 with Why;
 
-with Flow_Tree_Utility; use Flow_Tree_Utility;
 with Flow.Debug;        use Flow.Debug;
 
 package body Flow.Utility is
@@ -248,8 +247,11 @@ package body Flow.Utility is
    --  Get_Variable_Set  --
    ------------------------
 
-   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set is
-      VS     : Flow_Id_Sets.Set;
+   function Get_Variable_Set (Scope : Scope_Ptr;
+                              N     : Node_Id)
+                              return Flow_Id_Sets.Set
+   is
+      VS : Flow_Id_Sets.Set;
 
       procedure Process_Function_Call
         (Callsite       : Node_Id;
@@ -283,12 +285,14 @@ package body Flow.Utility is
          Get_Globals (Subprogram   => Subprogram,
                       Reads        => Global_Reads,
                       Writes       => Global_Writes,
-                      Refined_View => Should_Use_Refined_View (Callsite));
+                      Refined_View => Should_Use_Refined_View (Scope,
+                                                               Callsite));
          pragma Assert (Flow_Id_Sets.Length (Global_Writes) = 0);
 
          Used_Variables :=
            Used_Variables or
-           Get_Variable_Set (Parameter_Associations (Callsite));
+           Get_Variable_Set (Scope,
+                             Parameter_Associations (Callsite));
 
          for G of Global_Reads loop
             Used_Variables.Include (Change_Variant (G, Normal_Use));
@@ -349,7 +353,8 @@ package body Flow.Utility is
                   declare
                      D, U : Flow_Id_Sets.Set;
                   begin
-                     Untangle_Assignment_Target (N            => N,
+                     Untangle_Assignment_Target (Scope        => Scope,
+                                                 N            => N,
                                                  Vars_Defined => D,
                                                  Vars_Used    => U);
                      VS.Union (D);
@@ -389,13 +394,16 @@ package body Flow.Utility is
       return Filter_Out_Constants (VS);
    end Get_Variable_Set;
 
-   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set is
+   function Get_Variable_Set (Scope : Scope_Ptr;
+                              L     : List_Id)
+                              return Flow_Id_Sets.Set
+   is
       VS : Flow_Id_Sets.Set;
       P  : Node_Id;
    begin
       P := First (L);
       while Present (P) loop
-         VS.Union (Get_Variable_Set (P));
+         VS.Union (Get_Variable_Set (Scope, P));
 
          P := Next (P);
       end loop;
@@ -464,7 +472,8 @@ package body Flow.Utility is
    --------------------------------
 
    procedure Untangle_Assignment_Target
-     (N            : Node_Id;
+     (Scope        : Scope_Ptr;
+      N            : Node_Id;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
    is
@@ -537,10 +546,10 @@ package body Flow.Utility is
       begin
          case Nkind (N) is
             when N_Indexed_Component =>
-               Vars_Used.Union (Get_Variable_Set (Expressions (N)));
+               Vars_Used.Union (Get_Variable_Set (Scope, Expressions (N)));
                return OK;
             when N_Slice =>
-               Vars_Used.Union (Get_Variable_Set (Discrete_Range (N)));
+               Vars_Used.Union (Get_Variable_Set (Scope, Discrete_Range (N)));
                return OK;
             when others =>
                return OK;
@@ -564,7 +573,7 @@ package body Flow.Utility is
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
             --  X :=
-            Vars_Defined := Get_Variable_Set (N);
+            Vars_Defined := Get_Variable_Set (Scope, N);
 
          when N_Selected_Component | N_Indexed_Component | N_Slice =>
             --  R.A :=
@@ -617,7 +626,7 @@ package body Flow.Utility is
                when N_Function_Call =>
                   --  Not strictly right, but this will satisfy the
                   --  postcondition.
-                  Vars_Defined.Union (Get_Variable_Set (End_Of_Record));
+                  Vars_Defined.Union (Get_Variable_Set (Scope, End_Of_Record));
 
                when others =>
                   Vars_Defined.Insert

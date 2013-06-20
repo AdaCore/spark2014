@@ -31,8 +31,6 @@ with Sem_Util; use Sem_Util;
 with Output; use Output;
 with Sprint; use Sprint;
 
-with Flow_Tree_Utility; use Flow_Tree_Utility;
-
 with Why;
 
 package body Flow.Antialiasing is
@@ -64,7 +62,8 @@ package body Flow.Antialiasing is
    --  assume it is a global.
 
    procedure Check_Parameter_Against_Parameters_And_Globals
-     (Actual              : Node_Id;
+     (Scope               : Scope_Ptr;
+      Actual              : Node_Id;
       Introduces_Aliasing : in out Boolean);
    --  Checks the given actual against all other parameters and
    --  globals.
@@ -580,7 +579,8 @@ package body Flow.Antialiasing is
    ----------------------------------------------------
 
    procedure Check_Parameter_Against_Parameters_And_Globals
-     (Actual              : Node_Id;
+     (Scope               : Scope_Ptr;
+      Actual              : Node_Id;
       Introduces_Aliasing : in out Boolean)
    is
       Formal : Entity_Id;
@@ -666,7 +666,7 @@ package body Flow.Antialiasing is
          Get_Globals (Subprogram   => Entity (Name (Call)),
                       Reads        => Reads,
                       Writes       => Writes,
-                      Refined_View => Should_Use_Refined_View (Call));
+                      Refined_View => Should_Use_Refined_View (Scope, Call));
          if Is_Out then
             for R of Reads loop
                --  No use in checking both the read and the write of
@@ -721,6 +721,7 @@ package body Flow.Antialiasing is
      (N                   : Node_Id;
       Introduces_Aliasing : in out Boolean)
    is
+      Scope : constant Scope_Ptr := Get_Enclosing_Scope (N);
    begin
 
       --  Check out and in out parameters against other parameters and
@@ -743,7 +744,8 @@ package body Flow.Antialiasing is
             pragma Assert (Call = N);
 
             Check_Parameter_Against_Parameters_And_Globals
-              (Actual,
+              (Scope,
+               Actual,
                Introduces_Aliasing);
 
             P := Next (P);

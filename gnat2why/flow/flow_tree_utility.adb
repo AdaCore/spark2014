@@ -28,6 +28,9 @@ with Nlists;   use Nlists;
 
 with Why;
 
+--  with Treepr; use Treepr;
+--  with Output; use Output;
+
 package body Flow_Tree_Utility is
 
    --------------------------------
@@ -196,16 +199,56 @@ package body Flow_Tree_Utility is
       end case;
    end Get_Body;
 
+   -------------------------
+   -- Get_Enclosing_Scope --
+   -------------------------
+
+   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr
+   is
+      P : Node_Id := Parent (N);
+   begin
+      while Present (P) and then
+        Nkind (P) not in --  N_Function_Specification |
+                         --  N_Procedure_Specification |
+                         --  N_Package_Specification |
+                         N_Subprogram_Body |
+                         N_Package_Body
+      loop
+         P := Parent (P);
+      end loop;
+      return P;
+   end Get_Enclosing_Scope;
+
    -----------------------------
    -- Should_Use_Refined_View --
    -----------------------------
 
-   function Should_Use_Refined_View (N : Node_Id) return Boolean
+   function Should_Use_Refined_View (Scope : Scope_Ptr;
+                                     N     : Node_Id)
+                                     return Boolean
    is
-      pragma Unreferenced (N);
+      Spec_E : constant Node_Id := Entity (Name (N));
+      Body_E : constant Node_Id := Get_Body (Spec_E);
+
+      Scope_Of_Called_Subprogram : Scope_Ptr;
+      P                          : Scope_Ptr;
    begin
-      --  !!! To be resolved in M314-012 once M619-012 is answered.
-      return True;
+      --  !!! To be resolved completely in M314-012 once M619-012 is
+      --  !!! answered.
+      if Present (Body_E) then
+         Scope_Of_Called_Subprogram := Get_Enclosing_Scope
+           (Get_Enclosing_Scope (Body_E));
+         P                          := Scope;
+
+         while Present (P) and P /= Scope_Of_Called_Subprogram loop
+            P := Get_Enclosing_Scope (P);
+         end loop;
+         return P = Scope_Of_Called_Subprogram;
+      else
+         --  If we have not parsed the body then clearly we need to
+         --  use the abstract view.
+         return False;
+      end if;
    end Should_Use_Refined_View;
 
 end Flow_Tree_Utility;

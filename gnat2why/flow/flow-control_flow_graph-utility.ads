@@ -155,7 +155,8 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Variables_Defined or Variables_Used
 
    function Make_Default_Initialization_Attributes
-     (F       : Flow_Id;
+     (Scope   : Scope_Ptr;
+      F       : Flow_Id;
       Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes

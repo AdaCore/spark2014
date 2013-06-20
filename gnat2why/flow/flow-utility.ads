@@ -34,10 +34,14 @@ use type Ada.Containers.Count_Type;
 
 package Flow.Utility is
 
-   function Get_Variable_Set (N : Node_Id) return Flow_Id_Sets.Set;
+   function Get_Variable_Set (Scope : Scope_Ptr;
+                              N     : Node_Id)
+                              return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression.
 
-   function Get_Variable_Set (L : List_Id) return Flow_Id_Sets.Set;
+   function Get_Variable_Set (Scope : Scope_Ptr;
+                              L     : List_Id)
+                              return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
    function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
@@ -54,7 +58,8 @@ package Flow.Utility is
    --  always returns the full view.
 
    procedure Untangle_Assignment_Target
-     (N            : Node_Id;
+     (Scope        : Scope_Ptr;
+      N            : Node_Id;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
    with Pre => Nkind (N) in N_Identifier |

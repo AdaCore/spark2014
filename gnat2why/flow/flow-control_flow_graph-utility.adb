@@ -26,7 +26,6 @@ with Sinfo; use Sinfo;
 with Why;
 
 with Flow.Utility; use Flow.Utility;
-with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -159,8 +158,9 @@ package body Flow.Control_Flow_Graph.Utility is
       E_Loc              : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      A        : V_Attributes     := Null_Attributes;
-      Tmp_Used : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      A        : V_Attributes       := Null_Attributes;
+      Tmp_Used : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
+      Scope    : constant Scope_Ptr := Get_Enclosing_Scope (Call_Vertex);
    begin
       A.Is_Parameter                    := True;
       A.Is_Discriminants_Only_Parameter := Discriminants_Only;
@@ -175,7 +175,7 @@ package body Flow.Control_Flow_Graph.Utility is
            (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
               Discriminants_Only);
 
-         Tmp_Used := Get_Variable_Set (Actual);
+         Tmp_Used := Get_Variable_Set (Scope, Actual);
          for F of Tmp_Used loop
             if not Discriminants_Only or else Is_Discriminant (F) then
                A.Variables_Used.Include (F);
@@ -185,7 +185,8 @@ package body Flow.Control_Flow_Graph.Utility is
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          pragma Assert (not Discriminants_Only);
-         Untangle_Assignment_Target (N            => Actual,
+         Untangle_Assignment_Target (Scope        => Scope,
+                                     N            => Actual,
                                      Vars_Defined => A.Variables_Defined,
                                      Vars_Used    => A.Variables_Used);
       end if;
@@ -338,7 +339,8 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Default_Initialization_Attributes
-     (F       : Flow_Id;
+     (Scope   : Scope_Ptr;
+      F       : Flow_Id;
       Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -353,7 +355,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Default_Init_Val  := Get_Default_Initialization (F);
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
-      A.Variables_Used    := Get_Variable_Set (A.Default_Init_Val);
+      A.Variables_Used    := Get_Variable_Set (Scope, A.Default_Init_Val);
 
       return A;
    end Make_Default_Initialization_Attributes;

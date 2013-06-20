@@ -38,6 +38,7 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 with Graph;
 with Flow_Types;        use Flow_Types;
+with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package Flow is
 
@@ -87,7 +88,8 @@ package Flow is
 
    type Flow_Analysis_Graphs is record
       Subprogram       : Entity_Id;
-      --  The entity of the analysed subprogram.
+      Scope            : Scope_Ptr;
+      --  The entity and scope of the analysed subprogram.
 
       Start_Vertex     : Flow_Graphs.Vertex_Id;
       End_Vertex       : Flow_Graphs.Vertex_Id;
