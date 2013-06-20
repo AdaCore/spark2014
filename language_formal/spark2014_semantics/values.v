@@ -26,8 +26,16 @@ Inductive stored_value_type: val -> typ -> Prop :=
     | SVT_Bool: forall b, stored_value_type (Value (Bool b)) Tbool.
 
 Inductive return_value_type: return_val -> typ -> Prop :=
-    | EVT_Int: forall n, return_value_type (ValNormal (Int n)) Tint
-    | EVT_Bool: forall b, return_value_type (ValNormal (Bool b)) Tbool.
+    | RVT_Int: forall n, return_value_type (ValNormal (Int n)) Tint
+    | RVT_Bool: forall b, return_value_type (ValNormal (Bool b)) Tbool.
+
+Lemma value_type_consistent: forall v t,
+    stored_value_type (Value v) t <-> return_value_type (ValNormal v) t.
+Proof.
+    intros; split; intros;
+    destruct v; destruct t; 
+    (try constructor; try inversion H).
+Qed.
 
 (* Operations over values *)
 Module Val.

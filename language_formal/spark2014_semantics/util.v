@@ -10,6 +10,11 @@ Ltac rm_eval_expr :=
     | [h: ?A |- ?A] => apply h
     end.
 
+Ltac simpl_unop := 
+    match goal with
+    | [ |- context[eval_unop ?uop (ValNormal (Bool ?b))]] => unfold eval_unop; simpl
+    end.
+
 Ltac simpl_binop :=
     match goal with
     | [ |- context [eval_binop ?OP (ValNormal ?V1) (ValNormal ?V2)]] => unfold eval_binop; simpl
@@ -23,6 +28,18 @@ Ltac simpl_binop :=
     | [ |- context [eval_binop Oand (ValBool ?V1) (ValBool ?V2)]] => unfold eval_binop; simpl
     | [ |- context [eval_binop Oor (ValBool ?V1) (ValBool ?V2)]] => unfold eval_binop; simpl
 *)
+    end.
+
+Ltac simpl_binop_hyp :=
+    repeat match goal with
+    | [h: Some ?T = binop_type ?OP ?T1 ?T1 |- _ ] => 
+            unfold binop_type in h; simpl in h; inversion h; subst
+    | [h: binop_type ?OP ?T1 ?T1 = Some ?T |- _ ] => 
+            unfold binop_type in h; simpl in h; inversion h; subst
+    | [h: ValNormal ?V = eval_binop ?OP (ValNormal _) (ValNormal _) |- _] =>
+            unfold eval_binop in h; simpl in h; inversion h; subst
+    | [h: eval_binop ?OP (ValNormal _) (ValNormal _) = ValNormal ?V |- _] =>
+            unfold eval_binop in h; simpl in h; inversion h; subst
     end.
 
 Ltac specialize_hypo := 

@@ -97,7 +97,7 @@ Inductive well_defined_expr: stack -> expr -> Prop :=
         well_defined_expr s (Eunop ast_id op e). 
 
 (* A simple version of well-defined commands *)
-(* TODO: modify it later *)
+(* 
 Inductive well_defined_stmt: stack -> stmt -> Prop :=
     | WD_Sassign: forall ast_id s x e,
         reside x s = true ->
@@ -118,6 +118,118 @@ Inductive well_defined_stmt: stack -> stmt -> Prop :=
 (*    | WD_Sassert: forall ast_id s e, 
         well_defined_expr s e ->
         well_defined_stmt s (Sassert ast_id e) *)
+*)
+
+(* =============================== *)
+
+Inductive init_mode: Type := 
+    | Init: init_mode
+    |Uninit: init_mode.
+
+Definition initializationState: Type := list (idnum * init_mode).
+
+Function fetch2 (x : idnum) (s : initializationState): option init_mode := 
+    match s with 
+    | (y, imode) :: s' =>
+      if beq_nat x y then
+        Some imode
+      else fetch2 x s' 
+    | nil => None
+    end.
+
+Function update2 (s: initializationState) (x : idnum) (v: init_mode): option initializationState := 
+    match s with 
+    | (y, imode) :: s' => 
+      if beq_nat x y then 
+        Some ((y,v)::s') 
+      else 
+        match update2 s' x v with
+        | Some s'' => Some ((y, imode)::s'')
+        | None => None
+        end
+   | nil => None
+   end.
+
+Inductive initializationMap: stack -> initializationState -> Prop :=
+    | IEmpty: initializationMap nil nil 
+    | IList0: forall s ilist x v,
+        v <> Vundef ->
+        initializationMap s ilist ->
+        initializationMap ((x, v)::s) ((x, Init)::ilist)
+    | IList1: forall s ilist x v,
+        v = Vundef ->
+        initializationMap s ilist ->
+        initializationMap ((x, v)::s) ((x, Uninit)::ilist).
+
+Inductive well_defined_expr2: initializationState -> expr -> Prop :=
+    | WD_Econst_Int2: forall ast_id s n,
+        well_defined_expr2 s (Econst ast_id (Ointconst n))
+    | WD_Econst_Bool2: forall ast_id s b,
+        well_defined_expr2 s (Econst ast_id (Oboolconst b))
+    | WD_Evar2: forall ast_id x s,
+        Some Init = fetch2 x s ->
+        well_defined_expr2 s (Evar ast_id x)
+    | WD_Ebinop2: forall ast_id s op e1 e2,
+        well_defined_expr2 s e1 ->
+        well_defined_expr2 s e2 ->
+        well_defined_expr2 s (Ebinop ast_id op e1 e2)
+    | WD_Eunop2: forall ast_id s op e,
+        well_defined_expr2 s e ->
+        well_defined_expr2 s (Eunop ast_id op e). 
+
+Inductive well_defined_stmt2: initializationState -> stmt -> initializationState -> Prop :=
+    | WD_Sassign2: forall ast_id s s' x e,
+        well_defined_expr2 s e ->
+        Some s' = update2 s x Init ->
+        well_defined_stmt2 s (Sassign ast_id x e) s'
+    | WD_Sseq2: forall ast_id c1 c2 s s' s'',
+        well_defined_stmt2 s c1 s' ->
+        well_defined_stmt2 s' c2 s'' ->
+        well_defined_stmt2 s (Sseq ast_id c1 c2) s''
+    | WD_Sifthen2: forall ast_id s s' b c,
+        well_defined_expr2 s b ->
+        well_defined_stmt2 s c s' ->
+        well_defined_stmt2 s (Sifthen ast_id b c) s
+    | WD_Swhile2: forall ast_id s s' b c,
+        well_defined_expr2 s b ->
+        well_defined_stmt2 s c s' ->
+        well_defined_stmt2 s (Swhile ast_id b c) s.
+
+(* =============================== *)
+(*  - - - Experiment - - -  *)
+Function free_vars (e: expr): list idnum :=
+    match e with
+    | Econst _ _ => nil
+    | Evar _ x => x::nil
+    | Ebinop _ op e1 e2 =>
+        let l1 := free_vars e1 in
+        let l2 := free_vars e2 in
+        l1 ++ l2
+    | Eunop _ op e1 =>
+        free_vars e1
+    end.
+
+Inductive well_defined_stmt1: stack -> (list idnum)  -> (list idnum) -> stmt -> Prop :=
+    | WD_Sassign1: forall ast_id s l l' x e fv,
+        fv = free_vars e ->
+        (forall x, List.In x fv -> exists v, Some v = fetch x s \/ List.In x l) -> 
+        l' = x::l ->
+        well_defined_stmt1 s l l' ((Sassign ast_id x e))
+    | WD_Sseq1: forall ast_id c1 c2 s l l' l'',
+        well_defined_stmt1 s l l' c1 ->
+        well_defined_stmt1 s l' l'' c2 ->
+        well_defined_stmt1 s l l'' (Sseq ast_id c1 c2)
+    | WD_Sifthen1: forall ast_id s b c l l' fv,
+        fv = free_vars b -> 
+        (forall x, List.In x fv -> exists v, Some v = fetch x s \/ List.In x l) ->
+        well_defined_expr s b ->
+        well_defined_stmt1 s l l' c ->
+        well_defined_stmt1 s l l (Sifthen ast_id b c)
+    | WD_Swhile1: forall ast_id s b c l l' fv,
+        fv = free_vars b -> 
+        (forall x, List.In x fv -> exists v, Some v = fetch x s \/ List.In x l) ->
+        well_defined_stmt1 s l l' c ->
+        well_defined_stmt1 s l l (Swhile ast_id b c).
 
 
 

@@ -39,8 +39,8 @@ Inductive eval_expr: stack -> expr -> return_val -> Prop :=
     | eval_Ebinop: forall ast_id op s e1 e2 v1 v2 v,
         eval_expr s e1 v1 ->
         eval_expr s e2 v2 ->
-        v = eval_binop op v1 v2 ->
-        eval_expr s (Ebinop ast_id op e1 e2) v
+        ValNormal v = eval_binop op v1 v2 ->
+        eval_expr s (Ebinop ast_id op e1 e2) (ValNormal v)
     | eval_Eunop: forall ast_id op s e v b,
         eval_expr s e (ValNormal (Bool b)) ->
         v = eval_unop op (ValNormal (Bool b)) ->
@@ -160,7 +160,7 @@ Proof.
     remember (f_eval_expr s e1) as v1.
     remember (f_eval_expr s e2) as v2.
     destruct v1; destruct v2; try (inversion H0).
-    econstructor; intuition.
+    rewrite H0. econstructor; intuition.
   - (* 4. Eunop *)
     inversion h; subst.
     unfold eval_unop in H0. destruct u.
@@ -172,11 +172,11 @@ Proof.
     econstructor; intuition. assumption.
 Qed.
 
-Lemma f_eval_expr_complete : forall s e v,  
+Lemma f_eval_expr_complete : forall e s v,  
                         eval_expr e s v -> 
                             (f_eval_expr e s) = v.
 Proof.
-    intros s e v h.
+    intros e s v h.
     induction h; simpl; intros;
     repeat match goal with
     | h: _ = fetch _ _  |- _ => progress rewrite <- h
@@ -262,7 +262,7 @@ Ltac kgreater :=
     executable one. One needs a weak form of type preservation: well
     formedness (that is: no Anomaly or Constraint_error is stored in
     the stack) of the stack is preserved. *)
-Lemma correct_f_eval_stmt : forall s p s',
+Lemma f_eval_stmt_correct : forall s p s',
         eval_stmt s p s' ->
             exists k, f_eval_stmt k s p = SNormal s'.
 Proof.
@@ -301,6 +301,43 @@ Proof.
     rewrite (f_eval_expr_complete _ _ _ H).
     reflexivity.
 Qed.
+
+Lemma f_eval_stmt_complete : forall k s p s',
+        f_eval_stmt k s p = SNormal s' ->
+          eval_stmt s p s'.
+Proof.
+    intros k s p.
+    functional induction (f_eval_stmt k s p); 
+    intros s' H; try inversion H.
+  - (* Sassign *)
+    eapply eval_Sassign. 
+    apply f_eval_expr_correct in e2. apply e2.
+    blam.
+  - (* Sseq *)
+    eapply eval_Sseq. 
+    specialize (IHs0 s1 e1).
+    apply IHs0. 
+    specialize (IHs1 s' H).
+    apply IHs1.
+  - (* Cifthen_True *)
+    eapply eval_Sifthen_True.
+    apply f_eval_expr_correct in e1. assumption.
+    specialize (IHs0 s' H). assumption.
+  - (* Cifthen_False *)
+    eapply eval_Sifthen_False.
+    apply f_eval_expr_correct in e1. 
+    subst. assumption.
+  - (* Swhile_True *)
+    eapply eval_Swhile_True.
+    apply f_eval_expr_correct in e1. assumption.
+    specialize (IHs0 s1 e2). apply IHs0.
+    specialize (IHs1 s' H). assumption.
+  - (* Swhile_False *)
+    eapply eval_Swhile_False.
+    apply f_eval_expr_correct in e1. 
+    subst; assumption.
+Qed.
+    
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 (* basic lemmas *)
