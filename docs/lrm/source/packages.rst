@@ -561,7 +561,7 @@ grammar of ``initialization_spec`` given below.
 
       :Trace Unit: 7.1.5 LR Entities in single input_list shall be distinct
 
-   .. centered:: **Static Semantics**
+.. centered:: **Static Semantics**
 
 #. The Initializes aspect of a package has visibility of the declarations
    occurring immediately within the visible part of the package.
