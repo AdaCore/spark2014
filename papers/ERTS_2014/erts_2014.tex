@@ -70,7 +70,7 @@ practical use of the language and associated formal verification tool
 
 \section{SPARK 2014}
 
-\subsection{SPARK: Past and Present}
+%%\subsection{SPARK: Past and Present}
 
 SPARK is a programming language subset targeted at safety and security critical
 applications. It is a subset of the Ada programming language, thus building on
@@ -517,15 +517,15 @@ The contracts defined in the Tokeneer source code consist of information flow co
 
 The verification objectives supported by these contracts are as follows:
 
-\begin{itemize}
-\item Detecting improper initialization
-\item Identifying innefective assignments
-\item Showing the code is free from any run time exceptions, such as buffer overflow or divide-by-zero
-\item Ensuring secure infomration flow
-\item Proving that key security properties are guaranteed by the implementation
-\end{itemize}
+%\begin{itemize}
+ Detecting improper initialization;
+ Identifying innefective assignments;
+ Showing the code is free from any run time exceptions, such as buffer overflow or divide-by-zero;
+ Ensuring secure infomration flow;
+ Proving that key security properties are guaranteed by the implementation.
+%\end{itemize}
 
-\emph{Examples of the various types of contract will be added here.}
+%%\emph{Examples of the various types of contract will be added here.}
 
 \subsection{Formal Verification Results}
 
@@ -538,15 +538,13 @@ attributes using the \newspark toolset.
 \subsection{Lessons Learned}
 
 Some additional aims of this study are the following:
-\begin {itemize}
-  \item Evaluate how easy is it to convert programs from \oldspark to \newspark.
-  \item Investigate how executable semantics affect the way code has to be written
-        and what advantages/disadvantages they introduce.
-  \item Discover the percentage of the code that can be automatically proven
+   Evaluate how easy is it to convert programs from \oldspark to \newspark;
+   Investigate how executable semantics affect the way code has to be written
+        and what advantages/disadvantages they introduce;
+   Discover the percentage of the code that can be automatically proven;
         and the combination of options/provers that achieve the best results
-        for this specific test case.
-  \item Provide feedback and suggest features or changes that could improve future versions of the \newspark toolset.
-\end {itemize}
+        for this specific test case;
+   Provide feedback and suggest features or changes that could improve future versions of the \newspark toolset.
 
 \section{Common Findings and Dissimilarities}
 
