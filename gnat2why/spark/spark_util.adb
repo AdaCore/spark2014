@@ -925,14 +925,11 @@ package body SPARK_Util is
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
          elsif Ekind (Typ) in Record_Kind then
-            if Typ = Base_Type (Typ) then
-               if Type_In_Formal_Container (Etype (Typ)) then
-                  return Etype (Typ);
-               else
-                  return Empty;
-               end if;
+            if Typ = Etype (Typ) or else
+              Underlying_Type (Etype (Typ)) = Typ then
+               return Empty;
             end if;
-            Typ := Base_Type (Typ);
+            Typ := Etype (Typ);
          else
             return Empty;
          end if;

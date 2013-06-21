@@ -204,6 +204,75 @@ package body Gnat2Why.Types is
       procedure Translate_Underlying_Type
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id) is
+
+         procedure Declare_Private_Type (Theory : W_Theory_Declaration_Id;
+                                         E      : Entity_Id;
+                                         Base_E : Entity_Id);
+
+         --  Translation for types based on formal containers
+         --  clone of the theory of base_t plus:
+         --  type t = base_t
+         --  function of_base (x : base_t) : t := x
+         --  function to_base (x : t) : base_t := x
+         --  a discriminant check if needed
+
+         procedure Declare_Private_Type (Theory : W_Theory_Declaration_Id;
+                                         E      : Entity_Id;
+                                         Base_E : Entity_Id) is
+
+            Base_Ident : constant W_Identifier_Id :=
+              To_Why_Id (Base_E, Local => True);
+            E_Ident : constant W_Identifier_Id :=
+              To_Why_Id (E, Local => True);
+            Var_X : constant W_Identifier_Id :=
+              New_Identifier (Name => Full_Name (E) & "__x");
+
+         begin
+            Add_Use_For_Entity (File, Base_E, EW_Export);
+
+            --  if the copy has the same name as the original, do not redefine
+            --  the type name.
+
+            if Short_Name (E) /= Short_Name (Base_E) then
+               Emit (Theory,
+                     New_Type (Name => E_Ident,
+                               Alias =>
+                                 New_Abstract_Type
+                                   (Name => Base_Ident)));
+            end if;
+
+            Emit
+              (Theory,
+               New_Function_Def
+                 (Domain      => EW_Term,
+                  Name        => To_Ident (WNE_To_Base),
+                  Binders     =>
+                    (1 =>
+                       Binder_Type'(B_Name => Var_X,
+                                    B_Type =>
+                                      New_Abstract_Type (Name => E_Ident),
+                                    others => <>)),
+                  Return_Type => New_Abstract_Type (Name => Base_Ident),
+                  Def         => +Var_X));
+            Emit
+              (Theory,
+               New_Function_Def
+                 (Domain      => EW_Term,
+                  Name        => To_Ident (WNE_Of_Base),
+                  Binders     =>
+                    (1 =>
+                       Binder_Type'(B_Name => Var_X,
+                                    B_Type =>
+                                      New_Abstract_Type (Name => E_Ident),
+                                    others => <>)),
+                  Return_Type => New_Abstract_Type (Name => Base_Ident),
+                  Def         => +Var_X));
+
+            if Has_Discriminants (E) then
+               Declare_Conversion_Check_Function (Theory, E, Base_E);
+            end if;
+         end Declare_Private_Type;
+
       begin
          if E = Standard_Boolean or else
             E = Universal_Fixed
@@ -216,64 +285,10 @@ package body Gnat2Why.Types is
          then
             Declare_Ada_Abstract_Signed_Int_From_Range (Theory, E, E);
 
-         elsif Type_Based_On_Formal_Container (E) then
-            --  Minimal translation for subtype of formal containers
-            --  type tmp = base_t
-            --  type t = tmp
-            --  function of_base (x : base_t) : t := x
-            --  function to_base (x : t) : base_t := x
-            --  To be removed when container typa are handled like private
-            --  records with discriminants and a non alfa fullview.
-            declare
-               Rename_Id : constant W_Identifier_Id :=
-                 To_Why_Id (E, Local => True);
-               Rename_Type : constant W_Primitive_Type_Id :=
-                 New_Abstract_Type (Name => Rename_Id);
-               Base_Type : constant W_Primitive_Type_Id :=
-                 Why_Logic_Type_Of_Ada_Type
-                   (Underlying_Formal_Container_Type (E));
-               Tmp : constant W_Identifier_Id :=
-                 New_Identifier (Name => Full_Name (E) & "__tmp");
-            begin
-               Emit
-                 (File.Cur_Theory,
-                  New_Type (Name  => Tmp,
-                            Alias => Base_Type));
-               Emit
-                 (File.Cur_Theory,
-                  New_Type (Name  => Rename_Id,
-                            Alias => New_Abstract_Type (Name => Tmp)));
-               Emit
-                 (Theory,
-                  New_Function_Def
-                    (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_To_Base),
-                     Binders     =>
-                       (1 =>
-                          Binder_Type'(B_Name =>
-                                         New_Identifier
-                                           (Name => Full_Name (E) & "__x"),
-                                       B_Type => Rename_Type,
-                                       others => <>)),
-                     Return_Type => Base_Type,
-                     Def         => +New_Identifier
-                       (Name => Full_Name (E) & "__x")));
-               Emit
-                 (Theory,
-                  New_Function_Def
-                    (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_Of_Base),
-                     Binders     =>
-                       (1 =>
-                          Binder_Type'(B_Name =>
-                                         New_Identifier
-                                           (Name => Full_Name (E) & "__x"),
-                                       B_Type => Base_Type,
-                                       others => <>)),
-                     Return_Type => Rename_Type,
-                     Def         => +New_Identifier
-                       (Name => Full_Name (E) & "__x")));
-            end;
+         elsif Type_Based_On_Formal_Container (E) and then
+           Ekind (Underlying_Formal_Container_Type (E)) in Private_Kind then
+            Declare_Private_Type (Theory, E,
+                                  Underlying_Formal_Container_Type (E));
          else
             case Ekind (E) is
             when E_Signed_Integer_Type    |

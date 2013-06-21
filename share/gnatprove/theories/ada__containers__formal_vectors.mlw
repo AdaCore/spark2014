@@ -123,7 +123,7 @@ module Ada__containers__formal_vectors__to_index
 
   function to_index (cu : cursor) : extended_index
 
-  (* change to_index so that it take a container as an argument *)
+  (* change to_index so that it takes a container as an argument *)
   axiom to_index_def:
         forall co : vector, cu : cursor [real_to_index co cu, to_index cu].
           extended_index__to_index (to_int (real_to_index co cu)) > 0 -> real_to_index co cu = to_index cu
@@ -671,11 +671,11 @@ module Ada__containers__formal_vectors__left
        0 < i <= length_ co + 1 -> 0 < j < i -> element_ co j = element_ (left_ co i) j
 
   axiom left_curs:
-    forall co:vector, i :int, cu : cursor [left_ co i, to_index_ co cu|to_index_ (left_ co i) cu].
+    forall co:vector, i :int, cu : cursor [left_ co i, real_to_index co cu|real_to_index (left_ co i) cu].
       0 < i <= length_ co + 1 ->  (to_index_ co cu < i \/ to_index_ (left_ co i) cu > 0) -> to_index_ co cu = to_index_ (left_ co i) cu
 
   axiom left_curs_out:
-    forall co:vector, i :int, cu : cursor [left_ co i, to_index_ co cu|to_index_ (left_ co i) cu].
+    forall co:vector, i :int, cu : cursor [left_ co i, real_to_index co cu|real_to_index (left_ co i) cu].
        0 < i <= length_ co + 1 -> (to_index_ co cu >= i) -> to_index_ (left_ co i) cu = 0
 
   axiom left_eq:
@@ -788,7 +788,7 @@ module Ada__containers__formal_vectors__insert
   
   axiom insert_vect_curs:
     forall co1 co2 nv: vector, i : int, cu : cursor 
-   [insert_vect co1 i nv co2, to_index_ co1 cu | insert_vect co1 i nv co2, to_index_ co2 cu ].
+   [insert_vect co1 i nv co2, real_to_index co1 cu | insert_vect co1 i nv co2, real_to_index co2 cu ].
     insert_vect co1 i nv co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
     to_index_ co1 cu = to_index_ co2 cu
 
@@ -1145,8 +1145,8 @@ module Ada__containers__formal_vectors__delete
     delete_ li1 i l li2 -> i <= j <= length_ li2 -> element_ li1 (j+l) = element_ li2 j
   
   axiom delete_curs:
-    forall co1 co2 : vector, i l : int, cu : cursor [delete_ co1 i l co2, to_index_ co1 cu |
-                                                                                       delete_ co1 i l co2, to_index_ co2 cu ].
+    forall co1 co2 : vector, i l : int, cu : cursor [delete_ co1 i l co2, real_to_index co1 cu |
+                                                                                       delete_ co1 i l co2, real_to_index co2 cu ].
     delete_ co1 i l co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
     to_index_ co1 cu = to_index_ co2 cu
 
@@ -1169,8 +1169,8 @@ module Ada__containers__formal_vectors__delete
     delete_end li1 i li2 -> 0 < j < i -> element_ li1 j = element_ li2 j
   
   axiom delete_end_curs:
-    forall co1 co2 : vector, i : int, cu : cursor [delete_end co1 i co2, to_index_ co1 cu |
-                                                                                       delete_end co1 i co2, to_index_ co2 cu ].
+    forall co1 co2 : vector, i : int, cu : cursor [delete_end co1 i co2, real_to_index co1 cu |
+                                                                                       delete_end co1 i co2, real_to_index co2 cu ].
     delete_end co1 i co2 -> (0 < to_index_ co1 cu < i \/ 0 < to_index_ co2 cu < i) -> 
     to_index_ co1 cu = to_index_ co2 cu
 

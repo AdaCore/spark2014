@@ -518,7 +518,7 @@ package body Gnat2Why.Driver is
          --  Given to the handler for packages with an associated theory
 
          when E_Package =>
-            if Is_Instantiation_Of_Formal_Container (E) then
+            if Entity_Is_Instance_Of_Formal_Container (Parent (E)) then
                Translate_Container_Package (E);
             else
 

@@ -201,10 +201,6 @@ package body Why.Gen.Records is
       --  result is the same as the record field access, but there is a
       --  precondition (when needed)
 
-      procedure Declare_Conversion_Check_Function;
-      --  generate the program function which is used to insert subtype
-      --  discriminant checks
-
       function Compute_Discriminant_Check (Field : Entity_Id)
                                            return W_Pred_Id;
       --  compute the discriminant check for an access to the given field, as a
@@ -333,83 +329,6 @@ package body Why.Gen.Records is
          end loop;
          return Cond;
       end Compute_Others_Choice;
-
-      ---------------------------------------
-      -- Declare_Conversion_Check_Function --
-      ---------------------------------------
-
-      procedure Declare_Conversion_Check_Function
-      is
-         Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
-         Root_Abstr : constant W_Primitive_Type_Id :=
-           New_Abstract_Type (Name => Root_Ident);
-         A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
-         Num_Discr  : constant Natural := Count_Discriminants (E);
-         Discr      : Node_Id := First_Discriminant (E);
-         Post       : constant W_Pred_Id :=
-           New_Relation (Op      => EW_Eq,
-                         Op_Type => EW_Abstract,
-                         Left    => +To_Ident (WNE_Result),
-                         Right   => +A_Ident);
-         R_Binder   : Binder_Array (1 .. Num_Discr + 1);
-         Args       : W_Expr_Array (1 .. Num_Discr + 1);
-         Check_Pred : W_Pred_Id := True_Pred;
-         Count      : Natural := 1;
-         Pre_Cond   : W_Pred_Id;
-      begin
-         R_Binder (Num_Discr + 1) :=
-           Binder_Type'(B_Name => A_Ident,
-                        B_Type => Root_Abstr,
-                        others => <>);
-         Args (Num_Discr + 1) := +A_Ident;
-         Count := 1;
-         Discr := First_Discriminant (E);
-         while Present (Discr) loop
-            if Is_Not_Hidden_Discriminant (Discr) then
-               R_Binder (Count) :=
-                 Binder_Type'(B_Name => To_Why_Id (Discr, Local => True),
-                              B_Type =>
-                                Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
-                              others => <>);
-               Args (Count) := +To_Why_Id (Discr, Local => True);
-               Check_Pred :=
-                 +New_And_Expr
-                 (Domain => EW_Pred,
-                  Left   => +Check_Pred,
-                  Right  =>
-                    New_Relation
-                      (Domain => EW_Pred,
-                       Op      => EW_Eq,
-                       Op_Type => EW_Abstract,
-                       Left    => +To_Why_Id (Discr, Local => True),
-                       Right   =>
-                         New_Call
-                           (Ada_Node => Root,
-                            Name     => To_Why_Id (Discr, Rec => Root),
-                            Args     => (1 => +A_Ident),
-                            Domain   => EW_Term)));
-               Count := Count + 1;
-            end if;
-            Next_Discriminant (Discr);
-         end loop;
-         Emit (Theory,
-               New_Function_Def
-                 (Domain      => EW_Pred,
-                  Name        => To_Ident (WNE_Range_Pred),
-                  Binders     => R_Binder,
-                  Def         => +Check_Pred));
-         Pre_Cond :=
-           New_Call (Name   => To_Ident (WNE_Range_Pred),
-                     Args   => Args);
-         Emit (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => To_Ident (WNE_Range_Check_Fun),
-                  Binders     => R_Binder,
-                  Return_Type => Root_Abstr,
-                  Pre         => Pre_Cond,
-                  Post        => Post));
-      end Declare_Conversion_Check_Function;
 
       ----------------------------------
       -- Declare_Conversion_Functions --
@@ -923,9 +842,89 @@ package body Why.Gen.Records is
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
       if not Is_Root and then Has_Discriminants (E) then
-         Declare_Conversion_Check_Function;
+         Declare_Conversion_Check_Function (Theory, E, Root);
       end if;
    end Declare_Ada_Record;
+
+   ---------------------------------------
+   -- Declare_Conversion_Check_Function --
+   ---------------------------------------
+
+   procedure Declare_Conversion_Check_Function
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id;
+      Root   : Entity_Id)
+   is
+      Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
+      Root_Abstr : constant W_Primitive_Type_Id :=
+        New_Abstract_Type (Name => Root_Ident);
+      A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
+      Num_Discr  : constant Natural := Count_Discriminants (E);
+      Discr      : Node_Id := First_Discriminant (E);
+      Post       : constant W_Pred_Id :=
+        New_Relation (Op      => EW_Eq,
+                      Op_Type => EW_Abstract,
+                      Left    => +To_Ident (WNE_Result),
+                      Right   => +A_Ident);
+      R_Binder   : Binder_Array (1 .. Num_Discr + 1);
+      Args       : W_Expr_Array (1 .. Num_Discr + 1);
+      Check_Pred : W_Pred_Id := True_Pred;
+      Count      : Natural := 1;
+      Pre_Cond   : W_Pred_Id;
+   begin
+      R_Binder (Num_Discr + 1) :=
+        Binder_Type'(B_Name => A_Ident,
+                     B_Type => Root_Abstr,
+                     others => <>);
+      Args (Num_Discr + 1) := +A_Ident;
+      Count := 1;
+      Discr := First_Discriminant (E);
+      while Present (Discr) loop
+         if Is_Not_Hidden_Discriminant (Discr) then
+            R_Binder (Count) :=
+              Binder_Type'(B_Name => To_Why_Id (Discr, Local => True),
+                           B_Type =>
+                             Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
+                           others => <>);
+            Args (Count) := +To_Why_Id (Discr, Local => True);
+            Check_Pred :=
+              +New_And_Expr
+              (Domain => EW_Pred,
+               Left   => +Check_Pred,
+               Right  =>
+                 New_Relation
+                   (Domain => EW_Pred,
+                    Op      => EW_Eq,
+                    Op_Type => EW_Abstract,
+                    Left    => +To_Why_Id (Discr, Local => True),
+                    Right   =>
+                      New_Call
+                        (Ada_Node => Root,
+                         Name     => To_Why_Id (Discr, Rec => Root),
+                         Args     => (1 => +A_Ident),
+                         Domain   => EW_Term)));
+            Count := Count + 1;
+         end if;
+         Next_Discriminant (Discr);
+      end loop;
+      Emit (Theory,
+            New_Function_Def
+              (Domain      => EW_Pred,
+               Name        => To_Ident (WNE_Range_Pred),
+               Binders     => R_Binder,
+               Def         => +Check_Pred));
+      Pre_Cond :=
+        New_Call (Name   => To_Ident (WNE_Range_Pred),
+                  Args   => Args);
+      Emit (Theory,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => To_Ident (WNE_Range_Check_Fun),
+               Binders     => R_Binder,
+               Return_Type => Root_Abstr,
+               Pre         => Pre_Cond,
+               Post        => Post));
+   end Declare_Conversion_Check_Function;
 
    ------------------------
    -- First_Discriminant --

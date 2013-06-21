@@ -32,6 +32,13 @@ package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This
    --  also includes records with variant parts.
 
+   procedure Declare_Conversion_Check_Function
+     (Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id;
+      Root   : Entity_Id);
+   --  generate the program function which is used to insert subtype
+   --  discriminant checks
+
    procedure Declare_Ada_Record
      (P       : in out Why_File;
       Theory  : W_Theory_Declaration_Id;
