@@ -34,7 +34,7 @@ with Snames;                use Snames;
 with Sprint;                use Sprint;
 with Sinfo;                 use Sinfo;
 
-with Output;
+with Output;                use Output;
 with Treepr;                use Treepr;
 
 with Why;
@@ -562,7 +562,7 @@ package body Flow is
          A : constant V_Attributes := G.Get_Attributes (V);
       begin
          Temp_String := Null_Unbounded_String;
-         Output.Set_Special_Output (Add_To_Temp_String'Access);
+         Set_Special_Output (Add_To_Temp_String'Access);
 
          if A.Is_Null_Node then
             Rv.Show := False;
@@ -587,11 +587,11 @@ package body Flow is
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   Sprint_Node (A.Parameter_Formal.Node);
-                  Output.Write_Str ("'in");
-                  Output.Write_Str ("&nbsp;:=&nbsp;");
+                  Write_Str ("'in");
+                  Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Node (A.Parameter_Actual.Node);
                   if A.Is_Discriminants_Only_Parameter then
-                     Output.Write_Str ("'discriminants");
+                     Write_Str ("'discriminants");
                   end if;
 
                when Out_View =>
@@ -599,9 +599,9 @@ package body Flow is
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   pragma Assert (not A.Is_Discriminants_Only_Parameter);
                   Sprint_Node (A.Parameter_Actual.Node);
-                  Output.Write_Str ("&nbsp;:=&nbsp;");
+                  Write_Str ("&nbsp;:=&nbsp;");
                   Sprint_Node (A.Parameter_Formal.Node);
-                  Output.Write_Str ("'out");
+                  Write_Str ("'out");
 
                when others =>
                   raise Program_Error;
@@ -610,18 +610,18 @@ package body Flow is
          elsif A.Is_Global_Parameter then
             Rv.Shape := Shape_None;
 
-            Output.Write_Str ("global&nbsp;");
+            Write_Str ("global&nbsp;");
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
                   if A.Is_Discriminants_Only_Parameter then
-                     Output.Write_Str ("'discriminants");
+                     Write_Str ("'discriminants");
                   end if;
-                  Output.Write_Str ("'in");
+                  Write_Str ("'in");
 
                when Out_View =>
                   pragma Assert (not A.Is_Discriminants_Only_Parameter);
-                  Output.Write_Str ("'out");
+                  Write_Str ("'out");
 
                when others =>
                   raise Program_Error;
@@ -631,16 +631,16 @@ package body Flow is
             Rv.Shape := Shape_None;
 
             Sprint_Flow_Id (A.Default_Init_Var);
-            Output.Write_Str ("&nbsp;is by default&nbsp;");
+            Write_Str ("&nbsp;is by default&nbsp;");
             Sprint_Node (A.Default_Init_Val);
 
          else
             if A.Is_Precondition then
                Rv.Shape := Shape_None;
-               Output.Write_Str ("precondition ");
+               Write_Str ("precondition ");
             elsif A.Is_Loop_Entry then
                Rv.Shape := Shape_None;
-               Output.Write_Str ("loop entry ");
+               Write_Str ("loop entry ");
             end if;
 
             case F.Kind is
@@ -651,22 +651,22 @@ package body Flow is
                      case Nkind (N) is
                         when N_Case_Statement =>
                            Rv.Shape := Shape_Diamond;
-                           Output.Write_Str ("case ");
+                           Write_Str ("case ");
                            Sprint_Node (Expression (N));
 
                         when N_Case_Statement_Alternative =>
                            Rv.Shape := Shape_None;
-                           Output.Write_Str ("when ");
+                           Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
 
                         when N_Elsif_Part =>
                            Rv.Shape := Shape_Diamond;
-                           Output.Write_Str ("elsif ");
+                           Write_Str ("elsif ");
                            Sprint_Node (Condition (N));
 
                         when N_If_Statement =>
                            Rv.Shape := Shape_Diamond;
-                           Output.Write_Str ("if ");
+                           Write_Str ("if ");
                            Sprint_Node (Condition (N));
 
                         when N_Loop_Statement =>
@@ -680,7 +680,7 @@ package body Flow is
                              (Condition (Iteration_Scheme (N)))
                            then
                               --  While loop.
-                              Output.Write_Str ("while ");
+                              Write_Str ("while ");
                               Sprint_Node
                                 (Condition (Iteration_Scheme (N)));
                            else
@@ -690,7 +690,7 @@ package body Flow is
 
                         when N_Procedure_Call_Statement =>
                            Rv.Shape := Shape_Box;
-                           Output.Write_Str ("call ");
+                           Write_Str ("call ");
                            Sprint_Node (Name (N));
 
                         when others =>
@@ -708,15 +708,15 @@ package body Flow is
             case F.Variant is
                when Initial_Grouping =>
                   Rv.Shape := Shape_None;
-                  Output.Write_Str ("'group'initial");
+                  Write_Str ("'group'initial");
 
                when Final_Grouping =>
                   Rv.Shape := Shape_None;
-                  Output.Write_Str ("'group'final");
+                  Write_Str ("'group'final");
 
                when Initial_Value =>
                   Rv.Shape := Shape_None;
-                  Output.Write_Str ("'initial");
+                  Write_Str ("'initial");
 
                   if not A.Is_Initialised then
                      Rv.Colour := To_Unbounded_String ("red");
@@ -726,7 +726,7 @@ package body Flow is
 
                when Final_Value =>
                   Rv.Shape := Shape_None;
-                  Output.Write_Str ("'final");
+                  Write_Str ("'final");
                   if A.Is_Export then
                      Rv.Colour := To_Unbounded_String ("blue");
                   elsif A.Is_Constant then
@@ -739,24 +739,24 @@ package body Flow is
 
             if A.Loops.Length > 0 and not (A.Is_Parameter or
                                              A.Is_Global_Parameter) then
-               Output.Write_Str ("\nLoops:");
+               Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
-                  Output.Write_Str ("&nbsp;");
+                  Write_Str ("&nbsp;");
                   Sprint_Node (Loop_Identifier);
                end loop;
             end if;
 
             if A.Perform_IPFA then
-               Output.Write_Str ("\nIPFA");
+               Write_Str ("\nIPFA");
             end if;
 
             if A.Is_Global then
-               Output.Write_Str ("\n(global)");
+               Write_Str ("\n(global)");
             end if;
          end if;
 
-         Output.Write_Eol;
-         Output.Cancel_Special_Output;
+         Write_Eol;
+         Cancel_Special_Output;
 
          if Length (Temp_String) > 0 then
             Rv.Label := Temp_String;
@@ -835,24 +835,24 @@ package body Flow is
 
       if Debug_Print_Magic_Source_Set then
          for C in FA.Magic_Source.Iterate loop
-            Output.Write_Str (Magic_String_To_Node_Sets.Key (C).all);
-            Output.Write_Eol;
+            Write_Str (Magic_String_To_Node_Sets.Key (C).all);
+            Write_Eol;
 
-            Output.Indent;
+            Indent;
             for E of Magic_String_To_Node_Sets.Element (C) loop
                Sprint_Node (E);
-               Output.Write_Eol;
+               Write_Eol;
             end loop;
-            Output.Outdent;
+            Outdent;
          end loop;
       end if;
 
       if Gnat2Why.Opt.Flow_Dump_Graphs then
-         Output.Write_Str (Character'Val (8#33#) & "[32m" &
+         Write_Str (Character'Val (8#33#) & "[32m" &
                              "Flow analysis (cons) of " &
                              Get_Name_String (Chars (E)) &
                              Character'Val (8#33#) & "[0m");
-         Output.Write_Eol;
+         Write_Eol;
       end if;
       Control_Flow_Graph.Create (Body_N, FA);
 
@@ -925,11 +925,11 @@ package body Flow is
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
          if Gnat2Why.Opt.Flow_Dump_Graphs then
-            Output.Write_Str (Character'Val (8#33#) & "[32m" &
+            Write_Str (Character'Val (8#33#) & "[32m" &
                                 "Flow analysis (errors) for " &
                                 Get_Name_String (Chars (FA.Subprogram)) &
                                 Character'Val (8#33#) & "[0m");
-            Output.Write_Eol;
+            Write_Eol;
          end if;
          Analysis.Sanity_Check (FA, Success);
          if Success then
