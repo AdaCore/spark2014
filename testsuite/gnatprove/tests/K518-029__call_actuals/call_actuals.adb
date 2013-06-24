@@ -1,6 +1,6 @@
 package body Call_Actuals is
 
-   G : Integer := 0;
+   G, H : Integer := 0;
 
    procedure FI (X, Y : in out Integer) is
    begin
@@ -34,11 +34,11 @@ package body Call_Actuals is
 
    procedure Call is
    begin
-      FI (G, G);
-      FN (G, G);
-      FT (T(G), T(G));
-      FNT (NT(G), NT(G));
-      FS (T(G), T(G));
+      FI (G, H);
+      FN (G, H);
+      FT (T(G), T(H));
+      FNT (NT(G), NT(H));
+      FS (T(G), T(H));
    end Call;
 
 end Call_Actuals;
