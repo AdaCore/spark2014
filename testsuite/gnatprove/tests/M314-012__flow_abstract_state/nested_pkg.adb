@@ -1,13 +1,33 @@
 package body Nested_Pkg
+  with Refined_State => (Foobar => Z.State)
 is
    pragma SPARK_Mode (On);
 
    function G return Boolean is (True);
 
+   package Z
+     with Abstract_State => State,
+          Initializes    => State
+   is
+
+      function H return Boolean with Global => State;
+   end Z;
+
+   package body Z
+     with Refined_State => (State => (Foo, Bar))
+   is
+      Foo : Boolean := False;
+      Bar : Boolean := True;
+
+      function H return Boolean is (Bar) with Refined_Global => Bar;
+   end Z;
+
    package X is
       function F return Boolean;
 
-      procedure Wibble with Pre => G;
+      procedure Wibble
+        with Global => Z.State,
+             Pre    => G and Z.H;
    end X;
 
    package body X is
@@ -16,6 +36,7 @@ is
       procedure Wibble is
       begin
          --  precondition. g body is visible
+         --  precondition. h spec is visible
          null;
       end Wibble;
 
