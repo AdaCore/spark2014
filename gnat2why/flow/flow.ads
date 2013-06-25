@@ -86,7 +86,14 @@ package Flow is
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
 
-   type Flow_Analysis_Graphs_Root (Kind : Entity_Kind := E_Subprogram_Body)
+   subtype Valid_Analyzed_Entity is Entity_Kind
+     with Static_Predicate =>
+       Valid_Analyzed_Entity in E_Subprogram_Body |
+                                E_Package |
+                                E_Package_Body;
+
+   type Flow_Analysis_Graphs_Root (Kind : Valid_Analyzed_Entity :=
+                                     E_Subprogram_Body)
    is record
       Analyzed_Entity  : Entity_Id;
       Scope            : Scope_Ptr;
@@ -130,10 +137,6 @@ package Flow is
 
          when E_Package_Body =>
             null;
-
-         when others =>
-            null;
-
       end case;
    end record;
 
