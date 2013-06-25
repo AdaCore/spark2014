@@ -7,6 +7,7 @@ SPARK 2014 Toolset User's Guide
 ===============================
 
    Copyright (C) 2011-2013, AdaCore
+   Copyright (C) 2013, Altran UK Ltd
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
