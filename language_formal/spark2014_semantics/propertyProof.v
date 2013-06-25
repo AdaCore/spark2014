@@ -105,15 +105,6 @@ Proof.
     tv_l1 lookup reside h2 IHh1 x x0.
 Qed.
 
-Inductive symbol_consistent1: stack -> symtb -> Prop :=
-    | SymCons: forall (s: stack) (tb: symtb), 
-        ( forall x v, Some v = fetch x s -> 
-                          (exists t, stored_value_type (Value v) t /\ ( exists m, lookup x tb = Some (m, t)))) -> 
-        (forall x m t, lookup x tb = Some (m, t) -> 
-                          reside x s = true /\ 
-                          (forall v, (Some v = fetch x s) -> stored_value_type (Value v) t)) -> 
-        symbol_consistent1 s tb.
-
 
 Ltac rm_contradict := 
     match goal with
@@ -651,12 +642,6 @@ Qed.
 
 (****************************************************)
 (****************************************************)
-(*
-Axiom istate_preserve: forall istate e c istate',
-    well_defined_expr2 istate e ->
-    well_defined_stmt2 istate c istate' ->
-    well_defined_expr2 istate' e.
-*)
 
 Lemma initializationMap_expr: forall istate1 e istate2,
      well_defined_expr2 istate1 e ->   
@@ -993,65 +978,148 @@ Proof.
 Qed.
 
 
-(*
-Axiom imap_exists: forall s, exists istate, 
-    initializationMap s istate.
-
-Axiom initializationMap_consistent: forall (s: stack) istate k s c1 s' istate' c2 istate'' istate1,
-     initializationMap s istate ->
-     f_eval_stmt k s c1 = SNormal s' -> 
-     well_defined_stmt2 istate c1 istate' -> 
-     well_defined_stmt2 istate' c2 istate'' ->      
-     initializationMap s' istate1 ->
-     exists istate2, well_defined_stmt2 istate1 c2 istate2. 
-
-Axiom type_consistent: forall s tb b v, 
-    symbol_consistent s tb ->
-    well_typed_expr tb b Tbool ->
-    ~eval_expr s b (ValNormal (Int v)).  
-
-Axiom while_well_form : forall s tb b k c s' ast_id,
-    symbol_consistent s tb ->
-    well_defined_expr s b -> 
-    well_typed_expr tb b Tbool ->
-    f_eval_stmt k s c = SNormal s' ->
-        (exists s'0 : stack, f_eval_stmt k s' (Swhile ast_id b c) = SNormal s'0) \/
-        f_eval_stmt k s' (Swhile ast_id b c) = SUnterminated.
-
-Axiom initializationMap_Expr: forall (s: stack) istate e k c s' istate',
-    initializationMap s istate ->
-    well_defined_expr2 istate e ->
-    f_eval_stmt k s c = SNormal s' ->
-    initializationMap s' istate' ->
-    well_defined_expr2 istate' e.
-
-Axiom initializationMap_Stmt: forall (s: stack) istate k c s' istate' istate1,
-    initializationMap s istate ->
-    f_eval_stmt k s c = SNormal s' ->
-    well_defined_stmt2 istate c istate' ->
-    initializationMap s' istate1 ->
-    exists istate2, well_defined_stmt2 istate1 c istate2.
-*)
-
-
 Ltac unfold_f_eval_stmt :=
     match goal with
     | [ |- context[f_eval_stmt ?k ?s _]] => unfold f_eval_stmt; simpl
     end.
 
-(*
-Ltac invert_well_form_hyp :=
-    match goal with 
-    | [h: well_defined_stmt2 _ (Sassign _ ?x ?e) _ |- _] => inversion h; subst
-    | [h: well_typed_stmt _ (Sassign _ ?x ?e) |- _] => inversion h; subst
-    | [h: well_defined_stmt2 _ (Sifthen _ ?b ?c) _ |- _] => inversion h; subst
-    | [h: well_typed_stmt _ (Sifthen _ ?b ?c) |- _] => inversion h; subst
-    | [h: well_defined_stmt2 _ (Swhile _ ?b ?c) _ |- _] => inversion h; subst
-    | [h: well_typed_stmt _ (Swhile _ ?b ?c) |- _] => inversion h; subst
-    end.
-*)
-
 (* Lemmas to prove... *)
+(* do functional induction on 'f_eval_stmt k s c', so 'k, s, c' are put before the other variables in the 
+    universal qualifier. 
+ *)
+Lemma well_formed_cmd: forall k s c tb istate istate', 
+    well_typed_stmt tb c -> 
+    type_check_stack tb s ->
+    initializationMap s istate ->
+    well_defined_stmt2 istate c istate' ->
+    (exists s', f_eval_stmt k s c = (SNormal s')) \/ f_eval_stmt k s c = SUnterminated.
+Proof.
+    intros k s c.
+    functional induction (f_eval_stmt k s c);
+    intros.
+  - right; auto.
+  - left.
+    exists s1; auto.
+  - (* proof term with contradictory hypothesis *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (typed_value' _ _ _ _ _ H0 H6); intros hz1.
+    inversion hz1.
+    clear hz1 H H0 H1 H2 H4 H6 H8 H10 H11 e2.
+    functional induction (reside x s).
+    + unfold update in e3.
+       rewrite e1 in e3.
+       inversion e3.
+    + unfold update in e3.
+       rewrite e1 in e3.
+       fold update in e3.
+       destruct (update s' x (Value v)).
+       * inversion e3.
+       * apply  IHb; auto.
+    + inversion H3.
+  - (* proof term with contradictory hypothesis *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (equal_wd_expr_expr2_L _ _ _ H1 H10); intros hz1.
+    specialize (well_formed_expr _ _ _ _ H0 hz1 H8); intros hz2.
+    rm_exists.
+    specialize (f_eval_expr_complete _ _ _ H4); intros hz3.
+    rewrite hz3 in e2.
+    destruct x0.
+    + inversion e2.
+    + inversion H5.
+  - (* Sseq*)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (f_eval_stmt_complete _ _ _ _ e1); intros hz1.
+    specialize (symbol_consistent_reserve _ _ _ _ H0 H6 hz1); intros hz2.
+    specialize (imap_exists s1); intros hz3.
+    inversion hz3.
+    assert (hz4: exists istate, well_defined_stmt2 x c2 istate).
+    { specialize (eval_stmt_greater _ _ _ _ _ _ hz1 H1 H10 H3); intros hz5.
+      specialize (initializationMap_stmt _ _ _ _ H11 hz5); intros hz6.
+      assumption.
+    }
+    inversion hz4.
+    specialize (IHs1 _ _ _ H8 hz2 H3 H4).
+    assumption.
+  - (* proof term with contradictory hypothesis *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (IHs0 _ _ _ H6 H0 H1 H10).
+    rewrite e1 in IHs0.
+    inversion IHs0.
+    + inversion H3. 
+       inversion H4.
+    + inversion H3.
+  - right; auto.
+  - (* Sifthen_True *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (IHs0 _ _ _ H8 H0 H1 H11).
+    assumption.
+  - left.
+    exists s; auto.
+  - (* proof term with contradictory hypothesis *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (equal_wd_expr_expr2_L _ _ _ H1 H10); intros hz1.
+    specialize (well_formed_expr _ _ _ _ H0 hz1 H6); intros hz2.
+    rm_exists.
+    specialize (f_eval_expr_complete _ _ _ H4); intros hz3.
+    rewrite hz3 in y.
+    destruct x. 
+    + destruct v. 
+       inversion H5. 
+       destruct b0; inversion y.
+    + inversion H5.
+  - (* Swhile_True *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (f_eval_stmt_complete _ _ _ _ e2); intros hz1.
+    specialize (imap_exists s1); intros hz2.
+    rm_exists.
+    assert (hz3: well_defined_stmt2 x (Swhile ast_id b c0) x).
+    { specialize (initializationMap_inc _ _ _ H11); intros hz2.
+      specialize (eval_stmt_greater _ _ _ _ _ _ hz1 H1 H11 H3); intros hz3.
+      specialize (fetch2_transitive _ _ _ hz2 hz3); intros hz4.
+      specialize (initializationMap_stmt _ _ _ _ H2 hz4); intros hz5.
+      inversion hz5.
+      inversion H4; subst.
+      assumption.
+    }
+    specialize (symbol_consistent_reserve _ _ _ _ H0 H8 hz1); intros hz4.
+    specialize (IHs1 _ _ _ H hz4 H3 hz3).
+    assumption.
+  - (* proof term with contradictory hypothesis *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (IHs0 _ _ _ H8 H0 H1 H11).
+    rewrite e2 in IHs0.
+    inversion IHs0.
+    + inversion H3.
+       inversion H4.
+    + inversion H3.
+  - right; auto.
+  - left.
+    exists s; auto.
+  - (* proof term with contradictory hypothesis *)
+    inversion H; subst.
+    inversion H2; subst.
+    specialize (equal_wd_expr_expr2_L _ _ _ H1 H10); intros hz1.
+    specialize (well_formed_expr _ _ _ _ H0 hz1 H6); intros hz2.
+    rm_exists.
+    specialize (f_eval_expr_complete _ _ _ H4); intros hz3.
+    rewrite hz3 in y.
+    destruct x. 
+    + destruct v. 
+       inversion H5. 
+       destruct b0; inversion y.
+    + inversion H5.    
+Qed.
+
+
+(*
 Lemma well_formed_cmd: forall tb c s istate istate' k, 
     well_typed_stmt tb c -> (* we want to do induction on 'c', but keep the variables 's', 'istate' ... universal *)
     type_check_stack tb s ->
@@ -1150,6 +1218,7 @@ Proof.
      * rewrite H.
        right; auto.
 Qed.
+*)
 
 
 
