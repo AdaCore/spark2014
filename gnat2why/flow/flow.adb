@@ -178,6 +178,19 @@ package body Flow is
       return RV;
    end Calculate_Magic_Mapping;
 
+   --------------
+   -- Is_Valid --
+   --------------
+
+   function Is_Valid (X : Flow_Analysis_Graphs_Root)
+                      return Boolean
+   is (case X.Kind is
+          when E_Subprogram_Body =>
+             Ekind (X.Analyzed_Entity) in E_Function | E_Procedure,
+          when others =>
+             False
+      );
+
    -------------------------------
    -- Loop_Parameter_From_Loop  --
    -------------------------------
@@ -818,7 +831,8 @@ package body Flow is
       FA     : Flow_Analysis_Graphs;
    begin
       FA := Flow_Analysis_Graphs'
-        (Subprogram       => E,
+        (Kind             => E_Subprogram_Body,
+         Analyzed_Entity  => E,
          Scope            => Body_N,
          Start_Vertex     => Null_Vertex,
          End_Vertex       => Null_Vertex,
@@ -927,7 +941,7 @@ package body Flow is
          if Gnat2Why.Opt.Flow_Dump_Graphs then
             Write_Str (Character'Val (8#33#) & "[32m" &
                                 "Flow analysis (errors) for " &
-                                Get_Name_String (Chars (FA.Subprogram)) &
+                                Get_Name_String (Chars (FA.Analyzed_Entity)) &
                                 Character'Val (8#33#) & "[0m");
             Write_Eol;
          end if;

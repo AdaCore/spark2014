@@ -86,10 +86,11 @@ package Flow is
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
 
-   type Flow_Analysis_Graphs is record
-      Subprogram       : Entity_Id;
+   type Flow_Analysis_Graphs_Root (Kind : Entity_Kind := E_Subprogram_Body)
+   is record
+      Analyzed_Entity  : Entity_Id;
       Scope            : Scope_Ptr;
-      --  The entity and scope of the analysed subprogram.
+      --  The entity and scope of the analysed entity.
 
       Start_Vertex     : Flow_Graphs.Vertex_Id;
       End_Vertex       : Flow_Graphs.Vertex_Id;
@@ -117,11 +118,28 @@ package Flow is
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
 
-      Is_Main          : Boolean;
-      --  True if this is the main program. In order to be the main
-      --  it has to be a library level subprogram without formal
-      --  parameters (global parameters are allowed).
+      case Kind is
+         when E_Subprogram_Body =>
+            Is_Main          : Boolean;
+            --  True if this is the main program. In order to be the
+            --  main it has to be a library level subprogram without
+            --  formal parameters (global parameters are allowed).
+
+         when E_Package =>
+            null;
+
+         when E_Package_Body =>
+            null;
+
+         when others =>
+            null;
+
+      end case;
    end record;
+
+   function Is_Valid (X : Flow_Analysis_Graphs_Root) return Boolean;
+
+   subtype Flow_Analysis_Graphs is Flow_Analysis_Graphs_Root;
 
    package Analysis_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,

@@ -568,7 +568,7 @@ package body Flow.Analysis is
       --     Input   ->   State must be initialized
       --     In_Out  ->   State must be initialized
       --     Output  ->   Always OK
-      Get_Globals (Subprogram   => FA.Subprogram,
+      Get_Globals (Subprogram   => FA.Analyzed_Entity,
                    Reads        => Reads,
                    Writes       => Writes,
                    Refined_View => True);
@@ -583,7 +583,7 @@ package body Flow.Analysis is
                then
                   Error_Msg_Flow
                     (Msg => "global input & is not initialized",
-                     N   => Find_Global (FA.Subprogram, R),
+                     N   => Find_Global (FA.Analyzed_Entity, R),
                      F1  => R,
                      Tag => "uninitialized");
                end if;
@@ -592,7 +592,7 @@ package body Flow.Analysis is
                Error_Msg_Flow
                  (Msg => "analysis of main program impossible in the "&
                     "presence of computed global &",
-                  N   => Find_Global (FA.Subprogram, R),
+                  N   => Find_Global (FA.Analyzed_Entity, R),
                   F1  => R,
                   Tag => "uninitialized");
 
@@ -614,7 +614,7 @@ package body Flow.Analysis is
                         N   => Find_Node_In_Initializes
                           (Get_Direct_Mapping_Id (W)),
                         F1  => W,
-                        F2  => Direct_Mapping_Id (FA.Subprogram),
+                        F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                         Tag => "ineffective");
                   end if;
                end if;
@@ -681,8 +681,8 @@ package body Flow.Analysis is
       if FA.Aliasing_Present then
          Error_Msg_NE
            ("flow analysis of & abandoned due to aliasing!",
-            FA.Subprogram,
-            FA.Subprogram);
+            FA.Analyzed_Entity,
+            FA.Analyzed_Entity);
          Sane := False;
          return;
       end if;
@@ -691,13 +691,13 @@ package body Flow.Analysis is
 
       pragma Assert (Sane);
 
-      Check_Record_Declarations (Get_Subprogram_Body (FA.Subprogram));
+      Check_Record_Declarations (Get_Subprogram_Body (FA.Analyzed_Entity));
       if not Sane then
          Error_Msg_NE
            ("flow analysis of & abandoned due to records with non-manifest" &
               " initializations!",
-            FA.Subprogram,
-            FA.Subprogram);
+            FA.Analyzed_Entity,
+            FA.Analyzed_Entity);
          return;
       end if;
 
@@ -724,9 +724,9 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (Msg => "& must be listed in the Global " &
                                 "aspect of &",
-                              N   => FA.Subprogram,
+                              N   => FA.Analyzed_Entity,
                               F1  => Entire_Variable (Var),
-                              F2  => Direct_Mapping_Id (FA.Subprogram),
+                              F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                               Tag => "missing_global");
 
                         when Magic_String =>
@@ -745,8 +745,8 @@ package body Flow.Analysis is
       if not Sane then
          Error_Msg_NE
            ("flow analysis of & abandoned due to inconsistent graph!",
-            FA.Subprogram,
-            FA.Subprogram);
+            FA.Analyzed_Entity,
+            FA.Analyzed_Entity);
          return;
       end if;
 
@@ -827,7 +827,7 @@ package body Flow.Analysis is
                   null;
                elsif A.Is_Global then
                   Error_Msg_Flow (Msg => "ineffective global import &",
-                                  N   => Find_Global (FA.Subprogram, F),
+                                  N   => Find_Global (FA.Analyzed_Entity, F),
                                   F1  => F,
                                   Tag => "ineffective_import");
                else
@@ -1167,11 +1167,11 @@ package body Flow.Analysis is
                         if Atr_U.Is_Global then
                            Error_Msg_Flow
                              (Msg => "global & might not be set",
-                              N   => Find_Global (FA.Subprogram, Key_I),
+                              N   => Find_Global (FA.Analyzed_Entity, Key_I),
                               F1  => Key_I,
                               Tag => Create_Tag ("uninitialized", Key_I));
                            Mark_Definition_Free_Path
-                             (E_Loc => Find_Global (FA.Subprogram, Key_I),
+                             (E_Loc => Find_Global (FA.Analyzed_Entity, Key_I),
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
                               Var   => Change_Variant (Key_I, Normal_Use),
@@ -1397,7 +1397,7 @@ package body Flow.Analysis is
                   --  error on the subprogram, instead of the
                   --  global.
                   Error_Msg_Flow (Msg => "global & is not used",
-                                  N   => Find_Global (FA.Subprogram, F),
+                                  N   => Find_Global (FA.Analyzed_Entity, F),
                                   F1  => F,
                                   Tag => "unused");
                else
@@ -1419,12 +1419,12 @@ package body Flow.Analysis is
    procedure Check_Contracts (FA : Flow_Analysis_Graphs)
    is
       function Find_Existing_Export (E : Entity_Id) return Node_Id
-        with Pre => Has_Depends (FA.Subprogram);
-      --  Looks through the depends aspect on FA.Subprogram and
+        with Pre => Has_Depends (FA.Analyzed_Entity);
+      --  Looks through the depends aspect on FA.Analyzed_Entity and
       --  returns the node which represents E in the dependency for E.
 
       function Find_Export (E : Entity_Id) return Node_Id;
-      --  As above, but returns FA.Subprogram as a fallback if the
+      --  As above, but returns FA.Analyzed_Entity as a fallback if the
       --  subprogram does not have a dependency relation.
 
       --------------------------
@@ -1434,7 +1434,7 @@ package body Flow.Analysis is
       function Find_Existing_Export (E : Entity_Id) return Node_Id
       is
          Depends_Contract : constant Node_Id :=
-           Get_Pragma (FA.Subprogram, Pragma_Depends);
+           Get_Pragma (FA.Analyzed_Entity, Pragma_Depends);
          pragma Assert
            (List_Length (Pragma_Argument_Associations (Depends_Contract)) = 1);
 
@@ -1482,10 +1482,10 @@ package body Flow.Analysis is
       function Find_Export (E : Entity_Id) return Node_Id
       is
       begin
-         if Has_Depends (FA.Subprogram) then
+         if Has_Depends (FA.Analyzed_Entity) then
             return Find_Existing_Export (E);
          else
-            return FA.Subprogram;
+            return FA.Analyzed_Entity;
          end if;
       end Find_Export;
 
@@ -1493,16 +1493,16 @@ package body Flow.Analysis is
       Actual_Deps : Dependency_Maps.Map;
 
       Depends_Location : constant Node_Id :=
-        (if Has_Depends (FA.Subprogram) then
-            Get_Pragma (FA.Subprogram, Pragma_Depends)
+        (if Has_Depends (FA.Analyzed_Entity) then
+            Get_Pragma (FA.Analyzed_Entity, Pragma_Depends)
          else
-            FA.Subprogram);
+            FA.Analyzed_Entity);
 
    begin --  Check_Contracts
 
-      if Has_Depends (FA.Subprogram) then
+      if Has_Depends (FA.Analyzed_Entity) then
          --  Obtain the dependency relation specified by the user.
-         Get_Depends (FA.Subprogram,
+         Get_Depends (FA.Analyzed_Entity,
                       User_Deps);
 
       elsif Debug_Depends_Required then

@@ -1622,7 +1622,7 @@ package body Flow.Control_Flow_Graph is
          FA.CFG.Add_Vertex
            (Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def => Flatten_Variable (FA.Subprogram),
+              (Var_Def => Flatten_Variable (FA.Analyzed_Entity),
                Var_Use => Get_Variable_Set (FA.Scope, Expression (N)),
                Loops   => Ctx.Current_Loops,
                E_Loc   => N),
@@ -2125,7 +2125,7 @@ package body Flow.Control_Flow_Graph is
       The_Context     : Context              := No_Context;
       Subprogram_Spec : Entity_Id;
       Preconditions   : constant Node_Lists.List :=
-        Get_Preconditions (FA.Subprogram);
+        Get_Preconditions (FA.Analyzed_Entity);
       Precon_Block    : Graph_Connections;
    begin
       if Acts_As_Spec (N) then
@@ -2244,8 +2244,8 @@ package body Flow.Control_Flow_Graph is
       --  If we are dealing with a function, we use its entity to deal
       --  with the value returned, so that should also go into
       --  FA.All_Vars.
-      if Ekind (FA.Subprogram) = E_Function then
-         Create_Initial_And_Final_Vertices (FA.Subprogram, FA);
+      if Ekind (FA.Analyzed_Entity) = E_Function then
+         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
       end if;
 
       --  If you're now wondering where we deal with locally declared
