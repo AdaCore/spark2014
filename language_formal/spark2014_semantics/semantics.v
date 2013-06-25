@@ -31,25 +31,25 @@ Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
 
 Inductive eval_expr: stack -> expr -> return_val -> Prop :=
     | eval_Econst: forall ast_id cst s v,
-        v = eval_constant cst ->
+        eval_constant cst = v ->
         eval_expr s (Econst ast_id cst) v
     | eval_Evar: forall ast_id v x s,
-        Some v = fetch x s ->
+        fetch x s = Some v ->
         eval_expr s (Evar ast_id x) (ValNormal v)
     | eval_Ebinop: forall ast_id op s e1 e2 v1 v2 v,
         eval_expr s e1 v1 ->
         eval_expr s e2 v2 ->
-        ValNormal v = eval_binop op v1 v2 ->
+        eval_binop op v1 v2 = ValNormal v ->
         eval_expr s (Ebinop ast_id op e1 e2) (ValNormal v)
     | eval_Eunop: forall ast_id op s e v b,
         eval_expr s e (ValNormal (Bool b)) ->
-        v = eval_unop op (ValNormal (Bool b)) ->
+        eval_unop op (ValNormal (Bool b)) = v ->
         eval_expr s (Eunop ast_id op e) v.
 
 Inductive eval_stmt: stack -> stmt -> stack -> Prop := 
     | eval_Sassign: forall ast_id s s1 x e v,
         eval_expr s e (ValNormal v) ->
-        Some s1 = update s x (Value v) -> (* needs the type check on both sides *)
+        update s x (Value v) = Some s1 -> (* needs the type check on both sides *)
         eval_stmt s (Sassign ast_id x e) s1
     | eval_Sseq: forall ast_id s s1 s2 c1 c2,
         eval_stmt s c1 s1 ->
@@ -179,11 +179,10 @@ Proof.
     intros e s v h.
     induction h; simpl; intros;
     repeat match goal with
-    | h: _ = fetch _ _  |- _ => progress rewrite <- h
+    | h: fetch _ _ = _  |- _ => progress rewrite h
     | h: f_eval_expr _ _ = _ |- _ => progress rewrite h
     end;auto.
   - destruct v1; destruct v2;
-    symmetry;
     [assumption | | | ]; 
     destruct op in H; simpl in H; assumption.
 Qed.
@@ -270,7 +269,7 @@ Proof.
   induction H.
   - exists 1%nat. simpl.
     rewrite (f_eval_expr_complete _ _ _ H).
-    rewrite <- H0. 
+    rewrite H0. 
     reflexivity.
   - destrIH.
     exists (S (k0+k)).

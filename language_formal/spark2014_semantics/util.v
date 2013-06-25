@@ -6,7 +6,7 @@ Ltac rm_eval_expr :=
     | [ |- eval_expr _ (Evar _ _) _] => apply eval_Evar
     | [ |- eval_expr ?S (Ebinop _ _ _ _) _] => eapply eval_Ebinop
     | [h: eval_expr ?S ?E ?V |- eval_expr ?S ?E _] => apply h 
-    | [h: ?V = eval_binop ?OP _ _ |- ?V = eval_binop ?OP _ _] => apply h
+    | [h: eval_binop ?OP _ _  = ?V |- eval_binop ?OP _ _ = ?V ] => apply h
     | [h: ?A |- ?A] => apply h
     end.
 
@@ -62,20 +62,39 @@ Ltac rm_wd_expr :=
     | [ |- well_defined_expr _ (Econst _ ?C)] => destruct C; apply (WD_Econst_Bool, WD_Econst_Int)
     | [ |- well_defined_expr _ (Evar _ _)] => eapply WD_Evar;
           match goal with 
-          [ h: Some ?V = fetch ?X ?S |- Some _ = fetch ?X ?S ] => apply h
+          [ h: fetch ?X ?S = Some ?V |- fetch ?X ?S = Some _ ] => apply h
           end
     | [ |- well_defined_expr ?S (Ebinop _ ?OP ?E1 ?E2)] => apply WD_Ebinop; specialize_hypo; assumption
     | [ |- well_defined_expr ?S (Eunop _ ?OP ?E)] => apply WD_Eunop; specialize_hypo; assumption
-    | [ h: Some ?V = fetch ?X ?S |- well_defined_expr ?S (Evar _ ?X)] => destruct V; subst
+    | [ h: fetch ?X ?S = Some ?V |- well_defined_expr ?S (Evar _ ?X)] => destruct V; subst
     end.
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
+Ltac rm_none_eq_some :=
+    match goal with
+    | [h: None = Some _ |- _ ] => inversion h
+    | [h: Some _ = None |- _ ] => inversion h
+    end.
 
 Ltac rm_exists :=
     repeat match goal with
     | [ h: exists _, _ |- _ ] => inversion h; clear h
     | [ h: _ /\ _  |- _ ] => inversion h; clear h
     end.
+
+Ltac rm_or_hyp := 
+    match goal with
+    | [h: ?b1 \/ ?b2 |- _] => inversion h; clear h
+    end.
+
+Ltac distr_qualifier := 
+    match goal with
+    [h: forall x: ?T, ?A1 /\ ?A2 |- _ ] => assert ((forall x: T, A1) /\ (forall x: T, A2))
+            ; [split; intros xz; specialize (h xz); rm_exists; assumption | ]; clear h; rm_exists
+    end.
+
+(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
+(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
 
 
 

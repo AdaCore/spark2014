@@ -52,6 +52,12 @@ Function update (s: stack) (x : idnum) (v: val): option stack :=
    | nil => None
    end.
 
+(*
+Lemma update_fetch_new: forall s x v s',
+    update s x v = Some s' ->
+    fetch x s' = Some v.
+*)
+
 (* # lemmas about stack operations *)
 Lemma fetch_in: forall x s v, fetch x s = Some v -> List.In (x, Value v) s.
 Proof.

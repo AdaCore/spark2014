@@ -43,12 +43,12 @@ Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
     | WT_Econst_Bool: forall ast_id b tb,
         well_typed_expr tb (Econst ast_id (Oboolconst b)) Tbool
     | WT_Evar: forall ast_id x tb t,
-        Some (In, t) = lookup x tb ->  (* the 'out' variables can never be read *)    
+        lookup x tb = Some (In, t) ->  (* the 'out' variables can never be read *)    
         well_typed_expr tb (Evar ast_id x) t
     | WT_Ebinop: forall ast_id tb op e1 e2 t t1,
         well_typed_expr tb e1 t ->
         well_typed_expr tb e2 t ->
-        Some t1 = binop_type op t t ->
+        binop_type op t t = Some t1 ->
         well_typed_expr tb (Ebinop ast_id op e1 e2) t1
     | WT_Eunop: forall ast_id tb op e,
         well_typed_expr tb e Tbool ->
@@ -60,7 +60,7 @@ Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
  *)
 Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
     | WT_Sassign: forall ast_id tb x e t,
-        Some (Out, t) = lookup x tb ->
+        lookup x tb = Some (Out, t) ->
         well_typed_expr tb e t ->
         well_typed_stmt tb ((Sassign ast_id x e))
     | WT_Sseq: forall ast_id c1 c2 tb,
@@ -86,7 +86,7 @@ Inductive well_defined_expr: stack -> expr -> Prop :=
     | WD_Econst_Bool: forall ast_id s b,
         well_defined_expr s (Econst ast_id (Oboolconst b))
     | WD_Evar: forall ast_id x v s,
-        Some v = fetch x s ->
+        fetch x s = Some v ->
         well_defined_expr s (Evar ast_id x)
     | WD_Ebinop: forall ast_id s op e1 e2,
         well_defined_expr s e1 ->
@@ -124,7 +124,7 @@ Inductive well_defined_stmt: stack -> stmt -> Prop :=
 
 Inductive init_mode: Type := 
     | Init: init_mode
-    |Uninit: init_mode.
+    | Uninit: init_mode.
 
 Definition initializationState: Type := list (idnum * init_mode).
 
@@ -150,6 +150,201 @@ Function update2 (s: initializationState) (x : idnum) (v: init_mode): option ini
    | nil => None
    end.
 
+Lemma update2_fetch2: forall istate x m istate',
+    update2 istate x m = Some istate' ->
+    exists m0, fetch2 x istate = Some m0.
+Proof.
+    intros istate x m.
+    functional induction (update2 istate x m);
+    intros istate' h1.
+  - unfold fetch2.
+    rewrite e0.
+    exists imode; auto.
+  - unfold fetch2.
+    rewrite e0.
+    fold fetch2.
+    specialize (IHo _ e1); assumption.
+  - inversion h1.
+  - inversion h1.
+Qed.
+
+Lemma fetch2_update2: forall x istate m0 m,
+    fetch2 x istate = Some m0 ->
+    exists istate', update2 istate x m = Some istate'.
+Proof.
+    intros x istate.
+    functional induction (fetch2 x istate);
+    intros m0 m h1.
+  - unfold update2.
+    rewrite e0.
+    exists ((y, m) :: s'); auto.
+  - unfold update2.
+    rewrite e0.
+    fold update2.
+    specialize (IHo _ m h1).
+    inversion IHo.
+    rewrite H.
+    exists ((y, imode) :: x0); auto.
+  - inversion h1.
+Qed.
+
+Lemma update2_in: forall istate x m istate' y m',
+    update2 istate x m = Some istate' ->
+    fetch2 y istate = Some m' ->
+    (fetch2 y istate' = Some m) \/ (fetch2 y istate' = Some m').
+Proof.
+    intros istate x m.
+    functional induction (update2 istate x m);
+    intros istate' y0 m' h1 h2.
+  - inversion h1; subst.
+    unfold fetch2.
+    unfold fetch2 in h2.
+    destruct (beq_nat y0 y).
+    + left; auto.
+    + fold fetch2.
+       fold fetch2 in h2.
+       right; assumption.
+  - inversion h1; subst.
+    unfold fetch2.
+    unfold fetch2 in h2.
+    destruct (beq_nat y0 y).
+    + right; assumption.
+    + fold fetch2.
+       fold fetch2 in h2.
+       specialize (IHo _ _ _ e1 h2).
+       assumption.
+  - inversion h1.
+  - inversion h1.
+Qed.
+
+Lemma update2_in1: forall istate x m istate' y m',
+    update2 istate x m = Some istate' ->
+    fetch2 y istate' = Some m' ->
+    (y = x /\ m' = m) \/ (y <> x /\ fetch2 y istate = Some m').
+Proof.
+    intros istate x m.
+    functional induction (update2 istate x m);
+    intros istate' y0 m' h1 h2.
+  - inversion h1; subst.
+    unfold fetch2.
+    unfold fetch2 in h2.
+    remember (beq_nat y0 y) as eq.
+    destruct eq.
+    + left. 
+       inversion h2; subst.
+       apply beq_nat_true in e0.
+       symmetry in Heqeq.
+       apply beq_nat_true in Heqeq.
+       subst. auto.
+    + right. 
+       fold fetch2.
+       fold fetch2 in h2.
+       symmetry in Heqeq.
+       apply beq_nat_true in e0.
+       apply beq_nat_false in Heqeq.
+       subst.
+       split; assumption.
+  - inversion h1; subst.
+    unfold fetch2.
+    unfold fetch2 in h2.
+    remember (beq_nat y0 y) as eq.
+    destruct eq.
+    + right.
+       symmetry in Heqeq.
+       apply beq_nat_false in e0;
+       apply beq_nat_true in Heqeq; subst.
+       split; auto.
+    + fold fetch2.
+       fold fetch2 in h2.
+       specialize (IHo _ _ _ e1 h2).
+       assumption.
+  - inversion h1.
+  - inversion h1.  
+Qed.
+
+(*
+Lemma update2_in2: forall istate x m istate' y m',
+    update2 istate x m = Some istate' ->
+    fetch2 y istate' = Some m' ->
+    exists m1, (fetch2 y istate = Some m1).
+Proof.
+    intros istate x m.
+    functional induction (update2 istate x m);
+    intros istate' y0 m' h1 h2.
+  - inversion h1; subst.
+    unfold fetch2.
+    unfold fetch2 in h2.
+    destruct (beq_nat y0 y).
+    + exists imode; auto.
+    + fold fetch2.
+       fold fetch2 in h2.
+       rewrite h2.
+       exists m'; auto.
+  - inversion h1; subst.
+    unfold fetch2.
+    unfold fetch2 in h2.
+    destruct (beq_nat y0 y).
+    + exists imode; auto.
+    + fold fetch2.
+       fold fetch2 in h2.
+       specialize (IHo _ _ _ e1 h2).
+       assumption.
+  - inversion h1.
+  - inversion h1.
+Qed.
+*)
+
+Lemma update2_fetch2_new: forall istate x m istate',
+    update2 istate x m = Some istate' ->
+    fetch2 x istate' = Some m.
+Proof.
+    intros istate x m.
+    functional induction (update2 istate x m);
+    intros istate' h1.
+  - inversion h1; subst.
+    unfold fetch2.
+    destruct (beq_nat x y).
+    + auto.
+    + inversion e0.
+  - inversion h1; subst.
+    unfold fetch2.
+    destruct (beq_nat x y).
+    + inversion e0.
+    + fold fetch2.
+       specialize (IHo _ e1).
+       assumption.
+  - inversion h1.
+  - inversion h1.    
+Qed.
+
+Lemma update2_fetch2_old: forall istate x m istate' y,
+    update2 istate x m = Some istate' ->
+    y <> x ->
+    fetch2 y istate' = fetch2 y istate.
+Proof.
+    intros istate x m.
+    functional induction (update2 istate x m);
+    intros istate' y0 h1 h2.
+  - inversion h1; subst.
+    apply beq_nat_true in e0.
+    subst.
+    apply beq_nat_false_iff in h2.
+    unfold fetch2.
+    rewrite h2.
+    fold fetch2.
+    auto.
+  - inversion h1; subst.
+    specialize (IHo _ _ e1 h2).
+    unfold fetch2.
+    destruct (beq_nat y0 y).
+    auto.
+    fold fetch2.
+    assumption.
+  - inversion h1.
+  - inversion h1.    
+Qed.
+
+
 Inductive initializationMap: stack -> initializationState -> Prop :=
     | IEmpty: initializationMap nil nil 
     | IList0: forall s ilist x v,
@@ -161,13 +356,145 @@ Inductive initializationMap: stack -> initializationState -> Prop :=
         initializationMap s ilist ->
         initializationMap ((x, v)::s) ((x, Uninit)::ilist).
 
+Lemma initializationMap_consistent1: forall s istate x v,
+    initializationMap s istate -> 
+    fetch x s = Some v -> 
+    fetch2 x istate = Some Init.
+Proof.
+    intros s istate x v h1 h2.
+    induction h1.
+      + inversion h2.
+      + unfold fetch in h2. 
+         unfold fetch2.
+         destruct (beq_nat x x0); auto.
+      + unfold fetch in h2.
+         unfold fetch2.
+         destruct (beq_nat x x0);
+         auto.
+         destruct v0.
+         inversion H.
+         inversion h2.
+Qed.
+
+Lemma initializationMap_consistent2: forall s istate x,
+    initializationMap s istate ->
+    fetch2 x istate = Some Init -> 
+    exists v, fetch x s = Some v.
+Proof.
+    intros s istate x h1 h2.
+    induction h1.
+      + inversion h2.
+      + unfold fetch2 in h2. 
+         unfold fetch.
+         destruct (beq_nat x x0); auto.
+         destruct v.
+         exists v; auto.
+         intuition.
+      + unfold fetch2 in h2.
+         unfold fetch.
+         destruct (beq_nat x x0); auto.
+         destruct v.
+         exists v; auto.
+         inversion h2.    
+Qed.
+
+
+Lemma initializationMap_unique: forall s istate istate',
+    initializationMap s istate ->
+    initializationMap s istate' ->
+    istate = istate'.
+Proof.
+    intros s istate istate' h1.
+    generalize istate'. clear istate'.
+    induction h1;
+    intros istate' h2.
+  - inversion h2.
+    auto.
+  - inversion h2; subst.
+    specialize (IHh1 _ H5).
+    subst. auto.
+    intuition.
+  - inversion h2; subst.
+    intuition.
+    specialize (IHh1 _ H5).
+    subst.
+    auto.
+Qed.
+
+Lemma update_consis: forall s istate x v s1 istate1 istate'1,
+    initializationMap s istate -> 
+    update s x (Value v) = Some s1 ->
+    update2 istate x Init = Some istate1 ->
+    initializationMap s1 istate'1 ->
+    istate1 = istate'1.
+Proof.
+    intros s istate x v s1 istate1 istate'1 h1.
+    generalize x v s1 istate1 istate'1.
+    induction h1; intros.
+  - inversion H.
+  - unfold update in H0.
+    unfold update2 in H1.
+    destruct (beq_nat x1 x0).
+    + inversion H0; subst.
+       inversion H1; subst.
+       inversion H2; subst.
+       * specialize (initializationMap_unique _ _ _ h1 H8); intros hz1.
+         subst.
+         auto.
+       * inversion H7.
+    + fold update in H0.
+       fold update2 in H1.
+       remember (update s x1 (Value v1)) as eq1.
+       remember (update2 ilist x1 Init) as eq2.
+       destruct eq1; destruct eq2.
+       * inversion H0; subst; clear H0.
+         inversion H1; subst; clear H1.
+         symmetry in Heqeq1. 
+         symmetry in Heqeq2.
+         inversion H2; subst.
+         specialize (IHh1 _ _ _ _ _ Heqeq1 Heqeq2 H6).
+         subst. auto.
+         intuition.
+       * inversion H1.
+       * inversion H0.
+       * inversion H0.
+  - unfold update in H0.
+    unfold update2 in H1.
+    destruct (beq_nat x1 x0).
+    + inversion H0; subst.
+       inversion H1; subst.
+       inversion H2; subst.
+       * specialize (initializationMap_unique _ _ _ h1 H7); intros hz1.
+         subst.
+         auto.
+       * inversion H6.
+    + fold update in H0.
+       fold update2 in H1.
+       remember (update s x1 (Value v1)) as eq1.
+       remember (update2 ilist x1 Init) as eq2.
+       destruct eq1; destruct eq2.
+       * inversion H0; subst; clear H0.
+         inversion H1; subst; clear H1.
+         symmetry in Heqeq1. 
+         symmetry in Heqeq2.
+         inversion H2; subst.
+         intuition.
+         specialize (IHh1 _ _ _ _ _ Heqeq1 Heqeq2 H5).
+         subst. auto.
+       * inversion H1.
+       * inversion H0.
+       * inversion H0.
+Qed.
+
+
+
 Inductive well_defined_expr2: initializationState -> expr -> Prop :=
     | WD_Econst_Int2: forall ast_id s n,
         well_defined_expr2 s (Econst ast_id (Ointconst n))
     | WD_Econst_Bool2: forall ast_id s b,
         well_defined_expr2 s (Econst ast_id (Oboolconst b))
     | WD_Evar2: forall ast_id x s,
-        Some Init = fetch2 x s ->
+        fetch2 x s = Some Init ->
         well_defined_expr2 s (Evar ast_id x)
     | WD_Ebinop2: forall ast_id s op e1 e2,
         well_defined_expr2 s e1 ->
@@ -180,7 +507,7 @@ Inductive well_defined_expr2: initializationState -> expr -> Prop :=
 Inductive well_defined_stmt2: initializationState -> stmt -> initializationState -> Prop :=
     | WD_Sassign2: forall ast_id s s' x e,
         well_defined_expr2 s e ->
-        Some s' = update2 s x Init ->
+        update2 s x Init = Some s' ->
         well_defined_stmt2 s (Sassign ast_id x e) s'
     | WD_Sseq2: forall ast_id c1 c2 s s' s'',
         well_defined_stmt2 s c1 s' ->
@@ -194,42 +521,6 @@ Inductive well_defined_stmt2: initializationState -> stmt -> initializationState
         well_defined_expr2 s b ->
         well_defined_stmt2 s c s' ->
         well_defined_stmt2 s (Swhile ast_id b c) s.
-
-(* =============================== *)
-(*  - - - Experiment - - -  *)
-Function free_vars (e: expr): list idnum :=
-    match e with
-    | Econst _ _ => nil
-    | Evar _ x => x::nil
-    | Ebinop _ op e1 e2 =>
-        let l1 := free_vars e1 in
-        let l2 := free_vars e2 in
-        l1 ++ l2
-    | Eunop _ op e1 =>
-        free_vars e1
-    end.
-
-Inductive well_defined_stmt1: stack -> (list idnum)  -> (list idnum) -> stmt -> Prop :=
-    | WD_Sassign1: forall ast_id s l l' x e fv,
-        fv = free_vars e ->
-        (forall x, List.In x fv -> exists v, Some v = fetch x s \/ List.In x l) -> 
-        l' = x::l ->
-        well_defined_stmt1 s l l' ((Sassign ast_id x e))
-    | WD_Sseq1: forall ast_id c1 c2 s l l' l'',
-        well_defined_stmt1 s l l' c1 ->
-        well_defined_stmt1 s l' l'' c2 ->
-        well_defined_stmt1 s l l'' (Sseq ast_id c1 c2)
-    | WD_Sifthen1: forall ast_id s b c l l' fv,
-        fv = free_vars b -> 
-        (forall x, List.In x fv -> exists v, Some v = fetch x s \/ List.In x l) ->
-        well_defined_expr s b ->
-        well_defined_stmt1 s l l' c ->
-        well_defined_stmt1 s l l (Sifthen ast_id b c)
-    | WD_Swhile1: forall ast_id s b c l l' fv,
-        fv = free_vars b -> 
-        (forall x, List.In x fv -> exists v, Some v = fetch x s \/ List.In x l) ->
-        well_defined_stmt1 s l l' c ->
-        well_defined_stmt1 s l l (Swhile ast_id b c).
 
 
 
