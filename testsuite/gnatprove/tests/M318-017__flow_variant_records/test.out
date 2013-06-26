@@ -3,6 +3,5 @@ test.adb:89:32: component "X.Reason" of formal parameter might not be set [unini
 test.adb:97:32: component "X.Index" of formal parameter might not be set [uninitialized__x_index]
 test.adb:97:32: component "X.Reason" of formal parameter might not be set [uninitialized__x_reason]
 test.adb:132:09: use of uninitialized variable "R.Reason" [uninitialized__r_reason]
-test.adb:154:21: "Y" depends on "X" [depends_missing]
-test.adb:167:09: "X" missing from null dependency [depends_null]
-test.adb:203:21: "R" depends on "R" [depends_missing]
+test.adb:204:09: "R" incorrectly included in null dependency [depends_wrong]
+test.adb:204:21: "R" depends on "R" [depends_missing]

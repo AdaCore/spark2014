@@ -151,7 +151,7 @@ is
                                Y : out Boolean)
    with Global => null,
         Depends => (X => null,
-                    Y => null);
+                    Y => X);
 
    procedure Test_Definite_07 (X : out Search_Result;
                                Y : out Boolean)
@@ -164,8 +164,9 @@ is
    procedure Test_Definite_08 (X : out Search_Result;
                                Y : out Boolean)
    with Global => null,
-        Depends => (X => null,
-                    Y => null);
+        Depends => (X    => null,
+                    Y    => null,
+                    null => X);
 
    procedure Test_Definite_08 (X : out Search_Result;
                                Y : out Boolean)
@@ -200,7 +201,8 @@ is
    procedure Test_ND_Record_02 (X, Y : Integer;
                                 R    : in out ND_Record)
    with Global  => null,
-        Depends => (R => (X, Y)) --  R depends on R
+        Depends => (R    => (X, Y),
+                    null => R) --  R depends on R
    is
    begin
       R.A := X;

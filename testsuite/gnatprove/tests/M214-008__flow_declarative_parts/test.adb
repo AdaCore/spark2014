@@ -110,7 +110,7 @@ is
                        B : out Integer)
    with Global => null,
         Depends => (A => null,
-                    B => null)
+                    B => A)
    is
    begin
       B := A'Last;
@@ -121,7 +121,7 @@ is
                        B : out Integer)
    with Global => null,
         Depends => (A => null,
-                    B => null)
+                    B => A)
    is
    begin
       B := A'Last;
@@ -132,7 +132,7 @@ is
                        B : out Integer)
    with Global => null,
         Depends => (A => null,
-                    B => null)
+                    B => A)
    is
    begin
       A := (others => ' ');
