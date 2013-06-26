@@ -1,5 +1,6 @@
-(* function / lemma library *)
 Require Export wellformed.
+
+(** * Customized Tactics *)
 
 Ltac rm_eval_expr :=
     repeat match goal with
@@ -18,16 +19,6 @@ Ltac simpl_unop :=
 Ltac simpl_binop :=
     match goal with
     | [ |- context [eval_binop ?OP (ValNormal ?V1) (ValNormal ?V2)]] => unfold eval_binop; simpl
-(*
-    | [ |- context [eval_binop Cne (ValInt ?V1) (ValInt ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Ceq (ValInt ?V1) (ValInt ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Oadd (ValInt ?V1) (ValInt ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Osub (ValInt ?V1) (ValInt ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Omul (ValInt ?V1) (ValInt ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Odiv (ValInt ?V1) (ValInt ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Oand (ValBool ?V1) (ValBool ?V2)]] => unfold eval_binop; simpl
-    | [ |- context [eval_binop Oor (ValBool ?V1) (ValBool ?V2)]] => unfold eval_binop; simpl
-*)
     end.
 
 Ltac simpl_binop_hyp :=
@@ -57,6 +48,7 @@ Ltac rm_wt_expr :=
     | [ |- context[binop_type _ _ _]] => unfold binop_type; auto
     end.
 
+(*
 Ltac rm_wd_expr :=
     repeat match goal with
     | [ |- well_defined_expr _ (Econst _ ?C)] => destruct C; apply (WD_Econst_Bool, WD_Econst_Int)
@@ -68,8 +60,15 @@ Ltac rm_wd_expr :=
     | [ |- well_defined_expr ?S (Eunop _ ?OP ?E)] => apply WD_Eunop; specialize_hypo; assumption
     | [ h: fetch ?X ?S = Some ?V |- well_defined_expr ?S (Evar _ ?X)] => destruct V; subst
     end.
+*)
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
+
+Ltac put_in_context_as hname :=
+    match goal with
+    [ |- ?A /\ ?B ] => assert(hname: A)
+    end.
+
 Ltac rm_none_eq_some :=
     match goal with
     | [h: None = Some _ |- _ ] => inversion h
@@ -92,9 +91,6 @@ Ltac distr_qualifier :=
     [h: forall x: ?T, ?A1 /\ ?A2 |- _ ] => assert ((forall x: T, A1) /\ (forall x: T, A2))
             ; [split; intros xz; specialize (h xz); rm_exists; assumption | ]; clear h; rm_exists
     end.
-
-(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
-(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
 
 
 

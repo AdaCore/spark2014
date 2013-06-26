@@ -6,12 +6,12 @@
     of this file is experimental and cannot reach publicity without
     permission of KSU. *)
 
-
 Require Export ZArith. 
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
 Require Export Coq.Strings.String.
 
+(** * SPARK Subset Language *)
 Inductive mode: Type := 
     | In: mode
     | Out: mode.
@@ -20,6 +20,7 @@ Inductive typ: Type :=
     | Tint: typ
     | Tbool: typ.
 
+(** AST node id number *)
 Definition astnum := nat.
 
 Definition idnum := nat.
@@ -39,15 +40,12 @@ Record type_table: Type := mktype_table{
     tt_typename_table: list (typenum * (typeuri * option typedeclnum))
 }.
 
-(* 
-   (1) change integer constant from nat to Z;
-   (2) use add Oboolconst construct for constant boolean value;
-*)
-
+(** ** Constants *)
 Inductive constant: Type := 
 	| Ointconst: Z -> constant
         | Oboolconst: bool -> constant.
 
+(** Basic unary/binary operators *)
 Inductive unary_operation: Type := 
         | Onot: unary_operation.
 (*     
@@ -65,12 +63,14 @@ Inductive binary_operation: Type :=
 	| Omul: binary_operation
 	| Odiv: binary_operation.
 
+(** ** Basic expressions *)
 Inductive expr: Type := 
 	| Econst: astnum -> constant -> expr
 	| Evar: astnum -> idnum -> expr
 	| Ebinop: astnum -> binary_operation -> expr -> expr -> expr
 	| Eunop: astnum -> unary_operation -> expr -> expr.
 
+(** ** Basic commands *)
 Inductive stmt: Type := 
 	| Sassign: astnum -> idnum -> expr -> stmt
 	| Sifthen: astnum -> expr -> stmt -> stmt
@@ -123,6 +123,7 @@ Record function_body: Type := mkfunction_body{
 	fn_body: stmt
 }.
 
+(** ** Compilation unit: subprogram *)
 Inductive subprogram: Type := 
 	| Sproc: astnum -> procedure_body -> subprogram
 	| Sfunc: astnum -> function_body -> subprogram.
@@ -132,3 +133,4 @@ Inductive unit_declaration: Type :=
 
 Inductive compilation_unit: Type := 
 	| CompilationUnit: astnum -> unit_declaration -> type_table -> compilation_unit.
+

@@ -1,18 +1,15 @@
-(*
+Require Export semantics. 
+
+(** * Well-Formed Program  *)
+(**
    Before executing the program, make sure that the program is well-formed
    - well-typed: 
-         * all operators work on the operands of the right types;
-         * all assignments write into memory with the values of right types;
-   - defined-before-used: all variables are defined (and initialized ? ) before they are used
-
-    index /-----------------------------
-              |- well-typed program
-              | -----------------------------
-              |- well-defined program
-              | -----------------------------
+      - all operators work on the operands of the right types;
+      - all assignments write into memory with the values of right types;
+      - variables has right _in/out_ mode;
+   - well-defined: 
+      all variables are initialized before they are used
 *)
-Require Export language.
-Require Export semantics. 
 
 Definition binop_type (op: binary_operation) (x y: typ): option typ := 
     match op with 
@@ -33,9 +30,11 @@ Definition binop_type (op: binary_operation) (x y: typ): option typ :=
         end
     end.
 
-(* well typed 
-   1. general typing checking;
-   2. all variables should be in mode 'in';
+(** * Well-Typed *)
+(** ** Well-typed expressions *)
+(**
+   - general type checking;
+   - all variables should be in mode _in_; 
 *)
 Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
     | WT_Econst_Int: forall ast_id n tb,
@@ -54,10 +53,13 @@ Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
         well_typed_expr tb e Tbool ->
         well_typed_expr tb (Eunop ast_id op e) Tbool.
 
-(* two kinds of type checking:
-   1. general type checking;
-   2. in / out mode checking;
- *)
+
+(** ** Well-typed commands *)
+(**
+   two kinds of type checking:
+   - general type checking;
+   - _in/out_ mode checking;
+*)
 Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
     | WT_Sassign: forall ast_id tb x e t,
         lookup x tb = Some (Out, t) ->
@@ -79,55 +81,18 @@ Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
         well_typed_expr tb e Tbool ->
         well_typed_stmt tb (Sassert ast_id e) *)
 
-(* all refered variables are defined *)
-Inductive well_defined_expr: stack -> expr -> Prop :=
-    | WD_Econst_Int: forall ast_id s n,
-        well_defined_expr s (Econst ast_id (Ointconst n))
-    | WD_Econst_Bool: forall ast_id s b,
-        well_defined_expr s (Econst ast_id (Oboolconst b))
-    | WD_Evar: forall ast_id x v s,
-        fetch x s = Some v ->
-        well_defined_expr s (Evar ast_id x)
-    | WD_Ebinop: forall ast_id s op e1 e2,
-        well_defined_expr s e1 ->
-        well_defined_expr s e2 ->
-        well_defined_expr s (Ebinop ast_id op e1 e2)
-    | WD_Eunop: forall ast_id s op e,
-        well_defined_expr s e ->
-        well_defined_expr s (Eunop ast_id op e). 
-
-(* A simple version of well-defined commands *)
-(* 
-Inductive well_defined_stmt: stack -> stmt -> Prop :=
-    | WD_Sassign: forall ast_id s x e,
-        reside x s = true ->
-        well_defined_expr s e ->
-        well_defined_stmt s ((Sassign ast_id x e))
-    | WD_Sseq: forall ast_id c1 c2 s,
-        well_defined_stmt s c1 ->
-        well_defined_stmt s c2 ->
-        well_defined_stmt s (Sseq ast_id c1 c2)
-    | WD_Sifthen: forall ast_id s b c,
-        well_defined_expr s b ->
-        well_defined_stmt s c ->
-        well_defined_stmt s (Sifthen ast_id b c)
-    | WD_Swhile: forall ast_id s b c,
-        well_defined_expr s b ->
-        well_defined_stmt s c ->
-        well_defined_stmt s (Swhile ast_id b c).
-(*    | WD_Sassert: forall ast_id s e, 
-        well_defined_expr s e ->
-        well_defined_stmt s (Sassert ast_id e) *)
-*)
-
 (* =============================== *)
 
+(** * Well-Defined *)
+
+(** basic data structures for well-defined expressions and commands *)
 Inductive init_mode: Type := 
     | Init: init_mode
     | Uninit: init_mode.
 
 Definition initializationState: Type := list (idnum * init_mode).
 
+(** basic operators for well-defined expressions and commands *)
 Function fetch2 (x : idnum) (s : initializationState): option init_mode := 
     match s with 
     | (y, imode) :: s' =>
@@ -150,6 +115,64 @@ Function update2 (s: initializationState) (x : idnum) (v: init_mode): option ini
    | nil => None
    end.
 
+(** ** Well-defined expressions *)
+(**
+    all referenced variables are initialized 
+*)
+Inductive well_defined_expr: initializationState -> expr -> Prop :=
+    | WD_Econst_Int: forall ast_id s n,
+        well_defined_expr s (Econst ast_id (Ointconst n))
+    | WD_Econst_Bool: forall ast_id s b,
+        well_defined_expr s (Econst ast_id (Oboolconst b))
+    | WD_Evar: forall ast_id x s,
+        fetch2 x s = Some Init ->
+        well_defined_expr s (Evar ast_id x)
+    | WD_Ebinop: forall ast_id s op e1 e2,
+        well_defined_expr s e1 ->
+        well_defined_expr s e2 ->
+        well_defined_expr s (Ebinop ast_id op e1 e2)
+    | WD_Eunop: forall ast_id s op e,
+        well_defined_expr s e ->
+        well_defined_expr s (Eunop ast_id op e). 
+
+(*
+Inductive well_defined_expr: stack -> expr -> Prop :=
+    | WD_Econst_Int: forall ast_id s n,
+        well_defined_expr s (Econst ast_id (Ointconst n))
+    | WD_Econst_Bool: forall ast_id s b,
+        well_defined_expr s (Econst ast_id (Oboolconst b))
+    | WD_Evar: forall ast_id x v s,
+        fetch x s = Some v ->
+        well_defined_expr s (Evar ast_id x)
+    | WD_Ebinop: forall ast_id s op e1 e2,
+        well_defined_expr s e1 ->
+        well_defined_expr s e2 ->
+        well_defined_expr s (Ebinop ast_id op e1 e2)
+    | WD_Eunop: forall ast_id s op e,
+        well_defined_expr s e ->
+        well_defined_expr s (Eunop ast_id op e). 
+*)
+
+(** ** Well-defined commands *)
+Inductive well_defined_stmt: initializationState -> stmt -> initializationState -> Prop :=
+    | WD_Sassign: forall ast_id s s' x e,
+        well_defined_expr s e ->
+        update2 s x Init = Some s' ->
+        well_defined_stmt s (Sassign ast_id x e) s'
+    | WD_Sseq: forall ast_id c1 c2 s s' s'',
+        well_defined_stmt s c1 s' ->
+        well_defined_stmt s' c2 s'' ->
+        well_defined_stmt s (Sseq ast_id c1 c2) s''
+    | WD_Sifthen: forall ast_id s s' b c,
+        well_defined_expr s b ->
+        well_defined_stmt s c s' ->
+        well_defined_stmt s (Sifthen ast_id b c) s
+    | WD_Swhile: forall ast_id s s' b c,
+        well_defined_expr s b ->
+        well_defined_stmt s c s' ->
+        well_defined_stmt s (Swhile ast_id b c) s.
+
+(** ** Lemmas about initialization operations *)
 Lemma update2_fetch2: forall istate x m istate',
     update2 istate x m = Some istate' ->
     exists m0, fetch2 x istate = Some m0.
@@ -178,7 +201,7 @@ Proof.
   - unfold update2.
     rewrite e0.
     exists ((y, m) :: s'); auto.
-  - unfold update2.
+  - unfold update2. 
     rewrite e0.
     fold update2.
     specialize (IHo _ m h1).
@@ -262,38 +285,6 @@ Proof.
   - inversion h1.  
 Qed.
 
-(*
-Lemma update2_in2: forall istate x m istate' y m',
-    update2 istate x m = Some istate' ->
-    fetch2 y istate' = Some m' ->
-    exists m1, (fetch2 y istate = Some m1).
-Proof.
-    intros istate x m.
-    functional induction (update2 istate x m);
-    intros istate' y0 m' h1 h2.
-  - inversion h1; subst.
-    unfold fetch2.
-    unfold fetch2 in h2.
-    destruct (beq_nat y0 y).
-    + exists imode; auto.
-    + fold fetch2.
-       fold fetch2 in h2.
-       rewrite h2.
-       exists m'; auto.
-  - inversion h1; subst.
-    unfold fetch2.
-    unfold fetch2 in h2.
-    destruct (beq_nat y0 y).
-    + exists imode; auto.
-    + fold fetch2.
-       fold fetch2 in h2.
-       specialize (IHo _ _ _ e1 h2).
-       assumption.
-  - inversion h1.
-  - inversion h1.
-Qed.
-*)
-
 Lemma update2_fetch2_new: forall istate x m istate',
     update2 istate x m = Some istate' ->
     fetch2 x istate' = Some m.
@@ -344,7 +335,7 @@ Proof.
   - inversion h1.    
 Qed.
 
-
+(** ** Mapping from stack to initialization state *)
 Inductive initializationMap: stack -> initializationState -> Prop :=
     | IEmpty: initializationMap nil nil 
     | IList0: forall s ilist x v,
@@ -356,6 +347,7 @@ Inductive initializationMap: stack -> initializationState -> Prop :=
         initializationMap s ilist ->
         initializationMap ((x, v)::s) ((x, Uninit)::ilist).
 
+(** some useful lemmas *)
 Lemma initializationMap_consistent1: forall s istate x v,
     initializationMap s istate -> 
     fetch x s = Some v -> 
@@ -485,42 +477,6 @@ Proof.
        * inversion H0.
        * inversion H0.
 Qed.
-
-
-
-Inductive well_defined_expr2: initializationState -> expr -> Prop :=
-    | WD_Econst_Int2: forall ast_id s n,
-        well_defined_expr2 s (Econst ast_id (Ointconst n))
-    | WD_Econst_Bool2: forall ast_id s b,
-        well_defined_expr2 s (Econst ast_id (Oboolconst b))
-    | WD_Evar2: forall ast_id x s,
-        fetch2 x s = Some Init ->
-        well_defined_expr2 s (Evar ast_id x)
-    | WD_Ebinop2: forall ast_id s op e1 e2,
-        well_defined_expr2 s e1 ->
-        well_defined_expr2 s e2 ->
-        well_defined_expr2 s (Ebinop ast_id op e1 e2)
-    | WD_Eunop2: forall ast_id s op e,
-        well_defined_expr2 s e ->
-        well_defined_expr2 s (Eunop ast_id op e). 
-
-Inductive well_defined_stmt2: initializationState -> stmt -> initializationState -> Prop :=
-    | WD_Sassign2: forall ast_id s s' x e,
-        well_defined_expr2 s e ->
-        update2 s x Init = Some s' ->
-        well_defined_stmt2 s (Sassign ast_id x e) s'
-    | WD_Sseq2: forall ast_id c1 c2 s s' s'',
-        well_defined_stmt2 s c1 s' ->
-        well_defined_stmt2 s' c2 s'' ->
-        well_defined_stmt2 s (Sseq ast_id c1 c2) s''
-    | WD_Sifthen2: forall ast_id s s' b c,
-        well_defined_expr2 s b ->
-        well_defined_stmt2 s c s' ->
-        well_defined_stmt2 s (Sifthen ast_id b c) s
-    | WD_Swhile2: forall ast_id s s' b c,
-        well_defined_expr2 s b ->
-        well_defined_stmt2 s c s' ->
-        well_defined_stmt2 s (Swhile ast_id b c) s.
 
 
 

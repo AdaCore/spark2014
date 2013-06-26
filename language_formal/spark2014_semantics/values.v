@@ -1,10 +1,13 @@
 Require Export language.
 
+(** * Value Types *)
+
+(** Basic value type *)
 Inductive value : Type :=
 | Int (n : Z)
 | Bool (b : bool).
 
-(* type of stored values for variables in the stack *)
+(** type of stored values for variables in the stack *)
 Inductive val: Type := 
     | Value: value -> val
     | Vundef: val.
@@ -21,6 +24,7 @@ Inductive return_val: Type :=
     | ValException: return_val.
 (*    | ValAbnormal: return_val *) 
 
+(** type of stored/return values *)
 Inductive stored_value_type: val -> typ -> Prop :=
     | SVT_Int: forall n, stored_value_type (Value (Int n)) Tint
     | SVT_Bool: forall b, stored_value_type (Value (Bool b)) Tbool.
@@ -37,9 +41,8 @@ Proof.
     (try constructor; try inversion H).
 Qed.
 
-(* Operations over values *)
+(** * Value Operations *)
 Module Val.
-  (* 1. Arithmetic operations *)
 
 Notation "n == m" := (Zeq_bool n m) (at level 70, no associativity).
 Notation "n != m" := (Zneq_bool n m) (at level 70, no associativity).
@@ -48,9 +51,7 @@ Notation "n >= m" := (Z.geb m n) (at level 70, no associativity).
 Notation "n < m" := (Z.ltb n m) (at level 70, no associativity).
 Notation "n > m" := (Z.gtb m n) (at level 70, no associativity).
 
-(* ToDo:  
-    overflow checks for the following operations are needed to be done later
-*)
+(** ** Arithmetic operations *)
 Definition add (v1 v2: return_val): return_val := 
     match v1, v2 with
     | ValNormal n1, ValNormal n2 => 
@@ -94,7 +95,7 @@ Definition div (v1 v2: return_val): return_val :=
     | _, _ => ValException
     end.
 
-  (* 2. Logic operations  *)
+(** ** Logic operations  *)
 Definition and (v1 v2: return_val): return_val :=
     match v1, v2 with
     | ValNormal b1, ValNormal b2 => 
@@ -115,7 +116,7 @@ Definition or (v1 v2: return_val): return_val :=
     | _, _ => ValException
     end.
 
-  (* 3. Comparisons *)
+(** ** Comparisons *)
 Definition eq (v1 v2: return_val): return_val :=
     match v1, v2 with
     | ValNormal n1, ValNormal n2 => 
@@ -136,7 +137,7 @@ Definition ne (v1 v2: return_val): return_val :=
     | _, _ => ValException
     end.
 
-  (* 4. Unary operations *)
+(** ** Unary operations *)
 Definition not (v: return_val): return_val :=
     match v with
     | ValNormal (Bool b) => ValNormal (Bool (negb b))

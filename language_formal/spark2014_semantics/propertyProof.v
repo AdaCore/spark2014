@@ -1,110 +1,7 @@
 Require Export util.
 Require Export wellformed.
 
-Inductive type_check_stack: symtb -> stack -> Prop :=
-    | TC_Empty: type_check_stack nil nil
-    | TC_Bool: forall tb s x m b,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Tbool)) :: tb) ((x, (Value (Bool b))) :: s)
-    | TC_Int: forall tb s x m v,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Tint)) :: tb) ((x, (Value (Int v))) :: s)
-    | TC_UndefBool: forall tb s x m,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Tbool)) :: tb) ((x, Vundef) :: s)
-    | TC_UndefInt: forall tb s x m,
-          type_check_stack tb s ->
-          type_check_stack ((x, (m, Tint)) :: tb) ((x, Vundef) :: s).
-
-(*
-Inductive symbol_consistent: stack -> symtb -> Prop :=
-    | SymCons: forall (s: stack) (tb: symtb), 
-        ( forall x v, Some v = fetch x s -> 
-                          (exists t, stored_value_type (Value v) t /\ ( exists m, lookup x tb = Some (m, t)))) -> 
-        (forall x m t, lookup x tb = Some (m, t) -> 
-                          reside x s = true /\ 
-                          (forall v, (Some v = fetch x s) -> stored_value_type (Value v) t)) -> 
-        symbol_consistent s tb.
-*)
-
-Lemma typed_value: forall tb s x v,
-    type_check_stack tb s ->
-    fetch x s = Some v ->
-    (exists t, stored_value_type (Value v) t /\ ( exists m, lookup x tb = Some (m, t))).
-Proof.
-    intros tb s x v h1 h2.
-    destruct v.
-  - exists Tint.
-    split.
-    + constructor.
-    + induction h1;
-       [inversion h2 | | | | ];
-       unfold fetch in h2;
-       unfold lookup;
-       destruct (beq_nat x x0);
-       [ inversion h2 | | exists m; auto | | inversion h2 | | inversion h2 | ];
-       fold fetch in h2;
-       fold lookup;
-       specialize (IHh1 h2);
-       assumption.
-  - exists Tbool.
-    split.
-    + constructor.
-    + induction h1;
-       [inversion h2 | | | | ];
-       unfold fetch in h2;
-       unfold lookup;
-       destruct (beq_nat x x0);
-       [ exists m; auto | | inversion h2 | | inversion h2 | | inversion h2 | ];
-       fold fetch in h2;
-       fold lookup;
-       specialize (IHh1 h2);
-       assumption.
-Qed.
-
-Ltac tv_l1 f1 f2 h1 h2 x x0 := 
-    unfold f1 in h1;
-    unfold f2;
-    destruct (beq_nat x x0);
-    [ auto |
-      fold f1 in h1;
-      fold f2;
-      specialize (h2 h1);
-      rm_exists; auto
-    ].
-
-Ltac tv_l2 f1 f2 h1 h2 x x0 tac :=
-    unfold f1 in h1;
-    unfold f2;
-    destruct (beq_nat x x0);
-    [ intros; 
-      inversion h1; subst;
-      inversion H; subst; 
-      tac |
-      fold f1 in h1;
-      fold f2;
-      specialize (h2 h1);
-      rm_exists; auto
-    ].
-
-Lemma typed_value': forall tb s x m t,
-    type_check_stack tb s ->
-    lookup x tb = Some (m, t) -> 
-    reside x s = true /\ 
-    (forall v, (Some v = fetch x s) -> stored_value_type (Value v) t).
-Proof.
-    intros tb s x m t h1 h2.
-    induction h1;
-    [inversion h2 | | | | ];
-    split;
-    [ | tv_l2 lookup fetch h2 IHh1 x x0 constructor |
-      | tv_l2 lookup fetch h2 IHh1 x x0 constructor |
-      | tv_l2 lookup fetch h2 IHh1 x x0 auto |
-      | tv_l2 lookup fetch h2 IHh1 x x0 auto
-    ];
-    tv_l1 lookup reside h2 IHh1 x x0.
-Qed.
-
+(** * Properties Proof *)
 
 Ltac rm_contradict := 
     match goal with
@@ -121,6 +18,9 @@ Ltac rm_contradict2 :=
     | [h: return_value_type ValException ?t |- _] => destruct t; inversion h
     end.
 
+(** the type of the expression evaluation result should be consistent with the type  
+     computed by the type checker
+*)
 Lemma eval_type_reserve: forall tb s e v t,
     type_check_stack tb s -> 
     eval_expr s e v ->
@@ -276,47 +176,52 @@ Proof.
     ur_clearer (Bool x).
 Qed.
 
-Lemma well_formed_expr: forall tb s e t,
+(** * Correctness Proof About Well-Formed Expression *)
+
+Lemma well_formed_expr: forall tb s istate e t,
     type_check_stack tb s -> 
-    well_defined_expr s e ->
+    initializationMap s istate ->
+    well_defined_expr istate e ->
     well_typed_expr tb e t ->
     exists v, eval_expr s e v /\ return_value_type v t.
 Proof.
-    intros tb s e t h1 h2.
+    intros tb s istate e t h1 h2 h3.
     generalize t. 
-    induction h2; 
-    intros t0 h3.
-    (* 1. Econst *)
-  - exists (ValNormal (Int n)).
+    induction h3; 
+    intros t0 h4.
+  - (* 1. Econst_Int *)
+    exists (ValNormal (Int n)).
     split.
     + constructor. 
        unfold eval_constant; simpl; auto.
-    + inversion h3; subst.
+    + inversion h4; subst.
        constructor.
-  - exists (ValNormal (Bool b)).
+  - (* 2. Econst_Bool *)
+    exists (ValNormal (Bool b)).
     split.
     + constructor. 
        unfold eval_constant; simpl; auto.
-    + inversion h3; subst.
+    + inversion h4; subst.
        constructor.
-    (* 2. Evar *)
-  - exists (ValNormal v).
-    assert (HZ1: eval_expr s (Evar ast_id x) (ValNormal v)). (* this one is used to prove "return_value_type _ _" *)
+  - (* 3. Evar *)
+    specialize (initializationMap_consistent2 _ _ _ h2 H); intros hz1.
+    inversion hz1.
+    exists (ValNormal x0). 
+    put_in_context_as hz2. (* this one is used to prove "return_value_type _ _" *)
     constructor; assumption.
     split.
     + assumption.
     + apply eval_type_reserve with (s := s) (tb := tb) (e := (Evar ast_id x));
        assumption.
-    (* 3. Ebinop *)
-  - assert (HZ2: exists v, eval_expr s (Ebinop ast_id op e1 e2) v).
-    inversion h3; subst. 
-    specialize (IHh2_1 h1 _ H5).
-    specialize (IHh2_2 h1 _ H6).
+  - (* 4. Ebinop *)
+    assert (hz1: exists v, eval_expr s (Ebinop ast_id op e1 e2) v). (* this one is used to prove "return_value_type _ _" *)
+    inversion h4; subst. 
+    specialize (IHh3_1 h2 _ H5).
+    specialize (IHh3_2 h2 _ H6).
     rm_exists.
-
     destruct x; destruct x0.
-    + specialize (binop_rule _ _ _ _ _ _ _ _ _ h1 H1 H0 h3).
-       intros h4; rm_exists. 
+    + specialize (binop_rule _ _ _ _ _ _ _ _ _ h1 H1 H0 h4); intros hz2.
+       rm_exists. 
        exists (ValNormal x); assumption.
     + specialize (exceptionVal_has_no_typ _ _ _ _ h1 H1 H5); intuition.
     + specialize (exceptionVal_has_no_typ _ _ _ _ h1 H0 H6); intuition.
@@ -327,13 +232,12 @@ Proof.
        split; try assumption.
        apply eval_type_reserve with (s := s) (tb := tb) (e := (Ebinop ast_id op e1 e2));
        assumption.
-    (* 4. Eunop *)
-  - assert(HZ3: exists v, eval_expr s (Eunop ast_id op e) v ).
-    inversion h3; subst.
-    specialize (IHh2 h1 _ H3).
+  - (* 5. Eunop *)
+    assert(hz1: exists v, eval_expr s (Eunop ast_id op e) v ). (* this one is used to prove "return_value_type _ _" *)
+    inversion h4; subst.
+    specialize (IHh3 h2 _ H3).
     rm_exists.
-    specialize (eval_type_reserve _ _ _ _ _ h1 H0 H3).
-    intros h5.
+    specialize (eval_type_reserve _ _ _ _ _ h1 H0 H3); intros hz2.
     destruct x; try rm_contradict.
     destruct v; try rm_contradict.
     set (y :=  (eval_unop op (ValNormal (Bool b)))).
@@ -349,177 +253,10 @@ Proof.
 Qed.
 
 
-Lemma well_formed_expr_lm: forall tb s e t,
-    type_check_stack tb s -> 
-    well_defined_expr s e ->
-    well_typed_expr tb e t ->
-    exists v, eval_expr s e v.
-Proof.
-    intros tb s e t h1 h2.
-    generalize t. 
-    induction h2; 
-    intros t0 h3.
-    (* 1. Econst *)
-  - exists (ValNormal (Int n)).
-    constructor. unfold eval_constant; simpl; auto.
-  - exists (ValNormal (Bool b)).
-    constructor. unfold eval_constant; simpl; auto.
-    (* 2. Evar *)
-  - exists (ValNormal v).
-    constructor; assumption.
-    (* 3. Ebinop *)
-  - inversion h3; subst. 
-    specialize (IHh2_1 h1 _ H5).
-    specialize (IHh2_2 h1 _ H6).
-    rm_exists.
-
-    destruct x; destruct x0.
-    + specialize (binop_rule _ _ _ _ _ _ _ _ _ h1 H0 H h3).
-       intros h4; rm_exists. 
-       exists (ValNormal x); assumption.
-    + specialize (exceptionVal_has_no_typ _ _ _ _ h1 H0 H5); intuition.
-    + specialize (exceptionVal_has_no_typ _ _ _ _ h1 H H6); intuition.
-    + specialize (exceptionVal_has_no_typ _ _ _ _ h1 H H6); intuition.
-
-    (* 4. Eunop *)
-  - inversion h3; subst.
-    specialize (IHh2 h1 _ H3).
-    rm_exists.
-    specialize (eval_type_reserve _ _ _ _ _ h1 H H3).
-    intros h5.
-    destruct x; try rm_contradict.
-    destruct v; try rm_contradict.
-    set (y :=  (eval_unop op (ValNormal (Bool b)))).
-    exists y. 
-    econstructor. 
-    apply H. intuition.
-Qed.
-
-(*
-Lemma well_formed_expr_lm: forall tb s e t,
-    well_typed_expr tb e t ->
-    well_defined_expr s e ->
-    symbol_consistent s tb -> 
-    (exists v, eval_expr s e (ValNormal (Int v))) \/ (exists b, eval_expr s e (ValNormal (Bool b))).
-Proof.
-    intros tb s e.
-    induction e; 
-    intros t H H0 H1.
-  - (* 1. Econst *)
-    destruct c.
-    * left. 
-      exists z. 
-      constructor; auto.
-    * right. 
-      exists b. 
-      constructor; auto.
-  - (* 2. Evar *)
-    inversion H0; subst.
-    destruct v as [ n | b].
-    * left. 
-      exists n.
-      rm_eval_expr.
-    * right.
-      exists b.
-      rm_eval_expr.
-  - (* 3. Ebinop *)
-    inversion H; subst. 
-    inversion H0; subst.
-    specialize (IHe1 t0  H8 H5 H1).
-    specialize (IHe2 t0 H9 H11 H1).
-    destruct IHe1; destruct IHe2.
-    * (* 3.1 ValInt, ValInt *)
-      inversion H2. inversion H3.
-
-      specialize (binop_rule s tb e1 (Int x) e2 (Int x0) a b t H1 H4 H6 H).
-      intros h1. inversion h1. destruct x1 as [x2 | x3]. 
-      left; exists x2; assumption.
-      right; exists x3; assumption.
-
-    * (* 3.2 ValInt, ValBool *)
-      inversion H2. inversion H3.
-      specialize (eval_type_reserve _ _ _ _ _ H1 H4 H8); intros.
-      specialize (eval_type_reserve _ _ _ _ _ H1 H6 H9); intros.
-      inversion H7; subst. 
-      inversion H12.
-    * (* 3.3 ValBool, ValInt *)
-      inversion H2. inversion H3.
-      specialize (eval_type_reserve _ _ _ _ _ H1 H4 H8); intros.
-      specialize (eval_type_reserve _ _ _ _ _ H1 H6 H9); intros.
-      inversion H7; subst. inversion H12.
-    * (* 3.4 ValBool, ValBool *)
-      inversion H2. inversion H3.
-      specialize (binop_rule _ _ _ _ _ _ _ _ _ H1 H4 H6 H).
-      intros h2. inversion h2. destruct x1 as [x2 | x3]. 
-      left; exists x2; assumption.
-      right; exists x3; assumption.
-  - (* 4. Eunop *)
-    inversion H; subst. 
-    inversion H0; subst.
-    specialize (IHe Tbool H6 H4 H1). 
-    inversion IHe; rm_exists.    
-    + specialize (eval_type_reserve s tb e (ValNormal (Int x)) Tbool H1 H3 H6); 
-       intros h3; 
-       inversion h3. 
-    + specialize (unop_rule s tb e (Bool x) a u Tbool H1 H3 H); 
-       intros h4; inversion h4. 
-       destruct x0 as [x2 | x3]. 
-       left; exists x2; assumption.
-       right; exists x3; assumption.
-Qed.
-
-Theorem well_formed_expr: forall tb s e t,
-    well_typed_expr tb e t ->
-    well_defined_expr s e ->
-    symbol_consistent s tb -> 
-    exists v, eval_expr s e v /\ return_value_type v t.
-Proof.
-    intros tb s e t h1 h2 h3.
-    specialize (well_formed_expr_lm _ _ _ _ h1 h2 h3).
-    intros h.
-    rm_or_hyp; rm_exists.
-  - exists (ValNormal (Int x)).
-    split.
-    + assumption.
-    + apply eval_type_reserve with (s := s) (tb := tb) (e := e);
-       assumption.
-  - exists (ValNormal (Bool x)).
-    split.
-    + assumption.
-    + apply eval_type_reserve with (s := s) (tb := tb) (e := e);
-       assumption.
-Qed.
-*)
-
 (* = = = = = = = = = = = = = = =  *)
 (* = = = = = = = = = = = = = = =  *)
 
-(* -> *)
-Lemma equal_wd_expr_expr2_R: forall s istate e,  
-    initializationMap s istate ->
-    well_defined_expr s e -> 
-    well_defined_expr2 istate e. (* !!! *)
-Proof.
-    intros s istate e h1 h2.
-    induction h2; try constructor; try intuition. 
-  - apply initializationMap_consistent1 with (s:=s) (v:=v);
-    assumption.
-Qed.
-
-(* <- *)    
-Lemma equal_wd_expr_expr2_L: forall s istate e,
-    initializationMap s istate ->
-    well_defined_expr2 istate e -> 
-    well_defined_expr s e. (* !!! *)
-Proof.
-    intros s istate e h1 h2.
-    induction h2; try constructor; try intuition.
-  - specialize (initializationMap_consistent2 _ _ _ h1 H); intros h3.
-    rm_exists.
-    apply WD_Evar with (v:=x0).
-    auto. 
-Qed.
-
+(** some help lemmas *)
 Lemma valid_update: forall tb s ast_id x e v,
     type_check_stack tb s ->
     well_typed_stmt tb (Sassign ast_id x e) ->
@@ -644,9 +381,9 @@ Qed.
 (****************************************************)
 
 Lemma initializationMap_expr: forall istate1 e istate2,
-     well_defined_expr2 istate1 e ->   
+     well_defined_expr istate1 e ->   
      (forall x, fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) ->
-     well_defined_expr2 istate2 e.
+     well_defined_expr istate2 e.
 Proof.
     intros istate1 e istate2 h1.
     generalize istate2. 
@@ -671,10 +408,10 @@ Qed.
 
 (* this modified version is used to prove lemma: ''initializationMap_stmt'' *)
 Lemma initializationMap_expr1: forall istate1 e istate2,
-     well_defined_expr2 istate1 e ->   
+     well_defined_expr istate1 e ->   
      (forall x, (fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) /\
                    (fetch2 x istate1 = Some Uninit -> exists m, fetch2 x istate2 = Some m)) ->
-     well_defined_expr2 istate2 e.
+     well_defined_expr istate2 e.
 Proof.
     intros.
     distr_qualifier.
@@ -713,8 +450,8 @@ Qed.
 
 (* 'c' is put before 'istate1', because when we do induction on 'c', keep 'istate1' universal *)
 Lemma wd_fetch2_sync: forall c istate1 istate1' istate2 istate2',
-    well_defined_stmt2 istate1 c istate1' ->
-    well_defined_stmt2 istate2 c istate2' ->
+    well_defined_stmt istate1 c istate1' ->
+    well_defined_stmt istate2 c istate2' ->
     (forall x, (fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) /\
                   (fetch2 x istate1 = Some Uninit -> exists m', fetch2 x istate2 = Some m')) ->
     (forall x, (fetch2 x istate1' = Some Init -> fetch2 x istate2' = Some Init) /\
@@ -772,10 +509,10 @@ Proof.
 Qed.
 
 Lemma initializationMap_stmt: forall istate1 c istate1' istate2,
-     well_defined_stmt2 istate1 c istate1' ->   
+     well_defined_stmt istate1 c istate1' ->   
      (forall x, (fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) /\
                    (fetch2 x istate1 = Some Uninit -> exists m, fetch2 x istate2 = Some m)) ->
-     exists istate2', well_defined_stmt2 istate2 c istate2'.
+     exists istate2', well_defined_stmt istate2 c istate2'.
 Proof.
     intros istate1 c istate1' istate2 h1.
     generalize istate2. clear istate2.
@@ -806,12 +543,12 @@ Proof.
     + specialize (IHh1_2 x hz2).
        rm_exists.
        exists x0.
-       apply WD_Sseq2 with (s' := x);
+       apply WD_Sseq with (s' := x);
        assumption.
   - exists istate2.
     specialize (IHh1 _ h2).
     rm_exists.
-    apply WD_Sifthen2 with (s' := x).    
+    apply WD_Sifthen with (s' := x).    
     + distr_qualifier.
        specialize (initializationMap_expr _ _ _ H H2); intros hz1.
        assumption.
@@ -819,7 +556,7 @@ Proof.
   - exists istate2.
     specialize (IHh1 _ h2).
     rm_exists.
-    apply WD_Swhile2 with (s' := x).
+    apply WD_Swhile with (s' := x).
     + distr_qualifier.
        specialize (initializationMap_expr _ _ _ H H2); intros hz1.
        assumption.
@@ -828,7 +565,7 @@ Qed.
 
 
 Lemma initializationMap_inc: forall istate c istate',
-     well_defined_stmt2 istate c istate' ->   
+     well_defined_stmt istate c istate' ->   
      (forall x, (fetch2 x istate = Some Init -> fetch2 x istate' = Some Init) /\
                    (fetch2 x istate = Some Uninit -> exists m, fetch2 x istate' = Some m)).
 Proof.
@@ -882,7 +619,7 @@ Qed.
 Lemma eval_stmt_greater: forall s c s' istate istate' istate1,
      eval_stmt s c s' -> 
      initializationMap s istate ->
-     well_defined_stmt2 istate c istate' -> 
+     well_defined_stmt istate c istate' -> 
      initializationMap s' istate1 -> 
      (forall x, (fetch2 x istate' = Some Init -> fetch2 x istate1 = Some Init) /\
                    (fetch2 x istate' = Some Uninit -> exists m, fetch2 x istate1 = Some m)).
@@ -906,7 +643,7 @@ Proof.
     specialize (imap_exists s1); intros hz1.
     rm_exists.
     specialize (IHh1_1 _ _ _ h2 H4 H).
-    assert (hz2: exists istate, well_defined_stmt2 x c2 istate).
+    assert (hz2: exists istate, well_defined_stmt x c2 istate).
     specialize (initializationMap_stmt _ _ _ _ H5 IHh1_1); intros hz2.
     assumption.
     rm_exists.
@@ -934,15 +671,15 @@ Proof.
     rm_exists.
     specialize (IHh1_1 _ _ _ h2 H6 H0).
     specialize (initializationMap_inc _ _ _ H6); intros hz2.
-    assert (hz2': exists istate, well_defined_stmt2 x (Swhile ast_id b c) istate).
+    assert (hz2': exists istate, well_defined_stmt x (Swhile ast_id b c) istate).
     exists x.
-    assert (hz3: exists istate, well_defined_stmt2 x c istate).
+    assert (hz3: exists istate, well_defined_stmt x c istate).
     specialize (initializationMap_stmt _ _ _ _ H6 hz2); intros hz3.
     inversion hz3.
     specialize (initializationMap_stmt _ _ _ _ H1 IHh1_1); intros hz4.    
     assumption.
     inversion hz3.
-    apply WD_Swhile2 with (s' := x0). 
+    apply WD_Swhile with (s' := x0). 
     + specialize (fetch2_transitive _ _ _ hz2 IHh1_1); intros hz5.
        specialize (initializationMap_expr1 _ _ _ H5 hz5); intros hz6.
        assumption.
@@ -966,10 +703,10 @@ Qed.
 Lemma initializationMap_consistent: forall s istate c1 s' istate' c2 istate'' istate1,
      initializationMap s istate ->
      eval_stmt s c1 s' -> 
-     well_defined_stmt2 istate c1 istate' -> 
-     well_defined_stmt2 istate' c2 istate'' ->      
+     well_defined_stmt istate c1 istate' -> 
+     well_defined_stmt istate' c2 istate'' ->      
      initializationMap s' istate1 ->
-     exists istate2, well_defined_stmt2 istate1 c2 istate2.
+     exists istate2, well_defined_stmt istate1 c2 istate2.
 Proof.
     intros s istate c1 s' istate' c2 istate'' istate1 h1 h2 h3 h4 h5.
     specialize (eval_stmt_greater _ _ _ _ _ _ h2 h1 h3 h5); intros hz1.
@@ -983,7 +720,9 @@ Ltac unfold_f_eval_stmt :=
     | [ |- context[f_eval_stmt ?k ?s _]] => unfold f_eval_stmt; simpl
     end.
 
-(* Lemmas to prove... *)
+
+(** * Correctness Proof About Well-Formed Command *)
+
 (* do functional induction on 'f_eval_stmt k s c', so 'k, s, c' are put before the other variables in the 
     universal qualifier. 
  *)
@@ -991,7 +730,7 @@ Lemma well_formed_cmd: forall k s c tb istate istate',
     well_typed_stmt tb c -> 
     type_check_stack tb s ->
     initializationMap s istate ->
-    well_defined_stmt2 istate c istate' ->
+    well_defined_stmt istate c istate' ->
     (exists s', f_eval_stmt k s c = (SNormal s')) \/ f_eval_stmt k s c = SUnterminated.
 Proof.
     intros k s c.
@@ -1020,8 +759,7 @@ Proof.
   - (* proof term with contradictory hypothesis *)
     inversion H; subst.
     inversion H2; subst.
-    specialize (equal_wd_expr_expr2_L _ _ _ H1 H10); intros hz1.
-    specialize (well_formed_expr _ _ _ _ H0 hz1 H8); intros hz2.
+    specialize (well_formed_expr _ _ _ _ _ H0 H1 H10 H8); intros hz2.
     rm_exists.
     specialize (f_eval_expr_complete _ _ _ H4); intros hz3.
     rewrite hz3 in e2.
@@ -1031,11 +769,11 @@ Proof.
   - (* Sseq*)
     inversion H; subst.
     inversion H2; subst.
-    specialize (f_eval_stmt_complete _ _ _ _ e1); intros hz1.
+    specialize (f_eval_stmt_correct _ _ _ _ e1); intros hz1.
     specialize (symbol_consistent_reserve _ _ _ _ H0 H6 hz1); intros hz2.
     specialize (imap_exists s1); intros hz3.
     inversion hz3.
-    assert (hz4: exists istate, well_defined_stmt2 x c2 istate).
+    assert (hz4: exists istate, well_defined_stmt x c2 istate).
     { specialize (eval_stmt_greater _ _ _ _ _ _ hz1 H1 H10 H3); intros hz5.
       specialize (initializationMap_stmt _ _ _ _ H11 hz5); intros hz6.
       assumption.
@@ -1063,8 +801,7 @@ Proof.
   - (* proof term with contradictory hypothesis *)
     inversion H; subst.
     inversion H2; subst.
-    specialize (equal_wd_expr_expr2_L _ _ _ H1 H10); intros hz1.
-    specialize (well_formed_expr _ _ _ _ H0 hz1 H6); intros hz2.
+    specialize (well_formed_expr _ _ _ _ _ H0 H1 H10 H6); intros hz2.
     rm_exists.
     specialize (f_eval_expr_complete _ _ _ H4); intros hz3.
     rewrite hz3 in y.
@@ -1076,10 +813,10 @@ Proof.
   - (* Swhile_True *)
     inversion H; subst.
     inversion H2; subst.
-    specialize (f_eval_stmt_complete _ _ _ _ e2); intros hz1.
+    specialize (f_eval_stmt_correct _ _ _ _ e2); intros hz1.
     specialize (imap_exists s1); intros hz2.
     rm_exists.
-    assert (hz3: well_defined_stmt2 x (Swhile ast_id b c0) x).
+    assert (hz3: well_defined_stmt x (Swhile ast_id b c0) x).
     { specialize (initializationMap_inc _ _ _ H11); intros hz2.
       specialize (eval_stmt_greater _ _ _ _ _ _ hz1 H1 H11 H3); intros hz3.
       specialize (fetch2_transitive _ _ _ hz2 hz3); intros hz4.
@@ -1106,8 +843,7 @@ Proof.
   - (* proof term with contradictory hypothesis *)
     inversion H; subst.
     inversion H2; subst.
-    specialize (equal_wd_expr_expr2_L _ _ _ H1 H10); intros hz1.
-    specialize (well_formed_expr _ _ _ _ H0 hz1 H6); intros hz2.
+    specialize (well_formed_expr _ _ _ _ _ H0 H1 H10 H6); intros hz2.
     rm_exists.
     specialize (f_eval_expr_complete _ _ _ H4); intros hz3.
     rewrite hz3 in y.
@@ -1117,108 +853,6 @@ Proof.
        destruct b0; inversion y.
     + inversion H5.    
 Qed.
-
-
-(*
-Lemma well_formed_cmd: forall tb c s istate istate' k, 
-    well_typed_stmt tb c -> (* we want to do induction on 'c', but keep the variables 's', 'istate' ... universal *)
-    type_check_stack tb s ->
-    initializationMap s istate ->
-    well_defined_stmt2 istate c istate' ->
-    (exists s', f_eval_stmt k s c = (SNormal s')) \/ f_eval_stmt k s c = SUnterminated.
-Proof.
-    intros tb. 
-    (* in the later proof during the induction on 'c', we have to keep the variables 's', 'istate', 'istate'', 'k' 
-       universal, that's why in the definition of lemma, we put 'well_typed_stmt' at the beginning  *)
-    induction c;
-    intros s istate istate' k h1 h2 h3 h4.
-  - (* 1. Sassign *)
-    inversion h1; subst.
-    inversion h4; subst.
-    specialize (equal_wd_expr_expr2_L _ _ _ h3 H6); intros hz1.
-    specialize (well_formed_expr _ _ _ _ h2 hz1 H4); intros hz2.
-    rm_exists.
-    specialize (f_eval_expr_complete _ _ _ H0); intros hz3.
-    unfold_f_eval_stmt.
-    destruct k.
-    + right; auto.
-    + left. rewrite hz3.
-       destruct x.
-       * specialize (valid_update _ _ _ _ _ v h2 h1); intros hz4.
-         rm_exists.
-         rewrite H.
-         exists x; auto.
-       * specialize (exceptionVal_has_no_typ _ _ _ _ h2 H0 H4); intros hz5.
-         intuition.
-  - (* 2. Sifthen *)
-    inversion h1; subst.
-    inversion h4; subst.
-    unfold_f_eval_stmt.
-    destruct k.
-    + right; auto.
-    + fold f_eval_stmt.
-       specialize (IHc _ _ _ k H4 h2 h3 H7).
-       specialize (equal_wd_expr_expr2_L _ _ _ h3 H6); intros hz1.
-       specialize (well_formed_expr _ _ _ _ h2 hz1 H2); intros hz2.
-       rm_exists.
-       specialize (f_eval_expr_complete _ _ _ H0); intros hz3.
-       rewrite hz3.
-       destruct x.
-       * destruct v.
-         rm_contradict.
-         destruct b.
-           assumption.
-           left; exists s; auto.
-       * rm_contradict.
-  - (* 3. Swhile *)
-    inversion h1; subst.
-    inversion h4; subst.
-    unfold_f_eval_stmt.
-    destruct k.
-    + right; auto.
-    + fold f_eval_stmt.
-       specialize (IHc _ _ _ k H4 h2 h3 H7).
-       specialize (equal_wd_expr_expr2_L _ _ _ h3 H6); intros hz1.
-       specialize (well_formed_expr _ _ _ _ h2 hz1 H2); intros hz2.
-       rm_exists.
-       specialize (f_eval_expr_complete _ _ _ H0); intros hz3.
-       rewrite hz3.
-       destruct x.
-       * destruct v.
-         rm_contradict.
-         destruct b.
-           inversion IHc.
-           rm_exists.
-           rewrite H3.
-             admit. (******** ?????????? ********)
-           rewrite H.
-           right; auto.
-           left; exists s; auto.
-       * rm_contradict.
-  - (* 4. Sseq *)
-    inversion h1; subst.
-    inversion h4; subst.
-    unfold_f_eval_stmt.
-    destruct k.
-    + right; auto.
-    + fold f_eval_stmt.
-    specialize (IHc1 _ _ _ k H2 h2 h3 H6).
-    inversion IHc1.
-      * rm_exists.
-        rewrite H0.
-        remember H0 as H'0. clear HeqH'0.
-        apply f_eval_stmt_complete in H0.
-        specialize (symbol_consistent_reserve _ _ _ _ h2 H2 H0); intros hz1.
-        specialize (imap_exists x); intros hz2; rm_exists.
-        specialize (f_eval_stmt_complete _ _ _ _ H'0); intros hz2.
-        specialize (initializationMap_consistent _ _ _ _ _ _ _ _ h3 hz2 H6 H7 H); intros hz3.
-        rm_exists.
-        specialize (IHc2 _ _ _ k H4 hz1 H H1).
-        assumption.
-     * rewrite H.
-       right; auto.
-Qed.
-*)
 
 
 

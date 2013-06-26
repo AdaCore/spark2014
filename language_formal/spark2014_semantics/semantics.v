@@ -1,7 +1,7 @@
-Require Export language.
 Require Export values.
 Require Export environment.
 
+(** * Relational Semantics *)
 Definition eval_constant (cst: constant): return_val :=
     match cst with
     | Ointconst v => ValNormal (Int v)
@@ -29,6 +29,7 @@ Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
     | Onot => Val.not v
     end.
 
+(** ** Expression semantics *)
 Inductive eval_expr: stack -> expr -> return_val -> Prop :=
     | eval_Econst: forall ast_id cst s v,
         eval_constant cst = v ->
@@ -46,6 +47,7 @@ Inductive eval_expr: stack -> expr -> return_val -> Prop :=
         eval_unop op (ValNormal (Bool b)) = v ->
         eval_expr s (Eunop ast_id op e) v.
 
+(** ** Command semantics *)
 Inductive eval_stmt: stack -> stmt -> stack -> Prop := 
     | eval_Sassign: forall ast_id s s1 x e v,
         eval_expr s e (ValNormal v) ->
@@ -76,6 +78,8 @@ Inductive eval_stmt: stack -> stmt -> stack -> Prop :=
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 
+(** * Functional Semantics *)
+(** ** Expression semantics *)
 (* here use 'Function' instead of 'Fixpoint' in order to use tactic 'functional induction (f_eval_expr _ _)' in proofs *)
 Function f_eval_expr (s: stack) (e: expr): return_val :=
     match e with
@@ -99,6 +103,7 @@ Function f_eval_expr (s: stack) (e: expr): return_val :=
         eval_unop op v
     end.
 
+(** ** Command semantics *)
 Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state := 
   match k with
   | 0 => SUnterminated
@@ -140,8 +145,9 @@ Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state :=
   end.
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
-(* Bisumlation between inductive and functional semantics. *)
 
+(** * Bisimulation Between Relational And Functional Semantics. *)
+(** ** Semantics equivalence for expression *)
 Lemma f_eval_expr_correct : forall s e v,
                         f_eval_expr s e = ValNormal v ->
                             eval_expr s e (ValNormal v).
@@ -187,18 +193,7 @@ Proof.
     destruct op in H; simpl in H; assumption.
 Qed.
 
-(*
-Lemma eval_expr_correct : forall s e v,
-(*                           correct_stack s -> *)
-                          eval_expr e s v ->
-                              (exists v1, v = ValNormal v1) \/ v = ValException.
-Proof.
-  intros s e v h.
-  inversion h; auto.
-Qed.
-*)
 
-(* Bisimulation for semantics of commands. *)
 Ltac blam :=
   match goal with
     | H:SUnterminated _ = SNormal _ |- _ => inversion H
@@ -212,7 +207,6 @@ Ltac blam :=
 Ltac invle := match goal with
     | H: (S _ <= _)%nat |- _ => (inversion H; clear H; subst;simpl)
   end.
-
 
 Lemma f_eval_stmt_fixpoint: forall s p (k:nat) s', 
         f_eval_stmt k s p = SNormal s' ->
@@ -254,54 +248,9 @@ Ltac kgreater :=
              rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
          end.
 
+(** ** Semantics equivalence for command *)
 
-
-
-(** Bisimulation between the inductive semantic of commands and the
-    executable one. One needs a weak form of type preservation: well
-    formedness (that is: no Anomaly or Constraint_error is stored in
-    the stack) of the stack is preserved. *)
-Lemma f_eval_stmt_correct : forall s p s',
-        eval_stmt s p s' ->
-            exists k, f_eval_stmt k s p = SNormal s'.
-Proof.
-  intros s p s' H.
-  induction H.
-  - exists 1%nat. simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    rewrite H0. 
-    reflexivity.
-  - destrIH.
-    exists (S (k0+k)).
-    simpl.
-    kgreater.
-  - destrIH.
-    exists (S (k)).
-    simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    assumption.
-(*  - destrIH.
-    exists (S (k)).
-    simpl.
-    rewrite <- (feval_complete _ _ _ H).
-    assumption.*)
-  - exists (S 0).
-    simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    reflexivity.
-  - destrIH.
-    exists (S (k0+k)).
-    simpl.
-    kgreater.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    reflexivity.
-  - exists (S 0).
-    simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    reflexivity.
-Qed.
-
-Lemma f_eval_stmt_complete : forall k s p s',
+Lemma f_eval_stmt_correct : forall k s p s',
         f_eval_stmt k s p = SNormal s' ->
           eval_stmt s p s'.
 Proof.
@@ -336,10 +285,46 @@ Proof.
     apply f_eval_expr_correct in e1. 
     subst; assumption.
 Qed.
+
+
+Lemma f_eval_stmt_complete : forall s p s',
+        eval_stmt s p s' ->
+            exists k, f_eval_stmt k s p = SNormal s'.
+Proof.
+  intros s p s' H.
+  induction H.
+  - exists 1%nat. simpl.
+    rewrite (f_eval_expr_complete _ _ _ H).
+    rewrite H0. 
+    reflexivity.
+  - destrIH.
+    exists (S (k0+k)).
+    simpl.
+    kgreater.
+  - destrIH.
+    exists (S (k)).
+    simpl.
+    rewrite (f_eval_expr_complete _ _ _ H).
+    assumption.
+  - exists (S 0).
+    simpl.
+    rewrite (f_eval_expr_complete _ _ _ H).
+    reflexivity.
+  - destrIH.
+    exists (S (k0+k)).
+    simpl.
+    kgreater.
+    rewrite (f_eval_expr_complete _ _ _ H).
+    reflexivity.
+  - exists (S 0).
+    simpl.
+    rewrite (f_eval_expr_complete _ _ _ H).
+    reflexivity.
+Qed.
     
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
-(* basic lemmas *)
+(** basic lemmas *)
 Lemma expr_type_infer: forall op v1 v2 n,
     eval_binop op v1 v2 = ValNormal (Int n) -> (exists n1 n2, v1 = ValNormal (Int n1) /\ v2 = ValNormal (Int n2)).
 Proof.
