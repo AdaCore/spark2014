@@ -400,22 +400,26 @@ is used purely for static analysis purposes and is not executed.
    * a ``global_item`` that denotes an input but not an output
      has a ``mode_selector`` of Input;
 
-   * a ``global_item`` that denotes an output but not an input and is always
-     fully initialized as a result of any successful execution of a call of the
-     subprogram has a ``mode_selector`` of Output;
+   * a ``global_item`` has a ``mode_selector`` of Output if:
+     
+     - it denotes an output but not an input, other than the
+       use of a discriminant or an attribute of the ``global_item`` and 
+       
+     - is always fully initialized as a result of any successful execution of a 
+       call of the subprogram;
 
    * otherwise the ``global_item`` denotes both an input and an output, is
      has a ``mode_selector`` of In_Out.
 
-For purposes of determining whether an output of a subprogram shall have a
-``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
-or tags of any part of the output are ignored. Similarly, for purposes of
-determining whether an entity is "fully initialized as a result of any
-successful execution of the call", only nondiscriminant parts are considered.
-[This implies that given an output of a discriminated type that is not known
-to be constrained ("known to be constrained" is defined in Ada RM 3.3),
-the discriminants of the output might or might not be updated by the call.]
-
+   [For purposes of determining whether an output of a subprogram shall have a
+   ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
+   or tags of any part of the output are ignored. Similarly, for purposes of
+   determining whether an entity is "fully initialized as a result of any
+   successful execution of the call", only nondiscriminant parts are considered.
+   This implies that given an output of a discriminated type that is not known
+   to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
+   discriminants of the output might or might not be updated by the call.]
+       
 #. An entity that is denoted by a ``global_item`` which is referenced by a
    subprogram but is neither an input nor an output but is only referenced
    directly, or indirectly in assertion expressions has a ``mode_selector`` of
@@ -552,19 +556,19 @@ where
       :Trace Unit: 6.1.5 LR The input set consists of formal parameters of mode 'in'
                    and 'in out' and global_items with mode_selector Input or In_Out
 
-#. The *input set* of a subprogram is the *explicit input set* of the
+#. The *input set* of a subprogram is the explicit input set of the
    subprogram augmented with those formal parameters of mode **out** and
-   those global_items with a mode_selector of Output having discriminants,
+   those ``global_items`` with a ``mode_selector`` of Output having discriminants,
    array bounds, or a tag which can be read and whose values are not
    implied by the subtype of the parameter. More specifically, it includes formal
-   parameters of mode **out** and global_items with a mode_selector of
+   parameters of mode **out** and ``global_items`` with a ``mode_selector`` of
    Output which are of an unconstrained array subtype, an unconstrained
    discriminated subtype, a tagged type, or a type having a subcomponent of an
    unconstrained discriminated subtype. [Tagged types are mentioned in this rule
    in anticipation of a later version of |SPARK| in which the current
    restriction on uses of the 'Class attribute is relaxed; currently
    there is no way to read or otherwise depend on the underlying tag of an
-   **out** mode formal parameter or a global_item with a mode_selector
+   **out** mode formal parameter or a ``global_item`` with a ``mode_selector``
    of Output of a tagged type.]
 
    .. ifconfig:: Display_Trace_Units
