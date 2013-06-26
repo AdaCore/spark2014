@@ -552,20 +552,20 @@ where
       :Trace Unit: 6.1.5 LR The input set consists of formal parameters of mode 'in'
                    and 'in out' and global_items with mode_selector Input or In_Out
 
-#.  The *input set* of a subprogram is the *explicit input set* of the
-    subprogram augmented with those formal parameters of mode **out** and
-    those global_items with a mode_selector of Output having discriminants,
-    array bounds, or a tag which can be read and whose values are not
-     implied by the subtype of the parameter. More specifically, it includes formal
-    parameters of mode **out** and global_items with a mode_selector of
-    Output which are of an unconstrained array subtype, an unconstrained
-    discriminated subtype, a tagged type, or a type having a subcomponent of an
-    unconstrained discriminated subtype. [Tagged types are mentioned in this rule
-    in anticipation of a later version of |SPARK| in which the current
-    restriction on uses of the 'Class attribute is relaxed; currently
-    there is no way to read or otherwise depend on the underlying tag of an
-    **out** mode formal parameter or a global_item with a mode_selector
-    of Output of a tagged type.]
+#. The *input set* of a subprogram is the *explicit input set* of the
+   subprogram augmented with those formal parameters of mode **out** and
+   those global_items with a mode_selector of Output having discriminants,
+   array bounds, or a tag which can be read and whose values are not
+   implied by the subtype of the parameter. More specifically, it includes formal
+   parameters of mode **out** and global_items with a mode_selector of
+   Output which are of an unconstrained array subtype, an unconstrained
+   discriminated subtype, a tagged type, or a type having a subcomponent of an
+   unconstrained discriminated subtype. [Tagged types are mentioned in this rule
+   in anticipation of a later version of |SPARK| in which the current
+   restriction on uses of the 'Class attribute is relaxed; currently
+   there is no way to read or otherwise depend on the underlying tag of an
+   **out** mode formal parameter or a global_item with a mode_selector
+   of Output of a tagged type.]
 
    .. ifconfig:: Display_Trace_Units
 
