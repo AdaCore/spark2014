@@ -3,7 +3,88 @@ across_compilation_units-child.ads:27:24: "X" depends on "Y" [depends_missing]
 across_compilation_units-child.ads:29:24: "Y" depends on "Y" [depends_missing]
 across_compilation_units-child.ads:30:24: "Z" depends on "X" [depends_missing]
 across_compilation_units-child.ads:30:24: "Z" depends on "Z" [depends_missing]
-// coprime_cfg
+// package_spec_across_compilation_units_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_across_compilation_units_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// package_spec_caller_of_across_compilation_units_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_caller_of_across_compilation_units_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// package_spec_child_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext",fontcolor="red"];
+    4 [label="x'final",shape="plaintext"];
+    6 [label="y'initial",shape="plaintext",fontcolor="red"];
+    7 [label="y'final",shape="plaintext"];
+    9 [label="z'initial",shape="plaintext",fontcolor="red"];
+    10 [label="z'final",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  7 [arrowType="normal"];
+    2 ->  10 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+}
+
+// package_spec_child_pdg
+digraph G {
+   graph [splines=True];
+    3 [label="x'initial",shape="plaintext",fontcolor="red"];
+    4 [label="x'final",shape="plaintext"];
+    6 [label="y'initial",shape="plaintext",fontcolor="red"];
+    7 [label="y'final",shape="plaintext"];
+    9 [label="z'initial",shape="plaintext",fontcolor="red"];
+    10 [label="z'final",shape="plaintext"];
+
+    3 ->  4 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red"];
+}
+
+// package_spec_single_compilation_unit_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_single_compilation_unit_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// subprogram_coprime_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -45,7 +126,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// coprime_pdg
+// subprogram_coprime_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -88,7 +169,7 @@ digraph G {
     19 ->  8 [arrowType="normal",color="red"];
 }
 
-// double_max_cfg
+// subprogram_double_max_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -123,7 +204,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// double_max_pdg
+// subprogram_double_max_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -157,7 +238,7 @@ digraph G {
     17 ->  8 [arrowType="normal",color="red"];
 }
 
-// factorial_cfg
+// subprogram_factorial_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -187,7 +268,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// factorial_pdg
+// subprogram_factorial_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -219,7 +300,7 @@ digraph G {
     14 ->  6 [arrowType="normal",color="red"];
 }
 
-// fibonacci_cfg
+// subprogram_fibonacci_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -243,7 +324,7 @@ digraph G {
     11 ->  2 [arrowType="normal"];
 }
 
-// fibonacci_pdg
+// subprogram_fibonacci_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -265,7 +346,7 @@ digraph G {
     11 ->  6 [arrowType="normal",color="red"];
 }
 
-// max_cfg
+// subprogram_max_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -295,7 +376,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// max_pdg
+// subprogram_max_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -324,7 +405,7 @@ digraph G {
     14 ->  4 [arrowType="normal",color="red"];
 }
 
-// min_cfg
+// subprogram_min_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -352,7 +433,7 @@ digraph G {
     13 ->  2 [arrowType="normal"];
 }
 
-// min_pdg
+// subprogram_min_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -379,7 +460,7 @@ digraph G {
     13 ->  8 [arrowType="normal",color="red"];
 }
 
-// mutual_recursion_a_cfg
+// subprogram_mutual_recursion_a_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -421,7 +502,7 @@ digraph G {
     20 ->  2 [arrowType="normal"];
 }
 
-// mutual_recursion_a_pdg
+// subprogram_mutual_recursion_a_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -471,7 +552,7 @@ digraph G {
     20 ->  8 [arrowType="normal",color="red"];
 }
 
-// mutual_recursion_b_cfg
+// subprogram_mutual_recursion_b_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -513,7 +594,7 @@ digraph G {
     20 ->  2 [arrowType="normal"];
 }
 
-// mutual_recursion_b_pdg
+// subprogram_mutual_recursion_b_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -563,7 +644,7 @@ digraph G {
     20 ->  8 [arrowType="normal",color="red"];
 }
 
-// prime_cfg
+// subprogram_prime_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -594,7 +675,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// prime_pdg
+// subprogram_prime_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -622,7 +703,7 @@ digraph G {
     14 ->  6 [arrowType="normal",color="red"];
 }
 
-// round_swap_1_cfg
+// subprogram_round_swap_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -663,181 +744,7 @@ digraph G {
     20 ->  2 [arrowType="normal"];
 }
 
-// round_swap_1_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    3 [label="x'initial\n(global)",shape="plaintext"];
-    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="y'initial\n(global)",shape="plaintext"];
-    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="z'initial\n(global)",shape="plaintext"];
-    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    11 [label="call swap",shape="box"];
-    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    16 [label="call swap",shape="box"];
-    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  11 [arrowType="normal"];
-    1 ->  16 [arrowType="normal"];
-    3 ->  12 [arrowType="normal",color="red"];
-    5 ->  14 [arrowType="normal",color="red"];
-    7 ->  19 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    11 ->  14 [arrowType="normal"];
-    11 ->  15 [arrowType="normal"];
-    12 ->  13 [arrowType="normal",color="cornflowerblue"];
-    12 ->  15 [arrowType="normal",color="cornflowerblue"];
-    13 ->  17 [arrowType="normal",color="red"];
-    14 ->  13 [arrowType="normal",color="cornflowerblue"];
-    14 ->  15 [arrowType="normal",color="cornflowerblue"];
-    15 ->  6 [arrowType="normal",color="red"];
-    16 ->  17 [arrowType="normal"];
-    16 ->  18 [arrowType="normal"];
-    16 ->  19 [arrowType="normal"];
-    16 ->  20 [arrowType="normal"];
-    17 ->  18 [arrowType="normal",color="cornflowerblue"];
-    17 ->  20 [arrowType="normal",color="cornflowerblue"];
-    18 ->  4 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal",color="cornflowerblue"];
-    19 ->  20 [arrowType="normal",color="cornflowerblue"];
-    20 ->  8 [arrowType="normal",color="red"];
-}
-
-// round_swap_2_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="x'initial\n(global)",shape="plaintext"];
-    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="y'initial\n(global)",shape="plaintext"];
-    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="z'initial\n(global)",shape="plaintext"];
-    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    11 [label="call swap_with_depends",shape="box"];
-    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    16 [label="call swap_with_depends",shape="box"];
-    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  11 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
-    11 ->  12 [arrowType="normal"];
-    12 ->  14 [arrowType="normal"];
-    13 ->  15 [arrowType="normal"];
-    14 ->  13 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  17 [arrowType="normal"];
-    17 ->  19 [arrowType="normal"];
-    18 ->  20 [arrowType="normal"];
-    19 ->  18 [arrowType="normal"];
-    20 ->  2 [arrowType="normal"];
-}
-
-// round_swap_2_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    3 [label="x'initial\n(global)",shape="plaintext"];
-    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="y'initial\n(global)",shape="plaintext"];
-    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="z'initial\n(global)",shape="plaintext"];
-    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    11 [label="call swap_with_depends",shape="box"];
-    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    16 [label="call swap_with_depends",shape="box"];
-    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  11 [arrowType="normal"];
-    1 ->  16 [arrowType="normal"];
-    3 ->  12 [arrowType="normal",color="red"];
-    5 ->  14 [arrowType="normal",color="red"];
-    7 ->  19 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal"];
-    11 ->  13 [arrowType="normal"];
-    11 ->  14 [arrowType="normal"];
-    11 ->  15 [arrowType="normal"];
-    12 ->  15 [arrowType="normal",color="cornflowerblue"];
-    13 ->  17 [arrowType="normal",color="red"];
-    14 ->  13 [arrowType="normal",color="cornflowerblue"];
-    15 ->  6 [arrowType="normal",color="red"];
-    16 ->  17 [arrowType="normal"];
-    16 ->  18 [arrowType="normal"];
-    16 ->  19 [arrowType="normal"];
-    16 ->  20 [arrowType="normal"];
-    17 ->  20 [arrowType="normal",color="cornflowerblue"];
-    18 ->  4 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal",color="cornflowerblue"];
-    20 ->  8 [arrowType="normal",color="red"];
-}
-
-// round_swap_with_depends_1_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start",shape="plaintext"];
-    2 [label="end",shape="plaintext"];
-    3 [label="x'initial\n(global)",shape="plaintext"];
-    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
-    5 [label="y'initial\n(global)",shape="plaintext"];
-    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
-    7 [label="z'initial\n(global)",shape="plaintext"];
-    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
-    11 [label="call swap",shape="box"];
-    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
-    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
-    16 [label="call swap",shape="box"];
-    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
-    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
-    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
-    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
-
-    1 ->  11 [arrowType="normal"];
-    2 ->  4 [arrowType="normal"];
-    2 ->  6 [arrowType="normal"];
-    2 ->  8 [arrowType="normal"];
-    3 ->  1 [arrowType="normal"];
-    5 ->  1 [arrowType="normal"];
-    7 ->  1 [arrowType="normal"];
-    11 ->  12 [arrowType="normal"];
-    12 ->  14 [arrowType="normal"];
-    13 ->  15 [arrowType="normal"];
-    14 ->  13 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  17 [arrowType="normal"];
-    17 ->  19 [arrowType="normal"];
-    18 ->  20 [arrowType="normal"];
-    19 ->  18 [arrowType="normal"];
-    20 ->  2 [arrowType="normal"];
-}
-
-// round_swap_with_depends_1_pdg
+// subprogram_round_swap_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -885,7 +792,7 @@ digraph G {
     20 ->  8 [arrowType="normal",color="red"];
 }
 
-// round_swap_with_depends_2_cfg
+// subprogram_round_swap_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -926,7 +833,7 @@ digraph G {
     20 ->  2 [arrowType="normal"];
 }
 
-// round_swap_with_depends_2_pdg
+// subprogram_round_swap_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -970,7 +877,181 @@ digraph G {
     20 ->  8 [arrowType="normal",color="red"];
 }
 
-// swap_cfg
+// subprogram_round_swap_with_depends_1_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    11 [label="call swap",shape="box"];
+    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    16 [label="call swap",shape="box"];
+    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  11 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  15 [arrowType="normal"];
+    14 ->  13 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  17 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    18 ->  20 [arrowType="normal"];
+    19 ->  18 [arrowType="normal"];
+    20 ->  2 [arrowType="normal"];
+}
+
+// subprogram_round_swap_with_depends_1_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    11 [label="call swap",shape="box"];
+    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    16 [label="call swap",shape="box"];
+    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  11 [arrowType="normal"];
+    1 ->  16 [arrowType="normal"];
+    3 ->  12 [arrowType="normal",color="red"];
+    5 ->  14 [arrowType="normal",color="red"];
+    7 ->  19 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    11 ->  14 [arrowType="normal"];
+    11 ->  15 [arrowType="normal"];
+    12 ->  13 [arrowType="normal",color="cornflowerblue"];
+    12 ->  15 [arrowType="normal",color="cornflowerblue"];
+    13 ->  17 [arrowType="normal",color="red"];
+    14 ->  13 [arrowType="normal",color="cornflowerblue"];
+    14 ->  15 [arrowType="normal",color="cornflowerblue"];
+    15 ->  6 [arrowType="normal",color="red"];
+    16 ->  17 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    16 ->  19 [arrowType="normal"];
+    16 ->  20 [arrowType="normal"];
+    17 ->  18 [arrowType="normal",color="cornflowerblue"];
+    17 ->  20 [arrowType="normal",color="cornflowerblue"];
+    18 ->  4 [arrowType="normal",color="red"];
+    19 ->  18 [arrowType="normal",color="cornflowerblue"];
+    19 ->  20 [arrowType="normal",color="cornflowerblue"];
+    20 ->  8 [arrowType="normal",color="red"];
+}
+
+// subprogram_round_swap_with_depends_2_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    11 [label="call swap_with_depends",shape="box"];
+    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    16 [label="call swap_with_depends",shape="box"];
+    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  11 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  6 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    5 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
+    12 ->  14 [arrowType="normal"];
+    13 ->  15 [arrowType="normal"];
+    14 ->  13 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  17 [arrowType="normal"];
+    17 ->  19 [arrowType="normal"];
+    18 ->  20 [arrowType="normal"];
+    19 ->  18 [arrowType="normal"];
+    20 ->  2 [arrowType="normal"];
+}
+
+// subprogram_round_swap_with_depends_2_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial\n(global)",shape="plaintext"];
+    4 [label="x'final\n(global)",shape="plaintext",fontcolor="blue"];
+    5 [label="y'initial\n(global)",shape="plaintext"];
+    6 [label="y'final\n(global)",shape="plaintext",fontcolor="blue"];
+    7 [label="z'initial\n(global)",shape="plaintext"];
+    8 [label="z'final\n(global)",shape="plaintext",fontcolor="blue"];
+    11 [label="call swap_with_depends",shape="box"];
+    12 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    13 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    14 [label="y'in&nbsp;:=&nbsp;y",shape="plaintext"];
+    15 [label="y&nbsp;:=&nbsp;y'out",shape="plaintext"];
+    16 [label="call swap_with_depends",shape="box"];
+    17 [label="x'in&nbsp;:=&nbsp;x",shape="plaintext"];
+    18 [label="x&nbsp;:=&nbsp;x'out",shape="plaintext"];
+    19 [label="y'in&nbsp;:=&nbsp;z",shape="plaintext"];
+    20 [label="z&nbsp;:=&nbsp;y'out",shape="plaintext"];
+
+    1 ->  11 [arrowType="normal"];
+    1 ->  16 [arrowType="normal"];
+    3 ->  12 [arrowType="normal",color="red"];
+    5 ->  14 [arrowType="normal",color="red"];
+    7 ->  19 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal"];
+    11 ->  13 [arrowType="normal"];
+    11 ->  14 [arrowType="normal"];
+    11 ->  15 [arrowType="normal"];
+    12 ->  15 [arrowType="normal",color="cornflowerblue"];
+    13 ->  17 [arrowType="normal",color="red"];
+    14 ->  13 [arrowType="normal",color="cornflowerblue"];
+    15 ->  6 [arrowType="normal",color="red"];
+    16 ->  17 [arrowType="normal"];
+    16 ->  18 [arrowType="normal"];
+    16 ->  19 [arrowType="normal"];
+    16 ->  20 [arrowType="normal"];
+    17 ->  20 [arrowType="normal",color="cornflowerblue"];
+    18 ->  4 [arrowType="normal",color="red"];
+    19 ->  18 [arrowType="normal",color="cornflowerblue"];
+    20 ->  8 [arrowType="normal",color="red"];
+}
+
+// subprogram_swap_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -997,7 +1078,7 @@ digraph G {
     13 ->  2 [arrowType="normal"];
 }
 
-// swap_pdg
+// subprogram_swap_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -1022,7 +1103,7 @@ digraph G {
     13 ->  6 [arrowType="normal",color="red"];
 }
 
-// swap_with_depends_cfg
+// subprogram_swap_with_depends_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -1049,7 +1130,7 @@ digraph G {
     13 ->  2 [arrowType="normal"];
 }
 
-// swap_with_depends_pdg
+// subprogram_swap_with_depends_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

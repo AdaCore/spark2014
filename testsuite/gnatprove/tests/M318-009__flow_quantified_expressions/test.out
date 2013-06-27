@@ -1,7 +1,22 @@
 test.adb:22:26: ineffective statement [ineffective]
 test.adb:23:28: unused assignment [ineffective]
 test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized__temp_table]
-// qe_1_cfg
+// package_spec_test_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_test_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// subprogram_qe_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -38,7 +53,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// qe_1_pdg
+// subprogram_qe_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -79,7 +94,7 @@ digraph G {
     17 ->  17 [arrowType="normal",color="red"];
 }
 
-// qe_2_cfg
+// subprogram_qe_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -117,7 +132,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// qe_2_pdg
+// subprogram_qe_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

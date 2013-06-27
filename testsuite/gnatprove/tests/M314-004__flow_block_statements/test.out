@@ -1,4 +1,19 @@
-// compare_and_swap_cfg
+// package_spec_test_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_test_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// subprogram_compare_and_swap_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -28,7 +43,7 @@ digraph G {
     15 ->  2 [arrowType="normal"];
 }
 
-// compare_and_swap_pdg
+// subprogram_compare_and_swap_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -60,7 +75,7 @@ digraph G {
     15 ->  6 [arrowType="normal",color="red"];
 }
 
-// nested_block_statements_cfg
+// subprogram_nested_block_statements_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -95,7 +110,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// nested_block_statements_pdg
+// subprogram_nested_block_statements_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -134,7 +149,7 @@ digraph G {
     16 ->  17 [arrowType="normal",color="red"];
 }
 
-// parallel_block_statements_cfg
+// subprogram_parallel_block_statements_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -218,7 +233,7 @@ digraph G {
     46 ->  2 [arrowType="normal"];
 }
 
-// parallel_block_statements_pdg
+// subprogram_parallel_block_statements_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

@@ -1,4 +1,19 @@
-// null_statement_cfg
+// package_spec_test_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_test_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// subprogram_null_statement_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -9,7 +24,7 @@ digraph G {
     5 ->  2 [arrowType="normal"];
 }
 
-// null_statement_pdg
+// subprogram_null_statement_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];

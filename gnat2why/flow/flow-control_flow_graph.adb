@@ -30,6 +30,7 @@ with Sinfo;    use Sinfo;
 with Snames;   use Snames;
 
 with Treepr;   use Treepr;
+with Output;   use Output;
 
 with Flow.Debug; use Flow.Debug;
 pragma Unreferenced (Flow.Debug);
@@ -367,10 +368,11 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) in N_Subprogram_Body | N_Block_Statement;
-   --  This is the top level procedure which deals with a subprogam or
-   --  a block statement. The declarations and sequence of statements
-   --  is processed and linked.
+      with Pre => Nkind (N) in
+        N_Subprogram_Body | N_Block_Statement | N_Package_Body;
+   --  This is the top level procedure which deals with a subprogam,
+   --  block or package elaboration statement. The declarations and
+   --  sequence of statements is processed and linked.
 
    procedure Do_Type_Declaration
      (N   : Node_Id;
@@ -2071,17 +2073,28 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       case Get_Pragma_Id (N) is
-         when Pragma_Annotate        |
+         when Pragma_Abstract_State  |
+              Pragma_Ada_05          |
+              Pragma_Ada_2012        |
+              Pragma_Annotate        |
+              Pragma_Convention      |
               Pragma_Depends         |
+              Pragma_Elaborate_Body  |
               Pragma_Export          |
               Pragma_Global          |
               Pragma_Import          |
+              Pragma_Initializes     |
+              Pragma_Inline_Always   |
               Pragma_Postcondition   |
               Pragma_Precondition    |
               Pragma_Preelaborate    |
               Pragma_Pure            |
+              Pragma_Pure_Function   |
               Pragma_Refined_Depends |
               Pragma_Refined_Global  |
+              Pragma_Refined_State   |
+              Pragma_SPARK_Mode      |
+              Pragma_Test_Case       |
               Pragma_Warnings        =>
 
             return False;
@@ -2104,7 +2117,10 @@ package body Flow.Control_Flow_Graph is
          when others =>
             --  If we find another pragma which got past the "in
             --  SPARK" check we should do one of the above.
-            raise Why.Unexpected_Node;
+            Write_Str ("Unexpected pragma: " &
+                         Pragma_Id'Image (Get_Pragma_Id (N)));
+            Write_Eol;
+            return False;
       end case;
 
    end Pragma_Relevant_To_Flow;
@@ -2117,25 +2133,43 @@ package body Flow.Control_Flow_Graph is
    -- Create --
    -------------
 
-   procedure Create
-     (N  : Node_Id;
-      FA : in out Flow_Analysis_Graphs)
+   procedure Create (FA : in out Flow_Analysis_Graphs)
    is
-      Connection_Map  : Connection_Maps.Map;
-      The_Context     : Context              := No_Context;
+      Connection_Map  : Connection_Maps.Map := Connection_Maps.Empty_Map;
+      The_Context     : Context             := No_Context;
       Subprogram_Spec : Entity_Id;
-      Preconditions   : constant Node_Lists.List :=
-        Get_Preconditions (FA.Analyzed_Entity);
+      Preconditions   : Node_Lists.List;
       Precon_Block    : Graph_Connections;
+      Body_N          : Node_Id;
+      Spec_N          : Node_Id;
    begin
-      if Acts_As_Spec (N) then
-         Subprogram_Spec := Defining_Unit_Name (Specification (N));
-      else
-         Subprogram_Spec := Corresponding_Spec (N);
-      end if;
+      pragma Assert (Is_Valid (FA));
 
-      --  Start with a blank slate.
-      Connection_Map := Connection_Maps.Empty_Map;
+      case FA.Kind is
+         when E_Subprogram_Body =>
+            Body_N        := Get_Subprogram_Body (FA.Analyzed_Entity);
+            Preconditions := Get_Preconditions (FA.Analyzed_Entity);
+
+            if Acts_As_Spec (Body_N) then
+               Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));
+            else
+               Subprogram_Spec := Corresponding_Spec (Body_N);
+            end if;
+
+         when E_Package =>
+            Spec_N := FA.Analyzed_Entity;
+            while Present (Spec_N) and
+              Nkind (Spec_N) /= N_Package_Specification
+            loop
+               Spec_N := Parent (Spec_N);
+            end loop;
+
+            Body_N := Spec_N;
+
+         when E_Package_Body =>
+            Body_N := Parent (FA.Analyzed_Entity);
+            Spec_N := Parent (Corresponding_Spec (Body_N));
+      end case;
 
       --  Create the magic start and end vertices.
       declare
@@ -2143,107 +2177,146 @@ package body Flow.Control_Flow_Graph is
       begin
          --  We attach the subprogram's location to the start vertex
          --  as it gives us a convenient way to generate error
-         --  messages applying to the whole subprogram.
-         Start_Atr.Error_Location := N;
+         --  messages applying to the whole subprogram/package/body.
+         Start_Atr.Error_Location := Body_N;
          FA.CFG.Add_Vertex (Start_Atr, FA.Start_Vertex);
       end;
       FA.CFG.Add_Vertex (Null_Attributes, FA.End_Vertex);
 
-      --  Collect parameters to this procedure and stick them into
-      --  FA.Params.
-      declare
-         E : Entity_Id;
-      begin
-         E := First_Formal (Subprogram_Spec);
-         while Present (E) loop
-            Create_Initial_And_Final_Vertices (E, FA);
-            E := Next_Formal (E);
-         end loop;
-      end;
-
-      --  Collect globals for this procedure and stick them into
-      --  FA.All_Globals.
-      declare
-         type G_Prop is record
-            Is_Read  : Boolean;
-            Is_Write : Boolean;
-         end record;
-
-         package Global_Maps is new Ada.Containers.Hashed_Maps
-           (Key_Type        => Flow_Id,
-            Element_Type    => G_Prop,
-            Hash            => Hash,
-            Equivalent_Keys => "=",
-            "="             => "=");
-
-         Reads   : Flow_Id_Sets.Set;
-         Writes  : Flow_Id_Sets.Set;
-         Globals : Global_Maps.Map := Global_Maps.Empty_Map;
-      begin
-         Get_Globals (Subprogram   => Subprogram_Spec,
-                      Reads        => Reads,
-                      Writes       => Writes,
-                      Refined_View => True);
-         for G of Reads loop
-            Globals.Include (Change_Variant (G, Normal_Use),
-                             G_Prop'(Is_Read  => True,
-                                     Is_Write => False));
-         end loop;
-         for G of Writes loop
+      --  Collect parameters of the analyzed entity and produce
+      --  initial and final vertices.
+      case FA.Kind is
+         when E_Subprogram_Body =>
             declare
-               P : G_Prop;
+               E : Entity_Id;
             begin
-               if Globals.Contains (Change_Variant (G, Normal_Use)) then
-                  P := Globals (Change_Variant (G, Normal_Use));
-                  P.Is_Write := True;
-               else
-                  P := G_Prop'(Is_Read  => False,
-                               Is_Write => True);
-               end if;
-               Globals.Include (Change_Variant (G, Normal_Use), P);
+               E := First_Formal (Subprogram_Spec);
+               while Present (E) loop
+                  Create_Initial_And_Final_Vertices (E, FA);
+                  E := Next_Formal (E);
+               end loop;
             end;
-         end loop;
 
-         for C in Globals.Iterate loop
+         when E_Package | E_Package_Body =>
+            --  No parameters to see here.
+            null;
+      end case;
+
+      --  Collect globals for the analyzed entity and create initial
+      --  and final vertices.
+      case FA.Kind is
+         when E_Subprogram_Body =>
             declare
-               G : constant Flow_Id := Global_Maps.Key (C);
-               P : constant G_Prop  := Global_Maps.Element (C);
+               type G_Prop is record
+                  Is_Read  : Boolean;
+                  Is_Write : Boolean;
+               end record;
 
-               Mode : Global_Modes;
+               package Global_Maps is new Ada.Containers.Hashed_Maps
+                 (Key_Type        => Flow_Id,
+                  Element_Type    => G_Prop,
+                  Hash            => Hash,
+                  Equivalent_Keys => "=",
+                  "="             => "=");
+
+               Reads   : Flow_Id_Sets.Set;
+               Writes  : Flow_Id_Sets.Set;
+               Globals : Global_Maps.Map := Global_Maps.Empty_Map;
             begin
-               if P.Is_Read and P.Is_Write then
-                  Mode := Global_Mode_In_Out;
-               elsif P.Is_Read then
-                  Mode := Global_Mode_In;
-               elsif P.Is_Write then
-                  Mode := Global_Mode_Out;
-               else
-                  raise Program_Error;
-               end if;
+               Get_Globals (Subprogram   => Subprogram_Spec,
+                            Reads        => Reads,
+                            Writes       => Writes,
+                            Refined_View => True);
+               for G of Reads loop
+                  Globals.Include (Change_Variant (G, Normal_Use),
+                                   G_Prop'(Is_Read  => True,
+                                           Is_Write => False));
+               end loop;
+               for G of Writes loop
+                  declare
+                     P : G_Prop;
+                  begin
+                     if Globals.Contains (Change_Variant (G, Normal_Use)) then
+                        P := Globals (Change_Variant (G, Normal_Use));
+                        P.Is_Write := True;
+                     else
+                        P := G_Prop'(Is_Read  => False,
+                                     Is_Write => True);
+                     end if;
+                     Globals.Include (Change_Variant (G, Normal_Use), P);
+                  end;
+               end loop;
 
-               Create_Initial_And_Final_Vertices (G, Mode, FA);
+               for C in Globals.Iterate loop
+                  declare
+                     G : constant Flow_Id := Global_Maps.Key (C);
+                     P : constant G_Prop  := Global_Maps.Element (C);
+
+                     Mode : Global_Modes;
+                  begin
+                     if P.Is_Read and P.Is_Write then
+                        Mode := Global_Mode_In_Out;
+                     elsif P.Is_Read then
+                        Mode := Global_Mode_In;
+                     elsif P.Is_Write then
+                        Mode := Global_Mode_Out;
+                     else
+                        raise Program_Error;
+                     end if;
+
+                     Create_Initial_And_Final_Vertices (G, Mode, FA);
+                  end;
+               end loop;
             end;
-         end loop;
-      end;
+
+         when E_Package | E_Package_Body =>
+            --  Packages have no globals
+            null;
+
+      end case;
 
       --  Collect variables introduced by quantified expressions. We
       --  need to look at the following parts:
       --     - precondition
       --     - declarative part
       --     - body
-      for Precondition of Preconditions loop
-         Process_Quantified_Expressions
-           (Precondition, FA, Connection_Map, The_Context);
-      end loop;
-      Process_Quantified_Expressions
-        (Declarations (N), FA, Connection_Map, The_Context);
-      Process_Quantified_Expressions
-        (Statements (Handled_Statement_Sequence (N)),
-         FA, Connection_Map, The_Context);
+      case FA.Kind is
+         when E_Subprogram_Body =>
+            for Precondition of Preconditions loop
+               Process_Quantified_Expressions
+                 (Precondition, FA, Connection_Map, The_Context);
+            end loop;
+            Process_Quantified_Expressions
+              (Declarations (Body_N), FA, Connection_Map, The_Context);
+            Process_Quantified_Expressions
+              (Statements (Handled_Statement_Sequence (Body_N)),
+               FA, Connection_Map, The_Context);
+
+         when E_Package =>
+            --  !!! Look into initial conditions
+            Process_Quantified_Expressions
+              (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
+            Process_Quantified_Expressions
+              (Private_Declarations (Spec_N), FA, Connection_Map, The_Context);
+
+         when E_Package_Body =>
+            --  Look into the spec
+            Process_Quantified_Expressions
+              (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
+            Process_Quantified_Expressions
+              (Private_Declarations (Spec_N), FA, Connection_Map, The_Context);
+
+            --  Look at the body
+            Process_Quantified_Expressions
+              (Declarations (Body_N), FA, Connection_Map, The_Context);
+            Process_Quantified_Expressions
+              (Statements (Handled_Statement_Sequence (Body_N)),
+               FA, Connection_Map, The_Context);
+
+      end case;
 
       --  If we are dealing with a function, we use its entity to deal
-      --  with the value returned, so that should also go into
-      --  FA.All_Vars.
+      --  with the value returned.
       if Ekind (FA.Analyzed_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
       end if;
@@ -2253,32 +2326,87 @@ package body Flow.Control_Flow_Graph is
       --  Do_N_Object_Declaration for enlightenment.
 
       --  Produce flowgraph for the precondition, if any.
-      declare
-         NL : Union_Lists.List := Union_Lists.Empty_List;
-      begin
-         for Precondition of Preconditions loop
-            Do_Precondition (Precondition, FA, Connection_Map, The_Context);
-            NL.Append (Union_Id (Precondition));
-         end loop;
-         Join (CFG   => FA.CFG,
-               CM    => Connection_Map,
-               Nodes => NL,
-               Block => Precon_Block);
-      end;
+      case FA.Kind is
+         when E_Subprogram_Body =>
+            declare
+               NL : Union_Lists.List := Union_Lists.Empty_List;
+            begin
+               for Precondition of Preconditions loop
+                  Do_Precondition (Precondition,
+                                   FA,
+                                   Connection_Map,
+                                   The_Context);
+                  NL.Append (Union_Id (Precondition));
+               end loop;
+               Join (CFG   => FA.CFG,
+                     CM    => Connection_Map,
+                     Nodes => NL,
+                     Block => Precon_Block);
+            end;
 
-      --  Produce flowgraph for the body
-      Do_Subprogram_Or_Block (N, FA, Connection_Map, The_Context);
+         when E_Package | E_Package_Body =>
+            --  !!! process initial condition
+            null;
+      end case;
 
-      --  Connect up all the dots...
-      Linkup (FA.CFG,
-              FA.Start_Vertex,
-              Precon_Block.Standard_Entry);
-      Linkup (FA.CFG,
-              Precon_Block.Standard_Exits,
-              Connection_Map (Union_Id (N)).Standard_Entry);
-      Linkup (FA.CFG,
-              Connection_Map (Union_Id (N)).Standard_Exits,
-              FA.End_Vertex);
+      --  Produce flowgraphs for the body and link to start and end
+      --  vertex.
+      case FA.Kind is
+         when E_Subprogram_Body =>
+            Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
+
+            --  Connect up all the dots...
+            Linkup (FA.CFG,
+                    FA.Start_Vertex,
+                    Precon_Block.Standard_Entry);
+            Linkup (FA.CFG,
+                    Precon_Block.Standard_Exits,
+                    Connection_Map (Union_Id (Body_N)).Standard_Entry);
+            Linkup (FA.CFG,
+                    Connection_Map (Union_Id (Body_N)).Standard_Exits,
+                    FA.End_Vertex);
+
+         when E_Package | E_Package_Body =>
+            declare
+               UL   : Union_Lists.List := Union_Lists.Empty_List;
+               Prev : Union_Id;
+            begin
+               if Present (Visible_Declarations (Spec_N)) then
+                  Process_Statement_List (Visible_Declarations (Spec_N),
+                                          FA, Connection_Map, The_Context);
+                  UL.Append (Union_Id (Visible_Declarations (Spec_N)));
+               end if;
+
+               if Present (Private_Declarations (Spec_N)) then
+                  Process_Statement_List (Private_Declarations (Spec_N),
+                                          FA, Connection_Map, The_Context);
+                  UL.Append (Union_Id (Private_Declarations (Spec_N)));
+               end if;
+
+               if FA.Kind = E_Package_Body then
+                  Do_Subprogram_Or_Block (Body_N,
+                                          FA, Connection_Map, The_Context);
+                  UL.Append (Union_Id (Body_N));
+               end if;
+
+               Prev := Union_Id (Empty);
+               Linkup (FA.CFG,
+                       FA.Start_Vertex,
+                       Connection_Map (UL.First_Element).Standard_Entry);
+               for X of UL loop
+                  if Prev /= Union_Id (Empty) then
+                     Linkup (FA.CFG,
+                             Connection_Map (Prev).Standard_Exits,
+                             Connection_Map (X).Standard_Entry);
+                  end if;
+                  Prev := X;
+               end loop;
+               Linkup (FA.CFG,
+                       Connection_Map (UL.Last_Element).Standard_Exits,
+                       FA.End_Vertex);
+
+            end;
+      end case;
 
       --  Simplify graph by removing all null vertices.
       Simplify (FA.CFG);

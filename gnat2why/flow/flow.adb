@@ -33,6 +33,7 @@ with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
 with Sprint;                use Sprint;
 with Sinfo;                 use Sinfo;
+with Lib;                   use Lib;
 
 with Output;                use Output;
 with Treepr;                use Treepr;
@@ -89,10 +90,10 @@ package body Flow is
    --  Flow_Id. This is used for emitting more helpful error messages
    --  if a Magic_String Flow_Id is concerened.
 
-   function Flow_Analyse_Subprogram_Entity (E : Entity_Id)
-                                            return Flow_Analysis_Graphs
-   with Pre =>
-     (Ekind (E) in Subprogram_Kind and then Subprogram_Body_In_SPARK (E));
+   function Flow_Analyse_Entity (E : Entity_Id)
+                                 return Flow_Analysis_Graphs
+     with Pre  => Ekind (E) in Subprogram_Kind | E_Package | E_Package_Body,
+          Post => Is_Valid (Flow_Analyse_Entity'Result);
    --  Flow analyse the given entity. This subprogram does nothing for
    --  entities without a body and not in SPARK 2014.
 
@@ -130,6 +131,11 @@ package body Flow is
       begin
          case Nkind (N) is
             when N_Function_Call | N_Procedure_Call_Statement =>
+               if Nkind (Name (N)) = N_Explicit_Dereference then
+                  --  Deal with this non-spark case
+                  return OK;
+               end if;
+
                declare
                   Subprogram : constant Entity_Id := Entity (Name (N));
                begin
@@ -187,8 +193,10 @@ package body Flow is
    is (case X.Kind is
           when E_Subprogram_Body =>
              Ekind (X.Analyzed_Entity) in E_Function | E_Procedure,
-          when others =>
-             False
+          when E_Package =>
+             Ekind (X.Analyzed_Entity) = E_Package,
+          when E_Package_Body =>
+             Ekind (X.Analyzed_Entity) = E_Package_Body
       );
 
    -------------------------------
@@ -821,31 +829,101 @@ package body Flow is
       end if;
    end Print_Graph;
 
-   ------------------------------------
-   -- Flow_Analyse_Subprogram_Entity --
-   ------------------------------------
+   -------------------------
+   -- Flow_Analyse_Entity --
+   -------------------------
 
-   function Flow_Analyse_Subprogram_Entity (E : Entity_Id)
-                                            return Flow_Analysis_Graphs is
-      Body_N : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-      FA     : Flow_Analysis_Graphs;
+   function Flow_Analyse_Entity (E : Entity_Id)
+                                 return Flow_Analysis_Graphs
+   is
+      FA            : Flow_Analysis_Graphs;
+      Base_Filename : Unbounded_String;
    begin
-      FA := Flow_Analysis_Graphs'
-        (Kind             => E_Subprogram_Body,
-         Analyzed_Entity  => E,
-         Scope            => Body_N,
-         Start_Vertex     => Null_Vertex,
-         End_Vertex       => Null_Vertex,
-         CFG              => Create,
-         DDG              => Create,
-         CDG              => Create,
-         TDG              => Create,
-         PDG              => Create,
-         All_Vars         => Flow_Id_Sets.Empty_Set,
-         Loops            => Node_Sets.Empty_Set,
-         Magic_Source     => Calculate_Magic_Mapping (Body_N),
-         Aliasing_Present => False,
-         Is_Main          => Might_Be_Main (E));
+      case Ekind (E) is
+         when Subprogram_Kind =>
+            FA := Flow_Analysis_Graphs'
+              (Kind             => E_Subprogram_Body,
+               Analyzed_Entity  => E,
+               Scope            => SPARK_Util.Get_Subprogram_Body (E),
+               Start_Vertex     => Null_Vertex,
+               End_Vertex       => Null_Vertex,
+               CFG              => Create,
+               DDG              => Create,
+               CDG              => Create,
+               TDG              => Create,
+               PDG              => Create,
+               All_Vars         => Flow_Id_Sets.Empty_Set,
+               Loops            => Node_Sets.Empty_Set,
+               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present => False,
+               Is_Main          => Might_Be_Main (E));
+            Base_Filename := To_Unbounded_String ("subprogram_");
+
+         when E_Package =>
+            declare
+               Scope : Node_Id := E;
+            begin
+               while Present (Scope) and
+                 Nkind (Scope) /= N_Package_Specification
+               loop
+                  Scope := Parent (Scope);
+               end loop;
+
+               FA := Flow_Analysis_Graphs'
+                 (Kind             => E_Package,
+                  Analyzed_Entity  => E,
+                  Scope            => Scope,
+                  Start_Vertex     => Null_Vertex,
+                  End_Vertex       => Null_Vertex,
+                  CFG              => Create,
+                  DDG              => Create,
+                  CDG              => Create,
+                  TDG              => Create,
+                  PDG              => Create,
+                  All_Vars         => Flow_Id_Sets.Empty_Set,
+                  Loops            => Node_Sets.Empty_Set,
+                  Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+                  Aliasing_Present => False);
+            end;
+            Base_Filename := To_Unbounded_String ("package_spec_");
+
+         when E_Package_Body =>
+            FA := Flow_Analysis_Graphs'
+              (Kind             => E_Package_Body,
+               Analyzed_Entity  => E,
+               Scope            => Parent (E),
+               Start_Vertex     => Null_Vertex,
+               End_Vertex       => Null_Vertex,
+               CFG              => Create,
+               DDG              => Create,
+               CDG              => Create,
+               TDG              => Create,
+               PDG              => Create,
+               All_Vars         => Flow_Id_Sets.Empty_Set,
+               Loops            => Node_Sets.Empty_Set,
+               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present => False);
+            Base_Filename := To_Unbounded_String ("package_body_");
+
+         when others =>
+            raise Why.Not_SPARK;
+      end case;
+      pragma Assert (Is_Valid (FA));
+
+      Append (Base_Filename, Get_Name_String (Chars (E)));
+
+      if Gnat2Why.Opt.Flow_Dump_Graphs then
+         Write_Str (Character'Val (8#33#) & "[32m" &
+                      "Flow analysis (cons) of " &
+                      Entity_Kind'Image (FA.Kind) &
+                      " " &
+                      Character'Val (8#33#) & "[1m" &
+                      Get_Name_String (Chars (E)) &
+                      Character'Val (8#33#) & "[0m");
+         Write_Eol;
+      end if;
+
+      FA.Magic_Source := Calculate_Magic_Mapping (FA.Scope);
 
       if Debug_Print_Magic_Source_Set then
          for C in FA.Magic_Source.Iterate loop
@@ -861,19 +939,12 @@ package body Flow is
          end loop;
       end if;
 
-      if Gnat2Why.Opt.Flow_Dump_Graphs then
-         Write_Str (Character'Val (8#33#) & "[32m" &
-                             "Flow analysis (cons) of " &
-                             Get_Name_String (Chars (E)) &
-                             Character'Val (8#33#) & "[0m");
-         Write_Eol;
-      end if;
-      Control_Flow_Graph.Create (Body_N, FA);
+      Control_Flow_Graph.Create (FA);
 
       --  We print this graph first in cast the other algorithms
       --  barf.
       if Debug_Print_CFG then
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cfg",
+         Print_Graph (Filename     => To_String (Base_Filename) & "_cfg",
                       G            => FA.CFG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
@@ -882,7 +953,7 @@ package body Flow is
       Control_Dependence_Graph.Create (FA);
 
       if Debug_Print_Intermediates then
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_cdg",
+         Print_Graph (Filename     => To_String (Base_Filename) & "_cdg",
                       G            => FA.CDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
@@ -893,21 +964,21 @@ package body Flow is
       Program_Dependence_Graph.Create (FA);
 
       if Debug_Print_Intermediates then
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_ddg",
+         Print_Graph (Filename     => To_String (Base_Filename) & "_ddg",
                       G            => FA.DDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
 
       if Debug_Print_PDG then
-         Print_Graph (Filename     => Get_Name_String (Chars (E)) & "_pdg",
+         Print_Graph (Filename     => To_String (Base_Filename) & "_pdg",
                       G            => FA.PDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
 
       return FA;
-   end Flow_Analyse_Subprogram_Entity;
+   end Flow_Analyse_Entity;
 
    ------------------------
    -- Flow_Analyse_CUnit --
@@ -918,20 +989,44 @@ package body Flow is
       Success   : Boolean;
    begin
       --  Process entities and construct graphs if necessary
-      for E of Spec_Entities loop
-         if Ekind (E) in Subprogram_Kind
-           and then Subprogram_Body_In_SPARK (E)
-         then
-            FA_Graphs.Include (E, Flow_Analyse_Subprogram_Entity (E));
-         end if;
-      end loop;
+      for E of All_Entities loop
+         case Ekind (E) is
+            when Subprogram_Kind =>
+               if Subprogram_Body_In_SPARK (E) then
+                  FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+               end if;
 
-      for E of Body_Entities loop
-         if Ekind (E) in Subprogram_Kind
-           and then Subprogram_Body_In_SPARK (E)
-         then
-            FA_Graphs.Include (E, Flow_Analyse_Subprogram_Entity (E));
-         end if;
+            when E_Package =>
+               declare
+                  Pkg_Spec : Node_Id;
+                  Pkg_Body : Node_Id;
+               begin
+                  Pkg_Spec := E;
+                  while Present (Pkg_Spec) and
+                    Nkind (Pkg_Spec) /= N_Package_Specification
+                  loop
+                     Pkg_Spec := Parent (Pkg_Spec);
+                  end loop;
+
+                  Pkg_Body := Corresponding_Body (Parent (Pkg_Spec));
+
+                  if Entity_In_SPARK (E) and not In_Predefined_Unit (E) then
+                     FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+                     if Present (Pkg_Body) and then
+                       Entity_In_SPARK (Pkg_Body)
+                     then
+                        pragma Assert (Nkind (Pkg_Body) = N_Defining_Identifier
+                                         and then
+                                         Ekind (Pkg_Body) = E_Package_Body);
+                        FA_Graphs.Include (Pkg_Body,
+                                           Flow_Analyse_Entity (Pkg_Body));
+                     end if;
+                  end if;
+               end;
+
+            when others =>
+               null;
+         end case;
       end loop;
 
       --  TODO: Perform interprocedural analysis
@@ -940,22 +1035,34 @@ package body Flow is
       for FA of FA_Graphs loop
          if Gnat2Why.Opt.Flow_Dump_Graphs then
             Write_Str (Character'Val (8#33#) & "[32m" &
-                                "Flow analysis (errors) for " &
-                                Get_Name_String (Chars (FA.Analyzed_Entity)) &
-                                Character'Val (8#33#) & "[0m");
+                         "Flow analysis (errors) for " &
+                         Entity_Kind'Image (FA.Kind) &
+                         " " &
+                         Character'Val (8#33#) & "[1m" &
+                         Get_Name_String (Chars (FA.Analyzed_Entity)) &
+                         Character'Val (8#33#) & "[0m");
             Write_Eol;
          end if;
-         Analysis.Sanity_Check (FA, Success);
-         if Success then
-            Analysis.Find_Ineffective_Imports (FA);
-            Analysis.Find_Illegal_Updates (FA);
-            Analysis.Find_Ineffective_Statements (FA);
-            Analysis.Find_Use_Of_Uninitialised_Variables (FA);
-            Analysis.Find_Stable_Elements (FA);
-            Analysis.Find_Unused_Objects (FA);
-            Analysis.Check_Contracts (FA);
-            Analysis.Analyse_Main (FA);
-         end if;
+         case FA.Kind is
+            when E_Subprogram_Body =>
+               Analysis.Sanity_Check (FA, Success);
+               if Success then
+                  Analysis.Find_Ineffective_Imports (FA);
+                  Analysis.Find_Illegal_Updates (FA);
+                  Analysis.Find_Ineffective_Statements (FA);
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+                  Analysis.Find_Stable_Elements (FA);
+                  Analysis.Find_Unused_Objects (FA);
+                  Analysis.Check_Contracts (FA);
+                  Analysis.Analyse_Main (FA);
+               end if;
+
+            when E_Package =>
+               null;
+
+            when E_Package_Body =>
+               null;
+         end case;
       end loop;
 
    end Flow_Analyse_CUnit;

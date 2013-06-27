@@ -1,4 +1,19 @@
-// case_1_cfg
+// package_spec_test_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+
+    1 ->  2 [arrowType="normal"];
+}
+
+// package_spec_test_pdg
+digraph G {
+   graph [splines=True];
+
+}
+
+// subprogram_case_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -36,7 +51,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// case_1_pdg
+// subprogram_case_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -71,7 +86,7 @@ digraph G {
     17 ->  6 [arrowType="normal",color="red"];
 }
 
-// if_1_cfg
+// subprogram_if_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -101,7 +116,7 @@ digraph G {
     13 ->  2 [arrowType="normal"];
 }
 
-// if_1_pdg
+// subprogram_if_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -131,7 +146,7 @@ digraph G {
     13 ->  4 [arrowType="normal",color="red"];
 }
 
-// if_2_cfg
+// subprogram_if_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -154,7 +169,7 @@ digraph G {
     10 ->  2 [arrowType="normal"];
 }
 
-// if_2_pdg
+// subprogram_if_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -176,7 +191,7 @@ digraph G {
     10 ->  4 [arrowType="normal",color="red"];
 }
 
-// if_3_cfg
+// subprogram_if_3_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -196,7 +211,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// if_3_pdg
+// subprogram_if_3_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -214,7 +229,7 @@ digraph G {
     9 ->  4 [arrowType="normal",color="red"];
 }
 
-// if_4_cfg
+// subprogram_if_4_cfg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
@@ -232,7 +247,7 @@ digraph G {
     8 ->  2 [arrowType="normal"];
 }
 
-// if_4_pdg
+// subprogram_if_4_pdg
 digraph G {
    graph [splines=True];
     1 [label="start",shape="plaintext"];
