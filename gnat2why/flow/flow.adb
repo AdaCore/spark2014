@@ -1033,10 +1033,11 @@ package body Flow is
                          Character'Val (8#33#) & "[0m");
             Write_Eol;
          end if;
-         case FA.Kind is
-            when E_Subprogram_Body =>
-               Analysis.Sanity_Check (FA, Success);
-               if Success then
+
+         Analysis.Sanity_Check (FA, Success);
+         if Success then
+            case FA.Kind is
+               when E_Subprogram_Body =>
                   Analysis.Find_Ineffective_Imports (FA);
                   Analysis.Find_Illegal_Updates (FA);
                   Analysis.Find_Ineffective_Statements (FA);
@@ -1045,14 +1046,14 @@ package body Flow is
                   Analysis.Find_Unused_Objects (FA);
                   Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);
-               end if;
 
-            when E_Package =>
-               null;
+               when E_Package =>
+                  null;
 
-            when E_Package_Body =>
-               null;
-         end case;
+               when E_Package_Body =>
+                  null;
+            end case;
+         end if;
       end loop;
 
    end Flow_Analyse_CUnit;

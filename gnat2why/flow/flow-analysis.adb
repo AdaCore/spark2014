@@ -643,6 +643,14 @@ package body Flow.Analysis is
       is
       begin
          case Nkind (N) is
+            when N_Subprogram_Body | N_Package_Body =>
+               --  We do not want to process declarations any nested
+               --  subprograms or packages.
+               if N = FA.Scope then
+                  return OK;
+               else
+                  return Skip;
+               end if;
             when N_Component_Declaration =>
                if Present (Expression (N)) then
                   declare
@@ -691,7 +699,7 @@ package body Flow.Analysis is
 
       pragma Assert (Sane);
 
-      Check_Record_Declarations (Get_Subprogram_Body (FA.Analyzed_Entity));
+      Check_Record_Declarations (FA.Scope);
       if not Sane then
          Error_Msg_NE
            ("flow analysis of & abandoned due to records with non-manifest" &
