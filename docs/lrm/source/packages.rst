@@ -689,6 +689,11 @@ be a *Boolean_*\ ``expression``.
    hidden state, functions declared in the visible part acting on the state
    abstractions of the package must be used.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.6 SS Initial_Condition acts as postcondition. State
+                   abstractions cannot be denoted by an Initial_Condition aspect.
+
 .. centered:: **Dynamic Semantics**
 
 #. With respect to dynamic semantics, specifying a given expression
