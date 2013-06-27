@@ -3,6 +3,128 @@ across_compilation_units-child.ads:27:24: "X" depends on "Y" [depends_missing]
 across_compilation_units-child.ads:29:24: "Y" depends on "Y" [depends_missing]
 across_compilation_units-child.ads:30:24: "Z" depends on "X" [depends_missing]
 across_compilation_units-child.ads:30:24: "Z" depends on "Z" [depends_missing]
+// package_body_across_compilation_units_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    5 [label="null;"];
+
+    1 ->  5 [arrowType="normal"];
+    5 ->  2 [arrowType="normal"];
+}
+
+// package_body_across_compilation_units_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    5 [label="null;"];
+
+    1 ->  5 [arrowType="normal"];
+}
+
+// package_body_caller_of_across_compilation_units_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    5 [label="null;"];
+
+    1 ->  5 [arrowType="normal"];
+    5 ->  2 [arrowType="normal"];
+}
+
+// package_body_caller_of_across_compilation_units_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    5 [label="null;"];
+
+    1 ->  5 [arrowType="normal"];
+}
+
+// package_body_child_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext",fontcolor="red"];
+    4 [label="x'final",shape="plaintext"];
+    6 [label="y'initial",shape="plaintext",fontcolor="red"];
+    7 [label="y'final",shape="plaintext"];
+    9 [label="z'initial",shape="plaintext",fontcolor="red"];
+    10 [label="z'final",shape="plaintext"];
+    17 [label="null;"];
+
+    1 ->  17 [arrowType="normal"];
+    2 ->  4 [arrowType="normal"];
+    2 ->  7 [arrowType="normal"];
+    2 ->  10 [arrowType="normal"];
+    3 ->  1 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    17 ->  2 [arrowType="normal"];
+}
+
+// package_body_child_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    3 [label="x'initial",shape="plaintext",fontcolor="red"];
+    4 [label="x'final",shape="plaintext"];
+    6 [label="y'initial",shape="plaintext",fontcolor="red"];
+    7 [label="y'final",shape="plaintext"];
+    9 [label="z'initial",shape="plaintext",fontcolor="red"];
+    10 [label="z'final",shape="plaintext"];
+    17 [label="null;"];
+
+    1 ->  17 [arrowType="normal"];
+    3 ->  4 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red"];
+}
+
+// package_body_single_compilation_unit_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    4 [label="condition'initial",shape="plaintext",fontcolor="red"];
+    5 [label="condition'final",shape="plaintext"];
+    7 [label="x'initial",shape="plaintext",fontcolor="red"];
+    8 [label="x'final",shape="plaintext"];
+    10 [label="y'initial",shape="plaintext",fontcolor="red"];
+    11 [label="y'final",shape="plaintext"];
+    19 [label="null;"];
+
+    1 ->  19 [arrowType="normal"];
+    2 ->  5 [arrowType="normal"];
+    2 ->  8 [arrowType="normal"];
+    2 ->  11 [arrowType="normal"];
+    4 ->  1 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  1 [arrowType="normal"];
+    19 ->  2 [arrowType="normal"];
+}
+
+// package_body_single_compilation_unit_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    4 [label="condition'initial",shape="plaintext",fontcolor="red"];
+    5 [label="condition'final",shape="plaintext"];
+    7 [label="x'initial",shape="plaintext",fontcolor="red"];
+    8 [label="x'final",shape="plaintext"];
+    10 [label="y'initial",shape="plaintext",fontcolor="red"];
+    11 [label="y'final",shape="plaintext"];
+    19 [label="null;"];
+
+    1 ->  19 [arrowType="normal"];
+    4 ->  5 [arrowType="normal",color="red"];
+    7 ->  8 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal",color="red"];
+}
+
 // package_spec_across_compilation_units_cfg
 digraph G {
    graph [splines=True];
