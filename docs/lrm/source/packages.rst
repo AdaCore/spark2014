@@ -667,8 +667,8 @@ be a *Boolean_*\ ``expression``.
       :Trace Unit: 7.1.6 LR Initial_Condition aspect shall follow Abstract_State
                    and Initializes aspects
 
-#. Each variable or state abstraction denoted in an Initial_Condition aspect
-   of a package Q which is declared immediately within the visible part of Q
+#. Each variable or indirectly referenced state abstraction in an Initial_Condition
+   aspect of a package Q which is declared immediately within the visible part of Q
    shall be initialized during the elaboration of Q and be denoted by a ``name``
    of an ``initialization_item`` of the Initializes aspect of Q.
 
