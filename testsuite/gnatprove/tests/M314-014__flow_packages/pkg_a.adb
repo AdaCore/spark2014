@@ -7,6 +7,6 @@ is
 
 begin
 
-   Y := Do_Something (Integer'Last);
+   Y := Do_Something (X);
 
 end Pkg_A;

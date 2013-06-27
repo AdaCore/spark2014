@@ -1048,10 +1048,11 @@ package body Flow is
                   Analysis.Analyse_Main (FA);
 
                when E_Package =>
-                  null;
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
 
                when E_Package_Body =>
-                  null;
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+
             end case;
          end if;
       end loop;
