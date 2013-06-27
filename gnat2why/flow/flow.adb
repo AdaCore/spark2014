@@ -860,38 +860,28 @@ package body Flow is
             Base_Filename := To_Unbounded_String ("subprogram_");
 
          when E_Package =>
-            declare
-               Scope : Node_Id := E;
-            begin
-               while Present (Scope) and
-                 Nkind (Scope) /= N_Package_Specification
-               loop
-                  Scope := Parent (Scope);
-               end loop;
-
-               FA := Flow_Analysis_Graphs'
-                 (Kind             => E_Package,
-                  Analyzed_Entity  => E,
-                  Scope            => Scope,
-                  Start_Vertex     => Null_Vertex,
-                  End_Vertex       => Null_Vertex,
-                  CFG              => Create,
-                  DDG              => Create,
-                  CDG              => Create,
-                  TDG              => Create,
-                  PDG              => Create,
-                  All_Vars         => Flow_Id_Sets.Empty_Set,
-                  Loops            => Node_Sets.Empty_Set,
-                  Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
-                  Aliasing_Present => False);
-            end;
+            FA := Flow_Analysis_Graphs'
+              (Kind             => E_Package,
+               Analyzed_Entity  => E,
+               Scope            => Get_Enclosing_Scope (E),
+               Start_Vertex     => Null_Vertex,
+               End_Vertex       => Null_Vertex,
+               CFG              => Create,
+               DDG              => Create,
+               CDG              => Create,
+               TDG              => Create,
+               PDG              => Create,
+               All_Vars         => Flow_Id_Sets.Empty_Set,
+               Loops            => Node_Sets.Empty_Set,
+               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present => False);
             Base_Filename := To_Unbounded_String ("package_spec_");
 
          when E_Package_Body =>
             FA := Flow_Analysis_Graphs'
               (Kind             => E_Package_Body,
                Analyzed_Entity  => E,
-               Scope            => Parent (E),
+               Scope            => Get_Enclosing_Body_Scope (E),
                Start_Vertex     => Null_Vertex,
                End_Vertex       => Null_Vertex,
                CFG              => Create,
@@ -998,23 +988,23 @@ package body Flow is
 
             when E_Package =>
                declare
-                  Pkg_Spec : Node_Id;
+                  Pkg_Spec : constant Node_Id := Get_Enclosing_Scope (E);
                   Pkg_Body : Node_Id;
                begin
-                  Pkg_Spec := E;
-                  while Present (Pkg_Spec) and
-                    Nkind (Pkg_Spec) /= N_Package_Specification
-                  loop
-                     Pkg_Spec := Parent (Pkg_Spec);
-                  end loop;
-
-                  Pkg_Body := Corresponding_Body (Parent (Pkg_Spec));
-
                   if Entity_In_SPARK (E) and not In_Predefined_Unit (E) then
                      FA_Graphs.Include (E, Flow_Analyse_Entity (E));
-                     if Present (Pkg_Body) and then
-                       Entity_In_SPARK (Pkg_Body)
-                     then
+
+                     Pkg_Body := Pkg_Spec;
+                     while Present (Pkg_Body) and
+                       Nkind (Pkg_Body) /= N_Package_Declaration
+                     loop
+                        Pkg_Body := Parent (Pkg_Body);
+                     end loop;
+                     if Present (Pkg_Body) then
+                        Pkg_Body := Corresponding_Body (Pkg_Body);
+                     end if;
+
+                     if Present (Pkg_Body) then
                         pragma Assert (Nkind (Pkg_Body) = N_Defining_Identifier
                                          and then
                                          Ekind (Pkg_Body) = E_Package_Body);

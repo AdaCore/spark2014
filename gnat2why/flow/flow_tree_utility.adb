@@ -208,9 +208,9 @@ package body Flow_Tree_Utility is
       P : Node_Id := Parent (N);
    begin
       while Present (P) and then
-        Nkind (P) not in --  N_Function_Specification |
-                         --  N_Procedure_Specification |
-                         --  N_Package_Specification |
+        Nkind (P) not in N_Function_Specification |
+                         N_Procedure_Specification |
+                         N_Package_Specification |
                          N_Subprogram_Body |
                          N_Package_Body
       loop
@@ -218,6 +218,23 @@ package body Flow_Tree_Utility is
       end loop;
       return P;
    end Get_Enclosing_Scope;
+
+   ------------------------------
+   -- Get_Enclosing_Body_Scope --
+   ------------------------------
+
+   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr
+   is
+      P : Node_Id := Parent (N);
+   begin
+      while Present (P) and then
+        Nkind (P) not in N_Subprogram_Body |
+                         N_Package_Body
+      loop
+         P := Parent (P);
+      end loop;
+      return P;
+   end Get_Enclosing_Body_Scope;
 
    -----------------------------
    -- Should_Use_Refined_View --
@@ -236,12 +253,12 @@ package body Flow_Tree_Utility is
       --  !!! To be resolved completely in M314-012 once M619-012 is
       --  !!! answered.
       if Present (Body_E) then
-         Scope_Of_Called_Subprogram := Get_Enclosing_Scope
-           (Get_Enclosing_Scope (Body_E));
+         Scope_Of_Called_Subprogram := Get_Enclosing_Body_Scope
+           (Get_Enclosing_Body_Scope (Body_E));
          P                          := Scope;
 
          while Present (P) and P /= Scope_Of_Called_Subprogram loop
-            P := Get_Enclosing_Scope (P);
+            P := Get_Enclosing_Body_Scope (P);
          end loop;
          return P = Scope_Of_Called_Subprogram;
       else

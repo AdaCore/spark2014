@@ -1,6 +1,30 @@
 test.adb:22:26: ineffective statement [ineffective]
 test.adb:23:28: unused assignment [ineffective]
 test.adb:23:28: use of uninitialized variable "Temp_Table" [uninitialized__temp_table]
+// package_body_test_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    2 [label="end",shape="plaintext"];
+    4 [label="type table_t is array (positive range 1 .. 9) of integer;"];
+    5 [label="null;"];
+
+    1 ->  4 [arrowType="normal"];
+    4 ->  5 [arrowType="normal"];
+    5 ->  2 [arrowType="normal"];
+}
+
+// package_body_test_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start",shape="plaintext"];
+    4 [label="type table_t is array (positive range 1 .. 9) of integer;"];
+    5 [label="null;"];
+
+    1 ->  4 [arrowType="normal"];
+    1 ->  5 [arrowType="normal"];
+}
+
 // package_spec_test_cfg
 digraph G {
    graph [splines=True];

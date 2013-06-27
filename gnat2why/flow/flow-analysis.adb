@@ -648,7 +648,7 @@ package body Flow.Analysis is
                   declare
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
                        To_Ordered_Flow_Id_Set (Get_Variable_Set
-                                                 (Get_Enclosing_Scope (N),
+                                                 (Get_Enclosing_Body_Scope (N),
                                                   Expression (N)));
                   begin
                      for F of Deps loop

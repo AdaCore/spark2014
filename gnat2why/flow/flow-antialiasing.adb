@@ -721,7 +721,7 @@ package body Flow.Antialiasing is
      (N                   : Node_Id;
       Introduces_Aliasing : in out Boolean)
    is
-      Scope : constant Scope_Ptr := Get_Enclosing_Scope (N);
+      Scope : constant Scope_Ptr := Get_Enclosing_Body_Scope (N);
    begin
 
       --  Check out and in out parameters against other parameters and

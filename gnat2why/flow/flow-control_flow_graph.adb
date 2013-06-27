@@ -1651,23 +1651,66 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
    begin
-      Process_Statement_List (Declarations (N), FA, CM, Ctx);
+      if Present (Declarations (N)) then
+         Process_Statement_List (Declarations (N), FA, CM, Ctx);
+      end if;
 
-      Do_Handled_Sequence_Of_Statements
-        (Handled_Statement_Sequence (N), FA, CM, Ctx);
+      if Present (Handled_Statement_Sequence (N)) then
+         Do_Handled_Sequence_Of_Statements
+           (Handled_Statement_Sequence (N), FA, CM, Ctx);
+      end if;
 
-      Linkup (FA.CFG,
-              CM (Union_Id (Declarations (N))).Standard_Exits,
-              CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
+      if Present (Declarations (N)) and
+        Present (Handled_Statement_Sequence (N))
+      then
+         Linkup
+           (FA.CFG,
+            CM (Union_Id (Declarations (N))).Standard_Exits,
+            CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
 
-      --  !!! Workaround for stdlib bug
-      CM.Include
-        (Union_Id (N),
-         Graph_Connections'
-           (Standard_Entry => CM.Element
-              (Union_Id (Declarations (N))).Standard_Entry,
-            Standard_Exits => CM.Element
-              (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
+         --  !!! Workaround for stdlib bug
+         CM.Include
+           (Union_Id (N),
+            Graph_Connections'
+              (Standard_Entry => CM.Element
+                 (Union_Id (Declarations (N))).Standard_Entry,
+               Standard_Exits => CM.Element
+                 (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
+
+      elsif Present (Declarations (N)) then
+         --  !!! Workaround for stdlib bug
+         CM.Include
+           (Union_Id (N),
+            Graph_Connections'
+              (Standard_Entry => CM.Element
+                 (Union_Id (Declarations (N))).Standard_Entry,
+               Standard_Exits => CM.Element
+                 (Union_Id (Declarations (N))).Standard_Exits));
+
+      elsif Present (Handled_Statement_Sequence (N)) then
+         --  !!! Workaround for stdlib bug
+         CM.Include
+           (Union_Id (N),
+            Graph_Connections'
+              (Standard_Entry => CM.Element
+                 (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry,
+               Standard_Exits => CM.Element
+                 (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
+
+      else
+         declare
+            V : Flow_Graphs.Vertex_Id;
+         begin
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (N),
+               Make_Aux_Vertex_Attributes (E_Loc => N),
+               V);
+            CM.Include (Union_Id (N), No_Connections);
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
+         end;
+      end if;
+
    end Do_Subprogram_Or_Block;
 
    -------------------------
@@ -1943,7 +1986,7 @@ package body Flow.Control_Flow_Graph is
       Block          : Graph_Connections;
    begin
       --  Create initial nodes for the statements.
-      P    := First (L);
+      P := First (L);
       while Present (P) loop
          case Nkind (P) is
             when N_Freeze_Entity                |
@@ -2157,18 +2200,12 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when E_Package =>
-            Spec_N := FA.Analyzed_Entity;
-            while Present (Spec_N) and
-              Nkind (Spec_N) /= N_Package_Specification
-            loop
-               Spec_N := Parent (Spec_N);
-            end loop;
-
+            Spec_N := FA.Scope;
             Body_N := Spec_N;
 
          when E_Package_Body =>
-            Body_N := Parent (FA.Analyzed_Entity);
-            Spec_N := Parent (Corresponding_Spec (Body_N));
+            Body_N := FA.Scope;
+            Spec_N := Get_Enclosing_Scope (Corresponding_Spec (Body_N));
       end case;
 
       --  Create the magic start and end vertices.
@@ -2309,9 +2346,11 @@ package body Flow.Control_Flow_Graph is
             --  Look at the body
             Process_Quantified_Expressions
               (Declarations (Body_N), FA, Connection_Map, The_Context);
-            Process_Quantified_Expressions
-              (Statements (Handled_Statement_Sequence (Body_N)),
-               FA, Connection_Map, The_Context);
+            if Present (Handled_Statement_Sequence (Body_N)) then
+               Process_Quantified_Expressions
+                 (Statements (Handled_Statement_Sequence (Body_N)),
+                  FA, Connection_Map, The_Context);
+            end if;
 
       end case;
 

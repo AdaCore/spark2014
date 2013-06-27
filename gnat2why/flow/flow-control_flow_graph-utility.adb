@@ -160,7 +160,7 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A        : V_Attributes       := Null_Attributes;
       Tmp_Used : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
-      Scope    : constant Scope_Ptr := Get_Enclosing_Scope (Call_Vertex);
+      Scope    : constant Scope_Ptr := Get_Enclosing_Body_Scope (Call_Vertex);
    begin
       A.Is_Parameter                    := True;
       A.Is_Discriminants_Only_Parameter := Discriminants_Only;

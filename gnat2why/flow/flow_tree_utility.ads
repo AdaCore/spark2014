@@ -81,6 +81,11 @@ package Flow_Tree_Utility is
    --  Fetches the body entity for a subprogram with a spec and a body.
 
    function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr;
+   --  Returns the first parent of N which is a valid Scope_Ptr.
+
+   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr;
+   --  Returns the first parent of N which is a N_Subprogram_Body or
+   --  N_Package_Body.
 
    function Should_Use_Refined_View (Scope : Scope_Ptr;
                                      N     : Node_Id)
