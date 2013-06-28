@@ -1,3 +1,5 @@
+test.adb:4:04: ineffective statement [ineffective]
+test.adb:5:04: ineffective statement [ineffective]
 test.adb:42:09: use of uninitialized variable "Tmp.A" [uninitialized__tmp_a]
 test.adb:80:09: use of uninitialized variable "Tmp.A.A" [uninitialized__tmp_a_a]
 test.adb:91:14: flow analysis of "Test_06" abandoned due to records with non-manifest initializations

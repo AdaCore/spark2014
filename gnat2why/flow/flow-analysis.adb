@@ -1156,6 +1156,8 @@ package body Flow.Analysis is
                                     Tag   => Tag);
       end Mark_Definition_Free_Path;
 
+      Tmp : Unbounded_String;
+
    begin
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1206,26 +1208,32 @@ package body Flow.Analysis is
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
-                           case Key_I.Kind is
-                              when Record_Field =>
-                                 Error_Msg_Flow
-                                   (Msg => "component & of formal parameter"
-                                      & " might not be set",
-                                    G   => FA.PDG,
-                                    Loc => V_Use,
-                                    F   => Key_I,
-                                    Tag => Create_Tag ("uninitialized",
-                                                       Key_I));
-                              when others =>
-                                 Error_Msg_Flow
-                                   (Msg => "formal parameter &"
-                                      & " might not be set",
-                                    G   => FA.PDG,
-                                    Loc => V_Use,
-                                    F   => Key_I,
-                                    Tag => Create_Tag ("uninitialized",
-                                                       Key_I));
-                           end case;
+                           if Key_I.Kind = Record_Field then
+                              Tmp := To_Unbounded_String ("component & of ");
+                           else
+                              Tmp := Null_Unbounded_String;
+                           end if;
+                           if Atr_U.Is_Package_State then
+                              Append (Tmp, "package state ");
+                           else
+                              Append (Tmp, "formal parameter ");
+                           end if;
+                           if Key_I.Kind /= Record_Field then
+                              Append (Tmp, "& ");
+                           end if;
+                           Append (Tmp, "might not be ");
+                           if Atr_U.Is_Package_State then
+                              Append (Tmp, "initialized");
+                           else
+                              Append (Tmp, "set");
+                           end if;
+
+                           Error_Msg_Flow
+                             (Msg => To_String (Tmp),
+                              G   => FA.PDG,
+                              Loc => V_Use,
+                              F   => Key_I,
+                              Tag => Create_Tag ("uninitialized", Key_I));
                            Mark_Definition_Free_Path
                              (E_Loc => V_Use,
                               From  => FA.Start_Vertex,

@@ -297,6 +297,9 @@ package Flow_Types is
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
+      Is_Package_State    : Boolean;
+      --  True if the given variable is part of a package' state.
+
       Is_Constant         : Boolean;
       --  True if this value may not be updated.
 
@@ -361,6 +364,7 @@ package Flow_Types is
                    Is_Loop_Parameter               => False,
                    Is_Import                       => False,
                    Is_Export                       => False,
+                   Is_Package_State                => False,
                    Is_Constant                     => False,
                    Is_Callsite                     => False,
                    Use_Refined_View                => False,
@@ -379,32 +383,7 @@ package Flow_Types is
                    Error_Location                  => Empty);
 
    Null_Node_Attributes : constant V_Attributes :=
-     V_Attributes'(Is_Null_Node                    => True,
-                   Is_Program_Node                 => True,
-                   Is_Precondition                 => False,
-                   Is_Default_Init                 => False,
-                   Is_Loop_Entry                   => False,
-                   Is_Initialised                  => False,
-                   Is_Function_Return              => False,
-                   Is_Global                       => False,
-                   Is_Loop_Parameter               => False,
-                   Is_Import                       => False,
-                   Is_Export                       => False,
-                   Is_Constant                     => False,
-                   Is_Callsite                     => False,
-                   Use_Refined_View                => False,
-                   Is_Parameter                    => False,
-                   Is_Discriminants_Only_Parameter => False,
-                   Is_Global_Parameter             => False,
-                   Perform_IPFA                    => False,
-                   Call_Vertex                     => Null_Flow_Id,
-                   Parameter_Actual                => Null_Flow_Id,
-                   Parameter_Formal                => Null_Flow_Id,
-                   Default_Init_Var                => Null_Flow_Id,
-                   Default_Init_Val                => Empty,
-                   Variables_Defined               => Flow_Id_Sets.Empty_Set,
-                   Variables_Used                  => Flow_Id_Sets.Empty_Set,
-                   Loops                           => Node_Sets.Empty_Set,
-                   Error_Location                  => Empty);
+     Null_Attributes'Update (Is_Null_Node    => True,
+                             Is_Program_Node => True);
 
 end Flow_Types;

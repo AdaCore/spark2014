@@ -1050,8 +1050,12 @@ package body Flow is
                when E_Package =>
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
 
+                  --  !!! Issue here with detection of uninitialized
+                  --  !!! state. Needs resolution of M628-002.
+
                when E_Package_Body =>
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
+                  Analysis.Find_Ineffective_Statements (FA);
 
             end case;
          end if;

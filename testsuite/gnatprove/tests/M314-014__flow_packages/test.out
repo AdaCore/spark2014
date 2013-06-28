@@ -1,1 +1,6 @@
-NOT IMPLEMENTED YET
+pkg_a.adb:7:04: package state "A" might not be initialized [uninitialized__a]
+pkg_a.adb:9:04: ineffective statement [ineffective]
+pkg_a.adb:16:06: use of uninitialized variable "X" [uninitialized__x]
+pkg_a.adb:17:06: unused assignment [ineffective]
+pkg_a.ads:8:04: package state "X" might not be initialized [uninitialized__x]
+pkg_a.ads:10:04: ineffective statement [ineffective]

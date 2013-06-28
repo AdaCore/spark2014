@@ -70,9 +70,12 @@ package Flow_Tree_Utility is
                 Entity (Find_Node_In_Initializes'Result) = E;
    --  Returns the node representing E in an initializes aspect or Empty.
 
-   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean
-     is (Present (Find_Node_In_Initializes (E)));
+   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean;
    --  Returns true if E is covered by an initializes aspect.
+
+   function Is_Package_State (E : Entity_Id) return Boolean;
+   --  Returns true if E is declared in a package spec or body. Also
+   --  returns true for any abstract state.
 
    function Get_Body (E : Entity_Id) return Entity_Id
      with Pre => Ekind (E) in E_Function | E_Procedure,

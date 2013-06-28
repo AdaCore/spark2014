@@ -120,6 +120,8 @@ package body Flow_Tree_Utility is
    is
       P : Entity_Id := E;
    begin
+      --  !!! Fix this to support refined state
+
       while Ekind (P) /= E_Package loop
          case Ekind (P) is
             when E_Package_Body =>
@@ -177,6 +179,59 @@ package body Flow_Tree_Utility is
             raise Why.Unexpected_Node;
       end case;
    end Find_Node_In_Initializes;
+
+   -----------------------------------
+   -- Is_Initialized_At_Elaboration --
+   -----------------------------------
+
+   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean
+   is
+   begin
+      case Ekind (E) is
+         when E_Abstract_State =>
+            return Find_Node_In_Initializes (E) /= Empty;
+
+         when E_Variable =>
+            if Is_Package_State (E) then
+               if Present (Refined_State (E)) then
+                  return Is_Initialized_At_Elaboration (Refined_State (E));
+               else
+                  return Find_Node_In_Initializes (E) /= Empty;
+               end if;
+            else
+               return False;
+            end if;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Initialized_At_Elaboration;
+
+   ----------------------
+   -- Is_Package_State --
+   ----------------------
+
+   function Is_Package_State (E : Entity_Id) return Boolean
+   is
+   begin
+      case Ekind (E) is
+         when E_Abstract_State =>
+            return True;
+
+         when E_Variable =>
+            case Ekind (Scope (E)) is
+               when E_Package =>
+                  return True;
+
+               when others =>
+                  return False;
+            end case;
+
+         when others =>
+            return False;
+
+      end case;
+   end Is_Package_State;
 
    --------------
    -- Get_Body --
