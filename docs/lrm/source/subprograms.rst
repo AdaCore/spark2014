@@ -296,7 +296,8 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 SS no global_item referenced when null_global_specification
+      :Trace Unit: 6.1.4 SS no global_item referenced when
+                   null_global_specification
 
 .. centered:: **Name Resolution Rules**
 
@@ -392,6 +393,11 @@ is used purely for static analysis purposes and is not executed.
    subprogram if and only if it denotes an entity that is referenced by the
    subprogram.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 VR global_item shall occur only if entity referenced
+                   is denoted by the subprogram
+
 #. Each entity denoted by a ``global_item`` in a ``global_specification`` of a
    subprogram that is an input or output of the subprogram shall satisfy the
    following mode specification rules [which are checked during analysis of the
@@ -401,14 +407,14 @@ is used purely for static analysis purposes and is not executed.
      has a ``mode_selector`` of Input;
 
    * a ``global_item`` has a ``mode_selector`` of Output if:
-     
+
      - it denotes an output but not an input, other than the
-       use of a discriminant or an attribute of the ``global_item`` and 
-       
-     - is always fully initialized as a result of any successful execution of a 
+       use of a discriminant or an attribute of the ``global_item`` and
+
+     - is always fully initialized as a result of any successful execution of a
        call of the subprogram;
 
-   * otherwise the ``global_item`` denotes both an input and an output, is
+   * otherwise the ``global_item`` denotes both an input and an output, and
      has a ``mode_selector`` of In_Out.
 
    [For purposes of determining whether an output of a subprogram shall have a
@@ -419,11 +425,22 @@ is used purely for static analysis purposes and is not executed.
    This implies that given an output of a discriminated type that is not known
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]
-       
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 VR Input has to only be read, Output has to be updated
+                   and In_Out has to be both read and updated
+
 #. An entity that is denoted by a ``global_item`` which is referenced by a
    subprogram but is neither an input nor an output but is only referenced
    directly, or indirectly in assertion expressions has a ``mode_selector`` of
    Proof_In.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 VR a Proof_In global_item is not referenced by a
+                   subprogram but is directly or indirectly referenced in
+                   assertion expressions
 
 .. centered:: **Examples**
 
@@ -755,11 +772,29 @@ as it is used purely for static analysis purposes and is not executed.
    the output must depend on all, but only, the entities denoted by the
    ``inputs`` given in the ``input_list`` associated with the ``output``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 VR each output in the Depends aspect must be an
+                   output in the implementation and must depend on all
+                   its inputs and nothing else
+
 #. Each output of the implementation of the subprogram body is denoted by
    an ``output`` in the Depends aspect of the subprogram.
 
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 VR all outputs of the implementation must be
+                   denoted as outputs in the Depends aspect
+
 #. [Each input of the implementation of a subprogram body is denoted by an
    ``input`` of the Depends aspect of the subprogram.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.5 VR all inputs of the implementation must be denoted
+                   as inputs in the Depends aspect (maybe in more than one
+                   input-list)
 
 .. centered:: **Examples**
 
