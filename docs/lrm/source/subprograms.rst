@@ -325,6 +325,11 @@ follow the grammar of ``global_specification``
    a formal parameter [of an enclosing subprogram] of mode **in**.
    [This restriction may be relaxed in some way at some point in the future.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.4 LR global_item shall only denote a constant if it is
+                   a formal parameter of an enclosing subprogram of mode in
+
 #. The Global aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
