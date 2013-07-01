@@ -412,6 +412,11 @@ shall follow the grammar of ``abstract_state_list`` given below.
 #. An External state abstraction is one declared with an ``option_list``
    that includes the External ``option`` (see :ref:`external_state`).
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.4 SS External state abstraction needs to have an
+                   External option in its option_list
+
 #. A state abstraction which is declared with an ``option_list`` that includes
    a Part_Of ``name_value_option`` indicates that it is a constituent (see
    :ref:`state_refinement`) exclusively of the state abstraction
@@ -566,6 +571,11 @@ grammar of ``initialization_spec`` given below.
 #. The Initializes aspect of a package has visibility of the declarations
    occurring immediately within the visible part of the package.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 Initializes aspect has visibility of declarations
+                   occurring immediately within the visible part
+
 #. The Initializes aspect of a package specification asserts which
    state abstractions and visible variables of the package are initialized
    by the elaboration of the package, both its specification and body, and
@@ -604,9 +614,19 @@ There are no dynamic semantics associated with the Initializes aspect.
    entire variable is initialized if all of its components are initialized.
    Other parts of the visible state of the package shall not be initialized.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 VR only variables and state abstractions in the
+                   Initializes aspect shall be initialized
+
 #. If an ``initialization_item`` has an ``input_list`` then the entities denoted
    in the input list shall be used in determining the initialized value of the
    entity denoted by the ``name`` of the ``initialization_item``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.5 VR only entities in the input_list shall be used in
+                   determining the initialized value of an entity
 
 .. centered:: **Examples**
 
@@ -706,11 +726,21 @@ be a *Boolean_*\ ``expression``.
    cause freezing until the point where it is evaluated [, at which point
    everything that it might freeze has already been frozen].
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.6 Initial_Condition aspect is equivalent to an assertion
+                   located at the very end of the package's body
+
 .. centered:: **Verification Rules**
 
 #. [The Initial_Condition aspect gives a proof obligation to show that the
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.1.6 VR Initial_Condition generates proof obligation that
+                   must be satisfied after package's spec and body
 
 .. centered:: **Examples**
 
@@ -802,8 +832,13 @@ where
 
 .. centered:: **Name Resolution Rules**
 
-#. A Refined_State aspect of a ``package_body`` has visibility extended to  the
+#. A Refined_State aspect of a ``package_body`` has visibility extended to the
    ``declarative_part`` of the body.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.2 NRR Refined_State has visibility of the declarative_part
+                   of the body
 
 .. centered:: **Legality Rules**
 
@@ -885,6 +920,11 @@ where
    and defines the objects and each subordinate state abstraction that are the
    ``constituents`` of the *abstract_*\ ``state_names`` declared in the
    ``package_specification``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.2 SS Refined_State completes declaration of all of the
+                   corresponding state abstractions
 
 #. A **null** ``constituent_list`` indicates that the named abstract state has
    no constituents. The state abstraction does not represent any actual state at
@@ -1158,6 +1198,16 @@ is part of and a state abstraction always knows all of its constituents.
      ``inputs`` and Output_Only states shall be denoted only as
      ``outputs``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.3 VR public children which see a state abstraction
+                   and some of its constituents but not its refinement,
+                   may either read the most visible encapsulating state
+                   abstraction or update it. These children must reference
+                   this most visible encapsulating state abstraction in their
+                   Global and Depends aspects.
+
+
 .. centered:: **Examples**
 
 .. code-block:: ada
@@ -1366,7 +1416,7 @@ Initialization Issues
 ~~~~~~~~~~~~~~~~~~~~~
 
 Every state abstraction specified as being initialized in the Initializes
-aspect of a package has to have all of its constituents initialized.  This
+aspect of a package has to have all of its constituents initialized. This
 may be achieved by initialization within the package, by assumed
 pre-initialization (in the case of external state) or, for constituents
 which reside in another package, initialization by their declaring package.
@@ -1386,6 +1436,13 @@ which reside in another package, initialization by their declaring package.
      package. [It follows that such constituents will appear in the
      initialization clause of the declaring unit unless they are external
      states.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.4 VR each state abstraction in an Initializes aspect
+                   shall have all its constituents initializes by either the
+                   package, by assumed pre-initialization or by the other
+                   unit that declares the state abstraction constituent
 
 .. _refined-global-aspect:
 
@@ -1517,6 +1574,13 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 #. If a subprogram has a Refined_Global aspect it is used in the analysis of the
    subprogram body rather than its Global aspect.
 
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.5 VR if Refined_Global aspect exists, the it is used
+                   instead of the Global aspect for the analysis of the
+                   subprogram body
+
 #. The verification rules given for :ref:`global-aspects` also apply.
 
 .. _refined-depends-aspect:
@@ -1643,6 +1707,11 @@ The static semantics are equivalent to those given for the Depends aspect in
    ``input_list`` is the union of all of the ``inputs`` from the original
    ``input_lists``.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.6 LR Refined_Depends aspect needs to be consistent with
+                   its corresponding Depends aspect. Covered by another TU.
+
 #. The rules for :ref:`depends-aspects` also apply.
 
 .. centered:: **Dynamic Semantics**
@@ -1653,7 +1722,12 @@ as it is used purely for static analysis purposes and is not executed.
 .. centered:: **Verification Rules**
 
 #. If a subprogram has a Refined_Depends aspect it is used in the analysis of
-   the subprogram body rather than its Depends Aspect.
+   the subprogram body rather than its Depends aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.6 VR Refined_Depends aspect is used in the analysis of
+                   the subprogram body instead of Depends aspect
 
 #. The verification rules given for :ref:`depends-aspects` also apply.
 
