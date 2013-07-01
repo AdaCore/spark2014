@@ -573,7 +573,7 @@ grammar of ``initialization_spec`` given below.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.5 Initializes aspect has visibility of declarations
+      :Trace Unit: 7.1.5 SS Initializes aspect has visibility of declarations
                    occurring immediately within the visible part
 
 #. The Initializes aspect of a package specification asserts which
@@ -728,8 +728,8 @@ be a *Boolean_*\ ``expression``.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.6 Initial_Condition aspect is equivalent to an assertion
-                   located at the very end of the package's body
+      :Trace Unit: 7.1.6 DS Initial_Condition aspect is equivalent to an
+                   assertion located at the very end of the package's body
 
 .. centered:: **Verification Rules**
 
