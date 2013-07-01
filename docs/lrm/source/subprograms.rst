@@ -780,8 +780,8 @@ as it is used purely for static analysis purposes and is not executed.
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 6.1.5 VR each output in the Depends aspect must be an
-                   output in the implementation and must depend on all
-                   its inputs and nothing else
+                   output in the implementation and must depend on all its
+                   inputs and nothing else
 
 #. Each output of the implementation of the subprogram body is denoted by
    an ``output`` in the Depends aspect of the subprogram.
@@ -789,17 +789,16 @@ as it is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 VR all outputs of the implementation must be
-                   denoted as outputs in the Depends aspect
+      :Trace Unit: 6.1.5 VR all implementation's outputs must be outputs
+                   of the Depends aspect
 
 #. [Each input of the implementation of a subprogram body is denoted by an
    ``input`` of the Depends aspect of the subprogram.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 VR all inputs of the implementation must be denoted
-                   as inputs in the Depends aspect (maybe in more than one
-                   input-list)
+      :Trace Unit: 6.1.5 VR all implementation's inputs must be inputs of
+                   the Depends aspect (maybe in more than one input_list)
 
 .. centered:: **Examples**
 
