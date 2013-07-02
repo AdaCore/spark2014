@@ -1577,8 +1577,8 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.2.5 VR if Refined_Global aspect exists, the it is used
-                   instead of the Global aspect for the analysis of the
+      :Trace Unit: 7.2.5 VR if a Refined_Global aspect exists, then it is
+                   used instead of the Global aspect for the analysis of the
                    subprogram body
 
 #. The verification rules given for :ref:`global-aspects` also apply.
