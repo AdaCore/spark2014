@@ -1440,7 +1440,7 @@ which reside in another package, initialization by their declaring package.
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: 7.2.4 VR each state abstraction in an Initializes aspect
-                   shall have all its constituents initializes by either the
+                   shall have all its constituents initialized by either the
                    package, by assumed pre-initialization or by the other
                    unit that declares the state abstraction constituent
 
