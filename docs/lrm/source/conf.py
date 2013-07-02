@@ -57,7 +57,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'spark2014_rm'
-copyright = u'2013, Altran UK Ltd and AdaCore'
+copyright = u'2013, AdaCore and Altran UK Ltd'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -201,7 +201,7 @@ htmlhelp_basename = 'spark2014doc'
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 'spark2014_rm.tex', u'SPARK 2014 LRM',
-   u'Altran and AdaCore', 'manual'),
+   u'AdaCore and Altran UK Ltd', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -234,6 +234,6 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'spark2014_rm', u'SPARK 2014 Reference Manual',
-     [u'Altran and AdaCore'], 1)
+     [u'AdaCore and Altran UK Ltd'], 1)
 ]
 

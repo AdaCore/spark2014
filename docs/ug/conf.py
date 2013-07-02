@@ -53,7 +53,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 def get_copyright():
-    return u'2011-%s, AdaCore' % time.strftime("%Y")
+    return u'2011-%s, AdaCore and Altran UK Ltd' % time.strftime("%Y")
 
 # General information about the project.
 project = u'SPARK 2014 Toolset User\'s Guide'
@@ -209,8 +209,8 @@ htmlhelp_basename = 'SPARK2014ToolsetUsersGuidedoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'gnatprove_ug.tex', u'SPARK 2014 Toolset User\'s Guide',
-   u'AdaCore', 'manual'),
+  ('index', 'spark2014_ug.tex', u'SPARK 2014 Toolset User\'s Guide',
+   u'AdaCore and Altran UK Ltd', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -243,5 +243,5 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'spark2014toolsetusersguide', u'SPARK 2014 Toolset User\'s Guide',
-     [u'AdaCore'], 1)
+     [u'AdaCore and Altran UK Ltd'], 1)
 ]
