@@ -224,8 +224,6 @@ package body Gnat2Why.Types is
               To_Why_Id (Base_E, Local => True);
             E_Ident : constant W_Identifier_Id :=
               To_Why_Id (E, Local => True);
-            Var_X : constant W_Identifier_Id :=
-              New_Identifier (Name => Full_Name (E) & "__x");
 
          begin
             Add_Use_For_Entity (File, Base_E, EW_Export);
@@ -240,33 +238,6 @@ package body Gnat2Why.Types is
                                  New_Abstract_Type
                                    (Name => Base_Ident)));
             end if;
-
-            Emit
-              (Theory,
-               New_Function_Def
-                 (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_To_Base),
-                  Binders     =>
-                    (1 =>
-                       Binder_Type'(B_Name => Var_X,
-                                    B_Type =>
-                                      New_Abstract_Type (Name => E_Ident),
-                                    others => <>)),
-                  Return_Type => New_Abstract_Type (Name => Base_Ident),
-                  Def         => +Var_X));
-            Emit
-              (Theory,
-               New_Function_Def
-                 (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Of_Base),
-                  Binders     =>
-                    (1 =>
-                       Binder_Type'(B_Name => Var_X,
-                                    B_Type =>
-                                      New_Abstract_Type (Name => E_Ident),
-                                    others => <>)),
-                  Return_Type => New_Abstract_Type (Name => Base_Ident),
-                  Def         => +Var_X));
 
             if Has_Discriminants (E) then
                Declare_Conversion_Check_Function (Theory, E, Base_E);

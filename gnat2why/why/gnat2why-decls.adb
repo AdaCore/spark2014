@@ -375,40 +375,56 @@ package body Gnat2Why.Decls is
             TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
          begin
 
-            --  If no theory is needed for Node or if the copy was already in
-            --  the appropriate file, there is nothing to do
+            --  If no theory is needed for Node there is nothing to do
 
-            if not Entity_In_SPARK (E) or else TFile.Name.all = File_Name then
+            if not Entity_In_SPARK (E) then
                return;
             end if;
 
             --  Adds a new theory to the appropriate file, containing only a
             --  use export of the theory to be copied
+            if TFile.Name.all /= File_Name then
+               Open_Theory
+                 (TFile, Theory_Name,
+                  Comment => "Module for axiomatizing "
+                  & """" & Get_Name_String (Chars (E)) & """"
+                  & (if Sloc (E) > 0 then
+                       " defined at " & Build_Location_String (Sloc (E))
+                    else "")
+                  & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-            Open_Theory
-              (TFile, Theory_Name,
-               Comment => "Module for axiomatizing "
-               & """" & Get_Name_String (Chars (E)) & """"
-               & (if Sloc (E) > 0 then
-                 " defined at " & Build_Location_String (Sloc (E))
-                 else "")
-               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+               Add_With_Clause (T        => TFile.Cur_Theory,
+                                File     => File_Name,
+                                T_Name   => Capitalize_First (Theory_Name),
+                                Use_Kind => EW_Export);
 
-            Add_With_Clause (T        => TFile.Cur_Theory,
-                             File     => File_Name,
-                             T_Name   => Capitalize_First (Theory_Name),
-                             Use_Kind => EW_Export);
+               if not (Ekind (E) in Type_Kind) then
+                  for I in Compl'Range loop
+                     Add_Completion (Name            => Full_Name (E),
+                                     Completion_Name => Full_Name (Compl (I)),
+                                     Kind            =>
+                                       Dispatch_Entity (Compl (I)));
+                  end loop;
+               end if;
 
-            if not (Ekind (E) in Type_Kind) then
-               for I in Compl'Range loop
-                  Add_Completion (Name            => Full_Name (E),
-                                  Completion_Name => Full_Name (Compl (I)),
-                                  Kind            =>
-                                    Dispatch_Entity (Compl (I)));
-               end loop;
+               Close_Theory (TFile, Filter_Entity => Empty);
             end if;
 
-            Close_Theory (TFile, Filter_Entity => Empty);
+            if Ekind (E) in Subprogram_Kind then
+               declare
+                  File : Why_File :=
+                    Why_Files (Dispatch_Entity (E, Is_Completion => True));
+               begin
+                  Open_Theory (File,
+                               Theory_Name & To_String (WNE_Expr_Fun_Closure),
+                               Comment => "");
+
+                  Close_Theory (File,
+                                Filter_Entity  => Empty,
+                                Defined_Entity => E,
+                                Do_Closure     => True);
+               end;
+            end if;
          end Parse_Declaration;
 
          Cur : Node_Id := First (Decls);

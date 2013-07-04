@@ -18,12 +18,14 @@ module Ada__containers__formal_ordered_sets__set
 
   type set
 
-  function rec__modulus set : Ada__containers__hash_type.hash_type
-
   function rec__capacity set : Ada__containers__count_type.count_type
 
    function capacity  (co : set) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
+
+  function to_base "inline" (co : set) : set = co
+
+  function of_base "inline" (co : set) : set = co
 end
 
 module Ada__containers__formal_ordered_sets__length
@@ -761,6 +763,38 @@ module Ada__containers__formal_ordered_sets__delete__2
      writes     { co, cu }
      reads      { co }
      ensures { delete (old !co) (old !cu) !co /\ !cu = no_element}
+ end
+
+module Ada__containers__formal_ordered_sets__delete_first
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__first
+  use import Ada__containers__formal_ordered_sets__delete
+
+  val delete__first (co:ref set) : unit
+     writes     { co }
+     reads      { co }
+     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (first (old !co)) !co }
+ end
+
+module Ada__containers__formal_ordered_sets__delete_last
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__last
+  use import Ada__containers__formal_ordered_sets__delete
+
+  val delete__last (co:ref set) : unit
+     writes     { co }
+     reads      { co }
+     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (last (old !co)) !co }
  end
 
 module Ada__containers__formal_ordered_sets__include

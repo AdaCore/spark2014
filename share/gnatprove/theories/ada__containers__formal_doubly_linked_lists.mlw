@@ -9,6 +9,10 @@ module Ada__containers__formal_doubly_linked_lists__list
 
    function capacity  (co : list) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
+
+  function to_base "inline" (co : list) : list = co
+
+  function of_base "inline" (co : list) : list = co
 end
 
 module Ada__containers__formal_doubly_linked_lists__length

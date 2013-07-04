@@ -27,6 +27,8 @@ with Data_Types; use Data_Types;
 
 with Com_Map; use Com_Map;
 
+use Com_Map.Com_To_RBC_Map;
+
 Package Section_3_5_3 is
    -- FIXME using SRS sections as package name is probably not the best approach
 
@@ -69,10 +71,10 @@ Package Section_3_5_3 is
                                             phone : Telephone_Number_t)
    with
      Pre => ((Authorize_New_Communication_Session = True) -- §3.5.3.4
-             and (not Connections.Contains(destination)) -- §3.5.3.4.1
+             and (not Contains(Connections, destination)) -- §3.5.3.4.1
              -- FIXME: what should we do for cases f and g?
             ),
-     Post => (Connections.Contains(destination));
+     Post => (Contains(Connections, destination));
 
    -- §3.5.3.3 not formalized (Note)
 

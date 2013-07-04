@@ -81,6 +81,10 @@ module  Ada__containers__formal_vectors__vector
   axiom capacity_range:
     forall co : vector [rec__capacity co].
       0 <= capacity co <= index_type_length
+
+  function to_base "inline" (co : vector) : vector = co
+
+  function of_base "inline" (co : vector) : vector = co
 end
 
 module Ada__containers__formal_vectors__length
@@ -223,7 +227,7 @@ module Ada__containers__formal_vectors__empty_vector
   axiom Empty_is_empty: length_ empty_vector = 0
 end
 
-module Ada__containers__vectors__is_empty
+module Ada__containers__formal_vectors__is_empty
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__vector

@@ -23,6 +23,10 @@ module Ada__containers__formal_hashed_maps__map
 
    function capacity  (co : map) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
+
+  function to_base "inline" (co : map) : map = co
+
+  function of_base "inline" (co : map) : map = co
 end
 
 module Ada__containers__formal_hashed_maps__length

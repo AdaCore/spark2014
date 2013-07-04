@@ -28,11 +28,17 @@ package Com_Map is
    function RBC_RIU_ID_Hash(id : RBC_RIU_ID_t) return Hash_Type is
      (Hash_Type(id));
 
+   function Equivalent_Keys (K1, K2 : RBC_RIU_ID_T) return Boolean is
+     (K1 = K2);
+
+   function Equal_Elements (E1, E2 : Boolean) return Boolean is
+      (E1 = E2);
+
    package Com_To_RBC_Map is new Ada.Containers.Formal_Hashed_Maps
      (Key_Type        => RBC_RIU_ID_t,
       Element_Type    => Boolean, -- False: com being established
                                   -- True : com established
       Hash            => RBC_RIU_ID_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => Equivalent_Keys,
+      "="             => Equal_Elements);
 end;

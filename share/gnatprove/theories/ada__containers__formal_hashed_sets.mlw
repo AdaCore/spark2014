@@ -23,6 +23,10 @@ module Ada__containers__formal_hashed_sets__set
 
    function capacity  (co : set) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
+
+  function to_base "inline" (co : set) : set = co
+
+  function of_base "inline" (co : set) : set = co
 end
 
 module Ada__containers__formal_hashed_sets__length
