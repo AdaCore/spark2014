@@ -328,8 +328,8 @@ hold on exit.
 The program obtained so far is a valid |SPARK| program, which |GNAT Pro|
 analyzes semantically without errors or warnings.
 
-Compiling |SPARK| Programs
-==========================
+Testing |SPARK| Programs
+========================
 
 We can compile the above program, and test it on a set of selected inputs. The
 following testing program exercizes both the case where the searched value is
