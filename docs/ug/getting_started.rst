@@ -623,7 +623,8 @@ information that, since the loop did not exit, its test ``Pos < A'Last`` is
 false, so the range check can be proved.
 
 We solve this issue by setting the type of ``Pos`` to the base type of
-``Index``, which ranges past the last value of ``Index``:
+``Index``, which ranges past the last value of ``Index``. (This may not be the
+simplest solution, but we use it here for the dynamics of this tutorial.)
 
 .. code-block:: ada
 
