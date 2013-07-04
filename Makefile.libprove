@@ -49,6 +49,7 @@ check: $(ALL_WHYPACK:__package.mlw=.check)
 %.ali: %.ads
 	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.G $<
 
+# Generate Why3 files for Standard unit
 $(WHY_STANDARD):
 	echo "procedure Dummy is begin null end Dummy;" > $(DUMMYFILE)
 	env GNAT2WHY_ARGS="standard_mode" $(GNAT2WHY) $(DUMMYFILE)
