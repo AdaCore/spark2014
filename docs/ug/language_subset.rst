@@ -148,6 +148,8 @@ features and their impact on execution and formal verification.
 Subprogram Contracts
 --------------------
 
+.. _Preconditions and Postconditions:
+
 Preconditions and Postconditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -628,7 +630,7 @@ For example, in the function ``My_Preppend`` below, ``Strict_Equal`` is
 used to state that ``My_Preppend`` does not modify the tail of the
 list. Note that we use ``First (L1'Old)`` to refer to the first
 element of the tail in the output of preppend, which would not have
-been possible is cursors still had an internal reference to the list
+been possible if cursors still had an internal reference to the list
 they come from.
 
 .. code-block:: ada

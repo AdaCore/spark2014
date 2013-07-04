@@ -95,7 +95,6 @@ Language Features Not Yet Supported
 The major features not yet supported are:
 
 * OO programming: tagged types, dispatching
-* formal containers
 * invariants on types (invariants and predicates)
 
 |GNATprove| outputs in the :ref:`summary file` which features from |SPARK| are

@@ -45,8 +45,7 @@ proved. The goal then, when combining formal verification and testing, is to
 reach a level of confidence as good as the level reached by testing alone.
 
 |GNAT Pro| proposes a combination of formal verification and testing for
-|SPARK| based on |GNATprove| and GNATtest. See :ref:`proof and test` for
-details.
+|SPARK| based on |GNATprove| and GNATtest.
 
 Constructive and Retrospective Verification Modes
 -------------------------------------------------

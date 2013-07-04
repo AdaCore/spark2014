@@ -100,7 +100,6 @@ User's Guide.
 The obvious specification of ``Search`` is given in file ``search.ads``:
 
 .. code-block:: ada
-   :linenos:
 
    package Search is
 
@@ -124,7 +123,6 @@ parameter and looking for the first index at which ``Val`` is found, if there
 is such an index:
 
 .. code-block:: ada
-   :linenos:
 
    package body Search is
 
@@ -164,8 +162,8 @@ following line is added on the first line of ``search.ads``:
     pragma SPARK_Mode (On);
 
 Then, we run |GNATprove| in mode ``check``, using the ``Prove::Prove File``
-menu, so that it issues errors on code that has ``SPARK_Mode=On`` but is not in
-SPARK:
+menu and selecting mode ``check``, so that it issues errors on code that has
+``SPARK_Mode=On`` but is not in SPARK:
 
 .. image:: static/search_check.png
 
@@ -185,7 +183,6 @@ both the boolean result and the index for cases when the value is found, and
 making ``Linear_Search`` return this type:
 
 .. code-block:: ada
-   :linenos:
 
     pragma SPARK_Mode (On);
 
@@ -210,7 +207,6 @@ making ``Linear_Search`` return this type:
 The implementation of ``Linear_Search`` is modified to use this type:
 
 .. code-block:: ada
-   :linenos:
 
     pragma SPARK_Mode (On);
 
@@ -245,13 +241,13 @@ it does not contain any contracts, which are necessary to be able to apply
 formal verification modularly on each subprogram, independently of the
 implementation of other subprograms. The precondition constrains the value of
 input parameters, while the postcondition states desired properties of the
-result of the function. Here, we can require in the precondition that callers
-of ``Linear_Search`` always pass a non-negative value for parameter ``Val``,
-and we can state that, when the search succeeds, the index returned points to
-the desired value in the array:
+result of the function. See :ref:`Preconditions and Postconditions` for more
+details. Here, we can require in the precondition that callers of
+``Linear_Search`` always pass a non-negative value for parameter ``Val``, and
+we can state that, when the search succeeds, the index returned points to the
+desired value in the array:
 
 .. code-block:: ada
-   :linenos:
 
    function Linear_Search
      (A   : Arr;
@@ -284,7 +280,6 @@ to express that a value ``Val`` is found in an array ``A`` within given bounds
 ``Low`` and ``Up``:
 
 .. code-block:: ada
-   :linenos:
 
    function Value_Found_In_Range
      (A       : Arr;
@@ -336,7 +331,6 @@ following testing program exercizes both the case where the searched value is
 present or not in the array:
 
 .. code-block:: ada
-    :linenos:
 
     with Search;      use Search;
     with Ada.Text_IO; use Ada.Text_IO;
@@ -426,7 +420,6 @@ strengthening the guard of the second contract case, so that it only applies
 when the value is not found at index 1:
 
 .. code-block:: ada
-     :linenos:
      :emphasize-lines: 4
 
      Contract_Cases =>
@@ -525,7 +518,6 @@ choose to turn the type ``Search_Result`` into a discriminant record, so that
 the component ``At_Index`` is only usable when the search succeeds:
 
 .. code-block:: ada
-       :linenos:
 
        type Search_Result (Found : Boolean := False) is record
           case Found is
@@ -540,7 +532,6 @@ Then, in the implementation of ``Linear_Search``, we change the value of the
 discriminant depending on the success of the search:
 
 .. code-block:: ada
-       :linenos:
 
        function Linear_Search
          (A   : Arr;
@@ -744,7 +735,6 @@ still fully proved. Here is the final version of ``Search``, with the complete
 annotations:
 
 .. code-block:: ada
-    :linenos:
 
     pragma SPARK_Mode (On);
 
@@ -788,7 +778,6 @@ annotations:
     end Search;
 
 .. code-block:: ada
-    :linenos:
 
     pragma SPARK_Mode (On);
 
