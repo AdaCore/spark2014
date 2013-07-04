@@ -262,10 +262,10 @@ module Ada__containers__formal_hashed_sets__left
   axiom left_find :
     forall co:set, cu:cursor, w:real [find_ co w, left co cu|
      find_ (left co cu) w].
-     position co cu > position co (find_ co w) /\
-      position co (find_ co w) > 0 \/
-      position (left co cu) (find_ (left co cu) w) > 0 ->
-      find_ co w = find_ (left co cu) w
+     ((position co cu > position co (find_ co w) > 0 \/
+      position (left co cu) (find_ (left co cu) w) > 0) ->
+      find_ co w = find_ (left co cu) w) /\
+      (position co (find_ co w) >= position co cu -> find_ (left co cu) w = no_element)
 
   val left (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
@@ -309,9 +309,10 @@ module Ada__containers__formal_hashed_sets__right
   axiom right_find :
     forall co:set, cu:cursor, w:real [find_ (right co cu) w| right co cu,
      find_ co w].
-     position co cu <= position co (find_ co w) /\ position co cu > 0 \/
-      position (right co cu) (find_ (right co cu) w) > 0 ->
-      find_ co w = find_ (right co cu) w
+     ((0 < position co cu <= position co (find_ co w) \/
+      position (right co cu) (find_ (right co cu) w) > 0) ->
+      find_ co w = find_ (right co cu) w) /\
+      (position co (find_ co w) < position co cu -> find_ (right co cu) w = no_element)
 
   val right (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }

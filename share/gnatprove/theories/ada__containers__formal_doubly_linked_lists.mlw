@@ -240,6 +240,9 @@ module Ada__containers__formal_doubly_linked_lists__first_element
   use import Ada__containers__formal_doubly_linked_lists__first
   use import Ada__containers__formal_doubly_linked_lists__element
 
+  function first_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+= element co (first co)
+
   val first_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
      requires { length_ co > 0 }
      ensures  { result = element co (first co) }
@@ -254,6 +257,9 @@ module Ada__containers__formal_doubly_linked_lists__last_element
   use import Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__last
   use import Ada__containers__formal_doubly_linked_lists__element
+
+  function last_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+= element co (last co)
 
   val last_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
      requires { length_ co > 0 }

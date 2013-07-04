@@ -1,490 +1,1275 @@
-module Main
+module Ada__containers__formal_ordered_sets__witness
   use import real.Real
-  use "a-contai__types_in_spec".Ada__containers__count_type
-  use import int.Int
-  use import ref.Ref
-  
-  (*** TO BE INSTANTIATED ***)
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__olt
 
-  namespace import Element_type
-    type element_type
-  end
-
-  function oeq element_type element_type : bool
-
-  axiom equal_refl :
-  forall e : element_type [oeq e e].
-	oeq e e = True
-
-  axiom equal_sym :
-  forall e1 : element_type, e2 : element_type [oeq e1 e2].
-	oeq e1 e2 = oeq e2 e1
-
-  axiom equal_trans :
-  forall e1 : element_type, e2 : element_type, e3 : element_type [oeq e1 e2, oeq e1 e3 | oeq e1 e2, oeq e2 e3].
-	oeq e1 e2 = True -> oeq e2 e3 = True -> oeq e1 e3 = True
-
-  function olt element_type element_type : bool
-
-  (**************************)
-
-  type cursor
-  
-  type set
-  
-  function no_element  : cursor
-  
-  function empty_  : set
-
-  function capacity set : int
-  
-  function length set : int
-  
-  axiom Length_gte_zero:
-    forall co:set [length co]. 0 <= length co  <= capacity co
-  
-  function witness element_type : real
+  function witness Ada__containers__formal_ordered_sets__element_type.base_type : real
 
   axiom olt_witness :
-    (forall k1 : element_type, k2 : element_type [olt k1 k2].
-	Real.(<) (witness k1) (witness k2) -> olt k1 k2 = True) /\
-    (forall k1 : element_type, k2 : element_type [olt k1 k2].
-	olt k1 k2 = True -> Real.(<) (witness k1) (witness k2))
-  
-  function position_ set cursor : int
-  
-  axiom Position_gte_zero:
-    (forall co:set.
-      (forall cu:cursor.
-        ((Int.(<=) 0 (position_ co cu : int)) /\
-         (Int.(<=) (position_ co cu : int) (length co : int)))))
-  
-  axiom Position_no_element:
-    (forall co:set. ((position_ co (no_element  : cursor) : int) = 0))
-  
-  axiom Position_eq:
-    (forall co:set.
-      (forall cu1:cursor.
-        (forall cu2:cursor.
-          ((Int.(>) (position_ co cu1 : int) 0) ->
-           (((position_ co cu1 : int) = (position_ co cu2 : int)) ->
-            (cu1 = cu2))))))
-  
-  function element_ set cursor : element_type
-  
-  predicate is_empty_ (co : set) =
-    (forall cu:cursor. ((position_ co cu : int) = 0))
-  
-  axiom Length_is_empty:
-    (forall co:set. ((is_empty_ co) -> ((length co : int) = 0)))
-  
-  axiom Empty_is_empty: (is_empty_ (empty_  : set))
-  
-  predicate previous__ (co : set) (cu1 : cursor) (cu2 : cursor) =
-    (((Int.(>) (position_ co cu1 : int) 1) ->
-      ((position_ co cu2 : int) = (Int.(-) (position_ co cu1 : int) 1 : int))) /\
-     ((((position_ co cu1 : int) = 1) \/ (cu1 = (no_element  : cursor))) ->
-      (cu2 = (no_element  : cursor))))
-  
-  function previous_ set cursor : cursor
-  
-  axiom Previous_previous:
-    (forall co:set.
-      (forall cu:cursor [(previous_ co cu : cursor)].
-        (previous__ co cu (previous_ co cu : cursor))))
-  
-  predicate next__ (co : set) (cu1 : cursor) (cu2 : cursor) =
-    (((((Int.(>) (length co : int) (position_ co cu1 : int)) /\
-        (Int.(>) (position_ co cu1 : int) 0)) \/
-       (Int.(>) (position_ co cu2 : int) 0)) ->
-      ((position_ co cu2 : int) = (Int.(+) (position_ co cu1 : int) 1 : int))) /\
-     ((((Int.(>) (length co : int) 0) /\
-        ((position_ co cu1 : int) = (length co : int))) \/
-       (cu1 = (no_element  : cursor))) ->
-      (cu2 = (no_element  : cursor))))
-  
-  function next_ set cursor : cursor
-  
-  axiom Next_next:
-    (forall co:set.
-      (forall cu:cursor [(next_ co cu : cursor)].
-        (next__ co cu (next_ co cu : cursor))))
-  
-  predicate last_ (co : set) (cu : cursor) =
-    (((not (is_empty_ co)) -> ((position_ co cu : int) = (length co : int))) /\
-     ((is_empty_ co) -> (cu = (no_element  : cursor))))
-  
+    (forall k1  k2 : Ada__containers__formal_ordered_sets__element_type.base_type [Ada__containers__formal_ordered_sets__olt.olt k1 k2].
+	Real.(<) (witness k1) (witness k2) <-> Ada__containers__formal_ordered_sets__olt.olt k1 k2 = True)
+end
+
+module Ada__containers__formal_ordered_sets__set
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "a-contai__types_in_spec".Ada__containers__hash_type
+  use "a-contai__types_in_spec".Ada__containers__count_type
+
+  type set
+
+  function rec__modulus set : Ada__containers__hash_type.hash_type
+
+  function rec__capacity set : Ada__containers__count_type.count_type
+
+   function capacity  (co : set) : int =
+          Ada__containers__count_type.to_int (rec__capacity co)
+end
+
+module Ada__containers__formal_ordered_sets__length
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "a-contai__types_in_spec".Ada__containers__count_type
+  use import Ada__containers__formal_ordered_sets__set
+
+  function length set : Ada__containers__count_type.count_type
+
+  function length_ "inline" (co : set) : int =
+    Ada__containers__count_type.to_int (length co)
+
+  axiom length_range:
+    forall co:set [length co]. 0 <= length_ co <= capacity co
+
+  val length (co : set) :  Ada__containers__count_type.count_type
+     ensures { result = length co }
+end
+
+module Ada__containers__formal_ordered_sets__cursor
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+
+  type cursor
+
+  function position set cursor : int
+
+  function position_inv set int : cursor
+
+  axiom position_gte_zero:
+    forall co:set, cu:cursor [position co cu].
+        length_ co >= position co cu >= 0
+
+  axiom position_eq1:
+   forall co:set, i :int [position co (position_inv co i)]. 0 < i <= length_ co -> 
+              position co (position_inv co i) = i
+
+  axiom position_eq2:
+    forall co:set, cu:cursor [position co cu].
+          position co cu > 0 -> position_inv co (position co cu) = cu
+end
+
+module Ada__containers__formal_ordered_sets__no_element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+
+  function no_element : cursor
+
+  axiom position_no_element:
+    forall co:set [position co no_element]. position co no_element = 0
+end
+
+module Ada__containers__formal_ordered_sets__empty_set
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+
+  function empty_set : set
+
+  axiom Empty_is_empty: length_ empty_set = 0
+end
+
+module Ada__containers__formal_ordered_sets__is_empty
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+
+  function is_empty set : bool
+
+  axiom is_empty:
+    forall co:set [is_empty (co)]. 
+          is_empty (co) = True <-> length_ co = 0
+
+  val is_empty (co:set) : bool
+     ensures  { result = is_empty co }
+end
+
+module Ada__containers__formal_ordered_sets__element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use export Ada__containers__formal_ordered_sets__cursor
+
+  function element set cursor : Ada__containers__formal_ordered_sets__element_type.element_type
+
+  axiom ordered:
+    forall s:set, cu1 cu2:cursor [element s cu2, element s cu1].
+       position s cu1 > 0 -> position s cu2 > 0 ->
+         (position s cu1 > position s cu2 <-> Real.(>) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s cu1))) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s cu2))))
+
+  val element (co:set) (cu:cursor) : Ada__containers__formal_ordered_sets__element_type.element_type
+     requires { position co cu > 0 }
+     ensures  { result = element co cu }
+end
+
+module Ada__containers__formal_ordered_sets__previous
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+
+  function previous set cursor : cursor
+
+  axiom previous_in:
+    forall co:set, cu:cursor [previous co cu].
+	(position co cu > 1 \/ position co (previous co cu) > 0) ->
+	position co (previous co cu) = position co cu - 1
+
+  axiom previous_ext:
+    forall co:set, cu:cursor [previous co cu].
+        (position co cu = 1 \/ cu = no_element) -> previous co cu = no_element
+
+  val previous (co:set) (cu:cursor) : cursor
+     requires { cu = no_element \/ position co cu > 0 }
+     ensures  { result = previous co cu }
+end
+
+module Ada__containers__formal_ordered_sets__previous__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__previous
+
+  val previous__2 (co:set) (cu:ref cursor) : unit
+     requires { !cu = no_element \/ position co !cu > 0 }
+     writes     { cu }
+     reads      { cu }
+     ensures  { !cu = previous co (old !cu) }
+end
+
+module Ada__containers__formal_ordered_sets__next
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+
+  function next set cursor : cursor
+
+  axiom next_in:
+    forall co:set, cu:cursor [next co cu].
+	(length_ co > position co cu > 0 \/ position co (next co cu) > 0) ->
+	position co (next co cu) = position co cu + 1
+
+  axiom next_ext:
+    forall co:set, cu:cursor [next co cu].
+        (position co cu = length_ co \/ cu = no_element) -> next co cu = no_element
+
+  val next (co:set) (cu:cursor) : cursor
+     requires { cu = no_element \/ position co cu > 0 }
+     ensures  { result = next co cu }
+end
+
+module Ada__containers__formal_ordered_sets__next__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__next
+
+  val next__2 (co:set) (cu:ref cursor) : unit
+     requires { !cu = no_element \/ position co !cu > 0 }
+     writes     { cu }
+     reads      { cu }
+     ensures  { !cu = next co (old !cu) }
+end
+
+module Ada__containers__formal_ordered_sets__last
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+
   function last set : cursor
-  
-  axiom Last_last:
-    (forall co:set [(last co : cursor)]. (last_ co (last co : cursor)))
-  
-  predicate first_ (co : set) (cu : cursor) =
-    (((not (is_empty_ co)) -> ((position_ co cu : int) = 1)) /\
-     ((is_empty_ co) -> (cu = (no_element  : cursor))))
-  
+
+  axiom last_empty:
+    forall co:set [last co]. length_ co = 0 <-> last co = no_element
+
+  axiom last_gen:
+    forall co:set [last co]. length_ co = position co (last co)
+
+  val last (co:set) : cursor
+     ensures  { result = last co }
+end
+
+module Ada__containers__formal_ordered_sets__first
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+
   function first set : cursor
-  
-  axiom First_first:
-    (forall co:set [(first co : cursor)]. (first_ co (first co : cursor)))
-  
+
+  axiom first_empty:
+    forall co:set [first co]. length_ co = 0 <-> first co = no_element
+
+  axiom first_gen:
+    forall co:set [first co]. length_ co > 0 -> position co (first co) = 1
+
+  val first (co:set) : cursor
+     ensures  { result = first co }
+end
+
+module Ada__containers__formal_ordered_sets__first_element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__first
+  use import Ada__containers__formal_ordered_sets__element
+
+  function first_element (co:set) : Ada__containers__formal_ordered_sets__element_type.element_type = element co (first co)
+
+  val first_element (co:set) : Ada__containers__formal_ordered_sets__element_type.element_type
+     requires { length_ co > 0 }
+     ensures  { result = element co (first co) }
+end
+
+module Ada__containers__formal_ordered_sets__last_element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__last
+  use import Ada__containers__formal_ordered_sets__element
+
+  function last_element (co:set) : Ada__containers__formal_ordered_sets__element_type.element_type = element co (last co)
+
+  val last_element (co:set) : Ada__containers__formal_ordered_sets__element_type.element_type
+     requires { length_ co > 0 }
+     ensures  { result = element co (last co) }
+end
+
+module Ada__containers__formal_ordered_sets__find
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__element
+
   function find_ set real : cursor
   
   predicate find__ (co : set) (i : real) (cu : cursor) =
     (cu = (no_element  : cursor) /\
       (forall cun:cursor.
-        Int.(>) (position_ co cun : int) 0 ->
-         (witness (element_ co cun : element_type) : real) <> i)) \/
-     (Int.(>) (position_ co cu : int) 0 /\
-      (witness (element_ co cu : element_type) : real) = i)(* /\
-       (forall cun:cursor.
-         ((Int.(>) (position_ co cun : int) 0) ->
-          ((cu <> cun) ->
-           ((witness (element_ co cun : element_type) : real) <> i)))))))*)
+        position co cun >  0 ->
+         witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co cun)) <> i)) \/
+     (position co cu > 0 /\
+      witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co cu)) = i)
   
   axiom Find_find_val:
     (forall co:set.
       (forall i:real.
-        ((find__ co i (find_ co i : cursor)) /\
-         ((is_empty_ co) -> ((find_ co i : cursor) = (no_element  : cursor))))))
+        ((find__ co i (find_ co i)) /\
+         ((length_ co = 0) -> (find_ co i = no_element )))))
+
+  function find "inline" (co : set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : cursor =
+  find_ co (witness e)
+
+  val find (co:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type)  : cursor
+     ensures  { result = find co e }
+end
+
+module Ada__containers__formal_ordered_sets__ceiling
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__last
+  use import Ada__containers__formal_ordered_sets__element
   
-  axiom Ordered:
-    (forall s:set.
-      (forall cu1:cursor.
-        (forall cu2:cursor.
-          (((Int.(>) (position_ s cu1 : int) 0) /\
-            (Int.(>) (position_ s cu2 : int) 0)) ->
-           ((Int.(>) (position_ s cu2 : int) (position_ s cu1 : int)) <->
-            (Real.(>) (witness (element_ s cu2 : element_type) : real) (witness (element_ s cu1 : element_type) : real)))))))
-  
-  predicate left_pos (co : set) (i : int) (col : set) =
-    (forall cu:cursor.
-       Int.(>=) (position_ co cu : int) i ->
-         position_ col cu = 0) /\
-    (forall cu:cursor.
-        Int.(<) (position_ co cu : int) i ->
-          position_ col cu = position_ co cu) /\
-    (forall cu:cursor.
-         Int.(>) (position_ col cu : int) 0 ->
-          (position_ co cu : int) = (position_ col cu : int)) /\
-     (forall cu:cursor.
-       Int.(>) (position_ col cu : int) 0 ->
-        (element_ col cu : element_type) = (element_ co cu : element_type))
-  
-  predicate left_find (co : set) (cu : cursor) (col : set) =
-	(forall w:real [element_ co cu, find_ col w | element_ co cu, find_ co w].
-		Real.(>) (witness (element_ co cu)) w -> find_ col w = find_ co w /\
-		position_ col (find_ col w) = position_ co (find_ co w)) /\
-	(forall w:real [element_ co cu, find_ col w].
-		Real.(<=) (witness (element_ co cu)) w -> find_ col w = no_element) /\
-	(forall w:real [find_ col w | find_ co w]. 
-	 	position_ col (find_ col w) > 0 \/ position_ co cu > position_ co (find_ co w)
-		-> find_ col w = find_ co w)
-  
-  predicate left__ (co : set) (cu : cursor) (col : set) =
-    (((cu = (no_element  : cursor)) -> (col = co)) /\
-     ((Int.(>) (position_ co cu : int) 0) ->
-      (((length col : int) = (Int.(-) (position_ co cu : int) 1 : int)) /\
-       ((left_pos co (position_ co cu) col) /\
-        (left_find co cu col)))))
-  
-  function left_ set cursor : set
-  
-  axiom Left_left:
-    (forall co:set.
-      (forall cu:cursor [(left_ co cu : set)].
-        (left__ co cu (left_ co cu : set))))
-  
-  predicate right_pos (co : set) (i : int) (cor : set) =
-    ((forall cu:cursor.
-       (((Int.(>) i (position_ co cu : int)) ->
-         ((position_ cor cu : int) = 0)) /\
-        (((Int.(<=) i (position_ co cu : int)) ->
-          ((position_ cor cu : int) = (Int.(+) (Int.(-) (position_ co cu : int) i : int) 1 : int))) /\
-         ((Int.(>) (position_ cor cu : int) 0) ->
-          ((position_ co cu : int) = (Int.(-) (Int.(+) (position_ cor cu : int) i : int) 1 : int)))))) /\
-     (forall cu:cursor.
-       ((Int.(<=) i (position_ co cu : int)) ->
-        ((element_ cor cu : element_type) = (element_ co cu : element_type)))))
-  
-  predicate right_find (co : set) (i : int) (cor : set) =
-    (forall w:real.
-      ((((Int.(<=) i (position_ co (find_ co w : cursor) : int)) /\
-         (Int.(>) i 0)) \/
-        (Int.(>) (position_ cor (find_ cor w : cursor) : int) 0)) ->
-       ((find_ co w : cursor) = (find_ cor w : cursor))))
-  
-  predicate right__ (co : set) (cu : cursor) (cor : set) =
-    (((cu = (no_element  : cursor)) -> (cor = (empty_  : set))) /\
-     (((Int.(>) (position_ co cu : int) 0) ->
-       (((length cor : int) = (Int.(+) (Int.(-) (length co : int) (position_ co cu : int) : int) 1 : int)) /\
-        ((right_pos co (position_ co cu : int) cor) /\
-         (right_find co (position_ co cu : int) cor)))) /\
-      (forall cun:cursor.
-        ((Int.(>) (position_ cor cun : int) 0) ->
-         (Int.(>) (position_ co cun : int) 0)))))
-  
-  function right_ set cursor : set
-  
-  axiom Right_right:
-    (forall co:set.
-      (forall cu:cursor [(right_ co cu : set)].
-        (right__ co cu (right_ co cu : set))))
-  
-  predicate replace_ (co1 : set) (e : element_type) (co2 : set) =
-    ((Int.(>) (position_ co1 (find_ co1 (witness e : real) : cursor) : int) 0) /\
-     (((length co1 : int) = (length co2 : int)) /\
-      (((element_ co2 (find_ co1 (witness e : real) : cursor) : element_type) = e) /\
-       ((forall cun:cursor.
-          ((position_ co2 cun : int) = (position_ co1 cun : int))) /\
-        ((forall cun:cursor.
-           (((Int.(>) (position_ co1 cun : int) 0) /\
-             (not (cun = (find_ co1 (witness e : real) : cursor)))) ->
-            ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))) /\
-         (forall w:real. ((find_ co1 w : cursor) = (find_ co2 w : cursor)))))))) /\ capacity co1 = capacity co2
-  
-  predicate replace_pos (co1 : set) (co2 : set) =
-    (forall cu:cursor.
-      ((((position_ co1 cu : int) = 0) /\ ((position_ co2 cu : int) = 0)) \/
-       ((Int.(>) (position_ co1 cu : int) 0) /\
-        (Int.(>) (position_ co2 cu : int) 0))))
-  
-  predicate replace_element_ (co1 : set) (cu : cursor) (e : element_type) (co2 : set) =
-    ((Int.(>) (position_ co1 cu : int) 0) /\
-     (((length co1 : int) = (length co2 : int)) /\
-      (((element_ co2 cu : element_type) = e) /\
-       ((replace_pos co1 co2) /\
-        ((forall cun:cursor.
-           ((Int.(>) (position_ co1 cun : int) 0) ->
-            ((cu <> cun) ->
-             ((element_ co2 cun : element_type) = (element_ co1 cun : element_type))))) /\
-         ((forall w:real.
-            (((witness e : real) = w) -> ((find_ co2 w : cursor) = cu))) /\
-          (forall w:real.
-            ((((witness e : real) <> w) /\
-              (not ((find_ co1 w : cursor) = cu))) ->
-             ((find_ co1 w : cursor) = (find_ co2 w : cursor)))))))))) /\ capacity co1 = capacity co2
-  
-  function ceiling set real : cursor
+  function ceiling_ set real : cursor
   
   predicate is_ceiling (s : set) (i : real) (cu : cursor) =
      (cu = no_element  /\
-       (is_empty_ s \/
-        Real.(>) i (witness (element_ s (last s : cursor) : element_type)))) \/
-      (Int.(>) (position_ s cu : int) 0 /\
-       Real.(<=) i (witness (element_ s cu : element_type) : real) /\
-	(forall cun : cursor. 0 < position_ s cun < position_ s cu
-	 -> Real.(>) i (witness (element_ s cun))))
+       (length_ s = 0 \/ length_ s > 0 /\
+        Real.(>) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s (last s)))))) \/
+      (position s cu > 0 /\
+       Real.(<=) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s cu))) /\
+	(forall cun : cursor [element s cun]. 0 < position s cun < position s cu
+	 -> Real.(>) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s cun)))))
   
-  axiom Ceiling_is_ceiling:
-    (forall s:set.
-      forall i:real [(ceiling s i : cursor)].
-        is_ceiling s i (ceiling s i : cursor))
+  axiom ceiling_is_ceiling:
+    forall s:set.
+      forall i:real [(ceiling_ s i : cursor)].
+        is_ceiling s i (ceiling_ s i : cursor)
+
+  function ceiling  "inline" (co:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : cursor =
+ ceiling_ co (witness e)
+
+  val ceiling (co:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) :cursor
+     ensures { result = ceiling_ co (witness e) }
+end
+
+module Ada__containers__formal_ordered_sets__floor
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__first
+  use import Ada__containers__formal_ordered_sets__element
   
-  function floor set real : cursor
+  function floor_ set real : cursor
   
   predicate is_floor (s : set) (i : real) (cu : cursor) =
      (cu = no_element  /\
-       (is_empty_ s \/
-         Real.(<) i (witness (element_ s (first s : cursor))))) \/
-      (Int.(>) (position_ s cu) 0 /\
-       Real.(>=) i (witness (element_ s cu)) /\
-	(forall cun : cursor. position_ s cu < position_ s cun
-	 ->  Real.(<) i (witness (element_ s cun))))
+       (length_ s = 0 \/ length_ s > 0 /\
+         Real.(<) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s (first s)))))) \/
+      (position s cu > 0 /\
+       Real.(>=) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s cu))) /\
+	(forall cun : cursor. position s cu < position s cun
+	 ->  Real.(<) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element s cun)))))
   
   axiom floor_is_floor:
     (forall s:set.
-      (forall i:real [(floor s i : cursor)].
-        (is_floor s i (floor s i : cursor))))
-  
-  predicate insert_find (co1 : set) (e : element_type) (co2 : set) =
-    ((forall i:real.
-       ((i <> (witness e : real)) ->
-        ((find_ co1 i : cursor) = (find_ co2 i : cursor)))) /\
-     ((((ceiling co1 (witness e : real) : cursor) = (no_element  : cursor)) ->
-       ((find_ co2 (witness e : real) : cursor) = (last co2 : cursor))) /\
-      ((Int.(>) (position_ co1 (ceiling co1 (witness e : real) : cursor) : int) 0) ->
-       ((position_ co2 (find_ co2 (witness e : real) : cursor) : int) = (position_ co1 (ceiling co1 (witness e : real) : cursor) : int)))))
-  
-  predicate insert_pos (co1 : set) (e : element_type) (co2 : set) =
-    ((forall cun:cursor.
-       ((Int.(>) (position_ co1 cun : int) 0) ->
-        (((Real.(>) (witness e : real) (witness (element_ co1 cun : element_type) : real)) ->
-          ((position_ co2 cun : int) = (position_ co1 cun : int))) /\
-         ((Real.(>) (witness (element_ co1 cun : element_type) : real) (witness e : real)) ->
-          ((position_ co2 cun : int) = (Int.(+) (position_ co1 cun : int) 1 : int)))))) /\
-     ((forall cun:cursor.
-        ((Int.(>) (position_ co1 cun : int) 0) ->
-         ((element_ co1 cun : element_type) = (element_ co2 cun : element_type)))) /\
-      (forall cun:cursor.
-        ((Int.(>) (position_ co1 cun : int) 0) ->
-         ((witness (element_ co1 cun : element_type) : real) <> (witness e : real))))))
-  
-  predicate insert_inv (co1 : set) (e : element_type) (co2 : set) =
-    ((forall cun:cursor.
-       (((Int.(<) 0 (position_ co2 cun : int)) /\
-         ((witness (element_ co2 cun : element_type) : real) = (witness e : real))) ->
-        ((position_ co1 cun : int) = 0))) /\
-     (forall cun:cursor.
-       (((Int.(<) 0 (position_ co2 cun : int)) /\
-         ((position_ co1 cun : int) = 0)) ->
-        ((element_ co2 cun : element_type) = e))))
-  
-  predicate insert_ (co1 : set) (e : element_type) (co2 : set) =
-    ((Int.(>) (position_ co2 (find_ co2 (witness e : real) : cursor) : int) 0) /\
-     (((length co2 : int) = (Int.(+) (length co1 : int) 1 : int)) /\
-      ((insert_pos co1 e co2) /\
-       ((insert_inv co1 e co2) /\ (insert_find co1 e co2))))) /\ capacity co1 = capacity co2
+      (forall i:real [(floor_ s i : cursor)].
+        (is_floor s i (floor_ s i : cursor))))
 
-  predicate first_inserted (co1:set) (k:element_type) (co2:set) (p:cursor) =
-     position_ co2 p > 0 /\ (ceiling co1 (witness k) = no_element /\ p = last co2 \/
-             position_ co1 (ceiling co1 (witness k)) > 0 /\
-             p = previous_ co2 (ceiling co1 (witness k)))
-  
-  predicate delete_find (co1 : set) (e : element_type) (co2 : set) =
-    (forall w:real.
-      ((((witness e : real) <> w) ->
-        ((find_ co1 w : cursor) = (find_ co2 w : cursor))) /\
-       (((witness e : real) = w) ->
-        ((find_ co2 w : cursor) = (no_element  : cursor)))))
-  
-  predicate delete_pos (co1 : set) (i : int) (co2 : set) =
-    ((forall cun:cursor.
-       ((((position_ co1 cun : int) = i) -> ((position_ co2 cun : int) = 0)) /\
-        (((Int.(>) (position_ co1 cun : int) i) ->
-          ((position_ co2 cun : int) = (Int.(-) (position_ co1 cun : int) 1 : int))) /\
-         ((Int.(>) i (position_ co1 cun : int)) ->
-          ((position_ co2 cun : int) = (position_ co1 cun : int)))))) /\
-     (forall cun:cursor.
-       (((position_ co1 cun : int) <> i) ->
-        ((element_ co2 cun : element_type) = (element_ co1 cun : element_type)))))
-  
-  predicate delete_inv (co1 : set) (i : int) (co2 : set) =
-    (forall cun:cursor.
-      ((Int.(>) (position_ co2 cun : int) 0) ->
-       (Int.(>) (position_ co1 cun : int) 0)))
-  
-  predicate delete_ (co1 : set) (cu : cursor) (co2 : set) =
-    (((find_ co2 (witness (element_ co1 cu : element_type) : real) : cursor) = (no_element  : cursor)) /\
-     ((Int.(>) (position_ co1 cu : int) 0) /\
-      (((length co2 : int) = (Int.(-) (length co1 : int) 1 : int)) /\
-       ((delete_pos co1 (position_ co1 cu : int) co2) /\
-        ((delete_inv co1 (position_ co1 cu : int) co2) /\
-         (delete_find co1 (element_ co1 cu : element_type) co2)))))) /\ capacity co1 = capacity co2
-  
-  predicate include__ (co1 : set) (e : element_type) (co2 : set) =
-    (((Int.(>) (position_ co1 (find_ co1 (witness e : real) : cursor) : int) 0) ->
-      (replace_ co1 e co2)) /\
-     (((find_ co1 (witness e : real) : cursor) = (no_element  : cursor)) ->
-      (insert_ co1 e co2)))
-  
-  predicate exclude_ (co1 : set) (e : element_type) (co2 : set) =
-    (((Int.(>) (position_ co1 (find_ co1 (witness e : real) : cursor) : int) 0) ->
-      (delete_ co1 (find_ co1 (witness e : real) : cursor) co2)) /\
-     (((find_ co1 (witness e : real) : cursor) = (no_element  : cursor)) ->
-      (co1 = co2)))
-  
-  predicate has_element (co : set) (cu : cursor) =
-    (Int.(>) (position_ co cu : int) 0)
-  
-  predicate contains (co : set) (i : real) =
-    (Int.(>) (position_ co (find_ co i : cursor) : int) 0)
-  
-  axiom Empty_contains:
-    (forall s:set [(is_empty_ s)].
-      ((forall i:real. (not (contains s i))) -> (is_empty_ s)))
-  
-  predicate equal_ (co1 : set) (co2 : set) =
-    length co1 = length co2 /\
-    forall cu1:cursor. 
-    (position_ co1 cu1 : int) > 0 -> exists cu2:cursor.
-       (position_ co1 cu1 : int) = (position_ co2 cu1 : int) /\
-        (oeq (element_ co1 cu1 : element_type) (element_ co2 cu2 : element_type) = True)
-  
-  predicate strict_equal (co1 : set) (co2 : set) =
-    ((forall cu:cursor.
-       ((position_ co1 cu : int) = (position_ co2 cu : int))) /\
-     (forall cu:cursor.
-       ((Int.(>) (position_ co1 cu : int) 0) ->
-        ((element_ co1 cu : element_type) = (element_ co2 cu : element_type)))))
-  
-  predicate equivalent_sets (co1 : set) (co2 : set) =
-    ((forall i:real. ((contains co1 i) -> (contains co2 i))) /\
-     ((length co1 : int) = (length co2 : int)))
-  
-  axiom Equivalent_sym:
-    (forall co1:set.
-      (forall co2:set [(equivalent_sets co2 co1)| (equivalent_sets co1 co2)].
-        ((equivalent_sets co1 co2) -> (equivalent_sets co2 co1))))
+  function floor  "inline" (co:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : cursor =
+ floor_ co (witness e)
 
-  function singleton element_type : set
+  val floor (co:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) :cursor
+     ensures { result = floor_ co (witness e) }
+end
 
-  axiom singleton_def:
-  forall e : element_type [singleton e].
-    length (singleton e) = 1 /\ element_ (singleton e) (first (singleton e)) = e
-  
-  function inter set set : set
-  
-  predicate is_inter (s1 : set) (s2 : set) (i : set) =
-    (forall j:real [(contains s1 j), (contains s2 j)| (contains i j)].
-      ((((contains s1 j) /\ (contains s2 j)) -> (contains i j)) /\
-       (((not (contains s1 j)) \/ (not (contains s2 j))) ->
-        (not (contains i j)))))
-  
-  axiom Inter_is_inter:
-    (forall s1:set.
-      (forall s2:set [(inter s1 s2 : set)].
-        ((is_inter s1 s2 (inter s1 s2 : set)) /\
-         ((length (inter s1 s2 : set) : int) = (length (inter s2 s1 : set) : int)))))
-  
-  function union set set : set
-  
-  predicate is_union (s1 : set) (s2 : set) (u : set) =
-    ((forall i:real [(contains s1 i), (contains s2 i)| (contains u i)].
-       ((((contains s1 i) \/ (contains s2 i)) -> (contains u i)) /\
-        (((not (contains s1 i)) /\ (not (contains s2 i))) ->
-         (not (contains u i))))) /\
-     ((length u : int) = (Int.(-) (Int.(+) (length s1 : int) (length s2 : int) : int) (length (inter s1 s2 : set) : int) : int)))
-  
-  axiom Union_is_union:
-    (forall s1:set.
-      (forall s2:set [(union s1 s2 : set)].
-        (is_union s1 s2 (union s1 s2 : set))))
-  
-  function diff set set : set
-  
-  predicate is_diff (s1 : set) (s2 : set) (d : set) =
-    ((forall i:real [(contains s1 i), (contains s2 i)| (contains d i)].
-       ((((contains s1 i) /\ (not (contains s2 i))) -> (contains d i)) /\
-        (((not (contains s1 i)) \/ (contains s2 i)) ->
-         (not (contains d i))))) /\
-     ((length d : int) = (Int.(-) (length s1 : int) (length (inter s1 s2 : set) : int) : int)))
-  
-  axiom Diff_is_diff:
-    (forall s1:set.
-      (forall s2:set [(diff s1 s2 : set)].
-        (is_diff s1 s2 (diff s1 s2 : set))))
-  
-  function sdiff set set : set
-  
-  predicate is_sdiff (s1 : set) (s2 : set) (d : set) =
-    (forall i:real [(contains s1 i), (contains s2 i)| (contains d i)].
-       (contains s1 i /\ not (contains s2 i) -> contains d i) /\
-       (contains s2 i /\ not (contains s1 i) -> contains d i) /\
-       (not (contains s2 i) /\ not (contains s1 i) -> not (contains d i)) /\
-       (contains s2 i /\ contains s1 i -> not (contains d i))) /\
-     ((length d : int) = length s1 + length s2 - 2 * length (inter s1 s2))
-  
-  axiom sdiff_is_sdiff:
-    (forall s1:set.
-      (forall s2:set [(sdiff s1 s2 : set)].
-        (is_sdiff s1 s2 (sdiff s1 s2 : set))))
-  
-  predicate is_subset_ (s1 : set) (s2 : set) =
-    (forall i:real. ((contains s1 i) -> (contains s2 i)))
+module Ada__containers__formal_ordered_sets__left
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__element
+  use import Ada__containers__formal_ordered_sets__find
 
-  predicate no_overlaping (s1 : set) (s2 : set) =
-    (forall i:real. not (contains s1 i) \/ not (contains s2 i))
+  function left set cursor : set
+
+  axiom left_no_element:
+    forall co:set [left co no_element]. left co no_element = co
+
+  axiom left_length_:
+    forall co:set, cu:cursor [left co cu].
+	position co cu > 0 -> length_ (left co cu) = position co cu - 1
+
+  axiom left_position_in:
+    forall co:set, cu cun:cursor [position (left co cu) cun | left co cu, position co cun].
+	(position (left co cu) cun > 0 \/ position co cun < position co cu) ->
+	position (left co cu) cun = position co cun
+
+  axiom left_position_ext:
+    forall co:set, cu cun:cursor [position (left co cu) cun].
+	position co cun >= position co cu > 0 ->
+	position (left co cu) cun = 0
+
+  axiom left_element:
+    forall co:set, cu cun:cursor [element (left co cu) cun | left co cu, element co cun].
+	(position (left co cu) cun > 0 \/ 0 < position co cun < position co cu) ->
+	element (left co cu) cun = element co cun
+
+  axiom left_find :
+    forall co:set, cu:cursor, w:real [find_ co w, left co cu|
+     find_ (left co cu) w].
+     ((position co cu > position co (find_ co w) > 0 \/
+      position (left co cu) (find_ (left co cu) w) > 0) ->
+      find_ co w = find_ (left co cu) w) /\
+      (position co (find_ co w) >= position co cu -> find_ (left co cu) w = no_element)
+
+  axiom left_find_elt :
+    forall co:set, cu:cursor, w:real [element co cu, find_ co w, left co cu|
+     element co cu, find_ (left co cu) w].
+     (Real.(>) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co cu))) w  ->
+      find_ co w = find_ (left co cu) w) /\
+     (Real.(<=) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co cu))) w  ->
+      find_ (left co cu) w = no_element) 
+     
+  val left (co:set) (cu:cursor) : set
+     requires { cu = no_element \/ position co cu > 0 }
+     ensures  { result = left co cu }
+end
+
+module Ada__containers__formal_ordered_sets__right
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__empty_set
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__element
+  use import Ada__containers__formal_ordered_sets__find
+
+  function right set cursor : set
+
+  axiom right_no_element:
+    forall co:set [right co no_element]. right co no_element = empty_set
+
+  axiom right_length_:
+    forall co:set, cu:cursor [length_ (right co cu) ].
+	position co cu > 0 -> length_ (right co cu) = (length_ co) - (position co cu) + 1
+
+  axiom right_position_in:
+    forall co:set, cu cun:cursor [position (right co cu) cun | right co cu, position co cun].
+	(position (right co cu) cun > 0 \/ position co cun >= position co cu > 0) ->
+	position (right co cu) cun = (position co cun) - (position co cu) + 1
+
+  axiom right_position_ext:
+    forall co:set, cu cun:cursor [position (right co cu) cun].
+	position co cun < position co cu -> position (right co cu) cun = 0
+
+  axiom right_element:
+    forall co:set, cu cun:cursor [element (right co cu) cun | right co cu, element co cun].
+	(position (right co cu) cun > 0 \/ 0 < position co cu <= position co cun) ->
+	element (right co cu) cun = element co cun
+
+  axiom right_find :
+    forall co:set, cu:cursor, w:real [find_ (right co cu) w| right co cu,
+     find_ co w].
+     ((0 < position co cu <= position co (find_ co w) \/
+      position (right co cu) (find_ (right co cu) w) > 0) ->
+      find_ co w = find_ (right co cu) w) /\
+      (position co (find_ co w) < position co cu -> find_ (right co cu) w = no_element)
+
+  axiom right_find_elt :
+    forall co:set, cu:cursor, w:real [element co cu, find_ co w, right co cu|
+     element co cu, find_ (right co cu) w].
+     (Real.(<=) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co cu))) w  ->
+      find_ co w = find_ (right co cu) w) /\
+     (Real.(>) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co cu))) w  ->
+      find_ (right co cu) w = no_element) 
+
+  val right (co:set) (cu:cursor) : set
+     requires { cu = no_element \/ position co cu > 0 }
+     ensures  { result = right co cu }
+end
+
+module Ada__containers__formal_ordered_sets__replace
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__empty_set
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__element
+  use import Ada__containers__formal_ordered_sets__find  
+
+  predicate replace (co1:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) (co2:set) =
+    (position co1 (find_ co1 (witness e)) > 0 /\
+      length_ co1 = length_ co2 /\
+       Ada__containers__formal_ordered_sets__element_type.to_base (element co2 (find_ co1 (witness e))) = e /\
+        (forall cun:cursor. position co2 cun = position co1 cun) /\
+         (forall cun:cursor.
+           position co1 cun > 0 /\ not cun = find_ co1 (witness e) ->
+            element co2 cun = element co1 cun) /\
+          (forall w:real. find_ co1 w = find_ co2 w)) /\
+     capacity co1 = capacity co2
+
+  val replace (co :ref set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { find_ !co (witness e) <> no_element }
+     writes { co }
+     reads { co }
+     ensures { replace (old !co) e !co }
+end
+
+module Ada__containers__formal_ordered_sets__replace_element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__element
+  use import Ada__containers__formal_ordered_sets__find
+
+  predicate replace_element set cursor Ada__containers__formal_ordered_sets__element_type.base_type set
+
+  axiom replace_element_length_:
+    forall co1 co2:set, cu:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [replace_element co1 cu e co2].
+      replace_element co1 cu e co2 -> length_ co1 = length_ co2
+
+  axiom replace_element_capacity:
+    forall co1 co2:set, cu:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [replace_element co1 cu e co2, capacity co1|replace_element co1 cu e co2, capacity co2].
+      replace_element co1 cu e co2 -> capacity co1 = capacity co2
+
+  axiom replace_element_position:
+    forall co1 co2:set, cu cun:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [replace_element co1 cu e co2, position co2 cun
+     | replace_element co1 cu e co2, position co1 cun].
+      replace_element co1 cu e co2 -> (position co2 cun > 0 <-> position co1 cun > 0)
+
+  axiom replace_element_element_in:
+    forall co1 co2:set, cu:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [replace_element co1 cu e co2].
+      replace_element co1 cu e co2 -> Ada__containers__formal_ordered_sets__element_type.to_base (element co2 cu) = e /\ find_ co2 (witness  e) = cu
+
+  axiom replace_element_element_ext:
+    forall co1 co2:set, cu cun:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [replace_element co1 cu e co2, element co2 cun
+     | replace_element co1 cu e co2, element co1 cun].
+      replace_element co1 cu e co2 -> cu <> cun -> position co1 cun > 0 ->
+        element co2 cun = element co1 cun
+
+  axiom replace_element_find:
+    forall co1 co2:set, cu:cursor, w:real, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [replace_element co1 cu e co2, find_ co2 w
+     | replace_element co1 cu e co2, find_ co1 w].
+       not witness e = w /\ not find_ co1 w = cu ->
+       find_ co1 w = find_ co2 w
+
+  val replace_element (co:ref set) (cu:cursor) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { position !co cu > 0 /\ (find_ !co (witness e) = no_element \/ find_ !co (witness e) = cu) }
+     writes     { co }
+     reads      { co }
+     ensures { replace_element (old !co) cu e !co }
+end
+
+module Ada__containers__formal_ordered_sets__insert
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__last
+  use import Ada__containers__formal_ordered_sets__element
+  use import Ada__containers__formal_ordered_sets__find
+  use import Ada__containers__formal_ordered_sets__ceiling
+
+  predicate insert set Ada__containers__formal_ordered_sets__element_type.base_type set
+
+  axiom insert_length_:
+    forall co1 co2:set,  e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [insert co1 e co2].
+      insert co1 e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness e) = no_element /\ Ada__containers__formal_ordered_sets__element_type.to_base (element co2 (find_ co2 (witness e))) = e
+
+  axiom insert_capacity:
+    forall co1 co2:set, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [insert co1 e co2, capacity co1|insert co1 e co2, capacity co2].
+      insert co1 e co2 -> capacity co1 = capacity co2
+
+  axiom insert_new:
+    forall co1 co2:set, e:Ada__containers__formal_ordered_sets__element_type.base_type [insert co1 e co2].
+      insert co1 e co2 -> (ceiling_ co1 (witness e) <> no_element ->
+      find_ co2 (witness e) = ceiling_ co1 (witness e)) /\ (ceiling_ co1 (witness e) = no_element ->
+      find_ co2 (witness e) = last co2)
+
+  axiom insert_position_before:
+    forall co1 co2:set, cun:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [insert co1 e co2,  position co1 cun
+     | insert co1 e co2,  position co2 cun].
+    let i = position co2 (find_ co2 (witness e)) in
+      insert co1 e co2 ->
+      (i > position co1 cun > 0 \/ position co2 cun < i) ->
+        position co1 cun = position co2 cun
+
+  axiom insert_position_after:
+    forall co1 co2:set, cun:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [insert co1 e co2,  position co1 cun
+     | insert co1 e co2,  position co2 cun].
+    let i = position co2 (find_ co2 (witness e)) in
+      insert co1 e co2 ->
+      (position co1 cun >= i \/ position co2 cun > i) ->
+        position co1 cun + 1 = position co2 cun
+
+  axiom insert_element:
+    forall co1 co2:set, cun:cursor, e:Ada__containers__formal_ordered_sets__element_type.base_type
+      [insert co1 e co2,  element co1 cun
+     | insert co1 e co2,  element co2 cun].
+      insert co1 e co2 ->
+      (position co1 cun > 0 \/ position co2 cun > 0 /\ find_ co2 (witness e) <> cun) ->
+        element co1 cun = element co2 cun
+
+  axiom insert_find :
+    forall co1:set, co2:set, w:real, e:Ada__containers__formal_ordered_sets__element_type.base_type
+     [insert co1 e co2, find_ co1 w| insert co1 e co2, find_ co2 w].
+     not witness e = w -> find_ co1 w = find_ co2 w
+
+  val insert (co:ref set) (e:Ada__containers__formal_ordered_sets__element_type.base_type)  (p:ref cursor) (inserted : ref bool) : unit
+     requires { length_ !co < capacity !co }
+     writes     { co, p, inserted }
+     reads      { co }
+     ensures { (!inserted = True <-> find_(old  !co) (witness e) = no_element) /\
+                          if !inserted = True then (insert (old !co) e !co /\ !p = find_ !co (witness e))
+                                                                 else (!p = find_ (old !co) (witness e) /\ !co = old !co) }
+end
+
+module Ada__containers__formal_ordered_sets__insert__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__insert
+  use import Ada__containers__formal_ordered_sets__find
+
+  val insert__2 (co:ref set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { length_ !co < capacity !co /\ find_ !co (witness e) = no_element }
+     writes     { co }
+     reads      { co }
+     ensures { insert (old !co) e !co }
+end
+
+module Ada__containers__formal_ordered_sets__delete
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__next
+  use import Ada__containers__formal_ordered_sets__element
+  use import Ada__containers__formal_ordered_sets__find
+
+  predicate delete set cursor set
+
+  axiom delete_capacity:
+    forall co1 co2:set, cu:cursor
+      [delete co1 cu co2, capacity co1|delete co1 cu co2, capacity co2].
+      delete co1 cu co2 -> capacity co1 = capacity co2
+
+  axiom delete_length_:
+    forall co1 co2:set, cu:cursor
+      [delete co1 cu co2].
+      delete co1 cu co2 -> length_ co1 = length_ co2 + 1
+
+  axiom delete_position_before:
+    forall co1 co2:set, cu cun:cursor
+      [delete co1 cu co2,  position co1 cun
+     | delete co1 cu co2,  position co2 cun].
+      delete co1 cu co2 ->
+      (position co1 cu > position co1 cun \/ 0 < position co2 cun < position co1 cu) ->
+        position co1 cun = position co2 cun
+
+  axiom delete_position_after:
+    forall co1 co2:set, cu cun:cursor
+      [delete co1 cu co2,  position co1 cun | delete co1 cu co2,  position co2 cun].
+      delete co1 cu co2 ->
+      (position co1 cun > position co1 cu \/ position co2 cun >= position co1 cu) ->
+        position co1 cun = position co2 cun + 1
+
+  axiom delete_position_range:
+    forall co1 co2:set, cu:cursor [delete co1 cu co2].
+      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co1 cu))) = no_element
+
+  axiom delete_position_next:
+    forall co1 co2:set, cu:cursor [delete co1 cu co2].
+      delete co1 cu co2 -> position co1 (next co1 cu) >= 0
+
+  axiom delete_element:
+    forall co1 co2:set, cu cun:cursor
+      [delete co1 cu co2,  element co1 cun
+     | delete co1 cu co2,  element co2 cun].
+      delete co1 cu co2 ->
+      0 < position co2 cun ->
+        element co1 cun = element co2 cun  
+
+  axiom delete_find :
+    forall co1:set, co2:set, cu:cursor, w:real [delete co1 cu co2,
+     find_ co1 w| delete co1 cu co2, find_ co2 w].
+     not witness (Ada__containers__formal_ordered_sets__element_type.to_base (element co1 cu)) = w -> find_ co1 w = find_ co2 w
+
+  val delete (co:ref set) (e : Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { find_ !co (witness e) <> no_element }
+     writes     { co }
+     reads      { co }
+     ensures { delete (old !co) (find_ (old !co) (witness e)) !co }
+end
+
+module Ada__containers__formal_ordered_sets__delete__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__delete
+
+  val delete__2 (co:ref set) (cu:ref cursor) : unit
+     requires { position !co !cu > 0 }
+     writes     { co, cu }
+     reads      { co }
+     ensures { delete (old !co) (old !cu) !co /\ !cu = no_element}
+ end
+
+module Ada__containers__formal_ordered_sets__include
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__replace
+  use import Ada__containers__formal_ordered_sets__insert
+  use import Ada__containers__formal_ordered_sets__find
+
+  val include (co:ref set) (e :Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires {  length_ !co  < capacity !co}
+     writes     { co }
+     reads      { co }
+     ensures { if find_ (old !co) (witness e) <> no_element then replace (old !co) e !co
+                         else insert (old !co) e !co  }
+end
+
+module Ada__containers__formal_ordered_sets__exclude
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__delete
+  use import Ada__containers__formal_ordered_sets__find
+
+  val exclude (co:ref set) (e :Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     writes     { co }
+     reads      { co }
+     ensures { if find_ (old !co) (witness e) = no_element then  old !co = !co
+                         else delete (old !co) (find_ (old !co) (witness e)) !co  }
+end
+
+module Ada__containers__formal_ordered_sets__to_set
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__first
+  use import Ada__containers__formal_ordered_sets__element
+
+  function to_set Ada__containers__formal_ordered_sets__element_type.base_type : set
+
+  axiom to_set__def:
+  forall e : Ada__containers__formal_ordered_sets__element_type.base_type [to_set e].
+    length_ (to_set e) = 1 /\ Ada__containers__formal_ordered_sets__element_type.to_base (element (to_set e) (first (to_set e))) = e 
+
+ val  to_set  (e: Ada__containers__formal_ordered_sets__element_type.base_type) : set
+     ensures { result = to_set e }
+end
+
+module Ada__containers__formal_ordered_sets__has_element
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+
+  function has_element set cursor : bool
+
+  axiom has_element_pos:
+    forall co:set, cu:cursor [has_element co cu].
+    has_element co cu = True -> 0 < position co cu
+
+  axiom has_element_neg:
+    forall co:set, cu:cursor [has_element co cu].
+    has_element co cu <> True -> position co cu = 0
+
+  val has_element (co:set) (cu:cursor) : bool
+     ensures { has_element co cu = result }
+end
+
+module Ada__containers__formal_ordered_sets__contains
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__find
+
+  function contains set Ada__containers__formal_ordered_sets__element_type.base_type : bool
+
+  axiom contains_c:
+  forall co : set, e : Ada__containers__formal_ordered_sets__element_type.base_type [contains co e].
+    contains co e = True <-> 0 < position co (find_ co (witness e))
+
+  val contains (co:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : bool
+     ensures { contains co e = result }
+end
+
+module Ada__containers__formal_ordered_sets__strict_equal
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__element
+
+  function strict_equal set set : bool
+
+  axiom strict_equal__def:
+    forall co1 co2 : set [strict_equal co1 co2].
+    ((forall cu:cursor [position co1 cu | position co2 cu].
+       position co1 cu = position co2 cu) /\
+     (forall cu:cursor [element co1 cu | element co2 cu]. position co1 cu > 0 ->
+        Ada__containers__formal_ordered_sets__element_type.to_base (element co1 cu) = Ada__containers__formal_ordered_sets__element_type.to_base (element co2 cu))) <->  strict_equal co1 co2 = True
+
+  lemma strict_equal_length_:
+    forall co1 co2 : set [strict_equal co1 co2].
+     strict_equal co1 co2 = True -> length_ co1 = length_ co2
+
+    val strict_equal (co1:set) (co2:set) : bool
+     ensures  { result  = strict_equal co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__Oeq__2
+  use import int.Int
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__oeq
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__element
+
+  function oeq__2 set set : bool
+
+  axiom oeq__2_length_:
+   forall co1 co2 : set [oeq__2 co1 co2].
+   oeq__2 co1 co2 = True -> length_ co1 = length_ co2
+
+  axiom oeq__2_element:
+   forall co1 co2 : set [oeq__2 co1 co2]. oeq__2 co1 co2 = True ->
+   forall cu1 : cursor [element co1 cu1]. position co1 cu1 > 0 ->
+	exists cu2 : cursor. position co2 cu2 = position co1 cu1 /\ 
+          Ada__containers__formal_ordered_sets__oeq.oeq (Ada__containers__formal_ordered_sets__element_type.to_base (element co2 cu2)) (Ada__containers__formal_ordered_sets__element_type.to_base (element co1 cu1)) = True
+
+  axiom oeq__2_inv:
+   forall co1 co2 : set [oeq__2 co1 co2]. oeq__2 co1 co2 <> True ->
+   (length_ co1 <> length_ co2 \/
+   exists i : int. 0<i<=length_ co1 /\ Ada__containers__formal_ordered_sets__oeq.oeq (Ada__containers__formal_ordered_sets__element_type.to_base (element co1 (position_inv co1 i)))
+       (Ada__containers__formal_ordered_sets__element_type.to_base (element co2 (position_inv co2 i)))=False)
+
+  lemma oeq__2_sym :
+  forall e1 e2 : set [oeq__2 e1 e2].
+	oeq__2 e1 e2 = True -> oeq__2 e2 e1 = True
+
+  lemma oeq__2_trans :
+  forall e1 e2 e3 : set [oeq__2 e1 e2, oeq__2 e1 e3 | oeq__2 e1 e2, oeq__2 e2 e3].
+	oeq__2 e1 e2 = True -> oeq__2 e2 e3 = True -> oeq__2 e1 e3 = True
+
+  val oeq__2 (co1:set) (co2:set) : bool
+     ensures  { result  = oeq__2 co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__equivalent_sets
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+  
+  function equivalent_sets set set : bool 
+
+  axiom equivalent_sets__def :
+    forall co1:set, co2:set [equivalent_sets co1 co2].
+     (forall i:real.
+       not find_ co1 i = no_element -> not find_ co2 i = no_element) /\
+      length co1 = length co2 <-> equivalent_sets co1 co2 = True
+  
+  axiom equivalent_sym :
+    forall co1:set.
+     forall co2:set [equivalent_sets co2 co1| equivalent_sets co1 co2].
+      equivalent_sets co1 co2 = True -> equivalent_sets co2 co1 = True
+
+  val equivalent_sets (co1:set) (co2:set) : bool
+  ensures { result  = equivalent_sets co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__intersection
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+  
+  function intersection set set : set 
+
+  predicate is_inter (s1:set) (s2:set) (i:set) =
+    forall j:real [find_ s1 j, find_ s2 j| find_ i j].
+     (not find_ s1 j = no_element /\ not find_ s2 j = no_element ->
+       not find_ i j = no_element) /\
+      (find_ s1 j = no_element \/ find_ s2 j = no_element ->
+        find_ i j = no_element)
+  
+  axiom Inter_is_inter :
+    forall s1:set.
+     forall s2:set [intersection s1 s2].
+      is_inter s1 s2 (intersection s1 s2) /\
+       length_ (intersection s1 s2) = length_ (intersection s2 s1)
+  
+  val intersection (co1: ref set) (co2:set) :unit
+     reads { co1 }
+     writes { co1 }
+     ensures { !co1 = intersection (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+end
+
+module Ada__containers__formal_ordered_sets__intersection__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__intersection
+
+  function intersection__2 "inline" (co1 co2 : set) : set = intersection co1 co2
+
+  val intersection__2 (co1 co2 : set) : set
+    ensures { result = intersection co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__union
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+  use import Ada__containers__formal_ordered_sets__intersection
+  
+  function union set set : set  
+
+  predicate is_union (s1:set) (s2:set) (u:set) =
+    (forall i:real [find_ s1 i, find_ s2 i| find_ u i].
+      (not find_ s1 i = no_element \/ not find_ s2 i = no_element ->
+        not find_ u i = no_element) /\
+       (find_ s1 i = no_element /\ find_ s2 i = no_element ->
+         find_ u i = no_element)) /\
+     length_ u = ((length_ s1 + length_ s2) - length_ (intersection s1 s2))
+  
+  axiom union_is_union :
+    forall s1:set. forall s2:set [union s1 s2]. is_union s1 s2 (union s1 s2)
+  
+  val union (co1: ref set) (co2:set) :unit
+     requires { length_ (union !co1 co2) <= capacity !co1}
+     reads { co1 }
+     writes { co1 }
+     ensures { !co1 = union (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+end
+
+module Ada__containers__formal_ordered_sets__union__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__union
+
+  function union__2 set set : set
+
+  axiom union__2__def :
+     forall co1 co2 : set [union__2 co1 co2].
+	  length_ (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
+          union__2 co1 co2 = union co1 co2
+
+  val union__2 (co1 co2 : set) : set
+    requires { length_ (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST }
+    ensures { result = union co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__difference
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+  use import Ada__containers__formal_ordered_sets__intersection
+  
+  function difference set set : set 
+
+  predicate is_diff (s1:set) (s2:set) (d:set) =
+    (forall i:real [find_ s1 i, find_ s2 i| find_ d i].
+      (not find_ s1 i = no_element /\ find_ s2 i = no_element ->
+        not find_ d i = no_element) /\
+       (find_ s1 i = no_element \/ not find_ s2 i = no_element ->
+         find_ d i = no_element)) /\
+     length_ d = (length_ s1 - length_ (intersection s1 s2))
+  
+  axiom diff_is_diff :
+    forall s1:set.
+     forall s2:set [difference s1 s2]. is_diff s1 s2 (difference s1 s2)
+
+  val difference (co1: ref set) (co2:set) :unit
+     reads { co1 }
+     writes { co1 }
+     ensures { !co1 = difference (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+end
+
+module Ada__containers__formal_ordered_sets__difference__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__difference
+
+  function difference__2 "inline" (co1 co2 : set) : set = difference co1 co2
+
+  val difference__2 (co1 co2 : set) : set
+    ensures { result = difference co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__symmetric_difference
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+  use import Ada__containers__formal_ordered_sets__intersection
+  
+  function symmetric_difference set set : set 
+
+  predicate is_sdiff (s1:set) (s2:set) (d:set) =
+    (forall i:real [find_ s1 i, find_ s2 i| find_ d i].
+      (not find_ s1 i = no_element /\ find_ s2 i = no_element ->
+        not find_ d i = no_element) /\
+       (not find_ s2 i = no_element /\ find_ s1 i = no_element ->
+         not find_ d i = no_element) /\
+        (find_ s2 i = no_element /\ find_ s1 i = no_element ->
+          find_ d i = no_element) /\
+         (not find_ s2 i = no_element /\ not find_ s1 i = no_element ->
+           find_ d i = no_element)) /\
+     length_ d =
+      ((length_ s1 + length_ s2) - (2 * length_ (intersection s1 s2)))
+  
+  axiom sdiff_is_sdiff :
+    forall s1:set.
+     forall s2:set [symmetric_difference s1 s2].
+      is_sdiff s1 s2 (symmetric_difference s1 s2)
+  
+  val symmetric_difference (co1: ref set) (co2:set) :unit
+     requires { length_ (symmetric_difference !co1 co2) <= capacity !co1}
+     reads { co1 }
+     writes { co1 }
+     ensures { !co1 = symmetric_difference (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+end
+
+module Ada__containers__formal_ordered_sets__symmetric_difference__2
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__symmetric_difference
+
+  function symmetric_difference__2 set set : set
+
+  axiom symmetric_difference__2__def :
+     forall co1 co2 : set [symmetric_difference__2 co1 co2].
+	  length_ (symmetric_difference co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
+          symmetric_difference__2 co1 co2 = symmetric_difference co1 co2
+
+  val symmetric_difference__2 (co1 co2 : set) : set
+    requires { length_ (symmetric_difference co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST }
+    ensures { result = symmetric_difference co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__is_subset
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+  
+  function is_subset set set : bool 
+
+  axiom is_subset__def :
+    forall s1:set, s2:set [is_subset s1 s2].
+     is_subset s1 s2 = True <->
+      (forall i:real [find_ s1 i | find_ s2 i]. find_ s1 i = no_element -> find_ s2 i = no_element)
+
+  val is_subset (co1 co2:set) : bool
+     ensures { result = is_subset co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__overlap
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use  "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__no_element
+  use import Ada__containers__formal_ordered_sets__find
+
+  function overlap set set : bool  
+
+  axiom overlap__def :
+    forall s1:set, s2:set [overlap s1 s2].
+     overlap s1 s2 <> True <->
+      (forall i:real [find_ s1 i| find_ s2 i].
+        find_ s1 i = no_element \/ find_ s2 i = no_element)
+
+  val overlap (co1 co2:set) : bool
+     ensures { result = overlap co1 co2 }
+end
+
+module Ada__containers__formal_ordered_sets__capacity
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "a-contai__types_in_spec".Ada__containers__count_type
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+
+  function capacity (co : set) : Ada__containers__count_type.count_type = rec__capacity co
+
+  val capacity (co : set) : Ada__containers__count_type.count_type
+    ensures { result = rec__capacity co }
+end
+
+module Ada__containers__formal_ordered_sets__reserve_capacity
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+
+  val reserve_capacity (co : ref set) (c :  int) : unit
+    requires { capacity !co >= c }
+    ensures { !co = old !co }
+end
+
+module Ada__containers__formal_ordered_sets__equivalent_elements
+  use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
+  use import Ada__containers__formal_ordered_sets__witness
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__cursor
+  use import Ada__containers__formal_ordered_sets__element
+
+  function equivalent_elements (co1:set) (e1:Ada__containers__formal_ordered_sets__element_type.base_type) (co2:set) (e2:Ada__containers__formal_ordered_sets__element_type.base_type) : bool =
+  if witness e1 = witness e2 then True else False
+
+ val equivalent_elements__2  (co1:set) (e1:Ada__containers__formal_ordered_sets__element_type.base_type) (co2:set) (e2:Ada__containers__formal_ordered_sets__element_type.base_type) : bool
+	ensures {  result = equivalent_elements co1 e1 co2 e2 }
+end
+
+module Ada__containers__formal_ordered_sets__clear
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  
+  val clear (co:ref set) : unit
+     writes     { co }
+     ensures { length_ !co = 0 /\ capacity !co = capacity (old !co) }
+end
+
+module Ada__containers__formal_ordered_sets__assign
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__Oeq__2
+
+  val assign (target:ref set) (source:set) : unit
+     requires { capacity !target >= length_ source }
+     writes     { target }
+     reads      { target }
+     ensures { oeq__2 !target source = True }
+end
+
+module Ada__containers__formal_ordered_sets__move
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__Oeq__2
+
+  val move (target:ref set) (source:ref set) : unit
+     requires { capacity !target >= length_ !source }
+     writes     { target, source }
+     reads      { target, source }
+     ensures { oeq__2 !target (old !source) = True /\ length_ !source = 0 }
+end
+
+module Ada__containers__formal_ordered_sets__copy
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_ordered_sets__set
+  use import Ada__containers__formal_ordered_sets__length
+  use import Ada__containers__formal_ordered_sets__strict_equal
 
   predicate cap_is_max set set int
 
@@ -493,316 +1278,9 @@ module Main
                   [cap_is_max co1 co2 max, capacity co1 | cap_is_max co1 co2 max, capacity co2].
    if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
 
-  predicate equivalent_elements (e1 : element_type) (e2 : element_type) =
-    witness e1 = witness e2
-
-
-(*******************************  API  ********************************)
-
- function empty_set__object : set = empty_
-
- function no_element__object : cursor = no_element
-
- function set__capacity__record (co : set) : Ada__containers__count_type.count_type = 
-    Ada__containers__count_type.of_int (capacity co)
-
- function equivalent_elements__logic (k1 k2 : element_type) : bool =
-  if witness k1 = witness k2 then True else False
-
- predicate equivalent_elements__pre  (k1 k2 : element_type) = true
- predicate equivalent_elements__post (k1 k2 : element_type) (result : bool) =
-	result = True <-> witness k1 = witness k2
-
- function oeq__2__logic (co1:set) (co2:set) : bool =
-    if equal_ co1 co2 then True else False
-
-  predicate oeq__2__pre (co1:set) (co2:set) = true
-  predicate oeq__2__post (co1:set) (co2:set) (result:bool) = 
-         result  = True <-> equal_ co1 co2
-
- function equivalent_sets__logic (co1:set) (co2:set) : bool =
-    if equivalent_sets co1 co2 then True else False
-
-  predicate equivalent_sets__pre (co1:set) (co2:set) = true
-  predicate equivalent_sets__post (co1:set) (co2:set) (result:bool) = 
-         result  = True <-> equivalent_sets co1 co2
-
- function to_set__logic (e:element_type)  : set = singleton e
- predicate  to_set__pre  (e:element_type) = true
- predicate  to_set__post (e:element_type) (result : set) =
-	result = singleton e
-
-  function length__logic (co : set) : Ada__containers__count_type.count_type = Ada__containers__count_type.of_int (length co)
-
-  predicate length__pre (co : set) = true
-  predicate length__post (co : set) (result :  Ada__containers__count_type.count_type) =
-     result = Ada__containers__count_type.of_int (length co)
-
-  function is_empty__logic set : bool 
-
-  axiom is_empty__logic_def:
-    forall co : set [is_empty__logic co ].
-      is_empty__logic co = True <-> is_empty_ co
-
-  predicate is_empty__pre (co:set) = true
-  predicate is_empty__post (co:set) (result:bool)=
-     result = True <-> is_empty_ co
-
-  predicate clear__pre (co:set) = true
-  predicate clear__post (co oldco: set) =
-     is_empty_ co /\ capacity co = capacity oldco
-
-  predicate assign__pre (target:set) (source:set) =
-     capacity target >= length source
-  predicate assign__post (target oldtarget:set) (source:set) =
-     equal_ target source /\ capacity target = capacity oldtarget 
-
-  function copy__logic set Ada__containers__count_type.count_type : set
-
-  axiom copy__logic_def:
-    forall co:set, cap:Ada__containers__count_type.count_type [copy__logic co cap].
-          strict_equal co (copy__logic co cap) 
-                       /\ cap_is_max co (copy__logic co cap) (Ada__containers__count_type.to_int cap)
-
-  predicate copy__pre (co:set) (cap:Ada__containers__count_type.count_type) = true
-  predicate copy__post (co:set) (cap:Ada__containers__count_type.count_type) 
-              (result: set) = result = copy__logic co cap
-
-  function element__logic (co:set) (cu:cursor) : element_type = element_ co cu
-
-  predicate element__pre (co:set) (cu:cursor) =
-     has_element co cu
-  predicate element__post (co:set) (cu:cursor) (result : element_type) =
-     result = element_ co cu
-
-  predicate replace_element__pre (co: set) (cu:cursor) (e:element_type)=
-     has_element co cu
-  predicate replace_element__post (co oldco: set) (cu:cursor) (e:element_type)=
-     replace_element_ oldco cu e co
-
-  predicate move__pre (target:set) (source:set) =
-     capacity target >= length source
-  predicate move__post (target oldtarget:set) (source oldsource:set) =
-     equal_ target oldsource /\ is_empty_ source
-
-  predicate insert__pre (co :set) (k:element_type)
-                                             (p : cursor) (inserted : bool)=
-     length co  < capacity co \/ contains co (witness k)
-  predicate insert__post (co oldco: set) (k:element_type)
-                                             (p oldp : cursor) (inserted oldinserted : bool) =
-     (if inserted = True then not (contains oldco (witness k)) 
-      else contains oldco (witness k)) /\ 
-       (if contains oldco (witness k) then 
-      (p = find_ oldco (witness k) /\ co = oldco /\ inserted = False)
-       else (first_inserted oldco k co p /\ insert_ oldco k co /\ inserted = True))
-
-  predicate insert__2__pre (co :set) (k:element_type) =
-     length co  < capacity co /\ not contains co (witness k)
-  predicate insert__2__post (co oldco: set) (k:element_type) =
-     insert_ oldco k co
-
-  predicate include__pre (co :set) (k:element_type) =
-     length co  < capacity co \/ contains co (witness k)
-  predicate include__post (co oldco: set) (k:element_type)  =
-     include__ oldco k co
-
-  predicate replace__pre (co :set) (k:element_type) =
-     contains co (witness k)
-  predicate replace__post (co oldco: set) (k:element_type) =
-     replace_ oldco k co
-
-  predicate exclude__pre (co :set) (k:element_type) = true
-  predicate exclude__post (co oldco: set) (k:element_type) =
-     exclude_ oldco k co
-
-  predicate delete__pre (co :set) (k:element_type) = contains co (witness k)
-  predicate delete__post (co oldco: set) (k:element_type) =
-     delete_ oldco (find_ oldco (witness k)) co
-
-  predicate delete__2__pre (co :set) (cu:cursor) = has_element co cu
-  predicate delete__2__post (co oldco: set) (cu oldcu:cursor) =
-     delete_ oldco oldcu co /\ cu = no_element
-
-  predicate delete_first__pre (co :set) = length co > 0
-  predicate delete_first__post (co oldco: set) =
-     delete_ oldco (first oldco) co
-
-  predicate delete_last__pre (co :set) = length co > 0
-  predicate delete_last__post (co oldco: set) =
-     delete_ oldco (last oldco) co
-
-  function previous__logic (co:set) (cu:cursor) : cursor = previous_ co cu
-
-  predicate previous__pre (co:set) (cu:cursor) = cu = no_element \/ has_element co cu
-  predicate previous__post (co:set) (cu:cursor) (result: cursor) =
-     result = previous_ co cu
-
-  function next__logic (co:set) (cu:cursor) : cursor = next_ co cu
-
-  predicate next__pre (co:set) (cu:cursor)= cu = no_element \/ has_element co cu 
-  predicate next__post (co:set) (cu:cursor) (result : cursor) =
-     result = next_ co cu
-
-  predicate previous__2__pre (co:set) (cu:cursor) =
-     cu = no_element \/ has_element co cu
-  predicate previous__2__post (co:set) (cu oldcu:cursor) =
-     cu = previous_ co oldcu
-
-  predicate next__2__pre (co:set) (cu:cursor) =
-     cu = no_element \/ has_element co cu
-  predicate next__2__post (co:set) (cu oldcu:cursor) =
-     cu = next_ co oldcu
-
-  function first__logic (co:set) : cursor = first co
-
-  predicate first__pre (co:set) = true
-  predicate first__post (co:set) (result:cursor) =
-     result = first co
-
-  function last__logic (co:set) : cursor = last co
-
-  predicate last__pre (co:set) = true
-  predicate last__post (co:set) (result:cursor) =
-     result = last co
-
-  function first_element__logic (co:set) : element_type = element_ co (first co)
-
-  predicate first_element__pre (co:set) = length co > 0
-  predicate first_element__post (co:set) (result:element_type) =
-     result = element_ co (first co)
-
-  function last_element__logic (co:set) : element_type = element_ co (last co)
-
-  predicate last_element__pre (co:set) = length co > 0
-  predicate last_element__post (co:set) (result:element_type) =
-     result = element_ co (last co)
-
-  function find__logic (co:set) (e:element_type) : cursor = find_ co (witness e)
-
-  predicate find__pre (co:set) (e:element_type) = true
-  predicate find__post (co:set) (e:element_type) (result:cursor) =
-     result = find_ co (witness e)
-
-  function floor__logic (co:set) (e:element_type) : cursor = floor co (witness e)
-
-  predicate floor__pre (co:set) (e:element_type) = true
-  predicate floor__post (co:set) (e:element_type) (result:cursor) =
-     result = floor co (witness e)
-
-  function ceiling__logic (co:set) (e:element_type) : cursor = ceiling co (witness e)
-
-  predicate ceiling__pre (co:set) (e:element_type) = true
-  predicate ceiling__post (co:set) (e:element_type) (result:cursor) =
-     result = ceiling co (witness e)
-
-  function contains__logic set element_type: bool
-
-  axiom contains__logic_def:
-    forall co : set, e : element_type [contains__logic co e].
-      contains co (witness e) <-> contains__logic co e = True
-
-  predicate contains__pre (co:set) (e:element_type) = true
-  predicate contains__post (co:set) (e:element_type) (result: bool) =
-     contains co (witness e) <-> result = True
-
-  function has_element__logic set cursor : bool
-
-  axiom has_element__logic_def:
-    forall co : set, cu : cursor [has_element__logic co cu].
-      has_element co cu <-> has_element__logic co cu = True
-
-  predicate has_element__pre (co:set) (cu:cursor) = true
-  predicate has_element__post (co:set) (cu:cursor) (result: bool) =
-     has_element co cu <-> result = True
-
-  function strict_equal__logic (co1 co2 : set) : bool =
-    if strict_equal co1 co2 then True else False
-
-  predicate strict_equal__pre (co1:set) (co2:set) = true
-  predicate strict_equal__post (co1:set) (co2:set) (result:bool) =
-     result  = True <-> strict_equal co1 co2
-
-  function left__logic (co:set) (cu:cursor) : set = left_ co cu
-
-  predicate left__pre (co:set) (cu:cursor) =
-     cu = no_element \/ has_element co cu
-  predicate left__post (co:set) (cu:cursor) (result:set) =
-     result = left_ co cu
-
-  function right__logic (co:set) (cu:cursor) : set = right_ co cu
-
-  predicate right__pre (co:set) (cu:cursor) =
-     cu = no_element \/ has_element co cu
-  predicate right__post (co:set) (cu:cursor)(result : set) =
-     result = right_ co cu
-
-  function overlap__logic (co1 co2:set) : bool = 
-   if no_overlaping co1 co2 then False else True
-
-  predicate overlap__pre (co1 co2:set) = true
-  predicate overlap__post (co1 co2:set)(result : bool) =
-     result = False <-> no_overlaping co1 co2
-  
-  predicate union__pre (co1 co2:set) =
-     length (union co1 co2) <= capacity co1
-  predicate union__post (co1 oldco1 co2:set) =
-     co1 = union oldco1 co2 /\ capacity co1 = capacity oldco1
-
-  function union__2__logic set set : set
-
-  axiom union__2__logic__def :
-     forall co1 co2 : set [union__2__logic co1 co2].
-	  length (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
-          union__2__logic co1 co2 = union co1 co2
-
-  predicate union__2__pre (co1 co2 : set) =  
-    length (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST
-  predicate union__2__post (co1 co2 : set)(result : set) =
-     result = union__2__logic co1 co2
-
-  predicate intersection__pre (co1 co2:set) = true
-  predicate intersection__post (co1 oldco1 co2:set) =
-     co1 = inter oldco1 co2 /\ capacity co1 = capacity oldco1
-
-  function intersection__2__logic (co1 co2 : set) : set = inter co1 co2
-
-  predicate intersection__2__pre (co1 co2 : set) =  true
-  predicate intersection__2__post (co1 co2 : set)(result : set) =
-     result = intersection__2__logic co1 co2
-
-  predicate difference__pre (co1 co2:set) = true
-  predicate difference__post (co1 oldco1 co2:set) =
-     co1 = diff oldco1 co2 /\ capacity co1 = capacity oldco1
-
-  function difference__2__logic (co1 co2 : set) : set = diff co1 co2
-
-  predicate difference__2__pre (co1 co2 : set) =  true
-  predicate difference__2__post (co1 co2 : set)(result : set) =
-     result = difference__2__logic co1 co2
-
-  predicate symmetric_difference__pre (co1 co2:set) = 
-     length (sdiff co1 co2) <= capacity co1
-  predicate symmetric_difference__post (co1 oldco1 co2:set) =
-     co1 = sdiff oldco1 co2 /\ capacity co1 = capacity oldco1
-
-  function symmetric_difference__2__logic set set : set
-
-  axiom symmetric_difference__2__logic__def :
-     forall co1 co2 : set [symmetric_difference__2__logic co1 co2].
-	  length (sdiff co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
-          symmetric_difference__2__logic co1 co2 = sdiff co1 co2
-
-  predicate symmetric_difference__2__pre (co1 co2 : set) =  
-    length (sdiff co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST
-  predicate symmetric_difference__2__post (co1 co2 : set)(result : set) =
-     result = symmetric_difference__2__logic co1 co2
-
-  function is_subset__logic (co1 co2:set) : bool = 
-   if is_subset_ co1 co2 then True else False
-
-  predicate is_subset__pre (co1 co2:set) = true
-  predicate is_subset__post (co1 co2:set)(result : bool) =
-     result = True <-> is_subset_ co1 co2
-  
+  function copy set int : set
+
+  val copy (co: set) (cap:int) : set
+     ensures { strict_equal co (result) = True /\ 
+                      cap_is_max co result cap /\ result = copy co cap }
 end
-

@@ -74,12 +74,12 @@ module  Ada__containers__formal_vectors__vector
 
   function rec__capacity vector : Ada__containers__count_type.count_type
 
-  function capacity (co : vector) : int =
+  function capacity "inline" (co : vector) : int =
           Ada__containers__count_type.to_int (rec__capacity co)
 
 (****** Should be enforced by typing, to do: modify ads file accordingly *******)
   axiom capacity_range:
-    forall co : vector [capacity co].
+    forall co : vector [rec__capacity co].
       0 <= capacity co <= index_type_length
 end
 
@@ -95,7 +95,7 @@ module Ada__containers__formal_vectors__length
     Ada__containers__count_type.to_int (length co)
 
   axiom length_range:
-    forall co:vector [length_ co]. 0 <= length_ co <= capacity co
+    forall co:vector [length co]. 0 <= length_ co <= capacity co
 
   val length (co : vector) :  Ada__containers__count_type.count_type
      ensures { result = length co }
@@ -1258,7 +1258,7 @@ module Ada__containers__formal_vectors__reverse_elements
 
   axiom reverse_elements_capacity:
     forall co1 co2:vector
-      [reverse_elements co1 co2, capacity co1|reverse_elements co1 co2, capacity co2].
+      [reverse_elements co1 co2].
       reverse_elements co1 co2 -> capacity co1 = capacity co2
 
   axiom reverse_elements_element:
@@ -1297,14 +1297,17 @@ end
 module Ada__containers__formal_vectors__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__index_type
+  use import Ada__containers__formal_vectors__extended_index
+  use import Ada__containers__formal_vectors__extended_index_helper
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__find_index
   
   function contains (co : vector) (e : Ada__containers__formal_vectors__element_type.base_type) : bool =
-    if find_ co e 1 > 0 then True else False
+    if extended_index__to_index (to_int (find_index co e Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST))  > 0 then True else False
 
   val contains (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) : bool
-    ensures { if find_ co e 1 > 0 then result = True else result = False }
+    ensures { if extended_index__to_index ( to_int (find_index co e Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST)) > 0 then result = True else result = False }
 end
 
 module Ada__containers__formal_vectors__capacity
