@@ -221,7 +221,7 @@ module Ada__containers__formal_doubly_linked_lists__element
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
-  use export Ada__containers__formal_doubly_linked_lists__cursor
+  use import Ada__containers__formal_doubly_linked_lists__cursor
 
   function element list cursor : Ada__containers__formal_doubly_linked_lists__element_type.element_type
 
