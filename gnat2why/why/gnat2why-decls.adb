@@ -247,16 +247,9 @@ package body Gnat2Why.Decls is
          Def := Why_Empty;
       end if;
 
-      --  The definition of deferred constants is done in a separate theory, so
-      --  that only code in the unit defining the deferred constant has access
-      --  to its value. This allows supporting parameterized verification of
-      --  client units not depending on the value of a delayed constant. This
-      --  theory is added as a completion of the base theory defining the
-      --  constant, so that further modules including the base theory also
-      --  include the completion, for modules defined in this unit. Theories
-      --  defined in other units only have access to the base theory. Note
-      --  that modules in the same unit may also have access to the base
-      --  theory only, if they are defined before this point.
+      --  The definition of deferred constants is done in a separate theory.
+      --  This theory is added as a completion of the base theory defining the
+      --  constant.
 
       if Is_Full_View (E) then
          if Def = Why_Empty then
