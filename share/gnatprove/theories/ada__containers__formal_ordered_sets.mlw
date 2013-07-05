@@ -619,7 +619,7 @@ module Ada__containers__formal_ordered_sets__insert
   axiom insert_new:
     forall co1 co2:set, e:Ada__containers__formal_ordered_sets__element_type.base_type [insert co1 e co2].
       insert co1 e co2 -> (ceiling_ co1 (witness e) <> no_element ->
-      find_ co2 (witness e) = ceiling_ co1 (witness e)) /\ (ceiling_ co1 (witness e) = no_element ->
+      position co2 (find_ co2 (witness e)) = position co1 (ceiling_ co1 (witness e))) /\ (ceiling_ co1 (witness e) = no_element ->
       find_ co2 (witness e) = last co2)
 
   axiom insert_position_before:

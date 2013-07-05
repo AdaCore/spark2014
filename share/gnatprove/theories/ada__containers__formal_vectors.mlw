@@ -135,7 +135,7 @@ module Ada__containers__formal_vectors__to_index
   val to_index (cu : cursor) : extended_index
       ensures { result = to_index cu }
   
-  function to_index_ (co : vector) (cu : cursor) : int = extended_index__to_index (to_int (real_to_index co cu))
+  function to_index_ "inline" (co : vector) (cu : cursor) : int = extended_index__to_index (to_int (real_to_index co cu))
 
   function to_cursor_ vector int : cursor
   
@@ -446,27 +446,29 @@ module Ada__containers__formal_vectors__find_index
   use import Ada__containers__formal_vectors__to_index
   use import Ada__containers__formal_vectors__element
 
-  function find_index vector Ada__containers__formal_vectors__element_type.base_type int : extended_index
+  function find_index_ vector Ada__containers__formal_vectors__element_type.base_type int : extended_index
+
+  function find_index "inline" (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i : int) : extended_index = find_index_ co e (index_type__to_index i)
   
   function find_ "inline" (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i:int) : int =
-    extended_index__to_index (to_int (find_index co e (index_type__of_index i)))
+    extended_index__to_index (to_int (find_index_ co e i))
 
   axiom find_range:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_index_ v e n].
       n <= find_ v e n <= length_ v \/ find_ v e n = 0
 
   axiom find_no:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_index_ v e n].
       find_ v e n = 0 -> 
       forall i : int [element_ v i]. n <= i <= length_ v /\ i > 0 ->
           Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
   axiom find_ex:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_index_ v e n].
       find_ v e n > 0 -> Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v (find_ v e n))) e = True
 
   axiom find_oth:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [find_index_ v e n].
       find_ v e n > 0 -> 
       forall i : int [element_ v i]. n <= i < find_ v e n /\ i > 0 ->
               Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
@@ -488,8 +490,10 @@ module Ada__containers__formal_vectors__find
   use import Ada__containers__formal_vectors__no_element
   use import Ada__containers__formal_vectors__find_index
 
-  function find (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (cu:cursor) : cursor =
-    to_cursor_ co (find_ co e (to_index_ co cu))
+  function find (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (cu:cursor) : cursor
+  axiom find__def:
+    forall co:vector, e:Ada__containers__formal_vectors__element_type.base_type, cu : cursor [find co e cu].
+    to_index_ co (find co e cu) = find_ co e (to_index_ co cu)
 
   val find (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (cu:cursor) : cursor
     requires { 0 <= to_index_ co cu <= length_ co \/ cu = no_element }
@@ -508,34 +512,34 @@ module Ada__containers__formal_vectors__reverse_find_index
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__element
 
-  function reverse_find vector Ada__containers__formal_vectors__element_type.base_type int : extended_index
+  function reverse_find_index_ vector Ada__containers__formal_vectors__element_type.base_type int : extended_index
   
   function reverse_find_ "inline" (co : vector) (e :Ada__containers__formal_vectors__element_type.base_type) (i : int) : int =
-    extended_index__to_index (to_int (reverse_find co e i))
+    extended_index__to_index (to_int (reverse_find_index_ co e i))
 
   axiom reverse_find_range:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_index_ v e n].
       0 < reverse_find_ v e n <= n /\  reverse_find_ v e n <= length_ v \/ reverse_find_ v e n = 0
 
   axiom reverse_find_no:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_index_ v e n].
       reverse_find_ v e n = 0 -> 
       forall i : int [element_ v i]. 0 < i <= n /\ i <= length_ v -> Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
   axiom reverse_find_ex:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_index_ v e n].
       reverse_find_ v e n > 0 -> Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v (reverse_find_ v e n))) e = True
 
   axiom reverse_find_oth:
-    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_ v e n].
+    forall v:vector, e:Ada__containers__formal_vectors__element_type.base_type, n:int [reverse_find_index_ v e n].
       reverse_find_ v e n > 0 -> 
       forall i : int [element_ v i]. reverse_find_ v e n < i <= n /\ i <= length_ v -> Ada__containers__formal_vectors__oeq.oeq (Ada__containers__formal_vectors__element_type.to_base (element_ v i)) e = False
 
   function reverse_find_index (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i:int) : extended_index =
     if extended_index__to_index (i) = 0 then
-	reverse_find co e (length_ co)
+	reverse_find_index_ co e (length_ co)
     else
-	reverse_find co e (index_type__to_index i)
+	reverse_find_index_ co e (index_type__to_index i)
 
   val reverse_find_index (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (i:int) : extended_index
   ensures {result = reverse_find_index co e i }
@@ -554,11 +558,14 @@ module Ada__containers__formal_vectors__reverse_find
   use import Ada__containers__formal_vectors__no_element
   use import Ada__containers__formal_vectors__reverse_find_index
 
-  function reverse_find (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (cu:cursor) : cursor = 
+  function reverse_find (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (cu:cursor) : cursor
+
+  axiom reverse_find__def:
+    forall co:vector, e:Ada__containers__formal_vectors__element_type.base_type, cu:cursor [reverse_find co e cu].
     if cu = no_element then
-	to_cursor_ co (reverse_find_ co e (length_ co))
+	to_index_ co (reverse_find co e cu) = (reverse_find_ co e (length_ co))
     else
-	to_cursor_ co (reverse_find_ co e (to_index_ co cu))
+	to_index_ co (reverse_find co e cu) =  (reverse_find_ co e (to_index_ co cu))
 
   val reverse_find__pre (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) (cu:cursor) : cursor
      requires { cu = no_element \/ 0 < to_index_ co cu }
@@ -605,7 +612,7 @@ module Ada__containers__formal_vectors__strict_equal
      (forall i:int [element_ co1 i |  element_ co2 i].
       0 < i <= length_ co1 ->
        Ada__containers__formal_vectors__element_type.to_base (element_ co1 i) = Ada__containers__formal_vectors__element_type.to_base (element_ co2 i)) /\
-     (forall cu:cursor [to_index_ co1 cu |  to_index_ co2 cu].
+     (forall cu:cursor [real_to_index co1 cu |  real_to_index co2 cu].
        to_index_ co1 cu = to_index_ co2 cu))
 
   val strict_equal__program (co1:vector) (co2:vector) : bool
@@ -629,7 +636,7 @@ module Ada__containers__formal_vectors__replace_element
       Ada__containers__formal_vectors__element_type.to_base (element_ co2 i) = e /\
        (forall j:int [element_ co2 j | element_ co1 j].
           0 < j <= length_ co1 ->  i <> j ->  element_ co2 j = element_ co1 j) /\
-       (forall cu:cursor[to_index_ co1 cu | to_index_ co2 cu].  to_index_ co1 cu = to_index_ co2 cu)
+       (forall cu:cursor[real_to_index co1 cu | real_to_index co2 cu].  to_index_ co1 cu = to_index_ co2 cu)
 
   val replace_element (co:ref vector) (i:int) (e:Ada__containers__formal_vectors__element_type.base_type): unit
     requires { 0 < index_type__to_index i <= length_ !co }
@@ -1308,10 +1315,10 @@ module Ada__containers__formal_vectors__contains
   use import Ada__containers__formal_vectors__find_index
   
   function contains (co : vector) (e : Ada__containers__formal_vectors__element_type.base_type) : bool =
-    if extended_index__to_index (to_int (find_index co e Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST))  > 0 then True else False
+    if extended_index__to_index (to_int (find_index_ co e 1))  > 0 then True else False
 
   val contains (co:vector) (e:Ada__containers__formal_vectors__element_type.base_type) : bool
-    ensures { if extended_index__to_index ( to_int (find_index co e Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST)) > 0 then result = True else result = False }
+    ensures { if extended_index__to_index ( to_int (find_index_ co e 1)) > 0 then result = True else result = False }
 end
 
 module Ada__containers__formal_vectors__capacity
