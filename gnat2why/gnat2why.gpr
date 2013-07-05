@@ -18,4 +18,8 @@ project GNAT2Why is
         ("-O0", "-gnata", "-gnat12", "-gnatg", "-gnatVa");
    end Compiler;
 
+   package IDE is
+      for VCS_Kind use "Auto";
+   end IDE;
+
 end GNAT2Why;
