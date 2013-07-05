@@ -260,7 +260,7 @@ package body Flow.Control_Flow_Graph.Utility is
          when Initial_Value =>
             A.Is_Initialised := Ekind (Entire_Var) in
               E_In_Out_Parameter |
-                 E_In_Parameter |
+                 E_In_Parameter  |
                  E_Loop_Parameter;
 
             A.Is_Import := Ekind (Entire_Var) in

@@ -306,13 +306,16 @@ package body Flow.Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Procedure_Call_Statement |
-              N_Subprogram_Body |
-              N_Subprogram_Declaration =>
+            when N_Procedure_Call_Statement =>
                --  If we ever get one of these we have a problem -
                --  Get_Variable_Set is only really meant to be called
                --  on expressions and not statements.
                raise Program_Error;
+
+            when N_Later_Decl_Item =>
+               --  These should allow us to go through package specs
+               --  and bodies.
+               return Skip;
 
             when N_Function_Call =>
                Process_Function_Call (Callsite       => N,

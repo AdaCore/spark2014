@@ -97,7 +97,5 @@ package Flow_Tree_Utility is
    --  For a given function or procedure call N, this function returns
    --  true if we should use the Refined_Global and Refined_Depends
    --  aspects or the Global and Depends aspects.
-   --
-   --  !!! This currently always returns true.
 
 end Flow_Tree_Utility;
