@@ -170,11 +170,11 @@ package body Test is
    -- Unused_Variables_1 --
    ------------------------
 
-   procedure Unused_Variables_1 is
-      Unused : Integer;
-
+   procedure Unused_Variables_1
+   is
       generic
       package G is
+         Unused : Integer;
       end G;
 
       package body G is
@@ -184,7 +184,6 @@ package body Test is
       end G;
 
       package Inst is new G;
-
    begin
       null;
    end Unused_Variables_1;
