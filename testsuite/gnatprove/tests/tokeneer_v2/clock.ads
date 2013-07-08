@@ -22,7 +22,7 @@ with BasicTypes;
 
 package Clock
    with Abstract_State => (CurrentTime,
-                           (Now with Volatile, Input))
+                           (Now with External, Input_Only))
 is
 
    ------------------------------------------------------------------
@@ -57,13 +57,13 @@ is
    MilliSecsInTenthSec : constant := 100;
    MilliSecsInSec      : constant := 1000;
 
-   type MilliSecsT    is range 0..DurationT'Last * MilliSecsInTenthSec - 1;
+   type MilliSecsT is range 0..DurationT'Last * MilliSecsInTenthSec - 1;
 
    type TimeT is record
-      Year      : YearsT;
-      Month     : MonthsT;
-      Day       : DaysT;
-      MilliSec  : MilliSecsT;
+      Year     : YearsT;
+      Month    : MonthsT;
+      Day      : DaysT;
+      MilliSec : MilliSecsT;
    end record;
 
    ZeroTime : constant TimeT :=

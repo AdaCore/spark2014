@@ -51,10 +51,11 @@ is
    --
    -- Traceunit : C.File.GetName
    ------------------------------------------------------------------
-   procedure GetName (TheFile     : in     T;
-                      TheName     :    out String;
-                      NameLength  :    out Natural)
-      with Depends => ((NameLength, TheName) => TheFile);
+   procedure GetName (TheFile    : in     T;
+                      TheName    :    out String;
+                      NameLength :    out Natural)
+      with Depends => ((NameLength, TheName) => TheFile,
+                       null => TheName);
    ------------------------------------------------------------------
    -- Construct
    --
@@ -76,7 +77,7 @@ is
    -- Traceunit : C.File.OpenAppend
    ------------------------------------------------------------------
    procedure OpenAppend (TheFile : in out T;
-                          Success :    out Boolean)
+                         Success :    out Boolean)
       with Depends => ((Success, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -88,7 +89,7 @@ is
    -- Traceunit : C.File.OpenWrite
    ------------------------------------------------------------------
    procedure OpenWrite (TheFile : in out T;
-                         Success :    out Boolean)
+                        Success :    out Boolean)
       with Depends => ((Success, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -100,7 +101,7 @@ is
    -- Traceunit : C.File.OpenRead
    ------------------------------------------------------------------
    procedure OpenRead (TheFile : in out T;
-                        Success :    out Boolean)
+                       Success :    out Boolean)
       with Depends => ((Success, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -112,7 +113,7 @@ is
    -- Traceunit : C.File.Close
    ------------------------------------------------------------------
    procedure Close (TheFile : in out T;
-                     Success :    out Boolean)
+                    Success :    out Boolean)
       with Depends => ((Success, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -136,8 +137,8 @@ is
    -- Traceunit : C.File.PutString
    ------------------------------------------------------------------
    procedure PutString (TheFile : in out T;
-                         Text    : in     String;
-                         Stop    : in     Natural)
+                        Text    : in     String;
+                        Stop    : in     Natural)
       with Depends => (TheFile =>+ (Stop, Text));
 
    ------------------------------------------------------------------
@@ -150,9 +151,10 @@ is
    -- Traceunit : C.File.GetString
    ------------------------------------------------------------------
    procedure GetString (TheFile : in out T;
-                         Text    :    out String;
-                         Stop    :    out Natural)
-      with Depends => ((Stop, Text, TheFile) => TheFile);
+                        Text    :    out String;
+                        Stop    :    out Natural)
+      with Depends => ((Stop, Text, TheFile) => TheFile,
+                       null => Text);
 
 
    ------------------------------------------------------------------
@@ -164,7 +166,7 @@ is
    -- Traceunit : C.File.GetChar
    ------------------------------------------------------------------
    procedure GetChar (TheFile : in out T;
-                       Item    :    out Character)
+                      Item    :    out Character)
       with Depends => ((Item, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -176,8 +178,8 @@ is
    -- Traceunit : C.File.PutInteger
    ------------------------------------------------------------------
    procedure PutInteger (TheFile : in out T;
-                          Item    : in Integer;
-                          Width   : in Natural)
+                         Item    : in Integer;
+                         Width   : in Natural)
       with Depends => (TheFile =>+ (Item, Width));
 
    ------------------------------------------------------------------
@@ -189,9 +191,9 @@ is
    -- Traceunit : C.File.GetInteger
    ------------------------------------------------------------------
    procedure GetInteger (TheFile : in out T;
-                          Item    :    out Integer;
-                          Width   : in     Natural;
-                          Success :    out Boolean)
+                         Item    :    out Integer;
+                         Width   : in     Natural;
+                         Success :    out Boolean)
       with Depends => ((Item, Success, TheFile) => (TheFile, Width));
    ------------------------------------------------------------------
    -- NewLine
@@ -202,7 +204,7 @@ is
    -- Traceunit : C.File.NewLine
    ------------------------------------------------------------------
    procedure NewLine (TheFile : in out T;
-                       Spacing : in     Natural)
+                      Spacing : in     Natural)
       with Depends => (TheFile =>+ Spacing);
 
    ------------------------------------------------------------------
@@ -215,7 +217,7 @@ is
    -- Traceunit : C.File.SkipLine
    ------------------------------------------------------------------
    procedure SkipLine (TheFile  : in out T;
-                        Spacing  : in     Positive)
+                       Spacing  : in     Positive)
       with Depends => (TheFile =>+ Spacing);
 
    ------------------------------------------------------------------
@@ -229,9 +231,10 @@ is
    -- Traceunit : C.File.GetLine
    ------------------------------------------------------------------
    procedure GetLine (TheFile  : in out T;
-                       Item     :    out String;
-                       Stop     :    out Natural)
-      with Depends => ((Item, Stop, TheFile) => TheFile);
+                      Item     :    out String;
+                      Stop     :    out Natural)
+      with Depends => ((Item, Stop, TheFile) => TheFile,
+                       null => Item);
 
    ------------------------------------------------------------------
    -- EndOfFile
@@ -262,7 +265,7 @@ is
    -- Traceunit : C.File.Create
    ------------------------------------------------------------------
    procedure Create (TheFile : in out T;
-                      Success :    out Boolean)
+                     Success :    out Boolean)
       with Depends => ((Success, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -274,7 +277,7 @@ is
    -- Traceunit : C.File.Delete
    ------------------------------------------------------------------
    procedure Delete (TheFile : in out T;
-                      Success :    out Boolean)
+                     Success :    out Boolean)
       with Depends => ((Success, TheFile) => TheFile);
 
    ------------------------------------------------------------------
@@ -286,9 +289,10 @@ is
    -- Traceunit : C.File.Copy
    ------------------------------------------------------------------
    procedure Compare (FileA        : in out T;
-                       FileB        : in out T;
-                       FilesTheSame :    out Boolean)
-      with Depends => ((FileA, FileB) =>+ null, FilesTheSame => (FileA, FileB));
+                      FileB        : in out T;
+                      FilesTheSame :    out Boolean)
+      with Depends => ((FileA, FileB) =>+ null,
+                       FilesTheSame => (FileA, FileB));
 
    ------------------------------------------------------------------
    -- Copy
@@ -299,9 +303,9 @@ is
    --
    -- Traceunit : C.File.Copy
    ------------------------------------------------------------------
-   procedure Copy (FileA        : in out T;
-                    FileB        : in out T;
-                    Success      :    out Boolean)
+   procedure Copy (FileA   : in out T;
+                   FileB   : in out T;
+                   Success :    out Boolean)
       with Depends => ((FileA,
                         FileB) =>+ FileA,
                        Success => (FileA,
@@ -315,13 +319,14 @@ is
    --
    -- Traceunit : C.File.CreateDirectory
    ------------------------------------------------------------------
-   procedure CreateDirectory (DirName : in String;
-                               Success : out Boolean)
+   procedure CreateDirectory (DirName : in     String;
+                              Success :    out Boolean)
       with Depends => (Success => DirName);
 
 private
 
    --# hide File;
+   pragma SPARK_Mode (Off);
    -- hidden due to use of access types, required in low level file
    -- handling.
 

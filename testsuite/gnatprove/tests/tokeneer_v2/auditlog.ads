@@ -188,7 +188,7 @@ is
                                  FileState)),
            Post    => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile));
 
    ------------------------------------------------------------------
@@ -224,11 +224,11 @@ is
                                    User)),
            Pre     => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile)),
-           Post     => (UsedLogFiles.Length >= 1 and then
+           Post    => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile));
 
 
@@ -259,11 +259,11 @@ is
                                    User)),
            Pre     => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile)),
            Post    => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile));
 
 
@@ -291,11 +291,11 @@ is
                                    User)),
            Pre     => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile)),
            Post    => (UsedLogFiles.Length >= 1 and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile));
 
 

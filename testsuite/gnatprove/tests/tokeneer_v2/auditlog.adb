@@ -22,14 +22,14 @@ with AlarmTypes;
 use type AlarmTypes.StatusT;
 
 package body AuditLog
-   --  with Refined_State => (State => (AuditAlarm,
-   --                                   CurrentLogFile,
-   --                                   UsedLogFiles,
-   --                                   LogFileEntries,
-   --                                   LogFilesStatus,
-   --                                   NumberLogEntries,
-   --                                   AuditSystemFault),
-   --                         FileState => LogFiles)
+   with Refined_State => (State => (AuditAlarm,
+                                    CurrentLogFile,
+                                    UsedLogFiles,
+                                    LogFileEntries,
+                                    LogFilesStatus,
+                                    NumberLogEntries,
+                                    AuditSystemFault),
+                          FileState => LogFiles)
 is
 
    ------------------------------------------------------------------
@@ -175,7 +175,7 @@ is
 
       if File.Exists(TheFile => TheFile) then
          File.OpenRead(TheFile => TheFile,
-                        Success => OK);
+                       Success => OK);
 
          AuditSystemFault := AuditSystemFault or not OK;
 
@@ -183,8 +183,8 @@ is
             -- get the age of the first element
             -- time is the first field on the line
             File.GetString(TheFile => TheFile,
-                            Text    => FirstTime,
-                            Stop    => TimeCount);
+                           Text    => FirstTime,
+                           Stop    => TimeCount);
 
             if TimeCount /= FirstTime'Last then
                -- Time was corrupt
@@ -195,8 +195,8 @@ is
 
             -- get the age of the last element
             File.GetString(TheFile => TheFile,
-                            Text    => LastTime,
-                            Stop    => TimeCount);
+                           Text    => LastTime,
+                           Stop    => TimeCount);
 
             if TimeCount /= LastTime'Last then
                -- Time was corrupt
@@ -206,7 +206,7 @@ is
         end if;
 
          File.Close(TheFile => TheFile,
-                     Success => OK);
+                    Success => OK);
 
          AuditSystemFault := AuditSystemFault or not OK;
 
@@ -296,7 +296,7 @@ is
 
       if File.Exists(TheFile => TheFile) then
          File.OpenRead(TheFile => TheFile,
-                        Success => OK);
+                       Success => OK);
 
          AuditSystemFault := AuditSystemFault or not OK;
 
@@ -306,8 +306,8 @@ is
             -- get the age of the last element
             -- the time is the first field on the line
             File.GetString(TheFile => TheFile,
-                            Text    => LastTime,
-                            Stop    => TimeCount);
+                           Text    => LastTime,
+                           Stop    => TimeCount);
 
             if TimeCount /= LastTime'Last then
                -- Time was corrupt
@@ -317,7 +317,7 @@ is
         end if;
 
          File.Close(TheFile => TheFile,
-                     Success => OK);
+                    Success => OK);
 
          AuditSystemFault := AuditSystemFault or not OK;
 
@@ -470,55 +470,55 @@ is
       if OK then
          -- Write Time
          File.PutString(TheFile => TheFile,
-                         Text    => Clock.PrintTime(Now),
-                         Stop    => 0);
+                        Text    => Clock.PrintTime(Now),
+                        Stop    => 0);
 
          File.PutString(TheFile => TheFile,
-                         Text    => ", ",
-                         Stop    => 0);
+                        Text    => ", ",
+                        Stop    => 0);
 
          -- Write Severity
          File.PutInteger(TheFile => TheFile,
-                          Item   => AuditTypes.SeverityT'Pos(Severity)+ 1,
-                          Width  => 1);
+                         Item   => AuditTypes.SeverityT'Pos(Severity)+ 1,
+                         Width  => 1);
 
          File.PutString(TheFile => TheFile,
-                         Text    => ", ",
-                         Stop    => 0);
+                        Text    => ", ",
+                        Stop    => 0);
 
          -- Write type
          File.PutInteger(TheFile => TheFile,
-                          Item    => AuditTypes.ElementT'Pos(ElementID),
-                          Width   => 2);
+                         Item    => AuditTypes.ElementT'Pos(ElementID),
+                         Width   => 2);
 
          File.PutString(TheFile => TheFile,
-                         Text    => ", ",
-                         Stop    => 0);
+                        Text    => ", ",
+                        Stop    => 0);
 
          File.PutString(TheFile => TheFile,
-                         Text   => NameOfType (ElementID),
-                         Stop => 0);
+                        Text   => NameOfType (ElementID),
+                        Stop => 0);
 
          File.PutString(TheFile => TheFile,
-                         Text    => ", ",
-                         Stop    => 0);
+                        Text    => ", ",
+                        Stop    => 0);
 
          -- Write user
          File.PutString(TheFile => TheFile,
-                         Text    => User,
-                         Stop    => 0);
+                        Text    => User,
+                        Stop    => 0);
 
          File.PutString(TheFile => TheFile,
-                         Text    => ", ",
-                         Stop    => 0);
+                        Text    => ", ",
+                        Stop    => 0);
 
          -- Write description
          File.PutString(TheFile => TheFile,
-                         Text    => Description,
-                         Stop    => 0);
+                        Text    => Description,
+                        Stop    => 0);
 
          File.NewLine(TheFile => TheFile,
-                       Spacing => 1);
+                      Spacing => 1);
 
       else
          AuditSystemFault := True;
@@ -579,10 +579,10 @@ is
                          (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or else
                             UsedLogFiles.Length < LogFileCountT'Last) and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1)*MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile)),
            Post    => (NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1)*MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile) and then
                          NumberLogEntries = NumberLogEntries'Old + 1 and then
                          ((LogFileEntries(CurrentLogFile)'Old = MaxLogFileEntries) <=
@@ -630,11 +630,11 @@ is
       begin
          TheFile := LogFiles (CurrentLogFile);
          AddElementToFile
-           (TheFile => TheFile,
-            ElementID    => ElementID,
-            Severity     => Severity,
-            User         => User,
-            Description  => Description);
+           (TheFile     => TheFile,
+            ElementID   => ElementID,
+            Severity    => Severity,
+            User        => User,
+            Description => Description);
          LogFiles (CurrentLogFile) := TheFile;
 
          LogFileEntries(CurrentLogFile) := LogFileEntries(CurrentLogFile) + 1;
@@ -689,8 +689,6 @@ is
          is
          begin
             for I in LogFileIndexT loop
-               --# assert I in LogFileIndexT;
-               pragma Loop_Invariant (I in LogFileIndexT);
                if LogFilesStatus(I) = Free then
                   CurrentLogFile := I;
                   exit;
@@ -714,11 +712,11 @@ is
 
          TheFile := LogFiles (CurrentLogFile);
          AddElementToFile
-           (TheFile => TheFile,
-            ElementID    => ElementID,
-            Severity     => Severity,
-            User         => User,
-            Description  => Description);
+           (TheFile     => TheFile,
+            ElementID   => ElementID,
+            Severity    => Severity,
+            User        => User,
+            Description => Description);
          LogFiles (CurrentLogFile) := TheFile;
 
          LogFileEntries(CurrentLogFile) := 1;
@@ -735,9 +733,9 @@ is
 
          AddElementToCurrentFile
            (ElementID   => ElementID,
-             Severity    => Severity,
-             User        => User,
-             Description => Description);
+            Severity    => Severity,
+            User        => User,
+            Description => Description);
 
       else
 
@@ -746,9 +744,9 @@ is
 
          AddElementToNextFile
            (ElementID   => ElementID,
-             Severity    => Severity,
-             User        => User,
-             Description => Description);
+            Severity    => Severity,
+            User        => User,
+            Description => Description);
       end if;
 
       NumberLogEntries := NumberLogEntries + 1;
@@ -785,10 +783,10 @@ is
                        NumberLogEntries =>+ null),
            Pre     => UsedLogFiles.Length = LogFileCountT'Last and then
                         NumberLogEntries =
-                        LogEntryCountT(UsedLogFiles.Length)*MaxLogFileEntries,
+                        LogEntryCountT(UsedLogFiles.Length) * MaxLogFileEntries,
            Post    => UsedLogFiles.Length = LogFileCountT'Last - 1 and then
                         NumberLogEntries =
-                        LogEntryCountT(UsedLogFiles.Length)*MaxLogFileEntries
+                        LogEntryCountT(UsedLogFiles.Length) * MaxLogFileEntries
 
    is
       TheFile : File.T;
@@ -868,11 +866,11 @@ is
                                           UsedLogFiles)),
            Pre  => (UsedLogFiles.Length >= 1 and then
                       NumberLogEntries =
-                      LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                      LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                       LogFileEntries(CurrentLogFile)),
            Post => (UsedLogFiles.Length >= 1 and then
                       NumberLogEntries =
-                      LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                      LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                       LogFileEntries(CurrentLogFile))
 
    is
@@ -887,7 +885,7 @@ is
          --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile) and LogFileEntries(CurrentLogFile) = MaxLogFileEntries and UsedLogFiles.Length = LogFileCountT'Last - 1;
          pragma Assert_And_Cut
            (NumberLogEntries =
-              LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+              LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
               LogFileEntries(CurrentLogFile) and then
             LogFileEntries(CurrentLogFile) = MaxLogFileEntries and then
             UsedLogFiles.Length = LogFileCountT'Last - 1);
@@ -901,7 +899,7 @@ is
          --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile) and LogFileEntries(CurrentLogFile) = 1  and UsedLogFiles.Length = LogFileCountT'Last;
          pragma Assert_And_Cut
            (NumberLogEntries =
-              LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+              LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
               LogFileEntries(CurrentLogFile) and then
             LogFileEntries(CurrentLogFile) = 1 and then
             UsedLogFiles.Length = LogFileCountT'Last);
@@ -911,16 +909,16 @@ is
          --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile) and (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or UsedLogFiles.Length < LogFileCountT'Last);
       pragma Assert_And_Cut
         (NumberLogEntries =
-           LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+           LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
            LogFileEntries(CurrentLogFile) and then
            (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or else
             UsedLogFiles.Length < LogFileCountT'Last));
 
       AddElementToLogFile
         (ElementID   => ElementID,
-          Severity    => Severity,
-          User        => User,
-          Description => Description);
+         Severity    => Severity,
+         User        => User,
+         Description => Description);
 
    end AddElementToLogFileWithTruncateChecks;
 
@@ -1032,7 +1030,7 @@ is
 
            if File.Exists(TheFile => FileH) then
               File.OpenRead(TheFile => FileH,
-                             Success => OK);
+                            Success => OK);
               if OK then
                  -- if can open then see if it is empty
                  if File.EndOfFile(FileH) then
@@ -1041,8 +1039,8 @@ is
                     Status := Used;
                     -- get the age of the first element
                     File.GetString(TheFile => FileH,
-                                    Text    => FirstTime,
-                                    Stop    => TimeCount);
+                                   Text    => FirstTime,
+                                   Stop    => TimeCount);
                     if TimeCount /= FirstTime'Last then
                        -- Time was corrupt
                        TimeOK := False;
@@ -1086,8 +1084,6 @@ is
 
         --# accept F, 23, LogFilesStatus, "Array initialization is total in loop"& F, 23, LogFileEntries, "Array initialization is total in loop"& F, 23, FileAges, "Array initialization is total in loop";
         for I in LogFileIndexT loop
-           --# assert I in LogFileIndexT;
-           pragma Loop_Invariant (I in LogFileIndexT);
            GetFileDetails(I);
            LogFilesStatus(I) := Status;
            LogFiles(I)       := FileH;
@@ -1132,8 +1128,7 @@ is
       for I in LogFileIndexT loop
          --# assert I in LogFileIndexT and UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length < I and UsedLogFiles.LastI in LogFileIndexT and (UsedLogFiles.Length > 0 -> UsedLogFiles.LastI < I) and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT))  and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
          pragma Loop_Invariant
-           (I in LogFileIndexT and then
-            UsedLogFiles.Length in LogFileCountT and then
+           (UsedLogFiles.Length in LogFileCountT and then
             UsedLogFiles.Length < I and then
             UsedLogFiles.LastI in LogFileIndexT and then
               ((UsedLogFiles.Length > 0) <= (UsedLogFiles.LastI < I)));
@@ -1148,9 +1143,7 @@ is
                for J in LogFileIndexT  range 1..UsedLogFiles.LastI loop
                   --# assert I in LogFileIndexT and J in LogFileIndexT and J <= UsedLogFiles.LastI and UsedLogFiles.LastI in LogFileIndexT and UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length > 0 and UsedLogFiles.Length < I and (UsedLogFiles.Length > 0 -> UsedLogFiles.LastI < I) and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT)) and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
                   pragma Loop_Invariant
-                    (I in LogFileIndexT and then
-                     J in LogFileIndexT and then
-                     J <= UsedLogFiles.LastI and then
+                    (J <= UsedLogFiles.LastI and then
                      UsedLogFiles.LastI in LogFileIndexT and then
                      UsedLogFiles.Length in LogFileCountT and then
                      UsedLogFiles.Length > 0 and then
@@ -1165,10 +1158,7 @@ is
                        range J + 1..UsedLogFiles.LastI loop
                         --# assert K in LogFileIndexT and J in LogFileIndexT and I in LogFileIndexT and J = J% and K >= J + 1 and K <= UsedLogFiles.LastI and UsedLogFiles.LastI in LogFileIndexT and UsedLogFiles.Length in LogFileCountT and UsedLogFiles.Length > 0 and UsedLogFiles.Length <= I and UsedLogFiles.LastI <= I and (for all N in LogFileIndexT => (LogFileEntries(N) in FileEntryCountT)) and (for all N in LogFileIndexT => (UsedLogFiles.List(N) in LogFileIndexT));
                         pragma Loop_Invariant
-                          (K in LogFileIndexT and then
-                           J in LogFileIndexT and then
-                           I in LogFileIndexT and then
-                           K >= J + 1 and then
+                          (K >= J + 1 and then
                            K <= UsedLogFiles.LastI and then
                            UsedLogFiles.LastI in LogFileIndexT and then
                            UsedLogFiles.Length in LogFileCountT and then
@@ -1398,11 +1388,10 @@ is
             and ArchivedFileCount < UsedLogFiles.Length loop
             --# assert FileIndexInUsedList in LogFileIndexT and ArchivedFileCount >= 0 and ArchivedFileCount < MaxNumberArchivableFiles and NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
             pragma Loop_Invariant
-              (FileIndexInUsedList in LogFileIndexT and then
-               ArchivedFileCount >= 0 and then
+              (ArchivedFileCount >= 0 and then
                ArchivedFileCount < MaxNumberArchivableFiles and then
                NumberLogEntries =
-                 LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+                 LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                  LogFileEntries(CurrentLogFile));
 
             FileIndex := UsedLogFiles.List(FileIndexInUsedList);
@@ -1442,7 +1431,7 @@ is
       --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
       pragma Assert_And_Cut
         (NumberLogEntries =
-           LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+           LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
            LogFileEntries(CurrentLogFile));
 
       if ArchiveFault then
@@ -1520,7 +1509,7 @@ is
          pragma Loop_Invariant
            (UsedLogFiles.Length > 1 and then
             NumberLogEntries =
-              LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+              LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
               LogFileEntries(CurrentLogFile));
          exit when LogFilesStatus(UsedLogFiles.List(UsedLogFiles.Head))
            /= Archived;
@@ -1530,7 +1519,7 @@ is
             LogFilesStatus(UsedLogFiles.List(UsedLogFiles.Head))
             = Archived and then
             NumberLogEntries =
-              LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+              LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
               LogFileEntries(CurrentLogFile));
 
          -- Empty the archived file.
@@ -1546,7 +1535,7 @@ is
       --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
       pragma Assert_And_Cut
         (NumberLogEntries =
-           LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
+           LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
            LogFileEntries(CurrentLogFile));
       OldAlarm := AuditAlarm;
 
@@ -1589,8 +1578,6 @@ is
    is
    begin
       for I in LogFileIndexT loop
-         --# assert I in LogFileIndexT;
-         pragma Loop_Invariant (I in LogFileIndexT);
          if LogFilesStatus(I) = Archived then
             LogFilesStatus(I) := Used;
          end if;
