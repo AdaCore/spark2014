@@ -70,4 +70,38 @@ package body Flow.Debug is
       Outdent;
    end Print_Dependency_Map;
 
+   procedure Print_Optional_Dependency_Map (M : Optional_Dependency_Maps.Map)
+   is
+      use type Ada.Containers.Count_Type;
+      use Optional_Dependency_Maps;
+   begin
+      Write_Str ("Optional_Dependency_Map:");
+      Write_Eol;
+      Indent;
+      if M.Length >= 1 then
+         for C in M.Iterate loop
+            declare
+               A : constant Flow_Id              := Key (C);
+               D : constant Optional_Flow_Id_Set := Element (C);
+            begin
+               Sprint_Flow_Id (A);
+               if D.Exists then
+                  Write_Str (" depends on:");
+                  Write_Eol;
+                  Indent;
+                  for B of D.The_Set loop
+                     Sprint_Flow_Id (B);
+                     Write_Eol;
+                  end loop;
+                  Outdent;
+               end if;
+            end;
+         end loop;
+      else
+         Write_Str ("null");
+         Write_Eol;
+      end if;
+      Outdent;
+   end Print_Optional_Dependency_Map;
+
 end Flow.Debug;

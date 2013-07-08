@@ -33,4 +33,7 @@ package Flow.Debug is
    procedure Print_Dependency_Map (M : Dependency_Maps.Map);
    --  Print a human-readable form of the given dependency relation.
 
+   procedure Print_Optional_Dependency_Map (M : Optional_Dependency_Maps.Map);
+   --  Print a human-readable form of the given dependency relation.
+
 end Flow.Debug;

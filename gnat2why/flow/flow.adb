@@ -50,7 +50,8 @@ with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
-with Flow.Utility;
+
+with Flow.Utility;         use Flow.Utility;
 
 use type Ada.Containers.Count_Type;
 
@@ -289,7 +290,7 @@ package body Flow is
                                       (The_Global, Out_View));
                   when Name_Output =>
                      if Consider_Discriminants and then
-                       Flow.Utility.Contains_Discriminants
+                       Contains_Discriminants
                        (Direct_Mapping_Id (The_Global, In_View))
                      then
                         Reads.Insert (Direct_Mapping_Id
@@ -437,109 +438,12 @@ package body Flow is
    -----------------
 
    procedure Get_Depends (Subprogram : Entity_Id;
-                          Depends    : out Dependency_Maps.Map) is
+                          Depends    : out Dependency_Maps.Map)
+   is
       Depends_Contract : constant Node_Id :=
         Get_Pragma (Subprogram, Pragma_Depends);
-      pragma Assert
-        (List_Length (Pragma_Argument_Associations (Depends_Contract)) = 1);
-
-      PAA : constant Node_Id :=
-        First (Pragma_Argument_Associations (Depends_Contract));
-      pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
-
-      CA : List_Id;
-
-      Row : Node_Id;
-      LHS : Node_Id;
-      RHS : Node_Id;
-
-      Inputs  : Flow_Id_Sets.Set;
-      Outputs : Flow_Id_Sets.Set;
-
    begin
-      Depends := Dependency_Maps.Empty_Map;
-
-      if Ekind (Subprogram) = E_Function then
-         --  ??? To be implemented by M412-008
-         raise Why.Not_Implemented;
-      end if;
-
-      case Nkind (Expression (PAA)) is
-         when N_Null =>
-            --  Depends => null
-            return;
-         when N_Aggregate =>
-            CA := Component_Associations (Expression (PAA));
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
-
-      Row := First (CA);
-      while Present (Row) loop
-         Inputs  := Flow_Id_Sets.Empty_Set;
-         Outputs := Flow_Id_Sets.Empty_Set;
-
-         LHS := First (Choices (Row));
-         case Nkind (LHS) is
-            when N_Aggregate =>
-               LHS := First (Expressions (LHS));
-               while Present (LHS) loop
-                  pragma Assert (Present (Entity (LHS)));
-                  Outputs.Include
-                    (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
-                  LHS := Next (LHS);
-               end loop;
-            when N_Identifier | N_Expanded_Name =>
-               pragma Assert (Present (Entity (LHS)));
-               Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
-            when N_Null =>
-               null;
-            when others =>
-               Print_Node_Subtree (LHS);
-               raise Why.Unexpected_Node;
-         end case;
-
-         RHS := Expression (Row);
-         case Nkind (RHS) is
-            when N_Aggregate =>
-               RHS := First (Expressions (RHS));
-               while Present (RHS) loop
-                  pragma Assert (Present (Entity (RHS)));
-                  Inputs.Include
-                    (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
-                  RHS := Next (RHS);
-               end loop;
-            when N_Identifier | N_Expanded_Name =>
-               pragma Assert (Present (Entity (RHS)));
-               Inputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
-            when N_Null =>
-               null;
-            when others =>
-               Print_Node_Subtree (RHS);
-               raise Why.Unexpected_Node;
-         end case;
-
-         if Outputs.Length = 0 and then Inputs.Length >= 1 then
-            --  The inser is on purpose - we want this to fail if we
-            --  manage to obtain more than one null derives.
-            Depends.Insert (Null_Flow_Id, Flow_Id_Sets.Empty_Set);
-            for Input of Inputs loop
-               Depends (Null_Flow_Id).Include (Input);
-            end loop;
-         else
-            for Output of Outputs loop
-               Depends.Include (Output, Flow_Id_Sets.Empty_Set);
-               for Input of Inputs loop
-                  Depends (Output).Include (Input);
-               end loop;
-            end loop;
-         end if;
-
-         Row := Next (Row);
-      end loop;
-
+      Depends := Parse_Depends (Depends_Contract);
    end Get_Depends;
 
    -----------------
@@ -741,7 +645,7 @@ package body Flow is
 
                   if not A.Is_Initialised then
                      Rv.Colour := To_Unbounded_String ("red");
-                  elsif Flow.Utility.Is_Discriminant (F) then
+                  elsif Is_Discriminant (F) then
                      Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 
@@ -1055,7 +959,7 @@ package body Flow is
                when E_Package_Body =>
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
-
+                  Analysis.Find_Illegal_Updates (FA);
             end case;
          end if;
       end loop;

@@ -37,8 +37,9 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 --  Entity_Name
 
 with Graph;
-with Flow_Types;        use Flow_Types;
-with Flow_Tree_Utility; use Flow_Tree_Utility;
+with Flow_Types;           use Flow_Types;
+with Flow_Tree_Utility;    use Flow_Tree_Utility;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 
 package Flow is
 
@@ -143,6 +144,7 @@ package Flow is
    function Is_Valid (X : Flow_Analysis_Graphs_Root) return Boolean;
 
    subtype Flow_Analysis_Graphs is Flow_Analysis_Graphs_Root;
+   --  with Dynamic_Predicate => Is_Valid (Flow_Analysis_Graphs);
 
    package Analysis_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -150,13 +152,6 @@ package Flow is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
-
-   package Dependency_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Flow_Id,
-      Element_Type    => Flow_Id_Sets.Set,
-      Hash            => Hash,
-      Equivalent_Keys => "=",
-      "="             => Flow_Id_Sets."=");
 
    ----------------------------------------------------------------------
    --  Utilities
@@ -205,7 +200,7 @@ package Flow is
    --  dependency relation is represented as a map from entities to
    --  sets of entities.
    --
-   --  For example (X, Y) =>* Z would be represented as:
+   --  For example (X, Y) =>+ Z would be represented as:
    --     x -> {x, z}
    --     y -> {y, z}
    --
@@ -217,7 +212,7 @@ package Flow is
    --     * null          (keyword null)
    --  One final form which is supported is the null dependency.
    --
-   --  The * shorthand to mean "itself" is expanded away by the
+   --  The + shorthand to mean "itself" is expanded away by the
    --  front-end and this procedure does not have to deal with it.
 
    ----------------------------------------------------------------------
