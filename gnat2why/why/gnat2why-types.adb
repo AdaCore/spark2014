@@ -51,8 +51,8 @@ with Why.Gen.Scalars;    use Why.Gen.Scalars;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
-with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package body Gnat2Why.Types is
 

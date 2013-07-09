@@ -62,6 +62,7 @@ with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why_Args;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with Gnat2Why.Types;         use Gnat2Why.Types;
+with Gnat2Why.Util;          use Gnat2Why.Util;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -103,8 +104,7 @@ package body Gnat2Why.Driver is
    ---------------------------------
 
    procedure Complete_Entity_Translation (E : Entity_Id) is
-      File : Why_File :=
-        Why_Files (Dispatch_Entity (E, Is_Completion => True));
+      File : Why_File := Why_Files (Dispatch_Entity_Completion (E));
 
    begin
       case Ekind (E) is
@@ -114,8 +114,7 @@ package body Gnat2Why.Driver is
 
          when Subprogram_Kind =>
             if Entity_In_SPARK (E) then
-               Complete_Subprogram_Spec_Translation
-                 (File, E, In_Body => In_Main_Unit_Body (E));
+               Complete_Subprogram_Spec_Translation (File, E);
             end if;
 
          --  Always generate a module for SPARK constant declarations, so
@@ -124,8 +123,7 @@ package body Gnat2Why.Driver is
 
          when E_Constant =>
             if Entity_In_SPARK (E) and then not Is_Full_View (E) then
-               Complete_Constant_Translation
-                 (File, E, In_Body => In_Main_Unit_Body (E));
+               Complete_Constant_Translation (File, E);
             end if;
 
          when others =>
@@ -365,6 +363,50 @@ package body Gnat2Why.Driver is
    ---------------------
 
    procedure Translate_CUnit is
+
+      procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List);
+      --  Translate the list of entities from the spec or body, in batches, in
+      --  order to ensure proper definition before use in Why files.
+
+      -----------------------------
+      -- Translate_List_Entities --
+      -----------------------------
+
+      procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List) is
+      begin
+         --  Types are translated first, as the frontend generates mutually
+         --  dependent definitions between constants and types, for dynamically
+         --  generated types (e.g. the unconstrained array type for an input
+         --  parameter).
+
+         for E of List_Entities loop
+            if Ekind (E) in Type_Kind then
+               Translate_Entity (E);
+            end if;
+         end loop;
+
+         --  Then all remaining entities are translated
+
+         for E of List_Entities loop
+            if Ekind (E) not in Type_Kind then
+               Translate_Entity (E);
+            end if;
+         end loop;
+
+         --  Finally, completions are added for entities that require one.
+         --  Currently, this is done to provide a "closure" theory which
+         --  includes the defining axioms for constants and expression
+         --  functions. This completion is defined last to break possible
+         --  mutually dependent or out-of-order definitions of constants and
+         --  expression functions.
+
+         for E of List_Entities loop
+            Complete_Entity_Translation (E);
+         end loop;
+      end Translate_List_Entities;
+
+   --  Start of Translate_CUnit
+
    begin
       for E of All_Entities loop
          if Entity_In_SPARK (E) and then not Is_In_Current_Unit (E) then
@@ -384,8 +426,7 @@ package body Gnat2Why.Driver is
                        Base_Name & To_String (WNE_Expr_Fun_Closure);
                   begin
                      Add_Completion
-                       (Base_Name, Name,
-                        Dispatch_Entity (E, Is_Completion => True));
+                       (Base_Name, Name, Dispatch_Entity_Completion (E));
                   end;
 
                --  For all constants from other units, make their definition
@@ -402,8 +443,7 @@ package body Gnat2Why.Driver is
                           Base_Name & To_String (WNE_Constant_Closure);
                      begin
                         Add_Completion
-                          (Base_Name, Name,
-                           Dispatch_Entity (E, Is_Completion => True));
+                          (Base_Name, Name, Dispatch_Entity_Completion (E));
                      end;
                   end if;
 
@@ -415,21 +455,8 @@ package body Gnat2Why.Driver is
 
       --  Translate Ada entities into Why3
 
-      for E of Spec_Entities loop
-         Translate_Entity (E);
-      end loop;
-
-      for E of Spec_Entities loop
-         Complete_Entity_Translation (E);
-      end loop;
-
-      for E of Body_Entities loop
-         Translate_Entity (E);
-      end loop;
-
-      for E of Body_Entities loop
-         Complete_Entity_Translation (E);
-      end loop;
+      Translate_List_Entities (Spec_Entities);
+      Translate_List_Entities (Body_Entities);
 
       --  Generate VCs for entities of unit. This must follow the generation of
       --  modules for entities, so that all completions for deferred constants
@@ -461,9 +488,8 @@ package body Gnat2Why.Driver is
    ----------------------
 
    procedure Translate_Entity (E : Entity_Id) is
-      Is_Completion : constant Boolean := Ekind (E) = E_Subprogram_Body;
-      File          : Why_File :=
-        Why_Files (Dispatch_Entity (E, Is_Completion));
+      File       : Why_File := Why_Files (Dispatch_Entity (E));
+      Compl_File : Why_File := Why_Files (Dispatch_Entity_Completion (E));
 
    begin
       case Ekind (E) is
@@ -480,12 +506,16 @@ package body Gnat2Why.Driver is
          when Named_Kind =>
             if Entity_In_SPARK (E) then
                Translate_Constant (File, E);
+               Translate_Constant_Value (Compl_File, E);
             end if;
 
          when Object_Kind =>
             if not Is_Mutable_In_Why (E) then
                if Entity_In_SPARK (E) then
-                  Translate_Constant (File, E);
+                  if not Is_Full_View (E) then
+                     Translate_Constant (File, E);
+                  end if;
+                  Translate_Constant_Value (Compl_File, E);
                end if;
             else
                Translate_Variable (File, E);
@@ -511,8 +541,7 @@ package body Gnat2Why.Driver is
                --  Always generate a module, so that units which depend on this
                --  one can rely on the presence of the completion.
 
-               Translate_Expression_Function_Body
-                 (File, Decl_E, In_Body => In_Main_Unit_Body (E));
+               Translate_Expression_Function_Body (File, Decl_E);
             end;
 
          --  Given to the handler for packages with an associated theory

@@ -27,8 +27,13 @@ with GNAT.Source_Info;
 
 with Atree;                use Atree;
 with Einfo;                use Einfo;
+with Namet;                use Namet;
+with Nlists;               use Nlists;
+with Sem_Ch12;             use Sem_Ch12;
+with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
+with String_Utils;         use String_Utils;
 
 with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util;           use SPARK_Util;
@@ -36,7 +41,7 @@ with SPARK_Util;           use SPARK_Util;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
@@ -48,12 +53,7 @@ with Why.Conversions;      use Why.Conversions;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
 with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
-
-with Sem_Ch12;             use Sem_Ch12;
-with String_Utils;         use String_Utils;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sem_Util;             use Sem_Util;
+with Gnat2Why.Util;        use Gnat2Why.Util;
 
 package body Gnat2Why.Decls is
 
@@ -62,9 +62,8 @@ package body Gnat2Why.Decls is
    -----------------------------------
 
    procedure Complete_Constant_Translation
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean)
+     (File : in out Why_File;
+      E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
@@ -89,40 +88,8 @@ package body Gnat2Why.Decls is
                     Filter_Entity  => Empty,
                     Defined_Entity => E,
                     Do_Closure     => True);
-
-      if In_Body then
-         Add_Completion (Base_Name, Name, WF_Context_In_Body);
-      else
-         Add_Completion (Base_Name, Name, WF_Context_In_Spec);
-      end if;
+      Add_Completion (Base_Name, Name, File.Kind);
    end Complete_Constant_Translation;
-
-   ----------------
-   -- Is_Mutable --
-   ----------------
-
-   function Is_Mutable_In_Why (N : Node_Id) return Boolean is
-   begin
-
-      --  A variable is translated as mutable in Why if it is not constant on
-      --  the Ada side, or if it is a loop parameter (of an actual loop, not a
-      --  quantified expression.
-
-      if Ekind (N) = E_Loop_Parameter then
-         return not (Is_Quantified_Loop_Param (N));
-
-      elsif Ekind (N) in E_Enumeration_Literal |
-                         Named_Kind |
-                         Subprogram_Kind
-              or else
-            Is_Constant_Object (N)
-      then
-         return False;
-
-      else
-         return True;
-      end if;
-   end Is_Mutable_In_Why;
 
    ------------------------
    -- Translate_Variable --
@@ -204,15 +171,53 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Constant
-     (File   : in out Why_File;
-      E      : Entity_Id)
+     (File : in out Why_File;
+      E    : Entity_Id)
+   is
+      Base_Name : constant String := Full_Name (E);
+      Name      : constant String := Base_Name;
+      Typ       : constant W_Primitive_Type_Id :=
+        Why_Logic_Type_Of_Ada_Obj (E);
+
+   begin
+      --  Start with opening the theory to define, as the creation of a
+      --  function for the logic term needs the current theory to insert an
+      --  include declaration.
+
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining the constant "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  We generate a "logic", whose axiom will be given in a completion
+
+      Emit (File.Cur_Theory,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => Typ));
+
+      Close_Theory (File,
+                    Filter_Entity  => E,
+                    Defined_Entity => E);
+   end Translate_Constant;
+
+   ------------------------------
+   -- Translate_Constant_Value --
+   ------------------------------
+
+   procedure Translate_Constant_Value
+     (File : in out Why_File;
+      E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
-                    (if Is_Full_View (E) then
-                       Base_Name & To_String (WNE_Constant_Axiom)
-                     else
-                       Base_Name);
+        Base_Name & To_String (WNE_Constant_Axiom);
       Typ    : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
@@ -247,15 +252,16 @@ package body Gnat2Why.Decls is
          Def := Why_Empty;
       end if;
 
-      --  The definition of deferred constants is done in a separate theory.
-      --  This theory is added as a completion of the base theory defining the
-      --  constant.
+      if Def = Why_Empty then
+         Discard_Theory (File);
 
-      if Is_Full_View (E) then
-         if Def = Why_Empty then
-            Discard_Theory (File);
+      else
+         --  The definition of constants is done in a separate theory. This
+         --  theory is added as a completion of the base theory defining the
+         --  constant.
 
-         else
+         if Is_Full_View (E) then
+
             --  It may be the case that the full view has a more precise type
             --  than the partial view, for example when the type of the partial
             --  view is an indefinite array. In that case, convert back to the
@@ -288,43 +294,33 @@ package body Gnat2Why.Decls is
             Close_Theory (File,
                           Filter_Entity  => Empty,
                           Defined_Entity => Partial_View (E));
+            Add_Completion (Base_Name, Name, File.Kind);
 
-            if In_Main_Unit_Body (E) then
-               Add_Completion (Base_Name, Name, WF_Context_In_Body);
-            else
-               Add_Completion (Base_Name, Name, WF_Context_In_Spec);
-            end if;
-         end if;
+         --  In the general case, we generate a defining axiom if necessary and
+         --  possible.
 
-      --  In the general case, we generate a "logic", with a defining axiom if
-      --  necessary and possible.
-
-      else
-         Emit
-           (File.Cur_Theory,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
-               Binders     => (1 .. 0 => <>),
-               Return_Type => Typ));
-
-         if Def /= Why_Empty then
+         else
             Emit
               (File.Cur_Theory,
                New_Defining_Axiom
                  (Name        =>
-                    To_Why_Id (E, Domain => EW_Term, Local => True),
+                    To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
                   Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
-         end if;
 
-         Close_Theory (File,
-                       Filter_Entity  => E,
-                       Defined_Entity => E);
+            --  No filtering is necessary here, as the theory should on the
+            --  contrary use the previously defined theory for the partial
+            --  view.
+
+            Close_Theory (File,
+                          Filter_Entity  => Empty,
+                          Defined_Entity => E);
+            Add_Completion (Base_Name, Name, File.Kind);
+         end if;
       end if;
-   end Translate_Constant;
+   end Translate_Constant_Value;
 
    ---------------------------------
    -- Translate_Container_Package --
@@ -412,8 +408,7 @@ package body Gnat2Why.Decls is
 
             if Ekind (E) in Subprogram_Kind then
                declare
-                  File : Why_File :=
-                    Why_Files (Dispatch_Entity (E, Is_Completion => True));
+                  File : Why_File := Why_Files (Dispatch_Entity (E));
                begin
                   Open_Theory (File,
                                Theory_Name & To_String (WNE_Expr_Fun_Closure),

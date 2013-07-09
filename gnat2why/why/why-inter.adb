@@ -42,7 +42,7 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 
-with Gnat2Why.Decls;      use Gnat2Why.Decls;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Inter is
 
@@ -264,78 +264,91 @@ package body Why.Inter is
    ---------------------
 
    function Get_Completions
-     (Name : String) return Why_Completions
+     (Name       : String;
+      Up_To_Kind : Why_File_Enum) return Why_Completions
    is
       function Num_Compl (L : Why_File_Completion_Lists.List) return Natural;
       --  Find the number of completions from L
 
-      procedure Get_Compl (L           :        Why_File_Completion_Lists.List;
-                           Position    : in out Natural;
-                           Completions : in out Why_Completions);
+      procedure Get_Compl
+        (L           :        Why_File_Completion_Lists.List;
+         Position    : in out Natural;
+         Completions : in out Why_Completions);
       --  Find all the completions from L
+
+      ---------------
+      -- Num_Compl --
+      ---------------
 
       function Num_Compl (L : Why_File_Completion_Lists.List) return Natural is
          Count : Natural := 0;
-         Current : Why_File_Completion_Lists.Cursor := L.First;
       begin
-         while Why_File_Completion_Lists.Has_Element (Current) loop
-            Count    := Count + 1;
-            if Why_File_Completion.Contains
-              (Why_File_Completion_Lists.Element (Current).Name) then
-               Count := Count +
-                 Num_Compl
-                   (Why_File_Completion.Element
-                        (Why_File_Completion_Lists.Element (Current).Name));
+         for Compl of L loop
+            if Compl.Kind <= Up_To_Kind then
+               Count := Count + 1;
+
+               if Why_File_Completion.Contains (Compl.Name) then
+                  Count := Count +
+                    Num_Compl (Why_File_Completion.Element (Compl.Name));
+               end if;
             end if;
-            Why_File_Completion_Lists.Next (Current);
          end loop;
+
          return Count;
       end Num_Compl;
 
-      procedure Get_Compl (L           :        Why_File_Completion_Lists.List;
-                           Position    : in out Natural;
-                           Completions : in out Why_Completions) is
+      ---------------
+      -- Get_Compl --
+      ---------------
 
-         Current : Why_File_Completion_Lists.Cursor := L.First;
+      procedure Get_Compl
+        (L           :        Why_File_Completion_Lists.List;
+         Position    : in out Natural;
+         Completions : in out Why_Completions) is
       begin
-         while Why_File_Completion_Lists.Has_Element (Current) loop
-            Completions (Position) :=
-              Why_File_Completion_Lists.Element (Current);
-            Position := Position + 1;
-            if Why_File_Completion.Contains
-              (Why_File_Completion_Lists.Element (Current).Name) then
-               Get_Compl
-                 (Why_File_Completion.Element
-                    (Why_File_Completion_Lists.Element (Current).Name),
-                  Position, Completions);
+         for Compl of L loop
+            if Compl.Kind <= Up_To_Kind then
+               Completions (Position) := Compl;
+               Position := Position + 1;
+               if Why_File_Completion.Contains (Compl.Name) then
+                  Get_Compl (Why_File_Completion.Element (Compl.Name),
+                             Position, Completions);
+               end if;
             end if;
-            Why_File_Completion_Lists.Next (Current);
          end loop;
       end Get_Compl;
 
       Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
       Count : Natural;
+      Direct_Completions : Why_File_Completion_Lists.List;
+
+   --  Start of Get_Completions
+
    begin
-      --  Find the number of completions for Name
-
-      Count := 0;
       if Why_File_Completion.Contains (Unb_Name) then
-         Count := Num_Compl (Why_File_Completion.Element (Unb_Name));
+         Direct_Completions := Why_File_Completion.Element (Unb_Name);
+
+         --  Find the number of completions for Name
+
+         Count := Num_Compl (Direct_Completions);
+
+         --  Return all completions
+
+         declare
+            Completions : Why_Completions (1 .. Count);
+            Position    : Positive := 1;
+         begin
+            Get_Compl (Direct_Completions, Position, Completions);
+            return Completions;
+         end;
+
+      else
+         declare
+            Completions : Why_Completions (1 .. 0);
+         begin
+            return Completions;
+         end;
       end if;
-
-      --  Return all completions
-
-      declare
-         Completions : Why_Completions (1 .. Count);
-         Position : Positive := 1;
-      begin
-         if Why_File_Completion.Contains (Unb_Name) then
-            Get_Compl (Why_File_Completion.Element (Unb_Name), Position,
-                       Completions);
-         end if;
-
-         return Completions;
-      end;
    end Get_Completions;
 
    ------------------------
@@ -430,7 +443,7 @@ package body Why.Inter is
       if With_Completion then
          declare
             Completions  : constant Why_Completions :=
-              Get_Completions (Raw_Name);
+              Get_Completions (Raw_Name, Up_To_Kind => P.Kind);
          begin
             for J in Completions'Range loop
                declare
@@ -651,19 +664,32 @@ package body Why.Inter is
    -- Dispatch_Entity --
    ---------------------
 
-   function Dispatch_Entity
-     (E             : Entity_Id;
-      Is_Completion : Boolean := False) return Why_File_Enum is
+   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum is
    begin
       if Nkind (E) = N_String_Literal
         or else Nkind (E) = N_Aggregate
         or else Nkind (E) = N_Slice
       then
-         if In_Main_Unit_Spec (E) then
-            return WF_Context_In_Spec;
+         --  Theories which depend on variables are defined in context files
+
+         if Expression_Depends_On_Variables (E) then
+            if In_Main_Unit_Spec (E) then
+               return WF_Context_In_Spec;
+            else
+               pragma Assert (In_Main_Unit_Body (E));
+               return WF_Context_In_Body;
+            end if;
+
+         --  Theories which do not depend on variables are defined in type
+         --  files.
+
          else
-            pragma Assert (In_Main_Unit_Body (E));
-            return WF_Context_In_Body;
+            if In_Main_Unit_Spec (E) then
+               return WF_Types_In_Spec;
+            else
+               pragma Assert (In_Main_Unit_Body (E));
+               return WF_Types_In_Body;
+            end if;
          end if;
       end if;
 
@@ -681,15 +707,11 @@ package body Why.Inter is
 
                --  If the subprogram reads or writes a variables in an outter
                --  scope, it cannot be declared in the "type" Why file, as it
-               --  needs visibility over the "variable" Why file. As read
-               --  effects for contracts are currently not computed, consider
-               --  that there is a potential read if the subprogram has a
-               --  contract. To be modified. ???
+               --  needs visibility over the "variable" Why file.
 
                Has_Effects : constant Boolean :=
                  Has_Global_Reads (Decl_E)
-                   or else Has_Global_Writes (Decl_E)
-                   or else Present (Pre_Post_Conditions (Contract (Decl_E)));
+                   or else Has_Global_Writes (Decl_E);
             begin
                --  Subprograms without read/write global effects are declared
                --  in the "type" Why files instead of the "context" Why files,
@@ -698,13 +720,13 @@ package body Why.Inter is
                --  containers).
 
                if In_Some_Unit_Body (Parent (E)) then
-                  if Has_Effects or Is_Completion then
+                  if Has_Effects then
                      return WF_Context_In_Body;
                   else
                      return WF_Types_In_Body;
                   end if;
                else
-                  if Has_Effects or Is_Completion then
+                  if Has_Effects then
                      return WF_Context_In_Spec;
                   else
                      return WF_Types_In_Spec;
@@ -713,15 +735,26 @@ package body Why.Inter is
             end;
 
          when Object_Kind =>
-            if not Is_Mutable_In_Why (E)
-              or else (Ekind (E) = E_Discriminant
-                         and then Is_Formal_Container_Capacity (E))
+
+            --  Constants are defined in type files. Their defining axiom, if
+            --  any, is defined as a completion in the type or context file.
+
+            if not Is_Mutable_In_Why (E) then
+               if In_Main_Unit_Body (E) then
+                  return WF_Types_In_Body;
+               else
+                  return WF_Types_In_Spec;
+               end if;
+
+            elsif Ekind (E) = E_Discriminant
+              and then Is_Formal_Container_Capacity (E)
             then
                if In_Main_Unit_Body (E) then
                   return WF_Context_In_Body;
                else
                   return WF_Context_In_Spec;
                end if;
+
             else
                return WF_Variables;
             end if;
@@ -752,6 +785,48 @@ package body Why.Inter is
             raise Program_Error;
       end case;
    end Dispatch_Entity;
+
+   --------------------------------
+   -- Dispatch_Entity_Completion --
+   --------------------------------
+
+   function Dispatch_Entity_Completion (E : Entity_Id) return Why_File_Enum is
+   begin
+      case Ekind (E) is
+         when Object_Kind =>
+            if not Is_Mutable_In_Why (E) then
+
+               --  Theories which depend on variables are defined in context
+               --  files.
+
+               if Expression_Depends_On_Variables
+                 (Expression (Parent (Unique_Entity (E))))
+               then
+                  if In_Main_Unit_Body (E) then
+                     return WF_Context_In_Body;
+                  else
+                     return WF_Context_In_Spec;
+                  end if;
+
+               --  Theories which do not depend on variables are defined in
+               --  type files.
+
+               else
+                  if In_Main_Unit_Body (E) then
+                     return WF_Types_In_Body;
+                  else
+                     return WF_Types_In_Spec;
+                  end if;
+               end if;
+
+            else
+               return Dispatch_Entity (E);
+            end if;
+
+         when others =>
+            return Dispatch_Entity (E);
+      end case;
+   end Dispatch_Entity_Completion;
 
    --------
    -- Eq --
@@ -1022,8 +1097,7 @@ package body Why.Inter is
    -- Init_Why_Files --
    --------------------
 
-   procedure Init_Why_Files (Unit : Node_Id)
-   is
+   procedure Init_Why_Files (Unit : Node_Id) is
       Spec_Prefix : constant String := Spec_File_Name_Without_Suffix (Unit);
       Body_Prefix : constant String := Body_File_Name_Without_Suffix (Unit);
    begin
@@ -1036,18 +1110,20 @@ package body Why.Inter is
 
       for Kind in WF_Types_In_Spec .. WF_Context_In_Body loop
          Why_Files (Kind) :=
-           Make_Empty_Why_File (Spec_Prefix & Why_File_Suffix (Kind));
+           Make_Empty_Why_File (Name => Spec_Prefix & Why_File_Suffix (Kind),
+                                Kind => Kind);
       end loop;
       Why_Files (WF_Main) :=
-        Make_Empty_Why_File (Body_Prefix & Why_File_Suffix (WF_Main));
+        Make_Empty_Why_File (Name => Body_Prefix & Why_File_Suffix (WF_Main),
+                             Kind => WF_Main);
    end Init_Why_Files;
 
-   procedure Init_Why_Files (Prefix : String)
-   is
+   procedure Init_Why_Files (Prefix : String) is
    begin
       for Kind in Why_File_Enum loop
          Why_Files (Kind) :=
-           Make_Empty_Why_File (Prefix & Why_File_Suffix (Kind));
+           Make_Empty_Why_File (Name => Prefix & Why_File_Suffix (Kind),
+                                Kind => Kind);
       end loop;
    end Init_Why_Files;
 
@@ -1084,12 +1160,14 @@ package body Why.Inter is
    -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_File (S : String) return Why_File is
+   function Make_Empty_Why_File
+     (Name : String;
+      Kind : Why_File_Enum) return Why_File is
    begin
-      return
-        (Name       => new String'(S),
-         File       => New_File,
-         Cur_Theory => Why_Empty);
+      return Why_File'(Name       => new String'(Name),
+                       File       => New_File,
+                       Kind       => Kind,
+                       Cur_Theory => Why_Empty);
    end Make_Empty_Why_File;
 
    ------------------

@@ -85,23 +85,18 @@ package Gnat2Why.Subprograms is
    --  E is a E_Function or E_Procedure.
 
    procedure Complete_Subprogram_Spec_Translation
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean);
+     (File : in out Why_File;
+      E    : Entity_Id);
    --  Generates a theory that completes the base theory for a subprogram
-   --  declaration. In_Body is True if the subprogram is declared in the
-   --  body of the current unit.
+   --  declaration.
 
    procedure Translate_Expression_Function_Body
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean);
+     (File : in out Why_File;
+      E    : Entity_Id);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
    --  = E". The axiom is only generated if the body of the expression function
-   --  only contains aggregates that are fully initialized. In_Body is True
-   --  if the body of the expression function is defined in the body of the
-   --  current unit. If subprogram E's body is not in SPARK, generate an empty
-   --  module.
+   --  only contains aggregates that are fully initialized. If subprogram E's
+   --  body is not in SPARK, generate an empty module.
 
 end Gnat2Why.Subprograms;

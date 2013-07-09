@@ -97,6 +97,9 @@ package SPARK_Util is
    function Is_Full_View (E : Entity_Id) return Boolean;
    --  Return whether E is the full view of another entity
 
+   function Is_Partial_View (E : Entity_Id) return Boolean;
+   --  Return whether E is the partial view of another entity
+
    function Is_Formal_Container_Capacity (E : Entity_Id) return Boolean
    with
      Pre => Ekind (E) = E_Discriminant;

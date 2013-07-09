@@ -25,6 +25,8 @@
 
 --  Utilities for the transformation phase
 
+with Types;            use Types;
+
 with Why.Atree.Tables; use Why.Atree.Tables;
 with Why.Ids;          use Why.Ids;
 with Why.Inter;        use Why.Inter;
@@ -88,5 +90,20 @@ package Gnat2Why.Util is
      (Vars : Node_Lists.List;
       Prog : W_Prog_Id) return W_Prog_Id;
    --  Return a program which binds every variable in Vars to 0 in Prog
+
+   -------------
+   -- Queries --
+   -------------
+
+   function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
+   --  Returns whether the expression E depends on a variable, either directly,
+   --  or through the read effects of a function call. This is used to decide
+   --  in which output Why file the axiom for the corresponding
+   --  constant (for an initialization expression) or the
+   --  corresponding aggregate/slice/string literal should be declared.
+
+   function Is_Mutable_In_Why (N : Node_Id) return Boolean;
+   --  Given an N_Defining_Identifier, decide if the variable is mutable in
+   --  the Why translation
 
 end Gnat2Why.Util;

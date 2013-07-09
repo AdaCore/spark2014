@@ -139,9 +139,8 @@ package body Gnat2Why.Subprograms is
    ------------------------------------------
 
    procedure Complete_Subprogram_Spec_Translation
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean)
+     (File : in out Why_File;
+      E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
@@ -166,12 +165,7 @@ package body Gnat2Why.Subprograms is
                     Filter_Entity  => Empty,
                     Defined_Entity => E,
                     Do_Closure     => True);
-
-      if In_Body then
-         Add_Completion (Base_Name, Name, WF_Context_In_Body);
-      else
-         Add_Completion (Base_Name, Name, WF_Context_In_Spec);
-      end if;
+      Add_Completion (Base_Name, Name, File.Kind);
    end Complete_Subprogram_Spec_Translation;
 
    ------------------
@@ -1120,9 +1114,8 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------
 
    procedure Translate_Expression_Function_Body
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean)
+     (File : in out Why_File;
+      E    : Entity_Id)
    is
       Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
       pragma Assert (Present (Expr_Fun_N));
@@ -1250,12 +1243,7 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Filter_Entity  => Empty,
                     Defined_Entity => E);
-
-      if In_Body then
-         Add_Completion (Base_Name, Name, WF_Context_In_Body);
-      else
-         Add_Completion (Base_Name, Name, WF_Context_In_Spec);
-      end if;
+      Add_Completion (Base_Name, Name, File.Kind);
    end Translate_Expression_Function_Body;
 
    -------------------------------

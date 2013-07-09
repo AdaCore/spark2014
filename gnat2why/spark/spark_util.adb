@@ -574,6 +574,13 @@ package body SPARK_Util is
         and then Name = Lowercase_Capacity_Name;
    end Is_Formal_Container_Capacity;
 
+   ---------------------
+   -- Is_Partial_View --
+   ---------------------
+
+   function Is_Partial_View (E : Entity_Id) return Boolean is
+      (Present (Full_View (E)));
+
    ---------------
    -- Is_Pragma --
    ---------------

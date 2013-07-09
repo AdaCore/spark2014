@@ -28,10 +28,6 @@ with Why.Inter; use Why.Inter;
 
 package Gnat2Why.Decls is
 
-   function Is_Mutable_In_Why (N : Node_Id) return Boolean;
-   --  Given an N_Defining_Identifier, decide if the variable is mutable in
-   --  the Why translation
-
    function Use_Why_Base_Type (E : Entity_Id) return Boolean;
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type
@@ -43,17 +39,23 @@ package Gnat2Why.Decls is
    --  declaration
 
    procedure Translate_Constant
-     (File   : in out Why_File;
-      E      : Entity_Id);
-   --  Called for IN parameters, named numbers and constant objects
+     (File : in out Why_File;
+      E    : Entity_Id);
+   --  Generate a function declaration for IN parameters, named numbers and
+   --  constant objects.
+
+   procedure Translate_Constant_Value
+     (File : in out Why_File;
+      E    : Entity_Id);
+   --  Possibly generate an axiom to define the value of the function
+   --  previously declared by a call to Translate_Constant, for IN
+   --  parameters, named numbers and constant objects.
 
    procedure Complete_Constant_Translation
-     (File    : in out Why_File;
-      E       : Entity_Id;
-      In_Body : Boolean);
+     (File : in out Why_File;
+      E    : Entity_Id);
    --  Generates a theory that completes the base theory for a constant
-   --  declaration. In_Body is True if the subprogram is declared in the
-   --  body of the current unit.
+   --  declaration.
 
    procedure Translate_Container_Package (Package_Entity : Entity_Id);
    --  Translate a package with a Why3 axiomatization
