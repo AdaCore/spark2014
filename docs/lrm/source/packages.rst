@@ -1736,50 +1736,51 @@ Refined Precondition Aspect
 .. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the
      |SPARK| Toolset.  Its usefulness and exact semantics are still to be
      determined.
+     
+.. Text commented out until decision on Refined_Pre is finalised.
+   A subprogram declared in the visible part of a package may have a Refined
+   Precondition aspect applied to its body or body stub. The Refined
+   Precondition may be used to restate a precondition given on the declaration
+   of a subprogram in terms of the full view of a private type or the
+   ``constituents`` of a refined ``state_name``.
+   
+   The Refined Precondition aspect is introduced by an ``aspect_specification``
+   where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition``
+   shall be a Boolean ``expression``.
 
-A subprogram declared in the visible part of a package may have a Refined
-Precondition aspect applied to its body or body stub. The Refined Precondition
-may be used to restate a precondition given on the declaration of a subprogram
-in terms of the full view of a private type or the ``constituents`` of a refined
-``state_name``.
+   .. centered:: **Legality Rules**
 
-The Refined Precondition aspect is introduced by an ``aspect_specification``
-where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition`` shall
-be a Boolean ``expression``.
+   #. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
+      the body (if no stub is present) of subprogram if the subprogram is declared
+      in the visible part of a package, its abstract view. If the subprogram
+      declaration in the visible part has no explicit precondition, a precondition
+      of True is assumed for its abstract view.
 
-.. centered:: **Legality Rules**
+   #. At the point of call of a subprogram, both its precondition and the
+      expression of its Refined_Pre aspect shall evaluate to True.
 
-#. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
-   the body (if no stub is present) of subprogram if the subprogram is declared
-   in the visible part of a package, its abstract view. If the subprogram
-   declaration in the visible part has no explicit precondition, a precondition
-   of True is assumed for its abstract view.
+   #. The same legality rules apply to a Refined Precondition as for
+      a precondition.
 
-#. At the point of call of a subprogram, both its precondition and the
-   expression of its Refined_Pre aspect shall evaluate to True.
+   .. centered:: **Static Semantics**
 
-#. The same legality rules apply to a Refined Precondition as for
-   a precondition.
+   #. A Refined Precondition of a subprogram defines a *refinement*
+      of the precondition of the subprogram.
 
-.. centered:: **Static Semantics**
+   #. The static semantics are otherwise as for a precondition.
 
-#. A Refined Precondition of a subprogram defines a *refinement*
-   of the precondition of the subprogram.
+   .. centered:: **Dynamic Semantics**
 
-#. The static semantics are otherwise as for a precondition.
+   #. When a subprogram with a Refined Precondition is called; first
+      the precondition is evaluated as defined in the Ada RM. If the
+      precondition evaluates to True, then the Refined Precondition
+      is evaluated. If either precondition or Refined Precondition
+      do not evaluate to True an exception is raised.
 
-.. centered:: **Dynamic Semantics**
+   .. centered:: **Verification Rules**
 
-#. When a subprogram with a Refined Precondition is called; first
-   the precondition is evaluated as defined in the Ada RM. If the
-   precondition evaluates to True, then the Refined Precondition
-   is evaluated. If either precondition or Refined Precondition
-   do not evaluate to True an exception is raised.
-
-.. centered:: **Verification Rules**
-
-#. The precondition of the abstract view of the subprogram shall imply its
-   Refined_Precondition.
+   #. The precondition of the abstract view of the subprogram shall imply its
+      Refined_Precondition.
 
 
 Refined Postcondition Aspect
