@@ -116,8 +116,6 @@ package Configuration is
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
 
-   GNAT2Why_Var : constant String := "GNAT2WHY_ARGS";
-
    --  Here we set the various paths that are needed during a run of
    --  gnatprove. The hierarchy looks as follows:
    --  prefix

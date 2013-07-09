@@ -23,14 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Environment_Variables;
+with Ada.Text_IO;
 
-with Output; use Output;
-with Types;  use Types;
+with Output;       use Output;
+with Types;        use Types;
+
+with String_Utils; use String_Utils;
 
 package body Gnat2Why_Args is
 
    Env_Variable_Name : constant String := "GNAT2WHY_ARGS";
+
+   Standard_Mode_Name      : constant String := "standard_mode";
+   Check_Mode_Name         : constant String := "check_mode";
+   Flow_Analysis_Mode_Name : constant String := "flow_analysis_mode";
+   Flow_Dump_Graphs_Name   : constant String := "flow_dump_graphs";
+   Analyze_File_Name       : constant String := "analyze_file";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -43,7 +52,7 @@ package body Gnat2Why_Args is
 
    procedure Init is
       Args_String : constant String :=
-        Value (Env_Variable_Name, Default => "");
+        Ada.Environment_Variables.Value (Env_Variable_Name, Default => "");
       Start : Integer := Args_String'First;
    begin
       while Start in Args_String'Range loop
@@ -85,14 +94,23 @@ package body Gnat2Why_Args is
 
    procedure Interpret_Token (Token : String) is
    begin
-      if Token = "standard_mode" then
+      if Token = Standard_Mode_Name then
          Standard_Mode := True;
-      elsif Token = "check_mode" then
+      elsif Token = Check_Mode_Name then
          Check_Mode := True;
-      elsif Token = "flow_analysis_mode" then
+      elsif Token = Flow_Analysis_Mode_Name then
          Flow_Analysis_Mode := True;
-      elsif Token = "flow_dump_graphs" then
+      elsif Token = Flow_Dump_Graphs_Name then
          Flow_Dump_Graphs := True;
+      elsif Starts_With (Token, Analyze_File_Name) and then
+        Token (Token'First + Analyze_File_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Analyze_File_Name'Length + 1;
+         begin
+            Analyze_File := To_Unbounded_String (Token (Start .. Token'Last));
+         end;
       else
 
          --  We play it safe and quit if there is an unrecognized option
@@ -107,20 +125,52 @@ package body Gnat2Why_Args is
    -- Set --
    ---------
 
-   procedure Set is
+   procedure Set (Debug : Boolean) is
+      Val : Unbounded_String := Null_Unbounded_String;
    begin
-
-      --  ??? TODO
-
-      null;
+      if Standard_Mode then
+         Append (Val, ' ');
+         Append (Val, Standard_Mode_Name);
+      end if;
+      if Check_Mode then
+         Append (Val, ' ');
+         Append (Val, Check_Mode_Name);
+      end if;
+      if Flow_Analysis_Mode then
+         Append (Val, ' ');
+         Append (Val, Flow_Analysis_Mode_Name);
+      end if;
+      if Flow_Dump_Graphs then
+         Append (Val, ' ');
+         Append (Val, Flow_Dump_Graphs_Name);
+      end if;
+      if Analyze_File /= Null_Unbounded_String then
+         Append (Val, ' ');
+         Append (Val, Analyze_File_Name);
+         Append (Val, '=');
+         Append (Val, Analyze_File);
+      end if;
+      if Val /= "" then
+         declare
+            Val_Str : constant String := To_String (Val);
+         begin
+            if Debug then
+               Ada.Text_IO.Put_Line ("Setting " & Env_Variable_Name &
+                                     " to """ & Val_Str & """");
+            end if;
+            Ada.Environment_Variables.Set (Name  => Env_Variable_Name,
+                                           Value => Val_Str);
+         end;
+      end if;
    end Set;
+
+   -----------
+   -- Clear --
+   -----------
 
    procedure Clear is
    begin
-
-      --  ??? TODO
-
-      null;
+      Ada.Environment_Variables.Clear (Env_Variable_Name);
    end Clear;
 
 end Gnat2Why_Args;

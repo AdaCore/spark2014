@@ -31,9 +31,16 @@ package Gnat2Why_Args is
    --  not relevant to the GNAT frontend.
 
    --  Today, these options are read from the environment variable
-   --  GNAT2WHY_ARGS. This variable contains a list of tokens. Each token has
-   --  the same name in lower case as the corresponding variable in this
-   --  package.
+   --  GNAT2WHY_ARGS. This variable contains a list of arguments separated
+   --  by spaces. Each argument is of the form
+   --    name=value
+   --  where neither "name" nor "value" can contain spaces. The "=value"
+   --  part is optional. Each "name" corresponds to a global variable in
+   --  this package (lower case).
+
+   --  For boolean variables, the presence of the name means "true", absence
+   --  means "false". For other variables, the value is given after the "="
+   --  sign.
 
    --  Reading in the environment variable is done by a call to [Init].
 
@@ -75,7 +82,7 @@ package Gnat2Why_Args is
    --  Read the environment variable GNAT2WHY_Args and set the corresponding
    --  options.
 
-   procedure Set;
+   procedure Set (Debug : Boolean);
    --  Read the above variables and set the environment variable
 
    procedure Clear;

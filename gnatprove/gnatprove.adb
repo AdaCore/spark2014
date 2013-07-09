@@ -39,6 +39,8 @@ with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with String_Utils;      use String_Utils;
 with GNAT.Strings;      use GNAT.Strings;
 
+with Gnat2Why_Args;
+
 procedure Gnatprove is
 
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why, GS_Why);
@@ -107,8 +109,6 @@ procedure Gnatprove is
    procedure Set_Gnat2why_Env_Var;
    --  Set the environment variable which passes some options to gnat2why
 
-   procedure Unset_Gnat2why_Env_Var;
-   --  unset the environment variable for gnat2why
    -------------------
    -- Call_Gprbuild --
    -------------------
@@ -555,34 +555,20 @@ procedure Gnatprove is
    -- Set_Gnat2why_Env_Var --
    --------------------------
 
-   procedure Set_Gnat2why_Env_Var
-   is
-      use Ada.Strings.Unbounded;
-      Val : Unbounded_String := Null_Unbounded_String;
+   procedure Set_Gnat2why_Env_Var is
    begin
       if Debug then
-         Append (Val, " flow_dump_graphs");
+         Gnat2Why_Args.Flow_Dump_Graphs := True;
       end if;
       case MMode is
          when GPM_Check =>
-            Append (Val, " check_mode");
+            Gnat2Why_Args.Check_Mode := True;
          when GPM_Flow | GPM_All =>
-            Append (Val, " flow_analysis_mode");
+            Gnat2Why_Args.Flow_Analysis_Mode := True;
          when GPM_Prove =>
             null;
       end case;
-      if Val /= "" then
-         declare
-            Val_Str : constant String := To_String (Val);
-         begin
-            if Debug then
-               Ada.Text_IO.Put_Line ("Setting " & GNAT2Why_Var & " to """ &
-                                     Val_Str & """");
-            end if;
-            Ada.Environment_Variables.Set (Name  => GNAT2Why_Var,
-                                           Value => Val_Str);
-         end;
-      end if;
+      Gnat2Why_Args.Set (Debug);
    end Set_Gnat2why_Env_Var;
 
    ------------------
@@ -645,17 +631,8 @@ procedure Gnatprove is
                      Parallel,
                      Args,
                      Status);
-      Unset_Gnat2why_Env_Var;
+      Gnat2Why_Args.Clear;
    end Translate_To_Why;
-
-   ----------------------------
-   -- Unset_Gnat2why_Env_Var --
-   ----------------------------
-
-   procedure Unset_Gnat2why_Env_Var is
-   begin
-      Ada.Environment_Variables.Clear (GNAT2Why_Var);
-   end Unset_Gnat2why_Env_Var;
 
    Tree      : Project_Tree;
    --  GNAT project tree
