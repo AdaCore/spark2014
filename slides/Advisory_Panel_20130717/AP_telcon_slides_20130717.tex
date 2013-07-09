@@ -1,0 +1,194 @@
+\documentclass{beamer}
+\input{praxis-beamer}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+
+\title{SPARK 2014 Advisory Panel}
+\subtitle{Teleconference 2}
+
+% Inspired by http://tex.stackexchange.com/questions/15237
+\makeatletter
+\newenvironment{btHighlight}[1][]
+{\begingroup\tikzset{bt@Highlight@par/.style={#1}}\begin{lrbox}{\@tempboxa}}
+{\end{lrbox}\bt@HL@box[bt@Highlight@par]{\@tempboxa}\endgroup}
+
+\newcommand\btHL[1][]{%
+  \begin{btHighlight}[#1]\bgroup\aftergroup\bt@HL@endenv%
+}
+\def\bt@HL@endenv{%
+  \end{btHighlight}%
+  \egroup
+}
+\newcommand{\bt@HL@box}[2][]{%
+  \tikz[remember picture]{%
+    \pgfpathrectangle{\pgfpoint{1pt}{0pt}}{\pgfpoint{\wd #2}{\ht #2}}%
+    \pgfusepath{use as bounding box}%
+    \node[anchor=base west,%
+          outer sep=0pt,%
+          inner xsep=1pt,%
+          inner ysep=0pt,%
+          rounded corners=2pt,%
+          minimum height=\ht\strutbox+1pt,%
+          #1]%
+          {%
+            \raisebox{1pt}{\strut}\strut\usebox{#2}%
+          };%
+  }%
+}
+\makeatother
+
+\date{July 17, 2013}
+\begin{document}
+
+\begin{altrantitle}
+\titleprismlabela{SPARK 2014}
+\titleprismlabelb{Safe and Secure programming}
+\titleprismlabelc{
+  \resizebox{4cm}{!}{
+    \includegraphics{partnership}
+  }
+}
+\end{altrantitle}
+
+\begin{frame}{Introduction}
+
+  \begin{itemize}
+
+  \item Introductions
+  \item Round-up of LRM review comments
+  \item Update on Language Issues: 
+    \begin{itemize}
+    \item Refined\_Post
+    \item Refined\_Pre
+    \item Externals
+    \end{itemize}
+  \item Early Preview Release:
+    \begin{itemize}
+    \item Access
+    \item Demo
+    \end{itemize}
+  \item Conclusion
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{LRM Review Comments}
+
+  \begin{itemize}
+
+  \item \emph{We haven't received any comments yet so this section may be blank!}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Refined\_Post}
+
+  \begin{itemize}
+  \item \emph{Not much to say here - we are keeping it}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Refined\_Pre}
+
+  \begin{itemize}
+  \item Refined\_Pre is being postponed until after Release 1
+  \item \emph{explain rationale - it allows us time to fully define the semantics and in the meantime there are workarounds}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Refined\_Pre - Example 1}
+
+  \begin{itemize}
+  \item \emph{include simple example of work-around}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Refined\_Pre - Example 2}
+
+  \begin{itemize}
+  \item \emph{include more complex example of work around}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Refined\_Pre - Feedback}
+
+  \begin{itemize}
+  \item \emph{invite feedback on the impact of no Refined\_Pre - we will email before the call to ask people to think about how they use refinement. This will allow is to gauge the priority for implementation.}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Externals - Overview}
+
+  \begin{itemize}
+  \item \emph{Overview of the concepts being modelled with Externals}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Externals - Language Definition}
+
+  \begin{itemize}
+  \item \emph{Outline the syntax - Async\_Readers, Async\_Writers etc.}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Externals - Phasing}
+
+  \begin{itemize}
+  \item \emph{Describe the proposed phased introduction as discussed in the LRM call (we need to validate implementation timescales first)}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Externals - Feedback}
+
+  \begin{itemize}
+  \item \emph{invite feedback on the proposed phasing of support for Externals}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Early Preview Release}
+
+  \begin{itemize}
+  \item \emph{reminder of how to request/access wavefronts}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Demo}
+
+  \begin{itemize}
+  \item \emph{linear search example/demo as written by Yannick for Hi-Lite}
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Conclusion}
+
+  \begin{itemize}
+
+  \item Key dates: 
+    \begin{itemize}
+    \item News email 4 - \emph{date}
+    \item Teleconference 3 - \emph{date}
+    \item Preview Release Tutorial - October/November 2013
+    \end{itemize}
+
+  \item AOB
+
+  \end{itemize}
+
+\end{frame}
+
+\end{document}
+
