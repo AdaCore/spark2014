@@ -223,15 +223,8 @@ package body Why.Gen.Expr is
          return +Ada_To_Why.Element (Cur);
       else
          declare
-            Loc  : constant Source_Ptr :=
-              Translate_Location (Sloc (Uniq));
-            File : constant String := File_Name (Loc);
-            Line : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Loc);
-            Result : constant String :=
-              "GP_Subp:" & File & ":" & Int_Image (Integer (Line));
             Res_Id : constant W_Identifier_Id :=
-              New_Identifier (Name => Result);
+              New_Identifier (Name => Subp_Location (Uniq));
          begin
             Subp_Sloc_Map.Insert (Uniq, +Res_Id);
             return Res_Id;

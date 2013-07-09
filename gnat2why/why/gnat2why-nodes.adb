@@ -881,6 +881,18 @@ package body Gnat2Why.Nodes is
       end if;
    end Subprogram_Full_Source_Name;
 
+   function Subp_Location (E : Entity_Id) return String
+   is
+      Loc  : constant Source_Ptr :=
+        Translate_Location (Sloc (E));
+      File : constant String := File_Name (Loc);
+      Line : constant Physical_Line_Number :=
+        Get_Physical_Line_Number (Loc);
+   begin
+      return
+        "GP_Subp:" & File & ":" & Int_Image (Integer (Line));
+   end Subp_Location;
+
    ------------------
    -- Type_Of_Node --
    ------------------

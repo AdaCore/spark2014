@@ -199,6 +199,13 @@ package Gnat2Why.Nodes is
    --  check whether the E_Loop_Parameter in argument comes from a quantifier
    --  or not
 
+   function Subp_Location (E : Entity_Id) return String
+   with Pre => (Ekind (E) in Subprogram_Kind);
+   --  for a given subprogram entity, compute the string that identifies this
+   --  subprogram. The string will be of the form foo.ads:12, where this is the
+   --  file and line where this subprogram is declared.
+   --  This is used e.g. for the --limit-subp option of gnatprove.
+
    function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
    with Pre => (Nkind (N) = N_Pragma);
 
