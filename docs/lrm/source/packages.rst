@@ -799,8 +799,8 @@ subprogram in the package body whose visible part declares its abstract view.
 In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
 refinements of state abstractions declared by the package. Refined_Global,
-Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express the contracts of a refined
-view of a subprogram.
+Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express 
+the contracts of a refined view of a subprogram.
 
 .. _refined_state_aspect:
 
@@ -1735,7 +1735,7 @@ as it is used purely for static analysis purposes and is not executed.
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: The Refined_Pre aspect will not be implemented in Realease 1 of the 
+.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the 
      |SPARK| Toolset.  Its usefulness and exact semantics are still to be 
      determined.
      
