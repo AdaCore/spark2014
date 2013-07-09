@@ -33,6 +33,143 @@ package body AuditLog
 is
 
    ------------------------------------------------------------------
+   -- Types
+   --
+   ------------------------------------------------------------------
+
+   MaxNumberLogFiles : constant := 2**4 + 1;  -- 17
+   MaxNumberArchivableFiles : constant := 4;
+
+   type LogFileCountT is range 0..MaxNumberLogFiles;
+   subtype LogFileIndexT is LogFileCountT range 1..MaxNumberLogFiles;
+
+   type FileStatusT is (Free, Archived, Used);
+
+   type LogFilesT is array (LogFileIndexT) of File.T;
+
+   type LogFilesStatusT is array (LogFileIndexT) of FileStatusT;
+
+   subtype FileNameI is Positive range 1..16;
+   subtype FileNameT is String(FileNameI);
+
+   type LogFileNamesT is array (LogFileIndexT) of FileNameT;
+
+   type LogFileListEntriesT is array (LogFileIndexT) of LogFileIndexT;
+
+   ----------------------------------------------------------------
+   -- LogFileListT
+   --
+   -- Description:
+   --   This represents a list.
+   --      List - is a cyclic buffer that can hold all the files
+   --      Head - is the current head of the list in the cyclic buffer
+   --      LastI - is the last index of the list in the cyclic buffer
+   --      Length - is the length of the list
+   --   The values of Head and LastI are not significant when Length=0.
+   -----------------------------------------------------------------
+
+   type LogFileListT is record
+       List : LogFileListEntriesT;
+       Head : LogFileIndexT;
+       LastI : LogFileIndexT;
+       Length : LogFileCountT;
+   end record;
+
+   EmptyList : constant LogFileListT :=
+     LogFileListT'(List => LogFileListEntriesT'
+                               (others => LogFileIndexT'First),
+                   Head => LogFileIndexT'Last,
+                   LastI => LogFileIndexT'First,
+                   Length => 0);
+
+
+   subtype LogDirStringI is Positive range 1..3;
+   subtype LogDirStringT is String(LogDirStringI);
+
+   LogDirectory : constant LogDirStringT := "Log";
+
+   subtype ArchiveFileStringI is Positive range 1..17;
+   subtype ArchiveFileStringT is String(ArchiveFileStringI);
+
+   ArchiveFileName : constant ArchiveFileStringT := "./Log/archive.log";
+   --------------------------------------------------------------
+   --  ElementText
+   --
+   --  Description:
+   --     Text representation of Element name
+   --
+   --------------------------------------------------------------
+   subtype ElementTextI is Positive range 1..20;
+   subtype ElementTextT is String(ElementTextI);
+
+   NoElement : constant ElementTextT := ElementTextT'(others => ' ');
+
+   ------------------------------------------------------------------
+   -- MaxLogFileEntries
+   --
+   --  Description:
+   --     The max number of entries in a file.
+   --     Note that it is a requirement of the Formal Design that
+   --        MaxLogFileEntries * (NumberLogFiles - 1)
+   --                                * AuditTypes.SizeAuditElement
+   --             >= AuditTypes.MaxSupportedLogSize
+   --
+   -- Implementation Notes:
+   --    None.
+   ------------------------------------------------------------------
+   MaxLogFileEntries : constant
+     := AuditTypes.MaxSupportedLogEntries/(MaxNumberLogFiles - 1);
+   MaxLogEntries     : constant := MaxLogFileEntries * MaxNumberLogFiles;
+
+   type LogEntryCountT  is range 0..MaxLogEntries;
+   subtype FileEntryCountT is LogEntryCountT range 0..MaxLogFileEntries;
+
+   type LogFileEntryT is array (LogFileIndexT) of FileEntryCountT;
+
+
+   ------------------------------------------------------------------
+   -- State
+   --
+   ------------------------------------------------------------------
+   LogFiles : LogFilesT := LogFilesT'(others => File.NullFile);
+
+   CurrentLogFile : LogFileIndexT;
+   LogFilesStatus : LogFilesStatusT;
+   NumberLogEntries : LogEntryCountT;
+   UsedLogFiles : LogFileListT;
+   LogFileEntries : LogFileEntryT;
+
+   AuditAlarm : AlarmTypes.StatusT;
+
+   AuditSystemFault : Boolean;
+   ------------------------------------------------------------------
+   -- LogFileNames
+   --
+   -- Description:
+   --       A look-up table giving file names.
+   --
+   ------------------------------------------------------------------
+   LogFileNames : constant LogFileNamesT :=
+     LogFileNamesT'(1 => "./Log/File01.log",
+                    2 => "./Log/File02.log",
+                    3 => "./Log/File03.log",
+                    4 => "./Log/File04.log",
+                    5 => "./Log/File05.log",
+                    6 => "./Log/File06.log",
+                    7 => "./Log/File07.log",
+                    8 => "./Log/File08.log",
+                    9 => "./Log/File09.log",
+                    10 => "./Log/File10.log",
+                    11 => "./Log/File11.log",
+                    12 => "./Log/File12.log",
+                    13 => "./Log/File13.log",
+                    14 => "./Log/File14.log",
+                    15 => "./Log/File15.log",
+                    16 => "./Log/File16.log",
+                    17 => "./Log/File17.log"
+                   );
+
+   ------------------------------------------------------------------
    -- Private Operations
    --
    ------------------------------------------------------------------
@@ -579,10 +716,10 @@ is
                          (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or else
                             UsedLogFiles.Length < LogFileCountT'Last) and then
                          NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile)),
            Post    => (NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1)*MaxLogFileEntries +
+                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
                          LogFileEntries(CurrentLogFile) and then
                          NumberLogEntries = NumberLogEntries'Old + 1 and then
                          ((LogFileEntries(CurrentLogFile)'Old = MaxLogFileEntries) <=
@@ -938,23 +1075,23 @@ is
    ------------------------------------------------------------------
 
    procedure Init
-      --  with Refined_Global  => (Input  => ConfigData.State,
-      --                           Output => (AuditAlarm,
-      --                                      AuditSystemFault,
-      --                                      CurrentLogFile,
-      --                                      LogFileEntries,
-      --                                      LogFilesStatus,
-      --                                      NumberLogEntries,
-      --                                      UsedLogFiles),
-      --                           In_Out => LogFiles),
-      --       Refined_Depends => (AuditAlarm => (ConfigData.State, LogFiles),
-      --                           (AuditSystemFault,
-      --                            CurrentLogFile,
-      --                            LogFileEntries,
-      --                            LogFiles,
-      --                            LogFilesStatus,
-      --                            NumberLogEntries,
-      --                            UsedLogFiles) => LogFiles)
+      with Refined_Global  => (Input  => ConfigData.State,
+                               Output => (AuditAlarm,
+                                          AuditSystemFault,
+                                          CurrentLogFile,
+                                          LogFileEntries,
+                                          LogFilesStatus,
+                                          NumberLogEntries,
+                                          UsedLogFiles),
+                               In_Out => LogFiles),
+           Refined_Depends => (AuditAlarm => (ConfigData.State, LogFiles),
+                               (AuditSystemFault,
+                                CurrentLogFile,
+                                LogFileEntries,
+                                LogFiles,
+                                LogFilesStatus,
+                                NumberLogEntries,
+                                UsedLogFiles) => LogFiles)
    --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
    is
      type FileAgeT is array (LogFileIndexT) of Clock.TimeTextT;
@@ -1003,19 +1140,19 @@ is
         --
         ------------------------------------------------------------------
         procedure GetFileDetails (I : in LogFileIndexT)
-           --  with Global  => (Input  => LogFiles,
-           --                   Output => (FileH,
-           --                              FirstTime,
-           --                              NumberEntries,
-           --                              Status),
-           --                   In_Out => AuditSystemFault),
-           --       Depends => (AuditSystemFault =>+ (I,
-           --                                         LogFiles),
-           --                   (FileH,
-           --                    FirstTime,
-           --                    NumberEntries,
-           --                    Status) => (I,
-           --                                LogFiles))
+            --  with Global  => (Input  => LogFiles,
+            --                  Output => (FileH,
+            --                             FirstTime,
+            --                             NumberEntries,
+            --                             Status),
+            --                  In_Out => AuditSystemFault),
+            --      Depends => (AuditSystemFault =>+ (I,
+            --                                        LogFiles),
+            --                  (FileH,
+            --                   FirstTime,
+            --                   NumberEntries,
+            --                   Status) => (I,
+            --                               LogFiles))
         is
            OK : Boolean;
            TimeOK : Boolean := True;
@@ -1230,42 +1367,42 @@ is
                 Severity     : in     AuditTypes.SeverityT;
                 User         : in     AuditTypes.UserTextT;
                 Description  : in     String)
-      --  with Refined_Global  => (Input  => (Clock.Now,
-      --                                      ConfigData.State),
-      --                           In_Out => (AuditAlarm,
-      --                                      AuditSystemFault,
-      --                                      CurrentLogFile,
-      --                                      LogFileEntries,
-      --                                      LogFiles,
-      --                                      LogFilesStatus,
-      --                                      NumberLogEntries,
-      --                                      UsedLogFiles)),
-      --       Refined_Depends => ((AuditAlarm,
-      --                            CurrentLogFile,
-      --                            LogFileEntries,
-      --                            LogFilesStatus,
-      --                            NumberLogEntries,
-      --                            UsedLogFiles) => (AuditAlarm,
-      --                                              ConfigData.State,
-      --                                              CurrentLogFile,
-      --                                              LogFileEntries,
-      --                                              LogFilesStatus,
-      --                                              NumberLogEntries,
-      --                                              UsedLogFiles),
-      --                           (AuditSystemFault,
-      --                            LogFiles) =>+ (AuditAlarm,
-      --                                           Clock.Now,
-      --                                           ConfigData.State,
-      --                                           CurrentLogFile,
-      --                                           Description,
-      --                                           ElementID,
-      --                                           LogFileEntries,
-      --                                           LogFiles,
-      --                                           LogFilesStatus,
-      --                                           NumberLogEntries,
-      --                                           Severity,
-      --                                           UsedLogFiles,
-      --                                           User))
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State),
+                               In_Out => (AuditAlarm,
+                                          AuditSystemFault,
+                                          CurrentLogFile,
+                                          LogFileEntries,
+                                          LogFiles,
+                                          LogFilesStatus,
+                                          NumberLogEntries,
+                                          UsedLogFiles)),
+           Refined_Depends => ((AuditAlarm,
+                                CurrentLogFile,
+                                LogFileEntries,
+                                LogFilesStatus,
+                                NumberLogEntries,
+                                UsedLogFiles) => (AuditAlarm,
+                                                  ConfigData.State,
+                                                  CurrentLogFile,
+                                                  LogFileEntries,
+                                                  LogFilesStatus,
+                                                  NumberLogEntries,
+                                                  UsedLogFiles),
+                               (AuditSystemFault,
+                                LogFiles) =>+ (AuditAlarm,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               CurrentLogFile,
+                                               Description,
+                                               ElementID,
+                                               LogFileEntries,
+                                               LogFiles,
+                                               LogFilesStatus,
+                                               NumberLogEntries,
+                                               Severity,
+                                               UsedLogFiles,
+                                               User))
      --# pre NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
      --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
    is
@@ -1303,43 +1440,43 @@ is
    ------------------------------------------------------------------
    procedure ArchiveLog (User    : in     AuditTypes.UserTextT;
                          Archive :    out File.T)
-      --  with Refined_Global  => (Input  => (Clock.Now,
-      --                                      ConfigData.State),
-      --                           In_Out => (AuditAlarm,
-      --                                      AuditSystemFault,
-      --                                      CurrentLogFile,
-      --                                      LogFileEntries,
-      --                                      LogFiles,
-      --                                      LogFilesStatus,
-      --                                      NumberLogEntries,
-      --                                      UsedLogFiles)),
-      --       Refined_Depends => (Archive => (LogFileEntries,
-      --                                       LogFiles,
-      --                                       UsedLogFiles),
-      --                           (AuditAlarm,
-      --                            CurrentLogFile,
-      --                            LogFileEntries,
-      --                            LogFilesStatus,
-      --                            NumberLogEntries,
-      --                            UsedLogFiles) => (AuditAlarm,
-      --                                              ConfigData.State,
-      --                                              CurrentLogFile,
-      --                                              LogFileEntries,
-      --                                              LogFiles,
-      --                                              LogFilesStatus,
-      --                                              NumberLogEntries,
-      --                                              UsedLogFiles),
-      --                           (AuditSystemFault,
-      --                            LogFiles) =>+ (AuditAlarm,
-      --                                           Clock.Now,
-      --                                           ConfigData.State,
-      --                                           CurrentLogFile,
-      --                                           LogFileEntries,
-      --                                           LogFiles,
-      --                                           LogFilesStatus,
-      --                                           NumberLogEntries,
-      --                                           UsedLogFiles,
-      --                                           User))
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State),
+                               In_Out => (AuditAlarm,
+                                          AuditSystemFault,
+                                          CurrentLogFile,
+                                          LogFileEntries,
+                                          LogFiles,
+                                          LogFilesStatus,
+                                          NumberLogEntries,
+                                          UsedLogFiles)),
+           Refined_Depends => (Archive => (LogFileEntries,
+                                           LogFiles,
+                                           UsedLogFiles),
+                               (AuditAlarm,
+                                CurrentLogFile,
+                                LogFileEntries,
+                                LogFilesStatus,
+                                NumberLogEntries,
+                                UsedLogFiles) => (AuditAlarm,
+                                                  ConfigData.State,
+                                                  CurrentLogFile,
+                                                  LogFileEntries,
+                                                  LogFiles,
+                                                  LogFilesStatus,
+                                                  NumberLogEntries,
+                                                  UsedLogFiles),
+                               (AuditSystemFault,
+                                LogFiles) =>+ (AuditAlarm,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               CurrentLogFile,
+                                               LogFileEntries,
+                                               LogFiles,
+                                               LogFilesStatus,
+                                               NumberLogEntries,
+                                               UsedLogFiles,
+                                               User))
      --# pre NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
      --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
 
@@ -1461,39 +1598,39 @@ is
    --      list of used files so search the list of used files.
    ------------------------------------------------------------------
    procedure ClearLogEntries (User    : in     AuditTypes.UserTextT)
-      --  with Refined_Global  => (Input  => (Clock.Now,
-      --                                      ConfigData.State),
-      --                           In_Out => (AuditAlarm,
-      --                                      AuditSystemFault,
-      --                                      CurrentLogFile,
-      --                                      LogFileEntries,
-      --                                      LogFiles,
-      --                                      LogFilesStatus,
-      --                                      NumberLogEntries,
-      --                                      UsedLogFiles)),
-      --       Refined_Depends => ((AuditAlarm,
-      --                            CurrentLogFile,
-      --                            LogFileEntries,
-      --                            LogFilesStatus,
-      --                            NumberLogEntries,
-      --                            UsedLogFiles) => (AuditAlarm,
-      --                                              ConfigData.State,
-      --                                              CurrentLogFile,
-      --                                              LogFileEntries,
-      --                                              LogFilesStatus,
-      --                                              NumberLogEntries,
-      --                                              UsedLogFiles),
-      --                           (AuditSystemFault,
-      --                            LogFiles) =>+ (AuditAlarm,
-      --                                           Clock.Now,
-      --                                           ConfigData.State,
-      --                                           CurrentLogFile,
-      --                                           LogFileEntries,
-      --                                           LogFiles,
-      --                                           LogFilesStatus,
-      --                                           NumberLogEntries,
-      --                                           UsedLogFiles,
-      --                                           User))
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State),
+                               In_Out => (AuditAlarm,
+                                          AuditSystemFault,
+                                          CurrentLogFile,
+                                          LogFileEntries,
+                                          LogFiles,
+                                          LogFilesStatus,
+                                          NumberLogEntries,
+                                          UsedLogFiles)),
+           Refined_Depends => ((AuditAlarm,
+                                CurrentLogFile,
+                                LogFileEntries,
+                                LogFilesStatus,
+                                NumberLogEntries,
+                                UsedLogFiles) => (AuditAlarm,
+                                                  ConfigData.State,
+                                                  CurrentLogFile,
+                                                  LogFileEntries,
+                                                  LogFilesStatus,
+                                                  NumberLogEntries,
+                                                  UsedLogFiles),
+                               (AuditSystemFault,
+                                LogFiles) =>+ (AuditAlarm,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               CurrentLogFile,
+                                               LogFileEntries,
+                                               LogFiles,
+                                               LogFilesStatus,
+                                               NumberLogEntries,
+                                               UsedLogFiles,
+                                               User))
      --# pre NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
      --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile);
    is
@@ -1573,8 +1710,8 @@ is
    ------------------------------------------------------------------
 
    procedure CancelArchive
-      --  with Refined_Global  => (In_Out => LogFilesStatus),
-      --       Refined_Depends => (LogFilesStatus =>+ null)
+      with Refined_Global  => (In_Out => LogFilesStatus),
+           Refined_Depends => (LogFilesStatus =>+ null)
    is
    begin
       for I in LogFileIndexT loop
@@ -1595,7 +1732,7 @@ is
    ------------------------------------------------------------------
 
    function TheAuditAlarm return AlarmTypes.StatusT
-      --  with Refined_Global  => AuditAlarm
+      with Refined_Global  => AuditAlarm
    is
    begin
       return AuditAlarm;
@@ -1609,7 +1746,7 @@ is
    ------------------------------------------------------------------
 
    function SystemFaultOccurred return Boolean
-      --  with Refined_Global  => AuditSystemFault
+      with Refined_Global  => AuditSystemFault
    is
    begin
       return AuditSystemFault;

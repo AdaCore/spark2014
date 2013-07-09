@@ -24,148 +24,14 @@ with AlarmTypes,
 
 package AuditLog
    with Abstract_State => (FileState,
-                           State)
---# initializes FileState;
+                           State),
+        Initializes    => FileState
 is
 
    ------------------------------------------------------------------
    -- Types
    --
    ------------------------------------------------------------------
-
-   MaxNumberLogFiles : constant := 2**4 + 1;  -- 17
-   MaxNumberArchivableFiles : constant := 4;
-
-   type LogFileCountT is range 0..MaxNumberLogFiles;
-   subtype LogFileIndexT is LogFileCountT range 1..MaxNumberLogFiles;
-
-   type FileStatusT is (Free, Archived, Used);
-
-   type LogFilesT is array (LogFileIndexT) of File.T;
-
-   type LogFilesStatusT is array (LogFileIndexT) of FileStatusT;
-
-   subtype FileNameI is Positive range 1..16;
-   subtype FileNameT is String(FileNameI);
-
-   type LogFileNamesT is array (LogFileIndexT) of FileNameT;
-
-   type LogFileListEntriesT is array (LogFileIndexT) of LogFileIndexT;
-
-   ----------------------------------------------------------------
-   -- LogFileListT
-   --
-   -- Description:
-   --   This represents a list.
-   --      List - is a cyclic buffer that can hold all the files
-   --      Head - is the current head of the list in the cyclic buffer
-   --      LastI - is the last index of the list in the cyclic buffer
-   --      Length - is the length of the list
-   --   The values of Head and LastI are not significant when Length=0.
-   -----------------------------------------------------------------
-
-   type LogFileListT is record
-       List : LogFileListEntriesT;
-       Head : LogFileIndexT;
-       LastI : LogFileIndexT;
-       Length : LogFileCountT;
-   end record;
-
-   EmptyList : constant LogFileListT :=
-     LogFileListT'(List => LogFileListEntriesT'
-                               (others => LogFileIndexT'First),
-                   Head => LogFileIndexT'Last,
-                   LastI => LogFileIndexT'First,
-                   Length => 0);
-
-
-   subtype LogDirStringI is Positive range 1..3;
-   subtype LogDirStringT is String(LogDirStringI);
-
-   LogDirectory : constant LogDirStringT := "Log";
-
-   subtype ArchiveFileStringI is Positive range 1..17;
-   subtype ArchiveFileStringT is String(ArchiveFileStringI);
-
-   ArchiveFileName : constant ArchiveFileStringT := "./Log/archive.log";
-   --------------------------------------------------------------
-   --  ElementText
-   --
-   --  Description:
-   --     Text representation of Element name
-   --
-   --------------------------------------------------------------
-   subtype ElementTextI is Positive range 1..20;
-   subtype ElementTextT is String(ElementTextI);
-
-   NoElement : constant ElementTextT := ElementTextT'(others => ' ');
-
-   ------------------------------------------------------------------
-   -- MaxLogFileEntries
-   --
-   --  Description:
-   --     The max number of entries in a file.
-   --     Note that it is a requirement of the Formal Design that
-   --        MaxLogFileEntries * (NumberLogFiles - 1)
-   --                                * AuditTypes.SizeAuditElement
-   --             >= AuditTypes.MaxSupportedLogSize
-   --
-   -- Implementation Notes:
-   --    None.
-   ------------------------------------------------------------------
-   MaxLogFileEntries : constant
-     := AuditTypes.MaxSupportedLogEntries/(MaxNumberLogFiles - 1);
-   MaxLogEntries     : constant := MaxLogFileEntries * MaxNumberLogFiles;
-
-   type LogEntryCountT  is range 0..MaxLogEntries;
-   subtype FileEntryCountT is LogEntryCountT range 0..MaxLogFileEntries;
-
-   type LogFileEntryT is array (LogFileIndexT) of FileEntryCountT;
-
-
-   ------------------------------------------------------------------
-   -- State
-   --
-   ------------------------------------------------------------------
-   LogFiles : LogFilesT := LogFilesT'(others => File.NullFile);
-
-   CurrentLogFile : LogFileIndexT;
-   LogFilesStatus : LogFilesStatusT;
-   NumberLogEntries : LogEntryCountT;
-   UsedLogFiles : LogFileListT;
-   LogFileEntries : LogFileEntryT;
-
-   AuditAlarm : AlarmTypes.StatusT;
-
-   AuditSystemFault : Boolean;
-   ------------------------------------------------------------------
-   -- LogFileNames
-   --
-   -- Description:
-   --       A look-up table giving file names.
-   --
-   ------------------------------------------------------------------
-   LogFileNames : constant LogFileNamesT :=
-     LogFileNamesT'(1 => "./Log/File01.log",
-                    2 => "./Log/File02.log",
-                    3 => "./Log/File03.log",
-                    4 => "./Log/File04.log",
-                    5 => "./Log/File05.log",
-                    6 => "./Log/File06.log",
-                    7 => "./Log/File07.log",
-                    8 => "./Log/File08.log",
-                    9 => "./Log/File09.log",
-                    10 => "./Log/File10.log",
-                    11 => "./Log/File11.log",
-                    12 => "./Log/File12.log",
-                    13 => "./Log/File13.log",
-                    14 => "./Log/File14.log",
-                    15 => "./Log/File15.log",
-                    16 => "./Log/File16.log",
-                    17 => "./Log/File17.log"
-                   );
-
-
 
    ------------------------------------------------------------------
    -- Init
@@ -185,11 +51,11 @@ is
                        In_Out => FileState),
            Depends => (FileState =>+ null,
                        State => (ConfigData.State,
-                                 FileState)),
-           Post    => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile));
+                                 FileState));--  ,
+           --  Post    => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile));
 
    ------------------------------------------------------------------
    -- AddElementToLog
@@ -221,15 +87,15 @@ is
                                    FileState,
                                    Severity,
                                    State,
-                                   User)),
-           Pre     => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile)),
-           Post    => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile));
+                                   User));--  ,
+           --  Pre     => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile)),
+           --  Post    => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile));
 
 
    ------------------------------------------------------------------
@@ -256,15 +122,15 @@ is
                                    ConfigData.State,
                                    FileState,
                                    State,
-                                   User)),
-           Pre     => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile)),
-           Post    => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile));
+                                   User));--  ,
+           --  Pre     => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile)),
+           --  Post    => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile));
 
 
    ------------------------------------------------------------------
@@ -288,15 +154,15 @@ is
                                    ConfigData.State,
                                    FileState,
                                    State,
-                                   User)),
-           Pre     => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile)),
-           Post    => (UsedLogFiles.Length >= 1 and then
-                         NumberLogEntries =
-                         LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                         LogFileEntries(CurrentLogFile));
+                                   User));--  ,
+           --  Pre     => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile)),
+           --  Post    => (UsedLogFiles.Length >= 1 and then
+           --                NumberLogEntries =
+           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+           --                LogFileEntries(CurrentLogFile));
 
 
    ------------------------------------------------------------------
