@@ -345,11 +345,9 @@ shall follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.4 LR any name_value_options must be the final options
                    in the list
 
-#. A library level ``package_declaration`` or ``generic_package_declaration`` shall
-   have a completion [(require a body)] if it contains a non-null Abstract_State
-   aspect specification. If a library level package declaration has a non-null
-   Abstract_State aspect but in Ada a body is not required, a pragma Elaborate_Body
-   shall be stated within the package declaration to make it required in Ada.
+#. A package_declaration or generic_package_declaration that contains a
+   non-null Abstract_State aspect must have a completion (i.e. such a
+   package requires a body).
 
    .. ifconfig:: Display_Trace_Units
 
@@ -799,7 +797,7 @@ subprogram in the package body whose visible part declares its abstract view.
 In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
 refinements of state abstractions declared by the package. Refined_Global,
-Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express 
+Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express
 the contracts of a refined view of a subprogram.
 
 .. _refined_state_aspect:
@@ -1735,10 +1733,10 @@ as it is used purely for static analysis purposes and is not executed.
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the 
-     |SPARK| Toolset.  Its usefulness and exact semantics are still to be 
+.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the
+     |SPARK| Toolset.  Its usefulness and exact semantics are still to be
      determined.
-     
+
 A subprogram declared in the visible part of a package may have a Refined
 Precondition aspect applied to its body or body stub. The Refined Precondition
 may be used to restate a precondition given on the declaration of a subprogram
@@ -1864,7 +1862,7 @@ be a Boolean ``expression``.
 
 .. centered:: **Verification Rules**
 
-#. The precondition of a subprogram declaration and its Refined Postcondition 
+#. The precondition of a subprogram declaration and its Refined Postcondition
    together imply the postcondition of the declaration, that is:
 
    (Precondition and Refined Postcondition) -> Postcondition
