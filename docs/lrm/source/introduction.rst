@@ -313,7 +313,7 @@ Some are expanded in subsequent sections within this chapter.
 - |SPARK| shall support *constructive*, modular development which allows
   contracts to be specified on the declaration of program units and allows
   analysis and verification to be perfomed based on these contracts as early as
-  possible in the development lifecycle, even before before the units are
+  possible in the development lifecycle, even before the units are
   implemented. As units are implemented the implementation is verified against
   its specification given in its contract. The contracts are specified using
   |SPARK| specific aspects.
