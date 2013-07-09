@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with String_Utils; use String_Utils;
 
 package Gnat2Why_Args is
 
@@ -70,9 +70,9 @@ package Gnat2Why_Args is
 
    Flow_Dump_Graphs : Boolean := False;
 
-   --  If this string is non-empty, only this unit should be analyzed.
+   --  If this list is non-empty, only units of this list should be analyzed.
 
-   Analyze_File : Unbounded_String := Null_Unbounded_String;
+   Analyze_File : String_Lists.List := String_Lists.Empty_List;
 
    --------------------------------
    -- Procedures of this package --

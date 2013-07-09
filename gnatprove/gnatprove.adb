@@ -557,17 +557,10 @@ procedure Gnatprove is
 
    procedure Set_Gnat2why_Env_Var is
    begin
-      if Debug then
-         Gnat2Why_Args.Flow_Dump_Graphs := True;
-      end if;
-      case MMode is
-         when GPM_Check =>
-            Gnat2Why_Args.Check_Mode := True;
-         when GPM_Flow | GPM_All =>
-            Gnat2Why_Args.Flow_Analysis_Mode := True;
-         when GPM_Prove =>
-            null;
-      end case;
+      Gnat2Why_Args.Flow_Dump_Graphs := MMode = GPM_Flow and Debug;
+      Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
+      Gnat2Why_Args.Flow_Analysis_Mode := MMode in GPM_Flow | GPM_All;
+      Gnat2Why_Args.Analyze_File := File_List;
       Gnat2Why_Args.Set (Debug);
    end Set_Gnat2why_Env_Var;
 

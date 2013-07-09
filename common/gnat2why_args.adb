@@ -25,11 +25,10 @@
 
 with Ada.Environment_Variables;
 with Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Output;       use Output;
-with Types;        use Types;
-
-with String_Utils; use String_Utils;
+with Output;                use Output;
+with Types;                 use Types;
 
 package body Gnat2Why_Args is
 
@@ -109,7 +108,7 @@ package body Gnat2Why_Args is
             Start : constant Integer :=
               Token'First + Analyze_File_Name'Length + 1;
          begin
-            Analyze_File := To_Unbounded_String (Token (Start .. Token'Last));
+            Analyze_File.Append (Token (Start .. Token'Last));
          end;
       else
 
@@ -144,12 +143,12 @@ package body Gnat2Why_Args is
          Append (Val, ' ');
          Append (Val, Flow_Dump_Graphs_Name);
       end if;
-      if Analyze_File /= Null_Unbounded_String then
+      for File of Analyze_File loop
          Append (Val, ' ');
          Append (Val, Analyze_File_Name);
          Append (Val, '=');
-         Append (Val, Analyze_File);
-      end if;
+         Append (Val, File);
+      end loop;
       if Val /= "" then
          declare
             Val_Str : constant String := To_String (Val);
