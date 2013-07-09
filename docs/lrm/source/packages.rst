@@ -1735,6 +1735,10 @@ as it is used purely for static analysis purposes and is not executed.
 Refined Precondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. todo:: The Refined_Pre aspect will not be implemented in Realease 1 of the 
+     |SPARK| Toolset.  Its usefulness and exact semantics are still to be 
+     determined.
+     
 A subprogram declared in the visible part of a package may have a Refined
 Precondition aspect applied to its body or body stub. The Refined Precondition
 may be used to restate a precondition given on the declaration of a subprogram
@@ -1754,7 +1758,7 @@ be a Boolean ``expression``.
    of True is assumed for its abstract view.
 
 #. At the point of call of a subprogram, both its precondition and the
-   expression of its Refined_Post aspect shall evaluate to True.
+   expression of its Refined_Pre aspect shall evaluate to True.
 
 #. The same legality rules apply to a Refined Precondition as for
    a precondition.
@@ -1860,11 +1864,10 @@ be a Boolean ``expression``.
 
 .. centered:: **Verification Rules**
 
-#. The precondition of a subprogram declaration with the Refined Precondition
-   of its body or body stub and its Refined Postcondition together imply the
-   postcondition of the declaration, that is:
+#. The precondition of a subprogram declaration and its Refined Postcondition 
+   together imply the postcondition of the declaration, that is:
 
-   (Precondition and Refined Precondition and Refined Postcondition) -> Postcondition
+   (Precondition and Refined Postcondition) -> Postcondition
 
    .. ifconfig:: Display_Trace_Units
 
