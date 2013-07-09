@@ -25,10 +25,9 @@
 
 with Ada.Environment_Variables;
 with Ada.Text_IO;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Output;                use Output;
-with Types;                 use Types;
+with Output; use Output;
+with Types;  use Types;
 
 package body Gnat2Why_Args is
 
@@ -39,6 +38,7 @@ package body Gnat2Why_Args is
    Flow_Analysis_Mode_Name : constant String := "flow_analysis_mode";
    Flow_Dump_Graphs_Name   : constant String := "flow_dump_graphs";
    Analyze_File_Name       : constant String := "analyze_file";
+   Limit_Subp_Name         : constant String := "limit_subp";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -110,6 +110,15 @@ package body Gnat2Why_Args is
          begin
             Analyze_File.Append (Token (Start .. Token'Last));
          end;
+      elsif Starts_With (Token, Limit_Subp_Name) and then
+        Token (Token'First + Limit_Subp_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Limit_Subp_Name'Length + 1;
+         begin
+            Limit_Subp := To_Unbounded_String (Token (Start .. Token'Last));
+         end;
       else
 
          --  We play it safe and quit if there is an unrecognized option
@@ -149,6 +158,12 @@ package body Gnat2Why_Args is
          Append (Val, '=');
          Append (Val, File);
       end loop;
+      if Limit_Subp /= Null_Unbounded_String then
+         Append (Val, ' ');
+         Append (Val, Limit_Subp_Name);
+         Append (Val, '=');
+         Append (Val, Limit_Subp);
+      end if;
       if Val /= "" then
          declare
             Val_Str : constant String := To_String (Val);

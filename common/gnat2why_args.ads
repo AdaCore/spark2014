@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with String_Utils; use String_Utils;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with String_Utils;          use String_Utils;
 
 package Gnat2Why_Args is
 
@@ -65,7 +66,7 @@ package Gnat2Why_Args is
 
    Flow_Analysis_Mode : Boolean := False;
 
-   --  Flow analysis mode (-gnatd.Q), dump the different graphs (control flow,
+   --  In Flow analysis mode dump the different graphs (control flow,
    --  control dependence) for debugging purposes.
 
    Flow_Dump_Graphs : Boolean := False;
@@ -73,6 +74,10 @@ package Gnat2Why_Args is
    --  If this list is non-empty, only units of this list should be analyzed.
 
    Analyze_File : String_Lists.List := String_Lists.Empty_List;
+
+   --  Limit analysis to this subprogram
+
+   Limit_Subp   : Unbounded_String := Null_Unbounded_String;
 
    --------------------------------
    -- Procedures of this package --
