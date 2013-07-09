@@ -103,6 +103,34 @@ Proof.
        * right. right; assumption.
 Qed.
 
+(*
+Lemma update_fetch_new: forall v v0 s x  s',
+    v = Value v0 ->
+    update s x v = Some s' ->
+    fetch x s' = Some v0.
+Proof.
+    intros v v0 s x.
+    functional induction (update s x v);
+    intros s'0 h1 h2; subst.
+  - inversion h2; subst.
+    unfold fetch.
+    rewrite e0.
+    auto.
+  - inversion h2; subst.
+    apply IHo.
+    auto. admit.
+
+Qed.
+
+Lemma update_fetch_old: forall s x v s' y,
+    update s x (Value v) = Some s' ->
+    y <> x ->
+    fetch y s' = fetch y s.
+Proof.
+
+Qed.
+*)
+
 (** * Symbol Table *)
 
 (** ** Symbol table as a list *)
@@ -121,12 +149,13 @@ Fixpoint lookup (x : idnum) (tb: symtb) :=
     - a normal resultant stack
     - an exception (such as overflow, division by zero and so on)
     - an unterminated state
+    - an abnormal (unexpected) state
 *)
 Inductive state: Type :=
     | SNormal: stack -> state
     | SException: state
-    | SUnterminated: state.
-(*    | SAbnormal: state (* for state (1) above *) *)
+    | SUnterminated: state
+    | SAbnormal: state.
 
 (** * Type Check Stack *)
 

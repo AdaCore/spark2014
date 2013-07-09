@@ -7,7 +7,7 @@ Inductive value : Type :=
 | Int (n : Z)
 | Bool (b : bool).
 
-(** type of stored values for variables in the stack *)
+(** Stored values type in the stack *)
 Inductive val: Type := 
     | Value: value -> val
     | Vundef: val.
@@ -21,8 +21,8 @@ Inductive val: Type :=
 *)
 Inductive return_val: Type :=
     | ValNormal: value -> return_val
-    | ValException: return_val.
-(*    | ValAbnormal: return_val *) 
+    | ValException: return_val
+    | ValAbnormal: return_val. 
 
 (** type of stored/return values *)
 Inductive stored_value_type: val -> typ -> Prop :=
@@ -57,9 +57,12 @@ Definition add (v1 v2: return_val): return_val :=
     | ValNormal n1, ValNormal n2 => 
           match n1, n2 with
           | Int n1', Int n2' => ValNormal (Int (n1' + n2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 Definition sub (v1 v2: return_val): return_val := 
@@ -67,9 +70,12 @@ Definition sub (v1 v2: return_val): return_val :=
     | ValNormal n1, ValNormal n2 => 
           match n1, n2 with
           | Int n1', Int n2' => ValNormal (Int (n1' - n2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 Definition mul (v1 v2: return_val): return_val :=
@@ -77,9 +83,12 @@ Definition mul (v1 v2: return_val): return_val :=
     | ValNormal n1, ValNormal n2 => 
           match n1, n2 with
           | Int n1', Int n2' => ValNormal (Int (n1' * n2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 (* ToDo: 
@@ -89,10 +98,13 @@ Definition div (v1 v2: return_val): return_val :=
     match v1, v2 with
     | ValNormal n1, ValNormal n2 => 
           match n1, n2 with
-          | Int n1', Int n2' => ValNormal (Int (n1' / n2'))
-          | _, _ => ValException
+          | Int n1', Int n2' => if n2' == 0%Z then ValException else ValNormal (Int (n1' / n2'))
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 (** ** Logic operations  *)
@@ -101,9 +113,12 @@ Definition and (v1 v2: return_val): return_val :=
     | ValNormal b1, ValNormal b2 => 
           match b1, b2 with
           | Bool b1', Bool b2' => ValNormal (Bool (andb b1' b2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 Definition or (v1 v2: return_val): return_val :=
@@ -111,20 +126,26 @@ Definition or (v1 v2: return_val): return_val :=
     | ValNormal b1, ValNormal b2 => 
           match b1, b2 with
           | Bool b1', Bool b2' => ValNormal (Bool (orb b1' b2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
-(** ** Comparisons *)
+(** ** Relational operations *)
 Definition eq (v1 v2: return_val): return_val :=
     match v1, v2 with
     | ValNormal n1, ValNormal n2 => 
           match n1, n2 with
           | Int n1', Int n2' => ValNormal (Bool (n1' == n2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 Definition ne (v1 v2: return_val): return_val :=
@@ -132,16 +153,20 @@ Definition ne (v1 v2: return_val): return_val :=
     | ValNormal n1, ValNormal n2 => 
           match n1, n2 with
           | Int n1', Int n2' => ValNormal (Bool (n1' != n2'))
-          | _, _ => ValException
+          | _, _ => ValAbnormal
           end
-    | _, _ => ValException
+    | ValException, _ => ValException
+    | ValAbnormal, _ => ValAbnormal
+    | _, ValException => ValException
+    | _, ValAbnormal => ValAbnormal
     end.
 
 (** ** Unary operations *)
 Definition not (v: return_val): return_val :=
     match v with
     | ValNormal (Bool b) => ValNormal (Bool (negb b))
-    | _ => ValException
+    | ValException => ValException
+    | _ => ValAbnormal
     end.
 
 End Val. 
