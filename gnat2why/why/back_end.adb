@@ -33,7 +33,7 @@ with Stringt;
 with System;
 
 with Gnat2Why.Driver;
-with Gnat2Why.Opt;
+with Gnat2Why_Args;
 
 package body Back_End is
 
@@ -57,7 +57,7 @@ package body Back_End is
       Namet.Unlock;
       Stringt.Unlock;
 
-      if Gnat2Why.Opt.Standard_Mode then
+      if Gnat2Why_Args.Standard_Mode then
          Translate_Standard_Package;
          Osint.Exit_Program (Osint.E_Success);
       else
@@ -110,7 +110,7 @@ package body Back_End is
       end if;
 
       GNAT2Why_BE.Scan_Compiler_Arguments;
-      Gnat2Why.Opt.Init;
+      Gnat2Why_Args.Init;
    end Scan_Compiler_Arguments;
 
 end Back_End;

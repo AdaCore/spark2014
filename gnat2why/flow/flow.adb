@@ -42,7 +42,7 @@ with Why;
 with SPARK_Definition;      use SPARK_Definition;
 with SPARK_Util;
 
-with Gnat2Why.Opt;
+with Gnat2Why_Args;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -720,7 +720,7 @@ package body Flow is
          return Rv;
       end EDI;
    begin
-      if Gnat2Why.Opt.Flow_Dump_Graphs then
+      if Gnat2Why_Args.Flow_Dump_Graphs then
          G.Write_Pdf_File
            (Filename  => Filename,
             Node_Info => NDI'Access,
@@ -806,7 +806,7 @@ package body Flow is
 
       Append (Base_Filename, Get_Name_String (Chars (E)));
 
-      if Gnat2Why.Opt.Flow_Dump_Graphs then
+      if Gnat2Why_Args.Flow_Dump_Graphs then
          Write_Str (Character'Val (8#33#) & "[32m" &
                       "Flow analysis (cons) of " &
                       Entity_Kind'Image (FA.Kind) &
@@ -927,7 +927,7 @@ package body Flow is
 
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
-         if Gnat2Why.Opt.Flow_Dump_Graphs then
+         if Gnat2Why_Args.Flow_Dump_Graphs then
             Write_Str (Character'Val (8#33#) & "[32m" &
                          "Flow analysis (errors) for " &
                          Entity_Kind'Image (FA.Kind) &

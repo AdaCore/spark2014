@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                          G N A T 2 W H Y - O P T                         --
+--                          G N A T 2 W H Y _ A R G S                       --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Gnat2Why.Opt is
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+package Gnat2Why_Args is
 
    --  This unit defines and initializes extra options of gnat2why, that are
    --  not relevant to the GNAT frontend.
@@ -34,6 +36,9 @@ package Gnat2Why.Opt is
    --  package.
 
    --  Reading in the environment variable is done by a call to [Init].
+
+   --  Setting the environment variable is done by changing the values of the
+   --  variables and calling [Set].
 
    -------------------------------------
    -- Options defined in this package --
@@ -58,6 +63,10 @@ package Gnat2Why.Opt is
 
    Flow_Dump_Graphs : Boolean := False;
 
+   --  If this string is non-empty, only this unit should be analyzed.
+
+   Analyze_File : Unbounded_String := Null_Unbounded_String;
+
    --------------------------------
    -- Procedures of this package --
    --------------------------------
@@ -66,4 +75,10 @@ package Gnat2Why.Opt is
    --  Read the environment variable GNAT2WHY_Args and set the corresponding
    --  options.
 
-end Gnat2Why.Opt;
+   procedure Set;
+   --  Read the above variables and set the environment variable
+
+   procedure Clear;
+   --  Clear the environment variable, do not change the variables.
+
+end Gnat2Why_Args;

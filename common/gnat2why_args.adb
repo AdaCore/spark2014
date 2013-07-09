@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                          G N A T 2 W H Y - O P T                         --
+--                          G N A T 2 W H Y - A R G S                       --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -28,7 +28,7 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Output; use Output;
 with Types;  use Types;
 
-package body Gnat2Why.Opt is
+package body Gnat2Why_Args is
 
    Env_Variable_Name : constant String := "GNAT2WHY_ARGS";
 
@@ -103,4 +103,24 @@ package body Gnat2Why.Opt is
       end if;
    end Interpret_Token;
 
-end Gnat2Why.Opt;
+   ---------
+   -- Set --
+   ---------
+
+   procedure Set is
+   begin
+
+      --  ??? TODO
+
+      null;
+   end Set;
+
+   procedure Clear is
+   begin
+
+      --  ??? TODO
+
+      null;
+   end Clear;
+
+end Gnat2Why_Args;
