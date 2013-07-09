@@ -52,8 +52,7 @@ Machine code insertions are not in |SPARK|.
 Unchecked Type Conversions
 --------------------------
 
-An instantiation of an Unchecked_Conversion may have Refined_Pre and
-Refined_Post aspects specified.
+The validity of unchecked type conversions is not currently checked by |SPARK|.
 
 .. todo::
    Provide a detailed semantics for Refined_Pre and Refined_Post aspects on
@@ -62,10 +61,9 @@ Refined_Post aspects specified.
 Data Validity
 ~~~~~~~~~~~~~
 
-[Currently |SPARK| does not check for data validity as it analyses code,
-though this may be changed in a future release.
-It is therefore up to users to ensure that data read from external sources
-is valid.]
+[Currently |SPARK| does not check for data validity , though this may be changed
+in a future release. It is therefore up to users to ensure that data read from
+external sources is valid.]
 
 .. todo:: Need to put some words in here to describe the precautions that may
    be taken to avoid invalid data. To be completed in the Milestone 4 version

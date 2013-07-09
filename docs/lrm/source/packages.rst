@@ -796,9 +796,8 @@ subprogram in the package body whose visible part declares its abstract view.
 
 In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
-refinements of state abstractions declared by the package. Refined_Global,
-Refined_Depends, Refined_Pre and Refined_Post aspects are provided to express
-the contracts of a refined view of a subprogram.
+refinements of state abstractions declared by the package. Refined versions of
+aspects are provided to express the contracts of a refined view of a subprogram.
 
 .. _refined_state_aspect:
 
@@ -1729,60 +1728,6 @@ as it is used purely for static analysis purposes and is not executed.
 
 #. The verification rules given for :ref:`depends-aspects` also apply.
 
-
-Refined Precondition Aspect
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the
-     |SPARK| Toolset.  Its usefulness and exact semantics are still to be
-     determined.
-     
-.. Text commented out until decision on Refined_Pre is finalised.
-   A subprogram declared in the visible part of a package may have a Refined
-   Precondition aspect applied to its body or body stub. The Refined
-   Precondition may be used to restate a precondition given on the declaration
-   of a subprogram in terms of the full view of a private type or the
-   ``constituents`` of a refined ``state_name``.
-   
-   The Refined Precondition aspect is introduced by an ``aspect_specification``
-   where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition``
-   shall be a Boolean ``expression``.
-
-   .. centered:: **Legality Rules**
-
-   #. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
-      the body (if no stub is present) of subprogram if the subprogram is declared
-      in the visible part of a package, its abstract view. If the subprogram
-      declaration in the visible part has no explicit precondition, a precondition
-      of True is assumed for its abstract view.
-
-   #. At the point of call of a subprogram, both its precondition and the
-      expression of its Refined_Pre aspect shall evaluate to True.
-
-   #. The same legality rules apply to a Refined Precondition as for
-      a precondition.
-
-   .. centered:: **Static Semantics**
-
-   #. A Refined Precondition of a subprogram defines a *refinement*
-      of the precondition of the subprogram.
-
-   #. The static semantics are otherwise as for a precondition.
-
-   .. centered:: **Dynamic Semantics**
-
-   #. When a subprogram with a Refined Precondition is called; first
-      the precondition is evaluated as defined in the Ada RM. If the
-      precondition evaluates to True, then the Refined Precondition
-      is evaluated. If either precondition or Refined Precondition
-      do not evaluate to True an exception is raised.
-
-   .. centered:: **Verification Rules**
-
-   #. The precondition of the abstract view of the subprogram shall imply its
-      Refined_Precondition.
-
-
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1874,6 +1819,58 @@ be a Boolean ``expression``.
 
 .. todo:: refined contract_cases.
           To be completed in a post-Release 1 version of this document.
+
+.. Refined Precondition Aspect
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the
+     |SPARK| Toolset.  Its usefulness and exact semantics are still to be
+     determined.
+     
+.. Text commented out until decision on Refined_Pre is finalised.
+   A subprogram declared in the visible part of a package may have a Refined
+   Precondition aspect applied to its body or body stub. The Refined
+   Precondition may be used to restate a precondition given on the declaration
+   of a subprogram in terms of the full view of a private type or the
+   ``constituents`` of a refined ``state_name``.
+   
+   The Refined Precondition aspect is introduced by an ``aspect_specification``
+   where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition``
+   shall be a Boolean ``expression``.
+
+   .. centered:: **Legality Rules**
+
+   #. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
+      the body (if no stub is present) of subprogram if the subprogram is declared
+      in the visible part of a package, its abstract view. If the subprogram
+      declaration in the visible part has no explicit precondition, a precondition
+      of True is assumed for its abstract view.
+
+   #. At the point of call of a subprogram, both its precondition and the
+      expression of its Refined_Pre aspect shall evaluate to True.
+
+   #. The same legality rules apply to a Refined Precondition as for
+      a precondition.
+
+   .. centered:: **Static Semantics**
+
+   #. A Refined Precondition of a subprogram defines a *refinement*
+      of the precondition of the subprogram.
+
+   #. The static semantics are otherwise as for a precondition.
+
+   .. centered:: **Dynamic Semantics**
+
+   #. When a subprogram with a Refined Precondition is called; first
+      the precondition is evaluated as defined in the Ada RM. If the
+      precondition evaluates to True, then the Refined Precondition
+      is evaluated. If either precondition or Refined Precondition
+      do not evaluate to True an exception is raised.
+
+   .. centered:: **Verification Rules**
+
+   #. The precondition of the abstract view of the subprogram shall imply its
+      Refined_Precondition.
 
 .. _refined_external_states:
 
