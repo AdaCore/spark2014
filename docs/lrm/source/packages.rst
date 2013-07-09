@@ -1786,7 +1786,7 @@ Refined Postcondition Aspect
 A subprogram declared in the visible part of a package may have a Refined
 Postcondition aspect applied to its body or body stub. The Refined Postcondition
 may be used to restate a postcondition given on the declaration of a subprogram
-in terms the full view of a private type or the ``constituents`` of a refined
+in terms of the full view of a private type or the ``constituents`` of a refined
 ``state_name``.
 
 The Refined Postcondition aspect is introduced by an ``aspect_specification``
@@ -1797,9 +1797,15 @@ be a Boolean ``expression``.
 
 #. A Refined_Post aspect may only appear on a body_stub (if one is
    present) or the body (if no stub is present) of a subprogram which is
-   declared in the visible part of a package, its abstract view.  If the
+   declared in the visible part of a package, its abstract view. If the
    subprogram declaration in the visible part has no explicit postcondition, a
    postcondition of True is assumed for the abstract view.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.8 LR Refined_Post must be on the body or body stub
+                   of a subprogram whose spec is on the visible part of a
+                   package.
 
 #. The same legality rules apply to a Refined Postcondition as for
    a postcondition.
@@ -1809,15 +1815,29 @@ be a Boolean ``expression``.
 #. A Refined Postcondition of a subprogram defines a *refinement*
    of the postcondition of the subprogram.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.8 SS Refined_Post defines a refinement of the
+                   abstract post. Covered by another TU.
+
 #. Logically, the Refined Postcondition of a subprogram must imply
-   its postcondition.  This means that it is perfectly logical for the
+   its postcondition. This means that it is perfectly logical for the
    declaration not to have a postcondition (which in its absence
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.8 SS Refined_Post must imply abstract post
+
 #. The default Refined_Post for an expression function, F, is
    F'Result = ``expression``, where ``expression`` is the expression defining
    the body of the function.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.8 SS Expression functions have a default Refined_Post
+                   of F'Result = expression_of_expression_function
 
 #. The static semantics are otherwise as for a postcondition.
 
@@ -1833,6 +1853,11 @@ be a Boolean ``expression``.
    do not evaluate to True then the exception Assertions.Assertion_Error is
    raised.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.8 DS Refined_Post is evaluated right before Post and
+                   if either is False Assertions.Assertion_Error is raised
+
 .. centered:: **Verification Rules**
 
 #. The precondition of a subprogram declaration with the Refined Precondition
@@ -1840,6 +1865,10 @@ be a Boolean ``expression``.
    postcondition of the declaration, that is:
 
    (Precondition and Refined Precondition and Refined Postcondition) -> Postcondition
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.8 VR Pre and Refined_Post -> Post
 
 .. todo:: refined contract_cases.
           To be completed in a post-Release 1 version of this document.
