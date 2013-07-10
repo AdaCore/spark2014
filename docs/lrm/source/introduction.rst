@@ -511,7 +511,7 @@ for doing so, including any necessary additional testing of proof assumptions.
 Restrictions that Apply to the Tested Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are two two sources of restriction that apply to the tested code:
+There are two sources of restriction that apply to the tested code:
 
 #. The need to validate a partial proof that relies on code that is not
    itself proven but is only tested.
