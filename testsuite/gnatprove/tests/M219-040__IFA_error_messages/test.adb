@@ -121,20 +121,16 @@ package body Test is
       Temp : Integer;
 
       procedure Initialize_Temp
-         with Global  => (Output => Temp),
-              Depends => (Temp => null);
-
-      procedure Edit_Temp (Import : Integer)
-         with Global  => (Output => Temp),
-              Depends => (Temp => Import);
-
-      procedure Initialize_Temp
+        with Global  => (Output => Temp),
+             Depends => (Temp => null)
       is
       begin
          Temp := 0;
       end Initialize_Temp;
 
       procedure Edit_Temp (Import : Integer)
+         with Global  => (Output => Temp),
+              Depends => (Temp => Import)
       is
       begin
          Temp := Import;
@@ -151,8 +147,6 @@ package body Test is
 
    procedure Ineffective_Statements_4 (Import : in Natural) is
       Temp : Natural := Import;
-
-      function Factorial (Val : Natural) return Natural;
 
       function Factorial (Val : Natural) return Natural is
       begin
