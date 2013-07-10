@@ -268,7 +268,7 @@ package body Gnat2Why.Decls is
             --  expected type for the constant.
 
             if Etype (Partial_View (E)) /= Etype (E) then
-               Def := W_Term_Id (Insert_Conversion
+               Def := W_Term_Id (Insert_Simple_Conversion
                         (Domain   => EW_Term,
                          Ada_Node => Expression (Decl),
                          Expr     => W_Expr_Id (Def),

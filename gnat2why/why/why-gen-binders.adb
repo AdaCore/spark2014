@@ -119,7 +119,7 @@ package body Why.Gen.Binders is
    begin
       if Present (Ada_Type) and then Is_Scalar_Type (Ada_Type) then
          Left :=
-           +Insert_Conversion
+           +Insert_Simple_Conversion
            (Domain   => EW_Term,
             Ada_Node => Ada_Node,
             Expr     => +Left,

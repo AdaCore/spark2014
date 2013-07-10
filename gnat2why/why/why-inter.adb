@@ -44,6 +44,10 @@ with Why.Gen.Expr;        use Why.Gen.Expr;
 
 with Gnat2Why.Util;       use Gnat2Why.Util;
 
+---------------
+-- Why.Inter --
+---------------
+
 package body Why.Inter is
 
    package Type_Hierarchy is
@@ -1126,6 +1130,16 @@ package body Why.Inter is
                                 Kind => Kind);
       end loop;
    end Init_Why_Files;
+
+   --------------------------
+   -- Is_Record_Conversion --
+   --------------------------
+
+   function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean
+   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
+       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+       Is_Record_Type (Get_Ada_Node (+Left)) and then
+       Is_Record_Type (Get_Ada_Node (+Right)));
 
    ---------
    -- LCA --

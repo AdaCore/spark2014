@@ -51,6 +51,17 @@ with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 
 package body Why.Gen.Expr is
 
+   function Insert_Single_Conversion
+     (Ada_Node : Node_Id;
+      Domain   : EW_Domain;
+      To       : W_Base_Type_Id;
+      From     : W_Base_Type_Id;
+      Expr     : W_Expr_Id) return W_Expr_Id;
+   --  Assuming that there is at most one step between To and From in the
+   --  type hierarchy (i.e. that it exists a conversion from From
+   --  to To; a counterexample would be two abstract types whose base
+   --  types differ), insert the corresponding conversion.
+
    Subp_Sloc_Map : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------------------
@@ -246,6 +257,7 @@ package body Why.Gen.Expr is
           (Name => To_String (WNE_Pretty_Ada) & ":" & Prefix &
              Subprogram_Full_Source_Name (Current_Subp));
    end Cur_Subp_Name_Label;
+
    -----------------------
    -- Insert_Conversion --
    -----------------------
@@ -256,93 +268,10 @@ package body Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Range_Check   : Node_Id := Empty;
-      Discr_Check   : Node_Id := Empty) return W_Expr_Id
+      Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
       Base   : constant W_Base_Type_Id :=
         LCA (To, From, Force => Range_Check /= Empty);
-      Is_Record_Conversion : constant Boolean :=
-        Get_Base_Type (Base) = EW_Abstract and then
-        Is_Record_Type (Get_Ada_Node (+Base));
-
-      function Insert_Discr_Check
-        (Expr : W_Expr_Id) return W_Expr_Id;
-      --  insert a discriminant check, if Discr_Check is not empty.
-
-      function Compute_Check_Subtype return Entity_Id;
-      --  compute the record type given the discriminant check node
-
-      function Insert_Single_Conversion
-        (To   : W_Base_Type_Id;
-         From : W_Base_Type_Id;
-         Expr : W_Expr_Id) return W_Expr_Id;
-      --  Assuming that there is at most one step between To and From in the
-      --  type hierarchy (i.e. that it exists a conversion from From
-      --  to To; a counterexample would be two abstract types whose base
-      --  types differ), insert the corresponding conversion.
-
-      ---------------------------
-      -- Compute_Check_Subtype --
-      ---------------------------
-
-      function Compute_Check_Subtype return Entity_Id
-      is
-      begin
-         case Nkind (Discr_Check) is
-            when N_Assignment_Statement =>
-               return Unique_Entity (Etype (Name (Discr_Check)));
-            when N_Type_Conversion =>
-               return Unique_Entity (Etype (Discr_Check));
-            when others =>
-               raise Program_Error;
-         end case;
-      end Compute_Check_Subtype;
-
-      ------------------------
-      -- Insert_Discr_Check --
-      ------------------------
-
-      function Insert_Discr_Check (Expr : W_Expr_Id) return W_Expr_Id
-      is
-      begin
-         if Discr_Check = Empty then
-            return Expr;
-         end if;
-         return
-           +Insert_Subtype_Discriminant_Check
-           (Ada_Node,
-            Compute_Check_Subtype,
-            +Expr);
-      end Insert_Discr_Check;
-
-      ------------------------------
-      -- Insert_Single_Conversion --
-      ------------------------------
-
-      function Insert_Single_Conversion
-        (To   : W_Base_Type_Id;
-         From : W_Base_Type_Id;
-         Expr : W_Expr_Id) return W_Expr_Id is
-      begin
-         if Eq (From, To) then
-            return Expr;
-         else
-            declare
-               Name         : constant W_Identifier_Id :=
-                 Conversion_Name (From => From, To => To);
-            begin
-               return
-                 New_Call
-                   (Domain   => Domain,
-                    Ada_Node => Ada_Node,
-                    Name     => Name,
-                    Args     => (1 => +Expr));
-            end;
-         end if;
-      end Insert_Single_Conversion;
-
-   --  Start of processing for Insert_Conversion
-
    begin
 
       --  It seems that when the to and from types are equal, we can stop. But
@@ -356,165 +285,198 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      if Is_Record_Conversion then
+      --  the regular case, we take care to insert the range check at a
+      --  valid place where the expression is of the appropriate Why base
+      --  type (real for a range check of a floating point type, int for a
+      --  range check of a discrete type).
 
-         --  the case of record conversions
+      declare
+         Up_From : constant W_Base_Type_Id := Up (From, Base);
+         Up_To   : constant W_Base_Type_Id := Up (To, Base);
+         Range_Type : Entity_Id;
+         Check_Kind : Range_Check_Kind;
 
+         function Is_Appropriate (Base       : W_Base_Type_Id;
+                                  Check_Type : Entity_Id) return Boolean;
+         --  Return True if the Base type and the check type are
+         --  compatible. This indicates the point where the check should be
+         --  inserted.
+
+         --------------------
+         -- Is_Appropriate --
+         --------------------
+
+         function Is_Appropriate (Base       : W_Base_Type_Id;
+                                  Check_Type : Entity_Id) return Boolean
+         is
+            Und : constant Entity_Id := Underlying_Type (Check_Type);
+         begin
+            if Is_Discrete_Type (Und) then
+               return Base = EW_Int_Type;
+            elsif Is_Fixed_Point_Type (Und) or else
+              Is_Floating_Point_Type (Und) then
+               return Base = EW_Real_Type;
+            elsif Is_Array_Type (Und) then
+               return Base = EW_Array_Type;
+            else
+               return False;
+            end if;
+         end Is_Appropriate;
+
+      begin
+
+         --  Here we explicit all four situations of where the range check
+         --  should be inserted, or inserted at all. It's not very elegant,
+         --  but it has the advantage of being pretty clear.
+
+         if Range_Check /= Empty then
+            Get_Range_Check_Info (Range_Check, Range_Type, Check_Kind);
+            if Is_Appropriate (From, Range_Type) then
+               return
+                 Insert_Simple_Conversion
+                   (Domain => Domain,
+                    To     => To,
+                    From   => From,
+                    Expr   =>
+                      Insert_Range_Check (Range_Check, Expr));
+            elsif Is_Appropriate (Up_From, Range_Type) then
+               return
+                 Insert_Simple_Conversion
+                   (Domain => Domain,
+                    To     => To,
+                    From   => Up_From,
+                    Expr =>
+                      Insert_Range_Check
+                        (Range_Check,
+                         Insert_Simple_Conversion
+                           (Domain => Domain,
+                            To     => Up_From,
+                            From   => From,
+                            Expr   => Expr)));
+            elsif Is_Appropriate (Up_To, Range_Type) then
+               return
+                 Insert_Simple_Conversion
+                   (Domain => Domain,
+                    To     => To,
+                    From   => Up_To,
+                    Expr   =>
+                      Insert_Range_Check
+                        (Range_Check,
+                         Insert_Simple_Conversion
+                           (Domain   => Domain,
+                            Ada_Node => Ada_Node,
+                            To       => Up_To,
+                            From     => From,
+                            Expr     => Expr)));
+            elsif Is_Appropriate (To, Range_Type) then
+               return
+                 Insert_Range_Check
+                   (Range_Check,
+                    Insert_Simple_Conversion
+                      (Domain => Domain,
+                       To     => To,
+                       From   => From,
+                       Expr   => Expr));
+            else
+
+               --  should never happen
+
+               raise Program_Error;
+            end if;
+         else
+            return
+              Insert_Simple_Conversion
+                (Domain => Domain,
+                 To     => To,
+                 From   => From,
+                 Expr   => Expr);
+         end if;
+      end;
+   end Insert_Conversion;
+
+   ------------------------------
+   -- Insert_Simple_Conversion --
+   ------------------------------
+
+   function Insert_Simple_Conversion
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Expr     : W_Expr_Id;
+      To       : W_Base_Type_Id;
+      From     : W_Base_Type_Id) return W_Expr_Id
+   is
+
+      Base   : constant W_Base_Type_Id := LCA (To, From);
+
+      --  beginning of processing for Insert_Simple_Conversion
+
+   begin
+      if Eq (To, From) then
+         return Expr;
+      end if;
+      declare
+         Up_From : constant W_Base_Type_Id := Up (From, Base);
+         Up_To   : constant W_Base_Type_Id := Up (To, Base);
+      begin
          return
            Insert_Single_Conversion
-             (To   => To,
-              From => Base,
-              Expr =>
-                Insert_Discr_Check
-                  (Insert_Single_Conversion
-                       (To   => Base,
-                        From => From,
-                        Expr => Expr)));
+             (Ada_Node => Ada_Node,
+              Domain   => Domain,
+              To       => To,
+              From     => Up_To,
+              Expr     =>
+                Insert_Simple_Conversion
+                  (Domain   => Domain,
+                   Ada_Node => Ada_Node,
+                   To       => Up_To,
+                   From     => Up_From,
+                   Expr     =>
+                     Insert_Single_Conversion
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        To       => Up_From,
+                        From     => From,
+                        Expr     => Expr)));
+      end;
+   end Insert_Simple_Conversion;
+
+   ------------------------------
+   -- Insert_Single_Conversion --
+   ------------------------------
+
+   function Insert_Single_Conversion
+     (Ada_Node : Node_Id;
+      Domain   : EW_Domain;
+      To       : W_Base_Type_Id;
+      From     : W_Base_Type_Id;
+      Expr     : W_Expr_Id) return W_Expr_Id is
+   begin
+      if Eq (From, To)
+
+        --  ??? Special trick to ignore conversion on formal container types
+        --  for the time being.
+
+        or else
+          (Present (Ada_Node)
+           and then Ekind (Etype (Ada_Node)) in Record_Kind
+           and then
+           SPARK_Util.Type_Based_On_Formal_Container (Etype (Ada_Node)))
+      then
+         return Expr;
       else
-
-         --  the regular case, we take care to insert the range check at a
-         --  valid place where the expression is of the appropriate Why base
-         --  type (real for a range check of a floating point type, int for a
-         --  range check of a discrete type).
-
          declare
-            Up_From : constant W_Base_Type_Id := Up (From, Base);
-            Up_To   : constant W_Base_Type_Id := Up (To, Base);
-            Range_Type : Entity_Id;
-            Check_Kind : Range_Check_Kind;
-
-            function Is_Appropriate (Base       : W_Base_Type_Id;
-                                     Check_Type : Entity_Id) return Boolean;
-            --  Return True if the Base type and the check type are
-            --  compatible. This indicates the point where the check should be
-            --  inserted.
-
-            --------------------
-            -- Is_Appropriate --
-            --------------------
-
-            function Is_Appropriate (Base       : W_Base_Type_Id;
-                                     Check_Type : Entity_Id) return Boolean
-            is
-               Und : constant Entity_Id := Underlying_Type (Check_Type);
-            begin
-               if Is_Discrete_Type (Und) then
-                  return Base = EW_Int_Type;
-               elsif Is_Fixed_Point_Type (Und) or else
-                 Is_Floating_Point_Type (Und) then
-                  return Base = EW_Real_Type;
-               elsif Is_Array_Type (Und) then
-                  return Base = EW_Array_Type;
-               else
-                  return False;
-               end if;
-            end Is_Appropriate;
-
+            Name         : constant W_Identifier_Id :=
+              Conversion_Name (From => From, To => To);
          begin
-
-            --  Here we explicit all four situations of where the range check
-            --  should be inserted, or inserted at all. It's not very elegant,
-            --  but it has the advantage of being pretty clear.
-
-            if Range_Check /= Empty then
-               Get_Range_Check_Info (Range_Check, Range_Type, Check_Kind);
-               if Is_Appropriate (From, Range_Type) then
-                  return
-                    Insert_Single_Conversion
-                      (To   => To,
-                       From => Up_To,
-                       Expr =>
-                         Insert_Conversion
-                           (Domain   => Domain,
-                            Ada_Node => Ada_Node,
-                            To       => Up_To,
-                            From     => Up_From,
-                            Expr     =>
-                              Insert_Single_Conversion
-                                (To => Up_From,
-                                 From => From,
-                                 Expr =>
-                                   Insert_Range_Check (Range_Check, Expr))));
-               elsif Is_Appropriate (Up_From, Range_Type) then
-                  return
-                    Insert_Single_Conversion
-                      (To   => To,
-                       From => Up_To,
-                       Expr =>
-                         Insert_Conversion
-                           (Domain   => Domain,
-                            Ada_Node => Ada_Node,
-                            To       => Up_To,
-                            From     => Up_From,
-                            Expr     =>
-                              Insert_Range_Check
-                                (Range_Check,
-                                 Insert_Single_Conversion
-                                   (To => Up_From,
-                                    From => From,
-                                    Expr => Expr))));
-               elsif Is_Appropriate (Up_To, Range_Type) then
-                  return
-                    Insert_Single_Conversion
-                      (To   => To,
-                       From => Up_To,
-                       Expr =>
-                         Insert_Range_Check
-                           (Range_Check,
-                            Insert_Conversion
-                              (Domain   => Domain,
-                               Ada_Node => Ada_Node,
-                               To       => Up_To,
-                               From     => Up_From,
-                               Expr     =>
-                                 Insert_Single_Conversion
-                                   (To => Up_From,
-                                    From => From,
-                                    Expr => Expr))));
-               elsif Is_Appropriate (To, Range_Type) then
-                  return
-                    Insert_Range_Check
-                      (Range_Check,
-                       Insert_Single_Conversion
-                         (To   => To,
-                          From => Up_To,
-                          Expr =>
-                            Insert_Conversion
-                              (Domain   => Domain,
-                               Ada_Node => Ada_Node,
-                               To       => Up_To,
-                               From     => Up_From,
-                               Expr     =>
-                                 Insert_Single_Conversion
-                                   (To => Up_From,
-                                    From => From,
-                                    Expr => Expr))));
-               else
-
-                  --  should never happen
-
-                  raise Program_Error;
-               end if;
-            else
-               return
-                 Insert_Single_Conversion
-                   (To   => To,
-                    From => Up_To,
-                    Expr =>
-                      Insert_Conversion
-                        (Domain   => Domain,
-                         Ada_Node => Ada_Node,
-                         To       => Up_To,
-                         From     => Up_From,
-                         Expr     =>
-                           Insert_Single_Conversion
-                             (To => Up_From,
-                              From => From,
-                              Expr => Expr)));
-            end if;
+            return
+              New_Call
+                (Domain   => Domain,
+                 Ada_Node => Ada_Node,
+                 Name     => Name,
+                 Args     => (1 => +Expr));
          end;
       end if;
-   end Insert_Conversion;
+   end Insert_Single_Conversion;
 
    ----------------------
    -- Is_False_Boolean --
@@ -671,13 +633,13 @@ package body Why.Gen.Expr is
       then
          Op_Type := EW_Int_Type;
          Left1  :=
-           Insert_Conversion
+           Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => Left,
               From   => Arg_Types,
               To     => EW_Int_Type);
          Right1 :=
-           Insert_Conversion
+           Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => Right,
               From   => Arg_Types,
@@ -1062,6 +1024,66 @@ package body Why.Gen.Expr is
               Args   => (1 => +Left, 2 => +Right));
       end if;
    end New_Xor_Expr;
+
+   ----------------------------------
+   -- Record_Conversion_With_Check --
+   ----------------------------------
+
+   function Record_Conversion_With_Check
+     (Ada_Node    : Node_Id;
+      Domain      : EW_Domain;
+      Expr        : W_Expr_Id;
+      From        : W_Base_Type_Id;
+      To          : W_Base_Type_Id;
+      Discr_Check : Node_Id)
+      return W_Expr_Id
+   is
+      Base   : constant W_Base_Type_Id :=
+        LCA (To, From, Force => Discr_Check /= Empty);
+   begin
+      if Discr_Check = Empty then
+         return
+           Insert_Single_Conversion
+             (Domain   => Domain,
+              Ada_Node => Ada_Node,
+              To       => To,
+              From     => Base,
+              Expr     =>
+                Insert_Single_Conversion
+                  (Domain   => Domain,
+                   Ada_Node => Ada_Node,
+                   To       => Base,
+                   From     => From,
+                   Expr     => Expr));
+      else
+         declare
+            Check_Entity : constant Entity_Id :=
+              (case Nkind (Discr_Check) is
+                  when N_Assignment_Statement =>
+                     Unique_Entity (Etype (Name (Discr_Check))),
+                  when N_Type_Conversion =>
+                     Unique_Entity (Etype (Discr_Check)),
+                  when others => Empty);
+         begin
+            return
+              Insert_Single_Conversion
+                (Domain   => Domain,
+                 Ada_Node => Ada_Node,
+                 To       => To,
+                 From     => Base,
+                 Expr     =>
+                 +Insert_Subtype_Discriminant_Check
+                   (Ada_Node,
+                    Check_Entity,
+                    +Insert_Single_Conversion
+                      (Domain   => Domain,
+                       Ada_Node => Ada_Node,
+                       To       => Base,
+                       From     => From,
+                       Expr     => Expr)));
+         end;
+      end if;
+   end Record_Conversion_With_Check;
 
    -----------------------
    -- Why_Default_Value --

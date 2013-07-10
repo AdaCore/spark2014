@@ -252,6 +252,8 @@ package Why.Inter is
    --  used for comparisons, conversions etc. Examples are EW_Real_Type
    --  for standard__float, and the Root_Record_Type for record types.
 
+   function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
+
    function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
    function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id;
    --  Return the most general base type for Left and Right

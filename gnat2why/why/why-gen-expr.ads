@@ -22,20 +22,21 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Snames;         use Snames;
-with Types;          use Types;
+
+with Snames;              use Snames;
+with Types;               use Types;
 pragma Warnings (Off);
 --  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
 --  with the same name ("Types"). Maybe we should think of renaming it to
 --  "Why.W_Types".
-with Why.Types;      use Why.Types;
+with Why.Types;           use Why.Types;
 pragma Warnings (On);
-with VC_Kinds;       use VC_Kinds;
+with VC_Kinds;            use VC_Kinds;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
-with Why.Ids;        use Why.Ids;
-with Why.Sinfo;      use Why.Sinfo;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
 
 package Why.Gen.Expr is
 
@@ -144,14 +145,20 @@ package Why.Gen.Expr is
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
 
+   function Insert_Simple_Conversion
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Expr     : W_Expr_Id;
+      To       : W_Base_Type_Id;
+      From     : W_Base_Type_Id) return W_Expr_Id;
+
    function Insert_Conversion
      (Domain        : EW_Domain;
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
-      Range_Check   : Node_Id := Empty;
-      Discr_Check   : Node_Id := Empty) return W_Expr_Id;
+      Range_Check   : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
    --  We insert a conversion so that its type corresponds to "To".
    --  When Range_Check is set, a range check is inserted into the conversion,
@@ -159,10 +166,17 @@ package Why.Gen.Expr is
    --  here includes regular range checks of scalar types, index checks, length
    --  checks of constrained arrays and range checks for conversion to
    --  unconstrained array types.
+
+   function Record_Conversion_With_Check
+     (Ada_Node    : Node_Id;
+      Domain      : EW_Domain;
+      Expr        : W_Expr_Id;
+      From        : W_Base_Type_Id;
+      To          : W_Base_Type_Id;
+      Discr_Check : Node_Id)
+      return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
-   --  Note that Discr_Check is ignored when the conversion is not between
-   --  record types.
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
                                 return W_Expr_Id;

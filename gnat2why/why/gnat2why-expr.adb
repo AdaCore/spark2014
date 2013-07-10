@@ -1167,7 +1167,7 @@ package body Gnat2Why.Expr is
                --  "in out" parameters:
 
                Fetch_Actual  : constant W_Prog_Id :=
-                                 +Insert_Conversion
+                                 +Insert_Simple_Conversion
                                    (Domain   => Fetch_Domain,
                                     Ada_Node => Actual,
                                     Expr     =>
@@ -1187,7 +1187,7 @@ package body Gnat2Why.Expr is
                --  ... with the appropriate range checks...
 
                Arg_Value     : constant W_Prog_Id :=
-                                 +Insert_Conversion
+                                 +Insert_Simple_Conversion
                                    (Domain   => EW_Prog,
                                     Ada_Node => Actual,
                                     Expr     => +Tmp_Var_Deref,
@@ -1406,7 +1406,7 @@ package body Gnat2Why.Expr is
                begin
                   N := Expression (N);
                   Expr :=
-                    +Insert_Conversion
+                    +Insert_Simple_Conversion
                       (Domain => EW_Prog,
                        Expr   => +Expr,
                        To     => Type_Of_Node (New_Type),
@@ -4221,48 +4221,56 @@ package body Gnat2Why.Expr is
       --  one step down for the Range_Check_Node.
 
       if Domain in EW_Term | EW_Prog then
-         declare
-            Range_Check_Node : Node_Id := Empty;
-            Discr_Check_Node : Node_Id := Empty;
-         begin
+         if Is_Record_Conversion (Current_Type, Expected_Type) then
+            declare
+               Discr_Check_Node : Node_Id := Empty;
+            begin
+               if Domain = EW_Prog and then
+                 Nkind (Parent (Expr)) in
+                   N_Type_Conversion | N_Assignment_Statement then
 
-            --  ??? Protect array types, range checks currently broken for
-            --  those
+                  --  ??? in which cases exactly do we need a check?
 
-            if Domain /= EW_Prog then
-               Range_Check_Node := Empty;
-            elsif Do_Range_Check (Expr) then
-               Range_Check_Node := Expr;
-            elsif Nkind (Expr) = N_Type_Conversion and then
-              Do_Overflow_Check (Expr) then
-               Range_Check_Node := Expression (Expr);
-            end if;
+                  Discr_Check_Node := Parent (Expr);
+               end if;
+               T := Record_Conversion_With_Check
+                 (Domain        => Domain,
+                  Ada_Node      => Expr,
+                  Expr          => T,
+                  From          => Current_Type,
+                  To            => Expected_Type,
+                  Discr_Check   => Discr_Check_Node);
+            end;
+         else
+            declare
+               Range_Check_Node : Node_Id := Empty;
+            begin
 
-            if Nkind (Parent (Expr)) in
-              N_Type_Conversion | N_Assignment_Statement | N_Op_And |
-                N_Op_Or | N_Op_Xor and then
-              Do_Length_Check (Parent (Expr)) and then
-              Domain = EW_Prog then
-               Range_Check_Node := Expr;
-            end if;
+               if Domain /= EW_Prog then
+                  Range_Check_Node := Empty;
+               elsif Do_Range_Check (Expr) then
+                  Range_Check_Node := Expr;
+               elsif Nkind (Expr) = N_Type_Conversion and then
+                 Do_Overflow_Check (Expr) then
+                  Range_Check_Node := Expression (Expr);
+               end if;
 
-            if Domain = EW_Prog and then
-              Nkind (Parent (Expr)) in
-              N_Type_Conversion | N_Assignment_Statement then
+               if Nkind (Parent (Expr)) in
+                 N_Type_Conversion | N_Assignment_Statement | N_Op_And |
+               N_Op_Or | N_Op_Xor and then
+                 Do_Length_Check (Parent (Expr)) and then
+                 Domain = EW_Prog then
+                  Range_Check_Node := Expr;
+               end if;
 
-               --  ??? in which cases exactly do we need a check?
-
-               Discr_Check_Node := Parent (Expr);
-            end if;
-
-            T := Insert_Conversion (Domain        => Domain,
-                                    Ada_Node      => Expr,
-                                    Expr          => T,
-                                    From          => Current_Type,
-                                    To            => Expected_Type,
-                                    Range_Check   => Range_Check_Node,
-                                    Discr_Check   => Discr_Check_Node);
-         end;
+               T := Insert_Conversion (Domain        => Domain,
+                                       Ada_Node      => Expr,
+                                       Expr          => T,
+                                       From          => Current_Type,
+                                       To            => Expected_Type,
+                                       Range_Check   => Range_Check_Node);
+            end;
+         end if;
       end if;
 
       return T;

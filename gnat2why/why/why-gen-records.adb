@@ -276,7 +276,7 @@ package body Why.Gen.Records is
                Ada_Discr : constant Node_Id :=
                  Entity (Name (Info.Parent_Var_Part));
                Discr : constant W_Term_Id :=
-                 +Insert_Conversion
+                 +Insert_Simple_Conversion
                    (Domain => EW_Term,
                     Expr =>
                       New_Record_Access
@@ -374,7 +374,7 @@ package body Why.Gen.Records is
                       (Domain => EW_Term,
                        Field  => Field_Id,
                        Value  =>
-                         Insert_Conversion
+                         Insert_Simple_Conversion
                            (Domain => EW_Term,
                             To     => EW_Abstract (Etype (Field)),
                             From   => EW_Abstract (Etype (Orig)),
@@ -387,7 +387,7 @@ package body Why.Gen.Records is
                       (Domain => EW_Term,
                        Field  => Orig_Id,
                        Value  =>
-                         Insert_Conversion
+                         Insert_Simple_Conversion
                            (Domain => EW_Term,
                             To     => EW_Abstract (Etype (Orig)),
                             From   => EW_Abstract (Etype (Field)),
