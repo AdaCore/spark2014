@@ -912,7 +912,7 @@ The following example illustrates a more complex I/O device: the device is funda
 an output device but an acknowledgement has to be read from it. In addition, a local register
 stores the last value written to avoid writes that would just re-send the same value.
 The own variable is then refined into a normal variable, an input external variable
-ad an output external variable.
+and an output external variable.
 
 Specification in SPARK 2005:
 
