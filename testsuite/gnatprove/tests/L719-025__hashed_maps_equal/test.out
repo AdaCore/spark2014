@@ -2,7 +2,7 @@ p.adb:5:7: info: precondition proved
 p.adb:6:7: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:7: info: precondition proved
-p.adb:13:7: precondition not proved
+p.adb:13:7: info: precondition proved
 p.adb:19:10: info: precondition proved
 p.adb:21:10: info: precondition proved
 p.ads:22:14: postcondition not proved

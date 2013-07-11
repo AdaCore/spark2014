@@ -7,7 +7,7 @@ int_list.adb:21:10: info: precondition proved
 int_list.adb:21:33: info: precondition proved
 int_list.adb:21:48: range check not proved
 int_list.adb:22:10: info: precondition proved
+int_list.ads:18:8: info: postcondition proved
 int_list.ads:18:8: info: precondition proved
-int_list.ads:18:8: postcondition not proved
 int_list.ads:20:36: info: overflow check proved
 int_list.ads:27:8: info: postcondition proved

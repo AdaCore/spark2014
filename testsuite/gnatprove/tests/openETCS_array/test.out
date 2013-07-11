@@ -115,7 +115,7 @@ step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:50: info: index check proved
 step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: info: index check proved
-step_function.ads:56:12: postcondition not proved
+step_function.ads:56:12: info: postcondition proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved

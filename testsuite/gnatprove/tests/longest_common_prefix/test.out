@@ -2,7 +2,7 @@ lcp.adb:3:10: info: range check proved
 lcp.adb:7:12: info: overflow check proved
 lcp.adb:8:17: info: overflow check proved
 lcp.adb:9:20: info: index check proved
-lcp.adb:9:20: overflow check not proved
+lcp.adb:9:20: info: overflow check proved
 lcp.adb:9:32: info: index check proved
 lcp.adb:9:32: overflow check not proved
 lcp.adb:11:7: info: loop invariant initialization proved
