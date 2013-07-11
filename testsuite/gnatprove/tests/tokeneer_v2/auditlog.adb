@@ -284,7 +284,7 @@ is
       --
       ------------------------------------------------------------------
       function ConvertTimesToText return AuditTypes.DescriptionT
-         with Global  => (FirstTime, LastTime, TimeOK)
+         with Global => (FirstTime, LastTime, TimeOK)
       is
          pragma SPARK_Mode (Off);
          Descr : AuditTypes.DescriptionT;
@@ -391,8 +391,7 @@ is
       ------------------------------------------------------------------
       function OverwriteTimeInText(Description : AuditTypes.DescriptionT)
                                    return AuditTypes.DescriptionT
-         with Global  => (LastTime,
-                          TimeOK)
+         with Global  => (LastTime, TimeOK)
       is
          pragma SPARK_Mode (Off);
          Descr : AuditTypes.DescriptionT;
@@ -1029,9 +1028,9 @@ is
 
          AddElementToLogFile
            (ElementID   => AuditTypes.TruncateLog,
-             Severity    => AuditTypes.Critical,
-             User        => AuditTypes.NoUser,
-             Description => TruncateDescription);
+            Severity    => AuditTypes.Critical,
+            User        => AuditTypes.NoUser,
+            Description => TruncateDescription);
 
          --# assert NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile) and LogFileEntries(CurrentLogFile) = 1  and UsedLogFiles.Length = LogFileCountT'Last;
          pragma Assert_And_Cut
@@ -1048,8 +1047,8 @@ is
         (NumberLogEntries =
            LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
            LogFileEntries(CurrentLogFile) and then
-           (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or else
-            UsedLogFiles.Length < LogFileCountT'Last));
+         (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or else
+          UsedLogFiles.Length < LogFileCountT'Last));
 
       AddElementToLogFile
         (ElementID   => ElementID,
@@ -1113,16 +1112,16 @@ is
      --
      ------------------------------------------------------------------
      procedure SetFileDetails
-        --  with Global  => (Output => (FileAges,
-        --                              LogFileEntries,
-        --                              LogFilesStatus),
-        --                   In_Out => (AuditSystemFault,
-        --                              LogFiles)),
-        --       Depends => ((AuditSystemFault,
-        --                    LogFiles) =>+ LogFiles,
-        --                   (FileAges,
-        --                    LogFileEntries,
-        --                    LogFilesStatus) => LogFiles)
+        with Global  => (Output => (FileAges,
+                                    LogFileEntries,
+                                    LogFilesStatus),
+                         In_Out => (AuditSystemFault,
+                                    LogFiles)),
+             Depends => ((AuditSystemFault,
+                          LogFiles) =>+ LogFiles,
+                         (FileAges,
+                          LogFileEntries,
+                          LogFilesStatus) => LogFiles)
      is
         FileH         : File.T;
         Status        : FileStatusT;
@@ -1140,19 +1139,19 @@ is
         --
         ------------------------------------------------------------------
         procedure GetFileDetails (I : in LogFileIndexT)
-            --  with Global  => (Input  => LogFiles,
-            --                  Output => (FileH,
-            --                             FirstTime,
-            --                             NumberEntries,
-            --                             Status),
-            --                  In_Out => AuditSystemFault),
-            --      Depends => (AuditSystemFault =>+ (I,
-            --                                        LogFiles),
-            --                  (FileH,
-            --                   FirstTime,
-            --                   NumberEntries,
-            --                   Status) => (I,
-            --                               LogFiles))
+            with Global  => (Input  => LogFiles,
+                            Output => (FileH,
+                                       FirstTime,
+                                       NumberEntries,
+                                       Status),
+                            In_Out => AuditSystemFault),
+                Depends => (AuditSystemFault =>+ (I,
+                                                  LogFiles),
+                            (FileH,
+                             FirstTime,
+                             NumberEntries,
+                             Status) => (I,
+                                         LogFiles))
         is
            OK : Boolean;
            TimeOK : Boolean := True;
@@ -1185,9 +1184,9 @@ is
                     -- See how full it is
                     while not File.EndOfFile(FileH) loop
                        --# assert NumberEntries >= 0 and NumberEntries < MaxLogFileEntries;
-                        pragma Loop_Invariant
-                          (NumberEntries >= 0 and then
-                           NumberEntries < MaxLogFileEntries);
+                       --  pragma Loop_Invariant
+                       --    (NumberEntries >= 0 and then
+                       --     NumberEntries < MaxLogFileEntries);
                        File.SkipLine(FileH, 1);
                        NumberEntries := NumberEntries + 1;
                        exit when NumberEntries = MaxLogFileEntries;
@@ -1363,10 +1362,10 @@ is
    ------------------------------------------------------------------
 
    procedure AddElementToLog (
-                ElementID    : in     AuditTypes.ElementT;
-                Severity     : in     AuditTypes.SeverityT;
-                User         : in     AuditTypes.UserTextT;
-                Description  : in     String)
+                ElementID   : in     AuditTypes.ElementT;
+                Severity    : in     AuditTypes.SeverityT;
+                User        : in     AuditTypes.UserTextT;
+                Description : in     String)
       with Refined_Global  => (Input  => (Clock.Now,
                                           ConfigData.State),
                                In_Out => (AuditAlarm,
@@ -1495,9 +1494,9 @@ is
       Description := ConvertToAuditDescription("Nothing archived");
 
       if UsedLogFiles.Length = 0 or
-        (UsedLogFiles.Length = 1
-        and LogFileEntries(UsedLogFiles.List(UsedLogFiles.Head))
-               < MaxLogFileEntries) then
+        (UsedLogFiles.Length = 1 and
+           LogFileEntries(UsedLogFiles.List(UsedLogFiles.Head))
+           < MaxLogFileEntries) then
          -- Make an empty file to return
 
          File.OpenWrite(TheFile => Archive,
@@ -1506,14 +1505,14 @@ is
          --# accept F, 22, "Invariant expression expected and OK here";
          if not OK then
             File.Create(TheFile => Archive,
-                         Success => OK);
+                        Success => OK);
          end if;
          --#   end accept;
 
          ArchiveFault := not OK;
 
          File.Close(TheFile => Archive,
-                     Success => OK);
+                    Success => OK);
 
          ArchiveFault := ArchiveFault or not OK;
 
@@ -1550,11 +1549,11 @@ is
             if ArchivedFileCount = 0 then
                GetStartAndEndTimeFromFile
                  (TheFile     => TheFile,
-                   Description => Description);
+                  Description => Description);
             else
                UpdateEndTimeFromFile
                  (TheFile     => TheFile,
-                   Description => Description);
+                  Description => Description);
             end if;
 
             LogFiles (FileIndex) := TheFile;
@@ -1574,9 +1573,9 @@ is
       if ArchiveFault then
          AddElementToLog
            (ElementID   => AuditTypes.SystemFault,
-             Severity    => AuditTypes.Warning,
-             User        => AuditTypes.NoUser,
-             Description => "Fault creating archive");
+            Severity    => AuditTypes.Warning,
+            User        => AuditTypes.NoUser,
+            Description => "Fault creating archive");
       end if;
 
       -- As we always add at least one element to the log the CurrentLogFile cannot
@@ -1654,7 +1653,7 @@ is
          pragma Loop_Invariant
            (UsedLogFiles.Length > 1 and then
             LogFilesStatus(UsedLogFiles.List(UsedLogFiles.Head))
-            = Archived and then
+              = Archived and then
             NumberLogEntries =
               LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
               LogFileEntries(CurrentLogFile));
