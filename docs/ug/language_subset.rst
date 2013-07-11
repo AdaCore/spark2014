@@ -4,30 +4,7 @@
 Overview of |SPARK|
 *******************
 
-|SPARK| is a programming language and a set of verification tools
-designed to meet the needs of high-assurance software development.
-|SPARK| is based on Ada 2012, both subsetting the language to remove
-features that defy verification and also extending the system of
-contracts by defining new Ada aspects to support modular, formal verification.
-
-The new aspects support abstraction and refinement and facilitate deep static
-analysis to be performed including information-flow analysis and formal
-verification of an implementation against a specification.
-
-|SPARK| is a much larger and more flexible language than its
-predecessor SPARK 2005. The language can be configured to suit
-a number of application domains and standards, from server-class
-high-assurance systems to embedded, hard real-time, critical systems.
-
-A major feature of |SPARK| is the support for a mixture of proof and
-other verification methods such as testing, which
-facilitates the use of unit proof in place of unit testing; an approach now
-formalized in DO-178C and the DO-333 formal methods supplement.
-Certain units may be formally proven and other units validated through
-testing.
-
-The remainder of
-this chapter provides an overview of the |SPARK| language, detailing for each
+This chapter provides an overview of the |SPARK| language, detailing for each
 feature its consequences in terms of execution and formal verification. This is
 not a reference manual for the |SPARK| language, which can be found in:
 

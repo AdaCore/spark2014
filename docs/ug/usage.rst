@@ -8,6 +8,13 @@ The |GNATprove| tool is packaged as an executable called ``gnatprove``. Like
 other tools in |GNAT Pro| Toolsuite, |GNATprove| is based on the structure of
 GNAT projects, defined in ``.gpr`` files.
 
+A crucial feature of |GNATprove| is that it interprets annotations exactly like
+they are interpreted at run time during tests. In particular, their executable
+semantics includes the verification of run-time checks, which can be verified
+statically with |GNATprove|. |GNATprove| also performs additional verifications
+on the specification of the expected behavior itself, and its correspondence to
+the code.
+
 How to Run |GNATprove|
 ======================
 
