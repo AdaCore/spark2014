@@ -83,11 +83,6 @@ its type is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
 Object Declarations
 ~~~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
-
-Number Declarations
-~~~~~~~~~~~~~~~~~~~
-
 Constants that are not preelaborable are not subject to flow analysis.
 [Users may write programs using such constants and those programs can be
 subject to formal verification. However, flow analysis will ignore the use
@@ -96,6 +91,11 @@ been analysed.]
 
 .. todo:: Lift restriction that non-preelaborable constants are not subject
           to flow analysis. To be completed in a post-Release 1 version of this document.
+
+Number Declarations
+~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
 
 
 Derived Types and Classes
