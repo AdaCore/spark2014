@@ -4,6 +4,7 @@ Require Export semantics.
 
 (** * Properties Proof *)
 
+(** some help tactics used to prove lemmas *)
 Ltac simpl_binop_hyp :=
     repeat match goal with
     | [h: Some ?T = binop_type ?OP ?T1 ?T1 |- _ ] => 
@@ -81,32 +82,61 @@ Proof.
     constructor.
 Qed.
 
-Ltac br_rm_rop v1 v2 op v1' v2' :=
-    match goal with
-    | [ |- exists v : value, eval_expr _ (Ebinop ?ast_id ?rop ?e1 ?e2) (ValNormal ?v)] =>
-            assert (exists b, eval_binop rop (ValNormal v1) (ValNormal v2) = ValNormal (Bool b))
-    end; [ simpl_binop; exists (op v1' v2'); auto | ].
-
-Ltac br_rm_aop v1 v2 v3 :=
-    match goal with
-    | [ |- exists v : value, eval_expr _ (Ebinop ?ast_id ?aop ?e1 ?e2) (ValNormal ?v)] =>
-            assert (exists n, eval_binop aop (ValNormal v1) (ValNormal v2) = ValNormal (Int n))
-    end; [ simpl_binop; exists v3; auto | ].
-
-
-
-
-
+(** the type of the expression evaluation result by eval_expr_with_checks should be 
+     consistent with the type computed by the type checker;
+     the difference between eval_expr and eval_expr_with_checks is that:
+     eval_expr has checks performed implicitly according to the language semantics, while
+     eval_expr_with_checks performs checks only if there are check flags requiring to do that
+*)
+Lemma eval_type_reserve2: forall tb s cks e v t,
+    type_check_stack tb s -> 
+    eval_expr_with_checks cks s e (ValNormal v) ->
+    well_typed_expr tb e t ->
+    return_value_type (ValNormal v) t.
+Proof.
+    intros tb s cks e.
+    induction e;
+    intros v t h1 h2 h3;
+    inversion h3;
+    inversion h2; subst.
+  - (* Econst *)
+    inversion H7; subst.
+    constructor.
+  - inversion H7; subst.
+    constructor.  
+  - (* Evar *)
+    specialize (typed_value _ _ i v h1 ); intros hz1.
+    specialize (hz1 H6).
+    rm_exists.
+    rewrite H3 in H. inversion H; subst.
+    apply value_type_consistent; assumption.
+  - (* Ebinop *)
+    specialize (IHe1 _ _ h1 H12 H5).
+    specialize (IHe2 _ _ h1 H13 H6).
+    destruct v1 as [v11 | v12]; inversion IHe1; subst;
+    destruct v2 as [v21 | v22]; try rm_contradict.
+    + destruct b; 
+       repeat simpl_binop_hyp; 
+       simpl; try constructor.
+       destruct (Zeq_bool v21 0).
+       * inversion H0.
+       * constructor.       
+    + destruct b; try simpl_binop_hyp;
+       constructor.
+  - (* Eunop *)
+    rewrite <- H8.
+    destruct op; destruct v0; inversion H8.
+    constructor.
+Qed.
 
 (**************************************************************************)
-(*                                              BEGIN                                            *)
 (**************************************************************************)
 
 (** some help lemmas *)
 Lemma valid_update: forall tb s ast_id x e v,
     type_check_stack tb s ->
     well_typed_stmt tb (Sassign ast_id x e) ->
-    exists s', update s x (Value v) = Some s'.  (* !!! *)
+    exists s', update s x (Value v) = Some s'.
 Proof.
     intros tb s ast_id x e v h1 h2.
     inversion h2; subst.
@@ -126,12 +156,13 @@ Proof.
     + inversion H.
 Qed.
 
+(** update to the well-typed stack should return well-typed stack  *)
 Lemma type_reserve: forall s x v s' tb m t ,
     update s x (Value v) = Some s' ->    
     type_check_stack tb s -> 
     lookup x tb = Some (m, t)-> 
     return_value_type (ValNormal v) t ->
-    type_check_stack tb s'. (* !!! *)
+    type_check_stack tb s'.
 Proof.
     intros s x v.
     remember (Value v) as v'0.
@@ -161,12 +192,13 @@ Proof.
   - inversion h1.
 Qed.
 
+(** the resulting stack should be well-typed after the modification to the initially well-typed stack by the assignment *)
 Lemma type_reserve_assign: forall tb s ast_id x e v s',
     type_check_stack tb s -> 
     well_typed_stmt tb (Sassign ast_id x e) -> 
     eval_expr s e (ValNormal v) ->
     update s x (Value v) = Some s' ->
-    type_check_stack tb s'. (* !!! *)
+    type_check_stack tb s'. 
 Proof.
     intros tb s ast_id x e v s' h1 h2 h3 h4.
     inversion h2; subst.
@@ -175,12 +207,14 @@ Proof.
     assumption.
 Qed.
 
-
+(** the resulting state for executing a statement can be either exception or a 
+     normal state according to the semantics rules 
+*)
 Lemma symbol_consistent_reserve_0: forall tb s c s',
     type_check_stack tb s -> 
     well_typed_stmt tb c ->
     eval_stmt s c s' -> 
-    s' = SException \/ (exists s0, s' = SNormal s0 /\ type_check_stack tb s0). (* !!! *)
+    s' = SException \/ (exists s0, s' = SNormal s0 /\ type_check_stack tb s0).
 Proof.
     intros tb s c s' h1 h2 h3.
     induction h3;
@@ -222,12 +256,16 @@ Proof.
     exists s; 
     split; auto.
 Qed.
-    
+
+(** 
+    if the initial stack is well-typed, and when we execute a command, 
+    the resulting normal stack should also be well-typed
+*)
 Lemma symbol_consistent_reserve: forall tb s c s',
     type_check_stack tb s -> 
     well_typed_stmt tb c ->
     eval_stmt s c (SNormal s') -> 
-    type_check_stack tb s'. (* !!! *)
+    type_check_stack tb s'. 
 Proof.
     intros tb s c s' h1 h2 h3.
     remember (SNormal s') as s1.
@@ -240,6 +278,7 @@ Proof.
 Qed.
 
 
+(** for any stack s, a corresponding initialization state map can be computed from it *)
 Lemma imap_exists: forall s, 
     exists istate, initializationMap s istate.
 Proof.
@@ -260,6 +299,11 @@ Qed.
 (****************************************************)
 (****************************************************)
 
+(** 
+    if expression e is well-defined (meaning that all variables used in e has been initialized) under the 
+    initialization state map istate1, and for all variables that are initialized in istate1 are also initialized in istate2, 
+    then of course, e is also well-typed under istate2
+*)
 Lemma initializationMap_expr: forall istate1 e istate2,
      well_defined_expr istate1 e ->   
      (forall x, fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) ->
@@ -287,6 +331,12 @@ Proof.
 Qed.
 
 (* this modified version is used to prove lemma: ''initializationMap_stmt'' *)
+(** 
+    if expression e is well-defined (meaning that all variables used in e has been initialized) under the 
+    initialization state map istate1, and for all variables that are initialized in istate1 are also initialized in istate2, 
+    and for variables that are uninitialized in state1 may be initialized or uninitialized in istate2,
+    then of course, e is also well-typed under istate2
+*)
 Lemma initializationMap_expr1: forall istate1 e istate2,
      well_defined_expr istate1 e ->   
      (forall x, (fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) /\
@@ -299,6 +349,10 @@ Proof.
     assumption.
 Qed.
 
+(** 
+    if istate1 is a subset of istate2, which means that all variables that are initialized in istate1 are also
+    initialized in istate2, and istate2 is a subset of istate3, then istate1 is subset of istate3 
+*)
 Lemma fetch2_transitive: forall istate1 istate2 istate3,
     (forall x : idnum,
       (fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) /\
@@ -329,6 +383,11 @@ Proof.
 Qed.
 
 (* 'c' is put before 'istate1', because when we do induction on 'c', keep 'istate1' universal *)
+(** 
+    if command c is well-defined under both the initialization states istate1 and istate2 and 
+    istate1 is a subset of istate2, then the resulting initialization state istate1' should be the subset 
+    of istate2'
+*)
 Lemma wd_fetch2_sync: forall c istate1 istate1' istate2 istate2',
     well_defined_stmt istate1 c istate1' ->
     well_defined_stmt istate2 c istate2' ->
@@ -388,6 +447,10 @@ Proof.
     + apply H3. assumption.
 Qed.
 
+(** 
+    if command c is well-defined under the initialization state istate1, and istate1 is a subset of  
+    istate2, then c should also be well-defined under istate2
+*)
 Lemma initializationMap_stmt: forall istate1 c istate1' istate2,
      well_defined_stmt istate1 c istate1' ->   
      (forall x, (fetch2 x istate1 = Some Init -> fetch2 x istate2 = Some Init) /\
@@ -443,7 +506,11 @@ Proof.
     + assumption.
 Qed.
 
-
+(** 
+    command may change the uninitialized variables into initialized ones, 
+    so the initialization state istate before executing command c should be
+    subset of the resulting initialization state istate'
+*)
 Lemma initializationMap_inc: forall istate c istate',
      well_defined_stmt istate c istate' ->   
      (forall x, (fetch2 x istate = Some Init -> fetch2 x istate' = Some Init) /\
@@ -501,6 +568,12 @@ Ltac rm_hyps :=
     | [ h: SNormal _ = SException \/ _ |- _] => destruct h as [h1z | h2z]; [inversion h1z | intuition] 
     end.
 
+(** 
+    in well_defined_stmt, the initialization state istate' after executing the conditional and while statement is 
+    defined as the intersection of the resulting initialization states from both branches;
+    in eval_stmt, it executes either true branch or false branch for conditional and while statemet according
+    to the current state s,  so the initialization state istate1 computed from s' should be a superset of istate'
+ *)
 Lemma eval_stmt_greater_0: forall s c s' istate istate' s0 istate1,
      eval_stmt s c s' ->
      initializationMap s istate ->
@@ -608,7 +681,10 @@ Proof.
     exists Uninit; auto.
 Qed.
 
-
+(** 
+    it's similar to eval_stmt_greater_0, the only difference is that we exclude the
+    exception state when running eval_stmt here 
+*)
 Lemma eval_stmt_greater: forall s c s' istate istate' istate1,
      eval_stmt s c (SNormal s') -> 
      initializationMap s istate ->
@@ -625,6 +701,10 @@ Proof.
   - apply H; auto.
 Qed.
 
+(** 
+    according to the lemma eval_stmt_greater, we know that istate' is a subset of istate1, 
+    so whenever c2 is well-defined under istate', it should also be well-defined under istate1
+*)
 Lemma initializationMap_consistent: forall s istate c1 s' istate' c2 istate'' istate1,
      initializationMap s istate ->
      eval_stmt s c1 (SNormal s') -> 
@@ -645,6 +725,10 @@ Qed.
 
 (** * Correctness Proof About Well-Formed Command *)
 
+(** 
+    subset is introduced to prove eval_expr_with_checks_correct and eval_stmt_with_checks_correct, 
+    otherwise they cannot be proved directly 
+*)
 Definition subset (cks1: check_points) (cks2: check_points): Prop := 
     forall id ck, fetch_ck id cks1 = Some ck -> fetch_ck id cks2 = Some ck.
 
@@ -668,6 +752,10 @@ Proof.
     assumption.
 Qed.
 
+(** 
+    if all ast id numbers in checks list ls is less then n, in other words, n is outside the  
+   domain of ls, then when we fetch n from ls, of course it returns None
+*)
 Lemma fetch_ck_none: forall ls n,
     ast_ids_lt ls n ->
     fetch_ck n ls = None.
@@ -708,6 +796,12 @@ Proof.
     apply IHx.
 Qed.
 
+(** 
+   ast_id_inc_expr enforces that all ast id numbers used in expression e are unique and they are increasing,
+   cks1 stores the checks (indexed by ast id numbers) that are generated for expression e on top of cks0, 
+   if fetch n from cks0 is None and n is smaller than all ast id numbers in expression e, then fetch n 
+   from cks1 should also be None
+*)
 Lemma check_update_expr: forall cks0 e cks1 max n, 
     check_generator_expr cks0 e cks1 ->
     ast_id_inc_expr e max ->
@@ -735,6 +829,7 @@ Proof.
     assumption.
 Qed.
 
+(** it's similar to check_update_expr *)
 Lemma check_update_stmt: forall cks0 c cks1 max n, 
     check_generator_stmt cks0 c cks1 ->
     ast_id_inc_stmt c max ->
@@ -769,7 +864,10 @@ Proof.
     specialize (IHh1 _ _ H4 hz2 hz_2); assumption.
 Qed.
 
-
+(** 
+    if ls0 is a subset of ls1 and x has never appeared in ls1, 
+    then, ls0 should be a subset of the ls1 added with new element indexed by x 
+*)
 Lemma check_update: forall x ls1 ls0 flag,
     fetch_ck x ls1 = None ->
     subset ls0 ls1 ->
@@ -788,7 +886,6 @@ Proof.
     apply H0.
     assumption.
 Qed.
-
 
 Lemma sub_subset: forall x ls0 flag ls1,
     fetch_ck x ls0 = None ->
@@ -809,6 +906,16 @@ Proof.
 Qed. 
 
 
+(** 
+    cks1 is a list of checks that are generated for expression e on top of cks0, so cks1 
+    should be a superset of cks0;
+    ast_id_inc_expr enforces that all ast id numbers used in e are unique and increasing,
+    and ast_id_lt constrains that all ast ids in cks0 is smaller than the ast ids used in e, 
+    this is an implicit requirement enforced by check_generator_expr, for example: 
+    for binary expression e1 op e2, [check_generator_expr nil (e1 op e2) cks1] can be computed
+    by [check_generator_expr nil e1 cks0]  and [check_generator_expr cks0 e2 cks1], because the 
+    ast ids are increasing inside the expression, so all ast ids in cks0 should be smaller than the ast ids in e2;
+*)
 Lemma subset_expr: forall cks0 e cks1 max,
     check_generator_expr cks0 e cks1 ->
     ast_ids_lt cks0 (get_ast_id_expr e) -> (* make sure that all ast num used in e is fresh *)
@@ -866,7 +973,7 @@ Proof.
 Qed.
 
 
-
+(** it's similar to subset_expr *)
 Lemma subset_stmt: forall cks0 c cks1 max,
     check_generator_stmt cks0 c cks1 ->
     ast_ids_lt cks0 (get_ast_id_stmt c) -> 
@@ -930,6 +1037,11 @@ Proof.
     assumption.     
 Qed.
 
+(** 
+    cks1 is a list of checks that are generated for expression e on top of cks0, 
+    if max is the maximum ast id number used inside e and all ast ids in cks0 are less than ast ids used in e,
+    then for any n greater than max, n should be greater than all ast ids stored in cks1
+*)
 Lemma lt_trans_expr: forall cks0 cks1 e max n,
     check_generator_expr cks0 e cks1 ->
     ast_ids_lt cks0 (get_ast_id_expr e) ->
@@ -944,6 +1056,7 @@ Proof.
     assumption.
 Qed.
 
+(* it's similar to lt_trans_expr *)
 Lemma lt_trans_stmt: forall cks0 cks1 c max n,
     check_generator_stmt cks0 c cks1 ->
     ast_ids_lt cks0 (get_ast_id_stmt c) ->
@@ -959,6 +1072,10 @@ Proof.
 Qed.
 
 
+(** 
+    help1 and help2 are just help lemmas that are used repeatedly to prove eval_expr_with_checks_correct0, 
+    so I define them as lemmas
+*)
 Lemma help1: forall ls0 ls1 ls2 ast_id e1 e2 max1 max2,
     ast_ids_lt ls0 ast_id ->
     ast_id < get_ast_id_expr e1 -> 
@@ -996,7 +1113,15 @@ Proof.
     assumption.
 Qed.
 
-
+(** 
+    Because we cannot prove eval_expr_with_checks_correct directly, so 
+    eval_expr_with_checks_correct0 is proved as an intermediate proof step by introducing "subset";
+    it means that if cks1 is checks that are generated for expression e on top of cks0, and cks is a 
+    superset of cks1, then whenever e is evaluated to value v under checks cks, expression
+    e can also evaluate to value v in relational semantics eval_expr;
+    all ast nodes in expression e are denoted with either checks or no checks by cks1, so even if cks is 
+    a superset of cks1, all these extra checks in cks cannot affect the evaluation of expression e
+*)
 Lemma eval_expr_with_checks_correct0: forall cks s e v cks1 cks0 max,
     eval_expr_with_checks cks s e v ->
     subset cks1 cks ->
@@ -1105,6 +1230,14 @@ Proof.
     assumption.
 Qed.
 
+(**
+    cks is checks that are generated for expression e according to the checking rules built on top of cks0, 
+    then whenever e is evaluated to value v under checks cks, expression e can also be evaluated to value v 
+    in relational semantics eval_expr;
+    ast_id_inc_expr is used to constrain that all ast ids used in e are unique and increasing;
+    ast_ids_lt is used to enforce that new checks added for expression e will not cover the checks cks0 built
+    for previous AST nodes
+*)
 Theorem eval_expr_with_checks_correct: forall cks s e v cks0 max,
     eval_expr_with_checks cks s e v ->
     check_generator_expr cks0 e cks ->
@@ -1239,6 +1372,7 @@ Proof.
 Qed.
 *)
 
+(** these help lemmas are used to finally prove eval_stmt_with_checks_correct *)
 Lemma help3: forall cks0 cks1 cks2 c1 c2 max1 max2,
     check_generator_stmt cks0 c1 cks1 ->
     check_generator_stmt cks1 c2 cks2 ->
@@ -1309,6 +1443,11 @@ Proof.
     assumption.
 Qed.
 
+(** 
+    Because we cannot prove eval_stmt_with_checks_correct directly, so 
+    eval_stmt_with_checks_correct0 is proved as an intermediate proof step by introducing "subset",
+    it's similar to eval_expr_with_checks_correct0
+*)
 Theorem eval_stmt_with_checks_correct_0: forall cks s c s' cks1 cks0 max,
     eval_stmt_with_checks cks s c s' ->
     subset cks1 cks ->
@@ -1420,6 +1559,14 @@ Proof.
     assumption.
 Qed.
 
+(**
+    cks is checks that are generated for statement c according to the checking rules built on top of cks0, 
+    then whenever c is evaluated to a state s' under checks cks, statement c can also be evaluated to state s' 
+    in relational semantics eval_stmt;
+    ast_id_inc_stmt is used to constrain that all ast ids used in c are unique and increasing;
+    ast_ids_lt is used to enforce that new checks added for c will not cover the checks cks0 built
+    for previous AST nodes
+*)
 Theorem eval_stmt_with_checks_correct: forall cks s c s' cks0 max,
     eval_stmt_with_checks cks s c s' ->
     check_generator_stmt cks0 c cks ->
@@ -1432,5 +1579,4 @@ Proof.
     specialize (eval_stmt_with_checks_correct_0 _ _ _ _ _ _ _ H hz1 H0 H1 H2).
     auto.
 Qed.
-
 

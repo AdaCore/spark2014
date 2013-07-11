@@ -14,6 +14,9 @@ Require Export semantics.
       - right checks are put at the right places
 *)
 
+(** this is used by the type system to check whether types are consistent on both sides
+     of binary operators, and return either the result type or None if their types are not consistent
+*)
 Definition binop_type (op: binary_operation) (x y: typ): option typ := 
     match op with 
     | Ceq | Cne  => 
@@ -36,8 +39,8 @@ Definition binop_type (op: binary_operation) (x y: typ): option typ :=
 (** * Well-Typed *)
 (** ** Well-typed expressions *)
 (**
-   - general type checking;
-   - all variables should be in mode _in_; 
+   - general type check for expressions;
+   - all variables used in expression should be in mode _in_ or _in/out_; 
 *)
 Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
     | WT_Econst_Int: forall ast_id n tb,
@@ -61,7 +64,7 @@ Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
 (**
    two kinds of type checking:
    - general type checking;
-   - _in/out_ mode checking;
+   - _in/out_ mode checking (for variables that are updated by assignments, their mode should be _out_ or _in\out_);
 *)
 Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
     | WT_Sassign: forall ast_id tb x e t,
@@ -88,14 +91,15 @@ Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
 
 (** * Well-Defined *)
 
-(** basic data structures for well-defined expressions and commands *)
+(** Well-Defined means that all referenced variables are initialized *)
+(** the initialization modes can be either Init (initialized) or Uninit (uninitialized) *)
 Inductive init_mode: Type := 
     | Init: init_mode
     | Uninit: init_mode.
 
 Definition initializationState: Type := list (idnum * init_mode).
 
-(** basic operators for well-defined expressions and commands *)
+(** basic functions for fetching and updating the variable's initialization state *)
 Function fetch2 (x : idnum) (s : initializationState): option init_mode := 
     match s with 
     | (y, imode) :: s' =>
@@ -157,6 +161,14 @@ Inductive well_defined_expr: stack -> expr -> Prop :=
 *)
 
 (** ** Well-defined commands *)
+(** 
+    update by assignment will make the uninitialized variables into initialized one, so 
+    in the following definition, we have to track the initialization states after executing
+    each command, and use the latest initialization state to check whether the used variables 
+    are initialized or not;
+    For conditional and while loop commands, their final initialization state are the intersection 
+    of the resulting initialization states from both branches;
+*)
 Inductive well_defined_stmt: initializationState -> stmt -> initializationState -> Prop :=
     | WD_Sassign: forall ast_id s s' x e,
         well_defined_expr s e ->
@@ -175,7 +187,7 @@ Inductive well_defined_stmt: initializationState -> stmt -> initializationState 
         well_defined_stmt s c s' ->
         well_defined_stmt s (Swhile ast_id b c) s.
 
-(** ** Lemmas about initialization operations *)
+(** ** Lemmas for fetching and updating initialization state *)
 Lemma update2_fetch2: forall istate x m istate',
     update2 istate x m = Some istate' ->
     exists m0, fetch2 x istate = Some m0.
@@ -339,6 +351,10 @@ Proof.
 Qed.
 
 (** ** Mapping from stack to initialization state *)
+(** 
+   for any variable in stack, if it has a defined value then it has an initialized state,
+   otherwise, it's uninitialized;
+*)
 Inductive initializationMap: stack -> initializationState -> Prop :=
     | IEmpty: initializationMap nil nil 
     | IList0: forall s ilist x v,
@@ -351,6 +367,12 @@ Inductive initializationMap: stack -> initializationState -> Prop :=
         initializationMap ((x, v)::s) ((x, Uninit)::ilist).
 
 (** some useful lemmas *)
+(** 
+    'istate' is an initialization state map (from variable to initialization mode: Init or Uninit) that's constructed
+    from the stack 's' (mapping from variable to defined value or undefined value);
+    when we fetch a variable 'x' from stack 's', if it returns some value 'v', then the result should be the 'Init' mode 
+    when we fetch it from the corresponding initialization state map 'istate';
+*)
 Lemma initializationMap_consistent1: forall s istate x v,
     initializationMap s istate -> 
     fetch x s = Some v -> 
@@ -371,6 +393,7 @@ Proof.
          inversion h2.
 Qed.
 
+(** the reverse is the same *)
 Lemma initializationMap_consistent2: forall s istate x,
     initializationMap s istate ->
     fetch2 x istate = Some Init -> 
@@ -393,7 +416,7 @@ Proof.
          inversion h2.    
 Qed.
 
-
+(** for any stack s, we can only compute one initialization state Map from s *)
 Lemma initializationMap_unique: forall s istate istate',
     initializationMap s istate ->
     initializationMap s istate' ->
@@ -416,6 +439,9 @@ Proof.
     auto.
 Qed.
 
+(** when we update the stack s with x by a new value v, the initialization state map istate'1 computed
+     from s1 should be equal to the initialization state istate1 that update istate with x by Init directly;
+*)
 Lemma update_consis: forall s istate x v s1 istate1 istate'1,
     initializationMap s istate -> 
     update s x (Value v) = Some s1 ->
@@ -485,6 +511,7 @@ Qed.
 (* = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = *)
 
 (** * Well-Checked *)
+(** get the ast id from the expression ast node *)
 Definition get_ast_id_expr (e: expr): astnum :=
     match e with
     | (Econst ast_id n) => ast_id
@@ -493,6 +520,7 @@ Definition get_ast_id_expr (e: expr): astnum :=
     | (Eunop ast_id op e) => ast_id
     end.
 
+(** get the ast id from the statemet ast node *)
 Definition get_ast_id_stmt (c: stmt): astnum :=
     match c with
     | (Sassign ast_id x e) => ast_id
@@ -501,9 +529,17 @@ Definition get_ast_id_stmt (c: stmt): astnum :=
     | (Swhile ast_id b c) => ast_id
     end.
 
-(** ast_id for each AST node is unique *)
 Definition max_id := astnum.
 
+(** ast_id for each AST node is unique *)
+(** later the ast id will be used to map ast node to the check flag denoting the run-time checks
+     that needs to be performed before executing that ast node;
+*)
+
+(** all the ast ids for expression ast nodes are unique: parent node's ast id number is smaller than
+     children node's ast id number, and the left child node's id number is smaller than the right child 
+     node's id number; max_id is the maximum ast id number used in the expression
+*)
 Inductive ast_id_inc_expr: expr -> max_id -> Prop :=
     | Inc_Econst: forall ast_id n,
         ast_id_inc_expr (Econst ast_id n) ast_id
@@ -524,6 +560,7 @@ Inductive ast_id_inc_expr: expr -> max_id -> Prop :=
         ast_id < ast_id0 ->
         ast_id_inc_expr (Eunop ast_id op e) max.
 
+(** it's similar to ast_id_inc_expr, all ast id number is unique *)
 Inductive ast_id_inc_stmt: stmt -> max_id -> Prop :=
     | Inc_Sassign: forall e max ast_id0 ast_id x,
         ast_id_inc_expr e max ->
@@ -561,6 +598,7 @@ Inductive ast_id_inc_stmt: stmt -> max_id -> Prop :=
 
 (** ** Generate the run-time-check flags *)
 
+(** the run-time checks are stored in a list indexed with ast id number *)
 Definition check_points :=  list (astnum * check_action).
 
 Function fetch_ck (id : astnum) (m : check_points): option check_action := 
@@ -573,6 +611,7 @@ Function fetch_ck (id : astnum) (m : check_points): option check_action :=
     | nil => None
     end.
 
+(** this's used to constrain that all ast id number used in check_points are smaller than a certain number *)
 Inductive ast_ids_lt: check_points -> astnum -> Prop := 
     | lt1: forall ls n ast_id ck,
         ast_ids_lt ls n ->
@@ -607,6 +646,9 @@ Qed.
 
 
 (** *** generate run-time-check flags for expressions *)
+(** compute check flags for each expression ast node according to the checking rules, and the results  
+     are stored in a list of type check_points
+*)
 Inductive check_generator_expr: check_points -> expr -> check_points -> Prop :=
     | CG_Econst: forall ast_id n flag ls,
         check_flag (Econst ast_id n) flag -> 
@@ -647,6 +689,9 @@ Inductive check_generator_stmt: check_points -> stmt -> check_points -> Prop :=
         check_generator_stmt ls1 (Swhile ast_id b c) ((ast_id, No_Check) :: ls3).
 
 (** ** Semantics with run-time-checks *)
+(** the semantics for expressions evaluation, where cps is passed in as a parameter telling 
+     whether a check is needed to be performed before executing the expression ast node
+*)
 Inductive eval_expr_with_checks (cps: check_points): stack -> expr -> return_val -> Prop :=
     | eval_Const: forall cst v s ast_id,
         eval_constant cst = v ->
@@ -685,13 +730,18 @@ Inductive eval_expr_with_checks (cps: check_points): stack -> expr -> return_val
         eval_expr_with_checks cps s (Eunop ast_id op e) v1.
 
 
+(** 
+    it's similar to the eval_expr_with_checks: cps is used to denote whether a check is needed to be
+    performed before executing the statement; right now, we only consider the division and overflow checks
+    for expressions, and there are checks enfornced on the statements
+*)
 Inductive eval_stmt_with_checks (cps: check_points): stack -> stmt -> state -> Prop :=
     | eval_Assign1: forall s e ast_id x,
         eval_expr_with_checks cps s e ValException ->
         eval_stmt_with_checks cps s (Sassign ast_id x e) SException
     | eval_Assign2: forall s e v x s1 ast_id,
         eval_expr_with_checks cps s e (ValNormal v) ->
-        update s x (Value v) = Some s1 -> (* needs the type check on both sides *)
+        update s x (Value v) = Some s1 -> 
         eval_stmt_with_checks cps s (Sassign ast_id x e) (SNormal s1)
     | eval_Seq1: forall s c1 ast_id c2,
         eval_stmt_with_checks cps s c1 SException ->
@@ -727,56 +777,8 @@ Inductive eval_stmt_with_checks (cps: check_points): stack -> stmt -> state -> P
         eval_stmt_with_checks cps s (Swhile ast_id b c) (SNormal s).
 
 
-(*
-(** ** Semantics: run-time-check never fails *)
-Inductive check_never_fail_expr: stack -> expr -> check_points -> Prop :=
-    | CNF_Econst: forall s ast_id n cps,
-        check_never_fail_expr s (Econst ast_id n) cps
-    | CNF_Evar: forall s ast_id x cps,  
-        check_never_fail_expr s (Evar ast_id x) cps
-    | CNF_Ebinop: forall s e1 cps e2 ast_id ck op,
-        check_never_fail_expr s e1 cps ->
-        check_never_fail_expr s e2 cps ->
-        (fetch_ck ast_id cps = Some ck -> run_time_check eval_expr s (check_expr ck) true) ->
-        check_never_fail_expr s (Ebinop ast_id op e1 e2) cps
-    | CNF_Eunop: forall s e cps ast_id ck op,
-        check_never_fail_expr s e cps ->
-        (fetch_ck ast_id cps = Some ck -> run_time_check eval_expr s (check_expr ck) true) ->
-        check_never_fail_expr s (Eunop ast_id op e) cps.
-
-Inductive check_never_fail_stmt: stack -> stmt -> check_points -> Prop :=
-    | CNF_Sassign: forall s e cps ast_id x,
-        check_never_fail_expr s e cps ->
-(*        (fetch_ck ast_id cps = Some ck -> run_time_check eval_expr s (check_expr ck) true) -> *)
-        check_never_fail_stmt s (Sassign ast_id x e) cps
-    | CNF_Sseq: forall s c1 cps s' c2 ast_id,
-        check_never_fail_stmt s c1 cps->
-        eval_stmt s c1 (SNormal s') -> 
-        check_never_fail_stmt s' c2 cps ->
-        check_never_fail_stmt s (Sseq ast_id c1 c2)  cps   
-    | CNF_Sifthen_False: forall s b cps ast_id c,
-        check_never_fail_expr s b cps ->
-        eval_expr s b (ValNormal (Bool false)) ->
-        check_never_fail_stmt s (Sifthen ast_id b c) cps
-    | CNF_Sifthen_True: forall s b cps c ast_id,
-        check_never_fail_expr s b cps ->
-        eval_expr s b (ValNormal (Bool true)) ->
-        check_never_fail_stmt s c cps ->
-        check_never_fail_stmt s (Sifthen ast_id b c) cps
-    | CNF_Swhile_False: forall s b cps c ast_id,
-        check_never_fail_expr s b cps ->
-        eval_expr s b (ValNormal (Bool false)) ->
-        check_never_fail_stmt s (Swhile ast_id b c) cps
-    | CNF_Swhile: forall s b cps c s' ast_id,
-        check_never_fail_expr s b cps ->
-        eval_expr s b (ValNormal (Bool true)) ->     
-        check_never_fail_stmt s c cps ->
-        eval_stmt s c (SNormal s') ->
-        check_never_fail_stmt s' (Swhile ast_id b c) cps -> 
-        check_never_fail_stmt s (Swhile ast_id b c) cps.
-*)
-
 (** some basic lemmas *)
+(** eval_stmt_with_checks returns either a normal value or an exception when the check is false *)
 Lemma eval_expr_with_checks_state: forall ls s e v,
     eval_expr_with_checks ls s e v ->
     (exists v0, v = ValNormal v0) \/ v = ValException.
@@ -800,6 +802,7 @@ Proof.
     intuition.    
 Qed.
 
+(** the results of running eval_expr_with_checks should be unique *)
 Lemma eval_expr_with_checks_unique: forall ls s e v1 v2,
     eval_expr_with_checks ls s e (ValNormal v1) ->
     eval_expr_with_checks ls s e (ValNormal v2) ->
@@ -868,6 +871,12 @@ Proof.
 Qed.
 *)
 
+(** 
+   the ast id number is increasing: parent node's ast id number is smaller than children node's ast id number.
+   (get_ast_id_expr e) is the ast id number for expression e, and max is the maximum ast id number used 
+   by e. if e has no subexpression, then max is the same as (get_ast_id_expr e), otherwise, max is maximum
+   ast id number of its subexpressions, so (get_ast_id_expr e) should be less and equal max
+*)
 Lemma ast_id_bound_expr: forall e max,
     ast_id_inc_expr e max ->
     get_ast_id_expr e <= max.
@@ -876,7 +885,11 @@ Proof.
     induction h; simpl; intuition.
 Qed.
 
-
+(** 
+    checks are computed according to the checking rules for expression e and its subexpressions,
+    the results are stored in cks indexed by expression and its subexpression ast ids,
+    because max is the maximum ast id, so all ast ids in cks should be less than (max + 1)
+*)
 Lemma ast_id_max_expr: forall e max cks0 cks,
     ast_id_inc_expr e max ->
     check_generator_expr cks0 e cks ->
@@ -912,6 +925,7 @@ Proof.
        intuition.
 Qed.
 
+(** it's similar to ast_id_bound_expr *)
 Lemma ast_id_bound_stmt: forall c max,
     ast_id_inc_stmt c max ->
     get_ast_id_stmt c <= max.
@@ -922,7 +936,7 @@ Proof.
     intuition.    
 Qed.
 
-
+(** it's similar to ast_id_max_expr *)
 Lemma ast_id_max_stmt: forall c max cks0 cks1,
     ast_id_inc_stmt c max ->
     check_generator_stmt cks0 c cks1 ->

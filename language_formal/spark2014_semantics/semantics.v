@@ -1,18 +1,19 @@
+
+
+
 Require Export values.
 Require Export environment.
 Require Import util.
 
 (** * Relational Semantics *)
+(** interpret the constant syntax as a constant stored value *)
 Definition eval_constant (cst: constant): return_val :=
     match cst with
     | Ointconst v => ValNormal (Int v)
     | Oboolconst b => ValNormal (Bool b)
     end.
 
-(* 
-   - Use type checker to make sure that operator works on the operand of right type
-   - There still exists problems like overflow or division by zero in the binary operation
- *)
+(** interpret the binary operation for each binary operator *)
 Definition eval_binop (op: binary_operation) (v1: return_val) (v2: return_val): return_val :=
     match op with
     | Ceq => Val.eq v1 v2
@@ -25,6 +26,7 @@ Definition eval_binop (op: binary_operation) (v1: return_val) (v2: return_val): 
     | Odiv => Val.div v1 v2
     end.
 
+(** interpret the unary operation *)
 Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
     match op with
     | Onot => Val.not v
@@ -33,6 +35,18 @@ Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
     
 (** ** Run-Time Checking Rules *)
+(** *** check rules marking what and where to check *)
+(** 
+      - Do_Division_Check
+       
+       This flag is set on a division operator (/ mod rem) to indicate
+       that a zero divide check is required. 
+
+     - Do_Overflow_Check
+
+       This flag is set on an operator where an overflow check is required on
+       the operation.
+*)
 
 (** *** check actions *)
 (** which are needed to be performed before excecuting the program *)
@@ -41,13 +55,13 @@ Inductive check_action: Type :=
    | Overflow_Check: expr -> check_action
    | No_Check: check_action.
 
-(** *** semantics for check actions *)
 Inductive is_not_zero: Z -> bool -> Prop :=
     | Not_Zero: forall v, v <> 0%Z -> is_not_zero v true
     | Is_Zero: forall v, v = 0%Z -> is_not_zero v false.
 
 Definition Interpreter_Expr: Type := stack -> expr -> return_val -> Prop.
 
+(** *** semantics for check actions *)
 Inductive do_check (IE: Interpreter_Expr): stack -> check_action -> bool -> Prop :=
     | DC_Division_By_Zero: forall s e1 v1 e2 v2 b ast_id,
         IE s e1 (ValNormal (Int v1)) -> (* make sure that v1 and v2 are type consistent *)
@@ -62,22 +76,7 @@ Inductive do_check (IE: Interpreter_Expr): stack -> check_action -> bool -> Prop
     | ... 
 *)
 
-(** *** check rules marking what and where to check *)
-(** 
-      - Do_Division_Check
-       
-       This flag is set on a division operator (/ mod rem) to indicate
-       that a zero divide check is required. 
-
-     - Do_Overflow_Check
-
-       This flag is set on an operator where an overflow check is required on
-       the operation. This flag is also set on if and case expression nodes if 
-       we are operating in either MINIMIZED or ELIMINATED overflow checking 
-       mode (to make sure that we properly process overflow checking for dependent 
-       expressions).
-*)
-
+(** add check flags for AST nodes according to the checking rules *)
 Inductive check_flag: expr -> check_action -> Prop :=
     | CF_Econst_Int: forall ast_id n,
         check_flag (Econst ast_id (Ointconst n)) No_Check
@@ -94,13 +93,60 @@ Inductive check_flag: expr -> check_action -> Prop :=
         check_flag (Eunop ast_id op e) No_Check.
 
 (** *** checking procedure *)
+(** 
+    before evaluating the expression e, we have to first check the checking rules, if the checking rules
+    enforce a run_time_check for the expression, then we do the check by calling do_check, whose
+    result is returned as the check result
+ *)
 Inductive run_time_check (IE: Interpreter_Expr):  stack -> expr -> bool -> Prop :=
     | RTC: forall e runtime_check b s,
         check_flag e runtime_check ->
         do_check IE s runtime_check b ->
         run_time_check IE s e b.
 
+
+
+
+Inductive eval_binexpr: binary_operation -> value -> value -> value -> Prop :=
+    | Eq: forall v1 v2 b,
+        Zeq_bool v1 v2 = b ->
+        eval_binexpr Ceq (Int v1) (Int v2) (Bool b)
+    | Ne: forall v1 v2 b,
+        Zneq_bool v1 v2 = b ->
+        eval_binexpr Cne (Int v1) (Int v2) (Bool b)
+    | And: forall v1 v2 b,
+        andb v1 v2 = b ->
+        eval_binexpr Cne (Bool v1) (Bool v2) (Bool b)
+    | Or: forall v1 v2 b,
+        orb v1 v2 = b ->
+        eval_binexpr Cne (Bool v1) (Bool v2) (Bool b)
+    | Add: forall v1 v2 v3,
+        (v1 + v2)%Z =v3 ->
+        eval_binexpr Cne (Int v1) (Int v2) (Int v3)
+    | Sub: forall v1 v2 v3,
+        (v1 - v2)%Z =v3 ->
+        eval_binexpr Cne (Int v1) (Int v2) (Int v3)
+    | Mul: forall v1 v2 v3,
+        (v1 * v2)%Z =v3 ->
+        eval_binexpr Cne (Int v1) (Int v2) (Int v3)
+    | Div: forall v1 v2 v3,
+        (v1 / v2)%Z =v3 ->
+        eval_binexpr Cne (Int v1) (Int v2) (Int v3).
+
+
+Inductive eval_unaryexpr : unary_operation -> value -> value -> Prop :=
+    | Not: forall b v,
+        negb b = v ->
+        eval_unaryexpr Onot (Bool b) (Bool v).
+
+
 (** ** Expression semantics *)
+(** 
+    for binary expression and unary expression, if any of its child expression returns exception,
+    then the reuslt of the whole expression is exception; for binary expression (e1 op e2), 
+    if both e1 and e2 can evaluate to some normal value, then we do some checks on the operator 'op',
+    whenever the check fails, an exception is returned, otherwise, binary operation result is returned
+ *)
 Inductive eval_expr: stack -> expr -> return_val -> Prop :=
     | eval_Econst: forall cst v s ast_id,
         eval_constant cst = v ->
@@ -138,13 +184,17 @@ Inductive eval_expr: stack -> expr -> return_val -> Prop :=
 
 
 (** ** Command semantics *)
+(** 
+   for any command, whenever its sub-command throws an exception or any expression 
+   evaluate to an exception, then the whole command returns an exception; 
+*)
 Inductive eval_stmt: stack -> stmt -> state -> Prop := 
     | eval_Sassign1: forall s e ast_id x,
         eval_expr s e ValException ->
         eval_stmt s (Sassign ast_id x e) SException
     | eval_Sassign2: forall s e v x s1 ast_id,
         eval_expr s e (ValNormal v) ->
-        update s x (Value v) = Some s1 -> (* needs the type check on both sides *)
+        update s x (Value v) = Some s1 ->
         eval_stmt s (Sassign ast_id x e) (SNormal s1)
     | eval_Sseq1: forall s c1 ast_id c2,
         eval_stmt s c1 SException ->
@@ -183,6 +233,11 @@ Inductive eval_stmt: stack -> stmt -> state -> Prop :=
 
 (** * Functional Semantics *)
 (** ** Expression semantics *)
+
+(** 
+    in functional semantics for expression, it can return a normal value or an exception or 
+    go abnormal, the checks are encoded inside the semantics
+*)
 (* here use 'Function' instead of 'Fixpoint' in order to use tactic 'functional induction (f_eval_expr _ _)' in proofs *)
 Function f_eval_expr (s: stack) (e: expr): return_val :=
     match e with
@@ -212,6 +267,11 @@ Function f_eval_expr (s: stack) (e: expr): return_val :=
     end.
 
 (** ** Command semantics *)
+(** 
+   in the functional semantics for command, 'k' denotes the execution steps, whenever it reaches 0,
+   an untermination state is returned, in other cases, it can return a normal state, an exception or
+   an abnormal state; checks are encoded inside the functional semantics
+*)
 Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state := 
   match k with
   | 0 => SUnterminated
@@ -300,6 +360,7 @@ Qed.
 
 (** * Bisimulation Between Relational And Functional Semantics *)
 
+(** for any expression e, if it evaluate to v1 and v2, then v1 and v2 should be the same *)
 Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e (ValNormal v1) ->
     eval_expr s e (ValNormal v2) ->
@@ -324,11 +385,16 @@ Proof.
     inversion H3; auto.
 Qed.
 
-Lemma eval_stmt_state : forall s p s',
-        eval_stmt s p s' ->                        (* s' is either a normal state or an exception *)
+(** 
+    for any command c run under the state s, if it can execute to a state s' under the relational
+    semantics, then the result state s' should be either a normal state or exception. In our relational 
+    semantics, all commands that can go abnormal are excluded
+*)
+Lemma eval_stmt_state : forall s c s',
+        eval_stmt s c s' ->                        (* s' is either a normal state or an exception *)
             (exists v, s' = SNormal v) \/ s' = SException.
 Proof.
-    intros s p s' h.
+    intros s c s' h.
     induction h;
     try match goal with
     | [ |- (exists v, SNormal ?v1 = SNormal v) \/ _ ] => left; exists v1; reflexivity
@@ -364,6 +430,7 @@ Qed.
 
 
 (** ** Semantics equivalence for expression *)
+(** a help lemma to prove the theorem: f_eval_expr_correct *)
 Lemma f_eval_expr_correct1 : forall s e v,
                         f_eval_expr s e = ValNormal v ->
                             eval_expr s e (ValNormal v).
@@ -401,7 +468,7 @@ Proof.
     rewrite h1 in H; inversion H.
 Qed.
 
-
+(** another help lemma to prove the theorem: f_eval_expr_correct *)
 Lemma f_eval_expr_correct2 : forall s e,
                         f_eval_expr s e = ValException ->
                             eval_expr s e ValException.
@@ -445,7 +512,12 @@ Proof.
 Qed.
 
 (** *** f_eval_expr_correct *)
-Lemma f_eval_expr_correct : forall s e v,
+(** 
+    for any expression e evaluated with 'f_eval_expr' under the state s,  whenever it returns 
+    a normal value v or an exception, the relationship between evaluation result, s and e should 
+    also be satisfied with regard to the relational semantics 'eval_expr'
+*)
+Theorem f_eval_expr_correct : forall s e v,
                         (f_eval_expr s e = ValNormal v ->
                             eval_expr s e (ValNormal v)) /\
                         (f_eval_expr s e = ValException ->
@@ -456,6 +528,10 @@ Proof.
   - apply f_eval_expr_correct2.
 Qed.
 
+(** 
+    for the division by zero checking, if the check result is false, then
+    we get that the value of divide is zero
+*)
 Lemma dividor_is_zero: forall s e2 v2 ast_id e1, 
     eval_expr s e2 (ValNormal v2) ->
     run_time_check eval_expr s (Ebinop ast_id Odiv e1 e2) false ->
@@ -489,7 +565,12 @@ Qed.
 *)
 
 (** *** f_eval_expr_complete *)
-Lemma f_eval_expr_complete : forall e s v,  
+(** 
+   for any expression e, if it can be evaluated to value v under state s with regard to the 
+   relational semantics 'eval_expr', then when we evalute e under the same state s in functional
+   semantics 'f_eval_expr', it should return the same result v
+*)
+Theorem f_eval_expr_complete : forall e s v,  
                         eval_expr e s v -> 
                             (f_eval_expr e s) = v.
 Proof.
@@ -542,6 +623,7 @@ Ltac invle := match goal with
     | H: (S _ <= _)%nat |- _ => (inversion H; clear H; subst;simpl)
   end.
 
+(** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_fixpoint: forall k s p s', 
         f_eval_stmt k s p = SNormal s' ->
         forall k':nat, (k <= k')%nat -> 
@@ -562,6 +644,7 @@ Proof.
   - invle; repeat blam.
 Qed.
 
+(** another help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_fixpoint_E: forall k s p, 
         f_eval_stmt k s p = SException ->
         forall k':nat, (k <= k')%nat -> 
@@ -627,6 +710,7 @@ Ltac rm_f_eval_expr :=
 *)
     end; auto.
 
+(** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_correct1 : forall k s p s',
         f_eval_stmt k s p = SNormal s' ->
           eval_stmt s p (SNormal s').
@@ -670,6 +754,7 @@ Ltac rm_f_eval_stmt :=
     | [ h: f_eval_stmt ?k ?s ?c = SNormal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
     end; auto.
 
+(** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_correct2 : forall k s p,
         f_eval_stmt k s p = SException ->
           eval_stmt s p SException.
@@ -720,11 +805,16 @@ Ltac rm_f_eval :=
     end; auto.
 
 (** *** f_eval_stmt_correct *)
-Lemma f_eval_stmt_correct : forall k s p s',
-        (f_eval_stmt k s p = SNormal s' ->
-          eval_stmt s p (SNormal s')) /\ 
-        (f_eval_stmt k s p = SException ->
-          eval_stmt s p SException).
+(** 
+   for any command c, if it returns a normal state or an exception within k steps under the state s 
+   with regard to the functional semantics 'f_eval_stmt', then the relationship between s, e and the
+   resulting state should also be satisfied with regard to the relational semantics 'eval_stmt'
+*)
+Theorem f_eval_stmt_correct : forall k s c s',
+        (f_eval_stmt k s c = SNormal s' ->
+          eval_stmt s c (SNormal s')) /\ 
+        (f_eval_stmt k s c = SException ->
+          eval_stmt s c SException).
 Proof.
     intros.
     split; intros;
@@ -732,11 +822,17 @@ Proof.
 Qed.
 
 (** *** f_eval_stmt_complete *)
-Lemma f_eval_stmt_complete : forall s p s',
-        eval_stmt s p s' ->                        (* s' is either a normal state or an exception *)
-            exists k, f_eval_stmt k s p = s'.
+(** 
+   the reverse direction is also satisfied: for any command c, whenever it's executed under the
+   state s and return a new state s' with regard to the relational semantics 'eval_stmt', then
+   there should exist a constant k that command c starting from s will terminate in state s' 
+   within k steps with regard to the functional semantics 'f_eval_stmt'
+*)
+Theorem f_eval_stmt_complete : forall s c s',
+        eval_stmt s c s' ->                        (* s' is either a normal state or an exception *)
+            exists k, f_eval_stmt k s c = s'.
 Proof. 
-  intros s p s' H;
+  intros s c s' H;
   induction H;
   try match goal with
   [ h: eval_expr ?s ?e ValException |- exists k, _ = SException] => 
@@ -782,9 +878,6 @@ Proof.
     rewrite (f_eval_expr_complete _ _ _ H).
     reflexivity.
 Qed.
-
-
-
 
 
 
