@@ -110,8 +110,8 @@ of situations, for example:
 
 .. _Abstract_State and Initializes:
 
-Abstract_State and Initializes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Abstract_State, Refined_State and Initializes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The previous section discussed the global annotation, which applies to subprograms.
 There are two more annotations required for data-flow analysis, and these apply to
@@ -170,13 +170,21 @@ by the initializes annotation.
    end P;
 
    package body P
+      with Refined_State => (Total => T)
    is
-      Total : Integer := 0;
+      T : Integer := 0;
 
 If state is initialized by the package then it must appear in an initializes 
 annotation. If it is not initialized then it must not appear in the annotation.
 Once again, the initializes annotation may be derived automatically by the tools
 if not provided explicitly by the programmer.
+
+Note also the use of the Refined_State annotation in the package body. Each item
+named in the Abstract_State annotation in the package specification may be refined
+onto many constituents in the package body. This is done by means of the Refined_State
+annotation. In this case there is a one-to-one mapping between the abstract view in
+the specification (``Total``) and the refined view in the body (``T``) but it could
+be a one-to-many relationship or even, in special cases, a one-to-null relationship. 
 
 .. _Depends:
 
