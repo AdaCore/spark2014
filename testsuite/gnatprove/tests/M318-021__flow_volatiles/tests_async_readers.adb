@@ -18,6 +18,8 @@ package body Tests_Async_Readers
   with Refined_State => (State_With_Async_Readers => Vol)
 is
    Vol : Integer;  -- TODO: mark as volatile
+   -- with Volatile,
+   --      Async_Readers
 
    ----------------------------------------------------------------------
    --  The following are "correct" contracts and should not raise any
@@ -42,6 +44,7 @@ is
                      Depends => (Vol => (X, Y),
                                  Z   => Y,
                                  W   => (X, Y))  -- hmmm, interesting
+                                                 -- Yes but conservative
    is
    begin
       P (X, Y, Z);
@@ -51,9 +54,16 @@ is
    procedure Q (X, Y : in     Integer;
                 Z, W :    out Integer)
      with Global  => (In_Out => Vol),
-                      Depends => (Vol => (Vol, X, Y),    --  should this be implicit?
-                                  Z   => Vol,
-                                  W   => Y)              --  and not vol?
+          Depends => (Vol => (X, Y),  --  Vol is not an input here
+                                      -- it has no asyncronous writers.
+                                      -- Previous values have been consumed
+                                      -- by asynchronous readers
+                                      -- It would be the same in S2005
+                                      -- mode in own variable
+
+                      Z   => Vol,
+                      W   => Y)       --  and not Vol because Vol has
+                                      -- no asynchronous writers
    is
    begin
       Z   := Vol;
@@ -64,11 +74,11 @@ is
 
    procedure Calling_Q (X, Y, N : in     Integer;
                         Z, W, V :    out Integer)
-     with Global  => (In_Out => Vol),
-          Depends => (Vol => (Vol, X, Y, N),
-                      Z   => (Vol, N),
+     with Global  => (Output => Vol),
+          Depends => (Vol => (X, Y, N),  -- Vol is not an input here
+                      Z   => N,          -- It has no asynchronous writers
                       W   => Y,
-                      V   => (Vol, X, Y, N))
+                      V   => (X, Y, N))  -- Conservative again
    is
    begin
       Vol := N;
@@ -76,16 +86,17 @@ is
       V := Vol;
    end Calling_Q;
 
-   procedure Calling_P_Again (X, Y    : in     Integer;
+   procedure Calling_P_Again (X, Y, N : in     Integer;
                               Z, W, V :    out Integer)
-     with Global => (In_Out => Vol),
-                     Depends => (Vol => (Vol, X, Y),
-                                 Z   => Y,
-                                 W   => Vol,
-                                 V   => (Vol, X, Y))
+     with Global  => (Output  => Vol),
+          Depends => (Vol => (X, Y), -- Vol is not an input here
+                      Z   => Y,      -- It has no asynchronous writers
+                      W   => N,
+                      V   => (X, Y)) -- Conservative
    is
    begin
-      --  Vol := N;   --  would this raise an "import not used" flow error?
+      Vol := N;   --  No flow error here because Vol is not an input
+                  -- and N is used in determing the value of W
       W := Vol;
       P (X, Y, Z);
       V := Vol;
@@ -111,15 +122,35 @@ is
    procedure Calling_R (A, B    : in     Integer;
                         X, Y, Z :    out Integer)
      with Global  => (In_Out => Vol),
-          Depends => (Vol => (Vol, A, B),
+          Depends => (Vol => (A, B), -- Vol does not depend on itself
                       X   => Vol,
                       Y   => A,     --  This is quite different than before
+                                    -- Not because of the differnce between
+                                    -- a procedure and a function but because
+                                    -- of the surrounding statements.
+                                    -- See example below
                       Z   => B)
    is
    begin
       X   := R_Func;
       Vol := A;
       R_Proc (Y);
+      Vol := B;
+      Z   := Vol;
+   end Calling_R;
+
+   procedure Calling_R_Again (A, B    : in     Integer;
+                              X, Y, Z :    out Integer)
+     with Global  => (In_Out => Vol),
+          Depends => (Vol => (A, B), -- Vol does not depend on itself
+                      X   => Vol,    -- We have the same dependencies as
+                      Y   => A,      -- in the previous example.
+                      Z   => B)
+   is
+   begin
+      R_Proc (X);
+      Vol := A;
+      Y := R_Func;
       Vol := B;
       Z   := Vol;
    end Calling_R;

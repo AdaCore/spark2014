@@ -16,6 +16,8 @@ package body Tests_Async_Writers
   with Refined_State => (State_With_Async_Writers => Vol)
 is
    Vol : Integer;  -- TODO: mark as volatile
+-- with Volatile,
+        Async_Writers
 
    ----------------------------------------------------------------------
    --  The following are "correct" contracts and should not raise any
@@ -32,12 +34,25 @@ is
       Y := Vol;
    end P;
 
+   -- This is illegal.  A Volatile object with Async_Writers true cannot appear
+   -- in an expression and therefore cannot be the return expression of the
+   -- function.  If it was allowed the function would have a side-effect.
+   -- This is different to SPARK 2005.
    function Q return Integer
      with Global => (Input => Vol)
    is
    begin
       return Vol;
    end Q;
+
+   -- Rewrite Q as a procedure
+   procedure Proc_Q (V_Out : out Integer)
+      with Global  => (Input => Vol),
+           Depends => (V_Out => Vol)
+   is
+   begin
+      V_Out := Vol;
+   end Proc_Q;
 
    procedure Test_01 (X, Y : out Integer)
      with Global  => (Input => Vol),
@@ -54,12 +69,13 @@ is
                       Y => Vol)
    is
    begin
-      X := Q;
-      Y := Q;
+      Proc_Q (X);
+      Proc_Q (Y);
    end Test_02;
 
    procedure Test_03 (X : out Integer)
-     with Global => (Input => Vol)
+      with Global  => (Input => Vol)
+           Depends => (X => Vol)
    is
    begin
       X := 0;
@@ -69,12 +85,13 @@ is
    end Test_03;
 
    procedure Test_04 (X : out Integer)
-     with Global => (Input => Vol)
+      with Global  => (Input => Vol)
+           Depends => (X => Vol)
    is
    begin
       X := 0;
       while X <= 0 loop
-         X := Q;  --  Not stable
+         Proc_Q (X);  --  Not stable
       end loop;
    end Test_04;
 
