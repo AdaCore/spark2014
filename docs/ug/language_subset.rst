@@ -1,10 +1,33 @@
 .. _introduction to spark:
 
-***********************
-Introduction to |SPARK|
-***********************
+*******************
+Overview of |SPARK|
+*******************
 
-This chapter provides an overview of the |SPARK| language, detailing for each
+|SPARK| is a programming language and a set of verification tools
+designed to meet the needs of high-assurance software development.
+|SPARK| is based on Ada 2012, both subsetting the language to remove
+features that defy verification and also extending the system of
+contracts by defining new Ada aspects to support modular, formal verification.
+
+The new aspects support abstraction and refinement and facilitate deep static
+analysis to be performed including information-flow analysis and formal
+verification of an implementation against a specification.
+
+|SPARK| is a much larger and more flexible language than its
+predecessor SPARK 2005. The language can be configured to suit
+a number of application domains and standards, from server-class
+high-assurance systems to embedded, hard real-time, critical systems.
+
+A major feature of |SPARK| is the support for a mixture of proof and
+other verification methods such as testing, which
+facilitates the use of unit proof in place of unit testing; an approach now
+formalized in DO-178C and the DO-333 formal methods supplement.
+Certain units may be formally proven and other units validated through
+testing.
+
+The remainder of
+this chapter provides an overview of the |SPARK| language, detailing for each
 feature its consequences in terms of execution and formal verification. This is
 not a reference manual for the |SPARK| language, which can be found in:
 
@@ -14,8 +37,8 @@ not a reference manual for the |SPARK| language, which can be found in:
 More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.
 
-Ada Features That Are Not in |SPARK|
-====================================
+The |SPARK| Subset of Ada
+=========================
 
 To facilitate formal verification, |SPARK| enforces a number of global
 simplifications to Ada 2012. The most notable simplifications are:
@@ -30,131 +53,197 @@ simplifications to Ada 2012. The most notable simplifications are:
 
 - The use of controlled types is not permitted.
 
-- Tasking is not currently permitted.
+- Tasking is not currently permitted (it is intended that this will be included
+  in Release 2 of the |SPARK| language and tools).
 
-- Raising and handling of exceptions is not permitted.
+- Raising and handling of exceptions is not currently permitted (exceptions can
+  be included in a program but proof must be used to show that they cannot be
+  raised).
 
 Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
 features.
-
-Combining Code in |SPARK| and Code in Ada
-=========================================
-
-Allowed Combinations
---------------------
-
-We describe a program unit or language feature as being "in |SPARK|" if it
-complies with the restrictions required to permit formal verification.
-Conversely, a program unit language feature is "not in |SPARK|" if it does not
-meet these requirements, and so is not amenable to formal verification. Within
-a single unit, features which are "in" and "not in" |SPARK| may be mixed at a
-fine level. For example, the following combinations may be typical:
-
-- Package specification in |SPARK|. Package body not in |SPARK|.
-
-- Visible part of package specification in |SPARK|. Private part and body not
-  in |SPARK|.
-
-- Package specification in |SPARK|. Package body almost entirely in |SPARK|,
-  with a small number of subprogram bodies not in |SPARK|.
-
-- Package specification in |SPARK|, with all bodies imported from another
-  language.
-
-- Package specification contains a mixture of declarations which are in |SPARK|
-  and not in |SPARK|.  The latter declarations are only visible and usable from
-  client units which are not in |SPARK|.
-
-Such patterns are intended to allow for application of formal verification to a
-subset of a program, and the combination of formal verification with more
-traditional testing (see :ref:`proof and test`).
-
-Specifying the Boundary with Pragma ``SPARK_Mode``
---------------------------------------------------
-
-This pragma is used to designate whether a contract and its implementation must
-follow the |SPARK| programming language syntactic and semantic rules. The
-pragma is intended for use with formal verification tools and has no effect on
-the generated code. Its syntax is:
-
-.. code-block:: ada
-
-   pragma SPARK_Mode [ (On | Off | Auto) ] ;
-
-When used as a configuration pragma over a whole compilation or in a particular
-compilation unit, it sets the mode of the units involved, in particular:
-
-* ``On``: All entities in the units must follow the |SPARK| language, and
-  an error will be generated if not, unless locally overridden by a local
-  ``SPARK_Mode`` pragma or aspect. ``On`` is the default mode when pragma
-  ``SPARK_Mode`` is used without an argument.
-
-* ``Off``: The units are considered to be in Ada by default and therefore not
-  part of |SPARK| unless overridden locally. These units may be called by
-  |SPARK| units.
-
-* ``Auto``: The formal verification tools will automatically detect whether
-  each entity is in |SPARK| or in Ada.
-
-Pragma ``SPARK_Mode`` can be used as a local pragma with the following
-semantics:
-
-* ``Auto`` cannot be used as a mode argument.
-
-* When the pragma at the start of the visible declarations (preceded only
-  by other pragmas) of a package declaration, it marks the whole package
-  (declaration and body) in or out of |SPARK|.
-
-* When the pragma appears at the start of the private declarations of a
-  package (only other pragmas can appear between the ``private`` keyword
-  and the ``SPARK_Mode`` pragma), it marks the private part in or
-  out of |SPARK| (overriding the default mode of the visible part).
-
-* When the pragma appears immediately at the start of the declarations of a
-  package body (preceded only by other pragmas),
-  it marks the whole body in or out of |SPARK| (overriding the default
-  mode set by the declaration).
-
-* When the pragma appears at the start of the elaboration statements of
-  a package body (only other pragmas can appear between the ``begin``
-  keyword and the ``SPARK_Mode`` pragma),
-  it marks the elaboration statements in or out of |SPARK| (overriding
-  the default mode of the package body).
-
-* When the pragma appears after a subprogram declaration (with only other
-  pragmas intervening), it marks the whole
-  subprogram (spec and body) in or out of |SPARK|.
-
-* When the pragma appears at the start of the declarations of a subprogram
-  body (preceded only by other pragmas), it marks the whole body in or out
-  of |SPARK| (overriding the default mode set by the declaration).
-
-* Any other use of the pragma is illegal.
-
-In code where ``SPARK_Mode`` applies, any violation of |SPARK| is reported by
-|GNATprove| as an error, and any construct in |SPARK| not yet implemented is
-reported as a warning.
 
 |SPARK| Features
 ================
 
 |SPARK| contains many features for specifying the intended behavior of
 programs. Some of these features come from Ada 2012 (preconditions and
-postconditions for example). Other features are specific to |SPARK| (loop
-invariants and variants for example). In this section, we describe these
+postconditions for example). Other features are specific to |SPARK| (globals,
+and loop invariants for example). In this section, we describe these
 features and their impact on execution and formal verification.
 
 Subprogram Contracts
 --------------------
+
+|SPARK| provides features to strengthen the contracts on Ada subprograms to
+enable more in-depth verification to be performed. The more information is
+provided in a contract, the more verification can be performed by the |SPARK|
+tools to check that the contracts are satisfied. This ranges from data-flow and
+information-flow analysis through to formal proof of robustness and
+correctness properties.
+
+.. _Globals:
+
+Globals
+^^^^^^^
+
+The data-flow analysis performed by the |SPARK| tools considers the initialization
+of variables and the data dependencies of subprograms (which variables are read
+or written). This type of analysis can detect errors such as attempting to read
+from a variable which has not been assigned a value. In order to perform data-flow
+analysis the tools need to know the complete set of variables which may be read
+or written by each subprogram, which consists of any formal parameters of the 
+subprogram and any global variables used by the subprogram. This set of global
+variables may be specified by the programmer via the global annotation, as in
+this example:
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Add_To_Total (X : in Integer)
+      with Global => (In_Out => Total);
+
+This states that the global variable ``Total`` is both an input and an output of the
+subprogram, i.e. it is both read and written. If such a global annotation is
+present then it will be used in the analysis of calls to the subprogram - callers
+may assume that ``Total`` is both read and written and, very importantly, that no
+other global variables are read or written by this subprogram. Then, when the body
+of the subprogram is analyzed the tools will check that its implementation satisfies
+this contract.
+
+If the global annotation is not explicitly provided then the tools can derive it
+automatically from the body of the subprogram. This may be appropriate in a number
+of situations, for example:
+
+- Code has been developed as |SPARK| but not all the aspects are included on all
+  subprograms by the developer. This is regarded as *generative analysis*, where
+  the code was written with the intention that it would be analyzed.
+
+- Code is in maintenance phase, it might or might not have all of the |SPARK|
+  specific aspects. If the aspects are present, the synthesized aspects may be
+  compared with the explicit ones and auto correction used to update the aspects
+  if the changes are acceptable. If there are aspects missing they are
+  automatically synthesized for analysis purposes. This is also regarded
+  as generative analysis.
+
+- Legacy code is analyzed which has no (or incomplete) |SPARK| specific aspects
+  This is regarded as *retrospective analysis*, where code is being analyzed
+  that was not originally written with analysis in mind.
+
+.. _Abstract_State and Initializes:
+
+Abstract_State and Initializes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The previous section discussed the global annotation, which applies to subprograms.
+There are two more annotations required for data-flow analysis, and these apply to
+packages rather than subprograms. Consider the specification of ``Add_To_Total`` 
+above. The global variable ``Total`` might well be declared in the body of the enclosing
+package. If the specification of ``Add_To_Total`` appears in the package specification
+then its global annotation is referring to a variable ``Total`` about which nothing
+is known because the package body has not yet been analyzed. Indeed, the package
+body might not even have been written yet. The Abstract_State annotation allows
+us to announce the presence of variables declared within packages.
+
+.. code-block:: ada
+   :linenos:
+
+   package P
+      with Abstract_State => Total
+   is
+      procedure Add_To_Total (X : in Integer)
+         with Global => (In_Out => Total);
+   end P;
+
+Any state (typically a variable or collection of variables) declared within a
+package specification or body (but not within a subprogram of the package) must
+be announced in the package's Abstract_State annotation. As with the global
+annotation described above, the Abstract_State annotation may be stated
+explicitly by the programmer or it may be derived automatically by the tools
+depending on the circumstances.
+
+The language also provides facilities for combining multiple items of package state
+(which could be variables of the package itself, or state from its child packages
+or embedded packages) into a single item of Abstract_State (hence the name). There
+are also facilities for dealing with volatile state representing inputs or outputs
+at the interface with the environment. However these are outside the scope of this
+overview.
+
+In the example given above, when performing the flow analysis of any call to
+``Add_To_Total`` the tools will check that ``Total`` has previously been assigned a 
+value. This is necessary because the global annotation states that ``Add_To_Total``
+reads the value of ``Total``, so if ``Total`` is undefined then a flow error will result.
+In order to perform this flow analysis for the whole program the tools need to
+know which elements of package state are initialized when the main program
+starts executing and which are still uninitialized. This is the purpose of the
+initializes annotation - it tells us what is initialized by the elaboration of
+the package. In our example package ``P`` does initialize ``Total`` so this is specified
+by the initializes annotation.
+
+.. code-block:: ada
+   :linenos:
+
+   package P
+      with Abstract_State => Total,
+           Initializes    => Total
+   is
+      procedure Add_To_Total (X : in Integer)
+         with Global => (In_Out => Total);
+   end P;
+
+   package body P
+   is
+      Total : Integer := 0;
+
+If state is initialized by the package then it must appear in an initializes 
+annotation. If it is not initialized then it must not appear in the annotation.
+Once again, the initializes annotation may be derived automatically by the tools
+if not provided explicitly by the programmer.
+
+.. _Depends:
+
+Depends
+^^^^^^^
+
+The depends annotation adds more detail to subprogram contracts by specifying
+the relationship between the inputs and the outputs.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Swap (X, Y : in out Integer)
+      with Depends => (X => Y,
+                       Y => X);
+
+In the example above the depends annotation states that the final value of ``X``
+depends on the initial value of ``Y``, and the final value of ``Y`` depends on the
+initial value of ``X``. It is important to note that this is not stating the 
+stronger property that the values of ``X`` and ``Y`` are swapped - that would require
+a postcondition aspect which will be described in the next section. So an
+implementation which, for example, doubled ``X`` and ``Y`` and then swapped their
+values would satisfy this dependency. If a depends annotation is present then
+it must be complete, i.e. for every output of the subprogram it must specify
+the (possibly null) list of inputs on which that output depends.
+
+The depends aspect of a subprogram is used by the tools when performing flow
+analysis of calls to that subprogram, and it is checked by the tools when 
+analysing the body. This level of flow analysis is referred to as information-flow
+analysis. As with the other annotations discussed so far, if the
+depends aspect is not provided explicitly for a subprogram then it will be
+synthesized by the tools. (The synthesized dependency will be a conservative
+approximation if the body of the subprogram is not available for analysis,
+and may still be an approximation even if the body is available. For more details
+see the LRM.)
 
 .. _Preconditions and Postconditions:
 
 Preconditions and Postconditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Preconditions and postconditions are the most important annotations in
-|SPARK|. They specify the contract of a subprogram. For example:
+Preconditions and postconditions are very important annotations in |SPARK| as
+they enable us to strengthen subprogram contracts by specifying the intended
+behaviour in more detail. For example:
 
 .. code-block:: ada
    :linenos:
@@ -641,3 +730,101 @@ they come from.
      Post => Length (L1) = 1 + Length (L1'Old) and then
              First_Element (L1) = E and then
              Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
+
+Combining Code in |SPARK| and Code in Ada
+=========================================
+
+Allowed Combinations
+--------------------
+
+We describe a program unit or language feature as being "in |SPARK|" if it
+complies with the restrictions required to permit formal verification.
+Conversely, a program unit language feature is "not in |SPARK|" if it does not
+meet these requirements, and so is not amenable to formal verification. Within
+a single unit, features which are "in" and "not in" |SPARK| may be mixed at a
+fine level. For example, the following combinations may be typical:
+
+- Package specification in |SPARK|. Package body not in |SPARK|.
+
+- Visible part of package specification in |SPARK|. Private part and body not
+  in |SPARK|.
+
+- Package specification in |SPARK|. Package body almost entirely in |SPARK|,
+  with a small number of subprogram bodies not in |SPARK|.
+
+- Package specification in |SPARK|, with all bodies imported from another
+  language.
+
+- Package specification contains a mixture of declarations which are in |SPARK|
+  and not in |SPARK|.  The latter declarations are only visible and usable from
+  client units which are not in |SPARK|.
+
+Such patterns are intended to allow for application of formal verification to a
+subset of a program, and the combination of formal verification with more
+traditional testing (see :ref:`proof and test`).
+
+Specifying the Boundary with Pragma ``SPARK_Mode``
+--------------------------------------------------
+
+This pragma is used to designate whether a contract and its implementation must
+follow the |SPARK| programming language syntactic and semantic rules. The
+pragma is intended for use with formal verification tools and has no effect on
+the generated code. Its syntax is:
+
+.. code-block:: ada
+
+   pragma SPARK_Mode [ (On | Off | Auto) ] ;
+
+When used as a configuration pragma over a whole compilation or in a particular
+compilation unit, it sets the mode of the units involved, in particular:
+
+* ``On``: All entities in the units must follow the |SPARK| language, and
+  an error will be generated if not, unless locally overridden by a local
+  ``SPARK_Mode`` pragma or aspect. ``On`` is the default mode when pragma
+  ``SPARK_Mode`` is used without an argument.
+
+* ``Off``: The units are considered to be in Ada by default and therefore not
+  part of |SPARK| unless overridden locally. These units may be called by
+  |SPARK| units.
+
+* ``Auto``: The formal verification tools will automatically detect whether
+  each entity is in |SPARK| or in Ada.
+
+Pragma ``SPARK_Mode`` can be used as a local pragma with the following
+semantics:
+
+* ``Auto`` cannot be used as a mode argument.
+
+* When the pragma at the start of the visible declarations (preceded only
+  by other pragmas) of a package declaration, it marks the whole package
+  (declaration and body) in or out of |SPARK|.
+
+* When the pragma appears at the start of the private declarations of a
+  package (only other pragmas can appear between the ``private`` keyword
+  and the ``SPARK_Mode`` pragma), it marks the private part in or
+  out of |SPARK| (overriding the default mode of the visible part).
+
+* When the pragma appears immediately at the start of the declarations of a
+  package body (preceded only by other pragmas),
+  it marks the whole body in or out of |SPARK| (overriding the default
+  mode set by the declaration).
+
+* When the pragma appears at the start of the elaboration statements of
+  a package body (only other pragmas can appear between the ``begin``
+  keyword and the ``SPARK_Mode`` pragma),
+  it marks the elaboration statements in or out of |SPARK| (overriding
+  the default mode of the package body).
+
+* When the pragma appears after a subprogram declaration (with only other
+  pragmas intervening), it marks the whole
+  subprogram (spec and body) in or out of |SPARK|.
+
+* When the pragma appears at the start of the declarations of a subprogram
+  body (preceded only by other pragmas), it marks the whole body in or out
+  of |SPARK| (overriding the default mode set by the declaration).
+
+* Any other use of the pragma is illegal.
+
+In code where ``SPARK_Mode`` applies, any violation of |SPARK| is reported by
+|GNATprove| as an error, and any construct in |SPARK| not yet implemented is
+reported as a warning.
