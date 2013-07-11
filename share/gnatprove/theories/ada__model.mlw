@@ -66,7 +66,7 @@ module Discrete
   clone export Discrete_Base
 
   axiom coerce_axiom :
-    forall x  : int [to_int (of_int x) | in_range x, of_int x].
+    forall x  : int [to_int (of_int x)].
       in_range x -> to_int (of_int x) = x
 
 end
