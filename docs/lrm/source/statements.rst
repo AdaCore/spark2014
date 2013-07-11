@@ -232,8 +232,15 @@ Attribute Loop_Entry
    * the prefix of the ``attribute_reference`` shall not contain a Loop_Entry
      ``attribute_reference.``
 
-#. A Loop_Entry ``attribute_reference`` shall occur within a Loop_Variant or
-   Loop_Invariant pragma.
+#. A ``Loop_Entry`` ``attribute_reference`` shall occur within a ``Loop_Variant``
+   or ``Loop_Invariant`` pragma, or an ``Assert``, ``Assume`` or
+   ``Assert_And_Cut`` pragma appearing in a position where a ``Loop_Invariant``
+   pragma would be allowed.
+
+  [Roughly speaking, a ``Loop_Entry`` ``attribute_reference`` can occur in an
+  ``Assert``, ``Assume`` or ``Assert_And_Cut`` pragma immediately within a loop
+  statement except that intervening block statements are ignored for purposes of
+  this rule.]
 
 #. The prefix of a Loop_Entry ``attribute_reference`` shall not contain a use
    of an entity declared within the ``loop_statement`` but not within the prefix
