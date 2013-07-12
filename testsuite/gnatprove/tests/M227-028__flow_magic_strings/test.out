@@ -1,17 +1,17 @@
-other.ads:4:14: ineffective global import "X" [ineffective_import]
-other.ads:4:14: ineffective global import "Y" [ineffective_import]
+other.ads:4:14: unused initial value of "X" [unused_initial_value]
+other.ads:4:14: unused initial value of "Y" [unused_initial_value]
 test.adb:20:12: called subprogram "Initialise" requires "global" aspect to make state visible
 test.adb:24:14: global "Z" is not used [unused]
-test.adb:24:14: ineffective global import "Z" [ineffective_import]
+test.adb:24:14: unused initial value of "Z" [unused_initial_value]
 test.adb:25:11: "Z" missing from null dependency [depends_null]
 test.adb:28:12: called subprogram "Initialise" requires "global" aspect to make state visible
 test.adb:31:14: global "Z" is not used [unused]
-test.adb:31:14: ineffective global import "Z" [ineffective_import]
+test.adb:31:14: unused initial value of "Z" [unused_initial_value]
 test.adb:32:11: "Z" missing from null dependency [depends_null]
 test.adb:38:14: global "Z" is not used [unused]
-test.adb:38:14: ineffective global import "Z" [ineffective_import]
-test.adb:47:14: ineffective global import "Z" [ineffective_import]
-test.adb:54:14: ineffective global import "Z" [ineffective_import]
+test.adb:38:14: unused initial value of "Z" [unused_initial_value]
+test.adb:47:14: unused initial value of "Z" [unused_initial_value]
+test.adb:54:14: unused initial value of "Z" [unused_initial_value]
 test.adb:55:11: "Z" missing from null dependency [depends_null]
 test.adb:58:17: called subprogram "Get_X" requires "global" aspect to make state visible
 test.adb:62:14: flow analysis of "Test_06" abandoned due to inconsistent graph

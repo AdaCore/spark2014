@@ -1,5 +1,1 @@
-test.adb:39:04: function "No_Return" might not return [noreturn__no_return]
-
-
-
-
+test.adb:39:04: possibly missing return statement in "No_Return" [noreturn]

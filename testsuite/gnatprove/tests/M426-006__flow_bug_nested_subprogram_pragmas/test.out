@@ -1,1 +1,1 @@
-t3q5.adb:46:10: ineffective statement [ineffective]
+t3q5.adb:46:10: statement has no effect [ineffective]

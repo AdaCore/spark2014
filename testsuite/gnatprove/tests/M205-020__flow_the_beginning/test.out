@@ -1,6 +1,6 @@
-foo.adb:3:16: ineffective import "Y" [ineffective_import]
+foo.adb:3:16: unused initial value of "Y" [unused_initial_value]
 foo.adb:4:16: formal parameter "Z" might not be set [uninitialized__z]
-foo.adb:9:04: ineffective statement [ineffective]
+foo.adb:9:04: statement has no effect [ineffective]
 foo.adb:10:09: unused assignment [ineffective]
 foo.adb:12:09: unused assignment [ineffective]
 foo.adb:12:09: use of uninitialized variable "Z" [uninitialized__z]
