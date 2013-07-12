@@ -94,7 +94,7 @@ Portability Issues
 
 To execute a |SPARK| program, it is expected that users will compile
 the program (as an Ada program) using an Ada compiler.
-The SPARK language definition defines of number of implementation-defined
+The SPARK language definition defines a number of implementation-defined
 (with respect to the Ada language definition) aspects,
 attributes, pragmas, and conventions. 
 Ideally a |SPARK| program will be compiled using an Ada compiler that
@@ -118,28 +118,28 @@ and will be rejected if the program is compiled as, for example, an
 Ada 95 program.
 
 Many Spark-defined constructs have no dynamic semantics (e.g., the Global,
-Depends, and Abstract_State aspects), so the runtime behavior of
+Depends, and Abstract_State aspects), so the run-time behavior of
 a program is unaffected if they are ignored by a compiler. Thus, there is
 no problem if these constructs are expressed as pragmas which are
 then ignored by the Ada compiler.
 
-Of those constructs which do have dynamic semantics, most are runtime
+Of those constructs which do have dynamic semantics, most are run-time
 assertions. These include Loop_Variant, Loop_Invariant, Assert_And_Cut,
 Contract_Cases, Initial_Condition, and Refined_Postcondition. Because
 |SPARK| requires that the success of these assertions must be statically
 proven (and that the evaluation of the asserted condition can have no side
-effects), the runtime behavior a program is unaffected if they are ignored
+effects), the run-time behavior a program is unaffected if they are ignored
 by a compiler.
 
 The situation with pragma Assume is slightly different because the
 success of the given condition is not statically proven. If ignoring
-an Assume pragma at runtime is deemed to be unacceptable, then it can
+an Assume pragma at run time is deemed to be unacceptable, then it can
 be replaced with an Assert pragma (at the cost of introducing a source
 code difference between the |SPARK| program that is analyzed statically
 and the Ada program that is executed). An ignored Assume pragma is the
 only case where the use of a Spark-specific construct can lead to a
 portability problem which is not detected at compile time. In all
-other cases, either the Ada compiler will reject (as opposed to ignoring)
+other cases, either the Ada compiler will reject (as opposed to ignore)
 an unrecognized construct or the construct can safely be ignored.
 
 An Ada compiler which does not support convention Ghost will reject
@@ -156,7 +156,7 @@ Update and Loop_Entry attributes.
 |SPARK| includes a rule that a package which declares a state
 abstraction requires a body. In the case of a library unit package
 (or generic package) which requires a body only because of this rule,
-an Ada compiler which knows nothing about state abstractions would
+an Ada compiler that knows nothing about state abstractions would
 reject the body of the package because of the rule (introduced in Ada 95)
 that a library unit package (or generic package) body is never optional;
 if it is not required then it is forbidden. In the unlikely event
