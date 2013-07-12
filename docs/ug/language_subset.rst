@@ -70,7 +70,7 @@ of variables and the data dependencies of subprograms (which variables are read
 or written). This type of analysis can detect errors such as attempting to read
 from a variable which has not been assigned a value. In order to perform data-flow
 analysis the tools need to know the complete set of variables which may be read
-or written by each subprogram, which consists of any formal parameters of the 
+or written by each subprogram, which consists of any formal parameters of the
 subprogram and any global variables used by the subprogram. This set of global
 variables may be specified by the programmer via the global annotation, as in
 this example:
@@ -115,7 +115,7 @@ Abstract_State, Refined_State and Initializes
 
 The previous section discussed the global annotation, which applies to subprograms.
 There are two more annotations required for data-flow analysis, and these apply to
-packages rather than subprograms. Consider the specification of ``Add_To_Total`` 
+packages rather than subprograms. Consider the specification of ``Add_To_Total``
 above. The global variable ``Total`` might well be declared in the body of the enclosing
 package. If the specification of ``Add_To_Total`` appears in the package specification
 then its global annotation is referring to a variable ``Total`` about which nothing
@@ -148,7 +148,7 @@ at the interface with the environment. However these are outside the scope of th
 overview.
 
 In the example given above, when performing the flow analysis of any call to
-``Add_To_Total`` the tools will check that ``Total`` has previously been assigned a 
+``Add_To_Total`` the tools will check that ``Total`` has previously been assigned a
 value. This is necessary because the global annotation states that ``Add_To_Total``
 reads the value of ``Total``, so if ``Total`` is undefined then a flow error will result.
 In order to perform this flow analysis for the whole program the tools need to
@@ -174,7 +174,7 @@ by the initializes annotation.
    is
       T : Integer := 0;
 
-If state is initialized by the package then it must appear in an initializes 
+If state is initialized by the package then it must appear in an initializes
 annotation. If it is not initialized then it must not appear in the annotation.
 Once again, the initializes annotation may be derived automatically by the tools
 if not provided explicitly by the programmer.
@@ -184,7 +184,7 @@ named in the Abstract_State annotation in the package specification may be refin
 onto many constituents in the package body. This is done by means of the Refined_State
 annotation. In this case there is a one-to-one mapping between the abstract view in
 the specification (``Total``) and the refined view in the body (``T``) but it could
-be a one-to-many relationship or even, in special cases, a one-to-null relationship. 
+be a one-to-many relationship or even, in special cases, a one-to-null relationship.
 
 .. _Depends:
 
@@ -203,7 +203,7 @@ the relationship between the inputs and the outputs.
 
 In the example above the depends annotation states that the final value of ``X``
 depends on the initial value of ``Y``, and the final value of ``Y`` depends on the
-initial value of ``X``. It is important to note that this is not stating the 
+initial value of ``X``. It is important to note that this is not stating the
 stronger property that the values of ``X`` and ``Y`` are swapped - that would require
 a postcondition aspect which will be described in the next section. So an
 implementation which, for example, doubled ``X`` and ``Y`` and then swapped their
@@ -212,7 +212,7 @@ it must be complete, i.e. for every output of the subprogram it must specify
 the (possibly null) list of inputs on which that output depends.
 
 The depends aspect of a subprogram is used by the tools when performing flow
-analysis of calls to that subprogram, and it is checked by the tools when 
+analysis of calls to that subprogram, and it is checked by the tools when
 analysing the body. This level of flow analysis is referred to as information-flow
 analysis. As with the other annotations discussed so far, if the
 depends aspect is not provided explicitly for a subprogram then it will be
@@ -257,7 +257,7 @@ subprogram exit. Their evaluation should also not raise a run-time error, for
 example when accessing an array element, or doing arithmetic computations.
 
 When proving a subprogram with |GNATprove|, its precondition is assumed to
-hold, and its postcondition is proved. |GNATprove| also generate checks to
+hold, and its postcondition is proved. |GNATprove| also generates checks to
 prove that the precondition can never raise a run-time error, whatever the
 calling context. For example:
 
