@@ -30,6 +30,7 @@ with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Get_SPARK_Xrefs;
 with Output;                 use Output;
+with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with SPARK_Xrefs;            use SPARK_Xrefs;
 
@@ -502,7 +503,7 @@ package body SPARK_Frame_Conditions is
 
    function Get_Reads (E : Entity_Id) return Name_Set.Set is
       E_Alias : constant Entity_Id :=
-        (if Present (Alias (E)) then Alias (E) else E);
+        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       Name    : aliased constant String := Unique_Name (E_Alias);
       E_Name  : constant Entity_Name    :=
         Make_Entity_Name (Name'Unrestricted_Access);
@@ -534,7 +535,7 @@ package body SPARK_Frame_Conditions is
 
    function Get_Writes (E : Entity_Id) return Name_Set.Set is
       E_Alias : constant Entity_Id :=
-        (if Present (Alias (E)) then Alias (E) else E);
+        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       Name    : aliased constant String := Unique_Name (E_Alias);
       E_Name  : constant Entity_Name    :=
         Make_Entity_Name (Name'Unrestricted_Access);

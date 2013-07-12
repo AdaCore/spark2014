@@ -3483,7 +3483,7 @@ package body Gnat2Why.Expr is
                Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
             begin
                if Is_Record_Type (Expr_Type) then
-                  pragma Assert (No (Expressions (Expr)));
+                  pragma Assert (Is_Empty_List (Expressions (Expr)));
                   T :=
                      New_Record_Aggregate
                       (Associations =>

@@ -80,7 +80,7 @@ package body SPARK_Util is
 
    begin
       if Is_Record_Type (Typ) then
-         pragma Assert (No (Expressions (N)));
+         pragma Assert (Is_Empty_List (Expressions (N)));
 
          Assocs      := Component_Associations (N);
          Component   := First_Component_Or_Discriminant (Typ);
