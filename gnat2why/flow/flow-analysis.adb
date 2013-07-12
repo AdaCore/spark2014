@@ -74,24 +74,15 @@ package body Flow.Analysis is
    --     Create_Tag ("foo", a)  ->   "foo__r_discriminant"
 
    procedure Error_Msg_Flow (Msg : String;
-                             G   : Flow_Graphs.T'Class;
-                             Loc : Flow_Graphs.Vertex_Id;
+                             N   : Node_Id;
                              Tag : String := "");
-   --  Output an error message attaced to the given vertex.
-
-   procedure Error_Msg_Flow (Msg : String;
-                             G   : Flow_Graphs.T'Class;
-                             Loc : Flow_Graphs.Vertex_Id;
-                             F   : Flow_Id;
-                             Tag : String := "");
-   --  Output an error message attaced to the given vertex with a
-   --  substitution using F. Use & as the substitution character.
+   --  Output an error message attached to the given node.
 
    procedure Error_Msg_Flow (Msg : String;
                              N   : Node_Id;
                              F1  : Flow_Id;
                              Tag : String := "");
-   --  Output an error message attaced to the given node with a
+   --  Output an error message attached to the given node with a
    --  substitution using F1. Use & as the substitution character.
 
    procedure Error_Msg_Flow (Msg : String;
@@ -254,15 +245,19 @@ package body Flow.Analysis is
    --------------------
 
    procedure Error_Msg_Flow (Msg : String;
-                             G   : Flow_Graphs.T'Class;
-                             Loc : Flow_Graphs.Vertex_Id;
-                             Tag : String := "") is
+                             N   : Node_Id;
+                             Tag : String := "")
+   is
+      M : Unbounded_String := To_Unbounded_String (Msg);
    begin
+      --  Assemble message string to be passed to Error_Msg_N
       if Tag'Length >= 1 then
-         Error_Msg_N (Msg & " [" & Tag & "]!", Error_Location (G, Loc));
-      else
-         Error_Msg_N (Msg & "!", Error_Location (G, Loc));
+         Append (M, " [" & Tag & "]");
       end if;
+      Append (M, '!');
+
+      --  Issue error message
+      Error_Msg_N (To_String (M), N);
    end Error_Msg_Flow;
 
    procedure Error_Msg_Flow (Msg : String;
@@ -272,7 +267,6 @@ package body Flow.Analysis is
    is
       M : Unbounded_String;
    begin
-
       --  Assemble message string to be passed to Error_Msg_N
       M := Substitute (To_Unbounded_String (Msg),
                        F1);
@@ -283,7 +277,6 @@ package body Flow.Analysis is
 
       --  Issue error message
       Error_Msg_N (To_String (M), N);
-
    end Error_Msg_Flow;
 
    procedure Error_Msg_Flow (Msg : String;
@@ -294,7 +287,6 @@ package body Flow.Analysis is
    is
       M : Unbounded_String;
    begin
-
       --  Assemble message string to be passed to Error_Msg_N
       M := Substitute (Substitute (To_Unbounded_String (Msg),
                                    F1),
@@ -306,21 +298,6 @@ package body Flow.Analysis is
 
       --  Issue error message
       Error_Msg_N (To_String (M), N);
-
-   end Error_Msg_Flow;
-
-   procedure Error_Msg_Flow (Msg : String;
-                             G   : Flow_Graphs.T'Class;
-                             Loc : Flow_Graphs.Vertex_Id;
-                             F   : Flow_Id;
-                             Tag : String := "")
-   is
-      L : constant Node_Or_Entity_Id := Error_Location (G, Loc);
-   begin
-      Error_Msg_Flow (Msg => Msg,
-                      N   => L,
-                      F1  => F,
-                      Tag => Tag);
    end Error_Msg_Flow;
 
    --------------
@@ -582,13 +559,15 @@ package body Flow.Analysis is
                  (Get_Direct_Mapping_Id (R))
                then
                   Error_Msg_Flow
-                    (Msg => "global input & is not initialized",
+                    (Msg => "& may not be initialized after elaboration of &",
                      N   => Find_Global (FA.Analyzed_Entity, R),
                      F1  => R,
+                     F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Tag => "uninitialized");
                end if;
 
             when Magic_String =>
+               --  !!! Remove once M711-031 is implemented
                Error_Msg_Flow
                  (Msg => "analysis of main program impossible in the "&
                     "presence of computed global &",
@@ -607,6 +586,9 @@ package body Flow.Analysis is
                if Is_Initialized_At_Elaboration
                  (Get_Direct_Mapping_Id (W))
                then
+                  --  !!! if we initialize something, make use of it
+                  --  in another package and then overwrite it here
+                  --  this is not really a warning. think about this!
                   if not Reads.Contains (Change_Variant (W, In_View)) then
                      Error_Msg_Flow
                        (Msg => "ineffective initialization of & " &
@@ -660,12 +642,12 @@ package body Flow.Analysis is
                                                   Expression (N)));
                   begin
                      for F of Deps loop
+                        --  !!! consider moving this to spark_definition
                         Error_Msg_Flow
-                          (Msg => "default initialization must be a" &
-                             " manifest constant, but it depends on &!",
+                          (Msg => "default initialization cannot depend on &",
                            N   => Expression (N),
                            F1  => F,
-                           Tag => "non_manifest_default");
+                           Tag => "static_init");
                         Sane := False;
                      end loop;
                   end;
@@ -729,6 +711,12 @@ package body Flow.Analysis is
                   if not FA.All_Vars.Contains (Neutral) then
                      case Neutral.Kind is
                         when Direct_Mapping | Record_Field =>
+                           --  !!! hopefully we can move this to
+                           --  spark_definition too
+
+                           --  !!! maybe also point to the first
+                           --  occurrence of the variable, possibly
+                           --  via a continuation message
                            Error_Msg_Flow
                              (Msg => "& must be listed in the Global " &
                                 "aspect of &",
@@ -834,16 +822,17 @@ package body Flow.Analysis is
                   --  Discriminants are never ineffective imports.
                   null;
                elsif A.Is_Global then
-                  Error_Msg_Flow (Msg => "ineffective global import &",
+                  --  !!! don't say this in generative mode
+                  Error_Msg_Flow (Msg => "unused initial value of &",
                                   N   => Find_Global (FA.Analyzed_Entity, F),
                                   F1  => F,
-                                  Tag => "ineffective_import");
+                                  Tag => "unused_initial_value");
                else
-                  Error_Msg_Flow (Msg => "ineffective import &",
-                                  G   => FA.PDG,  --  !!! find_import
-                                  Loc => V,
-                                  F   => F,
-                                  Tag => "ineffective_import");
+                  Error_Msg_Flow (Msg => "unused initial value of &",
+                                  --  !!! find_import
+                                  N   => Error_Location (FA.PDG, V),
+                                  F1  => F,
+                                  Tag => "unused_initial_value");
                end if;
             end;
          end if;
@@ -869,31 +858,32 @@ package body Flow.Analysis is
          Tag : constant String := "illegal_update";
       begin
          if The_Global_Atr.Is_Global then
+            --  !!! can we merge these three cases now?
             if Illegal_Use_Atr.Is_Parameter then
                --  foo (bar);
                Error_Msg_Flow
-                 (Msg => "actual for & cannot be a global input",
-                  G   => FA.PDG,
-                  Loc => Illegal_Use_Loc,
-                  F   => Illegal_Use_Atr.Parameter_Formal,
+                 (Msg => "& must be a global output of &",
+                  N   => Error_Location (FA.PDG, Illegal_Use_Loc),
+                  F1  => Illegal_Use_Atr.Parameter_Formal,
+                  F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag => Tag);
 
             elsif Illegal_Use_Atr.Is_Global_Parameter then
                --  foo;
                Error_Msg_Flow
-                 (Msg => "global item & must denote a global output",
-                  G   => FA.PDG,
-                  Loc => Illegal_Use_Loc,
-                  F   => The_Global_Id,
+                 (Msg => "& must be a global output of &",
+                  N   => Error_Location (FA.PDG, Illegal_Use_Loc),
+                  F1  => The_Global_Id,
+                  F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag => Tag);
 
             else
                --  bar := 12;
                Error_Msg_Flow
-                 (Msg => "assignment to global in & not allowed",
-                  G   => FA.PDG,
-                  Loc => Illegal_Use_Loc,
-                  F   => The_Global_Id,
+                 (Msg => "& must be a global output of &",
+                  N   => Error_Location (FA.PDG, Illegal_Use_Loc),
+                  F1  => The_Global_Id,
+                  F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag => Tag);
 
             end if;
@@ -1018,23 +1008,20 @@ package body Flow.Analysis is
                   if Atr.Is_Parameter then
                      Error_Msg_Flow
                        (Msg => "unused assignment to &",
-                        G   => FA.PDG,
-                        Loc => V,
-                        F   => Atr.Parameter_Actual,
+                        N   => Error_Location (FA.PDG, V),
+                        F1  => Atr.Parameter_Actual,
                         Tag => Tag);
 
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow
                        (Msg => "unused assignment",
-                        G   => FA.PDG,
-                        Loc => V,
+                        N   => Error_Location (FA.PDG, V),
                         Tag => Tag);
 
                   else
                      Error_Msg_Flow
-                       (Msg => "ineffective statement",
-                        G   => FA.PDG,
-                        Loc => V,
+                       (Msg => "statement has no effect",
+                        N   => Error_Location (FA.PDG, V),
                         Tag => Tag);
 
                   end if;
@@ -1176,7 +1163,7 @@ package body Flow.Analysis is
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
                            Error_Msg_Flow
-                             (Msg => "global & might not be set",
+                             (Msg => "& might not be initialized",
                               N   => Find_Global (FA.Analyzed_Entity, Key_I),
                               F1  => Key_I,
                               Tag => Create_Tag ("uninitialized", Key_I));
@@ -1192,17 +1179,16 @@ package body Flow.Analysis is
                            --  error. It means we have a path where we
                            --  do not return from the function.
                            Error_Msg_Flow
-                             (Msg => "function & might not return",
-                              G   => FA.PDG,
-                              Loc => FA.Start_Vertex,
-                              F   => Key_I,
-                              Tag => Create_Tag ("noreturn", Key_I));
+                             (Msg => "possibly missing return statement in &",
+                              N   => Error_Location (FA.PDG, FA.Start_Vertex),
+                              F1  => Direct_Mapping_Id (FA.Analyzed_Entity),
+                              Tag => "noreturn");
                            Mark_Definition_Free_Path
                              (E_Loc => FA.Start_Vertex,
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
                               Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => Create_Tag ("noreturn", Key_I));
+                              Tag   => "noreturn");
 
                         elsif Atr_U.Is_Export then
                            --  As we don't have a global, but an
@@ -1228,11 +1214,11 @@ package body Flow.Analysis is
                               Append (Tmp, "set");
                            end if;
 
+                           --  !!! WE GOT UP TO HERE
                            Error_Msg_Flow
                              (Msg => To_String (Tmp),
-                              G   => FA.PDG,
-                              Loc => V_Use,
-                              F   => Key_I,
+                              N   => Error_Location (FA.PDG, V_Use),
+                              F1  => Key_I,
                               Tag => Create_Tag ("uninitialized", Key_I));
                            Mark_Definition_Free_Path
                              (E_Loc => V_Use,
@@ -1250,9 +1236,8 @@ package body Flow.Analysis is
                      else
                         Error_Msg_Flow
                           (Msg => "use of uninitialized variable &",
-                           G   => FA.PDG,
-                           Loc => V_Use,
-                           F   => Key_I,
+                           N   => Error_Location (FA.PDG, V_Use),
+                           F1  => Key_I,
                            Tag => Create_Tag ("uninitialized", Key_I));
                         Mark_Definition_Free_Path
                           (E_Loc => V_Use,
@@ -1318,8 +1303,7 @@ package body Flow.Analysis is
 
                         --  Complain
                         Error_Msg_Flow (Msg => "stable",
-                                        G   => FA.PDG,
-                                        Loc => N_Loop,
+                                        N   => Error_Location (FA.PDG, N_Loop),
                                         Tag => "stable");
 
                         --  There might be other stable elements now.
@@ -1418,9 +1402,8 @@ package body Flow.Analysis is
                                   Tag => "unused");
                else
                   Error_Msg_Flow (Msg => "& is not used",
-                                  G   => FA.PDG,
-                                  Loc => V,
-                                  F   => F,
+                                  N   => Error_Location (FA.PDG, V),
+                                  F1  => F,
                                   Tag => "unused");
                end if;
             end;

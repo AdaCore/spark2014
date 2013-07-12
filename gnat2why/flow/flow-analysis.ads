@@ -49,6 +49,8 @@ package Flow.Analysis is
    --  Find all cases where we update an in parameter or global.
    --
    --  Complexity is O(N)
+   --
+   --  !!! this should be moved to spark_definition
 
    procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
    --  Find all ineffective statements.
