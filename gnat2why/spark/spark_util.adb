@@ -878,23 +878,7 @@ package body SPARK_Util is
 
    function Type_In_Formal_Container (Id : Entity_Id) return Boolean is
 
-      function Name_Ends_With (N, Suffix : String) return Boolean;
-      --  Return whether N ends with Suffix, as a means to recognize whether
-      --  the full name of entity Id is the completion of a type name which we
-      --  handle specially.
-
-      --------------------
-      -- Name_Ends_With --
-      --------------------
-
-      function Name_Ends_With (N, Suffix : String) return Boolean is
-         (Ada.Strings.Fixed.Tail (N, Suffix'Length) = Suffix);
-
       N : Node_Id := Parent (Id);
-      Name : constant String :=
-        Ada.Strings.Fixed.Translate
-          (Get_Name_String (Chars (Id)),
-           Ada.Strings.Maps.Constants.Lower_Case_Map);
    begin
       if Present (N) then
          N := Parent (N);
@@ -906,16 +890,7 @@ package body SPARK_Util is
 
       return Present (N)
         and then Nkind (N) = N_Package_Declaration
-        and then Is_Instantiation_Of_Formal_Container (N)
-        and then (Name_Ends_With (Name, "list") or else
-                  Name_Ends_With (Name, "vector") or else
-                  Name_Ends_With (Name, "set") or else
-                  Name_Ends_With (Name, "map") or else
-                  Name_Ends_With (Name, "key_type") or else
-                  Name_Ends_With (Name, "element_type") or else
-                  Name_Ends_With (Name, "index_type") or else
-                  Name_Ends_With (Name, "extended_index") or else
-                  Name_Ends_With (Name, "cursor"));
+        and then Is_Instantiation_Of_Formal_Container (N);
    end Type_In_Formal_Container;
 
    --------------------------------------

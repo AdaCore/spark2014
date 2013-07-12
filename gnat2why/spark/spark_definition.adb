@@ -2972,6 +2972,27 @@ package body SPARK_Definition is
       begin
          Decl := First (Decls);
 
+         --  Mark formals of the generic if any
+
+         while Present (Decl) and then not Comes_From_Source (Decl) loop
+            if Nkind (Decl) in N_Full_Type_Declaration         |
+                               N_Private_Type_Declaration      |
+                               N_Private_Extension_Declaration |
+                               N_Subtype_Declaration           |
+                               N_Subprogram_Declaration        |
+                               N_Object_Declaration
+            then
+               Id := Defining_Entity (Decl);
+               if Ekind (Id) in Type_Kind then
+                     Mark_Entity (Id);
+               elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
+                  All_Entities.Include (Id);
+                  Entities_In_SPARK.Include (Id);
+               end if;
+            end if;
+            Next (Decl);
+         end loop;
+
          while Present (Decl) loop
             if Nkind (Decl) in N_Full_Type_Declaration         |
                                N_Private_Type_Declaration      |
@@ -2983,7 +3004,7 @@ package body SPARK_Definition is
                Id := Defining_Entity (Decl);
 
                if Ekind (Id) in Type_Kind then
-                  if Type_In_Formal_Container (Id) then
+                  if not Is_Hidden (Id) then
 
                      --  Should only mark types that are public or formals of
                      --  the generic. Others are simply ignored.
