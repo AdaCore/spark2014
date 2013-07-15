@@ -1,7 +1,7 @@
 p.adb:6:8: info: assertion proved
 p.ads:3:15: info: postcondition proved
 p.ads:3:53: info: range check proved
-p.ads:3:56: overflow check not proved
+p.ads:3:56: info: overflow check proved
 p.ads:7:36: info: postcondition proved
 p.ads:10:38: info: range check proved
 p.ads:10:43: overflow check not proved

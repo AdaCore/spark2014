@@ -27,7 +27,7 @@ auditlog.adb:745:50: info: overflow check proved
 auditlog.adb:745:69: info: overflow check proved
 auditlog.adb:749:10: postcondition not proved
 auditlog.adb:750:47: range check not proved
-auditlog.adb:750:50: overflow check not proved
+auditlog.adb:750:50: info: overflow check proved
 auditlog.adb:750:69: overflow check not proved
 auditlog.adb:800:13: info: postcondition proved
 auditlog.adb:813:75: info: range check proved
@@ -37,7 +37,7 @@ auditlog.adb:891:53: info: range check proved
 auditlog.adb:916:10: info: precondition proved
 auditlog.adb:925:10: info: assertion proved
 auditlog.adb:927:10: info: precondition proved
-auditlog.adb:934:44: range check not proved
+auditlog.adb:934:44: info: range check proved
 auditlog.adb:976:47: info: overflow check proved
 auditlog.adb:978:10: info: postcondition proved
 auditlog.adb:980:47: info: overflow check proved
@@ -89,9 +89,9 @@ auditlog.adb:1828:74: info: overflow check proved
 auditlog.adb:1838:10: info: assertion proved
 auditlog.adb:1843:50: info: range check proved
 auditlog.adb:1843:53: info: overflow check proved
-auditlog.adb:1843:72: overflow check not proved
+auditlog.adb:1843:72: info: overflow check proved
 auditlog.adb:1849:53: info: range check proved
-auditlog.adb:1852:47: range check not proved
+auditlog.adb:1852:47: info: range check proved
 auditlog.adb:1859:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1861:47: range check not proved
 auditlog.adb:1861:50: overflow check not proved
@@ -203,7 +203,7 @@ configdata.adb:1767:17: info: range check proved
 crypto.adb:669:38: range check not proved
 display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
-display.adb:138:30: index check not proved
+display.adb:138:30: info: index check proved
 display.adb:139:30: index check not proved
 display.adb:140:32: range check not proved
 display.adb:143:11: range check not proved
@@ -335,7 +335,7 @@ msgproc.adb:91:17: index check not proved
 msgproc.adb:97:45: overflow check not proved
 msgproc.adb:106:49: overflow check not proved
 msgproc.adb:110:20: index check not proved
-msgproc.adb:114:49: range check not proved
+msgproc.adb:114:49: info: range check proved
 msgproc.adb:127:52: overflow check not proved
 msgproc.adb:130:26: range check not proved
 msgproc.adb:130:52: overflow check not proved
