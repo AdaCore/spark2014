@@ -48,6 +48,7 @@ with Stand;                  use Stand;
 with Switch;                 use Switch;
 
 with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Rewrite;          use SPARK_Rewrite;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
@@ -180,6 +181,9 @@ package body Gnat2Why.Driver is
       --  the combination of generics and inlining, as well as child units
       --  referenced in parent units. To be checked.
 
+      procedure Rewrite_All_Compilation_Units is new Sem.Walk_Library_Items
+        (Action => Rewrite_Compilation_Unit);
+
       procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
         (Action => Mark_Compilation_Unit);
 
@@ -281,6 +285,11 @@ package body Gnat2Why.Driver is
       --  information.
 
       Propagate_Through_Call_Graph (Ignore_Errors => False);
+
+      --  Before any analysis takes place, perform some rewritings of the tree
+      --  that facilitates analysis.
+
+      Rewrite_All_Compilation_Units;
 
       --  Mark all compilation units with "in SPARK / not in SPARK" marks, in
       --  the same order that they were processed by the frontend. Bodies

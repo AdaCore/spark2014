@@ -1966,7 +1966,10 @@ package body SPARK_Definition is
          when N_Component_Association =>
             pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
-            if not Box_Present (N) then
+            if Box_Present (N) then
+               Mark_Violation ("partially initialized aggregate",
+                               N, NYI_Aggregate);
+            else
                Mark (Expression (N));
             end if;
 
