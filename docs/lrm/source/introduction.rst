@@ -428,7 +428,7 @@ in the remaining chapters of this document, the most notable restrictions are:
 - All expressions (including function calls) are free of side-effects.
 
 - Aliasing of names is not permitted in general but the renaming of entities is
-  permitted as there is a static relation ship between the two names.  In
+  permitted as there is a static relationship between the two names.  In
   analysis all names introduced by a renaming declaration are replaced by the
   name of the renamed entity. This replacement is applied recursively when there
   are multiple renames of an entity.
