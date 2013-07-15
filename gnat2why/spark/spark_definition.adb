@@ -2972,7 +2972,10 @@ package body SPARK_Definition is
       begin
          Decl := First (Decls);
 
-         --  Mark formals of the generic if any
+         --  Mark formals of the generic if any:
+         --  The mapping nodes are all nodes starting from the top of the
+         --  visible declarations upto the first source node (detectable by
+         --  Comes_From_Source (...)).
 
          while Present (Decl) and then not Comes_From_Source (Decl) loop
             if Nkind (Decl) in N_Full_Type_Declaration         |
