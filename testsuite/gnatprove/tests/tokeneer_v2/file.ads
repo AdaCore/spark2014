@@ -64,9 +64,9 @@ is
    --
    -- Traceunit : C.File.Construct
    ------------------------------------------------------------------
-   function Construct (TheName : String) return T;
+   function Construct (TheName : String) return T
    --# pre TheName'Last <= MaxNameLength;
-   pragma Precondition (TheName'Last <= MaxNameLength);
+      with Pre => TheName'Last <= MaxNameLength;
 
    ------------------------------------------------------------------
    -- OpenAppend

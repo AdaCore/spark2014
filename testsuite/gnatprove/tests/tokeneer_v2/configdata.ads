@@ -137,6 +137,7 @@ is
                                      TheTokenRemovalDuration,
                                      TheWorkingHoursEnd,
                                      TheWorkingHoursStart));
+
    ------------------------------------------------------------------
    -- TheDisplayFields
    --

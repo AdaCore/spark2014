@@ -40,11 +40,11 @@ is
    -- Traceto : FD.Types.Time
    ------------------------------------------------------------------
 
-   type YearsT      is range 1901..2099;
-   type MonthsT     is range 1..12;
-   type DaysT       is range 1..31;
-   type HoursT      is range 0..23;
-   type MinutesT    is range 0..59;
+   type YearsT   is range 1901..2099;
+   type MonthsT  is range 1..12;
+   type DaysT    is range 1..31;
+   type HoursT   is range 0..23;
+   type MinutesT is range 0..59;
    ------------------------------------------------------------------
    -- Duration
    --
@@ -113,7 +113,7 @@ is
    ------------------------------------------------------------------
 
    function TheCurrentTime return TimeT
-      with Global  => CurrentTime;
+      with Global => CurrentTime;
 
    ------------------------------------------------------------------
    -- GetNow
@@ -195,7 +195,12 @@ is
       Min     : in     BasicTypes.Unsigned32T;
       TheTime :    out TimeT;
       Success :    out Boolean)
-      with Depends => ((Success, TheTime) => (Day, Hour, Min, Month, Year));
+      with Depends => ((Success,
+                        TheTime) => (Day,
+                                     Hour,
+                                     Min,
+                                     Month,
+                                     Year));
 
    ------------------------------------------------------------------
    -- SplitTime
