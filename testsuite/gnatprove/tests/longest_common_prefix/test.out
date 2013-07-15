@@ -11,7 +11,7 @@ lcp.adb:11:62: info: index check proved
 lcp.adb:11:74: info: index check proved
 lcp.adb:12:7: info: loop variant proved
 lcp.adb:14:14: info: overflow check proved
-lcp.ads:6:5: postcondition not proved
+lcp.ads:6:5: info: postcondition proved
 lcp.ads:6:47: info: index check proved
 lcp.ads:6:59: info: index check proved
 lcp.ads:9:32: info: index check proved
