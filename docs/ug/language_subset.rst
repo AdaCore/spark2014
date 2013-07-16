@@ -780,7 +780,7 @@ semantics:
 
 * ``Auto`` cannot be used as a mode argument.
 
-* When the pragma at the start of the visible declarations (preceded only
+* When the pragma appears at the start of the visible declarations (preceded only
   by other pragmas) of a package declaration, it marks the whole package
   (declaration and body) in or out of |SPARK|.
 
