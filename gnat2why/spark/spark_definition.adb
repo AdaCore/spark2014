@@ -1647,15 +1647,15 @@ package body SPARK_Definition is
 
          when Private_Kind =>
 
-            --  The underlying type of a private type in a formal container
-            --  should not be analyzed.
+            --  The underlying type of a private type in a package with
+            --  external axioms should not be analyzed.
 
             if Entity_In_External_Axioms (E) then
                All_Entities.Insert (Underlying_Type (E));
             elsif Type_Based_On_External_Axioms (E) then
 
-               --  A private type based on a formal container should be in
-               --  SPARK.
+               --  A private type based on a package with external axioms
+               --  should be in SPARK.
 
                All_Entities.Insert (Underlying_Type (E));
                Entities_In_SPARK.Include (Underlying_Type (E));
@@ -1669,8 +1669,8 @@ package body SPARK_Definition is
 
          --  Now mark the type itself
 
-         --  Special case to accept subtypes and derived types of formal
-         --  container types.
+         --  Special case to accept subtypes and derived types of types in
+         --  packages with external axioms.
 
          if Type_Based_On_External_Axioms (E) then
             return;
@@ -1877,8 +1877,9 @@ package body SPARK_Definition is
          Entities_In_SPARK.Include (E);
       end if;
 
-      --  Add entity to appropriate list. Type from formal containers are
-      --  handled by a specific mechanism and thus should not be translated.
+      --  Add entity to appropriate list. Type from packages with external
+      --  axioms are handled by a specific mechanism and thus should not be
+      --  translated.
       if not Entity_In_External_Axioms (E) then
          Append_Entity_To_List (E);
       end if;
@@ -2944,9 +2945,10 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  Do not analyze bodies for instantiations of the formal containers
+      --  Do not analyze bodies for packages with external axioms
 
-      if Is_Instance_Of_External_Axioms (Decl_N) then
+      if Package_Has_External_Axioms (Decl_N) or else
+        Is_Instance_Of_External_Axioms (Decl_N) then
          return;
       end if;
 
@@ -2961,15 +2963,15 @@ package body SPARK_Definition is
 
    procedure Mark_Package_Declaration (N : Node_Id) is
 
-      procedure Declare_In_Container (Decls : List_Id);
-      --  Mark types, subprograms and objects from formal container
-      --  instantiations.
+      procedure Declare_In_Package_With_External_Axioms (Decls : List_Id);
+      --  Mark types, subprograms and objects from a package with external
+      --  axioms.
 
-      --------------------------
-      -- Declare_In_Container --
-      --------------------------
+      ---------------------------------------------
+      -- Declare_In_Package_With_External_Axioms --
+      ---------------------------------------------
 
-      procedure Declare_In_Container (Decls : List_Id) is
+      procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
          Decl : Node_Id;
          Id   : Entity_Id;
       begin
@@ -3025,7 +3027,7 @@ package body SPARK_Definition is
 
             Next (Decl);
          end loop;
-      end Declare_In_Container;
+      end Declare_In_Package_With_External_Axioms;
 
       Id         : constant Entity_Id := Defining_Entity (N);
       Vis_Decls  : constant List_Id :=
@@ -3038,7 +3040,8 @@ package body SPARK_Definition is
       --  Only mark types in SPARK or not, and mark all subprograms in SPARK,
       --  but none should be scheduled for translation into Why3.
 
-      if Is_Instance_Of_External_Axioms (N) then
+      if Package_Has_External_Axioms (N) or else
+        Is_Instance_Of_External_Axioms (N) then
 
          --  Explicitly add the package declaration to the entities to
          --  translate into Why3.
@@ -3050,10 +3053,10 @@ package body SPARK_Definition is
             Body_Entities.Append (Id);
          end if;
 
-         --  Mark types and subprograms from the formal container instantiation
-         --  as in SPARK or not.
+         --  Mark types and subprograms from packages with external axioms as
+         --  in SPARK or not.
 
-         Declare_In_Container (Vis_Decls);
+         Declare_In_Package_With_External_Axioms (Vis_Decls);
 
          return;
       end if;
@@ -3277,7 +3280,7 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  Content of formal containers is not to be proved
+      --  Content of packages with external axioms is not to be proved
 
       if Entity_In_External_Axioms (E) then
          return;

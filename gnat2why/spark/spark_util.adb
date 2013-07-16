@@ -501,9 +501,9 @@ package body SPARK_Util is
    function Is_Full_View (E : Entity_Id) return Boolean is
       (Full_To_Partial_Entities.Contains (E));
 
-   ------------------------------------------
-   -- Is_Instantiation_Of_Formal_Container --
-   ------------------------------------------
+   ------------------------------------
+   -- Is_Instance_Of_External_Axioms --
+   ------------------------------------
 
    function Is_Instance_Of_External_Axioms (N : Node_Id) return Boolean
    is
@@ -522,7 +522,7 @@ package body SPARK_Util is
    end Is_Instance_Of_External_Axioms;
 
    ---------------------------------
-   -- Is_Formal_Container_Package --
+   -- Package_Has_External_Axioms --
    ---------------------------------
 
    function Package_Has_External_Axioms (N : Node_Id) return Boolean
@@ -570,9 +570,9 @@ package body SPARK_Util is
       return (Location_In_Formal_Containers (Sloc (N)));
    end Package_Has_External_Axioms;
 
-   --------------------------------
-   -- Entity_In_Formal_Container --
-   --------------------------------
+   -------------------------------
+   -- Entity_In_External_Axioms --
+   -------------------------------
 
    function Entity_In_External_Axioms (E : Entity_Id) return Boolean is
       S : Entity_Id := E;
@@ -590,9 +590,9 @@ package body SPARK_Util is
       return False;
    end Entity_In_External_Axioms;
 
-   --------------------------------------------
-   -- Is_Access_To_Formal_Container_Capacity --
-   --------------------------------------------
+   -----------------------------------------------
+   -- Is_Access_To_External_Axioms_Discriminant --
+   -----------------------------------------------
 
    function Is_Access_To_External_Axioms_Discriminant (N : Node_Id)
                                                        return Boolean
@@ -603,9 +603,9 @@ package body SPARK_Util is
         and then Is_External_Axioms_Discriminant (E);
    end Is_Access_To_External_Axioms_Discriminant;
 
-   ----------------------------------
-   -- Is_Formal_Container_Capacity --
-   ----------------------------------
+   -------------------------------------
+   -- Is_External_Axioms_Discriminant --
+   -------------------------------------
 
    function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
@@ -747,7 +747,7 @@ package body SPARK_Util is
       Typ : Entity_Id := E;
    begin
       loop
-         --  For types in formal container instantiations, do not consider the
+         --  For types in packages with external axioms, do not consider the
          --  underlying type.
 
          if Entity_In_External_Axioms (Typ) then
@@ -891,16 +891,16 @@ package body SPARK_Util is
       raise Program_Error;
    end Search_Component_By_Name;
 
-   ------------------------------------
-   -- Type_Based_On_Formal_Container --
-   ------------------------------------
+   -----------------------------------
+   -- Type_Based_On_External_Axioms --
+   -----------------------------------
 
    function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean is
      (Present (Underlying_External_Axioms_Type (E)));
 
-   --------------------------------------
-   -- Underlying_Formal_Container_Type --
-   --------------------------------------
+   -------------------------------------
+   -- Underlying_External_Axioms_Type --
+   -------------------------------------
 
    function Underlying_External_Axioms_Type (E : Entity_Id) return Entity_Id
    is

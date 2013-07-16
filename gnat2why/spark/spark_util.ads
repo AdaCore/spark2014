@@ -134,7 +134,8 @@ package SPARK_Util is
    function Most_Underlying_Type (E : Entity_Id) return Entity_Id;
    --  Takes a type E in parameter. If E is a private type, follow the chain of
    --  underlying types to return the first non-private type. Otherwise, return
-   --  E. As a special case, return the first type in a formal container found.
+   --  E. As a special case, return the first type in a package with external
+   --  axioms found.
 
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
       (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
