@@ -1,36 +1,76 @@
-
-
-
 Require Export values.
 Require Export environment.
 Require Import util.
 
 (** * Relational Semantics *)
 (** interpret the constant syntax as a constant stored value *)
-Definition eval_constant (cst: constant): return_val :=
+Definition eval_constant (cst: constant): value :=
     match cst with
-    | Ointconst v => ValNormal (Int v)
-    | Oboolconst b => ValNormal (Bool b)
+    | Ointconst v => (Int v)
+    | Oboolconst b => (Bool b)
     end.
+(*
+Inductive eval_const: constant -> value -> Prop :=
+    | C_Int: forall v, 
+        eval_const (Ointconst v) (Int v)
+    | C_Bool: forall b, 
+        eval_const (Oboolconst b) (Bool b).
+*)
 
 (** interpret the binary operation for each binary operator *)
-Definition eval_binop (op: binary_operation) (v1: return_val) (v2: return_val): return_val :=
-    match op with
-    | Ceq => Val.eq v1 v2
-    | Cne => Val.ne v1 v2
-    | Oand => Val.and v1 v2
-    | Oor => Val.or v1 v2
-    | Oadd => Val.add v1 v2
-    | Osub => Val.sub v1 v2
-    | Omul => Val.mul v1 v2
-    | Odiv => Val.div v1 v2
-    end.
+Inductive eval_binexpr: binary_operation -> value -> value -> value -> Prop :=
+    | Eq: forall v1 v2 b,
+        Zeq_bool v1 v2 = b ->
+        eval_binexpr Ceq (Int v1) (Int v2) (Bool b)
+    | Ne: forall v1 v2 b,
+        Zneq_bool v1 v2 = b ->
+        eval_binexpr Cne (Int v1) (Int v2) (Bool b)
+    | And: forall v1 v2 b,
+        andb v1 v2 = b ->
+        eval_binexpr Oand (Bool v1) (Bool v2) (Bool b)
+    | Or: forall v1 v2 b,
+        orb v1 v2 = b ->
+        eval_binexpr Oor (Bool v1) (Bool v2) (Bool b)
+    | Add: forall v1 v2 v3,
+        (v1 + v2)%Z =v3 ->
+        eval_binexpr Oadd (Int v1) (Int v2) (Int v3)
+    | Sub: forall v1 v2 v3,
+        (v1 - v2)%Z =v3 ->
+        eval_binexpr Osub (Int v1) (Int v2) (Int v3)
+    | Mul: forall v1 v2 v3,
+        (v1 * v2)%Z =v3 ->
+        eval_binexpr Omul (Int v1) (Int v2) (Int v3)
+    | Div: forall v1 v2 v3,
+        (v1 / v2)%Z =v3 ->
+        eval_binexpr Odiv (Int v1) (Int v2) (Int v3).
 
 (** interpret the unary operation *)
-Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
-    match op with
-    | Onot => Val.not v
-    end.
+Inductive eval_unaryexpr : unary_operation -> value -> value -> Prop :=
+    | Not: forall b v,
+        negb b = v ->
+        eval_unaryexpr Onot (Bool b) (Bool v).
+
+Lemma eval_bin_unique: forall op v1 v2 x y,
+    eval_binexpr op v1 v2 x ->
+    eval_binexpr op v1 v2 y ->
+    x = y.
+Proof.
+    intros.
+    destruct op;
+    inversion H; subst; inversion H0; subst;
+    auto.
+Qed.
+
+Lemma eval_unary_unique: forall uop v x y,
+    eval_unaryexpr uop v x ->
+    eval_unaryexpr uop v y ->
+    x = y.
+Proof.
+    intros.
+    destruct uop;
+    inversion H; subst; inversion H0; subst;
+    auto.
+Qed.
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
     
@@ -51,94 +91,42 @@ Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
 (** *** check actions *)
 (** which are needed to be performed before excecuting the program *)
 Inductive check_action: Type := 
-   | Division_Check: expr -> check_action
-   | Overflow_Check: expr -> check_action
-   | No_Check: check_action.
+   | Do_Division_Check: check_action
+   | Do_Overflow_Check: check_action.
+
+(** add check flags for AST nodes according to the checking rules *)
+Inductive check_flag: expr -> option check_action -> Prop :=
+    | CF_Econst_Int: forall ast_id n,
+        check_flag (Econst ast_id (Ointconst n)) None
+    | CF_Econst_Bool: forall ast_id b,
+        check_flag (Econst ast_id (Oboolconst b)) None
+    | CF_Evar: forall ast_id x,  
+        check_flag (Evar ast_id x) None
+    | CF_Ebinop_Div: forall ast_id e1 e2,
+        check_flag (Ebinop ast_id Odiv e1 e2) (Some Do_Division_Check)
+    | CF_Ebinop_Others: forall ast_id op e1 e2,
+        op <> Odiv ->
+        check_flag (Ebinop ast_id op e1 e2) None
+    | CF_Eunop: forall ast_id op e,
+        check_flag (Eunop ast_id op e) None.
+
+(** *** semantics for run-time checks *)
 
 Inductive is_not_zero: Z -> bool -> Prop :=
     | Not_Zero: forall v, v <> 0%Z -> is_not_zero v true
     | Is_Zero: forall v, v = 0%Z -> is_not_zero v false.
 
-Definition Interpreter_Expr: Type := stack -> expr -> return_val -> Prop.
-
-(** *** semantics for check actions *)
-Inductive do_check (IE: Interpreter_Expr): stack -> check_action -> bool -> Prop :=
-    | DC_Division_By_Zero: forall s e1 v1 e2 v2 b ast_id,
-        IE s e1 (ValNormal (Int v1)) -> (* make sure that v1 and v2 are type consistent *)
-        IE s e2 (ValNormal (Int v2)) ->
+Inductive do_check: binary_operation -> value -> value -> bool -> Prop :=
+    | Do_Division_Check0: forall v1 v2 b,
         is_not_zero v2 b ->
-        do_check IE s (Division_Check (Ebinop ast_id Odiv e1 e2)) b
-    | DC_No_Check: forall s,
-        do_check IE s No_Check true.
+        do_check Odiv (Int v1) (Int v2) b
+    | Do_Nothing: forall op v1 v2,
+        op <> Odiv ->
+        do_check op v1 v2 true.
 (*
-    | DC_Overflow: 
-    | DC_Range: 
+    | DC_Overflow_Check0: 
     | ... 
 *)
-
-(** add check flags for AST nodes according to the checking rules *)
-Inductive check_flag: expr -> check_action -> Prop :=
-    | CF_Econst_Int: forall ast_id n,
-        check_flag (Econst ast_id (Ointconst n)) No_Check
-    | CF_Econst_Bool: forall ast_id b,
-        check_flag (Econst ast_id (Oboolconst b)) No_Check
-    | CF_Evar: forall ast_id x,  
-        check_flag (Evar ast_id x) No_Check
-    | CF_Ebinop_Div: forall ast_id e1 e2,
-        check_flag (Ebinop ast_id Odiv e1 e2) (Division_Check (Ebinop ast_id Odiv e1 e2))
-    | CF_Ebinop_Others: forall ast_id op e1 e2,
-        op <> Odiv ->
-        check_flag (Ebinop ast_id op e1 e2) No_Check
-    | CF_Eunop: forall ast_id op e,
-        check_flag (Eunop ast_id op e) No_Check.
-
-(** *** checking procedure *)
-(** 
-    before evaluating the expression e, we have to first check the checking rules, if the checking rules
-    enforce a run_time_check for the expression, then we do the check by calling do_check, whose
-    result is returned as the check result
- *)
-Inductive run_time_check (IE: Interpreter_Expr):  stack -> expr -> bool -> Prop :=
-    | RTC: forall e runtime_check b s,
-        check_flag e runtime_check ->
-        do_check IE s runtime_check b ->
-        run_time_check IE s e b.
-
-
-
-
-Inductive eval_binexpr: binary_operation -> value -> value -> value -> Prop :=
-    | Eq: forall v1 v2 b,
-        Zeq_bool v1 v2 = b ->
-        eval_binexpr Ceq (Int v1) (Int v2) (Bool b)
-    | Ne: forall v1 v2 b,
-        Zneq_bool v1 v2 = b ->
-        eval_binexpr Cne (Int v1) (Int v2) (Bool b)
-    | And: forall v1 v2 b,
-        andb v1 v2 = b ->
-        eval_binexpr Cne (Bool v1) (Bool v2) (Bool b)
-    | Or: forall v1 v2 b,
-        orb v1 v2 = b ->
-        eval_binexpr Cne (Bool v1) (Bool v2) (Bool b)
-    | Add: forall v1 v2 v3,
-        (v1 + v2)%Z =v3 ->
-        eval_binexpr Cne (Int v1) (Int v2) (Int v3)
-    | Sub: forall v1 v2 v3,
-        (v1 - v2)%Z =v3 ->
-        eval_binexpr Cne (Int v1) (Int v2) (Int v3)
-    | Mul: forall v1 v2 v3,
-        (v1 * v2)%Z =v3 ->
-        eval_binexpr Cne (Int v1) (Int v2) (Int v3)
-    | Div: forall v1 v2 v3,
-        (v1 / v2)%Z =v3 ->
-        eval_binexpr Cne (Int v1) (Int v2) (Int v3).
-
-
-Inductive eval_unaryexpr : unary_operation -> value -> value -> Prop :=
-    | Not: forall b v,
-        negb b = v ->
-        eval_unaryexpr Onot (Bool b) (Bool v).
-
 
 (** ** Expression semantics *)
 (** 
@@ -150,7 +138,7 @@ Inductive eval_unaryexpr : unary_operation -> value -> value -> Prop :=
 Inductive eval_expr: stack -> expr -> return_val -> Prop :=
     | eval_Econst: forall cst v s ast_id,
         eval_constant cst = v ->
-        eval_expr s (Econst ast_id cst) v
+        eval_expr s (Econst ast_id cst) (ValNormal v)
     | eval_Evar: forall x s v ast_id,
         fetch x s = Some v ->
         eval_expr s (Evar ast_id x) (ValNormal v)
@@ -164,23 +152,21 @@ Inductive eval_expr: stack -> expr -> return_val -> Prop :=
     | eval_Ebinop3: forall s e1 v1 e2 v2 ast_id op,
         eval_expr s e1 (ValNormal v1) ->
         eval_expr s e2 (ValNormal v2) ->
-        run_time_check eval_expr s (Ebinop ast_id op e1 e2) false ->
+        do_check op v1 v2 false ->
         eval_expr s (Ebinop ast_id op e1 e2) ValException
     | eval_Ebinop4: forall s e1 v1 e2 v2 ast_id op v,
         eval_expr s e1 (ValNormal v1) ->
         eval_expr s e2 (ValNormal v2) ->
-        run_time_check eval_expr s (Ebinop ast_id op e1 e2) true ->
-        eval_binop op (ValNormal v1) (ValNormal v2) = v ->
-        v <> ValAbnormal ->
-        eval_expr s (Ebinop ast_id op e1 e2) v
+        do_check op v1 v2 true ->
+        eval_binexpr op v1 v2 v ->
+        eval_expr s (Ebinop ast_id op e1 e2) (ValNormal v)
     | eval_Eunop1: forall s e ast_id op,
         eval_expr s e ValException ->
         eval_expr s (Eunop ast_id op e) ValException
     | eval_Eunop2: forall s e v ast_id op v1,
         eval_expr s e (ValNormal v) ->
-        eval_unop op (ValNormal v) = v1 ->
-        v1 <> ValAbnormal ->
-        eval_expr s (Eunop ast_id op e) v1.
+        eval_unaryexpr op v v1 ->
+        eval_expr s (Eunop ast_id op e) (ValNormal v1).
 
 
 (** ** Command semantics *)
@@ -232,6 +218,26 @@ Inductive eval_stmt: stack -> stmt -> state -> Prop :=
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 
 (** * Functional Semantics *)
+
+(** interpret the binary operation for each binary operator *)
+Definition eval_binop (op: binary_operation) (v1: return_val) (v2: return_val): return_val :=
+    match op with
+    | Ceq => Val.eq v1 v2
+    | Cne => Val.ne v1 v2
+    | Oand => Val.and v1 v2
+    | Oor => Val.or v1 v2
+    | Oadd => Val.add v1 v2
+    | Osub => Val.sub v1 v2
+    | Omul => Val.mul v1 v2
+    | Odiv => Val.div v1 v2
+    end.
+
+(** interpret the unary operation *)
+Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
+    match op with
+    | Onot => Val.not v
+    end.
+
 (** ** Expression semantics *)
 
 (** 
@@ -241,7 +247,7 @@ Inductive eval_stmt: stack -> stmt -> state -> Prop :=
 (* here use 'Function' instead of 'Fixpoint' in order to use tactic 'functional induction (f_eval_expr _ _)' in proofs *)
 Function f_eval_expr (s: stack) (e: expr): return_val :=
     match e with
-    | Econst _ v => eval_constant v
+    | Econst _ v => ValNormal (eval_constant v)
     | Evar _ x =>
         match (fetch x s) with  (* here we have not considered the variable's mode *)
         | Some v => ValNormal v
@@ -370,19 +376,17 @@ Proof.
     intros v1 v2 h1 h2;
     inversion h1; subst; 
     inversion h2; subst.
-  - rewrite H3 in H4; inversion H4; subst.
-    auto.
+  - auto.
   - rewrite H1 in H2; inversion H2; auto.
-  - specialize (IHe1 _ _ H3 H4).
-    specialize (IHe2 _ _ H5 H10).
+  - specialize (IHe1 _ _ H5 H9).
+    specialize (IHe2 _ _ H6 H10).
     subst.
-    rewrite H13 in H8.
-    inversion H8; auto.
-  - specialize (IHe _ _ H1 H2).
-    subst.
+    specialize (eval_bin_unique _ _ _ _ _ H8 H12); intros hz1; subst.
+    auto.
+  - specialize (IHe _ _ H3 H5). subst.
     destruct op, op0.
-    rewrite H6 in H3.
-    inversion H3; auto.
+    specialize (eval_unary_unique _ _ _ _ H4 H6); intros hz1; subst.
+    auto.
 Qed.
 
 (** 
@@ -445,27 +449,34 @@ Proof.
     assumption.
   - specialize (IHr _ e3).
     specialize (IHr0 _ e4).
-    clear H0.
-    econstructor; auto; try assumption.
+    rewrite H0.
+    econstructor.
+    apply IHr. apply IHr0.
     + (* check division by zero *)
        destruct op;
        match goal with
-       | [ |- run_time_check _ _ (Ebinop _ Odiv _ _) true ] => econstructor; [constructor | ]
-       | [ |- run_time_check _ _ (Ebinop _ _ _ _) true ] => econstructor; constructor; intuition; try inversion H
+       | [ |- do_check Odiv ?v1 ?v2 true ] => destruct v1, v2; inversion h1; constructor
+       | [ |- do_check ?op ?v1 ?v2 true ] => constructor; unfold not; intros H; inversion H
        end.
-       destruct v1; destruct v2; simpl in h1; try inversion h1.
-       econstructor; intuition.
-       apply IHr.
-       apply IHr0.
-       remember (Zeq_bool n0 0) as eq.
-       destruct eq; try inversion h1.
-       symmetry in Heqeq.
+       remember (Zeq_bool n0 0) as b.
+       destruct b; try inversion H1.
+       symmetry in Heqb.
        apply Zeq_zero_false; assumption.
-    + rewrite h1. 
-       intuition. inversion H.
+    + destruct op;
+       destruct v1, v2;
+       simpl in h1; inversion h1;
+       try constructor; auto.
+       destruct (Zeq_bool n0 0); inversion h1; subst.
+       constructor.
+       reflexivity.
   - specialize (IHr _ e2).
-    econstructor; intuition; try assumption.
-    rewrite h1 in H; inversion H.
+    rewrite h1.
+    econstructor. 
+    apply IHr.
+    destruct op. 
+    simpl in h1. 
+    destruct v; inversion h1; subst.
+    constructor; auto.
 Qed.
 
 (** another help lemma to prove the theorem: f_eval_expr_correct *)
@@ -476,37 +487,27 @@ Proof.
     intros s e.
     functional induction (f_eval_expr s e);
     intros h; try inversion h.
-  - destruct v; inversion h.
   - rewrite h.
     specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
     specialize (f_eval_expr_correct1 _ _ _ e4); intros hz2.
-    econstructor 5.
+    eapply eval_Ebinop3.
     apply hz1. apply hz2.
     destruct op;
     destruct v1; destruct v2;
     try inversion h.
-    econstructor. 
-    constructor.
-    econstructor. 
-    intuition.
-    apply hz1.
-    apply hz2.
-    remember (Zeq_bool n0 0) as eq.
-    symmetry in Heqeq.
-    destruct eq; try inversion h1.
+    constructor. 
+    remember (Zeq_bool n0 0) as b.
+    symmetry in Heqb.
+    destruct b; try inversion H1.
     apply Zeq_zero_true; assumption.
-    inversion H1.  
   - specialize (IHr0 e4).
     specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
-    econstructor 4; auto.
+    eapply eval_Ebinop2; auto.
     apply hz1.
   - specialize (IHr e3).
     constructor; assumption.
-  - econstructor 8; intuition.
-    apply f_eval_expr_correct1; assumption.
-    repeat (progress constructor).
-    rewrite h in H. 
-    discriminate H.    
+  - destruct op;
+    destruct v; inversion h. 
   - specialize (IHr e2).
     constructor; assumption.
 Qed.
@@ -528,41 +529,6 @@ Proof.
   - apply f_eval_expr_correct2.
 Qed.
 
-(** 
-    for the division by zero checking, if the check result is false, then
-    we get that the value of divide is zero
-*)
-Lemma dividor_is_zero: forall s e2 v2 ast_id e1, 
-    eval_expr s e2 (ValNormal v2) ->
-    run_time_check eval_expr s (Ebinop ast_id Odiv e1 e2) false ->
-    v2 = Int 0.
-Proof.
-    intros.
-    inversion H0; subst.
-    inversion H1; subst.
-    inversion H2; subst.
-    specialize (eval_expr_unique _ _ _ _ H H9); intros hz1.
-    apply Zeq_zero_true in H10. 
-    apply Zeq_bool_eq in H10.
-    subst.
-    reflexivity.
-    intuition.
-Qed.
-
-(*
-Lemma dividor_is_zero: forall s e2 v2 ast_id e1, 
-    eval_expr s e2 (ValNormal (Int v2)) ->
-    run_time_check eval_expr s (Ebinop ast_id Odiv e1 e2) false ->
-    is_not_zero v2 false.
-Proof.
-    intros.
-    inversion H0; subst.
-    inversion H1; subst.
-    inversion H2; subst.
-    specialize (eval_expr_unique _ _ _ _ H H8); intros hz1.
-    rm_eq.
-Qed.
-*)
 
 (** *** f_eval_expr_complete *)
 (** 
@@ -580,22 +546,20 @@ Proof.
     | h: fetch _ _ = _  |- _ => progress rewrite h
     | h: f_eval_expr _ _ = _ |- _ => progress rewrite h
     end;auto.
+  - rewrite H; reflexivity.
+  - inversion H; subst. inversion H; subst.
+    inversion H3; subst.
+    auto.
   - destruct v1; destruct v2;
     destruct op;
-    inversion H; inversion H0; subst; inversion H1; 
-    subst; simpl; auto;
-    match goal with
-    | [h1: eval_expr ?s e1 (ValNormal ?v1), h2: eval_expr ?s e1 (ValNormal ?v1') |- _ ] =>
-            specialize (eval_expr_unique _ _ _ _  h1 h2); let hz := fresh "hz" in intros hz; inversion hz; subst
-    end;
-    match goal with
-    | [h1: eval_expr ?s e2 (ValNormal ?v2), h2: eval_expr ?s e2 (ValNormal ?v2') |- _ ] =>
-            specialize (eval_expr_unique _ _ _ _  h1 h2); let hz := fresh "hz" in intros hz; inversion hz; subst
-    end;
-    match goal with
-    | [h1: eval_expr _ ?e2 (ValNormal ?v2), h2: run_time_check _ _ (Ebinop _ Odiv _ ?e2) false |- _ ] =>
-            specialize (dividor_is_zero _ _ _ _ _ h1 h2); let hz := fresh "hz" in intros hz; inversion hz; subst; simpl; auto
-    end.
+    inversion H0; subst; simpl; auto.
+    inversion H; subst. 
+    apply Zeq_zero_false in H3. 
+    rewrite H3; auto.
+    unfold not in H1; intuition.
+  - destruct op.
+    inversion H; subst.
+    auto.
 Qed.
 
 
