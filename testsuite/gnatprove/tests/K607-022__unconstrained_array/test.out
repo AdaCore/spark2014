@@ -1,5 +1,5 @@
 simple_unc_arrays.adb:26:36: info: discriminant check proved
-simple_unc_arrays.adb:26:36: info: range check proved
+simple_unc_arrays.adb:26:36: range check not proved
 simple_unc_arrays.adb:33:44: loop invariant initialization not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:44: loop invariant preservation not proved, requires A.V (J) = AV_Old (A.Last - J + 1)
 simple_unc_arrays.adb:33:46: discriminant check not proved

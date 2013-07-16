@@ -23,6 +23,6 @@ queen.ads:32:50: info: index check proved
 queen.ads:32:57: info: index check proved
 queen.ads:33:63: info: range check proved
 queen.ads:34:17: postcondition not proved
-queen.ads:36:50: info: index check proved
-queen.ads:36:62: info: index check proved
+queen.ads:36:50: index check not proved
+queen.ads:36:62: index check not proved
 queen.ads:38:58: info: range check proved
