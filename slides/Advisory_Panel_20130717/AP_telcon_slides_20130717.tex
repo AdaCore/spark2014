@@ -89,7 +89,7 @@
   \item In the meantime, possible workarounds:
    \begin{itemize}
     \item Use an indefinite container - we hope to give a SPARK
-      version of indefinite containers and\/or provide a SPARK
+      version of indefinite containers and/or provide a SPARK
       interface to the Ada Container library
    \item Make the type to contain the constants private and provide
      subprograms to read the values of the constants. The body of the
@@ -133,12 +133,12 @@
 
   \begin{itemize}
 
-  \item Global and Depends aspects: when we say that for mode out
-    parameters and globals that things like array attributes,
-    discriminants and tags are ignored, we mean ignored for the
-    purposes of  flow analysis - they are treated as constants.  
-  \item We will consider post release 1 if this model is adequate
-  \item Also post release 1 we will consider whether we can provide more
+  \item Global and Depends aspects: we say in the RM "for mode out
+    parameters and globals things like array attributes,
+    discriminants and tags are ignored", what we mean by this is
+    that flow analysis treats them as constants.
+  \item We will consider after release 1 if this model is adequate
+  \item Also after release 1 we will consider whether we can provide more
   precise flow relations for composite objects which are only
   partially updated by a subprogram, but never read
   \end{itemize}
@@ -150,15 +150,15 @@
   \begin{itemize}
 
   \item Ghost functions can be used in any assertion expression this
-    include Pre and Post conditions.  We will make this clearer in the
+    includes Pre and Post conditions.  We will make this clearer in the
     RM.
-  \item It is intended that SPARK will raise an error if a Ghost
+  \item SPARK will raise an error if a Ghost
     function is used outside of an assertion expression.  
-  \item It is expected that the compiler will be able to not generate
+  \item the compiler will be able to not generate
     code for Ghost functions if assertion expressions are not executed
     (Ignored).
-  \item \emph {Check with AdaCore regarding omitting such functions
-    from dead code statistics if they are not executed.}
+  \item \emph gnatcoverage will be updated to ignore ghost functions if
+    they are not executed.
  \end{itemize}
 
 \end{frame}
@@ -333,7 +333,7 @@
   \item We use the concept of an asynchronous writer to represent an
     external entity writing to the program, an external input; and
  \item the concept of an asychronous reader to represent an external
-   entity reading from the progra, an external output
+   entity reading from the program, an external output
  \item Unlike SPARK 2005 an external object may be both an input and
    an output
  \item A state abstraction representing one or more volatile objects
@@ -355,7 +355,7 @@
   \item These aspects may be applied to volatile object declarations
   \item Async\_Writers and Async\_Readers may also be applied to an
     External state abstraction
-  \item Further aspects will be added post release 1 to allow modelling of other types of interface
+  \item Further aspects will be added after release 1 to allow modelling of other types of interface
   \end{itemize}
  
 \end{frame}
