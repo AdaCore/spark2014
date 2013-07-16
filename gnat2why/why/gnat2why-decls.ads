@@ -57,7 +57,8 @@ package Gnat2Why.Decls is
    --  Generates a theory that completes the base theory for a constant
    --  declaration.
 
-   procedure Translate_Container_Package (Package_Entity : Entity_Id);
+   procedure Translate_Package_With_External_Axioms
+     (Package_Entity : Entity_Id);
    --  Translate a package with a Why3 axiomatization
 
    procedure Translate_Loop_Entity

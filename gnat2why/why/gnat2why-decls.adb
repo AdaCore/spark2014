@@ -124,7 +124,7 @@ package body Gnat2Why.Decls is
       function Normalize_Type (E : Entity_Id) return Entity_Id is
       begin
          if not (Ekind (E) in Private_Kind) or else
-           Type_In_Formal_Container (E)
+           Entity_In_External_Axioms (E)
          then
             return E;
          end if;
@@ -322,11 +322,12 @@ package body Gnat2Why.Decls is
       end if;
    end Translate_Constant_Value;
 
-   ---------------------------------
-   -- Translate_Container_Package --
-   ---------------------------------
+   --------------------------------------------
+   -- Translate_Package_With_External_Axioms --
+   --------------------------------------------
 
-   procedure Translate_Container_Package (Package_Entity : Entity_Id) is
+   procedure Translate_Package_With_External_Axioms
+     (Package_Entity : Entity_Id) is
       type Entity_Array is array (Integer range <>) of Entity_Id;
 
       procedure Compute_Length (Labs         :     List_Id;
@@ -771,7 +772,7 @@ package body Gnat2Why.Decls is
 
          Parse_Declarations (Decls, TFile.Name.all);
       end if;
-   end Translate_Container_Package;
+   end Translate_Package_With_External_Axioms;
 
    ---------------------------
    -- Translate_Loop_Entity --

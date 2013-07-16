@@ -100,16 +100,33 @@ package SPARK_Util is
    function Is_Partial_View (E : Entity_Id) return Boolean;
    --  Return whether E is the partial view of another entity
 
-   function Is_Formal_Container_Capacity (E : Entity_Id) return Boolean
+   function Package_Has_External_Axioms (N : Node_Id) return Boolean;
+   --  Return whether N is a package with External Axioms
+   --  This function only recognizes formal containers for now
+
+   function Is_Instance_Of_External_Axioms (N : Node_Id) return Boolean;
+   --  Return whether N is the package instantiation of a package with
+   --  external axioms
+
+   function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean;
+   --  Return whether a type E is defined in a package with external axioms, or
+   --  it is a subtype or derived type ultimately based on such a type.
+
+   function Entity_In_External_Axioms (E : Entity_Id) return Boolean;
+   --  Return whether an entity E is declared in a package with external axioms
+
+   function Underlying_External_Axioms_Type (E : Entity_Id) return Entity_Id;
+   --  Return the underlying base type declared in a package with external
+   --  axioms, if any
+
+   function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean
    with
      Pre => Ekind (E) = E_Discriminant;
 
-   function Is_Access_To_Formal_Container_Capacity (N : Node_Id) return Boolean
+   function Is_Access_To_External_Axioms_Discriminant
+     (N : Node_Id) return Boolean
    with
      Pre => Nkind (N) = N_Selected_Component;
-
-   function Is_Instantiation_Of_Formal_Container (N : Node_Id) return Boolean;
-   --  Return whether N is the package instantiation of a formal container
 
    function Partial_View (E : Entity_Id) return Entity_Id;
    --  Return the partial view for entity E
@@ -119,9 +136,6 @@ package SPARK_Util is
    --  underlying types to return the first non-private type. Otherwise, return
    --  E. As a special case, return the first type in a formal container found.
 
-   function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean;
-   --  Return whether a location Loc is in the formal container sources
-
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
       (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
    --  Returns True is unit U is in the standard library, which includes all
@@ -130,21 +144,6 @@ package SPARK_Util is
    function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean;
    --  Returns True if location Loc is in a unit of the standard library, as
    --  computed by Unit_In_Standard_Library.
-
-   function Type_Based_On_Formal_Container (E : Entity_Id) return Boolean;
-   --  Return whether a type E is defined in the formal containers, or it is a
-   --  subtype or derived type ultimately based on such a type.
-
-   function Type_In_Formal_Container (Id : Entity_Id) return Boolean;
-   --  Return whether a type Id is in the formal container sources
-
-   function Entity_Is_Instance_Of_Formal_Container (Id : Entity_Id)
-                                                    return Boolean;
-   --  return whether the entity Id is the instance of an entity defined in the
-   --  formal containers.
-
-   function Underlying_Formal_Container_Type (E : Entity_Id) return Entity_Id;
-   --  Return the underlying base type in formal containers, if any
 
    function Root_Record_Type (E : Entity_Id) return Entity_Id;
    --  Given a record type (or private type whose implementation is a record

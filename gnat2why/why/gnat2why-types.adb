@@ -172,7 +172,7 @@ package body Gnat2Why.Types is
          --  For a private type or record subtype, use the most underlying type
          --  if it is in SPARK. Otherwise, return the special private type.
 
-         if Type_In_Formal_Container (Ty) then
+         if Entity_In_External_Axioms (Ty) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
          elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
@@ -209,11 +209,9 @@ package body Gnat2Why.Types is
                                          E      : Entity_Id;
                                          Base_E : Entity_Id);
 
-         --  Translation for types based on formal containers
-         --  clone of the theory of base_t plus:
+         --  Translation for private types based on packages with external
+         --  axioms. It contains a clone of the theory of base_t plus:
          --  type t = base_t
-         --  function of_base (x : base_t) : t := x
-         --  function to_base (x : t) : base_t := x
          --  a discriminant check if needed
 
          procedure Declare_Private_Type (Theory : W_Theory_Declaration_Id;
@@ -256,10 +254,10 @@ package body Gnat2Why.Types is
          then
             Declare_Ada_Abstract_Signed_Int_From_Range (Theory, E, E);
 
-         elsif Type_Based_On_Formal_Container (E) and then
-           Ekind (Underlying_Formal_Container_Type (E)) in Private_Kind then
+         elsif Type_Based_On_External_Axioms (E) and then
+           Ekind (Underlying_External_Axioms_Type (E)) in Private_Kind then
             Declare_Private_Type (Theory, E,
-                                  Underlying_Formal_Container_Type (E));
+                                  Underlying_External_Axioms_Type (E));
          else
             case Ekind (E) is
             when E_Signed_Integer_Type    |

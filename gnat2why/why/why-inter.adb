@@ -747,7 +747,7 @@ package body Why.Inter is
                end if;
 
             elsif Ekind (E) = E_Discriminant
-              and then Is_Formal_Container_Capacity (E)
+              and then Is_External_Axioms_Discriminant (E)
             then
                if In_Main_Unit_Body (E) then
                   return WF_Context_In_Body;
@@ -883,7 +883,7 @@ package body Why.Inter is
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
-         if Type_In_Formal_Container (N) then
+         if Entity_In_External_Axioms (N) then
             return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
          else
             declare
@@ -1080,7 +1080,7 @@ package body Why.Inter is
             end if;
 
          when Private_Kind =>
-            if Type_In_Formal_Container (Ty) then
+            if Entity_In_External_Axioms (Ty) then
                return EW_Abstract;
             elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
                return Get_EW_Term_Type (Most_Underlying_Type (Ty));

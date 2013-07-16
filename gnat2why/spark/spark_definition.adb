@@ -1650,9 +1650,9 @@ package body SPARK_Definition is
             --  The underlying type of a private type in a formal container
             --  should not be analyzed.
 
-            if Type_In_Formal_Container (E) then
+            if Entity_In_External_Axioms (E) then
                All_Entities.Insert (Underlying_Type (E));
-            elsif Type_Based_On_Formal_Container (E) then
+            elsif Type_Based_On_External_Axioms (E) then
 
                --  A private type based on a formal container should be in
                --  SPARK.
@@ -1672,7 +1672,7 @@ package body SPARK_Definition is
          --  Special case to accept subtypes and derived types of formal
          --  container types.
 
-         if Type_Based_On_Formal_Container (E) then
+         if Type_Based_On_External_Axioms (E) then
             return;
          end if;
 
@@ -1879,7 +1879,7 @@ package body SPARK_Definition is
 
       --  Add entity to appropriate list. Type from formal containers are
       --  handled by a specific mechanism and thus should not be translated.
-      if not Type_In_Formal_Container (E) then
+      if not Entity_In_External_Axioms (E) then
          Append_Entity_To_List (E);
       end if;
 
@@ -2057,7 +2057,7 @@ package body SPARK_Definition is
                       Ada.Strings.Maps.Constants.Lower_Case_Map) =
                    SPARK_Util.Lowercase_Iterate_Name
                  and then
-                   Location_In_Formal_Containers (Sloc (Entity (Name (Iter))))
+                   Entity_In_External_Axioms (Entity (Name (Iter)))
                then
                   Mark_List (Parameter_Associations (Iter));
                else
@@ -2943,7 +2943,7 @@ package body SPARK_Definition is
 
       --  Do not analyze bodies for instantiations of the formal containers
 
-      if Is_Instantiation_Of_Formal_Container (Decl_N) then
+      if Is_Instance_Of_External_Axioms (Decl_N) then
          return;
       end if;
 
@@ -3035,7 +3035,7 @@ package body SPARK_Definition is
       --  Only mark types in SPARK or not, and mark all subprograms in SPARK,
       --  but none should be scheduled for translation into Why3.
 
-      if Is_Instantiation_Of_Formal_Container (N) then
+      if Is_Instance_Of_External_Axioms (N) then
 
          --  Explicitly add the package declaration to the entities to
          --  translate into Why3.
@@ -3276,7 +3276,7 @@ package body SPARK_Definition is
 
       --  Content of formal containers is not to be proved
 
-      if Location_In_Formal_Containers (Sloc (E)) then
+      if Entity_In_External_Axioms (E) then
          return;
       end if;
 

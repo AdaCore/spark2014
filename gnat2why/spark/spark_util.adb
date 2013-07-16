@@ -23,9 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Fixed;
-with Ada.Strings.Maps.Constants;
-
 with Fname;    use Fname;
 with Lib;      use Lib;
 with Nlists;   use Nlists;
@@ -33,10 +30,6 @@ with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
 
 package body SPARK_Util is
-
-   function File_Is_Formal_Container (Name : String) return Boolean;
-   --  Return true when the string in argument is a file of formal container
-   --  unit
    ------------------
    -- Global State --
    ------------------
@@ -288,28 +281,6 @@ package body SPARK_Util is
       return Only_Expression_Functions;
    end Expression_Functions_All_The_Way;
 
-   function Entity_Is_Instance_Of_Formal_Container (Id : Entity_Id)
-                                                    return Boolean
-   is
-   begin
-      return File_Is_Formal_Container (File_Name (Sloc (Id)));
-   end Entity_Is_Instance_Of_Formal_Container;
-
-   ------------------------------
-   -- File_Is_Formal_Container --
-   ------------------------------
-
-   function File_Is_Formal_Container (Name : String) return Boolean is
-   begin
-      return
-        Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
-        Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
-        Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
-        Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
-        Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
-        Name = "a-cofove.ads" or else Name = "a-cofove.adb";
-   end File_Is_Formal_Container;
-
    -------------------------------
    -- Get_Enclosing_Declaration --
    -------------------------------
@@ -534,45 +505,115 @@ package body SPARK_Util is
    -- Is_Instantiation_Of_Formal_Container --
    ------------------------------------------
 
-   function Is_Instantiation_Of_Formal_Container (N : Node_Id) return Boolean
-   is ((Is_Rewrite_Insertion (N)
-          or else Nkind (Original_Node (N)) = N_Package_Instantiation)
+   function Is_Instance_Of_External_Axioms (N : Node_Id) return Boolean
+   is
+   begin
+      if Nkind (N) = N_Package_Specification then
+         return (Present (Generic_Parent (N)))
+           and then Package_Has_External_Axioms
+             (Generic_Parent (N));
+      elsif Nkind (N) = N_Package_Declaration then
+         return (Present (Generic_Parent (Specification (N))))
+           and then Package_Has_External_Axioms
+             (Generic_Parent (Specification (N)));
+      else
+         return False;
+      end if;
+   end Is_Instance_Of_External_Axioms;
 
-       --  The Generic_Parent component is not set in some cases, so test its
-       --  presence before looking at its source location.
+   ---------------------------------
+   -- Is_Formal_Container_Package --
+   ---------------------------------
 
-       and then Present (Generic_Parent (Specification (N)))
-       and then Location_In_Formal_Containers
-                  (Sloc (Generic_Parent (Specification (N)))));
+   function Package_Has_External_Axioms (N : Node_Id) return Boolean
+   is
+
+      function File_Is_Formal_Container (Name : String) return Boolean;
+      --  Return true when the string in argument is a file of formal container
+      --  unit
+
+      function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean;
+      --  Return whether a location Loc is in the formal container sources
+
+      ------------------------------
+      -- File_Is_Formal_Container --
+      ------------------------------
+
+      function File_Is_Formal_Container (Name : String) return Boolean is
+      begin
+         return
+           Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
+           Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
+           Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
+           Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
+           Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
+           Name = "a-cofove.ads" or else Name = "a-cofove.adb";
+      end File_Is_Formal_Container;
+
+      -----------------------------------
+      -- Location_In_Formal_Containers --
+      -----------------------------------
+
+      function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean
+      is
+      begin
+         if Loc = Standard_Location then
+            return False;
+         else
+            return
+              File_Is_Formal_Container
+                (Get_Name_String (Reference_Name
+                 (Get_Source_File_Index (Loc))));
+         end if;
+      end Location_In_Formal_Containers;
+   begin
+      return (Location_In_Formal_Containers (Sloc (N)));
+   end Package_Has_External_Axioms;
+
+   --------------------------------
+   -- Entity_In_Formal_Container --
+   --------------------------------
+
+   function Entity_In_External_Axioms (E : Entity_Id) return Boolean is
+      S : Entity_Id := E;
+   begin
+      while Present (S) loop
+         if Ekind (S) = E_Package and then
+           (Package_Has_External_Axioms (Parent (S)) or else
+            Is_Instance_Of_External_Axioms
+              (Parent (S))) then
+            return True;
+         end if;
+
+         S := Scope (S);
+      end loop;
+      return False;
+   end Entity_In_External_Axioms;
 
    --------------------------------------------
    -- Is_Access_To_Formal_Container_Capacity --
    --------------------------------------------
 
-   function Is_Access_To_Formal_Container_Capacity (N : Node_Id) return Boolean
+   function Is_Access_To_External_Axioms_Discriminant (N : Node_Id)
+                                                       return Boolean
    is
       E : constant Entity_Id := Entity (Selector_Name (N));
    begin
       return Ekind (E) = E_Discriminant
-        and then Is_Formal_Container_Capacity (E);
-   end Is_Access_To_Formal_Container_Capacity;
+        and then Is_External_Axioms_Discriminant (E);
+   end Is_Access_To_External_Axioms_Discriminant;
 
    ----------------------------------
    -- Is_Formal_Container_Capacity --
    ----------------------------------
 
-   function Is_Formal_Container_Capacity (E : Entity_Id) return Boolean is
+   function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
         Most_Underlying_Type
           (Unique_Defining_Entity (Get_Enclosing_Declaration (E)));
-      Name : constant String :=
-        Ada.Strings.Fixed.Translate
-          (Get_Name_String (Chars (E)),
-           Ada.Strings.Maps.Constants.Lower_Case_Map);
    begin
-      return Location_In_Formal_Containers (Sloc (Typ))
-        and then Name = Lowercase_Capacity_Name;
-   end Is_Formal_Container_Capacity;
+      return Entity_In_External_Axioms (Typ);
+   end Is_External_Axioms_Discriminant;
 
    ---------------------
    -- Is_Partial_View --
@@ -630,21 +671,6 @@ package body SPARK_Util is
 
       return True;
    end Is_Toplevel_Entity;
-
-   -----------------------------------
-   -- Location_In_Formal_Containers --
-   -----------------------------------
-
-   function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean is
-   begin
-      if Loc = Standard_Location then
-         return False;
-      else
-         return
-           File_Is_Formal_Container
-             (Get_Name_String (Reference_Name (Get_Source_File_Index (Loc))));
-      end if;
-   end Location_In_Formal_Containers;
 
    ----------------------------------
    -- Location_In_Standard_Library --
@@ -724,7 +750,7 @@ package body SPARK_Util is
          --  For types in formal container instantiations, do not consider the
          --  underlying type.
 
-         if Type_In_Formal_Container (Typ) then
+         if Entity_In_External_Axioms (Typ) then
             return Typ;
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
@@ -869,40 +895,19 @@ package body SPARK_Util is
    -- Type_Based_On_Formal_Container --
    ------------------------------------
 
-   function Type_Based_On_Formal_Container (E : Entity_Id) return Boolean is
-     (Present (Underlying_Formal_Container_Type (E)));
-
-   ------------------------------
-   -- Type_In_Formal_Container --
-   ------------------------------
-
-   function Type_In_Formal_Container (Id : Entity_Id) return Boolean is
-
-      N : Node_Id := Parent (Id);
-   begin
-      if Present (N) then
-         N := Parent (N);
-      end if;
-
-      if Present (N) then
-         N := Parent (N);
-      end if;
-
-      return Present (N)
-        and then Nkind (N) = N_Package_Declaration
-        and then Is_Instantiation_Of_Formal_Container (N);
-   end Type_In_Formal_Container;
+   function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean is
+     (Present (Underlying_External_Axioms_Type (E)));
 
    --------------------------------------
    -- Underlying_Formal_Container_Type --
    --------------------------------------
 
-   function Underlying_Formal_Container_Type (E : Entity_Id) return Entity_Id
+   function Underlying_External_Axioms_Type (E : Entity_Id) return Entity_Id
    is
       Typ : Entity_Id := E;
    begin
       loop
-         if Type_In_Formal_Container (Typ) then
+         if Entity_In_External_Axioms (Typ) then
             return Typ;
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
@@ -916,7 +921,7 @@ package body SPARK_Util is
             return Empty;
          end if;
       end loop;
-   end Underlying_Formal_Container_Type;
+   end Underlying_External_Axioms_Type;
 
    --------------------------------------
    -- Is_Unchecked_Conversion_Instance --

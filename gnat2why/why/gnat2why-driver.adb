@@ -547,8 +547,9 @@ package body Gnat2Why.Driver is
          --  Given to the handler for packages with an associated theory
 
          when E_Package =>
-            if Entity_Is_Instance_Of_Formal_Container (Parent (E)) then
-               Translate_Container_Package (E);
+            if Package_Has_External_Axioms (Parent (E)) or else
+              Is_Instance_Of_External_Axioms (Parent (E)) then
+               Translate_Package_With_External_Axioms (E);
             else
 
                --  ??? We should deal with elaboration at this point

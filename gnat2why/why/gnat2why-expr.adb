@@ -975,7 +975,7 @@ package body Gnat2Why.Expr is
       pragma Assert
         (Nkind (Iter) = N_Function_Call
          and then Is_Entity_Name (Name (Iter))
-         and then Location_In_Formal_Containers (Sloc (Entity (Name (Iter)))));
+         and then Entity_In_External_Axioms (Entity (Name (Iter))));
       return First (Parameter_Associations (Iter));
    end Get_Container_In_Iterator_Specification;
 
@@ -1480,7 +1480,7 @@ package body Gnat2Why.Expr is
                Rec_Ty  : constant Entity_Id :=
                  Unique_Entity (Etype (Prefix (N)));
             begin
-               if Is_Access_To_Formal_Container_Capacity (N) then
+               if Is_Access_To_External_Axioms_Discriminant (N) then
                   Current_Type := Type_Of_Node (N);
                   return
                     New_Call (Ada_Node => N,
@@ -1559,7 +1559,7 @@ package body Gnat2Why.Expr is
             --  assigning to it. This is ensured by making the formal container
             --  type a private type, but keep the assertion in case.
 
-            pragma Assert (not Is_Access_To_Formal_Container_Capacity (N));
+            pragma Assert (not Is_Access_To_External_Axioms_Discriminant (N));
 
             return New_Ada_Record_Update
               (Ada_Node => N,
@@ -4381,7 +4381,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Ekind (Ent) = E_Loop_Parameter and then
-        not Type_In_Formal_Container (Etype (Ent))
+        not Entity_In_External_Axioms (Etype (Ent))
       then
          Current_Type := EW_Int_Type;
       end if;
@@ -5240,7 +5240,7 @@ package body Gnat2Why.Expr is
    function Why_Subp_Has_Precondition (E : Entity_Id) return Boolean is
    begin
       return Has_Precondition (E) or else
-        Entity_Is_Instance_Of_Formal_Container (E) or else
+        Entity_In_External_Axioms (E) or else
         No_Return (E);
    end Why_Subp_Has_Precondition;
 
