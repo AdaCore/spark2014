@@ -1310,7 +1310,7 @@ package body Flow.Control_Flow_Graph is
          --  Then we stick the actual loop at the end.
          Augmented_Loop.Append (Union_Id (N));
 
-         --  And conenct up the dots, and finally replacing the
+         --  And connect up the dots, and finally replacing the
          --  connection map we have for N with the new augmented one.
          Join (CFG   => FA.CFG,
                CM    => CM,
