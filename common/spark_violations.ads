@@ -68,6 +68,7 @@ package SPARK_Violations is
       NIR_Exception,        --  exception
       NIR_Forward_Reference, --  forward reference
       NIR_Goto,             --  goto
+      NIR_Incomplete_Init,  --  incomplete initialization
       NIR_Indirect_Call,    --  indirect call
       NIR_Tasking,          --  tasks and protected objects
       NIR_Unchecked_Conv,   --  unchecked conversion
@@ -127,6 +128,8 @@ package SPARK_Violations is
       NIR_Exception        => To_Unbounded_String ("exception"),
       NIR_Forward_Reference => To_Unbounded_String ("forward reference"),
       NIR_Goto             => To_Unbounded_String ("goto"),
+      NIR_Incomplete_Init  =>
+                             To_Unbounded_String ("incomplete initialization"),
       NIR_Impure_Function  => To_Unbounded_String ("impure function"),
       NIR_Indirect_Call    => To_Unbounded_String ("indirect call"),
       NIR_Tasking          => To_Unbounded_String ("tasking"),

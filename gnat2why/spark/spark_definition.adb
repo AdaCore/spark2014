@@ -1913,13 +1913,9 @@ package body SPARK_Definition is
             Mark_Violation ("abstract subprogram", N, NYI_Tagged);
 
          when N_Aggregate =>
-
-            --  Aggregates should be completely initialized to
-            --  be in SPARK, otherwise they do not have a logic interpretation.
-
             if not Aggregate_Is_Fully_Initialized (N) then
-               Mark_Violation ("aggregate not fully initialized",
-                               N, NIR_Uninit_Logic_Expr);
+               Mark_Violation ("partially initialized aggregate",
+                               N, NIR_Incomplete_Init);
             end if;
 
             Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
@@ -1969,7 +1965,7 @@ package body SPARK_Definition is
             Mark_List (Choices (N));
             if Box_Present (N) then
                Mark_Violation ("partially initialized aggregate",
-                               N, NYI_Aggregate);
+                               N, NIR_Incomplete_Init);
             else
                Mark (Expression (N));
             end if;
