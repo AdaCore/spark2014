@@ -56,7 +56,13 @@
   \begin{itemize}
 
   \item Introductions
-  \item Round-up of LRM review comments
+  \item Round-up of key SPARK 2014 RM review comments:
+    \begin{itemize}
+    \item Access types and Allocators
+    \item Global and Depends Aspects
+    \item Ghost Functions
+    \item Compiler Portability
+    \end{itemize}
   \item Update on Language Issues: 
     \begin{itemize}
     \item Refined\_Post
@@ -65,7 +71,7 @@
     \end{itemize}
   \item Early Preview Release:
     \begin{itemize}
-    \item Access
+    \item How to Download
     \item Demo
     \end{itemize}
   \item Conclusion
@@ -74,16 +80,16 @@
 
 \end{frame}
 
-\begin{frame}{LRM Review Comments - Access types and Allocators}
+\begin{frame}{Access types and Allocators}
 
   \begin{itemize}
 
-  \item Limited support for access types - this may be possible in the
-    future as perhaps access to constants or to subprogram types. In
-    the mean time possible workarounds:
+  \item Limited support for access types in SPARK 2014 release 1
+  \item More may be possible in future releases --- perhaps access to constants or to subprogram types. 
+  \item In the meantime, possible workarounds:
    \begin{itemize}
     \item Use an indefinite container - we hope to give a SPARK
-      version of indefinite containers and or provide a SPARK
+      version of indefinite containers and\/or provide a SPARK
       interface to the Ada Container library
    \item Make the type to contain the constants private and provide
      subprograms to read the values of the constants. The body of the
@@ -123,7 +129,7 @@
 
 \end{frame}
 
-\begin{frame}{LRM Review Comments - Global and Depends aspects}
+\begin{frame}{Global and Depends aspects}
 
   \begin{itemize}
 
@@ -139,7 +145,7 @@
 
 \end{frame}
 
-\begin{frame}{LRM Review Comments - Ghost Functions}
+\begin{frame}{Ghost Functions}
 
   \begin{itemize}
 
@@ -157,7 +163,7 @@
 
 \end{frame}
 
-\begin{frame}{LRM Review Comments - Annotations}
+\begin{frame}{Compiler Portability}
 
   \begin{itemize}
 
@@ -168,7 +174,7 @@
 
 \end{frame}
 
-\begin{frame}{Refined\_Post}
+\begin{frame}{Update on Language Issues: Refined\_Post}
 
   \begin{itemize}
   \item The aspect Refined\_Post is in SPARK 2014.  It facilitates
@@ -191,18 +197,21 @@
     is called.  The refined precondition cannot be weaker it must be equivalent.
   \item This difference has led to much discussion and the deferral of
     the refined precondition until after release 1.
-  \item There are usually workarounds: 
   \end{itemize}
  
 \end{frame}
 
-\begin{frame}{Refined\_Pre - Example 1}
+\begin{frame}{Refined\_Pre - Workarounds}
 
   \begin{itemize}
-
-    \item SImple case where the preconditions are given in terms of
-      functions without postconditions
+    \item There are usually workarounds in the absence of Refine\_Pre
+    \item Simple case where the preconditions are given in terms of
+      functions without postconditions \ldots
   \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Refined\_Pre - Example Spec}
 
   \begin{pxcode}[language=SPARK,style=tinystyle,gobble=4]
     package Stacks
@@ -242,16 +251,19 @@
 
 \end{frame}
 
-\begin{frame}{Refined\_Pre - Example 1 body}
+\begin{frame}[fragile]{Refined\_Pre - Example Body}
 
   \begin{itemize}
 
     \item The specification (and implementation) of the functions used
       in the preconditions are given as expression functions
     \item The default Refined\_Post condition of an expression
-      function is F'Result = <Expression>
-   \item The expression can be in terms of the full view of type Stack.
+      function is F'Result = \emph{expression}
+   \item The expression can be in terms of the full view of type Stack \ldots
   \end{itemize}
+
+\end{frame}
+\begin{frame}[fragile]{Refined\_Pre - Example Body}
 
   \begin{pxcode}[language=SPARK,style=tinystyle,gobble=4]
     package Stacks
@@ -265,7 +277,7 @@
 
        procedure Push (S : in out Stack; I : in Integer)
        -- Uses the precondition specified in the visible view
-       -- but in terms of the refined postcondition of Is_Full
+       -- but in terms of the refined postcondition of Is\_Full
        is
        begin
           S.P := S.P + 1;
@@ -274,7 +286,7 @@
 
        procedure Pop (S : in out Stack)
        -- Uses the precondition specified in the visible view
-       -- but in terms of the refined postcondition of Is_Empty
+       -- but in terms of the refined postcondition of Is\_Empty
        is
        begin
             S.P := S.P - 1;
@@ -282,30 +294,23 @@
 
        function Top (S : Stack) return Integer is (S.V (S.P));
        -- Uses the precondition specified in the visible view
-       -- but in terms of the refined postcondition of Is_Empty
+       -- but in terms of the refined postcondition of Is\_Empty
 
     end Stacks;          
  \end{pxcode}
 
 \end{frame}
 
- \begin{frame}{Refined\_Pre - Example 2}
-
-  \begin{itemize}
-  \item \emph{include more complex example of work around}
-  \end{itemize}
- 
-\end{frame}
-
 \begin{frame}{Refined\_Pre - Feedback}
 
   \begin{itemize}
-  \item \emph{invite feedback on the impact of no Refined\_Pre - we will email before the call to ask people to think about how they use refinement. This will allow is to gauge the priority for implementation.}
+  \item Is the proposed workaround sufficient to support typical use cases?
+  \item How important is the ability to be able to express a weaker precondition on the refined subprogram?
   \end{itemize}
  
 \end{frame}
 
-\begin{frame}{Externals - Overview}
+\begin{frame}{Externals - Ada Context}
 
   \begin{itemize}
   \item In Ada interfacing to an external device or subsystem normally
@@ -315,6 +320,13 @@
   \item Ada also has the concept of \emph {external readers} and \emph
     {external writers} to represent external entities reading or
     writing to the program through volatlie variables
+  \end{itemize}
+ 
+\end{frame}
+
+\begin{frame}{Externals - SPARK 2014 Overview}
+
+  \begin{itemize}
  \item In SPARK we are specifically concerned with asynchronous
    external readers and writers - ones we essentially have no direct
    control over when they read or write and object.
@@ -335,30 +347,15 @@
   \begin{itemize}
   \item We introduce four new Boolean aspects:
     \begin{itemize}
-    \item Async_Writers
-    \item Async_Readers
-    \item Read_Only
-    \item Write_Only
+    \item Async\_Writers
+    \item Async\_Readers
+    \item Read\_Only
+    \item Write\_Only
     \end{itemize}
   \item These aspects may be applied to volatile object declarations
-  \item Async_Writers and Async_Readers may also be applied to an
+  \item Async\_Writers and Async\_Readers may also be applied to an
     External state abstraction
-  \end{itemize}
- 
-\end{frame}
-
-\begin{frame}{Externals - Phasing}
-
-  \begin{itemize}
-  \item \emph{Describe the proposed phased introduction as discussed in the LRM call (we need to validate implementation timescales first)}
-  \end{itemize}
- 
-\end{frame}
-
-\begin{frame}{Externals - Feedback}
-
-  \begin{itemize}
-  \item \emph{invite feedback on the proposed phasing of support for Externals}
+  \item Further aspects will be added post release 1 to allow modelling of other types of interface
   \end{itemize}
  
 \end{frame}
@@ -366,7 +363,10 @@
 \begin{frame}{Early Preview Release}
 
   \begin{itemize}
-  \item \emph{reminder of how to request/access wavefronts}
+  \item Early preview of the SPARK 2014 toolset announced end of May
+  \item To obtain the latest version, submit a request through the GNAT Tracker report mechanism
+  \item Wavefront will be made available to download from you GNAT Tracker account
+  \item Please report any comments or issues via GNAT Tracker
   \end{itemize}
  
 \end{frame}
@@ -374,7 +374,7 @@
 \begin{frame}{Demo}
 
   \begin{itemize}
-  \item \emph{linear search example/demo as written by Yannick for Hi-Lite}
+  \item Based on the Linear Search example shown in the Getting Started section of the User Guide \ldots
   \end{itemize}
  
 \end{frame}
@@ -385,8 +385,8 @@
 
   \item Key dates: 
     \begin{itemize}
-    \item News email 4 - \emph{date}
-    \item Teleconference 3 - \emph{date}
+    \item News email 4 - September 2013
+    \item Teleconference 3 - October 2013
     \item Preview Release Tutorial - October/November 2013
     \end{itemize}
 
