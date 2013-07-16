@@ -449,7 +449,7 @@ package body Flow.Control_Flow_Graph is
 
    function Pragma_Relevant_To_Flow (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma;
-   --  Check if we flow analysis cares about this particular pragma.
+   --  Check if flow analysis cares about this particular pragma.
 
    ------------------------------------------------------------
    --  Local procedures and functions
