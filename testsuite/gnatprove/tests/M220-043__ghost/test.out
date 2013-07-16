@@ -11,7 +11,7 @@ semantics.adb:16:53: overflow check not proved
 semantics.adb:33:40: info: overflow check proved
 semantics.adb:33:53: info: overflow check proved
 semantics.ads:12:19: info: postcondition proved
-semantics.ads:12:43: overflow check not proved
+semantics.ads:12:43: info: overflow check proved
 semantics.ads:13:41: info: contract case proved
 semantics.ads:14:41: contract case not proved
-semantics.ads:14:68: overflow check not proved
+semantics.ads:14:68: info: overflow check proved
