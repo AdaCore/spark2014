@@ -1161,6 +1161,8 @@ package body Flow.Control_Flow_Graph is
                   when others =>
                      raise Why.Unexpected_Node;
                end case;
+            when N_Identifier | N_Expanded_Name =>
+               R := Get_Range (Entity (DSD));
             when N_Range =>
                R := DSD;
             when others =>
