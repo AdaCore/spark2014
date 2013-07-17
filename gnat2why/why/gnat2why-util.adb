@@ -109,13 +109,14 @@ package body Gnat2Why.Util is
       if Ekind (N) = E_Loop_Parameter then
          return not (Is_Quantified_Loop_Param (N));
 
-      --  A component is not separately considered as mutable, only the
-      --  enclosing object is. This ensures that components used in the named
-      --  notation of aggregates are not considered as references to mutable
-      --  variables (e.g. in Expression_Depends_On_Variables).
+      --  A component or discriminant is not separately considered as mutable,
+      --  only the enclosing object is. This ensures that components used in
+      --  the named notation of aggregates are not considered as references
+      --  to mutable variables (e.g. in Expression_Depends_On_Variables).
 
       elsif Ekind (N) in E_Enumeration_Literal |
                          E_Component           |
+                         E_Discriminant        |
                          Named_Kind            |
                          Subprogram_Kind
               or else
