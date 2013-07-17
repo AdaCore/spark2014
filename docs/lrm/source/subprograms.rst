@@ -1002,7 +1002,7 @@ ghosts-have-no-effect-on-program-behavior rule.
    function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
       (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
       with Pre        => Lo <= Hi,
-           Post       => A_Ghost_Function'Result in Lo .. Hi,
+           Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
            Convention => Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
@@ -1013,7 +1013,7 @@ ghosts-have-no-effect-on-program-behavior rule.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
       with Pre        => Lo <= Hi,
-           Post       => A_Ghost_Function'Result in Lo .. Hi,
+           Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
            Convention => Ghost,
            Import;
    -- The body of the function is not declared elsewhere.
