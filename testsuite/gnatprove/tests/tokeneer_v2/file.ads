@@ -216,8 +216,8 @@ is
    --
    -- Traceunit : C.File.SkipLine
    ------------------------------------------------------------------
-   procedure SkipLine (TheFile  : in out T;
-                       Spacing  : in     Positive)
+   procedure SkipLine (TheFile : in out T;
+                       Spacing : in     Positive)
       with Depends => (TheFile =>+ Spacing);
 
    ------------------------------------------------------------------
@@ -230,9 +230,9 @@ is
    --
    -- Traceunit : C.File.GetLine
    ------------------------------------------------------------------
-   procedure GetLine (TheFile  : in out T;
-                      Item     :    out String;
-                      Stop     :    out Natural)
+   procedure GetLine (TheFile : in out T;
+                      Item    :    out String;
+                      Stop    :    out Natural)
       with Depends => ((Item, Stop, TheFile) => TheFile,
                        null => Item);
 
@@ -324,7 +324,6 @@ is
       with Depends => (Success => DirName);
 
 private
-
    --# hide File;
    pragma SPARK_Mode (Off);
    -- hidden due to use of access types, required in low level file
@@ -347,7 +346,7 @@ private
    end record;
 
    NullFile : constant T := T'(NameT'(NameTextT'(others => ' '),
-                                       0),
+                                      0),
                                null);
 
 end File;

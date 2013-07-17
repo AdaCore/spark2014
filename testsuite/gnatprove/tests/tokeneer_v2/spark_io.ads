@@ -10,12 +10,14 @@
 
 with Ada.Text_IO;
 package Spark_IO
-  --# own State   : State_Type;
-  --#     Inputs  : Inputs_Type;
-  --#     Outputs : Outputs_Type;
-  --# initializes State,
-  --#             Inputs,
-  --#             Outputs;
+   with Abstract_State => (State, Inputs, Outputs),
+        Initializes    => (State, Inputs, Outputs)
+--# own State   : State_Type;
+--#     Inputs  : Inputs_Type;
+--#     Outputs : Outputs_Type;
+--# initializes State,
+--#             Inputs,
+--#             Outputs;
 is
   --# type State_Type is abstract;
   --# type Inputs_Type is abstract;
@@ -36,62 +38,91 @@ is
 
 -- File Management
 
-  procedure Create( File         :    out File_Type;
-                    Name_Of_File : in     String;
-                    Form_Of_File : in     String;
-                    Status       :    out File_Status);
-    --# global in out State;
-    --# derives State,
-    --#         File,
-    --#         Status   from State, Name_Of_File, Form_Of_File;
+  procedure Create(File         :    out File_Type;
+                   Name_Of_File : in     String;
+                   Form_Of_File : in     String;
+                   Status       :    out File_Status)
+  --# global in out State;
+  --# derives State,
+  --#         File,
+  --#         Status   from State, Name_Of_File, Form_Of_File;
+     with Global  => (In_Out => State),
+          Depends => ((State,
+                       File,
+                       Status) => (State,
+                                   Name_Of_File,
+                                   Form_Of_File));
 
-  procedure Open( File         :    out File_Type;
+  procedure Open(File         :    out File_Type;
+                 Mode_Of_File : in     File_Mode;
+                 Name_Of_File : in     String;
+                 Form_Of_File : in     String;
+                 Status       :    out File_Status)
+  --# global in out State;
+  --# derives State,
+  --#         File,
+  --#         Status from State, Mode_Of_File, Name_Of_File,
+  --#                     Form_Of_File;
+     with Global  => (In_Out => State),
+          Depends => ((State,
+                       File,
+                       Status) => (State,
+                                   Mode_Of_File,
+                                   Name_Of_File,
+                                   Form_Of_File));
+
+  procedure Close(File   : in     File_Type;
+                  Status :    out File_Status)
+  --# global in out State;
+  --# derives State,
+  --#         Status from State, File;
+     with Global => (In_Out => State), Depends => ((State, Status) =>
+          (State, File));
+
+  procedure Delete(File   : in     File_Type;
+                   Status :    out File_Status)
+  --# global in out State;
+  --# derives State,
+  --#         Status from State, File
+     with Global  => (In_Out => State),
+          Depends => ((State,
+                       Status) => (State,
+                                   File));
+
+  procedure Reset(File         : in out File_Type;
                   Mode_Of_File : in     File_Mode;
-                  Name_Of_File : in     String;
-                  Form_Of_File : in     String;
-                  Status       :    out File_Status);
-    --# global in out State;
-    --# derives State,
-    --#         File,
-    --#         Status from State, Mode_Of_File, Name_Of_File,
-    --#                     Form_Of_File;
+                  Status       :    out File_Status)
+  --# derives File,
+  --#         Status   from File, Mode_Of_File;
+     with Depends => ((File,
+                       Status) => (File,
+                                   Mode_Of_File));
 
-  procedure Close( File   : in     File_Type;
-                   Status :    out File_Status);
-    --# global in out State;
-    --# derives State,
-    --#         Status   from State, File;
+  function Valid_File(File : File_Type) return Boolean;
 
-  procedure Delete( File   : in     File_Type;
-                    Status :    out File_Status);
-    --# global in out State;
-    --# derives State,
-    --#         Status   from State, File;
+  function Mode(File : File_Type) return File_Mode;
 
-  procedure Reset( File         : in out File_Type;
-                   Mode_Of_File : in     File_Mode;
-                   Status       :    out File_Status);
-    --# derives File,
-    --#         Status   from File, Mode_Of_File;
+  procedure Name(File         : in     File_Type;
+                 Name_Of_File :    out String;
+                 Stop         :    out Natural)
+  --# derives Name_Of_File,
+  --#         Stop          from File;
+     with Depends => ((Name_Of_File,
+                       Stop)         => (File,
+                                         Name_Of_File));
 
-  function Valid_File( File : File_Type) return Boolean;
+  procedure Form(File         : in     File_Type;
+                 Form_Of_File :    out String;
+                 Stop         :    out Natural)
+  --# derives Form_Of_File,
+  --#         Stop          from File;
+    with Depends => ((Form_Of_File,
+                      Stop)         => (File,
+                                        Form_Of_File));
 
-  function Mode( File : File_Type) return File_Mode;
-
-  procedure Name( File         : in     File_Type;
-                  Name_Of_File :    out String;
-                  Stop         :    out Natural);
-    --# derives Name_Of_File,
-    --#         Stop          from File;
-
-  procedure Form( File         : in      File_Type;
-                  Form_Of_File :    out String;
-                  Stop         :    out Natural);
-    --# derives Form_Of_File,
-    --#         Stop             from File;
-
-  function Is_Open( File : File_Type) return Boolean;
+  function Is_Open(File : File_Type) return Boolean
   --# global State;
+     with Global => State;
 
 -- Control of default input and output Files
 
@@ -108,184 +139,277 @@ is
 
 -- Column, Line and Page Control
 
-  procedure New_Line( File    : in File_Type;
-                      Spacing : in Positive);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Spacing;
+  procedure New_Line(File    : in File_Type;
+                     Spacing : in Positive)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Spacing;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                 File,
+                                 Spacing));
 
-  procedure Skip_Line( File    : in File_Type;
-                       Spacing : in Positive);
-    --# global in out Inputs;
-    --# derives Inputs from Inputs, File, Spacing;
+  procedure Skip_Line(File    : in File_Type;
+                      Spacing : in Positive)
+  --# global in out Inputs;
+  --# derives Inputs from Inputs, File, Spacing;
+     with Global  => (In_Out => Inputs),
+          Depends => (Inputs => (Inputs,
+                                 File,
+                                 Spacing));
 
-  procedure New_Page( File : in File_Type);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File;
+  procedure New_Page(File : in File_Type)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File));
 
-  function End_Of_Line( File : File_Type) return Boolean;
-    --# global Inputs;
+  function End_Of_Line(File : File_Type) return Boolean
+  --# global Inputs;
+     with Global => Inputs;
 
-  function End_Of_File( File : File_Type) return Boolean;
-    --# global Inputs;
+  function End_Of_File(File : File_Type) return Boolean
+  --# global Inputs;
+     with Global => Inputs;
 
-  procedure Set_In_File_Col( File : in File_Type;
-                     Posn : in Positive);
-    --# global in out Inputs;
-    --# derives Inputs from Inputs, File, Posn;
-    --# pre Mode (File) = In_File;
-    pragma Precondition (Mode (File) = In_File);
+  procedure Set_In_File_Col(File : in File_Type;
+                     Posn : in Positive)
+  --# global in out Inputs;
+  --# derives Inputs from Inputs, File, Posn;
+  --# pre Mode (File) = In_File;
+     with Global  => (In_Out => Inputs),
+          Depends => (Inputs => (Inputs,
+                                 File,
+                                 Posn)),
+          Pre     => Mode (File) = In_File;
 
   procedure Set_Out_File_Col( File : in File_Type;
-                     Posn : in Positive);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Posn;
-    --# pre Mode( File ) = Out_File or
-    --#     Mode (File) = Append_File;
-    pragma Precondition (Mode( File ) = Out_File or else
-                           Mode (File) = Append_File);
+                     Posn : in Positive)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Posn;
+  --# pre Mode( File ) = Out_File or
+  --#     Mode (File) = Append_File;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File,
+                                  Posn)),
+          Pre     => Mode (File) = Out_File or else
+                       Mode (File) = Append_File;
 
-  function In_File_Col( File : File_Type) return Positive;
-    --# global Inputs;
-    --# pre Mode (File) = In_File;
-    pragma Precondition (Mode (File) = In_File);
+  function In_File_Col(File : File_Type) return Positive
+  --# global Inputs;
+  --# pre Mode (File) = In_File;
+     with Global => Inputs,
+          Pre    => Mode (File) = In_File;
 
-  function Out_File_Col( File : File_Type) return Positive;
-    --# global Outputs;
-    --# pre Mode (File) = Out_File or
-    --#     Mode (File) = Append_File;
-    pragma Precondition (Mode (File) = Out_File or else
-                           Mode (File) = Append_File);
+  function Out_File_Col(File : File_Type) return Positive
+  --# global Outputs;
+  --# pre Mode (File) = Out_File or
+  --#     Mode (File) = Append_File;
+     with Global => Outputs,
+          Pre    => Mode (File) = Out_File or else
+                      Mode (File) = Append_File;
 
-  function In_File_Line( File : File_Type) return Positive;
-    --# global Inputs;
-    --# pre Mode (File) = In_File;
-    pragma Precondition (Mode (File) = In_File);
+  function In_File_Line(File : File_Type) return Positive
+  --# global Inputs;
+  --# pre Mode (File) = In_File;
+     with Global => Inputs,
+          Pre    => Mode (File) = In_File;
 
-  function Out_File_Line( File : File_Type) return Positive;
-    --# global Outputs;
-    --# pre Mode (File) = Out_File or
-    --#     Mode (File) = Append_File;
-     pragma Precondition (Mode (File) = Out_File or else
-                            Mode (File) = Append_File);
+  function Out_File_Line(File : File_Type) return Positive
+  --# global Outputs;
+  --# pre Mode (File) = Out_File or
+  --#     Mode (File) = Append_File;
+     with Global => Outputs,
+          Pre    => Mode (File) = Out_File or else
+                      Mode (File) = Append_File;
 
 -- Character Input-Output
 
-  procedure Get_Char( File : in      File_Type;
-                      Item :    out Character);
-    --# global in out  Inputs;
-    --# derives Inputs,
-    --#         Item     from Inputs, File;
+  procedure Get_Char(File : in     File_Type;
+                     Item :    out Character)
+  --# global in out  Inputs;
+  --# derives Inputs,
+  --#         Item    from Inputs, File;
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Item)  => (Inputs,
+                                  File));
 
-  procedure Put_Char( File : in File_Type;
-                      Item : in Character);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Item;
-
+  procedure Put_Char(File : in File_Type;
+                     Item : in Character)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Item;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File,
+                                  Item));
 
 -- String Input-Output
 
-  procedure Get_String( File     : in     File_Type;
-                        Item     :    out String;
-                        Stop     :    out Natural);
-    --# global in out Inputs;
-    --# derives Inputs,
-    --#         Item,
-    --#         Stop         from Inputs, File;
+  procedure Get_String(File : in     File_Type;
+                       Item :    out String;
+                       Stop :    out Natural)
+  --# global in out Inputs;
+  --# derives Inputs,
+  --#         Item,
+  --#         Stop    from Inputs, File;
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Item,
+                       Stop)   => (Inputs,
+                                   File,
+                                   Item));
 
-  procedure Put_String( File     : in File_Type;
-                        Item     : in String;
-                        Stop     : in Natural);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Item, Stop;
+  procedure Put_String(File : in File_Type;
+                       Item : in String;
+                       Stop : in Natural)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Item, Stop;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File,
+                                  Item,
+                                  Stop));
 
-  procedure Get_Line( File     : in     File_Type;
-                      Item     :    out String;
-                      Stop     :    out Natural);
-    --# global in out Inputs;
-    --# derives Inputs,
-    --#         Item,
-    --#         Stop     from Inputs, File;
+  procedure Get_Line(File : in     File_Type;
+                     Item :    out String;
+                     Stop :    out Natural)
+  --# global in out Inputs;
+  --# derives Inputs,
+  --#         Item,
+  --#         Stop     from Inputs, File;
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Item,
+                       Stop)   => (Inputs,
+                                   File,
+                                   Item));
 
-  procedure Put_Line( File     : in File_Type;
-                      Item     : in String;
-                      Stop     : in Natural);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Item, Stop;
-
+  procedure Put_Line(File : in File_Type;
+                     Item : in String;
+                     Stop : in Natural)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Item, Stop;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File,
+                                  Item,
+                                  Stop));
 
 -- Integer Input-Output
 
   -- Spark_IO only supports input-output of
   -- the built-in Integer type Integer
 
-  procedure Get_Integer( File  : in     File_Type;
-                         Item  :    out Integer;
-                         Width : in     Natural;
-                         Read  :    out Boolean);
-    --# global in out Inputs;
-    --# derives Inputs,
-    --#         Item,
-    --#         Read     from Inputs, File, Width;
+  procedure Get_Integer(File  : in     File_Type;
+                        Item  :    out Integer;
+                        Width : in     Natural;
+                        Read  :    out Boolean)
+  --# global in out Inputs;
+  --# derives Inputs,
+  --#         Item,
+  --#         Read     from Inputs, File, Width;
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Item,
+                       Read)   => (Inputs,
+                                   File,
+                                   Width));
 
-  procedure Put_Integer( File  : in File_Type;
-                         Item  : in Integer;
-                         Width : in Natural;
-                         Base  : in Number_Base);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Item, Width, Base;
+  procedure Put_Integer(File  : in File_Type;
+                        Item  : in Integer;
+                        Width : in Natural;
+                        Base  : in Number_Base)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Item, Width, Base;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File,
+                                  Item,
+                                  Width,
+                                  Base));
 
-  procedure Get_Int_From_String( Source    : in     String;
-                                 Item      :    out Integer;
-                                 Start_Pos : in     Positive;
-                                 Stop      :    out Natural);
-    --# derives Item,
-    --#         Stop from Source, Start_Pos;
+  procedure Get_Int_From_String(Source    : in     String;
+                                Item      :    out Integer;
+                                Start_Pos : in     Positive;
+                                Stop      :    out Natural)
+  --# derives Item,
+  --#         Stop from Source, Start_Pos;
+     with Depends => ((Item,
+                       Stop) => (Source,
+                                 Start_Pos));
 
-  procedure Put_Int_To_String( Dest      : in out String;
-                               Item      : in     Integer;
-                               Start_Pos : in     Positive;
-                               Base      : in     Number_Base);
-    --# derives Dest from Dest, Item, Start_Pos, Base;
-
+  procedure Put_Int_To_String(Dest      : in out String;
+                              Item      : in     Integer;
+                              Start_Pos : in     Positive;
+                              Base      : in     Number_Base)
+  --# derives Dest from Dest, Item, Start_Pos, Base;
+     with Depends => (Dest => (Dest,
+                               Item,
+                               Start_Pos,
+                               Base));
 
 -- Float Input-Output
 
   -- Spark_IO only supports input-output of
   -- the built-in real type Float
 
-  procedure Get_Float( File  : in     File_Type;
-                       Item  :    out Float;
-                       Width : in     Natural;
-                       Read  :    out Boolean);
-    --# global in out Inputs;
-    --# derives Inputs,
-    --#         Item,
-    --#         Read     from Inputs, File, Width;
+  procedure Get_Float(File  : in     File_Type;
+                      Item  :    out Float;
+                      Width : in     Natural;
+                      Read  :    out Boolean)
+  --# global in out Inputs;
+  --# derives Inputs,
+  --#         Item,
+  --#         Read     from Inputs, File, Width;
+     with Global  => (In_Out => Inputs),
+          Depends => ((Inputs,
+                       Item,
+                       Read)   => (Inputs,
+                                   File,
+                                   Width));
 
-  procedure Put_Float( File  : in File_Type;
-                       Item  : in Float;
-                       Fore  : in Natural;
-                       Aft   : in Natural;
-                       Exp   : in Natural);
-    --# global in out Outputs;
-    --# derives Outputs from Outputs, File, Item, Fore, Aft, Exp;
+  procedure Put_Float(File : in File_Type;
+                      Item : in Float;
+                      Fore : in Natural;
+                      Aft  : in Natural;
+                      Exp  : in Natural)
+  --# global in out Outputs;
+  --# derives Outputs from Outputs, File, Item, Fore, Aft, Exp;
+     with Global  => (In_Out => Outputs),
+          Depends => (Outputs => (Outputs,
+                                  File,
+                                  Item,
+                                  Fore,
+                                  Aft,
+                                  Exp));
 
-  procedure Get_Float_From_String( Source    : in     String;
-                                   Item      :    out Float;
-                                   Start_Pos : in     Positive;
-                                   Stop      :    out Natural);
-    --# derives Item,
-    --#         Stop from Source, Start_Pos;
+  procedure Get_Float_From_String(Source    : in     String;
+                                  Item      :    out Float;
+                                  Start_Pos : in     Positive;
+                                  Stop      :    out Natural)
+  --# derives Item,
+  --#         Stop from Source, Start_Pos;
+     with Depends => ((Item,
+                       Stop) => (Source,
+                                 Start_Pos));
 
-  procedure Put_Float_To_String( Dest      : in out String;
-                                 Item      : in     Float;
-                                 Start_Pos : in     Positive;
-                                 Aft       : in     Natural;
-                                 Exp       : in     Natural);
-    --# derives Dest from Dest, Item, Start_Pos, Aft, Exp;
+  procedure Put_Float_To_String(Dest      : in out String;
+                                Item      : in     Float;
+                                Start_Pos : in     Positive;
+                                Aft       : in     Natural;
+                                Exp       : in     Natural)
+  --# derives Dest from Dest, Item, Start_Pos, Aft, Exp;
+     with Depends => (Dest => (Dest,
+                               Item,
+                               Start_Pos,
+                               Aft,
+                               Exp));
 
 private
---# hide Spark_IO;
+  --# hide Spark_IO;
+  pragma SPARK_Mode (Off);
 
   type IO_TYPE   is (Stdin, Stdout, NamedFile);
   type File_PTR  is access Ada.Text_IO.File_Type;
@@ -293,10 +417,11 @@ private
   -- In addition to the fields listed here, we consider the
   -- FILE_PTR.all record to contain the name and mode of the
   -- file from the point of view of the annotations above.
-  type File_Type is record
-           File    : File_Ptr := null;
-           IO_Sort : IO_Type  := NamedFile;
-         end record;
+  type File_Type is
+     record
+        File    : File_Ptr := null;
+        IO_Sort : IO_Type  := NamedFile;
+     end record;
 
   Standard_Input  : constant File_Type := File_Type'(null, StdIn);
   Standard_Output : constant File_Type := File_Type'(null, StdOut);

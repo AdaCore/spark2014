@@ -26,7 +26,8 @@ with IandATypes;
 
 
 package ConfigData
-   with Abstract_State => (FileState, State)
+   with Abstract_State => (FileState, State),
+        Initializes    => Filestate
 --# initializes FileState;
 is
 
