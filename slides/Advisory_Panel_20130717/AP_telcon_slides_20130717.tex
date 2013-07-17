@@ -84,7 +84,7 @@
 
   \begin{itemize}
 
-  \item Limited support for access types in SPARK 2014 release 1
+  \item Access types are not available in release 1 but there are workarounds
   \item More may be possible in future releases --- perhaps access to constants or to subprogram types. 
   \item In the meantime, possible workarounds:
    \begin{itemize}
@@ -97,8 +97,11 @@
   \end{itemize}
   \item Limited support of allocators - particularly used for context
     switching.  We will consider this when we add tasking. A possible
-    workaround is to use a private type as the context and mark the
-    body of the package defining the type as not in SPARK
+    workaround is:
+    \begin{itemize}
+    \item use a private type as the context 
+    \item mark the body of the package defining the type as not in SPARK
+    \end{itemize}
   \end{itemize}
 
 \end{frame}
@@ -107,6 +110,7 @@
 
   \begin{itemize}
 
+    \item For example, consider an array of access to String
     \item Write a SPARK compatible visible part and a non-spark private part and body
     \item Use the declared functions to get pointers and strings.
     \item Alternatively use a SPARK interface to Ada.Strings.Unbounded. 
@@ -123,8 +127,8 @@
         function Get_A_String (S : Ref_String) return String;
     private
        pragma SPARK_Mode (Off);
-       type ref_String is access String;
-   end String_Constants; 
+       type Ref_String is access String;
+    end String_Constants; 
   \end{pxcode}
 
 \end{frame}
@@ -163,7 +167,7 @@
 
 \end{frame}
 
-\begin{frame}{Compiler Portability}
+\begin{frame}{Compiler Independence}
 
   \begin{itemize}
 
