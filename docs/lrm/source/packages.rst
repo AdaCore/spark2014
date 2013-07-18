@@ -14,7 +14,7 @@ Package Specifications and Declarations
 Abstraction of State
 ~~~~~~~~~~~~~~~~~~~~
 
-The variables declared within a package but not within a subprogram body or
+The variables declared within a package but not within a subprogram body or 
 block which does not also enclose the given package constitute the *persistent
 state* of the package. A package's persistent state is divided into *visible
 state* and *hidden state*. If a declaration that is part of a package's
@@ -63,128 +63,189 @@ External State
 ~~~~~~~~~~~~~~
 
 External state is a state abstraction or variable representing something
-external to a program.  For instance, an input or output device, or a
+external to a program. For instance, an input or output device, or a
 communication channel to another subsystem such as another |SPARK| program.
 
-External state may be specified as *output only* or *input only*. The update of
-output only external state is considered to be read by some external reader of
-the state and so the update is not ineffective even though the program itself
-cannot read the updated state. Input only external state is considered to be
-updated by some external writer and so successive reads of the input only
-external state may not give the same value even though the program itself cannot
-update the state. In other words the update of output only and the read of input
-only external state both have a side effect.
+Updating external state might have some external effect. It could be writing
+a value to be read by some external device or subsystem which then has a
+potential effect on that device or subsystem. Similarly the value read from an
+external state might depend on a value provided by some external device or
+subsystem.
 
-Output only and input only external states are treated specially in Global and
-Depends aspects as described below and cannot be denoted as actual parameters or
-be ``global_items`` of a function as they would introduce side-effects.
+Ada uses the terms external readers and writers to describe entities external to
+a program which interact with the program through reading and writing data. Of
+particular concern to |SPARK| are external readers and writers which are not
+strictly under control of the program. It is not known precisely when a value
+will be written or read by an external reader or writer. These are called
+*asynchronous readers* an *asynchronous writers* in |SPARK|.
 
-External state that is not specified as output only or input only behaves as
-normal (non-volatile) state and may be read or updated by the program and has no
-special treatment for Global and Depends aspects.
+A read or update of an external state does not necessarily have an external
+effect and in |SPARK| either because there are no asynchronous readers or the
+successive writing of the same value has no external observable effect.  
+A mechanism is provided for stating whether the reads or writes always have an 
+effect.   
 
-|SPARK| aspects are defined for specifying a variable as an input only or an
-output only [Ada aspects Volatile, Import and Export are used for specifying
-whether a variable is external] see :ref:`external_aspects`). When a state
-abstraction is declared by an Abstract_State aspect (see
-:ref:`abstract-state-aspect`) it may be specified as external, in which case it
-may be also specified as either input only or output only.
+An external state may have both asynchronous readers and writers or either one.
+An external state that has asynchronous readers might have effective writes, 
+every write is significant and has some observable external effect.  An external
+state that has asynchronous writers might have effective reads.  Every read has
+some externally observable effect. 
 
-.. centered:: **Static Semantics**
+By default if an external state is declared without explicitly
+defining that it has asynchronous readers or writers it defaults to having both,
+and with effective writes and effective reads which is the most general case.
 
-Static semantics are given individually for external variables and external
-state abstractions.
+If a state has an asynchronous writers then each read of the state may have a
+different value because an asynchronous writer may have updated its value. If a
+state has asynchronous readers then each write to state might be significant 
+because each item of data written may be read by an asynchronous reader.
 
-.. centered:: **Legality Rules**
+External state is a variable declared as Volatile or a state abstraction which
+represents one or more volatile variables (or it could be a null state
+abstraction; see :ref:`abstract-state-aspect`).
 
-#. External state which is specified as input only shall not be denoted in a
-   Global aspect with a ``mode_selector`` of In_Out or Output. [Nor shall it be
-   denoted as an ``output`` of a Depends aspect.]
+Four *properties* of external states that may be specified are defined:
 
-#. External state which is specified as output only shall not be denoted in
-   a Global aspect with a ``mode_selector`` of Input or In_Out. [Nor shall not be
-   denoted as an ``input`` of a Depends aspect.]
+  * Async_Readers - A component of the system external to the program might     
+    read/consume a value written to an external state.
 
-#. A ``global_item`` of a function shall not denote input only or output only
-   external state.
+  * Async_Writers - A component of the system external to the program might
+    update the value of an external state.
+    
+  * Effective_Writes - every update of the external state has an externally
+    observable effect.
+    
+  * Effective_Reads - every read of the external state has an externall
+    observable effect.
 
-#. An actual parameter in a function call shall not denote output only or input
-   only external state.
-
-#. Since output only external state shall never be read by the program and
-   input only external state may never be updated by the program neither of
-   these sorts of external state shall be denoted by a ``name`` of an
-   ``initialization_item`` of an Initializes aspect (see
-   :ref:`initializes_aspect`).
-
-.. _external_aspects:
-
-Input_Only and Output_Only Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A variable which represents a communication channel with an external entity, for
-instance a transducer, subsystem, or program is considered an *external
-variable*. A variable is external if it is Volatile or is declared with an Ada
-Address, Import, or Export specification (either using an aspect or a pragma).
-
-If a variable is volatile it has to be specified as an input only or an output
-only external state. The Boolean aspects Input_Only and Output_Only are used for
-this specification.
-
-.. centered:: **Static Semantics**
-
-#. A variable which is Volatile or has one of the Ada aspects Import or Export,
-   or the Ada aspect Address specified in its declaration is an external
-   variable.
+These properties may be specified for a Volatile variable as Boolean aspects or
+as external properties of an external state abstraction.
 
 .. centered:: **Legality Rules**
 
-#. The declaration of Volatile variable shall have exactly one of an Input_Only
-   or Output_Only aspect specified as True. A variable with a True Input_Only
-   specification is an *external input*; a variable with a True Output_Only
-   specification is an *external output*. [The rule that a volatile variable
-   shall be either an input or an output only may be relaxed in a future version
-   of SPARK.]
+#. If neither Async_Readers or Async_Writers are specified for a Volatile object
+   or External state abstraction their default values are 
+   Async_Readers => True and Async_Writers => True.
+   
+#. If the value Async_Readers True, the default value of Effective_Writes is
+   True.  If Async_Readers is False then Effective_Wr
+   
+#. If only one of Async_Readers or Async_Writers is specified with a value of 
+   True the other defaults to a value of False.
+   
+#. If just the name of the property is given then its value defaults to True;
+   that is Async_Readers defaults to Async_Readers => True and  Async_Writers
+   defaults to Async_Writers => True.
+   
+#. A property may be explicitly given the value False; that is Async_Readers =>
+   False and/or Async_Writers => False.
+   
+#. The expression defining the Boolean valued property shall be static.
 
-#. A variable which is not Volatile shall not have an Input_Only or Output_Only
-   aspect specified as True.
+.. centered:: **Static Semantics**
 
-#. The Boolean expression of the aspect definitions of the Input_Only
-   or Output_Only aspects shall be static.
+#. Every read or write from/to an external state might have an effect external 
+   to the program.
+   
+#. If the property Async_Readers => True is specified for an external state then
+   every value written to the external state is significant and may cause an
+   effect. 
+   
+#. If Async_Readers => False for a volatile variable then values written to the 
+   object are insignificant to the external environment. The action of writing 
+   may have some external effect that does not depend on the value written.
+   
+#. If the property Async_Writers is specified for an external state then each
+   value written by a asynchronous writer may be significant and the value of
+   each read of the external state is significant. 
+   
+#. If Async_Writers => False, then the value read from the external state will be the 
+   last value written (synchronously by the program) to the external state. 
+   Reading from the external may have some external effect that does not affect 
+   the last value written to the external state.
 
-#. Contrary to the general SPARK 2014 rule that expression evaluation
-   cannot have side effects, a read of an external input is considered to have
-   side effects. To reconcile this discrepancy, a name denoting an external
-   input shall only occur in the following contexts:
+External State - Variables 
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Ada interfacing to an external device or subsystem normally entails using one
+or more volatile variables to ensure that writes and reads to the device are not
+optimized by the compiler into internal register reads and writes. A variable is
+specified as Volatile using the Ada aspect or pragma Volatile or Atomic.
+
+|SPARK| refines the Volatile specification by by introducing four new Boolean
+aspects which may be applied only to objects declared as Volatile. The aspects
+may be specified in the aspect specification of a Volatile object declaration
+(this excludes volatile objects that are formal parameters).
+
+Reads and writes to Volatile objects are always effective; they may have some
+external effect. A read of a volatile object reads the last value written
+whether it be written synchronously by the program or by some asynchronous
+writer.
+
+The new aspects are:
+
+  * Async_Readers - as described in :ref:`external_state`.
+
+  * Async_Writers - as described in :ref:`external_state`.
+
+  * Read_Only - A program shall not directly or indirectly write to the object
+    (but it may have asynchronous writers external to the program if
+    Async_Writers is True).
+    
+  * Write_Only - A program shall not directly or indirectly read the object (but
+    it may have asynchronous readers external to the program if Async_Readers is
+    True).
+    
+.. centered:: **Legality Rules**
+
+#. The aspects shall only be specified in the aspect specification of a Volatile
+   object declaration excluding Volatile formal parameter declarations.
+   
+#. The Boolean aspects Read_Only and Write_Only have a default value of False if
+   they are not specified on a volatile object declaration. 
+   
+#. At most one of Read_Only or Write_Only shall have a value of True
+   
+#. If just the name of the aspect is given its value defaults to True.
+
+#. The expression defining the Boolean valued aspect shall be static.
+
+#. The declaration of a volatile object (other than as a formal parameter) 
+   shall not be declared within the scope of a subprogram body. [A volatile 
+   variable has an external effect and therefore should be global
+   even if it is not visible. It is made visible via a state abstraction.]
+   
+#. A volatile object shall only occur as an actual parameter of a subprogram if
+   the corresponding formal parameter is of a non-scalar Volatile type.
+
+#. Contrary to the general SPARK 2014 rule that expression evaluation cannot
+   have side effects, a read of a Volatile object with the property 
+   Async_Writers => True is considered to have a side effect when read. 
+   To reconcile this discrepancy, a name denoting such an object shall only 
+   occur in the following contexts:
+
+   * as the name on the left-hand side of an assignment statement; or
 
    * as the [right hand side] expression of an assignment statement; or
 
    * as the expression of an initialization expression of an object declaration
-     that is not specified as volatile; or
+     that is not specified as Volatile; or
 
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
 
    * as an actual parameter in a procedure call of which the corresponding
-     formal parameter is mode **in** and is of a non-scalar volatile type.
+     formal parameter is of a non-scalar Volatile type.
 
-   [This rule means that an external input cannot be updated directly by the
-   program.]
+   .. centered:: **Static Semantics**
 
-#. A name denoting an external output shall only occur in the following
-   contexts:
+#. A volatile object whose declaration has Read_Only => True specified shall not
+    be directly or indirectly updated by the program. Asynchronous writers
+    external to the program might write to the object.
 
-   * as the name on the left-hand side of an assignment statement; or
-
-   * as an actual parameter in a procedure call of which the mode of the
-     corresponding formal parameter is **out** and is of a non-scalar volatile
-     type.
-
-   [This rule means that an external output cannot be directly read by the
-   program.]
-
-#. See section on volatile variables for rules concerning their use in |SPARK|
-   (:ref:`shared_variable_control`).
+#. A volatile object whose declaration has Write_Only => True shall not be 
+   read directly or indirectly by the program. Asynchronous readers external to
+   the program might read values written to the object.
 
 .. centered:: **Dynamic Semantics**
 
@@ -203,7 +264,8 @@ There are no extra verification rules.
    is
       Sensor : Integer
          with Volatile,
-              Input_Only,
+              Async_writers,
+              Read_Only,
               Address => System.Storage_Units.To_Address (16#ACECAFE#);
    end Input_Port;
 
@@ -215,45 +277,43 @@ There are no extra verification rules.
          I : Integer
       end record with Volatile;
 
-      -- Read_Port may only be called with an actual parameter for Port
-      -- which is an external input only
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
-         with Depends => (Value => Port); -- Port is an external input only
+         with Depends => (Value => Port); 
+          -- Port is Volatile and potentially has Asyn_Readers and Async_Writers
+          -- As an in mode parameter it can only be read by the program but it 
+          -- might have external, asynchronous writers 
 
-      -- Write_Port may only be called with an actual parameter for Port
-      -- which is an external output only
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
-         with Depends => (Port => Value); -- Port is external output only
+         with Depends => (Port => Value);
+          -- Port is Volatile and potentially has Asyn_Readers and Async_Writers
 
-      -- The following declarations are all external input only variables
       V_In_1 : Volatile_Type
-         with Input_Only,
+         with Async_Writers,
+              Read_Only,
               Address => System.Storage_Units.To_Address (16#A1CAFE#);
 
       V_In_2 : Integer
          with Volatile,
-              Input_Only,
+              Async_Writers,
               Address => System.Storage_Units.To_Address (16#ABCCAFE#);
 
-      -- The following declarations are all external output only variables
       V_Out_1 : Volatile_Type
-         with Output_Only,
+         with Async_Readers,
+              Write_Only,
               Address => System.Storage_Units.To_Address (16#BBCCAFE#);
 
       V_Out_2 : Integer
          with Volatile,
-              Output_Only,
+              Async_Writers,
               Address => System.Storage_Units.To_Address (16#ADACAFE#);
 
-      -- The following is a declaration of a non-volatile external variable
-      V_Non_Volatile : Integer
-         with Address => System.Storage_Units.To_Address (16#BEECAFE#);
+      V_In_Out : Integer
+         with Volatile,
+              Async_Readers,
+              Async_Writers,
+              Address => System.Storage_Units.To_Address (16#BEECAFE#);
 
    end Multiple_Ports;
-
-.. todo:: Add support for more complex models of external state.
-          To be completed in a post-Release 1 version of this document.
-
 
 .. _abstract-state-aspect:
 
@@ -307,10 +367,13 @@ shall follow the grammar of ``abstract_state_list`` given below.
   option_list                ::= option { , option }
   option                     ::= simple_option
                                | name_value_option
-  simple_option              ::= External
-                               | Input_Only
-                               | Output_Only
+  simple_option              ::= identifier
   name_value_option          ::= Part_Of => abstract_state
+                               | External [=> external_property_list]
+  external_property_list     ::= external_property
+                               | (external_property {, external_property})
+  external_property          ::= Async_Readers [=> expression]
+                               | Async_Writers [=> expression]
   state_name                 ::= defining_identifier
   abstract_state             ::= name
 
@@ -326,10 +389,10 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
       :Trace Unit: 7.1.4 LR an option shall not be repeated within an option list
 
-#. If External is specified in an ``option_list`` then at most one of
-   Input_Only or Output_Only ``options`` shall be specified in the
-   ``option_list``. The Input_Only and Output_Only options shall not be specified in
-   an ``option_list`` without an External ``option``.
+#. If External is specified in an ``option_list`` then there shall be at most 
+   one occurrence of each of Async_Readers and Async_Writers.
+   
+#. If neither 
 
    .. ifconfig:: Display_Trace_Units
 
