@@ -4,6 +4,6 @@ dir.adb:18:7: info: range check proved
 dir.adb:23:13: info: range check proved
 dir.adb:24:13: info: range check proved
 dir.adb:31:13: info: range check proved
-dir.adb:32:13: info: range check proved
+dir.adb:32:13: range check not proved
 dir.adb:33:13: range check not proved
 dir.adb:36:28: length check not proved
