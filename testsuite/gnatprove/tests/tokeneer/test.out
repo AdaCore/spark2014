@@ -91,7 +91,7 @@ auditlog.adb:1843:50: info: range check proved
 auditlog.adb:1843:53: info: overflow check proved
 auditlog.adb:1843:72: info: overflow check proved
 auditlog.adb:1849:53: info: range check proved
-auditlog.adb:1852:47: info: range check proved
+auditlog.adb:1852:47: range check not proved
 auditlog.adb:1859:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1861:47: range check not proved
 auditlog.adb:1861:50: overflow check not proved
@@ -135,7 +135,7 @@ clock-interfac.adb:59:21: info: overflow check proved
 clock-interfac.adb:63:36: range check not proved
 clock-interfac.adb:66:45: overflow check not proved
 clock-interfac.adb:66:45: range check not proved
-clock.adb:58:8: info: range check proved
+clock.adb:58:8: range check not proved
 clock.adb:74:11: info: range check proved
 clock.adb:78:10: assertion not proved
 clock.adb:82:12: info: index check proved
@@ -335,7 +335,7 @@ msgproc.adb:91:17: index check not proved
 msgproc.adb:97:45: overflow check not proved
 msgproc.adb:106:49: overflow check not proved
 msgproc.adb:110:20: index check not proved
-msgproc.adb:114:49: info: range check proved
+msgproc.adb:114:49: range check not proved
 msgproc.adb:127:52: overflow check not proved
 msgproc.adb:130:26: range check not proved
 msgproc.adb:130:52: overflow check not proved
