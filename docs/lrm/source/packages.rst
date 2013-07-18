@@ -985,7 +985,7 @@ using the Part_Of ``option`` or aspect associated with each declaration of
 the visible state of the private unit.
 
 The unit declaring the encapsulating state abstraction identified by the Part_Of
-``option`` or aspect needs not be its parent, but it must be a unit whose body
+``option`` or aspect need not be its parent, but it must be a unit whose body
 has visibility of the private library unit, while being *more visible* than the
 original unit. Furthermore, the unit declaring the encapsulating state
 abstraction must denote the corresponding item of visible state in its
