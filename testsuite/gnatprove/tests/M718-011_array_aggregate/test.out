@@ -1,0 +1,3 @@
+simple.adb:4:54: overflow check not proved
+simple.ads:8:17: info: postcondition proved
+simple.ads:8:69: info: overflow check proved
