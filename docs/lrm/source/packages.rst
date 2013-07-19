@@ -104,7 +104,8 @@ External state is a variable declared as Volatile or a state abstraction which
 represents one or more volatile variables (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`).
 
-Four *properties* of external states that may be specified are defined:
+Four Boolean valued *properties* of external states that may be specified are
+defined:
 
   * Async_Readers - A component of the system external to the program might     
     read/consume a value written to an external state.
@@ -123,46 +124,67 @@ as external properties of an external state abstraction.
 
 .. centered:: **Legality Rules**
 
-#. If neither Async_Readers or Async_Writers are specified for a Volatile object
-   or External state abstraction their default values are 
-   Async_Readers => True and Async_Writers => True.
-   
-#. If the value Async_Readers True, the default value of Effective_Writes is
-   True.  If Async_Readers is False then Effective_Wr
-   
+#. If an external state is declared without any of the external properties
+   specified then all of the properties default to a value of True.
+
 #. If only one of Async_Readers or Async_Writers is specified with a value of 
    True the other defaults to a value of False.
+
+#. If Async_Readers => True is specified, the value of Effective_Writes defaults
+   to a value of True if the aspect is not explicitly specified.
+
+#. If Async_Readers => False is specified, the value of Effective_Writes defaults
+   to a value of False if the aspect is not explicitly specified.
+
+#. If Async_Writers => True is specified, the value of Effective_Reads defaults
+   to a value of True if the aspect is not explicitly specified.
+
+#. If Async_Writers => False is specified, the value of Effective_Reads defaults
+   to a value of False if the aspect is not explicitly specified.
+
+#. If just the name of the property is given then its value defaults to True [;
+   for instance  Async_Readers defaults to Async_Readers => True].
    
-#. If just the name of the property is given then its value defaults to True;
-   that is Async_Readers defaults to Async_Readers => True and  Async_Writers
-   defaults to Async_Writers => True.
-   
-#. A property may be explicitly given the value False; that is Async_Readers =>
-   False and/or Async_Writers => False.
+#. A property may be explicitly given the value False [;for instance
+   Async_Readers => False].
    
 #. The expression defining the Boolean valued property shall be static.
 
 .. centered:: **Static Semantics**
 
-#. Every read or write from/to an external state might have an effect external 
-   to the program.
+#. Every read from an external state might have an externally observable effect
+   if Effective_Reads is True.
    
-#. If the property Async_Readers => True is specified for an external state then
-   every value written to the external state is significant and may cause an
-   effect. 
+#. Every update of an external state might have an externally observable effect
+   if Effective_Writes => True or Async_Readers => True are specified on the
+   declaration of the state.
+
+#. If the property Async_Readers => True and Effective_Writes => False are
+   specified for an external state successive updates of the external state
+   with the same value may not have an externally observable effect. [Flow
+   analysis might be used to warn of such successive writes in simple cases.]
+
+#. If Async_Readers => False and Effective_Writes => True is specified for an
+   external state then there is a synchronous observable external effect when
+   the external state is updated.
+
+#. If Async_Readers => False and Effective_Writes => False are specified for an
+   external state, updates of the external state have no externally observable
+   effects and behave as an update of a normal variable or state abstraction.
+ 
+#. If Async_Writers => True and Effective_Reads => True are specified for an
+   external state then each value written by a asynchronous writer may be
+   significant and each read has some externally observable effect.
    
-#. If Async_Readers => False for a volatile variable then values written to the 
-   object are insignificant to the external environment. The action of writing 
-   may have some external effect that does not depend on the value written.
-   
-#. If the property Async_Writers is specified for an external state then each
-   value written by a asynchronous writer may be significant and the value of
-   each read of the external state is significant. 
-   
-#. If Async_Writers => False, then the value read from the external state will be the 
-   last value written (synchronously by the program) to the external state. 
-   Reading from the external may have some external effect that does not affect 
-   the last value written to the external state.
+#. If Async_Writers => False and Effective_Reads => True are specified for an
+   external state , then the value read will be the value from the last
+   (synchronous) program update of the external state, however, the read will
+   have some externally observable effect.  
+
+#. If Async_Writers => False and Effective_Reads => False are specified for an
+   external state , then the value read will be the value from the last
+   (synchronous) program update of the external state and there will be no 
+   effects externally observable due to the read..  
 
 External State - Variables 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,10 +199,9 @@ aspects which may be applied only to objects declared as Volatile. The aspects
 may be specified in the aspect specification of a Volatile object declaration
 (this excludes volatile objects that are formal parameters).
 
-Reads and writes to Volatile objects are always effective; they may have some
-external effect. A read of a volatile object reads the last value written
-whether it be written synchronously by the program or by some asynchronous
-writer.
+Reads and writes to Volatile objects may have some externally observable
+effect. A read of a volatile object reads the last value written whether it be
+written synchronously by the program or by some asynchronous writer.
 
 The new aspects are:
 
@@ -188,27 +209,19 @@ The new aspects are:
 
   * Async_Writers - as described in :ref:`external_state`.
 
-  * Read_Only - A program shall not directly or indirectly write to the object
-    (but it may have asynchronous writers external to the program if
-    Async_Writers is True).
-    
-  * Write_Only - A program shall not directly or indirectly read the object (but
-    it may have asynchronous readers external to the program if Async_Readers is
-    True).
-    
+  * Effective_Reads - as described in :ref:`external_state`.
+
+  * Effective_Writes - as described in :ref:`external_state`.
+
 .. centered:: **Legality Rules**
 
 #. The aspects shall only be specified in the aspect specification of a Volatile
    object declaration excluding Volatile formal parameter declarations.
    
-#. The Boolean aspects Read_Only and Write_Only have a default value of False if
-   they are not specified on a volatile object declaration. 
-   
-#. At most one of Read_Only or Write_Only shall have a value of True
-   
-#. If just the name of the aspect is given its value defaults to True.
-
-#. The expression defining the Boolean valued aspect shall be static.
+#. Formal subprogram parameters of a Volatile type cannot have these aspects
+   specified, consequently all the external properties for formal parameters
+   default to a value of True.  This is compatible with the external properties
+   declared on any Volatile object.
 
 #. The declaration of a volatile object (other than as a formal parameter) 
    shall not be declared within the scope of a subprogram body. [A volatile 
@@ -219,10 +232,10 @@ The new aspects are:
    the corresponding formal parameter is of a non-scalar Volatile type.
 
 #. Contrary to the general SPARK 2014 rule that expression evaluation cannot
-   have side effects, a read of a Volatile object with the property 
-   Async_Writers => True is considered to have a side effect when read. 
-   To reconcile this discrepancy, a name denoting such an object shall only 
-   occur in the following contexts:
+   have side effects, a read of a Volatile object with the property
+   Async_Writers => True or Effective_Reads are considered to have a side effect
+   when read.  To reconcile this discrepancy, a name denoting such an object
+   shall only occur in the following contexts:
 
    * as the name on the left-hand side of an assignment statement; or
 
@@ -239,13 +252,7 @@ The new aspects are:
 
    .. centered:: **Static Semantics**
 
-#. A volatile object whose declaration has Read_Only => True specified shall not
-    be directly or indirectly updated by the program. Asynchronous writers
-    external to the program might write to the object.
-
-#. A volatile object whose declaration has Write_Only => True shall not be 
-   read directly or indirectly by the program. Asynchronous readers external to
-   the program might read values written to the object.
+These  are explained in :ref:`external_state`.
 
 .. centered:: **Dynamic Semantics**
 
@@ -255,7 +262,10 @@ There are no dynamic semantics associated with these aspects.
 
 There are no extra verification rules.
 
+.. todo: Update these examples
+
 .. centered:: **Examples**
+
 
 .. code-block:: ada
 
@@ -279,7 +289,7 @@ There are no extra verification rules.
 
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
          with Depends => (Value => Port); 
-          -- Port is Volatile and potentially has Asyn_Readers and Async_Writers
+          -- Port is Volatile and potentially has Async_Readers and Async_Writers
           -- As an in mode parameter it can only be read by the program but it 
           -- might have external, asynchronous writers 
 
@@ -359,21 +369,23 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 ::
 
-  abstract_state_list        ::= null
-                               | state_name_with_options
-                               | (state_name_with_options { , state_name_with_options } )
-  state_name_with_options    ::= state_name
-                               | ( state_name with option_list )
-  option_list                ::= option { , option }
-  option                     ::= simple_option
-                               | name_value_option
-  simple_option              ::= identifier
-  name_value_option          ::= Part_Of => abstract_state
-                               | External [=> external_property_list]
-  external_property_list     ::= external_property
-                               | (external_property {, external_property})
-  external_property          ::= Async_Readers [=> expression]
-                               | Async_Writers [=> expression]
+  abstract_state_list             ::= null
+                                              | state_name_with_options
+                                              | (state_name_with_options { , state_name_with_options } )
+  state_name_with_options  ::= state_name
+                                              | ( state_name with option_list )
+  option_list                         ::= option { , option }
+  option                               ::= simple_option
+                                              | name_value_option
+  simple_option                   ::= identifier
+  name_value_option           ::= Part_Of => abstract_state
+                                              | External [=> external_property_list]
+  external_property_list       ::= external_property
+                                             | (external_property {, external_property})
+  external_property             ::= Async_Readers [=> expression]
+                                             | Async_Writers [=> expression]
+                                             | Effective_Writes [=> expression]
+                                             | Effective_Reads  [=>expression] 
   state_name                 ::= defining_identifier
   abstract_state             ::= name
 
@@ -390,13 +402,14 @@ shall follow the grammar of ``abstract_state_list`` given below.
       :Trace Unit: 7.1.4 LR an option shall not be repeated within an option list
 
 #. If External is specified in an ``option_list`` then there shall be at most 
-   one occurrence of each of Async_Readers and Async_Writers.
-   
-#. If neither 
-
+   one occurrence of each of Async_Readers, Async_Writers, Effective_Writes
+   and Effective_Reads.
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.4 LR at most one of Input_Only or Output_Only with External
+      :Trace Unit: 7.1.4 LR at most one occurrence of each of Async_Readers,
+         Async_Writers, Effective_Writes and Effect_Reads with External
+
+#. Currently no ``simple_options`` are defined.
 
 #. If an ``option_list`` contains one or more ``name_value_option`` items
    then they shall be the final options in the list.
@@ -414,8 +427,8 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 7.1.4 LR package declarations with non-null Abstract State shall
-                   have bodies
+      :Trace Unit: 7.1.4 LR package declarations with non-null Abstract State require
+                   a body
 
 
 #. A subprogram declaration that overloads a state abstraction has an implicit
@@ -519,10 +532,11 @@ There are no verification rules associated with the Abstract_State aspect.
    end Q;
 
    package X
-      with Abstract_State => (A, B, (C with External, Input_Only))
+      with Abstract_State => (A, B, (C with  External =>
+                                                          (Async_Readers, Effective_Reads => False))
            -- Three abstract state names are declared A, B & C.
            -- A and B are internal abstract states
-           -- C is specified as external state which is input only.
+           -- C is specified as external state which is an external input.
    is
       ...
    end X;
@@ -530,7 +544,7 @@ There are no verification rules associated with the Abstract_State aspect.
    package Mileage
       with Abstract_State => (Trip,  -- number of miles so far on this trip
                                      -- (can be reset to 0).
-                              Total) -- total mileage of vehicle since last factory-reset.
+                                           Total) -- total mileage of vehicle since last factory-reset.
    is
       function Trip  return Natural;  -- Has an implicit Global => Trip.
       function Total return Natural;  -- Has an implicit Global => Total.
