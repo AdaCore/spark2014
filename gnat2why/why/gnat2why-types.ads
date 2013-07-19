@@ -44,6 +44,8 @@
 --  the conversion functions; converting from discrete type A to discrete type
 --  B corresponds to a conversion from A to int, and from int to B.
 
+--  See why-gen-arrays.ads for the encoding of arrays.
+
 --  Records are a bit special because there cannot be a "universal" record
 --  type in Why, as e.g. for integer types. Instead, we use Why records which
 --  directly correspond to the Ada definition. All operations (i.e. field

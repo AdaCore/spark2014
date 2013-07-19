@@ -21,7 +21,7 @@ module Main
   (* A predicate symbol that ignores its argument.
        It is used for instantiation of generic package with a user-defined
        axiomatization. *)
-  predicate __ignore "inline" (x : 'a) = true 
+  predicate __ignore "inline" (x : 'a) = true
 
 end
 
@@ -185,17 +185,37 @@ module Boolean
     if x = y then True else False
 end
 
+(* The following theories care about the *contents* of Arrays, and defines
+   access and update functions. It does not care about properties of bounds.
+   However, boolean equality and sliding needs array bounds as *input*. These
+   functions are independent of the representation of
+   constrained/unconstrained arrays. This also means that there is some
+   special circuitry in gnat2why to actually call these functions.
+
+   For Boolean equality, the arguments are, in order:
+    - the first array
+    - for each dimension, first and last
+    - the second array
+    - for each dimension, first and last
+
+  Boolean equality is true when all dimensions of the two arrays are of the
+  same length, and the arrays contain the same elements in their valid range
+  (note that access needs to be slided when the bounds do not coincide, but
+  the length is the same)
+
+  For sliding, the arguments are, in order:
+    - the array
+    - for each dimension, the old and new value of first
+
+  Sliding shifts the elements of the array according to the difference between
+  the old and new value of first
+*)
 theory Array__1
+
   use import int.Int
   use import bool.Bool
 
   type map 'a
-
-  type t 'a =
-   { elts   : map 'a;
-     offset : int;
-     first  : int;
-     last   : int }
 
   function get (map 'a) int : 'a
   function set (map 'a) int 'a : map 'a
@@ -209,289 +229,190 @@ theory Array__1
     forall a : 'a [get (set m i a) j| set m i a, get m j].
     i <> j -> get (set m i a) j = get m j
 
-  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
-      if x.last >= x.first then x.last - x.first + 1 else 0
-
-  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
-  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
-
-  function access "inline" (i : int) (x : t 'a) : 'a =
-     get x.elts (i + x.offset - x.first)
-  function update "inline" (i : int) (x : t 'a) (v : 'a) : (t 'a) =
-   { x with elts = set x.elts (i + x.offset - x.first) v }
-
-  function bool_eq (t 'a) (t 'a) : bool
+  function bool_eq (map 'a) int int (map 'a) int int : bool
 
    axiom T__ada_array___equal_def:
-     forall a:t 'a.
-     forall b:t 'a [bool_eq a b].
-         ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
-          /\ (forall i:int[access i a].
-                (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
-                 ->
-                (access i a = access (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i) b)))
-         <-> bool_eq a b = True
+     forall a:map 'a.
+     forall af : int. forall al : int.
+     forall b:map 'a.
+     forall bf : int. forall bl : int [bool_eq a af al b bf bl].
+         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl)
+          /\ (forall i:int[get a i].
+                af <= i <= al ->
+                (get a i = get b (bf - af + i))))
+         <-> bool_eq a af al b bf bl = True
+
+  function slide (map 'a) int int : map 'a
+
+  axiom slide_def :
+    forall a : map 'a.
+    forall old_first : int.
+    forall new_first : int.
+    forall i : int
+      [get (slide a old_first new_first) i].
+      get (slide a old_first new_first) i = get a (i - (new_first - old_first))
 end
 
 theory Array__2
-
   use import int.Int
   use import bool.Bool
-  (* The theory of Ada arrays of two dimensions *)
 
   type map 'a
 
-  function get int int (map 'a) : 'a
+  function get (map 'a) int int : 'a
+  function set (map 'a) int int 'a : map 'a
 
-  function set int int (map 'a) 'a : (map 'a)
+  axiom Select_eq :
+    forall m : map 'a.
+    forall i j : int.
+    forall a : 'a [set m i j a].  get (set m i j a) i j = a
 
-  axiom accupd_eq:
-    forall a:map 'a.
-    forall i:int. forall j :int.
-    forall v:'a [set i j a v].
-       get i j (set i j a v) = v
+  axiom Select_neq :
+    forall m : map 'a.
+    forall i j i2 j2 : int.
+    forall a : 'a [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
+    not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
-  axiom accupd_neq:
-    forall a:map 'a.
-    forall i1:int.
-    forall i2:int.
-    forall j1:int.
-    forall j2:int.
-    forall v:'a [get i2 j2 (set i1 j1 a v ) | set i1 j1 a v, get i2 j2 a].
-      (i1 <> i2 \/ j1 <> j2) ->
-       get i2 j2 (set i1 j1 a v ) = get i2 j2 a
+  function bool_eq (map 'a) int int int int (map 'a) int int int int : bool
 
-  type t 'a =
-   { elts     : map 'a;
-     offset   : int;
-     offset_2 : int;
-     first    : int;
-     last     : int;
-     first_2  : int;
-     last_2   : int;
-   }
+   axiom T__ada_array___equal_def:
+     forall a:map 'a.
+     forall af al af2 al2 : int.
+     forall b:map 'a.
+     forall bf bl bf2 bl2 : int [bool_eq a af al af2 al2 b bf bl bf2 bl2].
+         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl) /\
+          (if af2 <= al2 then al2 - af2 + 1 = bl2 - bf2 + 1 else bf2 > bl2) /\
+          (forall i j:int[get a i j].
+                af <= i <= al ->
+                af2 <= j <= al2 ->
+                (get a i j = get b (bf - af + i) (bf2 - af2 + j))))
+         <-> bool_eq a af al af2 al2 b bf bl bf2 bl2 = True
 
-  function access (i : int) (j : int) (x : t 'a) : 'a =
-     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts
-  function update (i : int) (j : int) (x : t 'a) (v : 'a) : (t 'a) =
-   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) x.elts v }
+  function slide (map 'a) int int int int : map 'a
 
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
-      if x.last >= x.first then x.last - x.first + 1 else 0
-  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
-      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
-
-  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
-  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
-
-  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
-  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
-
-  axiom T__ada_array_2___equal_def:
-    forall a:t 'a.
-    forall b:t 'a [bool_eq a b].
-        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
-         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
-         /\
-         (forall i:int. forall j : int [access i j a].
-               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
-                ->
-               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
-                ->
-               (access i j a = access
-                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
-                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
-                  b)))
-        <-> bool_eq a b = True
+  axiom slide_def :
+    forall a : map 'a.
+    forall old_first old_first_2 : int.
+    forall new_first new_first_2 : int.
+    forall i j : int
+      [get (slide a old_first new_first old_first_2 new_first_2) i j].
+      get (slide a old_first new_first old_first_2 new_first_2) i j =
+        get a (i - (new_first - old_first)) (j - (new_first_2 - old_first_2))
 end
 
 theory Array__3
-
   use import int.Int
   use import bool.Bool
-  (* The theory of Ada arrays of two dimensions *)
 
   type map 'a
 
-  function get int int int (map 'a) : 'a
+  function get (map 'a) int int int : 'a
+  function set (map 'a) int int int 'a : map 'a
 
-  function set int int int (map 'a) 'a : (map 'a)
+  axiom Select_eq :
+    forall m : map 'a.
+    forall i j k : int.
+    forall a : 'a [set m i j k a].  get (set m i j k a) i j k = a
 
-  axiom accupd_eq:
-    forall a:map 'a.
-    forall i:int. forall j :int. forall k : int.
-    forall v:'a [set i j k a v].
-       get i j k (set i j k a v) = v
+  axiom Select_neq :
+    forall m : map 'a.
+    forall i j k i2 j2 k2 : int.
+    forall a : 'a [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
+    not (i = i2 /\ j = j2 /\ k = k2) ->
+      get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
 
-  axiom accupd_neq:
-    forall a:map 'a.
-    forall i1:int.
-    forall i2:int.
-    forall j1:int.
-    forall j2:int.
-    forall k1:int.
-    forall k2:int.
-    forall v:'a [get i2 j2 k2 (set i1 j1 k1 a v ) | set i1 j1 k1 a v, get i2 j2 k2 a].
-      (i1 <> i2 \/ j1 <> j2 \/ k1 <> k2) ->
-       get i2 j2 k2 (set i1 j1 k1 a v ) = get i2 j2 k2 a
+  function bool_eq (map 'a)
+    int int int int int int (map 'a) int int int int int int : bool
 
-  type t 'a =
-   { elts     : map 'a;
-     offset   : int;
-     offset_2 : int;
-     offset_3 : int;
-     first    : int;
-     last     : int;
-     first_2  : int;
-     last_2   : int;
-     first_3  : int;
-     last_3   : int;
-   }
+   axiom T__ada_array___equal_def:
+     forall a:map 'a.
+     forall af al af2 al2 af3 al3 : int.
+     forall b:map 'a.
+     forall bf bl bf2 bl2 bf3 bl3 : int
+      [bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3].
+         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl) /\
+          (if af2 <= al2 then al2 - af2 + 1 = bl2 - bf2 + 1 else bf2 > bl2) /\
+          (if af3 <= al3 then al3 - af3 + 1 = bl3 - bf3 + 1 else bf3 > bl3) /\
+          (forall i j k:int[get a i j k].
+                af <= i <= al ->
+                af2 <= j <= al2 ->
+                af3 <= k <= al3 ->
+                (get a i j k = get b (bf - af + i) (bf2 - af2 + j) (bf3 - af3 + k))))
+         <-> bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3 = True
 
-  function access (i : int) (j : int) (k : int) (x : t 'a) : 'a =
-     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts
+  function slide (map 'a) int int int int int int : map 'a
 
-  function update (i : int) (j : int) (k : int) (x : t 'a) (v : 'a) : (t 'a) =
-   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) x.elts v }
-
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
-      if x.last >= x.first then x.last - x.first + 1 else 0
-  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
-      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
-  function attr__ATTRIBUTE_LENGTH_3 (x : t 'a) : int =
-      if x.last_3 >= x.first_3 then x.last_3 - x.first_3 + 1 else 0
-
-  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
-  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
-  function attr__ATTRIBUTE_FIRST_3 (x : t 'a) : int = x.first_3
-
-  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
-  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
-  function attr__ATTRIBUTE_LAST_3 (x : t 'a) : int = x.last_3
-
-  axiom T__ada_array_2___equal_def:
-    forall a:t 'a.
-    forall b:t 'a [bool_eq a b].
-        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
-         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
-         /\ (attr__ATTRIBUTE_LENGTH_3 a = attr__ATTRIBUTE_LENGTH_3 b)
-         /\
-         (forall i:int. forall j : int . forall k : int [access i j k a].
-               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
-                ->
-               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
-                ->
-               (attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a)
-                ->
-               (access i j k a = access
-                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
-                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
-                  (attr__ATTRIBUTE_FIRST_3 b - attr__ATTRIBUTE_FIRST_3 a + k)
-                  b)))
-        <-> bool_eq a b = True
+  axiom slide_def :
+    forall a : map 'a.
+    forall old_first old_first_2 old_first_3 : int.
+    forall new_first new_first_2 new_first_3 : int.
+    forall i j k : int
+      [get (slide a old_first new_first old_first_2 new_first_2
+                    old_first_3 new_first_3) i j k].
+      get (slide a old_first new_first old_first_2 new_first_2
+                   old_first_3 new_first_3) i j k =
+        get a (i - (new_first - old_first))
+              (j - (new_first_2 - old_first_2))
+              (k - (new_first_3 - old_first_3))
 end
 
 theory Array__4
-
   use import int.Int
   use import bool.Bool
-  (* The theory of Ada arrays of two dimensions *)
 
   type map 'a
 
-  function get int int int int (map 'a) : 'a
+  function get (map 'a) int int int int : 'a
+  function set (map 'a) int int int int 'a : map 'a
 
-  function set int int int int (map 'a) 'a : (map 'a)
+  axiom Select_eq :
+    forall m : map 'a.
+    forall i j k l : int.
+    forall a : 'a [set m i j k l a].  get (set m i j k l a) i j k l = a
 
-  axiom accupd_eq:
-    forall a:map 'a.
-    forall i:int. forall j :int. forall k : int. forall l : int.
-    forall v:'a [set i j k l a v].
-       get i j k l (set i j k l a v) = v
+  axiom Select_neq :
+    forall m : map 'a.
+    forall i j k l i2 j2 k2 l2 : int.
+    forall a : 'a
+      [get (set m i j k l a) i2 j2 k2 l2|
+       set m i j k l a, get m i2 j2 k2 l2].
+    not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
+      get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
 
-  axiom accupd_neq:
-    forall a:map 'a.
-    forall i1:int.
-    forall i2:int.
-    forall j1:int.
-    forall j2:int.
-    forall k1:int.
-    forall k2:int.
-    forall l1:int.
-    forall l2:int.
-    forall v:'a [get i2 j2 k2 l2 (set i1 j1 k1 l1 a v ) | set i1 j1 k1 l1 a v, get i2 j2 k2 l2 a].
-      (i1 <> i2 \/ j1 <> j2 \/ k1 <> k2 \/ l1 <> l2) ->
-       get i2 j2 k2 l2 (set i1 j1 k1 l1 a v ) = get i2 j2 k2 l2 a
+  function bool_eq (map 'a)
+    int int int int int int int int (map 'a) int int int int int int int int : bool
 
-  type t 'a =
-   { elts     : map 'a;
-     offset   : int;
-     offset_2 : int;
-     offset_3 : int;
-     offset_4 : int;
-     first    : int;
-     last     : int;
-     first_2  : int;
-     last_2   : int;
-     first_3  : int;
-     last_3   : int;
-     first_4  : int;
-     last_4   : int;
-   }
+   axiom T__ada_array___equal_def:
+     forall a:map 'a.
+     forall af al af2 al2 af3 al3 af4 al4 : int.
+     forall b:map 'a.
+     forall bf bl bf2 bl2 bf3 bl3 bf4 bl4 : int
+      [bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4].
+         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl) /\
+          (if af2 <= al2 then al2 - af2 + 1 = bl2 - bf2 + 1 else bf2 > bl2) /\
+          (if af3 <= al3 then al3 - af3 + 1 = bl3 - bf3 + 1 else bf3 > bl3) /\
+          (if af4 <= al4 then al4 - af4 + 1 = bl4 - bf4 + 1 else bf4 > bl4) /\
+          (forall i j k l:int[get a i j k l].
+                af <= i <= al ->
+                af2 <= j <= al2 ->
+                af3 <= k <= al3 ->
+                af4 <= l <= al4 ->
+                (get a i j k l = get b (bf - af + i) (bf2 - af2 + j) (bf3 - af3 + k) (bf4 - af4 + l))))
+         <-> bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4 = True
 
-  function access (i : int) (j : int) (k : int) (l : int) (x : t 'a) : 'a =
-     get (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts
+  function slide (map 'a) int int int int int int int int : map 'a
 
-  function update (i : int) (j : int) (k : int) (l : int) (x : t 'a) (v : 'a) : (t 'a) =
-   { x with elts = set (i + x.offset - x.first) (j + x.offset_2 - x.first_2) (k + x.offset_3 - x.first_3) (l + x.offset_4 - x.first_4) x.elts v }
-
-  function bool_eq (t 'a) (t 'a) : bool
-
-  function attr__ATTRIBUTE_LENGTH (x : t 'a) : int =
-      if x.last >= x.first then x.last - x.first + 1 else 0
-  function attr__ATTRIBUTE_LENGTH_2 (x : t 'a) : int =
-      if x.last_2 >= x.first_2 then x.last_2 - x.first_2 + 1 else 0
-  function attr__ATTRIBUTE_LENGTH_3 (x : t 'a) : int =
-      if x.last_3 >= x.first_3 then x.last_3 - x.first_3 + 1 else 0
-  function attr__ATTRIBUTE_LENGTH_4 (x : t 'a) : int =
-      if x.last_4 >= x.first_4 then x.last_4 - x.first_4 + 1 else 0
-
-  function attr__ATTRIBUTE_FIRST (x : t 'a) : int = x.first
-  function attr__ATTRIBUTE_FIRST_2 (x : t 'a) : int = x.first_2
-  function attr__ATTRIBUTE_FIRST_3 (x : t 'a) : int = x.first_3
-  function attr__ATTRIBUTE_FIRST_4 (x : t 'a) : int = x.first_4
-
-  function attr__ATTRIBUTE_LAST (x : t 'a) : int = x.last
-  function attr__ATTRIBUTE_LAST_2 (x : t 'a) : int = x.last_2
-  function attr__ATTRIBUTE_LAST_3 (x : t 'a) : int = x.last_3
-  function attr__ATTRIBUTE_LAST_4 (x : t 'a) : int = x.last_4
-
-  axiom T__ada_array_2___equal_def:
-    forall a:t 'a.
-    forall b:t 'a [bool_eq a b].
-        ((attr__ATTRIBUTE_LENGTH a = attr__ATTRIBUTE_LENGTH b)
-         /\ (attr__ATTRIBUTE_LENGTH_2 a = attr__ATTRIBUTE_LENGTH_2 b)
-         /\ (attr__ATTRIBUTE_LENGTH_3 a = attr__ATTRIBUTE_LENGTH_3 b)
-         /\ (attr__ATTRIBUTE_LENGTH_4 a = attr__ATTRIBUTE_LENGTH_4 b)
-         /\
-         (forall i:int. forall j : int . forall k : int. forall l : int [access i j k l a].
-               (attr__ATTRIBUTE_FIRST a <= i <= attr__ATTRIBUTE_LAST a)
-                ->
-               (attr__ATTRIBUTE_FIRST_2 a <= j <= attr__ATTRIBUTE_LAST_2 a)
-                ->
-               (attr__ATTRIBUTE_FIRST_3 a <= k <= attr__ATTRIBUTE_LAST_3 a)
-                ->
-               (attr__ATTRIBUTE_FIRST_4 a <= l <= attr__ATTRIBUTE_LAST_4 a)
-                ->
-               (access i j k l a = access
-                  (attr__ATTRIBUTE_FIRST b - attr__ATTRIBUTE_FIRST a + i)
-                  (attr__ATTRIBUTE_FIRST_2 b - attr__ATTRIBUTE_FIRST_2 a + j)
-                  (attr__ATTRIBUTE_FIRST_3 b - attr__ATTRIBUTE_FIRST_3 a + k)
-                  (attr__ATTRIBUTE_FIRST_4 b - attr__ATTRIBUTE_FIRST_4 a + l)
-                  b)))
-        <-> bool_eq a b = True
+  axiom slide_def :
+    forall a : map 'a.
+    forall old_first old_first_2 old_first_3 old_first_4 : int.
+    forall new_first new_first_2 new_first_3 new_first_4 : int.
+    forall i j k l : int
+      [get (slide a old_first new_first old_first_2 new_first_2
+                    old_first_3 new_first_3 old_first_4 new_first_4) i j k l].
+      get (slide a old_first new_first old_first_2 new_first_2
+                   old_first_3 new_first_3 old_first_4 new_first_4) i j k l =
+        get a (i - (new_first - old_first))
+              (j - (new_first_2 - old_first_2))
+              (k - (new_first_3 - old_first_3))
+              (l - (new_first_4 - old_first_4))
 end

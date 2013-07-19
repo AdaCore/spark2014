@@ -527,9 +527,7 @@ package body Why.Inter is
    begin
       case E is
          when EW_Abstract =>
-            if Is_Array_Type (Typ) then
-               return Why_Types (EW_Array);
-            elsif Is_Record_Type (Typ) then
+            if Is_Record_Type (Typ) then
                return EW_Abstract (Root_Record_Type (Typ));
             else
                return EW_Abstract (Typ);
@@ -1141,6 +1139,16 @@ package body Why.Inter is
        Is_Record_Type (Get_Ada_Node (+Left)) and then
        Is_Record_Type (Get_Ada_Node (+Right)));
 
+   -------------------------
+   -- Is_Array_Conversion --
+   -------------------------
+
+   function Is_Array_Conversion (Left, Right : W_Base_Type_Id) return Boolean
+   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
+       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+       Is_Array_Type (Get_Ada_Node (+Left)) and then
+       Is_Array_Type (Get_Ada_Node (+Right)));
+
    ---------
    -- LCA --
    ---------
@@ -1343,7 +1351,6 @@ package body Why.Inter is
    end Why_File_Suffix;
 
 begin
-   Type_Hierarchy.Move_Child (EW_Array, EW_Array);  --  Special self loop
    Type_Hierarchy.Move_Child (EW_Unit, EW_Real);
    Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
    Type_Hierarchy.Move_Child (EW_Real, EW_Int);

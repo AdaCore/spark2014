@@ -238,14 +238,6 @@ package Why.Gen.Names is
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
 
-   function Attr_To_Why_Name (A     : Attribute_Id;
-                              Dim   : Pos;
-                              Count : Positive) return W_Identifier_Id;
-
-   function Attr_To_Why_Name (A     : Attribute_Id;
-                              Dim   : Pos;
-                              Count : Uint) return W_Identifier_Id;
-
    function Append_Num (S : String; Count : Positive) return W_Identifier_Id;
 
    function Append_Num (W : Why_Name_Enum; Count : Positive)
@@ -256,6 +248,9 @@ package Why.Gen.Names is
 
    function Append_Num (P, W : Why_Name_Enum; Count : Positive)
                         return W_Identifier_Id;
+
+   function Append_Num (S : String; Count : Positive) return String;
+   function Append_Num (S : String; Count : Uint) return String;
 
    function To_String (W : Why_Name_Enum) return String;
 

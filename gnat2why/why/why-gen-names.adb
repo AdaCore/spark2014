@@ -98,14 +98,19 @@ package body Why.Gen.Names is
    -- Append_Num --
    ----------------------
 
-   function Append_Num (S : String; Count : Positive) return W_Identifier_Id
-   is
+   function Append_Num (S : String; Count : Positive) return String is
    begin
-      if Count = 1 then
-         return New_Identifier (Name => S);
-      else
-         return New_Identifier (Name => S & "_" & Int_Image (Count));
-      end if;
+      return (if Count = 1 then S else S & "_" & Int_Image (Count));
+   end Append_Num;
+
+   function Append_Num (S : String; Count : Uint) return String is
+   begin
+      return Append_Num (S, Uint_To_Positive (Count));
+   end Append_Num;
+
+   function Append_Num (S : String; Count : Positive) return W_Identifier_Id is
+   begin
+      return New_Identifier (Name => Append_Num (S, Count));
    end Append_Num;
 
    function Append_Num (W : Why_Name_Enum; Count : Positive)
@@ -148,27 +153,6 @@ package body Why.Gen.Names is
       end case;
    end Attr_To_Why_Name;
 
-   function Attr_To_Why_Name (A     : Attribute_Id;
-                              Dim   : Pos;
-                              Count : Positive) return W_Identifier_Id
-   is
-      Attr_Name : constant String :=
-        (if Count = 1 then To_String (Attr_To_Why_Name (A))
-         else To_String (Attr_To_Why_Name (A)) & "_" & Int_Image (Count));
-   begin
-      return
-        New_Identifier (Name =>
-                          To_String (Ada_Array_Name (Dim)) & "." & Attr_Name);
-   end Attr_To_Why_Name;
-
-   function Attr_To_Why_Name (A     : Attribute_Id;
-                              Dim   : Pos;
-                              Count : Uint) return W_Identifier_Id is
-      C : constant Positive := Uint_To_Positive (Count);
-   begin
-      return Attr_To_Why_Name (A, Dim, C);
-   end Attr_To_Why_Name;
-
    ---------------------
    -- Conversion_Name --
    ---------------------
@@ -186,7 +170,7 @@ package body Why.Gen.Names is
 
          when EW_Scalar =>
             case To_Kind is
-               when EW_Unit | EW_Prop | EW_Array | EW_Private =>
+               when EW_Unit | EW_Prop | EW_Private =>
                   raise Not_Implemented;
 
                when EW_Scalar =>
@@ -231,15 +215,6 @@ package body Why.Gen.Names is
                   end;
             end case;
 
-         when EW_Array =>
-            pragma Assert (To_Kind = EW_Abstract);
-            declare
-               A : constant Node_Id := Get_Ada_Node (+To);
-            begin
-               return
-                 Prefix (Ada_Node => A, S => Full_Name (A), W => WNE_Of_Array);
-            end;
-
          when EW_Abstract =>
             case To_Kind is
                when EW_Unit | EW_Prop | EW_Private =>
@@ -253,15 +228,6 @@ package body Why.Gen.Names is
                        Prefix (Ada_Node => A,
                                S => Full_Name (A),
                                W => Convert_To (To_Kind));
-                  end;
-               when EW_Array =>
-                  declare
-                     A : constant Node_Id := Get_Ada_Node (+From);
-                  begin
-                     return
-                       Prefix (Ada_Node => A,
-                               S        => Full_Name (A),
-                               W        => WNE_To_Array);
                   end;
 
                --  Case of a conversion between two record types
@@ -277,7 +243,6 @@ package body Why.Gen.Names is
                                   S        => Full_Name (To_Node),
                                   W        => WNE_Of_Base);
                      else
-                        pragma Assert (Root_Record_Type (To_Node) = To_Node);
                         return
                           Prefix (Ada_Node => From_Node,
                                   S        => Full_Name (From_Node),
@@ -379,7 +344,7 @@ package body Why.Gen.Names is
          when EW_Int  => "Integer",
          when EW_Real => "Floating",
          when EW_Bool => "Boolean",
-         when EW_Unit .. EW_Prop | EW_Array | EW_Private => "Main",
+         when EW_Unit .. EW_Prop | EW_Private => "Main",
          when EW_Abstract => Full_Name (Get_Ada_Node (+Arg_Types)));
    begin
       return Prefix (Ada_Node => A,
@@ -672,12 +637,12 @@ package body Why.Gen.Names is
          when WNE_Array_4      => return "Array__4";
          when WNE_First_Static => return "first_static";
          when WNE_Last_Static  => return "last_static";
-         when WNE_Array_Access => return "access";
+         when WNE_Array_Access => return "get";
          when WNE_Array_Elts   => return "elts";
          when WNE_Array_First_Field => return "first";
          when WNE_Array_Last_Field => return "last";
          when WNE_Array_Offset => return "offset";
-         when WNE_Array_Update => return "update";
+         when WNE_Array_Update => return "set";
          when WNE_Bool_Eq      => return "bool_eq";
          when WNE_Bool_Ne      => return "bool_ne";
          when WNE_Bool_Lt      => return "bool_lt";

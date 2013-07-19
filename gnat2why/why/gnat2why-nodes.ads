@@ -38,6 +38,7 @@ with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Stand;                  use Stand;
 with Types;                  use Types;
+with Uintp;                  use Uintp;
 
 with VC_Kinds;               use VC_Kinds;
 
@@ -254,6 +255,19 @@ package Gnat2Why.Nodes is
           Present (High_Bound (Get_Range'Result)));
    --  Get the range of a range constraint or subtype definition.
    --  The return node is of kind N_Range
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
+   with Pre => Is_Array_Type (E);
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id
+   with Pre => Is_Array_Type (E);
+   --  for the array type in argument, return the nth index type In the normal
+   --  case, these functions return the entity of the index type. In the
+   --  special case where the array type entity is in fact a string literal
+   --  subtype, the argument itself is returned.
+
+   function Get_Low_Bound (E : Entity_Id) return Node_Id;
+   --  Given an index subtype or string literal subtype return its low bound
 
    function String_Of_Node (N : Node_Id) return String;
    --  Return the node as pretty printed Ada code, limited to 50 chars

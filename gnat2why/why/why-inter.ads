@@ -227,10 +227,6 @@ package Why.Inter is
                     New_Base_Type (Base_Type => EW_Int);
    EW_Real_Type : constant W_Base_Type_Id :=
                     New_Base_Type (Base_Type => EW_Real);
-   --  This corresponds to a polymorphic type in reality, used only for
-   --  conversions in gnat2why.
-   EW_Array_Type : constant W_Base_Type_Id :=
-                     New_Base_Type (Base_Type => EW_Array);
    EW_Private_Type : constant W_Base_Type_Id :=
                        New_Base_Type (Base_Type => EW_Private);
 
@@ -241,7 +237,6 @@ package Why.Inter is
                  (EW_Bool    => EW_Bool_Type,
                   EW_Int     => EW_Int_Type,
                   EW_Real    => EW_Real_Type,
-                  EW_Array   => EW_Array_Type,
                   EW_Private => EW_Private_Type);
 
    function EW_Abstract (N : Node_Id) return W_Base_Type_Id;
@@ -253,6 +248,8 @@ package Why.Inter is
    --  for standard__float, and the Root_Record_Type for record types.
 
    function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
+
+   function Is_Array_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
 
    function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
    function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id;

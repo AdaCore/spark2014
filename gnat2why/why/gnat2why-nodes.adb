@@ -299,6 +299,19 @@ package body Gnat2Why.Nodes is
       return Result;
    end Get_Graph_Closure;
 
+   -------------------
+   -- Get_Low_Bound --
+   -------------------
+
+   function Get_Low_Bound (E : Entity_Id) return Node_Id is
+   begin
+      if Ekind (E) = E_String_Literal_Subtype then
+         return String_Literal_Low_Bound (E);
+      else
+         return Low_Bound (Scalar_Range (E));
+      end if;
+   end Get_Low_Bound;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -730,6 +743,31 @@ package body Gnat2Why.Nodes is
          end if;
       end loop;
    end Iterate_Call_Arguments;
+
+   --------------------
+   -- Nth_Index_Type --
+   --------------------
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id
+   is
+      Cur   : Int := 1;
+      Index : Node_Id := First_Index (E);
+   begin
+      if Ekind (E) = E_String_Literal_Subtype then
+         return E;
+      end if;
+      while Cur /= Dim loop
+         Cur := Cur + 1;
+         Next_Index (Index);
+      end loop;
+      return Etype (Index);
+   end Nth_Index_Type;
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
+   is
+   begin
+      return Nth_Index_Type (E, UI_From_Int (Int (Dim)));
+   end Nth_Index_Type;
 
    -----------------
    -- Source_Name --

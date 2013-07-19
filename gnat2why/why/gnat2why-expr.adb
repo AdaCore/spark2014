@@ -403,6 +403,13 @@ package body Gnat2Why.Expr is
    --  Convert a membership expression (N_In or N_Not_In) into a boolean Why
    --  expression.
 
+   function Transform_Array_Equality
+     (Params : Transformation_Params;
+      Expr   : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  Translate an equality on arrays into a Why expression, take care of the
+   --  different cases (constrained / unconstrained) for each argument
+
    -------------------
    -- Apply_Modulus --
    -------------------
@@ -2273,7 +2280,7 @@ package body Gnat2Why.Expr is
                          (Ada_Node => Expr_Or_Association,
                           Domain   => EW_Term,
                           Dimension => Num_Dim,
-                          Args      => Indexes & (1 => Arr));
+                          Args      => (1 => Arr) & Indexes);
                   begin
                      return New_Comparison
                        (Cmp       => EW_Eq,
@@ -2370,17 +2377,14 @@ package body Gnat2Why.Expr is
             First, Val : W_Expr_Id;
 
          begin
+
             if Is_Static_Expression (Low) then
                Val := New_Integer_Constant
                  (Value => Expr_Value (Low) + UI_From_Int (Offset));
 
             else
-               First := New_Simple_Array_Attr
-                 (Attr      => Attribute_First,
-                  Ar        => Arr,
-                  Domain    => EW_Term,
-                  Dimension => Num_Dim,
-                  Argument  => UI_From_Int (Dim));
+               First := New_Attribute_Expr (Etype (Rng), Attribute_First);
+
                Val := New_Binary_Op
                         (Left     => First,
                          Right    =>
@@ -2663,6 +2667,98 @@ package body Gnat2Why.Expr is
       end;
    end Transform_Aggregate;
 
+   ------------------------------
+   -- Transform_Array_Equality --
+   ------------------------------
+
+   function Transform_Array_Equality
+     (Params : Transformation_Params;
+      Expr   : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Left      : constant Node_Id := Left_Opnd (Expr);
+      Right     : constant Node_Id := Right_Opnd (Expr);
+      Left_Ty   : constant Entity_Id := Etype (Left);
+      Right_Ty  : constant Entity_Id := Etype (Right);
+      Dim       : constant Positive := Positive (Number_Dimensions (Left_Ty));
+      Subdomain : constant EW_Domain :=
+        (if Domain = EW_Pred then EW_Term else Domain);
+      Args      : W_Expr_Array (1 .. 4 * Dim + 2);
+      T         : W_Expr_Id;
+      Left_Simp : constant Boolean :=
+        Is_Constrained (Left_Ty) or else
+        Nkind (Left) in N_Identifier | N_Expanded_Name;
+      Right_Simp : constant Boolean :=
+        Is_Constrained (Left_Ty) or else
+        Nkind (Left) in N_Identifier | N_Expanded_Name;
+      Left_Expr : constant W_Expr_Id :=
+        Transform_Expr (Left, Subdomain, Params);
+      Left_Name : constant W_Expr_Id :=
+        (if Left_Simp then Left_Expr else +New_Temp_Identifier);
+      Right_Expr : constant W_Expr_Id :=
+        Transform_Expr (Right, Subdomain, Params);
+      Right_Name : constant W_Expr_Id :=
+        (if Right_Simp then Right_Expr else +New_Temp_Identifier);
+      Arg_Ind    : Positive := 1;
+   begin
+      Add_Array_Arg
+        (Subdomain,
+         Args,
+         Left_Name,
+         Left_Ty,
+         Arg_Ind);
+      Add_Array_Arg
+        (Subdomain,
+         Args,
+         Right_Name,
+         Right_Ty,
+         Arg_Ind);
+      T := New_Call
+        (Ada_Node => Expr,
+         Domain   => Subdomain,
+         Name     =>
+           Prefix
+             (Ada_Node => Etype (Left),
+              S        =>
+                To_String
+                  (Ada_Array_Name
+                     (Number_Dimensions
+                        (Type_Of_Node (Left)))),
+              W        => WNE_Bool_Eq),
+         Args     => Args);
+      if not Left_Simp then
+         T :=
+           New_Binding
+             (Domain  => Domain,
+              Name    => +Left_Name,
+              Def     => +Left_Expr,
+              Context => T);
+      end if;
+      if not Right_Simp then
+         T :=
+           New_Binding
+             (Domain  => Domain,
+              Name    => +Right_Name,
+              Def     => +Right_Expr,
+              Context => T);
+      end if;
+      if Domain = EW_Pred then
+         T := New_Comparison
+           (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+            Left      => T,
+            Right     => New_Literal (Domain => Subdomain,
+                                      Value  => EW_True),
+            Arg_Types => EW_Bool_Type,
+            Domain    => Domain);
+      elsif Nkind (Expr) = N_Op_Ne then
+         T :=
+           New_Call (Domain => Domain,
+                     Name   => To_Ident (WNE_Bool_Not),
+                     Args   => (1 => T));
+      end if;
+      return T;
+   end Transform_Array_Equality;
+
    ---------------------
    -- Transform_Slice --
    ---------------------
@@ -2672,63 +2768,69 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Expr         : Node_Id) return W_Expr_Id
    is
-      Prefx      : constant Node_Id := Sinfo.Prefix (Expr);
-      Range_N     : constant Node_Id := Get_Range (Discrete_Range (Expr));
-      Low         : constant Node_Id := Low_Bound (Range_N);
-      High        : constant Node_Id := High_Bound (Range_N);
-      Tmp_Low     : constant W_Identifier_Id := New_Temp_Identifier;
-      Tmp_Pre     : constant W_Identifier_Id := New_Temp_Identifier;
-      Array_Base  : constant Why_Name_Enum := Ada_Array_Name (1);
-      Shift       : constant W_Expr_Id :=
-        New_Binary_Op
-          (Op_Type => EW_Int,
-           Op      => EW_Substract,
-           Left    => +Tmp_Low,
-           Right   =>
-             New_Record_Access
-               (Name  => +Tmp_Pre,
-                Field => Prefix (Array_Base, WNE_Array_First_Field)));
-      New_Offset  : constant W_Expr_Id :=
-        New_Binary_Op
-          (Op_Type => EW_Int,
-           Op      => EW_Add,
-           Left    =>
-             New_Record_Access
-               (Name => +Tmp_Pre,
-                Field =>
-                Prefix (Array_Base, WNE_Array_Offset)),
-           Right  => Shift);
-      Updates     : constant W_Field_Association_Array :=
-        (1 =>
-           New_Field_Association
-             (Field  => Prefix (Array_Base, WNE_Array_First_Field),
-              Value  => +Tmp_Low,
-              Domain => Domain),
-         2 =>
-           New_Field_Association
-             (Field  => Prefix (Array_Base, WNE_Array_Last_Field),
-              Value  => Transform_Expr (High, EW_Int_Type, Domain, Params),
-              Domain => Domain),
-         3 =>
-           New_Field_Association
-             (Field  => Prefix (Array_Base, WNE_Array_Offset),
-              Value  => New_Offset,
-              Domain => Domain));
+      Prefx  : constant Node_Id := Sinfo.Prefix (Expr);
+      Ty_Ent : constant Entity_Id := Unique_Entity (Etype (Prefx));
+      T      : W_Expr_Id;
    begin
-      return
-        New_Binding
-          (Domain  => Domain,
-           Name    => Tmp_Pre,
-           Def     => +Transform_Expr (Prefx, EW_Array_Type, Domain, Params),
-           Context =>
-             New_Binding
-               (Domain  => Domain,
-                Name    => Tmp_Low,
-                Def     => +Transform_Expr (Low, EW_Int_Type, Domain, Params),
-                Context =>
-                  New_Record_Update
-                    (Name    => +Tmp_Pre,
-                     Updates => Updates)));
+
+      --  We start by translating the prefix itself.
+
+      T := Transform_Expr (Prefx, Domain, Params);
+
+      if not Is_Constrained (Ty_Ent) then
+         T :=
+           Insert_Array_Conversion
+             (Domain => Domain,
+              Expr   => T,
+              To     => Type_Of_Node (Etype (Expr)),
+              From   => Type_Of_Node (Ty_Ent));
+      end if;
+
+      --  ??? We check for runtime errors in the bounds expressions. But we
+      --  should also check that the defined range is part of the subtype of
+      --  the array type.
+
+      --  ??? We should also insert an assumption that the bounds of the
+      --  subtype are equal to the expressions provided here.
+
+      --  ??? This should *not* happen whenever the expression here is
+      --  duplicated; Note that there is only one place where such a
+      --  duplication happens today: the loop condition and code that
+      --  appears before the loop statement
+
+      if Domain = EW_Prog then
+         case Nkind (Discrete_Range (Expr)) is
+            when N_Identifier | N_Attribute_Reference =>
+
+            --  The bound is given by a reference to some other range
+
+               null;
+
+            when N_Range =>
+               declare
+                  Low  : constant Node_Id := Low_Bound (Discrete_Range (Expr));
+                  High : constant Node_Id :=
+                    High_Bound (Discrete_Range (Expr));
+               begin
+                  T :=
+                    +Sequence
+                    (New_Ignore (Prog =>
+                                     +Transform_Expr (High, Domain, Params)),
+                     +T);
+                  T :=
+                    +Sequence
+                    (New_Ignore (Prog =>
+                                     +Transform_Expr (Low, Domain, Params)),
+                     +T);
+               end;
+
+            when others =>
+               Ada.Text_IO.Put_Line ("[Transform_Slice] Node ="
+                                     & Node_Id'Image (Discrete_Range (Expr)));
+               raise Program_Error;
+         end case;
+      end if;
+      return T;
    end Transform_Slice;
 
    ------------------------------------
@@ -2901,43 +3003,86 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_First | Attribute_Last | Attribute_Length =>
-            case Ekind (Unique_Entity (Etype (Var))) is
-               when Array_Kind =>
+            declare
+               Ty_Ent : constant Entity_Id :=
+                 Unique_Entity (Etype (Var));
+               Dim    : constant Uint :=
+                 (if Present (Expressions (Expr)) then
+                     Expr_Value (First (Expressions (Expr)))
+                  else Uint_1);
+            begin
+               case Ekind (Ty_Ent) is
+                  when Array_Kind =>
 
-                  --  Array_Type'First
+                     --  Array_Type'First
 
-                  if Nkind (Var) in N_Identifier | N_Expanded_Name
-                    and then Is_Type (Entity (Var))
-                  then
-                     T := New_Attribute_Expr
-                       (Etype (First_Index (Entity (Var))),
-                        Attr_Id);
-                  else
-                     T :=
-                       New_Array_Attr
-                         (Attr_Id,
-                          Etype (Var),
-                          Transform_Expr (Var, Domain, Params),
-                          Domain,
-                          Number_Dimensions (Type_Of_Node (Var)),
-                          (if Present (Expressions (Expr)) then
-                             Expr_Value (First (Expressions (Expr)))
-                           else Uint_1));
-                  end if;
-                  Current_Type := EW_Int_Type;
+                     if Nkind (Var) in N_Identifier | N_Expanded_Name
+                       and then Is_Type (Entity (Var))
+                     then
+                        T := New_Attribute_Expr
+                          (Nth_Index_Type (Entity (Var), Dim),
+                           Attr_Id);
+                     elsif Is_Constrained (Ty_Ent) then
+                        if Attr_Id = Attribute_Length then
+                           declare
+                              Ind_Ty : constant Entity_Id :=
+                                Nth_Index_Type (Ty_Ent, Dim);
+                           begin
+                              T :=
+                                Build_Length_Expr
+                                  (Domain => Domain,
+                                   First  =>
+                                     New_Attribute_Expr
+                                       (Ind_Ty, Attribute_First),
+                                   Last   =>
+                                     New_Attribute_Expr
+                                       (Ind_Ty, Attribute_Last));
+                           end;
+                        else
+                           T :=
+                             New_Attribute_Expr
+                               (Nth_Index_Type (Ty_Ent, Dim), Attr_Id);
+                        end if;
+                        if Domain = EW_Prog then
+                           T :=
+                             +Sequence
+                               (New_Ignore
+                                  (Prog =>
+                                       +Transform_Expr (Var, Domain, Params)),
+                                +T);
+                        end if;
+                     else
+                        T :=
+                          New_Call
+                            (Domain => Domain,
+                             Name   =>
+                               Prefix
+                                 (Ada_Node => Ty_Ent,
+                                  P        => Full_Name (Ty_Ent),
+                                  N        =>
+                                    Append_Num
+                                      (To_String (Attr_To_Why_Name (Attr_Id)),
+                                       Dim)),
+                             Args   =>
+                               (1 => Transform_Expr (Var, Domain, Params)));
+                     end if;
+                     Current_Type := EW_Int_Type;
 
-               when Discrete_Kind | Real_Kind =>
-                  T := New_Attribute_Expr (Etype (Var), Attr_Id);
-                  Current_Type :=
-                    (if Ekind (Etype (Var)) in Discrete_Kind
-                     then EW_Int_Type else EW_Real_Type);
+                  when Discrete_Kind | Real_Kind =>
+                     T := New_Attribute_Expr (Etype (Var), Attr_Id);
+                     Current_Type :=
+                       (if Ekind (Etype (Var)) in Discrete_Kind
+                        then EW_Int_Type else EW_Real_Type);
 
-               when others =>
-                  --  All possible cases should have been handled
-                  --  before this point.
-                  pragma Assert (False);
-                  null;
-            end case;
+                  when others =>
+
+                     --  All possible cases should have been handled
+                     --  before this point.
+
+                     pragma Assert (False);
+                     null;
+               end case;
+            end;
 
          when Attribute_Loop_Entry =>
             Loop_Entry : declare
@@ -3504,7 +3649,6 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             T := Transform_Slice (Local_Params, Domain, Expr);
-            Current_Type := EW_Array_Type;
 
          when N_Integer_Literal =>
             T :=
@@ -3587,6 +3731,8 @@ package body Gnat2Why.Expr is
                          Local_Params),
                     Op     => EW_Equivalent);
                Current_Type := EW_Bool_Type;
+            elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
+                  T := Transform_Array_Equality (Local_Params, Expr, Domain);
             else
                declare
                   Left      : constant Node_Id := Left_Opnd (Expr);
@@ -3603,37 +3749,7 @@ package body Gnat2Why.Expr is
                     Transform_Expr (Right, BT, Subdomain,
                                     Local_Params);
                begin
-                  if Is_Array_Type (Etype (Left)) then
-                     T := New_Call
-                       (Ada_Node => Expr,
-                        Domain   => Subdomain,
-                        Name     =>
-                          Prefix
-                            (Ada_Node => Etype (Left),
-                             S        =>
-                               To_String
-                                 (Ada_Array_Name
-                                      (Number_Dimensions
-                                           (Type_Of_Node (Left)))),
-                             W        => WNE_Bool_Eq),
-                        Args     =>
-                          (1 => Left_Arg,
-                           2 => Right_Arg));
-                     if Domain = EW_Pred then
-                        T := New_Comparison
-                          (Cmp       => Transform_Compare_Op (Nkind (Expr)),
-                           Left      => T,
-                           Right     => New_Literal (Domain => Subdomain,
-                                                     Value  => EW_True),
-                           Arg_Types => EW_Bool_Type,
-                           Domain    => Domain);
-                     elsif Nkind (Expr) = N_Op_Ne then
-                        T :=
-                          New_Call (Domain => Domain,
-                                    Name   => To_Ident (WNE_Bool_Not),
-                                    Args   => (1 => T));
-                     end if;
-                  elsif Is_Record_Type (Etype (Left)) then
+                  if Is_Record_Type (Etype (Left)) then
                      pragma Assert (Root_Record_Type (Etype (Left)) =
                                       Root_Record_Type (Etype (Right)));
                      pragma Assert (Root_Record_Type (Etype (Left)) =
@@ -4263,12 +4379,23 @@ package body Gnat2Why.Expr is
                   Range_Check_Node := Expr;
                end if;
 
-               T := Insert_Conversion (Domain        => Domain,
-                                       Ada_Node      => Expr,
-                                       Expr          => T,
-                                       From          => Current_Type,
-                                       To            => Expected_Type,
-                                       Range_Check   => Range_Check_Node);
+               if Is_Array_Conversion (Current_Type, Expected_Type) then
+                  T :=
+                    Insert_Array_Conversion
+                      (Domain        => Domain,
+                       Ada_Node      => Expr,
+                       Expr          => T,
+                       From          => Current_Type,
+                       To            => Expected_Type,
+                       Range_Check   => Range_Check_Node);
+               else
+                  T := Insert_Conversion (Domain        => Domain,
+                                          Ada_Node      => Expr,
+                                          Expr          => T,
+                                          From          => Current_Type,
+                                          To            => Expected_Type,
+                                          Range_Check   => Range_Check_Node);
+               end if;
             end;
          end if;
       end if;

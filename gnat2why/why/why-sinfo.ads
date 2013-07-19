@@ -185,11 +185,6 @@ package Why.Sinfo is
       EW_Int,
       EW_Real,
 
-      --  This is really a set of types, as the array type is polymorphic in
-      --  the type of element. Since we are only using it for conversions in
-      --  gnat2why, this is fine. Using it to declare objects is not possible.
-      EW_Array,
-
       --  This is the set of all private types whose most underlying type is
       --  not in SPARK.
       EW_Private,
@@ -201,7 +196,6 @@ package Why.Sinfo is
    --  EW_Bool
    --  EW_Int
    --  EW_Real
-   --  EW_Array
    --  EW_Private
        EW_Abstract;
 
@@ -209,7 +203,6 @@ package Why.Sinfo is
        EW_Bool ..
    --  EW_Int
    --  EW_Real
-   --  EW_Array
    --  EW_Private
        EW_Abstract;
 
@@ -218,8 +211,7 @@ package Why.Sinfo is
    --  EW_Prop
    --  EW_Bool
    --  EW_Int
-   --  EW_Real
-       EW_Array;
+       EW_Real;
 
    subtype EW_Basic_Type is EW_Base_Type range
        EW_Unit ..
@@ -232,7 +224,6 @@ package Why.Sinfo is
        EW_Bool ..
    --  EW_Int
    --  EW_Real
-   --  EW_Array
        EW_Private;
 
    subtype EW_Scalar is EW_Base_Type range

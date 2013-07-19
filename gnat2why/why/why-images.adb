@@ -370,8 +370,6 @@ package body Why.Images is
             P (O, "int");
          when EW_Bool =>
             P (O, "bool");
-         when EW_Array =>
-            P (O, "[from Ada array]");
          when EW_Private =>
             P (O, To_String (WNE_Private));
          when EW_Abstract =>

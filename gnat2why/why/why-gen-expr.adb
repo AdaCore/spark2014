@@ -28,11 +28,13 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
+with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
 with Stand;                 use Stand;
+with Uintp;                 use Uintp;
 
 with SPARK_Util;            use SPARK_Util;
 
@@ -41,6 +43,7 @@ with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Atree.Traversal;   use Why.Atree.Traversal;
 with Why.Conversions;       use Why.Conversions;
+with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Records;       use Why.Gen.Records;
@@ -316,8 +319,6 @@ package body Why.Gen.Expr is
             elsif Is_Fixed_Point_Type (Und) or else
               Is_Floating_Point_Type (Und) then
                return Base = EW_Real_Type;
-            elsif Is_Array_Type (Und) then
-               return Base = EW_Array_Type;
             else
                return False;
             end if;
@@ -406,15 +407,18 @@ package body Why.Gen.Expr is
       From     : W_Base_Type_Id) return W_Expr_Id
    is
 
-      Base   : constant W_Base_Type_Id := LCA (To, From);
-
       --  beginning of processing for Insert_Simple_Conversion
 
    begin
       if Eq (To, From) then
          return Expr;
       end if;
+      if Is_Array_Conversion (To, From) then
+         return Insert_Array_Conversion
+           (Domain, Ada_Node, Expr, To, From);
+      end if;
       declare
+         Base   : constant W_Base_Type_Id := LCA (To, From);
          Up_From : constant W_Base_Type_Id := Up (From, Base);
          Up_To   : constant W_Base_Type_Id := Up (To, Base);
       begin
@@ -451,17 +455,7 @@ package body Why.Gen.Expr is
       From     : W_Base_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id is
    begin
-      if Eq (From, To)
-
-        --  ??? Special trick to ignore conversion on formal container types
-        --  for the time being.
-
-        or else
-          (Present (Ada_Node)
-           and then Ekind (Etype (Ada_Node)) in Record_Kind
-           and then
-           SPARK_Util.Type_Based_On_Formal_Container (Etype (Ada_Node)))
-      then
+      if Eq (From, To) then
          return Expr;
       else
          declare
@@ -597,15 +591,37 @@ package body Why.Gen.Expr is
    ------------------------
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
-     return W_Expr_Id
-   is
-      S : constant String :=
-        (if Ty = Standard_Boolean then "Boolean"
-         else Full_Name (Ty));
+     return W_Expr_Id is
    begin
-      return +Prefix (Ada_Node => Ty,
-                      S        => S,
-                      W        => Attr_To_Why_Name (Attr));
+      if Attr in Attribute_First | Attribute_Last | Attribute_Length and then
+        Ekind (Ty) = E_String_Literal_Subtype then
+         case Attr is
+            when Attribute_First =>
+               return New_Integer_Constant
+                 (Value => Expr_Value (String_Literal_Low_Bound (Ty)));
+            when Attribute_Length =>
+               return New_Integer_Constant
+                 (Value => String_Literal_Length (Ty));
+            when Attribute_Last =>
+               return
+                 New_Integer_Constant
+                   (Value =>
+                       Expr_Value (String_Literal_Low_Bound (Ty)) +
+                      String_Literal_Length (Ty) - 1);
+            when others =>
+               raise Program_Error;
+         end case;
+      else
+         declare
+            S : constant String :=
+              (if Ty = Standard_Boolean then "Boolean"
+               else Full_Name (Ty));
+         begin
+            return +Prefix (Ada_Node => Ty,
+                            S        => S,
+                            W        => Attr_To_Why_Name (Attr));
+         end;
+      end if;
    end New_Attribute_Expr;
 
    --------------------
