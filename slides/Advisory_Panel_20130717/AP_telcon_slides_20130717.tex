@@ -61,7 +61,7 @@
     \item Access types and Allocators
     \item Global and Depends Aspects
     \item Ghost Functions
-    \item Compiler Portability
+    \item Compiler Independence
     \end{itemize}
   \item Update on Language Issues: 
     \begin{itemize}
@@ -158,7 +158,7 @@
     RM.
   \item SPARK will raise an error if a Ghost
     function is used outside of an assertion expression.  
-  \item the compiler will be able to not generate
+  \item the compiler will not generate
     code for Ghost functions if assertion expressions are not executed
     (Ignored).
   \item gnatcoverage will be updated to ignore ghost functions if
@@ -221,36 +221,36 @@
     package Stacks
     is
        type Stack is private;
- 
+    
        function Is_Empty (S : Stack) return Boolean;
        function Is_Full (S : Stack) return Boolean;
-
+    
        function New_Stack return Stack
-       with Post => Is_Empty (New_Stack'Result) and 
-                             not Is_Full (New_Stack'Result);
-
+       with Post => Is_Empty (New_Stack'Result) and
+         not Is_Full (New_Stack'Result);
+    
        procedure Push (S : in out Stack; I : in Integer)
-          with Depends => (S => S, I),
-                  Pre         => not Is_Full (S);
-
+       with Depends => (S => (S, I)),
+            Pre     => not Is_Full (S);
+    
        procedure Pop (S : in out Stack)
-          with Depends => (S => S),
-                  Pre         => not Is_Emptyl (S);
-
+       with Depends => (S => S),
+            Pre     => not Is_Empty (S);
+    
        function Top (S : Stack) return Integer
-           with Pre => not Is_Empty;
-
+       with Pre => not Is_Empty (S);
+    
     private
-        Max_Stack : constant 100;
-        type Stack_Pointer is range 0 .. Max_Stack;
-        subtype Stack_Index is Stack_Pointer range 1 .. Max_Stack;
-        Vector is array (Stack_Index) of Integer; 
-        type Stack is record
-            P : Stack_Pointer;
-            V : Vector;
-         end record;
+       Max_Stack : constant := 100;
+       type Stack_Pointer is range 0 .. Max_Stack;
+       subtype Stack_Index is Stack_Pointer range 1 .. Max_Stack;
+       type Vector is array (Stack_Index) of Integer;
+       type Stack is record
+          P : Stack_Pointer;
+          V : Vector;
+       end record;
     end Stacks;
-          
+       
  \end{pxcode}
 
 \end{frame}
@@ -270,37 +270,35 @@
 \begin{frame}[fragile]{Refined\_Pre - Example Body}
 
   \begin{pxcode}[language=SPARK,style=tinystyle,gobble=4]
-    package Stacks
+    package body Stacks
     is
-       type Stack is private;
- 
        function Is_Empty (S : Stack) return Boolean is (S.P = 0);
-       function Is_Full (S : Stack) return Boolean is (S.P /= Max_Stack);
-
-       function New_Stack return Stack is (Stack'((P => 0, V => (others => 0)));
-
+       function Is_Full (S : Stack) return Boolean is (S.P = Max_Stack);
+    
+       function New_Stack return Stack is (Stack'((P => 0, V => (others => 0))));
+    
        procedure Push (S : in out Stack; I : in Integer)
-       -- Uses the precondition specified in the visible view
-       -- but in terms of the refined postcondition of Is\_Full
+         -- Uses the precondition specified in the visible view
+         -- but in terms of the refined postcondition of Is\_Full
        is
        begin
           S.P := S.P + 1;
-          S.V := I;
+          S.V(S.P) := I;
        end Push;
-
+    
        procedure Pop (S : in out Stack)
-       -- Uses the precondition specified in the visible view
-       -- but in terms of the refined postcondition of Is\_Empty
+         -- Uses the precondition specified in the visible view
+         -- but in terms of the refined postcondition of Is\_Empty
        is
        begin
-            S.P := S.P - 1;
+          S.P := S.P - 1;
        end Pop;
-
+    
        function Top (S : Stack) return Integer is (S.V (S.P));
        -- Uses the precondition specified in the visible view
        -- but in terms of the refined postcondition of Is\_Empty
-
-    end Stacks;          
+    
+    end Stacks;
  \end{pxcode}
 
 \end{frame}
