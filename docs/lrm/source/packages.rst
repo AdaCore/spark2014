@@ -77,10 +77,10 @@ a program which interact with the program through reading and writing data. Of
 particular concern to |SPARK| are external readers and writers which are not
 strictly under control of the program. It is not known precisely when a value
 will be written or read by an external reader or writer. These are called
-*asynchronous readers* an *asynchronous writers* in |SPARK|.
+*asynchronous readers* and *asynchronous writers* in |SPARK|.
 
 A read or update of an external state does not necessarily have an external
-effect and in |SPARK| either because there are no asynchronous readers or the
+effect in |SPARK| either because there are no asynchronous readers or the
 successive writing of the same value has no external observable effect.  
 A mechanism is provided for stating whether the reads or writes always have an 
 effect.   
@@ -95,7 +95,7 @@ By default if an external state is declared without explicitly
 defining that it has asynchronous readers or writers it defaults to having both,
 and with effective writes and effective reads which is the most general case.
 
-If a state has an asynchronous writers then each read of the state may have a
+If a state has asynchronous writers then each read of the state may have a
 different value because an asynchronous writer may have updated its value. If a
 state has asynchronous readers then each write to state might be significant 
 because each item of data written may be read by an asynchronous reader.
@@ -116,7 +116,7 @@ defined:
   * Effective_Writes - every update of the external state has an externally
     observable effect.
     
-  * Effective_Reads - every read of the external state has an externall
+  * Effective_Reads - every read of the external state has an externally
     observable effect.
 
 These properties may be specified for a Volatile variable as Boolean aspects or
@@ -194,7 +194,7 @@ or more volatile variables to ensure that writes and reads to the device are not
 optimized by the compiler into internal register reads and writes. A variable is
 specified as Volatile using the Ada aspect or pragma Volatile or Atomic.
 
-|SPARK| refines the Volatile specification by by introducing four new Boolean
+|SPARK| refines the Volatile specification by introducing four new Boolean
 aspects which may be applied only to objects declared as Volatile. The aspects
 may be specified in the aspect specification of a Volatile object declaration
 (this excludes volatile objects that are formal parameters).
@@ -295,7 +295,7 @@ There are no extra verification rules.
 
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
          with Depends => (Port => Value);
-          -- Port is Volatile and potentially has Asyn_Readers and Async_Writers
+          -- Port is Volatile and potentially has Async_Readers and Async_Writers
 
       V_In_1 : Volatile_Type
          with Async_Writers,
