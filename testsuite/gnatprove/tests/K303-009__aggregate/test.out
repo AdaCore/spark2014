@@ -1,15 +1,14 @@
-
 aggregate.adb:5:28: info: division check proved
 aggregate.adb:5:28: info: overflow check proved
 aggregate.adb:5:45: info: overflow check proved
-aggregate.adb:6:26: overflow check not proved
+aggregate.adb:6:26: info: overflow check proved
 aggregate.ads:10:21: postcondition not proved
 arr_aggregate.adb:46:7: info: precondition proved
 arr_aggregate.adb:51:7: info: precondition proved
 arr_aggregate.adb:56:7: info: precondition proved
 arr_aggregate.ads:11:14: info: postcondition proved
 arr_aggregate.ads:11:43: info: index check proved
-arr_aggregate.ads:16:14: postcondition not proved
+arr_aggregate.ads:16:14: info: postcondition proved
 arr_aggregate.ads:16:41: info: index check proved
 arr_aggregate.ads:19:38: info: index check proved
 arr_aggregate.ads:20:43: info: index check proved

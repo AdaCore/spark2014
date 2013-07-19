@@ -3,9 +3,9 @@ model.adb:61:10: info: loop invariant preservation proved
 model.adb:63:36: info: index check proved
 model.adb:64:41: info: range check proved
 model.adb:71:10: info: loop invariant initialization proved
+model.adb:71:10: info: loop invariant preservation proved
 model.adb:73:62: info: index check proved
 model.adb:74:56: info: range check proved
-model.adb:76:15: loop invariant preservation not proved, requires Name(Owned_State(SM)(To(Owned_Transition(SM)(T)))) = Name(AV(To(CFV(T)
 model.adb:76:60: info: index check proved
 model.adb:77:54: info: range check proved
 model.ads:36:14: info: postcondition proved
@@ -16,4 +16,4 @@ model.ads:102:14: info: postcondition proved
 model.ads:106:14: info: postcondition proved
 model.ads:129:14: info: postcondition proved
 model.ads:134:14: info: postcondition proved
-model.ads:151:12: postcondition not proved, requires Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (From(Owned_Flow(Transform'Result) (T)
+model.ads:156:12: postcondition not proved, requires Name(Owned_State(SM)(To(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (To(Owned_Flow(Transform'Result) (T)

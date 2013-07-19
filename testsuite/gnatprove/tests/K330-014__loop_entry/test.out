@@ -9,7 +9,7 @@ for_loops.adb:61:13: info: loop invariant preservation proved
 optional.adb:17:10: info: loop invariant initialization proved
 optional.adb:17:10: info: loop invariant preservation proved
 optional.adb:27:11: index check not proved
-optional.adb:31:13: loop invariant initialization not proved, requires TA'Loop_Entry (Outer, Inner) = 0
+optional.adb:31:13: info: loop invariant initialization proved
 optional.adb:31:13: loop invariant preservation not proved, requires TA'Loop_Entry (Outer, Inner) = 0
 utils.adb:10:29: info: range check proved
 utils.adb:10:34: overflow check not proved

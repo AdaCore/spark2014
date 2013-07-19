@@ -4,7 +4,7 @@ admin.adb:110:10: info: loop invariant preservation proved
 admin.adb:121:13: assertion not proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
-admin.adb:137:16: loop invariant preservation not proved
+admin.adb:137:16: info: loop invariant preservation proved
 admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved
@@ -21,7 +21,7 @@ alarm-interfac.ads:70:26: postcondition not proved, requires not (IsAlarming)
 alarm.ads:82:7: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:237:39: info: range check proved
-auditlog.adb:491:22: precondition not proved
+auditlog.adb:491:22: info: precondition proved
 auditlog.adb:745:47: range check not proved
 auditlog.adb:745:50: info: overflow check proved
 auditlog.adb:745:69: info: overflow check proved
@@ -72,7 +72,7 @@ auditlog.adb:1124:7: precondition not proved
 auditlog.adb:1494:14: info: range check proved
 auditlog.adb:1557:7: precondition not proved
 auditlog.adb:1567:10: info: precondition proved
-auditlog.adb:1649:22: precondition not proved
+auditlog.adb:1649:22: info: precondition proved
 auditlog.adb:1688:13: assertion not proved
 auditlog.adb:1693:53: range check not proved
 auditlog.adb:1693:56: overflow check not proved
@@ -91,7 +91,7 @@ auditlog.adb:1843:50: info: range check proved
 auditlog.adb:1843:53: info: overflow check proved
 auditlog.adb:1843:72: info: overflow check proved
 auditlog.adb:1849:53: info: range check proved
-auditlog.adb:1852:47: range check not proved
+auditlog.adb:1852:47: info: range check proved
 auditlog.adb:1859:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1861:47: range check not proved
 auditlog.adb:1861:50: overflow check not proved
@@ -135,7 +135,7 @@ clock-interfac.adb:59:21: info: overflow check proved
 clock-interfac.adb:63:36: range check not proved
 clock-interfac.adb:66:45: overflow check not proved
 clock-interfac.adb:66:45: range check not proved
-clock.adb:58:8: range check not proved
+clock.adb:58:8: info: range check proved
 clock.adb:74:11: info: range check proved
 clock.adb:78:10: assertion not proved
 clock.adb:82:12: info: index check proved
@@ -155,29 +155,29 @@ clock.adb:280:41: info: range check proved
 clock.adb:281:44: info: division check proved
 clock.adb:282:25: info: division check proved
 clock.adb:282:25: info: range check proved
-clock.adb:328:7: precondition not proved
+clock.adb:328:7: info: precondition proved
 clock.adb:329:44: info: division check proved
-clock.adb:333:7: precondition not proved
+clock.adb:333:7: info: precondition proved
 clock.adb:334:45: info: division check proved
 clock.adb:335:32: info: division check proved
-clock.adb:339:7: precondition not proved
+clock.adb:339:7: info: precondition proved
 clock.adb:340:45: info: division check proved
 clock.adb:341:32: info: division check proved
-clock.adb:345:7: precondition not proved
+clock.adb:345:7: info: precondition proved
 clock.adb:346:44: info: division check proved
 clock.adb:387:7: info: assertion proved
-clock.adb:391:7: precondition not proved
-clock.adb:396:7: precondition not proved
-clock.adb:401:7: precondition not proved
-clock.adb:406:7: precondition not proved
+clock.adb:391:7: info: precondition proved
+clock.adb:396:7: info: precondition proved
+clock.adb:401:7: info: precondition proved
+clock.adb:406:7: info: precondition proved
 clock.adb:407:49: info: division check proved
-clock.adb:411:7: precondition not proved
+clock.adb:411:7: info: precondition proved
 clock.adb:412:50: info: division check proved
 clock.adb:413:32: info: division check proved
-clock.adb:417:7: precondition not proved
+clock.adb:417:7: info: precondition proved
 clock.adb:418:50: info: division check proved
 clock.adb:419:32: info: division check proved
-clock.adb:423:7: precondition not proved
+clock.adb:423:7: info: precondition proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
 configdata.adb:237:44: info: overflow check proved
@@ -204,9 +204,9 @@ crypto.adb:669:38: range check not proved
 display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
 display.adb:138:30: info: index check proved
-display.adb:139:30: index check not proved
+display.adb:139:30: info: index check proved
 display.adb:140:32: range check not proved
-display.adb:143:11: range check not proved
+display.adb:143:11: info: range check proved
 display.adb:148:33: index check not proved
 display.adb:148:33: overflow check not proved
 display.adb:150:32: range check not proved
@@ -298,7 +298,7 @@ enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
-file.adb:413:39: overflow check not proved
+file.adb:413:39: info: overflow check proved
 file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
@@ -329,8 +329,8 @@ latch.ads:162:26: postcondition not proved, requires Latch_Timeout = Time
 msgproc.adb:34:13: info: range check proved
 msgproc.adb:38:7: info: range check proved
 msgproc.adb:76:13: info: range check proved
-msgproc.adb:84:7: range check not proved
-msgproc.adb:89:11: info: range check proved
+msgproc.adb:84:7: info: range check proved
+msgproc.adb:89:11: range check not proved
 msgproc.adb:91:17: index check not proved
 msgproc.adb:97:45: overflow check not proved
 msgproc.adb:106:49: overflow check not proved
@@ -343,11 +343,11 @@ poll.ads:132:11: postcondition not proved
 screen-interfac.adb:7:14: info: range check proved
 screen.adb:813:10: info: range check proved
 spark_io.adb:440:13: info: range check proved
-spark_io.adb:447:26: overflow check not proved
+spark_io.adb:447:26: info: overflow check proved
 spark_io.adb:447:26: range check not proved
 spark_io.adb:450:22: overflow check not proved
 spark_io.adb:451:30: index check not proved
-spark_io.adb:456:26: overflow check not proved
+spark_io.adb:456:26: info: overflow check proved
 spark_io.adb:456:26: range check not proved
 stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
@@ -368,8 +368,8 @@ tismain.adb:836:17: precondition not proved
 tismain.adb:839:17: precondition not proved
 tismain.adb:847:17: precondition not proved
 tismain.adb:1333:13: precondition not proved
-tokenapi.adb:73:8: range check not proved
-tokenreader-interfac.adb:55:7: range check not proved
+tokenapi.adb:73:8: info: range check proved
+tokenreader-interfac.adb:55:7: info: range check proved
 tokenreader-interfac.adb:120:43: range check not proved
 tokenreader.adb:101:47: info: range check proved
 tokenreader.adb:127:46: info: range check proved
