@@ -262,7 +262,7 @@ follow the grammar of ``global_specification``
 
 .. ifconfig:: Display_Trace_Units
 
-   :Trace Unit: 6.1.4 Syntax
+   :Trace Unit: FE 6.1.4 Syntax
 
 .. centered:: **Static Semantics**
 
@@ -271,7 +271,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 SS an unmoded global_list is shorthand for Input
+      :Trace Unit: FA 6.1.4 SS an unmoded global_list is shorthand for Input
 
 #. A ``global_item`` is *referenced* by a subprogram if:
 
@@ -296,7 +296,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 SS no global_item referenced when
+      :Trace Unit: FA 6.1.4 SS no global_item referenced when
                    null_global_specification
 
 .. centered:: **Name Resolution Rules**
@@ -308,7 +308,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 NRR global_item shall denote entire object
+      :Trace Unit: FE 6.1.4 NRR global_item shall denote entire object
 
 .. centered:: **Legality Rules**
 
@@ -318,7 +318,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR if Global aspect does not mention a variable, it
+      :Trace Unit: FA 6.1.4 LR if Global aspect does not mention a variable, it
                    cannot appear within the subprogram
 
 #. A ``global_item`` shall not denote a constant object other than
@@ -327,7 +327,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_item shall only denote a constant if it is
+      :Trace Unit: FE 6.1.4 LR global_item shall only denote a constant if it is
                    a formal parameter of an enclosing subprogram of mode in
 
 #. The Global aspect may only be specified for the initial declaration of a
@@ -335,7 +335,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR Global aspect must be on subprogram's
+      :Trace Unit: FE 6.1.4 LR Global aspect must be on subprogram's
                    initial declaration
 
 #. A ``global_item`` shall not denote a state abstraction whose refinement
@@ -344,7 +344,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_item shall not denote state abstraction
+      :Trace Unit: FE 6.1.4 LR global_item shall not denote state abstraction
                    with visible refinement
 
 #. Each ``mode_selector`` shall occur at most once in a single
@@ -352,28 +352,28 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR each mode_selector shall occur at most once
+      :Trace Unit: FE 6.1.4 LR each mode_selector shall occur at most once
 
 #. A function subprogram shall not have a ``mode_selector`` of
    Output or In_Out in its Global aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR functions cannot have Output or In_Out as mode_selector
+      :Trace Unit: FE 6.1.4 LR functions cannot have Output or In_Out as mode_selector
 
 #. The ``global_items`` in a single Global aspect specification shall denote
    distinct entities.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_items shall denote distinct entities
+      :Trace Unit: FE 6.1.4 LR global_items shall denote distinct entities
 
 #. A ``global_item`` occurring in a Global aspect specification of a subprogram
    shall not denote a formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR global_item shall not denote formal parameter
+      :Trace Unit: FE 6.1.4 LR global_item shall not denote formal parameter
 
 #. If a subprogram is nested within another and if the ``global_specification``
    of the outer subprogram has an entity denoted by a ``global_item`` with a
@@ -383,7 +383,7 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 LR nested subprograms cannot have mode_specification
+      :Trace Unit: FE 6.1.4 LR nested subprograms cannot have mode_specification
                    of In_Out or Output if enclosing subprogram's mode_specification
                    is Input
 
@@ -400,7 +400,7 @@ is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 VR global_item shall occur only if entity referenced
+      :Trace Unit: FA 6.1.4 VR global_item shall occur only if entity referenced
                    is denoted by the subprogram
 
 #. Each entity denoted by a ``global_item`` in a ``global_specification`` of a
@@ -433,7 +433,7 @@ is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 VR Input has to only be read, Output has to be updated
+      :Trace Unit: FA 6.1.4 VR Input has to only be read, Output has to be updated
                    and In_Out has to be both read and updated
 
 #. An entity that is denoted by a ``global_item`` which is referenced by a
@@ -443,7 +443,7 @@ is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.4 VR a Proof_In global_item is not referenced by a
+      :Trace Unit: FA 6.1.4 VR a Proof_In global_item is not referenced by a
                    subprogram but is directly or indirectly referenced in
                    assertion expressions
 
@@ -489,8 +489,8 @@ UML, the entity at the tail of the arrow depends on the entity at the head of
 the arrow.
 
 If an output does not depend on any input this is indicated
-using a **null**, e.g., *X =>* **null**.  An output may be
-self-dependent but not dependent on any other input.  The shorthand
+using a **null**, e.g., *X =>* **null**. An output may be
+self-dependent but not dependent on any other input. The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
 
 The functional behavior of a subprogram is not specified by the Depends
@@ -535,7 +535,7 @@ where
 
 .. ifconfig:: Display_Trace_Units
 
-   :Trace Unit: 6.1.5 Syntax
+   :Trace Unit: FE 6.1.5 Syntax
 
 .. centered:: **Name Resolution Rules**
 
@@ -547,7 +547,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 NRR inputs and outputs of a dependency_relation shall denote
+      :Trace Unit: FE 6.1.5 NRR inputs and outputs of a dependency_relation shall denote
                    entire objects or state abstractions
 
 .. centered:: **Legality Rules**
@@ -557,7 +557,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Depends aspect shall be on subprogram's declaration
+      :Trace Unit: FE 6.1.5 LR Depends aspect shall be on subprogram's declaration
 
 #. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
@@ -565,7 +565,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR dependency_relation shall not denote a state
+      :Trace Unit: FE 6.1.5 LR dependency_relation shall not denote a state
                    abstraction with visible refinement
 
 #. The *explicit input set* of a subprogram is the set of formal parameters of
@@ -575,7 +575,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR The input set consists of formal parameters of mode 'in'
+      :Trace Unit: FE 6.1.5 LR The input set consists of formal parameters of mode 'in'
                    and 'in out' and global_items with mode_selector Input or In_Out
 
 #. The *input set* of a subprogram is the explicit input set of the
@@ -595,7 +595,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR discriminants, array bounds and tags of out formal
+      :Trace Unit: FE 6.1.5 LR discriminants, array bounds and tags of out formal
                    parameters and output globals, are part of the input set
 
 #. The *output set* of a subprogram is the set of formal parameters of the
@@ -606,7 +606,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR The output set consists of formal parameters of mode 'out'
+      :Trace Unit: FE 6.1.5 LR The output set consists of formal parameters of mode 'out'
                    and 'in out' and global_item with mode_selector Output or In_Out
                    and for a function the function_result
 
@@ -615,14 +615,14 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Entity denoted by input shall be member of input set
+      :Trace Unit: FE 6.1.5 LR Entity denoted by input shall be member of input set
 
 #. Every member of the explicit input set of a subprogram shall be denoted by
    at least one ``input`` of the ``dependency_relation`` of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Every member of the input set shall be denoted by
+      :Trace Unit: FE 6.1.5 LR Every member of the input set shall be denoted by
                    at least one input of the dependency_relation
 
 #. The entity denoted by each ``output`` of a ``dependency_relation`` of a
@@ -630,14 +630,14 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Entity denoted by output shall be member of output set
+      :Trace Unit: FE 6.1.5 LR Entity denoted by output shall be member of output set
 
 #. Every member of the output set of a subprogram shall be denoted by exactly
    one ``output`` in the ``dependency_relation`` of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR Every member of the output set shall be denoted
+      :Trace Unit: FE 6.1.5 LR Every member of the output set shall be denoted
                    by exactly one output of the dependency_relation
 
 #. For the purposes of determining the legality of a Result
@@ -647,7 +647,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR 'Result on Depends aspect is checked as a
+      :Trace Unit: FA 6.1.5 LR 'Result on Depends aspect is checked as a
                    postcondition of the function
 
 #. In a ``dependency_relation`` there can be at most one ``dependency_clause``
@@ -656,7 +656,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR null_dependency_clause shall be the last
+      :Trace Unit: FE 6.1.5 LR null_dependency_clause shall be the last
                    dependency_clause in the dependency_relation
 
 #. An entity denoted by an ``input`` which is in an ``input_list`` of a
@@ -665,20 +665,20 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR an input of a null output_list shall not appear
+      :Trace Unit: FE 6.1.5 LR an input of a null output_list shall not appear
                    as an input in another input_list
 
 #. The ``inputs`` in a single ``input_list`` shall denote distinct entities.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR input entities shall be distinct entities
+      :Trace Unit: FE 6.1.5 LR input entities shall be distinct entities
 
 #. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 LR null_dependency_clause shall not have input_list
+      :Trace Unit: FE 6.1.5 LR null_dependency_clause shall not have input_list
                    of null
 
 .. centered:: **Static Semantics**
@@ -691,7 +691,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 SS '+' introduces self dependence
+      :Trace Unit: FA 6.1.5 SS '+' introduces self dependence
 
 #. A ``dependency_clause`` of the form A =>+ A has the same meaning as A => A.
    [The reason for this rule is to allow the short hand:
@@ -709,7 +709,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 SS dependency_clause with null input_list means that
+      :Trace Unit: FA 6.1.5 SS dependency_clause with null input_list means that
                    each output in the output_list does not depend on anything
 
 #. The ``inputs`` in the ``input_list`` of a ``null_dependency_clause`` may be
@@ -718,7 +718,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 SS inputs in the input_list of a null_dependency_clause
+      :Trace Unit: FA 6.1.5 SS inputs in the input_list of a null_dependency_clause
                    play no role in determining outputs of the subprogram
 
 #. A Depends aspect of a subprogram with a **null** ``dependency_relation``
@@ -728,7 +728,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 SS null dependency_relation means subprogram has
+      :Trace Unit: FA 6.1.5 SS null dependency_relation means subprogram has
                    no inputs or outputs
 
 #. [A function without an explicit Depends aspect specification
@@ -749,7 +749,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 SS subprogram with explicit Depends and implicit
+      :Trace Unit: FA 6.1.5 SS subprogram with explicit Depends and implicit
                    Global has the unique global aspect that is consistent
                    with the Depends aspect.
 
@@ -761,7 +761,7 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 SS a subprogram with an explicit Global aspect
+      :Trace Unit: FA 6.1.5 SS a subprogram with an explicit Global aspect
                    and no Depends or body has an implicit dependency_relation
                    where each output is dependent on every input
 
@@ -779,7 +779,7 @@ as it is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 VR each output in the Depends aspect must be an
+      :Trace Unit: FA 6.1.5 VR each output in the Depends aspect must be an
                    output in the implementation and must depend on all its
                    inputs and nothing else
 
@@ -789,7 +789,7 @@ as it is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 VR all implementation's outputs must be outputs
+      :Trace Unit: FA 6.1.5 VR all implementation's outputs must be outputs
                    of the Depends aspect
 
 #. [Each input of the implementation of a subprogram body is denoted by an
@@ -797,7 +797,7 @@ as it is used purely for static analysis purposes and is not executed.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: 6.1.5 VR all implementation's inputs must be inputs of
+      :Trace Unit: FA 6.1.5 VR all implementation's inputs must be inputs of
                    the Depends aspect (maybe in more than one input_list)
 
 .. centered:: **Examples**
