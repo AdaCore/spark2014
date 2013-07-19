@@ -1,0 +1,7 @@
+unconstr.adb:9:20: info: postcondition proved
+unconstr.adb:11:13: info: range check proved
+unconstr.adb:18:20: postcondition not proved, requires Constr_Call'Result = true
+unconstr.adb:30:20: info: postcondition proved
+unconstr.adb:32:13: info: range check proved
+unconstr.adb:57:20: info: postcondition proved
+unconstr.adb:61:7: info: range check proved
