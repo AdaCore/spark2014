@@ -39,6 +39,13 @@ with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
 package SPARK_Util is
 
    -------------------
+   -- Special Names --
+   -------------------
+
+   Name_GNATprove : constant String := "GNATprove";
+   Name_External_Axiomatization : constant String := "External_Axiomatization";
+
+   -------------------
    -- Special modes --
    -------------------
 
@@ -82,6 +89,18 @@ package SPARK_Util is
 
    function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
    --  Return the N_Specification node for a subprogram entity E
+
+   function Get_Package_Spec (E : Entity_Id) return Node_Id with
+     Pre  => Ekind_In (E, E_Package, E_Generic_Package),
+     Post => Nkind (Get_Package_Spec'Result) = N_Package_Specification;
+   --  Return the specification node for a package entity E
+
+   function Get_Package_Decl (E : Entity_Id) return Node_Id with
+     Pre  => Ekind_In (E, E_Package, E_Generic_Package),
+     Post => Nkind_In (Get_Package_Decl'Result,
+                       N_Package_Declaration,
+                       N_Generic_Package_Declaration);
+   --  Return the declaration node for a package entity E
 
    function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id;
    --  Return the pragma Contract_Cases for E, if any
@@ -207,5 +226,17 @@ package SPARK_Util is
 
    function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
    --  Returns whether E is an instance of Ada.Unchecked_Conversion
+
+   function Is_Annotate_Pragma_For_External_Axiomatization
+     (N : Node_Id) return Boolean;
+   --  Returns whether N is
+   --    pragma Annotate (GNATprove, External_Axiomatization);
+
+   function Has_Annotate_Pragma_For_External_Axiomatization
+     (E : Entity_Id) return Boolean
+   with Pre => Ekind_In (E, E_Package, E_Generic_Package);
+   --  Returns whether E is a package entity, for which the initial list of
+   --  pragmas at the start of the package declaration contains
+   --    pragma Annotate (GNATprove, External_Axiomatization);
 
 end SPARK_Util;
