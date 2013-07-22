@@ -116,12 +116,21 @@ is defined and yields a value of type ``T``. The
 one or more ``record_component_associations``, each of which
 shall have a non-**others** ``component_choice_list`` and an expression.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 4.3.1 component_choice_list cannot be others
+
 Each ``selector_name`` of each ``record_component_name`` shall denote a
 distinct non discriminant component of ``T``.
 Each ``record_component_association``'s associated components shall all
 be of the same type. The expected type and applicable index
 constraint of the expression is defined as for a
 ``record_component_association`` occurring within a record aggregate.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 4.3.1 each selector_name of each record_component_name
+                   shall denote a distinct non discriminant record component
 
 In all cases (i.e., whether ``T`` is a record type, a record extension type,
 or an array type - see below), evaluation of ``X'Update``
@@ -162,6 +171,10 @@ type ``T``. The expected type for each ``discrete_choice`` is the index
 type of ``T``. The reserved word **others** shall not occur as a ``discrete_choice``
 of an ``array_component_association`` of the ``attribute_reference``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 4.3.1 a discrete_choice cannot be others
+
 For a prefix ``X`` that denotes an object of a nonlimited
 multidimensional array type ``T``, the attribute
 
@@ -191,6 +204,11 @@ The length of each ``index_expression_list`` shall equal the
 dimensionality of ``T``. The expected type for each expression in an
 ``index_expression_list`` is the corresponding index type of ``T``.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 4.3.1 length of each index_expression_list shall equal
+                   dimensionality of multidimensional array
+
 If ``T`` is a one-dimensional array type then the component updating referenced
 above proceeds as follows. The discrete choices and array
 component expressions are evaluated. Each array component
@@ -212,6 +230,11 @@ and the expression are evaluated (in unspecified order)
 and the expression value is assigned to the component of the result
 object indexed by the given index values. Each array component expression
 is evaluated once for each associated ``index_expression_list``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE PR 4.3.1 when array ranges overlap then the initial
+                   ones are overwritten by the subsequent ones
 
 Note: the ``Update`` attribute for an array object allows multiple
 assignments to the same component, as in either
