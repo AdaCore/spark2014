@@ -1,4 +1,4 @@
-uninitialized.adb:6:07: use of uninitialized variable "B" [uninitialized__b]
+uninitialized.adb:6:07: "B" might not be initialized [uninitialized__b]
 // package_body_uninitialized_cfg
 digraph G {
    graph [splines=True];

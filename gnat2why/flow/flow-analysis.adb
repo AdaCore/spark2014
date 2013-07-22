@@ -59,10 +59,18 @@ package body Flow.Analysis is
                             return Node_Or_Entity_Id;
    --  Find a good place to raise an error for vertex V.
 
+   function Escape (S : Unbounded_String)
+                    return Unbounded_String
+     with Post => Length (Escape'Result) >= Length (S);
+   --  Escape any special characters used in the error message (for
+   --  example transforms "=>" into "='>" as > is a special insertion
+   --  character.
+
    function Substitute (S : Unbounded_String;
                         F : Flow_Id)
                         return Unbounded_String;
-   --  Find the first '&' and substitute with the given flow id.
+   --  Find the first '&' or '#' and substitute with the given flow
+   --  id, with or without enclosing quotes respectively.
 
    function Create_Tag (Tag : String;
                         F1  : Flow_Id := Null_Flow_Id;
@@ -83,7 +91,9 @@ package body Flow.Analysis is
                              F1  : Flow_Id;
                              Tag : String := "");
    --  Output an error message attached to the given node with a
-   --  substitution using F1. Use & as the substitution character.
+   --  substitution using F1. Use & or # as the substitution
+   --  characters, which quote the flow id with or without double
+   --  quotes respectively.
 
    procedure Error_Msg_Flow (Msg : String;
                              N   : Node_Id;
@@ -144,6 +154,27 @@ package body Flow.Analysis is
       end if;
    end Error_Location;
 
+   ------------
+   -- Escape --
+   ------------
+
+   function Escape (S : Unbounded_String)
+                    return Unbounded_String
+   is
+      R : Unbounded_String := Null_Unbounded_String;
+   begin
+      for Index in Positive range 1 .. Length (S) loop
+         if Element (S, Index) in '%' | '$' | '{' | '*' | '&' |
+           '#' | '}' | '@' | '^' | '>' |
+           '!' | '?' | '<' | '`' | ''' | '\' | '|' | '~'
+         then
+            Append (R, "'");
+         end if;
+         Append (R, Element (S, Index));
+      end loop;
+      return R;
+   end Escape;
+
    ----------------
    -- Substitute --
    ----------------
@@ -154,25 +185,36 @@ package body Flow.Analysis is
    is
       R      : Unbounded_String := Null_Unbounded_String;
       Do_Sub : Boolean          := True;
+      Quote  : Boolean;
    begin
       for Index in Positive range 1 .. Length (S) loop
-         if Do_Sub and then Element (S, Index) = '&' then
+         if Do_Sub and then Element (S, Index) in '&' | '#' then
+            Quote := Element (S, Index) = '&';
             case  F.Kind is
                when Null_Value =>
                   Append (R, "NULL");
 
                when Direct_Mapping | Record_Field =>
-                  Append (R, """");
+                  if Quote then
+                     Append (R, """");
+                  end if;
                   Append (R, Flow_Id_To_String (F));
-                  Append (R, """");
+                  if Quote then
+                     Append (R, """");
+                  end if;
 
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
                   if F.Name.all = "__HEAP" then
-                     Append (R, """the heap""");
-
+                     if Quote then
+                        Append (R, """the heap""");
+                     else
+                        Append (R, "the heap");
+                     end if;
                   else
-                     Append (R, """");
+                     if Quote then
+                        Append (R, """");
+                     end if;
                      declare
                         Index : Positive := 1;
                      begin
@@ -195,7 +237,9 @@ package body Flow.Analysis is
                            end case;
                         end loop;
                      end;
-                     Append (R, """");
+                     if Quote then
+                        Append (R, """");
+                     end if;
                   end if;
 
             end case;
@@ -248,7 +292,7 @@ package body Flow.Analysis is
                              N   : Node_Id;
                              Tag : String := "")
    is
-      M : Unbounded_String := To_Unbounded_String (Msg);
+      M : Unbounded_String := Escape (To_Unbounded_String (Msg));
    begin
       --  Assemble message string to be passed to Error_Msg_N
       if Tag'Length >= 1 then
@@ -268,8 +312,8 @@ package body Flow.Analysis is
       M : Unbounded_String;
    begin
       --  Assemble message string to be passed to Error_Msg_N
-      M := Substitute (To_Unbounded_String (Msg),
-                       F1);
+      M := Escape (Substitute (To_Unbounded_String (Msg),
+                               F1));
       if Tag'Length >= 1 then
          Append (M, " [" & Tag & "]");
       end if;
@@ -288,9 +332,9 @@ package body Flow.Analysis is
       M : Unbounded_String;
    begin
       --  Assemble message string to be passed to Error_Msg_N
-      M := Substitute (Substitute (To_Unbounded_String (Msg),
-                                   F1),
-                       F2);
+      M := Escape (Substitute (Substitute (To_Unbounded_String (Msg),
+                                           F1),
+                               F2));
       if Tag'Length >= 1 then
          Append (M, " [" & Tag & "]");
       end if;
@@ -1143,8 +1187,6 @@ package body Flow.Analysis is
                                     Tag   => Tag);
       end Mark_Definition_Free_Path;
 
-      Tmp : Unbounded_String;
-
    begin
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1194,31 +1236,11 @@ package body Flow.Analysis is
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
-                           if Key_I.Kind = Record_Field then
-                              Tmp := To_Unbounded_String ("component & of ");
-                           else
-                              Tmp := Null_Unbounded_String;
-                           end if;
-                           if Atr_U.Is_Package_State then
-                              Append (Tmp, "package state ");
-                           else
-                              Append (Tmp, "formal parameter ");
-                           end if;
-                           if Key_I.Kind /= Record_Field then
-                              Append (Tmp, "& ");
-                           end if;
-                           Append (Tmp, "might not be ");
-                           if Atr_U.Is_Package_State then
-                              Append (Tmp, "initialized");
-                           else
-                              Append (Tmp, "set");
-                           end if;
-
-                           --  !!! WE GOT UP TO HERE
                            Error_Msg_Flow
-                             (Msg => To_String (Tmp),
+                             (Msg => "& might not be initialized in &",
                               N   => Error_Location (FA.PDG, V_Use),
                               F1  => Key_I,
+                              F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                               Tag => Create_Tag ("uninitialized", Key_I));
                            Mark_Definition_Free_Path
                              (E_Loc => V_Use,
@@ -1234,8 +1256,11 @@ package body Flow.Analysis is
                            null;
                         end if;
                      else
+                        --  !!! possibly have something special for
+                        --  !!! arrays: "might not be fully
+                        --  !!! initialized"
                         Error_Msg_Flow
-                          (Msg => "use of uninitialized variable &",
+                          (Msg => "& might not be initialized",
                            N   => Error_Location (FA.PDG, V_Use),
                            F1  => Key_I,
                            Tag => Create_Tag ("uninitialized", Key_I));
@@ -1396,12 +1421,13 @@ package body Flow.Analysis is
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
                   --  global.
-                  Error_Msg_Flow (Msg => "global & is not used",
+                  Error_Msg_Flow (Msg => "unused global &",
                                   N   => Find_Global (FA.Analyzed_Entity, F),
                                   F1  => F,
                                   Tag => "unused");
                else
-                  Error_Msg_Flow (Msg => "& is not used",
+                  --  !!! distinguish between variables and parameters
+                  Error_Msg_Flow (Msg => "unused variable &",
                                   N   => Error_Location (FA.PDG, V),
                                   F1  => F,
                                   Tag => "unused");
@@ -1525,8 +1551,9 @@ package body Flow.Analysis is
             F_Out : constant Flow_Id := Dependency_Maps.Key (C);
          begin
             if not Actual_Deps.Contains (F_Out) then
+               --  !!! check quotation in errout.ads
                Error_Msg_Flow
-                 (Msg => "& missing from null dependency",
+                 (Msg => "missing dependency ""null => #""",
                   N   => Depends_Location,
                   F1  => F_Out,
                   Tag => "depends_null");
@@ -1563,6 +1590,8 @@ package body Flow.Analysis is
                Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
             else
+               --  !!! legality error, should be moved to frontend;
+               --  !!! possibly raise exception here
                Error_Msg_Flow
                  (Msg => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
@@ -1596,13 +1625,13 @@ package body Flow.Analysis is
                   --  mention.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (Msg => "& missing from null dependency",
+                       (Msg => "missing dependency ""null => #""",
                         N   => Depends_Location,
                         F1  => Missing_Var,
                         Tag => "depends_null");
                   else
                      Error_Msg_Flow
-                       (Msg => "& depends on &",
+                       (Msg => "missing dependency ""# => #""",
                         N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
                         F1  => F_Out,
                         F2  => Missing_Var,
@@ -1616,14 +1645,14 @@ package body Flow.Analysis is
                   --  not happen in reality.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (Msg => "& incorrectly included in null dependency",
+                       (Msg => "incorrect dependency ""null => #""",
                         N   => Depends_Location,
                         F1  => Wrong_Var,
                         Tag => "depends_wrong");
                      --  ??? show a path?
                   else
                      Error_Msg_Flow
-                       (Msg => "& does not depend on &",
+                       (Msg => "incorrect dependency ""# => #""",
                         N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
                         F1  => F_Out,
                         F2  => Wrong_Var,

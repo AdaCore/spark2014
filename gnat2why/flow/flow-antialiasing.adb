@@ -545,30 +545,35 @@ package body Flow.Antialiasing is
       B_Formal            : Entity_Id;
       Introduces_Aliasing : in out Boolean)
    is
-      Msg : Unbounded_String := Null_Unbounded_String;
+      Msg : Unbounded_String               := Null_Unbounded_String;
+      Tmp : constant Aliasing_Check_Result := Aliasing (A, B);
    begin
-      case Aliasing (A, B) is
-         when No_Aliasing =>
-            --  Nothing to do here.
-            return;
-
-         when Possible_Aliasing =>
-            Append (Msg, "possible ");
-
-         when Definite_Aliasing =>
-            null;
-      end case;
-
+      if Tmp = No_Aliasing then
+         --  Nothing to do here.
+         return;
+      end if;
       Introduces_Aliasing := True;
 
-      Append (Msg, "aliasing between formal parameter");
+      Append (Msg, "formal parameter");
       if Present (B_Formal) then
          Append (Msg, "s & and &");
          Error_Msg_Node_2 := B_Formal;
       else
+         --  !!! maybe have a special message for generated globals
          Append (Msg, " & and global &");
          Error_Msg_Node_2 := B;
       end if;
+      case Tmp is
+         when Possible_Aliasing =>
+            Append (Msg, " might");
+
+         when Definite_Aliasing =>
+            Append (Msg, " must not");
+
+         when others =>
+            raise Program_Error;
+      end case;
+      Append (Msg, " be aliased");
       Append (Msg, " [flow_aliasing]!");
 
       Error_Msg_NE (To_String (Msg), A, A_Formal);

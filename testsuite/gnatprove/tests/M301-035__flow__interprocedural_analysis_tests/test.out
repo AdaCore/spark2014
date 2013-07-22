@@ -1,8 +1,8 @@
-across_compilation_units-child.ads:27:24: "X" depends on "X" [depends_missing]
-across_compilation_units-child.ads:27:24: "X" depends on "Y" [depends_missing]
-across_compilation_units-child.ads:29:24: "Y" depends on "Y" [depends_missing]
-across_compilation_units-child.ads:30:24: "Z" depends on "X" [depends_missing]
-across_compilation_units-child.ads:30:24: "Z" depends on "Z" [depends_missing]
+across_compilation_units-child.ads:27:24: missing dependency "X => X" [depends_missing]
+across_compilation_units-child.ads:27:24: missing dependency "X => Y" [depends_missing]
+across_compilation_units-child.ads:29:24: missing dependency "Y => Y" [depends_missing]
+across_compilation_units-child.ads:30:24: missing dependency "Z => X" [depends_missing]
+across_compilation_units-child.ads:30:24: missing dependency "Z => Z" [depends_missing]
 // package_body_across_compilation_units_cfg
 digraph G {
    graph [splines=True];
