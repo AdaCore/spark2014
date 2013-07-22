@@ -8,5 +8,5 @@ sgs.adb:19:7: info: assertion proved
 sgs.adb:20:7: info: assertion proved
 sgs.adb:21:7: info: assertion proved
 sgs.adb:22:7: info: assertion proved
-sgs.ads:5:53: info: range check proved
+sgs.ads:5:53: range check not proved
 sgs.ads:13:17: info: postcondition proved

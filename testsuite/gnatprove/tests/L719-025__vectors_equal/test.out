@@ -8,7 +8,7 @@ p.adb:19:7: info: precondition proved
 p.adb:20:7: assertion not proved, requires Element (L, I1) = Element (L_In, I2)
 p.adb:20:22: info: precondition proved
 p.adb:20:40: precondition not proved
-p.adb:21:7: info: precondition proved
+p.adb:21:7: precondition not proved
 p.ads:19:14: postcondition not proved, requires L = L'old
 p.ads:23:14: postcondition not proved, requires L = L'old
 p.ads:28:14: postcondition not proved, requires L = L'old

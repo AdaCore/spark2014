@@ -4,7 +4,7 @@ admin.adb:110:10: info: loop invariant preservation proved
 admin.adb:121:13: assertion not proved
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
-admin.adb:137:16: info: loop invariant preservation proved
+admin.adb:137:16: loop invariant preservation not proved
 admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved
@@ -157,27 +157,27 @@ clock.adb:282:25: info: division check proved
 clock.adb:282:25: info: range check proved
 clock.adb:328:7: info: precondition proved
 clock.adb:329:44: info: division check proved
-clock.adb:333:7: info: precondition proved
+clock.adb:333:7: precondition not proved
 clock.adb:334:45: info: division check proved
 clock.adb:335:32: info: division check proved
-clock.adb:339:7: info: precondition proved
+clock.adb:339:7: precondition not proved
 clock.adb:340:45: info: division check proved
 clock.adb:341:32: info: division check proved
 clock.adb:345:7: info: precondition proved
 clock.adb:346:44: info: division check proved
 clock.adb:387:7: info: assertion proved
-clock.adb:391:7: info: precondition proved
-clock.adb:396:7: info: precondition proved
-clock.adb:401:7: info: precondition proved
-clock.adb:406:7: info: precondition proved
+clock.adb:391:7: precondition not proved
+clock.adb:396:7: precondition not proved
+clock.adb:401:7: precondition not proved
+clock.adb:406:7: precondition not proved
 clock.adb:407:49: info: division check proved
-clock.adb:411:7: info: precondition proved
+clock.adb:411:7: precondition not proved
 clock.adb:412:50: info: division check proved
 clock.adb:413:32: info: division check proved
-clock.adb:417:7: info: precondition proved
+clock.adb:417:7: precondition not proved
 clock.adb:418:50: info: division check proved
 clock.adb:419:32: info: division check proved
-clock.adb:423:7: info: precondition proved
+clock.adb:423:7: precondition not proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
 configdata.adb:237:44: info: overflow check proved
@@ -369,7 +369,7 @@ tismain.adb:839:17: precondition not proved
 tismain.adb:847:17: precondition not proved
 tismain.adb:1333:13: precondition not proved
 tokenapi.adb:73:8: info: range check proved
-tokenreader-interfac.adb:55:7: info: range check proved
+tokenreader-interfac.adb:55:7: range check not proved
 tokenreader-interfac.adb:120:43: range check not proved
 tokenreader.adb:101:47: info: range check proved
 tokenreader.adb:127:46: info: range check proved
