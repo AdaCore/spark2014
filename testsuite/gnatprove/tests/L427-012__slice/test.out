@@ -1,2 +1,1 @@
-
-p.adb:7:19: info: overflow check proved
+p.adb:7:19: overflow check not proved
