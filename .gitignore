@@ -20,3 +20,4 @@ GNAT-*
 gnat_src
 stdlib_tmp
 install
+gnat2why/obj
