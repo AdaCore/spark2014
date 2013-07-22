@@ -533,7 +533,7 @@ procedure Gnatprove is
       Start_Section ("prover");
       declare
          Altergo_Command : constant String :=
-           "why3-cpulimit %t %m -s alt-ergo %f";
+           "why3-cpulimit %t %m -s alt-ergo-gp %f";
       begin
          if Steps /= 0 then
             Put_Keyval ("command",
@@ -545,9 +545,9 @@ procedure Gnatprove is
       Put_Keyval ("driver",
                   Ada.Directories.Compose (Why3_Drivers_Dir,
                                            "alt_ergo.drv"));
-      Put_Keyval ("name", "Alt-Ergo");
-      Put_Keyval ("shortcut", "altergo");
-      Put_Keyval ("version", "0.94");
+      Put_Keyval ("name", "Alt-Ergo for GNATprove");
+      Put_Keyval ("shortcut", "altergo-gp");
+      Put_Keyval ("version", "0.95");
       Close (File);
    end Generate_Why3_Conf_File;
 

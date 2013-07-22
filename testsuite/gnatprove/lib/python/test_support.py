@@ -134,7 +134,7 @@ def altergo(src, timeout=10, opt=None):
       timeout: timeout passed to why3-cpulimit
       opt: additional command line options for alt-ergo
     """
-    cmd = ["why3-cpulimit", str(timeout), "0", "-h", "alt-ergo"]
+    cmd = ["why3-cpulimit", str(timeout), "0", "-h", "alt-ergo-gp"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
