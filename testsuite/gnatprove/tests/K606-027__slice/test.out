@@ -6,6 +6,7 @@ fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:38: info: range check proved
 fb20a00.adb:37:34: overflow check not proved
 fb20a00.adb:37:49: overflow check not proved
+fb20a00.adb:39:11: range check not proved
 fb20a00.adb:39:31: overflow check not proved
 fb20a00.adb:39:46: overflow check not proved
 fb20a00.adb:42:21: overflow check not proved

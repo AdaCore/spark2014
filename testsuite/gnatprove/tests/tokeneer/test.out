@@ -21,6 +21,7 @@ alarm-interfac.ads:70:26: postcondition not proved, requires not (IsAlarming)
 alarm.ads:82:7: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:237:39: info: range check proved
+auditlog.adb:246:23: range check not proved
 auditlog.adb:491:22: info: precondition proved
 auditlog.adb:745:47: range check not proved
 auditlog.adb:745:50: info: overflow check proved
@@ -101,6 +102,7 @@ bio-interfac.adb:78:38: range check not proved
 bio.adb:126:10: assertion not proved, requires Result = InternalError
 certificatestore.adb:216:10: info: range check proved
 certificatestore.adb:219:31: range check not proved
+certificatestore.adb:220:29: range check not proved
 certproc.adb:147:30: range check not proved
 certproc.adb:151:7: range check not proved
 certproc.adb:154:7: range check not proved
@@ -201,6 +203,9 @@ configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: info: range check proved
 crypto.adb:669:38: range check not proved
+display-interfac.adb:75:39: info: range check proved
+display-interfac.adb:92:45: info: range check proved
+display-interfac.adb:109:45: info: range check proved
 display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
 display.adb:138:30: info: index check proved
@@ -303,6 +308,7 @@ file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
 file.adb:422:39: info: overflow check proved
+file.adb:424:27: info: range check proved
 file.adb:554:14: info: range check proved
 file.adb:584:14: info: range check proved
 file.adb:832:14: info: range check proved
@@ -328,6 +334,7 @@ latch.ads:142:8: postcondition not proved, requires IsLocked = LatchisLocked or 
 latch.ads:162:26: postcondition not proved, requires Latch_Timeout = Time
 msgproc.adb:34:13: info: range check proved
 msgproc.adb:38:7: info: range check proved
+msgproc.adb:64:14: range check not proved
 msgproc.adb:76:13: info: range check proved
 msgproc.adb:84:7: info: range check proved
 msgproc.adb:89:11: range check not proved
@@ -336,12 +343,14 @@ msgproc.adb:97:45: overflow check not proved
 msgproc.adb:106:49: overflow check not proved
 msgproc.adb:110:20: index check not proved
 msgproc.adb:114:49: range check not proved
+msgproc.adb:127:40: range check not proved
 msgproc.adb:127:52: overflow check not proved
 msgproc.adb:130:26: range check not proved
 msgproc.adb:130:52: overflow check not proved
 poll.ads:132:11: postcondition not proved
 screen-interfac.adb:7:14: info: range check proved
 screen.adb:813:10: info: range check proved
+screen.adb:816:40: range check not proved
 spark_io.adb:440:13: info: range check proved
 spark_io.adb:447:26: info: overflow check proved
 spark_io.adb:447:26: range check not proved
@@ -354,8 +363,10 @@ stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
 stats.adb:104:47: info: overflow check proved
 tcpip.adb:118:26: info: range check proved
+tcpip.adb:325:58: info: range check proved
 tcpip.adb:326:60: overflow check not proved
 tcpip.adb:326:60: range check not proved
+tcpip.adb:327:17: range check not proved
 tismain.adb:242:10: postcondition not proved
 tismain.adb:707:21: info: precondition proved
 tismain.adb:712:26: info: precondition proved

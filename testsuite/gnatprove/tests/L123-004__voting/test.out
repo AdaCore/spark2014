@@ -1,3 +1,4 @@
+evoting.adb:58:52: range check not proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
