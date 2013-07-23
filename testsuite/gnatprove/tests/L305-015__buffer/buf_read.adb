@@ -48,10 +48,6 @@ package body Buf_Read is
          Pointer := Pointer + 1;
       end if;
 
-      --  assertion not provable, only to test translation
-      pragma Assert (Pointer <= Max_Read and then
-         (for all Index in Buffer'First .. Max_Read =>
-             Valid (Buffer (Index))));
    end Next_Char;
 
 end Buf_Read;
