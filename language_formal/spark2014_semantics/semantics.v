@@ -96,19 +96,19 @@ Inductive check_action: Type :=
 
 (** add check flags for AST nodes according to the checking rules *)
 Inductive check_flag: expr -> option check_action -> Prop :=
-    | CF_Econst_Int: forall ast_id n,
-        check_flag (Econst ast_id (Ointconst n)) None
-    | CF_Econst_Bool: forall ast_id b,
-        check_flag (Econst ast_id (Oboolconst b)) None
-    | CF_Evar: forall ast_id x,  
-        check_flag (Evar ast_id x) None
-    | CF_Ebinop_Div: forall ast_id e1 e2,
-        check_flag (Ebinop ast_id Odiv e1 e2) (Some Do_Division_Check)
-    | CF_Ebinop_Others: forall ast_id op e1 e2,
+    | CF_Econst_Int: forall ast_num n,
+        check_flag (Econst ast_num (Ointconst n)) None
+    | CF_Econst_Bool: forall ast_num b,
+        check_flag (Econst ast_num (Oboolconst b)) None
+    | CF_Evar: forall ast_num x,  
+        check_flag (Evar ast_num x) None
+    | CF_Ebinop_Div: forall ast_num e1 e2,
+        check_flag (Ebinop ast_num Odiv e1 e2) (Some Do_Division_Check)
+    | CF_Ebinop_Others: forall ast_num op e1 e2,
         op <> Odiv ->
-        check_flag (Ebinop ast_id op e1 e2) None
-    | CF_Eunop: forall ast_id op e,
-        check_flag (Eunop ast_id op e) None.
+        check_flag (Ebinop ast_num op e1 e2) None
+    | CF_Eunop: forall ast_num op e,
+        check_flag (Eunop ast_num op e) None.
 
 (** *** semantics for run-time checks *)
 
@@ -129,91 +129,91 @@ Inductive do_check: binary_operation -> value -> value -> bool -> Prop :=
 *)
 
 (** ** Expression semantics *)
-(** 
+(**
     for binary expression and unary expression, if any of its child expression returns exception,
     then the reuslt of the whole expression is exception; for binary expression (e1 op e2), 
     if both e1 and e2 can evaluate to some normal value, then we do some checks on the operator 'op',
     whenever the check fails, an exception is returned, otherwise, binary operation result is returned
  *)
 Inductive eval_expr: stack -> expr -> return_val -> Prop :=
-    | eval_Econst: forall cst v s ast_id,
+    | eval_Econst: forall cst v s ast_num,
         eval_constant cst = v ->
-        eval_expr s (Econst ast_id cst) (ValNormal v)
-    | eval_Evar: forall x s v ast_id,
+        eval_expr s (Econst ast_num cst) (ValNormal v)
+    | eval_Evar: forall x s v ast_num,
         fetch x s = Some v ->
-        eval_expr s (Evar ast_id x) (ValNormal v)
-    | eval_Ebinop1: forall s e1 ast_id op e2,
+        eval_expr s (Evar ast_num x) (ValNormal v)
+    | eval_Ebinop1: forall s e1 ast_num op e2,
         eval_expr s e1 ValException ->
-        eval_expr s (Ebinop ast_id op e1 e2) ValException
-    | eval_Ebinop2: forall s e1 v1 e2 ast_id op,
+        eval_expr s (Ebinop ast_num op e1 e2) ValException
+    | eval_Ebinop2: forall s e1 v1 e2 ast_num op,
         eval_expr s e1 (ValNormal v1) ->
         eval_expr s e2 ValException ->
-        eval_expr s (Ebinop ast_id op e1 e2) ValException
-    | eval_Ebinop3: forall s e1 v1 e2 v2 ast_id op,
+        eval_expr s (Ebinop ast_num op e1 e2) ValException
+    | eval_Ebinop3: forall s e1 v1 e2 v2 ast_num op,
         eval_expr s e1 (ValNormal v1) ->
         eval_expr s e2 (ValNormal v2) ->
         do_check op v1 v2 false ->
-        eval_expr s (Ebinop ast_id op e1 e2) ValException
-    | eval_Ebinop4: forall s e1 v1 e2 v2 ast_id op v,
+        eval_expr s (Ebinop ast_num op e1 e2) ValException
+    | eval_Ebinop4: forall s e1 v1 e2 v2 ast_num op v,
         eval_expr s e1 (ValNormal v1) ->
         eval_expr s e2 (ValNormal v2) ->
         do_check op v1 v2 true ->
         eval_binexpr op v1 v2 v ->
-        eval_expr s (Ebinop ast_id op e1 e2) (ValNormal v)
-    | eval_Eunop1: forall s e ast_id op,
+        eval_expr s (Ebinop ast_num op e1 e2) (ValNormal v)
+    | eval_Eunop1: forall s e ast_num op,
         eval_expr s e ValException ->
-        eval_expr s (Eunop ast_id op e) ValException
-    | eval_Eunop2: forall s e v ast_id op v1,
+        eval_expr s (Eunop ast_num op e) ValException
+    | eval_Eunop2: forall s e v ast_num op v1,
         eval_expr s e (ValNormal v) ->
         eval_unaryexpr op v v1 ->
-        eval_expr s (Eunop ast_id op e) (ValNormal v1).
+        eval_expr s (Eunop ast_num op e) (ValNormal v1).
 
 
-(** ** Command semantics *)
+(** ** Statement semantics *)
 (** 
    for any command, whenever its sub-command throws an exception or any expression 
    evaluate to an exception, then the whole command returns an exception; 
 *)
 Inductive eval_stmt: stack -> stmt -> state -> Prop := 
-    | eval_Sassign1: forall s e ast_id x,
+    | eval_Sassign1: forall s e ast_num x,
         eval_expr s e ValException ->
-        eval_stmt s (Sassign ast_id x e) SException
-    | eval_Sassign2: forall s e v x s1 ast_id,
+        eval_stmt s (Sassign ast_num x e) SException
+    | eval_Sassign2: forall s e v x s1 ast_num,
         eval_expr s e (ValNormal v) ->
         update s x (Value v) = Some s1 ->
-        eval_stmt s (Sassign ast_id x e) (SNormal s1)
-    | eval_Sseq1: forall s c1 ast_id c2,
+        eval_stmt s (Sassign ast_num x e) (SNormal s1)
+    | eval_Sseq1: forall s c1 ast_num c2,
         eval_stmt s c1 SException ->
-        eval_stmt s (Sseq ast_id c1 c2) SException
-    | eval_Sseq2: forall ast_id s s1 s2 c1 c2,
+        eval_stmt s (Sseq ast_num c1 c2) SException
+    | eval_Sseq2: forall ast_num s s1 s2 c1 c2,
         eval_stmt s c1 (SNormal s1) ->
         eval_stmt s1 c2 s2 ->
-        eval_stmt s (Sseq ast_id c1 c2) s2
-    | eval_Sifthen: forall s b ast_id c,
+        eval_stmt s (Sseq ast_num c1 c2) s2
+    | eval_Sifthen: forall s b ast_num c,
         eval_expr s b ValException ->
-        eval_stmt s (Sifthen ast_id b c) SException
-    | eval_Sifthen_True: forall s b c s1 ast_id,
+        eval_stmt s (Sifthen ast_num b c) SException
+    | eval_Sifthen_True: forall s b c s1 ast_num,
         eval_expr s b (ValNormal (Bool true)) ->
         eval_stmt s c s1 ->
-        eval_stmt s (Sifthen ast_id b c) s1
-    | eval_Sifthen_False: forall s b ast_id c,
+        eval_stmt s (Sifthen ast_num b c) s1
+    | eval_Sifthen_False: forall s b ast_num c,
         eval_expr s b (ValNormal (Bool false)) ->
-        eval_stmt s (Sifthen ast_id b c) (SNormal s)
-    | eval_Swhile: forall s b ast_id c,
+        eval_stmt s (Sifthen ast_num b c) (SNormal s)
+    | eval_Swhile: forall s b ast_num c,
         eval_expr s b ValException ->
-        eval_stmt s (Swhile ast_id b c) SException
-    | eval_Swhile_True1: forall s b c ast_id,
+        eval_stmt s (Swhile ast_num b c) SException
+    | eval_Swhile_True1: forall s b c ast_num,
         eval_expr s b (ValNormal (Bool true)) ->
         eval_stmt s c SException ->
-        eval_stmt s (Swhile ast_id b c) SException
-    | eval_Swhile_True2: forall s b c s1 ast_id s2,
+        eval_stmt s (Swhile ast_num b c) SException
+    | eval_Swhile_True2: forall s b c s1 ast_num s2,
         eval_expr s b (ValNormal (Bool true)) ->
         eval_stmt s c (SNormal s1) ->
-        eval_stmt s1 (Swhile ast_id b c) s2 ->
-        eval_stmt s (Swhile ast_id b c) s2
-    | eval_Swhile_False: forall s b ast_id c,
+        eval_stmt s1 (Swhile ast_num b c) s2 ->
+        eval_stmt s (Swhile ast_num b c) s2
+    | eval_Swhile_False: forall s b ast_num c,
         eval_expr s b (ValNormal (Bool false)) ->
-        eval_stmt s (Swhile ast_id b c) (SNormal s).
+        eval_stmt s (Swhile ast_num b c) (SNormal s).
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 
@@ -240,7 +240,7 @@ Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
 
 (** ** Expression semantics *)
 
-(** 
+(**
     in functional semantics for expression, it can return a normal value or an exception or 
     go abnormal, the checks are encoded inside the semantics
 *)
@@ -272,7 +272,7 @@ Function f_eval_expr (s: stack) (e: expr): return_val :=
         end
     end.
 
-(** ** Command semantics *)
+(** ** Statement semantics *)
 (** 
    in the functional semantics for command, 'k' denotes the execution steps, whenever it reaches 0,
    an untermination state is returned, in other cases, it can return a normal state, an exception or
@@ -283,7 +283,7 @@ Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state :=
   | 0 => SUnterminated
   | S k' => 
     match c with
-    | Sassign ast_id x e =>
+    | Sassign ast_num x e =>
         match f_eval_expr s e with (* exceptions maybe raised either in evaluation of e or when looking up x  *)
         | ValNormal v => 
             match update s x (Value v) with
@@ -293,25 +293,25 @@ Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state :=
         | ValException => SException
         | ValAbnormal => SAbnormal
         end
-    | Sseq ast_id c1 c2 =>
+    | Sseq ast_num c1 c2 =>
         match f_eval_stmt k' s c1 with
         | SNormal s1 => f_eval_stmt k' s1 c2
         | SException => SException
         | SUnterminated => SUnterminated
         | SAbnormal => SAbnormal
         end
-    | Sifthen ast_id b c =>
+    | Sifthen ast_num b c =>
         match f_eval_expr s b with
         | ValNormal (Bool true) => f_eval_stmt k' s c
         | ValNormal (Bool false) => SNormal s
         | ValException => SException
         | _ => SAbnormal
         end
-    | Swhile ast_id b c => 
+    | Swhile ast_num b c => 
         match f_eval_expr s b with
         | ValNormal (Bool true) => 
             match f_eval_stmt k' s c with
-            | SNormal s1 => f_eval_stmt k' s1 (Swhile ast_id b c)
+            | SNormal s1 => f_eval_stmt k' s1 (Swhile ast_num b c)
             | SException => SException
             | SUnterminated => SUnterminated
             | SAbnormal => SAbnormal
@@ -390,7 +390,23 @@ Proof.
 Qed.
 
 (** 
-    for any command c run under the state s, if it can execute to a state s' under the relational
+    for any expression e evaluated under the state s, if it can be evaluated to a value v 
+    under the relational semantics, then the result value v should be either a normal value or exception.
+*)
+Lemma eval_expr_state : forall s e v,
+        eval_expr s e v ->                        (* s' is either a normal state or an exception *)
+            (exists v0, v = ValNormal v0) \/ v = ValException.
+Proof.
+    intros s e v h.
+    induction h;
+    try match goal with
+    | [ |- (exists v, ValNormal ?v1 = ValNormal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
+    end; auto.
+Qed.
+
+(** 
+    for any statement c run under the state s, if it can execute to a state s' under the relational
     semantics, then the result state s' should be either a normal state or exception. In our relational 
     semantics, all commands that can go abnormal are excluded
 *)

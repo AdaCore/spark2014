@@ -91,9 +91,7 @@ Definition mul (v1 v2: return_val): return_val :=
     | _, ValAbnormal => ValAbnormal
     end.
 
-(* ToDo: 
-   check for division by zero 
-*)
+(* check for division by zero *)
 Definition div (v1 v2: return_val): return_val :=
     match v1, v2 with
     | ValNormal n1, ValNormal n2 => 

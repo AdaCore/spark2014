@@ -196,9 +196,9 @@ Proof.
     intuition.
 Qed. 
 
-Lemma subset_close1: forall ls0 ls1 ast_id flag,
-    subset ast_id ((ast_id, flag) :: ls0) ls1 ->
-    subset ast_id ls0 ls1.
+Lemma subset_close1: forall ls0 ls1 ast_num flag,
+    subset ast_num ((ast_num, flag) :: ls0) ls1 ->
+    subset ast_num ls0 ls1.
 Proof.
     intros.
     unfold subset in *.
@@ -245,13 +245,13 @@ Qed.
    domain of ls, then when we fetch n from ls, of course it returns None
 *)
 Lemma fetch_ck_none: forall ls n,
-    ast_ids_lt ls n ->
+    ast_nums_lt ls n ->
     fetch_ck n ls = None.
 Proof.
     intros.
     induction H.
     + simpl. 
-       remember (beq_nat n ast_id) as b.
+       remember (beq_nat n ast_num) as b.
        destruct b.
        * symmetry in Heqb. 
          apply beq_nat_true in Heqb; rewrite Heqb in H0.
@@ -261,36 +261,72 @@ Proof.
 Qed.
 
 (** 
+    if ast_num is not in cks0, and ast_num is less than all ast numbers used in expression e,
+    and cks1 is the resulting check list generated for expression e with ast numbers as its index,
+    then ast_num is not in cks1;
+*)
+Lemma fetch_ck_none1: forall ast_num cks0 e cks1 max,
+    fetch_ck ast_num cks0 = None -> 
+    check_generator_expr cks0 e cks1 ->
+    ast_num_inc_expr e max -> 
+    ast_num < (get_ast_num_expr e) ->
+    fetch_ck ast_num cks1 = None.
+Proof.
+    intros ast_num cks0 e cks1 max h1 h2.
+    revert max.
+    induction h2;
+    intros max h3 h4;
+    simpl in h4; inversion h3; subst; auto.
+  - assert (hz1: fetch_ck ast_num ((ast_num0, flag) :: ls) = None).
+    unfold fetch_ck. 
+    rewrite (lt_not_equal _ _ h4). assumption. 
+    assert (hz2: ast_num < get_ast_num_expr e1); intuition.
+    assert (hz3: ast_num < get_ast_num_expr e2); intuition.
+    specialize (H0 _ H4 hz2).
+    specialize (IHh2_2 H0 _ H5 hz3).
+    assumption.
+  - assert (hz1: ast_num < get_ast_num_expr e1); intuition.
+    assert (hz2: ast_num < get_ast_num_expr e2); intuition.
+    specialize (H0 _ H4 hz1).
+    specialize (IHh2_2 H0 _ H5 hz2).
+    assumption.
+  - assert (hz1: ast_num < get_ast_num_expr e); intuition.
+    specialize (H _ H1 hz1).
+    assumption.
+Qed.
+
+
+(** 
     cks1 is a list of checks that are generated for expression e on top of cks0, 
     if max is the maximum ast id number used inside e and all ast ids in cks0 are less than ast ids used in e,
     then for any n greater than max, n should be greater than all ast ids stored in cks1
 *)
 Lemma lt_trans_expr: forall cks0 cks1 e max n,
     check_generator_expr cks0 e cks1 ->
-    ast_ids_lt cks0 (get_ast_id_expr e) ->
-    ast_id_inc_expr e max ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
     max < n ->
-    ast_ids_lt cks1 n.
+    ast_nums_lt cks1 n.
 Proof.
     intros.
-    specialize (ast_id_max_expr _ _ _ _ H1 H H0); intros h1.
+    specialize (ast_num_max_expr _ _ _ _ H1 H H0); intros h1.
     assert (h2: max + 1 <= n); intuition.
-    specialize (ast_ids_lt_trans0 _ _ _ h1 h2); intros h3.
+    specialize (ast_nums_lt_trans0 _ _ _ h1 h2); intros h3.
     assumption.
 Qed.
 
 (* it's similar to lt_trans_expr *)
 Lemma lt_trans_stmt: forall cks0 cks1 c max n,
     check_generator_stmt cks0 c cks1 ->
-    ast_ids_lt cks0 (get_ast_id_stmt c) ->
-    ast_id_inc_stmt c max ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->
     max < n ->
-    ast_ids_lt cks1 n.
+    ast_nums_lt cks1 n.
 Proof.
     intros.
-    specialize (ast_id_max_stmt _ _ _ _ H1 H H0); intros h1.
+    specialize (ast_num_max_stmt _ _ _ _ H1 H H0); intros h1.
     assert (h2: max + 1 <= n); intuition.
-    specialize (ast_ids_lt_trans0 _ _ _ h1 h2); intros h3.
+    specialize (ast_nums_lt_trans0 _ _ _ h1 h2); intros h3.
     assumption.
 Qed.
 
@@ -298,8 +334,8 @@ Qed.
 (** 
     cks1 is a list of checks that are generated for expression e on top of cks0, so cks1 
     should be a superset of cks0;
-    ast_id_inc_expr enforces that all ast id numbers used in e are unique and increasing,
-    and ast_id_lt constrains that all ast ids in cks0 is smaller than the ast ids used in e, 
+    ast_num_inc_expr enforces that all ast id numbers used in e are unique and increasing,
+    and ast_num_lt constrains that all ast ids in cks0 is smaller than the ast ids used in e, 
     this is an implicit requirement enforced by check_generator_expr, for example: 
     for binary expression e1 op e2, [check_generator_expr nil (e1 op e2) cks1] can be computed
     by [check_generator_expr nil e1 cks0]  and [check_generator_expr cks0 e2 cks1], because the 
@@ -307,9 +343,9 @@ Qed.
 *)
 Lemma subset_expr: forall cks0 e cks1 max,
     check_generator_expr cks0 e cks1 ->
-    ast_ids_lt cks0 (get_ast_id_expr e) -> (* make sure that all ast num used in e is fresh *)
-    ast_id_inc_expr e max -> (* make sure that all ast numbers are unique and increase *)
-    subset (get_ast_id_expr e) cks0 cks1.
+    ast_nums_lt cks0 (get_ast_num_expr e) -> (* make sure that all ast num used in e is fresh *)
+    ast_num_inc_expr e max -> (* make sure that all ast numbers are unique and increase *)
+    subset (get_ast_num_expr e) cks0 cks1.
 Proof.
     intros cks0 e cks1 max h1 h2.
     revert max.
@@ -317,25 +353,25 @@ Proof.
     intros max h3;
     inversion h3; subst;
     try apply subset_refl; simpl.
-  - specialize (ast_ids_lt_trans _ _ _ h2 H9); intros hz1.
-    specialize (ast_ids_lt_trans _ _ _ h2 H10); intros hz2.
-    specialize (ast_ids_lt_add _ _ _ flag H9 hz1); intros hz3.
+  - specialize (ast_nums_lt_trans _ _ _ h2 H9); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h2 H10); intros hz2.
+    specialize (ast_nums_lt_add _ _ _ flag H9 hz1); intros hz3.
     specialize (IHh1_1 hz3 _ H4).
     specialize (lt_trans_expr _ _ _ _ _ h1_1 hz3 H4 H11); intros hz4.
     specialize (IHh1_2 hz4 _ H5).
     specialize (subset_close _ _ _ _ IHh1_1 H9); intros hz5.
     specialize (subset_close1 _ _ _ _ hz5); intros hz6.
     specialize (subset_trans _ _ _ _ _ hz6 IHh1_2 H10); auto.
-  - specialize (ast_ids_lt_trans _ _ _ h2 H9); intros hz1.
-    specialize (ast_ids_lt_trans _ _ _ h2 H10); intros hz2.
+  - specialize (ast_nums_lt_trans _ _ _ h2 H9); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h2 H10); intros hz2.
     specialize (IHh1_1 hz1 _ H4).
     specialize (lt_trans_expr _ _ _ _ _ h1_1 hz1 H4 H11); intros hz3.
     specialize (IHh1_2 hz3 _ H5).
-    specialize (ast_id_bound_expr _ _ H4); intros hz4.
-    assert (hz5: get_ast_id_expr e1 < get_ast_id_expr e2); intuition.
+    specialize (ast_num_bound_expr _ _ H4); intros hz4.
+    assert (hz5: get_ast_num_expr e1 < get_ast_num_expr e2); intuition.
     specialize (subset_trans _ _ _ _ _ IHh1_1 IHh1_2 hz5); intros hz6.
     specialize (subset_close _ _ _ _ hz6 H9); intuition.
-  - specialize (ast_ids_lt_trans _ _ _ h2 H4); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h2 H4); intros hz1.
     specialize (IHh1 hz1 _ H1).
     specialize (subset_close _ _ _ _ IHh1 H4); intuition.
 Qed.
@@ -344,9 +380,9 @@ Qed.
 (** it's similar to subset_expr *)
 Lemma subset_stmt: forall cks0 c cks1 max,
     check_generator_stmt cks0 c cks1 ->
-    ast_ids_lt cks0 (get_ast_id_stmt c) -> 
-    ast_id_inc_stmt c max ->
-    subset (get_ast_id_stmt c) cks0 cks1.
+    ast_nums_lt cks0 (get_ast_num_stmt c) -> 
+    ast_num_inc_stmt c max ->
+    subset (get_ast_num_stmt c) cks0 cks1.
 Proof.
     intros cks0 c cks1 max h1.
     revert max.
@@ -355,82 +391,82 @@ Proof.
     simpl in h2; inversion h3; subst;
     simpl.
   - (* Sassign *)
-    specialize (ast_ids_lt_trans _ _ _ h2 H6); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h2 H6); intros hz1.
     specialize (subset_expr _ _ _ _ H hz1 H3); intros hz2.
-    apply subset_close with (n0 := get_ast_id_expr e); assumption.
+    apply subset_close with (n0 := get_ast_num_expr e); assumption.
   - (* Sseq *)
-    specialize (ast_ids_lt_trans _ _ _ h2 H6); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h2 H6); intros hz1.
     specialize (IHh1_1 _ hz1 H2).
-    specialize (ast_id_max_stmt _ _ _ _ H2 h1_1 hz1); intros hz2.
-    assert (hz: max1 + 1 <= get_ast_id_stmt c2); intuition.
-    specialize (ast_ids_lt_trans0 _ _ _ hz2 hz); intros hz3.
+    specialize (ast_num_max_stmt _ _ _ _ H2 h1_1 hz1); intros hz2.
+    assert (hz: max1 + 1 <= get_ast_num_stmt c2); intuition.
+    specialize (ast_nums_lt_trans0 _ _ _ hz2 hz); intros hz3.
     specialize (IHh1_2 _ hz3 H3).
-    specialize (ast_id_bound_stmt _ _ H2); intros hz4.
-    assert (hz5: get_ast_id_stmt c1 < get_ast_id_stmt c2); intuition.
+    specialize (ast_num_bound_stmt _ _ H2); intros hz4.
+    assert (hz5: get_ast_num_stmt c1 < get_ast_num_stmt c2); intuition.
     specialize (subset_trans _ _ _ _ _ IHh1_1 IHh1_2 hz5); intros hz6.
     specialize (subset_close _ _ _ _ hz6 H6); auto.
   - (* Sifthen *)
-    specialize (ast_ids_lt_trans _ _ _ h2 H7); intros hz1.
-    specialize (ast_id_max_expr _ _ _ _ H3 H hz1); intros hz2.
-    assert (hz: max1 + 1 <= get_ast_id_stmt c); intuition.
-    specialize (ast_ids_lt_trans0 _ _ _ hz2 hz); intros hz3.
+    specialize (ast_nums_lt_trans _ _ _ h2 H7); intros hz1.
+    specialize (ast_num_max_expr _ _ _ _ H3 H hz1); intros hz2.
+    assert (hz: max1 + 1 <= get_ast_num_stmt c); intuition.
+    specialize (ast_nums_lt_trans0 _ _ _ hz2 hz); intros hz3.
     specialize (IHh1 _ hz3 H4).
     specialize (subset_expr _ _ _ _ H hz1 H3); intros hz4.
-    specialize (ast_id_bound_expr _ _ H3); intros hz5.
-    assert (hz6: get_ast_id_expr b < get_ast_id_stmt c); intuition.
+    specialize (ast_num_bound_expr _ _ H3); intros hz5.
+    assert (hz6: get_ast_num_expr b < get_ast_num_stmt c); intuition.
     specialize (subset_trans _ _ _ _ _ hz4 IHh1 hz6); intros hz7.
-    apply subset_close with (n0 := (get_ast_id_expr b)); auto.
+    apply subset_close with (n0 := (get_ast_num_expr b)); auto.
   - (* Swhile *)
-    specialize (ast_ids_lt_trans _ _ _ h2 H7); intros hz1.
-    specialize (ast_id_max_expr _ _ _ _ H3 H hz1); intros hz2.
-    assert (hz: max1 + 1 <= get_ast_id_stmt c); intuition.
-    specialize (ast_ids_lt_trans0 _ _ _ hz2 hz); intros hz3.
+    specialize (ast_nums_lt_trans _ _ _ h2 H7); intros hz1.
+    specialize (ast_num_max_expr _ _ _ _ H3 H hz1); intros hz2.
+    assert (hz: max1 + 1 <= get_ast_num_stmt c); intuition.
+    specialize (ast_nums_lt_trans0 _ _ _ hz2 hz); intros hz3.
     specialize (IHh1 _ hz3 H4).
     specialize (subset_expr _ _ _ _ H hz1 H3); intros hz4.
-    specialize (ast_id_bound_expr _ _ H3); intros hz5.
-    assert (hz6: get_ast_id_expr b < get_ast_id_stmt c); intuition.
+    specialize (ast_num_bound_expr _ _ H3); intros hz5.
+    assert (hz6: get_ast_num_expr b < get_ast_num_stmt c); intuition.
     specialize (subset_trans _ _ _ _ _ hz4 IHh1 hz6); intros hz7.
-    apply subset_close with (n0 := (get_ast_id_expr b)); auto.
+    apply subset_close with (n0 := (get_ast_num_expr b)); auto.
 Qed.
 
 
 (** 
-    help1 and help2 are just help lemmas that are used repeatedly to prove eval_expr_with_checks_correct0, 
-    so I define them as lemmas
+    help1 and help2 are just help lemmas that are used repeatedly to prove eval_expr_with_checks_correct0
+    and other lemmas, so I define them as helper lemmas
 *)
 
 Lemma help1: forall ls0 ls1 ls2 e max n,
     check_generator_expr ls0 e ls1 ->
-    ast_id_inc_expr e max ->
-    ast_ids_lt ls0 (get_ast_id_expr e) ->
-    n < get_ast_id_expr e ->
+    ast_num_inc_expr e max ->
+    ast_nums_lt ls0 (get_ast_num_expr e) ->
+    n < get_ast_num_expr e ->
     subset (max + 1) ls1 ls2 ->
     subset (n + 1) ls0 ls2.
 Proof.
     intros.
     specialize (subset_expr _ _ _ _ H H1 H0); intros hz1.
-    specialize (ast_id_bound_expr _ _ H0); intros hz2.
-    assert (hz3: (get_ast_id_expr e) < (max + 1)); intuition.
+    specialize (ast_num_bound_expr _ _ H0); intros hz2.
+    assert (hz3: (get_ast_num_expr e) < (max + 1)); intuition.
     specialize (subset_trans _ _ _ _ _ hz1 H3 hz3); intros hz4.
-    assert (hz5: n + 1 <= get_ast_id_expr e); intuition.
+    assert (hz5: n + 1 <= get_ast_num_expr e); intuition.
     specialize (subset_close_le _ _ _ _ hz4 hz5); 
     intuition.
 Qed.
 
 Lemma help2: forall ls0 ls1 ls2 c max n,
     check_generator_stmt ls0 c ls1 ->
-    ast_id_inc_stmt c max ->
-    ast_ids_lt ls0 (get_ast_id_stmt c) ->
-    n < get_ast_id_stmt c ->
+    ast_num_inc_stmt c max ->
+    ast_nums_lt ls0 (get_ast_num_stmt c) ->
+    n < get_ast_num_stmt c ->
     subset (max + 1) ls1 ls2 ->
     subset (n + 1) ls0 ls2.
 Proof.
     intros.
     specialize (subset_stmt _ _ _ _ H H1 H0); intros hz1.
-    specialize (ast_id_bound_stmt _ _ H0); intros hz2.
-    assert (hz3: (get_ast_id_stmt c) < (max + 1)); intuition.
+    specialize (ast_num_bound_stmt _ _ H0); intros hz2.
+    assert (hz3: (get_ast_num_stmt c) < (max + 1)); intuition.
     specialize (subset_trans _ _ _ _ _ hz1 H3 hz3); intros hz4.
-    assert (hz5: n + 1 <= get_ast_id_stmt c); intuition.
+    assert (hz5: n + 1 <= get_ast_num_stmt c); intuition.
     specialize (subset_close_le _ _ _ _ hz4 hz5); 
     intuition.
 Qed.
@@ -448,8 +484,8 @@ Lemma eval_expr_with_checks_correct0: forall cks s e v cks1 cks0 max,
     eval_expr_with_checks cks s e v ->
     subset (max + 1) cks1 cks ->
     check_generator_expr cks0 e cks1 ->
-    ast_ids_lt cks0 (get_ast_id_expr e) ->
-    ast_id_inc_expr e max ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
     eval_expr s e v.
 Proof.
     intros cks s e v cks1 cks0 max h1.
@@ -464,20 +500,20 @@ Proof.
     constructor; auto.
   - (* Ebinop *)
     inversion h3; subst.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H8); intros hz1. 
-       specialize (ast_ids_lt_add _ _ _ flag H8 hz1); intros hz2.       
+    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1. 
+       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.       
        specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h2); intros hz4.       
        specialize (IHh1 _ _ _ hz4 H11 hz2 H3).
        constructor; assumption.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H8); intros hz1.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h2); intros hz3.
        specialize (IHh1 _ _ _ hz3 H11 hz1 H3).
        constructor; assumption.
   - inversion h3; subst.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H8); intros hz1.
-       specialize (ast_ids_lt_add _ _ _ flag H8 hz1); intros hz2.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
        specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h2); intros hz4.
        specialize (IHh1_1 _ _ _ hz4 H11 hz2 H3).
@@ -485,7 +521,7 @@ Proof.
        eapply eval_Ebinop2. 
        apply IHh1_1.
        assumption.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H8); intros hz1.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h2); intros hz3.
        specialize (IHh1_1 _ _ _ hz3 H11 hz1 H3).
@@ -494,8 +530,8 @@ Proof.
        apply IHh1_1.
        assumption.
   - inversion h3; subst.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H10); intros hz1.
-       specialize (ast_ids_lt_add _ _ _ flag H10 hz1); intros hz2.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
        specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
        specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h2); intros hz4.
        specialize (IHh1_1 _ _ _ hz4 H13 hz2 H5).
@@ -503,7 +539,7 @@ Proof.
        eapply eval_Ebinop3. 
        apply IHh1_1. apply IHh1_2.
        assumption.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H10); intros hz1.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
        specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h2); intros hz3.
        specialize (IHh1_1 _ _ _ hz3 H13 hz1 H5).
@@ -512,8 +548,8 @@ Proof.
        apply IHh1_1. apply IHh1_2.
        assumption.
   - inversion h3; subst.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H11); intros hz1.
-       specialize (ast_ids_lt_add _ _ _ flag H11 hz1); intros hz2.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H11); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H11 hz1); intros hz2.
        specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H6 H13); intros hz3.
        specialize (help1 _ _ _ _ _ _ H15 H7 hz3 H13 h2); intros hz4.
        specialize (IHh1_1 _ _ _ hz4 H14 hz2 H6).
@@ -521,7 +557,7 @@ Proof.
        eapply eval_Ebinop4. 
        apply IHh1_1. apply IHh1_2.
        assumption. assumption.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H11); intros hz1.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H11); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H14 hz1 H6 H13); intros hz2.
        specialize (help1 _ _ _ _ _ _ H15 H7 hz2 H13 h2); intros hz3.
        specialize (IHh1_1 _ _ _ hz3 H14 hz1 H6).
@@ -530,8 +566,8 @@ Proof.
        apply IHh1_1. apply IHh1_2.
        assumption. assumption.
   - inversion h3; subst.     
-    + specialize (ast_ids_lt_trans _ _ _ h4 H10); intros hz1.
-       specialize (ast_ids_lt_add _ _ _ flag H10 hz1); intros hz2.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
        specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
        specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h2); intros hz4.
        specialize (IHh1_1 _ _ _ hz4 H13 hz2 H5).
@@ -539,18 +575,18 @@ Proof.
        eapply eval_Ebinop4. 
        apply IHh1_1. apply IHh1_2.
        specialize (subset_expr _ _ _ _ H13 hz2 H5); intros hz5.
-       assert(A1: get_ast_id_expr e1 < max1 + 1).
-       specialize (ast_id_bound_expr _ _ H5); intros ha2.
+       assert(A1: get_ast_num_expr e1 < max1 + 1).
+       specialize (ast_num_bound_expr _ _ H5); intros ha2.
        intuition.
        specialize (subset_trans _ _ _ _ _ hz5 hz4 A1); intros hz6.
        unfold subset in hz6. 
-       specialize (hz6 ast_id (Some flag)).
+       specialize (hz6 ast_num (Some flag)).
        unfold fetch_ck in hz6.
-       rewrite <- (beq_nat_refl ast_id) in hz6. fold fetch_ck in hz6.
+       rewrite <- (beq_nat_refl ast_num) in hz6. fold fetch_ck in hz6.
        intuition. 
        rewrite H in H2; inversion H2.
        assumption.
-    + specialize (ast_ids_lt_trans _ _ _ h4 H10); intros hz1.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
        specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h2); intros hz3.
        specialize (IHh1_1 _ _ _ hz3 H13 hz1 H5).
@@ -563,11 +599,11 @@ Proof.
        assumption.
   - (* Eunop *)
     inversion h3; subst.
-    specialize (ast_ids_lt_trans _ _ _ h4 H4); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h4 H4); intros hz1.
     specialize (IHh1 _ _ _ h2 H5 hz1 H1).
     econstructor; assumption.
   - inversion h3; subst.
-    specialize (ast_ids_lt_trans _ _ _ h4 H5); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h4 H5); intros hz1.
     specialize (IHh1 _ _ _ h2 H6 hz1 H2).
     econstructor. 
     apply IHh1.
@@ -580,21 +616,508 @@ Qed.
     cks is checks that are generated for expression e according to the checking rules built on top of cks0, 
     then whenever e is evaluated to value v under checks cks, expression e can also be evaluated to value v 
     in relational semantics eval_expr;
-    ast_id_inc_expr is used to constrain that all ast ids used in e are unique and increasing;
-    ast_ids_lt is used to enforce that new checks added for expression e will not cover the checks cks0 built
+    ast_num_inc_expr is used to constrain that all ast ids used in e are unique and increasing;
+    ast_nums_lt is used to enforce that new checks added for expression e will not cover the checks cks0 built
     for previous AST nodes
 *)
 Theorem eval_expr_with_checks_correct: forall cks s e v cks0 max,
     eval_expr_with_checks cks s e v ->
     check_generator_expr cks0 e cks ->
-    ast_ids_lt cks0 (get_ast_id_expr e) ->
-    ast_id_inc_expr e max ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
     eval_expr s e v.
 Proof.
     intros.
     specialize (subset_refl (max + 1) cks); intros hz1.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz1 H0 H1 H2).
     auto.
+Qed.
+
+
+(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
+
+(**
+    this is a help lemma to prove another lemma: eval_expr_with_checks_fixed;
+    it means that: for any expression e, generate its checks according to the checking rules and
+    the results are stored in cks1, if cks1 is a subset of cks, and cks is a subset of cks', then,
+    whenever e is evaluated to a value v under the checks cks, e can also be evaluated to 
+    value v under its superset cks';
+    term "subset (max + 1) cks1 cks" means that: check list cks1 is a subset of check list cks 
+    with respect to the index less than (max + 1), where max is the maximum ast number used
+    in expression e;
+*)
+Lemma eval_expr_with_checks_fixed0: forall cks s e v n cks' cks1 cks0 max,
+    eval_expr_with_checks cks s e v ->
+    max + 1 <= n ->
+    subset n cks cks' ->
+    (* the following four assumptions are necessary constraints for the proof *)
+    subset (max + 1) cks1 cks ->
+    check_generator_expr cks0 e cks1 ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->  
+    eval_expr_with_checks cks' s e v.
+Proof.
+    intros cks s e v  n cks' cks1 cks0 max h1.
+    revert n cks' cks1 cks0 max.
+    induction h1; intros n cks' cks1 cks0 max h2 h3 h4 h5 h6 h7;
+    simpl in h6; inversion h7; subst.
+  - constructor; reflexivity.
+  - constructor; assumption.
+  - inversion h5; subst. 
+    + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h4); intros hz4.
+       assert (hz5: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H4); intros hz6. intuition.
+       specialize (IHh1 _ _ _ _ _ hz5 h3 hz4 H11 hz2 H3).
+       constructor; assumption.
+    + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1. 
+       specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h4); intros hz3.
+       assert (hz5: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H4); intros hz4; intuition.
+       specialize (IHh1 _ _ _ _ _ hz5 h3 hz3 H11 hz1 H3).
+       constructor; assumption.
+  -  inversion h5; subst. 
+    + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h4); intros hz4.
+       assert (hz5: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H4); intros hz6. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H11 hz2 H3).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H12 hz3 H4).
+       eapply eval_Binop2.
+       apply IHh1_1. apply IHh1_2.
+    + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+       specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h4); intros hz3.
+       assert (hz4: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H4); intros hz5. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H11 hz1 H3).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H12 hz2 H4).
+       eapply eval_Binop2.
+       apply IHh1_1. apply IHh1_2.
+  - inversion h5; subst. 
+    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h4); intros hz4.
+       assert (hz5: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H6); intros hz6. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H13 hz2 H5).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz3 H6).
+       eapply eval_Binop3.
+       apply IHh1_1. apply IHh1_2.
+       unfold subset in h3.
+       assert (hz6: ast_num < n).
+       specialize (ast_num_bound_expr _ _ H5); intuition.
+       specialize (h3 _ _ hz6 H).
+       apply h3. assumption.
+    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
+       specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
+       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h4); intros hz3.
+       assert (hz4: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H6); intros hz5. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H13 hz1 H5).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz2 H6).
+       eapply eval_Binop3.
+       apply IHh1_1. apply IHh1_2.
+       unfold subset in h3. 
+       assert (hz5: ast_num < n).
+       specialize (ast_num_bound_expr _ _ H5); intuition.
+       specialize (h3 _ _ hz5 H).
+       apply h3. assumption.
+  - inversion h5; subst. 
+    + specialize (ast_nums_lt_trans _ _ _ h6 H11); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H11 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H6 H13); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H15 H7 hz3 H13 h4); intros hz4.
+       assert (hz5: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H7); intros hz6. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H14 hz2 H6).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H15 hz3 H7).
+       eapply eval_Binop4.
+       apply IHh1_1. apply IHh1_2.
+       unfold subset in h3. 
+       assert (hz6: ast_num < n).
+       specialize (ast_num_bound_expr _ _ H6); intuition.
+       specialize (h3 _ _ hz6 H).
+       apply h3. 
+       assumption. assumption.
+    + specialize (ast_nums_lt_trans _ _ _ h6 H11); intros hz1.
+       specialize (lt_trans_expr _ _ _ _ _ H14 hz1 H6 H13); intros hz2.
+       specialize (help1 _ _ _ _ _ _ H15 H7 hz2 H13 h4); intros hz3.
+       assert (hz4: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H7); intros hz5. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H14 hz1 H6).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H15 hz2 H7).
+       eapply eval_Binop4.
+       apply IHh1_1. apply IHh1_2.
+       unfold subset in h3. 
+       assert (hz5: ast_num < n).
+       specialize (ast_num_bound_expr _ _ H6); intuition.
+       specialize (h3 _ _ hz5 H).
+       apply h3. 
+       assumption. assumption.
+  - inversion h5; subst. 
+    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h4); intros hz4.
+       assert (hz5: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H6); intros hz6. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H13 hz2 H5).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz3 H6).
+       eapply eval_Binop5.
+       apply IHh1_1. apply IHh1_2.
+       unfold subset in h3. 
+       assert (hz6: ast_num < n).
+       specialize (ast_num_bound_expr _ _ H5); intuition.
+       specialize (h3 _ _ hz6 H).
+       apply h3. 
+       assumption.
+    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
+       specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
+       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h4); intros hz3.
+       assert (hz4: max1 + 1 <= n).
+       specialize (ast_num_bound_expr _ _ H6); intros hz5. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H13 hz1 H5).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz2 H6).
+       eapply eval_Binop5.
+       apply IHh1_1. apply IHh1_2.
+       unfold subset in h3. 
+       assert (hz5: ast_num < n).
+       specialize (ast_num_bound_expr _ _ H5); intuition.
+       specialize (h3 _ _ hz5 H).
+       apply h3. 
+       assumption.
+  - inversion h5; subst. 
+    specialize (ast_nums_lt_trans _ _ _ h6 H4); intros hz1. 
+    specialize (IHh1 _ _ _ _ _ h2 h3 h4 H5 hz1 H1).
+    constructor; assumption.
+  - inversion h5; subst. 
+    specialize (ast_nums_lt_trans _ _ _ h6 H5); intros hz1. 
+    specialize (IHh1 _ _ _ _ _ h2 h3 h4 H6 hz1 H2).
+    econstructor. 
+    apply IHh1.
+    assumption.
+Qed.
+
+
+(**
+    for any expression e, generate its checks according to the checking rules and
+    the results are stored in cks1, if cks1 is a subset of cks', then,
+    whenever e is evaluated to a value v under the checks cks1, e can also be evaluated to 
+    value v under its superset cks';
+    term " subset (max + 1) cks1 cks' " means that: check list cks1 is a subset of check list cks' 
+    with respect to the index less than (max + 1), where max is the maximum ast number used
+    in expression e;
+*)
+Lemma eval_expr_with_checks_fixed: forall s e v cks' cks1 cks0 max,
+    eval_expr_with_checks cks1 s e v ->
+    subset (max + 1) cks1 cks' ->
+    check_generator_expr cks0 e cks1 ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->  
+    eval_expr_with_checks cks' s e v.
+Proof.
+    intros.
+    apply eval_expr_with_checks_fixed0 with (cks := cks1) (n := max + 1) (cks1 := cks1) (cks0 := cks0) (max := max); 
+    auto.
+    apply subset_refl.
+Qed.
+
+(**
+    it's a help lemma used to prove the lemma: eval_stmt_with_checks_fixed;
+    it's similar to eval_expr_with_checks_fixed0, the only difference is that: 
+    eval_expre_with_checks_fixed0 is used for expression, and eval_stmt_with_checks_fixed0 is used for statement;
+*)
+Lemma eval_stmt_with_checks_fixed0: forall cks s0 c s1 n cks' cks1 cks0 max,
+    eval_stmt_with_checks cks s0 c s1 ->
+    max + 1 <= n ->
+    subset n cks cks' ->
+    (* the following four assumptions are necessary constraints for the proof *)
+    subset (max + 1) cks1 cks ->
+    check_generator_stmt cks0 c cks1 ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->  
+    eval_stmt_with_checks cks' s0 c s1.
+Proof.
+    intros cks s0 c s1 n cks' cks1 cks0 max h1.
+    revert n cks' cks1 cks0 max.
+    induction h1;
+    intros n cks' cks1 cks0 max h2 h3 h4 h5 h6 h7;
+    inversion h5; subst;
+    simpl in h6;
+    inversion h7; subst.
+  - (* Sassign: SException *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H7); intros hz1.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H h2 h3 h4 H5 hz1 H3); intros hz2.
+    constructor; auto.
+  - (* Sassign: SNormal *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H h2 h3 h4 H6 hz1 H4); intros hz2.    
+    econstructor.
+    apply hz2. assumption.
+  - (* Sseq: SException *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+    specialize (lt_trans_stmt _ _ _ _ _ H4 hz1 H2 H11); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H3); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H5 H3 hz2 H11 h4); intros hz4.
+    specialize (IHh1 _ _ _ _ _ hz3 h3 hz4 H4 hz1 H2).
+    constructor; assumption.
+  - (* Sseq *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+    specialize (lt_trans_stmt _ _ _ _ _ H4 hz1 H2 H11); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H3); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H5 H3 hz2 H11 h4); intros hz4.
+    specialize (IHh1_1 _ _ _ _ _ hz3 h3 hz4 H4 hz1 H2).
+    specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H5 hz2 H3).
+    eapply eval_Seq2.
+    apply IHh1_1.
+    apply IHh1_2.
+  - (* Sifthen: SException *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    constructor; assumption.
+  - (* Sifthen: true branch *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    specialize (IHh1 _ _ _ _ _ h2 h3 h4 H6 hz2 H4).
+    eapply eval_Ifthen_True; assumption.
+  - (* Sifthen: false branch *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    eapply eval_Ifthen_False; assumption.
+  - (* Swhile: SException at condition expression *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    constructor; assumption.
+  - (* Swhile: SException at loop body *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    specialize (IHh1 _ _ _ _ _ h2 h3 h4 H6 hz2 H4).
+    eapply eval_While_True1; assumption.
+  - (* Swhile *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    specialize (IHh1_1 _ _ _ _ _ h2 h3 h4 H6 hz2 H4).
+    simpl in IHh1_2.
+    specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 h5 h6 h7).
+    eapply eval_While_True2; auto.
+    apply IHh1_1.
+    apply IHh1_2.
+  - (* Swhile: false branch *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H9); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H3 H12); intros hz2.
+    assert (hz3: max1 + 1 <= n).
+    specialize (ast_num_bound_stmt _ _ H4); intros ha1.
+    intuition.
+    specialize (help2 _ _ _ _ _ _ H6 H4 hz2 H12 h4); intros hz4.
+    specialize (eval_expr_with_checks_fixed0 _ _ _ _ _ _ _ _ _ H hz3 h3 hz4 H5 hz1 H3); intros hz5.
+    eapply eval_While_False; assumption.
+Qed.
+
+
+(**
+    for any statement c, generate its checks according to the checking rules and
+    the results are stored in cks1, if cks1 is a subset of cks, then,
+    whenever executing c from state s0 to s1 under the checks cks1, c can also be executed from
+    state s0 to s1 under the checks cks';
+    term " subset (max + 1) cks1 cks' " means that: check list cks1 is a subset of check list cks' 
+    with respect to the index less than (max + 1), where max is the maximum ast number used
+    in statement c;
+*)
+Lemma eval_stmt_with_checks_fixed: forall cks1 s0 c s1 cks cks0 max,
+    eval_stmt_with_checks cks1 s0 c s1 ->
+    subset (max + 1) cks1 cks ->
+    check_generator_stmt cks0 c cks1 ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->  
+    eval_stmt_with_checks cks s0 c s1.
+Proof.
+    intros.
+    apply eval_stmt_with_checks_fixed0 with (cks := cks1) (n := max + 1) (cks1 := cks1) (cks0 := cks0) (max := max); 
+    auto.
+    apply subset_refl.
+Qed.
+
+
+(** ** eval_expr_with_checks_complete *)
+(**  
+    this lemma is used to prove the theorem: well_formed_stmt:
+    it means that for any expression e, if it can be evaluated to value v under state s, and cks1 
+    is the check list generated for e according to the checking rules, then e should be evaluated
+    to the same value v under the check list cks1 in eval_expr_with_checks semantics;
+*)
+
+Lemma eval_expr_with_checks_complete: forall s e v cks0 cks1 max,
+    eval_expr s e v ->
+    check_generator_expr cks0 e cks1 ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
+    eval_expr_with_checks cks1 s e v.
+Proof.
+    intros s e v cks0 cks1 max h1.
+    revert cks0 cks1 max.
+    induction h1;
+    intros cks0 cks1 max h2 h3 h4;
+    simpl in h3;
+    inversion h4; subst.
+  - (* Econst *)
+    constructor; reflexivity.
+  - (* Evar *)
+    constructor; auto.
+  - (* Ebinop: e1 exception *)
+    specialize (ast_nums_lt_trans _ _ _ h3 H8); intros hz1.
+    inversion h2; subst.
+    + specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
+       specialize (IHh1 _ _ _ H11 hz2 H3).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1 hz5 H11 hz2 H3); intros hz6.
+       constructor; assumption.
+    + specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
+       specialize (IHh1 _ _ _ H11 hz1 H3).
+       specialize (subset_refl (max + 1) cks1); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 hz3); intros hz4.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1 hz4 H11 hz1 H3); intros hz5.
+       constructor; assumption.
+  - (* Ebinop: e2 exception *)
+    specialize (ast_nums_lt_trans _ _ _ h3 H8); intros hz1.
+    inversion h2; subst.
+    + specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
+       specialize (IHh1_1 _ _ _ H11 hz2 H3).
+       specialize (IHh1_2 _ _ _ H12 hz3 H4).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H11 hz2 H3); intros hz6.
+       eapply eval_Binop2. 
+       * apply hz6.
+       * assumption.
+    + specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
+       specialize (IHh1_1 _ _ _ H11 hz1 H3).
+       specialize (IHh1_2 _ _ _ H12 hz2 H4).
+       specialize (subset_refl (max + 1) cks1); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 hz3); intros hz4.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz4 H11 hz1 H3); intros hz5.
+       eapply eval_Binop2.
+       * apply hz5.
+       * assumption.
+  - (* Ebinop: binary operation exception *)
+    specialize (ast_nums_lt_trans _ _ _ h3 H9); intros hz1.
+    inversion h2; subst.
+    + specialize (ast_nums_lt_add _ _ _ flag H9 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H4 H11); intros hz3.
+       specialize (IHh1_1 _ _ _ H12 hz2 H4).
+       specialize (IHh1_2 _ _ _ H13 hz3 H5).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H13 H5 hz3 H11 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H12 hz2 H4); intros hz6.
+       eapply eval_Binop3. 
+       * apply hz6.
+       * apply IHh1_2.
+       * specialize (subset_expr _ _ _ _ H12 hz2 H4); intros hz7.
+         assert (hz8: get_ast_num_expr e1  < max1 + 1).
+         specialize (ast_num_bound_expr _ _ H4); intros ha1; intuition.
+         specialize (subset_trans _ _ _ _ _ hz7 hz5 hz8); intros hz9.
+         unfold subset in hz9.
+         specialize (hz9 ast_num (Some flag)). 
+         unfold fetch_ck in hz9. rewrite <- (beq_nat_refl ast_num) in hz9.
+         fold fetch_ck in hz9; intuition.
+         apply H1.
+       * assumption.
+    + destruct op; inversion H; subst.
+       inversion H8; subst.
+       intuition.
+  - (* Ebinop: normal value *)
+    specialize (ast_nums_lt_trans _ _ _ h3 H10); intros hz1.
+    inversion h2; subst.
+    + specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
+       specialize (IHh1_1 _ _ _ H13 hz2 H5).
+       specialize (IHh1_2 _ _ _ H14 hz3 H6).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H13 hz2 H5); intros hz6.
+       eapply eval_Binop4. 
+       * apply hz6.
+       * apply IHh1_2.
+       * specialize (subset_expr _ _ _ _ H13 hz2 H5); intros hz7.
+         assert (hz8: get_ast_num_expr e1  < max1 + 1).
+         specialize (ast_num_bound_expr _ _ H5); intros ha1; intuition.
+         specialize (subset_trans _ _ _ _ _ hz7 hz5 hz8); intros hz9.
+         unfold subset in hz9.
+         specialize (hz9 ast_num (Some flag)). 
+         unfold fetch_ck in hz9. rewrite <- (beq_nat_refl ast_num) in hz9.
+         fold fetch_ck in hz9; intuition.
+         apply H2.
+       * assumption.
+       * assumption.
+    + specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
+       specialize (IHh1_1 _ _ _ H13 hz1 H5).
+       specialize (IHh1_2 _ _ _ H14 hz2 H6).
+       specialize (subset_refl (max + 1) cks1); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 hz3); intros hz4.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz4 H13 hz1 H5); intros hz5.
+       eapply eval_Binop5.
+       * apply hz5.
+       * apply IHh1_2.
+       * specialize (fetch_ck_none _ _ h3); intros hz6.
+         specialize (fetch_ck_none1 _ _ _ _ _ hz6 H13 H5 H10); intros hz7.
+         specialize (fetch_ck_none1 _ _ _ _ _ hz7 H14 H6 H11); auto.
+       * assumption.
+  - (* Eunop: exception *)
+    specialize (ast_nums_lt_trans _ _ _ h3 H4); intros hz1.
+    inversion h2; subst.
+    + specialize (IHh1 _ _ _ H5 hz1 H1).
+       constructor. 
+       assumption.
+  - (* Eunop: normal value *)
+    specialize (ast_nums_lt_trans _ _ _ h3 H5); intros hz1.
+    inversion h2; subst.
+    + specialize (IHh1 _ _ _ H6 hz1 H2).
+       econstructor.
+       apply IHh1.
+       assumption.
 Qed.
 
 
@@ -607,8 +1130,8 @@ Theorem eval_stmt_with_checks_correct_0: forall cks s c s' cks1 cks0 max,
     eval_stmt_with_checks cks s c s' ->
     subset (max + 1) cks1 cks ->
     check_generator_stmt cks0 c cks1 ->
-    ast_ids_lt cks0 (get_ast_id_stmt c) ->
-    ast_id_inc_stmt c max ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->
     eval_stmt s c s'.
 Proof.
     intros cks s c s' cks1 cks0 max h1.
@@ -618,22 +1141,22 @@ Proof.
     intros cks1 cks0 max h2 h3 h4 h5;
     simpl in h4; inversion h3; inversion h5; subst.
   - (* Sassign *)
-    specialize (ast_ids_lt_trans _ _ _ h4 H12); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h4 H12); intros hz1.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H h2 H5 hz1 H9); intros hz2.
     constructor;
     assumption.
-  - specialize (ast_ids_lt_trans _ _ _ h4 H13); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H13); intros hz1.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H h2 H6 hz1 H10); intros hz2.
     econstructor.
     apply hz2.
     assumption.
   - (* Sseq *)
-    specialize (ast_ids_lt_trans _ _ _ h4 H13); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h4 H13); intros hz1.
     specialize (lt_trans_stmt _ _ _ _ _ H4 hz1 H9 H16); intros hz2.
     specialize (help2 _ _ _ _ _ _ H5 H10 hz2 H16 h2); intros hz3.
     specialize (IHh1 _ _ _ hz3 H4 hz1 H9).
     constructor; assumption.
-  - specialize (ast_ids_lt_trans _ _ _ h4 H13); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H13); intros hz1.
     specialize (lt_trans_stmt _ _ _ _ _ H4 hz1 H9 H16); intros hz2.
     specialize (help2 _ _ _ _ _ _ H5 H10 hz2 H16 h2); intros hz3.
     specialize (IHh1_1 _ _ _ hz3 H4 hz1 H9).
@@ -642,37 +1165,37 @@ Proof.
     apply IHh1_1.
     assumption.
   - (* Sifthen *)
-    specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
     constructor; 
     assumption.
-  - specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
     specialize (IHh1 _ _ _ h2 H6 hz2 H11).
     econstructor; try assumption. 
-  - specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
     apply eval_Sifthen_False; assumption.
   - (* Swhile *)
-    specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
     constructor; 
     assumption.   
-  - specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
     specialize (IHh1 _ _ _ h2 H6 hz2 H11).
     eapply eval_Swhile_True1; try assumption.
-  - specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
@@ -680,7 +1203,7 @@ Proof.
     specialize (IHh1_2 _ _ _ h2 h3 h4 h5).
     eapply eval_Swhile_True2; auto.
     apply IHh1_1. apply IHh1_2.
-  - specialize (ast_ids_lt_trans _ _ _ h4 H14); intros hz1.
+  - specialize (ast_nums_lt_trans _ _ _ h4 H14); intros hz1.
     specialize (lt_trans_expr _ _ _ _ _ H5 hz1 H10 H17); intros hz2.
     specialize (help2 _ _ _ _ _ _ H6 H11 hz2 H17 h2); intros hz3.
     specialize (eval_expr_with_checks_correct0 _ _ _ _ _ _ _ H hz3 H5 hz1 H10); intros hz4.
@@ -692,20 +1215,1526 @@ Qed.
     cks is checks that are generated for statement c according to the checking rules built on top of cks0, 
     then whenever c is evaluated to a state s' under checks cks, statement c can also be evaluated to state s' 
     in relational semantics eval_stmt;
-    ast_id_inc_stmt is used to constrain that all ast ids used in c are unique and increasing;
-    ast_ids_lt is used to enforce that new checks added for c will not cover the checks cks0 built
+    ast_num_inc_stmt is used to constrain that all ast ids used in c are unique and increasing;
+    ast_nums_lt is used to enforce that new checks added for c will not cover the checks cks0 built
     for previous AST nodes
 *)
 Theorem eval_stmt_with_checks_correct: forall cks s c s' cks0 max,
     eval_stmt_with_checks cks s c s' ->
     check_generator_stmt cks0 c cks ->
-    ast_ids_lt cks0 (get_ast_id_stmt c) ->
-    ast_id_inc_stmt c max ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->
     eval_stmt s c s'.
 Proof.
     intros.
     specialize (subset_refl (max + 1) cks); intros hz1.
     specialize (eval_stmt_with_checks_correct_0 _ _ _ _ _ _ _ H hz1 H0 H1 H2).
     auto.
+Qed.
+
+
+
+(************************************************************************************************************)
+(*   Prove that well-formed expression can evaluate to either normal value or some exception    *)
+(************************************************************************************************************)
+
+(* some lemmas *)
+
+(**
+    if e1 is evaluated to value v1 and e2 is evaluated to value v2, and the binary expression
+    (e1 op e2) is well-typed, then there should exists a value v that the binary expression can 
+    be evaluated to; v can be either a normal value or an exception whenever the checks fail;
+*)
+Lemma binop_rule: forall tb s e1 v1 e2 v2 ast_num op t,
+    type_check_stack tb s -> 
+    eval_expr s e1 (ValNormal v1) ->
+    eval_expr s e2 (ValNormal v2) -> 
+    well_typed_expr tb (Ebinop ast_num op e1 e2) t -> 
+    (exists v, eval_expr s (Ebinop ast_num op e1 e2) v).
+Proof.
+    intros.
+    inversion H2; subst.
+    specialize (eval_type_reserve _ _ _ _ _ H H0 H9); intros h1.
+    specialize (eval_type_reserve _ _ _ _ _ H H1 H10); intros h2.    
+    destruct v1 as [v11 | v12]; destruct v2 as [v21 | v22]; 
+    inversion h1; subst; try rm_contradict. 
+  - (* Ebinop Tint Tint *)
+    destruct op; try simpl_binop_hyp;
+    [ exists (ValNormal (Bool (Zeq_bool v11 v21))) |
+      exists (ValNormal (Bool (Zneq_bool v11 v21))) |
+      exists (ValNormal (Int ((v11 + v21)%Z))) |
+      exists (ValNormal (Int ((v11 - v21)%Z))) |
+      exists (ValNormal (Int ((v11 * v21)%Z))) |
+      (* exists (ValNormal (Int ((v11 / v21)%Z))) *)
+    ];
+    try match goal with 
+    | [ |- eval_expr ?s (Ebinop ?ast_num Odiv ?e1 ?e2) ?v ] => idtac
+    | [ |- eval_expr ?s (Ebinop ?ast_num _ ?e1 ?e2) ?v ] => 
+      econstructor; 
+      [ apply H0 | apply H1 | 
+        constructor; intuition; inversion H3 | 
+        constructor; reflexivity ]
+    end.
+    (* division *)
+    destruct v21. 
+    + exists ValException.
+       eapply eval_Ebinop3.
+       apply H0. apply H1.
+       constructor.  
+       constructor; reflexivity.
+    + exists (ValNormal (Int ((v11 / (Z.pos p))%Z))).
+       econstructor.
+       apply H0. apply H1.
+       constructor. constructor. intuition. inversion H3.   
+       constructor. reflexivity.
+    + exists (ValNormal (Int ((v11 / (Z.neg p))%Z))).
+       econstructor.
+       apply H0. apply H1. 
+       constructor. constructor. intuition. inversion H3. 
+       constructor. reflexivity.
+  - (* Ebinop Tbool Tbool *)
+    destruct op;
+    simpl; 
+    try simpl_binop_hyp;
+    [ exists (ValNormal (Bool (v12 && v22))) |
+      exists (ValNormal (Bool (v12 || v22)))
+    ].
+    econstructor. apply H0. apply H1.
+    constructor. intuition. inversion H3.
+    constructor. auto. 
+    econstructor. apply H0. apply H1.
+    constructor. intuition. inversion H3.
+    constructor. auto. 
+Qed.
+
+(** 
+    this lemma is used only to prove binop_rule2, which means that 
+    run time check on binary expression (v1 op v2) should always return a value b, which
+    can be either true or false;
+*)
+Lemma check_result_exists: forall op v1 v2,
+    exists b, do_check op (Int v1) (Int v2) b.
+Proof.
+    intros.
+    destruct op;
+    match goal with
+    | [ |- exists r : bool, do_check Odiv (Int ?v1) (Int ?v2) r ] => idtac
+    | [ |- exists r : bool, do_check ?op (Int ?v1) (Int ?v2) r ] =>
+            exists true; constructor; intuition; inversion H
+    end.
+    destruct v2.
+    + exists false.
+       constructor. constructor. auto.
+    + exists true.
+       constructor. constructor. intuition. inversion H.
+    + exists true.
+       constructor. constructor. intuition. inversion H.    
+Qed.
+
+(**
+    for binary expression (e1 op e2) that's type-cheked and e1 evaluates to value v1 and e2
+    evaluates to v2, when it's evaluated under the semantics with explicit checks (eval_expr_with_checks),
+    it either throws an exception or evaluates to a normal value. Because, if there is no check flag 
+    for this binary expression, then it just returns the binary operation result. Otherwise, it performs
+    the run-time checks and either returns a value or throws an exception based on the result of 
+    checks
+*)
+Lemma binop_rule2: forall tb s cks e1 v1 e2 v2 ast_num op t,
+    type_check_stack tb s -> 
+    eval_expr_with_checks cks s e1 (ValNormal v1) ->
+    eval_expr_with_checks cks s e2 (ValNormal v2) ->
+    well_typed_expr tb (Ebinop ast_num op e1 e2) t ->
+(*
+    check_generator_expr cks0 (Ebinop ast_num op e1 e2) cks1 ->
+    ast_nums_lt cks0 ast_num ->
+    ast_num_inc_expr (Ebinop ast_num op e1 e2) max ->
+*)
+    (exists v, eval_expr_with_checks cks s (Ebinop ast_num op e1 e2) v).
+Proof.
+    intros.
+    inversion H2; subst.
+    specialize (eval_type_reserve2 _ _ _ _ _ _ H H0 H9); intros h1.
+    specialize (eval_type_reserve2 _ _ _ _ _ _ H H1 H10); intros h2.
+    destruct v1 as [v11 | v12]; destruct v2 as [v21 | v22];
+    inversion h1; subst; try rm_contradict.
+  - (* Ebinop Tint Tint *)
+    destruct op; try simpl_binop_hyp;
+    [ exists (ValNormal (Bool (Zeq_bool v11 v21))) |
+      exists (ValNormal (Bool (Zneq_bool v11 v21))) |
+      exists (ValNormal (Int ((v11 + v21)%Z))) |
+      exists (ValNormal (Int ((v11 - v21)%Z))) |
+      exists (ValNormal (Int ((v11 * v21)%Z))) |
+      (* exists (ValNormal (Int ((v11 / v21)%Z))) *)
+    ];
+    try match goal with 
+    | [ |- eval_expr_with_checks _ _ (Ebinop ?ast_num Odiv ?e1 ?e2) ?v ] => idtac
+    | [ |- eval_expr_with_checks _ _ (Ebinop ?ast_num _ ?e1 ?e2) ?v ] => 
+            remember (fetch_ck ast_num cks) as ck;
+            destruct ck;
+            [ eapply eval_Binop4;
+              [ apply H0 | apply H1 |  symmetry in Heqck; apply Heqck | 
+                constructor; intuition; inversion H3 | constructor; reflexivity 
+              ] | 
+              eapply eval_Binop5; 
+              [ apply H0 | apply H1 |
+                auto | constructor; reflexivity
+              ]
+             ]
+      end.
+(*
+    remember (fetch_ck ast_num cks) as ck;
+    destruct ck.
+    eapply eval_Binop4. 
+    apply H0. apply H1. 
+    symmetry in Heqck; apply Heqck. constructor. 
+    intuition. inversion H3. constructor; reflexivity.    
+    eapply eval_Binop5. apply H0. apply H1.
+    auto. 
+    constructor; reflexivity.
+*)
+    remember (fetch_ck ast_num cks) as ck;
+    destruct ck. 
+    + specialize (check_result_exists Odiv v11 v21); intros hz1.
+       destruct hz1.
+       destruct x.
+       * exists (ValNormal (Int ((v11 / v21)%Z))).
+         eapply eval_Binop4; auto.
+         apply H0. apply H1. 
+         symmetry in Heqck; apply Heqck.
+         assumption.
+         constructor; reflexivity.
+       * exists ValException.
+         eapply eval_Binop3.
+         apply H0. apply H1.
+         symmetry in Heqck; apply Heqck.
+         assumption.
+    + exists (ValNormal (Int ((v11 / v21)%Z))).
+       eapply eval_Binop5; auto.
+       apply H0. apply H1.
+       constructor; reflexivity.
+  - (* Ebinop Tbool Tbool *)
+    destruct op; try simpl_binop_hyp;
+    [ exists (ValNormal (Bool (v12 && v22))) |
+      exists (ValNormal (Bool (v12 || v22)))
+    ];
+    try match goal with 
+    | [ |- eval_expr_with_checks _ _ (Ebinop ?ast_num Odiv ?e1 ?e2) ?v ] => idtac
+    | [ |- eval_expr_with_checks _ _ (Ebinop ?ast_num _ ?e1 ?e2) ?v ] => 
+            remember (fetch_ck ast_num cks) as ck;
+            destruct ck;
+            [ eapply eval_Binop4;
+              [ apply H0 | apply H1 |  symmetry in Heqck; apply Heqck | 
+                constructor; intuition; inversion H3 | constructor; reflexivity 
+              ] | 
+              eapply eval_Binop5; 
+              [ apply H0 | apply H1 |
+                auto | constructor; reflexivity
+              ]
+             ]
+      end.
+Qed.
+
+(**
+    expressions (or statements) constrained by checks generated according to the checking rules
+    are called well-checked expressions (or statements);
+*)
+Definition well_checked_expr := check_generator_expr.
+
+Definition well_checked_stmt := check_generator_stmt.
+
+(**
+    for any well-typed, well-defined (all used variables have benn initialized) and 
+    well-checked (with right checks put at the right places according to checking rules) expression e, 
+    it can always be evaluated to a value v under the eval_expr_with_checks semantics, where v
+    can be either a normal value or an exception;
+*)
+Lemma well_formed_expr0: forall tb s m e t cks0 cks1 max,
+    type_check_stack tb s -> 
+    mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
+    well_defined_expr m e ->
+    well_typed_expr tb e t ->
+    well_checked_expr cks0 e cks1 ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
+    exists v, eval_expr_with_checks cks1 s e v.
+Proof.
+    intros tb s m e t cks0 cks1 max h1 h2 h3.
+    revert t cks0 cks1 max. 
+    induction h3;
+    intros t cks0 cks1 max h4 h5 h6 h7.
+  - (* 1. Econst_Int *)
+    exists (ValNormal (Int n)).
+    constructor. 
+    simpl; auto.
+  - (* 2. Econst_Bool *)
+    exists (ValNormal (Bool b)).
+    constructor.
+    simpl; auto.
+  - (* 3. Evar *)
+    specialize (fetch_exists _ _ _ _ _ h2 H); intros hz1;
+    destruct hz1;
+    exists (ValNormal x0);
+    constructor; assumption.
+  - (* 4. Ebinop *)
+    inversion h4; subst;
+    inversion h5; subst;
+    simpl in h6;
+    inversion h7; subst;
+    specialize (ast_nums_lt_trans _ _ _ h6 H14); intros hz1.
+    { specialize (ast_nums_lt_add _ _ _ flag H14 hz1); intros hz2.
+      specialize (IHh3_1 h2 _ _ _ _ H5 H9 hz2 H3).
+      specialize (lt_trans_expr _ _ _ _ _ H9 hz2 H3 H16); intros hz3.
+      specialize (IHh3_2 h2 _ _ _ _ H6 H10 hz3 H4).
+      rm_exists.
+      specialize (eval_expr_with_checks_state _ _ _ _ H0); intros hz4;
+      specialize (eval_expr_with_checks_state _ _ _ _ H); intros hz5.
+      
+      specialize (subset_expr _ _ _ _ H10 hz3 H4); intros hz6.
+      assert (hz7: max1 + 1 <= get_ast_num_expr e2). intuition.
+      specialize (subset_close_le _ _ _ _ hz6 hz7); intros hz8.
+      specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ H0 hz8 H9 hz2 H3); intros hz9.
+      
+      inversion hz4; inversion hz5;
+      rm_exists; subst.
+      + specialize (binop_rule2 _ _ _ _ _ _ _ _ _ _ h1 hz9 H h4); intros hz10. (**************)
+         assumption.
+      + exists ValException.
+         eapply eval_Binop2.
+         apply hz9.
+         assumption.
+     + exists ValException.
+        eapply eval_Binop1.
+        apply hz9.
+     + exists ValException.
+        eapply eval_Binop1.
+        apply hz9.
+    }
+    { specialize (IHh3_1 h2 _ _ _ _ H5 H9 hz1 H3).
+      specialize (lt_trans_expr _ _ _ _ _ H9 hz1 H3 H16); intros hz2.
+      specialize (IHh3_2 h2 _ _ _ _ H6 H10 hz2 H4).
+      rm_exists.
+      specialize (eval_expr_with_checks_state _ _ _ _ H0); intros hz3;
+      specialize (eval_expr_with_checks_state _ _ _ _ H); intros hz4.
+      
+      specialize (subset_expr _ _ _ _ H10 hz2 H4); intros hz5.
+      assert (hz6: max1 + 1 <= get_ast_num_expr e2). intuition.
+      specialize (subset_close_le _ _ _ _ hz5 hz6); intros hz7.
+      specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ H0 hz7 H9 hz1 H3); intros hz8.
+      
+      inversion hz3; inversion hz4;
+      rm_exists; subst.
+      + specialize (binop_rule2 _ _ _ _ _ _ _ _ _ _ h1 hz8 H h4); intros hz9. (**************)
+         assumption.
+      + exists ValException.
+         eapply eval_Binop2.
+         apply hz8.
+         assumption.
+     + exists ValException.
+        eapply eval_Binop1.
+        apply hz8.
+     + exists ValException.
+        eapply eval_Binop1.
+        apply hz8.
+    }
+  - (* 5. Eunop *)
+    inversion h4; subst.
+    inversion h5; subst;
+    simpl in h6;
+    inversion h7; subst;
+    specialize (ast_nums_lt_trans _ _ _ h6 H6); intros hz1;
+    specialize (IHh3 h2 _ _ _ _ H3 H4 hz1 H1);
+    rm_exists.
+
+    specialize (eval_expr_with_checks_state _ _ _ _ H); intros hz2.
+    destruct hz2; rm_exists; subst.
+    + exists (eval_unop op (ValNormal x0)).
+       specialize (eval_type_reserve2 _ _ _ _ _ _ h1 H H3); intros hz8.
+       destruct x0; try rm_contradict.
+       destruct op. econstructor.
+       apply H. 
+       constructor.
+       reflexivity.
+    + exists ValException.
+       constructor.
+       assumption.
+Qed.
+
+(** ** well_formed_expr *)
+(**
+    the difference with well_formed_expr0 is that their conclusions are different, here the conclusion
+    is the reference semantics for expression e: "eval_expr s e v"; 
+    for any well-typed, well-defined (all used variables have benn initialized) and 
+    well-checked (with right checks put at the right places according to checking rules) expression e, 
+    it can always be evaluated to a value v under the eval_expr reference semantics, where v
+    can be either a normal value or an exception;
+*)
+Theorem well_formed_expr: forall tb s m e t cks0 cks1 max,
+    type_check_stack tb s -> 
+    mode_mapping tb s m -> (* m: a map from variable to its initialization state and in/out mode *)
+    well_defined_expr m e ->
+    well_typed_expr tb e t ->
+    well_checked_expr cks0 e cks1 ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
+    exists v, eval_expr s e v.
+Proof.
+    intros.
+    specialize (well_formed_expr0 _ _ _ _ _ _ _ _ H H0 H1 H2 H3 H4 H5); intros hz1.
+    destruct hz1.
+    specialize (eval_expr_with_checks_correct _ _ _ _ _ _ H6 H3 H4 H5); intros hz2.
+    exists x.
+    assumption.
+Qed.
+
+(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
+
+(* some help lemmas *)
+
+Lemma valid_update: forall tb s ast_id x e v,
+    type_check_stack tb s ->
+    well_typed_stmt tb (Sassign ast_id x e) ->
+    exists s', update s x (Value v) = Some s'.
+Proof.
+    intros tb s ast_id x e v h1 h2.
+    inversion h2; subst.
+    specialize (typed_value' _ _ _ m t h1 H2); intros hz1.
+    rm_exists.
+    clear h1 h2 H0 H2 H4.
+    functional induction (reside x s).
+    + unfold update; rewrite e1.
+       exists ((y, Value v) :: s'); auto.
+    + specialize (IHb H).
+       rm_exists.
+       unfold update.
+       rewrite e1.
+       fold update.
+       rewrite H0. 
+       exists ((y, v0) :: x0); auto.
+    + inversion H.
+Qed.
+
+(** for a well-typed stack, any updates to its element x with a value of its expected type should
+     should still keep the stack well-typed;
+*)
+Lemma type_reserve_update: forall s x v s' tb m t ,
+    update s x (Value v) = Some s' ->    
+    type_check_stack tb s -> 
+    lookup x tb = Some (m, t)-> 
+    return_value_type (ValNormal v) t ->
+    type_check_stack tb s'.
+Proof.
+    intros s x v.
+    remember (Value v) as v'0.
+    functional induction (update s x v'0);
+    intros s'0 tb m t h1 h2 h3 h4.
+  - inversion h1; clear h1; subst.
+    destruct tb. 
+    + inversion h3.
+    + destruct p.
+       inversion h2; subst;
+       unfold lookup in h3; rewrite e0 in h3; fold lookup;
+       inversion h3; clear h3; subst;
+       destruct v;
+       [ rm_contradict | | | rm_contradict | rm_contradict | | | rm_contradict ];
+       constructor; assumption.
+  - inversion h1; subst.
+    destruct tb.
+    + inversion h3.
+    + assert (hz1: Value v = Value v); auto.
+       destruct p; 
+       inversion h2; subst;
+       constructor;
+       unfold lookup in h3; rewrite e0 in h3; fold lookup in h3;
+       specialize (IHo hz1 _ _ _ _ e1 H0 h3 h4);
+       assumption.
+  - inversion h1.
+  - inversion h1.
+Qed.
+
+(** the resulting stack should be well-typed after the modification to the initially 
+     well-typed stack by a well-typed assignment;
+*)
+Lemma type_reserve_assign: forall tb s ast_id x e v s',
+    type_check_stack tb s -> 
+    well_typed_stmt tb (Sassign ast_id x e) -> 
+    eval_expr s e (ValNormal v) ->
+    update s x (Value v) = Some s' ->
+    type_check_stack tb s'. 
+Proof.
+    intros tb s ast_id x e v s' h1 h2 h3 h4.
+    inversion h2; subst.
+    specialize (eval_type_reserve _ _ _ _ _ h1 h3 H4); intros hz1.
+    specialize (type_reserve_update _ _ _ _ _ _ _ h4 h1 H2 hz1); intros hz2.
+    assumption.
+Qed.
+
+(** the resulting state for executing a statement can be either exception or a 
+     normal state according to the semantics rules 
+*)
+Lemma well_typed_stmt_result: forall tb s c s',
+    type_check_stack tb s -> 
+    well_typed_stmt tb c ->
+    eval_stmt s c s' -> 
+    s' = SException \/ (exists s0, s' = SNormal s0 /\ type_check_stack tb s0).
+Proof.
+    intros tb s c s' h1 h2 h3.
+    induction h3;
+    try match goal with
+    | [ |- SException = SException \/ _ ] => left; reflexivity
+    end.
+  - (* Sassign *)
+    right.
+    exists s1.
+    split.
+    reflexivity.
+    specialize (type_reserve_assign _ _ _ _ _ _ _ h1 h2 H H0); intros hz1.
+    assumption.
+  - (* Sseq *)
+    inversion h2; subst.
+    specialize (IHh3_1 h1 H2).
+    destruct IHh3_1 as [hz1 | hz1]; inversion hz1.
+    destruct H. 
+    inversion H; subst.
+    specialize (IHh3_2 H0 H4).
+    assumption.
+  - (* Sifthen_true *)
+    inversion h2; subst.
+    apply IHh3; assumption.
+  - (* Sifthen_false *)
+    right. 
+    exists s;
+    split; auto.
+  - (* Swhile_true *)
+    apply IHh3_2; auto.
+    inversion h2; subst.
+    specialize (IHh3_1 h1 H5).
+    destruct IHh3_1 as [hz1 | hz1]; inversion hz1.
+    destruct hz1. destruct H0.
+    inversion H0; subst. 
+    assumption.
+  - (* Swhile_false *)
+    right.
+    exists s; 
+    split; auto.
+Qed.
+
+(** if the initial stack is well-typed, and when we execute a well-typed statement, 
+     the resulting normal stack should also be well-typed;
+*)
+Lemma type_reserve_stmt: forall tb s c s',
+    type_check_stack tb s -> 
+    well_typed_stmt tb c ->
+    eval_stmt s c (SNormal s') -> 
+    type_check_stack tb s'. 
+Proof.
+    intros tb s c s' h1 h2 h3.
+    remember (SNormal s') as s1.
+    specialize (well_typed_stmt_result _ _ _ _ h1 h2 h3); intros hz1.
+    subst.
+    destruct hz1 as [hz2 | hz2]; inversion hz2.
+    destruct H.
+    inversion H; subst.
+    assumption.
+Qed.
+
+
+(****************************************************)
+(****************************************************)
+
+(**
+    for any expression e, and for any variable x, whenever it's initialized in istate1 it's also
+    initialized in state istate2, if e is well-defined (all used variables have been initialized) 
+    in state istate1, then it should also be well-defined in state istate2;
+*)
+Lemma initializationMap_expr: forall istate1 e istate2,
+     well_defined_expr istate1 e ->   
+     (forall x md, fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) ->
+     well_defined_expr istate2 e.
+Proof.
+    intros istate1 e istate2 h1.
+    revert istate2.
+    induction e;
+    intros istate2 h2.
+  - destruct c; constructor.
+  - inversion h1; subst.
+    specialize (h2 _ _ H1).
+    econstructor. apply h2.
+  - inversion h1; subst.
+    constructor.
+    + specialize (IHe1 H2 _ h2).
+       assumption.
+    + specialize (IHe2 H5 _ h2).
+       assumption.
+  - inversion h1; subst.
+    constructor.
+    specialize (IHe H1 _ h2).
+    assumption.
+Qed.
+
+Ltac distr_univ_qualifier :=
+    match goal with (* move the universally qualified variables x and md into inside its elements *)
+    | [h: forall (x: ?T1) (md: ?T2), ?A1 /\ ?A2 |- _ ] => 
+        assert (ha1: (forall (x: T1) (md: T2), A1) /\ (forall (x: T1) (md: T2), A2));
+        [split; intros x_1 md_1 hz_1; specialize (h x_1 md_1); destruct h; intuition | ]; clear h; destruct ha1
+    end.
+
+(** 
+    this is an extended version of initializationMap_expr, 
+    which is used to prove lemma: ''initializationMap_stmt'' 
+*)
+Lemma initializationMap_expr1: forall istate1 e istate2,
+     well_defined_expr istate1 e ->   
+     (forall x md, (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) /\
+                   (fetch2 x istate1 = Some (Uninit, md) -> exists istate, fetch2 x istate2 = Some (istate, md))) ->
+     well_defined_expr istate2 e.
+Proof.
+    intros.
+    distr_univ_qualifier.
+    specialize (initializationMap_expr _ _ _ H H0); intros hz1.
+    assumption.
+Qed.
+
+(**
+    for any variable x, whenever it's initialized in state istate1 it's also initialized in state istate2, and
+    for any variable x, whenever it's initialized in state istate2 it's also initialized in state istate3,
+    then, for any variable x, whenever it's initialized in state istate1 it's also initialized in state istate3;
+*)
+Lemma fetch2_transitive: forall istate1 istate2 istate3,
+    (forall x md,
+      (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) /\
+      (fetch2 x istate1 = Some (Uninit, md) ->
+       exists istate, fetch2 x istate2 = Some (istate, md))) ->       
+    (forall x md,
+      (fetch2 x istate2 = Some (Init, md) -> fetch2 x istate3 = Some (Init, md)) /\
+      (fetch2 x istate2 = Some (Uninit, md) ->
+       exists istate, fetch2 x istate3 = Some (istate, md))) ->
+    (forall x md,
+      (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate3 = Some (Init, md)) /\
+      (fetch2 x istate1 = Some (Uninit, md) ->
+       exists istate, fetch2 x istate3 = Some (istate, md))).
+Proof.
+    intros istate1 istate2 istate3 h1 h2.
+    intros x md.
+    repeat distr_univ_qualifier.
+    split; intros hz1.
+  - specialize (H1 _ _ hz1).
+    specialize (H _ _ H1).
+    assumption.
+  - specialize (H2 _ _ hz1).
+    destruct H2.
+    destruct x0.
+    + specialize (H _ _ H2).
+       exists Init; assumption.
+    + specialize (H0 _ _ H2).
+       assumption.
+Qed.
+
+Lemma fetch_same_mode: forall istate1 istate2 im1 im2 x md1 md2,
+    (forall x md, (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md))) ->
+     (forall x md, (fetch2 x istate1 = Some (Uninit, md) -> exists im, fetch2 x istate2 = Some (im, md))) ->
+    fetch2 x istate1 = Some (im1, md1) ->
+    fetch2 x istate2 = Some (im2, md2) ->
+    md1 = md2.
+Proof.
+    intros.
+    destruct im1.
+  - specialize (H _ _ H1).
+    rewrite H in H2; inversion H2; subst; 
+    auto.
+  - specialize (H0 _ _ H1).
+    destruct H0.
+    rewrite H0 in H2; inversion H2; subst;
+    auto.
+Qed.
+
+
+(* 'c' is put before 'istate1', because when we do induction on 'c', keep 'istate1' universal *)
+(**
+    if istate1 is a subset of istate2 with respect to initialization state,  and istate1' is the resulting initialization
+    state after executing statement c from initialization state istate1, and istate' is the resulting initialization
+    state after executing statement c from initialization state istate2, 
+    then istate1' should be a subset of istate2'; 
+*)
+Lemma wd_fetch2_sync: forall c istate1 istate1' istate2 istate2',
+    well_defined_stmt istate1 c istate1' ->
+    well_defined_stmt istate2 c istate2' ->
+    (forall x md, (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) /\
+                  (fetch2 x istate1 = Some (Uninit, md) -> exists istate, fetch2 x istate2 = Some (istate, md))) ->
+    (forall x md, (fetch2 x istate1' = Some (Init, md) -> fetch2 x istate2' = Some (Init, md)) /\
+                  (fetch2 x istate1' = Some (Uninit, md) -> exists istate, fetch2 x istate2' = Some (istate, md))).
+Proof.
+    induction c;
+    intros istate1 istate1' istate2 istate2' h1 h2 h3.
+  - distr_univ_qualifier.
+    inversion h1; subst.
+    inversion h2; subst.
+    intros x md1.    
+    specialize (fetch_same_mode _ _ _ _ _ _ _ H H0 H6 H10); intros hz1.
+    subst.
+    split; intros hz1;
+    specialize (update2_in1 _ _ _ _ _ _ H9 hz1); intros hz2;
+    destruct hz2 as [hz3 | hz4].
+    + destruct hz3. inversion H2; subst.
+       specialize (update2_fetch2_new _ _ _ _  H13). 
+       auto.
+    + rm_exists.
+       specialize (H _ _ H2).
+       specialize (update2_fetch2_old _ _ _ _ _ H13 H1); intros hz3.
+       rewrite H in hz3.
+       assumption.
+    + inversion hz3.
+       inversion H2.
+    + rm_exists.
+       specialize (H0 _ _ H2).
+       specialize (update2_fetch2_old _ _ _ _ _ H13 H1); intros hz3.
+       rewrite hz3.
+       assumption. 
+  - distr_univ_qualifier.
+    inversion h1; subst.
+    inversion h2; subst.
+    intros x md.
+    split; intros hz1.
+    specialize (H _ _ hz1); assumption.
+    specialize (H0 _ _ hz1); assumption.
+  - distr_univ_qualifier.
+    inversion h1; subst.
+    inversion h2; subst.
+    intros x md.
+    split; intros hz1.
+    specialize (H _ _ hz1); assumption.
+    specialize (H0 _ _ hz1); assumption.
+  - inversion h1; subst.
+    inversion h2; subst.
+    intros x md.
+    split; intros hz1;
+    specialize (IHc1 _ _ _ _ H4 H6 h3);
+    specialize (IHc2 _ _ _ _ H5 H7 IHc1);
+    repeat distr_univ_qualifier.
+    + apply H1; assumption.
+    + apply H2; assumption.
+Qed.
+
+
+(**
+    if statement c is well-defined (all its used variables have been initialized) under the state istate1, and
+    istate' is the resulting initialization state after executing statement c from initialization state istate1,
+    and istate1 is a subset of istate2 with respect to initialization state, 
+    then statement c should be also well-defined under the state istate2;
+*)
+Lemma initializationMap_stmt: forall istate1 c istate1' istate2,
+     well_defined_stmt istate1 c istate1' ->   
+     (forall x md, (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) /\
+                   (fetch2 x istate1 = Some (Uninit, md) -> exists im, fetch2 x istate2 = Some (im, md))) ->
+     exists istate2', well_defined_stmt istate2 c istate2'.
+Proof.
+    intros istate1 c istate1' istate2 h1.
+    revert istate2.
+    induction h1;
+    intros istate2 h2.
+  - specialize (initializationMap_expr1 _ _ _ H h2); intros hz1.
+    distr_univ_qualifier.
+    assert (hz2: exists istate, update2 istate2 x (Init, md) = Some istate).
+    + destruct i.
+       * specialize (H3 _ _ H0).
+          specialize (fetch2_update2 _ _ _ (Init, md) H3); intros hz3.
+          assumption.
+       * specialize (H4 _ _ H0).
+          destruct H4.
+          specialize (fetch2_update2 _ _ _ (Init, md) H4); intros hz3.
+          assumption.
+    + destruct hz2.
+       exists x0.
+       assert (hz2: exists im, fetch2 x istate2 = Some (im, md)).
+       destruct i.
+       specialize (H3 _ _ H0). exists Init; apply H3.
+       specialize (H4 _ _ H0). assumption.
+       destruct hz2.
+       econstructor; auto. apply H6.
+       assumption. assumption.
+  - specialize (IHh1_1 _ h2).
+    rm_exists.
+    specialize (wd_fetch2_sync _ _ _ _ _ h1_1 H h2); intros hz1.
+    specialize (IHh1_2 x hz1).
+    rm_exists.
+    exists x0.
+    apply WD_Sseq with (m' := x);
+    assumption.
+  - exists istate2.
+    specialize (IHh1 _ h2).
+    rm_exists.
+    apply WD_Sifthen with (m' := x); auto.   
+    distr_univ_qualifier.
+    specialize (initializationMap_expr _ _ _ H H1); intros hz1.
+    assumption.
+  - exists istate2.
+    specialize (IHh1 _ h2).
+    rm_exists.
+    apply WD_Swhile with (m' := x); auto.
+    distr_univ_qualifier.
+    specialize (initializationMap_expr _ _ _ H H1); intros hz1.
+    assumption.
+Qed.
+
+(**
+    if c is well-defined (all its used variables have been initialized) in state istate, and istate' is its
+    resulting initialization state after statement c, then for any variable x that's initialized in state istate 
+    should also be initialized in state istate'; 
+*)
+Lemma initializationMap_inc: forall istate c istate',
+     well_defined_stmt istate c istate' ->   
+     (forall x md, (fetch2 x istate = Some (Init, md) -> fetch2 x istate' = Some (Init, md)) /\
+                   (fetch2 x istate = Some (Uninit, md) -> exists im, fetch2 x istate' = Some (im, md))).
+Proof.
+    intros istate c istate' h1.
+    induction h1;
+    intros x0 md0.
+  - remember (beq_nat x0 x) as eq;
+    symmetry in Heqeq;
+    destruct eq as [eq1 | eq2].
+    + apply beq_nat_true in Heqeq; subst.
+       specialize (update2_fetch2_new _ _ _ _ H2); intros hz1.
+       split; intros;
+       rewrite H0 in H3; inversion H3; subst.
+       * assumption.
+       * exists Init; assumption.
+    + apply beq_nat_false in Heqeq.
+       specialize (update2_fetch2_old _ _ _ _ _ H2 Heqeq); intros hz1.
+       split; intros; rewrite hz1. 
+       * assumption.
+       * exists Uninit; assumption.
+  - repeat distr_univ_qualifier.
+    split; intros hz1.
+    + apply H.
+       apply H1.
+       assumption.
+    + specialize (H2 _ _ hz1).
+       rm_exists.
+       destruct x.
+       specialize (H _ _ H3).
+       exists Init; assumption.
+       specialize (H0 _ _ H3).
+       assumption.
+  - split; auto.
+    intros.
+    exists Uninit.
+    assumption.
+  - split;auto.
+    intros.
+    exists Uninit.
+    assumption.
+Qed.
+
+(**
+    it's used to prove the lemma update_consis, refer to update_consis for its meanings;
+*)
+Lemma update_consis0: forall tb s istate x v s1 istate1 md t,
+    mode_mapping tb s istate -> 
+    update s x (Value v) = Some s1 ->
+    mode_mapping tb s1 istate1 ->
+    lookup x tb = Some (md, t) ->
+    (update2 istate x (Init, md)) = Some istate1.
+Proof.
+    intros tb s istate x v s1 istate1 md t h1.
+    revert x v s1 istate1 md t.
+    induction h1;
+    intros x'0 v'0 s1 istate1 md t h2 h3 h4.
+  - inversion h2.
+  - unfold update in h2.
+    remember (beq_nat x'0 x) as eq.
+    fold update in h2.
+    destruct eq;
+    unfold lookup in h4; rewrite <- Heqeq in h4.
+    + inversion h2; subst;
+       inversion h3; subst.
+       specialize (mode_mapping_unique _ _ _ _ h1 H5); intros hz1; subst.
+       unfold update2; rewrite <- Heqeq. 
+       inversion h4; subst.
+       reflexivity.
+    + remember (update s x'0 (Value v'0)) as z.
+       symmetry in Heqz.
+       destruct z.
+       inversion h2; subst;
+       inversion h3; subst.
+       fold lookup in h4.
+       specialize (IHh1 _ _ _ _ _ _ Heqz H5 h4).
+       unfold update2; rewrite <- Heqeq.
+       fold update2. 
+       rewrite IHh1; reflexivity.
+       inversion h2.
+  - unfold update in h2.
+    remember (beq_nat x'0 x) as eq.
+    fold update in h2.
+    destruct eq;
+    unfold lookup in h4; rewrite <- Heqeq in h4.
+    + inversion h2; subst;
+       inversion h3; subst.
+       specialize (mode_mapping_unique _ _ _ _ h1 H5); intros hz1; subst.
+       unfold update2; rewrite <- Heqeq. 
+       inversion h4; subst.
+       reflexivity.
+    + remember (update s x'0 (Value v'0)) as z.
+       symmetry in Heqz.
+       destruct z.
+       inversion h2; subst;
+       inversion h3; subst.
+       fold lookup in h4.
+       specialize (IHh1 _ _ _ _ _ _ Heqz H5 h4).
+       unfold update2; rewrite <- Heqeq.
+       fold update2. 
+       rewrite IHh1; reflexivity.
+       inversion h2.
+  - unfold update in h2.
+    remember (beq_nat x'0 x) as eq.
+    fold update in h2.
+    destruct eq;
+    unfold lookup in h4; rewrite <- Heqeq in h4.
+    + inversion h2; subst;
+       inversion h3; subst.
+       specialize (mode_mapping_unique _ _ _ _ h1 H5); intros hz1; subst.
+       unfold update2; rewrite <- Heqeq. 
+       inversion h4; subst.
+       reflexivity.
+    + remember (update s x'0 (Value v'0)) as z.
+       symmetry in Heqz.
+       destruct z.
+       inversion h2; subst;
+       inversion h3; subst.
+       fold lookup in h4.
+       specialize (IHh1 _ _ _ _ _ _ Heqz H4 h4).
+       unfold update2; rewrite <- Heqeq.
+       fold update2. 
+       rewrite IHh1; reflexivity.
+       inversion h2.
+  - unfold update in h2.
+    remember (beq_nat x'0 x) as eq.
+    fold update in h2.
+    destruct eq;
+    unfold lookup in h4; rewrite <- Heqeq in h4.
+    + inversion h2; subst;
+       inversion h3; subst.
+       specialize (mode_mapping_unique _ _ _ _ h1 H5); intros hz1; subst.
+       unfold update2; rewrite <- Heqeq. 
+       inversion h4; subst.
+       reflexivity.
+    + remember (update s x'0 (Value v'0)) as z.
+       symmetry in Heqz.
+       destruct z.
+       inversion h2; subst;
+       inversion h3; subst.
+       fold lookup in h4.
+       specialize (IHh1 _ _ _ _ _ _ Heqz H4 h4).
+       unfold update2; rewrite <- Heqeq.
+       fold update2. 
+       rewrite IHh1; reflexivity.
+       inversion h2.
+Qed.
+
+
+(**
+    tb: a symbol table mapping from variable to a pair (type, in/out mode);
+    s: a stack mapping from variable to value;
+    istate: is a mode table constructed from tb and s, which maps from variable to a pair (initialization mode, in/out mode),
+               for a variable x, if it's initialized according to the stack s, then it's initialization mode is "Init", otherwise, it's "Uninit";
+    if we update the stack s with variable x by a value v, and the resulting state is s1, then the mode table istate1
+    constructed from tb and s1 should be the same as istate'1 which is the result of updating istate directly by (Init, md);
+*)
+Lemma update_consis: forall tb s istate x v s1 istate1 md t istate'1,
+    mode_mapping tb s istate -> 
+    update s x (Value v) = Some s1 ->
+    mode_mapping tb s1 istate1 ->
+    lookup x tb = Some (md, t) ->
+    (update2 istate x (Init, md)) = Some istate'1 ->
+    istate1 = istate'1.
+Proof.
+    intros.
+    specialize (update_consis0 _ _ _ _ _ _ _ _ _ H H0 H1 H2); intros hz1.
+    rewrite hz1 in H3; inversion H3; subst.
+    reflexivity.
+Qed.
+
+Lemma mode_consis: forall tb s istate x md1 t im md2,
+    mode_mapping tb s istate ->
+    lookup x tb = Some (md1, t) ->
+    fetch2 x istate = Some (im, md2) ->
+    md1 = md2.
+Proof.
+    intros.
+    induction H;
+    [inversion H0 | | | | ];
+    unfold lookup in H0;
+    unfold fetch2 in H1;
+    remember (beq_nat x x0) as eq;
+    destruct eq;
+    [ inversion H0; subst;
+      inversion H1; subst;
+      reflexivity |  |
+      inversion H0; subst;
+      inversion H1; subst;
+      reflexivity | |
+      inversion H0; subst;
+      inversion H1; subst;
+      reflexivity | |
+      inversion H0; subst;
+      inversion H1; subst;
+      reflexivity | 
+    ]; 
+    fold lookup in H0; fold fetch2 in H1;
+    apply IHmode_mapping; auto.
+(*
+    intros.
+    induction H.
+  - inversion H0.
+  - unfold lookup in H0;
+    unfold fetch2 in H1;
+    remember (beq_nat x x0) as eq;
+    destruct eq.
+    + inversion H0; subst.
+       inversion H1; subst.
+       reflexivity.
+    + fold lookup in H0; fold fetch2 in H1.
+       apply IHmode_mapping; auto.
+  - unfold lookup in H0.
+    unfold fetch2 in H1.
+    remember (beq_nat x x0) as eq.
+    destruct eq.
+    + inversion H0; subst.
+       inversion H1; subst.
+       reflexivity.
+    + fold lookup in H0; fold fetch2 in H1.
+       apply IHmode_mapping; auto.
+  - unfold lookup in H0.
+    unfold fetch2 in H1.
+    remember (beq_nat x x0) as eq.
+    destruct eq.
+    + inversion H0; subst.
+       inversion H1; subst.
+       reflexivity.
+    + fold lookup in H0; fold fetch2 in H1.
+       apply IHmode_mapping; auto.
+  - unfold lookup in H0.
+    unfold fetch2 in H1.
+    remember (beq_nat x x0) as eq.
+    destruct eq.
+    + inversion H0; subst.
+       inversion H1; subst.
+       reflexivity.
+    + fold lookup in H0; fold fetch2 in H1.
+       apply IHmode_mapping; auto.
+*)
+Qed.
+
+
+(**
+    tb: a symbol table mapping from variable to a pair (type, in/out mode);
+    s: a stack mapping from variable to value;
+    istate: is a mode table constructed from tb and s, which maps from variable to a pair (initialization mode, in/out mode),
+               for a variable x, if it's initialized according to the stack s, then it's initialization mode is "Init", otherwise, it's "Uninit";
+    whenever we execute the statement c from state s1 to state s2 under the refence semantics eval_stmt, 
+    if istate1 is the mode table constructed from tb and s1 and istate2 is the mode table constructed from tb and s2,
+    then istate1 should be a subset of istate2 with respect to initialization mode and in/out mode, because the statement 
+    will cause uninitialized variables to initialized ones and will not change their in/out mode;
+*)
+Lemma initialization_inc: forall s1 c s2 tb istate1 istate2,
+    eval_stmt s1 c (SNormal s2) ->
+    type_check_stack tb s1 ->
+    well_typed_stmt tb c ->
+    mode_mapping tb s1 istate1 ->
+    mode_mapping tb s2 istate2 ->
+     (forall x md, (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) /\
+                   (fetch2 x istate1 = Some (Uninit, md) -> exists im, fetch2 x istate2 = Some (im, md))).
+Proof.
+    intros s1 c s2 tb istate1 istate2 h1.
+    revert tb istate1 istate2.
+    remember (SNormal s2) as v; revert Heqv; revert s2.
+    induction h1;
+    intros s'2 h2 tb istate1 istate2 h3 h4 h5 h6;
+    try (inversion h2; subst);
+    inversion h4; subst.
+  - specialize (update_consis0 _ _ _ _ _ _ _ _ _ h5 H0 h6 H4); intros hz1.
+    intros; split; intros;
+    remember (beq_nat x0 x) as eq; symmetry in Heqeq;
+    destruct eq.
+    * apply beq_nat_true in Heqeq. subst. 
+      specialize (mode_consis _ _ _ _ _ _ _ _ h5 H4 H1); intros hz2; subst. 
+      specialize (update2_fetch2_new _ _ _ _ hz1); intros hz3.
+      assumption.
+   * apply beq_nat_false in Heqeq.
+     specialize (update2_fetch2_old _ _ _ _ _ hz1 Heqeq); intros hz2.
+     rewrite H1 in hz2.
+     assumption.
+    * apply beq_nat_true in Heqeq. subst. 
+      specialize (mode_consis _ _ _ _ _ _ _ _ h5 H4 H1); intros hz2; subst. 
+      specialize (update2_fetch2_new _ _ _ _ hz1); intros hz3.
+      exists Init; assumption.
+   * apply beq_nat_false in Heqeq.
+     specialize (update2_fetch2_old _ _ _ _ _ hz1 Heqeq); intros hz2.
+     rewrite H1 in hz2.
+     exists Uninit; assumption.
+  - specialize (type_reserve_stmt _ _ _ _ h3 H3 h1_1); intros hz1.
+    specialize (mode_mapping_exists _ _ hz1); intros hz2.
+    destruct hz2.
+    assert (a1: SNormal s1 = SNormal s1); auto.
+    assert (a2: SNormal s'2 = SNormal s'2); auto.
+    specialize (IHh1_1 s1 a1 tb istate1 x);
+    specialize (IHh1_2 s'2 a2 tb x istate2); intuition;
+    repeat distr_univ_qualifier.
+    apply H4. apply H2; assumption.
+    specialize (H7 _ _ H1). destruct H7.
+    destruct x1.
+    * specialize (H4 _ _ H7). exists Init; auto.
+    * specialize (H6 _ _ H7); auto.
+  - assert (a1: SNormal s'2 = SNormal s'2); auto.
+    specialize (IHh1 s'2 a1 tb istate1 istate2); intuition.
+  - specialize (mode_mapping_unique _ _ _ _ h5 h6); intros hz1.
+    subst. 
+    intros; split; intros; auto.
+    exists Uninit; assumption.
+  - specialize (type_reserve_stmt _ _ _ _ h3 H6 h1_1); intros hz1.
+    specialize (mode_mapping_exists _ _ hz1); intros hz2.
+    destruct hz2.
+    assert (a1: SNormal s1 = SNormal s1); auto.
+    assert (a2: SNormal s'2 = SNormal s'2); auto.    
+    specialize (IHh1_1 s1 a1 tb istate1 x).
+    specialize (IHh1_2 s'2 a2 tb x istate2); intuition;
+    repeat distr_univ_qualifier.
+    apply H5. apply H3; auto.
+    specialize (H8 _ _ H2). destruct H8.
+    destruct x1.
+    * specialize (H5 _ _ H8). exists Init; auto.
+    * specialize (H7 _ _ H8); auto.
+  - specialize (mode_mapping_unique _ _ _ _ h5 h6); intros hz1.
+    subst.
+    intros; split; intros; auto.
+    exists Uninit; auto.
+Qed.
+
+
+(*
+Lemma initialization_inc: forall s1 c s'1 s2 tb istate1 istate2,
+    eval_stmt s1 c s'1 ->
+    s'1 = (SNormal s2) ->
+    type_check_stack tb s1 ->
+    well_typed_stmt tb c ->
+    mode_mapping tb s1 istate1 ->
+    mode_mapping tb s2 istate2 ->
+     (forall x md, (fetch2 x istate1 = Some (Init, md) -> fetch2 x istate2 = Some (Init, md)) /\
+                   (fetch2 x istate1 = Some (Uninit, md) -> exists im, fetch2 x istate2 = Some (im, md))).
+Proof.
+    intros s1 c s'1 s2 tb istate1 istate2 h1.
+    revert s2 tb istate1 istate2.
+    induction h1; 
+    intros s'2 tb istate1 istate2 h2 h3 h4 h5 h6;
+    try (inversion h2; subst);
+    inversion h4; subst.
+  - specialize (update_consis0 _ _ _ _ _ _ _ _ _ h5 H0 h6 H4); intros hz1.
+    intros; split; intros;
+    remember (beq_nat x0 x) as eq; symmetry in Heqeq;
+    destruct eq.
+    * apply beq_nat_true in Heqeq. subst. 
+      specialize (mode_consis _ _ _ _ _ _ _ _ h5 H4 H1); intros hz2; subst. 
+      specialize (update2_fetch2_new _ _ _ _ hz1); intros hz3.
+      assumption.
+   * apply beq_nat_false in Heqeq.
+     specialize (update2_fetch2_old _ _ _ _ _ hz1 Heqeq); intros hz2.
+     rewrite H1 in hz2.
+     assumption.
+    * apply beq_nat_true in Heqeq. subst. 
+      specialize (mode_consis _ _ _ _ _ _ _ _ h5 H4 H1); intros hz2; subst. 
+      specialize (update2_fetch2_new _ _ _ _ hz1); intros hz3.
+      exists Init; assumption.
+   * apply beq_nat_false in Heqeq.
+     specialize (update2_fetch2_old _ _ _ _ _ hz1 Heqeq); intros hz2.
+     rewrite H1 in hz2.
+     exists Uninit; assumption.
+  - specialize (type_reserve_stmt _ _ _ _ h3 H3 h1_1); intros hz1.
+    specialize (mode_mapping_exists _ _ hz1); intros hz2.
+    destruct hz2.
+    specialize (IHh1_1 s1 tb istate1 x).
+    specialize (IHh1_2 s'2 tb x istate2); intuition;
+    repeat distr_univ_qualifier.
+    apply H1. apply H2; assumption.
+    specialize (H6 _ _ H4). destruct H6.
+    destruct x1.
+    * specialize (H1 _ _ H6). exists Init; auto.
+    * specialize (H7 _ _ H6); auto.
+  - specialize (IHh1 s'2 tb istate1 istate2); intuition.
+  - specialize (mode_mapping_unique _ _ _ _ h5 h6); intros hz1.
+    subst. 
+    intros; split; intros; auto.
+    exists Uninit; assumption.
+  - specialize (type_reserve_stmt _ _ _ _ h3 H6 h1_1); intros hz1.
+    specialize (mode_mapping_exists _ _ hz1); intros hz2.
+    destruct hz2.
+    specialize (IHh1_1 s1 tb istate1 x).
+    specialize (IHh1_2 s'2 tb x istate2); intuition;
+    repeat distr_univ_qualifier.
+    apply H2. apply H3; auto.
+    specialize (H7 _ _ H5). destruct H7.
+    destruct x1.
+    * specialize (H2 _ _ H7). exists Init; auto.
+    * specialize (H8 _ _ H7); auto.
+  - specialize (mode_mapping_unique _ _ _ _ h5 h6); intros hz1.
+    subst.
+    intros; split; intros; auto.
+    exists Uninit; auto.
+Qed.
+*)
+
+(**
+    tb: a symbol table mapping from variable to a pair (type, in/out mode);
+    s: a stack mapping from variable to value;
+    istate: is a mode table constructed from tb and s, which maps from variable to a pair (initialization mode, in/out mode),
+               for a variable x, if it's initialized according to the stack s, then it's initialization mode is "Init", otherwise, it's "Uninit";
+    when we define "well_defined_stmt", we adopt the following strategy: for conditional and while loop, we do intersection on
+    the initialization states generated on both branches;
+    but "eval_stmt" will take one branch to execute from state s to s', so the mode table istate' is a subset of
+    the mode table istate1 constructed from tb and s';
+*)
+Lemma eval_stmt_greater: forall c s s' tb istate istate' istate1,
+     eval_stmt s c (SNormal s') ->
+     type_check_stack tb s ->
+     well_typed_stmt tb c -> 
+     mode_mapping tb s istate->
+     well_defined_stmt istate c istate' -> 
+     mode_mapping tb s' istate1 ->
+     (forall x md, (fetch2 x istate' = Some (Init, md) -> fetch2 x istate1 = Some (Init, md)) /\
+                   (fetch2 x istate' = Some (Uninit, md) -> exists im, fetch2 x istate1 = Some (im, md))).
+Proof.
+    induction c;
+    intros s s' tb istate istate' istate1 h1 h2 h3 h4 h5 h6;
+    inversion h1; subst;
+    inversion h3; subst;
+    inversion h5; subst.
+  - specialize (mode_consis _ _ _ _ _ _ _ _ h4 H3 H8); intros hz1; subst.
+    specialize (update_consis _ _ _ _ _ _ _ _ _ _  h4 H5 h6 H3 H11); intros hz1.
+    subst.
+    intros; split; intros; auto.
+    exists Uninit; assumption.
+  - specialize (IHc _ _ _ _ _ _ H5 h2 H6 h4 H9 h6).
+    specialize (initializationMap_inc _ _ _ H9); intros hz1.
+    specialize (fetch2_transitive _ _ _ hz1 IHc); intros hz2.
+    assumption.
+  - specialize (mode_mapping_unique _ _ _ _ h4 h6); intros hz1.
+    subst.
+    intros; split; intros; auto.
+    exists Uninit; assumption.
+  - specialize (type_reserve_stmt _ _ _ _ h2 H7 H5); intros hz1.
+    specialize (mode_mapping_exists _ _ hz1); intros hz2.
+    destruct hz2.
+    specialize (IHc _ _ _ _ _ _ H5 h2 H7 h4 H10 H).
+    specialize (initializationMap_inc _ _ _ H10); intros hz2.
+    specialize (fetch2_transitive _ _ _ hz2 IHc); intros hz3.
+    specialize (initialization_inc _ _ _ _ _ _ H6 hz1 h3 H h6); intros hz4.
+    specialize (fetch2_transitive _ _ _ hz3 hz4); intros hz5.
+    assumption.
+  - specialize (mode_mapping_unique _ _ _ _ h4 h6); intros hz1.
+    subst.
+    intros; split; intros; auto.
+    exists Uninit; assumption.
+  - specialize (type_reserve_stmt _ _ _ _ h2 H2 H4); intros hz1.
+    specialize (mode_mapping_exists _ _ hz1); intros hz2.
+    destruct hz2.
+    specialize (IHc1 _ _ _ _ _ _ H4 h2 H2 h4 H8 H).
+    specialize (initializationMap_stmt _ _ _ _ H9 IHc1); intros hz3.
+    destruct hz3.
+    specialize (IHc2 _ _ _ _ _ _ H5 hz1 H6 H H0 h6).
+    specialize (wd_fetch2_sync _ _ _ _ _ H9 H0 IHc1); intros hz4.
+    specialize (fetch2_transitive _ _ _ hz4 IHc2); auto.
+Qed.
+
+
+(* destruct a disjunction of the following type in the hypothesis, among its disjunct elements, most of
+    which can be removed quickly:
+    IHs0 : (exists s' : stack,
+          SNormal s1 = SNormal s' /\
+          eval_stmt_with_checks ls2 s c1 (SNormal s')) \/
+       SNormal s1 = SException /\ eval_stmt_with_checks ls2 s c1 SException \/
+       SNormal s1 = SUnterminated
+*)
+Ltac destruct_disj IH :=
+    destruct IH as [IH0 | [IH1 | IH2]];
+    [destruct IH0 as [s'1 IH1] | | inversion IH2];
+    destruct IH1 as [IH11 IH12]; 
+    [inversion IH11; subst | inversion IH11].
+
+
+(** 
+    This is a help lemma to prove the theorem: well_formed_stmt,  refer to well_formed_stmt for 
+    its meanings;
+*)
+Lemma well_formed_stmt0: forall k s c tb m0 m1 cks0 cks1 max,
+    type_check_stack tb s ->
+    mode_mapping tb s m0 -> (* m: a map from variable to its initialization state and in/out mode *)
+    well_defined_stmt m0 c m1 ->
+    well_typed_stmt tb c ->
+    well_checked_stmt cks0 c cks1 ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->
+    (exists s', f_eval_stmt k s c = (SNormal s') /\ eval_stmt_with_checks cks1 s c (SNormal s')) \/ 
+    (f_eval_stmt k s c = SException /\ eval_stmt_with_checks cks1 s c SException) \/ 
+    f_eval_stmt k s c = SUnterminated.
+Proof.
+    intros k s c.
+    functional induction (f_eval_stmt k s c);
+    intros tb m0 m1 cks0 cks1 max h1 h2 h3 h4 h5 h6 h7;
+    try match goal with
+    | [ |- ?G1 \/ ?G2 \/ ?T = ?T ] => right; right; reflexivity
+    | [ |- (exists s', SNormal ?s = SNormal s' /\ ?G1) \/ ?G2 \/ ?G3 ] => left; exists s; split; auto
+    | [ |- ?G1 \/ (?T = ?T /\ ?G2) \/ ?G3 ] => right; left; split; auto
+    end;
+    simpl in h6;
+    inversion h3; subst;
+    inversion h4; subst;
+    inversion h5; subst;
+    inversion h7; subst.
+  - (* Sassign: return normal state *)
+    econstructor.
+    Focus 2. apply e3.
+    specialize (f_eval_expr_correct1 _ _ _ e2); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz2.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz1 H10 hz2 H5); auto.
+  - (* Sassign: proof term with contradictory hypothesis *)
+    specialize (valid_update _ _ _ _ _ v h1 h4); intros hz1.
+    destruct hz1 as [s' hz1].
+    rewrite e3 in hz1; inversion hz1.
+  - (* Sassign: return exception *)
+    econstructor.
+    specialize (f_eval_expr_correct2 _ _ e2); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz2.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz1 H10 hz2 H5); auto.
+  - (* Sassign: proof term with contradictory hypothesis *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (well_formed_expr _ _ _ _ _ _ _ _ h1 h2 H2 H8 H10 hz1 H5); intros hz2.
+    destruct hz2 as [v hz2].
+    specialize (f_eval_expr_complete _ _ _ hz2); intros hz3.
+    rewrite e2 in hz3.
+    
+    specialize (eval_expr_state _ _ _ hz2); intros hz4.
+    destruct hz4 as [ [v0 hz5] | hz5]; subst;
+    inversion hz5.
+  - (* Sseq *)
+    specialize (f_eval_stmt_correct1 _ _ _ _ e1); intros hz1.
+    specialize (type_reserve_stmt _ _ _ _ h1 H2 hz1); intros hz2.
+    specialize (mode_mapping_exists _ _ hz2); intros hz3.
+    destruct hz3 as [m'1 hz3].
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz4.
+    specialize (lt_trans_stmt _ _ _ _ _ H8 hz4 H3 H15); intros hz5.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H4 H2 H8 hz4 H3).
+    
+    specialize (eval_stmt_greater _ _ _ _ _ _ _ hz1 h1 H2 h2 H4 hz3); intros hz6.
+    specialize (initializationMap_stmt _ _ _ _ H5 hz6); intros hz7.
+    destruct hz7. clear hz6.
+    
+    specialize (IHs1 _ _ _ _ _ _ hz2 hz3 H H6 H9 hz5 H7).
+    rewrite e1 in IHs0.
+
+    destruct_disj IHs0.
+    specialize (subset_refl (max + 1) cks1); intros hz6.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz5 H15 hz6); intros hz7.
+    specialize (eval_stmt_with_checks_fixed _ _ _ _ _ _ _ IH12 hz7 H8 hz4 H3); intros hz8.
+    destruct IHs1 as [IHs1_1 | [IHs1_1 | IHs1_1]].
+    + destruct IHs1_1. destruct H0.
+       left. exists x0.
+       split; auto.
+       econstructor.
+       apply hz8. assumption.
+    + destruct IHs1_1.
+       right. left.
+       split; auto.
+       eapply eval_Seq2.
+       apply hz8. assumption.
+    + right. right.
+       assumption.
+  - (* Sseq: return exception *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_stmt _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H4 H2 H8 hz1 H3). 
+    rewrite e1 in IHs0.
+    destruct_disj IHs0.
+    specialize (subset_refl (max + 1) cks1); intros hz3.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz3); intros hz4.
+    specialize (eval_stmt_with_checks_fixed _ _ _ _ _ _ _ IH12 hz4 H8 hz1 H3); intros hz5.
+    + constructor. assumption.
+  - (* Sseq: proof term with contradictory hypothesis *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_stmt _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H4 H2 H8 hz1 H3). 
+    rewrite e1 in IHs0.
+    destruct_disj IHs0.
+  - (* Sifthen_true: return normal state *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct1 _ _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H5 H6 H9 hz2 H7).
+    
+    destruct IHs0 as [IH0_1 | [IH0_1 | IH0_1]].
+    + destruct IH0_1. destruct H.
+       left. exists x.
+       split; auto.
+       econstructor; auto.
+    + destruct IH0_1.
+       right. left.
+       split; auto.
+       eapply eval_Ifthen_True; auto.
+    + right. right.
+       assumption.
+  - (* Sifthen_false: return normal state *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct1 _ _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    eapply eval_Ifthen_False.
+    assumption.    
+  - (* Sifthen: return exception *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct2 _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    constructor; auto.
+  - (* Sifthen: proof term with contradictory hypothesis *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (well_formed_expr _ _ _ _ _ _ _ _ h1 h2 H4 H2 H8 hz1 H3); intros hz2.
+    destruct hz2 as [v hz2].
+    specialize (f_eval_expr_complete _ _ _ hz2); intros hz3.
+    specialize (eval_expr_state _ _ _ hz2); intros hz4.
+    destruct hz4 as [ [v0 hz5] | hz5]; subst;
+    rewrite hz5 in y.    
+    + rewrite hz5 in hz2.
+       specialize (eval_type_reserve _ _ _ _ _ h1 hz2 H2); intros hz6.
+       destruct v0; inversion hz6.
+       destruct b0; inversion y.
+    + inversion y.
+  - (* Swhile_true: return normal state *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct1 _ _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H5 H6 H9 hz2 H7).
+
+    specialize (f_eval_stmt_correct1 _ _ _ _ e2); intros hz8.
+    specialize (type_reserve_stmt _ _ _ _ h1 H6 hz8); intros hz9.
+ 
+    specialize (type_reserve_stmt _ _ _ _ h1 H6 hz8); intros hz10.
+    specialize (mode_mapping_exists _ _ hz10); intros hz11.
+    destruct hz11.
+    simpl in IHs1.
+    assert (a1: well_defined_stmt x (Swhile ast_num b c0) x).
+    specialize (initialization_inc _ _ _ _ _ _ hz8 h1 H6 h2 H); intros ha1.
+    specialize (initializationMap_expr1 _ _ _ H4 ha1); intros ha1_1.
+    specialize (initializationMap_stmt _ _ _ _ H5 ha1); intros ha1_2.
+    destruct ha1_2.
+    apply WD_Swhile with (m' := x0); auto.
+
+    specialize (IHs1 _ _ _ _ _ _ hz9 H a1 h4 h5 h6 h7).
+    rewrite e2 in IHs0.
+
+    destruct_disj IHs0.
+    destruct IHs1 as [IHs1_1 | [IHs1_1 | IHs1_1]].
+    + destruct IHs1_1. destruct H0.
+       left. exists x0.
+       split; auto.
+       econstructor; auto.
+       apply IH12. assumption.
+    + destruct IHs1_1.
+       right. left.
+       split; auto.
+       eapply eval_While_True2; auto.
+       apply IH12. assumption.
+    + right. right.
+       assumption.
+  - (* Swhile: return exception *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct1 _ _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H5 H6 H9 hz2 H7).
+    
+    rewrite e2 in IHs0.
+    destruct_disj IHs0.
+    eapply eval_While_True1; auto.
+  - (* Swhile: proof term with contradictory hypothesis *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (IHs0 _ _ _ _ _ _ h1 h2 H5 H6 H9 hz2 H7).    
+    rewrite e2 in IHs0.
+    destruct_disj IHs0.
+  - (* Swhile_false: return normal state *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct1 _ _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    eapply eval_While_False; auto.
+  - (* Swhile: return exception *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (lt_trans_expr _ _ _ _ _ H8 hz1 H3 H15); intros hz2.
+    specialize (f_eval_expr_correct2 _ _ e1); intros hz3.
+    specialize (eval_expr_with_checks_complete _ _ _ _ _ _ hz3 H8 hz1 H3); intros hz4.
+    specialize (subset_refl (max + 1) cks1); intros hz5.
+    specialize (help2 _ _ _ _ _ _ H9 H7 hz2 H15 hz5); intros hz6.
+    specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ hz4 hz6 H8 hz1 H3); intros hz7.
+    constructor; auto.
+  - (* Swhile: proof term with contradictory hypothesis *)
+    specialize (ast_nums_lt_trans _ _ _ h6 H12); intros hz1.
+    specialize (well_formed_expr _ _ _ _ _ _ _ _ h1 h2 H4 H2 H8 hz1 H3); intros hz2.
+    destruct hz2 as [v hz2].
+    specialize (f_eval_expr_complete _ _ _ hz2); intros hz3.
+    specialize (eval_expr_state _ _ _ hz2); intros hz4.
+    destruct hz4 as [ [v0 hz5] | hz5]; subst;
+    rewrite hz5 in y.    
+    + rewrite hz5 in hz2.
+       specialize (eval_type_reserve _ _ _ _ _ h1 hz2 H2); intros hz6.
+       destruct v0; inversion hz6.
+       destruct b0; inversion y.
+    + inversion y.
+Qed.
+
+(** ** well_formed_stmt *)
+(**
+    for any well-typed, well-defined (all used variables have benn initialized) and 
+    well-checked (with right checks put at the right places according to checking rules) statement c, executed
+    from the initial state s, it should either always be evaluated to a valid state s' under the eval_stmt 
+    reference semantics or it never terminate;
+*)
+Theorem well_formed_stmt: forall k s c tb m0 m1 cks0 cks1 max,
+    type_check_stack tb s ->
+    mode_mapping tb s m0 -> (* m: a map from variable to its initialization state and in/out mode *)
+    well_defined_stmt m0 c m1 ->
+    well_typed_stmt tb c ->
+    well_checked_stmt cks0 c cks1 ->
+    ast_nums_lt cks0 (get_ast_num_stmt c) ->
+    ast_num_inc_stmt c max ->
+    (exists s', eval_stmt s c s') \/ f_eval_stmt k s c = SUnterminated.
+Proof.
+    intros.
+    specialize (well_formed_stmt0 k _ _ _ _ _ _ _ _ H H0 H1 H2 H3 H4 H5); intros hz1.
+    destruct hz1 as [hz2 | [hz2 | hz2]].
+  - destruct hz2 as [s' [hz3 hz4]].
+    specialize (f_eval_stmt_correct1 _ _ _ _ hz3); intros hz5.
+    left; 
+    exists (SNormal s'); auto.
+  - destruct hz2 as [hz3 hz4].
+    specialize (f_eval_stmt_correct2 _ _ _ hz3); intros hz5.
+    left;
+    exists SException; auto.
+  - right; assumption.
 Qed.
 
