@@ -64,7 +64,7 @@ Loop Invariants, Variants and Entry Values
 
 Two loop-related pragmas, Loop_Invariant and Loop_Variant, and a loop-related
 attribute, Loop_Entry are defined. The pragma Loop_Invariant is used to specify
-the essential non-varying properties of a loop Pragma Loop_Variant is intended
+the essential non-varying properties of a loop. Pragma Loop_Variant is intended
 for use in ensuring termination. The Loop_Entry attribute is used to refer to
 the value that an expression had upon entry to a given loop in much the same way
 that the ``Old`` attribute in a subprogram postcondition can be used to refer to
@@ -85,11 +85,20 @@ the value an expression had upon entry to the subprogram.
    as a *cut point* in formal verification. A cut point means that a prover is
    free to forget all information about modified variables that has been
    established within the loop. Only the given Boolean expression is carried
-   forward..
+   forward.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 5.5.3 SS Loop_Invariant acts as a cut point
 
 #. Pragma Loop_Variant is used to demonstrate that a loop will terminate by
    specifying expressions that will increase or decrease as the loop is
    executed.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 5.5.3 SS expressions in Loop_Variant increase or
+                   decrease
 
 .. centered:: **Legality Rules**
 
@@ -97,10 +106,19 @@ the value an expression had upon entry to the subprogram.
    Boolean actual parameter, name resolution, legality rules and dynamic
    semantics, except for extra legality rules given below.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 5.5.3 LR Loop_Invariant is like a pragma Assert, except for
+                   some extra legality rules. Covered by another TU
+
 #. Loop_Variant has an expected actual parameter which is a specialization of an
    Ada expression. Otherwise, it has the same name resolution and legality
    rules as pragma Assert, except for extra legality rules given below.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 5.5.3 LR Loop_Variant is like a pragma Assert except for
+                   some extra legality rules. Covered by another TU
 
 #. The following constructs are said to be *restricted to loops*:
 
@@ -111,6 +129,14 @@ the value an expression had upon entry to the subprogram.
    * A ``block_statement`` whose ``sequence_of_statements`` or
      ``declarative_part`` immediately includes a construct which is restricted
      to loops.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR Loop_Invariant and Loop_Variant can only appear
+                   immediately within a Loop, or immediately within the
+                   sequence_of_statements or declarative_part of a
+                   block_statement that appears immediately within a loop.
+                   Covered by another TU
 
 #. A construct which is restricted to loops shall occur immediately within
    either:
@@ -124,15 +150,32 @@ the value an expression had upon entry to the subprogram.
    shall only occur immediately within a loop statement except that intervening
    block statements are ignored for purposes of this rule.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR Loop_Invariant and Loop_Variant can only appear
+                   immediately within a Loop, or immediately within the
+                   sequence_of_statements or declarative_part of a
+                   block_statement that appears immediately within a loop
+
 #. The expression of a ``loop_variant_item`` shall be of any
    discrete type.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR Expression of Loop_Variant shall be discrete type
 
 .. centered:: **Dynamic Semantics**
 
 #. Other than the above legality rules, pragma Loop_Invariant is equivalent to
    pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada
-   RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant  assertion aspect
-   [and may be used in an  Assertion_Policy pragma].
+   RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant assertion aspect
+   [and may be used in an Assertion_Policy pragma].
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 5.5.3 DS Apart from the extra legality rules, pragma
+                   Loop_Invariant is equivalent to pragma Assert. Covered by
+                   another TU
 
 #. The elaboration of an Checked Loop_Variant pragma begins by evaluating the
    ``discrete_expressions`` in textual order. For the first elaboration of the
@@ -151,6 +194,11 @@ the value an expression had upon entry to the subprogram.
    Pragma Loop_Variant is an assertion (as defined in Ada RM 11.4.2(1.1/3)) and
    is governed by the Loop_Variant assertion aspect [and may be used in an
    Assertion_Policy pragma].
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 DS When a Loop_Variant check fails, exception
+                   Assertions.Assertion_Error is raised.
 
 .. centered:: **Examples**
 
@@ -184,12 +232,23 @@ Attribute Loop_Entry
 #. For a prefix *X* that denotes an object of a nonlimited type, the
    following attribute is defined:
 
-::
+   ::
+
       X'Loop_Entry [(loop_name)]
 
-#. The value of X'Loop_Entry [(loop_name] is the value of X on entry to the loop
-   that is denoted by ``loop_name``.  If the optional ``loop_name`` parameter is
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 5.5.3 SS Nonlimited types have a 'Loop_Entry attribute.
+                   Covered by another TU
+
+#. The value of X'Loop_Entry [(loop_name)] is the value of X on entry to the loop
+   that is denoted by ``loop_name``. If the optional ``loop_name`` parameter is
    not provided, the closest enclosing loop is the default.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 SS If loop_name is not provided the closest enclosing
+                   loop is chosen by default
 
 .. centered:: **Legality Rules**
 
@@ -198,6 +257,12 @@ Attribute Loop_Entry
    about ``exit_statements`` in the Name Resolution Rules and Legality Rules
    sections of Ada RM 5.7, a corresponding rule applies to Loop_Entry
    ``attribute_references``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR 'Loop_Entry shall occur within a loop and loop_name
+                   shall to refer to an existing enclosing loop. Covered by
+                   another TU
 
 #. In many cases, the language rules pertaining to the Loop_Entry
    attribute match those pertaining to the Old attribute (see Ada LRM 6.1.1),
@@ -232,15 +297,27 @@ Attribute Loop_Entry
    * the prefix of the ``attribute_reference`` shall not contain a Loop_Entry
      ``attribute_reference.``
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR Referencing 'Loop_Entry is only possible from
+                   within the corresponding loop. Covered by another TU
+
 #. A ``Loop_Entry`` ``attribute_reference`` shall occur within a ``Loop_Variant``
    or ``Loop_Invariant`` pragma, or an ``Assert``, ``Assume`` or
    ``Assert_And_Cut`` pragma appearing in a position where a ``Loop_Invariant``
    pragma would be allowed.
 
-  [Roughly speaking, a ``Loop_Entry`` ``attribute_reference`` can occur in an
-  ``Assert``, ``Assume`` or ``Assert_And_Cut`` pragma immediately within a loop
-  statement except that intervening block statements are ignored for purposes of
-  this rule.]
+   [Roughly speaking, a ``Loop_Entry`` ``attribute_reference`` can occur in an
+   ``Assert``, ``Assume`` or ``Assert_And_Cut`` pragma immediately within a loop
+   statement except that intervening block statements are ignored for purposes of
+   this rule.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR Loop_Entry can occur in an Assert, Assume,
+                   Assert_And_Cut, Loop_Variant and Loop_Invariant pragma that
+                   is immediately within a loop or within a block statement
+                   that is immediately within a loop.
 
 #. The prefix of a Loop_Entry ``attribute_reference`` shall not contain a use
    of an entity declared within the ``loop_statement`` but not within the prefix
@@ -258,6 +335,11 @@ Attribute Loop_Entry
    evaluated on entry to the loop is obtained even if the value of Var has since
    changed].
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 LR Loop_Entry can be combined with quantified
+                   expressions but cannot refer to variables declared in
+                   block statements that are within the loop
 
 #. The prefix of a Loop_Entry ``attribute_reference`` shall statically denote
    an entity, or shall denote an ``object_renaming_declaration``, if
@@ -267,23 +349,28 @@ Attribute Loop_Entry
    * the ``attribute_reference`` does not apply to the innermost
      enclosing ``loop_statement``.
 
-   [This rule follows the corresponding Ada RM rule for 'Old
-    The prefix of an Old attribute_reference that is potentially unevaluated
-    shall statically denote an entity and have the same rationale. If the
-    following was allowed:
+   [This rule follows the corresponding Ada RM rule for 'Old.
+   The prefix of an Old attribute_reference that is potentially unevaluated
+   shall statically denote an entity and have the same rationale. If the
+   following was allowed:
 
    .. code-block:: ada
-
 
       procedure P (X : in out String; Idx : Positive) is
       begin
          Outer :
             loop
-                if Idx in X'Range then
-                   loop
-                      pragma Loop_Invariant (X(Idx) > X(Idx)'Loop_Entry(Outer));
+               if Idx in X'Range then
+                  loop
+                     pragma Loop_Invariant (X(Idx) > X(Idx)'Loop_Entry(Outer));
 
    this would introduce an exception in the case where Idx is not in X'Range.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE FA 5.5.3 LR Loop_Entry shall denote an
+                   object_renaming_declaration if the attribute_reference is
+                   unevaluated or does not apply to the innermost loop.
 
 .. centered:: **Dynamic Semantics**
 
@@ -294,6 +381,12 @@ Attribute Loop_Entry
    of the constant declaration. The value of X'Loop_Entry is the value of this
    constant; the type of X'Loop_Entry is the type of X. These implicit
    constant declarations occur in an arbitrary order.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 DS Each Loop_Entry has a corresponding constant
+                   declared at the associated loop statement. Covered by
+                   another TU
 
 #. The previous paragraph notwithstanding, the implicit constant declaration
    is not elaborated if the ``loop_statement`` has an ``iteration_scheme`` whose
@@ -343,6 +436,11 @@ Attribute Loop_Entry
          P (Length_Is_Zero);
       end;]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.5.3 DS Loops that do not execute at least once do not
+                   have constants declared for the Loop_Entry attributes they
+                   contain. Covered by another TU
 
 Block Statements
 ----------------
@@ -366,7 +464,7 @@ Proof Pragmas
 
 This section discusses the pragmas Assert_And_Cut and Assume.
 
-Two |SPARK| pragmas are defined, Assert_And_Cut and Assume.  Each has a
+Two |SPARK| pragmas are defined, Assert_And_Cut and Assume. Each has a
 single Boolean parameter and may be used wherever pragma Assert is allowed.
 
 A Boolean expression which is an actual parameter of pragma Assume
@@ -374,7 +472,7 @@ can be assumed to be True for the remainder of the subprogram. If the
 Assertion_Policy is Check for pragma Assume and the Boolean expression does not
 evaluate to True, the exception Assertions.Assertion_Error will be raised.
 However, in proof, no verification of the expression is performed and in general
-it cannot.  It has to be used with caution and is used to state axioms.
+it cannot. It has to be used with caution and is used to state axioms.
 
 
 .. centered:: **Static Semantics**
@@ -387,7 +485,7 @@ it cannot.  It has to be used with caution and is used to state axioms.
 
 #. Pragma Assume is the same as a pragma Assert except that there is no
    proof obligation to prove the truth of the Boolean expression that is its
-   actual parameter.  [Pragma Assume indicates to proof tools that the
+   actual parameter. [Pragma Assume indicates to proof tools that the
    expression can be assumed to be True].
 
 .. centered:: **Legality Rules**
