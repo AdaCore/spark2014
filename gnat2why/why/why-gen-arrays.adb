@@ -27,7 +27,6 @@ with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Sem_Eval;            use Sem_Eval;
 with Sinfo;               use Sinfo;
-with Snames;              use Snames;
 with Stand;               use Stand;
 with Uintp;               use Uintp;
 
@@ -84,16 +83,6 @@ package body Why.Gen.Arrays is
       Arg_Ind : in out Positive);
    --  Add an argument for the corresponding attribute of the array. See alse
    --  [Get_Array_Attr].
-
-   function Get_Array_Attr
-     (Domain : EW_Domain;
-      Expr   : W_Expr_Id;
-      Ty     : Entity_Id;
-      Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id;
-   --  Get the expression for the attribute (first/last) of the array.
-   --  For constrained arrays, this refers to the introduced constant,
-   --  for unconstrained arrays this is translated to a field access.
 
    function Build_Length_Expr
      (Domain : EW_Domain;

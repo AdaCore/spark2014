@@ -2768,67 +2768,180 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Expr         : Node_Id) return W_Expr_Id
    is
-      Prefx  : constant Node_Id := Sinfo.Prefix (Expr);
-      Ty_Ent : constant Entity_Id := Unique_Entity (Etype (Prefx));
-      T      : W_Expr_Id;
+
+      function Range_Contained_In_Ty
+        (Ty : Entity_Id;
+         N  : Node_Id) return Boolean;
+      --  Check if the range node N is statically contained in the type Ty
+
+      ---------------------------
+      -- Range_Contained_In_Ty --
+      ---------------------------
+
+      function Range_Contained_In_Ty
+        (Ty : Entity_Id;
+         N  : Node_Id) return Boolean
+      is
+      begin
+         if not Is_Constrained (Ty) then
+            return False;
+         end if;
+         if not Is_Static_Range (N) then
+            return False;
+         end if;
+         declare
+            Ind_Ty : constant Entity_Id := Nth_Index_Type (Ty, 1);
+            Low    : constant Uint := Expr_Value (Low_Bound (N));
+            High   : constant Uint := Expr_Value (High_Bound (N));
+         begin
+            if not Is_Static_Subtype (Ind_Ty) then
+               return False;
+            else
+               declare
+                  Ind_Low  : constant Uint :=
+                    Expr_Value (Low_Bound (Scalar_Range (Ind_Ty)));
+                  Ind_High : constant Uint :=
+                    Expr_Value (High_Bound (Scalar_Range (Ind_Ty)));
+               begin
+                  return
+                    Ind_Low <= Low and then Low <= Ind_High and then
+                    Ind_Low <= Low and then High <= Ind_High;
+               end;
+            end if;
+         end;
+      end Range_Contained_In_Ty;
+
+      Prefx     : constant Node_Id := Sinfo.Prefix (Expr);
+      Ty_Ent    : constant Entity_Id := Unique_Entity (Etype (Prefx));
+      T         : W_Expr_Id;
+      Need_Tmp  : constant Boolean :=
+        not Is_Constrained (Ty_Ent) and then Domain = EW_Prog;
+      Tmp_Var   : W_Identifier_Id;
+      Tmp_Expr  : W_Expr_Id;
+      Orig_Expr : W_Expr_Id;
+
    begin
 
       --  We start by translating the prefix itself.
 
       T := Transform_Expr (Prefx, Domain, Params);
 
+      if Need_Tmp then
+         Tmp_Var := New_Temp_Identifier;
+         Tmp_Expr := +Tmp_Var;
+         Orig_Expr := T;
+      else
+         Tmp_Expr := T;
+      end if;
+
       if not Is_Constrained (Ty_Ent) then
          T :=
            Insert_Array_Conversion
              (Domain => Domain,
-              Expr   => T,
+              Expr   => Tmp_Expr,
               To     => Type_Of_Node (Etype (Expr)),
               From   => Type_Of_Node (Ty_Ent));
       end if;
 
-      --  ??? We check for runtime errors in the bounds expressions. But we
-      --  should also check that the defined range is part of the subtype of
-      --  the array type.
+      --  Now we insert checks. There are two things that we need to check
+      --  here: First, the expression(s) that define the slice range don't
+      --  contain RTE themselves; Second, if the range is non-empty, the
+      --  bounds of the range need to be in the bounds of the prefix.
 
-      --  ??? We should also insert an assumption that the bounds of the
-      --  subtype are equal to the expressions provided here.
+      if Domain = EW_Prog and then
+        not Range_Contained_In_Ty
+          (Ty_Ent,
+           Get_Range (Discrete_Range (Expr))) then
+         declare
+            Rng      : constant Node_Id := Get_Range (Discrete_Range (Expr));
+            Tmp_Low  : constant W_Identifier_Id := New_Temp_Identifier;
+            Tmp_High : constant W_Identifier_Id := New_Temp_Identifier;
+            Ar_Low   : constant W_Expr_Id :=
+              Get_Array_Attr (Domain => EW_Pred,
+                              Expr   => Tmp_Expr,
+                              Ty     => Ty_Ent,
+                              Attr   => Attribute_First,
+                              Dim    => 1);
+            Ar_High  : constant W_Expr_Id :=
+              Get_Array_Attr (Domain => EW_Pred,
+                              Expr   => Tmp_Expr,
+                              Ty     => Ty_Ent,
+                              Attr   => Attribute_Last,
+                              Dim    => 1);
+            Check    : constant W_Pred_Id :=
+              New_Connection
+                (Op     => EW_Imply,
+                 Left   =>
+                   New_Relation (Domain  => EW_Pred,
+                                 Op_Type => EW_Int,
+                                 Op      => EW_Le,
+                                 Left    => +Tmp_Low,
+                                 Right   => +Tmp_High),
+                 Right  =>
+                   New_And_Then_Expr
+                     (Domain => EW_Pred,
+                      Left   =>
+                        New_Relation
+                          (Domain  => EW_Pred,
+                           Op_Type => EW_Int,
+                           Op      => EW_Le,
+                           Left    => +Ar_Low,
+                           Right   => +Tmp_Low,
+                           Op2     => EW_Le,
+                           Right2  => +Ar_High),
+                      Right =>
+                        New_Relation
+                          (Domain  => EW_Pred,
+                           Op_Type => EW_Int,
+                           Op      => EW_Le,
+                           Left    => +Ar_Low,
+                           Right   => +Tmp_High,
+                           Op2     => EW_Le,
+                           Right2  => +Ar_High)));
+         begin
+            T :=
+              New_Binding
+                (Domain  => EW_Prog,
+                 Name    => Tmp_Low,
+                 Def     =>
+                 +Transform_Expr
+                   (Low_Bound (Rng),
+                    EW_Int_Type,
+                    EW_Prog,
+                    Params),
+                 Context =>
+                   New_Binding
+                     (Domain => EW_Prog,
+                      Name   => Tmp_High,
+                      Def    =>
+                      +Transform_Expr
+                        (High_Bound (Rng),
+                         EW_Int_Type,
+                         Domain,
+                         Params),
+                      Context =>
+                      +Sequence
+                        (New_Located_Assert (Expr, Check, VC_Range_Check),
+                         +T)));
+         end;
+      end if;
 
-      --  ??? This should *not* happen whenever the expression here is
-      --  duplicated; Note that there is only one place where such a
-      --  duplication happens today: the loop condition and code that
-      --  appears before the loop statement
+      --  ??? Currently, if Slice bounds are not static, they get forgotten,
+      --  because we do not actually use the expression(s) that define the
+      --  slice range other than for absence of RTE checks. TBD. For static
+      --  ranges, this still works, because access to the bounds of the slice
+      --  is done by going through the subtype declaration, which has the
+      --  necessary definitions in case of static bounds.
 
-      if Domain = EW_Prog then
-         case Nkind (Discrete_Range (Expr)) is
-            when N_Identifier | N_Attribute_Reference =>
+      --  if a tmp was generated for the expression, introduce the binding here
 
-            --  The bound is given by a reference to some other range
-
-               null;
-
-            when N_Range =>
-               declare
-                  Low  : constant Node_Id := Low_Bound (Discrete_Range (Expr));
-                  High : constant Node_Id :=
-                    High_Bound (Discrete_Range (Expr));
-               begin
-                  T :=
-                    +Sequence
-                    (New_Ignore (Prog =>
-                                     +Transform_Expr (High, Domain, Params)),
-                     +T);
-                  T :=
-                    +Sequence
-                    (New_Ignore (Prog =>
-                                     +Transform_Expr (Low, Domain, Params)),
-                     +T);
-               end;
-
-            when others =>
-               Ada.Text_IO.Put_Line ("[Transform_Slice] Node ="
-                                     & Node_Id'Image (Discrete_Range (Expr)));
-               raise Program_Error;
-         end case;
+      if Need_Tmp then
+         T :=
+           New_Binding
+             (Domain => Domain,
+              Name   => Tmp_Var,
+              Def    => +Orig_Expr,
+              Context => T);
       end if;
       return T;
    end Transform_Slice;

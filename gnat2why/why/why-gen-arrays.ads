@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Snames;    use Snames;
 with Types;     use Types;
 with Why.Ids;   use Why.Ids;
 with Why.Sinfo; use Why.Sinfo;
@@ -206,5 +207,15 @@ package Why.Gen.Arrays is
    --  all these extra arguments starting from the initial value of Arg_Ind.
    --  The final value of Arg_Ind corresponds to the array index that follows
    --  the last argument filled in by this procedure.
+
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Expr   : W_Expr_Id;
+      Ty     : Entity_Id;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id;
+   --  Get the expression for the attribute (first/last) of the array.
+   --  For constrained arrays, this refers to the introduced constant,
+   --  for unconstrained arrays this is translated to a field access.
 
 end Why.Gen.Arrays;
