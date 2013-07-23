@@ -70,8 +70,8 @@ originally designed with the |SPARK| contracts in mind.
 a subprogram spec or body is in |SPARK|, and it can compute the data
 dependences of subprograms both inside and outside of |SPARK|.
 
-Special Compilation Mode
-------------------------
+Compilation Options to Support Integration of Test and Proof
+------------------------------------------------------------
 
 In order to combine formal verification with testing, the program should
 respect a number of restrictions, even on code that is not in |SPARK|. These
@@ -84,12 +84,14 @@ restrictions are:
             No_Finalization,
             No_Implicit_Aliasing);
 
-Additionally, the program should be compiled with special switches, which add
-run-time checks to verify dynamically the assumptions made during formal
-verification:
+Additionally, special switches add run-time checks to verify dynamically the
+assumptions made during formal verification:
 
  * ``-gnateA`` adds checks that parameters are not aliased
- * ``-gnateV`` adds checks that parameters are valid, including parameters of composite types (arrays, records)
+ * ``-gnateV`` adds checks that parameters are valid, including parameters of
+   composite types (arrays, records)
+ * ``-gnatVa`` adds checks that objects are valid at more places than -gnateV,
+   but only for scalar objects
 
 Test Cases
 ----------
