@@ -115,21 +115,6 @@ package body Xtree_Sinfo is
                  "Aliased_Type", "W_Primitive_Type", Id_One);
       Set_Domain (W_Ref_Type, EW_Prog);
 
-      ------------------------
-      -- W_Computation_Type --
-      ------------------------
-
-      New_Field (W_Computation_Type,
-                 "Binders", "W_Binder", Id_Set);
-      New_Field (W_Computation_Type,
-                 "Result", "W_Binder", Id_One);
-      New_Field (W_Computation_Type,
-                 "Effects", "W_Effects", Id_Lone);
-      New_Field (W_Computation_Type,
-                 "Pre", "W_Pred", Id_Lone);
-      New_Field (W_Computation_Type,
-                 "Post", "W_Pred", Id_Lone);
-
       ---------------
       -- W_Effects --
       ---------------
@@ -630,7 +615,15 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Decl,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Function_Decl,
-                 "Func_Type", "W_Computation_Type", Id_One);
+                 "Binders", "W_Binder", Id_Set);
+      New_Field (W_Function_Decl,
+                 "Effects", "W_Effects", Id_Lone);
+      New_Field (W_Function_Decl,
+                 "Pre", "W_Pred", Id_Lone);
+      New_Field (W_Function_Decl,
+                 "Post", "W_Pred", Id_Lone);
+      New_Field (W_Function_Decl,
+                 "Return_Type", "W_Simple_Value_Type", Id_One);
       New_Field (W_Function_Decl,
                  "Labels", "W_Identifier", Id_Set);
 

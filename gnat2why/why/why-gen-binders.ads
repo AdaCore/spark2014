@@ -40,6 +40,8 @@ package Why.Gen.Binders is
    --  This package provides operations to build binders in program space
    --  and in logic space.
 
+   type Modifier_Type is (Array_Modifier, Ref_Modifier, None);
+
    type Binder_Type is record
       Ada_Node : Node_Id := Empty;
       B_Name   : W_Identifier_Id;

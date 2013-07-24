@@ -177,72 +177,6 @@ package body Why.Atree.Sprint is
       P (O, "ref ");
    end Ref_Type_Pre_Op;
 
-   -----------------------------
-   -- Computation_Type_Pre_Op --
-   -----------------------------
-
-   procedure Computation_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Computation_Type_Id)
-   is
-      Binders     : constant W_Binder_OList := Get_Binders (Node);
-      Result      : constant W_Binder_Id := Get_Result (Node);
-      Result_Type : constant W_Simple_Value_Type_Id := Get_Arg_Type (Result);
-      Pre         : constant W_Pred_Id := Get_Pre (Node);
-      Domain      : constant EW_Domain := Get_Domain (+Node);
-   begin
-      case Domain is
-         when EW_Prog =>
-            if not (Is_Empty (+Binders)) then
-               Print_List (State, +Binders, " ->", Newline => True);
-               PL (O, " ->");
-            end if;
-
-            P (O, "{ ");
-            Traverse (State, +Pre);
-            P (O, " }");
-            NL (O);
-            Relative_Indent (O, 1);
-            Traverse (State, +Result_Type);
-            NL (O);
-            Traverse (State, +Get_Effects (Node));
-            Relative_Indent (O, -1);
-            P (O, "{ ");
-            Traverse (State, +Get_Post (Node));
-            P (O, " }");
-
-         when EW_Term =>
-            declare
-               use Node_Lists;
-               Nodes    : constant List := Get_List (+Binders);
-               Position : Cursor := First (Nodes);
-            begin
-               while Position /= No_Element loop
-                  declare
-                     Binder   : constant W_Binder_Id := +Element (Position);
-                  begin
-                     Traverse (State, +Get_Arg_Type (Binder));
-                  end;
-                  Next (Position);
-
-                  if Position /= No_Element then
-                     PL (O, ",");
-                  else
-                     P (O, " -> ");
-                  end if;
-               end loop;
-
-               Traverse (State, +Result_Type);
-            end;
-
-         when EW_Pred =>
-            pragma Assert (False);
-            null;
-      end case;
-
-      State.Control := Abandon_Children;
-   end Computation_Type_Pre_Op;
-
    --------------------
    -- Effects_Pre_Op --
    --------------------
@@ -1377,8 +1311,10 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Function_Decl_Id)
    is
-      Name      : constant W_Identifier_Id := Get_Name (Node);
-      Func_Type : constant W_Computation_Type_Id := Get_Func_Type (Node);
+      Name        : constant W_Identifier_Id := Get_Name (Node);
+      Return_Type : constant W_Simple_Value_Type_Id := Get_Return_Type (Node);
+      Binders     : constant W_Binder_OList := Get_Binders (Node);
+
    begin
       case Get_Domain (+Node) is
          when EW_Term =>
@@ -1392,21 +1328,13 @@ package body Why.Atree.Sprint is
             NL (O);
             Relative_Indent (O, 1);
 
-            declare
-               Binders     : constant W_Binder_OList :=
-                               Get_Binders (Func_Type);
-               Result      : constant W_Binder_Id := Get_Result (Func_Type);
-               Result_Type : constant W_Simple_Value_Type_Id :=
-                               Get_Arg_Type (Result);
-            begin
-               if not Is_Empty (+Binders) then
-                  P (O, " (");
-                  Print_List (State, +Binders, ") (");
-                  P (O, ") ");
-               end if;
-               P (O, " :");
-               Traverse (State, +Result_Type);
-            end;
+            if not Is_Empty (+Binders) then
+               P (O, " (");
+               Print_List (State, +Binders, ") (");
+               P (O, ") ");
+            end if;
+            P (O, " :");
+            Traverse (State, +Return_Type);
 
             Relative_Indent (O, -1);
             NL (O);
@@ -1418,15 +1346,9 @@ package body Why.Atree.Sprint is
             Relative_Indent (O, 1);
             NL (O);
             declare
-               Binders     : constant W_Binder_OList :=
-                 Get_Binders (Func_Type);
-               Result      : constant W_Binder_Id :=
-                 Get_Result (Func_Type);
-               Result_Type : constant W_Simple_Value_Type_Id :=
-                 Get_Arg_Type (Result);
-               Pre         : constant W_Pred_Id := Get_Pre (Func_Type);
-               Effects     : constant W_Effects_Id := Get_Effects (Func_Type);
-               Post        : constant W_Pred_Id := Get_Post (Func_Type);
+               Pre         : constant W_Pred_Id := Get_Pre (Node);
+               Effects     : constant W_Effects_Id := Get_Effects (Node);
+               Post        : constant W_Pred_Id := Get_Post (Node);
             begin
                if not Is_Empty (+Binders) then
                   P (O, " (");
@@ -1434,7 +1356,7 @@ package body Why.Atree.Sprint is
                   P (O, ") ");
                end if;
                P (O, " :");
-               Traverse (State, +Result_Type);
+               Traverse (State, +Return_Type);
                NL (O);
                if Pre /= Why_Empty then
                   P (O, "requires { ");
@@ -1463,15 +1385,11 @@ package body Why.Atree.Sprint is
             NL (O);
             Relative_Indent (O, 1);
 
-            declare
-               Binders : constant W_Binder_OList := Get_Binders (Func_Type);
-            begin
-               if not Is_Empty (+Binders) then
-                  P (O, " (");
-                  Print_List (State, +Binders, ") (");
-                  P (O, ") ");
-               end if;
-            end;
+            if not Is_Empty (+Binders) then
+               P (O, " (");
+               Print_List (State, +Binders, ") (");
+               P (O, ") ");
+            end if;
 
             Relative_Indent (O, -1);
             NL (O);
@@ -1489,14 +1407,12 @@ package body Why.Atree.Sprint is
       Node  : W_Function_Def_Id)
    is
       Spec        : constant W_Function_Decl_Id := Get_Spec (Node);
-      Func_Type   : constant W_Computation_Type_Id := Get_Func_Type (Spec);
       Def         : constant W_Expr_Id := Get_Def (Node);
       Name        : constant W_Identifier_Id := Get_Name (Spec);
-      Binders     : constant W_Binder_OList := Get_Binders (Func_Type);
-      Result      : constant W_Binder_Id := Get_Result (Func_Type);
-      Result_Type : constant W_Simple_Value_Type_OId := Get_Arg_Type (Result);
-      Pre         : constant W_Pred_OId := Get_Pre (Func_Type);
-      Post        : constant W_Pred_OId := Get_Post (Func_Type);
+      Binders     : constant W_Binder_OList := Get_Binders (Spec);
+      Return_Type : constant W_Simple_Value_Type_OId := Get_Return_Type (Spec);
+      Pre         : constant W_Pred_OId := Get_Pre (Spec);
+      Post        : constant W_Pred_OId := Get_Post (Spec);
    begin
       case Get_Domain (+Node) is
          when EW_Pred =>
@@ -1529,7 +1445,7 @@ package body Why.Atree.Sprint is
             end if;
             P (O, " : ");
 
-            Traverse (State, +Result_Type);
+            Traverse (State, +Return_Type);
             PL (O, " =");
             Relative_Indent (O, 1);
             Traverse (State, +Def);

@@ -43,7 +43,6 @@ with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;

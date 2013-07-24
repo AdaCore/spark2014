@@ -5466,7 +5466,7 @@ package body Gnat2Why.Expr is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Emit
         (Decl_File.Cur_Theory,
-         New_Function_Decl
+         Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,
             Binders     => (1 .. 0 => <>),

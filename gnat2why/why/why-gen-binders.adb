@@ -30,20 +30,9 @@ with Why.Conversions;  use Why.Conversions;
 with Why.Gen.Names;    use Why.Gen.Names;
 with Why.Gen.Decl;     use Why.Gen.Decl;
 with Why.Gen.Expr;     use Why.Gen.Expr;
-with Why.Gen.Progs;    use Why.Gen.Progs;
 with Why.Inter;        use Why.Inter;
 
 package body Why.Gen.Binders is
-
-   function New_Computation_Type
-     (Ada_Node    : Node_Id := Empty;
-      Domain      : EW_Domain;
-      Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
-      Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id := True_Pred;
-      Post        : W_Pred_Id := True_Pred)
-     return W_Computation_Type_Id;
 
    function New_Binders
      (Domain  : EW_Domain;
@@ -236,30 +225,6 @@ package body Why.Gen.Binders is
          Args     => New_Expr_Array (Domain, Binders));
    end New_Call;
 
-   --------------------------
-   -- New_Computation_Type --
-   --------------------------
-
-   function New_Computation_Type
-     (Ada_Node    : Node_Id := Empty;
-      Domain      : EW_Domain;
-      Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
-      Effects     : W_Effects_Id := New_Effects;
-      Pre         : W_Pred_Id := True_Pred;
-      Post        : W_Pred_Id := True_Pred)
-     return W_Computation_Type_Id is
-   begin
-      return New_Computation_Type
-        (Ada_Node => Ada_Node,
-         Domain   => Domain,
-         Binders  => New_Binders (Domain, Binders),
-         Pre      => Pre,
-         Effects  => Effects,
-         Post     => Post,
-         Result   => New_Result (+Return_Type));
-   end New_Computation_Type;
-
    -----------------------------
    -- New_Existential_Quantif --
    -----------------------------
@@ -324,18 +289,15 @@ package body Why.Gen.Binders is
      return W_Declaration_Id is
    begin
       return New_Function_Decl
-        (Ada_Node  => Ada_Node,
-         Domain    => Domain,
-         Name      => Name,
-         Labels    => Labels,
-         Func_Type =>
-           New_Computation_Type
-             (Binders     => Binders,
-              Domain      => Domain,
-              Return_Type => Return_Type,
-              Effects     => Effects,
-              Pre         => Pre,
-              Post        => Post));
+        (Ada_Node    => Ada_Node,
+         Domain      => Domain,
+         Name        => Name,
+         Labels      => Labels,
+         Binders     => New_Binders (Domain, Binders),
+         Return_Type => +Return_Type,
+         Effects     => Effects,
+         Pre         => Pre,
+         Post        => Post);
    end New_Function_Decl;
 
    -----------------------
