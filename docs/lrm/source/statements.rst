@@ -483,10 +483,20 @@ it cannot. It has to be used with caution and is used to state axioms.
    established from the statement list before the cut point. Only the given
    Boolean expression is carried forward.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 5.9 SS Pragma Assert_And_Cut is like pragma Assert but
+                   it also acts as a cut point.
+
 #. Pragma Assume is the same as a pragma Assert except that there is no
    proof obligation to prove the truth of the Boolean expression that is its
    actual parameter. [Pragma Assume indicates to proof tools that the
-   expression can be assumed to be True].
+   expression can be assumed to be True.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 5.9 SS Pragma Assume is like pragma Assert but creates
+                   no proof obligation.
 
 .. centered:: **Legality Rules**
 
@@ -494,12 +504,17 @@ it cannot. It has to be used with caution and is used to state axioms.
    actual parameter, name resolution rules and dynamic semantics as pragma
    Assert.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 5.9 LR Pragmas Assert_And_Cut and Assume have the same
+                   syntax as pragma Assert. Covered by another TU
+
 .. _assertcutinv_proof_semantics:
 
 .. centered:: **Verification Rules**
 
-#. The verification rules for pragma Assume are significantly different to that
-   pragma Assert. [It would be difficult to overstate the importance of the
+#. The verification rules for pragma Assume are significantly different to those
+   of pragma Assert. [It would be difficult to overstate the importance of the
    difference.] Even though the dynamic semantics of pragma Assume and pragma
    Assert are identical, pragma Assume does not introduce a corresponding proof
    obligation. Instead the prover is given permission to assume the truth of the
@@ -507,4 +522,7 @@ it cannot. It has to be used with caution and is used to state axioms.
    pragma can invalidate an arbitrarily large number of proofs - the
    responsibility for ensuring correctness rests entirely upon the user.]
 
+   .. ifconfig:: Display_Trace_Units
 
+      :Trace Unit: PR 5.9 VR Pragma Assume is like pragma Assert but creates
+                   no proof obligation. Covered by another TU
