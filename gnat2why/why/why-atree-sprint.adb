@@ -177,36 +177,6 @@ package body Why.Atree.Sprint is
       P (O, "'");
    end Generic_Formal_Type_Pre_Op;
 
-   --------------------------------------
-   -- Generic_Actual_Type_Chain_Pre_Op --
-   --------------------------------------
-
-   procedure Generic_Actual_Type_Chain_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Generic_Actual_Type_Chain_Id)
-   is
-      use Node_Lists;
-      Args     : constant List := Get_List (+Get_Type_Chain (Node));
-      Nb_Args  : constant Count_Type := Length (Args);
-   begin
-      if Nb_Args >= 1 then
-         P (O, "(");
-      end if;
-
-      Traverse (State, +Get_Name (Node));
-
-      P (O, " ");
-
-      Print_List (State, +Get_Type_Chain (Node), " ");
-
-      if Nb_Args >= 1 then
-         P (O, ")");
-      end if;
-
-      State.Control := Abandon_Children;
-
-   end Generic_Actual_Type_Chain_Pre_Op;
-
    ---------------------
    -- Ref_Type_Pre_Op --
    ---------------------
