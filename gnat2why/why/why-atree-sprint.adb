@@ -1086,12 +1086,9 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Any_Expr_Id)
    is
-      Ty      : constant W_Computation_Type_Id := Get_Any_Type (Node);
-      Result  : constant W_Binder_Id := Get_Result (Ty);
-      Res_Ty  : constant W_Simple_Value_Type_Id := Get_Arg_Type (Result);
-      Pre     : constant W_Pred_Id := Get_Pre (Ty);
-      Post    : constant W_Pred_Id := Get_Post (Ty);
-      Effects : constant W_Effects_Id := Get_Effects (Ty);
+      Res_Ty  : constant W_Simple_Value_Type_Id := Get_Return_Type (Node);
+      Pre     : constant W_Pred_Id := Get_Pre (Node);
+      Post    : constant W_Pred_Id := Get_Post (Node);
    begin
       P (O, "(any ");
       Traverse (State, +Res_Ty);
@@ -1105,10 +1102,6 @@ package body Why.Atree.Sprint is
          P (O, "ensures {");
          Traverse (State, +Post);
          PL (O, "} ");
-      end if;
-      if Effects /= Why_Empty then
-         Traverse (State, +Effects);
-         NL (O);
       end if;
       P (O, ")");
       State.Control := Abandon_Children;

@@ -49,14 +49,9 @@ package body Why.Gen.Progs is
       return
         New_Any_Expr
           (Ada_Node => Ada_Node,
-           Any_Type =>
-             New_Computation_Type
-               (Domain   => EW_Prog,
-                Ada_Node => Ada_Node,
-                Result   => New_Result (+Return_Type),
-                Effects  => New_Effects,
-                Pre      => Pre,
-                Post     => Post));
+           Pre      => Pre,
+           Post     => Post,
+           Return_Type => +Return_Type);
    end New_Assume_Statement;
 
    ------------------
@@ -225,13 +220,9 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         New_Any_Expr
-            (Any_Type =>
-               New_Computation_Type
-                  (Domain  => EW_Prog,
-                   Result  => New_Result (+T),
-                   Effects => New_Effects,
-                   Post    => Pred));
+        New_Any_Expr
+          (Post        => Pred,
+           Return_Type => +T);
    end New_Simpl_Any_Prog;
 
    --------------

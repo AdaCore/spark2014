@@ -515,7 +515,11 @@ package body Xtree_Sinfo is
       ----------------
 
       New_Field (W_Any_Expr,
-                 "Any_Type", "W_Computation_Type", Id_One);
+                 "Pre", "W_Pred", Id_Lone);
+      New_Field (W_Any_Expr,
+                 "Post", "W_Pred", Id_Lone);
+      New_Field (W_Any_Expr,
+                 "Return_Type", "W_Simple_Value_Type", Id_One);
 
       ------------------
       -- W_Assignment --
