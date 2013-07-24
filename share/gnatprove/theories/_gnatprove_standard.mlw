@@ -181,7 +181,15 @@ module Boolean
     requires { in_range n }
     ensures { result = n }
 
-   function bool_eq (x : bool) (y : bool) : bool =
+  val check_not_last (n : int) : int
+    requires { n <> attr__ATTRIBUTE_LAST }
+    ensures { result = n }
+
+  val check_not_first (n : int) : int
+    requires { n <> attr__ATTRIBUTE_FIRST }
+    ensures { result = n }
+
+  function bool_eq (x : bool) (y : bool) : bool =
     if x = y then True else False
 end
 
