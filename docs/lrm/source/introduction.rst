@@ -25,10 +25,10 @@ testing.
 
 The new aspects defined for |SPARK| all have equivalent pragmas which allows a
 |SPARK| program to be compiled by and executed by any Ada implementation; for
-instance an Ada 95 compiler provided the use of Ada 2005 and Ada 2012 specific
-features are avoided.  The |SPARK| attributes Update and Loop_Entry can be used
-only if the Ada implementation supports them.  Additionally the attribute Old
-can be used in only a postcondition and not in a pragma.
+instance an Ada 95 compiler provided that the use of Ada 2005 and Ada 2012 specific
+features is avoided. The |SPARK| attributes Update and Loop_Entry can be used
+only if the Ada implementation supports them. Additionally, attribute Old
+can only be used in a postcondition.
 
 The direct use of the new aspects requires an Ada 2012 compiler which supports them
 in a way consistent with the definition given here in the |SPARK| reference manual.
