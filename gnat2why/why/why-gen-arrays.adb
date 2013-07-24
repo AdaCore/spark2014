@@ -417,7 +417,7 @@ package body Why.Gen.Arrays is
                        (1 =>
                           Binder_Type'(
                             Ada_Node => Empty,
-                            Modifier => None,
+                            Mutable  => False,
                             B_Name   => Dummy_Ident,
                             B_Type   => Image_Ty)),
                      Return_Type => Str_Typ));
@@ -429,7 +429,7 @@ package body Why.Gen.Arrays is
                        (1 =>
                           Binder_Type'(
                             Ada_Node => Empty,
-                            Modifier => None,
+                            Mutable  => False,
                             B_Name   => Dummy_Ident,
                             B_Type   => Str_Typ)),
                      Return_Type => Image_Ty));

@@ -125,14 +125,6 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       Set_Domain (W_Generic_Actual_Type_Chain, EW_Term);
 
-      ------------------
-      -- W_Array_Type --
-      ------------------
-
-      New_Field (W_Array_Type,
-                 "Component_Type", "W_Primitive_Type", Id_One);
-      Set_Domain (W_Array_Type, EW_Prog);
-
       ----------------
       -- W_Ref_Type --
       ----------------

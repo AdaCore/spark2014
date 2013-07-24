@@ -354,7 +354,7 @@ package body Gnat2Why.Subprograms is
                   B_Name   => New_Identifier (Name => R.all),
                   B_Type   =>
                     New_Abstract_Type (Name => To_Why_Type (R.all)),
-                  Modifier => None);
+                  Mutable  => False);
                Count := Count + 1;
             end loop;
 
@@ -391,8 +391,7 @@ package body Gnat2Why.Subprograms is
             Result (Count) :=
               (Ada_Node => Id,
                B_Name   => Name,
-               Modifier =>
-                 (if Is_Mutable_In_Why (Id) then Ref_Modifier else None),
+               Mutable  => Is_Mutable_In_Why (Id),
                B_Type   =>
                  (if Use_Why_Base_Type (Id) then
                      +Base_Why_Type (Unique_Entity (Etype (Id)))

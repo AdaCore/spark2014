@@ -1991,7 +1991,7 @@ package body Gnat2Why.Expr is
                B     : constant Binder_Type :=
                  (Ada_Node => Empty,
                   B_Name   => Ident,
-                  Modifier => None,
+                  Mutable  => False,
                   B_Type   => Why_Logic_Type_Of_Ada_Type (Element (Typ)));
             begin
                Call_Params (Cnt) := B;

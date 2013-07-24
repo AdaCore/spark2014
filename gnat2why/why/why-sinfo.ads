@@ -45,7 +45,6 @@ package Why.Sinfo is
       W_Abstract_Type,
       W_Generic_Formal_Type,
       W_Generic_Actual_Type_Chain,
-      W_Array_Type,
       W_Ref_Type,
       W_Computation_Type,
 

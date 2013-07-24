@@ -207,20 +207,6 @@ package body Why.Atree.Sprint is
 
    end Generic_Actual_Type_Chain_Pre_Op;
 
-   ------------------------
-   -- Array_Type_Pre_Op --
-   ------------------------
-
-   procedure Array_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Type_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      P (O, "array ");
-   end Array_Type_Pre_Op;
-
    ---------------------
    -- Ref_Type_Pre_Op --
    ---------------------

@@ -195,16 +195,8 @@ package body Why.Gen.Binders is
         (Binder : Binder_Type)
         return W_Simple_Value_Type_Id is
       begin
-         if Domain = EW_Prog then
-            case Binder.Modifier is
-               when Array_Modifier =>
-                  return New_Array_Type (Component_Type => Binder.B_Type);
-               when Ref_Modifier =>
-                  return New_Ref_Type (Aliased_Type => Binder.B_Type);
-               when None =>
-                  return +Binder.B_Type;
-            end case;
-
+         if Domain = EW_Prog and then Binder.Mutable then
+            return New_Ref_Type (Aliased_Type => Binder.B_Type);
          else
             return +Binder.B_Type;
          end if;
@@ -710,7 +702,7 @@ package body Why.Gen.Binders is
       return
         (B_Name   => New_Identifier (Name => "__void_param"),
          B_Type   => New_Base_Type (Base_Type => EW_Unit),
-         Modifier => None,
+         Mutable  => False,
          Ada_Node => Empty);
    end Unit_Param;
 
