@@ -61,7 +61,7 @@ package body Xtree_Sinfo is
                  W_Unreachable_Code);
       New_Class ("W_Primitive_Type",
                  W_Base_Type,
-                 W_Generic_Formal_Type);
+                 W_Abstract_Type);
       New_Class ("W_Simple_Value_Type",
                  W_Base_Type,
                  W_Ref_Type);
@@ -106,14 +106,6 @@ package body Xtree_Sinfo is
       New_Field (W_Abstract_Type,
                  "Name", "W_Identifier", Id_One);
       Set_Domain (W_Abstract_Type, EW_Term);
-
-      ---------------------------
-      -- W_Generic_Formal_Type --
-      ---------------------------
-
-      New_Field (W_Generic_Formal_Type,
-                 "Name", "W_Identifier", Id_One);
-      Set_Domain (W_Generic_Formal_Type, EW_Term);
 
       ----------------
       -- W_Ref_Type --

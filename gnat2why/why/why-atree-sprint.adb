@@ -163,20 +163,6 @@ package body Why.Atree.Sprint is
       end if;
    end Base_Type_Pre_Op;
 
-   --------------------------------
-   -- Generic_Formal_Type_Pre_Op --
-   --------------------------------
-
-   procedure Generic_Formal_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Generic_Formal_Type_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      P (O, "'");
-   end Generic_Formal_Type_Pre_Op;
-
    ---------------------
    -- Ref_Type_Pre_Op --
    ---------------------
