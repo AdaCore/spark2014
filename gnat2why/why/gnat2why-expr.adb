@@ -2276,11 +2276,13 @@ package body Gnat2Why.Expr is
                      Value     : constant W_Expr_Id :=
                                    +Ada_Ent_To_Why.Element (Args, Expr).B_Name;
                      Read      : constant W_Expr_Id :=
-                       New_Simple_Array_Access
+                       New_Array_Access
                          (Ada_Node => Expr_Or_Association,
                           Domain   => EW_Term,
                           Dimension => Num_Dim,
-                          Args      => (1 => Arr) & Indexes);
+                          Ar       => Arr,
+                          Index     => Indexes,
+                          Ty_Entity => Typ);
                   begin
                      return New_Comparison
                        (Cmp       => EW_Eq,

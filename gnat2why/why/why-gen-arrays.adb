@@ -729,14 +729,20 @@ package body Why.Gen.Arrays is
       Domain    : EW_Domain;
       Dimension : Pos) return W_Expr_Id
    is
-      Progs     : constant W_Expr_Array :=
-        (1 => Array_Convert_To_Base (Ty_Entity, Domain, Ar)) & Index;
+      Name      : constant W_Identifier_Id :=
+        Prefix (Ada_Node => Ty_Entity,
+                S => To_String (Ada_Array_Name (Dimension)),
+                W => WNE_Array_Access);
+      Elts     : constant W_Expr_Id :=
+        (if Is_Constrained (Ty_Entity) then Ar
+         else Array_Convert_To_Base (Ty_Entity, Domain, Ar));
    begin
-      return New_Simple_Array_Access
-        (Ada_Node  => Ada_Node,
-         Domain    => Domain,
-         Dimension => Dimension,
-         Args      => Progs);
+      return
+        New_Call
+        (Ada_Node => Ada_Node,
+         Name     => Name,
+         Domain   => Domain,
+         Args     => (1 => Elts) & Index);
    end New_Array_Access;
 
    ---------------------------
@@ -858,27 +864,5 @@ package body Why.Gen.Arrays is
                      W        => WNE_To_Array),
            Args   => (1 => +Ar));
    end Array_Convert_To_Base;
-
-   -----------------------------
-   -- New_Simple_Array_Access --
-   -----------------------------
-
-   function New_Simple_Array_Access
-     (Ada_Node  : Node_Id;
-      Domain    : EW_Domain;
-      Dimension : Pos;
-      Args      : W_Expr_Array) return W_Expr_Id
-   is
-      Name      : constant W_Identifier_Id :=
-        Prefix (S => To_String (Ada_Array_Name (Dimension)),
-                W => WNE_Array_Access);
-   begin
-      return
-        New_Call
-        (Ada_Node => Ada_Node,
-         Name     => Name,
-         Domain   => Domain,
-         Args    => Args);
-   end New_Simple_Array_Access;
 
 end Why.Gen.Arrays;
