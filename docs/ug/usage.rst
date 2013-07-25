@@ -422,7 +422,7 @@ about questionable code constructs.
    "depends_wrong", "F", "A stated dependency is not fulfilled."
    "illegal_update", "I", "Flow analysis has detected an update of a in mode global."
    "ineffective",, "Flow analysis has detected an ineffective statement, such as an unused assignment."
-   "ineffective_import",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "unused_initial_value",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
    "stable",, "A questionable loop construct where a variable is assigned the same value on each loop iteration."
    "uninitialized", "I", "Flow analysis has detected the use of an uninitialized variable."
    "unused",, "A global or locally declared variable is never used."
