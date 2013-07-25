@@ -42,8 +42,8 @@ package SPARK_Util is
    -- Special Names --
    -------------------
 
-   Name_GNATprove : constant String := "GNATprove";
-   Name_External_Axiomatization : constant String := "External_Axiomatization";
+   Name_GNATprove : constant String := "gnatprove";
+   Name_External_Axiomatization : constant String := "external_axiomatization";
 
    -------------------
    -- Special modes --
@@ -119,12 +119,14 @@ package SPARK_Util is
    function Is_Partial_View (E : Entity_Id) return Boolean;
    --  Return whether E is the partial view of another entity
 
-   function Package_Has_External_Axioms (N : Node_Id) return Boolean;
-   --  Return whether N is a package with External Axioms
+   function Package_Has_External_Axioms (E : Entity_Id) return Boolean with
+     Pre  => Ekind_In (E, E_Package, E_Generic_Package);
+   --  Return whether E is a package with External Axioms
    --  This function only recognizes formal containers for now
 
-   function Is_Instance_Of_External_Axioms (N : Node_Id) return Boolean;
-   --  Return whether N is the package instantiation of a package with
+   function Is_Instance_Of_External_Axioms (E : Entity_Id) return Boolean with
+     Pre  => Ekind_In (E, E_Package, E_Generic_Package);
+   --  Return whether E is the package instantiation of a package with
    --  external axioms
 
    function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean;

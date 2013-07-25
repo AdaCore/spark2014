@@ -619,69 +619,22 @@ package body SPARK_Util is
    -- Is_Instance_Of_External_Axioms --
    ------------------------------------
 
-   function Is_Instance_Of_External_Axioms (N : Node_Id) return Boolean
+   function Is_Instance_Of_External_Axioms (E : Entity_Id) return Boolean
    is
+      Generic_Par : constant Node_Id := Generic_Parent (Get_Package_Spec (E));
    begin
-      if Nkind (N) = N_Package_Specification then
-         return (Present (Generic_Parent (N)))
-           and then Package_Has_External_Axioms
-             (Generic_Parent (N));
-      elsif Nkind (N) = N_Package_Declaration then
-         return (Present (Generic_Parent (Specification (N))))
-           and then Package_Has_External_Axioms
-             (Generic_Parent (Specification (N)));
-      else
-         return False;
-      end if;
+      return (Present (Generic_Par) and then Package_Has_External_Axioms
+              (Generic_Par));
    end Is_Instance_Of_External_Axioms;
 
    ---------------------------------
    -- Package_Has_External_Axioms --
    ---------------------------------
 
-   function Package_Has_External_Axioms (N : Node_Id) return Boolean
+   function Package_Has_External_Axioms (E : Entity_Id) return Boolean
    is
-
-      function File_Is_Formal_Container (Name : String) return Boolean;
-      --  Return true when the string in argument is a file of formal container
-      --  unit
-
-      function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean;
-      --  Return whether a location Loc is in the formal container sources
-
-      ------------------------------
-      -- File_Is_Formal_Container --
-      ------------------------------
-
-      function File_Is_Formal_Container (Name : String) return Boolean is
-      begin
-         return
-           Name = "a-cfdlli.ads" or else Name = "a-cfdlli.adb" or else
-           Name = "a-cfhama.ads" or else Name = "a-cfhama.adb" or else
-           Name = "a-cfhase.ads" or else Name = "a-cfhase.adb" or else
-           Name = "a-cforma.ads" or else Name = "a-cforma.adb" or else
-           Name = "a-cforse.ads" or else Name = "a-cforse.adb" or else
-           Name = "a-cofove.ads" or else Name = "a-cofove.adb";
-      end File_Is_Formal_Container;
-
-      -----------------------------------
-      -- Location_In_Formal_Containers --
-      -----------------------------------
-
-      function Location_In_Formal_Containers (Loc : Source_Ptr) return Boolean
-      is
-      begin
-         if Loc = Standard_Location then
-            return False;
-         else
-            return
-              File_Is_Formal_Container
-                (Get_Name_String (Reference_Name
-                 (Get_Source_File_Index (Loc))));
-         end if;
-      end Location_In_Formal_Containers;
    begin
-      return (Location_In_Formal_Containers (Sloc (N)));
+      return Has_Annotate_Pragma_For_External_Axiomatization (E);
    end Package_Has_External_Axioms;
 
    -------------------------------
@@ -693,9 +646,8 @@ package body SPARK_Util is
    begin
       while Present (S) loop
          if Ekind (S) = E_Package and then
-           (Package_Has_External_Axioms (Parent (S)) or else
-            Is_Instance_Of_External_Axioms
-              (Parent (S))) then
+           (Package_Has_External_Axioms (S) or else
+            Is_Instance_Of_External_Axioms (S)) then
             return True;
          end if;
 

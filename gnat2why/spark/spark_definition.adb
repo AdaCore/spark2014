@@ -2932,7 +2932,6 @@ package body SPARK_Definition is
 
    procedure Mark_Package_Body (N : Node_Id) is
       Id     : constant Entity_Id := Unique_Defining_Entity (N);
-      Decl_N : constant Node_Id   := Parent (Parent (Id));
 
    begin
       --  Do not analyze generic bodies
@@ -2943,8 +2942,8 @@ package body SPARK_Definition is
 
       --  Do not analyze bodies for packages with external axioms
 
-      if Package_Has_External_Axioms (Decl_N) or else
-        Is_Instance_Of_External_Axioms (Decl_N) then
+      if Package_Has_External_Axioms (Id) or else
+        Is_Instance_Of_External_Axioms (Id) then
          return;
       end if;
 
@@ -3036,8 +3035,8 @@ package body SPARK_Definition is
       --  Only mark types in SPARK or not, and mark all subprograms in SPARK,
       --  but none should be scheduled for translation into Why3.
 
-      if Package_Has_External_Axioms (N) or else
-        Is_Instance_Of_External_Axioms (N) then
+      if Package_Has_External_Axioms (Id) or else
+        Is_Instance_Of_External_Axioms (Id) then
 
          --  Explicitly add the package declaration to the entities to
          --  translate into Why3.
