@@ -1,1 +1,1 @@
-a73001i.adb:5:04: statement has no effect [ineffective]
+a73001i.adb:5:04: warning: statement has no effect [ineffective]

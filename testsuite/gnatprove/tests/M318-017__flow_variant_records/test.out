@@ -3,5 +3,5 @@ test.adb:89:32: "X.Reason" might not be initialized in "Test_Definite_02" [unini
 test.adb:97:32: "X.Index" might not be initialized in "Test_Definite_03" [uninitialized]
 test.adb:97:32: "X.Reason" might not be initialized in "Test_Definite_03" [uninitialized]
 test.adb:132:09: "R.Reason" might not be initialized [uninitialized]
-test.adb:204:09: incorrect dependency "null => R" [depends_wrong]
-test.adb:204:21: missing dependency "R => R" [depends_missing]
+test.adb:204:09: warning: incorrect dependency "null => R" [depends_wrong]
+test.adb:204:21: warning: missing dependency "R => R" [depends_missing]

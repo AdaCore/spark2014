@@ -1,2 +1,2 @@
-test.adb:14:15: unused assignment to "Y" [ineffective]
-test.adb:24:15: unused assignment to "Y" [ineffective]
+test.adb:14:15: warning: unused assignment to "Y" [ineffective]
+test.adb:24:15: warning: unused assignment to "Y" [ineffective]

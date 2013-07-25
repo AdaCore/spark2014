@@ -70,25 +70,28 @@ package body Flow.Analysis is
    --  Find the first '&' or '#' and substitute with the given flow
    --  id, with or without enclosing quotes respectively.
 
-   procedure Error_Msg_Flow (Msg : String;
-                             N   : Node_Id;
-                             Tag : String := "");
-   --  Output an error message attached to the given node.
+   procedure Error_Msg_Flow (Msg     : String;
+                             N       : Node_Id;
+                             Tag     : String := "";
+                             Warning : Boolean := False);
+   --  Output an error (or warning) message attached to the given
+   --  node.
 
-   procedure Error_Msg_Flow (Msg : String;
-                             N   : Node_Id;
-                             F1  : Flow_Id;
-                             Tag : String := "");
-   --  Output an error message attached to the given node with a
-   --  substitution using F1. Use & or # as the substitution
-   --  characters, which quote the flow id with or without double
-   --  quotes respectively.
+   procedure Error_Msg_Flow (Msg     : String;
+                             N       : Node_Id;
+                             F1      : Flow_Id;
+                             Tag     : String := "";
+                             Warning : Boolean := False);
+   --  Output a message attached to the given node with a substitution
+   --  using F1. Use & or # as the substitution characters, which
+   --  quote the flow id with or without double quotes respectively.
 
-   procedure Error_Msg_Flow (Msg : String;
-                             N   : Node_Id;
-                             F1  : Flow_Id;
-                             F2  : Flow_Id;
-                             Tag : String := "");
+   procedure Error_Msg_Flow (Msg     : String;
+                             N       : Node_Id;
+                             F1      : Flow_Id;
+                             F2      : Flow_Id;
+                             Tag     : String := "";
+                             Warning : Boolean := False);
    --  As above with two nodes to substitute.
 
    function Get_Line (G   : Flow_Graphs.T'Class;
@@ -245,9 +248,11 @@ package body Flow.Analysis is
    -- Error_Msg_Flow --
    --------------------
 
-   procedure Error_Msg_Flow (Msg : String;
-                             N   : Node_Id;
-                             Tag : String := "")
+   procedure Error_Msg_Flow (Msg     : String;
+                             N       : Node_Id;
+                             Tag     : String := "";
+                             Warning : Boolean := False)
+
    is
       M : Unbounded_String := Escape (To_Unbounded_String (Msg));
    begin
@@ -255,16 +260,20 @@ package body Flow.Analysis is
       if Tag'Length >= 1 then
          Append (M, " [" & Tag & "]");
       end if;
-      Append (M, '!');
+      Append (M, "!!");
+      if Warning then
+         Append (M, '?');
+      end if;
 
       --  Issue error message
       Error_Msg_N (To_String (M), N);
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (Msg : String;
-                             N   : Node_Id;
-                             F1  : Flow_Id;
-                             Tag : String := "")
+   procedure Error_Msg_Flow (Msg     : String;
+                             N       : Node_Id;
+                             F1      : Flow_Id;
+                             Tag     : String := "";
+                             Warning : Boolean := False)
    is
       M : Unbounded_String;
    begin
@@ -274,17 +283,21 @@ package body Flow.Analysis is
       if Tag'Length >= 1 then
          Append (M, " [" & Tag & "]");
       end if;
-      Append (M, '!');
+      Append (M, "!!");
+      if Warning then
+         Append (M, '?');
+      end if;
 
       --  Issue error message
       Error_Msg_N (To_String (M), N);
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (Msg : String;
-                             N   : Node_Id;
-                             F1  : Flow_Id;
-                             F2  : Flow_Id;
-                             Tag : String := "")
+   procedure Error_Msg_Flow (Msg     : String;
+                             N       : Node_Id;
+                             F1      : Flow_Id;
+                             F2      : Flow_Id;
+                             Tag     : String := "";
+                             Warning : Boolean := False)
    is
       M : Unbounded_String;
    begin
@@ -295,7 +308,10 @@ package body Flow.Analysis is
       if Tag'Length >= 1 then
          Append (M, " [" & Tag & "]");
       end if;
-      Append (M, '!');
+      Append (M, "!!");
+      if Warning then
+         Append (M, '?');
+      end if;
 
       --  Issue error message
       Error_Msg_N (To_String (M), N);
@@ -592,13 +608,14 @@ package body Flow.Analysis is
                   --  this is not really a warning. think about this!
                   if not Reads.Contains (Change_Variant (W, In_View)) then
                      Error_Msg_Flow
-                       (Msg => "ineffective initialization of & " &
+                       (Msg     => "ineffective initialization of & " &
                           "(is global output in main program &)",
-                        N   => Find_Node_In_Initializes
+                        N       => Find_Node_In_Initializes
                           (Get_Direct_Mapping_Id (W)),
-                        F1  => W,
-                        F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                        Tag => "ineffective");
+                        F1      => W,
+                        F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag     => "ineffective",
+                        Warning => True);
                   end if;
                end if;
 
@@ -824,16 +841,20 @@ package body Flow.Analysis is
                   null;
                elsif A.Is_Global then
                   --  !!! don't say this in generative mode
-                  Error_Msg_Flow (Msg => "unused initial value of &",
-                                  N   => Find_Global (FA.Analyzed_Entity, F),
-                                  F1  => F,
-                                  Tag => "unused_initial_value");
+                  Error_Msg_Flow
+                    (Msg     => "unused initial value of &",
+                     N       => Find_Global (FA.Analyzed_Entity, F),
+                     F1      => F,
+                     Tag     => "unused_initial_value",
+                     Warning => True);
                else
-                  Error_Msg_Flow (Msg => "unused initial value of &",
-                                  --  !!! find_import
-                                  N   => Error_Location (FA.PDG, V),
-                                  F1  => F,
-                                  Tag => "unused_initial_value");
+                  Error_Msg_Flow
+                    (Msg     => "unused initial value of &",
+                     --  !!! find_import
+                     N       => Error_Location (FA.PDG, V),
+                     F1      => F,
+                     Tag     => "unused_initial_value",
+                     Warning => True);
                end if;
             end;
          end if;
@@ -1008,22 +1029,25 @@ package body Flow.Analysis is
 
                   if Atr.Is_Parameter then
                      Error_Msg_Flow
-                       (Msg => "unused assignment to &",
-                        N   => Error_Location (FA.PDG, V),
-                        F1  => Atr.Parameter_Actual,
-                        Tag => Tag);
+                       (Msg     => "unused assignment to &",
+                        N       => Error_Location (FA.PDG, V),
+                        F1      => Atr.Parameter_Actual,
+                        Tag     => Tag,
+                        Warning => True);
 
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow
-                       (Msg => "unused assignment",
-                        N   => Error_Location (FA.PDG, V),
-                        Tag => Tag);
+                       (Msg     => "unused assignment",
+                        N       => Error_Location (FA.PDG, V),
+                        Tag     => Tag,
+                        Warning => True);
 
                   else
                      Error_Msg_Flow
-                       (Msg => "statement has no effect",
-                        N   => Error_Location (FA.PDG, V),
-                        Tag => Tag);
+                       (Msg     => "statement has no effect",
+                        N       => Error_Location (FA.PDG, V),
+                        Tag     => Tag,
+                        Warning => True);
 
                   end if;
                   if Mask.Length >= 1 then
@@ -1284,9 +1308,11 @@ package body Flow.Analysis is
                         Tmp.Set_Attributes (N_Loop, Atr);
 
                         --  Complain
-                        Error_Msg_Flow (Msg => "stable",
-                                        N   => Error_Location (FA.PDG, N_Loop),
-                                        Tag => "stable");
+                        Error_Msg_Flow
+                          (Msg     => "stable",
+                           N       => Error_Location (FA.PDG, N_Loop),
+                           Tag     => "stable",
+                           Warning => True);
 
                         --  There might be other stable elements now.
                         Done := False;
@@ -1378,16 +1404,20 @@ package body Flow.Analysis is
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
                   --  global.
-                  Error_Msg_Flow (Msg => "unused global &",
-                                  N   => Find_Global (FA.Analyzed_Entity, F),
-                                  F1  => F,
-                                  Tag => "unused");
+                  Error_Msg_Flow
+                    (Msg     => "unused global &",
+                     N       => Find_Global (FA.Analyzed_Entity, F),
+                     F1      => F,
+                     Tag     => "unused",
+                     Warning => True);
                else
                   --  !!! distinguish between variables and parameters
-                  Error_Msg_Flow (Msg => "unused variable &",
-                                  N   => Error_Location (FA.PDG, V),
-                                  F1  => F,
-                                  Tag => "unused");
+                  Error_Msg_Flow
+                    (Msg     => "unused variable &",
+                     N       => Error_Location (FA.PDG, V),
+                     F1      => F,
+                     Tag     => "unused",
+                     Warning => True);
                end if;
             end;
          end if;
@@ -1510,10 +1540,11 @@ package body Flow.Analysis is
             if not Actual_Deps.Contains (F_Out) then
                --  !!! check quotation in errout.ads
                Error_Msg_Flow
-                 (Msg => "missing dependency ""null => #""",
-                  N   => Depends_Location,
-                  F1  => F_Out,
-                  Tag => "depends_null");
+                 (Msg     => "missing dependency ""null => #""",
+                  N       => Depends_Location,
+                  F1      => F_Out,
+                  Tag     => "depends_null",
+                  Warning => True);
             end if;
          end;
       end loop;
@@ -1550,11 +1581,12 @@ package body Flow.Analysis is
                --  !!! legality error, should be moved to frontend;
                --  !!! possibly raise exception here
                Error_Msg_Flow
-                 (Msg => "expected to see & on the left-hand-side of" &
+                 (Msg     => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
-                  N   => Depends_Location,
-                  F1  => F_Out,
-                  Tag => "depends_missing_clause");
+                  N       => Depends_Location,
+                  F1      => F_Out,
+                  Tag     => "depends_missing_clause",
+                  Warning => True);
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
@@ -1582,17 +1614,19 @@ package body Flow.Analysis is
                   --  mention.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (Msg => "missing dependency ""null => #""",
-                        N   => Depends_Location,
-                        F1  => Missing_Var,
-                        Tag => "depends_null");
+                       (Msg     => "missing dependency ""null => #""",
+                        N       => Depends_Location,
+                        F1      => Missing_Var,
+                        Tag     => "depends_null",
+                        Warning => True);
                   else
                      Error_Msg_Flow
-                       (Msg => "missing dependency ""# => #""",
-                        N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
-                        F1  => F_Out,
-                        F2  => Missing_Var,
-                        Tag => "depends_missing");
+                       (Msg     => "missing dependency ""# => #""",
+                        N       => Find_Export (Get_Direct_Mapping_Id (F_Out)),
+                        F1      => F_Out,
+                        F2      => Missing_Var,
+                        Tag     => "depends_missing",
+                        Warning => True);
                      --  !!! show path
                   end if;
                end loop;
@@ -1602,18 +1636,20 @@ package body Flow.Analysis is
                   --  not happen in reality.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (Msg => "incorrect dependency ""null => #""",
-                        N   => Depends_Location,
-                        F1  => Wrong_Var,
-                        Tag => "depends_wrong");
+                       (Msg     => "incorrect dependency ""null => #""",
+                        N       => Depends_Location,
+                        F1      => Wrong_Var,
+                        Tag     => "depends_wrong",
+                        Warning => True);
                      --  ??? show a path?
                   else
                      Error_Msg_Flow
-                       (Msg => "incorrect dependency ""# => #""",
-                        N   => Find_Export (Get_Direct_Mapping_Id (F_Out)),
-                        F1  => F_Out,
-                        F2  => Wrong_Var,
-                        Tag => "depends_wrong");
+                       (Msg     => "incorrect dependency ""# => #""",
+                        N       => Find_Export (Get_Direct_Mapping_Id (F_Out)),
+                        F1      => F_Out,
+                        F2      => Wrong_Var,
+                        Tag     => "depends_wrong",
+                        Warning => True);
                   end if;
                end loop;
 
