@@ -1345,6 +1345,7 @@ package body SPARK_Definition is
    procedure Mark_Iteration_Scheme            (N : Node_Id);
    procedure Mark_Pragma                      (N : Node_Id);
    procedure Mark_Simple_Return_Statement     (N : Node_Id);
+   procedure Mark_Extended_Return_Statement   (N : Node_Id);
    procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
 
@@ -1993,7 +1994,7 @@ package body SPARK_Definition is
             Mark_Violation ("explicit dereference", N, NIR_Access);
 
          when N_Extended_Return_Statement =>
-            Mark_Violation ("extended RETURN", N, NYI_Extended_Return);
+            Mark_Extended_Return_Statement (N);
 
          when N_Extension_Aggregate =>
             Mark_Violation ("extension aggregate", N, NYI_Aggregate);
@@ -3169,6 +3170,19 @@ package body SPARK_Definition is
          Mark (Expression (N));
       end if;
    end Mark_Simple_Return_Statement;
+
+   ------------------------------------
+   -- Mark_Extended_Return_Statement --
+   ------------------------------------
+
+   procedure Mark_Extended_Return_Statement (N : Node_Id) is
+   begin
+      Mark_List (Return_Object_Declarations (N));
+
+      if Present (Handled_Statement_Sequence (N)) then
+         Mark (Handled_Statement_Sequence (N));
+      end if;
+   end Mark_Extended_Return_Statement;
 
    ---------------------------
    -- Mark_Standard_Package --

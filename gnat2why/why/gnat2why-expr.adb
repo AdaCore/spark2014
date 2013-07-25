@@ -5156,9 +5156,9 @@ package body Gnat2Why.Expr is
          when N_Simple_Return_Statement =>
             declare
                Raise_Stmt  : constant W_Prog_Id :=
-                               New_Raise
-                                 (Ada_Node => Stmt_Or_Decl,
-                                  Name     => To_Ident (WNE_Result_Exc));
+                 New_Raise
+                   (Ada_Node => Stmt_Or_Decl,
+                    Name     => To_Ident (WNE_Result_Exc));
                Result_Stmt : W_Prog_Id;
             begin
                if Expression (Stmt_Or_Decl) /= Empty then
@@ -5181,6 +5181,17 @@ package body Gnat2Why.Expr is
                else
                   return Raise_Stmt;
                end if;
+            end;
+
+         when N_Extended_Return_Statement =>
+            declare
+               Raise_Stmt  : constant W_Prog_Id :=
+                 New_Raise
+                   (Ada_Node => Stmt_Or_Decl,
+                    Name     => To_Ident (WNE_Result_Exc));
+            begin
+               --  ??? Need to implement extended returns properly: M301-019
+               return Raise_Stmt;
             end;
 
          when N_Procedure_Call_Statement =>

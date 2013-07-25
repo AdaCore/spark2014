@@ -56,7 +56,6 @@ package SPARK_Violations is
       NYI_Class_Wide,       --  class wide types
       NYI_Unchecked,        --  unchecked expressions
       NYI_Composite_Conv,   --  conversion between composite types
-      NYI_Extended_Return,  --  extended return
 
       --  NIR: Not In Roadmap
       --  These constructs are not in SPARK in the foreseeable future
@@ -78,11 +77,7 @@ package SPARK_Violations is
       NIR_XXX);             --  all other cases
 
    subtype Not_Yet_Implemented is
-     Vkind range NYI_Aggregate .. NYI_Extended_Return;
-   subtype Known_Not_Yet_Implemented is Not_Yet_Implemented range
-     Not_Yet_Implemented'First ..
-       Not_Yet_Implemented'Val
-         (Not_Yet_Implemented'Pos (Not_Yet_Implemented'Last) - 1);
+     Vkind range NYI_Aggregate .. NYI_Composite_Conv;
    subtype Not_In_Roadmap is Vkind range NIR_Access .. NIR_XXX;
    subtype Known_Not_In_Roadmap is Not_In_Roadmap range
      Not_In_Roadmap'First ..
@@ -119,7 +114,6 @@ package SPARK_Violations is
       NYI_Interface        => To_Unbounded_String ("interfaces"),
       NYI_Unchecked        => To_Unbounded_String ("unchecked expressions"),
       NYI_Composite_Conv   => To_Unbounded_String ("conversion of composite"),
-      NYI_Extended_Return  => To_Unbounded_String ("extended return"),
 
       NIR_Access           => To_Unbounded_String ("access"),
       NIR_Assembly_Lang    => To_Unbounded_String ("assembly language"),
