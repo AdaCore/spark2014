@@ -1,4 +1,4 @@
-test.adb:18:23: "B" might not be initialized in "Test_02" [uninitialized__b]
-test.adb:30:23: "B" might not be initialized in "Test_03" [uninitialized__b]
-test.adb:31:23: "C" might not be initialized in "Test_03" [uninitialized__c]
+test.adb:18:23: "B" might not be initialized in "Test_02" [uninitialized]
+test.adb:30:23: "B" might not be initialized in "Test_03" [uninitialized]
+test.adb:31:23: "C" might not be initialized in "Test_03" [uninitialized]
 test.adb:31:23: unused variable "C" [unused]

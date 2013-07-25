@@ -21,8 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Strings.Maps;        use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
@@ -71,15 +69,6 @@ package body Flow.Analysis is
                         return Unbounded_String;
    --  Find the first '&' or '#' and substitute with the given flow
    --  id, with or without enclosing quotes respectively.
-
-   function Create_Tag (Tag : String;
-                        F1  : Flow_Id := Null_Flow_Id;
-                        F2  : Flow_Id := Null_Flow_Id)
-                        return String;
-   --  Produce a tag for use in error messages. If flow ids are
-   --  provided they are included in the tag. For example:
-   --     Create_Tag ("foo")     ->   "foo"
-   --     Create_Tag ("foo", a)  ->   "foo__r_discriminant"
 
    procedure Error_Msg_Flow (Msg : String;
                              N   : Node_Id;
@@ -251,38 +240,6 @@ package body Flow.Analysis is
       end loop;
       return R;
    end Substitute;
-
-   ----------------
-   -- Create_Tag --
-   ----------------
-
-   function Create_Tag (Tag : String;
-                        F1  : Flow_Id := Null_Flow_Id;
-                        F2  : Flow_Id := Null_Flow_Id)
-                        return String
-   is
-      R : Unbounded_String := Null_Unbounded_String;
-   begin
-      if Tag'Length = 0 then
-         return To_String (R);
-      end if;
-
-      Append (R, Tag);
-
-      if F1 /= Null_Flow_Id then
-         Append (R, "__");
-         Append (R, Flow_Id_To_String (F1));
-      end if;
-
-      if F2 /= Null_Flow_Id then
-         Append (R, "__");
-         Append (R, Flow_Id_To_String (F2));
-      end if;
-
-      Translate (R, To_Mapping (".", "_"));
-
-      return To_Lower (To_String (R));
-   end Create_Tag;
 
    --------------------
    -- Error_Msg_Flow --
@@ -1040,7 +997,7 @@ package body Flow.Analysis is
             N    : Node_Id;
             Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
             Mask : Vertex_Sets.Set;
-            Tag  : constant String := Create_Tag ("ineffective");
+            Tag  : constant String := "ineffective";
          begin
             if Atr.Is_Program_Node or else Atr.Is_Parameter then
                if not FA.PDG.Non_Trivial_Path_Exists
@@ -1208,13 +1165,13 @@ package body Flow.Analysis is
                              (Msg => "& might not be initialized",
                               N   => Find_Global (FA.Analyzed_Entity, Key_I),
                               F1  => Key_I,
-                              Tag => Create_Tag ("uninitialized", Key_I));
+                              Tag => "uninitialized");
                            Mark_Definition_Free_Path
                              (E_Loc => Find_Global (FA.Analyzed_Entity, Key_I),
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
                               Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => Create_Tag ("uninitialized", Key_I));
+                              Tag   => "uninitialized");
 
                         elsif Atr_U.Is_Function_Return then
                            --  This is actually a totally different
@@ -1241,13 +1198,13 @@ package body Flow.Analysis is
                               N   => Error_Location (FA.PDG, V_Use),
                               F1  => Key_I,
                               F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                              Tag => Create_Tag ("uninitialized", Key_I));
+                              Tag => "uninitialized");
                            Mark_Definition_Free_Path
                              (E_Loc => V_Use,
                               From  => FA.Start_Vertex,
                               To    => FA.End_Vertex,
                               Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => Create_Tag ("uninitialized", Key_I));
+                              Tag   => "uninitialized");
 
                         else
                            --  We are dealing with a local variable,
@@ -1263,13 +1220,13 @@ package body Flow.Analysis is
                           (Msg => "& might not be initialized",
                            N   => Error_Location (FA.PDG, V_Use),
                            F1  => Key_I,
-                           Tag => Create_Tag ("uninitialized", Key_I));
+                           Tag => "uninitialized");
                         Mark_Definition_Free_Path
                           (E_Loc => V_Use,
                            From  => FA.Start_Vertex,
                            To    => V_Use,
                            Var   => Change_Variant (Key_I, Normal_Use),
-                           Tag   => Create_Tag ("uninitialized", Key_I));
+                           Tag   => "uninitialized");
                      end if;
                   end;
                end loop;
