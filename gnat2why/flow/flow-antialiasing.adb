@@ -573,8 +573,7 @@ package body Flow.Antialiasing is
          when others =>
             raise Program_Error;
       end case;
-      Append (Msg, " be aliased");
-      Append (Msg, " [flow_aliasing]!");
+      Append (Msg, " be aliased!");
 
       Error_Msg_NE (To_String (Msg), A, A_Formal);
    end Check_Node_Against_Node;

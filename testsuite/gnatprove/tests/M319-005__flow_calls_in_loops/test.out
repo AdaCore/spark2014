@@ -1,4 +1,4 @@
 broken.adb:2:04: warning: statement has no effect [ineffective]
 broken.adb:14:10: warning: stable [stable]
 broken.adb:18:14: flow analysis of "Test_02" abandoned due to aliasing
-broken.adb:22:20: formal parameter "N" and global "I" must not be aliased [flow_aliasing]
+broken.adb:22:20: formal parameter "N" and global "I" must not be aliased

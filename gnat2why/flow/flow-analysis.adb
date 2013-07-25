@@ -664,8 +664,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (Msg => "default initialization cannot depend on &",
                            N   => Expression (N),
-                           F1  => F,
-                           Tag => "static_init");
+                           F1  => F);
                         Sane := False;
                      end loop;
                   end;
@@ -740,8 +739,7 @@ package body Flow.Analysis is
                                 "aspect of &",
                               N   => FA.Analyzed_Entity,
                               F1  => Entire_Variable (Var),
-                              F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                              Tag => "missing_global");
+                              F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                         when Magic_String =>
                            Global_Required (FA, Var);
