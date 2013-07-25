@@ -18,6 +18,7 @@
 with Crypto;
 
 package body KeyStore.Interfac
+   with SPARK_Mode => Off
 is
 
    ------------------------------------------------------------------
@@ -60,7 +61,6 @@ is
                    StoreRet));
    end GetCryptoReturn;
 
-
    ------------------------------------------------------------------
    -- Initialize
    --
@@ -75,7 +75,6 @@ is
       Crypto.Initialize(ReturnValue => LocalReturnValue);
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end Initialize;
-
 
    ------------------------------------------------------------------
    -- Finalize
@@ -92,7 +91,6 @@ is
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end Finalize;
 
-
    ------------------------------------------------------------------
    -- CreateObject
    --
@@ -100,7 +98,6 @@ is
    --    The object handle isn't required here
    --
    ------------------------------------------------------------------
-
    procedure CreateObject(Template     : in     KeyTemplateT;
                           ReturnValue  :    out ReturnValueT)
    is
@@ -128,7 +125,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure FindObjectsInit(Template    : in     KeyTemplateT;
                              ReturnValue :    out ReturnValueT)
    is
@@ -146,7 +142,6 @@ is
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end FindObjectsInit;
 
-
    ------------------------------------------------------------------
    -- FindObjects
    --
@@ -154,7 +149,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
                          ObjectHandles :    out HandleArrayT;
                          ReturnValue   :    out ReturnValueT)
@@ -174,7 +168,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure FindObjectsFinal(ReturnValue : out ReturnValueT)
    is
       LocalReturnValue : Crypto.ReturnValueT;
@@ -183,7 +176,6 @@ is
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end FindObjectsFinal;
 
-
    ------------------------------------------------------------------
    -- DigestInit
    --
@@ -191,7 +183,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
                         ReturnValue :    out ReturnValueT)
    is
@@ -202,7 +193,6 @@ is
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end DigestInit;
 
-
    ------------------------------------------------------------------
    -- DigestUpdate
    --
@@ -210,7 +200,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
                           ByteCount   : in     BasicTypes.Unsigned32T;
                           ReturnValue :    out ReturnValueT)
@@ -223,7 +212,6 @@ is
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end DigestUpdate;
 
-
    ------------------------------------------------------------------
    -- DigestFinal
    --
@@ -231,9 +219,8 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
-   procedure DigestFinal(Digest       : out DigestT;
-                         ReturnValue  : out ReturnValueT)
+   procedure DigestFinal(Digest      : out DigestT;
+                         ReturnValue : out ReturnValueT)
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
@@ -258,12 +245,11 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
-   procedure Sign(Mechanism    : in     CryptoTypes.AlgorithmT;
-                  KeyHandle    : in     BasicTypes.Unsigned32T;
-                  Digest       : in     DigestT;
-                  Signature    :    out CertTypes.SignatureT;
-                  ReturnValue  :    out ReturnValueT)
+   procedure Sign(Mechanism   : in     CryptoTypes.AlgorithmT;
+                  KeyHandle   : in     BasicTypes.Unsigned32T;
+                  Digest      : in     DigestT;
+                  Signature   :    out CertTypes.SignatureT;
+                  ReturnValue :    out ReturnValueT)
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
@@ -289,12 +275,11 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
-   procedure Verify(Mechanism    : in     CryptoTypes.AlgorithmT;
-                    KeyHandle    : in     BasicTypes.Unsigned32T;
-                    Digest       : in     DigestT;
-                    Signature    : in     CertTypes.SignatureT;
-                    ReturnValue  :    out ReturnValueT)
+   procedure Verify(Mechanism   : in     CryptoTypes.AlgorithmT;
+                    KeyHandle   : in     BasicTypes.Unsigned32T;
+                    Digest      : in     DigestT;
+                    Signature   : in     CertTypes.SignatureT;
+                    ReturnValue :    out ReturnValueT)
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
@@ -319,7 +304,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
                                Template    : in out KeyTemplateT;
                                ReturnValue :    out ReturnValueT)
@@ -346,7 +330,6 @@ is
       ReturnValue := GetKeystoreReturn(LocalReturnValue);
    end GetAttributeValue;
 
-
    ------------------------------------------------------------------
    -- Delete
    --
@@ -354,7 +337,6 @@ is
    --    None
    --
    ------------------------------------------------------------------
-
    procedure Delete
    is
    begin

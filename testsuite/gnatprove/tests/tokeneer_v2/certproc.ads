@@ -40,13 +40,10 @@ package CertProc is
       Minute : BasicTypes.Unsigned32T;
    end record;
 
-
    type ValidityT is record
       NotBefore : TimeT;
       NotAfter  : TimeT;
    end record;
-
-
 
    type PrivilegeT is record
       Role  : PrivTypes.PrivilegeT;
@@ -128,13 +125,11 @@ package CertProc is
    --    converts into the correct (ID) certificate structure.
    --
    ------------------------------------------------------------------
-
    procedure ExtractIDCertData(
                    RawIDCert      : in     CertTypes.RawCertificateT;
                    IDCert         :    out IDCertDataT;
                    ExtractSuccess :    out Boolean
                    );
-
 
    ------------------------------------------------------------------
    -- ExtractPrivCertData
@@ -144,13 +139,11 @@ package CertProc is
    --    converts into the correct (Priv) certificate structure.
    --
    ------------------------------------------------------------------
-
    procedure ExtractPrivCertData(
                    RawPrivCert    : in     CertTypes.RawCertificateT;
                    PrivCert       :    out PrivCertDataT;
                    ExtractSuccess :    out Boolean
                    );
-
 
    ------------------------------------------------------------------
    -- ExtractIACertData
@@ -160,7 +153,6 @@ package CertProc is
    --    converts into the correct (I&A) certificate structure.
    --
    ------------------------------------------------------------------
-
    procedure ExtractIACertData(
                    RawIACert      : in     CertTypes.RawCertificateT;
                    IACert         :    out IACertDataT;
@@ -176,13 +168,11 @@ package CertProc is
    --    converts into the correct (Auth) certificate structure.
    --
    ------------------------------------------------------------------
-
    procedure ExtractAuthCertData(
                    RawAuthCert    : in     CertTypes.RawCertificateT;
                    AuthCert       :    out AuthCertDataT;
                    ExtractSuccess :    out Boolean
                    );
-
 
    ------------------------------------------------------------------
    -- ObtainRawData
@@ -192,7 +182,6 @@ package CertProc is
    --    i.e. everything except the signature.
    --
    ------------------------------------------------------------------
-
    procedure ObtainRawData(
                    RawCert       : in     CertTypes.RawCertificateT;
                    RawData       :    out CertTypes.RawDataT;
@@ -208,13 +197,11 @@ package CertProc is
    --    may be longer than expected.
    --
    ------------------------------------------------------------------
-
    procedure ObtainSignatureData(
                    RawCert       : in     CertTypes.RawCertificateT;
                    SignatureData :    out CertTypes.SignatureT;
                    ObtainSuccess :    out Boolean
                    );
-
 
    ------------------------------------------------------------------
    -- ConstructAuthCert
@@ -223,12 +210,10 @@ package CertProc is
    --    Constructs a raw authorization certificate (prior to being signed).
    --
    ------------------------------------------------------------------
-
    procedure ConstructAuthCert(
                    AuthCert            : in     AuthCertDataT;
                    UnsignedRawAuthCert :    out CertTypes.RawCertificateT
                    );
-
 
    ------------------------------------------------------------------
    -- AddAuthSignature
@@ -238,11 +223,9 @@ package CertProc is
    --    writing to the user's card.
    --
    ------------------------------------------------------------------
-
    procedure AddAuthSignature(
                    UnsignedRawAuthCert : in     CertTypes.RawCertificateT;
                    SignatureData       : in     CertTypes.SignatureT;
                    SignedRawAuthCert   :    out CertTypes.RawCertificateT);
-
 
 end CertProc;

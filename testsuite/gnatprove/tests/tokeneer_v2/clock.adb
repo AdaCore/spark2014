@@ -21,7 +21,6 @@ with Clock.Interfac,
 use type BasicTypes.Unsigned32T;
 
 package body Clock
-   --# own Now is in Clock.Interfac.Now;
    with Refined_State => (CurrentTime => CurrentTimeVar,
                           Now         => Clock.Interfac.Now)
 is
@@ -61,30 +60,17 @@ is
       Value  : in     Natural;
       SStart : in     Positive;
       SEnd   : in     Positive)
-   --# derives S from *,
-   --#                Value,
-   --#                SEnd,
-   --#                SStart;
-   --# pre S'Last >= SEnd and S'First <= SStart;
       with Depends => (S =>+ (Value,
                               SEnd,
                               SStart)),
            Pre     => S'Last >= SEnd and S'First <= SStart
    is
-      pragma Precondition (S'Last >= SEnd and S'First <= SStart);
       V : Natural;
    begin
 
       V := Value;
 
       for I in reverse Positive range SStart .. SEnd loop
-         --# assert I <= SEnd and I >= SStart
-         --#        and I <= S'Last and I >= S'First
-         --#        and V in Natural ;
-         pragma Assert
-           (I <= SEnd and then I >= SStart
-            and then I <= S'Last and then I >= S'First
-            and then V in Natural) ;
          S(I) := Character'Val(Character'Pos('0') + (V mod 10));
          V    := V / 10;
       end loop;
@@ -104,9 +90,6 @@ is
    ------------------------------------------------------------------
 
    procedure Poll
-   --# global in     Interfac.Now;
-   --#           out CurrentTime;
-   --# derives CurrentTime from Interfac.Now;
       with Refined_Global  => (Input  => Interfac.Now,
                                Output => CurrentTimeVar),
            Refined_Depends => (CurrentTimeVar => Interfac.Now)
@@ -139,7 +122,6 @@ is
    ------------------------------------------------------------------
 
    function GetNow return TimeT
-   --# global Interfac.Now;
       with Refined_Global => Interfac.Now
    is
    begin
@@ -238,16 +220,16 @@ is
    is
    begin
       if BasicTypes.Unsigned32T(YearsT'First) <= Year and
-            Year <= BasicTypes.Unsigned32T(YearsT'Last) and
-            BasicTypes.Unsigned32T(MonthsT'First) <= Month and
-            Month <= BasicTypes.Unsigned32T(MonthsT'Last) and
-            BasicTypes.Unsigned32T(DaysT'First) <= Day and
-            Day <= BasicTypes.Unsigned32T(DaysT'Last) and
-            BasicTypes.Unsigned32T(HoursT'First) <= Hour and
-            Hour <= BasicTypes.Unsigned32T(HoursT'Last) and
-            BasicTypes.Unsigned32T(MinutesT'First) <= Min and
-            Min <= BasicTypes.Unsigned32T(MinutesT'Last) then
-
+           Year <= BasicTypes.Unsigned32T(YearsT'Last) and
+           BasicTypes.Unsigned32T(MonthsT'First) <= Month and
+           Month <= BasicTypes.Unsigned32T(MonthsT'Last) and
+           BasicTypes.Unsigned32T(DaysT'First) <= Day and
+           Day <= BasicTypes.Unsigned32T(DaysT'Last) and
+           BasicTypes.Unsigned32T(HoursT'First) <= Hour and
+           Hour <= BasicTypes.Unsigned32T(HoursT'Last) and
+           BasicTypes.Unsigned32T(MinutesT'First) <= Min and
+           Min <= BasicTypes.Unsigned32T(MinutesT'Last)
+      then
 
          TheTime := TimeT'
            (Year     => YearsT(Year),
@@ -283,13 +265,12 @@ is
       Hour    :    out HoursT;
       Min     :    out MinutesT)
    is
-
    begin
       Year  := TheTime.Year;
       Month := TheTime.Month;
       Day   := TheTime.Day;
       Hour  := HoursT (TheTime.MilliSec / MilliSecsInHr);
-      Min   := MinutesT ((TheTime.MilliSec mod MilliSecsInHr )
+      Min   := MinutesT ((TheTime.MilliSec mod MilliSecsInHr)
                         / MilliSecsInMin);
    end SplitTime;
 
@@ -393,8 +374,6 @@ is
       TenthSecIndex   : constant TimeTextI := 21;
 
    begin
-      --# assert LocalText'First = TimeTextI'First and
-      --#        LocalText'Last = TimeTextI'Last;
       pragma Assert
         (LocalText'First = TimeTextI'First and then
          LocalText'Last = TimeTextI'Last);
@@ -453,6 +432,5 @@ is
    begin
       return Interfac.AddDuration(TheTime, TheDuration);
    end AddDuration;
-
 
 end Clock;

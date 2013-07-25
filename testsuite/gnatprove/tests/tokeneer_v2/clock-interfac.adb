@@ -36,10 +36,10 @@ is
    ------------------------------------------------------------------
    function Convert (T : Ada.Calendar.Time) return Clock.TimeT
    is
-      Year      : Ada.Calendar.Year_Number;
-      Month     : Ada.Calendar.Month_Number;
-      Day       : Ada.Calendar.Day_Number;
-      Sec       : Duration;
+      Year  : Ada.Calendar.Year_Number;
+      Month : Ada.Calendar.Month_Number;
+      Day   : Ada.Calendar.Day_Number;
+      Sec   : Duration;
    begin
       Ada.Calendar.Split
         (Date    => T,
@@ -57,8 +57,7 @@ is
         (Year     => Clock.YearsT(Year),
          Month    => Clock.MonthsT(Month),
          Day      => Clock.DaysT(Day),
-         MilliSec => Clock.MillisecsT(Sec * Clock.MilliSecsInSec)
-         );
+         MilliSec => Clock.MillisecsT(Sec * Clock.MilliSecsInSec));
    end Convert;
 
 
@@ -110,7 +109,7 @@ is
    --    If the time can be converted to a system time then it is valid.
    --
    ------------------------------------------------------------------
-   function IsValidTime ( T : Clock.TimeT ) return Boolean
+   function IsValidTime (T : Clock.TimeT) return Boolean
    is
       LocalTime : Ada.Calendar.Time;
    begin
@@ -126,6 +125,5 @@ is
    exception when Ada.Calendar.Time_Error =>
       return False;
    end IsValidTime;
-
 
 end Clock.Interfac;

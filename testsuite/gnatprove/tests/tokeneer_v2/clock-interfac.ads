@@ -16,10 +16,8 @@
 --
 ------------------------------------------------------------------
 with Clock;
---# inherit Clock;
 
 private package Clock.Interfac
---# own in Now;
    with Abstract_State => (Now with Part_Of => Clock.Now)
 is
 
@@ -37,7 +35,6 @@ is
    --
    ------------------------------------------------------------------
    function TheTime return Clock.TimeT
-   --# global in Now;
       with Global => Now;
 
    ------------------------------------------------------------------
@@ -47,7 +44,7 @@ is
    --    Adds a duration to a time.
    --
    ------------------------------------------------------------------
-   function AddDuration ( T : Clock.TimeT ; D : Clock.DurationT )
+   function AddDuration (T : Clock.TimeT ; D : Clock.DurationT)
                          return Clock.TimeT;
 
    ------------------------------------------------------------------
@@ -57,6 +54,6 @@ is
    --    Uses system calls to check that the supplied time is valid.
    --
    ------------------------------------------------------------------
-   function IsValidTime ( T : Clock.TimeT ) return Boolean;
+   function IsValidTime (T : Clock.TimeT) return Boolean;
 
 end Clock.Interfac;

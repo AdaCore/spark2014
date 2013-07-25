@@ -54,7 +54,8 @@ is
    procedure GetName (TheFile    : in     T;
                       TheName    :    out String;
                       NameLength :    out Natural)
-      with Depends => ((NameLength, TheName) => TheFile,
+      with Depends => ((NameLength,
+                        TheName) => TheFile,
                        null => TheName);
    ------------------------------------------------------------------
    -- Construct
@@ -65,7 +66,6 @@ is
    -- Traceunit : C.File.Construct
    ------------------------------------------------------------------
    function Construct (TheName : String) return T
-   --# pre TheName'Last <= MaxNameLength;
       with Pre => TheName'Last <= MaxNameLength;
 
    ------------------------------------------------------------------
@@ -78,7 +78,8 @@ is
    ------------------------------------------------------------------
    procedure OpenAppend (TheFile : in out T;
                          Success :    out Boolean)
-      with Depends => ((Success, TheFile) => TheFile);
+      with Depends => ((Success,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- OpenWrite
@@ -90,7 +91,8 @@ is
    ------------------------------------------------------------------
    procedure OpenWrite (TheFile : in out T;
                         Success :    out Boolean)
-      with Depends => ((Success, TheFile) => TheFile);
+      with Depends => ((Success,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- OpenRead
@@ -102,7 +104,8 @@ is
    ------------------------------------------------------------------
    procedure OpenRead (TheFile : in out T;
                        Success :    out Boolean)
-      with Depends => ((Success, TheFile) => TheFile);
+      with Depends => ((Success,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- Close
@@ -114,7 +117,8 @@ is
    ------------------------------------------------------------------
    procedure Close (TheFile : in out T;
                     Success :    out Boolean)
-      with Depends => ((Success, TheFile) => TheFile);
+      with Depends => ((Success,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- Exists
@@ -139,7 +143,8 @@ is
    procedure PutString (TheFile : in out T;
                         Text    : in     String;
                         Stop    : in     Natural)
-      with Depends => (TheFile =>+ (Stop, Text));
+      with Depends => (TheFile =>+ (Stop,
+                                    Text));
 
    ------------------------------------------------------------------
    -- GetString
@@ -153,9 +158,10 @@ is
    procedure GetString (TheFile : in out T;
                         Text    :    out String;
                         Stop    :    out Natural)
-      with Depends => ((Stop, Text, TheFile) => TheFile,
+      with Depends => ((Stop,
+                        Text,
+                        TheFile) => TheFile,
                        null => Text);
-
 
    ------------------------------------------------------------------
    -- GetChar
@@ -167,7 +173,8 @@ is
    ------------------------------------------------------------------
    procedure GetChar (TheFile : in out T;
                       Item    :    out Character)
-      with Depends => ((Item, TheFile) => TheFile);
+      with Depends => ((Item,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- PutInteger
@@ -180,7 +187,8 @@ is
    procedure PutInteger (TheFile : in out T;
                          Item    : in Integer;
                          Width   : in Natural)
-      with Depends => (TheFile =>+ (Item, Width));
+      with Depends => (TheFile =>+ (Item,
+                                    Width));
 
    ------------------------------------------------------------------
    -- GetInteger
@@ -194,7 +202,11 @@ is
                          Item    :    out Integer;
                          Width   : in     Natural;
                          Success :    out Boolean)
-      with Depends => ((Item, Success, TheFile) => (TheFile, Width));
+      with Depends => ((Item,
+                        Success,
+                        TheFile) => (TheFile,
+                                     Width));
+
    ------------------------------------------------------------------
    -- NewLine
    --
@@ -233,7 +245,9 @@ is
    procedure GetLine (TheFile : in out T;
                       Item    :    out String;
                       Stop    :    out Natural)
-      with Depends => ((Item, Stop, TheFile) => TheFile,
+      with Depends => ((Item,
+                        Stop,
+                        TheFile) => TheFile,
                        null => Item);
 
    ------------------------------------------------------------------
@@ -266,7 +280,8 @@ is
    ------------------------------------------------------------------
    procedure Create (TheFile : in out T;
                      Success :    out Boolean)
-      with Depends => ((Success, TheFile) => TheFile);
+      with Depends => ((Success,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- Delete
@@ -278,7 +293,8 @@ is
    ------------------------------------------------------------------
    procedure Delete (TheFile : in out T;
                      Success :    out Boolean)
-      with Depends => ((Success, TheFile) => TheFile);
+      with Depends => ((Success,
+                        TheFile) => TheFile);
 
    ------------------------------------------------------------------
    -- Compare
@@ -291,8 +307,10 @@ is
    procedure Compare (FileA        : in out T;
                       FileB        : in out T;
                       FilesTheSame :    out Boolean)
-      with Depends => ((FileA, FileB) =>+ null,
-                       FilesTheSame => (FileA, FileB));
+      with Depends => ((FileA,
+                        FileB) =>+ null,
+                       FilesTheSame => (FileA,
+                                        FileB));
 
    ------------------------------------------------------------------
    -- Copy
@@ -324,7 +342,6 @@ is
       with Depends => (Success => DirName);
 
 private
-   --# hide File;
    pragma SPARK_Mode (Off);
    -- hidden due to use of access types, required in low level file
    -- handling.

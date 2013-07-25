@@ -11,8 +11,7 @@
 pragma Ada_95;
 package body Spark_IO
 is
-  --# hide Spark_IO
-  pragma SPARK_Mode (Off);
+   pragma SPARK_Mode (Off);
 -- File Management
 
   procedure Create(File         :    out File_Type;
@@ -24,7 +23,7 @@ is
     Status := Ok;
     File.File := new Ada.Text_IO.File_Type;
     Ada.Text_IO.Create (File.File.all, Ada.Text_IO.Out_File,
-                     Name_Of_File, Form_Of_File);
+                        Name_Of_File, Form_Of_File);
   exception
     when Ada.Text_IO.Status_Error => Status := Status_Error;
     when Ada.Text_IO.Name_Error   => Status := Name_Error;
@@ -51,19 +50,19 @@ is
     File.File := new Ada.Text_IO.File_Type;
     Ada.Text_IO.Open( File.File.all, Fmode, Name_Of_File, Form_Of_File);
   exception
-    when Ada.Text_IO.Status_Error  => Status := Status_Error;
-    when Ada.Text_IO.Name_Error    => Status := Name_Error;
-    when Ada.Text_IO.Use_Error     => Status := Use_Error;
-    when Ada.Text_IO.Device_Error  => Status := Device_Error;
-    when Standard.Storage_Error    => Status := Storage_Error;
-    when Standard.Program_Error    => Status := Program_Error;
+    when Ada.Text_IO.Status_Error => Status := Status_Error;
+    when Ada.Text_IO.Name_Error   => Status := Name_Error;
+    when Ada.Text_IO.Use_Error    => Status := Use_Error;
+    when Ada.Text_IO.Device_Error => Status := Device_Error;
+    when Standard.Storage_Error   => Status := Storage_Error;
+    when Standard.Program_Error   => Status := Program_Error;
   end Open;
 
   procedure Close(File   : in     File_Type;
                   Status :    out File_Status)
   is
   begin
-    Ada.Text_IO.Close( File.File.all);
+    Ada.Text_IO.Close (File.File.all);
     Status := Ok;
   exception
     when Constraint_Error         => Status := Use_Error;

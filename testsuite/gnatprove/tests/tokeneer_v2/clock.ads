@@ -17,9 +17,6 @@
 ------------------------------------------------------------------
 with BasicTypes;
 
---# inherit Clock.Interfac;
---# inherit BasicTypes;
-
 package Clock
    with Abstract_State => (CurrentTime,
                            (Now with External, Input_Only))
@@ -67,9 +64,9 @@ is
    end record;
 
    ZeroTime : constant TimeT :=
-     TimeT'(Year => YearsT'First,
-            Month => MonthsT'First,
-            Day => DaysT'First,
+     TimeT'(Year     => YearsT'First,
+            Month    => MonthsT'First,
+            Day      => DaysT'First,
             MilliSec => MilliSecsT'First);
 
    ------------------------------------------------------------------
@@ -111,7 +108,6 @@ is
    -- Traceunit: C.Clock.TheCurrentTime
    -- Traceto: FD.RealWorld.State
    ------------------------------------------------------------------
-
    function TheCurrentTime return TimeT
       with Global => CurrentTime;
 
@@ -124,7 +120,6 @@ is
    -- Traceunit: C.Clock.GetNow
    -- Traceto: FD.MonitoredRealWorld.State
    ------------------------------------------------------------------
-
    function GetNow return TimeT
       with Global  => Now;
 
@@ -138,7 +133,6 @@ is
    -- Traceunit: C.Clock.GreaterThan
    --
    ------------------------------------------------------------------
-
    function GreaterThan (Left, Right : TimeT) return Boolean;
 
    ------------------------------------------------------------------
@@ -150,7 +144,6 @@ is
    -- Traceunit: C.Clock.LessThan
    --
    ------------------------------------------------------------------
-
    function LessThan (Left, Right : TimeT) return Boolean;
 
    ------------------------------------------------------------------
@@ -162,7 +155,6 @@ is
    -- Traceunit: C.Clock.GreaterThanOrEqual
    --
    ------------------------------------------------------------------
-
    function GreaterThanOrEqual (Left, Right : TimeT) return Boolean;
 
    ------------------------------------------------------------------
@@ -174,7 +166,6 @@ is
    -- Traceunit: C.Clock.LessThanOrEqual
    --
    ------------------------------------------------------------------
-
    function LessThanOrEqual (Left, Right : TimeT) return Boolean;
 
    ------------------------------------------------------------------
@@ -218,7 +209,11 @@ is
       Day     :    out DaysT;
       Hour    :    out HoursT;
       Min     :    out MinutesT)
-      with Depends => ((Day, Hour, Min, Month, Year) => TheTime);
+      with Depends => ((Day,
+                        Hour,
+                        Min,
+                        Month,
+                        Year)  => TheTime);
 
    ------------------------------------------------------------------
    -- StartOfDay

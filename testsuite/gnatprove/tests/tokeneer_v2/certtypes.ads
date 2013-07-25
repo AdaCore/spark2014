@@ -18,9 +18,6 @@
 with BasicTypes,
      CryptoTypes;
 
---# inherit BasicTypes,
---#         CryptoTypes;
-
 package CertTypes
 is
 

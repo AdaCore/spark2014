@@ -9,19 +9,11 @@
 ------------------------------------------------------------------
 
 with Ada.Text_IO;
+
 package Spark_IO
    with Abstract_State => (State, Inputs, Outputs),
         Initializes    => (State, Inputs, Outputs)
---# own State   : State_Type;
---#     Inputs  : Inputs_Type;
---#     Outputs : Outputs_Type;
---# initializes State,
---#             Inputs,
---#             Outputs;
 is
-  --# type State_Type is abstract;
-  --# type Inputs_Type is abstract;
-  --# type Outputs_Type is abstract;
 
   type File_Type is private; --718 removed limited
   type File_Mode is (In_File, Out_File, Append_File);
@@ -42,10 +34,6 @@ is
                    Name_Of_File : in     String;
                    Form_Of_File : in     String;
                    Status       :    out File_Status)
-  --# global in out State;
-  --# derives State,
-  --#         File,
-  --#         Status   from State, Name_Of_File, Form_Of_File;
      with Global  => (In_Out => State),
           Depends => ((State,
                        File,
@@ -58,11 +46,6 @@ is
                  Name_Of_File : in     String;
                  Form_Of_File : in     String;
                  Status       :    out File_Status)
-  --# global in out State;
-  --# derives State,
-  --#         File,
-  --#         Status from State, Mode_Of_File, Name_Of_File,
-  --#                     Form_Of_File;
      with Global  => (In_Out => State),
           Depends => ((State,
                        File,
@@ -73,17 +56,13 @@ is
 
   procedure Close(File   : in     File_Type;
                   Status :    out File_Status)
-  --# global in out State;
-  --# derives State,
-  --#         Status from State, File;
-     with Global => (In_Out => State), Depends => ((State, Status) =>
-          (State, File));
+     with Global  => (In_Out => State),
+          Depends => ((State,
+                       Status) => (State,
+                                   File));
 
   procedure Delete(File   : in     File_Type;
                    Status :    out File_Status)
-  --# global in out State;
-  --# derives State,
-  --#         Status from State, File
      with Global  => (In_Out => State),
           Depends => ((State,
                        Status) => (State,
@@ -92,8 +71,6 @@ is
   procedure Reset(File         : in out File_Type;
                   Mode_Of_File : in     File_Mode;
                   Status       :    out File_Status)
-  --# derives File,
-  --#         Status   from File, Mode_Of_File;
      with Depends => ((File,
                        Status) => (File,
                                    Mode_Of_File));
@@ -105,8 +82,6 @@ is
   procedure Name(File         : in     File_Type;
                  Name_Of_File :    out String;
                  Stop         :    out Natural)
-  --# derives Name_Of_File,
-  --#         Stop          from File;
      with Depends => ((Name_Of_File,
                        Stop)         => (File,
                                          Name_Of_File));
@@ -114,14 +89,11 @@ is
   procedure Form(File         : in     File_Type;
                  Form_Of_File :    out String;
                  Stop         :    out Natural)
-  --# derives Form_Of_File,
-  --#         Stop          from File;
     with Depends => ((Form_Of_File,
                       Stop)         => (File,
                                         Form_Of_File));
 
   function Is_Open(File : File_Type) return Boolean
-  --# global State;
      with Global => State;
 
 -- Control of default input and output Files
@@ -141,42 +113,31 @@ is
 
   procedure New_Line(File    : in File_Type;
                      Spacing : in Positive)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File, Spacing;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
-                                 File,
-                                 Spacing));
+                                  File,
+                                  Spacing));
 
   procedure Skip_Line(File    : in File_Type;
                       Spacing : in Positive)
-  --# global in out Inputs;
-  --# derives Inputs from Inputs, File, Spacing;
      with Global  => (In_Out => Inputs),
           Depends => (Inputs => (Inputs,
                                  File,
                                  Spacing));
 
   procedure New_Page(File : in File_Type)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
                                   File));
 
   function End_Of_Line(File : File_Type) return Boolean
-  --# global Inputs;
      with Global => Inputs;
 
   function End_Of_File(File : File_Type) return Boolean
-  --# global Inputs;
      with Global => Inputs;
 
   procedure Set_In_File_Col(File : in File_Type;
                      Posn : in Positive)
-  --# global in out Inputs;
-  --# derives Inputs from Inputs, File, Posn;
-  --# pre Mode (File) = In_File;
      with Global  => (In_Out => Inputs),
           Depends => (Inputs => (Inputs,
                                  File,
@@ -185,10 +146,6 @@ is
 
   procedure Set_Out_File_Col( File : in File_Type;
                      Posn : in Positive)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File, Posn;
-  --# pre Mode( File ) = Out_File or
-  --#     Mode (File) = Append_File;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
                                   File,
@@ -197,29 +154,19 @@ is
                        Mode (File) = Append_File;
 
   function In_File_Col(File : File_Type) return Positive
-  --# global Inputs;
-  --# pre Mode (File) = In_File;
      with Global => Inputs,
           Pre    => Mode (File) = In_File;
 
   function Out_File_Col(File : File_Type) return Positive
-  --# global Outputs;
-  --# pre Mode (File) = Out_File or
-  --#     Mode (File) = Append_File;
      with Global => Outputs,
           Pre    => Mode (File) = Out_File or else
                       Mode (File) = Append_File;
 
   function In_File_Line(File : File_Type) return Positive
-  --# global Inputs;
-  --# pre Mode (File) = In_File;
      with Global => Inputs,
           Pre    => Mode (File) = In_File;
 
   function Out_File_Line(File : File_Type) return Positive
-  --# global Outputs;
-  --# pre Mode (File) = Out_File or
-  --#     Mode (File) = Append_File;
      with Global => Outputs,
           Pre    => Mode (File) = Out_File or else
                       Mode (File) = Append_File;
@@ -228,13 +175,10 @@ is
 
   procedure Get_Char(File : in     File_Type;
                      Item :    out Character)
-  --# global in out  Inputs;
-  --# derives Inputs,
-  --#         Item    from Inputs, File;
      with Global  => (In_Out => Inputs),
           Depends => ((Inputs,
-                       Item)  => (Inputs,
-                                  File));
+                       Item)   => (Inputs,
+                                   File));
 
   procedure Put_Char(File : in File_Type;
                      Item : in Character)
@@ -250,10 +194,6 @@ is
   procedure Get_String(File : in     File_Type;
                        Item :    out String;
                        Stop :    out Natural)
-  --# global in out Inputs;
-  --# derives Inputs,
-  --#         Item,
-  --#         Stop    from Inputs, File;
      with Global  => (In_Out => Inputs),
           Depends => ((Inputs,
                        Item,
@@ -264,8 +204,6 @@ is
   procedure Put_String(File : in File_Type;
                        Item : in String;
                        Stop : in Natural)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File, Item, Stop;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
                                   File,
@@ -275,10 +213,6 @@ is
   procedure Get_Line(File : in     File_Type;
                      Item :    out String;
                      Stop :    out Natural)
-  --# global in out Inputs;
-  --# derives Inputs,
-  --#         Item,
-  --#         Stop     from Inputs, File;
      with Global  => (In_Out => Inputs),
           Depends => ((Inputs,
                        Item,
@@ -289,8 +223,6 @@ is
   procedure Put_Line(File : in File_Type;
                      Item : in String;
                      Stop : in Natural)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File, Item, Stop;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
                                   File,
@@ -306,10 +238,6 @@ is
                         Item  :    out Integer;
                         Width : in     Natural;
                         Read  :    out Boolean)
-  --# global in out Inputs;
-  --# derives Inputs,
-  --#         Item,
-  --#         Read     from Inputs, File, Width;
      with Global  => (In_Out => Inputs),
           Depends => ((Inputs,
                        Item,
@@ -321,8 +249,6 @@ is
                         Item  : in Integer;
                         Width : in Natural;
                         Base  : in Number_Base)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File, Item, Width, Base;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
                                   File,
@@ -334,8 +260,6 @@ is
                                 Item      :    out Integer;
                                 Start_Pos : in     Positive;
                                 Stop      :    out Natural)
-  --# derives Item,
-  --#         Stop from Source, Start_Pos;
      with Depends => ((Item,
                        Stop) => (Source,
                                  Start_Pos));
@@ -344,7 +268,6 @@ is
                               Item      : in     Integer;
                               Start_Pos : in     Positive;
                               Base      : in     Number_Base)
-  --# derives Dest from Dest, Item, Start_Pos, Base;
      with Depends => (Dest => (Dest,
                                Item,
                                Start_Pos,
@@ -359,10 +282,6 @@ is
                       Item  :    out Float;
                       Width : in     Natural;
                       Read  :    out Boolean)
-  --# global in out Inputs;
-  --# derives Inputs,
-  --#         Item,
-  --#         Read     from Inputs, File, Width;
      with Global  => (In_Out => Inputs),
           Depends => ((Inputs,
                        Item,
@@ -375,8 +294,6 @@ is
                       Fore : in Natural;
                       Aft  : in Natural;
                       Exp  : in Natural)
-  --# global in out Outputs;
-  --# derives Outputs from Outputs, File, Item, Fore, Aft, Exp;
      with Global  => (In_Out => Outputs),
           Depends => (Outputs => (Outputs,
                                   File,
@@ -389,8 +306,6 @@ is
                                   Item      :    out Float;
                                   Start_Pos : in     Positive;
                                   Stop      :    out Natural)
-  --# derives Item,
-  --#         Stop from Source, Start_Pos;
      with Depends => ((Item,
                        Stop) => (Source,
                                  Start_Pos));
@@ -400,7 +315,6 @@ is
                                 Start_Pos : in     Positive;
                                 Aft       : in     Natural;
                                 Exp       : in     Natural)
-  --# derives Dest from Dest, Item, Start_Pos, Aft, Exp;
      with Depends => (Dest => (Dest,
                                Item,
                                Start_Pos,
@@ -408,7 +322,6 @@ is
                                Exp));
 
 private
-  --# hide Spark_IO;
   pragma SPARK_Mode (Off);
 
   type IO_TYPE   is (Stdin, Stdout, NamedFile);

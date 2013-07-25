@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -28,8 +28,8 @@ use type KeyStore.Interfac.ReturnValueT;
 use type KeyStore.Interfac.MaskT;
 
 package body KeyStore
---# Own Store is KeyStore.Interfac.Store &
---#     State is ThisTISInfo;
+   with Refined_State => (Store => KeyStore.Interfac.Store,
+                          State => ThisTISInfo)
 is
 
    ----------------------------------------------------------------
@@ -84,7 +84,7 @@ is
                  Interfac.BufferTooSmall             => True,
                  Interfac.CryptokiNotInitialized     => True,
                  Interfac.CryptokiAlreadyInitialized => True
-                 );
+                                              );
 
 
    ------------------------------------------------------------------
@@ -104,10 +104,10 @@ is
    ------------------------------------------------------------------
    function ConvertRetValToText(RetVal : Interfac.ReturnValueT;
                                 Op     : String) return AuditTypes.DescriptionT
+      with SPARK_Mode => Off
    is
-   --# hide ConvertRetValToText;
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
-      TheString : String := "Crypto Library Error in " & Op & " : " &
+      TheString : String := "Crypto Library Error in "& Op& " : "&
                                Interfac.ReturnValueT'Image(RetVal);
    begin
       if TheString'Length <= AuditTypes.DescriptionT'Last then
@@ -133,23 +133,23 @@ is
                     RawCertData : in     CertTypes.RawDataT;
                     TheDigest   :    out Interfac.DigestT;
                     Success     :    out Boolean)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives TheDigest,
-   --#         Success            from Mechanism,
-   --#                                 RawCertData,
-   --#                                 Interfac.Store &
-   --#         AuditLog.State,
-   --#         AuditLog.FileState from Mechanism,
-   --#                                 RawCertData,
-   --#                                 Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State;
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Interfac.Store),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                Interfac.Store,
+                                                Mechanism,
+                                                RawCertData),
+                       (Success,
+                        TheDigest) => (Interfac.Store,
+                                       Mechanism,
+                                       RawCertData))
    is
       RetValIni : Interfac.ReturnValueT;
       -- Initialize the update and final returns to Ok, so a
@@ -178,28 +178,24 @@ is
                         BlockNo   : Positive;
                         BlockSize : BasicTypes.Unsigned32T)
                   return Interfac.HundredByteArrayT
-      --# pre 1 <= BlockNo and
-      --#     BlockNo <= 41 and
-      --#     1 <= BlockSize and
-      --#     BlockSize <= 100 and
-      --#     Positive(BlockSize) + (BlockNo - 1) * 100 <= CertTypes.RawCertificateI'Last;
+         with Pre     => 1 <= BlockNo and then
+                         BlockNo <= 41 and then
+                         1 <= BlockSize and then
+                         BlockSize <= 100 and then
+                         Positive(BlockSize) + (BlockNo - 1) * 100 <=
+                           CertTypes.RawCertificateI'Last
       is
-         pragma Precondition
-           (1 <= BlockNo and then
-              BlockNo <= 41 and then
-                1 <= BlockSize and then
-                  BlockSize <= 100 and then
-                    Positive(BlockSize) + (BlockNo - 1) * 100 <= CertTypes.RawCertificateI'Last);
          Result : Interfac.HundredByteArrayT :=
                      Interfac.HundredByteArrayT'(others => ' ');
       begin
-         for i in CertTypes.RawCertificateI range 1 .. 100 loop
-            --# assert 1 <= BlockNo and
-            --#        BlockNo <= 41 and
-            --#        1 <= BlockSize and
-            --#        BlockSize <= 100 and
-            --#        1 <= i and i <= 100 and
-            --#        BasicTypes.Unsigned32T(i) <= BlockSize;
+         for i in CertTypes.RawCertificateI range 1..100 loop
+            pragma Loop_Invariant (1 <= BlockNo and
+                                     BlockNo <= 41 and
+                                     1 <= BlockSize and
+                                     BlockSize <= 100 and
+                                     1 <= i and
+                                     i <= 100 and
+                                     BasicTypes.Unsigned32T(i) <= BlockSize);
             Result(i) := Data(i + (BlockNo - 1) * 100);
             exit when BasicTypes.Unsigned32T(i) = BlockSize;
          end loop;
@@ -217,20 +213,22 @@ is
       if RetValIni = Interfac.Ok then
 
          -- If so perform digest...
-         LoopMax := ( (RawCertData.DataLength - 1) / 100 ) + 1;
+         LoopMax := ((RawCertData.DataLength - 1) / 100) + 1;
          BytesLeft := RawCertData.DataLength;
 
          for i in Positive range 1..LoopMax loop
 
-            --# assert LoopMax = ((RawCertData.DataLength - 1) / 100) + 1 and
-            --#        LoopMax = LoopMax% and
-            --#        1 <= i and i <= LoopMax and
-            --#        BytesLeft = (RawCertData.DataLength) - (i - 1) * 100 and
-            --#        1 <= RawCertData.DataLength and
-            --#        RawCertData.DataLength <= 4096 and
-            --#        1 <= Size and Size <= 100 and
-            --#        RetValIni = Interfac.Ok and
-            --#        RetValFin = Interfac.Ok;
+            pragma Loop_Invariant (LoopMax = ((RawCertData.DataLength - 1) / 100) + 1 and
+                                     LoopMax = LoopMax'Loop_Entry and
+                                     1 <= i and
+                                     i <= LoopMax and
+                                     BytesLeft = (RawCertData.DataLength) - (i - 1) * 100 and
+                                     1 <= RawCertData.DataLength and
+                                     RawCertData.DataLength <= 4096 and
+                                     1 <= Size and
+                                     Size <= 100 and
+                                     RetValIni = Interfac.Ok and
+                                     RetValFin = Interfac.Ok);
 
             if BytesLeft < 100 then
                Size := BasicTypes.Unsigned32T(BytesLeft);
@@ -283,21 +281,20 @@ is
 
       if IsSystem(RetValFin) then
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetValFin, "DigestFinal")
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => ConvertRetValToText(RetValFin, "DigestFinal")
                 );
       end if;
    end Digest;
-
 
    ------------------------------------------------------------------
    -- DoFind
    --
    -- Description:
    --    Calls the Crypto Find operations in order, and attempts to find
-   --    HandleCount handles. Returns these in a HandleArray and a
+   --    HandleCount handles.Returns these in a HandleArray and a
    --    count of the actual number found.
    --
    -- Implementation Notes:
@@ -307,23 +304,23 @@ is
    procedure DoFind(Template    : in     Interfac.KeyTemplateT;
                     HandleCount : in out BasicTypes.Unsigned32T;
                     Handles     :    out Interfac.HandleArrayT)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 HandleCount,
-   --#                                 Template &
-   --#         HandleCount,
-   --#         Handles            from Interfac.Store,
-   --#                                 HandleCount,
-   --#                                 Template;
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Interfac.Store),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                HandleCount,
+                                                Interfac.Store,
+                                                Template),
+                       (HandleCount,
+                        Handles)     => (HandleCount,
+                                         Interfac.Store,
+                                         Template))
    is
       RetValIni : Interfac.ReturnValueT;
       -- Initialize the find and final returns to Ok, so a
@@ -333,12 +330,12 @@ is
    begin
       Handles := Interfac.HandleArrayT'(others => NullKey);
       Interfac.FindObjectsInit(Template    => Template,
-                             ReturnValue => RetValIni);
+                               ReturnValue => RetValIni);
 
       if RetValIni = Interfac.Ok then
          Interfac.FindObjects(HandleCount   => HandleCount,
-                               ObjectHandles => Handles,
-                               ReturnValue   => RetValDo);
+                              ObjectHandles => Handles,
+                              ReturnValue   => RetValDo);
 
          if RetValIni = Interfac.Ok then
             Interfac.FindObjectsFinal(ReturnValue => RetValFin);
@@ -348,30 +345,30 @@ is
       if IsSystem(RetValIni) then
 
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetValIni, "FindObjectsInit ")
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => ConvertRetValToText(RetValIni, "FindObjectsInit ")
                 );
       end if;
 
       if IsSystem(RetValDo) then
 
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetValDo, "FindObjects ")
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => ConvertRetValToText(RetValDo, "FindObjects ")
                 );
       end if;
 
       if IsSystem(RetValFin) then
 
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetValFin, "FindObjectsFinal ")
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => ConvertRetValToText(RetValFin, "FindObjectsFinal ")
                 );
       end if;
 
@@ -393,20 +390,20 @@ is
    ------------------------------------------------------------------
    procedure KeyMatchingIssuer(Issuer    : in     CryptoTypes.IssuerT;
                                IssuerKey :    out BasicTypes.Unsigned32T)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 Issuer &
-   --#         IssuerKey          from Interfac.Store,
-   --#                                 Issuer;
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Interfac.Store),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                Interfac.Store,
+                                                Issuer),
+                       IssuerKey => (Interfac.Store,
+                                     Issuer))
    is
       IssuerTemplate : Interfac.KeyTemplateT;
       Handles : Interfac.HandleArrayT;
@@ -433,11 +430,11 @@ is
 
          -- More than one key matched.
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => "Crypto Library Error : Library holds " &
-                                "more than one public key for an Issuer."
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => "Crypto Library Error : Library holds "&
+                               "more than one public key for an Issuer."
                 );
       end if;
 
@@ -461,18 +458,18 @@ is
    --
    ------------------------------------------------------------------
    procedure PrivateKey(PrivateKeyHandle :    out BasicTypes.Unsigned32T)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State &
-   --#         PrivateKeyHandle   from Interfac.Store;
+      with Global  => (Input  => (Clock.Now,
+                                   ConfigData.State,
+                                   Interfac.Store),
+                        In_Out => (AuditLog.FileState,
+                                   AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                Interfac.Store),
+                       PrivateKeyHandle => Interfac.Store)
    is
       PrivateTemplate : Interfac.KeyTemplateT;
       Handles : Interfac.HandleArrayT;
@@ -498,11 +495,11 @@ is
 
          -- More than one key matched.
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => "Crypto Library Error : Library holds " &
-                                "more than one private key for this TIS."
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => "Crypto Library Error : Library holds "&
+                               "more than one private key for this TIS."
                 );
       end if;
 
@@ -523,19 +520,19 @@ is
    --
    ------------------------------------------------------------------
    procedure Init
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --#           out ThisTISInfo;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State &
-   --#         ThisTISInfo        from Interfac.Store;
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State,
+                                          Interfac.Store),
+                               Output => ThisTISInfo,
+                               In_Out => (AuditLog.FileState,
+                                          AuditLog.State)),
+           Refined_Depends => ((AuditLog.FileState,
+                                AuditLog.State)     => (AuditLog.FileState,
+                                                        AuditLog.State,
+                                                        Clock.Now,
+                                                        ConfigData.State,
+                                                        Interfac.Store),
+                               ThisTISInfo => Interfac.Store)
    is
       RetVal : Interfac.ReturnValueT;
       ThePrivateKeyH : BasicTypes.Unsigned32T;
@@ -552,10 +549,10 @@ is
       if IsSystem(RetVal) then
 
          AuditLog.AddElementToLog(
-                ElementID    => AuditTypes.SystemFault,
-                Severity     => AuditTypes.Warning,
-                User         => AuditTypes.NoUser,
-                Description  => ConvertRetValToText(RetVal, "Initialize")
+                ElementID   => AuditTypes.SystemFault,
+                Severity    => AuditTypes.Warning,
+                User        => AuditTypes.NoUser,
+                Description => ConvertRetValToText(RetVal, "Initialize")
                 );
       end if;
 
@@ -565,8 +562,8 @@ is
 
       if ThisTISInfo.IsPresent then
          Interfac.GetAttributeValue(KeyHandle   => ThePrivateKeyH,
-                                     Template    => ThePrivateKey,
-                                     ReturnValue => RetVal);
+                                    Template    => ThePrivateKey,
+                                    ReturnValue => RetVal);
 
          if RetVal = Interfac.Ok then
             ThisTISInfo.Owner := ThePrivateKey.Owner;
@@ -588,20 +585,20 @@ is
    ------------------------------------------------------------------
    procedure KeyMatchingIssuerPresent(Issuer    : in     CryptoTypes.IssuerT;
                                       IsPresent :    out Boolean)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 Issuer &
-   --#         IsPresent          from Interfac.Store,
-   --#                                 Issuer;
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State,
+                                          Interfac.Store),
+                               In_Out => (AuditLog.FileState,
+                                          AuditLog.State)),
+           Refined_Depends => ((AuditLog.FileState,
+                                AuditLog.State)     => (AuditLog.FileState,
+                                                        AuditLog.State,
+                                                        Clock.Now,
+                                                        ConfigData.State,
+                                                        Interfac.Store,
+                                                        Issuer),
+                               IsPresent => (Interfac.Store,
+                                             Issuer))
    is
       TheIssuerKey : BasicTypes.Unsigned32T;
    begin
@@ -621,7 +618,7 @@ is
    --
    ------------------------------------------------------------------
    function PrivateKeyPresent return Boolean
-   --# global ThisTISInfo;
+      with Refined_Global  => ThisTISInfo
    is
    begin
       return ThisTISInfo.IsPresent;
@@ -637,7 +634,7 @@ is
    ------------------------------------------------------------------
    function IssuerIsThisTIS(Issuer : in     CryptoTypes.IssuerT)
      return  Boolean
-   --# global ThisTISInfo;
+      with Refined_Global  => ThisTISInfo
    is
       IsTIS : Boolean;
    begin
@@ -658,7 +655,7 @@ is
    --
    ------------------------------------------------------------------
    function ThisTIS return CryptoTypes.IssuerT
-   --# global ThisTISInfo;
+      with Refined_Global  => ThisTISInfo
    is
    begin
       return ThisTISInfo.Owner;
@@ -677,26 +674,26 @@ is
                            Signature   : in     CertTypes.SignatureT;
                            TheIssuer   : in     CryptoTypes.IssuerT;
                            Verified    :    out Boolean)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from Mechanism,
-   --#                                 RawCertData,
-   --#                                 Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 TheIssuer,
-   --#                                 Signature &
-   --#         Verified           from Mechanism,
-   --#                                 RawCertData,
-   --#                                 Interfac.Store,
-   --#                                 TheIssuer,
-   --#                                 Signature;
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State,
+                                          Interfac.Store),
+                               In_Out => (AuditLog.FileState,
+                                          AuditLog.State)),
+           Refined_Depends => ((AuditLog.FileState,
+                                AuditLog.State)     => (AuditLog.FileState,
+                                                        AuditLog.State,
+                                                        Clock.Now,
+                                                        ConfigData.State,
+                                                        Interfac.Store,
+                                                        Mechanism,
+                                                        RawCertData,
+                                                        Signature,
+                                                        TheIssuer),
+                               Verified => (Interfac.Store,
+                                            Mechanism,
+                                            RawCertData,
+                                            Signature,
+                                            TheIssuer))
    is
       TheDigest    : Interfac.DigestT;
       Digested     : Boolean;
@@ -750,21 +747,21 @@ is
    procedure  Sign(RawCertData : in     CertTypes.RawDataT;
                    Signature   :    out CertTypes.SignatureT;
                    Signed      :    out Boolean)
-   --# global in     Interfac.Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from RawCertData,
-   --#                                 Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State &
-   --#         Signature,
-   --#         Signed             from RawCertData,
-   --#                                 Interfac.Store;
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State,
+                                          Interfac.Store),
+                               In_Out => (AuditLog.FileState,
+                                          AuditLog.State)),
+           Refined_Depends => ((AuditLog.FileState,
+                                AuditLog.State)     => (AuditLog.FileState,
+                                                        AuditLog.State,
+                                                        Clock.Now,
+                                                        ConfigData.State,
+                                                        Interfac.Store,
+                                                        RawCertData),
+                               (Signature,
+                                Signed)    => (Interfac.Store,
+                                               RawCertData))
    is
       -- This TIS always uses RSA with SHA-1
       Mechanism : constant CryptoTypes.AlgorithmT := CryptoTypes.SHA1_RSA;
@@ -782,20 +779,20 @@ is
       if Digested then
          PrivateKey(PrivateKeyHandle => ThePrivateKeyH);
 
-         Interfac.Sign(Mechanism    => Mechanism,
-                     KeyHandle    => ThePrivateKeyH,
-                     Digest       => TheDigest,
-                     Signature    => Signature,
-                     ReturnValue  => RetVal
-                     );
+         Interfac.Sign(Mechanism   => Mechanism,
+                       KeyHandle   => ThePrivateKeyH,
+                       Digest      => TheDigest,
+                       Signature   => Signature,
+                       ReturnValue => RetVal
+                      );
          Signed := (Retval = Interfac.Ok);
 
          if IsSystem(RetVal) then
             AuditLog.AddElementToLog(
-                   ElementID    => AuditTypes.SystemFault,
-                   Severity     => AuditTypes.Warning,
-                   User         => AuditTypes.NoUser,
-                   Description  => ConvertRetValToText(RetVal, "Sign")
+                   ElementID   => AuditTypes.SystemFault,
+                   Severity    => AuditTypes.Warning,
+                   User        => AuditTypes.NoUser,
+                   Description => ConvertRetValToText(RetVal, "Sign")
                    );
          end if;
 
@@ -822,39 +819,34 @@ is
                     TheKey   : in     CryptoTypes.KeyPartT;
                     IsPublic : in     Boolean;
                     Added    :    out Boolean)
-   --# global in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out Interfac.Store;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --#        in out ThisTISInfo;
-   --# derives Interfac.Store,
-   --#         ThisTISInfo        from *,
-   --#                                 Interfac.Store,
-   --#                                 TheOwner,
-   --#                                 TheKey,
-   --#                                 IsPublic &
-   --#         AuditLog.State,
-   --#         AuditLog.FileState from Interfac.Store,
-   --#                                 AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 TheOwner,
-   --#                                 TheKey,
-   --#                                 IsPublic &
-   --#         Added              from Interfac.Store,
-   --#                                 TheOwner,
-   --#                                 TheKey,
-   --#                                 IsPublic;
-   --# post ((Added and not IsPublic) -> PrivateKeyPresent(ThisTISInfo)) and
-   --#      (not (Added and not IsPublic) -> PrivateKeyPresent(ThisTISInfo) =
-   --#                                        PrivateKeyPresent(ThisTISInfo~));
+      with Refined_Global  => (Input  => (Clock.Now,
+                                          ConfigData.State),
+                               In_Out => (AuditLog.FileState,
+                                          AuditLog.State,
+                                          Interfac.Store,
+                                          ThisTISInfo)),
+            Refined_Depends => ((Added,
+                                 Interfac.Store) => (Interfac.Store,
+                                                     IsPublic,
+                                                     TheKey,
+                                                     TheOwner),
+                                (AuditLog.FileState,
+                                 AuditLog.State)     => (AuditLog.FileState,
+                                                         AuditLog.State,
+                                                         Clock.Now,
+                                                         ConfigData.State,
+                                                         Interfac.Store,
+                                                         IsPublic,
+                                                         TheKey,
+                                                         TheOwner),
+                                ThisTISInfo =>+ (Interfac.Store,
+                                                 IsPublic,
+                                                 TheKey,
+                                                 TheOwner)),
+           Refined_Post    => ((Added and then not IsPublic) <= PrivateKeyPresent) and then
+                                 (not (Added and then not IsPublic)) <=
+                                    (PrivateKeyPresent = PrivateKeyPresent'Old)
    is
-      pragma Postcondition
-        (((Added and then not IsPublic) <= PrivateKeyPresent) and then
-         (not (Added and then not IsPublic)) <= (PrivateKeyPresent =
-                                           PrivateKeyPresent'Old));
       TheKeyTemplate : Interfac.KeyTemplateT;
       RetVal : Interfac.ReturnValueT;
    begin
@@ -901,13 +893,12 @@ is
    -- Traceto   : FD.KeyTypes.UpdateKeyStore
    ------------------------------------------------------------------
    procedure Delete
-   --# global in out Interfac.Store;
-   --#           out ThisTISInfo;
-   --# derives Interfac.Store from * &
-   --#         ThisTISInfo     from ;
-   --# post not PrivateKeyPresent(ThisTISInfo);
+      with Refined_Global  => (Output => ThisTISInfo,
+                               In_Out => Interfac.Store),
+           Refined_Depends => (Interfac.Store =>+ null,
+                               ThisTISInfo => null),
+           Refined_Post    => not PrivateKeyPresent
    is
-      pragma Postcondition (not PrivateKeyPresent);
    begin
 
       Interfac.Delete;

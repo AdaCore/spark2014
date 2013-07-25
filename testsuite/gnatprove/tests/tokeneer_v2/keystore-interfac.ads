@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -19,20 +19,17 @@ with BasicTypes,
      CertTypes,
      CryptoTypes;
 
---# inherit BasicTypes,
---#         CertTypes,
---#         CryptoTypes;
 
 private package KeyStore.Interfac
---# own Store;
---# initializes Store;
+   with Abstract_State => (Store with Part_Of => Keystore.Store),
+        Initializes    => Store
 is
 
    -- As this library will only be storing key objects we are only
-   -- interested in Key templates. Key data in this system is
+   -- interested in Key templates.Key data in this system is
    -- replaced by dummy keys, consisting of an Owner, a Key ID, a
    -- KeyLength, and a Boolean flag indicating whether the key is
-   -- public or private. KeyTemplateT includes these as attributes,
+   -- public or private.KeyTemplateT includes these as attributes,
    -- and a mask to determine which of the attributes are defined.
 
    -- Each attribute will have a corresponding bit in AttrMask, which
@@ -97,7 +94,7 @@ is
       );
 
    -- DigestT represents the digest information contained in a
-   -- certificate. Padded for realistic size.
+   -- certificate.Padded for realistic size.
    type DigestPadI is range 1..20;
    type DigestPadT is array (DigestPadI) of BasicTypes.ByteT;
 
@@ -116,7 +113,6 @@ is
                                Pad          => DigestPadT'(others => 0));
 
 
-
    ------------------------------------------------------------------
    -- Initialize
    --
@@ -124,10 +120,9 @@ is
    --    Used to initialize the crypto library at TIS startup.
    --
    ------------------------------------------------------------------
-   procedure Initialize(ReturnValue : out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store;
-
+   procedure Initialize(ReturnValue : out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
    -- Finalize
@@ -136,10 +131,9 @@ is
    --    Used to finalize the crypto library.
    --
    ------------------------------------------------------------------
-   procedure Finalize(ReturnValue : out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store;
-
+   procedure Finalize(ReturnValue : out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
    -- CreateObject
@@ -148,13 +142,10 @@ is
    --    Can be used to store keys in the crypto database.
    --
    ------------------------------------------------------------------
-
    procedure CreateObject(Template     : in     KeyTemplateT;
-                          ReturnValue  :    out ReturnValueT);
-   --# global in out Store;
-   --# derives Store,
-   --#         ReturnValue from Store,
-   --#                          Template;
+                          ReturnValue  :    out ReturnValueT)
+      with Global  => (In_Out => Store),
+           Depends => ((ReturnValue, Store) => (Store, Template));
 
    ------------------------------------------------------------------
    -- FindObjectsInit
@@ -164,13 +155,10 @@ is
    --    library for an object matching a given template, obtained here.
    --
    ------------------------------------------------------------------
-
    procedure FindObjectsInit(Template    : in     KeyTemplateT;
-                             ReturnValue :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store,
-   --#                          Template;
-
+                             ReturnValue :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => (Store, Template));
 
    ------------------------------------------------------------------
    -- FindObjects
@@ -180,15 +168,14 @@ is
    --    found matches.
    --
    ------------------------------------------------------------------
-
    procedure FindObjects(HandleCount   : in out BasicTypes.Unsigned32T;
                          ObjectHandles :    out HandleArrayT;
-                         ReturnValue   :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue,
-   --#         ObjectHandles,
-   --#         HandleCount   from Store,
-   --#                            HandleCount;
+                         ReturnValue   :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => ((HandleCount,
+                        ObjectHandles,
+                        ReturnValue)   => (HandleCount,
+                                           Store));
 
    ------------------------------------------------------------------
    -- FindObjectsFinal
@@ -197,10 +184,9 @@ is
    --    Finalizes the find operation.
    --
    ------------------------------------------------------------------
-
-   procedure FindObjectsFinal(ReturnValue : out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store;
+   procedure FindObjectsFinal(ReturnValue : out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => Store);
 
    ------------------------------------------------------------------
    -- DigestInit
@@ -212,12 +198,10 @@ is
    --    which TIS can determine the type of digest to produce.
    --
    ------------------------------------------------------------------
-
    procedure DigestInit(Mechanism   : in     CryptoTypes.AlgorithmT;
-                        ReturnValue :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store,
-   --#                          Mechanism;
+                        ReturnValue :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => (Mechanism, Store));
 
 
    ------------------------------------------------------------------
@@ -225,19 +209,16 @@ is
    --
    -- Description:
    --    Called a number of times to read all of the raw certificate data,
-   --    in 100 byte chunks. The whole of the certificate must be read in to
+   --    in 100 byte chunks.The whole of the certificate must be read in to
    --    ensure that the CryptoControl field is visible.
    --    Performs the digest.
    --
    ------------------------------------------------------------------
-
    procedure DigestUpdate(DataBlock   : in     HundredByteArrayT;
                           ByteCount   : in     BasicTypes.Unsigned32T;
-                          ReturnValue :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store,
-   --#                          DataBlock,
-   --#                          ByteCount;
+                          ReturnValue :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => (ByteCount, DataBlock, Store));
 
    ------------------------------------------------------------------
    -- DigestFinal
@@ -247,12 +228,10 @@ is
    --    digest operation, returning the produced digest.
    --
    ------------------------------------------------------------------
-
    procedure DigestFinal(Digest       : out DigestT;
-                         ReturnValue  : out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue,
-   --#         Digest      from Store;
+                         ReturnValue  : out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => ((Digest, ReturnValue) => Store);
 
    ------------------------------------------------------------------
    -- Sign
@@ -261,18 +240,17 @@ is
    --    Signs the TIS created Auth Cert.
    --
    ------------------------------------------------------------------
-
    procedure Sign(Mechanism    : in     CryptoTypes.AlgorithmT;
                   KeyHandle    : in     BasicTypes.Unsigned32T;
                   Digest       : in     DigestT;
                   Signature    :    out CertTypes.SignatureT;
-                  ReturnValue  :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue,
-   --#         Signature   from Store,
-   --#                          Mechanism,
-   --#                          Digest,
-   --#                          KeyHandle;
+                  ReturnValue  :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => ((ReturnValue,
+                        Signature) => (Digest,
+                                       KeyHandle,
+                                       Mechanism,
+                                       Store));
 
    ------------------------------------------------------------------
    -- Verify
@@ -282,18 +260,17 @@ is
    --    against the digest of the certificate.
    --
    ------------------------------------------------------------------
-
    procedure Verify(Mechanism    : in     CryptoTypes.AlgorithmT;
                     KeyHandle    : in     BasicTypes.Unsigned32T;
                     Digest       : in     DigestT;
                     Signature    : in     CertTypes.SignatureT;
-                    ReturnValue  :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue from Store,
-   --#                          Mechanism,
-   --#                          Digest,
-   --#                          Signature,
-   --#                          KeyHandle;
+                    ReturnValue  :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => (ReturnValue => (Digest,
+                                       KeyHandle,
+                                       Mechanism,
+                                       Signature,
+                                       Store));
 
    ------------------------------------------------------------------
    -- GetAttributeValue
@@ -302,16 +279,14 @@ is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-
    procedure GetAttributeValue(KeyHandle   : in     BasicTypes.Unsigned32T;
                                Template    : in out KeyTemplateT;
-                               ReturnValue :    out ReturnValueT);
-   --# global in Store;
-   --# derives ReturnValue,
-   --#         Template    from Store,
-   --#                          Template,
-   --#                          KeyHandle;
-
+                               ReturnValue :    out ReturnValueT)
+      with Global  => (Input  => Store),
+           Depends => ((ReturnValue,
+                        Template) => (KeyHandle,
+                                      Store,
+                                      Template));
 
    ------------------------------------------------------------------
    -- Delete
@@ -320,9 +295,8 @@ is
    --    Deletes the KeyStore.
    --
    ------------------------------------------------------------------
-
-   procedure Delete;
-   --# global in out Store;
-   --# derives Store from *;
+   procedure Delete
+      with Global  => (In_Out => Store),
+           Depends => (Store =>+ null);
 
 end KeyStore.Interfac;

@@ -15,10 +15,8 @@
 --    Types that appear within the context of an I&A certificate
 --
 ------------------------------------------------------------------
-with BasicTypes, 
+with BasicTypes,
      CryptoTypes;
-
---# inherit BasicTypes,  CryptoTypes;
 
 package IandATypes
 is
@@ -61,9 +59,9 @@ is
       end record;
 
    NullTemplate : constant TemplateT := TemplateT'
-     (Length         => TemplateLengthT'First, 
-       RequiredMaxFAR => FarT'First, 
-       ID             => TemplateIDT'(others => ' '), 
+     (Length         => TemplateLengthT'First,
+       RequiredMaxFAR => FarT'First,
+       ID             => TemplateIDT'(others => ' '),
        Pad            => NullTemplatePad);
 
 

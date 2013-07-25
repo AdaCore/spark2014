@@ -20,13 +20,18 @@ with AlarmTypes,
      Clock,
      ConfigData,
      File;
---# inherit AlarmTypes,  AuditTypes,  Clock,  ConfigData,  File;
 
 package AuditLog
    with Abstract_State => (FileState,
                            State),
         Initializes    => FileState
 is
+   --  Helper expression function that acts as the precondition of
+   --  AddElementToLog, ArchiveLog and ClearLogEntries. It allows us
+   --  to refer to types and variables that are declared in the body
+   --  and are not visible here and it acts as an invariant.
+   function Valid_NumberLogEntries return Boolean;
+
 
    ------------------------------------------------------------------
    -- Types
@@ -44,18 +49,13 @@ is
    -- Traceunit : C.AuditLog.Init
    -- Traceto   : FD.TIS.TISStartup
    ------------------------------------------------------------------
-
    procedure Init
       with Global  => (Input  => ConfigData.State,
                        Output => State,
                        In_Out => FileState),
            Depends => (FileState =>+ null,
                        State => (ConfigData.State,
-                                 FileState));--  ,
-           --  Post    => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile));
+                                 FileState));
 
    ------------------------------------------------------------------
    -- AddElementToLog
@@ -69,7 +69,6 @@ is
    -- Traceunit : C.AuditLog.AddElementToLog
    -- Traceto   : FD.AuditLog.AddElementToLog
    ------------------------------------------------------------------
-
    procedure AddElementToLog (
                 ElementID    : in     AuditTypes.ElementT;
                 Severity     : in     AuditTypes.SeverityT;
@@ -87,16 +86,8 @@ is
                                    FileState,
                                    Severity,
                                    State,
-                                   User));--  ,
-           --  Pre     => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile)),
-           --  Post    => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile));
-
+                                   User)),
+           Pre     => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- ArchiveLog
@@ -108,7 +99,6 @@ is
    -- Traceunit : C.AuditLog.ArchiveLog
    -- Traceto   : FD.AuditLog.ArchiveLog
    ------------------------------------------------------------------
-
    procedure ArchiveLog (User    : in     AuditTypes.UserTextT;
                          Archive :    out File.T)
       with Global  => (Input  => (Clock.Now,
@@ -122,16 +112,8 @@ is
                                    ConfigData.State,
                                    FileState,
                                    State,
-                                   User));--  ,
-           --  Pre     => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile)),
-           --  Post    => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile));
-
+                                   User)),
+           Pre     => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- ClearLogEntries
@@ -143,7 +125,6 @@ is
    -- Traceunit : C.AuditLog.ClearLogEntries
    -- Traceto   : FD.AuditLog.ClearLog
    ------------------------------------------------------------------
-
    procedure ClearLogEntries (User    : in     AuditTypes.UserTextT)
       with Global  => (Input  => (Clock.Now,
                                   ConfigData.State),
@@ -154,16 +135,8 @@ is
                                    ConfigData.State,
                                    FileState,
                                    State,
-                                   User));--  ,
-           --  Pre     => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile)),
-           --  Post    => (UsedLogFiles.Length >= 1 and then
-           --                NumberLogEntries =
-           --                LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-           --                LogFileEntries(CurrentLogFile));
-
+                                   User)),
+           Pre     => Valid_NumberLogEntries;
 
    ------------------------------------------------------------------
    -- CancelArchive
@@ -174,7 +147,6 @@ is
    -- Traceunit : C.AuditLog.CancelArchive
    -- Traceto   : FD.AuditLog.CancelArchive
    ------------------------------------------------------------------
-
    procedure CancelArchive
       with Global  => (In_Out => State),
            Depends => (State =>+ null);

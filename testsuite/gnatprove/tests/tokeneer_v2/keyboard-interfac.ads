@@ -1,18 +1,11 @@
-
-
-
-
-
-
-
 ------------------------------------------------------------------
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -24,11 +17,11 @@
 ------------------------------------------------------------------
 with BasicTypes;
 with Keyboard;
---# inherit BasicTypes,
---#         Keyboard;
 
 private package Keyboard.Interfac
---# own in Input;
+   with Abstract_State => (Inputs with External,
+                                       Input_Only,
+                                       Part_Of => Keyboard.Inputs)
 is
 
    ------------------------------------------------------------------
@@ -39,15 +32,14 @@ is
    --    this is indicated by the value of KeyedDataPresence.
    --
    ------------------------------------------------------------------
-
    procedure ReadKeyboardData
      (KeyedDataPresence : out BasicTypes.PresenceT;
       KeyedData         : out Keyboard.DataTextT;
-      KeyedDataLength   : out Keyboard.DataLengthT);
-   --# global in Input;
-   --# derives KeyedDataPresence,
-   --#         KeyedData,
-   --#         KeyedDataLength   from Input;
+      KeyedDataLength   : out Keyboard.DataLengthT)
+      with Global  => (Input  => Inputs),
+           Depends => ((KeyedData,
+                        KeyedDataLength,
+                        KeyedDataPresence) => Inputs);
 
    ------------------------------------------------------------------
    -- Init
@@ -56,9 +48,9 @@ is
    --    Initialises the keyboard polling mechanism.
    --
    ------------------------------------------------------------------
-   procedure Init;
-   --# global in Input;
-   --# derives null from Input;
+   procedure Init
+      with Global  => (Input  => Inputs),
+           Depends => (null => Inputs);
 
    ------------------------------------------------------------------
    -- Finalise
@@ -67,9 +59,9 @@ is
    --    Finalises the keyboard polling mechanism.
    --
    ------------------------------------------------------------------
-   procedure Finalise;
-   --# global in Input;
-   --# derives null from Input;
+   procedure Finalise
+      with Global  => (Input  => Inputs),
+           Depends => (null => Inputs);
 
    ------------------------------------------------------------------
    -- Poll
@@ -78,8 +70,8 @@ is
    --    Polls the keyboard checking the freshness of data.
    --
    ------------------------------------------------------------------
-   procedure Poll;
-   --# global in Input;
-   --# derives null from Input;
+   procedure Poll
+      with Global  => (Input  => Inputs),
+           Depends => (null => Inputs);
 
 end Keyboard.Interfac;

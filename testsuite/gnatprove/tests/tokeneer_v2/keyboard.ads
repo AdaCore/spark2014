@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -16,10 +16,9 @@
 --
 ------------------------------------------------------------------
 with BasicTypes;
---# inherit BasicTypes;
 
 package Keyboard
---# own in Input;
+   with Abstract_State => (Inputs with External, Input_Only)
 is
 
    ------------------------------------------------------------------
@@ -27,7 +26,7 @@ is
    --
    ------------------------------------------------------------------
    MaxDataLength : constant Positive := 78;
-   subtype DataLengthT is Natural range 0 .. MaxDataLength;
+   subtype DataLengthT is Natural range 0..MaxDataLength;
    subtype DataI is Positive range 1..MaxDataLength;
    subtype DataTextT is String(DataI);
 
@@ -46,10 +45,9 @@ is
    -- Traceunit: C.Keyboard.Init
    -- Traceto:  FD.TIS.TISStartup
    ------------------------------------------------------------------
-
-   procedure Init;
-   --# global in Input;
-   --# derives null from Input;
+   procedure Init
+      with Global  => (Input  => Inputs),
+           Depends => (null => Inputs);
 
 
    ------------------------------------------------------------------
@@ -60,10 +58,9 @@ is
    --
    -- Traceunit: C.Keyboard.Finalise
    ------------------------------------------------------------------
-
-   procedure Finalise;
-   --# global in Input;
-   --# derives null from Input;
+   procedure Finalise
+      with Global  => (Input  => Inputs),
+           Depends => (null => Inputs);
 
 
    ------------------------------------------------------------------
@@ -77,13 +74,11 @@ is
    -- Traceto: FD.Enclave.ValidateOpRequestOK
    -- Traceto: FD.Enclave.ValidateOpRequestFail
    ------------------------------------------------------------------
-
    procedure Read
      (DataPresence :    out BasicTypes.PresenceT;
-      Data         :    out DataT );
-   --# global in Input;
-   --# derives DataPresence,
-   --#         Data         from Input;
+      Data         :    out DataT)
+      with Global  => (Input  => Inputs),
+           Depends => ((Data, DataPresence) => Inputs);
 
    ------------------------------------------------------------------
    -- Poll
@@ -94,11 +89,8 @@ is
    -- Traceunit: C.Keyboard.Poll
    -- Traceto: FD.Poll.Keyboard
    ------------------------------------------------------------------
-
-   procedure Poll;
-   --# global in Input;
-   --# derives null from Input;
-
-
+   procedure Poll
+      with Global  => (Input  => Inputs),
+           Depends => (null => Inputs);
 
 end Keyboard;

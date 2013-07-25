@@ -2,10 +2,10 @@
 -- Tokeneer ID Station Core Software
 --
 -- Copyright (2003) United States Government, as represented
--- by the Director, National Security Agency. All rights reserved.
+-- by the Director, National Security Agency.All rights reserved.
 --
 -- This material was originally developed by Praxis High Integrity
--- Systems Ltd. under contract to the National Security Agency.
+-- Systems Ltd.under contract to the National Security Agency.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -18,19 +18,14 @@
 
 with BasicTypes,
      CertTypes,
-     CryptoTypes;
---# inherit AuditLog,
---#         AuditTypes,
---#         BasicTypes,
---#         CertTypes,
---#         Clock,
---#         ConfigData,
---#         CryptoTypes;
+     Clock,
+     ConfigData,
+     CryptoTypes,
+     Auditlog;
 
 package KeyStore
---# own State;
---#     Store : Prf_StoreT;
---# initializes Store;
+   with Abstract_State => (State, Store),
+        Initializes    => Store
 is
 
    ------------------------------------------------------------------
@@ -42,33 +37,25 @@ is
    -- Init
    --
    -- Description:
-   --    Initializes the crypto library. May raise a system fault
+   --    Initializes the crypto library.May raise a system fault
    --
    -- Traceunit : C.KeyStore.Init
    -- Traceto   : FD.TIS.TISStartup
    ------------------------------------------------------------------
-   procedure Init;
-   --# global in     Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --#           out State;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Store,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State &
-   --#         State              from Store;
-
-
-   -- A proof function for use as a precondition for Verify
-   --# type Prf_StoreT is abstract;
-
-   --# function Prf_IssuerKeyNotNull(Issuer : CryptoTypes.IssuerT;
-   --#                               Store  : Prf_StoreT)
-   --#          return Boolean;
+   procedure Init
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Store),
+                       Output => State,
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)    => (AuditLog.FileState,
+                                               AuditLog.State,
+                                               Clock.Now,
+                                               ConfigData.State,
+                                               Store),
+                       State => Store);
 
    ------------------------------------------------------------------
    -- KeyMatchingIssuerPresent
@@ -83,24 +70,21 @@ is
    --             FD.KeyStore.State
    ------------------------------------------------------------------
    procedure KeyMatchingIssuerPresent(Issuer    : in     CryptoTypes.IssuerT;
-                                      IsPresent :    out Boolean);
-   --# global in     Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Store,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 Issuer &
-   --#         IsPresent          from Store,
-   --#                                 Issuer;
-   --# post IsPresent <-> Prf_IssuerKeyNotNull(Issuer, Store);
-
-
+                                      IsPresent :    out Boolean)
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Store),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                Issuer,
+                                                Store),
+                       IsPresent => (Issuer,
+                                     Store));
 
    ------------------------------------------------------------------
    -- PrivateKeyPresent
@@ -112,9 +96,8 @@ is
    -- Traceunit : C.KeyStore.PrivateKeyPresent
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
-   function PrivateKeyPresent return Boolean;
-   --# global State;
-
+   function PrivateKeyPresent return Boolean
+      with Global  => State;
 
    ------------------------------------------------------------------
    -- IssuerIsThisTIS
@@ -126,9 +109,8 @@ is
    -- Traceto   : FD.Certificate.AuthCertSignedOk
    ------------------------------------------------------------------
    function IssuerIsThisTIS(Issuer : CryptoTypes.IssuerT)
-     return Boolean ;
-   --# global State;
-
+     return Boolean
+      with Global  => State;
 
    ------------------------------------------------------------------
    -- ThisTIS
@@ -139,16 +121,14 @@ is
    -- Traceunit : C.KeyStore.ThisTIS
    -- Traceto   : FD.KeyStore.State
    ------------------------------------------------------------------
-   function ThisTIS return CryptoTypes.IssuerT;
-   --# global State;
-
-
+   function ThisTIS return CryptoTypes.IssuerT
+      with Global  => State;
 
    ------------------------------------------------------------------
    -- IsVerifiedBy
    --
    -- Description:
-   --    Attempts to verify the certificate. May raise a system fault.
+   --    Attempts to verify the certificate.May raise a system fault.
    --
    -- Traceunit : C.KeyStore.IsVerifiedBy
    -- Traceto   : FD.KeyTypes.Keys
@@ -157,58 +137,55 @@ is
                            RawCertData : in     CertTypes.RawDataT;
                            Signature   : in     CertTypes.SignatureT;
                            TheIssuer   : in     CryptoTypes.IssuerT;
-                           Verified    :    out Boolean);
-   --# global in     Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Store,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 TheIssuer,
-   --#                                 Mechanism,
-   --#                                 RawCertData,
-   --#                                 Signature &
-   --#         Verified           from Store,
-   --#                                 TheIssuer,
-   --#                                 Mechanism,
-   --#                                 RawCertData,
-   --#                                 Signature;
-   --# pre Prf_IssuerKeyNotNull(TheIssuer, Store);
-
+                           Verified    :    out Boolean)
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Store),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State) => (AuditLog.FileState,
+                                            AuditLog.State,
+                                            Clock.Now,
+                                            ConfigData.State,
+                                            Mechanism,
+                                            RawCertData,
+                                            Signature,
+                                            Store,
+                                            TheIssuer),
+                       Verified => (Mechanism,
+                                    RawCertData,
+                                    Signature,
+                                    Store,
+                                    TheIssuer));
 
    ------------------------------------------------------------------
    -- Sign
    --
    -- Description:
-   --    Attempts to sign the certificate. May raise a system fault.
+   --    Attempts to sign the certificate.May raise a system fault.
    --
    -- Traceunit : C.KeyStore.Sign
    -- Traceto   : FD.KeyTypes.Keys
    ------------------------------------------------------------------
    procedure  Sign(RawCertData : in     CertTypes.RawDataT;
                    Signature   :    out CertTypes.SignatureT;
-                   Signed      :    out Boolean);
-   --# global in     Store;
-   --#        in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --# derives AuditLog.State,
-   --#         AuditLog.FileState from AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Store,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 RawCertData &
-   --#         Signature,
-   --#         Signed             from Store,
-   --#                                 RawCertData;
-
+                   Signed      :    out Boolean)
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State,
+                                  Store),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State)),
+           Depends => ((AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                RawCertData,
+                                                Store),
+                       (Signature,
+                        Signed)    => (RawCertData,
+                                       Store));
 
    ------------------------------------------------------------------
    -- AddKey
@@ -222,40 +199,34 @@ is
    procedure AddKey(TheOwner : in     CryptoTypes.IssuerT;
                     TheKey   : in     CryptoTypes.KeyPartT;
                     IsPublic : in     Boolean;
-                    Added    :    out Boolean);
-   --# global in     Clock.Now;
-   --#        in     ConfigData.State;
-   --#        in out State;
-   --#        in out AuditLog.State;
-   --#        in out AuditLog.FileState;
-   --#        in out Store;
-   --# derives State,
-   --#         Store              from *,
-   --#                                 Store,
-   --#                                 TheOwner,
-   --#                                 TheKey,
-   --#                                 IsPublic &
-   --#         AuditLog.State,
-   --#         AuditLog.FileState from AuditLog.State,
-   --#                                 AuditLog.FileState,
-   --#                                 Store,
-   --#                                 Clock.Now,
-   --#                                 ConfigData.State,
-   --#                                 TheOwner,
-   --#                                 TheKey,
-   --#                                 IsPublic &
-   --#         Added              from Store,
-   --#                                 TheOwner,
-   --#                                 TheKey,
-   --#                                 IsPublic;
-   --# post ((Added and not IsPublic) -> PrivateKeyPresent(State)) and
-   --#      (not (Added and not IsPublic) -> PrivateKeyPresent(State) =
-   --#                                        PrivateKeyPresent(State~));
-   pragma  Postcondition
-     ((if (Added and then not IsPublic) then PrivateKeyPresent) and then
-     (if (not (Added and then not IsPublic)) then
-       (PrivateKeyPresent = PrivateKeyPresent'Old)));
-
+                    Added    :    out Boolean)
+      with Global  => (Input  => (Clock.Now,
+                                  ConfigData.State),
+                       In_Out => (AuditLog.FileState,
+                                  AuditLog.State,
+                                  State,
+                                  Store)),
+           Depends => ((Added,
+                        Store) => (IsPublic,
+                                   Store,
+                                   TheKey,
+                                   TheOwner),
+                       (AuditLog.FileState,
+                        AuditLog.State)     => (AuditLog.FileState,
+                                                AuditLog.State,
+                                                Clock.Now,
+                                                ConfigData.State,
+                                                IsPublic,
+                                                Store,
+                                                TheKey,
+                                                TheOwner),
+                       State =>+ (IsPublic,
+                                  Store,
+                                  TheKey,
+                                  TheOwner)),
+           Post    => (if (Added and then not IsPublic) then PrivateKeyPresent) and then
+                         (if (not (Added and then not IsPublic)) then
+                            (PrivateKeyPresent = PrivateKeyPresent'Old));
 
    ------------------------------------------------------------------
    -- Delete
@@ -266,14 +237,9 @@ is
    -- Traceunit : C.KeyStore.AddKey
    -- Traceto   : FD.KeyTypes.UpdateKeyStore
    ------------------------------------------------------------------
-   procedure Delete;
-   --# global in out Store;
-   --#           out State;
-   --# derives State from  &
-   --#         Store from *;
-   --# post not PrivateKeyPresent(State);
-   pragma Postcondition (not PrivateKeyPresent);
-
-
+   procedure Delete
+      with Global  => (Output => State, In_Out => Store),
+           Depends => (State => null, Store =>+ null),
+           Post    => not PrivateKeyPresent;
 
 end KeyStore;
