@@ -25,9 +25,9 @@ needed.
 
 Ada reference manual makes use of the notion of errors, which covers
 incorrect executions that must be detected at runtime and erroneous
-execution that *may* be detected at runtime. In Ada, this errors are
+execution that *may* be detected at runtime. In Ada, these errors are
 detected by runtime checks (RCs) inserted by the compiler. In
-contrast, in Spark the same errors must be guaranteed to never
+contrast, in Spark the same errors must be guaranteed never to
 happen. This is ensured either by static analysis or by generation
 of verification conditions (VCs) that must be discharged to prove
 the program. The tools of the gnatprove toolchain strongly rely on
@@ -47,7 +47,7 @@ Compcert[compcert].
 DESCRIPTION OF THE WORK
 + xml + coq translation toolchain
 
-Our final goal is to build the tool chain from SPARK 2014 source file
+Our final goal is to build a tool chain from SPARK 2014 source file
 to certified program evaluation with respect to appropriate run-time
 checks, for example division by zero check and overflow check. In the
 front end of this tool chain, a series of transformations from SPARK
