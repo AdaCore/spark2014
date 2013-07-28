@@ -60,21 +60,21 @@ package SPARK_Violations is
       --  NIR: Not In Roadmap
       --  These constructs are not in SPARK in the foreseeable future
 
-      NIR_Access,           --  access types
-      NIR_Assembly_Lang,    --  assembly language
-      NIR_Dealloc,          --  deallocation
-      NIR_Dynamic_Alloc,    --  dynamic allocation
-      NIR_Exception,        --  exception
+      NIR_Access,            --  access types
+      NIR_Assembly_Lang,     --  assembly language
+      NIR_Dealloc,           --  deallocation
+      NIR_Dynamic_Alloc,     --  dynamic allocation
+      NIR_Exception,         --  exception
       NIR_Forward_Reference, --  forward reference
-      NIR_Goto,             --  goto
-      NIR_Incomplete_Init,  --  incomplete initialization
-      NIR_Indirect_Call,    --  indirect call
-      NIR_Tasking,          --  tasks and protected objects
-      NIR_Unchecked_Conv,   --  unchecked conversion
-      NIR_Impure_Function,  --  impure functions
-      NIR_Recursive,        --  disallowed recursive calls (e.g. in specs)
+      NIR_Goto,              --  goto
+      NIR_Incomplete_Init,   --  incomplete initialization
+      NIR_Indirect_Call,     --  indirect call
+      NIR_Tasking,           --  tasks and protected objects
+      NIR_Unchecked_Conv,    --  unchecked conversion
+      NIR_Impure_Function,   --  impure functions
+      NIR_Recursive,         --  disallowed recursive calls (e.g. in specs)
       NIR_Uninit_Logic_Expr, --  uninitialized logic expr
-      NIR_XXX);             --  all other cases
+      NIR_XXX);              --  all other cases
 
    subtype Not_Yet_Implemented is
      Vkind range NYI_Aggregate .. NYI_Composite_Conv;
