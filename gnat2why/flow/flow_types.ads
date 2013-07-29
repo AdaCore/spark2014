@@ -349,6 +349,13 @@ package Flow_Types is
 
       Error_Location      : Node_Or_Entity_Id;
       --  If we have an error involving this vertex, raise it here.
+
+      Aux_Node            : Node_Or_Entity_Id;
+      --  The meaning of this depends on the kind of vertex these
+      --  attributes are attached to.
+      --
+      --     * E_Return_Statement: for the implicit extended return
+      --       returns this keeps track of the actual variable we return.
    end record;
    pragma Pack (V_Attributes);
 
@@ -380,7 +387,8 @@ package Flow_Types is
                    Variables_Defined               => Flow_Id_Sets.Empty_Set,
                    Variables_Used                  => Flow_Id_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
-                   Error_Location                  => Empty);
+                   Error_Location                  => Empty,
+                   Aux_Node                        => Empty);
 
    Null_Node_Attributes : constant V_Attributes :=
      Null_Attributes'Update (Is_Null_Node    => True,

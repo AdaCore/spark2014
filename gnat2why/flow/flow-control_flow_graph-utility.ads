@@ -26,10 +26,11 @@
 package Flow.Control_Flow_Graph.Utility is
 
    function Make_Basic_Attributes
-     (Var_Def : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Var_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc   : Node_Or_Entity_Id := Empty)
+     (Var_Def  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Var_Use  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc    : Node_Or_Entity_Id := Empty;
+      Aux_Node : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Basic_Attributes'Result.Is_Null_Node and
                    Make_Basic_Attributes'Result.Is_Program_Node;

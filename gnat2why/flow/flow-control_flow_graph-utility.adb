@@ -34,10 +34,11 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Var_Use : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Loops   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc   : Node_Or_Entity_Id := Empty)
+     (Var_Def  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Var_Use  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc    : Node_Or_Entity_Id := Empty;
+      Aux_Node : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -47,6 +48,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used    := Var_Use;
       A.Loops             := Loops;
       A.Error_Location    := E_Loc;
+      A.Aux_Node          := Aux_Node;
 
       return A;
    end Make_Basic_Attributes;

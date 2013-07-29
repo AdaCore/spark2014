@@ -220,6 +220,32 @@ package body Flow.Control_Flow_Graph is
    --  unique as all others Do_XYZ procedures only ever deal with
    --  things pertaining to their given node.
 
+   procedure Do_Extended_Return_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Extended_Return_Statement;
+   --  The CFG that we generate for extended return statements looks
+   --  like the following:
+   --
+   --  Returned_Object_Declaration
+   --              |
+   --  Handled_Statement_Sequence
+   --              |
+   --              ...
+   --              |  \
+   --              |   ...
+   --              |   |  \
+   --              |   |   \
+   --      return returned_object
+   --              |
+   --             end
+   --
+   --  The Handled_Statement_Sequence is optional. Additionally, the
+   --  Returned_Object_Declaration is only visible in the CFG if the
+   --  returned object is assigned a value at declaration.
+
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -827,6 +853,90 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (L)).Standard_Exits.Include (V);
       end if;
    end Do_Exit_Statement;
+
+   ------------------------------------
+   --  Do_Extended_Return_Statement  --
+   ------------------------------------
+
+   procedure Do_Extended_Return_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      Extended_Ret_V, Ret_Entity_V : Flow_Graphs.Vertex_Id;
+      Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
+      Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
+      Ret_Object   : Node_Id := First (Ret_Object_L);
+   begin
+      --  We create a null vertex for the extended return statement
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (N),
+         Null_Node_Attributes,
+         Extended_Ret_V);
+      --  Control flows in, but we do not flow out again.
+      CM.Include (Union_Id (N),
+                  Graph_Connections'(Standard_Entry => Extended_Ret_V,
+                                     Standard_Exits => Empty_Set));
+
+      --  Go through Ret_Object_L list and locate Ret_Object
+      while Nkind (Ret_Object) /= N_Object_Declaration
+        or else not Is_Return_Object (Defining_Identifier (Ret_Object))
+      loop
+         Ret_Object := Next (Ret_Object);
+      end loop;
+      Ret_Object := Defining_Identifier (Ret_Object);
+
+      --  Process the statements of Ret_Object_L
+      Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
+      --  Link Extended_Ret_V to standard entry of Ret_Object_L
+      Linkup (FA.CFG,
+              Extended_Ret_V,
+              CM (Union_Id (Ret_Object_L)).Standard_Entry);
+
+      --  We create a vertex for the Return_Statement_Entity
+      FA.CFG.Add_Vertex
+        (Direct_Mapping_Id (Ret_Entity),
+         Make_Basic_Attributes
+              (Var_Def  => Flatten_Variable (FA.Analyzed_Entity),
+               Var_Use  => Get_Variable_Set (FA.Scope, Ret_Object),
+               Loops    => Ctx.Current_Loops,
+               E_Loc    => Ret_Entity,
+               Aux_Node => Ret_Object),
+         Ret_Entity_V);
+      CM.Include (Union_Id (Ret_Entity), No_Connections);
+      CM (Union_Id (Ret_Entity)).Standard_Entry := Ret_Entity_V;
+
+      if Present (Handled_Statement_Sequence (N)) then
+         declare
+            Statement_Sequence : constant List_Id :=
+              Statements (Handled_Statement_Sequence (N));
+         begin
+            --  We process the sequence of statements
+            Process_Statement_List (Statement_Sequence, FA, CM, Ctx);
+            --  We link the standard exits of Ret_Object_L to the standard
+            --  entry of the sequence of statements.
+            Linkup (FA.CFG,
+                    CM (Union_Id (Ret_Object_L)).Standard_Exits,
+                    CM (Union_Id (Statement_Sequence)).Standard_Entry);
+            --  We link the standard exits of the sequence of statements to the
+            --  standard entry of the Ret_Entity_V vertex.
+            Linkup (FA.CFG,
+                    CM (Union_Id (Statement_Sequence)).Standard_Exits,
+                    Ret_Entity_V);
+         end;
+      else
+         --  No sequence of statements is present. We link the standard exits
+         --  of Ret_Object_L to the Ret_Entity_V vertex.
+         Linkup (FA.CFG,
+                 CM (Union_Id (Ret_Object_L)).Standard_Exits,
+                 Ret_Entity_V);
+      end if;
+
+      --  We link the Ret_Entity_V vertex to the End_Verted
+      Linkup (FA.CFG, Ret_Entity_V, FA.End_Vertex);
+
+   end Do_Extended_Return_Statement;
 
    -----------------------------------------
    --  Do_Handled_Sequence_Of_Statements  --
@@ -2052,6 +2162,8 @@ package body Flow.Control_Flow_Graph is
             Do_Case_Statement (N, FA, CM, Ctx);
          when N_Exit_Statement =>
             Do_Exit_Statement (N, FA, CM, Ctx);
+         when N_Extended_Return_Statement =>
+            Do_Extended_Return_Statement (N, FA, CM, Ctx);
          when N_If_Statement =>
             Do_If_Statement (N, FA, CM, Ctx);
          when N_Loop_Statement =>

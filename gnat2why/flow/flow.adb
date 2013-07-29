@@ -584,6 +584,12 @@ package body Flow is
                            Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
 
+                        when N_Defining_Identifier =>
+                           if Ekind (N) = E_Return_Statement then
+                              Write_Str ("return ");
+                           end if;
+                           Sprint_Node (A.Aux_Node);
+
                         when N_Elsif_Part =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("elsif ");
