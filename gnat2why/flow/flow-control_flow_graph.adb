@@ -231,20 +231,22 @@ package body Flow.Control_Flow_Graph is
    --
    --  Returned_Object_Declaration
    --              |
-   --  Handled_Statement_Sequence
+   --  [Handled_Statement_Sequence]
    --              |
-   --              ...
-   --              |  \
-   --              |   ...
-   --              |   |  \
-   --              |   |   \
-   --      return returned_object
+   --    return returned_object
    --              |
    --             end
    --
-   --  The Handled_Statement_Sequence is optional. Additionally, the
-   --  Returned_Object_Declaration is only visible in the CFG if the
-   --  returned object is assigned a value at declaration.
+   --  We create a null vertex for the extended return statement (this
+   --  vertex is not visible in the CFG).
+   --
+   --  The "return returned_object" vertex corresponds to the
+   --  N_Defining_Identifier node which has the Is_Return_Object flag
+   --  set to True.
+   --
+   --  The Handled_Statement_Sequence is optional. All exits of the
+   --  Handled_Statement_Sequence are gathered in the
+   --  "return returned_Object" vertex.
 
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
