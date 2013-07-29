@@ -45,11 +45,11 @@ a must in the certification process.
 
 + Enforce the theoretical foundation of the Gnatprove toolchain
 
-Ada 2012 (?) reference manual [3] introduces the notion of *errors*,
-corresponding to both
-incorrect executions that must be detected at runtime, and as well to erroneous
-execution that *may* be detected at runtime. In Ada, these errors are
-detected by runtime checks (RCs) inserted by the compiler. These same errors must 
+The Ada reference manual [3] introduces the notion of *errors*,
+corresponding in particular to
+error  situations that must be detected at run time, and as well to erroneous
+executions that need not to be detected. In Ada, the first ones are
+detected by run-time checks (RCs) inserted by the compiler. Both must 
 be guaranteed never to occur during the process of proving Spark (or Ada) 
 subprograms within the Gnatprove toolchain [4]. This
 can be ensured either by static analysis or by generating
