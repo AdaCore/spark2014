@@ -531,7 +531,8 @@ package body Flow.Utility is
          Partial_Use   := False;
 
          while Nkind (Bottom_Node) in
-           N_Indexed_Component | N_Selected_Component | N_Slice
+           N_Indexed_Component | N_Selected_Component |
+           N_Slice | N_Type_Conversion
          loop
             if Nkind (Bottom_Node) in N_Indexed_Component | N_Slice then
                End_Of_Record := Prefix (Bottom_Node);
@@ -574,6 +575,13 @@ package body Flow.Utility is
       end if;
 
       case Nkind (N) is
+         when N_Type_Conversion =>
+            Untangle_Assignment_Target
+              (Scope        => Scope,
+               N            => Expression (N),
+               Vars_Defined => Vars_Defined,
+               Vars_Used    => Vars_Used);
+
          when N_Identifier | N_Expanded_Name =>
             --  X :=
             Vars_Defined := Get_Variable_Set (Scope, N);

@@ -66,7 +66,8 @@ package Flow.Utility is
                             N_Expanded_Name |
                             N_Selected_Component |
                             N_Indexed_Component |
-                            N_Slice;
+                            N_Slice |
+                            N_Type_Conversion;
    --  Given the target of an assignment (perhaps the left-hand-side
    --  of an assignment statement or an out vertex in a procedure
    --  call), work out which variables are actually set and which

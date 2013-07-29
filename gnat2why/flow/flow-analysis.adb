@@ -951,7 +951,8 @@ package body Flow.Analysis is
    -- Find_Ineffective_Statements --
    ---------------------------------
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
+   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs)
+   is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
@@ -964,6 +965,11 @@ package body Flow.Analysis is
       --  reachable vertices which also define at least one variable
       --  of that set (and do not use it), render the vertex
       --  ineffective.
+
+      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
+                                     return Node_Or_Entity_Id;
+      --  Skips any conversions (unchecked or otherwise) and jumps to
+      --  the actual object.
 
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
       begin
@@ -1010,6 +1016,22 @@ package body Flow.Analysis is
          return Mask;
       end Find_Masking_Code;
 
+      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
+                                     return Node_Or_Entity_Id
+      is
+         P : Node_Or_Entity_Id := N;
+      begin
+         loop
+            case Nkind (P) is
+               when N_Type_Conversion =>
+                  P := Expression (P);
+
+               when others =>
+                  return P;
+            end case;
+         end loop;
+      end Skip_Any_Conversions;
+
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1029,7 +1051,8 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (Msg     => "unused assignment to &",
                         N       => Error_Location (FA.PDG, V),
-                        F1      => Atr.Parameter_Actual,
+                        F1      => Direct_Mapping_Id (Skip_Any_Conversions
+                          (Get_Direct_Mapping_Id (Atr.Parameter_Actual))),
                         Tag     => Tag,
                         Warning => True);
 
