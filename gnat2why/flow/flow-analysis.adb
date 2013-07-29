@@ -36,6 +36,8 @@ with Treepr;                use Treepr;
 
 with Why;
 
+with Gnat2Why_Args;
+
 with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
 
@@ -686,10 +688,12 @@ package body Flow.Analysis is
       --  Sanity check for aliasing.
 
       if FA.Aliasing_Present then
-         Error_Msg_NE
-           ("flow analysis of & abandoned due to aliasing!",
-            FA.Analyzed_Entity,
-            FA.Analyzed_Entity);
+         if Gnat2Why_Args.Flow_Dump_Graphs then
+            Error_Msg_NE
+              ("flow analysis of & abandoned due to aliasing!",
+               FA.Analyzed_Entity,
+               FA.Analyzed_Entity);
+         end if;
          Sane := False;
          return;
       end if;
@@ -700,11 +704,13 @@ package body Flow.Analysis is
 
       Check_Record_Declarations (FA.Scope);
       if not Sane then
-         Error_Msg_NE
-           ("flow analysis of & abandoned due to records with non-manifest" &
-              " initializations!",
-            FA.Analyzed_Entity,
-            FA.Analyzed_Entity);
+         if Gnat2Why_Args.Flow_Dump_Graphs then
+            Error_Msg_NE
+              ("flow analysis of & abandoned due to records with non-manifest"
+                 &  " initializations!",
+               FA.Analyzed_Entity,
+               FA.Analyzed_Entity);
+         end if;
          return;
       end if;
 
@@ -755,10 +761,12 @@ package body Flow.Analysis is
       end loop;
 
       if not Sane then
-         Error_Msg_NE
-           ("flow analysis of & abandoned due to inconsistent graph!",
-            FA.Analyzed_Entity,
-            FA.Analyzed_Entity);
+         if Gnat2Why_Args.Flow_Dump_Graphs then
+            Error_Msg_NE
+              ("flow analysis of & abandoned due to inconsistent graph!",
+               FA.Analyzed_Entity,
+               FA.Analyzed_Entity);
+         end if;
          return;
       end if;
 
