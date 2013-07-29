@@ -347,13 +347,13 @@ package body Flow.Analysis is
       Set   : Vertex_Sets.Set;
       Tag   : String)
    is
-      SI      : constant Source_File_Index :=
+      SI       : constant Source_File_Index :=
         Get_Source_File_Index (Sloc (E_Loc));
 
-      Line_No : constant String :=
+      Line_No  : constant String :=
         Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (E_Loc)));
 
-      Col_No  : constant String :=
+      Col_No   : constant String :=
         Column_Number'Image (Get_Column_Number (Sloc (E_Loc)));
 
       Filename : constant String :=
@@ -365,20 +365,24 @@ package body Flow.Analysis is
 
       FD       : Ada.Text_IO.File_Type;
    begin
-      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
+      if not Set.Is_Empty then
 
-      for V of Set loop
-         declare
-            F : constant Flow_Id := G.Get_Key (V);
-         begin
-            if F.Kind = Direct_Mapping then
-               Ada.Text_IO.Put (FD, Get_Line (G, V));
-               Ada.Text_IO.New_Line (FD);
-            end if;
-         end;
-      end loop;
+         Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
 
-      Ada.Text_IO.Close (FD);
+         for V of Set loop
+            declare
+               F : constant Flow_Id := G.Get_Key (V);
+            begin
+               if F.Kind = Direct_Mapping then
+                  Ada.Text_IO.Put (FD, Get_Line (G, V));
+                  Ada.Text_IO.New_Line (FD);
+               end if;
+            end;
+         end loop;
+
+         Ada.Text_IO.Close (FD);
+
+      end if;
    end Write_Vertex_Set;
 
    ---------------------
