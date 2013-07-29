@@ -29,13 +29,27 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Def  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Var_Use  : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Loops    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc    : Node_Or_Entity_Id := Empty;
-      Aux_Node : Node_Or_Entity_Id := Empty)
+      E_Loc    : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Post => not Make_Basic_Attributes'Result.Is_Null_Node and
                    Make_Basic_Attributes'Result.Is_Program_Node;
    --  Create attributes for vertices which simply define and use some
    --  variables.
+
+   function Make_Extended_Return_Attributes
+     (Var_Def         : Flow_Id_Sets.Set;
+      Var_Use         : Flow_Id_Sets.Set;
+      Object_Returned : Entity_Id;
+      Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc           : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+      with Pre => Present (Object_Returned),
+           Post =>
+        not Make_Extended_Return_Attributes'Result.Is_Null_Node and
+        Make_Extended_Return_Attributes'Result.Is_Program_Node and
+        Make_Extended_Return_Attributes'Result.Aux_Node = Object_Returned;
+   --  Create attributes for the implicit return of an extended return
+   --  statement.
 
    function Make_Sink_Vertex_Attributes
      (Var_Use         : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
