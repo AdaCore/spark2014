@@ -951,8 +951,8 @@ package body Flow.Analysis is
    -- Find_Ineffective_Statements --
    ---------------------------------
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs)
-   is
+   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
+
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
@@ -1036,9 +1036,11 @@ package body Flow.Analysis is
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             N    : Node_Id;
+            Key  : constant Flow_Id      := FA.PDG.Get_Key (V);
             Atr  : constant V_Attributes := FA.PDG.Get_Attributes (V);
             Mask : Vertex_Sets.Set;
             Tag  : constant String := "ineffective";
+            Tmp  : Flow_Id;
          begin
             if Atr.Is_Program_Node or else Atr.Is_Parameter then
                if not FA.PDG.Non_Trivial_Path_Exists
@@ -1048,13 +1050,30 @@ package body Flow.Analysis is
                   N := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
 
                   if Atr.Is_Parameter then
-                     Error_Msg_Flow
-                       (Msg     => "unused assignment to &",
-                        N       => Error_Location (FA.PDG, V),
-                        F1      => Direct_Mapping_Id (Skip_Any_Conversions
-                          (Get_Direct_Mapping_Id (Atr.Parameter_Actual))),
-                        Tag     => Tag,
-                        Warning => True);
+                     Tmp := Direct_Mapping_Id
+                       (Skip_Any_Conversions
+                          (Get_Direct_Mapping_Id (Atr.Parameter_Actual)));
+                     if Key.Variant = In_View then
+                        --  For in parameters we do not emit the
+                        --  ineffective assignment error as its a bit
+                        --  confusing.
+                        null;
+
+                     elsif Is_Easily_Printable (Tmp) then
+                        Error_Msg_Flow
+                          (Msg     => "unused assignment to &",
+                           N       => Error_Location (FA.PDG, V),
+                           F1      => Tmp,
+                           Tag     => Tag,
+                           Warning => True);
+
+                     else
+                        Error_Msg_Flow
+                          (Msg     => "unused assignment",
+                           N       => Error_Location (FA.PDG, V),
+                           Tag     => Tag,
+                           Warning => True);
+                     end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow

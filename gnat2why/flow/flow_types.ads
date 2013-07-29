@@ -213,9 +213,13 @@ package Flow_Types is
    --  Debug procedure to print the flow id with more information
    --  (such as kind and variant) attached.
 
-   function Flow_Id_To_String (F : Flow_Id) return String;
+   function Flow_Id_To_String (F : Flow_Id) return String
+     with Pre => Is_Easily_Printable (F);
    --  Convert a flow id to a human readable string. This is used for
    --  emitting error messages.
+
+   function Is_Easily_Printable (F : Flow_Id) return Boolean;
+   --  Check if F can be printed without resorting to Sprint.
 
    ----------------------------------------------------------------------
    --  Types based on Flow_Id

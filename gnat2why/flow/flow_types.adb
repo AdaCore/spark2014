@@ -427,6 +427,28 @@ package body Flow_Types is
       end case;
    end Flow_Id_To_String;
 
+   -------------------------
+   -- Is_Easily_Printable --
+   -------------------------
+
+   function Is_Easily_Printable (F : Flow_Id) return Boolean
+   is
+   begin
+      case F.Kind is
+         when Null_Value | Record_Field | Magic_String =>
+            return True;
+
+         when Direct_Mapping =>
+            case Nkind (F.Node) is
+               when N_Has_Chars =>
+                  return True;
+               when others =>
+                  return False;
+            end case;
+
+      end case;
+   end Is_Easily_Printable;
+
    ----------------------------
    -- To_Ordered_Flow_Id_Set --
    ----------------------------
