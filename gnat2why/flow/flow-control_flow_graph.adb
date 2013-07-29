@@ -2126,6 +2126,7 @@ package body Flow.Control_Flow_Graph is
               N_Package_Body_Stub               |
               N_Generic_Instantiation           |
               N_Subprogram_Body_Stub            |
+              N_Incomplete_Type_Declaration     |
               N_Use_Package_Clause              |
               N_Use_Type_Clause                 |
               N_Object_Renaming_Declaration     |
