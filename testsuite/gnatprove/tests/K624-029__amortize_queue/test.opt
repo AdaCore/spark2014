@@ -1,0 +1,3 @@
+ALL XFAIL waiting for M715-010
+
+# and then needs that an expression function with a post-condition has a defining axiom
