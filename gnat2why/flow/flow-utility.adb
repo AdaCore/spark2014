@@ -624,12 +624,21 @@ package body Flow.Utility is
 
             case Nkind (End_Of_Record) is
                when N_Selected_Component =>
-                  Vars_Defined.Union (All_Record_Components
-                                        (Record_Field_Id (End_Of_Record)));
-                  if Partial_Use then
-                     Vars_Used.Union (All_Record_Components
-                                        (Record_Field_Id (End_Of_Record)));
-                  end if;
+                  case Nkind (Prefix (End_Of_Record)) is
+                     when N_Function_Call =>
+                        Vars_Defined.Union
+                          (Get_Variable_Set (Scope, Prefix (End_Of_Record)));
+
+                     when others =>
+                        Vars_Defined.Union
+                          (All_Record_Components
+                             (Record_Field_Id (End_Of_Record)));
+                        if Partial_Use then
+                           Vars_Used.Union
+                             (All_Record_Components
+                                (Record_Field_Id (End_Of_Record)));
+                        end if;
+                  end case;
 
                when N_Indexed_Component | N_Slice =>
                   raise Program_Error;
@@ -640,10 +649,10 @@ package body Flow.Utility is
                   Vars_Defined.Union (Get_Variable_Set (Scope, End_Of_Record));
 
                when others =>
-                  Vars_Defined.Insert
+                  Vars_Defined.Include
                     (Direct_Mapping_Id (Entity (End_Of_Record)));
                   if Partial_Use then
-                     Vars_Used.Insert
+                     Vars_Used.Include
                        (Direct_Mapping_Id (Entity (End_Of_Record)));
                   end if;
             end case;
