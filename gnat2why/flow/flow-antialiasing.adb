@@ -21,8 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with Errout;   use Errout;
 with Nlists;   use Nlists;
 with Sem_Eval; use Sem_Eval;

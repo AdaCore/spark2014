@@ -24,7 +24,7 @@
 with Ada.Characters.Latin_1;
 with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Maps;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 with Aspects;               use Aspects;
 with Namet;                 use Namet;
@@ -750,8 +750,7 @@ package body Flow is
    function Flow_Analyse_Entity (E : Entity_Id)
                                  return Flow_Analysis_Graphs
    is
-      FA            : Flow_Analysis_Graphs;
-      Base_Filename : Unbounded_String;
+      FA : Flow_Analysis_Graphs;
    begin
       case Ekind (E) is
          when Subprogram_Kind =>
@@ -770,8 +769,8 @@ package body Flow is
                Loops            => Node_Sets.Empty_Set,
                Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present => False,
-               Is_Main          => Might_Be_Main (E));
-            Base_Filename := To_Unbounded_String ("subprogram_");
+               Is_Main          => Might_Be_Main (E),
+               Base_Filename    => To_Unbounded_String ("subprogram_"));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
@@ -788,8 +787,8 @@ package body Flow is
                All_Vars         => Flow_Id_Sets.Empty_Set,
                Loops            => Node_Sets.Empty_Set,
                Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present => False);
-            Base_Filename := To_Unbounded_String ("package_spec_");
+               Aliasing_Present => False,
+               Base_Filename    =>  To_Unbounded_String ("package_spec_"));
 
          when E_Package_Body =>
             FA := Flow_Analysis_Graphs'
@@ -806,15 +805,15 @@ package body Flow is
                All_Vars         => Flow_Id_Sets.Empty_Set,
                Loops            => Node_Sets.Empty_Set,
                Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present => False);
-            Base_Filename := To_Unbounded_String ("package_body_");
+               Aliasing_Present => False,
+               Base_Filename    => To_Unbounded_String ("package_body_"));
 
          when others =>
             raise Why.Not_SPARK;
       end case;
       pragma Assert (Is_Valid (FA));
 
-      Append (Base_Filename, Get_Name_String (Chars (E)));
+      Append (FA.Base_Filename, Get_Name_String (Chars (E)));
 
       if Gnat2Why_Args.Flow_Dump_Graphs then
          Write_Str (Character'Val (8#33#) & "[32m" &
@@ -848,7 +847,7 @@ package body Flow is
       --  We print this graph first in cast the other algorithms
       --  barf.
       if Debug_Print_CFG then
-         Print_Graph (Filename     => To_String (Base_Filename) & "_cfg",
+         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cfg",
                       G            => FA.CFG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
@@ -857,7 +856,7 @@ package body Flow is
       Control_Dependence_Graph.Create (FA);
 
       if Debug_Print_Intermediates then
-         Print_Graph (Filename     => To_String (Base_Filename) & "_cdg",
+         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_cdg",
                       G            => FA.CDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
@@ -868,14 +867,14 @@ package body Flow is
       Program_Dependence_Graph.Create (FA);
 
       if Debug_Print_Intermediates then
-         Print_Graph (Filename     => To_String (Base_Filename) & "_ddg",
+         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_ddg",
                       G            => FA.DDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
       end if;
 
       if Debug_Print_PDG then
-         Print_Graph (Filename     => To_String (Base_Filename) & "_pdg",
+         Print_Graph (Filename     => To_String (FA.Base_Filename) & "_pdg",
                       G            => FA.PDG,
                       Start_Vertex => FA.Start_Vertex,
                       End_Vertex   => FA.End_Vertex);
@@ -889,8 +888,46 @@ package body Flow is
    ------------------------
 
    procedure Flow_Analyse_CUnit is
-      FA_Graphs : Analysis_Maps.Map;
-      Success   : Boolean;
+
+      procedure Create_Flow_Result_File
+        (FA            : Flow_Analysis_Graphs_Root;
+         Found_Error   : Boolean;
+         Found_Warning : Boolean);
+      --  If no errors/warnings were generated during flow analysis then
+      --  we create a file that contains the word OK.
+
+      -----------------------------
+      -- Create_Flow_Result_File --
+      -----------------------------
+      procedure Create_Flow_Result_File
+        (FA            : Flow_Analysis_Graphs_Root;
+         Found_Error   : Boolean;
+         Found_Warning : Boolean)
+      is
+      begin
+         if not Found_Error
+           and then not Found_Warning
+         then
+            declare
+               FD : Ada.Text_IO.File_Type;
+
+               Filename : constant Unbounded_String :=
+                 FA.Base_Filename &
+                 ".flow_ok";
+            begin
+               Ada.Text_IO.Create
+                 (FD, Ada.Text_IO.Out_File, To_String (Filename));
+               Ada.Text_IO.Put (FD, "OK");
+               Ada.Text_IO.New_Line (FD);
+               Ada.Text_IO.Close (FD);
+            end;
+         end if;
+      end Create_Flow_Result_File;
+
+      FA_Graphs     : Analysis_Maps.Map;
+      Success       : Boolean;
+      Found_Error   : Boolean;
+      Found_Warning : Boolean;
    begin
       --  Process entities and construct graphs if necessary
       for E of All_Entities loop
@@ -937,6 +974,9 @@ package body Flow is
 
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
+         Found_Error   := False;
+         Found_Warning := False;
+
          if Gnat2Why_Args.Flow_Dump_Graphs then
             Write_Str (Character'Val (8#33#) & "[32m" &
                          "Flow analysis (errors) for " &
@@ -952,13 +992,27 @@ package body Flow is
          if Success then
             case FA.Kind is
                when E_Subprogram_Body =>
-                  Analysis.Find_Ineffective_Imports (FA);
-                  Analysis.Find_Illegal_Updates (FA);
-                  Analysis.Find_Ineffective_Statements (FA);
-                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
-                  Analysis.Find_Unused_Objects (FA);
-                  Analysis.Check_Contracts (FA);
-                  Analysis.Analyse_Main (FA);
+                  Analysis.Find_Ineffective_Imports (FA,
+                                                     Found_Error,
+                                                     Found_Warning);
+                  Analysis.Find_Illegal_Updates (FA,
+                                                 Found_Error,
+                                                 Found_Warning);
+                  Analysis.Find_Ineffective_Statements (FA,
+                                                        Found_Error,
+                                                        Found_Warning);
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA,
+                                                                Found_Error,
+                                                                Found_Warning);
+                  Analysis.Find_Unused_Objects (FA,
+                                                Found_Error,
+                                                Found_Warning);
+                  Analysis.Check_Contracts (FA,
+                                            Found_Error,
+                                            Found_Warning);
+                  Analysis.Analyse_Main (FA,
+                                         Found_Error,
+                                         Found_Warning);
 
                when E_Package =>
                   --  !!! Issue here with detection of uninitialized
@@ -966,11 +1020,23 @@ package body Flow is
                   null;
 
                when E_Package_Body =>
-                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
-                  Analysis.Find_Ineffective_Statements (FA);
-                  Analysis.Find_Illegal_Updates (FA);
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA,
+                                                                Found_Error,
+                                                                Found_Warning);
+                  Analysis.Find_Ineffective_Statements (FA,
+                                                        Found_Error,
+                                                        Found_Warning);
+                  Analysis.Find_Illegal_Updates (FA,
+                                                 Found_Error,
+                                                 Found_Warning);
             end case;
          end if;
+
+         Create_Flow_Result_File
+           (FA,
+            Found_Error,
+            Found_Warning);
+
       end loop;
 
    end Flow_Analyse_CUnit;

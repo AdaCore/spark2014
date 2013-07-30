@@ -25,6 +25,7 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree; use Atree;
 with Einfo; use Einfo;
@@ -121,6 +122,11 @@ package Flow is
       --  A mapping of any magic string to entities of the
       --  subprogram(s) they originate from. We need this to print
       --  more helpful error messages.
+
+      Base_Filename    : Unbounded_String;
+      --  A string with the name of the entity that is being analysed.
+      --  This string follows the convention that we use for naming the
+      --  .dot and .pdf files.
 
       Aliasing_Present : Boolean;
       --  True if this subprogram introduces (bad)

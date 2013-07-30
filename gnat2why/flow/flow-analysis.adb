@@ -21,7 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Errout;                use Errout;
@@ -553,7 +552,10 @@ package body Flow.Analysis is
    -- Analyse_Main --
    ------------------
 
-   procedure Analyse_Main (FA : Flow_Analysis_Graphs)
+   procedure Analyse_Main
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
    is
       Reads  : Flow_Id_Sets.Set;
       Writes : Flow_Id_Sets.Set;
@@ -581,6 +583,7 @@ package body Flow.Analysis is
                if not Is_Initialized_At_Elaboration
                  (Get_Direct_Mapping_Id (R))
                then
+                  Found_Error := True;
                   Error_Msg_Flow
                     (Msg => "& may not be initialized after elaboration of &",
                      N   => Find_Global (FA.Analyzed_Entity, R),
@@ -591,6 +594,7 @@ package body Flow.Analysis is
 
             when Magic_String =>
                --  !!! Remove once M711-031 is implemented
+               Found_Error := True;
                Error_Msg_Flow
                  (Msg => "analysis of main program impossible in the "&
                     "presence of computed global &",
@@ -613,6 +617,7 @@ package body Flow.Analysis is
                   --  in another package and then overwrite it here
                   --  this is not really a warning. think about this!
                   if not Reads.Contains (Change_Variant (W, In_View)) then
+                     Found_Warning := True;
                      Error_Msg_Flow
                        (Msg     => "ineffective initialization of & " &
                           "(is global output in main program &)",
@@ -780,8 +785,13 @@ package body Flow.Analysis is
    -- Find_Ineffective_Imports --
    ------------------------------
 
-   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs)
+   procedure Find_Ineffective_Imports
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
    is
+      pragma Unreferenced (Found_Error);
+
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
       is (FA.PDG.Get_Key (V).Variant = Final_Value and then
             FA.PDG.Get_Attributes (V).Is_Export);
@@ -851,6 +861,7 @@ package body Flow.Analysis is
                   null;
                elsif A.Is_Global then
                   --  !!! don't say this in generative mode
+                  Found_Warning := True;
                   Error_Msg_Flow
                     (Msg     => "unused initial value of &",
                      N       => Find_Global (FA.Analyzed_Entity, F),
@@ -858,6 +869,7 @@ package body Flow.Analysis is
                      Tag     => "unused_initial_value",
                      Warning => True);
                else
+                  Found_Warning := True;
                   Error_Msg_Flow
                     (Msg     => "unused initial value of &",
                      --  !!! find_import
@@ -875,7 +887,13 @@ package body Flow.Analysis is
    -- Find_Illegal_Updates --
    --------------------------
 
-   procedure Find_Illegal_Updates (FA : Flow_Analysis_Graphs) is
+   procedure Find_Illegal_Updates
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
+   is
+      pragma Unreferenced (Found_Warning);
+
       procedure Print_Error (Illegal_Use_Loc : Flow_Graphs.Vertex_Id;
                              The_Global_Id   : Flow_Id;
                              The_Global_Atr  : V_Attributes);
@@ -891,6 +909,7 @@ package body Flow.Analysis is
       begin
          if The_Global_Atr.Is_Global then
             --  !!! can we merge these three cases now?
+            Found_Error := True;
             if Illegal_Use_Atr.Is_Parameter then
                --  foo (bar);
                Error_Msg_Flow
@@ -963,7 +982,12 @@ package body Flow.Analysis is
    -- Find_Ineffective_Statements --
    ---------------------------------
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
+   procedure Find_Ineffective_Statements
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
+   is
+      pragma Unreferenced (Found_Error);
 
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
@@ -1072,6 +1096,7 @@ package body Flow.Analysis is
                         null;
 
                      elsif Is_Easily_Printable (Tmp) then
+                        Found_Warning := True;
                         Error_Msg_Flow
                           (Msg     => "unused assignment to &",
                            N       => Error_Location (FA.PDG, V),
@@ -1080,6 +1105,7 @@ package body Flow.Analysis is
                            Warning => True);
 
                      else
+                        Found_Warning := True;
                         Error_Msg_Flow
                           (Msg     => "unused assignment",
                            N       => Error_Location (FA.PDG, V),
@@ -1088,6 +1114,7 @@ package body Flow.Analysis is
                      end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
+                     Found_Warning := True;
                      Error_Msg_Flow
                        (Msg     => "unused assignment",
                         N       => Error_Location (FA.PDG, V),
@@ -1095,6 +1122,7 @@ package body Flow.Analysis is
                         Warning => True);
 
                   else
+                     Found_Warning := True;
                      Error_Msg_Flow
                        (Msg     => "statement has no effect",
                         N       => Error_Location (FA.PDG, V),
@@ -1120,8 +1148,12 @@ package body Flow.Analysis is
    -----------------------------------------
 
    procedure Find_Use_Of_Uninitialised_Variables
-     (FA : Flow_Analysis_Graphs)
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
    is
+      pragma Unreferenced (Found_Warning);
+
       procedure Mark_Definition_Free_Path
         (E_Loc : Flow_Graphs.Vertex_Id;
          From  : Flow_Graphs.Vertex_Id;
@@ -1237,6 +1269,7 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
+                           Found_Error := True;
                            Error_Msg_Flow
                              (Msg => "& might not be initialized",
                               N   => Find_Global (FA.Analyzed_Entity, Key_I),
@@ -1253,6 +1286,7 @@ package body Flow.Analysis is
                            --  This is actually a totally different
                            --  error. It means we have a path where we
                            --  do not return from the function.
+                           Found_Error := True;
                            Error_Msg_Flow
                              (Msg => "possibly missing return statement in &",
                               N   => Error_Location (FA.PDG, FA.Start_Vertex),
@@ -1269,6 +1303,7 @@ package body Flow.Analysis is
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
+                           Found_Error := True;
                            Error_Msg_Flow
                              (Msg => "& might not be initialized in &",
                               N   => Error_Location (FA.PDG, V_Use),
@@ -1292,6 +1327,7 @@ package body Flow.Analysis is
                         --  !!! possibly have something special for
                         --  !!! arrays: "might not be fully
                         --  !!! initialized"
+                        Found_Error := True;
                         Error_Msg_Flow
                           (Msg => "& might not be initialized",
                            N   => Error_Location (FA.PDG, V_Use),
@@ -1380,8 +1416,13 @@ package body Flow.Analysis is
    -- Find_Unused_Objects --
    -------------------------
 
-   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs)
+   procedure Find_Unused_Objects
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
    is
+      pragma Unreferenced (Found_Error);
+
       Used_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Entire_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
@@ -1456,6 +1497,7 @@ package body Flow.Analysis is
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
                   --  global.
+                  Found_Warning := True;
                   Error_Msg_Flow
                     (Msg     => "unused global &",
                      N       => Find_Global (FA.Analyzed_Entity, F),
@@ -1464,6 +1506,7 @@ package body Flow.Analysis is
                      Warning => True);
                else
                   --  !!! distinguish between variables and parameters
+                  Found_Warning := True;
                   Error_Msg_Flow
                     (Msg     => "unused variable &",
                      N       => Error_Location (FA.PDG, V),
@@ -1480,8 +1523,13 @@ package body Flow.Analysis is
    -- Check_Contracts --
    ---------------------
 
-   procedure Check_Contracts (FA : Flow_Analysis_Graphs)
+   procedure Check_Contracts
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
    is
+      pragma Unreferenced (Found_Error);
+
       function Find_Existing_Export (E : Entity_Id) return Node_Id
         with Pre => Has_Depends (FA.Analyzed_Entity);
       --  Looks through the depends aspect on FA.Analyzed_Entity and
@@ -1591,6 +1639,7 @@ package body Flow.Analysis is
          begin
             if not Actual_Deps.Contains (F_Out) then
                --  !!! check quotation in errout.ads
+               Found_Warning := True;
                Error_Msg_Flow
                  (Msg     => "missing dependency ""null => #""",
                   N       => Depends_Location,
@@ -1632,6 +1681,7 @@ package body Flow.Analysis is
             else
                --  !!! legality error, should be moved to frontend;
                --  !!! possibly raise exception here
+               Found_Warning := True;
                Error_Msg_Flow
                  (Msg     => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
@@ -1664,6 +1714,7 @@ package body Flow.Analysis is
                for Missing_Var of Missing_Deps loop
                   --  Something that the user dependency fails to
                   --  mention.
+                  Found_Warning := True;
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg     => "missing dependency ""null => #""",
@@ -1686,6 +1737,7 @@ package body Flow.Analysis is
                for Wrong_Var of Wrong_Deps loop
                   --  Something the user dependency claims, but does
                   --  not happen in reality.
+                  Found_Warning := True;
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg     => "incorrect dependency ""null => #""",

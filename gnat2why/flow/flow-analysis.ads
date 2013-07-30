@@ -26,7 +26,10 @@
 
 package Flow.Analysis is
 
-   procedure Analyse_Main (FA : Flow_Analysis_Graphs);
+   procedure Analyse_Main
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  If FA corresponds to a main program, we ensure that
    --  all globals it references are initialised.
 
@@ -40,24 +43,36 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Find_Ineffective_Imports (FA : Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Imports
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  Find all ineffective initial values.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Illegal_Updates (FA : Flow_Analysis_Graphs);
+   procedure Find_Illegal_Updates
+     (FA          : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  Find all cases where we update an in parameter or global.
    --
    --  Complexity is O(N)
    --
    --  !!! this should be moved to spark_definition
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Statements
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  Find all ineffective statements.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Use_Of_Uninitialised_Variables (FA : Flow_Analysis_Graphs);
+   procedure Find_Use_Of_Uninitialised_Variables
+     (FA          : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  Find all instances where uninitialised variables are used. Two
    --  separate checks are performed.
    --
@@ -68,12 +83,18 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Unused_Objects (FA : Flow_Analysis_Graphs);
+   procedure Find_Unused_Objects
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  Find unused objects.
    --
    --  Complexity is O(N)
 
-   procedure Check_Contracts (FA : Flow_Analysis_Graphs);
+   procedure Check_Contracts
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.
    --
