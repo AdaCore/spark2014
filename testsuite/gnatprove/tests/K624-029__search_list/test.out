@@ -1,0 +1,8 @@
+linked_list.adb:7:10: info: loop invariant initialization proved
+linked_list.adb:7:10: loop invariant preservation not proved
+linked_list.adb:9:31: info: precondition proved
+linked_list.adb:11:13: info: precondition proved
+linked_list.adb:15:10: info: precondition proved
+linked_list.ads:12:14: postcondition not proved, requires Search'Result = No_Element and then not Contains (L, 0)) or else (Has_Element (L, Search'Result) and then Element (L, Search'Result) = 0 and then not Contains (Left (L, Search'Result), 0)
+linked_list.ads:14:7: info: precondition proved
+linked_list.ads:15:25: info: precondition proved
