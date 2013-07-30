@@ -53,6 +53,11 @@ a subprogram.
    a ``subprogram_body`` for a function for which no explicit declaration
    is given.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE PR 6.1 VR Functions shall not have a parameter_specification
+                   of out or in out.
+
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -79,7 +84,7 @@ In order to extend Ada's support for specification of subprogram contracts
 .. centered:: **Legality Rules**
 
 #. The Global, Depends and Contract_Cases aspects may be
-   specified for a subprogram with an ``aspect_specification``.  More
+   specified for a subprogram with an ``aspect_specification``. More
    specifically, these aspects are allowed in the same
    contexts as a Pre or Post aspect.
 
@@ -166,9 +171,20 @@ where
 #. A Contract_Cases aspect may have at most one **others**
    ``contract_case`` and if it exists it must be the last one in the
    ``contract_case_list``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.3 LR if an others contract case exists, it must
+                   be the last one in the list
+
 #. A ``consequence`` expression is considered to be a postcondition
    expression for purposes of determining the legality of Old or
    Result ``attribute_references``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.3 LR Attributes Old and Result can only
+                   appear in the consequence part of a contract_case
 
 .. centered:: **Static Semantics**
 
@@ -176,6 +192,11 @@ where
    11.4.2(1.1/3)); its assertion expressions are as described
    below. Contract_Cases may be specified as an
    ``assertion_aspect_mark`` in an Assertion_Policy pragma.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.3 SS Contract_Cases may be
+                   specified in an Assertion_Policy pragma
 
 .. centered:: **Dynamic Semantics**
 
@@ -200,10 +221,21 @@ where
      ``consequence`` to be evaluated is the one corresponding to the
      one ``condition`` whose evaluation yielded True (if such a
      ``condition`` exists), or to the **others** ``contract_case`` (if
-     every ``condition``\ 's evaluation yielded False).  A check
+     every ``condition``\ 's evaluation yielded False). A check
      is performed that the evaluation of the selected ``consequence``
      evaluates to True; Assertions.Assertion_Error is raised if this
      check fails.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.3 DS If more than one contract_cases are
+                   True then Assertions.Assertion_Error is raised.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.3 DS If the consequence corresponding to
+                   the True contract_case does not evaluate to True
+                   then Assertions.Assertion_Error is raised.
 
 .. centered:: **Verification Rules**
 
@@ -211,10 +243,24 @@ where
    be mutually exclusive, that is only one ``condition`` can be
    True with any set of inputs conformant with the formal parameters
    and satisfying the specific precondition.
+
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 6.1.3 VR conditions must be mutually exclusive.
+
 #. At the point of call a check that a single ``condition`` of the
    Contract_Cases aspect is True has to be proven, or if no
    ``condition`` is True then the Contract_Cases aspect must have an
    **others** ``contract_case``.
+
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 6.1.3 VR When calling a subprogram with a
+                   Contract_Cases aspect a single condition has to be
+                   True.
+
 #. For every ``contract_case``, when its ``condition`` is True, or the
    **others** ``contract_case`` when none of the conditions are True,
    the implementation of the body of the subprogram must be proven to
