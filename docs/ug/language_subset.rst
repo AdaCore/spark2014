@@ -494,6 +494,54 @@ This postcondition is automatically satisfied, so |GNATprove| does not generate
 checks for it. Expression functions that have a user-defined postcondition
 are treated like regular functions.
 
+.. _Ghost Functions:
+
+Ghost Functions
+^^^^^^^^^^^^^^^
+
+Sometimes it is useful to declare functions that are needed in annotations only,
+but that are intended never to be called in executable code. Such functions may
+be used to factor out common parts of expressions in annotations, or to make it
+easier to express some desired property to be proved or tested. Such functions
+are referred to as Ghost Functions and their key property is that they have no
+effect on the dynamic semantics of the the Ada program. If all ghost functions
+and references to them in assertions were removed from the source code the behaviour
+of the compiled program would be unchanged.
+
+Ghost functions are identified by the convention ``Ghost`` and may be expression
+functions or regular functions. If they are regular functions then they may be
+executable (with a body declared as normal) or non-executable (no body is declared).
+If they are non-executable then they can only be used for proof, not testing, and
+their definitions might be provided by an external proof tool in order to complete
+the formal verification process.
+
+The examples below show the declarations of the three types of ghost functions
+mentioned above.
+
+.. code-block:: ada
+
+   function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
+      (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
+      with Pre        => Lo <= Hi,
+           Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
+           Convention => Ghost;
+
+   function A_Ghost_Function (Lo, Hi : Natural) return Natural
+      with Pre        => Lo <= Hi,
+           Post       => A_Ghost_Function'Result in Lo .. Hi,
+           Convention => Ghost;
+   -- The body of the function is declared elsewhere.
+
+   function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
+      with Pre        => Lo <= Hi,
+           Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
+           Convention => Ghost,
+           Import;
+   -- The body of the function is not declared elsewhere.
+
+The |SPARK| tools will verify that ghost functions cannot influence any non-ghost
+entities in the program.
+
 Function Calls in Annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
