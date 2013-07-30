@@ -1,8 +1,13 @@
-Basic Examples
---------------
+Basic Proof Examples
+--------------------
 
-This section presents the results of running |GNATprove| on simple subprograms
-composed of assignments and branches.
+The remaining examples in this section show the use of |GNATprove| for formal
+verification. We start by looking at the results of running |GNATprove| on
+simple subprograms composed of assignments and branches.  Note that the
+remaining examples generally do not
+have ``Global`` and ``Depends`` annotations present as we want to focus on
+formal verification. In practise the contracts for flow analysis and proof
+can, of course, co-exist happily together.
 
 Scalar Assignment
 ^^^^^^^^^^^^^^^^^
@@ -13,7 +18,10 @@ Scalar Assignment
 
 |GNATprove| is able to follow very precisely the assignments to scalar variables
 throughout the program. Take a very simple program ``Increment`` that assigns the
-value ``X+1`` to the variable ``X``:
+value ``X+1`` to the variable ``X``. This subprogram does not have any annotations
+to specify what its behaviour should be so |GNATprove| has no specification to
+verify it against. It will, however, attempt to prove that none of Ada's predefined
+exceptions can be raised during its execution.
 
 .. literalinclude:: gnatprove_by_example/examples/t1q1a.adb
    :language: ada

@@ -575,8 +575,13 @@ but it does not cross subprogram boundaries. Instead, it uses the subprogram
 contracts provided by users to interpret the effect of calls.  Thus, it is
 essential to understand how |GNATprove| uses contracts, as well as other forms
 of annotations. This section aims at providing a deeper insight into how
-|GNATprove| formal verification works, through a step-by-step exploration of
-simple code examples.
+|GNATprove| flow analysis and formal verification works, through a
+step-by-step exploration of simple code examples. We begin with flow analysis
+examples, then move on to exception freedom and correctness proofs.
+
+.. _flow_examples:
+
+.. include:: gnatprove_by_example/flow.rst
 
 .. _basic_examples:
 
@@ -589,10 +594,6 @@ simple code examples.
 .. _loop_examples:
 
 .. include:: gnatprove_by_example/loop.rst
-
-.. _flow_examples:
-
-.. include:: gnatprove_by_example/flow.rst
 
 .. .. _advanced_examples:
 
