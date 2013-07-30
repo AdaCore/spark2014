@@ -246,7 +246,8 @@ package body Flow_Tree_Utility is
             pragma Assert (Acts_As_Spec (P));
             return Empty;
 
-         when N_Subprogram_Declaration =>
+         when N_Subprogram_Declaration | N_Subprogram_Body_Stub =>
+            pragma Assert (Present (Corresponding_Body (P)));
             return Corresponding_Body (P);
 
          when others =>
