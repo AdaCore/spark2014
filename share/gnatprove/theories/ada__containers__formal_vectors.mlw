@@ -1276,13 +1276,13 @@ module Ada__containers__formal_vectors__reverse_elements
     forall co1 co2:vector, i:int
       [reverse_elements co1 co2, element_ co2 i].
       reverse_elements co1 co2 -> 0 < i <= length_ co2 ->
-        element_ co2 i = element_ co1 (length_ co2 - i)
+        element_ co2 i = element_ co1 (length_ co2 - i + 1)
 
   axiom reverse_elements_element_bis:
     forall co1 co2:vector, i:int
       [reverse_elements co1 co2, element_ co1 i].
       reverse_elements co1 co2 -> 0 < i <= length_ co1 ->
-        element_ co1 i = element_ co2 (length_ co1 - i)
+        element_ co1 i = element_ co2 (length_ co1 - i + 1)
 
   val reverse_elements (co:ref vector) : unit
      writes     { co }
