@@ -421,7 +421,7 @@ package body Flow.Utility is
       U : constant Entity_Id := Unique_Entity (E);
    begin
       case Ekind (Get_Full_Type (U)) is
-         when Elementary_Kind | Array_Kind =>
+         when Elementary_Kind | Array_Kind | Private_Kind =>
             return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
 
          when E_Record_Type | E_Record_Subtype =>
