@@ -395,16 +395,16 @@ package body Gnat2Why.Decls is
                                 T_Name   => Capitalize_First (Theory_Name),
                                 Use_Kind => EW_Export);
 
-               if not (Ekind (E) in Type_Kind) then
-                  for I in Compl'Range loop
-                     Add_Completion (Name            => Full_Name (E),
-                                     Completion_Name => Full_Name (Compl (I)),
-                                     Kind            =>
-                                       Dispatch_Entity (Compl (I)));
-                  end loop;
-               end if;
-
                Close_Theory (TFile, Filter_Entity => Empty);
+            end if;
+
+            if not (Ekind (E) in Type_Kind) then
+               for I in Compl'Range loop
+                  Add_Completion (Name            => Full_Name (E),
+                                  Completion_Name => Full_Name (Compl (I)),
+                                  Kind            =>
+                                    Dispatch_Entity (Compl (I)));
+               end loop;
             end if;
 
             if Ekind (E) in Subprogram_Kind then
