@@ -30,9 +30,6 @@ simplifications to Ada 2012. The most notable simplifications are:
 
 - The use of controlled types is not permitted.
 
-- Tasking is not currently permitted (it is intended that this will be included
-  in Release 2 of the |SPARK| language and tools).
-
 - Raising and handling of exceptions is not currently permitted (exceptions can
   be included in a program but proof must be used to show that they cannot be
   raised).
@@ -40,6 +37,14 @@ simplifications to Ada 2012. The most notable simplifications are:
 Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
 features.
+
+The features listed above are excluded from |SPARK| because, currently, they defy
+formal verification. As formal verification technology advances the list will be
+revisited and it may be possible to relax some of these restrictions. There are
+other features which are technically feasible to formally verify but which were
+excluded from Release 1 of the |SPARK| language and tools for scheduling reasons.
+These are scheduled for inclusion in Release 2, the most notable items being
+support for tasking and tagged types.
 
 |SPARK| Features
 ================
@@ -402,6 +407,68 @@ example:
       Contract_Cases => (X >= 0 and X < Threshold  => X = X'Old + 1,
                          X = Threshold             => X = X'Old,
                          others                    => X = -1;
+
+.. _Refined Postconditions:
+
+Refined Postconditions
+^^^^^^^^^^^^^^^^^^^^^^
+
+The postcondition of a subprogram declared in the visible part of a package may
+refer to objects of a private type, or to abstract state. In such cases a second,
+refined, version of the postcondition may be applied to the subprogram body. This
+restates the postcondition in terms of the full view of the private type or the
+constituents of the refined state. In fact, a refined postcondition may be given
+on the body even if there is no explicit postcondition on the declaration in the
+visible part, in which case the postcondition on the declaration defaults to ``True``.
+
+|GNATprove| will attempt to verify that the precondition of the subprogram together
+with its refined postcondition imply the postcondition on the declaration (and
+an error will be reported if this cannot be shown to hold).
+
+The example below shows how this might be used in a package which provides a type
+for declaring stacks of integers, and operations for that type. In the package
+specification the type ``Stack`` is private and the postcondition on procedure ``Push``
+states that the stack will not be empty after a push. In the body, where the
+type ``Stack`` is fully visible, the refined postcondition gives more detail
+about the effect of ``Push``. Note that ``Empty`` is an expression function -
+of which we will see more in the next section.
+
+.. code-block:: ada
+   :linenos:
+
+   package P is
+
+      type Stack is private;
+
+      function Empty (S : Stack) return Boolean;
+
+      procedure Push (I : in Integer; S : in out Stack)
+         with Post => (not Empty (S));
+
+   private
+      Stack_Size : constant := 100;
+      type Pointer_Range is range 0 .. Stack_Size;
+      subtype Stack_Range is Pointer_Range range 1 .. Stack_Size;
+      type Stack_Array is array (Stack_Range) of Integer;
+      type Stack is record
+         Vector  : Stack_Array;
+         Pointer : Pointer_Range;
+      end record;
+   end P;
+
+   package body P is
+
+      function Empty (S : Stack) return Boolean is (S.Pointer = 0);
+
+      procedure Push (I : in Integer; S : in out Stack)
+         with Refined_Post => (S.Pointer = S.Pointer'Old + 1)
+      is
+      begin
+         S.Pointer := S.Pointer + 1;
+         S.Vector (S.Pointer) := I;
+      end Push;
+
+   end P;
 
 .. _Expression Functions:
 
