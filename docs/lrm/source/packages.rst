@@ -2414,7 +2414,7 @@ global variables discussed later in this section.
    occurring. A library unit package spec which declares a tagged type will
    typically require an Elaborate_Body pragma.]
 
-#. For the inter-compilation_unit case, |SPARK| enforces the follwing static
+#. For the inter-compilation_unit case, |SPARK| enforces the following static
    elaboration order rule:
 
    * If a unit has elaboration code that can directly or indirectly make a call
