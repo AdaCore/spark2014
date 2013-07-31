@@ -32,6 +32,8 @@ with Nlists;                use Nlists;
 with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
 with Sprint;                use Sprint;
+with Stand;                 use Stand;
+with String_Utils;          use String_Utils;
 with Sinfo;                 use Sinfo;
 with Lib;                   use Lib;
 
@@ -896,9 +898,18 @@ package body Flow is
       --  If no errors/warnings were generated during flow analysis then
       --  we create a file that contains the word OK.
 
+      function In_Analyze_File
+        (E             : Entity_Id;
+         Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
+        return Boolean;
+      --  Returns true if E belongs to one of the entities that correspond
+      --  to the files that are to be analyzed. If Analyze_Files is an empty
+      --  list then we return true since we need to analyze everything.
+
       -----------------------------
       -- Create_Flow_Result_File --
       -----------------------------
+
       procedure Create_Flow_Result_File
         (FA            : Flow_Analysis_Graphs_Root;
          Found_Error   : Boolean;
@@ -924,6 +935,45 @@ package body Flow is
          end if;
       end Create_Flow_Result_File;
 
+      ---------------------
+      -- In_Analyze_File --
+      ---------------------
+
+      function In_Analyze_File
+        (E             : Entity_Id;
+         Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
+        return Boolean
+      is
+         Outer  : Entity_Id := E;
+      begin
+         --  If we have an empty files list we analyze everything
+         if Analyze_Files.Is_Empty then
+            return True;
+         end if;
+
+         --  Starting from an entity E, we find the enclosing compilation
+         --  unit (Outer).
+         while Present (Outer) loop
+            exit when Is_Child_Unit (Outer)
+              or else Scope (Outer) = Standard_Standard;
+            Outer := Scope (Outer);
+         end loop;
+
+         --  We check if the eclosing compilation unit's Chars field
+         --  extended with ".adb" is within the list of files.
+         declare
+            F_Name : constant String :=
+              Get_Name_String (Chars (Outer)) & ".adb";
+         begin
+            for A_File of Analyze_Files loop
+               if A_File = F_Name then
+                  return True;
+               end if;
+            end loop;
+            return False;
+         end;
+      end In_Analyze_File;
+
       FA_Graphs     : Analysis_Maps.Map;
       Success       : Boolean;
       Found_Error   : Boolean;
@@ -933,7 +983,9 @@ package body Flow is
       for E of All_Entities loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if Subprogram_Body_In_SPARK (E) then
+               if  In_Analyze_File (E)
+                 and Subprogram_Body_In_SPARK (E)
+               then
                   FA_Graphs.Include (E, Flow_Analyse_Entity (E));
                end if;
 
@@ -942,7 +994,10 @@ package body Flow is
                   Pkg_Spec : constant Node_Id := Get_Enclosing_Scope (E);
                   Pkg_Body : Node_Id;
                begin
-                  if Entity_In_SPARK (E) and not In_Predefined_Unit (E) then
+                  if In_Analyze_File (E)
+                    and Entity_In_SPARK (E)
+                    and not In_Predefined_Unit (E)
+                  then
                      FA_Graphs.Include (E, Flow_Analyse_Entity (E));
 
                      Pkg_Body := Pkg_Spec;
