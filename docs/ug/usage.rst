@@ -404,8 +404,8 @@ The following table shows the proof messages.
    "assertion", "Check that the given assertion evaluates to True."
 
 The following table shows all flow analysis messages, which come in
-three classes: I(nitialization) error are the most serious flow
-errors, not fixing them might result in a program which can raise a
+three classes: I(nitialization) errors are the most serious flow
+errors as not fixing them might result in a program which can raise a
 constraint error at runtime which proof may not be able to
 detect. F(low) errors indicate a serious problem with a dependency
 relation, if such an error is not fixed, the dependency relations
@@ -420,7 +420,7 @@ about questionable code constructs.
    "depends_missing_clause", "F", "An out parameter or global is missing from the dependency relation."
    "depends_null", "F", "A variable is missing from the null dependency."
    "depends_wrong", "F", "A stated dependency is not fulfilled."
-   "illegal_update", "I", "Flow analysis has detected an update of a in mode global."
+   "illegal_update", "I", "Flow analysis has detected an update of an in mode global."
    "ineffective",, "Flow analysis has detected an ineffective statement, such as an unused assignment."
    "unused_initial_value",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
    "stable",, "A questionable loop construct where a variable is assigned the same value on each loop iteration."
