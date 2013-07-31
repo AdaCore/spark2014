@@ -13,22 +13,212 @@ Usage Scenarios for Formal Verification
     in |SPARK|: favor automatic formal verification as much as possible, at the
     cost of minor adaptations to the code.
 
-To be completed
+This section discusses in more detail the various types of verification that
+|GNATprove| may be used for, ranging from flow analysis to formal verification
+of correctness properties.
 
-|GNATprove| generates Verification Conditions (VCs) whose proof ensures that some
-property holds on the source program. Such VCs are generated for functional
-properties expressed as annotations but also to ensure different high-level
-properties of the code described in the subsequent sections.
+.. _flow analysis of unannotated code:
+
+Flow Analysis of Unannotated Code
+---------------------------------
+
+When |GNATprove| is run in ``flow`` mode it performs flow analysis to check
+for errors relating to initialization of, and information flow between,
+variables. If the code under analysis does not include global or depends
+annotations then this analysis will detect errors relating to the use of
+uninitialized variables and unused assignments. This corresponds to the 
+"generative" or "retrospective" style of analysis. For example, in the code
+shown below |GNATprove| warns that the initial value of ``X`` is unused.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure P (X : in out Integer) is
+   begin
+      X := 10;
+   end P;
+
+If this is the intended behaviour then the warning can be eliminated by
+changing the mode of the parameter to ``out`` as has been done below.
+But in this version the result of the first assignment is overwritten
+by the second assignment, so |GNATprove| warns that the initial
+assignment is unused.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure P (X : out Integer) is
+   begin
+      X := 0;
+      X := 10;
+   end P;
+
+The previous examples were instances of warnings, but the use of
+uninitialized variables is considered more serious and results in
+an error being reported, as in the case below.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure P (X : out Integer) is
+      T : Integer;
+   begin
+      X := T;
+   end P;
+
+Here |GNATprove| reports the error that ``T`` might not be initialized.
+The reason for the word "might" is that the flow analyser cannot, in
+general, determine whether the use of the uninitialized variable is on
+a non-executable path. To do so would require proof, and it is possible
+that this may be done in a future version of the tools.
+
+Flow analysis will also detect unused variables as in this example
+where |GNATprove| warns that ``T`` is unused.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure P (X : out Integer) is
+      T : Integer;
+   begin
+      X := 0;
+   end P;
+
+.. _flow analysis of code with globals:
+
+Flow Analysis of Code with Globals 
+----------------------------------
+
+If the user has added global annotations to the code then |GNATprove|
+is able to go further with flow analysis and report any discrepancies
+between the contract specified in the annotation and the executable
+code. Here, ``P`` has an annotation specifying that the global ``G``
+is an input (but not an output).
+
+.. code-block:: ada
+   :linenos:
+
+   procedure P
+      with Global => (Input => G)
+   is
+   begin
+      G := G + 1;
+   end P;
+
+|GNATprove| reports that ``G`` must be a global output. This corresponds
+to the constructive analysis style, where the contract must be provided
+by the user before the executable code is written (or at least simultaneously
+with writing the code). Note that if the global aspect was not present then
+|GNATprove| would synthesize a global contract that matched the code and no
+error would be reported. This corresponds to the generative or retrospective
+style of analysis which has the advantage of not requiring the user to add
+the annotations but the disadvantage of not being able to detect cases where
+the user-supplied annotation is correct but the code is incorrect. Note also
+that for the code shown above |GNATprove| reports one more warning, that
+initial value of ``G`` is unused. This may seem surprising at first glance,
+because the initial value of ``G`` must be read in order to increment it.
+However, the global aspect states that ``G`` is not an output, so the
+assignment statement is not considered to affect any outputs and the new
+value of ``G`` is unused. Both of these messages disappear when the global
+annotation is corrected and the code is reanalysed.
+
+.. _flow analysis of code with depends:
+
+Flow Analysis of Code with Depends 
+----------------------------------
+
+If the user has specified depends annotations then |GNATprove| can go still
+further with the flow analysis it performs. This typically corresponds to a
+scenario where the constructive analysis style is being used and the extra
+analysis is considered to be valuable, for example when it is important to
+see the flows of information between inputs and outputs on a security or
+safety related system. The presence of depends annotations, which specify
+the relationships between inputs and outputs of a subprogram, allows
+|GNATprove| to check the specified dependency against the executable code
+and report any discrepancies.
+
+Here is our old friend ``Swap`` which is intended to exchange the values
+of its two integer parameters, ``X`` and ``Y``. The depends annotation
+correctly captures this specification, but the user has made a mistake in
+the implementation.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Swap (X, Y : in out Integer)
+      with Depends => (X => Y, Y => X)
+   is
+      T : Integer;
+   begin
+      T := Y; -- should be T := X;
+      X := Y;
+      Y := T;
+   end Swap;
+
+|GNATprove| analyses the body, calculates the actual dependencies between
+inputs and outputs, compares these with the specified dependencies and
+reports the following warnings:
+
+.. code-block:: ada
+
+   q.adb:4:20: warning: unused initial value of "X" [unused_initial_value]
+   q.adb:5:12: warning: missing dependency "null => X" [depends_null]
+   q.adb:5:32: warning: missing dependency "Y => Y" [depends_missing]
+   q.adb:5:32: warning: incorrect dependency "Y => X" [depends_wrong]
+
+Note that the style of these messages implies that the code is correct and
+the depends annotation should be fixed. However it should be borne in
+mind that where a discrepancy between the code and the depends annotation
+is detected it is generally up to the user to decide whether the code or
+the annotation is incorrect and to take the appropriate corrective action.
+In this case it is the code which is wrong, and correcting the first
+assignment statement will eliminate all of the errors listed above.
+
+It is important to note that the inclusion of user-supplied global and
+depends annotations is not an "all or nothing" decision that must be
+applied rigidly across all files. The tools are flexible enough to make
+use of, and check against, the annotations where they are present, and
+to synthesize them otherwise. There are various usage scenarios where
+there might be a mix of annotated and unannotated code, for example:
+
+ - Some projects, working in the constructive style, might opt to write
+   global and depends annotations for subprograms at the lower levels
+   of the calling hierarchy, but only use globals at the higher levels.
+   The depends annotations tend to give more value at the lower levels
+   of the hierarchy but can become more unweildy and less informative at
+   the higher levels.
+
+ - Some projects might opt to write the global and depends aspects for
+   the most critical areas of the software, but leave the less critical
+   parts unannotated.
+
+ - If an existing Ada project is adopting |SPARK|, annotations might be
+   added to all newly written code, but not retrospectively applied to
+   existing code. Or such a project might choose to gradually introduce
+   annotations to the code base as existing modules are modified, rather
+   than having to go for a "big bang" approach of applying annotations to
+   everything at the same time.
+
+These are just some of the possible usage scenarios. Yet more combinations
+can be envisaged when we consider that the proof contracts may also be
+specified or not, depending on the circumstances of the project. The
+following sections consider how |GNATprove| can be used for formal
+verification.
 
 .. _completeness of preconditions:
 
 Completeness of Preconditions
 -----------------------------
 
-This verification activity is part of the proof analysis of |GNATprove|.  It
-consists in verifying that preconditions of subprograms can never raise a
-run-time error, whatever the calling context. In order to get such a good
-property on the preconditions, the user should in general guard all expressions
+|GNATprove| generates Verification Conditions (VCs) whose proof ensures that some
+property holds on the source program. Such VCs are generated for functional
+properties expressed as annotations but also to ensure different high-level
+properties of the code. These will be discussed in the following sections,
+beginning with completeness of preconditions.
+
+This activity verifies that preconditions of subprograms can never raise
+run-time errors, whatever the calling context. In order to achieve this
+property for preconditions, the user should in general guard all expressions
 which may raise a ``Constraint_Error`` in Ada, such as array accesses and
 arithmetic operations.
 
