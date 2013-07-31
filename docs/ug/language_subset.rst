@@ -831,18 +831,125 @@ they come from.
              First_Element (L1) = E and then
              Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
 
-Combining Code in |SPARK| and Code in Ada
-=========================================
+Mixing |SPARK| Code and Ada Code
+================================
 
 Allowed Combinations
 --------------------
 
-We describe a program unit or language feature as being "in |SPARK|" if it
-complies with the restrictions required to permit formal verification.
-Conversely, a program unit language feature is "not in |SPARK|" if it does not
-meet these requirements, and so is not amenable to formal verification. Within
-a single unit, features which are "in" and "not in" |SPARK| may be mixed at a
-fine level. For example, the following combinations may be typical:
+An Ada program unit or other construct is said to be "in |SPARK|"
+if it complies with the restrictions required to permit formal verification
+given  in the |SPARK| Reference manual.
+Conversely, an Ada program unit or other construct is "not in |SPARK|" if
+it does not meet these requirements, and so is not amenable to formal
+verification.
+
+Within a single Ada unit, constructs which are "in" and "not in" |SPARK| may be
+mixed at a fine level in accordance with the following two general principles:
+
+- Spark code shall only reference Spark declarations, but a Spark
+  declaration which requires a completion may have a non-Spark completion.
+
+- Spark code shall only enclose Spark code, except that Spark code
+  may enclose a non-Spark completion of an enclosed Spark declaration.
+
+More specifically, non-Spark completions of Spark declarations are allowed
+for subprogram declarations, package declarations, private type declarations,
+and deferred constant declarations. [When tagged types are
+fully supported in |SPARK|, this list will also include private extension
+declarations.] [Strictly speaking, a package's private part is considered
+to be part of its completion for purposes of the above rules; this is
+described in more detail below].
+
+When a non-Spark completion is provided for a Spark declaration, the
+user has an obligation to ensure that the non-Spark completion
+is consistent (with respect to the semantics of |SPARK|) with its Spark
+declaration. For example, |SPARK| requires that a function call has no
+side effects. If the body of a given function is in |SPARK|, then this
+rule is enforced via various language rules; otherwise, it is the
+responsibility of the user to ensure that the function body does not
+violate this rule. As with other
+such constructs (notably pragma Assume), failure to meet this obligation
+can invalidate any or all analysis (i.e., proofs and/or flow analysis)
+associated with the Spark portion of a program. A non-Spark completion
+meets this obligation if it is semantically equivalent (with respect to
+dynamic semantics) to some notional completion that could have been
+written in |SPARK|.
+
+Failure to follow this rule can lead to subtle problems.
+For example, a Spark private type whose non-Spark completion includes a
+reference to a variable in a default initial value expression for a
+record component could be a violation. Given this |SPARK| example
+
+.. code-block:: ada
+
+   declare
+     X : T := T'(others => <>);
+   begin
+     Modify_Some_Global_Variables;
+     Flag := (X = T'(others => <>));
+
+, the rules of |SPARK| imply that Flag must be assigned the value True.
+If T is a private type with a non-Spark completion such that
+Flag is assigned False when the program executes, then the user's
+obligation has not been met. If this seems obscure, well, that's the point:
+care needs to be taken in this area.
+  
+When the |SPARK| Reference Manual defines the static and dynamic
+semantics of |SPARK|, there is no description of the semantics of
+non-Spark constructs (just as the Ada manual does not describe,
+for example, the dynamic semantics of assigning an array to a record).
+So how is the semantics of a such "mixed" |SPARK| programs defined?
+It would not be very helpful to say that "a mixed program is not a |SPARK|
+program; it is an Ada program, so go look in the Ada Reference Manual"
+because this would be useless with respect to flow analysis and proofs
+(although it might be fine for static and dynamic semantics).
+
+The |SPARK| semantics (specifically including flow analysis and proofs) of
+a "mixed" program which meets the aforementioned "is semantically equivalent ...
+to some ... completion ... written in |SPARK|" requirement is well defined -
+it is the semantics of the equivalent 100% |SPARK| program.
+For the semantics of other "mixed" programs, go look in the Ada Reference
+Manual.
+
+[A minor detail: this approach assumes that the details of the notional
+"equivalent |SPARK|" completion do not affect the static semantics,
+flow analysis, and proofs of the |SPARK| portion of the program. This is
+generally true but there are some sticky details. For example, consider
+the "no partial default initialization" rule for a type declaration,
+which says that either all or none of a record type's non-discriminant
+components shall have full default initialization. If a private type is
+used as a component type (and no explicit default value is provided for
+that component at the point of the component declaration), the implementation
+of this rule involves looking through the private type to its completion.
+As it happens, this particular case can be implemented fairly easily even
+if the completion of the type is Ada-but-not-Spark, but this is a case where
+the properties of the completion "poke through". Similarly, the caller of
+a Spark subprogram normally does not need to see the body of the subprogram,
+but the implementation of the |SPARK| rules which prevent calling a
+subprogram before its body has been elaborated are an exception to this.
+These rules can be generalized to handle some Ada-but-not-Spark constructs,
+but in the most general case (e.g., a call to an imported subprogram)
+optimistic assumptions are made and it is the responsibility of the user
+to ensure that this does not lead to problems.]
+
+Note that one possible non-Spark completion for a given Spark
+subprogram_declaration is an Import pragma (or an equivalent
+aspect_specification). This means that |SPARK| code can invoke
+code written in languages other than Ada (e.g., C).
+Definitionally, this is a minor point - if the completion of a given
+subprogram is not in |SPARK|, it really doesn't matter how it is
+implemented because the user has taken responsibility for ensuring
+that the implementation is "correct".
+
+In the case of a package, the specification/completion division described
+above is a simplification of the true situation. A package is divided into
+4 parts, not just 2: its visible part, its private part, the declarations
+of its body, and the statement list of its body. For a given package and
+any number N in the range 0 .. 4, the first N parts of the package might be
+in |SPARK| while the remainder is not.
+
+For example, the following combinations may be typical:
 
 - Package specification in |SPARK|. Package body not in |SPARK|.
 
@@ -852,8 +959,8 @@ fine level. For example, the following combinations may be typical:
 - Package specification in |SPARK|. Package body almost entirely in |SPARK|,
   with a small number of subprogram bodies not in |SPARK|.
 
-- Package specification in |SPARK|, with all bodies imported from another
-  language.
+- Package specification in |SPARK|, with all subprogram bodies imported
+  from another language.
 
 - Package specification contains a mixture of declarations which are in |SPARK|
   and not in |SPARK|.  The latter declarations are only visible and usable from
@@ -866,65 +973,159 @@ traditional testing (see :ref:`proof and test`).
 Specifying the Boundary with Pragma ``SPARK_Mode``
 --------------------------------------------------
 
-This pragma is used to designate whether a contract and its implementation must
-follow the |SPARK| programming language syntactic and semantic rules. The
-pragma is intended for use with formal verification tools and has no effect on
-the generated code. Its syntax is:
+SPARK_Mode is a three-valued aspect. At least until we get to the
+next paragraph, a SPARK_Mode of On, Off, or Auto is associated
+with each Ada construct. In general, On indicates that the construct is
+required to be in |SPARK|, Off indicates otherwise, and Auto
+is discussed below.
+
+Some Ada constructs are said to have more than one "part".
+For example, a declaration which requires a completion will have (at least)
+two parts: the initial declaration and the completion. The SPARK_Modes
+of the different parts of one entity may differ. In other words,
+SPARK_Mode is not an aspect of an entity but rather of a part of an entity.
+
+For example, if a subprogram declaration has a SPARK_Mode of On while
+its body has a SPARK_Mode of Off, then an error would be generated if
+the subprogram  took a parameter of an access type but not if
+the subprogram declared a local variable of an
+access type (recall that access types are not in |SPARK|).
+
+[Do not confuse the term "part" as it is used in this section with the
+Ada term "part" which is related to the terms "component" and "subcomponent".]
+[TBD: use another word instead of "part"?]
+
+A package is defined to have 4 parts: its visible part, its private part,
+its body declarations, and its body statements. Non-package declarations which
+require a completion have two parts, as noted above; all other entities and
+constructs have only one part.
+
+If the SPARK_Mode of a part of an entity is Off, then the SPARK_Mode
+of a later part of that entity shall not be On. [For example, a subprogram
+can have a Spark declaration and a non-Spark body, but not vice versa.]
+
+The SPARK_Mode aspect can be specified either via a pragma or via an
+aspect_specification. In some contexts, only a pragma can be used
+because of syntactic limitations. In those contexts where an
+aspect_specification can be used, it has the same effect as a
+corresponding pragma.
+
+The form of a pragma SPARK_Mode is as follows:
 
 .. code-block:: ada
 
-   pragma SPARK_Mode [ (On | Off | Auto) ] ;
+   pragma SPARK_Mode [ (On | Off | Auto) ] 
 
-When used as a configuration pragma over a whole compilation or in a particular
-compilation unit, it sets the mode of the units involved, in particular:
+The syntax for the aspect_definition of a SPARK_Mode aspect_specification is
+as follows:
 
-* ``On``: All entities in the units must follow the |SPARK| language, and
-  an error will be generated if not, unless locally overridden by a local
-  ``SPARK_Mode`` pragma or aspect. ``On`` is the default mode when pragma
-  ``SPARK_Mode`` is used without an argument.
+.. code-block:: ada
 
-* ``Off``: The units are considered to be in Ada by default and therefore not
-  part of |SPARK| unless overridden locally. These units may be called by
-  |SPARK| units.
+   [ (On | Off | Auto) ]
 
-* ``Auto``: The formal verification tools will automatically detect whether
-  each entity is in |SPARK| or in Ada.
+The pragma can be used as a configuration pragma. The effect of
+such a configuration pragma is described in the rules for
+determining the SPARK_Mode aspect value for an arbitrary part of an
+arbitrary Ada entity or construct. An argument of Auto shall only
+occur in a configuration pragma [, not in either a local SPARK_Mode pragma
+or in a SPARK_Mode aspect_specification]. Roughly speaking, Auto indicates
+that it left up to the formal verification tools to determine whether
+or not a given construct is in |SPARK|.
 
-Pragma ``SPARK_Mode`` can be used as a local pragma with the following
-semantics:
+Pragma ``SPARK_Mode`` shall be used as a local pragma in only the following
+contexts and has the described semantics:
 
-* ``Auto`` cannot be used as a mode argument.
-
-* When the pragma appears at the start of the visible declarations (preceded only
-  by other pragmas) of a package declaration, it marks the whole package
-  (declaration and body) in or out of |SPARK|.
+* When the pragma appears at the start of the visible declarations (preceded
+  only by other pragmas) of a package declaration, it specifies the
+  SPARK_Mode aspect of the visible part of the package. This can also
+  be accomplished via a SPARK_Mode aspect specification as part of the
+  package_specification.
 
 * When the pragma appears at the start of the private declarations of a
   package (only other pragmas can appear between the ``private`` keyword
-  and the ``SPARK_Mode`` pragma), it marks the private part in or
-  out of |SPARK| (overriding the default mode of the visible part).
+  and the ``SPARK_Mode`` pragma), it specifies the SPARK_Mode aspect
+  of the private part of the package. [This cannot be accomplished via
+  an aspect_specification.]
 
 * When the pragma appears immediately at the start of the declarations of a
   package body (preceded only by other pragmas),
-  it marks the whole body in or out of |SPARK| (overriding the default
-  mode set by the declaration).
+  it specifies the SPARK_Mode aspect of the body declarations of the package.
+  This can also be accomplished via a SPARK_Mode aspect specification
+  as part of the package_body.
 
 * When the pragma appears at the start of the elaboration statements of
   a package body (only other pragmas can appear between the ``begin``
   keyword and the ``SPARK_Mode`` pragma),
-  it marks the elaboration statements in or out of |SPARK| (overriding
-  the default mode of the package body).
+  it specifies the SPARK_Mode aspect of the body
+  the default mode of the package body). [This cannot be accomplished via
+  an aspect_specification.]
 
 * When the pragma appears after a subprogram declaration (with only other
-  pragmas intervening), it marks the whole
-  subprogram (spec and body) in or out of |SPARK|.
+  pragmas intervening), it specifies the SPARK_Mode aspect of the
+  subprogram's specification. This can also be accomplished via a SPARK_Mode
+  aspect_specification as part of the subprogram_declaration.
+  [This does not include the case of a subprogram whose initial declaration
+  is via a subprogram_body_stub. Such a subprogram has only one part because
+  a subunit is not a completion.]
 
 * When the pragma appears at the start of the declarations of a subprogram
-  body (preceded only by other pragmas), it marks the whole body in or out
-  of |SPARK| (overriding the default mode set by the declaration).
+  body (preceded only by other pragmas), it specifies the SPARK_Mode aspect
+  of the subprogram's body. This can also be accomplished via a SPARK_Mode
+  aspect_specification as part of the subprogram_body.
 
-* Any other use of the pragma is illegal.
+A default argument of On is assumed for any SPARK_Mode pragma or
+aspect_specification for which no argument is explicitly specified.
 
-In code where ``SPARK_Mode`` applies, any violation of |SPARK| is reported by
-|GNATprove| as an error, and any construct in |SPARK| not yet implemented is
-reported as a warning.
+A SPARK_Mode pragma or aspect specification shall only apply to a
+(part of a) library-level package or subprogram. 
+
+The SPARK_Mode aspect value of an arbitrary part of an arbitrary
+Ada entity or construct is then defined to be the following value
+(except if the this yields a result of Auto for a non-package; see below):
+
+- If SPARK_Mode has been specified for the given part of the
+  given entity or construct, then the specified value;
+
+- else if SPARK_Mode has been specified for at least one
+  preceding part of the same entity, then the SPARK_Mode of the
+  immediately preceding part;
+
+- else for any of the visible part or body declarations of a library
+  unit package or either part of a library unit subprogram,
+  if there is an applicable SPARK_Mode configuration pragma then the
+  value specified by the pragma; if no such configuration pragma
+  applies, then an implicit specification of Auto is assumed;
+
+- else for any subsequent (i.e., not the first) part of a library unit
+  package or subprogram, the SPARK_Mode of the preceding part;
+
+- else the SPARK_Mode of the enclosing part of the nearest enclosing
+  package or subprogram;
+
+- Corner cases: the SPARK_Mode of the visible declarations of the
+  limited view of a package is always Auto; the SPARK_Mode of any
+  part of a library unit generic unit is On.
+  [Recall that any generic unit is in |SPARK|.]
+
+If the above computation yields a result of Auto for any construct
+other than one of the four parts of a package, then a result of On
+or Off is determined instead based on the legality (with respect to
+the rules of |SPARK|) of the construct. The construct's SPARK_Mode is
+On if and only if If the construct is in |SPARK|. [A SPARK_Mode of Auto
+is therefore only possible for (parts of) a package.]
+
+In code where SPARK_Mode is On (also called "Spark code"), the rules of
+|SPARK| are enforced. In particular, such code shall not reference
+non-Spark entities, although such code may reference a Spark declaration
+with one or more non-Spark subsequent parts (e.g., a package whose visible part
+has a SPARK_Mode of On but whose private part has a SPARK_Mode of Off; a
+package whose visible part has a SPARK_Mode of Auto may also be referenced).
+Similarly, code where SPARK_Mode is On shall not enclose code where
+SPARK_Mode is Off unless the non-Spark code is part of the "completion"
+(using that term imprecisely, because we are including the private
+part of a package as part of its "completion" here) of a Spark declaration.
+
+SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
+speaking) part of the |SPARK| language. It is used to notionally transform
+programs which would otherwise not be in |SPARK| so that they can
+be viewed (at least in part) as |SPARK| programs.
