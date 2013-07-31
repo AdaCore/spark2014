@@ -5,8 +5,9 @@
 TITLE: "Towards the formalization of SPARK 2014 semantics with
 explicit run-time checks using Coq"
 
-AUTHORS: J. Guitton (AdaCore), P. Courtieu, V. APonte, T. Crolard
-(Cnam), Z. Zhang, J. Hatcliff, ??? (KSU).
+AUTHORS: P. Courtieu, V. APonte, T. Crolard (Cnam),
+ Z. Zhang, J. Hatcliff, ??? (KSU),
+ J. Guitton (AdaCore), T. Jennings (Altran).
 
  ABSTRACT: We present ongoing work on the formalization of the dynamic
  semantics for a toy subset of the SPARK 2014 language [Spark2014]
