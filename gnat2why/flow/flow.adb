@@ -901,7 +901,7 @@ package body Flow is
       function In_Analyze_File
         (E             : Entity_Id;
          Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
-        return Boolean;
+         return Boolean;
       --  Returns true if E belongs to one of the entities that correspond
       --  to the files that are to be analyzed. If Analyze_Files is an empty
       --  list then we return true since we need to analyze everything.
@@ -923,8 +923,7 @@ package body Flow is
                FD : Ada.Text_IO.File_Type;
 
                Filename : constant Unbounded_String :=
-                 FA.Base_Filename &
-                 ".flow_ok";
+                 FA.Base_Filename & ".flow_ok";
             begin
                Ada.Text_IO.Create
                  (FD, Ada.Text_IO.Out_File, To_String (Filename));
@@ -942,7 +941,7 @@ package body Flow is
       function In_Analyze_File
         (E             : Entity_Id;
          Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
-        return Boolean
+         return Boolean
       is
          Outer  : Entity_Id := E;
       begin
@@ -959,7 +958,7 @@ package body Flow is
             Outer := Scope (Outer);
          end loop;
 
-         --  We check if the eclosing compilation unit's Chars field
+         --  We check if the enclosing compilation unit's Chars field
          --  extended with ".adb" is within the list of files.
          declare
             F_Name : constant String :=
@@ -983,7 +982,7 @@ package body Flow is
       for E of All_Entities loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if  In_Analyze_File (E)
+               if In_Analyze_File (E)
                  and Subprogram_Body_In_SPARK (E)
                then
                   FA_Graphs.Include (E, Flow_Analyse_Entity (E));
