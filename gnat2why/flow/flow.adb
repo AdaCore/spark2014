@@ -26,7 +26,6 @@ with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Maps;
 with Ada.Text_IO;
 
-with Aspects;               use Aspects;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Util;              use Sem_Util;
@@ -248,11 +247,11 @@ package body Flow is
       Writes := Flow_Id_Sets.Empty_Set;
 
       if Refined_View and then Present (Body_E) and then
-        Has_Aspect (Body_E, Aspect_Refined_Global)
+        Present (Get_Pragma (Body_E, Pragma_Refined_Global))
       then
          Has_Global_Aspect := True;
          Global_Node       := Get_Pragma (Body_E, Pragma_Refined_Global);
-      elsif Has_Aspect (Subprogram, Aspect_Global) then
+      elsif Present (Get_Pragma (Subprogram, Pragma_Global)) then
          Has_Global_Aspect := True;
          Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
       else
@@ -432,7 +431,7 @@ package body Flow is
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean is
    begin
-      return Has_Aspect (Subprogram, Aspect_Depends);
+      return Present (Get_Pragma (Subprogram, Pragma_Depends));
    end Has_Depends;
 
    -----------------
