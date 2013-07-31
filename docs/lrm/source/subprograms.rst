@@ -992,7 +992,7 @@ other sections as appropriate, since they will refer to more than just subprogra
 [We are ignoring interactions between ghostliness and freezing. Adding a ghost
 variable, for example, could change the freezing point of a non-ghost type. It
 appears that this is ok; that is, this does not violate the
-ghosts-have-no-effect-on-program-behavior rule.
+ghosts-have-no-effect-on-program-behavior rule.]
 
 .. todo::
    Can a ghost variable be a constituent of a non-ghost state
