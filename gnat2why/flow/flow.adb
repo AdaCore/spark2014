@@ -22,28 +22,29 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
-with Ada.Strings;           use Ada.Strings;
+with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Maps;
 with Ada.Text_IO;
 
-with Namet;                 use Namet;
-with Nlists;                use Nlists;
-with Sem_Util;              use Sem_Util;
-with Snames;                use Snames;
-with Sprint;                use Sprint;
-with Stand;                 use Stand;
-with String_Utils;          use String_Utils;
-with Sinfo;                 use Sinfo;
-with Lib;                   use Lib;
+with Namet;                     use Namet;
+with Nlists;                    use Nlists;
+with Sem_Util;                  use Sem_Util;
+with Snames;                    use Snames;
+with Sprint;                    use Sprint;
+with String_Utils;              use String_Utils;
+with Sinfo;                     use Sinfo;
+with Sinput;                    use Sinput;
+with Lib;                       use Lib;
 
-with Output;                use Output;
-with Treepr;                use Treepr;
+with Output;                    use Output;
+with Treepr;                    use Treepr;
 
 with Why;
-with SPARK_Definition;      use SPARK_Definition;
+with SPARK_Definition;          use SPARK_Definition;
 with SPARK_Util;
 
 with Gnat2Why_Args;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -52,7 +53,7 @@ with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 
-with Flow.Utility;         use Flow.Utility;
+with Flow.Utility;              use Flow.Utility;
 
 use type Ada.Containers.Count_Type;
 
@@ -942,31 +943,31 @@ package body Flow is
          Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
          return Boolean
       is
-         Outer  : Entity_Id := E;
       begin
          --  If we have an empty files list we analyze everything
          if Analyze_Files.Is_Empty then
             return True;
          end if;
 
-         --  Starting from an entity E, we find the enclosing compilation
-         --  unit (Outer).
-         while Present (Outer) loop
-            exit when Is_Child_Unit (Outer)
-              or else Scope (Outer) = Standard_Standard;
-            Outer := Scope (Outer);
-         end loop;
-
-         --  We check if the enclosing compilation unit's Chars field
-         --  extended with ".adb" is within the list of files.
+         --  We strip everything from paths and extensions and then we
+         --  check if we have a match.
          declare
-            F_Name : constant String :=
-              Get_Name_String (Chars (Outer)) & ".adb";
+            Basename        : constant String :=
+              Get_Name_String (Reference_Name
+                                 (Get_Source_File_Index (Sloc (E))));
+            Basename_No_Ext : constant String :=
+              Basename (Basename'First .. Basename'Last - 4);
          begin
             for A_File of Analyze_Files loop
-               if A_File = F_Name then
-                  return True;
-               end if;
+               declare
+                  Filename        : constant String := File_Name (A_File);
+                  Filename_No_Ext : constant String :=
+                    Filename (Filename'First .. Filename'Last - 4);
+               begin
+                  if Filename_No_Ext = Basename_No_Ext then
+                     return True;
+                  end if;
+               end;
             end loop;
             return False;
          end;
