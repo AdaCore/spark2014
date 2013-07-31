@@ -5,7 +5,7 @@ Getting Started
 ***************
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
-completely in |SPARK|.  In the examples that follow demonstrate the use of the
+completely in |SPARK|.  The examples that follow demonstrate the use of the
 |SPARK| toolset within the GPS integrated development environment. All the tools
 may also be run from the command-line, see :ref:`command line`.
 
@@ -24,11 +24,11 @@ statements and raise statements. These restrictions correspond to existing
 coding standard rules for critical software, and do not prevent the natural
 expression of data-structures and algorithms used in critical software.
 
-As a running example, we consider the naive searching algorithm in an unordered
+As a running example, we consider a naive searching algorithm for an unordered
 collection of elements. The algorithm returns whether the collection contains
 the desired value, and if so, at which index. The collection is implemented
-here as an array. We start on purpose with an incorrect program for package
-``Search``, in order to explain how the |SPARK| toolset can help correcting
+here as an array. We deliberately start with an incorrect program for package
+``Search``, in order to explain how the |SPARK| toolset can help correct
 these errors.
 
 We start with creating a GNAT project file in ``search.gpr``:
@@ -46,7 +46,7 @@ We start with creating a GNAT project file in ``search.gpr``:
 It specifies that the source code to inspect is in the current directory, and
 that the code should be compiled at maximum warning level (switch
 ``-gnatwa``). GNAT projects are used by most tools in the |GNAT Pro| toolsuite;
-for an in-depth documentation of this technology, you may consult |GNAT Pro|
+for in-depth documentation of this technology, consult the |GNAT Pro|
 User's Guide.
 
 The obvious specification of ``Search`` is given in file ``search.ads``:
@@ -70,8 +70,8 @@ The obvious specification of ``Search`` is given in file ``search.ads``:
    end Search;
 
 The implementation of ``Search`` given in file ``search.adb`` is as obvious as
-its specification, using a loop to go through the array ``A`` given in
-parameter and looking for the first index at which ``Val`` is found, if there
+its specification, using a loop to go through the array parameter ``A``
+and looking for the first index at which ``Val`` is found, if there
 is such an index:
 
 .. code-block:: ada
@@ -99,15 +99,15 @@ is such an index:
 
    end Search;
 
-We can check that the above code is valid Ada code by using the ``Build::Check
+We can check that the above code is valid Ada by using the ``Build::Check
 Semantic`` menu, which completes without any errors or warnings:
 
 .. image:: static/search_check_semantic.png
 
-To state that this code should be valid |SPARK| code, we can add the
+To state that this code should be valid |SPARK|, we can add the
 ``SPARK_Mode`` pragma in the sources as a local pragma, or in a configuration
 file as a configuration pragma. We consider here the former case, where the
-following line is added on the first line of ``search.ads``:
+following is added as the first line of ``search.ads``:
 
 .. code-block:: ada
 
@@ -124,14 +124,14 @@ an ``out`` parameter:
 
 .. image:: static/search_not_spark.png
 
-This recent permission in Ada to have ``out`` parameters in functions is not
+This recent permission in Ada to have ``out`` parameters to functions is not
 allowed in |SPARK|, because it causes calls to have side-effects (assigning to
 their ``out`` parameters), which means that various calls in the same
 expression may be conflicting, yielding different results depending on the
 order of evaluation of the expression.
 
 We correct this problem by defining a record type ``Search_Result`` holding
-both the boolean result and the index for cases when the value is found, and
+both the Boolean result and the index for cases when the value is found, and
 making ``Linear_Search`` return this type:
 
 .. code-block:: ada
@@ -210,9 +210,9 @@ desired value in the array:
                 A (Linear_Search'Result.At_Index) = Val);
 
 Notice the use of an if-expression in the postcondition to express an
-implication: the search succeeds implies that the value at the returned index
-is the searched one. Note also the use of ``Linear_Search'Result`` to denote
-the value returned by the function.
+implication: if the search succeeds it implies that the value at the returned index
+is the value that was being searched for. Note also the use of ``Linear_Search'Result``
+to denote the value returned by the function.
 
 This contract is still not very strong. Many faulty implementations of the
 search would pass this contract, for example one that always fails (thus
@@ -255,16 +255,16 @@ to express that a value ``Val`` is found in an array ``A`` within given bounds
           not Linear_Search'Result.Found);
 
 Note that we express ``Value_Found_In_Range`` as an expression function, a
-function whose body consists in a single expression, which can be given in a
+function whose body consists of a single expression, which can be given in a
 specification file.
 
 Note also the use of quantified expressions to express properties over
 collections: ``for some`` in ``Value_Found_In_Range`` expresses an existential
 property (there exists an index in this range such that ...), ``for all`` in
 the third contract case expresses a universal property (all indexes in this
-range satisfy are such that ...).
+range are such that ...).
 
-Each contract case consists in a guard (on the left of the arrow symbol)
+Each contract case consists of a guard (on the left of the arrow symbol)
 evaluated on subprogram entry, and a consequence (on the right of the arrow
 symbol) evaluated on subprogram exit. The special expression
 ``Linear_Search'Result`` may be used in consequence expressions. The three
@@ -279,8 +279,8 @@ Testing |SPARK| Programs
 ========================
 
 We can compile the above program, and test it on a set of selected inputs. The
-following testing program exercizes both the case where the searched value is
-present or not in the array:
+following test program exercises the case where the searched value is present in
+the array and the case where it is not:
 
 .. code-block:: ada
 
@@ -397,8 +397,8 @@ that achieves 100% coverage for all the common coverage criteria, once
 impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
-Verifying Formally |SPARK| Programs
-===================================
+Formal Verification of |SPARK| Programs
+=======================================
 
 Formal verification of |SPARK| programs is a two-step process:
 
@@ -407,26 +407,25 @@ Formal verification of |SPARK| programs is a two-step process:
 #. the second step checks that the program correctly implement its specified
    contracts (if any), and that no run-time error can be raised.
 
-Step 1 is implemented as a static analysis pass in the tool |GNATprove|, under
-the ``flow`` mode. This mode is still experimental, so many |SPARK| features
+Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
+``flow`` mode. This mode is still experimental, so many |SPARK| features
 are not yet supported. Step 2 is implemented as a deductive verification pass
-in the tool |GNATprove|, under the default ``prove`` mode. This mode is well
+in the tool |GNATprove|, in the default ``prove`` mode. This mode is well
 developed, but a few |SPARK| features are still not yet supported.
 
 The difference between these two steps should be emphasized. Static analysis in
-step 1 is a terminating algorithm, which typically takes 2 to 10 times the
-compilation time to complete. Deductive verification in step 2 is based on the
+step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
+as compilation to complete. Deductive verification in step 2 is based on the
 generation of logical formulas for each check to prove, which are then passed
 on to an automatic prover to decide whether the logical formula holds or
 not. The generation of logical formulas is a translation phase, which typically
-takes 10 times the compilation time to complete. The automatic proof of logical
-formulas may take very long, or never terminate, hence the use of a timeout
+takes 10 times as long as compilation to complete. The automatic proof of logical
+formulas may take a very long time, or never terminate, hence the use of a timeout
 (default=1s) for each call to the automatic prover. It is this last step which
 takes the most time when calling |GNATprove| on a program, but it is also a
 step which can be completely parallelized (using switch ``-j`` to specify the
 number of parallel processes): each logical formula can be proved
-independently, so the more the number of available cores, the faster it
-completes.
+independently, so the more cores are available the faster it completes.
 
 .. note::
 
@@ -435,7 +434,7 @@ completes.
    more or less time to complete a proof depending on the platform and machine
    used.
 
-We start with the flow analysis of ``Search``, using the yet experimental mode
+We start with the flow analysis of ``Search``, using the still experimental mode
 ``flow`` of |GNATprove| reached through the ``Prove::Prove File`` menu:
 
 .. image:: static/search_flow.png
@@ -461,8 +460,8 @@ message, or on line 21 in file ``search.adb``, to show the path on which
    ``Prove::Show Path`` displayed when right-clicking in the code panel
    should not be used.
 
-This shows that, when the value is not found, indeed the component ``At_Index``
-of the value returned is not initialized. Although that's allowed in Ada,
+This shows that, when the value is not found, the component ``At_Index``
+of the value returned is indeed not initialized. Although that is allowed in Ada,
 |SPARK| requires that all inputs and outputs of subprograms are completely
 initialized (and the value returned by a function is such an output). Although
 we could give a dummy value to component ``At_Index`` when the search fails, we
@@ -529,7 +528,7 @@ invariant is a special pragma ``Loop_Invariant`` stating an assertion in a
 loop, which can be both executed at run-time like a regular pragma ``Assert``,
 and used by |GNATprove| to summarize the effect of successive iterations of the
 loop. We need to add a loop invariant stating enough properties about the
-cumulated effect of loop iterations, so that the contract cases of
+cumulative effect of loop iterations, so that the contract cases of
 ``Linear_Search`` become provable. Here, it should state that the value
 searched was not previously found:
 
@@ -546,7 +545,7 @@ unproved:
 
 .. image:: static/search_loopinv.png
 
-The new unproved check may seem odd, since all we did was adding information in
+The new unproved check may seem odd, since all we did was add information in
 the form of a loop invariant. The reason is that we also removed information at
 the same time. By adding a loop invariant, we require |GNATprove| to prove
 iterations around the (virtual) loop formed by the following steps:
@@ -560,7 +559,7 @@ iterations around the (virtual) loop formed by the following steps:
 
 Around this virtual loop, nothing guarantees that the index ``Pos`` is not the
 maximal index at step 2 (the increment), so the range check cannot be
-proved. It was previously proved because, in absence of a loop invariant,
+proved. It was previously proved because, in the absence of a loop invariant,
 |GNATprove| proves iterations around the source loop, and then we get the
 information that, since the loop did not exit, its test ``Pos < A'Last`` is
 false, so the range check can be proved.
@@ -573,7 +572,7 @@ simplest solution, but we use it here for the dynamics of this tutorial.)
 
       Pos : Index'Base := A'First;
 
-And we add the range information for ``Pos`` in the loop invariant:
+And we add the range information for ``Pos`` to the loop invariant:
 
 .. code-block:: ada
 
@@ -582,7 +581,7 @@ And we add the range information for ``Pos`` in the loop invariant:
               and then
             not Value_Found_In_Range (A, Val, A'First, Pos));
 
-This allows to prove the range check on line 21, but the loop invariant
+This allows |GNATprove| to prove the range check on line 21, but the loop invariant
 preservation becomes unproved:
 
 .. image:: static/search_loopinv_not_proved.png
@@ -599,7 +598,7 @@ of the loop invariant is goal 2.
 
 As we have modified the code and annotations, it is a good time to compile and
 run our test program, before doing any more formal verification work. This
-helps catching bugs early, and it's easy to do! In particular, the loop
+helps catch bugs early, and it's easy to do! In particular, the loop
 invariant will be dynamically checked at each iteration through the loop.
 Here, testing does not show any problems:
 
@@ -611,7 +610,7 @@ Here, testing does not show any problems:
    > OK: Did not find non-existing value
 
 The next easy thing to do is to increase the timeout of the automatic
-prover. Its default of 1s is voluntarily low, to facilitate interaction with
+prover. Its default of 1s is deliberately low, to facilitate interaction with
 |GNATprove| during the development of annotations, but it is not sufficient to
 prove the more complex checks. Let's increase it to 10s, and rerun |GNATprove|:
 
@@ -626,7 +625,7 @@ line 35:
 .. image:: static/search_prove_line.png
 
 This runs |GNATprove| only on the checks that originate from line 35, in a
-special mode which considers separately individual execution path if
+special mode which considers separately individual execution paths if
 needed. The check is still not proved, but GPS now displays an icon, either on
 the left of the message, or on line 35 in file ``search.ads``, to show the path
 on which the contract case is not proved:
@@ -660,7 +659,7 @@ was proved this time:
 
 .. image:: static/search_case_proved.png
 
-Like usual after code changes, we rerun the test program, which shows no
+As usual after code changes, we rerun the test program, which shows no
 errors. Rerunning |GNATprove| on the complete file shows no more unproved
 checks. The ``Search`` unit has been fully proved. To see all the checks that
 were proved, we can rerun the tool with box ``Report Proved VCs`` checked,
