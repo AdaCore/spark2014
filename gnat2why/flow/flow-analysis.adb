@@ -98,7 +98,7 @@ package body Flow.Analysis is
    function Get_Line (G   : Flow_Graphs.T'Class;
                       V   : Flow_Graphs.Vertex_Id;
                       Sep : Character := ':')
-                     return String;
+                      return String;
    --  Obtain the location for the given vertex as in "foo.adb:12".
 
    procedure Write_Vertex_Set
@@ -780,6 +780,82 @@ package body Flow.Analysis is
       end if;
 
    end Sanity_Check;
+
+   ----------------------------
+   -- Find_Unwritten_Exports --
+   ----------------------------
+
+   procedure Find_Unwritten_Exports
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean)
+   is
+      pragma Unreferenced (Found_Error);
+
+      F_Final   : Flow_Id;
+      A_Final   : V_Attributes;
+      F_Initial : Flow_Id;
+      A_Initial : V_Attributes;
+      Unwritten : Boolean;
+
+      Written_Entire_Vars : Flow_Id_Sets.Set;
+      Unwritten_Vars      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+   begin
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         F_Final := FA.PDG.Get_Key (V);
+         A_Final := FA.PDG.Get_Attributes (V);
+         if F_Final.Variant = Final_Value and then
+           A_Final.Is_Export
+         then
+
+            --  We have a final use vertex which is an export that has
+            --  a single in-link. If this in-link is its initial value
+            --  then clearly we do not set defined this output on any
+            --  path.
+
+            Unwritten := False;
+            if FA.PDG.In_Neighbour_Count (V) = 1 then
+               F_Initial := FA.PDG.Get_Key (FA.PDG.Parent (V));
+               A_Initial := FA.PDG.Get_Attributes (FA.PDG.Parent (V));
+               if F_Initial.Variant = Initial_Value and then
+                 A_Initial.Is_Import and then
+                 Change_Variant (F_Initial, Final_Value) = F_Final
+               then
+                  Unwritten := True;
+               end if;
+            end if;
+
+            if Unwritten then
+               Unwritten_Vars.Include (V);
+            else
+               Written_Entire_Vars.Include (Entire_Variable (F_Final));
+            end if;
+         end if;
+      end loop;
+
+      for V of Unwritten_Vars loop
+         F_Final := FA.PDG.Get_Key (V);
+         A_Final := FA.PDG.Get_Attributes (V);
+
+         if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
+            if A_Final.Is_Global then
+               Error_Msg_Flow (Msg     => "& is not modified, could be INPUT",
+                               N       => Find_Global (FA.Analyzed_Entity,
+                                                       F_Final),
+                               F1      => F_Final,
+                               Tag     => "inout_only_read",
+                               Warning => True);
+            else
+               Error_Msg_Flow (Msg     => "& is not modified, could be IN",
+                               N       => Error_Location (FA.PDG, V),
+                               F1      => F_Final,
+                               Tag     => "inout_only_read",
+                               Warning => True);
+            end if;
+            Found_Warning := True;
+         end if;
+      end loop;
+   end Find_Unwritten_Exports;
 
    ------------------------------
    -- Find_Ineffective_Imports --

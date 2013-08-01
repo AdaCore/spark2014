@@ -1046,6 +1046,9 @@ package body Flow is
          if Success then
             case FA.Kind is
                when E_Subprogram_Body =>
+                  Analysis.Find_Unwritten_Exports (FA,
+                                                   Found_Error,
+                                                   Found_Warning);
                   Analysis.Find_Ineffective_Imports (FA,
                                                      Found_Error,
                                                      Found_Warning);

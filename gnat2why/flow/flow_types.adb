@@ -342,10 +342,16 @@ package body Flow_Types is
    function Entire_Variable (F : Flow_Id) return Flow_Id
    is
    begin
-      return R : Flow_Id := F do
-         R.Kind := Direct_Mapping;
-         R.Component.Clear;
-      end return;
+      case F.Kind is
+         when Null_Value | Direct_Mapping | Magic_String =>
+            return F;
+
+         when Record_Field =>
+            return R : Flow_Id := F do
+               R.Kind := Direct_Mapping;
+               R.Component.Clear;
+            end return;
+      end case;
    end Entire_Variable;
 
    --------------------
@@ -474,12 +480,7 @@ package body Flow_Types is
       R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for X of S loop
-         case X.Kind is
-            when Null_Value | Direct_Mapping | Magic_String =>
-               R.Include (X);
-            when Record_Field =>
-               R.Include (Entire_Variable (X));
-         end case;
+         R.Include (Entire_Variable (X));
       end loop;
       return R;
    end To_Entire_Variables;

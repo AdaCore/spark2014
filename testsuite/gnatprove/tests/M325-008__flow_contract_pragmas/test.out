@@ -1,3 +1,4 @@
+test.adb:30:30: warning: "X" is not modified, could be "in" [inout_only_read]
 test.adb:43:23: "V" might not be initialized [uninitialized]
 test.adb:46:27: "X" might not be initialized in "T_Out_Param" [uninitialized]
 test.adb:47:18: "X" might not be initialized [uninitialized]

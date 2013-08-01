@@ -43,6 +43,14 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Find_Unwritten_Exports
+     (FA            : Flow_Analysis_Graphs;
+      Found_Error   : in out Boolean;
+      Found_Warning : in out Boolean);
+   --  Find outputs which are never written to.
+   --
+   --  Complexity is O(N)
+
    procedure Find_Ineffective_Imports
      (FA            : Flow_Analysis_Graphs;
       Found_Error   : in out Boolean;
@@ -52,7 +60,7 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Find_Illegal_Updates
-     (FA          : Flow_Analysis_Graphs;
+     (FA            : Flow_Analysis_Graphs;
       Found_Error   : in out Boolean;
       Found_Warning : in out Boolean);
    --  Find all cases where we update an in parameter or global.
@@ -70,7 +78,7 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Find_Use_Of_Uninitialised_Variables
-     (FA          : Flow_Analysis_Graphs;
+     (FA            : Flow_Analysis_Graphs;
       Found_Error   : in out Boolean;
       Found_Warning : in out Boolean);
    --  Find all instances where uninitialised variables are used. Two
