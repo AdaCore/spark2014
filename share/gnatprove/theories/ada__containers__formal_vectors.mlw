@@ -19,6 +19,25 @@ module Ada__containers__formal_vectors__index_type_helper
 
 end
 
+module Ada__containers__formal_vectors__capacity_range
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+  use import Ada__containers__formal_vectors__index_type_helper
+
+ type capacity_range
+ 
+ function attr__ATTRIBUTE_FIRST  : int = 0
+ 
+ function attr__ATTRIBUTE_LAST  : int = index_type_length
+ 
+ function attr__ATTRIBUTE_MODULUS :int
+ 
+ clone export "ada__model".Discrete with
+ type t = capacity_range, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
 module  Ada__containers__formal_vectors__extended_index
  use import "int".Int
  use import "_gnatprove_standard".Main
@@ -720,9 +739,13 @@ module Ada__containers__formal_vectors__right
     forall co:vector, i:int [right_ co i].
       0 < i <= length_ co + 1 -> length_ (right_ co i) = length_ co - i + 1
 
-  axiom right_elt:
-    forall co:vector, i j:int [right_ co i, element_ co j|element_ (right_ co i) j].
-      0 < i <= length_ co + 1 ->  i <= j <= length_ co -> element_ co j = element_ (right_ co i) j
+  axiom right_elt1:
+    forall co:vector, i j:int [right_ co i, element_ co j].
+      0 < i <= length_ co + 1 ->  i <= j <= length_ co -> element_ co j = element_ (right_ co i) (j - i + 1)
+
+  axiom right_elt2:
+    forall co:vector, i j:int [element_ (right_ co i) j].
+      0 < i <= length_ co + 1 ->  0 < j <= length_ co - i + 1 -> element_ co (j + i - 1) = element_ (right_ co i) j
 
   function right (co:vector) (cu : cursor) : vector = 
      let i = if cu = no_element then length_ co + 1 else to_index_ co cu in
