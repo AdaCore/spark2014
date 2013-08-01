@@ -773,8 +773,10 @@ package body Flow is
                Loops            => Node_Sets.Empty_Set,
                Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
                Aliasing_Present => False,
+               Base_Filename    => To_Unbounded_String ("subprogram_"),
                Is_Main          => Might_Be_Main (E),
-               Base_Filename    => To_Unbounded_String ("subprogram_"));
+               Is_Generative    => not Present (Get_Pragma (E,
+                                                            Pragma_Global)));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'

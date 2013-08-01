@@ -42,8 +42,7 @@ is
       null;
    end Test_03_C;
 
-   --  OK, with the exception of the flow error on the computed global
-   --  Z (its treated as an in-out)
+   --  OK
    procedure Test_04
    is
    begin

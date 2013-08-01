@@ -1,0 +1,1 @@
+test.adb:17:48: warning: unused initial value of "G" [unused_initial_value]

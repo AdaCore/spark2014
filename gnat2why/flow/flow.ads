@@ -134,10 +134,13 @@ package Flow is
 
       case Kind is
          when E_Subprogram_Body =>
-            Is_Main          : Boolean;
+            Is_Main : Boolean;
             --  True if this is the main program. In order to be the
             --  main it has to be a library level subprogram without
             --  formal parameters (global parameters are allowed).
+
+            Is_Generative : Boolean;
+            --  True if we do not have a global contract.
 
          when E_Package =>
             null;

@@ -936,14 +936,17 @@ package body Flow.Analysis is
                   --  Discriminants are never ineffective imports.
                   null;
                elsif A.Is_Global then
-                  --  !!! don't say this in generative mode
-                  Found_Warning := True;
-                  Error_Msg_Flow
-                    (Msg     => "unused initial value of &",
-                     N       => Find_Global (FA.Analyzed_Entity, F),
-                     F1      => F,
-                     Tag     => "unused_initial_value",
-                     Warning => True);
+                  if FA.Kind = E_Subprogram_Body and then
+                    not FA.Is_Generative
+                  then
+                     Found_Warning := True;
+                     Error_Msg_Flow
+                       (Msg     => "unused initial value of &",
+                        N       => Find_Global (FA.Analyzed_Entity, F),
+                        F1      => F,
+                        Tag     => "unused_initial_value",
+                        Warning => True);
+                  end if;
                else
                   Found_Warning := True;
                   Error_Msg_Flow
