@@ -53,4 +53,13 @@ is
       end loop;
    end Test_05;
 
+   procedure Test_06 (X : out Integer)
+   is
+   begin
+      for I in Integer range 1 .. 10 loop
+         X := 0;
+         pragma Assert (X'Loop_Entry = 0);  --  uninitialized
+      end loop;
+   end Test_06;
+
 end Test;
