@@ -1,10 +1,14 @@
 test.adb:20:12: called subprogram "Initialise" requires "global" aspect to make state visible
 test.adb:24:14: warning: unused global "Z" [unused]
+test.adb:24:14: warning: unused initial value of "Z" [unused_initial_value]
 test.adb:25:11: warning: missing dependency "null => Z" [depends_null]
 test.adb:28:12: called subprogram "Initialise" requires "global" aspect to make state visible
 test.adb:31:14: warning: unused global "Z" [unused]
+test.adb:31:14: warning: unused initial value of "Z" [unused_initial_value]
 test.adb:32:11: warning: missing dependency "null => Z" [depends_null]
 test.adb:38:14: warning: unused global "Z" [unused]
+test.adb:38:14: warning: unused initial value of "Z" [unused_initial_value]
+test.adb:53:14: warning: unused initial value of "Z" [unused_initial_value]
 test.adb:54:11: warning: missing dependency "null => Z" [depends_null]
 test.adb:57:17: called subprogram "Get_X" requires "global" aspect to make state visible
 test.adb:65:12: called subprogram "Initialise" requires "global" aspect to make state visible

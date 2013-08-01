@@ -775,8 +775,10 @@ package body Flow is
                Aliasing_Present => False,
                Base_Filename    => To_Unbounded_String ("subprogram_"),
                Is_Main          => Might_Be_Main (E),
-               Is_Generative    => not Present (Get_Pragma (E,
-                                                            Pragma_Global)));
+               Is_Generative    => not (Present
+                                          (Get_Pragma (E, Pragma_Global)) or
+                                        Present
+                                          (Get_Pragma (E, Pragma_Depends))));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
