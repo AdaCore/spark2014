@@ -1,8 +1,8 @@
-.. _getting started:
+.. _writing and verifying spark programs:
 
-***************
-Getting Started
-***************
+**************************************
+Writing and Verifying |SPARK| Programs
+**************************************
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
 completely in |SPARK|.  The examples that follow demonstrate the use of the
@@ -11,18 +11,6 @@ may also be run from the command-line, see :ref:`command line`.
 
 Writing |SPARK| Programs
 ========================
-
-A |SPARK| program is a valid Ada program, which can be compiled by the |GNAT
-Pro| compiler, edited in the GPS or GNATbench editors, and
-debugged/analyzed/modified with the associated |GNAT Pro| toolset.
-
-All kinds of data types defined in Ada can be defined in |SPARK|, except access
-types. The main restriction on expressions in |SPARK| is that they should not
-contain calls to functions which modify the value of non-local variables. Most
-statements in Ada are allowed in |SPARK|, at the notable exception of goto
-statements and raise statements. These restrictions correspond to existing
-coding standard rules for critical software, and do not prevent the natural
-expression of data-structures and algorithms used in critical software.
 
 As a running example, we consider a naive searching algorithm for an unordered
 collection of elements. The algorithm returns whether the collection contains

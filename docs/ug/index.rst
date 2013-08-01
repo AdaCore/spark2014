@@ -19,9 +19,10 @@ SPARK 2014 Toolset User's Guide
 .. toctree::
    :maxdepth: 3
 
+   getting_started
    introduction
    language_subset
-   getting_started
+   writing
    usage
    goals
    gnattest

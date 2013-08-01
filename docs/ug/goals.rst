@@ -1,8 +1,8 @@
-.. _usage scenarios for formal verification:
+.. _usage scenarios for spark:
 
-***************************************
-Usage Scenarios for Formal Verification
-***************************************
+***************************
+Usage Scenarios for |SPARK|
+***************************
 
 ..  Note that, in many cases, ad-hoc data structures based on pointers can be
     replaced by the use of standard Ada containers (vectors, lists, sets, maps,

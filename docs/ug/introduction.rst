@@ -36,14 +36,16 @@ testing.
 
 The remainder of this document is structured as follows:
 
-* Chapter :ref:`introduction to spark` provides an overview of the |SPARK|
+* :ref:`getting started` provides a very simple guide to getting the
+  |SPARK| tools up and running.
+* :ref:`introduction to spark` provides an overview of the |SPARK|
   language.
-* Chapter :ref:`getting started` shows how to get started with the language and
-  toolset by means of a simple example program.
-* Chapter :ref:`formal verification with gnatprove` describes the use of the
+* :ref:`writing and verifying spark programs` gives an introduction
+  to writing, testing and proving |SPARK| programs.
+* :ref:`formal verification with gnatprove` describes the use of the
   |GNATprove| formal verification tool.
-* Chapter :ref:`usage scenarios for formal verification` lists the main usage
-  scenarios for formal verification.
-* Chapter :ref:`proof and test` explains how to combine the results of formal
+* :ref:`usage scenarios for spark` lists the main usage
+  scenarios for |SPARK|.
+* :ref:`proof and test` explains how to combine the results of formal
   verification and classical verification by testing.
 
