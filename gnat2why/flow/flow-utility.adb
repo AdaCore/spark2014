@@ -295,7 +295,9 @@ package body Flow.Utility is
                              Parameter_Associations (Callsite));
 
          for G of Global_Reads loop
-            Used_Variables.Include (Change_Variant (G, Normal_Use));
+            for F of Flatten_Variable (G) loop
+               Used_Variables.Include (Change_Variant (F, Normal_Use));
+            end loop;
          end loop;
       end Process_Function_Call;
 

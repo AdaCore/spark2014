@@ -252,9 +252,11 @@ package body Flow is
       then
          Has_Global_Aspect := True;
          Global_Node       := Get_Pragma (Body_E, Pragma_Refined_Global);
+
       elsif Present (Get_Pragma (Subprogram, Pragma_Global)) then
          Has_Global_Aspect := True;
          Global_Node       := Get_Pragma (Subprogram, Pragma_Global);
+
       else
          Has_Global_Aspect := False;
       end if;
