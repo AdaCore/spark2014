@@ -2242,29 +2242,33 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       case Get_Pragma_Id (N) is
-         when Pragma_Abstract_State  |
-              Pragma_Ada_05          |
-              Pragma_Ada_2012        |
-              Pragma_Annotate        |
-              Pragma_Convention      |
-              Pragma_Contract_Cases  |
-              Pragma_Depends         |
-              Pragma_Elaborate_Body  |
-              Pragma_Export          |
-              Pragma_Global          |
-              Pragma_Import          |
-              Pragma_Initializes     |
-              Pragma_Inline_Always   |
-              Pragma_Postcondition   |
-              Pragma_Precondition    |
-              Pragma_Preelaborate    |
-              Pragma_Pure            |
-              Pragma_Pure_Function   |
-              Pragma_Refined_Depends |
-              Pragma_Refined_Global  |
-              Pragma_Refined_State   |
-              Pragma_SPARK_Mode      |
-              Pragma_Test_Case       |
+         when Pragma_Abstract_State               |
+              Pragma_Ada_05                       |
+              Pragma_Ada_2012                     |
+              Pragma_Annotate                     |
+              Pragma_Contract_Cases               |
+              Pragma_Convention                   |
+              Pragma_Depends                      |
+              Pragma_Elaborate_Body               |
+              Pragma_Export                       |
+              Pragma_Global                       |
+              Pragma_Import                       |
+              Pragma_Initializes                  |
+              Pragma_Inline                       |
+              Pragma_Inline_Always                |
+              Pragma_Overflow_Mode                |
+              Pragma_Pack                         |
+              Pragma_Postcondition                |
+              Pragma_Precondition                 |
+              Pragma_Preelaborate                 |
+              Pragma_Preelaborable_Initialization |
+              Pragma_Pure                         |
+              Pragma_Pure_Function                |
+              Pragma_Refined_Depends              |
+              Pragma_Refined_Global               |
+              Pragma_Refined_State                |
+              Pragma_SPARK_Mode                   |
+              Pragma_Test_Case                    |
               Pragma_Warnings        =>
 
             return False;

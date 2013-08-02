@@ -249,6 +249,10 @@ package body Flow_Tree_Utility is
          when N_Subprogram_Declaration | N_Subprogram_Body_Stub =>
             return Corresponding_Body (P);
 
+         when N_Formal_Concrete_Subprogram_Declaration =>
+            --  We should only get here from Magic_String_To_Node_Sets
+            return Empty;
+
          when others =>
             raise Why.Unexpected_Node;
       end case;
