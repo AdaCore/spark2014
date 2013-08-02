@@ -180,7 +180,7 @@ package body Flow.Utility is
                             return Node_Lists.List
    is
       C          : constant Node_Id := Contract (E);
-      P          : Node_Id;
+      P, Expr    : Node_Id;
       Contracts  : Node_Lists.List := Node_Lists.Empty_List;
       Other_Name : Name_Id;
    begin
@@ -210,33 +210,21 @@ package body Flow.Utility is
          when Name_Contract_Cases =>
             Other_Name := Name_Contract_Cases;
 
-            declare
-               Expr      : Node_Id;
-               C_Case    : Node_Id;
-               Condition : Node_Id;
-            begin
-               P := Contract_Test_Cases (C);
-               while Present (P) loop
-                  if Chars (Pragma_Identifier (P)) in Name | Other_Name then
-                     Expr := Expression (First
-                                           (Pragma_Argument_Associations (P)));
-                     C_Case := First (Component_Associations (Expr));
+            P := Contract_Test_Cases (C);
+            while Present (P) loop
+               if Chars (Pragma_Identifier (P)) in Name | Other_Name then
+                  Expr := Expression (First
+                                        (Pragma_Argument_Associations (P)));
 
-                     while Present (C_Case) loop
-                        Condition := First (Choices (C_Case));
-                        if Nkind (Condition) /= N_Others_Choice then
-                           Contracts.Append (Condition);
-                        end if;
+                  Contracts.Append (Expr);
 
-                        C_Case := Next (C_Case);
-                     end loop;
-                  end if;
+                  return Contracts;
+               end if;
 
-                  P := Next_Pragma (P);
-               end loop;
+               P := Next_Pragma (P);
+            end loop;
 
-               return Contracts;
-            end;
+            return Contracts;
 
          when others =>
             raise Program_Error;
@@ -706,12 +694,27 @@ package body Flow.Utility is
    is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Name_Precondition);
-      In_Contract_Cases        : constant Node_Lists.List :=
+      Contract_Case            : constant Node_Lists.List :=
         Find_Contracts (E, Name_Contract_Cases);
    begin
-      for Elem of In_Contract_Cases loop
-         Precondition_Expressions.Append (Elem);
-      end loop;
+      --  If a Contract_Cases aspect was found then we pull out every
+      --  condition apart from the others.
+      if not Contract_Case.Is_Empty then
+         declare
+            C_Case    : Node_Id :=
+              First (Component_Associations (Contract_Case.First_Element));
+            Condition : Node_Id;
+         begin
+            while Present (C_Case) loop
+               Condition := First (Choices (C_Case));
+               if Nkind (Condition) /= N_Others_Choice then
+                  Precondition_Expressions.Append (Condition);
+               end if;
+
+               C_Case := Next (C_Case);
+            end loop;
+         end;
+      end if;
 
       return Precondition_Expressions;
 
