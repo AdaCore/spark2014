@@ -88,13 +88,14 @@ module  Ada__containers__formal_vectors__vector
   use import int.Int
  use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__index_type_helper
+  use Ada__containers__formal_vectors__capacity_range
 
   type vector
 
-  function rec__capacity vector : Ada__containers__count_type.count_type
+  function rec__capacity vector : Ada__containers__formal_vectors__capacity_range.capacity_range
 
   function capacity "inline" (co : vector) : int =
-          Ada__containers__count_type.to_int (rec__capacity co)
+          Ada__containers__formal_vectors__capacity_range.to_int (rec__capacity co)
 
 (****** Should be enforced by typing, to do: modify ads file accordingly *******)
   axiom capacity_range:
@@ -1351,10 +1352,14 @@ module Ada__containers__formal_vectors__capacity
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
 
-  function capacity (co : vector) : Ada__containers__count_type.count_type = rec__capacity co
+  function capacity vector : Ada__containers__count_type.count_type
+
+  axiom capacity__def:
+     forall co : vector [capacity (co) | Ada__containers__formal_vectors__vector.capacity co].
+     Ada__containers__count_type.to_int (capacity (co)) = Ada__containers__formal_vectors__vector.capacity co
 
   val capacity (co : vector) : Ada__containers__count_type.count_type
-    ensures { result = rec__capacity co }
+    ensures { Ada__containers__count_type.to_int (result) = Ada__containers__formal_vectors__vector.capacity co }
 end
 
 module Ada__containers__formal_vectors__reserve_capacity
