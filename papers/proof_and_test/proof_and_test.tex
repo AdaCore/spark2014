@@ -1,0 +1,142 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{hyperref}
+
+\newcommand{\DO}{\textsc{do-178}\xspace}
+\newcommand{\DOB}{\textsc{do-178b}\xspace}
+\newcommand{\DOC}{\textsc{do-178c}\xspace}
+\newcommand{\hilite}{Hi-Lite\xspace}
+\newcommand{\gnatprove}{GNATprove\xspace}
+\newcommand{\oldspark}{SPARK~2005\xspace}
+\newcommand{\newspark}{SPARK~2014\xspace}
+\newcommand{\spark}{SPARK\xspace}
+\newcommand{\ada}{Ada\xspace}
+\newcommand{\adatwtw}{Ada~2012\xspace}
+
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\adhoc}{\textit{ad hoc}\xspace}
+\newcommand{\Eg}{\textit{E.g.,}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
+
+\begin{document}
+
+\title{Practical approaches to the combination of proof and testing with \newspark}
+
+\author{%
+\large Pavlos Efstathopoulos\\
+\normalsize ALTRAN, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom)}
+
+\date{}
+
+\maketitle
+
+\paragraph{Abstract}
+This paper identifies a number of scenarios where software may
+be proven, tested or a combination of both is utilised to verify the
+software. For each scenario, the most effective method of verification
+is identified and demonstrated using the \newspark toolset and/or
+VectorCast.
+
+\paragraph{Keywords}
+System formal development, Verification and validation,
+Certification and dependability
+
+\section{Introduction}
+Outline the context and describe why we believe the combination of proof
+and test can be better than using exclusively one or the other. Refer to Yannick's
+"Testing or Formal Verification: DO-178C Alternatives and Industrial Experience"
+
+The ideal scenario, in a user's perspective, would be for the entirety of the code
+to be fully proven. This would provide the utmost confidence in the code's validity
+and would eliminate all costs associated with testing. Unfortunately, a plethora of
+reasons usually render this impossible.
+
+The cost associated with formal proof, both in the sense of effort and money spent,
+increases as code gets more complicated. Test is easier, cheaper and can be performed
+by non-experts.
+
+Define a method for identifying scenarios, describe all of the scenarios,
+and justify their completeness.
+
+
+\section{Scenario identification}
+Given a certain piece a code, a user might:
+
+\begin {itemize}
+  \item decide that proof is too difficult to achieve (for example, due
+    to the code having complicated constructs like multiple nested
+    loops) and resort to testing right from the beginning. No proof
+    is involved in this scenario. [Quicksort is a good example]
+
+  \item try to fully prove the code and keep strengthening preconditions
+    and adding assertions until full proof is achieved. No testing is
+    involved in this scenario. [Any program really...]
+
+  \item make a first unsuccessful attempt to prove the code and afterwards
+    utilize testing to identify potential issues with the contracts or
+    the implementation. The tests might provide hints as to how the user
+    can alter the code to render it provable. In this scenario, testing
+    reveals the actions that need be performed to achieve full proof.
+    [Do I want to introduce an error and find it out through testing?]
+
+  \item attempt to prove the code, fail and resort to testing. At this
+    point the user has two different options:
+
+    \begin{enumerate}
+      \item Perform exclusively testing (prove no properties).
+        [``permutation'' was initially thought to be easy to prove but writing
+        the contracts proved difficult]
+
+      \item Prove only a subset of the properties of the code and
+        test the remaining. For instance, prove freedom of run-time
+        exceptions and test functional behaviour-related contracts.
+        [Tokeneer segment]
+    \end{enumerate}
+
+  \item be required (by a standard) to test the code. However, as an addition,
+    performing proof could improve the safety case and grant more confidence on the
+    code. In this scenario the user would try to prove as much as possible, but would
+    not insist when proof is too hard.
+    [I have no clue yet...]
+\end{itemize}
+
+When more than one units have to be analysed, any combination of the above could
+potentially occur. Naming but a few such examples, it would be possible to have:
+\begin{itemize}
+  \item a full formal specification can not be written for a subprogram Q
+    and consequently Q is tested. Subprogram P, which has to be proven, calls Q.
+    A partial specification is therefore required for Q purely to assist with the
+    proof of P.
+
+  \item
+\end{itemize}
+
+
+\section{For each scenario}
+\subsection{Example code}
+\subsection{Describe approach to verification}
+\subsection{Report results of verification}
+\subsection{Report any points of interest arising from attempting to verify}
+
+\section{Summary}
+
+\subsection{Can proof and test be practically combined?}
+
+\subsection{Where can the most value be derived?}
+
+\subsection{Additional tooling}
+What additional tooling support is required to make it easier/more
+generally applicable.
+
+
+\bibliographystyle{plain}
+\bibliography{proof_and_test}
+
+\end{document}
