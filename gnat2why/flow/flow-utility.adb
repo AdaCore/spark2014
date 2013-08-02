@@ -180,19 +180,25 @@ package body Flow.Utility is
                             return Node_Lists.List
    is
       C          : constant Node_Id := Contract (E);
-      P, Expr    : Node_Id;
+      P          : Node_Id;
       Contracts  : Node_Lists.List := Node_Lists.Empty_List;
       Other_Name : Name_Id;
    begin
       case Name is
-         when Name_Precondition | Name_Postcondition =>
+         when Name_Precondition   |
+              Name_Postcondition  |
+              Name_Contract_Cases =>
             if Name = Name_Precondition then
                Other_Name := Name_Pre;
-            else
+               P := Pre_Post_Conditions (C);
+            elsif Name = Name_Postcondition then
                Other_Name := Name_Post;
+               P := Pre_Post_Conditions (C);
+            else
+               Other_Name := Name_Contract_Cases;
+               P := Contract_Test_Cases (C);
             end if;
 
-            P := Pre_Post_Conditions (C);
             while Present (P) loop
                if Chars (Pragma_Identifier (P)) in Name | Other_Name then
                   Contracts.Append
@@ -206,25 +212,6 @@ package body Flow.Utility is
 
          when Name_Global | Name_Depends =>
             raise Why.Not_Implemented;
-
-         when Name_Contract_Cases =>
-            Other_Name := Name_Contract_Cases;
-
-            P := Contract_Test_Cases (C);
-            while Present (P) loop
-               if Chars (Pragma_Identifier (P)) in Name | Other_Name then
-                  Expr := Expression (First
-                                        (Pragma_Argument_Associations (P)));
-
-                  Contracts.Append (Expr);
-
-                  return Contracts;
-               end if;
-
-               P := Next_Pragma (P);
-            end loop;
-
-            return Contracts;
 
          when others =>
             raise Program_Error;
