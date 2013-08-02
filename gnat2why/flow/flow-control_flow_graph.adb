@@ -2247,6 +2247,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Ada_2012        |
               Pragma_Annotate        |
               Pragma_Convention      |
+              Pragma_Contract_Cases  |
               Pragma_Depends         |
               Pragma_Elaborate_Body  |
               Pragma_Export          |
@@ -2317,7 +2318,7 @@ package body Flow.Control_Flow_Graph is
       case FA.Kind is
          when E_Subprogram_Body =>
             Body_N        := Get_Subprogram_Body (FA.Analyzed_Entity);
-            Preconditions := Get_Preconditions (FA.Analyzed_Entity);
+            Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
 
             if Acts_As_Spec (Body_N) then
                Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));

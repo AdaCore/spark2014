@@ -208,7 +208,35 @@ package body Flow.Utility is
             raise Why.Not_Implemented;
 
          when Name_Contract_Cases =>
-            raise Why.Not_Implemented;
+            Other_Name := Name_Contract_Cases;
+
+            declare
+               Expr      : Node_Id;
+               C_Case    : Node_Id;
+               Condition : Node_Id;
+            begin
+               P := Contract_Test_Cases (C);
+               while Present (P) loop
+                  if Chars (Pragma_Identifier (P)) in Name | Other_Name then
+                     Expr := Expression (First
+                                           (Pragma_Argument_Associations (P)));
+                     C_Case := First (Component_Associations (Expr));
+
+                     while Present (C_Case) loop
+                        Condition := First (Choices (C_Case));
+                        if Nkind (Condition) /= N_Others_Choice then
+                           Contracts.Append (Condition);
+                        end if;
+
+                        C_Case := Next (C_Case);
+                     end loop;
+                  end if;
+
+                  P := Next_Pragma (P);
+               end loop;
+
+               return Contracts;
+            end;
 
          when others =>
             raise Program_Error;
@@ -669,16 +697,25 @@ package body Flow.Utility is
       end if;
    end Untangle_Assignment_Target;
 
-   -----------------------
-   -- Get_Preconditions --
-   -----------------------
+   ----------------------------------
+   -- Get_Precondition_Expressions --
+   ----------------------------------
 
-   function Get_Preconditions (E : Entity_Id)
+   function Get_Precondition_Expressions (E : Entity_Id)
                                return Node_Lists.List
    is
+      Precondition_Expressions : Node_Lists.List :=
+        Find_Contracts (E, Name_Precondition);
+      In_Contract_Cases        : constant Node_Lists.List :=
+        Find_Contracts (E, Name_Contract_Cases);
    begin
-      return Find_Contracts (E, Name_Precondition);
-   end Get_Preconditions;
+      for Elem of In_Contract_Cases loop
+         Precondition_Expressions.Append (Elem);
+      end loop;
+
+      return Precondition_Expressions;
+
+   end Get_Precondition_Expressions;
 
    ---------------------------
    -- Is_Precondition_Check --

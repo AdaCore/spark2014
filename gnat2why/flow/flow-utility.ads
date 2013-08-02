@@ -62,22 +62,24 @@ package Flow.Utility is
       N            : Node_Id;
       Vars_Defined : out Flow_Id_Sets.Set;
       Vars_Used    : out Flow_Id_Sets.Set)
-   with Pre => Nkind (N) in N_Identifier |
-                            N_Expanded_Name |
-                            N_Selected_Component |
-                            N_Indexed_Component |
-                            N_Slice |
-                            N_Type_Conversion;
+     with Pre => Nkind (N) in N_Identifier |
+                              N_Expanded_Name |
+                              N_Selected_Component |
+                              N_Indexed_Component |
+                              N_Slice |
+                              N_Type_Conversion;
    --  Given the target of an assignment (perhaps the left-hand-side
    --  of an assignment statement or an out vertex in a procedure
    --  call), work out which variables are actually set and which
    --  variables are used to determine what is set (in the case of
    --  arrays).
 
-   function Get_Preconditions (E : Entity_Id) return Node_Lists.List
+   function Get_Precondition_Expressions
+     (E : Entity_Id) return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind;
    --  Given the entity for a subprogram, return the expression(s) for
-   --  its precondition (or the empty list).
+   --  its precondition and the condition(s) of its Contract_Cases (or
+   --  return the empty list if none of these exist).
 
    function Is_Precondition_Check (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma and then

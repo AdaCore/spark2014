@@ -3142,14 +3142,15 @@ package body SPARK_Definition is
          --  effect on verification (Export, Import, Preelaborate, Pure,
          --  Warnings).
 
-         when Pragma_Export        |
-              Pragma_Import        |
-              Pragma_Precondition  |
-              Pragma_Preelaborate  |
-              Pragma_Postcondition |
-              Pragma_Pure          |
-              Pragma_SPARK_Mode    |
-              Pragma_Warnings      =>
+         when Pragma_Export         |
+              Pragma_Import         |
+              Pragma_Precondition   |
+              Pragma_Preelaborate   |
+              Pragma_Postcondition  |
+              Pragma_Contract_Cases |
+              Pragma_Pure           |
+              Pragma_SPARK_Mode     |
+              Pragma_Warnings       =>
             null;
 
          when Pragma_Overflow_Mode =>
