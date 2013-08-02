@@ -1,1 +1,24 @@
-NO OUTPUT EXPECTED YET
+test.adb:116:14: formal parameters "X" and "Y" must not be aliased
+test.adb:128:14: formal parameter "X" and global "Global_RA" must not be aliased
+test.adb:131:23: warning: "X.C" is not modified, could be "in" [inout_only_read]
+test.adb:131:23: warning: "X.B" is not modified, could be "in" [inout_only_read]
+test.adb:131:23: warning: "X.A" is not modified, could be "in" [inout_only_read]
+test.adb:142:19: formal parameters "Y" and "Z" must not be aliased
+test.adb:148:14: formal parameters "X" and "Y" must not be aliased
+test.adb:155:17: warning: unused assignment to "Y" [ineffective]
+test.adb:162:14: formal parameters "X" and "Y" must not be aliased
+test.adb:168:15: formal parameters "X" and "Y" must not be aliased
+test.adb:186:15: formal parameters "X" and "Y" must not be aliased
+test.adb:193:15: formal parameters "X" and "Y" might be aliased
+test.adb:213:24: warning: "B" is not modified, could be "in" [inout_only_read]
+test.adb:223:23: formal parameters "X" and "Y" might be aliased
+test.adb:230:23: formal parameters "X" and "Y" might be aliased
+test.adb:238:23: formal parameters "X" and "Y" might be aliased
+test.adb:244:23: formal parameters "X" and "Y" must not be aliased
+test.adb:250:23: formal parameters "X" and "Y" might be aliased
+test.adb:251:23: formal parameters "X" and "Y" might be aliased
+test.adb:252:23: formal parameters "X" and "Y" might be aliased
+test.adb:255:23: formal parameters "X" and "Y" might be aliased
+test.adb:262:23: formal parameters "X" and "Y" might be aliased
+test.adb:272:14: formal parameters "X" and "Y" must not be aliased
+test.adb:278:15: formal parameters "X" and "Y" must not be aliased

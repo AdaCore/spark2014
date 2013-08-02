@@ -2131,6 +2131,7 @@ package body Flow.Control_Flow_Graph is
               N_Use_Type_Clause                 |
               N_Object_Renaming_Declaration     |
               N_Subprogram_Renaming_Declaration |
+              N_Validate_Unchecked_Conversion   |
               N_Package_Renaming_Declaration    |
               N_Private_Type_Declaration        |
               N_Number_Declaration =>
@@ -2196,8 +2197,6 @@ package body Flow.Control_Flow_Graph is
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
          when N_Full_Type_Declaration | N_Subtype_Declaration =>
             Do_Type_Declaration (N, FA, CM, Ctx);
-         when N_Validate_Unchecked_Conversion =>
-            raise Program_Error;
          when others =>
             Print_Node_Subtree (N);
             --  ??? To be added by various future tickets. Eventually

@@ -25,14 +25,21 @@
 
 with Atree;   use Atree;
 with Einfo;   use Einfo;
+with Namet;   use Namet;
+with Nlists;  use Nlists;
 with Sem_Aux; use Sem_Aux;
 with Sinfo;   use Sinfo;
+with Snames;  use Snames;
+with Tbuild;  use Tbuild;
 
 package body SPARK_Rewrite is
 
    procedure Rewrite_Call (N : Node_Id);
    --  Replace renamings and inherited subprograms by the subprogram they
    --  rename or inherit.
+   --
+   --  Replace instantiations of unchecked conversions with
+   --  N_Unchecked_Type_Conversion nodes.
 
    ------------------
    -- Rewrite_Call --
@@ -61,6 +68,34 @@ package body SPARK_Rewrite is
               and then Present (Alias (E))
             then
                Set_Entity (Name (N), Ultimate_Alias (E));
+            end if;
+         end;
+      end if;
+
+      --  If the subprogram is actually an unchecked conversion we
+      --  rewrite the tree to use an N_Unchecked_Type_Conversion node
+      --  instead, as documented in Sinfo.
+
+      if Nkind (Name (N)) /= N_Explicit_Dereference and then
+        Is_Intrinsic_Subprogram (Entity (Name (N)))
+      then
+         declare
+            E   : constant Entity_Id := Entity (Name (N));
+            Nam : Name_Id;
+         begin
+            if Present (Parent (E))
+              and then Present (Generic_Parent (Parent (E)))
+            then
+               Nam := Chars (Generic_Parent (Parent (E)));
+            else
+               Nam := Chars (E);
+            end if;
+
+            if Nam = Name_Unchecked_Conversion then
+               Rewrite (Old_Node => N,
+                        New_Node => Unchecked_Convert_To
+                          (Typ => Etype (Etype (N)),
+                           Expr => First (Parameter_Associations (N))));
             end if;
          end;
       end if;
