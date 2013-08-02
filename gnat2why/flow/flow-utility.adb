@@ -688,10 +688,11 @@ package body Flow.Utility is
       --  condition apart from the others.
       if not Contract_Case.Is_Empty then
          declare
-            C_Case    : Node_Id :=
-              First (Component_Associations (Contract_Case.First_Element));
+            C_Case    : Node_Id;
             Condition : Node_Id;
          begin
+            C_Case := First (Component_Associations
+                               (Contract_Case.First_Element));
             while Present (C_Case) loop
                Condition := First (Choices (C_Case));
                if Nkind (Condition) /= N_Others_Choice then
