@@ -9,8 +9,16 @@ with the |SPARK| tools. A small |SPARK| example program will be used for
 illustration.
 
 As a prerequisite, it is assumed that the |SPARK| tools have already been
-installed. For more information on how to do this see the "AdaCore
-Installation Procedures" under GNAT Tracker.
+installed. As a minimum you should install:
+
+ - |GNATprove|
+ - GPS.
+
+Note that GPS is not strictly required for |SPARK| as all the commands
+can be invoked from the command line, but the instructions in this
+section assume that GPS is being used. For more information on how to
+install the tools see "AdaCore Installation Procedures" under the
+"Download" tab in GNAT Tracker, or contact AdaCore for further advice.
 
 The key tools that we will use in this example are |GNATprove| and GPS.
 To begin with, launch GPS with a new default project and check that the
