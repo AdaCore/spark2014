@@ -32,7 +32,6 @@ with Sem_Util;                  use Sem_Util;
 with Snames;                    use Snames;
 with Sprint;                    use Sprint;
 with Sinfo;                     use Sinfo;
-with Sinput;                    use Sinput;
 with Lib;                       use Lib;
 
 with Output;                    use Output;
@@ -956,30 +955,23 @@ package body Flow is
       -- Is_In_Analyzed_Files --
       --------------------------
 
-      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
-      is
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
+
       begin
          --  If we have an empty files list we analyze everything
          if Gnat2Why_Args.Analyze_File.Is_Empty then
             return True;
          end if;
 
-         --  We strip everything from paths and extensions and then we
-         --  check if we have a match.
          declare
-            Basename        : constant String :=
-              Get_Name_String (Reference_Name
-                                 (Get_Source_File_Index (Sloc (E))));
-            Basename_No_Ext : constant String :=
-              Basename (Basename'First .. Basename'Last - 4);
+            Spec_Prefix : constant String := Spec_File_Name (E);
+            Body_Prefix : constant String := Body_File_Name (E);
          begin
             for A_File of Gnat2Why_Args.Analyze_File loop
                declare
-                  Filename        : constant String := File_Name (A_File);
-                  Filename_No_Ext : constant String :=
-                    Filename (Filename'First .. Filename'Last - 4);
+                  Filename : constant String := File_Name (A_File);
                begin
-                  if Filename_No_Ext = Basename_No_Ext then
+                  if Filename = Body_Prefix or Filename = Spec_Prefix then
                      return True;
                   end if;
                end;

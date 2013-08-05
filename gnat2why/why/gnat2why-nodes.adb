@@ -225,12 +225,11 @@ package body Gnat2Why.Nodes is
       end if;
    end Avoid_Why3_Keyword;
 
-   -----------------------------------
-   -- Body_File_Name_Without_Suffix --
-   -----------------------------------
+   --------------------
+   -- Body_File_Name --
+   --------------------
 
-   function Body_File_Name_Without_Suffix (N : Node_Id) return String
-   is
+   function Body_File_Name (N : Node_Id) return String is
       CU       : Node_Id := Enclosing_Comp_Unit_Node (N);
       Switch   : Boolean := False;
    begin
@@ -245,8 +244,15 @@ package body Gnat2Why.Nodes is
       if Switch and then Present (Library_Unit (CU)) then
          CU := Library_Unit (CU);
       end if;
-      return File_Name_Without_Suffix (Sloc (CU));
-   end Body_File_Name_Without_Suffix;
+      return File_Name (Sloc (CU));
+   end Body_File_Name;
+
+   -----------------------------------
+   -- Body_File_Name_Without_Suffix --
+   -----------------------------------
+
+   function Body_File_Name_Without_Suffix (N : Node_Id) return String is
+      (File_Name_Without_Suffix (Body_File_Name (N)));
 
    -----------------------
    -- Get_Graph_Closure --
@@ -818,13 +824,13 @@ package body Gnat2Why.Nodes is
       return Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
    end Short_Name;
 
-   -----------------------------------
-   -- Spec_File_Name_Without_Suffix --
-   -----------------------------------
+   --------------------
+   -- Spec_File_Name --
+   --------------------
 
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String
+   function Spec_File_Name (N : Node_Id) return String
    is
-      CU       : Node_Id := Enclosing_Comp_Unit_Node (N);
+      CU : Node_Id := Enclosing_Comp_Unit_Node (N);
    begin
       case Nkind (Unit (CU)) is
          when N_Package_Body | N_Subunit =>
@@ -832,8 +838,15 @@ package body Gnat2Why.Nodes is
          when others =>
             null;
       end case;
-      return File_Name_Without_Suffix (Sloc (CU));
-   end Spec_File_Name_Without_Suffix;
+      return File_Name (Sloc (CU));
+   end Spec_File_Name;
+
+   -----------------------------------
+   -- Spec_File_Name_Without_Suffix --
+   -----------------------------------
+
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String is
+      (File_Name_Without_Suffix (Spec_File_Name (N)));
 
    --------------------
    -- String_Of_Node --
@@ -918,6 +931,10 @@ package body Gnat2Why.Nodes is
            "." & Name;
       end if;
    end Subprogram_Full_Source_Name;
+
+   -------------------
+   -- Subp_Location --
+   -------------------
 
    function Subp_Location (E : Entity_Id) return String
    is

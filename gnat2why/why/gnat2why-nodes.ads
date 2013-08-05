@@ -228,14 +228,20 @@ package Gnat2Why.Nodes is
    --  suffix. Contrary to the File_Name function, this one returns the file
    --  name of the instance.
 
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
+   function Spec_File_Name (N : Node_Id) return String;
    --  This function will return the file name in which the node appears, with
    --  a twist: we always return the file name of the spec, if there is one.
    --  Also, we return the file name of the instance, not the generic.
 
-   function Body_File_Name_Without_Suffix (N : Node_Id) return String;
-   --  Same as [Spec_File_Name_Without_Suffix], but always return the file name
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
+   --  Same as Spec_File_Name but without the suffix.
+
+   function Body_File_Name (N : Node_Id) return String;
+   --  Same as [Spec_File_Name], but always return the file name
    --  of the body, if there is one.
+
+   function Body_File_Name_Without_Suffix (N : Node_Id) return String;
+   --  Same as Body_File_Name but without the suffix.
 
    function Source_Name (E : Entity_Id) return String;
 
