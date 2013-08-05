@@ -427,7 +427,7 @@ about questionable code constructs.
    "uninitialized", "I", "Flow analysis has detected the use of an uninitialized variable."
    "unused",, "A global or locally declared variable is never used."
 
-
+.. _how to write loop invariants:
 
 How to Write Loop Invariants
 ============================

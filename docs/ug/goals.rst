@@ -305,5 +305,5 @@ to prove that the postcondition of the subprogram analyzed is satisfied.
 In order to prove such VCs, the user may have to write loop invariants, for
 which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
-(*loop invariant preservation*).
+(*loop invariant preservation*). See :ref:`how to write loop invariants`.
 
