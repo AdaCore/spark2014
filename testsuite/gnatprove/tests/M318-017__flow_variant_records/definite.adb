@@ -23,15 +23,57 @@ is
 
    procedure Test_01 (X : out T;
                       Y : out Status)
-   with Global  => (Output => G)
-        --  Depends => (X => null,
-        --              Y => X)
+   with Global  => (Output => G),
+        Depends => (X => null,
+                    Y => X,
+                    G => null)
    is
    begin
       Y := X.D;
       X := (File_Not_Found, 0);
       G := (File_Not_Found, 0);
    end Test_01;
+
+   procedure Test_01_B (Y : out Status)
+   with Global  => (Output => G),
+        Depends => (Y => G,
+                    G => null)
+   is
+   begin
+      Y := G.D;
+      G := (File_Not_Found, 0);
+   end Test_01_B;
+
+   procedure Test_01_C (X : out T)
+   with Global  => null,
+        Depends => (X => X)
+   is
+   begin
+      case X.D is
+         when Is_True =>
+            X := (Is_True, 0, 0);
+         when Is_False =>
+            X := (Is_False, 0, False);
+         when others =>
+            X := (File_Not_Found, 0);
+      end case;
+   end Test_01_C;
+
+   procedure Test_01_D
+   with Global  => G,
+        Depends => (G => G)
+   is
+   begin
+      case G.D is
+         when Is_True =>
+            G := (Is_True, 0, 0);
+         when Is_False =>
+            G := (Is_False, 0, False);
+         when others =>
+            G := (File_Not_Found, 0);
+      end case;
+   end Test_01_D;
+
 
    procedure Test_01_ND (X : out T;
                          Y : out Status)
@@ -53,9 +95,9 @@ is
 
    procedure Test_02 (X : out T;
                       Y : out Status)
-   with Global  => null
-   --       Depends => (X => X,
-   --                   Y => X)
+   with Global  => null,
+        Depends => (X => X,
+                    Y => X)
    is
    begin
       Y := X.D;
@@ -86,9 +128,9 @@ is
    end Test_02_ND;
 
    procedure Test_03 (X : out T)
-   with Global  => null
-   --       Depends => (X => null,
-   --                   null => X)
+   with Global  => null,
+        Depends => (X => null,
+                    null => X)
    is
    begin
       X := (File_Not_Found, 0);
