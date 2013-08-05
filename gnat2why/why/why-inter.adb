@@ -36,11 +36,11 @@ with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
 with Why.Conversions;     use Why.Conversions;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Expr;        use Why.Gen.Expr;
 
 with Gnat2Why.Util;       use Gnat2Why.Util;
 
@@ -49,6 +49,23 @@ with Gnat2Why.Util;       use Gnat2Why.Util;
 ---------------
 
 package body Why.Inter is
+
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
+
+   function Compute_Ada_Nodeset (W : Why_Node_Id) return
+     Node_Sets.Set;
+   --  For a given Why node, compute the required Ada nodes, from which we can
+   --  compute the necessary inclusions on the Why side
+
+   subtype N_Has_Theory is Node_Kind with
+     Static_Predicate => N_Has_Theory in N_String_Literal |
+                                         N_Aggregate      |
+                                         N_Slice          |
+                                         N_Unchecked_Type_Conversion;
+   --  Subtype of nodes (instead of entities) which have an associated theory,
+   --  and should be treated specially.
 
    package Type_Hierarchy is
      new Constant_Tree (EW_Base_Type, EW_Unit);
@@ -263,6 +280,162 @@ package body Why.Inter is
                                    New_Item => Completions);
    end Add_Completion;
 
+   -------------------------
+   -- Compute_Ada_Nodeset --
+   -------------------------
+
+   function Compute_Ada_Nodeset (W : Why_Node_Id) return Node_Sets.Set is
+      use Node_Sets;
+
+      type Search_State is new Traversal_State with record
+         S : Set;
+      end record;
+
+      procedure Base_Type_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Base_Type_Id);
+
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id);
+
+      procedure Integer_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Integer_Constant_Id);
+      --  Integer constants may require the use of integer infix + or -
+
+      procedure Literal_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Literal_Id);
+
+      procedure Real_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Real_Constant_Id);
+      --  Real constants may require the use of real infix + or -
+
+      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id);
+      --  Include if necessary node A or a node derived from A to the set S
+
+      ----------------------
+      -- Analyze_Ada_Node --
+      ----------------------
+
+      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id) is
+         N : Node_Id := Empty;
+      begin
+         if Present (A) then
+            case Nkind (A) is
+               when N_Identifier    |
+                    N_Expanded_Name =>
+                  N := Entity (A);
+               when N_Has_Theory |
+                    N_Entity     =>
+                  N := A;
+               when N_Object_Declaration =>
+                  N := Defining_Identifier (A);
+               when others =>
+                  null;
+            end case;
+
+            --  We should never depend on discriminants, unless this is the
+            --  discriminant of a type declared in a package with external
+            --  axioms. In all other cases, we add a reference to the
+            --  record instead.
+
+            if Nkind (N) = N_Defining_Identifier
+              and then Ekind (N) = E_Discriminant
+              and then not SPARK_Util.Is_External_Axioms_Discriminant (N)
+            then
+               N := Scope (N);
+            end if;
+
+            if Present (N) then
+               S.Include (N);
+            end if;
+         end if;
+      end Analyze_Ada_Node;
+
+      ----------------------
+      -- Base_Type_Pre_Op --
+      ----------------------
+
+      procedure Base_Type_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Base_Type_Id)
+      is
+      begin
+         if Get_Base_Type (+Node) = EW_Abstract then
+            Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+         end if;
+      end Base_Type_Pre_Op;
+
+      -----------------------
+      -- Identifier_Pre_Op --
+      -----------------------
+
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+      end Identifier_Pre_Op;
+
+      -----------------------------
+      -- Integer_Constant_Pre_Op --
+      -----------------------------
+
+      procedure Integer_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Integer_Constant_Id)
+      is
+         N : constant Node_Id := Get_Ada_Node (+Node);
+      begin
+         if Present (N)
+           and then Nkind (N) in N_Has_Etype
+         then
+            Analyze_Ada_Node (State.S, Etype (N));
+         end if;
+      end Integer_Constant_Pre_Op;
+
+      --------------------
+      -- Literal_Pre_Op --
+      --------------------
+
+      procedure Literal_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Literal_Id)
+      is
+      begin
+         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
+      end Literal_Pre_Op;
+
+      --------------------------
+      -- Real_Constant_Pre_Op --
+      --------------------------
+
+      procedure Real_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Real_Constant_Id)
+      is
+         N : constant Node_Id := Get_Ada_Node (+Node);
+      begin
+         if Present (N)
+           and then Nkind (N) in N_Has_Etype
+         then
+            Analyze_Ada_Node (State.S, Etype (N));
+         end if;
+      end Real_Constant_Pre_Op;
+
+      SS : Search_State := (Control => Continue, S => Empty_Set);
+
+   --  Start of Compute_Ada_Nodeset
+
+   begin
+      Traverse (SS, +W);
+      return SS.S;
+   end Compute_Ada_Nodeset;
+
    ---------------------
    -- Get_Completions --
    ---------------------
@@ -409,9 +582,7 @@ package body Why.Inter is
 
       function Import_Type_Of_Entity (E : Entity_Id) return EW_Clone_Type is
       begin
-         if Nkind (E) = N_String_Literal
-           or else Nkind (E) = N_Aggregate
-           or else Nkind (E) = N_Slice then
+         if Nkind (E) in N_Has_Etype then
             return EW_Import;
          end if;
          return EW_Clone_Default;
@@ -668,10 +839,8 @@ package body Why.Inter is
 
    function Dispatch_Entity (E : Entity_Id) return Why_File_Enum is
    begin
-      if Nkind (E) = N_String_Literal
-        or else Nkind (E) = N_Aggregate
-        or else Nkind (E) = N_Slice
-      then
+      if Nkind (E) in N_Has_Theory then
+
          --  Theories which depend on variables are defined in context files
 
          if Expression_Depends_On_Variables (E) then
@@ -1198,10 +1367,8 @@ package body Why.Inter is
 
    function Name_Of_Node (N : Node_Id) return String is
    begin
-      if Nkind (N) = N_String_Literal
-        or else Nkind (N) = N_Aggregate
-        or else Nkind (N) = N_Slice then
-         return New_Str_Lit_Ident (N);
+      if Nkind (N) in N_Has_Theory then
+         return New_Sloc_Ident (N);
       end if;
       return Full_Name (N);
    end Name_Of_Node;

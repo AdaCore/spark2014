@@ -76,8 +76,9 @@ package body SPARK_Rewrite is
       --  rewrite the tree to use an N_Unchecked_Type_Conversion node
       --  instead, as documented in Sinfo.
 
-      if Nkind (Name (N)) /= N_Explicit_Dereference and then
-        Is_Intrinsic_Subprogram (Entity (Name (N)))
+      if Nkind (Name (N)) in N_Has_Entity
+        and then Present (Entity (Name (N)))
+        and then Is_Intrinsic_Subprogram (Entity (Name (N)))
       then
          declare
             E   : constant Entity_Id := Entity (Name (N));

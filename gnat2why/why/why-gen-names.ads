@@ -127,10 +127,10 @@ package Why.Gen.Names is
    function To_Exprs (Ids : W_Identifier_Array) return W_Expr_Array;
    --  Conversion each element of Ids to exprs and return the result
 
-   function New_Str_Lit_Ident (N : Node_Id) return W_Identifier_Id;
-   function New_Str_Lit_Ident (N : Node_Id) return String;
-   --  Return a new unique identifier whose name only depends on the node that
-   --  is passed
+   function New_Sloc_Ident (N : Node_Id) return W_Identifier_Id;
+   function New_Sloc_Ident (N : Node_Id) return String;
+   --  Return a new unique identifier whose name only depends on the source
+   --  location of the node that is passed.
 
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given

@@ -485,11 +485,11 @@ package body Why.Gen.Names is
       return Result;
    end New_Temp_Identifiers;
 
-   -----------------------
-   -- New_Str_Lit_Ident --
-   -----------------------
+   --------------------
+   -- New_Sloc_Ident --
+   --------------------
 
-   function New_Str_Lit_Ident (N : Node_Id) return String is
+   function New_Sloc_Ident (N : Node_Id) return String is
       Loc     : constant Source_Ptr := Sloc (N);
       C1      : constant Loc_String_Maps.Cursor :=
         File_Loc_Map.Find (Loc);
@@ -563,12 +563,12 @@ package body Why.Gen.Names is
             end if;
          end;
       end if;
-   end New_Str_Lit_Ident;
+   end New_Sloc_Ident;
 
-   function New_Str_Lit_Ident (N : Node_Id) return W_Identifier_Id is
+   function New_Sloc_Ident (N : Node_Id) return W_Identifier_Id is
    begin
-      return New_Identifier (Name => New_Str_Lit_Ident (N));
-   end New_Str_Lit_Ident;
+      return New_Identifier (Name => New_Sloc_Ident (N));
+   end New_Sloc_Ident;
 
    --------------
    -- To_Exprs --

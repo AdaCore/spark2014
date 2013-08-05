@@ -34,7 +34,6 @@ with Why.Types;           use Why.Types;
 pragma Warnings (On);
 with VC_Kinds;            use VC_Kinds;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 
@@ -180,10 +179,5 @@ package Why.Gen.Expr is
 
    function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
                                 return W_Expr_Id;
-
-   function Compute_Ada_Nodeset (W : Why_Node_Id) return
-     Node_Sets.Set;
-   --  For a given Why node, compute the required Ada nodes, from which we can
-   --  compute the necessary inclusions on the Why side
 
 end Why.Gen.Expr;

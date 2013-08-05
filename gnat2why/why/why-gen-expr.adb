@@ -36,12 +36,9 @@ with String_Utils;          use String_Utils;
 with Stand;                 use Stand;
 with Uintp;                 use Uintp;
 
-with SPARK_Util;            use SPARK_Util;
-
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
-with Why.Atree.Traversal;   use Why.Atree.Traversal;
 with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Names;         use Why.Gen.Names;
@@ -50,6 +47,7 @@ with Why.Gen.Records;       use Why.Gen.Records;
 with Why.Inter;             use Why.Inter;
 
 with Gnat2Why.Expr;         use Gnat2Why.Expr;
+with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
 
 package body Why.Gen.Expr is
@@ -66,164 +64,6 @@ package body Why.Gen.Expr is
    --  types differ), insert the corresponding conversion.
 
    Subp_Sloc_Map : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-
-   --------------------------
-   -- Compute_Ada_Node_Set --
-   --------------------------
-
-   function Compute_Ada_Nodeset (W : Why_Node_Id) return Node_Sets.Set is
-      use Node_Sets;
-
-      type Search_State is new Traversal_State with record
-         S : Set;
-      end record;
-
-      procedure Base_Type_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Base_Type_Id);
-
-      procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id);
-
-      procedure Integer_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Integer_Constant_Id);
-      --  Integer constants may require the use of integer infix + or -
-
-      procedure Literal_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Literal_Id);
-
-      procedure Real_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Real_Constant_Id);
-      --  Real constants may require the use of real infix + or -
-
-      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id);
-      --  Include if necessary node A or a node derived from A to the set S
-
-      ----------------------
-      -- Analyze_Ada_Node --
-      ----------------------
-
-      procedure Analyze_Ada_Node (S : in out Set; A : Node_Id) is
-         N : Node_Id := Empty;
-      begin
-         if Present (A) then
-            case Nkind (A) is
-               when N_Identifier         |
-                    N_Expanded_Name      =>
-                  N := Entity (A);
-               when N_String_Literal     |
-                    N_Aggregate          |
-                    N_Slice              |
-                    N_Entity             =>
-                  N := A;
-               when N_Object_Declaration =>
-                  N := Defining_Identifier (A);
-               when others =>
-                  null;
-            end case;
-
-            --  We should never depend on discriminants, unless this is the
-            --  discriminant of a type declared in a package with external
-            --  axioms. In all other cases, we add a reference to the
-            --  record instead.
-
-            if Nkind (N) = N_Defining_Identifier
-              and then Ekind (N) = E_Discriminant
-              and then not SPARK_Util.Is_External_Axioms_Discriminant (N)
-            then
-               N := Scope (N);
-            end if;
-
-            if Present (N) then
-               S.Include (N);
-            end if;
-         end if;
-      end Analyze_Ada_Node;
-
-      ----------------------
-      -- Base_Type_Pre_Op --
-      ----------------------
-
-      procedure Base_Type_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Base_Type_Id)
-      is
-      begin
-         if Get_Base_Type (+Node) = EW_Abstract then
-            Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-         end if;
-      end Base_Type_Pre_Op;
-
-      -----------------------
-      -- Identifier_Pre_Op --
-      -----------------------
-
-      procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id)
-      is
-      begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-      end Identifier_Pre_Op;
-
-      -----------------------------
-      -- Integer_Constant_Pre_Op --
-      -----------------------------
-
-      procedure Integer_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Integer_Constant_Id)
-      is
-         N : constant Node_Id := Get_Ada_Node (+Node);
-      begin
-         if Present (N)
-           and then Nkind (N) in N_Has_Etype
-         then
-            Analyze_Ada_Node (State.S, Etype (N));
-         end if;
-      end Integer_Constant_Pre_Op;
-
-      --------------------
-      -- Literal_Pre_Op --
-      --------------------
-
-      procedure Literal_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Literal_Id)
-      is
-      begin
-         Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
-      end Literal_Pre_Op;
-
-      --------------------------
-      -- Real_Constant_Pre_Op --
-      --------------------------
-
-      procedure Real_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Real_Constant_Id)
-      is
-         N : constant Node_Id := Get_Ada_Node (+Node);
-      begin
-         if Present (N)
-           and then Nkind (N) in N_Has_Etype
-         then
-            Analyze_Ada_Node (State.S, Etype (N));
-         end if;
-      end Real_Constant_Pre_Op;
-
-      SS : Search_State := (Control => Continue, S => Empty_Set);
-
-   --  Start of Compute_Ada_Nodeset
-
-   begin
-      Traverse (SS, +W);
-      return SS.S;
-   end Compute_Ada_Nodeset;
 
    -------------------
    -- Cur_Subp_Sloc --

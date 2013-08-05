@@ -375,6 +375,13 @@ package body Gnat2Why.Expr is
    --  Create an uninterpreted logic function with no parameters that returns a
    --  string value corresponding to the string literal.
 
+   procedure Transform_Unchecked_Type_Conversion
+     (Params : Transformation_Params;
+      N      : Node_Id);
+   --  Create an uninterpreted logic function with a single parameter that
+   --  returns an unknown value corresponding to the result of the unchecked
+   --  type conversion.
+
    function Transform_Record_Component_Associations
      (Domain      : EW_Domain;
       Typ         : Entity_Id;
@@ -1929,7 +1936,7 @@ package body Gnat2Why.Expr is
          --  Generate name for the function based on the location of the
          --  aggregate.
 
-         Name          : constant String := New_Str_Lit_Ident (Expr);
+         Name          : constant String := New_Sloc_Ident (Expr);
          Func          : constant W_Identifier_Id :=
                            New_Identifier (Name     => Name,
                                            Ada_Node => Expr);
@@ -2012,9 +2019,9 @@ package body Gnat2Why.Expr is
 
          Aggr :=
            New_Call (Ada_Node => Expr,
-                          Domain   => EW_Term,
-                          Name     => Func,
-                          Args     => Call_Args);
+                     Domain   => EW_Term,
+                     Name     => Func,
+                     Args     => Call_Args);
          Call :=
            Array_Convert_To_Base
              (Ty_Entity => Etype (Expr),
@@ -4241,10 +4248,16 @@ package body Gnat2Why.Expr is
          when N_Unchecked_Type_Conversion =>
             --  Compiler inserted conversions are trusted
             pragma Assert (not Comes_From_Source (Expr));
-            return Transform_Expr (Expression (Expr),
-                                   Expected_Type,
-                                   Domain,
-                                   Local_Params);
+
+            if not Ada_To_Why_Func.Contains (Expr) then
+               Transform_Unchecked_Type_Conversion (Local_Params, Expr);
+            end if;
+            T := New_Call (Ada_Node => Expr,
+                           Domain   => Domain,
+                           Name     => +Ada_To_Why_Func.Element (Expr),
+                           Args     => (1 => Transform_Expr (Expression (Expr),
+                                                             Domain,
+                                                             Local_Params)));
 
          when N_Function_Call =>
             declare
@@ -5458,7 +5471,7 @@ package body Gnat2Why.Expr is
      (Params : Transformation_Params;
       N      : Node_Id)
    is
-      Name      : constant String := New_Str_Lit_Ident (N);
+      Name      : constant String := New_Sloc_Ident (N);
       Id        : constant W_Identifier_Id :=
         New_Identifier (Ada_Node => N, Name => Name);
       Ty        : constant Entity_Id := Type_Of_Node (N);
@@ -5493,6 +5506,55 @@ package body Gnat2Why.Expr is
       Strlit_To_Why_Term.Include (Strval (N), +Id);
       Strlit_To_Why_Type.Include (Strval (N), Why_Type);
    end Transform_String_Literal;
+
+   -----------------------------------------
+   -- Transform_Unchecked_Type_Conversion --
+   -----------------------------------------
+
+   procedure Transform_Unchecked_Type_Conversion
+     (Params : Transformation_Params;
+      N      : Node_Id)
+   is
+      Name        : constant String := New_Sloc_Ident (N);
+      Id          : constant W_Identifier_Id :=
+        New_Identifier (Ada_Node => N, Name => Name);
+      Ty          : constant Entity_Id := Type_Of_Node (N);
+      Why_Type    : constant W_Base_Type_Id :=
+        New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+      Decl_File   : Why_File := Why_Files (Dispatch_Entity (N));
+      Call_Params : Binder_Array (1 .. 1);
+   begin
+      if Params.File = Decl_File.File then
+         Decl_File.Cur_Theory := Why_Empty;
+      end if;
+
+      Open_Theory (Decl_File, Name,
+                   Comment =>
+                     "Module for defining a value for unchecked conversion "
+                       & (if Sloc (N) > 0 then
+                            " defined at " & Build_Location_String (Sloc (N))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Call_Params (1) :=
+        (Ada_Node => Empty,
+         B_Name   => New_Temp_Identifier,
+         Mutable  => False,
+         B_Type   => Why_Logic_Type_Of_Ada_Type (Etype (Expression (N))));
+      Emit
+        (Decl_File.Cur_Theory,
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Id,
+            Binders     => Call_Params,
+            Return_Type => +Why_Type));
+      Close_Theory (Decl_File, Filter_Entity => N);
+
+      if Params.File = Decl_File.File then
+         Decl_File.Cur_Theory := Params.Theory;
+      end if;
+
+      Ada_To_Why_Func.Include (N, +Id);
+   end Transform_Unchecked_Type_Conversion;
 
    -------------------------------
    -- Why_Subp_Has_Precondition --
