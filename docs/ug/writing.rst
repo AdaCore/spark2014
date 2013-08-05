@@ -385,8 +385,8 @@ that achieves 100% coverage for all the common coverage criteria, once
 impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
-Formal Verification of |SPARK| Programs
-=======================================
+Detailed Guidance on Using |GNATprove|
+======================================
 
 Formal verification of |SPARK| programs is a two-step process:
 
@@ -396,10 +396,8 @@ Formal verification of |SPARK| programs is a two-step process:
    contracts (if any), and that no run-time error can be raised.
 
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
-``flow`` mode. This mode is still experimental, so many |SPARK| features
-are not yet supported. Step 2 is implemented as a deductive verification pass
-in the tool |GNATprove|, in the default ``prove`` mode. This mode is well
-developed, but a few |SPARK| features are still not yet supported.
+``flow`` mode. Step 2 is implemented as a deductive verification pass
+in the tool |GNATprove|, in the default ``prove`` mode. 
 
 The difference between these two steps should be emphasized. Static analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
