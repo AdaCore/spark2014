@@ -153,6 +153,9 @@ package body Flow.Control_Flow_Graph.Utility is
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.
+      --
+      --  Make sure that once this is implemented, the mechanism for analysing
+      --  single subprograms is not broken.
 
       --  case Nkind (Parent (Procedure_Spec)) is
       --     when N_Subprogram_Body =>
