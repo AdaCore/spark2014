@@ -31,7 +31,6 @@ with Nlists;                    use Nlists;
 with Sem_Util;                  use Sem_Util;
 with Snames;                    use Snames;
 with Sprint;                    use Sprint;
-with String_Utils;              use String_Utils;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with Lib;                       use Lib;
@@ -897,12 +896,8 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
 
-      function Is_Limit_Subp
-        (E            : Entity_Id;
-         Analyze_Subp : Unbounded_String := Gnat2Why_Args.Limit_Subp)
-         return Boolean;
-      --  Returns true if E is the entity corresponding to the single
-      --  subprogram that needs to be analyzed, or if Limit_Subp is empty.
+      function Analysis_Requested (E : Entity_Id) return Boolean;
+      --  Returns true if entity E has to be analyzed.
 
       procedure Create_Flow_Result_File
         (FA            : Flow_Analysis_Graphs_Root;
@@ -911,37 +906,23 @@ package body Flow is
       --  If no errors/warnings were generated during flow analysis then
       --  we create a file that contains the word OK.
 
-      function In_Analyze_File
-        (E             : Entity_Id;
-         Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
-         return Boolean;
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
       --  Returns true if E belongs to one of the entities that correspond
       --  to the files that are to be analyzed. If Analyze_Files is an empty
       --  list then we return true since we need to analyze everything.
 
-      -------------------
-      -- Is_Limit_Subp --
-      -------------------
+      function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
+      --  Returns true if E is the entity corresponding to the single
+      --  subprogram that needs to be analyzed, or if Gnat2Why_Args.Limit_Subp
+      --  is the Null_Unbounded_String.
 
-      function Is_Limit_Subp
-        (E            : Entity_Id;
-         Analyze_Subp : Unbounded_String := Gnat2Why_Args.Limit_Subp)
-        return Boolean
+      ------------------------
+      -- Analysis_Requested --
+      ------------------------
+
+      function Analysis_Requested (E : Entity_Id) return Boolean
       is
-      begin
-         if Analyze_Subp = Null_Unbounded_String then
-            return True;
-         end if;
-
-         if Ekind (E) in Subprogram_Kind
-           and then "GP_Subp:" & To_String (Analyze_Subp) =
-           Gnat2Why.Nodes.Subp_Location (E)
-         then
-            return True;
-         else
-            return False;
-         end if;
-      end Is_Limit_Subp;
+         (Is_In_Analyzed_Files (E) and then Is_Requested_Subprogram (E));
 
       -----------------------------
       -- Create_Flow_Result_File --
@@ -971,18 +952,15 @@ package body Flow is
          end if;
       end Create_Flow_Result_File;
 
-      ---------------------
-      -- In_Analyze_File --
-      ---------------------
+      --------------------------
+      -- Is_In_Analyzed_Files --
+      --------------------------
 
-      function In_Analyze_File
-        (E             : Entity_Id;
-         Analyze_Files : String_Lists.List := Gnat2Why_Args.Analyze_File)
-         return Boolean
+      function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
       is
       begin
          --  If we have an empty files list we analyze everything
-         if Analyze_Files.Is_Empty then
+         if Gnat2Why_Args.Analyze_File.Is_Empty then
             return True;
          end if;
 
@@ -995,7 +973,7 @@ package body Flow is
             Basename_No_Ext : constant String :=
               Basename (Basename'First .. Basename'Last - 4);
          begin
-            for A_File of Analyze_Files loop
+            for A_File of Gnat2Why_Args.Analyze_File loop
                declare
                   Filename        : constant String := File_Name (A_File);
                   Filename_No_Ext : constant String :=
@@ -1008,7 +986,28 @@ package body Flow is
             end loop;
             return False;
          end;
-      end In_Analyze_File;
+      end Is_In_Analyzed_Files;
+
+      -----------------------------
+      -- Is_Requested_Subprogram --
+      -----------------------------
+
+      function Is_Requested_Subprogram (E : Entity_Id) return Boolean
+      is
+      begin
+         if Gnat2Why_Args.Limit_Subp = Null_Unbounded_String then
+            return True;
+         end if;
+
+         if Ekind (E) in Subprogram_Kind
+           and then "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
+           Gnat2Why.Nodes.Subp_Location (E)
+         then
+            return True;
+         else
+            return False;
+         end if;
+      end Is_Requested_Subprogram;
 
       FA_Graphs     : Analysis_Maps.Map;
       Success       : Boolean;
@@ -1019,8 +1018,7 @@ package body Flow is
       for E of All_Entities loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if In_Analyze_File (E)
-                 and Is_Limit_Subp (E)
+               if Analysis_Requested (E)
                  and Subprogram_Body_In_SPARK (E)
                then
                   FA_Graphs.Include (E, Flow_Analyse_Entity (E));
@@ -1031,8 +1029,7 @@ package body Flow is
                   Pkg_Spec : constant Node_Id := Get_Enclosing_Scope (E);
                   Pkg_Body : Node_Id;
                begin
-                  if In_Analyze_File (E)
-                    and Is_Limit_Subp (E)
+                  if Analysis_Requested (E)
                     and Entity_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then
