@@ -897,6 +897,13 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
 
+      function Is_Limit_Subp
+        (E            : Entity_Id;
+         Analyze_Subp : Unbounded_String := Gnat2Why_Args.Limit_Subp)
+         return Boolean;
+      --  Returns true if E is the entity corresponding to the single
+      --  subprogram that needs to be analyzed, or if Limit_Subp is empty.
+
       procedure Create_Flow_Result_File
         (FA            : Flow_Analysis_Graphs_Root;
          Found_Error   : Boolean;
@@ -911,6 +918,30 @@ package body Flow is
       --  Returns true if E belongs to one of the entities that correspond
       --  to the files that are to be analyzed. If Analyze_Files is an empty
       --  list then we return true since we need to analyze everything.
+
+      -------------------
+      -- Is_Limit_Subp --
+      -------------------
+
+      function Is_Limit_Subp
+        (E            : Entity_Id;
+         Analyze_Subp : Unbounded_String := Gnat2Why_Args.Limit_Subp)
+        return Boolean
+      is
+      begin
+         if Analyze_Subp = Null_Unbounded_String then
+            return True;
+         end if;
+
+         if Ekind (E) in Subprogram_Kind
+           and then "GP_Subp:" & To_String (Analyze_Subp) =
+           Gnat2Why.Nodes.Subp_Location (E)
+         then
+            return True;
+         else
+            return False;
+         end if;
+      end Is_Limit_Subp;
 
       -----------------------------
       -- Create_Flow_Result_File --
@@ -989,6 +1020,7 @@ package body Flow is
          case Ekind (E) is
             when Subprogram_Kind =>
                if In_Analyze_File (E)
+                 and Is_Limit_Subp (E)
                  and Subprogram_Body_In_SPARK (E)
                then
                   FA_Graphs.Include (E, Flow_Analyse_Entity (E));
@@ -1000,6 +1032,7 @@ package body Flow is
                   Pkg_Body : Node_Id;
                begin
                   if In_Analyze_File (E)
+                    and Is_Limit_Subp (E)
                     and Entity_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then
