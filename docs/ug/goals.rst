@@ -25,10 +25,19 @@ Flow Analysis of Unannotated Code
 When |GNATprove| is run in ``flow`` mode it performs flow analysis to check
 for errors relating to initialization of, and information flow between,
 variables. If the code under analysis does not include global or depends
-annotations then this analysis will detect errors relating to the use of
-uninitialized variables and unused assignments. This corresponds to the 
-"generative" or "retrospective" style of analysis. For example, in the code
-shown below |GNATprove| warns that the initial value of ``X`` is unused.
+annotations then this analysis will detect errors relating to:
+ 
+ - the use of uninitialized variables;
+ - unused variables;
+ - unused assignments;
+ - ineffective statements.
+
+(Note that the terms "unused" and "ineffective" both mean that the construct
+in question ultimately has no impact on any output from the subprogram.)
+
+This corresponds to the "generative" or "retrospective" style of analysis.
+For example, in the code shown below |GNATprove| warns that the initial value
+of ``X`` is unused.
 
 .. code-block:: ada
    :linenos:
