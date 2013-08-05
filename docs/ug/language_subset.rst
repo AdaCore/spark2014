@@ -1016,12 +1016,12 @@ The form of a pragma SPARK_Mode is as follows:
 
    pragma SPARK_Mode [ (On | Off | Auto) ] 
 
-The syntax for the aspect_definition of a SPARK_Mode aspect_specification is
+The form for the aspect_definition of a SPARK_Mode aspect_specification is
 as follows:
 
 .. code-block:: ada
 
-   SPARK_Mode => [ (On | Off | Auto) ]
+   [ (On | Off | Auto) ]
 
 The pragma can be used as a configuration pragma. The effect of
 such a configuration pragma is described in the rules for
