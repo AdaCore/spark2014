@@ -1021,7 +1021,7 @@ as follows:
 
 .. code-block:: ada
 
-   [ (On | Off | Auto) ]
+   SPARK_Mode => [ (On | Off | Auto) ]
 
 The pragma can be used as a configuration pragma. The effect of
 such a configuration pragma is described in the rules for
