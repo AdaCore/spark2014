@@ -1,4 +1,4 @@
-.. _introduction to spark:
+.. _introduction to SPARK:
 
 *******************
 Overview of |SPARK|
@@ -847,13 +847,13 @@ verification.
 Within a single Ada unit, constructs which are "in" and "not in" |SPARK| may be
 mixed at a fine level in accordance with the following two general principles:
 
-- Spark code shall only reference Spark declarations, but a Spark
-  declaration which requires a completion may have a non-Spark completion.
+- SPARK code shall only reference SPARK declarations, but a SPARK
+  declaration which requires a completion may have a non-SPARK completion.
 
-- Spark code shall only enclose Spark code, except that Spark code
-  may enclose a non-Spark completion of an enclosed Spark declaration.
+- SPARK code shall only enclose SPARK code, except that SPARK code
+  may enclose a non-SPARK completion of an enclosed SPARK declaration.
 
-More specifically, non-Spark completions of Spark declarations are allowed
+More specifically, non-SPARK completions of SPARK declarations are allowed
 for subprogram declarations, package declarations, private type declarations,
 and deferred constant declarations. [When tagged types are
 fully supported in |SPARK|, this list will also include private extension
@@ -861,9 +861,9 @@ declarations.] [Strictly speaking, a package's private part is considered
 to be part of its completion for purposes of the above rules; this is
 described in more detail below].
 
-When a non-Spark completion is provided for a Spark declaration, the
-user has an obligation to ensure that the non-Spark completion
-is consistent (with respect to the semantics of |SPARK|) with its Spark
+When a non-SPARK completion is provided for a SPARK declaration, the
+user has an obligation to ensure that the non-SPARK completion
+is consistent (with respect to the semantics of |SPARK|) with its SPARK
 declaration. For example, |SPARK| requires that a function call has no
 side effects. If the body of a given function is in |SPARK|, then this
 rule is enforced via various language rules; otherwise, it is the
@@ -871,13 +871,13 @@ responsibility of the user to ensure that the function body does not
 violate this rule. As with other
 such constructs (notably pragma Assume), failure to meet this obligation
 can invalidate any or all analysis (i.e., proofs and/or flow analysis)
-associated with the Spark portion of a program. A non-Spark completion
+associated with the SPARK portion of a program. A non-SPARK completion
 meets this obligation if it is semantically equivalent (with respect to
 dynamic semantics) to some notional completion that could have been
 written in |SPARK|.
 
 Failure to follow this rule can lead to subtle problems.
-For example, a Spark private type whose non-Spark completion includes a
+For example, a SPARK private type whose non-SPARK completion includes a
 reference to a variable in a default initial value expression for a
 record component could be a violation. Given this |SPARK| example
 
@@ -890,14 +890,14 @@ record component could be a violation. Given this |SPARK| example
      Flag := (X = T'(others => <>));
 
 , the rules of |SPARK| imply that Flag must be assigned the value True.
-If T is a private type with a non-Spark completion such that
+If T is a private type with a non-SPARK completion such that
 Flag is assigned False when the program executes, then the user's
 obligation has not been met. If this seems obscure, well, that's the point:
 care needs to be taken in this area.
   
 When the |SPARK| Reference Manual defines the static and dynamic
 semantics of |SPARK|, there is no description of the semantics of
-non-Spark constructs (just as the Ada manual does not describe,
+non-SPARK constructs (just as the Ada manual does not describe,
 for example, the dynamic semantics of assigning an array to a record).
 So how is the semantics of a such "mixed" |SPARK| programs defined?
 It would not be very helpful to say that "a mixed program is not a |SPARK|
@@ -923,17 +923,17 @@ used as a component type (and no explicit default value is provided for
 that component at the point of the component declaration), the implementation
 of this rule involves looking through the private type to its completion.
 As it happens, this particular case can be implemented fairly easily even
-if the completion of the type is Ada-but-not-Spark, but this is a case where
+if the completion of the type is Ada-but-not-SPARK, but this is a case where
 the properties of the completion "poke through". Similarly, the caller of
-a Spark subprogram normally does not need to see the body of the subprogram,
+a SPARK subprogram normally does not need to see the body of the subprogram,
 but the implementation of the |SPARK| rules which prevent calling a
 subprogram before its body has been elaborated are an exception to this.
-These rules can be generalized to handle some Ada-but-not-Spark constructs,
+These rules can be generalized to handle some Ada-but-not-SPARK constructs,
 but in the most general case (e.g., a call to an imported subprogram)
 optimistic assumptions are made and it is the responsibility of the user
 to ensure that this does not lead to problems.]
 
-Note that one possible non-Spark completion for a given Spark
+Note that one possible non-SPARK completion for a given SPARK
 subprogram_declaration is an Import pragma (or an equivalent
 aspect_specification). This means that |SPARK| code can invoke
 code written in languages other than Ada (e.g., C).
@@ -1002,7 +1002,7 @@ constructs have only one part.
 
 If the SPARK_Mode of a part of an entity is Off, then the SPARK_Mode
 of a later part of that entity shall not be On. [For example, a subprogram
-can have a Spark declaration and a non-Spark body, but not vice versa.]
+can have a SPARK declaration and a non-SPARK body, but not vice versa.]
 
 The SPARK_Mode aspect can be specified either via a pragma or via an
 aspect_specification. In some contexts, only a pragma can be used
@@ -1114,16 +1114,16 @@ the rules of |SPARK|) of the construct. The construct's SPARK_Mode is
 On if and only if If the construct is in |SPARK|. [A SPARK_Mode of Auto
 is therefore only possible for (parts of) a package.]
 
-In code where SPARK_Mode is On (also called "Spark code"), the rules of
+In code where SPARK_Mode is On (also called "SPARK code"), the rules of
 |SPARK| are enforced. In particular, such code shall not reference
-non-Spark entities, although such code may reference a Spark declaration
-with one or more non-Spark subsequent parts (e.g., a package whose visible part
+non-SPARK entities, although such code may reference a SPARK declaration
+with one or more non-SPARK subsequent parts (e.g., a package whose visible part
 has a SPARK_Mode of On but whose private part has a SPARK_Mode of Off; a
 package whose visible part has a SPARK_Mode of Auto may also be referenced).
 Similarly, code where SPARK_Mode is On shall not enclose code where
-SPARK_Mode is Off unless the non-Spark code is part of the "completion"
+SPARK_Mode is Off unless the non-SPARK code is part of the "completion"
 (using that term imprecisely, because we are including the private
-part of a package as part of its "completion" here) of a Spark declaration.
+part of a package as part of its "completion" here) of a SPARK declaration.
 
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
