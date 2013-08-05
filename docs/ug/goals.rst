@@ -214,18 +214,37 @@ specified or not, depending on the circumstances of the project. The
 following sections consider how |GNATprove| can be used for formal
 verification.
 
-.. _completeness of preconditions:
+.. _absence of run-time errors:
 
-Completeness of Preconditions
------------------------------
+Absence of Run-Time Errors
+--------------------------
 
-|GNATprove| generates Verification Conditions (VCs) whose proof ensures that some
-property holds on the source program. Such VCs are generated for functional
-properties expressed as annotations but also to ensure different high-level
-properties of the code. These will be discussed in the following sections,
-beginning with completeness of preconditions.
+This verification activity is available in mode ``prove``.
+|GNATprove| automatically generates Verification Conditions (VCs) whose proof
+ensures that the code of the subprogram being analyzed will not violate any of
+the following checks when it is executed:
 
-This activity verifies that preconditions of subprograms can never raise
+* overflow check
+* range check
+* index check
+* division check
+* discriminant check
+* length check
+
+The precise meaning of these checks is given by the Ada Language Reference
+Manual. An (*overflow check*) violation occurs when the result of an arithmetic
+operation cannot be represented in the base type (usually a machine integer)
+for this operation. A (*range check*) violation occurs when a value does not
+respect the range constraint for its type. An (*index check*) violation occurs
+when the value used to index into an array does not fit between the array
+bounds. A (*division check*) violation occurs when the divisor of a division
+operation (or ``rem`` or ``mod``) is zero. A *discriminant check* violation
+occurs when the discriminant(s) of a discriminant record does not have the
+expected value for a given operation. A *length check* violation occurs when an
+array does not have the expected length.
+
+|GNATprove| also takes into account checks that occur within preconditions.
+VCs are generated to show that preconditions of subprograms can never raise
 run-time errors, whatever the calling context. In order to achieve this
 property for preconditions, the user should in general guard all expressions
 which may raise a ``Constraint_Error`` in Ada, such as array accesses and
@@ -270,36 +289,8 @@ error::
    p.ads:10:31: overflow check not proved
    p.ads:13:15: (info) overflow check proved
 
-.. _absence of run-time errors:
-
-Absence of Run-Time Errors
---------------------------
-
-This verification activity is available in mode ``prove``.
-|GNATprove| verifies that the code of a subprogram analyzed does not contain
-violations of the following checks:
-
-* overflow check
-* range check
-* index check
-* division check
-* discriminant check
-* length check
-
-The precise meaning of these checks is given by the Ada Language Reference
-Manual. An (*overflow check*) violation occurs when the result of an arithmetic
-operation cannot be represented in the base type (usually a machine integer)
-for this operation. A (*range check*) violation occurs when a value does not
-respect the range constraint for its type. An (*index check*) violation occurs
-when the value used to index into an array does not fit between the array
-bounds. A (*division check*) violation occurs when the divisor of a division
-operation (or ``rem`` or ``mod``) is zero. A *discriminant check* violation
-occurs when the discriminant(s) of a discriminant record does not have the
-expected value for a given operation. A *length check* violation occurs when an
-array does not have the expected length.
-
-Note that |GNATprove| also takes into account checks that occur in assertions
-and pre- and postconditions.
+Similar VCs are generated to ensure that postconditions and assertions are
+also free from run-time exceptions.
 
 .. _functional verification:
 
