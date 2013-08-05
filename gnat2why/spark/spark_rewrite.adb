@@ -94,7 +94,7 @@ package body SPARK_Rewrite is
             if Nam = Name_Unchecked_Conversion then
                Rewrite (Old_Node => N,
                         New_Node => Unchecked_Convert_To
-                          (Typ => Etype (Etype (N)),
+                          (Typ  => Etype (Etype (N)),
                            Expr => First (Parameter_Associations (N))));
             end if;
          end;
