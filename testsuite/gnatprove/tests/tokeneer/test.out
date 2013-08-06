@@ -203,6 +203,8 @@ configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: info: range check proved
 crypto.adb:669:38: range check not proved
+crypto.adb:787:43: range check not proved
+crypto.adb:791:32: index check not proved
 display-interfac.adb:75:39: info: range check proved
 display-interfac.adb:92:45: info: range check proved
 display-interfac.adb:109:45: info: range check proved
