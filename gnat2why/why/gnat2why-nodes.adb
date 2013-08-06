@@ -501,6 +501,13 @@ package body Gnat2Why.Nodes is
          when N_Object_Declaration =>
             Check_Type := Etype (Defining_Identifier (Par));
 
+         when N_Op_Expon =>
+
+            --  A range check on exponentiation is only possible on the right
+            --  operand, and in this case the check range is "Natural"
+
+            Check_Type := Standard_Natural;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
