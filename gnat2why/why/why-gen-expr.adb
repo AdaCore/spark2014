@@ -400,6 +400,21 @@ package body Why.Gen.Expr is
       end if;
    end New_And_Expr;
 
+   function New_And_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain;
+       Base        : W_Base_Type_Id) return W_Expr_Id is
+   begin
+      if Base = EW_Bool_Type then
+         return New_And_Expr (Left, Right, Domain);
+      else
+         return
+           New_Call (Domain => Domain,
+                     Name   => To_Ident (WNE_Bitwise_And),
+                     Args   => (1 => +Left, 2 => +Right));
+      end if;
+   end New_And_Expr;
+
    -----------------------
    -- New_And_Then_Expr --
    -----------------------
@@ -655,6 +670,21 @@ package body Why.Gen.Expr is
       end if;
    end New_Or_Expr;
 
+   function New_Or_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain;
+       Base        : W_Base_Type_Id) return W_Expr_Id is
+   begin
+      if Base = EW_Bool_Type then
+         return New_Or_Expr (Left, Right, Domain);
+      else
+         return
+           New_Call (Domain => Domain,
+                     Name   => To_Ident (WNE_Bitwise_Or),
+                     Args   => (1 => +Left, 2 => +Right));
+      end if;
+   end New_Or_Expr;
+
    ----------------------
    -- New_Or_Else_Expr --
    ----------------------
@@ -856,9 +886,11 @@ package body Why.Gen.Expr is
 
    function New_Xor_Expr
       (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id is
+       Domain      : EW_Domain;
+       Base        : W_Base_Type_Id) return W_Expr_Id is
+
    begin
-      if Domain = EW_Pred then
+      if Domain = EW_Pred and then Base = EW_Bool_Type then
          declare
             Or_Expr : constant W_Expr_Id := New_Or_Expr (Left, Right, Domain);
             Both_Expr : constant W_Expr_Id :=
@@ -873,11 +905,18 @@ package body Why.Gen.Expr is
                Right  => Not_Both_Expr);
          end;
       else
-         return
-           New_Call
-             (Domain => Domain,
-              Name   => To_Ident (WNE_Bool_Xor),
-              Args   => (1 => +Left, 2 => +Right));
+         declare
+            Id : constant W_Identifier_Id :=
+              To_Ident
+                (if Base = EW_Bool_Type then WNE_Bool_Xor
+                 else WNE_Bitwise_Xor);
+         begin
+            return
+              New_Call
+                (Domain => Domain,
+                 Name   => Id,
+                 Args   => (1 => +Left, 2 => +Right));
+         end;
       end if;
    end New_Xor_Expr;
 

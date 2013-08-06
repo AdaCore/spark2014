@@ -50,6 +50,13 @@ package Why.Gen.Expr is
        Domain      : EW_Domain) return W_Expr_Id;
 
    function New_And_Expr
+      (Left, Right : W_Expr_Id;
+       Domain      : EW_Domain;
+       Base        : W_Base_Type_Id) return W_Expr_Id;
+   --  Generate the expression "Left and Right"; choose the right "and"
+   --  operation depending on "Base", e.g. for modular or boolean types.
+
+   function New_And_Expr
      (Conjuncts : W_Expr_Array;
       Domain    : EW_Domain) return W_Expr_Id;
 
@@ -69,6 +76,13 @@ package Why.Gen.Expr is
       Domain      : EW_Domain) return W_Expr_Id;
 
    function New_Or_Expr
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain;
+      Base        : W_Base_Type_Id) return W_Expr_Id;
+   --  Generate the expression "Left or Right"; choose the right "or" operation
+   --  depending on "Base", e.g. for modular or boolean types.
+
+   function New_Or_Expr
      (Conjuncts : W_Expr_Array;
       Domain    : EW_Domain) return W_Expr_Id;
 
@@ -78,7 +92,10 @@ package Why.Gen.Expr is
 
    function New_Xor_Expr
       (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain) return W_Expr_Id;
+       Domain      : EW_Domain;
+       Base        : W_Base_Type_Id) return W_Expr_Id;
+   --  Build an expression "Left xor Right", and choose the right xor operation
+   --  depending on "Base", which is either EW_Bool_Type or EW_Int_Type.
 
    function Why_Default_Value (Domain : EW_Domain; E : Entity_Id)
                                return W_Expr_Id;

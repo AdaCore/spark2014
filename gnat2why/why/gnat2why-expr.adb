@@ -4098,47 +4098,31 @@ package body Gnat2Why.Expr is
                     Domain => Domain);
             end if;
 
-         when N_Op_And =>
-            T :=
-               New_And_Expr
-                 (Left   => Transform_Expr (Left_Opnd (Expr),
-                                            EW_Bool_Type,
-                                            Domain,
-                                            Local_Params),
-                  Right  => Transform_Expr (Right_Opnd (Expr),
-                                            EW_Bool_Type,
-                                            Domain,
-                                            Local_Params),
-                  Domain => Domain);
-            Current_Type := EW_Bool_Type;
-
-         when N_Op_Or =>
-            T :=
-               New_Or_Expr
-                 (Left     => Transform_Expr (Left_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                  Right    => Transform_Expr (Right_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                  Domain   => Domain);
-            Current_Type := EW_Bool_Type;
-
-         when N_Op_Xor =>
-            T :=
-               New_Xor_Expr
-                 (Left     => Transform_Expr (Left_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                  Right    => Transform_Expr (Right_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                  Domain   => Domain);
-            Current_Type := EW_Bool_Type;
+         when N_Op_And | N_Op_Or | N_Op_Xor =>
+            declare
+               Base  : constant W_Base_Type_Id :=
+                 (if Is_Boolean_Type (Etype (Expr)) then EW_Bool_Type
+                  else EW_Int_Type);
+               Left  : constant W_Expr_Id :=
+                 Transform_Expr (Left_Opnd (Expr),
+                                 Base,
+                                 Domain,
+                                 Local_Params);
+               Right : constant W_Expr_Id :=
+                 Transform_Expr (Right_Opnd (Expr),
+                                 Base,
+                                 Domain,
+                                 Local_Params);
+            begin
+               Current_Type := Base;
+               if Nkind (Expr) = N_Op_And then
+                  T := New_And_Expr (Left, Right, Domain, Base);
+               elsif Nkind (Expr) = N_Op_Or then
+                  T := New_Or_Expr (Left, Right, Domain, Base);
+               else
+                  T := New_Xor_Expr (Left, Right, Domain, Base);
+               end if;
+            end;
 
          when N_Short_Circuit =>
             Short_Circuit : declare

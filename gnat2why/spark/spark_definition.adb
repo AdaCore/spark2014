@@ -2567,9 +2567,6 @@ package body SPARK_Definition is
             if Is_Array_Type (Left_T) then
                Mark_Violation
                  ("binary operator on array type", N, NYI_Array_Operation);
-            elsif not Is_Boolean_Type (Etype (N)) then
-               Mark_Violation
-                 ("bitwise modular operation", N, NYI_Arith_Operation);
             end if;
 
          when N_Op_Shift =>
