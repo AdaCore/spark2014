@@ -26,10 +26,7 @@
 
 package Flow.Analysis is
 
-   procedure Analyse_Main
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs);
    --  If FA corresponds to a main program, we ensure that
    --  all globals it references are initialised.
 
@@ -43,66 +40,46 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Find_Unwritten_Exports
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs);
    --  Find outputs which are never written to.
    --
    --  Complexity is O(N)
 
-   procedure Find_Ineffective_Imports
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Find_Ineffective_Imports (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective initial values.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Illegal_Updates
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Find_Illegal_Updates (FA : in out Flow_Analysis_Graphs);
    --  Find all cases where we update an in parameter or global.
    --
    --  Complexity is O(N)
    --
    --  !!! this should be moved to spark_definition
 
-   procedure Find_Ineffective_Statements
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --
    --  Complexity is O(N^2)
 
    procedure Find_Use_Of_Uninitialised_Variables
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+     (FA : in out Flow_Analysis_Graphs);
    --  Find all instances where uninitialised variables are used. Two
    --  separate checks are performed.
    --
    --  Complexity is O(N)
 
-   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs);
+   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Unused_Objects
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Find_Unused_Objects (FA : in out Flow_Analysis_Graphs);
    --  Find unused objects.
    --
    --  Complexity is O(N)
 
-   procedure Check_Contracts
-     (FA            : Flow_Analysis_Graphs;
-      Found_Error   : in out Boolean;
-      Found_Warning : in out Boolean);
+   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.
    --

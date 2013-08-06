@@ -97,40 +97,46 @@ package Flow is
    type Flow_Analysis_Graphs_Root (Kind : Valid_Analyzed_Entity :=
                                      E_Subprogram_Body)
    is record
-      Analyzed_Entity  : Entity_Id;
-      Scope            : Scope_Ptr;
+      Analyzed_Entity   : Entity_Id;
+      Scope             : Scope_Ptr;
       --  The entity and scope of the analysed entity.
 
-      Start_Vertex     : Flow_Graphs.Vertex_Id;
-      End_Vertex       : Flow_Graphs.Vertex_Id;
+      Start_Vertex      : Flow_Graphs.Vertex_Id;
+      End_Vertex        : Flow_Graphs.Vertex_Id;
       --  The start and end vertices in the graphs.
 
-      CFG              : Flow_Graphs.T;
-      DDG              : Flow_Graphs.T;
-      CDG              : Flow_Graphs.T;
-      TDG              : Flow_Graphs.T;
-      PDG              : Flow_Graphs.T;
+      CFG               : Flow_Graphs.T;
+      DDG               : Flow_Graphs.T;
+      CDG               : Flow_Graphs.T;
+      TDG               : Flow_Graphs.T;
+      PDG               : Flow_Graphs.T;
       --  The graphs.
 
-      All_Vars         : Flow_Id_Sets.Set;
+      All_Vars          : Flow_Id_Sets.Set;
       --  A set of all variables used.
 
-      Loops            : Node_Sets.Set;
+      Loops             : Node_Sets.Set;
       --  A set of all loops (identified by label).
 
-      Magic_Source     : Magic_String_To_Node_Sets.Map;
+      Magic_Source      : Magic_String_To_Node_Sets.Map;
       --  A mapping of any magic string to entities of the
       --  subprogram(s) they originate from. We need this to print
       --  more helpful error messages.
 
-      Base_Filename    : Unbounded_String;
+      Base_Filename     : Unbounded_String;
       --  A string with the name of the entity that is being analysed.
       --  This string follows the convention that we use for naming the
       --  .dot and .pdf files.
 
-      Aliasing_Present : Boolean;
+      Aliasing_Present  : Boolean;
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
+
+      Contains_Errors   : Boolean;
+      --  True if this entity contains flow errors.
+
+      Contains_Warnings : Boolean;
+      --  True if this entity contains flow warnings.
 
       case Kind is
          when E_Subprogram_Body =>
