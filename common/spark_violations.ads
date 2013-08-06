@@ -45,7 +45,7 @@ package SPARK_Violations is
       NYI_Dispatch,         --  dispatching
       NYI_Expr_With_Action, --  expression with action
       NYI_Invariant,        --  type invariant
-      NYI_Multi_Dim_Array,  --  multi-dimensional array of dimention > 2
+      NYI_Multi_Dim_Array,  --  multi-dimensional array of dimension > 4
       NYI_Pragma,           --  pragma
       NYI_Predicate,        --  type predicate
       NYI_Rep_Clause,       --  representation clause
