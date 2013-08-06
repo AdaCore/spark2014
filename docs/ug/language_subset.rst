@@ -1023,6 +1023,14 @@ as follows:
 
    [ (On | Off | Auto) ]
 
+For example:
+
+.. code-block:: ada
+
+   package P
+      with SPARK_Mode => On
+   is
+
 The pragma can be used as a configuration pragma. The effect of
 such a configuration pragma is described in the rules for
 determining the SPARK_Mode aspect value for an arbitrary part of an
