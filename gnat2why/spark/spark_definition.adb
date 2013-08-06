@@ -2570,7 +2570,7 @@ package body SPARK_Definition is
             end if;
 
          when N_Op_Shift =>
-            Mark_Violation ("operator", N, NYI_Arith_Operation);
+            null;
 
          when N_Op_Eq | N_Op_Ne | N_Op_Expon | N_Op_Add | N_Op_Subtract |
               N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
