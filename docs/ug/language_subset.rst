@@ -504,7 +504,7 @@ but that are intended never to be called in executable code. Such functions may
 be used to factor out common parts of expressions in annotations, or to make it
 easier to express some desired property to be proved or tested. Such functions
 are referred to as Ghost Functions and their key property is that they have no
-effect on the dynamic semantics of the the Ada program. If all ghost functions
+effect on the dynamic semantics of the Ada program. If all ghost functions
 and references to them in assertions were removed from the source code the behaviour
 of the compiled program would be unchanged.
 
@@ -894,7 +894,7 @@ If T is a private type with a non-SPARK completion such that
 Flag is assigned False when the program executes, then the user's
 obligation has not been met. If this seems obscure, well, that's the point:
 care needs to be taken in this area.
-  
+
 When the |SPARK| Reference Manual defines the static and dynamic
 semantics of |SPARK|, there is no description of the semantics of
 non-SPARK constructs (just as the Ada manual does not describe,
@@ -1014,7 +1014,7 @@ The form of a pragma SPARK_Mode is as follows:
 
 .. code-block:: ada
 
-   pragma SPARK_Mode [ (On | Off | Auto) ] 
+   pragma SPARK_Mode [ (On | Off | Auto) ]
 
 The form for the aspect_definition of a SPARK_Mode aspect_specification is
 as follows:
@@ -1085,11 +1085,11 @@ A default argument of On is assumed for any SPARK_Mode pragma or
 aspect_specification for which no argument is explicitly specified.
 
 A SPARK_Mode pragma or aspect specification shall only apply to a
-(part of a) library-level package or subprogram. 
+(part of a) library-level package or subprogram.
 
 The SPARK_Mode aspect value of an arbitrary part of an arbitrary
 Ada entity or construct is then defined to be the following value
-(except if the this yields a result of Auto for a non-package; see below):
+(except if this yields a result of Auto for a non-package; see below):
 
 - If SPARK_Mode has been specified for the given part of the
   given entity or construct, then the specified value;
@@ -1112,7 +1112,7 @@ Ada entity or construct is then defined to be the following value
 
 - Corner cases: the SPARK_Mode of the visible declarations of the
   limited view of a package is always Auto; the SPARK_Mode of any
-  part of a library unit generic unit is On.
+  part of a generic library unit is On.
   [Recall that any generic unit is in |SPARK|.]
 
 If the above computation yields a result of Auto for any construct
