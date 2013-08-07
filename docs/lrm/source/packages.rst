@@ -641,6 +641,14 @@ grammar of ``initialization_spec`` given below.
 
       :Trace Unit: FE 7.1.5 LR Entities in single input_list shall be distinct
 
+#. An ``initialization_item`` with a **null** ``input_list`` is
+   equivalent to the same ``initialization_item`` without an ``input_list``. 
+   [That is Initializes => (A => **null**) is equivalent to Initializes => A.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.5 LR Initializes => (A => null) is equivalent to Initializes => A. 
+
 .. centered:: **Static Semantics**
 
 #. The Initializes aspect of a package has visibility of the declarations
@@ -665,15 +673,21 @@ grammar of ``initialization_spec`` given below.
       :Trace Unit: FA 7.1.5 SS a null initialization_list package does not
                    initialize any state abstractions or variables
 
-#. If an ``initialization_item`` has an ``input_list`` then the ``names`` in the
-   list denote entities which are used in determining the initial value of the
-   state abstraction or variable denoted by the ``name`` of the
-   ``initialization_item`` but are not constituents of the state abstraction.
+#. An ``initialization_item`` shall have a an ``input_list`` if and
+   only if its initialization is dependent on visible variables and
+   state anbstractions not declared within the package containing the
+   Initializes aspect.  Then the ``names`` in the ``input_list`` shall
+   denote variables and state abstractions which are used in
+   determining the initial value of the state abstraction or variable
+   denoted by the ``name`` of the ``initialization_item`` but are not
+   constituents of the state abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.1.5 SS names in an input_list cannot be constituents of
-                   the state abstraction
+      :Trace Unit: FE 7.1.5 SS names in an input_list cannot be declared in the package
+                   containing the Initializes aspect and if the ininitalization_item
+                   is a state abstraction then the names in the input_list shall
+                   not be constituents of the state abstraction.
 
 .. centered:: **Dynamic Semantics**
 
@@ -694,33 +708,60 @@ There are no dynamic semantics associated with the Initializes aspect.
       :Trace Unit: FA 7.1.5 VR only variables and state abstractions in the
                    Initializes aspect shall be initialized
 
-#. If an ``initialization_item`` has an ``input_list`` then the entities denoted
-   in the input list shall be used in determining the initialized value of the
-   entity denoted by the ``name`` of the ``initialization_item``.
+#. If an ``initialization_item`` has an ``input_list`` then the
+   variables and state abstractions denoted in the input list shall be
+   used in determining the initialized value of the entity denoted by
+   the ``name`` of the ``initialization_item``.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FA 7.1.5 VR only entities in the input_list shall be used in
                    determining the initialized value of an entity
 
+#. All variables and state abstractions which are not declared within
+   the package but are used in the initialization of an
+   ``initialization_item`` shall appear in an ``input_list`` of the
+   ``initialization_item``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.5 VR enities used in the initialization of an 
+                   initialization_item must appear in its input_list.
+
 .. centered:: **Examples**
 
 .. code-block:: ada
 
     package Q
-       with Abstract_State => State,  -- Declaration of abstract state name State
-            Initializes    => State   -- Indicates that State will be initialized
-                                      -- during the elaboration of Q.
+       with Abstract_State => State,      -- Declaration of abstract state name State
+            Initializes    => State,      -- Indicates that State
+                              Visible_Var -- and Visible_Var will be initialized 
+                                          -- during the elaboration of Q.
     is
+       Visible_Var : Integer;
        ...
     end Q;
 
+
+    with Q;
+    package R
+       with Abstract_State => S1,                   -- Declaration of abstract state name S1
+            Initializes    => (S1 => Q.State,       -- Indicates that S1 will be initialized
+                                                    -- dependent on the value of Q.State
+                               X  => Q.Visible_Var) -- and X dependent on Q.Visible_Var
+                                                    -- during the elaboration of Q.
+    is
+       X : Integer := Q.Visible_Var;
+       ...
+    end Q;
+
+
     package Y
-       with Abstract_State => (A, B, (C with External, Input_Only)),
+       with Abstract_State => (A, B, (C with External => (Async_Writers, Effective_Reads)),
             -- Three abstract state names are declared A, B & C.
             Initializes    => A
             -- A is initialized during the elaboration of Y.
-            -- C is specified as external input only state
+            -- C is specified as external state (an input)
             -- B is not initialized.
     is
        ...
