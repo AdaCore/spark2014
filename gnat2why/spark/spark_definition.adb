@@ -2251,11 +2251,17 @@ package body SPARK_Definition is
             Mark_Violation ("unchecked expression", N, NYI_Unchecked);
 
          when N_Unchecked_Type_Conversion =>
+            Mark (Expression (N));
+
+            --  Source unchecked type conversion nodes were rewritten as such
+            --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
+            --  instance of Unchecked_Conversion as the Original_Node of the
+            --  new N_Unchecked_Type_Conversion node, and marking the node as
+            --  coming from source. We translate this original node to Why, so
+            --  it should be in SPARK too.
+
             if Comes_From_Source (N) then
-               Mark_Violation
-                 ("unchecked type conversion", N, NIR_Unchecked_Conv);
-            else
-               Mark (Expression (N));
+               Mark (Original_Node (N));
             end if;
 
          when N_Validate_Unchecked_Conversion =>

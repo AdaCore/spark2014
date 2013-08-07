@@ -62,8 +62,7 @@ package body Why.Inter is
    subtype N_Has_Theory is Node_Kind with
      Static_Predicate => N_Has_Theory in N_String_Literal |
                                          N_Aggregate      |
-                                         N_Slice          |
-                                         N_Unchecked_Type_Conversion;
+                                         N_Slice;
    --  Subtype of nodes (instead of entities) which have an associated theory,
    --  and should be treated specially.
 
@@ -1322,16 +1321,21 @@ package body Why.Inter is
    -- LCA --
    ---------
 
-   function  LCA (Left, Right : W_Base_Type_Id;
-                  Force : Boolean := False) return W_Base_Type_Id
+   function LCA
+     (Left  : W_Base_Type_Id;
+      Right : W_Base_Type_Id;
+      Force : Boolean := False) return W_Base_Type_Id
    is
       Left_Base, Right_Base : EW_Type;
+
    begin
       if not Force and then Eq (Left, Right) then
          return Left;
+
       else
          Left_Base := Get_Base_Type (Base_Why_Type (Left));
          Right_Base := Get_Base_Type (Base_Why_Type (Right));
+
          if Left_Base = EW_Abstract and then Right_Base = EW_Abstract then
             declare
                L : constant Node_Id := Get_Ada_Node (+Left);
@@ -1341,6 +1345,7 @@ package body Why.Inter is
                  (Root_Record_Type (L) = Root_Record_Type (R));
                return EW_Abstract (Root_Record_Type (L));
             end;
+
          else
             return Why_Types (Type_Hierarchy.LCA (Left_Base, Right_Base));
          end if;

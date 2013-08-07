@@ -72,9 +72,14 @@ package body SPARK_Rewrite is
          end;
       end if;
 
-      --  If the subprogram is actually an unchecked conversion we
+      --  If the subprogram is actually an unchecked type conversion we
       --  rewrite the tree to use an N_Unchecked_Type_Conversion node
-      --  instead, as documented in Sinfo.
+      --  instead, as documented in Sinfo. The original call to an instance
+      --  of Unchecked_Conversion is still accessible in the tree as the
+      --  Original_Node of the new N_Unchecked_Type_Conversion node. We mark
+      --  the node N_Unchecked_Type_Conversion as coming from source so that
+      --  it can be distinguished from compiler-generated unchecked type
+      --  conversion nodes, which are translated differently into Why.
 
       if Nkind (Name (N)) in N_Has_Entity
         and then Present (Entity (Name (N)))
@@ -97,6 +102,7 @@ package body SPARK_Rewrite is
                         New_Node => Unchecked_Convert_To
                           (Typ  => Etype (Etype (N)),
                            Expr => First (Parameter_Associations (N))));
+               Set_Comes_From_Source (N, True);
             end if;
          end;
       end if;
