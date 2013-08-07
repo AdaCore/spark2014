@@ -5,7 +5,7 @@ skein.adb:116:7: assertion not proved, requires Src'First = 0
 skein.adb:118:7: assertion not proved, requires Dst'Last >= Dst_Offset + (Byte_Count - 1
 skein.adb:120:7: assertion not proved, requires Src'Last + 1) * 8 >= Byte_Count
 skein.adb:124:14: info: range check proved
-skein.adb:135:29: index check not proved
+skein.adb:135:29: info: index check proved
 skein.adb:135:29: overflow check not proved
 skein.adb:137:48: info: division check proved
 skein.adb:137:48: info: index check proved
@@ -39,11 +39,11 @@ skein.adb:207:33: range check not proved
 skein.adb:210:33: overflow check not proved
 skein.adb:247:7: info: range check proved
 skein.adb:283:76: info: division check proved
-skein.adb:283:76: info: range check proved
+skein.adb:283:76: range check not proved
 skein.adb:286:56: info: division check proved
-skein.adb:286:56: info: range check proved
+skein.adb:286:56: range check not proved
 skein.adb:287:62: info: division check proved
-skein.adb:287:62: info: range check proved
+skein.adb:287:62: range check not proved
 skein.adb:587:14: info: range check proved
 skein.adb:662:17: range check not proved
 skein.adb:663:35: overflow check not proved
