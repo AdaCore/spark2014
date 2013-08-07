@@ -1,6 +1,4 @@
 gp_exp.adb:5:11: overflow check not proved
 gp_exp.adb:5:14: range check not proved
 gp_exp.adb:6:11: overflow check not proved
-gp_exp.adb:6:14: info: range check proved
 gp_exp.adb:7:11: overflow check not proved
-gp_exp.adb:7:14: info: range check proved

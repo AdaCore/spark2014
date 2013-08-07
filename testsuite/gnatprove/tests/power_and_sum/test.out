@@ -1,5 +1,6 @@
 power_and_sum.adb:9:10: loop invariant initialization not proved
 power_and_sum.adb:9:10: loop invariant preservation not proved
+power_and_sum.adb:9:47: range check not proved
 power_and_sum.adb:10:27: overflow check not proved
 power_and_sum.adb:11:17: overflow check not proved
 power_and_sum.adb:20:10: loop invariant initialization not proved, requires 2*TotalSum = I*(I-1

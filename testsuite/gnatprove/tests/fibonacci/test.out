@@ -48,6 +48,7 @@ fib.adb:97:50: division check not proved
 fib.adb:98:22: division check not proved
 fib.adb:99:22: overflow check not proved
 fib.adb:101:13: assertion not proved, requires p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1
+fib.adb:101:51: range check not proved
 fib.adb:102:22: range check not proved
 fib.adb:103:22: overflow check not proved
 fib.adb:110:10: loop invariant initialization not proved
@@ -59,6 +60,7 @@ fib.adb:114:50: division check not proved
 fib.adb:115:22: division check not proved
 fib.adb:116:22: overflow check not proved
 fib.adb:118:13: assertion not proved
+fib.adb:118:51: range check not proved
 fib.adb:120:22: range check not proved
 fib.adb:121:22: overflow check not proved
 fib.adb:130:11: range check not proved
