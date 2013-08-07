@@ -217,14 +217,45 @@ obligations.
 All such generated proof obligations must be discharged before the
 formal program verification phase may be considered to be complete.
 
-.. [#bounded_errors] In the case of some bounded errors a check and any resulting
-   exception only *may* be required.
+.. [#bounded_errors] In the case of some bounded errors, performing
+   a check (and raising an exception if the check fails) is permitted
+   but not required.
 
-Note that formal verification of a program must take acount
-of the machine on which that program is executed and the properties of the tools
-used to compile and build it. In such cases it must be possible to represent the dependencies as explicit
-inputs to the formal verification process.
+A |SPARK| implementation has the option of treating any construct which would
+otherwise generate an unsatisfiable proof obligation as illegal, even
+if the construct will never be executed. For example, a |SPARK| implementation
+might reject the declaration
 
+.. code-block:: ada
+
+   X : Positive := 0;
+
+in almost any context. [Roughly speaking, if it can be
+determined statically that a runtime check associated with some construct
+will inevitably fail whenever the construct is elaborated,
+then the implementation is  allowed (but not required) to reject
+the construct just as if the construct violated a legality rule.]
+For purposes of this rule, the
+Ada rule that Program_Error is raised if a function "completes normally
+without executing a return statement" is treated as a check associated
+with the end of the function body's sequence_of_statements. [This
+treatment gives |SPARK| implementations the option of imposing simpler
+(but more conservative) rules to ensure that the end of a function is
+not reachable. Strictly speaking, this rule gives |SPARK| implementations
+the option of rejecting many things that should not be rejected (e.g.,
+"pragma Assert (False);" in an unreachable arm of a case statement);
+reasonable implementations will not misuse this freedom.]
+
+Formal verification of a program may depend on properties of
+either the machine on which it is to be executed or on properties
+of the tools used to compile and build it. For example, a program
+might depend on the bounds of the type Standard.Long_Integer or on
+the implementation-dependent bounds chosen for the unconstrained
+base subtype associated with a declaration like "type T is range 1 .. 10;".
+In such cases it must be possible to provide the needed information
+as explicit inputs to the formal verification process. 
+The means by which this is accomplished is not specified as part of
+the |SPARK| language definition.
 
 .. _dynamic_sem:
 
