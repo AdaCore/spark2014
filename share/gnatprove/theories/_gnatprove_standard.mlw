@@ -32,6 +32,8 @@ module Integer
 
   use export _gnatprove_standard_th.Integer_Func
 
+  (* These program functions are there to generate division checks *)
+
   val computer_div_ (x:int) (y:int) : int
      requires { y<>0 }
      ensures { result = computer_div x y }
