@@ -33,7 +33,9 @@ theory Integer_Func
 
   function rem (x y : int) : int = ComputerDivision.mod x y
 
-  function mod (x y : int) : int
+  (* This is the formula I found after playing with mod and euclidean mod *)
+  function mod (x y : int) : int =
+    if y > 0 then EuclideanDivision.mod x y else EuclideanDivision.mod x y + y
 
   (* This function is used for the (implicit) modulo operation on modular
   types. The modulus is always positive, and in that case, the Ada mod or
