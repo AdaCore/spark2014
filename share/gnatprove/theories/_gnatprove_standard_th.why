@@ -26,12 +26,19 @@ theory Integer_Func
 
   function int_min (x y : int) : int = MinMax.min x y
 
-  function computer_div (x y : int) : int = ComputerDivision.div x y
+  (* Ada division and rem operator correspond to what Why3 calls "computer
+  division". Ada mod operator does not correspond to any predefined operator
+  in Why3. *)
+  function div (x y : int) : int = ComputerDivision.div x y
 
-  function computer_mod (x y : int) : int = ComputerDivision.mod x y
+  function rem (x y : int) : int = ComputerDivision.mod x y
 
-  function math_div (x y : int) : int = EuclideanDivision.div x y
+  function mod (x y : int) : int
 
+  (* This function is used for the (implicit) modulo operation on modular
+  types. The modulus is always positive, and in that case, the Ada mod or
+  Euclidean mod are OK. We take the Euclidean one because it is better
+  supported. *)
   function math_mod (x y : int) : int = EuclideanDivision.mod x y
 
   axiom bool_eq_axiom:

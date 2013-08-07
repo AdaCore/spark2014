@@ -423,7 +423,7 @@ package body Gnat2Why.Expr is
    begin
       if Is_Modular_Integer_Type (E) then
          return
-            New_Call (Name => To_Ident (WNE_Integer_Mod),
+            New_Call (Name => To_Ident (WNE_Integer_Math_Mod),
                       Domain => Domain,
                       Args =>
                        (1 => T,

@@ -34,17 +34,17 @@ module Integer
 
   (* These program functions are there to generate division checks *)
 
-  val computer_div_ (x:int) (y:int) : int
+  val div_ (x:int) (y:int) : int
      requires { y<>0 }
-     ensures { result = computer_div x y }
+     ensures { result = div x y }
 
-  val computer_mod_ (x:int) (y:int) : int
+  val rem_ (x:int) (y:int) : int
      requires { y<>0 }
-     ensures{ result = computer_mod x y }
+     ensures{ result = rem x y }
 
-  val math_mod_ (x:int) (y:int) : int
+  val mod_ (x:int) (y:int) : int
      requires { y<>0 }
-     ensures { result = math_mod x y }
+     ensures { result = mod x y }
 
   (* Bitwise operations in Ada are allowed on modular types only, which always
   range from 0 to some value N - 1. In consequence, there is no (trouble with

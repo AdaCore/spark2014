@@ -617,10 +617,11 @@ package body Why.Gen.Names is
          when WNE_Bitwise_And  => return "Integer.bitwise_and";
          when WNE_Bitwise_Or   => return "Integer.bitwise_or";
          when WNE_Bitwise_Xor  => return "Integer.bitwise_xor";
-         when WNE_Integer_Div  => return "Integer.computer_div";
+         when WNE_Integer_Div  => return "Integer.div";
          when WNE_Integer_Exp  => return "Integer.power";
-         when WNE_Integer_Rem  => return "Integer.computer_mod";
-         when WNE_Integer_Mod  => return "Integer.math_mod";
+         when WNE_Integer_Rem  => return "Integer.rem";
+         when WNE_Integer_Mod  => return "Integer.mod";
+         when WNE_Integer_Math_Mod => return "Integer.math_mod";
          when WNE_Integer_Max  => return "Integer.int_max";
          when WNE_Integer_Min  => return "Integer.int_min";
          when WNE_Real_Div     => return "Floating.div_real";

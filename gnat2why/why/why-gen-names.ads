@@ -199,6 +199,7 @@ package Why.Gen.Names is
       WNE_Integer_Abs,
       WNE_Integer_Div,
       WNE_Integer_Exp,
+      WNE_Integer_Math_Mod,
       WNE_Integer_Mod,
       WNE_Integer_Rem,
       WNE_Integer_Max,
