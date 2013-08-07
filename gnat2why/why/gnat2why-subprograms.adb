@@ -819,7 +819,7 @@ package body Gnat2Why.Subprograms is
                Expr : constant Node_Id :=
                  Expression (First (Pragma_Argument_Associations (PPC)));
                Why_Expr : constant W_Expr_Id :=
-                 Transform_Expr (Expr, Domain, Params);
+                 Transform_Expr (Expr, EW_Bool_Type, Domain, Params);
             begin
                if Cur_Spec /= Why_Empty then
                   Cur_Spec :=
