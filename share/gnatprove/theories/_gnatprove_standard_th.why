@@ -49,7 +49,7 @@ theory Integer_Func
     forall y:int.
       bool_lt x y = True <-> x < y
 
-  axiom Bool_int__le_axiom:
+  axiom bool_int__le_axiom:
     forall x:int.
     forall y:int.
       bool_le x y = True <-> x <= y
@@ -66,3 +66,50 @@ theory Integer_Func
 
 end
 
+theory Floating_Func
+  use import bool.Bool
+  use import real.Real
+  use import real.RealInfix
+  use import real.MinMax
+
+  function bool_lt real real : bool
+  function bool_le real real : bool
+  function bool_gt real real : bool
+  function bool_ge real real : bool
+  function bool_eq real real : bool
+  function bool_neq real real : bool
+
+  axiom Bool_real__lt_axiom:
+    forall x:real.
+    forall y:real.
+      bool_lt x y = True <-> x <. y
+
+  axiom Bool_real__le_axiom:
+    forall x:real.
+    forall y:real.
+      bool_le x y = True <-> x <=. y
+
+  axiom Bool_real__gt_axiom:
+    forall x:real.
+    forall y:real.
+        bool_gt x y = True <-> x >. y
+
+  axiom Bool_real__ge_axiom:
+    forall x:real.
+    forall y:real.
+      bool_ge x y = True <-> x >=. y
+
+  axiom Bool_real__eq_axiom:
+    forall x:real.
+    forall y:real.
+      bool_eq x y = True <-> x = y
+
+  axiom Bool_real__neq_axiom:
+    forall x:real.
+    forall y:real.
+       bool_neq x y = True <-> x <> y
+
+  function real_max (x y : real) : real = MinMax.max x y
+  function real_min (x y : real) : real = MinMax.min x y
+
+end

@@ -67,6 +67,8 @@ module Floating
 
   use real.FromInt
 
+  use export _gnatprove_standard_th.Floating_Func
+
   function real_of_int (x : int) : real = FromInt.from_int x
 
   function round real : int
@@ -105,58 +107,12 @@ module Floating
     forall x:real.
       x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
 
-  (* Boolean comparison functions for reals *)
-
-  function bool_lt real real : bool
-
-  function bool_le real real : bool
-
-  function bool_gt real real : bool
-
-  function bool_ge real real : bool
-
-  function bool_eq real real : bool
-
-  function bool_neq real real : bool
-
-  axiom Bool_real__lt_axiom:
-    forall x:real.
-    forall y:real.
-      bool_lt x y = True <-> x <. y
-
-  axiom Bool_real__le_axiom:
-    forall x:real.
-    forall y:real.
-      bool_le x y = True <-> x <=. y
-
-  axiom Bool_real__gt_axiom:
-    forall x:real.
-    forall y:real.
-        bool_gt x y = True <-> x >. y
-
-  axiom Bool_real__ge_axiom:
-    forall x:real.
-    forall y:real.
-      bool_ge x y = True <-> x >=. y
-
-  axiom Bool_real__eq_axiom:
-    forall x:real.
-    forall y:real.
-      bool_eq x y = True <-> x = y
-
-  axiom Bool_real__neq_axiom:
-    forall x:real.
-    forall y:real.
-       bool_neq x y = True <-> x <> y
-
   function div_real (x : real) (y : real) : real = x /. y
 
   val div_real_ (x:real) (y:real) : real
     requires { y<>0.0 }
     ensures { result = div_real x y }
 
-  function real_max (x y : real) : real = MinMax.max x y
-  function real_min (x y : real) : real = MinMax.min x y
 end
 
 module Boolean

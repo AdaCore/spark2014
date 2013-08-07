@@ -86,6 +86,7 @@ module Floating_Point
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Floating
   use import "real".RealInfix
+  use export ada__model_th.Floating_Point_Theory
 
   type t
 
@@ -120,9 +121,6 @@ module Floating_Point
   axiom inversion_axiom :
     forall x : t [to_real x].
       of_real ( to_real(x) ) = x
-
-  function bool_eq (x : real) (y : real) : bool =
-    if x = y then True else False
 
   function attr__ATTRIBUTE_IMAGE real : __image
 
