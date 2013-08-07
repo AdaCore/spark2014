@@ -106,6 +106,10 @@ procedure Gnatprove is
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
+   procedure Set_Environment;
+   --  Set the environment before calling other tools.
+   --  In particular, add any needed directories in the PATH env var.
+
    procedure Set_Gnat2why_Env_Var;
    --  Set the environment variable which passes some options to gnat2why
 
@@ -118,8 +122,7 @@ procedure Gnatprove is
        Config_File   : String;
        Parallel      : Integer;
        Compiler_Args : in out String_Lists.List;
-       Status        : out Integer)
-   is
+       Status        : out Integer) is
    begin
       if Verbose then
          Compiler_Args.Prepend ("-v");
@@ -315,7 +318,6 @@ procedure Gnatprove is
       Obj_Path     : File_Array)
    is
       Status : Integer;
-
    begin
       if not Quiet then
          Put_Line ("Phase " & Step_Image (Step)
@@ -454,14 +456,15 @@ procedure Gnatprove is
    -- Generate_Why_Project_File --
    -------------------------------
 
-   function Generate_Why_Project_File (Proj : Project_Type)
-                                       return String
+   function Generate_Why_Project_File
+     (Proj : Project_Type) return String
    is
       Why_File_Name : constant String := "why.gpr";
    begin
-      Generate_Project_File (Why_File_Name,
-                             "Why",
-                             Proj.Library_Files (ALI_Ext => "__package.mlw"));
+      Generate_Project_File
+        (Why_File_Name,
+         "Why",
+         Proj.Library_Files (ALI_Ext => "__package.mlw"));
       return Why_File_Name;
    end Generate_Why_Project_File;
 
@@ -469,8 +472,9 @@ procedure Gnatprove is
    -- Generate_Why3_Conf_File --
    -----------------------------
 
-   procedure Generate_Why3_Conf_File (Gnatprove_Subdir : String;
-                                      Obj_Path         : File_Array)
+   procedure Generate_Why3_Conf_File
+     (Gnatprove_Subdir : String;
+      Obj_Path         : File_Array)
    is
       File : File_Type;
       Filename : constant String :=
@@ -484,8 +488,7 @@ procedure Gnatprove is
       -- Put_Keyval --
       ----------------
 
-      procedure Put_Keyval (Key : String; Value : String)
-      is
+      procedure Put_Keyval (Key : String; Value : String) is
          use Ada.Strings.Unbounded;
          Value_Unb : Unbounded_String := To_Unbounded_String (Value);
       begin
@@ -496,8 +499,7 @@ procedure Gnatprove is
          Put_Line (File, """");
       end Put_Keyval;
 
-      procedure Put_Keyval (Key : String; Value : Integer)
-      is
+      procedure Put_Keyval (Key : String; Value : Integer) is
       begin
          Put (File, Key);
          Put (File, " = ");
@@ -508,8 +510,7 @@ procedure Gnatprove is
       -- Start_Section --
       -------------------
 
-      procedure Start_Section (Section : String)
-      is
+      procedure Start_Section (Section : String) is
       begin
          Put (File, "[");
          Put (File, Section);
@@ -550,6 +551,19 @@ procedure Gnatprove is
       Put_Keyval ("version", "0.95");
       Close (File);
    end Generate_Why3_Conf_File;
+
+   ---------------------
+   -- Set_Environment --
+   ---------------------
+
+   procedure Set_Environment is
+      use Ada.Environment_Variables, GNAT.OS_Lib;
+
+      Path_Val : constant String := Value ("PATH", "");
+   begin
+      --  Add <prefix>/libexec/spark2014/bin in front of the PATH
+      Set ("PATH", Libexec_Bin_Dir & Path_Separator & Path_Val);
+   end Set_Environment;
 
    --------------------------
    -- Set_Gnat2why_Env_Var --
@@ -622,7 +636,7 @@ procedure Gnatprove is
       end loop;
       Set_Gnat2why_Env_Var;
       Call_Gprbuild (Project_File,
-                     Gpr_Translataion_Cnf_File,
+                     Gpr_Translation_Cnf_File,
                      Parallel,
                      Args,
                      Status);
@@ -638,8 +652,8 @@ procedure Gnatprove is
 --  Start processing for Gnatprove
 
 begin
+   Set_Environment;
    Read_Command_Line (Tree);
-
    Proj_Type := Root_Project (Tree);
 
    declare

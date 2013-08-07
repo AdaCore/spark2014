@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
+with Ada.Directories; use Ada.Directories;
 
 with GNAT.Strings;
 
@@ -120,42 +120,36 @@ package Configuration is
    --  gnatprove. The hierarchy looks as follows:
    --  prefix
    --  prefix/lib
-   --  prefix/lib/gnatprove   -     ALI files of the stdlib
+   --  prefix/lib/gnatprove          - ALI files of the stdlib
+   --  prefix/libexec/spark2014
+   --  prefix/libexec/spark2014/bin  - all auxiliary tools, e.g. gprbuild
    --  prefix/share
-   --  prefix/share/why3      -     files that come with Why3
+   --  prefix/share/why3             - files that come with Why3
    --  prefix/share/gnatprove/config - gprbuild config files
    --  prefix/share/gnatprove/stdlib - Why3 files of the stdlib
    --  prefix/share/gnatprove/theories - Why3 files for Ada theories
    --
-   Prefix         : constant String := Executable_Location;
-   Lib_Dir        : constant String :=
-      Ada.Directories.Compose (Prefix, "lib");
-   Stdlib_ALI_Dir : constant String :=
-      Ada.Directories.Compose (Lib_Dir, "gnatprove");
-   Share_Dir      : constant String :=
-      Ada.Directories.Compose (Prefix, "share");
-   Why3_Dir       : constant String :=
-      Ada.Directories.Compose (Share_Dir, "why3");
-   Gnatprove_Dir  : constant String :=
-      Ada.Directories.Compose (Share_Dir, "gnatprove");
-   Theories_Dir   : constant String :=
-      Ada.Directories.Compose (Gnatprove_Dir, "theories");
-   Gpr_Cnf_Dir    : constant String :=
-      Ada.Directories.Compose (Gnatprove_Dir, "config");
-
-   Stdlib_Dir     : constant String :=
-      Ada.Directories.Compose (Gnatprove_Dir, "stdlib");
-
-   Why3_Drivers_Dir : constant String :=
-      Ada.Directories.Compose (Why3_Dir, "drivers");
+   Prefix           : constant String := Executable_Location;
+   Lib_Dir          : constant String := Compose (Prefix, "lib");
+   Stdlib_ALI_Dir   : constant String := Compose (Lib_Dir, "gnatprove");
+   Libexec_Dir      : constant String :=
+      Compose (Compose (Prefix, "libexec"), "spark2014");
+   Libexec_Bin_Dir  : constant String := Compose (Libexec_Dir, "bin");
+   Share_Dir        : constant String := Compose (Prefix, "share");
+   Why3_Dir         : constant String := Compose (Share_Dir, "why3");
+   Gnatprove_Dir    : constant String := Compose (Share_Dir, "gnatprove");
+   Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
+   Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
+   Stdlib_Dir       : constant String := Compose (Gnatprove_Dir, "stdlib");
+   Why3_Drivers_Dir : constant String := Compose (Why3_Dir, "drivers");
 
    --  The exact places for the three configuration files used by gnatprove
-   Gpr_Translataion_Cnf_File : constant String :=
-     Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
+   Gpr_Translation_Cnf_File : constant String :=
+     Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
    Gpr_Frames_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "frames.cgpr");
+      Compose (Gpr_Cnf_Dir, "frames.cgpr");
    Gpr_Why_Cnf_File : constant String :=
-      Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
+      Compose (Gpr_Cnf_Dir, "why.cgpr");
 
    function SPARK_Report_File (Out_Dir : String) return String;
    --  The name of the file in which the SPARK report is generated:
