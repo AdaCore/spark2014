@@ -133,14 +133,23 @@ Record Types
 |SPARK| does not permit partial default initialization of record objects.
 More specifically, if at least one non-discriminant component (either
 explicitly declared or inherited) of a record type or type extension either
-is of a type which defines default initialization or is declared by
-a component_declaration which includes a Default_Value, then the record type
-or type extension shall define full default initialization.
+is of a type which defines full default initialization or is declared by
+a ``component_declaration`` which includes a ``default_expression``, and if that
+component's type has at least one elementary non-discriminant part,
+then the record type or type extension shall define full default
+initialization.
+
+[In the unusual case of a non-discriminant component which has no
+non-discriminant scalar parts (e.g., an array of null records),
+the preceding "at least one elementary" wording means that the component
+is ignored for purposes of this rule.]
 
 [The enforcement of this rule requires looking at the ``full_type_declaration``
-of a ``private_type`` declaration to determine whether the private type has a
-default initialization. A future version of |SPARK| may introduce extra features
-to avoid having to do this.]
+of a ``private_type`` declaration. This is inconsistent with SPARK's usual
+"everything you need to know should be in the specification" design.
+A future version of |SPARK| may introduce some mechanism to
+somehow (at least optionally)  provide the needed
+information as part of the specification of a private type.]
 
 Tagged Types and Type Extensions
 --------------------------------
