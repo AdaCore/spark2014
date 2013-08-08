@@ -31,7 +31,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
---  Wrapper around gcc -c -x adawhy to provide a gnatwhy executable.
+--  Wrapper around gcc -c -x adawhy to provide a gnat2why executable.
 
 procedure GNAT2Why_Wrapper is
 
