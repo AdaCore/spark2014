@@ -6,7 +6,13 @@ segway.adb:23:16: "Speed" might not be initialized [uninitialized]
 segway.adb:25:07: "Speed" might not be initialized [uninitialized]
 segway.adb:27:07: "Speed" might not be initialized [uninitialized]
 segway.adb:29:07: "Speed" might not be initialized [uninitialized]
-segway.ads:23:16: "Speed" might not be initialized [uninitialized]
 segway.ads:23:16: "State" might not be initialized [uninitialized]
+segway.ads:23:16: "Speed" might not be initialized [uninitialized]
 segway.ads:25:31: "Speed" might not be initialized [uninitialized]
 segway.ads:25:38: "State" might not be initialized [uninitialized]
+
+   compilation of segway.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+

@@ -4,3 +4,9 @@ p.adb:9:19: object is not in SPARK
 p.adb:9:22: object is not in SPARK
 p.adb:10:19: object is not in SPARK
 p.adb:10:22: object is not in SPARK
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+

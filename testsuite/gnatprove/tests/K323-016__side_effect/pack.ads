@@ -1,3 +1,4 @@
+pragma SPARK_Mode (On);
 package Pack is
 
    X : Boolean;

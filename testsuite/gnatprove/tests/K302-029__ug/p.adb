@@ -1,5 +1,7 @@
 package body P is
-   procedure Set is
+   procedure Set with
+     SPARK_Mode => Off
+   is
    begin
       X.all := True;
    end Set;

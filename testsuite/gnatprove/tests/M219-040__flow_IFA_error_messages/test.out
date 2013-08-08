@@ -21,9 +21,15 @@ test.adb:180:07: warning: unused assignment [ineffective]
 test.adb:189:39: warning: unused initial value of "Par2" [unused_initial_value]
 test.adb:189:39: warning: unused variable "Par2" [unused]
 test.adb:191:13: warning: unused variable "Z" [unused]
-test.adb:194:29: warning: unused global "Y" [unused]
 test.adb:194:29: warning: unused initial value of "Y" [unused_initial_value]
+test.adb:194:29: warning: unused global "Y" [unused]
 test.adb:212:34: warning: unused initial value of "Condition" [unused_initial_value]
 test.adb:215:07: warning: statement has no effect [ineffective]
 test.adb:217:12: warning: unused assignment [ineffective]
 test.adb:221:15: warning: unused assignment [ineffective]
+
+   compilation of test.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+

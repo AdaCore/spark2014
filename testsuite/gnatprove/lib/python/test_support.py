@@ -162,6 +162,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     """
     global fake_output_generated
     cmd = ["gnatprove"]
+    # Continue on errors, to get the maximum number of messages for tests
+    cmd += ["-k"]
     if quick_mode():
       cmd += ["--proof=no_wp"]
     if debug_mode():
@@ -169,9 +171,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     if verbose_mode():
       cmd += ["--verbose"]
     cmd += to_list(opt)
-    # Force the option -gnatd.V for SPARK 2014 extensions, to avoid having to
-    # put it in all project files of tests.
-    cmd += ["-cargs", "-gnatd.V"]
     process = Run(cmd)
 
     # In quick mode, ignore xfail tests by simply generating a dummy output

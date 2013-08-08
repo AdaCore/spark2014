@@ -5,11 +5,11 @@ package Pack is
    type Acc is access Integer;
    Y : Acc;
 
-   procedure P0;
-   procedure P1;
-   procedure P2;
-   procedure P3;
-   procedure P4;
-   procedure P5;
+   procedure P0 with SPARK_Mode => On;
+   procedure P1 with SPARK_Mode => On;
+   procedure P2 with SPARK_Mode => On;
+   procedure P3 with SPARK_Mode => Off;
+   procedure P4 with SPARK_Mode => On;
+   procedure P5 with SPARK_Mode => On;
 
 end;
