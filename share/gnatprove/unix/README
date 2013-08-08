@@ -1,0 +1,13 @@
+This is the README file for the binary distribution of SPARK 2014.
+
+INSTALLING
+
+To install this package, run the script 'doinstall' contained in this
+directory. This script asks where you want this package to be installed.
+It prompts you for confirmation before proceeding with the actual installation.
+At any time before this confirmation, you can interrupt it by pressing Ctrl-C.
+
+USE
+
+See the SPARK 2014 documentation for more information:
+http://www.adacore.com/developers/documentation/category/sparkpro

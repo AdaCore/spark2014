@@ -1,0 +1,42 @@
+#!/bin/sh
+prefix=`type gps 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
+clear
+printf "    This is the installation script for the AdaCore and Altran
+    SPARK 2014 verification toolset.
+    For information on commercial support please contact sales@adacore.com.
+
+    To install this package, you need to specify a base directory.
+    All the files will be installed in subdirectories that are created
+    under this directory.
+
+    Important Note: You should not use ~ or ~username wildcards
+    when specifying this directory name.
+
+    In which directory do you want to install this
+    package? [$prefix]: "
+
+read pref
+if [ "$pref" != "" ]; then
+  prefix=$pref
+fi
+
+printf "    The install directory will be: $prefix
+    Do you want to proceed with the installation now? [y|n]: "
+
+read confirm
+case $confirm in
+  [yY])
+    echo "
+    installing package..."
+    tar cf - bin lib libexec share | (cd $prefix && tar xf -)
+    echo "    installation completed.
+    To use SPARK 2014, users must put $prefix/bin
+    in front of their PATH environment variable.
+    The following commands enable you to do this:
+       PATH=$prefix/bin:\$PATH  # Bourne shell
+       setenv PATH $prefix/bin:\$PATH  # C shell
+    Thank you for installing SPARK 2014!
+"
+    ;;
+  *) echo "installation aborted."; exit 1
+esac
