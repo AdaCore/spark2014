@@ -576,8 +576,14 @@ contracts provided by users to interpret the effect of calls.  Thus, it is
 essential to understand how |GNATprove| uses contracts, as well as other forms
 of annotations. This section aims at providing a deeper insight into how
 |GNATprove| flow analysis and formal verification works, through a
-step-by-step exploration of simple code examples. We begin with flow analysis
-examples, then move on to exception freedom and correctness proofs.
+step-by-step exploration of simple code examples. 
+
+This section is structured into the following subsections:
+
+ - Flow analysis examples
+ - Basic proof examples
+ - Call examples
+ - Loop examples
 
 .. _flow_examples:
 
