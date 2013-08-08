@@ -57,7 +57,14 @@ package Gnat2Why_Args is
 
    Standard_Mode : Boolean := False;
 
-   --  SPARK check mode. In this mode, gnat2why does not generate Why code.
+   --  Global generation mode. In this mode, gnat2why generates cross-reference
+   --  information in ALI files for being able to generated the globals read
+   --  and writen by subprograms.
+
+   Global_Gen_Mode : Boolean := False;
+
+   --  SPARK 2014 checking mode. In this mode, gnat2why checks that sections of
+   --  code marked as SPARK_Mode=>True do not contain violations of SPARK 2014.
 
    Check_Mode : Boolean := False;
 
@@ -70,6 +77,19 @@ package Gnat2Why_Args is
    --  control dependence) for debugging purposes.
 
    Flow_Dump_Graphs : Boolean := False;
+
+   --  When Pedantic is True, issue warnings on features that could cause
+   --  portability issues with other compilers than GNAT. For example, issue
+   --  a warning when the Ada RM allows reassociation of operators in an
+   --  expression (something GNAT never does), which could lead to different
+   --  overflows, e.g. on
+   --    A + B + C
+   --  which is parsed as
+   --    (A + B) + C
+   --  but could be reassociated by another compiler as
+   --    A + (B + C)
+
+   Pedantic : Boolean := False;
 
    --  If this list is non-empty, only units of this list should be analyzed.
 

@@ -49,6 +49,8 @@ with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 with SPARK_Util;                         use SPARK_Util;
 with SPARK_Violations;                   use all type SPARK_Violations.Vkind;
 
+with Gnat2Why_Args;
+
 package body SPARK_Definition is
 
    -----------------------------------
@@ -2583,13 +2585,13 @@ package body SPARK_Definition is
             null;
       end case;
 
-      --  In strict SPARK mode, issue a warning whenever an arithmetic
-      --  operation could be reordered by the compiler, like "A + B - C", as a
-      --  given ordering may overflow and another may not. Not that a warning
-      --  is issued even on operations like "A * B / C" which are not reordered
+      --  In pedantic mode, issue a warning whenever an arithmetic operation
+      --  could be reordered by the compiler, like "A + B - C", as a given
+      --  ordering may overflow and another may not. Not that a warning is
+      --  issued even on operations like "A * B / C" which are not reordered
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
-      if Opt.SPARK_Strict_Mode
+      if Gnat2Why_Args.Pedantic
 
         --  Ignore code defined in the standard library, unless the main unit
         --  is from the standard library. In particular, ignore code from

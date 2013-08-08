@@ -74,6 +74,14 @@ techniques (splitting conjunctions and trying each path separately) are tried.
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
 
+By default, |GNATprove| stops at the first unit where it detect errors
+(compilation errors, SPARK 2014 violations, or flow analysis errors).
+The option ``-k`` can be used to get |GNATprove| to issue errors of the
+same kind for multiple units. If there are any `compilation` errors
+(really violations of Ada legality rules here),|GNATprove| does not attempt
+analysis. If there are violations of |SPARK| legality rules, or flow
+analysis errors, |GNATprove| does not attempt proof.
+
 .. _implementation_defined:
 
 Implementation-Defined Behavior
@@ -576,7 +584,7 @@ contracts provided by users to interpret the effect of calls.  Thus, it is
 essential to understand how |GNATprove| uses contracts, as well as other forms
 of annotations. This section aims at providing a deeper insight into how
 |GNATprove| flow analysis and formal verification works, through a
-step-by-step exploration of simple code examples. 
+step-by-step exploration of simple code examples.
 
 This section is structured into the following subsections:
 

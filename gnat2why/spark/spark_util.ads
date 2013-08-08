@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;            use Atree;
-with Debug;
 with Einfo;            use Einfo;
 with Impunit;          use Impunit;
 with Namet;            use Namet;
@@ -44,15 +43,6 @@ package SPARK_Util is
 
    Name_GNATprove : constant String := "gnatprove";
    Name_External_Axiomatization : constant String := "external_axiomatization";
-
-   -------------------
-   -- Special modes --
-   -------------------
-
-   --  This mode is currently set through a debug flag
-
-   function In_Frame_Condition_Mode return Boolean is
-     (Debug.Debug_Flag_Dot_GG);
 
    ---------------
    -- Utilities --

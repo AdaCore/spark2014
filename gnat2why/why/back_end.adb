@@ -60,9 +60,9 @@ package body Back_End is
       if Gnat2Why_Args.Standard_Mode then
          Translate_Standard_Package;
          Osint.Exit_Program (Osint.E_Success);
-      else
-         GNAT2Why_BE.Call_Back_End;
       end if;
+
+      GNAT2Why_BE.Call_Back_End;
 
       --  Make sure to lock any unlocked tables again before returning
 
@@ -95,10 +95,21 @@ package body Back_End is
       use type System.Address;
 
    begin
+      --  Set global modes and settings from environment variable GNAT2WHY_ARGS
+
+      Gnat2Why_Args.Init;
 
       --  We are in the gnat2why executable, so GNATprove_Mode is always true
 
       Opt.GNATprove_Mode := True;
+
+      --  An ALI file should be generated only when generating globals.
+      --  Otherwise, when translating the program to Why, ALI file
+      --  generation should be disabled.
+
+      if not Gnat2Why_Args.Global_Gen_Mode then
+         Opt.Disable_ALI_File := True;
+      end if;
 
       --  If save_argv is non null, it means we are part of gnat1+gnat2why
       --  and need to set gnat_argv to save_argv so that Ada.Command_Line
@@ -110,7 +121,6 @@ package body Back_End is
       end if;
 
       GNAT2Why_BE.Scan_Compiler_Arguments;
-      Gnat2Why_Args.Init;
    end Scan_Compiler_Arguments;
 
 end Back_End;

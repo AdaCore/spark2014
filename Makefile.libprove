@@ -38,20 +38,20 @@ all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
 check: $(ALL_WHYPACK:__package.mlw=.check)
 
 %__package.mlw: %.adb $(ALL_ALIS)
-	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
+	$(GNAT2WHY) -gnatpg -I. $<
 
 %__package.mlw: %.ads $(ALL_ALIS)
-	$(GNAT2WHY) -gnatd.F -gnatpg -I. $<
+	$(GNAT2WHY) -gnatpg -I. $<
 
 %.ali: %.adb
-	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.G $<
+	env GNAT2WHY_ARGS="global_gen_mode" $(GNAT2WHY) -c -gnatc -gnatpg $<
 
 %.ali: %.ads
-	$(GNAT2WHY) -c -gnatc -gnatpg -gnatd.G $<
+	env GNAT2WHY_ARGS="global_gen_mode" $(GNAT2WHY) -c -gnatc -gnatpg $<
 
 # Generate Why3 files for Standard unit
 $(WHY_STANDARD):
-	echo "procedure Dummy is begin null end Dummy;" > $(DUMMYFILE)
+	echo "procedure Dummy is begin null; end Dummy;" > $(DUMMYFILE)
 	env GNAT2WHY_ARGS="standard_mode" $(GNAT2WHY) $(DUMMYFILE)
 	rm $(DUMMYFILE)
 

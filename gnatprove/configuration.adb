@@ -92,6 +92,8 @@ ASCII.LF &
 ASCII.LF &
 " -jnnn              Use nnn parallel processes (default: 1)" &
 ASCII.LF &
+" -k                 Do not stop analysis at the first error" &
+ASCII.LF &
 "     --mode=m       Set the mode of GNATprove (m=check, flow, prove*, all)"
 & ASCII.LF &
 " -q, --quiet        Be quiet/terse" &
@@ -348,6 +350,12 @@ ASCII.LF &
           Long_Switch => "-j:",
           Initial => -1,
           Help => "Set the number of parallel processes (default is 1)");
+
+      Define_Switch
+         (Config,
+          Continue_On_Error'Access,
+          "-k",
+          Help => "Do not stop analysis at the first error");
 
       Define_Switch
         (Config,

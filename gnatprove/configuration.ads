@@ -37,36 +37,38 @@ package Configuration is
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
 
-   Label_Length : constant := 26;
+   Label_Length      : constant := 26;
    --  Maximum length of label in report. Other characters are discarded.
 
-   Version      : aliased Boolean;
+   Version           : aliased Boolean;
    --  True if --version switch is present. Output current version and exit.
-   Verbose      : aliased Boolean;
+   Verbose           : aliased Boolean;
    --  True if -v switch is present. All executed commands are printed.
-   Force        : aliased Boolean;
+   Force             : aliased Boolean;
    --  True if -f is present. Force recompilation of all units.
-   Quiet        : aliased Boolean;
+   Quiet             : aliased Boolean;
    --  True if -q is present. Do not print on standard output.
-   Debug        : aliased Boolean;
+   Debug             : aliased Boolean;
    --  True if -d is present. Do not remove temporary files.
-   Only_Given   : aliased Boolean;
+   Continue_On_Error : aliased Boolean;
+   --  True if -k is present. Continue analysis in case of errors.
+   Only_Given        : aliased Boolean;
    --  True if -u is present. Only compile/prove given files
-   All_Projects : aliased Boolean;
+   All_Projects      : aliased Boolean;
    --  True if -U is present. compile/prove all files of all projects
-   Pedantic     : aliased Boolean;
+   Pedantic          : aliased Boolean;
    --  True if --strict switch is present. Stricter interpretation of language.
-   IDE_Progress_Bar : aliased Boolean;
+   IDE_Progress_Bar  : aliased Boolean;
    --  True if --ide-progress-bar switch is present. Generate information on
    --  progress for display in IDE.
-   Show_Tag     : aliased Boolean;
+   Show_Tag          : aliased Boolean;
    --  True if --show_tag switch is present. Add a unique tag to each error
    --  message.
-   Limit_Line   : aliased GNAT.Strings.String_Access;
+   Limit_Line        : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-line= was given
-   Limit_Subp   : aliased GNAT.Strings.String_Access;
+   Limit_Subp        : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-subp= was given
-   Alter_Prover : aliased GNAT.Strings.String_Access;
+   Alter_Prover      : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --prover= was given
 
    type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);

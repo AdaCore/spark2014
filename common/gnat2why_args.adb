@@ -34,11 +34,13 @@ package body Gnat2Why_Args is
    Env_Variable_Name : constant String := "GNAT2WHY_ARGS";
 
    Standard_Mode_Name      : constant String := "standard_mode";
+   Global_Gen_Mode_Name    : constant String := "global_gen_mode";
    Check_Mode_Name         : constant String := "check_mode";
    Flow_Analysis_Mode_Name : constant String := "flow_analysis_mode";
    Flow_Dump_Graphs_Name   : constant String := "flow_dump_graphs";
    Analyze_File_Name       : constant String := "analyze_file";
    Limit_Subp_Name         : constant String := "limit_subp";
+   Pedantic_Name           : constant String := "pedantic";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -95,12 +97,16 @@ package body Gnat2Why_Args is
    begin
       if Token = Standard_Mode_Name then
          Standard_Mode := True;
+      elsif Token = Global_Gen_Mode_Name then
+         Global_Gen_Mode := True;
       elsif Token = Check_Mode_Name then
          Check_Mode := True;
       elsif Token = Flow_Analysis_Mode_Name then
          Flow_Analysis_Mode := True;
       elsif Token = Flow_Dump_Graphs_Name then
          Flow_Dump_Graphs := True;
+      elsif Token = Pedantic_Name then
+         Pedantic := True;
       elsif Starts_With (Token, Analyze_File_Name) and then
         Token (Token'First + Analyze_File_Name'Length) = '='
       then
@@ -140,6 +146,10 @@ package body Gnat2Why_Args is
          Append (Val, ' ');
          Append (Val, Standard_Mode_Name);
       end if;
+      if Global_Gen_Mode then
+         Append (Val, ' ');
+         Append (Val, Global_Gen_Mode_Name);
+      end if;
       if Check_Mode then
          Append (Val, ' ');
          Append (Val, Check_Mode_Name);
@@ -151,6 +161,10 @@ package body Gnat2Why_Args is
       if Flow_Dump_Graphs then
          Append (Val, ' ');
          Append (Val, Flow_Dump_Graphs_Name);
+      end if;
+      if Pedantic then
+         Append (Val, ' ');
+         Append (Val, Pedantic_Name);
       end if;
       for File of Analyze_File loop
          Append (Val, ' ');
@@ -175,6 +189,8 @@ package body Gnat2Why_Args is
             Ada.Environment_Variables.Set (Name  => Env_Variable_Name,
                                            Value => Val_Str);
          end;
+      else
+         Clear;
       end if;
    end Set;
 

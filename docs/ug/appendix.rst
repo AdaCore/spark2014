@@ -19,6 +19,7 @@ Command-line Options
 
    -f            Force recompilation/proving of all units and all VCs
    -jnnn         Use nnn parallel processes (default: 1)
+   -k            Do not stop analysis at the first error
    --mode=       Proof mode
        check       Check SPARK restrictions for code where SPARK_Mode=On
        prove       Prove subprogram contracts and absence of run-time errors (default)
@@ -96,7 +97,7 @@ To execute a |SPARK| program, it is expected that users will compile
 the program (as an Ada program) using an Ada compiler.
 The SPARK language definition defines a number of implementation-defined
 (with respect to the Ada language definition) aspects,
-attributes, pragmas, and conventions. 
+attributes, pragmas, and conventions.
 Ideally a |SPARK| program will be compiled using an Ada compiler that
 supports all of these constructs. Portability problems may arise
 if this is not the case.

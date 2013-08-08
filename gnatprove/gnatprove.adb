@@ -110,8 +110,10 @@ procedure Gnatprove is
    --  Set the environment before calling other tools.
    --  In particular, add any needed directories in the PATH env var.
 
-   procedure Set_Gnat2why_Env_Var;
-   --  Set the environment variable which passes some options to gnat2why
+   procedure Set_Gnat2why_Env_Var (Translation_Phase : Boolean);
+   --  Set the environment variable which passes some options to gnat2why.
+   --  Translation_Phase is False for globals generation, and True for
+   --  translation to Why.
 
    -------------------
    -- Call_Gprbuild --
@@ -132,6 +134,9 @@ procedure Gnatprove is
       end if;
       if Parallel > 1 then
          Compiler_Args.Prepend ("-j" & Int_Image (Parallel));
+      end if;
+      if Continue_On_Error then
+         Compiler_Args.Prepend ("-k");
       end if;
       if Force then
          Compiler_Args.Prepend ("-f");
@@ -190,16 +195,14 @@ procedure Gnatprove is
 
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  only generate ALI
-      Args.Append ("-gnatd.G");     --  ALI file generation
-      if Pedantic then
-         Args.Append ("-gnatd.D");
-      end if;
 
+      Set_Gnat2why_Env_Var (Translation_Phase => False);
       Call_Gprbuild (Project_File,
                      Gpr_Frames_Cnf_File,
                      Parallel,
                      Args,
                      Status);
+      Gnat2Why_Args.Clear;
    end Compute_ALI_Information;
 
    -----------------
@@ -569,14 +572,26 @@ procedure Gnatprove is
    -- Set_Gnat2why_Env_Var --
    --------------------------
 
-   procedure Set_Gnat2why_Env_Var is
+   procedure Set_Gnat2why_Env_Var (Translation_Phase : Boolean) is
    begin
-      Gnat2Why_Args.Flow_Dump_Graphs := MMode = GPM_Flow and Debug;
-      Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
-      Gnat2Why_Args.Flow_Analysis_Mode := MMode in GPM_Flow | GPM_All;
-      Gnat2Why_Args.Analyze_File := File_List;
-      Gnat2Why_Args.Limit_Subp :=
-        Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
+      --  In the translation phase, set a number of values
+
+      if Translation_Phase then
+         Gnat2Why_Args.Global_Gen_Mode := False;
+         Gnat2Why_Args.Flow_Dump_Graphs := MMode = GPM_Flow and Debug;
+         Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
+         Gnat2Why_Args.Flow_Analysis_Mode := MMode in GPM_Flow | GPM_All;
+         Gnat2Why_Args.Analyze_File := File_List;
+         Gnat2Why_Args.Pedantic := Pedantic;
+         Gnat2Why_Args.Limit_Subp :=
+           Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
+
+      --  In the globals generation phase, only set Global_Gen_Mode
+
+      else
+         Gnat2Why_Args.Global_Gen_Mode := True;
+      end if;
+
       Gnat2Why_Args.Set (Debug);
    end Set_Gnat2why_Env_Var;
 
@@ -614,27 +629,30 @@ procedure Gnatprove is
       use String_Lists;
       Cur    : Cursor := First (Cargs_List);
       Args   : String_Lists.List := Empty_List;
+
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
+
       for File of File_List loop
          Args.Append (File);
       end loop;
+
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  No object file generation
       Args.Append ("-I");
       Args.Append (Stdlib_ALI_Dir);
+
       if Show_Tag then
          Args.Append ("-gnatw.d"); -- generation of unique tag
       end if;
-      if Pedantic then
-         Args.Append ("-gnatd.D");
-      end if;
+
       while Has_Element (Cur) loop
          Args.Append (Element (Cur));
          Next (Cur);
       end loop;
-      Set_Gnat2why_Env_Var;
+
+      Set_Gnat2why_Env_Var (Translation_Phase => True);
       Call_Gprbuild (Project_File,
                      Gpr_Translation_Cnf_File,
                      Parallel,

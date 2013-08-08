@@ -189,10 +189,10 @@ package body Gnat2Why.Driver is
 
    begin
 
-      --  We do not actually run the translation if we are in
-      --  Frame_Condition_Mode (-gnatd.G). Back out.
+      --  In global generation mode, gnat2why only generates ALI file with the
+      --  suitable cross-reference section. Exit now.
 
-      if In_Frame_Condition_Mode then
+      if Gnat2Why_Args.Global_Gen_Mode then
          return;
       end if;
 
