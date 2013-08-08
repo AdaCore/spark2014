@@ -1091,7 +1091,18 @@ package body Flow is
 
       function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
       begin
-         --  If we have an empty files list we analyze everything
+         --  If the entity is not in the compilation unit that is
+         --  currently being analyzed then return false.
+         if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
+           and then Library_Unit (Cunit (Main_Unit)) /=
+             Enclosing_Comp_Unit_Node (E)
+         then
+            return False;
+         end if;
+
+         --  If an empty files list has been provided then all entities that
+         --  are in the compilation unit that is currently being analyzed must
+         --  be analyzed.
          if Gnat2Why_Args.Analyze_File.Is_Empty then
             return True;
          end if;
