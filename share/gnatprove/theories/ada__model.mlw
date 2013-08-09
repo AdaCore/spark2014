@@ -7,6 +7,8 @@ module Discrete_Base
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Integer
 
+  use export ada__model_th.Discrete_Base_Theory
+
   type t
 
   function attr__ATTRIBUTE_FIRST : int
@@ -54,9 +56,6 @@ module Discrete_Base
   axiom inversion_axiom :
     forall x : t [to_int x].
     of_int (to_int (x)) = x
-
-  function bool_eq (x : int) (y : int) : bool =
-    if x = y then True else False
 
   function dummy : t
 end

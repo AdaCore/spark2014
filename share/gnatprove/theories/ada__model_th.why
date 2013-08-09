@@ -1,3 +1,11 @@
+theory Discrete_Base_Theory
+  use export bool.Bool
+  use export int.Int
+
+  function bool_eq (x : int) (y : int) : bool =
+    if x = y then True else False
+end
+
 theory Floating_Point_Theory
   use export bool.Bool
 

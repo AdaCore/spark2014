@@ -122,3 +122,11 @@ theory Floating_Func
   function real_min (x y : real) : real = MinMax.min x y
 
 end
+
+theory Boolean_Func
+  use import bool.Bool
+
+  function bool_eq (x : bool) (y : bool) : bool =
+    if x = y then True else False
+
+end

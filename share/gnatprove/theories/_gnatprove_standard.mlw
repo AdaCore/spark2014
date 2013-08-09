@@ -121,6 +121,8 @@ module Boolean
   use import int.Int
   use import Main
 
+  use export _gnatprove_standard_th.Boolean_Func
+
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
 
   function to_int (b : bool) : int =
@@ -156,8 +158,6 @@ module Boolean
     requires { n <> attr__ATTRIBUTE_FIRST }
     ensures { result = n }
 
-  function bool_eq (x : bool) (y : bool) : bool =
-    if x = y then True else False
 end
 
 (* The following theories care about the *contents* of Arrays, and defines
