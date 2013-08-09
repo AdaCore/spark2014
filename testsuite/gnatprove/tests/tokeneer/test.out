@@ -305,7 +305,7 @@ enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
-file.adb:413:39: overflow check not proved
+file.adb:413:39: info: overflow check proved
 file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
