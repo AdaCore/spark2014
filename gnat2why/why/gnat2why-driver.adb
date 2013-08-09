@@ -310,6 +310,10 @@ package body Gnat2Why.Driver is
          Flow_Analyse_CUnit;
       end if;
 
+      if Compilation_Errors then
+         return;
+      end if;
+
       --  Start the translation to Why
 
       Init_Why_Files (GNAT_Root);

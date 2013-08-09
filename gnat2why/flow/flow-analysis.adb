@@ -579,7 +579,6 @@ package body Flow.Analysis is
                if not Is_Initialized_At_Elaboration
                  (Get_Direct_Mapping_Id (R))
                then
-                  FA.Contains_Errors := True;
                   Error_Msg_Flow
                     (Msg => "& may not be initialized after elaboration of &",
                      N   => Find_Global (FA.Analyzed_Entity, R),
@@ -590,7 +589,6 @@ package body Flow.Analysis is
 
             when Magic_String =>
                --  !!! Remove once M711-031 is implemented
-               FA.Contains_Errors := True;
                Error_Msg_Flow
                  (Msg => "analysis of main program impossible in the "&
                     "presence of computed global &",
@@ -613,7 +611,6 @@ package body Flow.Analysis is
                   --  in another package and then overwrite it here
                   --  this is not really a warning. think about this!
                   if not Reads.Contains (Change_Variant (W, In_View)) then
-                     FA.Contains_Warnings := True;
                      Error_Msg_Flow
                        (Msg     => "ineffective initialization of & " &
                           "(is global output in main program &)",
@@ -828,7 +825,6 @@ package body Flow.Analysis is
          A_Final := FA.PDG.Get_Attributes (V);
 
          if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
-            FA.Contains_Warnings := True;
             if A_Final.Is_Global then
                Error_Msg_Flow (Msg     => "& is not modified, could be INPUT",
                                N       => Find_Global (FA.Analyzed_Entity,
@@ -923,7 +919,6 @@ package body Flow.Analysis is
                   if FA.Kind = E_Subprogram_Body and then
                     not FA.Is_Generative
                   then
-                     FA.Contains_Warnings := True;
                      Error_Msg_Flow
                        (Msg     => "unused initial value of &",
                         N       => Find_Global (FA.Analyzed_Entity, F),
@@ -932,7 +927,6 @@ package body Flow.Analysis is
                         Warning => True);
                   end if;
                else
-                  FA.Contains_Warnings := True;
                   Error_Msg_Flow
                     (Msg     => "unused initial value of &",
                      --  !!! find_import
@@ -966,7 +960,6 @@ package body Flow.Analysis is
       begin
          if The_Global_Atr.Is_Global then
             --  !!! can we merge these three cases now?
-            FA.Contains_Errors := True;
             if Illegal_Use_Atr.Is_Parameter then
                --  foo (bar);
                Error_Msg_Flow
@@ -1147,7 +1140,6 @@ package body Flow.Analysis is
                         null;
 
                      elsif Is_Easily_Printable (Tmp) then
-                        FA.Contains_Warnings := True;
                         Error_Msg_Flow
                           (Msg     => "unused assignment to &",
                            N       => Error_Location (FA.PDG, V),
@@ -1156,7 +1148,6 @@ package body Flow.Analysis is
                            Warning => True);
 
                      else
-                        FA.Contains_Warnings := True;
                         Error_Msg_Flow
                           (Msg     => "unused assignment",
                            N       => Error_Location (FA.PDG, V),
@@ -1165,7 +1156,6 @@ package body Flow.Analysis is
                      end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
-                     FA.Contains_Warnings := True;
                      Error_Msg_Flow
                        (Msg     => "unused assignment",
                         N       => Error_Location (FA.PDG, V),
@@ -1173,7 +1163,6 @@ package body Flow.Analysis is
                         Warning => True);
 
                   else
-                     FA.Contains_Warnings := True;
                      Error_Msg_Flow
                        (Msg     => "statement has no effect",
                         N       => Error_Location (FA.PDG, V),
@@ -1316,7 +1305,6 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
-                           FA.Contains_Errors := True;
                            Error_Msg_Flow
                              (Msg => "& might not be initialized",
                               N   => Find_Global (FA.Analyzed_Entity, Key_I),
@@ -1333,7 +1321,6 @@ package body Flow.Analysis is
                            --  This is actually a totally different
                            --  error. It means we have a path where we
                            --  do not return from the function.
-                           FA.Contains_Errors := True;
                            Error_Msg_Flow
                              (Msg => "possibly missing return statement in &",
                               N   => Error_Location (FA.PDG, FA.Start_Vertex),
@@ -1350,7 +1337,6 @@ package body Flow.Analysis is
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
-                           FA.Contains_Errors := True;
                            Error_Msg_Flow
                              (Msg => "& might not be initialized in &",
                               N   => Error_Location (FA.PDG, V_Use),
@@ -1374,7 +1360,6 @@ package body Flow.Analysis is
                         --  !!! possibly have something special for
                         --  !!! arrays: "might not be fully
                         --  !!! initialized"
-                        FA.Contains_Errors := True;
                         Error_Msg_Flow
                           (Msg => "& might not be initialized",
                            N   => Error_Location (FA.PDG, V_Use),
@@ -1443,7 +1428,6 @@ package body Flow.Analysis is
                         Tmp.Set_Attributes (N_Loop, Atr);
 
                         --  Complain
-                        FA.Contains_Warnings := True;
                         Error_Msg_Flow
                           (Msg     => "stable",
                            N       => Error_Location (FA.PDG, N_Loop),
@@ -1540,7 +1524,6 @@ package body Flow.Analysis is
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
                   --  global.
-                  FA.Contains_Warnings := True;
                   Error_Msg_Flow
                     (Msg     => "unused global &",
                      N       => Find_Global (FA.Analyzed_Entity, F),
@@ -1549,7 +1532,6 @@ package body Flow.Analysis is
                      Warning => True);
                else
                   --  !!! distinguish between variables and parameters
-                  FA.Contains_Warnings := True;
                   Error_Msg_Flow
                     (Msg     => "unused variable &",
                      N       => Error_Location (FA.PDG, V),
@@ -1676,7 +1658,6 @@ package body Flow.Analysis is
          begin
             if not Actual_Deps.Contains (F_Out) then
                --  !!! check quotation in errout.ads
-               FA.Contains_Warnings := True;
                Error_Msg_Flow
                  (Msg     => "missing dependency ""null => #""",
                   N       => Depends_Location,
@@ -1718,7 +1699,6 @@ package body Flow.Analysis is
             else
                --  !!! legality error, should be moved to frontend;
                --  !!! possibly raise exception here
-               FA.Contains_Warnings := True;
                Error_Msg_Flow
                  (Msg     => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
@@ -1751,7 +1731,6 @@ package body Flow.Analysis is
                for Missing_Var of Missing_Deps loop
                   --  Something that the user dependency fails to
                   --  mention.
-                  FA.Contains_Warnings := True;
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg     => "missing dependency ""null => #""",
@@ -1774,7 +1753,6 @@ package body Flow.Analysis is
                for Wrong_Var of Wrong_Deps loop
                   --  Something the user dependency claims, but does
                   --  not happen in reality.
-                  FA.Contains_Warnings := True;
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (Msg     => "incorrect dependency ""null => #""",

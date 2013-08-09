@@ -132,12 +132,6 @@ package Flow is
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
 
-      Contains_Errors   : Boolean;
-      --  True if this entity contains flow errors.
-
-      Contains_Warnings : Boolean;
-      --  True if this entity contains flow warnings.
-
       case Kind is
          when E_Subprogram_Body =>
             Is_Main : Boolean;

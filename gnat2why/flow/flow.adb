@@ -24,7 +24,6 @@
 with Ada.Characters.Latin_1;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Maps;
-with Ada.Text_IO;
 
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
@@ -757,68 +756,62 @@ package body Flow is
       case Ekind (E) is
          when Subprogram_Kind =>
             FA := Flow_Analysis_Graphs'
-              (Kind              => E_Subprogram_Body,
-               Analyzed_Entity   => E,
-               Scope             => SPARK_Util.Get_Subprogram_Body (E),
-               Start_Vertex      => Null_Vertex,
-               End_Vertex        => Null_Vertex,
-               CFG               => Create,
-               DDG               => Create,
-               CDG               => Create,
-               TDG               => Create,
-               PDG               => Create,
-               All_Vars          => Flow_Id_Sets.Empty_Set,
-               Loops             => Node_Sets.Empty_Set,
-               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present  => False,
-               Base_Filename     => To_Unbounded_String ("subprogram_"),
-               Contains_Errors   => False,
-               Contains_Warnings => False,
-               Is_Main           => Might_Be_Main (E),
-               Is_Generative     => not (Present
-                                          (Get_Pragma (E, Pragma_Global)) or
-                                        Present
-                                          (Get_Pragma (E, Pragma_Depends))));
+              (Kind             => E_Subprogram_Body,
+               Analyzed_Entity  => E,
+               Scope            => SPARK_Util.Get_Subprogram_Body (E),
+               Start_Vertex     => Null_Vertex,
+               End_Vertex       => Null_Vertex,
+               CFG              => Create,
+               DDG              => Create,
+               CDG              => Create,
+               TDG              => Create,
+               PDG              => Create,
+               All_Vars         => Flow_Id_Sets.Empty_Set,
+               Loops            => Node_Sets.Empty_Set,
+               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present => False,
+               Base_Filename    => To_Unbounded_String ("subprogram_"),
+               Is_Main          => Might_Be_Main (E),
+               Is_Generative    => not (Present
+                                         (Get_Pragma (E, Pragma_Global)) or
+                                       Present
+                                         (Get_Pragma (E, Pragma_Depends))));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
-              (Kind              => E_Package,
-               Analyzed_Entity   => E,
-               Scope             => Get_Enclosing_Scope (E),
-               Start_Vertex      => Null_Vertex,
-               End_Vertex        => Null_Vertex,
-               CFG               => Create,
-               DDG               => Create,
-               CDG               => Create,
-               TDG               => Create,
-               PDG               => Create,
-               All_Vars          => Flow_Id_Sets.Empty_Set,
-               Loops             => Node_Sets.Empty_Set,
-               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present  => False,
-               Base_Filename     =>  To_Unbounded_String ("package_spec_"),
-               Contains_Errors   => False,
-               Contains_Warnings => False);
+              (Kind             => E_Package,
+               Analyzed_Entity  => E,
+               Scope            => Get_Enclosing_Scope (E),
+               Start_Vertex     => Null_Vertex,
+               End_Vertex       => Null_Vertex,
+               CFG              => Create,
+               DDG              => Create,
+               CDG              => Create,
+               TDG              => Create,
+               PDG              => Create,
+               All_Vars         => Flow_Id_Sets.Empty_Set,
+               Loops            => Node_Sets.Empty_Set,
+               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present => False,
+               Base_Filename    => To_Unbounded_String ("package_spec_"));
 
          when E_Package_Body =>
             FA := Flow_Analysis_Graphs'
-              (Kind              => E_Package_Body,
-               Analyzed_Entity   => E,
-               Scope             => Get_Enclosing_Body_Scope (E),
-               Start_Vertex      => Null_Vertex,
-               End_Vertex        => Null_Vertex,
-               CFG               => Create,
-               DDG               => Create,
-               CDG               => Create,
-               TDG               => Create,
-               PDG               => Create,
-               All_Vars          => Flow_Id_Sets.Empty_Set,
-               Loops             => Node_Sets.Empty_Set,
-               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present  => False,
-               Base_Filename     => To_Unbounded_String ("package_body_"),
-               Contains_Errors   => False,
-               Contains_Warnings => False);
+              (Kind             => E_Package_Body,
+               Analyzed_Entity  => E,
+               Scope            => Get_Enclosing_Body_Scope (E),
+               Start_Vertex     => Null_Vertex,
+               End_Vertex       => Null_Vertex,
+               CFG              => Create,
+               DDG              => Create,
+               CDG              => Create,
+               TDG              => Create,
+               PDG              => Create,
+               All_Vars         => Flow_Id_Sets.Empty_Set,
+               Loops            => Node_Sets.Empty_Set,
+               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present => False,
+               Base_Filename    => To_Unbounded_String ("package_body_"));
 
          when others =>
             raise Why.Not_SPARK;
@@ -906,10 +899,6 @@ package body Flow is
       function Analysis_Requested (E : Entity_Id) return Boolean;
       --  Returns true if entity E has to be analyzed.
 
-      procedure Create_Flow_Result_Files;
-      --  For each compilation unit, if no flow errors/warnings were generated
-      --  during its analysis then we create a file that contains the word OK.
-
       function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
       --  Returns true if E belongs to one of the entities that correspond
       --  to the files that are to be analyzed. If Analyze_Files is an empty
@@ -926,164 +915,6 @@ package body Flow is
 
       function Analysis_Requested (E : Entity_Id) return Boolean is
          (Is_In_Analyzed_Files (E) and then Is_Requested_Subprogram (E));
-
-      -----------------------------
-      -- Create_Flow_Result_File --
-      -----------------------------
-
-      procedure Create_Flow_Result_Files is
-         function Has_No_Errors_Or_Warnings (FA : Flow_Analysis_Graphs)
-                                             return Boolean;
-         --  Returns true if no errors and no warnings are contained in FA.
-
-         function Find_Corresponding_Entity (E : Entity_Id) return Entity_Id;
-         --  If entity E is a spec then this function returns the entity of the
-         --  corresponding body. If entity E is a body then this function
-         --  returns the entity of the corresponding spec. If a corresponding
-         --  entity does not exist then Empty is returned.
-
-         -------------------------------
-         -- Has_No_Errors_Or_Warnings --
-         -------------------------------
-
-         function Has_No_Errors_Or_Warnings (FA : Flow_Analysis_Graphs)
-                                            return Boolean
-         is
-            (not FA.Contains_Errors and then not FA.Contains_Warnings);
-
-         -------------------------------
-         -- Find_Corresponding_Entity --
-         -------------------------------
-
-         function Find_Corresponding_Entity (E : Entity_Id) return Entity_Id is
-            P : Node_Id;
-         begin
-            case Ekind (E) is
-               when Subprogram_Kind =>
-                  P := Parent (Parent (E));
-
-                  case Nkind (P) is
-                     when N_Subprogram_Body =>
-                        if Acts_As_Spec (P) then
-                           return Empty;
-                        else
-                           return Corresponding_Spec (P);
-                        end if;
-
-                     when N_Subprogram_Declaration |
-                       N_Subprogram_Body_Stub   =>
-                        return Corresponding_Body (P);
-
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-
-               when E_Package =>
-                  P := Parent (Parent (E));
-                  case Nkind (P) is
-                     when N_Package_Declaration =>
-                        return Corresponding_Body (P);
-
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-
-               when E_Package_Body =>
-                  P := Parent (E);
-                  case Nkind (P) is
-                     when N_Package_Body   |
-                       N_Package_Body_Stub =>
-                        return Corresponding_Spec (P);
-
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-
-               when others =>
-                  raise Why.Unexpected_Node;
-            end case;
-         end Find_Corresponding_Entity;
-
-      begin
-         --  We go through all graphs and update the Contains_Errors and
-         --  Contains_Warnings fields of compilation units that enclose
-         --  entities that have Contains_Errors/Warnings set to true.
-         for FA of FA_Graphs loop
-            if Enclosing_Lib_Unit_Entity (FA.Analyzed_Entity) =
-              FA.Analyzed_Entity
-            then
-               for FA2 of FA_Graphs loop
-                  if FA2 /= FA
-                    and then Enclosing_Lib_Unit_Entity (FA2.Analyzed_Entity) =
-                             FA.Analyzed_Entity
-                  then
-                     if FA2.Contains_Errors then
-                        FA.Contains_Errors := True;
-                     end if;
-
-                     if FA2.Contains_Warnings then
-                        FA.Contains_Warnings := True;
-                     end if;
-                  end if;
-               end loop;
-            end if;
-         end loop;
-
-         --  Go through all graphs and create a flow_ok file for every
-         --  compilation unit that has no errors/warnings. Both the spec and
-         --  the corresponding body (if one exists) must be free of
-         --  errors/warnings.
-         for FA of FA_Graphs loop
-            if Is_Compilation_Unit (FA.Analyzed_Entity)
-              and then Has_No_Errors_Or_Warnings (FA)
-            then
-               declare
-                  Corresponding_Entity : constant Entity_Id :=
-                    Find_Corresponding_Entity (FA.Analyzed_Entity);
-               begin
-                  for FA2 of FA_Graphs loop
-                     if FA2 /= FA
-                       and then Is_Compilation_Unit (FA2.Analyzed_Entity)
-                       and then FA2.Analyzed_Entity = Corresponding_Entity
-                       and then Has_No_Errors_Or_Warnings (FA2)
-                     then
-                        declare
-                           FD : Ada.Text_IO.File_Type;
-
-                           Filename : constant String :=
-                             File_Name_Without_Suffix
-                               (Sloc (FA.Analyzed_Entity))
-                             & ".flow_ok";
-                        begin
-                           Ada.Text_IO.Create
-                             (FD, Ada.Text_IO.Out_File, Filename);
-                           Ada.Text_IO.Put (FD, "OK");
-                           Ada.Text_IO.New_Line (FD);
-                           Ada.Text_IO.Close (FD);
-                        end;
-                     end if;
-                  end loop;
-
-                  if No (Corresponding_Entity) then
-                     declare
-                        FD : Ada.Text_IO.File_Type;
-
-                        Filename : constant String :=
-                          File_Name_Without_Suffix
-                            (Sloc (FA.Analyzed_Entity))
-                          & ".flow_ok";
-                     begin
-                        Ada.Text_IO.Create
-                          (FD, Ada.Text_IO.Out_File, Filename);
-                        Ada.Text_IO.Put (FD, "OK");
-                        Ada.Text_IO.New_Line (FD);
-                        Ada.Text_IO.Close (FD);
-                     end;
-                  end if;
-               end;
-            end if;
-         end loop;
-      end Create_Flow_Result_Files;
 
       --------------------------
       -- Is_In_Analyzed_Files --
@@ -1231,8 +1062,6 @@ package body Flow is
          end if;
 
       end loop;
-
-      Create_Flow_Result_Files;
 
    end Flow_Analyse_CUnit;
 
