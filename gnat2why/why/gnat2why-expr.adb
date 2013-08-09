@@ -5387,6 +5387,9 @@ package body Gnat2Why.Expr is
               N_Subprogram_Declaration =>
             return New_Void;
 
+         when N_Raise_Statement =>
+            return New_Void;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
                                   & Node_Kind'Image (Nkind (Stmt_Or_Decl)));

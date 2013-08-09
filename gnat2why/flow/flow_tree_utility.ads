@@ -66,8 +66,8 @@ package Flow_Tree_Utility is
    --  parameters (E is allowed to have global parameters).
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   with Post => not Present (Find_Node_In_Initializes'Result) or else
-                Entity (Find_Node_In_Initializes'Result) = E;
+      with Post => not Present (Find_Node_In_Initializes'Result)
+                     or else Entity (Find_Node_In_Initializes'Result) = E;
    --  Returns the node representing E in an initializes aspect or Empty.
 
    function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean;
@@ -78,9 +78,9 @@ package Flow_Tree_Utility is
    --  returns true for any abstract state.
 
    function Get_Body (E : Entity_Id) return Entity_Id
-     with Pre => Ekind (E) in E_Function | E_Procedure,
-          Post => (not Present (Get_Body'Result)) or else
-                  Ekind (Get_Body'Result) = E_Subprogram_Body;
+      with Pre  => Ekind (E) in E_Function | E_Procedure,
+           Post => (not Present (Get_Body'Result))
+                      or else Ekind (Get_Body'Result) = E_Subprogram_Body;
    --  Fetches the body entity for a subprogram with a spec and a body.
 
    function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr;
@@ -93,9 +93,14 @@ package Flow_Tree_Utility is
    function Should_Use_Refined_View (Scope : Scope_Ptr;
                                      N     : Node_Id)
                                      return Boolean
-     with Pre => Nkind (N) in N_Subprogram_Call;
+      with Pre => Nkind (N) in N_Subprogram_Call;
    --  For a given function or procedure call N, this function returns
    --  true if we should use the Refined_Global and Refined_Depends
    --  aspects or the Global and Depends aspects.
+
+   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
+      with Pre => Ekind (E) in Subprogram_Kind;
+   --  Returns True if the last statement in the Handled_Sequence_Of_Statements
+   --  of subprogram E is an N_Raise_Statement.
 
 end Flow_Tree_Utility;

@@ -775,7 +775,8 @@ package body Flow is
                Is_Generative    => not (Present
                                          (Get_Pragma (E, Pragma_Global)) or
                                        Present
-                                         (Get_Pragma (E, Pragma_Depends))));
+                                          (Get_Pragma (E, Pragma_Depends))),
+              Last_Statement_Is_Raise => Last_Statement_Is_Raise (E));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'

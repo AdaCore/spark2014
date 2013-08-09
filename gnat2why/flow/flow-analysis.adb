@@ -1321,17 +1321,23 @@ package body Flow.Analysis is
                            --  This is actually a totally different
                            --  error. It means we have a path where we
                            --  do not return from the function.
-                           Error_Msg_Flow
-                             (Msg => "possibly missing return statement in &",
-                              N   => Error_Location (FA.PDG, FA.Start_Vertex),
-                              F1  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                              Tag => "noreturn");
-                           Mark_Definition_Free_Path
-                             (E_Loc => FA.Start_Vertex,
-                              From  => FA.Start_Vertex,
-                              To    => FA.End_Vertex,
-                              Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => "noreturn");
+                           if not FA.Last_Statement_Is_Raise then
+                              --  We only issue this error when the last
+                              --  statement is not a raise statement.
+                              Error_Msg_Flow
+                                (Msg =>
+                                   "possibly missing return statement in &",
+                                 N   =>
+                                   Error_Location (FA.PDG, FA.Start_Vertex),
+                                 F1  => Direct_Mapping_Id (FA.Analyzed_Entity),
+                                 Tag => "noreturn");
+                              Mark_Definition_Free_Path
+                                (E_Loc => FA.Start_Vertex,
+                                 From  => FA.Start_Vertex,
+                                 To    => FA.End_Vertex,
+                                 Var   => Change_Variant (Key_I, Normal_Use),
+                                 Tag   => "noreturn");
+                           end if;
 
                         elsif Atr_U.Is_Export then
                            --  As we don't have a global, but an

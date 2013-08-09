@@ -327,4 +327,48 @@ package body Flow_Tree_Utility is
       end if;
    end Should_Use_Refined_View;
 
+   -----------------------------
+   -- Last_Statement_Is_Raise --
+   -----------------------------
+
+   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
+      The_Body       : Node_Id;
+      Last_Statement : Node_Id;
+   begin
+      --  Expression functions cannot have a raise statement as their last
+      --  statement (all they have is a single statement).
+      if Is_Expression_Function (E) then
+         return False;
+      end if;
+
+      if Is_Generic_Instance (E) then
+         declare
+            Associated_Generic : constant Node_Id :=
+              Parent (Parent (Generic_Parent (Parent (E))));
+         begin
+            if Present (Corresponding_Body (Associated_Generic)) then
+               The_Body :=
+                 Parent (Parent (Corresponding_Body (Associated_Generic)));
+            else
+               return False;
+            end if;
+         end;
+      else
+         The_Body := Parent (Parent (E));
+
+         if Nkind (The_Body) = N_Subprogram_Declaration then
+            if Present (Corresponding_Body (The_Body)) then
+               The_Body := Parent (Parent (Corresponding_Body (The_Body)));
+            else
+               return False;
+            end if;
+         end if;
+      end if;
+
+      Last_Statement :=
+        Last (Statements (Handled_Statement_Sequence (The_Body)));
+
+      return Nkind (Last_Statement) = N_Raise_Statement;
+   end Last_Statement_Is_Raise;
+
 end Flow_Tree_Utility;

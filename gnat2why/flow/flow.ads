@@ -142,6 +142,10 @@ package Flow is
             Is_Generative : Boolean;
             --  True if we do not have a global contract.
 
+            Last_Statement_Is_Raise : Boolean;
+            --  True if the last statement of the subprogram is an
+            --  N_Raise_Statement.
+
          when E_Package =>
             null;
 

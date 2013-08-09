@@ -2133,7 +2133,33 @@ package body SPARK_Definition is
 
          when N_Raise_Statement |
               N_Raise_xxx_Error =>
-            Mark_Violation ("raise statement", N, NIR_Exception);
+
+            --  A "raise statement" is only allowed when it is:
+            --
+            --    1. the only statement within an "if statement" that has no
+            --       elsif/else parts.
+            --
+            --    2. the very last statement directly within a subprogram.
+
+            if Present (Parent (N))
+              and then Nkind (Parent (N)) = N_If_Statement
+              and then Elsif_Parts (Parent (N)) = No_List
+              and then Else_Statements (Parent (N)) = No_List
+              and then List_Length (Then_Statements (Parent (N))) = 1
+            then
+               null;
+            elsif Present (Parent (N))
+              and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
+              and then Present (Parent (Parent (N)))
+              and then Nkind (Parent (Parent (N))) = N_Subprogram_Body
+              and then Last (Statements
+                               (Handled_Statement_Sequence
+                                  (Parent (Parent (N))))) = N
+            then
+               null;
+            else
+               Mark_Violation ("raise statement", N, NIR_Exception);
+            end if;
 
          when N_Raise_Expression =>
             Mark_Violation ("raise expression", N, NIR_Exception);
