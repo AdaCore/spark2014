@@ -174,24 +174,32 @@ package body Why.Gen.Scalars is
    begin
       for J in Attr_Values'Range loop
          declare
-            Spec : Declaration_Spec;
+            Spec      : Declaration_Spec;
+            Emit_Decl : Boolean;
          begin
             if Attr_Values (J).Value /= Why_Empty then
-               Spec := (Kind   => W_Function_Def,
-                        Domain => EW_Term,
-                        Term   => Attr_Values (J).Value,
-                        others => <>);
+               Spec      := (Kind   => W_Function_Def,
+                             Domain => EW_Term,
+                             Term   => Attr_Values (J).Value,
+                             others => <>);
+               Emit_Decl := True;
             else
-               Spec := (Kind   => W_Function_Decl,
-                        Domain => EW_Term,
-                        others => <>);
+               Spec      := (Kind   => W_Function_Decl,
+                             Domain => EW_Term,
+                             others => <>);
+               --  We do not emit the declaration for modulus if this
+               --  type does not have a modulus.
+               Emit_Decl := J /= S_Modulus;
             end if;
-            Spec.Name := To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id));
-            Emit_Top_Level_Declarations
-              (Theory      => Theory,
-               Binders     => (1 .. 0 => <>),
-               Return_Type => New_Base_Type (Base_Type => Base_Type),
-               Spec        => (1 => Spec));
+            if Emit_Decl then
+               Spec.Name :=
+                 To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id));
+               Emit_Top_Level_Declarations
+                 (Theory      => Theory,
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => New_Base_Type (Base_Type => Base_Type),
+                  Spec        => (1 => Spec));
+            end if;
          end;
       end loop;
    end Define_Scalar_Attributes;
