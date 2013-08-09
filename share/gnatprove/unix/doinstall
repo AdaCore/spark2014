@@ -1,5 +1,9 @@
 #!/bin/sh
 prefix=`type gps 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
+if [ "$prefix" = "" ]; then
+  prefix="/opt/spark2014"
+fi
+
 clear
 printf "    This is the installation script for the AdaCore and Altran
     SPARK 2014 verification toolset.
