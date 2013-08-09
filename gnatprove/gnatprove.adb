@@ -108,7 +108,8 @@ procedure Gnatprove is
 
    procedure Set_Environment;
    --  Set the environment before calling other tools.
-   --  In particular, add any needed directories in the PATH env var.
+   --  In particular, add any needed directories in the PATH and
+   --  GPR_PROJECT_PATH env vars.
 
    procedure Set_Gnat2why_Env_Var (Translation_Phase : Boolean);
    --  Set the environment variable which passes some options to gnat2why.
@@ -560,12 +561,23 @@ procedure Gnatprove is
    ---------------------
 
    procedure Set_Environment is
-      use Ada.Environment_Variables, GNAT.OS_Lib;
+      use Ada.Environment_Variables, GNAT.OS_Lib, Ada.Directories;
 
       Path_Val : constant String := Value ("PATH", "");
+      Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
+      Libgnat  : constant String := Compose (Lib_Dir, "gnat");
+      Sharegpr : constant String := Compose (Share_Dir, "gpr");
+
    begin
       --  Add <prefix>/libexec/spark2014/bin in front of the PATH
       Set ("PATH", Libexec_Bin_Dir & Path_Separator & Path_Val);
+
+      --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
+      --  so that project files installed with GNAT (not with SPARK)
+      --  are found automatically, if any.
+
+      Set ("GPR_PROJECT_PATH",
+           Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
    end Set_Environment;
 
    --------------------------
