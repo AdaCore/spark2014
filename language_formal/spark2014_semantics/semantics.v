@@ -119,7 +119,7 @@ Inductive is_not_zero: Z -> bool -> Prop :=
 Inductive do_check: binary_operation -> value -> value -> bool -> Prop :=
     | Do_Division_Check0: forall v1 v2 b,
         is_not_zero v2 b ->
-        do_check Odiv (Int v1) (Int v2) b
+        do_check Odiv v1 (Int v2) b
     | Do_Nothing: forall op v1 v2,
         op <> Odiv ->
         do_check op v1 v2 true.
@@ -219,8 +219,18 @@ Inductive eval_stmt: stack -> stmt -> state -> Prop :=
 
 (** * Functional Semantics *)
 
+Function f_do_check (op: binary_operation) (v1: value) (v2: value): option bool :=
+    match op with
+    | Odiv =>
+        match v2 with
+        | Int v2' => if Zeq_bool v2' 0 then Some false else Some true
+        | _ => None
+        end
+    | _ => Some true
+    end.
+
 (** interpret the binary operation for each binary operator *)
-Definition eval_binop (op: binary_operation) (v1: return_val) (v2: return_val): return_val :=
+Definition f_eval_binexpr (op: binary_operation) (v1: value) (v2: value): return_val :=
     match op with
     | Ceq => Val.eq v1 v2
     | Cne => Val.ne v1 v2
@@ -233,7 +243,7 @@ Definition eval_binop (op: binary_operation) (v1: return_val) (v2: return_val): 
     end.
 
 (** interpret the unary operation *)
-Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
+Definition f_eval_unaryexpr (op: unary_operation) (v: value): return_val :=
     match op with
     | Onot => Val.not v
     end.
@@ -244,7 +254,8 @@ Definition eval_unop (op: unary_operation) (v: return_val): return_val :=
     in functional semantics for expression, it can return a normal value or an exception or 
     go abnormal, the checks are encoded inside the semantics
 *)
-(* here use 'Function' instead of 'Fixpoint' in order to use tactic 'functional induction (f_eval_expr _ _)' in proofs *)
+(* here use 'Function' instead of 'Fixpoint' in order to use 
+   tactic 'functional induction (f_eval_expr _ _)' in proofs *)
 Function f_eval_expr (s: stack) (e: expr): return_val :=
     match e with
     | Econst _ v => ValNormal (eval_constant v)
@@ -257,7 +268,12 @@ Function f_eval_expr (s: stack) (e: expr): return_val :=
         match f_eval_expr s e1 with
         | ValNormal v1 => 
             match f_eval_expr s e2 with
-            | ValNormal v2 => eval_binop op (ValNormal v1) (ValNormal v2)
+            | ValNormal v2 => 
+                match f_do_check op v1 v2 with
+                | Some true => f_eval_binexpr op v1 v2
+                | Some false => ValException
+                | _ => ValAbnormal
+                end
             | ValException => ValException
             | ValAbnormal => ValAbnormal
             end
@@ -266,7 +282,7 @@ Function f_eval_expr (s: stack) (e: expr): return_val :=
         end   
     | Eunop _ op e => 
         match f_eval_expr s e with
-        | ValNormal v => eval_unop op (ValNormal v)
+        | ValNormal v => f_eval_unaryexpr op v
         | ValException => ValException
         | ValAbnormal => ValAbnormal
         end
@@ -325,6 +341,8 @@ Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state :=
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 (** basic lemmas *)
+
+(*
 Lemma expr_type_infer: forall op v1 v2 n,
     eval_binop op v1 v2 = ValNormal (Int n) -> 
         (exists n1 n2, v1 = ValNormal (Int n1) /\ v2 = ValNormal (Int n2)).
@@ -339,6 +357,7 @@ Proof.
     destruct v2'; 
     simpl in H; try inversion H;
     try (exists n0, n1; auto).
+    destruct (Zeq_bool n0 0); inversion H.
 Qed.
 
 Lemma expr_type_infer': forall op v1 v2 n,
@@ -360,7 +379,9 @@ Proof.
     right; exists b, b0; auto.
     right; exists b, b0; auto.
     left; exists n0, n1; auto.
+    destruct (Zeq_bool n0 0); inversion H.
 Qed.
+*)
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 
@@ -422,6 +443,7 @@ Proof.
     end; auto.
 Qed.
 
+
 Lemma Zeq_zero_true: forall v,
     Zeq_bool v 0 = true <-> 
     is_not_zero v false.
@@ -448,6 +470,92 @@ Proof.
     destruct v; intuition.
 Qed.
 
+Lemma f_do_check_correct: forall op v1 v2 b,
+    f_do_check op v1 v2 = Some b ->
+    do_check op v1 v2 b.
+Proof.
+    intros op v1 v2;
+    functional induction (f_do_check op v1 v2);
+    intros b h1;
+    inversion h1; subst.
+  - constructor.
+    apply Zeq_zero_true.
+    assumption.
+  - constructor.
+    apply Zeq_zero_false.
+    assumption.
+  - destruct op; try inversion y;
+    constructor; unfold not; intros hz1;
+    inversion hz1.
+Qed.
+
+Lemma f_do_check_complete: forall op v1 v2 b,
+    do_check op v1 v2 b ->
+    f_do_check op v1 v2 = Some b.
+Proof.
+    intros op v1 v2 b h1.
+    induction h1.
+  - simpl.
+    destruct b.
+    specialize (Zeq_zero_false v2); intros hz1.
+    destruct hz1 as [hz1 hz2].
+    specialize (hz2 H).
+    rewrite hz2; auto.
+    specialize (Zeq_zero_true v2); intros hz1.
+    destruct hz1 as [hz1 hz2].
+    specialize (hz2 H).
+    rewrite hz2; auto.
+  - destruct op; intuition.
+Qed.
+
+Lemma f_eval_binexpr_correct: forall op v1 v2 v,
+    f_eval_binexpr op v1 v2 = ValNormal v ->
+    eval_binexpr op v1 v2 v.
+Proof.
+    intros op v1 v2 v h1.
+    destruct op;
+    match goal with 
+    |[|- eval_binexpr Odiv _ _ _] => idtac
+    |[|- eval_binexpr ?op _ _ _] =>
+        destruct v1, v2;
+        simpl in h1; inversion h1; subst;
+        constructor; auto
+    end.
+    destruct v1, v2; simpl in h1; inversion h1.
+    constructor.
+    remember (Zeq_bool n0 0) as x.
+    reflexivity.
+Qed.
+
+Lemma f_eval_binexpr_complete: forall op v1 v2 v,
+    eval_binexpr op v1 v2 v ->
+    f_eval_binexpr op v1 v2 = ValNormal v.
+Proof.
+    intros op v1 v2 v h1.
+    induction h1;
+    rewrite <- H;
+    simpl; auto.
+Qed.
+
+Lemma f_eval_unaryexpr_correct: forall op v v',
+    f_eval_unaryexpr op v = ValNormal v' ->
+    eval_unaryexpr op v v'.
+Proof.
+    intros.
+    destruct op; simpl in H.
+    destruct v; inversion H; subst.
+    constructor; auto.
+Qed.
+
+Lemma f_eval_unaryexpr_complete: forall op v v',
+    eval_unaryexpr op v v' ->
+    f_eval_unaryexpr op v = ValNormal v'.
+Proof.
+    intros op v v' h1;
+    induction h1;
+    rewrite <- H;
+    simpl; auto.
+Qed.
 
 (** ** Semantics equivalence for expression *)
 (** a help lemma to prove the theorem: f_eval_expr_correct *)
@@ -467,28 +575,15 @@ Proof.
     specialize (IHr0 _ e4).
     rewrite H0.
     econstructor.
-    apply IHr. apply IHr0.
-    + (* check division by zero *)
-       destruct op;
-       match goal with
-       | [ |- do_check Odiv ?v1 ?v2 true ] => destruct v1, v2; inversion h1; constructor
-       | [ |- do_check ?op ?v1 ?v2 true ] => constructor; unfold not; intros H; inversion H
-       end.
-       remember (Zeq_bool n0 0) as b.
-       destruct b; try inversion H1.
-       symmetry in Heqb.
-       apply Zeq_zero_false; assumption.
-    + destruct op;
-       destruct v1, v2;
-       simpl in h1; inversion h1;
-       try constructor; auto.
-       destruct (Zeq_bool n0 0); inversion h1; subst.
-       constructor.
-       reflexivity.
+    exact IHr. exact IHr0.
+    + apply f_do_check_correct.
+      auto.
+    + apply f_eval_binexpr_correct; 
+      auto.
   - specialize (IHr _ e2).
     rewrite h1.
     econstructor. 
-    apply IHr.
+    exact IHr.
     destruct op. 
     simpl in h1. 
     destruct v; inversion h1; subst.
@@ -503,23 +598,17 @@ Proof.
     intros s e.
     functional induction (f_eval_expr s e);
     intros h; try inversion h.
-  - rewrite h.
-    specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
+  - destruct op, v1, v2;
+    simpl in h; inversion h.
+  - specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
     specialize (f_eval_expr_correct1 _ _ _ e4); intros hz2.
     eapply eval_Ebinop3.
     apply hz1. apply hz2.
-    destruct op;
-    destruct v1; destruct v2;
-    try inversion h.
-    constructor. 
-    remember (Zeq_bool n0 0) as b.
-    symmetry in Heqb.
-    destruct b; try inversion H1.
-    apply Zeq_zero_true; assumption.
-  - specialize (IHr0 e4).
-    specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
+    apply f_do_check_correct; auto.
+  - specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
+    specialize (IHr0 e4).
     eapply eval_Ebinop2; auto.
-    apply hz1.
+    exact hz1.
   - specialize (IHr e3).
     constructor; assumption.
   - destruct op;
@@ -563,15 +652,15 @@ Proof.
     | h: f_eval_expr _ _ = _ |- _ => progress rewrite h
     end;auto.
   - rewrite H; reflexivity.
-  - inversion H; subst. inversion H; subst.
-    inversion H3; subst.
-    auto.
+  - specialize (f_do_check_complete _ _ _ _ H); intros hz1.
+    rewrite hz1.
+    reflexivity.
   - destruct v1; destruct v2;
     destruct op;
     inversion H0; subst; simpl; auto.
     inversion H; subst. 
-    apply Zeq_zero_false in H3. 
-    rewrite H3; auto.
+    apply Zeq_zero_false in H2. 
+    rewrite H2; auto.
     unfold not in H1; intuition.
   - destruct op.
     inversion H; subst.
@@ -579,7 +668,7 @@ Proof.
 Qed.
 
 
-Ltac blam :=
+Ltac apply_inv :=
   match goal with
     | H:SUnterminated = SNormal _ |- _ => inversion H
     | H:SUnterminated = SException |- _ => inversion H
@@ -594,13 +683,13 @@ Ltac blam :=
     | H:SNormal _ = SException |- _ => inversion H
     | H:SNormal _ = SAbnormal |- _ => inversion H
     | H:SNormal _ = SNormal _ |- _ => inversion H;clear H;subst 
-    | h:update _ _ (Value _) = _ |- _ => rewrite h
-    | H : f_eval_stmt _ _ _ = _ |- _ => rewrite H
-    | H : f_eval_expr _ _ = _ |- _ => rewrite H
+    | H:update _ _ (Value _) = _ |- _ => rewrite H
+    | H:f_eval_stmt _ _ _ = _ |- _ => rewrite H
+    | H:f_eval_expr _ _ = _ |- _ => rewrite H
   end;subst;simpl;auto.
 
 Ltac invle := match goal with
-    | H: (S _ <= _)%nat |- _ => (inversion H; clear H; subst;simpl)
+    | H: (S _ <= _)%nat |- _ => (inversion H; clear H; subst; simpl)
   end.
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
@@ -611,17 +700,15 @@ Lemma f_eval_stmt_fixpoint: forall k s p s',
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p); simpl; intros; subst; simpl; auto;
-    repeat progress blam.
+    repeat progress apply_inv.
+  - invle; repeat apply_inv.
   - invle.
-    + repeat blam.
-    + blam. blam.
-  - invle.
-    + repeat blam.
+    + repeat apply_inv.
     + rewrite (IHs0 _ e1);auto with arith.
-  - invle; repeat blam. rewrite (IHs0 _ H);auto with arith.
-  - invle; repeat blam.
-  - invle; repeat blam. rewrite (IHs0 _ e2); auto with arith.
-  - invle; repeat blam.
+  - invle; repeat apply_inv. rewrite (IHs0 _ H);auto with arith.
+  - invle; repeat apply_inv.
+  - invle; repeat apply_inv. rewrite (IHs0 _ e2); auto with arith.
+  - invle; repeat apply_inv.
 Qed.
 
 (** another help lemma to prove the theorem: 'f_eval_stmt_complete' *)
@@ -632,29 +719,29 @@ Lemma f_eval_stmt_fixpoint_E: forall k s p,
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p); simpl; intros; subst; simpl; auto;
-    repeat progress blam. 
+    repeat progress apply_inv. 
   - invle;
-    blam.
+    apply_inv.
   - invle;
-    repeat blam.
+    repeat apply_inv.
     rewrite (f_eval_stmt_fixpoint _ _ _ _ e1); auto with arith.
   - invle;
-    repeat blam.
+    repeat apply_inv.
     specialize (IHs0 e1). 
     rewrite IHs0; auto with arith. 
   - invle; 
-    repeat blam.
+    repeat apply_inv.
     rewrite IHs0; auto with arith.
   - invle;
-    repeat blam.
+    repeat apply_inv.
   - invle; 
-    repeat blam. 
+    repeat apply_inv. 
     rewrite (f_eval_stmt_fixpoint _ _ _ _ e2); auto with arith.
   - invle; 
-    repeat blam.
+    repeat apply_inv.
     rewrite (IHs0 e2); auto with arith.    
   - invle; 
-    repeat blam.   
+    repeat apply_inv.   
 Qed.
 
 
@@ -708,12 +795,12 @@ Proof.
     specialize (IHs1 _ H).
     econstructor.
     apply IHs0.
-    blam.
+    apply_inv.
   - (* Cifthen_True *)
     specialize (IHs0 _ H).
     econstructor.
     rm_f_eval_expr. 
-    blam.
+    apply_inv.
   - (* Cifthen_False *)
     eapply eval_Sifthen_False.
     rm_f_eval_expr.
@@ -723,7 +810,7 @@ Proof.
     econstructor.
     rm_f_eval_expr.
     apply IHs0. 
-    blam.
+    apply_inv.
   - (* Swhile_False *)
     eapply eval_Swhile_False.
     rm_f_eval_expr.
@@ -750,7 +837,7 @@ Proof.
     econstructor.
     rm_f_eval_stmt.
     apply hz1.
-    blam.
+    apply_inv.
   - specialize (IHs0 e1).
     econstructor.
     assumption.    
@@ -758,7 +845,7 @@ Proof.
     specialize (IHs0 H).
     econstructor.
     rm_f_eval_expr.
-    blam.
+    apply_inv.
   - econstructor.
     specialize (f_eval_expr_correct2 _ _ e1); intros hz1. 
     assumption.
@@ -768,7 +855,7 @@ Proof.
     rm_f_eval_expr.
     rm_f_eval_stmt.
     apply hz1.
-    blam.
+    apply_inv.
   - constructor 9.
     rm_f_eval_expr.
     specialize (IHs0 e2); assumption.    
@@ -808,6 +895,15 @@ Qed.
    there should exist a constant k that command c starting from s will terminate in state s' 
    within k steps with regard to the functional semantics 'f_eval_stmt'
 *)
+Ltac apply_rewrite := 
+    match goal with
+    | h: eval_expr ?s ?e ?s' |- _ => 
+        rewrite (f_eval_expr_complete _ _ _ h)
+    | h: update _ _ _ = _ |- _ => rewrite h
+    | h: f_eval_stmt _ _ _ = _ |- _ => rewrite h
+    | h: f_eval_expr _ _ = _ |- _ => rewrite h
+    end; auto.
+
 Theorem f_eval_stmt_complete : forall s c s',
         eval_stmt s c s' ->                        (* s' is either a normal state or an exception *)
             exists k, f_eval_stmt k s c = s'.
@@ -821,13 +917,12 @@ Proof.
           reflexivity
   end.
   (* 1. Sassign *)
-  - exists 1%nat. simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    blam.   
+  - exists 1%nat; simpl.
+    repeat apply_rewrite.
   (* 2. Sseq *)
   - destrIH.
     exists (S k); simpl.
-    blam.
+    apply_rewrite.
   - destrIH.
     exists (S (k0+k)); simpl.
     kgreater.
@@ -837,26 +932,296 @@ Proof.
   (* 3. Sifthen *)
   - destrIH.
     exists (S k); simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    assumption.
-  - exists 1%nat. simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    reflexivity.
+    apply_rewrite.
+  - exists 1%nat; simpl.
+    apply_rewrite.
   (* 4. Swhile *)
   - destrIH.
     exists (S k); simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
-    blam.
+    repeat apply_rewrite.
   - destrIH.
     exists (S (k0+k)); simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).    
+    apply_rewrite.
     kgreater.
     specialize (eval_stmt_state _ _ _ H1); intros hz1.
     destruct hz1 as [hz2 | hz2]; try rm_exists; subst;
     kgreater.
-  - exists 1%nat. simpl.
-    rewrite (f_eval_expr_complete _ _ _ H).
+  - exists 1%nat; simpl.
+    apply_rewrite.
+Qed.
+    
+
+(**********************************************************************)
+(**********************************************************************)
+
+(** * Subprogram Semantics *)
+
+(** In the current SPARK subset, there is no procedure call, 
+     so right now we only define the semantics for the main procedure.
+     And it can be used to test the tool chain from Ada source code to Coq evaluation;
+     
+     Later, we will and the procedure call and modify the following procedure semantics.
+*)
+
+(** all declared variables have unique names; *)
+
+Inductive eval_decl: stack -> local_declaration -> state -> Prop :=
+    | eval_Decl_E: forall e d s,
+        Some e = d.(local_init) ->
+        eval_expr s e ValException ->
+        eval_decl s d SException
+    | eval_Decl: forall d x e v s,
+        x = d.(local_ident) ->
+        Some e = d.(local_init) ->
+        eval_expr s e (ValNormal v) ->
+        eval_decl s d (SNormal ((x, Value v) :: s))
+    | eval_UndefDecl: forall d x s,
+        x = d.(local_ident) ->
+        None = d.(local_init) ->
+        eval_decl s d (SNormal ((x, Vundef) :: s)).
+
+Function f_eval_decl (s: stack) (d: local_declaration): state :=
+    let x := d.(local_ident) in
+    let e := d.(local_init) in
+    match e with
+    | Some e' => 
+        match f_eval_expr s e' with
+        | ValNormal v => 
+            SNormal ((x, Value v) :: s)
+        | ValException =>
+            SException      
+        | ValAbnormal => SAbnormal 
+        end
+    | None => SNormal ((x, Vundef) :: s)
+    end.
+
+Inductive eval_decls: stack -> (list local_declaration) -> state -> Prop :=
+    | eval_EmptyDecls: forall s,
+        eval_decls s nil (SNormal s)
+    | eval_Decls_E: forall d tl s,
+        eval_decl s d SException ->
+        eval_decls s (d::tl) SException
+    | eval_Decls: forall d tl s1 s2 s3,
+        eval_decl s1 d (SNormal s2) ->
+        eval_decls s2 tl s3 ->
+        eval_decls s1 (d::tl) s3.
+
+Function f_eval_decls (s: stack) (d: list local_declaration): state :=
+    match d with
+    | d' :: tl => 
+        match f_eval_decl s d' with
+        | SNormal s' => f_eval_decls s' tl 
+        | SException => SException
+        | _ => SAbnormal
+        end
+    | nil => SNormal s
+    end.
+
+Lemma eval_decl_state : forall s d s',
+        eval_decl s d s' -> (* s' is either a normal state or an exception *)
+            (exists v, s' = SNormal v) \/ s' = SException.
+Proof.
+    intros s d s' h.
+    induction h;
+    try match goal with
+    | [ |- (exists v, SNormal ?v1 = SNormal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
+    end; auto.
+Qed.
+
+Lemma eval_decls_state : forall tl s d s',
+        eval_decls s (d :: tl) s' -> (* s' is either a normal state or an exception *)
+            (exists v, s' = SNormal v) \/ s' = SException.
+Proof.
+    induction tl;
+    intros s d s' h1.
+  - inversion h1; subst.
+    right; auto.
+    left; exists s2.
+    inversion H4; subst; auto.
+  - inversion h1; subst.
+    right; auto.
+    specialize (IHtl _ _ _ H4).
+    destruct IHtl as [IH1 | IH1].
+    destruct IH1 as [v IH1].
+    left; exists v; auto.
+    right; auto.
+Qed.
+
+(** f_eval_decl completeness and correctness proofs *)
+
+Lemma f_eval_decl_correct: forall d s s',
+    (f_eval_decl s d = (SNormal s') -> eval_decl s d (SNormal s')) /\
+    (f_eval_decl s d = SException -> eval_decl s d SException).
+Proof.
+    intros d s.
+    functional induction (f_eval_decl s d);
+    intros; split; intros;
+    inversion H; subst.
+  - econstructor; auto.
+    symmetry in e0; apply e0.
+    eapply f_eval_expr_correct1; assumption.
+  - econstructor.
+    symmetry in e0; apply e0.
+    eapply f_eval_expr_correct2; assumption.
+  - econstructor; auto.
+Qed.
+
+Lemma f_eval_decl_complete: forall d s s',
+    eval_decl s d s' ->
+    f_eval_decl s d = s'.
+Proof.
+    intros d s s' h.
+    induction h;
+    unfold f_eval_decl.
+  - rewrite <- H.
+    apply f_eval_expr_complete in H0.
+    rewrite H0;
     reflexivity.
+  - rewrite <- H0.
+    apply f_eval_expr_complete in H1.
+    rewrite H1.
+    rewrite <- H. 
+    reflexivity.
+  - rewrite <- H0.
+    rewrite <- H.
+    reflexivity.
+Qed.
+
+(** f_eval_decls completeness and correctness proofs *)
+
+Lemma f_eval_decls_correct: forall d s s',
+    (f_eval_decls s d = (SNormal s') -> eval_decls s d (SNormal s')) /\
+    (f_eval_decls s d = SException -> eval_decls s d SException).
+Proof.
+    induction d;
+    intros; 
+    split; intros.
+  - inversion H; subst.
+    constructor.
+  - inversion H.
+  - simpl in H.
+    remember (f_eval_decl s a) as b. 
+    symmetry in Heqb.
+    destruct b; inversion H; subst.
+    specialize (IHd s0 s'). destruct IHd as [IH0 IH1].
+    specialize (IH0 H).
+    econstructor.
+    apply f_eval_decl_correct in Heqb.
+    apply Heqb.
+    rewrite H. assumption.
+  - simpl in H.
+    remember (f_eval_decl s a) as b;
+    symmetry in Heqb.
+    destruct b; inversion H; subst.    
+    specialize (IHd s0 s0). destruct IHd as [IH0 IH1].
+    specialize (IH1 H).
+    apply f_eval_decl_correct in Heqb.
+    econstructor.
+    apply Heqb.
+    rewrite H; assumption.
+    constructor. 
+    apply f_eval_decl_correct in Heqb; auto. 
+Qed.
+
+Lemma f_eval_decls_complete: forall d s s',
+    eval_decls s d s' ->
+    f_eval_decls s d = s'.
+Proof.
+    intros d s s' h.
+    induction h.
+  - constructor.
+  - apply f_eval_decl_complete in H.
+    unfold f_eval_decls.
+    rewrite H; auto.
+  - apply f_eval_decl_complete in H.
+    unfold f_eval_decls.
+    rewrite H; auto.
+Qed.
+
+(* = = = = = = Subprogram Body = = = = = =  *)
+
+Inductive eval_proc: stack -> procedure_body -> state -> Prop :=
+    | eval_Proc_E: forall f s,
+        eval_decls s f.(proc_loc_idents) SException ->
+        eval_proc s f SException
+    | eval_Proc: forall f s1 s2 s3,
+        eval_decls s1 f.(proc_loc_idents) (SNormal s2) ->
+        eval_stmt s2 f.(proc_body) s3 ->
+        eval_proc s1 f s3.
+
+Function f_eval_proc k (s: stack) (f: procedure_body): state :=
+    match (f_eval_decls s f.(proc_loc_idents)) with
+    | SNormal s' => f_eval_stmt k s' f.(proc_body)
+    | SException => SException
+    | _ => SAbnormal
+    end.
+
+
+(** ** Main Procedure Evaluation Without Parameters *)
+
+Inductive eval_subprogram: stack -> subprogram -> state -> Prop :=
+    | eval_SubpProc: forall s s' ast_num f,
+        eval_proc s f s' ->
+        eval_subprogram s (Sproc ast_num f) s'.
+
+Function f_eval_subprogram k (s: stack) (f: subprogram): state := 
+    match f with 
+    | Sproc ast_num f' => f_eval_proc k s f'
+    end.
+
+(** ** Bisimulation Between Relational And Functional Semantics For Main Procedure *)
+
+(** *** f_eval_subprogram_correct *)
+
+Theorem f_eval_subprogram_correct: forall k s f s',
+    (f_eval_subprogram k s f = SNormal s' -> eval_subprogram s f (SNormal s')) /\
+    (f_eval_subprogram k s f = SException -> eval_subprogram s f SException).
+Proof.
+    intros; 
+    split; intros;
+    destruct f;
+    simpl in H;
+    constructor;
+    unfold f_eval_proc in H;
+    remember (f_eval_decls s (proc_loc_idents p)) as x;
+    symmetry in Heqx.
+  - (* normal state *)
+    destruct x; inversion H; subst.
+    econstructor.
+    + apply f_eval_decls_correct in Heqx.
+       apply Heqx.
+    + apply f_eval_stmt_correct in H.
+       rewrite H1; auto.
+  - (* exception *)
+    destruct x; inversion H; subst.
+    + econstructor.
+       * apply f_eval_decls_correct in Heqx.
+         apply Heqx.
+       * rewrite H.
+         apply f_eval_stmt_correct in H; auto.
+    + econstructor.
+       apply f_eval_decls_correct in Heqx; auto.
+Qed.
+
+(** *** f_eval_subprogram_complete *)
+
+Theorem f_eval_subprogram_complete: forall s f s',
+    eval_subprogram s f s' ->
+    exists k, f_eval_subprogram k s f = s'.
+Proof.
+    intros s f s' h.
+    unfold f_eval_subprogram.
+    unfold f_eval_proc.
+    inversion h; subst.
+    inversion H; subst.
+  - apply f_eval_decls_complete in H0.
+    rewrite H0. 
+    exists 0; auto.
+  - apply f_eval_decls_complete in H0.
+    rewrite H0.
+    apply f_eval_stmt_complete in H1.
+    auto.
 Qed.
 
 

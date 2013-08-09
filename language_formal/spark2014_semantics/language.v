@@ -10,11 +10,13 @@ Require Export ZArith.
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
 Require Export Coq.Strings.String.
+(* oqdoc language.v values.v environment.v semantics.v wellformedness.v propertyProof.v  -toc --no-lib-name *)
 
 (** * SPARK Subset Language *)
 Inductive mode: Type := 
     | In: mode
-    | Out: mode.
+    | Out: mode
+    | InOut: mode.
 
 Inductive typ: Type := 
     | Tint: typ
@@ -63,14 +65,14 @@ Inductive binary_operation: Type :=
 	| Omul: binary_operation
 	| Odiv: binary_operation.
 
-(** ** Basic expressions *)
+(** ** Expressions *)
 Inductive expr: Type := 
 	| Econst: astnum -> constant -> expr
 	| Evar: astnum -> idnum -> expr
 	| Ebinop: astnum -> binary_operation -> expr -> expr -> expr
 	| Eunop: astnum -> unary_operation -> expr -> expr.
 
-(** ** Basic commands *)
+(** ** Statements *)
 Inductive stmt: Type := 
 	| Sassign: astnum -> idnum -> expr -> stmt
 	| Sifthen: astnum -> expr -> stmt -> stmt
@@ -82,8 +84,7 @@ Inductive stmt: Type :=
 
 Record param_specification: Type := mkparam_specification{
 	param_astnum: astnum;
-	(* param_idents: list idnum; *)
-        param_ident: idnum;
+        param_ident: idnum; (* param_idents: list idnum; *)
 	param_typenum: typenum;
 	param_mode: mode;
 	param_init: option (expr)
@@ -107,9 +108,9 @@ Record local_declaration: Type := mklocal_declaration{
 Record procedure_body: Type := mkprocedure_body{
 	proc_astnum: astnum;
 	proc_name: procnum;
-	proc_specs: option (list aspect_specification);
-	proc_params: option (list param_specification);
-	proc_loc_idents: option (list local_declaration);
+	proc_specs: list aspect_specification;
+	proc_params: list param_specification;
+	proc_loc_idents: list local_declaration;
 	proc_body: stmt
 }.
 
@@ -117,16 +118,16 @@ Record function_body: Type := mkfunction_body{
 	fn_astnum: astnum;
 	fn_name: procnum;
 	fn_ret_type: typ;
-	fn_specs: option (list aspect_specification);
-	fn_params: option (list param_specification);
-	fn_loc_idents: option (list local_declaration);
+	fn_specs: list aspect_specification;
+	fn_params: list param_specification;
+	fn_loc_idents: list local_declaration;
 	fn_body: stmt
 }.
 
 (** ** Compilation unit: subprogram *)
 Inductive subprogram: Type := 
 	| Sproc: astnum -> procedure_body -> subprogram
-	| Sfunc: astnum -> function_body -> subprogram.
+(*	| Sfunc: astnum -> function_body -> subprogram *).
 
 Inductive unit_declaration: Type := 
 	| UnitDecl: astnum -> subprogram -> unit_declaration.

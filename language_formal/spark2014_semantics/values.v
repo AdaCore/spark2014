@@ -52,121 +52,62 @@ Notation "n < m" := (Z.ltb n m) (at level 70, no associativity).
 Notation "n > m" := (Z.gtb m n) (at level 70, no associativity).
 
 (** ** Arithmetic operations *)
-Definition add (v1 v2: return_val): return_val := 
+Definition add (v1 v2: value): return_val := 
     match v1, v2 with
-    | ValNormal n1, ValNormal n2 => 
-          match n1, n2 with
-          | Int n1', Int n2' => ValNormal (Int (n1' + n2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Int v1', Int v2' => ValNormal (Int (v1' + v2'))
+    | _, _ => ValAbnormal
     end.
 
-Definition sub (v1 v2: return_val): return_val := 
+Definition sub (v1 v2: value): return_val := 
     match v1, v2 with
-    | ValNormal n1, ValNormal n2 => 
-          match n1, n2 with
-          | Int n1', Int n2' => ValNormal (Int (n1' - n2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Int v1', Int v2' => ValNormal (Int (v1' - v2'))
+    | _, _ => ValAbnormal
     end.
 
-Definition mul (v1 v2: return_val): return_val :=
+Definition mul (v1 v2: value): return_val :=
     match v1, v2 with
-    | ValNormal n1, ValNormal n2 => 
-          match n1, n2 with
-          | Int n1', Int n2' => ValNormal (Int (n1' * n2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Int v1', Int v2' => ValNormal (Int (v1' * v2'))
+    | _, _ => ValAbnormal
     end.
 
-(* check for division by zero *)
-Definition div (v1 v2: return_val): return_val :=
+Definition div (v1 v2: value): return_val :=
     match v1, v2 with
-    | ValNormal n1, ValNormal n2 => 
-          match n1, n2 with
-          | Int n1', Int n2' => if n2' == 0%Z then ValException else ValNormal (Int (n1' / n2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Int v1', Int v2' => ValNormal (Int (v1' / v2'))
+    | _, _ => ValAbnormal
     end.
 
 (** ** Logic operations  *)
-Definition and (v1 v2: return_val): return_val :=
+Definition and (v1 v2: value): return_val :=
     match v1, v2 with
-    | ValNormal b1, ValNormal b2 => 
-          match b1, b2 with
-          | Bool b1', Bool b2' => ValNormal (Bool (andb b1' b2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Bool v1', Bool v2' => ValNormal (Bool (andb v1' v2'))
+    | _, _ => ValAbnormal
     end.
 
-Definition or (v1 v2: return_val): return_val :=
+Definition or (v1 v2: value): return_val :=
     match v1, v2 with
-    | ValNormal b1, ValNormal b2 => 
-          match b1, b2 with
-          | Bool b1', Bool b2' => ValNormal (Bool (orb b1' b2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Bool v1', Bool v2' => ValNormal (Bool (orb v1' v2'))
+    | _, _ => ValAbnormal
     end.
 
 (** ** Relational operations *)
-Definition eq (v1 v2: return_val): return_val :=
+Definition eq (v1 v2: value): return_val :=
     match v1, v2 with
-    | ValNormal n1, ValNormal n2 => 
-          match n1, n2 with
-          | Int n1', Int n2' => ValNormal (Bool (n1' == n2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Int v1', Int v2' => ValNormal (Bool (v1' == v2'))
+    | _, _ => ValAbnormal
     end.
 
-Definition ne (v1 v2: return_val): return_val :=
+Definition ne (v1 v2: value): return_val :=
     match v1, v2 with
-    | ValNormal n1, ValNormal n2 => 
-          match n1, n2 with
-          | Int n1', Int n2' => ValNormal (Bool (n1' != n2'))
-          | _, _ => ValAbnormal
-          end
-    | ValException, _ => ValException
-    | ValAbnormal, _ => ValAbnormal
-    | _, ValException => ValException
-    | _, ValAbnormal => ValAbnormal
+    | Int v1', Int v2' => ValNormal (Bool (v1' != v2'))
+    | _, _ => ValAbnormal
     end.
 
 (** ** Unary operations *)
-Definition not (v: return_val): return_val :=
+Definition not (v: value): return_val :=
     match v with
-    | ValNormal (Bool b) => ValNormal (Bool (negb b))
-    | ValException => ValException
+    | Bool v' => ValNormal (Bool (negb v'))
     | _ => ValAbnormal
     end.
-
 End Val. 
 
  
