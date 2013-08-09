@@ -1,5 +1,5 @@
-pkg_b.ads:3:26: warning: ineffective initialization of "State" (is global output in main program "Test_04") [ineffective]
 test_07.adb:4:32: "State" may not be initialized after elaboration of "Test_07" [uninitialized]
+pkg_b.ads:3:26: warning: ineffective initialization of "State" (is global output in main program "Test_04") [ineffective]
 test_02.adb:7:09: "State" might not be initialized [uninitialized]
 test_05.adb:4:32: warning: unused initial value of "State" [unused_initial_value]
 test_01.adb:4:32: "State" may not be initialized after elaboration of "Test_01" [uninitialized]
