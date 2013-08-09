@@ -304,7 +304,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Null_Statement
-                    or else Nkind (N) = N_Raise_Statement;
+                    or else Nkind (N) = N_Raise_Statement
+                    or else Nkind (N) in N_Raise_xxx_Error;
    --  Deals with null and raise statements. We create a new vertex that has
    --  control flow in from the top and leave from the bottom (nothing happens
    --  in between).
@@ -2198,7 +2199,8 @@ package body Flow.Control_Flow_Graph is
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
          when N_Full_Type_Declaration | N_Subtype_Declaration =>
             Do_Type_Declaration (N, FA, CM, Ctx);
-         when N_Raise_Statement =>
+         when N_Raise_Statement |
+              N_Raise_xxx_Error =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);

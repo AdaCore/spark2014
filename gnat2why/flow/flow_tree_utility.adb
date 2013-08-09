@@ -368,7 +368,8 @@ package body Flow_Tree_Utility is
       Last_Statement :=
         Last (Statements (Handled_Statement_Sequence (The_Body)));
 
-      return Nkind (Last_Statement) = N_Raise_Statement;
+      return (Nkind (Last_Statement) = N_Raise_Statement
+                or else Nkind (Last_Statement) in N_Raise_xxx_Error);
    end Last_Statement_Is_Raise;
 
 end Flow_Tree_Utility;
