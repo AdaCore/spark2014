@@ -1,6 +1,2 @@
-project Test
-is
-   package Compiler is
-      for Default_Switches ("Ada") use ("-gnat12", "-gnatd.V", "-gnatdk");
-   end Compiler;
+project Test is
 end Test;
