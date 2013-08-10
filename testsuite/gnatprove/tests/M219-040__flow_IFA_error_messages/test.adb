@@ -28,6 +28,7 @@ package body Test is
       if A > B then
          return False;
       end if;
+      raise Program_Error;
    end Uninitialized_2;
 
    ---------------------

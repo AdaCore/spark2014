@@ -1,7 +1,0 @@
-test.adb:39:04: possibly missing return statement in "No_Return" [noreturn]
-
-   compilation of test.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-
