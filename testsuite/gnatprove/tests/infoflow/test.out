@@ -117,7 +117,7 @@ infoflow.ads:9:6: complete contract cases not proved
 infoflow.ads:9:6: disjoint contract cases not proved
 infoflow.ads:12:24: contract case not proved
 infoflow.ads:16:24: contract case not proved
-infoflow.ads:30:36: postcondition not proved, requires Flags (K) = Flags'old
+infoflow.ads:30:36: postcondition not proved, requires Flags (K) = Flags'Old (K)
 infoflow.ads:37:6: complete contract cases not proved
 infoflow.ads:38:24: contract case not proved
 infoflow.ads:48:6: info: complete contract cases proved
