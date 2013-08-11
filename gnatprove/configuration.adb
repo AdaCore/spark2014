@@ -76,7 +76,7 @@ package body Configuration is
    --  assume that there is no body)
 
    Usage_Message : constant String :=
-      "-Pproj [files] [switches] [-cargs switches]";
+     "-Pproj [files] [switches] [-cargs switches]";
 
    --  Hidden switches: --ide-progress-bar
    Help_Message : constant String :=
@@ -187,8 +187,7 @@ ASCII.LF &
    -- To_String --
    ---------------
 
-   function To_String (P : Proof_Mode) return String
-   is
+   function To_String (P : Proof_Mode) return String is
    begin
       case P is
          when No_WP => return "no_wp";
@@ -203,8 +202,7 @@ ASCII.LF &
    -- Read_Command_Line --
    -----------------------
 
-   procedure Read_Command_Line (Tree : out Project_Tree)
-   is
+   procedure Read_Command_Line (Tree : out Project_Tree) is
       Config : Command_Line_Configuration;
 
       procedure Abort_With_Help (Msg : String)
@@ -219,8 +217,7 @@ ASCII.LF &
       -- Abort_With_Help --
       ---------------------
 
-      procedure Abort_With_Help (Msg : String)
-      is
+      procedure Abort_With_Help (Msg : String) is
       begin
          Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
          Ada.Text_IO.New_Line;
@@ -232,8 +229,7 @@ ASCII.LF &
       -- Init --
       ----------
 
-      function Init return Project_Tree
-      is
+      function Init return Project_Tree is
          Proj_Env     : Project_Environment_Access;
          GNAT_Version : GNAT.Strings.String_Access;
          Tree         : Project_Tree;
@@ -266,8 +262,8 @@ ASCII.LF &
       First_Config : Command_Line_Configuration;
       Com_Lin : aliased String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
-   begin
 
+   begin
       --  We parse the command line *twice*.
 
       --  First parsing recognizes all switches with "immediate"
@@ -578,7 +574,9 @@ ASCII.LF &
             Only_Given := True;
          end if;
       end;
+
       Sanitize_File_List (Tree);
+
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
