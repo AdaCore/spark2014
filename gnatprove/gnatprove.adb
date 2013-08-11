@@ -54,11 +54,12 @@ procedure Gnatprove is
        when GPM_Prove | GPM_All => GS_Why);
 
    procedure Call_Gprbuild
-      (Project_File  : String;
-       Config_File   : String;
-       Parallel      : Integer;
-       Compiler_Args : in out String_Lists.List;
-       Status        : out Integer);
+      (Project_File : String;
+       Config_File  : String;
+       Parallel     : Integer;
+       RTS_Dir      : String_Access;
+       Args         : in out String_Lists.List;
+       Status       : out Integer);
    --  Call gprbuild with the given arguments. Pass in explicitly a number of
    --  parallel processes, so that we can force sequential execution when
    --  needed.
@@ -121,46 +122,58 @@ procedure Gnatprove is
    -------------------
 
    procedure Call_Gprbuild
-      (Project_File  : String;
-       Config_File   : String;
-       Parallel      : Integer;
-       Compiler_Args : in out String_Lists.List;
-       Status        : out Integer) is
+      (Project_File : String;
+       Config_File  : String;
+       Parallel     : Integer;
+       RTS_Dir      : String_Access;
+       Args         : in out String_Lists.List;
+       Status       : out Integer) is
    begin
       if Verbose then
-         Compiler_Args.Prepend ("-v");
+         Args.Prepend ("-v");
       else
-         Compiler_Args.Prepend ("-q");
-         Compiler_Args.Prepend ("-ws");
+         Args.Prepend ("-q");
+         Args.Prepend ("-ws");
       end if;
+
       if Parallel > 1 then
-         Compiler_Args.Prepend ("-j" & Int_Image (Parallel));
+         Args.Prepend ("-j" & Int_Image (Parallel));
       end if;
+
       if Continue_On_Error then
-         Compiler_Args.Prepend ("-k");
+         Args.Prepend ("-k");
       end if;
+
       if Force then
-         Compiler_Args.Prepend ("-f");
+         Args.Prepend ("-f");
       end if;
+
       if All_Projects then
-         Compiler_Args.Prepend ("-U");
+         Args.Prepend ("-U");
       end if;
-      Compiler_Args.Prepend ("-c");
+
+      Args.Prepend ("-c");
+
+      if RTS_Dir /= null then
+         Args.Prepend ("--RTS=" & RTS_Dir.all);
+      end if;
+
       if Project_File /= "" then
-         Compiler_Args.Prepend (Project_File);
-         Compiler_Args.Prepend ("-P");
+         Args.Prepend (Project_File);
+         Args.Prepend ("-P");
       end if;
+
       if Config_File /= "" then
-         Compiler_Args.Prepend ("--config=" & Config_File);
+         Args.Prepend ("--config=" & Config_File);
       end if;
 
       if Debug then
-         Compiler_Args.Prepend ("-dn");
+         Args.Prepend ("-dn");
       end if;
 
       Call_With_Status
         (Command   => "gprbuild",
-         Arguments => Compiler_Args,
+         Arguments => Args,
          Status    => Status,
          Verbose   => Verbose);
    end Call_Gprbuild;
@@ -201,6 +214,7 @@ procedure Gnatprove is
       Call_Gprbuild (Project_File,
                      Gpr_Frames_Cnf_File,
                      Parallel,
+                     RTS_Dir,
                      Args,
                      Status);
       Gnat2Why_Args.Clear;
@@ -310,9 +324,10 @@ procedure Gnatprove is
       Set ("TMPDIR", Obj_Dir);
       Call_Gprbuild (Why_Proj_File,
                      Gpr_Why_Cnf_File,
-                     Parallel      => 1,
-                     Compiler_Args => Args,
-                     Status        => Status);
+                     Parallel => 1,
+                     RTS_Dir  => RTS_Dir,
+                     Args     => Args,
+                     Status   => Status);
    end Compute_VCs;
 
    procedure Execute_Step
@@ -668,6 +683,7 @@ procedure Gnatprove is
       Call_Gprbuild (Project_File,
                      Gpr_Translation_Cnf_File,
                      Parallel,
+                     RTS_Dir,
                      Args,
                      Status);
       Gnat2Why_Args.Clear;

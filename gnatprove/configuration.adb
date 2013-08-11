@@ -123,6 +123,8 @@ ASCII.LF &
 "     --proof=p      Set the proof mode "&
 "(p=normal*, no_wp, all_split, path_wp, no_split)" &
 ASCII.LF &
+"     --RTS=dir      Specify the Ada runtime name/location" &
+ASCII.LF &
 "     --show-tag     Append a unique tag to each error message" &
 ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
@@ -370,6 +372,12 @@ ASCII.LF &
          Pedantic'Access,
          Long_Switch => "--pedantic",
          Help => "Use a strict interpretation of the Ada standard");
+
+      Define_Switch
+        (Config,
+         RTS_Dir'Access,
+         Long_Switch => "--RTS=",
+         Help => "Specify the Ada runtime name/location");
 
       Define_Switch
         (Config,
