@@ -11,15 +11,16 @@ Require Export semantics.
    - well-defined 
       - all variables are initialized before they are used
    - well-checked
-      - right checks are put at the right places
+      - right checks are put at the right places according to the checking rules
 *)
 
-(** this is used by the type system to check whether types are consistent on both sides
-     of binary operators, and return either the result type or None if their types are not consistent
+(** this is used by the type system to check whether types are consistent 
+    on both sides of binary operators, and return either the result type or 
+    None if their types are not consistent;
 *)
 Definition binop_type (op: binary_operation) (t1 t2: typ): option typ := 
     match op with 
-    | Ceq | Cne  => 
+    | Ceq | Cne | Cgt | Cge | Clt | Cle  => 
         match t1, t2 with
         | Tint, Tint => Some Tbool
         | _, _ => None
@@ -47,7 +48,7 @@ Definition unop_type (op: unary_operation) (t: typ): option typ :=
 (** * Well-Typed *)
 (** ** Well-typed expressions *)
 (**
-   - general type check for expressions;
+   - type check for expressions;
 *)
 Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
     | WT_Econst_Int: forall ast_num n tb,
@@ -66,10 +67,9 @@ Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
         well_typed_expr tb e Tbool ->
         well_typed_expr tb (Eunop ast_num op e) Tbool.
 
-
 (** ** Well-typed statements *)
 (**
-    - general type checking;
+    - type check for statements;
 *)
 Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
     | WT_Sassign: forall ast_num tb x e m t,
@@ -91,14 +91,15 @@ Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
 
 
 (* in our formalization framework, all names used in the SPARK programs are 
-    formalized as integer numbers, for example, variables, function/procedure names
-    and types are all represented as distinguishable integer numbers;
-    here I hard code that number "1" representing type "Tint", and "2" representing "Tbool";
+   formalized as integer numbers, for example, variables, function/procedure names
+   and types are all represented as distinguishable integer numbers;
+   here I hard code that number "1" representing type "Tint", and "2" representing "Tbool";
 *)
 Inductive type_map: typenum -> typ -> Prop :=
     | T1 : type_map 1 Tint
     | T2: type_map 2 Tbool.
 
+(** type check for local varialbe declaration; *)
 Inductive well_typed_decl: symtb -> local_declaration -> symtb -> Prop :=
     | WT_Decl0: forall d x t tb,
         x = d.(local_ident) ->
@@ -112,7 +113,6 @@ Inductive well_typed_decl: symtb -> local_declaration -> symtb -> Prop :=
         well_typed_expr tb i t -> (* the type of the initialization value should be consistent with the declared variable's type *)
         well_typed_decl tb d ((x, (InOut, t)) :: tb).
 
-
 Inductive well_typed_decls: symtb -> list local_declaration -> symtb -> Prop :=
     | WT_Decls_Empty: forall tb,
         well_typed_decls tb nil tb
@@ -121,12 +121,14 @@ Inductive well_typed_decls: symtb -> list local_declaration -> symtb -> Prop :=
         well_typed_decls tb'0 tl tb' ->
         well_typed_decls tb (d :: tl) tb'.
 
+(** type check for procedure body; *)
 Inductive well_typed_proc_body: symtb -> procedure_body -> Prop :=
     | WT_Proc_Body: forall tb f tb',
         well_typed_decls tb f.(proc_loc_idents) tb' ->
         well_typed_stmt tb' f.(proc_body) ->
         well_typed_proc_body tb f.
 
+(** type check for subproram, which can be either procedure or function; *)
 Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
     | WT_Proc: forall tb f ast_num,
         well_typed_proc_body tb f ->
@@ -136,6 +138,7 @@ Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
 
 (** functional semantics for type system *)
 
+(** type check expression; *)
 Function f_well_typed_expr (tb: symtb) (e: expr): option typ := 
     match e with
     | Econst _ (Ointconst n) => Some Tint
@@ -168,6 +171,7 @@ Function f_typ_equal (t1: typ) (t2: typ): bool :=
     | _, _ => false
     end.
 
+(** type check statement; *)
 Function f_well_typed_stmt (tb: symtb) (c: stmt): bool :=
     match c with
     | Sassign ast_num x e =>
@@ -197,8 +201,8 @@ Function f_well_typed_stmt (tb: symtb) (c: stmt): bool :=
     end.
 
 
-(** in the SPARK formalization, I use number to represent identifier, type and so on, 
-    here "1" represent type Tint, and "2" represent type Tbool;
+(** in the SPARK formalization, natural number are used to represent identifier, 
+    type and so on, here "1" represents type Tint, and "2" represents type Tbool;
 *)
 Function f_type_map (n: typenum): option typ :=
     match n with
@@ -207,6 +211,7 @@ Function f_type_map (n: typenum): option typ :=
     | _ => None
     end.
 
+(** type check variable declaration; *)
 Function f_well_typed_decl (tb: symtb) (d: local_declaration): option symtb :=
     match f_type_map d.(local_typenum) with
     | Some t =>
@@ -221,12 +226,6 @@ Function f_well_typed_decl (tb: symtb) (d: local_declaration): option symtb :=
     | None => None
     end.
 
-(*
-Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
-    | WT_Proc: forall tb f ast_num,
-        well_typed_proc_body tb f ->
-        well_typed_subprogram tb (Sproc ast_num f).
-*)
 Function f_well_typed_decls (tb: symtb) (ds: list local_declaration): option symtb :=
     match ds with
     | d :: tl => 
@@ -237,12 +236,14 @@ Function f_well_typed_decls (tb: symtb) (ds: list local_declaration): option sym
     | nil => Some tb
     end.
 
+(** type check procedure body; *)
 Function f_well_typed_proc_body (tb: symtb) (f: procedure_body): bool :=
     match f_well_typed_decls tb f.(proc_loc_idents) with
     | Some tb' => f_well_typed_stmt tb' f.(proc_body)
     | None => false
     end.
 
+(** type check subprogram, which can be either procedure or function; *)
 Function f_well_typed_subprogram (tb: symtb) (p: subprogram): bool :=
     match p with
     | Sproc ast_num f => f_well_typed_proc_body tb f
@@ -252,6 +253,7 @@ Function f_well_typed_subprogram (tb: symtb) (p: subprogram): bool :=
 
 (** Semantical equivalence between relational and functional semantics for type system *)
 
+(** bisimulation between f_well_typed_expr and well_typed_expr for expression *)
 Lemma f_well_typed_expr_correct: forall tb e t,
     f_well_typed_expr tb e = Some t ->
     well_typed_expr tb e t.
@@ -292,6 +294,7 @@ Proof.
     destruct op; auto.
 Qed.
 
+(** bisimulation between f_well_typed_stmt and well_typed_stmt for statement *)
 Lemma f_well_typed_stmt_correct: forall tb c,
     f_well_typed_stmt tb c = true ->
     well_typed_stmt tb c.
@@ -352,7 +355,7 @@ Proof.
     simpl; auto.
 Qed.
 
-
+(** bisimulation between f_well_typed_decl and well_typed_decl for local variable declaration *)
 Lemma f_well_typed_decl_correct: forall tb d tb',
     f_well_typed_decl tb d = Some tb' ->
     well_typed_decl tb d tb'.
@@ -388,7 +391,9 @@ Proof.
     destruct t; simpl; auto.
 Qed.
 
-
+(** bisimulation between f_well_typed_decls and well_typed_decls for
+    list of local variable declarations 
+*)
 Lemma f_well_typed_decls_correct: forall tb ds tb',
     f_well_typed_decls tb ds = Some tb' ->
     well_typed_decls tb ds tb'.
@@ -419,6 +424,9 @@ Proof.
 Qed.
 
 
+(** bisimulation between f_well_typed_proc_body and well_typed_proc_body for 
+    procedure body
+*)
 Lemma f_well_typed_proc_body_correct: forall tb f,
     f_well_typed_proc_body tb f = true ->
     well_typed_proc_body tb f.
@@ -446,6 +454,8 @@ Proof.
     auto.
 Qed.
 
+
+(** bisimulation between f_well_typed_subprogram and well_typed_subprogram for subprogram *)
 Lemma f_well_typed_subprogram_correct: forall tb p,
     f_well_typed_subprogram tb p = true ->
     well_typed_subprogram tb p.
@@ -507,7 +517,7 @@ Function update2 (s: mode_map) (x : idnum) (m: (init_mode * mode)): option mode_
 (** ** Well-defined expressions *)
 (**
    - all referenced variables are initialized 
-   - all variables used in expression should be in mode _in_ or _in/out_; 
+   - all variables used in expression should be either in mode _in_ or _in/out_; 
 *)
 Inductive well_defined_expr: mode_map -> expr -> Prop :=
     | WD_Econst_Int: forall ast_num m n,
@@ -526,15 +536,16 @@ Inductive well_defined_expr: mode_map -> expr -> Prop :=
         well_defined_expr m (Eunop ast_num op e). 
 
 
-(** ** Well-defined commands *)
+(** ** Well-defined statements *)
 (** 
     update by assignment will make the uninitialized variables into initialized one, so 
     in the following definition, we have to track the initialization states after executing
-    each command, and use the latest initialization state to check whether the used variables 
+    each statement, and use the latest initialization state to check whether the used variables 
     are initialized or not;
     For conditional and while loop commands, their final initialization state are the intersection 
     of the resulting initialization states from both branches;
-   - _in/out_ mode checking (for variables that are updated by assignments, their mode should be _out_ or _in\out_);
+   - _in/out_ mode checking (for variables that are updated by assignments, their mode 
+     should be either _out_ or _in\out_);
 *)
 
 Inductive well_defined_stmt: mode_map -> stmt -> mode_map -> Prop :=
@@ -558,8 +569,9 @@ Inductive well_defined_stmt: mode_map -> stmt -> mode_map -> Prop :=
         well_defined_stmt m (Swhile ast_num b c) m.
 
 
-(** in our current SPARK subset, we only consider Int and Bool types, which have no default initialization values,
-     so for any declared variable, if it's declared without initialization expression, then it's uninitialized;
+(** in our current SPARK subset, we only consider Int and Bool types, 
+    which have no default initialization values, so for any declared variable, 
+    if it's declared without initialization expression, then it's uninitialized;
 *)
 Inductive well_defined_decl: mode_map -> local_declaration -> mode_map -> Prop :=
     | WD_Decl0: forall d x m,
@@ -751,10 +763,10 @@ Proof.
     fold fetch2.
     assumption.
   - inversion h1.
-  - inversion h1.    
+  - inversion h1.
 Qed.
 
-(** ** Constructing mode map mapping from variable id to (initialization state * in/out mode)  *)
+(** ** Constructing mode map mapping from variable id to a pair of (initialization state * in/out mode) *)
 (** 
    for any variable in stack, if it has a defined value then it has an initialized state,
    otherwise, it's uninitialized;
@@ -963,7 +975,9 @@ Function f_well_defined_subprogram (m: mode_map) (p: subprogram): option mode_ma
 
 (* =============================== *)
 
-(** Semantical equivalence between relational and functional semantics for initialization state checking system *)
+(** Semantical equivalence between relational and functional semantics for 
+    initialization state checking system;
+*)
 
 Lemma f_well_defined_expr_correct: forall m e,
     f_well_defined_expr m e = true ->
@@ -1186,13 +1200,16 @@ Definition get_ast_num_stmt (c: stmt): astnum :=
 Definition max_num := astnum.
 
 (** ast_num for each AST node is unique *)
-(** later the ast id will be used to map ast node to the check flag denoting the run-time checks
-     that needs to be performed before executing that ast node;
+(** later the ast number will be used to map its labled ast node to 
+    the check flag denoting the run-time checks that needs to be 
+    performed before executing that ast node;
 *)
 
-(** all the ast ids for expression ast nodes are unique: parent node's ast id number is smaller than
-     children node's ast id number, and the left child node's id number is smaller than the right child 
-     node's id number; max_num is the maximum ast id number used in the expression
+(** all the ast numbers for expression ast nodes are unique: 
+    in the ast tree, parent node's ast number is smaller than children node's 
+    ast number, and the left child node's ast number is smaller than the 
+    right child node's ast number; 
+    max_num is the maximum ast number used in the expression;
 *)
 Inductive ast_num_inc_expr: expr -> max_num -> Prop :=
     | Inc_Econst: forall ast_num n,
@@ -1214,7 +1231,7 @@ Inductive ast_num_inc_expr: expr -> max_num -> Prop :=
         ast_num < ast_num0 ->
         ast_num_inc_expr (Eunop ast_num op e) max.
 
-(** it's similar to ast_num_inc_expr, all ast id number is unique *)
+(** it's similar to ast_num_inc_expr, all ast numbers used in the AST tree of statement are unique *)
 Inductive ast_num_inc_stmt: stmt -> max_num -> Prop :=
     | Inc_Sassign: forall e max ast_num0 ast_num x,
         ast_num_inc_expr e max ->
@@ -1756,7 +1773,7 @@ Qed.
 
 (** ** Generate the run-time-check flags *)
 
-(** the run-time checks are stored in a list indexed with ast id number *)
+(** the run-time checks are stored in a list indexed with ast number *)
 Definition check_points :=  list (astnum * check_action).
 
 Function fetch_ck (id : astnum) (m : check_points): option check_action := 
@@ -1769,7 +1786,9 @@ Function fetch_ck (id : astnum) (m : check_points): option check_action :=
     | nil => None
     end.
 
-(** this's used to constrain that all ast id number used in check_points are smaller than a certain number *)
+(** this's used to constrain that all ast id numbers used in check_points 
+    are smaller than a certain number;
+*)
 Inductive ast_nums_lt: check_points -> astnum -> Prop := 
     | lt1: forall ls n ast_num ck,
         ast_nums_lt ls n ->
@@ -1784,9 +1803,9 @@ Function f_ast_nums_lt (ckp: check_points) (n: astnum): bool :=
     | (ast_num, ck) :: tl => 
         if leb n ast_num then false else f_ast_nums_lt tl n
     | nil => true
-    end
-.
+    end.
 
+(** soem useful lemmas about ast_nums_lt *)
 Lemma ast_nums_lt_trans0: forall ls n n',
     ast_nums_lt ls n ->
     n <= n' ->
@@ -1822,8 +1841,9 @@ Qed.
 
 
 (** *** generate run-time-check flags for expressions *)
-(** compute check flags for each expression ast node according to the checking rules, and the results  
-     are stored in a list of type check_points
+(** compute run time check flags for each expression ast node according 
+    to the checking rules, and the results are stored in a data structure 
+    of type check_points;
 *)
 Inductive check_generator_expr: check_points -> expr -> check_points -> Prop :=
     | CG_Econst: forall ast_num n ls,
@@ -1845,9 +1865,12 @@ Inductive check_generator_expr: check_points -> expr -> check_points -> Prop :=
         check_generator_expr ls (Eunop ast_num op e) ls1.
 
 (** *** generate run-time-check flags for statements *)
-(** For the SPARK 2014 subset that we are working on, we only consider the division by zero check and 
-     overflow check. So here, the check for each statement is none, but it is extensible to includes necessary 
-     checks in the statements in the future. 
+(** For the SPARK 2014 subset that we are working on, we only consider 
+    the division by zero check and overflow check. Right now we have
+    only implemented the division by zero check, and we will extend it 
+    with overflow check later;
+    So here, the check for each statement is none, but it is extensible 
+    to includes all necessary checks in the statements in the future; 
  *)
 Inductive check_generator_stmt: check_points -> stmt -> check_points -> Prop :=
     | CG_Sassign: forall ls1 e ls2 ast_num x,
@@ -2242,13 +2265,10 @@ Qed.
 
         
 (** ** Semantics with run-time-checks *)
-(*
-Inductive correct_flag_on_op: check_action -> binary_operation -> Prop :=
-    | Div_Flag: correct_flag_on_op Do_Division_Check Odiv. 
-*)
 
-(** the semantics for expressions evaluation, where cps is passed in as a parameter telling 
-     whether a check is needed to be performed before executing the expression ast node
+(** the semantics for expressions evaluation, where cps is passed in 
+    as a parameter telling whether a check is needed to be performed 
+    before executing the expression ast node;
 *)
 Inductive eval_expr_with_checks (cps: check_points): stack -> expr -> return_val -> Prop :=
     | eval_Const: forall cst v s ast_num,
@@ -2293,9 +2313,12 @@ Inductive eval_expr_with_checks (cps: check_points): stack -> expr -> return_val
 
 
 (** 
-    it's similar to the eval_expr_with_checks: cps is used to denote whether a check is needed to be
-    performed before executing the statement; right now, we only consider the division and overflow checks
-    for expressions, and there are checks enfornced on the statements
+    it's similar to the eval_expr_with_checks: cps is used to denote 
+    whether a check is needed to be performed before executing the 
+    statement; right now, we only consider the division and overflow checks
+    for expressions, and there are no checks enfornced on the statements;
+    Note: only division by zero check has been implemented, overflow check
+          will be added later;
 *)
 Inductive eval_stmt_with_checks (cps: check_points): stack -> stmt -> state -> Prop :=
     | eval_Assign1: forall s e ast_num x,
@@ -2338,10 +2361,12 @@ Inductive eval_stmt_with_checks (cps: check_points): stack -> stmt -> state -> P
         eval_expr_with_checks cps s b (ValNormal (Bool false)) ->
         eval_stmt_with_checks cps s (Swhile ast_num b c) (SNormal s).
 
-(** variables declaration with initialization values are a little defferent from the assignments:
-    for variable declaration, we add the new declared variable with its initialization value to the initial stack,
-    because all declared variables have unique names;
-    for assignment, we update the initial stack by assigning new value to its component variable;
+(** variables declaration with initialization values are a little 
+    defferent from the assignments:
+    for variable declaration, we add the new declared variable with 
+    its initialization value to the initial stack, because all declared 
+    variables have unique names; for assignment, we update the initial 
+    stack by assigning new value to its component variable;
 *)
 Inductive eval_decl_with_checks (cps: check_points): stack -> local_declaration -> state -> Prop :=
     | eval_Decl0: forall x d s,
@@ -2385,7 +2410,9 @@ Inductive eval_subprogram_with_checks (cps: check_points): stack -> subprogram -
 
 
 (** some basic lemmas *)
-(** eval_stmt_with_checks returns either a normal value or an exception when the check is false *)
+(** eval_stmt_with_checks returns either a normal value or an exception 
+    when the check is false; 
+*)
 Lemma eval_expr_with_checks_state: forall ls s e v,
     eval_expr_with_checks ls s e v ->
     (exists v0, v = ValNormal v0) \/ v = ValException.
@@ -2399,10 +2426,13 @@ Proof.
 Qed.
 
 (** 
-   the ast id number is increasing: parent node's ast id number is smaller than children node's ast id number.
-   (get_ast_num_expr e) is the ast id number for expression e, and max is the maximum ast id number used 
-   by e. if e has no subexpression, then max is the same as (get_ast_num_expr e), otherwise, max is maximum
-   ast id number of its subexpressions, so (get_ast_num_expr e) should be less and equal max
+   all ast numbers are unique: in a AST tree, parent node's ast number 
+   is smaller than children node's ast number.
+   (get_ast_num_expr e) returns the ast number for expression e, and 
+   max is the maximum ast number used by e, if e has no subexpression, 
+   then max is the same as (get_ast_num_expr e), otherwise, max is maximum
+   ast number of its subexpressions, so (get_ast_num_expr e) should be 
+   less and equal than max;
 *)
 Lemma ast_num_bound_expr: forall e max,
     ast_num_inc_expr e max ->
@@ -2413,9 +2443,11 @@ Proof.
 Qed.
 
 (** 
-    checks are computed according to the checking rules for expression e and its subexpressions,
-    the results are stored in cks indexed by expression and its subexpression ast ids,
-    because max is the maximum ast id, so all ast ids in cks should be less than (max + 1)
+    checks are computed according to the checking rules for expression 
+    e and its subexpressions, the results are stored in cks indexed by 
+    expression and its subexpression ast numbers, because max is the 
+    maximum ast number, so all ast numbers in cks should be less than 
+    (max + 1);
 *)
 Lemma ast_num_max_expr: forall e max cks0 cks,
     ast_num_inc_expr e max ->
@@ -2505,7 +2537,7 @@ Proof.
     intuition.
 Qed.
 
-(** for declaration part with at least one declaration; *)
+(** local variable declarations with at least one declaration; *)
 Lemma ast_num_bound_decls: forall d tl max,
     ast_num_inc_decls (d :: tl) max ->
     d.(local_astnum) <= max.
@@ -2571,7 +2603,9 @@ Qed.
 
 (* =============================== *)
 
-(** Functional semantics for expression and statement evaluation with checks as passed in parameters *)
+(** Functional semantics for expression and statement evaluation 
+    with run time checks as passed in parameters; 
+*)
 
 Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expr): return_val :=
     match e with
@@ -2691,8 +2725,9 @@ Function f_eval_subprogram_with_checks k (cps: check_points) (s: stack) (p: subp
 
 (* ============================================ *)
 
-(** Semantical equivalence between the relatioinal semantics and functional semantics for
-    program evaluation with checks passed in as parameters; 
+(** Semantical equivalence between the relatioinal semantics and 
+    functional semantics for program evaluation with checks 
+    passed in as parameters; 
 *)
 
 Lemma f_eval_expr_with_checks_correct0: forall ckp s e v,
@@ -3306,17 +3341,6 @@ Proof.
     exists k; unfold f_eval_subprogram_with_checks.
     assumption.
 Qed.
-
-
-
-
-
-
-
-
-
-
-
 
 
 

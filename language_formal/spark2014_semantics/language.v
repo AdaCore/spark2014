@@ -10,7 +10,7 @@ Require Export ZArith.
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
 Require Export Coq.Strings.String.
-(* oqdoc language.v values.v environment.v semantics.v wellformedness.v propertyProof.v  -toc --no-lib-name *)
+(* coqdoc language.v values.v environment.v semantics.v wellformedness.v propertyProof.v  -toc --no-lib-name *)
 
 (** * SPARK Subset Language *)
 Inductive mode: Type := 
@@ -22,9 +22,12 @@ Inductive typ: Type :=
     | Tint: typ
     | Tbool: typ.
 
-(** AST node id number *)
+(** Distinct number labeled for each AST node *)
 Definition astnum := nat.
 
+(** In CompCert, Cminor uses non-negative values to represent identifiers; 
+    we follow this style by using natural numbers to represent identifiers/names.
+*)
 Definition idnum := nat.
 
 Definition procnum := nat.
@@ -58,6 +61,10 @@ Inductive unary_operation: Type :=
 Inductive binary_operation: Type := 
 	| Ceq: binary_operation
 	| Cne: binary_operation
+	| Cgt: binary_operation
+	| Cge: binary_operation
+	| Clt: binary_operation
+	| Cle: binary_operation
 	| Oand: binary_operation
 	| Oor: binary_operation
 	| Oadd: binary_operation
@@ -84,7 +91,7 @@ Inductive stmt: Type :=
 
 Record param_specification: Type := mkparam_specification{
 	param_astnum: astnum;
-        param_ident: idnum; (* param_idents: list idnum; *)
+        param_ident: idnum;
 	param_typenum: typenum;
 	param_mode: mode;
 	param_init: option (expr)
@@ -99,7 +106,6 @@ Record aspect_specification: Type := mkaspect_specification{
 (* Local variables declarations used in the procedure/function body *)
 Record local_declaration: Type := mklocal_declaration{
 	local_astnum: astnum;
-	(* local_idents: list idnum; *)
         local_ident: idnum;
 	local_typenum: typenum;
 	local_init: option (expr)

@@ -9,13 +9,6 @@ Definition eval_constant (cst: constant): value :=
     | Ointconst v => (Int v)
     | Oboolconst b => (Bool b)
     end.
-(*
-Inductive eval_const: constant -> value -> Prop :=
-    | C_Int: forall v, 
-        eval_const (Ointconst v) (Int v)
-    | C_Bool: forall b, 
-        eval_const (Oboolconst b) (Bool b).
-*)
 
 (** interpret the binary operation for each binary operator *)
 Inductive eval_binexpr: binary_operation -> value -> value -> value -> Prop :=
@@ -25,6 +18,18 @@ Inductive eval_binexpr: binary_operation -> value -> value -> value -> Prop :=
     | Ne: forall v1 v2 b,
         Zneq_bool v1 v2 = b ->
         eval_binexpr Cne (Int v1) (Int v2) (Bool b)
+    | Gt: forall v1 v2 b,
+        Zgt_bool v1 v2 = b ->
+        eval_binexpr Cgt (Int v1) (Int v2) (Bool b)
+    | Ge: forall v1 v2 b,
+        Zge_bool v1 v2 = b ->
+        eval_binexpr Cge (Int v1) (Int v2) (Bool b)
+    | Lt: forall v1 v2 b,
+        Zlt_bool v1 v2 = b ->
+        eval_binexpr Clt (Int v1) (Int v2) (Bool b)
+    | Le: forall v1 v2 b,
+        Zle_bool v1 v2 = b ->
+        eval_binexpr Cle (Int v1) (Int v2) (Bool b)
     | And: forall v1 v2 b,
         andb v1 v2 = b ->
         eval_binexpr Oand (Bool v1) (Bool v2) (Bool b)
@@ -94,7 +99,10 @@ Inductive check_action: Type :=
    | Do_Division_Check: check_action
    | Do_Overflow_Check: check_action.
 
-(** add check flags for AST nodes according to the checking rules *)
+(** add check flags for AST nodes according to the checking rules; 
+    Note: now we only consider the division by zero check, later we will 
+    extend it by adding overflow checks;
+*)
 Inductive check_flag: expr -> option check_action -> Prop :=
     | CF_Econst_Int: forall ast_num n,
         check_flag (Econst ast_num (Ointconst n)) None
@@ -171,8 +179,8 @@ Inductive eval_expr: stack -> expr -> return_val -> Prop :=
 
 (** ** Statement semantics *)
 (** 
-   for any command, whenever its sub-command throws an exception or any expression 
-   evaluate to an exception, then the whole command returns an exception; 
+   for any command, whenever its sub-statement throws an exception or any expression 
+   evaluate to an exception, then the whole statement returns an exception; 
 *)
 Inductive eval_stmt: stack -> stmt -> state -> Prop := 
     | eval_Sassign1: forall s e ast_num x,
@@ -219,6 +227,24 @@ Inductive eval_stmt: stack -> stmt -> state -> Prop :=
 
 (** * Functional Semantics *)
 
+(** for each version of relational semantic, we also provide its corresponding
+    version of functional semantics, and prove that they are semantics equivalent;
+    relational semantics encode the formal semantics rules, while
+    functional semantics provide a way to familiarize oneself with the SPARK 2014
+    semantics, and validate it experimentally by testing, and it also helps to fix 
+    the program if the program exhibits undefined behavior;
+    
+    - f_do_check  <-> do_check;
+    
+    - f_eval_binexpr <-> eval_binexpr;
+    
+    - f_eval_unaryexpr <-> eval_unaryexpr;
+    
+    - f_eval_expr <-> eval_expr;
+
+    - f_eval_stmt <-> eval_stmt;
+*)
+
 Function f_do_check (op: binary_operation) (v1: value) (v2: value): option bool :=
     match op with
     | Odiv =>
@@ -234,6 +260,10 @@ Definition f_eval_binexpr (op: binary_operation) (v1: value) (v2: value): return
     match op with
     | Ceq => Val.eq v1 v2
     | Cne => Val.ne v1 v2
+    | Cgt => Val.gt v1 v2
+    | Cge => Val.ge v1 v2
+    | Clt => Val.lt v1 v2
+    | Cle => Val.le v1 v2
     | Oand => Val.and v1 v2
     | Oor => Val.or v1 v2
     | Oadd => Val.add v1 v2
@@ -251,16 +281,18 @@ Definition f_eval_unaryexpr (op: unary_operation) (v: value): return_val :=
 (** ** Expression semantics *)
 
 (**
-    in functional semantics for expression, it can return a normal value or an exception or 
-    go abnormal, the checks are encoded inside the semantics
+    in functional semantics for expression, it returns either a normal value or an 
+    exception or go abnormal, the run time checks (for division by zero) are 
+    encoded inside the semantics;
 *)
 (* here use 'Function' instead of 'Fixpoint' in order to use 
-   tactic 'functional induction (f_eval_expr _ _)' in proofs *)
+   tactic 'functional induction (f_eval_expr _ _)' in proofs;
+*)
 Function f_eval_expr (s: stack) (e: expr): return_val :=
     match e with
     | Econst _ v => ValNormal (eval_constant v)
     | Evar _ x =>
-        match (fetch x s) with  (* here we have not considered the variable's mode *)
+        match (fetch x s) with
         | Some v => ValNormal v
         | None => ValAbnormal
         end
@@ -290,17 +322,19 @@ Function f_eval_expr (s: stack) (e: expr): return_val :=
 
 (** ** Statement semantics *)
 (** 
-   in the functional semantics for command, 'k' denotes the execution steps, whenever it reaches 0,
+   in the functional semantics for statement, 'k' denotes the execution steps, whenever it reaches 0,
    an untermination state is returned, in other cases, it can return a normal state, an exception or
-   an abnormal state; checks are encoded inside the functional semantics
+   an abnormal state; run time checks (for division by zero) are encoded inside the functional 
+   semantics;
 *)
+
 Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state := 
   match k with
   | 0 => SUnterminated
   | S k' => 
     match c with
     | Sassign ast_num x e =>
-        match f_eval_expr s e with (* exceptions maybe raised either in evaluation of e or when looking up x  *)
+        match f_eval_expr s e with
         | ValNormal v => 
             match update s x (Value v) with
             | Some s1 => SNormal s1
@@ -340,54 +374,14 @@ Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state :=
   end.
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
+
 (** basic lemmas *)
-
-(*
-Lemma expr_type_infer: forall op v1 v2 n,
-    eval_binop op v1 v2 = ValNormal (Int n) -> 
-        (exists n1 n2, v1 = ValNormal (Int n1) /\ v2 = ValNormal (Int n2)).
-Proof.
-    intros.
-    unfold eval_binop in H. 
-    destruct v1 as [v1' | | ]; 
-    destruct v2 as [v2' | | ];
-    destruct op; 
-    simpl in H; try inversion H;
-    destruct v1'; 
-    destruct v2'; 
-    simpl in H; try inversion H;
-    try (exists n0, n1; auto).
-    destruct (Zeq_bool n0 0); inversion H.
-Qed.
-
-Lemma expr_type_infer': forall op v1 v2 n,
-    eval_binop op v1 v2 = ValNormal (Bool n)  -> 
-        (exists n1 n2, v1 = ValNormal (Int n1) /\ v2 = ValNormal (Int n2)) \/ 
-        (exists n1 n2, v1 = ValNormal (Bool n1) /\ v2 = ValNormal (Bool n2)).
-Proof.
-    intros.
-    unfold eval_binop in H.
-    destruct v1 as [v1' | | ]; 
-    destruct v2 as [v2' | | ]; 
-    destruct op; 
-    simpl in H; try inversion H;
-    destruct v1'; 
-    destruct v2';
-    simpl in H; try inversion H.
-    left; exists n0, n1; auto.
-    left; exists n0, n1; auto.
-    right; exists b, b0; auto.
-    right; exists b, b0; auto.
-    left; exists n0, n1; auto.
-    destruct (Zeq_bool n0 0); inversion H.
-Qed.
-*)
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 
 (** * Bisimulation Between Relational And Functional Semantics *)
 
-(** for any expression e, if it evaluate to v1 and v2, then v1 and v2 should be the same *)
+(** for any expression e, if it evaluate to v1 and v2, then v1 and v2 should be the same; *)
 Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e (ValNormal v1) ->
     eval_expr s e (ValNormal v2) ->
@@ -412,10 +406,11 @@ Qed.
 
 (** 
     for any expression e evaluated under the state s, if it can be evaluated to a value v 
-    under the relational semantics, then the result value v should be either a normal value or exception.
+    under the relational semantics, then the result value v should be either a normal value 
+    or exception;
 *)
 Lemma eval_expr_state : forall s e v,
-        eval_expr s e v ->                        (* s' is either a normal state or an exception *)
+        eval_expr s e v -> (* v should be either a normal value or an exception *)
             (exists v0, v = ValNormal v0) \/ v = ValException.
 Proof.
     intros s e v h.
@@ -427,12 +422,12 @@ Proof.
 Qed.
 
 (** 
-    for any statement c run under the state s, if it can execute to a state s' under the relational
-    semantics, then the result state s' should be either a normal state or exception. In our relational 
-    semantics, all commands that can go abnormal are excluded
+    for any statement c run under the state s, if it terminates in a state s' under the relational
+    semantics, then the result state s' should be either a normal state or an exception. 
+    In our relational semantics, all statement that can go abnormal are excluded;
 *)
 Lemma eval_stmt_state : forall s c s',
-        eval_stmt s c s' ->                        (* s' is either a normal state or an exception *)
+        eval_stmt s c s' -> (* s' is either a normal state or an exception *)
             (exists v, s' = SNormal v) \/ s' = SException.
 Proof.
     intros s c s' h.
@@ -443,7 +438,9 @@ Proof.
     end; auto.
 Qed.
 
-
+(** (Zeq_bool v 0) checks whether v is zero, and (is_not_zero v b) checks  
+    whether v is not zero and the result is returned by b;
+*)
 Lemma Zeq_zero_true: forall v,
     Zeq_bool v 0 = true <-> 
     is_not_zero v false.
@@ -470,6 +467,7 @@ Proof.
     destruct v; intuition.
 Qed.
 
+(** bisimulation proof between f_do_check and do_check; *)
 Lemma f_do_check_correct: forall op v1 v2 b,
     f_do_check op v1 v2 = Some b ->
     do_check op v1 v2 b.
@@ -508,6 +506,7 @@ Proof.
   - destruct op; intuition.
 Qed.
 
+(** bisimulation proof between f_eval_binexpr and eval_binexpr; *)
 Lemma f_eval_binexpr_correct: forall op v1 v2 v,
     f_eval_binexpr op v1 v2 = ValNormal v ->
     eval_binexpr op v1 v2 v.
@@ -537,6 +536,7 @@ Proof.
     simpl; auto.
 Qed.
 
+(** bisimulation proof between f_eval_unaryexpr and eval_unaryexpr; *)
 Lemma f_eval_unaryexpr_correct: forall op v v',
     f_eval_unaryexpr op v = ValNormal v' ->
     eval_unaryexpr op v v'.
@@ -557,7 +557,7 @@ Proof.
     simpl; auto.
 Qed.
 
-(** ** Semantics equivalence for expression *)
+(** ** Bisimulation between f_eval_expr and eval_expr for expression Semantics *)
 (** a help lemma to prove the theorem: f_eval_expr_correct *)
 Lemma f_eval_expr_correct1 : forall s e v,
                         f_eval_expr s e = ValNormal v ->
@@ -621,7 +621,7 @@ Qed.
 (** 
     for any expression e evaluated with 'f_eval_expr' under the state s,  whenever it returns 
     a normal value v or an exception, the relationship between evaluation result, s and e should 
-    also be satisfied with regard to the relational semantics 'eval_expr'
+    also be satisfied with regard to the relational semantics 'eval_expr';
 *)
 Theorem f_eval_expr_correct : forall s e v,
                         (f_eval_expr s e = ValNormal v ->
@@ -639,7 +639,7 @@ Qed.
 (** 
    for any expression e, if it can be evaluated to value v under state s with regard to the 
    relational semantics 'eval_expr', then when we evalute e under the same state s in functional
-   semantics 'f_eval_expr', it should return the same result v
+   semantics 'f_eval_expr', it should return the same result v;
 *)
 Theorem f_eval_expr_complete : forall e s v,  
                         eval_expr e s v -> 
@@ -667,7 +667,6 @@ Proof.
     auto.
 Qed.
 
-
 Ltac apply_inv :=
   match goal with
     | H:SUnterminated = SNormal _ |- _ => inversion H
@@ -692,14 +691,18 @@ Ltac invle := match goal with
     | H: (S _ <= _)%nat |- _ => (inversion H; clear H; subst; simpl)
   end.
 
-(** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
-Lemma f_eval_stmt_fixpoint: forall k s p s', 
-        f_eval_stmt k s p = SNormal s' ->
+(** a help lemma to prove the theorem: 'f_eval_stmt_complete',
+    it means that: for any statement c, starting from initial state s, 
+    if it terminates in a normal state s' within k execution steps, then for 
+    any k' greater and equal than k, it should also terminate in the same state s';
+ *)
+Lemma f_eval_stmt_fixpoint: forall k s c s', 
+        f_eval_stmt k s c = SNormal s' ->
         forall k':nat, (k <= k')%nat -> 
-            f_eval_stmt k' s p = SNormal s'.
+            f_eval_stmt k' s c = SNormal s'.
 Proof.
-    intros k s p.
-    functional induction (f_eval_stmt k s p); simpl; intros; subst; simpl; auto;
+    intros k s c.
+    functional induction (f_eval_stmt k s c); simpl; intros; subst; simpl; auto;
     repeat progress apply_inv.
   - invle; repeat apply_inv.
   - invle.
@@ -765,7 +768,7 @@ Ltac kgreater :=
              rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
          end.
 
-(** ** Semantics equivalence for command *)
+(** ** Bisimulation between f_eval_stmt and eval_stmt for statement semantics *)
 
 Ltac rm_f_eval_expr :=
     match goal with 
@@ -895,6 +898,7 @@ Qed.
    there should exist a constant k that command c starting from s will terminate in state s' 
    within k steps with regard to the functional semantics 'f_eval_stmt'
 *)
+
 Ltac apply_rewrite := 
     match goal with
     | h: eval_expr ?s ?e ?s' |- _ => 
@@ -905,7 +909,7 @@ Ltac apply_rewrite :=
     end; auto.
 
 Theorem f_eval_stmt_complete : forall s c s',
-        eval_stmt s c s' ->                        (* s' is either a normal state or an exception *)
+        eval_stmt s c s' -> (* s' is either a normal state or an exception *)
             exists k, f_eval_stmt k s c = s'.
 Proof. 
   intros s c s' H;
@@ -948,8 +952,7 @@ Proof.
     kgreater.
   - exists 1%nat; simpl.
     apply_rewrite.
-Qed.
-    
+Qed.   
 
 (**********************************************************************)
 (**********************************************************************)
@@ -957,14 +960,17 @@ Qed.
 (** * Subprogram Semantics *)
 
 (** In the current SPARK subset, there is no procedure call, 
-     so right now we only define the semantics for the main procedure.
-     And it can be used to test the tool chain from Ada source code to Coq evaluation;
+    so right now we only define the semantics for the main procedure.
+    And it can be used to test the tool chain from SPARK source code to Coq evaluation;
      
-     Later, we will and the procedure call and modify the following procedure semantics.
+    Later, we will add the procedure call and modify the following procedure semantics;
 *)
 
-(** all declared variables have unique names; *)
+(** all declared variables in the same procedure should have unique names; *)
 
+(** relational (eval_decl) and functional (f_eval_decl) semantics for 
+    local variable declaration;
+*)
 Inductive eval_decl: stack -> local_declaration -> state -> Prop :=
     | eval_Decl_E: forall e d s,
         Some e = d.(local_init) ->
@@ -995,6 +1001,9 @@ Function f_eval_decl (s: stack) (d: local_declaration): state :=
     | None => SNormal ((x, Vundef) :: s)
     end.
 
+(** relational (eval_decls) and functional (f_eval_decls) semantics for 
+    a sequence of local variable declarations;
+*)
 Inductive eval_decls: stack -> (list local_declaration) -> state -> Prop :=
     | eval_EmptyDecls: forall s,
         eval_decls s nil (SNormal s)
@@ -1017,14 +1026,21 @@ Function f_eval_decls (s: stack) (d: list local_declaration): state :=
     | nil => SNormal s
     end.
 
+(** for any initial state s, after executing the declaration d, it either returns a
+    normal state s' or an exception;
+    (for any local variable declaration, if its initialization expression fails the
+     run time checks, for example division by zero or overflow, then it returns an exception
+    )
+*)
+
 Lemma eval_decl_state : forall s d s',
         eval_decl s d s' -> (* s' is either a normal state or an exception *)
-            (exists v, s' = SNormal v) \/ s' = SException.
+            (exists t, s' = SNormal t) \/ s' = SException.
 Proof.
     intros s d s' h.
     induction h;
     try match goal with
-    | [ |- (exists v, SNormal ?v1 = SNormal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- (exists t, SNormal ?t1 = SNormal t) \/ _ ] => left; exists t1; reflexivity
     | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
     end; auto.
 Qed.
@@ -1049,6 +1065,7 @@ Proof.
 Qed.
 
 (** f_eval_decl completeness and correctness proofs *)
+(** bisimulation proof between f_eval_decl and eval_decl *)
 
 Lemma f_eval_decl_correct: forall d s s',
     (f_eval_decl s d = (SNormal s') -> eval_decl s d (SNormal s')) /\
@@ -1089,6 +1106,7 @@ Proof.
 Qed.
 
 (** f_eval_decls completeness and correctness proofs *)
+(** bisimulation proof between f_eval_decls and eval_decls *)
 
 Lemma f_eval_decls_correct: forall d s s',
     (f_eval_decls s d = (SNormal s') -> eval_decls s d (SNormal s')) /\
@@ -1140,6 +1158,7 @@ Proof.
 Qed.
 
 (* = = = = = = Subprogram Body = = = = = =  *)
+(** relational and functional semantics for procedure body; *)
 
 Inductive eval_proc: stack -> procedure_body -> state -> Prop :=
     | eval_Proc_E: forall f s,
@@ -1159,6 +1178,8 @@ Function f_eval_proc k (s: stack) (f: procedure_body): state :=
 
 
 (** ** Main Procedure Evaluation Without Parameters *)
+
+(** relational and functional semantics for main procedure; *)
 
 Inductive eval_subprogram: stack -> subprogram -> state -> Prop :=
     | eval_SubpProc: forall s s' ast_num f,
@@ -1223,7 +1244,3 @@ Proof.
     apply f_eval_stmt_complete in H1.
     auto.
 Qed.
-
-
-
-

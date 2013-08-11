@@ -2,22 +2,21 @@ Require Export language.
 
 (** * Value Types *)
 
-(** Basic value type *)
+(** Type of basic values *)
 Inductive value : Type :=
 | Int (n : Z)
 | Bool (b : bool).
 
-(** Stored values type in the stack *)
+(** Type of stored values in the stack *)
 Inductive val: Type := 
     | Value: value -> val
     | Vundef: val.
 
-(* type of evaluation values 
-   possible results:
-     - normal evaluation results
-     - non-well-formed errors 
-       (type checks failure, undefined variables, un-initialized variables)
-     - constraint-violated results (it's a security problem: overflow, division by zero)
+(** Expression evaluation results can be:
+     - normal values
+     - exceptions caught by run time checks (for example, overflow, division by zero)
+     - abnormal values caused by, for example, 
+       type checks failure, undefined variables, un-initialized variables;
 *)
 Inductive return_val: Type :=
     | ValNormal: value -> return_val
@@ -44,12 +43,14 @@ Qed.
 (** * Value Operations *)
 Module Val.
 
+(*
 Notation "n == m" := (Zeq_bool n m) (at level 70, no associativity).
 Notation "n != m" := (Zneq_bool n m) (at level 70, no associativity).
-Notation "n <= m" := (Z.leb n m) (at level 70, no associativity).
+Notation "n > m" := (Z.gtb m n) (at level 70, no associativity).
 Notation "n >= m" := (Z.geb m n) (at level 70, no associativity).
 Notation "n < m" := (Z.ltb n m) (at level 70, no associativity).
-Notation "n > m" := (Z.gtb m n) (at level 70, no associativity).
+Notation "n <= m" := (Z.leb n m) (at level 70, no associativity).
+*)
 
 (** ** Arithmetic operations *)
 Definition add (v1 v2: value): return_val := 
@@ -92,13 +93,37 @@ Definition or (v1 v2: value): return_val :=
 (** ** Relational operations *)
 Definition eq (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (v1' == v2'))
+    | Int v1', Int v2' => ValNormal (Bool (Zeq_bool v1' v2'))
     | _, _ => ValAbnormal
     end.
 
 Definition ne (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (v1' != v2'))
+    | Int v1', Int v2' => ValNormal (Bool (Zneq_bool v1' v2'))
+    | _, _ => ValAbnormal
+    end.
+
+Definition gt (v1 v2: value): return_val :=
+    match v1, v2 with
+    | Int v1', Int v2' => ValNormal (Bool (Zgt_bool v1' v2'))
+    | _, _ => ValAbnormal
+    end.
+
+Definition ge (v1 v2: value): return_val :=
+    match v1, v2 with
+    | Int v1', Int v2' => ValNormal (Bool (Zge_bool v1' v2'))
+    | _, _ => ValAbnormal
+    end.
+
+Definition lt (v1 v2: value): return_val :=
+    match v1, v2 with
+    | Int v1', Int v2' => ValNormal (Bool (Zlt_bool v1' v2'))
+    | _, _ => ValAbnormal
+    end.
+
+Definition le (v1 v2: value): return_val :=
+    match v1, v2 with
+    | Int v1', Int v2' => ValNormal (Bool (Zle_bool v1' v2'))
     | _, _ => ValAbnormal
     end.
 
@@ -109,5 +134,3 @@ Definition not (v: value): return_val :=
     | _ => ValAbnormal
     end.
 End Val. 
-
- 

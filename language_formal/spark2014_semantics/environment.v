@@ -103,34 +103,6 @@ Proof.
        * right. right; assumption.
 Qed.
 
-(*
-Lemma update_fetch_new: forall v v0 s x  s',
-    v = Value v0 ->
-    update s x v = Some s' ->
-    fetch x s' = Some v0.
-Proof.
-    intros v v0 s x.
-    functional induction (update s x v);
-    intros s'0 h1 h2; subst.
-  - inversion h2; subst.
-    unfold fetch.
-    rewrite e0.
-    auto.
-  - inversion h2; subst.
-    apply IHo.
-    auto. admit.
-
-Qed.
-
-Lemma update_fetch_old: forall s x v s' y,
-    update s x (Value v) = Some s' ->
-    y <> x ->
-    fetch y s' = fetch y s.
-Proof.
-
-Qed.
-*)
-
 (** * Symbol Table *)
 
 (** ** Symbol table as a list *)
@@ -147,7 +119,7 @@ Fixpoint lookup (x : idnum) (tb: symtb) :=
 (** 
     possible state after running a command:
     - a normal resultant stack
-    - an exception (such as overflow, division by zero and so on)
+    - an exception caught by run time checks, for example overflow, division by zero and so on)
     - an unterminated state
     - an abnormal (unexpected) state
 *)
@@ -159,7 +131,11 @@ Inductive state: Type :=
 
 (** * Type Check Stack *)
 
-(** ** Type checker *)
+(** ** Type checker for stack *)
+(** - relational one: type_check_stack;
+    - functional one: f_type_check_stack;
+    - bisilumation between relational and functional one;
+*)
 Inductive type_check_stack: symtb -> stack -> Prop :=
     | TC_Empty: type_check_stack nil nil
     | TC_Bool: forall tb s x m b,
@@ -175,16 +151,49 @@ Inductive type_check_stack: symtb -> stack -> Prop :=
           type_check_stack tb s ->
           type_check_stack ((x, (m, Tint)) :: tb) ((x, Vundef) :: s).
 
-(*
-Inductive symbol_consistent: stack -> symtb -> Prop :=
-    | SymCons: forall (s: stack) (tb: symtb), 
-        ( forall x v, Some v = fetch x s -> 
-                          (exists t, stored_value_type (Value v) t /\ ( exists m, lookup x tb = Some (m, t)))) -> 
-        (forall x m t, lookup x tb = Some (m, t) -> 
-                          reside x s = true /\ 
-                          (forall v, (Some v = fetch x s) -> stored_value_type (Value v) t)) -> 
-        symbol_consistent s tb.
-*)
+Function f_type_check_stack (tb: symtb) (s: stack): bool :=
+    match tb, s with
+    | nil, nil => true
+    | (u :: tb'), (v :: s') => 
+        match u, v with
+        | (x, (m, Tbool)), (y, (Value (Bool b))) => 
+            if beq_nat x y then f_type_check_stack tb' s' else false
+        | (x, (m, Tint)), (y, (Value (Int v))) => 
+            if beq_nat x y then f_type_check_stack tb' s' else false
+        | (x, (m, Tbool)), (y, Vundef) => 
+            if beq_nat x y then f_type_check_stack tb' s' else false
+        | (x, (m, Tint)), (y, Vundef) => 
+            if beq_nat x y then f_type_check_stack tb' s' else false
+        | _, _ => false
+        end
+    | _, _ => false
+    end.
+
+Lemma f_type_check_stack_correct: forall tb s,
+    f_type_check_stack tb s = true ->
+        type_check_stack tb s.
+Proof.
+    intros tb s.
+    functional induction (f_type_check_stack tb s);
+    intros h1;
+    try match goal with
+    | h: false = true |- _ => inversion h
+    | h: beq_nat ?x ?y = true |- _ => rewrite (beq_nat_true _ _ e3)
+    end; constructor; auto.
+Qed.
+
+Lemma f_type_check_stack_complete: forall tb s,
+    type_check_stack tb s ->
+        f_type_check_stack tb s = true.
+Proof.
+    intros tb s h1.
+    induction h1;
+    simpl;
+    repeat match goal with
+    | |- context[beq_nat ?x ?x] => rewrite <- (beq_nat_refl x)
+    | h: f_type_check_stack ?tb ?s = true |- _ => rewrite h
+    end; auto.
+Qed.
 
 (** ** Some lemmas *)
 Lemma typed_value: forall tb s x v,
@@ -270,6 +279,3 @@ Proof.
     ];
     tv_l1 lookup reside h2 IHh1 x x0.
 Qed.
-
-
- 

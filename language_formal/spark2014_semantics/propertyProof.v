@@ -1671,6 +1671,10 @@ Proof.
     destruct op; try simpl_binop_hyp;
     [ exists (ValNormal (Bool (Zeq_bool v11 v21))) |
       exists (ValNormal (Bool (Zneq_bool v11 v21))) |
+      exists (ValNormal (Bool (Zgt_bool v11 v21))) |
+      exists (ValNormal (Bool (Zge_bool v11 v21))) |
+      exists (ValNormal (Bool (Zlt_bool v11 v21))) |
+      exists (ValNormal (Bool (Zle_bool v11 v21))) |
       exists (ValNormal (Int ((v11 + v21)%Z))) |
       exists (ValNormal (Int ((v11 - v21)%Z))) |
       exists (ValNormal (Int ((v11 * v21)%Z))) |
@@ -1770,6 +1774,10 @@ Proof.
     destruct op; try simpl_binop_hyp;
     [ exists (ValNormal (Bool (Zeq_bool v11 v21))) |
       exists (ValNormal (Bool (Zneq_bool v11 v21))) |
+      exists (ValNormal (Bool (Zgt_bool v11 v21))) |
+      exists (ValNormal (Bool (Zge_bool v11 v21))) |
+      exists (ValNormal (Bool (Zlt_bool v11 v21))) |
+      exists (ValNormal (Bool (Zle_bool v11 v21))) |
       exists (ValNormal (Int ((v11 + v21)%Z))) |
       exists (ValNormal (Int ((v11 - v21)%Z))) |
       exists (ValNormal (Int ((v11 * v21)%Z))) |
@@ -3487,4 +3495,3 @@ Proof.
   - right.
     simpl; assumption.
 Qed.
-
