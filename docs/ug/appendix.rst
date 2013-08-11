@@ -47,6 +47,7 @@ Command-line Options
       path_wp               Generate one formula per path for each check
       no_split              Generate one formula per check
       then_split            Start with one formula per check, then split into paths when needed
+   --RTS=dir              Specify the Ada runtime name/location
    --pedantic             Use a strict interpretation of the Ada standard
    --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
    --timeout=s            Set the prover timeout in seconds (default: 1)
