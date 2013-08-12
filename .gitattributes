@@ -5,6 +5,9 @@ docs/case_study/*/* no-precommit-check
 docs/case_study/*/*/* no-precommit-check
 docs/case_study/*/*/*/* no-precommit-check
 docs/case_study/*/*/*/*/* no-precommit-check
+papers/proof_and_test/Code/* no-precommit-check
+papers/proof_and_test/Code/*/* no-precommit-check
+papers/proof_and_test/Code/*/*/* no-precommit-check
 integration_tests/code/* no-precommit-check
 libs/containers/ada/*/*/* no-precommit-check
 libs/containers/ada/*/* no-precommit-check

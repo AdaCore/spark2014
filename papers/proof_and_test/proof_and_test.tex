@@ -1,8 +1,11 @@
-\documentclass{article}
+\documentclass{llncs}
 \usepackage[utf8]{inputenc}
 \usepackage{url}
 \usepackage{xspace}
 \usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{graphicx}
 
 \newcommand{\DO}{\textsc{do-178}\xspace}
 \newcommand{\DOB}{\textsc{do-178b}\xspace}
@@ -25,24 +28,29 @@
 \newcommand{\aka}{a.k.a.\xspace}
 \newcommand{\resp}{resp.\xspace}
 
+\lstdefinestyle{tinystyle}
+   {basicstyle=\scriptsize\tt,
+    keywordstyle=\bf,
+    commentstyle=\rmfamily\it,
+    escapeinside={(*}{*)}}
+\lstset{style=tinystyle}
+
 \begin{document}
 
 \title{Practical approaches to the combination of proof and testing with \newspark}
 
-\author{%
-\large Pavlos Efstathopoulos\\
-\normalsize ALTRAN, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom)}
-
-\date{}
+\author{Pavlos Efstathopoulos}
+\institute{ALTRAN, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom)}
 
 \maketitle
 
-\paragraph{Abstract}
+\begin{abstract}
 This paper identifies a number of scenarios where software may
 be proven, tested or a combination of both is utilised to verify the
 software. For each scenario, the most effective method of verification
 is identified and demonstrated using the \newspark toolset and/or
 VectorCast.
+\end{abstract}
 
 \paragraph{Keywords}
 System formal development, Verification and validation,
@@ -51,7 +59,7 @@ Certification and dependability
 \section{Introduction}
 Outline the context and describe why we believe the combination of proof
 and test can be better than using exclusively one or the other. Refer to Yannick's
-"Testing or Formal Verification: DO-178C Alternatives and Industrial Experience"
+``Testing or Formal Verification: DO-178C Alternatives and Industrial Experience''
 
 The ideal scenario, in a user's perspective, would be for the entirety of the code
 to be fully proven. This would provide the utmost confidence in the code's validity
@@ -70,21 +78,9 @@ and justify their completeness.
 Given a certain piece a code, a user might:
 
 \begin {itemize}
-  \item decide that proof is too difficult to achieve (for example, due
-    to the code having complicated constructs like multiple nested
-    loops) and resort to testing right from the beginning. No proof
-    is involved in this scenario. [Quicksort is a good example]
-
   \item try to fully prove the code and keep strengthening preconditions
     and adding assertions until full proof is achieved. No testing is
-    involved in this scenario. [Any program really...]
-
-  \item make a first unsuccessful attempt to prove the code and afterwards
-    utilize testing to identify potential issues with the contracts or
-    the implementation. The tests might provide hints as to how the user
-    can alter the code to render it provable. In this scenario, testing
-    reveals the actions that need be performed to achieve full proof.
-    [Do I want to introduce an error and find it out through testing?]
+    involved in this scenario. [Is\_Prime, Are\_Coprime, Factorial]
 
   \item attempt to prove the code, fail and resort to testing. At this
     point the user has two different options:
@@ -100,6 +96,18 @@ Given a certain piece a code, a user might:
         [Tokeneer segment]
     \end{enumerate}
 
+  \item decide that proof is too difficult to achieve (for example, due
+    to the code having complicated constructs like multiple nested
+    loops) and resort to testing right from the beginning. No proof
+    is involved in this scenario. [Mergesort]
+
+  \item make a first unsuccessful attempt to prove the code and afterwards
+    utilize testing to identify potential issues with the contracts or
+    the implementation. The tests might provide hints as to how the user
+    can alter the code to render it provable. In this scenario, testing
+    reveals the actions that need be performed to achieve full proof.
+    [I need to introduce an error and find it out through testing.]
+
   \item be required (by a standard) to test the code. However, as an addition,
     performing proof could improve the safety case and grant more confidence on the
     code. In this scenario the user would try to prove as much as possible, but would
@@ -110,16 +118,91 @@ Given a certain piece a code, a user might:
 When more than one units have to be analysed, any combination of the above could
 potentially occur. Naming but a few such examples, it would be possible to have:
 \begin{itemize}
-  \item a full formal specification can not be written for a subprogram Q
-    and consequently Q is tested. Subprogram P, which has to be proven, calls Q.
-    A partial specification is therefore required for Q purely to assist with the
-    proof of P.
+  \item a subprogram Q for which a full formal specification cannot be provided.
+    Consequently Q is tested. Subprogram P, which has to be proven, calls Q.
+    A partial specification is therefore added to Q to assist with the proof of P.
 
-  \item
+  \item a subprogram that has only been tested is utilized in the proof of one of its
+    callers.
 \end{itemize}
 
+\section{Prove the code by strengthening assertions}
+In this section, we will attempt to prove 3 functions. The entire process that
+was followed will be presented. The chosen functions have precise mathematical
+definitions and consequently it was hypothesised that fully proving them should
+be possible. The functions are the following:
+\begin{enumerate}
+  \item Function \emph{Is\_Prime} takes a natural number as its single parameter and
+    returns true if that number is a prime and false if it is not. A natural
+    number (\ie $1, 2, 3, 4, \dots$) is called a prime if it has exactly two
+    positive divisors, $1$ and the number itself.
 
-\section{For each scenario}
+  \item Function \emph{Are\_Coprime} takes two natural numbers as parameters and returns
+    true if these numbers are coprime and false if they are not. Two naturals
+    X and Y are called coprime if the only natural that evenly divides both of
+    them is $1$.
+
+  \item Function \emph{Factorial} takes a natural number as its parameter and returns
+    this number's factorial. The factorial of a natural number is the product
+    of that number and all natural numbers below it (\Eg $5! = 5 * 4 * 3 * 2 * 1$).
+\end{enumerate}
+
+\subsection{Generating and proving the code}
+As a first attempt, the following code was written:
+\lstinputlisting[language=Ada, numbers=left, title=Spec]{Code/proven/Initial_Attempt/proven.ads}
+\lstinputlisting[language=Ada, numbers=left, title=Body]{Code/proven/Initial_Attempt/proven.adb}
+Functions \emph{Is\_Prime} and \emph{Are\_Coprime} were proven straight away while the following
+messages that relate to function \emph{Factorial} were issued:
+
+proven.adb:47:19: overflow check not proved
+
+proven.adb:47:19: range check not proved
+
+\noindent
+To resolve these, it must be shown that:
+\begin{enumerate}
+  \item the value returned by the expression $N * Factorial (N - 1)$ is within
+    the range $Natural'First .. Natural'Last$.
+
+  \item the result of $N - 1$ is within the range
+    $Natural'First .. Natural'Last$.
+\end{enumerate}
+Unfortunately, property 1 does not hold for the current code. If parameter
+$N$ exceeds a certain value, then the result of \emph{Factorial} will not fit
+within a Natural and an overflow exception will be raised at runtime.
+
+In order to overcome these issues, a precondition, an assumption and a new
+subtype had to be introduced to the code. The precondition creates an obligation,
+for all callers of \emph{Factorial}, that $N \leq 10$. The assumption informs the tools
+that $Factorial (N - 1) \leq 362880$, since $(10 - 1)! = 9! = 362880$. Finally, the
+subtype constrains the value returned by the function to the range $1 .. 362880$.
+After strengthening the code, all verification conditions are discharged.
+
+\lstinputlisting[language=Ada, title=Strengthened Spec, firstline=13,
+                 lastline=21]{Code/proven/Strengthened/proven.ads}
+\lstinputlisting[language=Ada, title=Strengthened Body, firstline=35,
+                 lastline=46]{Code/proven/Strengthened/proven.adb}
+
+\subsection{Notable observations}
+The initial assumption that was made was that the selected functions would be
+proof-friendly due to their mathematically well-defined nature. This was indeed
+the case. However, recursive definitions (such as the definition of function
+\emph{Factorial}) can considerably complicate the proving process (a non-recursive
+equivalent of the existing contract could not be generated).
+
+\section{Mergesort}
+\subsection{Example code}
+\subsection{Describe approach to verification}
+\subsection{Report results of verification}
+\subsection{Report any points of interest arising from attempting to verify}
+
+\section{One of the VSTTE examples}
+\subsection{Example code}
+\subsection{Describe approach to verification}
+\subsection{Report results of verification}
+\subsection{Report any points of interest arising from attempting to verify}
+
+\section{}
 \subsection{Example code}
 \subsection{Describe approach to verification}
 \subsection{Report results of verification}
