@@ -85,21 +85,6 @@ successive writing of the same value has no external observable effect.
 A mechanism is provided for stating whether the reads or writes always have an
 effect.
 
-An external state may have both asynchronous readers and writers or either one.
-An external state that has asynchronous readers might have effective writes,
-every write is significant and has some observable external effect.  An external
-state that has asynchronous writers might have effective reads.  Every read has
-some externally observable effect.
-
-By default if an external state is declared without explicitly
-defining that it has asynchronous readers or writers it defaults to having both,
-and with effective writes and effective reads which is the most general case.
-
-If a state has asynchronous writers then each read of the state may have a
-different value because an asynchronous writer may have updated its value. If a
-state has asynchronous readers then each write to state might be significant
-because each item of data written may be read by an asynchronous reader.
-
 External state is a variable declared as Volatile or a state abstraction which
 represents one or more volatile variables (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`).
@@ -124,67 +109,55 @@ as external properties of an external state abstraction.
 
 .. centered:: **Legality Rules**
 
-#. If an external state is declared without any of the external properties
-   specified then all of the properties default to a value of True.
+#. If an external state is declared without any of the external properties specified then all of the properties default to a value of True.
 
-#. If only one of Async_Readers or Async_Writers is specified with a value of
-   True the other defaults to a value of False.
+#. If just the name of the property is given then its value defaults to True [; for instance Async_Readers defaults to Async_Readers => True].
 
-#. If Async_Readers => True is specified, the value of Effective_Writes defaults
-   to a value of True if the aspect is not explicitly specified.
+#. A property may be explicitly given the value False [for instance Async_Readers => False].
 
-#. If Async_Readers => False is specified, the value of Effective_Writes defaults
-   to a value of False if the aspect is not explicitly specified.
-
-#. If Async_Writers => True is specified, the value of Effective_Reads defaults
-   to a value of True if the aspect is not explicitly specified.
-
-#. If Async_Writers => False is specified, the value of Effective_Reads defaults
-   to a value of False if the aspect is not explicitly specified.
-
-#. If just the name of the property is given then its value defaults to True [;
-   for instance  Async_Readers defaults to Async_Readers => True].
-
-#. A property may be explicitly given the value False [;for instance
-   Async_Readers => False].
+#. If any one property is explicitly defined, all undefined properties default to a value of False.
 
 #. The expression defining the Boolean valued property shall be static.
 
+#. Only the following combinations of properties are valid:
+
+   * Async_Readers, Effective_Writes => True, Others => False;
+
+   * Async_Writers, Effective_Reads => True, Others => False;
+
+   * Async_Readers => True, Others => False;
+
+   * Async_Writers => True, Others => False and
+
+   * Others => True.
+
+#. If an external state has Effective_Reads set to True then it must be an "out" or "in out".
+
 .. centered:: **Static Semantics**
 
-#. Every read from an external state might have an externally observable effect
-   if Effective_Reads is True.
+#. Every update to an external state might have an external effect if Effective_Writes and Async_Readers are True and all other external aspects are false.
 
-#. Every update of an external state might have an externally observable effect
-   if Effective_Writes => True or Async_Readers => True are specified on the
-   declaration of the state.
+#. Successive reads from an external state will result in the last value written if Effective_Writes and Async_Readers are True and all other external aspects are false.
 
-#. If the property Async_Readers => True and Effective_Writes => False are
-   specified for an external state successive updates of the external state
-   with the same value may not have an externally observable effect. [Flow
-   analysis might be used to warn of such successive writes in simple cases.]
+#. Every read from an external state might have a synchronous external effect if Effective_Reads and Async_Writers are True and all other external aspects are false.
 
-#. If Async_Readers => False and Effective_Writes => True is specified for an
-   external state then there is a synchronous observable external effect when
-   the external state is updated.
+#. Every read from an external state might have a different value if Effective_Reads and Async_Writers are True and all other external aspects are false.
 
-#. If Async_Readers => False and Effective_Writes => False are specified for an
-   external state, updates of the external state have no externally observable
-   effects and behave as an update of a normal variable or state abstraction.
+#. Every update to an external state has no external effect if Effective_Reads and Async_Writers are True and all other external aspects are false.
 
-#. If Async_Writers => True and Effective_Reads => True are specified for an
-   external state then each value written by a asynchronous writer may be
-   significant and each read has some externally observable effect.
+#. Every update may affect the next value read if Effective_Reads and Async_Writers are True and all other external aspects are false.
 
-#. If Async_Writers => False and Effective_Reads => True are specified for an
-   external state , then the value read will be the value from the last
-   (synchronous) program update of the external state, however, the read will
-   have some externally observable effect.
+#. Every update to an external state has no external effect if Async_Writers is True and all other external aspects are false.
 
-#. If Async_Writers => False and Effective_Reads => False are specified for an
-   external state , then the value read will be the value from the last
-   (synchronous) program update of the external state and there will be no
-   effects externally observable due to the read..
+#. Every read from an external state might have a different value if Async_Writers is True and all other external aspects are false.
+
+#. An update to an external state might have an external effect if Async_Readers is True and all other external aspects are false.
+
+#. Successive reads from an external state will result in the last value written if Async_Readers is True and all other external aspects are false.
+
+#. Every read and update might have an asynchronous and synchronous externally observable effect if all External aspects are true.
+
+#. Every read from an external state might have a different value if all External aspects are true.
 
 External State - Variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -269,61 +242,184 @@ There are no extra verification rules.
 
 .. code-block:: ada
 
+   -- This is a hardware abstraction layer (HAL)
+   -- which handles input and output streams over serial interfaces
+   -- and monitors and resets an area of shared memory used
+   -- as a watchdog.
+   package HAL
+      with Abstract_State => 
+              ((Lossy_Serial_In 
+                  with External => Async_Writers), 
+               (Serial_In 
+                  with External => (Async_Writers, Effective_Reads)), 
+               (Lossy_Serial_Out 
+                  with External => Async_Readers),
+               (Serial_Out 
+                  with External => (Async_Readers, Effective_Writes)),
+               (Wdog_State 
+                  with External => (Async_Readers, 
+                                    Async_Writers, 
+                                    Effective_Reads, 
+                                    Effective_Writes)))is
+   begin
+
+      type Byte_T is new Integer;
+    
+      -- This procedure reads the next byte available on
+      -- the serial input port using a FIFO buffer.
+      procedure Get_Byte (A_Byte : out Byte_T)
+         with Global  => (In_Out => Serial_In),
+              Depends => (A_Byte    => Serial_In,
+                          Serial_In => null);
+
+                        
+      -- This procedure writes a byte to the serial
+      -- output port using a FIFO buffer.
+      procedure Put_Byte (A_Byte : Byte_T)
+         with Global  => (Output => Serial_Out),
+              Depends => (Serial_Out => A_Byte);
+            
+      -- This procedure reads the last byte on
+      -- the serial input port.
+      procedure Lossy_Get_Byte (A_Byte : out Byte_T)
+         with Global  => (Input => Serial_In),
+              Depends => (A_Byte    => Lossy_Serial_In);
+
+                        
+      -- This procedure writes a byte to the serial
+      -- output port without using the FIFO buffer.
+      -- Some values written may therefore not be read.
+      procedure Lossy_Put_Byte (A_Byte : Byte_T)
+         with Global  => (Output => Lossy_Serial_Out),
+              Depends => (Lossy_Serial_Out => A_Byte);
+            
+
+      -- This procedure checks and then resets the status of
+      -- the watchdog state.
+      procedure Wdog_Timed_Out (Result : out Boolean)
+         with Global  => (In_Out => Wdog_State),
+              Depends => (Result     => Wdog_State,
+                          Wdog_State => Wdog_State);
+    
+   end HAL;
+
    with System.Storage_Units;
-   package Input_Port
+   package HAL body 
+      with Refined_State (Serial_In  => Read_FIFO,
+                          Serial_Out => Write_FIFO,
+                          Lossy_Serial_In  => Read_Last,
+                          Lossy_Serial_Out => Write_First,
+                          Wdog_State => Wdog_shared_memory)
    is
-      Sensor : Integer
-         with Volatile,
-              Async_writers,
-              Read_Only,
-              Address => System.Storage_Units.To_Address (16#ACECAFE#);
-   end Input_Port;
 
-
-   with System.Storage_Units;
-   package Multiple_Ports
-   is
-      type Volatile_Type is record
-         I : Integer
-      end record with Volatile;
-
-      procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
-         with Depends => (Value => Port);
-          -- Port is Volatile and potentially has Async_Readers and Async_Writers
-          -- As an in mode parameter it can only be read by the program but it
-          -- might have external, asynchronous writers
-
-      procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
-         with Depends => (Port => Value);
-          -- Port is Volatile and potentially has Async_Readers and Async_Writers
-
-      V_In_1 : Volatile_Type
-         with Async_Writers,
-              Read_Only,
-              Address => System.Storage_Units.To_Address (16#A1CAFE#);
-
-      V_In_2 : Integer
+      Read_FIFO: Byte_T 
          with Volatile,
               Async_Writers,
-              Address => System.Storage_Units.To_Address (16#ABCCAFE#);
+              Effective_Reads,
+           Address => System.Storage_Units.To_Address(16#A1CAFE#);
 
-      V_Out_1 : Volatile_Type
-         with Async_Readers,
-              Write_Only,
-              Address => System.Storage_Units.To_Address (16#BBCCAFE#);
-
-      V_Out_2 : Integer
-         with Volatile,
-              Async_Writers,
-              Address => System.Storage_Units.To_Address (16#ADACAFE#);
-
-      V_In_Out : Integer
+      Write_FIFO: Byte_T 
          with Volatile,
               Async_Readers,
-              Async_Writers,
-              Address => System.Storage_Units.To_Address (16#BEECAFE#);
+              Effective_Writes,
+              Address => System.Storage_Units.To_Address(16#A2CAFE#);
 
-   end Multiple_Ports;
+      Read_Last: Byte_T 
+         with Volatile,
+              Async_Writers,
+              Address => System.Storage_Units.To_Address(16#A3CAFE#);
+
+      Write_First: Byte_T 
+         with Volatile,
+              Async_Readers,
+              Address => System.Storage_Units.To_Address(16#A4CAFE#);
+
+      Wdog_shared_memory : Boolean 
+         with Volatile,
+              Async_Writers,
+              Async_Readers,
+              Effective_Reads,
+              Effective_Writes,
+              Address => System.Storage_Units.To_Address(16#A5CAFE#);
+             
+      procedure Get_Byte (A_Byte : out Byte_T)
+         with Global  => (In_Out => Read_FIFO),
+              Depends => (A_Byte      => Read_FIFO,
+                          Read_FIFO => null)
+      is
+      begin
+         A_Byte := Read_FIFO;
+      end Get_Byte;
+
+                         
+      procedure Put_Byte (A_Byte : Byte_T)
+         with Global  => (Output => Write_FIFO),
+              Depends => (Write_FIFO => A_Byte)
+      is
+      begin
+         Write_FIFO := A_Byte;
+      end Put_Byte;
+            
+      procedure Lossy_Get_Byte (A_Byte : out Byte_T)
+         with Global  => (Input => Read_Last),
+              Depends => (A_Byte  => Read_Last)
+      is
+      begin
+         A_Byte := Read_Last;
+      end Get_Byte;
+
+                         
+      procedure Lossy_Put_Byte (A_Byte : Byte_T)
+         with Global  => (Output => Write_First),
+              Depends => (Write_First => A_Byte)
+      is
+      begin
+         Write_First := A_Byte;
+      end Put_Byte;
+            
+
+      procedure Wdog_Timed_Out (Result : out Boolean)
+         with Global  => (In_Out => Wdog_shared_memory),
+              Depends => (Result             => Wdog_shared_memory,
+                          Wdog_shared_memory => Wdog_shared_memory)
+      is
+      begin
+         if Wdog_shared_memory then
+            Wdog_shared_memory := False;
+            Result := False;
+         else
+            Result := True;
+         end if;
+      end Wdog_Time_Out;
+
+   end HAL;
+
+
+   with HAL; 
+   procedure Main
+      with Global  => (In_Out => (HAL.Serial_In, HAL.Wdog_State),
+                       Output => HAL.Serial_Out),
+           Depends => (HAL.Serial_In  => HAL.Wdog_State,
+                       HAL.Serial_Out => (HAL.Serial_In, HAL.Wdog_State),
+                       HAL.Wdog_State => HAL.Wdog_State)
+   is
+      Wdog_Timed_Out : Boolean;
+      A_Byte         : HAL.Byte_T;
+   begin
+   
+      -- As long as the watchdog doesn't time out, move data
+      -- from Serial_In to Serial_Out.
+      loop    
+         HAL.Wdog_Time_Out (Wdog_Timed_Out);
+        
+         if not Wdog_Timed_Out then
+            Get_Byte (A_Byte);
+            Put_Byte (A_Byte);      
+         end if;
+    
+       end loop;
+
+   end Main;
 
 .. _abstract-state-aspect:
 

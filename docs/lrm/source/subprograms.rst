@@ -527,12 +527,20 @@ subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The dependency relation is used in information flow
 analysis.
 
-A Depends aspect for a subprogram specifies for each output every input on
-which it depends. The meaning of *X depends on Y* in this context is that the
-exit value of output, X, on the completion of the subprogram is at least partly
-determined from the entry value of input, *Y* and is written *X => Y*. As in
-UML, the entity at the tail of the arrow depends on the entity at the head of
-the arrow.
+A Depends aspect for a subprogram specifies for each output every 
+input on which it depends. The meaning of *X depends on Y* in this 
+context is that the input value(s) of *Y* may affect:
+
+* the exit value of *X*;
+* the externally visible intermediate values of *X* and
+* the external events caused by reading or writing to *X*.
+
+This is written *X => Y*. As in UML, the entity at the tail of the 
+arrow depends on the entity at the head of the arrow.
+
+The last two effects only apply to external objects which are 
+described in section :ref:`external_state`.
+
 
 If an output does not depend on any input this is indicated
 using a **null**, e.g., *X =>* **null**. An output may be
