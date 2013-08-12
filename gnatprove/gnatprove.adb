@@ -154,7 +154,7 @@ procedure Gnatprove is
 
       Args.Prepend ("-c");
 
-      if RTS_Dir /= null then
+      if RTS_Dir /= null and then RTS_Dir.all /= "" then
          Args.Prepend ("--RTS=" & RTS_Dir.all);
       end if;
 
