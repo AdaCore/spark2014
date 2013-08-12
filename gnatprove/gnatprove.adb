@@ -57,7 +57,7 @@ procedure Gnatprove is
       (Project_File : String;
        Config_File  : String;
        Parallel     : Integer;
-       RTS_Dir      : String_Access;
+       RTS_Dir      : String;
        Args         : in out String_Lists.List;
        Status       : out Integer);
    --  Call gprbuild with the given arguments. Pass in explicitly a number of
@@ -125,7 +125,7 @@ procedure Gnatprove is
       (Project_File : String;
        Config_File  : String;
        Parallel     : Integer;
-       RTS_Dir      : String_Access;
+       RTS_Dir      : String;
        Args         : in out String_Lists.List;
        Status       : out Integer) is
    begin
@@ -154,8 +154,8 @@ procedure Gnatprove is
 
       Args.Prepend ("-c");
 
-      if RTS_Dir /= null and then RTS_Dir.all /= "" then
-         Args.Prepend ("--RTS=" & RTS_Dir.all);
+      if RTS_Dir /= "" then
+         Args.Prepend ("--RTS=" & RTS_Dir);
       end if;
 
       if Project_File /= "" then
@@ -214,7 +214,7 @@ procedure Gnatprove is
       Call_Gprbuild (Project_File,
                      Gpr_Frames_Cnf_File,
                      Parallel,
-                     RTS_Dir,
+                     RTS_Dir.all,
                      Args,
                      Status);
       Gnat2Why_Args.Clear;
@@ -325,7 +325,7 @@ procedure Gnatprove is
       Call_Gprbuild (Why_Proj_File,
                      Gpr_Why_Cnf_File,
                      Parallel => 1,
-                     RTS_Dir  => RTS_Dir,
+                     RTS_Dir  => RTS_Dir.all,
                      Args     => Args,
                      Status   => Status);
    end Compute_VCs;
@@ -683,7 +683,7 @@ procedure Gnatprove is
       Call_Gprbuild (Project_File,
                      Gpr_Translation_Cnf_File,
                      Parallel,
-                     RTS_Dir,
+                     RTS_Dir.all,
                      Args,
                      Status);
       Gnat2Why_Args.Clear;
