@@ -80,39 +80,41 @@ Given a certain piece a code, a user might:
 \begin {itemize}
   \item try to fully prove the code and keep strengthening preconditions
     and adding assertions until full proof is achieved. No testing is
-    involved in this scenario. [Is\_Prime, Are\_Coprime, Factorial]
+    involved in this scenario.
+
+  \item decide that proof is too difficult to achieve (for example, due
+    to the code having complicated constructs like multiple nested
+    loops) and resort to testing right from the beginning. No proof
+    is involved in this scenario.
 
   \item attempt to prove the code, fail and resort to testing. At this
     point the user has two different options:
 
     \begin{enumerate}
       \item Perform exclusively testing (prove no properties).
-        [``permutation'' was initially thought to be easy to prove but writing
-        the contracts proved difficult]
+        [exponentiation example]
 
       \item Prove only a subset of the properties of the code and
         test the remaining. For instance, prove freedom of run-time
         exceptions and test functional behaviour-related contracts.
-        [Tokeneer segment]
+        [Selection sort]
     \end{enumerate}
-
-  \item decide that proof is too difficult to achieve (for example, due
-    to the code having complicated constructs like multiple nested
-    loops) and resort to testing right from the beginning. No proof
-    is involved in this scenario. [Mergesort]
 
   \item make a first unsuccessful attempt to prove the code and afterwards
     utilize testing to identify potential issues with the contracts or
     the implementation. The tests might provide hints as to how the user
     can alter the code to render it provable. In this scenario, testing
     reveals the actions that need be performed to achieve full proof.
-    [I need to introduce an error and find it out through testing.]
+    [Angela's solution to the ?VSTTE? competition.]
+
+  \item not be able to formulate a contract. [interfacing, externals or something
+    that is hard to put into a contract (/Eg performance/complexity)].
 
   \item be required (by a standard) to test the code. However, as an addition,
     performing proof could improve the safety case and grant more confidence on the
     code. In this scenario the user would try to prove as much as possible, but would
     not insist when proof is too hard.
-    [I have no clue yet...]
+    [Tokeneer]
 \end{itemize}
 
 When more than one units have to be analysed, any combination of the above could
@@ -126,25 +128,26 @@ potentially occur. Naming but a few such examples, it would be possible to have:
     callers.
 \end{itemize}
 
+
+
 \section{Prove the code by strengthening assertions}
 In this section, we will attempt to prove 3 functions. The entire process that
 was followed will be presented. The chosen functions have precise mathematical
 definitions and consequently it was hypothesised that fully proving them should
 be possible. The functions are the following:
 \begin{enumerate}
-  \item Function \emph{Is\_Prime} takes a natural number as its single parameter and
-    returns true if that number is a prime and false if it is not. A natural
+  \item Function \emph{Is\_Prime} takes a natural number as its single parameter
+    and returns true if that number is a prime and false if it is not. A natural
     number (\ie $1, 2, 3, 4, \dots$) is called a prime if it has exactly two
     positive divisors, $1$ and the number itself.
 
   \item Function \emph{Are\_Coprime} takes two natural numbers as parameters and returns
-    true if these numbers are coprime and false if they are not. Two naturals
-    X and Y are called coprime if the only natural that evenly divides both of
-    them is $1$.
+    true if these numbers are coprime and false if they are not. Two naturals X and Y
+    are called coprime if the only natural that evenly divides both of them is $1$.
 
   \item Function \emph{Factorial} takes a natural number as its parameter and returns
-    this number's factorial. The factorial of a natural number is the product
-    of that number and all natural numbers below it (\Eg $5! = 5 * 4 * 3 * 2 * 1$).
+    this number's factorial. The factorial of a natural number is the product of that
+    number and all natural numbers below it (\Eg $5! = 5 * 4 * 3 * 2 * 1$).
 \end{enumerate}
 
 \subsection{Generating and proving the code}
@@ -164,8 +167,7 @@ To resolve these, it must be shown that:
   \item the value returned by the expression $N * Factorial (N - 1)$ is within
     the range $Natural'First .. Natural'Last$.
 
-  \item the result of $N - 1$ is within the range
-    $Natural'First .. Natural'Last$.
+  \item the result of $N - 1$ is within the range $Natural'First .. Natural'Last$.
 \end{enumerate}
 Unfortunately, property 1 does not hold for the current code. If parameter
 $N$ exceeds a certain value, then the result of \emph{Factorial} will not fit
@@ -190,17 +192,42 @@ the case. However, recursive definitions (such as the definition of function
 \emph{Factorial}) can considerably complicate the proving process (a non-recursive
 equivalent of the existing contract could not be generated).
 
-\section{Mergesort}
-\subsection{Example code}
-\subsection{Describe approach to verification}
+
+
+\section{Resort to testing right away}
+The costs associated with fully proving a unit might occasionally overshadow
+the benefits entailed. Testing can provide a certain confidence in the validity of
+the code without requiring for a lot or resources to be consumed. This section provides
+an example where testing was deemed to be more efficient and attempts to identify more
+cases for which this might be applicable.
+
+\subsection{Mergesort}
+The code that follows is an Ada implementation of the top-down version of a well
+known sorting algorithm called mergesort.
+\lstinputlisting[language=Ada, title=Mergesort's Spec]{Code/tested/mergesort.ads}
+\lstinputlisting[language=Ada, title=Mergesort's Body]{Code/tested/mergesort.adb}
+
+\subsection{VectorCAST's tool}
+
 \subsection{Report results of verification}
+
 \subsection{Report any points of interest arising from attempting to verify}
+Well-established algorithms such as A* (A star), quicksort, \etc have
+been used by many programmers throughout the years and have been mathematically
+shown to hold true. Spending time in annotating the implementations of such algorithms
+in order to force them through proof tools is not worth the effort. Performing some
+basic tests so at to know that no porting errors were made, should suffice in such
+cases.
+
+
 
 \section{One of the VSTTE examples}
 \subsection{Example code}
 \subsection{Describe approach to verification}
 \subsection{Report results of verification}
 \subsection{Report any points of interest arising from attempting to verify}
+
+
 
 \section{}
 \subsection{Example code}
