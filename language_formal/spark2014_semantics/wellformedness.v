@@ -18,31 +18,32 @@ Require Export semantics.
     on both sides of binary operators, and return either the result type or 
     None if their types are not consistent;
 *)
-Definition binop_type (op: binary_operation) (t1 t2: typ): option typ := 
-    match op with 
-    | Ceq | Cne | Cgt | Cge | Clt | Cle  => 
+Definition binop_type (op: binary_operator) (t1 t2: type): option type := 
+    match op with
+    | Equal | Not_Equal | Greater_Than | Greater_Than_Or_Equal 
+    | Less_Than | Less_Than_Or_Equal  => 
         match t1, t2 with
-        | Tint, Tint => Some Tbool
+        | Integer, Integer => Some Boolean
         | _, _ => None
         end
-    | Oand | Oor =>
+    | And | Or =>
         match t1, t2 with
-        | Tbool, Tbool => Some Tbool
+        | Boolean, Boolean => Some Boolean
         | _, _ => None
         end
-    | Oadd | Osub | Omul | Odiv =>
+    | Plus | Minus | Multiply | Divide =>
         match t1, t2 with
-        | Tint, Tint => Some Tint
+        | Integer, Integer => Some Integer
         | _, _ => None
         end
     end.
 
-Definition unop_type (op: unary_operation) (t: typ): option typ := 
+Definition unop_type (op: unary_operator) (t: type): option type := 
     match op with 
-    | Onot => match t with
-              | Tbool => Some Tbool
-              | _ => None
-              end
+    | Not => match t with
+             | Boolean => Some Boolean
+             | _ => None
+             end
     end.
 
 (** * Well-Typed *)
@@ -50,70 +51,71 @@ Definition unop_type (op: unary_operation) (t: typ): option typ :=
 (**
    - type check for expressions;
 *)
-Inductive well_typed_expr: symtb -> expr -> typ -> Prop :=
-    | WT_Econst_Int: forall ast_num n tb,
-        well_typed_expr tb (Econst ast_num (Ointconst n)) Tint
-    | WT_Econst_Bool: forall ast_num b tb,
-        well_typed_expr tb (Econst ast_num (Oboolconst b)) Tbool
-    | WT_Evar: forall ast_num x tb m t,
+Inductive well_typed_expr: symtb -> expression -> type -> Prop :=
+    | WT_E_Literal_Int: forall ast_num n tb,
+        well_typed_expr tb (E_Literal ast_num (Integer_Literal n)) Integer
+    | WT_E_Literal_Bool: forall ast_num b tb,
+        well_typed_expr tb (E_Literal ast_num (Boolean_Literal b)) Boolean
+    | WT_E_Identifier: forall ast_num x tb m t,
         lookup x tb = Some (m, t) ->  
-        well_typed_expr tb (Evar ast_num x) t
-    | WT_Ebinop: forall ast_num tb op e1 e2 t t1,
+        well_typed_expr tb (E_Identifier ast_num x) t
+    | WT_E_Binary_Operation: forall ast_num tb op e1 e2 t t1,
         well_typed_expr tb e1 t ->
         well_typed_expr tb e2 t ->
         binop_type op t t = Some t1 ->
-        well_typed_expr tb (Ebinop ast_num op e1 e2) t1
-    | WT_Eunop: forall ast_num tb op e,
-        well_typed_expr tb e Tbool ->
-        well_typed_expr tb (Eunop ast_num op e) Tbool.
+        well_typed_expr tb (E_Binary_Operation ast_num op e1 e2) t1
+    | WT_E_Unary_Operation: forall ast_num tb op e,
+        well_typed_expr tb e Boolean ->
+        well_typed_expr tb (E_Unary_Operation ast_num op e) Boolean.
 
 (** ** Well-typed statements *)
 (**
     - type check for statements;
 *)
-Inductive well_typed_stmt: symtb -> stmt  -> Prop :=
-    | WT_Sassign: forall ast_num tb x e m t,
+Inductive well_typed_stmt: symtb -> statement  -> Prop :=
+    | WT_S_Assignment: forall ast_num tb x e m t,
         lookup x tb = Some (m, t) ->
         well_typed_expr tb e t ->
-        well_typed_stmt tb ((Sassign ast_num x e))
-    | WT_Sseq: forall ast_num c1 c2 tb,
+        well_typed_stmt tb ((S_Assignment ast_num x e))
+    | WT_S_Sequence: forall ast_num c1 c2 tb,
         well_typed_stmt tb c1 ->
         well_typed_stmt tb c2 ->
-        well_typed_stmt tb (Sseq ast_num c1 c2)
-    | WT_Sifthen: forall ast_num tb b c,
-        well_typed_expr tb b Tbool ->
+        well_typed_stmt tb (S_Sequence ast_num c1 c2)
+    | WT_S_If: forall ast_num tb b c,
+        well_typed_expr tb b Boolean ->
         well_typed_stmt tb c ->
-        well_typed_stmt tb (Sifthen ast_num b c)
-    | WT_Swhile: forall ast_num tb b c,
-        well_typed_expr tb b Tbool ->
+        well_typed_stmt tb (S_If ast_num b c)
+    | WT_S_While_Loop: forall ast_num tb b c,
+        well_typed_expr tb b Boolean ->
         well_typed_stmt tb c ->
-        well_typed_stmt tb (Swhile ast_num b c).
+        well_typed_stmt tb (S_While_Loop ast_num b c).
 
 
-(* in our formalization framework, all names used in the SPARK programs are 
-   formalized as integer numbers, for example, variables, function/procedure names
-   and types are all represented as distinguishable integer numbers;
-   here I hard code that number "1" representing type "Tint", and "2" representing "Tbool";
+(* in our formalization framework, all names used in the SPARK programs 
+   are formalized as integer numbers, for example, variables, 
+   function/procedure names and types are all represented as 
+   unique integer numbers; here I hard code that number "1" 
+   representing type "Integer", and "2" representing "Boolean";
 *)
-Inductive type_map: typenum -> typ -> Prop :=
-    | T1 : type_map 1 Tint
-    | T2: type_map 2 Tbool.
+Inductive type_map: typenum -> type -> Prop :=
+    | T1: type_map 1 Integer
+    | T2: type_map 2 Boolean.
 
-(** type check for local varialbe declaration; *)
-Inductive well_typed_decl: symtb -> local_declaration -> symtb -> Prop :=
+(** type check for varialbe declaration; *)
+Inductive well_typed_decl: symtb -> object_declaration -> symtb -> Prop :=
     | WT_Decl0: forall d x t tb,
-        x = d.(local_ident) ->
-        type_map d.(local_typenum) t ->
-        None = d.(local_init) ->
-        well_typed_decl tb d ((x, (InOut, t)) :: tb) (* the declared variables have in/out mode *)
+        x = d.(object_name) ->
+        type_map d.(object_nominal_subtype) t ->
+        None = d.(initialization_expression) ->
+        well_typed_decl tb d ((x, (In_Out, t)) :: tb) (* the declared variables have in/out mode *)
     | WT_Decl1: forall d x t i tb,
-        x = d.(local_ident) ->
-        type_map d.(local_typenum) t ->
-        Some i = d.(local_init) -> 
+        x = d.(object_name) ->
+        type_map d.(object_nominal_subtype) t ->
+        Some i = d.(initialization_expression) -> 
         well_typed_expr tb i t -> (* the type of the initialization value should be consistent with the declared variable's type *)
-        well_typed_decl tb d ((x, (InOut, t)) :: tb).
+        well_typed_decl tb d ((x, (In_Out, t)) :: tb).
 
-Inductive well_typed_decls: symtb -> list local_declaration -> symtb -> Prop :=
+Inductive well_typed_decls: symtb -> list object_declaration -> symtb -> Prop :=
     | WT_Decls_Empty: forall tb,
         well_typed_decls tb nil tb
     | WT_Decls: forall tb d tb'0 tl tb',
@@ -124,31 +126,31 @@ Inductive well_typed_decls: symtb -> list local_declaration -> symtb -> Prop :=
 (** type check for procedure body; *)
 Inductive well_typed_proc_body: symtb -> procedure_body -> Prop :=
     | WT_Proc_Body: forall tb f tb',
-        well_typed_decls tb f.(proc_loc_idents) tb' ->
-        well_typed_stmt tb' f.(proc_body) ->
+        well_typed_decls tb f.(procedure_declarative_part) tb' ->
+        well_typed_stmt tb' f.(procedure_statements) ->
         well_typed_proc_body tb f.
 
 (** type check for subproram, which can be either procedure or function; *)
 Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
     | WT_Proc: forall tb f ast_num,
         well_typed_proc_body tb f ->
-        well_typed_subprogram tb (Sproc ast_num f).
+        well_typed_subprogram tb (Procedure ast_num f).
 
 (* =============================== *)
 
 (** functional semantics for type system *)
 
 (** type check expression; *)
-Function f_well_typed_expr (tb: symtb) (e: expr): option typ := 
+Function f_well_typed_expr (tb: symtb) (e: expression): option type := 
     match e with
-    | Econst _ (Ointconst n) => Some Tint
-    | Econst _ (Oboolconst n) => Some Tbool
-    | Evar _ x =>
+    | E_Literal _ (Integer_Literal n) => Some Integer
+    | E_Literal _ (Boolean_Literal n) => Some Boolean
+    | E_Identifier _ x =>
         match (lookup x tb) with
         | Some (m, t) => Some t
         | None => None
         end
-    | Ebinop _ op e1 e2 =>
+    | E_Binary_Operation _ op e1 e2 =>
         match (f_well_typed_expr tb e1) with
         | Some t1 => 
             match (f_well_typed_expr tb e2) with
@@ -157,24 +159,24 @@ Function f_well_typed_expr (tb: symtb) (e: expr): option typ :=
             end
         | None => None
         end   
-    | Eunop _ op e => 
+    | E_Unary_Operation _ op e => 
         match f_well_typed_expr tb e with
         | Some t => unop_type op t
         | None => None
         end
     end.
 
-Function f_typ_equal (t1: typ) (t2: typ): bool :=
+Function f_typ_equal (t1: type) (t2: type): bool :=
     match t1, t2 with
-    | Tint, Tint => true
-    | Tbool, Tbool => true
+    | Integer, Integer => true
+    | Boolean, Boolean => true
     | _, _ => false
     end.
 
 (** type check statement; *)
-Function f_well_typed_stmt (tb: symtb) (c: stmt): bool :=
+Function f_well_typed_stmt (tb: symtb) (c: statement): bool :=
     match c with
-    | Sassign ast_num x e =>
+    | S_Assignment ast_num x e =>
         match (f_well_typed_expr tb e) with
         | Some t1 => 
             match lookup x tb with
@@ -183,50 +185,51 @@ Function f_well_typed_stmt (tb: symtb) (c: stmt): bool :=
             end
         | None => false
         end
-    | Sseq ast_num c1 c2 =>
+    | S_Sequence ast_num c1 c2 =>
         match f_well_typed_stmt tb c1 with
         | true => f_well_typed_stmt tb c2
         | false => false
         end
-    | Sifthen ast_num b c =>
+    | S_If ast_num b c =>
         match f_well_typed_expr tb b with
-        | Some Tbool => f_well_typed_stmt tb c
+        | Some Boolean => f_well_typed_stmt tb c
         | _ => false
         end
-    | Swhile ast_num b c =>
+    | S_While_Loop ast_num b c =>
         match f_well_typed_expr tb b with
-        | Some Tbool => f_well_typed_stmt tb c
+        | Some Boolean => f_well_typed_stmt tb c
         | _ => false
         end
     end.
 
 
-(** in the SPARK formalization, natural number are used to represent identifier, 
-    type and so on, here "1" represents type Tint, and "2" represents type Tbool;
+(** in the SPARK formalization, natural number are used to represent 
+    identifier, type and so on, here "1" represents type Integer, 
+    and "2" represents type Boolean;
 *)
-Function f_type_map (n: typenum): option typ :=
+Function f_type_map (n: typenum): option type :=
     match n with
-    | 1 => Some Tint
-    | 2 => Some Tbool
+    | 1 => Some Integer
+    | 2 => Some Boolean
     | _ => None
     end.
 
 (** type check variable declaration; *)
-Function f_well_typed_decl (tb: symtb) (d: local_declaration): option symtb :=
-    match f_type_map d.(local_typenum) with
+Function f_well_typed_decl (tb: symtb) (d: object_declaration): option symtb :=
+    match f_type_map d.(object_nominal_subtype) with
     | Some t =>
-        match d.(local_init) with
+        match d.(initialization_expression) with
         | Some i => 
             match f_well_typed_expr tb i with
-            | Some t' => if f_typ_equal t t' then Some ((d.(local_ident), (InOut, t)) :: tb) else None
+            | Some t' => if f_typ_equal t t' then Some ((d.(object_name), (In_Out, t)) :: tb) else None
             | None => None
             end
-        | None => Some ((d.(local_ident), (InOut, t)) :: tb)
+        | None => Some ((d.(object_name), (In_Out, t)) :: tb)
         end
     | None => None
     end.
 
-Function f_well_typed_decls (tb: symtb) (ds: list local_declaration): option symtb :=
+Function f_well_typed_decls (tb: symtb) (ds: list object_declaration): option symtb :=
     match ds with
     | d :: tl => 
         match f_well_typed_decl tb d with
@@ -238,22 +241,26 @@ Function f_well_typed_decls (tb: symtb) (ds: list local_declaration): option sym
 
 (** type check procedure body; *)
 Function f_well_typed_proc_body (tb: symtb) (f: procedure_body): bool :=
-    match f_well_typed_decls tb f.(proc_loc_idents) with
-    | Some tb' => f_well_typed_stmt tb' f.(proc_body)
+    match f_well_typed_decls tb f.(procedure_declarative_part) with
+    | Some tb' => f_well_typed_stmt tb' f.(procedure_statements)
     | None => false
     end.
 
 (** type check subprogram, which can be either procedure or function; *)
 Function f_well_typed_subprogram (tb: symtb) (p: subprogram): bool :=
     match p with
-    | Sproc ast_num f => f_well_typed_proc_body tb f
+    | Procedure ast_num f => f_well_typed_proc_body tb f
     end.
 
 (* =============================== *)
 
-(** Semantical equivalence between relational and functional semantics for type system *)
+(** Semantical equivalence between relational and functional 
+    semantics for type system; 
+*)
 
-(** bisimulation between f_well_typed_expr and well_typed_expr for expression *)
+(** bisimulation between f_well_typed_expr and well_typed_expr 
+    for expression; 
+*)
 Lemma f_well_typed_expr_correct: forall tb e t,
     f_well_typed_expr tb e = Some t ->
     well_typed_expr tb e t.
@@ -355,7 +362,9 @@ Proof.
     simpl; auto.
 Qed.
 
-(** bisimulation between f_well_typed_decl and well_typed_decl for local variable declaration *)
+(** bisimulation between f_well_typed_decl and well_typed_decl for 
+    variable declaration; 
+*)
 Lemma f_well_typed_decl_correct: forall tb d tb',
     f_well_typed_decl tb d = Some tb' ->
     well_typed_decl tb d tb'.
@@ -380,7 +389,7 @@ Lemma f_well_typed_decl_complete: forall tb d tb',
 Proof.
     intros tb d tb' h1.
     induction h1;
-    specialize (type_map_equal (local_typenum d) t); intros h2;
+    specialize (type_map_equal (object_nominal_subtype d) t); intros h2;
     destruct h2 as [h3 h4];
     specialize (h4 H0);
     unfold f_well_typed_decl;
@@ -392,7 +401,7 @@ Proof.
 Qed.
 
 (** bisimulation between f_well_typed_decls and well_typed_decls for
-    list of local variable declarations 
+    list of variable declarations;
 *)
 Lemma f_well_typed_decls_correct: forall tb ds tb',
     f_well_typed_decls tb ds = Some tb' ->
@@ -455,7 +464,9 @@ Proof.
 Qed.
 
 
-(** bisimulation between f_well_typed_subprogram and well_typed_subprogram for subprogram *)
+(** bisimulation between f_well_typed_subprogram and 
+    well_typed_subprogram for subprogram; 
+*)
 Lemma f_well_typed_subprogram_correct: forall tb p,
     f_well_typed_subprogram tb p = true ->
     well_typed_subprogram tb p.
@@ -483,7 +494,9 @@ Qed.
 (** * Well-Defined *)
 
 (** Well-Defined means that all referenced variables are initialized *)
-(** the initialization modes can be either Init (initialized) or Uninit (uninitialized) *)
+(** the initialization modes can be either Init (initialized) or 
+    Uninit (uninitialized); 
+*)
 Inductive init_mode: Type := 
     | Init: init_mode
     | Uninit: init_mode.
@@ -491,7 +504,9 @@ Inductive init_mode: Type :=
 (** map from variable to its initialization state and in/out mode *)
 Definition mode_map: Type := list (idnum * (init_mode * mode)).
 
-(** basic functions for fetching and updating the variable's initialization state *)
+(** basic functions for fetching and updating the variable's 
+    initialization state; 
+*)
 Function fetch2 (x : idnum) (s : mode_map): option (init_mode * mode) := 
     match s with 
     | (y, m) :: s' =>
@@ -517,74 +532,78 @@ Function update2 (s: mode_map) (x : idnum) (m: (init_mode * mode)): option mode_
 (** ** Well-defined expressions *)
 (**
    - all referenced variables are initialized 
-   - all variables used in expression should be either in mode _in_ or _in/out_; 
+   - all variables used in expression should be either in mode 
+     _in_ or _in/out_; 
 *)
-Inductive well_defined_expr: mode_map -> expr -> Prop :=
-    | WD_Econst_Int: forall ast_num m n,
-        well_defined_expr m (Econst ast_num (Ointconst n))
-    | WD_Econst_Bool: forall ast_num m b,
-        well_defined_expr m (Econst ast_num (Oboolconst b))
-    | WD_Evar: forall ast_num x m md,
+Inductive well_defined_expr: mode_map -> expression -> Prop :=
+    | WD_E_Literal_Int: forall ast_num m n,
+        well_defined_expr m (E_Literal ast_num (Integer_Literal n))
+    | WD_E_Literal_Bool: forall ast_num m b,
+        well_defined_expr m (E_Literal ast_num (Boolean_Literal b))
+    | WD_E_Identifier: forall ast_num x m md,
         fetch2 x m = Some (Init, md) -> (* initialized out variables can also be read *)
-        well_defined_expr m (Evar ast_num x)
-    | WD_Ebinop: forall ast_num m op e1 e2,
+        well_defined_expr m (E_Identifier ast_num x)
+    | WD_E_Binary_Operation: forall ast_num m op e1 e2,
         well_defined_expr m e1 ->
         well_defined_expr m e2 ->
-        well_defined_expr m (Ebinop ast_num op e1 e2)
-    | WD_Eunop: forall ast_num m op e,
+        well_defined_expr m (E_Binary_Operation ast_num op e1 e2)
+    | WD_E_Unary_Operation: forall ast_num m op e,
         well_defined_expr m e ->
-        well_defined_expr m (Eunop ast_num op e). 
+        well_defined_expr m (E_Unary_Operation ast_num op e). 
 
 
 (** ** Well-defined statements *)
 (** 
-    update by assignment will make the uninitialized variables into initialized one, so 
-    in the following definition, we have to track the initialization states after executing
-    each statement, and use the latest initialization state to check whether the used variables 
+    update by assignment will make the uninitialized variables into 
+    initialized one, so in the following definition, we have to track 
+    the initialization states after executing each statement, and use 
+    the latest initialization state to check whether the used variables 
     are initialized or not;
-    For conditional and while loop commands, their final initialization state are the intersection 
-    of the resulting initialization states from both branches;
-   - _in/out_ mode checking (for variables that are updated by assignments, their mode 
-     should be either _out_ or _in\out_);
+    For conditional and while loop commands, their final initialization 
+    state are the intersection of the resulting initialization states 
+    from both branches;
+    - _in/out_ mode checking (for variables that are updated by 
+      assignments, their mode should be either _out_ or _in\out_);
 *)
 
-Inductive well_defined_stmt: mode_map -> stmt -> mode_map -> Prop :=
-    | WD_Sassign: forall m e x i md m' ast_num,
+Inductive well_defined_stmt: mode_map -> statement -> mode_map -> Prop :=
+    | WD_S_Assignment: forall m e x i md m' ast_num,
         well_defined_expr m e ->
         fetch2 x m = Some (i, md) ->
         md <> In ->
         update2 m x (Init, md) = Some m' ->
-        well_defined_stmt m (Sassign ast_num x e) m'
-    | WD_Sseq: forall ast_num c1 c2 m m' m'',
+        well_defined_stmt m (S_Assignment ast_num x e) m'
+    | WD_S_Sequence: forall ast_num c1 c2 m m' m'',
         well_defined_stmt m c1 m' ->
         well_defined_stmt m' c2 m'' ->
-        well_defined_stmt m (Sseq ast_num c1 c2) m''
-    | WD_Sifthen: forall ast_num m m' b c,
+        well_defined_stmt m (S_Sequence ast_num c1 c2) m''
+    | WD_S_If: forall ast_num m m' b c,
         well_defined_expr m b ->
         well_defined_stmt m c m' ->
-        well_defined_stmt m (Sifthen ast_num b c) m
-    | WD_Swhile: forall ast_num m m' b c,
+        well_defined_stmt m (S_If ast_num b c) m
+    | WD_S_While_Loop: forall ast_num m m' b c,
         well_defined_expr m b ->
         well_defined_stmt m c m' ->
-        well_defined_stmt m (Swhile ast_num b c) m.
+        well_defined_stmt m (S_While_Loop ast_num b c) m.
 
 
-(** in our current SPARK subset, we only consider Int and Bool types, 
-    which have no default initialization values, so for any declared variable, 
-    if it's declared without initialization expression, then it's uninitialized;
+(** in our current SPARK subset, we only consider Integer and Boolean 
+    types, which have no default initialization values, so for any 
+    declared variable, if it's declared without initialization 
+    expression, then it's uninitialized;
 *)
-Inductive well_defined_decl: mode_map -> local_declaration -> mode_map -> Prop :=
+Inductive well_defined_decl: mode_map -> object_declaration -> mode_map -> Prop :=
     | WD_Decl0: forall d x m,
-        x = d.(local_ident) ->
-        None = d.(local_init) ->
-        well_defined_decl m d ((x, (Uninit, InOut)) :: m) 
+        x = d.(object_name) ->
+        None = d.(initialization_expression) ->
+        well_defined_decl m d ((x, (Uninit, In_Out)) :: m) 
     | WD_Decl1: forall d x i m,
-        x = d.(local_ident) ->
-        Some i = d.(local_init) ->
+        x = d.(object_name) ->
+        Some i = d.(initialization_expression) ->
         well_defined_expr m i ->
-        well_defined_decl m d ((x, (Init, InOut)) :: m).
+        well_defined_decl m d ((x, (Init, In_Out)) :: m).
 
-Inductive well_defined_decls: mode_map -> list local_declaration -> mode_map -> Prop :=
+Inductive well_defined_decls: mode_map -> list object_declaration -> mode_map -> Prop :=
     | WD_Decls_Empty: forall m,
         well_defined_decls m nil m
     | WD_Decls: forall m d m'0 tl m',
@@ -594,14 +613,14 @@ Inductive well_defined_decls: mode_map -> list local_declaration -> mode_map -> 
 
 Inductive well_defined_proc_body: mode_map -> procedure_body -> mode_map -> Prop :=
     | WD_Proc_Body: forall m f m'0 m',
-        well_defined_decls m f.(proc_loc_idents) m'0 ->
-        well_defined_stmt m'0 f.(proc_body) m' -> 
+        well_defined_decls m f.(procedure_declarative_part) m'0 ->
+        well_defined_stmt m'0 f.(procedure_statements) m' -> 
         well_defined_proc_body m f m'.
 
 Inductive well_defined_subprogram: mode_map -> subprogram -> mode_map -> Prop :=
     | WD_Subprogram: forall m f m' ast_num,
         well_defined_proc_body m f m' ->        
-        well_defined_subprogram m (Sproc ast_num f) m'.
+        well_defined_subprogram m (Procedure ast_num f) m'.
 
 (** ** Lemmas for fetching and updating initialization state *)
 Lemma update2_fetch2: forall s x m s',
@@ -766,25 +785,27 @@ Proof.
   - inversion h1.
 Qed.
 
-(** ** Constructing mode map mapping from variable id to a pair of (initialization state * in/out mode) *)
+(** ** Constructing mode map from variable id to a pair of 
+    (initialization state * in/out mode) 
+*)
 (** 
-   for any variable in stack, if it has a defined value then it has an initialized state,
-   otherwise, it's uninitialized;
+   for any variable in stack, if it has a defined value then it 
+   has an initialized state, otherwise, it's uninitialized;
 *)
 Inductive mode_mapping: symtb -> stack -> (mode_map) -> Prop :=
     | M_Empty: mode_mapping nil nil nil
     | M_Bool: forall tb s x m b ls,
           mode_mapping tb s ls ->
-          mode_mapping ((x, (m, Tbool)) :: tb) ((x, (Value (Bool b))) :: s) ((x, (Init, m)) :: ls)
+          mode_mapping ((x, (m, Boolean)) :: tb) ((x, (Value (Bool b))) :: s) ((x, (Init, m)) :: ls)
     | M_Int: forall tb s x m v ls,
           mode_mapping tb s ls ->
-          mode_mapping ((x, (m, Tint)) :: tb) ((x, (Value (Int v))) :: s) ((x, (Init, m)) :: ls)
+          mode_mapping ((x, (m, Integer)) :: tb) ((x, (Value (Int v))) :: s) ((x, (Init, m)) :: ls)
     | M_UndefBool: forall tb s x m ls,
           mode_mapping tb s ls ->
-          mode_mapping ((x, (m, Tbool)) :: tb) ((x, Vundef) :: s) ((x, (Uninit, m)) :: ls)
+          mode_mapping ((x, (m, Boolean)) :: tb) ((x, Undefined) :: s) ((x, (Uninit, m)) :: ls)
     | M_UndefInt: forall tb s x m ls,
           mode_mapping tb s ls ->
-          mode_mapping ((x, (m, Tint)) :: tb) ((x, Vundef) :: s) ((x, (Uninit, m)) :: ls).
+          mode_mapping ((x, (m, Integer)) :: tb) ((x, Undefined) :: s) ((x, (Uninit, m)) :: ls).
 
 Lemma mode_mapping_unique: forall tb s m1 m2,
     mode_mapping tb s m1 ->
@@ -859,7 +880,7 @@ Qed.
 Function f_mode_mapping (tb: symtb) (s: stack): option mode_map :=
     match tb, s with
     | nil, nil => Some nil
-    | ((x, (md, Tbool)) :: tb'), ((x', (Value (Bool b))) :: s') => 
+    | ((x, (md, Boolean)) :: tb'), ((x', (Value (Bool b))) :: s') => 
         if beq_nat x x' then
           match f_mode_mapping tb' s' with
           | Some m => Some ((x, (Init, md)) :: m)
@@ -867,7 +888,7 @@ Function f_mode_mapping (tb: symtb) (s: stack): option mode_map :=
           end
         else 
           None
-    | ((x, (md, Tint)) :: tb'), ((x', (Value (Int v))) :: s') => 
+    | ((x, (md, Integer)) :: tb'), ((x', (Value (Int v))) :: s') => 
         if beq_nat x x' then
           match f_mode_mapping tb' s' with
           | Some m => Some ((x, (Init, md)) :: m)
@@ -875,7 +896,7 @@ Function f_mode_mapping (tb: symtb) (s: stack): option mode_map :=
           end
         else 
           None
-    | ((x, (md, Tbool)) :: tb'), ((x', Vundef) :: s') => 
+    | ((x, (md, Boolean)) :: tb'), ((x', Vundef) :: s') => 
         if beq_nat x x' then
           match f_mode_mapping tb' s' with
           | Some m => Some ((x, (Uninit, md)) :: m)
@@ -883,7 +904,7 @@ Function f_mode_mapping (tb: symtb) (s: stack): option mode_map :=
           end
         else
           None
-    | ((x, (md, Tint)) :: tb'), ((x', Vundef) :: s') => 
+    | ((x, (md, Integer)) :: tb'), ((x', Vundef) :: s') => 
         if beq_nat x x' then
           match f_mode_mapping tb' s' with
           | Some m => Some ((x, (Uninit, md)) :: m)
@@ -897,36 +918,38 @@ Function f_mode_mapping (tb: symtb) (s: stack): option mode_map :=
 
 (* =============================== *)
 
-(** Functional semantics for checking whether used variables being initialized *)
-Function f_well_defined_expr (m: mode_map) (e: expr): bool :=
+(** Functional semantics for checking whether used variables being 
+    initialized
+*)
+Function f_well_defined_expr (m: mode_map) (e: expression): bool :=
     match e with
-    | Econst ast_num v => true
-    | Evar ast_num x =>
+    | E_Literal ast_num v => true
+    | E_Identifier ast_num x =>
         match fetch2 x m with
         | Some (Init, md) => true
         | _ => false
         end
-    | Ebinop ast_num op e1 e2 =>
+    | E_Binary_Operation ast_num op e1 e2 =>
         if (f_well_defined_expr m e1) then (f_well_defined_expr m e2) else false
-    | Eunop ast_num op e => f_well_defined_expr m e
+    | E_Unary_Operation ast_num op e => f_well_defined_expr m e
     end.
 
-Function f_well_defined_stmt (m: mode_map) (c: stmt): option mode_map :=
+Function f_well_defined_stmt (m: mode_map) (c: statement): option mode_map :=
     match c with
-    | Sassign ast_num x e =>
+    | S_Assignment ast_num x e =>
         match fetch2 x m with
         | Some (_, Out) => 
             if f_well_defined_expr m e then update2 m x (Init, Out) else None
-        | Some (_, InOut) => 
-            if f_well_defined_expr m e then update2 m x (Init, InOut) else None
+        | Some (_, In_Out) => 
+            if f_well_defined_expr m e then update2 m x (Init, In_Out) else None
         | _ => None
         end
-    | Sseq ast_num c1 c2 =>
+    | S_Sequence ast_num c1 c2 =>
         match f_well_defined_stmt m c1 with
         | Some m' => f_well_defined_stmt m' c2
         | None => None
         end
-    | Sifthen ast_num b c =>
+    | S_If ast_num b c =>
         if f_well_defined_expr m b 
         then 
             match f_well_defined_stmt m c with
@@ -934,7 +957,7 @@ Function f_well_defined_stmt (m: mode_map) (c: stmt): option mode_map :=
             | None => None
             end
         else None
-    | Swhile ast_num b c =>
+    | S_While_Loop ast_num b c =>
         if f_well_defined_expr m b 
         then 
             match f_well_defined_stmt m c with
@@ -944,14 +967,14 @@ Function f_well_defined_stmt (m: mode_map) (c: stmt): option mode_map :=
         else None
     end.
 
-Function f_well_defined_decl (m: mode_map) (d: local_declaration): option mode_map :=
-    match d.(local_init) with
+Function f_well_defined_decl (m: mode_map) (d: object_declaration): option mode_map :=
+    match d.(initialization_expression) with
     | Some i => 
-        if f_well_defined_expr m i then Some ((d.(local_ident), (Init, InOut)) :: m) else None
-    | None => Some ((d.(local_ident), (Uninit, InOut)) :: m)
+        if f_well_defined_expr m i then Some ((d.(object_name), (Init, In_Out)) :: m) else None
+    | None => Some ((d.(object_name), (Uninit, In_Out)) :: m)
     end.
 
-Function f_well_defined_decls (m: mode_map) (ds: list local_declaration): option mode_map :=
+Function f_well_defined_decls (m: mode_map) (ds: list object_declaration): option mode_map :=
     match ds with
     | d :: tl =>
         match f_well_defined_decl m d with
@@ -962,14 +985,14 @@ Function f_well_defined_decls (m: mode_map) (ds: list local_declaration): option
     end.
 
 Function f_well_defined_proc_body (m: mode_map) (f: procedure_body): option mode_map :=
-    match f_well_defined_decls m f.(proc_loc_idents) with
-    | Some m' => f_well_defined_stmt m' f.(proc_body)
+    match f_well_defined_decls m f.(procedure_declarative_part) with
+    | Some m' => f_well_defined_stmt m' f.(procedure_statements)
     | None => None
     end.
 
 Function f_well_defined_subprogram (m: mode_map) (p: subprogram): option mode_map :=
     match p with
-    | Sproc ast_num f => f_well_defined_proc_body m f
+    | Procedure ast_num f => f_well_defined_proc_body m f
     end.
 
 
@@ -1179,21 +1202,21 @@ Qed.
 
 (** * Well-Checked *)
 (** get the ast number from the expression ast node *)
-Definition get_ast_num_expr (e: expr): astnum :=
+Definition get_ast_num_expr (e: expression): astnum :=
     match e with
-    | (Econst ast_num n) => ast_num
-    | (Evar ast_num x) => ast_num
-    | (Ebinop ast_num op e1 e2) => ast_num
-    | (Eunop ast_num op e) => ast_num
+    | (E_Literal ast_num n) => ast_num
+    | (E_Identifier ast_num x) => ast_num
+    | (E_Binary_Operation ast_num op e1 e2) => ast_num
+    | (E_Unary_Operation ast_num op e) => ast_num
     end.
 
 (** get the ast number from the statemet ast node *)
-Definition get_ast_num_stmt (c: stmt): astnum :=
+Definition get_ast_num_stmt (c: statement): astnum :=
     match c with
-    | (Sassign ast_num x e) => ast_num
-    | (Sseq ast_num c1 c2) => ast_num
-    | (Sifthen ast_num b c) => ast_num
-    | (Swhile ast_num b c) => ast_num
+    | (S_Assignment ast_num x e) => ast_num
+    | (S_Sequence ast_num c1 c2) => ast_num
+    | (S_If ast_num b c) => ast_num
+    | (S_While_Loop ast_num b c) => ast_num
     end.
 
 
@@ -1201,22 +1224,22 @@ Definition max_num := astnum.
 
 (** ast_num for each AST node is unique *)
 (** later the ast number will be used to map its labled ast node to 
-    the check flag denoting the run-time checks that needs to be 
+    the check flags denoting the run-time checks that needs to be 
     performed before executing that ast node;
 *)
 
 (** all the ast numbers for expression ast nodes are unique: 
-    in the ast tree, parent node's ast number is smaller than children node's 
-    ast number, and the left child node's ast number is smaller than the 
-    right child node's ast number; 
+    in the ast tree, parent node's ast number is smaller than 
+    children node's ast number, and the left child node's ast 
+    number is smaller than the right child node's ast number; 
     max_num is the maximum ast number used in the expression;
 *)
-Inductive ast_num_inc_expr: expr -> max_num -> Prop :=
-    | Inc_Econst: forall ast_num n,
-        ast_num_inc_expr (Econst ast_num n) ast_num
-    | Inc_Evar: forall ast_num x,
-        ast_num_inc_expr (Evar ast_num x) ast_num
-    | Inc_Ebinop: forall e1 max1 e2 max2 ast_num1 ast_num2 ast_num op,
+Inductive ast_num_inc_expr: expression -> max_num -> Prop :=
+    | Inc_E_Literal: forall ast_num n,
+        ast_num_inc_expr (E_Literal ast_num n) ast_num
+    | Inc_E_Identifier: forall ast_num x,
+        ast_num_inc_expr (E_Identifier ast_num x) ast_num
+    | Inc_E_Binary_Operation: forall e1 max1 e2 max2 ast_num1 ast_num2 ast_num op,
         ast_num_inc_expr e1 max1 ->
         ast_num_inc_expr e2 max2 ->
         get_ast_num_expr e1 = ast_num1 ->
@@ -1224,21 +1247,23 @@ Inductive ast_num_inc_expr: expr -> max_num -> Prop :=
         ast_num < ast_num1 ->
         ast_num < ast_num2 ->
         max1 < ast_num2 ->
-        ast_num_inc_expr (Ebinop ast_num op e1 e2) max2
-    | Inc_Eunop: forall e max ast_num0 ast_num op,
+        ast_num_inc_expr (E_Binary_Operation ast_num op e1 e2) max2
+    | Inc_E_Unary_Operation: forall e max ast_num0 ast_num op,
         ast_num_inc_expr e max ->
         get_ast_num_expr e = ast_num0 ->
         ast_num < ast_num0 ->
-        ast_num_inc_expr (Eunop ast_num op e) max.
+        ast_num_inc_expr (E_Unary_Operation ast_num op e) max.
 
-(** it's similar to ast_num_inc_expr, all ast numbers used in the AST tree of statement are unique *)
-Inductive ast_num_inc_stmt: stmt -> max_num -> Prop :=
-    | Inc_Sassign: forall e max ast_num0 ast_num x,
+(** it's similar to ast_num_inc_expr, all ast numbers used in the 
+    AST tree of statement are unique; 
+*)
+Inductive ast_num_inc_stmt: statement -> max_num -> Prop :=
+    | Inc_S_Assignment: forall e max ast_num0 ast_num x,
         ast_num_inc_expr e max ->
         get_ast_num_expr e = ast_num0 ->
         ast_num < ast_num0 ->
-        ast_num_inc_stmt (Sassign ast_num x e) max
-    | Inc_Sseq: forall c1 max1 c2 max2 ast_num1 ast_num2 ast_num,
+        ast_num_inc_stmt (S_Assignment ast_num x e) max
+    | Inc_S_Sequence: forall c1 max1 c2 max2 ast_num1 ast_num2 ast_num,
         ast_num_inc_stmt c1 max1 ->
         ast_num_inc_stmt c2 max2 ->
         get_ast_num_stmt c1 = ast_num1 ->
@@ -1246,8 +1271,8 @@ Inductive ast_num_inc_stmt: stmt -> max_num -> Prop :=
         ast_num < ast_num1 ->
         ast_num < ast_num2 ->
         max1 < ast_num2 ->
-        ast_num_inc_stmt (Sseq ast_num c1 c2) max2
-    | Inc_Sifthen: forall b max1 c max2 ast_num1 ast_num2 ast_num,
+        ast_num_inc_stmt (S_Sequence ast_num c1 c2) max2
+    | Inc_S_If: forall b max1 c max2 ast_num1 ast_num2 ast_num,
         ast_num_inc_expr b max1 ->
         ast_num_inc_stmt c max2 ->
         get_ast_num_expr b = ast_num1 ->
@@ -1255,8 +1280,8 @@ Inductive ast_num_inc_stmt: stmt -> max_num -> Prop :=
         ast_num < ast_num1 ->
         ast_num < ast_num2 ->
         max1 < ast_num2 ->
-        ast_num_inc_stmt (Sifthen ast_num b c) max2
-    | Inc_Swhile: forall b max1 c max2 ast_num1 ast_num2 ast_num,
+        ast_num_inc_stmt (S_If ast_num b c) max2
+    | Inc_S_While_Loop: forall b max1 c max2 ast_num1 ast_num2 ast_num,
         ast_num_inc_expr b max1 ->
         ast_num_inc_stmt c max2 ->
         get_ast_num_expr b = ast_num1 ->
@@ -1264,23 +1289,23 @@ Inductive ast_num_inc_stmt: stmt -> max_num -> Prop :=
         ast_num < ast_num1 -> 
         ast_num < ast_num2 -> 
         max1 < ast_num2 ->
-        ast_num_inc_stmt (Swhile ast_num b c) max2.
+        ast_num_inc_stmt (S_While_Loop ast_num b c) max2.
 
 
-Inductive ast_num_inc_decl: local_declaration -> max_num -> Prop :=
+Inductive ast_num_inc_decl: object_declaration -> max_num -> Prop :=
     | Inc_Decl0: forall n0 d i max n1,
-        n0 = d.(local_astnum) ->
-        Some i = d.(local_init) ->
+        n0 = d.(declaration_astnum) ->
+        Some i = d.(initialization_expression) ->
         ast_num_inc_expr i max ->
         get_ast_num_expr i = n1 ->
         n0 < n1 ->
         ast_num_inc_decl d max
     | Inc_Decl1: forall n d,
-        n = d.(local_astnum) ->
-        None = d.(local_init) ->
+        n = d.(declaration_astnum) ->
+        None = d.(initialization_expression) ->
         ast_num_inc_decl d n.
 
-Inductive ast_num_inc_decls: list local_declaration -> max_num -> Prop :=
+Inductive ast_num_inc_decls: list object_declaration -> max_num -> Prop :=
     | Inc_Decls_Empty: forall n, 
         ast_num_inc_decls nil n
     | Inc_Decls1: forall d n,
@@ -1288,45 +1313,45 @@ Inductive ast_num_inc_decls: list local_declaration -> max_num -> Prop :=
         ast_num_inc_decls (d :: nil) n
     | Inc_Decls2: forall d1 n1 d2 n2 tl,
         ast_num_inc_decl d1 n1 ->
-        n1 < d2.(local_astnum) ->
+        n1 < d2.(declaration_astnum) ->
         ast_num_inc_decls (d2 :: tl) n2 ->
         ast_num_inc_decls (d1 :: (d2 :: tl)) n2.
 
 Inductive ast_num_inc_proc_body: procedure_body -> max_num -> Prop :=
     | Inc_Proc_Body0: forall f max,
-        nil = f.(proc_loc_idents) ->
-        ast_num_inc_stmt f.(proc_body) max ->
-        f.(proc_astnum) < get_ast_num_stmt f.(proc_body) ->
+        nil = f.(procedure_declarative_part) ->
+        ast_num_inc_stmt f.(procedure_statements) max ->
+        f.(procedure_astnum) < get_ast_num_stmt f.(procedure_statements) ->
         ast_num_inc_proc_body f max
     | Inc_Proc_Body1: forall d tl f max1 max2,
-        (d :: tl) = f.(proc_loc_idents) ->
-        ast_num_inc_decls f.(proc_loc_idents) max1 ->
-        ast_num_inc_stmt f.(proc_body) max2 ->
-        f.(proc_astnum) < d.(local_astnum) ->
-        f.(proc_astnum) < get_ast_num_stmt f.(proc_body) ->
-        max1 < get_ast_num_stmt f.(proc_body) ->
+        (d :: tl) = f.(procedure_declarative_part) ->
+        ast_num_inc_decls f.(procedure_declarative_part) max1 ->
+        ast_num_inc_stmt f.(procedure_statements) max2 ->
+        f.(procedure_astnum) < d.(declaration_astnum) ->
+        f.(procedure_astnum) < get_ast_num_stmt f.(procedure_statements) ->
+        max1 < get_ast_num_stmt f.(procedure_statements) ->
         ast_num_inc_proc_body f max2.
 
 Inductive ast_num_inc_subprogram: subprogram -> max_num -> Prop :=
     | Inc_Subprogram: forall f n ast_num,
-        ast_num < f.(proc_astnum) ->
+        ast_num < f.(procedure_astnum) ->
         ast_num_inc_proc_body f n ->
-        ast_num_inc_subprogram (Sproc ast_num f) n.
+        ast_num_inc_subprogram (Procedure ast_num f) n.
 
 (*************************************************)
 
-(** Function to test whether ast numbers labled for each ast node are increasing in
-    depth-first way;
+(** Function to test whether ast numbers labled for each ast node 
+    are increasing in depth-first way;
 *)
 
 (** To import the function "leb" from the library Arith.Compare_dec; *)
 Require Import Arith.Compare_dec.
 
-Function f_ast_num_inc_expr (e: expr): option max_num :=
+Function f_ast_num_inc_expr (e: expression): option max_num :=
     match e with
-    | Econst ast_num n => Some ast_num
-    | Evar ast_num x => Some ast_num
-    | Ebinop ast_num op e1 e2 =>
+    | E_Literal ast_num n => Some ast_num
+    | E_Identifier ast_num x => Some ast_num
+    | E_Binary_Operation ast_num op e1 e2 =>
         if (leb (get_ast_num_expr e1) ast_num) || (leb (get_ast_num_expr e2) ast_num) then
           None
         else
@@ -1338,18 +1363,18 @@ Function f_ast_num_inc_expr (e: expr): option max_num :=
               end
           | None => None
           end
-    | Eunop ast_num op e =>
+    | E_Unary_Operation ast_num op e =>
         if leb (get_ast_num_expr e) ast_num then
           None
         else
           f_ast_num_inc_expr e
     end.
   
-Function f_ast_num_inc_stmt (c: stmt): option max_num :=
+Function f_ast_num_inc_stmt (c: statement): option max_num :=
     match c with
-    | Sassign ast_num x e =>
+    | S_Assignment ast_num x e =>
         if leb (get_ast_num_expr e) ast_num then None else f_ast_num_inc_expr e
-    | Sseq ast_num c1 c2 =>
+    | S_Sequence ast_num c1 c2 =>
         if (leb (get_ast_num_stmt c1) ast_num) || (leb (get_ast_num_stmt c2) ast_num) then
           None
         else
@@ -1361,7 +1386,7 @@ Function f_ast_num_inc_stmt (c: stmt): option max_num :=
               end
           | None => None
           end
-    | Sifthen ast_num b c =>
+    | S_If ast_num b c =>
         if (leb (get_ast_num_expr b) ast_num) || (leb (get_ast_num_stmt c) ast_num) then
           None
         else
@@ -1373,7 +1398,7 @@ Function f_ast_num_inc_stmt (c: stmt): option max_num :=
               end
           | None => None
           end
-    | Swhile ast_num b c =>
+    | S_While_Loop ast_num b c =>
         if (leb (get_ast_num_expr b) ast_num) || (leb (get_ast_num_stmt c) ast_num) then
           None
         else
@@ -1387,17 +1412,17 @@ Function f_ast_num_inc_stmt (c: stmt): option max_num :=
           end
     end.
 
-Function f_ast_num_inc_decl (d: local_declaration): option max_num :=
-    match d.(local_init) with
+Function f_ast_num_inc_decl (d: object_declaration): option max_num :=
+    match d.(initialization_expression) with
     | Some i => 
         match f_ast_num_inc_expr i with
-        | Some n => if leb (get_ast_num_expr i) d.(local_astnum) then None else Some n
+        | Some n => if leb (get_ast_num_expr i) d.(declaration_astnum) then None else Some n
         | None => None
         end
-    | None => Some d.(local_astnum)
+    | None => Some d.(declaration_astnum)
     end.
 
-Function f_ast_num_inc_decls (ds: list local_declaration): option max_num :=
+Function f_ast_num_inc_decls (ds: list object_declaration): option max_num :=
     match ds with
     | nil => Some 0 (* 0 is the default value for maximum ast number of empty declarations *)
     | d1 :: ds1 =>
@@ -1406,27 +1431,28 @@ Function f_ast_num_inc_decls (ds: list local_declaration): option max_num :=
             match ds1 with
             | nil => Some n1
             | d2 :: ds2 => 
-                if leb d2.(local_astnum) n1 then None else f_ast_num_inc_decls ds1
+                if leb d2.(declaration_astnum) n1 then None else f_ast_num_inc_decls ds1
             end
         | None => None
         end
     end.
 
 Function f_ast_num_inc_proc_body (f: procedure_body): option max_num :=
-    match f.(proc_loc_idents) with
+    match f.(procedure_declarative_part) with
     | nil => 
-        if leb (get_ast_num_stmt f.(proc_body)) f.(proc_astnum) 
+        if leb (get_ast_num_stmt f.(procedure_statements)) f.(procedure_astnum) 
         then None 
-        else f_ast_num_inc_stmt f.(proc_body)
+        else f_ast_num_inc_stmt f.(procedure_statements)
     | d :: ds' => 
-        if leb d.(local_astnum) f.(proc_astnum) || leb (get_ast_num_stmt f.(proc_body)) f.(proc_astnum) 
+        if leb d.(declaration_astnum) f.(procedure_astnum) || 
+           leb (get_ast_num_stmt f.(procedure_statements)) f.(procedure_astnum) 
         then None
         else
-          match f_ast_num_inc_decls f.(proc_loc_idents) with
+          match f_ast_num_inc_decls f.(procedure_declarative_part) with
           | Some n1 =>
-              if leb (get_ast_num_stmt f.(proc_body)) n1 
+              if leb (get_ast_num_stmt f.(procedure_statements)) n1 
               then None
-              else f_ast_num_inc_stmt f.(proc_body)
+              else f_ast_num_inc_stmt f.(procedure_statements)
           | None => None
           end
     end.
@@ -1434,16 +1460,16 @@ Function f_ast_num_inc_proc_body (f: procedure_body): option max_num :=
 
 Function f_ast_num_inc_subprogram (p: subprogram): option max_num :=
     match p with
-    | Sproc ast_num f =>
-        if leb f.(proc_astnum) ast_num 
+    | Procedure ast_num f =>
+        if leb f.(procedure_astnum) ast_num 
         then None
         else f_ast_num_inc_proc_body f
     end.
 
 (* ===================================== *)
 
-(** Semantical equivalence between relational and functional one for checking that ast number  
-    are unique in the ast tree;
+(** Semantical equivalence between relational and functional one 
+    for checking that ast number are unique in the ast tree;
 *)
 Lemma expr_ast_num_exists: forall e,
     exists n, get_ast_num_expr e = n.
@@ -1666,7 +1692,7 @@ Proof.
     remember (f_ast_num_inc_decl d) as x.
     symmetry in Heqx.
     destruct x.
-    + remember (leb (local_astnum a) m) as y.
+    + remember (leb (declaration_astnum a) m) as y.
       symmetry in Heqy.
       destruct y. inversion h1.
       specialize (f_ast_num_inc_decl_correct _ _ Heqx); intros hz1.
@@ -1774,9 +1800,9 @@ Qed.
 (** ** Generate the run-time-check flags *)
 
 (** the run-time checks are stored in a list indexed with ast number *)
-Definition check_points :=  list (astnum * check_action).
+Definition check_points :=  list (astnum * run_time_checks).
 
-Function fetch_ck (id : astnum) (m : check_points): option check_action := 
+Function fetch_ck (id : astnum) (m : check_points): option run_time_checks := 
     match m with 
     | (id0, ck0) :: s0 =>
       if beq_nat id id0 then
@@ -1786,7 +1812,7 @@ Function fetch_ck (id : astnum) (m : check_points): option check_action :=
     | nil => None
     end.
 
-(** this's used to constrain that all ast id numbers used in check_points 
+(** this's used to constrain that all ast numbers used in check_points
     are smaller than a certain number;
 *)
 Inductive ast_nums_lt: check_points -> astnum -> Prop := 
@@ -1845,24 +1871,24 @@ Qed.
     to the checking rules, and the results are stored in a data structure 
     of type check_points;
 *)
-Inductive check_generator_expr: check_points -> expr -> check_points -> Prop :=
-    | CG_Econst: forall ast_num n ls,
-        check_generator_expr ls (Econst ast_num n) ls
-    | CG_Evar: forall ast_num x ls,
-        check_generator_expr ls (Evar ast_num x) ls
-    | CG_Ebinop: forall ls e1 ls1 e2 ls2 ast_num op flag,
-        check_flag (Ebinop ast_num op e1 e2) (Some flag) -> 
+Inductive check_generator_expr: check_points -> expression -> check_points -> Prop :=
+    | CG_E_Literal: forall ast_num n ls,
+        check_generator_expr ls (E_Literal ast_num n) ls
+    | CG_E_Identifier: forall ast_num x ls,
+        check_generator_expr ls (E_Identifier ast_num x) ls
+    | CG_E_Binary_Operation: forall ls e1 ls1 e2 ls2 ast_num op flag,
+        check_flag (E_Binary_Operation ast_num op e1 e2) (Some flag) -> 
         check_generator_expr ((ast_num, flag) :: ls) e1 ls1 ->
         check_generator_expr ls1 e2 ls2 ->
-        check_generator_expr ls (Ebinop ast_num op e1 e2) ls2
-    | CG_Ebinop_None: forall ls e1 ls1 e2 ls2 ast_num op,
-        check_flag (Ebinop ast_num op e1 e2) None -> 
+        check_generator_expr ls (E_Binary_Operation ast_num op e1 e2) ls2
+    | CG_E_Binary_Operation_None: forall ls e1 ls1 e2 ls2 ast_num op,
+        check_flag (E_Binary_Operation ast_num op e1 e2) None -> 
         check_generator_expr ls e1 ls1 ->
         check_generator_expr ls1 e2 ls2 ->
-        check_generator_expr ls (Ebinop ast_num op e1 e2) ls2
-    | CG_Eunop: forall ls e ls1 ast_num op,
+        check_generator_expr ls (E_Binary_Operation ast_num op e1 e2) ls2
+    | CG_E_Unary_Operation: forall ls e ls1 ast_num op,
         check_generator_expr ls e ls1 ->
-        check_generator_expr ls (Eunop ast_num op e) ls1.
+        check_generator_expr ls (E_Unary_Operation ast_num op e) ls1.
 
 (** *** generate run-time-check flags for statements *)
 (** For the SPARK 2014 subset that we are working on, we only consider 
@@ -1872,34 +1898,34 @@ Inductive check_generator_expr: check_points -> expr -> check_points -> Prop :=
     So here, the check for each statement is none, but it is extensible 
     to includes all necessary checks in the statements in the future; 
  *)
-Inductive check_generator_stmt: check_points -> stmt -> check_points -> Prop :=
-    | CG_Sassign: forall ls1 e ls2 ast_num x,
+Inductive check_generator_stmt: check_points -> statement -> check_points -> Prop :=
+    | CG_S_Assignment: forall ls1 e ls2 ast_num x,
         check_generator_expr ls1 e ls2 ->
-        check_generator_stmt ls1 (Sassign ast_num x e) ls2
-    | CG_Sseq: forall ls1 c1 ls2 c2 ls3 ast_num,
+        check_generator_stmt ls1 (S_Assignment ast_num x e) ls2
+    | CG_S_Sequence: forall ls1 c1 ls2 c2 ls3 ast_num,
         check_generator_stmt ls1 c1 ls2 ->
         check_generator_stmt ls2 c2 ls3 ->
-        check_generator_stmt ls1 (Sseq ast_num c1 c2) ls3
-    | CG_Sifthen: forall ls1 b ls2 c ls3 ast_num,
+        check_generator_stmt ls1 (S_Sequence ast_num c1 c2) ls3
+    | CG_S_If: forall ls1 b ls2 c ls3 ast_num,
         check_generator_expr ls1 b ls2 ->
         check_generator_stmt ls2 c ls3 ->
-        check_generator_stmt ls1 (Sifthen ast_num b c) ls3
-    | CG_Swhile: forall ls1 b ls2 c ls3 ast_num,
+        check_generator_stmt ls1 (S_If ast_num b c) ls3
+    | CG_S_While_Loop: forall ls1 b ls2 c ls3 ast_num,
         check_generator_expr ls1 b ls2 ->
         check_generator_stmt ls2 c ls3 ->        
-        check_generator_stmt ls1 (Swhile ast_num b c) ls3.
+        check_generator_stmt ls1 (S_While_Loop ast_num b c) ls3.
 
 
-Inductive check_generator_decl: check_points -> local_declaration -> check_points -> Prop :=
+Inductive check_generator_decl: check_points -> object_declaration -> check_points -> Prop :=
     | CG_Decl0: forall d ls,
-        None = d.(local_init) ->
+        None = d.(initialization_expression) ->
         check_generator_decl ls d ls
     | CG_Decl1: forall i d ls1 ls2,
-        Some i = d.(local_init) ->
+        Some i = d.(initialization_expression) ->
         check_generator_expr ls1 i ls2 ->
         check_generator_decl ls1 d ls2.
 
-Inductive check_generator_decls: check_points -> list local_declaration -> check_points -> Prop :=
+Inductive check_generator_decls: check_points -> list object_declaration -> check_points -> Prop :=
     | CG_Decls_Empty: forall ls,
         check_generator_decls ls nil ls
     | CG_Decls: forall ls d ls'0 tl ls',
@@ -1909,37 +1935,37 @@ Inductive check_generator_decls: check_points -> list local_declaration -> check
 
 Inductive check_generator_proc_body: check_points -> procedure_body -> check_points -> Prop :=
     | CG_Proc_Body: forall ls1 f ls2 ls3,
-        check_generator_decls ls1 f.(proc_loc_idents) ls2 ->
-        check_generator_stmt ls2 f.(proc_body) ls3 ->
+        check_generator_decls ls1 f.(procedure_declarative_part) ls2 ->
+        check_generator_stmt ls2 f.(procedure_statements) ls3 ->
         check_generator_proc_body ls1 f ls3.
 
 Inductive check_generator_subprogram: check_points -> subprogram -> check_points -> Prop :=
     | CG_Subprogram: forall ls1 f ls2 ast_num,
         check_generator_proc_body ls1 f ls2 ->
-        check_generator_subprogram ls1 (Sproc ast_num f) ls2.
+        check_generator_subprogram ls1 (Procedure ast_num f) ls2.
 
 
 (* =============================== *)
 
 (** Function for run-time checks generation according to checking rules *)
 
-Function f_check_flag (e: expr): option check_action :=
+Function f_check_flag (e: expression): option run_time_checks :=
     match e with
-    | Econst ast_num n => None
-    | Evar ast_num x => None
-    | Ebinop ast_num op e1 e2 => 
+    | E_Literal ast_num n => None
+    | E_Identifier ast_num x => None
+    | E_Binary_Operation ast_num op e1 e2 => 
         match op with
-        | Odiv => Some Do_Division_Check
+        | Divide => Some Do_Division_Check
         | _ => None
         end
-    | Eunop ast_num op e => None
+    | E_Unary_Operation ast_num op e => None
     end.
 
-Function f_check_generator_expr (ckp: check_points) (e: expr): check_points :=
+Function f_check_generator_expr (ckp: check_points) (e: expression): check_points :=
     match e with
-    | Econst ast_num n => ckp
-    | Evar ast_num x => ckp
-    | Ebinop ast_num op e1 e2 => 
+    | E_Literal ast_num n => ckp
+    | E_Identifier ast_num x => ckp
+    | E_Binary_Operation ast_num op e1 e2 => 
         match f_check_flag e with
         | Some flag => 
             let ckp' := f_check_generator_expr ((ast_num, flag) :: ckp) e1 in
@@ -1948,31 +1974,31 @@ Function f_check_generator_expr (ckp: check_points) (e: expr): check_points :=
             let ckp' := f_check_generator_expr ckp e1 in
             f_check_generator_expr ckp' e2
         end
-    | Eunop ast_num op e0 =>
+    | E_Unary_Operation ast_num op e0 =>
         f_check_generator_expr ckp e0
     end.
 
-Function f_check_generator_stmt (ckp: check_points) (c: stmt): check_points :=
+Function f_check_generator_stmt (ckp: check_points) (c: statement): check_points :=
     match c with
-    | Sassign ast_num x e => f_check_generator_expr ckp e
-    | Sseq ast_num c1 c2 =>
+    | S_Assignment ast_num x e => f_check_generator_expr ckp e
+    | S_Sequence ast_num c1 c2 =>
         let ckp' := f_check_generator_stmt ckp c1 in
         f_check_generator_stmt ckp' c2
-    | Sifthen ast_num b c0 => 
+    | S_If ast_num b c0 => 
         let ckp' := f_check_generator_expr ckp b in
         f_check_generator_stmt ckp' c0
-    | Swhile ast_num b c0 => 
+    | S_While_Loop ast_num b c0 => 
         let ckp' := f_check_generator_expr ckp b in
         f_check_generator_stmt ckp' c0
     end.
 
-Function f_check_generator_decl (ckp: check_points) (d: local_declaration): check_points :=
-    match d.(local_init) with
+Function f_check_generator_decl (ckp: check_points) (d: object_declaration): check_points :=
+    match d.(initialization_expression) with
     | None => ckp
     | Some i => f_check_generator_expr ckp i
     end.
 
-Function f_check_generator_decls (ckp: check_points) (ds: list local_declaration): check_points :=
+Function f_check_generator_decls (ckp: check_points) (ds: list object_declaration): check_points :=
     match ds with
     | nil => ckp
     | d :: tl => 
@@ -1981,18 +2007,44 @@ Function f_check_generator_decls (ckp: check_points) (ds: list local_declaration
     end.
 
 Function f_check_generator_proc_body (ckp: check_points) (f: procedure_body): check_points :=
-    let ckp' := f_check_generator_decls ckp f.(proc_loc_idents) in
-    f_check_generator_stmt ckp' f.(proc_body).
+    let ckp' := f_check_generator_decls ckp f.(procedure_declarative_part) in
+    f_check_generator_stmt ckp' f.(procedure_statements).
 
 Function f_check_generator_subprogram (ckp: check_points) (p: subprogram): check_points :=
     match p with
-    | Sproc ast_num f => f_check_generator_proc_body ckp f
+    | Procedure ast_num f => f_check_generator_proc_body ckp f
     end.
 
+(** f_checks_match can be used to check whether GNAT frontend generated 
+    run time checks are consistent with the checks required by checking 
+    rules; 
+*)
+
+Function f_check_match (ck: run_time_checks) (ck': run_time_checks): bool :=
+    match ck, ck' with
+    | Do_Division_Check, Do_Division_Check => true
+    | Do_Overflow_Check, Do_Overflow_Check => true
+    | _, _ => false
+    end.
+
+Function f_checks_match (required_checks: check_points) (actual_checks: check_points): bool :=
+    match required_checks, actual_checks with
+    | nil, nil => true
+    | (ck :: cks), (ck' :: cks') => 
+        match ck, ck' with
+        | (astnum, check), (astnum', check') =>
+            if beq_nat astnum astnum' && f_check_match check check' 
+            then f_checks_match cks cks' 
+            else false
+        end
+    | _, _ => false
+    end.
 
 (* =============================== *)
 
-(** Semantical equivalence between functional and relational style for run-time checks generation *)
+(** Semantical equivalence between functional and relational style 
+    for run time check flags generation; 
+*)
 
 Lemma f_ast_nums_lt_correct: forall ckp n,
     f_ast_nums_lt ckp n = true ->
@@ -2071,7 +2123,7 @@ Proof.
     intuition.
     exact H. assumption.
   - specialize (IHc0 _ h1).
-    eapply CG_Ebinop_None.
+    eapply CG_E_Binary_Operation_None.
     specialize (f_check_flag_correct _ _ e3); auto.
     specialize (IHc (f_check_generator_expr ckp e1)).
     intuition.
@@ -2209,7 +2261,7 @@ Proof.
     intros ckp f;
     functional induction (f_check_generator_proc_body ckp f);
     intros ckp' h1.
-    remember (proc_loc_idents f) as x.
+    remember (procedure_declarative_part f) as x.
     destruct x.
     econstructor.
     rewrite <- Heqx. constructor.
@@ -2217,7 +2269,7 @@ Proof.
     specialize (f_check_generator_stmt_correct _ _ _ h1); auto.
     econstructor.
     rewrite <- Heqx.
-    assert (hz1: (f_check_generator_decls ckp (l :: x)) = (f_check_generator_decls ckp (l :: x))); auto.
+    assert (hz1: (f_check_generator_decls ckp (o :: x)) = (f_check_generator_decls ckp (o :: x))); auto.
     specialize (f_check_generator_decls_correct _ _ _ _ hz1); intros hz2.
     exact hz2.
     specialize (f_check_generator_stmt_correct _ _ _ h1); auto.
@@ -2229,7 +2281,7 @@ Lemma f_check_generator_proc_body_complete: forall ckp f ckp',
 Proof.
     intros ckp f ckp' h1.
     induction h1.
-    remember (proc_loc_idents f) as x.
+    remember (procedure_declarative_part f) as x.
     destruct x.
   - inversion H; subst.
     unfold f_check_generator_proc_body.
@@ -2267,49 +2319,49 @@ Qed.
 (** ** Semantics with run-time-checks *)
 
 (** the semantics for expressions evaluation, where cps is passed in 
-    as a parameter telling whether a check is needed to be performed 
+    as a parameter telling whether a checks are needed to be performed 
     before executing the expression ast node;
 *)
-Inductive eval_expr_with_checks (cps: check_points): stack -> expr -> return_val -> Prop :=
-    | eval_Const: forall cst v s ast_num,
-        eval_constant cst = v ->
-        eval_expr_with_checks cps s (Econst ast_num cst) (ValNormal v)
-    | eval_Var: forall x s v ast_num,
+Inductive eval_expr_with_checks (cps: check_points): stack -> expression -> return_val -> Prop :=
+    | eval_Literal: forall l v s ast_num,
+        eval_literal l = v ->
+        eval_expr_with_checks cps s (E_Literal ast_num l) (Val_Normal v)
+    | eval_Identifier: forall x s v ast_num,
         fetch x s = Some v ->
-        eval_expr_with_checks cps s (Evar ast_num x) (ValNormal v)
-    | eval_Binop1: forall s e1 ast_num op e2,
-        eval_expr_with_checks cps s e1 ValException ->
-        eval_expr_with_checks cps s (Ebinop ast_num op e1 e2) ValException
-    | eval_Binop2: forall s e1 v1 e2 ast_num op,
-        eval_expr_with_checks cps s e1 (ValNormal v1) ->
-        eval_expr_with_checks cps s e2 ValException ->
-        eval_expr_with_checks cps s (Ebinop ast_num op e1 e2) ValException
-    | eval_Binop3: forall s e1 v1 e2 v2 ck ast_num op,
-        eval_expr_with_checks cps s e1 (ValNormal v1) ->
-        eval_expr_with_checks cps s e2 (ValNormal v2) ->
+        eval_expr_with_checks cps s (E_Identifier ast_num x) (Val_Normal v)
+    | eval_Binary_Operation1: forall s e1 ast_num op e2,
+        eval_expr_with_checks cps s e1 Val_Run_Time_Error ->
+        eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
+    | eval_Binary_Operation2: forall s e1 v1 e2 ast_num op,
+        eval_expr_with_checks cps s e1 (Val_Normal v1) ->
+        eval_expr_with_checks cps s e2 Val_Run_Time_Error ->
+        eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
+    | eval_Binary_Operation3: forall s e1 v1 e2 v2 ck ast_num op,
+        eval_expr_with_checks cps s e1 (Val_Normal v1) ->
+        eval_expr_with_checks cps s e2 (Val_Normal v2) ->
         fetch_ck ast_num cps = Some ck ->
         do_check op v1 v2 false ->
-        eval_expr_with_checks cps s (Ebinop ast_num op e1 e2) ValException
-    | eval_Binop4: forall s e1 v1 e2 v2 ck ast_num op v,
-        eval_expr_with_checks cps s e1 (ValNormal v1) ->
-        eval_expr_with_checks cps s e2 (ValNormal v2) ->
+        eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
+    | eval_Binary_Operation4: forall s e1 v1 e2 v2 ck ast_num op v,
+        eval_expr_with_checks cps s e1 (Val_Normal v1) ->
+        eval_expr_with_checks cps s e2 (Val_Normal v2) ->
         fetch_ck ast_num cps = Some ck -> 
         do_check op v1 v2 true ->
-        eval_binexpr op v1 v2 v ->
-        eval_expr_with_checks cps s (Ebinop ast_num op e1 e2) (ValNormal v)
-    | eval_Binop5: forall s e1 v1 e2 v2 ast_num op v,
-        eval_expr_with_checks cps s e1 (ValNormal v1) ->
-        eval_expr_with_checks cps s e2 (ValNormal v2) ->
+        eval_bin_expr op v1 v2 v ->
+        eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) (Val_Normal v)
+    | eval_Binary_Operation5: forall s e1 v1 e2 v2 ast_num op v,
+        eval_expr_with_checks cps s e1 (Val_Normal v1) ->
+        eval_expr_with_checks cps s e2 (Val_Normal v2) ->
         fetch_ck ast_num cps = None ->
-        eval_binexpr op v1 v2 v ->
-        eval_expr_with_checks cps s (Ebinop ast_num op e1 e2) (ValNormal v)
-    | eval_Unop1: forall s e ast_num op,
-        eval_expr_with_checks cps s e ValException ->
-        eval_expr_with_checks cps s (Eunop ast_num op e) ValException
-    | eval_Unop2: forall s e v ast_num op v1,
-        eval_expr_with_checks cps s e (ValNormal v) ->
-        eval_unaryexpr op v v1 ->
-        eval_expr_with_checks cps s (Eunop ast_num op e) (ValNormal v1).
+        eval_bin_expr op v1 v2 v ->
+        eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) (Val_Normal v)
+    | eval_Unary_Operation1: forall s e ast_num op,
+        eval_expr_with_checks cps s e Val_Run_Time_Error ->
+        eval_expr_with_checks cps s (E_Unary_Operation ast_num op e) Val_Run_Time_Error
+    | eval_Unary_Operation2: forall s e v ast_num op v1,
+        eval_expr_with_checks cps s e (Val_Normal v) ->
+        eval_unary_expr op v v1 ->
+        eval_expr_with_checks cps s (E_Unary_Operation ast_num op e) (Val_Normal v1).
 
 
 (** 
@@ -2320,107 +2372,109 @@ Inductive eval_expr_with_checks (cps: check_points): stack -> expr -> return_val
     Note: only division by zero check has been implemented, overflow check
           will be added later;
 *)
-Inductive eval_stmt_with_checks (cps: check_points): stack -> stmt -> state -> Prop :=
-    | eval_Assign1: forall s e ast_num x,
-        eval_expr_with_checks cps s e ValException ->
-        eval_stmt_with_checks cps s (Sassign ast_num x e) SException
-    | eval_Assign2: forall s e v x s1 ast_num,
-        eval_expr_with_checks cps s e (ValNormal v) ->
+Inductive eval_stmt_with_checks (cps: check_points): stack -> statement -> state -> Prop :=
+    | eval_Assignment1: forall s e ast_num x,
+        eval_expr_with_checks cps s e Val_Run_Time_Error ->
+        eval_stmt_with_checks cps s (S_Assignment ast_num x e) S_Run_Time_Error
+    | eval_Assignment2: forall s e v x s1 ast_num,
+        eval_expr_with_checks cps s e (Val_Normal v) ->
         update s x (Value v) = Some s1 -> 
-        eval_stmt_with_checks cps s (Sassign ast_num x e) (SNormal s1)
-    | eval_Seq1: forall s c1 ast_num c2,
-        eval_stmt_with_checks cps s c1 SException ->
-        eval_stmt_with_checks cps s (Sseq ast_num c1 c2) SException
-    | eval_Seq2: forall ast_num s s1 s2 c1 c2,
-        eval_stmt_with_checks cps s c1 (SNormal s1) ->
+        eval_stmt_with_checks cps s (S_Assignment ast_num x e) (S_Normal s1)
+    | eval_Sequence1: forall s c1 ast_num c2,
+        eval_stmt_with_checks cps s c1 S_Run_Time_Error ->
+        eval_stmt_with_checks cps s (S_Sequence ast_num c1 c2) S_Run_Time_Error
+    | eval_Sequence2: forall ast_num s s1 s2 c1 c2,
+        eval_stmt_with_checks cps s c1 (S_Normal s1) ->
         eval_stmt_with_checks cps s1 c2 s2 ->
-        eval_stmt_with_checks cps s (Sseq ast_num c1 c2) s2
-    | eval_Ifthen: forall s b ast_num c,
-        eval_expr_with_checks cps s b ValException ->
-        eval_stmt_with_checks cps s (Sifthen ast_num b c) SException
-    | eval_Ifthen_True: forall s b c s1 ast_num,
-        eval_expr_with_checks cps s b (ValNormal (Bool true)) ->
+        eval_stmt_with_checks cps s (S_Sequence ast_num c1 c2) s2
+    | eval_If: forall s b ast_num c,
+        eval_expr_with_checks cps s b Val_Run_Time_Error ->
+        eval_stmt_with_checks cps s (S_If ast_num b c) S_Run_Time_Error
+    | eval_If_True: forall s b c s1 ast_num,
+        eval_expr_with_checks cps s b (Val_Normal (Bool true)) ->
         eval_stmt_with_checks cps s c s1 ->
-        eval_stmt_with_checks cps s (Sifthen ast_num b c) s1
-    | eval_Ifthen_False: forall s b ast_num c,
-        eval_expr_with_checks cps s b (ValNormal (Bool false)) ->
-        eval_stmt_with_checks cps s (Sifthen ast_num b c) (SNormal s)
-    | eval_While: forall s b ast_num c,
-        eval_expr_with_checks cps s b ValException ->
-        eval_stmt_with_checks cps s (Swhile ast_num b c) SException
-    | eval_While_True1: forall s b c ast_num,
-        eval_expr_with_checks cps s b (ValNormal (Bool true)) ->
-        eval_stmt_with_checks cps s c SException ->
-        eval_stmt_with_checks cps s (Swhile ast_num b c) SException
-    | eval_While_True2: forall s b c s1 ast_num s2,
-        eval_expr_with_checks cps s b (ValNormal (Bool true)) ->
-        eval_stmt_with_checks cps s c (SNormal s1) ->
-        eval_stmt_with_checks cps s1 (Swhile ast_num b c) s2 ->
-        eval_stmt_with_checks cps s (Swhile ast_num b c) s2
-    | eval_While_False: forall s b ast_num c,
-        eval_expr_with_checks cps s b (ValNormal (Bool false)) ->
-        eval_stmt_with_checks cps s (Swhile ast_num b c) (SNormal s).
+        eval_stmt_with_checks cps s (S_If ast_num b c) s1
+    | eval_If_False: forall s b ast_num c,
+        eval_expr_with_checks cps s b (Val_Normal (Bool false)) ->
+        eval_stmt_with_checks cps s (S_If ast_num b c) (S_Normal s)
+    | eval_While_Loop: forall s b ast_num c,
+        eval_expr_with_checks cps s b Val_Run_Time_Error ->
+        eval_stmt_with_checks cps s (S_While_Loop ast_num b c) S_Run_Time_Error
+    | eval_While_Loop_True1: forall s b c ast_num,
+        eval_expr_with_checks cps s b (Val_Normal (Bool true)) ->
+        eval_stmt_with_checks cps s c S_Run_Time_Error ->
+        eval_stmt_with_checks cps s (S_While_Loop ast_num b c) S_Run_Time_Error
+    | eval_While_Loop_True2: forall s b c s1 ast_num s2,
+        eval_expr_with_checks cps s b (Val_Normal (Bool true)) ->
+        eval_stmt_with_checks cps s c (S_Normal s1) ->
+        eval_stmt_with_checks cps s1 (S_While_Loop ast_num b c) s2 ->
+        eval_stmt_with_checks cps s (S_While_Loop ast_num b c) s2
+    | eval_While_Loop_False: forall s b ast_num c,
+        eval_expr_with_checks cps s b (Val_Normal (Bool false)) ->
+        eval_stmt_with_checks cps s (S_While_Loop ast_num b c) (S_Normal s).
 
-(** variables declaration with initialization values are a little 
+(** variables declaration with initialization expression are a little 
     defferent from the assignments:
     for variable declaration, we add the new declared variable with 
     its initialization value to the initial stack, because all declared 
     variables have unique names; for assignment, we update the initial 
-    stack by assigning new value to its component variable;
+    stack by assigning new value to its existing variable;
 *)
-Inductive eval_decl_with_checks (cps: check_points): stack -> local_declaration -> state -> Prop :=
+Inductive eval_decl_with_checks (cps: check_points): stack -> object_declaration -> state -> Prop :=
     | eval_Decl0: forall x d s,
-        x = d.(local_ident) ->
-        None = d.(local_init) ->
-        eval_decl_with_checks cps s d (SNormal ((x, Vundef) :: s))
+        x = d.(object_name) ->
+        None = d.(initialization_expression) ->
+        eval_decl_with_checks cps s d (S_Normal ((x, Undefined) :: s))
     | eval_Decl1: forall i d s,
-        Some i = d.(local_init) ->
-        eval_expr_with_checks cps s i ValException ->
-        eval_decl_with_checks cps s d SException
+        Some i = d.(initialization_expression) ->
+        eval_expr_with_checks cps s i Val_Run_Time_Error ->
+        eval_decl_with_checks cps s d S_Run_Time_Error
     | eval_Decl2: forall x d i s v,
-        x = d.(local_ident) ->
-        Some i = d.(local_init) ->
-        eval_expr_with_checks cps s i (ValNormal v) ->
-        eval_decl_with_checks cps s d (SNormal ((x, Value v) :: s)).
+        x = d.(object_name) ->
+        Some i = d.(initialization_expression) ->
+        eval_expr_with_checks cps s i (Val_Normal v) ->
+        eval_decl_with_checks cps s d (S_Normal ((x, Value v) :: s)).
 
-Inductive eval_decls_with_checks (cps: check_points): stack -> list local_declaration -> state -> Prop :=
+Inductive eval_decls_with_checks (cps: check_points): 
+    stack -> list object_declaration -> state -> Prop :=
     | eval_Decls_Empty: forall s,
-        eval_decls_with_checks cps s nil (SNormal s)
+        eval_decls_with_checks cps s nil (S_Normal s)
     | eval_Decls0: forall s d tl,
-        eval_decl_with_checks cps s d SException ->
-        eval_decls_with_checks cps s (d :: tl) SException
+        eval_decl_with_checks cps s d S_Run_Time_Error ->
+        eval_decls_with_checks cps s (d :: tl) S_Run_Time_Error
     | eval_Decls1: forall s d s'0 tl s',
-        eval_decl_with_checks cps s d (SNormal s'0) ->
+        eval_decl_with_checks cps s d (S_Normal s'0) ->
         eval_decls_with_checks cps s'0 tl s' ->
         eval_decls_with_checks cps s (d :: tl) s'.
 
-Inductive eval_proc_body_with_checks (cps: check_points): stack -> procedure_body -> state -> Prop :=
+Inductive eval_proc_body_with_checks (cps: check_points): 
+    stack -> procedure_body -> state -> Prop :=
     | eval_Proc_Body0: forall s f,
-        eval_decls_with_checks cps s f.(proc_loc_idents) SException ->
-        eval_proc_body_with_checks cps s f SException
+        eval_decls_with_checks cps s f.(procedure_declarative_part) S_Run_Time_Error ->
+        eval_proc_body_with_checks cps s f S_Run_Time_Error
     | eval_Proc_Body1: forall s f s'0 s',
-        eval_decls_with_checks cps s f.(proc_loc_idents) (SNormal s'0) ->
-        eval_stmt_with_checks cps s'0 f.(proc_body) s' ->
+        eval_decls_with_checks cps s f.(procedure_declarative_part) (S_Normal s'0) ->
+        eval_stmt_with_checks cps s'0 f.(procedure_statements) s' ->
         eval_proc_body_with_checks cps s f s'.
 
 Inductive eval_subprogram_with_checks (cps: check_points): stack -> subprogram -> state -> Prop :=
     | eval_Subprogram: forall s1 f s2 ast_num,
         eval_proc_body_with_checks cps s1 f s2 ->
-        eval_subprogram_with_checks cps s1 (Sproc ast_num f) s2.
+        eval_subprogram_with_checks cps s1 (Procedure ast_num f) s2.
 
 
 (** some basic lemmas *)
-(** eval_stmt_with_checks returns either a normal value or an exception 
-    when the check is false; 
+(** eval_stmt_with_checks returns either a normal value or a 
+    run time error when the run time check fails; 
 *)
 Lemma eval_expr_with_checks_state: forall ls s e v,
     eval_expr_with_checks ls s e v ->
-    (exists v0, v = ValNormal v0) \/ v = ValException.
+    (exists v', v = Val_Normal v') \/ v = Val_Run_Time_Error.
 Proof.
     intros.
     induction H;
     try match goal with
-    | [ |- (exists v0 : value, ValNormal ?v = ValNormal v0) \/ _ ] => left; exists v; reflexivity
+    | [ |- (exists v' : value, Val_Normal ?v = Val_Normal v') \/ _ ] => left; exists v; reflexivity
     | [ |- _ \/ ?A = ?A ] => right; reflexivity
     end.
 Qed.
@@ -2429,7 +2483,7 @@ Qed.
    all ast numbers are unique: in a AST tree, parent node's ast number 
    is smaller than children node's ast number.
    (get_ast_num_expr e) returns the ast number for expression e, and 
-   max is the maximum ast number used by e, if e has no subexpression, 
+   max is the maximum ast number used in e, if e has no subexpression, 
    then max is the same as (get_ast_num_expr e), otherwise, max is maximum
    ast number of its subexpressions, so (get_ast_num_expr e) should be 
    less and equal than max;
@@ -2445,7 +2499,7 @@ Qed.
 (** 
     checks are computed according to the checking rules for expression 
     e and its subexpressions, the results are stored in cks indexed by 
-    expression and its subexpression ast numbers, because max is the 
+    expression's and its subexpression's ast numbers, because max is the 
     maximum ast number, so all ast numbers in cks should be less than 
     (max + 1);
 *)
@@ -2529,7 +2583,7 @@ Qed.
 
 Lemma ast_num_bound_decl: forall d max,
     ast_num_inc_decl d max ->
-    d.(local_astnum) <= max.
+    d.(declaration_astnum) <= max.
 Proof.
     intros d max h.
     induction h; simpl; intuition.
@@ -2540,7 +2594,7 @@ Qed.
 (** local variable declarations with at least one declaration; *)
 Lemma ast_num_bound_decls: forall d tl max,
     ast_num_inc_decls (d :: tl) max ->
-    d.(local_astnum) <= max.
+    d.(declaration_astnum) <= max.
 Proof.
     intros.
     remember (d :: tl) as ds.
@@ -2556,7 +2610,7 @@ Qed.
 Lemma ast_num_max_decl: forall d max cks0 cks1,
     ast_num_inc_decl d max ->
     check_generator_decl cks0 d cks1 ->
-    ast_nums_lt cks0 d.(local_astnum) ->
+    ast_nums_lt cks0 d.(declaration_astnum) ->
     ast_nums_lt cks1 (max + 1).
 Proof.
     intros d max cks0 cks1 h1.
@@ -2572,7 +2626,7 @@ Proof.
   - rewrite <- H0 in H4; inversion H4; subst.
     specialize (ast_nums_lt_trans _ _ _ h3 H3); intros hz1.
     specialize (ast_num_max_expr _ _ _ _ H1 H5 hz1); auto.
-  - assert (hz1: local_astnum d < local_astnum d + 1); intuition.
+  - assert (hz1: declaration_astnum d < declaration_astnum d + 1); intuition.
     specialize (ast_nums_lt_trans _ _ _ h3 hz1); auto.
   - rewrite <- H0 in H1; inversion H1.
 Qed.
@@ -2580,7 +2634,7 @@ Qed.
 Lemma ast_num_max_decls: forall d tl max cks0 cks1,
     ast_num_inc_decls (d :: tl) max ->
     check_generator_decls cks0 (d :: tl) cks1 ->
-    ast_nums_lt cks0 d.(local_astnum) ->
+    ast_nums_lt cks0 d.(declaration_astnum) ->
     ast_nums_lt cks1 (max + 1).
 Proof.
     intros d tl max cks0 cks1 h1.
@@ -2595,7 +2649,7 @@ Proof.
   - specialize (IHh1 d2 tl); intuition.
     inversion h3; subst.
     specialize (ast_num_max_decl _ _ _ _ H H5 h4); intros hz1.
-    assert (hz2: n1 + 1 <= local_astnum d2); intuition.
+    assert (hz2: n1 + 1 <= declaration_astnum d2); intuition.
     specialize (ast_nums_lt_trans0 _ _ _ hz1 hz2); intros hz3.
     specialize (H1 _ _ H7 hz3).
     assumption.
@@ -2607,119 +2661,119 @@ Qed.
     with run time checks as passed in parameters; 
 *)
 
-Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expr): return_val :=
+Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expression): return_val :=
     match e with
-    | Econst ast_num n => ValNormal (eval_constant n)
-    | Evar ast_num x => 
+    | E_Literal ast_num l => Val_Normal (eval_literal l)
+    | E_Identifier ast_num x => 
         match fetch x s with
-        | Some v => ValNormal v
-        | _ => ValAbnormal
+        | Some v => Val_Normal v
+        | _ => Val_Abnormal
         end
-    | Ebinop ast_num op e1 e2 => 
+    | E_Binary_Operation ast_num op e1 e2 => 
         match f_eval_expr_with_checks ckp s e1 with
-        | ValNormal v1 => 
+        | Val_Normal v1 => 
             match f_eval_expr_with_checks ckp s e2 with
-            | ValNormal v2 => 
+            | Val_Normal v2 => 
                 match fetch_ck ast_num ckp with
                 | Some ck => 
                     match f_do_check op v1 v2 with
-                    | Some true => f_eval_binexpr op v1 v2
-                    | Some false => ValException
-                    | _ => ValAbnormal
+                    | Some true => f_eval_bin_expr op v1 v2
+                    | Some false => Val_Run_Time_Error
+                    | _ => Val_Abnormal
                     end
-                | None => f_eval_binexpr op v1 v2
+                | None => f_eval_bin_expr op v1 v2
                 end
-            | ValException => ValException
-            | _ => ValAbnormal
+            | Val_Run_Time_Error => Val_Run_Time_Error
+            | _ => Val_Abnormal
             end
-        | ValException => ValException
-        | _ => ValAbnormal
+        | Val_Run_Time_Error => Val_Run_Time_Error
+        | _ => Val_Abnormal
         end
-    | Eunop ast_num op e0 =>
+    | E_Unary_Operation ast_num op e0 =>
         match f_eval_expr_with_checks ckp s e0 with
-        | ValNormal v => f_eval_unaryexpr op v
-        | ValException => ValException
-        | _ => ValAbnormal
+        | Val_Normal v => f_eval_unary_expr op v
+        | Val_Run_Time_Error => Val_Run_Time_Error
+        | _ => Val_Abnormal
         end
     end.
 
-Function f_eval_stmt_with_checks k (ckp: check_points) (s: stack) (c: stmt): state :=
+Function f_eval_stmt_with_checks k (ckp: check_points) (s: stack) (c: statement): state :=
   match k with
-  | 0 => SUnterminated
+  | 0 => S_Unterminated
   | S k' =>
     match c with
-    | Sassign ast_num x e =>
+    | S_Assignment ast_num x e =>
         match f_eval_expr_with_checks ckp s e with
-        | ValNormal v => 
+        | Val_Normal v => 
             match update s x (Value v) with
-            | Some s1 => SNormal s1
-            | _ => SAbnormal
+            | Some s1 => S_Normal s1
+            | _ => S_Abnormal
             end
-        | ValException => SException
-        | _ => SAbnormal
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
-    | Sseq ast_num c1 c2 =>
+    | S_Sequence ast_num c1 c2 =>
         match f_eval_stmt_with_checks k' ckp s c1 with
-        | SNormal s1 => f_eval_stmt_with_checks k' ckp s1 c2
-        | SException => SException
-        | SUnterminated => SUnterminated
-        | _ => SAbnormal
+        | S_Normal s1 => f_eval_stmt_with_checks k' ckp s1 c2
+        | S_Run_Time_Error => S_Run_Time_Error
+        | S_Unterminated => S_Unterminated
+        | _ => S_Abnormal
         end
-    | Sifthen ast_num b c0 =>
+    | S_If ast_num b c0 =>
         match f_eval_expr_with_checks ckp s b with
-        | ValNormal (Bool true) => f_eval_stmt_with_checks k' ckp s c0
-        | ValNormal (Bool false) => SNormal s
-        | ValException => SException
-        | _ => SAbnormal
+        | Val_Normal (Bool true) => f_eval_stmt_with_checks k' ckp s c0
+        | Val_Normal (Bool false) => S_Normal s
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
-    | Swhile ast_num b c0 =>
+    | S_While_Loop ast_num b c' =>
         match f_eval_expr_with_checks ckp s b with
-        | ValNormal (Bool true) => 
-            match f_eval_stmt_with_checks k' ckp s c0 with
-            | SNormal s1 => f_eval_stmt_with_checks k' ckp s1 (Swhile ast_num b c0)
-            | SException => SException
-            | SUnterminated => SUnterminated
-            | _ => SAbnormal
+        | Val_Normal (Bool true) => 
+            match f_eval_stmt_with_checks k' ckp s c' with
+            | S_Normal s1 => f_eval_stmt_with_checks k' ckp s1 (S_While_Loop ast_num b c')
+            | S_Run_Time_Error => S_Run_Time_Error
+            | S_Unterminated => S_Unterminated
+            | _ => S_Abnormal
             end
-        | ValNormal (Bool false) => SNormal s
-        | ValException => SException
-        | _ => SAbnormal
+        | Val_Normal (Bool false) => S_Normal s
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
     end
   end.
 
-Function f_eval_decl_with_checks (cps: check_points) (s: stack) (d: local_declaration): state :=
-    match d.(local_init) with
+Function f_eval_decl_with_checks (cps: check_points) (s: stack) (d: object_declaration): state :=
+    match d.(initialization_expression) with
     | Some i =>
         match f_eval_expr_with_checks cps s i with
-        | ValNormal v => SNormal ((d.(local_ident), Value v) :: s)
-        | ValException => SException
-        | _ => SAbnormal
+        | Val_Normal v => S_Normal ((d.(object_name), Value v) :: s)
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
-    | None => SNormal ((d.(local_ident), Vundef) :: s)
+    | None => S_Normal ((d.(object_name), Undefined) :: s)
     end.
 
-Function f_eval_decls_with_checks (cps: check_points) (s: stack) (ds: list local_declaration): state :=
+Function f_eval_decls_with_checks (cps: check_points) (s: stack) (ds: list object_declaration): state :=
     match ds with
-    | nil => SNormal s
+    | nil => S_Normal s
     | d :: tl =>
         match f_eval_decl_with_checks cps s d with
-        | SNormal s1 => f_eval_decls_with_checks cps s1 tl
-        | SException => SException
-        | _ => SAbnormal
+        | S_Normal s1 => f_eval_decls_with_checks cps s1 tl
+        | S_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
     end.
 
 Function f_eval_proc_body_with_checks k (cps: check_points) (s: stack) (f: procedure_body): state :=
-    match f_eval_decls_with_checks cps s f.(proc_loc_idents) with
-    | SNormal s1 => f_eval_stmt_with_checks k cps s1 f.(proc_body)
-    | SException => SException
-    | _ => SAbnormal
+    match f_eval_decls_with_checks cps s f.(procedure_declarative_part) with
+    | S_Normal s1 => f_eval_stmt_with_checks k cps s1 f.(procedure_statements)
+    | S_Run_Time_Error => S_Run_Time_Error
+    | _ => S_Abnormal
     end.
 
 Function f_eval_subprogram_with_checks k (cps: check_points) (s: stack) (p: subprogram): state :=
     match p with
-    | Sproc ast_num f =>
+    | Procedure ast_num f =>
         f_eval_proc_body_with_checks k cps s f
     end.
 
@@ -2727,20 +2781,20 @@ Function f_eval_subprogram_with_checks k (cps: check_points) (s: stack) (p: subp
 
 (** Semantical equivalence between the relatioinal semantics and 
     functional semantics for program evaluation with checks 
-    passed in as parameters; 
+    as passed in parameters; 
 *)
 
 Lemma f_eval_expr_with_checks_correct0: forall ckp s e v,
-    f_eval_expr_with_checks ckp s e = ValNormal v ->
-    eval_expr_with_checks ckp s e (ValNormal v).
+    f_eval_expr_with_checks ckp s e = Val_Normal v ->
+    eval_expr_with_checks ckp s e (Val_Normal v).
 Proof.
     intros ckp s e;
     functional induction (f_eval_expr_with_checks ckp s e);
     intros v' h1;
     try match goal with
-    | [h: ValException = ValNormal ?v |- _] => inversion h
-    | [h: ValAbnormal = ValNormal ?v |- _] => inversion h
-    | [h: ValNormal ?v1 = ValNormal ?v2 |- _] => inversion h
+    | [h: Val_Run_Time_Error = Val_Normal ?v |- _] => inversion h
+    | [h: Val_Abnormal = Val_Normal ?v |- _] => inversion h
+    | [h: Val_Normal ?v1 = Val_Normal ?v2 |- _] => inversion h
     end; subst; auto.
   - constructor.
     reflexivity.
@@ -2752,41 +2806,41 @@ Proof.
     exact IHr. exact IHr0.
     exact e5.
     specialize (f_do_check_correct _ _ _ _ e6); auto.
-    apply f_eval_binexpr_correct; auto.
+    apply f_eval_bin_expr_correct; auto.
   - specialize (IHr _ e3).
     specialize (IHr0 _ e4).
-    eapply eval_Binop5.
+    eapply eval_Binary_Operation5.
     exact IHr. exact IHr0.
     exact e5.
-    apply f_eval_binexpr_correct; auto.
+    apply f_eval_bin_expr_correct; auto.
   - specialize (IHr _ e2).
     econstructor.
     exact IHr.
-    apply f_eval_unaryexpr_correct; auto.
+    apply f_eval_unary_expr_correct; auto.
 Qed.
 
 Lemma f_eval_expr_with_checks_correct1: forall ckp s e,
-    f_eval_expr_with_checks ckp s e = ValException ->
-    eval_expr_with_checks ckp s e ValException.
+    f_eval_expr_with_checks ckp s e = Val_Run_Time_Error ->
+    eval_expr_with_checks ckp s e Val_Run_Time_Error.
 Proof.
     intros ckp s e;
     functional induction (f_eval_expr_with_checks ckp s e);
     intros h1;
     try match goal with
-    |[h: ValNormal ?v = ValException |- _] => inversion h
-    |[h: ValAbnormal = ValException |- _] => inversion h
+    |[h: Val_Normal ?v = Val_Run_Time_Error |- _] => inversion h
+    |[h: Val_Abnormal = Val_Run_Time_Error |- _] => inversion h
     end.
   - destruct v1, v2, op;
     simpl in h1; inversion h1.
   - specialize (f_eval_expr_with_checks_correct0 _ _ _ _ e3); intros hz1.
     specialize (f_eval_expr_with_checks_correct0 _ _ _ _ e4); intros hz2.
-    eapply eval_Binop3.
+    eapply eval_Binary_Operation3.
     apply hz1. apply hz2. apply e5.
     apply f_do_check_correct; auto.
   - destruct v1, v2, op;
     simpl in h1; inversion h1.
   - specialize (IHr0 e4).
-    eapply eval_Binop2.
+    eapply eval_Binary_Operation2.
     specialize (f_eval_expr_with_checks_correct0 _ _ _ _ e3); intros hz1.
     apply hz1. assumption.
   - specialize (IHr e3).
@@ -2798,10 +2852,10 @@ Proof.
 Qed.
 
 Lemma f_eval_expr_with_checks_correct: forall ckp s e v,
-    (f_eval_expr_with_checks ckp s e = ValNormal v ->
-        eval_expr_with_checks ckp s e (ValNormal v)) /\ 
-    (f_eval_expr_with_checks ckp s e = ValException ->
-        eval_expr_with_checks ckp s e ValException).
+    (f_eval_expr_with_checks ckp s e = Val_Normal v ->
+        eval_expr_with_checks ckp s e (Val_Normal v)) /\ 
+    (f_eval_expr_with_checks ckp s e = Val_Run_Time_Error ->
+        eval_expr_with_checks ckp s e Val_Run_Time_Error).
 Proof.
     intros.
     split; intros.
@@ -2826,16 +2880,16 @@ Proof.
     reflexivity.
   - specialize (f_do_check_complete _ _ _ _ H0); intros hz1.
     rewrite hz1.
-    apply f_eval_binexpr_complete; auto.
-  - apply f_eval_binexpr_complete; auto.
-  - apply f_eval_unaryexpr_complete; auto.
+    apply f_eval_bin_expr_complete; auto.
+  - apply f_eval_bin_expr_complete; auto.
+  - apply f_eval_unary_expr_complete; auto.
 Qed.
 
 Ltac apply_expr_correct_lemma :=
     match goal with
-    | |- eval_expr_with_checks ?ckp ?s ?e (ValNormal ?v) => 
+    | |- eval_expr_with_checks ?ckp ?s ?e (Val_Normal ?v) => 
         apply f_eval_expr_with_checks_correct0
-    | |- eval_expr_with_checks ?ckp ?s ?e ValException =>
+    | |- eval_expr_with_checks ?ckp ?s ?e Val_Run_Time_Error =>
         apply f_eval_expr_with_checks_correct1
     end; auto.
 
@@ -2846,17 +2900,17 @@ Ltac apply_expr_complete_lemma :=
     end; auto.
 
 Lemma f_eval_stmt_with_checks_correct0: forall k ckp s c s',
-    f_eval_stmt_with_checks k ckp s c = (SNormal s') ->
-    eval_stmt_with_checks ckp s c (SNormal s').
+    f_eval_stmt_with_checks k ckp s c = (S_Normal s') ->
+    eval_stmt_with_checks ckp s c (S_Normal s').
 Proof.
     intros k ckp s c;
     functional induction (f_eval_stmt_with_checks k ckp s c);
     intros s' h1;
     try match goal with
-    | [h: SUnterminated = SNormal ?s |- _] => inversion h
-    | [h: SException = SNormal ?s |- _] => inversion h
-    | [h: SAbnormal = SNormal ?s |- _] => inversion h
-    | [h: SNormal ?s1 = SNormal ?s2 |- _] => inversion h; subst
+    | [h: S_Unterminated = S_Normal ?s |- _] => inversion h
+    | [h: S_Run_Time_Error = S_Normal ?s |- _] => inversion h
+    | [h: S_Abnormal = S_Normal ?s |- _] => inversion h
+    | [h: S_Normal ?s1 = S_Normal ?s2 |- _] => inversion h; subst
     end.
   - econstructor. 
     apply_expr_correct_lemma.
@@ -2870,50 +2924,50 @@ Proof.
     econstructor.
     apply_expr_correct_lemma.
     assumption.
-  - eapply eval_Ifthen_False.
+  - eapply eval_If_False.
     apply_expr_correct_lemma.
   - specialize (IHs0 _ e2).
     specialize (IHs1 _ h1).
     econstructor.
     apply_expr_correct_lemma.
     apply IHs0. assumption.
-  - apply eval_While_False.
+  - apply eval_While_Loop_False.
     apply_expr_correct_lemma.
 Qed.
 
 Lemma f_eval_stmt_with_checks_correct1: forall k ckp s c,
-    f_eval_stmt_with_checks k ckp s c = SException ->
-    eval_stmt_with_checks ckp s c SException.
+    f_eval_stmt_with_checks k ckp s c = S_Run_Time_Error ->
+    eval_stmt_with_checks ckp s c S_Run_Time_Error.
 Proof.
     intros k ckp s c h1;
     functional induction (f_eval_stmt_with_checks k ckp s c);
     try match goal with
-    | [h: SUnterminated = SException |- _] => inversion h
-    | [h: SAbnormal = SException |- _] => inversion h
-    | [h: SNormal ?s1 = SException |- _] => inversion h
+    | [h: S_Unterminated = S_Run_Time_Error |- _] => inversion h
+    | [h: S_Abnormal = S_Run_Time_Error |- _] => inversion h
+    | [h: S_Normal ?s1 = S_Run_Time_Error |- _] => inversion h
     end.
   - constructor.
     apply_expr_correct_lemma.
   - specialize (IHs1 h1).
     specialize (f_eval_stmt_with_checks_correct0 _ _ _ _ _ e1); intros hz1.
-    eapply eval_Seq2.
+    eapply eval_Sequence2.
     apply hz1. assumption.
   - specialize (IHs0 e1).
     econstructor; auto.
   - specialize (IHs0 h1).
-    apply eval_Ifthen_True.
+    apply eval_If_True.
     apply_expr_correct_lemma.
     assumption.
   - constructor.
     apply_expr_correct_lemma.
   - specialize (IHs1 h1).
-    eapply eval_While_True2.
+    eapply eval_While_Loop_True2.
     apply_expr_correct_lemma.
     specialize (f_eval_stmt_with_checks_correct0 _ _ _ _ _ e2); intros hz1.
     apply hz1.
     assumption.
   - specialize (IHs0 e2).
-    eapply eval_While_True1.
+    eapply eval_While_Loop_True1.
     apply_expr_correct_lemma.
     assumption.
   - constructor.
@@ -2921,10 +2975,10 @@ Proof.
 Qed.
 
 Lemma f_eval_stmt_with_checks_correct: forall k ckp s c s',
-    (f_eval_stmt_with_checks k ckp s c = (SNormal s') ->
-        eval_stmt_with_checks ckp s c (SNormal s')) /\
-    (f_eval_stmt_with_checks k ckp s c = SException ->
-        eval_stmt_with_checks ckp s c SException).
+    (f_eval_stmt_with_checks k ckp s c = (S_Normal s') ->
+        eval_stmt_with_checks ckp s c (S_Normal s')) /\
+    (f_eval_stmt_with_checks k ckp s c = S_Run_Time_Error ->
+        eval_stmt_with_checks ckp s c S_Run_Time_Error).
 Proof.
     intros;
     split; intros h1.
@@ -2938,31 +2992,31 @@ Qed.
 
 Lemma eval_stmt_with_checks_state : forall ckp s c s',
         eval_stmt_with_checks ckp s c s' ->
-            (exists v, s' = SNormal v) \/ s' = SException.
+            (exists v, s' = S_Normal v) \/ s' = S_Run_Time_Error.
 Proof.
     intros ckp s c s' h.
     induction h;
     try match goal with
-    | [ |- (exists v, SNormal ?v1 = SNormal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- (exists v', S_Normal ?v = S_Normal v') \/ _ ] => left; exists v; reflexivity
     | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
     end; auto.
 Qed.
 
 Ltac apply_inv1 :=
   match goal with
-    | H:SUnterminated = SNormal _ |- _ => inversion H
-    | H:SUnterminated = SException |- _ => inversion H
-    | H:SUnterminated = SAbnormal |- _ => inversion H
-    | H:SAbnormal = SNormal _ |- _ => inversion H
-    | H:SAbnormal = SException |- _ => inversion H
-    | H:SAbnormal = SUnterminated |- _ => inversion H
-    | H:SException = SNormal _ |- _ => inversion H
-    | H:SException = SAbnormal |- _ => inversion H
-    | H:SException = SUnterminated |- _ => inversion H
-    | H:SNormal _ = SUnterminated |- _ => inversion H
-    | H:SNormal _ = SException |- _ => inversion H
-    | H:SNormal _ = SAbnormal |- _ => inversion H
-    | H:SNormal _ = SNormal _ |- _ => inversion H;clear H;subst 
+    | H:S_Unterminated = S_Normal _ |- _ => inversion H
+    | H:S_Unterminated = S_Run_Time_Error |- _ => inversion H
+    | H:S_Unterminated = S_Abnormal |- _ => inversion H
+    | H:S_Abnormal = S_Normal _ |- _ => inversion H
+    | H:S_Abnormal = S_Run_Time_Error |- _ => inversion H
+    | H:S_Abnormal = S_Unterminated |- _ => inversion H
+    | H:S_Run_Time_Error = S_Normal _ |- _ => inversion H
+    | H:S_Run_Time_Error = S_Abnormal |- _ => inversion H
+    | H:S_Run_Time_Error = S_Unterminated |- _ => inversion H
+    | H:S_Normal _ = S_Unterminated |- _ => inversion H
+    | H:S_Normal _ = S_Run_Time_Error |- _ => inversion H
+    | H:S_Normal _ = S_Abnormal |- _ => inversion H
+    | H:S_Normal _ = S_Normal _ |- _ => inversion H;clear H;subst 
     | H:update _ _ (Value _) = _ |- _ => rewrite H
     | H:f_eval_expr_with_checks _ _ _ = _ |- _ => rewrite H
     | H:f_eval_expr_with_checks _ _ = _ |- _ => rewrite H
@@ -2970,9 +3024,9 @@ Ltac apply_inv1 :=
   end;subst;simpl;auto.
 
 Lemma f_eval_stmt_with_checks_fixpoint: forall k ckp s c s', 
-        f_eval_stmt_with_checks k ckp s c = SNormal s' ->
+        f_eval_stmt_with_checks k ckp s c = S_Normal s' ->
         forall k':nat, (k <= k')%nat -> 
-            f_eval_stmt_with_checks k' ckp s c = SNormal s'.
+            f_eval_stmt_with_checks k' ckp s c = S_Normal s'.
 Proof.
     intros k ckp s c.
     functional induction (f_eval_stmt_with_checks k ckp s c); simpl; intros; subst; simpl; auto;
@@ -2989,9 +3043,9 @@ Proof.
 Qed.
 
 Lemma f_eval_stmt_with_checks_fixpoint_E: forall k ckp s c, 
-        f_eval_stmt_with_checks k ckp s c = SException ->
+        f_eval_stmt_with_checks k ckp s c = S_Run_Time_Error ->
         forall k':nat, (k <= k')%nat -> 
-            f_eval_stmt_with_checks k' ckp s c = SException.
+            f_eval_stmt_with_checks k' ckp s c = S_Run_Time_Error.
 Proof.
     intros k ckp s c.
     functional induction (f_eval_stmt_with_checks k ckp s c); simpl; intros; subst; simpl; auto;
@@ -3022,13 +3076,13 @@ Qed.
 
 Ltac kgreater1 :=
   repeat match goal with
-           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = SNormal ?s' |- context [f_eval_stmt_with_checks (?k + _) ?ckp ?s ?c] =>
+           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = S_Normal ?s' |- context [f_eval_stmt_with_checks (?k + _) ?ckp ?s ?c] =>
              rewrite (@f_eval_stmt_with_checks_fixpoint _ _ _ _ _ h);auto with arith
-           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = SNormal ?s' |- context [f_eval_stmt_with_checks (_ + ?k) ?ckp ?s ?c] =>
+           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = S_Normal ?s' |- context [f_eval_stmt_with_checks (_ + ?k) ?ckp ?s ?c] =>
              rewrite (@f_eval_stmt_with_checks_fixpoint _ _ _ _ _ h);auto with arith
-           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = SException |- context [f_eval_stmt_with_checks (?k + _) ?ckp ?s ?c] =>
+           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = S_Run_Time_Error |- context [f_eval_stmt_with_checks (?k + _) ?ckp ?s ?c] =>
              rewrite (@f_eval_stmt_with_checks_fixpoint_E _ _ _ _ h);auto with arith
-           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = SException |- context [f_eval_stmt_with_checks (_ + ?k) ?ckp ?s ?c] =>
+           | h:f_eval_stmt_with_checks ?k ?ckp ?s ?c = S_Run_Time_Error |- context [f_eval_stmt_with_checks (_ + ?k) ?ckp ?s ?c] =>
              rewrite (@f_eval_stmt_with_checks_fixpoint_E _ _ _ _ h);auto with arith
          end.
 
@@ -3090,16 +3144,16 @@ Proof.
 Qed.
 
 Lemma f_eval_decl_with_checks_correct0: forall ckp s d s',
-    f_eval_decl_with_checks ckp s d = SNormal s' ->
-       eval_decl_with_checks ckp s d (SNormal s').
+    f_eval_decl_with_checks ckp s d = S_Normal s' ->
+       eval_decl_with_checks ckp s d (S_Normal s').
 Proof.
     intros ckp s d;
     functional induction (f_eval_decl_with_checks ckp s d);
     intros s' h1;
     try match goal with
-    | h: SAbnormal = SNormal ?s |- _ => inversion h
-    | h: SException = SNormal ?s |- _ => inversion h
-    | h: SNormal ?s1 = SNormal ?s2 |- _ => inversion h; subst
+    | h: S_Abnormal = S_Normal ?s |- _ => inversion h
+    | h: S_Run_Time_Error = S_Normal ?s |- _ => inversion h
+    | h: S_Normal ?s1 = S_Normal ?s2 |- _ => inversion h; subst
     end; auto.
   - econstructor; auto.
     symmetry in e; apply e.
@@ -3108,15 +3162,15 @@ Proof.
 Qed.
 
 Lemma f_eval_decl_with_checks_correct1: forall ckp s d,
-    f_eval_decl_with_checks ckp s d = SException ->
-       eval_decl_with_checks ckp s d SException.
+    f_eval_decl_with_checks ckp s d = S_Run_Time_Error ->
+       eval_decl_with_checks ckp s d S_Run_Time_Error.
 Proof.
     intros ckp s d;
     functional induction (f_eval_decl_with_checks ckp s d);
     intros h1;
     try match goal with
-    | h: SAbnormal = SException |- _ => inversion h
-    | h: SNormal ?s = SException |- _ => inversion h
+    | h: S_Abnormal = S_Run_Time_Error |- _ => inversion h
+    | h: S_Normal ?s = S_Run_Time_Error |- _ => inversion h
     end; auto.
     econstructor.
     symmetry in e; apply e.
@@ -3124,10 +3178,10 @@ Proof.
 Qed.
 
 Lemma f_eval_decl_with_checks_correct: forall ckp s d s',
-    (f_eval_decl_with_checks ckp s d = SNormal s' ->
-       eval_decl_with_checks ckp s d (SNormal s')) /\
-    (f_eval_decl_with_checks ckp s d = SException ->
-       eval_decl_with_checks ckp s d SException).
+    (f_eval_decl_with_checks ckp s d = S_Normal s' ->
+       eval_decl_with_checks ckp s d (S_Normal s')) /\
+    (f_eval_decl_with_checks ckp s d = S_Run_Time_Error ->
+       eval_decl_with_checks ckp s d S_Run_Time_Error).
 Proof.
     intros ckp s d s';
     split; intros h1.
@@ -3150,8 +3204,8 @@ Qed.
 
 Ltac apply_decl_correct_lemma :=
     match goal with
-    | |- eval_decl_with_checks ?ckp ?s ?d (SNormal ?s') => apply f_eval_decl_with_checks_correct0
-    | |- eval_decl_with_checks ?ckp ?s ?d SException => apply f_eval_decl_with_checks_correct1
+    | |- eval_decl_with_checks ?ckp ?s ?d (S_Normal ?s') => apply f_eval_decl_with_checks_correct0
+    | |- eval_decl_with_checks ?ckp ?s ?d S_Run_Time_Error => apply f_eval_decl_with_checks_correct1
     end; auto.
 
 Ltac apply_decl_complete_lemma :=
@@ -3160,16 +3214,16 @@ Ltac apply_decl_complete_lemma :=
     end; auto.
 
 Lemma f_eval_decls_with_checks_correct0: forall ckp s ds s',
-    f_eval_decls_with_checks ckp s ds = SNormal s' ->
-        eval_decls_with_checks ckp s ds (SNormal s').
+    f_eval_decls_with_checks ckp s ds = S_Normal s' ->
+        eval_decls_with_checks ckp s ds (S_Normal s').
 Proof.
     intros ckp s ds; 
     functional induction (f_eval_decls_with_checks ckp s ds);
     intros s' h1;
     try match goal with
-    | h: SAbnormal = SNormal ?s |- _ => inversion h
-    | h: SException = SNormal ?s |- _ => inversion h
-    | h: SNormal ?s1 = SNormal ?s2 |- _ => inversion h; subst
+    | h: S_Abnormal = S_Normal ?s |- _ => inversion h
+    | h: S_Run_Time_Error = S_Normal ?s |- _ => inversion h
+    | h: S_Normal ?s1 = S_Normal ?s2 |- _ => inversion h; subst
     end; auto.
   - constructor.
   - specialize (IHs0 _ h1).
@@ -3179,15 +3233,15 @@ Proof.
 Qed.
 
 Lemma f_eval_decls_with_checks_correct1: forall ckp s ds,
-    f_eval_decls_with_checks ckp s ds = SException ->
-        eval_decls_with_checks ckp s ds SException.
+    f_eval_decls_with_checks ckp s ds = S_Run_Time_Error ->
+        eval_decls_with_checks ckp s ds S_Run_Time_Error.
 Proof.
     intros ckp s ds;
     functional induction (f_eval_decls_with_checks ckp s ds);
     intros h1;
     try match goal with
-    | h: SAbnormal = SException |- _ => inversion h
-    | h: SNormal ?s = SException |- _ => inversion h
+    | h: S_Abnormal = S_Run_Time_Error |- _ => inversion h
+    | h: S_Normal ?s = S_Run_Time_Error |- _ => inversion h
     end; auto.
   - specialize (IHs0 h1).
     eapply eval_Decls1.
@@ -3198,10 +3252,10 @@ Proof.
 Qed.
 
 Lemma f_eval_decls_with_checks_correct: forall ckp s ds s',
-    (f_eval_decls_with_checks ckp s ds = SNormal s' ->
-        eval_decls_with_checks ckp s ds (SNormal s')) /\
-    (f_eval_decls_with_checks ckp s ds = SException ->
-        eval_decls_with_checks ckp s ds SException).
+    (f_eval_decls_with_checks ckp s ds = S_Normal s' ->
+        eval_decls_with_checks ckp s ds (S_Normal s')) /\
+    (f_eval_decls_with_checks ckp s ds = S_Run_Time_Error ->
+        eval_decls_with_checks ckp s ds S_Run_Time_Error).
 Proof.
     intros;
     split; intros h1.
@@ -3225,15 +3279,15 @@ Proof.
 Qed.
 
 Lemma f_eval_proc_body_with_checks_correct0: forall k ckp s f s',
-    f_eval_proc_body_with_checks k ckp s f = SNormal s' ->
-        eval_proc_body_with_checks ckp s f (SNormal s').
+    f_eval_proc_body_with_checks k ckp s f = S_Normal s' ->
+        eval_proc_body_with_checks ckp s f (S_Normal s').
 Proof.
     intros k ckp s f;
     functional induction (f_eval_proc_body_with_checks k ckp s f);
     intros s' h1;
     try match goal with
-    |h: SException = SNormal ?s |- _ => inversion h
-    |h: SAbnormal = SNormal ?s |- _ => inversion h
+    |h: S_Run_Time_Error = S_Normal ?s |- _ => inversion h
+    |h: S_Abnormal = S_Normal ?s |- _ => inversion h
     end.
   - econstructor.
     apply f_eval_decls_with_checks_correct0.
@@ -3243,15 +3297,15 @@ Proof.
 Qed.
 
 Lemma f_eval_proc_body_with_checks_correct1: forall k ckp s f,
-    f_eval_proc_body_with_checks k ckp s f = SException ->
-        eval_proc_body_with_checks ckp s f SException.
+    f_eval_proc_body_with_checks k ckp s f = S_Run_Time_Error ->
+        eval_proc_body_with_checks ckp s f S_Run_Time_Error.
 Proof.
     intros k ckp s f;
     functional induction (f_eval_proc_body_with_checks k ckp s f);
     intros h1;
     try match goal with
-    |h: SNormal ?s = SException |- _ => inversion h
-    |h: SAbnormal = SException |- _ => inversion h
+    |h: S_Normal ?s = S_Run_Time_Error |- _ => inversion h
+    |h: S_Abnormal = S_Run_Time_Error |- _ => inversion h
     end.
   - eapply eval_Proc_Body1.
     apply f_eval_decls_with_checks_correct0. 
@@ -3264,10 +3318,10 @@ Proof.
 Qed.
 
 Lemma f_eval_proc_body_with_checks_correct: forall k ckp s f s',
-    (f_eval_proc_body_with_checks k ckp s f = SNormal s' ->
-        eval_proc_body_with_checks ckp s f (SNormal s')) /\
-    (f_eval_proc_body_with_checks k ckp s f = SException ->
-        eval_proc_body_with_checks ckp s f SException).
+    (f_eval_proc_body_with_checks k ckp s f = S_Normal s' ->
+        eval_proc_body_with_checks ckp s f (S_Normal s')) /\
+    (f_eval_proc_body_with_checks k ckp s f = S_Run_Time_Error ->
+        eval_proc_body_with_checks ckp s f S_Run_Time_Error).
 Proof.
     intros;
     split; intros h1.
@@ -3293,8 +3347,8 @@ Proof.
 Qed.
 
 Lemma f_eval_subprogram_with_checks_correct0: forall k ckp s p s',
-    f_eval_subprogram_with_checks k ckp s p = SNormal s' ->
-        eval_subprogram_with_checks ckp s p (SNormal s').
+    f_eval_subprogram_with_checks k ckp s p = S_Normal s' ->
+        eval_subprogram_with_checks ckp s p (S_Normal s').
 Proof.
     intros k ckp s p;
     functional induction (f_eval_subprogram_with_checks k ckp s p);
@@ -3305,8 +3359,8 @@ Proof.
 Qed.
 
 Lemma f_eval_subprogram_with_checks_correct1: forall k ckp s p,
-    f_eval_subprogram_with_checks k ckp s p = SException ->
-        eval_subprogram_with_checks ckp s p SException.
+    f_eval_subprogram_with_checks k ckp s p = S_Run_Time_Error ->
+        eval_subprogram_with_checks ckp s p S_Run_Time_Error.
 Proof.
     intros k ckp s p;
     functional induction (f_eval_subprogram_with_checks k ckp s p);
@@ -3317,10 +3371,10 @@ Proof.
 Qed.
 
 Lemma f_eval_subprogram_with_checks_correct: forall k ckp s p s',
-    (f_eval_subprogram_with_checks k ckp s p = SNormal s' ->
-        eval_subprogram_with_checks ckp s p (SNormal s')) /\
-    (f_eval_subprogram_with_checks k ckp s p = SException ->
-        eval_subprogram_with_checks ckp s p SException).
+    (f_eval_subprogram_with_checks k ckp s p = S_Normal s' ->
+        eval_subprogram_with_checks ckp s p (S_Normal s')) /\
+    (f_eval_subprogram_with_checks k ckp s p = S_Run_Time_Error ->
+        eval_subprogram_with_checks ckp s p S_Run_Time_Error).
 Proof.
     intros;
     split; intros h1.
@@ -3341,6 +3395,3 @@ Proof.
     exists k; unfold f_eval_subprogram_with_checks.
     assumption.
 Qed.
-
-
-

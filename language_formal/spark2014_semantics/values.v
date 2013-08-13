@@ -10,35 +10,27 @@ Inductive value : Type :=
 (** Type of stored values in the stack *)
 Inductive val: Type := 
     | Value: value -> val
-    | Vundef: val.
+    | Undefined: val.
 
-(** Expression evaluation results can be:
-     - normal values
-     - exceptions caught by run time checks (for example, overflow, division by zero)
-     - abnormal values caused by, for example, 
-       type checks failure, undefined variables, un-initialized variables;
+(** Expression evaluation returns one of the following results:
+    - normal values;
+    - run time errors, which is caught by run time checks,
+      for example, overflow check and division by zero check;
+    - abnormal values, which includes compile time errors
+      (for example, type checks failure and undefined variables), 
+      bounded errors and erroneous execution. In the future, 
+      if it's necessary, we would refine the abnormal value into 
+      these more precise categories (1.1.5);
 *)
+
 Inductive return_val: Type :=
-    | ValNormal: value -> return_val
-    | ValException: return_val
-    | ValAbnormal: return_val. 
+    | Val_Normal: value -> return_val
+    | Val_Run_Time_Error: return_val
+    | Val_Abnormal: return_val. 
 
-(** type of stored/return values *)
-Inductive stored_value_type: val -> typ -> Prop :=
-    | SVT_Int: forall n, stored_value_type (Value (Int n)) Tint
-    | SVT_Bool: forall b, stored_value_type (Value (Bool b)) Tbool.
-
-Inductive return_value_type: return_val -> typ -> Prop :=
-    | RVT_Int: forall n, return_value_type (ValNormal (Int n)) Tint
-    | RVT_Bool: forall b, return_value_type (ValNormal (Bool b)) Tbool.
-
-Lemma value_type_consistent: forall v t,
-    stored_value_type (Value v) t <-> return_value_type (ValNormal v) t.
-Proof.
-    intros; split; intros;
-    destruct v; destruct t; 
-    (try constructor; try inversion H).
-Qed.
+Inductive value_of_type: value -> type -> Prop :=
+    | VT_Int: forall n, value_of_type (Int n) Integer
+    | VT_Bool: forall b, value_of_type (Bool b) Boolean.
 
 (** * Value Operations *)
 Module Val.
@@ -55,82 +47,82 @@ Notation "n <= m" := (Z.leb n m) (at level 70, no associativity).
 (** ** Arithmetic operations *)
 Definition add (v1 v2: value): return_val := 
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Int (v1' + v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Int (v1' + v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition sub (v1 v2: value): return_val := 
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Int (v1' - v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Int (v1' - v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition mul (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Int (v1' * v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Int (v1' * v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition div (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Int (v1' / v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Int (v1' / v2'))
+    | _, _ => Val_Abnormal
     end.
 
 (** ** Logic operations  *)
 Definition and (v1 v2: value): return_val :=
     match v1, v2 with
-    | Bool v1', Bool v2' => ValNormal (Bool (andb v1' v2'))
-    | _, _ => ValAbnormal
+    | Bool v1', Bool v2' => Val_Normal (Bool (andb v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition or (v1 v2: value): return_val :=
     match v1, v2 with
-    | Bool v1', Bool v2' => ValNormal (Bool (orb v1' v2'))
-    | _, _ => ValAbnormal
+    | Bool v1', Bool v2' => Val_Normal (Bool (orb v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 (** ** Relational operations *)
 Definition eq (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (Zeq_bool v1' v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Bool (Zeq_bool v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition ne (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (Zneq_bool v1' v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Bool (Zneq_bool v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition gt (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (Zgt_bool v1' v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Bool (Zgt_bool v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition ge (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (Zge_bool v1' v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Bool (Zge_bool v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition lt (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (Zlt_bool v1' v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Bool (Zlt_bool v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 Definition le (v1 v2: value): return_val :=
     match v1, v2 with
-    | Int v1', Int v2' => ValNormal (Bool (Zle_bool v1' v2'))
-    | _, _ => ValAbnormal
+    | Int v1', Int v2' => Val_Normal (Bool (Zle_bool v1' v2'))
+    | _, _ => Val_Abnormal
     end.
 
 (** ** Unary operations *)
 Definition not (v: value): return_val :=
     match v with
-    | Bool v' => ValNormal (Bool (negb v'))
-    | _ => ValAbnormal
+    | Bool v' => Val_Normal (Bool (negb v'))
+    | _ => Val_Abnormal
     end.
-End Val. 
+End Val.

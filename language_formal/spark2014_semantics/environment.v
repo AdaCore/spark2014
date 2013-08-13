@@ -44,42 +44,40 @@ Function update (s: stack) (x : idnum) (v: val): option stack :=
    end.
 
 (** ** Lemmas about stack operations *)
-Lemma fetch_in: forall x s v, fetch x s = Some v -> List.In (x, Value v) s.
+Lemma fetch_in: forall x s v, 
+    fetch x s = Some v -> List.In (x, Value v) s.
 Proof.
     intros x s.
-    functional induction (fetch x s).
-  - intros v H.
-    inversion H; clear H; subst.
-    rewrite beq_nat_true_iff in e0.
-    rewrite e0.
-    simpl.
+    functional induction (fetch x s);
+    intros v1 H;
+    try match goal with
+    | h: None = Some ?v |- _ => inversion h
+    | h: Some ?v1 = Some ?v2 |- _ => inversion h; subst
+    end; simpl.
+  - apply beq_nat_true_iff in e0; subst.
     left;auto.
-  - intros v H.
-    inversion H. 
-  - intros v0 H.
-    simpl.
-    right.
+  - right.
     apply IHo.
     assumption.
-  - intros v H.
-    inversion H.
 Qed.
 
-Lemma update_in: forall s x v' s', update s x v' = Some s' -> (exists v, List.In (x, v) s).
+Lemma update_in: forall s x v' s', 
+    update s x v' = Some s' -> (exists v, List.In (x, v) s).
 Proof.
     intros s x v'.
     functional induction (update s x v');
+    intros s1 h1;
     try match goal with
-    | [h: beq_nat _ _ = true |- _ ] => rewrite beq_nat_true_iff in h; subst
-    end; intros s1 h1.
+    | h: None = Some ?s |- _ => inversion h
+    | h: beq_nat _ _ = true |- _  => rewrite beq_nat_true_iff in h; subst
+    end.
   - exists v'. 
-    simpl. left; auto.
+    simpl.
+    left; auto.
   - specialize (IHo s'' e1).
     inversion IHo.
     exists x0. simpl. 
     right; assumption.
-  - inversion h1.
-  - inversion h1.
 Qed.
     
 Lemma in_update: forall s x v' y v s',
@@ -90,7 +88,7 @@ Proof.
     intros s x v'.
     functional induction (update s x v'); simpl; intros y0 v0 s0 h h'; subst;
     (inversion h; clear h); subst.
-    rewrite beq_nat_true_iff in e0; subst.
+    apply beq_nat_true_iff in e0; subst.
   - destruct h'.
     + left. inversion H; auto.
     + right. right; assumption.
@@ -106,7 +104,7 @@ Qed.
 (** * Symbol Table *)
 
 (** ** Symbol table as a list *)
-Definition symtb: Type := list (idnum * (mode * typ)).
+Definition symtb: Type := list (idnum * (mode * type)).
 
 (** ** Symbol table operations *)
 Fixpoint lookup (x : idnum) (tb: symtb) := 
@@ -116,18 +114,23 @@ Fixpoint lookup (x : idnum) (tb: symtb) :=
    end.
 
 (** * Program State *)
-(** 
-    possible state after running a command:
-    - a normal resultant stack
-    - an exception caught by run time checks, for example overflow, division by zero and so on)
-    - an unterminated state
-    - an abnormal (unexpected) state
+(** Statement evaluation returns one of the following results:
+    - normal state;
+    - run time errors, which is caught by run time checks,
+      for example, overflow check and division by zero check;
+    - unterminated state because of the loop;
+    - abnormal state, which includes compile time errors
+      (for example, type checks failure and undefined variables), 
+      bounded errors and erroneous execution. In the future, 
+      if it's necessary, we would refine the abnormal state into 
+      these more precise categories (1.1.5);
 *)
+
 Inductive state: Type :=
-    | SNormal: stack -> state
-    | SException: state
-    | SUnterminated: state
-    | SAbnormal: state.
+    | S_Normal: stack -> state
+    | S_Run_Time_Error: state
+    | S_Unterminated: state
+    | S_Abnormal: state.
 
 (** * Type Check Stack *)
 
@@ -140,35 +143,36 @@ Inductive type_check_stack: symtb -> stack -> Prop :=
     | TC_Empty: type_check_stack nil nil
     | TC_Bool: forall tb s x m b,
           type_check_stack tb s ->
-          type_check_stack ((x, (m, Tbool)) :: tb) ((x, (Value (Bool b))) :: s)
+          type_check_stack ((x, (m, Boolean)) :: tb) ((x, (Value (Bool b))) :: s)
     | TC_Int: forall tb s x m v,
           type_check_stack tb s ->
-          type_check_stack ((x, (m, Tint)) :: tb) ((x, (Value (Int v))) :: s)
+          type_check_stack ((x, (m, Integer)) :: tb) ((x, (Value (Int v))) :: s)
     | TC_UndefBool: forall tb s x m,
           type_check_stack tb s ->
-          type_check_stack ((x, (m, Tbool)) :: tb) ((x, Vundef) :: s)
+          type_check_stack ((x, (m, Boolean)) :: tb) ((x, Undefined) :: s)
     | TC_UndefInt: forall tb s x m,
           type_check_stack tb s ->
-          type_check_stack ((x, (m, Tint)) :: tb) ((x, Vundef) :: s).
+          type_check_stack ((x, (m, Integer)) :: tb) ((x, Undefined) :: s).
 
 Function f_type_check_stack (tb: symtb) (s: stack): bool :=
     match tb, s with
     | nil, nil => true
     | (u :: tb'), (v :: s') => 
         match u, v with
-        | (x, (m, Tbool)), (y, (Value (Bool b))) => 
+        | (x, (m, Boolean)), (y, (Value (Bool b))) => 
             if beq_nat x y then f_type_check_stack tb' s' else false
-        | (x, (m, Tint)), (y, (Value (Int v))) => 
+        | (x, (m, Integer)), (y, (Value (Int v))) => 
             if beq_nat x y then f_type_check_stack tb' s' else false
-        | (x, (m, Tbool)), (y, Vundef) => 
+        | (x, (m, Boolean)), (y, Undefined) => 
             if beq_nat x y then f_type_check_stack tb' s' else false
-        | (x, (m, Tint)), (y, Vundef) => 
+        | (x, (m, Integer)), (y, Undefined) => 
             if beq_nat x y then f_type_check_stack tb' s' else false
         | _, _ => false
         end
     | _, _ => false
     end.
 
+(** Bisimulation proof between f_type_check_stack and type_check_stack; *)
 Lemma f_type_check_stack_correct: forall tb s,
     f_type_check_stack tb s = true ->
         type_check_stack tb s.
@@ -199,11 +203,11 @@ Qed.
 Lemma typed_value: forall tb s x v,
     type_check_stack tb s ->
     fetch x s = Some v ->
-    (exists t, stored_value_type (Value v) t /\ ( exists m, lookup x tb = Some (m, t))).
+    (exists t, value_of_type v t /\ ( exists m, lookup x tb = Some (m, t))).
 Proof.
     intros tb s x v h1 h2.
     destruct v.
-  - exists Tint.
+  - exists Integer.
     split.
     + constructor.
     + induction h1;
@@ -216,7 +220,7 @@ Proof.
        fold lookup;
        specialize (IHh1 h2);
        assumption.
-  - exists Tbool.
+  - exists Boolean.
     split.
     + constructor.
     + induction h1;
@@ -266,7 +270,7 @@ Lemma typed_value': forall tb s x m t,
     type_check_stack tb s ->
     lookup x tb = Some (m, t) -> 
     reside x s = true /\ 
-    (forall v, (Some v = fetch x s) -> stored_value_type (Value v) t).
+    (forall v, (Some v = fetch x s) -> value_of_type v t).
 Proof.
     intros tb s x m t h1 h2.
     induction h1;

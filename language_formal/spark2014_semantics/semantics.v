@@ -3,61 +3,61 @@ Require Export environment.
 Require Import util.
 
 (** * Relational Semantics *)
-(** interpret the constant syntax as a constant stored value *)
-Definition eval_constant (cst: constant): value :=
-    match cst with
-    | Ointconst v => (Int v)
-    | Oboolconst b => (Bool b)
+(** interpret the literal expressions *)
+Definition eval_literal (l: literal): value :=
+    match l with
+    | Integer_Literal v => (Int v)
+    | Boolean_Literal b => (Bool b)
     end.
 
-(** interpret the binary operation for each binary operator *)
-Inductive eval_binexpr: binary_operation -> value -> value -> value -> Prop :=
-    | Eq: forall v1 v2 b,
+(** interpret the binary operators *)
+Inductive eval_bin_expr: binary_operator -> value -> value -> value -> Prop :=
+    | Bin_Eq: forall v1 v2 b,
         Zeq_bool v1 v2 = b ->
-        eval_binexpr Ceq (Int v1) (Int v2) (Bool b)
-    | Ne: forall v1 v2 b,
+        eval_bin_expr Equal (Int v1) (Int v2) (Bool b)
+    | Bin_Ne: forall v1 v2 b,
         Zneq_bool v1 v2 = b ->
-        eval_binexpr Cne (Int v1) (Int v2) (Bool b)
-    | Gt: forall v1 v2 b,
+        eval_bin_expr Not_Equal (Int v1) (Int v2) (Bool b)
+    | Bin_Gt: forall v1 v2 b,
         Zgt_bool v1 v2 = b ->
-        eval_binexpr Cgt (Int v1) (Int v2) (Bool b)
-    | Ge: forall v1 v2 b,
+        eval_bin_expr Greater_Than (Int v1) (Int v2) (Bool b)
+    | Bin_Ge: forall v1 v2 b,
         Zge_bool v1 v2 = b ->
-        eval_binexpr Cge (Int v1) (Int v2) (Bool b)
-    | Lt: forall v1 v2 b,
+        eval_bin_expr Greater_Than_Or_Equal (Int v1) (Int v2) (Bool b)
+    | Bin_Lt: forall v1 v2 b,
         Zlt_bool v1 v2 = b ->
-        eval_binexpr Clt (Int v1) (Int v2) (Bool b)
-    | Le: forall v1 v2 b,
+        eval_bin_expr Less_Than (Int v1) (Int v2) (Bool b)
+    | Bin_Le: forall v1 v2 b,
         Zle_bool v1 v2 = b ->
-        eval_binexpr Cle (Int v1) (Int v2) (Bool b)
-    | And: forall v1 v2 b,
+        eval_bin_expr Less_Than_Or_Equal (Int v1) (Int v2) (Bool b)
+    | Bin_And: forall v1 v2 b,
         andb v1 v2 = b ->
-        eval_binexpr Oand (Bool v1) (Bool v2) (Bool b)
-    | Or: forall v1 v2 b,
+        eval_bin_expr And (Bool v1) (Bool v2) (Bool b)
+    | Bin_Or: forall v1 v2 b,
         orb v1 v2 = b ->
-        eval_binexpr Oor (Bool v1) (Bool v2) (Bool b)
-    | Add: forall v1 v2 v3,
+        eval_bin_expr Or (Bool v1) (Bool v2) (Bool b)
+    | Bin_Plus: forall v1 v2 v3,
         (v1 + v2)%Z =v3 ->
-        eval_binexpr Oadd (Int v1) (Int v2) (Int v3)
-    | Sub: forall v1 v2 v3,
+        eval_bin_expr Plus (Int v1) (Int v2) (Int v3)
+    | Bin_Minus: forall v1 v2 v3,
         (v1 - v2)%Z =v3 ->
-        eval_binexpr Osub (Int v1) (Int v2) (Int v3)
-    | Mul: forall v1 v2 v3,
+        eval_bin_expr Minus (Int v1) (Int v2) (Int v3)
+    | Bin_Mul: forall v1 v2 v3,
         (v1 * v2)%Z =v3 ->
-        eval_binexpr Omul (Int v1) (Int v2) (Int v3)
-    | Div: forall v1 v2 v3,
+        eval_bin_expr Multiply (Int v1) (Int v2) (Int v3)
+    | Bin_Div: forall v1 v2 v3,
         (v1 / v2)%Z =v3 ->
-        eval_binexpr Odiv (Int v1) (Int v2) (Int v3).
+        eval_bin_expr Divide (Int v1) (Int v2) (Int v3).
 
 (** interpret the unary operation *)
-Inductive eval_unaryexpr : unary_operation -> value -> value -> Prop :=
-    | Not: forall b v,
+Inductive eval_unary_expr : unary_operator -> value -> value -> Prop :=
+    | Unary_Not: forall b v,
         negb b = v ->
-        eval_unaryexpr Onot (Bool b) (Bool v).
+        eval_unary_expr Not (Bool b) (Bool v).
 
 Lemma eval_bin_unique: forall op v1 v2 x y,
-    eval_binexpr op v1 v2 x ->
-    eval_binexpr op v1 v2 y ->
+    eval_bin_expr op v1 v2 x ->
+    eval_bin_expr op v1 v2 y ->
     x = y.
 Proof.
     intros.
@@ -67,8 +67,8 @@ Proof.
 Qed.
 
 Lemma eval_unary_unique: forall uop v x y,
-    eval_unaryexpr uop v x ->
-    eval_unaryexpr uop v y ->
+    eval_unary_expr uop v x ->
+    eval_unary_expr uop v y ->
     x = y.
 Proof.
     intros.
@@ -93,30 +93,30 @@ Qed.
        the operation.
 *)
 
-(** *** check actions *)
+(** *** run time checks *)
 (** which are needed to be performed before excecuting the program *)
-Inductive check_action: Type := 
-   | Do_Division_Check: check_action
-   | Do_Overflow_Check: check_action.
+Inductive run_time_checks: Type := 
+   | Do_Division_Check: run_time_checks
+   | Do_Overflow_Check: run_time_checks.
 
 (** add check flags for AST nodes according to the checking rules; 
     Note: now we only consider the division by zero check, later we will 
     extend it by adding overflow checks;
 *)
-Inductive check_flag: expr -> option check_action -> Prop :=
+Inductive check_flag: expression -> option run_time_checks -> Prop :=
     | CF_Econst_Int: forall ast_num n,
-        check_flag (Econst ast_num (Ointconst n)) None
+        check_flag (E_Literal ast_num (Integer_Literal n)) None
     | CF_Econst_Bool: forall ast_num b,
-        check_flag (Econst ast_num (Oboolconst b)) None
+        check_flag (E_Literal ast_num (Boolean_Literal b)) None
     | CF_Evar: forall ast_num x,  
-        check_flag (Evar ast_num x) None
+        check_flag (E_Identifier ast_num x) None
     | CF_Ebinop_Div: forall ast_num e1 e2,
-        check_flag (Ebinop ast_num Odiv e1 e2) (Some Do_Division_Check)
+        check_flag (E_Binary_Operation ast_num Divide e1 e2) (Some Do_Division_Check)
     | CF_Ebinop_Others: forall ast_num op e1 e2,
-        op <> Odiv ->
-        check_flag (Ebinop ast_num op e1 e2) None
+        op <> Divide ->
+        check_flag (E_Binary_Operation ast_num op e1 e2) None
     | CF_Eunop: forall ast_num op e,
-        check_flag (Eunop ast_num op e) None.
+        check_flag (E_Unary_Operation ast_num op e) None.
 
 (** *** semantics for run-time checks *)
 
@@ -124,12 +124,12 @@ Inductive is_not_zero: Z -> bool -> Prop :=
     | Not_Zero: forall v, v <> 0%Z -> is_not_zero v true
     | Is_Zero: forall v, v = 0%Z -> is_not_zero v false.
 
-Inductive do_check: binary_operation -> value -> value -> bool -> Prop :=
+Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
     | Do_Division_Check0: forall v1 v2 b,
         is_not_zero v2 b ->
-        do_check Odiv v1 (Int v2) b
+        do_check Divide v1 (Int v2) b
     | Do_Nothing: forall op v1 v2,
-        op <> Odiv ->
+        op <> Divide ->
         do_check op v1 v2 true.
 (*
     | DC_Overflow_Check0: 
@@ -138,90 +138,96 @@ Inductive do_check: binary_operation -> value -> value -> bool -> Prop :=
 
 (** ** Expression semantics *)
 (**
-    for binary expression and unary expression, if any of its child expression returns exception,
-    then the reuslt of the whole expression is exception; for binary expression (e1 op e2), 
-    if both e1 and e2 can evaluate to some normal value, then we do some checks on the operator 'op',
-    whenever the check fails, an exception is returned, otherwise, binary operation result is returned
+    for binary expression and unary expression, if any of its child 
+    expression returns exception, then the reuslt of the whole 
+    expression is exception; for binary expression (e1 op e2), if 
+    both e1 and e2 can be evaluated to some normal value, then we 
+    do the run time checks on the operator 'op', whenever the check 
+    fails, an exception is returned, otherwise, binary operation 
+    result is returned;
  *)
-Inductive eval_expr: stack -> expr -> return_val -> Prop :=
-    | eval_Econst: forall cst v s ast_num,
-        eval_constant cst = v ->
-        eval_expr s (Econst ast_num cst) (ValNormal v)
-    | eval_Evar: forall x s v ast_num,
+
+Inductive eval_expr: stack -> expression -> return_val -> Prop :=
+    | eval_E_Literal: forall l v s ast_num,
+        eval_literal l = v ->
+        eval_expr s (E_Literal ast_num l) (Val_Normal v)
+    | eval_E_Identifier: forall x s v ast_num,
         fetch x s = Some v ->
-        eval_expr s (Evar ast_num x) (ValNormal v)
-    | eval_Ebinop1: forall s e1 ast_num op e2,
-        eval_expr s e1 ValException ->
-        eval_expr s (Ebinop ast_num op e1 e2) ValException
-    | eval_Ebinop2: forall s e1 v1 e2 ast_num op,
-        eval_expr s e1 (ValNormal v1) ->
-        eval_expr s e2 ValException ->
-        eval_expr s (Ebinop ast_num op e1 e2) ValException
-    | eval_Ebinop3: forall s e1 v1 e2 v2 ast_num op,
-        eval_expr s e1 (ValNormal v1) ->
-        eval_expr s e2 (ValNormal v2) ->
+        eval_expr s (E_Identifier ast_num x) (Val_Normal v)
+    | eval_E_Binary_Operation1: forall s e1 ast_num op e2,
+        eval_expr s e1 Val_Run_Time_Error ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
+    | eval_E_Binary_Operation2: forall s e1 v1 e2 ast_num op,
+        eval_expr s e1 (Val_Normal v1) ->
+        eval_expr s e2 Val_Run_Time_Error ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
+    | eval_E_Binary_Operation3: forall s e1 v1 e2 v2 ast_num op,
+        eval_expr s e1 (Val_Normal v1) ->
+        eval_expr s e2 (Val_Normal v2) ->
         do_check op v1 v2 false ->
-        eval_expr s (Ebinop ast_num op e1 e2) ValException
-    | eval_Ebinop4: forall s e1 v1 e2 v2 ast_num op v,
-        eval_expr s e1 (ValNormal v1) ->
-        eval_expr s e2 (ValNormal v2) ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
+    | eval_E_Binary_Operation4: forall s e1 v1 e2 v2 ast_num op v,
+        eval_expr s e1 (Val_Normal v1) ->
+        eval_expr s e2 (Val_Normal v2) ->
         do_check op v1 v2 true ->
-        eval_binexpr op v1 v2 v ->
-        eval_expr s (Ebinop ast_num op e1 e2) (ValNormal v)
-    | eval_Eunop1: forall s e ast_num op,
-        eval_expr s e ValException ->
-        eval_expr s (Eunop ast_num op e) ValException
-    | eval_Eunop2: forall s e v ast_num op v1,
-        eval_expr s e (ValNormal v) ->
-        eval_unaryexpr op v v1 ->
-        eval_expr s (Eunop ast_num op e) (ValNormal v1).
+        eval_bin_expr op v1 v2 v ->
+        eval_expr s (E_Binary_Operation ast_num op e1 e2) (Val_Normal v)
+    | eval_E_Unary_Operation1: forall s e ast_num op,
+        eval_expr s e Val_Run_Time_Error ->
+        eval_expr s (E_Unary_Operation ast_num op e) Val_Run_Time_Error
+    | eval_E_Unary_Operation2: forall s e v ast_num op v1,
+        eval_expr s e (Val_Normal v) ->
+        eval_unary_expr op v v1 ->
+        eval_expr s (E_Unary_Operation ast_num op e) (Val_Normal v1).
 
 
 (** ** Statement semantics *)
 (** 
-   for any command, whenever its sub-statement throws an exception or any expression 
-   evaluate to an exception, then the whole statement returns an exception; 
+   for any statement, whenever its sub-statement throws an exception 
+   or any expression in assignment is evaluated to an exception, 
+   then the whole statement returns an exception; 
 *)
-Inductive eval_stmt: stack -> stmt -> state -> Prop := 
-    | eval_Sassign1: forall s e ast_num x,
-        eval_expr s e ValException ->
-        eval_stmt s (Sassign ast_num x e) SException
-    | eval_Sassign2: forall s e v x s1 ast_num,
-        eval_expr s e (ValNormal v) ->
+
+Inductive eval_stmt: stack -> statement -> state -> Prop := 
+    | eval_S_Assignment1: forall s e ast_num x,
+        eval_expr s e Val_Run_Time_Error ->
+        eval_stmt s (S_Assignment ast_num x e) S_Run_Time_Error
+    | eval_S_Assignment2: forall s e v x s1 ast_num,
+        eval_expr s e (Val_Normal v) ->
         update s x (Value v) = Some s1 ->
-        eval_stmt s (Sassign ast_num x e) (SNormal s1)
-    | eval_Sseq1: forall s c1 ast_num c2,
-        eval_stmt s c1 SException ->
-        eval_stmt s (Sseq ast_num c1 c2) SException
-    | eval_Sseq2: forall ast_num s s1 s2 c1 c2,
-        eval_stmt s c1 (SNormal s1) ->
+        eval_stmt s (S_Assignment ast_num x e) (S_Normal s1)
+    | eval_S_Sequence1: forall s c1 ast_num c2,
+        eval_stmt s c1 S_Run_Time_Error ->
+        eval_stmt s (S_Sequence ast_num c1 c2) S_Run_Time_Error
+    | eval_S_Sequence2: forall ast_num s s1 s2 c1 c2,
+        eval_stmt s c1 (S_Normal s1) ->
         eval_stmt s1 c2 s2 ->
-        eval_stmt s (Sseq ast_num c1 c2) s2
-    | eval_Sifthen: forall s b ast_num c,
-        eval_expr s b ValException ->
-        eval_stmt s (Sifthen ast_num b c) SException
-    | eval_Sifthen_True: forall s b c s1 ast_num,
-        eval_expr s b (ValNormal (Bool true)) ->
+        eval_stmt s (S_Sequence ast_num c1 c2) s2
+    | eval_S_If: forall s b ast_num c,
+        eval_expr s b Val_Run_Time_Error ->
+        eval_stmt s (S_If ast_num b c) S_Run_Time_Error
+    | eval_S_If_True: forall s b c s1 ast_num,
+        eval_expr s b (Val_Normal (Bool true)) ->
         eval_stmt s c s1 ->
-        eval_stmt s (Sifthen ast_num b c) s1
-    | eval_Sifthen_False: forall s b ast_num c,
-        eval_expr s b (ValNormal (Bool false)) ->
-        eval_stmt s (Sifthen ast_num b c) (SNormal s)
-    | eval_Swhile: forall s b ast_num c,
-        eval_expr s b ValException ->
-        eval_stmt s (Swhile ast_num b c) SException
-    | eval_Swhile_True1: forall s b c ast_num,
-        eval_expr s b (ValNormal (Bool true)) ->
-        eval_stmt s c SException ->
-        eval_stmt s (Swhile ast_num b c) SException
-    | eval_Swhile_True2: forall s b c s1 ast_num s2,
-        eval_expr s b (ValNormal (Bool true)) ->
-        eval_stmt s c (SNormal s1) ->
-        eval_stmt s1 (Swhile ast_num b c) s2 ->
-        eval_stmt s (Swhile ast_num b c) s2
-    | eval_Swhile_False: forall s b ast_num c,
-        eval_expr s b (ValNormal (Bool false)) ->
-        eval_stmt s (Swhile ast_num b c) (SNormal s).
+        eval_stmt s (S_If ast_num b c) s1
+    | eval_S_If_False: forall s b ast_num c,
+        eval_expr s b (Val_Normal (Bool false)) ->
+        eval_stmt s (S_If ast_num b c) (S_Normal s)
+    | eval_S_While_Loop: forall s b ast_num c,
+        eval_expr s b Val_Run_Time_Error ->
+        eval_stmt s (S_While_Loop ast_num b c) S_Run_Time_Error
+    | eval_S_While_Loop_True1: forall s b c ast_num,
+        eval_expr s b (Val_Normal (Bool true)) ->
+        eval_stmt s c S_Run_Time_Error ->
+        eval_stmt s (S_While_Loop ast_num b c) S_Run_Time_Error
+    | eval_S_While_Loop_True2: forall s b c s1 ast_num s2,
+        eval_expr s b (Val_Normal (Bool true)) ->
+        eval_stmt s c (S_Normal s1) ->
+        eval_stmt s1 (S_While_Loop ast_num b c) s2 ->
+        eval_stmt s (S_While_Loop ast_num b c) s2
+    | eval_S_While_Loop_False: forall s b ast_num c,
+        eval_expr s b (Val_Normal (Bool false)) ->
+        eval_stmt s (S_While_Loop ast_num b c) (S_Normal s).
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
 
@@ -245,9 +251,9 @@ Inductive eval_stmt: stack -> stmt -> state -> Prop :=
     - f_eval_stmt <-> eval_stmt;
 *)
 
-Function f_do_check (op: binary_operation) (v1: value) (v2: value): option bool :=
+Function f_do_check (op: binary_operator) (v1: value) (v2: value): option bool :=
     match op with
-    | Odiv =>
+    | Divide =>
         match v2 with
         | Int v2' => if Zeq_bool v2' 0 then Some false else Some true
         | _ => None
@@ -256,119 +262,122 @@ Function f_do_check (op: binary_operation) (v1: value) (v2: value): option bool 
     end.
 
 (** interpret the binary operation for each binary operator *)
-Definition f_eval_binexpr (op: binary_operation) (v1: value) (v2: value): return_val :=
+Definition f_eval_bin_expr (op: binary_operator) (v1: value) (v2: value): return_val :=
     match op with
-    | Ceq => Val.eq v1 v2
-    | Cne => Val.ne v1 v2
-    | Cgt => Val.gt v1 v2
-    | Cge => Val.ge v1 v2
-    | Clt => Val.lt v1 v2
-    | Cle => Val.le v1 v2
-    | Oand => Val.and v1 v2
-    | Oor => Val.or v1 v2
-    | Oadd => Val.add v1 v2
-    | Osub => Val.sub v1 v2
-    | Omul => Val.mul v1 v2
-    | Odiv => Val.div v1 v2
+    | Equal => Val.eq v1 v2
+    | Not_Equal => Val.ne v1 v2
+    | Greater_Than => Val.gt v1 v2
+    | Greater_Than_Or_Equal => Val.ge v1 v2
+    | Less_Than => Val.lt v1 v2
+    | Less_Than_Or_Equal => Val.le v1 v2
+    | And => Val.and v1 v2
+    | Or => Val.or v1 v2
+    | Plus => Val.add v1 v2
+    | Minus => Val.sub v1 v2
+    | Multiply => Val.mul v1 v2
+    | Divide => Val.div v1 v2
     end.
 
 (** interpret the unary operation *)
-Definition f_eval_unaryexpr (op: unary_operation) (v: value): return_val :=
+
+Definition f_eval_unary_expr (op: unary_operator) (v: value): return_val :=
     match op with
-    | Onot => Val.not v
+    | Not => Val.not v
     end.
 
 (** ** Expression semantics *)
 
 (**
-    in functional semantics for expression, it returns either a normal value or an 
-    exception or go abnormal, the run time checks (for division by zero) are 
-    encoded inside the semantics;
+    in functional semantics for expression, it returns either a 
+    normal value or a run time error or go abnormal, the run time 
+    checks (for example, division by zero check) are encoded inside 
+    the semantics;
 *)
 (* here use 'Function' instead of 'Fixpoint' in order to use 
    tactic 'functional induction (f_eval_expr _ _)' in proofs;
 *)
-Function f_eval_expr (s: stack) (e: expr): return_val :=
+Function f_eval_expr (s: stack) (e: expression): return_val :=
     match e with
-    | Econst _ v => ValNormal (eval_constant v)
-    | Evar _ x =>
+    | E_Literal _ v => Val_Normal (eval_literal v)
+    | E_Identifier _ x =>
         match (fetch x s) with
-        | Some v => ValNormal v
-        | None => ValAbnormal
+        | Some v => Val_Normal v
+        | None => Val_Abnormal
         end
-    | Ebinop _ op e1 e2 =>
+    | E_Binary_Operation _ op e1 e2 =>
         match f_eval_expr s e1 with
-        | ValNormal v1 => 
+        | Val_Normal v1 => 
             match f_eval_expr s e2 with
-            | ValNormal v2 => 
+            | Val_Normal v2 => 
                 match f_do_check op v1 v2 with
-                | Some true => f_eval_binexpr op v1 v2
-                | Some false => ValException
-                | _ => ValAbnormal
+                | Some true => f_eval_bin_expr op v1 v2
+                | Some false => Val_Run_Time_Error
+                | _ => Val_Abnormal
                 end
-            | ValException => ValException
-            | ValAbnormal => ValAbnormal
+            | Val_Run_Time_Error => Val_Run_Time_Error
+            | Val_Abnormal => Val_Abnormal
             end
-        | ValException => ValException
-        | ValAbnormal => ValAbnormal
+        | Val_Run_Time_Error => Val_Run_Time_Error
+        | Val_Abnormal => Val_Abnormal
         end   
-    | Eunop _ op e => 
+    | E_Unary_Operation _ op e => 
         match f_eval_expr s e with
-        | ValNormal v => f_eval_unaryexpr op v
-        | ValException => ValException
-        | ValAbnormal => ValAbnormal
+        | Val_Normal v => f_eval_unary_expr op v
+        | Val_Run_Time_Error => Val_Run_Time_Error
+        | Val_Abnormal => Val_Abnormal
         end
     end.
 
 (** ** Statement semantics *)
 (** 
-   in the functional semantics for statement, 'k' denotes the execution steps, whenever it reaches 0,
-   an untermination state is returned, in other cases, it can return a normal state, an exception or
-   an abnormal state; run time checks (for division by zero) are encoded inside the functional 
-   semantics;
+   in the functional semantics for statement, 'k' denotes the execution 
+   steps, whenever it reaches 0, an untermination state is returned, 
+   in other cases, it can return a normal state, a run time check error 
+   or an abnormal state; run time checks (for example, division by zero 
+   check) are encoded inside the functional semantics;
 *)
 
-Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state := 
+Function f_eval_stmt k (s: stack) (c: statement) {struct k}: state := 
   match k with
-  | 0 => SUnterminated
+  | 0 => S_Unterminated
   | S k' => 
     match c with
-    | Sassign ast_num x e =>
+    | S_Assignment ast_num x e =>
         match f_eval_expr s e with
-        | ValNormal v => 
+        | Val_Normal v => 
             match update s x (Value v) with
-            | Some s1 => SNormal s1
-            | None => SAbnormal
+            | Some s1 => S_Normal s1
+            | None => S_Abnormal
             end
-        | ValException => SException
-        | ValAbnormal => SAbnormal
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | Val_Abnormal => S_Abnormal
         end
-    | Sseq ast_num c1 c2 =>
+    | S_Sequence ast_num c1 c2 =>
         match f_eval_stmt k' s c1 with
-        | SNormal s1 => f_eval_stmt k' s1 c2
-        | SException => SException
-        | SUnterminated => SUnterminated
-        | SAbnormal => SAbnormal
+        | S_Normal s1 => f_eval_stmt k' s1 c2
+        | S_Run_Time_Error => S_Run_Time_Error
+        | S_Unterminated => S_Unterminated
+        | S_Abnormal => S_Abnormal
         end
-    | Sifthen ast_num b c =>
+    | S_If ast_num b c =>
         match f_eval_expr s b with
-        | ValNormal (Bool true) => f_eval_stmt k' s c
-        | ValNormal (Bool false) => SNormal s
-        | ValException => SException
-        | _ => SAbnormal
+        | Val_Normal (Bool true) => f_eval_stmt k' s c
+        | Val_Normal (Bool false) => S_Normal s
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
-    | Swhile ast_num b c => 
+    | S_While_Loop ast_num b c => 
         match f_eval_expr s b with
-        | ValNormal (Bool true) => 
+        | Val_Normal (Bool true) => 
             match f_eval_stmt k' s c with
-            | SNormal s1 => f_eval_stmt k' s1 (Swhile ast_num b c)
-            | SException => SException
-            | SUnterminated => SUnterminated
-            | SAbnormal => SAbnormal
+            | S_Normal s1 => f_eval_stmt k' s1 (S_While_Loop ast_num b c)
+            | S_Run_Time_Error => S_Run_Time_Error
+            | S_Unterminated => S_Unterminated
+            | S_Abnormal => S_Abnormal
             end
-        | ValNormal (Bool false) => SNormal s
-        | ValException => SException
-        | _ => SAbnormal
+        | Val_Normal (Bool false) => S_Normal s
+        | Val_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
     end
   end.
@@ -381,10 +390,12 @@ Function f_eval_stmt k (s: stack) (c: stmt) {struct k}: state :=
 
 (** * Bisimulation Between Relational And Functional Semantics *)
 
-(** for any expression e, if it evaluate to v1 and v2, then v1 and v2 should be the same; *)
+(** for any expression e, if it is evaluated to v1 and v2, then v1 
+    and v2 should be the same; 
+*)
 Lemma eval_expr_unique: forall s e v1 v2,
-    eval_expr s e (ValNormal v1) ->
-    eval_expr s e (ValNormal v2) ->
+    eval_expr s e (Val_Normal v1) ->
+    eval_expr s e (Val_Normal v2) ->
     v1 = v2.
 Proof.
     induction e; 
@@ -405,41 +416,42 @@ Proof.
 Qed.
 
 (** 
-    for any expression e evaluated under the state s, if it can be evaluated to a value v 
-    under the relational semantics, then the result value v should be either a normal value 
-    or exception;
+    for any expression e evaluated under the state s, if it can be 
+    evaluated to a value v under the relational semantics, then the 
+    result value v should be either a normal value or a run time error;
 *)
 Lemma eval_expr_state : forall s e v,
-        eval_expr s e v -> (* v should be either a normal value or an exception *)
-            (exists v0, v = ValNormal v0) \/ v = ValException.
+        eval_expr s e v -> (* v should be either a normal value or a run time error *)
+            (exists v0, v = Val_Normal v0) \/ v = Val_Run_Time_Error.
 Proof.
     intros s e v h.
     induction h;
     try match goal with
-    | [ |- (exists v, ValNormal ?v1 = ValNormal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- (exists v, Val_Normal ?v1 = Val_Normal v) \/ _ ] => left; exists v1; reflexivity
     | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
     end; auto.
 Qed.
 
 (** 
-    for any statement c run under the state s, if it terminates in a state s' under the relational
-    semantics, then the result state s' should be either a normal state or an exception. 
-    In our relational semantics, all statement that can go abnormal are excluded;
+    for any statement c run under the state s, if it terminates in a 
+    state s' under the relational semantics, then the result state s' 
+    should be either a normal state or a run time error. In the 
+    relational semantics, all statement that can go abnormal are excluded;
 *)
 Lemma eval_stmt_state : forall s c s',
         eval_stmt s c s' -> (* s' is either a normal state or an exception *)
-            (exists v, s' = SNormal v) \/ s' = SException.
+            (exists v, s' = S_Normal v) \/ s' = S_Run_Time_Error.
 Proof.
     intros s c s' h.
     induction h;
     try match goal with
-    | [ |- (exists v, SNormal ?v1 = SNormal v) \/ _ ] => left; exists v1; reflexivity
+    | [ |- (exists v, S_Normal ?v1 = S_Normal v) \/ _ ] => left; exists v1; reflexivity
     | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
     end; auto.
 Qed.
 
-(** (Zeq_bool v 0) checks whether v is zero, and (is_not_zero v b) checks  
-    whether v is not zero and the result is returned by b;
+(** (Zeq_bool v 0) checks whether v is zero, and (is_not_zero v b) 
+    checks whether v is not zero and the result is returned by b;
 *)
 Lemma Zeq_zero_true: forall v,
     Zeq_bool v 0 = true <-> 
@@ -453,7 +465,7 @@ Proof.
   - inversion h; subst.
     auto.
 Qed.
-    
+
 Lemma Zeq_zero_false: forall v,
     Zeq_bool v 0 = false <-> 
     is_not_zero v true.
@@ -507,15 +519,15 @@ Proof.
 Qed.
 
 (** bisimulation proof between f_eval_binexpr and eval_binexpr; *)
-Lemma f_eval_binexpr_correct: forall op v1 v2 v,
-    f_eval_binexpr op v1 v2 = ValNormal v ->
-    eval_binexpr op v1 v2 v.
+Lemma f_eval_bin_expr_correct: forall op v1 v2 v,
+    f_eval_bin_expr op v1 v2 = Val_Normal v ->
+    eval_bin_expr op v1 v2 v.
 Proof.
     intros op v1 v2 v h1.
     destruct op;
     match goal with 
-    |[|- eval_binexpr Odiv _ _ _] => idtac
-    |[|- eval_binexpr ?op _ _ _] =>
+    |[|- eval_bin_expr Divide _ _ _] => idtac
+    |[|- eval_bin_expr ?op _ _ _] =>
         destruct v1, v2;
         simpl in h1; inversion h1; subst;
         constructor; auto
@@ -526,9 +538,9 @@ Proof.
     reflexivity.
 Qed.
 
-Lemma f_eval_binexpr_complete: forall op v1 v2 v,
-    eval_binexpr op v1 v2 v ->
-    f_eval_binexpr op v1 v2 = ValNormal v.
+Lemma f_eval_bin_expr_complete: forall op v1 v2 v,
+    eval_bin_expr op v1 v2 v ->
+    f_eval_bin_expr op v1 v2 = Val_Normal v.
 Proof.
     intros op v1 v2 v h1.
     induction h1;
@@ -537,9 +549,9 @@ Proof.
 Qed.
 
 (** bisimulation proof between f_eval_unaryexpr and eval_unaryexpr; *)
-Lemma f_eval_unaryexpr_correct: forall op v v',
-    f_eval_unaryexpr op v = ValNormal v' ->
-    eval_unaryexpr op v v'.
+Lemma f_eval_unary_expr_correct: forall op v v',
+    f_eval_unary_expr op v = Val_Normal v' ->
+    eval_unary_expr op v v'.
 Proof.
     intros.
     destruct op; simpl in H.
@@ -547,9 +559,9 @@ Proof.
     constructor; auto.
 Qed.
 
-Lemma f_eval_unaryexpr_complete: forall op v v',
-    eval_unaryexpr op v v' ->
-    f_eval_unaryexpr op v = ValNormal v'.
+Lemma f_eval_unary_expr_complete: forall op v v',
+    eval_unary_expr op v v' ->
+    f_eval_unary_expr op v = Val_Normal v'.
 Proof.
     intros op v v' h1;
     induction h1;
@@ -560,8 +572,8 @@ Qed.
 (** ** Bisimulation between f_eval_expr and eval_expr for expression Semantics *)
 (** a help lemma to prove the theorem: f_eval_expr_correct *)
 Lemma f_eval_expr_correct1 : forall s e v,
-                        f_eval_expr s e = ValNormal v ->
-                            eval_expr s e (ValNormal v).
+                        f_eval_expr s e = Val_Normal v ->
+                            eval_expr s e (Val_Normal v).
 Proof.
     intros s e.
     functional induction (f_eval_expr s e);
@@ -578,7 +590,7 @@ Proof.
     exact IHr. exact IHr0.
     + apply f_do_check_correct.
       auto.
-    + apply f_eval_binexpr_correct; 
+    + apply f_eval_bin_expr_correct; 
       auto.
   - specialize (IHr _ e2).
     rewrite h1.
@@ -592,8 +604,8 @@ Qed.
 
 (** another help lemma to prove the theorem: f_eval_expr_correct *)
 Lemma f_eval_expr_correct2 : forall s e,
-                        f_eval_expr s e = ValException ->
-                            eval_expr s e ValException.
+                        f_eval_expr s e = Val_Run_Time_Error ->
+                            eval_expr s e Val_Run_Time_Error.
 Proof.
     intros s e.
     functional induction (f_eval_expr s e);
@@ -602,12 +614,12 @@ Proof.
     simpl in h; inversion h.
   - specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
     specialize (f_eval_expr_correct1 _ _ _ e4); intros hz2.
-    eapply eval_Ebinop3.
+    eapply eval_E_Binary_Operation3.
     apply hz1. apply hz2.
     apply f_do_check_correct; auto.
   - specialize (f_eval_expr_correct1 _ _ _ e3); intros hz1.
     specialize (IHr0 e4).
-    eapply eval_Ebinop2; auto.
+    eapply eval_E_Binary_Operation2; auto.
     exact hz1.
   - specialize (IHr e3).
     constructor; assumption.
@@ -619,15 +631,16 @@ Qed.
 
 (** *** f_eval_expr_correct *)
 (** 
-    for any expression e evaluated with 'f_eval_expr' under the state s,  whenever it returns 
-    a normal value v or an exception, the relationship between evaluation result, s and e should 
-    also be satisfied with regard to the relational semantics 'eval_expr';
+    for any expression e evaluated with 'f_eval_expr' under the 
+    state s,  whenever it returns a normal value v or an exception, 
+    the relationship between evaluation result, s and e should also 
+    be satisfied with regard to the relational semantics 'eval_expr';
 *)
 Theorem f_eval_expr_correct : forall s e v,
-                        (f_eval_expr s e = ValNormal v ->
-                            eval_expr s e (ValNormal v)) /\
-                        (f_eval_expr s e = ValException ->
-                            eval_expr s e ValException).
+                        (f_eval_expr s e = Val_Normal v ->
+                            eval_expr s e (Val_Normal v)) /\
+                        (f_eval_expr s e = Val_Run_Time_Error ->
+                            eval_expr s e Val_Run_Time_Error).
 Proof.
     split.
   - apply f_eval_expr_correct1.
@@ -637,8 +650,9 @@ Qed.
 
 (** *** f_eval_expr_complete *)
 (** 
-   for any expression e, if it can be evaluated to value v under state s with regard to the 
-   relational semantics 'eval_expr', then when we evalute e under the same state s in functional
+   for any expression e, if it can be evaluated to value v under 
+   state s with regard to the relational semantics 'eval_expr', 
+   then when we evalute e under the same state s in functional
    semantics 'f_eval_expr', it should return the same result v;
 *)
 Theorem f_eval_expr_complete : forall e s v,  
@@ -669,19 +683,19 @@ Qed.
 
 Ltac apply_inv :=
   match goal with
-    | H:SUnterminated = SNormal _ |- _ => inversion H
-    | H:SUnterminated = SException |- _ => inversion H
-    | H:SUnterminated = SAbnormal |- _ => inversion H
-    | H:SAbnormal = SNormal _ |- _ => inversion H
-    | H:SAbnormal = SException |- _ => inversion H
-    | H:SAbnormal = SUnterminated |- _ => inversion H
-    | H:SException = SNormal _ |- _ => inversion H
-    | H:SException = SAbnormal |- _ => inversion H
-    | H:SException = SUnterminated |- _ => inversion H
-    | H:SNormal _ = SUnterminated |- _ => inversion H
-    | H:SNormal _ = SException |- _ => inversion H
-    | H:SNormal _ = SAbnormal |- _ => inversion H
-    | H:SNormal _ = SNormal _ |- _ => inversion H;clear H;subst 
+    | H:S_Unterminated = S_Normal _ |- _ => inversion H
+    | H:S_Unterminated = S_Run_Time_Error |- _ => inversion H
+    | H:S_Unterminated = S_Abnormal |- _ => inversion H
+    | H:S_Abnormal = S_Normal _ |- _ => inversion H
+    | H:S_Abnormal = S_Run_Time_Error |- _ => inversion H
+    | H:S_Abnormal = S_Unterminated |- _ => inversion H
+    | H:S_Run_Time_Error = S_Normal _ |- _ => inversion H
+    | H:S_Run_Time_Error = S_Abnormal |- _ => inversion H
+    | H:S_Run_Time_Error = S_Unterminated |- _ => inversion H
+    | H:S_Normal _ = S_Unterminated |- _ => inversion H
+    | H:S_Normal _ = S_Run_Time_Error |- _ => inversion H
+    | H:S_Normal _ = S_Abnormal |- _ => inversion H
+    | H:S_Normal _ = S_Normal _ |- _ => inversion H;clear H;subst 
     | H:update _ _ (Value _) = _ |- _ => rewrite H
     | H:f_eval_stmt _ _ _ = _ |- _ => rewrite H
     | H:f_eval_expr _ _ = _ |- _ => rewrite H
@@ -693,13 +707,14 @@ Ltac invle := match goal with
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete',
     it means that: for any statement c, starting from initial state s, 
-    if it terminates in a normal state s' within k execution steps, then for 
-    any k' greater and equal than k, it should also terminate in the same state s';
- *)
+    if it terminates in a normal state s' within k execution steps, 
+    then for any k' greater and equal than k, it should also terminate 
+    in the same state s';
+*)
 Lemma f_eval_stmt_fixpoint: forall k s c s', 
-        f_eval_stmt k s c = SNormal s' ->
+        f_eval_stmt k s c = S_Normal s' ->
         forall k':nat, (k <= k')%nat -> 
-            f_eval_stmt k' s c = SNormal s'.
+            f_eval_stmt k' s c = S_Normal s'.
 Proof.
     intros k s c.
     functional induction (f_eval_stmt k s c); simpl; intros; subst; simpl; auto;
@@ -716,9 +731,9 @@ Qed.
 
 (** another help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_fixpoint_E: forall k s p, 
-        f_eval_stmt k s p = SException ->
+        f_eval_stmt k s p = S_Run_Time_Error ->
         forall k':nat, (k <= k')%nat -> 
-            f_eval_stmt k' s p = SException.
+            f_eval_stmt k' s p = S_Run_Time_Error.
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p); simpl; intros; subst; simpl; auto;
@@ -758,13 +773,13 @@ Ltac destrIH :=
 
 Ltac kgreater :=
   repeat match goal with
-           | h:f_eval_stmt ?k ?s ?p = SNormal ?s' |- context [f_eval_stmt (?k + _) ?s ?p] =>
+           | h:f_eval_stmt ?k ?s ?p = S_Normal ?s' |- context [f_eval_stmt (?k + _) ?s ?p] =>
              rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
-           | h:f_eval_stmt ?k ?s ?p = SNormal ?s' |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
+           | h:f_eval_stmt ?k ?s ?p = S_Normal ?s' |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
              rewrite (@f_eval_stmt_fixpoint _ _ _ _ h);auto with arith
-           | h:f_eval_stmt ?k ?s ?p = SException |- context [f_eval_stmt (?k + _) ?s ?p] =>
+           | h:f_eval_stmt ?k ?s ?p = S_Run_Time_Error |- context [f_eval_stmt (?k + _) ?s ?p] =>
              rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
-           | h:f_eval_stmt ?k ?s ?p = SException |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
+           | h:f_eval_stmt ?k ?s ?p = S_Run_Time_Error |- context [f_eval_stmt (_ + ?k) ?s ?p] =>
              rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
          end.
 
@@ -772,18 +787,20 @@ Ltac kgreater :=
 
 Ltac rm_f_eval_expr :=
     match goal with 
-    | [ h: f_eval_expr ?s ?b = ValException |- _ ] => specialize (f_eval_expr_correct2 _ _ h); intros hz1
-    | [ h: f_eval_expr ?s ?b = ValNormal ?v |- _ ] => specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
+    | [ h: f_eval_expr ?s ?b = Val_Run_Time_Error |- _ ] => 
+        specialize (f_eval_expr_correct2 _ _ h); intros hz1
+    | [ h: f_eval_expr ?s ?b = Val_Normal ?v |- _ ] => 
+        specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
 (*
-    | [ h: f_eval_stmt ?k ?s ?c = SException |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
-    | [ h: f_eval_stmt ?k ?s ?c = SNormal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
+    | [ h: f_eval_stmt ?k ?s ?c = S_Run_Time_Error |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
+    | [ h: f_eval_stmt ?k ?s ?c = S_Normal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
 *)
     end; auto.
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_correct1 : forall k s p s',
-        f_eval_stmt k s p = SNormal s' ->
-          eval_stmt s p (SNormal s').
+        f_eval_stmt k s p = S_Normal s' ->
+          eval_stmt s p (S_Normal s').
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p);
@@ -805,7 +822,7 @@ Proof.
     rm_f_eval_expr. 
     apply_inv.
   - (* Cifthen_False *)
-    eapply eval_Sifthen_False.
+    eapply eval_S_If_False.
     rm_f_eval_expr.
   - (* Swhile_True *)
     specialize (IHs0 _ e2).
@@ -815,19 +832,20 @@ Proof.
     apply IHs0. 
     apply_inv.
   - (* Swhile_False *)
-    eapply eval_Swhile_False.
+    eapply eval_S_While_Loop_False.
     rm_f_eval_expr.
 Qed.
 
 Ltac rm_f_eval_stmt :=
     match goal with 
-    | [ h: f_eval_stmt ?k ?s ?c = SNormal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
+    | [ h: f_eval_stmt ?k ?s ?c = S_Normal ?s1 |- _ ] => 
+        specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
     end; auto.
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_correct2 : forall k s p,
-        f_eval_stmt k s p = SException ->
-          eval_stmt s p SException.
+        f_eval_stmt k s p = S_Run_Time_Error ->
+          eval_stmt s p S_Run_Time_Error.
 Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p);
@@ -868,23 +886,25 @@ Qed.
 
 Ltac rm_f_eval :=
     match goal with 
-    | [ h: f_eval_expr ?s ?b = ValException |- _ ] => specialize (f_eval_expr_correct2 _ _ h); intros hz1
-    | [ h: f_eval_expr ?s ?b = ValNormal ?v |- _ ] => specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
-    | [ h: f_eval_stmt ?k ?s ?c = SException |- _ ] => specialize (f_eval_stmt_correct2 _ _ _ h); intros hz1
-    | [ h: f_eval_stmt ?k ?s ?c = SNormal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
+    | [ h: f_eval_expr ?s ?b = Val_Run_Time_Error |- _ ] => specialize (f_eval_expr_correct2 _ _ h); intros hz1
+    | [ h: f_eval_expr ?s ?b = Val_Normal ?v |- _ ] => specialize (f_eval_expr_correct1 _ _ _ h); intros hz1   
+    | [ h: f_eval_stmt ?k ?s ?c = S_Run_Time_Error |- _ ] => specialize (f_eval_stmt_correct2 _ _ _ h); intros hz1
+    | [ h: f_eval_stmt ?k ?s ?c = S_Normal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
     end; auto.
 
 (** *** f_eval_stmt_correct *)
 (** 
-   for any command c, if it returns a normal state or an exception within k steps under the state s 
-   with regard to the functional semantics 'f_eval_stmt', then the relationship between s, e and the
-   resulting state should also be satisfied with regard to the relational semantics 'eval_stmt'
+   for any statement c, if it returns a normal state or a run time 
+   error within k steps starting from initial state s with regard 
+   to the functional semantics 'f_eval_stmt', then the relationship 
+   between s, e and the resulting state should also be satisfied with 
+   regard to the relational semantics 'eval_stmt';
 *)
 Theorem f_eval_stmt_correct : forall k s c s',
-        (f_eval_stmt k s c = SNormal s' ->
-          eval_stmt s c (SNormal s')) /\ 
-        (f_eval_stmt k s c = SException ->
-          eval_stmt s c SException).
+        (f_eval_stmt k s c = S_Normal s' ->
+          eval_stmt s c (S_Normal s')) /\ 
+        (f_eval_stmt k s c = S_Run_Time_Error ->
+          eval_stmt s c S_Run_Time_Error).
 Proof.
     intros.
     split; intros;
@@ -893,10 +913,12 @@ Qed.
 
 (** *** f_eval_stmt_complete *)
 (** 
-   the reverse direction is also satisfied: for any command c, whenever it's executed under the
-   state s and return a new state s' with regard to the relational semantics 'eval_stmt', then
-   there should exist a constant k that command c starting from s will terminate in state s' 
-   within k steps with regard to the functional semantics 'f_eval_stmt'
+   the reverse direction is also satisfied: for any statement c, 
+   whenever it's executed starting from initial state s and return 
+   a new state s' with regard to the relational semantics 'eval_stmt', 
+   then there should exist a constant k that statement c starting from 
+   s will terminate in state s' within k steps with regard to the 
+   functional semantics 'f_eval_stmt';
 *)
 
 Ltac apply_rewrite := 
@@ -909,13 +931,13 @@ Ltac apply_rewrite :=
     end; auto.
 
 Theorem f_eval_stmt_complete : forall s c s',
-        eval_stmt s c s' -> (* s' is either a normal state or an exception *)
+        eval_stmt s c s' -> (* s' is either a normal state or a run time error *)
             exists k, f_eval_stmt k s c = s'.
 Proof. 
   intros s c s' H;
   induction H;
   try match goal with
-  [ h: eval_expr ?s ?e ValException |- exists k, _ = SException] => 
+  [ h: eval_expr ?s ?e Val_Run_Time_Error |- exists k, _ = S_Run_Time_Error] => 
           exists 1%nat; simpl;
           rewrite (f_eval_expr_complete _ _ _ h);
           reflexivity
@@ -952,7 +974,7 @@ Proof.
     kgreater.
   - exists 1%nat; simpl.
     apply_rewrite.
-Qed.   
+Qed.
 
 (**********************************************************************)
 (**********************************************************************)
@@ -961,93 +983,95 @@ Qed.
 
 (** In the current SPARK subset, there is no procedure call, 
     so right now we only define the semantics for the main procedure.
-    And it can be used to test the tool chain from SPARK source code to Coq evaluation;
-     
-    Later, we will add the procedure call and modify the following procedure semantics;
+    And it can be used to test the tool chain from SPARK source code 
+    to Coq evaluation; Later, we will add the procedure call and 
+    modify the following procedure semantics;
 *)
 
-(** all declared variables in the same procedure should have unique names; *)
+(** all declared variables in the same procedure should have unique 
+    names; 
+*)
 
 (** relational (eval_decl) and functional (f_eval_decl) semantics for 
-    local variable declaration;
+    variable declaration;
 *)
-Inductive eval_decl: stack -> local_declaration -> state -> Prop :=
+Inductive eval_decl: stack -> object_declaration -> state -> Prop :=
     | eval_Decl_E: forall e d s,
-        Some e = d.(local_init) ->
-        eval_expr s e ValException ->
-        eval_decl s d SException
+        Some e = d.(initialization_expression) ->
+        eval_expr s e Val_Run_Time_Error ->
+        eval_decl s d S_Run_Time_Error
     | eval_Decl: forall d x e v s,
-        x = d.(local_ident) ->
-        Some e = d.(local_init) ->
-        eval_expr s e (ValNormal v) ->
-        eval_decl s d (SNormal ((x, Value v) :: s))
+        x = d.(object_name) ->
+        Some e = d.(initialization_expression) ->
+        eval_expr s e (Val_Normal v) ->
+        eval_decl s d (S_Normal ((x, Value v) :: s))
     | eval_UndefDecl: forall d x s,
-        x = d.(local_ident) ->
-        None = d.(local_init) ->
-        eval_decl s d (SNormal ((x, Vundef) :: s)).
+        x = d.(object_name) ->
+        None = d.(initialization_expression) ->
+        eval_decl s d (S_Normal ((x, Undefined) :: s)).
 
-Function f_eval_decl (s: stack) (d: local_declaration): state :=
-    let x := d.(local_ident) in
-    let e := d.(local_init) in
+Function f_eval_decl (s: stack) (d: object_declaration): state :=
+    let x := d.(object_name) in
+    let e := d.(initialization_expression) in
     match e with
     | Some e' => 
         match f_eval_expr s e' with
-        | ValNormal v => 
-            SNormal ((x, Value v) :: s)
-        | ValException =>
-            SException      
-        | ValAbnormal => SAbnormal 
+        | Val_Normal v => 
+            S_Normal ((x, Value v) :: s)
+        | Val_Run_Time_Error =>
+            S_Run_Time_Error      
+        | Val_Abnormal => S_Abnormal 
         end
-    | None => SNormal ((x, Vundef) :: s)
+    | None => S_Normal ((x, Undefined) :: s)
     end.
 
-(** relational (eval_decls) and functional (f_eval_decls) semantics for 
-    a sequence of local variable declarations;
+(** relational (eval_decls) and functional (f_eval_decls) semantics 
+    for a sequence of object declarations;
 *)
-Inductive eval_decls: stack -> (list local_declaration) -> state -> Prop :=
+Inductive eval_decls: stack -> (list object_declaration) -> state -> Prop :=
     | eval_EmptyDecls: forall s,
-        eval_decls s nil (SNormal s)
+        eval_decls s nil (S_Normal s)
     | eval_Decls_E: forall d tl s,
-        eval_decl s d SException ->
-        eval_decls s (d::tl) SException
+        eval_decl s d S_Run_Time_Error ->
+        eval_decls s (d::tl) S_Run_Time_Error
     | eval_Decls: forall d tl s1 s2 s3,
-        eval_decl s1 d (SNormal s2) ->
+        eval_decl s1 d (S_Normal s2) ->
         eval_decls s2 tl s3 ->
         eval_decls s1 (d::tl) s3.
 
-Function f_eval_decls (s: stack) (d: list local_declaration): state :=
+Function f_eval_decls (s: stack) (d: list object_declaration): state :=
     match d with
     | d' :: tl => 
         match f_eval_decl s d' with
-        | SNormal s' => f_eval_decls s' tl 
-        | SException => SException
-        | _ => SAbnormal
+        | S_Normal s' => f_eval_decls s' tl 
+        | S_Run_Time_Error => S_Run_Time_Error
+        | _ => S_Abnormal
         end
-    | nil => SNormal s
+    | nil => S_Normal s
     end.
 
-(** for any initial state s, after executing the declaration d, it either returns a
-    normal state s' or an exception;
-    (for any local variable declaration, if its initialization expression fails the
-     run time checks, for example division by zero or overflow, then it returns an exception
-    )
+(** for any initial state s, after executing the declaration d, 
+    it either returns a normal state s' or a run time error;
+    (for any variable declaration, if its initialization expression 
+     fails the run time checks, for example division by zero or overflow, 
+     then it returns an exception)
 *)
 
 Lemma eval_decl_state : forall s d s',
-        eval_decl s d s' -> (* s' is either a normal state or an exception *)
-            (exists t, s' = SNormal t) \/ s' = SException.
+        eval_decl s d s' -> (* s' is either a normal state or a run time error *)
+            (exists t, s' = S_Normal t) \/ s' = S_Run_Time_Error.
 Proof.
     intros s d s' h.
     induction h;
     try match goal with
-    | [ |- (exists t, SNormal ?t1 = SNormal t) \/ _ ] => left; exists t1; reflexivity
+    | [ |- (exists t, S_Normal ?t1 = S_Normal t) \/ _ ] => left; exists t1; reflexivity
     | [ |- context [ _ \/ ?A = ?A ] ] => right; reflexivity
     end; auto.
 Qed.
 
 Lemma eval_decls_state : forall tl s d s',
         eval_decls s (d :: tl) s' -> (* s' is either a normal state or an exception *)
-            (exists v, s' = SNormal v) \/ s' = SException.
+            (exists v, s' = S_Normal v) \/ s' = S_Run_Time_Error.
 Proof.
     induction tl;
     intros s d s' h1.
@@ -1068,8 +1092,8 @@ Qed.
 (** bisimulation proof between f_eval_decl and eval_decl *)
 
 Lemma f_eval_decl_correct: forall d s s',
-    (f_eval_decl s d = (SNormal s') -> eval_decl s d (SNormal s')) /\
-    (f_eval_decl s d = SException -> eval_decl s d SException).
+    (f_eval_decl s d = (S_Normal s') -> eval_decl s d (S_Normal s')) /\
+    (f_eval_decl s d = S_Run_Time_Error -> eval_decl s d S_Run_Time_Error).
 Proof.
     intros d s.
     functional induction (f_eval_decl s d);
@@ -1109,8 +1133,8 @@ Qed.
 (** bisimulation proof between f_eval_decls and eval_decls *)
 
 Lemma f_eval_decls_correct: forall d s s',
-    (f_eval_decls s d = (SNormal s') -> eval_decls s d (SNormal s')) /\
-    (f_eval_decls s d = SException -> eval_decls s d SException).
+    (f_eval_decls s d = (S_Normal s') -> eval_decls s d (S_Normal s')) /\
+    (f_eval_decls s d = S_Run_Time_Error -> eval_decls s d S_Run_Time_Error).
 Proof.
     induction d;
     intros; 
@@ -1162,18 +1186,18 @@ Qed.
 
 Inductive eval_proc: stack -> procedure_body -> state -> Prop :=
     | eval_Proc_E: forall f s,
-        eval_decls s f.(proc_loc_idents) SException ->
-        eval_proc s f SException
+        eval_decls s f.(procedure_declarative_part) S_Run_Time_Error ->
+        eval_proc s f S_Run_Time_Error
     | eval_Proc: forall f s1 s2 s3,
-        eval_decls s1 f.(proc_loc_idents) (SNormal s2) ->
-        eval_stmt s2 f.(proc_body) s3 ->
+        eval_decls s1 f.(procedure_declarative_part) (S_Normal s2) ->
+        eval_stmt s2 f.(procedure_statements) s3 ->
         eval_proc s1 f s3.
 
 Function f_eval_proc k (s: stack) (f: procedure_body): state :=
-    match (f_eval_decls s f.(proc_loc_idents)) with
-    | SNormal s' => f_eval_stmt k s' f.(proc_body)
-    | SException => SException
-    | _ => SAbnormal
+    match (f_eval_decls s f.(procedure_declarative_part)) with
+    | S_Normal s' => f_eval_stmt k s' f.(procedure_statements)
+    | S_Run_Time_Error => S_Run_Time_Error
+    | _ => S_Abnormal
     end.
 
 
@@ -1184,11 +1208,11 @@ Function f_eval_proc k (s: stack) (f: procedure_body): state :=
 Inductive eval_subprogram: stack -> subprogram -> state -> Prop :=
     | eval_SubpProc: forall s s' ast_num f,
         eval_proc s f s' ->
-        eval_subprogram s (Sproc ast_num f) s'.
+        eval_subprogram s (Procedure ast_num f) s'.
 
 Function f_eval_subprogram k (s: stack) (f: subprogram): state := 
     match f with 
-    | Sproc ast_num f' => f_eval_proc k s f'
+    | Procedure ast_num f' => f_eval_proc k s f'
     end.
 
 (** ** Bisimulation Between Relational And Functional Semantics For Main Procedure *)
@@ -1196,8 +1220,8 @@ Function f_eval_subprogram k (s: stack) (f: subprogram): state :=
 (** *** f_eval_subprogram_correct *)
 
 Theorem f_eval_subprogram_correct: forall k s f s',
-    (f_eval_subprogram k s f = SNormal s' -> eval_subprogram s f (SNormal s')) /\
-    (f_eval_subprogram k s f = SException -> eval_subprogram s f SException).
+    (f_eval_subprogram k s f = S_Normal s' -> eval_subprogram s f (S_Normal s')) /\
+    (f_eval_subprogram k s f = S_Run_Time_Error -> eval_subprogram s f S_Run_Time_Error).
 Proof.
     intros; 
     split; intros;
@@ -1205,7 +1229,7 @@ Proof.
     simpl in H;
     constructor;
     unfold f_eval_proc in H;
-    remember (f_eval_decls s (proc_loc_idents p)) as x;
+    remember (f_eval_decls s (procedure_declarative_part p)) as x;
     symmetry in Heqx.
   - (* normal state *)
     destruct x; inversion H; subst.
