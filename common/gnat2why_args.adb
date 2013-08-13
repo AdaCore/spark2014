@@ -41,6 +41,7 @@ package body Gnat2Why_Args is
    Analyze_File_Name       : constant String := "analyze_file";
    Limit_Subp_Name         : constant String := "limit_subp";
    Pedantic_Name           : constant String := "pedantic";
+   Ide_Mode_Name           : constant String := "ide_mode";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -107,6 +108,8 @@ package body Gnat2Why_Args is
          Flow_Dump_Graphs := True;
       elsif Token = Pedantic_Name then
          Pedantic := True;
+      elsif Token = Ide_Mode_Name then
+         Ide_Mode := True;
       elsif Starts_With (Token, Analyze_File_Name) and then
         Token (Token'First + Analyze_File_Name'Length) = '='
       then
@@ -165,6 +168,10 @@ package body Gnat2Why_Args is
       if Pedantic then
          Append (Val, ' ');
          Append (Val, Pedantic_Name);
+      end if;
+      if Ide_Mode then
+         Append (Val, ' ');
+         Append (Val, Ide_Mode_Name);
       end if;
       for File of Analyze_File loop
          Append (Val, ' ');

@@ -99,6 +99,11 @@ package Gnat2Why_Args is
 
    Limit_Subp   : Unbounded_String := Null_Unbounded_String;
 
+   --  IDE mode. Error messages may be formatted differently in this mode (e.g.
+   --  JSON dict)
+
+   Ide_Mode : Boolean := False;
+
    --------------------------------
    -- Procedures of this package --
    --------------------------------
