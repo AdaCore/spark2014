@@ -27,7 +27,8 @@ test.adb:216:07: warning: statement has no effect [ineffective]
 test.adb:218:12: warning: unused assignment [ineffective]
 test.adb:222:15: warning: unused assignment [ineffective]
 
- compilation of test.adb failed
+   compilation of test.adb failed
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
+

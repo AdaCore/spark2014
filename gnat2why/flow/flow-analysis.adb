@@ -259,7 +259,7 @@ package body Flow.Analysis is
    begin
       --  Assemble message string to be passed to Error_Msg_N
       if Tag'Length >= 1 then
-         Append (M, " [" & Tag & "]");
+         Append (M, " '[" & Tag & "']");
       end if;
       Append (M, "!!");
       if Warning then
@@ -282,7 +282,7 @@ package body Flow.Analysis is
       M := Escape (Substitute (To_Unbounded_String (Msg),
                                F1));
       if Tag'Length >= 1 then
-         Append (M, " [" & Tag & "]");
+         Append (M, " '[" & Tag & "']");
       end if;
       Append (M, "!!");
       if Warning then
@@ -307,7 +307,7 @@ package body Flow.Analysis is
                                            F1),
                                F2));
       if Tag'Length >= 1 then
-         Append (M, " [" & Tag & "]");
+         Append (M, " '[" & Tag & "']");
       end if;
       Append (M, "!!");
       if Warning then
