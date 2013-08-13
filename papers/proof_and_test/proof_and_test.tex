@@ -152,10 +152,12 @@ be possible. The functions are the following:
 
 \subsection{Generating and proving the code}
 As a first attempt, the following code was written:
-\lstinputlisting[language=Ada, numbers=left, title=Spec]{Code/proven/Initial_Attempt/proven.ads}
-\lstinputlisting[language=Ada, numbers=left, title=Body]{Code/proven/Initial_Attempt/proven.adb}
-Functions \emph{Is\_Prime} and \emph{Are\_Coprime} were proven straight away while the following
-messages that relate to function \emph{Factorial} were issued:
+\lstinputlisting[language=Ada, numbers=left, title=Initial Spec]
+                {Code/proven/Initial_Attempt/proven.ads}
+\lstinputlisting[language=Ada, numbers=left, title=Initial Body]
+                {Code/proven/Initial_Attempt/proven.adb}
+Functions \emph{Is\_Prime} and \emph{Are\_Coprime} were proven straight away while the
+following messages that relate to function \emph{Factorial} were issued:
 
 proven.adb:47:19: overflow check not proved
 
@@ -207,17 +209,24 @@ known sorting algorithm called mergesort.
 \lstinputlisting[language=Ada, title=Mergesort's Spec]{Code/tested/mergesort.ads}
 \lstinputlisting[language=Ada, title=Mergesort's Body]{Code/tested/mergesort.adb}
 
-\subsection{VectorCAST's tool}
+\subsection{VectorCAST's tool and testing results}
+In order to establish that no errors were introduced during the conversion of the
+pseudo-code into source code, a tool called VectorCAST was utilized. VectorCAST
+reads the Ada source code and assists in the generation of a test harness.
 
-\subsection{Report results of verification}
+TODO:  Give a more detailed description of VectorCAST and emphasise that creating the
+test harness was effortless, despite using the tool for the first time.
 
-\subsection{Report any points of interest arising from attempting to verify}
+Even thought the tests that were added were very basic (a total of 3 pairs
+of inputs and their expected outputs were written), 100\% statement coverage and 96\%
+branch coverage was achieved. All tests yielded the expected results.
+
+\subsection{Cases where proof does not add much value}
 Well-established algorithms such as A* (A star), quicksort, \etc have
 been used by many programmers throughout the years and have been mathematically
 shown to hold true. Spending time in annotating the implementations of such algorithms
-in order to force them through proof tools is not worth the effort. Performing some
-basic tests so at to know that no porting errors were made, should suffice in such
-cases.
+in order to force them through proof tools is arguably not worth the effort. In such cases,
+performing some basic tests to ensure that no porting errors were made should be sufficient.
 
 
 
