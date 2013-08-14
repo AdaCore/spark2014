@@ -18,7 +18,7 @@ package body Queen is
    end Add_next;
 
    function Copy_Until (B : in Board; I : Index; C : in Board) return Board is
-      R : Board := (Index'Range => 0);
+      R : Board := (Index'Range => 1);
    begin
       for J in Index'First .. I loop
          pragma Loop_Invariant
