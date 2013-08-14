@@ -23,16 +23,18 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Nlists;   use Nlists;
-with Sem_Eval; use Sem_Eval;
-with Sem_Util; use Sem_Util;
-with Sinfo;    use Sinfo;
-with Snames;   use Snames;
+with Errout;                          use Errout;
+with Nlists;                          use Nlists;
+with Sem_Eval;                        use Sem_Eval;
+with Sem_Util;                        use Sem_Util;
+with Sinfo;                           use Sinfo;
+with Snames;                          use Snames;
+with SPARK_Definition;                use SPARK_Definition;
 
-with Treepr;   use Treepr;
-with Output;   use Output;
+with Treepr;                          use Treepr;
+with Output;                          use Output;
 
-with Flow.Debug; use Flow.Debug;
+with Flow.Debug;                      use Flow.Debug;
 pragma Unreferenced (Flow.Debug);
 
 with Flow.Antialiasing;               use Flow.Antialiasing;
@@ -1614,6 +1616,29 @@ package body Flow.Control_Flow_Graph is
                E_Loc   => N),
             V);
 
+         --  If we are dealing with a Pragma_Import and:
+         --     1. the code is marked as In-SPARK
+         --     2. and no global aspect has been given
+         --  then we warn that null global effect was assumed.
+         if Get_Pragma_Id (N) = Pragma_Import then
+            declare
+               Argument_Associations : constant List_Id :=
+                 Pragma_Argument_Associations (N);
+
+               Associated_Subprogram : constant Node_Id :=
+                 Associated_Node (Expression
+                                    (Next (First (Argument_Associations))));
+            begin
+               if Entity_In_SPARK (Associated_Subprogram)
+                 and then No (Get_Pragma
+                                (Associated_Subprogram, Pragma_Global))
+               then
+                  Error_Msg_N ("null global effect assumed on imported"
+                               & " subprogram?",
+                               Associated_Subprogram);
+               end if;
+            end;
+         end if;
       else
          --  Otherwise we produce a null vertex.
          FA.CFG.Add_Vertex (Null_Node_Attributes,
@@ -2256,7 +2281,6 @@ package body Flow.Control_Flow_Graph is
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
               Pragma_Global                       |
-              Pragma_Import                       |
               Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
@@ -2273,12 +2297,12 @@ package body Flow.Control_Flow_Graph is
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
               Pragma_Test_Case                    |
-              Pragma_Warnings        =>
+              Pragma_Warnings                     =>
 
             return False;
 
-         when Pragma_Check         |
-              Pragma_Loop_Variant  =>
+         when Pragma_Check        |
+              Pragma_Loop_Variant =>
 
             if Get_Pragma_Id (N) = Pragma_Check and then
               Is_Precondition_Check (N)
@@ -2287,6 +2311,9 @@ package body Flow.Control_Flow_Graph is
             else
                return True;
             end if;
+
+         when Pragma_Import =>
+            return True;
 
          when Unknown_Pragma =>
             --  If we find an Unknown_Pragma we raise Why.Not_SPARK

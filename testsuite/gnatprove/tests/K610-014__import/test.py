@@ -1,4 +1,3 @@
 from test_support import *
 
-prove_all()
-
+gnatprove (opt=["-P", "test.gpr", "--mode=all", "-f", "-q"])
