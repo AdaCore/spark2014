@@ -1,0 +1,4 @@
+div_one.ads:4:20: info: postcondition proved
+div_one.ads:4:30: info: division check proved
+div_one.ads:4:30: info: overflow check proved
+
