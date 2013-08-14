@@ -5,11 +5,11 @@ Require Export semantics.
 (**
    Before executing the program, make sure that the program is well-formed
    - well-typed
-      - all operators work on the operands of the right types;
-      - all assignments write into memory with the values of right types;
-      - variables has right _in/out_ mode;
+      - unary/binary operators have right type of operands;
+      - types on both sides of assignments are consistent;
+      - used variables has right _in/out_ mode;
    - well-defined 
-      - all variables are initialized before they are used
+      - all used variables are initialized
    - well-checked
       - right checks are put at the right places according to the checking rules
 *)
@@ -52,19 +52,19 @@ Definition unop_type (op: unary_operator) (t: type): option type :=
    - type check for expressions;
 *)
 Inductive well_typed_expr: symtb -> expression -> type -> Prop :=
-    | WT_E_Literal_Int: forall ast_num n tb,
+    | WT_Literal_Int: forall ast_num n tb,
         well_typed_expr tb (E_Literal ast_num (Integer_Literal n)) Integer
-    | WT_E_Literal_Bool: forall ast_num b tb,
+    | WT_Literal_Bool: forall ast_num b tb,
         well_typed_expr tb (E_Literal ast_num (Boolean_Literal b)) Boolean
-    | WT_E_Identifier: forall ast_num x tb m t,
+    | WT_Identifier: forall ast_num x tb m t,
         lookup x tb = Some (m, t) ->  
         well_typed_expr tb (E_Identifier ast_num x) t
-    | WT_E_Binary_Operation: forall ast_num tb op e1 e2 t t1,
+    | WT_Binary_Operation: forall ast_num tb op e1 e2 t t1,
         well_typed_expr tb e1 t ->
         well_typed_expr tb e2 t ->
         binop_type op t t = Some t1 ->
         well_typed_expr tb (E_Binary_Operation ast_num op e1 e2) t1
-    | WT_E_Unary_Operation: forall ast_num tb op e,
+    | WT_Unary_Operation: forall ast_num tb op e,
         well_typed_expr tb e Boolean ->
         well_typed_expr tb (E_Unary_Operation ast_num op e) Boolean.
 
@@ -73,19 +73,19 @@ Inductive well_typed_expr: symtb -> expression -> type -> Prop :=
     - type check for statements;
 *)
 Inductive well_typed_stmt: symtb -> statement  -> Prop :=
-    | WT_S_Assignment: forall ast_num tb x e m t,
+    | WT_Assignment: forall ast_num tb x e m t,
         lookup x tb = Some (m, t) ->
         well_typed_expr tb e t ->
         well_typed_stmt tb ((S_Assignment ast_num x e))
-    | WT_S_Sequence: forall ast_num c1 c2 tb,
+    | WT_Sequence: forall ast_num c1 c2 tb,
         well_typed_stmt tb c1 ->
         well_typed_stmt tb c2 ->
         well_typed_stmt tb (S_Sequence ast_num c1 c2)
-    | WT_S_If: forall ast_num tb b c,
+    | WT_If: forall ast_num tb b c,
         well_typed_expr tb b Boolean ->
         well_typed_stmt tb c ->
         well_typed_stmt tb (S_If ast_num b c)
-    | WT_S_While_Loop: forall ast_num tb b c,
+    | WT_While_Loop: forall ast_num tb b c,
         well_typed_expr tb b Boolean ->
         well_typed_stmt tb c ->
         well_typed_stmt tb (S_While_Loop ast_num b c).
@@ -132,7 +132,7 @@ Inductive well_typed_proc_body: symtb -> procedure_body -> Prop :=
 
 (** type check for subproram, which can be either procedure or function; *)
 Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
-    | WT_Proc: forall tb f ast_num,
+    | WT_Procedure: forall tb f ast_num,
         well_typed_proc_body tb f ->
         well_typed_subprogram tb (Procedure ast_num f).
 
@@ -536,18 +536,18 @@ Function update2 (s: mode_map) (x : idnum) (m: (init_mode * mode)): option mode_
      _in_ or _in/out_; 
 *)
 Inductive well_defined_expr: mode_map -> expression -> Prop :=
-    | WD_E_Literal_Int: forall ast_num m n,
+    | WD_Literal_Int: forall ast_num m n,
         well_defined_expr m (E_Literal ast_num (Integer_Literal n))
-    | WD_E_Literal_Bool: forall ast_num m b,
+    | WD_Literal_Bool: forall ast_num m b,
         well_defined_expr m (E_Literal ast_num (Boolean_Literal b))
-    | WD_E_Identifier: forall ast_num x m md,
+    | WD_Identifier: forall ast_num x m md,
         fetch2 x m = Some (Init, md) -> (* initialized out variables can also be read *)
         well_defined_expr m (E_Identifier ast_num x)
-    | WD_E_Binary_Operation: forall ast_num m op e1 e2,
+    | WD_Binary_Operation: forall ast_num m op e1 e2,
         well_defined_expr m e1 ->
         well_defined_expr m e2 ->
         well_defined_expr m (E_Binary_Operation ast_num op e1 e2)
-    | WD_E_Unary_Operation: forall ast_num m op e,
+    | WD_Unary_Operation: forall ast_num m op e,
         well_defined_expr m e ->
         well_defined_expr m (E_Unary_Operation ast_num op e). 
 
@@ -567,21 +567,21 @@ Inductive well_defined_expr: mode_map -> expression -> Prop :=
 *)
 
 Inductive well_defined_stmt: mode_map -> statement -> mode_map -> Prop :=
-    | WD_S_Assignment: forall m e x i md m' ast_num,
+    | WD_Assignment: forall m e x i md m' ast_num,
         well_defined_expr m e ->
         fetch2 x m = Some (i, md) ->
         md <> In ->
         update2 m x (Init, md) = Some m' ->
         well_defined_stmt m (S_Assignment ast_num x e) m'
-    | WD_S_Sequence: forall ast_num c1 c2 m m' m'',
+    | WD_Sequence: forall ast_num c1 c2 m m' m'',
         well_defined_stmt m c1 m' ->
         well_defined_stmt m' c2 m'' ->
         well_defined_stmt m (S_Sequence ast_num c1 c2) m''
-    | WD_S_If: forall ast_num m m' b c,
+    | WD_If: forall ast_num m m' b c,
         well_defined_expr m b ->
         well_defined_stmt m c m' ->
         well_defined_stmt m (S_If ast_num b c) m
-    | WD_S_While_Loop: forall ast_num m m' b c,
+    | WD_While_Loop: forall ast_num m m' b c,
         well_defined_expr m b ->
         well_defined_stmt m c m' ->
         well_defined_stmt m (S_While_Loop ast_num b c) m.
@@ -618,7 +618,7 @@ Inductive well_defined_proc_body: mode_map -> procedure_body -> mode_map -> Prop
         well_defined_proc_body m f m'.
 
 Inductive well_defined_subprogram: mode_map -> subprogram -> mode_map -> Prop :=
-    | WD_Subprogram: forall m f m' ast_num,
+    | WD_Procedure: forall m f m' ast_num,
         well_defined_proc_body m f m' ->        
         well_defined_subprogram m (Procedure ast_num f) m'.
 
@@ -800,10 +800,10 @@ Inductive mode_mapping: symtb -> stack -> (mode_map) -> Prop :=
     | M_Int: forall tb s x m v ls,
           mode_mapping tb s ls ->
           mode_mapping ((x, (m, Integer)) :: tb) ((x, (Value (Int v))) :: s) ((x, (Init, m)) :: ls)
-    | M_UndefBool: forall tb s x m ls,
+    | M_Undefined_Bool: forall tb s x m ls,
           mode_mapping tb s ls ->
           mode_mapping ((x, (m, Boolean)) :: tb) ((x, Undefined) :: s) ((x, (Uninit, m)) :: ls)
-    | M_UndefInt: forall tb s x m ls,
+    | M_Undefined_Int: forall tb s x m ls,
           mode_mapping tb s ls ->
           mode_mapping ((x, (m, Integer)) :: tb) ((x, Undefined) :: s) ((x, (Uninit, m)) :: ls).
 
@@ -816,8 +816,8 @@ Proof.
     revert m2.
     induction H;
     intros m2 H0;
-    inversion H0; subst.
-  - reflexivity.
+    inversion H0; subst;
+    auto.
   - specialize (IHmode_mapping _ H7); subst.
     reflexivity.
   - specialize (IHmode_mapping _ H7); subst; 
@@ -1235,11 +1235,11 @@ Definition max_num := astnum.
     max_num is the maximum ast number used in the expression;
 *)
 Inductive ast_num_inc_expr: expression -> max_num -> Prop :=
-    | Inc_E_Literal: forall ast_num n,
+    | Inc_Literal: forall ast_num n,
         ast_num_inc_expr (E_Literal ast_num n) ast_num
-    | Inc_E_Identifier: forall ast_num x,
+    | Inc_Identifier: forall ast_num x,
         ast_num_inc_expr (E_Identifier ast_num x) ast_num
-    | Inc_E_Binary_Operation: forall e1 max1 e2 max2 ast_num1 ast_num2 ast_num op,
+    | Inc_Binary_Operation: forall e1 max1 e2 max2 ast_num1 ast_num2 ast_num op,
         ast_num_inc_expr e1 max1 ->
         ast_num_inc_expr e2 max2 ->
         get_ast_num_expr e1 = ast_num1 ->
@@ -1248,7 +1248,7 @@ Inductive ast_num_inc_expr: expression -> max_num -> Prop :=
         ast_num < ast_num2 ->
         max1 < ast_num2 ->
         ast_num_inc_expr (E_Binary_Operation ast_num op e1 e2) max2
-    | Inc_E_Unary_Operation: forall e max ast_num0 ast_num op,
+    | Inc_Unary_Operation: forall e max ast_num0 ast_num op,
         ast_num_inc_expr e max ->
         get_ast_num_expr e = ast_num0 ->
         ast_num < ast_num0 ->
@@ -1258,12 +1258,12 @@ Inductive ast_num_inc_expr: expression -> max_num -> Prop :=
     AST tree of statement are unique; 
 *)
 Inductive ast_num_inc_stmt: statement -> max_num -> Prop :=
-    | Inc_S_Assignment: forall e max ast_num0 ast_num x,
+    | Inc_Assignment: forall e max ast_num0 ast_num x,
         ast_num_inc_expr e max ->
         get_ast_num_expr e = ast_num0 ->
         ast_num < ast_num0 ->
         ast_num_inc_stmt (S_Assignment ast_num x e) max
-    | Inc_S_Sequence: forall c1 max1 c2 max2 ast_num1 ast_num2 ast_num,
+    | Inc_Sequence: forall c1 max1 c2 max2 ast_num1 ast_num2 ast_num,
         ast_num_inc_stmt c1 max1 ->
         ast_num_inc_stmt c2 max2 ->
         get_ast_num_stmt c1 = ast_num1 ->
@@ -1272,7 +1272,7 @@ Inductive ast_num_inc_stmt: statement -> max_num -> Prop :=
         ast_num < ast_num2 ->
         max1 < ast_num2 ->
         ast_num_inc_stmt (S_Sequence ast_num c1 c2) max2
-    | Inc_S_If: forall b max1 c max2 ast_num1 ast_num2 ast_num,
+    | Inc_If: forall b max1 c max2 ast_num1 ast_num2 ast_num,
         ast_num_inc_expr b max1 ->
         ast_num_inc_stmt c max2 ->
         get_ast_num_expr b = ast_num1 ->
@@ -1281,7 +1281,7 @@ Inductive ast_num_inc_stmt: statement -> max_num -> Prop :=
         ast_num < ast_num2 ->
         max1 < ast_num2 ->
         ast_num_inc_stmt (S_If ast_num b c) max2
-    | Inc_S_While_Loop: forall b max1 c max2 ast_num1 ast_num2 ast_num,
+    | Inc_While_Loop: forall b max1 c max2 ast_num1 ast_num2 ast_num,
         ast_num_inc_expr b max1 ->
         ast_num_inc_stmt c max2 ->
         get_ast_num_expr b = ast_num1 ->
@@ -1872,21 +1872,21 @@ Qed.
     of type check_points;
 *)
 Inductive check_generator_expr: check_points -> expression -> check_points -> Prop :=
-    | CG_E_Literal: forall ast_num n ls,
+    | CG_Literal: forall ast_num n ls,
         check_generator_expr ls (E_Literal ast_num n) ls
-    | CG_E_Identifier: forall ast_num x ls,
+    | CG_Identifier: forall ast_num x ls,
         check_generator_expr ls (E_Identifier ast_num x) ls
-    | CG_E_Binary_Operation: forall ls e1 ls1 e2 ls2 ast_num op flag,
+    | CG_Binary_Operation: forall ls e1 ls1 e2 ls2 ast_num op flag,
         check_flag (E_Binary_Operation ast_num op e1 e2) (Some flag) -> 
         check_generator_expr ((ast_num, flag) :: ls) e1 ls1 ->
         check_generator_expr ls1 e2 ls2 ->
         check_generator_expr ls (E_Binary_Operation ast_num op e1 e2) ls2
-    | CG_E_Binary_Operation_None: forall ls e1 ls1 e2 ls2 ast_num op,
+    | CG_Binary_Operation_None: forall ls e1 ls1 e2 ls2 ast_num op,
         check_flag (E_Binary_Operation ast_num op e1 e2) None -> 
         check_generator_expr ls e1 ls1 ->
         check_generator_expr ls1 e2 ls2 ->
         check_generator_expr ls (E_Binary_Operation ast_num op e1 e2) ls2
-    | CG_E_Unary_Operation: forall ls e ls1 ast_num op,
+    | CG_Unary_Operation: forall ls e ls1 ast_num op,
         check_generator_expr ls e ls1 ->
         check_generator_expr ls (E_Unary_Operation ast_num op e) ls1.
 
@@ -1899,18 +1899,18 @@ Inductive check_generator_expr: check_points -> expression -> check_points -> Pr
     to includes all necessary checks in the statements in the future; 
  *)
 Inductive check_generator_stmt: check_points -> statement -> check_points -> Prop :=
-    | CG_S_Assignment: forall ls1 e ls2 ast_num x,
+    | CG_Assignment: forall ls1 e ls2 ast_num x,
         check_generator_expr ls1 e ls2 ->
         check_generator_stmt ls1 (S_Assignment ast_num x e) ls2
-    | CG_S_Sequence: forall ls1 c1 ls2 c2 ls3 ast_num,
+    | CG_Sequence: forall ls1 c1 ls2 c2 ls3 ast_num,
         check_generator_stmt ls1 c1 ls2 ->
         check_generator_stmt ls2 c2 ls3 ->
         check_generator_stmt ls1 (S_Sequence ast_num c1 c2) ls3
-    | CG_S_If: forall ls1 b ls2 c ls3 ast_num,
+    | CG_If: forall ls1 b ls2 c ls3 ast_num,
         check_generator_expr ls1 b ls2 ->
         check_generator_stmt ls2 c ls3 ->
         check_generator_stmt ls1 (S_If ast_num b c) ls3
-    | CG_S_While_Loop: forall ls1 b ls2 c ls3 ast_num,
+    | CG_While_Loop: forall ls1 b ls2 c ls3 ast_num,
         check_generator_expr ls1 b ls2 ->
         check_generator_stmt ls2 c ls3 ->        
         check_generator_stmt ls1 (S_While_Loop ast_num b c) ls3.
@@ -2123,7 +2123,7 @@ Proof.
     intuition.
     exact H. assumption.
   - specialize (IHc0 _ h1).
-    eapply CG_E_Binary_Operation_None.
+    eapply CG_Binary_Operation_None.
     specialize (f_check_flag_correct _ _ e3); auto.
     specialize (IHc (f_check_generator_expr ckp e1)).
     intuition.
@@ -3395,3 +3395,5 @@ Proof.
     exists k; unfold f_eval_subprogram_with_checks.
     assumption.
 Qed.
+
+

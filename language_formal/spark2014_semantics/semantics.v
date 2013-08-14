@@ -96,43 +96,43 @@ Qed.
 (** *** run time checks *)
 (** which are needed to be performed before excecuting the program *)
 Inductive run_time_checks: Type := 
-   | Do_Division_Check: run_time_checks
-   | Do_Overflow_Check: run_time_checks.
+    | Do_Division_Check: run_time_checks
+    | Do_Overflow_Check: run_time_checks.
 
 (** add check flags for AST nodes according to the checking rules; 
     Note: now we only consider the division by zero check, later we will 
     extend it by adding overflow checks;
 *)
 Inductive check_flag: expression -> option run_time_checks -> Prop :=
-    | CF_Econst_Int: forall ast_num n,
+    | CF_Literal_Int: forall ast_num n,
         check_flag (E_Literal ast_num (Integer_Literal n)) None
-    | CF_Econst_Bool: forall ast_num b,
+    | CF_Literal_Bool: forall ast_num b,
         check_flag (E_Literal ast_num (Boolean_Literal b)) None
-    | CF_Evar: forall ast_num x,  
+    | CF_Identifier: forall ast_num x,  
         check_flag (E_Identifier ast_num x) None
-    | CF_Ebinop_Div: forall ast_num e1 e2,
+    | CF_Binary_Operation_Div: forall ast_num e1 e2,
         check_flag (E_Binary_Operation ast_num Divide e1 e2) (Some Do_Division_Check)
-    | CF_Ebinop_Others: forall ast_num op e1 e2,
+    | CF_Binary_Operation_Others: forall ast_num op e1 e2,
         op <> Divide ->
         check_flag (E_Binary_Operation ast_num op e1 e2) None
-    | CF_Eunop: forall ast_num op e,
+    | CF_Unary_Operation: forall ast_num op e,
         check_flag (E_Unary_Operation ast_num op e) None.
 
 (** *** semantics for run-time checks *)
 
 Inductive is_not_zero: Z -> bool -> Prop :=
-    | Not_Zero: forall v, v <> 0%Z -> is_not_zero v true
-    | Is_Zero: forall v, v = 0%Z -> is_not_zero v false.
+    | Not_Zero_T: forall v, v <> 0%Z -> is_not_zero v true
+    | Not_Zero_F: forall v, v = 0%Z -> is_not_zero v false.
 
 Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
-    | Do_Division_Check0: forall v1 v2 b,
+    | Do_Division_Checking: forall v1 v2 b,
         is_not_zero v2 b ->
         do_check Divide v1 (Int v2) b
     | Do_Nothing: forall op v1 v2,
         op <> Divide ->
         do_check op v1 v2 true.
 (*
-    | DC_Overflow_Check0: 
+    | DC_Overflow_Checking: 
     | ... 
 *)
 
@@ -400,10 +400,11 @@ Lemma eval_expr_unique: forall s e v1 v2,
 Proof.
     induction e; 
     intros v1 v2 h1 h2;
-    inversion h1; subst; 
-    inversion h2; subst.
-  - auto.
-  - rewrite H1 in H2; inversion H2; auto.
+    inversion h1; subst;
+    inversion h2; subst;
+    auto.
+  - rewrite H1 in H2; 
+    inversion H2; auto.
   - specialize (IHe1 _ _ H5 H9).
     specialize (IHe2 _ _ H6 H10).
     subst.
@@ -439,7 +440,7 @@ Qed.
     relational semantics, all statement that can go abnormal are excluded;
 *)
 Lemma eval_stmt_state : forall s c s',
-        eval_stmt s c s' -> (* s' is either a normal state or an exception *)
+        eval_stmt s c s' -> (* s' is either a normal state or a run time error *)
             (exists v, s' = S_Normal v) \/ s' = S_Run_Time_Error.
 Proof.
     intros s c s' h.
@@ -805,33 +806,33 @@ Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p);
     intros s' H; try inversion H; subst.
-  - (* Sassign *)
+  - (* S_Assignment *)
     econstructor.
     rm_f_eval_expr.
     apply hz1.
     assumption.
-  - (* Sseq *)
+  - (* S_Sequence *)
     specialize (IHs0 _ e1).
     specialize (IHs1 _ H).
     econstructor.
     apply IHs0.
     apply_inv.
-  - (* Cifthen_True *)
+  - (* S_If_True *)
     specialize (IHs0 _ H).
     econstructor.
     rm_f_eval_expr. 
     apply_inv.
-  - (* Cifthen_False *)
+  - (* S_If_False *)
     eapply eval_S_If_False.
     rm_f_eval_expr.
-  - (* Swhile_True *)
+  - (* S_While_Loop_True *)
     specialize (IHs0 _ e2).
     specialize (IHs1 _ H).
     econstructor.
     rm_f_eval_expr.
     apply IHs0. 
     apply_inv.
-  - (* Swhile_False *)
+  - (* S_While_Loop_False *)
     eapply eval_S_While_Loop_False.
     rm_f_eval_expr.
 Qed.
@@ -850,10 +851,10 @@ Proof.
     intros k s p.
     functional induction (f_eval_stmt k s p);
     intros H; try inversion H; subst.
-  - (* Sassign *)
+  - (* S_Assignment *)
     econstructor.
     rm_f_eval_expr.
-  - (* Sseq *)
+  - (* S_Sequence*)
     specialize (IHs1 H).
     econstructor.
     rm_f_eval_stmt.
@@ -862,7 +863,7 @@ Proof.
   - specialize (IHs0 e1).
     econstructor.
     assumption.    
-  - (* Cifthen *)
+  - (* C_If *)
     specialize (IHs0 H).
     econstructor.
     rm_f_eval_expr.
@@ -870,7 +871,7 @@ Proof.
   - econstructor.
     specialize (f_eval_expr_correct2 _ _ e1); intros hz1. 
     assumption.
-  - (* Swhile *)
+  - (* S_While_Loop *)
     specialize (IHs1 H).
     econstructor.
     rm_f_eval_expr.
@@ -942,10 +943,10 @@ Proof.
           rewrite (f_eval_expr_complete _ _ _ h);
           reflexivity
   end.
-  (* 1. Sassign *)
+  (* 1. S_Assignment *)
   - exists 1%nat; simpl.
     repeat apply_rewrite.
-  (* 2. Sseq *)
+  (* 2. S_Sequence *)
   - destrIH.
     exists (S k); simpl.
     apply_rewrite.
@@ -955,13 +956,13 @@ Proof.
     specialize (eval_stmt_state _ _ _ H0); intros hz1.
     destruct hz1 as [hz2 | hz2]; try rm_exists; subst;
     kgreater.
-  (* 3. Sifthen *)
+  (* 3. S_If *)
   - destrIH.
     exists (S k); simpl.
     apply_rewrite.
   - exists 1%nat; simpl.
     apply_rewrite.
-  (* 4. Swhile *)
+  (* 4. S_While_Loop *)
   - destrIH.
     exists (S k); simpl.
     repeat apply_rewrite.
@@ -1133,8 +1134,10 @@ Qed.
 (** bisimulation proof between f_eval_decls and eval_decls *)
 
 Lemma f_eval_decls_correct: forall d s s',
-    (f_eval_decls s d = (S_Normal s') -> eval_decls s d (S_Normal s')) /\
-    (f_eval_decls s d = S_Run_Time_Error -> eval_decls s d S_Run_Time_Error).
+    (f_eval_decls s d = (S_Normal s') -> 
+        eval_decls s d (S_Normal s')) /\
+    (f_eval_decls s d = S_Run_Time_Error -> 
+        eval_decls s d S_Run_Time_Error).
 Proof.
     induction d;
     intros; 
@@ -1206,7 +1209,7 @@ Function f_eval_proc k (s: stack) (f: procedure_body): state :=
 (** relational and functional semantics for main procedure; *)
 
 Inductive eval_subprogram: stack -> subprogram -> state -> Prop :=
-    | eval_SubpProc: forall s s' ast_num f,
+    | eval_Procedure: forall s s' ast_num f,
         eval_proc s f s' ->
         eval_subprogram s (Procedure ast_num f) s'.
 
@@ -1220,8 +1223,10 @@ Function f_eval_subprogram k (s: stack) (f: subprogram): state :=
 (** *** f_eval_subprogram_correct *)
 
 Theorem f_eval_subprogram_correct: forall k s f s',
-    (f_eval_subprogram k s f = S_Normal s' -> eval_subprogram s f (S_Normal s')) /\
-    (f_eval_subprogram k s f = S_Run_Time_Error -> eval_subprogram s f S_Run_Time_Error).
+    (f_eval_subprogram k s f = S_Normal s' -> 
+        eval_subprogram s f (S_Normal s')) /\
+    (f_eval_subprogram k s f = S_Run_Time_Error -> 
+        eval_subprogram s f S_Run_Time_Error).
 Proof.
     intros; 
     split; intros;
@@ -1238,7 +1243,7 @@ Proof.
        apply Heqx.
     + apply f_eval_stmt_correct in H.
        rewrite H1; auto.
-  - (* exception *)
+  - (* run time error *)
     destruct x; inversion H; subst.
     + econstructor.
        * apply f_eval_decls_correct in Heqx.
@@ -1268,3 +1273,4 @@ Proof.
     apply f_eval_stmt_complete in H1.
     auto.
 Qed.
+

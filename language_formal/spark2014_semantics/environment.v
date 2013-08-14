@@ -147,10 +147,10 @@ Inductive type_check_stack: symtb -> stack -> Prop :=
     | TC_Int: forall tb s x m v,
           type_check_stack tb s ->
           type_check_stack ((x, (m, Integer)) :: tb) ((x, (Value (Int v))) :: s)
-    | TC_UndefBool: forall tb s x m,
+    | TC_Undefined_Bool: forall tb s x m,
           type_check_stack tb s ->
           type_check_stack ((x, (m, Boolean)) :: tb) ((x, Undefined) :: s)
-    | TC_UndefInt: forall tb s x m,
+    | TC_Undefined_Int: forall tb s x m,
           type_check_stack tb s ->
           type_check_stack ((x, (m, Integer)) :: tb) ((x, Undefined) :: s).
 

@@ -35,10 +35,11 @@ Require Export Coq.Strings.String.
 
 Definition astnum := nat.
 
-(** In CompCert, Cminor uses non-negative values to represent identifiers,
-    we follow this style by using natural numbers to represent 
-    dentifiers/names;
+(** In CompCert, Cminor uses non-negative values to represent 
+    identifiers, we follow this style by using natural numbers 
+    to represent dentifiers/names;
 *)
+
 Definition idnum := nat.
 
 Definition procnum := nat.
@@ -63,12 +64,12 @@ Inductive literal: Type :=
 	| Integer_Literal: Z -> literal (** 2.4 *)
         | Boolean_Literal: bool -> literal (** 3.5.3 *).
 
-(** Basic unary/binary operators *)
+(** unary and binary operators *)
 Inductive unary_operator: Type := 
         | Not: unary_operator.
 (*     
-        | Unary_plus: unary_operator
-	| Unary_minus: unary_operator. *)
+        | Unary_Plus: unary_operator
+	| Unary_Minus: unary_operator. *)
 
 Inductive binary_operator: Type := 
 	| Equal: binary_operator 
@@ -113,7 +114,7 @@ Inductive mode: Type :=
     | In_Out: mode.
 
 (** 3.3.1 *)
-Record object_declaration: Type := mklocal_declaration{
+Record object_declaration: Type := mkobject_declaration{
 	declaration_astnum: astnum;
         object_name: idnum;
 	object_nominal_subtype: typenum;

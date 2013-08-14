@@ -4,8 +4,8 @@ Require Export language.
 
 (** Type of basic values *)
 Inductive value : Type :=
-| Int (n : Z)
-| Bool (b : bool).
+    | Int (n : Z)
+    | Bool (b : bool).
 
 (** Type of stored values in the stack *)
 Inductive val: Type := 
@@ -125,4 +125,6 @@ Definition not (v: value): return_val :=
     | Bool v' => Val_Normal (Bool (negb v'))
     | _ => Val_Abnormal
     end.
-End Val.
+End Val. 
+
+ 

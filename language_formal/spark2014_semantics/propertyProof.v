@@ -40,16 +40,16 @@ Proof.
     intros v t h1 h2 h3;
     inversion h3;
     inversion h2; subst.
-  - (* Econst *)
+  - (* E_Literal *)
     constructor.
   - constructor.  
-  - (* Evar *)
+  - (* E_Identifier *)
     specialize (typed_value _ _ i v h1 ); intros hz1.
     specialize (hz1 H6).
     rm_exists.
     rewrite H3 in H. inversion H; subst.
     assumption.
-  - (* Ebinop *)
+  - (* E_Binary_Operation *)
     specialize (IHe1 _ _ h1 H14 H5).
     specialize (IHe2 _ _ h1 H15 H6).
     destruct v1 as [v11 | v12]; inversion IHe1; subst;
@@ -59,7 +59,7 @@ Proof.
        inversion H17; subst; constructor.
     + destruct b; try simpl_binop_hyp;
        inversion H17; subst; constructor.
-  - (* Eunop *)
+  - (* E_Unary_Operation *)
     destruct op; destruct v0; inversion H9; subst.
     constructor.
 Qed.
@@ -82,16 +82,16 @@ Proof.
     intros v t h1 h2 h3;
     inversion h3;
     inversion h2; subst.
-  - (* Econst *)
+  - (* E_Literal *)
     constructor.
   - constructor.  
-  - (* Evar *)
+  - (* E_Identifier *)
     specialize (typed_value _ _ i v h1 ); intros hz1.
     specialize (hz1 H6).
     rm_exists.
     rewrite H3 in H. inversion H; subst.
     assumption.
-  - (* Ebinop *)
+  - (* E_Binary_Expression *)
     specialize (IHe1 _ _ h1 H14 H5).
     specialize (IHe2 _ _ h1 H15 H6).
     destruct v1 as [v11 | v12]; inversion IHe1; subst;
@@ -110,7 +110,7 @@ Proof.
        inversion H17; subst; constructor.
     + destruct b; try simpl_binop_hyp;
        inversion H17; subst; constructor.
-  - (* Eunop *)
+  - (* E_Unary_Expression *)
     destruct op; destruct v0; inversion H9; subst.
     constructor.
 Qed.
@@ -1675,6 +1675,30 @@ Qed.
     evaluated to; v can be either a normal value or a run time error 
     whenever the run time checks fail;
 *)
+Ltac instantiate_bin_op_result v1 v2 :=
+    match goal with
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zeq_bool v1 v2)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Not_Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zneq_bool v1 v2)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Greater_Than ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zgt_bool v1 v2)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Greater_Than_Or_Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zge_bool v1 v2)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Less_Than ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zlt_bool v1 v2)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Less_Than_Or_Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zle_bool v1 v2)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Plus ?e1 ?e2) v =>
+        exists (Val_Normal (Int ((v1 + v2)%Z)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Minus ?e1 ?e2) v =>
+        exists (Val_Normal (Int ((v1 - v2)%Z)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Multiply ?e1 ?e2) v =>
+        exists (Val_Normal (Int ((v1 * v2)%Z)))
+    | |- exists v, eval_expr ?s (E_Binary_Operation _ Divide ?e1 ?e2) v =>
+        idtac (* exists (Val_Normal (Int ((v11 / v21)%Z))) *)
+    end.
+
 Lemma binop_rule: forall tb s e1 v1 e2 v2 ast_num op t,
     type_check_stack tb s -> 
     eval_expr s e1 (Val_Normal v1) ->
@@ -1690,17 +1714,7 @@ Proof.
     inversion h1; subst; try rm_contradict. 
   - (* Ebinop Tint Tint *)
     destruct op; try simpl_binop_hyp;
-    [ exists (Val_Normal (Bool (Zeq_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zneq_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zgt_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zge_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zlt_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zle_bool v11 v21))) |
-      exists (Val_Normal (Int ((v11 + v21)%Z))) |
-      exists (Val_Normal (Int ((v11 - v21)%Z))) |
-      exists (Val_Normal (Int ((v11 * v21)%Z))) |
-      (* exists (Val_Normal (Int ((v11 / v21)%Z))) *)
-    ];
+    instantiate_bin_op_result v11 v21;
     try match goal with 
     | [ |- eval_expr ?s (E_Binary_Operation ?ast_num Divide ?e1 ?e2) ?v ] => idtac
     | [ |- eval_expr ?s (E_Binary_Operation ?ast_num _ ?e1 ?e2) ?v ] => 
@@ -1775,6 +1789,30 @@ Qed.
     Otherwise, it performs the run time checks and either returns a 
     value or capture the run time error;
 *)
+Ltac instantiate_bin_op_result2 v1 v2 :=
+    match goal with
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zeq_bool v1 v2)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Not_Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zneq_bool v1 v2)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Greater_Than ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zgt_bool v1 v2)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Greater_Than_Or_Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zge_bool v1 v2)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Less_Than ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zlt_bool v1 v2)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Less_Than_Or_Equal ?e1 ?e2) v =>
+        exists (Val_Normal (Bool (Zle_bool v1 v2)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Plus ?e1 ?e2) v =>
+        exists (Val_Normal (Int ((v1 + v2)%Z)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Minus ?e1 ?e2) v =>
+        exists (Val_Normal (Int ((v1 - v2)%Z)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Multiply ?e1 ?e2) v =>
+        exists (Val_Normal (Int ((v1 * v2)%Z)))
+    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Divide ?e1 ?e2) v =>
+        idtac (* exists (Val_Normal (Int ((v11 / v21)%Z))) *)
+    end.
+
 Lemma binop_rule2: forall tb s cks e1 v1 e2 v2 ast_num op t,
     type_check_stack tb s -> 
     eval_expr_with_checks cks s e1 (Val_Normal v1) ->
@@ -1790,17 +1828,7 @@ Proof.
     inversion h1; subst; try rm_contradict.
   - (* Ebinop Tint Tint *)
     destruct op; try simpl_binop_hyp;
-    [ exists (Val_Normal (Bool (Zeq_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zneq_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zgt_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zge_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zlt_bool v11 v21))) |
-      exists (Val_Normal (Bool (Zle_bool v11 v21))) |
-      exists (Val_Normal (Int ((v11 + v21)%Z))) |
-      exists (Val_Normal (Int ((v11 - v21)%Z))) |
-      exists (Val_Normal (Int ((v11 * v21)%Z))) |
-      (* exists (ValNormal (Int ((v11 / v21)%Z))) *)
-    ];
+    instantiate_bin_op_result2 v11 v21;
     try match goal with 
     | [ |- eval_expr_with_checks _ _ (E_Binary_Operation ?ast_num Divide ?e1 ?e2) ?v ] => idtac
     | [ |- eval_expr_with_checks _ _ (E_Binary_Operation ?ast_num _ ?e1 ?e2) ?v ] => 
@@ -2492,19 +2520,19 @@ Proof.
     specialize (IHh1_2 x hz1).
     rm_exists.
     exists x0.
-    apply WD_S_Sequence with (m' := x);
+    apply WD_Sequence with (m' := x);
     assumption.
   - exists istate2.
     specialize (IHh1 _ h2).
     rm_exists.
-    apply WD_S_If with (m' := x); auto.
+    apply WD_If with (m' := x); auto.
     distr_univ_qualifier.
     specialize (initializationMap_expr _ _ _ H H1); intros hz1.
     assumption.
   - exists istate2.
     specialize (IHh1 _ h2).
     rm_exists.
-    apply WD_S_While_Loop with (m' := x); auto.
+    apply WD_While_Loop with (m' := x); auto.
     distr_univ_qualifier.
     specialize (initializationMap_expr _ _ _ H H1); intros hz1.
     assumption.
@@ -3080,7 +3108,7 @@ Proof.
     specialize (initializationMap_expr1 _ _ _ H4 ha1); intros ha1_1.
     specialize (initializationMap_stmt _ _ _ _ H5 ha1); intros ha1_2.
     destruct ha1_2.
-    apply WD_S_While_Loop with (m' := x0); auto.
+    apply WD_While_Loop with (m' := x0); auto.
 
     specialize (IHs1 _ _ _ _ _ _ hz9 H a1 h4 h5 h6 h7).
     rewrite e2 in IHs0.
@@ -3433,3 +3461,9 @@ Proof.
   - right.
     simpl; assumption.
 Qed.
+
+
+
+
+
+

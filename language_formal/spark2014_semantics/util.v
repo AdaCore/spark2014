@@ -69,3 +69,12 @@ Ltac distr_qualifier :=
     [h: forall x: ?T, ?A1 /\ ?A2 |- _ ] => assert ((forall x: T, A1) /\ (forall x: T, A2))
             ; [split; intros xz; specialize (h xz); rm_exists; assumption | ]; clear h; rm_exists
     end.
+
+
+
+
+
+
+
+
+
