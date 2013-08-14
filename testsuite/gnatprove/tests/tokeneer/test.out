@@ -168,7 +168,7 @@ clock.adb:341:32: info: division check proved
 clock.adb:345:7: info: precondition proved
 clock.adb:346:44: info: division check proved
 clock.adb:387:7: info: assertion proved
-clock.adb:391:7: precondition not proved
+clock.adb:391:7: info: precondition proved
 clock.adb:396:7: precondition not proved
 clock.adb:401:7: precondition not proved
 clock.adb:406:7: precondition not proved
@@ -179,7 +179,7 @@ clock.adb:413:32: info: division check proved
 clock.adb:417:7: precondition not proved
 clock.adb:418:50: info: division check proved
 clock.adb:419:32: info: division check proved
-clock.adb:423:7: precondition not proved
+clock.adb:423:7: info: precondition proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
 configdata.adb:237:44: info: overflow check proved
@@ -305,7 +305,7 @@ enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
-file.adb:413:39: overflow check not proved
+file.adb:413:39: info: overflow check proved
 file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
