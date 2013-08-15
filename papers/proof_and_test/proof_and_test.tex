@@ -92,12 +92,10 @@ Given a certain piece a code, a user might:
 
     \begin{enumerate}
       \item Perform exclusively testing (prove no properties).
-        [exponentiation example]
 
       \item Prove only a subset of the properties of the code and
         test the remaining. For instance, prove freedom of run-time
         exceptions and test functional behaviour-related contracts.
-        [Selection sort]
     \end{enumerate}
 
   \item make a first unsuccessful attempt to prove the code and afterwards
@@ -230,11 +228,46 @@ performing some basic tests to ensure that no porting errors were made should be
 
 
 
-\section{One of the VSTTE examples}
-\subsection{Example code}
-\subsection{Describe approach to verification}
-\subsection{Report results of verification}
-\subsection{Report any points of interest arising from attempting to verify}
+\section{When proof fails}
+Having an accurate contract and a flawlessly annotated implementation, unfortunately,
+does not always guarantee that all properties of the code will be fully verified.
+Theorem provers are the best option currently available for performing automated
+reasoning and even though they improve on a daily basis they are still far from perfect.
+This section presents two examples and shows two different courses of action
+that a user can follow when proof is not (directly) achievable.
+
+\subsection{Fall back to testings}
+\lstinputlisting[language=Ada, title=Spec Of Example One]{Code/proof_failed/example_one/example_one.ads}
+\lstinputlisting[language=Ada, title=Body Of Example One]{Code/proof_failed/example_one/example_one.adb}
+The given code should be provable with its current annotations but the tools are not
+able to discharge the overflow check associated with line 10. Restructuring the code
+and/or the annotations could potentially enable the tools to achieve full proof. However,
+for this example, due to the simplicity of the code, performing a manual review and writing
+some basic tests was deemed to be more cost-effective.
+
+\subsection{Perform a partial proof}
+\lstinputlisting[language=Ada, title=Spec Of Example One]{Code/proof_failed/example_two/sorting.ads}
+\lstinputlisting[language=Ada, title=Body Of Example One]{Code/proof_failed/example_two/sorting.adb}
+
+
+\subsection{Points of interest arising from attempting to verify}
+When the tools are unable to discharge a verification condition and the
+user is confident that the existing annotations should be rendering it provable,
+trying the following might help:
+\begin{itemize}
+  \item Increase the time spent by the prover on each verification condition.
+
+  \item Restructure the code and/or annotations to facilitate proof.
+\end{itemize}
+
+Predicting if a prover will be able to discharge a certain verification condition is not
+always possible. Results might occasionally even differ between provers. Non the less,
+there are certain areas where provers are known to perform well (linear arithmetics) and
+other areas where automated proof is harder to achieve (non-linear arithmetics). The more
+accustomed a user becomes to the tools, the easier it becomes to predict what will be
+automatically provable. Performing proof when it is expected to be easy and testing
+the remainder of the code is theorised to be the most time-efficient code-validating
+method.
 
 
 
