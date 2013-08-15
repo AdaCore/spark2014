@@ -1620,22 +1620,30 @@ package body Flow.Control_Flow_Graph is
                  Pragma_Unreferenced =>
 
                declare
-                  Expr           : constant Node_Id :=
-                    Expression (First (Pragma_Argument_Associations (N)));
-                  Associated_Var : constant Node_Id :=
-                    Associated_Node (Expr);
+                  Argument_Association : Node_Id;
+                  Associated_Variable  : Node_Id;
                begin
-                  if Get_Pragma_Id (N) = Pragma_Unmodified then
-                     --  If a pragma Unmodified was found, we insert its
-                     --  associated variable to the set of unmodified
-                     --  variables.
-                     FA.Unmodified_Vars.Insert (Associated_Var);
-                  else
-                     --  If a pragma Unreferenced was found, we insert its
-                     --  associated variable to the set of unreferrenced
-                     --  variables.
-                     FA.Unreferenced_Vars.Insert (Associated_Var);
-                  end if;
+                  Argument_Association :=
+                    First (Pragma_Argument_Associations (N));
+
+                  while Present (Argument_Association) loop
+                     Associated_Variable :=
+                       Associated_Node (Expression (Argument_Association));
+
+                     if Get_Pragma_Id (N) = Pragma_Unmodified then
+                        --  If a pragma Unmodified was found, we insert its
+                        --  associated variable to the set of unmodified
+                        --  variables.
+                        FA.Unmodified_Vars.Insert (Associated_Variable);
+                     else
+                        --  If a pragma Unreferenced was found, we insert its
+                        --  associated variable to the set of unreferrenced
+                        --  variables.
+                        FA.Unreferenced_Vars.Insert (Associated_Variable);
+                     end if;
+
+                     Argument_Association := Next (Argument_Association);
+                  end loop;
                end;
 
             when others =>

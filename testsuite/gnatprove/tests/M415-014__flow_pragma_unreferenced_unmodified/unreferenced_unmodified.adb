@@ -1,7 +1,6 @@
 package body Unreferenced_Unmodified is
    function Return_5 (X, Y : Integer) return Integer is
-      pragma Unreferenced (X);
-      pragma Unreferenced (Y);
+      pragma Unreferenced (X, Y);
    begin
       return 5;
    end Return_5;
