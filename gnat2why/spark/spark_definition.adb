@@ -3187,8 +3187,9 @@ package body SPARK_Definition is
 
          when Pragma_Import =>
             --  If the associated node of Pragma_Import:
-            --     1. is marked as In-SPARK
-            --     2. and no global aspect has been specified
+            --     1. is a subprogram
+            --     2. and is marked as In-SPARK
+            --     3. and no global aspect has been specified
             --  then we warn that null global effect was assumed.
             declare
                Argument_Associations : constant List_Id :=
@@ -3198,7 +3199,8 @@ package body SPARK_Definition is
                  Associated_Node (Expression
                                     (Next (First (Argument_Associations))));
             begin
-               if Entity_In_SPARK (Associated_Subprogram)
+               if Ekind (Associated_Subprogram) in Subprogram_Kind
+                 and then Entity_In_SPARK (Associated_Subprogram)
                  and then No (Get_Pragma
                                 (Associated_Subprogram, Pragma_Global))
                then
