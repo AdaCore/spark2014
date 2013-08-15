@@ -861,13 +861,12 @@ effect on the internal operation of a program, its only effects are external to
 the program. These properties require special treatment of volatile variables
 during flow analysis and formal verification.
 
-|SPARK| follows the Ada convention that a read of a volatile variable has a
-possible side effect of updating the variable. |SPARK| extends this notion
-to cover updates of a volatile variable such that an update of a volatile
-variable also has a side effect of reading the variable. |SPARK| further extends
-these principles to apply to state abstractions also using the Input_Only and
-Output_Only options in the declaration of a state abstraction
-(see section :ref:`external_state`).
+|SPARK| follows the Ada convention that a read of a volatile variable
+may have an external effect as well as reading the value of the
+variable.  |SPARK| extends this notion to cover updates of a volatile
+variable such that an update of a volatile variable may also have some
+other observable effect.  |SPARK| further extends these principles to
+apply to state abstractions. (see section :ref:`external_state`).
 
 .. _notes:
 
