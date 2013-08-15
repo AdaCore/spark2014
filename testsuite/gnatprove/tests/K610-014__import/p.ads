@@ -14,6 +14,7 @@ package P is
    pragma Import (Ada, ">");
 
    X : Integer;
+   pragma Import (CPP, X, "_X");
 
    procedure Double
       with Convention => C,
