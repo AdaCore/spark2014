@@ -11,50 +11,58 @@ Appendix
 Command-line Options
 --------------------
 
-|GNATprove| is executed with the following command line::
+|GNATprove| is executed with the following command line:
 
-   gnatprove -P <project_file>.gpr <switches> <optional_list_of_files>
+   ``gnatprove -P <project_file.gpr> [switches] [optional_list_of_files]``
 
-|GNATprove| accepts the following basic switches::
+|GNATprove| accepts the following basic switches:
 
-   -f            Force recompilation/proving of all units and all VCs
-   -jnnn         Use nnn parallel processes (default: 1)
-   -k            Do not stop analysis at the first error
-   --mode=       Proof mode
-       check       Check SPARK restrictions for code where SPARK_Mode=On
-       prove       Prove subprogram contracts and absence of run-time errors (default)
-       flow        Prove object initialization, globals and depends contracts
-       all         Activates all modes
-   -q            Be quiet/terse
-   --clean       Remove GNATprove intermediate files, and exit
-   --report=     Output mode
-       fail        Report failures to prove VCs (default)
-       all         Report all results of proving VCs
-       statistics  Report all results of proving VCs, including timing and
-                   steps information
-   -u            Unique compilation, only prove the given files
-   -U            Prove all files of all projects
-   -v, --verbose Output extra verbose information
-   --version     Output version of the tool and exit
-   -h, --help    Display usage information
+* ``-f``      Force recompilation/proving of all units and all VCs
+* ``-jnnn``   Use nnn parallel processes (default: 1)
+* ``-k```     Do not stop analysis at the first error
+* ``--mode=M`` Proof mode
 
-|GNATprove| accepts the following advanced switches::
+  * ``check`` - Check SPARK restrictions for code where SPARK_Mode=On
+  * ``flow``  - Prove object initialization, globals and depends contracts
+  * ``prove`` - Prove subprogram contracts and absence of run-time
+    errors (default)
+  * ``all``   - Activates all modes
 
-   -d, --debug            Debug mode
-   --proof=               Proof mode
-      no_wp                 Do not compute VCs, do not call prover
-      all_split             Compute all VCs, save them to file, do not call prover
-      path_wp               Generate one formula per path for each check
-      no_split              Generate one formula per check
-      then_split            Start with one formula per check, then split into paths when needed
-   --RTS=dir              Specify the Ada runtime name/location
-   --pedantic             Use a strict interpretation of the Ada standard
-   --steps=nnn            Set the maximum number of proof steps to nnn for Alt-Ergo
-   --timeout=s            Set the prover timeout in seconds (default: 1)
-   --limit-line=file:line Limit proofs to the specified file and line
-   --limit-subp=file:line Limit proofs to the specified subprogram declared at
-                          the location given by file and line
-   --prover=s             Use given prover instead of default Alt-Ergo prover
+* ``-q``      Be quiet/terse
+* ``--clean`` Remove GNATprove intermediate files, and exit
+* ``--report=M`` Output mode
+
+  * ``fail``       - Report failures to prove VCs (default)
+  * ``all``        - Report all results of proving VCs
+  * ``statistics`` - Report all results of proving VCs, including
+    timing and steps information
+
+* ``-u``      Unique compilation, only prove the given files
+* ``-U``      Prove all files of all projects
+* ``-v``, ``--verbose`` Output extra verbose information
+* ``--version``         Output version of the tool and exit
+* ``-h``, ``--help``    Display usage information
+
+|GNATprove| accepts the following advanced switches:
+
+* ``-d``, ``--debug``   Debug mode
+* ``--proof=M``         Proof mode
+
+  * ``no_wp``      - Do not compute VCs, do not call prover
+  * ``all_split``  - Compute all VCs, save them to file, do not call prover
+  * ``path_wp``    - Generate one formula per path for each check
+  * ``no_split``   - Generate one formula per check
+  * ``then_split`` - Start with one formula per check, then split into
+    paths when needed
+
+* ``--RTS=DIR``   Specify the Ada runtime name/location
+* ``--pedantic``  Use a strict interpretation of the Ada standard
+* ``--steps=nnn`` Set the maximum number of proof steps to nnn for Alt-Ergo
+* ``--timeout=s`` Set the prover timeout in seconds (default: 1)
+* ``--limit-line=file:line`` Limit proofs to the specified file and line
+* ``--limit-subp=file:line`` Limit proofs to the specified subprogram
+  declared at the location given by file and line
+* ``--prover=s``  Use given prover instead of default Alt-Ergo prover
 
 .. _Project_Attributes:
 
