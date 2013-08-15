@@ -3170,11 +3170,9 @@ package body SPARK_Definition is
 
          --  Ignored pragmas, either because they are already taken into
          --  account (Precondition and Postcondition), or because they have no
-         --  effect on verification (Export, Import, Preelaborate, Pure,
-         --  Warnings).
+         --  effect on verification (Export, Preelaborate, Pure, Warnings).
 
          when Pragma_Export         |
-              Pragma_Import         |
               Pragma_Precondition   |
               Pragma_Preelaborate   |
               Pragma_Postcondition  |
@@ -3183,6 +3181,28 @@ package body SPARK_Definition is
               Pragma_SPARK_Mode     |
               Pragma_Warnings       =>
             null;
+
+         when Pragma_Import =>
+            --  If the associated node of Pragma_Import:
+            --     1. is marked as In-SPARK
+            --     2. and no global aspect has been specified
+            --  then we warn that null global effect was assumed.
+            declare
+               Argument_Associations : constant List_Id :=
+                 Pragma_Argument_Associations (N);
+
+               Associated_Subprogram : constant Node_Id :=
+                 Associated_Node (Expression
+                                    (Next (First (Argument_Associations))));
+            begin
+               if Entity_In_SPARK (Associated_Subprogram)
+                 and then No (Get_Pragma
+                                (Associated_Subprogram, Pragma_Global))
+               then
+                  Error_Msg_N ("null global effect assumed on imported"
+                                 & " subprogram?", Associated_Subprogram);
+               end if;
+            end;
 
          when Pragma_Overflow_Mode =>
             Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);

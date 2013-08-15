@@ -23,13 +23,11 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Errout;                          use Errout;
 with Nlists;                          use Nlists;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Snames;                          use Snames;
-with SPARK_Definition;                use SPARK_Definition;
 
 with Treepr;                          use Treepr;
 with Output;                          use Output;
@@ -1616,29 +1614,6 @@ package body Flow.Control_Flow_Graph is
                E_Loc   => N),
             V);
 
-         --  If we are dealing with a Pragma_Import and:
-         --     1. the code is marked as In-SPARK
-         --     2. and no global aspect has been given
-         --  then we warn that null global effect was assumed.
-         if Get_Pragma_Id (N) = Pragma_Import then
-            declare
-               Argument_Associations : constant List_Id :=
-                 Pragma_Argument_Associations (N);
-
-               Associated_Subprogram : constant Node_Id :=
-                 Associated_Node (Expression
-                                    (Next (First (Argument_Associations))));
-            begin
-               if Entity_In_SPARK (Associated_Subprogram)
-                 and then No (Get_Pragma
-                                (Associated_Subprogram, Pragma_Global))
-               then
-                  Error_Msg_N ("null global effect assumed on imported"
-                               & " subprogram?",
-                               Associated_Subprogram);
-               end if;
-            end;
-         end if;
       else
          --  Otherwise we produce a null vertex.
          FA.CFG.Add_Vertex (Null_Node_Attributes,

@@ -8,4 +8,19 @@ package P is
 
    function Compare (Left, Right : T) return Boolean is
       (Left < Right);
+
+   function ">" (Left, Right : T) return Boolean
+      with Global => null;
+   pragma Import (Ada, ">");
+
+   X : Integer;
+
+   procedure Double
+      with Convention => C,
+           Import     => True,
+           Global     => (In_Out => X);
+
+   procedure Triple
+      with Convention => Fortran,
+           Import     => True;
 end;
