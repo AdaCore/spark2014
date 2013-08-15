@@ -64,6 +64,21 @@ Command-line Options
   declared at the location given by file and line
 * ``--prover=s``  Use given prover instead of default Alt-Ergo prover
 
+.. _Alternative_Provers:
+
+Alternative Provers
+===================
+
+|GNATprove| by default uses Alt-Ergo, but it can be used with
+different provers, as long as they are supported by the Why3
+platform. To use a prover, it must be listed in your ``.why3.conf``
+file. The command ``why3config --detect-provers`` can be used to
+search your PATH for any supported provers and add them to the config
+file. Any such prover can then be used with the ``--prover`` option,
+for example:
+
+   ``gnatprove -P foo.gpr --prover=cvc4_gnatprove``
+
 .. _Project_Attributes:
 
 Project Attributes
