@@ -135,7 +135,7 @@ as external properties of an external state abstraction.
    * Async_Readers, Async_Writers, Effective_Writes True, Others False;
 
    * Async_Readers, Async_Writers, Effective Reads True, Others False;
-   
+
    * Async_Readers, Async_Writers => True, Others => False; and
 
    * Others => True.
@@ -166,8 +166,8 @@ as external properties of an external state abstraction.
 #. Each successive read of an external state will result in the last
    value explicitly written [by the program] if Async_Writers => False.
 
-#. Every explicit update of an external state might affect the next value 
-   read from the external state even if Async_Writers => True. 
+#. Every explicit update of an external state might affect the next value
+   read from the external state even if Async_Writers => True.
 
 #. An external state which has the property Async_Readers => True need
    not be initialized before being read although explicit
@@ -219,7 +219,7 @@ The new aspects are:
 
 #. If a Volatile object has Effective_Reads set to True then it must
    have a ``mode_selector`` of Output or In_Out when denoted as a
-   ``global_item``. 
+   ``global_item``.
 
 #. A Volatile object shall only occur as an actual parameter of a
    subprogram if the corresponding formal parameter is of a non-scalar
@@ -321,22 +321,22 @@ There are no dynamic semantics associated with these aspects.
       -- V_In_1 is essentially an external input since it
       -- has Async_Writers => True but Async_Readers => False.
       -- Reading a value from V_In_1 is independent of other
-      -- reads of the same object. Two successive reads might 
+      -- reads of the same object. Two successive reads might
       -- not have the same value.
       V_In_1 : Volatile_Type
          with Async_Writers,
               Address => System.Storage_Units.To_Address (16#A1CAFE#);
 
-      -- V_In_2 is similar to V_In_1 except that each value read is 
-      -- significant. V_In_2 can only be used as a Global with a 
+      -- V_In_2 is similar to V_In_1 except that each value read is
+      -- significant. V_In_2 can only be used as a Global with a
       -- mode_Selector of Output or In_Out or as an actual parameter
-      -- whose corresponding formal parameter is of a Volatile type and 
+      -- whose corresponding formal parameter is of a Volatile type and
       -- has mode out or in out.
       V_In_2 : Volatile_Type
          with Async_Writers,
               Effective_Reads,
               Address => System.Storage_Units.To_Address (16#ABCCAFE#);
- 
+
 
       -- V_Out_1 is essentially an external output since it
       -- has Async_Readers => True but Async_Writers => False.
@@ -345,12 +345,12 @@ There are no dynamic semantics associated with these aspects.
       V_Out_1 : Volatile_Type
          with Async_Readers,
               Address => System.Storage_Units.To_Address (16#BBCCAFE#);
- 
+
       -- V_Out_2 is similar to V_Out_1 except that each write to
       -- V_Out_2 is significant.
       V_Out_2 : Volatile_Type
          with Async_Readers,
-              Effective_Writes, 
+              Effective_Writes,
               Address => System.Storage_Units.To_Address (16#ADACAFE#);
 
       -- This declaration defaults to the following properties:
@@ -359,7 +359,7 @@ There are no dynamic semantics associated with these aspects.
       -- Effective_Reads => True,
       -- Effective_Writes => True;
       -- That is the most comprehensive type of external interface
-      -- which is bi-directional and each read and write has an 
+      -- which is bi-directional and each read and write has an
       -- observable effect.
       V_In_Out : Volatile_Type
          with Address => System.Storage_Units.To_Address (16#BEECAFE#);
@@ -368,19 +368,19 @@ There are no dynamic semantics associated with these aspects.
       -- as global items and actual parameters of subprogram calls
       -- dependent on their properties.
 
-      procedure Read (Value : out Integaer) 
+      procedure Read (Value : out Integaer)
          with Global  => (Input => V_In_1),
               Depends => (Value => V_in_1);
-         -- V_In_1, V_Out_1 and V_Out_2 are compatible with a mode selector 
-         -- of Input as this mode requires Effective_Reads => False. 
+         -- V_In_1, V_Out_1 and V_Out_2 are compatible with a mode selector
+         -- of Input as this mode requires Effective_Reads => False.
 
-      procedure Write (Value : in Integaer) 
+      procedure Write (Value : in Integaer)
          with Global  => (Output => V_Out_1),
               Depends => (V_Out_1 => Value);
          -- Any Volatile Global is compatible with a mode selector of Output.
          -- A flow error will be raised if the subprogram attempts to
          -- read a Volatile Global with Async_Writers and or
-         -- Effective_Reads set to True. 
+         -- Effective_Reads set to True.
 
       procedure Read_With_Effect (Value : out Integer)
          with Global  => (In_Out => V_In_2),
@@ -394,12 +394,12 @@ There are no dynamic semantics associated with these aspects.
      -- When a formal parameter is volatile assumptions have to be made in
      -- the body of the subprogram as to the possible properties that the actual
      -- volatile parameter might have dependent on the mode of the formal parameter.
- 
+
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
          with Depends => (Value => Port,);
-          -- Port is Volatile and of mode in.  Assume that the formal parameter 
+          -- Port is Volatile and of mode in.  Assume that the formal parameter
           -- has the properties Async_Writers => True and Effective_Reads => False
-          -- The actual parameter in a call of the subprogram must have 
+          -- The actual parameter in a call of the subprogram must have
           -- Async_Writers_True and Effective_Reads => False
           -- and may have Async_Writers and/or Effective_Writes True.
           -- As an in mode parameter it can only be read by the subprogram.
@@ -407,15 +407,15 @@ There are no dynamic semantics associated with these aspects.
 
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
          with Depends => (Port => Value);
-          -- Port is volatile and of mode out.  Assume the formal parameter 
+          -- Port is volatile and of mode out.  Assume the formal parameter
           -- has the properties Async_Readers => True, Effective_Writes => True
-          -- The actual parameter in a call to the subprogram must have 
-          -- Async_Readers and/or Effective_Writes True, and may have 
+          -- The actual parameter in a call to the subprogram must have
+          -- Async_Readers and/or Effective_Writes True, and may have
           -- Async_Writers and Effective_Reads True.
-          -- As the mode of the formal parameter is mode out, it is 
+          -- As the mode of the formal parameter is mode out, it is
           -- incompatible with reading the parameter because this could read
           -- a value from an Async_Writer.
-          -- A flow error will be signalled if a read of the parameter occurs 
+          -- A flow error will be signalled if a read of the parameter occurs
           -- in the subprogram.
           -- Eg. Write_Port (V_Out_1, Output_Value) and Write_Port (V_Out_2, Output_Value).
 
@@ -430,7 +430,7 @@ There are no dynamic semantics associated with these aspects.
       procedure Read_And_Ack (Port : in out Volatile_Type; Value : out Integer)
          with Depends => (Value => Port,
                           Port => Port);
-         -- Port is Volatile and reading a value may require the sending of an 
+         -- Port is Volatile and reading a value may require the sending of an
          -- acknowledgement, for instance.
          -- Eg. Read_And_Ack (V_In_Out, Read_Value).
 
@@ -561,7 +561,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
    declaration of a state abstraction entity. This implicit
    declaration occurs at the beginning of the visible part of P. This
    implicit declaration shall have a completion and is overloadable.
-  
+
    [The declaration of a state abstraction has the same visibility as
    any other declaration but a state abstraction shall only be named
    in contexts where this is explicitly permitted (e.g., as part of a
@@ -742,12 +742,12 @@ grammar of ``initialization_spec`` given below.
       :Trace Unit: FE 7.1.5 LR Entities in single input_list shall be distinct
 
 #. An ``initialization_item`` with a **null** ``input_list`` is
-   equivalent to the same ``initialization_item`` without an ``input_list``. 
+   equivalent to the same ``initialization_item`` without an ``input_list``.
    [That is Initializes => (A => **null**) is equivalent to Initializes => A.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.1.5 LR Initializes => (A => null) is equivalent to Initializes => A. 
+      :Trace Unit: FE 7.1.5 LR Initializes => (A => null) is equivalent to Initializes => A.
 
 .. centered:: **Static Semantics**
 
@@ -825,7 +825,7 @@ There are no dynamic semantics associated with the Initializes aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 7.1.5 VR enities used in the initialization of an 
+      :Trace Unit: FA 7.1.5 VR enities used in the initialization of an
                    initialization_item must appear in its input_list.
 
 .. centered:: **Examples**
@@ -835,7 +835,7 @@ There are no dynamic semantics associated with the Initializes aspect.
     package Q
        with Abstract_State => State,      -- Declaration of abstract state name State
             Initializes    => State,      -- Indicates that State
-                              Visible_Var -- and Visible_Var will be initialized 
+                              Visible_Var -- and Visible_Var will be initialized
                                           -- during the elaboration of Q.
     is
        Visible_Var : Integer;
@@ -1406,7 +1406,7 @@ is part of and a state abstraction always knows all of its constituents.
      the Global aspect of the subprogram and as both an ``input`` and
      an ``output`` in the Depends aspect of the subprogram. [The
      reason for this is that it is not known whether the entire state
-     abstraction is updated or only some of its constituents.] 
+     abstraction is updated or only some of its constituents.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -2120,12 +2120,14 @@ abstraction on to external states which are given in this section.
    package Externals
       with Abstract_State => ((Combined_Inputs with External => Async_Writers),
                               (Displays with External => Asyc_Readers),
-                              (Complex_Device with (Async_Readers, Effective_Writes, Async_Writers))),
+                              (Complex_Device with External => (Async_Readers,
+                                                                Effective_Writes,
+                                                                Async_Writers))),
            Initializes => Complex_Device
    is
       procedure Read (Combined_Value : out Integer)
          with Global  => Combined_Inputs,  -- Combined_Inputs is an Input;
-                                           -- it does not have Effective_Reads and 
+                                           -- it does not have Effective_Reads and
                                            -- may be an specified just as an
                                            -- Input in Global and Depends aspects.
               Depends => (Combined_Value => Combined_Inputs);
@@ -2139,11 +2141,11 @@ abstraction on to external states which are given in this section.
 
       function Last_Value_Sent return Integer
          with Global => Complex_Device;  -- Complex_Device is an External
-                                         -- state.  It can be a global_item of 
-                                         -- a function provided the Refined_Global 
-                                         -- aspect only refers to non-volatile 
-                                         -- constituents and to external 
-                                         -- state abstractions via calls to 
+                                         -- state.  It can be a global_item of
+                                         -- a function provided the Refined_Global
+                                         -- aspect only refers to non-volatile
+                                         -- constituents and to external
+                                         -- state abstractions via calls to
                                          -- functions defined on them.
 
       procedure Output_Value (Value : in Integer)
@@ -2203,7 +2205,7 @@ abstraction on to external states which are given in this section.
                              Complex_Device => (Saved_Value,
                                                 Out_Reg,
                                                 In_Reg))
-                          -- Complex_Device is a mixture of inputs, outputs and 
+                          -- Complex_Device is a mixture of inputs, outputs and
                           -- non-volatile constituents.
    is
       Saved_Value : Integer := 0;  -- Initialized as required.
@@ -2221,7 +2223,7 @@ abstraction on to external states which are given in this section.
 
       function Last_Value_Sent return Integer
          with Refined_Global => Saved_Value -- Refined_Global aspect only
-                                            -- refers to a non-volatile 
+                                            -- refers to a non-volatile
                                             -- constituent.
       is
       begin
@@ -2253,7 +2255,7 @@ abstraction on to external states which are given in this section.
 
             Out_Reg := Value;  -- Out_Reg has the property Async_Readers
                                -- and the assigned value will be consumed.
-            Saved_Value := Value;  -- Writing to the Out_Reg also results 
+            Saved_Value := Value;  -- Writing to the Out_Reg also results
                                    -- in updating Saved_Value.
          end if;
       end Output_Value;
@@ -2268,22 +2270,22 @@ abstraction on to external states which are given in this section.
    -- and monitors and resets an area of shared memory used
    -- as a watchdog.
    package HAL
-      with Abstract_State => 
+      with Abstract_State =>
               ((FIFO_Status
-                  with External => Async_Writers), 
-               (Serial_In 
+                  with External => Async_Writers),
+               (Serial_In
                   with External => (Async_Writers, Effective_Reads)),
-                  -- Each value received is significant 
+                  -- Each value received is significant
                (FIFO_Control
                   with External => Async_Readers),
-               (Serial_Out 
+               (Serial_Out
                   with External => (Async_Readers, Effective_Writes)),
-               (Wdog_State 
-                  with External => (Async_Readers, 
+               (Wdog_State
+                  with External => (Async_Readers,
                                     Async_Writers)))
    is
       type Byte_T is mod 256;
-    
+
       -- This procedure reads the next byte available on
       -- the serial input port using a FIFO buffer.
       procedure Get_Byte (A_Byte : out Byte_T)
@@ -2292,14 +2294,14 @@ abstraction on to external states which are given in this section.
                           Serial_In => null);
 
       -- This procedure skips input bytes until
-      -- the byte matches the given pattern or the input 
-      -- FIFO is empty.                  
+      -- the byte matches the given pattern or the input
+      -- FIFO is empty.
       procedure Skip_To (Pattern : in Byte_T; Found : out Boolean)
          with Global  => (Input  => FIFO_Status,
                           In_Out => Serial_In),
               Depends => (Found,
                           Serial_In => (FIFO_Status, Pattern, Serial_In));
-            
+
       -- This procedure reads the status of the input and output FIFOs.
       procedure Get_FIFO_Status (A_Byte : out Byte_T)
          with Global  => (Input  => FIFO_Status),
@@ -2308,21 +2310,21 @@ abstraction on to external states which are given in this section.
       -- This procedure writes a byte to the serial
       -- output port using a FIFO buffer.
       procedure Put_Byte (A_Byte : Byte_T)
-      with Global => (Output => Serial_Out),
-      Depends => (Serial_Out => A_Byte);
+         with Global  => (Output => Serial_Out),
+              Depends => (Serial_Out => A_Byte);
 
-                  
+
       -- This procedure clears the input FIFO.
       procedure Clear_In_FIFO
          with Global  => (Output => FIFO_Control),
               Depends => (FIFO_Control => null);
-            
+
 
       -- This procedure clears the output FIFO.
       procedure Clear_Out_FIFO
          with Global  => (Output => FIFO_Control),
               Depends => (FIFO_Control => null);
-            
+
 
       -- This procedure checks and then resets the status of
       -- the watchdog state.
@@ -2330,11 +2332,11 @@ abstraction on to external states which are given in this section.
          with Global  => (In_Out => Wdog_State),
               Depends => (Result     => Wdog_State,
                           Wdog_State => Wdog_State);
-    
+
    end HAL;
 
    with System.Storage_Units;
-   package HAL body 
+   package HAL body
       with Refined_State (Serial_In    => Read_FIFO,
                           Serial_Out   => Write_FIFO,
                           FIFO_Status  => Status,
@@ -2344,15 +2346,15 @@ abstraction on to external states which are given in this section.
 
       -- Each byte read is significant, it is a sequence of bytes
       -- and so Effective_Reads => True.
-      Read_FIFO: Byte_T 
+      Read_FIFO: Byte_T
          with Volatile,
               Async_Writers,
               Effective_Reads,
-           Address => System.Storage_Units.To_Address(16#A1CAFE#);
+              Address => System.Storage_Units.To_Address(16#A1CAFE#);
 
       -- Each byte written is significant, it is a sequence of bytes
       -- and so Effective_Writes => True.
-      Write_FIFO: Byte_T 
+      Write_FIFO: Byte_T
          with Volatile,
               Async_Readers,
               Effective_Writes,
@@ -2360,8 +2362,8 @@ abstraction on to external states which are given in this section.
 
       -- The read of the FIFO status is a snap shot of the current status
       -- individual reads are independent of other reads of the FIFO status
-      -- and so Effective_Reads => False. 
-      Status: Byte_T 
+      -- and so Effective_Reads => False.
+      Status: Byte_T
          with Volatile,
               Async_Writers,
               Address => System.Storage_Units.To_Address(16#A3CAFE#);
@@ -2369,7 +2371,7 @@ abstraction on to external states which are given in this section.
       -- The value written to the FIFO control register are independent
       -- of other value written to the control register and so
       -- Effective_Writes => False.
-      Control: Byte_T 
+      Control: Byte_T
          with Volatile,
               Async_Readers,
               Address => System.Storage_Units.To_Address(16#A4CAFE#);
@@ -2377,12 +2379,12 @@ abstraction on to external states which are given in this section.
       -- This is a bidirectional port but individual reads and writes
       -- are independent and so Effective_Reads and Effective_Writes
       -- are both False.
-      Wdog_Shared_Memory : Boolean 
+      Wdog_Shared_Memory : Boolean
          with Volatile,
               Async_Writers,
               Async_Readers,
               Address => System.Storage_Units.To_Address(16#A5CAFE#);
-             
+
       procedure Get_Byte (A_Byte : out Byte_T)
          with Refined_Global  => (In_Out => Read_FIFO),
               Refined_Depends => (A_Byte    => Read_FIFO,
@@ -2392,7 +2394,6 @@ abstraction on to external states which are given in this section.
          A_Byte := Read_FIFO;
       end Get_Byte;
 
-                         
       procedure Skip_To_Pattern (Pattern : in Byte_T; Found : out Boolean)
          with Refined_Global  => (Input  => Status,
                                   In_Out => Read_FIFO),
@@ -2404,14 +2405,14 @@ abstraction on to external states which are given in this section.
          Next_Byte : Byte_T;
       begin
          Found := False;
-         loop 
+         loop
             Get_In_FIFO_Status (Current_Status);
             exit when Current_Status = Read_FIFO_Empty;
             Get_Byte (Next_Byte);
             exit when Next_Byte = Pattern;
          end loop;
       end Skip_To_Pattern;
-            
+
       procedure Get_FIFO_Status (A_Byte : out Byte_T)
          with Refined_Global  => (Input  => Status),
               Refined_Depends => (A_Byte => Status)
@@ -2421,14 +2422,13 @@ abstraction on to external states which are given in this section.
       end Get_FIFO_Status;
 
       procedure Put_Byte (A_Byte : Byte_T)
-         with Refined_Global => (Output => Write_FIFO),
+         with Refined_Global  => (Output => Write_FIFO),
               Refined_Depends => (Write_FIFO => A_Byte)
       is
       begin
          Write_FIFO := A_Byte;
       end Put_Byte;
 
-                  
       procedure Clear_In_FIFO
          with Refined_Global  => (Output => Control),
               Refined_Depends => (Control => null)
@@ -2437,7 +2437,6 @@ abstraction on to external states which are given in this section.
       begin
          Control := In_FIFO_Clear;
       end Clear_In_FIFO;
-            
 
       procedure Clear_Out_FIFO
          with Refined_Global  => (Output => Control),
@@ -2447,8 +2446,7 @@ abstraction on to external states which are given in this section.
       begin
          Control := Out_FIFO_Clear;
       end Clear_Out_FIFO;
-            
-            
+
       procedure Wdog_Timed_Out (Result : out Boolean)
          with Refined_Global  => (In_Out => Wdog_Shared_Memory),
               Refined_Depends => (Result             => Wdog_Shared_Memory,
@@ -2470,24 +2468,26 @@ abstraction on to external states which are given in this section.
    end HAL;
 
 
-   with HAL; 
+   with HAL;
    procedure Main
       with Global  => (Input  => HAL.FIFO_Status,
                        In_Out => (HAL.Serial_In, HAL.Wdog_State),
                        Output => (HAL.FIFO_Control, HAL.Serial_Out)),
-           Depends => (HAL.Serial_In    =>+ (HAL.FIFO_Status, HAL.Wdog_State),
-                       HAL.Serial_Out   => (HAL.Serial_In, HAL.FIFO_Status, HAL.Wdog_State),
+           Depends => (HAL.Serial_In    =>+ (HAL.FIFO_Status,
+                                             HAL.Wdog_State),
+                       HAL.Serial_Out   =>  (HAL.Serial_In,
+                                             HAL.FIFO_Status,
+                                             HAL.Wdog_State),
                        HAL.Wdog_State   =>+ HAL.FIFO_Status,
                        HAL.FIFO_Control => null)
    is
-      Wdog_Timed_Out,
-      Found          : Boolean;
-      A_Byte         : HAL.Byte_T;
+      Wdog_Timed_Out, Found : Boolean;
+      A_Byte                : HAL.Byte_T;
    begin
       HAL.Clear_Out_FIFO;
 
       -- The start of the data is marked by the sequence 16#5555#
-      -- Skip until we find the start of the message or the FIFO is empty. 
+      -- Skip until we find the start of the message or the FIFO is empty.
       loop
          HAL.Wdog_Time_Out (Wdog_Timed_Out);
          exit when Wdog_Timed_Out;
@@ -2502,13 +2502,13 @@ abstraction on to external states which are given in this section.
 
          -- As long as the watchdog doesn't time out, move data
          -- from Serial_In to Serial_Out.
-         loop    
+         loop
             HAL.Wdog_Time_Out (Wdog_Timed_Out);
-        
+
             exit when Wdog_Timed_Out;
-          
+
             Get_Byte (A_Byte);
-            Put_Byte (A_Byte);      
+            Put_Byte (A_Byte);
          end loop;
       end if;
 
