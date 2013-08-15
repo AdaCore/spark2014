@@ -37,7 +37,7 @@ with Errout;                             use Errout;
 with Lib;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
-with Opt;
+with Opt;                                use Opt;
 with Sem_Prag;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
@@ -129,7 +129,7 @@ package body SPARK_Definition is
 
    function Applicable_SPARK_Pragma_Is
      (E       : Entity_Id;
-      Mode    : SPARK_Mode_Id;
+      Mode    : SPARK_Mode_Type;
       Is_Body : Boolean := False) return Boolean;
    --  Returns True if the applicable SPARK_Pragma for entity E has value Mode,
    --  whether it comes from a local or a global SPARK_Mode pragma.
@@ -156,16 +156,16 @@ package body SPARK_Definition is
 
    function Applicable_SPARK_Pragma_Is
      (E       : Entity_Id;
-      Mode    : SPARK_Mode_Id;
+      Mode    : SPARK_Mode_Type;
       Is_Body : Boolean := False) return Boolean
    is
       Prag : constant Node_Id := Get_Applicable_SPARK_Pragma (E, Is_Body);
 
    begin
       if Present (Prag) then
-         return Sem_Prag.Get_SPARK_Mode_Id (Prag) = Mode;
+         return Sem_Prag.Get_SPARK_Mode_From_Pragma (Prag) = Mode;
       else
-         return Opt.Global_SPARK_Mode = Mode;
+         return SPARK_Mode_Config = Mode;
       end if;
    end Applicable_SPARK_Pragma_Is;
 
@@ -1019,7 +1019,7 @@ package body SPARK_Definition is
       --  Raise an error if the violation is forbidden by the use of pragma
       --  SPARK_Mode with value On.
 
-      if Applicable_SPARK_Pragma_Is (E, SPARK_On, Is_Body) then
+      if Applicable_SPARK_Pragma_Is (E, On, Is_Body) then
          Error_Msg_F (Complete_Error_Msg (Msg, V), N);
       end if;
 
@@ -1055,7 +1055,7 @@ package body SPARK_Definition is
       --  Raise an error if the violation is forbidden by the use of pragma
       --  SPARK_Mode with value On.
 
-      if Applicable_SPARK_Pragma_Is (E, SPARK_On, Is_Body) then
+      if Applicable_SPARK_Pragma_Is (E, On, Is_Body) then
 
          if In_Standard_Scope (From)
            or else Spec_Violations (NIR_XXX).Contains (From)
@@ -1264,7 +1264,7 @@ package body SPARK_Definition is
                elsif NYI_Msg /= "" then
                   return ' ' & NYI_Msg;
                elsif Applicable_SPARK_Pragma_Is
-                 (Id, SPARK_Off, Is_Body => True)
+                 (Id, Off, Is_Body => True)
                then
                   return " SPARK_Mode=Off";
                else
@@ -3375,7 +3375,7 @@ package body SPARK_Definition is
       --  Why.
 
       if not Has_Body_Violations (E)
-        and then not Applicable_SPARK_Pragma_Is (E, SPARK_Off, Is_Body => True)
+        and then not Applicable_SPARK_Pragma_Is (E, Off, Is_Body => True)
       then
          Bodies_In_SPARK.Include (E);
 
