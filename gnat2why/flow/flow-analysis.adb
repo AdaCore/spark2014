@@ -824,7 +824,10 @@ package body Flow.Analysis is
          F_Final := FA.PDG.Get_Key (V);
          A_Final := FA.PDG.Get_Attributes (V);
 
-         if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
+         if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
+           and then not FA.Unmodified_Vars.Contains
+             (Get_Direct_Mapping_Id (F_Final))
+         then
             if A_Final.Is_Global then
                Error_Msg_Flow (Msg     => "& is not modified, could be INPUT",
                                N       => Find_Global (FA.Analyzed_Entity,
@@ -907,11 +910,15 @@ package body Flow.Analysis is
       --  Now that we can issue error messages. We can't do it inline
       --  because we need to pay special attention to records.
       for V of Entire_Ids loop
-         if not Effective_Ids.Contains (V) then
-            declare
-               F : constant Flow_Id      := FA.PDG.Get_Key (V);
-               A : constant V_Attributes := FA.PDG.Get_Attributes (V);
-            begin
+         declare
+            F : constant Flow_Id      := FA.PDG.Get_Key (V);
+            A : constant V_Attributes := FA.PDG.Get_Attributes (V);
+         begin
+            if not Effective_Ids.Contains (V)
+              and then not FA.Unreferenced_Vars.Contains
+                (Get_Direct_Mapping_Id (F))
+            then
+
                if Is_Discriminant (F) then
                   --  Discriminants are never ineffective imports.
                   null;
@@ -935,8 +942,8 @@ package body Flow.Analysis is
                      Tag     => "unused_initial_value",
                      Warning => True);
                end if;
-            end;
-         end if;
+            end if;
+         end;
       end loop;
    end Find_Ineffective_Imports;
 

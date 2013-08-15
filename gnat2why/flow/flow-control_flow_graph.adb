@@ -1614,6 +1614,34 @@ package body Flow.Control_Flow_Graph is
                E_Loc   => N),
             V);
 
+         case Get_Pragma_Id (N) is
+
+            when Pragma_Unmodified   |
+                 Pragma_Unreferenced =>
+
+               declare
+                  Expr           : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (N)));
+                  Associated_Var : constant Node_Id :=
+                    Associated_Node (Expr);
+               begin
+                  if Get_Pragma_Id (N) = Pragma_Unmodified then
+                     --  If a pragma Unmodified was found, we insert its
+                     --  associated variable to the set of unmodified
+                     --  variables.
+                     FA.Unmodified_Vars.Insert (Associated_Var);
+                  else
+                     --  If a pragma Unreferenced was found, we insert its
+                     --  associated variable to the set of unreferrenced
+                     --  variables.
+                     FA.Unreferenced_Vars.Insert (Associated_Var);
+                  end if;
+               end;
+
+            when others =>
+               null;
+         end case;
+
       else
          --  Otherwise we produce a null vertex.
          FA.CFG.Add_Vertex (Null_Node_Attributes,
@@ -2288,6 +2316,10 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when Pragma_Import =>
+            return True;
+
+         when Pragma_Unmodified   |
+              Pragma_Unreferenced =>
             return True;
 
          when Unknown_Pragma =>

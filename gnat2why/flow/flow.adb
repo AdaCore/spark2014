@@ -756,63 +756,69 @@ package body Flow is
       case Ekind (E) is
          when Subprogram_Kind =>
             FA := Flow_Analysis_Graphs'
-              (Kind             => E_Subprogram_Body,
-               Analyzed_Entity  => E,
-               Scope            => SPARK_Util.Get_Subprogram_Body (E),
-               Start_Vertex     => Null_Vertex,
-               End_Vertex       => Null_Vertex,
-               CFG              => Create,
-               DDG              => Create,
-               CDG              => Create,
-               TDG              => Create,
-               PDG              => Create,
-               All_Vars         => Flow_Id_Sets.Empty_Set,
-               Loops            => Node_Sets.Empty_Set,
-               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present => False,
-               Base_Filename    => To_Unbounded_String ("subprogram_"),
-               Is_Main          => Might_Be_Main (E),
-               Is_Generative    => not (Present
-                                         (Get_Pragma (E, Pragma_Global)) or
-                                       Present
-                                          (Get_Pragma (E, Pragma_Depends))),
+              (Kind              => E_Subprogram_Body,
+               Analyzed_Entity   => E,
+               Scope             => SPARK_Util.Get_Subprogram_Body (E),
+               Start_Vertex      => Null_Vertex,
+               End_Vertex        => Null_Vertex,
+               CFG               => Create,
+               DDG               => Create,
+               CDG               => Create,
+               TDG               => Create,
+               PDG               => Create,
+               All_Vars          => Flow_Id_Sets.Empty_Set,
+               Unmodified_Vars   => Node_Sets.Empty_Set,
+               Unreferenced_Vars => Node_Sets.Empty_Set,
+               Loops             => Node_Sets.Empty_Set,
+               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present  => False,
+               Base_Filename     => To_Unbounded_String ("subprogram_"),
+               Is_Main           => Might_Be_Main (E),
+               Is_Generative     => not (Present
+                                          (Get_Pragma (E, Pragma_Global)) or
+                                        Present
+                                           (Get_Pragma (E, Pragma_Depends))),
               Last_Statement_Is_Raise => Last_Statement_Is_Raise (E));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
-              (Kind             => E_Package,
-               Analyzed_Entity  => E,
-               Scope            => Get_Enclosing_Scope (E),
-               Start_Vertex     => Null_Vertex,
-               End_Vertex       => Null_Vertex,
-               CFG              => Create,
-               DDG              => Create,
-               CDG              => Create,
-               TDG              => Create,
-               PDG              => Create,
-               All_Vars         => Flow_Id_Sets.Empty_Set,
-               Loops            => Node_Sets.Empty_Set,
-               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present => False,
-               Base_Filename    => To_Unbounded_String ("package_spec_"));
+              (Kind              => E_Package,
+               Analyzed_Entity   => E,
+               Scope             => Get_Enclosing_Scope (E),
+               Start_Vertex      => Null_Vertex,
+               End_Vertex        => Null_Vertex,
+               CFG               => Create,
+               DDG               => Create,
+               CDG               => Create,
+               TDG               => Create,
+               PDG               => Create,
+               All_Vars          => Flow_Id_Sets.Empty_Set,
+               Unmodified_Vars   => Node_Sets.Empty_Set,
+               Unreferenced_Vars => Node_Sets.Empty_Set,
+               Loops             => Node_Sets.Empty_Set,
+               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present  => False,
+               Base_Filename     => To_Unbounded_String ("package_spec_"));
 
          when E_Package_Body =>
             FA := Flow_Analysis_Graphs'
-              (Kind             => E_Package_Body,
-               Analyzed_Entity  => E,
-               Scope            => Get_Enclosing_Body_Scope (E),
-               Start_Vertex     => Null_Vertex,
-               End_Vertex       => Null_Vertex,
-               CFG              => Create,
-               DDG              => Create,
-               CDG              => Create,
-               TDG              => Create,
-               PDG              => Create,
-               All_Vars         => Flow_Id_Sets.Empty_Set,
-               Loops            => Node_Sets.Empty_Set,
-               Magic_Source     => Magic_String_To_Node_Sets.Empty_Map,
-               Aliasing_Present => False,
-               Base_Filename    => To_Unbounded_String ("package_body_"));
+              (Kind              => E_Package_Body,
+               Analyzed_Entity   => E,
+               Scope             => Get_Enclosing_Body_Scope (E),
+               Start_Vertex      => Null_Vertex,
+               End_Vertex        => Null_Vertex,
+               CFG               => Create,
+               DDG               => Create,
+               CDG               => Create,
+               TDG               => Create,
+               PDG               => Create,
+               All_Vars          => Flow_Id_Sets.Empty_Set,
+               Unmodified_Vars   => Node_Sets.Empty_Set,
+               Unreferenced_Vars => Node_Sets.Empty_Set,
+               Loops             => Node_Sets.Empty_Set,
+               Magic_Source      => Magic_String_To_Node_Sets.Empty_Map,
+               Aliasing_Present  => False,
+               Base_Filename     => To_Unbounded_String ("package_body_"));
 
          when others =>
             raise Why.Not_SPARK;

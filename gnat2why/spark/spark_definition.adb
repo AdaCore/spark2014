@@ -3162,23 +3162,26 @@ package body SPARK_Definition is
 
          --  SPARK pragmas
 
-         when Pragma_Global  |
-              Pragma_Refined_Global |
-              Pragma_Depends |
+         when Pragma_Global          |
+              Pragma_Refined_Global  |
+              Pragma_Depends         |
               Pragma_Refined_Depends =>
             null;
 
          --  Ignored pragmas, either because they are already taken into
          --  account (Precondition and Postcondition), or because they have no
-         --  effect on verification (Export, Preelaborate, Pure, Warnings).
+         --  effect on verification (Export, Preelaborate, Pure, Unmodified,
+         --  Unreferenced, Warnings).
 
-         when Pragma_Export         |
+         when Pragma_Contract_Cases |
+              Pragma_Export         |
               Pragma_Precondition   |
               Pragma_Preelaborate   |
               Pragma_Postcondition  |
-              Pragma_Contract_Cases |
               Pragma_Pure           |
               Pragma_SPARK_Mode     |
+              Pragma_Unmodified     |
+              Pragma_Unreferenced   |
               Pragma_Warnings       =>
             null;
 
