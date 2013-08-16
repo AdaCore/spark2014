@@ -124,21 +124,21 @@ as external properties of an external state abstraction.
 
 #. Only the following combinations of properties are valid:
 
-   * Async_Readers, Effective_Writes, Others => False;
+   * Async_Readers, Effective_Writes, others => False;
 
-   * Async_Writers, Effective_Reads, Others => False;
+   * Async_Writers, Effective_Reads, others => False;
 
-   * Async_Readers, Others => False;
+   * Async_Readers, others => False;
 
-   * Async_Writers, Others => False;
+   * Async_Writers, others => False;
 
-   * Async_Readers, Async_Writers, Effective_Writes, Others => False;
+   * Async_Readers, Async_Writers, Effective_Writes, others => False;
 
-   * Async_Readers, Async_Writers, Effective_Reads, Others => False;
+   * Async_Readers, Async_Writers, Effective_Reads, others => False;
 
-   * Async_Readers, Async_Writer, Others => False; and
+   * Async_Readers, Async_Writers, others => False; and
 
-   * Others => True.
+   * others => True.
 
      [Another way of expressing this rule is that Effective_Reads can
      only be True if Async_Writers is True and Effective_Writes can only
