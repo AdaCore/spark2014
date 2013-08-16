@@ -264,7 +264,7 @@ There are no dynamic semantics associated with these aspects.
      subprogram and is considered to have the properties Async_Writers
      => True and Effective_Reads => False. The actual parameter in a
      call must be Volatile and have these properties but may also have
-     the properties Async_Readers and Writes_Effective True.
+     the properties Async_Readers and Writes_Effective set to True.
 
    * mode **out**: the formal parameter cannot be read by the
      subprogram as it is unknown whether a read will have an external
@@ -498,6 +498,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
                              | Async_Writers [=> expression]
                              | Effective_Writes [=> expression]
                              | Effective_Reads  [=> expression]
+                             | others [=> expression]
   state_name               ::= defining_identifier
   abstract_state           ::= name
 
