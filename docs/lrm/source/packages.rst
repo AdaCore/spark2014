@@ -286,25 +286,25 @@ There are no dynamic semantics associated with these aspects.
 
 .. code-block:: ada
 
-   with System.Storage_Units;
+   with System;
    package Input_Port
    is
       Sensor : Integer
          with Volatile,
               Async_Writers,
-              Address => System.Storage_Units.To_Address (16#ACECAFE#);
+              Address => System'To_Address (16#ACECAFE#);
    end Input_Port;
 
-   with System.Storage_Units;
+   with System;
    package Output_Port
    is
       Sensor : Integer
          with Volatile,
               Async_Readers,
-              Address => System.Storage_Units.To_Address (16#ACECAFE#);
+              Address => System'To_Address (16#ACECAFE#);
    end Input_Port;
 
-   with System.Storage_Units;
+   with System;
    package Multiple_Ports
    is
       type Volatile_Type is record
@@ -325,7 +325,7 @@ There are no dynamic semantics associated with these aspects.
       -- not have the same value.
       V_In_1 : Volatile_Type
          with Async_Writers,
-              Address => System.Storage_Units.To_Address (16#A1CAFE#);
+              Address => System'To_Address (16#A1CAFE#);
 
       -- V_In_2 is similar to V_In_1 except that each value read is
       -- significant. V_In_2 can only be used as a Global with a
@@ -335,7 +335,7 @@ There are no dynamic semantics associated with these aspects.
       V_In_2 : Volatile_Type
          with Async_Writers,
               Effective_Reads,
-              Address => System.Storage_Units.To_Address (16#ABCCAFE#);
+              Address => System'To_Address (16#ABCCAFE#);
 
 
       -- V_Out_1 is essentially an external output since it
@@ -344,14 +344,14 @@ There are no dynamic semantics associated with these aspects.
       -- observable effect.
       V_Out_1 : Volatile_Type
          with Async_Readers,
-              Address => System.Storage_Units.To_Address (16#BBCCAFE#);
+              Address => System'To_Address (16#BBCCAFE#);
 
       -- V_Out_2 is similar to V_Out_1 except that each write to
       -- V_Out_2 is significant.
       V_Out_2 : Volatile_Type
          with Async_Readers,
               Effective_Writes,
-              Address => System.Storage_Units.To_Address (16#ADACAFE#);
+              Address => System'To_Address (16#ADACAFE#);
 
       -- This declaration defaults to the following properties:
       -- Async_Readers => True,
@@ -362,7 +362,7 @@ There are no dynamic semantics associated with these aspects.
       -- which is bi-directional and each read and write has an
       -- observable effect.
       V_In_Out : Volatile_Type
-         with Address => System.Storage_Units.To_Address (16#BEECAFE#);
+         with Address => System'To_Address (16#BEECAFE#);
 
       -- These volatile variable declarations may be used in specific ways
       -- as global items and actual parameters of subprogram calls
@@ -2215,12 +2215,12 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Readers,
               Effective_Writes, -- Every value written to the port is significant.
-              Address  => System.Storage_Units.To_Address (16#ACECAFE#);
+              Address  => System'To_Address (16#ACECAFE#);
 
       In_Reg : Integer
          with Volatile,
               Async_Writers,
-              Address  => System.Storage_Units.To_Address (16#A11CAFE#);
+              Address  => System'To_Address (16#A11CAFE#);
 
       function Last_Value_Sent return Integer
          with Refined_Global => Saved_Value -- Refined_Global aspect only
@@ -2336,7 +2336,7 @@ abstraction on to external states which are given in this section.
 
    end HAL;
 
-   with System.Storage_Units;
+   with System;
    package body HAL
       with Refined_State => (Serial_In    => Read_FIFO,
                              Serial_Out   => Write_FIFO,
@@ -2351,7 +2351,7 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Writers,
               Effective_Reads,
-              Address => System.Storage_Units.To_Address(16#A1CAFE#);
+              Address => System'To_Address(16#A1CAFE#);
 
       -- Each byte written is significant, it is a sequence of bytes
       -- and so Effective_Writes => True.
@@ -2359,7 +2359,7 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Readers,
               Effective_Writes,
-              Address => System.Storage_Units.To_Address(16#A2CAFE#);
+              Address => System'To_Address(16#A2CAFE#);
 
       -- The read of the FIFO status is a snap shot of the current status
       -- individual reads are independent of other reads of the FIFO status
@@ -2367,7 +2367,7 @@ abstraction on to external states which are given in this section.
       Status: Byte_T
          with Volatile,
               Async_Writers,
-              Address => System.Storage_Units.To_Address(16#A3CAFE#);
+              Address => System'To_Address(16#A3CAFE#);
 
       -- The value written to the FIFO control register are independent
       -- of other value written to the control register and so
@@ -2375,7 +2375,7 @@ abstraction on to external states which are given in this section.
       Control: Byte_T
          with Volatile,
               Async_Readers,
-              Address => System.Storage_Units.To_Address(16#A4CAFE#);
+              Address => System'To_Address(16#A4CAFE#);
 
       -- This is a bidirectional port but individual reads and writes
       -- are independent and so Effective_Reads and Effective_Writes
@@ -2384,7 +2384,7 @@ abstraction on to external states which are given in this section.
          with Volatile,
               Async_Writers,
               Async_Readers,
-              Address => System.Storage_Units.To_Address(16#A5CAFE#);
+              Address => System'To_Address(16#A5CAFE#);
 
       procedure Get_Byte (A_Byte : out Byte_T)
          with Refined_Global  => (In_Out => Read_FIFO),
