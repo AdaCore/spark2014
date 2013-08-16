@@ -2337,12 +2337,12 @@ abstraction on to external states which are given in this section.
    end HAL;
 
    with System.Storage_Units;
-   package HAL body
-      with Refined_State (Serial_In    => Read_FIFO,
-                          Serial_Out   => Write_FIFO,
-                          FIFO_Status  => Status,
-                          FIFO_Control => Control,
-                          Wdog_State   => Wdog_Shared_memory)
+   package body HAL
+      with Refined_State => (Serial_In    => Read_FIFO,
+                             Serial_Out   => Write_FIFO,
+                             FIFO_Status  => Status,
+                             FIFO_Control => Control,
+                             Wdog_State   => Wdog_Shared_memory)
    is
 
       -- Each byte read is significant, it is a sequence of bytes
@@ -2441,7 +2441,7 @@ abstraction on to external states which are given in this section.
 
       procedure Clear_Out_FIFO
          with Refined_Global  => (Output => Control),
-              Refined_Depends => (Control => null);
+              Refined_Depends => (Control => null)
       is
          Out_FIFO_Clear : constant Byte_T := 16#02#;
       begin
@@ -2464,7 +2464,7 @@ abstraction on to external states which are given in this section.
          else
             Result := True;
          end if;
-      end Wdog_Time_Out;
+      end Wdog_Timed_Out;
 
    end HAL;
 
@@ -2490,7 +2490,7 @@ abstraction on to external states which are given in this section.
       -- The start of the data is marked by the sequence 16#5555#
       -- Skip until we find the start of the message or the FIFO is empty.
       loop
-         HAL.Wdog_Time_Out (Wdog_Timed_Out);
+         HAL.Wdog_Timed_Out (Wdog_Timed_Out);
          exit when Wdog_Timed_Out;
          HAL.Skip_To_Pattern (16#55#, Found);
          exit when not Found;
@@ -2504,7 +2504,7 @@ abstraction on to external states which are given in this section.
          -- As long as the watchdog doesn't time out, move data
          -- from Serial_In to Serial_Out.
          loop
-            HAL.Wdog_Time_Out (Wdog_Timed_Out);
+            HAL.Wdog_Timed_Out (Wdog_Timed_Out);
 
             exit when Wdog_Timed_Out;
 
