@@ -83,7 +83,7 @@ Each read or update of an external state may be significant for
 instance reading or writing a stream of characters to a file, or
 individual reads or writes may not be significant, for instance
 reading a temperature from a device or writing the same value to a
-lamp driver or display.  |SPARK| provides a mechanism to indicate
+lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
 
 External state is a variable declared as Volatile or a state abstraction which
@@ -124,19 +124,19 @@ as external properties of an external state abstraction.
 
 #. Only the following combinations of properties are valid:
 
-   * Async_Readers, Effective_Writes => True, Others => False;
+   * Async_Readers, Effective_Writes, Others => False;
 
-   * Async_Writers, Effective_Reads => True, Others => False;
+   * Async_Writers, Effective_Reads, Others => False;
 
-   * Async_Readers => True, Others => False;
+   * Async_Readers, Others => False;
 
-   * Async_Writers => True, Others => False;
+   * Async_Writers, Others => False;
 
-   * Async_Readers, Async_Writers, Effective_Writes True, Others False;
+   * Async_Readers, Async_Writers, Effective_Writes, Others False;
 
-   * Async_Readers, Async_Writers, Effective Reads True, Others False;
+   * Async_Readers, Async_Writers, Effective Reads, Others False;
 
-   * Async_Readers, Async_Writers => True, Others => False; and
+   * Async_Readers, Async_Writer, Others => False; and
 
    * Others => True.
 
@@ -171,7 +171,7 @@ as external properties of an external state abstraction.
 
 #. An external state which has the property Async_Readers => True need
    not be initialized before being read although explicit
-   initialization is permitted.  [The external state might be
+   initialization is permitted. [The external state might be
    initialized by an external writer.]
 
 
@@ -206,7 +206,7 @@ The new aspects are:
    object declaration excluding Volatile formal parameter declarations.
 
 #. The declaration of a Volatile object (other than as a formal
-   parameter) shall be at library level.  [That is, it shall not be
+   parameter) shall be at library level. [That is, it shall not be
    declared within the scope of a subprogram body. A Volatile variable
    has an external effect and therefore should be global even if it is
    not visible. It is made visible via a state abstraction.]
@@ -278,7 +278,7 @@ There are no dynamic semantics associated with these aspects.
 
    * mode **in out**: the formal parameter is considered to have all
      properties; Async_Readers => True, Async_Writers => True,
-     Effective_Reads => True, Effective_Writes => True.  The actual
+     Effective_Reads => True, Effective_Writes => True. The actual
      parameter in a subprogram call must be Volatile have all of these
      properties set to True.
 
@@ -397,27 +397,27 @@ There are no dynamic semantics associated with these aspects.
 
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
          with Depends => (Value => Port,);
-          -- Port is Volatile and of mode in.  Assume that the formal parameter
-          -- has the properties Async_Writers => True and Effective_Reads => False
-          -- The actual parameter in a call of the subprogram must have
-          -- Async_Writers_True and Effective_Reads => False
-          -- and may have Async_Writers and/or Effective_Writes True.
-          -- As an in mode parameter it can only be read by the subprogram.
-           -- Eg. Read_Port (V_In_1, Read_Value).
+         -- Port is Volatile and of mode in.  Assume that the formal parameter
+         -- has the properties Async_Writers => True and Effective_Reads => False
+         -- The actual parameter in a call of the subprogram must have
+         -- Async_Writers_True and Effective_Reads => False
+         -- and may have Async_Writers and/or Effective_Writes True.
+         -- As an in mode parameter it can only be read by the subprogram.
+         -- Eg. Read_Port (V_In_1, Read_Value).
 
       procedure Write_Port (Port : out Volatile_Type; Value : in Integer)
          with Depends => (Port => Value);
-          -- Port is volatile and of mode out.  Assume the formal parameter
-          -- has the properties Async_Readers => True, Effective_Writes => True
-          -- The actual parameter in a call to the subprogram must have
-          -- Async_Readers and/or Effective_Writes True, and may have
-          -- Async_Writers and Effective_Reads True.
-          -- As the mode of the formal parameter is mode out, it is
-          -- incompatible with reading the parameter because this could read
-          -- a value from an Async_Writer.
-          -- A flow error will be signalled if a read of the parameter occurs
-          -- in the subprogram.
-          -- Eg. Write_Port (V_Out_1, Output_Value) and Write_Port (V_Out_2, Output_Value).
+         -- Port is volatile and of mode out.  Assume the formal parameter
+         -- has the properties Async_Readers => True, Effective_Writes => True
+         -- The actual parameter in a call to the subprogram must have
+         -- Async_Readers and/or Effective_Writes True, and may have
+         -- Async_Writers and Effective_Reads True.
+         -- As the mode of the formal parameter is mode out, it is
+         -- incompatible with reading the parameter because this could read
+         -- a value from an Async_Writer.
+         -- A flow error will be signalled if a read of the parameter occurs
+         -- in the subprogram.
+         -- Eg. Write_Port (V_Out_1, Output_Value) and Write_Port (V_Out_2, Output_Value).
 
       -- A Volatile formal parameter type of mode in out is
       -- assume to have all the properties True:
@@ -497,7 +497,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
   external_property        ::= Async_Readers [=> expression]
                              | Async_Writers [=> expression]
                              | Effective_Writes [=> expression]
-                             | Effective_Reads  [=>expression]
+                             | Effective_Reads  [=> expression]
   state_name               ::= defining_identifier
   abstract_state           ::= name
 
@@ -565,7 +565,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
    [The declaration of a state abstraction has the same visibility as
    any other declaration but a state abstraction shall only be named
    in contexts where this is explicitly permitted (e.g., as part of a
-   Global aspect specification).  A state abstraction is not an
+   Global aspect specification). A state abstraction is not an
    object; it does not have a type. The completion of a state
    abstraction declared in a package ``aspect_specification`` can only
    be provided as part of a Refined_State ``aspect_specification``
