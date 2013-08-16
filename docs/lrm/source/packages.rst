@@ -132,9 +132,9 @@ as external properties of an external state abstraction.
 
    * Async_Writers, Others => False;
 
-   * Async_Readers, Async_Writers, Effective_Writes, Others False;
+   * Async_Readers, Async_Writers, Effective_Writes, Others => False;
 
-   * Async_Readers, Async_Writers, Effective Reads, Others False;
+   * Async_Readers, Async_Writers, Effective_Reads, Others => False;
 
    * Async_Readers, Async_Writer, Others => False; and
 
