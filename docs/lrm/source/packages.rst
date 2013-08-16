@@ -634,7 +634,7 @@ There are no verification rules associated with the Abstract_State aspect.
    end Q;
 
    package X
-      with Abstract_State => (A, B, (C with  External => (Async_Writers, Effective_Reads => False))
+      with Abstract_State => (A, B, (C with External => (Async_Writers, Effective_Reads => False))
            -- Three abstract state names are declared A, B & C.
            -- A and B are internal abstract states
            -- C is specified as external state which is an external input.
@@ -858,7 +858,7 @@ There are no dynamic semantics associated with the Initializes aspect.
 
 
     package Y
-       with Abstract_State => (A, B, (C with External => (Async_Writers, Effective_Reads)),
+       with Abstract_State => (A, B, (C with External => (Async_Writers, Effective_Reads))),
             -- Three abstract state names are declared A, B & C.
             Initializes    => A
             -- A is initialized during the elaboration of Y.
@@ -2124,7 +2124,7 @@ abstraction on to external states which are given in this section.
                               (Complex_Device with External => (Async_Readers,
                                                                 Effective_Writes,
                                                                 Async_Writers))),
-           Initializes => Complex_Device
+           Initializes    => Complex_Device
    is
       procedure Read (Combined_Value : out Integer)
          with Global  => Combined_Inputs,  -- Combined_Inputs is an Input;
@@ -2161,28 +2161,28 @@ abstraction on to external states which are given in this section.
 
    private package Externals.Temperature
       with Abstract_State => (State with External => Async_Writers,
-                              Part_Of => Externals.Combined_Inputs)
+                                         Part_Of  => Externals.Combined_Inputs)
    is
       ...
    end Externals.Temperature;
 
    private package Externals.Pressure
       with Abstract_State => (State with External => Async_Writers,
-                              Part_Of => Externals.Combined_Inputs)
+                                         Part_Of  => Externals.Combined_Inputs)
    is
       ...
    end Externals.Pressure;
 
    private package Externals.Main_Display
       with Abstract_State => (State with External => Async_Readers,
-                              Part_Of => Externals.Displays)
+                                         Part_Of  => Externals.Displays)
    is
       ...
    end Externals.Main_Display;
 
    private package Externals.Secondary_Display
       with Abstract_State => (State with External => Async_Readers,
-                              Part_Of => Externals.Displays)
+                                         Part_Of  => Externals.Displays)
    is
      ...
    end Externals.Secondary_Display;
@@ -2193,13 +2193,13 @@ abstraction on to external states which are given in this section.
         Externals.Main_Display,
         Externals.Secondary_Display;
    package body Externals
-      with Refined_State => (Combined_Inputs => (Externals.Temperature,
-                                                 Externals.Pressure),
+      with Refined_State => (Combined_Inputs => (Externals.Temperature.State,
+                                                 Externals.Pressure.State),
                           -- Both Temperature and
                           -- Pressure are inputs only.
 
-                             Displays => (Externals.Main_Display,
-                                          Externals.Secondary_Display),
+                             Displays => (Externals.Main_Display.State,
+                                          Externals.Secondary_Display.State),
                           -- Both Main_Display and
                           -- Secondary_Display are outputs only.
 
