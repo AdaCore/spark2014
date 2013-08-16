@@ -1630,16 +1630,20 @@ package body Flow.Control_Flow_Graph is
                      Associated_Variable :=
                        Associated_Node (Expression (Argument_Association));
 
-                     if Get_Pragma_Id (N) = Pragma_Unmodified then
-                        --  If a pragma Unmodified was found, we insert its
-                        --  associated variable to the set of unmodified
-                        --  variables.
-                        FA.Unmodified_Vars.Insert (Associated_Variable);
-                     else
-                        --  If a pragma Unreferenced was found, we insert its
-                        --  associated variable to the set of unreferrenced
-                        --  variables.
-                        FA.Unreferenced_Vars.Insert (Associated_Variable);
+                     if not (Ekind (Associated_Variable) in
+                               Subprogram_Kind)
+                     then
+                        if Get_Pragma_Id (N) = Pragma_Unmodified then
+                           --  If a pragma Unmodified was found, we insert
+                           --  its associated variable to the set of
+                           --  unmodified variables.
+                           FA.Unmodified_Vars.Insert (Associated_Variable);
+                        else
+                           --  If a pragma Unreferenced was found, we insert
+                           --  its associated variable to the set of
+                           --  unreferenced variables.
+                           FA.Unreferenced_Vars.Insert (Associated_Variable);
+                        end if;
                      end if;
 
                      Argument_Association := Next (Argument_Association);

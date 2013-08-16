@@ -824,23 +824,28 @@ package body Flow.Analysis is
          F_Final := FA.PDG.Get_Key (V);
          A_Final := FA.PDG.Get_Attributes (V);
 
-         if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
-           and then not FA.Unmodified_Vars.Contains
-             (Get_Direct_Mapping_Id (F_Final))
-         then
-            if A_Final.Is_Global then
-               Error_Msg_Flow (Msg     => "& is not modified, could be INPUT",
-                               N       => Find_Global (FA.Analyzed_Entity,
-                                                       F_Final),
-                               F1      => F_Final,
-                               Tag     => "inout_only_read",
-                               Warning => True);
-            else
-               Error_Msg_Flow (Msg     => "& is not modified, could be IN",
-                               N       => Error_Location (FA.PDG, V),
-                               F1      => F_Final,
-                               Tag     => "inout_only_read",
-                               Warning => True);
+         if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
+
+            if not (F_Final.Kind in Direct_Mapping | Record_Field)
+              or else not FA.Unmodified_Vars.Contains
+                            (Get_Direct_Mapping_Id (F_Final))
+            then
+
+               if A_Final.Is_Global then
+                  Error_Msg_Flow
+                    (Msg     => "& is not modified, could be INPUT",
+                     N       => Find_Global (FA.Analyzed_Entity, F_Final),
+                     F1      => F_Final,
+                     Tag     => "inout_only_read",
+                     Warning => True);
+               else
+                  Error_Msg_Flow
+                    (Msg     => "& is not modified, could be IN",
+                     N       => Error_Location (FA.PDG, V),
+                     F1      => F_Final,
+                     Tag     => "inout_only_read",
+                     Warning => True);
+               end if;
             end if;
          end if;
       end loop;
@@ -914,33 +919,36 @@ package body Flow.Analysis is
             F : constant Flow_Id      := FA.PDG.Get_Key (V);
             A : constant V_Attributes := FA.PDG.Get_Attributes (V);
          begin
-            if not Effective_Ids.Contains (V)
-              and then not FA.Unreferenced_Vars.Contains
-                (Get_Direct_Mapping_Id (F))
-            then
+            if not Effective_Ids.Contains (V) then
 
-               if Is_Discriminant (F) then
-                  --  Discriminants are never ineffective imports.
-                  null;
-               elsif A.Is_Global then
-                  if FA.Kind = E_Subprogram_Body and then
-                    not FA.Is_Generative
-                  then
+               if not (F.Kind in Direct_Mapping | Record_Field)
+                 or else not FA.Unreferenced_Vars.Contains
+                               (Get_Direct_Mapping_Id (F))
+               then
+
+                  if Is_Discriminant (F) then
+                     --  Discriminants are never ineffective imports.
+                     null;
+                  elsif A.Is_Global then
+                     if FA.Kind = E_Subprogram_Body and then
+                       not FA.Is_Generative
+                     then
+                        Error_Msg_Flow
+                          (Msg     => "unused initial value of &",
+                           N       => Find_Global (FA.Analyzed_Entity, F),
+                           F1      => F,
+                           Tag     => "unused_initial_value",
+                        Warning => True);
+                     end if;
+                  else
                      Error_Msg_Flow
                        (Msg     => "unused initial value of &",
-                        N       => Find_Global (FA.Analyzed_Entity, F),
+                        --  !!! find_import
+                        N       => Error_Location (FA.PDG, V),
                         F1      => F,
                         Tag     => "unused_initial_value",
                         Warning => True);
                   end if;
-               else
-                  Error_Msg_Flow
-                    (Msg     => "unused initial value of &",
-                     --  !!! find_import
-                     N       => Error_Location (FA.PDG, V),
-                     F1      => F,
-                     Tag     => "unused_initial_value",
-                     Warning => True);
                end if;
             end if;
          end;

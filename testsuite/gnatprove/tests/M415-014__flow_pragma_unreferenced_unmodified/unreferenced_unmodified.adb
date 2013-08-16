@@ -1,6 +1,11 @@
 package body Unreferenced_Unmodified is
-   function Return_5 (X, Y : Integer) return Integer is
+   type Record_T is record
+      X, Y : Integer;
+   end record;
+
+   function Return_5 (X, Y : Integer ; Rec : Record_T) return Integer is
       pragma Unreferenced (X, Y);
+      pragma Unreferenced (Rec);
    begin
       return 5;
    end Return_5;
