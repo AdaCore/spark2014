@@ -101,20 +101,10 @@ Proof.
        inversion H18; subst; constructor.
     + destruct b; try simpl_binop_hyp;
        inversion H18; subst; constructor.
-  - specialize (IHe1 _ _ h1 H14 H5).
-    specialize (IHe2 _ _ h1 H15 H6).
-    destruct v1 as [v11 | v12]; inversion IHe1; subst;
-    destruct v2 as [v21 | v22]; try rm_contradict.
-    + destruct b; 
-       repeat simpl_binop_hyp;
-       inversion H17; subst; constructor.
-    + destruct b; try simpl_binop_hyp;
-       inversion H17; subst; constructor.
   - (* E_Unary_Expression *)
     destruct op; destruct v0; inversion H9; subst.
     constructor.
 Qed.
-
 
 Lemma lt_not_equal: forall x y,
     x < y ->
@@ -130,16 +120,6 @@ Proof.
     intuition.
 Qed.
 
-Lemma beq_nat_comm: forall x y,
-    beq_nat x y = beq_nat y x.
-Proof.
-    induction x; intros y.
-  - destruct y; auto.
-  - destruct y; auto.
-    simpl. 
-    apply IHx.
-Qed.
-
 (** * Correctness Proof About Well-Formed Statement *)
 
 (** 
@@ -153,8 +133,8 @@ Qed.
 Definition subset (n: astnum) (cks1: check_points) (cks2: check_points): Prop := 
     forall id v, 
     id < n -> 
-    fetch_ck id cks1 = v -> 
-    fetch_ck id cks2 = v.
+    fetch_cks id cks1 = v -> 
+    fetch_cks id cks2 = v.
 
 Lemma subset_refl: forall n ls,
     subset n ls ls.
@@ -203,8 +183,8 @@ Proof.
     apply H.
     assumption.
     specialize (lt_not_equal _ _ H0); intros hz1.
-    unfold fetch_ck.
-    rewrite hz1; fold fetch_ck.
+    unfold fetch_cks.
+    rewrite hz1; fold fetch_cks.
     assumption.
 Qed.
 
@@ -242,9 +222,9 @@ Qed.
     words, n is outside the domain of ls, then when we fetch n from 
     ls, of course it returns None;
 *)
-Lemma fetch_ck_none: forall ls n,
+Lemma fetch_cks_none: forall ls n,
     ast_nums_lt ls n ->
-    fetch_ck n ls = None.
+    fetch_cks n ls = nil.
 Proof.
     intros.
     induction H.
@@ -264,30 +244,30 @@ Qed.
     for expression e with ast numbers as its index, then ast_num is not 
     in cks1;
 *)
-Lemma fetch_ck_none1: forall ast_num cks0 e cks1 max,
-    fetch_ck ast_num cks0 = None -> 
+Lemma fetch_cks_none1: forall ast_num cks0 e cks1 max,
+    fetch_cks ast_num cks0 = nil -> 
     check_generator_expr cks0 e cks1 ->
     ast_num_inc_expr e max -> 
     ast_num < (get_ast_num_expr e) ->
-    fetch_ck ast_num cks1 = None.
+    fetch_cks ast_num cks1 = nil.
 Proof.
     intros ast_num cks0 e cks1 max h1 h2.
     revert max.
     induction h2;
     intros max h3 h4;
     simpl in h4; inversion h3; subst; auto.
-  - assert (hz1: fetch_ck ast_num ((ast_num0, flag) :: ls) = None).
-    unfold fetch_ck. 
-    rewrite (lt_not_equal _ _ h4). assumption. 
-    assert (hz2: ast_num < get_ast_num_expr e1); intuition.
-    assert (hz3: ast_num < get_ast_num_expr e2); intuition.
-    specialize (H0 _ H4 hz2).
-    specialize (IHh2_2 H0 _ H5 hz3).
-    assumption.
   - assert (hz1: ast_num < get_ast_num_expr e1); intuition.
     assert (hz2: ast_num < get_ast_num_expr e2); intuition.
     specialize (H0 _ H4 hz1).
     specialize (IHh2_2 H0 _ H5 hz2).
+    assumption.
+  - assert (hz1: fetch_cks ast_num ((ast_num0, cks) :: ls) = nil).
+    unfold fetch_cks. 
+    rewrite (lt_not_equal _ _ h4). assumption. 
+    assert (hz2: ast_num < get_ast_num_expr e1); intuition.
+    assert (hz3: ast_num < get_ast_num_expr e2); intuition.
+    specialize (H1 _ H5 hz2).
+    specialize (IHh2_2 H1 _ H6 hz3).
     assumption.
   - assert (hz1: ast_num < get_ast_num_expr e); intuition.
     specialize (H _ H1 hz1).
@@ -390,15 +370,6 @@ Proof.
     try apply subset_refl; simpl.
   - specialize (ast_nums_lt_trans _ _ _ h2 H9); intros hz1.
     specialize (ast_nums_lt_trans _ _ _ h2 H10); intros hz2.
-    specialize (ast_nums_lt_add _ _ _ flag H9 hz1); intros hz3.
-    specialize (IHh1_1 hz3 _ H4).
-    specialize (lt_trans_expr _ _ _ _ _ h1_1 hz3 H4 H11); intros hz4.
-    specialize (IHh1_2 hz4 _ H5).
-    specialize (subset_close _ _ _ _ IHh1_1 H9); intros hz5.
-    specialize (subset_close1 _ _ _ _ hz5); intros hz6.
-    specialize (subset_trans _ _ _ _ _ hz6 IHh1_2 H10); auto.
-  - specialize (ast_nums_lt_trans _ _ _ h2 H9); intros hz1.
-    specialize (ast_nums_lt_trans _ _ _ h2 H10); intros hz2.
     specialize (IHh1_1 hz1 _ H4).
     specialize (lt_trans_expr _ _ _ _ _ h1_1 hz1 H4 H11); intros hz3.
     specialize (IHh1_2 hz3 _ H5).
@@ -406,6 +377,15 @@ Proof.
     assert (hz5: get_ast_num_expr e1 < get_ast_num_expr e2); intuition.
     specialize (subset_trans _ _ _ _ _ IHh1_1 IHh1_2 hz5); intros hz6.
     specialize (subset_close _ _ _ _ hz6 H9); intuition.
+  - specialize (ast_nums_lt_trans _ _ _ h2 H10); intros hz1.
+    specialize (ast_nums_lt_trans _ _ _ h2 H11); intros hz2.
+    specialize (ast_nums_lt_add _ _ _ cks H10 hz1); intros hz3.
+    specialize (IHh1_1 hz3 _ H5).
+    specialize (lt_trans_expr _ _ _ _ _ h1_1 hz3 H5 H12); intros hz4.
+    specialize (IHh1_2 hz4 _ H6).
+    specialize (subset_close _ _ _ _ IHh1_1 H10); intros hz5.
+    specialize (subset_close1 _ _ _ _ hz5); intros hz6.
+    specialize (subset_trans _ _ _ _ _ hz6 IHh1_2 H11); auto.
   - specialize (ast_nums_lt_trans _ _ _ h2 H4); intros hz1.
     specialize (IHh1 hz1 _ H1).
     specialize (subset_close _ _ _ _ IHh1 H4); intuition.
@@ -565,6 +545,106 @@ Proof.
 Qed.
 
 
+Lemma fetch_cks_inv: forall e flags cks0 cks1 max,
+    check_flags e flags ->
+    check_generator_expr cks0 e cks1 ->
+    ast_nums_lt cks0 (get_ast_num_expr e) ->
+    ast_num_inc_expr e max ->
+    fetch_cks (get_ast_num_expr e) cks1 = flags.
+Proof.
+    intros e flags cks0 cks1 max h1.
+    revert cks0 cks1 max.
+    induction h1;
+    intros cks0 cks1 max h2 h3 h4;
+    simpl in *; 
+    match goal with
+    | h: check_generator_expr ?cks0 (E_Literal _ _) ?cks1 |- _ => 
+        inversion h2; subst; apply fetch_cks_none; auto
+    | h: check_generator_expr ?cks0 (E_Identifier _ _ ) ?cks1 |- _ =>
+        inversion h2; subst; apply fetch_cks_none; auto
+    | _ => inversion h4; subst
+    end.
+  - (* E_Binary_Operation: Plus *)
+    inversion h2; subst.
+    inversion H7; subst; rm_false_hyp.
+    inversion H6; subst.
+    assert (hz1: ast_nums_lt ((ast_num, Do_Overflow_Check :: nil) :: cks0) (get_ast_num_expr e1)).
+      apply ast_nums_lt_add; auto.
+      apply ast_nums_lt_trans with (n := ast_num); auto.
+    assert (hz2: subset (get_ast_num_expr e1) ((ast_num, Do_Overflow_Check :: nil) :: cks0) ls1).
+      apply subset_expr with (max := max1); auto.
+    assert (hz3: subset (get_ast_num_expr e2) ls1 cks1).
+      apply subset_expr with (max := max); auto.
+      apply lt_trans_expr with (cks0 := ((ast_num, Do_Overflow_Check :: nil) :: cks0)) (e := e1) (max := max1);
+      auto.
+    apply hz3; auto.
+    apply hz2; auto.
+    simpl. rewrite <- beq_nat_refl. auto.
+    rm_false_hyp.
+  - (* E_Binary_Operation: Minus *)
+    inversion h2; subst.
+    inversion H7; subst; rm_false_hyp.
+    inversion H6; subst.
+    assert (hz1: ast_nums_lt ((ast_num, Do_Overflow_Check :: nil) :: cks0) (get_ast_num_expr e1)).
+      apply ast_nums_lt_add; auto.
+      apply ast_nums_lt_trans with (n := ast_num); auto.
+    assert (hz2: subset (get_ast_num_expr e1) ((ast_num, Do_Overflow_Check :: nil) :: cks0) ls1).
+      apply subset_expr with (max := max1); auto.
+    assert (hz3: subset (get_ast_num_expr e2) ls1 cks1).
+      apply subset_expr with (max := max); auto.
+      apply lt_trans_expr with (cks0 := ((ast_num, Do_Overflow_Check :: nil) :: cks0)) (e := e1) (max := max1);
+      auto.
+    apply hz3; auto.
+    apply hz2; auto.
+    simpl. rewrite <- beq_nat_refl. auto.
+    rm_false_hyp.
+  - (* E_Binary_Operation: Multiply *)
+    inversion h2; subst.
+    inversion H7; subst; rm_false_hyp.
+    inversion H6; subst.
+    assert (hz1: ast_nums_lt ((ast_num, Do_Overflow_Check :: nil) :: cks0) (get_ast_num_expr e1)).
+      apply ast_nums_lt_add; auto.
+      apply ast_nums_lt_trans with (n := ast_num); auto.
+    assert (hz2: subset (get_ast_num_expr e1) ((ast_num, Do_Overflow_Check :: nil) :: cks0) ls1).
+      apply subset_expr with (max := max1); auto.
+    assert (hz3: subset (get_ast_num_expr e2) ls1 cks1).
+      apply subset_expr with (max := max); auto.
+      apply lt_trans_expr with (cks0 := ((ast_num, Do_Overflow_Check :: nil) :: cks0)) (e := e1) (max := max1);
+      auto.
+    apply hz3; auto.
+    apply hz2; auto.
+    simpl. rewrite <- beq_nat_refl. auto.
+    rm_false_hyp.
+  - (* E_Binary_Operation: Divide *)
+    inversion h2; subst.
+    inversion H7; subst; rm_false_hyp.
+    inversion H6; subst.
+    assert (hz1: ast_nums_lt ((ast_num, Do_Division_Check :: Do_Overflow_Check :: nil) :: cks0) (get_ast_num_expr e1)).
+      apply ast_nums_lt_add; auto.
+      apply ast_nums_lt_trans with (n := ast_num); auto.
+    assert (hz2: subset (get_ast_num_expr e1) ((ast_num, Do_Division_Check :: Do_Overflow_Check :: nil) :: cks0) ls1).
+      apply subset_expr with (max := max1); auto.
+    assert (hz3: subset (get_ast_num_expr e2) ls1 cks1).
+      apply subset_expr with (max := max); auto.
+      apply lt_trans_expr with (cks0 := ((ast_num, Do_Division_Check :: Do_Overflow_Check :: nil) :: cks0)) (e := e1) (max := max1);
+      auto.
+    apply hz3; auto.
+    apply hz2; auto.
+    simpl. rewrite <- beq_nat_refl. auto.
+    rm_false_hyp.
+  - inversion h2; subst.
+    apply fetch_cks_none1 with (cks0 := ls1) (e := e2) (max := max); auto.
+    apply fetch_cks_none1 with (cks0 := cks0) (e := e1) (max := max1); auto.
+    apply fetch_cks_none; auto.
+    destruct op; try rm_false_hyp;
+    inversion H10; subst; rm_false_hyp.
+  - (* E_Unary_Operation *)
+    inversion h2; subst.
+    apply fetch_cks_none1 with (cks0 := cks0) (e := e) (max := max); auto.
+    apply fetch_cks_none; auto.
+Qed.
+
+
 (** 
     We cannot prove eval_expr_with_checks_correct directly, so
     eval_expr_with_checks_correct0 is proved as an intermediate proof 
@@ -580,6 +660,7 @@ Qed.
     a superset of cks1, all these extra checks in cks cannot affect 
     the evaluation of expression e;
 *)
+
 Lemma eval_expr_with_checks_correct0: forall cks s e v cks1 cks0 max,
     eval_expr_with_checks cks s e v ->
     subset (max + 1) cks1 cks ->
@@ -591,7 +672,7 @@ Proof.
     intros cks s e v cks1 cks0 max h1.
     revert cks1 cks0 max.
     induction h1;
-    intros cks1 cks0 max h2 h3 h4 h5;
+    intros cks1 cks'0 max h2 h3 h4 h5;
     simpl in h4;
     inversion h5; subst.
   - (* Econst *) 
@@ -600,27 +681,18 @@ Proof.
     constructor; auto.
   - (* Ebinop *)
     inversion h3; subst.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1. 
-       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.       
-       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h2); intros hz4.       
-       specialize (IHh1 _ _ _ hz4 H11 hz2 H3).
-       constructor; assumption.
     + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h2); intros hz3.
        specialize (IHh1 _ _ _ hz3 H11 hz1 H3).
        constructor; assumption.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1. 
+       specialize (ast_nums_lt_add _ _ _ cks0 H8 hz1); intros hz2.  
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H3 H10); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H13 H4 hz3 H10 h2); intros hz4. 
+       specialize (IHh1 _ _ _ hz4 H12 hz2 H3).
+       constructor; assumption.
   - inversion h3; subst.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h2); intros hz4.
-       specialize (IHh1_1 _ _ _ hz4 H11 hz2 H3).
-       specialize (IHh1_2 _ _ _ h2 H12 hz3 H4).
-       eapply eval_E_Binary_Operation2. 
-       apply IHh1_1.
-       assumption.
     + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h2); intros hz3.
@@ -629,74 +701,75 @@ Proof.
        eapply eval_E_Binary_Operation2. 
        apply IHh1_1.
        assumption.
-  - inversion h3; subst.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h2); intros hz4.
-       specialize (IHh1_1 _ _ _ hz4 H13 hz2 H5).
-       specialize (IHh1_2 _ _ _ h2 H14 hz3 H6).
-       eapply eval_E_Binary_Operation3. 
-       apply IHh1_1. apply IHh1_2.
-       assumption.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h2); intros hz3.
-       specialize (IHh1_1 _ _ _ hz3 H13 hz1 H5).
-       specialize (IHh1_2 _ _ _ h2 H14 hz2 H6).
-       eapply eval_E_Binary_Operation3. 
-       apply IHh1_1. apply IHh1_2.
+    + specialize (ast_nums_lt_trans _ _ _ h4 H8); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ cks0 H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H3 H10); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H13 H4 hz3 H10 h2); intros hz4.
+       specialize (IHh1_1 _ _ _ hz4 H12 hz2 H3).
+       specialize (IHh1_2 _ _ _ h2 H13 hz3 H4).
+       eapply eval_E_Binary_Operation2. 
+       apply IHh1_1.
        assumption.
   - inversion h3; subst.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H11); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H11 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H6 H13); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H15 H7 hz3 H13 h2); intros hz4.
-       specialize (IHh1_1 _ _ _ hz4 H14 hz2 H6).
-       specialize (IHh1_2 _ _ _ h2 H15 hz3 H7).
-       eapply eval_E_Binary_Operation4. 
-       apply IHh1_1. apply IHh1_2.
-       assumption. assumption.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H11); intros hz1.
-       specialize (lt_trans_expr _ _ _ _ _ H14 hz1 H6 H13); intros hz2.
-       specialize (help1 _ _ _ _ _ _ H15 H7 hz2 H13 h2); intros hz3.
-       specialize (IHh1_1 _ _ _ hz3 H14 hz1 H6).
-       specialize (IHh1_2 _ _ _ h2 H15 hz2 H7).
-       eapply eval_E_Binary_Operation4. 
-       apply IHh1_1. apply IHh1_2.
-       assumption. assumption.
-  - inversion h3; subst.     
-    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h2); intros hz4.
-       specialize (IHh1_1 _ _ _ hz4 H13 hz2 H5).
-       specialize (IHh1_2 _ _ _ h2 H14 hz3 H6).
-       eapply eval_E_Binary_Operation4. 
-       apply IHh1_1. apply IHh1_2.
-       specialize (subset_expr _ _ _ _ H13 hz2 H5); intros hz5.
-       assert(A1: get_ast_num_expr e1 < max1 + 1).
-       specialize (ast_num_bound_expr _ _ H5); intros ha2.
-       intuition.
-       specialize (subset_trans _ _ _ _ _ hz5 hz4 A1); intros hz6.
-       unfold subset in hz6. 
-       specialize (hz6 ast_num (Some flag)).
-       unfold fetch_ck in hz6.
-       rewrite <- (beq_nat_refl ast_num) in hz6. fold fetch_ck in hz6.
-       intuition. 
-       rewrite H in H2; inversion H2.
-       assumption.
-    + specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h2); intros hz3.
-       specialize (IHh1_1 _ _ _ hz3 H13 hz1 H5).
-       specialize (IHh1_2 _ _ _ h2 H14 hz2 H6).
-       eapply eval_E_Binary_Operation4. 
-       apply IHh1_1. apply IHh1_2.
-       
-       destruct op; inversion H9; subst;
-       constructor; assumption.       
-       assumption.
+    + assert(ha: fetch_cks ast_num cks = nil).
+        apply h2.
+        specialize (ast_num_bound_expr _ _ H6); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      destruct op;
+      inversion H0; subst.
+    + assert(ha: fetch_cks ast_num cks = cks0).
+        apply h2.
+        specialize (ast_num_bound_expr _ _ H6); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      specialize (ast_nums_lt_trans _ _ _ h4 H10); intros hz1.
+      specialize (ast_nums_lt_add _ _ _ cks0 H10 hz1); intros hz2.
+      specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
+      specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h2); intros hz4.
+      specialize (IHh1_1 _ _ _ hz4 H13 hz2 H5).
+      specialize (IHh1_2 _ _ _ h2 H14 hz3 H6).
+      eapply eval_E_Binary_Operation3. 
+      apply IHh1_1. apply IHh1_2.
+      specialize (do_complete_checks_correct _ _ _ _ _ _ _ _ H7 H0); auto.
+  - inversion h3; subst.
+    + assert(ha: fetch_cks ast_num cks = nil).
+        apply h2.
+        specialize (ast_num_bound_expr _ _ H7); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      specialize (ast_nums_lt_trans _ _ _ h4 H11); intros hz1.
+      specialize (lt_trans_expr _ _ _ _ _ H10 hz1 H6 H13); intros hz2.
+      specialize (help1 _ _ _ _ _ _ H14 H7 hz2 H13 h2); intros hz3.
+      specialize (IHh1_1 _ _ _ hz3 H10 hz1 H6).
+      specialize (IHh1_2 _ _ _ h2 H14 hz2 H7).
+      eapply eval_E_Binary_Operation4. 
+      apply IHh1_1. apply IHh1_2.
+      specialize (do_complete_checks_correct _ _ _ _ _ _ _ _ H9 H0); auto.
+      assumption.
+    + assert(ha: fetch_cks ast_num cks = cks0).
+        apply h2.
+        specialize (ast_num_bound_expr _ _ H7); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      specialize (ast_nums_lt_trans _ _ _ h4 H11); intros hz1.
+      specialize (ast_nums_lt_add _ _ _ cks0 H11 hz1); intros hz2.
+      specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H6 H13); intros hz3.
+      specialize (help1 _ _ _ _ _ _ H15 H7 hz3 H13 h2); intros hz4.
+      specialize (IHh1_1 _ _ _ hz4 H14 hz2 H6).
+      specialize (IHh1_2 _ _ _ h2 H15 hz3 H7).
+      eapply eval_E_Binary_Operation4. 
+      apply IHh1_1. apply IHh1_2.
+      specialize (do_complete_checks_correct _ _ _ _ _ _ _ _ H8 H0); auto.
+      assumption.
   - (* Eunop *)
     inversion h3; subst.
     specialize (ast_nums_lt_trans _ _ _ h4 H4); intros hz1.
@@ -763,19 +836,11 @@ Lemma eval_expr_with_checks_fixed0: forall cks s e v n cks' cks1 cks0 max,
 Proof.
     intros cks s e v  n cks' cks1 cks0 max h1.
     revert n cks' cks1 cks0 max.
-    induction h1; intros n cks' cks1 cks0 max h2 h3 h4 h5 h6 h7;
+    induction h1; intros n cks' cks1 cks'0 max h2 h3 h4 h5 h6 h7;
     simpl in h6; inversion h7; subst.
   - constructor; reflexivity.
   - constructor; assumption.
   - inversion h5; subst. 
-    + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h4); intros hz4.
-       assert (hz5: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H4); intros hz6. intuition.
-       specialize (IHh1 _ _ _ _ _ hz5 h3 hz4 H11 hz2 H3).
-       constructor; assumption.
     + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1. 
        specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h4); intros hz3.
@@ -783,17 +848,15 @@ Proof.
        specialize (ast_num_bound_expr _ _ H4); intros hz4; intuition.
        specialize (IHh1 _ _ _ _ _ hz5 h3 hz3 H11 hz1 H3).
        constructor; assumption.
-  -  inversion h5; subst. 
     + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 h4); intros hz4.
+       specialize (ast_nums_lt_add _ _ _ cks0 H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H3 H10); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H13 H4 hz3 H10 h4); intros hz4.
        assert (hz5: max1 + 1 <= n).
        specialize (ast_num_bound_expr _ _ H4); intros hz6. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H11 hz2 H3).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H12 hz3 H4).
-       eapply eval_Binary_Operation2.
-       apply IHh1_1. apply IHh1_2.
+       specialize (IHh1 _ _ _ _ _ hz5 h3 hz4 H12 hz2 H3).
+       constructor; assumption.
+  - inversion h5; subst.
     + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
        specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 h4); intros hz3.
@@ -803,100 +866,94 @@ Proof.
        specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H12 hz2 H4).
        eapply eval_Binary_Operation2.
        apply IHh1_1. apply IHh1_2.
-  - inversion h5; subst. 
-    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h4); intros hz4.
+    + specialize (ast_nums_lt_trans _ _ _ h6 H8); intros hz1.
+       specialize (ast_nums_lt_add _ _ _ cks0 H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H3 H10); intros hz3.
+       specialize (help1 _ _ _ _ _ _ H13 H4 hz3 H10 h4); intros hz4.
        assert (hz5: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H6); intros hz6. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H13 hz2 H5).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz3 H6).
-       eapply eval_Binary_Operation3.
+       specialize (ast_num_bound_expr _ _ H4); intros hz6. intuition.
+       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H12 hz2 H3).
+       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H13 hz3 H4).
+       eapply eval_Binary_Operation2.
        apply IHh1_1. apply IHh1_2.
-       unfold subset in h3.
-       assert (hz6: ast_num < n).
-       specialize (ast_num_bound_expr _ _ H5); intuition.
-       specialize (h3 _ _ hz6 H).
-       apply h3. assumption.
-    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h4); intros hz3.
-       assert (hz4: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H6); intros hz5. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H13 hz1 H5).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz2 H6).
-       eapply eval_Binary_Operation3.
-       apply IHh1_1. apply IHh1_2.
-       unfold subset in h3. 
-       assert (hz5: ast_num < n).
-       specialize (ast_num_bound_expr _ _ H5); intuition.
-       specialize (h3 _ _ hz5 H).
-       apply h3. assumption.
+  - inversion h5; subst.
+    + assert(ha: fetch_cks ast_num cks = nil).
+        apply h4.
+        specialize (ast_num_bound_expr _ _ H6); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      destruct op;
+      inversion H0; subst.
+    + assert(ha: fetch_cks ast_num cks = cks0).
+        apply h4.
+        specialize (ast_num_bound_expr _ _ H6); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
+      specialize (ast_nums_lt_add _ _ _ cks0 H10 hz1); intros hz2.
+      specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
+      specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h4); intros hz4.
+      assert (hz5: max1 + 1 <= n).
+      specialize (ast_num_bound_expr _ _ H6); intuition.
+      specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H13 hz2 H5).
+      specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz3 H6).
+      eapply eval_Binary_Operation3.
+      apply IHh1_1. apply IHh1_2.
+      unfold subset in h3.
+      assert (hz6: ast_num < n).
+      specialize (ast_num_bound_expr _ _ H5); intuition.
+      specialize (h3 _ _ hz6 ha).
+      apply h3. assumption.
   - inversion h5; subst. 
-    + specialize (ast_nums_lt_trans _ _ _ h6 H11); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H11 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H6 H13); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H15 H7 hz3 H13 h4); intros hz4.
-       assert (hz5: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H7); intros hz6. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H14 hz2 H6).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H15 hz3 H7).
-       eapply eval_Binary_Operation4.
-       apply IHh1_1. apply IHh1_2.
-       unfold subset in h3. 
-       assert (hz6: ast_num < n).
-       specialize (ast_num_bound_expr _ _ H6); intuition.
-       specialize (h3 _ _ hz6 H).
-       apply h3. 
-       assumption. assumption.
-    + specialize (ast_nums_lt_trans _ _ _ h6 H11); intros hz1.
-       specialize (lt_trans_expr _ _ _ _ _ H14 hz1 H6 H13); intros hz2.
-       specialize (help1 _ _ _ _ _ _ H15 H7 hz2 H13 h4); intros hz3.
-       assert (hz4: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H7); intros hz5. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H14 hz1 H6).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H15 hz2 H7).
-       eapply eval_Binary_Operation4.
-       apply IHh1_1. apply IHh1_2.
-       unfold subset in h3. 
-       assert (hz5: ast_num < n).
-       specialize (ast_num_bound_expr _ _ H6); intuition.
-       specialize (h3 _ _ hz5 H).
-       apply h3. 
-       assumption. assumption.
-  - inversion h5; subst. 
-    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
-       specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 h4); intros hz4.
-       assert (hz5: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H6); intros hz6. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H13 hz2 H5).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz3 H6).
-       eapply eval_Binary_Operation5.
-       apply IHh1_1. apply IHh1_2.
-       unfold subset in h3. 
-       assert (hz6: ast_num < n).
-       specialize (ast_num_bound_expr _ _ H5); intuition.
-       specialize (h3 _ _ hz6 H).
-       apply h3. 
-       assumption.
-    + specialize (ast_nums_lt_trans _ _ _ h6 H10); intros hz1.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 h4); intros hz3.
-       assert (hz4: max1 + 1 <= n).
-       specialize (ast_num_bound_expr _ _ H6); intros hz5. intuition.
-       specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H13 hz1 H5).
-       specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz2 H6).
-       eapply eval_Binary_Operation5.
-       apply IHh1_1. apply IHh1_2.
-       unfold subset in h3. 
-       assert (hz5: ast_num < n).
-       specialize (ast_num_bound_expr _ _ H5); intuition.
-       specialize (h3 _ _ hz5 H).
-       apply h3. 
-       assumption.
+    + assert(ha: fetch_cks ast_num cks = nil).
+        apply h4.
+        specialize (ast_num_bound_expr _ _ H7); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      specialize (ast_nums_lt_trans _ _ _ h6 H11); intros hz1.
+      specialize (lt_trans_expr _ _ _ _ _ H10 hz1 H6 H13); intros hz2.
+      specialize (help1 _ _ _ _ _ _ H14 H7 hz2 H13 h4); intros hz3.
+      assert (hz4: max1 + 1 <= n).
+      specialize (ast_num_bound_expr _ _ H7); intros hz5. intuition.
+      specialize (IHh1_1 _ _ _ _ _ hz4 h3 hz3 H10 hz1 H6).
+      specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H14 hz2 H7).
+      eapply eval_Binary_Operation4.
+      apply IHh1_1. apply IHh1_2.
+      unfold subset in h3. 
+      assert (hz5: ast_num < n).
+      specialize (ast_num_bound_expr _ _ H6); intuition.
+      specialize (h3 _ _ hz5 ha).
+      apply h3. 
+      assumption. assumption.
+    + assert(ha: fetch_cks ast_num cks = cks0).
+        apply h4.
+        specialize (ast_num_bound_expr _ _ H7); intuition.
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks'0) (max := max); auto.
+        auto.
+      rewrite ha in *.
+      specialize (ast_nums_lt_trans _ _ _ h6 H11); intros hz1.
+      specialize (ast_nums_lt_add _ _ _ cks0 H11 hz1); intros hz2.
+      specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H6 H13); intros hz3.
+      specialize (help1 _ _ _ _ _ _ H15 H7 hz3 H13 h4); intros hz4.
+      assert (hz5: max1 + 1 <= n).
+      specialize (ast_num_bound_expr _ _ H7); intros hz6. intuition.
+      specialize (IHh1_1 _ _ _ _ _ hz5 h3 hz4 H14 hz2 H6).
+      specialize (IHh1_2 _ _ _ _ _ h2 h3 h4 H15 hz3 H7).
+      eapply eval_Binary_Operation4.
+      apply IHh1_1. apply IHh1_2.
+      unfold subset in h3. 
+      assert (hz6: ast_num < n).
+      specialize (ast_num_bound_expr _ _ H6); intuition.
+      specialize (h3 _ _ hz6 ha).
+      apply h3. 
+      assumption. assumption.
   - inversion h5; subst. 
     specialize (ast_nums_lt_trans _ _ _ h6 H4); intros hz1. 
     specialize (IHh1 _ _ _ _ _ h2 h3 h4 H5 hz1 H1).
@@ -1220,35 +1277,25 @@ Proof.
     constructor; reflexivity.
   - (* Evar *)
     constructor; auto.
-  - (* Ebinop: e1 exception *)
+  - (* Ebinop: e1 run time error *)
     specialize (ast_nums_lt_trans _ _ _ h3 H8); intros hz1.
     inversion h2; subst.
-    + specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
-       specialize (IHh1 _ _ _ H11 hz2 H3).
-       specialize (subset_refl (max + 1) cks1); intros hz4.
-       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 hz4); intros hz5.
-       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1 hz5 H11 hz2 H3); intros hz6.
-       constructor; assumption.
     + specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (IHh1 _ _ _ H11 hz1 H3).
        specialize (subset_refl (max + 1) cks1); intros hz3.
        specialize (help1 _ _ _ _ _ _ H12 H4 hz2 H10 hz3); intros hz4.
        specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1 hz4 H11 hz1 H3); intros hz5.
        constructor; assumption.
-  - (* Ebinop: e2 exception *)
+    + specialize (ast_nums_lt_add _ _ _ cks H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H3 H10); intros hz3.
+       specialize (IHh1 _ _ _ H12 hz2 H3).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H13 H4 hz3 H10 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1 hz5 H12 hz2 H3); intros hz6.
+       constructor; assumption.
+  - (* Ebinop: e2 run time error *)
     specialize (ast_nums_lt_trans _ _ _ h3 H8); intros hz1.
     inversion h2; subst.
-    + specialize (ast_nums_lt_add _ _ _ flag H8 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H11 hz2 H3 H10); intros hz3.
-       specialize (IHh1_1 _ _ _ H11 hz2 H3).
-       specialize (IHh1_2 _ _ _ H12 hz3 H4).
-       specialize (subset_refl (max + 1) cks1); intros hz4.
-       specialize (help1 _ _ _ _ _ _ H12 H4 hz3 H10 hz4); intros hz5.
-       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H11 hz2 H3); intros hz6.
-       eapply eval_Binary_Operation2. 
-       * apply hz6.
-       * assumption.
     + specialize (lt_trans_expr _ _ _ _ _ H11 hz1 H3 H10); intros hz2.
        specialize (IHh1_1 _ _ _ H11 hz1 H3).
        specialize (IHh1_2 _ _ _ H12 hz2 H4).
@@ -1258,68 +1305,73 @@ Proof.
        eapply eval_Binary_Operation2.
        * apply hz5.
        * assumption.
-  - (* Ebinop: binary operation exception *)
+    + specialize (ast_nums_lt_add _ _ _ cks H8 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H3 H10); intros hz3.
+       specialize (IHh1_1 _ _ _ H12 hz2 H3).
+       specialize (IHh1_2 _ _ _ H13 hz3 H4).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H13 H4 hz3 H10 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H12 hz2 H3); intros hz6.
+       eapply eval_Binary_Operation2. 
+       * apply hz6.
+       * assumption.
+  - (* Ebinop: run time error on binary operation *)
     specialize (ast_nums_lt_trans _ _ _ h3 H9); intros hz1.
     inversion h2; subst.
-    + specialize (ast_nums_lt_add _ _ _ flag H9 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H12 hz2 H4 H11); intros hz3.
-       specialize (IHh1_1 _ _ _ H12 hz2 H4).
-       specialize (IHh1_2 _ _ _ H13 hz3 H5).
-       specialize (subset_refl (max + 1) cks1); intros hz4.
-       specialize (help1 _ _ _ _ _ _ H13 H5 hz3 H11 hz4); intros hz5.
-       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H12 hz2 H4); intros hz6.
-       eapply eval_Binary_Operation3. 
+    + destruct op; inversion H; subst;
+       inversion H8; subst;
+       intuition.
+    + assert(ha: fetch_cks ast_num cks1 = cks).
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks0) (max := max); auto.
+        auto.      
+      specialize (ast_nums_lt_add _ _ _ cks H9 hz1); intros hz2.
+      specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H4 H11); intros hz3.
+      specialize (IHh1_1 _ _ _ H13 hz2 H4).
+      specialize (IHh1_2 _ _ _ H14 hz3 H5).
+      specialize (subset_refl (max + 1) cks1); intros hz4.
+      specialize (help1 _ _ _ _ _ _ H14 H5 hz3 H11 hz4); intros hz5.
+      specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H13 hz2 H4); intros hz6.
+      eapply eval_Binary_Operation3. 
        * apply hz6.
        * apply IHh1_2.
-       * specialize (subset_expr _ _ _ _ H12 hz2 H4); intros hz7.
-         assert (hz8: get_ast_num_expr e1  < max1 + 1).
-         specialize (ast_num_bound_expr _ _ H4); intros ha1; intuition.
-         specialize (subset_trans _ _ _ _ _ hz7 hz5 hz8); intros hz9.
-         unfold subset in hz9.
-         specialize (hz9 ast_num (Some flag)). 
-         unfold fetch_ck in hz9. rewrite <- (beq_nat_refl ast_num) in hz9.
-         fold fetch_ck in hz9; intuition.
-         apply H1.
-       * assumption.
-    + destruct op; inversion H; subst.
-       inversion H8; subst.
-       intuition.
+       * apply ha.
+       * specialize (do_complete_checks_correct' _ _ _ _ _ _ _ _ H7 H); auto.
   - (* Ebinop: normal value *)
     specialize (ast_nums_lt_trans _ _ _ h3 H10); intros hz1.
     inversion h2; subst.
-    + specialize (ast_nums_lt_add _ _ _ flag H10 hz1); intros hz2.
-       specialize (lt_trans_expr _ _ _ _ _ H13 hz2 H5 H12); intros hz3.
-       specialize (IHh1_1 _ _ _ H13 hz2 H5).
-       specialize (IHh1_2 _ _ _ H14 hz3 H6).
-       specialize (subset_refl (max + 1) cks1); intros hz4.
-       specialize (help1 _ _ _ _ _ _ H14 H6 hz3 H12 hz4); intros hz5.
-       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H13 hz2 H5); intros hz6.
-       eapply eval_Binary_Operation4. 
-       * apply hz6.
-       * apply IHh1_2.
-       * specialize (subset_expr _ _ _ _ H13 hz2 H5); intros hz7.
-         assert (hz8: get_ast_num_expr e1  < max1 + 1).
-         specialize (ast_num_bound_expr _ _ H5); intros ha1; intuition.
-         specialize (subset_trans _ _ _ _ _ hz7 hz5 hz8); intros hz9.
-         unfold subset in hz9.
-         specialize (hz9 ast_num (Some flag)). 
-         unfold fetch_ck in hz9. rewrite <- (beq_nat_refl ast_num) in hz9.
-         fold fetch_ck in hz9; intuition.
-         apply H2.
-       * assumption.
-       * assumption.
-    + specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
+    + assert(ha: fetch_cks ast_num cks1 = nil).
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks0) (max := max); auto.
+        auto.
+      specialize (lt_trans_expr _ _ _ _ _ H13 hz1 H5 H12); intros hz2.
        specialize (IHh1_1 _ _ _ H13 hz1 H5).
        specialize (IHh1_2 _ _ _ H14 hz2 H6).
        specialize (subset_refl (max + 1) cks1); intros hz3.
        specialize (help1 _ _ _ _ _ _ H14 H6 hz2 H12 hz3); intros hz4.
        specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz4 H13 hz1 H5); intros hz5.
-       eapply eval_Binary_Operation5.
+       eapply eval_Binary_Operation4.
        * apply hz5.
        * apply IHh1_2.
-       * specialize (fetch_ck_none _ _ h3); intros hz6.
-         specialize (fetch_ck_none1 _ _ _ _ _ hz6 H13 H5 H10); intros hz7.
-         specialize (fetch_ck_none1 _ _ _ _ _ hz7 H14 H6 H11); auto.
+       * apply ha.
+       * constructor.
+       * assumption.
+    + assert(ha: fetch_cks ast_num cks1 = cks).
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks0) (max := max); auto.
+        auto.
+      specialize (ast_nums_lt_add _ _ _ cks H10 hz1); intros hz2.
+       specialize (lt_trans_expr _ _ _ _ _ H14 hz2 H5 H12); intros hz3.
+       specialize (IHh1_1 _ _ _ H14 hz2 H5).
+       specialize (IHh1_2 _ _ _ H15 hz3 H6).
+       specialize (subset_refl (max + 1) cks1); intros hz4.
+       specialize (help1 _ _ _ _ _ _ H15 H6 hz3 H12 hz4); intros hz5.
+       specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ IHh1_1 hz5 H14 hz2 H5); intros hz6.
+       eapply eval_Binary_Operation4. 
+       * apply hz6.
+       * apply IHh1_2.
+       * apply ha.
+       * specialize (do_complete_checks_correct' _ _ _ _ _ _ _ _ H8 H); auto.
        * assumption.
   - (* Eunop: exception *)
     specialize (ast_nums_lt_trans _ _ _ h3 H4); intros hz1.
@@ -1666,226 +1718,6 @@ Qed.
 (*   Prove that well-formed expression can evaluate to either normal value or some exception    *)
 (************************************************************************************************)
 
-(* some lemmas *)
-
-(**
-    if e1 is evaluated to value v1 and e2 is evaluated to value v2, 
-    and the binary expression (e1 op e2) is well-typed, then there 
-    should exists a value v that the binary expression can be 
-    evaluated to; v can be either a normal value or a run time error 
-    whenever the run time checks fail;
-*)
-Ltac instantiate_bin_op_result v1 v2 :=
-    match goal with
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zeq_bool v1 v2)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Not_Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zneq_bool v1 v2)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Greater_Than ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zgt_bool v1 v2)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Greater_Than_Or_Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zge_bool v1 v2)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Less_Than ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zlt_bool v1 v2)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Less_Than_Or_Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zle_bool v1 v2)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Plus ?e1 ?e2) v =>
-        exists (Val_Normal (Int ((v1 + v2)%Z)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Minus ?e1 ?e2) v =>
-        exists (Val_Normal (Int ((v1 - v2)%Z)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Multiply ?e1 ?e2) v =>
-        exists (Val_Normal (Int ((v1 * v2)%Z)))
-    | |- exists v, eval_expr ?s (E_Binary_Operation _ Divide ?e1 ?e2) v =>
-        idtac (* exists (Val_Normal (Int ((v11 / v21)%Z))) *)
-    end.
-
-Lemma binop_rule: forall tb s e1 v1 e2 v2 ast_num op t,
-    type_check_stack tb s -> 
-    eval_expr s e1 (Val_Normal v1) ->
-    eval_expr s e2 (Val_Normal v2) -> 
-    well_typed_expr tb (E_Binary_Operation ast_num op e1 e2) t -> 
-    (exists v, eval_expr s (E_Binary_Operation ast_num op e1 e2) v).
-Proof.
-    intros.
-    inversion H2; subst.
-    specialize (eval_type_reserve _ _ _ _ _ H H0 H9); intros h1.
-    specialize (eval_type_reserve _ _ _ _ _ H H1 H10); intros h2.    
-    destruct v1 as [v11 | v12]; destruct v2 as [v21 | v22]; 
-    inversion h1; subst; try rm_contradict. 
-  - (* Ebinop Tint Tint *)
-    destruct op; try simpl_binop_hyp;
-    instantiate_bin_op_result v11 v21;
-    try match goal with 
-    | [ |- eval_expr ?s (E_Binary_Operation ?ast_num Divide ?e1 ?e2) ?v ] => idtac
-    | [ |- eval_expr ?s (E_Binary_Operation ?ast_num _ ?e1 ?e2) ?v ] => 
-      econstructor; 
-      [ apply H0 | apply H1 | 
-        constructor; intuition; inversion H3 | 
-        constructor; reflexivity ]
-    end.
-    (* division *)
-    destruct v21. 
-    + exists Val_Run_Time_Error.
-       eapply eval_E_Binary_Operation3.
-       apply H0. apply H1.
-       constructor.  
-       constructor; reflexivity.
-    + exists (Val_Normal (Int ((v11 / (Z.pos p))%Z))).
-       econstructor.
-       apply H0. apply H1.
-       constructor. constructor. intuition. inversion H3.
-       constructor. reflexivity.
-    + exists (Val_Normal (Int ((v11 / (Z.neg p))%Z))).
-       econstructor.
-       apply H0. apply H1. 
-       constructor. constructor. intuition. inversion H3. 
-       constructor. reflexivity.
-  - (* Ebinop Tbool Tbool *)
-    destruct op;
-    simpl; 
-    try simpl_binop_hyp;
-    [ exists (Val_Normal (Bool (v12 && v22))) |
-      exists (Val_Normal (Bool (v12 || v22)))
-    ].
-    econstructor. apply H0. apply H1.
-    constructor. intuition. inversion H3.
-    constructor. auto. 
-    econstructor. apply H0. apply H1.
-    constructor. intuition. inversion H3.
-    constructor. auto. 
-Qed.
-
-(** 
-    this lemma is used only to prove binop_rule2, which means that
-    run time checks on binary expression (v1 op v2) should always 
-    return a value b, which can be either true or false;
-*)
-Lemma check_result_exists: forall op v1 v2,
-    exists b, do_check op (Int v1) (Int v2) b.
-Proof.
-    intros.
-    destruct op;
-    match goal with
-    | [ |- exists r : bool, do_check Divide (Int ?v1) (Int ?v2) r ] => idtac
-    | [ |- exists r : bool, do_check ?op (Int ?v1) (Int ?v2) r ] =>
-            exists true; constructor; intuition; inversion H
-    end.
-    destruct v2.
-    + exists false.
-       constructor. constructor. auto.
-    + exists true.
-       constructor. constructor. intuition. inversion H.
-    + exists true.
-       constructor. constructor. intuition. inversion H.
-Qed.
-
-(**
-    for well-typed binary expression (e1 op e2), e1 is evaluated to 
-    value v1 and e2 is evaluated to v2, when it's evaluated under the 
-    semantics with explicit checks (eval_expr_with_checks), it either 
-    evaluates to a normal value or it captures a run time error. 
-    Because, if there is no run time check flag for this binary 
-    expression, then it just returns the binary operation result. 
-    Otherwise, it performs the run time checks and either returns a 
-    value or capture the run time error;
-*)
-Ltac instantiate_bin_op_result2 v1 v2 :=
-    match goal with
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zeq_bool v1 v2)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Not_Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zneq_bool v1 v2)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Greater_Than ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zgt_bool v1 v2)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Greater_Than_Or_Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zge_bool v1 v2)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Less_Than ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zlt_bool v1 v2)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Less_Than_Or_Equal ?e1 ?e2) v =>
-        exists (Val_Normal (Bool (Zle_bool v1 v2)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Plus ?e1 ?e2) v =>
-        exists (Val_Normal (Int ((v1 + v2)%Z)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Minus ?e1 ?e2) v =>
-        exists (Val_Normal (Int ((v1 - v2)%Z)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Multiply ?e1 ?e2) v =>
-        exists (Val_Normal (Int ((v1 * v2)%Z)))
-    | |- exists v, eval_expr_with_checks ?cks ?s (E_Binary_Operation _ Divide ?e1 ?e2) v =>
-        idtac (* exists (Val_Normal (Int ((v11 / v21)%Z))) *)
-    end.
-
-Lemma binop_rule2: forall tb s cks e1 v1 e2 v2 ast_num op t,
-    type_check_stack tb s -> 
-    eval_expr_with_checks cks s e1 (Val_Normal v1) ->
-    eval_expr_with_checks cks s e2 (Val_Normal v2) ->
-    well_typed_expr tb (E_Binary_Operation ast_num op e1 e2) t ->
-    (exists v, eval_expr_with_checks cks s (E_Binary_Operation ast_num op e1 e2) v).
-Proof.
-    intros.
-    inversion H2; subst.
-    specialize (eval_type_reserve2 _ _ _ _ _ _ H H0 H9); intros h1.
-    specialize (eval_type_reserve2 _ _ _ _ _ _ H H1 H10); intros h2.
-    destruct v1 as [v11 | v12]; destruct v2 as [v21 | v22];
-    inversion h1; subst; try rm_contradict.
-  - (* Ebinop Tint Tint *)
-    destruct op; try simpl_binop_hyp;
-    instantiate_bin_op_result2 v11 v21;
-    try match goal with 
-    | [ |- eval_expr_with_checks _ _ (E_Binary_Operation ?ast_num Divide ?e1 ?e2) ?v ] => idtac
-    | [ |- eval_expr_with_checks _ _ (E_Binary_Operation ?ast_num _ ?e1 ?e2) ?v ] => 
-            remember (fetch_ck ast_num cks) as ck;
-            destruct ck;
-            [ eapply eval_Binary_Operation4;
-              [ apply H0 | apply H1 |  symmetry in Heqck; apply Heqck | 
-                constructor; intuition; inversion H3 | constructor; reflexivity 
-              ] | 
-              eapply eval_Binary_Operation5; 
-              [ apply H0 | apply H1 |
-                auto | constructor; reflexivity
-              ]
-             ]
-      end.
-    remember (fetch_ck ast_num cks) as ck;
-    destruct ck. 
-    + specialize (check_result_exists Divide v11 v21); intros hz1.
-       destruct hz1.
-       destruct x.
-       * exists (Val_Normal (Int ((v11 / v21)%Z))).
-         eapply eval_Binary_Operation4; auto.
-         apply H0. apply H1. 
-         symmetry in Heqck; apply Heqck.
-         assumption.
-         constructor; reflexivity.
-       * exists Val_Run_Time_Error.
-         eapply eval_Binary_Operation3.
-         apply H0. apply H1.
-         symmetry in Heqck; apply Heqck.
-         assumption.
-    + exists (Val_Normal (Int ((v11 / v21)%Z))).
-       eapply eval_Binary_Operation5; auto.
-       apply H0. apply H1.
-       constructor; reflexivity.
-  - (* Ebinop Tbool Tbool *)
-    destruct op; try simpl_binop_hyp;
-    [ exists (Val_Normal (Bool (v12 && v22))) |
-      exists (Val_Normal (Bool (v12 || v22)))
-    ];
-    try match goal with 
-    | [ |- eval_expr_with_checks _ _ (E_Binary_Operation ?ast_num Divide ?e1 ?e2) ?v ] => idtac
-    | [ |- eval_expr_with_checks _ _ (E_Binary_Operation ?ast_num _ ?e1 ?e2) ?v ] => 
-            remember (fetch_ck ast_num cks) as ck;
-            destruct ck;
-            [ eapply eval_Binary_Operation4;
-              [ apply H0 | apply H1 |  symmetry in Heqck; apply Heqck | 
-                constructor; intuition; inversion H3 | constructor; reflexivity 
-              ] | 
-              eapply eval_Binary_Operation5; 
-              [ apply H0 | apply H1 |
-                auto | constructor; reflexivity
-              ]
-             ]
-      end.
-Qed.
-
 (**
     expressions (or statements) accompanied with correct run time 
     checks, which are produced according to the checking rules, are 
@@ -1938,65 +1770,163 @@ Proof.
     exists (Val_Normal x0);
     constructor; assumption.
   - (* 4. Ebinop *)
+    simpl in h6;
     inversion h4; subst;
     inversion h5; subst;
-    simpl in h6;
-    inversion h7; subst;
-    specialize (ast_nums_lt_trans _ _ _ h6 H14); intros hz1.
-    { specialize (ast_nums_lt_add _ _ _ flag H14 hz1); intros hz2.
-      specialize (IHh3_1 h2 _ _ _ _ H5 H9 hz2 H3).
-      specialize (lt_trans_expr _ _ _ _ _ H9 hz2 H3 H16); intros hz3.
-      specialize (IHh3_2 h2 _ _ _ _ H6 H10 hz3 H4).
-      rm_exists.
-      specialize (eval_expr_with_checks_state _ _ _ _ H0); intros hz4;
-      specialize (eval_expr_with_checks_state _ _ _ _ H); intros hz5.
-      
-      specialize (subset_expr _ _ _ _ H10 hz3 H4); intros hz6.
-      assert (hz7: max1 + 1 <= get_ast_num_expr e2). intuition.
-      specialize (subset_close_le _ _ _ _ hz6 hz7); intros hz8.
-      specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ H0 hz8 H9 hz2 H3); intros hz9.
-      
-      inversion hz4; inversion hz5;
-      rm_exists; subst.
-      + specialize (binop_rule2 _ _ _ _ _ _ _ _ _ _ h1 hz9 H h4); intros hz10. (**************)
-         assumption.
-      + exists Val_Run_Time_Error.
-         eapply eval_Binary_Operation2.
-         apply hz9.
-         assumption.
-     + exists Val_Run_Time_Error.
-        eapply eval_Binary_Operation1.
-        apply hz9.
-     + exists Val_Run_Time_Error.
-        eapply eval_Binary_Operation1.
-        apply hz9.
-    }
-    { specialize (IHh3_1 h2 _ _ _ _ H5 H9 hz1 H3).
+    inversion h7; subst.
+    { assert (ha: fetch_cks ast_num cks1 = nil).
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks0) (max := max); auto.
+        auto.
+      specialize (ast_nums_lt_trans _ _ _ h6 H14); intros hz1.
+      specialize (IHh3_1 h2 _ _ _ _ H5 H9 hz1 H3).
       specialize (lt_trans_expr _ _ _ _ _ H9 hz1 H3 H16); intros hz2.
       specialize (IHh3_2 h2 _ _ _ _ H6 H10 hz2 H4).
       rm_exists.
+      assert (ha1: eval_expr_with_checks cks1 s e1 x0).
+        specialize (subset_expr _ _ _ _ H10 hz2 H4); intros hz3.
+        assert (hz4: max1 + 1 <= get_ast_num_expr e2). intuition.
+        specialize (subset_close_le _ _ _ _ hz3 hz4); intros hz5.
+        specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ H0 hz5 H9 hz1 H3); auto.
       specialize (eval_expr_with_checks_state _ _ _ _ H0); intros hz3;
       specialize (eval_expr_with_checks_state _ _ _ _ H); intros hz4.
-      
-      specialize (subset_expr _ _ _ _ H10 hz2 H4); intros hz5.
-      assert (hz6: max1 + 1 <= get_ast_num_expr e2). intuition.
-      specialize (subset_close_le _ _ _ _ hz5 hz6); intros hz7.
-      specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ H0 hz7 H9 hz1 H3); intros hz8.
-      
-      inversion hz3; inversion hz4;
+      inversion hz3; clear hz3; inversion hz4; clear hz4;
       rm_exists; subst.
-      + specialize (binop_rule2 _ _ _ _ _ _ _ _ _ _ h1 hz8 H h4); intros hz9. (**************)
-         assumption.
+      + specialize (eval_type_reserve2 _ _ _ _ _ _ h1 ha1 H5); intros hz3.
+        specialize (eval_type_reserve2 _ _ _ _ _ _ h1 H H6); intros hz4.
+        destruct x1, x2;
+        inversion hz3; subst; inversion hz4; subst.
+        - exists (f_eval_bin_expr op (Int n0) (Int n)).
+          destruct op; inversion H7; simpl;
+          match goal with
+          | _ => 
+              eapply eval_Binary_Operation4;
+              [apply ha1 | apply H | apply ha | constructor | constructor; auto]
+          end.
+        - exists (f_eval_bin_expr op (Bool b0) (Bool b)).
+          destruct op; inversion H7; simpl;
+          match goal with
+          | _ => 
+              eapply eval_Binary_Operation4;
+              [apply ha1 | apply H | apply ha | constructor | constructor; auto]
+          end.
       + exists Val_Run_Time_Error.
-         eapply eval_Binary_Operation2.
-         apply hz8.
-         assumption.
-     + exists Val_Run_Time_Error.
+        eapply eval_Binary_Operation2.
+        apply ha1.
+        assumption.
+      + exists Val_Run_Time_Error.
         eapply eval_Binary_Operation1.
-        apply hz8.
-     + exists Val_Run_Time_Error.
+        apply ha1.
+      + exists Val_Run_Time_Error.
         eapply eval_Binary_Operation1.
-        apply hz8.
+        apply ha1.
+    }
+    { specialize (ast_nums_lt_trans _ _ _ h6 H15); intros hz1.
+      specialize (ast_nums_lt_add _ _ _ cks H15 hz1); intros hz2.
+      specialize (IHh3_1 h2 _ _ _ _ H5 H10 hz2 H3).
+      specialize (lt_trans_expr _ _ _ _ _ H10 hz2 H3 H17); intros hz3.
+      specialize (IHh3_2 h2 _ _ _ _ H6 H11 hz3 H8).
+      rm_exists.
+      assert (ha1: eval_expr_with_checks cks1 s e1 x0).
+        specialize (subset_expr _ _ _ _ H11 hz3 H8); intros hz4.
+        assert (hz5: max1 + 1 <= get_ast_num_expr e2); intuition.
+        specialize (subset_close_le _ _ _ _ hz4 hz5); intros hz6.
+        specialize (eval_expr_with_checks_fixed _ _ _ _ _ _ _ H0 hz6 H10 hz2 H3); auto.
+      specialize (eval_expr_with_checks_state _ _ _ _ H0); intros hz4;
+      specialize (eval_expr_with_checks_state _ _ _ _ H); intros hz5.
+      inversion hz4; clear hz4; inversion hz5; clear hz5;
+      rm_exists; subst.
+      assert (ha: fetch_cks ast_num cks1 = cks).
+        replace ast_num with (get_ast_num_expr (E_Binary_Operation ast_num op e1 e2)).
+        apply fetch_cks_inv with (cks0 := cks0) (max := max); auto.
+        auto.
+      + specialize (eval_type_reserve2 _ _ _ _ _ _ h1 ha1 H5); intros hz4.
+        specialize (eval_type_reserve2 _ _ _ _ _ _ h1 H H6); intros hz5.
+        destruct x1, x2;
+        inversion hz4; subst; inversion hz5; subst.
+        - destruct op; inversion H4; subst;
+          try match goal with
+          | h1: fetch_cks ?ast_num ?cks <> nil, h2: nil = fetch_cks ?ast_num ?cks |- _ =>
+              rewrite h2 in h1; rm_false_hyp
+          end.
+          (* 1. Plus *)
+          { remember ((Zge_bool (n0 + n) min_signed) && (Zle_bool (n0 + n) max_signed)) as x.
+            symmetry in Heqx.
+            destruct x.
+            * exists (Val_Normal (Int (n0 + n))).
+              eapply eval_Binary_Operation4.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto.
+              constructor; auto.
+            * exists Val_Run_Time_Error.
+              eapply eval_Binary_Operation3.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto.
+          }
+          (* 2. Minus *)
+          { remember ((Zge_bool (n0 - n) min_signed) && (Zle_bool (n0 - n) max_signed)) as x.
+            symmetry in Heqx.
+            destruct x.
+            * exists (Val_Normal (Int (n0 - n))).
+              eapply eval_Binary_Operation4.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto.
+              constructor; auto.
+            * exists Val_Run_Time_Error.
+              eapply eval_Binary_Operation3.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto.
+          }
+          (* 3. Multiply *)
+          { remember ((Zge_bool (n0 * n) min_signed) && (Zle_bool (n0 * n) max_signed)) as x.
+            symmetry in Heqx.
+            destruct x.
+            * exists (Val_Normal (Int (n0 * n))).
+              eapply eval_Binary_Operation4.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto.
+              constructor; auto.
+            * exists Val_Run_Time_Error.
+              eapply eval_Binary_Operation3.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto.
+          }
+          (* 4. Divide *)
+          { remember ((negb (Zeq_bool n 0)) && ((Zge_bool (n0 / n) min_signed) && (Zle_bool (n0 / n) max_signed))) as x.
+            symmetry in Heqx.
+            destruct x.
+            * exists (Val_Normal (Int (n0 / n))).
+              eapply eval_Binary_Operation4.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              repeat constructor; auto;
+              destruct (negb (Zeq_bool n 0)); inversion Heqx; auto.
+              constructor; auto.
+            * exists Val_Run_Time_Error.
+              eapply eval_Binary_Operation3.
+              apply ha1. apply H. symmetry in H14; apply H14.
+              remember (negb (Zeq_bool n 0)) as y.
+              symmetry in Heqy.
+              destruct y; simpl in Heqx.
+              apply Do_Checks_True;
+              repeat constructor; auto.
+              repeat constructor; auto.
+          }
+        - destruct op; inversion H7; simpl;
+          inversion H4; subst;
+          match goal with
+          | h1: fetch_cks ?ast_num ?cks <> nil, h2: nil = fetch_cks ?ast_num ?cks |- _ =>
+              rewrite h2 in h1; rm_false_hyp
+          end.
+      + exists Val_Run_Time_Error.
+        eapply eval_Binary_Operation2.
+        apply ha1.
+        assumption.
+      + exists Val_Run_Time_Error.
+        eapply eval_Binary_Operation1.
+        apply ha1.
+      + exists Val_Run_Time_Error.
+        eapply eval_Binary_Operation1.
+        apply ha1.
     }
   - (* 5. Eunop *)
     inversion h4; subst.

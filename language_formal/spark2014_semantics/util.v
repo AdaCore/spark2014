@@ -34,6 +34,16 @@ Ltac specialize_hypo :=
     | [h: ?A, h1: ?A -> _ -> _ |- _] => specialize (h1 h)
     end.
 
+(* prove some obviously true term, for example |- And <> Or *)
+Ltac rm_always_true :=
+    match goal with
+    | |- ?A <> ?B => unfold not; let h := fresh "h" in intros h; inversion h
+    end.
+
+Ltac rm_false_hyp :=
+    match goal with
+    | h: ?A <> ?A |- _ => unfold not in h; intuition
+    end.
 
 (* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
 

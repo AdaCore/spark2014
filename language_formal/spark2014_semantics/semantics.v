@@ -1,8 +1,9 @@
 Require Export values.
 Require Export environment.
-Require Import util.
+Require Export util.
+Require Export checks.
 
-(** * Relational Semantics *)
+(** * Relational Semantics (big-step) *)
 (** interpret the literal expressions *)
 Definition eval_literal (l: literal): value :=
     match l with
@@ -17,7 +18,7 @@ Inductive eval_bin_expr: binary_operator -> value -> value -> value -> Prop :=
         eval_bin_expr Equal (Int v1) (Int v2) (Bool b)
     | Bin_Ne: forall v1 v2 b,
         Zneq_bool v1 v2 = b ->
-        eval_bin_expr Not_Equal (Int v1) (Int v2) (Bool b)
+         eval_bin_expr Not_Equal (Int v1) (Int v2) (Bool b)
     | Bin_Gt: forall v1 v2 b,
         Zgt_bool v1 v2 = b ->
         eval_bin_expr Greater_Than (Int v1) (Int v2) (Bool b)
@@ -77,75 +78,18 @@ Proof.
     auto.
 Qed.
 
-(* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
-    
-(** ** Run-Time Checking Rules *)
-(** *** check rules marking what and where to check *)
-(** 
-      - Do_Division_Check
-       
-       This flag is set on a division operator (/ mod rem) to indicate
-       that a zero divide check is required. 
-
-     - Do_Overflow_Check
-
-       This flag is set on an operator where an overflow check is required on
-       the operation.
-*)
-
-(** *** run time checks *)
-(** which are needed to be performed before excecuting the program *)
-Inductive run_time_checks: Type := 
-    | Do_Division_Check: run_time_checks
-    | Do_Overflow_Check: run_time_checks.
-
-(** add check flags for AST nodes according to the checking rules; 
-    Note: now we only consider the division by zero check, later we will 
-    extend it by adding overflow checks;
-*)
-Inductive check_flag: expression -> option run_time_checks -> Prop :=
-    | CF_Literal_Int: forall ast_num n,
-        check_flag (E_Literal ast_num (Integer_Literal n)) None
-    | CF_Literal_Bool: forall ast_num b,
-        check_flag (E_Literal ast_num (Boolean_Literal b)) None
-    | CF_Identifier: forall ast_num x,  
-        check_flag (E_Identifier ast_num x) None
-    | CF_Binary_Operation_Div: forall ast_num e1 e2,
-        check_flag (E_Binary_Operation ast_num Divide e1 e2) (Some Do_Division_Check)
-    | CF_Binary_Operation_Others: forall ast_num op e1 e2,
-        op <> Divide ->
-        check_flag (E_Binary_Operation ast_num op e1 e2) None
-    | CF_Unary_Operation: forall ast_num op e,
-        check_flag (E_Unary_Operation ast_num op e) None.
-
-(** *** semantics for run-time checks *)
-
-Inductive is_not_zero: Z -> bool -> Prop :=
-    | Not_Zero_T: forall v, v <> 0%Z -> is_not_zero v true
-    | Not_Zero_F: forall v, v = 0%Z -> is_not_zero v false.
-
-Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
-    | Do_Division_Checking: forall v1 v2 b,
-        is_not_zero v2 b ->
-        do_check Divide v1 (Int v2) b
-    | Do_Nothing: forall op v1 v2,
-        op <> Divide ->
-        do_check op v1 v2 true.
-(*
-    | DC_Overflow_Checking: 
-    | ... 
-*)
 
 (** ** Expression semantics *)
 (**
-    for binary expression and unary expression, if any of its child 
-    expression returns exception, then the reuslt of the whole 
-    expression is exception; for binary expression (e1 op e2), if 
-    both e1 and e2 can be evaluated to some normal value, then we 
-    do the run time checks on the operator 'op', whenever the check 
-    fails, an exception is returned, otherwise, binary operation 
-    result is returned;
- *)
+    for binary expression and unary expression, if a run time error 
+    is detected in any of its child expressions, then return a run
+    time error; for binary expression (e1 op e2), if both e1 and e2 
+    are evaluated to some normal value, then run time checks are
+    performed according to the checking rules specified for the 
+    operator 'op', whenever the check fails (returning false), a run 
+    time error is detected and the program is terminated, otherwise, 
+    normal binary operation result is returned;
+*)
 
 Inductive eval_expr: stack -> expression -> return_val -> Prop :=
     | eval_E_Literal: forall l v s ast_num,
@@ -183,9 +127,10 @@ Inductive eval_expr: stack -> expression -> return_val -> Prop :=
 
 (** ** Statement semantics *)
 (** 
-   for any statement, whenever its sub-statement throws an exception 
-   or any expression in assignment is evaluated to an exception, 
-   then the whole statement returns an exception; 
+   in a statement evaluation, whenever a run time error is detected 
+   in the evaluation of its sub-statements or sub-component, the 
+   evaluation is terminated and return a run time error; otherwise, 
+   evaluate the statement into a normal state; 
 *)
 
 Inductive eval_stmt: stack -> statement -> state -> Prop := 
@@ -229,18 +174,21 @@ Inductive eval_stmt: stack -> statement -> state -> Prop :=
         eval_expr s b (Val_Normal (Bool false)) ->
         eval_stmt s (S_While_Loop ast_num b c) (S_Normal s).
 
-(* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
+
 
 (** * Functional Semantics *)
 
-(** for each version of relational semantic, we also provide its corresponding
-    version of functional semantics, and prove that they are semantics equivalent;
+(** for relational semantics of expression and statement, we also 
+    provide its corresponding version of functional semantics, and 
+    prove that they are semantics equivalent;
     relational semantics encode the formal semantics rules, while
-    functional semantics provide a way to familiarize oneself with the SPARK 2014
-    semantics, and validate it experimentally by testing, and it also helps to fix 
-    the program if the program exhibits undefined behavior;
+    functional semantics is useful to familiarize oneself with the 
+    SPARK 2014 semantics, and validate it experimentally by testing, 
+    and it also helps to fix the program if the program exhibits 
+    undefined behavior;
     
-    - f_do_check  <-> do_check;
+    Bisimulation between relational and functional semantics are
+    proved for the following pairs of evaluations: 
     
     - f_eval_binexpr <-> eval_binexpr;
     
@@ -250,16 +198,6 @@ Inductive eval_stmt: stack -> statement -> state -> Prop :=
 
     - f_eval_stmt <-> eval_stmt;
 *)
-
-Function f_do_check (op: binary_operator) (v1: value) (v2: value): option bool :=
-    match op with
-    | Divide =>
-        match v2 with
-        | Int v2' => if Zeq_bool v2' 0 then Some false else Some true
-        | _ => None
-        end
-    | _ => Some true
-    end.
 
 (** interpret the binary operation for each binary operator *)
 Definition f_eval_bin_expr (op: binary_operator) (v1: value) (v2: value): return_val :=
@@ -279,7 +217,6 @@ Definition f_eval_bin_expr (op: binary_operator) (v1: value) (v2: value): return
     end.
 
 (** interpret the unary operation *)
-
 Definition f_eval_unary_expr (op: unary_operator) (v: value): return_val :=
     match op with
     | Not => Val.not v
@@ -331,10 +268,10 @@ Function f_eval_expr (s: stack) (e: expression): return_val :=
 (** ** Statement semantics *)
 (** 
    in the functional semantics for statement, 'k' denotes the execution 
-   steps, whenever it reaches 0, an untermination state is returned, 
-   in other cases, it can return a normal state, a run time check error 
-   or an abnormal state; run time checks (for example, division by zero 
-   check) are encoded inside the functional semantics;
+   steps, whenever it reaches 0, an untermination state is returned;
+   otherwise, it returns either a normal state, or a run time error 
+   or an abnormal state; run time checks (for example, division by 
+   zero check) are encoded inside the functional semantics;
 *)
 
 Function f_eval_stmt k (s: stack) (c: statement) {struct k}: state := 
@@ -382,16 +319,12 @@ Function f_eval_stmt k (s: stack) (c: statement) {struct k}: state :=
     end
   end.
 
-(* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
+
 
 (** basic lemmas *)
 
-(* - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - *)
-
-(** * Bisimulation Between Relational And Functional Semantics *)
-
-(** for any expression e, if it is evaluated to v1 and v2, then v1 
-    and v2 should be the same; 
+(** for any expression e, if it can be evaluated to v1 and v2 in the
+    same state s, then v1 and v2 should be the same; 
 *)
 Lemma eval_expr_unique: forall s e v1 v2,
     eval_expr s e (Val_Normal v1) ->
@@ -418,8 +351,9 @@ Qed.
 
 (** 
     for any expression e evaluated under the state s, if it can be 
-    evaluated to a value v under the relational semantics, then the 
-    result value v should be either a normal value or a run time error;
+    evaluated to a value v with respect to the relational semantics 
+    eval_expr, then the result value v should be either a normal 
+    value or a run time error;
 *)
 Lemma eval_expr_state : forall s e v,
         eval_expr s e v -> (* v should be either a normal value or a run time error *)
@@ -434,10 +368,11 @@ Proof.
 Qed.
 
 (** 
-    for any statement c run under the state s, if it terminates in a 
-    state s' under the relational semantics, then the result state s' 
-    should be either a normal state or a run time error. In the 
-    relational semantics, all statement that can go abnormal are excluded;
+    for any statement c starting from the initial state s, if it 
+    terminates in a state s' with respect to the relational semantics 
+    eval_stmt, then the result state s' should be either a normal 
+    state or a run time error. In relational semantics eval_stmt, 
+    all statements that can go abnormal are excluded;
 *)
 Lemma eval_stmt_state : forall s c s',
         eval_stmt s c s' -> (* s' is either a normal state or a run time error *)
@@ -451,75 +386,12 @@ Proof.
     end; auto.
 Qed.
 
-(** (Zeq_bool v 0) checks whether v is zero, and (is_not_zero v b) 
-    checks whether v is not zero and the result is returned by b;
+(** * Bisimulation Between Relational And Functional Semantics *)
+
+(** bisimulation proof between f_eval_binexpr and eval_binexpr:
+    - f_eval_bin_expr_correct
+    - f_eval_bin_expr_complete
 *)
-Lemma Zeq_zero_true: forall v,
-    Zeq_bool v 0 = true <-> 
-    is_not_zero v false.
-Proof.
-    intros v.
-    split; intros h.
-  - apply Zeq_bool_eq in h.
-    constructor.
-    assumption.
-  - inversion h; subst.
-    auto.
-Qed.
-
-Lemma Zeq_zero_false: forall v,
-    Zeq_bool v 0 = false <-> 
-    is_not_zero v true.
-Proof.
-    intros v.
-    split; intros h.
-  - apply Zeq_bool_neq in h.
-    constructor.
-    assumption.
-  - inversion h; subst.
-    destruct v; intuition.
-Qed.
-
-(** bisimulation proof between f_do_check and do_check; *)
-Lemma f_do_check_correct: forall op v1 v2 b,
-    f_do_check op v1 v2 = Some b ->
-    do_check op v1 v2 b.
-Proof.
-    intros op v1 v2;
-    functional induction (f_do_check op v1 v2);
-    intros b h1;
-    inversion h1; subst.
-  - constructor.
-    apply Zeq_zero_true.
-    assumption.
-  - constructor.
-    apply Zeq_zero_false.
-    assumption.
-  - destruct op; try inversion y;
-    constructor; unfold not; intros hz1;
-    inversion hz1.
-Qed.
-
-Lemma f_do_check_complete: forall op v1 v2 b,
-    do_check op v1 v2 b ->
-    f_do_check op v1 v2 = Some b.
-Proof.
-    intros op v1 v2 b h1.
-    induction h1.
-  - simpl.
-    destruct b.
-    specialize (Zeq_zero_false v2); intros hz1.
-    destruct hz1 as [hz1 hz2].
-    specialize (hz2 H).
-    rewrite hz2; auto.
-    specialize (Zeq_zero_true v2); intros hz1.
-    destruct hz1 as [hz1 hz2].
-    specialize (hz2 H).
-    rewrite hz2; auto.
-  - destruct op; intuition.
-Qed.
-
-(** bisimulation proof between f_eval_binexpr and eval_binexpr; *)
 Lemma f_eval_bin_expr_correct: forall op v1 v2 v,
     f_eval_bin_expr op v1 v2 = Val_Normal v ->
     eval_bin_expr op v1 v2 v.
@@ -549,7 +421,10 @@ Proof.
     simpl; auto.
 Qed.
 
-(** bisimulation proof between f_eval_unaryexpr and eval_unaryexpr; *)
+(** bisimulation proof between f_eval_unaryexpr and eval_unaryexpr: 
+    - f_eval_unary_expr_correct
+    - f_eval_unary_expr_complete
+*)
 Lemma f_eval_unary_expr_correct: forall op v v',
     f_eval_unary_expr op v = Val_Normal v' ->
     eval_unary_expr op v v'.
@@ -580,9 +455,9 @@ Proof.
     functional induction (f_eval_expr s e);
     intros v0 h1;
     try inversion h1; subst.
-  - constructor.
+  - constructor;
     reflexivity.
-  - constructor.
+  - constructor;
     assumption.
   - specialize (IHr _ e3).
     specialize (IHr0 _ e4).
@@ -632,10 +507,11 @@ Qed.
 
 (** *** f_eval_expr_correct *)
 (** 
-    for any expression e evaluated with 'f_eval_expr' under the 
-    state s,  whenever it returns a normal value v or an exception, 
-    the relationship between evaluation result, s and e should also 
-    be satisfied with regard to the relational semantics 'eval_expr';
+    for an expression e evaluated under the state s with respect to
+    the functional semantics f_eval_expr, whenever it returns a 
+    normal value v or terminates in a run time error, 
+    the relation between s, e and evaluation result should also be 
+    satisfied with respect to the relational semantics 'eval_expr';
 *)
 Theorem f_eval_expr_correct : forall s e v,
                         (f_eval_expr s e = Val_Normal v ->
@@ -651,8 +527,8 @@ Qed.
 
 (** *** f_eval_expr_complete *)
 (** 
-   for any expression e, if it can be evaluated to value v under 
-   state s with regard to the relational semantics 'eval_expr', 
+   for any expression e, if it can be evaluated to a value v under
+   state s with respect to the relational semantics 'eval_expr', 
    then when we evalute e under the same state s in functional
    semantics 'f_eval_expr', it should return the same result v;
 *)
@@ -673,10 +549,22 @@ Proof.
   - destruct v1; destruct v2;
     destruct op;
     inversion H0; subst; simpl; auto.
-    inversion H; subst. 
-    apply Zeq_zero_false in H2. 
-    rewrite H2; auto.
-    unfold not in H1; intuition.
+    + (* overflow check for Plus *)
+      inversion H; subst.
+      rewrite H3; auto.
+      unfold not in H2; intuition.
+    + (* overflow check for Minus *)
+      inversion H; subst.
+      rewrite H3; auto.
+      unfold not in H2; intuition.
+    + (* overflow check for Multiply *)
+      inversion H; subst.
+      rewrite H3; auto.
+      unfold not in H2; intuition.
+    + (* both division by zero check and overflow check *)
+      inversion H; subst.
+      rewrite H3; auto.
+      rm_false_hyp.
   - destruct op.
     inversion H; subst.
     auto.
@@ -784,7 +672,6 @@ Ltac kgreater :=
              rewrite (@f_eval_stmt_fixpoint_E _ _ _ h);auto with arith
          end.
 
-(** ** Bisimulation between f_eval_stmt and eval_stmt for statement semantics *)
 
 Ltac rm_f_eval_expr :=
     match goal with 
@@ -797,6 +684,9 @@ Ltac rm_f_eval_expr :=
     | [ h: f_eval_stmt ?k ?s ?c = S_Normal ?s1 |- _ ] => specialize (f_eval_stmt_correct1 _ _ _ _ h); intros hz1
 *)
     end; auto.
+
+
+(** ** Bisimulation between f_eval_stmt and eval_stmt for statement semantics *)
 
 (** a help lemma to prove the theorem: 'f_eval_stmt_complete' *)
 Lemma f_eval_stmt_correct1 : forall k s p s',
@@ -895,11 +785,11 @@ Ltac rm_f_eval :=
 
 (** *** f_eval_stmt_correct *)
 (** 
-   for any statement c, if it returns a normal state or a run time 
-   error within k steps starting from initial state s with regard 
-   to the functional semantics 'f_eval_stmt', then the relationship 
-   between s, e and the resulting state should also be satisfied with 
-   regard to the relational semantics 'eval_stmt';
+   for any statement c starting from initial state s, if it returns 
+   a normal state s' or terminates in a run time error within k steps
+   with respect to the functional semantics 'f_eval_stmt', then the 
+   relation between s, c and the resulting state should also be 
+   satisfied with respect to the relational semantics 'eval_stmt';
 *)
 Theorem f_eval_stmt_correct : forall k s c s',
         (f_eval_stmt k s c = S_Normal s' ->
@@ -918,7 +808,7 @@ Qed.
    whenever it's executed starting from initial state s and return 
    a new state s' with regard to the relational semantics 'eval_stmt', 
    then there should exist a constant k that statement c starting from 
-   s will terminate in state s' within k steps with regard to the 
+   s will terminate in state s' within k steps with respect to the 
    functional semantics 'f_eval_stmt';
 *)
 
@@ -1071,7 +961,7 @@ Proof.
 Qed.
 
 Lemma eval_decls_state : forall tl s d s',
-        eval_decls s (d :: tl) s' -> (* s' is either a normal state or an exception *)
+        eval_decls s (d :: tl) s' -> (* s' is either a normal state or a run time error *)
             (exists v, s' = S_Normal v) \/ s' = S_Run_Time_Error.
 Proof.
     induction tl;
@@ -1090,7 +980,11 @@ Proof.
 Qed.
 
 (** f_eval_decl completeness and correctness proofs *)
-(** bisimulation proof between f_eval_decl and eval_decl *)
+
+(** bisimulation proof between f_eval_decl and eval_decl: 
+    - f_eval_decl_correct
+    - f_eval_decl_complete
+*)
 
 Lemma f_eval_decl_correct: forall d s s',
     (f_eval_decl s d = (S_Normal s') -> eval_decl s d (S_Normal s')) /\
@@ -1131,7 +1025,11 @@ Proof.
 Qed.
 
 (** f_eval_decls completeness and correctness proofs *)
-(** bisimulation proof between f_eval_decls and eval_decls *)
+
+(** bisimulation proof between f_eval_decls and eval_decls: 
+    - f_eval_decls_correct
+    - f_eval_decls_complete
+*)
 
 Lemma f_eval_decls_correct: forall d s s',
     (f_eval_decls s d = (S_Normal s') -> 

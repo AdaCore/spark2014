@@ -2,6 +2,14 @@ Require Export language.
 
 (** * Value Types *)
 
+(** uses CompCert’s 32-bit integer type *)
+Definition wordsize: nat := 32.
+Definition modulus : Z := two_power_nat wordsize.
+Definition half_modulus : Z := Z.div modulus 2 (** modulus / 2 *).
+Definition max_unsigned : Z := Z.sub modulus 1 (** modulus - 1 *).
+Definition max_signed : Z := Z.sub half_modulus 1 (** half_modulus - 1 *).
+Definition min_signed : Z := Z.opp half_modulus (** -half_modulus *).
+
 (** Type of basic values *)
 Inductive value : Type :=
     | Int (n : Z)
@@ -22,7 +30,6 @@ Inductive val: Type :=
       if it's necessary, we would refine the abnormal value into 
       these more precise categories (1.1.5);
 *)
-
 Inductive return_val: Type :=
     | Val_Normal: value -> return_val
     | Val_Run_Time_Error: return_val
@@ -43,6 +50,7 @@ Notation "n >= m" := (Z.geb m n) (at level 70, no associativity).
 Notation "n < m" := (Z.ltb n m) (at level 70, no associativity).
 Notation "n <= m" := (Z.leb n m) (at level 70, no associativity).
 *)
+
 
 (** ** Arithmetic operations *)
 Definition add (v1 v2: value): return_val := 

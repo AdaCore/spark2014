@@ -1800,16 +1800,16 @@ Qed.
 (** ** Generate the run-time-check flags *)
 
 (** the run-time checks are stored in a list indexed with ast number *)
-Definition check_points :=  list (astnum * run_time_checks).
+Definition check_points :=  list (astnum * run_time_check_set).
 
-Function fetch_ck (id : astnum) (m : check_points): option run_time_checks := 
+Function fetch_cks (id : astnum) (m : check_points): run_time_check_set := 
     match m with 
-    | (id0, ck0) :: s0 =>
-      if beq_nat id id0 then
-        Some ck0
+    | (id', cks') :: m' =>
+      if beq_nat id id' then
+        cks'
       else 
-        fetch_ck id s0 
-    | nil => None
+        fetch_cks id m' 
+    | nil => nil
     end.
 
 (** this's used to constrain that all ast numbers used in check_points
@@ -1876,14 +1876,15 @@ Inductive check_generator_expr: check_points -> expression -> check_points -> Pr
         check_generator_expr ls (E_Literal ast_num n) ls
     | CG_Identifier: forall ast_num x ls,
         check_generator_expr ls (E_Identifier ast_num x) ls
-    | CG_Binary_Operation: forall ls e1 ls1 e2 ls2 ast_num op flag,
-        check_flag (E_Binary_Operation ast_num op e1 e2) (Some flag) -> 
-        check_generator_expr ((ast_num, flag) :: ls) e1 ls1 ->
+    | CG_Binary_Operation_None: forall ls e1 ls1 e2 ls2 ast_num op,
+        check_flags (E_Binary_Operation ast_num op e1 e2) nil -> 
+        check_generator_expr ls e1 ls1 ->
         check_generator_expr ls1 e2 ls2 ->
         check_generator_expr ls (E_Binary_Operation ast_num op e1 e2) ls2
-    | CG_Binary_Operation_None: forall ls e1 ls1 e2 ls2 ast_num op,
-        check_flag (E_Binary_Operation ast_num op e1 e2) None -> 
-        check_generator_expr ls e1 ls1 ->
+    | CG_Binary_Operation: forall ls e1 ls1 e2 ls2 ast_num op cks,
+        check_flags (E_Binary_Operation ast_num op e1 e2) cks ->
+        cks <> nil ->
+        check_generator_expr ((ast_num, cks) :: ls) e1 ls1 ->
         check_generator_expr ls1 e2 ls2 ->
         check_generator_expr ls (E_Binary_Operation ast_num op e1 e2) ls2
     | CG_Unary_Operation: forall ls e ls1 ast_num op,
@@ -1949,29 +1950,17 @@ Inductive check_generator_subprogram: check_points -> subprogram -> check_points
 
 (** Function for run-time checks generation according to checking rules *)
 
-Function f_check_flag (e: expression): option run_time_checks :=
-    match e with
-    | E_Literal ast_num n => None
-    | E_Identifier ast_num x => None
-    | E_Binary_Operation ast_num op e1 e2 => 
-        match op with
-        | Divide => Some Do_Division_Check
-        | _ => None
-        end
-    | E_Unary_Operation ast_num op e => None
-    end.
-
 Function f_check_generator_expr (ckp: check_points) (e: expression): check_points :=
     match e with
     | E_Literal ast_num n => ckp
     | E_Identifier ast_num x => ckp
     | E_Binary_Operation ast_num op e1 e2 => 
-        match f_check_flag e with
-        | Some flag => 
-            let ckp' := f_check_generator_expr ((ast_num, flag) :: ckp) e1 in
-            f_check_generator_expr ckp' e2
-        | None => 
+        match f_check_flags e with
+        | nil =>
             let ckp' := f_check_generator_expr ckp e1 in
+            f_check_generator_expr ckp' e2      
+        | cks => 
+            let ckp' := f_check_generator_expr ((ast_num, cks) :: ckp) e1 in
             f_check_generator_expr ckp' e2
         end
     | E_Unary_Operation ast_num op e0 =>
@@ -2027,13 +2016,24 @@ Function f_check_match (ck: run_time_checks) (ck': run_time_checks): bool :=
     | _, _ => false
     end.
 
+Function f_check_list_match (cks: run_time_check_set) (cks': run_time_check_set): bool :=
+    match cks, cks' with
+    | nil, nil => true
+    | (x :: xs), (y :: ys) =>
+        match f_check_match x y with
+        | true => f_check_list_match xs ys
+        | false => false
+        end
+    | _, _ => false
+    end.
+
 Function f_checks_match (required_checks: check_points) (actual_checks: check_points): bool :=
     match required_checks, actual_checks with
     | nil, nil => true
     | (ck :: cks), (ck' :: cks') => 
         match ck, ck' with
         | (astnum, check), (astnum', check') =>
-            if beq_nat astnum astnum' && f_check_match check check' 
+            if beq_nat astnum astnum' && f_check_list_match check check' 
             then f_checks_match cks cks' 
             else false
         end
@@ -2080,29 +2080,6 @@ Proof.
     assumption.
 Qed.
 
-Lemma f_check_flag_correct: forall e ck,
-    f_check_flag e = ck ->
-    check_flag e ck.
-Proof.
-    intros e;
-    functional induction (f_check_flag e);
-    intros ck h1;
-    rewrite <- h1;
-    try constructor.
-  - destruct n; constructor.
-  - destruct op; inversion y;
-    unfold not; intros hz1; inversion hz1.
-Qed.
-
-Lemma f_check_flag_complete: forall e ck,
-    check_flag e ck ->
-    f_check_flag e = ck.
-Proof.
-    intros e ck h1.
-    induction h1;
-    auto.
-    destruct op; intuition.
-Qed.
 
 Lemma f_check_generator_expr_correct: forall ckp e ckp',
     f_check_generator_expr ckp e = ckp' ->
@@ -2116,16 +2093,20 @@ Proof.
   - rewrite <- h1.
     constructor.
   - specialize (IHc0 _ h1).
-    econstructor.
-    specialize (f_check_flag_correct _ _ e3); intros hz1.
-    exact hz1.
-    specialize (IHc (f_check_generator_expr ((ast_num, flag) :: ckp) e1)).
+    eapply CG_Binary_Operation_None.
+    specialize (f_check_flags_correct _ _ e3); auto.
+    specialize (IHc (f_check_generator_expr ckp e1)).
     intuition.
     exact H. assumption.
   - specialize (IHc0 _ h1).
-    eapply CG_Binary_Operation_None.
-    specialize (f_check_flag_correct _ _ e3); auto.
-    specialize (IHc (f_check_generator_expr ckp e1)).
+    remember (f_check_flags (E_Binary_Operation ast_num op e1 e2)) as x.
+    symmetry in Heqx.
+    destruct x; inversion y.
+    eapply CG_Binary_Operation.
+    specialize (f_check_flags_correct _ _ Heqx); intros hz1.
+    exact hz1.
+    rm_always_true.
+    specialize (IHc (f_check_generator_expr ((ast_num, r :: x) :: ckp) e1)).
     intuition.
     exact H. assumption.
   - specialize (IHc _ h1).
@@ -2139,12 +2120,10 @@ Lemma f_check_generator_expr_complete: forall ckp e ckp',
 Proof.
     intros ckp e ckp' h1.
     induction h1;
-    simpl; auto.
-  - destruct op; inversion H; subst.
-    reflexivity.
-  - destruct op; inversion H; subst;
-    try rewrite IHh1_1, IHh1_2; auto.
-    destruct H1. reflexivity.
+    simpl; auto;
+    destruct op; 
+    inversion H; subst; auto;
+    try rm_false_hyp.
 Qed.
 
 Lemma f_check_generator_stmt_correct: forall ckp c ckp',
@@ -2315,7 +2294,7 @@ Proof.
     specialize (f_check_generator_proc_body_complete _ _ _ H); auto.
 Qed.
 
-        
+
 (** ** Semantics with run-time-checks *)
 
 (** the semantics for expressions evaluation, where cps is passed in 
@@ -2336,23 +2315,17 @@ Inductive eval_expr_with_checks (cps: check_points): stack -> expression -> retu
         eval_expr_with_checks cps s e1 (Val_Normal v1) ->
         eval_expr_with_checks cps s e2 Val_Run_Time_Error ->
         eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
-    | eval_Binary_Operation3: forall s e1 v1 e2 v2 ck ast_num op,
+    | eval_Binary_Operation3: forall s e1 v1 e2 v2 cks ast_num op,
         eval_expr_with_checks cps s e1 (Val_Normal v1) ->
         eval_expr_with_checks cps s e2 (Val_Normal v2) ->
-        fetch_ck ast_num cps = Some ck ->
-        do_check op v1 v2 false ->
+        fetch_cks ast_num cps = cks ->
+        do_flagged_checks cks op v1 v2 false ->
         eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) Val_Run_Time_Error
-    | eval_Binary_Operation4: forall s e1 v1 e2 v2 ck ast_num op v,
+    | eval_Binary_Operation4: forall s e1 v1 e2 v2 cks ast_num op v,
         eval_expr_with_checks cps s e1 (Val_Normal v1) ->
         eval_expr_with_checks cps s e2 (Val_Normal v2) ->
-        fetch_ck ast_num cps = Some ck -> 
-        do_check op v1 v2 true ->
-        eval_bin_expr op v1 v2 v ->
-        eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) (Val_Normal v)
-    | eval_Binary_Operation5: forall s e1 v1 e2 v2 ast_num op v,
-        eval_expr_with_checks cps s e1 (Val_Normal v1) ->
-        eval_expr_with_checks cps s e2 (Val_Normal v2) ->
-        fetch_ck ast_num cps = None ->
+        fetch_cks ast_num cps = cks -> 
+        do_flagged_checks cks op v1 v2 true ->
         eval_bin_expr op v1 v2 v ->
         eval_expr_with_checks cps s (E_Binary_Operation ast_num op e1 e2) (Val_Normal v)
     | eval_Unary_Operation1: forall s e ast_num op,
@@ -2517,17 +2490,17 @@ Proof.
   - apply ast_nums_lt_trans with (n := ast_num); intuition.
   - apply ast_nums_lt_trans with (n := ast_num); intuition.
   - specialize (ast_nums_lt_trans _ _ _ h3 H1); intros hz1.
-    specialize (ast_nums_lt_add _ _ _ flag H1 hz1); intros hz2.
-    specialize (IHh1_1 _ _ H11 hz2).
+    specialize (IHh1_1 _ _ H11 hz1).
     assert(hz: max1 + 1 <= get_ast_num_expr e2); intuition.
     specialize (ast_nums_lt_trans0 _ _ _ IHh1_1 hz); intros hz3.
     specialize (IHh1_2 _ _ H12 hz3).
     assumption.
   - specialize (ast_nums_lt_trans _ _ _ h3 H1); intros hz1.
-    specialize (IHh1_1 _ _ H11 hz1).
+    specialize (ast_nums_lt_add _ _ _ cks1 H1 hz1); intros hz2.
+    specialize (IHh1_1 _ _ H12 hz2).
     assert(hz: max1 + 1 <= get_ast_num_expr e2); intuition.
     specialize (ast_nums_lt_trans0 _ _ _ IHh1_1 hz); intros hz3.
-    specialize (IHh1_2 _ _ H12 hz3).
+    specialize (IHh1_2 _ _ H13 hz3).
     assumption.
   - specialize (ast_nums_lt_trans _ _ _ h3 H0); intros hz1.
     specialize (IHh1 _ _ H5 hz1).
@@ -2674,14 +2647,11 @@ Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expression):
         | Val_Normal v1 => 
             match f_eval_expr_with_checks ckp s e2 with
             | Val_Normal v2 => 
-                match fetch_ck ast_num ckp with
-                | Some ck => 
-                    match f_do_check op v1 v2 with
-                    | Some true => f_eval_bin_expr op v1 v2
-                    | Some false => Val_Run_Time_Error
-                    | _ => Val_Abnormal
-                    end
-                | None => f_eval_bin_expr op v1 v2
+                let cks := fetch_cks ast_num ckp in
+                match f_do_flagged_checks cks op v1 v2 with
+                | Some true => f_eval_bin_expr op v1 v2
+                | Some false => Val_Run_Time_Error
+                | _ => Val_Abnormal
                 end
             | Val_Run_Time_Error => Val_Run_Time_Error
             | _ => Val_Abnormal
@@ -2802,17 +2772,19 @@ Proof.
     assumption.
   - specialize (IHr _ e3).
     specialize (IHr0 _ e4).
-    econstructor.
-    exact IHr. exact IHr0.
-    exact e5.
-    specialize (f_do_check_correct _ _ _ _ e6); auto.
-    apply f_eval_bin_expr_correct; auto.
-  - specialize (IHr _ e3).
-    specialize (IHr0 _ e4).
-    eapply eval_Binary_Operation5.
-    exact IHr. exact IHr0.
-    exact e5.
-    apply f_eval_bin_expr_correct; auto.
+    remember (fetch_cks ast_num ckp) as x.
+    symmetry in Heqx.
+    destruct x.
+    + econstructor.
+      exact IHr. exact IHr0.
+      exact Heqx.
+      constructor.
+      apply f_eval_bin_expr_correct; auto.
+    + econstructor.
+      exact IHr. exact IHr0.
+      exact Heqx.
+      apply f_do_flagged_checks_correct; auto.
+      apply f_eval_bin_expr_correct; auto.
   - specialize (IHr _ e2).
     econstructor.
     exact IHr.
@@ -2834,11 +2806,15 @@ Proof.
     simpl in h1; inversion h1.
   - specialize (f_eval_expr_with_checks_correct0 _ _ _ _ e3); intros hz1.
     specialize (f_eval_expr_with_checks_correct0 _ _ _ _ e4); intros hz2.
-    eapply eval_Binary_Operation3.
-    apply hz1. apply hz2. apply e5.
-    apply f_do_check_correct; auto.
-  - destruct v1, v2, op;
-    simpl in h1; inversion h1.
+    remember (fetch_cks ast_num ckp) as x.
+    symmetry in Heqx.
+    destruct x.
+    * eapply eval_Binary_Operation3.
+      apply hz1. apply hz2. apply Heqx.
+      apply f_do_flagged_checks_correct; auto.
+    * eapply eval_Binary_Operation3.
+      apply hz1. apply hz2. apply Heqx.
+      apply f_do_flagged_checks_correct; auto.
   - specialize (IHr0 e4).
     eapply eval_Binary_Operation2.
     specialize (f_eval_expr_with_checks_correct0 _ _ _ _ e3); intros hz1.
@@ -2875,13 +2851,10 @@ Proof.
     repeat match goal with
     | [h: ?x = ?y |- _] => rewrite h; clear h
     end; auto.
-  - specialize (f_do_check_complete _ _ _ _ H0); intros hz1.
-    rewrite hz1.
+  - rewrite (f_do_flagged_checks_complete _ _ _ _ _ H0).
     reflexivity.
-  - specialize (f_do_check_complete _ _ _ _ H0); intros hz1.
-    rewrite hz1.
+  - rewrite (f_do_flagged_checks_complete _ _ _ _ _ H0).
     apply f_eval_bin_expr_complete; auto.
-  - apply f_eval_bin_expr_complete; auto.
   - apply f_eval_unary_expr_complete; auto.
 Qed.
 

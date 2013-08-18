@@ -6,13 +6,13 @@
     of this file is experimental and cannot reach publicity without
     permission of KSU. *)
 
-Require Export ZArith. 
+Require Export ZArith.
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
 Require Export Coq.Strings.String.
 
 (* command to generate HTML document from Coq source files: 
-   coqdoc language.v values.v environment.v semantics.v wellformedness.v propertyProof.v  -toc --no-lib-name 
+   coqdoc language.v values.v environment.v semantics.v wellformedness.v propertyProof.v -toc --no-lib-name 
 *)
 
 (** * SPARK Subset Language *)
@@ -61,8 +61,8 @@ Record type_table: Type := mktype_table{
 
 (** ** Literals *)
 Inductive literal: Type :=
-	| Integer_Literal: Z -> literal (** 2.4 *)
-        | Boolean_Literal: bool -> literal (** 3.5.3 *).
+	| Integer_Literal: Z -> literal (* 2.4 *)
+        | Boolean_Literal: bool -> literal (* 3.5.3 *).
 
 (** unary and binary operators *)
 Inductive unary_operator: Type := 
@@ -93,10 +93,10 @@ Inductive type: Type :=
 (** ** Expressions *)
 (** Chapter 4 *)
 Inductive expression: Type := 
-	| E_Literal: astnum -> literal -> expression (** 4.2 *)
-	| E_Identifier: astnum -> idnum -> expression (** 4.1 *)
-	| E_Binary_Operation: astnum -> binary_operator -> expression -> expression -> expression (** 4.5.3 and 4.5.5 *)
-	| E_Unary_Operation: astnum -> unary_operator -> expression -> expression (** 4.5.4 *).
+	| E_Literal: astnum -> literal -> expression (* 4.2 *)
+	| E_Identifier: astnum -> idnum -> expression (* 4.1 *)
+	| E_Binary_Operation: astnum -> binary_operator -> expression -> expression -> expression (* 4.5.3 and 4.5.5 *)
+	| E_Unary_Operation: astnum -> unary_operator -> expression -> expression (* 4.5.4 *).
 
 (** ** Statements *)
 (** Chapter 5 *)
@@ -151,7 +151,7 @@ Record procedure_body: Type := mkprocedure_body{
 Record function_body: Type := mkfunction_body{
 	function_astnum: astnum;
 	function_name: procnum;
-	function_result_subtype: type; (** 6.5 (3/2) *)
+	function_result_subtype: type; (* 6.5 (3/2) *)
 	function_contracts: list aspect_specification;
 	function_parameter_profile: list parameter_specification;
 	function_declarative_part: list object_declaration;

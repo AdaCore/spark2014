@@ -1,11 +1,24 @@
 Require Export values.
 
+(** for any valid variable x, it has an in/out mode, type and value 
+    (either defined or undefined); as the in/out mode and type are
+    invariant since the variable is declared, and they are used only
+    at compile time, we keep these invariant information in a symbol 
+    table called _symtb_; while the value of a variable will change 
+    as the program executes, and it's used in run time evaluation, 
+    so we keep this information in a stack called _stack_;
+*)
+
 (** * Stack *)
 
 (** ** Stack as a list *)
+(** it's a map from a variable, represented with natural number,
+    to its value;
+*)
 Definition stack : Type := list (idnum * val).
 
 (** ** Stack operations *)
+(** check whether variable x has already been declared *)
 Function reside (x : idnum) (s : stack) := 
     match s with 
     | (y, v) :: s' =>
@@ -104,6 +117,9 @@ Qed.
 (** * Symbol Table *)
 
 (** ** Symbol table as a list *)
+(** it's a map from a variable, represented as natural number,
+    to a pair of in/out mode and it's declared type;
+*)
 Definition symtb: Type := list (idnum * (mode * type)).
 
 (** ** Symbol table operations *)
@@ -135,9 +151,23 @@ Inductive state: Type :=
 (** * Type Check Stack *)
 
 (** ** Type checker for stack *)
-(** - relational one: type_check_stack;
+(** for any valid variable x, it has an in/out mode, type and value 
+    (either defined or undefined); as the in/out mode and type are
+    invariant since the variable is declared, and they are used only
+    at compile time, we keep these invariant information in a symbol 
+    table called _symtb_; while the value of a variable will change 
+    as the program executes, and it's used in run time evaluation, 
+    so we keep this information in a stack called _stack_;
+    
+    Type Check Stack means: for any variable x, its stored value in
+    stack should be consistent with its declared type recorded in
+    symbol table symtb;
+    
+    This section defines the type checker for stack in both relational
+    and functional logic and prove their bisimulation relation
+    - relational one: type_check_stack;
     - functional one: f_type_check_stack;
-    - bisilumation between relational and functional one;
+    - bisilumation proof between relational and functional one;
 *)
 Inductive type_check_stack: symtb -> stack -> Prop :=
     | TC_Empty: type_check_stack nil nil
@@ -172,7 +202,10 @@ Function f_type_check_stack (tb: symtb) (s: stack): bool :=
     | _, _ => false
     end.
 
-(** Bisimulation proof between f_type_check_stack and type_check_stack; *)
+(** Bisimulation proof between f_type_check_stack and type_check_stack: 
+    - f_type_check_stack_correct
+    - f_type_check_stack_complete
+*)
 Lemma f_type_check_stack_correct: forall tb s,
     f_type_check_stack tb s = true ->
         type_check_stack tb s.
@@ -200,6 +233,9 @@ Proof.
 Qed.
 
 (** ** Some lemmas *)
+(** typed_value means: for any variable x in a type checked stack,
+    it should has some type t that can be found in the symbol table;
+*)
 Lemma typed_value: forall tb s x v,
     type_check_stack tb s ->
     fetch x s = Some v ->
@@ -235,7 +271,7 @@ Proof.
        assumption.
 Qed.
 
-Ltac rm_exists1 :=
+Ltac rm_ex :=
     repeat match goal with
     | [ h: exists _, _ |- _ ] => inversion h; clear h
     | [ h: _ /\ _  |- _ ] => inversion h; clear h
@@ -249,7 +285,7 @@ Ltac tv_l1 f1 f2 h1 h2 x x0 :=
       fold f1 in h1;
       fold f2;
       specialize (h2 h1);
-      rm_exists1; auto
+      rm_ex; auto
     ].
 
 Ltac tv_l2 f1 f2 h1 h2 x x0 tac :=
@@ -263,9 +299,14 @@ Ltac tv_l2 f1 f2 h1 h2 x x0 tac :=
       fold f1 in h1;
       fold f2;
       specialize (h2 h1);
-      rm_exists1; auto
+      rm_ex; auto
     ].
 
+(** typed_value' means: for any type checked stack s with respect to 
+    the symbol table tb, if tb includes a variable x of type t, then 
+    x should also reside in stack s, and if x has a defined value v,
+    then v should have the type of t;
+*)
 Lemma typed_value': forall tb s x m t,
     type_check_stack tb s ->
     lookup x tb = Some (m, t) -> 
