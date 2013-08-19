@@ -307,3 +307,33 @@ which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*). See :ref:`how to write loop invariants`.
 
+Analysing incomplete programs
+-----------------------------
+
+It is often necessary to analyse |SPARK| programs which are not complete.
+This may occur when the program is under development and package specifications
+have been written but the corresponding bodies have not yet been implemented, or
+perhaps the bodies are being developed and currently have errors in them.
+Another situation might be that existing Ada code is being converted to |SPARK|
+and there are bodies which are not yet compliant with the |SPARK| rules, although
+this would typically be dealt with by using pragma SPARK_Mode to
+identify code which is intended to be in and out of |SPARK|.
+
+When developing new code, if a package specification is present but the body does
+not yet exist the tools will assume that the specification is correct when 
+analysing code that depends on it. But if the body is present and contains
+errors this will prevent the analysis of units that depend on it. This might be
+an issue when software is being developed by a team and a developer checks in a
+new package body containing errors, causing other developers' analyses to fail.
+This would typically be avoided by having project procedures which do not allow
+code to be checked in until it analyses and compiles cleanly. Another, possibly
+more robust, option is to manage the issue via the GNAT project file. Any
+problematic bodies can be excluded from analysis as follows:
+
+.. code-block:: ada
+
+   for Excluded_Source_Files use ("body_with_errors.adb", ...);
+
+Alternatively, the project file could list only the package specifications, not
+the bodies.
+
