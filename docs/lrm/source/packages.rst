@@ -112,15 +112,39 @@ as external properties of an external state abstraction.
    properties specified then all of the properties default to a value
    of True.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.2 LR An external state without any properties defaults to
+                   having all properties set to True.
+
 #. If just the name of the property is given then its value defaults
    to True [; for instance Async_Readers defaults to Async_Readers =>
    True].
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.2 LR If just a property name is given, then its value defaults
+                   to True.
+
 #. A property may be explicitly given the value False [for instance Async_Readers => False].
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.2 LR A property may be explicitly given the value False.
 
 #. If any one property is explicitly defined, all undefined properties default to a value of False.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.2 LR If a property is explicitly defined then all undefined
+                   properties default to False.
+
 #. The expression defining the Boolean valued property shall be static.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.2 LR The expression defining the Boolean valued property
+                   shall be static.
 
 #. Only the following combinations of properties are valid:
 
@@ -144,36 +168,84 @@ as external properties of an external state abstraction.
      only be True if Async_Writers is True and Effective_Writes can only
      be True if Async_Readers is True.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.2 LR Effective_Reads can only be True if Async_Writers
+                   is True and Effective Writes can only be True if Async_Readers
+                   is True.
+
 .. centered:: **Static Semantics**
 
 #. Every update of an external state is considered to be read by
    some external reader if Async_Readers => True.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS Every update of an external state is considered
+                   to be read by some external reader if Async_Readers => True.
+
 #. Each successive read of an external state might have a different
    value [written by some external writer] if Async_Writers => True.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS Each successive read of an external state might
+                   have a different value if Async_Writers => True.
 
 #. If Effective_Writes => True, then every value written to the
    external state is significant. [For instance writing a sequence
    of values to a port.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS If Effective_Writes => True then every value
+                   written to the external state is significant.
+
 #. If Effective_Reads => True, then every value read from the external
    state is significant. [For example a value read from a port
    might be used in determining how the next value is processed.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS If Effective_Reads => True then every value
+                   read from the external state is significant.
+
 #. Each update of an external state has no external effect if both
    Async_Readers => False and Effective_Writes => False.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS An update of an external state has no
+                   external effect if Async_Readers => False and
+                   Effective_Writes => False.
 
 #. Each successive read of an external state will result in the last
    value explicitly written [by the program] if Async_Writers => False.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS Each successive read of an external state will
+                   result in the last value explicitly written if
+                   Async_Writers => False.
+
 #. Every explicit update of an external state might affect the next value
    read from the external state even if Async_Writers => True.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS Every explicit update of an external
+                   state might affect the next value read from the
+                   external state even if Async_Writers => True.
 
 #. An external state which has the property Async_Readers => True need
    not be initialized before being read although explicit
    initialization is permitted. [The external state might be
    initialized by an external writer.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.1.2 SS An external state with Async_Readers => True
+                   need not be initialized.
 
 .. _external_state-variables:
 
@@ -205,36 +277,74 @@ The new aspects are:
 #. The aspects shall only be specified in the aspect specification of a Volatile
    object declaration excluding Volatile formal parameter declarations.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR The aspects shall be specified in the aspect
+                   specification of a Volatile object declaration excluding
+                   Volatile formal parameter declarations.
+
 #. The declaration of a Volatile object (other than as a formal
    parameter) shall be at library level. [That is, it shall not be
    declared within the scope of a subprogram body. A Volatile variable
    has an external effect and therefore should be global even if it is
    not visible. It is made visible via a state abstraction.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR Declaration of Volatile object shall be at
+                   library level.
+
 #. A Volatile object shall not be used as an actual parameter in a generic instantiation.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A Volatile object shall not be used as an actual
+                   parameter in a generic instantiation.
 
 #. A Volatile object shall not be a ``global_item`` of a function.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A Volatile shall not be a global_item of a function.
+
 #. A function shall not have a formal parameter of a Volatile type.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A function shall not have a Volatile formal parameter.
 
 #. If a Volatile object has Effective_Reads set to True then it must
    have a ``mode_selector`` of Output or In_Out when denoted as a
    ``global_item``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A Volatile with Effective_Reads must have a
+                   mode_selector of Output or In_Out when denoted as a
+                   global_item.
 
 #. A Volatile object shall only occur as an actual parameter of a
    subprogram if the corresponding formal parameter is of a non-scalar
    Volatile type or as an actual parameter in a call to an instance of
    Unchecked_Conversion.
 
-#. Contrary to the general SPARK 2014 rule that expression evaluation cannot
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A Volatile shall only occur as an actual
+                   parameter of a subprogram if the corresponding formal
+                   parameter is of a non-scalar Volatile type or as an
+                   actual parameter in a call to an instance of
+                   Unchecked_Conversion.
+
+#. Contrary to the general |SPARK| rule that expression evaluation cannot
    have side effects, a read of a Volatile object with the properties
-   Async_Writers or Effective_Reads True is considered to have an effect
-   when read.  To reconcile this discrepancy, a name denoting such an object
+   Async_Writers or Effective_Reads set to True is considered to have an effect
+   when read. To reconcile this discrepancy, a name denoting such an object
    shall only occur in the following contexts:
 
    * as the name on the left-hand side of an assignment statement; or
 
-   * as the [right hand side] expression of an assignment statement; or
+   * as the [right-hand side] expression of an assignment statement; or
 
    * as the expression of an initialization expression of an object declaration
      that is not specified as Volatile; or
@@ -245,9 +355,19 @@ The new aspects are:
    * as an actual parameter in a procedure call of which the corresponding
      formal parameter is of a non-scalar Volatile type.
 
-   .. centered:: **Static Semantics**
+   .. ifconfig:: Display_Trace_Units
 
-These  are explained in :ref:`external_state`.
+      :Trace Unit: FE 7.1.3 LR A Volatile with Async_Writers or Effective_Reads
+                   can appear as the left-hand side of an assignment statement,
+                   the right-hand side of an assignment statement, the expression
+                   of an initialization expression, an actual parameter in an
+                   Unchecked_Conversion and an actual parameter in a procedure
+                   call where the corresponding formal parameter is a
+                   non-scalar Volatile.
+
+.. centered:: **Static Semantics**
+
+These are explained in :ref:`external_state`.
 
 .. centered:: **Dynamic Semantics**
 
@@ -268,11 +388,11 @@ There are no dynamic semantics associated with these aspects.
 
    * mode **out**: the formal parameter cannot be read by the
      subprogram as it is unknown whether a read will have an external
-     effect.  The formal parameter is considered to have the
+     effect. The formal parameter is considered to have the
      properties Async_Readers => True and/or Effective_Writes =>
      True. The actual parameter in a call to the subprogram must be
      Volatile and have either or both of these properties True but may
-     also have Async_Writers and Effective_Reads set to True.  If the
+     also have Async_Writers and Effective_Reads set to True. If the
      subprogram attempts a read of the formal parameter a flow anomaly
      will be reported.
 
@@ -281,6 +401,17 @@ There are no dynamic semantics associated with these aspects.
      Effective_Reads => True, Effective_Writes => True. The actual
      parameter in a subprogram call must be Volatile have all of these
      properties set to True.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE FA 7.1.3 VR A Volatile actual parameter of mode in has
+                   to have Async_Writers => True and Effective_Reads => False.
+                   A Volatile actual parameter of mode out has to have
+                   Async_Readers => True and/or Effective_Writes => True and
+                   if a read is attempted, a flow anomaly is reported.
+                   A Volatile actual parameter of mode in out must have all
+                   properties set to True.
+
 
 .. centered:: **Examples**
 
@@ -311,9 +442,7 @@ There are no dynamic semantics associated with these aspects.
         I : Integer;
       end record with Volatile;
 
-.. code-block:: ada
-
-     -- This type declaration indicates all objects
+      -- This type declaration indicates all objects
       -- of this type will be volatile.
       -- We can declare a number of objects of this type
       -- with different properties.
@@ -391,9 +520,9 @@ There are no dynamic semantics associated with these aspects.
          -- is intended to be used and this is checked by flow analysis
          -- to be compatible with the properties specified for the Volatile Global.
 
-     -- When a formal parameter is volatile assumptions have to be made in
-     -- the body of the subprogram as to the possible properties that the actual
-     -- volatile parameter might have dependent on the mode of the formal parameter.
+      -- When a formal parameter is volatile assumptions have to be made in
+      -- the body of the subprogram as to the possible properties that the actual
+      -- volatile parameter might have dependent on the mode of the formal parameter.
 
       procedure Read_Port (Port : in Volatile_Type; Value : out Integer)
          with Depends => (Value => Port,);
@@ -834,10 +963,10 @@ There are no dynamic semantics associated with the Initializes aspect.
 .. code-block:: ada
 
     package Q
-       with Abstract_State => State,      -- Declaration of abstract state name State
-            Initializes    => State,      -- Indicates that State
-                              Visible_Var -- and Visible_Var will be initialized
-                                          -- during the elaboration of Q.
+       with Abstract_State => State,        -- Declaration of abstract state name State
+            Initializes    => (State,       -- Indicates that State
+                               Visible_Var) -- and Visible_Var will be initialized
+                                            -- during the elaboration of Q.
     is
        Visible_Var : Integer;
        ...
@@ -2101,11 +2230,28 @@ abstraction on to external states which are given in this section.
 #. A state abstraction that is not specified as External shall not have
    ``constituents`` which are External states.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.8 LR A non External state abstraction cannot
+                   have Volatile constituents
+
 #. An External state abstraction shall have at least one ``constituent``
    that is External state, or shall have a null refinement.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.8 LR An External state abstraction must have at least
+                   one External state constituent, or shall have a null
+                   refinement.
+
 #. An External state abstraction shall have each of the properties set to True
    which are True for any of its ``constituents``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.8 LR An External state abstraction shall have each
+                   of the properties, which are True for any of its
+                   constituents, set to True.
 
 #. Refined_Global aspects must respect the rules related to external
    properties of constituents which are external states given in
