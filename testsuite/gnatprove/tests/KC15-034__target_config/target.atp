@@ -21,7 +21,7 @@ System_Allocator_Alignment   16
 Wchar_T_Size                 32
 Words_BE                      0
 
-float         15  I  64  64
+float         15  I  32  32
 double        15  I  64  64
 long double   18  I  80 128
 TF            33  I 128 128
