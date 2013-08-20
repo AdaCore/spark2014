@@ -218,6 +218,10 @@ package Why.Gen.Names is
       WNE_Range_Field,
       WNE_Range_Pred,
       WNE_Range_Type,
+      WNE_Float_Abs,
+      WNE_Float_Div,
+      WNE_Float_Exp,
+      WNE_Float_Of_Real,
       WNE_Real_Abs,
       WNE_Real_Ceil,
       WNE_Real_Div,
@@ -236,6 +240,7 @@ package Why.Gen.Names is
       WNE_To_Base,
       WNE_To_Int,
       WNE_To_Real,
+      WNE_To_Float,
       WNE_Type,
       WNE_Unicity
      );
@@ -274,10 +279,10 @@ package Why.Gen.Names is
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
    function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
-   with Pre => (Kind in EW_Int | EW_Real);
+   with Pre => (Kind in EW_Int | EW_Real | EW_Float32 | EW_Float64);
 
    function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
-   with Pre => (Kind in EW_Int | EW_Real);
+   with Pre => (Kind in EW_Int | EW_Real | EW_Float32 | EW_Float64);
 
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";

@@ -225,6 +225,10 @@ package Why.Inter is
                     New_Base_Type (Base_Type => EW_Bool);
    EW_Int_Type  : constant W_Base_Type_Id :=
                     New_Base_Type (Base_Type => EW_Int);
+   EW_Float32_Type : constant W_Base_Type_Id :=
+                    New_Base_Type (Base_Type => EW_Float32);
+   EW_Float64_Type : constant W_Base_Type_Id :=
+                    New_Base_Type (Base_Type => EW_Float64);
    EW_Real_Type : constant W_Base_Type_Id :=
                     New_Base_Type (Base_Type => EW_Real);
    EW_Private_Type : constant W_Base_Type_Id :=
@@ -236,6 +240,8 @@ package Why.Inter is
    Why_Types : constant Why_Scalar_Or_Array_Type_Array :=
                  (EW_Bool    => EW_Bool_Type,
                   EW_Int     => EW_Int_Type,
+                  EW_Float32 => EW_Float32_Type,
+                  EW_Float64 => EW_Float64_Type,
                   EW_Real    => EW_Real_Type,
                   EW_Private => EW_Private_Type);
 

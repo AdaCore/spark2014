@@ -364,6 +364,10 @@ package body Why.Images is
             P (O, "unit");
          when EW_Prop =>
             P (O, "prop");
+         when EW_Float32 =>
+            P (O, "single");
+         when EW_Float64 =>
+            P (O, "double");
          when EW_Real =>
             P (O, "real");
          when EW_Int =>

@@ -115,7 +115,7 @@ package body Why.Gen.Scalars is
    is
       Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
       Clone_Id : constant W_Identifier_Id :=
-         New_Identifier (Name    => """ada__model"".Floating_Point");
+         New_Identifier (Name    => """ada__model"".Float_32");
       Clone_Subst : constant W_Clone_Substitution_Array :=
         (1 =>
            New_Clone_Substitution

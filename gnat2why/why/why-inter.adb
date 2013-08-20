@@ -24,13 +24,14 @@
 ------------------------------------------------------------------------------
 
 with AA_Util;             use AA_Util;
+with Constant_Tree;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
-with Sem_Util;            use Sem_Util;
 with SPARK_Xrefs;         use SPARK_Xrefs;
+with Sem_Util;            use Sem_Util;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
-with Constant_Tree;
+with Uintp;               use Uintp;
 
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
@@ -813,6 +814,11 @@ package body Why.Inter is
                                       "RealInfix",
                                       EW_Import,
                                       EW_Theory);
+                     Add_With_Clause (P,
+                                      "ieee754",
+                                      "Single_RNE",
+                                      EW_Import,
+                                      EW_Theory);
                   end if;
                end if;
             end loop;
@@ -1226,7 +1232,16 @@ package body Why.Inter is
       end if;
 
       case Ekind (Ty) is
-         when Real_Kind =>
+         when E_Floating_Point_Type | E_Floating_Point_Subtype =>
+            if RM_Size (Ty) = Uint_32 then
+               return EW_Float32;
+            elsif RM_Size (Ty) = Uint_64 then
+               return EW_Float64;
+            else
+               raise Not_Implemented;
+            end if;
+
+         when E_Ordinary_Fixed_Point_Type .. E_Decimal_Fixed_Point_Subtype =>
             return EW_Real;
 
          when Discrete_Kind =>
@@ -1477,12 +1492,14 @@ package body Why.Inter is
 
    function Up (WT : W_Base_Type_Id) return W_Base_Type_Id is
       Kind : constant EW_Type := Get_Base_Type (WT);
+      Tmp  : EW_Scalar_Or_Array_Or_Private;
    begin
       case Kind is
          when EW_Abstract =>
             return Base_Why_Type (WT);
          when others =>
-            return Why_Types (Type_Hierarchy.Up (Kind));
+            Tmp := Type_Hierarchy.Up (Kind);
+            return Why_Types (Tmp);
       end case;
    end Up;
 
@@ -1524,7 +1541,9 @@ package body Why.Inter is
 
 begin
    Type_Hierarchy.Move_Child (EW_Unit, EW_Real);
-   Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
+   Type_Hierarchy.Move_Child (EW_Real, EW_Float32);
+   Type_Hierarchy.Move_Child (EW_Real, EW_Float64);
    Type_Hierarchy.Move_Child (EW_Real, EW_Int);
+   Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
    Type_Hierarchy.Freeze;
 end Why.Inter;
