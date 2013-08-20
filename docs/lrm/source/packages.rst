@@ -274,6 +274,15 @@ The new aspects are:
 
 .. centered:: **Legality Rules**
 
+#. All Volatile objects are considered to have one or more external
+   state properties, either given explicitly in their declaration or
+   implicitly when all the properties are considered to be True.  The
+   following rules also apply to all Volatile objects.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR The aspects and rules apply to all volatile objects.
+
 #. The aspects shall only be specified in the aspect specification of a Volatile
    object declaration excluding Volatile formal parameter declarations.
 
