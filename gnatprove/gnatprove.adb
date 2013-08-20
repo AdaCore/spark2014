@@ -66,6 +66,7 @@ procedure Gnatprove is
 
    procedure Compute_ALI_Information
       (Project_File : String;
+       Proj         : Project_Tree;
        Status : out Integer);
    --  Compute ALI information for all source units, using gnatmake.
 
@@ -101,8 +102,9 @@ procedure Gnatprove is
       Obj_Path         : File_Array);
 
    procedure Translate_To_Why
-      (Project_File : String;
-       Status : out Integer);
+      (Project_File     : String;
+       Proj             : Project_Tree;
+       Status           : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
@@ -112,7 +114,9 @@ procedure Gnatprove is
    --  In particular, add any needed directories in the PATH and
    --  GPR_PROJECT_PATH env vars.
 
-   procedure Set_Gnat2why_Env_Var (Translation_Phase : Boolean);
+   function Pass_Extra_Options_To_Gnat2why
+      (Translation_Phase : Boolean;
+       Obj_Dir           : String) return String;
    --  Set the environment variable which passes some options to gnat2why.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
@@ -184,10 +188,18 @@ procedure Gnatprove is
 
    procedure Compute_ALI_Information
      (Project_File : String;
+      Proj         : Project_Tree;
       Status       : out Integer)
    is
       use String_Lists;
-      Args : List := Empty_List;
+      Args     : List := Empty_List;
+      Obj_Dir  : constant String :=
+         Proj.Root_Project.Object_Dir.Display_Full_Name;
+      Opt_File : constant String :=
+         Pass_Extra_Options_To_Gnat2why
+            (Translation_Phase => False,
+             Obj_Dir           => Obj_Dir);
+      Del_Succ : Boolean;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
@@ -210,14 +222,16 @@ procedure Gnatprove is
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  only generate ALI
 
-      Set_Gnat2why_Env_Var (Translation_Phase => False);
+      Args.Append ("-gnates=" & Opt_File);
       Call_Gprbuild (Project_File,
                      Gpr_Frames_Cnf_File,
                      Parallel,
                      RTS_Dir.all,
                      Args,
                      Status);
-      Gnat2Why_Args.Clear;
+      if Status = 0 and then not Debug then
+         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
+      end if;
    end Compute_ALI_Information;
 
    -----------------
@@ -346,7 +360,7 @@ procedure Gnatprove is
 
       case Step is
          when GS_ALI =>
-            Compute_ALI_Information (Project_File, Status);
+            Compute_ALI_Information (Project_File, Proj, Status);
             if Status /= 0
               and then MMode = GPM_Check
             then
@@ -354,7 +368,7 @@ procedure Gnatprove is
             end if;
 
          when GS_Gnat2Why =>
-            Translate_To_Why (Project_File, Status);
+            Translate_To_Why (Project_File, Proj, Status);
             if Status /= 0
               and then MMode = GPM_Check
             then
@@ -595,12 +609,15 @@ procedure Gnatprove is
            Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
    end Set_Environment;
 
-   --------------------------
-   -- Set_Gnat2why_Env_Var --
-   --------------------------
+   ------------------------------------
+   -- Pass_Extra_Options_To_Gnat2why --
+   ------------------------------------
 
-   procedure Set_Gnat2why_Env_Var (Translation_Phase : Boolean) is
+   function Pass_Extra_Options_To_Gnat2why
+      (Translation_Phase : Boolean;
+       Obj_Dir           : String) return String is
    begin
+
       --  In the translation phase, set a number of values
 
       if Translation_Phase then
@@ -620,8 +637,8 @@ procedure Gnatprove is
          Gnat2Why_Args.Global_Gen_Mode := True;
       end if;
 
-      Gnat2Why_Args.Set (Debug);
-   end Set_Gnat2why_Env_Var;
+      return Gnat2Why_Args.Set (Obj_Dir);
+   end Pass_Extra_Options_To_Gnat2why;
 
    ------------------
    -- Text_Of_Step --
@@ -651,13 +668,20 @@ procedure Gnatprove is
    ----------------------
 
    procedure Translate_To_Why
-      (Project_File : String;
-       Status : out Integer)
+      (Project_File     : String;
+       Proj             : Project_Tree;
+       Status           : out Integer)
    is
       use String_Lists;
-      Cur    : Cursor := First (Cargs_List);
-      Args   : String_Lists.List := Empty_List;
-
+      Cur     : Cursor := First (Cargs_List);
+      Args    : String_Lists.List := Empty_List;
+      Obj_Dir : constant String :=
+         Proj.Root_Project.Object_Dir.Display_Full_Name;
+      Opt_File : aliased constant String :=
+         Pass_Extra_Options_To_Gnat2why
+            (Translation_Phase => True,
+             Obj_Dir           => Obj_Dir);
+      Del_Succ : Boolean;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
@@ -675,19 +699,22 @@ procedure Gnatprove is
          Args.Append ("-gnatw.d"); -- generation of unique tag
       end if;
 
+      Args.Append ("-gnates=" & Opt_File);
+
       while Has_Element (Cur) loop
          Args.Append (Element (Cur));
          Next (Cur);
       end loop;
 
-      Set_Gnat2why_Env_Var (Translation_Phase => True);
       Call_Gprbuild (Project_File,
                      Gpr_Translation_Cnf_File,
                      Parallel,
                      RTS_Dir.all,
                      Args,
                      Status);
-      Gnat2Why_Args.Clear;
+      if Status = 0 and then not Debug then
+         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
+      end if;
    end Translate_To_Why;
 
    Tree      : Project_Tree;

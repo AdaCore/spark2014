@@ -31,22 +31,21 @@ package Gnat2Why_Args is
    --  This unit defines and initializes extra options of gnat2why, that are
    --  not relevant to the GNAT frontend.
 
-   --  Today, these options are read from the environment variable
-   --  GNAT2WHY_ARGS. This variable contains a list of arguments separated
-   --  by spaces. Each argument is of the form
-   --    name=value
-   --  where neither "name" nor "value" can contain spaces. The "=value"
-   --  part is optional. Each "name" corresponds to a global variable in
-   --  this package (lower case).
+   --  These package defines both the reading and the writing of these extra
+   --  options. There are two ways to use this package, depending on whether
+   --  you are on the reading side (gnat2why) or the writing side (gnatprove).
 
-   --  For boolean variables, the presence of the name means "true", absence
-   --  means "false". For other variables, the value is given after the "="
-   --  sign.
+   --  For reading the extra options, simply call "init". Now the global
+   --  variables defined at the beginning of this package are set corresponding
+   --  to the extra options.
 
-   --  Reading in the environment variable is done by a call to [Init].
+   --  For writing extra options, set the global variables to the required
+   --  values, and call "Set".
 
-   --  Setting the environment variable is done by changing the values of the
-   --  variables and calling [Set].
+   --  These extra options are stored in a file that is passed to gnat2why
+   --  using the extra switch "-gnates=<file>". See the body of this package
+   --  for the format of this file, the spec only describes what is needed for
+   --  interfacing.
 
    -------------------------------------
    -- Options defined in this package --
@@ -109,13 +108,12 @@ package Gnat2Why_Args is
    --------------------------------
 
    procedure Init;
-   --  Read the environment variable GNAT2WHY_Args and set the corresponding
-   --  options.
+   --  Read the extra options information and set the corresponding global
+   --  variables above.
 
-   procedure Set (Debug : Boolean);
-   --  Read the above variables and set the environment variable
-
-   procedure Clear;
-   --  Clear the environment variable, do not change the variables.
+   function Set (Obj_Dir : String) return String;
+   --  Read the above variables and prepare passing them to gnat2why. Obj_Dir
+   --  is a place to store temp files, and the return value is the full name
+   --  of the file that is to be passed to gnat2why using -gnates=<file>.
 
 end Gnat2Why_Args;

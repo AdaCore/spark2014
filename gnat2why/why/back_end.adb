@@ -95,7 +95,17 @@ package body Back_End is
       use type System.Address;
 
    begin
-      --  Set global modes and settings from environment variable GNAT2WHY_ARGS
+      --  If save_argv is non null, it means we are part of gnat1+gnat2why
+      --  and need to set gnat_argv to save_argv so that Ada.Command_Line
+      --  has access to the command line.
+
+      if save_argv /= System.Null_Address then
+         gnat_argv := save_argv;
+         gnat_argc := save_argc;
+      end if;
+      GNAT2Why_BE.Scan_Compiler_Arguments;
+
+      --  Read extra options for gnat2why
 
       Gnat2Why_Args.Init;
 
@@ -111,16 +121,6 @@ package body Back_End is
          Opt.Disable_ALI_File := True;
       end if;
 
-      --  If save_argv is non null, it means we are part of gnat1+gnat2why
-      --  and need to set gnat_argv to save_argv so that Ada.Command_Line
-      --  has access to the command line.
-
-      if save_argv /= System.Null_Address then
-         gnat_argv := save_argv;
-         gnat_argc := save_argc;
-      end if;
-
-      GNAT2Why_BE.Scan_Compiler_Arguments;
    end Scan_Compiler_Arguments;
 
 end Back_End;

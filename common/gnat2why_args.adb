@@ -23,15 +23,26 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Environment_Variables;
-with Ada.Text_IO;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib;               use GNAT.OS_Lib;
 
-with Output; use Output;
-with Types;  use Types;
+with Opt;
+with Call;                      use Call;
+with Output;                    use Output;
+with Types;                     use Types;
 
 package body Gnat2Why_Args is
 
-   Env_Variable_Name : constant String := "GNAT2WHY_ARGS";
+   --  The extra options are passed to gnat2why using a file, specified
+   --  via -gnates. This file contains on each line a single argument.
+   --  Each argument is of the form
+   --    name=value
+   --  where neither "name" nor "value" can contain spaces. Each "name"
+   --  corresponds to a global variable in this package (lower case).
+
+   --  For boolean variables, the presence of the name means "true", absence
+   --  means "false". For other variables, the value is given after the "="
+   --  sign. No "=value" part is allowed for boolean variables.
 
    Standard_Mode_Name      : constant String := "standard_mode";
    Global_Gen_Mode_Name    : constant String := "global_gen_mode";
@@ -53,41 +64,13 @@ package body Gnat2Why_Args is
    ----------
 
    procedure Init is
-      Args_String : constant String :=
-        Ada.Environment_Variables.Value (Env_Variable_Name, Default => "");
-      Start : Integer := Args_String'First;
+
+      procedure Read_File is new For_Line_In_File (Interpret_Token);
+
    begin
-      while Start in Args_String'Range loop
-         declare
-            Ending : Integer := Start;
-         begin
-
-            --  Search for the next blank and store its position in [Ending]
-
-            while Ending in Args_String'Range and then
-              Args_String (Ending) /= ' ' loop
-               Ending := Ending + 1;
-            end loop;
-
-            if Start /= Ending then
-
-               --  We have recognized a token, take it into account
-
-               Interpret_Token (Args_String (Start .. Ending - 1));
-
-            else
-
-               --  Here we have Start = Ending, so either there are two spaces
-               --  in a row, or a space at the start, or we are at the end of
-               --  the string. In any case, we just continue.
-
-               null;
-
-            end if;
-
-            Start := Ending + 1;
-         end;
-      end loop;
+      if Opt.SPARK_Switches_File_Name /= null then
+         Read_File (Opt.SPARK_Switches_File_Name.all);
+      end if;
    end Init;
 
    ---------------------
@@ -142,72 +125,71 @@ package body Gnat2Why_Args is
    -- Set --
    ---------
 
-   procedure Set (Debug : Boolean) is
-      Val : Unbounded_String := Null_Unbounded_String;
+   function Set (Obj_Dir : String) return String is
+      Cur_Dir : constant String := Get_Current_Dir;
+      FD      : File_Descriptor;
+      Name    : GNAT.OS_Lib.String_Access;
+
+      procedure Write_Line (S : String);
+      --  Write S to FD, and add a newline
+
+      ----------------
+      -- Write_Line --
+      ----------------
+
+      procedure Write_Line (S : String) is
+         N : Integer;
+         pragma Unreferenced (N);
+      begin
+         N := Write (FD, S'Address, S'Length);
+         N := Write (FD, ASCII.LF'Address, 1);
+      end Write_Line;
+
+      --  beginning of processing for Set
+
    begin
+
+      --  We need to switch to the given Obj_Dir so that the temp file is
+      --  created there
+
+      Change_Dir (Obj_Dir);
+      Create_Temp_Output_File (FD, Name);
+
       if Standard_Mode then
-         Append (Val, ' ');
-         Append (Val, Standard_Mode_Name);
+         Write_Line (Standard_Mode_Name);
       end if;
       if Global_Gen_Mode then
-         Append (Val, ' ');
-         Append (Val, Global_Gen_Mode_Name);
+         Write_Line (Global_Gen_Mode_Name);
       end if;
       if Check_Mode then
-         Append (Val, ' ');
-         Append (Val, Check_Mode_Name);
+         Write_Line (Check_Mode_Name);
       end if;
       if Flow_Analysis_Mode then
-         Append (Val, ' ');
-         Append (Val, Flow_Analysis_Mode_Name);
+         Write_Line (Flow_Analysis_Mode_Name);
       end if;
       if Flow_Dump_Graphs then
-         Append (Val, ' ');
-         Append (Val, Flow_Dump_Graphs_Name);
+         Write_Line (Flow_Dump_Graphs_Name);
       end if;
       if Pedantic then
-         Append (Val, ' ');
-         Append (Val, Pedantic_Name);
+         Write_Line (Pedantic_Name);
       end if;
       if Ide_Mode then
-         Append (Val, ' ');
-         Append (Val, Ide_Mode_Name);
+         Write_Line (Ide_Mode_Name);
       end if;
       for File of Analyze_File loop
-         Append (Val, ' ');
-         Append (Val, Analyze_File_Name);
-         Append (Val, '=');
-         Append (Val, File);
+         Write_Line (Analyze_File_Name & "=" & File);
       end loop;
       if Limit_Subp /= Null_Unbounded_String then
-         Append (Val, ' ');
-         Append (Val, Limit_Subp_Name);
-         Append (Val, '=');
-         Append (Val, Limit_Subp);
+         Write_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
       end if;
-      if Val /= "" then
-         declare
-            Val_Str : constant String := To_String (Val);
-         begin
-            if Debug then
-               Ada.Text_IO.Put_Line ("Setting " & Env_Variable_Name &
-                                     " to """ & Val_Str & """");
-            end if;
-            Ada.Environment_Variables.Set (Name  => Env_Variable_Name,
-                                           Value => Val_Str);
-         end;
-      else
-         Clear;
-      end if;
+      Close (FD);
+      Change_Dir (Cur_Dir);
+      declare
+         S : constant String := Name.all;
+      begin
+         Free (Name);
+         return Obj_Dir & Dir_Separator & S;
+      end;
    end Set;
-
-   -----------
-   -- Clear --
-   -----------
-
-   procedure Clear is
-   begin
-      Ada.Environment_Variables.Clear (Env_Variable_Name);
-   end Clear;
 
 end Gnat2Why_Args;
