@@ -207,7 +207,7 @@ as external properties of an external state abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 7.1.2 SS If Effective_Reads => True then every value
+      :Trace Unit: PR 7.1.2 SS If Effective_Reads => True then every value
                    read from the external state is significant.
 
 #. Each update of an external state has no external effect if both
@@ -224,7 +224,7 @@ as external properties of an external state abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 7.1.2 SS Each successive read of an external state will
+      :Trace Unit: PR 7.1.2 SS Each successive read of an external state will
                    result in the last value explicitly written if
                    Async_Writers => False.
 
@@ -393,7 +393,7 @@ There are no dynamic semantics associated with these aspects.
      subprogram and is considered to have the properties Async_Writers
      => True and Effective_Reads => False. The actual parameter in a
      call must be Volatile and have these properties but may also have
-     the properties Async_Readers and Writes_Effective set to True.
+     the properties Async_Readers and Effective_Writes set to True.
 
    * mode **out**: the formal parameter cannot be read by the
      subprogram as it is unknown whether a read will have an external
