@@ -171,7 +171,7 @@ as external properties of an external state abstraction.
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.1.2 LR Effective_Reads can only be True if Async_Writers
-                   is True and Effective Writes can only be True if Async_Readers
+                   is True and Effective_Writes can only be True if Async_Readers
                    is True.
 
 .. centered:: **Static Semantics**
@@ -189,7 +189,7 @@ as external properties of an external state abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 7.1.2 SS Each successive read of an external state might
+      :Trace Unit: PR 7.1.2 SS Each successive read of an external state might
                    have a different value if Async_Writers => True.
 
 #. If Effective_Writes => True, then every value written to the
