@@ -129,6 +129,7 @@ package body Why.Atree.Sprint is
    procedure wpg (Node : Why_Node_Id) is
    begin
       Sprint_Why_Node (Node, Stdout);
+      NL (Stdout);
    end wpg;
 
    ----------------------------------------
