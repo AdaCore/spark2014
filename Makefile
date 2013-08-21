@@ -36,7 +36,7 @@
 .PHONY: clean doc gnat1why gnat2why gnatprove stdlib install install-stdlib \
 	install-all gnatmerge why3 alt-ergo all setup all-nightly doc-nightly
 
-ADAINCLUDE=$(shell gnatls -v | grep adainclude)
+ADAINCLUDE=$(strip $(shell gnatls -v | grep adainclude))
 GNAT_ROOT=$(shell echo $(ADAINCLUDE) | sed -e 's!\(.*\)/lib/gcc/\(.*\)!\1!')
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
@@ -151,7 +151,7 @@ local-stdlib:
 	mkdir -p $(STDLIB_TMP)
 	$(CP) Makefile.libprove $(STDLIB_TMP)
 	$(MAKE) -C $(STDLIB_TMP) -f Makefile.libprove ROOT=$(GNAT_ROOT) \
-	GNAT2WHY="../install/bin/gnat2why -B ../install/bin -I $(ADAINCLUDE)"
+	GNAT2WHY="../install/bin/gnat2why -B ../install/bin -I$(ADAINCLUDE)"
 
 stdlib:
 	rm -rf $(STDLIB_TMP)
