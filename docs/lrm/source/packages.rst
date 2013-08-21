@@ -282,6 +282,7 @@ The new aspects are:
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.1.3 LR The aspects and rules apply to all volatile objects.
+                   Covered by another TU.
 
 #. The aspects shall only be specified in the aspect specification of a Volatile
    object declaration excluding Volatile formal parameter declarations.
