@@ -95,7 +95,7 @@ for further detail on Depends aspects.
 .. _contract-cases:
 
 Contract Cases
-~~~~~~~~~~~~~~	
+~~~~~~~~~~~~~~
 
 The Contract_Cases aspect provides a structured way of defining a subprogram
 contract using mutually exclusive subcontract cases. The final case in the
@@ -265,6 +265,11 @@ where
    **others** ``contract_case`` when none of the conditions are True,
    the implementation of the body of the subprogram must be proven to
    satisfy the ``consequence`` of the ``contract_case``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: PR 6.1.3 VR All Contract_Cases have to be proven
+                   true based on the implementation.
 
 .. todo::
    (TJJ 29/11/12) Do we need this verification rule? Could it
@@ -527,15 +532,15 @@ subprogram which may be given in the ``aspect_specification`` of the
 subprogram.  The dependency relation is used in information flow
 analysis.
 
-A Depends aspect for a subprogram specifies for each output every 
-input on which it depends. The meaning of *X depends on Y* in this 
+A Depends aspect for a subprogram specifies for each output every
+input on which it depends. The meaning of *X depends on Y* in this
 context is that the input value(s) of *Y* may affect:
 
 * the exit value of *X*; and
-* the intermediate values of *X* if it is an external state 
+* the intermediate values of *X* if it is an external state
   (see section  :ref:`external_state`).
 
-This is written *X => Y*. As in UML, the entity at the tail of the 
+This is written *X => Y*. As in UML, the entity at the tail of the
 arrow depends on the entity at the head of the arrow.
 
 If an output does not depend on any input this is indicated
