@@ -114,8 +114,7 @@ package body Why.Gen.Scalars is
       Last    : W_Real_Constant_Id)
    is
       Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
-      Clone_Id : constant W_Identifier_Id :=
-         New_Identifier (Name    => """ada__model"".Float_32");
+      Clone_Id : W_Identifier_Id;
       Clone_Subst : constant W_Clone_Substitution_Array :=
         (1 =>
            New_Clone_Substitution
@@ -134,6 +133,18 @@ package body Why.Gen.Scalars is
               Image     => To_Ident (WNE_Attr_Last)));
 
    begin
+
+      case Get_EW_Type (Entity) is
+         when EW_Float32 =>
+            Clone_Id := New_Identifier (Name => """ada__model"".Float_32");
+         when EW_Float64 =>
+            Clone_Id := New_Identifier (Name => """ada__model"".Float_64");
+         when EW_Real =>
+            Clone_Id := New_Identifier (Name => """ada__model"".Fixed_Point");
+         when others =>
+            raise Program_Error;
+      end case;
+
       Emit (Theory, New_Type (Name => Why_Name));
       Define_Scalar_Attributes
         (Theory    => Theory,
@@ -143,9 +154,9 @@ package body Why.Gen.Scalars is
          Modulus   => Why_Empty);
       Emit (Theory,
             New_Clone_Declaration
-              (Theory_Kind => EW_Module,
-               Clone_Kind  => EW_Export,
-               Origin      => Clone_Id,
+              (Theory_Kind   => EW_Module,
+               Clone_Kind    => EW_Export,
+               Origin        => Clone_Id,
                Substitutions => Clone_Subst));
    end Declare_Ada_Real;
 
