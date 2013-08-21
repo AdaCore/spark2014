@@ -433,7 +433,11 @@ package body Why.Images is
          when EW_None =>
             P (O, " <none> ");
          when EW_Eq =>
-            P (O, "=");
+            if Op_Type in EW_Float32 | EW_Float64 then
+               P (O, "fp_eq");
+            else
+               P (O, "=");
+            end if;
          when EW_Ne =>
             P (O, "<>");
          when EW_Lt =>

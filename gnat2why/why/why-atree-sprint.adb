@@ -534,21 +534,32 @@ package body Why.Atree.Sprint is
       Op2    : constant EW_Relation := Get_Op2 (Node);
       Right2 : constant W_Value_OId := Get_Right2 (Node);
    begin
-      P (O, "( ");
-      Traverse (State, +Left);
-      P (O, " ");
-      P (O, Op, Get_Op_Type (Node));
-      P (O, " ");
-      Traverse (State, +Right);
+      if Get_Op_Type (Node) in EW_Float32 | EW_Float64 and then Op = EW_Eq then
+         P (O, "( ");
+         P (O, Op, Get_Op_Type (Node));
+         P (O, " ");
+         Traverse (State, +Left);
+         P (O, " ");
+         Traverse (State, +Right);
+         P (O, " )");
+         pragma Assert (Op2 = EW_None);
+      else
+         P (O, "( ");
+         Traverse (State, +Left);
+         P (O, " ");
+         P (O, Op, Get_Op_Type (Node));
+         P (O, " ");
+         Traverse (State, +Right);
 
-      if Op2 /= EW_None then
-         P (O, " ");
-         P (O, Op2, Get_Op_Type (Node));
-         P (O, " ");
-         Traverse (State, +Right2);
+         if Op2 /= EW_None then
+            P (O, " ");
+            P (O, Op2, Get_Op_Type (Node));
+            P (O, " ");
+            Traverse (State, +Right2);
+         end if;
+
+         P (O, " )");
       end if;
-
-      P (O, " )");
       State.Control := Abandon_Children;
    end Relation_Pre_Op;
 
