@@ -57,9 +57,10 @@ package SPARK_Definition is
    --  Set of all entities marked so far. This contains both entities from the
    --  current compiled unit, and also entities from other units.
 
-   procedure Before_Marking (Filename : String);
+   procedure Before_Marking (Basename : String);
    --  Create a file to store detailed information about the SPARK status of
-   --  toplevel subprograms (spec/body in SPARK or not).
+   --  toplevel subprograms (spec/body in SPARK or not). Use the argument as
+   --  the base of the file.
 
    procedure After_Marking;
    --  Close the file created by Before_Marking.

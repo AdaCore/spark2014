@@ -239,7 +239,7 @@ procedure SPARK_Report is
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate (Path => '*' & Configuration.SPARK_Suffix);
+      Iterate (Path => '*' & SPARK_Violations.SPARK_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>
@@ -341,7 +341,8 @@ procedure SPARK_Report is
                F_Cnt   : constant Natural := M.Element (F_Name);
                Lab     : constant String :=
                            ' ' & GNAT.Directory_Operations.Base_Name
-                             (To_String (F_Name), Configuration.SPARK_Suffix);
+                                   (To_String (F_Name),
+                                    SPARK_Violations.SPARK_Suffix);
                Tot_Cnt : constant Natural :=
                            F_Cnt + M_Complement.Element (F_Name);
             begin

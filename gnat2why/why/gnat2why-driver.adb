@@ -296,7 +296,7 @@ package body Gnat2Why.Driver is
       --  are not included, except for the main unit itself, which always
       --  comes last.
 
-      Before_Marking (Base_Name & ".alfa");
+      Before_Marking (Base_Name);
       Mark_All_Compilation_Units;
       After_Marking;
 

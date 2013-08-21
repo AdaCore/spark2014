@@ -145,4 +145,6 @@ package SPARK_Violations is
 
    Violation_From_Msg : Name_Map.Map;
 
+   SPARK_Suffix : constant String := ".spark";
+
 end SPARK_Violations;
