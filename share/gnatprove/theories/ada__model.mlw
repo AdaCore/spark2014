@@ -132,6 +132,13 @@ module Float_32
     ensures { true }
 
   function dummy : t
+
+  function div_float (x : single) (y : single) : single = x / y
+
+  val div_float_ (x:single) (y:single) : single
+    requires { not fp_eq y fp_constant_zero }
+    ensures { result = div_float x y }
+
 end
 
 module Float_64
@@ -185,11 +192,18 @@ module Float_64
     ensures { true }
 
   function dummy : t
+
+  function div_float (x : double) (y : double) : double = x / y
+
+  val div_float_ (x:double) (y:double) : double
+    requires { not fp_eq y fp_constant_zero }
+    ensures { result = div_float x y }
+
 end
 
 module Fixed_Point
   use import "_gnatprove_standard".Main
-  use        "_gnatprove_standard".Floating
+  use        "_gnatprove_standard".Real
   use import "real".RealInfix
   use export ada__model_th.Floating_Point_Theory
 

@@ -84,7 +84,9 @@ package body Why.Inter is
       --  _gnatprove_standard file.
 
       type Standard_Imports_Enum is (SI_Integer,
-                                     SI_Float,
+                                     SI_Float32,
+                                     SI_Float64,
+                                     SI_Real,
                                      SI_Boolean,
                                      SI_Array1,
                                      SI_Array2,
@@ -158,65 +160,71 @@ package body Why.Inter is
                Imports (SI_Integer) := True;
             else
                case Ekind (UE) is
-               when Discrete_Kind | E_Named_Integer =>
-                  Imports (SI_Integer) := True;
+                  when Discrete_Kind | E_Named_Integer =>
+                     Imports (SI_Integer) := True;
 
-               when Float_Kind | Fixed_Point_Kind | E_Named_Real =>
-                  Imports (SI_Float) := True;
+                  when Float_Kind | Fixed_Point_Kind | E_Named_Real =>
+                     case Get_EW_Type (UE) is
+                        when EW_Float32 => Imports (SI_Float32) := True;
+                        when EW_Float64 => Imports (SI_Float64) := True;
+                        when EW_Real    => Imports (SI_Real)    := True;
+                        when others =>
+                           raise Program_Error;
+                     end case;
 
-               when Array_Kind =>
-                  Imports (SI_Integer) := True;
-                  Set_SI_Internal (Component_Type (UE));
-                  case Number_Dimensions (UE) is
-                  when 1 =>
-                     Imports (SI_Array1) := True;
-                  when 2 =>
-                     Imports (SI_Array2) := True;
-                  when 3 =>
-                     Imports (SI_Array3) := True;
-                  when 4 =>
-                     Imports (SI_Array4) := True;
+                  when Array_Kind =>
+                     Imports (SI_Integer) := True;
+                     Set_SI_Internal (Component_Type (UE));
+                     case Number_Dimensions (UE) is
+                        when 1 =>
+                           Imports (SI_Array1) := True;
+                        when 2 =>
+                           Imports (SI_Array2) := True;
+                        when 3 =>
+                           Imports (SI_Array3) := True;
+                        when 4 =>
+                           Imports (SI_Array4) := True;
+                        when others =>
+                           raise Program_Error;
+                     end case;
+
+                  when Private_Kind =>
+                     if Entity_In_SPARK (Most_Underlying_Type (UE)) then
+                        Set_SI_Internal (Most_Underlying_Type (UE));
+                     end if;
+
+                  when E_Record_Type | E_Record_Subtype =>
+                     declare
+                        Field            : Node_Id :=
+                          First_Component_Or_Discriminant (UE);
+                     begin
+                        while Present (Field) loop
+                           if Ekind (Field) in Object_Kind then
+                              Set_SI_Internal (Etype (Field));
+                           end if;
+                           Next_Component_Or_Discriminant (Field);
+                        end loop;
+                     end;
+
+                  when Object_Kind =>
+                     Set_SI (Etype (UE));
+
+                  when Subprogram_Kind =>
+                     declare
+                        Formal : Node_Id :=
+                          First_Formal (UE);
+                     begin
+                        while Present (Formal) loop
+                           Set_SI_Internal (Etype (Formal));
+                           Next_Formal (Formal);
+                        end loop;
+                     end;
+
+                  when E_Loop =>
+                     null;
+
                   when others =>
                      raise Program_Error;
-                  end case;
-
-               when Private_Kind =>
-                  if Entity_In_SPARK (Most_Underlying_Type (UE)) then
-                     Set_SI_Internal (Most_Underlying_Type (UE));
-                  end if;
-
-               when E_Record_Type | E_Record_Subtype =>
-                  declare
-                     Field            : Node_Id :=
-                       First_Component_Or_Discriminant (UE);
-                  begin
-                     while Present (Field) loop
-                        if Ekind (Field) in Object_Kind then
-                           Set_SI_Internal (Etype (Field));
-                        end if;
-                        Next_Component_Or_Discriminant (Field);
-                     end loop;
-                  end;
-
-               when Object_Kind =>
-                  Set_SI (Etype (UE));
-
-               when Subprogram_Kind =>
-                  declare
-                     Formal : Node_Id :=
-                       First_Formal (UE);
-                  begin
-                     while Present (Formal) loop
-                        Set_SI_Internal (Etype (Formal));
-                        Next_Formal (Formal);
-                     end loop;
-                  end;
-
-               when E_Loop =>
-                  null;
-
-               when others =>
-                  raise Program_Error;
                end case;
             end if;
          end;
@@ -240,7 +248,9 @@ package body Why.Inter is
       begin
          case E is
             when SI_Integer => return "Integer";
-            when SI_Float   => return "Floating";
+            when SI_Float32 => return "Float32";
+            when SI_Float64 => return "Float64";
+            when SI_Real    => return "Real";
             when SI_Boolean => return "Boolean";
             when SI_Array1  => return "Array__1";
             when SI_Array2  => return "Array__2";
@@ -793,33 +803,58 @@ package body Why.Inter is
          begin
             for Index in Imports'Range loop
                if Imports (Index) then
-                  Add_With_Clause (P,
-                                   Gnatprove_Standard,
-                                   To_String (Index),
-                                   EW_Clone_Default);
+                  case Index is
+                     when SI_Float32 | SI_Float64 =>
+                        null;
+                     when others =>
+                        Add_With_Clause (P,
+                                         Gnatprove_Standard,
+                                         To_String (Index),
+                                         EW_Clone_Default);
+                  end case;
 
                   --  Two special cases for infix symbols; these are the only
                   --  theories (as opposed to modules) that are used, and the
                   --  only ones to be "use import"ed
 
-                  if Index = SI_Integer then
-                     Add_With_Clause (P,
-                                      "int",
-                                      "Int",
-                                      EW_Import,
-                                      EW_Theory);
-                  elsif Index = SI_Float then
-                     Add_With_Clause (P,
-                                      "real",
-                                      "RealInfix",
-                                      EW_Import,
-                                      EW_Theory);
-                     Add_With_Clause (P,
-                                      "ieee754",
-                                      "Single_RNE",
-                                      EW_Import,
-                                      EW_Theory);
-                  end if;
+                  case Index is
+                     when SI_Integer =>
+                        Add_With_Clause (P,
+                                         "int",
+                                         "Int",
+                                         EW_Import,
+                                         EW_Theory);
+                     when SI_Real =>
+                        Add_With_Clause (P,
+                                         "real",
+                                         "RealInfix",
+                                         EW_Import,
+                                         EW_Theory);
+                     when SI_Float32 =>
+                        Add_With_Clause (P,
+                                         "real",
+                                         "RealInfix",
+                                         EW_Import,
+                                         EW_Theory);
+                        Add_With_Clause (P,
+                                         "ieee754",
+                                         "Single_RNE",
+                                         EW_Import,
+                                         EW_Theory);
+                     when SI_Float64 =>
+                        Add_With_Clause (P,
+                                         "real",
+                                         "RealInfix",
+                                         EW_Import,
+                                         EW_Theory);
+                        Add_With_Clause (P,
+                                         "ieee754",
+                                         "Double_RNE",
+                                         EW_Import,
+                                         EW_Theory);
+                     when others =>
+                        null;
+                  end case;
                end if;
             end loop;
          end;

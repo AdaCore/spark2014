@@ -57,7 +57,7 @@ module Integer
 
 end
 
-module Floating
+module Real
   use real.Real
   use import real.RealInfix
   use real.Abs as AbsReal
@@ -67,9 +67,7 @@ module Floating
 
   use real.FromInt
 
-  use import ieee754.Single_RNE
-
-  use export _gnatprove_standard_th.Floating_Func
+  use export _gnatprove_standard_th.Real_Func
 
   function real_of_int (x : int) : real = FromInt.from_int x
 
@@ -114,14 +112,6 @@ module Floating
   val div_real_ (x:real) (y:real) : real
     requires { y<>0.0 }
     ensures { result = div_real x y }
-
-  function div_float (x : single) (y : single) : single = x / y
-
-  val div_float_ (x:single) (y:single) : single
-    requires { not fp_eq y fp_constant_zero }
-    ensures { result = div_float x y }
-
-  (*** Do we want to check for division by zero here or not? ***)
 
 end
 

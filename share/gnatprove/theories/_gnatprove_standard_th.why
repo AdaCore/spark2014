@@ -75,7 +75,7 @@ theory Integer_Func
 
 end
 
-theory Floating_Func
+theory Real_Func
   use import bool.Bool
   use import real.Real
   use import real.RealInfix

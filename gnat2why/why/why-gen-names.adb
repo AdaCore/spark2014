@@ -654,7 +654,7 @@ package body Why.Gen.Names is
          when WNE_Real_Div     => return "Floating.div_real";
          when WNE_Integer_Abs  => return "Integer.abs";
          when WNE_Float_Abs    => return "TBD";
-         when WNE_Float_Div    => return "Floating.div_float";
+         when WNE_Float_Div    => return "div_float";
          when WNE_Float_Exp    => return "TBD";
          when WNE_Real_To_IEEE => return "of_real";
          when WNE_IEEE_To_Real => return "ieee_to_real";
