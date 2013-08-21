@@ -372,6 +372,19 @@ follow the grammar of ``global_specification``
       :Trace Unit: FA 6.1.4 LR if Global aspect does not mention a variable, it
                    cannot appear within the subprogram
 
+#. Where the refinement of a state abstraction is not visible, the
+   referencing of one or more of its ``constituents`` by a subprogram
+   is represented by a ``global_item`` that denotes the state
+   abstraction in the ``global_specification`` of the subprogram.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 6.1.4 LR Where the refinement of a state
+           abstraction is not visible, the referencing of one or more
+           of its ``constituents`` by a subprogram is represented by a
+           ``global_item`` that denotes the state abstraction in the
+           ``global_specification`` of the subprogram.
+
 #. A ``global_item`` shall not denote a constant object other than
    a formal parameter [of an enclosing subprogram] of mode **in**.
    [This restriction may be relaxed in some way at some point in the future.]
@@ -467,8 +480,10 @@ is used purely for static analysis purposes and is not executed.
      - it denotes an output but not an input, other than the
        use of a discriminant or an attribute of the ``global_item`` and
 
-     - is always fully initialized as a result of any successful execution of a
-       call of the subprogram;
+     - is always *fully initialized* as a result of any successful execution of a
+       call of the subprogram. A state abstraction whose refinement is not visible
+       is not fully initialized by only updating one or more of its constituents
+       [because it may have other constituents that are not visible];
 
    * otherwise the ``global_item`` denotes both an input and an output, and
      has a ``mode_selector`` of In_Out.
@@ -476,7 +491,7 @@ is used purely for static analysis purposes and is not executed.
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
    or tags of any part of the output are ignored. Similarly, for purposes of
-   determining whether an entity is "fully initialized as a result of any
+   determining whether an entity is fully initialized as a result of any
    successful execution of the call", only nondiscriminant parts are considered.
    This implies that given an output of a discriminated type that is not known
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
