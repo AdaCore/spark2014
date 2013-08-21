@@ -22,7 +22,7 @@
 -- Reference: UNISIG SUBSET-026-3 v3.3.0
 
 Package ETCS_Level is
-   type ertms_etcs_level_t is range 0..4;
+   type ertms_etcs_level_t is range 0..4; -- SUBSET-026-2.6.2.3
    ertms_etcs_level_ntc : constant ertms_etcs_level_t := 4;
 
    ertms_etcs_level : ertms_etcs_level_t;

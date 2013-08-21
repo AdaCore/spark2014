@@ -18,9 +18,8 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-with Ada.Containers.Formal_Hashed_Maps;
-
-with Ada.Containers; use Ada.Containers;
+ with Ada.Containers.Formal_Hashed_Maps;
+ with Ada.Containers; use Ada.Containers;
 
 with Data_Types; use Data_Types;
 
@@ -28,17 +27,25 @@ package Com_Map is
    function RBC_RIU_ID_Hash(id : RBC_RIU_ID_t) return Hash_Type is
      (Hash_Type(id));
 
-   function Equivalent_Keys (K1, K2 : RBC_RIU_ID_T) return Boolean is
+   --  These two functions are needed until M321-015 is finished
+   function Equal_Elements (E1, E2 : Boolean) return Boolean is
+     (E1 = E2);
+
+   function Equivalent_Keys (K1, K2 : RBC_RIU_ID_t) return Boolean is
      (K1 = K2);
 
-   function Equal_Elements (E1, E2 : Boolean) return Boolean is
-      (E1 = E2);
+   --  These subtype is needed until M821-008 is finished
+   subtype My_Boolean is Boolean;
 
    package Com_To_RBC_Map is new Ada.Containers.Formal_Hashed_Maps
      (Key_Type        => RBC_RIU_ID_t,
-      Element_Type    => Boolean, -- False: com being established
-                                  -- True : com established
+      Element_Type    => My_Boolean, -- False: com being established
+      -- True : com established
       Hash            => RBC_RIU_ID_Hash,
       Equivalent_Keys => Equivalent_Keys,
       "="             => Equal_Elements);
+
+   function Contains (Map : Com_To_RBC_Map.Map; Id : RBC_RIU_ID_T) return Boolean
+   is (Com_To_RBC_Map.Contains (Map, Id) and
+         Com_To_RBC_Map.Element (Map, Id));
 end;
