@@ -54,8 +54,8 @@ themselves records.
 
    * any variables declared immediately in the private part or body of P; and
 
-   * the state declared in the visible part of any packages declared immediately
-     within the private part or body of P.
+   * the visible state of any packages declared immediately within
+     the private part or body of P.
 
 .. _external_state:
 
@@ -610,7 +610,7 @@ allowing a single state abstraction to contain visible declarations of package
 declarations nested immediately within the body of a package, private child or
 private sibling units and descendants thereof. Each visible state abstraction or
 variable of a private child or descendant thereof has to be specified as being
-*part of* a state abstraction of a unit which is more visible than itself.
+*part of* a state abstraction of its parent or a public descendant of its parent.
 
 The Abstract_State aspect is introduced by an ``aspect_specification``
 where the ``aspect_mark`` is Abstract_State and the ``aspect_definition``
@@ -1236,19 +1236,23 @@ where
 
       :Trace Unit: FE 7.2.2 LR constituent must be entire object
 
-#. A ``constituent`` shall denote an entity of the hidden state of a package or an
-   entity which has a Part_Of ``option`` or aspect associated with its
-   declaration.
+#. A ``constituent`` of a state abstraction of a package shall denote
+   either an entity with no Part_Of ``option`` or aspect which is part
+   of the hidden state of the package, or an entity whose declaration
+   has a Part_Of ``option`` or aspect which denotes this state
+   abstraction.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.2 LR constituents of hidden state must have
-                   a Part_Of option that associates them with this
-                   state abstraction
+      :Trace Unit: FE 7.2.2 LR constituents of a state abstraction of
+         a package must either belong to the hidden state of a package
+         or have a Part_Of option that associates them with this state
+         abstraction
 
-#. Each *abstract_*\ ``state_name`` declared in the package specification shall
-   be denoted as the ``state_name`` of a ``refinement_clause`` in the
-   Refined_State aspect of the body of the package.
+#. Each *abstract_*\ ``state_name`` declared in the package
+   specification shall be denoted exactly once as the ``state_name``
+   of a ``refinement_clause`` in the Refined_State aspect of the body
+   of the package.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1264,7 +1268,19 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.2.2 LR hidden state constituents must be denoted by exactly
-                   one constituents_list
+                   once in one constituents_list
+
+#. In a package body where the refinement of a state abstraction is
+   visible the ``constituents`` of the state abstraction must be
+   denoted in aspect specifications rather than the state abstraction.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.2 LR In a package body where the refinement
+          of a state abstraction is visible the ``constituents`` of
+          the state abstraction must be denoted in aspect
+          specifications rather than the state abstraction.
+
 
 #. The legality rules related to a Refined_State aspect given in
    :ref:`package_hierarchy` also apply.
@@ -1338,130 +1354,116 @@ There are no verification rules associated with Refined_State aspect.
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Each item of state declared in the visible part of a private library unit
-(and any descendants thereof) must be connected, directly or indirectly, to an
-*encapsulating* state abstraction of some public library unit. This is done
-using the Part_Of ``option`` or aspect associated with each declaration of
-the visible state of the private unit.
+In order to avoid aliasing-related problems, SPARK 2014 must ensure
+that if a given piece of state (either a variable or a state
+abstraction) is going to be a constituent of a given state
+abstraction, that relationship must be known at the point where the
+constituent is declared.
 
-The unit declaring the encapsulating state abstraction identified by the Part_Of
-``option`` or aspect need not be its parent, but it must be a unit whose body
-has visibility of the private library unit, while being *more visible* than the
-original unit. Furthermore, the unit declaring the encapsulating state
-abstraction must denote the corresponding item of visible state in its
-Refined_State aspect to indicate that it includes this part of the visible state
-of the private unit. That is, the two specifications, one in the private unit,
-and one in the body of the (typically) public unit, must match one another.
+For a variable declared immediately within a package body, this is not
+a problem.  The state refinement in which the variable is specified as
+a constituent precedes the declaration of the variable, and so there
+is no *window* between the introduction of the variable and its
+identification as a constituent. Similarly for a variable or state
+abstraction that is part of the visible state of a package that is
+declared immediately within the given package body.
 
-Hidden state declared in the private part of a unit also requires a Part_Of
-``option`` or aspect, but it must be connected to an encapsulating state
-abstraction of the same unit.
+For variable declared immediately within the private part of a
+package, such an unwanted "window" does exist (and similarly for a
+variable or state abstraction that is part of the visible state of a
+package that is declared immediately within the given private part).
 
-The ``option`` or aspect Part_Of is used to specify the encapsulating state
-abstraction of the (typically) public unit with which a private unit's visible
-state item is associated.
+In order to cope with this situation, the Part_Of aspect provides a
+mechanism for specifying at the point of a constituent's declaration
+the state abstraction that the constituent is going to be a
+constituent of, thereby closing the "window".  The state abstraction's
+refinement will eventually confirm this relationship. The Part_Of
+aspect, in effect, makes visible a preview of (some of) the state
+refinement that will eventually be provided in the package body.
 
-To support multi-level hierarchies of private units, a private unit may connect
-its visible state to the state abstraction of another private unit, so long as
-eventually the state gets connected to the state abstraction of a public unit
-through a chain of connections. However, as indicated above, the unit through
-which the state is *exposed* must be more visible.
-
-If a private library unit has visible state, this state might be read or updated
-as a side effect of calling a visible operation of a public library unit. This
-visible state may be referenced, either separately or as part of the state
-abstraction of some other public library unit. The following scenario gives rise
-to aliasing between the state abstraction and its constituents:
-
-   * a state abstraction is visible; and
-
-   * an object (or another state abstraction) is visible which is a constituent
-     of the state abstraction; and
-
-   * it is not apparent that the object (or other state) is a constituent
-     of the state abstraction - there are effectively two entities representing
-     part or all of the state abstraction.
-
-To resolve such aliasing, rules are imposed to ensure such a scenario can never
-occur. In particular, it is always known what state abstraction a constituent
-is part of and a state abstraction always knows all of its constituents.
+This mechanism is also used in the case of the visible state of a
+private child unit (or a public descendant thereof).  
 
 .. centered:: **Static Semantics**
 
-#. A *Part_Of indicator* is a Part_Of ``option`` of a state abstraction
-   declaration in an Abstract_State aspect, a Part_Of aspect applied to a
-   variable declaration or a Part_Of aspect applied to a generic package
-   instantiation.  The Part_Of indicator shall denote the encapsulating state
-   abstraction of which the declaration is a constituent.
-
-#. A unit is more visible than another if it has less private ancestors.
+#. A *Part_Of indicator* is a Part_Of ``option`` of a state
+   abstraction declaration in an Abstract_State aspect, a Part_Of
+   aspect specification applied to a variable declaration or a Part_Of
+   specification aspect applied to a generic package instantiation.  The
+   Part_Of indicator shall denote the *encapsulating* state abstraction
+   of which the declaration is a constituent.
 
 .. centered:: **Legality Rules**
 
-#. Every private unit and each of its descendants, that have visible state
-   shall for each declaration in the visible state:
-
-   * connect the declaration to an encapsulating state abstraction by
-     associating a Part_Of indicator with the declaration; and
-
-   * name an encapsulating state abstraction in its Part_Of indicator if and
-     only if the unit declaring the state abstraction is strictly more visible
-     than the unit containing the declaration.
-
-   [Each state abstraction which has a Part_Of indicator, the unit in which it
-   is declared and its encapsulating state is noted by any tool analyzing
-   SPARK 2014.]
+#. A variable declared immediately within the private part of a given
+   package or a variable or state abstraction that is part of the
+   visible state of a package that is declared immediately within the
+   private part of the given package shall have its Part_Of indicator
+   specified; the Part_Of indicator shall denote a state abstraction
+   declared by the given package.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 LR private units and their descendants must connect
-                   their visible states, via Part_Of indicators, to
-                   encapsulating state abstractions of more visible units
+      :Trace Unit: FE 7.2.3 LR A variable declared immediately within
+          the private part of a given package or a variable or state
+          abstraction that is part of the visible state of a package
+          that is declared immediately within the private part of the
+          given package shall have its Part_Of indicator specified;
+          the Part_Of indicator shall denote a state abstraction
+          declared by the given package.
 
-#. Each item of hidden state declared in the private part of a unit shall have
-   a Part_Of indicator associated with the declaration which shall denote an
-   encapsulating state abstraction of the same unit.
+#. A variable or state abstraction which is part of the visible state
+   of a private child unit shall have its Part_Of indicator specified;
+   the Part_Of indicator shall denote a state abstraction declared by
+   either the parent unit of the private unit or by a public
+   descendant of that parent unit.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 LR hidden state declared in private part of
-                   a unit must be associated, via a Part_Of indicator, to
-                   an encapsulating state abstraction of the same unit
+      :Trace Unit: FE 7.2.3 LR A variable or state abstraction which
+          is part of the visible state of a private child unit shall
+          have its Part_Of indicator specified; the Part_Of indicator
+          shall denote a state abstraction declared by either the
+          parent unit of the private unit or by a public descendant of
+          that parent unit.
+
+#. A variable or state abstraction which is part of the visible state
+   of a public descendant of a private child shall have
+   its Part_Of indicator specified; the Part_Of indicator shall denote
+   a state abstraction declared by its nearest private ancestor.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.3 LR A variable or state abstraction which
+          is part of the visible state of a public descendant of a
+          private child shall have its Part_Of indicator specified;
+          the Part_Of indicator shall denote a state abstraction
+          declared by its nearest private ancestor.
 
 #. No other declarations shall have a Part_Of indicator.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 LR Part_Of only applies on hidden state and
-                   private units
+      :Trace Unit: FE 7.2.3 LR Part_Of indicators are only allowed for the
+          declarations described above.
 
-#. The body of a unit whose specification declares a state abstraction named
-   as an encapsulating state abstraction of a Part_Of indicator shall:
-
-   * have a ``with_clause`` naming each unit, excluding itself, containing such
-     a Part_Of indicator; and
-
-   * in its Refined_State aspect, denote each declaration associated with such a
-     Part_Of indicator as a ``constituent`` exclusively of the encapsulating
-     state abstraction.
-
-   [The state abstractions with a Part_Of indicator, the unit in which they have
-   been declared and their encapsulating state have been noted as described
-   previously and these records are used to check this rule.]
+#. The refinement of a state abstraction denoted in a Part_Of
+   indicator shall denote as ``constituents`` all of the declarations
+   that have a Part_Of indicator denoting the state abstraction. [This
+   might be performed once the package body has been processed.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 LR unit bodies must with other units that denote
-                   their abstract states in their Part_Of indicators and
-                   each declaration associated with a Part_Of indicator must
-                   be a constituent of the encapsulating state abstraction
+      :Trace Unit: FE 7.2.3 LR Each declaration associated with a
+                   Part_Of indicator must be a constituent of the
+                   encapsulating state abstraction
 
-#. If both a state abstraction and one or more of its ``constituents`` are
-   visible in a private package specification or in the package specification of
-   a non-private descendant of a private package, then either the state
-   abstraction or its ``constituents`` may be denoted but not within the same
-   Global aspect or Depends aspect. The denotation must also be consistent
-   between the Global and Depends aspects of a subprogram.
+#. A state abstraction and a constituent (direct or indirect) thereof
+   shall not both be denoted in one Global, Depends, Initializes,
+   Refined_Global or Refined_Depends aspect specification.  The
+   denotation must be consistent between the Global and Depends or
+   between Refined_Global and Refined_Depends aspects of a single
+   subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1469,93 +1471,73 @@ is part of and a state abstraction always knows all of its constituents.
                    visible then Global and Depends aspects shall consistently
                    denote one of them
 
-#. In a public package specification entities that are Part_Of an
-   encapsulating state abstraction shall not be denoted; such entities
-   may be represented by denoting their encapsulating state
-   abstraction which is not Part_Of a more visible state abstraction.
-   [This rule is applied recursively, if an entity is Part_Of a state
-   abstraction which is itself Part_Of another encapsulating state
-   abstraction, then it must be represented by the encapsulating state
-   abstraction]. The exclusion to this rule is that for private parts
-   of a package given below.
+#. The ``constituents`` of a state abstraction not declared in a given
+   package may only be used in an aspect specification in the given
+   package where the refinement of the state abstraction is visible.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 LR entities in public package specifications that
-                   are Part_Of encapsulating states must not be denoted
+      :Trace Unit: FE 7.2.3 LR The ``constituents`` of a state
+          abstraction not declared in a given package may only be used
+          in an aspect specification in the given package where the
+          refinement of the state abstraction is visible.
 
-#. In the private part of a package a state abstraction declared by the
-   package shall not be denoted other than for specifying it as the
-   encapsulating state in the Part_Of indicator. The state abstraction's
-   ``constituents`` declared in the private part shall be denoted.
-
+#. In a package which declares a state abstraction which is Part_Of an
+   encapsulating state abstraction aspect specifications may denote
+   the local state abstraction rather than the encapsulating one if
+   the entity with the aspect specification only reads or updates the
+   local state abstraction and not other parts of the encapsulating
+   state.
+   
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 LR a package's state abstraction cannot be denoted
-                   in its private part except for specifying a Part_Of
-                   indicator
+      :Trace Unit: FE 7.2.3 LR In a package which declares a state
+            abstraction which is Part_Of an encapsulating state
+            abstraction aspect specifications may denote the local
+            state abstraction rather than the encapsulating one if the
+            entity with the aspect specification only reads or updates
+            the local state abstraction and not other parts of the
+            encapsulating state.
 
-#. In the body of a package, a state abstraction whose refinement is visible
-   shall not be denoted except as an encapsulating state in a Part_Of indicator.
-   Only its ``constituents`` may be denoted.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.3 LR when the refinement is visible, the state
-                   abstraction cannot be denoted except as an encapsulating
-                   state in a Part_Of indicator
-
-#. Within a package body where a state abstraction is visible, its
-   refinement is not visible, but one or more of its ``constituents``
-   are visible, then the following rules apply:
-
-   * either the state abstraction or its ``constituents`` may be
-     denoted but not within the same Global aspect or Depends
-     aspect. The denotation must also be consistent between the Global
-     and Depends aspects of a subprogram.
-
-   * a state abstraction denoted in a Global or Depends aspect is not
-     refined into its constituents in a Refined_Global or
-     Refined_Depends aspect [because the refinement of the state
-     abstraction is not visible].
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.3 LR in a package body, when a state abstraction
-                   and some of its constituents are visible but the refinement
-                   is not then both the Global and Depends aspects have to
-                   consistently mention either of the two
 
 .. centered:: *Verification Rules*
 
-#. In a package body of a public child when a state abstraction is
-   visible, its refinement is not but one or more of its constituents
-   are visible then if a subprogram declared in the visible part of
-   the package, directly or indirectly:
+#. In a package where a state abstraction not declared in the package
+   is visible, its refinement is not visible, but one or more of its
+   ``constituents`` are visible then, if a subprogram declared in the
+   visible part of the package directly or indirectly
 
-   * reads a ``constituent`` of a state abstraction then, this
-     shall be regarded as a read of the most visible encapsulating
-     state abstraction of the ``constituent`` and shall be represented
-     by this encapsulating state in the Global and Depends aspects of
-     the subprogram; or
+   * reads a ``constituent`` of the state abstraction this shall be
+     regarded as a read of the encapsulating state abstraction of the
+     ``constituent`` and shall be represented by this encapsulating
+     state abstraction in the Global and Depends aspects of the
+     subprogram declaration; or
 
-   * updates a ``constituent`` of a state abstraction then, this shall
-     be regarded as an update of the most visible encapsulation state
+   * updates a ``constituent`` of the state abstraction then, this
+     shall be regarded as an update of the encapsulation state
      abstraction of the ``constituent`` and shall be represented by
-     this encapsulating state with a ``mode_selector`` of In_Out in
-     the Global aspect of the subprogram and as both an ``input`` and
-     an ``output`` in the Depends aspect of the subprogram. [The
-     reason for this is that it is not known whether the entire state
-     abstraction is updated or only some of its constituents.]
+     this encapsulating state abstraction and shall have a
+     ``mode_selector`` of In_Out in the Global aspect of the
+     subprogram and appear as both an ``input`` and an ``output`` in
+     the Depends aspect of the subprogram declaration. [The reason for
+     this is that it is not known whether the entire state abstraction
+     is updated or only some of its constituents.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 VR public children which see a state abstraction
-                   and some of its constituents but not its refinement,
-                   may either read the most visible encapsulating state
-                   abstraction or update it. These children must reference
-                   this most visible encapsulating state abstraction in their
-                   Global and Depends aspects.
+      :Trace Unit: FE 7.2.3 VR In a package which sees a state
+                   abstraction and some of its constituents but not
+                   its refinement, a subprogram which is declared in
+                   the visible part of the package that reads or
+                   updates a constituent must refer to its
+                   encapsulating state in the Global and Depends
+                   aspects of its declaration rather than the
+                   constituent.  If the subprogram updates the
+                   constituent then its encapsulating state
+                   abstraction must appear with a mode selector of
+                   In_Out in the Global aspect of its declaration and
+                   as both an input and an output in its Depends
+                   aspect.
 
 
 .. centered:: **Examples**
@@ -1618,28 +1600,32 @@ is part of and a state abstraction always knows all of its constituents.
        package Inner
           with Abstract_state => (B1 with Part_Of => Outer.A1)
                         -- State abstraction declared in the private
-                        -- part must have a Part_Of option
-                        -- A1 cannot be denoted in the private part.
+                        -- part must have a Part_Of option.
        is
+          -- B1 is declared in this package and may be used in
+          -- aspect specifications provided a part of Outer.A1
+          -- other than B1 is not accessed.
           procedure Init_B1
              with Global  => (Output => B1),
                   Depends => (B1 => null);
 
           procedure Init_A2
-             -- A2 cannot be denoted in the private part but
-             -- Outer.Hidden_State, which is Part_Of A2, may be denoted.
-             with Global  => (Output => Outer.Hidden_State),
-                  Depends => (Outer.Hidden_State => null);
+             -- We can only refer to A2 and not its constituents
+             -- as its refinement is not visible. We can just update
+             with Global  => (Output => A2),
+                  Depends => (A2 => null);
 
        end Inner;
     end Outer;
 
    package body Outer
       with Refined_State => (A1 => Inner.B1,
-                             A2 => Hidden_State)
+                             A2 => Hidden_State, State_In_Body)
                              -- Outer.A1 and Outer.A2 cannot be denoted in the
                              -- body of Outer because their refinements are visible.
    is
+      State_In_Body : Integer;
+
       package body Inner
          with Refined_State => (B1 => null)  -- Oh, there isn't any state after all
       is
@@ -1652,26 +1638,29 @@ is part of and a state abstraction always knows all of its constituents.
          end Init_B1;
 
          procedure Init_A2
-            -- Refined_Global and Refined_Depends aspects not required
-            -- because there is no refinement of Outer.Hidden_State.
+            -- The refinement of A2 is visible and so we have 
+            -- Refined_Global and Refined_Depends aspects.
+            with Refined_Global  => (Output => (Hidden_State, State_In_Body)),
+                 Refined_Depends => ((Hidden_State, State_In_Body) => null)
          is
          begin
             Outer.Hidden_State := 0;
+            State_In_Body := 42;
          end Init_A2;
 
       end Inner;
 
       procedure Init_A1
-         with Refined_Global  => (Output => B1),
-              Refined_Depends => (B1 => null)
+         with Refined_Global  => (Output => Inner.B1),
+              Refined_Depends => (Inner.B1 => null)
       is
       begin
          Inner.Init_B1;
       end Init_A1;
 
       procedure Init_A2
-         with Refined_Global  => (Output => Hidden_State),
-              Refined_Depends => (Hidden_State => null)
+         with Refined_Global  => (Output => (Hidden_State, State_In_Body)),
+              Refined_Depends => ((Hidden_State, State_In_Body) => null)
       is
       begin
          Inner.Init_A2;
@@ -1692,22 +1681,35 @@ is part of and a state abstraction always knows all of its constituents.
               Depends => (Q2 => null);
 
    private
-      -- Q1 and Q2 may only be denoted as the encapsulating state abstraction
       Hidden_State : Integer
          with Part_Of => Q2;
+
+      -- We have to use Q2 as its refinement is not
+      -- visible here.
+      procedure Init_All_Q2
+         with Global  => (Output => Q2),
+              Depends => (Q2 => null);
    end Q;
 
    private package Q.Child
       with Abstract_State => (C1 with Part_Of => Q.Q1)
    is
-      -- Only constituents of Q1 and Q2 may be denoted here
+      -- C1 is declared in this package and so we can use
+      -- C1 rather than Q1 provided we do not read or
+      -- update any other parts of Q1 other than C1.
+
+      -- Here C1 is used so Q1 cannot also be used in
+      -- the aspect specifications of this subprogram
       procedure Init_Q1
          with Global  => (Output => C1),
               Depends => (C1 => null);
 
+      -- The refinement of Q2 is not visible and so Q2 must be used
+      -- and must have a mode_selector of In_Out as its refinement
+      -- will not be visible in Q.Child.
       procedure Init_Q2
-         with Global  => (Output => Q.Hidden_State),
-              Depends => (Q.Hidden_State => null);
+         with Global  => (In_Out => Q.Q2),
+              Depends => (Q.Q2 => Q.Q2);
    end Q.Child;
 
    with Q;
@@ -1715,7 +1717,7 @@ is part of and a state abstraction always knows all of its constituents.
       with Refined_State => (C1 => Actual_State)
    is
       -- C1 shall not be denoted here - only Actual_State
-      -- but Q.Hidden_State may be denoted.
+      -- but Q.Q2 and Q.Hidden_State may be denoted.
       Actual_State : Integer;
 
       procedure Init_Q1
@@ -1729,6 +1731,7 @@ is part of and a state abstraction always knows all of its constituents.
       procedure Init_Q2
       is
       begin
+         Q.Init_All_Q2;
          Q.Hidden_State := 0;
       end Init_Q2;
 
@@ -1737,10 +1740,20 @@ is part of and a state abstraction always knows all of its constituents.
    with Q.Child;
    package body Q
       with Refined_State => (Q1 => Q.Child.C1,
-                             Q2 => Hidden_State)
+                             Q2 => Hidden_State, State_In_Body)
    is
       -- Q1 and Q2 shall not be denoted here but the constituents
-      -- Q.Child.C1 and Hidden_State may be.
+      -- Q.Child.C1, State_In_Body and Hidden_State may be.
+      State_In_Body : Integer;
+
+      procedure Init_All_Q2
+         with Refined_Global  => (Output => (Hidden_State, State_In_Body),
+              Refined_Depends => ((Hidden_State, State_In_Body) => null)
+      is
+      begin
+        State_in_Body := 42;
+        Hidden_State := State_In_Body;
+      end Init_All_Q2;
 
       procedure Init_Q1
          with Refined_Global  => (Output => Q.Child.C1),
@@ -1751,8 +1764,8 @@ is part of and a state abstraction always knows all of its constituents.
       end Init_Q1;
 
       procedure Init_Q2
-         with Refined_Global  => (Output => Hidden_State),
-              Refined_Depends => (Hidden_State => null)
+         with Refined_Global  => (Output => (Hidden_State, State_in_Body)),
+              Refined_Depends => ((Hidden_State, State_in_Body) => null)
       is
       begin
          Q.Child.Init_Q2;
