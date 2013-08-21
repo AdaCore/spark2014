@@ -93,7 +93,8 @@ module Float_32
   function to_float t : single
   function of_float single : t
 
-  function of_real (x: real) : single = from_real x
+  function of_real (x: real) : single       = from_real x
+  function ieee_to_real (x : single) : real = to_real x
 
   predicate in_range  (x : single) =
    ( of_real attr__ATTRIBUTE_FIRST <= x <= of_real attr__ATTRIBUTE_LAST )
@@ -133,7 +134,60 @@ module Float_32
   function dummy : t
 end
 
-module Floating_Point
+module Float_64
+  use import "_gnatprove_standard".Main
+  use import ieee754.Double_RNE
+
+  type t
+
+  function attr__ATTRIBUTE_FIRST : real
+  function attr__ATTRIBUTE_LAST  : real
+
+  function to_float t : double
+  function of_float double : t
+
+  function of_real (x: real) : double       = from_real x
+  function ieee_to_real (x : double) : real = to_real x
+
+  predicate in_range  (x : double) =
+   ( of_real attr__ATTRIBUTE_FIRST <= x <= of_real attr__ATTRIBUTE_LAST )
+
+
+  val of_float (x : double) : t
+    requires { true }
+    ensures  { to_float (result) = x }
+
+  val range_check_ (n : double) : double
+    requires { in_range n }
+    ensures { result = n }
+
+  predicate eq (x : t) (y : t) = fp_eq (to_float x) (to_float y)
+
+  axiom range_axiom :
+    forall x  : t.  in_range (to_float x)
+
+  axiom coerce_axiom :
+    forall x  : double [to_float (of_float x) | in_range x, of_float x].
+      in_range x -> to_float (of_float x) = x
+
+  axiom inversion_axiom :
+    forall x : t [to_float x].
+      of_float ( to_float(x) ) = x
+
+  function attr__ATTRIBUTE_IMAGE double : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : double
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : double
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+  function dummy : t
+end
+
+module Fixed_Point
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Floating
   use import "real".RealInfix

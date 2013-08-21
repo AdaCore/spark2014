@@ -200,8 +200,15 @@ package body Why.Gen.Names is
                   --  they are of incompatible types
                   --  In both cases, it is an error.
 
-                  elsif From_Kind = EW_Real and then To_Kind = EW_Float32 then
-                     return To_Ident (WNE_Float_Of_Real);
+                  elsif From_Kind = EW_Real and then
+                    To_Kind in EW_Float32 | EW_Float64
+                  then
+                     return To_Ident (WNE_Real_To_IEEE);
+
+                  elsif From_Kind in EW_Float32 | EW_Float64 and then
+                    To_Kind = EW_Real
+                  then
+                     return To_Ident (WNE_IEEE_To_Real);
 
                   else
                      raise Program_Error;
@@ -264,8 +271,10 @@ package body Why.Gen.Names is
    is
    begin
       case Kind is
-         when EW_Int => return WNE_Of_Int;
-         when EW_Real => return WNE_Of_Real;
+         when EW_Int     => return WNE_Of_Int;
+         when EW_Real    => return WNE_Of_Real;
+         when EW_Float32 => return WNE_Of_Float;
+         when EW_Float64 => return WNE_Of_Float;
          when others =>
             raise Program_Error;
       end case;
@@ -279,8 +288,8 @@ package body Why.Gen.Names is
    is
    begin
       case Kind is
-         when EW_Int => return WNE_To_Int;
-         when EW_Real => return WNE_To_Real;
+         when EW_Int     => return WNE_To_Int;
+         when EW_Real    => return WNE_To_Real;
          when EW_Float32 => return WNE_To_Float;
          when EW_Float64 => return WNE_To_Float;
          when others =>
@@ -614,6 +623,7 @@ package body Why.Gen.Names is
          when WNE_To_Real      => return "to_real";
          when WNE_Of_Real      => return "of_real";
          when WNE_To_Float     => return "to_float";
+         when WNE_Of_Float     => return "of_float";
          when WNE_To_Array     => return "to_array";
          when WNE_Of_Array     => return "of_array";
          when WNE_To_Base      => return "to_base";
@@ -646,7 +656,9 @@ package body Why.Gen.Names is
          when WNE_Float_Abs    => return "TBD";
          when WNE_Float_Div    => return "Floating.div_float";
          when WNE_Float_Exp    => return "TBD";
-         when WNE_Float_Of_Real => return "of_real";
+         when WNE_Real_To_IEEE => return "of_real";
+         when WNE_IEEE_To_Real => return "ieee_to_real";
+         when WNE_Real_Of_Float => return "of_float";
          when WNE_Real_Abs     => return "Floating.AbsReal.abs";
          when WNE_Real_Ceil    => return "Floating.ceil";
          when WNE_Real_Exp     => return "Floating.power";
