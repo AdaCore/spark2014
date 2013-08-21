@@ -1158,9 +1158,9 @@ package body SPARK_Definition is
    -- Before_Marking --
    --------------------
 
-   procedure Before_Marking (Filename : String) is
+   procedure Before_Marking (Basename : String) is
    begin
-      Create (Output_File, Out_File, Filename);
+      Create (Output_File, Out_File, Basename & SPARK_Violations.SPARK_Suffix);
    end Before_Marking;
 
    ----------------------------------

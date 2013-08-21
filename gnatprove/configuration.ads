@@ -159,9 +159,6 @@ package Configuration is
    --  The name of the file in which the SPARK report is generated:
    --    Out_Dir/gnatprove.out
 
-   SPARK_Suffix : constant String := ".alfa";
-   --  Suffix for raw SPARK information files
-
    procedure Read_Command_Line (Tree : out Project_Tree);
 
    function To_String (P : Proof_Mode) return String;
