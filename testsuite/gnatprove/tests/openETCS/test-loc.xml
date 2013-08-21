@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project >
+    <file_marker column=" 40" line=" 44" >
+      <vfs_file>/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/com_map.ads</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 40" line=" 49" >
+      <vfs_file>/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/section_3_5_3.ads</vfs_file>
+    </file_marker>
+  </Project>
+  <Project >
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/appendix_a_3_1.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/com_map.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/safe_radio.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/safe_radio.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/section_3_5_3.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 15" line=" 102">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/section_4_6.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 13" line=" 28">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/section_4_6.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 31" line=" 68">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/section_3_5_3.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 14" line=" 29">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/section_3_5_3.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1">
+      <vfs_file >/home/claire/Documents/spark2014/testsuite/gnatprove/tests/openETCS/com_map.ads</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

@@ -1,0 +1,172 @@
+com_map.ads:50:24: precondition not proved
+deceleration_curve.adb:37:10: info: assertion proved
+deceleration_curve.adb:39:10: info: loop invariant initialization proved
+deceleration_curve.adb:39:10: info: loop invariant preservation proved
+deceleration_curve.adb:41:10: info: assertion proved
+deceleration_curve.adb:41:34: info: division check proved
+deceleration_curve.adb:41:48: info: division check proved
+deceleration_curve.adb:42:10: info: assertion proved
+deceleration_curve.adb:44:38: info: division check proved
+deceleration_curve.adb:45:10: info: assertion proved
+deceleration_curve.adb:48:39: info: division check proved
+deceleration_curve.adb:50:48: info: division check proved
+deceleration_curve.adb:50:48: info: overflow check proved
+deceleration_curve.adb:51:12: info: overflow check proved
+deceleration_curve.adb:53:10: info: assertion proved
+deceleration_curve.adb:59:25: info: overflow check proved
+deceleration_curve.adb:61:31: overflow check not proved
+deceleration_curve.adb:70:36: info: division check proved
+deceleration_curve.adb:70:36: info: range check proved
+deceleration_curve.adb:82:9: info: precondition proved
+deceleration_curve.adb:90:19: overflow check not proved
+deceleration_curve.adb:90:32: overflow check not proved
+deceleration_curve.adb:91:13: overflow check not proved
+deceleration_curve.adb:91:29: overflow check not proved
+deceleration_curve.adb:92:13: overflow check not proved
+deceleration_curve.adb:92:46: info: division check proved
+deceleration_curve.adb:92:46: overflow check not proved
+deceleration_curve.adb:97:36: overflow check not proved
+deceleration_curve.adb:97:36: range check not proved
+deceleration_curve.adb:107:9: precondition not proved
+deceleration_curve.adb:111:12: precondition not proved
+deceleration_curve_test.adb:6:31: info: precondition proved
+deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
+deceleration_curve_test.adb:15:19: info: precondition proved
+deceleration_curve_test.adb:17:4: info: precondition proved
+example.adb:4:13: info: overflow check proved
+example.adb:5:20: info: overflow check proved
+example.ads:5:14: info: postcondition proved
+sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
+sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
+sec_3_13_6_deceleration.adb:26:37: info: precondition proved
+sec_3_13_6_deceleration.adb:26:37: range check not proved
+sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
+sec_3_13_6_deceleration.ads:40:37: info: range check proved
+sec_3_13_6_deceleration.ads:40:37: precondition not proved
+sec_3_13_6_deceleration.ads:45:23: precondition not proved
+sec_3_13_6_deceleration.ads:46:23: overflow check not proved
+sec_3_13_6_deceleration.ads:46:26: precondition not proved
+sec_3_13_6_deceleration.ads:46:38: info: overflow check proved
+sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
+sec_3_13_6_deceleration.ads:46:57: overflow check not proved
+sec_3_13_6_deceleration.ads:46:59: precondition not proved
+sec_3_13_6_deceleration.ads:47:22: overflow check not proved
+sec_3_13_6_deceleration.ads:47:22: range check not proved
+sec_3_13_6_deceleration.ads:47:30: precondition not proved
+sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
+sec_3_13_6_deceleration.ads:52:26: info: range check proved
+sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
+section_3_5_3.adb:41:54: info: overflow check proved
+section_3_5_3.ads:75:14: postcondition not proved, requires Contains(Connections, destination)
+section_4_6.ads:106:6: complete contract cases not proved
+section_4_6.ads:106:6: disjoint contract cases not proved
+section_4_6.ads:106:55: info: contract case proved
+section_4_6.ads:107:55: info: contract case proved
+section_4_6.ads:108:55: info: contract case proved
+section_4_6.ads:109:14: info: postcondition proved
+step_function.adb:30:10: info: loop invariant initialization proved
+step_function.adb:30:10: info: loop invariant preservation proved
+step_function.adb:31:50: info: index check proved
+step_function.adb:32:61: info: index check proved
+step_function.adb:32:61: info: overflow check proved
+step_function.adb:45:10: info: loop invariant initialization proved
+step_function.adb:45:10: loop invariant preservation not proved
+step_function.adb:47:34: info: index check proved
+step_function.adb:48:33: info: index check proved
+step_function.adb:51:31: info: index check proved
+step_function.adb:53:34: info: index check proved
+step_function.adb:60:18: assertion not proved, requires SFun.Step(j-1).Delimiter < SFun.Step(j).Delimiter
+step_function.adb:60:29: info: index check proved
+step_function.adb:60:55: info: index check proved
+step_function.adb:72:17: info: range check proved
+step_function.adb:89:7: info: assertion proved
+step_function.adb:92:10: info: loop invariant initialization proved
+step_function.adb:92:10: loop invariant preservation not proved
+step_function.adb:103:39: info: index check proved
+step_function.adb:103:66: info: index check proved
+step_function.adb:110:30: info: index check proved
+step_function.adb:110:56: info: index check proved
+step_function.adb:114:30: info: index check proved
+step_function.adb:114:56: info: index check proved
+step_function.adb:119:26: info: index check proved
+step_function.adb:120:19: info: precondition proved
+step_function.adb:120:47: info: index check proved
+step_function.adb:121:17: info: precondition proved
+step_function.adb:121:45: info: index check proved
+step_function.adb:128:22: info: precondition proved
+step_function.adb:129:22: info: precondition proved
+step_function.adb:135:22: info: precondition proved
+step_function.adb:136:22: info: precondition proved
+step_function.adb:142:22: info: precondition proved
+step_function.adb:143:22: info: precondition proved
+step_function.adb:151:19: info: precondition proved
+step_function.adb:152:19: info: precondition proved
+step_function.adb:158:22: info: precondition proved
+step_function.adb:159:22: info: precondition proved
+step_function.adb:163:58: assertion not proved, requires im < i1 + i2
+step_function.adb:165:22: range check not proved
+step_function.ads:40:17: info: postcondition proved
+step_function.ads:46:24: info: index check proved
+step_function.ads:46:24: info: overflow check proved
+step_function.ads:46:50: info: index check proved
+step_function.ads:52:23: info: index check proved
+step_function.ads:52:49: info: index check proved
+step_function.ads:56:12: postcondition not proved
+step_function.ads:58:27: info: index check proved
+step_function.ads:59:36: info: index check proved
+step_function.ads:60:50: info: index check proved
+step_function.ads:72:6: postcondition not proved
+step_function.ads:73:28: index check not proved
+step_function.ads:74:50: index check not proved
+step_function.ads:78:26: info: index check proved
+step_function.ads:80:53: info: index check proved
+step_function.ads:86:6: info: postcondition proved
+step_function.ads:101:4: postcondition not proved
+step_function.ads:106:30: info: index check proved
+step_function.ads:106:56: info: index check proved
+step_function.ads:111:30: info: index check proved
+step_function.ads:111:56: info: index check proved
+step_function.ads:114:25: info: index check proved
+step_function.ads:114:40: info: precondition proved
+step_function.ads:115:61: info: index check proved
+step_function.ads:116:40: info: precondition proved
+step_function.ads:117:61: info: index check proved
+step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
+step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
+step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
+step_function_test.adb:44:4: assertion not proved, requires Step_Function.Is_Valid(sfun4)
+step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) =
+step_function_test.adb:46:19: info: precondition proved
+step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) =
+step_function_test.adb:47:19: info: precondition proved
+step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) =
+step_function_test.adb:48:19: info: precondition proved
+step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) =
+step_function_test.adb:49:19: info: precondition proved
+step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) =
+step_function_test.adb:50:19: info: precondition proved
+step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) =
+step_function_test.adb:51:19: info: precondition proved
+step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
+step_function_test.adb:56:4: info: precondition proved
+step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
+step_function_test.adb:61:22: info: precondition proved
+step_function_test.adb:62:28: info: precondition proved
+step_function_test.adb:62:49: info: precondition proved
+step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) =
+step_function_test.adb:65:19: info: precondition proved
+step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:19: info: precondition proved
+step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) =
+step_function_test.adb:67:19: info: precondition proved
+units.adb:24:38: info: overflow check proved
+units.adb:24:48: info: division check proved
+units.adb:24:48: overflow check not proved
+units.ads:37:22: info: overflow check proved
+units.ads:37:32: info: division check proved
+units.ads:37:32: info: overflow check proved
+units.ads:43:20: info: precondition proved

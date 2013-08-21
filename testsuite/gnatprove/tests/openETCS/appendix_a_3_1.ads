@@ -26,5 +26,7 @@ Package Appendix_A_3_1 is
 
    driver_acknowledgment_time : constant Integer := 5; -- seconds
    t_ack : constant Integer := driver_acknowledgment_time;
+
+   M_NVAVADH : constant Float := 0.0;
 end;
 
