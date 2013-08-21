@@ -965,7 +965,7 @@ There are no dynamic semantics associated with the Initializes aspect.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 7.1.5 VR enities used in the initialization of an
+      :Trace Unit: FA 7.1.5 VR entities used in the initialization of an
                    initialization_item must appear in its input_list.
 
 .. centered:: **Examples**
@@ -1474,7 +1474,7 @@ is part of and a state abstraction always knows all of its constituents.
    may be represented by denoting their encapsulating state
    abstraction which is not Part_Of a more visible state abstraction.
    [This rule is applied recursively, if an entity is Part_Of a state
-   abstraction which itself a Part_Of another encapsulating state
+   abstraction which is itself Part_Of another encapsulating state
    abstraction, then it must be represented by the encapsulating state
    abstraction]. The exclusion to this rule is that for private parts
    of a package given below.
