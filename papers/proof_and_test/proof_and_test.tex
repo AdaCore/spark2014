@@ -1,6 +1,12 @@
-\documentclass{llncs} \usepackage[utf8]{inputenc} \usepackage{url}
-\usepackage{xspace} \usepackage{hyperref} \usepackage{listings}
-\usepackage{amsmath} \usepackage{graphicx} \usepackage{zed-csp}
+\documentclass{llncs}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{zed-csp}
 
 \newcommand{\DO}{\textsc{do-178}\xspace}
 \newcommand{\DOB}{\textsc{do-178b}\xspace}
@@ -9,16 +15,20 @@
 \newcommand{\gnatprove}{GNATprove\xspace}
 \newcommand{\oldspark}{SPARK~2005\xspace}
 \newcommand{\newspark}{SPARK~2014\xspace}
-\newcommand{\spark}{SPARK\xspace} \newcommand{\ada}{Ada\xspace}
+\newcommand{\spark}{SPARK\xspace}
+\newcommand{\ada}{Ada\xspace}
 \newcommand{\adatwtw}{Ada~2012\xspace}
 \newcommand{\vectorcast}{VectorCast\xspace}
 
 \newcommand{\etc}{\textit{etc.}\xspace}
-\newcommand{\ie}{\textit{i.e.,}\xspace} \newcommand{\adhoc}{\textit{ad
-    hoc}\xspace} \newcommand{\Eg}{\textit{E.g.,}\xspace}
-\newcommand{\eg}{\textit{e.g.,}\xspace} \newcommand{\etal}{\textit{et
-    al.}\xspace} \newcommand{\wrt}{w.r.t.\xspace}
-\newcommand{\aka}{a.k.a.\xspace} \newcommand{\resp}{resp.\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\adhoc}{\textit{ad hoc}\xspace}
+\newcommand{\Eg}{\textit{E.g.,}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
 
 \lstdefinestyle{tinystyle} {basicstyle=\scriptsize\tt,
   keywordstyle=\bf, commentstyle=\rmfamily\it, escapeinside={(*}{*)}}
@@ -112,13 +122,13 @@ useful.
 The features of \newspark that are particularly relevant to the proof
 and test combination are:
 \begin{itemize}
-   \item language subsetting;
-   \item flow analysis;
-   \item the use of theorem provers to demonstrate absence of run-time
-     errors;
-   \item partial and full specification using pre- and
-     post-conditions; and
-   \item the use of global contracts.
+\item language subsetting;
+\item flow analysis;
+\item the use of theorem provers to demonstrate absence of run-time
+  errors;
+\item partial and full specification using pre- and post-conditions;
+  and
+\item the use of global contracts.
 \end{itemize}
 
 \subsection{\newspark language subset}
@@ -130,14 +140,14 @@ language subset will therefore be a lot larger than \oldspark.
 The key language features that are not in the subset are:
 
 \begin{itemize}
-   \item no access types (pointers);
-   \item expressions (hence functions) must not have side-effects;
-   \item no aliasing (but renaming is permitted);
-   \item no gotos;
-   \item no controlled types;
-   \item no tagged types (for now...);
-   \item no tasking (for now...); and
-   \item no exceptions.
+\item no access types (pointers);
+\item expressions (hence functions) must not have side-effects;
+\item no aliasing (but renaming is permitted);
+\item no gotos;
+\item no controlled types;
+\item no tagged types (for now...);
+\item no tasking (for now...); and
+\item no exceptions.
 \end{itemize}
 
 These restrictions are necessary for proof but also help test by
@@ -168,12 +178,12 @@ Proof of absence of run-time errors verifies that no exceptions will
 be raised. This covers the following Ada checks:
 
 \begin{itemize}
-   \item overflow check;
-   \item range check;
-   \item index check;
-   \item division check;
-   \item discriminant check and
-   \item length check.
+\item overflow check;
+\item range check;
+\item index check;
+\item division check;
+\item discriminant check and
+\item length check.
 \end{itemize}
 
 See the Ada Language Reference Manual for the precise definitions.
@@ -528,7 +538,6 @@ Two]{Code/proof_failed/example_two/sorting.ads}
 \lstinputlisting[language=SPARK, title=Body Of Example
 Two]{Code/proof_failed/example_two/sorting.adb}
 
-
 \subsubsection{Points of interest arising from attempting to verify}
 When the tools are unable to discharge a verification condition and
 the user is confident that the existing annotations should be
@@ -536,7 +545,6 @@ rendering it provable, trying the following might help:
 \begin{itemize}
 \item Increase the time spent by the prover on each verification
   condition.
-
 \item Restructure the code and/or annotations to facilitate proof.
 \end{itemize}
 
