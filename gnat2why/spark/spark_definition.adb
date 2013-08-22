@@ -1122,7 +1122,6 @@ package body SPARK_Definition is
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
       generic
          type Violation_Subkind is (<>);
-         Open, Close : Character;
          with function Has_Violation
            (V : Violation_Subkind;
             E : Entity_Id) return Boolean is <>;
@@ -1133,7 +1132,7 @@ package body SPARK_Definition is
       --  Produce a comma-separated list of message for NYI or NIR violations,
       --  enclosed in Open-Close characters.
 
-      function Suffix return String;
+      function Violations return String;
       --  Suffix string indicates why subprogram body is not in SPARK
 
       ----------------------
@@ -1151,12 +1150,6 @@ package body SPARK_Definition is
       is
         (SPARK_Violations.Violation_Msg (V));
 
-      function Location return String is
-        (Name_String (Chars (Id)) & ' ' & Build_Location_String (Sloc (Id)));
-      --  Location string points to source location for entity. Use the
-      --  location of the body (Defining_Entity) rather than the location
-      --  of the spec (Id).
-
       ----------------------------
       -- Collect_Msg_Violations --
       ----------------------------
@@ -1169,18 +1162,13 @@ package body SPARK_Definition is
          for V in Violation_Subkind loop
             if Has_Violation (V, E) then
                if Msg = "" then
-                  Msg := Msg & Get_Violation_Msg (V);
+                  Msg := Msg & """" & Get_Violation_Msg (V) & """";
                else
-                  Msg := Msg & ", " & Get_Violation_Msg (V);
+                  Msg := Msg & ", """ & Get_Violation_Msg (V) & """";
                end if;
             end if;
          end loop;
-
-         if Msg /= "" then
-            return Open & To_String (Msg) & Close;
-         else
-            return "";
-         end if;
+         return To_String (Msg);
       end Collect_Msg_Violations;
 
       --------------------------------------
@@ -1189,16 +1177,16 @@ package body SPARK_Definition is
 
       function Collect_NYI_Msg_Violations is
         new Collect_Msg_Violations
-          (SPARK_Violations.Not_Yet_Implemented, '[', ']');
+          (SPARK_Violations.Not_Yet_Implemented);
 
       function Collect_NIR_Msg_Violations is
-        new Collect_Msg_Violations (SPARK_Violations.Not_In_Roadmap, '(', ')');
+        new Collect_Msg_Violations (SPARK_Violations.Not_In_Roadmap);
 
       ------------
       -- Suffix --
       ------------
 
-      function Suffix return String is
+      function Violations return String is
       begin
          if Subprogram_Body_In_SPARK (Id) then
             return "";
@@ -1210,50 +1198,33 @@ package body SPARK_Definition is
                            Collect_NYI_Msg_Violations (Id);
             begin
                if NIR_Msg /= "" and then NYI_Msg /= "" then
-                  return ' ' & NIR_Msg & ' ' & NYI_Msg;
+                  return NIR_Msg & ", " & NYI_Msg;
                elsif NIR_Msg /= "" then
-                  return ' ' & NIR_Msg;
+                  return NIR_Msg;
                elsif NYI_Msg /= "" then
-                  return ' ' & NYI_Msg;
+                  return NYI_Msg;
                elsif Applicable_SPARK_Pragma_Is
                  (Id, Off, Is_Body => True)
                then
-                  return " SPARK_Mode=Off";
+                  return "";
                else
                   raise Program_Error;
                end if;
             end;
          end if;
-      end Suffix;
+      end Violations;
 
-      C1, C2 : Character;
-      --  Character indicates whether entity body (C1) and spec (C2) are:
-      --    + in SPARK
-      --    - not in SPARK roadmap
-      --    * not yet implemented in SPARK
-
+      SPARK_Status : constant String :=
+        (if Subprogram_Body_In_SPARK (Id) then "true" else "false");
+      Line_Num     : constant String :=
+        Get_Logical_Line_Number (Sloc (Id))'Img;
    begin
-      if Comes_From_Source (Id) then
-         if Subprogram_Body_In_SPARK (Id) then
-            C1 := '+';
-         elsif (for some V in SPARK_Violations.Not_In_Roadmap =>
-                   Body_Violations (V).Contains (Id)) then
-            C1 := '-';
-         else
-            C1 := '*';
-         end if;
-
-         if Entity_In_SPARK (Id) then
-            C2 := '+';
-         elsif (for some V in SPARK_Violations.Not_In_Roadmap =>
-                   Spec_Violations (V).Contains (Id)) then
-            C2 := '-';
-         else
-            C2 := '*';
-         end if;
-
-         Put_Line (Output_File, C1 & C2 & ' ' & Location & Suffix);
-      end if;
+      Put_Line (Output_File,
+                "{ ""name"" : """ & Name_String (Chars (Id)) & """, " &
+                  """file"" :""" & File_Name (Sloc (Id)) & """, " &
+                  """line"" : " & Line_Num & ", " &
+                  """spark"" : " & SPARK_Status & ", " &
+                  """violations"" : [" & Violations & "] }");
    end Generate_Output_In_Out_SPARK;
 
    ----------------------------------
