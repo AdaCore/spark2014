@@ -34,13 +34,18 @@ with Ada.Directories;
 with Ada.Text_IO;
 with Ada.Strings.Fixed;
 
-with Call;                    use Call;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;             use GNAT.OS_Lib;
 
+with GNATCOLL.JSON;
+
+with Call;                    use Call;
+with String_Utils;            use String_Utils;
 with SPARK_Violations;
+with VC_Kinds;
 
 with Configuration;           use Configuration;
+with Report_Database;         use Report_Database;
 
 procedure SPARK_Report is
 
@@ -81,11 +86,18 @@ procedure SPARK_Report is
    procedure Handle_SPARK_Line (Line : String);
    --  Parse and extract all information from a single SPARK line.
 
+   procedure Handle_Proof_File (Fn : String);
+   --  Parse and extract all information from a proof result file
+
    procedure Handle_Source_Dir (Dir : String);
-   --  Parse all .alfa files of this directory.
+   --  Parse all result files of this directory.
 
    procedure Print_Report (Out_Dir : String);
    --  Print the final SPARK report in directory Out_Dir
+
+   function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
+      return Subp_Type;
+   --  convert a json entity dict to a subp
 
    procedure Print_Statistics
      (Handle      : Ada.Text_IO.File_Type;
@@ -97,6 +109,54 @@ procedure SPARK_Report is
    --  Print a line of the form:
    --    label:  X% (Cnt / Total)
    --  where X is the ration Cnt / Total expressed in percent.
+
+   procedure Print_Proof_Report
+     (Unit : Unit_Type;
+      Subp : Subp_Type;
+      Stat : Stat_Rec);
+   --  Print a line of the form
+   --    "in unit <unit>, in subp <bla> proved X out of Y checks"
+
+   -----------------------
+   -- Mk_Subp_Of_Entity --
+   -----------------------
+
+   function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
+                               return Subp_Type is
+      use GNATCOLL.JSON;
+   begin
+      return
+        Mk_Subp (Get (Get (Ent, "name")),
+                 Get (Get (Ent, "file")),
+                 Get (Get (Ent, "line")));
+   end Mk_Subp_Of_Entity;
+
+   -----------------------
+   -- Handle_Proof_File --
+   -----------------------
+
+   procedure Handle_Proof_File (Fn : String)
+   is
+      use GNATCOLL.JSON;
+      Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
+   begin
+      Ada.Text_IO.Put_Line (Fn);
+      declare
+         Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
+         Entries : constant JSON_Array := Get (Dict);
+      begin
+         for Index in 1 .. Length (Entries) loop
+            declare
+               Result : constant JSON_Value := Get (Entries, Index);
+               Severe : constant String     := Get (Get (Result, "severity"));
+            begin
+               Add_Proof_Result (Unit,
+                                 Mk_Subp_Of_Entity (Get (Result, "entity")),
+                                 Severe = "info");
+            end;
+         end loop;
+      end;
+   end Handle_Proof_File;
 
    -----------------------
    -- Handle_SPARK_File --
@@ -214,6 +274,27 @@ procedure SPARK_Report is
         (Item    : String;
          Index   : Positive;
          Quit    : in out Boolean);
+      --  Wrapper for Handle_SPARK_File
+
+      procedure Local_Handle_Proof_File
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean);
+      --  Wrapper for Handle_Proof_File
+
+      -----------------------------
+      -- Local_Handle_Proof_File --
+      -----------------------------
+
+      procedure Local_Handle_Proof_File
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean) is
+      begin
+         pragma Unreferenced (Index);
+         pragma Unreferenced (Quit);
+         Handle_Proof_File (Item);
+      end Local_Handle_Proof_File;
 
       -----------------------------
       -- Local_Handle_SPARK_File --
@@ -229,9 +310,13 @@ procedure SPARK_Report is
          Handle_SPARK_File (Item);
       end Local_Handle_SPARK_File;
 
-      procedure Iterate is new
+      procedure Iterate_SPARK is new
          GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-           (Action => Local_Handle_SPARK_File);
+          (Action => Local_Handle_SPARK_File);
+
+      procedure Iterate_Proof is new
+         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
+          (Action => Local_Handle_Proof_File);
 
       Save_Dir : constant String := Ada.Directories.Current_Directory;
 
@@ -239,7 +324,8 @@ procedure SPARK_Report is
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate (Path => '*' & SPARK_Violations.SPARK_Suffix);
+      Iterate_SPARK (Path => '*' & SPARK_Violations.SPARK_Suffix);
+      Iterate_Proof (Path => '*' & VC_Kinds.Proof_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>
@@ -255,6 +341,22 @@ procedure SPARK_Report is
    begin
       Global_Count (S) := Global_Count (S) + 1;
    end Incr_Count;
+
+   ------------------------
+   -- Print_Proof_Report --
+   ------------------------
+
+   procedure Print_Proof_Report
+     (Unit : Unit_Type;
+      Subp : Subp_Type;
+      Stat : Stat_Rec) is
+   begin
+      Ada.Text_IO.Put_Line ("in unit " & Unit_Name (Unit) & ", subprogram " &
+                              Subp_Name (Subp) & " at " & Subp_File (Subp) &
+                              ":" & Int_Image (Subp_Line (Subp)) & " proved" &
+                              Stat.VC_Proved'Img & " out of " &
+                              Stat.VC_Count'Img & " checks");
+   end Print_Proof_Report;
 
    ------------------
    -- Print_Report --
@@ -611,4 +713,5 @@ begin
    Iterate_Source_Dirs (Source_Directories_File.all);
    Print_Report
      (GNAT.Directory_Operations.Dir_Name (Source_Directories_File.all));
+   Iter_Subps (Print_Proof_Report'Access);
 end SPARK_Report;

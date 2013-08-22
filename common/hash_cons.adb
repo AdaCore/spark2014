@@ -2,9 +2,9 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                                 C A L L                                  --
+--                              H A S H C O N S                             --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                       Copyright (C) 2010-2013, AdaCore                   --
 --                                                                          --
@@ -23,53 +23,50 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib;       use GNAT.OS_Lib;
-with String_Utils;      use String_Utils;
+with Ada.Containers.Hashed_Maps;
+with System.Storage_Elements;
 
-package Call is
+package body Hash_Cons is
 
-   procedure Abort_With_Message (Msg : String) with
-     No_Return;
-   --  Print the Msg to Standard Error and Exit with Error code 1.
+   package Cons_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Elt_Type,
+        Element_Type    => Access_Type,
+        Hash            => Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Verbose   : Boolean := False);
-   --  Call the given command using the given argument list.
-   --  Free all argument access values
-   --  If the command exit status is not 0, print its output and exit.
+   Cons_Table : Cons_Maps.Map := Cons_Maps.Empty_Map;
 
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : Argument_List;
-      Verbose   : Boolean := False);
+   ----------
+   -- Hash --
+   ----------
 
-   procedure Call_With_Status
-     (Command   : String;
-      Arguments : Argument_List;
-      Status    : out Integer;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True);
+   function Hash (A : Access_Type) return Ada.Containers.Hash_Type is
+      use Ada.Containers;
+      use System.Storage_Elements;
+   begin
+      return (Hash_Type (To_Integer (A.all'Address) mod Hash_Type'Modulus));
+   end Hash;
 
-   procedure Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Verbose   : Boolean := False);
+   ---------------
+   -- Hash_Cons --
+   ---------------
 
-   generic
-      with procedure Handle_Line (Line : String);
-   procedure For_Line_In_File
-      (File : String);
-   --  Do something for each line of a file.
+   function Hash_Cons (E : Elt_Type) return Access_Type is
+      use Cons_Maps;
+      C : constant Cursor := Cons_Table.Find (E);
+   begin
+      if Has_Element (C) then
+         return Element (C);
+      else
+         declare
+            N_Ptr : constant Access_Type := new Elt_Type'(E);
+         begin
+            Cons_Table.Insert (E, N_Ptr);
+            return N_Ptr;
+         end;
+      end if;
+   end Hash_Cons;
 
-   function Read_File_Into_String (Fn : String) return String;
-   --  Return a string with the contents of the file in argument
-
-   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0);
-   --  Print the file to stdout
-
-   procedure Ch_Dir_Create_If_Needed (Dir : String);
-   --  chdir to given directory; if it does not exist, create it before
-end Call;
+end Hash_Cons;

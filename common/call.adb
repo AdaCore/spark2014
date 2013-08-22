@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.IO_Exceptions;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with GNAT.Directory_Operations;
 
@@ -268,5 +269,27 @@ package body Call is
          end;
       end loop;
    end Free_Argument_List;
+
+   ---------------------------
+   -- Read_File_Into_String --
+   ---------------------------
+
+   function Read_File_Into_String (Fn : String) return String
+   is
+      use Ada.Strings.Unbounded;
+      U : Unbounded_String := Null_Unbounded_String;
+
+      procedure Append_To_Buf (S : String);
+
+      procedure Append_To_Buf (S : String) is
+      begin
+         Append (U, S);
+      end Append_To_Buf;
+
+      procedure Do_It is new Call.For_Line_In_File (Append_To_Buf);
+   begin
+      Do_It (Fn);
+      return To_String (U);
+   end Read_File_Into_String;
 
 end Call;

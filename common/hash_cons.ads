@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                                 C A L L                                  --
+--                              H A S H C O N S                             --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,53 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib;       use GNAT.OS_Lib;
-with String_Utils;      use String_Utils;
+with Ada.Containers;
 
-package Call is
+generic
+   type Elt_Type is private;
+   type Access_Type is access constant Elt_Type;
+   with function Hash (E : Elt_Type) return Ada.Containers.Hash_Type;
+   with function "=" (E1, E2 : Elt_Type) return Boolean;
+package Hash_Cons is
 
-   procedure Abort_With_Message (Msg : String) with
-     No_Return;
-   --  Print the Msg to Standard Error and Exit with Error code 1.
+   function Hash_Cons (E : Elt_Type) return Access_Type;
 
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Verbose   : Boolean := False);
-   --  Call the given command using the given argument list.
-   --  Free all argument access values
-   --  If the command exit status is not 0, print its output and exit.
+   function Hash (A : Access_Type) return Ada.Containers.Hash_Type;
 
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : Argument_List;
-      Verbose   : Boolean := False);
-
-   procedure Call_With_Status
-     (Command   : String;
-      Arguments : Argument_List;
-      Status    : out Integer;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True);
-
-   procedure Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Verbose   : Boolean := False);
-
-   generic
-      with procedure Handle_Line (Line : String);
-   procedure For_Line_In_File
-      (File : String);
-   --  Do something for each line of a file.
-
-   function Read_File_Into_String (Fn : String) return String;
-   --  Return a string with the contents of the file in argument
-
-   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0);
-   --  Print the file to stdout
-
-   procedure Ch_Dir_Create_If_Needed (Dir : String);
-   --  chdir to given directory; if it does not exist, create it before
-end Call;
+end Hash_Cons;
