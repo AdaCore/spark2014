@@ -560,8 +560,7 @@ package body Gnat2Why.Driver is
          --  Given to the handler for packages with an associated theory
 
          when E_Package =>
-            if Package_Has_External_Axioms (E) or else
-              Is_Instance_Of_External_Axioms (E) then
+            if Entity_In_External_Axioms (E) then
                Translate_Package_With_External_Axioms (E);
             else
 

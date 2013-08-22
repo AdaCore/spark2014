@@ -615,18 +615,6 @@ package body SPARK_Util is
    function Is_Full_View (E : Entity_Id) return Boolean is
       (Full_To_Partial_Entities.Contains (E));
 
-   ------------------------------------
-   -- Is_Instance_Of_External_Axioms --
-   ------------------------------------
-
-   function Is_Instance_Of_External_Axioms (E : Entity_Id) return Boolean
-   is
-      Generic_Par : constant Node_Id := Generic_Parent (Get_Package_Spec (E));
-   begin
-      return (Present (Generic_Par) and then Package_Has_External_Axioms
-              (Generic_Par));
-   end Is_Instance_Of_External_Axioms;
-
    ---------------------------------
    -- Package_Has_External_Axioms --
    ---------------------------------
@@ -642,18 +630,22 @@ package body SPARK_Util is
    -------------------------------
 
    function Entity_In_External_Axioms (E : Entity_Id) return Boolean is
-      S : Entity_Id := E;
    begin
-      while Present (S) loop
-         if Ekind (S) = E_Package and then
-           (Package_Has_External_Axioms (S) or else
-            Is_Instance_Of_External_Axioms (S)) then
+      if Present (E) then
+         if Ekind (E) = E_Package and then
+           Package_Has_External_Axioms (E) then
             return True;
          end if;
-
-         S := Scope (S);
-      end loop;
-      return False;
+         if Entity_In_External_Axioms (Scope (E)) then
+            return True;
+         else
+            return Ekind (E) = E_Package and then
+              Entity_In_External_Axioms
+                (Generic_Parent (Get_Package_Spec (E)));
+         end if;
+      else
+         return False;
+      end if;
    end Entity_In_External_Axioms;
 
    -----------------------------------------------
