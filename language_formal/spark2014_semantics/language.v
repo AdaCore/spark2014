@@ -85,13 +85,20 @@ Inductive binary_operator: Type :=
 	| Multiply: binary_operator
 	| Divide: binary_operator.
 
-(** Ada 2012 RM, Chapter 3. Declaration and Types *)
+(* Ada 2012 RM, Chapter 3. Declaration and Types *)
+
+(** Note: now we only consider the 32-bit singed integer type for 
+    our SPARK subset language, and model it with _Integer_; Actually,
+    SPARK has various integer types, we can extend our types by 
+    adding more SPARK types here and adding its corresponding value
+    definition in values.v;
+*)
 Inductive type: Type := 
     | Boolean: type (* 3.5.3 *)
     | Integer: type (* 3.5.4 *).
 
 (** ** Expressions *)
-(** Chapter 4 *)
+(* Chapter 4 *)
 Inductive expression: Type := 
 	| E_Literal: astnum -> literal -> expression (* 4.2 *)
 	| E_Identifier: astnum -> idnum -> expression (* 4.1 *)
@@ -99,21 +106,21 @@ Inductive expression: Type :=
 	| E_Unary_Operation: astnum -> unary_operator -> expression -> expression (* 4.5.4 *).
 
 (** ** Statements *)
-(** Chapter 5 *)
+(* Chapter 5 *)
+(* Sequence is not a statement in Ada, it's a shortcut for now *)
 Inductive statement: Type := 
 	| S_Assignment: astnum -> idnum -> expression -> statement (* 5.2 *)
 	| S_If: astnum -> expression -> statement -> statement (* 5.3 *)
 	| S_While_Loop: astnum -> expression -> statement -> statement (* 5.5 *)
-        (* Sequence is not a statement in Ada, it's a shortcut for now *)
 	| S_Sequence: astnum -> statement -> statement -> statement (* 5.1 *).
 
-(** 6.2 *)
+(* 6.2 *)
 Inductive mode: Type := 
     | In: mode
     | Out: mode
     | In_Out: mode.
 
-(** 3.3.1 *)
+(* 3.3.1 *)
 Record object_declaration: Type := mkobject_declaration{
 	declaration_astnum: astnum;
         object_name: idnum;
@@ -121,7 +128,7 @@ Record object_declaration: Type := mkobject_declaration{
 	initialization_expression: option (expression)
 }.
 
-(** 6.1 (15/3) *)
+(* 6.1 (15/3) *)
 Record parameter_specification: Type := mkparameter_specification{
 	parameter_astnum: astnum;
         parameter_name: idnum;
@@ -130,14 +137,14 @@ Record parameter_specification: Type := mkparameter_specification{
 	parameter_default_expression: option (expression)
 }.
 
-(** 13.1.1 *)
+(* 13.1.1 *)
 Record aspect_specification: Type := mkaspect_specification{
 	aspect_astnum: astnum;
 	aspect_mark: aspectnum;
 	aspect_definition: expression
 }.
 
-(** 6.3 *)
+(* 6.3 *)
 Record procedure_body: Type := mkprocedure_body{
 	procedure_astnum: astnum;
 	procedure_name: procnum;
@@ -147,7 +154,7 @@ Record procedure_body: Type := mkprocedure_body{
 	procedure_statements: statement
 }.
 
-(** 6.3 *)
+(* 6.3 *)
 Record function_body: Type := mkfunction_body{
 	function_astnum: astnum;
 	function_name: procnum;
@@ -159,15 +166,15 @@ Record function_body: Type := mkfunction_body{
 }.
 
 (** ** Compilation unit: subprogram *)
-(** 6.1 *)
+(* 6.1 *)
 Inductive subprogram: Type := 
 	| Procedure: astnum -> procedure_body -> subprogram
 (*	| Function: astnum -> function_body -> subprogram *).
 
-(** 10.1.1 *)
+(* 10.1.1 *)
 Inductive library_unit_declaration: Type := 
 	| Library_Subprogram: astnum -> subprogram -> library_unit_declaration.
 
-(** 10.1.1 *)
+(* 10.1.1 *)
 Inductive compilation_unit: Type := 
 	| Library_Unit: astnum -> library_unit_declaration -> type_table -> compilation_unit.

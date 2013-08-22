@@ -1892,10 +1892,10 @@ Proof.
               repeat constructor; auto.
           }
           (* 4. Divide *)
-          { remember ((negb (Zeq_bool n 0)) && ((Zge_bool (n0 / n) min_signed) && (Zle_bool (n0 / n) max_signed))) as x.
+          { remember ((negb (Zeq_bool n 0)) && ((Zge_bool (n0 ÷ n) min_signed) && (Zle_bool (n0 ÷ n) max_signed))) as x.
             symmetry in Heqx.
             destruct x.
-            * exists (Val_Normal (Int (n0 / n))).
+            * exists (Val_Normal (Int (n0 ÷ n))).
               eapply eval_Binary_Operation4.
               apply ha1. apply H. symmetry in H14; apply H14.
               repeat constructor; auto;
@@ -3111,18 +3111,19 @@ Qed.
 
 (** ** well_formed_stmt *)
 (**
-    for any well-typed, well-defined (all used variables have been 
-    initialized) and well-checked (with right checks put at the right 
-    places according to checking rules) statement c, executed from 
-    the initial state s, it should either always be evaluated to a 
-    valid state s' under the eval_stmt reference semantics or it 
-    never terminate;
+    well-formed means: well-typed, well-defined (all used variables 
+    have been initialized) and well-checked (with right checks put 
+    at the right places according to checking rules);
+
+    for any well-formed statement c, starting from the initial state 
+    s, it should either terminate in a valid state s' with respect to 
+    the reference semantics eval_stmt or it never terminates;
 *)
 
 
-(** the well-checked statement should be semantical equivalent to 
-    its reference semantics, in other words, for any well-formed 
-    statement c evaluated in two semantics environments 
+(** well-formed terminated statement should be correct with respect 
+    to its reference semantics, in other words, for any well-formed 
+    terminated statement c evaluated in two semantics environments 
     "eval_stmt_with_checks" and "eval_stmt", if they start with the 
     same initial state s, they should terminate in the same state s';
     "eval_stmt_with_checks" is the semantics for statement with 
@@ -3354,8 +3355,8 @@ Proof.
 Qed.
 
 
-(** the well-checked subprogram should be semantical equivalent to 
-    its reference semantics, in other words, for any well-formed 
+(** well-formed terminated program should be always correct with respect 
+    to its reference semantics, in other words, for any well-formed 
     terminated subprogram evaluated under two semantics environments 
     "eval_subprogram_with_checks"  and "eval_subprogram", if they 
     start with the same initial state s, they should terminate in 
@@ -3391,9 +3392,5 @@ Proof.
   - right.
     simpl; assumption.
 Qed.
-
-
-
-
 
 

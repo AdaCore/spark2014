@@ -3,7 +3,7 @@ Require Import values.
 Require Import util.
 
 (** * Run Time Check Rules *)
-(** ** check rules marking what and where to check *)
+(** ** check rules marking _what_ and _where_ to check *)
 (**
       - Do_Division_Check
        
@@ -18,17 +18,19 @@ Require Import util.
 
 
 (** ** run time checks *)
-(** checks that are needed to be performed in run time *)
+(** checks that are needed to be performed at run time *)
 Inductive run_time_checks: Type := 
     | Do_Division_Check: run_time_checks
     | Do_Overflow_Check: run_time_checks.
 
+(** For an expression or statement, there may exists list of checks 
+    enforced on it, for example, for division expression, both
+    division by zero and overflow checks are needed to be performed;
+*)
 Definition run_time_check_set := list run_time_checks.
 
 (** produce check flags for expressions according to the checking rules; 
-    Note: for division operator, now we only consider the division by 
-    zero check, later we will extend it by with overflow checks, and
-    it will be a mapping from one ast node to a set of run time checks;
+    it is a mapping from one ast node to a set of run time checks;
 *)
 Inductive check_flags: expression -> run_time_check_set -> Prop :=
     | CF_Literal_Int: forall ast_num n,
@@ -59,7 +61,7 @@ Inductive check_flags: expression -> run_time_check_set -> Prop :=
     min_signed: -2^31 
     max_signed: 2^31-1
     
-    if v1 = -2^31 and v2 = -1 then v1/v2 = 2^31, which is out of its range; 
+    if v1 = -2^31 and v2 = -1 then v1 ÷ v2 = 2^31, which is out of its range; 
 *)
 Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
     | Do_Overflow_Check_On_Plus: forall v1 v2 b,
@@ -75,9 +77,9 @@ Inductive do_check: binary_operator -> value -> value -> bool -> Prop :=
         (Zge_bool (v1 * v2) min_signed) && (Zle_bool (v1 * v2) max_signed) = b ->
         do_check Multiply (Int v1) (Int v2) b
     | Do_Division_By_Zero_And_Overflow_Check_On_Divide: forall v1 v2 b,
-        (* min_signed <= (v1 / v2) <= max_signed and v2 is not zero *)
+        (* min_signed <= (v1 ÷ v2) <= max_signed and v2 is not zero *)
         (* (negb (Zeq_bool v2 0)) && (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (negb (Zeq_bool v2 0)) && ((Zge_bool (v1 / v2) min_signed) && (Zle_bool (v1 / v2) max_signed)) = b ->
+        (negb (Zeq_bool v2 0)) && ((Zge_bool (v1 ÷ v2) min_signed) && (Zle_bool (v1 ÷ v2) max_signed)) = b ->
         do_check Divide (Int v1) (Int v2) b
     | Do_Nothing: forall op v1 v2,
         op <> Plus ->
@@ -100,7 +102,7 @@ Inductive do_flagged_check: run_time_checks -> binary_operator -> value -> value
         do_flagged_check Do_Overflow_Check Multiply (Int v1) (Int v2) b
     | Do_Overflow_Check_Divide: forall v1 v2 b,
         (* (Zeq_bool v1 min_signed) && (Zeq_bool v2 (-1)) = b -> *)
-        (Zge_bool (v1 / v2) min_signed) && (Zle_bool (v1 / v2) max_signed) = b ->
+        (Zge_bool (v1 ÷ v2) min_signed) && (Zle_bool (v1 ÷ v2) max_signed) = b ->
         do_flagged_check Do_Overflow_Check Divide (Int v1) (Int v2) b
     | Do_Division_By_Zero_Check: forall v1 v2 b,
         negb (Zeq_bool v2 0) = b ->
@@ -157,14 +159,16 @@ Function f_do_check (op: binary_operator) (v1: value) (v2: value): option bool :
     | Divide => (* both division by zero check and overflow check *)
         match v1, v2 with
         | Int v1', Int v2' => 
-            Some ((negb (Zeq_bool v2' 0)) && ((Zge_bool (v1' / v2') min_signed) && (Zle_bool (v1' / v2') max_signed)))
+            Some ((negb (Zeq_bool v2' 0)) && ((Zge_bool (v1' ÷ v2') min_signed) && (Zle_bool (v1' ÷ v2') max_signed)))
         | _, _ => None
         end
     | _ => Some true
     end.
 
-(** only do Do_Division_Check on Divide make sense, so 
-    Do_Division_Check on other operators returns None;
+(** perform the flagged checks on operators, but at the same time we
+    have to ensure that the flagged checks on operators are correct,
+    for exmpale, only do Do_Division_Check on Divide make sense, so 
+    Do_Division_Check on other operators should return None;
 *)
 Function f_do_flagged_check (rtc: run_time_checks) (op: binary_operator) (v1: value) (v2: value): option bool :=
     match rtc, op with
@@ -185,7 +189,7 @@ Function f_do_flagged_check (rtc: run_time_checks) (op: binary_operator) (v1: va
         end
     | Do_Overflow_Check, Divide => 
         match v1, v2 with
-        | Int v1', Int v2' => Some ((Zge_bool (v1' / v2') min_signed) && (Zle_bool (v1' / v2') max_signed))
+        | Int v1', Int v2' => Some ((Zge_bool (v1' ÷ v2') min_signed) && (Zle_bool (v1' ÷ v2') max_signed))
         | _, _ => None
         end
     | Do_Division_Check, Divide => 
@@ -196,6 +200,7 @@ Function f_do_flagged_check (rtc: run_time_checks) (op: binary_operator) (v1: va
     | _, _ => None
     end.
 
+(** perform a series of different checks on one operation *)
 Function f_do_flagged_checks (rtcs: run_time_check_set) (op: binary_operator) (v1: value) (v2: value): option bool :=
     match rtcs with
     | nil => Some true
@@ -222,7 +227,7 @@ Proof.
     functional induction (f_check_flags e);
     intros ck h1;
     rewrite <- h1;
-    try constructor;
+     try constructor;
     match goal with
     | |- ?op <> Plus => idtac
     | |- ?op <> Minus => idtac
@@ -330,6 +335,11 @@ Qed.
 
 (** * Lemmas about run time checks *)
 
+(** whenever perform the flagged checks on the binary operator, 
+    if these flagged checks are produced correctly according to 
+    the checking rules, then its result should be the same as the
+    result by the reference check semantcis do_check;
+*)
 Lemma do_complete_checks_correct: forall ast_num op e1 e2 cks v1 v2 b,
     check_flags (E_Binary_Operation ast_num op e1 e2) cks ->
     do_flagged_checks cks op v1 v2 b ->
@@ -399,6 +409,11 @@ Proof.
 Qed.
 
 
+(** whenever perform the flagged checks on the binary operator, 
+    if these flagged checks are produced correctly according to 
+    the checking rules, then its result should be the same as the
+    result by the reference check semantcis do_check;
+*)
 Lemma do_complete_checks_correct': forall ast_num op e1 e2 cks v1 v2 b,
     check_flags (E_Binary_Operation ast_num op e1 e2) cks ->
     do_check op v1 v2 b ->
@@ -496,11 +511,11 @@ Proof.
       destruct v2.
       * exists false; 
         constructor; auto.
-      * remember ((Zge_bool (v1 / (Z.pos p)) min_signed) && (Zle_bool (v1 / (Z.pos p)) max_signed)) as b.
+      * remember ((Zge_bool (v1 ÷ (Z.pos p)) min_signed) && (Zle_bool (v1 ÷ (Z.pos p)) max_signed)) as b.
         destruct b;
         [exists true | exists false];
         constructor; auto.
-      * remember ((Zge_bool (v1 / (Z.neg p)) min_signed) && (Zle_bool (v1 / (Z.neg p)) max_signed)) as b.
+      * remember ((Zge_bool (v1 ÷ (Z.neg p)) min_signed) && (Zle_bool (v1 ÷ (Z.neg p)) max_signed)) as b.
         destruct b;
         [exists true | exists false];
         constructor; auto.
