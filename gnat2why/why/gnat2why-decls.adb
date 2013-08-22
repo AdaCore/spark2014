@@ -55,6 +55,8 @@ with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 
+with Ada.Containers.Doubly_Linked_Lists;
+
 package body Gnat2Why.Decls is
 
    -----------------------------------
@@ -328,13 +330,48 @@ package body Gnat2Why.Decls is
 
    procedure Translate_Package_With_External_Axioms
      (Package_Entity : Entity_Id) is
+
       type Entity_Array is array (Integer range <>) of Entity_Id;
 
-      procedure Compute_Length (Labs         :     List_Id;
+      package List_Of_Entity is new Ada.Containers.Doubly_Linked_Lists
+        (Entity_Id);
+
+      procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
                                 Subst_Length : out Natural;
                                 Num_Of_Obj   : out Natural);
       --  Computes the length of the substitution that has to be computed
       --  for the parameters of the generic.
+
+      procedure Compute_Substitution
+        (G_Parents :     List_Of_Entity.List;
+         Subst     : out W_Custom_Substitution_Array;
+         Compl     : out Entity_Array);
+      --  Creates a substitution for the generic parameters of the package
+      --  if any. The substitution is a string following the format in
+      --  GNAT.Regpat. It is then used to copy the associated Why3
+      --  axiomatization.
+
+      function Get_Association_List (E : Entity_Id) return List_Id is
+         (Generic_Associations (Get_Package_Instantiation_Node (E)));
+
+      function Get_Generic_Name (E : Entity_Id;
+                                 Parents : List_Of_Entity.Cursor)
+                                 return String;
+      --  Returns the sequence of every scope of E where instances are replaced
+      --  by generics.
+      --  E should be an element of the path between Package_Entity and the
+      --  first package with external axioms above it
+
+      function Get_Generic_Parents
+        (E : Entity_Id) return List_Of_Entity.List;
+      --  Returns the list of every instance of generic package up to the first
+      --  package with external axioms
+
+      function Get_Instance_Name (E : Entity_Id) return String is
+        (Capitalize_First (Full_Name (E)));
+
+      function Get_Label_List (E : Entity_Id) return List_Id;
+      --  Use Parent field to reach N_Generic_Package_Declaration
 
       procedure Parse_Declarations
         (Decls      : List_Id;
@@ -345,17 +382,542 @@ package body Gnat2Why.Decls is
       --  in one single file, a copy of each theory needs to be added to the
       --  appropriate file afterward.
 
-      procedure Parse_Parameters
-        (Assoc         :     List_Id;
-         Labs          :     List_Id;
-         Generic_Name  :     String;
-         Instance_Name :     String;
+      procedure Parse_Parameters (G_Parents : List_Of_Entity.List);
+      --  Declares a Why type per formal of type kind of the first element of
+      --  G_Parents and a Why function per formal of function kind of the first
+      --  element of G_Parents
+
+      --------------------
+      -- Compute_Length --
+      --------------------
+
+      procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
+                                Subst_Length : out Natural;
+                                Num_Of_Obj   : out Natural) is
+
+         procedure Compute_Length_Package (Labs         :     List_Id;
+                                           Subst_Length : in out Natural;
+                                           Num_Of_Obj   : in out Natural);
+
+         procedure Compute_Length_Package (Labs         :     List_Id;
+                                           Subst_Length : in out Natural;
+                                           Num_Of_Obj   : in out Natural) is
+            CurLabs  : Node_Id := First (Labs);
+         begin
+            Subst_Length := Subst_Length + 2;
+            while Present (CurLabs) loop
+               declare
+                  K : constant Entity_Kind :=
+                    Ekind (Defining_Entity (CurLabs));
+               begin
+                  if K in Private_Kind then
+                     Subst_Length := Subst_Length + 6;
+                  elsif K in Type_Kind then
+                     Subst_Length := Subst_Length + 3;
+                  else
+                     Num_Of_Obj   := Num_Of_Obj + 1;
+                     Subst_Length := Subst_Length + 2;
+                  end if;
+               end;
+               Next (CurLabs);
+            end loop;
+         end Compute_Length_Package;
+
+         CurGParent : List_Of_Entity.Cursor :=
+           List_Of_Entity.First (G_Parents);
+      begin
+         Subst_Length := 0;
+         Num_Of_Obj   := 0;
+
+         while List_Of_Entity.Has_Element (CurGParent) loop
+            Compute_Length_Package (Get_Label_List
+                                    (List_Of_Entity.Element (CurGParent)),
+                                    Subst_Length,
+                                    Num_Of_Obj);
+            List_Of_Entity.Next (CurGParent);
+         end loop;
+      end Compute_Length;
+
+      --------------------------
+      -- Compute_Substitution --
+      --------------------------
+
+      procedure Compute_Substitution
+        (G_Parents     :     List_Of_Entity.List;
          Subst         : out W_Custom_Substitution_Array;
-         Compl         : out Entity_Array);
-      --  Creates a substitution for the generic parameters of the package
-      --  if any. The substitution is a string following the format in
-      --  GNAT.Regpat. It is then used to copy the associated Why3
-      --  axiomatization.
+         Compl         : out Entity_Array) is
+
+         procedure Compute_Substitution_Package
+           (Assoc         : List_Id;
+            Labs          : List_Id;
+            Generic_Name  : String;
+            Instance_Name : String;
+            Instance_File : String);
+
+         --  Names of elements expected in a Why3 theory for a formal of a
+         --  private type. Used to comply with the special handling for
+         --  range types. In parameters of subprograms are expected to be of
+         --  type Base_Type_Name. The functions To_Base_Name and Of_Base_Name
+         --  are used to translate to and from type Base_Type_Name and
+         --  the predicate In_Range_Name asserts that an element of type
+         --  Base_Type_Name can be translated back to the range type.
+
+         Base_Type_Name : constant String := "base_type";
+         To_Base_Name   : constant String := "to_base";
+         Of_Base_Name   : constant String := "of_base";
+         In_Range_Name  : constant String := "valid";
+         File_Name : constant String :=
+           Why_Files (Dispatch_Entity (Package_Entity)).Name.all;
+         Subst_Cur : Integer := 1;
+         Compl_Cur : Integer := 1;
+
+         procedure Compute_Substitution_Package
+           (Assoc         : List_Id;
+            Labs          : List_Id;
+            Generic_Name  : String;
+            Instance_Name : String;
+            Instance_File : String) is
+
+            CurAssoc  : Node_Id := First (Assoc);
+            CurLabs   : Node_Id := First (Labs);
+         begin
+            while Present (CurAssoc) loop
+               declare
+                  Actual : constant Entity_Id :=
+                    Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+                  Formal : constant Entity_Id := Defining_Entity (CurLabs);
+                  Actual_File : constant String :=
+                    File_Base_Name_Of_Entity (Actual)
+                    & Why_File_Suffix (Dispatch_Entity (Actual));
+               begin
+
+                  if Ekind (Formal) in Type_Kind then
+
+                     --  Replace:
+                     --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
+                     --  by: use ("<Actual_File>".)Name_Of_Node (Actual)
+                     --  No use is generated if Actual doesn't have a unique
+                     --  name
+
+                     if Full_Name_Is_Not_Unique_Name (Actual) then
+                        Subst (Subst_Cur) := New_Custom_Substitution
+                          (Domain   => EW_Prog,
+                           From     => NID ("use\s+" & """" & Generic_Name &
+                               "__args""\." & Capitalize_First (Generic_Name)
+                             & "__" & Short_Name (Formal) & "\s"),
+                           To       => W_Any_Node_Id (
+                             New_Identifier (Name => "" & ASCII.LF)));
+
+                     elsif Actual_File /= File_Name then
+                        Subst (Subst_Cur) := New_Custom_Substitution
+                          (Domain   => EW_Prog,
+                           From     => NID ("use\s+" & """" & Generic_Name &
+                               "__args""\." & Capitalize_First (Generic_Name)
+                             & "__" & Short_Name (Formal) & "\s"),
+                           To       => W_Any_Node_Id (New_Identifier
+                             (Name => "use """ & Actual_File & """." &
+                                Capitalize_First (Name_Of_Node (Actual))
+                              & ASCII.LF)));
+                     else
+                        Subst (Subst_Cur) := New_Custom_Substitution
+                          (Domain   => EW_Prog,
+                           From     => NID ("use\s+" & """" & Generic_Name &
+                               "__args""\." & Capitalize_First (Generic_Name)
+                             & "__" & Short_Name (Formal) & "\s"),
+                           To       => W_Any_Node_Id (New_Identifier
+                             (Name => "use " & Capitalize_First
+                              (Name_Of_Node (Actual)) & ASCII.LF)));
+                     end if;
+                     Subst_Cur := Subst_Cur + 1;
+
+                     --  Replace: <Generic_Name>__<Formal>.<Formal>
+                     --  by: Why_Logic_Type_Of_Ada_Type (Actual)
+
+                     Subst (Subst_Cur) := New_Custom_Substitution
+                       (Domain   => EW_Prog,
+                        From     => NID (Capitalize_First (Generic_Name)
+                          & "__" & Short_Name (Formal) & "\." &
+                            Short_Name (Formal)),
+                        To       => W_Any_Node_Id
+                          (Why_Logic_Type_Of_Ada_Type (Actual)));
+
+                     --  If the formal has a private kind, Base_Type_Name,
+                     --  To_Base_Name, Of_Base_Name, and In_Range_Name must be
+                     --  replaced appropriately
+
+                     if Ekind (Formal) in Private_Kind then
+                        declare
+                           Actual_Type : constant W_Primitive_Type_OId :=
+                             Why_Logic_Type_Of_Ada_Type (Actual);
+                           Actual_Base : constant W_Primitive_Type_OId :=
+                             +Base_Why_Type (Unique_Entity (Actual));
+                        begin
+
+                           --  If the actual is a scalar type and not a bool:
+                           --  <Generic_Name>__<Base_Type_Name> =>
+                           --               Base_Why_Type (<Actual>)
+                           --  <Generic_Name>__<To_Base_Name>   =>
+                           --               Conversion_Name (To   => <Base>,
+                           --                                From => <Actual>)
+                           --  <Generic_Name>__<Of_Base_Name>   =>
+                           --               Conversion_Name (From => <Base>,
+                           --                                To   => <Actual>)
+                           --  <Generic_Name>__<In_Range_Name>  =>
+                           --               Range_Pred_Name (<Actual>)
+                           --  Otherwise:
+                           --  <Generic_Name>__<Base_Type_Name> => <Actual>
+                           --  <Generic_Name>__<To_Base_Name>   =>
+                           --  <Generic_Name>__<Of_Base_Name>   =>
+                           --  <Generic_Name>__<In_Range_Name>  => __ignore
+
+                           if Is_Scalar_Type (Actual) and then
+                             not Is_Boolean_Type (Actual) then
+                              Subst (Subst_Cur + 1) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name)  & "__" & Short_Name (Formal)
+                                   & "\." & Base_Type_Name),
+                                 To       => W_Any_Node_Id (Actual_Base));
+
+                              Subst (Subst_Cur + 2) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & To_Base_Name),
+                                 To       => W_Any_Node_Id (Conversion_Name
+                                   (From => +Actual_Type,
+                                    To => +Actual_Base)));
+
+                              Subst (Subst_Cur + 3) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & Of_Base_Name),
+                                 To       => W_Any_Node_Id (Conversion_Name
+                                   (From => +Actual_Base,
+                                    To => +Actual_Type)));
+
+                              Subst (Subst_Cur + 4) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & In_Range_Name),
+                                 To       => W_Any_Node_Id
+                                   (Range_Pred_Name (Actual)));
+                           else
+                              Subst (Subst_Cur + 1) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & Base_Type_Name),
+                                 To       => W_Any_Node_Id (Actual_Type));
+
+                              Subst (Subst_Cur + 2) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & To_Base_Name),
+                                 To       => W_Any_Node_Id
+                                   (New_Identifier (Name => "")));
+
+                              Subst (Subst_Cur + 3) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & Of_Base_Name),
+                                 To       => W_Any_Node_Id
+                                   (New_Identifier (Name => "")));
+
+                              Subst (Subst_Cur + 4) := New_Custom_Substitution
+                                (Domain   => EW_Prog,
+                                 From     => NID (Capitalize_First
+                                   (Generic_Name) & "__" & Short_Name (Formal)
+                                   & "\." & In_Range_Name),
+                                 To       => W_Any_Node_Id
+                                   (New_Identifier (Name => "__ignore")));
+                           end if;
+                        end;
+                        Subst_Cur := Subst_Cur + 5;
+                     else
+
+                        --  If the formal is not of a private kind, there can
+                        --  be some other elements in its module that are used
+                        --  inside the axiomatization.
+                        --  Replace: <Generic_Name>__<Formal>.
+                        --  by: Name_Of_Node (Actual).
+
+                        Subst (Subst_Cur + 1) := New_Custom_Substitution
+                          (Domain   => EW_Prog,
+                           From     => NID (Capitalize_First (Generic_Name)
+                             & "__" & Short_Name (Formal) & "\."),
+                           To       => W_Any_Node_Id
+                             (New_Identifier (Name => Capitalize_First
+                                              (Name_Of_Node (Actual)) & ".")));
+                        Subst_Cur := Subst_Cur + 2;
+                     end if;
+
+                  elsif Ekind (Formal) = E_Function then
+
+                     --  Replace:
+                     --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
+                     --  by: use <Instance_Name>__<Formal>
+
+                     Subst (Subst_Cur) := New_Custom_Substitution
+                       (Domain   => EW_Prog,
+                        From     => NID ("use\s+" & """" & Generic_Name &
+                            "__args""\." & Capitalize_First (Generic_Name)
+                          & "__" & Short_Name (Formal) & "\s"),
+                        To       => W_Any_Node_Id (New_Identifier
+                          (Name => "use " & Capitalize_First (Instance_Name)
+                           & "__" & Short_Name (Formal) & ASCII.LF)));
+                     Subst_Cur := Subst_Cur + 1;
+
+                     --  Replace: <Generic_Name>__<Formal>.<Formal>
+                     --  by: <Instance_Name>__<Formal>.<Formal>
+
+                     Subst (Subst_Cur) := New_Custom_Substitution
+                       (Domain   => EW_Prog,
+                        From     => NID (Capitalize_First (Generic_Name)
+                          & "__" & Short_Name (Formal) & "\." &
+                            Short_Name (Formal)),
+                        To       => W_Any_Node_Id
+                          (New_Identifier
+                               (Name => Short_Name (Formal),
+                                Context =>
+                                  Capitalize_First (Instance_Name) & "__"
+                                & Short_Name (Formal))));
+                     Subst_Cur := Subst_Cur + 1;
+
+                     Compl (Compl_Cur) := Actual;
+                     Compl_Cur := Compl_Cur + 1;
+
+                  else
+
+                     --  Replace:
+                     --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
+                     --  by: use ("<Actual_File>".)Name_Of_Node (Actual)
+
+                     if Actual_File /= File_Name then
+                        Subst (Subst_Cur) := New_Custom_Substitution
+                          (Domain   => EW_Prog,
+                           From     => NID ("use\s+" & """" & Generic_Name &
+                               "__args""\." & Capitalize_First (Generic_Name)
+                             & "__" & Short_Name (Formal) & "\s"),
+                           To       => W_Any_Node_Id (New_Identifier
+                             (Name => "use """ & Actual_File & """." &
+                                Capitalize_First (Name_Of_Node (Actual))
+                              & ASCII.LF)));
+                     else
+                        Subst (Subst_Cur) := New_Custom_Substitution
+                          (Domain   => EW_Prog,
+                           From     => NID ("use\s+" & """" & Generic_Name &
+                               "__args""\." & Capitalize_First (Generic_Name)
+                             & "__" & Short_Name (Formal) & "\s"),
+                           To       => W_Any_Node_Id (New_Identifier
+                             (Name => "use " & Capitalize_First
+                              (Name_Of_Node (Actual)) & ASCII.LF)));
+                     end if;
+                     Subst_Cur := Subst_Cur + 1;
+
+                     --  Replace: <Generic_Name>__<Formal>.<Formal>
+                     --  by: To_Why_Id (Actual)
+
+                     Subst (Subst_Cur) := New_Custom_Substitution
+                       (Domain   => EW_Prog,
+                        From     => NID (Capitalize_First (Generic_Name)
+                          & "__" & Short_Name (Formal) & "\." &
+                            Short_Name (Formal)),
+                        To       => W_Any_Node_Id
+                          (To_Why_Id (Actual, Domain => EW_Term)));
+                     Subst_Cur := Subst_Cur + 1;
+
+                     Compl (Compl_Cur) := Actual;
+                     Compl_Cur := Compl_Cur + 1;
+                  end if;
+               end;
+               Next (CurAssoc);
+               Next (CurLabs);
+            end loop;
+
+            --  Rename every module in the copy.
+            --  Replace: <Generic_Name>__ by: <Instance_Name>__
+
+            Subst (Subst_Cur) := New_Custom_Substitution
+              (Domain   => EW_Prog,
+               From     => NID (Capitalize_First (Generic_Name) & "__"),
+               To       => W_Any_Node_Id
+                 (New_Identifier (Name => Instance_Name & "__")));
+
+            Subst_Cur := Subst_Cur + 1;
+
+            --  Rename the theory file.
+            --  Replace: "<Generic_Name>". by:
+            --    "<Instance_File>". if Instance_File is not File_Name
+            --    nothing otherwise
+
+            if Instance_File = File_Name then
+               Subst (Subst_Cur) := New_Custom_Substitution
+                 (Domain   => EW_Prog,
+                  From     => NID ("""" & Generic_Name & """."),
+                  To       => W_Any_Node_Id
+                    (New_Identifier (Name => "")));
+            else
+               Subst (Subst_Cur) := New_Custom_Substitution
+                 (Domain   => EW_Prog,
+                  From     => NID ("""" & Generic_Name & """."),
+                  To       => W_Any_Node_Id
+                    (New_Identifier (Name => """" & Instance_File & """.")));
+            end if;
+
+            Subst_Cur := Subst_Cur + 1;
+         end Compute_Substitution_Package;
+
+         GParent_Cur : List_Of_Entity.Cursor :=
+           List_Of_Entity.First (G_Parents);
+      begin
+         while List_Of_Entity.Has_Element (GParent_Cur) loop
+            Compute_Substitution_Package
+              (Assoc         => Get_Association_List (
+               List_Of_Entity.Element (GParent_Cur)),
+               Labs          => Get_Label_List (
+                 List_Of_Entity.Element (GParent_Cur)),
+               Generic_Name  => Get_Generic_Name (
+                 List_Of_Entity.Element (GParent_Cur), GParent_Cur),
+               Instance_Name => Get_Instance_Name
+                 (List_Of_Entity.Element (GParent_Cur)),
+               Instance_File =>
+                 Why_Files (Dispatch_Entity (
+                   List_Of_Entity.Element (GParent_Cur))).Name.all);
+            List_Of_Entity.Next (GParent_Cur);
+         end loop;
+      end Compute_Substitution;
+
+      ----------------------
+      -- Get_Generic_Name --
+      ----------------------
+
+      function Get_Generic_Name (E : Entity_Id;
+                                 Parents : List_Of_Entity.Cursor)
+                                 return String is
+         function Get_Generic_Name_Scope (E : Entity_Id;
+                                          N : List_Of_Entity.Cursor)
+                                          return String;
+
+         function Get_Generic_Name_Scope (E : Entity_Id;
+                                          N : List_Of_Entity.Cursor)
+                                          return String is
+         begin
+            if List_Of_Entity.Has_Element (N) then
+
+               --  If E is the next instance N, then use the name of its
+               --  Generic_Parent instead.
+
+               if List_Of_Entity.Element (N) = E then
+                  return
+                    Get_Generic_Name_Scope
+                      (Generic_Parent (Get_Package_Spec (E)),
+                       List_Of_Entity.Next (N));
+               else
+
+                  --  Append the name of E to its Scope
+
+                  declare
+                     Name : constant String := Get_Name_String (Chars (E));
+                  begin
+                     return Get_Generic_Name_Scope
+                       (Unique_Entity (Scope (E)), N) & "__" & Name;
+                  end;
+               end if;
+            else
+
+               --  If there is no instance, return E's full name
+
+               return Full_Name (E);
+            end if;
+         end Get_Generic_Name_Scope;
+      begin
+         return Get_Generic_Name_Scope (E, Parents);
+      end Get_Generic_Name;
+
+      -------------------------
+      -- Get_Generic_Parents --
+      -------------------------
+
+      function Get_Generic_Parents
+        (E : Entity_Id) return List_Of_Entity.List is
+
+         procedure Internal_Get_Generic_Parents
+           (E      :     Entity_Id;
+            Result : out List_Of_Entity.List;
+            Found  : out Boolean);
+
+         procedure Internal_Get_Generic_Parents
+           (E      :     Entity_Id;
+            Result : out List_Of_Entity.List;
+            Found  : out Boolean) is
+         begin
+            if Present (E) then
+
+               --  If E has external axioms, return the empty list
+               if Ekind (E) = E_Package and then
+                 Package_Has_External_Axioms (E) then
+                  Result := List_Of_Entity.Empty_List;
+                  Found := True;
+                  if Present (Generic_Parent (Get_Package_Spec (E))) then
+                     List_Of_Entity.Prepend (Result, E);
+                  end if;
+                  return;
+               end if;
+
+               --  If a package with external axioms has been found above
+               --  Scope (E) return the list of generic parents above Scope (E)
+               Internal_Get_Generic_Parents (Scope (E), Result, Found);
+
+               if Found then
+                  return;
+               end if;
+
+               --  If a package with external axioms has been found above
+               --  Generic_Parent (E) return the list of generic parents above
+               --  Generic_Parent (E) plus E
+
+               if Ekind (E) = E_Package then
+                  Internal_Get_Generic_Parents
+                    (Generic_Parent (Get_Package_Spec (E)), Result, Found);
+                  if Found then
+                     List_Of_Entity.Prepend (Result, E);
+                     return;
+                  end if;
+               end if;
+            end if;
+            Found := False;
+         end Internal_Get_Generic_Parents;
+
+         Result : List_Of_Entity.List;
+         Found  : Boolean;
+      begin
+         Internal_Get_Generic_Parents (E, Result, Found);
+         pragma Assert (Found);
+         return Result;
+      end Get_Generic_Parents;
+
+      --------------------
+      -- Get_Label_List --
+      --------------------
+
+      function Get_Label_List (E : Entity_Id) return List_Id is
+         P : Node_Id := Generic_Parent (Get_Package_Spec (E));
+      begin
+         while Nkind (P) /= N_Generic_Package_Declaration loop
+            P := Parent (P);
+         end loop;
+
+         return Generic_Formal_Declarations (P);
+      end Get_Label_List;
+
+      ------------------------
+      -- Parse_Declarations --
+      ------------------------
 
       procedure Parse_Declarations
         (Decls      : List_Id;
@@ -380,6 +942,7 @@ package body Gnat2Why.Decls is
 
             --  Adds a new theory to the appropriate file, containing only a
             --  use export of the theory to be copied
+
             if TFile.Name.all /= File_Name then
                Open_Theory
                  (TFile, Theory_Name,
@@ -398,6 +961,9 @@ package body Gnat2Why.Decls is
                Close_Theory (TFile, Filter_Entity => Empty);
             end if;
 
+            --  For subprograms and objects, adds the completion of function
+            --  parameters to the completion of E
+
             if not (Ekind (E) in Type_Kind) then
                for I in Compl'Range loop
                   Add_Completion (Name            => Full_Name (E),
@@ -406,6 +972,8 @@ package body Gnat2Why.Decls is
                                     Dispatch_Entity (Compl (I)));
                end loop;
             end if;
+
+            --  For subprograms, adds a new empty theory for expr_fun_closure
 
             if Ekind (E) in Subprogram_Kind then
                declare
@@ -435,46 +1003,32 @@ package body Gnat2Why.Decls is
               | N_Subprogram_Declaration | N_Object_Declaration then
                Parse_Declaration (Cur);
             end if;
+
+            if Comes_From_Source (Cur) and then
+              Nkind (Cur) = N_Package_Declaration then
+               Parse_Declarations
+                 (Decls      => Visible_Declarations (Get_Package_Spec (Cur)),
+                  File_Name  => File_Name,
+                  Compl      => Compl);
+            end if;
             Next (Cur);
          end loop;
       end Parse_Declarations;
 
-      procedure Compute_Length (Labs         :     List_Id;
-                                Subst_Length : out Natural;
-                                Num_Of_Obj   : out Natural) is
-         CurLabs  : Node_Id := First (Labs);
-      begin
-         Subst_Length := 1;
-         Num_Of_Obj   := 0;
-         while Present (CurLabs) loop
-            declare
-               K : constant Entity_Kind :=
-                 Ekind (Defining_Entity (CurLabs));
-            begin
-               if K in Private_Kind then
-                  Subst_Length := Subst_Length + 6;
-               elsif K in Type_Kind then
-                  Subst_Length := Subst_Length + 3;
-               else
-                  Num_Of_Obj   := Num_Of_Obj + 1;
-                  Subst_Length := Subst_Length + 2;
-               end if;
-            end;
-            Next (CurLabs);
-         end loop;
-      end Compute_Length;
+      ----------------------
+      -- Parse_Parameters --
+      ----------------------
 
       procedure Parse_Parameters
-        (Assoc         :     List_Id;
-         Labs          :     List_Id;
-         Generic_Name  :     String;
-         Instance_Name :     String;
-         Subst         : out W_Custom_Substitution_Array;
-         Compl         : out Entity_Array) is
+        (G_Parents : List_Of_Entity.List) is
+
+         Assoc : constant List_Id :=  Get_Association_List (Package_Entity);
+         Labs  : constant List_Id :=  Get_Label_List (Package_Entity);
+         Instance_Name : constant String := Get_Instance_Name (Package_Entity);
 
          function Why_Logic_Type_Of_Ada_Generic_Type
-           (Ty : Node_Id; Is_Input : Boolean)
-                           return W_Primitive_Type_Id;
+           (Ty       : Node_Id;
+            Is_Input : Boolean) return W_Primitive_Type_Id;
          --  Take an Ada Node and transform it into a Why logic type. The Ada
          --  Node is expected to be a Defining_Identifier for a type.
          --  Return the associated actual if Ty is a generic formal parameter.
@@ -482,42 +1036,69 @@ package body Gnat2Why.Decls is
          --  be used.
 
          function Why_Logic_Type_Of_Ada_Generic_Type
-           (Ty : Node_Id; Is_Input : Boolean)
-                           return W_Primitive_Type_Id is
-            CurAssoc : Node_Id := First (Assoc);
-            CurLabs  : Node_Id := First (Labs);
+           (Ty       : Node_Id;
+            Is_Input : Boolean) return W_Primitive_Type_Id is
+
+            --  Goes through a list of parameters to find actual that is
+            --  associated with the formal Ty
+            function Find_Actual
+              (Assoc : List_Id;
+               Labs  : List_Id) return Node_Id;
+
+            function Find_Actual
+              (Assoc : List_Id;
+               Labs  : List_Id) return Node_Id is
+
+               CurAssoc   : Node_Id := First (Assoc);
+               CurLabs    : Node_Id := First (Labs);
+            begin
+               while Present (CurAssoc) loop
+                  if Defining_Entity (CurLabs) = Ty then
+                     return Entity (Explicit_Generic_Actual_Parameter
+                                    (CurAssoc));
+                  end if;
+
+                  Next (CurLabs);
+                  Next (CurAssoc);
+               end loop;
+               return Empty;
+            end Find_Actual;
+
          begin
             if Is_Generic_Type (Ty) then
+               declare
+                  Actual     : Node_Id := Find_Actual (Assoc, Labs);
+                  CurGParent : List_Of_Entity.Cursor :=
+                    List_Of_Entity.Next (List_Of_Entity.First (G_Parents));
+               begin
 
-               --  If Ty is a formal of the generic, goes through the list
-               --  of parameters to find the corresponding actual.
+                  --  If Ty is a formal of the generic, goes through the list
+                  --  of enclosing instances to find the corresponding actual.
 
-               while Present (CurAssoc) loop
-                  declare
-                     Actual : constant Entity_Id :=
-                       Entity (Explicit_Generic_Actual_Parameter
-                               (CurAssoc));
-                     Formal : constant Entity_Id :=
-                       Defining_Entity (CurLabs);
-                  begin
-                     if Formal = Ty then
+                  while List_Of_Entity.Has_Element (CurGParent) and then
+                    not Present (Actual) loop
+                     Actual := Find_Actual
+                       (Assoc => Get_Association_List (
+                        List_Of_Entity.Element (CurGParent)),
+                        Labs  => Get_Label_List (
+                          List_Of_Entity.Element (CurGParent)));
 
-                        --  If Is_Input is true, checks wether the base_type of
-                        --  Ty should be used.
+                     List_Of_Entity.Next (CurGParent);
+                  end loop;
 
-                        if Is_Input and then
-                            Is_Scalar_Type (Actual) and then
-                          not Is_Boolean_Type (Actual) then
-                           return +Base_Why_Type (Unique_Entity (Actual));
-                        else
-                           return Why_Logic_Type_Of_Ada_Type (Actual);
-                        end if;
-                     end if;
-                  end;
-                  Next (CurAssoc);
-                  Next (CurLabs);
-               end loop;
-               raise Program_Error;
+                  pragma Assert (Present (Actual));
+
+                  --  If Is_Input is true, checks wether the base_type of
+                  --  Ty should be used.
+
+                  if Is_Input and then
+                    Is_Scalar_Type (Actual) and then
+                    not Is_Boolean_Type (Actual) then
+                     return +Base_Why_Type (Unique_Entity (Actual));
+                  else
+                     return Why_Logic_Type_Of_Ada_Type (Actual);
+                  end if;
+               end;
             else
                if Is_Input and then
                  Is_Scalar_Type (Ty) and then
@@ -533,34 +1114,15 @@ package body Gnat2Why.Decls is
             end if;
          end Why_Logic_Type_Of_Ada_Generic_Type;
 
-         --  Names of elements expected in a Why3 theory for a formal of a
-         --  private type. Used to comply with the special handling for
-         --  range types. In parameters of subprograms are expected to be of
-         --  type Base_Type_Name. The functions To_Base_Name and Of_Base_Name
-         --  are used to translate to and from type Base_Type_Name and
-         --  the predicate In_Range_Name asserts that an element of type
-         --  Base_Type_Name can be translated back to the range type.
-
-         Base_Type_Name : constant String := "base_type";
-         To_Base_Name   : constant String := "to_base";
-         Of_Base_Name   : constant String := "of_base";
-         In_Range_Name  : constant String := "valid";
-
          TFile     : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
-         File_Name : constant String := TFile.Name.all;
          CurAssoc  : Node_Id := First (Assoc);
          CurLabs   : Node_Id := First (Labs);
-         Subst_Cur : Integer := 1;
-         Compl_Cur : Integer := 1;
       begin
          while Present (CurAssoc) loop
             declare
                Actual : constant Entity_Id :=
                  Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                Formal : constant Entity_Id := Defining_Entity (CurLabs);
-               Actual_File : constant String :=
-                 File_Base_Name_Of_Entity (Actual)
-                 & Why_File_Suffix (Dispatch_Entity (Actual));
             begin
 
                if Ekind (Formal) in Type_Kind then
@@ -596,168 +1158,6 @@ package body Gnat2Why.Decls is
                   end if;
 
                   Close_Theory (TFile, Filter_Entity => Empty);
-
-                  --  Replace:
-                  --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
-                  --  by: use ("<Actual_File>".)Name_Of_Node (Actual)
-                  --  No use is generated if Actual doesn't have a unique name
-
-                  if Full_Name_Is_Not_Unique_Name (Actual) then
-                     Subst (Subst_Cur) := New_Custom_Substitution
-                       (Domain   => EW_Prog,
-                        From     => NID ("use\s+" & """" & Generic_Name &
-                            "__args""\." & Capitalize_First (Generic_Name)
-                          & "__" & Short_Name (Formal) & "\s"),
-                        To       => W_Any_Node_Id (
-                          New_Identifier (Name => "" & ASCII.LF)));
-
-                  elsif Actual_File /= File_Name then
-                     Subst (Subst_Cur) := New_Custom_Substitution
-                       (Domain   => EW_Prog,
-                        From     => NID ("use\s+" & """" & Generic_Name &
-                            "__args""\." & Capitalize_First (Generic_Name)
-                          & "__" & Short_Name (Formal) & "\s"),
-                        To       => W_Any_Node_Id (New_Identifier
-                          (Name => "use """ & Actual_File & """." &
-                             Capitalize_First (Name_Of_Node (Actual))
-                           & ASCII.LF)));
-                  else
-                     Subst (Subst_Cur) := New_Custom_Substitution
-                       (Domain   => EW_Prog,
-                        From     => NID ("use\s+" & """" & Generic_Name &
-                            "__args""\." & Capitalize_First (Generic_Name)
-                          & "__" & Short_Name (Formal) & "\s"),
-                        To       => W_Any_Node_Id (New_Identifier
-                          (Name => "use " & Capitalize_First
-                           (Name_Of_Node (Actual)) & ASCII.LF)));
-                  end if;
-                  Subst_Cur := Subst_Cur + 1;
-
-               --  Replace: <Generic_Name>__<Formal>.<Formal>
-               --  by: Why_Logic_Type_Of_Ada_Type (Actual)
-
-                  Subst (Subst_Cur) := New_Custom_Substitution
-                    (Domain   => EW_Prog,
-                     From     => NID (Capitalize_First (Generic_Name)
-                       & "__" & Short_Name (Formal) & "\." &
-                         Short_Name (Formal)),
-                     To       => W_Any_Node_Id
-                       (Why_Logic_Type_Of_Ada_Type (Actual)));
-
-                  --  If the formal has a private kind, Base_Type_Name,
-                  --  To_Base_Name, Of_Base_Name, and In_Range_Name must be
-                  --  replaced appropriately
-
-                  if Ekind (Formal) in Private_Kind then
-                     declare
-                        Actual_Type : constant W_Primitive_Type_OId :=
-                          Why_Logic_Type_Of_Ada_Type (Actual);
-                        Actual_Base : constant W_Primitive_Type_OId :=
-                          +Base_Why_Type (Unique_Entity (Actual));
-                     begin
-
-                        --  If the actual is a scalar type and not a boolean:
-                        --  <Generic_Name>__<Base_Type_Name> =>
-                        --               Base_Why_Type (<Actual>)
-                        --  <Generic_Name>__<To_Base_Name>   =>
-                        --               Conversion_Name (To   => <Base>,
-                        --                                From => <Actual>)
-                        --  <Generic_Name>__<Of_Base_Name>   =>
-                        --               Conversion_Name (From => <Base>,
-                        --                                To   => <Actual>)
-                        --  <Generic_Name>__<In_Range_Name>  =>
-                        --               Range_Pred_Name (<Actual>)
-                        --  Otherwise:
-                        --  <Generic_Name>__<Base_Type_Name> => <Actual>
-                        --  <Generic_Name>__<To_Base_Name>   =>
-                        --  <Generic_Name>__<Of_Base_Name>   =>
-                        --  <Generic_Name>__<In_Range_Name>  => __ignore
-
-                        if Is_Scalar_Type (Actual) and then
-                          not Is_Boolean_Type (Actual) then
-                           Subst (Subst_Cur + 1) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  Base_Type_Name),
-                              To       => W_Any_Node_Id (Actual_Base));
-
-                           Subst (Subst_Cur + 2) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  To_Base_Name),
-                              To       => W_Any_Node_Id (Conversion_Name
-                                (From => +Actual_Type,
-                                 To => +Actual_Base)));
-
-                           Subst (Subst_Cur + 3) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  Of_Base_Name),
-                              To       => W_Any_Node_Id (Conversion_Name
-                                (From => +Actual_Base,
-                                 To => +Actual_Type)));
-
-                           Subst (Subst_Cur + 4) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  In_Range_Name),
-                              To       => W_Any_Node_Id
-                                (Range_Pred_Name (Actual)));
-                        else
-                           Subst (Subst_Cur + 1) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  Base_Type_Name),
-                              To       => W_Any_Node_Id (Actual_Type));
-
-                           Subst (Subst_Cur + 2) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  To_Base_Name),
-                              To       => W_Any_Node_Id
-                                (New_Identifier (Name => "")));
-
-                           Subst (Subst_Cur + 3) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  Of_Base_Name),
-                              To       => W_Any_Node_Id
-                                (New_Identifier (Name => "")));
-
-                           Subst (Subst_Cur + 4) := New_Custom_Substitution
-                             (Domain   => EW_Prog,
-                              From     => NID (Capitalize_First (Generic_Name)
-                                & "__" & Short_Name (Formal) & "\." &
-                                  In_Range_Name),
-                              To       => W_Any_Node_Id
-                                (New_Identifier (Name => "__ignore")));
-                        end if;
-                     end;
-                     Subst_Cur := Subst_Cur + 5;
-                  else
-
-                     --  If the formal is not of a private kind, there can be
-                     --  some other elements in its module that are used
-                     --  inside the axiomatization.
-                     --  Replace: <Generic_Name>__<Formal>.
-                     --  by: Name_Of_Node (Actual).
-
-                     Subst (Subst_Cur + 1) := New_Custom_Substitution
-                       (Domain   => EW_Prog,
-                        From     => NID (Capitalize_First (Generic_Name)
-                          & "__" & Short_Name (Formal) & "\."),
-                        To       => W_Any_Node_Id
-                          (New_Identifier (Name => Capitalize_First
-                                           (Name_Of_Node (Actual)) & ".")));
-                     Subst_Cur := Subst_Cur + 2;
-                  end if;
 
                elsif Ekind (Formal) = E_Function then
 
@@ -806,8 +1206,10 @@ package body Gnat2Why.Decls is
                        (1 .. Integer (List_Length (F_Params)));
                      Count : Integer := 1;
                   begin
+
                      pragma Assert (List_Length (F_Params) =
                                       List_Length (A_Params));
+
                      while Present (F_Param) loop
                         declare
                            A_Id   : constant Node_Id :=
@@ -870,145 +1272,56 @@ package body Gnat2Why.Decls is
 
                   Close_Theory (TFile, Filter_Entity => Empty);
 
-                  --  Replace:
-                  --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
-                  --  by: use <Instance_Name>__<Formal>
-
-                  Subst (Subst_Cur) := New_Custom_Substitution
-                    (Domain   => EW_Prog,
-                     From     => NID ("use\s+" & """" & Generic_Name &
-                         "__args""\." & Capitalize_First (Generic_Name)
-                       & "__" & Short_Name (Formal) & "\s"),
-                     To       => W_Any_Node_Id (New_Identifier
-                       (Name => "use " & Capitalize_First (Instance_Name)
-                        & "__" & Short_Name (Formal) & ASCII.LF)));
-                  Subst_Cur := Subst_Cur + 1;
-
-                  --  Replace: <Generic_Name>__<Formal>.<Formal>
-                  --  by: <Instance_Name>__<Formal>.<Formal>
-
-                  Subst (Subst_Cur) := New_Custom_Substitution
-                    (Domain   => EW_Prog,
-                     From     => NID (Capitalize_First (Generic_Name)
-                       & "__" & Short_Name (Formal) & "\." &
-                         Short_Name (Formal)),
-                     To       => W_Any_Node_Id
-                       (New_Identifier
-                            (Name => Short_Name (Formal),
-                             Context =>
-                               Capitalize_First (Instance_Name) & "__"
-                             & Short_Name (Formal))));
-                  Subst_Cur := Subst_Cur + 1;
-
-                  Compl (Compl_Cur) := Actual;
-                  Compl_Cur := Compl_Cur + 1;
-
-               else
-
-                  --  Replace:
-                  --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
-                  --  by: use ("<Actual_File>".)Name_Of_Node (Actual)
-
-                  if Actual_File /= File_Name then
-                     Subst (Subst_Cur) := New_Custom_Substitution
-                       (Domain   => EW_Prog,
-                        From     => NID ("use\s+" & """" & Generic_Name &
-                            "__args""\." & Capitalize_First (Generic_Name)
-                          & "__" & Short_Name (Formal) & "\s"),
-                        To       => W_Any_Node_Id (New_Identifier
-                          (Name => "use """ & Actual_File & """." &
-                             Capitalize_First (Name_Of_Node (Actual))
-                           & ASCII.LF)));
-                  else
-                     Subst (Subst_Cur) := New_Custom_Substitution
-                       (Domain   => EW_Prog,
-                        From     => NID ("use\s+" & """" & Generic_Name &
-                            "__args""\." & Capitalize_First (Generic_Name)
-                          & "__" & Short_Name (Formal) & "\s"),
-                        To       => W_Any_Node_Id (New_Identifier
-                          (Name => "use " & Capitalize_First
-                           (Name_Of_Node (Actual)) & ASCII.LF)));
-                  end if;
-                  Subst_Cur := Subst_Cur + 1;
-
-                  --  Replace: <Generic_Name>__<Formal>.<Formal>
-                  --  by: To_Why_Id (Actual)
-
-                  Subst (Subst_Cur) := New_Custom_Substitution
-                    (Domain   => EW_Prog,
-                     From     => NID (Capitalize_First (Generic_Name)
-                       & "__" & Short_Name (Formal) & "\." &
-                         Short_Name (Formal)),
-                     To       => W_Any_Node_Id
-                       (To_Why_Id (Actual, Domain => EW_Term)));
-                  Subst_Cur := Subst_Cur + 1;
-
-                  Compl (Compl_Cur) := Actual;
-                  Compl_Cur := Compl_Cur + 1;
                end if;
             end;
             Next (CurAssoc);
             Next (CurLabs);
          end loop;
-
-         --  A last substitution is needed to rename every module in the copy
-         --  so that there is no name clash.
-         --  Replace: <Generic_Name>__ by: <Instance_Name>__
-
-         Subst (Subst_Cur) := New_Custom_Substitution
-           (Domain   => EW_Prog,
-            From     => NID (Capitalize_First (Generic_Name) & "__"),
-            To       => W_Any_Node_Id
-              (New_Identifier (Name => Instance_Name & "__")));
       end Parse_Parameters;
 
       Decls : constant List_Id :=
         Visible_Declarations (Parent (Package_Entity));
-      G_Node : constant Node_Id :=
-        Generic_Parent (Parent (Package_Entity));
       TFile : constant Why_File :=
         Why_Files (Dispatch_Entity (Package_Entity));
+      G_Parents : constant List_Of_Entity.List :=
+        Get_Generic_Parents (Package_Entity);
+      Subst_Length : Natural;
+      Num_Of_Compl : Natural;
    begin
-      if Present (G_Node) then
-         declare
-            Generic_Name : constant String :=
-              Full_Name (G_Node);
-            Instance_Name : constant String :=
-              Capitalize_First (Full_Name (Package_Entity));
-            Assoc : constant List_Id := Generic_Associations
-              (Get_Package_Instantiation_Node (Package_Entity));
 
-            --  use Parent field to reach N_Generic_Package_Declaration
+      if List_Of_Entity.Is_Empty (G_Parents) then
 
-            Labs : constant List_Id :=
-              Generic_Formal_Declarations (Parent (Parent (Parent (G_Node))));
-            Subst_Length : Natural;
-            Num_Of_Compl : Natural;
-         begin
-            Compute_Length (Labs, Subst_Length, Num_Of_Compl);
-            declare
-               Subst : W_Custom_Substitution_Array (1 .. Subst_Length);
-               Compl : Entity_Array (1 .. Num_Of_Compl);
-            begin
-               Parse_Parameters
-                 (Assoc, Labs, Generic_Name, Instance_Name, Subst, Compl);
-
-               File_Append_To_Theories
-                 (TFile.File, New_Custom_Declaration
-                    (Domain    => EW_Prog,
-                     File_Name => NID (Generic_Name & ".mlw"),
-                     Subst     => Subst));
-
-               Parse_Declarations (Decls, TFile.Name.all, Compl);
-            end;
-         end;
-      else
          File_Append_To_Theories
            (TFile.File, New_Custom_Declaration
               (Domain    => EW_Prog,
                File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
 
          Parse_Declarations (Decls, TFile.Name.all);
+
+      else
+
+         if List_Of_Entity.First_Element (G_Parents) = Package_Entity then
+            Parse_Parameters (G_Parents);
+         end if;
+
+         Compute_Length (G_Parents, Subst_Length, Num_Of_Compl);
+
+         declare
+            Subst : W_Custom_Substitution_Array (1 .. Subst_Length);
+            Compl : Entity_Array (1 .. Num_Of_Compl);
+         begin
+            Compute_Substitution (G_Parents, Subst, Compl);
+
+            File_Append_To_Theories
+              (TFile.File, New_Custom_Declaration
+                 (Domain    => EW_Prog,
+                  File_Name =>
+                    NID (Get_Generic_Name (Package_Entity,
+                      List_Of_Entity.First (G_Parents)) & ".mlw"),
+                  Subst     => Subst));
+
+            Parse_Declarations (Decls, TFile.Name.all, Compl);
+         end;
       end if;
    end Translate_Package_With_External_Axioms;
 

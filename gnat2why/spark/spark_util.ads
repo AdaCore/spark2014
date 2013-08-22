@@ -112,12 +112,6 @@ package SPARK_Util is
    function Package_Has_External_Axioms (E : Entity_Id) return Boolean with
      Pre  => Ekind_In (E, E_Package, E_Generic_Package);
    --  Return whether E is a package with External Axioms
-   --  This function only recognizes formal containers for now
-
-   function Is_Instance_Of_External_Axioms (E : Entity_Id) return Boolean with
-     Pre  => Ekind_In (E, E_Package, E_Generic_Package);
-   --  Return whether E is the package instantiation of a package with
-   --  external axioms
 
    function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean;
    --  Return whether a type E is defined in a package with external axioms, or

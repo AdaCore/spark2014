@@ -1,0 +1,59 @@
+module Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__list
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__cursor
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__element
+  use "ada__containers__formal_doubly_linked_lists__generic_sorting__args".Ada__containers__formal_doubly_linked_lists__generic_sorting__olt
+
+  function is_sorted list : bool
+
+  axiom is_sorted__def:
+  forall co : list. is_sorted co = True <-> (forall cu1 cu2 : cursor [element co cu1, element co cu2].
+         position co cu1 >  position co cu2 > 0 -> not Ada__containers__formal_doubly_linked_lists__generic_sorting__olt.olt (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element co cu1))
+(Ada__containers__formal_doubly_linked_lists__element_type.to_base (element co cu2)) = True)
+
+  val is_sorted (co : list) : bool
+     ensures  { result = is_sorted co }
+end
+
+module Ada__containers__formal_doubly_linked_lists__generic_sorting__sort
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__list
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__length
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__cursor
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__find
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__contains
+  use import Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
+
+  val sort (co : ref list) : bool
+     writes { co }
+     ensures  { is_sorted !co = True /\ length_ !co = length_ (old !co) /\ capacity !co = capacity (old !co) /\
+            (forall e : Ada__containers__formal_doubly_linked_lists__element_type.base_type
+	[findfirst !co e| findfirst (old !co) e].  contains !co e = contains (old !co) e) }
+end
+
+module Ada__containers__formal_doubly_linked_lists__generic_sorting__merge
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__list
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__length
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__cursor
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__find
+  use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__contains
+  use import Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
+
+  val merge (target source : ref list) : bool
+     writes { target, source }
+     requires { length_ !source <= capacity !target - length_ !target }
+     ensures  { (is_sorted (old !target) = True -> is_sorted (old !source) = True -> is_sorted !target = True) /\ 
+	length_ !target = length_ (old !target) + length_ (old !source) /\ length_ !source = 0 /\
+        capacity !target = capacity (old !target) /\ capacity !source = capacity (old !source) /\
+            (forall e : Ada__containers__formal_doubly_linked_lists__element_type.base_type
+	[findfirst !target e | findfirst (old !target) e |  findfirst (old !source) e]. 
+             contains !target e = True <-> (contains (old !target) e = True \/  contains (old !source) e = True)) }
+end
