@@ -2552,7 +2552,7 @@ abstraction on to external states which are given in this section.
          A_Byte := Read_FIFO;
       end Get_Byte;
 
-      procedure Skip_To_Pattern (Pattern : in Byte_T; Found : out Boolean)
+      procedure Skip_To (Pattern : in Byte_T; Found : out Boolean)
          with Refined_Global  => (Input  => Status,
                                   In_Out => Read_FIFO),
               Refined_Depends => (Found,
@@ -2564,12 +2564,12 @@ abstraction on to external states which are given in this section.
       begin
          Found := False;
          loop
-            Get_In_FIFO_Status (Current_Status);
+            Get_FIFO_Status (Current_Status);
             exit when Current_Status = Read_FIFO_Empty;
             Get_Byte (Next_Byte);
             exit when Next_Byte = Pattern;
          end loop;
-      end Skip_To_Pattern;
+      end Skip_To;
 
       procedure Get_FIFO_Status (A_Byte : out Byte_T)
          with Refined_Global  => (Input  => Status),
@@ -2649,7 +2649,7 @@ abstraction on to external states which are given in this section.
       loop
          HAL.Wdog_Timed_Out (Wdog_Timed_Out);
          exit when Wdog_Timed_Out;
-         HAL.Skip_To_Pattern (16#55#, Found);
+         HAL.Skip_To (16#55#, Found);
          exit when not Found;
          HAL.Get_Byte (A_Byte);
          exit when A_Byte = 16#55#;
