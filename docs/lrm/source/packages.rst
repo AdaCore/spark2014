@@ -2344,7 +2344,7 @@ abstraction on to external states which are given in this section.
    end Externals.Secondary_Display;
 
 
-   with System,
+   with System.Storage_Elements,
         Externals.Temperature,
         Externals.Pressure,
         Externals.Main_Display,

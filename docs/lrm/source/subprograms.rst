@@ -1259,7 +1259,7 @@ No extra legality rules are associated with anti-aliasing.
 
 No extra dynamic semantics are associated with anti-aliasing.
 
-   .. centered:: **Verification Rules**
+.. centered:: **Verification Rules**
 
 #. A procedure call shall not pass actual parameters which denote objects
    with overlapping locations, when at least one of the corresponding formal
