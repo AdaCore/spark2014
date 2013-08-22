@@ -34,7 +34,6 @@ with AA_Util;                            use AA_Util;
 with Atree;                              use Atree;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
-with Lib;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Opt;                                use Opt;
@@ -63,9 +62,9 @@ package body SPARK_Definition is
    --    types and deferred constants
 
    --  The SPARK_Mode pragma may be used as a configuration pragma or a local
-   --  pragma in the source. The frontend rejects all invalid placements of
-   --  this pragma, and stores them in the attribute "SPARK_Mode_Pragmas" of
-   --  the relevant entities:
+   --  pragma in the source. The frontend rejects all invalid placements
+   --  of this pragma, and stores them in the attributes "SPARK_Pragma"
+   --  and "SPARK_Aux_Pragma" of the relevant entities:
 
    --      E_Function
    --      E_Generic_Function
@@ -76,31 +75,13 @@ package body SPARK_Definition is
    --      E_Package
    --      E_Package_Body
 
-   --  [Generic] package specs and bodies may have two pragmas. Those are
-   --  linked using the Next_Pragma field. To distinguish between pragmas that
-   --  apply to the visible or private part of a spec, one can use function
-   --
-   --      sem_prag.Is_Private_SPARK_Mode
-   --
-   --  To distinguish between pragmas that apply to the declarative and
-   --  statement part of a body, one can use function
-   --
-   --      sem_prag.Is_Elaboration_SPARK_Mode
-   --
-   --  The unit-wide configuration version of the pragma is associated
-   --  with the unit itself. See the facilities in lib.ads and function
-   --  SPARK_Mode_Pragma.
-   --
-   --  The compilation-wide configuration mode of the pragma is retained in
-   --  opt.ads. See opt.ads.
-   --
-   --  There is a special type called SPARK_Mode_Id which defines the various
+   --  There is a special type called SPARK_Mode_Type which defines the various
    --  modes. There is a useful function in sem_prag to extract the Mode_Id
    --  from a pragma
    --
-   --      sem_prag.Get_SPARK_Mode_Id
+   --      sem_prag.Get_SPARK_Mode_Type
    --
-   --  The idea is that one should compare SPARK_Mode_Id values rather than
+   --  The idea is that one should compare SPARK_Mode_Type values rather than
    --  Name_Ids.
 
    package Applicable_SPARK_Mode is new
@@ -279,17 +260,6 @@ package body SPARK_Definition is
    --  Start of Get_Scope_Info
 
    begin
-      --  Get the applicable SPARK_Mode pragma for this unit, if any
-
-      if Nkind (Parent (N)) = N_Compilation_Unit then
-
-         --  ??? After Opt.Global_SPARK_Mode is changed to a Node_Id, this is
-         --  the place to push it on the stack.
-
-         Push_SPARK_Pragma
-           (Lib.SPARK_Mode_Pragma (Lib.Get_Cunit_Unit_Number (Parent (N))));
-      end if;
-
       --  Traversal currently stops at non-declarations (except
       --  N_Handled_Sequence_Of_Statements and N_Block_Statement which may
       --  contain declarations) which is sufficient to get the applicable
@@ -369,7 +339,7 @@ package body SPARK_Definition is
                       E_Package           |
                       E_Package_Body
       then
-         Prag := SPARK_Mode_Pragmas (E);
+         Prag := SPARK_Pragma (E);
       end if;
 
       case Nkind (N) is
@@ -386,17 +356,8 @@ package body SPARK_Definition is
             --  Retrieve the SPARK_Mode pragmas on the visible and private
             --  parts of the package, if any.
 
-            if Present (Prag)
-              and then not Sem_Prag.Is_Private_SPARK_Mode (Prag)
-            then
-               Vis_Prag := Prag;
-               Prag := Next_Pragma (Prag);
-            end if;
-
-            if Present (Prag) then
-               pragma Assert (Sem_Prag.Is_Private_SPARK_Mode (Prag));
-               Priv_Prag := Prag;
-            end if;
+            Vis_Prag := Prag;
+            Priv_Prag := SPARK_Aux_Pragma (E);
 
             --  Do the package entity itself and its visible part
 
@@ -432,17 +393,8 @@ package body SPARK_Definition is
             --  Retrieve the SPARK_Mode pragmas on the declarative and
             --  statement parts of the package body, if any.
 
-            if Present (Prag)
-              and then not Sem_Prag.Is_Elaboration_SPARK_Mode (Prag)
-            then
-               Decl_Prag := Prag;
-               Prag := Next_Pragma (Prag);
-            end if;
-
-            if Present (Prag) then
-               pragma Assert (Sem_Prag.Is_Elaboration_SPARK_Mode (Prag));
-               Stat_Prag := Prag;
-            end if;
+            Decl_Prag := Prag;
+            Stat_Prag := SPARK_Aux_Pragma (E);
 
             --  Do the package body entity itself and its declarative part
 
