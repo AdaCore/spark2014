@@ -30,7 +30,6 @@ with Ada.Strings.Maps.Constants;
 with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
-with AA_Util;                            use AA_Util;
 with Atree;                              use Atree;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
@@ -1060,42 +1059,25 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id);
-   --  Produce a line in output file for subprogram Id, following syntax:
-   --
-   --    cd name location opt_list_NIR opt_list_NYI
-   --
-   --  where
-   --
-   --    c and d are characters which denote respectively whether the body and
-   --    spec of subprogram Id are:
-   --      + in SPARK
-   --      - not in SPARK roadmap
-   --      * not yet implemented in SPARK
-   --
-   --    name is the name of subprogram Id
-   --    location is the location (file:line) of subprogram Id
-   --
-   --    opt_list_NIR and opt_list_NYI are optional lists of violations of
-   --    SPARK for not-in-roadmap constructs (NIR) or not-yet-implemented
-   --    constructs (NYI). opt_list_NIR is enclosed in parentheses.
-   --    opt_list_NYI is enclosed in brackets. Both are comma-separated lists.
-   --
-   --  examples:
-   --
-   --  -+ pack__f f.adb:3 (tasking)
-   --  Subprogram Pack.F has its spec in SPARK, and its body not in SPARK, due
-   --  to the use of tasking.
-   --
-   --  ++ pack__g f.adb:78
-   --  Subprogram Pack.G is in SPARK
-   --
-   --  ** pack__h f.adb:3 [slice, not yet implemented]
-   --  Subprogram Pack.H has both its spec and body not implemented in SPARK,
-   --  due to the use of slices, plus some other not precised constructs.
+   --  Produce a line in output file for subprogram Id, in JSON format, with
+   --  following interface:
+
+   --   { name : string,          name of the subprogram
+   --     file : string,          file name of the spec
+   --     line : int,             line of the spec
+   --     spark : bool,           subp is in SPARK
+   --     violations : string[]   the list of violations of the SPARK rules
+   --   }
+   --  Note that when field "spark" is set to false, and no violations are
+   --  reported, then it means that spark_mode was "off".
 
    Output_File : Ada.Text_IO.File_Type;
    --  <file>.alfa in which this pass generates information about subprograms
    --  in SPARK and subprograms not in SPARK.
+
+   First_Entry : Boolean := True;
+   --  Global variable used to decide whether a separator needs to be printed
+   --  between records in the JSON output
 
    -------------------
    -- After_Marking --
@@ -1103,6 +1085,7 @@ package body SPARK_Definition is
 
    procedure After_Marking is
    begin
+      Put_Line (Output_File, "]");
       Close (Output_File);
    end After_Marking;
 
@@ -1113,6 +1096,7 @@ package body SPARK_Definition is
    procedure Before_Marking (Basename : String) is
    begin
       Create (Output_File, Out_File, Basename & SPARK_Violations.SPARK_Suffix);
+      Put_Line (Output_File, "[");
    end Before_Marking;
 
    ----------------------------------
@@ -1129,11 +1113,10 @@ package body SPARK_Definition is
            (V : Violation_Subkind) return Unbounded_String is <>;
       function Collect_Msg_Violations
         (E : Entity_Id) return String;
-      --  Produce a comma-separated list of message for NYI or NIR violations,
-      --  enclosed in Open-Close characters.
+      --  Produce a comma-separated list of message for NYI or NIR violations
 
       function Violations return String;
-      --  Suffix string indicates why subprogram body is not in SPARK
+      --  JSON string  list indicates why subprogram body is not in SPARK
 
       ----------------------
       -- Helper Functions --
@@ -1219,8 +1202,13 @@ package body SPARK_Definition is
       Line_Num     : constant String :=
         Get_Logical_Line_Number (Sloc (Id))'Img;
    begin
+      if First_Entry then
+         First_Entry := False;
+      else
+         Put (Output_File, ", ");
+      end if;
       Put_Line (Output_File,
-                "{ ""name"" : """ & Name_String (Chars (Id)) & """, " &
+                "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
                   """file"" :""" & File_Name (Sloc (Id)) & """, " &
                   """line"" : " & Line_Num & ", " &
                   """spark"" : " & SPARK_Status & ", " &
