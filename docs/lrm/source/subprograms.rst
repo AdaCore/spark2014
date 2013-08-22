@@ -918,8 +918,8 @@ semantics (when viewed as an Ada program) should be unaffected by this
 transformation other than evaluating fewer known to be true assertion
 expressions.
 
-The rules below are in given in general terms in relation to "ghost entities"
-since in future it is intended that ghost types and ghost variables
+The rules below are given in general terms in relation to "ghost entities"
+since in the future it is intended that ghost types and ghost variables
 will be allowed. Currently, however, only ghost functions are allowed
 and so an additional legality rule is provided that allows only
 functions to be explicitly declared as a ghost (though entities declared within
@@ -938,17 +938,37 @@ other sections as appropriate, since they will refer to more than just subprogra
    specified to have the value Ghost is said to be a ghost entity (e.g., a ghost
    function or a ghost variable).
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 6.1.6 SS An entity with Convention => Ghost is a ghost
+                   entity. Covered by another TU.
+
 #. The Convention aspect of an entity declared inside of a ghost entity (e.g.,
    within the body of a ghost function) is defined to be Ghost.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 SS Any entity declared inside a ghost entity, is also
+                   defined to be Ghost.
+
 #. The Link_Name aspect of an imported ghost entity is defined
    to be a name that cannot be resolved in the external environment.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 SS The Link_Name aspect of an imported ghost entity
+                   cannot be resolved in the external environment.
 
 .. centered:: **Legality Rules**
 
 #. Only functions can be explicitly declared with the Convention aspect Ghost.
    [This means that the scope of the following rules is restricted to functions,
    even though they are stated in more general terms.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR Only functions can be explicitly declared with
+                   Convention => Ghost.
 
 #. A ghost entity shall only be referenced:
 
@@ -962,14 +982,35 @@ other sections as appropriate, since they will refer to more than just subprogra
      which passes a non-ghost variable as an out or in out mode actual
      parameter.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR A ghost entity shall only be referenced in
+                   an assertion expression, in another ghost entity or in
+                   a statement which does not contain (nor is itself) either
+                   an assignment statement targeting a non-ghost variable or
+                   a procedure call which passes a non-ghost variable as an
+                   out or in out actual parameter.
+
 #. Within a ghost procedure, the view of any non-ghost variable is
    a constant view. Within a ghost procedure, a volatile object shall
    not be read. [In a ghost procedure we do not want to allow assignments to
    non-ghosts either via assignment statements or procedure calls.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR Within a ghost procedure, the view of any
+                   non-ghost variable is a constant view. Within a ghost
+                   procedure, a volatile object shall not be read.
+
 #. A ghost entity shall not be referenced from within the expression of a
    predicate specification of a non-ghost subtype [because such predicates
    participate in determining the outcome of a membership test].
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR A ghost entity shall not be referenced from
+                   within the expression of a predicate specification of a
+                   non-ghost subtype.
 
 #. All subcomponents of a ghost object shall be initialized by the
    elaboration of the declaration of the object.
