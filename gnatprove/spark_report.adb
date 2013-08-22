@@ -139,23 +139,19 @@ procedure SPARK_Report is
    is
       use GNATCOLL.JSON;
       Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
+      Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
+      Entries : constant JSON_Array := Get (Dict);
    begin
-      Ada.Text_IO.Put_Line (Fn);
-      declare
-         Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
-         Entries : constant JSON_Array := Get (Dict);
-      begin
-         for Index in 1 .. Length (Entries) loop
-            declare
-               Result : constant JSON_Value := Get (Entries, Index);
-               Severe : constant String     := Get (Get (Result, "severity"));
-            begin
-               Add_Proof_Result (Unit,
-                                 Mk_Subp_Of_Entity (Get (Result, "entity")),
-                                 Severe = "info");
-            end;
-         end loop;
-      end;
+      for Index in 1 .. Length (Entries) loop
+         declare
+            Result : constant JSON_Value := Get (Entries, Index);
+            Severe : constant String     := Get (Get (Result, "severity"));
+         begin
+            Add_Proof_Result (Unit,
+                              Mk_Subp_Of_Entity (Get (Result, "entity")),
+                              Severe = "info");
+         end;
+      end loop;
    end Handle_Proof_File;
 
    -----------------------
