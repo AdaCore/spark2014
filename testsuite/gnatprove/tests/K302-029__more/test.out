@@ -1,4 +1,6 @@
--+ p0 pack.ads:13 (access)
--- p1 pack.ads:15 (access)
-++ p2 pack.ads:17
+[
+{ "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : false, "violations" : ["access"] }
+, { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : false, "violations" : ["access"] }
+, { "name" : "Pack.P2", "file" :"pack.ads", "line" :  17, "spark" : true, "violations" : [] }
+]
 

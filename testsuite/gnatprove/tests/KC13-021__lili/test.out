@@ -1,3 +1,6 @@
-++ next lili.ads:6 instantiated at user.adb:5
--- finalize lili.adb:10 instantiated at user.adb:5 (access)
-++ p user.ads:3
+[
+{ "name" : "User.Events.Next", "file" :"lili.ads", "line" :  6, "spark" : true, "violations" : [] }
+, { "name" : "User.Events.Finalize", "file" :"lili.adb", "line" :  10, "spark" : false, "violations" : ["access"] }
+, { "name" : "User.P", "file" :"user.ads", "line" :  3, "spark" : true, "violations" : [] }
+]
+
