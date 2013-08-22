@@ -50,17 +50,31 @@ package Report_Database is
      (Unit : Unit_Type; Subp : Subp_Type; Proved : Boolean);
    --  For the subprogram in the given unit, register a proof result
 
-   procedure Iter_Subps
+   procedure Iter_All_Subps
      (Process : not null access
                    procedure (U : Unit_Type;
                               Subp : Subp_Type;
                               Stat : Stat_Rec));
+   --  Iterate over all subprograms of all units
 
    function Unit_Name (Unit : Unit_Type) return String;
 
    function Subp_Name (Subp : Subp_Type) return String;
    function Subp_File (Subp : Subp_Type) return String;
    function Subp_Line (Subp : Subp_Type) return Integer;
+
+   function Num_Units return Integer;
+   --  Return the number of units
+
+   procedure Iter_Units
+     (Process : not null access procedure (U : Unit_Type));
+   --  Iterate over all units
+
+   procedure Iter_Unit_Subps
+     (Unit : Unit_Type;
+      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec));
+   --  Iterate over all subprograms of a given Unit
+
 private
 
    type Unit_Type is new Symbol;

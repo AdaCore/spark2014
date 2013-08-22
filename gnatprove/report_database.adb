@@ -132,7 +132,7 @@ package body Report_Database is
    -- Iter_Subps --
    ----------------
 
-   procedure Iter_Subps
+   procedure Iter_All_Subps
      (Process : not null access
                    procedure (U : Unit_Type;
                               Subp : Subp_Type;
@@ -160,7 +160,51 @@ package body Report_Database is
       for Unit_C in Unit_Map.Iterate loop
          Query_Element (Unit_C, Iter_Subp_Map'Access);
       end loop;
-   end Iter_Subps;
+   end Iter_All_Subps;
+
+   ----------------
+   -- Iter_Units --
+   ----------------
+
+   procedure Iter_Units
+     (Process : not null access procedure (U : Unit_Type)) is
+   begin
+      for Unit_C in Unit_Map.Iterate loop
+         Process (Unit_Maps.Key (Unit_C));
+      end loop;
+   end Iter_Units;
+
+   ---------------------
+   -- Iter_Unit_Subps --
+   ---------------------
+
+   procedure Iter_Unit_Subps
+     (Unit : Unit_Type;
+      Process : not null access procedure (Subp : Subp_Type; Stat : Stat_Rec))
+   is
+
+      procedure Iter_Subp_Map (Unit : Unit_Type; Map : Subp_Maps.Map);
+
+      -------------------
+      -- Iter_Subp_Map --
+      -------------------
+      procedure Iter_Subp_Map (Unit : Unit_Type; Map : Subp_Maps.Map) is
+         pragma Unreferenced (Unit);
+      begin
+         for Subp_C in Map.Iterate loop
+            Process (Subp_Maps.Key (Subp_C), Subp_Maps.Element (Subp_C));
+         end loop;
+      end Iter_Subp_Map;
+
+      C : constant Unit_Maps.Cursor := Unit_Map.Find (Unit);
+
+      --  beginning of processing for Iter_Unit_Subps
+
+   begin
+      if Unit_Maps.Has_Element (C) then
+         Unit_Maps.Query_Element (C, Iter_Subp_Map'Access);
+      end if;
+   end Iter_Unit_Subps;
 
    -------------
    -- Mk_Unit --
@@ -185,6 +229,28 @@ package body Report_Database is
                           File => Find (Symbol_Table, File),
                           Line => Line));
    end Mk_Subp;
+
+   ---------------
+   -- Num_Units --
+   ---------------
+
+   function Num_Units return Integer is
+      Count : aliased Integer := 0;
+
+      procedure Update (U : Unit_Type);
+
+      procedure Update (U : Unit_Type) is
+         pragma Unreferenced (U);
+      begin
+         Count := Count + 1;
+      end Update;
+
+      --  beginning of processing for Num_Units
+
+   begin
+      Iter_Units (Update'Access);
+      return Count;
+   end Num_Units;
 
    ---------------
    -- Subp_Name --
