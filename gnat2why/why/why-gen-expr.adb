@@ -92,13 +92,12 @@ package body Why.Gen.Expr is
    -------------------------
 
    function Cur_Subp_Name_Label
-     (Prefix : String := "")
       return W_Identifier_Id is
    begin
       return
         New_Identifier
-          (Name => To_String (WNE_Pretty_Ada) & ":" & Prefix &
-             Subprogram_Full_Source_Name (Current_Subp));
+          (Name => To_String (WNE_Pretty_Ada) & ":" &
+               Subprogram_Full_Source_Name (Current_Subp));
    end Cur_Subp_Name_Label;
 
    -----------------------
