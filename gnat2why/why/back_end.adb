@@ -103,15 +103,18 @@ package body Back_End is
          gnat_argv := save_argv;
          gnat_argc := save_argc;
       end if;
+
+      --  We are in the gnat2why executable, so GNATprove_Mode is always true
+      --  note that this flag needs to be set very early on, since e.g.
+      --  Scan_Compiler_Arguments uses it.
+
+      Opt.GNATprove_Mode := True;
+
       GNAT2Why_BE.Scan_Compiler_Arguments;
 
       --  Read extra options for gnat2why
 
       Gnat2Why_Args.Init;
-
-      --  We are in the gnat2why executable, so GNATprove_Mode is always true
-
-      Opt.GNATprove_Mode := True;
 
       --  An ALI file should be generated only when generating globals.
       --  Otherwise, when translating the program to Why, ALI file
@@ -120,7 +123,6 @@ package body Back_End is
       if not Gnat2Why_Args.Global_Gen_Mode then
          Opt.Disable_ALI_File := True;
       end if;
-
    end Scan_Compiler_Arguments;
 
 end Back_End;
