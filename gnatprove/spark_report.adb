@@ -92,8 +92,8 @@ procedure SPARK_Report is
    procedure Handle_Source_Dir (Dir : String);
    --  Parse all result files of this directory.
 
-   procedure Print_Report (Out_Dir : String);
-   --  Print the final SPARK report in directory Out_Dir
+   procedure Print_Report (Handle : Ada.Text_IO.File_Type);
+   --  Print the final SPARK report in the file
 
    function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
       return Subp_Type;
@@ -110,12 +110,8 @@ procedure SPARK_Report is
    --    label:  X% (Cnt / Total)
    --  where X is the ration Cnt / Total expressed in percent.
 
-   procedure Print_Proof_Report
-     (Unit : Unit_Type;
-      Subp : Subp_Type;
-      Stat : Stat_Rec);
-   --  Print a line of the form
-   --    "in unit <unit>, in subp <bla> proved X out of Y checks"
+   procedure Print_Proof_Report (Handle : Ada.Text_IO.File_Type);
+   --  print the proof report in the given file
 
    -----------------------
    -- Mk_Subp_Of_Entity --
@@ -342,25 +338,54 @@ procedure SPARK_Report is
    -- Print_Proof_Report --
    ------------------------
 
-   procedure Print_Proof_Report
-     (Unit : Unit_Type;
-      Subp : Subp_Type;
-      Stat : Stat_Rec) is
+   procedure Print_Proof_Report (Handle : Ada.Text_IO.File_Type) is
+      use Ada.Text_IO;
+
+      procedure For_Each_Unit (Unit : Unit_Type);
+      --  print proof results for the given unit
+
+      -------------------
+      -- For_Each_Unit --
+      -------------------
+
+      procedure For_Each_Unit (Unit : Unit_Type) is
+
+         procedure For_Each_Subp (Subp : Subp_Type; Stat : Stat_Rec);
+
+         -------------------
+         -- For_Each_Subp --
+         -------------------
+
+         procedure For_Each_Subp (Subp : Subp_Type; Stat : Stat_Rec) is
+         begin
+            Put (Handle,
+                 " " & Subp_Name (Subp) & " at " & Subp_File (Subp) & ":" &
+                 Int_Image (Subp_Line (Subp)));
+            if Stat.VC_Count = Stat.VC_Proved then
+               Put_Line (Handle,
+                         " proved (" & Int_Image (Stat.VC_Count) & " checks)");
+            else
+               Put_Line (Handle,
+                         " not proved," & Stat.VC_Proved'Img & " out of" &
+                           Stat.VC_Count'Img & " proved");
+            end if;
+         end For_Each_Subp;
+
+      begin
+         Put_Line (Handle, "unit " & Unit_Name (Unit) & " analyzed");
+         Iter_Unit_Subps (Unit, For_Each_Subp'Access);
+      end For_Each_Unit;
    begin
-      Ada.Text_IO.Put_Line ("in unit " & Unit_Name (Unit) & ", subprogram " &
-                              Subp_Name (Subp) & " at " & Subp_File (Subp) &
-                              ":" & Int_Image (Subp_Line (Subp)) & " proved" &
-                              Stat.VC_Proved'Img & " out of " &
-                              Stat.VC_Count'Img & " checks");
+      Put_Line (Handle, "Analyzed" & Num_Units'Img & " units");
+      Iter_Units (For_Each_Unit'Access);
    end Print_Proof_Report;
 
    ------------------
    -- Print_Report --
    ------------------
 
-   procedure Print_Report (Out_Dir : String) is
+   procedure Print_Report (Handle : Ada.Text_IO.File_Type) is
       use Ada.Text_IO;
-      Handle : File_Type;
 
       type Violation_Ranking is
         array (SPARK_Violations.Vkind range <>) of SPARK_Violations.Vkind;
@@ -525,7 +550,6 @@ procedure SPARK_Report is
    begin
       --  global statistics
 
-      Create (Handle, Out_File, Configuration.SPARK_Report_File (Out_Dir));
       Print_Statistics (Handle      => Handle,
                         Label       => "Subprograms in SPARK",
                         Label_Len   => Label_Length,
@@ -699,7 +723,11 @@ procedure SPARK_Report is
 
    Source_Directories_File : GNAT.OS_Lib.String_Access;
 
---  Start of SPARK_Report
+   use Ada.Text_IO;
+
+   Handle : File_Type;
+
+   --  Start of SPARK_Report
 
 begin
    if Ada.Command_Line.Argument_Count = 0 then
@@ -707,7 +735,12 @@ begin
    end if;
    Source_Directories_File := new String'(Ada.Command_Line.Argument (1));
    Iterate_Source_Dirs (Source_Directories_File.all);
-   Print_Report
-     (GNAT.Directory_Operations.Dir_Name (Source_Directories_File.all));
-   Iter_Subps (Print_Proof_Report'Access);
+   Create (Handle,
+           Out_File,
+           Configuration.SPARK_Report_File
+             (GNAT.Directory_Operations.Dir_Name
+                (Source_Directories_File.all)));
+   Print_Report (Handle);
+   Print_Proof_Report (Handle);
+   Close (Handle);
 end SPARK_Report;
