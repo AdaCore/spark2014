@@ -63,34 +63,51 @@ Procedure 3 (
                     ) ) ) )
           )).
 
+(* 1. program is syntax correct *)
 Check f_prime.
 
+(* 2. run the program in reference semantics *)
 Definition result := f_eval_subprogram 100 nil f_prime.
 
 Eval compute in result.
+
+(* 3. program with right checks at right places should be semantical equivelent with reference semantics  *)
+
+Definition expected_run_time_checks := f_check_generator_subprogram nil f_prime.
+
+Eval compute in expected_run_time_checks.
+
+Definition result_with_checks := f_eval_subprogram_with_checks 100 expected_run_time_checks nil f_prime.
+
+Eval compute in result_with_checks.
+
+(* 4. certified static analyzer *)
 
 Definition ast_num_inc := f_ast_num_inc_subprogram f_prime.
 
 Eval compute in ast_num_inc.
 
+(* 4.1 well-typed *)
 Definition well_typed := f_well_typed_subprogram nil f_prime.
 
 Eval compute in well_typed.
 
+(* 4.2 well-defined *)
 Definition well_initialized := f_well_defined_subprogram nil f_prime.
 
 Eval compute in well_initialized.
 
-Definition well_checked := f_check_generator_subprogram nil f_prime.
+(* 4.3 well-checked *)
+Definition actual_run_time_checks := expected_run_time_checks.
+
+Definition well_checked := f_checks_match actual_run_time_checks expected_run_time_checks.
 
 Eval compute in well_checked.
 
-Definition run_time_checks := well_checked.
+(* 4.4 well-formed (well-typed, well-defined and well-checked) program should always run correctly *)
+Definition result_with_checks' := f_eval_subprogram_with_checks 100 actual_run_time_checks nil f_prime.
 
-Definition result_with_checks := f_eval_subprogram_with_checks 100 run_time_checks nil f_prime.
-
-Eval compute in result_with_checks.
-
+Eval compute in result_with_checks'.
 
 
 (****************
@@ -131,10 +148,10 @@ Procedure 3 (
           (nil) 
           (* Procedure Body - Variable Declarations *)
           (
-          mkobject_declaration 5 (*N*) 1 2 (Some (E_Literal 6 (Integer_Literal 25))) :: 
-          mkobject_declaration 7 (*Result*) 2 3 None :: 
-          mkobject_declaration 8 (*I*) 3 2 None :: 
-          mkobject_declaration 9 (*X*) 4 2 None :: nil)
+          mkobject_declaration 5 (*N*) 1 1 (Some (E_Literal 6 (Integer_Literal 25))) :: 
+          mkobject_declaration 7 (*Result*) 2 2 None :: 
+          mkobject_declaration 8 (*I*) 3 1 None :: 
+          mkobject_declaration 9 (*X*) 4 1 None :: nil)
           (* Procedure Body - Statements *) (
             S_Sequence 10 (
               S_Assignment 11 ((*Result*) 2) (E_Literal 12 (Boolean_Literal true)) ) ( 
@@ -156,22 +173,49 @@ Procedure 3 (
           )
       ).
 
+(* 1. run the program in reference semantics *)
 Definition result_1 := f_eval_subprogram 100 nil f_prime_div_zero.
 
 Eval compute in result_1.
 
-Definition run_time_checks_1 := f_check_generator_subprogram nil f_prime_div_zero.
+(* 2.1 well-typed *)
+Definition well_typed_1 := f_well_typed_subprogram nil f_prime_div_zero.
 
-Eval compute in run_time_checks_1.
+Eval compute in well_typed_1.
 
-Definition result_with_checks_1 := f_eval_subprogram_with_checks 100 run_time_checks_1 nil f_prime_div_zero.
+(* 2.2 well-defined *)
+Definition well_initialized_1 := f_well_defined_subprogram nil f_prime_div_zero.
+
+Eval compute in well_initialized_1.
+
+(* 2.3 well-checked *)
+Definition expected_run_time_checks_1 := f_check_generator_subprogram nil f_prime_div_zero.
+
+Eval compute in expected_run_time_checks_1.
+
+Definition actual_run_time_checks_1 := expected_run_time_checks_1.
+
+Definition well_checked_1 := f_checks_match actual_run_time_checks_1 expected_run_time_checks_1.
+
+Eval compute in well_checked_1.
+
+(* 2.4 well-formed (well-typed, well-defined and well-checked) program should always run correctly *)
+Definition result_with_checks_1 := f_eval_subprogram_with_checks 100 actual_run_time_checks_1 nil f_prime_div_zero.
 
 Eval compute in result_with_checks_1.
 
-Definition result_without_checks_1 := f_eval_subprogram_with_checks 100 nil nil f_prime_div_zero.
 
-Eval compute in result_without_checks_1.
+(* 3 not well-checked *)
+Definition not_complete_checks := (44, Do_Overflow_Check :: nil)
+       :: (38, Do_Overflow_Check :: nil)
+          :: (31, Do_Overflow_Check :: nil)
+             :: (25, Do_Overflow_Check :: nil) :: nil.
 
+Definition result_with_bad_checks := f_eval_subprogram_with_checks 100 not_complete_checks nil f_prime_div_zero.
+
+Eval compute in result_with_bad_checks.
+
+(* ast numbers are unique *)
 Definition ast_num_inc_1 := f_ast_num_inc_subprogram f_prime_div_zero.
 
 Eval compute in ast_num_inc_1.
@@ -240,26 +284,34 @@ Definition f_prime_uninitialized :=
           )
       ).
 
+(* 1 well-typed *)
+Definition well_typed_2 := f_well_typed_subprogram nil f_prime_uninitialized.
+
+Eval compute in well_typed.
+
+(* 2 well-defined *)
+Definition well_initialized_2 := f_well_defined_subprogram nil f_prime_uninitialized.
+
+Eval compute in well_initialized_2.
+
+(* 3 well-checked *)
+Definition expected_run_time_checks_2 := f_check_generator_subprogram nil f_prime_uninitialized.
+
+Eval compute in expected_run_time_checks_2.
+
+Definition result_with_checks_2 := f_eval_subprogram_with_checks 100 expected_run_time_checks_2 nil f_prime_uninitialized.
+
+Eval compute in result_with_checks_2.
+
+(* 4. run the program in reference semantics *)
 Definition result_2 := f_eval_subprogram 100 nil f_prime_uninitialized.
 
 Eval compute in result_2.
 
-Definition run_time_checks_2 := f_check_generator_subprogram nil f_prime_uninitialized.
-
-Eval compute in run_time_checks_2.
-
-Definition result_with_checks_2 := f_eval_subprogram_with_checks 100 run_time_checks_2 nil f_prime_uninitialized.
-
-Eval compute in result_with_checks_2.
-
-Definition initialization_result := f_well_defined_subprogram nil f_prime_uninitialized.
-
-Eval compute in initialization_result.
 
 
 (* ======================================================== *)
 (* ======================================================== *)
-
 
 
 

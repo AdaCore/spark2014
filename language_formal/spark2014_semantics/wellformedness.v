@@ -5,9 +5,8 @@ Require Export semantics.
 (**
    Before executing the program, make sure that the program is well-formed
    - well-typed
-      - unary/binary operators have right type of operands;
-      - types on both sides of assignments are consistent;
-      - used variables has right _in/out_ mode;
+      - operation on the values of right types;
+      - used variables with right _in/out_ mode;
    - well-defined 
       - all used variables are initialized
    - well-checked
@@ -91,7 +90,8 @@ Inductive well_typed_stmt: symtb -> statement  -> Prop :=
         well_typed_stmt tb (S_While_Loop ast_num b c).
 
 
-(* in our formalization framework, all names used in the SPARK programs 
+(** 
+   in our formalization framework, all names used in the SPARK programs 
    are formalized as integer numbers, for example, variables, 
    function/procedure names and types are all represented as 
    unique integer numbers; here I hard code that number "1" 
@@ -130,7 +130,9 @@ Inductive well_typed_proc_body: symtb -> procedure_body -> Prop :=
         well_typed_stmt tb' f.(procedure_statements) ->
         well_typed_proc_body tb f.
 
-(** type check for subproram, which can be either procedure or function; *)
+(** type check for subproram, which can be either procedure or function,
+    now we only consider the procedure; 
+*)
 Inductive well_typed_subprogram: symtb -> subprogram -> Prop :=
     | WT_Procedure: forall tb f ast_num,
         well_typed_proc_body tb f ->
@@ -246,7 +248,9 @@ Function f_well_typed_proc_body (tb: symtb) (f: procedure_body): bool :=
     | None => false
     end.
 
-(** type check subprogram, which can be either procedure or function; *)
+(** type check subprogram, which can be either procedure or function,
+    now we only consider procedure; 
+*)
 Function f_well_typed_subprogram (tb: symtb) (p: subprogram): bool :=
     match p with
     | Procedure ast_num f => f_well_typed_proc_body tb f
@@ -789,7 +793,7 @@ Qed.
     (initialization state * in/out mode) 
 *)
 (** 
-   for any variable in stack, if it has a defined value then it 
+   for any variable in a stack, if it has a defined value then it
    has an initialized state, otherwise, it's uninitialized;
 *)
 Inductive mode_mapping: symtb -> stack -> (mode_map) -> Prop :=
@@ -1948,7 +1952,7 @@ Inductive check_generator_subprogram: check_points -> subprogram -> check_points
 
 (* =============================== *)
 
-(** Function for run-time checks generation according to checking rules *)
+(** Function for run time checks generation according to checking rules *)
 
 Function f_check_generator_expr (ckp: check_points) (e: expression): check_points :=
     match e with
@@ -2005,8 +2009,8 @@ Function f_check_generator_subprogram (ckp: check_points) (p: subprogram): check
     end.
 
 (** f_checks_match can be used to check whether GNAT frontend generated 
-    run time checks are consistent with the checks required by checking 
-    rules; 
+    run time checks are consistent with the expected checks required by 
+    checking rules; 
 *)
 
 Function f_check_match (ck: run_time_checks) (ck': run_time_checks): bool :=
@@ -2295,11 +2299,11 @@ Proof.
 Qed.
 
 
-(** ** Semantics with run-time-checks *)
+(** ** Language semantics with flagged run time checks *)
 
 (** the semantics for expressions evaluation, where cps is passed in 
     as a parameter telling whether a checks are needed to be performed 
-    before executing the expression ast node;
+    or not before executing the expression ast node;
 *)
 Inductive eval_expr_with_checks (cps: check_points): stack -> expression -> return_val -> Prop :=
     | eval_Literal: forall l v s ast_num,
@@ -2342,8 +2346,6 @@ Inductive eval_expr_with_checks (cps: check_points): stack -> expression -> retu
     whether a check is needed to be performed before executing the 
     statement; right now, we only consider the division and overflow checks
     for expressions, and there are no checks enfornced on the statements;
-    Note: only division by zero check has been implemented, overflow check
-          will be added later;
 *)
 Inductive eval_stmt_with_checks (cps: check_points): stack -> statement -> state -> Prop :=
     | eval_Assignment1: forall s e ast_num x,
@@ -2631,9 +2633,8 @@ Qed.
 (* =============================== *)
 
 (** Functional semantics for expression and statement evaluation 
-    with run time checks as passed in parameters; 
+    with flagged run time checks as passed in parameters; 
 *)
-
 Function f_eval_expr_with_checks (ckp: check_points) (s: stack) (e: expression): return_val :=
     match e with
     | E_Literal ast_num l => Val_Normal (eval_literal l)
@@ -2750,7 +2751,7 @@ Function f_eval_subprogram_with_checks k (cps: check_points) (s: stack) (p: subp
 (* ============================================ *)
 
 (** Semantical equivalence between the relatioinal semantics and 
-    functional semantics for program evaluation with checks 
+    functional semantics for program evaluation with flagged checks 
     as passed in parameters; 
 *)
 
@@ -3342,6 +3343,11 @@ Proof.
     apply f_eval_proc_body_with_checks_correct1 with (k := k);
     auto.
 Qed.
+
+(** 
+    Semantical equivalence between f_eval_subprogram_with_checks 
+    and eval_subprogram_with_checks;
+*)
 
 Lemma f_eval_subprogram_with_checks_correct: forall k ckp s p s',
     (f_eval_subprogram_with_checks k ckp s p = S_Normal s' ->

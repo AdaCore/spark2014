@@ -47,7 +47,7 @@ Inductive eval_bin_expr: binary_operator -> value -> value -> value -> Prop :=
         (v1 * v2)%Z =v3 ->
         eval_bin_expr Multiply (Int v1) (Int v2) (Int v3)
     | Bin_Div: forall v1 v2 v3,
-        (v1 / v2)%Z =v3 ->
+        (v1 ÷ v2)%Z =v3 ->
         eval_bin_expr Divide (Int v1) (Int v2) (Int v3).
 
 (** interpret the unary operation *)
@@ -1119,7 +1119,6 @@ Function f_eval_subprogram k (s: stack) (f: subprogram): state :=
 (** ** Bisimulation Between Relational And Functional Semantics For Main Procedure *)
 
 (** *** f_eval_subprogram_correct *)
-
 Theorem f_eval_subprogram_correct: forall k s f s',
     (f_eval_subprogram k s f = S_Normal s' -> 
         eval_subprogram s f (S_Normal s')) /\
@@ -1153,7 +1152,6 @@ Proof.
 Qed.
 
 (** *** f_eval_subprogram_complete *)
-
 Theorem f_eval_subprogram_complete: forall s f s',
     eval_subprogram s f s' ->
     exists k, f_eval_subprogram k s f = s'.
