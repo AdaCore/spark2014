@@ -3345,15 +3345,29 @@ package body Gnat2Why.Expr is
                                  Base,
                                  Domain,
                                  Params);
-               Attr_Name : constant Why_Name_Enum :=
-                 (if Attr_Id = Attribute_Min then
-                    (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Min
-                     else WNE_Real_Min)
-                  else
-                     (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Max
-                      else WNE_Real_Max));
-               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+               Attr_Name : Why_Name_Enum;
+               Func      : W_Identifier_Id;
             begin
+               case Get_EW_Type (Ada_Ty) is
+                  when EW_Float32 =>
+                     Attr_Name := (if Attr_Id = Attribute_Min then
+                                      WNE_Float_Min else WNE_Float_Max);
+                     Func := Prefix ("Single_RNE", Attr_Name);
+                  when EW_Float64 =>
+                     Attr_Name := (if Attr_Id = Attribute_Min then
+                                      WNE_Float_Min else WNE_Float_Max);
+                     Func := Prefix ("Double_RNE", WNE_Float_Min);
+                  when others =>
+                     Attr_Name :=
+                       (if Attr_Id = Attribute_Min then
+                          (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Min
+                           else WNE_Real_Min)
+                        else
+                          (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Max
+                           else WNE_Real_Max));
+                     Func := To_Ident (Attr_Name);
+               end case;
+
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
                               Name     => Func,

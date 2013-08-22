@@ -328,8 +328,10 @@ package body Why.Gen.Names is
    function New_Abs (Kind : EW_Numeric) return W_Identifier_Id is
    begin
       case Kind is
-         when EW_Float32 | EW_Float64 =>
-            return To_Ident (WNE_Float_Abs);
+         when EW_Float32 =>
+            return Prefix ("Single_RNE", WNE_Float_Abs);
+         when EW_Float64 =>
+            return Prefix ("Double_RNE", WNE_Float_Abs);
          when EW_Real =>
             return To_Ident (WNE_Real_Abs);
          when EW_Int =>
@@ -653,11 +655,15 @@ package body Why.Gen.Names is
          when WNE_Integer_Min  => return "Integer.int_min";
          when WNE_Real_Div     => return "Floating.div_real";
          when WNE_Integer_Abs  => return "Integer.abs";
-         when WNE_Float_Abs    => return "TBD";
+
+         when WNE_Float_Abs    => return "fp_abs";
          when WNE_Float_Div    => return "div_float";
-         when WNE_Float_Exp    => return "TBD";
+         when WNE_Float_Exp    => return "TBD_exp";
+         when WNE_Float_Min    => return "fp_min";
+         when WNE_Float_Max    => return "fp_max";
          when WNE_Real_To_IEEE => return "of_real";
          when WNE_IEEE_To_Real => return "ieee_to_real";
+
          when WNE_Real_Of_Float => return "of_float";
          when WNE_Real_Abs     => return "Floating.AbsReal.abs";
          when WNE_Real_Ceil    => return "Floating.ceil";

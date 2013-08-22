@@ -400,6 +400,11 @@ package body Why.Images is
       Op_Type : EW_Scalar := EW_Int) is
    begin
       if Op_Type in EW_Float32 | EW_Float64 then
+         if Op_Type = EW_Float32 then
+            P (O, "Single_RNE.");
+         else
+            P (O, "Double_RNE.");
+         end if;
          case Value is
             when EW_Add =>       P (O, "fp_add");
             when EW_Substract => P (O, "fp_sub");
@@ -425,6 +430,11 @@ package body Why.Images is
       Op_Type : EW_Type := EW_Int) is
    begin
       if Op_Type in EW_Float32 | EW_Float64 then
+         if Op_Type = EW_Float32 then
+            P (O, "Single_RNE.");
+         else
+            P (O, "Double_RNE.");
+         end if;
          case Value is
             when EW_None => P (O, " <none> ");
             when EW_Eq =>   P (O, "fp_eq");
@@ -432,7 +442,7 @@ package body Why.Images is
             when EW_Lt =>   P (O, "fp_lt");
             when EW_Le =>   P (O, "fp_leq");
             when EW_Gt =>   P (O, "fp_gt");
-            when EW_Ge =>   P (O, "gp_geq");
+            when EW_Ge =>   P (O, "fp_geq");
          end case;
       else
          case Value is
@@ -468,6 +478,11 @@ package body Why.Images is
                 Op_Type : EW_Scalar := EW_Int) is
    begin
       if Op_Type in EW_Float32 | EW_Float64 then
+         if Op_Type = EW_Float32 then
+            P (O, "Single_RNE.");
+         else
+            P (O, "Double_RNE.");
+         end if;
          case Value is
             when EW_Minus =>
                P (O, "fp_neg");
