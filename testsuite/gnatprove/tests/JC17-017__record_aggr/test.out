@@ -1,9 +1,11 @@
-++ proc p.ads:2
-++ proc2 p.adb:12
-++ proc3 p.adb:18
-++ proc4 p.adb:24
-++ proc5 p.adb:30
-++ proc6 p.adb:36
-++ proc7 p.adb:42
-++ proc8 p.adb:49
+[
+{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc2", "file" :"p.adb", "line" :  12, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc3", "file" :"p.adb", "line" :  18, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc4", "file" :"p.adb", "line" :  24, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc5", "file" :"p.adb", "line" :  30, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc6", "file" :"p.adb", "line" :  36, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc7", "file" :"p.adb", "line" :  42, "spark" : true, "violations" : [] }
+, { "name" : "P.Proc8", "file" :"p.adb", "line" :  49, "spark" : true, "violations" : [] }
+]
 
