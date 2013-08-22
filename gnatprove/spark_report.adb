@@ -23,11 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;          use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
-with Ada.Strings.Hash;
-with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
-with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Text_IO;
@@ -47,40 +42,8 @@ with Report_Database;         use Report_Database;
 
 procedure SPARK_Report is
 
-   type SPARK_Status is (Supported, Not_Yet, Unsupported);
-   type SPARK_Counts is array (SPARK_Status) of Natural;
-
-   Global_Count : SPARK_Counts := SPARK_Counts'(others => 0);
-
-   function SPARK_Count return Natural is
-     (Global_Count (Supported) + Global_Count (Not_Yet));
-
-   function Not_SPARK_Count return Natural is (Global_Count (Unsupported));
-
-   procedure Incr_Count (S : SPARK_Status);
-
-   type Violation_Count is array (SPARK_Violations.Vkind) of Natural;
-   Violation_Cnt : Violation_Count := (others => 0);
-
-   function Filename_Hash (N : Unbounded_String) return Hash_Type is
-      (Ada.Strings.Hash (To_String (N)));
-
-   package Filename_Map is new Hashed_Maps
-     (Key_Type        => Unbounded_String,
-      Element_Type    => Natural,
-      Hash            => Filename_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-
-   Total_Files        : Natural := 0;
-   File_SPARK_Cnt     : Filename_Map.Map;
-   File_Not_SPARK_Cnt : Filename_Map.Map;
-
    procedure Handle_SPARK_File (Fn : String);
    --  Parse and extract all information from a single SPARK file.
-
-   procedure Handle_SPARK_Line (Line : String);
-   --  Parse and extract all information from a single SPARK line.
 
    procedure Handle_Proof_File (Fn : String);
    --  Parse and extract all information from a proof result file
@@ -138,105 +101,24 @@ procedure SPARK_Report is
 
    procedure Handle_SPARK_File (Fn : String)
    is
-      procedure Iterate_SPARK_Lines is new
-        For_Line_In_File (Handle_SPARK_Line);
-
-      Cur_SPARK_Cnt     : constant Natural := SPARK_Count;
-      Cur_Not_SPARK_Cnt : constant Natural := Not_SPARK_Count;
-
+      use GNATCOLL.JSON;
+      Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
+      Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
    begin
-      Iterate_SPARK_Lines (Fn);
-
-      --  Update counts for files
-
-      Total_Files := Total_Files + 1;
-      File_SPARK_Cnt.Insert
-        (To_Unbounded_String (Fn), SPARK_Count - Cur_SPARK_Cnt);
-      File_Not_SPARK_Cnt.Insert
-        (To_Unbounded_String (Fn), Not_SPARK_Count - Cur_Not_SPARK_Cnt);
-   end Handle_SPARK_File;
-
-   -----------------------
-   -- Handle_SPARK_Line --
-   -----------------------
-
-   procedure Handle_SPARK_Line (Line : String) is
-      Violation_Mode : Boolean := False;
-      Cur            : Positive;
-
-      procedure Add_One_Violation (S : String);
-      --  Increment violation counter for violation called S
-
-      function Get_Name return String with
-        Pre  => Cur in Line'Range
-                  and then Is_Alphanumeric (Line (Cur))
-                  and then not Is_Alphanumeric (Line (Line'Last)),
-        Post => Get_Name'Result /= "";
-      --  Return the longest alphanumeric substring possibly containing spaces
-      --  of Line starting at Cur. Update Cur to the character past this
-      --  substring.
-
-      -----------------------
-      -- Add_One_Violation --
-      -----------------------
-
-      procedure Add_One_Violation (S : String) is
-         Count : Natural renames
-                   Violation_Cnt (SPARK_Violations.Violation_From_Msg.Element
-                                  (To_Unbounded_String (S)));
+      declare
+         Entries : constant JSON_Array := Get (Dict);
       begin
-         Count := Count + 1;
-      end Add_One_Violation;
-
-      --------------
-      -- Get_Name --
-      --------------
-
-      function Get_Name return String is
-         Start, Stop : Natural;
-      begin
-         Start := Cur;
-         while Cur <= Line'Last
-           and then (Is_Alphanumeric (Line (Cur)) or else Line (Cur) = ' ')
-         loop
-            Cur := Cur + 1;
+         for Index in 1 .. Length (Entries) loop
+            declare
+               Result : constant JSON_Value := Get (Entries, Index);
+            begin
+               Add_SPARK_Status (Unit,
+                                 Mk_Subp_Of_Entity (Result),
+                                 Get (Get (Result, "spark")));
+            end;
          end loop;
-         Stop := Cur - 1;
-         return Line (Start .. Stop);
-      end Get_Name;
-
-   begin
-      if Line'Length = 0 then
-         return;
-      end if;
-
-      --  Update global counts
-
-      Cur := Line'First;
-      if Line (Cur) = '+' then
-         Incr_Count (Supported);
-      elsif Line (Cur) = '*' then
-         Incr_Count (Not_Yet);
-      else
-         Incr_Count (Unsupported);
-      end if;
-
-      --  Update counts for violations
-
-      while Cur <= Line'Last loop
-         case Line (Cur) is
-            when '(' | '[' =>
-               Violation_Mode := True;
-            when others =>
-               if Violation_Mode
-                 and then Is_Alphanumeric (Line (Cur))
-               then
-                  Add_One_Violation (Get_Name);
-               end if;
-         end case;
-         Cur := Cur + 1;
-      end loop;
-   end Handle_SPARK_Line;
+      end;
+   end Handle_SPARK_File;
 
    -----------------------
    -- Handle_Source_Dir --
@@ -307,15 +189,6 @@ procedure SPARK_Report is
          raise;
    end Handle_Source_Dir;
 
-   ----------------
-   -- Incr_Count --
-   ----------------
-
-   procedure Incr_Count (S : SPARK_Status) is
-   begin
-      Global_Count (S) := Global_Count (S) + 1;
-   end Incr_Count;
-
    ------------------------
    -- Print_Proof_Report --
    ------------------------
@@ -341,20 +214,30 @@ procedure SPARK_Report is
          procedure For_Each_Subp (Subp : Subp_Type; Stat : Stat_Rec) is
          begin
             Put (Handle,
-                 " " & Subp_Name (Subp) & " at " & Subp_File (Subp) & ":" &
-                 Int_Image (Subp_Line (Subp)));
-            if Stat.VC_Count = Stat.VC_Proved then
-               Put_Line (Handle,
-                         " proved (" & Int_Image (Stat.VC_Count) & " checks)");
+                 "  " & Subp_Name (Subp) & " at " & Subp_File (Subp) & ":" &
+                   Int_Image (Subp_Line (Subp)));
+            if Stat.SPARK then
+               if Stat.VC_Count = Stat.VC_Proved then
+                  Put_Line
+                    (Handle,
+                     " proved (" & Int_Image (Stat.VC_Count) & " checks)");
+               else
+                  Put_Line (Handle,
+                            " not proved," & Stat.VC_Proved'Img &
+                              " checks out of" & Stat.VC_Count'Img &
+                              " proved");
+               end if;
             else
-               Put_Line (Handle,
-                         " not proved," & Stat.VC_Proved'Img & " out of" &
-                           Stat.VC_Count'Img & " proved");
+               Put_Line (Handle, " skipped");
             end if;
          end For_Each_Subp;
 
       begin
-         Put_Line (Handle, "unit " & Unit_Name (Unit) & " analyzed");
+         Put_Line
+           (Handle,
+            "in unit " & Unit_Name (Unit) & ", " &
+              Int_Image (Num_Subps_SPARK (Unit)) & " subprograms out of " &
+                Int_Image (Num_Subps (Unit)) & " analyzed");
          Iter_Unit_Subps (Unit, For_Each_Subp'Access);
       end For_Each_Unit;
    begin

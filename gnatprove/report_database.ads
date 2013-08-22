@@ -37,6 +37,7 @@ package Report_Database is
    type Stat_Rec is record
       VC_Count  : Integer;
       VC_Proved : Integer;
+      SPARK     : Boolean;
    end record;
 
    function Mk_Unit (Name : String) return Unit_Type;
@@ -49,6 +50,12 @@ package Report_Database is
    procedure Add_Proof_Result
      (Unit : Unit_Type; Subp : Subp_Type; Proved : Boolean);
    --  For the subprogram in the given unit, register a proof result
+
+   procedure Add_SPARK_Status
+     (Unit         : Unit_Type;
+      Subp         : Subp_Type;
+      SPARK_Status : Boolean);
+   --  register the SPARK status for the given unit
 
    procedure Iter_All_Subps
      (Process : not null access
@@ -65,6 +72,12 @@ package Report_Database is
 
    function Num_Units return Integer;
    --  Return the number of units
+
+   function Num_Subps (Unit : Unit_Type) return Integer;
+   --  return the number of subprograms in the unit
+
+   function Num_Subps_SPARK (Unit : Unit_Type) return Integer;
+   --  return the number of subprograms in SPARK in the unit
 
    procedure Iter_Units
      (Process : not null access procedure (U : Unit_Type));

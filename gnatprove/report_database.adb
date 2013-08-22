@@ -34,6 +34,9 @@ package body Report_Database is
 
    Symbol_Table : constant Symbol_Table_Access := Allocate;
 
+   Default_Stat : constant Stat_Rec :=
+     Stat_Rec'(VC_Count => 0, VC_Proved => 0, SPARK => False);
+
    function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type;
 
    ----------
@@ -70,6 +73,14 @@ package body Report_Database is
 
    Unit_Map : Unit_Maps.Map := Unit_Maps.Empty_Map;
 
+   procedure Update_Subp_Entry
+     (Unit    : Unit_Type;
+      Subp    : Subp_Type;
+      Process : not null access procedure (Stat : in out Stat_Rec));
+   --  update the stat record of the given subp using the callback. If the
+   --  unit/subp didn't exist yet, they are added, and a default Stat_Rec
+   --  is created.
+
    ----------------------
    -- Add_Proof_Result --
    ----------------------
@@ -79,54 +90,51 @@ package body Report_Database is
       Subp   : Subp_Type;
       Proved : Boolean)
    is
-      procedure Update_Unit_Entry (U : Unit_Type; Map : in out Subp_Maps.Map);
 
-      procedure Update_Subp_Entry (S : Subp_Type; Stat : in out Stat_Rec);
+      procedure Process (Stat : in out Stat_Rec);
+      --  Do the actual work
 
-      -----------------------
-      -- Update_Subp_Entry --
-      -----------------------
+      -------------
+      -- Process --
+      -------------
 
-      procedure Update_Subp_Entry (S : Subp_Type; Stat : in out Stat_Rec)
+      procedure Process (Stat : in out Stat_Rec)
       is
-         pragma Unreferenced (S);
       begin
          Stat.VC_Count := Stat.VC_Count + 1;
          if Proved then
             Stat.VC_Proved := Stat.VC_Proved + 1;
          end if;
-      end Update_Subp_Entry;
-
-      -----------------------
-      -- Update_Unit_Entry --
-      -----------------------
-
-      procedure Update_Unit_Entry (U : Unit_Type; Map : in out Subp_Maps.Map)
-      is
-         pragma Unreferenced (U);
-         use Subp_Maps;
-
-         C        : Cursor;
-         Inserted : Boolean;
-         Default_Rec : constant Stat_Rec :=
-           Stat_Rec'(VC_Count => 1, VC_Proved => (if Proved then 1 else 0));
-      begin
-         Map.Insert (Subp, Default_Rec, C, Inserted);
-         if not Inserted then
-            Map.Update_Element (C, Update_Subp_Entry'Access);
-         end if;
-      end Update_Unit_Entry;
-
-      use Unit_Maps;
-      C        : Cursor;
-      Inserted : Boolean;
+      end Process;
 
       --  begin processing for Add_Proof_Result
 
    begin
-      Unit_Map.Insert (Unit, Subp_Maps.Empty_Map, C, Inserted);
-      Unit_Map.Update_Element (C, Update_Unit_Entry'Access);
+      Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Proof_Result;
+
+   procedure Add_SPARK_Status
+     (Unit         : Unit_Type;
+      Subp         : Subp_Type;
+      SPARK_Status : Boolean) is
+
+      procedure Process (Stat : in out Stat_Rec);
+      --  Do the actual work
+
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (Stat : in out Stat_Rec) is
+      begin
+         Stat.SPARK := SPARK_Status;
+      end Process;
+
+      --  begin processing for Add_SPARK_Status
+
+   begin
+      Update_Subp_Entry (Unit, Subp, Process'Access);
+   end Add_SPARK_Status;
 
    ----------------
    -- Iter_Subps --
@@ -231,6 +239,50 @@ package body Report_Database is
    end Mk_Subp;
 
    ---------------
+   -- Num_Subps --
+   ---------------
+
+   function Num_Subps (Unit : Unit_Type) return Integer is
+
+      Count : aliased Integer := 0;
+
+      procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
+
+      procedure Update (Subp : Subp_Type; Stat : Stat_Rec) is
+         pragma Unreferenced (Subp, Stat);
+      begin
+         Count := Count + 1;
+      end Update;
+
+   begin
+      Iter_Unit_Subps (Unit, Update'Access);
+      return Count;
+   end Num_Subps;
+
+   ---------------------
+   -- Num_Subps_SPARK --
+   ---------------------
+
+   function Num_Subps_SPARK (Unit : Unit_Type) return Integer
+   is
+      Count : aliased Integer := 0;
+
+      procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
+
+      procedure Update (Subp : Subp_Type; Stat : Stat_Rec) is
+         pragma Unreferenced (Subp);
+      begin
+         if Stat.SPARK then
+            Count := Count + 1;
+         end if;
+      end Update;
+
+   begin
+      Iter_Unit_Subps (Unit, Update'Access);
+      return Count;
+   end Num_Subps_SPARK;
+
+   ---------------
    -- Num_Units --
    ---------------
 
@@ -287,5 +339,58 @@ package body Report_Database is
    begin
       return S.all;
    end Unit_Name;
+
+   -----------------------
+   -- Update_Subp_Entry --
+   -----------------------
+
+   procedure Update_Subp_Entry
+     (Unit    : Unit_Type;
+      Subp    : Subp_Type;
+      Process : not null access procedure (Stat : in out Stat_Rec))
+   is
+
+      procedure Update_Unit_Entry (U : Unit_Type; Map : in out Subp_Maps.Map);
+
+      procedure Call_Back (S : Subp_Type; Stat : in out Stat_Rec);
+      --  wrapper for the client callback
+
+      -----------------------
+      -- Update_Subp_Entry --
+      -----------------------
+
+      procedure Call_Back (S : Subp_Type; Stat : in out Stat_Rec)
+      is
+         pragma Unreferenced (S);
+      begin
+         Process (Stat);
+      end Call_Back;
+
+      -----------------------
+      -- Update_Unit_Entry --
+      -----------------------
+
+      procedure Update_Unit_Entry (U : Unit_Type; Map : in out Subp_Maps.Map)
+      is
+         pragma Unreferenced (U);
+         use Subp_Maps;
+
+         C        : Cursor;
+         Inserted : Boolean;
+      begin
+         Map.Insert (Subp, Default_Stat, C, Inserted);
+         Map.Update_Element (C, Call_Back'Access);
+      end Update_Unit_Entry;
+
+      use Unit_Maps;
+      C        : Cursor;
+      Inserted : Boolean;
+
+      --  begin processing for Add_Proof_Result
+
+   begin
+      Unit_Map.Insert (Unit, Subp_Maps.Empty_Map, C, Inserted);
+      Unit_Map.Update_Element (C, Update_Unit_Entry'Access);
+   end Update_Subp_Entry;
 
 end Report_Database;
