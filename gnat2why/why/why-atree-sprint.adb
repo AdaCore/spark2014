@@ -534,7 +534,7 @@ package body Why.Atree.Sprint is
       Op2    : constant EW_Relation := Get_Op2 (Node);
       Right2 : constant W_Value_OId := Get_Right2 (Node);
    begin
-      if Get_Op_Type (Node) in EW_Float32 | EW_Float64 and then Op = EW_Eq then
+      if Get_Op_Type (Node) in EW_Float32 | EW_Float64 then
          P (O, "( ");
          P (O, Op, Get_Op_Type (Node));
          P (O, " ");
@@ -853,11 +853,19 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "( ");
-      Traverse (State, +Get_Left (Node));
-      P (O, " ");
-      P (O, Get_Op (Node), Get_Op_Type (Node));
-      P (O, " ");
-      Traverse (State, +Get_Right (Node));
+      if Get_Op_Type (Node) in EW_Float32 | EW_Float64 then
+         P (O, Get_Op (Node), Get_Op_Type (Node));
+         P (O, " ");
+         Traverse (State, +Get_Left (Node));
+         P (O, " ");
+         Traverse (State, +Get_Right (Node));
+      else
+         Traverse (State, +Get_Left (Node));
+         P (O, " ");
+         P (O, Get_Op (Node), Get_Op_Type (Node));
+         P (O, " ");
+         Traverse (State, +Get_Right (Node));
+      end if;
       P (O, " )");
       State.Control := Abandon_Children;
    end Binary_Op_Pre_Op;

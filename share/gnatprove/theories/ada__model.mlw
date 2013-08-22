@@ -97,8 +97,8 @@ module Float_32
   function ieee_to_real (x : single) : real = to_real x
 
   predicate in_range  (x : single) =
-   ( of_real attr__ATTRIBUTE_FIRST <= x <= of_real attr__ATTRIBUTE_LAST )
-
+   ( fp_leq (of_real attr__ATTRIBUTE_FIRST) x /\
+     fp_leq x (of_real attr__ATTRIBUTE_LAST) )
 
   val of_float (x : single) : t
     requires { true }
@@ -133,7 +133,7 @@ module Float_32
 
   function dummy : t
 
-  function div_float (x : single) (y : single) : single = x / y
+  function div_float (x : single) (y : single) : single = fp_div x y
 
   val div_float_ (x:single) (y:single) : single
     requires { not fp_eq y fp_constant_zero }
@@ -157,8 +157,8 @@ module Float_64
   function ieee_to_real (x : double) : real = to_real x
 
   predicate in_range  (x : double) =
-   ( of_real attr__ATTRIBUTE_FIRST <= x <= of_real attr__ATTRIBUTE_LAST )
-
+   ( fp_leq (of_real attr__ATTRIBUTE_FIRST) x /\
+     fp_leq x (of_real attr__ATTRIBUTE_LAST) )
 
   val of_float (x : double) : t
     requires { true }
@@ -193,7 +193,7 @@ module Float_64
 
   function dummy : t
 
-  function div_float (x : double) (y : double) : double = x / y
+  function div_float (x : double) (y : double) : double = fp_div x y
 
   val div_float_ (x:double) (y:double) : double
     requires { not fp_eq y fp_constant_zero }

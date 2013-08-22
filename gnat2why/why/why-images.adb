@@ -360,24 +360,15 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Type) is
    begin
       case Value is
-         when EW_Unit =>
-            P (O, "unit");
-         when EW_Prop =>
-            P (O, "prop");
-         when EW_Float32 =>
-            P (O, "single");
-         when EW_Float64 =>
-            P (O, "double");
-         when EW_Real =>
-            P (O, "real");
-         when EW_Int =>
-            P (O, "int");
-         when EW_Bool =>
-            P (O, "bool");
-         when EW_Private =>
-            P (O, To_String (WNE_Private));
-         when EW_Abstract =>
-            P (O, "[from Ada node]");
+         when EW_Unit =>     P (O, "unit");
+         when EW_Prop =>     P (O, "prop");
+         when EW_Float32 =>  P (O, "single");
+         when EW_Float64 =>  P (O, "double");
+         when EW_Real =>     P (O, "real");
+         when EW_Int =>      P (O, "int");
+         when EW_Bool =>     P (O, "bool");
+         when EW_Private =>  P (O, To_String (WNE_Private));
+         when EW_Abstract => P (O, "[from Ada node]");
       end case;
    end P;
 
@@ -408,19 +399,23 @@ package body Why.Images is
       Value   : EW_Binary_Op;
       Op_Type : EW_Scalar := EW_Int) is
    begin
-      case Value is
-         when EW_Add =>
-            P (O, "+");
-         when EW_Substract =>
-            P (O, "-");
-         when EW_Multiply =>
-            P (O, "*");
-         when EW_Divide =>
-            P (O, "/");
-      end case;
-
-      if Op_Type = EW_Real then
-         P (O, ".");
+      if Op_Type in EW_Float32 | EW_Float64 then
+         case Value is
+            when EW_Add =>       P (O, "fp_add");
+            when EW_Substract => P (O, "fp_sub");
+            when EW_Multiply =>  P (O, "fp_mul");
+            when EW_Divide =>    P (O, "fp_div");
+         end case;
+      else
+         case Value is
+            when EW_Add =>       P (O, "+");
+            when EW_Substract => P (O, "-");
+            when EW_Multiply =>  P (O, "*");
+            when EW_Divide =>    P (O, "/");
+         end case;
+         if Op_Type = EW_Real then
+            P (O, ".");
+         end if;
       end if;
    end P;
 
@@ -429,53 +424,42 @@ package body Why.Images is
       Value   : EW_Relation;
       Op_Type : EW_Type := EW_Int) is
    begin
-      case Value is
-         when EW_None =>
-            P (O, " <none> ");
-         when EW_Eq =>
-            if Op_Type in EW_Float32 | EW_Float64 then
-               P (O, "fp_eq");
-            else
-               P (O, "=");
-            end if;
-         when EW_Ne =>
-            P (O, "<>");
-         when EW_Lt =>
-            P (O, "<");
-         when EW_Le =>
-            P (O, "<=");
-         when EW_Gt =>
-            P (O, ">");
-         when EW_Ge =>
-            P (O, ">=");
-      end case;
-
-      if Op_Type = EW_Real and then
-         not (Value in EW_Eq .. EW_Ne) then
-         P (O, ".");
+      if Op_Type in EW_Float32 | EW_Float64 then
+         case Value is
+            when EW_None => P (O, " <none> ");
+            when EW_Eq =>   P (O, "fp_eq");
+            when EW_Ne =>   P (O, "fp_neq");
+            when EW_Lt =>   P (O, "fp_lt");
+            when EW_Le =>   P (O, "fp_leq");
+            when EW_Gt =>   P (O, "fp_gt");
+            when EW_Ge =>   P (O, "gp_geq");
+         end case;
+      else
+         case Value is
+            when EW_None => P (O, " <none> ");
+            when EW_Eq =>   P (O, "=");
+            when EW_Ne =>   P (O, "<>");
+            when EW_Lt =>   P (O, "<");
+            when EW_Le =>   P (O, "<=");
+            when EW_Gt =>   P (O, ">");
+            when EW_Ge =>   P (O, ">=");
+         end case;
+         if Op_Type = EW_Real and then
+           not (Value in EW_Eq .. EW_Ne) then
+            P (O, ".");
+         end if;
       end if;
    end P;
 
    procedure P (O : Output_Id; Value : EW_Connector) is
    begin
       case Value is
-         when EW_Or_Else =>
-            P (O, "||");
-
-         when EW_And_Then =>
-            P (O, "&&");
-
-         when EW_Imply =>
-            P (O, "->");
-
-         when EW_Equivalent =>
-            P (O, "<->");
-
-         when EW_Or =>
-            P (O, "\/");
-
-         when EW_And =>
-            P (O, "/\");
+         when EW_Or_Else =>    P (O, "||");
+         when EW_And_Then =>   P (O, "&&");
+         when EW_Imply =>      P (O, "->");
+         when EW_Equivalent => P (O, "<->");
+         when EW_Or =>         P (O, "\/");
+         when EW_And =>        P (O, "/\");
       end case;
    end P;
 
@@ -483,10 +467,17 @@ package body Why.Images is
                 Value   : EW_Unary_Op;
                 Op_Type : EW_Scalar := EW_Int) is
    begin
-      case Value is
-         when EW_Minus =>
-            P (O, EW_Substract, Op_Type);
-      end case;
+      if Op_Type in EW_Float32 | EW_Float64 then
+         case Value is
+            when EW_Minus =>
+               P (O, "fp_neg");
+         end case;
+      else
+         case Value is
+            when EW_Minus =>
+               P (O, EW_Substract, Op_Type);
+         end case;
+      end if;
    end P;
 
    procedure P (O : Output_Id; Value : EW_Domain) is
