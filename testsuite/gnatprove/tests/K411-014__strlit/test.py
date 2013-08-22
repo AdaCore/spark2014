@@ -3,4 +3,4 @@ import os.path
 import glob
 
 prove_all()
-cat(os.path.join ("gnatprove", "strlit.alfa"))
+cat(os.path.join ("gnatprove", "strlit.spark"))
