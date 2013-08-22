@@ -66,4 +66,6 @@ package VC_Kinds is
         VC_Loop_Invariant |
         VC_Assert);
 
+   Proof_Suffix : constant String := ".proof";
+
 end VC_Kinds;
