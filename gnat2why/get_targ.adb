@@ -132,7 +132,7 @@ package body Get_Targ is
 
    function Get_Pointer_Size return Pos is
    begin
-      return 32;
+      return 64;
    end Get_Pointer_Size;
 
    ---------------------------
