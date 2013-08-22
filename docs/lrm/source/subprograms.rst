@@ -1015,6 +1015,12 @@ other sections as appropriate, since they will refer to more than just subprogra
 #. All subcomponents of a ghost object shall be initialized by the
    elaboration of the declaration of the object.
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR All subcomponents of a ghost object shall be
+                   initialized by the elaboration of the declaration of the
+                   object.
+
    .. todo::
       Make worst-case assumptions about private types for this rule,
       or blast through privacy? To be completed in milestone 4 version
@@ -1026,10 +1032,20 @@ other sections as appropriate, since they will refer to more than just subprogra
    We will need the general rule that the elaboration of a ghost declaration of
    any kind cannot modify non-ghost state.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR A ghost instantiation shall not be an
+                   instantiation of a non-ghost generic package.
+
 #. The Link_Name or External_Name aspects of an imported ghost
    entity shall not be specified. A Convention aspect specification for an
    entity declared inside of a ghost entity shall be confirming [(in other
    words, the specified Convention shall be Ghost)].
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR For an imported ghost entity, the Convention
+                   shall be Ghost.
 
 #. Ghost tagged types are disallowed. [This is because just the existence
    of a ghost tagged type (even if it is never referenced) changes the behavior
@@ -1037,7 +1053,16 @@ other sections as appropriate, since they will refer to more than just subprogra
    participates in conformance checks (so ghost can't override non-ghost and
    vice versa).]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR Ghost tagged types are disallowed.
+
 #. The Convention aspect of an External entity shall not be Ghost.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 LR The Convention aspect of an External entity
+                   shall not be Ghost.
 
 [We are ignoring interactions between ghostliness and freezing. Adding a ghost
 variable, for example, could change the freezing point of a non-ghost type. It
@@ -1070,9 +1095,22 @@ ghosts-have-no-effect-on-program-behavior rule.]
    enabled (e.g., via an Assertion_Policy pragma) assertions),
    then the Import aspect of the entity may be specified to be True.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 DS The effects of specifying a convention
+                   of Ghost on the runtime representation, calling
+                   conventions, and other such dynamic properties of
+                   an entity are the same as if a convention of Ada
+                   had been specified. Covered by another TU
+
 .. centered:: **Verification Rules**
 
 #. A non-ghost output shall not depend on a ghost input.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 VR A non-ghost output shall not depend on
+                   a ghost input.
 
 #. A ghost entity shall not be referenced
 
@@ -1089,9 +1127,21 @@ ghosts-have-no-effect-on-program-behavior rule.]
      [This rule is intended to ensure an update of a non-ghost entity shall not
      have a control flow dependency on a ghost entity.]
 
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 VR A ghost entity shall not be referenced within a
+                   call to a procedure which has a non-ghost output; or within
+                   a control flow expression of a compound statement which
+                   contains such a procedure call.
+
 #. A ghost procedure shall not have a non-ghost output.
 
-   .. centered:: **Examples**
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.6 VR A ghost procedure shall not have a non-ghost
+                   output.
+
+.. centered:: **Examples**
 
 .. code-block:: ada
 
