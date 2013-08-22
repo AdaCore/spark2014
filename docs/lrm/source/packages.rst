@@ -1471,17 +1471,6 @@ private child unit (or a public descendant thereof).
                    visible then Global and Depends aspects shall consistently
                    denote one of them
 
-#. The ``constituents`` of a state abstraction not declared in a given
-   package may only be used in an aspect specification in the given
-   package where the refinement of the state abstraction is visible.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.3 LR The ``constituents`` of a state
-          abstraction not declared in a given package may only be used
-          in an aspect specification in the given package where the
-          refinement of the state abstraction is visible.
-
 #. In a package which declares a state abstraction which is Part_Of an
    encapsulating state abstraction aspect specifications may denote
    the local state abstraction rather than the encapsulating one if
@@ -1499,46 +1488,52 @@ private child unit (or a public descendant thereof).
             the local state abstraction and not other parts of the
             encapsulating state.
 
-
-.. centered:: *Verification Rules*
-
-#. In a package where a state abstraction not declared in the package
-   is visible, its refinement is not visible, but one or more of its
-   ``constituents`` are visible then, if a subprogram declared in the
-   visible part of the package directly or indirectly
-
-   * reads a ``constituent`` of the state abstraction this shall be
-     regarded as a read of the encapsulating state abstraction of the
-     ``constituent`` and shall be represented by this encapsulating
-     state abstraction in the Global and Depends aspects of the
-     subprogram declaration; or
-
-   * updates a ``constituent`` of the state abstraction then, this
-     shall be regarded as an update of the encapsulation state
-     abstraction of the ``constituent`` and shall be represented by
-     this encapsulating state abstraction and shall have a
-     ``mode_selector`` of In_Out in the Global aspect of the
-     subprogram and appear as both an ``input`` and an ``output`` in
-     the Depends aspect of the subprogram declaration. [The reason for
-     this is that it is not known whether the entire state abstraction
-     is updated or only some of its constituents.]
+#. The ``constituents`` of a state abstraction declared in a package
+   may only be used in an aspect specification within the package
+   where the refinement of the state abstraction is visible.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 VR In a package which sees a state
-                   abstraction and some of its constituents but not
-                   its refinement, a subprogram which is declared in
-                   the visible part of the package that reads or
-                   updates a constituent must refer to its
-                   encapsulating state in the Global and Depends
-                   aspects of its declaration rather than the
-                   constituent.  If the subprogram updates the
-                   constituent then its encapsulating state
-                   abstraction must appear with a mode selector of
-                   In_Out in the Global aspect of its declaration and
-                   as both an input and an output in its Depends
-                   aspect.
+      :Trace Unit: FE 7.2.3 LR The ``constituents`` of a state
+          abstraction declared in a given package may only be used in
+          an aspect specification in the given package where the
+          refinement of the state abstraction is visible.
 
+
+.. centered:: *Verification Rules*
+
+#. Where a state abstraction not declared in an enclosing package is
+   visible as well as one or more of its ``constituents`` a
+   subprogram that directly or indirectly
+
+   * reads a ``constituent`` of the state abstraction shall be
+     regarded as a read of the encapsulating state abstraction of the
+     ``constituent`` and shall be represented by this encapsulating
+     state abstraction in the Global and Depends aspects (or their
+     refined versions) of the subprogram declaration; or
+
+   * updates a ``constituent`` of the state abstraction shall be
+     regarded as an update of the encapsulating state abstraction of
+     the ``constituent`` and shall be represented by this
+     encapsulating state abstraction.  An update of such a
+     ``constituent`` is regarded as updating its enclosing state
+     abstraction with a self dependency as it is unknown what other
+     ``constituents`` the state abstraction encapsulates [; the
+     refinement of the state abstraction is not visible].  Unless a
+     call is made to a subprogram that fully initializes the state
+     abstraction the ``mode_selector`` of the state abstraction shall
+     be be In_Out.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.3 VR Where a state abstraction not declared
+          in an enclosing package is visible as well as one or more of
+          its ``constituents`` a subprogram that directly or
+          indirectly reads or updates a constituent must refer to its
+          encapsulating state in the Global and Depends aspects (or
+          their refined versions) of the subprogram rather than the
+          constituent.  Each update of a constituent is considered to
+          have a self dependency.
 
 .. centered:: **Examples**
 
@@ -1611,8 +1606,8 @@ private child unit (or a public descendant thereof).
 
           procedure Init_A2
              -- We can only refer to A2 and not its constituents
-             -- as its refinement is not visible. We can just update
-             with Global  => (Output => A2),
+             -- as its refinement is not visible.
+             with Global  => (Out => A2),
                   Depends => (A2 => null);
 
        end Inner;
@@ -1630,8 +1625,8 @@ private child unit (or a public descendant thereof).
          with Refined_State => (B1 => null)  -- Oh, there isn't any state after all
       is
          procedure Init_B1
-            with Refined_Global  => null,  -- Refined_Global and Refined_Depends of a null refinement
-                 Refined_Depends => null
+            with Refined_Global  => null,  -- Refined_Global and
+                 Refined_Depends => null   -- Refined_Depends of a null refinement
          is
          begin
             null;
@@ -1683,12 +1678,6 @@ private child unit (or a public descendant thereof).
    private
       Hidden_State : Integer
          with Part_Of => Q2;
-
-      -- We have to use Q2 as its refinement is not
-      -- visible here.
-      procedure Init_All_Q2
-         with Global  => (Output => Q2),
-              Depends => (Q2 => null);
    end Q;
 
    private package Q.Child
@@ -1704,9 +1693,11 @@ private child unit (or a public descendant thereof).
          with Global  => (Output => C1),
               Depends => (C1 => null);
 
-      -- The refinement of Q2 is not visible and so Q2 must be used
-      -- and must have a mode_selector of In_Out as its refinement
-      -- will not be visible in Q.Child.
+      -- The Q2 is declared in this package and so  Q2 rather 
+      -- than its visible constituent Q.Hidden_State.
+      -- Init_Q2 can only directly update Q.Hidden_State and
+      -- if we just update this we Q.Q2 must have a mode_selector
+      -- of In_Out.
       procedure Init_Q2
          with Global  => (In_Out => Q.Q2),
               Depends => (Q.Q2 => Q.Q2);
@@ -1728,10 +1719,11 @@ private child unit (or a public descendant thereof).
          Actual_State := 0;
       end Init_Q1;
 
+      -- The refinement of Q2 is not visible and so Init_Q2
+      -- has no Refined_Global or Refined_Depends aspects.
       procedure Init_Q2
       is
       begin
-         Q.Init_All_Q2;
          Q.Hidden_State := 0;
       end Init_Q2;
 
@@ -1746,14 +1738,88 @@ private child unit (or a public descendant thereof).
       -- Q.Child.C1, State_In_Body and Hidden_State may be.
       State_In_Body : Integer;
 
-      procedure Init_All_Q2
-         with Refined_Global  => (Output => (Hidden_State, State_In_Body),
-              Refined_Depends => ((Hidden_State, State_In_Body) => null)
+      procedure Init_Q1
+         with Refined_Global  => (Output => Q.Child.C1),
+              Refined_Depends => (Q.Child.C1 => null)
       is
       begin
-        State_in_Body := 42;
-        Hidden_State := State_In_Body;
-      end Init_All_Q2;
+         Q.Child.Init_Q1;
+      end Init_Q1;
+
+      procedure Init_Q2
+         with Refined_Global  => (Output => (Hidden_State, State_in_Body)),
+              Refined_Depends => ((Hidden_State, State_in_Body) => null)
+      is
+      begin
+         Sate_In_Body := 42;
+         Q.Child.Init_Q2;
+      end Init_Q2;
+
+   end Q;
+
+   package R
+      with Abstract_State => S1
+   is
+      -- R1 may be denoted here
+      procedure Init_S1
+         with Global  => (Output => R1),
+              Depends => (R1 => null);
+    
+      procedure Op_1 (I : in Integer)
+         with Global  => (In_Out => S1),
+              Depends => (S1 =>+ I);
+   end Q;
+
+   private package R.Child
+      with Abstract_State => (S2 with Part_Of => R.S1)
+   is
+      -- Both R.S1 and S2 are visible.  
+
+      -- Here We intend to use more than just the S2 part of R.S1 and
+      -- so we use R.S1 in the aspect specifications rather than
+      -- S2.R.S1.
+      -- S2 cannot also be used in the aspect
+      -- specifications of this subprogram 
+      procedure Private_Op (I, J : in Integer)
+         with Global => (In_Out => R.S1), 
+             Depends => (R.S1 =>+ (I, J));
+
+  end R.Child;
+
+   with R;
+   package body R.Child
+      with Refined_State => (C1 => Actual_State)
+   is
+      -- C1 shall not be denoted here - only Actual_State
+      -- but Q.Q2 and Q.Hidden_State may be denoted.
+      Actual_State : Integer;
+
+      procedure Init_Q1
+         with Refined_Global  => (Output => Actual_State),
+              Refined_Depends => (Actual_State => null)
+      is
+      begin
+         Actual_State := 0;
+      end Init_Q1;
+
+      -- The refinement of Q2 is not visible and so Init_Q2
+      -- has no Refined_Global or Refined_Depends aspects.
+      procedure Init_Q2
+      is
+      begin
+         Q.Hidden_State := 0;
+      end Init_Q2;
+
+   end Q.Child;
+
+   with Q.Child;
+   package body Q
+      with Refined_State => (Q1 => Q.Child.C1,
+                             Q2 => Hidden_State, State_In_Body)
+   is
+      -- Q1 and Q2 shall not be denoted here but the constituents
+      -- Q.Child.C1, State_In_Body and Hidden_State may be.
+      State_In_Body : Integer;
 
       procedure Init_Q1
          with Refined_Global  => (Output => Q.Child.C1),
@@ -1768,6 +1834,7 @@ private child unit (or a public descendant thereof).
               Refined_Depends => ((Hidden_State, State_in_Body) => null)
       is
       begin
+         Sate_In_Body := 42;
          Q.Child.Init_Q2;
       end Init_Q2;
 

@@ -359,31 +359,26 @@ follow the grammar of ``global_specification``
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 6.1.4 NRR global_item shall denote entire object
+      :Trace Unit: FE 6.1.4 NRR global_item shall denote entire object or a state abstraction
 
 .. centered:: **Legality Rules**
 
-#. For a subprogram that has a ``global_specification``, an entire object that
-   is outside the subprogram, can only be referenced within if it is a
-   ``global_item`` in the ``global_specification``.
+#. The Global aspect may only be specified for the initial declaration of a
+   subprogram (which may be a declaration, a body or a body stub).
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 6.1.4 LR if Global aspect does not mention a variable, it
-                   cannot appear within the subprogram
+      :Trace Unit: FE 6.1.4 LR Global aspect must be on subprogram's
+                   initial declaration
 
-#. Where the refinement of a state abstraction is not visible, the
-   referencing of one or more of its ``constituents`` by a subprogram
-   is represented by a ``global_item`` that denotes the state
-   abstraction in the ``global_specification`` of the subprogram.
+#. A ``global_item`` occurring in a Global aspect specification of a subprogram
+   shall not denote a formal parameter of the subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 6.1.4 LR Where the refinement of a state
-           abstraction is not visible, the referencing of one or more
-           of its ``constituents`` by a subprogram is represented by a
-           ``global_item`` that denotes the state abstraction in the
-           ``global_specification`` of the subprogram.
+      :Trace Unit: FE 6.1.4 LR A ``global_item`` occurring in a Global
+          aspect specification of a subprogram shall not denote a
+          formal parameter of the subprogram.
 
 #. A ``global_item`` shall not denote a constant object other than
    a formal parameter [of an enclosing subprogram] of mode **in**.
@@ -394,17 +389,23 @@ follow the grammar of ``global_specification``
       :Trace Unit: FE 6.1.4 LR global_item shall only denote a constant if it is
                    a formal parameter of an enclosing subprogram of mode in
 
-#. The Global aspect may only be specified for the initial declaration of a
-   subprogram (which may be a declaration, a body or a body stub).
+#. A constituent of a state abstraction shall not appear as a
+   ``global_item`` if the state abstraction is not declared within an
+   enclosing package (see :ref:`state_refinement`). [A constituent of
+   a state abstraction may be visible due to a Part_Of indicator (see
+   :ref:`package_hierarchy`).  The constituent is represented by a
+   ``global_item`` denoting the state abstraction itself.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 6.1.4 LR Global aspect must be on subprogram's
-                   initial declaration
+      :Trace Unit: FA 6.1.4 LR A constituent of a state abstraction
+          shall not appear as a ``global_item`` if the state
+          abstraction is not declared within an enclosing package.
 
-#. A ``global_item`` shall not denote a state abstraction whose refinement
-   is visible [(a state abstraction cannot be named within its enclosing
-   package's body other than in its refinement)].
+#. A ``global_item`` shall not denote a state abstraction whose
+   refinement is visible. [A state abstraction cannot be named within
+   its enclosing package's body other than in its refinement.  Its
+   constituents must be used rather than the state abstraction.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -432,13 +433,6 @@ follow the grammar of ``global_specification``
 
       :Trace Unit: FE 6.1.4 LR global_items shall denote distinct entities
 
-#. A ``global_item`` occurring in a Global aspect specification of a subprogram
-   shall not denote a formal parameter of the subprogram.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR global_item shall not denote formal parameter
-
 #. If a subprogram is nested within another and if the ``global_specification``
    of the outer subprogram has an entity denoted by a ``global_item`` with a
    ``mode_specification`` of Input, then a ``global_item`` of the
@@ -458,6 +452,17 @@ is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
+#. For a subprogram that has a ``global_specification``, an object or
+   state abstraction that is declared outside the subprogram, can only
+   be referenced within if it is a ``global_item`` in the
+   ``global_specification``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 6.1.4 LR if Global aspect does not mention an
+                   object or state abstraction, it cannot appear
+                   within the subprogram
+
 #. A ``global_item`` shall occur in a Global aspect of a
    subprogram if and only if it denotes an entity that is referenced by the
    subprogram.
@@ -466,6 +471,22 @@ is used purely for static analysis purposes and is not executed.
 
       :Trace Unit: FA 6.1.4 VR global_item shall occur only if entity referenced
                    is denoted by the subprogram
+
+#. Where the refinement of a state abstraction is not visible and a
+   subprogram references one or more of its constituents the
+   constituents are represented by a ``global_item`` that denotes the
+   state abstraction in the ``global_specification`` of the
+   subprogram. [The state abstraction encapsulating a constituent is
+   known from the Part_Of indicator on the declaration of the
+   constituent.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 6.1.4 LR Where the refinement of a state
+           abstraction is not visible, the referencing of one or more
+           of its constituents by a subprogram is represented by a
+           ``global_item`` that denotes the state abstraction in the
+           ``global_specification`` of the subprogram.
 
 #. Each entity denoted by a ``global_item`` in a ``global_specification`` of a
    subprogram that is an input or output of the subprogram shall satisfy the
@@ -628,6 +649,20 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 6.1.5 LR Depends aspect shall be on subprogram's declaration
+
+#. An ``input`` or ``output`` of a ``dependency_relation`` shall not
+   denote a constituent of a state abstraction if the state
+   abstraction is not declared by an enclosing package. [A constituent
+   of a state abstraction may be visible due to a Part_Of indicator
+   (see :ref:`package_hierarchy`).  The constituent is represented by
+   a ``global_item`` denoting the state abstraction.]
+   
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.1.5 LR An ``input`` or ``output`` of a
+          ``dependency_relation`` shall not denote a constituent of a
+          state abstraction if the state abstraction is not declared
+          by an enclosing package.
 
 #. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
@@ -869,6 +904,20 @@ as it is used purely for static analysis purposes and is not executed.
 
       :Trace Unit: FA 6.1.5 VR all implementation's inputs must be inputs of
                    the Depends aspect (maybe in more than one input_list)
+
+#. If only part of an entire object or state abstraction (only some of
+   its constituents) are updated then the updated entity is dependent
+   on itself as the parts that are not updated have their current
+   value preserved.  [Where a constituent of a state abstraction is
+   updated but the refinement of the state abstraction is not visible,
+   it is not known if all of the constituents have been updated by the
+   subprogram and in such cases the state abstraction shall always
+   have a self dependency.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 6.1.5 VR If only part of an object or state
+          abstraction is updated it has a self dependency.
 
 .. centered:: **Examples**
 
