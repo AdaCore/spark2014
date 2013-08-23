@@ -28,6 +28,7 @@ with Lib;      use Lib;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
+with Uintp;    use Uintp;
 
 package body SPARK_Util is
    ------------------
@@ -608,12 +609,40 @@ package body SPARK_Util is
       end if;
    end Is_Annotate_Pragma_For_External_Axiomatization;
 
+   ---------------------------------------------
+   -- Is_Double_Precision_Floating_Point_Type --
+   ---------------------------------------------
+
+   function Is_Double_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean is
+   begin
+      return Is_Floating_Point_Type (E)
+        and then Machine_Radix_Value (E) = Uint_2
+        and then Machine_Mantissa_Value (E) = UI_From_Int (53)
+        and then Machine_Emax_Value (E) = Uint_2 ** Uint_10
+        and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_10);
+   end Is_Double_Precision_Floating_Point_Type;
+
    ------------------
    -- Is_Full_View --
    ------------------
 
    function Is_Full_View (E : Entity_Id) return Boolean is
       (Full_To_Partial_Entities.Contains (E));
+
+   ---------------------------------------------
+   -- Is_Single_Precision_Floating_Point_Type --
+   ---------------------------------------------
+
+   function Is_Single_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean is
+   begin
+      return Is_Floating_Point_Type (E)
+        and then Machine_Radix_Value (E) = Uint_2
+        and then Machine_Mantissa_Value (E) = Uint_24
+        and then Machine_Emax_Value (E) = Uint_2 ** Uint_7
+        and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_7);
+   end Is_Single_Precision_Floating_Point_Type;
 
    ---------------------------------
    -- Package_Has_External_Axioms --

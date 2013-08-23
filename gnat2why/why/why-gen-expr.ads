@@ -161,11 +161,11 @@ package Why.Gen.Expr is
    --  comparisons being in Base_Type (int or real)
 
    function Insert_Simple_Conversion
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Expr     : W_Expr_Id;
-      To       : W_Base_Type_Id;
-      From     : W_Base_Type_Id) return W_Expr_Id;
+     (Ada_Node   : Node_Id := Empty;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Base_Type_Id;
+      From       : W_Base_Type_Id) return W_Expr_Id;
 
    function Insert_Scalar_Conversion
      (Domain        : EW_Domain;
@@ -173,9 +173,12 @@ package Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
+      Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Check   : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
    --  We insert a conversion so that its type corresponds to "To".
+   --  When Round_Func is set, a call to the rounding function is inserted
+   --  into the conversion, on the argument of type "real".
    --  When Range_Check is set, a range check is inserted into the conversion,
    --  and the node is used to determine the kind of the check.
 

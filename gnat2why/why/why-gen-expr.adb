@@ -178,6 +178,7 @@ package body Why.Gen.Expr is
       Expr          : W_Expr_Id;
       To            : W_Base_Type_Id;
       From          : W_Base_Type_Id;
+      Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
       --  Current result expression
@@ -194,10 +195,12 @@ package body Why.Gen.Expr is
       Range_Check_Applied : Boolean := False;
 
    begin
-      --  When From = To and no check needs to be inserted, do nothing
+      --  When From = To and no check nor rounding needs to be inserted, do
+      --  nothing.
 
       if Eq (To, From)
-        and then Range_Check = Empty
+        and then No (Range_Check)
+        and then No (Round_Func)
       then
          return Expr;
       end if;
@@ -252,7 +255,17 @@ package body Why.Gen.Expr is
          end;
       end if;
 
-      --  4. Possibly perform the range check, if not already applied
+      --  4. When converting to a floating-point or fixed-point type, always
+      --     perform a rounding operation.
+
+      if Present (Round_Func) then
+         pragma Assert (Get_Base_Type (Cur) = EW_Real);
+         Result := New_Call (Domain   => Domain,
+                             Name     => Round_Func,
+                             Args     => (1 => Result));
+      end if;
+
+      --  5. Possibly perform the range check, if not already applied
 
       if Present (Range_Check)
         and then not Range_Check_Applied
@@ -263,7 +276,7 @@ package body Why.Gen.Expr is
          Result := Insert_Range_Check (Range_Check, Result);
       end if;
 
-      --  5. If To is an abstract type, convert from int or real to it
+      --  6. If To is an abstract type, convert from int or real to it
 
       if Get_Base_Type (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -325,23 +338,17 @@ package body Why.Gen.Expr is
       Domain   : EW_Domain;
       To       : W_Base_Type_Id;
       From     : W_Base_Type_Id;
-      Expr     : W_Expr_Id) return W_Expr_Id is
+      Expr     : W_Expr_Id) return W_Expr_Id
+   is
    begin
       if Eq (From, To) then
          return Expr;
-      else
-         declare
-            Name         : constant W_Identifier_Id :=
-              Conversion_Name (From => From, To => To);
-         begin
-            return
-              New_Call
-                (Domain   => Domain,
-                 Ada_Node => Ada_Node,
-                 Name     => Name,
-                 Args     => (1 => +Expr));
-         end;
       end if;
+
+      return New_Call (Domain   => Domain,
+                       Ada_Node => Ada_Node,
+                       Name     => Conversion_Name (From => From, To => To),
+                       Args     => (1 => +Expr));
    end Insert_Single_Conversion;
 
    ----------------------

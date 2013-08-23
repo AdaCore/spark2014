@@ -109,6 +109,24 @@ package SPARK_Util is
    function Is_Partial_View (E : Entity_Id) return Boolean;
    --  Return whether E is the partial view of another entity
 
+   function Is_Single_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean;
+   --  Return whether E is a single precision floating point type,
+   --  characterized by:
+   --  . machine_radix = 2
+   --  . machine_mantissa = 24
+   --  . machine_emax = 2**7
+   --  . machine_emin = 3 - machine_emax
+
+   function Is_Double_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean;
+   --  Return whether E is a double precision floating point type,
+   --  characterized by:
+   --  . machine_radix = 2
+   --  . machine_mantissa = 53
+   --  . machine_emax = 2**10
+   --  . machine_emin = 3 - machine_emax
+
    function Package_Has_External_Axioms (E : Entity_Id) return Boolean with
      Pre  => Ekind_In (E, E_Package, E_Generic_Package);
    --  Return whether E is a package with External Axioms

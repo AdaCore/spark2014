@@ -134,14 +134,14 @@ package body Gnat2Why.Expr is
    -- Local Subprograms --
    -----------------------
 
-   function Apply_Modulus
+   function Apply_Modulus_Or_Rounding
       (E                     : Entity_Id;
        T                     : W_Expr_Id;
        Domain                : EW_Domain)
        return W_Expr_Id;
-   --  Apply a modulus on T, where the modulus is defined by the Entity N
-   --  which must be a modular type. If E is not a modular type, return T
-   --  unchanged.
+   --  If E is a modular type, apply a modulus on T. If E is a single or
+   --  double precision floating-point type, apply the corresponding
+   --  rounding operation. If E is neither, return T unchanged.
 
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
@@ -414,7 +414,7 @@ package body Gnat2Why.Expr is
    -- Apply_Modulus --
    -------------------
 
-   function Apply_Modulus
+   function Apply_Modulus_Or_Rounding
       (E                     : Entity_Id;
        T                     : W_Expr_Id;
        Domain                : EW_Domain)
@@ -428,11 +428,25 @@ package body Gnat2Why.Expr is
                       Args =>
                        (1 => T,
                         2 => New_Integer_Constant
-                                (Value => Modulus (E))));
+                          (Value => Modulus (E))));
+
+      --  Currently apply rounding on both floating-point and fixed-point
+      --  types. The rounding on fixed-point types is an uninterpreted and
+      --  unaxiomatized function, which models soundly (if not accurately)
+      --  the semantics of fixed-point numbers.
+
+      elsif Is_Floating_Point_Type (E)
+              or else
+            Is_Fixed_Point_Type (E)
+      then
+         return New_Call (Domain   => Domain,
+                          Name     => Float_Round_Name (E),
+                          Args     => (1 => T));
+
       else
          return T;
       end if;
-   end Apply_Modulus;
+   end Apply_Modulus_Or_Rounding;
 
    ----------------------------
    -- Assignment_Of_Obj_Decl --
@@ -3919,7 +3933,7 @@ package body Gnat2Why.Expr is
                     +Transform_Expr (Right, Current_Type, Domain,
                      Local_Params),
                     Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus (Etype (Expr), T, Domain);
+               T := Apply_Modulus_Or_Rounding (Etype (Expr), T, Domain);
             end;
 
          when N_Op_Plus =>
@@ -3967,7 +3981,7 @@ package body Gnat2Why.Expr is
                                                 Local_Params),
                     Op       => Transform_Binop (Nkind (Expr)),
                     Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus (Etype (Expr), T, Domain);
+               T := Apply_Modulus_Or_Rounding (Etype (Expr), T, Domain);
             end;
 
          when N_Op_Divide =>
@@ -4006,7 +4020,7 @@ package body Gnat2Why.Expr is
                        Args    => (1 => L_Why, 2 => R_Why));
                end if;
 
-               T := Apply_Modulus (Etype (Expr), T, Domain);
+               T := Apply_Modulus_Or_Rounding (Etype (Expr), T, Domain);
             end;
 
          when N_Op_Rem | N_Op_Mod =>
@@ -4216,11 +4230,30 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Type_Conversion =>
-            T := Transform_Expr (Expression (Expr),
-                                 Expected_Type,
-                                 Domain,
-                                 Local_Params);
-            Current_Type := Expected_Type;
+            --  When converting to a flating-point or fixed-point type, a
+            --  rounding operation should be applied on the intermediate
+            --  real value. This is ensured by requiring that the converted
+            --  expression is translated into a value of the type of the
+            --  conversion Current_Type.
+
+            if Ekind (Etype (Expr)) in Real_Kind then
+               T := Transform_Expr (Expression (Expr),
+                                    Current_Type,
+                                    Domain,
+                                    Local_Params);
+
+            --  In other cases, only require that the converted expression
+            --  is translated into a value of the expected type. Necessary
+            --  checks and conversions will be introduced at the end of
+            --  Transform_Expr below.
+
+            else
+               T := Transform_Expr (Expression (Expr),
+                                    Expected_Type,
+                                    Domain,
+                                    Local_Params);
+               Current_Type := Expected_Type;
+            end if;
 
          when N_Unchecked_Type_Conversion =>
 
@@ -4525,12 +4558,26 @@ package body Gnat2Why.Expr is
                      Expression (Expr)
                   else Empty)
                else Empty);
+
+            --  When converting to a floating-point or fixed-point type, from
+            --  either a discrete type or another real type, rounding should
+            --  be applied on the value of type real. Round_Func is the
+            --  appropriate rounding function for the type.
+
+            Round_Func : constant W_Identifier_Id :=
+              (if Nkind (Expr) = N_Type_Conversion
+                 and then Ekind (Etype (Expr)) in Real_Kind
+               then
+                  Float_Round_Name (Etype (Expr))
+               else Why_Empty);
+
          begin
             T := Insert_Scalar_Conversion (Domain      => Domain,
                                            Ada_Node    => Expr,
                                            Expr        => T,
                                            From        => Current_Type,
                                            To          => Expected_Type,
+                                           Round_Func  => Round_Func,
                                            Range_Check => Range_Check_Node);
          end;
       end if;

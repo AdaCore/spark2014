@@ -39,4 +39,10 @@ package Why.Types is
 
    Why_Empty : constant := 0;
 
+   function No (N : Why_Node_Id) return Boolean is (N = Why_Empty);
+   --  Returns True if N is the empty node, False otherwise
+
+   function Present (N : Why_Node_Id) return Boolean is (N /= Why_Empty);
+   --  Returns True if N is not the empty node, False otherwise
+
 end Why.Types;

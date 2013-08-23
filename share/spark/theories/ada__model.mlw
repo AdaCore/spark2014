@@ -89,9 +89,24 @@ module Floating_Point
 
   type t
 
+  (* This module will be cloned and round_real_tmp possibly replaced.
+     We keep round_real to denote the resulting rounding function. *)
+
+  function round_real_tmp real : real
+  function round_real (x : real) : real = round_real_tmp (x)
+
   function attr__ATTRIBUTE_FIRST  : real
 
   function attr__ATTRIBUTE_LAST  : real
+
+  (* The first and last value of the floating-point type are exactly
+     represented. So round_real is the identity on such values. *)
+
+  axiom representable_first :
+    round_real attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST
+
+  axiom representable_last :
+    round_real attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
 
   predicate in_range  (x : real) =
    ( attr__ATTRIBUTE_FIRST <=. x <=. attr__ATTRIBUTE_LAST )

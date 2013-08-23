@@ -26,7 +26,6 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded.Hash;
 
-with Atree;               use Atree;
 with Lib;                 use Lib;
 with Sinput;              use Sinput;
 with Stand;               use Stand;
@@ -180,7 +179,7 @@ package body Why.Gen.Names is
                   if From_Kind = EW_Int and then To_Kind = EW_Real then
                      return To_Ident (WNE_Real_Of_Int);
 
-                  --  Conversions from int to real in Ada round to the nearest
+                  --  Conversions from real to int in Ada round to the nearest
                   --  integer, and away from zero in case of tie, exactly like
                   --  'Rounding attribute.
 
@@ -302,6 +301,17 @@ package body Why.Gen.Names is
             return "bool";
       end case;
    end EW_Base_Type_Name;
+
+   ----------------------
+   -- Float_Round_Name --
+   ----------------------
+
+   function Float_Round_Name (Ty : Entity_Id) return W_Identifier_Id is
+   begin
+      return Prefix (Ada_Node => Ty,
+                     S        => Full_Name (Ty),
+                     W        => WNE_Float_Round);
+   end Float_Round_Name;
 
    -------------
    -- New_Abs --
@@ -635,6 +645,10 @@ package body Why.Gen.Names is
          when WNE_Real_Truncate => return "Floating.truncate";
          when WNE_Real_Max  => return "Floating.real_max";
          when WNE_Real_Min  => return "Floating.real_min";
+         when WNE_Float_Round   => return "round_real";
+         when WNE_Float_Round_Tmp => return "round_real_tmp";
+         when WNE_Float_Round_Single => return "Floating.round_single";
+         when WNE_Float_Round_Double => return "Floating.round_double";
          when WNE_Array_1      => return "Array__1";
          when WNE_Array_2      => return "Array__2";
          when WNE_Array_3      => return "Array__3";

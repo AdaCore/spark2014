@@ -25,16 +25,18 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Namet;        use Namet;
-with Snames;       use Snames;
-with Types;        use Types;
-with Uintp;        use Uintp;
-with Why.Ids;      use Why.Ids;
-with Why.Sinfo;    use Why.Sinfo;
+with Atree;                 use Atree;
+with Einfo;                 use Einfo;
+with Namet;                 use Namet;
+with Snames;                use Snames;
+with Types;                 use Types;
+with Uintp;                 use Uintp;
+with Why.Ids;               use Why.Ids;
+with Why.Sinfo;             use Why.Sinfo;
 
 with Why.Gen.Name_Gen;
 
-with Gnat2Why.Nodes; use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -56,6 +58,10 @@ package Why.Gen.Names is
    function Range_Pred_Name
      (Ty : Entity_Id) return W_Identifier_Id;
    --  Return the name of the "in_range" predicate for the type
+
+   function Float_Round_Name (Ty : Entity_Id) return W_Identifier_Id
+   with Pre => Ekind (Ty) in Real_Kind;
+   --  Returns the name of the floating-point rounding operation for type Ty
 
    function Range_Check_Name
      (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
@@ -192,6 +198,20 @@ package Why.Gen.Names is
       --  suffix for the name of the theory importing all necessary axioms from
       --  expression functions for a constant
       WNE_Constant_Closure,
+
+      --  Name of an unknown floating-point rounding operation, when the
+      --  floating-point type is neither single precision nor double precision.
+      WNE_Float_Round,
+
+      --  Name of a the temporary floating-point rounding operation, to replace
+      --  when cloning module Floating.
+      WNE_Float_Round_Tmp,
+
+      --  Name of the single precision floating-point rounding operation
+      WNE_Float_Round_Single,
+
+      --  Name of the double precision floating-point rounding operation
+      WNE_Float_Round_Double,
 
       WNE_First_Static,
       WNE_Func,
