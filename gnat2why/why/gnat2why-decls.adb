@@ -59,6 +59,13 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 package body Gnat2Why.Decls is
 
+   package List_Of_Entity is new
+     Ada.Containers.Doubly_Linked_Lists (Entity_Id);
+
+   function Get_Generic_Parents (E : Entity_Id) return List_Of_Entity.List;
+   --  Returns the list of every instance of generic package up to the first
+   --  package with external axioms
+
    -----------------------------------
    -- Complete_Constant_Translation --
    -----------------------------------
@@ -75,12 +82,12 @@ package body Gnat2Why.Decls is
       Open_Theory (File, Name,
                    Comment =>
                      "Module including all necessary axioms for the "
-                       & "constant "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " declared at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & "constant "
+                   & """" & Get_Name_String (Chars (E)) & """"
+                   & (if Sloc (E) > 0 then
+                        " declared at " & Build_Location_String (Sloc (E))
+                     else "")
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  No filtering is necessary here, as the theory should on the contrary
       --  use the previously defined theory for the constant.
@@ -92,6 +99,222 @@ package body Gnat2Why.Decls is
                     Do_Closure     => True);
       Add_Completion (Base_Name, Name, File.Kind);
    end Complete_Constant_Translation;
+
+   -------------------------------------------------------
+   -- Complete_Package_With_External_Axioms_Translation --
+   -------------------------------------------------------
+
+   procedure Complete_Package_With_External_Axioms_Translation
+     (E    : Entity_Id)
+   is
+
+      procedure Compute_Completions
+        (G_Parents :     List_Of_Entity.List;
+         Compl     : out List_Of_Entity.List);
+      --  Returns the list of the actuals of the generic parameters of
+      --  G_Parents.
+
+      procedure Compute_Completions
+        (G_Parents :     List_Of_Entity.List;
+         Compl     : out List_Of_Entity.List) is
+
+         procedure Compute_Completions_Package
+           (Assoc         : List_Id);
+
+         procedure Compute_Completions_Package
+           (Assoc         : List_Id) is
+
+            CurAssoc  : Node_Id := First (Assoc);
+         begin
+            while Present (CurAssoc) loop
+               declare
+                  Actual : constant Entity_Id :=
+                    Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+               begin
+                  if not (Ekind (Actual) in Type_Kind) then
+                     List_Of_Entity.Append (Compl, Actual);
+                  end if;
+               end;
+               Next (CurAssoc);
+            end loop;
+         end Compute_Completions_Package;
+
+         GParent_Cur : List_Of_Entity.Cursor :=
+           List_Of_Entity.First (G_Parents);
+      begin
+         while List_Of_Entity.Has_Element (GParent_Cur) loop
+            Compute_Completions_Package
+              (Generic_Associations (Get_Package_Instantiation_Node
+               (List_Of_Entity.Element (GParent_Cur))));
+
+            List_Of_Entity.Next (GParent_Cur);
+         end loop;
+      end Compute_Completions;
+
+      Decls  : constant List_Id :=
+        Visible_Declarations (Get_Package_Spec (E));
+      N      : Node_Id := First (Decls);
+      C_List : List_Of_Entity.List;
+   begin
+      Compute_Completions (Get_Generic_Parents (E), C_List);
+
+      while Present (N) loop
+         if Comes_From_Source (N) and then
+           Nkind (N) in N_Subtype_Declaration
+           | N_Private_Type_Declaration
+             | N_Subprogram_Declaration | N_Object_Declaration then
+            declare
+               E : constant Entity_Id := Defining_Entity (N);
+               Theory_Name : constant String := Full_Name (E);
+               TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
+               Completion : List_Of_Entity.Cursor :=
+                 List_Of_Entity.First (C_List);
+            begin
+
+               --  For constants, add a new empty theory for constant_closure
+
+               if (Ekind (E) in Object_Kind and then not Is_Mutable_In_Why (E))
+                 or else Ekind (E) in Named_Kind then
+
+                  Open_Theory
+                    (TFile, Theory_Name & To_String (WNE_Constant_Closure),
+                     Comment =>
+                       "Module including all necessary axioms for the "
+                     & "parameters of the generic constant "
+                     & """" & Get_Name_String (Chars (E)) & """"
+                     & (if Sloc (E) > 0 then
+                          " declared at " & Build_Location_String (Sloc (E))
+                       else "")
+                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                  --  Add the completion of function parameters
+
+                  while List_Of_Entity.Has_Element (Completion) loop
+                     Add_Use_For_Entity (P               => TFile,
+                                         N               =>
+                                           List_Of_Entity.Element (Completion),
+                                         Use_Kind        => EW_Clone_Default,
+                                         With_Completion => True);
+
+                     List_Of_Entity.Next (Completion);
+                  end loop;
+
+                  Close_Theory (TFile,
+                                Filter_Entity  => Empty,
+                                Defined_Entity => Empty,
+                                Do_Closure     => True);
+
+                  Add_Completion
+                    (Theory_Name,
+                     Theory_Name & To_String (WNE_Constant_Closure),
+                     TFile.Kind);
+               end if;
+
+               --  For subprograms, add a new empty theory for expr_fun_closure
+
+               if Ekind (E) in Subprogram_Kind then
+
+                  Open_Theory
+                    (TFile, Theory_Name & To_String (WNE_Expr_Fun_Closure),
+                     Comment =>
+                       "Module including all necessary axioms for the "
+                     & "parameters of the generic subprogram "
+                     & """" & Get_Name_String (Chars (E)) & """"
+                     & (if Sloc (E) > 0 then
+                          " declared at " & Build_Location_String (Sloc (E))
+                       else "")
+                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                  --  Add the completion of function parameters
+
+                  while List_Of_Entity.Has_Element (Completion) loop
+                     Add_Use_For_Entity (P               => TFile,
+                                         N               =>
+                                           List_Of_Entity.Element (Completion),
+                                         Use_Kind        => EW_Clone_Default,
+                                         With_Completion => True);
+
+                     List_Of_Entity.Next (Completion);
+                  end loop;
+
+                  Close_Theory (TFile,
+                                Filter_Entity  => Empty,
+                                Defined_Entity => Empty,
+                                Do_Closure     => True);
+
+                  Add_Completion
+                    (Theory_Name,
+                     Theory_Name & To_String (WNE_Expr_Fun_Closure),
+                     TFile.Kind);
+               end if;
+            end;
+         end if;
+
+         Next (N);
+      end loop;
+   end Complete_Package_With_External_Axioms_Translation;
+
+   -------------------------
+   -- Get_Generic_Parents --
+   -------------------------
+
+   function Get_Generic_Parents
+     (E : Entity_Id) return List_Of_Entity.List is
+
+      procedure Internal_Get_Generic_Parents
+        (E      :     Entity_Id;
+         Result : out List_Of_Entity.List;
+         Found  : out Boolean);
+
+      procedure Internal_Get_Generic_Parents
+        (E      :     Entity_Id;
+         Result : out List_Of_Entity.List;
+         Found  : out Boolean) is
+      begin
+         if Present (E) then
+
+            --  If E has external axioms, return the empty list
+            if Ekind (E) = E_Package and then
+              Package_Has_External_Axioms (E) then
+               Result := List_Of_Entity.Empty_List;
+               Found := True;
+               if Present (Generic_Parent (Get_Package_Spec (E))) then
+                  List_Of_Entity.Prepend (Result, E);
+               end if;
+               return;
+            end if;
+
+            --  If a package with external axioms has been found above
+            --  Scope (E) return the list of generic parents above Scope (E)
+            Internal_Get_Generic_Parents (Scope (E), Result, Found);
+
+            if Found then
+               return;
+            end if;
+
+            --  If a package with external axioms has been found above
+            --  Generic_Parent (E) return the list of generic parents above
+            --  Generic_Parent (E) plus E
+
+            if Ekind (E) = E_Package then
+               Internal_Get_Generic_Parents
+                 (Generic_Parent (Get_Package_Spec (E)), Result, Found);
+               if Found then
+                  List_Of_Entity.Prepend (Result, E);
+                  return;
+               end if;
+            end if;
+         end if;
+         Found := False;
+      end Internal_Get_Generic_Parents;
+
+      Result : List_Of_Entity.List;
+      Found  : Boolean;
+   begin
+      Internal_Get_Generic_Parents (E, Result, Found);
+      pragma Assert (Found);
+      return Result;
+   end Get_Generic_Parents;
 
    ------------------------
    -- Translate_Variable --
@@ -333,19 +556,14 @@ package body Gnat2Why.Decls is
 
       type Entity_Array is array (Integer range <>) of Entity_Id;
 
-      package List_Of_Entity is new Ada.Containers.Doubly_Linked_Lists
-        (Entity_Id);
-
       procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
-                                Subst_Length : out Natural;
-                                Num_Of_Obj   : out Natural);
+                                Subst_Length : out Natural);
       --  Computes the length of the substitution that has to be computed
       --  for the parameters of the generic.
 
       procedure Compute_Substitution
         (G_Parents :     List_Of_Entity.List;
-         Subst     : out W_Custom_Substitution_Array;
-         Compl     : out Entity_Array);
+         Subst     : out W_Custom_Substitution_Array);
       --  Creates a substitution for the generic parameters of the package
       --  if any. The substitution is a string following the format in
       --  GNAT.Regpat. It is then used to copy the associated Why3
@@ -361,11 +579,6 @@ package body Gnat2Why.Decls is
       --  by generics.
       --  E should be an element of the path between Package_Entity and the
       --  first package with external axioms above it
-
-      function Get_Generic_Parents
-        (E : Entity_Id) return List_Of_Entity.List;
-      --  Returns the list of every instance of generic package up to the first
-      --  package with external axioms
 
       function Get_Instance_Name (E : Entity_Id) return String is
         (Capitalize_First (Full_Name (E)));
@@ -392,16 +605,13 @@ package body Gnat2Why.Decls is
       --------------------
 
       procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
-                                Subst_Length : out Natural;
-                                Num_Of_Obj   : out Natural) is
+                                Subst_Length : out Natural) is
 
          procedure Compute_Length_Package (Labs         :     List_Id;
-                                           Subst_Length : in out Natural;
-                                           Num_Of_Obj   : in out Natural);
+                                           Subst_Length : in out Natural);
 
          procedure Compute_Length_Package (Labs         :     List_Id;
-                                           Subst_Length : in out Natural;
-                                           Num_Of_Obj   : in out Natural) is
+                                           Subst_Length : in out Natural) is
             CurLabs  : Node_Id := First (Labs);
          begin
             Subst_Length := Subst_Length + 2;
@@ -415,7 +625,6 @@ package body Gnat2Why.Decls is
                   elsif K in Type_Kind then
                      Subst_Length := Subst_Length + 3;
                   else
-                     Num_Of_Obj   := Num_Of_Obj + 1;
                      Subst_Length := Subst_Length + 2;
                   end if;
                end;
@@ -427,13 +636,11 @@ package body Gnat2Why.Decls is
            List_Of_Entity.First (G_Parents);
       begin
          Subst_Length := 0;
-         Num_Of_Obj   := 0;
 
          while List_Of_Entity.Has_Element (CurGParent) loop
             Compute_Length_Package (Get_Label_List
                                     (List_Of_Entity.Element (CurGParent)),
-                                    Subst_Length,
-                                    Num_Of_Obj);
+                                    Subst_Length);
             List_Of_Entity.Next (CurGParent);
          end loop;
       end Compute_Length;
@@ -444,8 +651,7 @@ package body Gnat2Why.Decls is
 
       procedure Compute_Substitution
         (G_Parents     :     List_Of_Entity.List;
-         Subst         : out W_Custom_Substitution_Array;
-         Compl         : out Entity_Array) is
+         Subst         : out W_Custom_Substitution_Array) is
 
          procedure Compute_Substitution_Package
            (Assoc         : List_Id;
@@ -469,7 +675,6 @@ package body Gnat2Why.Decls is
          File_Name : constant String :=
            Why_Files (Dispatch_Entity (Package_Entity)).Name.all;
          Subst_Cur : Integer := 1;
-         Compl_Cur : Integer := 1;
 
          procedure Compute_Substitution_Package
            (Assoc         : List_Id;
@@ -688,9 +893,6 @@ package body Gnat2Why.Decls is
                                 & Short_Name (Formal))));
                      Subst_Cur := Subst_Cur + 1;
 
-                     Compl (Compl_Cur) := Actual;
-                     Compl_Cur := Compl_Cur + 1;
-
                   else
 
                      --  Replace:
@@ -730,9 +932,6 @@ package body Gnat2Why.Decls is
                         To       => W_Any_Node_Id
                           (To_Why_Id (Actual, Domain => EW_Term)));
                      Subst_Cur := Subst_Cur + 1;
-
-                     Compl (Compl_Cur) := Actual;
-                     Compl_Cur := Compl_Cur + 1;
                   end if;
                end;
                Next (CurAssoc);
@@ -776,19 +975,29 @@ package body Gnat2Why.Decls is
            List_Of_Entity.First (G_Parents);
       begin
          while List_Of_Entity.Has_Element (GParent_Cur) loop
-            Compute_Substitution_Package
-              (Assoc         => Get_Association_List (
-               List_Of_Entity.Element (GParent_Cur)),
-               Labs          => Get_Label_List (
-                 List_Of_Entity.Element (GParent_Cur)),
-               Generic_Name  => Get_Generic_Name (
-                 List_Of_Entity.Element (GParent_Cur), GParent_Cur),
-               Instance_Name => Get_Instance_Name
-                 (List_Of_Entity.Element (GParent_Cur)),
-               Instance_File =>
-                 Why_Files (Dispatch_Entity (
-                   List_Of_Entity.Element (GParent_Cur))).Name.all);
-            List_Of_Entity.Next (GParent_Cur);
+            declare
+               E             : constant Entity_Id :=
+                 List_Of_Entity.Element (GParent_Cur);
+               Assoc         : constant List_Id := Get_Association_List (E);
+               Labs          : constant List_Id := Get_Label_List (E);
+               Generic_Name  : constant String  :=
+                 Get_Generic_Name (E, GParent_Cur);
+               Instance_Name : constant String  := Get_Instance_Name (E);
+               Instance_File : constant String  :=
+                 File_Base_Name_Of_Entity (E)
+                 & Why_File_Suffix (Dispatch_Entity (E));
+            begin
+
+               Compute_Substitution_Package
+                 (Assoc         => Assoc,
+                  Labs          => Labs,
+                  Generic_Name  => Generic_Name,
+                  Instance_Name => Instance_Name,
+                  Instance_File => Instance_File);
+
+               List_Of_Entity.Next (GParent_Cur);
+
+            end;
          end loop;
       end Compute_Substitution;
 
@@ -839,68 +1048,6 @@ package body Gnat2Why.Decls is
          return Get_Generic_Name_Scope (E, Parents);
       end Get_Generic_Name;
 
-      -------------------------
-      -- Get_Generic_Parents --
-      -------------------------
-
-      function Get_Generic_Parents
-        (E : Entity_Id) return List_Of_Entity.List is
-
-         procedure Internal_Get_Generic_Parents
-           (E      :     Entity_Id;
-            Result : out List_Of_Entity.List;
-            Found  : out Boolean);
-
-         procedure Internal_Get_Generic_Parents
-           (E      :     Entity_Id;
-            Result : out List_Of_Entity.List;
-            Found  : out Boolean) is
-         begin
-            if Present (E) then
-
-               --  If E has external axioms, return the empty list
-               if Ekind (E) = E_Package and then
-                 Package_Has_External_Axioms (E) then
-                  Result := List_Of_Entity.Empty_List;
-                  Found := True;
-                  if Present (Generic_Parent (Get_Package_Spec (E))) then
-                     List_Of_Entity.Prepend (Result, E);
-                  end if;
-                  return;
-               end if;
-
-               --  If a package with external axioms has been found above
-               --  Scope (E) return the list of generic parents above Scope (E)
-               Internal_Get_Generic_Parents (Scope (E), Result, Found);
-
-               if Found then
-                  return;
-               end if;
-
-               --  If a package with external axioms has been found above
-               --  Generic_Parent (E) return the list of generic parents above
-               --  Generic_Parent (E) plus E
-
-               if Ekind (E) = E_Package then
-                  Internal_Get_Generic_Parents
-                    (Generic_Parent (Get_Package_Spec (E)), Result, Found);
-                  if Found then
-                     List_Of_Entity.Prepend (Result, E);
-                     return;
-                  end if;
-               end if;
-            end if;
-            Found := False;
-         end Internal_Get_Generic_Parents;
-
-         Result : List_Of_Entity.List;
-         Found  : Boolean;
-      begin
-         Internal_Get_Generic_Parents (E, Result, Found);
-         pragma Assert (Found);
-         return Result;
-      end Get_Generic_Parents;
-
       --------------------
       -- Get_Label_List --
       --------------------
@@ -940,7 +1087,7 @@ package body Gnat2Why.Decls is
                return;
             end if;
 
-            --  Adds a new theory to the appropriate file, containing only a
+            --  Add a new theory to the appropriate file, containing only a
             --  use export of the theory to be copied
 
             if TFile.Name.all /= File_Name then
@@ -959,35 +1106,6 @@ package body Gnat2Why.Decls is
                                 Use_Kind => EW_Export);
 
                Close_Theory (TFile, Filter_Entity => Empty);
-            end if;
-
-            --  For subprograms and objects, adds the completion of function
-            --  parameters to the completion of E
-
-            if not (Ekind (E) in Type_Kind) then
-               for I in Compl'Range loop
-                  Add_Completion (Name            => Full_Name (E),
-                                  Completion_Name => Full_Name (Compl (I)),
-                                  Kind            =>
-                                    Dispatch_Entity (Compl (I)));
-               end loop;
-            end if;
-
-            --  For subprograms, adds a new empty theory for expr_fun_closure
-
-            if Ekind (E) in Subprogram_Kind then
-               declare
-                  File : Why_File := Why_Files (Dispatch_Entity (E));
-               begin
-                  Open_Theory (File,
-                               Theory_Name & To_String (WNE_Expr_Fun_Closure),
-                               Comment => "");
-
-                  Close_Theory (File,
-                                Filter_Entity  => Empty,
-                                Defined_Entity => E,
-                                Do_Closure     => True);
-               end;
             end if;
          end Parse_Declaration;
 
@@ -1280,13 +1398,12 @@ package body Gnat2Why.Decls is
       end Parse_Parameters;
 
       Decls : constant List_Id :=
-        Visible_Declarations (Parent (Package_Entity));
+        Visible_Declarations (Get_Package_Spec (Package_Entity));
       TFile : constant Why_File :=
         Why_Files (Dispatch_Entity (Package_Entity));
       G_Parents : constant List_Of_Entity.List :=
         Get_Generic_Parents (Package_Entity);
       Subst_Length : Natural;
-      Num_Of_Compl : Natural;
    begin
 
       if List_Of_Entity.Is_Empty (G_Parents) then
@@ -1304,13 +1421,12 @@ package body Gnat2Why.Decls is
             Parse_Parameters (G_Parents);
          end if;
 
-         Compute_Length (G_Parents, Subst_Length, Num_Of_Compl);
+         Compute_Length (G_Parents, Subst_Length);
 
          declare
             Subst : W_Custom_Substitution_Array (1 .. Subst_Length);
-            Compl : Entity_Array (1 .. Num_Of_Compl);
          begin
-            Compute_Substitution (G_Parents, Subst, Compl);
+            Compute_Substitution (G_Parents, Subst);
 
             File_Append_To_Theories
               (TFile.File, New_Custom_Declaration
@@ -1320,7 +1436,7 @@ package body Gnat2Why.Decls is
                       List_Of_Entity.First (G_Parents)) & ".mlw"),
                   Subst     => Subst));
 
-            Parse_Declarations (Decls, TFile.Name.all, Compl);
+            Parse_Declarations (Decls, TFile.Name.all);
          end;
       end if;
    end Translate_Package_With_External_Axioms;

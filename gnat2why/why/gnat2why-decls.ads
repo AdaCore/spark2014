@@ -61,6 +61,11 @@ package Gnat2Why.Decls is
      (Package_Entity : Entity_Id);
    --  Translate a package with a Why3 axiomatization
 
+   procedure Complete_Package_With_External_Axioms_Translation
+     (E    : Entity_Id);
+   --  Generates theories that complete the theories for elements of a package
+   --  declaration.
+
    procedure Translate_Loop_Entity
      (File : in out Why_File;
       E    : Entity_Id);
