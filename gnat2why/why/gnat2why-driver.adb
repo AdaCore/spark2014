@@ -127,6 +127,14 @@ package body Gnat2Why.Driver is
                Complete_Constant_Translation (File, E);
             end if;
 
+         when E_Package =>
+
+            --  Complete entities defined in packages with external axioms.
+
+            if Entity_In_External_Axioms (E) then
+               Complete_Package_With_External_Axioms_Translation (E);
+            end if;
+
          when others =>
             null;
       end case;
