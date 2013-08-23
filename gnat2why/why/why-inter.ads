@@ -53,22 +53,22 @@ package Why.Inter is
    --  Kinds of Why files ordered by possible inclusion. A file of greater kind
    --  can include files of the same or lower kind.
    type Why_File_Enum is
-     (WF_Types_In_Spec,
-      WF_Types_In_Body,
+     (WF_Pure,
       WF_Variables,
-      WF_Context_In_Spec,
-      WF_Context_In_Body,
+      WF_Context,
       WF_Main);
 
    type Why_File is
       record
-         Name        : access String;
          File        : W_File_Id;
          Kind        : Why_File_Enum;
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
 
    Why_Files : array (Why_File_Enum) of Why_File;
+   Why_File_Name : String_Access;
+
+   Why_File_Suffix : constant String := "__package";
 
    -----------------
    -- Completions --
@@ -86,7 +86,7 @@ package Why.Inter is
    --  functions coming from its actuals.
 
    subtype Why_Context_File_Enum is Why_File_Enum range
-     WF_Types_In_Spec .. WF_Context_In_Body;
+     WF_Pure .. WF_Context;
 
    type Why_File_Completion_Item is record
       Name : Unbounded_String;
@@ -110,8 +110,6 @@ package Why.Inter is
    --  Why_File_Enum, so only completions of kinds less than Why_File_Enum are
    --  taken into account, to avoid circularities in Why file dependences.
 
-   function Why_File_Suffix (Kind : Why_File_Enum) return String;
-
    Standard_Why_Package_Name : constant String := "_standard";
 
    procedure Init_Why_Files (Unit : Node_Id);
@@ -121,8 +119,7 @@ package Why.Inter is
    --  uses the spec or body prefix as appropriate.
 
    function Make_Empty_Why_File
-     (Name : String;
-      Kind : Why_File_Enum) return Why_File
+     (Kind : Why_File_Enum) return Why_File
    with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Return an empty Why_File with the given name and kind
 
@@ -152,25 +149,18 @@ package Why.Inter is
    --  Open a new theory in the file.
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : String;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
 
-   procedure Add_With_Clause (P        : in out Why_File;
-                              File     : String;
+   procedure Add_With_Clause (P        : Why_File;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
-   --  Add a package name to the context of a Why package.
-
-   procedure Add_With_Clause (P        : in out Why_File;
-                              Other    : Why_File;
-                              Use_Kind : EW_Clone_Type);
    --  Add a package name to the context of a Why package.
 
    procedure Add_Use_For_Entity
-     (P               : in out Why_File;
+     (P               : Why_File;
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True);
@@ -188,7 +178,7 @@ package Why.Inter is
    --  Return the uncapitalized name which needs to be used to include the
    --  Why entity for that node (after capitalization).
 
-   procedure Add_Effect_Imports (P : in out Why_File;
+   procedure Add_Effect_Imports (P : Why_File;
                                  S : Name_Set.Set);
 
    procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;

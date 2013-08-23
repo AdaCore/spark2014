@@ -104,7 +104,7 @@ package body Gnat2Why.Subprograms is
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
 
-   function Compute_Effects (File : in out Why_File;
+   function Compute_Effects (File : Why_File;
                              E    : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
 
@@ -226,7 +226,7 @@ package body Gnat2Why.Subprograms is
    -- Compute_Effects --
    ---------------------
 
-   function Compute_Effects (File : in out Why_File;
+   function Compute_Effects (File : Why_File;
                              E    : Entity_Id) return W_Effects_Id is
       Read_Names      : Name_Set.Set;
       Write_Names     : Name_Set.Set;

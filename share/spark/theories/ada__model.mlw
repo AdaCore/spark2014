@@ -3,11 +3,11 @@ module Discrete_Base
     whole discrete theory, except the coerce_axiom which differs between
     modular and non-modular types. *)
 
-  use import "int".Int
+  use import int.Int
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Integer
 
-  use export ada__model_th.Discrete_Base_Theory
+  use export "ada__model_th".Discrete_Base_Theory
 
   type t
 
@@ -61,7 +61,7 @@ module Discrete_Base
 end
 
 module Discrete
-  use import "int".Int
+  use import int.Int
   clone export Discrete_Base
 
   axiom coerce_axiom :
@@ -84,8 +84,8 @@ end
 module Floating_Point
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Floating
-  use import "real".RealInfix
-  use export ada__model_th.Floating_Point_Theory
+  use import real.RealInfix
+  use export "ada__model_th".Floating_Point_Theory
 
   type t
 
@@ -211,7 +211,7 @@ end
 module Unconstr_Array
   (* The module to be cloned for an unconstrained array of dimension 1 *)
 
-  use import "int".Int
+  use import int.Int
   use "_gnatprove_standard".Array__1
 
   (* These declarations have to be filled in by gnat2why for each
@@ -255,7 +255,7 @@ end
 module Unconstr_Array_2
   (* The module to be cloned for an unconstrained array of dimension 1 *)
 
-  use import "int".Int
+  use import int.Int
   use "_gnatprove_standard".Array__2
 
   type component_type
@@ -318,7 +318,7 @@ end
 module Unconstr_Array_3
   (* The module to be cloned for an unconstrained array of dimension 1 *)
 
-  use import "int".Int
+  use import int.Int
   use "_gnatprove_standard".Array__3
 
   type component_type
@@ -402,7 +402,7 @@ end
 module Unconstr_Array_4
   (* The module to be cloned for an unconstrained array of dimension 1 *)
 
-  use import "int".Int
+  use import int.Int
   use "_gnatprove_standard".Array__4
 
   type component_type

@@ -78,6 +78,8 @@ package body Gnat2Why.Driver is
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
 
+   procedure Translate_Standard_Package;
+
    procedure Translate_Entity (E : Entity_Id);
    --  Translates entity E into Why
 
@@ -92,7 +94,7 @@ package body Gnat2Why.Driver is
    --  subprogram. This could be extended one day to generate VCs for the
    --  elaboration code of packages.
 
-   procedure Print_Why_File (File : in out Why_File);
+   procedure Print_Why_File;
    --  Print the input Why3 file on disk
 
    procedure Touch_Main_File (Prefix : String);
@@ -325,6 +327,7 @@ package body Gnat2Why.Driver is
       --  Start the translation to Why
 
       Init_Why_Files (GNAT_Root);
+      Translate_Standard_Package;
       Translate_CUnit;
    end GNAT_To_Why;
 
@@ -361,10 +364,12 @@ package body Gnat2Why.Driver is
    -- Print_Why_File --
    --------------------
 
-   procedure Print_Why_File (File : in out Why_File) is
+   procedure Print_Why_File is
    begin
-      Open_Current_File (File.Name.all & ".mlw");
-      Sprint_Why_Node (Why_Node_Id (File.File), Current_File);
+      Open_Current_File (Why_File_Name.all & ".mlw");
+      for WF in Why_File_Enum loop
+         Sprint_Why_Node (Why_Node_Id (Why_Files (WF).File), Current_File);
+      end loop;
       Close_Current_File;
    end Print_Why_File;
 
@@ -373,7 +378,7 @@ package body Gnat2Why.Driver is
    ---------------------
 
    procedure Touch_Main_File (Prefix : String) is
-      Filename : constant String := Prefix & Why_File_Suffix (WF_Main);
+      Filename : constant String := Prefix & Why_File_Suffix;
    begin
       Open_Current_File (Filename & ".mlw");
       Close_Current_File;
@@ -429,6 +434,8 @@ package body Gnat2Why.Driver is
    --  Start of Translate_CUnit
 
    begin
+      Translate_List_Entities (Withed_Entities);
+
       for E of All_Entities loop
          if Entity_In_SPARK (E) and then not Is_In_Current_Unit (E) then
             case Ekind (E) is
@@ -491,17 +498,7 @@ package body Gnat2Why.Driver is
          Do_Generate_VCs (E);
       end loop;
 
-      --  Generate Why3 files
-
-      for Kind in Why_File_Enum loop
-         Print_Why_File (Why_Files (Kind));
-      end loop;
-
-      if Print_Generated_Code then
-         for Kind in Why_File_Enum loop
-            wpg (Why_Node_Id (Why_Files (Kind).File));
-         end loop;
-      end if;
+      Print_Why_File;
    end Translate_CUnit;
 
    ----------------------
@@ -591,27 +588,9 @@ package body Gnat2Why.Driver is
    --------------------------------
 
    procedure Translate_Standard_Package is
-      Decl : Node_Id;
-
-   begin
-
-      Mark_Standard_Package;
-
-      --  Authorize warnings now, since regular compiler warnings should
-      --  already have been issued, e.g. to generate warnings related to
-      --  misuse of SPARK specific pragmas.
-
-      Warning_Mode := Normal;
-
-      --  Allow the generation of new nodes and lists
-
-      Atree.Unlock;
-      Nlists.Unlock;
-
-      Init_Why_Files (Standard_Why_Package_Name);
-
-      Decl :=
+      Decl : Node_Id :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
+   begin
       while Present (Decl) loop
          case Nkind (Decl) is
             when N_Full_Type_Declaration |
@@ -635,15 +614,6 @@ package body Gnat2Why.Driver is
       Translate_Entity (Universal_Integer);
       Translate_Entity (Universal_Real);
 
-      for Kind in Why_File_Enum loop
-         Print_Why_File (Why_Files (Kind));
-      end loop;
-
-      if Print_Generated_Code then
-         for Kind in Why_File_Enum loop
-            wpg (Why_Node_Id (Why_Files (Kind).File));
-         end loop;
-      end if;
    end Translate_Standard_Package;
 
 end Gnat2Why.Driver;

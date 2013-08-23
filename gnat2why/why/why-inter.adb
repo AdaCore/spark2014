@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;             use AA_Util;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
@@ -76,6 +75,17 @@ package body Why.Inter is
    --  other units).
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
+
+   procedure Add_Standard_With_Clause
+     (P        : Why_File;
+      T_Name   : String;
+      Use_Kind : EW_Clone_Type);
+
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
+                              File     : String;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
 
    package Standard_Imports is
 
@@ -538,12 +548,9 @@ package body Why.Inter is
       for Var of S loop
          if not (Is_Heap_Variable (Var)) then
             declare
-               F : constant Entity_Name := File_Of_Entity (Var);
                S : constant String := Capitalize_First (Var.all);
             begin
                Add_With_Clause (T,
-                                File_Name_Without_Suffix (F.all) &
-                                  Why_File_Suffix (WF_Variables),
                                 S,
                                 EW_Clone_Default);
             end;
@@ -555,7 +562,7 @@ package body Why.Inter is
    -- Add_Effect_Imports --
    ------------------------
 
-   procedure Add_Effect_Imports (P : in out Why_File;
+   procedure Add_Effect_Imports (P : Why_File;
                                  S : Name_Set.Set)
    is
    begin
@@ -567,7 +574,7 @@ package body Why.Inter is
    ------------------------
 
    procedure Add_Use_For_Entity
-     (P               : in out Why_File;
+     (P               : Why_File;
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
@@ -587,9 +594,6 @@ package body Why.Inter is
          return EW_Clone_Default;
       end Import_Type_Of_Entity;
 
-      File_Name   : constant String :=
-        File_Base_Name_Of_Entity (N)
-        & Why_File_Suffix (Dispatch_Entity (N));
       Raw_Name    : constant String := Name_Of_Node (N);
       Theory_Name : constant String := Capitalize_First (Raw_Name);
       Import      : constant EW_Clone_Type :=
@@ -608,11 +612,7 @@ package body Why.Inter is
          return;
       end if;
 
-      if File_Name /= P.Name.all then
-         Add_With_Clause (P, File_Name, Theory_Name, Import);
-      else
-         Add_With_Clause (P, "", Theory_Name, Import);
-      end if;
+      Add_With_Clause (P, Theory_Name, Import);
 
       if With_Completion then
          declare
@@ -621,18 +621,10 @@ package body Why.Inter is
          begin
             for J in Completions'Range loop
                declare
-                  Compl_Fname  : constant String :=
-                    File_Base_Name_Of_Entity (N)
-                    & Why_File_Suffix (Completions (J).Kind);
                   Compl_Name : constant String :=
                     Capitalize_First (To_String (Completions (J).Name));
                begin
-                  if Compl_Fname /= P.Name.all then
-                     Add_With_Clause
-                       (P, Compl_Fname, Compl_Name, Import);
-                  else
-                     Add_With_Clause (P, "", Compl_Name, Import);
-                  end if;
+                  Add_With_Clause (P, Compl_Name, Import);
                end;
             end loop;
          end;
@@ -644,36 +636,52 @@ package body Why.Inter is
    ---------------------
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : String;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
-      File_Ident : constant W_Identifier_Id :=
-        (if File = "" then Why_Empty else New_Identifier (Name => File));
    begin
       Theory_Declaration_Append_To_Includes
         (T,
-         New_Include_Declaration (File     => File_Ident,
+         New_Include_Declaration (File     => Why_Empty,
                                   T_Name   => New_Identifier (Name => T_Name),
                                   Use_Kind => Use_Kind,
                                   Kind     => Th_Type));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P        : in out Why_File;
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               File     : String;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
    begin
-      Add_With_Clause (P.Cur_Theory, File, T_Name, Use_Kind, Th_Type);
+      Theory_Declaration_Append_To_Includes
+        (T,
+         New_Include_Declaration (File     =>
+                                      New_Identifier (Name => File),
+                                  T_Name   => New_Identifier (Name => T_Name),
+                                  Use_Kind => Use_Kind,
+                                  Kind     => Th_Type));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P        : in out Why_File;
-                              Other    : Why_File;
-                              Use_Kind : EW_Clone_Type) is
+   procedure Add_With_Clause (P        : Why_File;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module) is
    begin
-      Add_With_Clause (P, Other.Name.all, "Main", Use_Kind);
+      Add_With_Clause (P.Cur_Theory, T_Name, Use_Kind, Th_Type);
    end Add_With_Clause;
+
+   ------------------------------
+   -- Add_Standard_With_Clause --
+   ------------------------------
+
+   procedure Add_Standard_With_Clause
+     (P        : Why_File;
+      T_Name   : String;
+      Use_Kind : EW_Clone_Type) is
+   begin
+      Add_With_Clause (P.Cur_Theory, "_gnatprove_standard", T_Name, Use_Kind);
+   end Add_Standard_With_Clause;
 
    -------------------
    -- Base_Why_Type --
@@ -733,8 +741,6 @@ package body Why.Inter is
       use Node_Sets;
       S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
 
-      Gnatprove_Standard : constant String := "_gnatprove_standard";
-
    begin
       --  If required, compute the closure of entities on which Defined_Entity
       --  depends, and add those in the set of nodes S used for computing
@@ -745,7 +751,7 @@ package body Why.Inter is
       end if;
 
       Standard_Imports.Clear;
-      Add_With_Clause (P, Gnatprove_Standard, "Main", EW_Import);
+      Add_Standard_With_Clause (P, "Main", EW_Import);
 
       if not (No_Import) then
 
@@ -792,23 +798,23 @@ package body Why.Inter is
          begin
             for Index in Imports'Range loop
                if Imports (Index) then
-                  Add_With_Clause (P,
-                                   Gnatprove_Standard,
-                                   To_String (Index),
-                                   EW_Clone_Default);
+                  Add_Standard_With_Clause
+                    (P,
+                     To_String (Index),
+                     EW_Clone_Default);
 
                   --  Two special cases for infix symbols; these are the only
                   --  theories (as opposed to modules) that are used, and the
                   --  only ones to be "use import"ed
 
                   if Index = SI_Integer then
-                     Add_With_Clause (P,
+                     Add_With_Clause (P.Cur_Theory,
                                       "int",
                                       "Int",
                                       EW_Import,
                                       EW_Theory);
                   elsif Index = SI_Float then
-                     Add_With_Clause (P,
+                     Add_With_Clause (P.Cur_Theory,
                                       "real",
                                       "RealInfix",
                                       EW_Import,
@@ -843,33 +849,19 @@ package body Why.Inter is
          --  Theories which depend on variables are defined in context files
 
          if Expression_Depends_On_Variables (E) then
-            if In_Main_Unit_Spec (E) then
-               return WF_Context_In_Spec;
-            else
-               pragma Assert (In_Main_Unit_Body (E));
-               return WF_Context_In_Body;
-            end if;
+            return WF_Context;
 
          --  Theories which do not depend on variables are defined in type
          --  files.
 
          else
-            if In_Main_Unit_Spec (E) then
-               return WF_Types_In_Spec;
-            else
-               pragma Assert (In_Main_Unit_Body (E));
-               return WF_Types_In_Body;
-            end if;
+            return WF_Pure;
          end if;
       end if;
 
       case Ekind (E) is
          when Named_Kind  =>
-            if In_Some_Unit_Body (Parent (E)) then
-               return WF_Context_In_Body;
-            else
-               return WF_Context_In_Spec;
-            end if;
+            return WF_Context;
 
          when Subprogram_Kind | E_Subprogram_Body =>
             declare
@@ -889,18 +881,10 @@ package body Why.Inter is
                --  axiomatization in Why is written manually (example: formal
                --  containers).
 
-               if In_Some_Unit_Body (Parent (E)) then
-                  if Has_Effects then
-                     return WF_Context_In_Body;
-                  else
-                     return WF_Types_In_Body;
-                  end if;
+               if Has_Effects then
+                  return WF_Context;
                else
-                  if Has_Effects then
-                     return WF_Context_In_Spec;
-                  else
-                     return WF_Types_In_Spec;
-                  end if;
+                  return WF_Pure;
                end if;
             end;
 
@@ -910,46 +894,24 @@ package body Why.Inter is
             --  any, is defined as a completion in the type or context file.
 
             if not Is_Mutable_In_Why (E) then
-               if In_Main_Unit_Body (E) then
-                  return WF_Types_In_Body;
-               else
-                  return WF_Types_In_Spec;
-               end if;
+               return WF_Pure;
 
             elsif Ekind (E) = E_Discriminant
               and then Is_External_Axioms_Discriminant (E)
             then
-               if In_Main_Unit_Body (E) then
-                  return WF_Context_In_Body;
-               else
-                  return WF_Context_In_Spec;
-               end if;
-
+               return WF_Context;
             else
                return WF_Variables;
             end if;
 
          when Type_Kind =>
-            declare
-               Real_Node : constant Node_Id :=
-                (if Is_Itype (E) then Associated_Node_For_Itype (E) else E);
-            begin
-               if In_Main_Unit_Body (Real_Node) then
-                  return WF_Types_In_Body;
-               else
-                  return WF_Types_In_Spec;
-               end if;
-            end;
+               return WF_Pure;
 
          when E_Package =>
-            if In_Some_Unit_Body (Parent (E)) then
-               return WF_Types_In_Body;
-            else
-               return WF_Types_In_Spec;
-            end if;
+            return WF_Pure;
 
          when E_Loop =>
-            return WF_Context_In_Body;
+            return WF_Context;
 
          when others =>
             raise Program_Error;
@@ -972,21 +934,13 @@ package body Why.Inter is
                if Expression_Depends_On_Variables
                  (Expression (Parent (Unique_Entity (E))))
                then
-                  if In_Main_Unit_Body (E) then
-                     return WF_Context_In_Body;
-                  else
-                     return WF_Context_In_Spec;
-                  end if;
+                  return WF_Context;
 
                --  Theories which do not depend on variables are defined in
                --  type files.
 
                else
-                  if In_Main_Unit_Body (E) then
-                     return WF_Types_In_Body;
-                  else
-                     return WF_Types_In_Spec;
-                  end if;
+                  return WF_Pure;
                end if;
 
             else
@@ -1268,33 +1222,19 @@ package body Why.Inter is
    --------------------
 
    procedure Init_Why_Files (Unit : Node_Id) is
-      Spec_Prefix : constant String := Spec_File_Name_Without_Suffix (Unit);
       Body_Prefix : constant String := Body_File_Name_Without_Suffix (Unit);
    begin
-
-      --  We cannot assume that spec and body use the same file basename. So we
-      --  force to use the spec filename everywhere. The "main" Why3 file is
-      --  special: the builder expects it to have the basename of the body.
-      --  That's not a problem, we can use the body name because this file will
-      --  never be referenced by other Why3 files.
-
-      for Kind in WF_Types_In_Spec .. WF_Context_In_Body loop
-         Why_Files (Kind) :=
-           Make_Empty_Why_File (Name => Spec_Prefix & Why_File_Suffix (Kind),
-                                Kind => Kind);
-      end loop;
-      Why_Files (WF_Main) :=
-        Make_Empty_Why_File (Name => Body_Prefix & Why_File_Suffix (WF_Main),
-                             Kind => WF_Main);
+      Init_Why_Files (Body_Prefix);
    end Init_Why_Files;
 
    procedure Init_Why_Files (Prefix : String) is
    begin
-      for Kind in Why_File_Enum loop
+      Why_File_Name := new String'(Prefix & Why_File_Suffix);
+      for Kind in WF_Pure .. WF_Context loop
          Why_Files (Kind) :=
-           Make_Empty_Why_File (Name => Prefix & Why_File_Suffix (Kind),
-                                Kind => Kind);
+           Make_Empty_Why_File (Kind => Kind);
       end loop;
+      Why_Files (WF_Main) := Make_Empty_Why_File (Kind => WF_Main);
    end Init_Why_Files;
 
    --------------------------
@@ -1356,12 +1296,9 @@ package body Why.Inter is
    -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_File
-     (Name : String;
-      Kind : Why_File_Enum) return Why_File is
+   function Make_Empty_Why_File (Kind : Why_File_Enum) return Why_File is
    begin
-      return Why_File'(Name       => new String'(Name),
-                       File       => New_File,
+      return Why_File'(File       => New_File,
                        Kind       => Kind,
                        Cur_Theory => Why_Empty);
    end Make_Empty_Why_File;
@@ -1498,29 +1435,6 @@ package body Why.Inter is
          return Up (From);
       end if;
    end Up;
-
-   ---------------------
-   -- Why_File_Suffix --
-   ---------------------
-
-   function Why_File_Suffix (Kind : Why_File_Enum) return String
-   is
-   begin
-      case Kind is
-         when WF_Types_In_Spec =>
-            return "__types_in_spec";
-         when WF_Types_In_Body =>
-            return "__types_in_body";
-         when WF_Variables =>
-            return "__variables";
-         when WF_Context_In_Spec =>
-            return "__context_in_spec";
-         when WF_Context_In_Body =>
-            return "__context_in_body";
-         when WF_Main =>
-            return "__package";
-      end case;
-   end Why_File_Suffix;
 
 begin
    Type_Hierarchy.Move_Child (EW_Unit, EW_Real);

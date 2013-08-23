@@ -793,6 +793,8 @@ package body SPARK_Definition is
 
       elsif Current_Unit_Is_Main_Body then
          Body_Entities.Append (E);
+      else
+         Withed_Entities.Append (E);
       end if;
    end Append_Entity_To_List;
 
@@ -818,6 +820,13 @@ package body SPARK_Definition is
          for E of Subprogram_Entities loop
             Body_Entities.Append (E);
          end loop;
+
+      else
+
+         for E of Subprogram_Entities loop
+            Withed_Entities.Append (E);
+         end loop;
+
       end if;
 
       Subprogram_Entities.Clear;
@@ -3005,6 +3014,8 @@ package body SPARK_Definition is
 
          elsif Current_Unit_Is_Main_Body then
             Body_Entities.Append (Id);
+         else
+            Withed_Entities.Append (Id);
          end if;
 
          --  Mark types and subprograms from packages with external axioms as

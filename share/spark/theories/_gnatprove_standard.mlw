@@ -3,7 +3,7 @@ module Main
   use export ref.Ref
   (* dito for boolean functions *)
   use export bool.Bool
-  use export "_gnatprove_standard_th".Main
+  use export "_gnatprove_standard_th".Main_Main
 
   (* exception used to simulate return statements *)
   exception Return__exc
@@ -30,7 +30,7 @@ module Integer
   use export int.Abs
   use export int.Power
 
-  use export _gnatprove_standard_th.Integer_Func
+  use export "_gnatprove_standard_th".Integer_Func
 
   (* These program functions are there to generate division checks *)
 
@@ -128,7 +128,7 @@ module Boolean
   use import int.Int
   use import Main
 
-  use export _gnatprove_standard_th.Boolean_Func
+  use export "_gnatprove_standard_th".Boolean_Func
 
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
 

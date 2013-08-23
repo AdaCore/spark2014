@@ -28,7 +28,6 @@
 with Adabkend;
 with Namet;
 with Opt;
-with Osint;
 with Stringt;
 with System;
 
@@ -56,11 +55,6 @@ package body Back_End is
       --  first unlock any tables that we need to change.
       Namet.Unlock;
       Stringt.Unlock;
-
-      if Gnat2Why_Args.Standard_Mode then
-         Translate_Standard_Package;
-         Osint.Exit_Program (Osint.E_Success);
-      end if;
 
       GNAT2Why_BE.Call_Back_End;
 

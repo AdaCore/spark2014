@@ -37,7 +37,4 @@ package Gnat2Why.Driver is
    --  Returns True if and only if Switch denotes a back-end switch. This is
    --  only used to ignore switches for now.
 
-   procedure Translate_Standard_Package;
-   --  Translate the Ada Standard package
-
 end Gnat2Why.Driver;

@@ -47,6 +47,7 @@ package SPARK_Definition is
 
    Spec_Entities : List_Of_Nodes.List;
    Body_Entities : List_Of_Nodes.List;
+   Withed_Entities : List_Of_Nodes.List;
    --  Lists of entities which are defined in the current unit, that require
    --  a translation in Why3. One is for entities defined in the spec, and the
    --  other for entities defined in the body. These lists contains both

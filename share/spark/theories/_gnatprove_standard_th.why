@@ -1,4 +1,4 @@
-theory Main
+theory Main_Main
 
   (* ignore blocks of code *)
   function ___ignore 'a : ()

@@ -711,8 +711,7 @@ package body Gnat2Why.Decls is
          To_Base_Name   : constant String := "to_base";
          Of_Base_Name   : constant String := "of_base";
          In_Range_Name  : constant String := "valid";
-         File_Name : constant String :=
-           Why_Files (Dispatch_Entity (Package_Entity)).Name.all;
+         File_Name : constant String := "";
          Subst_Cur : Integer := 1;
 
          procedure Compute_Substitution_Package
@@ -731,8 +730,7 @@ package body Gnat2Why.Decls is
                     Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                   Formal : constant Entity_Id := Defining_Entity (CurLabs);
                   Actual_File : constant String :=
-                    File_Base_Name_Of_Entity (Actual)
-                    & Why_File_Suffix (Dispatch_Entity (Actual));
+                    File_Base_Name_Of_Entity (Actual);
                begin
 
                   if Ekind (Formal) in Type_Kind then
@@ -1025,7 +1023,7 @@ package body Gnat2Why.Decls is
                Instance_Name : constant String  := Get_Instance_Name (E);
                Instance_File : constant String  :=
                  File_Base_Name_Of_Entity (E)
-                 & Why_File_Suffix (Dispatch_Entity (E));
+                 & Why_File_Suffix;
             begin
 
                Compute_Substitution_Package
@@ -1130,7 +1128,7 @@ package body Gnat2Why.Decls is
             --  Add a new theory to the appropriate file, containing only a
             --  use export of the theory to be copied
 
-            if TFile.Name.all /= File_Name then
+            if "" /= File_Name then
                Open_Theory
                  (TFile, Theory_Name,
                   Comment => "Module for axiomatizing "
@@ -1141,7 +1139,6 @@ package body Gnat2Why.Decls is
                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
                Add_With_Clause (T        => TFile.Cur_Theory,
-                                File     => File_Name,
                                 T_Name   => Capitalize_First (Theory_Name),
                                 Use_Kind => EW_Export);
 
@@ -1464,8 +1461,7 @@ package body Gnat2Why.Decls is
               (Ada_Node  => Package_Entity,
                Domain    => EW_Prog,
                File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
-         Parse_Declarations (Decls, TFile.Name.all);
-
+         Parse_Declarations (Decls, "");
       else
          if List_Of_Entity.First_Element (G_Parents) = Package_Entity then
             Parse_Parameters (G_Parents);
@@ -1486,7 +1482,7 @@ package body Gnat2Why.Decls is
                       List_Of_Entity.First (G_Parents)) & ".mlw"),
                   Subst     => Subst));
 
-            Parse_Declarations (Decls, TFile.Name.all);
+            Parse_Declarations (Decls, "");
          end;
       end if;
    end Translate_Package_With_External_Axioms;

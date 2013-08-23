@@ -188,7 +188,7 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Declare_Ada_Record
-     (P       : in out Why_File;
+     (P       : Why_File;
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id)
    is
