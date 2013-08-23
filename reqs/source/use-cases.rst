@@ -70,12 +70,12 @@ Milestone 4:
 
 * :ref:`uc-analyse-information-flow`
 
+Milestone |rel2+|:
+
 * Check security and safety policy 
 
   * includes lowering security level following encryption, 
   * needs to consider use of "ghost" variables and functions)
-
-Milestone |rel2+|:
 
 * Visualise information flow (slicing)
 
@@ -92,10 +92,10 @@ Milestone 4:
 
 * Prove contract refinement
 
-* Prove type invariants
-
 
 Milestone |rel2+|:
+
+* Prove type invariants
 
 * Prove generic packages (not instantiations)
 
@@ -149,7 +149,7 @@ Milestone 3:
 
 * :ref:`uc-internally-generate-aspects`
 
-* Use Ada Containers
+* Use Formal Containers
 
 
 Milestone 4:
