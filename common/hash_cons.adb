@@ -45,8 +45,11 @@ package body Hash_Cons is
    function Hash (A : Access_Type) return Ada.Containers.Hash_Type is
       use Ada.Containers;
       use System.Storage_Elements;
+
+      Addr : constant Integer_Address :=
+        To_Integer (A.all'Address) mod 2147483647;
    begin
-      return (Hash_Type (To_Integer (A.all'Address) mod Hash_Type'Modulus));
+      return (Hash_Type (Addr));
    end Hash;
 
    ---------------
