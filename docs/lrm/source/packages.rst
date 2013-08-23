@@ -1267,8 +1267,8 @@ where
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.2 LR hidden state constituents must be denoted by exactly
-                   once in one constituents_list
+      :Trace Unit: FE 7.2.2 LR hidden state constituents must be denoted
+                   exactly once and only by a single abstract state_name
 
 #. In a package body where the refinement of a state abstraction is
    visible the ``constituents`` of the state abstraction must be
@@ -1279,7 +1279,8 @@ where
       :Trace Unit: FE 7.2.2 LR In a package body where the refinement
           of a state abstraction is visible the ``constituents`` of
           the state abstraction must be denoted in aspect
-          specifications rather than the state abstraction.
+          specifications rather than the state abstraction. Covered
+          by another TU
 
 
 #. The legality rules related to a Refined_State aspect given in
@@ -1382,7 +1383,7 @@ aspect, in effect, makes visible a preview of (some of) the state
 refinement that will eventually be provided in the package body.
 
 This mechanism is also used in the case of the visible state of a
-private child unit (or a public descendant thereof).  
+private child unit (or a public descendant thereof).
 
 .. centered:: **Static Semantics**
 
@@ -1477,7 +1478,7 @@ private child unit (or a public descendant thereof).
    the entity with the aspect specification only reads or updates the
    local state abstraction and not other parts of the encapsulating
    state.
-   
+
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.2.3 LR In a package which declares a state
@@ -1633,7 +1634,7 @@ private child unit (or a public descendant thereof).
          end Init_B1;
 
          procedure Init_A2
-            -- The refinement of A2 is visible and so we have 
+            -- The refinement of A2 is visible and so we have
             -- Refined_Global and Refined_Depends aspects.
             with Refined_Global  => (Output => (Hidden_State, State_In_Body)),
                  Refined_Depends => ((Hidden_State, State_In_Body) => null)
@@ -1693,7 +1694,7 @@ private child unit (or a public descendant thereof).
          with Global  => (Output => C1),
               Depends => (C1 => null);
 
-      -- The Q2 is declared in this package and so  Q2 rather 
+      -- The Q2 is declared in this package and so  Q2 rather
       -- than its visible constituent Q.Hidden_State.
       -- Init_Q2 can only directly update Q.Hidden_State and
       -- if we just update this we Q.Q2 must have a mode_selector
@@ -1764,7 +1765,7 @@ private child unit (or a public descendant thereof).
       procedure Init_S1
          with Global  => (Output => R1),
               Depends => (R1 => null);
-    
+
       procedure Op_1 (I : in Integer)
          with Global  => (In_Out => S1),
               Depends => (S1 =>+ I);
@@ -1773,15 +1774,15 @@ private child unit (or a public descendant thereof).
    private package R.Child
       with Abstract_State => (S2 with Part_Of => R.S1)
    is
-      -- Both R.S1 and S2 are visible.  
+      -- Both R.S1 and S2 are visible.
 
       -- Here We intend to use more than just the S2 part of R.S1 and
       -- so we use R.S1 in the aspect specifications rather than
       -- S2.R.S1.
       -- S2 cannot also be used in the aspect
-      -- specifications of this subprogram 
+      -- specifications of this subprogram
       procedure Private_Op (I, J : in Integer)
-         with Global => (In_Out => R.S1), 
+         with Global => (In_Out => R.S1),
              Depends => (R.S1 =>+ (I, J));
 
   end R.Child;
