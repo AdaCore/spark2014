@@ -24,12 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Directories; use Ada.Directories;
 with GNAT.IO; use GNAT.IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Strings;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 --  Wrapper around gcc -c -x adawhy to provide a gnat2why executable.
 
@@ -48,17 +45,20 @@ procedure GNAT2Why_Wrapper is
       Command     : constant String := Command_Name;
       Exe         : String_Access := Get_Target_Executable_Suffix;
       Exec_Suffix : constant String := Exe.all;
+      Result      : constant String_Access := Locate_Exec_On_Path (Exec);
 
    begin
       Free (Exe);
 
-      if Is_Absolute_Path (Command)
+      if Result /= null then
+         return Result;
+      elsif Is_Absolute_Path (Command)
         and then Is_Executable_File (Compose
                    (Containing_Directory (Command), Exec & Exec_Suffix))
       then
          return new String'(Compose (Containing_Directory (Command), Exec));
       else
-         return Locate_Exec_On_Path (Exec);
+         return null;
       end if;
    end Locate_Exec;
 
