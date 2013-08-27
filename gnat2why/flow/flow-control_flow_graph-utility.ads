@@ -136,6 +136,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Variable_Attributes
      (F_Ent : Flow_Id;
+      Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field,
@@ -154,7 +155,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Global_Variable_Attributes
      (F       : Flow_Id;
-      Mode    : Global_Modes;
+      Mode    : Param_Mode;
       E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes
       with Pre  => F.Variant in Initial_Or_Final_Variant,

@@ -69,19 +69,20 @@ package Flow_Types is
    --  Flow_Id
    ----------------------------------------------------------------------
 
-   type Global_Modes is (Global_Mode_In,
-                         Global_Mode_Proof,
-                         Global_Mode_In_Out,
-                         Global_Mode_Out);
+   type Param_Mode is (Mode_Invalid,
+                       Mode_Proof,
+                       Mode_In,
+                       Mode_In_Out,
+                       Mode_Out);
 
-   subtype In_Global_Modes is Global_Modes
-     range Global_Mode_In .. Global_Mode_Proof;
+   subtype In_Global_Modes is Param_Mode
+     range Mode_Proof .. Mode_In;
 
-   subtype Initialised_Global_Modes is Global_Modes
-     range Global_Mode_In .. Global_Mode_In_Out;
+   subtype Initialised_Global_Modes is Param_Mode
+     range Mode_Proof .. Mode_In_Out;
 
-   subtype Exported_Global_Modes is Global_Modes
-     range Global_Mode_In_Out .. Global_Mode_Out;
+   subtype Exported_Global_Modes is Param_Mode
+     range Mode_In_Out .. Mode_Out;
 
    type Edge_Colours is (EC_Default, EC_DDG, EC_TD);
 
@@ -300,6 +301,10 @@ package Flow_Types is
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
+      Mode                : Param_Mode;
+      --  Set for initial and final use vertices which are parameters
+      --  or globals.
+
       Is_Package_State    : Boolean;
       --  True if the given variable is part of a package' state.
 
@@ -374,6 +379,7 @@ package Flow_Types is
                    Is_Loop_Parameter               => False,
                    Is_Import                       => False,
                    Is_Export                       => False,
+                   Mode                            => Mode_Invalid,
                    Is_Package_State                => False,
                    Is_Constant                     => False,
                    Is_Callsite                     => False,

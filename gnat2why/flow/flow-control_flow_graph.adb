@@ -160,14 +160,15 @@ package body Flow.Control_Flow_Graph is
    --      R.A.X       R.A.Y*
 
    procedure Create_Initial_And_Final_Vertices
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs);
+     (E        : Entity_Id;
+      Is_Param : Boolean;
+      FA       : in out Flow_Analysis_Graphs);
    --  Create the 'initial and 'final vertices for the given entity
    --  and link them up to the start and end vertices.
 
    procedure Create_Initial_And_Final_Vertices
      (F    : Flow_Id;
-      Mode : Global_Modes;
+      Mode : Param_Mode;
       FA   : in out Flow_Analysis_Graphs);
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
@@ -622,15 +623,29 @@ package body Flow.Control_Flow_Graph is
    ----------------------------------------
 
    procedure Create_Initial_And_Final_Vertices
-     (E  : Entity_Id;
-      FA : in out Flow_Analysis_Graphs)
+     (E        : Entity_Id;
+      Is_Param : Boolean;
+      FA       : in out Flow_Analysis_Graphs)
    is
       V : Flow_Graphs.Vertex_Id;
       A : V_Attributes;
+      M : Param_Mode;
    begin
       if Ekind (E) = E_Constant then
          --  We ignore constants (for now).
          return;
+      end if;
+
+      if Is_Param then
+         case Ekind (E) is
+            when E_Out_Parameter    => M := Mode_Out;
+            when E_In_Out_Parameter => M := Mode_In_Out;
+            when E_In_Parameter     => M := Mode_In;
+            when others =>
+               raise Program_Error;
+         end case;
+      else
+         M := Mode_Invalid;
       end if;
 
       for F of Flatten_Variable (E) loop
@@ -639,6 +654,7 @@ package body Flow.Control_Flow_Graph is
          --  for declarative parts.
          A := Make_Variable_Attributes (F_Ent => Change_Variant
                                           (F, Initial_Value),
+                                        Mode  => M,
                                         E_Loc => E);
          FA.CFG.Add_Vertex
            (Change_Variant (F, Initial_Value),
@@ -655,6 +671,7 @@ package body Flow.Control_Flow_Graph is
            (Change_Variant (F, Final_Value),
             Make_Variable_Attributes (F_Ent => Change_Variant
                                         (F, Final_Value),
+                                      Mode  => M,
                                       E_Loc => E),
             V);
          Linkup (FA.CFG, FA.End_Vertex, V);
@@ -665,7 +682,7 @@ package body Flow.Control_Flow_Graph is
 
    procedure Create_Initial_And_Final_Vertices
      (F    : Flow_Id;
-      Mode : Global_Modes;
+      Mode : Param_Mode;
       FA   : in out Flow_Analysis_Graphs)
    is
       V : Flow_Graphs.Vertex_Id;
@@ -1295,7 +1312,7 @@ package body Flow.Control_Flow_Graph is
 
          --  We have a new variable here which we have not picked up
          --  in Create, so we should set it up.
-         Create_Initial_And_Final_Vertices (LP, FA);
+         Create_Initial_And_Final_Vertices (LP, False, FA);
 
          --  Work out which of the three variants (empty, full,
          --  unknown) we have...
@@ -1484,7 +1501,7 @@ package body Flow.Control_Flow_Graph is
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
    begin
       --  First, we need a 'initial and 'final vertex for this object.
-      Create_Initial_And_Final_Vertices (Defining_Identifier (N), FA);
+      Create_Initial_And_Final_Vertices (Defining_Identifier (N), False, FA);
 
       if not Present (Expression (N)) then
          --  No initializing expression, so we fall back to the
@@ -1948,6 +1965,7 @@ package body Flow.Control_Flow_Graph is
 
                Create_Initial_And_Final_Vertices
                  (Defining_Identifier (Loop_Parameter_Specification (N)),
+                  False,
                   FA);
 
             when others =>
@@ -2410,7 +2428,7 @@ package body Flow.Control_Flow_Graph is
             begin
                E := First_Formal (Subprogram_Spec);
                while Present (E) loop
-                  Create_Initial_And_Final_Vertices (E, FA);
+                  Create_Initial_And_Final_Vertices (E, True, FA);
                   E := Next_Formal (E);
                end loop;
             end;
@@ -2470,14 +2488,14 @@ package body Flow.Control_Flow_Graph is
                      G : constant Flow_Id := Global_Maps.Key (C);
                      P : constant G_Prop  := Global_Maps.Element (C);
 
-                     Mode : Global_Modes;
+                     Mode : Param_Mode;
                   begin
                      if P.Is_Read and P.Is_Write then
-                        Mode := Global_Mode_In_Out;
+                        Mode := Mode_In_Out;
                      elsif P.Is_Read then
-                        Mode := Global_Mode_In;
+                        Mode := Mode_In;
                      elsif P.Is_Write then
-                        Mode := Global_Mode_Out;
+                        Mode := Mode_Out;
                      else
                         raise Program_Error;
                      end if;
@@ -2538,7 +2556,7 @@ package body Flow.Control_Flow_Graph is
       --  If we are dealing with a function, we use its entity to deal
       --  with the value returned.
       if Ekind (FA.Analyzed_Entity) = E_Function then
-         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
+         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, False, FA);
       end if;
 
       --  If you're now wondering where we deal with locally declared

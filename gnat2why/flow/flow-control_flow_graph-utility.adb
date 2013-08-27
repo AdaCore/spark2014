@@ -271,6 +271,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Variable_Attributes
      (F_Ent : Flow_Id;
+      Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
@@ -282,6 +283,7 @@ package body Flow.Control_Flow_Graph.Utility is
         Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
       A.Is_Function_Return := Ekind (Entire_Var) = E_Function;
       A.Is_Package_State   := Is_Package_State (Entire_Var);
+      A.Mode               := Mode;
 
       case F_Ent.Variant is
          when Initial_Value =>
@@ -329,7 +331,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Global_Variable_Attributes
      (F       : Flow_Id;
-      Mode    : Global_Modes;
+      Mode    : Param_Mode;
       E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes is
       A : V_Attributes := Null_Attributes;
@@ -337,6 +339,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location := E_Loc;
       A.Is_Global      := True;
       A.Is_Constant    := Mode in In_Global_Modes;
+      A.Mode           := Mode;
 
       case F.Variant is
          when Initial_Value =>
