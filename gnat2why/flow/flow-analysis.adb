@@ -1137,17 +1137,29 @@ package body Flow.Analysis is
             Tag  : constant String := "ineffective";
             Tmp  : Flow_Id;
          begin
-            if Atr.Is_Program_Node or else Atr.Is_Parameter then
+            if Atr.Is_Program_Node or
+              Atr.Is_Parameter or
+              Atr.Is_Global_Parameter
+            then
                if not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use'Access)
                then
                   Mask := Find_Masking_Code (V);
-                  N := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
+                  if FA.PDG.Get_Key (V) = Null_Flow_Id then
+                     N := Empty;
+                  else
+                     N := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
+                  end if;
 
-                  if Atr.Is_Parameter then
-                     Tmp := Direct_Mapping_Id
-                       (Skip_Any_Conversions
-                          (Get_Direct_Mapping_Id (Atr.Parameter_Actual)));
+                  if Atr.Is_Parameter or Atr.Is_Global_Parameter then
+                     if Atr.Is_Parameter then
+                        Tmp := Direct_Mapping_Id
+                          (Skip_Any_Conversions
+                             (Get_Direct_Mapping_Id (Atr.Parameter_Actual)));
+                     else
+                        Tmp := Atr.Parameter_Formal;
+                     end if;
+
                      if Key.Variant = In_View then
                         --  For in parameters we do not emit the
                         --  ineffective assignment error as its a bit
