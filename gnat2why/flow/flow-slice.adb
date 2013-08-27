@@ -23,7 +23,11 @@
 
 with Why;
 
+with Flow.Utility; use Flow.Utility;
+
 package body Flow.Slice is
+
+   use type Flow_Id_Sets.Set;
 
    ----------------------------------------------------------------------
    --  Local procedures for local subprograms
@@ -162,6 +166,13 @@ package body Flow.Slice is
 
       Unused_Inputs : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
 
+      Out_Discrim   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      --  We need to keep track of discriminated out parameters, as
+      --  the implicit input (the discriminant) is never unused. So if
+      --  it unused after all we silently take it out the
+      --  unused_inputs set, so that we don't produce a flow error
+      --  about a missing null dependency.
+
       DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
       use type Vertex_Sets.Set;
@@ -197,6 +208,17 @@ package body Flow.Slice is
             then
                In_Vertices.Include (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
+
+               if Is_Discriminant (F_Initial) and then
+                 Attr.Mode = Mode_Out
+               then
+                  --  See above about supressing "null => foo"
+                  --  dependency error messages for out parameters and
+                  --  globals.
+                  Out_Discrim.Include
+                    (Change_Variant (Entire_Variable (F_Initial),
+                                     Normal_Use));
+               end if;
             end if;
          end;
       end loop;
@@ -229,7 +251,7 @@ package body Flow.Slice is
          end;
       end loop;
 
-      DM.Include (Null_Flow_Id, Unused_Inputs);
+      DM.Include (Null_Flow_Id, Unused_Inputs - Out_Discrim);
 
       return DM;
 

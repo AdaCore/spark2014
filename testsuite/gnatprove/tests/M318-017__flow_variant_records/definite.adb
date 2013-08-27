@@ -34,6 +34,17 @@ is
       G := (File_Not_Found, 0);
    end Test_01;
 
+   procedure Test_01_Call (X : out T;
+                           Y : out Status)
+   with Global  => (Output => G),
+        Depends => (X => null,
+                    Y => X,
+                    G => null)
+   is
+   begin
+      Test_01 (X, Y);
+   end Test_01_Call;
+
    procedure Test_01_B (Y : out Status)
    with Global  => (Output => G),
         Depends => (Y => G,
@@ -60,7 +71,7 @@ is
    end Test_01_C;
 
    procedure Test_01_D
-   with Global  => G,
+   with Global  => (Output => G),
         Depends => (G => G)
    is
    begin
@@ -127,14 +138,13 @@ is
       end case;
    end Test_02_ND;
 
-   procedure Test_03 (X : out T)
-   with Global  => null,
-        Depends => (X => null,
-                    null => X)
-   is
-   begin
-      X := (File_Not_Found, 0);
-   end Test_03;
+   --  procedure Test_03 (X : out T)
+   --  with Global  => null,
+   --       Depends => (X => null)
+   --  is
+   --  begin
+   --     X := (File_Not_Found, 0);
+   --  end Test_03;
 
    procedure Test_03_ND (X : out T)
    with Global => null
@@ -143,6 +153,14 @@ is
       X := (File_Not_Found, 0);
    end Test_03_ND;
 
-
+   procedure Test_04 (X : in out T;
+                      I : in     Integer)
+   with Global => null,
+        Depends => (X => I,
+                    null => X)
+   is
+   begin
+      X := (File_Not_Found, I);
+   end Test_04;
 
 end Definite;
