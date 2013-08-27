@@ -389,19 +389,6 @@ follow the grammar of ``global_specification``
       :Trace Unit: FE 6.1.4 LR global_item shall only denote a constant if it is
                    a formal parameter of an enclosing subprogram of mode in
 
-#. A constituent of a state abstraction shall not appear as a
-   ``global_item`` if the state abstraction is not declared within an
-   enclosing package (see :ref:`state_refinement`). [A constituent of
-   a state abstraction may be visible due to a Part_Of indicator (see
-   :ref:`package_hierarchy`).  The constituent is represented by a
-   ``global_item`` denoting the state abstraction itself.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 LR A constituent of a state abstraction
-          shall not appear as a ``global_item`` if the state
-          abstraction is not declared within an enclosing package.
-
 #. A ``global_item`` shall not denote a state abstraction whose
    refinement is visible. [A state abstraction cannot be named within
    its enclosing package's body other than in its refinement.  Its
@@ -474,8 +461,8 @@ is used purely for static analysis purposes and is not executed.
 
 #. Where the refinement of a state abstraction is not visible and a
    subprogram references one or more of its constituents the
-   constituents are represented by a ``global_item`` that denotes the
-   state abstraction in the ``global_specification`` of the
+   constituents may be represented by a ``global_item`` that denotes
+   the state abstraction in the ``global_specification`` of the
    subprogram. [The state abstraction encapsulating a constituent is
    known from the Part_Of indicator on the declaration of the
    constituent.]
@@ -484,7 +471,7 @@ is used purely for static analysis purposes and is not executed.
 
       :Trace Unit: FA 6.1.4 LR Where the refinement of a state
            abstraction is not visible, the referencing of one or more
-           of its constituents by a subprogram is represented by a
+           of its constituents by a subprogram may be represented by a
            ``global_item`` that denotes the state abstraction in the
            ``global_specification`` of the subprogram.
 
@@ -649,20 +636,6 @@ where
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 6.1.5 LR Depends aspect shall be on subprogram's declaration
-
-#. An ``input`` or ``output`` of a ``dependency_relation`` shall not
-   denote a constituent of a state abstraction if the state
-   abstraction is not declared by an enclosing package. [A constituent
-   of a state abstraction may be visible due to a Part_Of indicator
-   (see :ref:`package_hierarchy`).  The constituent is represented by
-   a ``global_item`` denoting the state abstraction.]
-   
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR An ``input`` or ``output`` of a
-          ``dependency_relation`` shall not denote a constituent of a
-          state abstraction if the state abstraction is not declared
-          by an enclosing package.
 
 #. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
@@ -906,13 +879,14 @@ as it is used purely for static analysis purposes and is not executed.
                    the Depends aspect (maybe in more than one input_list)
 
 #. If only part of an entire object or state abstraction (only some of
-   its constituents) are updated then the updated entity is dependent
+   its constituents) is updated then the updated entity is dependent
    on itself as the parts that are not updated have their current
    value preserved.  [Where a constituent of a state abstraction is
    updated but the refinement of the state abstraction is not visible,
    it is not known if all of the constituents have been updated by the
-   subprogram and in such cases the state abstraction shall always
-   have a self dependency.]
+   subprogram and in such cases the the update is represented as the
+   the update of the encapsulating state abstraction with a self
+   dependency.]
 
    .. ifconfig:: Display_Trace_Units
 
