@@ -21,10 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sem_Util; use Sem_Util;
-with Snames;   use Snames;
-with Uintp;    use Uintp;
-with Nlists;   use Nlists;
+with Nlists;     use Nlists;
+with Sem_Util;   use Sem_Util;
+with Snames;     use Snames;
+with Uintp;      use Uintp;
+
+with SPARK_Util; use SPARK_Util;
 
 with Why;
 
@@ -332,42 +334,10 @@ package body Flow_Tree_Utility is
    -----------------------------
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
-      The_Body       : Node_Id;
-      Last_Statement : Node_Id;
-   begin
-      --  Expression functions cannot have a raise statement as their last
-      --  statement (all they have is a single statement).
-      if Is_Expression_Function (E) then
-         return False;
-      end if;
-
-      if Is_Generic_Instance (E) then
-         declare
-            Associated_Generic : constant Node_Id :=
-              Parent (Parent (Generic_Parent (Parent (E))));
-         begin
-            if Present (Corresponding_Body (Associated_Generic)) then
-               The_Body :=
-                 Parent (Parent (Corresponding_Body (Associated_Generic)));
-            else
-               return False;
-            end if;
-         end;
-      else
-         The_Body := Parent (Parent (E));
-
-         if Nkind (The_Body) = N_Subprogram_Declaration then
-            if Present (Corresponding_Body (The_Body)) then
-               The_Body := Parent (Parent (Corresponding_Body (The_Body)));
-            else
-               return False;
-            end if;
-         end if;
-      end if;
-
-      Last_Statement :=
+      The_Body       : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
+      Last_Statement : constant Node_Id :=
         Last (Statements (Handled_Statement_Sequence (The_Body)));
-
+   begin
       return (Nkind (Last_Statement) = N_Raise_Statement
                 or else Nkind (Last_Statement) in N_Raise_xxx_Error);
    end Last_Statement_Is_Raise;

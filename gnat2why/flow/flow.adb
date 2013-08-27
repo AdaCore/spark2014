@@ -775,10 +775,10 @@ package body Flow is
                Base_Filename     => To_Unbounded_String ("subprogram_"),
                Is_Main           => Might_Be_Main (E),
                Is_Generative     => not (Present
-                                          (Get_Pragma (E, Pragma_Global)) or
-                                        Present
+                                           (Get_Pragma (E, Pragma_Global)) or
+                                         Present
                                            (Get_Pragma (E, Pragma_Depends))),
-              Last_Statement_Is_Raise => Last_Statement_Is_Raise (E));
+               Last_Statement_Is_Raise => Last_Statement_Is_Raise (E));
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
