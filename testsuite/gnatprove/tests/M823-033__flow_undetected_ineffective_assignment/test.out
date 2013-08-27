@@ -1,0 +1,2 @@
+u.adb:14:04: warning: unused assignment to "X" [ineffective]
+u.adb:15:04: warning: unused assignment to "X" [ineffective]
