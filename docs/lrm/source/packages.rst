@@ -1414,32 +1414,19 @@ private child unit (or a public descendant thereof).
           declared by the given package.
 
 #. A variable or state abstraction which is part of the visible state
-   of a private child unit shall have its Part_Of indicator specified;
-   the Part_Of indicator shall denote a state abstraction declared by
-   either the parent unit of the private unit or by a public
-   descendant of that parent unit.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.3 LR A variable or state abstraction which
-          is part of the visible state of a private child unit shall
-          have its Part_Of indicator specified; the Part_Of indicator
-          shall denote a state abstraction declared by either the
-          parent unit of the private unit or by a public descendant of
-          that parent unit.
-
-#. A variable or state abstraction which is part of the visible state
-   of a public descendant of a private child shall have
+   of a private child unit (or a public descendant thereof) shall have
    its Part_Of indicator specified; the Part_Of indicator shall denote
-   a state abstraction declared by its nearest private ancestor.
+   a state abstraction declared by either the parent unit of the
+   private unit or by a public descendant of that parent unit.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.2.3 LR A variable or state abstraction which
-          is part of the visible state of a public descendant of a
-          private child shall have its Part_Of indicator specified;
-          the Part_Of indicator shall denote a state abstraction
-          declared by its nearest private ancestor.
+          is part of the visible state of a private child (or a public
+          descendant thereof) unit shall have its Part_Of indicator
+          specified; the Part_Of indicator shall denote a state
+          abstraction declared by either the parent unit of the
+          private unit or by a public descendant of that parent unit.
 
 #. No other declarations shall have a Part_Of indicator.
 
@@ -1472,40 +1459,10 @@ private child unit (or a public descendant thereof).
                    visible then Global and Depends aspects shall consistently
                    denote one of them
 
-#. In a package which declares a state abstraction which is Part_Of an
-   encapsulating state abstraction aspect specifications may denote
-   the local state abstraction rather than the encapsulating one if
-   the entity with the aspect specification only reads or updates the
-   local state abstraction and not other parts of the encapsulating
-   state.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.3 LR In a package which declares a state
-            abstraction which is Part_Of an encapsulating state
-            abstraction aspect specifications may denote the local
-            state abstraction rather than the encapsulating one if the
-            entity with the aspect specification only reads or updates
-            the local state abstraction and not other parts of the
-            encapsulating state.
-
-#. The ``constituents`` of a state abstraction declared in a package
-   may only be used in an aspect specification within the package
-   where the refinement of the state abstraction is visible.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.3 LR The ``constituents`` of a state
-          abstraction declared in a given package may only be used in
-          an aspect specification in the given package where the
-          refinement of the state abstraction is visible.
-
-
 .. centered:: *Verification Rules*
 
-#. Where a state abstraction not declared in an enclosing package is
-   visible as well as one or more of its ``constituents`` a
-   subprogram that directly or indirectly
+#. Where a state abstraction is visible as well as one or more of its
+   ``constituents`` a subprogram that directly or indirectly
 
    * reads a ``constituent`` of the state abstraction shall be
      regarded as a read of the encapsulating state abstraction of the
@@ -1561,7 +1518,7 @@ private child unit (or a public descendant thereof).
        with Abstract_State => ((A with Part_Of => P.Pub.R),
                                (B with Part_Of => P.Pub.S))
     is
-       X : T  -- visible variable which is part of state abstraction P.Pub.R.
+       X : T  -- visible variable which is a constituent of P.Pub.R.
           with Part_Of => P.Pub.R;
     end P.Priv;
 
@@ -1598,18 +1555,18 @@ private child unit (or a public descendant thereof).
                         -- State abstraction declared in the private
                         -- part must have a Part_Of option.
        is
-          -- B1 is declared in this package and may be used in
-          -- aspect specifications provided a part of Outer.A1
-          -- other than B1 is not accessed.
+          -- B1 may be used in aspect specifications provided 
+          -- Outer.A1 is not also used.
           procedure Init_B1
              with Global  => (Output => B1),
                   Depends => (B1 => null);
 
           procedure Init_A2
-             -- We can only refer to A2 and not its constituents
-             -- as its refinement is not visible.
-             with Global  => (Out => A2),
-                  Depends => (A2 => null);
+             -- We can only refer to Outer.Hidden_State which is
+             -- a constituent of Outer.A2 if the subprogram does 
+             -- not also refer to Outer.A2. 
+             with Global  => (Out => Hidden_State),
+                  Depends => (Hodden_State => null);
 
        end Inner;
     end Outer;
@@ -1634,14 +1591,12 @@ private child unit (or a public descendant thereof).
          end Init_B1;
 
          procedure Init_A2
-            -- The refinement of A2 is visible and so we have
-            -- Refined_Global and Refined_Depends aspects.
-            with Refined_Global  => (Output => (Hidden_State, State_In_Body)),
-                 Refined_Depends => ((Hidden_State, State_In_Body) => null)
+            -- The Global sparct is already in terms of the constituent
+            -- Hidden_State which is part of of A2, so no refined 
+            -- Global or Depends aspects are required. 
          is
          begin
             Outer.Hidden_State := 0;
-            State_In_Body := 42;
          end Init_A2;
 
       end Inner;
@@ -1659,10 +1614,36 @@ private child unit (or a public descendant thereof).
               Refined_Depends => ((Hidden_State, State_In_Body) => null)
       is
       begin
+         State_In_Body := 42;
          Inner.Init_A2;
       end Init_A2;
 
    end Outer;
+
+   package Outer.Public_Child
+   is
+      -- Outer.A1 and Outer.A2 are visible but
+      -- Outer.Hidden_State is not (by the rules of Ada) 
+      -- The Global and Depends Aspects are in terms
+      -- of the encapsulating state abstraction Outer.A2.
+      procedure Init_A2_With (Val : in Integer)
+         with Global  => (Output => Outer.A2),
+              Depends => (Outer.A2 => Val);
+   end Outer.Public_Child;
+
+   package body Outer.Public_Child
+   is
+      -- Outer.Hidden is visible here but the 
+      -- refinement of A2 is not so there are
+      -- no Refined_Global or Refined_Depends
+      procedure Init_A2_With (Val : in Integer)
+      is
+      begin
+         Outer.Init_A2;
+         Outer.Hidden_State := Val;
+      end Init_A2_With;
+   end Outer.Public_Child;
+   
 
    package Q
       with Abstract_State => (Q1, Q2)
@@ -1684,9 +1665,10 @@ private child unit (or a public descendant thereof).
    private package Q.Child
       with Abstract_State => (C1 with Part_Of => Q.Q1)
    is
-      -- C1 is declared in this package and so we can use
-      -- C1 rather than Q1 provided we do not read or
-      -- update any other parts of Q1 other than C1.
+      -- C1 rather than the ancapsulating state abstraction 
+      -- may be used in aspect specifications provided 
+      -- Q.Q1 is npt also denoted in the same aspect 
+      -- specification.
 
       -- Here C1 is used so Q1 cannot also be used in
       -- the aspect specifications of this subprogram
@@ -1694,17 +1676,14 @@ private child unit (or a public descendant thereof).
          with Global  => (Output => C1),
               Depends => (C1 => null);
 
-      -- The Q2 is declared in this package and so  Q2 rather
-      -- than its visible constituent Q.Hidden_State.
-      -- Init_Q2 can only directly update Q.Hidden_State and
-      -- if we just update this we Q.Q2 must have a mode_selector
-      -- of In_Out.
+      -- Q.Hidden_State which is a constituent of Q.Q2
+      -- is visible here so it can be used in a aspect 
+      -- specification provided Q.Q2 is not also used.
       procedure Init_Q2
-         with Global  => (In_Out => Q.Q2),
-              Depends => (Q.Q2 => Q.Q2);
+         with Global  => (Output => Q.Hidden_State),
+              Depends => (Q.Hidden_State => null);
    end Q.Child;
 
-   with Q;
    package body Q.Child
       with Refined_State => (C1 => Actual_State)
    is
@@ -1730,7 +1709,6 @@ private child unit (or a public descendant thereof).
 
    end Q.Child;
 
-   with Q.Child;
    package body Q
       with Refined_State => (Q1 => Q.Child.C1,
                              Q2 => Hidden_State, State_In_Body)
@@ -1759,87 +1737,52 @@ private child unit (or a public descendant thereof).
    end Q;
 
    package R
-      with Abstract_State => S1
+      with Abstract_State => R1
    is
       -- R1 may be denoted here
-      procedure Init_S1
+      procedure Init_R1
          with Global  => (Output => R1),
               Depends => (R1 => null);
 
       procedure Op_1 (I : in Integer)
-         with Global  => (In_Out => S1),
-              Depends => (S1 =>+ I);
+         with Global  => (In_Out => R1),
+              Depends => (R1 =>+ I);
    end Q;
 
    private package R.Child
-      with Abstract_State => (S2 with Part_Of => R.S1)
+      with Abstract_State => (R2 with Part_Of => R.R1)
    is
-      -- Both R.S1 and S2 are visible.
+      -- Both R.R1 and R2 are visible.  
 
-      -- Here We intend to use more than just the S2 part of R.S1 and
-      -- so we use R.S1 in the aspect specifications rather than
-      -- S2.R.S1.
-      -- S2 cannot also be used in the aspect
-      -- specifications of this subprogram
+      -- Here more than just the R2 constituent of R.R1 
+      -- will be updated and so we use R.R1 in the 
+      -- aspect specifications rather than R2.
+      -- R2 cannot also be used in the aspect
+      -- specifications of this subprogram 
       procedure Private_Op (I, J : in Integer)
-         with Global => (In_Out => R.S1),
-             Depends => (R.S1 =>+ (I, J));
+         with Global => (In_Out => R.R1), 
+             Depends => (R.R1 =>+ (I, J));
+   end R.Child;
 
-  end R.Child;
-
-   with R;
    package body R.Child
-      with Refined_State => (C1 => Actual_State)
+      with Refined_State => (R2 => Actual_State)
    is
-      -- C1 shall not be denoted here - only Actual_State
-      -- but Q.Q2 and Q.Hidden_State may be denoted.
+      -- R2 shall not be denoted here - only Actual_State
+      -- but R.R1 may be denoted.
       Actual_State : Integer;
 
-      procedure Init_Q1
-         with Refined_Global  => (Output => Actual_State),
-              Refined_Depends => (Actual_State => null)
+      -- The Global and Depends aspects of Private_Op
+      -- are in terms of R.R1 and the refinement of
+      -- R.R1 is not visible and so Refined_Global
+      -- and Refined_Depends are not required.
+      procedure Private_Op (I, J : in Integer)
       is
       begin
-         Actual_State := 0;
+         R.Op_1 (I);
+         Actual_State := J;
       end Init_Q1;
 
-      -- The refinement of Q2 is not visible and so Init_Q2
-      -- has no Refined_Global or Refined_Depends aspects.
-      procedure Init_Q2
-      is
-      begin
-         Q.Hidden_State := 0;
-      end Init_Q2;
-
-   end Q.Child;
-
-   with Q.Child;
-   package body Q
-      with Refined_State => (Q1 => Q.Child.C1,
-                             Q2 => Hidden_State, State_In_Body)
-   is
-      -- Q1 and Q2 shall not be denoted here but the constituents
-      -- Q.Child.C1, State_In_Body and Hidden_State may be.
-      State_In_Body : Integer;
-
-      procedure Init_Q1
-         with Refined_Global  => (Output => Q.Child.C1),
-              Refined_Depends => (Q.Child.C1 => null)
-      is
-      begin
-         Q.Child.Init_Q1;
-      end Init_Q1;
-
-      procedure Init_Q2
-         with Refined_Global  => (Output => (Hidden_State, State_in_Body)),
-              Refined_Depends => ((Hidden_State, State_in_Body) => null)
-      is
-      begin
-         Sate_In_Body := 42;
-         Q.Child.Init_Q2;
-      end Init_Q2;
-
-   end Q;
+   end R.Child;
 
 
 
