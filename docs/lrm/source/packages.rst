@@ -1355,11 +1355,11 @@ There are no verification rules associated with Refined_State aspect.
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to avoid aliasing-related problems, SPARK 2014 must ensure
-that if a given piece of state (either a variable or a state
-abstraction) is going to be a constituent of a given state
-abstraction, that relationship must be known at the point where the
-constituent is declared.
+In order to avoid aliasing-related problems (see :ref:
+`anti-aliasing`), SPARK 2014 must ensure that if a given piece of
+state (either a variable or a state abstraction) is going to be a
+constituent of a given state abstraction, that relationship must be
+known at the point where the constituent is declared.
 
 For a variable declared immediately within a package body, this is not
 a problem.  The state refinement in which the variable is specified as
@@ -1370,17 +1370,17 @@ abstraction that is part of the visible state of a package that is
 declared immediately within the given package body.
 
 For variable declared immediately within the private part of a
-package, such an unwanted "window" does exist (and similarly for a
+package, such an unwanted window does exist (and similarly for a
 variable or state abstraction that is part of the visible state of a
 package that is declared immediately within the given private part).
 
 In order to cope with this situation, the Part_Of aspect provides a
 mechanism for specifying at the point of a constituent's declaration
-the state abstraction that the constituent is going to be a
-constituent of, thereby closing the "window".  The state abstraction's
-refinement will eventually confirm this relationship. The Part_Of
-aspect, in effect, makes visible a preview of (some of) the state
-refinement that will eventually be provided in the package body.
+the state abstraction to which it belongs, thereby closing the window.
+The state abstraction's refinement will eventually confirm this
+relationship. The Part_Of aspect, in effect, makes visible a preview
+of (some of) the state refinement that will eventually be provided in
+the package body.
 
 This mechanism is also used in the case of the visible state of a
 private child unit (or a public descendant thereof).
@@ -1461,37 +1461,34 @@ private child unit (or a public descendant thereof).
 
 .. centered:: *Verification Rules*
 
-#. Where a state abstraction is visible as well as one or more of its
-   ``constituents`` a subprogram that directly or indirectly
+#. For flow analysis, where a state abstraction is visible as well as
+   one or more of its ``constituents``, its refinement is not visible
+   and the Global and or Depends aspects of a subprogram denote the
+   state abstraction, then in the implementation of the subprogram a
+   direct or indirect
 
-   * reads a ``constituent`` of the state abstraction shall be
-     regarded as a read of the encapsulating state abstraction of the
-     ``constituent`` and shall be represented by this encapsulating
-     state abstraction in the Global and Depends aspects (or their
-     refined versions) of the subprogram declaration; or
+   * read of a ``constituent`` of the state abstraction shall be
+     treated as a read of the encapsulating state abstraction of the
+     ``constituent``; or
 
-   * updates a ``constituent`` of the state abstraction shall be
-     regarded as an update of the encapsulating state abstraction of
-     the ``constituent`` and shall be represented by this
-     encapsulating state abstraction.  An update of such a
-     ``constituent`` is regarded as updating its enclosing state
-     abstraction with a self dependency as it is unknown what other
-     ``constituents`` the state abstraction encapsulates [; the
-     refinement of the state abstraction is not visible].  Unless a
-     call is made to a subprogram that fully initializes the state
-     abstraction the ``mode_selector`` of the state abstraction shall
-     be be In_Out.
+   * update of a ``constituent`` of the state abstraction shall be
+     treated as an update of the encapsulating state abstraction of
+     the ``constituent`` .  An update of such a ``constituent`` is
+     regarded as updating its enclosing state abstraction with a self
+     dependency as it is unknown what other ``constituents`` the state
+     abstraction encapsulates.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.3 VR Where a state abstraction not declared
-          in an enclosing package is visible as well as one or more of
-          its ``constituents`` a subprogram that directly or
-          indirectly reads or updates a constituent must refer to its
-          encapsulating state in the Global and Depends aspects (or
-          their refined versions) of the subprogram rather than the
-          constituent.  Each update of a constituent is considered to
-          have a self dependency.
+      :Trace Unit: FE 7.2.3 VR For flow analysis, where a state
+          abstraction is visible as well as one or more of its
+          ``constituents``, its refinement is not visible and the
+          Global and or Depends aspects of a subprogram denote the
+          state abstraction, then in the implementation of the
+          subprogram a direct or indirect read or update of a
+          ``constituent`` is treated as a read or update of the
+          encapsulating state. Each update of a ``constituent`` is an
+          update of the encapsulating state with a self-dependency.
 
 .. centered:: **Examples**
 
@@ -1574,7 +1571,7 @@ private child unit (or a public descendant thereof).
    package body Outer
       with Refined_State => (A1 => Inner.B1,
                              A2 => Hidden_State, State_In_Body)
-                             -- Outer.A1 and Outer.A2 cannot be denoted in the
+                             -- A1 and A2 cannot be denoted in the
                              -- body of Outer because their refinements are visible.
    is
       State_In_Body : Integer;
@@ -1665,9 +1662,9 @@ private child unit (or a public descendant thereof).
    private package Q.Child
       with Abstract_State => (C1 with Part_Of => Q.Q1)
    is
-      -- C1 rather than the ancapsulating state abstraction 
+      -- C1 rather than the encapsulating state abstraction 
       -- may be used in aspect specifications provided 
-      -- Q.Q1 is npt also denoted in the same aspect 
+      -- Q.Q1 is not also denoted in the same aspect 
       -- specification.
 
       -- Here C1 is used so Q1 cannot also be used in
