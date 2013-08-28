@@ -918,14 +918,16 @@ semantics (when viewed as an Ada program) should be unaffected by this
 transformation other than evaluating fewer known to be true assertion
 expressions.
 
-The rules below are given in general terms in relation to "ghost entities"
-since in the future it is intended that ghost types and ghost variables
-will be allowed. Currently, however, only ghost functions are allowed
-and so an additional legality rule is provided that allows only
-functions to be explicitly declared as a ghost (though entities declared within
-a ghost function are regarded implicitly as ghost entities). When the full scope of ghost
-entities is allowed, the rules given in this section may be moved to
-other sections as appropriate, since they will refer to more than just subprograms.
+The rules below are given in general terms in relation to "ghost
+entities" since in the future it is intended that ghost types and
+ghost variables will be allowed. Currently, however, only ghost
+functions are allowed and so an additional legality rule is provided
+that allows only functions to be explicitly declared as a ghost
+(though entities declared within a ghost function are regarded
+implicitly as ghost entities). When the full scope of ghost entities
+is allowed, the rules given in this section may be moved to other
+sections as appropriate, since they will refer to more than just
+subprograms.
 
 .. todo::
    Add ghost types and ghost variables to |SPARK|. To be completed in
@@ -1011,6 +1013,8 @@ other sections as appropriate, since they will refer to more than just subprogra
       :Trace Unit: FE 6.1.6 LR A ghost entity shall not be referenced from
                    within the expression of a predicate specification of a
                    non-ghost subtype.
+
+   .. todo:: I am not sure we need the following rule. Decide after release 1.
 
 #. All subcomponents of a ghost object shall be initialized by the
    elaboration of the declaration of the object.
@@ -1168,28 +1172,30 @@ ghosts-have-no-effect-on-program-behavior rule.]
 Formal Parameter Modes
 ----------------------
 
-No extensions or restrictions.
+In flow analysis, particularly information flow analysis, the update
+of a component of composite object is treated as updating the whole of
+the composite object with the component set to its new value and the
+remaining components of the composite object with their value preserved.
 
-.. todo::
-   The modes of a subprogram in Ada are not as strict as S2005 and there
-   is a difference in interpretation of the modes as viewed by flow analysis.
-   For instance in Ada a formal parameter of mode out of a composite type need
-   only be partially updated, but in flow analysis this would have mode in out.
-   Similarly an Ada formal parameter may have mode in out but not be an input.
-   In flow analysis it would be regarded as an input and give rise to
-   flow errors.
+This means that if a formal parameter of a subprogram is a composite
+type and only individual components, but not all, are updated, then
+the mode of the formal parameter should be **in out**.  
 
-   In deciding whether a parameter is only partially updated, discriminants
-   (including discriminants of subcomponents) are ignored. For example,
-   given an *out* mode parameter of a type with defaulted discriminants,
-   a subprogram might or might not modify those discriminants (if it does,
-   there will of course be an associated proof obligation to show that the
-   parameter's 'Constrained attribute is False in that path).
+In general, it is not possible to statically determine whether all
+elements of an array have been updated by a subprogram if individual
+array elements are updated.  The mode of a formal parameter of an
+array with such updates should be **in out**.
 
-   Perhaps we need an aspect to describe the strict view of a parameter
-   if it is different from the specified Ada mode of the formal parameter?
-   To be completed in a post-Release 1 version of this document.
+[In future |SPARK| may provide a way of proving that all elements of
+an array have been updated individually and or providing a means to
+specify that a composite object is updated but not read by a
+subprogram.]
 
+.. centered:: **Verification Rules**
+
+#. A subprogram formal parameter of a composite type which is updated
+   but not fully initialized by the subprogram shall have a mode of
+   **in out**.
 
 Subprogram Bodies
 -----------------
@@ -1229,8 +1235,9 @@ The presence of aliasing is inconsistent with the underlying flow
 analysis and proof models used by the tools which assume that
 different names represent different entities.  In general, it is not
 possible or is difficult to deduce that two names refer to the same
-object (although renaming declarations are not problematic in |SPARK|)
-and problems arise when one of the names is used to update the object.
+object and problems arise when one of the names is used to update the
+object (although object renaming declarations are not problematic in
+|SPARK|).
 
 A common place for aliasing to be introduced is through the actual
 parameters and between actual parameters and
