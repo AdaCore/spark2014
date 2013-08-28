@@ -1256,6 +1256,9 @@ Parameter Associations
 
 No extensions or restrictions.
 
+
+.. _anti-aliasing:
+
 Anti-Aliasing
 ~~~~~~~~~~~~~
 
