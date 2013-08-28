@@ -15,9 +15,8 @@
 package body Tests_Async_Writers
   with Refined_State => (State_With_Async_Writers => Vol)
 is
-   Vol : Integer;  -- TODO: mark as volatile
--- with Volatile,
-        Async_Writers
+   Vol : Integer
+    with Volatile, Async_Writers;
 
    ----------------------------------------------------------------------
    --  The following are "correct" contracts and should not raise any
@@ -74,7 +73,7 @@ is
    end Test_02;
 
    procedure Test_03 (X : out Integer)
-      with Global  => (Input => Vol)
+      with Global  => (Input => Vol),
            Depends => (X => Vol)
    is
    begin
@@ -85,7 +84,7 @@ is
    end Test_03;
 
    procedure Test_04 (X : out Integer)
-      with Global  => (Input => Vol)
+      with Global  => (Input => Vol),
            Depends => (X => Vol)
    is
    begin
@@ -95,4 +94,6 @@ is
       end loop;
    end Test_04;
 
+begin
+   Vol := 0;
 end Tests_Async_Writers;
