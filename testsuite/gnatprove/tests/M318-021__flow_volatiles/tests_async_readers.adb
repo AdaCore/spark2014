@@ -17,9 +17,8 @@
 package body Tests_Async_Readers
   with Refined_State => (State_With_Async_Readers => Vol)
 is
-   Vol : Integer;  -- TODO: mark as volatile
-   -- with Volatile,
-   --      Async_Readers
+   Vol : Integer
+    with Volatile, Async_Readers;
 
    ----------------------------------------------------------------------
    --  The following are "correct" contracts and should not raise any
@@ -153,6 +152,6 @@ is
       Y := R_Func;
       Vol := B;
       Z   := Vol;
-   end Calling_R;
+   end Calling_R_Again;
 
 end Tests_Async_Readers;
