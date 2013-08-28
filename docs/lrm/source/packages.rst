@@ -304,6 +304,20 @@ The new aspects are:
       :Trace Unit: FE 7.1.3 LR Declaration of Volatile object shall be at
                    library level.
 
+#. A constant, a discriminant or a loop parameter shall not be Volatile.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A constant, a discriminant nor a loop
+          parameter shall not be Volatile.
+
+#. A non-volatile object shall not have a Volatile component.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.1.3 LR A non-volatile object shall not have a
+          Volatile component.
+
 #. A Volatile object shall not be used as an actual parameter in a generic instantiation.
 
    .. ifconfig:: Display_Trace_Units
@@ -356,8 +370,7 @@ The new aspects are:
 
    * as the [right-hand side] expression of an assignment statement; or
 
-   * as the expression of an initialization expression of an object declaration
-     that is not specified as Volatile; or
+   * as the expression of an initialization expression of an object declaration; or
 
    * as an actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
@@ -451,6 +464,8 @@ There are no dynamic semantics associated with these aspects.
       type Volatile_Type is record
         I : Integer;
       end record with Volatile;
+
+.. code-block:: ada
 
       -- This type declaration indicates all objects
       -- of this type will be volatile.
@@ -637,7 +652,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
                              | Async_Writers [=> expression]
                              | Effective_Writes [=> expression]
                              | Effective_Reads  [=> expression]
-                             | others [=> expression]
+                             | others => expression
   state_name               ::= defining_identifier
   abstract_state           ::= name
 
@@ -1240,7 +1255,7 @@ where
    either an entity with no Part_Of ``option`` or aspect which is part
    of the hidden state of the package, or an entity whose declaration
    has a Part_Of ``option`` or aspect which denotes this state
-   abstraction.
+   abstraction (see :ref:`package_hierarchy`).
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1350,8 +1365,6 @@ There are no verification rules associated with Refined_State aspect.
       ...
    end Q;
 
-.. _package_hierarchy:
-
 
 Initialization Issues
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1373,10 +1386,10 @@ which reside in another package, initialization by their declaring package.
    * assumed pre-initialization (in the case of external states); or
 
    * for constituents which reside in another unit [and have a Part_Of
-     indicator associated with their declaration] by their declaring
-     package. [It follows that such constituents will appear in the
-     initialization clause of the declaring unit unless they are external
-     states.]
+     indicator associated with their declaration (see
+     :ref:`package_hierarchy`)] by their declaring package. [It follows
+     that such constituents will appear in the initialization clause
+     of the declaring unit unless they are external states.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1672,6 +1685,8 @@ as it is used purely for static analysis purposes and is not executed.
                    the subprogram body instead of Depends aspect
 
 #. The verification rules given for :ref:`depends-aspects` also apply.
+
+.. _package_hierarchy:
 
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2340,28 +2355,36 @@ abstraction on to external states which are given in this section.
       with Abstract_State => (State with External => Async_Writers,
                                          Part_Of  => Externals.Combined_Inputs)
    is
-      ...
+      procedure Read (Temp : out Integer)
+         with Global  => State,
+              Depends => (Temp => State);
    end Externals.Temperature;
 
    private package Externals.Pressure
       with Abstract_State => (State with External => Async_Writers,
                                          Part_Of  => Externals.Combined_Inputs)
    is
-      ...
+      procedure Read (Press : out Integer)
+         with Global  => State,
+              Depends => (Press => State);
    end Externals.Pressure;
 
    private package Externals.Main_Display
       with Abstract_State => (State with External => Async_Readers,
                                          Part_Of  => Externals.Displays)
    is
-      ...
+      procedure Display (Text: in String)
+         with Global_ => State,
+              Depends => (State => Text);
    end Externals.Main_Display;
 
    private package Externals.Secondary_Display
       with Abstract_State => (State with External => Async_Readers,
                                          Part_Of  => Externals.Displays)
    is
-     ...
+      procedure Display (Text: in String)
+         with Global_ => State,
+              Depends => (State => Text);
    end Externals.Secondary_Display;
 
 
@@ -2387,6 +2410,32 @@ abstraction on to external states which are given in this section.
                           -- Complex_Device is a mixture of inputs, outputs and
                           -- non-volatile constituents.
    is
+      procedure Read (Combined_Value : out Integer)
+         with Refined_Global  => (Temperature.State, Temperature.State),
+              Refined_Depends => (Combined_Value => 
+                                     (Temperature.State, Pressure.State)
+      is
+        Temp,
+        Press : Integer;
+      begin
+        Temperature.Read (Temp);
+        Pressure.Read (Press);
+        Combined_Value := Some_Function_Of (Temp, Pressure);
+      end Read;
+
+      procedure Display (D_Main, D_Secondary : in String)
+         with Global  => (Output => (Main_Display.State,
+                                     Secondary.State)),
+              Depends => ((Main_Display.State, 
+                           Secondary_Display.State) => (D_Main, D_Secondary))
+      is
+      begin
+        Main_Display.Display (D_Main);
+        Secondary_Display.Display (D_Secondary);
+      end Display;
+
+      -------------------- Complex Device --------------------
+
       Saved_Value : Integer := 0;  -- Initialized as required.
 
       Out_Reg : Integer

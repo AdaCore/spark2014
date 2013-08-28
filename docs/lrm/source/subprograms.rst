@@ -36,15 +36,22 @@ a subprogram.
 #. The *entry* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
 
-#. An *output* of a subprogram is a global item or parameter whose final
-   value may be updated by a call to the subprogram.  The result of a function
-   is also an output.
+#. An *output* of a subprogram is a global item or parameter whose
+   final value may be updated by a call to the subprogram.  The result
+   of a function is also an output.  For a global item or parameter
+   which is an external state with the property Async_Readers => True,
+   intermediate values written to the external state are also outputs
+   of the subprogram. (see :ref:`external_state`).
 
-#. An *input* of a subprogram is a global item or parameter whose initial
-   value may be used in determining the exit value of an output of the
-   subprogram. As a special case, a global item or parameter is also an input if
-   it is mentioned in a ``null_dependency_clause`` in the Depends
-   aspect of the subprogram (see :ref:`depends-aspects`).
+#. An *input* of a subprogram is a global item or parameter whose
+   initial value may be used in determining the exit value of an
+   output of the subprogram.  For a global item or parameter which is
+   an external state with Async_Writers => True, each successive value
+   read from the external state is also an input of the subprogram
+   (see :ref:`external_state`).  As a special case, a global item or
+   parameter is also an input if it is mentioned in a
+   ``null_dependency_clause`` in the Depends aspect of the subprogram
+   (see :ref:`depends-aspects`).
 
 .. centered:: **Verification Rules**
 
@@ -237,45 +244,6 @@ where
                    the True contract_case does not evaluate to True
                    then Assertions.Assertion_Error is raised.
 
-.. centered:: **Verification Rules**
-
-#. Each ``condition`` in a Contract_Cases aspect has to be proven to
-   be mutually exclusive, that is only one ``condition`` can be
-   True with any set of inputs conformant with the formal parameters
-   and satisfying the specific precondition.
-
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR 6.1.3 VR conditions must be mutually exclusive.
-
-#. At the point of call a check that a single ``condition`` of the
-   Contract_Cases aspect is True has to be proven, or if no
-   ``condition`` is True then the Contract_Cases aspect must have an
-   **others** ``contract_case``.
-
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR 6.1.3 VR When calling a subprogram with a
-                   Contract_Cases aspect a single condition has to be
-                   True.
-
-#. For every ``contract_case``, when its ``condition`` is True, or the
-   **others** ``contract_case`` when none of the conditions are True,
-   the implementation of the body of the subprogram must be proven to
-   satisfy the ``consequence`` of the ``contract_case``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: PR 6.1.3 VR All Contract_Cases have to be proven
-                   true based on the implementation.
-
-.. todo::
-   (TJJ 29/11/12) Do we need this verification rule? Could it
-   be captured as part of the general statement about proof? To be
-   completed in milestone 4 version of this document.
-
 .. _global-aspects:
 
 Global Aspect
@@ -440,9 +408,9 @@ is used purely for static analysis purposes and is not executed.
 .. centered:: **Verification Rules**
 
 #. For a subprogram that has a ``global_specification``, an object or
-   state abstraction that is declared outside the subprogram, can only
-   be referenced within if it is a ``global_item`` in the
-   ``global_specification``.
+   state abstraction that is declared outside the scope of the
+   subprogram, shall only be referenced within its implementation if
+   it is a ``global_item`` in the ``global_specification``.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -459,13 +427,13 @@ is used purely for static analysis purposes and is not executed.
       :Trace Unit: FA 6.1.4 VR global_item shall occur only if entity referenced
                    is denoted by the subprogram
 
-#. Where the refinement of a state abstraction is not visible and a
-   subprogram references one or more of its constituents the
-   constituents may be represented by a ``global_item`` that denotes
-   the state abstraction in the ``global_specification`` of the
-   subprogram. [The state abstraction encapsulating a constituent is
-   known from the Part_Of indicator on the declaration of the
-   constituent.]
+#. Where the refinement of a state abstraction is not visible (see
+   :ref:`state_refinement`) and a subprogram references one or more of
+   its constituents the constituents may be represented by a
+   ``global_item`` that denotes the state abstraction in the
+   ``global_specification`` of the subprogram. [The state abstraction
+   encapsulating a constituent is known from the Part_Of indicator on
+   the declaration of the constituent.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -488,10 +456,12 @@ is used purely for static analysis purposes and is not executed.
      - it denotes an output but not an input, other than the
        use of a discriminant or an attribute of the ``global_item`` and
 
-     - is always *fully initialized* as a result of any successful execution of a
-       call of the subprogram. A state abstraction whose refinement is not visible
-       is not fully initialized by only updating one or more of its constituents
-       [because it may have other constituents that are not visible];
+     - is always *fully initialized* (that is, all parts of the
+       ``global_item`` are initialized) as a result of any successful
+       execution of a call of the subprogram. A state abstraction
+       whose refinement is not visible is not fully initialized by
+       only updating one or more of its constituents [because it may
+       have other constituents that are not visible];
 
    * otherwise the ``global_item`` denotes both an input and an output, and
      has a ``mode_selector`` of In_Out.
@@ -550,10 +520,27 @@ is used purely for static analysis purposes and is not executed.
 Depends Aspect
 ~~~~~~~~~~~~~~
 
-A Depends aspect defines a *dependency relation* for a
-subprogram which may be given in the ``aspect_specification`` of the
-subprogram.  The dependency relation is used in information flow
-analysis.
+A Depends aspect defines a *dependency relation* for a subprogram
+which may be given in the ``aspect_specification`` of the subprogram.
+A dependency relation is a sort of formal specification which
+specifies a simple relationship between inputs and outputs of the
+subprogram.  It may be used with or without a postcondition.
+
+Unlike a post condition, the functional behavior of a subprogram is
+not specified by the Depends aspect but the Depends aspect has to be
+complete in the sense that every input and output of the subprogram
+must appear in it.  Whereas, a postcondition may be partial and only
+specify properties of particular interest.
+
+Like a postcondition, the dependency relation may be omitted from a
+subprogram declaration in when it defaults to the conservative
+relation that each output depends on every input of the subprogram.  A
+particular |SPARK| tool may synthesize a more accurate approximation
+from the subprogram implementation if it is present (see
+:ref:`verific_modes`).
+
+For accurate information flow analysis the Depends aspect should be
+present on every subprogram.
 
 A Depends aspect for a subprogram specifies for each output every
 input on which it depends. The meaning of *X depends on Y* in this
@@ -570,16 +557,6 @@ If an output does not depend on any input this is indicated
 using a **null**, e.g., *X =>* **null**. An output may be
 self-dependent but not dependent on any other input. The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
-
-The functional behavior of a subprogram is not specified by the Depends
-aspect but, unlike a postcondition, the Depends aspect has
-to be complete in the sense that every input and output of the subprogram must
-appear in the Depends aspect.
-
-The Depends aspect may only be specified for the initial declaration of a
-subprogram (which may be a declaration, a body or a body stub).
-The implementation of a subprogram body must be consistent with the
-subprogram's Depends Aspect.
 
 Note that a Refined_Depends aspect may be applied to a subprogram body when
 using state abstraction; see section :ref:`refined-depends-aspect` for further
@@ -665,11 +642,7 @@ where
    Output which are of an unconstrained array subtype, an unconstrained
    discriminated subtype, a tagged type, or a type having a subcomponent of an
    unconstrained discriminated subtype. [Tagged types are mentioned in this rule
-   in anticipation of a later version of |SPARK| in which the current
-   restriction on uses of the 'Class attribute is relaxed; currently
-   there is no way to read or otherwise depend on the underlying tag of an
-   **out** mode formal parameter or a ``global_item`` with a ``mode_selector``
-   of Output of a tagged type.]
+   in anticipation of a later version of |SPARK| will support them.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -737,9 +710,9 @@ where
       :Trace Unit: FE 6.1.5 LR null_dependency_clause shall be the last
                    dependency_clause in the dependency_relation
 
-#. An entity denoted by an ``input`` which is in an ``input_list`` of a
-   **null** ``output_list`` shall not be denoted by an ``input`` in another
-   ``input_list`` of the same ``dependency_relation``.
+#. An entity denoted by an ``input`` which is in an ``input_list`` of
+   a ``null_dependency_clause`` shall not be denoted by an ``input``
+   in another ``input_list`` of the same ``dependency_relation``.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -809,10 +782,10 @@ where
       :Trace Unit: FA 6.1.5 SS null dependency_relation means subprogram has
                    no inputs or outputs
 
-#. [A function without an explicit Depends aspect specification
-   is assumed to have the ``dependency_relation``
-   that its result is dependent on all of its inputs.
-   Generally an explicit Depends aspect is not required for functions.]
+#. A function without an explicit Depends aspect specification has the
+   default ``dependency_relation`` that its result is dependent on all
+   of its inputs.  [Generally an explicit Depends aspect is not
+   required for a function declaration.]
 
    .. ifconfig:: Display_Trace_Units
 
@@ -820,28 +793,17 @@ where
                    have implicit dependency_relation that result depends
                    on all inputs. Covered by another TU
 
-#. [A subprogram which has an explicit Depends aspect specification
-   and lacks an explicit Global aspect specification is assumed to have
-   the [unique] Global aspect specification that is consistent with the
-   subprogram's Depends aspect.]
+#. A procedure without an explicit Depends aspect specification has a
+   default ``dependency_relation`` that each member of its output set
+   is dependent on every member of its input set. [This conservative
+   approximation may be improved by analyzing the body of the
+   subprogram if it is present.]
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FA 6.1.5 SS subprogram with explicit Depends and implicit
-                   Global has the unique global aspect that is consistent
-                   with the Depends aspect.
-
-#. [A subprogram which has an explicit Global aspect specification
-   but lacks an explicit Depends aspect specification and, as yet, has no
-   implementation of its body is assumed to have the conservative
-   ``dependency_relation`` that each member of the output set is dependent on
-   every member of the input set.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 SS a subprogram with an explicit Global aspect
-                   and no Depends or body has an implicit dependency_relation
-                   where each output is dependent on every input
+      :Trace Unit: FA 6.1.5 SS a subprogram with no Depends or body
+                   has an implicit dependency_relation where each
+                   output is dependent on every input
 
 .. centered:: **Dynamic Semantics**
 
@@ -1267,12 +1229,12 @@ The presence of aliasing is inconsistent with the underlying flow
 analysis and proof models used by the tools which assume that
 different names represent different entities.  In general, it is not
 possible or is difficult to deduce that two names refer to the same
-object and problems arise when one of the names is used to update the
-object.
+object (although renaming declarations are not problematic in |SPARK|)
+and problems arise when one of the names is used to update the object.
 
 A common place for aliasing to be introduced is through the actual
 parameters and between actual parameters and
-global variables in a procedure call.  Extra verification rules are
+global variables in a procedure call. Extra verification rules are
 given that avoid the possibility of aliasing through actual
 parameters and global variables.  A function is not allowed to have
 side-effects and cannot update an actual parameter or global
