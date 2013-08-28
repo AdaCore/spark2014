@@ -1352,6 +1352,327 @@ There are no verification rules associated with Refined_State aspect.
 
 .. _package_hierarchy:
 
+
+Initialization Issues
+~~~~~~~~~~~~~~~~~~~~~
+
+Every state abstraction specified as being initialized in the Initializes
+aspect of a package has to have all of its constituents initialized. This
+may be achieved by initialization within the package, by assumed
+pre-initialization (in the case of external state) or, for constituents
+which reside in another package, initialization by their declaring package.
+
+.. centered:: **Verification Rules**
+
+#. For each state abstraction denoted by the ``name`` of an
+   ``initialization_item`` of an Initializes aspect of a package, all the
+   ``constituents`` of the state abstraction must be initialized by:
+
+   * initialization within the package; or
+
+   * assumed pre-initialization (in the case of external states); or
+
+   * for constituents which reside in another unit [and have a Part_Of
+     indicator associated with their declaration] by their declaring
+     package. [It follows that such constituents will appear in the
+     initialization clause of the declaring unit unless they are external
+     states.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.2.4 VR each state abstraction in an Initializes aspect
+                   shall have all its constituents initialized by either the
+                   package, by assumed pre-initialization or by the other
+                   unit that declares the state abstraction constituent
+
+.. _refined-global-aspect:
+
+Refined_Global Aspect
+~~~~~~~~~~~~~~~~~~~~~
+
+A subprogram declared in the visible part of a package may have a Refined_Global
+aspect applied to its body or body stub. A Refined_Global aspect of a subprogram
+defines a *refinement* of the Global Aspect of the subprogram; that is, the
+Refined_Global aspect repeats the Global aspect of the subprogram except that
+references to state abstractions whose refinements are visible at the point
+of the subprogram_body are replaced with references to [some or all of the]
+constituents of those abstractions.
+
+The Refined_Global aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
+shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
+
+.. centered:: **Static Semantics**
+
+The static semantics are equivalent to those given for the Global aspect in
+:ref:`global-aspects`.
+
+.. centered:: **Legality Rules**
+
+#. A Refined_Global aspect shall be specified on a body_stub (if one is
+   present) or subprogram body if and only if it has a declaration in the
+   visible part of an enclosing package, the declaration has a
+   Global aspect which denotes a state abstraction declared by the package and
+   the refinement of the state abstraction is visible.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.5 LR Refined_Global must be placed on the body of a
+                   subprogram. Specs of the subprogram must have a Global
+                   aspect and there must be a Refined_State aspect on the
+                   body of the enclosing package
+
+#. A Refined_Global aspect specification shall *refine* the subprogram's
+   Global aspect as follows:
+
+   * For each ``global_item`` in the Global aspect which denotes
+     a state abstraction whose non-**null** refinement is visible at the point
+     of the Refined_Global aspect specification, the Refined_Global
+     specification shall include one or more ``global_items`` which denote
+     ``constituents`` of that state abstraction.
+
+   * For each ``global_item`` in the Global aspect which denotes
+     a state abstraction whose **null** refinement is visible at the point
+     of the Refined_Global aspect specification, the Refined_Global
+     specification shall be omitted, or if
+     required by the syntax of a ``global_specification`` replaced by a **null**
+     in the Refined_Global aspect.
+
+   * For each ``global_item`` in the Global aspect which does not
+     denote a state abstraction whose refinement is visible, the
+     Refined_Global specification shall include exactly one
+     ``global_item`` which denotes the same entity as the
+     ``global_item`` in the Global aspect.
+
+   * No other ``global_items`` shall be included in the Refined_Global
+     aspect specification.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.5 LR Refined_Global must reference constituents of the
+                   state abstractions denoted in the corresponding Global aspect
+                   or must repeat the state abstraction if its refinement is not
+                   visible
+
+#. ``Global_items`` in a Refined_Global ``aspect_specification`` shall denote
+   distinct entities.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.5 LR Refined_Global aspect must denote distinct entities
+
+#. The mode of each ``global_item`` in a Refined_Global aspect shall match
+   that of the corresponding ``global_item`` in the Global aspect unless:
+   the ``mode_selector`` specified in the Global aspect is In_Out;
+   the corresponding ``global_item`` of Global aspect shall denote a state
+   abstraction whose refinement is visible; and the ``global_item`` in the
+   Refined_Global aspect is a ``constituent`` of the state abstraction.
+
+   For this special case when the ``mode_selector`` is In_Out, the
+   Refined_Global aspect may denote individual ``constituents`` of the state
+   abstraction as Input, Output, or In_Out (given that the constituent itself
+   may have any of these ``mode_selectors``) so long as one or more of the
+   following conditions are satisfied:
+
+   * at least one of the ``constituents`` has a ``mode_selector`` of In_Out; or
+
+   * there is at least one of each of a ``constituent`` with a ``mode_selector``
+     of Input and of Output; or
+
+   * the Refined_Global aspect does not denote all of the ``constituents`` of
+     the state abstraction but denotes at least one ``constituent`` that has
+     a ``mode_selector`` of Output.
+
+   [This rule ensures that a state abstraction with the ``mode_selector``
+   In_Out cannot be refined onto a set of ``constituents`` that are Output or
+   Input only. The last condition satisfies this requirement because not all of
+   the ``constituents`` are updated, some are preserved, that is the state
+   abstraction has a self-dependency.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.5 LR refinement of an In_Out state abstraction must
+                   have both an Input and an Output mode_selector
+
+#. If the Global aspect specification references a state abstraction with a
+   ``mode_selector`` of Output, whose refinement is visible, then every
+   ``constituent`` of that state abstraction shall be referenced in the
+   Refined_Global aspect specification.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.5 LR all constituents of an Output state abstraction
+                   must be referenced in the Refined_Global aspect
+
+#. The legality rules for :ref:`global-aspects` and External states described in
+   :ref:`refined_external_states` also apply.
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with a Refined_Global aspect.
+
+.. centered:: **Verification Rules**
+
+#. If a subprogram has a Refined_Global aspect it is used in the analysis of the
+   subprogram body rather than its Global aspect.
+
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.2.5 VR if a Refined_Global aspect exists, then it is
+                   used instead of the Global aspect for the analysis of the
+                   subprogram body
+
+#. The verification rules given for :ref:`global-aspects` also apply.
+
+.. _refined-depends-aspect:
+
+Refined_Depends Aspect
+~~~~~~~~~~~~~~~~~~~~~~
+
+A subprogram declared in the visible part of a package may have a Refined_Depends
+aspect applied to its body or body stub. A Refined_Depends aspect of a
+subprogram defines a *refinement* of the Depends aspect of the subprogram; that
+is, the Refined_Depends aspect repeats the Depends aspect of the subprogram
+except that references to state abstractions, whose refinements are visible at
+the point of the subprogram_body, are replaced with references to [some or all of
+the] constituents of those abstractions.
+
+The Refined_Depends aspect is introduced by an ``aspect_specification`` where
+the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
+shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
+
+.. centered:: **Static Semantics**
+
+The static semantics are equivalent to those given for the Depends aspect in
+:ref:`depends-aspects`.
+
+.. centered:: **Legality Rules**
+
+#. A Refined_Depends aspect shall be specified on a body_stub (if one is
+   present) or subprogram body if and only if it has a declaration in the
+   visible part of an enclosing package and the declaration has a
+   Depends aspect which denotes a state abstraction declared by the package and
+   the refinement of the state abstraction is visible.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.6 LR Refined_Depends must be on the body of a
+                   subprogram that has a spec with a Depends. The enclosing
+                   package must have a visible Refined_State
+
+#. A Refined_Depends aspect specification is, in effect, a copy of
+   the corresponding Depends aspect specification except that any references in
+   the Depends aspect to a state abstraction, whose refinement is
+   visible at the point of the Refined_Depends specification, are replaced with
+   references to zero or more direct or indirect constituents of that state
+   abstraction. A Refined_Depends aspect is defined by creating a new
+   ``dependency_relation`` from the original given in the Depends aspect as
+   follows:
+
+   * A *partially refined dependency relation* is created by first copying, from
+     the Depends aspect, each ``output`` that is not state abstraction whose
+     refinement is visible at the point of the Refined_Depends aspect, along
+     with its ``input_list``, to the partially refined dependency relation as an
+     ``output`` denoting the same entity with an ``input_list`` denoting the
+     same entities as the original. [The order of the ``outputs`` and the order
+     of ``inputs`` within the ``input_list`` is insignificant.]
+
+   * The partially refined dependency relation is then extended by replacing
+     each ``output`` in the Depends aspect that is a state abstraction, whose
+     refinement is visible at the point of the Refined_Depends, by zero or more
+     ``outputs`` in the partially refined dependency relation. It shall be zero
+     only for a **null** refinement, otherwise all of the ``outputs`` shall
+     denote a ``constituent`` of the state abstraction.
+
+     If the ``output`` in the Depends_Aspect denotes a state abstraction which
+     is not also an ``input``, then all of the ``constituents`` [for a
+     non-**null** refinement] of the state abstraction shall be denoted as
+     ``outputs`` of the partially refined dependency relation.
+
+     These rules may, for each ``output`` in the Depends aspect, introduce more
+     than one ``output`` in the partially refined dependency relation. Each of
+     these ``outputs`` has an ``input_list`` that has zero or more of the
+     ``inputs`` from the ``input_list`` of the original ``output``. The union of
+     these ``inputs`` shall denote the same ``inputs`` that appear in the
+     ``input_list`` of the original ``output``.
+
+   * If the Depends aspect has a ``null_dependency_clause``, then the partially
+     refined dependency relation has a ``null_dependency_clause`` added with an
+     ``input_list`` denoting the same ``inputs`` as the original.
+
+   * The partially refined dependency relation is completed by replacing the
+     ``inputs`` which are state abstractions, whose refinements are visible at
+     the point of the Refined_Depends aspect, by zero or more ``inputs``. It
+     shall be zero only for a **null** refinement, otherwise each of the
+     ``inputs`` shall denote a ``constituent`` of the state abstraction. The
+     completed dependency relation is the ``dependency_relation`` of the
+     Refined_Depends aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.6 LR Refined_Depends references constituents of the
+                   state abstractions denoted in the corresponding Depends
+                   aspect and repeats everything that is not a refinement.
+
+#. These rules result in omitting each state abstraction whose **null**
+   refinement is visible at the point of the Refined_Depends. If and only if
+   required by the syntax, the state abstraction shall be replaced by a **null**
+   symbol rather than being omitted.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.6 LR state abstractions with null refinement must be
+                   replaced by null if required by the syntax
+
+#. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
+   aspect specification. ``Outputs`` in the Refined_Depends aspect
+   specification shall denote distinct entities. ``Inputs`` in an ``input_list``
+   shall denote distinct entities.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 7.2.6 LR Refined_Depends must have no additional outputs
+                   or inputs and must denote distinct entities
+
+#. [The above rules may be viewed from the perspective of checking the
+   consistency of a Refined_Depends aspect with its corresponding Depends
+   aspect. In this view, each ``input`` in the Refined_Depends aspect that
+   is a ``constituent`` of a state abstraction, whose refinement is visible at
+   the point of the Refined_Depends aspect, is replaced by its representative
+   state abstraction with duplicate ``inputs`` removed.
+
+   Each ``output`` in the Refined_Depends aspect, which is a ``constituent`` of
+   the same state abstraction whose refinement is visible at the point of the
+   Refined_Depends aspect, is merged along with its ``input_list`` into a single
+   ``dependency_clause`` whose ``output`` denotes the state abstraction and
+   ``input_list`` is the union of all of the ``inputs`` from the original
+   ``input_lists``.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: 7.2.6 LR Refined_Depends aspect needs to be consistent with
+                   its corresponding Depends aspect. Covered by another TU.
+
+#. The rules for :ref:`depends-aspects` also apply.
+
+.. centered:: **Dynamic Semantics**
+
+There are no dynamic semantics associated with a Refined_Depends aspect
+as it is used purely for static analysis purposes and is not executed.
+
+.. centered:: **Verification Rules**
+
+#. If a subprogram has a Refined_Depends aspect it is used in the analysis of
+   the subprogram body rather than its Depends aspect.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FA 7.2.6 VR Refined_Depends aspect is used in the analysis of
+                   the subprogram body instead of Depends aspect
+
+#. The verification rules given for :ref:`depends-aspects` also apply.
+
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1781,327 +2102,6 @@ private child unit (or a public descendant thereof).
 
    end R.Child;
 
-
-
-Initialization Issues
-~~~~~~~~~~~~~~~~~~~~~
-
-Every state abstraction specified as being initialized in the Initializes
-aspect of a package has to have all of its constituents initialized. This
-may be achieved by initialization within the package, by assumed
-pre-initialization (in the case of external state) or, for constituents
-which reside in another package, initialization by their declaring package.
-
-.. centered:: **Verification Rules**
-
-#. For each state abstraction denoted by the ``name`` of an
-   ``initialization_item`` of an Initializes aspect of a package, all the
-   ``constituents`` of the state abstraction must be initialized by:
-
-   * initialization within the package; or
-
-   * assumed pre-initialization (in the case of external states); or
-
-   * for constituents which reside in another unit [and have a Part_Of
-     indicator associated with their declaration] by their declaring
-     package. [It follows that such constituents will appear in the
-     initialization clause of the declaring unit unless they are external
-     states.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.2.4 VR each state abstraction in an Initializes aspect
-                   shall have all its constituents initialized by either the
-                   package, by assumed pre-initialization or by the other
-                   unit that declares the state abstraction constituent
-
-.. _refined-global-aspect:
-
-Refined_Global Aspect
-~~~~~~~~~~~~~~~~~~~~~
-
-A subprogram declared in the visible part of a package may have a Refined_Global
-aspect applied to its body or body stub. A Refined_Global aspect of a subprogram
-defines a *refinement* of the Global Aspect of the subprogram; that is, the
-Refined_Global aspect repeats the Global aspect of the subprogram except that
-references to state abstractions whose refinements are visible at the point
-of the subprogram_body are replaced with references to [some or all of the]
-constituents of those abstractions.
-
-The Refined_Global aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
-shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
-
-.. centered:: **Static Semantics**
-
-The static semantics are equivalent to those given for the Global aspect in
-:ref:`global-aspects`.
-
-.. centered:: **Legality Rules**
-
-#. A Refined_Global aspect shall be specified on a body_stub (if one is
-   present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package, the declaration has a
-   Global aspect which denotes a state abstraction declared by the package and
-   the refinement of the state abstraction is visible.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR Refined_Global must be placed on the body of a
-                   subprogram. Specs of the subprogram must have a Global
-                   aspect and there must be a Refined_State aspect on the
-                   body of the enclosing package
-
-#. A Refined_Global aspect specification shall *refine* the subprogram's
-   Global aspect as follows:
-
-   * For each ``global_item`` in the Global aspect which denotes
-     a state abstraction whose non-**null** refinement is visible at the point
-     of the Refined_Global aspect specification, the Refined_Global
-     specification shall include one or more ``global_items`` which denote
-     ``constituents`` of that state abstraction.
-
-   * For each ``global_item`` in the Global aspect which denotes
-     a state abstraction whose **null** refinement is visible at the point
-     of the Refined_Global aspect specification, the Refined_Global
-     specification shall be omitted, or if
-     required by the syntax of a ``global_specification`` replaced by a **null**
-     in the Refined_Global aspect.
-
-   * For each ``global_item`` in the Global aspect which does not
-     denote a state abstraction whose refinement is visible, the
-     Refined_Global specification shall include exactly one
-     ``global_item`` which denotes the same entity as the
-     ``global_item`` in the Global aspect.
-
-   * No other ``global_items`` shall be included in the Refined_Global
-     aspect specification.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR Refined_Global must reference constituents of the
-                   state abstractions denoted in the corresponding Global aspect
-                   or must repeat the state abstraction if its refinement is not
-                   visible
-
-#. ``Global_items`` in a Refined_Global ``aspect_specification`` shall denote
-   distinct entities.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR Refined_Global aspect must denote distinct entities
-
-#. The mode of each ``global_item`` in a Refined_Global aspect shall match
-   that of the corresponding ``global_item`` in the Global aspect unless:
-   the ``mode_selector`` specified in the Global aspect is In_Out;
-   the corresponding ``global_item`` of Global aspect shall denote a state
-   abstraction whose refinement is visible; and the ``global_item`` in the
-   Refined_Global aspect is a ``constituent`` of the state abstraction.
-
-   For this special case when the ``mode_selector`` is In_Out, the
-   Refined_Global aspect may denote individual ``constituents`` of the state
-   abstraction as Input, Output, or In_Out (given that the constituent itself
-   may have any of these ``mode_selectors``) so long as one or more of the
-   following conditions are satisfied:
-
-   * at least one of the ``constituents`` has a ``mode_selector`` of In_Out; or
-
-   * there is at least one of each of a ``constituent`` with a ``mode_selector``
-     of Input and of Output; or
-
-   * the Refined_Global aspect does not denote all of the ``constituents`` of
-     the state abstraction but denotes at least one ``constituent`` that has
-     a ``mode_selector`` of Output.
-
-   [This rule ensures that a state abstraction with the ``mode_selector``
-   In_Out cannot be refined onto a set of ``constituents`` that are Output or
-   Input only. The last condition satisfies this requirement because not all of
-   the ``constituents`` are updated, some are preserved, that is the state
-   abstraction has a self-dependency.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR refinement of an In_Out state abstraction must
-                   have both an Input and an Output mode_selector
-
-#. If the Global aspect specification references a state abstraction with a
-   ``mode_selector`` of Output, whose refinement is visible, then every
-   ``constituent`` of that state abstraction shall be referenced in the
-   Refined_Global aspect specification.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.5 LR all constituents of an Output state abstraction
-                   must be referenced in the Refined_Global aspect
-
-#. The legality rules for :ref:`global-aspects` and External states described in
-   :ref:`refined_external_states` also apply.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with a Refined_Global aspect.
-
-.. centered:: **Verification Rules**
-
-#. If a subprogram has a Refined_Global aspect it is used in the analysis of the
-   subprogram body rather than its Global aspect.
-
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.2.5 VR if a Refined_Global aspect exists, then it is
-                   used instead of the Global aspect for the analysis of the
-                   subprogram body
-
-#. The verification rules given for :ref:`global-aspects` also apply.
-
-.. _refined-depends-aspect:
-
-Refined_Depends Aspect
-~~~~~~~~~~~~~~~~~~~~~~
-
-A subprogram declared in the visible part of a package may have a Refined_Depends
-aspect applied to its body or body stub. A Refined_Depends aspect of a
-subprogram defines a *refinement* of the Depends aspect of the subprogram; that
-is, the Refined_Depends aspect repeats the Depends aspect of the subprogram
-except that references to state abstractions, whose refinements are visible at
-the point of the subprogram_body, are replaced with references to [some or all of
-the] constituents of those abstractions.
-
-The Refined_Depends aspect is introduced by an ``aspect_specification`` where
-the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
-shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
-
-.. centered:: **Static Semantics**
-
-The static semantics are equivalent to those given for the Depends aspect in
-:ref:`depends-aspects`.
-
-.. centered:: **Legality Rules**
-
-#. A Refined_Depends aspect shall be specified on a body_stub (if one is
-   present) or subprogram body if and only if it has a declaration in the
-   visible part of an enclosing package and the declaration has a
-   Depends aspect which denotes a state abstraction declared by the package and
-   the refinement of the state abstraction is visible.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR Refined_Depends must be on the body of a
-                   subprogram that has a spec with a Depends. The enclosing
-                   package must have a visible Refined_State
-
-#. A Refined_Depends aspect specification is, in effect, a copy of
-   the corresponding Depends aspect specification except that any references in
-   the Depends aspect to a state abstraction, whose refinement is
-   visible at the point of the Refined_Depends specification, are replaced with
-   references to zero or more direct or indirect constituents of that state
-   abstraction. A Refined_Depends aspect is defined by creating a new
-   ``dependency_relation`` from the original given in the Depends aspect as
-   follows:
-
-   * A *partially refined dependency relation* is created by first copying, from
-     the Depends aspect, each ``output`` that is not state abstraction whose
-     refinement is visible at the point of the Refined_Depends aspect, along
-     with its ``input_list``, to the partially refined dependency relation as an
-     ``output`` denoting the same entity with an ``input_list`` denoting the
-     same entities as the original. [The order of the ``outputs`` and the order
-     of ``inputs`` within the ``input_list`` is insignificant.]
-
-   * The partially refined dependency relation is then extended by replacing
-     each ``output`` in the Depends aspect that is a state abstraction, whose
-     refinement is visible at the point of the Refined_Depends, by zero or more
-     ``outputs`` in the partially refined dependency relation. It shall be zero
-     only for a **null** refinement, otherwise all of the ``outputs`` shall
-     denote a ``constituent`` of the state abstraction.
-
-     If the ``output`` in the Depends_Aspect denotes a state abstraction which
-     is not also an ``input``, then all of the ``constituents`` [for a
-     non-**null** refinement] of the state abstraction shall be denoted as
-     ``outputs`` of the partially refined dependency relation.
-
-     These rules may, for each ``output`` in the Depends aspect, introduce more
-     than one ``output`` in the partially refined dependency relation. Each of
-     these ``outputs`` has an ``input_list`` that has zero or more of the
-     ``inputs`` from the ``input_list`` of the original ``output``. The union of
-     these ``inputs`` shall denote the same ``inputs`` that appear in the
-     ``input_list`` of the original ``output``.
-
-   * If the Depends aspect has a ``null_dependency_clause``, then the partially
-     refined dependency relation has a ``null_dependency_clause`` added with an
-     ``input_list`` denoting the same ``inputs`` as the original.
-
-   * The partially refined dependency relation is completed by replacing the
-     ``inputs`` which are state abstractions, whose refinements are visible at
-     the point of the Refined_Depends aspect, by zero or more ``inputs``. It
-     shall be zero only for a **null** refinement, otherwise each of the
-     ``inputs`` shall denote a ``constituent`` of the state abstraction. The
-     completed dependency relation is the ``dependency_relation`` of the
-     Refined_Depends aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR Refined_Depends references constituents of the
-                   state abstractions denoted in the corresponding Depends
-                   aspect and repeats everything that is not a refinement.
-
-#. These rules result in omitting each state abstraction whose **null**
-   refinement is visible at the point of the Refined_Depends. If and only if
-   required by the syntax, the state abstraction shall be replaced by a **null**
-   symbol rather than being omitted.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR state abstractions with null refinement must be
-                   replaced by null if required by the syntax
-
-#. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
-   aspect specification. ``Outputs`` in the Refined_Depends aspect
-   specification shall denote distinct entities. ``Inputs`` in an ``input_list``
-   shall denote distinct entities.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 7.2.6 LR Refined_Depends must have no additional outputs
-                   or inputs and must denote distinct entities
-
-#. [The above rules may be viewed from the perspective of checking the
-   consistency of a Refined_Depends aspect with its corresponding Depends
-   aspect. In this view, each ``input`` in the Refined_Depends aspect that
-   is a ``constituent`` of a state abstraction, whose refinement is visible at
-   the point of the Refined_Depends aspect, is replaced by its representative
-   state abstraction with duplicate ``inputs`` removed.
-
-   Each ``output`` in the Refined_Depends aspect, which is a ``constituent`` of
-   the same state abstraction whose refinement is visible at the point of the
-   Refined_Depends aspect, is merged along with its ``input_list`` into a single
-   ``dependency_clause`` whose ``output`` denotes the state abstraction and
-   ``input_list`` is the union of all of the ``inputs`` from the original
-   ``input_lists``.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 7.2.6 LR Refined_Depends aspect needs to be consistent with
-                   its corresponding Depends aspect. Covered by another TU.
-
-#. The rules for :ref:`depends-aspects` also apply.
-
-.. centered:: **Dynamic Semantics**
-
-There are no dynamic semantics associated with a Refined_Depends aspect
-as it is used purely for static analysis purposes and is not executed.
-
-.. centered:: **Verification Rules**
-
-#. If a subprogram has a Refined_Depends aspect it is used in the analysis of
-   the subprogram body rather than its Depends aspect.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 7.2.6 VR Refined_Depends aspect is used in the analysis of
-                   the subprogram body instead of Depends aspect
-
-#. The verification rules given for :ref:`depends-aspects` also apply.
 
 Refined Postcondition Aspect
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
