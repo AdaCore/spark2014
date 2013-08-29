@@ -1,10 +1,22 @@
 \documentclass{beamer}
 \input{altran-beamer}
-
+\usepackage{listings}
 \usepackage{setspace}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{shadows}
+
+\lstdefinestyle{tinystyle} {basicstyle=\scriptsize\tt,
+  keywordstyle=\bf, commentstyle=\rmfamily\it, escapeinside={(*}{*)}}
+\lstset{style=tinystyle}
+
+\lstdefinelanguage{SPARK}{ language = [95]Ada, morekeywords = {pre,
+    post, assert, assume, check, derives, hide, global, inherit, from,
+    own, initializes, main_program, input, output, in_out,
+    refined_pre, refined_post, some, depends}, comment=[l][commentstyle]{--\ },
+  showstringspaces=false }
+
+\lstset{language=SPARK}
 
 \title{Optimising Verification Effort with SPARK 2014}
 \author{Andrew Hawthorn}
@@ -43,96 +55,66 @@
 
 \section{What?}
 
-\begin{frame}[fragile]{What do we review?}
-  \begin{itemize}
-     \item Everything!
-  \end{itemize}
-
+\begin{frame}[fragile]{Static Analysis Summary}
+  \begin{columns}
+  \begin{column}{3cm}
   \begin{center}
     \begin{tikzpicture}[y=1.2cm]
-      %\draw[fill=AnColour01,AnColour01] (0, 0) -- (7, 0) -- (7, 3.5) -- (0, 0);
 
-      \draw[AnColour02,thick] (1.25, 0.5) -- (6, 2.5);
+      \draw[fill=AnColour01,AnColour01,xstep=2cm, ystep=1cm] (-2.01,0) grid (0,5);
 
-      \foreach \x/\descr in {
-        1.25/all-staff email,
-        6/safety critical project}
+      \foreach \y/\descr/\fill in {
+        6cm/In SPARK subset/green,
+        5cm/Variables Initialised/green,
+        4cm/No R-T Errors/green,
+        3cm/Globals Satisfied/green,
+        2cm/Partially proven/green,
+        1cm/Fully proven/green}
       {
-        \node[font=\small, anchor=north, text width=2.5cm, text badly centered] at (\x, 0) {\descr};
+        \node[font=\small, anchor=north, text width=1.7cm, text badly centered] at (-1.2, \y) {\descr};
+        \filldraw[fill=\fill, draw=black] (-0.2,\y-0.5cm) circle (0.1cm);
       }
 
-      \draw[->] (0, 0) -- (7.5, 0) node [anchor=west] {scale};
-      \draw[->] (0, 0) -- (0, 3) node [anchor=east] {rigour};
+%      \draw[->] (0, 0) -- (7.5, 0) node [anchor=west] {scale};
+%      \draw[->] (0, 0) -- (0, 3) node [anchor=east] {rigour};
 
     \end{tikzpicture}
   \end{center}
-\end{frame}
+  \end{column}
+  \begin{column}{9cm}
+%  \begin{block}{Example}
+    
+     \begin{lstlisting}[language=SPARK]
+package Conference_Numbers 
+is 
 
-\section{How?}
+A_Count, P_Count : Integer := 0;
 
-\begin{frame}[fragile]{Generic Process}
-  \begin{itemize}
-      \item What activities do you think are needed during a review cycle?
-  \end{itemize}
-\end{frame}
+   procedure Inc_Audience (N : in Integer)
+      with Global => (In_Out => A_Count),
+           Pre    => (N >= 0),
+           Post   => (A_Count = A_Count + N);
+
+end Counters;
+
+package body Counters 
+is 
+
+   procedure Inc_Audience (N : in Integer)
+   is
+   begin
+      A_Count = A_Count + N;
+   end Inc_Audience;
+
+end Counters;
 
 
-\begin{frame}[fragile]{Generic Process}
-  \begin{columns}
-     \begin{column}{4.0cm}
-	\vskip 0.5cm
-        \begin{itemize}
-           \item<1-> Assess risk
-           \item<2-> Prepare and plan:
-           \begin{itemize}
-               \item<2-> Select reviewers
-               \item<2-> Set quality attributes
-               \item<2-> Set timescale
-           \end{itemize}
-           \item<3-> Produce
-           \item<4-> Review
-           \item<5-> Agree changes
-           \item<6-> Update
-           \item<7-> Check
-        \end{itemize}
-     \end{column}
-     \begin{column}{6.0cm}
-        \begin{onlyenv}<8>
-           \begin{itemize}
-              \item My all-staff e-mail
-              \item Waste people's time
-              \item My plan:
-              \begin{itemize}
-                  \item Joe
-                  \item No typos, grammar issues or stupid mistakes
-                  \item Before 5pm today
-              \end{itemize}
-              \item Draft e-mail
-              \item Joe annotates draft
-              \item NA
-              \item Update e-mail
-              \item Check comments corrected
-           \end{itemize}
-        \end{onlyenv}
-        \begin{onlyenv}<9>
-           \begin{itemize}
-              \item SIL 4 Quality Plan
-              \item Software can't be certified
-              \item Project plan:
-              \begin{itemize}
-                  \item PM, TA, QA Rep, HoC
-                  \item IMS standard
-                  \item Rough draft wk 2, updated draft wk 3, sign-off wk4
-              \end{itemize}
-              \item Write plan
-              \item Review plan
-              \item Agree all mandatory comments
-              \item Update plan and RRR
-              \item Moderator checks changes, approver double checks
-           \end{itemize}
-        \end{onlyenv}
-     \end{column}
-  \end{columns}
+\end{lstlisting}
+
+%  \end{blocK}
+   \end{column}
+   \end{columns}
+
 \end{frame}
 
 \end{document}
