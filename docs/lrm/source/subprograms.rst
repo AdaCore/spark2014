@@ -53,7 +53,7 @@ a subprogram.
    ``null_dependency_clause`` in the Depends aspect of the subprogram
    (see :ref:`depends-aspects`).
 
-.. centered:: **Verification Rules**
+.. centered:: **Legality Rules**
 
 #. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
@@ -62,7 +62,7 @@ a subprogram.
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE PR 6.1 VR Functions shall not have a parameter_specification
+      :Trace Unit: FE PR 6.1 LR Functions shall not have a parameter_specification
                    of out or in out.
 
 Preconditions and Postconditions
