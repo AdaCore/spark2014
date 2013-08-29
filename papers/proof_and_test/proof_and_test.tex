@@ -411,27 +411,27 @@ errors.
 \item \emph{Only test} - there are at least two reasons why a user
    may resort to only testing a subprogram:
 
-   \begin{iterate}
+   \begin{itemize}
       \item the proof may be too difficult to perform because the 
             structure of the code is very different from the structure
             of the specification or
 
       \item contracts can not be written in Ada 2012, for example 
             because they represent an interface to an external device
-   \end{iterate}
+   \end{itemize}
 
 
 \item \emph{Prove some, test some} - attempt to prove the code, fail
   and resort to testing. At this point the user has two different
   options:
 
-  \begin{iterate}
+  \begin{itemize}
   \item Perform exclusively testing (prove no properties).
 
   \item Prove only a subset of the properties of the code and test the
     remaining. For instance, prove freedom of run-time exceptions and
     test functional behaviour-related contracts.
-  \end{iterate}
+  \end{itemize}
 
 \item \emph{Test to debug contracts} - make a first unsuccessful
   attempt to prove the code and afterwards utilize testing to identify
