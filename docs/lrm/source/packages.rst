@@ -80,7 +80,7 @@ will be written or read by an external reader or writer. These are called
 *asynchronous readers* and *asynchronous writers* in |SPARK|.
 
 Each read or update of an external state may be significant for
-instance reading or writing a stream of characters to a file, or
+instance reading or writing a stream of characters to a file or,
 individual reads or writes may not be significant, for instance
 reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
@@ -271,6 +271,27 @@ The new aspects are:
   * Effective_Reads - as described in :ref:`external_state`.
 
   * Effective_Writes - as described in :ref:`external_state`.
+
+.. centered:: **Static Semantics**
+
+#. Concurrent accesses of a volatile variable may cause a run-time
+   exception that cannot be proven to be absent by |SPARK|.  
+
+   [An example is a strictly 32-bit machine with a 64-bit Long_Float
+   type, where some (invalid) floating point values will trap (and
+   cause program termination) when loaded into a floating point
+   register.  If, on such a system, we have a volatile variable X of
+   type Long_Float, this variable will have to be stored using two
+   memory writes, so concurrent reads/writes could cause the trap, as
+   we could be unlucky and see a partially updated value that happens
+   to be invalid, even though both the old and new values would be
+   valid.]
+
+#. The key difference between accesses to atomic variables (they cause
+   expensive memory barriers to be used) and volatile accesses:
+   volatile use regular reads and writes, and use multiple memory
+   operations for doing so. Atomic accesses cause synchronization and
+   must by definition be indivisible.
 
 .. centered:: **Legality Rules**
 
