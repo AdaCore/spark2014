@@ -451,10 +451,26 @@ is used purely for static analysis purposes and is not executed.
    * a ``global_item`` that denotes an input but not an output
      has a ``mode_selector`` of Input;
 
+     .. ifconfig:: Display_Trace_Units
+
+        :Trace Unit: FA 6.1.4 VR Input must only be read.
+
    * a ``global_item`` has a ``mode_selector`` of Output if:
 
-     - it denotes an output but not an input, other than the
-       use of a discriminant or an attribute of the ``global_item`` and
+     - it denotes an output but not an input, other than the use of a
+       discriminant or an attribute related to a property, not its
+       value, of the ``global_item`` [examples of attributes that may
+       be used are A'Last, A'First and A'Length; examples of
+       attributes that are dependent on the value of the object and
+       shall not be used are X'Old and X'Update] and
+
+       .. ifconfig:: Display_Trace_Units
+
+          :Trace Unit: FA 6.1.4 VR Output may only be updated other than
+             the use of a discriminant or a property related to a property 
+             of the object such as A'First, A'Last or A'Length.  It does
+             not allow the use of attributes which are dependent on the value
+             of the object such as X'Old or X'Update.
 
      - is always *fully initialized* (that is, all parts of the
        ``global_item`` are initialized) as a result of any successful
@@ -463,8 +479,23 @@ is used purely for static analysis purposes and is not executed.
        only updating one or more of its constituents [because it may
        have other constituents that are not visible];
 
+       .. ifconfig:: Display_Trace_Units
+
+          :Trace Unit: FA 6.1.4 VR Output must be fully initialized by
+              subprogram.  A state abstraction whose refinement is not
+              visible is not fully initialized by only updating one or
+              more of its constituents.
+
    * otherwise the ``global_item`` denotes both an input and an output, and
      has a ``mode_selector`` of In_Out.
+
+     .. ifconfig:: Display_Trace_Units
+
+        :Trace Unit: FA 6.1.4 VR In_Out: The object is updated in at
+            least one execution path through the subprogram and is
+            either the object is read or there is at least one path
+            through the subprogram where the object is not updated.
+
 
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
@@ -1191,11 +1222,44 @@ an array have been updated individually and or providing a means to
 specify that a composite object is updated but not read by a
 subprogram.]
 
+A formal parameter with a mode of **out** is treated as not having an
+entry value (apart from any discriminant or attributes of properties
+of the formal parameter).  Hence, a subprogram cannot read a value of
+a formal parameter of mode **out** until the subprogram has updated
+it.
+
 .. centered:: **Verification Rules**
 
 #. A subprogram formal parameter of a composite type which is updated
    but not fully initialized by the subprogram shall have a mode of
    **in out**.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.2 VR A subprogram formal parameter of a
+         composite type which is updated but not fully initialized by
+         the subprogram shall have a mode of **in out**.
+
+#. A subprogram formal parameter of mode **out** shall not be read by
+   the subprogram until it has been updated by the subprogram.  The
+   use of a discriminant or an attribute related to a property, not
+   its value, of the formal parameter is not considered to be a read
+   of the formal parameter.  [Examples of attributes that may be used
+   are A'First, A'Last and A'Length; examples of attributes that are
+   dependent on the value of the formal parameter and shall not be
+   used are X'Old and X'Update.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 6.2 VR A subprogram formal parameter of mode
+         **out** shall not be read by the subprogram until it has been
+         updated by the subprogram.  The use of a discriminant or an
+         attribute related to a property, not its value, of the formal
+         parameter is not considered to be a read of the formal
+         parameter.  [Examples of attributes that may be used are
+         A'First, A'Last and A'Length; examples of attributes that are
+         dependent on the value of the formal parameter and shall not
+         be used are X'Old and X'Update.]
 
 Subprogram Bodies
 -----------------
