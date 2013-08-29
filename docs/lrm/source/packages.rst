@@ -1443,7 +1443,7 @@ The static semantics are equivalent to those given for the Global aspect in
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Global aspect shall be specified on a body_stub (if one is
+#. A Refined_Global aspect is permitted on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
    visible part of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
@@ -1451,7 +1451,7 @@ The static semantics are equivalent to those given for the Global aspect in
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.5 LR Refined_Global must be placed on the body of a
+      :Trace Unit: FE 7.2.5 LR Refined_Global is permitted on the body of a
                    subprogram. Specs of the subprogram must have a Global
                    aspect and there must be a Refined_State aspect on the
                    body of the enclosing package
@@ -1583,7 +1583,7 @@ The static semantics are equivalent to those given for the Depends aspect in
 
 .. centered:: **Legality Rules**
 
-#. A Refined_Depends aspect shall be specified on a body_stub (if one is
+#. A Refined_Depends aspect is permitted on a body_stub (if one is
    present) or subprogram body if and only if it has a declaration in the
    visible part of an enclosing package and the declaration has a
    Depends aspect which denotes a state abstraction declared by the package and
@@ -1591,7 +1591,7 @@ The static semantics are equivalent to those given for the Depends aspect in
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.2.6 LR Refined_Depends must be on the body of a
+      :Trace Unit: FE 7.2.6 LR Refined_Depends is permitted on the body of a
                    subprogram that has a spec with a Depends. The enclosing
                    package must have a visible Refined_State
 
