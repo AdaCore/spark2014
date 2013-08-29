@@ -1,0 +1,139 @@
+\documentclass{beamer}
+\input{altran-beamer}
+
+\usepackage{setspace}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadows}
+
+\title{Optimising Verification Effort with SPARK 2014}
+\author{Andrew Hawthorn}
+\hypersetup{colorlinks=true}
+\begin{document}
+
+\begin{altrantitle}
+  \titleprismlabela{Formally Specify}
+  \titleprismlabelb{Test and Prove}
+  \titleprismlabelc{Reduce Cost}
+\end{altrantitle}
+
+%\begin{frame}[fragile]{Contents}
+%  \tableofcontents
+%\end{frame}
+
+\section{Introduction}
+
+\begin{frame}[fragile]{Key messages}
+  \begin{itemize}
+  \item Precision of contracts can be tailored to project need
+  \item LLRs can be represented in Ada package specifications
+  \item Test and proof can be easily combined
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Agenda}
+  \begin{itemize}
+     \item Technical planning (REVEAL, INFORMED, V-lifecylce)
+     \item Verification spectrum (checks with traffic lights on left, code on right, demonstrate each level of verification with an error - start with full Ada)
+     \item Example code: Presenter and audience counter (first is more precise)o
+     \item ask audience to id faults? Give them a 10-second count=down timer.
+  \end{itemize}
+\end{frame}
+
+\section{What?}
+
+\begin{frame}[fragile]{What do we review?}
+  \begin{itemize}
+     \item Everything!
+  \end{itemize}
+
+  \begin{center}
+    \begin{tikzpicture}[y=1.2cm]
+      %\draw[fill=AnColour01,AnColour01] (0, 0) -- (7, 0) -- (7, 3.5) -- (0, 0);
+
+      \draw[AnColour02,thick] (1.25, 0.5) -- (6, 2.5);
+
+      \foreach \x/\descr in {
+        1.25/all-staff email,
+        6/safety critical project}
+      {
+        \node[font=\small, anchor=north, text width=2.5cm, text badly centered] at (\x, 0) {\descr};
+      }
+
+      \draw[->] (0, 0) -- (7.5, 0) node [anchor=west] {scale};
+      \draw[->] (0, 0) -- (0, 3) node [anchor=east] {rigour};
+
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\section{How?}
+
+\begin{frame}[fragile]{Generic Process}
+  \begin{itemize}
+      \item What activities do you think are needed during a review cycle?
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Generic Process}
+  \begin{columns}
+     \begin{column}{4.0cm}
+	\vskip 0.5cm
+        \begin{itemize}
+           \item<1-> Assess risk
+           \item<2-> Prepare and plan:
+           \begin{itemize}
+               \item<2-> Select reviewers
+               \item<2-> Set quality attributes
+               \item<2-> Set timescale
+           \end{itemize}
+           \item<3-> Produce
+           \item<4-> Review
+           \item<5-> Agree changes
+           \item<6-> Update
+           \item<7-> Check
+        \end{itemize}
+     \end{column}
+     \begin{column}{6.0cm}
+        \begin{onlyenv}<8>
+           \begin{itemize}
+              \item My all-staff e-mail
+              \item Waste people's time
+              \item My plan:
+              \begin{itemize}
+                  \item Joe
+                  \item No typos, grammar issues or stupid mistakes
+                  \item Before 5pm today
+              \end{itemize}
+              \item Draft e-mail
+              \item Joe annotates draft
+              \item NA
+              \item Update e-mail
+              \item Check comments corrected
+           \end{itemize}
+        \end{onlyenv}
+        \begin{onlyenv}<9>
+           \begin{itemize}
+              \item SIL 4 Quality Plan
+              \item Software can't be certified
+              \item Project plan:
+              \begin{itemize}
+                  \item PM, TA, QA Rep, HoC
+                  \item IMS standard
+                  \item Rough draft wk 2, updated draft wk 3, sign-off wk4
+              \end{itemize}
+              \item Write plan
+              \item Review plan
+              \item Agree all mandatory comments
+              \item Update plan and RRR
+              \item Moderator checks changes, approver double checks
+           \end{itemize}
+        \end{onlyenv}
+     \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}
+

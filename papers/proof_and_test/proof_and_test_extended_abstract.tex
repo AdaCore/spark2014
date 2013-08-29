@@ -1,0 +1,163 @@
+\documentclass{llncs}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{zed-csp}
+
+\newcommand{\DO}{\textsc{do-178}\xspace}
+\newcommand{\DOB}{\textsc{do-178b}\xspace}
+\newcommand{\DOC}{\textsc{do-178c}\xspace}
+\newcommand{\hilite}{Hi-Lite\xspace}
+\newcommand{\gnatprove}{GNATprove\xspace}
+\newcommand{\oldspark}{SPARK~2005\xspace}
+\newcommand{\newspark}{SPARK~2014\xspace}
+\newcommand{\spark}{SPARK\xspace}
+\newcommand{\ada}{Ada\xspace}
+\newcommand{\adatwtw}{Ada~2012\xspace}
+\newcommand{\vectorcast}{VectorCast\xspace}
+
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\adhoc}{\textit{ad hoc}\xspace}
+\newcommand{\Eg}{\textit{E.g.,}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
+
+\lstdefinestyle{tinystyle} {basicstyle=\scriptsize\tt,
+  keywordstyle=\bf, commentstyle=\rmfamily\it, escapeinside={(*}{*)}}
+\lstset{style=tinystyle}
+
+\lstdefinelanguage{SPARK}{ language = [95]Ada, morekeywords = {pre,
+    post, assert, assume, check, derives, hide, global, inherit, from,
+    own, initializes, main_program, input, output, in_out,
+    refined_pre, refined_post, some, depends}, comment=[l][commentstyle]{--\ },
+  showstringspaces=false }
+
+\lstset{language=SPARK}
+
+\begin{document}
+
+\title{Optimising Verification Effort with \newspark}
+
+\author{Pavlos Efstathopoulos, Andrew Hawthorn}
+\institute{ALTRAN, 22 St Lawrence Street, Bath BA1 1AN (United Kingdom)}
+
+\maketitle
+
+\begin{abstract}
+The introduction of executable contracts in Ada 2012 brings a new
+dimension to the debate over which is most efficient: proof or
+test. The Hi-Lite project was designed to demonstrate this extension
+and coverered the question of how proven subprograms can reliably call
+tested subprograms and visa versa \cite{hiliteERTS2012}. This paper
+looks at the issue from an industrial perspective to try to identify
+where it is most efficient to prove or test subprograms.
+
+Test is clearly the most preferred method of verifying software at the
+moment but the regulated industries have been trying to use formal
+methods where they can ever since software was first written. The
+acceptance of formal methods seems to be increasing, for example, the
+latest version of the aerospace standard \DO provides explicit
+guidance on the use of formal methods.
+
+The paper will consider the sorts of questions that need to be
+asked at the start of a project with respect to choosing and using a
+programming language and as part of this will introduce \newspark and the
+capabilities of the \newspark tool set focusing on the features that
+support the formal methods supplement of \DOC. These are:
+\begin{itemize}
+   \item the language subset;
+   \item the use of flow analysis to check for uninitialized, ineffective
+         and unused variables;
+   \item the use of theorem provers to prove the absence of run-time errors;
+   \item the use of pre- and post-conditions to specify subprograms and
+   \item the use of global contracts to check for non-interference between 
+         subprograms.
+\end{itemize}
+
+We then briefly walk through relevant aspects of the traditional 
+V-lifecycle explaining how REVEAL \cite{reveal} and INFORMED 
+\cite{informed} help to understand how pre- and post-condition
+specificatons can fit into a development model.
+
+We then consider the practical expressiveness of \newspark pre- and
+post-conditions in comparison with Z using Tokeneer as an example
+application. Examples of how writing pre- and post-conditions affect the
+development process and how they may be written to minimise or maximise
+the semantic gap between the specification and the code will also be given.
+
+With clear specifications on our subprograms we are now able to decide
+whether or not to prove, test or use a combination of the two methods.
+We will present examples of the following situations and demonstrate how
+a combination of proof and test can resolve them all:
+\begin {enumerate}
+\item \emph{Prove by strengthening assertions} - try to fully prove
+  the code by strengthening preconditions and adding assertions until
+  full proof is achieved. No testing is involved in this scenario.
+
+\item \emph{Test without proof} - decide that proof is too difficult
+  to achieve (for example, due to the code having complicated
+  constructs like multiple nested loops) and resort to testing right
+  from the beginning. No proof is involved in this scenario.
+
+\item \emph{Prove some, test some} - attempt to prove the code, fail
+  and resort to testing. At this point the user has two different
+  options:
+
+  \begin{enumerate}
+  \item Perform exclusively testing (prove no properties).
+
+  \item Prove only a subset of the properties of the code and test the
+    remaining. For instance, prove freedom of run-time exceptions and
+    test functional behaviour-related contracts.
+  \end{enumerate}
+
+\item \emph{Use test to debug contracts} - make a first unsuccessful
+  attempt to prove the code and afterwards utilize testing to identify
+  potential issues with the contracts or the implementation. The tests
+  might provide hints as to how the user can alter the code to render
+  it provable. In this scenario, testing reveals the actions that need
+  be performed to achieve full proof. 
+
+\item \emph{Contracts can not be written} - not able to formulate a
+  contract. 
+
+\item \emph{Proof results not useable} - be required (by a standard)
+  to test the code. However, as an addition, performing proof could
+  improve the safety case and grant more confidence on the code. In
+  this scenario the user would try to prove as much as possible, but
+  would not insist when proof is too hard.
+
+\end{enumerate}
+
+
+By walking through the examples, we will demonstrate how a combination
+of the use of the SPARK 2014 tool set and a commercially available unit 
+testing tool have the potential to dramatically reduce subprogram 
+verification effort.
+
+We conclude by summarising our views on the relative merits of
+alternative styles of contracts. Specifically, concluding where
+different types of contracts are most productively used. We also 
+share our experiences and views of the limitations of current tool
+support.
+
+
+\end{abstract}
+
+\paragraph{Keywords}
+Formal methods, Verification and validation, Certification,
+Dependability, DO-178C
+
+\bibliographystyle{plain}
+\bibliography{proof_and_test}
+
+\end{document}
+
