@@ -272,22 +272,26 @@ free from side-effects only retrieves or computes a value.
 An expression is in |SPARK| only if its type is in |SPARK| and the expression
 is side-effect free.
 
-An expression (or range) in |SPARK| occurring in certain contexts
-(listed below) shall not have a variable input.
-This means that such an expression shall not read a variable, nor shall it
-call a function which (directly or indirectly) reads a variable.
-These contexts include:
+.. centered:: **Legality Rules**
 
-  * a constraint;
+#. An expression (or range) in |SPARK| occurring in certain contexts
+   (listed below) shall not have a variable input.  This means that
+   such an expression shall not read a variable, nor shall it call a
+   function which (directly or indirectly) reads a variable.  These
+   contexts include:
 
-  * the default_expression of a discriminant_specification or
-    component_declaration;
+    * a constraint excluding the range of a loop parameter
+      specification where variables may be used in the expressions
+      defining the range (see :ref:`subtype_declarations`);
 
-  * a Dynamic_Predicate aspect specification;
+    * the default_expression of a discriminant_specification or
+      component_declaration (see :ref:`discriminants`);
 
-  * an indexing expresssion of an indexed_component or the discrete_range
-    of a slice in an object renaming declaration which renames
-    part of that index or slice.
+    * a Dynamic_Predicate aspect specification;
+
+    * an indexing expresssion of an indexed_component or the discrete_range
+      of a slice in an object renaming declaration which renames
+      part of that index or slice.
 
 [An expression in one of these contexts may read a constant
 which is initialized with the value of a variable.]

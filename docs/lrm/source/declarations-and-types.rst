@@ -48,6 +48,68 @@ been analysed.]
 .. todo:: Lift restriction that non-preelaborable subtypes are not subject
           to flow analysis. To be completed in a post-Release 1 version of this document.
 
+Type Declarations
+~~~~~~~~~~~~~~~~~
+
+.. centered:: **Legality Rules**
+
+#. The following type declarations are not permitted in |SPARK|
+
+   * ``task_type_declaration``,
+   * ``protected_type_declaration``, 
+   * ``private_extension_declaration``, 
+   * ``interface_type_definition``, and
+   * ``access_type_definition``.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 3.2.1 LR The following type declarations are not
+          permitted in |SPARK|: ``task_type_declaration``,
+          ``protected_type_declaration``,
+          ``private_extension_declaration``,
+          ``interface_type_definition``,
+          and``access_type_definition``.
+
+[``Task_type_declarations`` and ``protected_type_declarations`` will
+be included when |SPARK| is extended to cover some of the Ada tasking
+features. ``Private_extension_declarations`` and
+``interface_type_definitions`` may be included when |SPARK| is
+extended to support tagged types.]
+
+.. _subtype_declarations:
+
+Subtype Declarations
+~~~~~~~~~~~~~~~~~~~~
+
+A ``constraint`` in |SPARK| cannot be defined using variable
+expressions except when it is the ``range`` of a
+``loop_parameter_specification``.  Dynamic subtypes are permitted but
+they must be defined using constants whose values may be derived from
+expressions containing variables.  Note that a formal parameter of a
+subprogram of mode **in** is a constant and may be used in defining a
+constraint.
+
+This restriction gives an explicit constant which can be referenced in
+analysis and proof.
+
+.. centered:: **Legality Rules**
+
+#. A ``constraint``, excluding the ``range`` of a
+   ``loop_parameter_specification``, shall not have a variable input.
+   This means that an expression used in defining a constraint shall
+   not read a variable, nor shall it call a function which (directly
+   or indirectly) reads a variable.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 3.2.2 LR A ``constraint``, excluding the
+           ``range`` of a ``loop_parameter_specification``, shall not
+           have a variable input.  This means that an expression used
+           in defining a constraint shall not read a variable, nor
+           shall it call a function which (directly or indirectly)
+           reads a variable.
+
+ 
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -117,15 +179,40 @@ Array Types
 An entity declared by a ``array_type_definition`` is in |SPARK| if its
 components are in |SPARK| and default initialization is in |SPARK|.
 
+.. _discriminants:
 
 Discriminants
 -------------
 
-A ``discriminant_specification`` is in |SPARK| if its type is
-discrete and it does not occur as part of a derived type declaration
-whose parent type is discriminated. [In other words, inherited
-discriminants shall not be hidden.]
+The following rules apply to discriminants in |SPARK|.
 
+.. centered:: **Legality Rules**
+
+#. The type of a ``discriminant_specification`` shall be discrete.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 3.7 LR The type of a
+         ``discriminant_specification`` shall be discrete.
+
+#. A ``discriminant_specification`` shall not occur as part of a
+   derived type declaration whose parent type is discriminated. [In
+   other words, inherited discriminants shall not be hidden.]
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 3.7 LR A ``discriminant_specification`` shall
+          not occur as part of a derived type declaration whose parent
+          type is discriminated.
+
+#. The ``default_expression`` of a ``discriminate_specification`` 
+   shall not have a variable input.
+
+   .. ifconfig:: Display_Trace_Units
+
+      :Trace Unit: FE 3.7 LR The ``default_expression`` of a
+          ``discriminate_specification`` shall not be a variable
+          expression.
 
 Record Types
 ------------
