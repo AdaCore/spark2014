@@ -443,8 +443,8 @@ There are no dynamic semantics associated with these aspects.
    * mode **in out**: the formal parameter is considered to have all
      properties; Async_Readers => True, Async_Writers => True,
      Effective_Reads => True, Effective_Writes => True. The actual
-     parameter in a subprogram call must be Volatile have all of these
-     properties set to True.
+     parameter in a subprogram call must be Volatile and have all of
+     these properties set to True.
 
    .. ifconfig:: Display_Trace_Units
 
