@@ -161,8 +161,8 @@ This other type should have a base type ranging from -10 to 9::
 Running |GNATprove| from GPS
 ----------------------------
 
-|GNATprove| can be run from GPS. There is a menu ``Prove`` with the following
-entries:
+|GNATprove| can be run from GPS. A ``SPARK`` menu is available with the
+following entries:
 
 .. csv-table::
    :header: "Submenu", "Action"
