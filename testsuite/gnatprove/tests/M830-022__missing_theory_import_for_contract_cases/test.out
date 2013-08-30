@@ -1,0 +1,10 @@
+state_machine.adb:25:8: info: disjoint contract cases proved
+state_machine.adb:25:35: info: contract case proved
+state_machine.adb:26:35: info: contract case proved
+state_machine.adb:27:35: info: contract case proved
+state_machine.adb:28:35: contract case not proved
+state_machine.adb:29:35: contract case not proved
+state_machine.adb:36:20: info: overflow check proved
+state_machine.adb:39:17: info: overflow check proved
+state_machine.adb:41:20: info: overflow check proved
+state_machine.adb:44:9: assertion not proved, requires false
