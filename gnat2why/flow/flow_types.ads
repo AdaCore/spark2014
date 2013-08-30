@@ -184,6 +184,25 @@ package Flow_Types is
    --  (this only really works for record fields and direct mappings;
    --  magic strings are assumed to not be default initialised)
 
+   function Is_Volatile (F : Flow_Id) return Boolean;
+   --  Returns true if the given flow id is volatile in any way.
+
+   function Has_Async_Readers (F : Flow_Id) return Boolean
+   with Post => (if Has_Async_Readers'Result then Is_Volatile (F));
+   --  Checks if F has async readers.
+
+   function Has_Async_Writers (F : Flow_Id) return Boolean
+   with Post => (if Has_Async_Writers'Result then Is_Volatile (F));
+   --  Checks if F has async writers.
+
+   function Has_Effective_Reads (F : Flow_Id) return Boolean
+   with Post => (if Has_Effective_Reads'Result then Has_Async_Writers (F));
+   --  Checks if reads of F are always effective.
+
+   function Has_Effective_Writes (F : Flow_Id) return Boolean
+   with Post => (if Has_Effective_Writes'Result then Has_Async_Writers (F));
+   --  Checks if writes to F are always effective.
+
    function Magic_String_Id
      (S       : Entity_Name;
       Variant : Flow_Id_Variant := Normal_Use)

@@ -16,7 +16,7 @@ package body Tests_Async_Writers
   with Refined_State => (State_With_Async_Writers => Vol)
 is
    Vol : Integer
-    with Volatile, Async_Writers;
+    with Volatile, Async_Writers, Effective_Reads;
 
    ----------------------------------------------------------------------
    --  The following are "correct" contracts and should not raise any
