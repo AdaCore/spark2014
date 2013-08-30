@@ -86,35 +86,35 @@ step_function.adb:72:17: info: range check proved
 step_function.adb:89:7: info: assertion proved
 step_function.adb:92:10: info: loop invariant initialization proved
 step_function.adb:92:10: loop invariant preservation not proved
-step_function.adb:112:29: index check not proved
-step_function.adb:115:29: index check not proved
-step_function.adb:118:27: index check not proved
-step_function.adb:118:54: index check not proved
-step_function.adb:125:30: index check not proved
-step_function.adb:125:56: index check not proved
-step_function.adb:129:30: index check not proved
-step_function.adb:129:56: index check not proved
-step_function.adb:134:36: index check not proved
-step_function.adb:134:62: index check not proved
-step_function.adb:139:36: index check not proved
-step_function.adb:139:62: index check not proved
-step_function.adb:144:26: index check not proved
-step_function.adb:145:19: precondition not proved
-step_function.adb:145:47: index check not proved
-step_function.adb:146:17: precondition not proved
-step_function.adb:146:45: index check not proved
+step_function.adb:105:29: index check not proved
+step_function.adb:108:29: index check not proved
+step_function.adb:111:27: index check not proved
+step_function.adb:111:54: index check not proved
+step_function.adb:118:30: index check not proved
+step_function.adb:118:56: index check not proved
+step_function.adb:122:30: index check not proved
+step_function.adb:122:56: index check not proved
+step_function.adb:127:36: index check not proved
+step_function.adb:127:62: index check not proved
+step_function.adb:132:36: index check not proved
+step_function.adb:132:62: index check not proved
+step_function.adb:137:26: index check not proved
+step_function.adb:138:19: precondition not proved
+step_function.adb:138:47: index check not proved
+step_function.adb:139:17: info: precondition proved
+step_function.adb:139:45: index check not proved
+step_function.adb:146:22: precondition not proved
+step_function.adb:147:22: info: precondition proved
 step_function.adb:153:22: precondition not proved
 step_function.adb:154:22: precondition not proved
 step_function.adb:160:22: precondition not proved
-step_function.adb:161:22: precondition not proved
-step_function.adb:167:22: precondition not proved
-step_function.adb:168:22: precondition not proved
-step_function.adb:176:19: precondition not proved
-step_function.adb:177:19: precondition not proved
-step_function.adb:183:22: precondition not proved
-step_function.adb:184:22: precondition not proved
-step_function.adb:188:10: assertion not proved
-step_function.adb:192:22: range check not proved
+step_function.adb:161:22: info: precondition proved
+step_function.adb:169:19: precondition not proved
+step_function.adb:170:19: info: precondition proved
+step_function.adb:176:22: precondition not proved
+step_function.adb:177:22: precondition not proved
+step_function.adb:181:10: assertion not proved
+step_function.adb:185:22: range check not proved
 step_function.ads:40:17: info: postcondition proved
 step_function.ads:46:24: info: index check proved
 step_function.ads:46:24: info: overflow check proved

@@ -95,18 +95,11 @@ package body Step_Function is
          Pragma Loop_Invariant (i1 <= SFun1.Number_Of_Delimiters);
          Pragma Loop_Invariant (i2 <= SFun2.Number_Of_Delimiters);
          Pragma Loop_Invariant (im <= Num_Delimiters_Range'Last);
-         Pragma Loop_Invariant (if scan_sfun1 and scan_sfun2 then im <= i1 + i2
-                                elsif scan_sfun1 or scan_sfun2 then
-                                   im <= i1 + i2 + 1);
          Pragma Loop_Invariant (scan_sfun1 or scan_sfun2);
+         Pragma Loop_Invariant (if scan_sfun1 and scan_sfun2 then im <= i1 + i2
+                                else im <= i1 + i2 + 1);
 
          -- Merge is a valid step function until im
-         Pragma Loop_Invariant
-           (if not scan_sfun1 then
-               SFun1.Step(i1).Delimiter < SFun2.Step(i2).Delimiter);
-         Pragma Loop_Invariant
-           (if not scan_sfun2 then
-               SFun2.Step(i2).Delimiter < SFun1.Step(i1).Delimiter);
          Pragma Loop_Invariant
            (if im > 0 and then scan_sfun1 then
                Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter);
@@ -129,12 +122,12 @@ package body Step_Function is
                   SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter));
          Pragma Loop_Invariant
            (if not scan_sfun1 then
-              (for all i in 0..i1 =>
+              (for all i in 0..SFun1.Number_Of_Delimiters =>
                    (for some j in 0..im-1 =>
                         SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter)));
          Pragma Loop_Invariant
            (if not scan_sfun2 then
-              (for all i in 0..i2 =>
+              (for all i in 0..SFun2.Number_Of_Delimiters =>
                    (for some j in 0..im-1 =>
                         SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter)));
 
