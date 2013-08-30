@@ -18,7 +18,7 @@
 
 \lstset{language=SPARK}
 
-\title{Optimising Verification Effort with SPARK 2014}
+\title{Optimising Verification Effort\\with SPARK 2014}
 \author{Andrew Hawthorn}
 \hypersetup{colorlinks=true}
 \begin{document}
@@ -57,63 +57,60 @@
 
 \begin{frame}[fragile]{Static Analysis Summary}
   \begin{columns}
-  \begin{column}{3cm}
-  \begin{center}
-    \begin{tikzpicture}[y=1.2cm]
+    \begin{column}{3cm}
+      \begin{center}
+        \begin{tikzpicture}[y=1.2cm]
 
-      \draw[fill=AnColour01,AnColour01,xstep=2cm, ystep=1cm] (-2.01,0) grid (0,5);
+          \draw[fill=AnColour01,AnColour01,xstep=2cm, ystep=1cm] (-2.01,0) grid (0,5);
 
-      \foreach \y/\descr/\fill in {
-        6cm/In SPARK subset/green,
-        5cm/Variables Initialised/green,
-        4cm/No R-T Errors/green,
-        3cm/Globals Satisfied/green,
-        2cm/Partially proven/green,
-        1cm/Fully proven/green}
-      {
-        \node[font=\small, anchor=north, text width=1.7cm, text badly centered] at (-1.2, \y) {\descr};
-        \filldraw[fill=\fill, draw=black] (-0.2,\y-0.5cm) circle (0.1cm);
-      }
+          \foreach \y/\descr/\fill in {
+            6cm/In SPARK subset/green,
+            5cm/Variables Initialised/green,
+            4cm/No R-T Errors/green,
+            3cm/Globals Satisfied/green,
+            2cm/Partially proven/green,
+            1cm/Fully proven/green}
+          {
+            \node[font=\small, anchor=north, text width=1.7cm, text badly centered] at (-1.2, \y) {\descr};
+            \filldraw[fill=\fill, draw=black] (-0.2,\y-0.5cm) circle (0.1cm);
+          }
 
-%      \draw[->] (0, 0) -- (7.5, 0) node [anchor=west] {scale};
-%      \draw[->] (0, 0) -- (0, 3) node [anchor=east] {rigour};
+          % \draw[->] (0, 0) -- (7.5, 0) node [anchor=west] {scale};
+          % \draw[->] (0, 0) -- (0, 3) node [anchor=east] {rigour};
 
-    \end{tikzpicture}
-  \end{center}
-  \end{column}
-  \begin{column}{9cm}
-%  \begin{block}{Example}
-    
-     \begin{lstlisting}[language=SPARK]
-package Conference_Numbers 
-is 
+        \end{tikzpicture}
 
-A_Count, P_Count : Integer := 0;
-
-   procedure Inc_Audience (N : in Integer)
-      with Global => (In_Out => A_Count),
-           Pre    => (N >= 0),
-           Post   => (A_Count = A_Count + N);
-
-end Counters;
-
-package body Counters 
-is 
-
-   procedure Inc_Audience (N : in Integer)
-   is
-   begin
-      A_Count = A_Count + N;
-   end Inc_Audience;
-
-end Counters;
+      \end{center}
+    \end{column}
 
 
-\end{lstlisting}
+    \begin{column}{9cm}
+      % \begin{block}{Example}
 
-%  \end{blocK}
-   \end{column}
-   \end{columns}
+      \begin{pxcode}[language=SPARK,gobble=8]
+        package Conference_Numbers
+        is
+           A_Count, P_Count : Integer := 0;
+
+           procedure Inc_Audience (N : Integer)
+           with Global => (In_Out => A_Count),
+                Pre    => (N >= 0),
+                Post   => (A_Count = A_Count + N);
+        end Counters;
+
+        package body Counters
+        is
+           procedure Inc_Audience (N : Integer)
+           is
+           begin
+              A_Count := A_Count + N;
+           end Inc_Audience;
+        end Counters;
+      \end{pxcode}
+
+      % \end{blocK}
+    \end{column}
+  \end{columns}
 
 \end{frame}
 
