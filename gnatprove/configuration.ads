@@ -124,24 +124,24 @@ package Configuration is
    --  gnatprove. The hierarchy looks as follows:
    --  prefix
    --  prefix/lib
-   --  prefix/lib/gnatprove          - ALI files of the stdlib
-   --  prefix/libexec/spark2014
-   --  prefix/libexec/spark2014/bin  - all auxiliary tools, e.g. gprbuild
+   --  prefix/lib/spark2014          - ALI files of the stdlib
+   --  prefix/libexec/spark
+   --  prefix/libexec/spark/bin      - all auxiliary tools, e.g. gprbuild
    --  prefix/share
    --  prefix/share/why3             - files that come with Why3
-   --  prefix/share/gnatprove/config - gprbuild config files
-   --  prefix/share/gnatprove/stdlib - Why3 files of the stdlib
-   --  prefix/share/gnatprove/theories - Why3 files for Ada theories
+   --  prefix/share/spark/config     - gprbuild config files
+   --  prefix/share/spark/stdlib     - Why3 files of the stdlib
+   --  prefix/share/spark/theories   - Why3 files for Ada theories
    --
    Prefix           : constant String := Executable_Location;
    Lib_Dir          : constant String := Compose (Prefix, "lib");
-   Stdlib_ALI_Dir   : constant String := Compose (Lib_Dir, "gnatprove");
+   Stdlib_ALI_Dir   : constant String := Compose (Lib_Dir, "spark2014");
    Libexec_Dir      : constant String :=
-      Compose (Compose (Prefix, "libexec"), "spark2014");
+      Compose (Compose (Prefix, "libexec"), "spark");
    Libexec_Bin_Dir  : constant String := Compose (Libexec_Dir, "bin");
    Share_Dir        : constant String := Compose (Prefix, "share");
    Why3_Dir         : constant String := Compose (Share_Dir, "why3");
-   Gnatprove_Dir    : constant String := Compose (Share_Dir, "gnatprove");
+   Gnatprove_Dir    : constant String := Compose (Share_Dir, "spark");
    Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
    Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
    Stdlib_Dir       : constant String := Compose (Gnatprove_Dir, "stdlib");
