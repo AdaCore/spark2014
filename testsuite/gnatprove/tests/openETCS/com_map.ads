@@ -40,12 +40,12 @@ package Com_Map is
    package Com_To_RBC_Map is new Ada.Containers.Formal_Hashed_Maps
      (Key_Type        => RBC_RIU_ID_t,
       Element_Type    => My_Boolean, -- False: com being established
-      -- True : com established
+                                     -- True : com established
       Hash            => RBC_RIU_ID_Hash,
       Equivalent_Keys => Equivalent_Keys,
       "="             => Equal_Elements);
 
    function Contains (Map : Com_To_RBC_Map.Map; Id : RBC_RIU_ID_T) return Boolean
-   is (Com_To_RBC_Map.Contains (Map, Id) and
-         Com_To_RBC_Map.Element (Map, Id));
+   is (Com_To_RBC_Map.Contains (Map, Id) and then
+       Com_To_RBC_Map.Element (Map, Id));
 end;
