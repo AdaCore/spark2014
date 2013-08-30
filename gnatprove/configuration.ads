@@ -124,7 +124,7 @@ package Configuration is
    --  gnatprove. The hierarchy looks as follows:
    --  prefix
    --  prefix/lib
-   --  prefix/lib/spark2014          - ALI files of the stdlib
+   --  prefix/lib/spark/ali          - ALI files of the stdlib
    --  prefix/libexec/spark
    --  prefix/libexec/spark/bin      - all auxiliary tools, e.g. gprbuild
    --  prefix/share
@@ -135,9 +135,10 @@ package Configuration is
    --
    Prefix           : constant String := Executable_Location;
    Lib_Dir          : constant String := Compose (Prefix, "lib");
-   Stdlib_ALI_Dir   : constant String := Compose (Lib_Dir, "spark2014");
+   Stdlib_ALI_Dir   : constant String :=
+     Compose (Compose (Lib_Dir, "spark"), "ali");
    Libexec_Dir      : constant String :=
-      Compose (Compose (Prefix, "libexec"), "spark");
+     Compose (Compose (Prefix, "libexec"), "spark");
    Libexec_Bin_Dir  : constant String := Compose (Libexec_Dir, "bin");
    Share_Dir        : constant String := Compose (Prefix, "share");
    Why3_Dir         : constant String := Compose (Share_Dir, "why3");
