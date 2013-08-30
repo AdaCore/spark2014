@@ -31,6 +31,7 @@ with Einfo;    use Einfo;
 with Namet;    use Namet;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
+with Snames;   use Snames;
 
 with Output;   use Output;
 with Casing;   use Casing;
@@ -285,6 +286,90 @@ package body Flow_Types is
             raise Why.Unexpected_Node;
       end case;
    end Get_Default_Initialization;
+
+   -----------------
+   -- Is_Volatile --
+   -----------------
+
+   function Is_Volatile (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Null_Value | Magic_String =>
+            return False;
+         when Direct_Mapping =>
+            return Is_Volatile (Get_Direct_Mapping_Id (F));
+         when Record_Field =>
+            raise Why.Not_Implemented;
+      end case;
+   end Is_Volatile;
+
+   -----------------------
+   -- Has_Async_Readers --
+   -----------------------
+
+   function Has_Async_Readers (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Null_Value | Magic_String =>
+            return False;
+         when Direct_Mapping =>
+            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                        Pragma_Async_Readers));
+         when Record_Field =>
+            raise Why.Not_Implemented;
+      end case;
+   end Has_Async_Readers;
+
+   -----------------------
+   -- Has_Async_Writers --
+   -----------------------
+
+   function Has_Async_Writers (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Null_Value | Magic_String =>
+            return False;
+         when Direct_Mapping =>
+            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                        Pragma_Async_Writers));
+         when Record_Field =>
+            raise Why.Not_Implemented;
+      end case;
+   end Has_Async_Writers;
+
+   -------------------------
+   -- Has_Effective_Reads --
+   -------------------------
+
+   function Has_Effective_Reads (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Null_Value | Magic_String =>
+            return False;
+         when Direct_Mapping =>
+            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                        Pragma_Effective_Reads));
+         when Record_Field =>
+            raise Why.Not_Implemented;
+      end case;
+   end Has_Effective_Reads;
+
+   --------------------------
+   -- Has_Effective_Writes --
+   --------------------------
+
+   function Has_Effective_Writes (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Null_Value | Magic_String =>
+            return False;
+         when Direct_Mapping =>
+            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                        Pragma_Effective_Writes));
+         when Record_Field =>
+            raise Why.Not_Implemented;
+      end case;
+   end Has_Effective_Writes;
 
    ---------------------
    -- Magic_String_Id --
