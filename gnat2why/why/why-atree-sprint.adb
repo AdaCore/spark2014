@@ -37,7 +37,6 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Ada.Directories;
 with Ada.Direct_IO;
 with GNAT.Regpat;
-with Ada.Command_Line;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Ada.Strings.Unbounded;
 
@@ -1754,53 +1753,45 @@ package body Why.Atree.Sprint is
       use GNAT.Regpat;
 
       function Get_Whole_File return String;
+      --  ???
 
       function Get_Regexp return String;
+      --  ???
 
-      procedure Apply_Subst (Text : String;
-                             Matches : Match_Array);
+      procedure Apply_Subst (Text : String; Matches : Match_Array);
+      --  ???
 
       function Locate_File return String;
+      --  ???
 
       function Locate_File return String is
-         use Ada.Command_Line;
          use Ada.Directories;
 
-         Command   : constant String := Command_Name;
-         File_Name : constant String  :=
-           Get_Name_String (Get_File_Name (Node));
-         From_Command : constant String :=
-           Compose (Compose (Compose (Compose (Containing_Directory
-                    (Containing_Directory (Command)), "share"),
-                    "gnatprove"), "theories"), File_Name);
+         Dir : String_Access := Locate_Exec_On_Path (Exec_Name => "gnatprove");
       begin
-
-         if Is_Absolute_Path (Command) and then
-           Is_Readable_File (From_Command) then
-            return From_Command;
-         else
-            declare
-               R : String_Access :=
-                 Locate_Exec_On_Path (Exec_Name => "gnatprove");
-            begin
-               pragma Assert (R /= null and then
-                              Is_Readable_File
-                                (Compose (Compose (Compose (
-                                 Compose (Containing_Directory (
-                                   Containing_Directory (R.all)), "share"),
-                                 "gnatprove"), "theories"), File_Name)));
-               declare
-                     S : constant String :=
-                       Compose (Compose (Compose (
-                                Compose (Containing_Directory (
-                                  Containing_Directory (R.all)), "share"),
-                                "gnatprove"), "theories"), File_Name);
-               begin
-                  Free (R);
-                  return S;
-               end;
-            end;
+         if Dir = null then
+            --  ??? Generate a proper error message instead
+            raise Program_Error;
          end if;
+
+         declare
+            File_Name : constant String :=
+              Get_Name_String (Get_File_Name (Node));
+            From_Command : constant String :=
+              Compose (Compose (Compose (Compose (Containing_Directory
+                       (Containing_Directory (Dir.all)), "share"),
+                       "spark"), "theories"), File_Name);
+
+         begin
+            Free (Dir);
+
+            if Is_Readable_File (From_Command) then
+               return From_Command;
+            else
+               --  ??? Generate a proper error message instead
+               raise Program_Error;
+            end if;
+         end;
       end Locate_File;
 
       function Get_Whole_File return String is
@@ -1867,14 +1858,17 @@ package body Why.Atree.Sprint is
                   return;
                end if;
             end;
+
             Next (Position);
          end loop;
+
          raise Program_Error;
       end Apply_Subst;
 
       Text    : constant String := Get_Whole_File;
    begin
       NL (O);
+
       if Node_Lists.Is_Empty (Get_List (+Get_Subst (Node))) then
          P (O, Text);
       else
@@ -1890,9 +1884,11 @@ package body Why.Atree.Sprint is
                Apply_Subst (Text, Matches);
                Current := Matches (0).Last + 1;
             end loop;
+
             P (O, Text (Current .. Text'Last));
          end;
       end if;
+
       NL (O);
       State.Control := Abandon_Children;
    end Custom_Declaration_Pre_Op;
