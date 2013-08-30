@@ -87,9 +87,9 @@ install-all:
 install: install-stdlib
 	mkdir -p $(CONFIGDIR)
 	mkdir -p $(THEORIESDIR)
-	$(CP) share/gnatprove/config/*cgpr $(CONFIGDIR)
-	$(CP) share/gnatprove/theories/*why $(THEORIESDIR)
-	$(CP) share/gnatprove/theories/*mlw $(THEORIESDIR)
+	$(CP) share/spark/config/*cgpr $(CONFIGDIR)
+	$(CP) share/spark/theories/*why $(THEORIESDIR)
+	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
 
 doc: $(DOC)
 
