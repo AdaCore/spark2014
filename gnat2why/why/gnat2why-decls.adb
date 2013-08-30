@@ -1353,7 +1353,7 @@ package body Gnat2Why.Decls is
                               Mutable  => False,
                               B_Type   => F_Type);
 
-                           Args (Count) := Insert_Conversion
+                           Args (Count) := Insert_Simple_Conversion
                              (Domain        => EW_Term,
                               Expr          => +Name,
                               To            => +A_Type,
@@ -1376,7 +1376,7 @@ package body Gnat2Why.Decls is
                            Labels      =>
                              (1 => New_Identifier (Name => "inline")),
                            Def         =>
-                             Insert_Conversion
+                             Insert_Simple_Conversion
                              (Domain        => EW_Term,
                               Expr          => New_Call
                                 (Domain   => EW_Term,

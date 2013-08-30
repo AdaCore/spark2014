@@ -167,7 +167,7 @@ package Why.Gen.Expr is
       To       : W_Base_Type_Id;
       From     : W_Base_Type_Id) return W_Expr_Id;
 
-   function Insert_Conversion
+   function Insert_Scalar_Conversion
      (Domain        : EW_Domain;
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
@@ -177,19 +177,15 @@ package Why.Gen.Expr is
    --  We expect Expr to be of the type that corresponds to the type "From".
    --  We insert a conversion so that its type corresponds to "To".
    --  When Range_Check is set, a range check is inserted into the conversion,
-   --  and the node is used to determine the kind of the check. "Range check"
-   --  here includes regular range checks of scalar types, index checks, length
-   --  checks of constrained arrays and range checks for conversion to
-   --  unconstrained array types.
+   --  and the node is used to determine the kind of the check.
 
-   function Record_Conversion_With_Check
+   function Insert_Record_Conversion
      (Ada_Node    : Node_Id;
       Domain      : EW_Domain;
       Expr        : W_Expr_Id;
       From        : W_Base_Type_Id;
       To          : W_Base_Type_Id;
-      Discr_Check : Node_Id)
-      return W_Expr_Id;
+      Discr_Check : Node_Id := Empty) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 

@@ -4451,68 +4451,88 @@ package body Gnat2Why.Expr is
       --  determined by looking at the parent node, in that special case we go
       --  one step down for the Range_Check_Node.
 
-      if Domain in EW_Term | EW_Prog then
-         if Is_Record_Conversion (Current_Type, Expected_Type) then
-            declare
-               Discr_Check_Node : Node_Id := Empty;
-            begin
-               if Domain = EW_Prog and then
-                 Nkind (Parent (Expr)) in
-                   N_Type_Conversion | N_Assignment_Statement then
+      --  In predicate domain, only the Boolean type is used, no conversion is
+      --  needed.
 
-                  --  ??? in which cases exactly do we need a check?
+      if Domain in EW_Pred then
+         null;
 
-                  Discr_Check_Node := Parent (Expr);
-               end if;
-               T := Record_Conversion_With_Check
-                 (Domain        => Domain,
-                  Ada_Node      => Expr,
-                  Expr          => T,
-                  From          => Current_Type,
-                  To            => Expected_Type,
-                  Discr_Check   => Discr_Check_Node);
-            end;
-         else
-            declare
-               Range_Check_Node : Node_Id := Empty;
-            begin
+      --  Conversion between record types need to go through their common root
+      --  record type. A discriminant check may be needed. Currently perform it
+      --  on all discriminant record types, as the flag Do_Discriminant_Check
+      --  is not set appropriately by the frontend on type conversions.
 
-               if Domain /= EW_Prog then
-                  Range_Check_Node := Empty;
-               elsif Do_Range_Check (Expr) then
-                  Range_Check_Node := Expr;
-               elsif Nkind (Expr) = N_Type_Conversion and then
-                 Do_Overflow_Check (Expr) then
-                  Range_Check_Node := Expression (Expr);
-               end if;
+      elsif Is_Record_Conversion (Current_Type, Expected_Type) then
+         declare
+            Discr_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog
+                 and then Nkind (Parent (Expr)) in N_Type_Conversion      |
+                                                   N_Assignment_Statement
+               then
+                  Parent (Expr)
+               else Empty);
+         begin
+            T := Insert_Record_Conversion (Domain      => Domain,
+                                           Ada_Node    => Expr,
+                                           Expr        => T,
+                                           From        => Current_Type,
+                                           To          => Expected_Type,
+                                           Discr_Check => Discr_Check_Node);
+         end;
 
-               if Nkind (Parent (Expr)) in
-                 N_Type_Conversion | N_Assignment_Statement | N_Op_And |
-               N_Op_Or | N_Op_Xor and then
-                 Do_Length_Check (Parent (Expr)) and then
-                 Domain = EW_Prog then
-                  Range_Check_Node := Expr;
-               end if;
+      elsif Is_Array_Conversion (Current_Type, Expected_Type) then
+         declare
+            Range_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog then
+                (if Do_Range_Check (Expr) then
+                    Expr
+                 elsif Nkind (Parent (Expr)) in N_Type_Conversion |
+                                                N_Assignment_Statement |
+                                                N_Op_And |
+                                                N_Op_Or |
+                                                N_Op_Xor
+                   and then Do_Length_Check (Parent (Expr))
+                 then
+                    Expr
+                 else Empty)
+               else Empty);
+         begin
+            T := Insert_Array_Conversion (Domain      => Domain,
+                                          Ada_Node    => Expr,
+                                          Expr        => T,
+                                          From        => Current_Type,
+                                          To          => Expected_Type,
+                                          Range_Check => Range_Check_Node);
+         end;
 
-               if Is_Array_Conversion (Current_Type, Expected_Type) then
-                  T :=
-                    Insert_Array_Conversion
-                      (Domain        => Domain,
-                       Ada_Node      => Expr,
-                       Expr          => T,
-                       From          => Current_Type,
-                       To            => Expected_Type,
-                       Range_Check   => Range_Check_Node);
-               else
-                  T := Insert_Conversion (Domain        => Domain,
-                                          Ada_Node      => Expr,
-                                          Expr          => T,
-                                          From          => Current_Type,
-                                          To            => Expected_Type,
-                                          Range_Check   => Range_Check_Node);
-               end if;
-            end;
-         end if;
+      --  Conversion between scalar types
+
+      else
+         declare
+            --  Node whose Etype gives the bounds for a range check, if not
+            --  Empty. This node is directly Expr when Do_Range_Check is
+            --  set, or the expression of a type conversion whose flag
+            --  Do_Overflow_Check is set. (See description of these flags
+            --  in sinfo.ads for details.)
+
+            Range_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog then
+                 (if Do_Range_Check (Expr) then
+                       Expr
+                  elsif Nkind (Expr) = N_Type_Conversion
+                  and then Do_Overflow_Check (Expr)
+                  then
+                     Expression (Expr)
+                  else Empty)
+               else Empty);
+         begin
+            T := Insert_Scalar_Conversion (Domain      => Domain,
+                                           Ada_Node    => Expr,
+                                           Expr        => T,
+                                           From        => Current_Type,
+                                           To          => Expected_Type,
+                                           Range_Check => Range_Check_Node);
+         end;
       end if;
 
       return T;
