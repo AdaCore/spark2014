@@ -1,4 +1,4 @@
-com_map.ads:50:24: precondition not proved
+com_map.ads:50:22: info: precondition proved
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: info: loop invariant initialization proved
 deceleration_curve.adb:39:10: info: loop invariant preservation proved
@@ -86,29 +86,35 @@ step_function.adb:72:17: info: range check proved
 step_function.adb:89:7: info: assertion proved
 step_function.adb:92:10: info: loop invariant initialization proved
 step_function.adb:92:10: loop invariant preservation not proved
-step_function.adb:103:39: info: index check proved
-step_function.adb:103:66: info: index check proved
-step_function.adb:110:30: info: index check proved
-step_function.adb:110:56: info: index check proved
-step_function.adb:114:30: info: index check proved
-step_function.adb:114:56: info: index check proved
-step_function.adb:119:26: info: index check proved
-step_function.adb:120:19: info: precondition proved
-step_function.adb:120:47: info: index check proved
-step_function.adb:121:17: info: precondition proved
-step_function.adb:121:45: info: index check proved
-step_function.adb:128:22: info: precondition proved
-step_function.adb:129:22: info: precondition proved
-step_function.adb:135:22: info: precondition proved
-step_function.adb:136:22: info: precondition proved
-step_function.adb:142:22: info: precondition proved
-step_function.adb:143:22: info: precondition proved
-step_function.adb:151:19: info: precondition proved
-step_function.adb:152:19: info: precondition proved
-step_function.adb:158:22: info: precondition proved
-step_function.adb:159:22: info: precondition proved
-step_function.adb:163:58: assertion not proved, requires im < i1 + i2
-step_function.adb:165:22: range check not proved
+step_function.adb:112:29: index check not proved
+step_function.adb:115:29: index check not proved
+step_function.adb:118:27: index check not proved
+step_function.adb:118:54: index check not proved
+step_function.adb:125:30: index check not proved
+step_function.adb:125:56: index check not proved
+step_function.adb:129:30: index check not proved
+step_function.adb:129:56: index check not proved
+step_function.adb:134:36: index check not proved
+step_function.adb:134:62: index check not proved
+step_function.adb:139:36: index check not proved
+step_function.adb:139:62: index check not proved
+step_function.adb:144:26: index check not proved
+step_function.adb:145:19: precondition not proved
+step_function.adb:145:47: index check not proved
+step_function.adb:146:17: precondition not proved
+step_function.adb:146:45: index check not proved
+step_function.adb:153:22: precondition not proved
+step_function.adb:154:22: precondition not proved
+step_function.adb:160:22: precondition not proved
+step_function.adb:161:22: precondition not proved
+step_function.adb:167:22: precondition not proved
+step_function.adb:168:22: precondition not proved
+step_function.adb:176:19: precondition not proved
+step_function.adb:177:19: precondition not proved
+step_function.adb:183:22: precondition not proved
+step_function.adb:184:22: precondition not proved
+step_function.adb:188:10: assertion not proved
+step_function.adb:192:22: range check not proved
 step_function.ads:40:17: info: postcondition proved
 step_function.ads:46:24: info: index check proved
 step_function.ads:46:24: info: overflow check proved
@@ -126,15 +132,15 @@ step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved
 step_function.ads:86:6: info: postcondition proved
 step_function.ads:101:4: postcondition not proved
-step_function.ads:106:30: info: index check proved
+step_function.ads:106:30: index check not proved
 step_function.ads:106:56: info: index check proved
-step_function.ads:111:30: info: index check proved
+step_function.ads:111:30: index check not proved
 step_function.ads:111:56: info: index check proved
-step_function.ads:114:25: info: index check proved
+step_function.ads:114:25: index check not proved
 step_function.ads:114:40: info: precondition proved
-step_function.ads:115:61: info: index check proved
+step_function.ads:115:61: index check not proved
 step_function.ads:116:40: info: precondition proved
-step_function.ads:117:61: info: index check proved
+step_function.ads:117:61: index check not proved
 step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
 step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
@@ -152,7 +158,7 @@ step_function_test.adb:50:19: info: precondition proved
 step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) =
 step_function_test.adb:51:19: info: precondition proved
 step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
-step_function_test.adb:56:4: info: precondition proved
+step_function_test.adb:56:4: precondition not proved
 step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved
