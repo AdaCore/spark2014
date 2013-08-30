@@ -2939,7 +2939,25 @@ package body SPARK_Definition is
          end loop;
 
          while Present (Decl) loop
-            if Nkind (Decl) in N_Full_Type_Declaration         |
+            if Nkind (Decl) in N_Package_Declaration then
+
+               --  Mark elements of any sub-package
+
+               declare
+                  Id         : constant Entity_Id := Defining_Entity (Decl);
+                  Vis_Decls  : constant List_Id :=
+                    Visible_Declarations (Specification (Decl));
+               begin
+                  if Current_Unit_Is_Main_Spec then
+                     Spec_Entities.Append (Id);
+
+                  elsif Current_Unit_Is_Main_Body then
+                     Body_Entities.Append (Id);
+                  end if;
+
+                  Declare_In_Package_With_External_Axioms (Vis_Decls);
+               end;
+            elsif Nkind (Decl) in N_Full_Type_Declaration         |
                                N_Private_Type_Declaration      |
                                N_Private_Extension_Declaration |
                                N_Subtype_Declaration           |
