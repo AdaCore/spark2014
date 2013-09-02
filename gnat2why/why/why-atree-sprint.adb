@@ -1757,10 +1757,18 @@ package body Why.Atree.Sprint is
       --  Return whole contents of file associated with Node
 
       function Get_Regexp return String;
-      --  ???
+      --  Retrun the regexp that should be used to match the content of the
+      --  file associated with Node. If the substitution associated with Node
+      --  is : ((From => F1, To => T1), ..., (From => Fn, To => Tn)),
+      --  return F1 & '|' & ... & '|' & Fn.
 
       procedure Apply_Subst (Text : String; Matches : Match_Array);
-      --  ???
+      --  Output the correct replacement for the match Matches in Text. If the
+      --  substitution associated with Node is : ((From => F1, To => T1), ...,
+      --  (From => Fn, To => Tn)), then try to match the substring of Text
+      --  corresponding to Matches with F1, ... and then Fn. If a match is
+      --  found with Fi then output Ti.
+      --  Should be called on the result of a match with Get_Regexp.
 
       function Locate_File return String;
       --  Return name of file associated with Node
