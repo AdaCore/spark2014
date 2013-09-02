@@ -486,6 +486,8 @@ package body Gnat2Why.Driver is
       Translate_List_Entities (Spec_Entities);
       Translate_List_Entities (Body_Entities);
 
+      For_All_External_Objects (Translate_External_Object'Access);
+
       --  Generate VCs for entities of unit. This must follow the generation of
       --  modules for entities, so that all completions for deferred constants
       --  and expression functions are defined.

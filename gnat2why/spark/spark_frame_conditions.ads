@@ -119,4 +119,9 @@ package SPARK_Frame_Conditions is
    --  could be found (i.e. when the object is defined in the body of a with'ed
    --  unit), the empty node is returned.
 
+   procedure For_All_External_Objects
+     (Process : not null access procedure (E : Entity_Name));
+   --  invoke the callback for all object entity_names that do not correspond
+   --  to an entity in the tree (i.e. are defined in some other unit body).
+
 end SPARK_Frame_Conditions;

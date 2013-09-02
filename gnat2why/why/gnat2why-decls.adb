@@ -1487,6 +1487,35 @@ package body Gnat2Why.Decls is
       end if;
    end Translate_Package_With_External_Axioms;
 
+   -------------------------------
+   -- Translate_External_Object --
+   -------------------------------
+
+   procedure Translate_External_Object (E : Entity_Name) is
+      File : Why_File := Why_Files (WF_Variables);
+   begin
+      Open_Theory
+        (File, Capitalize_First (E.all),
+         Comment =>
+           "Module declaring the external object """ & E.all &
+           ","" created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
+
+      Emit (File.Cur_Theory,
+            New_Type
+              (Name => To_Ident (WNE_Type),
+               Args => 0));
+      Emit
+        (File.Cur_Theory,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E.all, Local => True),
+            Ref_Type =>
+              New_Abstract_Type (Name => To_Ident (WNE_Type))));
+
+      Close_Theory (File, Filter_Entity => Empty, No_Import => True);
+   end Translate_External_Object;
+
    ---------------------------
    -- Translate_Loop_Entity --
    ---------------------------

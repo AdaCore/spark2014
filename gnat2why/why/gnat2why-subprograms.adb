@@ -199,7 +199,7 @@ package body Gnat2Why.Subprograms is
            New_Deref
              (Right =>
                   To_Why_Id (Get_Name_String
-                     (Get_Symbol (Binders (Cnt).B_Name))));
+                     (Get_Symbol (Binders (Cnt).B_Name)), Local => False));
          Cnt := Cnt + 1;
       end loop;
 
@@ -244,7 +244,7 @@ package body Gnat2Why.Subprograms is
       for Name of Write_Names loop
          Effects_Append_To_Writes
            (Eff,
-            To_Why_Id (Obj => Name.all));
+            To_Why_Id (Obj => Name.all, Local => False));
       end loop;
 
       --  Add all OUT and IN OUT parameters as potential writes
@@ -270,7 +270,8 @@ package body Gnat2Why.Subprograms is
       end;
 
       for Name of Read_Names loop
-         Effects_Append_To_Reads (Eff, To_Why_Id (Obj => Name.all));
+         Effects_Append_To_Reads (Eff, To_Why_Id (Obj   => Name.all,
+                                                  Local => False));
       end loop;
 
       Add_Effect_Imports (File, Read_Names);
@@ -1065,7 +1066,7 @@ package body Gnat2Why.Subprograms is
       --  Compute_Contract_Cases_Entry_Checks may make use of the
       --  infix operators.
 
-      Add_With_Clause (File, "int", "Int", EW_Import, EW_Theory);
+      Add_With_Clause (File.Cur_Theory, "int", "Int", EW_Import, EW_Theory);
 
       Emit
         (File.Cur_Theory,

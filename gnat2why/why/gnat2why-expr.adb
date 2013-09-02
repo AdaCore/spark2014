@@ -910,7 +910,7 @@ package body Gnat2Why.Expr is
                   if Ada_Ent_To_Why.Has_Element (C) then
                      T := +Ada_Ent_To_Why.Element (C).B_Name;
                   else
-                     T := +To_Why_Id (Elt.all);
+                     T := +To_Why_Id (Elt.all, Local => False);
                   end if;
 
                   if Params.Ref_Allowed then

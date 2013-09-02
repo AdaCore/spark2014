@@ -507,6 +507,43 @@ package body SPARK_Frame_Conditions is
       end if;
    end Find_Object_Entity;
 
+   ------------------------------
+   -- For_All_External_Objects --
+   ------------------------------
+
+   procedure For_All_External_Objects
+     (Process : not null access procedure (E : Entity_Name))
+   is
+
+      procedure For_All_Define_Sets (Key : Id; S : Id_Set.Set);
+      --  will be called for all "define sets" for all subprograms
+
+      -------------------------
+      -- For_All_Define_Sets --
+      -------------------------
+
+      procedure For_All_Define_Sets (Key : Id; S : Id_Set.Set)
+      is
+         pragma Unreferenced (Key);
+      begin
+         for Elt of S loop
+            declare
+               E : constant Entity_Name := Entity_Names.Element (Elt);
+            begin
+               if not (Present (Find_Object_Entity (E))) then
+                  Process (E);
+               end if;
+            end;
+         end loop;
+      end For_All_Define_Sets;
+
+      --  beginning of processing for For_All_External_Objects
+   begin
+      for C in Defines.Iterate loop
+         Id_Map.Query_Element (C, For_All_Define_Sets'Access);
+      end loop;
+   end For_All_External_Objects;
+
    ---------------
    -- Free_SCCs --
    ---------------

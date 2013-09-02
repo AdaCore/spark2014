@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;     use Types;
-with Why.Inter; use Why.Inter;
+with Types;                  use Types;
+with Why.Inter;              use Why.Inter;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 package Gnat2Why.Decls is
 
@@ -56,6 +57,10 @@ package Gnat2Why.Decls is
       E    : Entity_Id);
    --  Generates a theory that completes the base theory for a constant
    --  declaration.
+
+   procedure Translate_External_Object (E : Entity_Name);
+   --  For a "magic string" generate a dummy declaration module which contains
+   --  the type and the variable declaration.
 
    procedure Translate_Package_With_External_Axioms
      (Package_Entity : Entity_Id);

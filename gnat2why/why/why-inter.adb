@@ -81,12 +81,6 @@ package body Why.Inter is
       T_Name   : String;
       Use_Kind : EW_Clone_Type);
 
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              File     : String;
-                              T_Name   : String;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
-
    package Standard_Imports is
 
       --  This package serves to trigger the necessary imports on the
@@ -1384,13 +1378,22 @@ package body Why.Inter is
       end if;
    end To_Why_Id;
 
-   function To_Why_Id (Obj : String) return W_Identifier_Id
+   function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id
    is
    begin
       if Obj = SPARK_Xrefs.Name_Of_Heap_Variable then
          return New_Identifier (Name => SPARK_Xrefs.Name_Of_Heap_Variable);
       else
-         return Prefix (Obj, Avoid_Why3_Keyword (Extract_Object_Name (Obj)));
+         declare
+            Name : constant String :=
+              Avoid_Why3_Keyword (Extract_Object_Name (Obj));
+         begin
+            if Local then
+               return New_Identifier (Name => Name);
+            else
+               return Prefix (Obj, Name);
+            end if;
+         end;
       end if;
    end To_Why_Id;
 

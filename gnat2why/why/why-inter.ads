@@ -157,6 +157,12 @@ package Why.Inter is
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
+
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
+                              File     : String;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
    --  Add a package name to the context of a Why package.
 
    procedure Add_Use_For_Entity
@@ -206,7 +212,7 @@ package Why.Inter is
    --  The Rec entity is used only for record components and specifies the
    --  (sub-)type which contains the component.
 
-   function To_Why_Id (Obj : String) return W_Identifier_Id;
+   function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id;
    --  This function should only be called for object references for effects
 
    function To_Why_Type (T : String) return W_Identifier_Id;
