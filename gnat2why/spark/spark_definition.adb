@@ -1372,6 +1372,12 @@ package body SPARK_Definition is
 
       procedure Mark_Parameter_Entity (E : Entity_Id) is
       begin
+
+         --  all objects should be registered in the object map of
+         --  SPARK_Frame_Conditions. See the documentation there.
+
+         Register_Object_Entity (E);
+
          if not In_SPARK (Etype (E)) then
             Mark_Violation ("type", E, From => Etype (E));
          end if;
