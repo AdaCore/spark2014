@@ -2949,20 +2949,8 @@ package body SPARK_Definition is
 
                --  Mark elements of any sub-package
 
-               declare
-                  Id         : constant Entity_Id := Defining_Entity (Decl);
-                  Vis_Decls  : constant List_Id :=
-                    Visible_Declarations (Specification (Decl));
-               begin
-                  if Current_Unit_Is_Main_Spec then
-                     Spec_Entities.Append (Id);
-
-                  elsif Current_Unit_Is_Main_Body then
-                     Body_Entities.Append (Id);
-                  end if;
-
-                  Declare_In_Package_With_External_Axioms (Vis_Decls);
-               end;
+               Declare_In_Package_With_External_Axioms
+                 (Visible_Declarations (Specification (Decl)));
             elsif Nkind (Decl) in N_Full_Type_Declaration         |
                                N_Private_Type_Declaration      |
                                N_Private_Extension_Declaration |
