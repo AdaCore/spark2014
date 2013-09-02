@@ -102,4 +102,21 @@ package SPARK_Frame_Conditions is
    --  scope that should have been present in some ALI file. This mode is used
    --  in simpler modes of operation that do not lead to translation into Why.
 
+   --  -----------------------------------------
+   --  Mapping between Entities and Entity_Names
+   --  -----------------------------------------
+
+   --  The following two procedures are used to fill in and query a map that
+   --  stores the entity (if present) for a given entity_name. Basically, if
+   --  the entity name is present somewhere in the closure of the with'ed specs
+   --  of the current unit, then Find_Object_Entity will return it.
+
+   procedure Register_Object_Entity (E : Entity_Id);
+   --  Register the object entity
+
+   function Find_Object_Entity (E : Entity_Name) return Entity_Id;
+   --  Find the entity that belongs to the given Entity_Name. If no such entity
+   --  could be found (i.e. when the object is defined in the body of a with'ed
+   --  unit), the empty node is returned.
+
 end SPARK_Frame_Conditions;
