@@ -1064,6 +1064,7 @@ package body Gnat2Why.Subprograms is
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the
       --  infix operators.
+
       Add_With_Clause (File, "int", "Int", EW_Import, EW_Theory);
 
       Emit
