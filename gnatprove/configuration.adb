@@ -41,6 +41,11 @@ package body Configuration is
    MMode_Input  : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
+
+   Warning_Input : aliased GNAT.Strings.String_Access;
+   --  The warnings mode of gnatprove, and the input variable for command line
+   --  parsing set by option --warnings=
+
    Report_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --report=
 
@@ -112,6 +117,10 @@ ASCII.LF &
 " -v, --verbose      Output extra verbose information" &
 ASCII.LF &
 "     --version      Output version of the tool and exit" &
+ASCII.LF &
+"     --warnings=w   Set the warning mode of GNATprove " &
+"(w=off, on, error*)"
+&
 ASCII.LF &
 " -h, --help         Display this usage information" &
 ASCII.LF &
@@ -363,6 +372,12 @@ ASCII.LF &
 
       Define_Switch
         (Config,
+         Warning_Input'Access,
+         Long_Switch => "--warnings=",
+         Help => "Set the warning mode of GNATprove (off | on | error)");
+
+      Define_Switch
+        (Config,
          Proof_Input'Access,
          Long_Switch => "--proof=",
          Help => "Select proof mode (normal | no_wp | all_split)");
@@ -507,6 +522,16 @@ ASCII.LF &
       else
          Abort_With_Help ("mode should be one of " &
                             "(check | prove | flow | all)");
+      end if;
+
+      if Warning_Input.all = "off" then
+         Warning_Mode := Opt.Suppress;
+      elsif Warning_Input.all = "on" then
+         Warning_Mode := Opt.Normal;
+      elsif Warning_Input.all = "error" or else Warning_Input.all = "" then
+         Warning_Mode := Opt.Treat_As_Error;
+      else
+         Abort_With_Help ("warnings should be one of (off | on | error)");
       end if;
 
       if Report_Input.all = "fail" or else Report_Input.all = "" then

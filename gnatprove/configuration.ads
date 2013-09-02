@@ -31,6 +31,7 @@ with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with String_Utils;      use String_Utils;
+with Opt;
 
 package Configuration is
 
@@ -88,16 +89,16 @@ package Configuration is
    --    timing information.
 
    type Proof_Mode is (Then_Split, No_WP, All_Split, Path_WP, No_Split);
-   --  This is a debug option of GNATprove. This option is simply passed to
-   --  gnatwhy3.
-   --  The modes for proof are:
-   --  Then_Split: compute WP, split VCs as necessary, call prover as necessary
-   --  No_WP: do not compute WP, do not split VCs, do not call prover
-   --  All_Split: compute VCs, split all VCs, do not call prover
-   --  Path_WP: use the "normal" (exponential) WP
-   --  No_Split: only use fast WP, no split of VCs at all
+   --  The modes for generating VCs.
+   --    Then_Split: compute WP, split VCs and call prover as necessary
+   --    No_WP: do not compute WP, do not split VCs, do not call prover
+   --    All_Split: compute VCs, split all VCs, do not call prover
+   --    Path_WP: use the "normal" (exponential) WP
+   --    No_Split: only use fast WP, no split of VCs at all
+   --  This option is simply passed to gnatwhy3.
 
    MMode        : GP_Mode := GPM_Prove;
+   Warning_Mode : Opt.Warning_Mode_Type := Opt.Treat_As_Error;
    Report       : Report_Mode := GPR_Fail;
    --  Silent reporting is the default
    Proof        : Proof_Mode;

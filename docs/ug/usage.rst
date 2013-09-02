@@ -365,6 +365,29 @@ body, because it contains a pointer dereference.  Since ``Set`` is a local
 subprogram of ``P0``, the body of ``P0`` is not in |SPARK| either. ``P1`` body
 is in |SPARK|.
 
+Warnings
+========
+
+|GNATprove| issues two kinds of warnings, which are controlled separately:
+
+* Compiler warnings are controlled with the usual GNAT compilation switches:
+
+  * ``-gnatws`` suppresses all warnings
+  * ``-gnatwa`` enables all optional warnings
+  * ``-gnatw?`` enables a specific warning denoted by the last character
+    See the GNAT User's Guide for more details. These should passed through
+    the compilation switches specified in the project file.
+
+* |GNATprove| specific warnings are controlled with switch ``--warnings``:
+
+  * ``--warnings=off`` suppresses all warnings
+  * ``--warnings=on`` issues warnings
+  * ``--warnings=error`` treats warnings as errors
+    The default is to treat |GNATprove| specific warnings as errors.
+
+Both kinds of warnings can be suppressed selectively by the use of ``pragma
+Warnings`` in the source code. See GNAT Reference Manual for more details.
+
 Error Messages
 ==============
 

@@ -611,6 +611,7 @@ procedure Gnatprove is
       --  In the translation phase, set a number of values
 
       if Translation_Phase then
+         Gnat2Why_Args.Warning_Mode := Warning_Mode;
          Gnat2Why_Args.Global_Gen_Mode := False;
          Gnat2Why_Args.Flow_Dump_Graphs := MMode = GPM_Flow and Debug;
          Gnat2Why_Args.Check_Mode := MMode = GPM_Check;

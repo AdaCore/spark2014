@@ -50,18 +50,39 @@ package body Back_End is
 
    procedure Call_Back_End (Mode : Back_End_Mode_Type) is
       pragma Unreferenced (Mode);
+
+      use type Opt.Warning_Mode_Type;
    begin
-      --  Since the back end is called with all tables locked,
-      --  first unlock any tables that we need to change.
-      Namet.Unlock;
-      Stringt.Unlock;
+      --  If Global_Gen_Mode = True, ALI have been generated at this point,
+      --  with suitable cross-reference section. Return now.
 
-      GNAT2Why_BE.Call_Back_End;
+      if Gnat2Why_Args.Global_Gen_Mode then
+         return;
 
-      --  Make sure to lock any unlocked tables again before returning
+      --  If Global_Gen_Mode = False, we run flow analysis and proof with
+      --  warnings as set by the caller of gnat2why (default is that warnings
+      --  are treated as errors).
 
-      Namet.Lock;
-      Stringt.Lock;
+      else
+         --  Since the back end is called with all tables locked,
+         --  first unlock any tables that we need to change.
+
+         Namet.Unlock;
+         Stringt.Unlock;
+
+         --  Frontend warnings were suppressed in this mode. Change that to the
+         --  expected warning mode for gnat2why.
+
+         pragma Assert (Opt.Warning_Mode = Opt.Suppress);
+         Opt.Warning_Mode := Gnat2Why_Args.Warning_Mode;
+
+         GNAT2Why_BE.Call_Back_End;
+
+         --  Make sure to lock any unlocked tables again before returning
+
+         Namet.Lock;
+         Stringt.Lock;
+      end if;
    end Call_Back_End;
 
    -------------------------------
@@ -110,11 +131,27 @@ package body Back_End is
 
       Gnat2Why_Args.Init;
 
-      --  An ALI file should be generated only when generating globals.
-      --  Otherwise, when translating the program to Why, ALI file
-      --  generation should be disabled.
+      --  gnat2why is run in two main modes:
+      --    Global_Gen_Mode = True for generating ALI files with effects.
+      --    Global_Gen_Mode = False for flow analysis and proof.
 
-      if not Gnat2Why_Args.Global_Gen_Mode then
+      if Gnat2Why_Args.Global_Gen_Mode then
+         --  In this mode, we should run the compiler with warnings as required
+         --  by the user through switches -gnatw?
+
+         null;
+
+      else
+         --  In this mode, we should run the frontend with no warnings, in
+         --  order to avoid repeating those already issued, and then we should
+         --  run flow analysis and proof with warnings-as-errors by default.
+
+         Opt.Warning_Mode := Opt.Suppress;
+
+         --  An ALI file should be generated only when generating globals.
+         --  Otherwise, when translating the program to Why, ALI file
+         --  generation should be disabled.
+
          Opt.Disable_ALI_File := True;
       end if;
    end Scan_Compiler_Arguments;

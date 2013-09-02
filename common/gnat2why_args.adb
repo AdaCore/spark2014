@@ -26,7 +26,6 @@
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib;               use GNAT.OS_Lib;
 
-with Opt;
 with Call;                      use Call;
 with Output;                    use Output;
 with Types;                     use Types;
@@ -44,6 +43,7 @@ package body Gnat2Why_Args is
    --  means "false". For other variables, the value is given after the "="
    --  sign. No "=value" part is allowed for boolean variables.
 
+   Warning_Mode_Name       : constant String := "warning_mode";
    Global_Gen_Mode_Name    : constant String := "global_gen_mode";
    Check_Mode_Name         : constant String := "check_mode";
    Flow_Analysis_Mode_Name : constant String := "flow_analysis_mode";
@@ -80,16 +80,33 @@ package body Gnat2Why_Args is
    begin
       if Token = Global_Gen_Mode_Name then
          Global_Gen_Mode := True;
+
       elsif Token = Check_Mode_Name then
          Check_Mode := True;
+
       elsif Token = Flow_Analysis_Mode_Name then
          Flow_Analysis_Mode := True;
+
       elsif Token = Flow_Dump_Graphs_Name then
          Flow_Dump_Graphs := True;
+
       elsif Token = Pedantic_Name then
          Pedantic := True;
+
       elsif Token = Ide_Mode_Name then
          Ide_Mode := True;
+
+      elsif Starts_With (Token, Warning_Mode_Name) and then
+        Token (Token'First + Warning_Mode_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Warning_Mode_Name'Length + 1;
+         begin
+            Warning_Mode :=
+              Opt.Warning_Mode_Type'Value (Token (Start .. Token'Last));
+         end;
+
       elsif Starts_With (Token, Analyze_File_Name) and then
         Token (Token'First + Analyze_File_Name'Length) = '='
       then
@@ -99,6 +116,7 @@ package body Gnat2Why_Args is
          begin
             Analyze_File.Append (Token (Start .. Token'Last));
          end;
+
       elsif Starts_With (Token, Limit_Subp_Name) and then
         Token (Token'First + Limit_Subp_Name'Length) = '='
       then
@@ -145,39 +163,55 @@ package body Gnat2Why_Args is
       --  beginning of processing for Set
 
    begin
-
       --  We need to switch to the given Obj_Dir so that the temp file is
       --  created there
 
       Change_Dir (Obj_Dir);
       Create_Temp_Output_File (FD, Name);
 
+      --  Warning_Mode is only relevant when Global_Mode = False, so ignore its
+      --  value if Global_Mode = True.
+
+      if not Global_Gen_Mode then
+         Write_Line (Warning_Mode_Name & "=" &
+                       Opt.Warning_Mode_Type'Image (Warning_Mode));
+      end if;
+
       if Global_Gen_Mode then
          Write_Line (Global_Gen_Mode_Name);
       end if;
+
       if Check_Mode then
          Write_Line (Check_Mode_Name);
       end if;
+
       if Flow_Analysis_Mode then
          Write_Line (Flow_Analysis_Mode_Name);
       end if;
+
       if Flow_Dump_Graphs then
          Write_Line (Flow_Dump_Graphs_Name);
       end if;
+
       if Pedantic then
          Write_Line (Pedantic_Name);
       end if;
+
       if Ide_Mode then
          Write_Line (Ide_Mode_Name);
       end if;
+
       for File of Analyze_File loop
          Write_Line (Analyze_File_Name & "=" & File);
       end loop;
+
       if Limit_Subp /= Null_Unbounded_String then
          Write_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
       end if;
+
       Close (FD);
       Change_Dir (Cur_Dir);
+
       declare
          S : constant String := Name.all;
       begin

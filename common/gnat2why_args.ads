@@ -24,6 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+with Opt;
 with String_Utils;          use String_Utils;
 
 package Gnat2Why_Args is
@@ -50,6 +52,11 @@ package Gnat2Why_Args is
    -------------------------------------
    -- Options defined in this package --
    -------------------------------------
+
+   --  Warning mode for gnat2why. This is similar to Opt.Warning_Mode for
+   --  the compiler.
+
+   Warning_Mode : Opt.Warning_Mode_Type := Opt.Treat_As_Error;
 
    --  Global generation mode. In this mode, gnat2why generates cross-reference
    --  information in ALI files for being able to generated the globals read

@@ -37,10 +37,10 @@ all: $(ALL_ALIS)
 check: $(ALL_WHYPACK:__package.mlw=.check)
 
 %__package.mlw: %.adb $(ALL_ALIS)
-	$(GNAT2WHY) -gnatpg -I. $<
+	$(GNAT2WHY) -gnatpg -gnatws -I. $<
 
 %__package.mlw: %.ads $(ALL_ALIS)
-	$(GNAT2WHY) -gnatpg -I. $<
+	$(GNAT2WHY) -gnatpg -gnatws -I. $<
 
 .PHONY: force
 
@@ -48,10 +48,10 @@ $(GLOBAL_GEN_ARG_FILE): force
 	@echo "global_gen_mode" > $@
 
 %.ali: %.adb $(GLOBAL_GEN_ARG_FILE)
-	$(GNAT2WHY) -c -gnatc -gnatpg -gnates=$(GLOBAL_GEN_ARG_FILE) $<
+	$(GNAT2WHY) -c -gnatc -gnatpg -gnatws -gnates=$(GLOBAL_GEN_ARG_FILE) $<
 
 %.ali: %.ads $(GLOBAL_GEN_ARG_FILE)
-	$(GNAT2WHY) -c -gnatc -gnatpg -gnates=$(GLOBAL_GEN_ARG_FILE) $<
+	$(GNAT2WHY) -c -gnatc -gnatpg -gnatws -gnates=$(GLOBAL_GEN_ARG_FILE) $<
 
 %.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
 	if [ -f $*__types_in_spec.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_spec.mlw > /dev/null ; fi

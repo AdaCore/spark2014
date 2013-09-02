@@ -197,14 +197,6 @@ package body Gnat2Why.Driver is
         (Action => Mark_Compilation_Unit);
 
    begin
-
-      --  In global generation mode, gnat2why only generates ALI file with the
-      --  suitable cross-reference section. Exit now.
-
-      if Gnat2Why_Args.Global_Gen_Mode then
-         return;
-      end if;
-
       --  We do nothing for generic units currently. If this get revised at
       --  some point to provide proof of generics, then the special SPARK
       --  expansion in the frontend should be applied to generic units as well.
@@ -225,12 +217,6 @@ package body Gnat2Why.Driver is
         To_Unbounded_String (Full_Name (Defining_Entity (N)));
 
       Mark_Standard_Package;
-
-      --  Authorize warnings now, since regular compiler warnings should
-      --  already have been issued, e.g. to generate warnings related to
-      --  misuse of SPARK specific pragmas.
-
-      Warning_Mode := Normal;
 
       --  Allow the generation of new nodes and lists
 
