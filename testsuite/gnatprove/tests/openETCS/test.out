@@ -83,38 +83,36 @@ step_function.adb:60:18: assertion not proved, requires SFun.Step(j-1).Delimiter
 step_function.adb:60:29: info: index check proved
 step_function.adb:60:55: info: index check proved
 step_function.adb:72:17: info: range check proved
-step_function.adb:89:7: info: assertion proved
-step_function.adb:92:10: info: loop invariant initialization proved
-step_function.adb:92:10: loop invariant preservation not proved
-step_function.adb:105:29: index check not proved
-step_function.adb:108:29: index check not proved
-step_function.adb:111:27: index check not proved
-step_function.adb:111:54: index check not proved
-step_function.adb:118:30: index check not proved
-step_function.adb:118:56: index check not proved
+step_function.adb:91:10: info: loop invariant initialization proved
+step_function.adb:91:10: loop invariant preservation not proved
+step_function.adb:110:29: index check not proved
+step_function.adb:113:29: index check not proved
+step_function.adb:116:27: index check not proved
+step_function.adb:116:54: index check not proved
 step_function.adb:122:30: index check not proved
 step_function.adb:122:56: index check not proved
 step_function.adb:127:36: index check not proved
 step_function.adb:127:62: index check not proved
-step_function.adb:132:36: index check not proved
-step_function.adb:132:62: index check not proved
-step_function.adb:137:26: index check not proved
-step_function.adb:138:19: precondition not proved
-step_function.adb:138:47: index check not proved
-step_function.adb:139:17: info: precondition proved
-step_function.adb:139:45: index check not proved
-step_function.adb:146:22: precondition not proved
-step_function.adb:147:22: info: precondition proved
+step_function.adb:133:30: index check not proved
+step_function.adb:133:56: index check not proved
+step_function.adb:138:36: index check not proved
+step_function.adb:138:62: index check not proved
+step_function.adb:143:26: index check not proved
+step_function.adb:144:19: precondition not proved
+step_function.adb:144:47: index check not proved
+step_function.adb:145:17: info: precondition proved
+step_function.adb:145:45: index check not proved
+step_function.adb:152:22: precondition not proved
 step_function.adb:153:22: precondition not proved
-step_function.adb:154:22: precondition not proved
+step_function.adb:159:22: precondition not proved
 step_function.adb:160:22: precondition not proved
-step_function.adb:161:22: info: precondition proved
-step_function.adb:169:19: precondition not proved
-step_function.adb:170:19: info: precondition proved
-step_function.adb:176:22: precondition not proved
-step_function.adb:177:22: precondition not proved
-step_function.adb:181:10: assertion not proved
-step_function.adb:185:22: range check not proved
+step_function.adb:166:22: precondition not proved
+step_function.adb:167:22: precondition not proved
+step_function.adb:175:19: precondition not proved
+step_function.adb:176:19: precondition not proved
+step_function.adb:182:22: precondition not proved
+step_function.adb:183:22: precondition not proved
+step_function.adb:188:22: range check not proved
 step_function.ads:40:17: info: postcondition proved
 step_function.ads:46:24: info: index check proved
 step_function.ads:46:24: info: overflow check proved
@@ -158,7 +156,7 @@ step_function_test.adb:50:19: info: precondition proved
 step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) =
 step_function_test.adb:51:19: info: precondition proved
 step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
-step_function_test.adb:56:4: precondition not proved
+step_function_test.adb:56:4: info: precondition proved
 step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved

@@ -95,7 +95,7 @@ package Step_Function is
                                Merge : out Step_Function_t)
    with Pre => Is_Valid(SFun1) and Is_Valid(SFun2)
      and SFun1.Number_Of_Delimiters + SFun2.Number_Of_Delimiters <=
-       Num_Delimiters_Range'Last - 1,
+       Num_Delimiters_Range'Last,
    Post =>
    -- Output is valid step function
    Is_Valid(Merge)
