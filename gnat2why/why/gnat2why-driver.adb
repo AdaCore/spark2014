@@ -434,53 +434,6 @@ package body Gnat2Why.Driver is
    --  Start of Translate_CUnit
 
    begin
-      Translate_List_Entities (Withed_Entities);
-
-      for E of All_Entities loop
-         if Entity_In_SPARK (E) and then not Is_In_Current_Unit (E) then
-            case Ekind (E) is
-               --  For all subprograms from other units, make their definition
-               --  available for proofs by declaring a completion of their base
-               --  theory. We only declare the "closure" theory as a
-               --  completion, as it already includes the "axiom" theory if
-               --  there is one (for expression functions). This does not
-               --  distinguish definitions which are visible at this point
-               --  from those that are not.
-
-               when E_Function | E_Procedure =>
-                  declare
-                     Base_Name : constant String := Full_Name (E);
-                     Name      : constant String :=
-                       Base_Name & To_String (WNE_Expr_Fun_Closure);
-                  begin
-                     Add_Completion
-                       (Base_Name, Name, Dispatch_Entity_Completion (E));
-                  end;
-
-               --  For all constants from other units, make their definition
-               --  available for proofs by declaring a completion of their base
-               --  theory. We only declare the "closure" theory as a
-               --  completion, as it already includes the "axiom" theory if
-               --  there is one.
-
-               when E_Constant =>
-                  if not Is_Full_View (E) then
-                     declare
-                        Base_Name : constant String := Full_Name (E);
-                        Name      : constant String :=
-                          Base_Name & To_String (WNE_Constant_Closure);
-                     begin
-                        Add_Completion
-                          (Base_Name, Name, Dispatch_Entity_Completion (E));
-                     end;
-                  end if;
-
-               when others =>
-                  null;
-            end case;
-         end if;
-      end loop;
-
       --  Translate Ada entities into Why3
 
       Translate_List_Entities (Spec_Entities);
@@ -493,7 +446,9 @@ package body Gnat2Why.Driver is
       --  and expression functions are defined.
 
       for E of Spec_Entities loop
-         Do_Generate_VCs (E);
+         if Is_In_Current_Unit (E) then
+            Do_Generate_VCs (E);
+         end if;
       end loop;
 
       for E of Body_Entities loop
@@ -542,6 +497,7 @@ package body Gnat2Why.Driver is
             end if;
 
          when Subprogram_Kind =>
+
             if Entity_In_SPARK (E) then
                Translate_Subprogram_Spec (File, E);
             end if;

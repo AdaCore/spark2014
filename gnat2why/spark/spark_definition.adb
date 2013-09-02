@@ -744,9 +744,6 @@ package body SPARK_Definition is
    Current_Unit_Is_Main_Body : Boolean;
    --  Flag set when marking the body for the current compiled unit
 
-   Current_Unit_Is_Main_Spec : Boolean;
-   --  Flag set when marking the spec for the current compiled unit
-
    Entities_In_SPARK : Node_Sets.Set;
    --  Entities in SPARK. An entity is inserted in this set if, after marking,
    --  no violations where attached to the corresponding scope. Standard
@@ -788,13 +785,10 @@ package body SPARK_Definition is
       --  are added either to Spec_Entities or Body_Entities, depending on
       --  whether they belong to the current unit spec or current unit body.
 
-      elsif Current_Unit_Is_Main_Spec then
-         Spec_Entities.Append (E);
-
       elsif Current_Unit_Is_Main_Body then
          Body_Entities.Append (E);
       else
-         Withed_Entities.Append (E);
+         Spec_Entities.Append (E);
       end if;
    end Append_Entity_To_List;
 
@@ -804,31 +798,15 @@ package body SPARK_Definition is
 
    procedure Append_Subprogram_Entities_To_List is
    begin
-      --  If the subprogram body is defined in the current unit spec (case of
-      --  expression functions), then all local entities are added to
-      --  Spec_Entities.
-
-      if Current_Unit_Is_Main_Spec then
-         for E of Subprogram_Entities loop
-            Spec_Entities.Append (E);
-         end loop;
-
-      --  In the general case where the subprogram body is defined in the
-      --  current unit body, all local entities are added to Body_Entities.
-
-      elsif Current_Unit_Is_Main_Body then
+      if Current_Unit_Is_Main_Body then
          for E of Subprogram_Entities loop
             Body_Entities.Append (E);
          end loop;
-
       else
-
          for E of Subprogram_Entities loop
-            Withed_Entities.Append (E);
+            Spec_Entities.Append (E);
          end loop;
-
       end if;
-
       Subprogram_Entities.Clear;
    end Append_Subprogram_Entities_To_List;
 
@@ -2644,6 +2622,7 @@ package body SPARK_Definition is
       Context_N : Node_Id;
 
    begin
+
       --  Separately mark declarations from Standard as in SPARK or not
 
       if Defining_Entity (N) = Standard_Standard then
@@ -2659,7 +2638,6 @@ package body SPARK_Definition is
       Push_Entity (Standard_Standard);
 
       Current_Unit_Is_Main_Body := In_Main_Unit_Body (N);
-      Current_Unit_Is_Main_Spec := In_Main_Unit_Spec (N);
 
       Context_N := First (Context_Items (CU));
       while Present (Context_N) loop
@@ -3009,13 +2987,10 @@ package body SPARK_Definition is
          --  Explicitly add the package declaration to the entities to
          --  translate into Why3.
 
-         if Current_Unit_Is_Main_Spec then
-            Spec_Entities.Append (Id);
-
-         elsif Current_Unit_Is_Main_Body then
+         if Current_Unit_Is_Main_Body then
             Body_Entities.Append (Id);
          else
-            Withed_Entities.Append (Id);
+            Spec_Entities.Append (Id);
          end if;
 
          --  Mark types and subprograms from packages with external axioms as
@@ -3264,12 +3239,6 @@ package body SPARK_Definition is
       HSS : constant Node_Id   := Handled_Statement_Sequence (N);
 
    begin
-      --  Only consider subprogram bodies from the main unit, and not bodies
-      --  for expression functions defined in unit specs with'ed directly or
-      --  indirectly from the main unit, or bodies from instances of generics
-      --  in unit specs with'ed directly or indirectly from the main unit.
-
-      if not (Current_Unit_Is_Main_Spec or Current_Unit_Is_Main_Body)
 
         --  Ignore bodies defined in the standard library, unless the main unit
         --  is from the standard library. In particular, ignore bodies from
@@ -3277,9 +3246,8 @@ package body SPARK_Definition is
         --  are analyzing the standard library itself). As a result, no VC is
         --  generated in this case for standard library code.
 
-        or else
-          (Location_In_Standard_Library (Sloc (N))
-             and not Unit_In_Standard_Library (Main_Unit))
+      if Location_In_Standard_Library (Sloc (N))
+          and not Unit_In_Standard_Library (Main_Unit)
       then
          return;
       end if;
