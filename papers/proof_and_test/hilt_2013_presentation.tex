@@ -33,6 +33,36 @@
 %  \tableofcontents
 %\end{frame}
 
+\makeatletter
+\newenvironment{btHighlight}[1][]
+{\begingroup\tikzset{bt@Highlight@par/.style={#1}}\begin{lrbox}{\@tempboxa}}
+{\end{lrbox}\bt@HL@box[bt@Highlight@par]{\@tempboxa}\endgroup}
+
+\newcommand\btHL[1][]{%
+  \begin{btHighlight}[#1]\bgroup\aftergroup\bt@HL@endenv%
+}
+\def\bt@HL@endenv{%
+  \end{btHighlight}%
+  \egroup
+}
+\newcommand{\bt@HL@box}[2][]{%
+  \tikz[remember picture]{%
+    \pgfpathrectangle{\pgfpoint{1pt}{0pt}}{\pgfpoint{\wd #2}{\ht #2}}%
+    \pgfusepath{use as bounding box}%
+    \node[anchor=base west,%
+          outer sep=0pt,%
+          inner xsep=1pt,%
+          inner ysep=0pt,%
+          rounded corners=2pt,%
+          minimum height=\ht\strutbox+1pt,%
+          #1]%
+          {%
+            \raisebox{1pt}{\strut}\strut\usebox{#2}%
+          };%
+  }%
+}
+\makeatother
+
 \section{Introduction}
 
 \begin{frame}[fragile]{Key messages}
@@ -56,38 +86,64 @@
 \section{What?}
 
 \begin{frame}[fragile]{Static Analysis Summary}
+
+  \lstdefinestyle{magic}{
+    basicstyle=\tiny\tt,
+    keywordstyle=\color{AnColour02},
+    moredelim=**[is][{\btHL[fill=AnSecondaryYellow!50,name=error]}]{`}{`},
+  }
+
   \begin{columns}
-    \begin{column}{3cm}
-      \begin{center}
-        \begin{tikzpicture}[y=1.2cm]
+    \begin{column}{2cm}
+      \begin{tikzpicture}[x=1cm,y=1.2cm]
+        \tikzstyle{legend}=[font=\scriptsize,text badly centered,text width=1.6cm]
+        \tikzstyle{unused}=[fill=white]
+        \tikzstyle{error}=[fill=AnSecondaryRed]
+        \tikzstyle{ok}=[fill=AnSecondaryGreen]
 
-          \draw[fill=AnColour01,AnColour01,xstep=2cm, ystep=1cm] (-2.01,0) grid (0,5);
+        \foreach \y in {1, 2, 3, 4, 5, 6} {
+          \draw[fill=AnGrey01] (0, \y) -- (2, \y) -- (2, \y + 1) -- (0, \y + 1) -- (0, \y);
+          \draw[white,thick]   (0, \y) -- (2, \y) -- (2, \y + 1) -- (0, \y + 1) -- (0, \y);
+        }
 
-          \foreach \y/\descr/\fill in {
-            6cm/In SPARK subset/green,
-            5cm/Variables Initialised/green,
-            4cm/No R-T Errors/green,
-            3cm/Globals Satisfied/green,
-            2cm/Partially proven/green,
-            1cm/Fully proven/green}
-          {
-            \node[font=\small, anchor=north, text width=1.7cm, text badly centered] at (-1.2, \y) {\descr};
-            \filldraw[fill=\fill, draw=black] (-0.2,\y-0.5cm) circle (0.1cm);
-          }
+        \node[legend] at (0.8, 6.5) {In \spark\ subset};
+        \node[legend] at (0.8, 5.5) {Globals satisfied};
+        \node[legend] at (0.8, 4.5) {Variables initialised};
+        \node[legend] at (0.8, 3.5) {No RT errors};
+        \node[legend] at (0.8, 2.5) {Partially proven};
+        \node[legend] at (0.8, 1.5) {Fully\\proven};
 
-          % \draw[->] (0, 0) -- (7.5, 0) node [anchor=west] {scale};
-          % \draw[->] (0, 0) -- (0, 3) node [anchor=east] {rigour};
+        \draw<-1>[unused] (1.7, 6.5) circle (0.1cm);
+        \draw<2>[error]   (1.7, 6.5) circle (0.1cm);
+        \draw<3->[ok]     (1.7, 6.5) circle (0.1cm);
 
-        \end{tikzpicture}
+        \draw<-1>[unused]  (1.7, 5.5) circle (0.1cm);
+        \draw<2>[error]    (1.7, 5.5) circle (0.1cm);
+        \draw<3->[ok]      (1.7, 5.5) circle (0.1cm);
 
-      \end{center}
+        \draw<-1>[unused] (1.7, 4.5) circle (0.1cm);
+        \draw<2>[error]   (1.7, 4.5) circle (0.1cm);
+        \draw<3->[ok]     (1.7, 4.5) circle (0.1cm);
+
+        \draw<-1>[unused] (1.7, 3.5) circle (0.1cm);
+        \draw<2>[error]   (1.7, 3.5) circle (0.1cm);
+        \draw<3->[ok]     (1.7, 3.5) circle (0.1cm);
+
+        \draw<-1>[unused] (1.7, 2.5) circle (0.1cm);
+        \draw<2>[error]   (1.7, 2.5) circle (0.1cm);
+        \draw<3->[ok]     (1.7, 2.5) circle (0.1cm);
+
+        \draw<-1>[unused] (1.7, 1.5) circle (0.1cm);
+        \draw<2>[error]   (1.7, 1.5) circle (0.1cm);
+        \draw<3->[ok]     (1.7, 1.5) circle (0.1cm);
+      \end{tikzpicture}
     \end{column}
 
-
     \begin{column}{9cm}
-      % \begin{block}{Example}
+      %\hrule
 
-      \begin{pxcode}[language=SPARK,gobble=8]
+      \begin{onlyenv}<1>
+      \begin{pxcode}[language=SPARK,style=magic,gobble=8]
         package Conference_Numbers
         is
            A_Count, P_Count : Integer := 0;
@@ -107,8 +163,55 @@
            end Inc_Audience;
         end Counters;
       \end{pxcode}
+      \end{onlyenv}
 
-      % \end{blocK}
+      \begin{onlyenv}<2>
+      \begin{pxcode}[language=SPARK,style=magic,gobble=8]
+        package Conference_Numbers
+        is
+           A_Count, P_Count : Integer := 0;
+
+           procedure Inc_Audience (N : Integer)
+           with Global => (`In_Out => A_Count`),
+                Pre    => (N >= 0),
+                Post   => (A_Count = A_Count + N);
+        end Counters;
+
+        package body Counters
+        is
+           procedure Inc_Audience (N : Integer)
+           is
+           begin
+              A_Count := A_Count + N;
+           end Inc_Audience;
+        end Counters;
+      \end{pxcode}
+      \end{onlyenv}
+
+      \begin{onlyenv}<3>
+      \begin{pxcode}[language=SPARK,style=magic,gobble=8]
+        package Conference_Numbers
+        is
+           A_Count, P_Count : Integer := 0;
+
+           procedure Inc_Audience (N : Integer)
+           with Global => (In_Out => A_Count),
+                Pre    => (N >= 0),
+                Post   => (A_Count = A_Count + N);
+        end Counters;
+
+        package `body Counters`
+        is
+           procedure Inc_Audience (N : Integer)
+           is
+           begin
+              A_Count := A_Count + N;
+           end Inc_Audience;
+        end Counters;
+      \end{pxcode}
+      \end{onlyenv}
+
+      %\hrule
     \end{column}
   \end{columns}
 
