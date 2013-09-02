@@ -552,8 +552,8 @@ package body Gnat2Why.Decls is
    --------------------------------------------
 
    procedure Translate_Package_With_External_Axioms
-     (Package_Entity : Entity_Id) is
-
+     (Package_Entity : Entity_Id)
+   is
       type Entity_Array is array (Integer range <>) of Entity_Id;
 
       procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
@@ -973,6 +973,7 @@ package body Gnat2Why.Decls is
 
          GParent_Cur : List_Of_Entity.Cursor :=
            List_Of_Entity.First (G_Parents);
+
       begin
          while List_Of_Entity.Has_Element (GParent_Cur) loop
             declare
@@ -1005,16 +1006,16 @@ package body Gnat2Why.Decls is
       -- Get_Generic_Name --
       ----------------------
 
-      function Get_Generic_Name (E : Entity_Id;
-                                 Parents : List_Of_Entity.Cursor)
-                                 return String is
-         function Get_Generic_Name_Scope (E : Entity_Id;
-                                          N : List_Of_Entity.Cursor)
-                                          return String;
+      function Get_Generic_Name
+        (E : Entity_Id;
+         Parents : List_Of_Entity.Cursor) return String
+      is
+         function Get_Generic_Name_Scope
+           (E : Entity_Id; N : List_Of_Entity.Cursor) return String;
+         --  ???
 
-         function Get_Generic_Name_Scope (E : Entity_Id;
-                                          N : List_Of_Entity.Cursor)
-                                          return String is
+         function Get_Generic_Name_Scope
+           (E : Entity_Id; N : List_Of_Entity.Cursor) return String is
          begin
             if List_Of_Entity.Has_Element (N) then
 
@@ -1137,9 +1138,7 @@ package body Gnat2Why.Decls is
       -- Parse_Parameters --
       ----------------------
 
-      procedure Parse_Parameters
-        (G_Parents : List_Of_Entity.List) is
-
+      procedure Parse_Parameters (G_Parents : List_Of_Entity.List) is
          Assoc : constant List_Id :=  Get_Association_List (Package_Entity);
          Labs  : constant List_Id :=  Get_Label_List (Package_Entity);
          Instance_Name : constant String := Get_Instance_Name (Package_Entity);
@@ -1235,12 +1234,14 @@ package body Gnat2Why.Decls is
          TFile     : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
          CurAssoc  : Node_Id := First (Assoc);
          CurLabs   : Node_Id := First (Labs);
+
       begin
          while Present (CurAssoc) loop
             declare
                Actual : constant Entity_Id :=
                  Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                Formal : constant Entity_Id := Defining_Entity (CurLabs);
+
             begin
 
                if Ekind (Formal) in Type_Kind then
@@ -1404,19 +1405,17 @@ package body Gnat2Why.Decls is
       G_Parents : constant List_Of_Entity.List :=
         Get_Generic_Parents (Package_Entity);
       Subst_Length : Natural;
+
    begin
-
       if List_Of_Entity.Is_Empty (G_Parents) then
-
          File_Append_To_Theories
            (TFile.File, New_Custom_Declaration
-              (Domain    => EW_Prog,
+              (Ada_Node  => Package_Entity,
+               Domain    => EW_Prog,
                File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
-
          Parse_Declarations (Decls, TFile.Name.all);
 
       else
-
          if List_Of_Entity.First_Element (G_Parents) = Package_Entity then
             Parse_Parameters (G_Parents);
          end if;

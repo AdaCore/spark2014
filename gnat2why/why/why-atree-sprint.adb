@@ -25,6 +25,7 @@
 
 with Ada.Containers;      use Ada.Containers;
 
+with Errout;              use Errout;
 with Namet;               use Namet;
 with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
@@ -1753,7 +1754,7 @@ package body Why.Atree.Sprint is
       use GNAT.Regpat;
 
       function Get_Whole_File return String;
-      --  ???
+      --  Return whole contents of file associated with Node
 
       function Get_Regexp return String;
       --  ???
@@ -1762,7 +1763,11 @@ package body Why.Atree.Sprint is
       --  ???
 
       function Locate_File return String;
-      --  ???
+      --  Return name of file associated with Node
+
+      -----------------
+      -- Locate_File --
+      -----------------
 
       function Locate_File return String is
          use Ada.Directories;
@@ -1770,8 +1775,9 @@ package body Why.Atree.Sprint is
          Dir : String_Access := Locate_Exec_On_Path (Exec_Name => "gnatprove");
       begin
          if Dir = null then
-            --  ??? Generate a proper error message instead
-            raise Program_Error;
+            Error_Msg_N
+              ("cannot locate associated theory file", Get_Ada_Node (+Node));
+            return "";
          end if;
 
          declare
@@ -1788,29 +1794,49 @@ package body Why.Atree.Sprint is
             if Is_Readable_File (From_Command) then
                return From_Command;
             else
-               --  ??? Generate a proper error message instead
-               raise Program_Error;
+               Name_Len := From_Command'Length;
+               Name_Buffer (1 .. Name_Len) := From_Command;
+               Error_Msg_Name_1 := Name_Enter;
+               Error_Msg_N
+                 ("cannot read theory file %%", Get_Ada_Node (+Node));
+               return "";
             end if;
          end;
       end Locate_File;
 
+      --------------------
+      -- Get_Whole_File --
+      --------------------
+
       function Get_Whole_File return String is
          File_Name : constant String  := Locate_File;
-         File_Size : constant Natural :=
-           Natural (Ada.Directories.Size (File_Name));
-
-         subtype File_String    is String (1 .. File_Size);
-         package File_String_IO is new Ada.Direct_IO (File_String);
-
-         File     : File_String_IO.File_Type;
-         Contents : File_String;
       begin
-         File_String_IO.Open  (File, Mode => File_String_IO.In_File,
-                               Name => File_Name);
-         File_String_IO.Read  (File, Item => Contents);
-         File_String_IO.Close (File);
-         return Contents;
+         if File_Name = "" then
+            return "";
+         end if;
+
+         declare
+            File_Size : constant Natural :=
+              Natural (Ada.Directories.Size (File_Name));
+
+            subtype File_String    is String (1 .. File_Size);
+            package File_String_IO is new Ada.Direct_IO (File_String);
+
+            File     : File_String_IO.File_Type;
+            Contents : File_String;
+
+         begin
+            File_String_IO.Open (File, Mode => File_String_IO.In_File,
+                                 Name => File_Name);
+            File_String_IO.Read  (File, Item => Contents);
+            File_String_IO.Close (File);
+            return Contents;
+         end;
       end Get_Whole_File;
+
+      ----------------
+      -- Get_Regexp --
+      ----------------
 
       function Get_Regexp return String is
          use Ada.Strings.Unbounded;
@@ -1818,7 +1844,8 @@ package body Why.Atree.Sprint is
 
          Nodes    : constant List := Get_List (+Get_Subst (Node));
          Position : Cursor := First (Nodes);
-         Result : Unbounded_String := Null_Unbounded_String;
+         Result   : Unbounded_String := Null_Unbounded_String;
+
       begin
          while Position /= No_Element loop
             declare
@@ -1834,16 +1861,21 @@ package body Why.Atree.Sprint is
                Result := Result & "|";
             end if;
          end loop;
+
          return To_String (Result);
       end Get_Regexp;
 
-      procedure Apply_Subst (Text : String;
-                             Matches : Match_Array) is
+      -----------------
+      -- Apply_Subst --
+      -----------------
+
+      procedure Apply_Subst (Text : String; Matches : Match_Array) is
          use Node_Lists;
 
          Nodes    : constant List := Get_List (+Get_Subst (Node));
          Position : Cursor := First (Nodes);
          Interm_Matches : Match_Array (0 .. 0);
+
       begin
          while Position /= No_Element loop
             declare
@@ -1852,8 +1884,10 @@ package body Why.Atree.Sprint is
             begin
                Match (Compile (Get_Name_String (Get_From (Node))), Text,
                       Interm_Matches, Matches (0).First);
-               if Interm_Matches (0) /= No_Match and then
-                 Interm_Matches (0).Last = Matches (0).Last then
+
+               if Interm_Matches (0) /= No_Match
+                 and then Interm_Matches (0).Last = Matches (0).Last
+               then
                   Traverse (State, +Get_To (Node));
                   return;
                end if;
@@ -1865,7 +1899,8 @@ package body Why.Atree.Sprint is
          raise Program_Error;
       end Apply_Subst;
 
-      Text    : constant String := Get_Whole_File;
+      Text : constant String := Get_Whole_File;
+
    begin
       NL (O);
 
