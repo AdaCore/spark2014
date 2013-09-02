@@ -127,15 +127,15 @@
 
         \draw<-1>[unused] (1.7, 3.5) circle (0.1cm);
         \draw<2>[error]   (1.7, 3.5) circle (0.1cm);
-        \draw<3->[ok]     (1.7, 3.5) circle (0.1cm);
+        \draw<3->[error]     (1.7, 3.5) circle (0.1cm);
 
         \draw<-1>[unused] (1.7, 2.5) circle (0.1cm);
         \draw<2>[error]   (1.7, 2.5) circle (0.1cm);
-        \draw<3->[ok]     (1.7, 2.5) circle (0.1cm);
+        \draw<3->[error]     (1.7, 2.5) circle (0.1cm);
 
         \draw<-1>[unused] (1.7, 1.5) circle (0.1cm);
         \draw<2>[error]   (1.7, 1.5) circle (0.1cm);
-        \draw<3->[ok]     (1.7, 1.5) circle (0.1cm);
+        \draw<3->[error]     (1.7, 1.5) circle (0.1cm);
       \end{tikzpicture}
     \end{column}
 
@@ -144,24 +144,36 @@
 
       \begin{onlyenv}<1>
       \begin{pxcode}[language=SPARK,style=magic,gobble=8]
-        package Conference_Numbers
+        package Conference_Attendance
         is
-           A_Count, P_Count : Integer := 0;
+           Max_Attendance : constant := 1000;
+           type Count_T is range 0 .. Max_Attendance;
+           Audience_Count, Presenter_Count : Count_T := 0;
+           Presenter_Set : Name_Sets.Set;
 
            procedure Inc_Audience (N : Integer)
-           with Global => (In_Out => A_Count),
-                Pre    => (N >= 0),
-                Post   => (A_Count = A_Count + N);
-        end Counters;
+           with Global => (In_Out => Audience_Count),
+                Pre    => (N >= 0, Audience_Count + N <= Max_Attendance),
+                Post   => (Audience_Count = Audience_Count + N);
 
-        package body Counters
+           procedure Inc_Presenter(Name : String)
+           with Global => (In_Out => Presenter_Count, Presenter_List),
+                Pre    => (Presenter_Count < Max_Attendance);
+                Post   => (Presenters_Set.Insert(Name) and 
+                           Presenter_Count = Presenters_Set.Count);
+           ...
+
+
+        package body Conference_Attendance
         is
            procedure Inc_Audience (N : Integer)
            is
            begin
-              A_Count := A_Count + N;
+              Audience_Count := Audience_Count - N;
            end Inc_Audience;
-        end Counters;
+
+           ...
+
       \end{pxcode}
       \end{onlyenv}
 
@@ -190,24 +202,35 @@
 
       \begin{onlyenv}<3>
       \begin{pxcode}[language=SPARK,style=magic,gobble=8]
-        package Conference_Numbers
+        package Conference_Attendance
         is
-           A_Count, P_Count : Integer := 0;
+           Max_Attendance : constant := 1000;
+           type Count_T is range 0 .. Max_Attendance;
+           Audience_Count, Presenter_Count : Count_T := 0;
+           Presenter_Set : Name_Sets.Set;
 
            procedure Inc_Audience (N : Integer)
-           with Global => (In_Out => A_Count),
-                Pre    => (N >= 0),
-                Post   => (A_Count = A_Count + N);
-        end Counters;
+           with Global => (In_Out => Audience_Count),
+                Pre    => (N >= 0, Audience_Count + N <= Max_Attendance),
+                Post   => (Audience_Count = Audience_Count + N);
 
-        package `body Counters`
+           procedure Inc_Presenter(Name : String)
+           with Global => (In_Out => Presenter_Count, Presenter_List),
+                Pre    => (Presenter_Count < Max_Attendance);
+                Post   => (Presenters_Set.Insert(Name) and 
+                           Presenter_Count = Presenters_Set.Count);
+           ...
+
+
+        package body Conference_Attendance
         is
            procedure Inc_Audience (N : Integer)
            is
            begin
-              A_Count := A_Count + N;
+              Audience_Count := `Audience_Count - N`;
            end Inc_Audience;
-        end Counters;
+
+           ...
       \end{pxcode}
       \end{onlyenv}
 
