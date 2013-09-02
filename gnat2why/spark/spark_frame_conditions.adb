@@ -811,6 +811,7 @@ package body SPARK_Frame_Conditions is
                   --  Start of processing for Do_One_Xref
 
                   begin
+
                      --  For a subunit, retrieve the file name of the unit
                      --  instead of the file name of the subunit, as only unit
                      --  names are relevant in the generated Why code.
@@ -839,10 +840,12 @@ package body SPARK_Frame_Conditions is
                      end if;
                      Def_Scope_Ent := Scope_Entities.Element (Def_Scope);
 
-                     --  Register the definition on first occurence
+                     --  Register the definition on first occurence of
+                     --  variables.
 
                      if Current_Entity /= Ref_Entity
                        and then not Is_Heap_Variable (Ref_Entity)
+                       and then Xref.Rtype in 'r' | 'm'
                      then
                         Add_To_Map (Defines,
                                     Id_Of_Entity (Def_Scope_Ent),
