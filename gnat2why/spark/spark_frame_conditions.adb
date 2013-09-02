@@ -85,6 +85,15 @@ package body SPARK_Frame_Conditions is
    --  Map used internally in strongly connected component computation. Not to
    --  be confused with map over ids.
 
+   package Name_To_Entity_Map is new Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Entity_Id,
+      Hash            => Name_Hash,
+      Equivalent_Keys => Name_Equal,
+      "="             => "=");
+
+   Name_To_Entity : Name_To_Entity_Map.Map := Name_To_Entity_Map.Empty_Map;
+
    type SCC is array (Positive range <>) of Id;
    --  Ordered list of subprograms in a strongly connected component, roughly
    --  ordered so as to follow call chains for better propagation.
@@ -482,6 +491,21 @@ package body SPARK_Frame_Conditions is
    begin
       return File_Defines.Element (E);
    end File_Of_Entity;
+
+   ------------------------
+   -- Find_Object_Entity --
+   ------------------------
+
+   function Find_Object_Entity (E : Entity_Name) return Entity_Id is
+      use Name_To_Entity_Map;
+      C : constant Name_To_Entity_Map.Cursor := Name_To_Entity.Find (E);
+   begin
+      if Has_Element (C) then
+         return Element (C);
+      else
+         return Empty;
+      end if;
+   end Find_Object_Entity;
 
    ---------------
    -- Free_SCCs --
@@ -1053,6 +1077,16 @@ package body SPARK_Frame_Conditions is
          Free_SCCs (Cur_SCCs);
       end;
    end Propagate_Through_Call_Graph;
+
+   ----------------------------
+   -- Register_Object_Entity --
+   ----------------------------
+
+   procedure Register_Object_Entity (E : Entity_Id) is
+      E_Name : constant Entity_Name := new String'(Unique_Name (E));
+   begin
+      Name_To_Entity.Include (E_Name, E);
+   end Register_Object_Entity;
 
    --------------------------
    -- Set_Default_To_Empty --

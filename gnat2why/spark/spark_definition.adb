@@ -1343,6 +1343,12 @@ package body SPARK_Definition is
          T    : constant Entity_Id := Etype (E);
 
       begin
+
+         --  all objects should be registered in the object map of
+         --  SPARK_Frame_Conditions. See the documentation there.
+
+         Register_Object_Entity (E);
+
          --  The object is in SPARK if-and-only-if its type is in SPARK, it
          --  is not aliased, and its initialization expression, if any, is
          --  in SPARK.

@@ -391,13 +391,11 @@ package body Flow is
               (Name : Entity_Name;
                View : Parameter_Variant)
                return Flow_Id is
+               E : constant Entity_Id := Find_Object_Entity (Name);
             begin
-               --  Look for a direct mapping first.
-               for E of All_Entities loop
-                  if Unique_Name (E) = Name.all then
-                     return Direct_Mapping_Id (E, View);
-                  end if;
-               end loop;
+               if Present (E) then
+                  return Direct_Mapping_Id (E, View);
+               end if;
 
                --  If none can be found, we fall back to the magic
                --  string.
