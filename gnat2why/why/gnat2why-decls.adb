@@ -114,6 +114,15 @@ package body Gnat2Why.Decls is
       --  Returns the list of the actuals of the generic parameters of
       --  G_Parents.
 
+      procedure Complete_Decls (Decls  : List_Id;
+                                C_List : List_Of_Entity.List);
+      --  Generate an empty completion package for functions and constants
+      --  Containing a reference to actuals of the generic parameters
+
+      --  ??? Should be replaced by an import of the actuals of the generic
+      --  parameters for every function that uses elements of the generic
+      --  when the completion mechanism is redesigned.
+
       procedure Compute_Completions
         (G_Parents :     List_Of_Entity.List;
          Compl     : out List_Of_Entity.List) is
@@ -151,107 +160,137 @@ package body Gnat2Why.Decls is
          end loop;
       end Compute_Completions;
 
-      Decls  : constant List_Id :=
-        Visible_Declarations (Get_Package_Spec (E));
-      N      : Node_Id := First (Decls);
+      procedure Complete_Decls (Decls  : List_Id;
+                                C_List : List_Of_Entity.List) is
+         N      : Node_Id := First (Decls);
+      begin
+
+         while Present (N) loop
+            if Comes_From_Source (N) and then
+              Nkind (N) in N_Subtype_Declaration
+              | N_Private_Type_Declaration
+                | N_Subprogram_Declaration | N_Object_Declaration then
+               declare
+                  E : constant Entity_Id := Defining_Entity (N);
+                  Theory_Name : constant String := Full_Name (E);
+                  TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
+                  Completion : List_Of_Entity.Cursor :=
+                    List_Of_Entity.First (C_List);
+               begin
+
+                  --  For constants, add a new empty theory for
+                  --  constant_closure
+
+                  if (Ekind (E) in Object_Kind
+                      and then not Is_Mutable_In_Why (E))
+                    or else Ekind (E) in Named_Kind then
+
+                     Open_Theory
+                       (TFile, Theory_Name & To_String (WNE_Constant_Closure),
+                        Comment =>
+                          "Module including all necessary axioms for the "
+                        & "parameters of the generic constant "
+                        & """" & Get_Name_String (Chars (E)) & """"
+                        & (if Sloc (E) > 0 then
+                             " declared at " & Build_Location_String (Sloc (E))
+                          else "")
+                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                     --  Add the completion of function parameters
+
+                     while List_Of_Entity.Has_Element (Completion) loop
+                        Add_Use_For_Entity
+                          (P               => TFile,
+                           N               =>
+                             List_Of_Entity.Element (Completion),
+                           Use_Kind        => EW_Clone_Default,
+                           With_Completion => True);
+
+                        List_Of_Entity.Next (Completion);
+                     end loop;
+
+                     Close_Theory (TFile,
+                                   Filter_Entity  => Empty,
+                                   Defined_Entity => Empty,
+                                   Do_Closure     => True);
+
+                     Add_Completion
+                       (Theory_Name,
+                        Theory_Name & To_String (WNE_Constant_Closure),
+                        TFile.Kind);
+                  end if;
+
+                  --  For subprograms, add a new empty theory for
+                  --  expr_fun_closure
+
+                  if Ekind (E) in Subprogram_Kind then
+
+                     Open_Theory
+                       (TFile, Theory_Name & To_String (WNE_Expr_Fun_Closure),
+                        Comment =>
+                          "Module including all necessary axioms for the "
+                        & "parameters of the generic subprogram "
+                        & """" & Get_Name_String (Chars (E)) & """"
+                        & (if Sloc (E) > 0 then
+                             " declared at " & Build_Location_String (Sloc (E))
+                          else "")
+                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                     --  Add the completion of function parameters
+
+                     while List_Of_Entity.Has_Element (Completion) loop
+                        Add_Use_For_Entity
+                          (P               => TFile,
+                           N               =>
+                             List_Of_Entity.Element (Completion),
+                           Use_Kind        => EW_Clone_Default,
+                           With_Completion => True);
+
+                        List_Of_Entity.Next (Completion);
+                     end loop;
+
+                     Close_Theory (TFile,
+                                   Filter_Entity  => Empty,
+                                   Defined_Entity => Empty,
+                                   Do_Closure     => True);
+
+                     Add_Completion
+                       (Theory_Name,
+                        Theory_Name & To_String (WNE_Expr_Fun_Closure),
+                        TFile.Kind);
+                  end if;
+               end;
+            end if;
+
+            --  Call Complete_Decls recursively on Package_Declaration and
+            --  Package_Instantiation.
+
+            if Comes_From_Source (N) and then
+              Nkind (N) = N_Package_Instantiation then
+               Complete_Decls
+                 (Decls  => Visible_Declarations
+                    (Specification (Instance_Spec (N))),
+                  C_List => C_List);
+            end if;
+
+            if Comes_From_Source (N) and then
+              Nkind (N) in N_Package_Declaration then
+               Complete_Decls
+                 (Decls  => Visible_Declarations (Get_Package_Spec (N)),
+                  C_List => C_List);
+            end if;
+
+            Next (N);
+         end loop;
+      end Complete_Decls;
+
       C_List : List_Of_Entity.List;
    begin
       Compute_Completions (Get_Generic_Parents (E), C_List);
 
-      while Present (N) loop
-         if Comes_From_Source (N) and then
-           Nkind (N) in N_Subtype_Declaration
-           | N_Private_Type_Declaration
-             | N_Subprogram_Declaration | N_Object_Declaration then
-            declare
-               E : constant Entity_Id := Defining_Entity (N);
-               Theory_Name : constant String := Full_Name (E);
-               TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
-               Completion : List_Of_Entity.Cursor :=
-                 List_Of_Entity.First (C_List);
-            begin
-
-               --  For constants, add a new empty theory for constant_closure
-
-               if (Ekind (E) in Object_Kind and then not Is_Mutable_In_Why (E))
-                 or else Ekind (E) in Named_Kind then
-
-                  Open_Theory
-                    (TFile, Theory_Name & To_String (WNE_Constant_Closure),
-                     Comment =>
-                       "Module including all necessary axioms for the "
-                     & "parameters of the generic constant "
-                     & """" & Get_Name_String (Chars (E)) & """"
-                     & (if Sloc (E) > 0 then
-                          " declared at " & Build_Location_String (Sloc (E))
-                       else "")
-                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-                  --  Add the completion of function parameters
-
-                  while List_Of_Entity.Has_Element (Completion) loop
-                     Add_Use_For_Entity (P               => TFile,
-                                         N               =>
-                                           List_Of_Entity.Element (Completion),
-                                         Use_Kind        => EW_Clone_Default,
-                                         With_Completion => True);
-
-                     List_Of_Entity.Next (Completion);
-                  end loop;
-
-                  Close_Theory (TFile,
-                                Filter_Entity  => Empty,
-                                Defined_Entity => Empty,
-                                Do_Closure     => True);
-
-                  Add_Completion
-                    (Theory_Name,
-                     Theory_Name & To_String (WNE_Constant_Closure),
-                     TFile.Kind);
-               end if;
-
-               --  For subprograms, add a new empty theory for expr_fun_closure
-
-               if Ekind (E) in Subprogram_Kind then
-
-                  Open_Theory
-                    (TFile, Theory_Name & To_String (WNE_Expr_Fun_Closure),
-                     Comment =>
-                       "Module including all necessary axioms for the "
-                     & "parameters of the generic subprogram "
-                     & """" & Get_Name_String (Chars (E)) & """"
-                     & (if Sloc (E) > 0 then
-                          " declared at " & Build_Location_String (Sloc (E))
-                       else "")
-                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-                  --  Add the completion of function parameters
-
-                  while List_Of_Entity.Has_Element (Completion) loop
-                     Add_Use_For_Entity (P               => TFile,
-                                         N               =>
-                                           List_Of_Entity.Element (Completion),
-                                         Use_Kind        => EW_Clone_Default,
-                                         With_Completion => True);
-
-                     List_Of_Entity.Next (Completion);
-                  end loop;
-
-                  Close_Theory (TFile,
-                                Filter_Entity  => Empty,
-                                Defined_Entity => Empty,
-                                Do_Closure     => True);
-
-                  Add_Completion
-                    (Theory_Name,
-                     Theory_Name & To_String (WNE_Expr_Fun_Closure),
-                     TFile.Kind);
-               end if;
-            end;
-         end if;
-
-         Next (N);
-      end loop;
+      Complete_Decls
+        (Decls  => Visible_Declarations (Get_Package_Spec (E)),
+         C_List => C_List);
    end Complete_Package_With_External_Axioms_Translation;
 
    -------------------------
@@ -1123,10 +1162,22 @@ package body Gnat2Why.Decls is
                Parse_Declaration (Cur);
             end if;
 
+            --  Call Parse_Declarations recursively on Package_Declaration and
+            --  Package_Instantiation.
+
             if Comes_From_Source (Cur) and then
               Nkind (Cur) = N_Package_Declaration then
                Parse_Declarations
                  (Decls      => Visible_Declarations (Get_Package_Spec (Cur)),
+                  File_Name  => File_Name,
+                  Compl      => Compl);
+            end if;
+
+            if Comes_From_Source (Cur) and then
+              Nkind (Cur) = N_Package_Instantiation then
+               Parse_Declarations
+                 (Decls  => Visible_Declarations
+                    (Specification (Instance_Spec (Cur))),
                   File_Name  => File_Name,
                   Compl      => Compl);
             end if;
