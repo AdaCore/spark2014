@@ -1,0 +1,29 @@
+testfloat.adb:7:20: info: overflow check proved
+testfloat.adb:7:25: info: division check proved
+testfloat.adb:7:25: info: overflow check proved
+testfloat.adb:14:23: info: overflow check proved
+testfloat.adb:19:23: overflow check not proved
+testfloat.adb:19:28: info: division check proved
+testfloat.adb:19:28: overflow check not proved
+testfloat.adb:21:7: info: assertion proved
+testfloat.adb:22:7: info: assertion proved
+testfloat.adb:23:7: info: assertion proved
+testfloat.adb:24:7: assertion not proved, requires Float'Floor (T) = X
+testfloat.adb:26:7: info: assertion proved
+testfloat.adb:27:7: info: assertion proved
+testfloat.adb:28:7: info: assertion proved
+testfloat.adb:29:7: assertion not proved, requires Float'Ceiling (T) = Y
+testfloat.adb:31:7: info: assertion proved
+testfloat.adb:32:7: info: assertion proved
+testfloat.adb:36:4: assertion not proved, requires Float'Floor (X) = X
+testfloat.adb:37:4: info: assertion proved
+testfloat.adb:38:4: assertion not proved, requires Float'Floor (Z) = X
+testfloat.adb:39:4: assertion not proved, requires Float'Floor (T) = X
+testfloat.adb:41:4: info: assertion proved
+testfloat.adb:42:4: info: assertion proved
+testfloat.adb:43:4: info: assertion proved
+testfloat.adb:44:4: assertion not proved, requires Float'Ceiling (T) = Y
+testfloat.adb:46:4: info: assertion proved
+testfloat.adb:47:4: info: assertion proved
+testfloat.adb:49:4: info: precondition proved
+testfloat.adb:50:4: info: precondition proved
