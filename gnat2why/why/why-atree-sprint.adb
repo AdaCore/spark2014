@@ -1738,7 +1738,7 @@ package body Why.Atree.Sprint is
       --  Return whole contents of file associated with Node
 
       function Get_Regexp return String;
-      --  Retrun the regexp that should be used to match the content of the
+      --  Return the regexp that should be used to match the content of the
       --  file associated with Node. If the substitution associated with Node
       --  is : ((From => F1, To => T1), ..., (From => Fn, To => Tn)),
       --  return F1 & '|' & ... & '|' & Fn.
