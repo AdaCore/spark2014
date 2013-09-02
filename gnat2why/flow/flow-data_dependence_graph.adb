@@ -23,13 +23,18 @@
 
 package body Flow.Data_Dependence_Graph is
 
-   procedure Create (FA : in out Flow_Analysis_Graphs)
-   is
+   use type Flow_Id_Sets.Set;
+
+   procedure Create (FA : in out Flow_Analysis_Graphs) is
+      Combined_Defined : Flow_Id_Sets.Set;
    begin
       FA.DDG := Flow_Graphs.Create (FA.CFG);
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         for Var of FA.CFG.Get_Attributes (V_D).Variables_Defined loop
+         Combined_Defined :=
+           FA.CFG.Get_Attributes (V_D).Variables_Defined or
+           FA.CFG.Get_Attributes (V_D).Volatiles_Read;
+         for Var of Combined_Defined loop
             declare
                procedure Visitor
                  (V_U : Flow_Graphs.Vertex_Id;
@@ -48,8 +53,10 @@ package body Flow.Data_Dependence_Graph is
                   then
                      FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
                   end if;
-                  if FA.CFG.Get_Attributes
-                    (V_U).Variables_Defined.Contains (Var)
+                  if (FA.CFG.Get_Attributes
+                        (V_U).Variables_Defined.Contains (Var))
+                    or (FA.CFG.Get_Attributes
+                          (V_U).Volatiles_Read.Contains (Var))
                   then
                      TV := Flow_Graphs.Skip_Children;
                   else
