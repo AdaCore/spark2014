@@ -29,6 +29,28 @@ with Flow.Utility; use Flow.Utility;
 
 package body Flow.Control_Flow_Graph.Utility is
 
+   procedure Add_Volatile_Effects (A : in out V_Attributes);
+   --  This helper procedure inspects the variables used by a
+   --  particular vertex. Any with a volatile property causing reads
+   --  to be effective will be noted in the volatiles_read set.
+   --
+   --  This procedure should not be blindly called in all cases; in
+   --  particular for 'inital and 'final vertices it should not be
+   --  used.
+
+   -------------------------
+   -- Add_Volatile_Effets --
+   -------------------------
+
+   procedure Add_Volatile_Effects (A : in out V_Attributes) is
+   begin
+      for F of A.Variables_Used loop
+         if Has_Effective_Reads (F) then
+            A.Volatiles_Read.Include (F);
+         end if;
+      end loop;
+   end Add_Volatile_Effects;
+
    ---------------------------
    -- Make_Basic_Attributes --
    ---------------------------
@@ -48,6 +70,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops             := Loops;
       A.Error_Location    := E_Loc;
 
+      Add_Volatile_Effects (A);
       return A;
    end Make_Basic_Attributes;
 
@@ -72,6 +95,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location    := E_Loc;
       A.Aux_Node          := Object_Returned;
 
+      Add_Volatile_Effects (A);
       return A;
    end Make_Extended_Return_Attributes;
 
@@ -93,6 +117,8 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Loop_Entry   := Is_Loop_Entry;
       A.Error_Location  := E_Loc;
 
+      Add_Volatile_Effects (A);
+      --  ??? volatility correct here?
       return A;
    end Make_Sink_Vertex_Attributes;
 
@@ -218,6 +244,7 @@ package body Flow.Control_Flow_Graph.Utility is
                                      Vars_Used    => A.Variables_Used);
       end if;
 
+      Add_Volatile_Effects (A);
       return A;
    end Make_Parameter_Attributes;
 
@@ -262,6 +289,7 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
+      Add_Volatile_Effects (A);
       return A;
    end Make_Global_Attributes;
 
@@ -390,6 +418,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       A.Variables_Used    := Get_Variable_Set (Scope, A.Default_Init_Val);
 
+      Add_Volatile_Effects (A);
       return A;
    end Make_Default_Initialization_Attributes;
 

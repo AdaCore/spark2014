@@ -297,7 +297,13 @@ package body Flow_Types is
          when Null_Value | Magic_String =>
             return False;
          when Direct_Mapping =>
-            return Is_Volatile (Get_Direct_Mapping_Id (F));
+            pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
+            case Ekind (Get_Direct_Mapping_Id (F)) is
+               when E_Variable | E_Constant =>
+                  return Is_Volatile (Get_Direct_Mapping_Id (F));
+               when others =>
+                  return False;
+            end case;
          when Record_Field =>
             raise Why.Not_Implemented;
       end case;
@@ -313,8 +319,9 @@ package body Flow_Types is
          when Null_Value | Magic_String =>
             return False;
          when Direct_Mapping =>
-            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                        Pragma_Async_Readers));
+            return Is_Volatile (F) and then
+              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                   Pragma_Async_Readers));
          when Record_Field =>
             raise Why.Not_Implemented;
       end case;
@@ -330,8 +337,9 @@ package body Flow_Types is
          when Null_Value | Magic_String =>
             return False;
          when Direct_Mapping =>
-            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                        Pragma_Async_Writers));
+            return Is_Volatile (F) and then
+              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                   Pragma_Async_Writers));
          when Record_Field =>
             raise Why.Not_Implemented;
       end case;
@@ -347,10 +355,12 @@ package body Flow_Types is
          when Null_Value | Magic_String =>
             return False;
          when Direct_Mapping =>
-            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                        Pragma_Effective_Reads));
+            return Is_Volatile (F) and then
+              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                   Pragma_Effective_Reads));
          when Record_Field =>
-            raise Why.Not_Implemented;
+            --  ??? to be implemented in M318-021
+            return False;
       end case;
    end Has_Effective_Reads;
 
@@ -364,8 +374,9 @@ package body Flow_Types is
          when Null_Value | Magic_String =>
             return False;
          when Direct_Mapping =>
-            return Present (Get_Pragma (Get_Direct_Mapping_Id (F),
-                                        Pragma_Effective_Writes));
+            return Is_Volatile (F) and then
+              Present (Get_Pragma (Get_Direct_Mapping_Id (F),
+                                   Pragma_Effective_Writes));
          when Record_Field =>
             raise Why.Not_Implemented;
       end case;

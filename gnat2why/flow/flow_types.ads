@@ -370,6 +370,10 @@ package Flow_Types is
       Variables_Used      : Flow_Id_Sets.Set;
       --  For producing the DDG.
 
+      Volatiles_Read      : Flow_Id_Sets.Set;
+      --  Again, for producing the DDG. These are implied updates due
+      --  to reads of volatiles where reads are effective.
+
       Loops               : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop
       --  name/label). For loop stability analysis.
@@ -414,6 +418,7 @@ package Flow_Types is
                    Default_Init_Val                => Empty,
                    Variables_Defined               => Flow_Id_Sets.Empty_Set,
                    Variables_Used                  => Flow_Id_Sets.Empty_Set,
+                   Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Error_Location                  => Empty,
                    Aux_Node                        => Empty);
