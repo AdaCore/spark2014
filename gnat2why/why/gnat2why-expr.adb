@@ -3701,12 +3701,35 @@ package body Gnat2Why.Expr is
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
-      T                     : W_Expr_Id;
-      Current_Type          : W_Base_Type_Id := Type_Of_Node (Expr);
-      Pretty_Label          : W_Identifier_Id := Why_Empty;
-      Local_Params          : Transformation_Params := Params;
-   begin
 
+      --  The multiplication and division operations on fixed-point types have
+      --  a return type of universal_fixed (with no bounds), which is used as
+      --  an overload resolution trick to allow free conversion between certain
+      --  real types on the result of multiplication or division. The target
+      --  non-universal type determines the actual sort of multiplication
+      --  or division performed, and therefore determines the possibility of
+      --  overflow. In the compiler, the multiplication is expanded so the
+      --  operands are first converted to some common type, so back ends don't
+      --  see the universal_fixed Etype. Here, we are seeing the unexpanded
+      --  operation because we are running in a mode that disables the
+      --  expansion. Hence, we recognize the universal_fixed case specially
+      --  and in that case use the target type of the enclosing conversion.
+
+      Expr_Type : constant Entity_Id :=
+        (if Nkind_In (Expr, N_Op_Multiply, N_Op_Divide)
+           and then Etype (Expr) = Universal_Fixed
+           and then Nkind (Parent (Expr)) = N_Type_Conversion
+         then
+            Etype (Parent (Expr))
+         else
+            Etype (Expr));
+
+      Current_Type : W_Base_Type_Id := Type_Of_Node (Expr_Type);
+      T            : W_Expr_Id;
+      Pretty_Label : W_Identifier_Id := Why_Empty;
+      Local_Params : Transformation_Params := Params;
+
+   begin
       --  We check whether we need to generate a pretty printing label. If we
       --  do, we set the corresponding flag to "False" so that the label is not
       --  printed for subterms.
@@ -3740,7 +3763,7 @@ package body Gnat2Why.Expr is
               Right    => +True_Prog,
               Op       => EW_Eq);
       elsif Domain /= EW_Pred and then
-        Is_Discrete_Type (Etype (Expr)) and then
+        Is_Discrete_Type (Expr_Type) and then
         Compile_Time_Known_Value (Expr) then
 
          --  Optimization: if we have a discrete value that is statically
@@ -3933,7 +3956,7 @@ package body Gnat2Why.Expr is
                     +Transform_Expr (Right, Current_Type, Domain,
                      Local_Params),
                     Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus_Or_Rounding (Etype (Expr), T, Domain);
+               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
             end;
 
          when N_Op_Plus =>
@@ -3981,7 +4004,7 @@ package body Gnat2Why.Expr is
                                                 Local_Params),
                     Op       => Transform_Binop (Nkind (Expr)),
                     Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus_Or_Rounding (Etype (Expr), T, Domain);
+               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
             end;
 
          when N_Op_Divide =>
@@ -4020,7 +4043,7 @@ package body Gnat2Why.Expr is
                        Args    => (1 => L_Why, 2 => R_Why));
                end if;
 
-               T := Apply_Modulus_Or_Rounding (Etype (Expr), T, Domain);
+               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
             end;
 
          when N_Op_Rem | N_Op_Mod =>
@@ -4108,7 +4131,7 @@ package body Gnat2Why.Expr is
          when N_Op_And | N_Op_Or | N_Op_Xor =>
             declare
                Base  : constant W_Base_Type_Id :=
-                 (if Is_Boolean_Type (Etype (Expr)) then EW_Bool_Type
+                 (if Is_Boolean_Type (Expr_Type) then EW_Bool_Type
                   else EW_Int_Type);
                Left  : constant W_Expr_Id :=
                  Transform_Expr (Left_Opnd (Expr),
@@ -4236,7 +4259,7 @@ package body Gnat2Why.Expr is
             --  expression is translated into a value of the type of the
             --  conversion Current_Type.
 
-            if Ekind (Etype (Expr)) in Real_Kind then
+            if Ekind (Expr_Type) in Real_Kind then
                T := Transform_Expr (Expression (Expr),
                                     Current_Type,
                                     Domain,
@@ -4408,31 +4431,6 @@ package body Gnat2Why.Expr is
         and then Do_Overflow_Check (Expr)
       then
          declare
-
-            --  The multiplication and division operations on fixed-point
-            --  types have a return type of universal_fixed (with no bounds),
-            --  which is used as an overload resolution trick to allow
-            --  free conversion between certain real types on the result of
-            --  multiplication or division. The target non-universal type
-            --  determines the actual sort of multiplication or division
-            --  performed, and therefore determines the possibility of
-            --  overflow. In the compiler, the multiplication is expanded so
-            --  the operands are first converted to some common type, so back
-            --  ends don't see the universal_fixed Etype. Here, we are seeing
-            --  the unexpanded operation because we are running in a mode that
-            --  disables the expansion. Hence, we recognize the universal_fixed
-            --  case specially and in that case use the target type of the
-            --  enclosing conversion.
-
-            Typ : constant Entity_Id :=
-              (if Nkind_In (Expr, N_Op_Multiply, N_Op_Divide)
-                 and then Etype (Expr) = Universal_Fixed
-                 and then Nkind (Parent (Expr)) = N_Type_Conversion
-               then
-                 Etype (Parent (Expr))
-               else
-                 Etype (Expr));
-
             --  Depending on the current mode for overflow checks, the
             --  operation is either done in the base type (Strict mode), or in
             --  Long_Long_Integer (Minimized mode) if needed, or in arbitrary
@@ -4456,7 +4454,7 @@ package body Gnat2Why.Expr is
 
             case Mode is
                when Strict =>
-                  T := Insert_Overflow_Check (Expr, T, Typ);
+                  T := Insert_Overflow_Check (Expr, T, Expr_Type);
                when Minimized =>
                   T := Insert_Overflow_Check
                     (Expr, T, Standard_Integer_64);
@@ -4566,9 +4564,9 @@ package body Gnat2Why.Expr is
 
             Round_Func : constant W_Identifier_Id :=
               (if Nkind (Expr) = N_Type_Conversion
-                 and then Ekind (Etype (Expr)) in Real_Kind
+                 and then Ekind (Expr_Type) in Real_Kind
                then
-                  Float_Round_Name (Etype (Expr))
+                  Float_Round_Name (Expr_Type)
                else Why_Empty);
 
          begin

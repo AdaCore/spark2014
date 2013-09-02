@@ -111,17 +111,17 @@ package Why.Gen.Expr is
    function New_Located_Label
      (N         : Node_Id;
       Is_VC     : Boolean;
-      Left_Most : Boolean := False)
-      return W_Identifier_Id;
+      Left_Most : Boolean := False) return W_Identifier_Id;
    --  Return a label that contains the Ada Sloc of the node
 
    function New_Pretty_Label (N : Node_Id) return W_Identifier_Id;
    --  Return a label that contains the pretty printing for the given node
 
-   function New_Located_Expr (Ada_Node : Node_Id;
-                              Expr     : W_Expr_Id;
-                              Domain   : EW_Domain;
-                              Is_VC    : Boolean) return W_Expr_Id;
+   function New_Located_Expr
+     (Ada_Node : Node_Id;
+      Expr     : W_Expr_Id;
+      Domain   : EW_Domain;
+      Is_VC    : Boolean) return W_Expr_Id;
    --  put a location label on the given expression
 
    function New_VC_Call
@@ -141,8 +141,9 @@ package Why.Gen.Expr is
    --  If we are not in the "term" domain, put VC and location labels on the
    --  expression.
 
-   function New_VC_Labels (N : Node_Id; Reason : VC_Kind)
-      return W_Identifier_Array;
+   function New_VC_Labels
+     (N      : Node_Id;
+      Reason : VC_Kind) return W_Identifier_Array;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 
@@ -161,20 +162,20 @@ package Why.Gen.Expr is
    --  comparisons being in Base_Type (int or real)
 
    function Insert_Simple_Conversion
-     (Ada_Node   : Node_Id := Empty;
-      Domain     : EW_Domain;
-      Expr       : W_Expr_Id;
-      To         : W_Base_Type_Id;
-      From       : W_Base_Type_Id) return W_Expr_Id;
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Expr     : W_Expr_Id;
+      To       : W_Base_Type_Id;
+      From     : W_Base_Type_Id) return W_Expr_Id;
 
    function Insert_Scalar_Conversion
-     (Domain        : EW_Domain;
-      Ada_Node      : Node_Id := Empty;
-      Expr          : W_Expr_Id;
-      To            : W_Base_Type_Id;
-      From          : W_Base_Type_Id;
-      Round_Func    : W_Identifier_Id := Why_Empty;
-      Range_Check   : Node_Id := Empty) return W_Expr_Id;
+     (Domain      : EW_Domain;
+      Ada_Node    : Node_Id := Empty;
+      Expr        : W_Expr_Id;
+      To          : W_Base_Type_Id;
+      From        : W_Base_Type_Id;
+      Round_Func  : W_Identifier_Id := Why_Empty;
+      Range_Check : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
    --  We insert a conversion so that its type corresponds to "To".
    --  When Round_Func is set, a call to the rounding function is inserted
@@ -192,7 +193,8 @@ package Why.Gen.Expr is
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 
-   function New_Attribute_Expr (Ty : Entity_Id; Attr : Attribute_Id)
-                                return W_Expr_Id;
+   function New_Attribute_Expr
+     (Ty   : Entity_Id;
+      Attr : Attribute_Id) return W_Expr_Id;
 
 end Why.Gen.Expr;
