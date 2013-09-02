@@ -733,7 +733,7 @@ module Ada__containers__formal_doubly_linked_lists__insert__2
   predicate first_inserted (co1:list) (cu:cursor) (co2:list) (p:cursor) =
 	    cu = no_element /\ length_ co1 > 0 /\ position co2 p = length_ co2 \/
              length_ co1 = 0 /\ p = first co2 \/
-             position co1 cu >= 0 /\ position co2 p = position co1 cu
+             position co1 cu > 0 /\ position co2 p = position co1 cu
 
   val insert__2 (co:ref list) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) (p:ref cursor)
                                              (c : int) : unit
