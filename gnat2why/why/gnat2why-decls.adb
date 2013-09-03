@@ -593,8 +593,6 @@ package body Gnat2Why.Decls is
    procedure Translate_Package_With_External_Axioms
      (Package_Entity : Entity_Id)
    is
-      type Entity_Array is array (Integer range <>) of Entity_Id;
-
       procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
                                 Subst_Length : out Natural);
       --  Computes the length of the substitution that has to be computed
@@ -624,15 +622,6 @@ package body Gnat2Why.Decls is
 
       function Get_Label_List (E : Entity_Id) return List_Id;
       --  Use Parent field to reach N_Generic_Package_Declaration
-
-      procedure Parse_Declarations
-        (Decls      : List_Id;
-         File_Name  : String;
-         Compl      : Entity_Array := (2 .. 1 => <>));
-      --  Dispatches theories of SPARK entities of the package spec in the
-      --  appropriate Why3 file. Since the copy of the Why3 axiomatization is
-      --  in one single file, a copy of each theory needs to be added to the
-      --  appropriate file afterward.
 
       procedure Parse_Parameters (G_Parents : List_Of_Entity.List);
       --  Declares a Why type per formal of type kind of the first element of
@@ -696,8 +685,7 @@ package body Gnat2Why.Decls is
            (Assoc         : List_Id;
             Labs          : List_Id;
             Generic_Name  : String;
-            Instance_Name : String;
-            Instance_File : String);
+            Instance_Name : String);
 
          --  Names of elements expected in a Why3 theory for a formal of a
          --  private type. Used to comply with the special handling for
@@ -711,15 +699,13 @@ package body Gnat2Why.Decls is
          To_Base_Name   : constant String := "to_base";
          Of_Base_Name   : constant String := "of_base";
          In_Range_Name  : constant String := "valid";
-         File_Name : constant String := "";
          Subst_Cur : Integer := 1;
 
          procedure Compute_Substitution_Package
            (Assoc         : List_Id;
             Labs          : List_Id;
             Generic_Name  : String;
-            Instance_Name : String;
-            Instance_File : String) is
+            Instance_Name : String) is
 
             CurAssoc  : Node_Id := First (Assoc);
             CurLabs   : Node_Id := First (Labs);
@@ -729,8 +715,6 @@ package body Gnat2Why.Decls is
                   Actual : constant Entity_Id :=
                     Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                   Formal : constant Entity_Id := Defining_Entity (CurLabs);
-                  Actual_File : constant String :=
-                    File_Base_Name_Of_Entity (Actual);
                begin
 
                   if Ekind (Formal) in Type_Kind then
@@ -749,17 +733,6 @@ package body Gnat2Why.Decls is
                              & "__" & Short_Name (Formal) & "\s"),
                            To       => W_Any_Node_Id (
                              New_Identifier (Name => "" & ASCII.LF)));
-
-                     elsif Actual_File /= File_Name then
-                        Subst (Subst_Cur) := New_Custom_Substitution
-                          (Domain   => EW_Prog,
-                           From     => NID ("use\s+" & """" & Generic_Name &
-                               "__args""\." & Capitalize_First (Generic_Name)
-                             & "__" & Short_Name (Formal) & "\s"),
-                           To       => W_Any_Node_Id (New_Identifier
-                             (Name => "use """ & Actual_File & """." &
-                                Capitalize_First (Name_Of_Node (Actual))
-                              & ASCII.LF)));
                      else
                         Subst (Subst_Cur) := New_Custom_Substitution
                           (Domain   => EW_Prog,
@@ -934,28 +907,16 @@ package body Gnat2Why.Decls is
 
                      --  Replace:
                      --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
-                     --  by: use ("<Actual_File>".)Name_Of_Node (Actual)
+                     --  by: use Name_Of_Node (Actual)
 
-                     if Actual_File /= File_Name then
-                        Subst (Subst_Cur) := New_Custom_Substitution
-                          (Domain   => EW_Prog,
-                           From     => NID ("use\s+" & """" & Generic_Name &
-                               "__args""\." & Capitalize_First (Generic_Name)
-                             & "__" & Short_Name (Formal) & "\s"),
-                           To       => W_Any_Node_Id (New_Identifier
-                             (Name => "use """ & Actual_File & """." &
-                                Capitalize_First (Name_Of_Node (Actual))
-                              & ASCII.LF)));
-                     else
-                        Subst (Subst_Cur) := New_Custom_Substitution
-                          (Domain   => EW_Prog,
-                           From     => NID ("use\s+" & """" & Generic_Name &
-                               "__args""\." & Capitalize_First (Generic_Name)
-                             & "__" & Short_Name (Formal) & "\s"),
-                           To       => W_Any_Node_Id (New_Identifier
-                             (Name => "use " & Capitalize_First
-                              (Name_Of_Node (Actual)) & ASCII.LF)));
-                     end if;
+                     Subst (Subst_Cur) := New_Custom_Substitution
+                       (Domain   => EW_Prog,
+                        From     => NID ("use\s+" & """" & Generic_Name &
+                            "__args""\." & Capitalize_First (Generic_Name)
+                          & "__" & Short_Name (Formal) & "\s"),
+                        To       => W_Any_Node_Id (New_Identifier
+                          (Name => "use " & Capitalize_First
+                           (Name_Of_Node (Actual)) & ASCII.LF)));
                      Subst_Cur := Subst_Cur + 1;
 
                      --  Replace: <Generic_Name>__<Formal>.<Formal>
@@ -991,19 +952,11 @@ package body Gnat2Why.Decls is
             --    "<Instance_File>". if Instance_File is not File_Name
             --    nothing otherwise
 
-            if Instance_File = File_Name then
-               Subst (Subst_Cur) := New_Custom_Substitution
-                 (Domain   => EW_Prog,
-                  From     => NID ("""" & Generic_Name & """."),
-                  To       => W_Any_Node_Id
-                    (New_Identifier (Name => "")));
-            else
-               Subst (Subst_Cur) := New_Custom_Substitution
-                 (Domain   => EW_Prog,
-                  From     => NID ("""" & Generic_Name & """."),
-                  To       => W_Any_Node_Id
-                    (New_Identifier (Name => """" & Instance_File & """.")));
-            end if;
+            Subst (Subst_Cur) := New_Custom_Substitution
+              (Domain   => EW_Prog,
+               From     => NID ("""" & Generic_Name & """."),
+               To       => W_Any_Node_Id
+                 (New_Identifier (Name => "")));
 
             Subst_Cur := Subst_Cur + 1;
          end Compute_Substitution_Package;
@@ -1021,17 +974,13 @@ package body Gnat2Why.Decls is
                Generic_Name  : constant String  :=
                  Get_Generic_Name (E, GParent_Cur);
                Instance_Name : constant String  := Get_Instance_Name (E);
-               Instance_File : constant String  :=
-                 File_Base_Name_Of_Entity (E)
-                 & Why_File_Suffix;
             begin
 
                Compute_Substitution_Package
                  (Assoc         => Assoc,
                   Labs          => Labs,
                   Generic_Name  => Generic_Name,
-                  Instance_Name => Instance_Name,
-                  Instance_File => Instance_File);
+                  Instance_Name => Instance_Name);
 
                List_Of_Entity.Next (GParent_Cur);
 
@@ -1099,88 +1048,6 @@ package body Gnat2Why.Decls is
 
          return Generic_Formal_Declarations (P);
       end Get_Label_List;
-
-      ------------------------
-      -- Parse_Declarations --
-      ------------------------
-
-      procedure Parse_Declarations
-        (Decls      : List_Id;
-         File_Name  : String;
-         Compl      : Entity_Array := (2 .. 1 => <>)) is
-
-         procedure Parse_Declaration
-           (Node    : Node_Id);
-
-         procedure Parse_Declaration
-           (Node      : Node_Id) is
-            E : constant Entity_Id := Defining_Entity (Node);
-            Theory_Name : constant String := Full_Name (E);
-            TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
-         begin
-
-            --  If no theory is needed for Node there is nothing to do
-
-            if not Entity_In_SPARK (E) then
-               return;
-            end if;
-
-            --  Add a new theory to the appropriate file, containing only a
-            --  use export of the theory to be copied
-
-            if "" /= File_Name then
-               Open_Theory
-                 (TFile, Theory_Name,
-                  Comment => "Module for axiomatizing "
-                  & """" & Get_Name_String (Chars (E)) & """"
-                  & (if Sloc (E) > 0 then
-                       " defined at " & Build_Location_String (Sloc (E))
-                    else "")
-                  & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-               Add_With_Clause (T        => TFile.Cur_Theory,
-                                T_Name   => Capitalize_First (Theory_Name),
-                                Use_Kind => EW_Export);
-
-               Close_Theory (TFile, Filter_Entity => Empty);
-            end if;
-         end Parse_Declaration;
-
-         Cur : Node_Id := First (Decls);
-      begin
-
-         --  Call Parse_Declaration on every element of the list of
-         --  declarations that needs a translation.
-
-         while Present (Cur) loop
-            if Comes_From_Source (Cur) and then
-              Nkind (Cur) in N_Subtype_Declaration | N_Private_Type_Declaration
-              | N_Subprogram_Declaration | N_Object_Declaration then
-               Parse_Declaration (Cur);
-            end if;
-
-            --  Call Parse_Declarations recursively on Package_Declaration and
-            --  Package_Instantiation.
-
-            if Comes_From_Source (Cur) and then
-              Nkind (Cur) = N_Package_Declaration then
-               Parse_Declarations
-                 (Decls      => Visible_Declarations (Get_Package_Spec (Cur)),
-                  File_Name  => File_Name,
-                  Compl      => Compl);
-            end if;
-
-            if Comes_From_Source (Cur) and then
-              Nkind (Cur) = N_Package_Instantiation then
-               Parse_Declarations
-                 (Decls  => Visible_Declarations
-                    (Specification (Instance_Spec (Cur))),
-                  File_Name  => File_Name,
-                  Compl      => Compl);
-            end if;
-            Next (Cur);
-         end loop;
-      end Parse_Declarations;
 
       ----------------------
       -- Parse_Parameters --
@@ -1446,8 +1313,6 @@ package body Gnat2Why.Decls is
          end loop;
       end Parse_Parameters;
 
-      Decls : constant List_Id :=
-        Visible_Declarations (Get_Package_Spec (Package_Entity));
       TFile : constant Why_File :=
         Why_Files (Dispatch_Entity (Package_Entity));
       G_Parents : constant List_Of_Entity.List :=
@@ -1461,7 +1326,6 @@ package body Gnat2Why.Decls is
               (Ada_Node  => Package_Entity,
                Domain    => EW_Prog,
                File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
-         Parse_Declarations (Decls, "");
       else
          if List_Of_Entity.First_Element (G_Parents) = Package_Entity then
             Parse_Parameters (G_Parents);
@@ -1482,7 +1346,6 @@ package body Gnat2Why.Decls is
                       List_Of_Entity.First (G_Parents)) & ".mlw"),
                   Subst     => Subst));
 
-            Parse_Declarations (Decls, "");
          end;
       end if;
    end Translate_Package_With_External_Axioms;
