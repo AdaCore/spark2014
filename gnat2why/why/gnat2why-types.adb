@@ -242,12 +242,7 @@ package body Gnat2Why.Types is
          end Declare_Private_Type;
 
       begin
-         if E = Standard_Boolean or else
-            E = Universal_Fixed
-         then
-            null;
-
-         elsif E = Standard_Character           or else
+         if E = Standard_Character           or else
                E = Standard_Wide_Character      or else
                E = Standard_Wide_Wide_Character
          then
@@ -300,6 +295,10 @@ package body Gnat2Why.Types is
    --  Start of Translate_Type
 
    begin
+      if E = Standard_Boolean or else E = Universal_Fixed then
+         return;
+      end if;
+
       Open_Theory (File, Name,
                    Comment =>
                      "Module for axiomatizing type "
