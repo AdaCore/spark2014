@@ -1,7 +1,7 @@
 module Ada__containers__formal_doubly_linked_lists__list
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__count_type
 
   type list
 
@@ -18,7 +18,7 @@ end
 module Ada__containers__formal_doubly_linked_lists__length
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__count_type
   use import Ada__containers__formal_doubly_linked_lists__list
 
   function length list : Ada__containers__count_type.count_type

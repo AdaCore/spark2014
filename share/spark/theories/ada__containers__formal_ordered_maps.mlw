@@ -13,8 +13,8 @@ end
 module Ada__containers__formal_ordered_maps__map
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__hash_type
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__hash_type
+  use Ada__containers__count_type
 
   type map
 
@@ -31,7 +31,7 @@ end
 module Ada__containers__formal_ordered_maps__length
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__count_type
   use import Ada__containers__formal_ordered_maps__map
 
   function length map : Ada__containers__count_type.count_type
@@ -1088,7 +1088,7 @@ end
 module Ada__containers__formal_ordered_maps__capacity
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__count_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
 

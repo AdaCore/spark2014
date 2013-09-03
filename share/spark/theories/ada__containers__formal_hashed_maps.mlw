@@ -12,8 +12,8 @@ end
 module Ada__containers__formal_hashed_maps__map
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__hash_type
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__hash_type
+  use Ada__containers__count_type
 
   type map
 
@@ -32,7 +32,7 @@ end
 module Ada__containers__formal_hashed_maps__length
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__count_type
   use import Ada__containers__formal_hashed_maps__map
 
   function length map : Ada__containers__count_type.count_type
@@ -832,7 +832,7 @@ end
 module Ada__containers__formal_hashed_maps__capacity
   use import int.Int
   use import "_gnatprove_standard".Main
-  use "a-contai__types_in_spec".Ada__containers__count_type
+  use Ada__containers__count_type
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
 
@@ -853,7 +853,7 @@ module Ada__containers__formal_hashed_maps__reserve_capacity
 end
 
 module Ada__containers__formal_hashed_maps__default_modulus
-  use "a-contai__types_in_spec".Ada__containers__hash_type
+  use Ada__containers__hash_type
 
  function default_modulus (cap : int): Ada__containers__hash_type.hash_type
 
