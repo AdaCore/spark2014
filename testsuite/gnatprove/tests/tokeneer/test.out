@@ -223,7 +223,7 @@ door.ads:215:8: postcondition not proved
 door.ads:270:8: postcondition not proved
 enclave.adb:109:18: info: precondition proved
 enclave.adb:207:29: info: postcondition proved
-enclave.adb:276:10: postcondition not proved, requires Status = EnclaveQuiescent and then KeyStore.PrivateKeyPresent) or else (Status = WaitingEndEnrol and then not KeyStore(KeyStore.privatekeypresent)
+enclave.adb:276:10: info: postcondition proved
 enclave.adb:288:16: info: precondition proved
 enclave.adb:362:29: info: postcondition proved
 enclave.adb:441:29: info: postcondition proved
@@ -305,7 +305,7 @@ enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
-file.adb:413:39: overflow check not proved
+file.adb:413:39: info: overflow check proved
 file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
@@ -374,10 +374,10 @@ tismain.adb:707:21: info: precondition proved
 tismain.adb:712:26: info: precondition proved
 tismain.adb:718:21: info: precondition proved
 tismain.adb:742:10: postcondition not proved
-tismain.adb:757:21: precondition not proved
-tismain.adb:762:26: precondition not proved
-tismain.adb:768:21: precondition not proved
-tismain.adb:836:17: precondition not proved
+tismain.adb:757:21: info: precondition proved
+tismain.adb:762:26: info: precondition proved
+tismain.adb:768:21: info: precondition proved
+tismain.adb:836:17: info: precondition proved
 tismain.adb:839:17: precondition not proved
 tismain.adb:847:17: precondition not proved
 tismain.adb:1333:13: precondition not proved
