@@ -58,12 +58,64 @@ package Why.Inter is
       WF_Context,
       WF_Main);
 
-   type Why_File is
+   type Why_File is tagged
       record
          File        : W_File_Id;
          Kind        : Why_File_Enum;
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
+   --  Making this type tagged is a way to force by-reference passing of
+   --  objects of this type. This is needed because we have aliasing between
+   --  parameters of many functions and the global variable Why_Files below.
+
+   function Make_Empty_Why_File
+     (Kind : Why_File_Enum) return Why_File
+   with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
+   --  Return an empty Why_File with the given name and kind
+
+   procedure Close_Theory
+     (P               : in out Why_File;
+      Filter_Entity   : Entity_Id;
+      Defined_Entity  : Entity_Id := Empty;
+      Do_Closure      : Boolean := False;
+      No_Import       : Boolean := False;
+      With_Completion : Boolean := True);
+   --  Close the current theory by adding all necessary imports and adding
+   --  the theory to the file. If not Empty, Defined_Entity is the entity
+   --  defined by the current theory, which is used to complete the graph
+   --  of dependencies for this entity. If Do_Closure is True, then these
+   --  dependencies are used to get all entities on which this definition
+   --  depends. With_Completion is True if the completion theories should be
+   --  added too.
+
+   procedure Discard_Theory (P : in out Why_File);
+   --  Remove the current theory from P
+
+   procedure Open_Theory (P       : in out Why_File;
+                          Name    : String;
+                          Comment : String;
+                          Kind    : EW_Theory_Type := EW_Module)
+     with Pre => (P.Cur_Theory = Why_Empty);
+   --  Open a new theory in the file.
+
+   procedure Add_With_Clause (P        : Why_File;
+                              T_Name   : String;
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
+
+   procedure Add_Use_For_Entity
+     (P               : Why_File;
+      N               : Entity_Id;
+      Use_Kind        : EW_Clone_Type := EW_Clone_Default;
+      With_Completion : Boolean := True);
+   --  For the given entity, add a use clause to the current theory. If
+   --  Use_Kind is set to EW_Clone_Default, the actual use kind for that
+   --  entity is computed from the entity itself. If another value is given for
+   --  Use_Kind, that value is used. With_Completion is True if the completion
+   --  theories for N should be added too.
+
+   procedure Add_Effect_Imports (P : Why_File;
+                                 S : Name_Set.Set);
 
    Why_Files : array (Why_File_Enum) of Why_File;
    Why_File_Name : String_Access;
@@ -118,42 +170,7 @@ package Why.Inter is
    --  The "String" variant uses the same prefix for all files. The other one
    --  uses the spec or body prefix as appropriate.
 
-   function Make_Empty_Why_File
-     (Kind : Why_File_Enum) return Why_File
-   with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
-   --  Return an empty Why_File with the given name and kind
-
-   procedure Close_Theory
-     (P               : in out Why_File;
-      Filter_Entity   : Entity_Id;
-      Defined_Entity  : Entity_Id := Empty;
-      Do_Closure      : Boolean := False;
-      No_Import       : Boolean := False;
-      With_Completion : Boolean := True);
-   --  Close the current theory by adding all necessary imports and adding
-   --  the theory to the file. If not Empty, Defined_Entity is the entity
-   --  defined by the current theory, which is used to complete the graph
-   --  of dependencies for this entity. If Do_Closure is True, then these
-   --  dependencies are used to get all entities on which this definition
-   --  depends. With_Completion is True if the completion theories should be
-   --  added too.
-
-   procedure Discard_Theory (P : in out Why_File);
-   --  Remove the current theory from P
-
-   procedure Open_Theory (P       : in out Why_File;
-                          Name    : String;
-                          Comment : String;
-                          Kind    : EW_Theory_Type := EW_Module)
-     with Pre => (P.Cur_Theory = Why_Empty);
-   --  Open a new theory in the file.
-
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
-                              T_Name   : String;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
-
-   procedure Add_With_Clause (P        : Why_File;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
@@ -165,17 +182,6 @@ package Why.Inter is
                               Th_Type  : EW_Theory_Type := EW_Module);
    --  Add a package name to the context of a Why package.
 
-   procedure Add_Use_For_Entity
-     (P               : Why_File;
-      N               : Entity_Id;
-      Use_Kind        : EW_Clone_Type := EW_Clone_Default;
-      With_Completion : Boolean := True);
-   --  For the given entity, add a use clause to the current theory. If
-   --  Use_Kind is set to EW_Clone_Default, the actual use kind for that
-   --  entity is computed from the entity itself. If another value is given for
-   --  Use_Kind, that value is used. With_Completion is True if the completion
-   --  theories for N should be added too.
-
    function File_Base_Name_Of_Entity (E : Entity_Id) return String;
    --  return the base name of the unit in which the entity is
    --  defined
@@ -183,9 +189,6 @@ package Why.Inter is
    function Name_Of_Node (N : Node_Id) return String;
    --  Return the uncapitalized name which needs to be used to include the
    --  Why entity for that node (after capitalization).
-
-   procedure Add_Effect_Imports (P : Why_File;
-                                 S : Name_Set.Set);
 
    procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
                                  S : Name_Set.Set);
