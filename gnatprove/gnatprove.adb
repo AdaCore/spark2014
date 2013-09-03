@@ -556,7 +556,6 @@ procedure Gnatprove is
       Start_Section ("main");
       Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "theories"));
       Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "modules"));
-      Put_Keyval ("loadpath", Stdlib_Dir);
       Put_Keyval ("loadpath", Theories_Dir);
       for File of Obj_Path loop
          Put_Keyval ("loadpath", File.Display_Full_Name);

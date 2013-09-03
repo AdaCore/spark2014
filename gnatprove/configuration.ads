@@ -145,7 +145,6 @@ package Configuration is
    Gnatprove_Dir    : constant String := Compose (Share_Dir, "spark");
    Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
    Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
-   Stdlib_Dir       : constant String := Compose (Gnatprove_Dir, "stdlib");
    Why3_Drivers_Dir : constant String := Compose (Why3_Dir, "drivers");
 
    --  The exact places for the three configuration files used by gnatprove

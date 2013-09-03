@@ -35,7 +35,7 @@ DUMMYFILE:= dummy.adb
 GLOBAL_GEN_ARG_FILE:= global_args.tmp
 STANDARD_ARG_FILE:= standard_args.tmp
 
-all: $(ALL_ALIS) $(ALL_WHYPACK) $(WHY_STANDARD)
+all: $(ALL_ALIS)
 
 check: $(ALL_WHYPACK:__package.mlw=.check)
 
