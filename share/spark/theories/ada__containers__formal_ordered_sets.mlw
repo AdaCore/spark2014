@@ -916,7 +916,7 @@ module Ada__containers__formal_ordered_sets__strict_equal
      (forall cu:cursor [element co1 cu | element co2 cu]. position co1 cu > 0 ->
         Ada__containers__formal_ordered_sets__element_type.to_base (element co1 cu) = Ada__containers__formal_ordered_sets__element_type.to_base (element co2 cu))) <->  strict_equal co1 co2 = True
 
-  lemma strict_equal_length_:
+  axiom strict_equal_length_:
     forall co1 co2 : set [strict_equal co1 co2].
      strict_equal co1 co2 = True -> length_ co1 = length_ co2
 
@@ -955,11 +955,11 @@ module Ada__containers__formal_ordered_sets__Oeq__2
          (find_ co2 e = no_element \/ position co2 (find_ co2 e) > 0 /\ 
           Ada__containers__formal_ordered_sets__oeq.oeq (Ada__containers__formal_ordered_sets__element_type.to_base (element co2 (find_ co2 e))) (Ada__containers__formal_ordered_sets__element_type.to_base (element co1 (find_ co1 e))) <> True))
 
-  lemma oeq__2_sym :
+  axiom oeq__2_sym :
   forall e1 e2 : set [oeq__2 e1 e2].
 	oeq__2 e1 e2 = True -> oeq__2 e2 e1 = True
 
-  lemma oeq__2_trans :
+  axiom oeq__2_trans :
   forall e1 e2 e3 : set [oeq__2 e1 e2, oeq__2 e1 e3 | oeq__2 e1 e2, oeq__2 e2 e3].
 	oeq__2 e1 e2 = True -> oeq__2 e2 e3 = True -> oeq__2 e1 e3 = True
 
