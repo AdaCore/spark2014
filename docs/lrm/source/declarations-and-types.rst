@@ -31,19 +31,31 @@ whether the type defines full default initialization.]
 Types and Subtypes
 ------------------
 
-The view of an entity introduced by a ``private_type_declaration`` is in
-|SPARK| if the types of any visible discriminants are in |SPARK|, even if the entity
-declared by the corresponding ``full_type_declaration`` is not in |SPARK|.
+.. centered:: **Legality Rules**
 
-For a type or subtype to be in |SPARK|, all predicate specifications that apply
-to the (sub)type must be in |SPARK|.  Notwithstanding any rule to the contrary,
-a (sub)type is never in |SPARK| if its applicable predicate is not in |SPARK|.
+.. _tu-types_and_subtypes-lr_01:
 
-Subtypes that are not preelaborable are not subject to flow analysis.
-[Users may write programs using such subtypes and those programs can be
-subject to formal verification. However, flow analysis will ignore the use
-of such a subtype and will instead raise a warning to indicate that its use has not
-been analysed.]
+1. The view of an entity introduced by a ``private_type_declaration``
+   is in |SPARK| if the types of any visible discriminants are in
+   |SPARK|, even if the entity declared by the corresponding
+   ``full_type_declaration`` is not in |SPARK|.
+
+.. _tu-types_and_subtypes-lr_02:
+
+2. For a type or subtype to be in |SPARK|, all predicate
+   specifications that apply to the (sub)type must be in |SPARK|.
+   Notwithstanding any rule to the contrary, a (sub)type is never in
+   |SPARK| if its applicable predicate is not in |SPARK|.
+
+.. _tu-types_and_subtypes-lr_03:
+
+3. Subtypes that are not preelaborable are not subject to flow
+   analysis.  [Users may write programs using such subtypes and those
+   programs can be subject to formal verification. However, flow
+   analysis will ignore the use of such a subtype and will instead
+   raise a warning to indicate that its use has not been analysed.]
+
+.. _etu-types_and_subtypes-lr:
 
 .. todo:: Lift restriction that non-preelaborable subtypes are not subject
           to flow analysis. To be completed in a post-Release 1 version of this document.
@@ -53,7 +65,9 @@ Type Declarations
 
 .. centered:: **Legality Rules**
 
-#. The following type declarations are not permitted in |SPARK|
+.. _tu-type_declarations-lr_01:
+
+1. The following type declarations are not permitted in |SPARK|
 
    * ``task_type_declaration``,
    * ``protected_type_declaration``, 
@@ -61,14 +75,7 @@ Type Declarations
    * ``interface_type_definition``, and
    * ``access_type_definition``.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 3.2.1 LR The following type declarations are not
-          permitted in |SPARK|: ``task_type_declaration``,
-          ``protected_type_declaration``,
-          ``private_extension_declaration``,
-          ``interface_type_definition``,
-          and``access_type_definition``.
+.. _etu-type_declarations-lr_01:
 
 [``Task_type_declarations`` and ``protected_type_declarations`` will
 be included when |SPARK| is extended to cover some of the Ada tasking
@@ -87,28 +94,22 @@ expressions except when it is the ``range`` of a
 they must be defined using constants whose values may be derived from
 expressions containing variables.  Note that a formal parameter of a
 subprogram of mode **in** is a constant and may be used in defining a
-constraint.
+constraint. This restriction gives an explicit constant which can be
+referenced in analysis and proof.
 
-This restriction gives an explicit constant which can be referenced in
-analysis and proof.
+An expression with a *variable input* reads a variable or calls a
+function which calls (directly or indirectly) reads a variable.
 
 .. centered:: **Legality Rules**
 
-#. A ``constraint``, excluding the ``range`` of a
-   ``loop_parameter_specification``, shall not have a variable input.
-   This means that an expression used in defining a constraint shall
-   not read a variable, nor shall it call a function which (directly
-   or indirectly) reads a variable.
+.. _tu-subtype_declarations-lr_01-fe:
 
-   .. ifconfig:: Display_Trace_Units
+1. A ``constraint``, excluding the ``range`` of a
+   ``loop_parameter_specification``, shall not be defined using an
+   expression with a variable input.
 
-      :Trace Unit: FE 3.2.2 LR A ``constraint``, excluding the
-           ``range`` of a ``loop_parameter_specification``, shall not
-           have a variable input.  This means that an expression used
-           in defining a constraint shall not read a variable, nor
-           shall it call a function which (directly or indirectly)
-           reads a variable.
-
+.. _etu-subtype_declarations-lr_01-fe:
+ 
  
 Classification of Operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,8 +119,16 @@ No restrictions or extensions.
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
-The Static_Predicate aspect is in |SPARK|.
-The Dynamic_Predicate aspect is not in |SPARK|.
+Static predicates are in |SPARK| but dynamic predicates are not in
+|SPARK|.
+
+.. centered:: **Legality Rules**
+
+.. _tu-subtype_predicates-lr_01:
+
+1. A Dynamic_Predicate aspect shall not occur in an aspect specification.
+
+.. _etu-subtype_predicates-lr_01:
 
 [Eventually |SPARK| may include uses of the Dynamic_Predicate aspect,
 subject to the restriction that the predicate expression cannot take
@@ -137,19 +146,25 @@ predicate of an enclosing object.]
 Objects and Named Numbers
 -------------------------
 
-The entity declared by an ``object_declaration`` is
-in |SPARK| if its declaration does not contain the reserved word **aliased**,
-its type is in |SPARK|, and its *initialization_*\ ``expression``, if any, is in
-|SPARK|.
-
 Object Declarations
 ~~~~~~~~~~~~~~~~~~~
+
+.. centered:: **Legality Rules**
+
+.. _tu-object_declarations-lr_01:
+
+1. The entity declared by an ``object_declaration`` is in |SPARK| if
+   its declaration does not contain the reserved word **aliased**, its
+   type is in |SPARK|, and its *initialization_*\ ``expression``, if
+   any, is in |SPARK|.
+
+.. _etu-object_declarations-lr_01:
 
 Constants that are not preelaborable are not subject to flow analysis.
 [Users may write programs using such constants and those programs can be
 subject to formal verification. However, flow analysis will ignore the use
 of such a constant and will instead raise a warning to indicate that its use has not
-been analysed.]
+been analyzed.]
 
 .. todo:: Lift restriction that non-preelaborable constants are not subject
           to flow analysis. To be completed in a post-Release 1 version of this document.
@@ -163,9 +178,16 @@ No extensions or restrictions.
 Derived Types and Classes
 -------------------------
 
-An entity declared by a ``derived_type`` declaration is in |SPARK| if its
-parent type is in |SPARK|, and if the declaration contains an ``interface_list``
-or a ``record_part`` these must also contain entities that are in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-derived_types_and_classes-lr_01:
+
+1. An entity declared by a ``derived_type`` declaration is in |SPARK|
+   if its parent type is in |SPARK|, and if the declaration contains
+   an ``interface_list`` or a ``record_part`` these must also contain
+   entities that are in |SPARK|.
+
+.. _etu-derived_types_and_classes-lr_01:
 
 Scalar Types
 ------------
@@ -176,8 +198,14 @@ No extensions or restrictions.
 Array Types
 -----------
 
-An entity declared by a ``array_type_definition`` is in |SPARK| if its
-components are in |SPARK| and default initialization is in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-array_types-lr_01:
+
+1. An entity declared by a ``array_type_definition`` is in |SPARK| if its
+   components are in |SPARK| and default initialization is in |SPARK|.
+
+.. _etu-array_types-lr_01:
 
 .. _discriminants:
 
@@ -188,43 +216,42 @@ The following rules apply to discriminants in |SPARK|.
 
 .. centered:: **Legality Rules**
 
-#. The type of a ``discriminant_specification`` shall be discrete.
+.. _tu-discriminants-lr_01:
 
-   .. ifconfig:: Display_Trace_Units
+1. The type of a ``discriminant_specification`` shall be discrete.
 
-      :Trace Unit: FE 3.7 LR The type of a
-         ``discriminant_specification`` shall be discrete.
+.. _tu-discriminants-lr_02:
 
-#. A ``discriminant_specification`` shall not occur as part of a
+2. A ``discriminant_specification`` shall not occur as part of a
    derived type declaration whose parent type is discriminated. [In
    other words, inherited discriminants shall not be hidden.]
 
-   .. ifconfig:: Display_Trace_Units
+.. _tu-discriminants-lr_03:
 
-      :Trace Unit: FE 3.7 LR A ``discriminant_specification`` shall
-          not occur as part of a derived type declaration whose parent
-          type is discriminated.
-
-#. The ``default_expression`` of a ``discriminate_specification`` 
+3. The ``default_expression`` of a ``discriminant_specification`` 
    shall not have a variable input.
 
-   .. ifconfig:: Display_Trace_Units
+.. _etu-discriminants-lr_03:
 
-      :Trace Unit: FE 3.7 LR The ``default_expression`` of a
-          ``discriminate_specification`` shall not be a variable
-          expression.
 
 Record Types
 ------------
 
 |SPARK| does not permit partial default initialization of record objects.
-More specifically, if at least one non-discriminant component (either
-explicitly declared or inherited) of a record type or type extension either
-is of a type which defines full default initialization or is declared by
-a ``component_declaration`` which includes a ``default_expression``, and if that
-component's type has at least one elementary non-discriminant part,
-then the record type or type extension shall define full default
-initialization.
+
+.. centered:: **Legality Rules**
+
+.. _tu-record_types-lr_01:
+
+1. If at least one non-discriminant component (either explicitly
+   declared or inherited) of a record type or type extension either is
+   of a type which defines full default initialization or is declared
+   by a ``component_declaration`` which includes a
+   ``default_expression``, and if that component's type has at least
+   one elementary non-discriminant part, then the record type or type
+   extension shall define full default initialization.
+
+.. _etu-record_types-lr_01:
 
 [In the unusual case of a non-discriminant component which has no
 non-discriminant scalar parts (e.g., an array of null records),
@@ -241,39 +268,55 @@ information as part of the specification of a private type.]
 Tagged Types and Type Extensions
 --------------------------------
 
-Use of the 'Class attribute is not permitted in |SPARK|.
+In this first release of |SPARK| tagged types and type extensions are not supported
+nor is the use of the 'Class attribute.
 
-[This restriction may be relaxed at some point in the future.
-As a consequence of this restriction, dispatching calls are not currently in
-|SPARK| but are planned for a future release.]
+[This restriction is planned to be relaxed in a future release of |SPARK|.]
 
-.. todo:: Add 'Class attribute to SPARK 2014. To be completed in a post-Release
-          1 version of this document.
+.. centered:: **Legality Rules**
+
+.. _tu-tagged_types_and_type_extensions-lr_01:
+
+1. A record or private type declaration shall not contain the reserved
+   word **tagged**.
+
+.. _tu-tagged_types_and_type_extensions-lr_02:
+
+2. The attribute 'Class shall not be denoted.
+
+.. _etu-tagged_types_and_type_extensions-lr_02:
+
+.. todo:: Add tagged types, type extensions and 'Class attribute to
+     SPARK 2014. To be completed in a post-Release 1 version of this
+     document.
 
 Type Extensions
 ~~~~~~~~~~~~~~~
 
-A type extension declared within a subprogram body,
-block statement, or generic body which does not also enclose the
-declaration of each of its ancestor types is not in |SPARK|.
+Tagged types are currently not in |SPARK|.
+
+.. todo:: The following rule applies to type extensions: A type
+     extension declared within a subprogram body, block statement, or
+     generic body which does not also enclose the declaration of each
+     of its ancestor types is not in |SPARK|.
 
 
 Dispatching Operations of Tagged Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
+Tagged types are not currently in |SPARK|
 
 
 Abstract Types and Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
+Tagged types are not currently in |SPARK|
 
 
 Interface Types
 ~~~~~~~~~~~~~~~
 
-Use of ``interface_type_definition`` is not permitted in |SPARK|.
+Tagged types are not in |SPARK|.
 
 .. todo:: Include interface types in SPARK 2014. To be completed in a post-Release 1
           version of this document.
@@ -284,12 +327,20 @@ Access Types
 
 Access types allow the creation of aliased data structures and objects, which
 notably complicate the specification and verification of a program's
-behavior. Therefore, all forms of access type declaration are excluded from |SPARK|.
+behavior. Therefore, the following rules are applied in |SPARK|.
 
-The attribute ``Access`` is not in |SPARK|.
+.. centered:: **Legality Rules**
 
-Finally, as they are based on access discriminants, user-defined references
-and user-defined indexing are not in |SPARK|.
+.. _tu-access_types-lr_01:
+
+1. All forms of access type and parameter declarations are prohibited.
+
+.. _tu-access_types-lr_02:
+
+2. The attribute 'Access shall not be denoted.
+
+.. _etu-access_types-lr_02:
+
 
 Declarative Parts
 -----------------

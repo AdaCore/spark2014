@@ -8,9 +8,19 @@ type invariant or (subtype) predicate, or other assertions introduced in |SPARK|
 Names
 -----
 
-A name that denotes an entity is in |SPARK| if and only if the entity is in
-|SPARK|. Neither ``explicit_dereference`` nor ``implicit_dereference`` are in
-|SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-names-lr_01:
+
+1. A name that denotes an entity is in |SPARK| if and only if the
+   entity is in |SPARK|.
+
+.. _tu-names-lr_02:
+
+2. Neither ``explicit_dereference`` nor ``implicit_dereference`` are
+   in |SPARK|.
+
+.. _etu-names-lr:
 
 Indexed Components
 ~~~~~~~~~~~~~~~~~~
@@ -29,16 +39,19 @@ Some constructs which would unconditionally raise an exception at
 run time in Ada are rejected as illegal in |SPARK| if this property
 can be determined prior to formal program verification.
 
-In particular, if the prefix of a
-record component selection is known statically to be constrained so
-that the selected component is not present, then the component
-selection (which, in Ada, would raise Constraint_Error if it were
-to be evaluated) is illegal.
+.. centered:: **Legality Rules**
+
+.. _tu-selected_components-lr_01:
+
+1. If the prefix of a record component selection is known statically
+   to be constrained so that the selected component is not present,
+   then the component selection (which, in Ada, would raise
+   Constraint_Error if it were to be evaluated) is illegal.
+
+.. _etu-selected_components-lr:
 
 Attributes
 ~~~~~~~~~~
-
-The ``attribute_designator`` Access is not allowed in |SPARK|.
 
 .. todo::  Are there any other language defined attributes which will not be supported?
            To be completed in the Milestone 4 version of this document.
@@ -69,89 +82,121 @@ The ``attribute_designator`` Access is not allowed in |SPARK|.
 User-Defined References
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-User-defined references are not allowed in |SPARK| and so the aspect
-Implicit_Dereference is not in |SPARK|.
+.. centered:: **Legality Rules**
 
-User-Defined Indexing
+.. _tu-user_defined_references-lr_01:
+
+1. User-defined references are not allowed.
+
+.. _tu-user_defined_references-lr_02:
+
+2. The aspect Implicit_Dereference is not permitted.
+   
+.. _etu-user_defined_references-lr:
+
+User-Defined Indexing 
 ~~~~~~~~~~~~~~~~~~~~~
 
-User-defined indexing is not allowed in |SPARK| and so the aspects
-Constant_Indexing and Variable_Indexing are not in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-user_defined_indexing-lr_01:
+
+1. User-defined indexing is not allowed.
+
+.. _tu-user_defined_indexing-lr_02:
+
+2. The aspects Constant_Indexing and Variable_Indexing are not
+   permitted.
+
+.. _etu-user_defined_indexing-lr:
 
 Literals
 --------
 
-The literal **null** representing an access value is not allowed in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-literals-lr_01:
+
+1. The literal **null** representing an access value is not allowed.
+
+.. _etu-literals-lr:
 
 Aggregates
 ----------
 
 .. centered:: **Legality Rules**
 
-The box symbol, <>, may only be used in an aggregate if the type(s) of the
-corresponding component(s) define full default initialization.
+.. _tu-aggregates-lr_01:
+
+1. The box symbol, <>, may only be used in an aggregate if the type(s)
+   of the corresponding component(s) define full default initialization.
+
+.. _etu-aggregates-lr:
 
 [The box symbol cannot be used in an aggregate to produce an uninitialized
 scalar value or a composite value having an uninitialized scalar value as a
 subcomponent.]
 
+Expressions
+-----------
+
+An expression is said to be *side-effect free* if the evaluation of the
+expression does not update any object.  The evaluation of an expression
+free from side-effects only retrieves or computes a value.
+
+.. centered:: **Legality Rules**
+
+.. _tu-expressions-lr_01:
+
+1. An expression is in |SPARK| only if its type is in |SPARK| and the
+   expression is side-effect free.
+
+.. _tu-expressions-lr_02:
+
+2. An expression (or range) in |SPARK| occurring in certain contexts
+   (listed below) shall not have a variable input.  This means that
+   such an expression shall not read a variable, nor shall it call a
+   function which (directly or indirectly) reads a variable.  These
+   contexts include:
+
+    * a constraint excluding the range of a loop parameter
+      specification where variables may be used in the expressions
+      defining the range (see :ref:`subtype_declarations`);
+
+    * the default_expression of a discriminant_specification or
+      component_declaration (see :ref:`discriminants`);
+
+    * a Dynamic_Predicate aspect specification;
+
+    * an indexing expresssion of an indexed_component or the discrete_range
+      of a slice in an object renaming declaration which renames
+      part of that index or slice.
+
+.. _etu-expressions-lr:
+
+[An expression in one of these contexts may read a constant
+which is initialized with the value of a variable.]
+
+[The Dynamic_Predicate rule is redundant because no use of the
+Dynamic_Predicate is currently in |SPARK|. This rule is added
+in anticipation of the possible relaxation of that restriction.]
+
 Update Expressions
 ~~~~~~~~~~~~~~~~~~
 
-.. todo::
-   Detail on Update Expressions needs to be put into the standard format.
-   To be completed in the Milestone 4 version of this document.
+The Update attribute provides a way of overwriting specified
+components of a copy of a given composite value.  
 
-The ``Update`` attribute provides a way of overwriting specified components
-of a copy of a given composite value.
-For a prefix ``X`` that denotes an object of a nonlimited record type or
-record extension ``T``, the attribute
+For a prefix ``X``
+that denotes an object of a nonlimited record type or record extension
+``T``, the attribute
 
 ::
 
      X'Update ( record_component_association_list )
 
-is defined and yields a value of type ``T``. The
-``record_component_association_list`` shall have
-one or more ``record_component_associations``, each of which
-shall have a non-**others** ``component_choice_list`` and an expression.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 4.3.1 component_choice_list cannot be others
-
-Each ``selector_name`` of each ``record_component_name`` shall denote a
-distinct non discriminant component of ``T``.
-Each ``record_component_association``'s associated components shall all
-be of the same type. The expected type and applicable index
-constraint of the expression is defined as for a
-``record_component_association`` occurring within a record aggregate.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 4.3.1 each selector_name of each record_component_name
-                   shall denote a distinct non discriminant record component
-
-In all cases (i.e., whether ``T`` is a record type, a record extension type,
-or an array type - see below), evaluation of ``X'Update``
-begins with the creation of an anonymous object of
-type ``T`` which is initialized to the value of ``X`` in the same way as for an
-occurrence of ``X'Old`` (except that the object is constrained
-by its initial value but not constant). Next, components of this object
-are updated as described below. The attribute reference then denotes a
-constant view of this updated object. The master and
-accessibility level of this object are defined as for the anonymous
-object of an aggregate. The assignments to components of the
-result object described below are assignment operations and include
-performance of any checks associated with evaluation of the target
-component name or with implicit conversion of the source value to
-the component subtype.
-
-If ``T`` is a record type or record extension then the component updating
-referenced above proceeds as follows. For each component for which an
-expression is provided, the expression value is assigned to the
-corresponding component of the result object. The order in which the
-components are updated is unspecified.
+is defined and yields a value of type ``T`` and is a *record update
+expression*..
 
 For a prefix ``X`` that denotes an object of a nonlimited one
 dimensional array type ``T``, the attribute
@@ -160,20 +205,8 @@ dimensional array type ``T``, the attribute
 
      X'Update ( array_component_association {, array_component_association} )
 
-is defined and yields a value of type ``T``.
-
-Each ``array_component_association`` of the attribute reference shall
-have one or more ``array_component_associations``, each of which
-shall have an expression. The expected type and applicable index
-constraint of the expression is defined as for an
-``array_component_association`` occurring within an array aggregate of
-type ``T``. The expected type for each ``discrete_choice`` is the index
-type of ``T``. The reserved word **others** shall not occur as a ``discrete_choice``
-of an ``array_component_association`` of the ``attribute_reference``.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 4.3.1 a discrete_choice cannot be others
+is defined and yields a value of type ``T`` and is an *array update
+expression*.
 
 For a prefix ``X`` that denotes an object of a nonlimited
 multidimensional array type ``T``, the attribute
@@ -183,7 +216,12 @@ multidimensional array type ``T``, the attribute
     X'Update ( multidimensional_array_component_association
             {, multidimensional_array_component_association} )
 
-is defined with associated syntax
+is defined and yields an object of type ``T`` and is a
+*multi-dimensional array update*.  Where
+``multidimensional_array_component_association`` has the following
+syntax:
+
+.. centered:: **Syntax**
 
 ::
 
@@ -194,42 +232,121 @@ is defined with associated syntax
   index_expression_list ::=
     ( expression {, expression} )
 
-and yields an object of type ``T``.
+.. centered:: **Dynamic Semantics**
 
-The expected type and applicable index constraint of the expression
-of a ``multidimensional_array_component_association`` are defined as for
-the expression of an ``array_component_association`` occurring within an
-array aggregate of type ``T``.
-The length of each ``index_expression_list`` shall equal the
-dimensionality of ``T``. The expected type for each expression in an
-``index_expression_list`` is the corresponding index type of ``T``.
+1. In all cases (i.e., whether ``T`` is a record type, a record
+   extension type, or an array type - see below), evaluation of
+   ``X'Update`` begins with the creation of an anonymous object of
+   type ``T`` which is initialized to the value of ``X`` in the same
+   way as for an occurrence of ``X'Old`` (except that the object is
+   constrained by its initial value but not constant). 
 
-   .. ifconfig:: Display_Trace_Units
+2. Next, components of this object are updated as described in the
+   following subsections. The attribute reference then denotes a
+   constant view of this updated object. The master and accessibility
+   level of this object are defined as for the anonymous object of an
+   aggregate. 
 
-      :Trace Unit: FE 4.3.1 length of each index_expression_list shall equal
-                   dimensionality of multidimensional array
+3. The assignments to components of the result object described in the
+   following subsections are assignment operations and include
+   performance of any checks associated with evaluation of the target
+   component name or with implicit conversion of the source value to
+   the component subtype.
 
-If ``T`` is a one-dimensional array type then the component updating referenced
-above proceeds as follows. The discrete choices and array
-component expressions are evaluated. Each array component
-expression is evaluated once for each associated component, as for
-an array aggregate. For each such associated component of the result
-object, the expression value is assigned to the component.
-Evaluations and updates are performed in the order in which the
-``array_component_associations`` are given; within a single
-``array_component_association``, in the order of the
-``discrete_choice_list``; and within the range of a single
-``discrete_choice``, in ascending order.
+Record Update Expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If ``T`` is a multidimensional type then the component updating referenced
-above proceeds as follows. For each
-``multidimensional_array_component`` association (in the order in which
-they are given) and for each ``index_expression_list`` (in the order
-in which they are given), the index values of the ``index_expression_list``
-and the expression are evaluated (in unspecified order)
-and the expression value is assigned to the component of the result
-object indexed by the given index values. Each array component expression
-is evaluated once for each associated ``index_expression_list``.
+For a record update expression of type ``T`` the following are
+required.
+ 
+.. centered:: **Legality Rules**
+
+.. _tu-record_update_expressions-lr_01:
+
+1. The ``record_component_association_list`` shall have one or more
+   ``record_component_associations``, each of which shall have a
+   non-**others** ``component_choice_list`` and an expression.
+
+.. _tu-record_update_expressions-lr_02:
+
+2. Each ``selector_name`` of each ``record_component_name`` shall denote a
+   distinct non discriminant component of ``T``.
+
+.. _tu-record_update_expressions-lr_03:
+
+3. Each ``record_component_association``'s associated components shall
+   all be of the same type. The expected type and applicable index
+   constraint of the expression is defined as for a
+   ``record_component_association`` occurring within a record
+   aggregate.
+
+.. _etu-record_update_expressions:
+
+
+.. centered:: **Dynamic Semantics**
+
+1. For each component for which an expression is provided, the
+   expression value is assigned to the corresponding component of the
+   result object. The order in which the components are updated is
+   unspecified.
+
+.. _tu-record_update_expressions-ds_02:
+
+[Components in a record update expression must be distinct.  The following is illegal
+
+::
+
+  Some_Record'Update
+    (Field_1 => ... ,
+     Field_2 => ... ,
+     Field_1 => ... ); -- illegal; components not distinct
+
+because  the order of component updates is unspecified.]
+
+.. _etu-record_update_expressions-ds:
+
+Array Update Expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For an array update expression of type ``T`` the following are
+required.
+ 
+.. centered:: **Legality Rules**
+
+.. _tu-array_update_expressions-lr_01:
+
+1. Each ``array_component_association`` of the attribute reference
+   shall have one or more ``array_component_associations``, each of
+   which shall have an expression.
+
+.. _tu-array_update_expressions-lr_02:
+
+2. The expected type and applicable index constraint of the expression
+   is defined as for an ``array_component_association`` occurring
+   within an array aggregate of type ``T``. The expected type for each
+   ``discrete_choice`` is the index type of ``T``. 
+
+.. _tu-array_update_expressions-lr_03:
+
+3. The reserved word **others** shall not occur as a
+   ``discrete_choice`` of an ``array_component_association`` of the
+   ``attribute_reference``.
+
+.. _etu-array_update_expressions-lr:
+
+.. centered:: **Dynamic Semantics**
+
+1. The discrete choices and array component expressions are
+   evaluated. Each array component expression is evaluated once for
+   each associated component, as for an array aggregate. For each such
+   associated component of the result object, the expression value is
+   assigned to the component.
+
+2. Evaluations and updates are performed in the order in which the
+   ``array_component_associations`` are given; within a single
+   ``array_component_association``, in the order of the
+   ``discrete_choice_list``; and within the range of a single
+   ``discrete_choice``, in ascending order.
 
    .. ifconfig:: Display_Trace_Units
 
@@ -250,55 +367,40 @@ or
   Some_Array'Update (Param_1'Range => True, Param_2'Range => False)
   -- ok even if the two ranges overlap
 
-This is different from the ``Update`` attribute of a record
+Multi-dimensional Array Update Expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
-
-  Some_Record'Update
-    (Field_1 => ... ,
-     Field_2 => ... ,
-     Field_1 => ... ); -- illegal; components not distinct
-
-for which the order of component updates is unspecified.
-
-
-Expressions
------------
-
-An expression is said to be *side-effect free* if the evaluation of the
-expression does not update any object.  The evaluation of an expression
-free from side-effects only retrieves or computes a value.
-
-An expression is in |SPARK| only if its type is in |SPARK| and the expression
-is side-effect free.
-
+For a multi-dimensional array update expression of type ``T`` the
+following are required.
+ 
 .. centered:: **Legality Rules**
 
-#. An expression (or range) in |SPARK| occurring in certain contexts
-   (listed below) shall not have a variable input.  This means that
-   such an expression shall not read a variable, nor shall it call a
-   function which (directly or indirectly) reads a variable.  These
-   contexts include:
+.. _tu-multi_dimensional_array_update_expressions-lr_01:
 
-    * a constraint excluding the range of a loop parameter
-      specification where variables may be used in the expressions
-      defining the range (see :ref:`subtype_declarations`);
+1. The expected type and applicable index constraint of the expression
+   of a ``multidimensional_array_component_association`` are defined
+   as for the expression of an ``array_component_association``
+   occurring within an array aggregate of type ``T``.
 
-    * the default_expression of a discriminant_specification or
-      component_declaration (see :ref:`discriminants`);
+.. _tu-multi_dimensional_array_update_expressions-lr_02:
 
-    * a Dynamic_Predicate aspect specification;
+2. The length of each ``index_expression_list`` shall equal the
+   dimensionality of ``T``. The expected type for each expression in
+   an ``index_expression_list`` is the corresponding index type of
+   ``T``.
 
-    * an indexing expresssion of an indexed_component or the discrete_range
-      of a slice in an object renaming declaration which renames
-      part of that index or slice.
+.. _etu-multi_dimensional_array_update_expressions-lr:
 
-[An expression in one of these contexts may read a constant
-which is initialized with the value of a variable.]
+.. centered:: **Dynamic Semantics**
 
-[The Dynamic_Predicate rule is redundant because no use of the
-Dynamic_Predicate is currently in |SPARK|. This rule is added
-in anticipation of the possible relaxation of that restriction.]
+1. For each ``multidimensional_array_component`` association (in the
+   order in which they are given) and for each
+   ``index_expression_list`` (in the order in which they are given),
+   the index values of the ``index_expression_list`` and the
+   expression are evaluated (in unspecified order) and the expression
+   value is assigned to the component of the result object indexed by
+   the given index values. Each array component expression is
+   evaluated once for each associated ``index_expression_list``.
 
 Operators and Expression Evaluation
 -----------------------------------

@@ -50,15 +50,13 @@ Reserved Words
 
 .. centered:: **Legality Rules**
 
-#. The following reserved words shall not appear in |SPARK| program text
+.. tu-reserved_words-lr_01
+
+1. The following reserved words shall not appear in |SPARK| program text
    other than in comments:
 
    * **access**, or
 
    * **aliased**.
 
-  .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE PR 2.9 LR The following reserved words shall not
-          appear in |SPARK| program text other than in comments:
-          **access**, or **aliased**.
+.. etu-reserved_words-lr_01
