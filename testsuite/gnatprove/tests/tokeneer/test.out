@@ -133,7 +133,7 @@ certproc.adb:471:64: info: range check proved
 certproc.adb:1127:7: range check not proved
 certproc.adb:1129:56: info: range check proved
 certproc.adb:1138:45: range check not proved
-clock-interfac.adb:59:21: info: overflow check proved
+clock-interfac.adb:59:21: overflow check not proved
 clock-interfac.adb:63:36: range check not proved
 clock-interfac.adb:66:45: overflow check not proved
 clock-interfac.adb:66:45: range check not proved

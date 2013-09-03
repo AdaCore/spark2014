@@ -1,8 +1,8 @@
 p.adb:7:4: info: assertion proved
-p.adb:8:4: info: assertion proved
+p.adb:8:4: assertion not proved, requires C-1.0 < X
 p.adb:8:20: overflow check not proved
 p.adb:9:4: info: assertion proved
-p.adb:10:4: info: assertion proved
+p.adb:10:4: assertion not proved, requires F+1.0 > X
 p.adb:10:20: overflow check not proved
 p.adb:11:4: assertion not proved, requires R = C or else R = F
 p.adb:12:4: assertion not proved, requires T = C or else T = F

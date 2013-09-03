@@ -1,17 +1,17 @@
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: assertion not proved
-deceleration_curve.adb:40:10: info: assertion proved
+deceleration_curve.adb:40:10: assertion not proved
 deceleration_curve.adb:40:34: info: division check proved
 deceleration_curve.adb:40:48: info: division check proved
-deceleration_curve.adb:41:10: info: assertion proved
+deceleration_curve.adb:41:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:43:38: info: division check proved
-deceleration_curve.adb:44:10: info: assertion proved
+deceleration_curve.adb:44:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
 deceleration_curve.adb:49:48: info: division check proved
 deceleration_curve.adb:49:48: info: overflow check proved
-deceleration_curve.adb:50:12: info: overflow check proved
-deceleration_curve.adb:52:10: info: assertion proved
-deceleration_curve.adb:58:25: info: overflow check proved
+deceleration_curve.adb:50:12: overflow check not proved
+deceleration_curve.adb:52:10: assertion not proved
+deceleration_curve.adb:58:25: overflow check not proved
 deceleration_curve.adb:60:31: overflow check not proved
 deceleration_curve.adb:69:36: info: division check proved
 deceleration_curve.adb:69:36: info: range check proved
@@ -42,13 +42,13 @@ sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
-sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
+sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: precondition not proved
 sec_3_13_6_deceleration.ads:45:23: precondition not proved
 sec_3_13_6_deceleration.ads:46:23: overflow check not proved
 sec_3_13_6_deceleration.ads:46:26: precondition not proved
-sec_3_13_6_deceleration.ads:46:38: info: overflow check proved
+sec_3_13_6_deceleration.ads:46:38: overflow check not proved
 sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
 sec_3_13_6_deceleration.ads:46:57: overflow check not proved
 sec_3_13_6_deceleration.ads:46:59: precondition not proved
@@ -139,17 +139,17 @@ step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
 step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
 step_function_test.adb:44:4: assertion not proved, requires Step_Function.Is_Valid(sfun4)
-step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) = 
+step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) =
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) = 
+step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) =
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) = 
+step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) =
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) = 
+step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) =
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) = 
+step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) =
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) = 
+step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) =
 step_function_test.adb:51:19: info: precondition proved
 step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:4: info: precondition proved
@@ -157,15 +157,15 @@ step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
-step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) = 
+step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) =
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) = 
+step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) = 
+step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) =
 step_function_test.adb:67:19: info: precondition proved
-units.adb:24:29: info: overflow check proved
+units.adb:24:29: overflow check not proved
 units.adb:24:39: info: division check proved
-units.adb:24:39: info: overflow check proved
+units.adb:24:39: overflow check not proved
 units.adb:29:38: overflow check not proved
 units.adb:29:48: info: division check proved
 units.adb:29:48: overflow check not proved

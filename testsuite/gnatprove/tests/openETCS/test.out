@@ -1,19 +1,19 @@
 com_map.ads:50:22: info: precondition proved
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: info: loop invariant initialization proved
-deceleration_curve.adb:39:10: info: loop invariant preservation proved
-deceleration_curve.adb:41:10: info: assertion proved
+deceleration_curve.adb:39:10: loop invariant preservation not proved
+deceleration_curve.adb:41:10: assertion not proved
 deceleration_curve.adb:41:34: info: division check proved
 deceleration_curve.adb:41:48: info: division check proved
-deceleration_curve.adb:42:10: info: assertion proved
+deceleration_curve.adb:42:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved
-deceleration_curve.adb:45:10: info: assertion proved
+deceleration_curve.adb:45:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved
 deceleration_curve.adb:50:48: info: division check proved
 deceleration_curve.adb:50:48: info: overflow check proved
-deceleration_curve.adb:51:12: info: overflow check proved
-deceleration_curve.adb:53:10: info: assertion proved
-deceleration_curve.adb:59:25: info: overflow check proved
+deceleration_curve.adb:51:12: overflow check not proved
+deceleration_curve.adb:53:10: assertion not proved
+deceleration_curve.adb:59:25: overflow check not proved
 deceleration_curve.adb:61:31: overflow check not proved
 deceleration_curve.adb:70:36: info: division check proved
 deceleration_curve.adb:70:36: info: range check proved
@@ -31,7 +31,7 @@ deceleration_curve.adb:107:9: precondition not proved
 deceleration_curve.adb:111:12: precondition not proved
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
-deceleration_curve_test.adb:15:19: info: precondition proved
+deceleration_curve_test.adb:15:19: precondition not proved
 deceleration_curve_test.adb:17:4: info: precondition proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
@@ -44,13 +44,13 @@ sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
-sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
+sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: precondition not proved
 sec_3_13_6_deceleration.ads:45:23: precondition not proved
 sec_3_13_6_deceleration.ads:46:23: overflow check not proved
 sec_3_13_6_deceleration.ads:46:26: precondition not proved
-sec_3_13_6_deceleration.ads:46:38: info: overflow check proved
+sec_3_13_6_deceleration.ads:46:38: overflow check not proved
 sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
 sec_3_13_6_deceleration.ads:46:57: overflow check not proved
 sec_3_13_6_deceleration.ads:46:59: precondition not proved
@@ -83,12 +83,15 @@ step_function.adb:60:18: assertion not proved, requires SFun.Step(j-1).Delimiter
 step_function.adb:60:29: info: index check proved
 step_function.adb:60:55: info: index check proved
 step_function.adb:72:17: info: range check proved
-step_function.adb:91:10: info: loop invariant initialization proved
-step_function.adb:91:10: loop invariant preservation not proved
-step_function.adb:110:29: index check not proved
-step_function.adb:113:29: index check not proved
-step_function.adb:116:27: index check not proved
-step_function.adb:116:54: index check not proved
+step_function.adb:89:7: info: assertion proved
+step_function.adb:92:10: loop invariant initialization not proved
+step_function.adb:92:10: loop invariant preservation not proved
+step_function.adb:105:29: index check not proved
+step_function.adb:108:29: index check not proved
+step_function.adb:111:27: index check not proved
+step_function.adb:111:54: index check not proved
+step_function.adb:118:30: index check not proved
+step_function.adb:118:56: index check not proved
 step_function.adb:122:30: index check not proved
 step_function.adb:122:56: index check not proved
 step_function.adb:127:36: index check not proved
@@ -167,10 +170,10 @@ step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(
 step_function_test.adb:66:19: info: precondition proved
 step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) =
 step_function_test.adb:67:19: info: precondition proved
-units.adb:24:38: info: overflow check proved
+units.adb:24:38: overflow check not proved
 units.adb:24:48: info: division check proved
 units.adb:24:48: overflow check not proved
-units.ads:37:22: info: overflow check proved
+units.ads:37:22: overflow check not proved
 units.ads:37:32: info: division check proved
-units.ads:37:32: info: overflow check proved
+units.ads:37:32: overflow check not proved
 units.ads:43:20: info: precondition proved
