@@ -280,17 +280,24 @@ required.
    ``record_component_association`` occurring within a record
    aggregate.
 
-.. _etu-record_update_expressions:
+.. _tu-record_update_expressions-lr_04:
+
+4. The Each selector of all ``component_choice_lists`` of a record
+   update expression shall denote a distinct component.
+
+.. _etu-record_update_expressions-lr:
 
 
 .. centered:: **Dynamic Semantics**
+
+.. _tu-record_update_expressions-ds_01:
 
 1. For each component for which an expression is provided, the
    expression value is assigned to the corresponding component of the
    result object. The order in which the components are updated is
    unspecified.
 
-.. _tu-record_update_expressions-ds_02:
+.. _etu-record_update_expressions-ds:
 
 [Components in a record update expression must be distinct.  The following is illegal
 
@@ -302,8 +309,6 @@ required.
      Field_1 => ... ); -- illegal; components not distinct
 
 because  the order of component updates is unspecified.]
-
-.. _etu-record_update_expressions-ds:
 
 Array Update Expressions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -336,11 +341,15 @@ required.
 
 .. centered:: **Dynamic Semantics**
 
+.. _tu-array_update_expressions-ds_01:
+
 1. The discrete choices and array component expressions are
    evaluated. Each array component expression is evaluated once for
    each associated component, as for an array aggregate. For each such
    associated component of the result object, the expression value is
    assigned to the component.
+
+.. _tu-array_update_expressions-ds_02:
 
 2. Evaluations and updates are performed in the order in which the
    ``array_component_associations`` are given; within a single
@@ -348,12 +357,9 @@ required.
    ``discrete_choice_list``; and within the range of a single
    ``discrete_choice``, in ascending order.
 
-   .. ifconfig:: Display_Trace_Units
+.. _tu-array_update_expressions-ds_03:
 
-      :Trace Unit: FE PR 4.3.1 when array ranges overlap then the initial
-                   ones are overwritten by the subsequent ones
-
-Note: the ``Update`` attribute for an array object allows multiple
+[Note: the ``Update`` attribute for an array object allows multiple
 assignments to the same component, as in either
 
 ::
@@ -365,7 +371,9 @@ or
 ::
 
   Some_Array'Update (Param_1'Range => True, Param_2'Range => False)
-  -- ok even if the two ranges overlap
+  -- ok even if the two ranges overlap]
+
+.. _etu-array_update_expressions-ds:
 
 Multi-dimensional Array Update Expressions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -393,6 +401,8 @@ following are required.
 
 .. centered:: **Dynamic Semantics**
 
+.. _tu-multi_dimensional_array_update_expressions-ds_01:
+
 1. For each ``multidimensional_array_component`` association (in the
    order in which they are given) and for each
    ``index_expression_list`` (in the order in which they are given),
@@ -401,6 +411,8 @@ following are required.
    value is assigned to the component of the result object indexed by
    the given index values. Each array component expression is
    evaluated once for each associated ``index_expression_list``.
+
+.. _etu-multi_dimensional_array_update_expressions-ds:
 
 Operators and Expression Evaluation
 -----------------------------------
@@ -411,7 +423,10 @@ changes the behavior of the program with respect to intermediate
 overflow (see Ada 2012 RM 4.5). |SPARK| assumes that an implementation
 does not take advantage of this permission; in particular,
 a proof of the absence of intermediate overflow in this situation
-may depend on this assumption.
+may depend on this assumption.  
+
+A |SPARK| tool is permitted to provide a warning where operators may
+be re-associated by a compiler.
 
 [The GNAT Ada 2012 compiler does not take advantage of this permission.
 The GNAT compiler also provides an option for rejecting constructs to
