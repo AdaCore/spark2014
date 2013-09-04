@@ -1005,7 +1005,7 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : Why_File;
+     (File          : Why_Section;
       Expr          : Node_Id;
       Expected_Type : W_Base_Type_Id) return W_Term_Id
    is
@@ -1985,7 +1985,7 @@ package body Gnat2Why.Expr is
 
          --  Select file for the declarations
 
-         Decl_File     : Why_File := Why_Files (Dispatch_Entity (Expr));
+         Decl_File     : Why_Section := Why_Sections (Dispatch_Entity (Expr));
 
       --  Start of Generate_Logic_Function
 
@@ -5532,7 +5532,7 @@ package body Gnat2Why.Expr is
       Ty        : constant Entity_Id := Type_Of_Node (N);
       Why_Type  : constant W_Base_Type_Id :=
         New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
-      Decl_File : Why_File := Why_Files (Dispatch_Entity (N));
+      Decl_File : Why_Section := Why_Sections (Dispatch_Entity (N));
    begin
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Why_Empty;

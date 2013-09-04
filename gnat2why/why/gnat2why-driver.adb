@@ -106,7 +106,7 @@ package body Gnat2Why.Driver is
    ---------------------------------
 
    procedure Complete_Entity_Translation (E : Entity_Id) is
-      File : Why_File := Why_Files (Dispatch_Entity_Completion (E));
+      File : Why_Section := Why_Sections (Dispatch_Entity_Completion (E));
 
    begin
       case Ekind (E) is
@@ -161,7 +161,7 @@ package body Gnat2Why.Driver is
       if Has_Precondition (E)
         or else Present (Get_Subprogram_Contract_Cases (E))
       then
-         Generate_VCs_For_Subprogram_Spec (Why_Files (WF_Main), E);
+         Generate_VCs_For_Subprogram_Spec (Why_Sections (WF_Main), E);
       end if;
 
       --  In 'prove' mode, generate Why3 code to check absence of run-time
@@ -169,7 +169,7 @@ package body Gnat2Why.Driver is
       --  body implements its contract.
 
       if Subprogram_Body_In_SPARK (E) then
-         Generate_VCs_For_Subprogram_Body (Why_Files (WF_Main), E);
+         Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
       end if;
    end Do_Generate_VCs;
 
@@ -366,8 +366,8 @@ package body Gnat2Why.Driver is
    procedure Print_Why_File is
    begin
       Open_Current_File (Why_File_Name.all);
-      for WF in Why_File_Enum loop
-         Sprint_Why_Node (Why_Node_Id (Why_Files (WF).File), Current_File);
+      for WF in Why_Section_Enum loop
+         Sprint_Why_Node (Why_Node_Id (Why_Sections (WF).File), Current_File);
       end loop;
       Close_Current_File;
    end Print_Why_File;
@@ -462,8 +462,9 @@ package body Gnat2Why.Driver is
    ----------------------
 
    procedure Translate_Entity (E : Entity_Id) is
-      File       : Why_File := Why_Files (Dispatch_Entity (E));
-      Compl_File : Why_File := Why_Files (Dispatch_Entity_Completion (E));
+      File       : Why_Section := Why_Sections (Dispatch_Entity (E));
+      Compl_File : Why_Section :=
+        Why_Sections (Dispatch_Entity_Completion (E));
 
    begin
       case Ekind (E) is

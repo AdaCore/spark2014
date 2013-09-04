@@ -40,7 +40,7 @@ package Why.Gen.Records is
    --  discriminant checks
 
    procedure Declare_Ada_Record
-     (P       : Why_File;
+     (P       : Why_Section;
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id);
    --  Emit all necessary Why3 declarations to support Ada records. This also

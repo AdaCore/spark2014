@@ -62,14 +62,14 @@ package Gnat2Why.Subprograms is
    Current_Subp : Entity_Id := Empty;
 
    procedure Generate_VCs_For_Subprogram_Body
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the contract of E and the absence of run-time errors in the
    --  body and postcondition of E.
 
    procedure Generate_VCs_For_Subprogram_Spec
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in the precondition of E.
@@ -79,19 +79,19 @@ package Gnat2Why.Subprograms is
    --  a singleton of unit type if E has no parameters.
 
    procedure Translate_Subprogram_Spec
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate a Why declaration that corresponds to an Ada subprogram. Entity
    --  E is a E_Function or E_Procedure.
 
    procedure Complete_Subprogram_Spec_Translation
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generates a theory that completes the base theory for a subprogram
    --  declaration.
 
    procedure Translate_Expression_Function_Body
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)

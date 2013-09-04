@@ -77,7 +77,7 @@ package body Why.Inter is
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
    procedure Add_Standard_With_Clause
-     (P        : Why_File;
+     (P        : Why_Section;
       T_Name   : String;
       Use_Kind : EW_Clone_Type);
 
@@ -261,7 +261,7 @@ package body Why.Inter is
    procedure Add_Completion
      (Name            : String;
       Completion_Name : String;
-      Kind            : Why_Context_File_Enum)
+      Kind            : Why_Context_Section_Enum)
    is
       Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
       Unb_Comp : constant Unbounded_String :=
@@ -445,7 +445,7 @@ package body Why.Inter is
 
    function Get_Completions
      (Name       : String;
-      Up_To_Kind : Why_File_Enum) return Why_Completions
+      Up_To_Kind : Why_Section_Enum) return Why_Completions
    is
       function Num_Compl (L : Why_File_Completion_Lists.List) return Natural;
       --  Find the number of completions from L
@@ -556,7 +556,7 @@ package body Why.Inter is
    -- Add_Effect_Imports --
    ------------------------
 
-   procedure Add_Effect_Imports (P : Why_File;
+   procedure Add_Effect_Imports (P : Why_Section;
                                  S : Name_Set.Set)
    is
    begin
@@ -568,7 +568,7 @@ package body Why.Inter is
    ------------------------
 
    procedure Add_Use_For_Entity
-     (P               : Why_File;
+     (P               : Why_Section;
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
@@ -657,7 +657,7 @@ package body Why.Inter is
                                   Kind     => Th_Type));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P        : Why_File;
+   procedure Add_With_Clause (P        : Why_Section;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
@@ -670,7 +670,7 @@ package body Why.Inter is
    ------------------------------
 
    procedure Add_Standard_With_Clause
-     (P        : Why_File;
+     (P        : Why_Section;
       T_Name   : String;
       Use_Kind : EW_Clone_Type) is
    begin
@@ -725,7 +725,7 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory
-     (P               : in out Why_File;
+     (P               : in out Why_Section;
       Filter_Entity   : Entity_Id;
       Defined_Entity  : Entity_Id := Empty;
       Do_Closure      : Boolean := False;
@@ -827,7 +827,7 @@ package body Why.Inter is
    -- Discard_Theory --
    --------------------
 
-   procedure Discard_Theory (P : in out Why_File) is
+   procedure Discard_Theory (P : in out Why_Section) is
    begin
       P.Cur_Theory := Why_Empty;
    end Discard_Theory;
@@ -836,7 +836,7 @@ package body Why.Inter is
    -- Dispatch_Entity --
    ---------------------
 
-   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum is
+   function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum is
    begin
       if Nkind (E) in N_Has_Theory then
 
@@ -916,7 +916,8 @@ package body Why.Inter is
    -- Dispatch_Entity_Completion --
    --------------------------------
 
-   function Dispatch_Entity_Completion (E : Entity_Id) return Why_File_Enum is
+   function Dispatch_Entity_Completion (E : Entity_Id)
+                                        return Why_Section_Enum is
    begin
       case Ekind (E) is
          when Object_Kind =>
@@ -1225,10 +1226,10 @@ package body Why.Inter is
    begin
       Why_File_Name := new String'(Prefix & Why_File_Suffix);
       for Kind in WF_Pure .. WF_Context loop
-         Why_Files (Kind) :=
+         Why_Sections (Kind) :=
            Make_Empty_Why_File (Kind => Kind);
       end loop;
-      Why_Files (WF_Main) := Make_Empty_Why_File (Kind => WF_Main);
+      Why_Sections (WF_Main) := Make_Empty_Why_File (Kind => WF_Main);
    end Init_Why_Files;
 
    --------------------------
@@ -1290,9 +1291,9 @@ package body Why.Inter is
    -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_File (Kind : Why_File_Enum) return Why_File is
+   function Make_Empty_Why_File (Kind : Why_Section_Enum) return Why_Section is
    begin
-      return Why_File'(File       => New_File,
+      return Why_Section'(File       => New_File,
                        Kind       => Kind,
                        Cur_Theory => Why_Empty);
    end Make_Empty_Why_File;
@@ -1313,7 +1314,7 @@ package body Why.Inter is
    -- Open_Theory --
    -----------------
 
-   procedure Open_Theory (P       : in out Why_File;
+   procedure Open_Theory (P       : in out Why_Section;
                           Name    : String;
                           Comment : String;
                           Kind    : EW_Theory_Type := EW_Module)

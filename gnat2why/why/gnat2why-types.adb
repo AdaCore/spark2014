@@ -188,7 +188,7 @@ package body Gnat2Why.Types is
    --------------------
 
    procedure Translate_Type
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       procedure Translate_Underlying_Type

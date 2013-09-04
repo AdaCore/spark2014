@@ -104,7 +104,7 @@ package body Gnat2Why.Subprograms is
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
 
-   function Compute_Effects (File : Why_File;
+   function Compute_Effects (File : Why_Section;
                              E    : Entity_Id) return W_Effects_Id;
    --  Compute the effects of the generated Why function.
 
@@ -139,7 +139,7 @@ package body Gnat2Why.Subprograms is
    ------------------------------------------
 
    procedure Complete_Subprogram_Spec_Translation
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
@@ -226,7 +226,7 @@ package body Gnat2Why.Subprograms is
    -- Compute_Effects --
    ---------------------
 
-   function Compute_Effects (File : Why_File;
+   function Compute_Effects (File : Why_Section;
                              E    : Entity_Id) return W_Effects_Id is
       Read_Names      : Name_Set.Set;
       Write_Names     : Name_Set.Set;
@@ -849,7 +849,7 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_VCs_For_Subprogram_Body
-     (File   : in out Why_File;
+     (File   : in out Why_Section;
       E      : Entity_Id)
    is
       Name       : constant String  := Full_Name (E);
@@ -1019,7 +1019,7 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_VCs_For_Subprogram_Spec
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Name    : constant String := Full_Name (E);
@@ -1120,7 +1120,7 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------
 
    procedure Translate_Expression_Function_Body
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
@@ -1257,7 +1257,7 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Name         : constant String := Full_Name (E);

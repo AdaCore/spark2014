@@ -50,31 +50,29 @@ package Why.Inter is
    --  This package contains types that are used to represent intermediate
    --  phases of the translation process.
 
-   --  Kinds of Why files ordered by possible inclusion. A file of greater kind
-   --  can include files of the same or lower kind.
-   type Why_File_Enum is
+   type Why_Section_Enum is
      (WF_Pure,
       WF_Variables,
       WF_Context,
       WF_Main);
 
-   type Why_File is tagged
+   type Why_Section is tagged
       record
          File        : W_File_Id;
-         Kind        : Why_File_Enum;
+         Kind        : Why_Section_Enum;
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
    --  Making this type tagged is a way to force by-reference passing of
    --  objects of this type. This is needed because we have aliasing between
-   --  parameters of many functions and the global variable Why_Files below.
+   --  parameters of many functions and the global variable Why_Sections below.
 
    function Make_Empty_Why_File
-     (Kind : Why_File_Enum) return Why_File
+     (Kind : Why_Section_Enum) return Why_Section
    with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Return an empty Why_File with the given name and kind
 
    procedure Close_Theory
-     (P               : in out Why_File;
+     (P               : in out Why_Section;
       Filter_Entity   : Entity_Id;
       Defined_Entity  : Entity_Id := Empty;
       Do_Closure      : Boolean := False;
@@ -88,23 +86,23 @@ package Why.Inter is
    --  depends. With_Completion is True if the completion theories should be
    --  added too.
 
-   procedure Discard_Theory (P : in out Why_File);
+   procedure Discard_Theory (P : in out Why_Section);
    --  Remove the current theory from P
 
-   procedure Open_Theory (P       : in out Why_File;
+   procedure Open_Theory (P       : in out Why_Section;
                           Name    : String;
                           Comment : String;
                           Kind    : EW_Theory_Type := EW_Module)
      with Pre => (P.Cur_Theory = Why_Empty);
    --  Open a new theory in the file.
 
-   procedure Add_With_Clause (P        : Why_File;
+   procedure Add_With_Clause (P        : Why_Section;
                               T_Name   : String;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
 
    procedure Add_Use_For_Entity
-     (P               : Why_File;
+     (P               : Why_Section;
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True);
@@ -114,10 +112,10 @@ package Why.Inter is
    --  Use_Kind, that value is used. With_Completion is True if the completion
    --  theories for N should be added too.
 
-   procedure Add_Effect_Imports (P : Why_File;
+   procedure Add_Effect_Imports (P : Why_Section;
                                  S : Name_Set.Set);
 
-   Why_Files : array (Why_File_Enum) of Why_File;
+   Why_Sections : array (Why_Section_Enum) of Why_Section;
    Why_File_Name : String_Access;
 
    Why_File_Suffix : constant String := ".mlw";
@@ -137,12 +135,12 @@ package Why.Inter is
    --  of a generic package with a Why axiomatization and the expression
    --  functions coming from its actuals.
 
-   subtype Why_Context_File_Enum is Why_File_Enum range
+   subtype Why_Context_Section_Enum is Why_Section_Enum range
      WF_Pure .. WF_Context;
 
    type Why_File_Completion_Item is record
       Name : Unbounded_String;
-      Kind : Why_Context_File_Enum;
+      Kind : Why_Context_Section_Enum;
    end record;
 
    type Why_Completions is array (Positive range <>) of
@@ -152,12 +150,12 @@ package Why.Inter is
    procedure Add_Completion
      (Name            : String;
       Completion_Name : String;
-      Kind            : Why_Context_File_Enum);
+      Kind            : Why_Context_Section_Enum);
    --  Add the completion Completion_Name to theory Name
 
    function Get_Completions
      (Name       : String;
-      Up_To_Kind : Why_File_Enum) return Why_Completions;
+      Up_To_Kind : Why_Section_Enum) return Why_Completions;
    --  Return the completions for the theory called Name, in a file of kind
    --  Why_File_Enum, so only completions of kinds less than Why_File_Enum are
    --  taken into account, to avoid circularities in Why file dependences.
@@ -194,11 +192,11 @@ package Why.Inter is
                                  S : Name_Set.Set);
    --  Add all import clauses that are necessary for the given set of variables
 
-   function Dispatch_Entity (E : Entity_Id) return Why_File_Enum;
+   function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum;
    --  Given an Ada Entity, return the appropriate Why File to insert the
    --  entity.
 
-   function Dispatch_Entity_Completion (E : Entity_Id) return Why_File_Enum;
+   function Dispatch_Entity_Completion (E : Entity_Id) return Why_Section_Enum;
    --  Given an Ada Entity, return the appropriate Why File to insert the
    --  completion theory for the entity.
 

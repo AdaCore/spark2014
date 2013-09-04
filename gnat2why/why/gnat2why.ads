@@ -52,51 +52,44 @@
 
 --    Transformation    Entities and subprogram bodies classified as in SPARK
 --                      in the previous phase are transformed into a Why3
---                      declarations. These declarations are dispatched between
---                      a set of Why3 files, so that any use of an entity is
+--                      declarations. These declarations are dispatched into
+--                      sections of a Why3 file, that any use of an entity is
 --                      preceded by its declaration.  The mapping between Ada
 --                      and Why3 entities is one-to-many, in order to comply
 --                      with this declaration-before-use constraint in Why3,
 --                      which is not present in the source Ada code (contrary
 --                      to SPARK).
 
---    Printing          Each Why3 file generated in the previous phase is
+--    Printing          The Why3 file generated in the previous phase is
 --                      printed on disk.
 
 -----------------------------
 -- Dispatching of Entities --
 -----------------------------
 
---  For each Ada unit, six Why3 files are generated, which correspond to the
---  six values of Why.Inter.Why_File_Enum. The table below summarizes, for
---  a unit defined in file 'u.ads' or 'u.adb', each of the six values, the
---  corresponding Ada entities that are translated and the name of the
---  generated file.
+--  For each Ada unit, a Why file is generated, which contains four sections
+--  corresponding to the four values of Why.Inter.Why_Section_Enum. The table
+--  below summarizes, for a unit defined in file 'u.ads' or 'u.adb', each of
+--  the six values, the corresponding Ada entities that are translated and the
+--  name of the generated file.
 
---     value               Ada entity                Why3 file name
---     --------------------------------------------------------------------
---  1. WF_Types_In_Spec    types in spec             u__types_in_spec.mlw
---  2. WF_Types_In_Body    types in body             u__types_in_body.mlw
---  3. WF_Variables        variables in spec/body    u__variables.mlw
---  4. WF_Context_In_Spec  subprogram specs in spec  u__context_in_spec.mlw
---  5. WF_Context_In_Body  subprogram specs in body  u__context_in_body.mlw
---  6. WF_Main             subprogram bodies         u__package.mlw
+--     value               Ada entity
+--     ----------------------------------------------
+--  1. WF_Pure             types and pure functions
+--  2. WF_Variables        variables
+--  3. WF_Context          subprogram specs and aggregates
+--  4. WF_Main             subprogram bodies for VC generation
 
---  Each SPARK entity defined in unit U is transformed into a set of Why3
---  declarations in the files above. These declarations are grouped in theories
---  or modules, so that the context used for generating VCs for a given module
---  is minimized, which leads to smaller (hence easier) VCs. This context is
---  given by a set of includes between theories and modules, which can belong
---  to the same or different files. Inclusion between theories/modules in the
---  same file respects the principle that any inclusion is preceded by the
---  definition of the included theory/module. Inclusion between
---  theories/modules in different files is only from a file of higher rank to
---  a file of lower rank, or to a file with same rank but avoiding cycles.
+--  Each SPARK entity defined in unit U or in one of the withed specs is
+--  transformed into a set of Why3 declarations in the sections above. These
+--  declarations are grouped in theories or modules, so that the context used
+--  for generating VCs for a given module is minimized, which leads to smaller
+--  (hence easier) VCs. This context is given by a set of includes between
+--  theories and modules. All these modules are then dumped into a single
+--  Why file "u.mlw", in the correct order as above.
 
 --  The generation of theories/modules for an entity in SPARK proceeds as
---  follows, where the corresponding type/context file of an entity is the
---  Type_/Context_ In_Spec file if the entity is declared in the unit spec,
---  Type_/Context_ In_Body file if the entity is declared in the unit body.
+--  follows:
 
 --     . Constant (IN parameter, named number and constant object)
 --         A logic function is created in the corresponding context file. For a
@@ -236,11 +229,6 @@
 --         module, in the corresponding context file. The logic function takes
 --         as parameters all the values of components of the (possibly
 --         multidimensional) aggregate.
-
---     . Slice
---         A logic function and a defining axiom are created in their own
---         module, in the corresponding context file. The logic function takes
---         as parameters the prefix and bounds for the slice.
 
 ------------------------------------
 -- Labels Interpreted by gnatwhy3 --

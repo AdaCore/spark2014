@@ -34,26 +34,26 @@ package Gnat2Why.Decls is
    --  used instead of the Ada type
 
    procedure Translate_Variable
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate Why declarations that correspond to an Ada top level object
    --  declaration
 
    procedure Translate_Constant
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate a function declaration for IN parameters, named numbers and
    --  constant objects.
 
    procedure Translate_Constant_Value
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Possibly generate an axiom to define the value of the function
    --  previously declared by a call to Translate_Constant, for IN
    --  parameters, named numbers and constant objects.
 
    procedure Complete_Constant_Translation
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
    --  Generates a theory that completes the base theory for a constant
    --  declaration.
@@ -72,7 +72,7 @@ package Gnat2Why.Decls is
    --  declaration.
 
    procedure Translate_Loop_Entity
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id);
 
 end Gnat2Why.Decls;

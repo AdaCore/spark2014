@@ -71,7 +71,7 @@ package body Gnat2Why.Decls is
    -----------------------------------
 
    procedure Complete_Constant_Translation
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
@@ -173,7 +173,7 @@ package body Gnat2Why.Decls is
                declare
                   E : constant Entity_Id := Defining_Entity (N);
                   Theory_Name : constant String := Full_Name (E);
-                  TFile : Why_File :=  Why_Files (Dispatch_Entity (E));
+                  TFile : Why_Section :=  Why_Sections (Dispatch_Entity (E));
                   Completion : List_Of_Entity.Cursor :=
                     List_Of_Entity.First (C_List);
                begin
@@ -360,7 +360,7 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Variable
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E     : Entity_Id)
    is
       Name : constant String := Full_Name (E);
@@ -435,7 +435,7 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Constant
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
@@ -476,7 +476,7 @@ package body Gnat2Why.Decls is
    ------------------------------
 
    procedure Translate_Constant_Value
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
@@ -1146,7 +1146,8 @@ package body Gnat2Why.Decls is
             end if;
          end Why_Logic_Type_Of_Ada_Generic_Type;
 
-         TFile     : Why_File := Why_Files (Dispatch_Entity (Package_Entity));
+         TFile     : Why_Section :=
+           Why_Sections (Dispatch_Entity (Package_Entity));
          CurAssoc  : Node_Id := First (Assoc);
          CurLabs   : Node_Id := First (Labs);
 
@@ -1313,8 +1314,8 @@ package body Gnat2Why.Decls is
          end loop;
       end Parse_Parameters;
 
-      TFile : constant Why_File :=
-        Why_Files (Dispatch_Entity (Package_Entity));
+      TFile : constant Why_Section :=
+        Why_Sections (Dispatch_Entity (Package_Entity));
       G_Parents : constant List_Of_Entity.List :=
         Get_Generic_Parents (Package_Entity);
       Subst_Length : Natural;
@@ -1355,7 +1356,7 @@ package body Gnat2Why.Decls is
    -------------------------------
 
    procedure Translate_External_Object (E : Entity_Name) is
-      File : Why_File := Why_Files (WF_Variables);
+      File : Why_Section := Why_Sections (WF_Variables);
    begin
       Open_Theory
         (File, Capitalize_First (E.all),
@@ -1384,7 +1385,7 @@ package body Gnat2Why.Decls is
    ---------------------------
 
    procedure Translate_Loop_Entity
-     (File : in out Why_File;
+     (File : in out Why_Section;
       E    : Entity_Id)
    is
       Name : constant String := Full_Name (E);

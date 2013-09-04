@@ -77,7 +77,7 @@ with Why.Inter; use Why.Inter;
 package Gnat2Why.Types is
 
    procedure Translate_Type
-      (File : in out Why_File;
+      (File : in out Why_Section;
        E    : Entity_Id);
    --  Generate the Why3 declaration module for the type entity in argument.
    --  This function basically dispatches to the corresponding specific package
