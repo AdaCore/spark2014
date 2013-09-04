@@ -44,7 +44,6 @@ EXAMPLESDIR=$(SHAREDIR)/examples/spark
 DOCDIR=$(SHAREDIR)/doc/spark
 GNATPROVEDIR=$(SHAREDIR)/spark
 ALI_DIR=$(INSTALLDIR)/lib/spark/ali
-GNATLIBDIR=$(GNATPROVEDIR)/stdlib
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
 STDLIB_TMP=stdlib_tmp
@@ -167,7 +166,6 @@ stdlib-check:
 
 install-stdlib:
 	mkdir -p $(ALI_DIR)
-	mkdir -p $(GNATLIBDIR)
 	$(CP) $(STDLIB_TMP)/*.ali $(ALI_DIR)
 
 install-examples:
