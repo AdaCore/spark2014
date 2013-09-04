@@ -1,10 +1,9 @@
+
+
+   compilation of contract_cases.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 contract_cases.adb:8:39: "Num_Out" might not be initialized [uninitialized]
 contract_cases.adb:9:39: "Num_Out" might not be initialized [uninitialized]
 contract_cases.adb:19:33: "Y" might not be initialized [uninitialized]
 contract_cases.adb:20:33: "Y" might not be initialized [uninitialized]
-
-   compilation of contract_cases.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-

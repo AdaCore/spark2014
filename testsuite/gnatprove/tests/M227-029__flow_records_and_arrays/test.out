@@ -1,16 +1,15 @@
+
+
+   compilation of message_tests.adb failed
+   compilation of parameter_tests.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
+message_tests.adb:40:33: warning: unused initial value of "C" [unused_initial_value]
+message_tests.adb:40:33: warning: unused variable "C" [unused]
+message_tests.adb:48:32: "C.Flags.A" might not be initialized in "Not_All_Used_Out" [uninitialized]
+message_tests.adb:48:32: "C.Flags.B" might not be initialized in "Not_All_Used_Out" [uninitialized]
+message_tests.adb:48:32: "C.W" might not be initialized in "Not_All_Used_Out" [uninitialized]
+message_tests.adb:66:15: "F.B" might not be initialized [uninitialized]
 parameter_tests.adb:36:32: "G.Y" might not be initialized [uninitialized]
 parameter_tests.adb:50:33: warning: unused initial value of "G" [unused_initial_value]
 parameter_tests.adb:50:36: warning: "H" is not modified, could be "input" [inout_only_read]
-message_tests.adb:40:33: warning: unused initial value of "C" [unused_initial_value]
-message_tests.adb:40:33: warning: unused variable "C" [unused]
-message_tests.adb:48:32: "C.Flags.B" might not be initialized in "Not_All_Used_Out" [uninitialized]
-message_tests.adb:48:32: "C.Flags.A" might not be initialized in "Not_All_Used_Out" [uninitialized]
-message_tests.adb:48:32: "C.W" might not be initialized in "Not_All_Used_Out" [uninitialized]
-message_tests.adb:66:15: "F.B" might not be initialized [uninitialized]
-
-   compilation of parameter_tests.adb failed
-   compilation of message_tests.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-

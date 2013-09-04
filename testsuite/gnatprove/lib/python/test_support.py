@@ -180,11 +180,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
             print "dummy output for XFAIL test"
         return []
 
-    # If the command returned with an error, print the command output
-    elif process.status:
-        print process.out
-        return []
-
     # Otherwise, in quick mode, ignore test output and copy instead the
     # expected output.
     elif quick_mode():

@@ -1,11 +1,10 @@
+
+
+   compilation of test.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 test.adb:4:04: warning: statement has no effect [ineffective]
 test.adb:5:04: warning: statement has no effect [ineffective]
 test.adb:42:09: "Tmp.A" might not be initialized [uninitialized]
 test.adb:80:09: "Tmp.A.A" might not be initialized [uninitialized]
 test.adb:100:25: default initialization cannot depend on "Tmp"
-
-   compilation of test.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-

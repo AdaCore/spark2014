@@ -1,8 +1,7 @@
-broken.adb:2:04: warning: statement has no effect [ineffective]
-broken.adb:22:20: formal parameter "N" and global "I" must not be aliased
+
 
    compilation of broken.adb failed
-
-gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.
-
+gprbuild: *** compilation phase failed
+broken.adb:2:04: warning: statement has no effect [ineffective]
+broken.adb:22:20: formal parameter "N" and global "I" must not be aliased

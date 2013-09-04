@@ -1,9 +1,8 @@
+
+
+   compilation of pack.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 pack.adb:11:14: subprogram called is not in SPARK
 pack.ads:6:13: function with side-effects is not in SPARK
 pack.ads:7:13: function with side-effects is not in SPARK
-
-   compilation of pack.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
-
