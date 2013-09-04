@@ -30,10 +30,7 @@ EXCLUDE_OBJ:= \
 ALL_OBJS := $(filter-out $(EXCLUDE_OBJ), $(GNARL_OBJS) $(GNAT_OBJS))
 ALL_ALIS:=$(ALL_OBJS:.o=.ali)
 ALL_WHYPACK:=$(ALL_ALIS:.ali=__package.mlw)
-WHY_STANDARD:= _standard__package.mlw
-DUMMYFILE:= dummy.adb
 GLOBAL_GEN_ARG_FILE:= global_args.tmp
-STANDARD_ARG_FILE:= standard_args.tmp
 
 all: $(ALL_ALIS)
 
@@ -55,13 +52,6 @@ $(GLOBAL_GEN_ARG_FILE): force
 
 %.ali: %.ads $(GLOBAL_GEN_ARG_FILE)
 	$(GNAT2WHY) -c -gnatc -gnatpg -gnates=$(GLOBAL_GEN_ARG_FILE) $<
-
-# Generate Why3 files for Standard unit
-$(WHY_STANDARD):
-	echo "procedure Dummy is begin null; end Dummy;" > $(DUMMYFILE)
-	@echo "standard_mode" > $(STANDARD_ARG_FILE)
-	$(GNAT2WHY) -gnates=$(STANDARD_ARG_FILE) $(DUMMYFILE)
-	@rm $(DUMMYFILE) $(STANDARD_ARG_FILE)
 
 %.check: %__package.mlw $(ALL_WHYPACK) $(WHY_STANDARD)
 	if [ -f $*__types_in_spec.mlw ] ; then why3 -L ../share/gnatprove/theories --type-only -L . $*__types_in_spec.mlw > /dev/null ; fi

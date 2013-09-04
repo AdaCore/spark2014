@@ -51,11 +51,6 @@ package Gnat2Why_Args is
    -- Options defined in this package --
    -------------------------------------
 
-   --  Standard package only mode. In this mode, gnat2why will only generate
-   --  Why code for package Standard. Any given input file will be ignored.
-
-   Standard_Mode : Boolean := False;
-
    --  Global generation mode. In this mode, gnat2why generates cross-reference
    --  information in ALI files for being able to generated the globals read
    --  and writen by subprograms.

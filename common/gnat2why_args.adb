@@ -44,7 +44,6 @@ package body Gnat2Why_Args is
    --  means "false". For other variables, the value is given after the "="
    --  sign. No "=value" part is allowed for boolean variables.
 
-   Standard_Mode_Name      : constant String := "standard_mode";
    Global_Gen_Mode_Name    : constant String := "global_gen_mode";
    Check_Mode_Name         : constant String := "check_mode";
    Flow_Analysis_Mode_Name : constant String := "flow_analysis_mode";
@@ -79,9 +78,7 @@ package body Gnat2Why_Args is
 
    procedure Interpret_Token (Token : String) is
    begin
-      if Token = Standard_Mode_Name then
-         Standard_Mode := True;
-      elsif Token = Global_Gen_Mode_Name then
+      if Token = Global_Gen_Mode_Name then
          Global_Gen_Mode := True;
       elsif Token = Check_Mode_Name then
          Check_Mode := True;
@@ -155,9 +152,6 @@ package body Gnat2Why_Args is
       Change_Dir (Obj_Dir);
       Create_Temp_Output_File (FD, Name);
 
-      if Standard_Mode then
-         Write_Line (Standard_Mode_Name);
-      end if;
       if Global_Gen_Mode then
          Write_Line (Global_Gen_Mode_Name);
       end if;
