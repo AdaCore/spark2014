@@ -120,7 +120,7 @@ package Why.Inter is
    Why_Files : array (Why_File_Enum) of Why_File;
    Why_File_Name : String_Access;
 
-   Why_File_Suffix : constant String := "__package";
+   Why_File_Suffix : constant String := ".mlw";
 
    -----------------
    -- Completions --

@@ -7,7 +7,7 @@ configuration project Why is
    end Compiler;
 
    package Naming is
-      for Implementation_Suffix ("Why") use "__package.mlw";
+      for Implementation_Suffix ("Why") use ".mlw";
    end Naming;
 
 end Why;

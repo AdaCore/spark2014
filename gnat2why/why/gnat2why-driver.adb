@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-
 with AA_Util;                use AA_Util;
 with ALI.Util;               use ALI.Util;
 with ALI;                    use ALI;
@@ -366,7 +365,7 @@ package body Gnat2Why.Driver is
 
    procedure Print_Why_File is
    begin
-      Open_Current_File (Why_File_Name.all & ".mlw");
+      Open_Current_File (Why_File_Name.all);
       for WF in Why_File_Enum loop
          Sprint_Why_Node (Why_Node_Id (Why_Files (WF).File), Current_File);
       end loop;
@@ -380,7 +379,7 @@ package body Gnat2Why.Driver is
    procedure Touch_Main_File (Prefix : String) is
       Filename : constant String := Prefix & Why_File_Suffix;
    begin
-      Open_Current_File (Filename & ".mlw");
+      Open_Current_File (Filename);
       Close_Current_File;
    end Touch_Main_File;
 

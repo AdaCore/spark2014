@@ -71,15 +71,13 @@ procedure Gnatprove is
    --  Compute ALI information for all source units, using gnatmake.
 
    procedure Compute_VCs (Proj     : Project_Tree;
-                          Obj_Path : File_Array;
                           Status   : out Integer);
    --  Compute Verification conditions using Why, driven by gprbuild.
 
    procedure Execute_Step
       (Step         : Gnatprove_Step;
        Project_File : String;
-       Proj         : Project_Tree;
-       Obj_Path     : File_Array);
+       Proj         : Project_Tree);
 
    procedure Generate_SPARK_Report
      (Obj_Dir : String;
@@ -98,8 +96,7 @@ procedure Gnatprove is
    --  and return the file name.
 
    procedure Generate_Why3_Conf_File
-     (Gnatprove_Subdir : String;
-      Obj_Path         : File_Array);
+     (Gnatprove_Subdir : String);
 
    procedure Translate_To_Why
       (Project_File     : String;
@@ -240,7 +237,6 @@ procedure Gnatprove is
 
    procedure Compute_VCs
      (Proj      : Project_Tree;
-      Obj_Path  : File_Array;
       Status    : out Integer)
    is
       use Ada.Environment_Variables;
@@ -251,7 +247,7 @@ procedure Gnatprove is
          Generate_Why_Project_File (Proj_Type);
       Args          : String_Lists.List := String_Lists.Empty_List;
    begin
-      Generate_Why3_Conf_File (Obj_Dir, Obj_Path);
+      Generate_Why3_Conf_File (Obj_Dir);
       if Timeout /= 0 then
          Args.Append ("--timeout");
          Args.Append (Int_Image (Timeout));
@@ -326,7 +322,7 @@ procedure Gnatprove is
       if Only_Given then
          for File of File_List loop
             Args.Prepend
-              (File (File'First .. File'Last - 4) & "__package.mlw");
+              (File (File'First .. File'Last - 4) & ".mlw");
          end loop;
          Args.Prepend ("-u");
       end if;
@@ -347,8 +343,7 @@ procedure Gnatprove is
    procedure Execute_Step
      (Step         : Gnatprove_Step;
       Project_File : String;
-      Proj         : Project_Tree;
-      Obj_Path     : File_Array)
+      Proj         : Project_Tree)
    is
       Status : Integer;
    begin
@@ -376,7 +371,7 @@ procedure Gnatprove is
             end if;
 
          when GS_Why =>
-            Compute_VCs (Proj,  Obj_Path, Status);
+            Compute_VCs (Proj, Status);
 
       end case;
 
@@ -497,7 +492,7 @@ procedure Gnatprove is
       Generate_Project_File
         (Why_File_Name,
          "Why",
-         Proj.Library_Files (ALI_Ext => "__package.mlw"));
+         Proj.Library_Files (ALI_Ext => ".mlw"));
       return Why_File_Name;
    end Generate_Why_Project_File;
 
@@ -506,8 +501,7 @@ procedure Gnatprove is
    -----------------------------
 
    procedure Generate_Why3_Conf_File
-     (Gnatprove_Subdir : String;
-      Obj_Path         : File_Array)
+     (Gnatprove_Subdir : String)
    is
       File : File_Type;
       Filename : constant String :=
@@ -557,9 +551,6 @@ procedure Gnatprove is
       Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "theories"));
       Put_Keyval ("loadpath", Ada.Directories.Compose (Why3_Dir, "modules"));
       Put_Keyval ("loadpath", Theories_Dir);
-      for File of Obj_Path loop
-         Put_Keyval ("loadpath", File.Display_Full_Name);
-      end loop;
       Put_Keyval ("magic", 14);
       Put_Keyval ("memlimit", 0);
       Put_Keyval ("running_provers_max", 2);
@@ -729,18 +720,18 @@ begin
    Read_Command_Line (Tree);
    Proj_Type := Root_Project (Tree);
 
+   Execute_Step (GS_ALI, Project_File.all, Tree);
+   Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
+
+   if MMode in GPM_Check | GPM_Flow then
+      GNAT.OS_Lib.OS_Exit (0);
+   end if;
+   Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
+   Execute_Step (GS_Why, Project_File.all, Tree);
    declare
       Obj_Path : constant File_Array :=
         Object_Path (Proj_Type, Recursive => True);
    begin
-      Execute_Step (GS_ALI, Project_File.all, Tree, Obj_Path);
-      Execute_Step (GS_Gnat2Why, Project_File.all, Tree, Obj_Path);
-
-      if MMode in GPM_Check | GPM_Flow then
-         GNAT.OS_Lib.OS_Exit (0);
-      end if;
-      Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
-      Execute_Step (GS_Why, Project_File.all, Tree, Obj_Path);
       Generate_SPARK_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
    end;
 exception
