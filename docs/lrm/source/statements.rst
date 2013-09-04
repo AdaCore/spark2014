@@ -10,16 +10,24 @@ Simple and Compound Statements - Sequences of Statements
 |SPARK| restricts statements that complicate verification, and excludes statements
 related to tasking and synchronization.
 
-.. centered:: **Extended Legality Rules**
+.. centered:: **Legality Rules**
 
-#. A ``simple_statement`` shall not be a ``goto_statement``, an ``entry_call_statement``,
+.. _tu-simple_and_compound_statements-01:
+
+1. A ``simple_statement`` shall not be a ``goto_statement``, an ``entry_call_statement``,
    a ``requeue_statement``, a ``delay_statement``, an ``abort_statement``,
    or a ``code_statement``.
 
-#. A ``compound_statement`` shall not be an ``accept_statement`` or a ``select_statement``.
+.. _tu-simple_and_compound_statements-02:
 
-A statement is only in |SPARK| if all the constructs used in the statement are
-in |SPARK|.
+2. A ``compound_statement`` shall not be an ``accept_statement`` or a ``select_statement``.
+
+.. _tu-simple_and_compound_statements-03:
+
+3. A statement is only in |SPARK| if all the constructs used in the
+   statement are in |SPARK|.
+
+.. _etu-simple_and_compound_statements:
 
 [A future release of |SPARK| is planned to support the Ravenscar multi-tasking
 profile and then some of the tasking statements such as
@@ -46,16 +54,28 @@ Loop Statements
 User-Defined Iterator Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| currently does not support the implementation of user-defined iterator
-types.
+.. centered:: **Legality Rules**
 
-.. todo:: Need to consider further the support for iterators and whether
-          the application of constant iterators could be supported.
+.. _tu-user_defined_iterator_types-01:
+
+1. User-defined iterator types are not currently permitted.
+
+.. _etu-user_defined_iterator_types:
+
+.. todo:: Need to consider further the support for iterators and
+          whether the application of constant iterators could be
+          supported. To be addressed post release 1.
 
 Generalized Loop Iteration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| currently does not support generalized loop iteration.
+.. centered:: **Legality Rules**
+
+.. _tu-generalozed_loop_iteration-01:
+
+1. Generalized forms of loop iteration are not currently supported.
+
+.. _etu-generalozed_loop_iteration:
 
 .. _loop_invariants:
 
@@ -81,7 +101,7 @@ the value an expression had upon entry to the subprogram.
 
 .. centered:: **Static Semantics**
 
-#. Pragma Loop_Invariant is like a pragma Assert except it also acts
+1. Pragma Loop_Invariant is like a pragma Assert except it also acts
    as a *cut point* in formal verification. A cut point means that a prover is
    free to forget all information about modified variables that has been
    established within the loop. Only the given Boolean expression is carried
@@ -91,7 +111,7 @@ the value an expression had upon entry to the subprogram.
 
       :Trace Unit: PR 5.5.3 SS Loop_Invariant acts as a cut point
 
-#. Pragma Loop_Variant is used to demonstrate that a loop will terminate by
+2. Pragma Loop_Variant is used to demonstrate that a loop will terminate by
    specifying expressions that will increase or decrease as the loop is
    executed.
 
@@ -102,7 +122,9 @@ the value an expression had upon entry to the subprogram.
 
 .. centered:: **Legality Rules**
 
-#. Loop_Invariant is just like pragma Assert with respect to syntax of its
+.. _tu-loop_invariants_variants_and_entry_values-03:
+
+3. Loop_Invariant is just like pragma Assert with respect to syntax of its
    Boolean actual parameter, name resolution, legality rules and dynamic
    semantics, except for extra legality rules given below.
 
@@ -111,7 +133,9 @@ the value an expression had upon entry to the subprogram.
       :Trace Unit: 5.5.3 LR Loop_Invariant is like a pragma Assert, except for
                    some extra legality rules. Covered by another TU
 
-#. Loop_Variant has an expected actual parameter which is a specialization of an
+.. _tu-loop_invariants_variants_and_entry_values-04:
+
+4. Loop_Variant has an expected actual parameter which is a specialization of an
    Ada expression. Otherwise, it has the same name resolution and legality
    rules as pragma Assert, except for extra legality rules given below.
 
@@ -120,7 +144,9 @@ the value an expression had upon entry to the subprogram.
       :Trace Unit: 5.5.3 LR Loop_Variant is like a pragma Assert except for
                    some extra legality rules. Covered by another TU
 
-#. The following constructs are said to be *restricted to loops*:
+.. _tu-loop_invariants_variants_and_entry_values-05:
+
+5. The following constructs are said to be *restricted to loops*:
 
    * A Loop_Invariant pragma;
 
@@ -138,7 +164,9 @@ the value an expression had upon entry to the subprogram.
                    block_statement that appears immediately within a loop.
                    Covered by another TU
 
-#. A construct which is restricted to loops shall occur immediately within
+.. _tu-loop_invariants_variants_and_entry_values-06:
+
+6. A construct which is restricted to loops shall occur immediately within
    either:
 
    * the ``sequence_of_statements`` of a ``loop_statement``; or
@@ -157,16 +185,22 @@ the value an expression had upon entry to the subprogram.
                    sequence_of_statements or declarative_part of a
                    block_statement that appears immediately within a loop
 
-#. The expression of a ``loop_variant_item`` shall be of any
+.. _tu-loop_invariants_variants_and_entry_values-07:
+
+7. The expression of a ``loop_variant_item`` shall be of any
    discrete type.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 5.5.3 LR Expression of Loop_Variant shall be discrete type
 
+.. _etu-loop_invariants_variants_and_entry_values-lr:
+
 .. centered:: **Dynamic Semantics**
 
-#. Other than the above legality rules, pragma Loop_Invariant is equivalent to
+.. _tu-loop_invariants_variants_and_entry_values-08:
+
+8. Other than the above legality rules, pragma Loop_Invariant is equivalent to
    pragma ``Assert``. Pragma Loop_Invariant is an assertion (as defined in Ada
    RM 11.4.2(1.1/3)) and is governed by the Loop_Invariant assertion aspect
    [and may be used in an Assertion_Policy pragma].
@@ -177,7 +211,9 @@ the value an expression had upon entry to the subprogram.
                    Loop_Invariant is equivalent to pragma Assert. Covered by
                    another TU
 
-#. The elaboration of an Checked Loop_Variant pragma begins by evaluating the
+.. _tu-loop_invariants_variants_and_entry_values-09:
+
+9. The elaboration of an Checked Loop_Variant pragma begins by evaluating the
    ``discrete_expressions`` in textual order. For the first elaboration of the
    pragma within a given execution of the enclosing loop statement, no further
    action is taken. For subsequent elaborations of the pragma, one or more of
@@ -199,6 +235,8 @@ the value an expression had upon entry to the subprogram.
 
       :Trace Unit: FE 5.5.3 DS When a Loop_Variant check fails, exception
                    Assertions.Assertion_Error is raised.
+
+.. _etu-loop_invariants_variants_and_entry_values:
 
 .. centered:: **Examples**
 
@@ -229,7 +267,7 @@ Attribute Loop_Entry
 
 .. centered:: **Static Semantics**
 
-#. For a prefix *X* that denotes an object of a nonlimited type, the
+1. For a prefix *X* that denotes an object of a nonlimited type, the
    following attribute is defined:
 
    ::
@@ -241,7 +279,7 @@ Attribute Loop_Entry
       :Trace Unit: 5.5.3 SS Nonlimited types have a 'Loop_Entry attribute.
                    Covered by another TU
 
-#. The value of X'Loop_Entry [(loop_name)] is the value of X on entry to the loop
+2. The value of X'Loop_Entry [(loop_name)] is the value of X on entry to the loop
    that is denoted by ``loop_name``. If the optional ``loop_name`` parameter is
    not provided, the closest enclosing loop is the default.
 
@@ -252,7 +290,9 @@ Attribute Loop_Entry
 
 .. centered:: **Legality Rules**
 
-#. A Loop_Entry ``attribute_reference`` *applies to* a ``loop_statement`` in the
+.. _tu-attribute_loop_entry-03:
+
+3. A Loop_Entry ``attribute_reference`` *applies to* a ``loop_statement`` in the
    same way that an ``exit_statement`` does (see Ada RM 5.7). For every rule
    about ``exit_statements`` in the Name Resolution Rules and Legality Rules
    sections of Ada RM 5.7, a corresponding rule applies to Loop_Entry
@@ -264,7 +304,9 @@ Attribute Loop_Entry
                    shall to refer to an existing enclosing loop. Covered by
                    another TU
 
-#. In many cases, the language rules pertaining to the Loop_Entry
+.. _tu-attribute_loop_entry-04:
+
+4. In many cases, the language rules pertaining to the Loop_Entry
    attribute match those pertaining to the Old attribute (see Ada LRM 6.1.1),
    except with "Loop_Entry" substituted for "Old". These include:
 
@@ -302,7 +344,9 @@ Attribute Loop_Entry
       :Trace Unit: FE 5.5.3 LR Referencing 'Loop_Entry is only possible from
                    within the corresponding loop. Covered by another TU
 
-#. A ``Loop_Entry`` ``attribute_reference`` shall occur within a ``Loop_Variant``
+.. _tu-attribute_loop_entry-05:
+
+5. A ``Loop_Entry`` ``attribute_reference`` shall occur within a ``Loop_Variant``
    or ``Loop_Invariant`` pragma, or an ``Assert``, ``Assume`` or
    ``Assert_And_Cut`` pragma appearing in a position where a ``Loop_Invariant``
    pragma would be allowed.
@@ -319,7 +363,9 @@ Attribute Loop_Entry
                    is immediately within a loop or within a block statement
                    that is immediately within a loop.
 
-#. The prefix of a Loop_Entry ``attribute_reference`` shall not contain a use
+.. _tu-attribute_loop_entry-06:
+
+6. The prefix of a Loop_Entry ``attribute_reference`` shall not contain a use
    of an entity declared within the ``loop_statement`` but not within the prefix
    itself.
 
@@ -341,13 +387,17 @@ Attribute Loop_Entry
                    expressions but cannot refer to variables declared in
                    block statements that are within the loop
 
-#. The prefix of a Loop_Entry ``attribute_reference`` shall statically denote
+.. _tu-attribute_loop_entry-07:
+
+7. The prefix of a Loop_Entry ``attribute_reference`` shall statically denote
    an entity, or shall denote an ``object_renaming_declaration``, if
 
    * the ``attribute_reference`` is potentially unevaluated; or
 
    * the ``attribute_reference`` does not apply to the innermost
      enclosing ``loop_statement``.
+
+.. _etu-attribute_loop_entry-lr:
 
    [This rule follows the corresponding Ada RM rule for 'Old.
    The prefix of an Old attribute_reference that is potentially unevaluated
@@ -374,7 +424,9 @@ Attribute Loop_Entry
 
 .. centered:: **Dynamic Semantics**
 
-#. For each X'Loop_Entry other than one occurring within an Ignored
+.. _tu-attribute_loop_entry-08:
+
+8. For each X'Loop_Entry other than one occurring within an Ignored
    assertion expression, a constant is implicitly declared at the beginning of
    the associated loop statement. The constant is of the type of X and is
    initialized to the result of evaluating X (as an expression) at the point
@@ -388,11 +440,15 @@ Attribute Loop_Entry
                    declared at the associated loop statement. Covered by
                    another TU
 
-#. The previous paragraph notwithstanding, the implicit constant declaration
+.. _tu-attribute_loop_entry-09:
+
+9. The previous paragraph notwithstanding, the implicit constant declaration
    is not elaborated if the ``loop_statement`` has an ``iteration_scheme`` whose
    evaluation yields the result that the ``sequence_of_statements`` of the
    ``loop_statement`` will not be executed (loosely speaking, if the loop
    completes after zero iterations).
+
+.. _etu-attribute_loop_entry:
 
    [Note: This means that the constant is not elaborated unless the
    loop body will execute (or at least begin execution) at least once.
@@ -455,7 +511,13 @@ No extensions or restrictions.
 Goto Statements
 ---------------
 
-The goto statement is not permitted in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-goto_statements-01:
+
+1. The goto statement is not permitted.
+
+.. _etu-goto_statements:
 
 .. _pragma_assume:
 
@@ -477,7 +539,9 @@ it cannot. It has to be used with caution and is used to state axioms.
 
 .. centered:: **Static Semantics**
 
-#. Pragma Assert_And_Cut is the same as a pragma Assert except it also acts
+.. _tu-proof_pragmas-01:
+
+1. Pragma Assert_And_Cut is the same as a pragma Assert except it also acts
    as a cut point in formal verification. The cut point means that a prover is
    free to forget all information about modified variables that has been
    established from the statement list before the cut point. Only the given
@@ -488,7 +552,9 @@ it cannot. It has to be used with caution and is used to state axioms.
       :Trace Unit: PR 5.9 SS Pragma Assert_And_Cut is like pragma Assert but
                    it also acts as a cut point.
 
-#. Pragma Assume is the same as a pragma Assert except that there is no
+.. _tu-proof_pragmas-02:
+
+2. Pragma Assume is the same as a pragma Assert except that there is no
    proof obligation to prove the truth of the Boolean expression that is its
    actual parameter. [Pragma Assume indicates to proof tools that the
    expression can be assumed to be True.]
@@ -498,9 +564,13 @@ it cannot. It has to be used with caution and is used to state axioms.
       :Trace Unit: PR 5.9 SS Pragma Assume is like pragma Assert but creates
                    no proof obligation.
 
+.. _etu-proof_pragmas-ss:
+
 .. centered:: **Legality Rules**
 
-#. Pragmas Assert_And_Cut and Assume have the same syntax for their Boolean
+.. _tu-proof_pragmas-03:
+
+3. Pragmas Assert_And_Cut and Assume have the same syntax for their Boolean
    actual parameter, name resolution rules and dynamic semantics as pragma
    Assert.
 
@@ -509,11 +579,15 @@ it cannot. It has to be used with caution and is used to state axioms.
       :Trace Unit: FE 5.9 LR Pragmas Assert_And_Cut and Assume have the same
                    syntax as pragma Assert. Covered by another TU
 
+.. _etu-proof_pragmas-lr:
+
 .. _assertcutinv_proof_semantics:
 
 .. centered:: **Verification Rules**
 
-#. The verification rules for pragma Assume are significantly different to those
+.. _tu-proof_pragmas-04:
+
+4. The verification rules for pragma Assume are significantly different to those
    of pragma Assert. [It would be difficult to overstate the importance of the
    difference.] Even though the dynamic semantics of pragma Assume and pragma
    Assert are identical, pragma Assume does not introduce a corresponding proof
@@ -526,3 +600,5 @@ it cannot. It has to be used with caution and is used to state axioms.
 
       :Trace Unit: PR 5.9 VR Pragma Assume is like pragma Assert but creates
                    no proof obligation. Covered by another TU
+
+.. _etu-proof_pragmas:
