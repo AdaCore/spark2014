@@ -1,4 +1,4 @@
 from test_support import *
 import glob
 
-prove_all(steps=1000)
+prove_all(steps=10000)

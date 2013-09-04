@@ -83,15 +83,12 @@ step_function.adb:60:18: assertion not proved, requires SFun.Step(j-1).Delimiter
 step_function.adb:60:29: info: index check proved
 step_function.adb:60:55: info: index check proved
 step_function.adb:72:17: info: range check proved
-step_function.adb:89:7: info: assertion proved
-step_function.adb:92:10: loop invariant initialization not proved
-step_function.adb:92:10: loop invariant preservation not proved
-step_function.adb:105:29: index check not proved
-step_function.adb:108:29: index check not proved
-step_function.adb:111:27: index check not proved
-step_function.adb:111:54: index check not proved
-step_function.adb:118:30: index check not proved
-step_function.adb:118:56: index check not proved
+step_function.adb:91:10: loop invariant initialization not proved
+step_function.adb:91:10: loop invariant preservation not proved
+step_function.adb:110:29: index check not proved
+step_function.adb:113:29: index check not proved
+step_function.adb:116:27: index check not proved
+step_function.adb:116:54: index check not proved
 step_function.adb:122:30: index check not proved
 step_function.adb:122:56: index check not proved
 step_function.adb:127:36: index check not proved
@@ -146,17 +143,17 @@ step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
 step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
 step_function_test.adb:44:4: assertion not proved, requires Step_Function.Is_Valid(sfun4)
-step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) =
+step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) = 
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) =
+step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) = 
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) =
+step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) = 
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) =
+step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) = 
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) =
+step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) = 
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) =
+step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) = 
 step_function_test.adb:51:19: info: precondition proved
 step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:4: info: precondition proved
@@ -164,11 +161,11 @@ step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
-step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) =
+step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) = 
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) = 
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) =
+step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) = 
 step_function_test.adb:67:19: info: precondition proved
 units.adb:24:38: overflow check not proved
 units.adb:24:48: info: division check proved
