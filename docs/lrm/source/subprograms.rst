@@ -388,11 +388,13 @@ follow the grammar of ``global_specification``
 
       :Trace Unit: FE 6.1.4 LR global_items shall denote distinct entities
 
-#. If a subprogram is nested within another and if the ``global_specification``
-   of the outer subprogram has an entity denoted by a ``global_item`` with a
-   ``mode_specification`` of Input, then a ``global_item`` of the
-   ``global_specification`` of the inner subprogram shall not denote the same
-   entity with a ``mode_selector`` of In_Out or Output.
+#. If a subprogram is nested within another and if the
+   ``global_specification`` of the outer subprogram has an entity
+   denoted by a ``global_item`` with a ``mode_specification`` of Input
+   or the entity is a formal parameter with a mode of **in**, then a
+   ``global_item`` of the ``global_specification`` of the inner
+   subprogram shall not denote the same entity with a
+   ``mode_selector`` of In_Out or Output.
 
    .. ifconfig:: Display_Trace_Units
 
