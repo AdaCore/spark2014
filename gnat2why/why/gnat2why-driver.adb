@@ -385,23 +385,10 @@ package body Gnat2Why.Driver is
 
       procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List) is
       begin
-         --  Types are translated first, as the frontend generates mutually
-         --  dependent definitions between constants and types, for dynamically
-         --  generated types (e.g. the unconstrained array type for an input
-         --  parameter).
+         --  First translate all entities
 
          for E of List_Entities loop
-            if Ekind (E) in Type_Kind then
-               Translate_Entity (E);
-            end if;
-         end loop;
-
-         --  Then all remaining entities are translated
-
-         for E of List_Entities loop
-            if Ekind (E) not in Type_Kind then
-               Translate_Entity (E);
-            end if;
+            Translate_Entity (E);
          end loop;
 
          --  Finally, completions are added for entities that require one.
