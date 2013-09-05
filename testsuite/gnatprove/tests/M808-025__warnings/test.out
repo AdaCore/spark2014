@@ -1,0 +1,82 @@
+Stop at compilation:
+--------------------
+
+
+   compilation of p.adb failed
+gnatprove: error during frame condition computation, aborting.
+gprbuild: *** compilation phase failed
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:6:04: warning: "X" is not modified, could be declared constant
+
+Issue all compilation warnings, stop at flow warnings treated as errors:
+------------------------------------------------------------------------
+
+
+   compilation of p.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:6:04: warning: "X" is not modified, could be declared constant
+p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:9:09: warning: unused assignment [ineffective]
+
+Do not issue all compilation warnings, stop at flow warnings treated as errors:
+-------------------------------------------------------------------------------
+
+
+   compilation of p.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:9:09: warning: unused assignment [ineffective]
+
+Do not issue any compilation warnings, stop at flow warnings treated as errors:
+-------------------------------------------------------------------------------
+
+
+   compilation of p.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
+p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:9:09: warning: unused assignment [ineffective]
+
+Issue all compilation warnings, issue flow warnings and continue:
+-----------------------------------------------------------------
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:6:04: warning: "X" is not modified, could be declared constant
+p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:9:09: warning: unused assignment [ineffective]
+p.adb:12:4: info: assertion proved
+
+Do not issue all compilation warnings, do not issue flow warnings and continue:
+------------------------------------------------------------------------
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:9:09: warning: unused assignment [ineffective]
+p.adb:12:4: info: assertion proved
+
+Do not issue any compilation warnings, issue flow warnings and continue:
+------------------------------------------------------------------------
+p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:9:09: warning: unused assignment [ineffective]
+p.adb:12:4: info: assertion proved
+
+Issue all compilation warnings, do not issue flow warnings and continue:
+------------------------------------------------------------------------
+p.adb:2:09: warning: type "M" is not referenced
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:6:04: warning: "X" is not modified, could be declared constant
+p.adb:12:4: info: assertion proved
+
+Do not issue all compilation warnings, do not issue flow warnings and continue:
+-------------------------------------------------------------------------------
+p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:12:4: info: assertion proved
+
+Do not issue any compilation warnings, do not issue flow warnings and continue:
+-------------------------------------------------------------------------------
+p.adb:12:4: info: assertion proved
