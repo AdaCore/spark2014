@@ -1,5 +1,5 @@
 project Test is
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnat12", "-gnato13");
+      for Default_Switches ("Ada") use ("-gnato13");
    end Compiler;
 end Test;

@@ -1,6 +1,6 @@
 project Test is
    package Compiler is
-      for Default_Switches ("ada") use ("-gnat12", "-gnata", "-gnato13", "-gnatd.V");
+      for Default_Switches ("ada") use ("-gnato13");
    end Compiler;
 end Test;
 

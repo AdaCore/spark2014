@@ -161,16 +161,28 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     opt: options to give to gnatprove
     """
     global fake_output_generated
+
+    # generate an empty project file if not present already
+    if not os.path.isfile("test.gpr"):
+        with open("test.gpr", 'w') as f_prj:
+            f_prj.write('project Test is\n')
+            f_prj.write('  package Compiler is\n')
+            f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
+            f_prj.write('  end Compiler;\n')
+            f_prj.write('end Test;\n')
+
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
     cmd += ["-k"]
     if quick_mode():
-      cmd += ["--proof=no_wp"]
+        cmd += ["--proof=no_wp"]
     if debug_mode():
-      cmd += ["--debug"]
+        cmd += ["--debug"]
     if verbose_mode():
-      cmd += ["--verbose"]
+        cmd += ["--verbose"]
     cmd += to_list(opt)
+    if verbose_mode():
+        print cmd
     process = Run(cmd)
 
     # In quick mode, ignore xfail tests by simply generating a dummy output
@@ -207,20 +219,21 @@ def gnatprove(opt=["-P", "test.gpr"]):
 def prove(opt=None, steps=max_steps, procs=parallel_procs,\
           vc_timeout=vc_timeout(), mode="prove"):
     """Call gnatprove with standard options"""
-    if opt is None:
-        opt = []
-    opt += ["--report=all", "-P", "test.gpr", "--quiet"]
-    opt += ["--timeout=%d"%(vc_timeout)]
-    opt += ["--steps=%d"%(steps)]
-    opt += ["--mode=%s"%(mode)]
-    opt += ["-j%d"%(procs)]
-    gnatprove(opt)
+    fullopt  = ["--report=all", "--warnings=on", "-P", "test.gpr", "--quiet"]
+    fullopt += ["--timeout=%d"%(vc_timeout)]
+    fullopt += ["--steps=%d"%(steps)]
+    fullopt += ["--mode=%s"%(mode)]
+    fullopt += ["-j%d"%(procs)]
+    # Add opt last, so that if may include switch -cargs
+    if opt is not None:
+        fullopt += opt
+    gnatprove(fullopt)
 
 def do_flow(opt=None, procs=parallel_procs):
     """Call gnatprove with standard options for flow"""
     if opt is None:
         opt = []
-    opt += ["-P", "test.gpr", "--quiet", "--mode=flow"]
+    opt += ["-P", "test.gpr", "--quiet", "--mode=flow", "--warnings=on"]
     opt += ["-j%d"%(procs)]
     gnatprove(opt)
 
@@ -228,6 +241,10 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,\
               vc_timeout=vc_timeout()):
     """Call gnatprove with standard options to prove all VCs"""
     prove(opt, steps, procs, vc_timeout)
+
+def clean():
+    """Call gnatprove with standard options to clean proof artifacts"""
+    prove(opt=["--clean"])
 
 def to_list(arg):
     """Convert to list

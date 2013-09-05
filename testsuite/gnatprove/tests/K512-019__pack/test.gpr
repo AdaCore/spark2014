@@ -1,4 +1,0 @@
-project Test is
-   for Source_Dirs use (".");
-   for Main use ("p.adb");
-end Test;

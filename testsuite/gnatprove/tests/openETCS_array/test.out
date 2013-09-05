@@ -62,6 +62,7 @@ section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:77:14: postcondition not proved, requires Contains(Connections, destination)
 section_4_6.ads:105:6: complete contract cases not proved
 section_4_6.ads:105:6: disjoint contract cases not proved
+section_4_6.ads:105:06: warning: contract cases do not mention result
 section_4_6.ads:105:55: info: contract case proved
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
@@ -79,6 +80,7 @@ step_function.adb:78:17: info: range check proved
 step_function.adb:95:7: info: assertion proved
 step_function.adb:98:10: info: loop invariant initialization proved
 step_function.adb:98:10: loop invariant preservation not proved
+step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
 step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved
 step_function.adb:121:49: info: index check proved
