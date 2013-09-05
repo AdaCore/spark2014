@@ -31,6 +31,13 @@ package Why.Sinfo is
    --  usually one entity for both program space and logic space, even if
    --  they are expressed with a different syntax in the generated Why code.
    --  This aims at reducing code duplication.
+
+   --  Together with xgen/xtree_sinfo.adb, this file describes the Why tree and
+   --  is the basis for the automotically generated files in the why-atree-*
+   --  hierarchy. The Why_Node_Kind type in this file describes all possible
+   --  node kinds, and in xtree_sinfo are described the possible fields for
+   --  each node kind.
+
    --  For more info about the syntax tree, see xgen/xtree_sinfo.adb
 
    type Why_Node_Kind is
