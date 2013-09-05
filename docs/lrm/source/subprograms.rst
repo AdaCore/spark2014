@@ -1005,8 +1005,8 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. _tu-depends_aspects-25:
 
-25. [Each input of the implementation of a subprogram body is denoted by an
-    ``input`` of the Depends aspect of the subprogram.]
+25. Each input of the implementation of a subprogram body is denoted by an
+    ``input`` of the Depends aspect of the subprogram.
 
     .. ifconfig:: Display_Trace_Units
 

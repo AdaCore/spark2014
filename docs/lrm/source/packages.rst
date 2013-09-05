@@ -1128,7 +1128,16 @@ There are no dynamic semantics associated with the Initializes aspect.
       :Trace Unit: FA 7.1.5 VR entities used in the initialization of an
                    initialization_item must appear in its input_list.
 
-.. _etu-initializes_aspects-vr:
+
+.. _tu-initializes_aspects-note_1:
+
+[Note: these rules allow a variable or state abstraction to be
+initialized by the elaboration of a package but not be denoted in an
+Initializes aspect.  In such a case the analysis tools will treat the
+variable or state abstraction as uninitialized when analyzing clients
+of the package.]
+
+.. _etu-initializes_aspects-note:
 
 .. centered:: **Examples**
 
@@ -1249,15 +1258,16 @@ be a *Boolean_*\ ``expression``.
 
 .. _tu-initial_condition_aspects-05:
 
-5. With respect to dynamic semantics, specifying a given expression
-   as the Initial_Condition aspect of a package is equivalent to specifying that
-   expression as the argument of an Assert pragma occurring at the end of the
-   (possibly implicit) statement list of the (possibly implicit) body of the
-   package. [This equivalence includes all interactions with pragma
-   Assertion_Policy. This equivalence does not extend to matters of static
-   semantics, such as name resolution.] An Initial_Condition expression does not
-   cause freezing until the point where it is evaluated [, at which point
-   everything that it might freeze has already been frozen].
+5. With respect to dynamic semantics, specifying a given expression as
+   the Initial_Condition aspect of a package is equivalent to
+   specifying that expression as the argument of an Assert pragma
+   occurring at the end of the (possibly implicit) statement list of
+   the (possibly implicit) body of the package. [This equivalence
+   includes all interactions with pragma Assertion_Policy but does not
+   extend to matters of static semantics, such as name resolution.] An
+   Initial_Condition expression does not cause freezing until the
+   point where it is evaluated [, at which point everything that it
+   might freeze has already been frozen].
 
    .. ifconfig:: Display_Trace_Units
 
@@ -1325,9 +1335,9 @@ aspect. The Refined_State aspect defines a *refinement* for each ``state_name``.
 The refinement shall denote the variables and subordinate state abstractions
 represented by the ``state_name`` and these are known as its *constituents*.
 
-Constituents of each ``state_name`` have to be initialized consistently
-with that of their representative ``state_name`` as determined by its denotation
-or absence in the Initializes aspect of the package.
+Constituents of each ``state_name`` have to be initialized
+consistently with that of their representative ``state_name`` as
+determined by its denotation in the Initializes aspect of the package.
 
 A subprogram may have an *abstract view* and a *refined view*. The abstract
 view is a subprogram declaration in the visible part of a package where a
