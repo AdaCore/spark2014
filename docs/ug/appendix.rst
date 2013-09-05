@@ -102,17 +102,17 @@ project file.
 |GNATprove| Limitations
 =======================
 
-|GNATprove| analyzes floating-point values and operations as if they were over
-real numbers, with no rounding. The only rounding that occurs is for static
-values (for example ``1.0``) which get rounded to their closest representable
-floating-point value, depending on the type used in the code.
+Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a
+project file is not supported. Instead, use ``for
+Local_Configuration_Pragmas use "pragmas.adc";``.
 
-Using the option ``-gnatec=pragmas.adc`` as Default_Switch in a project file is
-not supported. Instead, use ``for Local_Configuration_Pragmas use
-"pragmas.adc";``.
+Defining multiple units in the same file is not supported. Instead,
+define each unit in a separate file.
 
-Defining multiple units in the same file is not supported. Instead, define each
-unit in a separate file.
+Flow analysis currently treats all constants and array bounds as
+static; as the current language does not allow constants to appear in
+globals and dependency aspects. We expect to remove this limitation
+after the first release.
 
 Portability Issues
 ------------------
