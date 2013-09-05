@@ -438,6 +438,10 @@ package body Gnat2Why.Driver is
       Translate_List_Entities (Spec_Entities);
       Translate_List_Entities (Body_Entities);
 
+      --  For all objects whose declaration is not visible (has not been
+      --  translated to Why), we generate a dummy declaration. This must
+      --  be done after translating above entities.
+
       For_All_External_Objects (Translate_External_Object'Access);
 
       --  Generate VCs for entities of unit. This must follow the generation of
@@ -485,6 +489,16 @@ package body Gnat2Why.Driver is
             end if;
 
          when Object_Kind =>
+
+            --  We need to fill the set of translated object entities, so that
+            --  we do not generate a dummy declaration for those
+
+            declare
+               Ent_Name : constant Entity_Name := new String'(Unique_Name (E));
+            begin
+               Translated_Object_Entities.Include (Ent_Name);
+            end;
+
             if not Is_Mutable_In_Why (E) then
                if Entity_In_SPARK (E) then
                   if not Is_Full_View (E) then

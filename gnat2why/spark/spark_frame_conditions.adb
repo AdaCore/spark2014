@@ -529,8 +529,10 @@ package body SPARK_Frame_Conditions is
          for Elt of S loop
             declare
                E : constant Entity_Name := Entity_Names.Element (Elt);
+               C : constant Name_Set.Cursor :=
+                 Translated_Object_Entities.Find (E);
             begin
-               if not (Present (Find_Object_Entity (E))) then
+               if not (Name_Set.Has_Element (C)) then
                   Process (E);
                end if;
             end;

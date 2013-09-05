@@ -66,6 +66,10 @@ package SPARK_Frame_Conditions is
       "="             => Name_Equal);
    use Name_Map;
 
+   Translated_Object_Entities : Name_Set.Set := Name_Set.Empty_Set;
+   --  Is filled by gnat2why-driver.adb, and represents all object entities
+   --  that are actually translated to Why
+
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return whether Ent is the special variable "__HEAP"
 
