@@ -440,7 +440,103 @@ about questionable code constructs.
 How to Write Loop Invariants
 ============================
 
-.. todo:: Add section on how to write loop invariants
+.. todo:: Edit. Add example.
+
+Proving loops is often the most challenging part of the proof
+activity, both for automatic provers and for users guiding the proof
+tool. It is not uncommon that a proof attempt of a valid loop property
+fails.
+
+When proving loops, failed proof attempts may need to be "debugged",
+see :ref:`investigate`. In this section we provide a systematic guide
+on proving loops. We will see how failed proof attempts give valuable
+insights, the loop invariant can be mended, and proof attempted again.
+
+Loop Invariants
+---------------
+Loop invariants are a powerful way to guide an automatic proof tool to
+successful proof. Though the loop invariant is a rather simple
+concept, the use of it can be quite complicated. Let us start with an
+important observation to make it easier.
+
+Impact of the Loop Invariant
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Observation: The choice of loop invariant greatly influences the
+  proof (attempt) because it is instantiated at 4 occasions in 3
+  branches of the proof. 1) Establish loop invariant, 2) Preserve loop
+  invariant (two instances), and 3) Use loop invariant (to establish
+  postcondition).
+
+* The trick in successful loop invariant writing is to use this
+  observation early in the process and benefit from working out the
+  summary of all constraints implied by each branch as early as
+  possible.
+
+Guiding Loop Proofs
+-------------------
+
+We now go through the most important guiding choices for loop proof,
+the choice of 1) the loop variable and 2) the loop invariant.
+
+Loop Variable
+^^^^^^^^^^^^^
+* It is important to identify the loop variable to get the loop invariant right.
+
+* This is often trivial; for example for for-loops, or when there is
+  only one variable.
+
+* Trick: look at the terminating condition of the loop. The loop
+  variable should of course also be updated in the loop.
+
+* Make a note of how the loop variable is updated in every iteration
+  of the loop.
+
+* The loop variable is also used to write a loop variant for proving
+  termination of the loop, but this is not mandatory.
+
+Loop Invariant
+^^^^^^^^^^^^^^
+
+* The loop invariant represents what we really want to prove with the
+  induction. This formula depends on the loop variable.
+
+* To create the loop invariant, start with your proof obligation. What
+  property do you need to have proved after the loop? Then edit this
+  formula so that your loop variable appears in the right place (clues
+  here).
+
+* Analyse the failed proof attempt if any. Consider for which proof
+  obligations the proof fails.  Is it in the establishment,
+  preservation, or use of the loop invariant that proof fails?  
+
+* First: If the use case proof obligation fails (corresponding to the loop
+  having terminated, i.e. false loop condition), look at this first,
+  since this is the hardest constraint.
+
+* If the preservation of the loop invariant fails to prove, consider
+  generalisation of the loop invariant. Many times we can work around
+  our loop proof problem by proving a stronger than is actually needed
+  and then prove that if the stronger property holds, the original
+  proof obligation also holds. This is called generalisation since the
+  new, stronger loop invariant is a generalisation of the original
+  invariant we were trying to prove.
+
+* Next: Is it the establishment of the loop invariant that fails?  If
+  the rest of the loop proof has succeded, the reason for this failure
+  is external to the loop. Consider if the precondition of your loop
+  is strong enough? Maybe you need some more initialisation code
+  before your loop? Or a pre-condition to the subprogram? Lastly,
+  consider if your loop invariant is too strong? Is it contradictory?
+
+As mentioned earlier, any change to the loop invariant propagates to
+several branches of the proof. In particular a generalisation of the
+loop invariant both introduces more assumptions and - simultaneously
+and in different branches of the tree - increases the proof
+burden. Therefore a patch to the loop invariant based on the
+information from one failed proof branch is likely to cause another
+branch to fail. The suggested order of consideration given above is a heuristic that has shown to work well in practise.
+
+.. _investigate:
 
 How to Investigate Unproved Checks
 ==================================
