@@ -2019,16 +2019,27 @@ private child unit (or a public descendant thereof).
 
 .. _tu-abstract_state_package_hierarchy_and_part_of-04:
 
-4. No other declarations shall have a Part_Of indicator.
+4. A Part_Of aspect specification for a package instantiation applies
+   to each part of the visible state of the instantiation. More
+   specifically, explicitly specifying the Part_Of aspect of a package
+   instantiation implicitly specifies the Part_Of aspect of each part
+   of the visible state of that instantiation. The legality rules for
+   such an implicit specification are the same as for an explicit
+   specification.
+
+.. _tu-abstract_state_package_hierarchy_and_part_of-05:
+
+5. No other declarations shall have a Part_Of
+   indicator.
 
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.2.6 LR Part_Of indicators are only allowed for the
           declarations described above.
 
-.. _tu-abstract_state_package_hierarchy_and_part_of-05:
+.. _tu-abstract_state_package_hierarchy_and_part_of-06:
 
-5. The refinement of a state abstraction denoted in a Part_Of
+6. The refinement of a state abstraction denoted in a Part_Of
    indicator shall denote as ``constituents`` all of the declarations
    that have a Part_Of indicator denoting the state abstraction. [This
    might be performed once the package body has been processed.]
@@ -2039,9 +2050,9 @@ private child unit (or a public descendant thereof).
                    Part_Of indicator must be a constituent of the
                    encapsulating state abstraction
 
-.. _tu-abstract_state_package_hierarchy_and_part_of-06:
+.. _tu-abstract_state_package_hierarchy_and_part_of-07:
 
-6. A state abstraction and a constituent (direct or indirect) thereof
+7. A state abstraction and a constituent (direct or indirect) thereof
    shall not both be denoted in one Global, Depends, Initializes,
    Refined_Global or Refined_Depends aspect specification.  The
    denotation must be consistent between the Global and Depends or
@@ -2058,9 +2069,9 @@ private child unit (or a public descendant thereof).
 
 .. centered:: **Verification Rules**
 
-.. _tu-abstract_state_package_hierarchy_and_part_of-07:
+.. _tu-abstract_state_package_hierarchy_and_part_of-08:
 
-7. For flow analysis, where a state abstraction is visible as well as
+8. For flow analysis, where a state abstraction is visible as well as
    one or more of its ``constituents``, its refinement is not visible
    and the Global and or Depends aspects of a subprogram denote the
    state abstraction, then in the implementation of the subprogram a
