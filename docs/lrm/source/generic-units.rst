@@ -6,11 +6,33 @@ contains constructs that are not normally in |SPARK|.
 [Information flow analysis is not performed on a generic unit;
 a generic unit generates no proof obligations].
 
-An instantiation of a generic is or is not in |SPARK|
-depending on whether the instance declaration and the instance
-body (described in section 12.3 of the Ada reference manual)
-are in |SPARK| [(i.e., when considered as a package (or, in the
-case of an instance of a generic subprogram, as a subprogram)].
+Generic Declarations
+--------------------
+
+No additions or restrictions on the declaration but the declaration
+has to be in |SPARK| in order that it may be instantiated in |SPARK|.
+
+Generic Bodies
+--------------
+
+No additions or restrictions on the body but the body has to be in
+|SPARK| in order that it may be instantiated in |SPARK|.
+
+
+Generic Instantiation
+---------------------
+
+.. centered:: **Legality Rules**
+
+.. _tu-generic_instantiation-01:
+
+1. An instantiation of a generic is or is not in |SPARK| depending on
+   whether the instance declaration and the instance body (described
+   in section 12.3 of the Ada reference manual) are in |SPARK| [(i.e.,
+   when considered as a package (or, in the case of an instance of a
+   generic subprogram, as a subprogram)].
+
+.. _etu-generic_instantiation:
 
 [For example, a generic which takes a formal limited private type
 would be in |SPARK|. An instantiation which passes in a task type
@@ -43,10 +65,11 @@ generics may be defined, allowing a generic to be "proven" and
 eliminating the need separately verify the correctness of each
 instantiation. That is not today's approach.]
 
-[TBD: discsuss LSP-ish rules for globals, similar to the
-compatibility rules for Global/Depends aspects of a
-subprogram which overrides a dispatching operation. OK, for example,
-if a subprogram reads fewer inputs than it said it would.]
+.. todo:: Discsuss LSP-ish rules for globals, similar to the
+   compatibility rules for Global/Depends aspects of a subprogram
+   which overrides a dispatching operation. OK, for example, if a
+   subprogram reads fewer inputs than it said it would.] To be
+   considered post release 1.
 
 .. todo:: Update SPARK 2014 to allow prove once/use many approach to generics.
           To be completed in a post-Release 1 version of this document.

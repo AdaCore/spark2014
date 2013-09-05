@@ -6,7 +6,7 @@ performed before a program is complete based on unit interfaces. For instance,
 to analyze a subprogram which calls another all that is required is a
 specification of the called subprogram including, at least, its
 ``global_specification`` and if formal verification of the calling program is to
-be performed, then the Pre and Postcondition of the called subprogram needs to
+be performed, then the Pre and Postcondition of the called subprogram need to
 be provided. The body of the called subprogram does not need to be implemented
 to analyze the caller. The body of the called subprogram is checked to be
 conformant with its specification when its implementation code is available and
@@ -21,15 +21,33 @@ execution of the program.
 Separate Compilation
 --------------------
 
-A program unit cannot be a task unit, a protected unit or a protected entry.
+.. centered:: **Legality Rules**
 
-Compilation Units
-~~~~~~~~~~~~~~~~~
+.. _tu-separate_compilation-01:
+
+1. A program unit cannot be a task unit, a protected unit or a protected entry.
+
+.. _etu-separate_compilation:
+
+Compilation Units - Library Units
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 No restrictions or extensions.
 
 Context Clauses - With Clauses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. centered:: **Legality Rules**
+
+.. _tu-context_clauses_with_clauses-01:
+
+1. With clauses are always in |SPARK|, even if the unit mentioned is
+   not completely in |SPARK|.
+
+.. _etu-context_clauses_with_clauses-lr:
+
+Abstact Views
+^^^^^^^^^^^^^
 
 State abstractions are visible in the limited view of packages in |SPARK|. The
 notion of an *abstract view* of a variable declaration is also introduced, and
@@ -38,13 +56,11 @@ declared in the visible part of that package. The only allowed uses of an
 abstract view of a variable are where the use of a state abstraction would be
 allowed (for example, in a Global ``aspect_specification``).
 
-.. centered:: **Syntax**
-
-There is no additional syntax associated with limited package views in |SPARK|.
-
 .. centered:: **Legality Rules**
 
-#. A name denoting the abstract view of a variable shall occur only:
+.. _tu-context_clauses_with_clauses-02:
+
+2. A name denoting the abstract view of a variable shall occur only:
 
    * as a ``global_item`` in a Global or Refined_Global aspect
      specification; or
@@ -52,48 +68,30 @@ There is no additional syntax associated with limited package views in |SPARK|.
    * as an ``input`` or ``output`` in a Depends or Refined_Depends
      aspect specification.
 
+.. _etu-context_clauses_with_clauses_abstract_view-lr:
+
 .. centered:: **Static Semantics**
 
-#. Any state abstractions declared within a given package are present in
+.. _tu-context_clauses_with_clauses-03:
+
+3. Any state abstractions declared within a given package are present in
    the limited view of the package.
    [This means that, for example, a Globals ``aspect_specification`` for a
    subprogram declared in a library unit package *P1* could refer to a state
    abstraction declared in a package *P2* if *P1* has a limited with of *P2*.]
 
-#. For every variable object declared by an ``object_declaration`` occurring
+.. _tu-context_clauses_with_clauses-04:
+
+4. For every variable object declared by an ``object_declaration`` occurring
    immediately within the visible part of a given package, the limited
    view of the package contains an *abstract view* of the object.
 
-#. The abstract view of a volatile variable is external.
+.. _tu-context_clauses_with_clauses_abstract_view-ss:
 
-.. centered:: **Dynamic Semantics**
+.. todo:: Need to consider whether to allow an abstract view of a
+     name in other contexts where a name denoting a state abstraction
+     in an Initializes aspect spec.
 
-There are no additional dynamic semantics associated with limited package views in |SPARK|.
-
-.. centered:: **Verification Rules**
-
-There are no verification rules associated with limited package views in |SPARK|.
-
-.. note::
-  (SB) No need to allow such a name in other contexts where a name denoting
-  a state abstraction could be legal. In particular, in an
-  Initializes aspect spec or in any of the various refinement
-  aspect specifications. Initializes aspect specs do not refer to
-  variables in other packages. Refinements occur in bodies and bodies
-  don't need limited withs.
-
-.. note::
-  (SB) Is the rule about volatility needed? I think this is needed in
-  order to prevent a function's Global specification from mentioning
-  an abstract view of a volatile variable, but I'm not sure because
-  I don't understand what prevents a function's Global specification
-  from mentioning the "concrete" view of a volatile variable.
-  This problem is briefly mentioned at the beginning of the peculiarly
-  numbered subsection 7.2 (package bodies) of section 7.2.4
-  (volatile variables).
-
-With clauses are always in |SPARK|, even if the unit mentioned is not completely
-in |SPARK|.
 
 Subunits of Compilation Units
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

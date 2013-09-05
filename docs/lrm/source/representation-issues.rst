@@ -41,13 +41,25 @@ No restrictions or additions.
 The Package System
 ------------------
 
-The use of the operators defined for type Address are not permitted in |SPARK| 
-except for use within representation clauses. 
+.. centered:: **Legality Rules**
+
+.. _tu-the_package_system-01:
+
+1. The use of the operators defined for type Address are not permitted
+   in |SPARK| except for use within representation clauses.
+
+.. _etu-the_package_system:
 
 Machine Code Insertions
 -----------------------
 
-Machine code insertions are not in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-machine_code_insertions-01:
+
+1. Machine code insertions are not in |SPARK|.
+
+.. _etu-machine_code_insertions:
 
 Unchecked Type Conversions
 --------------------------
@@ -84,12 +96,24 @@ attribute) may invalidate any proofs performed on the program.
 Unchecked Access Value Creation
 -------------------------------
 
-As access types are not supported in |SPARK|, neither is this attribute.
+.. centered:: **Legality Rules**
+
+.. _tu-unchecked_access_value_creation-01:
+
+1. As access types are not supported in |SPARK|, neither is this attribute.
+
+.. _etu-unchecked_access_value_creation:
 
 Storage Management
 ------------------
 
-These features are related to access types and not in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-storage_management-01:
+
+1. These features are related to access types and not in |SPARK|.
+
+.. _etu-storage_management:
 
 Pragma Restrictions and Pragma Profile
 --------------------------------------
@@ -100,7 +124,13 @@ suitable for different application environments.
 Streams
 -------
 
-Stream types and operations are not in |SPARK|.
+.. centered:: **Legality Rules**
+
+.. _tu-streams-01:
+
+1. Stream types and operations are not in |SPARK|.
+
+.. _etu-streams:
 
 Freezing Rules
 --------------
