@@ -1192,6 +1192,45 @@ package body Gnat2Why.Decls is
                            Alias => Why_Logic_Type_Of_Ada_Type (Actual)));
                   end if;
 
+                  if Ekind (Actual) in E_Record_Type and then
+                    Root_Record_Type (Actual) = Actual then
+
+                     --  if the actual is a root type of a record type, we need
+                     --  to define the conversion functions
+
+                     declare
+                        F_Ty   : constant W_Primitive_Type_Id :=
+                          New_Abstract_Type
+                            (Name => New_Identifier
+                               (Name => Short_Name (Formal)));
+                        A_Ident    : constant W_Identifier_Id :=
+                          New_Identifier (Name => "a");
+                        R_Binder   : constant Binder_Array :=
+                          (1 => (B_Name => A_Ident,
+                                 B_Type => F_Ty,
+                                 others => <>));
+                     begin
+
+                        Emit
+                          (TFile.Cur_Theory,
+                           New_Function_Def
+                             (Domain      => EW_Term,
+                              Name        => To_Ident (WNE_To_Base),
+                              Binders     => R_Binder,
+                              Return_Type => F_Ty,
+                              Def         => +A_Ident));
+                        Emit
+                          (TFile.Cur_Theory,
+                           New_Function_Def
+                             (Domain      => EW_Term,
+                              Name        => To_Ident (WNE_Of_Base),
+                              Binders     => R_Binder,
+                              Return_Type => F_Ty,
+                              Def         => +A_Ident));
+
+                     end;
+                  end if;
+
                   Close_Theory (TFile, Filter_Entity => Empty);
 
                elsif Ekind (Formal) = E_Function then
