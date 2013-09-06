@@ -1,3 +1,7 @@
+strlit.adb:4:07: warning: statement has no effect [ineffective]
+strlit.adb:5:07: warning: statement has no effect [ineffective]
+strlit.adb:6:07: warning: statement has no effect [ineffective]
+strlit.adb:7:07: warning: statement has no effect [ineffective]
 strlit.ads:5:20: info: postcondition proved
 [
 { "name" : "Strlit.DoSome", "file" :"strlit.ads", "line" :  4, "spark" : true, "violations" : [] }

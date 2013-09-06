@@ -1,0 +1,2 @@
+pack-child.ads:3:26: warning: "I" is not modified, could be "in" [inout_only_read]
+pack-child.ads:3:26: warning: unused variable "I" [unused]

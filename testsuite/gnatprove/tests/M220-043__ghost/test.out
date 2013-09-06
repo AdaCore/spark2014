@@ -8,8 +8,10 @@ semantics.adb:15:10: info: loop invariant preservation proved
 semantics.adb:15:40: overflow check not proved
 semantics.adb:16:10: info: loop variant proved
 semantics.adb:16:53: overflow check not proved
+semantics.adb:25:35: warning: unused initial value of "Var" [unused_initial_value]
 semantics.adb:33:40: info: overflow check proved
 semantics.adb:33:53: info: overflow check proved
+semantics.adb:41:07: warning: statement has no effect [ineffective]
 semantics.ads:12:19: info: postcondition proved
 semantics.ads:12:43: info: overflow check proved
 semantics.ads:13:41: info: contract case proved

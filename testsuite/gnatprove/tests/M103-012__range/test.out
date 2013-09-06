@@ -1,3 +1,7 @@
 p.adb:6:16: info: range check proved
+p.adb:6:16: warning: unused initial value of "X" [unused_initial_value]
 p.adb:7:5: info: range check proved
+p.adb:7:05: warning: statement has no effect [ineffective]
 p.adb:7:17: range check not proved
+p.adb:12:03: warning: statement has no effect [ineffective]
+p.adb:14:03: warning: statement has no effect [ineffective]

@@ -1,2 +1,6 @@
+p.adb:6:07: warning: statement has no effect [ineffective]
+p.adb:8:09: warning: unused assignment [ineffective]
 p.adb:8:13: discriminant check not proved
+p.adb:12:07: warning: statement has no effect [ineffective]
+p.adb:14:09: warning: unused assignment [ineffective]
 p.adb:14:13: info: discriminant check proved

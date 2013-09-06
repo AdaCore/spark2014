@@ -1,2 +1,4 @@
 p.adb:5:20: info: range check proved
 p.adb:15:4: info: range check proved
+p.adb:17:04: warning: statement has no effect [ineffective]
+p.adb:17:10: warning: unused assignment to "A" [ineffective]

@@ -1,2 +1,3 @@
+p.adb:3:27: warning: statement has no effect [ineffective]
 p.adb:4:7: info: loop invariant initialization proved
 p.adb:4:7: info: loop invariant preservation proved

@@ -1,3 +1,5 @@
+data.ads:8:22: warning: unused initial value of "Strong_Data_Type" [unused_initial_value]
+data.ads:8:22: warning: unused variable "Strong_Data_Type" [unused]
 data.ads:14:18: info: postcondition proved
 data.ads:15:24: info: precondition proved
 data.ads:33:24: info: discriminant check proved

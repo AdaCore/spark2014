@@ -22,3 +22,4 @@ const.adb:36:7: info: assertion proved
 const.adb:37:7: info: assertion proved
 const.adb:41:7: assertion not proved, requires O = 1
 const.adb:42:7: assertion not proved, requires P = 1
+const.ads:36:04: warning: statement has no effect [ineffective]

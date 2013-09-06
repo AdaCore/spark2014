@@ -82,6 +82,7 @@ prefixsum.ads:32:28: overflow check not proved
 prefixsum.ads:32:34: index check not proved
 prefixsum.ads:38:14: postcondition not proved
 prefixsum.ads:40:17: info: precondition proved
+prefixsum.ads:43:07: warning: unused initial value of "Ghost" [unused_initial_value]
 prefixsum.ads:48:17: info: precondition proved
 prefixsum.ads:50:8: postcondition not proved
 prefixsum_expanded.adb:11:10: loop invariant initialization not proved
@@ -109,6 +110,7 @@ prefixsum_expanded.adb:81:25: overflow check not proved
 prefixsum_expanded.adb:81:25: range check not proved
 prefixsum_expanded.adb:84:7: assertion not proved
 prefixsum_expanded.adb:116:27: division check not proved
+prefixsum_expanded.adb:117:15: warning: unused assignment [ineffective]
 prefixsum_expanded.adb:118:7: assertion not proved
 prefixsum_expanded.adb:136:10: loop invariant initialization not proved
 prefixsum_expanded.adb:136:10: loop invariant preservation not proved
@@ -153,6 +155,7 @@ prefixsum_expanded.ads:29:23: overflow check not proved
 prefixsum_expanded.ads:31:23: overflow check not proved
 prefixsum_expanded.ads:43:14: postcondition not proved
 prefixsum_expanded.ads:45:17: precondition not proved
+prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost" [unused_initial_value]
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:8: postcondition not proved
 prefixsum_general.adb:12:10: loop invariant initialization not proved
@@ -217,3 +220,5 @@ prefixsum_general.ads:16:27: info: precondition proved
 prefixsum_general.ads:16:60: range check not proved
 prefixsum_general.ads:20:14: postcondition not proved
 prefixsum_general.ads:21:30: info: precondition proved
+prefixsum_general.ads:24:07: warning: unused initial value of "Ghost" [unused_initial_value]
+prefixsum_general.ads:24:07: warning: unused variable "Ghost" [unused]

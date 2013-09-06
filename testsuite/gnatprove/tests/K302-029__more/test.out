@@ -1,3 +1,8 @@
+pack.adb:4:17: warning: unused global "the heap" [unused]
+pack.adb:6:10: warning: statement has no effect [ineffective]
+pack.adb:44:16: warning: unused assignment [ineffective]
+pack.adb:46:10: warning: statement has no effect [ineffective]
+pack.adb:52:10: warning: statement has no effect [ineffective]
 [
 { "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : false, "violations" : ["access"] }
 , { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : false, "violations" : ["access"] }

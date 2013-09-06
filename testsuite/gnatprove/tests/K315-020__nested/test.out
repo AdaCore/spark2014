@@ -1,6 +1,8 @@
+nested.adb:4:07: warning: statement has no effect [ineffective]
 nested.adb:9:10: info: loop invariant initialization proved
 nested.adb:9:10: info: loop invariant preservation proved
 nested.adb:9:45: info: overflow check proved
+nested.adb:10:12: warning: unused assignment [ineffective]
 nested.adb:12:13: info: loop invariant initialization proved
 nested.adb:12:13: info: loop invariant preservation proved
 nested.adb:12:42: info: overflow check proved

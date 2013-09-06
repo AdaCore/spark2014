@@ -1,4 +1,18 @@
-
+p.adb:2:14: warning: "Y" is not modified, could be "in" [inout_only_read]
+p.adb:2:14: warning: unused variable "Y" [unused]
+p.adb:4:04: warning: statement has no effect [ineffective]
 p.adb:5:4: info: range check proved
+p.adb:5:04: warning: statement has no effect [ineffective]
+p.adb:7:04: warning: statement has no effect [ineffective]
+p.adb:7:04: warning: unused assignment to "Current_Out" [ineffective]
+p.adb:7:04: warning: unused assignment to "system.soft_links.abort_defer" [ineffective]
+p.adb:7:04: warning: unused assignment to "system.soft_links.abort_undefer" [ineffective]
+p.adb:7:04: warning: unused assignment to "the heap" [ineffective]
+p.adb:8:06: warning: unused assignment [ineffective]
 p.adb:8:10: precondition not proved
 p.adb:8:10: range check not proved
+p.adb:9:04: warning: statement has no effect [ineffective]
+p.adb:9:04: warning: unused assignment to "Current_Out" [ineffective]
+p.adb:9:04: warning: unused assignment to "system.soft_links.abort_defer" [ineffective]
+p.adb:9:04: warning: unused assignment to "system.soft_links.abort_undefer" [ineffective]
+p.adb:9:04: warning: unused assignment to "the heap" [ineffective]

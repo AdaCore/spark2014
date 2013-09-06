@@ -1,3 +1,4 @@
 localcst.ads:4:20: info: postcondition proved
+localcst.ads:6:17: warning: unused initial value of "N" [unused_initial_value]
 localcst.ads:7:20: info: postcondition proved
 localcst.ads:10:20: info: postcondition proved

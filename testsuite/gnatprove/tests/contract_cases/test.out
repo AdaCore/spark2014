@@ -2,6 +2,7 @@ p.adb:6:17: info: overflow check proved
 p.adb:13:17: info: overflow check proved
 p.adb:20:17: info: overflow check proved
 p.adb:27:17: info: overflow check proved
+p.ads:3:04: warning: statement has no effect [ineffective]
 p.ads:7:14: postcondition not proved, requires X = Integer'min
 p.ads:7:37: overflow check not proved
 p.ads:10:6: info: complete contract cases proved

@@ -2,10 +2,12 @@ r.adb:23:51: info: index check proved
 r.adb:23:57: index check not proved
 r.adb:31:51: index check not proved
 r.adb:31:57: info: index check proved
+r.adb:42:07: warning: statement has no effect [ineffective]
 r.adb:42:22: info: index check proved
 r.adb:42:25: info: index check proved
 r.adb:44:45: info: index check proved
 r.adb:44:48: info: index check proved
+r.adb:51:07: warning: statement has no effect [ineffective]
 r.adb:51:22: index check not proved
 r.adb:51:25: info: index check proved
 r.adb:53:45: index check not proved

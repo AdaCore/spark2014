@@ -1,2 +1,3 @@
 p.adb:3:9: info: range check proved
+p.adb:4:04: warning: statement has no effect [ineffective]
 p.adb:4:13: range check not proved

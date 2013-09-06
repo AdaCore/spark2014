@@ -1,2 +1,2 @@
-
+p.ads:3:13: warning: unused global "Current_Mode" [unused]
 p.ads:6:6: info: postcondition proved

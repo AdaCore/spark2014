@@ -1,7 +1,15 @@
+testfloat.adb:4:04: warning: statement has no effect [ineffective]
+testfloat.adb:5:04: warning: statement has no effect [ineffective]
+testfloat.adb:6:04: warning: statement has no effect [ineffective]
+testfloat.adb:7:04: warning: statement has no effect [ineffective]
 testfloat.adb:7:20: info: overflow check proved
 testfloat.adb:7:25: info: division check proved
 testfloat.adb:7:25: info: overflow check proved
+testfloat.adb:11:23: warning: unused initial value of "X" [unused_initial_value]
+testfloat.adb:11:26: warning: unused initial value of "Y" [unused_initial_value]
+testfloat.adb:11:29: warning: unused initial value of "Z" [unused_initial_value]
 testfloat.adb:14:23: info: overflow check proved
+testfloat.adb:19:07: warning: statement has no effect [ineffective]
 testfloat.adb:19:23: overflow check not proved
 testfloat.adb:19:28: info: division check proved
 testfloat.adb:19:28: overflow check not proved
@@ -26,4 +34,6 @@ testfloat.adb:44:4: assertion not proved, requires Float'Ceiling (T) = Y
 testfloat.adb:46:4: info: assertion proved
 testfloat.adb:47:4: info: assertion proved
 testfloat.adb:49:4: info: precondition proved
+testfloat.adb:49:04: warning: statement has no effect [ineffective]
 testfloat.adb:50:4: info: precondition proved
+testfloat.adb:50:04: warning: statement has no effect [ineffective]
