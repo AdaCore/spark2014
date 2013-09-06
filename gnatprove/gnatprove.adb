@@ -395,32 +395,6 @@ procedure Gnatprove is
             (Obj_Dir,
              "gnatprove.alfad");
 
-      function Append_To_Dir_Name (Dirname, Filename : String) return String;
-
-      ------------------------
-      -- Append_To_Dir_Name --
-      ------------------------
-
-      function Append_To_Dir_Name (Dirname, Filename : String) return String is
-         use GNAT.OS_Lib;
-      begin
-         if Dirname = "" then
-            return Filename;
-         elsif Dirname (Dirname'Last) = Directory_Separator then
-            return Dirname & Filename;
-         else
-            return Dirname & Directory_Separator & Filename;
-         end if;
-      end Append_To_Dir_Name;
-
-      SPARK_Files_Wildcard : constant String :=
-         Append_To_Dir_Name
-           (Dirname  => Obj_Dir,
-            Filename => "*.alfa");
-      --  SPARK files for the current project. Other SPARK files are present in
-      --  object directories of sub-projects, although we do not mention them
-      --  in the message below.
-
       Success : Boolean;
 
    begin
@@ -442,9 +416,7 @@ procedure Gnatprove is
       end if;
 
       if not Quiet then
-         Put_Line ("Statistics logged in " & SPARK_Report_File (Obj_Dir));
-         Put_Line
-           ("(detailed info can be found in " & SPARK_Files_Wildcard & ")");
+         Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
       end if;
    end Generate_SPARK_Report;
 
