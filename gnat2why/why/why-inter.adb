@@ -60,8 +60,7 @@ package body Why.Inter is
 
    subtype N_Has_Theory is Node_Kind with
      Static_Predicate => N_Has_Theory in N_String_Literal |
-                                         N_Aggregate      |
-                                         N_Slice;
+                                         N_Aggregate;
    --  Subtype of nodes (instead of entities) which have an associated theory,
    --  and should be treated specially.
 
@@ -1304,7 +1303,12 @@ package body Why.Inter is
 
    function Name_Of_Node (N : Node_Id) return String is
    begin
-      if Nkind (N) in N_Has_Theory then
+      if Nkind (N) = N_String_Literal then
+         return
+           Get_Name_String
+             (Identifier_Get_Symbol
+                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).B_Name));
+      elsif Nkind (N) in N_Has_Theory then
          return New_Sloc_Ident (N);
       end if;
       return Full_Name (N);

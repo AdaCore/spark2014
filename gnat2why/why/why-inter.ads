@@ -120,6 +120,10 @@ package Why.Inter is
 
    Why_File_Suffix : constant String := ".mlw";
 
+   Extra_Modules_Map : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   --  Mappings from Ada nodes to Why logic functions for their translation
+   --  This map is used for string literals and aggregates
+
    -----------------
    -- Completions --
    -----------------

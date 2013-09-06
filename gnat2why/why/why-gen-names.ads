@@ -125,6 +125,7 @@ package Why.Gen.Names is
       Context  : Name_Id) return W_Identifier_Id;
 
    function New_Temp_Identifier return W_Identifier_Id;
+   function New_Temp_Identifier return String;
    --  Return a new unique identifier
 
    function New_Temp_Identifiers (Num : Positive) return W_Identifier_Array;

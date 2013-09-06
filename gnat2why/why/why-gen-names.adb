@@ -474,14 +474,19 @@ package body Why.Gen.Names is
 
    New_Temp_Identifier_Counter : Natural := 0;
 
-   function New_Temp_Identifier return W_Identifier_Id is
+   function New_Temp_Identifier return String is
       Counter_Img : constant String :=
                       Natural'Image (New_Temp_Identifier_Counter);
    begin
       New_Temp_Identifier_Counter := New_Temp_Identifier_Counter + 1;
-      return New_Identifier
-        (Name => "_temp_" & To_String (New_Temp_Identifier_Suffix) & "_"
-         & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last));
+      return
+        "temp___" & To_String (New_Temp_Identifier_Suffix) & "_"
+        & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last);
+   end New_Temp_Identifier;
+
+   function New_Temp_Identifier return W_Identifier_Id is
+   begin
+      return New_Identifier (Name => New_Temp_Identifier);
    end New_Temp_Identifier;
 
    --------------------------

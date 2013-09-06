@@ -108,27 +108,8 @@ package body Gnat2Why.Expr is
    -- Local Variables --
    ---------------------
 
-   function Str_Hash (X : String_Id) return Hash_Type is (Hash_Type (X));
-
-   package Strlit_To_Why is new Hashed_Maps (Key_Type        => String_Id,
-                                             Element_Type    => Why_Node_Id,
-                                             Hash            => Str_Hash,
-                                             Equivalent_Keys => "=",
-                                             "="             => "=");
-
-   package Strlit_To_Type is new
-     Hashed_Maps (Key_Type        => String_Id,
-                  Element_Type    => W_Base_Type_Id,
-                  Hash            => Str_Hash,
-                  Equivalent_Keys => "=",
-                  "="             => "=");
-
    Ada_To_Why_Func : Ada_To_Why.Map;
    --  Mappings from Ada nodes to Why logic functions for their translation
-   Strlit_To_Why_Term : Strlit_To_Why.Map;
-   Strlit_To_Why_Type : Strlit_To_Type.Map;
-   --  Idem for string literals, where the Ref_Allowed information is not
-   --  needed.
 
    -----------------------
    -- Local Subprograms --
@@ -3845,13 +3826,16 @@ package body Gnat2Why.Expr is
 
          when N_String_Literal =>
             declare
-               Val : constant String_Id := Strval (Expr);
+               C : constant Ada_Ent_To_Why.Cursor :=
+                 Ada_Ent_To_Why.Find (Extra_Modules_Map, Expr);
+               B : Binder_Type;
             begin
-               if not (Strlit_To_Why_Term.Contains (Val)) then
+               if not Ada_Ent_To_Why.Has_Element (C) then
                   Transform_String_Literal (Local_Params, Expr);
                end if;
-               T := +Strlit_To_Why_Term.Element (Val);
-               Current_Type := Strlit_To_Why_Type.Element (Val);
+               B := Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr);
+               T := +B.B_Name;
+               Current_Type := +B.B_Type;
             end;
 
          when N_Identifier | N_Expanded_Name =>
@@ -5526,7 +5510,7 @@ package body Gnat2Why.Expr is
      (Params : Transformation_Params;
       N      : Node_Id)
    is
-      Name      : constant String := New_Sloc_Ident (N);
+      Name      : constant String := New_Temp_Identifier;
       Id        : constant W_Identifier_Id :=
         New_Identifier (Ada_Node => N, Name => Name);
       Ty        : constant Entity_Id := Type_Of_Node (N);
@@ -5558,8 +5542,12 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Params.Theory;
       end if;
 
-      Strlit_To_Why_Term.Include (Strval (N), +Id);
-      Strlit_To_Why_Type.Include (Strval (N), Why_Type);
+      Ada_Ent_To_Why.Insert (M => Extra_Modules_Map,
+                             E => N,
+                             W => Binder_Type'(B_Name   => Id,
+                                               B_Type   => +Why_Type,
+                                               Mutable  => False,
+                                               Ada_Node => Empty));
    end Transform_String_Literal;
 
    -------------------------------
