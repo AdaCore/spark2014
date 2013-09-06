@@ -74,6 +74,10 @@ package body Gnat2Why.Driver is
    -- Local Subprograms --
    -----------------------
 
+   procedure Compute_Global_Effects;
+   --  Make the computed global effects information available for all
+   --  subprograms
+
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
 
@@ -141,93 +145,16 @@ package body Gnat2Why.Driver is
       end case;
    end Complete_Entity_Translation;
 
-   ---------------------
-   -- Do_Generate_VCs --
-   ---------------------
+   ----------------------------
+   -- Compute_Global_Effects --
+   ----------------------------
 
-   procedure Do_Generate_VCs (E : Entity_Id) is
-   begin
-      --  Currently generate VCs only on subprograms in SPARK
-
-      if not (Ekind (E) in Subprogram_Kind
-               and then Entity_In_SPARK (E))
-      then
-         return;
-      end if;
-
-      --  Generate Why3 code to check absence of run-time errors in
-      --  preconditions.
-
-      if Has_Precondition (E)
-        or else Present (Get_Subprogram_Contract_Cases (E))
-      then
-         Generate_VCs_For_Subprogram_Spec (Why_Sections (WF_Main), E);
-      end if;
-
-      --  In 'prove' mode, generate Why3 code to check absence of run-time
-      --  errors in the body of a subprogram, and to check that a subprogram
-      --  body implements its contract.
-
-      if Subprogram_Body_In_SPARK (E) then
-         Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
-      end if;
-   end Do_Generate_VCs;
-
-   -----------------
-   -- GNAT_To_Why --
-   -----------------
-
-   procedure GNAT_To_Why (GNAT_Root : Node_Id) is
+   procedure Compute_Global_Effects is
       Main_Lib_File : File_Name_Type;
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
 
-      N         : constant Node_Id := Unit (GNAT_Root);
-      Base_Name : constant String := Body_File_Name_Without_Suffix (N);
-
-      --  Note that this use of Sem.Walk_Library_Items to see units in an order
-      --  which avoids forward references has caused problems in the past with
-      --  the combination of generics and inlining, as well as child units
-      --  referenced in parent units. To be checked.
-
-      procedure Rewrite_All_Compilation_Units is new Sem.Walk_Library_Items
-        (Action => Rewrite_Compilation_Unit);
-
-      procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
-        (Action => Mark_Compilation_Unit);
-
    begin
-      --  We do nothing for generic units currently. If this get revised at
-      --  some point to provide proof of generics, then the special SPARK
-      --  expansion in the frontend should be applied to generic units as well.
-
-      --  We still need to create the Why files to indicate that everything
-      --  went OK.
-
-      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
-         Touch_Main_File (Base_Name);
-         return;
-      end if;
-
-      --  All temporaries created for this unit should be different from
-      --  temporaries created for other units. To that end, use the unit name
-      --  as a suffix for creating temporary names.
-
-      New_Temp_Identifier_Suffix :=
-        To_Unbounded_String (Full_Name (Defining_Entity (N)));
-
-      Mark_Standard_Package;
-
-      --  Allow the generation of new nodes and lists
-
-      Atree.Unlock;
-      Nlists.Unlock;
-
-      --  Warn that formal proof is about sequential code
-
-      if Tasking_Used then
-         Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
-      end if;
 
       --  Compute the frame condition. This starts with identifying ALI files
       --  for the current unit and all dependent (with'ed) units. Then SPARK
@@ -277,6 +204,93 @@ package body Gnat2Why.Driver is
       --  information.
 
       Propagate_Through_Call_Graph (Ignore_Errors => False);
+   end Compute_Global_Effects;
+
+   ---------------------
+   -- Do_Generate_VCs --
+   ---------------------
+
+   procedure Do_Generate_VCs (E : Entity_Id) is
+   begin
+      --  Currently generate VCs only on subprograms in SPARK
+
+      if not (Ekind (E) in Subprogram_Kind
+               and then Entity_In_SPARK (E))
+      then
+         return;
+      end if;
+
+      --  Generate Why3 code to check absence of run-time errors in
+      --  preconditions.
+
+      if Has_Precondition (E)
+        or else Present (Get_Subprogram_Contract_Cases (E))
+      then
+         Generate_VCs_For_Subprogram_Spec (Why_Sections (WF_Main), E);
+      end if;
+
+      --  In 'prove' mode, generate Why3 code to check absence of run-time
+      --  errors in the body of a subprogram, and to check that a subprogram
+      --  body implements its contract.
+
+      if Subprogram_Body_In_SPARK (E) then
+         Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
+      end if;
+   end Do_Generate_VCs;
+
+   -----------------
+   -- GNAT_To_Why --
+   -----------------
+
+   procedure GNAT_To_Why (GNAT_Root : Node_Id) is
+      N         : constant Node_Id := Unit (GNAT_Root);
+      Base_Name : constant String := Body_File_Name_Without_Suffix (N);
+
+      --  Note that this use of Sem.Walk_Library_Items to see units in an order
+      --  which avoids forward references has caused problems in the past with
+      --  the combination of generics and inlining, as well as child units
+      --  referenced in parent units. To be checked.
+
+      procedure Rewrite_All_Compilation_Units is new Sem.Walk_Library_Items
+        (Action => Rewrite_Compilation_Unit);
+
+      procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
+        (Action => Mark_Compilation_Unit);
+
+   begin
+      --  We do nothing for generic units currently. If this get revised at
+      --  some point to provide proof of generics, then the special SPARK
+      --  expansion in the frontend should be applied to generic units as well.
+
+      --  We still need to create the Why files to indicate that everything
+      --  went OK.
+
+      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+         Touch_Main_File (Base_Name);
+         return;
+      end if;
+
+      --  All temporaries created for this unit should be different from
+      --  temporaries created for other units. To that end, use the unit name
+      --  as a suffix for creating temporary names.
+
+      New_Temp_Identifier_Suffix :=
+        To_Unbounded_String (Full_Name (Defining_Entity (N)));
+
+      Mark_Standard_Package;
+
+      --  Allow the generation of new nodes and lists
+
+      Atree.Unlock;
+      Nlists.Unlock;
+
+      --  Warn that formal proof is about sequential code
+
+      if Tasking_Used then
+         Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
+      end if;
+
+      Compute_Global_Effects;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
