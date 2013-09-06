@@ -23,11 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
-with Ada.Strings.Unbounded.Hash;
-
-with Lib;                 use Lib;
-with Sinput;              use Sinput;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 
@@ -39,36 +34,6 @@ with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
 package body Why.Gen.Names is
-
-   package String_Int_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Unbounded_String,
-        Element_Type    => Positive,
-        Equivalent_Keys => "=",
-        "="             => "=",
-        Hash            => Ada.Strings.Unbounded.Hash);
-
-   function Source_Ptr_Hash (X : Source_Ptr) return Ada.Containers.Hash_Type;
-
-   ---------------------
-   -- Source_Ptr_Hash --
-   ---------------------
-
-   function Source_Ptr_Hash (X : Source_Ptr) return Ada.Containers.Hash_Type is
-   begin
-      return Ada.Containers.Hash_Type (X);
-   end Source_Ptr_Hash;
-
-   package Loc_String_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Source_Ptr,
-        Element_Type    => Unbounded_String,
-        Equivalent_Keys => "=",
-        Hash            => Source_Ptr_Hash,
-        "="             => "=");
-
-   Unit_Loc_Map : String_Int_Maps.Map := String_Int_Maps.Empty_Map;
-   File_Loc_Map : Loc_String_Maps.Map := Loc_String_Maps.Empty_Map;
 
    function Uint_To_Positive (U : Uint) return Positive;
    --  Limited version of conversion that only works for 1 to 4
@@ -499,91 +464,6 @@ package body Why.Gen.Names is
    begin
       return Result;
    end New_Temp_Identifiers;
-
-   --------------------
-   -- New_Sloc_Ident --
-   --------------------
-
-   function New_Sloc_Ident (N : Node_Id) return String is
-      Loc     : constant Source_Ptr := Sloc (N);
-      C1      : constant Loc_String_Maps.Cursor :=
-        File_Loc_Map.Find (Loc);
-
-      function Register (Key : Source_Ptr; Value : String) return String;
-
-      function Loc_To_String (Loc : Source_Ptr) return Unbounded_String;
-
-      -------------------
-      -- Loc_To_String --
-      -------------------
-
-      function Loc_To_String (Loc : Source_Ptr) return Unbounded_String
-      is
-         Buf : Unbounded_String;
-         Ptr : Source_Ptr := Loc;
-      begin
-         loop
-            Append (Buf, Full_Name (Cunit_Entity (Get_Source_Unit (Ptr))));
-            Append (Buf, "__");
-            Append (Buf, Int_Image (Integer (Get_Physical_Line_Number (Ptr))));
-            Append (Buf, "__");
-            Append (Buf, Int_Image (Integer (Get_Column_Number (Ptr))));
-            Ptr := Instantiation_Location (Ptr);
-            exit when Ptr = No_Location;
-            Append (Buf, "__");
-         end loop;
-         return Buf;
-      end Loc_To_String;
-
-      --------------
-      -- Register --
-      --------------
-
-      function Register (Key : Source_Ptr; Value : String) return String
-      is
-      begin
-         File_Loc_Map.Insert (Key,
-                              To_Unbounded_String (Value));
-         return Value;
-      end Register;
-
-   begin
-
-      --  For a given location, we always generate the same name
-
-      if Loc_String_Maps.Has_Element (C1) then
-         return To_String (Loc_String_Maps.Element (C1));
-      else
-
-         --  We have not yet seen this particular aggregate; we generate a new
-         --  name. If we have already generated the given name, we add a suffix
-         --  which is incremented each time.
-
-         declare
-            Unb    : constant Unbounded_String := Loc_To_String (Loc);
-            Full_S : constant String := To_String (Unb);
-            C2     : constant String_Int_Maps.Cursor :=
-              Unit_Loc_Map.Find (Unb);
-         begin
-            if String_Int_Maps.Has_Element (C2) then
-               declare
-                  V : constant Positive := String_Int_Maps.Element (C2) + 1;
-               begin
-                  Unit_Loc_Map.Replace_Element (C2, V);
-                  return Register (Loc, Full_S & "__" & Int_Image (V));
-               end;
-            else
-               Unit_Loc_Map.Insert (Unb, 1);
-               return Register (Loc, Full_S);
-            end if;
-         end;
-      end if;
-   end New_Sloc_Ident;
-
-   function New_Sloc_Ident (N : Node_Id) return W_Identifier_Id is
-   begin
-      return New_Identifier (Name => New_Sloc_Ident (N));
-   end New_Sloc_Ident;
 
    --------------
    -- To_Exprs --

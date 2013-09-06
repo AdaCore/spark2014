@@ -104,13 +104,6 @@ package body Gnat2Why.Expr is
    --      why-gen-arrays.adb:Declare_Unconstrained_Array
    --    * handling of the attributes: Transform_Attr in this file.
 
-   ---------------------
-   -- Local Variables --
-   ---------------------
-
-   Ada_To_Why_Func : Ada_To_Why.Map;
-   --  Mappings from Ada nodes to Why logic functions for their translation
-
    -----------------------
    -- Local Subprograms --
    -----------------------
@@ -1924,7 +1917,7 @@ package body Gnat2Why.Expr is
          --  Generate name for the function based on the location of the
          --  aggregate.
 
-         Name          : constant String := New_Sloc_Ident (Expr);
+         Name          : constant String := New_Temp_Identifier;
          Func          : constant W_Identifier_Id :=
                            New_Identifier (Name     => Name,
                                            Ada_Node => Expr);
@@ -1973,7 +1966,12 @@ package body Gnat2Why.Expr is
       begin
          --  Store the logic function
 
-         Ada_To_Why_Func.Include (Expr, +Func);
+         Ada_Ent_To_Why.Insert (Extra_Modules_Map,
+                                Expr,
+                                Binder_Type'(B_Name   => Func,
+                                             B_Type   => Why_Empty,
+                                             Ada_Node => Empty,
+                                             Mutable  => False));
 
          --  Compute the parameters/arguments for the axiom/call
 
@@ -2650,17 +2648,20 @@ package body Gnat2Why.Expr is
 
       --  If not done already, generate the logic function
 
-      if not Ada_To_Why_Func.Contains (Expr) then
-         Generate_Logic_Function (Expr, Values, Types);
-      end if;
-
-      --  Retrieve the logic function previously generated, and call it on the
-      --  appropriate parameters.
-
       declare
-         Func : constant W_Identifier_Id := +Ada_To_Why_Func.Element (Expr);
+         C : constant Ada_Ent_To_Why.Cursor :=
+           Ada_Ent_To_Why.Find (Extra_Modules_Map, Expr);
       begin
-         return Complete_Translation (Params, Domain, Func, Values, Types);
+         if not Ada_Ent_To_Why.Has_Element (C) then
+            Generate_Logic_Function (Expr, Values, Types);
+         end if;
+         return
+           Complete_Translation
+             (Params,
+              Domain,
+              Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).B_Name,
+              Values,
+              Types);
       end;
    end Transform_Aggregate;
 

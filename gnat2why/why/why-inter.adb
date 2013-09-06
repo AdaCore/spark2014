@@ -1303,15 +1303,14 @@ package body Why.Inter is
 
    function Name_Of_Node (N : Node_Id) return String is
    begin
-      if Nkind (N) = N_String_Literal then
+      if Nkind (N) in N_Has_Theory then
          return
            Get_Name_String
              (Identifier_Get_Symbol
                 (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).B_Name));
-      elsif Nkind (N) in N_Has_Theory then
-         return New_Sloc_Ident (N);
+      else
+         return Full_Name (N);
       end if;
-      return Full_Name (N);
    end Name_Of_Node;
 
    -----------------
