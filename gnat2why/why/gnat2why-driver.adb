@@ -232,9 +232,12 @@ package body Gnat2Why.Driver is
       --  Compute the frame condition. This starts with identifying ALI files
       --  for the current unit and all dependent (with'ed) units. Then SPARK
       --  cross-reference information is loaded from all these files. Finally
-      --  the local SPARK cross-reference information is propagated to get the
-      --  frame condition.
+      --  the local SPARK cross-reference information is propagated to get
+      --  the frame condition. Note that the failure to read an ALI file is
+      --  ignored, as it can only correspond to the ALI file of an externally
+      --  built unit, for which we use the declared Global contracts.
 
+      Binderr.Initialize_Binderr;
       Initialize_ALI;
       Initialize_ALI_Source;
 
@@ -260,13 +263,7 @@ package body Gnat2Why.Driver is
          Ignore_Errors    => Debug_Flag_I,
          Directly_Scanned => True);
       Free (Text);
-      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => False);
-
-      --  Quit if some ALI files are missing
-
-      if Binderr.Errors_Detected > 0 then
-         raise Terminate_Program;
-      end if;
+      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
 
       --  Load SPARK cross-reference information from ALIs for all dependent
       --  units.
