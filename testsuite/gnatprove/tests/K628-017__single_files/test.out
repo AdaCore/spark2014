@@ -1,2 +1,9 @@
 s.adb:7:26: assertion not proved, requires Table (J) /= Value
+s.adb:7:33: info: index check proved
 s.adb:21:9: assertion not proved
+s.adb:22:32: info: index check proved
+s.adb:22:46: info: index check proved
+s.adb:24:31: info: index check proved
+s.adb:24:45: info: index check proved
+s.ads:8:13: info: postcondition proved
+s.ads:12:13: info: postcondition proved
