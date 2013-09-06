@@ -99,7 +99,7 @@ ASCII.LF &
 ASCII.LF &
 " -k                 Do not stop analysis at the first error" &
 ASCII.LF &
-"     --mode=m       Set the mode of GNATprove (m=check, flow, prove*, all)"
+"     --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)"
 & ASCII.LF &
 " -q, --quiet        Be quiet/terse" &
 ASCII.LF &
@@ -511,13 +511,13 @@ ASCII.LF &
          Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
       end if;
 
-      if MMode_Input.all = "prove" or else MMode_Input.all = "" then
+      if MMode_Input.all = "prove" then
          MMode := GPM_Prove;
       elsif MMode_Input.all = "check" then
          MMode := GPM_Check;
       elsif MMode_Input.all = "flow" then
          MMode := GPM_Flow;
-      elsif MMode_Input.all = "all" then
+      elsif MMode_Input.all = "all" or else MMode_Input.all = "" then
          MMode := GPM_All;
       else
          Abort_With_Help ("mode should be one of " &
