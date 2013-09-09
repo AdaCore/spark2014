@@ -1,1 +1,4 @@
-
+isnew.ads:3:04: warning: in instantiation at gen.ads:4
+isnew.ads:3:04: warning: in instantiation at gen.ads:4
+isnew.ads:3:04: warning: unused initial value of "Z" [unused_initial_value]
+isnew.ads:3:04: warning: unused variable "Z" [unused]
