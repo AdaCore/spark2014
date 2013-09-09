@@ -284,12 +284,6 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      --  Warn that formal proof is about sequential code
-
-      if Tasking_Used then
-         Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
-      end if;
-
       Compute_Global_Effects;
 
       --  Before any analysis takes place, perform some rewritings of the tree
