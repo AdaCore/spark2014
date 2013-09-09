@@ -1,18 +1,16 @@
-test.adb:109:27: "X" is not used
-test.adb:109:27: formal parameter "X" might not be set [uninitialized__x]
-test.adb:112:33: ineffective statement
-test.adb:113:12: stable
-test.adb:113:12: unused assignment
-test.adb:121:12: stable
-test.adb:25:26: ineffective import "X"
-test.adb:26:26: ineffective import "Y"
-test.adb:30:12: unused assignment [ineffective]
-test.adb:31:41: ineffective statement
-test.adb:32:15: unused assignment [ineffective]
-test.adb:33:13: ineffective statement
-test.adb:35:12: unused assignment [ineffective]
-test.adb:75:12: stable
-test.adb:77:12: stable
-test.adb:77:20: stable
-test.adb:77:20: use of uninitialized variable "R" [uninitialized__r]
-test.adb:91:15: stable
+
+
+   compilation of test.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
+test.adb:25:26: warning: unused initial value of "X" [unused_initial_value]
+test.adb:26:26: warning: unused initial value of "Y" [unused_initial_value]
+test.adb:30:12: warning: unused assignment [ineffective]
+test.adb:31:41: warning: statement has no effect [ineffective]
+test.adb:32:15: warning: unused assignment [ineffective]
+test.adb:33:13: warning: statement has no effect [ineffective]
+test.adb:35:12: warning: unused assignment [ineffective]
+test.adb:77:20: "R" might not be initialized [uninitialized]
+test.adb:109:27: "X" might not be initialized in "For_Test_01" [uninitialized]
+test.adb:112:33: warning: statement has no effect [ineffective]
+test.adb:113:12: warning: unused assignment [ineffective]
