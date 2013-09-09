@@ -5,17 +5,17 @@ module Ada__containers__formal_vectors__index_type_helper
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__index_type
 
   function index_type_length "inline" : int =
-      Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_LAST - 
-      Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST + 1
+      Ada__containers__formal_vectors__index_type.last - 
+      Ada__containers__formal_vectors__index_type.first + 1
 
   axiom index_type_length:
       Ada__containers__count_type.in_range (index_type_length)
 
   function index_type__to_index "inline" (i : int) : int =
-     i - Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST + 1
+     i - Ada__containers__formal_vectors__index_type.first + 1
 
   function index_type__of_index "inline" (i : int) : int =
-      i + Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST - 1
+      i + Ada__containers__formal_vectors__index_type.first - 1
 
 end
 
@@ -26,16 +26,16 @@ module Ada__containers__formal_vectors__capacity_range
 
  type capacity_range "bounded_type"
  
- function attr__ATTRIBUTE_FIRST  : int = 0
+ function first  : int = 0
  
- function attr__ATTRIBUTE_LAST  : int = index_type_length
+ function last  : int = index_type_length
  
  function attr__ATTRIBUTE_MODULUS :int
  
  clone export "ada__model".Discrete with
  type t = capacity_range, 
- function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
- function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+ function first = first, 
+ function last = last
 end
 
 module  Ada__containers__formal_vectors__extended_index
@@ -45,18 +45,18 @@ module  Ada__containers__formal_vectors__extended_index
 
  type extended_index "bounded_type"
  
- function attr__ATTRIBUTE_FIRST  : int = 
-      Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST - 1
+ function first  : int = 
+      Ada__containers__formal_vectors__index_type.first - 1
  
- function attr__ATTRIBUTE_LAST  : int = 
-      Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_LAST
+ function last  : int = 
+      Ada__containers__formal_vectors__index_type.last
  
  function attr__ATTRIBUTE_MODULUS :int
  
  clone export "ada__model".Discrete with
  type t = extended_index, 
- function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
- function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+ function first = first, 
+ function last = last
 end
 
 module Ada__containers__formal_vectors__extended_index_helper
@@ -66,10 +66,10 @@ module Ada__containers__formal_vectors__extended_index_helper
   use import Ada__containers__formal_vectors__extended_index
 
   function extended_index__to_index "inline" (i : int) : int =
-      i - attr__ATTRIBUTE_FIRST
+      i - first
 
   function extended_index__of_index "inline" (i : int) : int =
-      i + attr__ATTRIBUTE_FIRST
+      i + first
 
 end
 
@@ -81,7 +81,7 @@ module Ada__containers__formal_vectors__no_index
   function no_index : extended_index
 
   axiom no_index__def:
-    to_int (no_index) = attr__ATTRIBUTE_FIRST
+    to_int (no_index) = first
 end
 
 module  Ada__containers__formal_vectors__vector

@@ -138,8 +138,8 @@ module Boolean
   function of_int (i : int) : bool =
    if i = 0 then False else True
 
-  function attr__ATTRIBUTE_LAST : int = 1
-  function attr__ATTRIBUTE_FIRST : int = 0
+  function last : int = 1
+  function first : int = 0
 
   predicate in_range (x : int) = x = 0 \/ x = 1
 
@@ -158,11 +158,11 @@ module Boolean
     ensures { result = n }
 
   val check_not_last (n : int) : int
-    requires { n <> attr__ATTRIBUTE_LAST }
+    requires { n <> last }
     ensures { result = n }
 
   val check_not_first (n : int) : int
-    requires { n <> attr__ATTRIBUTE_FIRST }
+    requires { n <> first }
     ensures { result = n }
 
 end
