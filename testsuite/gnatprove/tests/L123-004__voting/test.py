@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=220)
+prove(steps=220) # flow issues with standard library (M909-012 to revisit)

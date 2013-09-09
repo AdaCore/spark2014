@@ -1,4 +1,3 @@
-
 flight_manager.adb:12:11: info: postcondition proved
 flight_manager.adb:13:24: overflow check not proved
 flight_manager.adb:13:46: info: division check proved

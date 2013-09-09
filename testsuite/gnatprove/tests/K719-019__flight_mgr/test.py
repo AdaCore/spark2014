@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # legit flow error to be fixed by M909-012

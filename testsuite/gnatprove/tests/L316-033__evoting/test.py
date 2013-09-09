@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # flow issues with standard library (M909-012 to revisit)

@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # flow can be enabled once computed effects on stdlib is fixed

@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # flow analysis requires M906-011

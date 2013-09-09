@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=50)
+prove(steps=50) # legit errors (M909-012) and missing effects (M905-019)

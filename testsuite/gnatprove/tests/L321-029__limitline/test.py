@@ -1,3 +1,4 @@
 from test_support import *
 
-prove_all(opt=["--limit-line=database.ads:53"])
+prove(opt=["--limit-line=database.ads:53"]) # missing effects M905-019
+

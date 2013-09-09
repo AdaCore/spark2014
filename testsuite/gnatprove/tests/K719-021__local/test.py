@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # missing effects (M905-019) blocking flow analysis

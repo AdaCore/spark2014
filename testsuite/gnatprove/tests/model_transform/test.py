@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=3300, opt=["--proof=then_split"])
+prove(steps=3300, opt=["--proof=then_split"]) # flow requires M906-011

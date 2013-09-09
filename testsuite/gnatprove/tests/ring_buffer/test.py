@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # contains legitimate flow errors (M909-012 to fix)

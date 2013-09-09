@@ -1,4 +1,3 @@
 from test_support import *
 
-prove_all()
-
+prove() # move to prove_all once M906-011 is implemented

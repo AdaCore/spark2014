@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # flow will be enabled in M909-023

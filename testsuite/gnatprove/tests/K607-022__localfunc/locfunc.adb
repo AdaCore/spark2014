@@ -3,7 +3,8 @@ package body Locfunc is
       Y : Integer;
 
       procedure Q
-         with Post => (X = 0 and then Y = 0);
+        with Global => (Output => (X, Y)),
+             Post => (X = 0 and then Y = 0);
 
       procedure Q is
       begin

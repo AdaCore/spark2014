@@ -1,4 +1,4 @@
 from test_support import *
 import glob
 
-prove_all(steps=120)
+prove(steps=120) # flow errors to be fixed in M909-012

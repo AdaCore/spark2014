@@ -1,12 +1,12 @@
-procedure Proc is
-   A : Integer;
-   B : Integer;
-   C : Integer;
-   D : Integer;
-   E : Integer;
-   F : Integer;
-   G : Integer;
-   H : Integer;
+procedure Proc (A : in out Integer;
+                B : in out Integer;
+                C : in out Integer;
+                D : in out Integer;
+                E : in out Integer;
+                F : in out Integer;
+                G : in out Integer;
+                H : in out Integer)
+is
 begin
    if A = 0 then
       A := A + 1;

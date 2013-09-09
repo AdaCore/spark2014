@@ -1,4 +1,6 @@
-package Pack is
+package Pack
+  with Initializes => (B1, B2)
+is
 
    type Derived_Bool is new Boolean;
 

@@ -19,6 +19,7 @@ procedure MinMax is
    MinE, MaxE : E;
 
    procedure P_Integer (X, Y : Integer) with
+     Global => (Output => (Min, Max)),
      Pre => X < Y;
 
    procedure P_Integer (X, Y : Integer) is
@@ -30,6 +31,7 @@ procedure MinMax is
    end P_Integer;
 
    procedure P_S (X, Y : S) with
+     Global => (Output => (Min, Max)),
      Pre => X < Y;
 
    procedure P_S (X, Y : S) is
@@ -46,6 +48,7 @@ procedure MinMax is
    end P_S;
 
    procedure P_T (X, Y : T) with
+     Global => (Output => (MinT, MaxT)),
      Pre => X < Y;
 
    procedure P_T (X, Y : T) is
@@ -65,6 +68,7 @@ procedure MinMax is
    end P_T;
 
    procedure P_E (X, Y : E) with
+     Global => (Output => (MinE, MaxE)),
      Pre => X < Y;
 
    procedure P_E (X, Y : E) is

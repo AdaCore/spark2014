@@ -1,12 +1,12 @@
-procedure P is
+procedure P (Havok_A, Havok_B : Boolean) is
    type T is array (1 .. 2) of Boolean;
-   X : T;
+   X : T := (others => Havok_A);
 
    type R is record
       B : Boolean;
    end record;
 
-   Y : R;
+   Y : R := (B => Havok_B);
 
 
    procedure Assign (B : in out Boolean) is

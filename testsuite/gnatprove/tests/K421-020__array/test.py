@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all()
+prove() # array tests for proof which predate flow analysis

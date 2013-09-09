@@ -19,7 +19,7 @@ package Segway is
          when Still    => Speed = 0,
          when Forward  => Speed > 0,
          when Backward => Speed < 0)
-     with Global => Speed;
+     with Global => (State, Speed);
 
    procedure State_Update (I : Valid_Input)
    with Global => (In_Out => (State, Speed)),

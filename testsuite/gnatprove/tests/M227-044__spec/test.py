@@ -1,4 +1,4 @@
 from test_support import *
 
-prove(opt=["-u", "test.ads"])
-prove(opt=["-u", "test.adb"])
+prove_all(opt=["-u", "test.ads"])
+prove_all(opt=["-u", "test.adb"])
