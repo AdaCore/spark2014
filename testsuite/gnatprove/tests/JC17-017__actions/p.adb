@@ -2,7 +2,7 @@ package body P is
    -- pragma Annotate (gnatprove, Force);
 
    X : String := "some";
-   B : Boolean;
+   B : Boolean := False;
 
    Y : String :=
      "yes" & (if B then X else X);

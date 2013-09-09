@@ -1,22 +1,38 @@
-
+p.adb:4:04: warning: statement has no effect [ineffective]
+p.adb:5:04: warning: statement has no effect [ineffective]
+p.adb:7:04: warning: statement has no effect [ineffective]
+p.adb:21:20: warning: unused initial value of "X" [unused_initial_value]
+p.adb:21:23: warning: unused initial value of "Y" [unused_initial_value]
+p.adb:22:07: warning: statement has no effect [ineffective]
 p.adb:22:20: range check not proved
+p.adb:23:07: warning: statement has no effect [ineffective]
 p.adb:23:22: info: range check proved
+p.adb:24:07: warning: statement has no effect [ineffective]
 p.adb:24:22: info: range check proved
+p.adb:26:13: warning: unused assignment [ineffective]
 p.adb:26:16: range check not proved
+p.adb:27:13: warning: unused assignment [ineffective]
 p.adb:27:18: info: range check proved
+p.adb:28:13: warning: unused assignment [ineffective]
 p.adb:28:18: info: range check proved
+p.adb:30:13: warning: unused assignment [ineffective]
 p.adb:30:18: info: overflow check proved
 p.adb:30:18: range check not proved
+p.adb:31:13: warning: unused assignment [ineffective]
 p.adb:31:20: info: overflow check proved
 p.adb:31:20: info: range check proved
+p.adb:32:13: warning: unused assignment [ineffective]
 p.adb:32:20: info: overflow check proved
 p.adb:32:20: info: range check proved
+p.adb:34:13: warning: unused assignment [ineffective]
 p.adb:34:18: info: division check proved
 p.adb:34:18: overflow check not proved
 p.adb:34:18: range check not proved
+p.adb:35:13: warning: unused assignment [ineffective]
 p.adb:35:20: info: division check proved
 p.adb:35:20: overflow check not proved
 p.adb:35:20: range check not proved
+p.adb:36:13: warning: unused assignment [ineffective]
 p.adb:36:20: info: division check proved
 p.adb:36:20: overflow check not proved
 p.adb:36:20: range check not proved
