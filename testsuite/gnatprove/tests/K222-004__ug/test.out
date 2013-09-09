@@ -1,2 +1,7 @@
-p.ads:3:08: type is not in SPARK
 
+
+   compilation of p.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
+p.adb:4:07: explicit dereference is not in SPARK
+p.ads:3:08: type is not in SPARK

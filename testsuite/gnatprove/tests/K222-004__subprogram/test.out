@@ -1,3 +1,8 @@
+
+
+   compilation of sub.adb failed
+gnatprove: error during translation to intermediate language, aborting.
+gprbuild: *** compilation phase failed
 sub.adb:4:07: access type is not in SPARK
 sub.adb:4:11: type is not in SPARK
 sub.adb:7:07: explicit dereference is not in SPARK
