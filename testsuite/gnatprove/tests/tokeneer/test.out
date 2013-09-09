@@ -314,7 +314,6 @@ file.adb:424:27: info: range check proved
 file.adb:554:14: info: range check proved
 file.adb:584:14: info: range check proved
 file.adb:832:14: info: range check proved
-keyboard-interfac.adb:24:22: warning: tasking is ignored in formal verification
 keyboard-interfac.adb:199:19: info: range check proved
 keystore.adb:192:30: info: range check proved
 keystore.adb:192:41: info: overflow check proved
