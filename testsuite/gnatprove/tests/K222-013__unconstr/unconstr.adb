@@ -2,7 +2,7 @@ package body Unconstr is
 
    procedure P (X : out Vec) is
    begin
-      X (X'First) := 0;
+      X := (others => 0);
    end P;
 
    procedure Q is
