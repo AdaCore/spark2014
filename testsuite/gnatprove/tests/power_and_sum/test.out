@@ -1,3 +1,5 @@
+power_and_sum.adb:31:07: warning: statement has no effect [ineffective]
+power_and_sum.adb:33:07: warning: statement has no effect [ineffective]
 power_and_sum.adb:9:10: loop invariant initialization not proved
 power_and_sum.adb:9:10: loop invariant preservation not proved
 power_and_sum.adb:9:47: range check not proved
@@ -9,8 +11,6 @@ power_and_sum.adb:22:31: overflow check not proved
 power_and_sum.adb:23:17: overflow check not proved
 power_and_sum.adb:25:7: assertion not proved, requires 2*TotalSum = N*(N+1
 power_and_sum.adb:26:17: range check not proved
-power_and_sum.adb:31:07: warning: statement has no effect [ineffective]
-power_and_sum.adb:33:07: warning: statement has no effect [ineffective]
 power_and_sum.adb:36:10: loop invariant initialization not proved, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:36:10: loop invariant preservation not proved, requires 6*TotalSum = (I-1)*I*(I+1
 power_and_sum.adb:41:13: loop invariant initialization not proved, requires 2*InnerSum = J*(J-1

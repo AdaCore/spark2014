@@ -1,19 +1,19 @@
-amortized_queue.adb:4:27: info: precondition proved
-amortized_queue.adb:7:22: precondition not proved
 amortized_queue.adb:11:07: warning: statement has no effect [ineffective]
-amortized_queue.adb:11:25: info: precondition proved
 amortized_queue.adb:12:07: warning: statement has no effect [ineffective]
-amortized_queue.adb:12:24: info: precondition proved
 amortized_queue.adb:14:07: warning: statement has no effect [ineffective]
 amortized_queue.adb:14:20: warning: unused assignment to "Front" [ineffective]
 amortized_queue.adb:15:07: warning: statement has no effect [ineffective]
 amortized_queue.adb:16:10: warning: statement has no effect [ineffective]
 amortized_queue.adb:16:28: warning: unused assignment to "Rear" [ineffective]
-amortized_queue.adb:17:10: precondition not proved
 amortized_queue.adb:17:10: warning: statement has no effect [ineffective]
 amortized_queue.adb:17:18: warning: unused assignment to "Front" [ineffective]
 amortized_queue.adb:18:10: warning: statement has no effect [ineffective]
 amortized_queue.adb:18:17: warning: unused assignment to "Rear" [ineffective]
+amortized_queue.adb:4:27: info: precondition proved
+amortized_queue.adb:7:22: precondition not proved
+amortized_queue.adb:11:25: info: precondition proved
+amortized_queue.adb:12:24: info: precondition proved
+amortized_queue.adb:17:10: precondition not proved
 amortized_queue.adb:24:25: info: precondition proved
 amortized_queue.adb:25:24: info: precondition proved
 amortized_queue.adb:27:7: precondition not proved

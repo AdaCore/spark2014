@@ -1,9 +1,9 @@
-
+uninitialized.adb:6:07: "B" might not be initialized [uninitialized]
 
    compilation of uninitialized.adb failed
-gnatprove: error during translation to intermediate language, aborting.
+
 gprbuild: *** compilation phase failed
-uninitialized.adb:6:07: "B" might not be initialized [uninitialized]
+gnatprove: error during translation to intermediate language, aborting.
 // package_body_uninitialized_cfg
 digraph G {
    graph [splines=True];

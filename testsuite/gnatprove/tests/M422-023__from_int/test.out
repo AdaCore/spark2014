@@ -1,18 +1,18 @@
+sgs.adb:17:10: warning: unused assignment [ineffective]
+sgs.adb:18:10: warning: unused assignment [ineffective]
 sgs.adb:9:7: info: assertion proved
 sgs.adb:10:7: assertion not proved, requires A (X1) <= 
 sgs.adb:12:7: info: assertion proved
 sgs.adb:13:7: assertion not proved, requires A (X2) >= 
 sgs.adb:15:7: assertion not proved
-sgs.adb:17:10: warning: unused assignment [ineffective]
-sgs.adb:18:10: warning: unused assignment [ineffective]
 sgs.adb:18:13: info: range check proved
 sgs.adb:19:7: info: assertion proved
 sgs.adb:20:7: info: assertion proved
 sgs.adb:21:7: info: assertion proved
 sgs.adb:22:7: info: assertion proved
-sgs.ads:5:53: info: range check proved
 sgs.ads:10:17: warning: unused initial value of "X1" [unused_initial_value]
 sgs.ads:10:25: warning: unused initial value of "X2" [unused_initial_value]
 sgs.ads:10:33: warning: unused initial value of "X3" [unused_initial_value]
 sgs.ads:10:41: warning: unused initial value of "X4" [unused_initial_value]
+sgs.ads:5:53: info: range check proved
 sgs.ads:13:17: info: postcondition proved

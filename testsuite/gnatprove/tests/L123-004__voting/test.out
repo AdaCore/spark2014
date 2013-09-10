@@ -3,8 +3,8 @@ evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
 evoting.adb:150:21: overflow check not proved
-evoting.adb:166:54: info: range check proved
 evoting.adb:166:54: overflow check not proved
+evoting.adb:166:54: info: range check proved
 evoting.adb:170:13: info: precondition proved
 evoting.adb:173:63: info: range check proved
 evoting.adb:174:51: info: overflow check proved

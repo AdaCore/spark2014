@@ -1,13 +1,13 @@
-
-
-   compilation of test.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
-test.adb:14:24: warning: incorrect dependency "Y => X" [depends_wrong]
 test.adb:14:24: warning: missing dependency "Y => Y" [depends_missing]
+test.adb:14:24: warning: incorrect dependency "Y => X" [depends_wrong]
 test.adb:29:47: "Par2" might not be initialized in "Check_Contract_6" [uninitialized]
 test.adb:33:24: warning: missing dependency "X => Par1" [depends_missing]
 test.adb:35:13: "Z" must be listed in the Global aspect of "Check_Contract_7"
 test.adb:39:14: "Z" must be listed in the Global aspect of "Check_Contract_8"
 test.adb:53:07: warning: statement has no effect [ineffective]
 test.adb:54:15: warning: unused assignment [ineffective]
+
+   compilation of test.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

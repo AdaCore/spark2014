@@ -1,3 +1,3 @@
-proc.adb:20:7: info: range check proved
 proc.adb:20:07: warning: statement has no effect [ineffective]
 proc.adb:21:07: warning: statement has no effect [ineffective]
+proc.adb:20:7: info: range check proved

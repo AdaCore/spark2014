@@ -23,18 +23,18 @@ queen.ads:17:27: info: index check proved
 queen.ads:17:35: info: index check proved
 queen.ads:18:27: info: index check proved
 queen.ads:18:35: info: index check proved
-queen.ads:24:42: info: index check proved
-queen.ads:24:49: info: index check proved
-queen.ads:25:38: info: range check proved
 queen.ads:26:14: postcondition not proved
 queen.ads:27:42: info: index check proved
 queen.ads:27:54: info: index check proved
+queen.ads:24:42: info: index check proved
+queen.ads:24:49: info: index check proved
+queen.ads:25:38: info: range check proved
 queen.ads:31:16: info: postcondition proved
 queen.ads:31:69: info: index check proved
 queen.ads:31:76: info: index check proved
-queen.ads:36:44: info: index check proved
-queen.ads:36:51: info: index check proved
-queen.ads:37:38: info: range check proved
 queen.ads:38:14: postcondition not proved
 queen.ads:39:44: info: index check proved
 queen.ads:39:56: info: index check proved
+queen.ads:36:44: info: index check proved
+queen.ads:36:51: info: index check proved
+queen.ads:37:38: info: range check proved

@@ -20,20 +20,20 @@ p.adb:51:7: loop variant not proved
 p.adb:58:12: index check not proved
 p.adb:59:14: overflow check not proved
 p.adb:60:7: loop variant not proved
-p.adb:61:50: overflow check not proved
 p.adb:61:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:61:57: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:61:50: overflow check not proved
 p.adb:61:62: index check not proved
 p.adb:68:12: index check not proved
 p.adb:69:14: overflow check not proved
-p.adb:70:50: overflow check not proved
 p.adb:70:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:70:57: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:70:50: overflow check not proved
 p.adb:70:62: index check not proved
 p.adb:71:7: loop variant not proved
-p.adb:78:50: overflow check not proved
 p.adb:78:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:78:57: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:78:50: overflow check not proved
 p.adb:78:62: index check not proved
 p.adb:79:12: index check not proved
 p.adb:80:14: overflow check not proved
@@ -53,16 +53,16 @@ p.adb:97:14: overflow check not proved
 p.adb:102:7: loop variant not proved
 p.adb:103:12: index check not proved
 p.adb:104:14: overflow check not proved
-p.adb:105:50: overflow check not proved
 p.adb:105:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:105:57: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:105:50: overflow check not proved
 p.adb:105:62: index check not proved
 p.adb:110:12: index check not proved
 p.adb:111:7: loop variant not proved
 p.adb:112:14: overflow check not proved
-p.adb:113:50: overflow check not proved
 p.adb:113:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:113:57: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:113:50: overflow check not proved
 p.adb:113:62: index check not proved
 p.adb:121:12: index check not proved
 p.adb:122:14: overflow check not proved
@@ -130,15 +130,15 @@ p.adb:182:7: loop variant not proved
 p.adb:188:12: index check not proved
 p.adb:189:14: overflow check not proved
 p.adb:190:7: loop variant not proved
-p.adb:191:50: overflow check not proved
 p.adb:191:57: loop invariant initialization not proved, requires Tab (L) = L
 p.adb:191:57: loop invariant preservation not proved, requires Tab (L) = L
+p.adb:191:50: overflow check not proved
 p.adb:191:62: index check not proved
 p.adb:192:14: overflow check not proved
 p.adb:193:7: loop invariant not proved, requires J = A + K
 p.adb:193:36: overflow check not proved
+p.adb:194:61: loop invariant not proved, requires Tab (L) = L
 p.adb:194:50: overflow check not proved
 p.adb:194:54: overflow check not proved
-p.adb:194:61: loop invariant not proved, requires Tab (L) = L
 p.adb:194:66: index check not proved
 p.adb:195:7: loop variant not proved

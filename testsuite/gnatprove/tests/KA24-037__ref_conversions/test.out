@@ -2,9 +2,7 @@ p.adb:3:14: warning: unused initial value of "Havok_A" [unused_initial_value]
 p.adb:3:23: warning: unused initial value of "Havok_B" [unused_initial_value]
 p.adb:10:04: warning: statement has no effect [ineffective]
 p.adb:11:04: warning: statement has no effect [ineffective]
-p.adb:11:18: info: range check proved
 p.adb:12:04: warning: statement has no effect [ineffective]
-p.adb:12:18: info: range check proved
 p.adb:14:08: warning: statement has no effect [ineffective]
 p.adb:14:16: warning: unused assignment to "A" [ineffective]
 p.adb:14:19: warning: unused assignment to "B" [ineffective]
@@ -13,6 +11,8 @@ p.adb:15:08: warning: statement has no effect [ineffective]
 p.adb:15:16: warning: unused assignment to "A" [ineffective]
 p.adb:15:19: warning: unused assignment to "B" [ineffective]
 p.adb:15:22: warning: unused assignment to "C" [ineffective]
+p.adb:11:18: info: range check proved
+p.adb:12:18: info: range check proved
 pack.ads:4:21: warning: "A" is not modified, could be "in" [inout_only_read]
 pack.ads:4:21: warning: unused variable "A" [unused]
 pack.ads:4:24: warning: "B" is not modified, could be "in" [inout_only_read]

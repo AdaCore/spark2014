@@ -5,9 +5,9 @@ test.adb:7:7
 
 test2.adb:5:05: warning: statement has no effect [ineffective]
 test2.ads:4:18: postcondition not proved, requires Test'Result = 1
-test2.adb:12:5
-
 test2.adb:7:5
 
 test2.adb:8:14
+
+test2.adb:12:5
 

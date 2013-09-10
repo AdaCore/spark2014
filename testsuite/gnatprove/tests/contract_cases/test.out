@@ -5,16 +5,16 @@ p.adb:27:17: info: overflow check proved
 p.ads:3:04: warning: statement has no effect [ineffective]
 p.ads:7:14: postcondition not proved, requires X = Integer'min
 p.ads:7:37: overflow check not proved
-p.ads:10:6: info: complete contract cases proved
-p.ads:10:6: info: disjoint contract cases proved
 p.ads:10:40: info: contract case proved
 p.ads:10:53: info: overflow check proved
 p.ads:11:40: info: contract case proved
+p.ads:10:6: info: disjoint contract cases proved
+p.ads:10:6: info: complete contract cases proved
 p.ads:15:14: info: postcondition proved
-p.ads:16:6: info: complete contract cases proved
-p.ads:16:6: info: disjoint contract cases proved
 p.ads:16:40: info: contract case proved
 p.ads:16:53: info: overflow check proved
 p.ads:17:40: info: contract case proved
+p.ads:16:6: info: disjoint contract cases proved
+p.ads:16:6: info: complete contract cases proved
 p.ads:22:14: info: postcondition proved
 p.ads:22:55: info: overflow check proved

@@ -1,5 +1,5 @@
 old.ads:9:14: warning: unused global "Z" [unused]
-old.ads:10:20: info: postcondition proved
 old.ads:12:26: warning: unused initial value of "X" [unused_initial_value]
 old.ads:12:26: warning: unused variable "X" [unused]
+old.ads:10:20: info: postcondition proved
 old.ads:13:20: postcondition not proved, requires boolean'(X in 1..10)'old

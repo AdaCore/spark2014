@@ -1,23 +1,23 @@
 main.adb:9:04: warning: statement has no effect [ineffective]
-main.adb:12:14: info: postcondition proved
-main.adb:15:14: info: postcondition proved
-main.adb:18:14: info: postcondition proved
 main.adb:41:04: warning: statement has no effect [ineffective]
 main.adb:42:04: warning: statement has no effect [ineffective]
-main.adb:58:32: overflow check not proved
 main.adb:67:10: warning: unused assignment [ineffective]
-main.adb:69:4: info: assertion proved
-main.adb:70:4: info: assertion proved
-main.adb:71:4: info: assertion proved
-main.adb:72:4: info: assertion proved
-main.adb:73:4: info: assertion proved
-main.adb:74:4: info: assertion proved
 main.adb:76:04: warning: statement has no effect [ineffective]
 main.adb:76:04: warning: unused assignment to "Arr_Obj" [ineffective]
 main.adb:77:04: warning: statement has no effect [ineffective]
 main.adb:77:04: warning: unused assignment to "Arr_Obj" [ineffective]
 main.adb:78:04: warning: statement has no effect [ineffective]
 main.adb:78:04: warning: unused assignment to "Rec_Obj" [ineffective]
+main.adb:69:4: info: assertion proved
+main.adb:70:4: info: assertion proved
+main.adb:71:4: info: assertion proved
+main.adb:72:4: info: assertion proved
+main.adb:73:4: info: assertion proved
+main.adb:74:4: info: assertion proved
 main.adb:83:4: assertion not proved, requires Obj_1.Comp = 9012
 main.adb:84:4: assertion not proved, requires Obj_2.Comp = 9012
 main.adb:85:4: assertion not proved, requires Obj_4 = 5678
+main.adb:12:14: info: postcondition proved
+main.adb:15:14: info: postcondition proved
+main.adb:18:14: info: postcondition proved
+main.adb:58:32: overflow check not proved

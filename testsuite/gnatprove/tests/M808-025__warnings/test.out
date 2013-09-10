@@ -1,47 +1,47 @@
 Stop at compilation:
 --------------------
-
-
-   compilation of p.adb failed
-gnatprove: error during frame condition computation, aborting.
-gprbuild: *** compilation phase failed
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:6:04: warning: "X" is not modified, could be declared constant
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during frame condition computation, aborting.
 
 Issue all compilation warnings, stop at flow warnings treated as errors:
 ------------------------------------------------------------------------
-
-
-   compilation of p.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:6:04: warning: "X" is not modified, could be declared constant
 p.adb:8:04: warning: statement has no effect [ineffective]
 p.adb:9:09: warning: unused assignment [ineffective]
 
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-
-
-   compilation of p.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:8:04: warning: statement has no effect [ineffective]
 p.adb:9:09: warning: unused assignment [ineffective]
 
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-
-
-   compilation of p.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
 p.adb:8:04: warning: statement has no effect [ineffective]
 p.adb:9:09: warning: unused assignment [ineffective]
+
+   compilation of p.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
 
 Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------

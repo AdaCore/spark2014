@@ -1,8 +1,8 @@
 length.adb:4:07: warning: unused variable "X" [unused]
 length.adb:16:07: warning: unused variable "X" [unused]
 length.adb:21:14: info: range check proved
-length.ads:6:20: info: postcondition proved
-length.ads:9:20: info: postcondition proved
 length.ads:15:18: warning: unused initial value of "X" [unused_initial_value]
 length.ads:15:18: warning: unused variable "X" [unused]
+length.ads:6:20: info: postcondition proved
+length.ads:9:20: info: postcondition proved
 length.ads:16:20: info: postcondition proved

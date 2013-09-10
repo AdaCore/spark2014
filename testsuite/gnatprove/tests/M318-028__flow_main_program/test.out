@@ -1,13 +1,13 @@
-
-
-   compilation of main2.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
 main.adb:9:04: warning: statement has no effect [ineffective]
 main.adb:11:27: warning: statement has no effect [ineffective]
 main.adb:12:12: warning: unused assignment [ineffective]
-main2.adb:4:32: "X" may not be initialized after elaboration of "Main2" [uninitialized]
 main2.adb:4:32: warning: unused initial value of "X" [unused_initial_value]
-main2.adb:4:48: "State" may not be initialized after elaboration of "Main2" [uninitialized]
-main2.adb:4:48: warning: unused global "State" [unused]
+main2.adb:4:32: "X" may not be initialized after elaboration of "Main2" [uninitialized]
 main2.adb:4:48: warning: unused initial value of "State" [unused_initial_value]
+main2.adb:4:48: warning: unused global "State" [unused]
+main2.adb:4:48: "State" may not be initialized after elaboration of "Main2" [uninitialized]
+
+   compilation of main2.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

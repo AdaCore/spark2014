@@ -1,5 +1,5 @@
-p.adb:2:15: info: range check proved
 p.adb:5:10: warning: unused assignment [ineffective]
+p.adb:2:15: info: range check proved
 p.adb:5:20: info: division check proved
 p.ads:4:21: warning: unused initial value of "A" [unused_initial_value]
 p.ads:4:21: warning: unused variable "A" [unused]

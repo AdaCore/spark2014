@@ -1,8 +1,3 @@
-
-
-   compilation of pack.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
 pack.adb:15:10: access type is not in SPARK
 pack.adb:15:14: type is not in SPARK
 pack.adb:18:10: explicit dereference is not in SPARK
@@ -11,3 +6,8 @@ pack.ads:4:08: type is not in SPARK
 pack.ads:4:26: type used is not in SPARK
 pack.ads:6:13: function with side-effects is not in SPARK
 pack.ads:7:18: explicit dereference is not in SPARK
+
+   compilation of pack.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

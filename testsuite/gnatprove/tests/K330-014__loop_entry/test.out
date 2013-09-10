@@ -1,7 +1,7 @@
-for_loops.adb:16:10: info: loop invariant preservation proved
 for_loops.adb:16:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test1) > 0
-for_loops.adb:29:10: info: loop invariant preservation proved
+for_loops.adb:16:10: info: loop invariant preservation proved
 for_loops.adb:29:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
+for_loops.adb:29:10: info: loop invariant preservation proved
 for_loops.adb:44:13: info: loop invariant initialization proved
 for_loops.adb:44:13: info: loop invariant preservation proved
 for_loops.adb:61:13: info: loop invariant initialization proved
@@ -16,8 +16,8 @@ utils.adb:10:34: overflow check not proved
 while_loops.adb:18:10: info: loop invariant initialization proved
 while_loops.adb:18:10: info: loop invariant preservation proved
 while_loops.adb:20:29: overflow check not proved
-while_loops.adb:32:10: info: loop invariant preservation proved
 while_loops.adb:32:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
+while_loops.adb:32:10: info: loop invariant preservation proved
 while_loops.adb:36:29: info: overflow check proved
 while_loops.adb:48:13: info: loop invariant initialization proved
 while_loops.adb:48:13: info: loop invariant preservation proved

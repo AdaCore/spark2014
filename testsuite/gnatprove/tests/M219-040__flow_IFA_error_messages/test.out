@@ -1,8 +1,3 @@
-
-
-   compilation of test.adb failed
-gnatprove: error during translation to intermediate language, aborting.
-gprbuild: *** compilation phase failed
 test.adb:16:07: "Y" might not be initialized [uninitialized]
 test.adb:38:51: "C" might not be initialized in "Uninitialized_3" [uninitialized]
 test.adb:56:31: "Export" might not be initialized in "Uninitialized_4" [uninitialized]
@@ -26,9 +21,14 @@ test.adb:181:07: warning: unused assignment [ineffective]
 test.adb:190:39: warning: unused initial value of "Par2" [unused_initial_value]
 test.adb:190:39: warning: unused variable "Par2" [unused]
 test.adb:192:13: warning: unused variable "Z" [unused]
-test.adb:195:29: warning: unused global "Y" [unused]
 test.adb:195:29: warning: unused initial value of "Y" [unused_initial_value]
+test.adb:195:29: warning: unused global "Y" [unused]
 test.adb:213:34: warning: unused initial value of "Condition" [unused_initial_value]
 test.adb:216:07: warning: statement has no effect [ineffective]
 test.adb:218:12: warning: unused assignment [ineffective]
 test.adb:222:15: warning: unused assignment [ineffective]
+
+   compilation of test.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
