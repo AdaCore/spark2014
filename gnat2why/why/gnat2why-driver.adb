@@ -35,7 +35,6 @@ with Errout;                 use Errout;
 with Flow;                   use Flow;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
-with Opt;                    use Opt;
 with Osint.C;                use Osint.C;
 with Osint;                  use Osint;
 with Output;                 use Output;
