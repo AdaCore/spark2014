@@ -7,11 +7,11 @@ arrays.adb:22:13: info: range check proved
 arrays.adb:23:17: info: overflow check proved
 arrays.adb:23:17: info: range check proved
 arrays.ads:5:14: postcondition not proved, requires Sum'Result >= X'length
-arrays.ads:6:38: info: contract case proved
-arrays.ads:7:60: info: contract case proved
 arrays.ads:6:6: disjoint contract cases not proved
 arrays.ads:6:6: complete contract cases not proved
+arrays.ads:6:38: info: contract case proved
 arrays.ads:7:52: index check not proved
+arrays.ads:7:60: info: contract case proved
 arrays.ads:20:14: postcondition not proved, requires Count_Even'Result <= X'length
-arrays.ads:21:38: info: contract case proved
 arrays.ads:21:6: complete contract cases not proved
+arrays.ads:21:38: info: contract case proved

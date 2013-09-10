@@ -14,14 +14,14 @@ p.adb:31:13: warning: unused assignment [ineffective]
 p.adb:33:41: warning: statement has no effect [ineffective]
 p.adb:34:16: warning: unused assignment [ineffective]
 p.adb:8:15: info: range check proved
+p.adb:16:14: range check not proved
+p.adb:16:34: overflow check not proved
+p.adb:17:28: overflow check not proved
 p.adb:21:16: info: range check proved
 p.adb:23:11: range check not proved
 p.adb:23:37: overflow check not proved
 p.adb:24:25: overflow check not proved
 p.adb:24:25: range check not proved
-p.adb:16:14: range check not proved
-p.adb:16:34: overflow check not proved
-p.adb:17:28: overflow check not proved
 p.adb:33:11: range check not proved
 p.adb:33:37: overflow check not proved
 p.adb:34:25: overflow check not proved

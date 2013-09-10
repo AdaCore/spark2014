@@ -1,13 +1,13 @@
-stack.adb:13:10: info: loop invariant initialization proved
-stack.adb:13:10: info: loop invariant preservation proved
-stack.adb:14:30: info: index check proved
 stack.adb:4:30: info: precondition proved
 stack.adb:6:12: info: index check proved
 stack.adb:7:12: precondition not proved
+stack.adb:13:10: info: loop invariant initialization proved
+stack.adb:13:10: info: loop invariant preservation proved
+stack.adb:14:30: info: index check proved
 stack.ads:21:40: warning: unused initial value of "S" [unused_initial_value]
+stack.ads:19:12: info: postcondition proved
+stack.ads:22:38: info: precondition proved
+stack.ads:23:12: postcondition not proved
 stack.ads:32:24: info: index check proved
 stack.ads:36:11: info: index check proved
 stack.ads:38:13: info: index check proved
-stack.ads:19:12: info: postcondition proved
-stack.ads:23:12: postcondition not proved
-stack.ads:22:38: info: precondition proved

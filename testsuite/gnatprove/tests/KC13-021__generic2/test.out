@@ -1,8 +1,8 @@
 p.adb:8:19: overflow check not proved, in instantiation at q.adb:13
-p.adb:8:29: overflow check not proved, in instantiation at q.adb:13
-p.adb:9:7: precondition not proved, in instantiation at q.adb:13
 p.adb:8:19: overflow check not proved, in instantiation at q.ads:8
+p.adb:8:29: overflow check not proved, in instantiation at q.adb:13
 p.adb:8:29: overflow check not proved, in instantiation at q.ads:8
+p.adb:9:7: precondition not proved, in instantiation at q.adb:13
 p.adb:9:7: precondition not proved, in instantiation at q.ads:8
 q.adb:10:14: info: overflow check proved
 q.adb:21:18: overflow check not proved
