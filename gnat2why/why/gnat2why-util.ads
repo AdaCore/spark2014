@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      G N A T 2 W H Y - D R I V E R                       --
+--                        G N A T 2 W H Y - U T I L S                       --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
