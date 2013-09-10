@@ -106,26 +106,26 @@ certificatestore.adb:220:29: range check not proved
 certproc.adb:147:30: range check not proved
 certproc.adb:151:7: range check not proved
 certproc.adb:154:7: range check not proved
-certproc.adb:189:61: precondition not proved
 certproc.adb:189:61: range check not proved
-certproc.adb:193:61: precondition not proved
+certproc.adb:189:61: precondition not proved
 certproc.adb:193:61: range check not proved
-certproc.adb:197:61: precondition not proved
+certproc.adb:193:61: precondition not proved
 certproc.adb:197:61: range check not proved
-certproc.adb:201:61: precondition not proved
+certproc.adb:197:61: precondition not proved
 certproc.adb:201:61: range check not proved
-certproc.adb:205:61: precondition not proved
+certproc.adb:201:61: precondition not proved
 certproc.adb:205:61: range check not proved
-certproc.adb:210:60: precondition not proved
+certproc.adb:205:61: precondition not proved
 certproc.adb:210:60: range check not proved
-certproc.adb:214:60: precondition not proved
+certproc.adb:210:60: precondition not proved
 certproc.adb:214:60: range check not proved
-certproc.adb:218:60: precondition not proved
+certproc.adb:214:60: precondition not proved
 certproc.adb:218:60: range check not proved
-certproc.adb:222:60: precondition not proved
+certproc.adb:218:60: precondition not proved
 certproc.adb:222:60: range check not proved
-certproc.adb:226:60: precondition not proved
+certproc.adb:222:60: precondition not proved
 certproc.adb:226:60: range check not proved
+certproc.adb:226:60: precondition not proved
 certproc.adb:460:13: range check not proved
 certproc.adb:462:64: info: range check proved
 certproc.adb:469:13: range check not proved
@@ -305,7 +305,7 @@ enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
 file.adb:412:7: info: range check proved
-file.adb:413:39: overflow check not proved
+file.adb:413:39: info: overflow check proved
 file.adb:414:30: range check not proved
 file.adb:417:39: overflow check not proved
 file.adb:418:25: overflow check not proved
