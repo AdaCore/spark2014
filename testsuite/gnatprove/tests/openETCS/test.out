@@ -42,8 +42,8 @@ sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
+sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: precondition not proved
@@ -62,12 +62,12 @@ sec_3_13_6_deceleration.ads:52:26: info: range check proved
 sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:75:14: postcondition not proved, requires Contains(Connections, destination)
-section_4_6.ads:106:6: complete contract cases not proved
-section_4_6.ads:106:6: disjoint contract cases not proved
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved
 section_4_6.ads:109:14: info: postcondition proved
+section_4_6.ads:106:6: disjoint contract cases not proved
+section_4_6.ads:106:6: complete contract cases not proved
 step_function.adb:30:10: info: loop invariant initialization proved
 step_function.adb:30:10: info: loop invariant preservation proved
 step_function.adb:31:50: info: index check proved

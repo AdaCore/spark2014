@@ -1,4 +1,3 @@
-
+forall.ads:6:20: postcondition not proved, requires Get_One'Result > 1
 forall.ads:5:45: division check not proved
 forall.ads:5:45: overflow check not proved
-forall.ads:6:20: postcondition not proved, requires Get_One'Result > 1
