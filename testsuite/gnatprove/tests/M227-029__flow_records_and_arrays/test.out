@@ -8,8 +8,8 @@ parameter_tests.adb:36:32: "G.Y" might not be initialized [uninitialized]
 parameter_tests.adb:50:33: warning: unused initial value of "G" [unused_initial_value]
 parameter_tests.adb:50:36: warning: "H" is not modified, could be "input" [inout_only_read]
 
-   compilation of message_tests.adb failed
    compilation of parameter_tests.adb failed
+   compilation of message_tests.adb failed
 
 gprbuild: *** compilation phase failed
 gnatprove: error during translation to intermediate language, aborting.

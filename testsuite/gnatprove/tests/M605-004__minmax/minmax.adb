@@ -1,8 +1,10 @@
 package body Minmax is
 
-   procedure P is
-      A, B, C : Float;
-      X, Y, Z : Integer;
+   procedure P (A, B : Float;
+                C    : out Float;
+                X, Y : Integer;
+                Z    : out Integer)
+   is
    begin
       C := Float'Min (A, B);
       C := Float'Max (A, B);

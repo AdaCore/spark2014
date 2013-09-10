@@ -2,11 +2,11 @@ procedure Pack is
    generic
       type T1 is (<>);
    package Genpack is
-      package Apack is
+      package Apack with Initializes => Ary is
          type    T is array (Integer range <>) of Boolean;
          Ary   : T(1..4) := (True,False,True,False);
 
-         package Bpack is
+         package Bpack with Initializes => Bry is
             type    Q is array (Integer range <>) of Boolean;
             Bry   : Q(1..4) := (True,False,True,False);
          end Bpack;

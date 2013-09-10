@@ -1,4 +1,4 @@
 from test_support import *
 
-prove_all()
+prove() # legitimate flow error M909-012
 

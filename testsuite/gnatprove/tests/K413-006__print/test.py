@@ -1,4 +1,3 @@
 from test_support import *
-import glob
 
-prove_all()
+prove() # flow requires better handling of stdlib M909-012

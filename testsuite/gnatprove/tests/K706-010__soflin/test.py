@@ -1,4 +1,3 @@
 from test_support import *
 
-prove_all()
-
+prove() # requires better handling of stdlib M909-012

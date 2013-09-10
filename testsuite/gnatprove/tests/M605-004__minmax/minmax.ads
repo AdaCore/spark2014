@@ -1,5 +1,5 @@
 package Minmax is
 
-   procedure P;
+   pragma Elaborate_Body (Minmax);
 
 end Minmax;
