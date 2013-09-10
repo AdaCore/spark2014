@@ -54,20 +54,15 @@ def xfail_test():
 def sort_key_for_errors(line):
     """given a line of output, return a key that can be used for sorting
 
-       this key will be a tuple (file,line,col,rest), where file and rest are
-       strings, and line and col are integers for correct sorting.
-       A dummy tuple will be returned for lines that are not of the form
-         file:line:col:msg
+       if the line is of the form "file:line:col:msg", then the key is "file",
+       otherwise the key is a constant string which is bigger than most other
+       strings
     """
-    try:
-        sl = line.split(':', 3)
-        if len(sl) == 4:
-            return (sl[0], int(sl[1]), int(sl[2]), sl[3])
-    except ValueError:
-        pass
-    # We arrive here if the line does not have 3 colons or one of the
-    # integer conversions fails
-    return ("", 0, 0, line)
+    sl = line.split(':', 3)
+    if len(sl) == 4:
+        return sl[0]
+    else:
+        return "zzzzz"
 
 def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
