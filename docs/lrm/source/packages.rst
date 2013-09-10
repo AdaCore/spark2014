@@ -2132,7 +2132,7 @@ private child unit (or a public descendant thereof).
     --  State abstractions of P.Priv, A and B, plus
     --  the concrete variable X, are split up among
     --  two state abstractions within P.Pub, R and S
-
+    with P.Pub;
     private package P.Priv --  private unit
        with Abstract_State => ((A with Part_Of => P.Pub.R),
                                (B with Part_Of => P.Pub.S))
@@ -2184,15 +2184,15 @@ private child unit (or a public descendant thereof).
              -- We can only refer to Outer.Hidden_State which is
              -- a constituent of Outer.A2 if the subprogram does 
              -- not also refer to Outer.A2. 
-             with Global  => (Out => Hidden_State),
-                  Depends => (Hodden_State => null);
+             with Global  => (Output => Hidden_State),
+                  Depends => (Hidden_State => null);
 
        end Inner;
     end Outer;
 
    package body Outer
       with Refined_State => (A1 => Inner.B1,
-                             A2 => Hidden_State, State_In_Body)
+                             A2 => (Hidden_State, State_In_Body))
                              -- A1 and A2 cannot be denoted in the
                              -- body of Outer because their refinements are visible.
    is
