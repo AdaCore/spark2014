@@ -1,0 +1,12 @@
+q.ads:2:01: warning: in instantiation at p.ads:4
+q.ads:2:01: warning: statement has no effect [ineffective]
+q.ads:2:01: warning: in instantiation at p.ads:5
+q.ads:2:01: warning: unused global "Default" [unused]
+q.ads:2:01: warning: in instantiation at p.ads:5
+q.ads:2:01: warning: unused initial value of "Y" [unused_initial_value]
+q.ads:2:01: warning: in instantiation at p.ads:6
+q.ads:2:01: warning: unused initial value of "Y" [unused_initial_value]
+q.ads:2:01: warning: in instantiation at p.ads:6
+q.ads:2:01: warning: unused variable "Y" [unused]
+q.ads:2:01: warning: in instantiation at p.adb:12
+q.ads:2:01: warning: statement has no effect [ineffective]

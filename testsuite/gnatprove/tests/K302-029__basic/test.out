@@ -1,0 +1,4 @@
+pack.adb:10:07: warning: statement has no effect [ineffective]
+pack.adb:18:10: warning: statement has no effect [ineffective]
+pack.adb:20:10: warning: statement has no effect [ineffective]
+pack.adb:46:10: warning: unused assignment [ineffective]

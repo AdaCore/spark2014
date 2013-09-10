@@ -1,0 +1,4 @@
+choice.adb:1:19: warning: unused initial value of "X" [unused_initial_value]
+choice.adb:3:04: warning: statement has no effect [ineffective]
+choice.adb:6:04: warning: statement has no effect [ineffective]
+choice.adb:9:04: warning: statement has no effect [ineffective]

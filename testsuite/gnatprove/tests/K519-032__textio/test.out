@@ -1,0 +1,5 @@
+pack.adb:7:07: warning: statement has no effect [ineffective]
+pack.adb:7:07: warning: unused assignment to "Current_Out" [ineffective]
+pack.adb:7:07: warning: unused assignment to "system.soft_links.abort_undefer" [ineffective]
+pack.adb:7:07: warning: unused assignment to "the heap" [ineffective]
+pack.adb:7:07: warning: unused assignment to "system.soft_links.abort_defer" [ineffective]
