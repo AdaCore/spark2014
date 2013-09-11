@@ -94,6 +94,8 @@ package body Flow.Debug is
                      Write_Eol;
                   end loop;
                   Outdent;
+               else
+                  Write_Eol;
                end if;
             end;
          end loop;

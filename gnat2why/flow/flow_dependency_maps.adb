@@ -65,8 +65,6 @@ package body Flow_Dependency_Maps is
 
       M : Optional_Dependency_Maps.Map := Optional_Dependency_Maps.Empty_Map;
 
-      CA : List_Id;
-
       Row : Node_Id;
       LHS : Node_Id;
       RHS : Node_Id;
@@ -81,7 +79,11 @@ package body Flow_Dependency_Maps is
 
          when N_Aggregate =>
             --  Aspect => (...)
-            CA := Component_Associations (Expression (PAA));
+
+            --  We will deal with this in the following, in detail,
+            --  extracting information from both the epxressions and
+            --  component_associations of the aggregate.
+            null;
 
          when N_Identifier =>
             --  Aspect => Foobar
@@ -96,7 +98,19 @@ package body Flow_Dependency_Maps is
       pragma Assert_And_Cut (Nkind (Expression (PAA)) = N_Aggregate);
       --  Aspect => (...)
 
-      Row := First (CA);
+      --  First we should look at the expressions of the aggregate,
+      --  i.e. foo and bar in (foo, bar, baz => ..., bork => ...)
+      Row := First (Expressions (Expression (PAA)));
+      while Present (Row) loop
+         M.Include (Direct_Mapping_Id (Unique_Entity (Entity (Row))),
+                    Optional_Flow_Id_Set'(Exists => False));
+
+         Row := Next (Row);
+      end loop;
+
+      --  Next, we look at the component associations, i.e. baz and
+      --  bork in the above example.
+      Row := First (Component_Associations (Expression (PAA)));
       while Present (Row) loop
          Inputs  := Flow_Id_Sets.Empty_Set;
          Outputs := Flow_Id_Sets.Empty_Set;
@@ -207,9 +221,8 @@ package body Flow_Dependency_Maps is
    function Parse_Initializes (N : Node_Id)
                                return Optional_Dependency_Maps.Map
    is
-      pragma Unreferenced (N);
    begin
-      return Optional_Dependency_Maps.Empty_Map;
+      return Parse_Raw_Dependency_Map (N);
    end Parse_Initializes;
 
 end Flow_Dependency_Maps;
