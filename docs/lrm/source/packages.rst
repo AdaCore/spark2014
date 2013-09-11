@@ -26,11 +26,11 @@ persistent state is visible outside of the package, then it is a constituent of
 the package's visible state; otherwise it is a constituent of the package's
 hidden state.
 
-Though the variables may be hidden they still form part (or all) of the
-persistent state of the package and the hidden state cannot be ignored for flow
-analysis and proof. *State abstraction* is the means by which this hidden state
-is managed for flow analysis and proof. A state abstraction represents one or
-more declarations which are part of the hidden state of a package.
+Though the variables may be hidden they still form part (or all) of
+the persistent state of the package and the hidden state cannot be
+ignored.  *State abstraction* is the means by which this hidden state
+is represented and managed. A state abstraction represents one or more
+declarations which are part of the hidden state of a package.
 
 |SPARK| extends the concept of state abstraction to provide hierarchical data
 abstraction whereby the state abstraction declared in a package may contain the

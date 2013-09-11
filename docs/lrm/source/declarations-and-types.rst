@@ -49,11 +49,12 @@ Types and Subtypes
 
 .. _tu-types_and_subtypes-03:
 
-3. Subtypes that are not preelaborable are not subject to flow
-   analysis.  [Users may write programs using such subtypes and those
-   programs can be subject to formal verification. However, flow
-   analysis will ignore the use of such a subtype and will instead
-   raise a warning to indicate that its use has not been analysed.]
+3. Constants, including those implicitly declared through a
+   non-preelaborable subtype declaration shall not be denoted in
+   Global, Depends, Initializes or Refined_State aspects.  [This means
+   that these constants are not taken into account in determining and
+   checking dependency relations. This may change in the future to
+   facilitate a more in depth and complete analysis.]
 
 .. _etu-types_and_subtypes:
 

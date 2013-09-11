@@ -1,10 +1,10 @@
 Generic Units
 =============
 
-Any generic unit is in |SPARK|, regardless of whether it
-contains constructs that are not normally in |SPARK|.
-[Information flow analysis is not performed on a generic unit;
-a generic unit generates no proof obligations].
+Any generic unit is in |SPARK|, regardless of whether it contains
+constructs that are not normally in |SPARK|.  [Analysis is not
+performed on a generic unit; a generic unit generates no proof
+obligations].
 
 Generic Declarations
 --------------------
@@ -55,10 +55,7 @@ in the generic, so this implies that we have to "get them right" in the generic
 is to assume that a generic formal subprogram references no globals
 (or, more generally, references any fixed set of globals)
 and to only instantiate the generic with actual subprograms that
-meet this requirement. Other solutions involving "generative mode"
-(where flow-related aspect specifications are omitted in the source
-and generated implicitly by the tools) may also be available, but
-are outside of the scope of this document.]
+meet this requirement.]
 
 [At some point in the future, a more sophisticated treatment of
 generics may be defined, allowing a generic to be "proven" and
