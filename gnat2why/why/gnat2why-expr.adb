@@ -328,10 +328,8 @@ package body Gnat2Why.Expr is
    --  Translate a list of Actions, that should consist only in declarations of
    --  constants used in Expr.
 
-   procedure Transform_Actions_Preparation
-     (Actions : List_Id;
-      Params  : in out Transformation_Params);
-   --  Update the map in Params for taking into account the names for
+   procedure Transform_Actions_Preparation (Actions : List_Id);
+   --  Update the symbol table for taking into account the names for
    --  declarations of constants in Actions.
 
    function Transform_Attr
@@ -684,33 +682,34 @@ package body Gnat2Why.Expr is
       -----------------
 
       function Branch_Expr (N : Node_Id) return W_Expr_Id is
-         Local_Params : Transformation_Params := Params;
          T : W_Expr_Id;
 
       begin
          case Nkind (N) is
             when N_Case_Expression_Alternative =>
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
                if Present (Actions (N)) then
-                  Transform_Actions_Preparation (Actions (N), Local_Params);
+                  Transform_Actions_Preparation (Actions (N));
                end if;
 
                if Expected_Type = Why_Empty then
                   T := Transform_Expr (Expression (N),
                                        Domain,
-                                       Local_Params);
+                                       Params);
                else
                   T := Transform_Expr (Expression (N),
                                        Expected_Type,
                                        Domain,
-                                       Local_Params);
+                                       Params);
                end if;
 
                if Present (Actions (N)) then
                   T := Transform_Actions (Actions (N),
                                           T,
                                           Domain,
-                                          Local_Params);
+                                          Params);
                end if;
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
                return T;
 
@@ -875,7 +874,7 @@ package body Gnat2Why.Expr is
             for Elt of Read_Names loop
                declare
                   C : constant Ada_Ent_To_Why.Cursor :=
-                        Ada_Ent_To_Why.Find (Params.Name_Map, Elt);
+                        Ada_Ent_To_Why.Find (Symbol_Table, Elt);
                   T : W_Expr_Id;
                begin
                   --  If the effect parameter is found in the map, use the name
@@ -988,8 +987,7 @@ package body Gnat2Why.Expr is
          File        => File.File,
          Phase       => Generate_Logic,
          Gen_Image   => False,
-         Ref_Allowed => True,
-         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+         Ref_Allowed => True);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
@@ -1768,8 +1766,7 @@ package body Gnat2Why.Expr is
    -----------------------------------
 
    procedure Transform_Actions_Preparation
-     (Actions : List_Id;
-      Params  : in out Transformation_Params)
+     (Actions : List_Id)
    is
       N  : Node_Id;
       Id : W_Identifier_Id;
@@ -1789,7 +1786,7 @@ package body Gnat2Why.Expr is
          if Nkind (N) = N_Object_Declaration then
             Id := New_Identifier (Name => Full_Name (Defining_Identifier (N)));
 
-            Ada_Ent_To_Why.Insert (Params.Name_Map,
+            Ada_Ent_To_Why.Insert (Symbol_Table,
                                    Defining_Identifier (N),
                                    Binder_Type'(B_Name => +Id,
                                                 B_Type => Why_Empty,
@@ -1929,8 +1926,7 @@ package body Gnat2Why.Expr is
                             File        => Params.File,
                             Phase       => Params.Phase,
                             Gen_Image   => False,
-                            Ref_Allowed => False,
-                            Name_Map    => Ada_Ent_To_Why.Empty_Map);
+                            Ref_Allowed => False);
 
          --  Values used in calls to the aggregate function
 
@@ -4168,8 +4164,9 @@ package body Gnat2Why.Expr is
             --  Start of Short_Circuit
 
             begin
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
                if Present (Actions (Expr)) then
-                  Transform_Actions_Preparation (Actions (Expr), Local_Params);
+                  Transform_Actions_Preparation (Actions (Expr));
                end if;
 
                T :=
@@ -4191,6 +4188,7 @@ package body Gnat2Why.Expr is
                                           Local_Params);
                end if;
 
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                Current_Type := EW_Bool_Type;
             end Short_Circuit;
 
@@ -4594,26 +4592,27 @@ package body Gnat2Why.Expr is
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
-      Local_Params : Transformation_Params := Params;
       T            : W_Expr_Id;
 
    begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       if Present (Actions) then
-         Transform_Actions_Preparation (Actions, Local_Params);
+         Transform_Actions_Preparation (Actions);
       end if;
 
       T := Transform_Expr (Expr,
                            Expected_Type,
                            Domain,
-                           Local_Params);
+                           Params);
 
       if Present (Actions) then
          T := Transform_Actions (Actions,
                                  T,
                                  Domain,
-                                 Local_Params);
+                                 Params);
       end if;
 
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       return T;
    end Transform_Expr_With_Actions;
 
@@ -4642,7 +4641,7 @@ package body Gnat2Why.Expr is
                                   return W_Expr_Id
    is
       C   : constant Ada_Ent_To_Why.Cursor :=
-        Ada_Ent_To_Why.Find (Params.Name_Map, Ent);
+        Ada_Ent_To_Why.Find (Symbol_Table, Ent);
       T   : W_Expr_Id;
    begin
 

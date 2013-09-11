@@ -895,8 +895,7 @@ package body Gnat2Why.Subprograms is
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Post,
                  Gen_Image   => False,
-                 Ref_Allowed => True,
-                 Name_Map    => Ada_Ent_To_Why.Empty_Map);
+                 Ref_Allowed => True);
 
       Compute_Contract_Cases_Exit_Checks
         (Params    => Params,
@@ -1046,8 +1045,7 @@ package body Gnat2Why.Subprograms is
          Theory      => File.Cur_Theory,
          Phase       => Generate_VCs_For_Pre,
          Gen_Image   => False,
-         Ref_Allowed => True,
-         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+         Ref_Allowed => True);
 
       --  Generate checks for absence of run-time error in the precondition, if
       --  any.
@@ -1175,15 +1173,16 @@ package body Gnat2Why.Subprograms is
          Theory      => File.Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Image   => False,
-         Ref_Allowed => False,
-         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+         Ref_Allowed => False);
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       for Binder of Logic_Func_Binders loop
          declare
             A : constant Node_Id := Binder.Ada_Node;
          begin
             if Present (A) then
-               Ada_Ent_To_Why.Insert (Params.Name_Map,
+               Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Unique_Entity (A),
                                       Binder);
             elsif Binder.B_Ent /= null then
@@ -1193,7 +1192,7 @@ package body Gnat2Why.Subprograms is
                --  unique name
 
                Ada_Ent_To_Why.Insert
-                 (Params.Name_Map,
+                 (Symbol_Table,
                   Binder.B_Ent,
                   Binder);
             end if;
@@ -1242,6 +1241,8 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
       --  No filtering is necessary here, as the theory should on the contrary
       --  use the previously defined theory for the function declaration. Pass
       --  in the defined entity E so that the graph of dependencies between
@@ -1289,11 +1290,12 @@ package body Gnat2Why.Subprograms is
          Theory      => File.Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Image   => False,
-         Ref_Allowed => True,
-         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+         Ref_Allowed => True);
 
       --  We fill the map of parameters, so that in the pre and post, we use
       --  local names of the parameters, instead of the global names
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       for Binder of Func_Binders loop
          declare
@@ -1304,7 +1306,7 @@ package body Gnat2Why.Subprograms is
             --  void_param)
 
             if Present (A) then
-               Ada_Ent_To_Why.Insert (Params.Name_Map,
+               Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Unique_Entity (A),
                                       Binder);
             end if;
@@ -1316,7 +1318,8 @@ package body Gnat2Why.Subprograms is
       --  one P.F
 
       if Ekind (E) = E_Function then
-         Ada_Ent_To_Why.Insert (Params.Name_Map, E,
+         Ada_Ent_To_Why.Insert (Symbol_Table,
+                                E,
                                 Binder_Type'(
                                   B_Name =>
                                     +To_Why_Id (E      => E,
@@ -1407,6 +1410,8 @@ package body Gnat2Why.Subprograms is
                Pre         => Pre,
                Post        => Post));
       end if;
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
       Close_Theory (File,
                     Filter_Entity  => E,
                     Defined_Entity => E);

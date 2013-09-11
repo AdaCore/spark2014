@@ -35,6 +35,8 @@ with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
 
 package Gnat2Why.Util is
 
+   Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+
    type Transformation_Params is record
       File        : W_File_Id;
       --  Identity of the current Why3 file. If needed, new theories and
@@ -51,10 +53,6 @@ package Gnat2Why.Util is
       --  part of a possibly large assertion is not proved.
       Ref_Allowed : Boolean;
       --  Flag that is True if references are allowed
-      Name_Map    : Ada_Ent_To_Why.Map;
-      --  Map from Ada entities to Why entities used for subprogram parameters
-      --  in specs, which should be translated differently from global
-      --  variables.
    end record;
    --  Set of parameters for the transformation phase
 
@@ -65,8 +63,7 @@ package Gnat2Why.Util is
                              Theory      => Why_Sections (WF_Main).Cur_Theory,
                              Phase       => Phase,
                              Gen_Image   => False,
-                             Ref_Allowed => True,
-                             Name_Map    => Ada_Ent_To_Why.Empty_Map));
+                             Ref_Allowed => True));
    --  Usual set of transformation parameters for a given phase
 
    ---------------------------------------------
