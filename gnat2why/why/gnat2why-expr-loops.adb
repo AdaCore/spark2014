@@ -40,6 +40,7 @@ with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
+with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
@@ -470,7 +471,31 @@ package body Gnat2Why.Expr.Loops is
       Final_Loop_Final       : W_Prog_Id;
       Final_Loop_Tmps        : Node_Lists.List;
 
+      Loop_Param_Ent         : Entity_Id := Empty;
+      Loop_Index             : W_Identifier_Id;
+      --  These two variables hold the loop parameter in Ada and Why, if any
+
    begin
+
+      if Present (Scheme) and then
+        not Present (Condition (Scheme)) and then
+        Present (Loop_Parameter_Specification (Scheme))
+      then
+         Loop_Param_Ent :=
+           Defining_Identifier (Loop_Parameter_Specification (Scheme));
+         Loop_Index     :=
+           To_Why_Id (E => Loop_Param_Ent, Domain => EW_Prog);
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         Ada_Ent_To_Why.Insert (Symbol_Table,
+                                Loop_Param_Ent,
+                                Binder_Type'(
+                                  Ada_Node => Loop_Param_Ent,
+                                  B_Name   => Loop_Index,
+                                  B_Ent    => null,
+                                  B_Type   => +EW_Int_Type,
+                                  Mutable  => True));
+      end if;
+
       --  Retrieve the different parts of the loop
 
       Loop_Stmts := Get_Flat_Statement_And_Declaration_List (Loop_Body);
@@ -676,11 +701,7 @@ package body Gnat2Why.Expr.Loops is
                              Loop_Parameter_Specification (Scheme);
             Loop_Range   : constant Node_Id :=
               Discrete_Subtype_Definition (LParam_Spec);
-            Ent          : constant Entity_Id :=
-              Defining_Identifier (LParam_Spec);
             Is_Reverse   : constant Boolean := Reverse_Present (LParam_Spec);
-            Loop_Index   : constant W_Identifier_Id :=
-              To_Why_Id (E => Ent, Domain => EW_Prog);
             Index_Deref  : constant W_Prog_Id :=
                              New_Deref
                                (Ada_Node => Stmt,
@@ -754,6 +775,7 @@ package body Gnat2Why.Expr.Loops is
          --  Start of For_Loop
 
          begin
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             Entire_Loop :=
               Sequence
                 (New_Assignment

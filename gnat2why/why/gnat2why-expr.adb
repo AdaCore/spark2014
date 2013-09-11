@@ -4674,18 +4674,10 @@ package body Gnat2Why.Expr is
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
          Current_Type := EW_Int_Type;
-
-      elsif Ekind (Ent) = E_Loop_Parameter and then
-        Is_Quantified_Loop_Param (Ent) then
+      elsif Ekind (Ent) = E_Loop_Parameter then
          pragma Assert (False);
       else
          T := +To_Why_Id (Ent, Domain);
-      end if;
-
-      if Ekind (Ent) = E_Loop_Parameter and then
-        not Entity_In_External_Axioms (Etype (Ent))
-      then
-         Current_Type := EW_Int_Type;
       end if;
 
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
