@@ -2284,7 +2284,6 @@ package body SPARK_Definition is
               N_Procedure_Instantiation                |
               N_Real_Literal                           |
               N_String_Literal                         |
-              N_Subprogram_Info                        |
               N_Subprogram_Renaming_Declaration        |
               N_Use_Package_Clause                     |
               N_With_Clause                            |
