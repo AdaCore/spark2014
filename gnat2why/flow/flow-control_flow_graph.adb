@@ -2506,8 +2506,34 @@ package body Flow.Control_Flow_Graph is
             end;
 
          when E_Package | E_Package_Body =>
-            --  Packages have no globals
-            null;
+            --  Packages have no obvious globals, but we can extract a
+            --  list of global variables used from the optional rhs of
+            --  the initialises clause:
+            --
+            --     Initializes => (State => (Global_A, ...),
+            --
+            --  Any other use of non-local variables is not legal (SRM
+            --  7.1.5, verification rule 12).
+            --
+            --  Any such globals are global inputs *only* as packages
+            --  are only allowed to initialise their own state.
+            declare
+               Initializes_Contract : constant Node_Id :=
+                 (if FA.Kind = E_Package
+                  then Get_Pragma (FA.Analyzed_Entity, Pragma_Initializes)
+                  else Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
+                                   Pragma_Initializes));
+            begin
+               if Present (Initializes_Contract) then
+                  for Opt_In of Parse_Initializes (Initializes_Contract) loop
+                     if Opt_In.Exists then
+                        for G of Opt_In.The_Set loop
+                           Create_Initial_And_Final_Vertices (G, Mode_In, FA);
+                        end loop;
+                     end if;
+                  end loop;
+               end if;
+            end;
 
       end case;
 

@@ -974,34 +974,24 @@ package body Flow.Analysis is
          Tag : constant String := "illegal_update";
       begin
          if The_Global_Atr.Is_Global then
-            --  !!! can we merge these three cases now?
-            if Illegal_Use_Atr.Is_Parameter then
-               --  foo (bar);
+            if FA.Kind in E_Package | E_Package_Body then
                Error_Msg_Flow
-                 (Msg => "& must be a global output of &",
-                  N   => Error_Location (FA.PDG, Illegal_Use_Loc),
-                  F1  => Illegal_Use_Atr.Parameter_Formal,
-                  F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag => Tag);
-
-            elsif Illegal_Use_Atr.Is_Global_Parameter then
-               --  foo;
-               Error_Msg_Flow
-                 (Msg => "& must be a global output of &",
+                 (Msg => "illegal update of &," &
+                    " which is not part of &",
                   N   => Error_Location (FA.PDG, Illegal_Use_Loc),
                   F1  => The_Global_Id,
                   F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag => Tag);
 
             else
-               --  bar := 12;
                Error_Msg_Flow
                  (Msg => "& must be a global output of &",
                   N   => Error_Location (FA.PDG, Illegal_Use_Loc),
-                  F1  => The_Global_Id,
+                  F1  => (if Illegal_Use_Atr.Is_Parameter
+                          then Illegal_Use_Atr.Parameter_Formal
+                          else The_Global_Id),
                   F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag => Tag);
-
             end if;
          else
             --  It *has* to be a global. The compiler would catch any
