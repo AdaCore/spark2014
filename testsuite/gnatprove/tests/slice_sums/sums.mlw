@@ -1,0 +1,156 @@
+module Sums__extended_index
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type extended_index 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  0
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  65536
+ 
+ clone export "ada__model".Discrete with
+ type t = extended_index, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+module Sums__index
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type index 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  1
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  65536
+ 
+ clone export "ada__model".Discrete with
+ type t = index, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+module Sums__vector_element
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type vector_element 
+ 
+ function attr__ATTRIBUTE_FIRST  : int =
+  -32768
+ 
+ function attr__ATTRIBUTE_LAST  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = vector_element, 
+ function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
+ function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+end
+
+module Sums__vector
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use        "_gnatprove_standard".Array__1
+ use import Standard__integer
+ use import Sums__index
+ use import Sums__vector_element
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Sums__vector_element.vector_element, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Sums__index.in_range
+ 
+ type vector  = 
+  __t
+end
+
+module Sums__slice_bounds
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import Sums__index
+ use import Sums__extended_index
+
+ type slice_bounds  = 
+  { rec__lo : Sums__index.index; rec__hi : Sums__extended_index.extended_index }
+ 
+ predicate lo__pred  (a : slice_bounds) =
+  true
+ 
+ val rec__lo_
+   (a : slice_bounds)  :Sums__index.index
+  requires { (lo__pred a) }
+  ensures { ( result = a.rec__lo ) }
+
+ 
+ predicate hi__pred  (a : slice_bounds) =
+  true
+ 
+ val rec__hi_
+   (a : slice_bounds)  :Sums__extended_index.extended_index
+  requires { (hi__pred a) }
+  ensures { ( result = a.rec__hi ) }
+
+ 
+ function bool_eq  (a : slice_bounds) (b : slice_bounds) : bool =
+  (if (( ( a.rec__lo = b.rec__lo ) /\ ( a.rec__hi = b.rec__hi ) )) then (
+   True) else (
+   False))
+ 
+ function dummy 
+   :slice_bounds
+end
+
+module Sums__sum
+ use import "_gnatprove_standard".Main
+ use import Sums__slice_bounds
+ use import Sums__index
+ use import Standard__integer
+ use import Sums__extended_index
+ use import Sums__vector
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function sum 
+   (sums__sum__x : Sums__vector.vector) (sums__sum__bounds : Sums__slice_bounds.slice_bounds)  :Standard__integer.integer
+
+ axiom sum_def:
+    forall v : Sums__vector.vector, b : Sums__slice_bounds.slice_bounds
+      [sum v b].
+      (* b.lo > b.hi -> sum v b = 0 *)
+      (Sums__index.to_int (Sums__slice_bounds.rec__lo b) >
+          Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
+       Standard__integer.to_int (sum v b) = 0) /\
+      
+      (* v'first <= b.lo <= b.hi <= v'last ->  *)
+      (Sums__vector.attr__ATTRIBUTE_FIRST v <= Sums__index.to_int (Sums__slice_bounds.rec__lo b) <= Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) <= (Sums__vector.attr__ATTRIBUTE_LAST v) ->
+      (* b.lo = b.hi -> sum v b = get v b.lo *)
+       (Sums__index.to_int (Sums__slice_bounds.rec__lo b) = Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
+    Standard__integer.to_int (sum v b) = Sums__vector_element.to_int (Array__1.get (Sums__vector.to_array v) (Sums__index.to_int (Sums__slice_bounds.rec__lo b)))) /\
+       (forall b' : Sums__slice_bounds.slice_bounds [sum v b'].
+          (* b.lo < i <= b.hi -> sum v b = sum v (b.lo, i - 1) + sum v (i, b.hi) *)
+          (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b') = Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) -> Sums__index.to_int (Sums__slice_bounds.rec__lo b) < Sums__index.to_int (Sums__slice_bounds.rec__lo b') <= Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
+          Standard__integer.to_int (sum v b) = Standard__integer.to_int (sum v b') + Standard__integer.to_int (sum v {Sums__slice_bounds.rec__lo = Sums__slice_bounds.rec__lo b; Sums__slice_bounds.rec__hi = Sums__extended_index.of_int (Sums__index.to_int (Sums__slice_bounds.rec__lo b') - 1)})) /\
+          (* b.lo <= i < b.hi -> sum v b = sum v (b.lo, i) + sum v (i + 1, b.hi) *)
+          (Sums__index.to_int (Sums__slice_bounds.rec__lo b') = Sums__index.to_int (Sums__slice_bounds.rec__lo b) -> Sums__index.to_int (Sums__slice_bounds.rec__lo b) <= Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b') < Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b) ->
+          Standard__integer.to_int (sum v b) = Standard__integer.to_int (sum v b') + Standard__integer.to_int (sum v {Sums__slice_bounds.rec__lo = Sums__index.of_int (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi b') + 1); Sums__slice_bounds.rec__hi = Sums__slice_bounds.rec__hi b})))
+      )
+
+ val sum
+   (sums__sum__x : Sums__vector.vector) (sums__sum__bounds : Sums__slice_bounds.slice_bounds)  :Standard__integer.integer
+  requires { ( ( (Sums__index.to_int (Sums__slice_bounds.rec__lo sums__sum__bounds)) > (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi sums__sum__bounds)) ) \/ ( ( (Sums__vector.attr__ATTRIBUTE_FIRST sums__sum__x) <= (Sums__index.to_int (Sums__slice_bounds.rec__lo sums__sum__bounds)) ) /\ ( (Sums__extended_index.to_int (Sums__slice_bounds.rec__hi sums__sum__bounds)) <= (Sums__vector.attr__ATTRIBUTE_LAST sums__sum__x) ) ) ) }
+  ensures { ( result = (sum sums__sum__x sums__sum__bounds) ) }
+
+end
