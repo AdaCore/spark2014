@@ -3345,12 +3345,16 @@ global variables discussed later in this section.
 
 .. _tu-elaboration_issues-07:
 
-7. In the case of a dispatching call, the subprogram_body mentioned
+   7. Rule removed.
+
+.. 7. In the case of a dispatching call, the subprogram_body mentioned
    in the above rules is that (if any) of the statically denoted callee.
 
 .. _tu-elaboration_issues-08:
 
-8. The first freezing point of a tagged type shall occur within the
+   8. Rule removed.
+
+.. 8. The first freezing point of a tagged type shall occur within the
    early call region of each of its overriding primitive operations.
 
    [This rule is needed to prevent a dispatching call before the body
@@ -3376,31 +3380,8 @@ global variables discussed later in this section.
    they both belonged to some enclosing declaration list with the body
    immediately following the specification. This means that the early call
    region in which a call is permitted can span the specification/body boundary.
-   This is important for tagged type declarations.
-
-   [This example is in |SPARK|, but would not be without the Elaborate_Body
-   pragma (because of the tagged type rule).
-
-   .. code-block:: ada
-
-     with Other_Pkg;
-     package Pkg is
-        pragma Elaborate_Body;
-        type T is new Other_Pkg.Some_Tagged_Type with null record;
-        overriding procedure Op (X : T);
-        -- freezing point of T is here
-     end;
-
-     package body Pkg is
-        ... ; -- only preelaborable constructs here
-        procedure Op (X : T) is ... ;
-     end Pkg;
-
-   An elaboration check failure would be possible if a call to Op (simple or via
-   a dispatching call to an ancestor) were attempted between the elaboration of
-   the spec and body of Pkg. The Elaborate_Body pragma prevents this from
-   occurring. A library unit package spec which declares a tagged type will
-   typically require an Elaborate_Body pragma.]
+   
+.. This is important for tagged type declarations.
 
 .. _tu-elaboration_issues-10:
 
@@ -3417,12 +3398,12 @@ global variables discussed later in this section.
       static elaboration order rule as given in the GNAT Pro User's
       Guide.]
 
-    For each call that is executable during elaboration for a given
-    library unit package spec or body, there are two cases: it is
-    (statically) a call to a subprogram whose body is in the current
-    compilation_unit, or it is not. In the latter case, we require an
-    Elaborate_All pragma as described above (the pragma must be given
-    explicitly; it is not supplied implicitly).
+    * For each call that is executable during elaboration for a given
+      library unit package spec or body, there are two cases: it is
+      (statically) a call to a subprogram whose body is in the current
+      compilation_unit, or it is not. In the latter case, we require
+      an Elaborate_All pragma as described above (the pragma must be
+      given explicitly; it is not supplied implicitly).
 
     [Corner case notes: 
     These rules correctly prohibit the following example:
@@ -3432,40 +3413,7 @@ global variables discussed later in this section.
      package P is
         function F return Boolean;
         Flag : Boolean := F; -- would fail elab check
-     end;
-
-   The following dispatching-call-during-elaboration example would
-   be problematic if the Elaborate_Body pragma were not required;
-   with the pragma, the problem is solved because the elaboration
-   order constraints are unsatisfiable:
-
-   .. code-block:: ada
-
-     package Pkg1 is
-        type T1 is abstract tagged null record;
-        function Op (X1 : T1) return Boolean is abstract;
-     end Pkg1;
-
-     with Pkg1;
-     package Pkg2 is
-        pragma Elaborate_Body;
-        type T2 is new Pkg1.T1 with null record;
-        function Op (X2 : T2) return Boolean;
-     end Pkg2;
-
-     with Pkg1, Pkg2;
-     package Pkg3 is
-        X : Pkg2.T2;
-        Flag : Boolean := Pkg1.Op (Pkg1.T1'Class (X));
-          -- dispatching call during elaboration fails check
-          -- Note 'Class is not currently permitted.
-     end Pkg3;
-
-     with Pkg3;
-     package body Pkg2 is
-        function Op (X2 : T2) return Boolean is
-        begin return True; end;
-     end Pkg2;
+     end;]
 
 .. _tu-elaboration_issues-11:
 
