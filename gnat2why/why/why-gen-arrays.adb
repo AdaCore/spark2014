@@ -416,10 +416,11 @@ package body Why.Gen.Arrays is
                      Binders     =>
                        (1 =>
                           Binder_Type'(
-                            Ada_Node => Empty,
-                            Mutable  => False,
-                            B_Name   => Dummy_Ident,
-                            B_Type   => Image_Ty)),
+                          Ada_Node => Empty,
+                          Mutable  => False,
+                          B_Ent    => null,
+                          B_Name   => Dummy_Ident,
+                          B_Type   => Image_Ty)),
                      Return_Type => Str_Typ));
             Emit (Theory,
                   New_Function_Decl
@@ -428,10 +429,11 @@ package body Why.Gen.Arrays is
                      Binders     =>
                        (1 =>
                           Binder_Type'(
-                            Ada_Node => Empty,
-                            Mutable  => False,
-                            B_Name   => Dummy_Ident,
-                            B_Type   => Str_Typ)),
+                          Ada_Node => Empty,
+                          Mutable  => False,
+                          B_Ent    => null,
+                          B_Name   => Dummy_Ident,
+                          B_Type   => Str_Typ)),
                      Return_Type => Image_Ty));
          end;
       end if;

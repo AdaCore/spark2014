@@ -1306,6 +1306,7 @@ package body Gnat2Why.Decls is
                            Binders (Count) :=
                              (Ada_Node => F_Id,
                               B_Name   => Name,
+                              B_Ent    => null,
                               Mutable  => False,
                               B_Type   => F_Type);
 

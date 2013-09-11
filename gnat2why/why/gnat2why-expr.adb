@@ -875,7 +875,7 @@ package body Gnat2Why.Expr is
             for Elt of Read_Names loop
                declare
                   C : constant Ada_Ent_To_Why.Cursor :=
-                        Ada_Ent_To_Why.Find (Params.Name_Map, Elt.all);
+                        Ada_Ent_To_Why.Find (Params.Name_Map, Elt);
                   T : W_Expr_Id;
                begin
                   --  If the effect parameter is found in the map, use the name
@@ -1970,6 +1970,7 @@ package body Gnat2Why.Expr is
                                 Expr,
                                 Binder_Type'(B_Name   => Func,
                                              B_Type   => Why_Empty,
+                                             B_Ent    => null,
                                              Ada_Node => Empty,
                                              Mutable  => False));
 
@@ -1984,6 +1985,7 @@ package body Gnat2Why.Expr is
                B     : constant Binder_Type :=
                  (Ada_Node => Empty,
                   B_Name   => Ident,
+                  B_Ent    => null,
                   Mutable  => False,
                   B_Type   => Why_Logic_Type_Of_Ada_Type (Element (Typ)));
             begin
@@ -5549,6 +5551,7 @@ package body Gnat2Why.Expr is
                              E => N,
                              W => Binder_Type'(B_Name   => Id,
                                                B_Type   => +Why_Type,
+                                               B_Ent    => null,
                                                Mutable  => False,
                                                Ada_Node => Empty));
    end Transform_String_Literal;

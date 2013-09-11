@@ -23,18 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;              use Types;
+with Types;                  use Types;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 pragma Warnings (Off);
 --  ??? Why.Types" is directly visible as "Types", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
 --  with the same name ("Types"). Maybe we should think of renaming it to
 --  "Why.W_Types".
-with Why.Types;          use Why.Types;
+with Why.Types;              use Why.Types;
 pragma Warnings (On);
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Ids;            use Why.Ids;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Sinfo;              use Why.Sinfo;
+with Why.Ids;                use Why.Ids;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Gen.Preds;          use Why.Gen.Preds;
 
 package Why.Gen.Binders is
    --  This package provides operations to build binders in program space
@@ -45,9 +46,14 @@ package Why.Gen.Binders is
    type Binder_Type is record
       Ada_Node : Node_Id := Empty;
       B_Name   : W_Identifier_Id;
+      B_Ent    : Entity_Name;
       B_Type   : W_Primitive_Type_Id;
       Mutable  : Boolean := False;
    end record;
+   --  This record represents a variable binding B_Name of type B_Type. In some
+   --  cases, extra information is stored concerning the Ada entity that is
+   --  represented by this binder. The Ada_Node may be used for that, or the
+   --  B_Ent field if no entity node is available for the entity.
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 

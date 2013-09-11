@@ -111,7 +111,7 @@ package body Gnat2Why.Nodes is
          end if;
       end Find;
 
-      function Find (M : Map; E : String) return Cursor is
+      function Find (M : Map; E : Entity_Name) return Cursor is
       begin
          --  We need to check the name map, but before generating a string to
          --  look up, let's check if the map is empty.
@@ -123,14 +123,8 @@ package body Gnat2Why.Nodes is
                return Cursor'(CK_Ent, Ent_To_Why.No_Element,
                               Name_To_Why_Map.No_Element);
          else
-            declare
-               S   : Entity_Name := new String'(E);
-               Res : constant Cursor := Cursor'(CK_Str, Ent_To_Why.No_Element,
-                                                M.Entity_Names.Find (S));
-            begin
-               Free (S);
-               return Res;
-            end;
+            return Cursor'(CK_Str, Ent_To_Why.No_Element,
+                           M.Entity_Names.Find (E));
          end if;
       end Find;
 
@@ -161,17 +155,126 @@ package body Gnat2Why.Nodes is
 
       procedure Insert (M : in out Map;
                         E : Entity_Id;
-                        W : Binder_Type) is
+                        W : Binder_Type)
+      is
+         C : Ent_To_Why.Cursor;
+         Inserted : Boolean;
       begin
-         M.Entity_Ids.Insert (E, W);
+         M.Entity_Ids.Insert (E, W, C, Inserted);
+         if Undo_Stacks.Is_Empty (M.Undo_Stack) then
+
+            --  At the global level (no undo stack) we expect that there are no
+            --  clashes in symbols
+
+            pragma Assert (Inserted);
+         else
+            if Inserted then
+               M.Undo_Stack.Append (Action'(Remove_Ent, E));
+            else
+
+               --  If there was already an entry for the entity, we need to
+               --  store in the undo stack the fact that this info must be
+               --  reinserted
+
+               M.Undo_Stack.Append
+                 (Action'(Kind       => Insert_Ent,
+                          Ins_Entity => Ent_To_Why.Key (C),
+                          Ins_Binder => Ent_To_Why.Element (C)));
+               M.Entity_Ids.Replace (E, W);
+               M.Undo_Stack.Append (Action'(Remove_Ent, E));
+            end if;
+         end if;
       end Insert;
 
       procedure Insert (M : in out Map;
-                        E : String;
+                        E : Entity_Name;
                         W : Binder_Type) is
+         C : Name_To_Why_Map.Cursor;
+         Inserted : Boolean;
       begin
-         M.Entity_Names.Insert (new String'(E), W);
+         M.Entity_Names.Insert (E, W, C, Inserted);
+         if Undo_Stacks.Is_Empty (M.Undo_Stack) then
+
+            --  At the global level (no undo stack) we expect that there are no
+            --  clashes in symbols
+
+            pragma Assert (Inserted);
+         else
+            if Inserted then
+               M.Undo_Stack.Append (Action'(Remove_Name, E));
+            else
+
+               --  If there was already an entry for the name, we need to
+               --  store in the undo stack the fact that this info must be
+               --  reinserted
+
+               M.Undo_Stack.Append
+                 (Action'(Kind => Insert_Name,
+                          Ins_Name => Name_To_Why_Map.Key (C),
+                          Ins_Binder => Name_To_Why_Map.Element (C)));
+               M.Entity_Names.Replace (E, W);
+               M.Undo_Stack.Append (Action'(Remove_Name, E));
+            end if;
+         end if;
       end Insert;
+
+      ---------------
+      -- Pop_Scope --
+      ---------------
+
+      procedure Pop_Scope (M : in out Map) is
+
+         procedure Apply_Action (C : Undo_Stacks.Cursor);
+         --  apply a single action
+
+         ------------------
+         -- Apply_Action --
+         ------------------
+
+         procedure Apply_Action (C : Undo_Stacks.Cursor) is
+            A : constant Action := Undo_Stacks.Element (C);
+         begin
+            case A.Kind is
+               when Insert_Ent =>
+                  Insert (M, A.Ins_Entity, A.Ins_Binder);
+               when Insert_Name =>
+                  Insert (M, A.Ins_Name, A.Ins_Binder);
+               when Remove_Ent =>
+                  M.Entity_Ids.Delete (A.Rem_Entity);
+               when Remove_Name =>
+                  M.Entity_Names.Delete (A.Rem_Name);
+               when Boundary =>
+                  raise Program_Error;
+            end case;
+         end Apply_Action;
+
+         C : Undo_Stacks.Cursor := M.Undo_Stack.Last;
+         Tmp : Undo_Stacks.Cursor;
+
+      begin
+         while Undo_Stacks.Has_Element (C) and then
+           Undo_Stacks.Element (C).Kind /= Boundary loop
+            Apply_Action (C);
+            Tmp := C;
+            Undo_Stacks.Previous (C);
+            M.Undo_Stack.Delete (Tmp);
+         end loop;
+
+         --  we still need to delete the boundary marker, if it exists
+
+         if Undo_Stacks.Has_Element (C) then
+            M.Undo_Stack.Delete (C);
+         end if;
+      end Pop_Scope;
+
+      ----------------
+      -- Push_Scope --
+      ----------------
+
+      procedure Push_Scope (M : in out Map) is
+      begin
+         M.Undo_Stack.Append (Action'(Kind => Boundary));
+      end Push_Scope;
 
    end Ada_Ent_To_Why;
 
