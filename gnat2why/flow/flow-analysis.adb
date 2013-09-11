@@ -690,7 +690,7 @@ package body Flow.Analysis is
       --  Sanity check for aliasing.
 
       if FA.Aliasing_Present then
-         if Gnat2Why_Args.Flow_Dump_Graphs then
+         if Gnat2Why_Args.Flow_Debug_Mode then
             Error_Msg_NE
               ("flow analysis of & abandoned due to aliasing!",
                FA.Analyzed_Entity,
@@ -706,7 +706,7 @@ package body Flow.Analysis is
 
       Check_Record_Declarations (FA.Scope);
       if not Sane then
-         if Gnat2Why_Args.Flow_Dump_Graphs then
+         if Gnat2Why_Args.Flow_Debug_Mode then
             Error_Msg_NE
               ("flow analysis of & abandoned due to records with non-manifest"
                  &  " initializations!",
@@ -763,7 +763,7 @@ package body Flow.Analysis is
       end loop;
 
       if not Sane then
-         if Gnat2Why_Args.Flow_Dump_Graphs then
+         if Gnat2Why_Args.Flow_Debug_Mode then
             Error_Msg_NE
               ("flow analysis of & abandoned due to inconsistent graph!",
                FA.Analyzed_Entity,

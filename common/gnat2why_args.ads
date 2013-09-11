@@ -74,10 +74,15 @@ package Gnat2Why_Args is
 
    Flow_Analysis_Mode : Boolean := False;
 
-   --  In Flow analysis mode dump the different graphs (control flow,
-   --  control dependence) for debugging purposes.
+   --  Enable basic debugging for flow analysis. This will dump the
+   --  CFG and PDG is dot format.
 
-   Flow_Dump_Graphs : Boolean := False;
+   Flow_Debug_Mode : Boolean := False;
+
+   --  This will enable additional tracing output and will call
+   --  graphviz on each dumped graph.
+
+   Flow_Advanced_Debug : Boolean := False;
 
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue

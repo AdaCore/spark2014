@@ -43,15 +43,16 @@ package body Gnat2Why_Args is
    --  means "false". For other variables, the value is given after the "="
    --  sign. No "=value" part is allowed for boolean variables.
 
-   Warning_Mode_Name       : constant String := "warning_mode";
-   Global_Gen_Mode_Name    : constant String := "global_gen_mode";
-   Check_Mode_Name         : constant String := "check_mode";
-   Flow_Analysis_Mode_Name : constant String := "flow_analysis_mode";
-   Flow_Dump_Graphs_Name   : constant String := "flow_dump_graphs";
-   Analyze_File_Name       : constant String := "analyze_file";
-   Limit_Subp_Name         : constant String := "limit_subp";
-   Pedantic_Name           : constant String := "pedantic";
-   Ide_Mode_Name           : constant String := "ide_mode";
+   Warning_Mode_Name        : constant String := "warning_mode";
+   Global_Gen_Mode_Name     : constant String := "global_gen_mode";
+   Check_Mode_Name          : constant String := "check_mode";
+   Flow_Analysis_Mode_Name  : constant String := "flow_analysis_mode";
+   Flow_Debug_Mode_Name     : constant String := "flow_debug";
+   Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
+   Analyze_File_Name        : constant String := "analyze_file";
+   Limit_Subp_Name          : constant String := "limit_subp";
+   Pedantic_Name            : constant String := "pedantic";
+   Ide_Mode_Name            : constant String := "ide_mode";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -87,8 +88,11 @@ package body Gnat2Why_Args is
       elsif Token = Flow_Analysis_Mode_Name then
          Flow_Analysis_Mode := True;
 
-      elsif Token = Flow_Dump_Graphs_Name then
-         Flow_Dump_Graphs := True;
+      elsif Token = Flow_Debug_Mode_Name then
+         Flow_Debug_Mode := True;
+
+      elsif Token = Flow_Advanced_Debug_Name then
+         Flow_Advanced_Debug := True;
 
       elsif Token = Pedantic_Name then
          Pedantic := True;
@@ -189,8 +193,12 @@ package body Gnat2Why_Args is
          Write_Line (Flow_Analysis_Mode_Name);
       end if;
 
-      if Flow_Dump_Graphs then
-         Write_Line (Flow_Dump_Graphs_Name);
+      if Flow_Debug_Mode then
+         Write_Line (Flow_Debug_Mode_Name);
+      end if;
+
+      if Flow_Advanced_Debug then
+         Write_Line (Flow_Advanced_Debug_Name);
       end if;
 
       if Pedantic then

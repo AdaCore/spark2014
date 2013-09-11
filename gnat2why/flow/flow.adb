@@ -729,16 +729,18 @@ package body Flow is
          return Rv;
       end EDI;
    begin
-      if Gnat2Why_Args.Flow_Dump_Graphs then
-         G.Write_Pdf_File
-           (Filename  => Filename,
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
-      else
-         G.Write_Dot_File
-           (Filename  => Filename,
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
+      if Gnat2Why_Args.Flow_Debug_Mode then
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            G.Write_Pdf_File
+              (Filename  => Filename,
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         else
+            G.Write_Dot_File
+              (Filename  => Filename,
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         end if;
       end if;
    end Print_Graph;
 
@@ -825,7 +827,7 @@ package body Flow is
 
       Append (FA.Base_Filename, Get_Name_String (Chars (E)));
 
-      if Gnat2Why_Args.Flow_Dump_Graphs then
+      if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Str (Character'Val (8#33#) & "[32m" &
                       "Flow analysis (cons) of " &
                       Entity_Kind'Image (FA.Kind) &
@@ -1030,7 +1032,7 @@ package body Flow is
 
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
-         if Gnat2Why_Args.Flow_Dump_Graphs then
+         if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Str (Character'Val (8#33#) & "[32m" &
                          "Flow analysis (errors) for " &
                          Entity_Kind'Image (FA.Kind) &

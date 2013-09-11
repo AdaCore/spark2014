@@ -585,7 +585,8 @@ procedure Gnatprove is
       if Translation_Phase then
          Gnat2Why_Args.Warning_Mode := Warning_Mode;
          Gnat2Why_Args.Global_Gen_Mode := False;
-         Gnat2Why_Args.Flow_Dump_Graphs := MMode = GPM_Flow and Debug;
+         Gnat2Why_Args.Flow_Debug_Mode := Debug;
+         Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
          Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
          Gnat2Why_Args.Flow_Analysis_Mode := MMode in GPM_Flow | GPM_All;
          Gnat2Why_Args.Analyze_File := File_List;

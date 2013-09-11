@@ -129,6 +129,8 @@ ASCII.LF &
 ASCII.LF &
 " -d, --debug        Debug mode" &
 ASCII.LF &
+" --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
+ASCII.LF &
 "     --proof=p      Set the proof mode "&
 "(p=normal*, no_wp, all_split, path_wp, no_split)" &
 ASCII.LF &
@@ -340,6 +342,12 @@ ASCII.LF &
           Debug'Access,
           "-d", Long_Switch => "--debug",
           Help => "Debug mode");
+
+      Define_Switch
+         (Config,
+          Flow_Extra_Debug'Access,
+          Long_Switch => "--flow-debug",
+          Help => "Extra debugging for flow analysis (requires graphviz)");
 
       Define_Switch
         (Config, Project_File'Access,
@@ -571,6 +579,10 @@ ASCII.LF &
          Abort_With_Help
            ("proof mode should be one of " &
             "(then_split | no_wp | all_split | path_wp | no_split)");
+      end if;
+
+      if Flow_Extra_Debug and not Debug then
+         Abort_With_Help ("extra debugging for flow analysis requires -d");
       end if;
 
       declare
