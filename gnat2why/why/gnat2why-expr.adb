@@ -4677,8 +4677,7 @@ package body Gnat2Why.Expr is
 
       elsif Ekind (Ent) = E_Loop_Parameter and then
         Is_Quantified_Loop_Param (Ent) then
-         T := +New_Identifier (Name => Full_Name (Ent));
-
+         pragma Assert (False);
       else
          T := +To_Why_Id (Ent, Domain);
       end if;
@@ -5000,18 +4999,56 @@ package body Gnat2Why.Expr is
                         New_Base_Type (Base_Type => EW_Int)
                       else
                         Why_Logic_Type_Of_Ada_Type (Index_Type));
+      Cond_Expr  : W_Expr_Id;
 
-   --  Start of Transform_Quantified_Expression
+      --  Start of Transform_Quantified_Expression
 
    begin
-      --  Simplest case, the quantification in Ada is translated as a
+
+      if Domain = EW_Term then
+
+         --  It is trivial to promote a predicate to a term, by doing
+         --    if pred then True else False
+
+         declare
+            Pred : constant W_Expr_Id :=
+                     Transform_Quantified_Expression
+                       (Expr, EW_Pred, Params);
+         begin
+            return
+              New_Conditional (Domain    => EW_Term,
+                               Condition => Pred,
+                               Then_Part =>
+                                 New_Literal (Value => EW_True,
+                                              Domain => Domain,
+                                              Ada_Node => Standard_Boolean),
+                               Else_Part =>
+                                 New_Literal (Value => EW_False,
+                                              Domain => Domain,
+                                              Ada_Node => Standard_Boolean));
+         end;
+      end if;
+
+      --  We are now in domain Prog or Pred, and have to translate the
+      --  condition of the quantified expression, where the context is
+      --  enriched by the loop parameter
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             Index_Ent,
+                             Binder_Type'(Ada_Node => Index_Ent,
+                                          B_Name   => Why_Id,
+                                          B_Type   => Index_Base,
+                                          B_Ent    => null,
+                                          Mutable  => False));
+      Cond_Expr := Transform_Expr (Condition (Expr), Domain, Params);
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      --  In the predicate case the quantification in Ada is translated as a
       --  quantification in Why3.
 
       if Domain = EW_Pred then
          declare
-            Conclusion : constant W_Pred_Id :=
-                           +Transform_Expr (Condition (Expr),
-                                            EW_Pred, Params);
             Constraint : constant W_Pred_Id :=
               (if Over_Range then
                  +Range_Expr (Range_E, +Why_Id, EW_Pred, Params)
@@ -5023,7 +5060,7 @@ package body Gnat2Why.Expr is
               New_Connection
                 (Op     => Connector,
                  Left   => +Constraint,
-                 Right  => +Conclusion);
+                 Right  => Cond_Expr);
          begin
             if All_Present (Expr) then
                return
@@ -5058,11 +5095,6 @@ package body Gnat2Why.Expr is
 
       elsif Domain = EW_Prog then
          declare
-            Why_Expr   : constant W_Prog_Id :=
-                           New_Ignore
-                             (Prog =>
-                                +Transform_Expr (Condition (Expr),
-                                                 EW_Prog, Params));
             Range_Cond : W_Prog_Id;
          begin
             Range_Cond :=
@@ -5080,7 +5112,7 @@ package body Gnat2Why.Expr is
                       New_Conditional
                         (Domain    => EW_Prog,
                          Condition => +Range_Cond,
-                         Then_Part => +Why_Expr)),
+                         Then_Part => +New_Ignore (Prog => +Cond_Expr))),
                  New_Assume_Statement
                    (Ada_Node    => Expr,
                     Return_Type => New_Base_Type (Base_Type => EW_Bool),
@@ -5098,28 +5130,11 @@ package body Gnat2Why.Expr is
                          Right    =>
                            +Transform_Expr (Expr, EW_Pred, Params)))));
          end;
-
-      --  It is trivial to promote a predicate to a term, by doing
-      --    if pred then True else False
-
       else
-         declare
-            Pred : constant W_Expr_Id :=
-                     Transform_Quantified_Expression
-                       (Expr, EW_Pred, Params);
-         begin
-            return
-              New_Conditional (Domain    => EW_Term,
-                               Condition => Pred,
-                               Then_Part =>
-                                 New_Literal (Value => EW_True,
-                                              Domain => Domain,
-                                              Ada_Node => Standard_Boolean),
-                               Else_Part =>
-                                 New_Literal (Value => EW_False,
-                                              Domain => Domain,
-                                              Ada_Node => Standard_Boolean));
-         end;
+
+         --  case Domain = EW_Term already handled
+
+         raise Program_Error;
       end if;
    end Transform_Quantified_Expression;
 
