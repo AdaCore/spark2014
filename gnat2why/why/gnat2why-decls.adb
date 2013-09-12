@@ -426,7 +426,14 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Ref_Type => Typ));
-
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Binder_Type'(
+                               Ada_Node => E,
+                               B_Name   => To_Why_Id (E),
+                               B_Ent    => null,
+                               B_Type   => Typ,
+                               Mutable  => True));
       Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Variable;
 
