@@ -20,7 +20,7 @@ with Clock;
 
 private package Clock.Interfac
 --# own in Now;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

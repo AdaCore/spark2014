@@ -1,6 +1,6 @@
 with Interfaces; use Interfaces;
 
-package NG is
+package NG is pragma SPARK_Mode (On);
 
    subtype Mod_Time is Unsigned_16;
    subtype Mod_Distance is Unsigned_16;

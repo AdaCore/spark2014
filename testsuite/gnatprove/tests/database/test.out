@@ -1,8 +1,8 @@
 database.adb:43:17: info: postcondition proved
-database.adb:51:17: info: postcondition proved
 database.adb:111:21: info: range check proved
 database.adb:112:17: info: index check proved
 database.adb:113:36: info: index check proved
+database.adb:51:17: info: postcondition proved
 database.adb:121:35: info: index check proved
 database.adb:124:35: info: index check proved
 database.adb:130:44: info: index check proved
@@ -20,16 +20,16 @@ database.adb:309:42: info: precondition proved
 database.ads:51:14: info: postcondition proved
 database.ads:53:41: info: precondition proved
 database.ads:74:41: info: precondition proved
-database.ads:93:14: info: precondition proved
 database.ads:94:14: info: precondition proved
 database.ads:94:14: info: postcondition proved
 database.ads:94:34: info: precondition proved
 database.ads:94:56: info: precondition proved
-database.ads:111:25: info: precondition proved
+database.ads:93:14: info: precondition proved
 database.ads:112:14: info: precondition proved
 database.ads:112:14: info: postcondition proved
 database.ads:112:34: info: precondition proved
 database.ads:112:56: info: precondition proved
+database.ads:111:25: info: precondition proved
 money.adb:4:33: info: range check proved
 money.adb:7:33: info: range check proved
 money.ads:31:14: info: postcondition proved

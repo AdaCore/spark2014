@@ -1,4 +1,5 @@
-package Ml_Bits is
+with System;
+package Ml_Bits is pragma SPARK_Mode (On);
 
    type T_Bit is range 0 .. 1;
    for T_Bit'Size use 1;

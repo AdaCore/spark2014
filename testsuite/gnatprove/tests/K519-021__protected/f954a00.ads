@@ -36,8 +36,8 @@
 --
 --!
 
-package F954A00 is  -- Printer device abstraction.
-
+package F954A00 is   -- Printer device abstraction.
+   pragma SPARK_Mode (Off);
 
    -- Model a printer device driver as a protected type. A printer remains
    -- unavailable while data is printing. The printer generates an interrupt

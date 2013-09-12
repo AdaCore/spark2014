@@ -103,8 +103,11 @@ is
    --
    ------------------------------------------------------------------
    function ConvertRetValToText(RetVal : Interfac.ReturnValueT;
+                                Op     : String) return AuditTypes.DescriptionT;
+   function ConvertRetValToText(RetVal : Interfac.ReturnValueT;
                                 Op     : String) return AuditTypes.DescriptionT
    is
+      pragma SPARK_Mode (Off);  --  concatenation
    --# hide ConvertRetValToText;
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheString : String := "Crypto Library Error in " & Op & " : " &

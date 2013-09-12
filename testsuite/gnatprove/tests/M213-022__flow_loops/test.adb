@@ -1,4 +1,4 @@
-package body Test is
+package body Test is 
 
    procedure Basic_Loop (X : in out Integer)
    is

@@ -1,4 +1,4 @@
-package body Lists is
+package body Lists is 
    function Search (L : List) return Cursor is
    begin
       for C in Iterate (L) loop

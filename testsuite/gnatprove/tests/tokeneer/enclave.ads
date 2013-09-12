@@ -49,7 +49,7 @@ with AdminToken; use AdminToken;
 
 package Enclave
 --# own State : StateType;
-is
+is pragma SPARK_Mode (On);
    type StatusT is (NotEnrolled,
                     WaitingEnrol,
                     WaitingEndEnrol,

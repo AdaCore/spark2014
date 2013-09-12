@@ -1,5 +1,5 @@
 with P; use P;
-procedure Q is
+procedure Q is 
    Y, Z : T;
 begin
    Z := Get (Y);

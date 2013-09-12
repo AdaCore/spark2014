@@ -61,11 +61,11 @@ sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:77:14: postcondition not proved, requires Contains(Connections, destination)
 section_4_6.ads:105:06: warning: contract cases do not mention result
-section_4_6.ads:105:6: disjoint contract cases not proved
-section_4_6.ads:105:6: complete contract cases not proved
 section_4_6.ads:105:55: info: contract case proved
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
+section_4_6.ads:105:6: disjoint contract cases not proved
+section_4_6.ads:105:6: complete contract cases not proved
 step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
 step_function.adb:31:27: assertion not proved, requires X >= SFun.Step(j).Delimiter
 step_function.adb:31:42: info: index check proved

@@ -1,6 +1,6 @@
 with Q;
 
-package body P is
+package body P is 
 
    procedure Proc is
    begin

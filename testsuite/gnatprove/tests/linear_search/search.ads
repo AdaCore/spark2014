@@ -1,6 +1,6 @@
-pragma SPARK_Mode (On);
 
-package Search is
+
+package Search is 
 
    type Index is range 1 .. 10;
    type Element is new Integer;

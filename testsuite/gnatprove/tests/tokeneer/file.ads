@@ -18,7 +18,7 @@
 with Ada.Streams.Stream_IO; -- only used in hidden private part
 
 package File
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types
@@ -139,7 +139,7 @@ is
    --
    -- Traceunit : C.File.Exists
    ------------------------------------------------------------------
-   function Exists ( TheFile : T ) return Boolean;
+   function Exists ( TheFile : T ) return Boolean with Global => null;
 
    ------------------------------------------------------------------
    -- PutString
@@ -377,7 +377,7 @@ is
    --#   Success from
    --#      DirName;
 
-private
+private pragma SPARK_Mode (Off);
 
    --# hide File;
    -- hidden due to use of access types, required in low level file

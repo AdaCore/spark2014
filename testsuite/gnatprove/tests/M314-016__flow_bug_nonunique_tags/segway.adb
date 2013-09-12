@@ -1,9 +1,5 @@
 package body Segway is
 
-   procedure Halt
-   with Pre  => Speed_Is_Valid,
-        Post => State = Still and Speed_Is_Valid;
-
    ------------------
    -- State_Update --
    ------------------
@@ -47,20 +43,5 @@ package body Segway is
          end if;
       end loop;
    end Halt;
-
-   -------------
-   -- Execute --
-   -------------
-
-   procedure Execute (Read : Reader) is
-      I : Input;
-   begin
-      loop
-         I := Read.all;
-         exit when I = No_Input;
-         State_Update (I);
-      end loop;
-      Halt;
-   end Execute;
 
 end Segway;

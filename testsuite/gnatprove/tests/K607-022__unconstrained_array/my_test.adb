@@ -1,7 +1,7 @@
 with Simple_Unc_Arrays; use Simple_Unc_Arrays;
 with Ada.Text_IO; use Ada.Text_IO;
 
-procedure My_Test is
+procedure My_Test is pragma SPARK_Mode (On); 
 
    T1 : Table := (10, (5, 1, 3, 0, 9, 8, 2, 7, 4, 6));
    T2 : Table := (10, (4, 8, 6, 9, 0, 1, 7, 2, 5, 3));

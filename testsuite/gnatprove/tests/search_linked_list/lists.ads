@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
 
-package Lists is
+package Lists is 
    package L is new Formal_Doubly_Linked_Lists (Integer);
    use L;
    function Search (L : List) return Cursor with

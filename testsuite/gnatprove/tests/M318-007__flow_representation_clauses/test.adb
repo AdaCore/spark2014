@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package body Test is
+package body Test is 
    procedure Edit (X : out Integer)
    is
       Temp : Integer;

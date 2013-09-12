@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Counters;    use Counters;
 
 procedure Main is
+   pragma SPARK_Mode (Off);  --  exception handlers
    function Factorial (Val : Natural) return Natural;
    --  Val!
 

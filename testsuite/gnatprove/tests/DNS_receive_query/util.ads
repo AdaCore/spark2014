@@ -1,7 +1,7 @@
 with Types; use Types;
 with Interfaces; use Interfaces;
 
-package Util is
+package Util is pragma SPARK_Mode (On);  
    function Extract_Unsigned_16(Query : Network_DNS_Query;
                                 Offset : Network_DNS_Query_Range)
                                 return Unsigned_16

@@ -1,5 +1,5 @@
 procedure Prot is
-
+   pragma SPARK_Mode (Off);
    protected type Shared_Boolean (Init : Boolean := False) is
       function  Value return Boolean;
    private

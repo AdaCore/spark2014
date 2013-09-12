@@ -24,7 +24,7 @@
 --  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package eVoting is
+package eVoting is pragma SPARK_Mode (On);
 
    subtype Candidate_Name_t is String(1 .. 70);
    NO_VOTE_ENTRY : constant String(1..7) := "No vote";

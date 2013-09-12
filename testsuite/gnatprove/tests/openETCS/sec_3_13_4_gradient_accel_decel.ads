@@ -20,7 +20,7 @@
 
 with Units; use Units;
 
-package sec_3_13_4_gradient_accel_decel is
+package sec_3_13_4_gradient_accel_decel is pragma SPARK_Mode (On);
    -- FIXME 3.13.4 not formalized
 
    function A_gradient(d: Distance_t) return Deceleration_t is

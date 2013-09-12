@@ -18,6 +18,7 @@ package body Renam is
 
    procedure O (M : out Integer)
    is
+      pragma SPARK_Mode (Off);
       PM : Integer renames M;
 
       function F return Integer

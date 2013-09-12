@@ -1,4 +1,4 @@
-package Subar is
+package Subar is 
    type One_Twenty is range 1 .. 20;
    subtype One_Ten is One_Twenty range 1 .. 10;
 

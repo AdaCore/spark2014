@@ -1,4 +1,4 @@
-package InvertInjection is
+package InvertInjection is  
 
    N : constant Natural := 100;
    subtype Element is Natural range 1 .. 100;

@@ -1,4 +1,4 @@
-package body Tab_Init is
+package body Tab_Init is  
     Procedure Init (T : out Tab; A : in Integer)
     is
 

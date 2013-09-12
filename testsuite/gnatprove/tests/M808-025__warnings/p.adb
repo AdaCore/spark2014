@@ -1,4 +1,4 @@
-procedure P (Y : out Integer) is
+procedure P (Y : out Integer) is pragma SPARK_Mode (On); 
    type M is mod 2*32;
    pragma Warnings (Off);
    Z : Natural := 0;   

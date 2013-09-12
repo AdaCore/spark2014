@@ -1,4 +1,4 @@
-package Funcs is
+package Funcs is 
    function F1 (X : Integer) return Boolean is (X > 0);
    function F2 (X : Integer) return Boolean;
    function F5 (X : Integer) return Boolean;

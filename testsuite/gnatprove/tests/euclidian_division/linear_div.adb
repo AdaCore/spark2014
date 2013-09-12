@@ -11,7 +11,7 @@ with
             and Remainder >= 0
             and Remainder < Divisor
             and Divisor * Quotient + Remainder = Dividend
-is
+is pragma SPARK_Mode (On);
 begin
    Quotient := 0;
    Remainder := Dividend;

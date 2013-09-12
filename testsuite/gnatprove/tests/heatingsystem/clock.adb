@@ -1,7 +1,7 @@
 with System.Storage_Elements;
 
 -- Clock
-package body Clock is
+package body Clock is  
 
   Ticks : Times;
 

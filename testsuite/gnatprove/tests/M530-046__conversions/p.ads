@@ -11,9 +11,13 @@ package P is
    function Conv_T1_T2 (I : T1) return T2 is
       (T2 (I));
 
+   function Conv_AT1_AT1bis (A : AT1) return AT1bis
+      with SPARK_Mode => Off;
    function Conv_AT1_AT1bis (A : AT1) return AT1bis is
       (AT1bis (A));
 
+   function Conv_AT1_AT1ter (A : AT1) return AT1ter
+      with SPARK_Mode => Off;
    function Conv_AT1_AT1ter (A : AT1) return AT1ter is
       (AT1ter (A));
 

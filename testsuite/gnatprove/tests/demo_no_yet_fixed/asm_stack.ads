@@ -2,7 +2,7 @@
 -- " An ASM is an entity which has well defined states plus a set of operation
 -- which cause state transitions
 
-package ASM_Stack is
+package ASM_Stack is pragma SPARK_Mode (On);  
 
    function Is_Empty return Boolean;
    function Is_Full return Boolean;

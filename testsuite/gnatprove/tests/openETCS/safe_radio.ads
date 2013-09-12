@@ -20,7 +20,7 @@
 
 with Data_Types;
 
-package Safe_Radio is
+package Safe_Radio is pragma SPARK_Mode (On);
    type Message_Type_t is (Initiation_Of_Communication);
 
    function Setup_Connection(phone : Data_Types.Telephone_Number_t)

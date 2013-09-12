@@ -1,2 +1,2 @@
 with Tab;
-package Other is new Tab (Integer);
+package Other is  new Tab (Integer);

@@ -1,4 +1,4 @@
-package body NG is
+package body NG is 
 
    --  Interface to sensors
 

@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Doubly_Linked_Lists;
 
-package Linked_List is
+package Linked_List is pragma SPARK_Mode (On);
 
    function Eq (I1, I2 : Integer) return Boolean is (I1 = I2);
 

@@ -2,7 +2,7 @@
 
 package Display
 --# own out Outputs : Displays;
-is
+is pragma SPARK_Mode (On);
    subtype DisplayDigits is Integer range 0..9;
    subtype DigitPositions is Integer range 0..3;
    type Displays is array (DigitPositions) of DisplayDigits;

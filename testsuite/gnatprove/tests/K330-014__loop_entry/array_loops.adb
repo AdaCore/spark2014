@@ -2,7 +2,7 @@ with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO;    use Ada.Text_IO;
 with Utils;          use Utils;
 
-procedure Array_Loops is
+procedure Array_Loops is pragma SPARK_Mode (Off); --  iterator on array
    type Test_Array is array (Natural range <>, Natural range <>) of Natural;
    Counter : Natural := 1;
 

@@ -1,10 +1,8 @@
-project Intro is
+project Test is
 
    package Compiler is
       for Default_Switches ("ada") use ("-gnat12");
    end Compiler;
 
-   for Main use ("test.adb");
-
-end Intro;
+end Test;
 

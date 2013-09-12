@@ -1,5 +1,5 @@
-queue.adb:13:7: info: precondition proved
 queue.adb:19:14: info: precondition proved
+queue.adb:13:7: info: precondition proved
 queue.ads:16:14: info: precondition proved
 queue.ads:16:14: info: postcondition proved
 queue.ads:20:14: postcondition not proved, requires Strict_Equal (Tail'Result, Left (Q, Last (Q)

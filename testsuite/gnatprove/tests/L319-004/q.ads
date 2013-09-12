@@ -1,2 +1,2 @@
 with P;
-package Q is new P (Integer);
+package Q is  new P (Integer);

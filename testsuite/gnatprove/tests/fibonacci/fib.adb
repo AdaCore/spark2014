@@ -1,4 +1,4 @@
-package body Fib is
+package body Fib is pragma SPARK_Mode (On);  
    function Fibonacci (n : Natural) return Natural is
       a, b, t : Natural;
    begin

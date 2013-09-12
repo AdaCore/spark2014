@@ -1,4 +1,4 @@
-package body Inner_Use is
+package body Inner_Use is 
    procedure P (B : Boolean) is
    begin
       if B then 

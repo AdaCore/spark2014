@@ -1,5 +1,5 @@
-package Pack is
-   pragma SPARK_Mode (On);
+package Pack is  
+   
 
    G : access Boolean := new Boolean;
 

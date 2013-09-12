@@ -1,4 +1,5 @@
 procedure Concat is
+   pragma SPARK_Mode (Off);  --  concatenation
     subtype Index is Integer range 1 .. 10;
     type T is array (Index) of Boolean;
     X : T := (others => True) ;

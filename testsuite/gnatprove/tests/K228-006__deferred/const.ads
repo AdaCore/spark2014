@@ -1,4 +1,4 @@
-package Const is
+package Const is 
    C : constant Integer;
    function Get return Integer with Post => Get'Result = C;
    function Get2 return Integer with Post => Get2'Result = 10_000;

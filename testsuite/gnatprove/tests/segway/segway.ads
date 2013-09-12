@@ -19,7 +19,7 @@ package Segway is
          when Still    => Speed = 0,
          when Forward  => Speed > 0,
          when Backward => Speed < 0)
-     with Global => (State, Speed);
+     with Global => (Speed, State);
 
    procedure State_Update (I : Valid_Input)
    with Global => (In_Out => (State, Speed)),
@@ -27,23 +27,10 @@ package Segway is
         Pre => Speed_Is_Valid,
         Post => Speed_Is_Valid;
 
-   type Reader is access function return Input;
-
-   procedure Execute (Read : Reader)
-   with
-     Pre => Speed_Is_Valid,
-     Post => State = Still and Speed_Is_Valid,
-     Test_Case =>
-       (Name     => "Segway standing still",
-        Mode     => Nominal,
-        Requires => State = Still),
-     Test_Case =>
-       (Name     => "Segway moving forward",
-        Mode     => Nominal,
-        Requires => State = Forward),
-     Test_Case =>
-       (Name     => "Segway moving backward",
-        Mode     => Nominal,
-        Requires => State = Backward);
+   procedure Halt
+   with Global => (In_Out => (State, Speed)),
+        Depends => ((State, Speed) => (State, Speed)),
+        Pre  => Speed_Is_Valid,
+        Post => State = Still and Speed_Is_Valid;
 
 end Segway;

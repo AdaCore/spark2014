@@ -1,4 +1,4 @@
-procedure P is
+procedure P is 
 
      generic
           type priv is private;

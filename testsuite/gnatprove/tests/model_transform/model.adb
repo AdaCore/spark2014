@@ -1,4 +1,4 @@
-package body Model is
+package body Model is 
 
    procedure Set_From
      (Self : in out UML_Transition; Val : UML_State_Access) is

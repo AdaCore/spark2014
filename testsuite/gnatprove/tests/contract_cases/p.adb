@@ -1,4 +1,4 @@
-package body P is
+package body P is  
 
    procedure Incr_Threshold1 (X : in out Integer) is
    begin

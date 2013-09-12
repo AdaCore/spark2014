@@ -1,7 +1,7 @@
 with Types; use Types;
 with LCP;
 with Ada.Text_IO; use Ada.Text_IO;
-procedure Main is
+procedure Main is pragma SPARK_Mode (On); 
    A : Text := (1, 2, 3, 4, 5, 1, 2, 3, 4, 5);
 begin
    Put_Line ("LCP returns non-null");

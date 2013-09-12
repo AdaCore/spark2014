@@ -1,6 +1,6 @@
 with Interfaces; use Interfaces;
 
-package NG_V1 is
+package NG_V1 is pragma SPARK_Mode (On);
 
    EstimatedGroundVelocityIsAvailable : Boolean := False;
    EstimatedGroundVelocity : Unsigned_16;

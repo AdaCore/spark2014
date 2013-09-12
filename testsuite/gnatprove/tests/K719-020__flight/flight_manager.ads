@@ -1,4 +1,4 @@
-package Flight_Manager is
+package Flight_Manager is 
 
    pragma Annotate (gnatprove, Force);
 

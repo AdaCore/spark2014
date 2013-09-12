@@ -1,4 +1,4 @@
-package body P is
+package body P is 
    function Get (X : T) return T is
       Tmp : T;
    begin

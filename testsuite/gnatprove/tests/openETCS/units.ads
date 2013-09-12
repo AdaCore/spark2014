@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package Units is
+package Units is pragma SPARK_Mode (On);
    -- For Breaking Curves computation
    type Speed_t is new Float; -- m/s unit
    type Speed_km_per_h_t is new Float; -- km/h unit

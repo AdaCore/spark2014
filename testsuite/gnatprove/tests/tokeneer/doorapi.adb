@@ -21,6 +21,7 @@ with TcpIp;
 with MsgProc;
 
 package body DoorAPI is
+   pragma SPARK_Mode (Off);  --  exception handler
 
    ------------------------------------------------------------------
    -- GetDoorState

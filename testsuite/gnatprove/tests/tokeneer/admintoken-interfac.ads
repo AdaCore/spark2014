@@ -33,7 +33,7 @@ private package AdminToken.Interfac
 --#            Status,
 --#     in     Input;
 --# initializes Status;
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

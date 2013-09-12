@@ -1,4 +1,4 @@
-package Sub is
+package Sub is pragma SPARK_Mode (On); 
 
    type My_Int is range 0 .. 1000;
 

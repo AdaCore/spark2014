@@ -1,7 +1,7 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Formal_Vectors;
 
-package Amortized_Queue is
+package Amortized_Queue is pragma SPARK_Mode (On);
 
    subtype Index is Integer range 1 .. 1_000;
 

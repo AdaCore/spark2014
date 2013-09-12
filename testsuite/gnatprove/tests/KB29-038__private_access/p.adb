@@ -1,4 +1,4 @@
-package body P is
+package body P is 
    procedure Log (X : T2) is
    begin
       null;

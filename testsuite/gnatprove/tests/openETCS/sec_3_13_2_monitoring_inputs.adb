@@ -20,7 +20,7 @@
 
 -- Reference: UNISIG SUBSET-026-3 v3.3.0
 
-package body sec_3_13_2_monitoring_inputs is
+package body sec_3_13_2_monitoring_inputs is pragma SPARK_Mode (On);
 --     function A_Brake_normal_service(V : Speed_t; position : Brake_Position_t)
 --                                     return Deceleration_t is
 --     begin

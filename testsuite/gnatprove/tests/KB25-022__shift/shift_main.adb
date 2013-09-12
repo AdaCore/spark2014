@@ -1,7 +1,7 @@
 with Interfaces; use Interfaces;
 
 procedure Shift_Main is
-
+   pragma SPARK_Mode (On);
    function P (A : Unsigned_64) return Unsigned_64 is
    begin
       return Shift_Right (A, 5);

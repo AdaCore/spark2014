@@ -32,7 +32,7 @@ package body eVoting is
    CANDIDATES_FILENAME : constant String := "candidates.txt";
 
    procedure Read_Candidates(program_phase : Program_Phase_t;
-                             candidates : out Candidate_Name_Array_t;
+                            candidates : out Candidate_Name_Array_t;
                              last_candidate : out Candidate_Number_t) is
       file : File_Type;
       current_candidate : Candidate_Number_t := Candidate_Number_t'First + 1;
@@ -103,6 +103,7 @@ package body eVoting is
                       candidates : Candidate_Name_Array_t;
                       last_candidate : Candidate_Number_t;
                       chosen_vote : out Candidate_Number_t) is
+      pragma SPARK_Mode (Off);  --  raise exception
       buf : String(1..10);
       last : Natural;
       choice : Candidate_Number_t;

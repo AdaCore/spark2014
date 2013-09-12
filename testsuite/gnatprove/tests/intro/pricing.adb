@@ -1,4 +1,4 @@
-package body Pricing is
+package body Pricing is  
 
    function Price_Of_Item (It : Item) return Sat.My_Int is
       (Sat.Mult (It.Price, It.Number));

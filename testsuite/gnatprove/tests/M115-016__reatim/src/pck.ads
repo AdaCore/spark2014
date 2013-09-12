@@ -1,4 +1,4 @@
-package Pck is
+package Pck is pragma SPARK_Mode (On);
    type Uint_64 is range 0 .. 2 ** 63 - 1;
    type Int64 is range 0 .. 2 ** 63 - 1;
    function Mul_Div (V : Uint_64; M : Natural; D : Natural) return Uint_64 with

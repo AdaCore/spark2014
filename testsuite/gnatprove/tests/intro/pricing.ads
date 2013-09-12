@@ -1,6 +1,6 @@
 with Sat;
 
-package Pricing is
+package Pricing is pragma SPARK_Mode (On);
 
    type Item is record
       Price  : Sat.My_Int;

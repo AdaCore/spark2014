@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package body Indicator is
+package body Indicator is  
    --# type Settings is abstract;
 
    type Settings is new Boolean;

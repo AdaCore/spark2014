@@ -2,7 +2,7 @@ with System.Storage_Elements;
 
 -- Raw Advance Button Boundary Package
 -- boundary package providing raw access to the advance switch
-package body AdvanceButton.Raw is
+package body AdvanceButton.Raw is  
 
    Inputs : Boolean;
 

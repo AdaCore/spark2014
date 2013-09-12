@@ -22,7 +22,7 @@ with BasicTypes,
 --#         CryptoTypes;
 
 package CertTypes
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

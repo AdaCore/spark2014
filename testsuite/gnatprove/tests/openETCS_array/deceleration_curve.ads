@@ -20,7 +20,7 @@
 
 with Units; use Units;
 
-package Deceleration_Curve is
+package Deceleration_Curve is pragma SPARK_Mode (On);
    Distance_Resolution : constant Distance_t := 5; -- m
 
    Maximum_Valid_Speed : constant Speed_t :=

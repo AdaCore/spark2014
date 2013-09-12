@@ -1,6 +1,6 @@
 with A;
 
-procedure B is
+procedure B is pragma SPARK_Mode (On);
    X : A.T;
 begin
    X := A.any;

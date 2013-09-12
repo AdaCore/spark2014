@@ -22,7 +22,7 @@ with Units; use Units;
 with sec_3_13_6_deceleration; use sec_3_13_6_deceleration;
 with Deceleration_Curve; use Deceleration_Curve;
 
-package sec_3_13_8_targets_decel_curves is
+package sec_3_13_8_targets_decel_curves is pragma SPARK_Mode (On);
    -- ** 3.13.8.1 Introduction **
 
    -- SUBSET-026-3.13.8.1.1

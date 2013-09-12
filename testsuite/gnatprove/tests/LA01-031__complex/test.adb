@@ -1,4 +1,4 @@
-procedure Test is
+procedure Test is 
 
    type T (D1 : Integer; D2 : Boolean) is record
       X : Integer;

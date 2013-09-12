@@ -11,3 +11,4 @@ function LCP (A : Text; X, Y : Integer) return Natural with
      (A (X) /= A (Y) => LCP'Result = 0,
       X = Y          => LCP'Result = A'Last - X + 1,
       others         => LCP'Result > 0);
+pragma SPARK_Mode (On);

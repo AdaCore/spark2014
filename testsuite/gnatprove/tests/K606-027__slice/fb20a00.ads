@@ -38,7 +38,7 @@
 --
 --!
 
-package FB20A00 is
+package FB20A00 is 
 
    function Find ( Str : in String ;           
                    Sub : in String ) return Boolean;

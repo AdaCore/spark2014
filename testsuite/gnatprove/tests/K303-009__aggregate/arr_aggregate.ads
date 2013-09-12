@@ -49,6 +49,7 @@ package Arr_Aggregate is
 	                when others => A = ((One, 2), (One, 2)));
 
    procedure P3_Ter (A : in out A3; B : Integer) with
+     SPARK_Mode => Off,  --  partially initialized aggregate
      Pre => One = 1,
      Post => (case B is when 1 => A = A3'((One, 2), others => <>),
 	                when 2 => A = ((One, others => <>), (others => <>)),

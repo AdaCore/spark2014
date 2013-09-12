@@ -1,5 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 procedure Put (X : Integer) is
+   pragma SPARK_Mode (On);
    Int   : Integer;
    S     : String (1 .. Integer'Width);
    First : Natural := S'Last + 1;

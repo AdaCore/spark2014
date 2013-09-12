@@ -1,4 +1,4 @@
-package body Pck is
+package body Pck is pragma SPARK_Mode (On);
    function Mul_Div (V : Uint_64; M : Natural; D : Natural) return Uint_64 is
 
       --  Upper case letters represent one word (32-bit words in our case).

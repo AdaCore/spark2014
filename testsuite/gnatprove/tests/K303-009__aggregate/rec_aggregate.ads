@@ -53,6 +53,7 @@ package Rec_Aggregate is
    function Ignore (R : R4) return Boolean is (True);
 
    procedure P4 (R : in out R4; B : Integer) with
+     SPARK_Mode => Off,  --  partially initialized aggregate
      Pre => One = 1,
      Post => (case B is when 1 => R /= R4'(X => 2, Y => <>),
 	                when 2 => Ignore ((others => <>)),

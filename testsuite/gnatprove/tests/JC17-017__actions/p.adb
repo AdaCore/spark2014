@@ -1,5 +1,5 @@
 package body P is
-   -- pragma Annotate (gnatprove, Force);
+   pragma SPARK_Mode (Off);  --  concatenation
 
    X : String := "some";
    B : Boolean := False;

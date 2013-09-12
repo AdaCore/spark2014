@@ -24,7 +24,7 @@
 
 with Data_Types; use Data_Types;
 
-package Com_Map is
+package Com_Map is pragma SPARK_Mode (On);
 -- Commented out because not supported in GNAT GPL 2012
 --     function RBC_RIU_ID_Hash(id : RBC_RIU_ID_t) return Hash_Type is
 --       (Hash_Type(id));

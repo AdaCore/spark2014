@@ -1,4 +1,4 @@
-package Types is
+package Types is 
 
    type Index is range 1 .. 5;
 

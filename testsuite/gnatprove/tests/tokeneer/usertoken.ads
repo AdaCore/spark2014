@@ -46,7 +46,7 @@ package UserToken
 --#     in Input,
 --#     out Output;
 --# initializes Status;
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

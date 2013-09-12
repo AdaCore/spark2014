@@ -163,8 +163,11 @@ def gnatprove_(opt=["-P", "test.gpr"]):
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
             f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
+            f_prj.write('    for Local_Configuration_Pragmas use "test.adc";\n')
             f_prj.write('  end Compiler;\n')
             f_prj.write('end Test;\n')
+        with open("test.adc", 'w') as f_adc:
+            f_adc.write('pragma SPARK_Mode (On);\n')
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests

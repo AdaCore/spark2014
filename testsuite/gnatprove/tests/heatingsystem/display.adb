@@ -2,7 +2,7 @@
 
 with System.Storage_Elements;
 
-package body Display is
+package body Display is  
 
    Outputs : Displays;
 

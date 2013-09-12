@@ -1,4 +1,4 @@
-package Report is
+package Report is 
 
      function Time_Stamp return String;
 

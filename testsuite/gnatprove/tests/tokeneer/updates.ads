@@ -35,7 +35,7 @@ with Latch; use Latch;
 --#    Screen,
 --#    Stats;
 package Updates
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

@@ -1,6 +1,6 @@
 with List; use List;
 with Text_IO; use Text_IO;
-procedure Main is
+procedure Main is 
 
    L : List.List;
 

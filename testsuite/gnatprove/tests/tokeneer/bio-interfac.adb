@@ -19,7 +19,7 @@ with BioApi,
      CommonTypes;
 
 package body Bio.Interfac
-is
+is pragma SPARK_Mode (Off);
 
    ------------------------------------------------------------------
    -- IsSamplePresent

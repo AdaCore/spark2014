@@ -1,4 +1,4 @@
-package MaxAndSum is
+package MaxAndSum is pragma SPARK_Mode (On); 
 
    N : constant Natural := 100;
    subtype Element is Natural range 0 .. 100;

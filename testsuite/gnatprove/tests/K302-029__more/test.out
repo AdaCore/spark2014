@@ -1,11 +1,17 @@
-pack.adb:4:17: warning: unused global "the heap" [unused]
-pack.adb:6:10: warning: statement has no effect [ineffective]
-pack.adb:44:16: warning: unused assignment [ineffective]
-pack.adb:46:10: warning: statement has no effect [ineffective]
-pack.adb:52:10: warning: statement has no effect [ineffective]
+pack.adb:6:13: explicit dereference is not in SPARK
+pack.adb:6:13:  violation of SPARK_Mode at test.adc:1
+pack.ads:5:09: access type is not in SPARK
+pack.ads:5:09:  violation of SPARK_Mode at test.adc:1
+pack.ads:15:30: explicit dereference is not in SPARK
+pack.ads:15:30:  violation of SPARK_Mode at test.adc:1
+
+   compilation of pack.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
 [
-{ "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : false, "violations" : ["access"] }
-, { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : false, "violations" : ["access"] }
+{ "name" : "Pack.P0", "file" :"pack.ads", "line" :  13, "spark" : true, "violations" : [] }
+, { "name" : "Pack.P1", "file" :"pack.ads", "line" :  15, "spark" : true, "violations" : [] }
 , { "name" : "Pack.P2", "file" :"pack.ads", "line" :  17, "spark" : true, "violations" : [] }
 ]
 

@@ -1,6 +1,6 @@
 package ProgramSwitch
 --# own in Inputs;
-is
+is pragma SPARK_Mode (On);
 
    type Positions is (auto, clock, on1, off1, on2, off2);
 

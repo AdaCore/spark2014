@@ -1,4 +1,4 @@
-package body Ring_Buf is
+package body Ring_Buf is 
 
    procedure Clear (R : in out Ring_Buffer) is
    begin

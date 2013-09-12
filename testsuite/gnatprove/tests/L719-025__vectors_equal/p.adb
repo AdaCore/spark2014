@@ -1,4 +1,4 @@
-package body P is
+package body P is 
 
    procedure Nearly_Identity_1 (L : in out Vector; I : Extended_Index) is
    begin

@@ -1,4 +1,4 @@
-package body Dynamic is
+package body Dynamic is 
 
    function P (X : Positive) return Integer is
       Z : constant Integer := X + 1;

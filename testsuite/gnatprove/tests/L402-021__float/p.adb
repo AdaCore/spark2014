@@ -1,4 +1,4 @@
-procedure P (X : Float) is
+procedure P (X : Float) is 
    C : Float := Float'Ceiling (X);
    F : Float := Float'Floor (X);
    R : Float := Float'Rounding (X);

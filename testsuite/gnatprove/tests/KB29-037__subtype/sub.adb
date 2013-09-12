@@ -1,4 +1,4 @@
-package body Sub is
+package body Sub is pragma SPARK_Mode (On); 
 
    function Incorrect (X : S) return S is
    begin

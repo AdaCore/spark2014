@@ -2,7 +2,7 @@ package P is
     function Id (N : Natural) return Natural with
       Post => Id'Result = (if N = 0 then 0 else Id(N-1)+1);
 
-    function Bad return Boolean is (not Bad);
+    function Bad return Boolean is (if True then not Bad);
 
     procedure Use_Bad with Post => False;
 

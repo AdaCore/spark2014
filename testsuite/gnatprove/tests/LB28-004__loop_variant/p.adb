@@ -1,4 +1,4 @@
-procedure P (A, B : Integer) is
+procedure P (A, B : Integer) is 
    type T is array (A .. B) of Integer;
    Tab : T;
    J, K : Integer;

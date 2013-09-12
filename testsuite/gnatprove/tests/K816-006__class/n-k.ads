@@ -3,7 +3,7 @@
      --==================================================================--
 
 
-package N.K is
+package N.K is pragma SPARK_Mode (Off);
 
    type P is new R with null record;
 

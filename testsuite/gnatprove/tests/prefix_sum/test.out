@@ -83,8 +83,8 @@ prefixsum.ads:32:28: overflow check not proved
 prefixsum.ads:32:34: index check not proved
 prefixsum.ads:38:14: postcondition not proved
 prefixsum.ads:40:17: info: precondition proved
-prefixsum.ads:48:17: info: precondition proved
 prefixsum.ads:50:8: postcondition not proved
+prefixsum.ads:48:17: info: precondition proved
 prefixsum_expanded.adb:117:15: warning: unused assignment [ineffective]
 prefixsum_expanded.adb:11:10: loop invariant initialization not proved
 prefixsum_expanded.adb:11:10: loop invariant preservation not proved
@@ -156,8 +156,8 @@ prefixsum_expanded.ads:29:23: overflow check not proved
 prefixsum_expanded.ads:31:23: overflow check not proved
 prefixsum_expanded.ads:43:14: postcondition not proved
 prefixsum_expanded.ads:45:17: precondition not proved
-prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:8: postcondition not proved
+prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_general.adb:12:10: loop invariant initialization not proved
 prefixsum_general.adb:12:10: loop invariant preservation not proved
 prefixsum_general.adb:13:22: division check not proved

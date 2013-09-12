@@ -1,4 +1,4 @@
-procedure P is
+procedure P is pragma SPARK_Mode (On); 
    type T is record
       Access_Count : Natural := 0;
       Locked       : Boolean := False;

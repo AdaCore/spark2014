@@ -1,5 +1,5 @@
-pragma SPARK_Mode (On);
-package Pack is
+
+package Pack is 
 
    X : Boolean;
 

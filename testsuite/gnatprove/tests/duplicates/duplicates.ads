@@ -1,5 +1,5 @@
 package Duplicates is
-
+   pragma SPARK_Mode (Off);  --  iterator on array
    type Int_Array is array (Natural range <>) of Integer;
 
    function Has_Duplicates(Arr : Int_Array) return Boolean is

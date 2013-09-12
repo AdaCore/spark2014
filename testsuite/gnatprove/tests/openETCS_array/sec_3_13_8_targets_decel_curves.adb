@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package body sec_3_13_8_targets_decel_curves is
+package body sec_3_13_8_targets_decel_curves is pragma SPARK_Mode (On);
    procedure Compute_SvL_Curve(Braking_Curve : out Braking_Curve_t) is
    begin
       Curve_From_Target(Target(Supervised_Location), Braking_Curve);

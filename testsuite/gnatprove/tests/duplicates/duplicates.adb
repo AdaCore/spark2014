@@ -1,4 +1,4 @@
-package body Duplicates is
+package body Duplicates is  
 
    procedure Dedupe (Arr: in out Int_Array; Last : out Natural) is
    begin

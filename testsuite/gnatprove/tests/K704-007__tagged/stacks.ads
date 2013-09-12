@@ -1,5 +1,5 @@
-package Stacks is
-   pragma SPARK_Mode (On);
+package Stacks is pragma SPARK_Mode (Off);  --  tagged types
+
    type Stack (Max : Positive) is tagged private;
 
    function Is_Empty (S : Stack) return Boolean;

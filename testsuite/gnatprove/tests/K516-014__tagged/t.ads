@@ -1,4 +1,4 @@
-package T is
+package T is pragma SPARK_Mode (Off);
    type T1 is tagged record
       X : Integer;
    end record;

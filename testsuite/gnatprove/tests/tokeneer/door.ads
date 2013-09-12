@@ -30,7 +30,7 @@ use Clock;
 package Door
 --# own State : StateType;
 --#     in Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

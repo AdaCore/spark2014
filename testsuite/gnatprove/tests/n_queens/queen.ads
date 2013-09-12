@@ -1,4 +1,4 @@
-package Queen is
+package Queen is 
 
    N : constant Positive := 8;
    subtype Index is Positive range 1 .. N;

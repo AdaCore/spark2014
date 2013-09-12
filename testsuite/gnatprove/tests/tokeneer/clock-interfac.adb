@@ -28,7 +28,7 @@ with Ada.Calendar;
 use Ada.Calendar;
 
 package body Clock.Interfac
-is
+is pragma SPARK_Mode (Off);
 
    ------------------------------------------------------------------
    -- Convert

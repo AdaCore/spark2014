@@ -18,7 +18,7 @@
 with AlarmAPI;
 
 package body Alarm.Interfac
-is
+is pragma SPARK_Mode (Off);
 
    Is_Alarming : Boolean;
 

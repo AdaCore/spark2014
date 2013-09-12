@@ -16,7 +16,7 @@ package Spark_IO
   --# initializes State,
   --#             Inputs,
   --#             Outputs;
-is
+is pragma SPARK_Mode (On);
   --# type State_Type is abstract;
   --# type Inputs_Type is abstract;
   --# type Outputs_Type is abstract;
@@ -285,6 +285,7 @@ is
     --# derives Dest from Dest, Item, Start_Pos, Aft, Exp;
 
 private
+   pragma SPARK_Mode (Off);
 --# hide Spark_IO;
 
   type IO_TYPE   is (Stdin, Stdout, NamedFile);

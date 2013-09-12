@@ -20,7 +20,7 @@
 
 private package Bio.Interfac
 --# own in Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types
@@ -34,7 +34,7 @@ is
    --    Used in Bio.Poll
    --
    ------------------------------------------------------------------
-   function IsSamplePresent return BasicTypes.PresenceT;
+   function IsSamplePresent return BasicTypes.PresenceT with Global => null;
    --# global in     Input;
 
 

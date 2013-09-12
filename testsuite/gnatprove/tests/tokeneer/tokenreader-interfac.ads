@@ -29,7 +29,7 @@ private package TokenReader.Interfac
 --# own in     ReaderInput,
 --#     in     ReaderStatus,
 --#        out ReaderOutput;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

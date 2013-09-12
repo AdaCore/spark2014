@@ -1,7 +1,0 @@
-stacks.ads:5:13: warning: type is not yet supported
-stacks.ads:9:09: warning: tagged type is not yet supported
-stacks.ads:13:13: warning: tagged type is not yet supported
-stacks.ads:13:13: warning: base type is not yet supported
-stacks.ads:13:53: warning: type is not yet supported
-stacks.ads:13:53: warning: type used is not yet supported
-stacks.ads:13:53: warning: object is not yet supported

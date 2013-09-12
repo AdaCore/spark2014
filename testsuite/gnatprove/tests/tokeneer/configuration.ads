@@ -33,7 +33,7 @@ with File;
 
 
 package Configuration
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

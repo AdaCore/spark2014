@@ -1,4 +1,4 @@
-package body Semantics is
+package body Semantics is 
 
    ---------------------------
    -- Check_Assertion_Exprs --

@@ -1,5 +1,5 @@
 procedure CXD4006 is
-
+   pragma SPARK_Mode (Off);
    task Distributor is
       entry Nb_waiting;
    end Distributor;

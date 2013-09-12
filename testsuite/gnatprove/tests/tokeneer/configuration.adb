@@ -63,6 +63,7 @@ is
      (TheFile        : in out File.T;
       DataValid      :    out Boolean)
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       TheLatchUnlockDuration  : ConfigData.DurationT;
       TheAlarmSilentDuration  : ConfigData.DurationT;
       TheFingerWaitDuration   : ConfigData.DurationT;

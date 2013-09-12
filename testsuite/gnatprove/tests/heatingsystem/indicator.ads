@@ -1,6 +1,6 @@
 package Indicator
 --# own out Outputs : Settings;
-is
+is pragma SPARK_Mode (On);
    --# type Settings is abstract;
    function IsOn return Boolean;
 

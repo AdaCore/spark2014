@@ -31,7 +31,7 @@ package KeyStore
 --# own State;
 --#     Store : Prf_StoreT;
 --# initializes Store;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

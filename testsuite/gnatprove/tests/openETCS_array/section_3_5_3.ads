@@ -27,7 +27,7 @@ with Data_Types; use Data_Types;
 
 with Com_Map; use Com_Map;
 
-Package Section_3_5_3 is
+package Section_3_5_3 is pragma SPARK_Mode (On);
    -- FIXME using SRS sections as package name is probably not the best approach
 
    -- SUBSET-026-3.5.3.4

@@ -1,4 +1,4 @@
-procedure Main is
+procedure Main is 
    type Rec is record
       Comp : Natural := 1234;
    end record;

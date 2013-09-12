@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Doubly_Linked_Lists;
 with Ada.Containers; use Ada.Containers;
-package Queue is
+package Queue is pragma SPARK_Mode (On);
 
    subtype Val is Integer range -2 ** 31 .. 2 ** 31 - 1;
 

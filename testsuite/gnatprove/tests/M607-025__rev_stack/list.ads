@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Vectors;
 
-package List is
+package List is 
 
    Max : constant := 100;
    subtype T is integer range 1 .. Max;

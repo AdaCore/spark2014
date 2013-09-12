@@ -19,7 +19,7 @@
 
 private package Latch.Interfac
 --# own out Output : OutType;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

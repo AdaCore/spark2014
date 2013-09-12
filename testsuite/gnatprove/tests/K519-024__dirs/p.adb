@@ -1,1 +1,1 @@
-procedure P is begin null; end;
+procedure P is pragma SPARK_Mode (On);  begin null; end;

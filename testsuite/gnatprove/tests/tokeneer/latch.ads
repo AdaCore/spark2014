@@ -26,7 +26,7 @@ use Clock;
 package Latch
 --# own State : StateType;
 --#     out Output : OutType;
-is
+is pragma SPARK_Mode (On);
 
    type T is (Locked, Unlocked);
    CurrentLatch : T;

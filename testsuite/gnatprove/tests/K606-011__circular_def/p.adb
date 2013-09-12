@@ -1,4 +1,5 @@
 procedure P is
+   pragma SPARK_Mode (Off);
    type r1(d1 : integer);
    type r2(d2 : integer);
 

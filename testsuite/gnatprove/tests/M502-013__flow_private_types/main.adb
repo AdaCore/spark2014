@@ -27,12 +27,12 @@ is
       X.B := False;
    end Do_Stuff_03;
 
-   procedure Do_Stuff_04 (X : in out V)
-   is
-   begin
-      X.A := X.B;
-      X.B := False;
-   end Do_Stuff_04;
+   --  procedure Do_Stuff_04 (X : in out V)
+   --  is
+   --  begin
+   --     X.A := X.B;
+   --     X.B := False;
+   --  end Do_Stuff_04;
 
 
 end Main;

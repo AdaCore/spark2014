@@ -1,0 +1,2 @@
+pack.adb:19:04: warning: statement has no effect [ineffective]
+pack.adb:23:04: warning: statement has no effect [ineffective]

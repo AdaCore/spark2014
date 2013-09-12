@@ -1,4 +1,4 @@
-package Super is
+package Super is 
 
    Max_Length : constant Positive := 10;
    type Super_String is record

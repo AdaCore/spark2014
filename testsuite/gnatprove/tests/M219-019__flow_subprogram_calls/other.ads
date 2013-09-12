@@ -1,4 +1,4 @@
-package Other is
+package Other is 
 
    procedure Swap_With_Contract (X, Y : in out Integer)
    with Global => null,

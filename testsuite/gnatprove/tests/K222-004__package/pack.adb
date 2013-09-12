@@ -1,5 +1,5 @@
-package body Pack is
-   pragma SPARK_Mode (On);
+package body Pack is  
+   
 
    function F return Boolean is
       B : access Boolean;

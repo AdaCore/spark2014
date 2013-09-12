@@ -1,6 +1,6 @@
 package body Foo
 is
-   pragma SPARK_Mode (On);
+   
 
    procedure Test_01 (X, Y : in out Boolean)
    with Post => (X = Y'Old and Y = X'Old)

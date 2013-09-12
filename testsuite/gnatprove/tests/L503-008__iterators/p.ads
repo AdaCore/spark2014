@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Doubly_Linked_Lists;
 
-package P is
+package P is 
 
    type Ar is array (Integer range <>) of Integer;
 

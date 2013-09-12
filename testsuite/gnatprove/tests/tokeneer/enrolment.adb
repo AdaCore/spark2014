@@ -45,6 +45,7 @@ is
                        DataOK      :    out Boolean;
                        Description :    out AuditTypes.DescriptionT)
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       CertNo   : Positive := 1;
       ClosedOK : Boolean;
 

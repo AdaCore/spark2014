@@ -1,4 +1,4 @@
-package Semantics is
+package Semantics is 
 
    function Ghost_Func return Integer
      with Convention => Ghost;

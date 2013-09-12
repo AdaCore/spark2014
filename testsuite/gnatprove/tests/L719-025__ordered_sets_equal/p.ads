@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Ordered_Sets;
 with Ada.Containers; use Ada.Containers;
-package P is
+package P is pragma SPARK_Mode (On);
 
    type Element_Type is new Integer range 1 .. 100;
 

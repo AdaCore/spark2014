@@ -1,4 +1,4 @@
-package Fib is --In total 608 VCs
+package Fib is pragma SPARK_Mode (On);   --In total 608 VCs
    type IntArray is array (0..100) of Integer;
 
    --Function to use in assertions which computes nth Fibonacci number

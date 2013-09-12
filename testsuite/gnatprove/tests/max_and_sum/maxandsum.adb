@@ -1,4 +1,4 @@
-package body MaxAndSum is
+package body MaxAndSum is pragma SPARK_Mode (On); 
 
    procedure MaxAndSum (A : ElementArray; Sum : out Natural; Max : out Element)
    is

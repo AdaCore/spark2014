@@ -1,6 +1,9 @@
-pack.adb:11:14: subprogram called is not in SPARK
+pack.adb:11:14: subprogram called "F1" is not in SPARK
+pack.adb:11:14:  violation of SPARK_Mode at test.adc:1
 pack.ads:6:13: function with side-effects is not in SPARK
+pack.ads:6:13:  violation of SPARK_Mode at test.adc:1
 pack.ads:7:13: function with side-effects is not in SPARK
+pack.ads:7:13:  violation of SPARK_Mode at test.adc:1
 
    compilation of pack.adb failed
 

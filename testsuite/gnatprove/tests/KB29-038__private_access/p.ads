@@ -6,6 +6,7 @@ package P is
    procedure Log (X : T2);
 
 private
+   pragma SPARK_Mode (Off);
 
    type R2 is record
       Component : Integer;

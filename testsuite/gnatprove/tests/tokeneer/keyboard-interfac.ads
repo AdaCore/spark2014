@@ -29,7 +29,7 @@ with Keyboard;
 
 private package Keyboard.Interfac
 --# own in Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- ReadKeyboardData

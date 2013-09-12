@@ -1,0 +1,4 @@
+project Test is
+   for Main use ("test.adb");
+end Test;
+

@@ -1,4 +1,4 @@
-package Typeinv is
+package Typeinv is 
    type T is private
       with Type_Invariant => Is_Valid (T);
 

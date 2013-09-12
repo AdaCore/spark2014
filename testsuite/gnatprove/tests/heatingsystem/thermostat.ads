@@ -11,7 +11,7 @@
 -- Thermostat
   package Thermostat
   --# own in Inputs : Boolean;
-  is
+  is pragma SPARK_Mode (On);
 
      -- proof function.  Provides a better name and some abstraction to read of the room thermostat
      function RoomTooWarm return Boolean;

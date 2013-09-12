@@ -1,6 +1,6 @@
 package body DevTest
 is
-   pragma SPARK_Mode (On);
+   
 
    Vol_AW : Integer with Volatile, Async_Writers;
 

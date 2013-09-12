@@ -103,6 +103,7 @@ package body eVoting is
                       candidates : Candidate_Name_Array_t;
                       last_candidate : Candidate_Number_t;
                       chosen_vote : out Candidate_Number_t) is
+      pragma SPARK_Mode (Off);  --  raise exception
       buf : String(1..10);
       last : Natural;
       choice : Candidate_Number_t;

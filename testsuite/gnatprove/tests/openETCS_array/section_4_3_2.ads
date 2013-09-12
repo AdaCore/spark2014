@@ -21,7 +21,7 @@
 
 -- Reference: UNISIG SUBSET-026-3 v3.3.0
 
-Package Section_4_3_2 is
+package Section_4_3_2 is pragma SPARK_Mode (On);
    type etcs_mode_t is (Full_Supervision,
                         Limited_SUpervision,
                         On_Sight,

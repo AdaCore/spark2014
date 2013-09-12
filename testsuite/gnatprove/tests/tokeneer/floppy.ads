@@ -25,7 +25,7 @@ package Floppy
 --#         WrittenState,  -- WrittenFile
 --#  in     Input,
 --#     out Output;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

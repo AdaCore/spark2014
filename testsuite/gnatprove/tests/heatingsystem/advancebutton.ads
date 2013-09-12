@@ -14,7 +14,7 @@ with Clock;
 package AdvanceButton -- provides an abstraction of the raw advance button settings
 --# own State;
 --# initializes State;
-is
+is pragma SPARK_Mode (On);
    type AdvanceModes is (Slow, Fast); -- determines rate of advance when button held down
 
    function CurrentMode return AdvanceModes;

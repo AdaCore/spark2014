@@ -1,4 +1,4 @@
-package body P1 is
+package body P1 is 
    procedure Swap (A : in out Arr; I, J : Index) with
      Pre  => I in A'Range
                and then J in A'Range,

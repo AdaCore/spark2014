@@ -1,4 +1,4 @@
-procedure Testfloat is
+procedure Testfloat is 
    Max_Float : constant Float := Float'Last;
    Max_Double : constant Long_Float := Long_Float'Last;
    X : Float := 10.567;

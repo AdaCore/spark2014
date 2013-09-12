@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package Step_Function is
+package Step_Function is pragma SPARK_Mode (On);
    type Num_Delimiters_Range is range 0 .. 10;
 
    type Function_Range is new Natural;

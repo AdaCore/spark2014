@@ -58,8 +58,11 @@ is
    --    None.
    ------------------------------------------------------------------
    function FilePathAndName( Path : in String;
+                             Name : in String) return Interfaces.C.Char_Array;
+   function FilePathAndName( Path : in String;
                              Name : in String) return Interfaces.C.Char_Array
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       FullName : String := Path & "\" & Name;
    begin
       return Interfaces.C.To_C(FullName);

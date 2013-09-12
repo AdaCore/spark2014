@@ -1,5 +1,0 @@
-duplicates.ads:5:13: info: range check proved
-duplicates.ads:6:43: overflow check not proved
-duplicates.ads:7:26: info: overflow check proved
-duplicates.ads:7:48: info: index check proved
-duplicates.ads:7:55: info: index check proved

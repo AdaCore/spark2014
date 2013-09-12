@@ -1,5 +1,5 @@
-pragma SPARK_Mode (On);
-package P is
+
+package P is pragma SPARK_Mode (Off);  --  access type
    type Ptr is access Integer;
    procedure Proc;
 end;

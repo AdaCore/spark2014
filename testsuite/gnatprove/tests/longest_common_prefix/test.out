@@ -16,9 +16,9 @@ lcp.ads:6:47: info: index check proved
 lcp.ads:6:59: info: index check proved
 lcp.ads:9:32: info: index check proved
 lcp.ads:9:54: info: index check proved
-lcp.ads:10:3: info: disjoint contract cases proved
-lcp.ads:11:10: index check not proved
-lcp.ads:11:19: index check not proved
 lcp.ads:11:22: info: contract case proved
 lcp.ads:12:22: info: contract case proved
 lcp.ads:13:22: info: contract case proved
+lcp.ads:10:3: info: disjoint contract cases proved
+lcp.ads:11:10: index check not proved
+lcp.ads:11:19: index check not proved

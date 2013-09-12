@@ -1,6 +1,6 @@
 with Const; use Const;
 
-procedure Client (B1, B2 : Boolean) is
+procedure Client (B1, B2 : Boolean) is 
 begin
    if B1 then
       pragma Assert (C = 10_000);  --  should be unprovable

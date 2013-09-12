@@ -1,4 +1,4 @@
-package body Pack is
+package body Pack is pragma SPARK_Mode (On); 
 
    procedure P0 is
    begin
@@ -24,6 +24,8 @@ package body Pack is
    end;
 
    procedure P3 is
+      type Acc is access Integer;
+      Y : Acc;   
    begin
       if Y.all = 0 then
          return;

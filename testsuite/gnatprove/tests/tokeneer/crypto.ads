@@ -26,7 +26,7 @@ with CryptoTypes;
 with SPARK_IO;
 
 package Crypto
-is
+is pragma SPARK_Mode (On);
 
    -- As this library will only be storing key objects we are only
    -- interested in Key templates. Key data in this system is

@@ -3,7 +3,7 @@ with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO;    use Ada.Text_IO;
 with Utils;          use Utils;
 
-procedure Container_Loops is
+procedure Container_Loops is pragma SPARK_Mode (Off);  --  standard lists
    package DLL is new Ada.Containers.Doubly_Linked_Lists (Integer, "=");
 
    L       : DLL.List;

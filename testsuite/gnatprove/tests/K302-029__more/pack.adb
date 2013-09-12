@@ -1,4 +1,4 @@
-package body Pack is
+package body Pack is 
 
    procedure P0 is
       procedure P3 is

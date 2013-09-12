@@ -1,4 +1,4 @@
-package Natural_Set is
+package Natural_Set is pragma SPARK_Mode (On);
    Maximum_Set_Size : constant Positive := 10;
 
    type T is private;

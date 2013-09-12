@@ -3,7 +3,7 @@
      --==================================================================--
 
 
-package body F954A00 is  -- Printer server abstraction.
+package body F954A00 is   -- Printer server abstraction.
 
 
    protected body Printers is

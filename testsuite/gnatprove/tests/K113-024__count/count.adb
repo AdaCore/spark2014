@@ -1,4 +1,4 @@
-package body Count is
+package body Count is  
    pragma Annotate (gnatprove, Force);
    function Count (Max : Integer; Step : Natural) return Natural is
       Res : Natural := 0;

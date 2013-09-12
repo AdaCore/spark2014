@@ -1,7 +1,7 @@
 package body Nested_Pkg
   with Refined_State => (Foobar => Z.State)
 is
-   pragma SPARK_Mode (On);
+   
 
    function G return Boolean is (True);
 

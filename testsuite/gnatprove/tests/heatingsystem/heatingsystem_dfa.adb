@@ -25,7 +25,7 @@ with Thermostat,
   --#                Display.Outputs,
   --#                Indicator.Outputs;
   --#         in out AdvanceButton.State;
-  is
+  is pragma SPARK_Mode (On);
 
      HoursInDay      : constant Clock.Times := 24;
      MinutesInHour   : constant Clock.Times := 60;

@@ -22,7 +22,7 @@ with BasicTypes,
 --#         CryptoTypes;
 
 package TokenTypes
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

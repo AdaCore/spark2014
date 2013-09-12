@@ -23,7 +23,7 @@ with Ada.Numerics.Generic_Elementary_Functions;
 with GNAT.IO; use GNAT.IO;
 with sec_3_13_6_deceleration; use sec_3_13_6_deceleration;
 
-package body Deceleration_Curve is
+package body Deceleration_Curve is pragma SPARK_Mode (On);
    Minimum_Valid_Speed : constant Speed_t := 0.1; -- m/s
 
    function Distance_To_Speed(Initial_Speed, Final_Speed: Speed_t;

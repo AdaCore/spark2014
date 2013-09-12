@@ -1,8 +1,8 @@
-segway.adb:5:17: info: postcondition proved
+segway.adb:14:31: info: range check proved
 segway.adb:18:31: info: range check proved
-segway.adb:22:31: info: range check proved
-segway.adb:42:10: info: loop invariant initialization proved
-segway.adb:42:10: info: loop invariant preservation proved
-segway.adb:44:13: info: precondition proved
-segway.adb:46:13: info: precondition proved
+segway.adb:38:10: info: loop invariant initialization proved
+segway.adb:38:10: info: loop invariant preservation proved
+segway.adb:40:13: info: precondition proved
+segway.adb:42:13: info: precondition proved
 segway.ads:24:17: postcondition not proved, requires (Speed_Is_Valid)
+segway.ads:28:17: info: postcondition proved

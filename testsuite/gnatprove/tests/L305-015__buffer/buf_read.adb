@@ -14,6 +14,7 @@ package body Buf_Read is
    Max_Read : Real_Index_Type;
 
    function Valid (C : Character) return Boolean is
+      pragma SPARK_Mode (Off);
       type Non_Alfa is access Integer;
    begin
       return True;
@@ -32,6 +33,7 @@ package body Buf_Read is
 
    procedure Read (B : out Buffer_Type; Count : out Index_Type)
    is
+      pragma SPARK_Mode (Off);
       type Non_Alfa is access Integer;
    begin
       Count := 1;

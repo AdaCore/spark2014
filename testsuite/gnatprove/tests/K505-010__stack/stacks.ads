@@ -2,6 +2,7 @@ with Error;
 use Error;
 
 package Stacks is
+   pragma SPARK_Mode (Off);
 
    Empty_Stack_Str : constant String := "empty stack";
 

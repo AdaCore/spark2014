@@ -25,7 +25,7 @@ with Appendix_A_3_1;
 with Safe_Radio;
 with ETCS_Level;
 
-package body Section_3_5_3 is
+package body Section_3_5_3 is pragma SPARK_Mode (On);
    procedure Initiate_Communication_Session(destination : RBC_RIU_ID_t;
                                             phone : Telephone_Number_t) is
       connection_attemps : Natural := 0;

@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package body Units is
+package body Units is pragma SPARK_Mode (On);
    function km_per_h_From_m_per_s(Speed: Speed_t) return Speed_km_per_h_t is
    begin
       return Speed_km_per_h_t((Speed * 3600.0) / 1000.0);

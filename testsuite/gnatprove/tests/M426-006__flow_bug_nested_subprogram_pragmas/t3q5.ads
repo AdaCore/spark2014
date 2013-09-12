@@ -1,4 +1,4 @@
-package T3Q5 is
+package T3Q5 is 
 
    Max_Table_Size : constant := 100;
    type Base_Index_Type is range 0..Max_Table_Size;

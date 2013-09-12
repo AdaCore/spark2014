@@ -1,4 +1,4 @@
-package body Simple_Unc_Arrays is
+package body Simple_Unc_Arrays is pragma SPARK_Mode (On); 
   ---------
    -- Add --
    ---------
@@ -186,7 +186,7 @@ package body Simple_Unc_Arrays is
       Q_S (1, A.Last);
    end Quick_Sort;
 
-procedure Swap (V, W : in out Value) is
+procedure Swap (V, W : in out Value) is pragma SPARK_Mode (On); 
       Tmp : Value;
    begin
       Tmp := V;

@@ -10,7 +10,7 @@
 --    Alfa)
 --    * We do not consider initialization issues
 
-package Ring_Buf is
+package Ring_Buf is 
 
    Buf_Size : constant := 10000;
    --  The problem description requires an array of variable size to be stored

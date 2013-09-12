@@ -1,7 +1,7 @@
 with Step_Function; use Step_Function;
 with GNAT.IO; use GNAT.IO;
 
-procedure Step_Function_Test is
+procedure Step_Function_Test is pragma SPARK_Mode (On);
    SFun1 : Step_Function_t :=
      (Number_Of_Delimiters => 2,
       Step => ((Delimiter => 0, Value => 3.0),

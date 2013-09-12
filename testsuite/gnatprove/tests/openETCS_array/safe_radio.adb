@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package body Safe_Radio is
+package body Safe_Radio is pragma SPARK_Mode (On);
 
    ----------------------
    -- Setup_Connection --
@@ -28,6 +28,7 @@ package body Safe_Radio is
      (phone : Data_Types.Telephone_Number_t)
       return Boolean
    is
+      pragma SPARK_Mode (Off);
    begin
       --  Generated stub: replace with real body!
       raise Program_Error with "Unimplemented function Setup_Connection";
@@ -35,6 +36,7 @@ package body Safe_Radio is
    end Setup_Connection;
 
    procedure Send_Message(message : Message_Type_t) is
+      pragma SPARK_Mode (Off);
    begin
       --  Generated stub: replace with real body!
       raise Program_Error with "Unimplemented function Setup_Connection";

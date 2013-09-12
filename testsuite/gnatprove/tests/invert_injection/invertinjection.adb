@@ -1,4 +1,4 @@
-package body InvertInjection is
+package body InvertInjection is  
 
    procedure Invert (A : ElementArray; B : in out ElementArray) is
    begin

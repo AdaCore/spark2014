@@ -27,7 +27,7 @@ use ETCS_Level;
 with Section_4_3_2;
 use Section_4_3_2;
 
-Package Section_4_6 is
+package Section_4_6 is pragma SPARK_Mode (On);
    -- SUBSET-026-4.6.3 Transitions Conditions Table
    -- WARNING: not all conditions are modeled
 

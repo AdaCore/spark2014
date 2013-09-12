@@ -66,6 +66,9 @@ is
    ------------------------------------------------------------------
    procedure GetNextSerialNumber(Next    : out CertTypes.SerialNumberT;
                                  OFlow   : out Boolean;
+                                 Success : out Boolean);
+   procedure GetNextSerialNumber(Next    : out CertTypes.SerialNumberT;
+                                 OFlow   : out Boolean;
                                  Success : out Boolean)
    --# global in out StoreFile;
    --# derives Next,
@@ -73,6 +76,7 @@ is
    --#         Success,
    --#         StoreFile from StoreFile;
    is
+      pragma SPARK_Mode (Off);  --  exception handler
       RawNext  : RawNextT;
       Stop     : Natural;
 

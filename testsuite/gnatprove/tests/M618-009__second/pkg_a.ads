@@ -1,7 +1,7 @@
 package Pkg_A
   with Initializes => X
 is
-   pragma SPARK_Mode (On);
+   
 
    X : Integer;
    Y : Integer;

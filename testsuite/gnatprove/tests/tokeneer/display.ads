@@ -26,7 +26,7 @@
 package Display
 --# own State;
 --#     out Output;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

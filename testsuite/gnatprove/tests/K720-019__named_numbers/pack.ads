@@ -1,7 +1,7 @@
 with Ada.Numerics; use Ada.Numerics;
 
 package Pack is
-
+   pragma SPARK_Mode (On);
    Two_Pi  : constant := 2 * Pi;
 
    Four_Pi : constant Float := 2.0 * Two_Pi;

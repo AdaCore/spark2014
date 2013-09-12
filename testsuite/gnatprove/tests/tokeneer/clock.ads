@@ -30,7 +30,7 @@ with BasicTypes;
 package Clock
 --# own CurrentTime;
 --#     in Now;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

@@ -1,5 +1,0 @@
-pack.adb:4:08: warning: statement has no effect [ineffective]
-pack.ads:6:04: warning: in instantiation at a-timoio.ads:47
-pack.ads:6:04: warning: statement has no effect [ineffective]
-pack.ads:6:04: warning: in instantiation at a-timoio.ads:48
-pack.ads:6:04: warning: statement has no effect [ineffective]

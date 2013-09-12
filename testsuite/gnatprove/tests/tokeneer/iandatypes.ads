@@ -22,7 +22,7 @@ with BasicTypes,
 --#         CryptoTypes;
 
 package IandATypes
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

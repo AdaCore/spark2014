@@ -1,4 +1,4 @@
-package Pack is
+package Pack is 
 
    type Dollar_Amount  is new Float;
 

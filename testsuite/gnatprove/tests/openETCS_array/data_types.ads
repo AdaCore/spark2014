@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package Data_Types is
+package Data_Types is pragma SPARK_Mode (On);
    type Telephone_Number_t is range 0..20_000; -- FIXME refine range
 
    type RBC_Contact_Action_t is (Establish_Session, Terminate_Session);

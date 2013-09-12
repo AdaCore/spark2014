@@ -15,5 +15,5 @@
 
 with Bar;
 
-package Foo is
+package Foo is 
    new Bar (Float);

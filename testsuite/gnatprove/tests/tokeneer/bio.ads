@@ -26,7 +26,7 @@ with BasicTypes,
 
 package Bio
 --# own in Input;
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

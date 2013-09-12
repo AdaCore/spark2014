@@ -1,4 +1,4 @@
-package body No_Return is
+package body No_Return is 
 
    X : Integer := 0;
 

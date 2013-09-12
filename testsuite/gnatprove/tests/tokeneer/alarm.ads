@@ -28,7 +28,7 @@ with AlarmTypes; use AlarmTypes;
 
 package Alarm
 --# own out Output : OutType;
-is
+is pragma SPARK_Mode (On);
 
    ---------------------------------------------------------
    -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3           --

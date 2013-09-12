@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package body Step_Function is
+package body Step_Function is pragma SPARK_Mode (On);
    function Min(X1, X2 : Float) return Float is
    begin
       if X1 <= X2 then return X1; else return X2; end if;

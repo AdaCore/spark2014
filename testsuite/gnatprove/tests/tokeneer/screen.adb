@@ -398,6 +398,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
+   procedure WriteConfigData( OK       :    out Boolean);
    procedure WriteConfigData( OK       :    out Boolean)
    --# global in     ConfigData.State;
    --#        in out CurrentConfig;
@@ -407,6 +408,7 @@ is
    --#         CurrentConfig    from CurrentConfig,
    --#                               ConfigData.State;
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       ConsoleOK : Boolean;
 
       LatchUnlock,

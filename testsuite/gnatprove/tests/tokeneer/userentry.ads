@@ -36,7 +36,7 @@ with Stats;
 package UserEntry
 --# own State : Prf_StateT;
 --# initializes State;
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

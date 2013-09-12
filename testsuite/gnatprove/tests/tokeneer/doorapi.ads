@@ -19,7 +19,7 @@
 
 package DoorAPI
 
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    --
@@ -42,6 +42,6 @@ is
    --
    ------------------------------------------------------------------
 
-   function GetDoorState return DoorStateT;
+   function GetDoorState return DoorStateT with Global => null;
 
 end DoorAPI;

@@ -1,4 +1,4 @@
-package body P is
+package body P is  
    Y : Boolean;
    function G_True return Boolean is (True);
    function G_X return Boolean is (Y);

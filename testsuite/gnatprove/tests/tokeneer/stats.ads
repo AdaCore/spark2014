@@ -18,7 +18,7 @@
 ------------------------------------------------------------------
 
 package Stats
-is
+is pragma SPARK_Mode (On);
 
    type T is private;
 

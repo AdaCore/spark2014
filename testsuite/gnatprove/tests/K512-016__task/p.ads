@@ -1,3 +1,4 @@
+with System;
 package P is
    type Base is range 1 .. 10;
    type Int is new Base;

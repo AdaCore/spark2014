@@ -1,7 +1,7 @@
 with Ada.Text_Io;
 use Ada.Text_Io;
 
-procedure Evoting_Simple is
+procedure Evoting_Simple is pragma SPARK_Mode (On);
    subtype Name is String (1 .. 80);
 
    type Counter_Range_t is new Integer range 0..10_000;

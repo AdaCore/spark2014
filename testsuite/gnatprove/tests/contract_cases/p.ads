@@ -1,4 +1,4 @@
-package P is
+package P is  
 
    Threshold : Integer := 1000;
 

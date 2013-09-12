@@ -1,4 +1,4 @@
-package body Test is
+package body Test is 
    X, Y, Z: Integer;
 
    function Check_Contract_1 return Integer;

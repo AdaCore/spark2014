@@ -1,4 +1,4 @@
-package Stack is
+package Stack is 
    type Stack  is private;
 
    package Model is

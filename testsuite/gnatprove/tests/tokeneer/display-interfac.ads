@@ -22,7 +22,7 @@ with Display,
 
 private package Display.Interfac
 --# own out Output;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- GetMaxTextSizeTop
@@ -31,7 +31,7 @@ is
    --    Determine size of display lines
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeTop return BasicTypes.Unsigned32T;
+   function GetMaxTextSizeTop return BasicTypes.Unsigned32T with Global => null;
 
 
    ------------------------------------------------------------------
@@ -41,7 +41,7 @@ is
    --    Determine size of display lines
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeBottom return BasicTypes.Unsigned32T;
+   function GetMaxTextSizeBottom return BasicTypes.Unsigned32T with Global => null;
 
 
    ------------------------------------------------------------------

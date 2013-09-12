@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package body ModeSwitch is
+package body ModeSwitch is  
 
    Inputs : Modes;
 

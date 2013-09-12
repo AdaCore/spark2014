@@ -1,4 +1,4 @@
-procedure Loops is
+procedure Loops is 
    Count : Integer;
 begin
    for I in 1 .. 5 loop

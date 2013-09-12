@@ -1,4 +1,4 @@
-procedure P is
+procedure P is 
     New_Str : String (1 .. 5);
     New_Sub : String (1 .. 5) := New_Str;
     Pos     : Integer := 1;

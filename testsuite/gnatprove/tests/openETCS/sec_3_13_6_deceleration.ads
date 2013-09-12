@@ -25,7 +25,7 @@ with Appendix_A_3_1; use Appendix_A_3_1;
 with sec_3_13_2_monitoring_inputs; use sec_3_13_2_monitoring_inputs;
 with sec_3_13_4_gradient_accel_decel; use sec_3_13_4_gradient_accel_decel;
 
-package sec_3_13_6_deceleration is
+package sec_3_13_6_deceleration is pragma SPARK_Mode (On);
    -- SUBSET-026-3.13.6.2.1 to 3.13.6.2.1.2 not formalized (FIXME)
 
    -- SUBSET-026-3.13.6.2.1.5 (Note .5 before .4 for proper definition)

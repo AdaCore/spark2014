@@ -31,7 +31,7 @@ with KeyStore; use KeyStore;
 --#         File;
 
 package Enrolment
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

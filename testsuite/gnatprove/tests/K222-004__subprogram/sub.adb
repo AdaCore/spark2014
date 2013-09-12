@@ -1,6 +1,6 @@
-package body Sub is
+package body Sub is  
    function F return Boolean is
-      pragma SPARK_Mode (On);
+      
       B : access Boolean;
    begin
       B := new Boolean;
@@ -9,7 +9,7 @@ package body Sub is
    end F;
 
    procedure P is
-      pragma SPARK_Mode (On);
+      
    begin
       declare
          B : access Boolean;

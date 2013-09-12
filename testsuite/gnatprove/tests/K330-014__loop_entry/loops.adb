@@ -1,6 +1,6 @@
 with Ada.Containers.Doubly_Linked_Lists;
 
-procedure Loops is
+procedure Loops is pragma SPARK_Mode (Off); --  standard lists
    subtype Small_Natural is Natural range 0 .. 5;
 
    subtype First_Dim is Positive range 1 .. 3;

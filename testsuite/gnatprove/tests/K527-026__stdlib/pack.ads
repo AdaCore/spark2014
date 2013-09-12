@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package Pack is
+package Pack is pragma SPARK_Mode (On);
 
    Col_Count : Positive_Count;
 

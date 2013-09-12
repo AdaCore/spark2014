@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package body ProgramSwitch is
+package body ProgramSwitch is  
 
    Inputs : Positions;
 

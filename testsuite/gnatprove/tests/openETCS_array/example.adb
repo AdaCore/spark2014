@@ -1,4 +1,4 @@
-package body Example is
+package body Example is pragma SPARK_Mode (On);
    function Saturated_Sum(X1, X2, Maximum : Natural) return Natural is
    begin
       if X1 + X2 <= Maximum then

@@ -1,4 +1,4 @@
-package Binary_Search is
+package Binary_Search is  
 
    type T is range 0 .. 10000;
    subtype U is T range 1 .. 10000;

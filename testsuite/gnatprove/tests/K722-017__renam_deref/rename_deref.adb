@@ -1,4 +1,5 @@
 package body Rename_Deref is
+   pragma SPARK_Mode (Off);
    X : access Integer := new Integer;
 
    Deref : Integer renames X.all;

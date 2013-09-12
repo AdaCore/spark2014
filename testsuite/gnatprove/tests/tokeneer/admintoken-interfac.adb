@@ -19,7 +19,7 @@
 with TokenReader;
 
 package body AdminToken.Interfac
-is
+is pragma SPARK_Mode (Off);
 
 
    ------------------------------------------------------------------

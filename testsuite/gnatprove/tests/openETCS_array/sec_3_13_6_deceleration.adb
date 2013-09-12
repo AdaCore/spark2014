@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package body sec_3_13_6_deceleration is
+package body sec_3_13_6_deceleration is pragma SPARK_Mode (On);
    function A_brake_emergency(V: Speed_t; d: Distance_t) return Deceleration_t
    is
    begin

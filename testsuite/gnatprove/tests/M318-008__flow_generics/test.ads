@@ -1,4 +1,4 @@
-package Test is
+package Test is 
    --  Generic subprograms
 
    --  Exchange  --

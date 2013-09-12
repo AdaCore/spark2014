@@ -1,4 +1,4 @@
-procedure P is
+procedure P is 
     package Pack is
        type T1 is record
           X : Boolean;

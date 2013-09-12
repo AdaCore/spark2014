@@ -2,7 +2,7 @@ with Ada.Containers.Formal_Doubly_Linked_Lists;
 with Ada.Containers;
 use Ada.Containers;
 
-procedure test_vdll is
+procedure test_vdll is 
    package VDLL is new Formal_Doubly_Linked_Lists
      (Element_Type => Integer);
    use VDLL;

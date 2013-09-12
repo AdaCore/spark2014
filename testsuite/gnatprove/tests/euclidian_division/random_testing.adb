@@ -8,7 +8,7 @@ with Bounded_Random;
 
 procedure Random_Testing (Result : out Boolean)
   with Post => Result
-is
+is pragma SPARK_Mode (On);
    M, N : Integer;
    Q, R : Integer;
 begin

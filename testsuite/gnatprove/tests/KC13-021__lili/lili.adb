@@ -1,5 +1,5 @@
 package body Lili is
-
+   pragma SPARK_Mode (Off);
    type Integer_Access is access Integer;
 
    type Iterator is

@@ -261,6 +261,9 @@ is
    ------------------------------------------------------------------
    procedure GetStartAndEndTimeFromFile
      (TheFile     : in out File.T;
+      Description :    out AuditTypes.DescriptionT);
+   procedure GetStartAndEndTimeFromFile
+     (TheFile     : in out File.T;
       Description :    out AuditTypes.DescriptionT)
      --# global in out AuditSystemFault;
      --# derives AuditSystemFault,
@@ -268,6 +271,7 @@ is
      --#                               TheFile &
      --#         Description      from TheFile;
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       OK : Boolean;
       FirstTime : Clock.TimeTextT;
       LastTime  : Clock.TimeTextT;
@@ -371,6 +375,9 @@ is
    ------------------------------------------------------------------
    procedure UpdateEndTimeFromFile
      (TheFile     : in out File.T;
+      Description : in out AuditTypes.DescriptionT);
+   procedure UpdateEndTimeFromFile
+     (TheFile     : in out File.T;
       Description : in out AuditTypes.DescriptionT)
      --# global in out AuditSystemFault;
      --# derives AuditSystemFault,
@@ -378,6 +385,7 @@ is
      --#         Description      from *,
      --#                               TheFile;
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       OK : Boolean;
       LastTime  : Clock.TimeTextT;
       TimeCount : Natural; -- type Natural to match formal parameter
@@ -1166,6 +1174,7 @@ is
    --# post NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
    --#                        LogFileEntries(CurrentLogFile);
    is
+      pragma SPARK_Mode (Off);  --  array comparison
       pragma Postcondition
         (NumberLogEntries =
            LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +

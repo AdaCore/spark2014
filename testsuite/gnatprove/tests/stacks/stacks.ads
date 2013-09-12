@@ -1,4 +1,4 @@
-package Stacks is
+package Stacks is pragma SPARK_Mode (Off); -- tagged type
 
    type Element is new Integer;
    type Elements is array (Integer range <>) of Element;

@@ -1,1 +1,1 @@
-pack.adb:27:7: assertion not proved, requires A = B
+pack.adb:39:7: assertion not proved, requires A = B

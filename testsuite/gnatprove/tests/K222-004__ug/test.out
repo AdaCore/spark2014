@@ -1,5 +1,7 @@
 p.adb:4:07: explicit dereference is not in SPARK
-p.ads:3:08: type is not in SPARK
+p.adb:4:07:  violation of SPARK_Mode at test.adc:1
+p.ads:3:08: type access to "Boolean" is not in SPARK
+p.ads:3:08:  violation of SPARK_Mode at test.adc:1
 
    compilation of p.adb failed
 

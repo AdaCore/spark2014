@@ -1,7 +1,7 @@
 package body Pack is
 
    function PP1 return Boolean is
-      pragma SPARK_Mode (On);
+
       X : T1;
    begin
       X.X := 1;

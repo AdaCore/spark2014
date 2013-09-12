@@ -1,6 +1,6 @@
 with Types; use Types;
 
-package PrefixSum_General is
+package PrefixSum_General is pragma SPARK_Mode (On); 
 
    Tree_Depth : constant := 3;
    Maximum    : constant := Integer'Last / (Index'Last + 1);

@@ -1,4 +1,4 @@
-package body Single_Compilation_Unit is
+package body Single_Compilation_Unit is 
    --  This package checks that the IFA produces correct
    --  CFGs and PDGs for subroutines that call other
    --  subroutines of the same compilation unit.

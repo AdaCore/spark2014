@@ -1,4 +1,4 @@
-package body P is
+package body P is 
 
    procedure Identity (L : in out Map; K : Key_Type) is
    begin

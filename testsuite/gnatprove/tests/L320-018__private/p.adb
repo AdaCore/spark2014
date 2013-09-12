@@ -1,5 +1,5 @@
 pragma Ada_12;
-procedure P (V : Integer) is
+procedure P (V : Integer) is pragma SPARK_Mode (Off);  --  conversion composite
     package Pack is
        type T1 is private;
        Null_T1 : constant T1;

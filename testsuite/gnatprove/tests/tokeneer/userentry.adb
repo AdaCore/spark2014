@@ -436,6 +436,7 @@ is
    -- Traceto : FD.UserEntry.ValidateFingerFail
    -- Traceto : FD.UserEntry.UserTokenTorn
    ------------------------------------------------------------------
+   procedure ValidateFinger (TheStats : in out Stats.T);
    procedure ValidateFinger (TheStats : in out Stats.T)
    --# global in     ConfigData.State;
    --#        in     Clock.Now;
@@ -463,6 +464,7 @@ is
    --#                                 Bio.Input &
    --#         UserToken.State    from *;
    is
+      pragma SPARK_Mode (Off);  --  concatenation
 
       TheTemplate : IandATypes.TemplateT;
       MatchResult : IandATypes.MatchResultT;

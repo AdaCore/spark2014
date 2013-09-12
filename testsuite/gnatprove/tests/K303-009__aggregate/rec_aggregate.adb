@@ -1,4 +1,4 @@
-package body Rec_Aggregate is
+package body Rec_Aggregate is 
    procedure P1 (R : in out R1; B : Integer) is
    begin
       case B is

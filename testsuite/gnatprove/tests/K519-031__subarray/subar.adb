@@ -1,4 +1,4 @@
-package body Subar is
+package body Subar is 
 
    procedure F (X : A) is
    begin

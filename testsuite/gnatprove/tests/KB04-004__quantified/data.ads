@@ -1,4 +1,4 @@
-package Data is
+package Data is 
    type T is array (1 .. 10) of Boolean;
    
    --  These postconditions should not be provable

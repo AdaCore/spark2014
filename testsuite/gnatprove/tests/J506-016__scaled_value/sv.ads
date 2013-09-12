@@ -1,4 +1,4 @@
-package SV is
+package SV is  
 
    type Base_Type is mod 2 ** 64;
    for Base_Type'Size use 64;

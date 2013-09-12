@@ -1,1 +1,0 @@
-rename_deref.adb:20:7: assertion not proved, requires Old = (Get)

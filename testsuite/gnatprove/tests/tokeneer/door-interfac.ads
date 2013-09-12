@@ -19,7 +19,7 @@
 
 private package Door.Interfac
 --# own in     Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

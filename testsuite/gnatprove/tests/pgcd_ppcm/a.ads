@@ -1,4 +1,4 @@
-package A is
+package A is 
 
    function Pgcd (A, B : in Integer) return Integer;
    pragma Precondition (A /= Integer'First);

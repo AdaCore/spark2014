@@ -1,4 +1,6 @@
 procedure T is
+   pragma SPARK_Mode (Off);
+
    task T1;
 
    task body T1 is

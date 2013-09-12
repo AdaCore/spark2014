@@ -148,8 +148,12 @@ is
    ------------------------------------------------------------------
    function MakeDescription
      (Text        : String;
+      ReturnValue : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT;
+   function MakeDescription
+     (Text        : String;
       ReturnValue : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT
    is
+      pragma SPARK_Mode (Off);  --  concatenation
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : ReturnT;
 

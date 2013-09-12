@@ -23,22 +23,8 @@ package Segway is
    with Pre => Speed_Is_Valid,
         Post => Speed_Is_Valid;
 
-   type Reader is access function return Input;
-
-   procedure Execute (Read : Reader)
-   with Pre => Speed_Is_Valid,
-     Post => State = Still and Speed_Is_Valid,
-     Test_Case =>
-       (Name     => "Segway standing still",
-        Mode     => Nominal,
-        Requires => State = Still),
-     Test_Case =>
-       (Name     => "Segway moving forward",
-        Mode     => Nominal,
-        Requires => State = Forward),
-     Test_Case =>
-       (Name     => "Segway moving backward",
-        Mode     => Nominal,
-        Requires => State = Backward);
+   procedure Halt
+   with Pre  => Speed_Is_Valid,
+        Post => State = Still and Speed_Is_Valid;
 
 end Segway;

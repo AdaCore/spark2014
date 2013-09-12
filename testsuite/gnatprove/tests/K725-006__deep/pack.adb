@@ -1,4 +1,4 @@
-procedure Pack is
+procedure Pack is 
    generic
       type T1 is (<>);
    package Genpack is

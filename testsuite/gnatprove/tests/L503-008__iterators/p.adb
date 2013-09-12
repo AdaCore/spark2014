@@ -1,4 +1,4 @@
-package body P is
+package body P is 
 
    procedure Iter_Over_Array (A : Ar) is
       Sum : Integer := 0;

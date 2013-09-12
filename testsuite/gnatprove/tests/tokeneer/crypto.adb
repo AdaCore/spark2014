@@ -30,7 +30,7 @@ use type BasicTypes.Unsigned32T;
 
 package body Crypto
 is
-
+   pragma SPARK_Mode (Off);  --  exception handlers
    -- State.
 
    -- NextHandle acts as a pointer to the next position in the keystore.

@@ -1,4 +1,4 @@
-package body PrefixSum is
+package body PrefixSum is pragma SPARK_Mode (On); 
 
    procedure Upsweep (A : in out Input; Output_Space : out Positive) is
       Space : Positive := 1;

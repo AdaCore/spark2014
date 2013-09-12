@@ -43,7 +43,7 @@ package body AdminToken
 --#     Status is AdminToken.Interfac.Status &
 --#     Input  is in AdminToken.Interfac.Input;
 is
-
+   pragma SPARK_Mode (Off);  --  tagged types
    ------------------------------------------------------------------
    -- Types
    --

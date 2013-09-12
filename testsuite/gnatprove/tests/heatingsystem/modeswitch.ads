@@ -1,6 +1,6 @@
 package ModeSwitch
 --# own in Inputs : Modes;
-is
+is pragma SPARK_Mode (On);
    type Modes is (off, cont, timed);
 
    function PF_Read return Modes;

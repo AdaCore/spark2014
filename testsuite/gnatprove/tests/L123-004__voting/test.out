@@ -2,18 +2,18 @@ evoting.adb:58:52: range check not proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
-evoting.adb:150:21: overflow check not proved
-evoting.adb:166:54: overflow check not proved
-evoting.adb:166:54: info: range check proved
-evoting.adb:170:13: info: precondition proved
-evoting.adb:173:63: info: range check proved
-evoting.adb:174:51: info: overflow check proved
-evoting.adb:231:25: range check not proved
-evoting.adb:234:28: range check not proved
-evoting.adb:251:7: info: precondition proved
-evoting.adb:270:7: info: precondition proved
-evoting.adb:272:7: info: precondition proved
-evoting.adb:274:7: info: precondition proved
+evoting.adb:151:21: overflow check not proved
+evoting.adb:167:54: overflow check not proved
+evoting.adb:167:54: info: range check proved
+evoting.adb:171:13: info: precondition proved
+evoting.adb:174:63: info: range check proved
+evoting.adb:175:51: info: overflow check proved
+evoting.adb:232:25: range check not proved
+evoting.adb:235:28: range check not proved
+evoting.adb:252:7: info: precondition proved
+evoting.adb:271:7: info: precondition proved
+evoting.adb:273:7: info: precondition proved
+evoting.adb:275:7: info: precondition proved
 evoting.ads:56:28: postcondition not proved, requires candidates(i)(j) = ' '
 evoting.ads:56:40: info: index check proved
 evoting.ads:92:6: postcondition not proved

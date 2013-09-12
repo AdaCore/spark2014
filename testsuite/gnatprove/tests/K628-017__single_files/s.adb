@@ -1,4 +1,4 @@
-package body S is
+package body S is 
 
   function Contains (Table : IntArray; Value : Integer) return Boolean is
   begin

@@ -21,7 +21,7 @@
 
 -- Reference: UNISIG SUBSET-026-3 v3.3.0
 
-Package Appendix_A_3_1 is
+package Appendix_A_3_1 is pragma SPARK_Mode (On);
    number_of_times_try_establish_safe_radio_connection : constant Integer := 3;
 
    driver_acknowledgment_time : constant Integer := 5; -- seconds

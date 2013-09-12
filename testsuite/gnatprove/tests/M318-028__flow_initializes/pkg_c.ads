@@ -1,6 +1,6 @@
 package Pkg_C
 is
-   pragma SPARK_Mode (On);
+   
 
    State : Integer;
 

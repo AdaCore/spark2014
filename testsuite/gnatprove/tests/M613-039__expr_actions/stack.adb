@@ -1,4 +1,4 @@
-package body Stack is
+package body Stack is 
 
    package body Model is
       function To (S : Stack) return M is (M(S.Content (1 .. S.Top)));

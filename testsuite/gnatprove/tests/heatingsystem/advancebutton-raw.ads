@@ -3,7 +3,7 @@
 -- boundary package providing raw access to the advance switch
 private package AdvanceButton.Raw
 --# own in Inputs;
-is
+is pragma SPARK_Mode (On);
    procedure Read (Pressed : out Boolean);
    --# global  in Inputs;
    --# derives Pressed from Inputs;

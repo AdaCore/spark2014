@@ -1,4 +1,4 @@
-procedure P is
+procedure P is 
    procedure Proc (W, X, Y, Z : Integer) is
       subtype S1 is Integer range W .. X;
       subtype S2 is S1 range Y .. Z;

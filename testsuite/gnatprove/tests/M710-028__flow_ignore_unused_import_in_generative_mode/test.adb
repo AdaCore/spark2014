@@ -1,6 +1,6 @@
 package body Test
 is
-   pragma SPARK_Mode (On);
+   
 
    G : Integer;
 

@@ -4,11 +4,11 @@ p.adb:35:09: warning: unused assignment [ineffective]
 p.adb:37:09: warning: unused assignment [ineffective]
 p.adb:7:19: info: postcondition proved
 p.adb:12:19: info: postcondition proved
-p.adb:22:22: info: postcondition proved
-p.adb:27:22: info: postcondition proved
 p.adb:32:7: info: assertion proved
 p.adb:34:7: info: assertion proved
 p.adb:36:7: info: assertion proved
 p.adb:38:7: info: assertion proved
+p.adb:22:22: info: postcondition proved
+p.adb:27:22: info: postcondition proved
 p.ads:9:19: info: postcondition proved
 p.ads:14:19: info: postcondition proved

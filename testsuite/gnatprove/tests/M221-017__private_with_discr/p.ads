@@ -1,4 +1,4 @@
-package P is
+package P is 
    package Private_Types is
       type T1 (Capacity : Integer) is private;
       type T2 is private;

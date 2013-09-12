@@ -29,7 +29,7 @@ package CertificateStore
 --# own State,
 --#     FileState;
 --# initializes FileState;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Init

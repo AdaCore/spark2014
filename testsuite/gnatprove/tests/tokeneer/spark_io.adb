@@ -11,6 +11,7 @@
 pragma Ada_95;
 package body Spark_IO
 is
+   pragma SPARK_Mode (Off);
 --# hide Spark_IO
 
 -- File Management

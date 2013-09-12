@@ -23,7 +23,7 @@
 with Units; use Units;
 with Step_Function; use Step_Function;
 
-package sec_3_13_2_monitoring_inputs is
+package sec_3_13_2_monitoring_inputs is pragma SPARK_Mode (On);
    -- *** section 3.13.2.2 Train related inputs ***
    -- ** section 3.13.2.2.1 Introduction **
 

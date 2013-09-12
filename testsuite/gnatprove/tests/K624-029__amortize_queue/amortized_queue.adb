@@ -1,4 +1,4 @@
-package body Amortized_Queue is
+package body Amortized_Queue is pragma SPARK_Mode (On); 
 
    function Model (Q : in Queue) return Vector is
       RevRear : Vector := Copy (Q.Rear);

@@ -1,4 +1,4 @@
-package Model is
+package Model is 
    type Name_T is new Natural;
 
    -----------

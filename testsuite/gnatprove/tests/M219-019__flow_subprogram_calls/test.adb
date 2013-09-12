@@ -1,6 +1,6 @@
 with Other;
 
-package body Test is
+package body Test is 
 
    ------------------------------------------------------------
    --  The example from the Horowitz, Reps, Binkley SDG paper

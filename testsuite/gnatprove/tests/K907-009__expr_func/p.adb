@@ -1,4 +1,4 @@
-package body P is
+package body P is 
    function F3 return Boolean is (True);
    function F4 return Boolean is 
    begin

@@ -3,7 +3,7 @@
 -- the behaviour of those object. Khown well on the name OOP.
 
 
-package ADT_Stack is
+package ADT_Stack is pragma SPARK_Mode (On);  
 
    type Stack is tagged private; -- tagged for extension in child package
 

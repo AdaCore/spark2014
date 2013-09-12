@@ -18,7 +18,7 @@
 with LatchAPI;
 
 package body Latch.Interfac
-is
+is pragma SPARK_Mode (Off);
 
    Locked : Boolean;
 

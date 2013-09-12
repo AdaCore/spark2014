@@ -1,6 +1,4 @@
 [
-{ "name" : "User.Events.Next", "file" :"lili.ads", "line" :  6, "spark" : true, "violations" : [] }
-, { "name" : "User.Events.Finalize", "file" :"lili.adb", "line" :  10, "spark" : false, "violations" : ["access"] }
-, { "name" : "User.P", "file" :"user.ads", "line" :  3, "spark" : true, "violations" : [] }
+{ "name" : "User.P", "file" :"user.ads", "line" :  3, "spark" : true, "violations" : [] }
 ]
 

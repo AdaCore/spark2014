@@ -23,6 +23,7 @@ is
 
 
    procedure Not_In_SPARK_1 (X : in out Integer) is
+      pragma SPARK_Mode (Off);
    begin
       if X = Integer'Last then
         raise Program_Error;
@@ -33,6 +34,7 @@ is
 
 
    function Not_In_SPARK_2 return Boolean is
+      pragma SPARK_Mode (Off);
    begin
       raise Program_Error;
 

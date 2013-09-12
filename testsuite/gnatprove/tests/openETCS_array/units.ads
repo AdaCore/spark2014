@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-package Units is
+package Units is pragma SPARK_Mode (On);
    -- FIXME: With GPL 2013 edition, try Dimension_System aspect
    --   http://www.adacore.com/adaanswers/gems/gem-136-how-tall-is-a-kilogram/
 

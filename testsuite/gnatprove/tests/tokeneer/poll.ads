@@ -36,7 +36,7 @@ with PrivTypes; use PrivTypes;
 --#    UserToken;
 
 package Poll
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Activity

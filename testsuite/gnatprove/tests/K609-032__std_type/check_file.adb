@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-procedure Check_File (Contents : String) is
+procedure Check_File (Contents : String) is pragma SPARK_Mode (On);
 
    Col_Count : Positive_Count := 1;
 

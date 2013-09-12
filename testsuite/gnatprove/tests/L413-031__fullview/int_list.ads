@@ -1,7 +1,7 @@
 pragma Ada_2012;
 with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
 
-package Int_List is
+package Int_List is pragma SPARK_Mode (On);
   type my_record (capacity : Integer) is private;
 
    subtype My_Int is Integer range 1 .. 100;

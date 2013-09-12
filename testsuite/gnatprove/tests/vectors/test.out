@@ -1,4 +1,6 @@
 counter.adb:3:04: warning: statement has no effect [ineffective]
+vectors.adb:5:14: warning: "counter.count" is not modified, could be "input" [inout_only_read]
+vectors.adb:5:14: warning: unused global "counter.count" [unused]
 vectors.adb:17:38: overflow check not proved
 vectors.adb:37:56: range check not proved
 vectors.adb:51:56: info: range check proved

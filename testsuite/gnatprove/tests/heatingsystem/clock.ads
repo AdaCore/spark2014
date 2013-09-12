@@ -2,7 +2,7 @@
 -- Clock
 package Clock
 --# own in Ticks : Times;
-is
+is pragma SPARK_Mode (On);
   subtype Times is Integer range 0 .. 86399;
 
   function PF_Read return Times;

@@ -18,7 +18,7 @@
 
 private package Screen.Interfac
 --# own out Output;
-is
+is pragma SPARK_Mode (On);
 
    ----------------------------------------------------------------------
    -- Types

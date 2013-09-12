@@ -1,4 +1,4 @@
-package body Binary_Search is
+package body Binary_Search is  
 
    function Search (A : Ar ; I : Integer) return T is
       Left  : U;

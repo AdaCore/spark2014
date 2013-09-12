@@ -4,7 +4,6 @@ package Pack is
    type T2 is private; -- not in Alfa
 
    type P1 is new Integer;
-   type P2 is access Integer;
 
    function PP1 return Boolean
      with Post => PP1'Result;
@@ -13,6 +12,8 @@ package Pack is
      with Post => PP2'Result;
 
 private
+   pragma SPARK_Mode (Off);
+   type P2 is access Integer;
    type T1 is record
       X : P1;
    end record;

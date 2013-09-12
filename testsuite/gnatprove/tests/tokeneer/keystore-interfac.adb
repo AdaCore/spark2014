@@ -18,7 +18,7 @@
 with Crypto;
 
 package body KeyStore.Interfac
-is
+is pragma SPARK_Mode (Off);
 
    ------------------------------------------------------------------
    -- GetKeystoreReturn

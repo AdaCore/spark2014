@@ -1,6 +1,6 @@
 with Ada.Unchecked_Conversion;
 
-package body Test is
+package body Test is 
    type A is new Integer range 0 .. 20;
    type B is new Natural range 0 .. 20;
 

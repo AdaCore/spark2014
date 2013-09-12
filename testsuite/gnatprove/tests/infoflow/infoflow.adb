@@ -1,4 +1,4 @@
-package body Infoflow is
+package body Infoflow is pragma SPARK_Mode (On);  
    procedure Machine_Step is
    begin
       declare
