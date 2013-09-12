@@ -167,9 +167,10 @@ package body Flow.Control_Flow_Graph is
    --  and link them up to the start and end vertices.
 
    procedure Create_Initial_And_Final_Vertices
-     (F    : Flow_Id;
-      Mode : Param_Mode;
-      FA   : in out Flow_Analysis_Graphs);
+     (F             : Flow_Id;
+      Mode          : Param_Mode;
+      Uninitialized : Boolean;
+      FA            : in out Flow_Analysis_Graphs);
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
 
@@ -681,9 +682,10 @@ package body Flow.Control_Flow_Graph is
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
-     (F    : Flow_Id;
-      Mode : Param_Mode;
-      FA   : in out Flow_Analysis_Graphs)
+     (F             : Flow_Id;
+      Mode          : Param_Mode;
+      Uninitialized : Boolean;
+      FA            : in out Flow_Analysis_Graphs)
    is
       V : Flow_Graphs.Vertex_Id;
       A : V_Attributes;
@@ -692,8 +694,9 @@ package body Flow.Control_Flow_Graph is
          --  Setup the n'initial vertex. Initialisation is deduced from
          --  the mode.
          A := Make_Global_Variable_Attributes
-           (F    => Change_Variant (F_Part, Initial_Value),
-            Mode => Mode);
+           (F      => Change_Variant (F_Part, Initial_Value),
+            Mode   => Mode,
+            Uninit => Uninitialized);
          FA.CFG.Add_Vertex
            (Change_Variant (F_Part, Initial_Value),
             A,
@@ -2500,7 +2503,7 @@ package body Flow.Control_Flow_Graph is
                         raise Program_Error;
                      end if;
 
-                     Create_Initial_And_Final_Vertices (G, Mode, FA);
+                     Create_Initial_And_Final_Vertices (G, Mode, False, FA);
                   end;
                end loop;
             end;
@@ -2528,7 +2531,13 @@ package body Flow.Control_Flow_Graph is
                   for Opt_In of Parse_Initializes (Initializes_Contract) loop
                      if Opt_In.Exists then
                         for G of Opt_In.The_Set loop
-                           Create_Initial_And_Final_Vertices (G, Mode_In, FA);
+                           Create_Initial_And_Final_Vertices
+                             (F             => G,
+                              Mode          => Mode_In,
+                              Uninitialized =>
+                                not Is_Initialized_At_Elaboration
+                                (Get_Direct_Mapping_Id (G)),
+                              FA            => FA);
                         end loop;
                      end if;
                   end loop;

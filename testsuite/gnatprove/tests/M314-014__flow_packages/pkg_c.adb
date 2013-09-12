@@ -6,24 +6,11 @@ is
    X : Integer := 0;
    Y : Integer;
    Z : Integer;
-
-   procedure Do_Stuff (P : in     Integer;
-                       Q : in out Integer;
-                       R :    out Integer)
-   with Global  => null,
-        Depends => (Q =>+ null,
-                    R => null,
-                    null => P)
-   is
-   begin
-      R := 0;
-   end Do_Stuff;
-
 begin
-   Y := Other.X;    --  use of uninitialized state
+   Y := Other.X;    --  use of uninitialized state Other.X
                     --  also violdates contract as other.state_d is not used
 
-   Z := 55;         --  State_C is not initialized
+   Z := 55;         --  State_C is not meant to be initialized
 
    Other.X := 12;   --  can only initialize my own state
 end Pkg_C;

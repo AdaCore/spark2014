@@ -360,6 +360,7 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Global_Variable_Attributes
      (F       : Flow_Id;
       Mode    : Param_Mode;
+      Uninit  : Boolean           := False;
       E_Loc   : Node_Or_Entity_Id := Empty)
       return V_Attributes is
       A : V_Attributes := Null_Attributes;
@@ -371,7 +372,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F.Variant is
          when Initial_Value =>
-            A.Is_Initialised    := Mode in Initialised_Global_Modes;
+            A.Is_Initialised    := (not Uninit) and
+              Mode in Initialised_Global_Modes;
 
             if Is_Discriminant (F) then
                --  Discriminants are *always* initialized imports.
