@@ -67,6 +67,7 @@ package Flow.Utility is
                               N_Selected_Component |
                               N_Indexed_Component |
                               N_Slice |
+                              N_Unchecked_Type_Conversion |
                               N_Type_Conversion;
    --  Given the target of an assignment (perhaps the left-hand-side
    --  of an assignment statement or an out vertex in a procedure

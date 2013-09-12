@@ -640,16 +640,15 @@ package body Flow.Utility is
                         --  the result of an unchecked conversion. The
                         --  variables used and defined should be the
                         --  argument to the unchecked conversion.
-                        Untangle_Assignment_Target
-                          (Scope        => Scope,
-                           N            => Expression (Prefix (End_Of_Record)),
-                           Vars_Defined => Vars_Defined,
-                           Vars_Used    => Vars_Used);
+                        Vars_Defined.Union
+                          (Get_Variable_Set
+                             (Scope,
+                              Expression (Prefix (End_Of_Record))));
 
                         --  Since we are using the defined variable
                         --  only partially, we need to make sure its
                         --  also used.
-                        Vars_Used := Vars_Used or Vars_Defined;
+                        Vars_Used.Union (Vars_Defined);
 
                      when others =>
                         Vars_Defined.Union
