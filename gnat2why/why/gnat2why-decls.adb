@@ -472,7 +472,14 @@ package body Gnat2Why.Decls is
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
-
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Binder_Type'(
+                               Ada_Node => E,
+                               B_Name   => To_Why_Id (E),
+                               B_Ent    => null,
+                               B_Type   => Typ,
+                               Mutable  => False));
       Close_Theory (File,
                     Filter_Entity  => E,
                     Defined_Entity => E);
