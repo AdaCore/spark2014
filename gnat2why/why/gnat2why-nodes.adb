@@ -236,9 +236,9 @@ package body Gnat2Why.Nodes is
          begin
             case A.Kind is
                when Insert_Ent =>
-                  Insert (M, A.Ins_Entity, A.Ins_Binder);
+                  M.Entity_Ids.Include (A.Ins_Entity, A.Ins_Binder);
                when Insert_Name =>
-                  Insert (M, A.Ins_Name, A.Ins_Binder);
+                  M.Entity_Names.Include (A.Ins_Name, A.Ins_Binder);
                when Remove_Ent =>
                   M.Entity_Ids.Delete (A.Rem_Entity);
                when Remove_Name =>
