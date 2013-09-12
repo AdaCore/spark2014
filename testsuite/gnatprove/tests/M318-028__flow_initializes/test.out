@@ -4,8 +4,8 @@ test_02.adb:7:09: "State" might not be initialized [uninitialized]
 test_05.adb:4:32: warning: unused initial value of "State" [unused_initial_value]
 test_07.adb:4:32: "State" may not be initialized after elaboration of "Test_07" [uninitialized]
 
-   compilation of test_02.adb failed
    compilation of test_01.adb failed
+   compilation of test_02.adb failed
    compilation of test_07.adb failed
 
 gprbuild: *** compilation phase failed
