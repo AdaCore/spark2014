@@ -118,9 +118,10 @@ package body Flow.Analysis is
    function Find_Global (S : Entity_Id;
                          F : Flow_Id)
                          return Node_Id;
-   --  Find the given global F in the subprogram declaration of S. If
-   --  we can't find it (perhaps because of computed globals) we just
-   --  return S which is a useful fallback place to raise an error.
+   --  Find the given global F in the subprogram declaration of S (or
+   --  in the initializes clause of S). If we can't find it (perhaps
+   --  because of computed globals) we just return S which is a useful
+   --  fallback place to raise an error.
 
    --------------------
    -- Error_Location --
@@ -518,12 +519,23 @@ package body Flow.Analysis is
 
       procedure Look_For_Global is new Traverse_Proc (Find_It);
    begin
-      if Present (Get_Body (S)) then
-         Haystack_A := Get_Pragma (Get_Body (S), Pragma_Refined_Global);
-      else
-         Haystack_A := Empty;
-      end if;
-      Haystack_B := Get_Pragma (S, Pragma_Global);
+      case Ekind (S) is
+         when E_Package_Body =>
+            Haystack_A := Empty;
+            Haystack_B := Get_Pragma (Spec_Entity (S), Pragma_Initializes);
+
+         when E_Package =>
+            Haystack_A := Empty;
+            Haystack_B := Get_Pragma (S, Pragma_Initializes);
+
+         when others =>
+            if Present (Get_Body (S)) then
+               Haystack_A := Get_Pragma (Get_Body (S), Pragma_Refined_Global);
+            else
+               Haystack_A := Empty;
+            end if;
+            Haystack_B := Get_Pragma (S, Pragma_Global);
+      end case;
 
       case F.Kind is
          when Direct_Mapping | Record_Field =>
