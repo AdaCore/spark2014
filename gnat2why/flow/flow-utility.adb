@@ -634,6 +634,23 @@ package body Flow.Utility is
                         Vars_Defined.Union
                           (Get_Variable_Set (Scope, Prefix (End_Of_Record)));
 
+                     when N_Unchecked_Type_Conversion =>
+                        --  This is an interesting special case. We
+                        --  are querying a specific record field of
+                        --  the result of an unchecked conversion. The
+                        --  variables used and defined should be the
+                        --  argument to the unchecked conversion.
+                        Untangle_Assignment_Target
+                          (Scope        => Scope,
+                           N            => Expression (Prefix (End_Of_Record)),
+                           Vars_Defined => Vars_Defined,
+                           Vars_Used    => Vars_Used);
+
+                        --  Since we are using the defined variable
+                        --  only partially, we need to make sure its
+                        --  also used.
+                        Vars_Used := Vars_Used or Vars_Defined;
+
                      when others =>
                         Vars_Defined.Union
                           (All_Record_Components
@@ -652,6 +669,11 @@ package body Flow.Utility is
                   --  Not strictly right, but this will satisfy the
                   --  postcondition.
                   Vars_Defined.Union (Get_Variable_Set (Scope, End_Of_Record));
+
+               when N_Unchecked_Type_Conversion =>
+                  --  See above.
+                  Vars_Defined.Union (Get_Variable_Set
+                                      (Scope, Expression (End_Of_Record)));
 
                when others =>
                   Vars_Defined.Include
