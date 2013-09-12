@@ -350,13 +350,29 @@ package body Gnat2Why.Subprograms is
 
             Count := Binders'Length + 1;
             for R of Read_Names loop
-               Result (Count) :=
-                 (Ada_Node => Empty,
-                  B_Name   => New_Identifier (Name => R.all),
-                  B_Ent    => R,
-                  B_Type   =>
-                    New_Abstract_Type (Name => To_Why_Type (R.all)),
-                  Mutable  => False);
+               declare
+                  Entity : constant Entity_Id := Find_Object_Entity (R);
+                  Name   : constant String :=
+                    (if Present (Entity) then Full_Name (Entity) else "");
+               begin
+                  if Present (Entity) then
+                     Result (Count) :=
+                       (Ada_Node => Entity,
+                        B_Name   => New_Identifier (Name => Name),
+                        B_Ent    => null,
+                        B_Type   =>
+                          New_Abstract_Type (Name => To_Why_Type (Name)),
+                        Mutable  => False);
+                  else
+                     Result (Count) :=
+                       (Ada_Node => Empty,
+                        B_Name   => New_Identifier (Name => R.all),
+                        B_Ent    => R,
+                        B_Type   =>
+                          New_Abstract_Type (Name => To_Why_Type (R.all)),
+                        Mutable  => False);
+                  end if;
+               end;
                Count := Count + 1;
             end loop;
 

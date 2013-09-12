@@ -87,44 +87,31 @@ package body Gnat2Why.Nodes is
       begin
          if Ent_To_Why.Has_Element (C) then
             return Cursor'(CK_Ent,
-                           M.Entity_Ids.Find (E),
+                           C,
                            Name_To_Why_Map.No_Element);
-
-            --  We need to check the name map, but before generating a string
-            --  to look up, let's check if the map is empty
-
-         elsif Name_To_Why_Map.Is_Empty (M.Entity_Names) then
-
-               --  The dummy cursor
-
-               return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                              Name_To_Why_Map.No_Element);
          else
-            declare
-               S   : Entity_Name := new String'(Unique_Name (E));
-               Res : constant Cursor := Cursor'(CK_Str, Ent_To_Why.No_Element,
-                                                M.Entity_Names.Find (S));
-            begin
-               Free (S);
-               return Res;
-            end;
+            return Cursor'(CK_Ent, Ent_To_Why.No_Element,
+                           Name_To_Why_Map.No_Element);
          end if;
       end Find;
 
       function Find (M : Map; E : Entity_Name) return Cursor is
+         C : constant Name_To_Why_Map.Cursor := M.Entity_Names.Find (E);
       begin
-         --  We need to check the name map, but before generating a string to
-         --  look up, let's check if the map is empty.
-
-         if Name_To_Why_Map.Is_Empty (M.Entity_Names) then
-
-               --  The dummy cursor
-
-               return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                              Name_To_Why_Map.No_Element);
-         else
+         if Name_To_Why_Map.Has_Element (C) then
             return Cursor'(CK_Str, Ent_To_Why.No_Element,
-                           M.Entity_Names.Find (E));
+                           C);
+         else
+            declare
+               Ent : constant Entity_Id := Find_Object_Entity (E);
+            begin
+               if Present (Ent) then
+                  return Find (M, Ent);
+               else
+                  return Cursor'(CK_Ent, Ent_To_Why.No_Element,
+                                 Name_To_Why_Map.No_Element);
+               end if;
+            end;
          end if;
       end Find;
 
