@@ -1,4 +1,3 @@
-admin.adb:253:16: info: range check proved
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
@@ -8,6 +7,7 @@ admin.adb:137:16: info: loop invariant initialization proved
 admin.adb:137:16: loop invariant preservation not proved
 admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
+admin.adb:253:16: info: range check proved
 admin.ads:103:26: info: postcondition proved
 admin.ads:143:7: info: postcondition proved
 admin.ads:163:26: info: postcondition proved
@@ -19,27 +19,30 @@ auditlog.adb:194:26: info: range check proved
 auditlog.adb:237:39: info: range check proved
 auditlog.adb:246:23: range check not proved
 auditlog.adb:499:22: info: precondition proved
+auditlog.adb:753:47: range check not proved
+auditlog.adb:753:50: info: overflow check proved
+auditlog.adb:753:69: info: overflow check proved
 auditlog.adb:757:10: postcondition not proved
 auditlog.adb:758:47: range check not proved
 auditlog.adb:758:50: info: overflow check proved
 auditlog.adb:758:69: overflow check not proved
+auditlog.adb:808:13: info: postcondition proved
+auditlog.adb:821:75: info: range check proved
+auditlog.adb:868:13: info: postcondition proved
+auditlog.adb:881:16: info: assertion proved
+auditlog.adb:899:53: info: range check proved
 auditlog.adb:924:10: info: precondition proved
 auditlog.adb:933:10: info: assertion proved
 auditlog.adb:935:10: info: precondition proved
 auditlog.adb:942:44: info: range check proved
-auditlog.adb:753:47: range check not proved
-auditlog.adb:753:50: info: overflow check proved
-auditlog.adb:753:69: info: overflow check proved
-auditlog.adb:808:13: info: postcondition proved
-auditlog.adb:821:75: info: range check proved
-auditlog.adb:868:13: info: postcondition proved
-auditlog.adb:899:53: info: range check proved
-auditlog.adb:881:16: info: assertion proved
+auditlog.adb:984:47: info: overflow check proved
 auditlog.adb:986:10: info: postcondition proved
 auditlog.adb:988:47: info: overflow check proved
 auditlog.adb:1008:50: info: range check proved
 auditlog.adb:1010:44: info: range check proved
-auditlog.adb:984:47: info: overflow check proved
+auditlog.adb:1074:47: range check not proved
+auditlog.adb:1074:50: info: overflow check proved
+auditlog.adb:1074:69: info: overflow check proved
 auditlog.adb:1077:10: info: postcondition proved
 auditlog.adb:1078:47: range check not proved
 auditlog.adb:1078:50: overflow check not proved
@@ -63,9 +66,6 @@ auditlog.adb:1127:47: range check not proved
 auditlog.adb:1127:50: overflow check not proved
 auditlog.adb:1127:69: overflow check not proved
 auditlog.adb:1132:7: precondition not proved
-auditlog.adb:1074:47: range check not proved
-auditlog.adb:1074:50: info: overflow check proved
-auditlog.adb:1074:69: info: overflow check proved
 auditlog.adb:1503:14: info: range check proved
 auditlog.adb:1566:7: precondition not proved
 auditlog.adb:1576:10: info: precondition proved
@@ -198,44 +198,47 @@ enclave.adb:276:10: info: postcondition proved
 enclave.adb:288:16: info: precondition proved
 enclave.adb:362:29: info: postcondition proved
 enclave.adb:441:29: info: postcondition proved
+enclave.adb:570:19: precondition not proved
+enclave.adb:575:24: info: precondition proved
 enclave.adb:579:10: postcondition not proved
 enclave.adb:593:19: info: precondition proved
 enclave.adb:598:24: info: precondition proved
 enclave.adb:638:48: info: precondition proved
-enclave.adb:570:19: precondition not proved
-enclave.adb:575:24: info: precondition proved
 enclave.adb:697:29: info: postcondition proved
+enclave.adb:829:15: info: precondition proved
+enclave.adb:837:19: info: precondition proved
+enclave.adb:842:24: info: precondition proved
 enclave.adb:846:10: postcondition not proved
 enclave.adb:856:19: info: precondition proved
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
-enclave.adb:1055:10: info: precondition proved
-enclave.adb:1057:10: info: precondition proved
-enclave.adb:829:15: info: precondition proved
-enclave.adb:837:19: info: precondition proved
-enclave.adb:842:24: info: precondition proved
 enclave.adb:924:13: info: postcondition proved
 enclave.adb:998:13: info: postcondition proved
 enclave.adb:1046:15: info: precondition proved
+enclave.adb:1055:10: info: precondition proved
+enclave.adb:1057:10: info: precondition proved
+enclave.adb:1138:15: info: precondition proved
 enclave.adb:1140:10: postcondition not proved
 enclave.adb:1148:19: precondition not proved
 enclave.adb:1189:15: info: precondition proved
-enclave.adb:1138:15: info: precondition proved
+enclave.adb:1302:15: info: precondition proved
+enclave.adb:1311:19: info: precondition proved
+enclave.adb:1316:24: info: precondition proved
 enclave.adb:1320:10: postcondition not proved
 enclave.adb:1344:19: precondition not proved
 enclave.adb:1349:24: precondition not proved
 enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: precondition not proved
-enclave.adb:1302:15: info: precondition proved
-enclave.adb:1311:19: info: precondition proved
-enclave.adb:1316:24: info: precondition proved
+enclave.adb:1508:15: info: precondition proved
+enclave.adb:1523:24: info: precondition proved
 enclave.adb:1527:10: postcondition not proved
 enclave.adb:1537:17: precondition not proved
 enclave.adb:1545:19: info: precondition proved
 enclave.adb:1568:19: info: precondition proved
 enclave.adb:1573:24: info: precondition proved
-enclave.adb:1508:15: info: precondition proved
-enclave.adb:1523:24: info: precondition proved
+enclave.adb:1800:19: info: precondition proved
+enclave.adb:1818:19: info: precondition proved
+enclave.adb:1823:24: info: precondition proved
 enclave.adb:1827:11: postcondition not proved
 enclave.adb:1850:19: info: precondition proved
 enclave.adb:1873:19: info: precondition proved
@@ -246,9 +249,13 @@ enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
 enclave.adb:1893:13: precondition not proved
 enclave.adb:1896:13: precondition not proved
-enclave.adb:1800:19: info: precondition proved
-enclave.adb:1818:19: info: precondition proved
-enclave.adb:1823:24: info: precondition proved
+enclave.adb:2079:13: info: precondition proved
+enclave.adb:2082:13: info: precondition proved
+enclave.adb:2085:13: info: precondition proved
+enclave.adb:2531:13: precondition not proved
+enclave.adb:2536:13: precondition not proved
+enclave.adb:2902:22: info: precondition proved
+enclave.adb:2907:27: info: precondition proved
 enclave.adb:2911:13: postcondition not proved
 enclave.adb:2920:22: info: precondition proved
 enclave.adb:2925:27: info: precondition proved
@@ -256,36 +263,29 @@ enclave.adb:2929:22: info: precondition proved
 enclave.adb:2956:27: info: precondition proved
 enclave.adb:2965:21: info: precondition proved
 enclave.adb:2966:42: range check not proved
-enclave.adb:2902:22: info: precondition proved
-enclave.adb:2907:27: info: precondition proved
-enclave.adb:2079:13: info: precondition proved
-enclave.adb:2082:13: info: precondition proved
-enclave.adb:2085:13: info: precondition proved
-enclave.adb:2531:13: precondition not proved
-enclave.adb:2536:13: precondition not proved
 enclave.adb:2997:10: precondition not proved
 enclave.ads:118:7: postcondition not proved
 enclave.ads:226:7: postcondition not proved
 enclave.ads:286:7: postcondition not proved
+enclave.ads:576:19: info: precondition proved
+enclave.ads:585:19: info: precondition proved
+enclave.ads:590:24: info: precondition proved
 enclave.ads:594:7: postcondition not proved
 enclave.ads:621:19: info: precondition proved
 enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
-enclave.ads:576:19: info: precondition proved
-enclave.ads:585:19: info: precondition proved
-enclave.ads:590:24: info: precondition proved
-keystore.adb:223:52: info: division check proved
-keystore.adb:226:14: range check not proved
-keystore.adb:242:22: precondition not proved
-keystore.adb:253:36: range check not proved
+keystore.adb:195:30: info: range check proved
+keystore.adb:195:41: info: overflow check proved
+keystore.adb:195:57: info: overflow check proved
 keystore.adb:199:14: info: range check proved
 keystore.adb:206:33: index check not proved
 keystore.adb:206:33: info: overflow check proved
 keystore.adb:206:49: info: overflow check proved
-keystore.adb:195:30: info: range check proved
-keystore.adb:195:41: info: overflow check proved
-keystore.adb:195:57: info: overflow check proved
+keystore.adb:223:52: info: division check proved
+keystore.adb:226:14: range check not proved
+keystore.adb:242:22: precondition not proved
+keystore.adb:253:36: range check not proved
 keystore.ads:255:7: postcondition not proved
 keystore.ads:275:26: postcondition not proved, requires not (PrivateKeyPresent)
 latch.ads:107:7: postcondition not proved

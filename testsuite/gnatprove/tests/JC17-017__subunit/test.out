@@ -6,10 +6,10 @@ main.adb:30:04: warning: statement has no effect [ineffective]
 main.adb:30:10: warning: unused assignment to "B" [ineffective]
 main.adb:32:05: warning: statement has no effect [ineffective]
 main.adb:32:12: warning: unused assignment to "B" [ineffective]
+main.adb:5:19: info: postcondition proved
+main.adb:13:19: info: postcondition proved
+main.adb:21:22: info: postcondition proved
 main.adb:27:4: info: assertion proved
 main.adb:29:4: info: assertion proved
 main.adb:31:4: assertion not proved, requires not B
 main.adb:33:4: info: assertion proved
-main.adb:5:19: info: postcondition proved
-main.adb:13:19: info: postcondition proved
-main.adb:21:22: info: postcondition proved

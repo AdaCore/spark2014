@@ -56,10 +56,10 @@ private_p.adb:39:13: info: assertion proved
 private_p.adb:41:13: assertion not proved, requires G2 = 1
 private_p.adb:43:13: assertion not proved, requires G3 = 1
 private_p.adb:45:13: assertion not proved, requires G4 = 1
-private_p.ads:9:38: info: overflow check proved
-private_p.ads:9:43: info: overflow check proved
 private_p.ads:8:38: overflow check not proved
 private_p.ads:8:43: info: overflow check proved
+private_p.ads:9:38: info: overflow check proved
+private_p.ads:9:43: info: overflow check proved
 private_q.adb:6:07: warning: statement has no effect [ineffective]
 private_q.adb:30:07: warning: statement has no effect [ineffective]
 private_q.adb:8:13: info: assertion proved
@@ -92,6 +92,8 @@ q.adb:16:13: info: assertion proved
 q.adb:18:13: info: assertion proved
 q.adb:20:13: info: assertion proved
 q.adb:22:13: info: assertion proved
+q.adb:28:38: info: overflow check proved
+q.adb:28:43: info: overflow check proved
 q.adb:35:13: info: assertion proved
 q.adb:37:13: info: assertion proved
 q.adb:39:13: assertion not proved, requires F3 = 1
@@ -100,8 +102,6 @@ q.adb:43:13: info: assertion proved
 q.adb:45:13: info: assertion proved
 q.adb:47:13: info: assertion proved
 q.adb:49:13: info: assertion proved
-q.adb:28:38: info: overflow check proved
-q.adb:28:43: info: overflow check proved
 q.ads:5:38: info: overflow check proved
 q.ads:5:43: info: overflow check proved
 reorder_main.adb:6:04: warning: statement has no effect [ineffective]

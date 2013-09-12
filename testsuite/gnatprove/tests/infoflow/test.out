@@ -1,27 +1,3 @@
-infoflow.adb:139:17: postcondition not proved
-infoflow.adb:140:35: division check not proved
-infoflow.adb:140:46: index check not proved
-infoflow.adb:140:60: index check not proved
-infoflow.adb:140:68: division check not proved
-infoflow.adb:141:29: index check not proved
-infoflow.adb:141:43: index check not proved
-infoflow.adb:141:51: division check not proved
-infoflow.adb:143:17: range check not proved
-infoflow.adb:147:22: info: division check proved
-infoflow.adb:149:13: loop invariant initialization not proved
-infoflow.adb:149:13: loop invariant preservation not proved
-infoflow.adb:150:48: index check not proved
-infoflow.adb:150:69: index check not proved
-infoflow.adb:152:37: index check not proved
-infoflow.adb:152:58: index check not proved
-infoflow.adb:153:39: index check not proved
-infoflow.adb:153:58: index check not proved
-infoflow.adb:154:29: index check not proved
-infoflow.adb:155:16: index check not proved
-infoflow.adb:155:31: index check not proved
-infoflow.adb:155:31: overflow check not proved
-infoflow.adb:156:18: index check not proved
-infoflow.adb:156:18: overflow check not proved
 infoflow.adb:59:10: info: loop invariant initialization proved
 infoflow.adb:60:42: loop invariant preservation not proved, requires Cache_V1 (K) = 0
 infoflow.adb:68:42: loop invariant initialization not proved, requires Cache_V2 (K) = 0
@@ -63,6 +39,30 @@ infoflow.adb:130:39: overflow check not proved
 infoflow.adb:131:24: index check not proved
 infoflow.adb:131:24: overflow check not proved
 infoflow.adb:136:14: range check not proved
+infoflow.adb:139:17: postcondition not proved
+infoflow.adb:140:35: division check not proved
+infoflow.adb:140:46: index check not proved
+infoflow.adb:140:60: index check not proved
+infoflow.adb:140:68: division check not proved
+infoflow.adb:141:29: index check not proved
+infoflow.adb:141:43: index check not proved
+infoflow.adb:141:51: division check not proved
+infoflow.adb:143:17: range check not proved
+infoflow.adb:147:22: info: division check proved
+infoflow.adb:149:13: loop invariant initialization not proved
+infoflow.adb:149:13: loop invariant preservation not proved
+infoflow.adb:150:48: index check not proved
+infoflow.adb:150:69: index check not proved
+infoflow.adb:152:37: index check not proved
+infoflow.adb:152:58: index check not proved
+infoflow.adb:153:39: index check not proved
+infoflow.adb:153:58: index check not proved
+infoflow.adb:154:29: index check not proved
+infoflow.adb:155:16: index check not proved
+infoflow.adb:155:31: index check not proved
+infoflow.adb:155:31: overflow check not proved
+infoflow.adb:156:18: index check not proved
+infoflow.adb:156:18: overflow check not proved
 infoflow.adb:161:7: precondition not proved
 infoflow.adb:163:7: precondition not proved
 infoflow.adb:166:14: range check not proved
@@ -113,23 +113,17 @@ infoflow.adb:220:55: index check not proved
 infoflow.adb:221:16: index check not proved
 infoflow.adb:221:36: index check not proved
 infoflow.adb:221:36: overflow check not proved
-infoflow.ads:12:24: contract case not proved
-infoflow.ads:16:24: contract case not proved
 infoflow.ads:9:6: disjoint contract cases not proved
 infoflow.ads:9:6: complete contract cases not proved
+infoflow.ads:12:24: contract case not proved
+infoflow.ads:16:24: contract case not proved
 infoflow.ads:30:36: postcondition not proved, requires Flags (K) = Flags'Old (K)
-infoflow.ads:38:24: contract case not proved
 infoflow.ads:37:6: complete contract cases not proved
-infoflow.ads:48:30: contract case not proved
+infoflow.ads:38:24: contract case not proved
 infoflow.ads:48:6: info: complete contract cases proved
-infoflow.ads:64:27: contract case not proved
+infoflow.ads:48:30: contract case not proved
 infoflow.ads:63:6: complete contract cases not proved
-infoflow.ads:80:24: contract case not proved
-infoflow.ads:80:33: index check not proved
-infoflow.ads:80:44: index check not proved
-infoflow.ads:87:24: contract case not proved
-infoflow.ads:87:33: index check not proved
-infoflow.ads:87:44: index check not proved
+infoflow.ads:64:27: contract case not proved
 infoflow.ads:74:6: disjoint contract cases not proved
 infoflow.ads:74:6: complete contract cases not proved
 infoflow.ads:78:40: info: division check proved
@@ -137,17 +131,17 @@ infoflow.ads:79:34: index check not proved
 infoflow.ads:79:45: info: division check proved
 infoflow.ads:79:59: index check not proved
 infoflow.ads:79:70: info: division check proved
+infoflow.ads:80:24: contract case not proved
+infoflow.ads:80:33: index check not proved
+infoflow.ads:80:44: index check not proved
 infoflow.ads:85:39: info: division check proved
 infoflow.ads:86:34: index check not proved
 infoflow.ads:86:45: info: division check proved
 infoflow.ads:86:59: index check not proved
 infoflow.ads:86:70: info: division check proved
-infoflow.ads:96:24: contract case not proved
-infoflow.ads:96:33: index check not proved
-infoflow.ads:96:44: index check not proved
-infoflow.ads:103:24: contract case not proved
-infoflow.ads:103:33: index check not proved
-infoflow.ads:103:44: index check not proved
+infoflow.ads:87:24: contract case not proved
+infoflow.ads:87:33: index check not proved
+infoflow.ads:87:44: index check not proved
 infoflow.ads:90:6: disjoint contract cases not proved
 infoflow.ads:90:6: complete contract cases not proved
 infoflow.ads:94:40: info: division check proved
@@ -155,20 +149,26 @@ infoflow.ads:95:34: index check not proved
 infoflow.ads:95:45: info: division check proved
 infoflow.ads:95:59: index check not proved
 infoflow.ads:95:70: info: division check proved
+infoflow.ads:96:24: contract case not proved
+infoflow.ads:96:33: index check not proved
+infoflow.ads:96:44: index check not proved
 infoflow.ads:101:39: info: division check proved
 infoflow.ads:102:34: index check not proved
 infoflow.ads:102:45: info: division check proved
 infoflow.ads:102:59: index check not proved
 infoflow.ads:102:70: info: division check proved
-infoflow.ads:132:24: contract case not proved
-infoflow.ads:132:33: index check not proved
-infoflow.ads:132:44: index check not proved
-infoflow.ads:136:24: contract case not proved
-infoflow.ads:136:33: index check not proved
-infoflow.ads:136:44: index check not proved
+infoflow.ads:103:24: contract case not proved
+infoflow.ads:103:33: index check not proved
+infoflow.ads:103:44: index check not proved
 infoflow.ads:129:6: disjoint contract cases not proved
 infoflow.ads:129:6: complete contract cases not proved
 infoflow.ads:131:33: index check not proved
 infoflow.ads:131:44: index check not proved
+infoflow.ads:132:24: contract case not proved
+infoflow.ads:132:33: index check not proved
+infoflow.ads:132:44: index check not proved
 infoflow.ads:135:34: index check not proved
 infoflow.ads:135:49: index check not proved
+infoflow.ads:136:24: contract case not proved
+infoflow.ads:136:33: index check not proved
+infoflow.ads:136:44: index check not proved

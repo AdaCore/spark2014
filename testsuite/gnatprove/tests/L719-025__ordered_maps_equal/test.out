@@ -1,12 +1,12 @@
-p.adb:19:10: info: precondition proved
-p.adb:21:10: info: precondition proved
 p.adb:5:7: info: precondition proved
 p.adb:6:7: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:7: info: precondition proved
 p.adb:13:7: info: precondition proved
+p.adb:19:10: info: precondition proved
+p.adb:21:10: info: precondition proved
 p.ads:20:14: postcondition not proved
 p.ads:20:34: precondition not proved
 p.ads:24:14: postcondition not proved, requires Strict_Equal (L, L'old)
-p.ads:28:14: postcondition not proved
 p.ads:27:13: info: precondition proved
+p.ads:28:14: postcondition not proved
