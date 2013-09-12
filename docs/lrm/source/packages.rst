@@ -802,7 +802,7 @@ Currently no ``simple_options`` are defined.
 
 .. _tu-abstract_state_aspects-05:
 
-5. A subprogram declaration that overloads a state abstraction has an implicit
+5. A function declaration that overloads a state abstraction has an implicit
    Global aspect denoting the state abstraction with a ``mode_selector`` of
    Input. An explicit Global aspect may be specified which replaces the
    implicit one.

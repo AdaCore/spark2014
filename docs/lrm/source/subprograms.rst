@@ -910,7 +910,7 @@ where
 18. A ``dependency_clause`` with a **null** ``input_list`` means that
     the final value of the entity denoted by each ``output`` in the
     ``output_list`` does not depend on any member of the input set of
-    the subrogram (other than itself, if the ``output_list`` =>+
+    the subprogram (other than itself, if the ``output_list`` =>+
     **null** self-dependency syntax is used).
 
     .. ifconfig:: Display_Trace_Units

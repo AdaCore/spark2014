@@ -213,7 +213,7 @@ the value an expression had upon entry to the subprogram.
 
 .. _tu-loop_invariants_variants_and_entry_values-09:
 
-9. The elaboration of an Checked Loop_Variant pragma begins by evaluating the
+9. The elaboration of a Checked Loop_Variant pragma begins by evaluating the
    ``discrete_expressions`` in textual order. For the first elaboration of the
    pragma within a given execution of the enclosing loop statement, no further
    action is taken. For subsequent elaborations of the pragma, one or more of

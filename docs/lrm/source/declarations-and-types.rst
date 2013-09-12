@@ -52,9 +52,9 @@ Types and Subtypes
 3. Constants, including those implicitly declared through a
    non-preelaborable subtype declaration shall not be denoted in
    Global, Depends, Initializes or Refined_State aspects.  [This means
-   that these constants are not taken into account in determining and
-   checking dependency relations. This may change in the future to
-   facilitate a more in depth and complete analysis.]
+   that non-preelaborable subtypes are not taken into account in
+   determining and checking dependency relations. This may change in
+   the future to facilitate a more in depth and complete analysis.]
 
 .. _etu-types_and_subtypes:
 
@@ -159,13 +159,16 @@ Object Declarations
    type is in |SPARK|, and its *initialization_*\ ``expression``, if
    any, is in |SPARK|.
 
-.. _etu-object_declarations:
+.. _tu-object_declarations-02:
 
-Constants that are not preelaborable are not subject to flow analysis.
-[Users may write programs using such constants and those programs can be
-subject to formal verification. However, flow analysis will ignore the use
-of such a constant and will instead raise a warning to indicate that its use has not
-been analyzed.]
+2. Constants including those that are not preelaborable shall not be
+   denoted in Global, Depends, Initializes or Refined_State
+   aspects. [This means that non-preelaborable constants are not taken
+   into account in determining and checking dependency relations. This
+   may change in the future to facilitate a more in depth and complete
+   analysis.]
+
+.. _etu-object_declarations:
 
 .. todo:: Lift restriction that non-preelaborable constants are not subject
           to flow analysis. To be completed in a post-Release 1 version of this document.

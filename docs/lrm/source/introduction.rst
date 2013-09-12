@@ -262,13 +262,15 @@ the |SPARK| language definition.
 Dynamic Semantics of |SPARK| Programs
 -------------------------------------
 
-Every valid |SPARK| program is also a valid Ada 2012 program.
-The |SPARK| dynamic semantics are the same as Ada 2012 with the
-exception of some new aspects, pragmas and attributes which have
-dynamic semantics. Additionally, the new dynamic semantics only
-affect assertion expressions so if assertion expressions are
-ignored then the dynamic semantics of an Ada 2012 program are
-the same as a |SPARK| program.
+Every valid |SPARK| program is also a valid Ada 2012 program, although
+for a general Ada 2012 compiler, |SPARK| specific aspects may have to
+be replaced by their equivalent pragmas.  The |SPARK| dynamic
+semantics are the same as Ada 2012 with the exception of some new
+aspects, pragmas and attributes which have dynamic
+semantics. Additionally, the new dynamic semantics only affect
+assertion expressions so if assertion expressions are ignored then the
+dynamic semantics of an Ada 2012 program are the same as a |SPARK|
+program.
 
 |SPARK| programs that have failed their static analysis checks can still be
 valid Ada 2012 programs. An incorrect |SPARK| program with, say, flow
@@ -286,13 +288,17 @@ attributes (e.g., Update) then it can only be compiled and executed by an
 implementation which supports the construct in a way consistent with the
 definition given here in the |SPARK| reference manual.
 
-If the equivalent pragmas are used instead of the implementation-defined aspects
-and if the use of implementation-defined attributes is avoided, then a |SPARK|
-program may be compiled and executed by any Ada implementation (whether or not
-it recognizes the |SPARK| pragmas). Ada specifies that unrecognized pragmas are
-ignored: an Ada compiler that ignores the pragma is correctly implementing the
-dynamic semantics of |SPARK| and the |SPARK| tools will still be able to
-undertake all their static checks and proofs.
+If the equivalent pragmas are used instead of the
+implementation-defined aspects and if the use of
+implementation-defined attributes is avoided, then a |SPARK| program
+may be compiled and executed by any Ada implementation (whether or not
+it recognizes the |SPARK| pragmas). Ada specifies that unrecognized
+pragmas are ignored: an Ada compiler that ignores the pragma is
+correctly implementing the dynamic semantics of |SPARK| and the
+|SPARK| tools will still be able to undertake all their static checks
+and proofs.  If an Ada compiler defines a pragma with the same name as
+a |SPARK| specific pragma but has different semantics, then the
+compilation or execution of the program may fail.
 
 .. todo::
       The pragmas equivalent to the new aspects need to be added to this document.
