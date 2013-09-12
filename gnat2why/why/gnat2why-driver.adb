@@ -232,7 +232,7 @@ package body Gnat2Why.Driver is
       --  errors in the body of a subprogram, and to check that a subprogram
       --  body implements its contract.
 
-      if Subprogram_Body_In_SPARK (E) then
+      if Entity_Body_In_SPARK (E) then
          Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
       end if;
    end Do_Generate_VCs;

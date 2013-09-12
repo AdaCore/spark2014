@@ -76,7 +76,7 @@ package SPARK_Definition is
    --  Return whether the entity E is in SPARK. Note that a subprogram E can be
    --  in SPARK without its body being in SPARK.
 
-   function Subprogram_Body_In_SPARK (E : Entity_Id) return Boolean;
+   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
    --  Return whether the body of subprogram E is in SPARK
 
 end SPARK_Definition;

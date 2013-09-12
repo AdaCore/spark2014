@@ -987,7 +987,7 @@ package body Flow is
          case Ekind (E) is
             when Subprogram_Kind =>
                if Analysis_Requested (E)
-                 and Subprogram_Body_In_SPARK (E)
+                 and Entity_Body_In_SPARK (E)
                then
                   FA_Graphs.Include (E, Flow_Analyse_Entity (E));
                end if;

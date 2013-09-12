@@ -51,7 +51,8 @@ package Why.Inter is
    --  phases of the translation process.
 
    type Why_Section_Enum is
-     (WF_Pure,
+     (
+      WF_Pure,
       WF_Variables,
       WF_Context,
       WF_Main);

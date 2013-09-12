@@ -898,7 +898,7 @@ package body Why.Inter is
             end if;
 
          when Type_Kind =>
-               return WF_Pure;
+            return WF_Pure;
 
          when E_Package =>
             return WF_Pure;
@@ -1224,7 +1224,9 @@ package body Why.Inter is
    procedure Init_Why_Files (Prefix : String) is
    begin
       Why_File_Name := new String'(Prefix & Why_File_Suffix);
-      for Kind in WF_Pure .. WF_Context loop
+      for Kind in Why_Section_Enum'First ..
+                  Why_Section_Enum'Pred (Why_Section_Enum'Last)
+      loop
          Why_Sections (Kind) :=
            Make_Empty_Why_File (Kind => Kind);
       end loop;

@@ -4276,6 +4276,7 @@ package body Gnat2Why.Expr is
                                     Expected_Type,
                                     Domain,
                                     Local_Params);
+               Current_Type := Expected_Type;
 
             --  Compiler inserted unchecked type conversions should be
             --  transparent for Why with our translation.
@@ -4285,6 +4286,7 @@ package body Gnat2Why.Expr is
                                     Expected_Type,
                                     Domain,
                                     Local_Params);
+               Current_Type := Expected_Type;
             end if;
 
          when N_Function_Call =>

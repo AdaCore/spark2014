@@ -28,6 +28,7 @@ with Lib;      use Lib;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
+with Treepr;   use Treepr;
 with Uintp;    use Uintp;
 
 package body SPARK_Util is
@@ -362,6 +363,120 @@ package body SPARK_Util is
    end Get_Flat_Statement_And_Declaration_List;
 
    ----------------------
+   -- Get_Global_Items --
+   ----------------------
+
+   procedure Get_Global_Items
+     (P      : Node_Id;
+      Reads  : out Node_Sets.Set;
+      Writes : out Node_Sets.Set)
+   is
+      pragma Assert (List_Length (Pragma_Argument_Associations (P)) = 1);
+
+      PAA : constant Node_Id := First (Pragma_Argument_Associations (P));
+      pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+      Row      : Node_Id;
+      The_Mode : Name_Id;
+      RHS      : Node_Id;
+
+      procedure Process (The_Mode   : Name_Id;
+                         The_Global : Entity_Id);
+      --  Add the given global to the reads or writes list,
+      --  depending on the mode.
+
+      procedure Process (The_Mode   : Name_Id;
+                         The_Global : Entity_Id)
+      is
+      begin
+         case The_Mode is
+            when Name_Input =>
+               Reads.Insert (The_Global);
+            when Name_In_Out =>
+               Reads.Insert (The_Global);
+               Writes.Insert (The_Global);
+            when Name_Output =>
+               Writes.Insert (The_Global);
+            when others =>
+               raise Program_Error;
+         end case;
+      end Process;
+
+   --  Start of Get_Global_Items
+
+   begin
+      Reads  := Node_Sets.Empty_Set;
+      Writes := Node_Sets.Empty_Set;
+
+      if Nkind (Expression (PAA)) = N_Null then
+         --  global => null
+         --  No globals, nothing to do.
+         return;
+
+      elsif Nkind (Expression (PAA)) in
+        N_Identifier | N_Expanded_Name
+      then
+         --  global => foo
+         --  A single input
+         Process (Name_Input, Entity (Expression (PAA)));
+
+      elsif Nkind (Expression (PAA)) = N_Aggregate and then
+        Expressions (Expression (PAA)) /= No_List then
+         --  global => (foo, bar)
+         --  Inputs
+         RHS := First (Expressions (Expression (PAA)));
+         while Present (RHS) loop
+            case Nkind (RHS) is
+               when N_Identifier | N_Expanded_Name =>
+                  Process (Name_Input, Entity (RHS));
+               when others =>
+                  raise Why.Unexpected_Node;
+            end case;
+            RHS := Next (RHS);
+         end loop;
+
+      elsif Nkind (Expression (PAA)) = N_Aggregate and then
+        Component_Associations (Expression (PAA)) /= No_List then
+         --  global => (mode => foo,
+         --             mode => (bar, baz))
+         --  A mixture of things.
+
+         declare
+            CA : constant List_Id :=
+              Component_Associations (Expression (PAA));
+         begin
+            Row := First (CA);
+            while Present (Row) loop
+               pragma Assert (List_Length (Choices (Row)) = 1);
+               The_Mode := Chars (First (Choices (Row)));
+
+               RHS := Expression (Row);
+               case Nkind (RHS) is
+                  when N_Aggregate =>
+                     RHS := First (Expressions (RHS));
+                     while Present (RHS) loop
+                        Process (The_Mode, Entity (RHS));
+                        RHS := Next (RHS);
+                     end loop;
+                  when N_Identifier | N_Expanded_Name =>
+                     Process (The_Mode, Entity (RHS));
+                  when N_Null =>
+                     null;
+                  when others =>
+                     Print_Node_Subtree (RHS);
+                     raise Why.Unexpected_Node;
+               end case;
+
+               Row := Next (Row);
+            end loop;
+         end;
+
+      else
+         raise Why.Unexpected_Node;
+      end if;
+   end Get_Global_Items;
+
+   ----------------------
    -- Get_Package_Decl --
    ----------------------
 
@@ -522,6 +637,27 @@ package body SPARK_Util is
 
       return False;
    end Has_Annotate_Pragma_For_External_Axiomatization;
+
+   -----------------------------
+   -- In_Private_Declarations --
+   -----------------------------
+
+   function In_Private_Declarations (Decl : Node_Id) return Boolean is
+      N : Node_Id;
+   begin
+      if Present (Parent (Decl))
+        and then Nkind (Parent (Decl)) = N_Package_Specification
+      then
+         N := First (Private_Declarations (Parent (Decl)));
+         while Present (N) loop
+            if Decl = N then
+               return True;
+            end if;
+            Next (N);
+         end loop;
+      end if;
+      return False;
+   end In_Private_Declarations;
 
    ------------------------------
    -- Innermost_Enclosing_Loop --

@@ -1150,7 +1150,7 @@ package body Gnat2Why.Subprograms is
 
       --  If the entity's body is not in SPARK, generate an empty module.
 
-      if not Subprogram_Body_In_SPARK (E) then
+      if not Entity_Body_In_SPARK (E) then
          Close_Theory (File, Filter_Entity => Empty);
          return;
       end if;

@@ -103,6 +103,10 @@ package SPARK_Util is
    --  Store the correspondance between the Full and Partial views of the same
    --  entity, for deferred constants and private types.
 
+   function In_Private_Declarations (Decl : Node_Id) return Boolean;
+   --  Returns whether Decl belongs to the list of private declarations of a
+   --  package.
+
    function Is_Full_View (E : Entity_Id) return Boolean;
    --  Return whether E is the full view of another entity
 
@@ -242,5 +246,11 @@ package SPARK_Util is
    --  Returns whether E is a package entity, for which the initial list of
    --  pragmas at the start of the package declaration contains
    --    pragma Annotate (GNATprove, External_Axiomatization);
+
+   procedure Get_Global_Items
+     (P      : Node_Id;
+      Reads  : out Node_Sets.Set;
+      Writes : out Node_Sets.Set);
+   --  Returns the set of input and output items in Global pragma P
 
 end SPARK_Util;
