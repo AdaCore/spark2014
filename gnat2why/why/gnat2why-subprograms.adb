@@ -1322,9 +1322,7 @@ package body Gnat2Why.Subprograms is
             --  void_param)
 
             if Present (A) then
-               Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Unique_Entity (A),
-                                      Binder);
+               Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
             end if;
          end;
       end loop;
@@ -1427,6 +1425,14 @@ package body Gnat2Why.Subprograms is
                Post        => Post));
       end if;
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Binder_Type'(
+                               Ada_Node => E,
+                               B_Name   => To_Why_Id (E),
+                               B_Type   => Why_Empty,
+                               others   => <>));
 
       Close_Theory (File,
                     Filter_Entity  => E,

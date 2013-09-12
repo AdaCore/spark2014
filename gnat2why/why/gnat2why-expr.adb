@@ -3839,7 +3839,7 @@ package body Gnat2Why.Expr is
 
          when N_Identifier | N_Expanded_Name =>
             T := Transform_Identifier (Local_Params, Expr,
-                                       Unique_Entity (Entity (Expr)),
+                                       Entity (Expr),
                                        Domain, Current_Type);
 
          when N_Op_Compare =>
@@ -4674,8 +4674,6 @@ package body Gnat2Why.Expr is
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
          Current_Type := EW_Int_Type;
-      elsif Ekind (Ent) = E_Loop_Parameter then
-         pragma Assert (False);
       else
          T := +To_Why_Id (Ent, Domain);
       end if;
