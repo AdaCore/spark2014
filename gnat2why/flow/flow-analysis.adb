@@ -47,7 +47,7 @@ package body Flow.Analysis is
    --  Enable this to always check the dependency relation, even if
    --  not specified. This may later be a configurable restriction
    --  (requires_depends or similar); but it is quite useful for
-   --  debugging anywya.
+   --  debugging anyway.
 
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
