@@ -31,14 +31,15 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 
-with Treepr;                use Treepr;
-
 with Why;
 
 with Gnat2Why_Args;
 
 with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
+
+--  with Treepr;                use Treepr;
+--  with Flow.Debug;            use Flow.Debug;
 
 package body Flow.Analysis is
 
@@ -1584,62 +1585,12 @@ package body Flow.Analysis is
    ---------------------
 
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
-      function Find_Existing_Export (E : Entity_Id) return Node_Id
-        with Pre => Has_Depends (FA.Analyzed_Entity);
-      --  Looks through the depends aspect on FA.Analyzed_Entity and
-      --  returns the node which represents E in the dependency for E.
 
       function Find_Export (E : Entity_Id) return Node_Id;
-      --  As above, but returns FA.Analyzed_Entity as a fallback if the
-      --  subprogram does not have a dependency relation.
-
-      --------------------------
-      -- Find_Export_Existing --
-      --------------------------
-
-      function Find_Existing_Export (E : Entity_Id) return Node_Id
-      is
-         Depends_Contract : constant Node_Id :=
-           Get_Pragma (FA.Analyzed_Entity, Pragma_Depends);
-         pragma Assert
-           (List_Length (Pragma_Argument_Associations (Depends_Contract)) = 1);
-
-         PAA : constant Node_Id :=
-           First (Pragma_Argument_Associations (Depends_Contract));
-         pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
-
-         CA : constant List_Id := Component_Associations (Expression (PAA));
-
-         Row : Node_Id;
-         LHS : Node_Id;
-      begin
-         Row := First (CA);
-         while Present (Row) loop
-            LHS := First (Choices (Row));
-            case Nkind (LHS) is
-               when N_Aggregate =>
-                  LHS := First (Expressions (LHS));
-                  while Present (LHS) loop
-                     if Entity (LHS) = E then
-                        return LHS;
-                     end if;
-                     LHS := Next (LHS);
-                  end loop;
-               when N_Identifier =>
-                  if Entity (LHS) = E then
-                     return LHS;
-                  end if;
-               when N_Null =>
-                  null;
-               when others =>
-                  Print_Node_Subtree (LHS);
-                  raise Why.Unexpected_Node;
-            end case;
-
-            Row := Next (Row);
-         end loop;
-         raise Why.Unexpected_Node;
-      end Find_Existing_Export;
+      --  Looks through the depends aspect on FA.Analyzed_Entity and
+      --  returns the node which represents E in the dependency for E.
+      --  If none can be found, returns FA.Analyzed_Entity as a
+      --  fallback.
 
       -----------------
       -- Find_Export --
@@ -1647,9 +1598,47 @@ package body Flow.Analysis is
 
       function Find_Export (E : Entity_Id) return Node_Id
       is
+         Depends_Contract : Node_Id;
+         Needle           : Node_Id := Empty;
+
+         function Proc (N : Node_Id) return Traverse_Result;
+         --  Searches dependency aspect for export E and sets needle
+         --  to the node, if found.
+
+         function Proc (N : Node_Id) return Traverse_Result is
+            Tmp : Node_Id;
+         begin
+            case Nkind (N) is
+               when N_Component_Association =>
+                  Tmp := First (Choices (N));
+                  while Present (Tmp) loop
+                     if Entity (Tmp) = E then
+                        Needle := Tmp;
+                        return Abandon;
+                     end if;
+                     Tmp := Next (Tmp);
+                  end loop;
+                  return Skip;
+               when others =>
+                  null;
+            end case;
+            return OK;
+         end Proc;
+
+         procedure Find_Export_Internal is new Traverse_Proc (Proc);
+
       begin
-         if Has_Depends (FA.Analyzed_Entity) then
-            return Find_Existing_Export (E);
+         if Present (FA.Refined_Depends_N) then
+            Depends_Contract := FA.Refined_Depends_N;
+         elsif Present (FA.Depends_N) then
+            Depends_Contract := FA.Depends_N;
+         else
+            return FA.Analyzed_Entity;
+         end if;
+
+         Find_Export_Internal (Depends_Contract);
+         if Present (Needle) then
+            return Needle;
          else
             return FA.Analyzed_Entity;
          end if;
@@ -1666,10 +1655,11 @@ package body Flow.Analysis is
 
    begin --  Check_Contracts
 
-      if Has_Depends (FA.Analyzed_Entity) then
-         --  Obtain the dependency relation specified by the user.
-         Get_Depends (FA.Analyzed_Entity,
-                      User_Deps);
+      if Present (FA.Refined_Depends_N) then
+         User_Deps := Parse_Depends (FA.Refined_Depends_N);
+
+      elsif Present (FA.Depends_N) then
+         User_Deps := Parse_Depends (FA.Depends_N);
 
       elsif Debug_Depends_Required then
          User_Deps := Dependency_Maps.Empty_Map;
@@ -1681,6 +1671,9 @@ package body Flow.Analysis is
       end if;
 
       Actual_Deps := Compute_Dependency_Relation (FA);
+
+      --  Print_Dependency_Map (User_Deps);
+      --  Print_Dependency_Map (Actual_Deps);
 
       --  If the user depds do not include something we have in the
       --  actual deps we will raise an appropriate error. We should

@@ -154,6 +154,11 @@ package Flow is
             --  True if the last statement of the subprogram is an
             --  N_Raise_Statement.
 
+            Depends_N         : Node_Id;
+            Refined_Depends_N : Node_Id;
+            --  A few contract nodes cached as they can be a bit
+            --  tedious to find.
+
          when E_Package =>
             null;
 

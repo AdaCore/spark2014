@@ -2395,10 +2395,18 @@ package body Flow.Control_Flow_Graph is
             Body_N        := Get_Subprogram_Body (FA.Analyzed_Entity);
             Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
 
+            FA.Depends_N := Get_Pragma (FA.Analyzed_Entity,
+                                        Pragma_Depends);
+
             if Acts_As_Spec (Body_N) then
                Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));
+               FA.Refined_Depends_N :=
+                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_Depends);
             else
                Subprogram_Spec := Corresponding_Spec (Body_N);
+               FA.Refined_Depends_N :=
+                 Get_Pragma (Get_Body (FA.Analyzed_Entity),
+                             Pragma_Refined_Depends);
             end if;
 
          when E_Package =>

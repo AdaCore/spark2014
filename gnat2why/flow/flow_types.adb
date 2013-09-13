@@ -503,14 +503,24 @@ package body Flow_Types is
    is
       R : Unbounded_String := Null_Unbounded_String;
    begin
+      --  case F.Kind is
+      --     when Direct_Mapping | Record_Field =>
+      --        Get_Name_String (Chars (Scope (F.Node)));
+      --        Set_Casing (Mixed_Case);
+      --        Append (R, Name_Buffer (1 .. Name_Len));
+      --        Append (R, ".");
+      --     when Null_Value | Magic_String =>
+      --        null;
+      --  end case;
+
       case F.Kind is
          when Null_Value =>
-            return "<null>";
+            Append (R, "<null>");
 
          when Direct_Mapping =>
             Get_Name_String (Chars (F.Node));
             Set_Casing (Mixed_Case);
-            return Name_Buffer (1 .. Name_Len);
+            Append (R, Name_Buffer (1 .. Name_Len));
 
          when Record_Field =>
             Get_Name_String (Chars (F.Node));
@@ -522,11 +532,12 @@ package body Flow_Types is
                Set_Casing (Mixed_Case);
                Append (R, Name_Buffer (1 .. Name_Len));
             end loop;
-            return To_String (R);
 
          when Magic_String =>
-            return F.Name.all;
+            Append (R, F.Name.all);
       end case;
+
+      return To_String (R);
    end Flow_Id_To_String;
 
    -------------------------

@@ -778,7 +778,9 @@ package body Flow is
                                            (Get_Pragma (E, Pragma_Global)) or
                                          Present
                                            (Get_Pragma (E, Pragma_Depends))),
-               Last_Statement_Is_Raise => Last_Statement_Is_Raise (E));
+               Last_Statement_Is_Raise => Last_Statement_Is_Raise (E),
+               Depends_N         => Empty,
+               Refined_Depends_N => Empty);
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'
@@ -1069,6 +1071,13 @@ package body Flow is
          end if;
 
       end loop;
+
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Write_Str (Character'Val (8#33#) & "[33m" &
+                      "Flow analysis complete for current CU" &
+                      Character'Val (8#33#) & "[0m");
+         Write_Eol;
+      end if;
 
    end Flow_Analyse_CUnit;
 
