@@ -20,6 +20,6 @@ natural_set.adb
 natural_set.ads
 obj
 test.gpr
-test_obj.gpr
 test.out
 test.py
+test_obj.gpr
