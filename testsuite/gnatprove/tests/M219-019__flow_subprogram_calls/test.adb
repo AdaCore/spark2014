@@ -1,6 +1,13 @@
 with Other;
 
-package body Test is 
+package body Test
+with SPARK_Mode,
+     Refined_State => (State => (Global_A, Global_B, Global_C))
+is
+
+   Global_A : Integer := 0;
+   Global_B : Integer := 0;
+   Global_C : Integer := 0;
 
    ------------------------------------------------------------
    --  The example from the Horowitz, Reps, Binkley SDG paper
@@ -9,7 +16,7 @@ package body Test is
    procedure HRB_Main (Sum : out Integer)
    is
       procedure HRB_Add (A : in out Integer;
-                         B : in out Integer)
+                         B : in out Integer)           --  could be in
       is
       begin
          A := A + B;
@@ -19,7 +26,7 @@ package body Test is
       is
          Tmp : Integer := 1;
       begin
-         HRB_Add (Z, B => Tmp);
+         HRB_Add (Z, B => Tmp);                        --  again, B could be in only
       end HRB_Increment;
 
       procedure HRB_A (X : in out Integer;
@@ -72,13 +79,13 @@ package body Test is
    --  Using Other.Swap_With_Contract
 
    procedure Swap_D (X, Y : in out Integer)
-   with Depends => (X => Y,
-                    Y => X);
+   with Depends => (X => Y,                   --  swc messes up precise derives here
+                    Y => X);                  --  ditto
    --  Using Other.Swap_Without_Contract
 
    procedure Swap_E (X, Y : in out Integer)
-   with Depends => (X => Y,
-                    Y => X);
+   with Depends => (X => Y,                   --  no contracts messes up precise derives here
+                    Y => X);                  --  ditto
    --  Using Swap_A (no contracts)
 
    procedure Swap_F (X, Y : in out Integer)
@@ -276,5 +283,31 @@ package body Test is
       Direct_Update;
    end Global_Test_04;
 
+   ------------------------------------------------------------
+   --  Tests for refinement
+   ------------------------------------------------------------
+
+   procedure Procedure_With_Refinement (X : Integer;
+                                        Y : out Integer)
+   with Refined_Global => (Input  => Global_A,
+                           Output => Global_B),
+        Refined_Depends => (Y => Global_A,
+                            Global_B => X)
+   is
+   begin
+      Y := Global_A;
+      Global_B := X;
+   end Procedure_With_Refinement;
+
+   procedure Call_Procedure_With_Refinement (Local_X : Integer;
+                                             Local_Y : out Integer)
+   with Global => (Input  => Global_A,
+                   Output => Global_B),
+        Depends => (Local_Y => Global_A,
+                    Global_B => Local_X)
+   is
+   begin
+      Procedure_With_Refinement (Local_X, Local_Y);
+   end Call_Procedure_With_Refinement;
 
 end Test;

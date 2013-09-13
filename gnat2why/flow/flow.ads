@@ -215,7 +215,13 @@ package Flow is
    --  Return true if the given subprogram has been annotated with a
    --  dependency relation.
 
+   function Has_Refined_Depends (Subprogram : Entity_Id) return Boolean
+   with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
+   --  Return true if the given subprogram has been annotated with a
+   --  refined dependency relation.
+
    procedure Get_Depends (Subprogram : Entity_Id;
+                          Refined    : Boolean;
                           Depends    : out Dependency_Maps.Map)
    with Pre  => Ekind (Subprogram) in E_Procedure | E_Function and
                 Has_Depends (Subprogram),

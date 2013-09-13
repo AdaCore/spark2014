@@ -146,7 +146,7 @@ package body Flow.Interprocedural is
          declare
             Deps : Dependency_Maps.Map;
          begin
-            Get_Depends (Called_Procedure, Deps);
+            Get_Depends (Called_Procedure, Use_Refined_View, Deps);
             for C in Deps.Iterate loop
                declare
                   Output : constant Flow_Id := Dependency_Maps.Key (C);

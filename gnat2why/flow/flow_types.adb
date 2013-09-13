@@ -505,7 +505,12 @@ package body Flow_Types is
    begin
       --  case F.Kind is
       --     when Direct_Mapping | Record_Field =>
-      --        Get_Name_String (Chars (Scope (F.Node)));
+      --        case Nkind (F.Node) is
+      --           when N_Entity =>
+      --              Get_Name_String (Chars (Scope (F.Node)));
+      --           when others =>
+      --              Get_Name_String (Chars (Scope (Entity (F.Node))));
+      --        end case;
       --        Set_Casing (Mixed_Case);
       --        Append (R, Name_Buffer (1 .. Name_Len));
       --        Append (R, ".");

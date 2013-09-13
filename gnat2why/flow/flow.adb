@@ -432,17 +432,48 @@ package body Flow is
       return Present (Get_Pragma (Subprogram, Pragma_Depends));
    end Has_Depends;
 
+   -------------------------
+   -- Has_Refined_Depends --
+   -------------------------
+
+   function Has_Refined_Depends (Subprogram : Entity_Id) return Boolean is
+      Body_N : constant Node_Id := Get_Subprogram_Body (Subprogram);
+   begin
+      if Present (Body_N) then
+         if Acts_As_Spec (Body_N) then
+            return Present (Get_Pragma (Subprogram, Pragma_Refined_Depends));
+         else
+            return Present (Get_Pragma (Get_Body (Subprogram),
+                                        Pragma_Refined_Depends));
+         end if;
+      else
+         return False;
+      end if;
+   end Has_Refined_Depends;
+
    -----------------
    -- Get_Depends --
    -----------------
 
    procedure Get_Depends (Subprogram : Entity_Id;
+                          Refined    : Boolean;
                           Depends    : out Dependency_Maps.Map)
    is
-      Depends_Contract : constant Node_Id :=
-        Get_Pragma (Subprogram, Pragma_Depends);
+      Body_N : constant Node_Id := Get_Subprogram_Body (Subprogram);
+      Deps   : Node_Id          := Empty;
    begin
-      Depends := Parse_Depends (Depends_Contract);
+      if Refined and then Present (Body_N) then
+         if Acts_As_Spec (Body_N) then
+            Deps := Get_Pragma (Subprogram, Pragma_Refined_Depends);
+         else
+            Deps := Get_Pragma (Get_Body (Subprogram), Pragma_Refined_Depends);
+         end if;
+      end if;
+      if not Present (Deps) then
+         Deps := Get_Pragma (Subprogram, Pragma_Depends);
+      end if;
+      pragma Assert (Present (Deps));
+      Depends := Parse_Depends (Deps);
    end Get_Depends;
 
    -----------------

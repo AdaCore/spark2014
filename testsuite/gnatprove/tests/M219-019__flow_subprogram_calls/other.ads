@@ -1,4 +1,4 @@
-package Other is 
+package Other with SPARK_Mode is
 
    procedure Swap_With_Contract (X, Y : in out Integer)
    with Global => null,
