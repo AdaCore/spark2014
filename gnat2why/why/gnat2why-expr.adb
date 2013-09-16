@@ -4675,7 +4675,9 @@ package body Gnat2Why.Expr is
              (Value => Char_Literal_Value (Constant_Value (Ent)));
          Current_Type := EW_Int_Type;
       else
-         T := +To_Why_Id (Ent, Domain);
+         Ada.Text_IO.Put_Line ("[Transform_Identifier] unregistered entity"
+                               & Full_Name (Ent));
+         raise Program_Error;
       end if;
 
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
