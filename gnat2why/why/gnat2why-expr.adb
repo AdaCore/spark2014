@@ -4305,14 +4305,6 @@ package body Gnat2Why.Expr is
 
             begin
 
-               --  For functions, the Etype of the Name is not always the type
-               --  returned by the function. Examples are primitive operations
-               --  of a derived type: The Etype of the Name is the derived
-               --  type, but the return type of the function is the original
-               --  type.
-
-               Current_Type := Type_Of_Node (Etype (Subp));
-
                if Why_Subp_Has_Precondition (Subp) then
                   T :=
                     +New_VC_Call

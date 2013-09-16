@@ -1290,6 +1290,7 @@ package body Gnat2Why.Subprograms is
       Post         : W_Pred_Id;
       Prog_Id      : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
+      Why_Type     : W_Primitive_Type_Id := Why_Empty;
    begin
       Open_Theory (File, Name,
                    Comment =>
@@ -1332,6 +1333,7 @@ package body Gnat2Why.Subprograms is
       --  one P.F
 
       if Ekind (E) = E_Function then
+         Why_Type := +Why_Logic_Type_Of_Ada_Type (Etype (E));
          Ada_Ent_To_Why.Insert (Symbol_Table,
                                 E,
                                 Binder_Type'(
@@ -1339,7 +1341,7 @@ package body Gnat2Why.Subprograms is
                                     +To_Why_Id (E      => E,
                                                 Domain => EW_Term,
                                                 Local  => True),
-                                  B_Type => Why_Empty,
+                                  B_Type => Why_Type,
                                   others => <>));
       end if;
 
@@ -1397,9 +1399,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
                   Binders     => Logic_Func_Binders,
-                  Return_Type =>
-                     +Why_Logic_Type_Of_Ada_Type
-                       (Etype (E))));
+                  Return_Type => Why_Type));
 
             Emit
               (File.Cur_Theory,
@@ -1431,7 +1431,7 @@ package body Gnat2Why.Subprograms is
                              Binder_Type'(
                                Ada_Node => E,
                                B_Name   => To_Why_Id (E),
-                               B_Type   => Why_Empty,
+                               B_Type   => Why_Type,
                                others   => <>));
 
       Close_Theory (File,
