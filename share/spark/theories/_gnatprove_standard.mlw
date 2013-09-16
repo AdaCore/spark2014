@@ -66,14 +66,6 @@ module Floating
   use real.MinMax
   use real.FromInt
 
-  use floating_point.Rounding
-  use floating_point.Single
-  use floating_point.Double
-
-  function round_single (x : real) : real = Single.round Rounding.NearestTiesToEven x
-
-  function round_double (x : real) : real = Double.round Rounding.NearestTiesToEven x
-
   use export _gnatprove_standard_th.Floating_Func
 
   function real_of_int (x : int) : real = FromInt.from_int x

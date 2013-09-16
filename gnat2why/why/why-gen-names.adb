@@ -150,14 +150,28 @@ package body Why.Gen.Names is
 
                   elsif From_Kind = EW_Real and then To_Kind = EW_Int then
                      return To_Ident (WNE_Real_Round);
+
                   elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
                      return Prefix (Ada_Node => Standard_Boolean,
                                     S        => "Boolean",
                                     W        => WNE_To_Int);
+
                   elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
                      return Prefix (Ada_Node => Standard_Boolean,
                                     S        => "Boolean",
                                     W        => WNE_Of_Int);
+
+                  elsif From_Kind = EW_Real and To_Kind in EW_Float then
+                     return To_Ident (WNE_Real_To_IEEE);
+
+                  elsif From_Kind in EW_Float and To_Kind = EW_Real then
+                     return To_Ident (WNE_IEEE_To_Real);
+
+                  elsif From_Kind = EW_Int and To_Kind in EW_Float then
+                     return To_Ident (WNE_Int_To_IEEE);
+
+                  elsif From_Kind in EW_Float and To_Kind = EW_Real then
+                     return To_Ident (WNE_IEEE_To_Int);
 
                   --  Either the two objects are of the same type
                   --  (in which case the conversion is useless) or
@@ -225,8 +239,9 @@ package body Why.Gen.Names is
    is
    begin
       case Kind is
-         when EW_Int => return WNE_Of_Int;
-         when EW_Real => return WNE_Of_Real;
+         when EW_Int   => return WNE_Of_Int;
+         when EW_Real  => return WNE_Of_Real;
+         when EW_Float => return WNE_Of_Float;
          when others =>
             raise Program_Error;
       end case;
@@ -240,8 +255,9 @@ package body Why.Gen.Names is
    is
    begin
       case Kind is
-         when EW_Int => return WNE_To_Int;
-         when EW_Real => return WNE_To_Real;
+         when EW_Int   => return WNE_To_Int;
+         when EW_Real  => return WNE_To_Real;
+         when EW_Float => return WNE_To_Float;
          when others =>
             raise Program_Error;
       end case;
@@ -254,16 +270,13 @@ package body Why.Gen.Names is
    function EW_Base_Type_Name (Kind : EW_Basic_Type) return String is
    begin
       case Kind is
-         when EW_Unit =>
-            return "unit";
-         when EW_Prop =>
-            return "prop";
-         when EW_Real =>
-            return "real";
-         when EW_Int =>
-            return "int";
-         when EW_Bool =>
-            return "bool";
+         when EW_Unit    => return "unit";
+         when EW_Prop    => return "prop";
+         when EW_Float32 => return "single";
+         when EW_Float64 => return "double";
+         when EW_Real    => return "real";
+         when EW_Int     => return "int";
+         when EW_Bool    => return "bool";
       end case;
    end EW_Base_Type_Name;
 
@@ -285,6 +298,8 @@ package body Why.Gen.Names is
    function New_Abs (Kind : EW_Numeric) return W_Identifier_Id is
    begin
       case Kind is
+         when EW_Float =>
+            return Prefix (To_String (Kind), WNE_Float_Abs);
          when EW_Real =>
             return To_Ident (WNE_Real_Abs);
          when EW_Int =>
@@ -316,11 +331,12 @@ package body Why.Gen.Names is
         );
       S : constant String :=
         (case Kind is
-         when EW_Int  => "Integer",
-         when EW_Real => "Floating",
-         when EW_Bool => "Boolean",
-         when EW_Unit .. EW_Prop | EW_Private => "Main",
-         when EW_Abstract => Full_Name (Get_Ada_Node (+Arg_Types)));
+           when EW_Int   => "Integer",
+           when EW_Float => "IEEE_Floating",
+           when EW_Real  => "Floating",
+           when EW_Bool  => "Boolean",
+           when EW_Unit .. EW_Prop | EW_Private => "Main",
+           when EW_Abstract => Full_Name (Get_Ada_Node (+Arg_Types)));
    begin
       return Prefix (Ada_Node => A,
                      S        => S,
@@ -334,6 +350,8 @@ package body Why.Gen.Names is
    function New_Division (Kind : EW_Numeric) return W_Identifier_Id is
    begin
       case Kind is
+         when EW_Float =>
+            return To_Ident (WNE_Float_Div);
          when EW_Real =>
             return To_Ident (WNE_Real_Div);
          when EW_Int =>
@@ -348,6 +366,8 @@ package body Why.Gen.Names is
    function New_Exp (Kind : EW_Numeric) return W_Identifier_Id is
    begin
       case Kind is
+         when EW_Float =>
+            return To_Ident (WNE_Float_Exp);
          when EW_Real =>
             return To_Ident (WNE_Real_Exp);
          when EW_Int =>
@@ -587,6 +607,27 @@ package body Why.Gen.Names is
             return "attr__" & Attribute_Id'Image (Attribute_Value)
               & "__pre_check";
 
+         when WNE_Real_To_IEEE => return "of_real";
+         when WNE_IEEE_To_Real => return "ieee_to_real";
+         when WNE_Int_To_IEEE  => return "int_to_ieee";
+         when WNE_IEEE_To_Int  => return "ieee_to_int";
+         when WNE_Of_Float     => return "of_float";
+         when WNE_To_Float     => return "to_float";
+         when WNE_Float_Abs    => return "fp_abs";
+         when WNE_Float_Div    => return "div_float";
+         when WNE_Float_Exp    => return "TBD_exp_TBD";
+         when WNE_Float_Min    => return "fp_min";
+         when WNE_Float_Max    => return "fp_max";
+
+      end case;
+   end To_String;
+
+   function To_String (T : EW_Float) return String
+   is
+   begin
+      case T is
+         when EW_Float32 => return "Single_RNE";
+         when EW_Float64 => return "Double_RNE";
       end case;
    end To_String;
 
@@ -614,6 +655,31 @@ package body Why.Gen.Names is
          return New_Identifier (Ada_Node => Ada_Node, Name => To_String (W));
       end if;
    end To_Ident;
+
+   -----------------
+   -- To_Fp_Ident --
+   -----------------
+
+   function To_Fp_Ident (Kind : Node_Kind) return W_Identifier_Id is
+      S : constant String :=
+        (case Kind is
+           when N_Op_Add      => "fp_add",
+           when N_Op_Multiply => "fp_mul",
+           when N_Op_Subtract => "fp_sub",
+           when N_Op_Gt       => "fp_gt",
+           when N_Op_Lt       => "fp_lt",
+           when N_Op_Eq       => "fp_eq",
+           when N_Op_Ge       => "fp_geq",
+           when N_Op_Le       => "fp_leq",
+           when N_Op_Ne       => "fp_neq",
+           when others => "");
+   begin
+      if S = "" then
+         raise Not_Implemented;
+      else
+         return New_Identifier (Name => S);
+      end if;
+   end To_Fp_Ident;
 
    ------------
    -- Prefix --
@@ -736,12 +802,11 @@ package body Why.Gen.Names is
    function Why_Scalar_Type_Name (Kind : EW_Scalar) return String is
    begin
       case Kind is
-         when EW_Bool =>
-            return "bool";
-         when EW_Int =>
-            return "int";
-         when EW_Real =>
-            return "real";
+         when EW_Bool    => return "bool";
+         when EW_Int     => return "int";
+         when EW_Float32 => return "single";
+         when EW_Float64 => return "double";
+         when EW_Real    => return "real";
       end case;
    end Why_Scalar_Type_Name;
 

@@ -3916,12 +3916,22 @@ package body Gnat2Why.Expr is
                                     Args   => (1 => T));
                      end if;
                   else
-                     T := New_Comparison
-                       (Cmp       => Transform_Compare_Op (Nkind (Expr)),
-                        Left      => Left_Arg,
-                        Right     => Right_Arg,
-                        Arg_Types => BT,
-                        Domain    => Domain);
+                     case Get_Base_Type (Base_Why_Type (Left, Right)) is
+                        when EW_Float =>
+                           T := New_Call
+                             (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => To_Fp_Ident (Nkind (Expr)),
+                              Args     => (1 => Left_Arg,
+                                           2 => Right_Arg));
+                        when others =>
+                           T := New_Comparison
+                             (Cmp       => Transform_Compare_Op (Nkind (Expr)),
+                              Left      => Left_Arg,
+                              Right     => Right_Arg,
+                              Arg_Types => BT,
+                              Domain    => Domain);
+                     end case;
                   end if;
                   Current_Type := EW_Bool_Type;
                end;
@@ -3976,20 +3986,37 @@ package body Gnat2Why.Expr is
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
                Current_Type := Base_Why_Type (Left, Right);
-               T :=
-                 New_Binary_Op
-                   (Ada_Node => Expr,
-                    Left     => Transform_Expr (Left,
-                                                Current_Type,
-                                                Domain,
-                                                Local_Params),
-                    Right    => Transform_Expr (Right,
-                                                Current_Type,
-                                                Domain,
-                                                Local_Params),
-                    Op       => Transform_Binop (Nkind (Expr)),
-                    Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+               case Get_Base_Type (Current_Type) is
+                  when EW_Float =>
+                     T := New_Call
+                       (Ada_Node => Expr,
+                        Domain   => Domain,
+                        Name     => To_Fp_Ident (Nkind (Expr)),
+                        Args     => (1 => Transform_Expr (Left,
+                                                          Current_Type,
+                                                          Domain,
+                                                          Local_Params),
+                                     2 => Transform_Expr (Right,
+                                                          Current_Type,
+                                                          Domain,
+                                                          Local_Params)));
+
+                  when others =>
+                     T :=
+                       New_Binary_Op
+                       (Ada_Node => Expr,
+                        Left     => Transform_Expr (Left,
+                                                    Current_Type,
+                                                    Domain,
+                                                    Local_Params),
+                        Right    => Transform_Expr (Right,
+                                                    Current_Type,
+                                                    Domain,
+                                                    Local_Params),
+                        Op       => Transform_Binop (Nkind (Expr)),
+                        Op_Type  => Get_Base_Type (Current_Type));
+                     T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+               end case;
             end;
 
          when N_Op_Divide =>

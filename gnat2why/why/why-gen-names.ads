@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
+with Sinfo;                 use Sinfo;
 with Namet;                 use Namet;
 with Snames;                use Snames;
 with Types;                 use Types;
@@ -253,7 +254,20 @@ package Why.Gen.Names is
       WNE_To_Int,
       WNE_To_Real,
       WNE_Type,
-      WNE_Unicity
+      WNE_Unicity,
+
+      WNE_Real_To_IEEE,
+      WNE_IEEE_To_Real,
+      WNE_Int_To_IEEE,
+      WNE_IEEE_To_Int,
+      WNE_Of_Float,
+      WNE_To_Float,
+      WNE_Float_Abs,
+      WNE_Float_Div,
+      WNE_Float_Exp,
+      WNE_Float_Min,
+      WNE_Float_Max
+
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
@@ -274,8 +288,12 @@ package Why.Gen.Names is
 
    function To_String (W : Why_Name_Enum) return String;
 
+   function To_String (T : EW_Float) return String;
+
    function To_Ident (W        : Why_Name_Enum;
                       Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+
+   function To_Fp_Ident (Kind : Node_Kind) return W_Identifier_Id;
 
    function Prefix (S        : String;
                     W        : Why_Name_Enum;
@@ -290,10 +308,10 @@ package Why.Gen.Names is
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
    function Convert_To (Kind : EW_Basic_Type) return Why_Name_Enum
-   with Pre => (Kind in EW_Int | EW_Real);
+   with Pre => (Kind in EW_Int | EW_Real | EW_Float);
 
    function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
-   with Pre => (Kind in EW_Int | EW_Real);
+   with Pre => (Kind in EW_Int | EW_Real | EW_Float);
 
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";

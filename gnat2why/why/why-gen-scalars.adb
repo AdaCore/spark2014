@@ -25,8 +25,6 @@
 
 with Snames;             use Snames;
 
-with SPARK_Util;         use SPARK_Util;
-
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
@@ -116,25 +114,12 @@ package body Why.Gen.Scalars is
       Last    : W_Real_Constant_Id)
    is
       Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
-      Clone_Id : constant W_Identifier_Id :=
-        New_Identifier (Name    => """ada__model"".Floating_Point");
-      Has_Round_Real : constant Boolean :=
-        Is_Single_Precision_Floating_Point_Type (Entity)
-          or else
-        Is_Double_Precision_Floating_Point_Type (Entity);
-      Round_Id : constant W_Identifier_Id :=
-        (if Is_Single_Precision_Floating_Point_Type (Entity) then
-           To_Ident (WNE_Float_Round_Single)
-         elsif Is_Double_Precision_Floating_Point_Type (Entity) then
-           To_Ident (WNE_Float_Round_Double)
-         else
-           --  not used
-           To_Ident (WNE_Float_Round));
+      Clone_Id : W_Identifier_Id;
 
       --  If the type Entity has a rounding operation, use it in the clone
       --  substitution to replace the default one.
       Clone_Subst : constant W_Clone_Substitution_Array :=
-        (if Has_Round_Real then
+        (if Get_EW_Type (Entity) in EW_Float then
           (1 =>
              New_Clone_Substitution
                (Kind      => EW_Type_Subst,
@@ -143,14 +128,9 @@ package body Why.Gen.Scalars is
            2 =>
              New_Clone_Substitution
                (Kind      => EW_Function,
-                Orig_Name => To_Ident (WNE_Float_Round_Tmp),
-                Image     => Round_Id),
-           3 =>
-             New_Clone_Substitution
-               (Kind      => EW_Function,
                 Orig_Name => To_Ident (WNE_Attr_First),
                 Image     => To_Ident (WNE_Attr_First)),
-           4 =>
+           3 =>
              New_Clone_Substitution
                (Kind      => EW_Function,
                 Orig_Name => To_Ident (WNE_Attr_Last),
@@ -161,6 +141,11 @@ package body Why.Gen.Scalars is
                (Kind      => EW_Type_Subst,
                 Orig_Name => New_Identifier (Name => "t"),
                 Image     => Why_Name),
+           --  2 =>
+           --    New_Clone_Substitution
+           --      (Kind      => EW_Function,
+           --       Orig_Name => To_Ident (WNE_Float_Round_Tmp),
+           --       Image     => To_Ident (WNE_Float_Round)),
            2 =>
              New_Clone_Substitution
                (Kind      => EW_Function,
@@ -171,7 +156,22 @@ package body Why.Gen.Scalars is
                (Kind      => EW_Function,
                 Orig_Name => To_Ident (WNE_Attr_Last),
                 Image     => To_Ident (WNE_Attr_Last))));
+
    begin
+      case Get_EW_Type (Entity) is
+         when EW_Float32 =>
+            Clone_Id := New_Identifier
+              (Name => """ada__model"".IEEE_Floating_Point_32");
+         when EW_Float64 =>
+            Clone_Id := New_Identifier
+              (Name => """ada__model"".IEEE_Floating_Point_64");
+         when EW_Real =>
+            Clone_Id := New_Identifier
+              (Name => """ada__model"".Floating_Point");
+         when others =>
+            raise Program_Error;
+      end case;
+
       Emit (Theory, New_Type (Name => Why_Name));
       Define_Scalar_Attributes
         (Theory    => Theory,
@@ -181,9 +181,9 @@ package body Why.Gen.Scalars is
          Modulus   => Why_Empty);
       Emit (Theory,
             New_Clone_Declaration
-              (Theory_Kind => EW_Module,
-               Clone_Kind  => EW_Export,
-               Origin      => Clone_Id,
+              (Theory_Kind   => EW_Module,
+               Clone_Kind    => EW_Export,
+               Origin        => Clone_Id,
                Substitutions => Clone_Subst));
    end Declare_Ada_Real;
 

@@ -360,20 +360,15 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Type) is
    begin
       case Value is
-         when EW_Unit =>
-            P (O, "unit");
-         when EW_Prop =>
-            P (O, "prop");
-         when EW_Real =>
-            P (O, "real");
-         when EW_Int =>
-            P (O, "int");
-         when EW_Bool =>
-            P (O, "bool");
-         when EW_Private =>
-            P (O, To_String (WNE_Private));
-         when EW_Abstract =>
-            P (O, "[from Ada node]");
+         when EW_Unit =>     P (O, "unit");
+         when EW_Prop =>     P (O, "prop");
+         when EW_Float32 =>  P (O, "single");
+         when EW_Float64 =>  P (O, "double");
+         when EW_Real =>     P (O, "real");
+         when EW_Int =>      P (O, "int");
+         when EW_Bool =>     P (O, "bool");
+         when EW_Private =>  P (O, To_String (WNE_Private));
+         when EW_Abstract => P (O, "[from Ada node]");
       end case;
    end P;
 
