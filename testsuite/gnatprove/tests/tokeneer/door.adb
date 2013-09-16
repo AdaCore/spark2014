@@ -204,16 +204,16 @@ is
              Latch.IsLocked and
              Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                       AlarmTimeout) ) =
-           (DoorAlarm = AlarmTypes.Alarming) ) and then
+           (DoorAlarm = AlarmTypes.Alarming) ) and
 
 
          ( Latch.IsLocked =
            Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                    Latch.Latch_Timeout) ) and then
+                                    Latch.Latch_Timeout) ) and
          ( Latch.IsLocked'Old <
-              (Latch.CurrentLatch = Latch.CurrentLatch'Old and then
-               Latch.LatchTimeout = Latch.LatchTimeout'Old and then
-               Latch.IsLocked ) ) and then
+              (Latch.CurrentLatch = Latch.CurrentLatch'Old and
+               Latch.LatchTimeout = Latch.LatchTimeout'Old and
+               Latch.IsLocked ) ) and
          Latch.Latch_Timeout = Latch.Latch_Timeout'Old);
 
       NewDoor : T;

@@ -740,50 +740,50 @@ is
 
       pragma Postcondition
         (((not Enclave.EnrolmentIsInProgress) =
-                  KeyStore.PrivateKeyPresent) and then
+                  KeyStore.PrivateKeyPresent) and 
 
            ( ( Latch.IsLocked and then
                Door.TheCurrentDoor = Door.Open and then
                Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                         Door.alarm_Timeout) ) =
-             (Door.TheDoorAlarm = AlarmTypes.Alarming) ) and then
+             (Door.TheDoorAlarm = AlarmTypes.Alarming) ) and 
 
            ( (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) <=
                 ( AdminToken.isGood and then
                   AdminToken.authCertValid and then
-                  AdminToken.TheAuthCertRole = PrivTypes.Guard )) and then
+                  AdminToken.TheAuthCertRole = PrivTypes.Guard )) and 
 
            ( ( Admin.IsDoingOp(TheAdmin) and then
                Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) <=
-                (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) ) and then
+                (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) ) and 
 
            ( (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) <=
                 ( ( Admin.IsDoingOp(TheAdmin) and then
                     Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) or else
-                  not Admin.IsDoingOp(TheAdmin) )) and then
+                  not Admin.IsDoingOp(TheAdmin) )) and 
 
-           ( (not Admin.IsPresent(TheAdmin)) <= (not Admin.IsDoingOp(TheAdmin)) ) and then
+           ( (not Admin.IsPresent(TheAdmin)) <= (not Admin.IsDoingOp(TheAdmin)) ) and 
 
            ( ( Admin.IsDoingOp(TheAdmin) and then
                Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp ) <=
-                         Enclave.statusIsWaitingStartAdminOp ) and then
+                         Enclave.statusIsWaitingStartAdminOp ) and 
 
            ( ( Enclave.statusIsGotAdminToken or else
                Enclave.statusIsWaitingRemoveAdminTokenFail ) <=
-             not Admin.IsPresent(TheAdmin) ) and then
+             not Admin.IsPresent(TheAdmin) ) and 
 
            ( ( Enclave.statusIsWaitingStartAdminOp or else
                Enclave.statusIsWaitingFinishAdminOp ) <=
-             ( Admin.IsDoingOp(TheAdmin) and then
-               Admin.IsPresent(TheAdmin) and then
-               Admin.rolePresent(TheAdmin) = Admin.rolePresent(TheAdmin)'Old ) ) and then
+             ( Admin.IsDoingOp(TheAdmin) and 
+               Admin.IsPresent(TheAdmin) and 
+               Admin.rolePresent(TheAdmin) = Admin.rolePresent(TheAdmin)'Old ) ) and 
 
            ( Enclave.statusIsEnclaveQuiescent <=
-             ( not Admin.IsDoingOp(TheAdmin) ) ) and then
+             ( not Admin.IsDoingOp(TheAdmin) ) ) and 
 
            ( Enclave.statusIsShutdown <=
              ( not Admin.IsDoingOp(TheAdmin) and then
-               Admin.rolePresent(TheAdmin) = PrivTypes.UserOnly ) ) and then
+               Admin.rolePresent(TheAdmin) = PrivTypes.UserOnly ) ) and 
 
            ( Enclave.EnrolmentIsInProgress <=
              ( not Admin.IsPresent(TheAdmin) and then

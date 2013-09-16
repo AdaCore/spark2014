@@ -121,8 +121,8 @@ is pragma SPARK_Mode (On);
    --#      ( TheAuthCertRole(State~) = PrivTypes.Guard <->
    --#           TheAuthCertRole(State) = PrivTypes.Guard );
    pragma Postcondition
-     ((IsGood'Old = IsGood) and then
-        (AuthCertValid'Old = AuthCertValid) and then
+     ((IsGood'Old = IsGood) and
+        (AuthCertValid'Old = AuthCertValid) and
         ((TheAuthCertRole'Old = PrivTypes.Guard) =
            (TheAuthCertRole = PrivTypes.Guard)));
 

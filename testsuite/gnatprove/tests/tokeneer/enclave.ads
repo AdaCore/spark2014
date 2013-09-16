@@ -591,64 +591,64 @@ is pragma SPARK_Mode (On);
                 not Admin.IsDoingOp(TheAdmin) )));
 
    pragma Postcondition
-     (not EnrolmentIsInProgress and then
+     (not EnrolmentIsInProgress and 
 
          ( ( Latch.IsLocked and then
              Door.TheCurrentDoor = Door.Open and then
              Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                       Door.Alarm_Timeout) ) =
-           (Door.TheDoorAlarm = AlarmTypes.Alarming) ) and then
+           (Door.TheDoorAlarm = AlarmTypes.Alarming) ) and 
 
          ( ( statusIsGotAdminToken or else
              statusIsWaitingRemoveAdminTokenFail ) <=
-           (not Admin.IsPresent(TheAdmin)) ) and then
+           (not Admin.IsPresent(TheAdmin)) ) and 
 
          ( ( statusIsWaitingStartAdminOp or else
              statusIsWaitingFinishAdminOp ) <=
-           ( Admin.IsDoingOp(TheAdmin) and then
-             Admin.IsPresent(TheAdmin) and then
+           ( Admin.IsDoingOp(TheAdmin) and 
+             Admin.IsPresent(TheAdmin) and 
             Admin.RolePresent(TheAdmin) =
-              Admin.RolePresent(TheAdmin)'Old ) ) and then
+              Admin.RolePresent(TheAdmin)'Old ) ) and 
 
          ( statusIsEnclaveQuiescent <=
-           ( not Admin.IsDoingOp(TheAdmin) ) ) and then
+           ( not Admin.IsDoingOp(TheAdmin) ) ) and 
 
          ( statusIsShutdown <=
            ( not Admin.IsDoingOp(TheAdmin) and then
-             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly ) ) and then
+             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly ) ) and 
 
          ( ( Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp ) <=
-                       statusIsWaitingStartAdminOp ) and then
+                       statusIsWaitingStartAdminOp ) and 
 
          ( (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) <=
               ( AdminToken.IsGood and then
                 AdminToken.AuthCertValid and then
-                AdminToken.TheAuthCertRole = PrivTypes.Guard )) and then
+                AdminToken.TheAuthCertRole = PrivTypes.Guard )) and 
 
          ( ( Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) <=
-              (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) ) and then
+              (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) ) and 
 
          ( (Admin.RolePresent(TheAdmin) = PrivTypes.Guard) <=
               ( ( Admin.IsDoingOp(TheAdmin) and then
                   Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock ) or else
-                not Admin.IsDoingOp(TheAdmin) )) and then
+                not Admin.IsDoingOp(TheAdmin) )) and 
 
         ( (not Admin.IsPresent(TheAdmin)) <=
-         (not Admin.IsDoingOp(TheAdmin)) ) and then
+         (not Admin.IsDoingOp(TheAdmin)) ) and 
 
-        ( ( not Latch.IsLocked and then
+        ( ( not Latch.IsLocked and 
          Latch.IsLocked'Old )
            <=
            ( ( AdminToken.IsGood and then
                AdminToken.AuthCertValid and then
                AdminToken.TheAuthCertRole = PrivTypes.Guard )
            )
-         ) and then
+         ) and 
 
-         ( ( not Latch.IsLocked and then Latch.IsLocked'Old )
-           <= ( Admin.IsDoingOp(TheAdmin)'Old and then
+         ( ( not Latch.IsLocked and Latch.IsLocked'Old )
+           <= ( Admin.IsDoingOp(TheAdmin)'Old and 
                  Admin.TheCurrentOp(TheAdmin)'Old = Admin.OverrideLock ) ));
 
    ------------------------------------------------------------------

@@ -855,7 +855,7 @@ is
    --#                                        PrivateKeyPresent(ThisTISInfo~));
    is
       pragma Postcondition
-        (((Added and then not IsPublic) <= PrivateKeyPresent) and then
+        (((Added and then not IsPublic) <= PrivateKeyPresent) and 
          (not (Added and then not IsPublic)) <= (PrivateKeyPresent =
                                            PrivateKeyPresent'Old));
       TheKeyTemplate : Interfac.KeyTemplateT;

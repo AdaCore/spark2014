@@ -756,14 +756,14 @@ is
       pragma Postcondition
         (NumberLogEntries =
            LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
-           LogFileEntries(CurrentLogFile) and then
-         NumberLogEntries = NumberLogEntries'Old + 1 and then
+           LogFileEntries(CurrentLogFile) and
+         NumberLogEntries = NumberLogEntries'Old + 1 and
            ((LogFileEntries(CurrentLogFile)'Old = MaxLogFileEntries) <=
-              (LogFileEntries(CurrentLogFile) = 1 and then
-               UsedLogFiles.Length = UsedLogFiles.Length'Old + 1)) and then
+              (LogFileEntries(CurrentLogFile) = 1 and
+               UsedLogFiles.Length = UsedLogFiles.Length'Old + 1)) and
            ((LogFileEntries(CurrentLogFile)'Old < MaxLogFileEntries) <=
             (LogFileEntries(CurrentLogFile) =
-                 LogFileEntries(CurrentLogFile)'Old + 1 and then
+                 LogFileEntries(CurrentLogFile)'Old + 1 and
                UsedLogFiles.Length = UsedLogFiles.Length'Old))) ;
 
       ------------------------------------------------------------------

@@ -145,19 +145,19 @@ is pragma SPARK_Mode (On);
    --#                  Latch.IsLocked(Latch.State) ) ) and
    --#      Latch.prf_latchTimeout(Latch.State) = Latch.prf_latchTimeout(Latch.State~);
    pragma Postcondition
-     ( ( Latch.IsLocked and then
-      TheCurrentDoor = Open and then
+     ( ( Latch.IsLocked and
+      TheCurrentDoor = Open and
       Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
         Alarm_Timeout) ) =
-      (TheDoorAlarm = AlarmTypes.Alarming ) and then
+      (TheDoorAlarm = AlarmTypes.Alarming ) and
 
         ( Latch.IsLocked =
            Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-             Latch.Latch_Timeout) ) and then
+             Latch.Latch_Timeout) ) and
          ( Latch.IsLocked'Old <=
-           ( Latch.CurrentLatch = Latch.CurrentLatch'Old and then
-            Latch.LatchTimeout = Latch.LatchTimeout'Old and then
-            Latch.IsLocked ) ) and then
+           ( Latch.CurrentLatch = Latch.CurrentLatch'Old and
+            Latch.LatchTimeout = Latch.LatchTimeout'Old and
+            Latch.IsLocked ) ) and
       Latch.Latch_Timeout = Latch.Latch_Timeout'Old);
 
 

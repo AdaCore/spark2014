@@ -252,8 +252,8 @@ is pragma SPARK_Mode (On);
    --#      (not (Added and not IsPublic) -> PrivateKeyPresent(State) =
    --#                                        PrivateKeyPresent(State~));
    pragma  Postcondition
-     ((if (Added and then not IsPublic) then PrivateKeyPresent) and then
-     (if (not (Added and then not IsPublic)) then
+     ((if (Added and then not IsPublic) then PrivateKeyPresent) and 
+     (((Added and then not IsPublic)) or
        (PrivateKeyPresent = PrivateKeyPresent'Old)));
 
 
