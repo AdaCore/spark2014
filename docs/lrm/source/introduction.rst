@@ -23,16 +23,39 @@ formalized in DO-178C and the DO-333 formal methods supplement.
 Certain units may be formally proven and other units validated through
 testing.
 
-The new aspects defined for |SPARK| all have equivalent pragmas which allows a
-|SPARK| program to be compiled by and executed by any Ada implementation; for
-instance an Ada 95 compiler provided that the use of Ada 2005 and Ada 2012 specific
-features is avoided. The |SPARK| attributes Update and Loop_Entry can be used
-only if the Ada implementation supports them. Additionally, attribute Old
-can only be used in a postcondition.
+Ada 2012 introduced executable contracts such as Pre and Post
+conditions and new types of expression, in particular conditional
+expressions and quantifiers. |SPARK| uses these contracts and
+expressions and extends them with new aspects and pragmas.
 
-The direct use of the new aspects requires an Ada 2012 compiler which supports them
-in a way consistent with the definition given here in the |SPARK| reference manual.
-The GNAT implementation is one such compiler.
+The new aspects defined for |SPARK| all have equivalent pragmas which
+allows a |SPARK| program to be compiled by and executed by any Ada
+implementation; for instance an Ada 95 compiler provided that the use
+of Ada 2005 and Ada 2012 specific features is avoided. The |SPARK|
+attributes Update and Loop_Entry can be used only if the Ada
+implementation supports them.
+
+The direct use of the new aspects requires an Ada 2012 compiler which
+supports them in a way consistent with the definition given here in
+the |SPARK| reference manual.  The GNAT implementation is one such
+compiler.
+
+As with the Ada 2012 contracts, the new |SPARK| aspects and pragmas
+have executable semantics and may be executed at run time.  An
+expression in an Ada contract or |SPARK| aspect or pragma is called an
+*assertion expression* and it is the ability to execute such
+expressions which facilitates the mix of proof and testing.
+
+The run-time checking of assertion expressions may be suppressed by
+using the Ada pragma Assertion_Policy but the static analysis and
+proof tools always use the assertion expressions whatever the
+assertion policy..
+
+A special feature of |SPARK| is that numbers in assertion expressions
+may have extended or "infinite" arithmetic to make it simpler to write
+specifications as they can be written without having to consider the
+possibility of overflow within the specification.  The numbers behave
+mathematically (see :ref:`exec_sem`).
 
 Structure of Introduction
 -------------------------
@@ -49,6 +72,8 @@ This introduction contains the following sections:
 
 - Section :ref:`formal_analysis` gives a brief overview of the formal analysis
   to which |SPARK| programs are amenable.
+
+- Section :ref:`exec_sem` gives a brief overview of the use of executable contracts.
 
 - Section :ref:`dynamic_sem` gives details on the dynamic semantics of
   |SPARK|.
@@ -257,6 +282,106 @@ as explicit inputs to the formal verification process.
 The means by which this is accomplished is not specified as part of
 the |SPARK| language definition.
 
+.. _exec_sem:
+
+Executable Contracts and Mathematical Numbers
+---------------------------------------------
+
+Contracts, in the form of assertion expressions, are executable in Ada
+and |SPARK| and have the same semantics in both.  The new aspects and
+pragmas introduced by |SPARK| where they are assertion expressions
+are also executable.  Executable contracts have a number of advantages
+but also a few drawbacks that |SPARK| to a large extent mitigates.
+
+The Ada pragma Assertion_Policy controls whether contracts and
+assertion expressions in general are executed and checked at run-time.
+Assertion expressions are always significant in static analysis and
+proof and, indeed, form that basis of the specification against which
+the implementation is verified.
+
+In summary, Ada 2012 in itself enables contract-based, dynamic
+verification of complex properties of a program.  |SPARK| enables
+contract-based static deductive verification of a large subset of Ada
+2012.
+
+
+The Advantages of Executable Contracts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The possibility of making assertions and contracts executable benefits
+the programmer in a number of ways:
+
+  * it gives the programmer a gentle introduction to the use of
+    contracts, and encourages the development of assertions and code
+    in parallel. This is natural when both are expressed in the same
+    programming language;
+
+  * executable assertions can be enabled and checked at run time, and
+    this gives valuable information to the user. When an assertion
+    fails, it means that the code failed to obey desired properties (
+    i.e., the code is erroneous), or that the intent of the code has
+    been incorrectly expressed ( i.e., the assertion is erroneous)
+    and experience shows that both situations arise equally often. In
+    any case, the understanding of the code and properties of the
+    programmer are improved. This also means that users get immediate
+    benefits from writing additional assertions and contracts, which
+    greatly encourages the adoption of contract-based programming;
+
+  * contracts can be written and dynamically verified even when the
+    contracts or the program are too complex for automatic proof. This
+    includes programs that explicitly manipulate pointers, for
+    example.  
+
+Executable contracts can be less expressive than pure mathematical
+ones, or more difficult to write in some situations but |SPARK| has
+features to largely mitigate these issues as described in the
+following subsections.
+
+Mathematical Numbers and Arithmetic
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Ada numeric overflow may occur when evaluating an assertion
+expression this adds to the complexity of writing contracts and
+specifications using them, for instance, the expression
+
+::
+   
+  Post => X = (Y + Z) / 100
+
+might raise a run-time exception if Y is an integer and Y + Z >
+Integer'Last even if the entire expression is less then Integer'Last.
+
+|SPARK| mandates that there is an operational mode where such
+expressions (at least for Integer types) are treated as mathematical
+and the above expression shall not overflow and will not raise an
+exception.  In this mode the assertion expressions may still be
+executable and use extended or infinite precision numbers.  This mode
+might be acceptable if assertion expressions are not to be executed in
+the delivered code or if the overhead of executing contracts is not an
+issue,
+
+If the mode is not chosen, then |SPARK| requires checks that have to
+be proven to demonstrate that an overflow cannot occur.  In the above
+example the checks would not be provable and the postcondition would
+have to be rewritten something like:
+
+::
+  
+  Post => X = Integer ((Long_Integer (Y) + Long_Integer (Z)) / 100)
+
+The way in which this operational mode is selected is tool dependent
+and shall be described in the user manual accompanying the tool.
+
+Libraries for Specification and Proof
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is intended that |SPARK| will have available libraries (as
+packages) of common paradigms such as sets that might be difficult to
+express in executable contracts but the underlying model of the
+library packages will have a more expressive specification along with
+axioms that will make automatic proof of (executable) contracts using
+these libraries practical.
+
 .. _dynamic_sem:
 
 Dynamic Semantics of |SPARK| Programs
@@ -266,11 +391,11 @@ Every valid |SPARK| program is also a valid Ada 2012 program, although
 for a general Ada 2012 compiler, |SPARK| specific aspects may have to
 be replaced by their equivalent pragmas.  The |SPARK| dynamic
 semantics are the same as Ada 2012 with the exception of some new
-aspects, pragmas and attributes which have dynamic
-semantics. Additionally, the new dynamic semantics only affect
-assertion expressions so if assertion expressions are ignored then the
-dynamic semantics of an Ada 2012 program are the same as a |SPARK|
-program.
+aspects, pragmas and attributes which have dynamic semantics and the
+mathematical arithmetic in assertion expressions. Additionally, the new
+dynamic semantics only affect assertion expressions so if assertion
+expressions are ignored then the dynamic semantics of an Ada 2012
+program are the same as a |SPARK| program.
 
 |SPARK| programs that have failed their static analysis checks can still be
 valid Ada 2012 programs. An incorrect |SPARK| program with, say, flow
