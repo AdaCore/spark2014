@@ -1,14 +1,3 @@
-amortized_queue.adb:11:07: warning: statement has no effect [ineffective]
-amortized_queue.adb:12:07: warning: statement has no effect [ineffective]
-amortized_queue.adb:14:07: warning: statement has no effect [ineffective]
-amortized_queue.adb:14:20: warning: unused assignment to "Front" [ineffective]
-amortized_queue.adb:15:07: warning: statement has no effect [ineffective]
-amortized_queue.adb:16:10: warning: statement has no effect [ineffective]
-amortized_queue.adb:16:28: warning: unused assignment to "Rear" [ineffective]
-amortized_queue.adb:17:10: warning: statement has no effect [ineffective]
-amortized_queue.adb:17:18: warning: unused assignment to "Front" [ineffective]
-amortized_queue.adb:18:10: warning: statement has no effect [ineffective]
-amortized_queue.adb:18:17: warning: unused assignment to "Rear" [ineffective]
 amortized_queue.adb:4:27: info: precondition proved
 amortized_queue.adb:7:22: precondition not proved
 amortized_queue.adb:11:25: info: precondition proved
@@ -18,26 +7,31 @@ amortized_queue.adb:24:25: info: precondition proved
 amortized_queue.adb:25:24: info: precondition proved
 amortized_queue.adb:27:7: precondition not proved
 amortized_queue.adb:30:10: precondition not proved
-amortized_queue.ads:31:8: postcondition not proved
-amortized_queue.ads:31:25: info: overflow check proved
-amortized_queue.ads:33:9: info: precondition proved
-amortized_queue.ads:33:32: info: range check proved
-amortized_queue.ads:34:11: info: precondition proved
-amortized_queue.ads:34:58: info: overflow check proved
-amortized_queue.ads:34:58: info: range check proved
-amortized_queue.ads:36:9: info: precondition proved
-amortized_queue.ads:36:34: info: overflow check proved
-amortized_queue.ads:36:34: range check not proved
-amortized_queue.ads:37:18: info: precondition proved
-amortized_queue.ads:37:36: info: range check proved
-amortized_queue.ads:41:14: postcondition not proved, requires Last_Element (Model (Q)) = Front'result
-amortized_queue.ads:41:28: info: precondition proved
-amortized_queue.ads:45:14: postcondition not proved
-amortized_queue.ads:46:6: precondition not proved
-amortized_queue.ads:46:12: info: precondition proved
-amortized_queue.ads:46:29: info: precondition proved
-amortized_queue.ads:46:43: info: precondition proved
-amortized_queue.ads:51:14: postcondition not proved
-amortized_queue.ads:52:6: info: precondition proved
-amortized_queue.ads:52:20: precondition not proved
-amortized_queue.ads:52:22: info: precondition proved
+amortized_queue.ads:30:24: info: overflow check proved
+amortized_queue.ads:32:17: info: precondition proved
+amortized_queue.ads:32:29: info: range check proved
+amortized_queue.ads:33:18: info: precondition proved
+amortized_queue.ads:33:65: info: overflow check proved
+amortized_queue.ads:33:65: info: range check proved
+amortized_queue.ads:35:15: info: precondition proved
+amortized_queue.ads:35:29: info: overflow check proved
+amortized_queue.ads:35:29: info: range check proved
+amortized_queue.ads:36:14: info: precondition proved
+amortized_queue.ads:36:32: info: range check proved
+amortized_queue.ads:40:14: postcondition not proved, requires Is_Model (Q, Model'result)
+amortized_queue.ads:45:17: postcondition not proved, requires Last_Element (Model (Q)) = Front'result
+amortized_queue.ads:44:31: info: precondition proved
+amortized_queue.ads:45:31: info: precondition proved
+amortized_queue.ads:49:14: postcondition not proved
+amortized_queue.ads:50:23: info: precondition proved
+amortized_queue.ads:50:61: info: precondition proved
+amortized_queue.ads:51:9: info: precondition proved
+amortized_queue.ads:51:15: info: precondition proved
+amortized_queue.ads:51:32: info: precondition proved
+amortized_queue.ads:51:46: info: precondition proved
+amortized_queue.ads:56:14: postcondition not proved
+amortized_queue.ads:57:23: info: precondition proved
+amortized_queue.ads:57:64: info: precondition proved
+amortized_queue.ads:58:11: precondition not proved
+amortized_queue.ads:58:13: info: precondition proved
+amortized_queue.ads:58:25: info: precondition proved
