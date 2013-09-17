@@ -260,6 +260,8 @@ package Why.Gen.Names is
       WNE_IEEE_To_Real,
       WNE_Int_To_IEEE,
       WNE_IEEE_To_Int,
+      WNE_Change_Precision_32,
+      WNE_Change_Precision_64,
       WNE_Of_Float,
       WNE_To_Float,
       WNE_Float_Abs,
@@ -293,7 +295,9 @@ package Why.Gen.Names is
    function To_Ident (W        : Why_Name_Enum;
                       Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
-   function To_Fp_Ident (Kind : Node_Kind) return W_Identifier_Id;
+   function To_Fp_Ident (T    : EW_Float;
+                         Kind : Node_Kind)
+                         return W_Identifier_Id;
 
    function Prefix (S        : String;
                     W        : Why_Name_Enum;

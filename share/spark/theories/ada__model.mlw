@@ -152,6 +152,7 @@ end
 module IEEE_Floating_Point_32
   use import "_gnatprove_standard".Main
   use import ieee754.Single_RNE
+  use import ieee754.Single_RNE_Conversion
 
   type t
 
@@ -215,6 +216,7 @@ end
 module IEEE_Floating_Point_64
   use import "_gnatprove_standard".Main
   use import ieee754.Double_RNE
+  use import ieee754.Double_RNE_Conversion
 
   type t
 

@@ -173,6 +173,20 @@ package body Why.Gen.Names is
                   elsif From_Kind in EW_Float and To_Kind = EW_Real then
                      return To_Ident (WNE_IEEE_To_Int);
 
+                  elsif From_Kind in EW_Float and To_Kind in EW_Float then
+                     case To_Kind is
+                        when EW_Float32 =>
+                           return Prefix
+                             (S => To_String (From_Kind) & "_Conversion",
+                              W => WNE_Change_Precision_32);
+                        when EW_Float64 =>
+                           return Prefix
+                             (S => To_String (From_Kind) & "_Conversion",
+                              W => WNE_Change_Precision_64);
+                        when others =>
+                           raise Program_Error;
+                     end case;
+
                   --  Either the two objects are of the same type
                   --  (in which case the conversion is useless) or
                   --  they are of incompatible types
@@ -607,6 +621,11 @@ package body Why.Gen.Names is
             return "attr__" & Attribute_Id'Image (Attribute_Value)
               & "__pre_check";
 
+         when WNE_Change_Precision_32 =>
+            return "to_single_rne";
+         when WNE_Change_Precision_64 =>
+            return "to_double_rne";
+
          when WNE_Real_To_IEEE => return "of_real";
          when WNE_IEEE_To_Real => return "ieee_to_real";
          when WNE_Int_To_IEEE  => return "int_to_ieee";
@@ -660,9 +679,13 @@ package body Why.Gen.Names is
    -- To_Fp_Ident --
    -----------------
 
-   function To_Fp_Ident (Kind : Node_Kind) return W_Identifier_Id is
+   function To_Fp_Ident (T    : EW_Float;
+                         Kind : Node_Kind)
+                         return W_Identifier_Id
+   is
       S : constant String :=
         (case Kind is
+           when N_Op_Minus    => "fp_neg",
            when N_Op_Add      => "fp_add",
            when N_Op_Multiply => "fp_mul",
            when N_Op_Subtract => "fp_sub",
@@ -677,7 +700,7 @@ package body Why.Gen.Names is
       if S = "" then
          raise Not_Implemented;
       else
-         return New_Identifier (Name => S);
+         return Prefix (To_String (T), S);
       end if;
    end To_Fp_Ident;
 

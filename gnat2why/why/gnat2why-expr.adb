@@ -3921,7 +3921,10 @@ package body Gnat2Why.Expr is
                            T := New_Call
                              (Ada_Node => Expr,
                               Domain   => Domain,
-                              Name     => To_Fp_Ident (Nkind (Expr)),
+                              Name     => To_Fp_Ident
+                                (Get_Base_Type (Base_Why_Type (Left,
+                                                               Right)),
+                                 Nkind (Expr)),
                               Args     => (1 => Left_Arg,
                                            2 => Right_Arg));
                         when others =>
@@ -3943,15 +3946,29 @@ package body Gnat2Why.Expr is
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
                Current_Type := Base_Why_Type (Right);
-               T :=
-                 New_Unary_Op
-                   (Ada_Node => Expr,
-                    Op       => EW_Minus,
-                    Right    =>
-                    +Transform_Expr (Right, Current_Type, Domain,
-                     Local_Params),
-                    Op_Type  => Get_Base_Type (Current_Type));
-               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+               case Get_Base_Type (Current_Type) is
+                  when EW_Float =>
+                     T := New_Call
+                       (Ada_Node => Expr,
+                        Domain   => Domain,
+                        Name     => To_Fp_Ident (Get_Base_Type (Current_Type),
+                                                 Nkind (Expr)),
+                        Args     => (1 => Transform_Expr (Right,
+                                                          Current_Type,
+                                                          Domain,
+                                                          Local_Params)));
+
+                  when others =>
+                     T :=
+                       New_Unary_Op
+                       (Ada_Node => Expr,
+                        Op       => EW_Minus,
+                        Right    =>
+                          +Transform_Expr (Right, Current_Type, Domain,
+                                           Local_Params),
+                        Op_Type  => Get_Base_Type (Current_Type));
+                     T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+               end case;
             end;
 
          when N_Op_Plus =>
@@ -3991,7 +4008,8 @@ package body Gnat2Why.Expr is
                      T := New_Call
                        (Ada_Node => Expr,
                         Domain   => Domain,
-                        Name     => To_Fp_Ident (Nkind (Expr)),
+                        Name     => To_Fp_Ident (Get_Base_Type (Current_Type),
+                                                 Nkind (Expr)),
                         Args     => (1 => Transform_Expr (Left,
                                                           Current_Type,
                                                           Domain,
@@ -4055,7 +4073,9 @@ package body Gnat2Why.Expr is
                        Args    => (1 => L_Why, 2 => R_Why));
                end if;
 
-               T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+               if Get_Base_Type (Current_Type) not in EW_Float then
+                  T := Apply_Modulus_Or_Rounding (Expr_Type, T, Domain);
+               end if;
             end;
 
          when N_Op_Rem | N_Op_Mod =>
@@ -4571,19 +4591,28 @@ package body Gnat2Why.Expr is
                   else Empty)
                else Empty);
 
+            Round_Func : W_Identifier_Id;
+
+         begin
+
             --  When converting to a floating-point or fixed-point type, from
             --  either a discrete type or another real type, rounding should
             --  be applied on the value of type real. Round_Func is the
             --  appropriate rounding function for the type.
+            --
+            --  When converting from a floating-point type to another
+            --  floating-point type the theory takes care of the
+            --  rounding and the conversion.
 
-            Round_Func : constant W_Identifier_Id :=
-              (if Nkind (Expr) = N_Type_Conversion
-                 and then Ekind (Expr_Type) in Real_Kind
-               then
-                  Float_Round_Name (Expr_Type)
-               else Why_Empty);
+            if Nkind (Expr) = N_Type_Conversion
+              and then Ekind (Expr_Type) in Real_Kind
+              and then Get_Base_Type (Expected_Type) not in EW_Float
+            then
+               Round_Func := Float_Round_Name (Expr_Type);
+            else
+               Round_Func := Why_Empty;
+            end if;
 
-         begin
             T := Insert_Scalar_Conversion (Domain      => Domain,
                                            Ada_Node    => Expr,
                                            Expr        => T,
