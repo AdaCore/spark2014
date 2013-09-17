@@ -1,0 +1,3 @@
+arith.adb:17:23: overflow check not proved
+arith.ads:6:40: info: overflow check proved
+arith.ads:6:68: info: overflow check proved
