@@ -32,7 +32,7 @@ with Einfo;                              use Einfo;
 with Errout;                             use Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
-with Opt;                                use Opt;
+with Opt;                                use type Opt.SPARK_Mode_Type;
 with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
@@ -124,11 +124,11 @@ package body SPARK_Definition is
       Violation_Detected := False;
    end Initialize;
 
-   function Current_SPARK_Pragma_Is (Mode : SPARK_Mode_Type) return Boolean;
+   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean;
    --  Returns whether Current_SPARK_Pragma is not Empty, and corresponds to
    --  the given Mode.
 
-   function Current_SPARK_Pragma_Is (Mode : SPARK_Mode_Type) return Boolean is
+   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
      (Present (Current_SPARK_Pragma)
        and then Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode);
 
@@ -204,7 +204,7 @@ package body SPARK_Definition is
 
       --  If SPARK_Mode is On, raise an error
 
-      if Current_SPARK_Pragma_Is (On) then
+      if SPARK_Pragma_Is (Opt.On) then
          Error_Msg_F (Msg & " is not in SPARK", N);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
          Error_Msg_F ("\\ violation of SPARK_Mode #", N);
@@ -223,7 +223,7 @@ package body SPARK_Definition is
 
       --  If SPARK_Mode is On, raise an error
 
-      if Current_SPARK_Pragma_Is (On) then
+      if SPARK_Pragma_Is (Opt.On) then
          Error_Msg_FE (Msg & " & is not in SPARK", N, From);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
          Error_Msg_F ("\\ violation of SPARK_Mode #", N);
@@ -814,7 +814,7 @@ package body SPARK_Definition is
       --  marking this entity.
 
       Save_Violation_Detected : constant Boolean := Violation_Detected;
-      Save_Current_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
    --  Start of Mark_Entity
 
@@ -863,7 +863,7 @@ package body SPARK_Definition is
       --  If the entity is declared in the scope of SPARK_Mode => Off, then do
       --  not consider whether it could be in SPARK or not.
 
-      if Current_SPARK_Pragma_Is (Off) then
+      if SPARK_Pragma_Is (Opt.Off) then
          return;
       end if;
 
@@ -938,7 +938,7 @@ package body SPARK_Definition is
 
       --  Restore SPARK_Mode pragma
 
-      Current_SPARK_Pragma := Save_Current_SPARK_Pragma;
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Entity;
 
    ----------
@@ -2024,6 +2024,7 @@ package body SPARK_Definition is
    -----------------------
 
    procedure Mark_Package_Body (N : Node_Id) is
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       Id  : constant Entity_Id := Unique_Defining_Entity (N);
       HSS : constant Node_Id := Handled_Statement_Sequence (N);
 
@@ -2044,27 +2045,26 @@ package body SPARK_Definition is
 
       --  Only analyze package body declarations in SPARK_Mode => On
 
-      if not Current_SPARK_Pragma_Is (On) then
-         return;
+      if SPARK_Pragma_Is (Opt.On) then
+         Mark_List (Declarations (N));
+
+         Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
+
+         --  Only analyze package body statements in SPARK_Mode => On
+
+         if SPARK_Pragma_Is (Opt.On) then
+
+            --  Always mark the body in SPARK
+
+            Bodies_In_SPARK.Include (Id);
+
+            if Present (HSS) then
+               Mark (HSS);
+            end if;
+         end if;
       end if;
 
-      Mark_List (Declarations (N));
-
-      Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
-
-      --  Only analyze package body statements in SPARK_Mode => On
-
-      if not Current_SPARK_Pragma_Is (On) then
-         return;
-      end if;
-
-      --  Always mark the body in SPARK
-
-      Bodies_In_SPARK.Include (Id);
-
-      if Present (HSS) then
-         Mark (HSS);
-      end if;
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Body;
 
    ------------------------------
@@ -2145,6 +2145,7 @@ package body SPARK_Definition is
          end loop;
       end Declare_In_Package_With_External_Axioms;
 
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       Id         : constant Entity_Id := Defining_Entity (N);
       Vis_Decls  : constant List_Id :=
                      Visible_Declarations (Specification (N));
@@ -2173,21 +2174,31 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
-      if Present (Vis_Decls) then
-         Mark_List (Vis_Decls);
+      --  Do not analyze package declarations in SPARK_Mode => Off
+
+      if not SPARK_Pragma_Is (Opt.Off) then
+         if Present (Vis_Decls) then
+            Mark_List (Vis_Decls);
+         end if;
+
+         Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
+
+         --  Do not analyze package private declarations in SPARK_Mode => Off
+
+         if not SPARK_Pragma_Is (Opt.Off) then
+            if Present (Priv_Decls) then
+               Mark_List (Priv_Decls);
+            end if;
+
+            --  Mark package in SPARK if SPARK_Mode => On
+
+            if SPARK_Pragma_Is (Opt.On) then
+               Mark_Entity (Id);
+            end if;
+         end if;
       end if;
 
-      Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
-
-      if Present (Priv_Decls) then
-         Mark_List (Priv_Decls);
-      end if;
-
-      --  Mark package in SPARK if SPARK_Mode => On
-
-      if Current_SPARK_Pragma_Is (On) then
-         Mark_Entity (Id);
-      end if;
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Declaration;
 
    -----------------
@@ -2425,18 +2436,11 @@ package body SPARK_Definition is
    --------------------------
 
    procedure Mark_Subprogram_Body (N : Node_Id) is
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       E   : constant Entity_Id := Unique_Defining_Entity (N);
       HSS : constant Node_Id   := Handled_Statement_Sequence (N);
 
    begin
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
-
-      --  Only analyze subprogram body declarations in SPARK_Mode => On
-
-      if not Current_SPARK_Pragma_Is (On) then
-         return;
-      end if;
-
       --  Ignore bodies defined in the standard library, unless the main unit
       --  is from the standard library. In particular, ignore bodies from
       --  instances of generics defined in the standard library (unless we
@@ -2444,7 +2448,7 @@ package body SPARK_Definition is
       --  generated in this case for standard library code.
 
       if Location_In_Standard_Library (Sloc (N))
-          and not Unit_In_Standard_Library (Main_Unit)
+        and not Unit_In_Standard_Library (Main_Unit)
       then
          return;
       end if;
@@ -2461,36 +2465,45 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  Always mark the body in SPARK
+      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
-      Bodies_In_SPARK.Include (E);
+      --  Only analyze subprogram body declarations in SPARK_Mode => On
 
-      --  Detect violations in the body itself
+      if SPARK_Pragma_Is (Opt.On) then
 
-      Mark_List (Declarations (N));
-      Mark (HSS);
+         --  Always mark the body in SPARK
 
-      --  For the special case of an expression function, the frontend
-      --  generates a distinct body if not already in source code. Use as
-      --  entity for the body the distinct E_Subprogram_Body entity. This
-      --  allows a separate definition of theories in Why3 for declaring
-      --  the logic function and its axiom. This is necessary so that they
-      --  are defined with the proper visibility over previously defined
-      --  entities.
+         Bodies_In_SPARK.Include (E);
 
-      if Ekind (E) = E_Function
-        and then Present (Get_Expression_Function (E))
-      then
-         Spec_Entities.Append (Defining_Entity (N));
+         --  Detect violations in the body itself
+
+         Mark_List (Declarations (N));
+         Mark (HSS);
+
+         --  For the special case of an expression function, the frontend
+         --  generates a distinct body if not already in source code. Use as
+         --  entity for the body the distinct E_Subprogram_Body entity. This
+         --  allows a separate definition of theories in Why3 for declaring
+         --  the logic function and its axiom. This is necessary so that they
+         --  are defined with the proper visibility over previously defined
+         --  entities.
+
+         if Ekind (E) = E_Function
+           and then Present (Get_Expression_Function (E))
+         then
+            Spec_Entities.Append (Defining_Entity (N));
+         end if;
+
+         if Is_Toplevel_Entity (E) then
+
+            --  Postprocessing: indicate in output file if subprogram is in
+            --  SPARK or not, for debug and verifications.
+
+            Generate_Output_In_Out_SPARK (E);
+         end if;
       end if;
 
-      if Is_Toplevel_Entity (E) then
-
-         --  Postprocessing: indicate in output file if subprogram is in SPARK
-         --  or not, for debug and verifications.
-
-         Generate_Output_In_Out_SPARK (E);
-      end if;
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Subprogram_Body;
 
    ---------------------------------
@@ -2498,6 +2511,7 @@ package body SPARK_Definition is
    ---------------------------------
 
    procedure Mark_Subprogram_Declaration (N : Node_Id) is
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       E : constant Entity_Id := Defining_Entity (N);
 
    begin
@@ -2507,11 +2521,17 @@ package body SPARK_Definition is
          return;
       end if;
 
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
-
       --  Mark entity
 
-      Mark_Entity (E);
+      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+
+      --  Do not analyze subprogram declarations in SPARK_Mode => Off
+
+      if not SPARK_Pragma_Is (Opt.Off) then
+         Mark_Entity (E);
+      end if;
+
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Subprogram_Declaration;
 
    -----------------------------
