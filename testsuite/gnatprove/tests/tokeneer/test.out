@@ -219,14 +219,14 @@ enclave.adb:1055:10: info: precondition proved
 enclave.adb:1057:10: info: precondition proved
 enclave.adb:1138:15: info: precondition proved
 enclave.adb:1140:10: postcondition not proved
-enclave.adb:1148:19: precondition not proved
+enclave.adb:1148:19: info: precondition proved
 enclave.adb:1189:15: info: precondition proved
 enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
 enclave.adb:1316:24: info: precondition proved
 enclave.adb:1320:10: postcondition not proved
 enclave.adb:1344:19: precondition not proved
-enclave.adb:1349:24: precondition not proved
+enclave.adb:1349:24: info: precondition proved
 enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: precondition not proved
 enclave.adb:1508:15: info: precondition proved
