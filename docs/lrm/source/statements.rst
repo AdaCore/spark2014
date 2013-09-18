@@ -484,13 +484,15 @@ Attribute Loop_Entry
          begin
             for I in X'Range loop
                pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
-               ...; -- modify X
+               X := F(X); -- modify X
             end loop;
          end P;
          Length_Is_Zero : String := "";
       begin
          P (Length_Is_Zero);
-      end;]
+     end;
+
+   ]
 
    .. ifconfig:: Display_Trace_Units
 
