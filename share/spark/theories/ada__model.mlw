@@ -154,23 +154,23 @@ module IEEE_Floating_Point_32
   use import ieee754.Single_RNE
   use import ieee754.Single_RNE_Conversion
 
-  type t
+  type t "bounded_type"
 
   function attr__ATTRIBUTE_FIRST : real
   function attr__ATTRIBUTE_LAST  : real
 
-  function to_float t : single
-  function of_float single : t
+  predicate in_range "bounded_type" (x : single) =
+   ( fp_leq (from_real attr__ATTRIBUTE_FIRST) x /\
+     fp_leq x (from_real attr__ATTRIBUTE_LAST) )
+
+  function to_float "bounded_type" t : single
+  function of_float "bounded_type" single : t
 
   function of_real (x: real) : single       = from_real x
   function ieee_to_real (x : single) : real = to_real x
 
   function int_to_ieee (x: int) : single   = from_int x
   function ieee_to_int (x : single) : int  = to_int x
-
-  predicate in_range  (x : single) =
-   ( fp_leq (of_real attr__ATTRIBUTE_FIRST) x /\
-     fp_leq x (of_real attr__ATTRIBUTE_LAST) )
 
   val of_float (x : single) : t
     requires { true }
@@ -182,14 +182,14 @@ module IEEE_Floating_Point_32
 
   predicate eq (x : t) (y : t) = fp_eq (to_float x) (to_float y)
 
-  axiom range_axiom :
+  axiom range_axiom "bounded_type":
     forall x  : t.  in_range (to_float x)
 
-  axiom coerce_axiom :
+  axiom coerce_axiom "bounded_type":
     forall x  : single [to_float (of_float x) | in_range x, of_float x].
       in_range x -> to_float (of_float x) = x
 
-  axiom inversion_axiom :
+  axiom inversion_axiom "bounded_type":
     forall x : t [to_float x].
       of_float ( to_float(x) ) = x
 
@@ -218,20 +218,23 @@ module IEEE_Floating_Point_64
   use import ieee754.Double_RNE
   use import ieee754.Double_RNE_Conversion
 
-  type t
+  type t "bounded_type"
 
   function attr__ATTRIBUTE_FIRST : real
   function attr__ATTRIBUTE_LAST  : real
 
-  function to_float t : double
-  function of_float double : t
+  predicate in_range "bounded_type" (x : double) =
+   ( fp_leq (from_real attr__ATTRIBUTE_FIRST) x /\
+     fp_leq x (from_real attr__ATTRIBUTE_LAST) )
+
+  function to_float "bounded_type" t : double
+  function of_float "bounded_type" double : t
 
   function of_real (x: real) : double       = from_real x
   function ieee_to_real (x : double) : real = to_real x
 
-  predicate in_range  (x : double) =
-   ( fp_leq (of_real attr__ATTRIBUTE_FIRST) x /\
-     fp_leq x (of_real attr__ATTRIBUTE_LAST) )
+  function int_to_ieee (x: int) : double   = from_int x
+  function ieee_to_int (x : double) : int  = to_int x
 
   val of_float (x : double) : t
     requires { true }
@@ -243,14 +246,14 @@ module IEEE_Floating_Point_64
 
   predicate eq (x : t) (y : t) = fp_eq (to_float x) (to_float y)
 
-  axiom range_axiom :
+  axiom range_axiom "bounded_type":
     forall x  : t.  in_range (to_float x)
 
-  axiom coerce_axiom :
+  axiom coerce_axiom "bounded_type":
     forall x  : double [to_float (of_float x) | in_range x, of_float x].
       in_range x -> to_float (of_float x) = x
 
-  axiom inversion_axiom :
+  axiom inversion_axiom "bounded_type":
     forall x : t [to_float x].
       of_float ( to_float(x) ) = x
 

@@ -175,7 +175,16 @@ package body Why.Gen.Scalars is
             raise Program_Error;
       end case;
 
-      Emit (Theory, New_Type (Name => Why_Name));
+      case Get_EW_Type (Entity) is
+         when EW_Float =>
+            Emit (Theory,
+                  New_Type (Name   => Why_Name,
+                            Labels => (1 => New_Identifier
+                                         (Name => """bounded_type"""))));
+         when others =>
+            Emit (Theory, New_Type (Name => Why_Name));
+      end case;
+
       Define_Scalar_Attributes
         (Theory    => Theory,
          Base_Type => EW_Real,
