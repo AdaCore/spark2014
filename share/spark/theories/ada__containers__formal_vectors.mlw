@@ -24,7 +24,7 @@ module Ada__containers__formal_vectors__capacity_range
  use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__index_type_helper
 
- type capacity_range
+ type capacity_range "bounded_type"
  
  function attr__ATTRIBUTE_FIRST  : int = 0
  
@@ -43,7 +43,7 @@ module  Ada__containers__formal_vectors__extended_index
  use import "_gnatprove_standard".Main
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__index_type
 
- type extended_index
+ type extended_index "bounded_type"
  
  function attr__ATTRIBUTE_FIRST  : int = 
       Ada__containers__formal_vectors__index_type.attr__ATTRIBUTE_FIRST - 1
