@@ -173,7 +173,7 @@ package body Flow_Dependency_Maps is
          --  Assemble map
 
          if Outputs.Length = 0 and then Inputs.Length >= 1 then
-            --  The inser is on purpose - we want this to fail if we
+            --  The insert is on purpose - we want this to fail if we
             --  manage to obtain more than one null derives.
             M.Insert (Null_Flow_Id, (True, Flow_Id_Sets.Empty_Set));
             for Input of Inputs loop

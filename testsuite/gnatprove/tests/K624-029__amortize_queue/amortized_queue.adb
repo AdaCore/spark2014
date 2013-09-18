@@ -17,7 +17,7 @@ package body Amortized_Queue is pragma SPARK_Mode (On);
          Insert (Front, 1, Rear);
          Clear (Rear);
       end if;
-      return Queue'(Front => Q.Front, Rear => Q.Rear);
+      return Queue'(Front => Front, Rear => Rear);
    end Tail;
 
    function Enqueue (Q : in Queue; V : in Val) return Queue is
