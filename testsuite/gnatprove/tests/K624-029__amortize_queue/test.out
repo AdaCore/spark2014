@@ -25,7 +25,7 @@ amortized_queue.ads:45:31: info: precondition proved
 amortized_queue.ads:49:14: postcondition not proved
 amortized_queue.ads:50:23: info: precondition proved
 amortized_queue.ads:50:61: info: precondition proved
-amortized_queue.ads:51:9: info: precondition proved
+amortized_queue.ads:51:9: precondition not proved
 amortized_queue.ads:51:15: info: precondition proved
 amortized_queue.ads:51:32: info: precondition proved
 amortized_queue.ads:51:46: info: precondition proved
