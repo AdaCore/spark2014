@@ -5,11 +5,21 @@ Introduction
 designed to meet the needs of high-assurance software development.
 |SPARK| is based on Ada 2012, both subsetting the language to remove
 features that defy verification and also extending the system of
-contracts by defining new Ada aspects to support modular, formal verification.
+contracts by defining new Ada aspects to support modular,
+constructive, formal verification.
 
-The new aspects support abstraction and refinement and facilitate deep static
-analysis to be performed including information-flow analysis and formal
-verification of an implementation against a specification.
+The new aspects support the analysis of incomplete programs,
+abstraction and refinement and facilitate deep static analysis to be
+performed including information-flow analysis and formal verification
+of an implementation against a specification.
+
+Meaningful static analysis is possible on complete programs without
+the |SPARK| specific aspects and pragmas (for programs which are
+otherwise within the |SPARK| subset), in fact the formal verification
+of an implementation against a specification of a complete program is
+possible using only the Ada 2012 contracts.  Without the |SPARK|
+specific aspects, however, analysis has to be performed on a completed
+program and cannot be applied constructively during its development.
 
 |SPARK| is a much larger and more flexible language than its
 predecessor SPARK 2005. The language can be configured to suit
@@ -93,7 +103,7 @@ Lifecycle of this Document
 --------------------------
 
 This document will be developed incrementally towards a number of milestones
--- this version of the document represents Milestone 3 --
+-- this version of the document represents Milestone 5 (Preview Release) --
 culminating in Release 1 of the document that matches the first formal release
 of the toolset. Subsequent releases of the document will follow, associated with
 subsequent formal releases of the toolset. Hence, where inclusion of particular
