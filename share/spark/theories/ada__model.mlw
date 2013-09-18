@@ -9,7 +9,7 @@ module Discrete_Base
 
   use export "ada__model_th".Discrete_Base_Theory
 
-  type t
+  type t "bounded_type"
 
   function attr__ATTRIBUTE_FIRST : int
 
@@ -25,12 +25,12 @@ module Discrete_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  predicate in_range  (x : int) =
+  predicate in_range "bounded_type"  (x : int) =
     ( attr__ATTRIBUTE_FIRST <= x <= attr__ATTRIBUTE_LAST )
 
-  function to_int t : int
+  function to_int "bounded_type" t : int
 
-  function of_int int : t
+  function of_int "bounded_type" int : t
 
   val of_int (x : int) : t
     requires { true }
@@ -50,10 +50,10 @@ module Discrete_Base
 
   predicate eq (x : t) (y : t) = ( to_int x = to_int y )
 
-  axiom range_axiom :
+  axiom range_axiom "bounded_type" :
     forall x : t. in_range (to_int x)
 
-  axiom inversion_axiom :
+  axiom inversion_axiom "bounded_type" :
     forall x : t [to_int x].
     of_int (to_int (x)) = x
 
@@ -64,7 +64,7 @@ module Discrete
   use import int.Int
   clone export Discrete_Base
 
-  axiom coerce_axiom :
+  axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
       in_range x -> to_int (of_int x) = x
 
@@ -75,7 +75,7 @@ module Modular
 
   function attr__ATTRIBUTE_MODULUS : int
 
-  axiom coerce_axiom :
+  axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
       to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
 

@@ -80,7 +80,10 @@ package body Why.Gen.Scalars is
               Image     => To_Ident (WNE_Attr_Last)));
    begin
 
-      Emit (Theory, New_Type (Name => Why_Id));
+      Emit (Theory,
+            New_Type (Name => Why_Id,
+                      Labels =>
+                        (1 => New_Identifier (Name => """bounded_type"""))));
 
       Define_Scalar_Attributes
         (Theory    => Theory,
