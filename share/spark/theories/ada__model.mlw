@@ -156,12 +156,12 @@ module IEEE_Floating_Point_32
 
   type t "bounded_type"
 
-  function attr__ATTRIBUTE_FIRST : real
-  function attr__ATTRIBUTE_LAST  : real
+  function first : real
+  function last  : real
 
   predicate in_range "bounded_type" (x : single) =
-   ( fp_leq (from_real attr__ATTRIBUTE_FIRST) x /\
-     fp_leq x (from_real attr__ATTRIBUTE_LAST) )
+   ( fp_leq (from_real first) x /\
+     fp_leq x (from_real last) )
 
   function to_float "bounded_type" t : single
   function of_float "bounded_type" single : t
@@ -220,12 +220,12 @@ module IEEE_Floating_Point_64
 
   type t "bounded_type"
 
-  function attr__ATTRIBUTE_FIRST : real
-  function attr__ATTRIBUTE_LAST  : real
+  function first : real
+  function last  : real
 
   predicate in_range "bounded_type" (x : double) =
-   ( fp_leq (from_real attr__ATTRIBUTE_FIRST) x /\
-     fp_leq x (from_real attr__ATTRIBUTE_LAST) )
+   ( fp_leq (from_real first) x /\
+     fp_leq x (from_real last) )
 
   function to_float "bounded_type" t : double
   function of_float "bounded_type" double : t
