@@ -4305,6 +4305,17 @@ package body Gnat2Why.Expr is
 
             begin
 
+               --  ??? This can be removed once we make sure that the call to
+               --  Transform_Identifier above sets current_type correctly.
+
+               --  For functions, the Etype of the Name is not always the type
+               --  returned by the function. Examples are primitive operations
+               --  of a derived type: The Etype of the Name is the derived
+               --  type, but the return type of the function is the original
+               --  type.
+
+               Current_Type := Type_Of_Node (Etype (Subp));
+
                if Why_Subp_Has_Precondition (Subp) then
                   T :=
                     +New_VC_Call
@@ -4652,6 +4663,10 @@ package body Gnat2Why.Expr is
             Why_Ent : constant Binder_Type := Ada_Ent_To_Why.Element (C);
          begin
             T := +Why_Ent.B_Name;
+
+            --  The type should never be empty, and the assignment be done in
+            --  any case
+
             if Why_Ent.B_Type /= Why_Empty and then
               Get_EW_Type (Why_Ent.B_Type) /= EW_Abstract then
                Current_Type := +Why_Ent.B_Type;
