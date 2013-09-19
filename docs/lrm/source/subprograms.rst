@@ -280,6 +280,36 @@ where
 
 .. _etu-contract_cases-ds:
 
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+   -- This subprogram is specified using a Contract_Cases aspect.
+   -- The prover will chack that the cases are disjoint and
+   -- cover the domain of X.
+   procedure Incr_Threshold (X : in out Integer; Threshold : in Integer) 
+      with Contract_Cases => (X < Threshold  => X = X'Old + 1,
+                              X >= Threshold => X = X'Old);
+
+   -- This is the equivalent specification not using Contract_Cases.
+   -- It is noticeably more complex and the prover is not able to check
+   -- for disjoint cases or that he domain of X is covered.
+   procedure Incr_Threshold_1 (X : in out Integer; Threshold : in Integer)
+      with Pre  => (X < Threshold and not (X = Threshold))
+                     or else (not (X < Threshold) and X = Threshold),
+           Post => (if X'Old < Threshold then X = X'Old + 1
+                    elsif X'Old = Threshold then X = X'Old);
+
+   -- Contract_Cases can be used in conjunction with  pre and postconditions.
+   procedure Incr_Threshold_2 (X : in out Integer; Threshold : in Integer) 
+      with Pre  => X in 0 .. Threshold,
+           Post => X >= X'Old,
+           Contract_Cases => (X < Threshold => X = X'Old + 1,
+                              X = Threshold => X = X'Old);
+
+
+
 .. _global-aspects:
 
 Global Aspects
@@ -1452,6 +1482,33 @@ it.
 
 .. _etu-formal_parameter_modes:
 
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    -- The following example is acceptable in Ada
+    -- but will raise a flow anomaly in SPARK stating that
+    -- X may not be initialized because an out parameter indicates
+    -- that the entire String is initialized.
+    procedure Param_1 (X : out String)
+    is
+    begin
+       if X'Length > 0 and X'First = 1 then 
+	  X (1) := '?'; 
+       end if;
+    end Param_1;
+    
+    -- In SPARK the parameter mode should be in out meaning that the
+    -- entire array is initialized before the call to the subprogram.
+    procedure Param_1 (X : in out String)
+    is
+    begin
+       if X'Length > 0 and X'First = 1 then 
+	  X (1) := '?'; 
+       end if;
+    end Param_1;
+
+
 Subprogram Bodies
 -----------------
 
@@ -1558,6 +1615,100 @@ No extra dynamic semantics are associated with anti-aliasing.
 
 .. _etu-anti_aliasing:
 
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    procedure Anti_Aliasing is
+       type Rec is record
+	  X : Integer;
+	  Y : Integer;
+       end record;
+
+       type Arr is array (1 .. 10) of Integer;
+
+       type Arr_With_Rec is array (1 .. 10) of Rec;
+
+       Local_1, Local_2 : Integer := 0;
+
+       Rec_1 : Rec := (0, 0);
+
+       Arr_1 : arr := (others => 0);
+
+       Arr_Rec : Arr_With_Rec := (others => (0, 0));
+
+       procedure One_In_One_Out (X : in Integer; Y : in out Integer)
+       is
+       begin
+	  Y := X + Y;
+       end One_In_One_Out;
+
+       procedure Two_In_Out (X, Y : in out Integer)
+       is
+	  Temp : Integer;
+       begin
+	  Temp := Y;
+	  Y := X + Y;
+	  X := Temp;
+       end Two_In_Out;
+
+       procedure With_In_Global (I : in out Integer)
+	 with Global => Local_1
+       is
+       begin
+	 I := I + Local_1;
+       end With_In_Global;      
+
+       procedure With_In_Out_Global (I : in Integer)
+	 with Global => (In_Out => Local_1)
+       is
+       begin
+	 Local_1 := I + Local_1;
+       end With_In_Out_Global;      
+
+       procedure With_Composite_In_Out_Global (I : in Integer)
+	 with Global => (In_Out => Rec_1)
+       is
+       begin
+	 Rec_1.X := I + Rec_1.X;
+       end With_Composite_In_Out_Global;      
+
+    begin
+       -- This is ok because parameters are by copy and there 
+       -- is only one out parameter
+       One_In_One_Out (Local_1, Local_1);
+
+       -- This is erroneous both parameters are in out and
+       -- the actual parameters overlap
+       Two_In_Out (Local_1, Local_1);
+
+       -- This is ok the variables do not overlap even though
+       -- they are part of the same record.
+       Two_In_Out (Rec_1.X, Rec_1.Y);
+
+       -- This is ok the variables do not overlap they
+       -- can statically determined to be distinct elements
+       Two_In_Out (Arr_1 (1), Arr_1 (2));
+
+       -- This is erroneous because it cannot be determined statically
+       -- whether the elements overlap
+       Two_In_Out (Arr_1 (Local_1), Arr_1 (Local_2));
+
+       -- This is ok the variables do not overlap they
+       -- can statically determined to be distinct components
+       Two_In_Out (Arr_Rec (Local_1).X , Arr_Rec (Local_2).Y);
+
+       -- This erroneous Global and formal in out parameter overlap.
+       With_In_Global (Local_1);
+
+       -- This erroneous Global In_Out and formal parameter overlap.
+       With_In_Out_Global (Local_1);
+
+       -- This erroneous Global In_Out and formal parameter overlap.
+       With_Composite_In_Out_Global (Rec_1.Y);
+
+    end Anti_Aliasing;
+
 
 Return Statements
 -----------------
@@ -1616,3 +1767,12 @@ Expression Functions
    does not have a separate declaration.  If it has a separate
    declaration then the aspects are applied to that.  It may have
    refined aspects applied (see :ref:`state_refinement`).
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+   function Expr_Func_1 (X : Natural; Y : Natural) return Natural is (X + Y)
+     with Pre => X <= Natural'Last - Y;
+   
+
