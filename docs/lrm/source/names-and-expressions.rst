@@ -91,10 +91,10 @@ User-Defined References
 .. _tu-user_defined_references-02:
 
 2. The aspect Implicit_Dereference is not permitted.
-   
+
 .. _etu-user_defined_references:
 
-User-Defined Indexing 
+User-Defined Indexing
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. centered:: **Legality Rules**
@@ -188,7 +188,7 @@ Update Expressions
 ~~~~~~~~~~~~~~~~~~
 
 The Update attribute provides a way of overwriting specified
-components of a copy of a given composite value.  
+components of a copy of a given composite value.
 
 For a prefix ``X``
 that denotes an object of a nonlimited record type or record extension
@@ -244,7 +244,7 @@ syntax:
    ``X'Update`` begins with the creation of an anonymous object of
    type ``T`` which is initialized to the value of ``X`` in the same
    way as for an occurrence of ``X'Old`` (except that the object is
-   constrained by its initial value but not constant). 
+   constrained by its initial value but not constant).
 
 .. _tu-update_expressions-02:
 
@@ -252,7 +252,7 @@ syntax:
    following subsections. The attribute reference then denotes a
    constant view of this updated object. The master and accessibility
    level of this object are defined as for the anonymous object of an
-   aggregate. 
+   aggregate.
 
 .. _tu-update_expressions-03:
 
@@ -270,7 +270,7 @@ Record Update Expressions
 
 For a record update expression of type ``T`` the following are
 required.
- 
+
 .. centered:: **Legality Rules**
 
 .. _tu-update_expressions-04:
@@ -294,7 +294,7 @@ required.
 
 .. _tu-update_expressions-07:
 
-7. The Each selector of all ``component_choice_lists`` of a record
+7. Each selector of all ``component_choice_lists`` of a record
    update expression shall denote a distinct component.
 
 .. _etu-record_update_expressions-lr:
@@ -327,7 +327,7 @@ Array Update Expressions
 
 For an array update expression of type ``T`` the following are
 required.
- 
+
 .. centered:: **Legality Rules**
 
 .. _tu-update_expressions-09:
@@ -392,7 +392,7 @@ Multi-dimensional Array Update Expressions
 
 For a multi-dimensional array update expression of type ``T`` the
 following are required.
- 
+
 .. centered:: **Legality Rules**
 
 .. _tu-update_expressions-14:
@@ -436,7 +436,7 @@ changes the behavior of the program with respect to intermediate
 overflow (see Ada 2012 RM 4.5). |SPARK| assumes that an implementation
 does not take advantage of this permission; in particular,
 a proof of the absence of intermediate overflow in this situation
-may depend on this assumption.  
+may depend on this assumption.
 
 A |SPARK| tool is permitted to provide a warning where operators may
 be re-associated by a compiler.
