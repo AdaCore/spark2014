@@ -1,0 +1,26 @@
+do_checks.adb:14:24: range check not proved
+do_checks.adb:20:24: info: range check proved
+do_checks.adb:20:57: overflow check not proved
+do_checks.adb:28:16: range check not proved
+do_checks.adb:35:16: info: range check proved
+do_checks.adb:35:48: overflow check not proved
+do_checks.adb:44:21: range check not proved
+do_checks.adb:50:21: info: range check proved
+do_checks.adb:50:58: overflow check not proved
+do_checks.adb:58 MISSING RANGE CHECK
+do_checks.adb:64 MISSING RANGE CHECK
+do_checks.adb:64:61: overflow check not proved
+do_checks.adb:71:17: range check not proved
+do_checks.adb:75:17: info: range check proved
+do_checks.adb:75:50: overflow check not proved
+do_checks.adb:83 MISSING RANGE CHECK
+do_checks.adb:91 MISSING RANGE CHECK
+do_checks.adb:91:51: overflow check not proved
+do_checks.adb:100:16: range check not proved
+do_checks.adb:106:16: range check not proved
+do_checks.adb:134 MISSING RANGE CHECK
+do_checks.adb:147 MISSING RANGE CHECK
+do_checks.adb:147:57: overflow check not proved
+do_checks.adb:159 MISSING RANGE CHECK
+do_checks.adb:165 MISSING RANGE CHECK
+do_checks.adb:165:67: overflow check not proved
