@@ -10,7 +10,7 @@ is
            Refined_Depends => (Input_Value => Inputs)
    is
    begin
-      pragma Assume(Inputs in Integer);
       Input_Value := Inputs;
+      pragma Assume(Input_Value in Integer);
    end Read_From_Port;
 end Input_Port;
