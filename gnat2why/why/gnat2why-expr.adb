@@ -328,10 +328,8 @@ package body Gnat2Why.Expr is
    --  Translate a list of Actions, that should consist only in declarations of
    --  constants used in Expr.
 
-   procedure Transform_Actions_Preparation
-     (Actions : List_Id;
-      Params  : in out Transformation_Params);
-   --  Update the map in Params for taking into account the names for
+   procedure Transform_Actions_Preparation (Actions : List_Id);
+   --  Update the symbol table for taking into account the names for
    --  declarations of constants in Actions.
 
    function Transform_Attr
@@ -684,33 +682,34 @@ package body Gnat2Why.Expr is
       -----------------
 
       function Branch_Expr (N : Node_Id) return W_Expr_Id is
-         Local_Params : Transformation_Params := Params;
          T : W_Expr_Id;
 
       begin
          case Nkind (N) is
             when N_Case_Expression_Alternative =>
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
                if Present (Actions (N)) then
-                  Transform_Actions_Preparation (Actions (N), Local_Params);
+                  Transform_Actions_Preparation (Actions (N));
                end if;
 
                if Expected_Type = Why_Empty then
                   T := Transform_Expr (Expression (N),
                                        Domain,
-                                       Local_Params);
+                                       Params);
                else
                   T := Transform_Expr (Expression (N),
                                        Expected_Type,
                                        Domain,
-                                       Local_Params);
+                                       Params);
                end if;
 
                if Present (Actions (N)) then
                   T := Transform_Actions (Actions (N),
                                           T,
                                           Domain,
-                                          Local_Params);
+                                          Params);
                end if;
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
                return T;
 
@@ -875,7 +874,7 @@ package body Gnat2Why.Expr is
             for Elt of Read_Names loop
                declare
                   C : constant Ada_Ent_To_Why.Cursor :=
-                        Ada_Ent_To_Why.Find (Params.Name_Map, Elt.all);
+                        Ada_Ent_To_Why.Find (Symbol_Table, Elt);
                   T : W_Expr_Id;
                begin
                   --  If the effect parameter is found in the map, use the name
@@ -988,8 +987,7 @@ package body Gnat2Why.Expr is
          File        => File.File,
          Phase       => Generate_Logic,
          Gen_Image   => False,
-         Ref_Allowed => True,
-         Name_Map    => Ada_Ent_To_Why.Empty_Map);
+         Ref_Allowed => True);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
@@ -1768,8 +1766,7 @@ package body Gnat2Why.Expr is
    -----------------------------------
 
    procedure Transform_Actions_Preparation
-     (Actions : List_Id;
-      Params  : in out Transformation_Params)
+     (Actions : List_Id)
    is
       N  : Node_Id;
       Id : W_Identifier_Id;
@@ -1789,7 +1786,7 @@ package body Gnat2Why.Expr is
          if Nkind (N) = N_Object_Declaration then
             Id := New_Identifier (Name => Full_Name (Defining_Identifier (N)));
 
-            Ada_Ent_To_Why.Insert (Params.Name_Map,
+            Ada_Ent_To_Why.Insert (Symbol_Table,
                                    Defining_Identifier (N),
                                    Binder_Type'(B_Name => +Id,
                                                 B_Type => Why_Empty,
@@ -1929,8 +1926,7 @@ package body Gnat2Why.Expr is
                             File        => Params.File,
                             Phase       => Params.Phase,
                             Gen_Image   => False,
-                            Ref_Allowed => False,
-                            Name_Map    => Ada_Ent_To_Why.Empty_Map);
+                            Ref_Allowed => False);
 
          --  Values used in calls to the aggregate function
 
@@ -1970,6 +1966,7 @@ package body Gnat2Why.Expr is
                                 Expr,
                                 Binder_Type'(B_Name   => Func,
                                              B_Type   => Why_Empty,
+                                             B_Ent    => null,
                                              Ada_Node => Empty,
                                              Mutable  => False));
 
@@ -1984,6 +1981,7 @@ package body Gnat2Why.Expr is
                B     : constant Binder_Type :=
                  (Ada_Node => Empty,
                   B_Name   => Ident,
+                  B_Ent    => null,
                   Mutable  => False,
                   B_Type   => Why_Logic_Type_Of_Ada_Type (Element (Typ)));
             begin
@@ -3841,7 +3839,7 @@ package body Gnat2Why.Expr is
 
          when N_Identifier | N_Expanded_Name =>
             T := Transform_Identifier (Local_Params, Expr,
-                                       Unique_Entity (Entity (Expr)),
+                                       Entity (Expr),
                                        Domain, Current_Type);
 
          when N_Op_Compare =>
@@ -4213,8 +4211,9 @@ package body Gnat2Why.Expr is
             --  Start of Short_Circuit
 
             begin
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
                if Present (Actions (Expr)) then
-                  Transform_Actions_Preparation (Actions (Expr), Local_Params);
+                  Transform_Actions_Preparation (Actions (Expr));
                end if;
 
                T :=
@@ -4236,6 +4235,7 @@ package body Gnat2Why.Expr is
                                           Local_Params);
                end if;
 
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                Current_Type := EW_Bool_Type;
             end Short_Circuit;
 
@@ -4351,6 +4351,9 @@ package body Gnat2Why.Expr is
                  Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Local_Params);
 
             begin
+
+               --  ??? This can be removed once we make sure that the call to
+               --  Transform_Identifier above sets current_type correctly.
 
                --  For functions, the Etype of the Name is not always the type
                --  returned by the function. Examples are primitive operations
@@ -4648,26 +4651,27 @@ package body Gnat2Why.Expr is
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
-      Local_Params : Transformation_Params := Params;
       T            : W_Expr_Id;
 
    begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       if Present (Actions) then
-         Transform_Actions_Preparation (Actions, Local_Params);
+         Transform_Actions_Preparation (Actions);
       end if;
 
       T := Transform_Expr (Expr,
                            Expected_Type,
                            Domain,
-                           Local_Params);
+                           Params);
 
       if Present (Actions) then
          T := Transform_Actions (Actions,
                                  T,
                                  Domain,
-                                 Local_Params);
+                                 Params);
       end if;
 
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       return T;
    end Transform_Expr_With_Actions;
 
@@ -4696,7 +4700,7 @@ package body Gnat2Why.Expr is
                                   return W_Expr_Id
    is
       C   : constant Ada_Ent_To_Why.Cursor :=
-        Ada_Ent_To_Why.Find (Params.Name_Map, Ent);
+        Ada_Ent_To_Why.Find (Symbol_Table, Ent);
       T   : W_Expr_Id;
    begin
 
@@ -4715,6 +4719,10 @@ package body Gnat2Why.Expr is
             Why_Ent : constant Binder_Type := Ada_Ent_To_Why.Element (C);
          begin
             T := +Why_Ent.B_Name;
+
+            --  The type should never be empty, and the assignment be done in
+            --  any case
+
             if Why_Ent.B_Type /= Why_Empty and then
               Get_EW_Type (Why_Ent.B_Type) /= EW_Abstract then
                Current_Type := +Why_Ent.B_Type;
@@ -4729,19 +4737,10 @@ package body Gnat2Why.Expr is
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
          Current_Type := EW_Int_Type;
-
-      elsif Ekind (Ent) = E_Loop_Parameter and then
-        Is_Quantified_Loop_Param (Ent) then
-         T := +New_Identifier (Name => Full_Name (Ent));
-
       else
-         T := +To_Why_Id (Ent, Domain);
-      end if;
-
-      if Ekind (Ent) = E_Loop_Parameter and then
-        not Entity_In_External_Axioms (Etype (Ent))
-      then
-         Current_Type := EW_Int_Type;
+         Ada.Text_IO.Put_Line ("[Transform_Identifier] unregistered entity"
+                               & Full_Name (Ent));
+         raise Program_Error;
       end if;
 
       if Is_Mutable_In_Why (Ent) and then Params.Ref_Allowed then
@@ -5055,18 +5054,56 @@ package body Gnat2Why.Expr is
                         New_Base_Type (Base_Type => EW_Int)
                       else
                         Why_Logic_Type_Of_Ada_Type (Index_Type));
+      Cond_Expr  : W_Expr_Id;
 
-   --  Start of Transform_Quantified_Expression
+      --  Start of Transform_Quantified_Expression
 
    begin
-      --  Simplest case, the quantification in Ada is translated as a
+
+      if Domain = EW_Term then
+
+         --  It is trivial to promote a predicate to a term, by doing
+         --    if pred then True else False
+
+         declare
+            Pred : constant W_Expr_Id :=
+                     Transform_Quantified_Expression
+                       (Expr, EW_Pred, Params);
+         begin
+            return
+              New_Conditional (Domain    => EW_Term,
+                               Condition => Pred,
+                               Then_Part =>
+                                 New_Literal (Value => EW_True,
+                                              Domain => Domain,
+                                              Ada_Node => Standard_Boolean),
+                               Else_Part =>
+                                 New_Literal (Value => EW_False,
+                                              Domain => Domain,
+                                              Ada_Node => Standard_Boolean));
+         end;
+      end if;
+
+      --  We are now in domain Prog or Pred, and have to translate the
+      --  condition of the quantified expression, where the context is
+      --  enriched by the loop parameter
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             Index_Ent,
+                             Binder_Type'(Ada_Node => Index_Ent,
+                                          B_Name   => Why_Id,
+                                          B_Type   => Index_Base,
+                                          B_Ent    => null,
+                                          Mutable  => False));
+      Cond_Expr := Transform_Expr (Condition (Expr), Domain, Params);
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      --  In the predicate case the quantification in Ada is translated as a
       --  quantification in Why3.
 
       if Domain = EW_Pred then
          declare
-            Conclusion : constant W_Pred_Id :=
-                           +Transform_Expr (Condition (Expr),
-                                            EW_Pred, Params);
             Constraint : constant W_Pred_Id :=
               (if Over_Range then
                  +Range_Expr (Range_E, +Why_Id, EW_Pred, Params)
@@ -5078,7 +5115,7 @@ package body Gnat2Why.Expr is
               New_Connection
                 (Op     => Connector,
                  Left   => +Constraint,
-                 Right  => +Conclusion);
+                 Right  => Cond_Expr);
          begin
             if All_Present (Expr) then
                return
@@ -5113,11 +5150,6 @@ package body Gnat2Why.Expr is
 
       elsif Domain = EW_Prog then
          declare
-            Why_Expr   : constant W_Prog_Id :=
-                           New_Ignore
-                             (Prog =>
-                                +Transform_Expr (Condition (Expr),
-                                                 EW_Prog, Params));
             Range_Cond : W_Prog_Id;
          begin
             Range_Cond :=
@@ -5135,7 +5167,7 @@ package body Gnat2Why.Expr is
                       New_Conditional
                         (Domain    => EW_Prog,
                          Condition => +Range_Cond,
-                         Then_Part => +Why_Expr)),
+                         Then_Part => +New_Ignore (Prog => +Cond_Expr))),
                  New_Assume_Statement
                    (Ada_Node    => Expr,
                     Return_Type => New_Base_Type (Base_Type => EW_Bool),
@@ -5153,28 +5185,11 @@ package body Gnat2Why.Expr is
                          Right    =>
                            +Transform_Expr (Expr, EW_Pred, Params)))));
          end;
-
-      --  It is trivial to promote a predicate to a term, by doing
-      --    if pred then True else False
-
       else
-         declare
-            Pred : constant W_Expr_Id :=
-                     Transform_Quantified_Expression
-                       (Expr, EW_Pred, Params);
-         begin
-            return
-              New_Conditional (Domain    => EW_Term,
-                               Condition => Pred,
-                               Then_Part =>
-                                 New_Literal (Value => EW_True,
-                                              Domain => Domain,
-                                              Ada_Node => Standard_Boolean),
-                               Else_Part =>
-                                 New_Literal (Value => EW_False,
-                                              Domain => Domain,
-                                              Ada_Node => Standard_Boolean));
-         end;
+
+         --  case Domain = EW_Term already handled
+
+         raise Program_Error;
       end if;
    end Transform_Quantified_Expression;
 
@@ -5605,6 +5620,7 @@ package body Gnat2Why.Expr is
                              E => N,
                              W => Binder_Type'(B_Name   => Id,
                                                B_Type   => +Why_Type,
+                                               B_Ent    => null,
                                                Mutable  => False,
                                                Ada_Node => Empty));
    end Transform_String_Literal;

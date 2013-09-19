@@ -11,9 +11,9 @@ module Discrete_Base
 
   type t "bounded_type"
 
-  function attr__ATTRIBUTE_FIRST : int
+  function first : int
 
-  function attr__ATTRIBUTE_LAST : int
+  function last : int
 
   function attr__ATTRIBUTE_IMAGE int : __image
 
@@ -26,7 +26,7 @@ module Discrete_Base
     ensures { true }
 
   predicate in_range "bounded_type"  (x : int) =
-    ( attr__ATTRIBUTE_FIRST <= x <= attr__ATTRIBUTE_LAST )
+    ( first <= x <= last )
 
   function to_int "bounded_type" t : int
 
@@ -41,11 +41,11 @@ module Discrete_Base
     ensures { result = n }
 
   val check_not_last (n : int) : int
-    requires { n <> attr__ATTRIBUTE_LAST }
+    requires { n <> last }
     ensures { result = n }
 
   val check_not_first (n : int) : int
-    requires { n <> attr__ATTRIBUTE_FIRST }
+    requires { n <> first }
     ensures { result = n }
 
   predicate eq (x : t) (y : t) = ( to_int x = to_int y )
@@ -95,21 +95,21 @@ module Floating_Point
   function round_real_tmp real : real
   function round_real (x : real) : real = round_real_tmp (x)
 
-  function attr__ATTRIBUTE_FIRST  : real
+  function first  : real
 
-  function attr__ATTRIBUTE_LAST  : real
+  function last  : real
 
   (* The first and last value of the floating-point type are exactly
      represented. So round_real is the identity on such values. *)
 
   axiom representable_first :
-    round_real attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST
+    round_real first = first
 
   axiom representable_last :
-    round_real attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST
+    round_real last = last
 
   predicate in_range  (x : real) =
-   ( attr__ATTRIBUTE_FIRST <=. x <=. attr__ATTRIBUTE_LAST )
+   ( first <=. x <=. last )
 
   function to_real t : real
 
@@ -368,11 +368,11 @@ module Unconstr_Array
   function of_array (a : Array__1.map component_type) (f l : int) : __t =
     { elts = a; rt = I1.mk f l }
 
-  function attr__ATTRIBUTE_FIRST (a : __t) : int = to_int (I1.first a.rt)
-  function attr__ATTRIBUTE_LAST (a : __t) : int = to_int (I1.last a.rt)
-  function attr__ATTRIBUTE_LENGTH (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST a <= attr__ATTRIBUTE_LAST a then
-      attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1 else 0
+  function first (a : __t) : int = to_int (I1.first a.rt)
+  function last (a : __t) : int = to_int (I1.last a.rt)
+  function length (a : __t) : int =
+    if first a <= last a then
+      last a - first a + 1 else 0
 
   predicate range_check (f1 l1 : int) =
     I1.range_check f1 l1
@@ -426,17 +426,17 @@ module Unconstr_Array_2
       rt = I1.mk f l;
       rt_2 = I2.mk f2 l2 }
 
-  function attr__ATTRIBUTE_FIRST (a : __t) : int = to_int (I1.first a.rt)
-  function attr__ATTRIBUTE_LAST (a : __t) : int = to_int (I1.last a.rt)
-  function attr__ATTRIBUTE_LENGTH (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST a <= attr__ATTRIBUTE_LAST a then
-      attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1 else 0
+  function first (a : __t) : int = to_int (I1.first a.rt)
+  function last (a : __t) : int = to_int (I1.last a.rt)
+  function length (a : __t) : int =
+    if first a <= last a then
+      last a - first a + 1 else 0
 
-  function attr__ATTRIBUTE_FIRST_2 (a : __t) : int = to_int_2 (I2.first a.rt_2)
-  function attr__ATTRIBUTE_LAST_2 (a : __t) : int = to_int_2 (I2.last a.rt_2)
-  function attr__ATTRIBUTE_LENGTH_2 (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST_2 a <= attr__ATTRIBUTE_LAST_2 a then
-      attr__ATTRIBUTE_LAST_2 a - attr__ATTRIBUTE_FIRST_2 a + 1 else 0
+  function first_2 (a : __t) : int = to_int_2 (I2.first a.rt_2)
+  function last_2 (a : __t) : int = to_int_2 (I2.last a.rt_2)
+  function length_2 (a : __t) : int =
+    if first_2 a <= last_2 a then
+      last_2 a - first_2 a + 1 else 0
 
   predicate range_check (f1 l1 f2 l2 : int) =
     I1.range_check f1 l1 /\ I2.range_check f2 l2
@@ -504,23 +504,23 @@ module Unconstr_Array_3
       rt_3 = I3.mk f3 l3
     }
 
-  function attr__ATTRIBUTE_FIRST (a : __t) : int = to_int (I1.first a.rt)
-  function attr__ATTRIBUTE_LAST (a : __t) : int = to_int (I1.last a.rt)
-  function attr__ATTRIBUTE_LENGTH (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST a <= attr__ATTRIBUTE_LAST a then
-      attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1 else 0
+  function first (a : __t) : int = to_int (I1.first a.rt)
+  function last (a : __t) : int = to_int (I1.last a.rt)
+  function length (a : __t) : int =
+    if first a <= last a then
+      last a - first a + 1 else 0
 
-  function attr__ATTRIBUTE_FIRST_2 (a : __t) : int = to_int_2 (I2.first a.rt_2)
-  function attr__ATTRIBUTE_LAST_2 (a : __t) : int = to_int_2 (I2.last a.rt_2)
-  function attr__ATTRIBUTE_LENGTH_2 (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST_2 a <= attr__ATTRIBUTE_LAST_2 a then
-      attr__ATTRIBUTE_LAST_2 a - attr__ATTRIBUTE_FIRST_2 a + 1 else 0
+  function first_2 (a : __t) : int = to_int_2 (I2.first a.rt_2)
+  function last_2 (a : __t) : int = to_int_2 (I2.last a.rt_2)
+  function length_2 (a : __t) : int =
+    if first_2 a <= last_2 a then
+      last_2 a - first_2 a + 1 else 0
 
-  function attr__ATTRIBUTE_FIRST_3 (a : __t) : int = to_int_3 (I3.first a.rt_3)
-  function attr__ATTRIBUTE_LAST_3 (a : __t) : int = to_int_3 (I3.last a.rt_3)
-  function attr__ATTRIBUTE_LENGTH_3 (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST_3 a <= attr__ATTRIBUTE_LAST_3 a then
-      attr__ATTRIBUTE_LAST_3 a - attr__ATTRIBUTE_FIRST_3 a + 1 else 0
+  function first_3 (a : __t) : int = to_int_3 (I3.first a.rt_3)
+  function last_3 (a : __t) : int = to_int_3 (I3.last a.rt_3)
+  function length_3 (a : __t) : int =
+    if first_3 a <= last_3 a then
+      last_3 a - first_3 a + 1 else 0
 
   predicate range_check (f1 l1 f2 l2 f3 l3 : int) =
     I1.range_check f1 l1 /\ I2.range_check f2 l2 /\ I3.range_check f3 l3
@@ -601,29 +601,29 @@ module Unconstr_Array_4
       rt_4 = I4.mk f4 l4
     }
 
-  function attr__ATTRIBUTE_FIRST (a : __t) : int = to_int (I1.first a.rt)
-  function attr__ATTRIBUTE_LAST (a : __t) : int = to_int (I1.last a.rt)
-  function attr__ATTRIBUTE_LENGTH (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST a <= attr__ATTRIBUTE_LAST a then
-      attr__ATTRIBUTE_LAST a - attr__ATTRIBUTE_FIRST a + 1 else 0
+  function first (a : __t) : int = to_int (I1.first a.rt)
+  function last (a : __t) : int = to_int (I1.last a.rt)
+  function length (a : __t) : int =
+    if first a <= last a then
+      last a - first a + 1 else 0
 
-  function attr__ATTRIBUTE_FIRST_2 (a : __t) : int = to_int_2 (I2.first a.rt_2)
-  function attr__ATTRIBUTE_LAST_2 (a : __t) : int = to_int_2 (I2.last a.rt_2)
-  function attr__ATTRIBUTE_LENGTH_2 (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST_2 a <= attr__ATTRIBUTE_LAST_2 a then
-      attr__ATTRIBUTE_LAST_2 a - attr__ATTRIBUTE_FIRST_2 a + 1 else 0
+  function first_2 (a : __t) : int = to_int_2 (I2.first a.rt_2)
+  function last_2 (a : __t) : int = to_int_2 (I2.last a.rt_2)
+  function length_2 (a : __t) : int =
+    if first_2 a <= last_2 a then
+      last_2 a - first_2 a + 1 else 0
 
-  function attr__ATTRIBUTE_FIRST_3 (a : __t) : int = to_int_3 (I3.first a.rt_3)
-  function attr__ATTRIBUTE_LAST_3 (a : __t) : int = to_int_3 (I3.last a.rt_3)
-  function attr__ATTRIBUTE_LENGTH_3 (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST_3 a <= attr__ATTRIBUTE_LAST_3 a then
-      attr__ATTRIBUTE_LAST_3 a - attr__ATTRIBUTE_FIRST_3 a + 1 else 0
+  function first_3 (a : __t) : int = to_int_3 (I3.first a.rt_3)
+  function last_3 (a : __t) : int = to_int_3 (I3.last a.rt_3)
+  function length_3 (a : __t) : int =
+    if first_3 a <= last_3 a then
+      last_3 a - first_3 a + 1 else 0
 
-  function attr__ATTRIBUTE_FIRST_4 (a : __t) : int = to_int_4 (I4.first a.rt_4)
-  function attr__ATTRIBUTE_LAST_4 (a : __t) : int = to_int_4 (I4.last a.rt_4)
-  function attr__ATTRIBUTE_LENGTH_4 (a : __t) : int =
-    if attr__ATTRIBUTE_FIRST_4 a <= attr__ATTRIBUTE_LAST_4 a then
-      attr__ATTRIBUTE_LAST_4 a - attr__ATTRIBUTE_FIRST_4 a + 1 else 0
+  function first_4 (a : __t) : int = to_int_4 (I4.first a.rt_4)
+  function last_4 (a : __t) : int = to_int_4 (I4.last a.rt_4)
+  function length_4 (a : __t) : int =
+    if first_4 a <= last_4 a then
+      last_4 a - first_4 a + 1 else 0
 
   predicate range_check (f1 l1 f2 l2 f3 l3 f4 l4 : int) =
     I1.range_check f1 l1 /\ I2.range_check f2 l2 /\
@@ -638,8 +638,8 @@ module Constr_Array
 
   type component_type
 
-  function attr__ATTRIBUTE_FIRST : int
-  function attr__ATTRIBUTE_LAST  : int
+  function first : int
+  function last  : int
 
   type __t = Array__1.map component_type
 
@@ -657,11 +657,11 @@ module Constr_Array_2
 
   type component_type
 
-  function attr__ATTRIBUTE_FIRST : int
-  function attr__ATTRIBUTE_LAST  : int
+  function first : int
+  function last  : int
 
-  function attr__ATTRIBUTE_FIRST_2 : int
-  function attr__ATTRIBUTE_LAST_2  : int
+  function first_2 : int
+  function last_2  : int
 
   type __t = Array__2.map component_type
 
@@ -678,14 +678,14 @@ module Constr_Array_3
 
   type component_type
 
-  function attr__ATTRIBUTE_FIRST : int
-  function attr__ATTRIBUTE_LAST  : int
+  function first : int
+  function last  : int
 
-  function attr__ATTRIBUTE_FIRST_2 : int
-  function attr__ATTRIBUTE_LAST_2  : int
+  function first_2 : int
+  function last_2  : int
 
-  function attr__ATTRIBUTE_FIRST_3 : int
-  function attr__ATTRIBUTE_LAST_3  : int
+  function first_3 : int
+  function last_3  : int
 
   type __t = Array__3.map component_type
 
@@ -702,17 +702,17 @@ module Constr_Array_4
 
   type component_type
 
-  function attr__ATTRIBUTE_FIRST : int
-  function attr__ATTRIBUTE_LAST  : int
+  function first : int
+  function last  : int
 
-  function attr__ATTRIBUTE_FIRST_2 : int
-  function attr__ATTRIBUTE_LAST_2  : int
+  function first_2 : int
+  function last_2  : int
 
-  function attr__ATTRIBUTE_FIRST_3 : int
-  function attr__ATTRIBUTE_LAST_3  : int
+  function first_3 : int
+  function last_3  : int
 
-  function attr__ATTRIBUTE_FIRST_4 : int
-  function attr__ATTRIBUTE_LAST_4  : int
+  function first_4 : int
+  function last_4  : int
 
   type __t = Array__4.map component_type
 

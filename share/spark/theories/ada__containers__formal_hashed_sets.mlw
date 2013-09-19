@@ -861,11 +861,11 @@ module Ada__containers__formal_hashed_sets__union__2
 
   axiom union__2__def :
      forall co1 co2 : set [union__2 co1 co2].
-	  length_ (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
+	  length_ (union co1 co2) <=  Ada__containers__count_type.last ->
           union__2 co1 co2 = union co1 co2
 
   val union__2 (co1 co2 : set) : set
-    requires { length_ (union co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST }
+    requires { length_ (union co1 co2) <=  Ada__containers__count_type.last }
     ensures { result = union co1 co2 }
 end
 
@@ -960,11 +960,13 @@ module Ada__containers__formal_hashed_sets__symmetric_difference__2
 
   axiom symmetric_difference__2__def :
      forall co1 co2 : set [symmetric_difference__2 co1 co2].
-	  length_ (symmetric_difference co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST ->
+	  length_ (symmetric_difference co1 co2) <=
+          Ada__containers__count_type.last ->
           symmetric_difference__2 co1 co2 = symmetric_difference co1 co2
 
   val symmetric_difference__2 (co1 co2 : set) : set
-    requires { length_ (symmetric_difference co1 co2) <=  Ada__containers__count_type.attr__ATTRIBUTE_LAST }
+    requires { length_ (symmetric_difference co1 co2) <=
+    Ada__containers__count_type.last }
     ensures { result = symmetric_difference co1 co2 }
 end
 

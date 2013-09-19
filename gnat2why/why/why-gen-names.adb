@@ -605,14 +605,11 @@ package body Why.Gen.Names is
          when WNE_Constant_Closure => return "__constant_closure";
          when WNE_Check_Not_First => return "check_not_first";
          when WNE_Check_Not_Last => return "check_not_last";
-         when WNE_Attr_First   =>
-            return "attr__" & Attribute_Id'Image (Attribute_First);
+         when WNE_Attr_First => return "first";
+         when WNE_Attr_Last => return "last";
+         when WNE_Attr_Length => return "length";
          when WNE_Attr_Image   =>
             return "attr__" & Attribute_Id'Image (Attribute_Image);
-         when WNE_Attr_Last    =>
-            return "attr__" & Attribute_Id'Image (Attribute_Last);
-         when WNE_Attr_Length  =>
-            return "attr__" & Attribute_Id'Image (Attribute_Length);
          when WNE_Attr_Modulus =>
             return "attr__" & Attribute_Id'Image (Attribute_Modulus);
          when WNE_Attr_Value   =>

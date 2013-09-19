@@ -663,6 +663,7 @@ package body Why.Gen.Binders is
    begin
       return
         (B_Name   => New_Identifier (Name => "__void_param"),
+         B_Ent    => null,
          B_Type   => New_Base_Type (Base_Type => EW_Unit),
          Mutable  => False,
          Ada_Node => Empty);

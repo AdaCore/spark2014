@@ -25,6 +25,7 @@
 
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Hashed_Maps;
 
@@ -113,17 +114,25 @@ package Gnat2Why.Nodes is
                         W : Binder_Type);
 
       procedure Insert (M : in out Map;
-                        E : String;
+                        E : Entity_Name;
                         W : Binder_Type);
 
       function Element (M : Map; E : Entity_Id) return Binder_Type;
       function Element (C : Cursor) return Binder_Type;
 
       function Find (M : Map; E : Entity_Id) return Cursor;
-      function Find (M : Map; E : String) return Cursor;
+      function Find (M : Map; E : Entity_Name) return Cursor;
 
       function Has_Element (M : Map; E : Entity_Id) return Boolean;
       function Has_Element (C : Cursor) return Boolean;
+
+      procedure Push_Scope (M : in out Map);
+      --  Mark that a new scope has begun. See the documentation of
+      --  [Pop_Scope].
+
+      procedure Pop_Scope (M : in out Map);
+      --  Restore the map into the state it was at the last call to Push_Scope.
+      --  Does nothing if Push_Scope was never called.
 
    private
 
@@ -141,14 +150,44 @@ package Gnat2Why.Nodes is
          Equivalent_Keys => "=",
          "="             => "=");
 
+      type Action_Enum is
+        (Insert_Ent, Insert_Name, Remove_Ent, Remove_Name, Boundary);
+
+      type Action (Kind : Action_Enum) is record
+         case Kind is
+            when Boundary =>
+               null;
+            when Remove_Ent =>
+               Rem_Entity : Entity_Id;
+            when Remove_Name =>
+               Rem_Name : Entity_Name;
+            when Insert_Ent | Insert_Name =>
+               Ins_Binder : Binder_Type;
+               case Kind is
+                  when Insert_Ent =>
+                     Ins_Entity : Entity_Id;
+                  when Insert_Name =>
+                     Ins_Name : Entity_Name;
+                  when others =>
+                     null;
+               end case;
+         end case;
+      end record;
+
+      package Undo_Stacks is new Ada.Containers.Indefinite_Doubly_Linked_Lists
+        (Element_Type => Action,
+         "="          => "=");
+
       type Map is record
          Entity_Ids   : Ent_To_Why.Map;
          Entity_Names : Name_To_Why_Map.Map;
+         Undo_Stack   : Undo_Stacks.List;
       end record;
 
       Empty_Map : constant Map :=
-        Map'(Entity_Ids    => Ent_To_Why.Empty_Map,
-             Entity_Names => Name_To_Why_Map.Empty_Map);
+        Map'(Entity_Ids   => Ent_To_Why.Empty_Map,
+             Entity_Names => Name_To_Why_Map.Empty_Map,
+             Undo_Stack   => Undo_Stacks.Empty_List);
 
       type Cursor_Kind is (CK_Ent, CK_Str);
 

@@ -1,29 +1,103 @@
-foo.adb:11:29: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:11:32: warning: unused initial value of "Y" [unused_initial_value]
-foo.adb:20:38: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:20:41: warning: unused initial value of "Y" [unused_initial_value]
-foo.adb:29:26: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:29:29: warning: unused initial value of "Y" [unused_initial_value]
-foo.adb:29:32: warning: unused initial value of "Z" [unused_initial_value]
-foo.adb:38:22: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:38:25: warning: unused initial value of "Y" [unused_initial_value]
-foo.adb:38:28: warning: unused initial value of "Z" [unused_initial_value]
-foo.adb:48:24: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:65:31: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:65:34: warning: unused initial value of "Y" [unused_initial_value]
-foo.adb:79:25: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:85:33: warning: unused initial value of "X" [unused_initial_value]
-foo.adb:85:44: warning: unused initial value of "Y" [unused_initial_value]
-foo.adb:15:7: assertion not proved, requires X + Y >= X
-foo.adb:24:7: assertion not proved, requires X + Y > X
-foo.adb:33:7: info: assertion proved
-foo.adb:42:7: assertion not proved, requires false
-foo.adb:51:7: info: assertion proved
-foo.adb:59:14: division check not proved
-foo.adb:59:14: overflow check not proved
-foo.adb:69:7: info: assertion proved
-foo.adb:69:24: division check not proved
-foo.adb:69:32: division check not proved
-foo.adb:82:7: assertion not proved, requires - (- X) = + X
-foo.adb:88:7: assertion not proved, requires Float (Y) = X) = (Long_Float (X) = Y
-foo.adb:88:30: info: range check proved
+foo.adb:14:32: warning: unused initial value of "A" [unused_initial_value]
+foo.adb:14:35: warning: unused initial value of "B" [unused_initial_value]
+foo.adb:30:29: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:30:32: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:39:38: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:39:41: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:48:22: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:48:25: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:48:28: warning: unused initial value of "Z" [unused_initial_value]
+foo.adb:98:34: warning: unused initial value of "C" [unused_initial_value]
+foo.adb:114:32: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:120:36: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:120:39: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:127:36: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:127:39: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:134:36: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:134:39: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:141:27: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:148:34: warning: unused initial value of "A" [unused_initial_value]
+foo.adb:148:37: warning: unused initial value of "B" [unused_initial_value]
+foo.adb:148:40: warning: unused initial value of "C" [unused_initial_value]
+foo.adb:154:41: warning: unused initial value of "A" [unused_initial_value]
+foo.adb:154:44: warning: unused initial value of "B" [unused_initial_value]
+foo.adb:160:31: warning: unused initial value of "A" [unused_initial_value]
+foo.adb:160:34: warning: unused initial value of "B" [unused_initial_value]
+foo.adb:160:37: warning: unused initial value of "C" [unused_initial_value]
+foo.adb:173:24: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:190:31: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:190:34: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:207:26: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:207:29: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:207:32: warning: unused initial value of "Z" [unused_initial_value]
+foo.adb:227:26: warning: unused initial value of "F" [unused_initial_value]
+foo.adb:241:26: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:279:25: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:285:33: warning: unused initial value of "X" [unused_initial_value]
+foo.adb:285:44: warning: unused initial value of "Y" [unused_initial_value]
+foo.adb:21:7: info: assertion proved
+foo.adb:34:7: assertion not proved, requires X + Y >= X
+foo.adb:43:7: assertion not proved, requires X + Y > X
+foo.adb:52:7: assertion not proved, requires false
+foo.adb:58:19: info: postcondition proved
+foo.adb:61:18: info: overflow check proved
+foo.adb:66:19: postcondition not proved, requires Underflow_1'Result > 
+foo.adb:69:16: info: division check proved
+foo.adb:69:16: overflow check not proved
+foo.adb:76:19: postcondition not proved, requires Inverse_Reciprocal'Result = A
+foo.adb:79:18: division check not proved
+foo.adb:79:18: overflow check not proved
+foo.adb:79:25: info: division check proved
+foo.adb:79:25: info: overflow check proved
+foo.adb:84:19: postcondition not proved, requires Underflow_2'result
+foo.adb:92:19: postcondition not proved, requires Underflow_3'Result > 
+foo.adb:95:16: overflow check not proved
+foo.adb:100:19: postcondition not proved, requires Sqrt_Comedy_1'result
+foo.adb:108:19: postcondition not proved, requires Bad_Optimisation_1'Result = A / B
+foo.adb:108:49: info: division check proved
+foo.adb:111:16: overflow check not proved
+foo.adb:111:23: info: division check proved
+foo.adb:111:23: overflow check not proved
+foo.adb:117:7: assertion not proved, requires X + X = X - (-X
+foo.adb:124:7: assertion not proved, requires X - Y = 0.0) = (X = Y
+foo.adb:131:7: assertion not proved, requires X - Y) + Y = X
+foo.adb:138:7: assertion not proved, requires X + Y) - Y = X
+foo.adb:145:7: assertion not proved, requires 1.0 / X > 
+foo.adb:145:26: info: division check proved
+foo.adb:151:7: assertion not proved, requires A + B) + C = A + (B + C
+foo.adb:157:7: info: assertion proved
+foo.adb:163:7: assertion not proved, requires A * (B + C) = (A * B) + (A * C
+foo.adb:176:7: info: assertion proved
+foo.adb:184:14: division check not proved
+foo.adb:184:14: overflow check not proved
+foo.adb:194:7: info: assertion proved
+foo.adb:194:24: division check not proved
+foo.adb:194:32: division check not proved
+foo.adb:202:18: division check not proved
+foo.adb:202:18: overflow check not proved
+foo.adb:202:28: division check not proved
+foo.adb:202:28: overflow check not proved
+foo.adb:211:7: info: assertion proved
+foo.adb:222:10: info: assertion proved
+foo.adb:231:7: assertion not proved, requires F = 
+foo.adb:235:19: postcondition not proved, requires F = F'old
+foo.adb:238:14: info: overflow check proved
+foo.adb:245:7: assertion not proved, requires X / X = 
+foo.adb:245:24: info: division check proved
+foo.adb:257:16: division check not proved
+foo.adb:257:16: overflow check not proved
+foo.adb:258:16: division check not proved
+foo.adb:258:16: overflow check not proved
+foo.adb:259:16: division check not proved
+foo.adb:259:16: overflow check not proved
+foo.adb:260:7: assertion not proved, requires A = C
+foo.adb:267:16: division check not proved
+foo.adb:267:16: overflow check not proved
+foo.adb:268:16: division check not proved
+foo.adb:268:16: overflow check not proved
+foo.adb:269:16: division check not proved
+foo.adb:269:16: overflow check not proved
+foo.adb:270:7: assertion not proved, requires X = B
+foo.adb:282:7: assertion not proved, requires - (- X) = + X
+foo.adb:288:7: assertion not proved, requires Float (Y) = X) = (Long_Float (X) = Y
+foo.adb:288:30: info: range check proved

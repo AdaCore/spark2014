@@ -66,6 +66,10 @@ package body Gnat2Why.Decls is
    --  Returns the list of every instance of generic package up to the first
    --  package with external axioms
 
+   procedure Register_External_Entities (E : Entity_Id);
+   --  This function is called on a package with external axioms.
+   --  It registers all entities in the global symbol table.
+
    -----------------------------------
    -- Complete_Constant_Translation --
    -----------------------------------
@@ -224,7 +228,6 @@ package body Gnat2Why.Decls is
                   --  expr_fun_closure
 
                   if Ekind (E) in Subprogram_Kind then
-
                      Open_Theory
                        (TFile, Theory_Name & To_String (WNE_Expr_Fun_Closure),
                         Comment =>
@@ -355,6 +358,66 @@ package body Gnat2Why.Decls is
       return Result;
    end Get_Generic_Parents;
 
+   --------------------------------
+   -- Register_External_Entities --
+   --------------------------------
+
+   procedure Register_External_Entities (E : Entity_Id)
+   is
+
+      procedure Register_Decls (Decls  : List_Id);
+      --  Register the entities of the declarations
+
+      procedure Register_Decls (Decls  : List_Id) is
+         N      : Node_Id := First (Decls);
+      begin
+
+         while Present (N) loop
+            if Comes_From_Source (N) and then
+              Nkind (N) in
+              N_Subprogram_Declaration | N_Object_Declaration then
+               declare
+                  E : constant Entity_Id := Defining_Entity (N);
+               begin
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table,
+                     E,
+                     Binder_Type'(Ada_Node => E,
+                                  B_Name   => To_Why_Id (E),
+                                  B_Ent    => null,
+                                  B_Type   =>
+                                    Why_Logic_Type_Of_Ada_Type (Etype (E)),
+                                  Mutable  =>
+                                    Ekind (E) in Object_Kind and then
+                                  Is_Mutable_In_Why (E)));
+               end;
+            end if;
+
+            --  Call Complete_Decls recursively on Package_Declaration and
+            --  Package_Instantiation.
+
+            if Comes_From_Source (N) and then
+              Nkind (N) = N_Package_Instantiation then
+               Register_Decls
+                 (Decls  => Visible_Declarations
+                    (Specification (Instance_Spec (N))));
+            end if;
+
+            if Comes_From_Source (N) and then
+              Nkind (N) in N_Package_Declaration then
+               Register_Decls
+                 (Decls  => Visible_Declarations (Get_Package_Spec (N)));
+            end if;
+
+            Next (N);
+         end loop;
+      end Register_Decls;
+
+   begin
+      Register_Decls
+        (Decls  => Visible_Declarations (Get_Package_Spec (E)));
+   end Register_External_Entities;
+
    ------------------------
    -- Translate_Variable --
    ------------------------
@@ -426,7 +489,14 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Ref_Type => Typ));
-
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Binder_Type'(
+                               Ada_Node => E,
+                               B_Name   => To_Why_Id (E),
+                               B_Ent    => null,
+                               B_Type   => Typ,
+                               Mutable  => True));
       Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Variable;
 
@@ -465,7 +535,14 @@ package body Gnat2Why.Decls is
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
-
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Binder_Type'(
+                               Ada_Node => E,
+                               B_Name   => To_Why_Id (E),
+                               B_Ent    => null,
+                               B_Type   => Typ,
+                               Mutable  => False));
       Close_Theory (File,
                     Filter_Entity  => E,
                     Defined_Entity => E);
@@ -1306,6 +1383,7 @@ package body Gnat2Why.Decls is
                            Binders (Count) :=
                              (Ada_Node => F_Id,
                               B_Name   => Name,
+                              B_Ent    => null,
                               Mutable  => False,
                               B_Type   => F_Type);
 
@@ -1360,6 +1438,7 @@ package body Gnat2Why.Decls is
       Subst_Length : Natural;
 
    begin
+      Register_External_Entities (Package_Entity);
       if List_Of_Entity.Is_Empty (G_Parents) then
          File_Append_To_Theories
            (TFile.File, New_Custom_Declaration
