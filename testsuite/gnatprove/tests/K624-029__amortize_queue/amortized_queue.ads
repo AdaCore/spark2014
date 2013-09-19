@@ -48,7 +48,7 @@ package Amortized_Queue is pragma SPARK_Mode (On);
      Pre  => Inv (Q) and then Length (Q.Front) > 0,
      Post => Inv (Tail'Result) and then
      (if is_Model (Q, Model (Q)) and is_Model (Tail'Result, Model (Tail'Result)) then
-        Left (Model (Q), Last (Model (Q))) = Model (Tail'Result));
+        Model (Q) = Model (Tail'Result) & Last_Element (Model (Q)));
 
    function Enqueue (Q : in Queue; V : in Val) return Queue with
      Pre  => Inv (Q) and then
