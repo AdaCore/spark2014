@@ -278,7 +278,6 @@ enclave.ads:652:23: precondition not proved
 keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
 keystore.adb:195:57: info: overflow check proved
-keystore.adb:199:14: info: range check proved
 keystore.adb:206:33: index check not proved
 keystore.adb:206:33: info: overflow check proved
 keystore.adb:206:49: info: overflow check proved

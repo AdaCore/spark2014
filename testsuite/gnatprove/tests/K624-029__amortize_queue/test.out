@@ -8,11 +8,13 @@ amortized_queue.adb:25:24: info: precondition proved
 amortized_queue.adb:27:7: precondition not proved
 amortized_queue.adb:30:10: precondition not proved
 amortized_queue.ads:30:24: info: overflow check proved
+amortized_queue.ads:31:20: info: range check proved
 amortized_queue.ads:32:17: info: precondition proved
 amortized_queue.ads:32:29: info: range check proved
 amortized_queue.ads:33:18: info: precondition proved
 amortized_queue.ads:33:65: info: overflow check proved
 amortized_queue.ads:33:65: info: range check proved
+amortized_queue.ads:34:18: info: range check proved
 amortized_queue.ads:35:15: info: precondition proved
 amortized_queue.ads:35:29: info: overflow check proved
 amortized_queue.ads:35:29: info: range check proved

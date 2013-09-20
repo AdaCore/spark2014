@@ -9,5 +9,7 @@ stack.ads:19:12: info: postcondition proved
 stack.ads:22:38: info: precondition proved
 stack.ads:23:12: postcondition not proved
 stack.ads:32:24: info: index check proved
+stack.ads:35:16: info: range check proved
 stack.ads:36:11: info: index check proved
+stack.ads:37:18: info: range check proved
 stack.ads:38:13: info: index check proved

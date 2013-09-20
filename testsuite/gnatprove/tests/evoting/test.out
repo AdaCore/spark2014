@@ -13,12 +13,15 @@ evoting.adb:179:63: info: range check proved
 evoting.adb:180:51: info: overflow check proved
 evoting.adb:209:10: info: loop invariant initialization proved
 evoting.adb:221:19: loop invariant preservation not proved, requires Counters(Latest_Highest_Score) = Counters(J)
+evoting.adb:213:24: info: range check proved
 evoting.adb:216:64: info: index check proved
+evoting.adb:218:24: info: range check proved
 evoting.adb:220:30: info: index check proved
 evoting.adb:221:61: info: index check proved
 evoting.adb:223:61: info: index check proved
 evoting.adb:226:16: info: loop invariant initialization proved
 evoting.adb:226:16: info: loop invariant preservation proved
+evoting.adb:227:27: info: range check proved
 evoting.adb:228:31: info: index check proved
 evoting.adb:229:24: info: index check proved
 evoting.adb:245:13: info: loop invariant initialization proved
@@ -38,9 +41,10 @@ evoting.adb:313:7: info: precondition proved
 evoting.adb:315:7: info: precondition proved
 evoting.ads:58:28: postcondition not proved, requires candidates(i)(j) = ' '
 evoting.ads:58:40: info: index check proved
-evoting.ads:97:9: postcondition not proved, requires Counters_Sum(counters) = number_of_votes
+evoting.ads:95:11: postcondition not proved, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
 evoting.ads:110:24: postcondition not proved, requires counters(winner) = counters(i)
+evoting.ads:105:25: info: range check proved
 evoting.ads:106:57: info: index check proved
 evoting.ads:107:50: info: index check proved
 evoting.ads:109:55: info: index check proved

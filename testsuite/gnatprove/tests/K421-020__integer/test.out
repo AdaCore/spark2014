@@ -9,4 +9,3 @@ p.adb:22:35: warning: statement has no effect [ineffective]
 p.adb:23:12: warning: unused assignment [ineffective]
 p.adb:15:12: range check not proved
 p.adb:16:15: range check not proved
-p.adb:22:8: info: range check proved
