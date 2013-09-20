@@ -38,7 +38,6 @@ with VC_Kinds;           use VC_Kinds;
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Types;     use Gnat2Why.Types;
-with Gnat2Why.Util;      use Gnat2Why.Util;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
@@ -49,6 +48,7 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Terms;      use Why.Gen.Terms;
+with Why.Inter;          use Why.Inter;
 with Why.Types;          use Why.Types;
 
 package body Why.Gen.Records is
@@ -249,7 +249,7 @@ package body Why.Gen.Records is
       Is_Root    : constant Boolean := Root = E;
       Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
       Abstr_Ty   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Ty_Ident);
+        +New_Named_Type (Name => Ty_Ident);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
       --  Component_Info record. This map is initialized by a call to
@@ -506,7 +506,7 @@ package body Why.Gen.Records is
                   Binder_Type'(B_Name => B_Ident,
                                  B_Type => Abstr_Ty,
                                  others => <>)),
-               Return_Type => New_Base_Type (Base_Type => EW_Bool),
+               Return_Type => +EW_Bool_Type,
                Def         =>
                  New_Conditional
                    (Domain    => EW_Term,
@@ -799,7 +799,7 @@ package body Why.Gen.Records is
                Emit (Theory,
                      New_Type (Name => Ty_Ident,
                                Alias =>
-                                 New_Abstract_Type
+                                 +New_Named_Type
                                    (Name =>
                                         To_Why_Id (Clone, Local => True))));
             end if;
@@ -858,7 +858,7 @@ package body Why.Gen.Records is
    is
       Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
       Root_Abstr : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Root_Ident);
+        +New_Named_Type (Name => Root_Ident);
       A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
       Num_Discr  : constant Natural := Count_Discriminants (E);
       Discr      : Node_Id := First_Discriminant (E);

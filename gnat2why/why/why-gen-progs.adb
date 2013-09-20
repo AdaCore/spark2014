@@ -31,6 +31,7 @@ with Why.Atree.Properties; use Why.Atree.Properties;
 with Why.Atree.Tables;     use Why.Atree.Tables;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Expr;         use Why.Gen.Expr;
+with Why.Inter;            use Why.Inter;
 
 package body Why.Gen.Progs is
 
@@ -42,8 +43,7 @@ package body Why.Gen.Progs is
      (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
-      Return_Type : W_Primitive_Type_Id :=
-        New_Base_Type (Base_Type => EW_Unit))
+      Return_Type : W_Primitive_Type_Id := Why_Empty)
       return W_Prog_Id is
    begin
       return
@@ -51,7 +51,9 @@ package body Why.Gen.Progs is
           (Ada_Node => Ada_Node,
            Pre      => Pre,
            Post     => Post,
-           Return_Type => +Return_Type);
+           Return_Type =>
+             +(if Return_Type = Why_Empty then +EW_Unit_Type
+               else Return_Type));
    end New_Assume_Statement;
 
    ------------------

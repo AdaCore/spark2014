@@ -46,13 +46,13 @@ with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Conversions;        use Why.Conversions;
---   with Why.Gen.Binders;   use Why.Gen.Binders;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
 with Why.Ids;                use Why.Ids;
+with Why.Inter;              use Why.Inter;
 with Why.Sinfo;              use Why.Sinfo;
 with Why.Types;              use Why.Types;
 
@@ -60,7 +60,6 @@ with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why.Types;         use Gnat2Why.Types;
-with Gnat2Why.Util;          use Gnat2Why.Util;
 
 package body Gnat2Why.Subprograms is
 
@@ -361,7 +360,7 @@ package body Gnat2Why.Subprograms is
                         B_Name   => New_Identifier (Name => Name),
                         B_Ent    => null,
                         B_Type   =>
-                          New_Abstract_Type (Name => To_Why_Type (Name)),
+                          +New_Named_Type (Name => To_Why_Type (Name)),
                         Mutable  => False);
                   else
                      Result (Count) :=
@@ -369,7 +368,7 @@ package body Gnat2Why.Subprograms is
                         B_Name   => New_Identifier (Name => R.all),
                         B_Ent    => R,
                         B_Type   =>
-                          New_Abstract_Type (Name => To_Why_Type (R.all)),
+                          +New_Named_Type (Name => To_Why_Type (R.all)),
                         Mutable  => False);
                   end if;
                end;
@@ -1419,7 +1418,7 @@ package body Gnat2Why.Subprograms is
               (Domain      => EW_Prog,
                Name        => Prog_Id,
                Binders     => Func_Binders,
-               Return_Type => New_Base_Type (Base_Type => EW_Unit),
+               Return_Type => +EW_Unit_Type,
                Effects     => Effects,
                Pre         => Pre,
                Post        => Post));

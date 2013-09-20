@@ -238,7 +238,7 @@ package body Why.Gen.Scalars is
                Emit_Top_Level_Declarations
                  (Theory      => Theory,
                   Binders     => (1 .. 0 => <>),
-                  Return_Type => New_Base_Type (Base_Type => Base_Type),
+                  Return_Type => +Why_Types (Base_Type),
                   Spec        => (1 => Spec));
             end if;
          end;

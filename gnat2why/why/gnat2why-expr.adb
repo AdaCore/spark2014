@@ -54,6 +54,7 @@ with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
+with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Gen.Decl;           use Why.Gen.Decl;
@@ -63,7 +64,7 @@ with Why.Gen.Progs;          use Why.Gen.Progs;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Conversions;        use Why.Conversions;
+with Why.Inter;              use Why.Inter;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
@@ -5159,8 +5160,7 @@ package body Gnat2Why.Expr is
       Why_Id     : constant W_Identifier_Id :=
                      New_Identifier (Name     => Full_Name (Index_Ent));
       Index_Base : constant W_Primitive_Type_Id :=
-                     (if Over_Range then
-                        New_Base_Type (Base_Type => EW_Int)
+                     (if Over_Range then +EW_Int_Type
                       else
                         Why_Logic_Type_Of_Ada_Type (Index_Type));
       Cond_Expr  : W_Expr_Id;
@@ -5279,7 +5279,7 @@ package body Gnat2Why.Expr is
                          Then_Part => +New_Ignore (Prog => +Cond_Expr))),
                  New_Assume_Statement
                    (Ada_Node    => Expr,
-                    Return_Type => New_Base_Type (Base_Type => EW_Bool),
+                    Return_Type => +EW_Bool_Type,
                     Post        =>
                       +W_Expr_Id'(New_Connection
                         (Domain   => EW_Pred,
@@ -5698,7 +5698,7 @@ package body Gnat2Why.Expr is
         New_Identifier (Ada_Node => N, Name => Name);
       Ty        : constant Entity_Id := Type_Of_Node (N);
       Why_Type  : constant W_Base_Type_Id :=
-        New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+        New_Abstract_Base_Type (Ty);
       Decl_File : Why_Section := Why_Sections (Dispatch_Entity (N));
    begin
       if Params.File = Decl_File.File then

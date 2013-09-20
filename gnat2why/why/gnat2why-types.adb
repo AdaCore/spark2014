@@ -47,11 +47,11 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
+with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
-with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package body Gnat2Why.Types is
 
@@ -163,23 +163,23 @@ package body Gnat2Why.Types is
       --  is modeled as an abstract type to have range checks.
 
       if Ty = Standard_Boolean then
-         return New_Base_Type (Base_Type => EW_Bool);
+         return +EW_Bool_Type;
       elsif Ty = Universal_Fixed then
-         return New_Base_Type (Base_Type => EW_Real);
+         return +EW_Real_Type;
       elsif Ekind (Ty) in Private_Kind then
 
          --  For a private type or record subtype, use the most underlying type
          --  if it is in SPARK. Otherwise, return the special private type.
 
          if Entity_In_External_Axioms (Ty) then
-            return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+            return +New_Abstract_Base_Type (Ty);
          elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
          else
-            return New_Base_Type (Base_Type => EW_Private);
+            return +EW_Private_Type;
          end if;
       else
-         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
+         return +New_Abstract_Base_Type (Ty);
       end if;
    end  Why_Logic_Type_Of_Ada_Type;
 
@@ -231,9 +231,7 @@ package body Gnat2Why.Types is
             if Short_Name (E) /= Short_Name (Base_E) then
                Emit (Theory,
                      New_Type (Name => E_Ident,
-                               Alias =>
-                                 New_Abstract_Type
-                                   (Name => Base_Ident)));
+                               Alias => +New_Named_Type (Base_Ident)));
             end if;
 
             if Has_Discriminants (E) then
@@ -325,7 +323,7 @@ package body Gnat2Why.Types is
                Name        => To_Ident (WNE_Dummy),
                Binders     => (1 .. 0 => <>),
                Return_Type =>
-                 New_Abstract_Type (Name => To_Why_Id (E, Local => True))));
+                 +New_Named_Type (Name => To_Why_Id (E, Local => True))));
       end if;
 
       --  If E is the full view of a private type, use its partial view as the

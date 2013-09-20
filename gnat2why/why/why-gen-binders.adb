@@ -319,8 +319,8 @@ package body Why.Gen.Binders is
       RT : constant W_Primitive_Type_Id :=
              (if Return_Type = Why_Empty then
                 (case Domain is
-                   when EW_Pred => New_Base_Type (Base_Type => EW_Bool),
-                   when others  => New_Base_Type (Base_Type => EW_Unit))
+                   when EW_Pred => +EW_Bool_Type,
+                   when others  => +EW_Unit_Type)
              else Return_Type);
    begin
       return New_Function_Def
@@ -664,7 +664,7 @@ package body Why.Gen.Binders is
       return
         (B_Name   => New_Identifier (Name => "__void_param"),
          B_Ent    => null,
-         B_Type   => New_Base_Type (Base_Type => EW_Unit),
+         B_Type   => +EW_Unit_Type,
          Mutable  => False,
          Ada_Node => Empty);
    end Unit_Param;

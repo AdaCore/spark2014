@@ -31,7 +31,6 @@ with Types;          use Types;
 
 with Why.Types;      use Why.Types;
 with Why.Ids;        use Why.Ids;
-with Why.Inter;      use Why.Inter;
 with Why.Sinfo;      use Why.Sinfo;
 
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;

@@ -49,7 +49,6 @@ package Why.Sinfo is
       -----------
 
       W_Base_Type,
-      W_Abstract_Type,
       W_Ref_Type,
 
       --------------------
@@ -216,15 +215,10 @@ package Why.Sinfo is
    --  EW_Int
        EW_Real;
 
-   subtype EW_Basic_Type is EW_Base_Type range
+   subtype EW_Basic_Type is EW_Type range
        EW_Unit ..
    --  EW_Prop
    --  EW_Bool
-   --  EW_Int
-       EW_Real;
-
-   subtype EW_Scalar_Or_Array_Or_Private is EW_Type range
-       EW_Bool ..
    --  EW_Int
    --  EW_Real
        EW_Private;

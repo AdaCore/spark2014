@@ -41,8 +41,7 @@ package Why.Gen.Progs is
      (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
-      Return_Type : W_Primitive_Type_Id :=
-                       New_Base_Type (Base_Type => EW_Unit))
+      Return_Type : W_Primitive_Type_Id := Why_Empty)
        return W_Prog_Id;
    --  Generate an assumption statement. There is no such thing in Why2, so it
    --  is encoded as follows:

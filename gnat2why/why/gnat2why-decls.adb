@@ -25,35 +25,35 @@
 
 with GNAT.Source_Info;
 
-with Atree;                use Atree;
-with Einfo;                use Einfo;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sem_Ch12;             use Sem_Ch12;
-with Sem_Util;             use Sem_Util;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
-with String_Utils;         use String_Utils;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Namet;               use Namet;
+with Nlists;              use Nlists;
+with Sem_Ch12;            use Sem_Ch12;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
+with Sinput;              use Sinput;
+with String_Utils;        use String_Utils;
 
-with SPARK_Definition;     use SPARK_Definition;
-with SPARK_Util;           use SPARK_Util;
+with SPARK_Definition;    use SPARK_Definition;
+with SPARK_Util;          use SPARK_Util;
 
-with Why.Ids;              use Why.Ids;
-with Why.Sinfo;            use Why.Sinfo;
-with Why.Atree.Accessors;  use Why.Atree.Accessors;
-with Why.Atree.Mutators;   use Why.Atree.Mutators;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Gen.Decl;         use Why.Gen.Decl;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Gen.Expr;         use Why.Gen.Expr;
-with Why.Types;            use Why.Types;
-with Why.Conversions;      use Why.Conversions;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
+with Why.Conversions;     use Why.Conversions;
 
-with Gnat2Why.Expr;        use Gnat2Why.Expr;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
-with Gnat2Why.Types;       use Gnat2Why.Types;
-with Gnat2Why.Util;        use Gnat2Why.Util;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+with Gnat2Why.Types;      use Gnat2Why.Types;
 
 with Ada.Containers.Doubly_Linked_Lists;
 
@@ -438,8 +438,8 @@ package body Gnat2Why.Decls is
                Args => 0));
       Typ  : constant W_Primitive_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter
-         then New_Base_Type (Base_Type => EW_Int)
-         else New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl))));
+         then +EW_Int_Type
+         else +New_Named_Type (Name => Get_Name (W_Type_Id (Decl))));
 
       function Normalize_Type (E : Entity_Id) return Entity_Id;
       --  Choose the correct type to use
@@ -1277,7 +1277,7 @@ package body Gnat2Why.Decls is
 
                      declare
                         F_Ty   : constant W_Primitive_Type_Id :=
-                          New_Abstract_Type
+                          +New_Named_Type
                             (Name => New_Identifier
                                (Name => Short_Name (Formal)));
                         A_Ident    : constant W_Identifier_Id :=
@@ -1492,8 +1492,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E.all, Local => True),
-            Ref_Type =>
-              New_Abstract_Type (Name => To_Ident (WNE_Type))));
+            Ref_Type => +New_Named_Type (Name => To_Ident (WNE_Type))));
 
       Close_Theory (File, Filter_Entity => Empty, No_Import => True);
    end Translate_External_Object;

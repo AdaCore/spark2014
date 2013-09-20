@@ -31,7 +31,6 @@ with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
-with Why.Inter;           use Why.Inter;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -148,13 +147,16 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Base_Type_Id)
    is
-      pragma Unreferenced (State);
       Base_Type : constant EW_Type := Get_Base_Type (Node);
+      Name      : constant W_Identifier_Id := Get_Name (Node);
    begin
-      if Base_Type = EW_Abstract then
+      if Present (Name) then
+         Traverse (State, +Name);
+      elsif Base_Type = EW_Abstract then
          declare
             N : constant Node_Id := Get_Ada_Node (+Node);
          begin
+            pragma Assert (N /= 0);
             P (O, Capitalize_First (Full_Name (N)));
             P (O, ".");
             P (O, Short_Name (N));
@@ -162,6 +164,7 @@ package body Why.Atree.Sprint is
       else
          P (O, Base_Type);
       end if;
+      State.Control := Abandon_Children;
    end Base_Type_Pre_Op;
 
    ---------------------

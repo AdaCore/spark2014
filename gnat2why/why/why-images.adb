@@ -60,6 +60,19 @@ package body Why.Images is
       end if;
    end Img;
 
+   function Img (Ty : EW_Type) return String is
+   begin
+      case Ty is
+         when EW_Unit => return "unit";
+         when EW_Prop => return "prop";
+         when EW_Real => return "real";
+         when EW_Int =>  return "int";
+         when EW_Bool => return "bool";
+         when EW_Private => return To_String (WNE_Private);
+         when EW_Abstract => return "[abstract node";
+      end case;
+   end Img;
+
    -------
    -- P --
    -------
@@ -359,22 +372,7 @@ package body Why.Images is
 
    procedure P (O : Output_Id; Value : EW_Type) is
    begin
-      case Value is
-         when EW_Unit =>
-            P (O, "unit");
-         when EW_Prop =>
-            P (O, "prop");
-         when EW_Real =>
-            P (O, "real");
-         when EW_Int =>
-            P (O, "int");
-         when EW_Bool =>
-            P (O, "bool");
-         when EW_Private =>
-            P (O, To_String (WNE_Private));
-         when EW_Abstract =>
-            P (O, "[from Ada node]");
-      end case;
+      P (O, Img (Value));
    end P;
 
    procedure P

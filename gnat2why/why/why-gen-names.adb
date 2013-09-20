@@ -30,7 +30,6 @@ with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
-with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
 package body Why.Gen.Names is
@@ -264,6 +263,8 @@ package body Why.Gen.Names is
             return "int";
          when EW_Bool =>
             return "bool";
+         when EW_Private =>
+            return "__private";
       end case;
    end EW_Base_Type_Name;
 

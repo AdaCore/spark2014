@@ -125,7 +125,7 @@ package body Why.Gen.Expr is
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
-      if Eq (To, From)
+      if Eq_Base (To, From)
         and then Discr_Check = Empty
       then
          return Expr;
@@ -198,7 +198,7 @@ package body Why.Gen.Expr is
       --  When From = To and no check nor rounding needs to be inserted, do
       --  nothing.
 
-      if Eq (To, From)
+      if Eq_Base (To, From)
         and then No (Range_Check)
         and then No (Round_Func)
       then
@@ -302,7 +302,7 @@ package body Why.Gen.Expr is
    begin
       --  Nothing to do if From = To
 
-      if Eq (To, From) then
+      if Eq_Base (To, From) then
          return Expr;
       end if;
 
@@ -341,7 +341,7 @@ package body Why.Gen.Expr is
       Expr     : W_Expr_Id) return W_Expr_Id
    is
    begin
-      if Eq (From, To) then
+      if Eq_Base (From, To) then
          return Expr;
       end if;
 

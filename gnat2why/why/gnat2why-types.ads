@@ -70,9 +70,9 @@
 --    Why.Gen.Arrays
 --  are useful.
 
-with Types;     use Types;
-with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
+with Types;         use Types;
+with Why.Ids;       use Why.Ids;
+with Gnat2Why.Util; use Gnat2Why.Util;
 
 package Gnat2Why.Types is
 
