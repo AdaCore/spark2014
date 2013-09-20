@@ -1,0 +1,46 @@
+\section{Formalization And Proof}
+
+\subsection{SPARK Translation Toolchain}
+In the long path through the definition of complete semantics for
+SPARK 2014, a very important step is to build a tool chain allowing 
+the experimentation of the behavior of these semantics on real SPARK
+2014 programs. In the front end of this tool chain, as part of the 
+Sireum analysis framework \cite{Sireum:URL}, we have developed a tool called Jago
+\cite{Jago:URL} that translates XML representation of the GNAT compiler's 
+ASTs into a Scala-based 
+representation in Sireum.  This open-source framework enables one to build
+code translators and analysis tools for SPARK 2014 in Scala.  Scala's 
+blending of functional of object-oriented program styles have proven 
+quite useful in other contexts for syntax tree manipulation and analysis.  
+Integrated into the Jago is a translation of GNAT ASTs into the Coq proof 
+assistant. In the backend of the tool chain, a certified interpreter 
+encoding run-time checks for the Coq AST has been developed in Coq.
+
+\subsection{Formalizing Language Semantics}
+A major difference between SPARK with other programming languages is that 
+its semantics requires its language implementation to detect all run-time errors to 
+ensure program correct execution. With Coq AST generated from SPARK by Jago, we 
+are now developing its semantics capturing run-time errors in Coq and working toward 
+adding more and more language features, such as procedure call, in our current 
+formalization framework.
+At this early stage, our formal semantics consider only a small subset
+of SPARK 2014, and only a small subset of run-time errors.  It performs 
+appropriate run-time checks as they are specified by the SPARK and Ada 
+reference manuals.  We call these semantics, the $\mathit{reference\
+semantics}$, and we implemented an interpreter certified with respect to them.
+Thus, our reference semantics can be both manually reviewed by SPARK 
+experts, and also be experimented on real source code programs.
+For those who are interested, we have posted our Coq code on GitHub 
+\cite{Formalization:URL}.
+
+\subsection{Program Correctness Proof}
+In Coq, we have formalized a well-formed SPARK program as a well-typed, well-defined
+and well-checked program. 
+A well-typed program has all its language constructs being consistent with respect to the 
+typing rules and all its variables have correct in/out mode with respect to their reading 
+and writing permissions. 
+A well-defined program is a program with all its used variables initialized.
+And a well-checked program is a program having right checks inserted at the right places
+in AST trees.
+It is proved that for any well-formed SPARK programs in our formalized language subset, they will
+execute as we expect and will never exhibits undefined behavior.

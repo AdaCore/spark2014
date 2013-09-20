@@ -1,0 +1,119 @@
+\documentclass{sig-alternate-2013}
+\usepackage{amsmath,amssymb,txfonts}
+\usepackage{mathpartir}
+\usepackage{paralist}
+\usepackage{colortbl}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[boxed,noend,linesnumbered,figure]{algorithm2e}
+% \usepackage{subfigure}
+\usepackage{listings}
+% \usepackage[all]{xy}
+
+\lstdefinelanguage{Spark}%
+  {morekeywords={abort,abs,accept,access,all,and,array,at,begin,body,%
+      case,constant,declare,delay,delta,digits,do,else,elsif,end,entry,%
+      exception,exit,for,function,generic,goto,if,in,is,limited,loop,%
+      mod,new,not,null,of,or,others,out,package,pragma,private,%
+      procedure,raise,range,record,rem,renames,return,reverse,select,%
+      separate,subtype,task,terminate,then,type,use,when,while,with,%
+      xor},%
+   sensitive=f,%
+   morecomment=[l]--,%
+   morecomment=[l][\itshape \color{blue}]{--\#},%
+   morestring=[m]",% percent not defined as stringizer so far
+   morestring=[m]'%
+  }[keywords,comments,strings]% 
+    
+\newif\iftechreport
+\techreportfalse
+%\techreporttrue
+\newcommand{\iftr}[1]{\iftechreport#1\fi}
+\newcommand{\ifntr}[1]{\iftechreport\else#1\fi}
+
+\renewcommand{\topfraction}{.99}
+\renewcommand{\textfraction}{.01}
+\renewcommand{\floatpagefraction}{.99}
+\renewcommand{\floatsep}{.1cm}
+\renewcommand{\textfloatsep}{.25cm}
+
+%\textheight=9in         % could be \textheight=9.2in
+%\topmargin=-0.5in
+%\oddsidemargin=0in
+%\evensidemargin=0in
+%\textwidth=6.5in
+%\textheight=8in 
+%\topmargin=-.2in
+%\addtolength{\textheight}{.52in}
+
+\newcommand{\mytitle}{Towards The Formalization of SPARK 2014 Semantics With
+Explicit Run-time Checks Using Coq}
+
+\input{def.tex}
+%
+\begin{document}
+\conferenceinfo{HILT'13,} {November 10--14, 2013, Pittsburgh, PA, USA.}
+\CopyrightYear{2013}
+\crdata{978-1-4503-2467-0/13/11}
+\clubpenalty=10000
+\widowpenalty = 10000
+
+%\title{\mytitle\thanks{Work supported in part by }}
+\title{\mytitle\thanks{}}
+%
+\numberofauthors{2}
+%
+\author{
+  \alignauthor 
+  Pierre Courtieu,Maria Virginia Aponte, Tristan Crolard \\
+  \affaddr{Conservatoire National des Arts et Metiers} \\
+  \email{Pierre.Courtieu@cnam.fr, maria-virginia.aponte\_garcia@cnam.fr, tristan.crolard@cnam.fr}
+  %
+  \alignauthor 
+  Zhi Zhang, Robby, Jason Belt, John~Hatcliff \\
+  \affaddr{Kansas State University} \\
+  \email{zhangzhi@ksu.edu, robby@ksu.edu, belt@ksu.edu, hatcliff@ksu.edu}
+  %
+  \and
+  \alignauthor
+  Jerome Guitton \\
+  \affaddr{AdaCore}\\
+  \email{guitton@adacore.com}
+  %
+  \alignauthor
+  Trevor Jennings \\
+  \affaddr{Altran}\\
+  \email{trevor.jennings@altran.com}
+}
+\date{\today}
+\iftechreport
+	\pagenumbering{arabic}
+	\pagestyle{plain}
+\fi
+%
+\maketitle
+\input{abstract.tex}
+\category{D.2.4}{Software Engineering}{Software/Program Verification},
+Formal Methods, Correctness Proofs
+ \category{F.4.1}{Mathematical Logic and Formal Language}{Mathematical Logic} 
+[mechanical theorem proving]
+
+\terms{Reliability, Security, Verification}
+
+\keywords{SPARK, Coq Proof Assistant, Formal Semantics,  Machine-Verified Proof}
+\input{motivation}
+%\vspace{2cm}
+\input{formalizationwork}
+\input{related}
+\input{conclusion}
+\input{acknowledgements}
+
+\bibliographystyle{abbrv}
+%\bibliography{santos}
+%\vspace{2cm}
+\input{acm-compliant-bib}
+%
+\end{document}

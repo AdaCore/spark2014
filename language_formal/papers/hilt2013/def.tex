@@ -1,0 +1,281 @@
+\def\doframeit#1{\vbox{%
+  \hrule height\fboxrule
+    \hbox{%
+      \vrule width\fboxrule \kern\fboxsep
+      \vbox{\kern\fboxsep #1\kern\fboxsep }%
+      \kern\fboxsep \vrule width\fboxrule }%
+    \hrule height\fboxrule }}
+
+\def\frameit{\smallskip \advance \linewidth by -7.5pt \setbox0=\vbox \bgroup
+\strut \ignorespaces }
+\def\frameit{\smallskip \advance \linewidth by -7.5pt \setbox0=\vbox \bgroup
+\strut \ignorespaces }
+\def\endframeit{\ifhmode \par \nointerlineskip \fi \egroup
+\doframeit{\box0}}
+
+\newenvironment{smallitemize}{\setlength{\topsep}{0.0 truein}
+   \begin{itemize}
+   \setlength{\leftmargin}{.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{itemize}}
+
+\newenvironment{smalldescription}{\setlength{\topsep}{0.0 truein}
+   \begin{description}
+   \setlength{\leftmargin}{.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{description}}
+
+\newenvironment{smallenumerate}{\setlength{\topsep}{0.0 truein}
+   \begin{enumerate}
+   \setlength{\leftmargin}{0.25 truein}
+   \setlength{\parsep}{0.0 truein}
+   \setlength{\parskip}{0.0 truein}
+   \setlength{\itemsep}{0.0 truein}}{\end{enumerate}}
+
+%%
+\newcommand{\spark}{{S{\sc park}}}
+\newcommand{\sparkada}{{S{\sc park}/\-A{\sc da}}}
+
+%% General formatting and Latin abbreviations
+\newcommand{\fig}{Figure~}
+\newcommand{\sect}{Section~}
+\newcommand{\comment}[1]{{\sf ({#1})}}
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\etc}{{\em etc.}}
+\newcommand{\wrt}{{\em wrt.}}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\etal}{{\em et al.}}
+\newcommand{\ignore}[1]{}
+
+%% Inline formating for SPARK code
+\newcommand{\sparkcode}[1]{\textsf{#1}}
+\newcommand{\sparkkeyword}[1]{\textbf{#1}}
+\newcommand{\invars}{\mbox{IN}}
+\newcommand{\outvars}{\mbox{OUT}}
+
+%% list
+\newcommand{\cons}[2]{#1\!::\!#2}
+\newcommand{\append}[2]{#2 +\!\!\!+\,[#1]}
+\newcommand{\mklist}[1]{[#1]}
+\newcommand{\emptylist}{[]}
+\newcommand{\emptymap}{\emptyset}
+
+%% tuple
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\newcommand{\triple}[3]{\langle#1,#2,#3\rangle}
+\newcommand{\quadruple}[4]{\langle#1,#2,#3,#4\rangle}
+\newcommand{\quintuple}[5]{\langle#1,#2,#3,#4,#5\rangle}
+\newcommand{\hextuple}[6]{\langle#1,#2,#3,#4,#5,#6\rangle}
+
+%% syntax
+\newcommand{\prog}{\mbox{\it prog}}
+\newcommand{\decl}{\mbox{\it decl}}
+\newcommand{\blk}{\mbox{\it blk}}
+\newcommand{\cmd}{\mbox{\it cmd}}
+\newcommand{\jmp}{\mbox{\it jmp}}
+
+%% semantic domains
+\newcommand{\typed}{\textbf{Type}}
+\newcommand{\constd}{\textbf{Const}}
+\newcommand{\bvald}{\textbf{BValue}}
+\newcommand{\arrd}{\textbf{Arr}}
+\newcommand{\fieldd}{\textbf{Field}}
+\newcommand{\recd}{\textbf{Rec}}
+% \newcommand{\tarrd}{\textbf{TArr}}
+\newcommand{\symd}{\textbf{SymVal}}
+\newcommand{\arefd}{\textbf{ARef}}
+\newcommand{\rrefd}{\textbf{RRef}}
+\newcommand{\refd}{\textbf{Ref}}
+\newcommand{\trefd}{\textbf{TRef}}
+\newcommand{\vald}{\textbf{Value}}
+\newcommand{\substd}{\textbf{Subst}}
+\newcommand{\locd}{\textbf{Label}}
+\newcommand{\gvard}{\textbf{Var}}
+\newcommand{\lvard}{\textbf{LocalVar}}
+\newcommand{\globald}{\textbf{Store}}
+\newcommand{\stated}{\textbf{State}}
+\newcommand{\heapd}{\textbf{Heap}}
+\newcommand{\theapd}{\textbf{THeap}}
+\newcommand{\pcd}{\textbf{PathCond}}
+
+%% state
+\newcommand{\statev}{s}
+\newcommand{\globalv}{\sigma}
+\newcommand{\heapv}{h}
+\newcommand{\theapv}{t}
+\newcommand{\labelv}{lbl}
+\newcommand{\substv}{\mu}
+\newcommand{\storev}{\sigma}
+\newcommand{\pcv}{\phi}
+\newcommand{\hstate}[5]{\quintuple{#1}{#2}{#3}{#4}{#5}}
+\newcommand{\sstate}[6]{\hextuple{#1}{#2}{#3}{#4}{#5}{#6}}
+\newcommand{\state}[3]{\triple{#1}{#2}{#3}}
+\newcommand{\heap}[1]{#1_{\heapv}}
+\newcommand{\theap}[1]{#1_{\theapv}}
+\newcommand{\pc}[1]{#1_{\pcv}}
+
+%% state lookups
+\newcommand{\slookup}[3]{#2_{#1}(#3)}
+\newcommand{\glookup}[2]{\slookup{\globalv}{#1}{#2}}
+\newcommand{\hlookup}[2]{\slookup{\heapv}{#1}{#2}}
+\newcommand{\tlookup}[2]{\slookup{\theapv}{#1}{#2}}
+\newcommand{\llookup}[1]{#1_{\labelv}}
+\newcommand{\olookup}[2]{\slookup{\storev}{#1}{#2}}
+\newcommand{\plookup}[2]{\slookup{\pcv}{#1}{#2}}
+\newcommand{\ulookup}[1]{{#1}_{\substv}}
+
+%% state updates
+\newcommand{\supdate}[4]{#1[#2]^{#3}_{#4}}
+\newcommand{\gupdate}[3]{\supdate{#1}{#2}{#3}{\globalv}}
+\newcommand{\hupdate}[3]{\supdate{#1}{#2}{#3}{\heapv}}
+\newcommand{\tupdate}[3]{\supdate{#1}{#2}{#3}{\theapv}}
+\newcommand{\lupdate}[3]{\supdate{#1}{#2}{#3}{\labelv}}
+\newcommand{\oupdate}[3]{\supdate{#1}{#2}{#3}{\storev}}
+\newcommand{\pupdate}[3]{\supdate{#1}{#2}{#3}{\pcv}}
+\newcommand{\uupdate}[3]{\supdate{#1}{#2}{#3}{\substv}}
+
+%% meta-vars
+\newcommand{\gvarv}{x}
+% \newcommand{\lvarv}{l}
+
+%% exp
+\newcommand{\expr}{e}
+\newcommand{\exprSub}[1]{\expr_{#1}}
+\newcommand{\expro}{\exprSub{0}}
+\newcommand{\expri}{\exprSub{1}}
+\newcommand{\exprii}{\exprSub{2}}
+\newcommand{\expriii}{\exprSub{3}}
+\newcommand{\expriv}{\exprSub{4}}
+\newcommand{\unexp}[2]{#1\,#2}
+\newcommand{\binexp}[3]{#1\,#2\,#3}
+\newcommand{\unop}{\ominus}
+\newcommand{\binop}{\oplus}
+\newcommand{\old}[1]{\unexp{\raise.17ex\hbox{$\scriptstyle\sim$}}{#1}}
+\newcommand{\aaexp}[2]{#1\sparkcode{[}#2\sparkcode{]}}
+\newcommand{\raexp}[2]{#1\sparkcode{.}#2}
+\newcommand{\aaupdt}[3]{#1\sparkcode{[}{#2}_{\!\!\!1}
+\Rightarrow {#3}_{\!\!\!\!\!1}~|~\ldots~|~{#2}_{\!\!\!n} \Rightarrow
+{#3}_{\!\!\!\!\!n}\sparkcode{]}}
+\newcommand{\raupdt}[3]{#1\sparkcode{[}{#2}_{1}
+\Rightarrow {#3}_{1}~|~\ldots~|~{#2}_{n} \Rightarrow
+{#3}_{n}\sparkcode{]}}
+
+%% command
+\newcommand{\assign}[2]{#1\,\sparkcode{:=}\,#2}
+\newcommand{\assert}[1]{\sparkcode{assert}\,#1}
+\newcommand{\assume}[1]{\sparkcode{assume}\,#1}
+\newcommand{\lhs}{\mbox{\it lhs}}
+
+%% jump
+\newcommand{\goto}[1]{\sparkcode{goto}\,#1}
+\newcommand{\ifelse}[3]{\sparkcode{if}\,#1\,
+\sparkcode{then goto}\,#2\,\sparkcode{else goto}\,#3}
+
+%% type
+\newcommand{\typev}{\tau}
+
+%% values
+\newcommand{\true}{\mbox{\sc{True}}}
+\newcommand{\false}{\mbox{\sc{False}}}
+\newcommand{\valv}{v}
+\newcommand{\valvv}{u}
+%\newcommand{\valvvv}{w}
+\newcommand{\indexv}{\iota}
+\newcommand{\indexvv}{\iota'}
+\newcommand{\indexvvv}{\iota''}
+\newcommand{\constv}{c}
+\newcommand{\constvv}{d}
+\newcommand{\constvvv}{b}
+\newcommand{\symv}{\alpha}
+\newcommand{\symvv}{\beta}
+\newcommand{\symvvv}{\gamma}
+\newcommand{\arrv}{a}
+\newcommand{\recv}{r}
+\newcommand{\refv}{p}
+\newcommand{\fieldv}{f}
+\newcommand{\tarrv}{\rho}
+\newcommand{\trecv}{\rho}
+\newcommand{\arrmv}{m}
+\newcommand{\recmv}{w}
+\newcommand{\tarrmv}{\omega}
+\newcommand{\trecmv}{\varpi}
+\newcommand{\locv}{l}
+\newcommand{\locvv}{l'}
+\newcommand{\lheapv}{\eta}
+\newcommand{\boundv}{\rho}
+\newcommand{\lboundv}{\boundv_{\textrm{lo}}}
+\newcommand{\hboundv}{\boundv_{\textrm{hi}}}
+\newcommand{\pathv}{\pi}
+\newcommand{\reflv}{rs}
+
+%% misc
+\newcommand{\fields}[1]{\mbox{\it fields}(#1)}
+\newcommand{\type}[1]{\mbox{\it type}(#1)}
+\newcommand{\timestamp}[1]{\mbox{\it timestamp}(#1)}
+% \newcommand{\unify}[4]{\mbox{\it unify}(#1,\,#2,\,#3,\,#4)}
+% \newcommand{\tunify}[3]{\mbox{\it unify}(#1,\,#2,\,#3)}
+\newcommand{\fst}[1]{\mbox{\it fst}(#1)}
+\newcommand{\snd}[1]{\mbox{\it snd}(#1)}
+\newcommand{\init}[1]{\mbox{\it init}(#1)}
+\newcommand{\block}[1]{\mbox{\it block}(#1)}
+\newcommand{\pset}[1]{\mathcal{P}(#1)}
+\newcommand{\prop}[5]{\mbox{\it propagate}(#1,\,\maps{#2}{#3},\,#4,\,#5)}
+\newcommand{\psubst}[4]{\mbox{\it subst}(#1,\,#2,\,#4/#3)}
+\newcommand{\tsubst}[2]{\mbox{\it substitute}(#1,\,#2)}
+\newcommand{\paupdate}[3]{\mbox{\it update}(#1,\,#2,\,#3)}
+\newcommand{\paassign}[3]{\mbox{\it assign}(#1,\,#2,\,#3)}
+% \newcommand{\insta}[3]{\delta(#1,\,#2,\,#3)}
+\newcommand{\pfun}[2]{#1\rightharpoonup #2}
+\newcommand{\mat}[2]{\mbox{\it materialize}(#1,\,#2)}
+\newcommand{\rep}[2]{\mbox{\it rep}(#1,\,#2)}
+\newcommand{\dom}[1]{\mbox{\it dom}(#1)}
+\newcommand{\ebounds}[1]{\mbox{\it bnds}(#1)}
+\newcommand{\elemtype}[1]{\mbox{\it elemtype}(#1)}
+\newcommand{\fieldtype}[2]{\mbox{\it fieldtype}(#1,\,#2)}
+\newcommand{\sadd}[2]{\mkset{#2}\cup #1}
+\newcommand{\sdel}[2]{#1-\mkset{#2}}
+\newcommand{\defeqop}{\triangleq}
+\newcommand{\defeq}[2]{#1\defeqop #2}
+\newcommand{\maps}[2]{#1\mapsto #2}
+\newcommand{\mlookup}[2]{{#1}(#2)}
+\newcommand{\mupdate}[3]{{#1}[\maps{#2}{#3}]}
+\newcommand{\mkset}[1]{\{\,#1\,\}}
+\newcommand{\mksetc}[2]{\mkset{#1\,|\,\,#2}}
+\newcommand{\ruleIdPrefix}{}
+\newcommand{\ruleWhere}[1]
+  { \vspace{.2cm}
+    
+    \ensuremath{ 
+      \begin{array}{lll}
+      \textrm{where} & #1
+      \end{array}
+    }
+  }
+
+%% array
+\newcommand{\alup}[2]{({\mbox{\it alkup}}~{#1}~{#2})}
+\newcommand{\aupt}[3]{({\mbox{\it aupdt}}~{#1}~{#2}~{#3})}
+\newcommand{\rlup}[2]{({\mbox{\it rlkup}}~{#1}~{#2})}
+\newcommand{\rupt}[3]{({\mbox{\it rupdt}}~{#1}~{#2}~{#3})}
+\newcommand{\aibound}[2]{_{#1}^{#2}}
+
+%% evals & tran
+\newcommand{\eeval}[4]{#1\vdash #2 \rightarrow \langle #3,#4\rangle}
+\newcommand{\eeeval}[5]{#1\vdash #2 \rightarrow \langle #3,#4,#5\rangle}
+\newcommand{\ceval}[3]{#1\vdash #2 \Rightarrow #3}
+\newcommand{\tran}[2]{#1 \rightsquigarrow #2}
+\newcommand{\trans}[2]{#1 \rightsquigarrow^+ #2}
+\newcommand{\hsa}{\hspace{0.5cm}}
+
+%% compare
+\newcommand{\compareN}{\mbox{\it compare}}
+\newcommand{\compareHN}{\mbox{\it compareHelper}}
+\newcommand{\compare}[3]{\compareN({#1},\,{#2},\,{#3})}
+\newcommand{\compareH}[3]{\compareHN({#1},\,{#2},\,{#3})}
+\newcommand{\comp}[2]{{#1}\simeq{#2}}
+
+%% Paragraphs
+\newcommand{\mypara}[1]{\vspace*{2mm}\noindent{\bf {#1}:}}
+\newcommand{\myfpara}[1]{\noindent{\bf {#1}:}}
