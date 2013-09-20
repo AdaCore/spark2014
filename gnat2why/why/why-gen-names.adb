@@ -701,6 +701,27 @@ package body Why.Gen.Names is
       end if;
    end To_Fp_Ident;
 
+   function To_Fp_Ident (T    : EW_Float;
+                         Kind : EW_Relation)
+                         return W_Identifier_Id
+   is
+      S : constant String :=
+        (case Kind is
+           when EW_None => "",
+           when EW_Gt => "fp_gt",
+           when EW_Lt => "fp_lt",
+           when EW_Eq => "fp_eq",
+           when EW_Ge => "fp_geq",
+           when EW_Le => "fp_leq",
+           when EW_Ne => "fp_neq");
+   begin
+      if S = "" then
+         raise Not_Implemented;
+      else
+         return Prefix (To_String (T), S);
+      end if;
+   end To_Fp_Ident;
+
    ------------
    -- Prefix --
    ------------

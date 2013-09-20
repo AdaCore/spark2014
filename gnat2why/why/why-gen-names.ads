@@ -299,6 +299,10 @@ package Why.Gen.Names is
                          Kind : Node_Kind)
                          return W_Identifier_Id;
 
+   function To_Fp_Ident (T    : EW_Float;
+                         Kind : EW_Relation)
+                         return W_Identifier_Id;
+
    function Prefix (S        : String;
                     W        : Why_Name_Enum;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;

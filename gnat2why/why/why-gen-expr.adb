@@ -561,13 +561,22 @@ package body Why.Gen.Expr is
       end if;
 
       if Domain in EW_Pred | EW_Prog then
-         return
-           New_Relation
-             (Domain  => Domain,
-              Op_Type => Get_Base_Type (Op_Type),
-              Left    => +Left1,
-              Right   => +Right1,
-              Op      => Cmp);
+         case Get_Base_Type (Op_Type) is
+            when EW_Float =>
+               return New_Call
+                 (Domain => Domain,
+                  Name   => To_Fp_Ident (Get_Base_Type (Op_Type), Cmp),
+                  Args   => (1 => +Left1,
+                             2 => +Right1));
+
+            when others =>
+               return New_Relation
+                 (Domain  => Domain,
+                  Op_Type => Get_Base_Type (Op_Type),
+                  Left    => +Left1,
+                  Right   => +Right1,
+                  Op      => Cmp);
+         end case;
       else
          return
            New_Call
