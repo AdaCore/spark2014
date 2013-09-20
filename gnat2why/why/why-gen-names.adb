@@ -623,17 +623,19 @@ package body Why.Gen.Names is
          when WNE_Change_Precision_64 =>
             return "to_double_rne";
 
-         when WNE_Real_To_IEEE => return "of_real";
-         when WNE_IEEE_To_Real => return "ieee_to_real";
-         when WNE_Int_To_IEEE  => return "int_to_ieee";
-         when WNE_IEEE_To_Int  => return "ieee_to_int";
-         when WNE_Of_Float     => return "of_float";
-         when WNE_To_Float     => return "to_float";
-         when WNE_Float_Abs    => return "fp_abs";
-         when WNE_Float_Div    => return "div_float";
-         when WNE_Float_Exp    => return "TBD_exp_TBD";
-         when WNE_Float_Min    => return "fp_min";
-         when WNE_Float_Max    => return "fp_max";
+         when WNE_Real_To_IEEE  => return "of_real";
+         when WNE_IEEE_To_Real  => return "ieee_to_real";
+         when WNE_Int_To_IEEE   => return "int_to_ieee";
+         when WNE_IEEE_To_Int   => return "ieee_to_int";
+         when WNE_Of_Float      => return "of_float";
+         when WNE_To_Float      => return "to_float";
+         when WNE_Float_Abs     => return "fp_abs";
+         when WNE_Float_Div     => return "div_float";
+         when WNE_Float_Exp     => return "TBD_exp_TBD";
+         when WNE_Float_Min     => return "fp_min";
+         when WNE_Float_Max     => return "fp_max";
+         when WNE_Float_Floor   => return "floor";
+         when WNE_Float_Ceiling => return "ceiling";
 
       end case;
    end To_String;

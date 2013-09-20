@@ -3303,26 +3303,57 @@ package body Gnat2Why.Expr is
               Attribute_Rounding   |
               Attribute_Truncation =>
             declare
+               Ada_Ty : constant Entity_Id := Etype (Expr);
+               Base : constant W_Base_Type_Id := Base_Why_Type (Ada_Ty);
                Arg  : constant W_Expr_Id :=
-                        Transform_Expr (First (Expressions (Expr)),
-                                        EW_Real_Type,
-                                        Domain,
-                                        Params);
-               Attr_Name : constant Why_Name_Enum :=
-                             (if Attr_Id = Attribute_Ceiling then
-                                WNE_Real_Ceil
-                              elsif Attr_Id = Attribute_Floor then
-                                WNE_Real_Floor
-                              elsif Attr_Id = Attribute_Rounding then
-                                WNE_Real_Round
-                              else WNE_Real_Truncate);
-               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+                 Transform_Expr (First (Expressions (Expr)),
+                                 Why_Types (Get_Base_Type (Base)),
+                                 Domain,
+                                 Params);
+               Func : W_Identifier_Id;
             begin
-               T := New_Call (Ada_Node => Expr,
-                              Domain   => Domain,
-                              Name     => Func,
-                              Args     => (1 => Arg));
-               Current_Type := EW_Int_Type;
+               case Get_Base_Type (Base) is
+                  when EW_Float =>
+                     case Attr_Id is
+                        when Attribute_Ceiling =>
+                           Func := Prefix (To_String (Get_Base_Type (Base)),
+                                           WNE_Float_Ceiling);
+                        when Attribute_Floor =>
+                           Func := Prefix (To_String (Get_Base_Type (Base)),
+                                           WNE_Float_Ceiling);
+                        when Attribute_Rounding | Attribute_Truncation =>
+                           raise Not_Implemented;
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                     T := New_Call (Ada_Node => Expr,
+                                    Domain   => Domain,
+                                    Name     => Func,
+                                    Args     => (1 => Arg));
+                     Current_Type := Why_Types (Get_Base_Type (Base));
+
+                  when EW_Real =>
+                     case Attr_Id is
+                        when Attribute_Ceiling =>
+                           Func := To_Ident (WNE_Real_Ceil);
+                        when Attribute_Floor =>
+                           Func := To_Ident (WNE_Real_Floor);
+                        when Attribute_Rounding =>
+                           Func := To_Ident (WNE_Real_Round);
+                        when Attribute_Truncation =>
+                           Func := To_Ident (WNE_Real_Truncate);
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                     T := New_Call (Ada_Node => Expr,
+                                    Domain   => Domain,
+                                    Name     => Func,
+                                    Args     => (1 => Arg));
+                     Current_Type := EW_Int_Type;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
             end;
 
          when Attribute_Min | Attribute_Max =>
@@ -3339,15 +3370,39 @@ package body Gnat2Why.Expr is
                                  Base,
                                  Domain,
                                  Params);
-               Attr_Name : constant Why_Name_Enum :=
-                 (if Attr_Id = Attribute_Min then
-                    (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Min
-                     else WNE_Real_Min)
-                  else
-                     (if Is_Discrete_Type (Ada_Ty) then WNE_Integer_Max
-                      else WNE_Real_Max));
-               Func : constant W_Identifier_Id := To_Ident (Attr_Name);
+               Attr_Name : Why_Name_Enum;
+               Func : W_Identifier_Id;
             begin
+               case Get_Base_Type (Base) is
+                  when EW_Float =>
+                     if Attr_Id = Attribute_Min then
+                        Attr_Name := WNE_Float_Min;
+                     else
+                        Attr_Name := WNE_Float_Max;
+                     end if;
+                     Func := Prefix (To_String (Get_Base_Type (Base)),
+                                     Attr_Name);
+
+                  when EW_Int =>
+                     if Attr_Id = Attribute_Min then
+                        Attr_Name := WNE_Integer_Min;
+                     else
+                        Attr_Name := WNE_Integer_Max;
+                     end if;
+                     Func := To_Ident (Attr_Name);
+
+                  when EW_Real =>
+                     if Attr_Id = Attribute_Min then
+                        Attr_Name := WNE_Real_Min;
+                     else
+                        Attr_Name := WNE_Real_Max;
+                     end if;
+                     Func := To_Ident (Attr_Name);
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
                               Name     => Func,

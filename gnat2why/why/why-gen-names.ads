@@ -268,7 +268,9 @@ package Why.Gen.Names is
       WNE_Float_Div,
       WNE_Float_Exp,
       WNE_Float_Min,
-      WNE_Float_Max
+      WNE_Float_Max,
+      WNE_Float_Floor,
+      WNE_Float_Ceiling
 
      );
 
