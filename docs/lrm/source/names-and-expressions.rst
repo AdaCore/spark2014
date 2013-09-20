@@ -427,6 +427,70 @@ following are required.
 
 .. _etu-multi_dimensional_array_update_expressions-ds:
 
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+   package Update_Examples is
+      type Rec is record
+         X, Y : Integer;
+      end record;
+
+      type Arr is array (1 .. 3) of Integer;
+
+      type Arr_2D is array (1 .. 3, 1 .. 3) of Integer;
+
+      type Nested_Rec is record
+         A : Integer;
+         B : Rec;
+         C : Arr;
+         D : Arr_2D;
+      end record;
+
+      type Nested_Arr is array (1 .. 3) of Nested_Rec;
+
+      -- Simple record update
+      procedure P1 (R : in out Rec)
+         with Post => R = R'Old'Update (X => 1);
+      -- this is equivalent to:
+      --              R = (X => 1, Y => Y'Old)
+
+      -- Simple 1D array update
+      procedure P2 (A : in out Arr)
+         with Post => A = A'Old'Update (1 => 2);
+      -- this is equivalent to:
+      --              A =  (1 => 2, 2 => A (2)'Old, 3 => A (3)'Old);
+   
+      -- 2D array update
+      procedure P3 (A2D : in out Arr_2D)
+         with Post => A2D = A2D'Old'Update ((1, 1) => 1,  (2, 2) => 2, (3, 3) => 3);
+      -- this is equivalent to:
+      --              A2D = (1 => (1 => 1, 2 => A2D (1, 2)'Old, 3 => A2D (1, 3)'Old),
+      --                     2 => (2 => 2, 1 => A2D (2, 1)'Old, 3 => A2D (2, 3)'Old),
+      --                     3 => (3 => 3, 1 => A2D (3, 1)'Old, 2 => A2D (3, 2)'Old));
+
+      -- Nested record update
+      procedure P4 (NR : in out Nested_Rec)
+         with Post => NR = NR'Old'Update (A => 1, B.X => 1, C (1) => 5);
+      -- this is equivalent to:
+      --              NR = (A => 1, B.X => 1, B.Y => B.Y'Old,
+      --                    C (1) => 5, C (2) => NR.C (2)'Old, C (3) => NR.C (3)'Old,
+      --                    D =>  NR.D'Old)
+
+      -- Nested array update
+      procedure P4 (NA : in out Nested_Arr)
+         with Post => NA = NA'Old'Update (1 => (A => 1, D (2, 2) => 0), 
+                                          2 => (B.X => 2), 
+                                          3 => (C => (1 => 5)));
+      -- this is equivalent to:
+      --              NA = (1 => (A => 1, B => NA.B'Old, NA.C => C'Old, NA.D => D'Old),
+      --                    2 => (B.X => 2, B.Y => B.Y'Old, 
+      --                          A => NA.A'Old, C => NA.C'Old, D => NA.D'Old),
+      --                    3 => (C => (1 => 5, 2 => NA.C (2)'Old, 3 => NA.C (3)'Old),
+      --                          A => NA (3).A'Old, B => NA (3).B'Old, D => NA (3).D'Old));
+
+   end Update_Examples;
+
 Operators and Expression Evaluation
 -----------------------------------
 
