@@ -2,7 +2,9 @@
 %\subsection{Using Formal Semantics for Certification}
 %First, certification process of SPARK technology can be stressed by the use of 
 %formal semantics.
-The software certification process as required by the DO-178-C \cite{RTCA:DO-178} 
+We believe that the certification process of SPARK technology can be
+stressed by the use of formal semantics.
+Indeed, the software certification process as required by the DO-178-C \cite{RTCA:DO-178} 
 standard allows formal verification to replace some forms of testing. 
 This is one of the goals pursued by the SPARK toolchain resulting from 
 the Hi-Lite project \cite{Hi-Lite:URL}. On the other hand, the DO-333 
@@ -14,7 +16,10 @@ precise and unambiguous definition of the semantics of this language
 becomes clearly a requirement in the certification process.
 
 %\subsection{}
-%Second, enforce the theoretical foundation of the GNATprove toolchain.
+%Second, enforce the theoretical foundation of the GNATprove
+%toolchain.
+We  aim also at strengthen the theoretical foundation of the GNATprove
+toolchain.
 The Ada reference manual \cite{Ada:URL} introduces the notion of $\mathit{errors}$.
 These correspond to error situations that must be detected 
 at run time as well as erroneous executions that need not to be 
@@ -36,7 +41,7 @@ GNAT compiler.
 
 %\subsection{}
 %Third, formal proofs of analyzers and certified compilers.
-One of our long-term goals is to provide infrastructure that can be 
+Finally, one of our long-term goals is to provide infrastructure that can be 
 leveraged in a variety of ways to support machine-verified proofs of 
 correctness of SPARK 2014 static analysis and 
 translations. To this end, we will build a translation framework 

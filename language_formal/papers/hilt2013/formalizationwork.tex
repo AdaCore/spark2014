@@ -10,16 +10,21 @@ Sireum analysis framework \cite{Sireum:URL}, we have developed a tool called Jag
 ASTs into a Scala-based 
 representation in Sireum.  This open-source framework enables one to build
 code translators and analysis tools for SPARK 2014 in Scala.  Scala's 
-blending of functional of object-oriented program styles have proven 
+blending of functional %of
+and object-oriented program styles have proven 
 quite useful in other contexts for syntax tree manipulation and analysis.  
 Integrated into the Jago is a translation of GNAT ASTs into the Coq proof 
 assistant. In the backend of the tool chain, a certified interpreter 
 encoding run-time checks for the Coq AST has been developed in Coq.
 
 \subsection{Formalizing Language Semantics}
-A major difference between SPARK with other programming languages is that 
-its semantics requires its language implementation to detect all run-time errors to 
-ensure program correct execution. With Coq AST generated from SPARK by Jago, we 
+A major difference between SPARK and other programming languages is that 
+its %semantics requires its language implementation to detect all run-time errors to 
+%ensure program correct execution.
+informal specification as given by the Ada reference manual requires the
+language to detect specific run-time error cases in order to enforce
+programs robustness.
+ With Coq AST generated from SPARK by Jago, we 
 are now developing its semantics capturing run-time errors in Coq and working toward 
 adding more and more language features, such as procedure call, in our current 
 formalization framework.
