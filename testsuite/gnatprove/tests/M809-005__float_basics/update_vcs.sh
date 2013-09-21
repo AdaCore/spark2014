@@ -13,5 +13,6 @@ gnatprove -P test.gpr \
     -v \
     --proof=no_split \
     foo.adb
+./clean_comments.py gnatprove/*.smt2
 
 cp gnatprove/*.smt2 /home/florian/projects/oxford-cde/vcs/vcs_01
