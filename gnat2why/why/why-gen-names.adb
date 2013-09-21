@@ -170,7 +170,7 @@ package body Why.Gen.Names is
                   elsif From_Kind = EW_Int and To_Kind in EW_Float then
                      return To_Ident (WNE_Int_To_IEEE);
 
-                  elsif From_Kind in EW_Float and To_Kind = EW_Real then
+                  elsif From_Kind in EW_Float and To_Kind = EW_Int then
                      return To_Ident (WNE_IEEE_To_Int);
 
                   elsif From_Kind in EW_Float and To_Kind in EW_Float then
