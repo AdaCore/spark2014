@@ -44,7 +44,6 @@ skein.adb:286:56: info: division check proved
 skein.adb:286:56: range check not proved
 skein.adb:287:62: info: division check proved
 skein.adb:287:62: range check not proved
-skein.adb:587:14: info: range check proved
 skein.adb:662:17: range check not proved
 skein.adb:663:35: overflow check not proved
 skein.adb:716:14: info: range check proved

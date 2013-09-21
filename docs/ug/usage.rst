@@ -298,7 +298,7 @@ subprogram is not in |SPARK| (using parentheses):
 * exception: raising and catching exceptions;
 * forward reference: forward reference to an entity;
 * goto: use of *goto*;
-* indirect call: indirect call;
+* indirect call: calls through access types;
 * tasking: tasking;
 * unchecked conversion: use of ``Unchecked_Conversion``;
 * impure function: functions which write to variables other than parameters;

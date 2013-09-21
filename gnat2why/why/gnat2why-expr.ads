@@ -25,6 +25,8 @@
 
 with Ada.Containers.Hashed_Maps;
 
+with Atree;          use Atree;
+with Sinfo;          use Sinfo;
 with Types;          use Types;
 
 with Why.Types;      use Why.Types;
@@ -50,8 +52,10 @@ package Gnat2Why.Expr is
       Base   : Entity_Id) return W_Prog_Id;
 
    function Assume_Of_Subtype_Indication
-     (Params : Transformation_Params;
-      N      : Node_Id) return W_Prog_Id;
+     (Params   : Transformation_Params;
+      N        : Node_Id;
+      Sub_Type : Entity_Id) return W_Prog_Id
+   with Pre => Nkind (N) = N_Subtype_Indication;
 
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;
@@ -102,11 +106,13 @@ package Gnat2Why.Expr is
    --  Runtime.
 
    function Transform_Discrete_Choices
-     (Case_N       : Node_Id;
+     (Choices      : List_Id;
+      Choice_Type  : Entity_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id;
-      --  Return the guard that corresponds to a branch
+      --  Return the guard that corresponds to a branch. In programs, also
+      --  generate a check that dynamic choices are in the subtype Choice_Type.
 
    function Transform_Attribute_Old
      (Expr   : Node_Id;

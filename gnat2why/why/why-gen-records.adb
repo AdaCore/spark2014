@@ -761,7 +761,8 @@ package body Why.Gen.Records is
       is
       begin
          return +Gnat2Why.Expr.Transform_Discrete_Choices
-           (Case_N       => Case_N,
+           (Choices      => Discrete_Choices (Case_N),
+            Choice_Type  => Empty,  --  not used for predicates, can be empty
             Matched_Expr => +Expr,
             Cond_Domain  => EW_Pred,
             Params       => Logic_Params);

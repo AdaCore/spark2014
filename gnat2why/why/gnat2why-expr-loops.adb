@@ -798,10 +798,23 @@ package body Gnat2Why.Expr.Loops is
                                               EW_Prog,
                                               Params => Body_Params),
                   Context => +Entire_Loop);
-            return
-              Sequence
-                (Assume_Of_Subtype_Indication (Body_Params, Loop_Range),
-                 Entire_Loop);
+
+            --  For loop_parameter_specification whose
+            --  discrete_subtype_definition is a subtype_indication,
+            --  we generate a check that the range_constraint of the
+            --  subtype_indication is compatible with the given subtype.
+
+            if Nkind (Loop_Range) = N_Subtype_Indication then
+               Entire_Loop :=
+                 Sequence
+                   (Assume_Of_Subtype_Indication
+                      (Params   => Body_Params,
+                       N        => Loop_Range,
+                       Sub_Type => Etype (Defining_Identifier (LParam_Spec))),
+                    Entire_Loop);
+            end if;
+
+            return Entire_Loop;
          end For_Loop;
 
       else

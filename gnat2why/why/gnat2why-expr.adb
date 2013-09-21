@@ -30,7 +30,6 @@ with GNAT.Source_Info;
 
 with Ada.Containers;         use Ada.Containers;
 
-with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Eval_Fat;
 with Namet;                  use Namet;
@@ -39,7 +38,6 @@ with Opt;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
@@ -214,11 +212,14 @@ package body Gnat2Why.Expr is
 
    function Transform_Discrete_Choice
      (Choice      : Node_Id;
+      Choice_Type : Entity_Id;
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
    --  For an expression Expr of a type EW_Int and a discrete Choice, build
-   --  the expression that Expr belongs to the range expressed by Choice.
+   --  the expression that Expr belongs to the range expressed by Choice. In
+   --  programs, also generate a check that dynamic choices are in the subtype
+   --  Choice_Type.
 
    function Transform_Identifier (Params       : Transformation_Params;
                                   Expr         : Node_Id;
@@ -503,72 +504,83 @@ package body Gnat2Why.Expr is
       N      : Entity_Id;
       Base   : Entity_Id) return W_Prog_Id
    is
-      Rng              : constant Node_Id := Get_Range (N);
-      Why_Base         : constant W_Base_Type_Id := Base_Why_Type (N);
-      Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
-      Low_Expr         : constant W_Term_Id :=
-         +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
-      High_Expr        : constant W_Term_Id :=
-         +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
-      First_Term       : constant W_Term_Id :=
-        +New_Attribute_Expr (N, Attribute_First);
-      Last_Term        : constant W_Term_Id :=
-        +New_Attribute_Expr (N, Attribute_Last);
-      Rel_First        : constant W_Pred_Id :=
-         New_Relation
-           (Op_Type  => EW_Bool,
-            Left     => +Low_Expr,
-            Right    => +First_Term,
-            Op       => EW_Eq);
-      Rel_Last         : constant W_Pred_Id :=
-         New_Relation
-           (Op_Type  => EW_Bool,
-            Left     => +High_Expr,
-            Right    => +Last_Term,
-            Op       => EW_Eq);
-      First_In_Range   : constant W_Pred_Id :=
-         New_Relation
-           (Op_Type  => Why_Base_EW,
-            Left     => +Low_Expr,
-            Right    => +New_Attribute_Expr (Base, Attribute_First),
-            Op       => EW_Ge);
-      Last_In_Range    : constant W_Pred_Id :=
-         New_Relation
-           (Op_Type  => Why_Base_EW,
-            Left     => +High_Expr,
-            Right    => +New_Attribute_Expr (Base, Attribute_Last),
-            Op       => EW_Le);
-      First_Le_Last    : constant W_Pred_Id :=
-         New_Relation
-           (Op_Type  => Why_Base_EW,
-            Left     => +Low_Expr,
-            Right    => +High_Expr,
-            Op       => EW_Le);
-      Precond          : constant W_Pred_Id :=
-         +New_Connection
-           (Op     => EW_Imply,
-            Left   => +First_Le_Last,
-            Right  =>
-              +New_And_Expr
+   begin
+      --  If the range is not static, we need to generate a check that
+      --  the subtype declaration is valid; otherwise, the frontend has
+      --  done it for us already
+
+      if Is_Static_Range (Get_Range (N)) then
+         return New_Void;
+      else
+         declare
+            Rng              : constant Node_Id := Get_Range (N);
+            Why_Base         : constant W_Base_Type_Id := Base_Why_Type (N);
+            Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
+            Low_Expr         : constant W_Term_Id :=
+              +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
+            High_Expr        : constant W_Term_Id :=
+              +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
+            First_Term       : constant W_Term_Id :=
+              +New_Attribute_Expr (N, Attribute_First);
+            Last_Term        : constant W_Term_Id :=
+              +New_Attribute_Expr (N, Attribute_Last);
+            Rel_First        : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => EW_Bool,
+                 Left     => +Low_Expr,
+                 Right    => +First_Term,
+                 Op       => EW_Eq);
+            Rel_Last         : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => EW_Bool,
+                 Left     => +High_Expr,
+                 Right    => +Last_Term,
+                 Op       => EW_Eq);
+            First_In_Range   : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Why_Base_EW,
+                 Left     => +Low_Expr,
+                 Right    => +New_Attribute_Expr (Base, Attribute_First),
+                 Op       => EW_Ge);
+            Last_In_Range    : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Why_Base_EW,
+                 Left     => +High_Expr,
+                 Right    => +New_Attribute_Expr (Base, Attribute_Last),
+                 Op       => EW_Le);
+            First_Le_Last    : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Why_Base_EW,
+                 Left     => +Low_Expr,
+                 Right    => +High_Expr,
+                 Op       => EW_Le);
+            Precond          : constant W_Pred_Id :=
+              +New_Connection
+              (Op     => EW_Imply,
+               Left   => +First_Le_Last,
+               Right  =>
+                 +New_And_Expr
                  (Domain => EW_Pred,
                   Left   => +First_In_Range,
                   Right => +Last_In_Range));
-      Assuming        : constant W_Prog_Id :=
-        New_Assume_Statement
-          (Ada_Node => N,
-           Pre      => Precond,
-           Post     =>
-           +New_And_Expr
-             (Domain => EW_Pred,
-              Left   => +Rel_First,
-              Right  => +Rel_Last));
-   begin
-      return
-        +New_VC_Expr
-        (Ada_Node => N,
-         Domain   => EW_Prog,
-         Reason   => VC_Range_Check,
-         Expr     => +Assuming);
+            Assuming        : constant W_Prog_Id :=
+              New_Assume_Statement
+                (Ada_Node => N,
+                 Pre      => Precond,
+                 Post     =>
+                   +New_And_Expr
+                   (Domain => EW_Pred,
+                    Left   => +Rel_First,
+                    Right  => +Rel_Last));
+         begin
+            return
+              +New_VC_Expr
+              (Ada_Node => N,
+               Domain   => EW_Prog,
+               Reason   => VC_Range_Check,
+               Expr     => +Assuming);
+         end;
+      end if;
    end Assume_Of_Scalar_Subtype;
 
    ----------------------------------
@@ -576,13 +588,14 @@ package body Gnat2Why.Expr is
    ----------------------------------
 
    function Assume_Of_Subtype_Indication
-     (Params : Transformation_Params;
-      N      : Node_Id) return W_Prog_Id is
+     (Params   : Transformation_Params;
+      N        : Node_Id;
+      Sub_Type : Entity_Id) return W_Prog_Id is
    begin
-      if Nkind (N) = N_Subtype_Indication then
-         return
-           Assume_Of_Scalar_Subtype
-             (Params, Etype (N), Etype (Subtype_Mark (N)));
+      if Is_Scalar_Type (Sub_Type) then
+         return Assume_Of_Scalar_Subtype (Params => Params,
+                                          N      => Sub_Type,
+                                          Base   => Etype (Subtype_Mark (N)));
       else
          return New_Void;
       end if;
@@ -731,9 +744,10 @@ package body Gnat2Why.Expr is
       Cases        : constant List_Id := Alternatives (N);
       First_Case   : constant Node_Id := First (Cases);
       Last_Case    : constant Node_Id := Last (Cases);
+      Expr         : constant Node_Id := Expression (N);
       Cur_Case     : Node_Id;
       Matched_Expr : constant W_Expr_Id :=
-                       Transform_Expr (Expression (N),
+                       Transform_Expr (Expr,
                                        EW_Int_Type,
                                        Match_Domain,
                                        Params);
@@ -751,10 +765,12 @@ package body Gnat2Why.Expr is
               New_Elsif
                 (Domain    => Domain,
                  Condition =>
-                   Transform_Discrete_Choices (Case_N       => Cur_Case,
-                                               Matched_Expr => Matched_Expr,
-                                               Cond_Domain  => Cond_Domain,
-                                               Params       => Params),
+                   Transform_Discrete_Choices
+                     (Choices      => Discrete_Choices (Cur_Case),
+                      Choice_Type  => Etype (Expr),
+                      Matched_Expr => Matched_Expr,
+                      Cond_Domain  => Cond_Domain,
+                      Params       => Params),
                  Then_Part => Branch_Expr (Cur_Case));
             Next (Cur_Case);
          end loop;
@@ -762,10 +778,12 @@ package body Gnat2Why.Expr is
          return New_Conditional
            (Domain      => Domain,
             Condition   =>
-              Transform_Discrete_Choices (Case_N       => First_Case,
-                                          Matched_Expr => Matched_Expr,
-                                          Cond_Domain  => Cond_Domain,
-                                          Params       => Params),
+              Transform_Discrete_Choices
+                (Choices      => Discrete_Choices (First_Case),
+                 Choice_Type  => Etype (Expr),
+                 Matched_Expr => Matched_Expr,
+                 Cond_Domain  => Cond_Domain,
+                 Params       => Params),
             Then_Part   => Branch_Expr (First_Case),
             Elsif_Parts => Elsif_Parts,
             Else_Part   => Branch_Expr (Last_Case));
@@ -1606,6 +1624,8 @@ package body Gnat2Why.Expr is
                Range_Pred  : constant W_Expr_Id :=
                                Transform_Discrete_Choice
                                  (Choice => Discrete_Range (N),
+                                  Choice_Type =>
+                                    Etype (First_Index (Prefix_Type)),
                                   Expr   => Indexes (1),
                                   Domain => EW_Pred,
                                   Params => Params);
@@ -1680,6 +1700,9 @@ package body Gnat2Why.Expr is
       Low        : constant Node_Id := Low_Bound (Range_Node);
       High       : constant Node_Id := High_Bound (Range_Node);
       Base_Type  : W_Base_Type_Id := Base_Why_Type (Low, High);
+
+      R : W_Expr_Id;
+
    begin
       if T_Type /= Why_Empty then
          Base_Type := Base_Why_Type (T_Type, Base_Type);
@@ -1693,8 +1716,7 @@ package body Gnat2Why.Expr is
          Base_Type := EW_Int_Type;
       end if;
 
-      return
-        New_Range_Expr
+      R := New_Range_Expr
           (Domain    => Domain,
            Base_Type => Base_Type,
            Low       => +Transform_Expr (Low,
@@ -1706,6 +1728,21 @@ package body Gnat2Why.Expr is
                                          Subdomain,
                                          Params),
            Expr      => T);
+
+      --  In programs, we generate a check that the range_constraint of a
+      --  subtype_indication is compatible with the given subtype.
+
+      if Domain = EW_Prog
+        and then Nkind (N) = N_Subtype_Indication
+      then
+         R := +Sequence
+                (Assume_Of_Subtype_Indication (Params   => Params,
+                                               N        => N,
+                                               Sub_Type => Etype (N)),
+                 +R);
+      end if;
+
+      return R;
    end Range_Expr;
 
    -----------------------
@@ -1811,13 +1848,17 @@ package body Gnat2Why.Expr is
       -----------------------
 
       procedure Get_Aggregate_Elements
-        (Expr   : Node_Id;
-         Values : out List_Of_Nodes.List;
-         Types  : out List_Of_Nodes.List);
+        (Expr         : Node_Id;
+         Values       : out List_Of_Nodes.List;
+         Types        : out List_Of_Nodes.List;
+         Index_Values : out List_Of_Nodes.List;
+         Index_Types  : out List_Of_Nodes.List);
       --  Extract elements of the aggregate Expr that will be passed in
       --  parameter. Each element of Values is an element of the (possibly
-      --  multi-dimensional) aggregate, with the corresponding type stored at
-      --  the same position in Types.
+      --  multi-dimensional) aggregate, with the corresponding type stored
+      --  at the same position in Types. Each element of Index_Values is a
+      --  component_association whose choices need to be checked against the
+      --  type at the same position in Index_Types.
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
@@ -1841,11 +1882,13 @@ package body Gnat2Why.Expr is
       --  mapping between Ada nodes and corresponding Why identifiers.
 
       function Complete_Translation
-        (Params : Transformation_Params;
-         Domain : EW_Domain;
-         Func   : W_Identifier_Id;
-         Values : List_Of_Nodes.List;
-         Types  : List_Of_Nodes.List) return W_Expr_Id;
+        (Params       : Transformation_Params;
+         Domain       : EW_Domain;
+         Func         : W_Identifier_Id;
+         Values       : List_Of_Nodes.List;
+         Types        : List_Of_Nodes.List;
+         Index_Values : List_Of_Nodes.List;
+         Index_Types  : List_Of_Nodes.List) return W_Expr_Id;
       --  Given a logic function Func previously defined for the aggregate,
       --  generate the actual call to Func by translating arguments Values
       --  of type Types in the context given by Params.
@@ -1855,11 +1898,13 @@ package body Gnat2Why.Expr is
       --------------------------
 
       function Complete_Translation
-        (Params : Transformation_Params;
-         Domain : EW_Domain;
-         Func   : W_Identifier_Id;
-         Values : List_Of_Nodes.List;
-         Types  : List_Of_Nodes.List) return W_Expr_Id
+        (Params       : Transformation_Params;
+         Domain       : EW_Domain;
+         Func         : W_Identifier_Id;
+         Values       : List_Of_Nodes.List;
+         Types        : List_Of_Nodes.List;
+         Index_Values : List_Of_Nodes.List;
+         Index_Types  : List_Of_Nodes.List) return W_Expr_Id
       is
          pragma Assert (Values.Length /= 0);
 
@@ -1869,6 +1914,8 @@ package body Gnat2Why.Expr is
          Value : List_Of_Nodes.Cursor;
          Typ   : List_Of_Nodes.Cursor;
          Args  : W_Expr_Array (1 .. Integer (Values.Length));
+
+         R : W_Expr_Id;
 
       begin
          --  Compute the arguments for the function call
@@ -1888,12 +1935,40 @@ package body Gnat2Why.Expr is
             Cnt := Cnt + 1;
          end loop;
 
-         --  Return the call
+         --  Compute the call
 
-         return New_Call (Ada_Node => Expr,
+         R := New_Call (Ada_Node => Expr,
                           Domain   => Domain,
                           Name     => Func,
                           Args     => Args);
+
+         --  In programs, we generate a check that all the choices are
+         --  compatible with their index subtype:
+         --  . a non-static value of choice must belong to the index subtype
+         --  . the range_constraint of a subtype_indication must be compatible
+         --    with the given subtype.
+
+         if Domain = EW_Prog then
+            Value := Index_Values.First;
+            Typ   := Index_Types.First;
+
+            while Value /= No_Element loop
+               R := +Sequence
+                      (New_Ignore (Prog =>
+                        +Transform_Discrete_Choices
+                          (Choices      => Choices (Element (Value)),
+                           Choice_Type  => Element (Typ),
+                           Matched_Expr =>  --  The value does not matter here
+                             New_Integer_Constant (Value => Uint_0),
+                           Cond_Domain  => EW_Prog,
+                           Params       => Params)),
+                       +R);
+               Next (Value);
+               Next (Typ);
+            end loop;
+         end if;
+
+         return R;
       end Complete_Translation;
 
       -----------------------------
@@ -2063,9 +2138,11 @@ package body Gnat2Why.Expr is
       ----------------------------
 
       procedure Get_Aggregate_Elements
-        (Expr   : Node_Id;
-         Values : out List_Of_Nodes.List;
-         Types  : out List_Of_Nodes.List)
+        (Expr         : Node_Id;
+         Values       : out List_Of_Nodes.List;
+         Types        : out List_Of_Nodes.List;
+         Index_Values : out List_Of_Nodes.List;
+         Index_Types  : out List_Of_Nodes.List)
       is
          Typ     : constant Entity_Id := Type_Of_Node (Expr);
          Num_Dim : constant Pos       := Number_Dimensions (Typ);
@@ -2076,12 +2153,14 @@ package body Gnat2Why.Expr is
 
          procedure Traverse_Value_At_Index
            (Dim                 : Pos;
+            Index               : Node_Id;
             Expr_Or_Association : Node_Id);
          --  Traverse the value Expr_Or_Association to collect desired elements
 
          procedure Traverse_Rec_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id);
+           (Dim   : Pos;
+            Index : Node_Id;
+            Expr  : Node_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
 
@@ -2091,10 +2170,20 @@ package body Gnat2Why.Expr is
 
          procedure Traverse_Value_At_Index
            (Dim                 : Pos;
+            Index               : Node_Id;
             Expr_Or_Association : Node_Id)
          is
             Expr : Node_Id;
          begin
+            --  Fill together the arrays Index_Values and Index_Types
+
+            if Nkind (Expr_Or_Association) = N_Component_Association then
+               Index_Values.Append (Expr_Or_Association);
+               Index_Types.Append (Etype (Index));
+            end if;
+
+            --  Fill together the arrays Values and Types
+
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then Box_Present (Expr_Or_Association)
             then
@@ -2110,7 +2199,7 @@ package body Gnat2Why.Expr is
 
                if Dim < Num_Dim then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
-                  Traverse_Rec_Aggregate (Dim + 1, Expr);
+                  Traverse_Rec_Aggregate (Dim + 1, Next_Index (Index), Expr);
                else
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
@@ -2127,8 +2216,9 @@ package body Gnat2Why.Expr is
          ----------------------------
 
          procedure Traverse_Rec_Aggregate
-           (Dim  : Pos;
-            Expr : Node_Id)
+           (Dim   : Pos;
+            Index : Node_Id;
+            Expr  : Node_Id)
          is
             Exprs       : constant List_Id := Expressions (Expr);
             Assocs      : constant List_Id := Component_Associations (Expr);
@@ -2137,7 +2227,7 @@ package body Gnat2Why.Expr is
 
          begin
             while Present (Expression) loop
-               Traverse_Value_At_Index (Dim, Expression);
+               Traverse_Value_At_Index (Dim, Index, Expression);
                Next (Expression);
             end loop;
 
@@ -2146,7 +2236,7 @@ package body Gnat2Why.Expr is
             --  in the list of associations, so we always do the following.
 
             while Present (Association) loop
-               Traverse_Value_At_Index (Dim, Association);
+               Traverse_Value_At_Index (Dim, Index, Association);
                Next (Association);
             end loop;
          end Traverse_Rec_Aggregate;
@@ -2154,7 +2244,9 @@ package body Gnat2Why.Expr is
          --  Start of Get_Aggregate_Elements
 
       begin
-         Traverse_Rec_Aggregate (Dim => 1, Expr => Expr);
+         Traverse_Rec_Aggregate (Dim   => 1,
+                                 Index => First_Index (Typ),
+                                 Expr  => Expr);
       end Get_Aggregate_Elements;
 
       --------------------------------------------
@@ -2406,6 +2498,7 @@ package body Gnat2Why.Expr is
                   Right  =>
                     Transform_Discrete_Choice
                       (Choice      => Choice,
+                       Choice_Type => Empty,
                        Expr        => Indexes (Integer (Dim)),
                        Domain      => EW_Pred,
                        Params => Params),
@@ -2634,15 +2727,17 @@ package body Gnat2Why.Expr is
 
       --  Elements of the aggregate
 
-      Values : List_Of_Nodes.List;
-      Types  : List_Of_Nodes.List;
+      Values       : List_Of_Nodes.List;
+      Types        : List_Of_Nodes.List;
+      Index_Values : List_Of_Nodes.List;
+      Index_Types  : List_Of_Nodes.List;
 
    --  Start of Transform_Aggregate
 
    begin
       --  Get the aggregate elements that should be passed in parameter
 
-      Get_Aggregate_Elements (Expr, Values, Types);
+      Get_Aggregate_Elements (Expr, Values, Types, Index_Values, Index_Types);
 
       --  If not done already, generate the logic function
 
@@ -2659,7 +2754,9 @@ package body Gnat2Why.Expr is
               Domain,
               Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).B_Name,
               Values,
-              Types);
+              Types,
+              Index_Values,
+              Index_Types);
       end;
    end Transform_Aggregate;
 
@@ -3476,38 +3573,10 @@ package body Gnat2Why.Expr is
 
    function Transform_Declaration (Decl : Node_Id) return W_Prog_Id is
 
-      function Local_Assume_Of_Scalar_Subtype
-        (Params : Transformation_Params;
-         Ent    : Entity_Id;
-         Base   : Entity_Id) return W_Prog_Id;
-      --  Local wrapper on Assume_Of_Scalar_Subtype
-
       function Get_Base_Type (N : Node_Id) return Entity_Id;
       --  Return the base type when N is the node of a (sub-)type
       --  declaration which requires a check.
       --  Return Empty otherwise.
-
-      ------------------------------------
-      -- Local_Assume_Of_Scalar_Subtype --
-      ------------------------------------
-
-      function Local_Assume_Of_Scalar_Subtype
-        (Params : Transformation_Params;
-         Ent    : Entity_Id;
-         Base   : Entity_Id) return W_Prog_Id
-      is
-      begin
-
-         --  If the range is not static, we need to generate a check that
-         --  the subtype declaration is valid; otherwise, the frontend has
-         --  done it for us already
-
-         if not Is_Static_Range (Get_Range (Ent)) then
-            return Assume_Of_Scalar_Subtype (Params, Ent, Base);
-         else
-            return New_Void;
-         end if;
-      end Local_Assume_Of_Scalar_Subtype;
 
       -------------------
       -- Get_Base_Type --
@@ -3573,41 +3642,95 @@ package body Gnat2Why.Expr is
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
             declare
-               Ent  : constant Entity_Id :=
-                 Unique_Entity (Defining_Identifier (Decl));
+               Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
                Base : constant Entity_Id := Get_Base_Type (Decl);
             begin
-               if Present (Base) then
-                  case Ekind (Ent) is
-                     when Scalar_Kind =>
-                        R := Local_Assume_Of_Scalar_Subtype
-                          (Body_Params, Ent, Base);
+               case Ekind (Ent) is
+                  when Scalar_Kind =>
+                     R := Assume_Of_Scalar_Subtype (Params => Body_Params,
+                                                    N      => Ent,
+                                                    Base   => Base);
 
-                     when Array_Kind =>
-                        declare
-                           Index      : Node_Id   := First_Index (Ent);
-                           Index_Base : Entity_Id := First_Index (Base);
-                        begin
+                  when Array_Kind =>
+                     declare
+                        Index      : Node_Id;
+                        Index_Base : Entity_Id;
+                     begin
+                        --  For each discrete_subtype_definition that is a
+                        --  non-static subtype_indication, we generate a check
+                        --  that the range_constraint is compatible with the
+                        --  subtype.
+
+                        Index := First_Index (Ent);
+                        while Present (Index) loop
+                           if Nkind (Index) = N_Subtype_Indication then
+                              R := Sequence
+                                     (Assume_Of_Subtype_Indication
+                                       (Params   => Body_Params,
+                                        N        => Index,
+                                        Sub_Type => Etype (Index)),
+                                      R);
+                           end if;
+                           Next (Index);
+                        end loop;
+
+                        --  For each range_constraint of an array subtype, we
+                        --  generate a check that it is compatible with the
+                        --  subtype of the corresponding index in the base
+                        --  array type.
+
+                        if Present (Base) then
+                           Index := First_Index (Ent);
+                           Index_Base := First_Index (Base);
                            while Present (Index) loop
-                              R := Sequence (Local_Assume_Of_Scalar_Subtype
-                                              (Body_Params,
-                                               Etype (Index),
-                                               Etype (Index_Base)), R);
+                              R := Sequence
+                                     (Assume_Of_Scalar_Subtype
+                                        (Params => Body_Params,
+                                         N      => Etype (Index),
+                                         Base   => Etype (Index_Base)),
+                                      R);
                               Next (Index);
                               Next (Index_Base);
                            end loop;
-                        end;
+                        end if;
+                     end;
 
-                     when Record_Kind =>
-                        null;
+                  when Record_Kind =>
+                     declare
+                        Comp : Node_Id := First_Component (Ent);
+                        Typ  : Node_Id;
+                     begin
+                        --  For each component_definition that is a non-static
+                        --  subtype_indication, we generate a check that the
+                        --  range_constraint is compatible with the subtype. It
+                        --  is not necessary to do that check on discriminants,
+                        --  as the type of discriminants are directly
+                        --  subtype_marks, not subtype_indications.
 
-                     when others =>
-                        Ada.Text_IO.Put_Line
-                          ("[Transform_Declarations_Block] ekind ="
-                           & Entity_Kind'Image (Ekind (Ent)));
-                        raise Not_Implemented;
-                  end case;
-               end if;
+                        while Present (Comp) loop
+                           Typ := Subtype_Indication
+                                    (Component_Definition (Parent (Comp)));
+
+                           if Present (Typ)
+                             and then Nkind (Typ) = N_Subtype_Indication
+                           then
+                              R := Sequence
+                                     (Assume_Of_Subtype_Indication
+                                        (Params   => Body_Params,
+                                         N        => Typ,
+                                         Sub_Type => Etype (Comp)),
+                                      R);
+                           end if;
+                           Next_Component (Comp);
+                        end loop;
+                     end;
+
+                  when others =>
+                     Ada.Text_IO.Put_Line
+                       ("[Transform_Declarations_Block] ekind ="
+                        & Entity_Kind'Image (Ekind (Ent)));
+                     raise Not_Implemented;
+               end case;
             end;
 
          when others =>
@@ -3639,6 +3762,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Discrete_Choice
      (Choice      : Node_Id;
+      Choice_Type : Entity_Id;
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id
@@ -3647,13 +3771,29 @@ package body Gnat2Why.Expr is
                     (if Domain = EW_Pred then EW_Term else Domain);
       Is_Range  : constant Boolean := Discrete_Choice_Is_Range (Choice);
 
+      R : W_Expr_Id;
    begin
       if Nkind (Choice) = N_Others_Choice then
-         return New_Literal (Domain => Domain, Value => EW_True);
+         R := New_Literal (Domain => Domain, Value => EW_True);
+
       elsif Is_Range then
-         return Range_Expr (Choice, Expr, Domain, Params, EW_Int_Type);
+         R := Range_Expr (Choice, Expr, Domain, Params, EW_Int_Type);
+
+         --  In programs, we generate a check that the range_constraint of a
+         --  subtype_indication is compatible with the given subtype.
+
+         if Domain = EW_Prog
+           and then Nkind (Choice) = N_Subtype_Indication
+         then
+            R := +Sequence
+                   (Assume_Of_Subtype_Indication (Params   => Params,
+                                                  N        => Choice,
+                                                  Sub_Type => Choice_Type),
+                    +R);
+         end if;
+
       else
-         return New_Comparison
+         R := New_Comparison
            (Cmp       => EW_Eq,
             Left      => Expr,
             Right     => Transform_Expr (Expr          => Choice,
@@ -3662,7 +3802,30 @@ package body Gnat2Why.Expr is
                                          Params        => Params),
             Arg_Types => EW_Int_Type,
             Domain    => Domain);
+
+         --  In programs, we generate a check that the non-static value of a
+         --  choice belongs to the given subtype.
+
+         if Domain = EW_Prog
+           and then not Is_OK_Static_Expression (Choice)
+         then
+            R := +Sequence
+                   (+New_Ignore (Prog =>
+                      +New_VC_Call
+                        (Domain   => EW_Prog,
+                         Ada_Node => Choice,
+                         Name     => Range_Check_Name (Choice_Type, RCK_Range),
+                         Progs    =>
+                           (1 => Transform_Expr (Expr          => Choice,
+                                                 Expected_Type => EW_Int_Type,
+                                                 Domain        => Subdomain,
+                                                 Params        => Params)),
+                         Reason   => To_VC_Kind (RCK_Range))),
+                    +R);
+         end if;
       end if;
+
+      return R;
    end Transform_Discrete_Choice;
 
    --------------------------------
@@ -3670,12 +3833,13 @@ package body Gnat2Why.Expr is
    --------------------------------
 
    function Transform_Discrete_Choices
-     (Case_N       : Node_Id;
+     (Choices      : List_Id;
+      Choice_Type  : Entity_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id
    is
-      Cur_Choice : Node_Id   := First (Sinfo.Discrete_Choices (Case_N));
+      Cur_Choice : Node_Id   := First (Choices);
       C          : W_Expr_Id := New_Literal (Domain => Cond_Domain,
                                              Value  => EW_False);
    begin
@@ -3683,6 +3847,7 @@ package body Gnat2Why.Expr is
          C := New_Or_Else_Expr
            (C,
             Transform_Discrete_Choice (Choice      => Cur_Choice,
+                                       Choice_Type => Choice_Type,
                                        Expr        => Matched_Expr,
                                        Domain      => Cond_Domain,
                                        Params      => Params),
