@@ -4820,7 +4820,8 @@ package body Gnat2Why.Expr is
 
             if Nkind (Expr) = N_Type_Conversion
               and then Ekind (Expr_Type) in Real_Kind
-              and then Get_Base_Type (Expected_Type) not in EW_Float
+              and then Get_Base_Type (Base_Why_Type
+                                        (Expected_Type)) not in EW_Float
             then
                Round_Func := Float_Round_Name (Expr_Type);
             else
