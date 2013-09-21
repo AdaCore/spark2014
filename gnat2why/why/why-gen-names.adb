@@ -637,7 +637,7 @@ package body Why.Gen.Names is
          when WNE_Float_Max        => return "fp_max";
          when WNE_Float_Floor      => return "floor";
          when WNE_Float_Ceiling    => return "ceiling";
-         when WNE_Float_Ada_Round  => return "roundToIntegral_RTA";
+         when WNE_Float_Ada_Round  => return "roundToIntegral_RNA";
          when WNE_Float_Truncation => return "roundToIntegral_RTZ";
 
       end case;
