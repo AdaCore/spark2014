@@ -345,10 +345,11 @@ package body Why.Gen.Names is
         );
       S : constant String :=
         (case Kind is
-           when EW_Int   => "Integer",
-           when EW_Float => "IEEE_Floating",
-           when EW_Real  => "Floating",
-           when EW_Bool  => "Boolean",
+           when EW_Int     => "Integer",
+           when EW_Float32 => "IEEE_Float32_Theory",
+           when EW_Float64 => "IEEE_Float64_Theory",
+           when EW_Real    => "Floating",
+           when EW_Bool    => "Boolean",
            when EW_Unit .. EW_Prop | EW_Private => "Main",
            when EW_Abstract => Full_Name (Get_Ada_Node (+Arg_Types)));
    begin

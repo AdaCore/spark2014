@@ -146,13 +146,15 @@ module Floating_Point
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
- function dummy :t
+  function dummy :t
+
 end
 
 module IEEE_Floating_Point_32
   use import "_gnatprove_standard".Main
   use import ieee754.Single_RNE
   use import ieee754.Single_RNE_Conversion
+  use "ada__model_th".IEEE_Float32_Theory
 
   type t "bounded_type"
 
@@ -217,6 +219,7 @@ module IEEE_Floating_Point_64
   use import "_gnatprove_standard".Main
   use import ieee754.Double_RNE
   use import ieee754.Double_RNE_Conversion
+  use "ada__model_th".IEEE_Float64_Theory
 
   type t "bounded_type"
 

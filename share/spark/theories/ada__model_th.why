@@ -13,3 +13,19 @@ theory Floating_Point_Theory
     if x = y then True else False
 
 end
+
+theory IEEE_Float32_Theory
+  use import bool.Bool
+  use import ieee754.Single_RNE
+
+  function bool_eq (x: single) (y: single) : bool
+
+end
+
+theory IEEE_Float64_Theory
+  use import bool.Bool
+  use import ieee754.Double_RNE
+
+  function bool_eq (x: double) (y: double) : bool
+
+end
