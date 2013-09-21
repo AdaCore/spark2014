@@ -3321,7 +3321,10 @@ package body Gnat2Why.Expr is
                         when Attribute_Floor =>
                            Func := Prefix (To_String (Get_Base_Type (Base)),
                                            WNE_Float_Floor);
-                        when Attribute_Rounding | Attribute_Truncation =>
+                        when Attribute_Rounding =>
+                           Func := Prefix (To_String (Get_Base_Type (Base)),
+                                           WNE_Float_Ada_Round);
+                        when Attribute_Truncation =>
                            raise Not_Implemented;
                         when others =>
                            raise Program_Error;
