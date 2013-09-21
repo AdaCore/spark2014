@@ -12,7 +12,7 @@ gnatprove -P test.gpr \
     --report=all \
     -v \
     --proof=no_split \
-    foo.adb homothetical.adb reduced_01.ads
+    foo.adb homothetical.adb reduced_*.ads
 ./clean_comments.py gnatprove/*.smt2
 
 cp gnatprove/*.smt2 /home/florian/projects/oxford-cde/vcs/vcs_01

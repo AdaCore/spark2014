@@ -256,10 +256,6 @@ package Why.Gen.Names is
       WNE_Type,
       WNE_Unicity,
 
-      WNE_Real_To_IEEE,
-      WNE_IEEE_To_Real,
-      WNE_Int_To_IEEE,
-      WNE_IEEE_To_Int,
       WNE_Change_Precision_32,
       WNE_Change_Precision_64,
       WNE_Of_Float,

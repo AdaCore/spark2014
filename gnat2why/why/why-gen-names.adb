@@ -162,16 +162,20 @@ package body Why.Gen.Names is
                                     W        => WNE_Of_Int);
 
                   elsif From_Kind = EW_Real and To_Kind in EW_Float then
-                     return To_Ident (WNE_Real_To_IEEE);
+                     return Prefix (To_String (To_Kind),
+                                    "from_real");
 
                   elsif From_Kind in EW_Float and To_Kind = EW_Real then
-                     return To_Ident (WNE_IEEE_To_Real);
+                     return Prefix (To_String (From_Kind),
+                                    "to_real");
 
                   elsif From_Kind = EW_Int and To_Kind in EW_Float then
-                     return To_Ident (WNE_Int_To_IEEE);
+                     return Prefix (To_String (To_Kind),
+                                    "from_int");
 
                   elsif From_Kind in EW_Float and To_Kind = EW_Int then
-                     return To_Ident (WNE_IEEE_To_Int);
+                     return Prefix (To_String (From_Kind),
+                                    "to_int");
 
                   elsif From_Kind in EW_Float and To_Kind in EW_Float then
                      case To_Kind is
@@ -624,10 +628,6 @@ package body Why.Gen.Names is
          when WNE_Change_Precision_64 =>
             return "to_double_rne";
 
-         when WNE_Real_To_IEEE     => return "of_real";
-         when WNE_IEEE_To_Real     => return "ieee_to_real";
-         when WNE_Int_To_IEEE      => return "int_to_ieee";
-         when WNE_IEEE_To_Int      => return "ieee_to_int";
          when WNE_Of_Float         => return "of_float";
          when WNE_To_Float         => return "to_float";
          when WNE_Float_Abs        => return "fp_abs";
