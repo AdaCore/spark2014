@@ -2,6 +2,12 @@ package body Foo
   with SPARK_Mode
 is
 
+   Biggest_Int_Float : constant := Float (2 ** 24);
+
+
+
+
+
    ----------------------------------------------------------------------
    --  Outrageously nasty tests
    ----------------------------------------------------------------------
@@ -397,6 +403,31 @@ is
    begin
       I := Integer (X);
    end Test_Round_1;
+
+   procedure Test_Round_2 (X : Float;
+                           Y : out Float)
+     with Pre => X in 0.0 .. Biggest_Int_Float,
+          Post => Y in X - 0.5 .. X + 0.5
+   is
+   begin
+      Y := Float'Rounding (X);
+   end Test_Round_2;
+
+   procedure Test_Record_1 (X : Float;
+                            Y : out Float)
+     with Post => X = Y
+   is
+      type Rec is record
+         A, B, C : Float;
+      end record;
+
+      R : Rec;
+   begin
+      R := (0.0, X, 1.0);
+      R.A := R.B;
+      Y := R.A;
+   end Test_Record_1;
+
 
    ----------------------------------------------------------------------
    --  Other ideas
