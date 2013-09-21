@@ -271,7 +271,8 @@ package Why.Gen.Names is
       WNE_Float_Max,
       WNE_Float_Floor,
       WNE_Float_Ceiling,
-      WNE_Float_Ada_Round
+      WNE_Float_Ada_Round,
+      WNE_Float_Truncation
 
      );
 

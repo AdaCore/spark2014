@@ -428,6 +428,36 @@ is
       Y := R.A;
    end Test_Record_1;
 
+   procedure Test_Array_1 (X : Float;
+                           Y : out Float)
+     with Post => X = Y
+   is
+      type Index_T is range 0 .. 128;
+      type Arr is array (Index_T) of Float;
+
+      A : Arr := (others => 0.0);
+   begin
+      A (8) := X;
+      A (5) := 3.0;
+      Y := A (8);
+   end Test_Array_1;
+
+   procedure Test_Truncation_1 (X : Float;
+                                Y : out Float)
+     with Pre => X in -4096.0 .. 4096.0,
+     Contract_Cases => (X = -1.6 => Y = -1.0,
+                        X = -1.5 => Y = -1.0,
+                        X = -1.4 => Y = -1.0,
+                        X = -1.0 => Y = -1.0,
+                        X =  0.0 => Y =  0.0,
+                        X =  1.0 => Y =  1.0,
+                        X =  1.4 => Y =  1.0,
+                        X =  1.5 => Y =  1.0,
+                        X =  1.6 => Y =  1.0)
+   is
+   begin
+      Y := Float'Truncation (X);
+   end Test_Truncation_1;
 
    ----------------------------------------------------------------------
    --  Other ideas
