@@ -18,8 +18,22 @@ is
       --  true for reals
       --  true for floats using round(x op y)
       --  false for properly modelled floats
+      --  false for my emulation
       pragma Assert (Magic (A) = Magic (B));
    end Equality_Matters;
+
+   procedure A_Minimum_Of_Care_Is_Needed (A, B : Float)
+   is
+   begin
+      --  IEEE leaves it unspecified what happens if both A and B are
+      --  the two different zeros.
+      --
+      --  true for reals
+      --  true for floats using round(x op y)
+      --  false for properly modelled floats
+      --  true for my emulation
+      pragma Assert (Magic (Float'Min (A, B)) = Magic (Float'Min (B, A)));
+   end A_Minimum_Of_Care_Is_Needed;
 
    ----------------------------------------------------------------------
    --  These tests aim to show the difference between reals and floats
@@ -271,9 +285,9 @@ is
    end Interesting_Inverse_2;
 
    ----------------------------------------------------------------------
-   --  These tests do nothign too fancy, but they go through
-   --  awkward code-paths in VCG to make sure the implementation
-   --  is reasonably robust
+   --  These tests do nothign too fancy, but they try to go through
+   --  most code-paths in VCG to make sure the implementation
+   --  is reasonably robust and complete.
    ----------------------------------------------------------------------
 
    procedure Unary_Ops (X : Float)
@@ -287,6 +301,102 @@ is
    begin
       pragma Assert ((Float (Y) = X) = (Long_Float (X) = Y));
    end Floats_And_Double;
+
+   procedure Test_Min (X, Y : Float;
+                       M    : out Float)
+     with Post => M <= X and M <= Y and (M = X or M = Y)
+   is
+   begin
+      M := Float'Min (X, Y);
+   end Test_Min;
+
+   procedure Test_Max (X, Y : Float;
+                       M    : out Float)
+     with Post => M >= X and M >= Y and (M = X or M = Y)
+   is
+   begin
+      M := Float'Max (X, Y);
+   end Test_Max;
+
+   procedure Test_Floor_1 (X : Float;
+                           Y : out Float)
+     with Pre => X >= 0.0,
+          Post => Y <= X
+   is
+   begin
+      Y := Float'Floor (X);
+   end Test_Floor_1;
+
+   procedure Test_Floor_2 (X : Float)
+     with Pre => X >= 0.0
+   is
+   begin
+      pragma Assert (Float'Floor (X) <= Float'Floor (X + 1.0));
+   end Test_Floor_2;
+
+   procedure Test_Floor_3 (X : Float)
+     with Pre => X in 0.0 .. 16777215.0
+   is
+   begin
+      pragma Assert (X < Float'Floor (X + 1.0));  -- should be true
+   end Test_Floor_3;
+
+   procedure Test_Floor_4 (X : Float)
+     with Pre => X in 0.0 .. 16777216.0
+   is
+   begin
+      pragma Assert (X < Float'Floor (X + 1.0));  -- should be false
+   end Test_Floor_4;
+
+   procedure Test_Floor_5 (X : Float)
+   is
+   begin
+      pragma Assert (Float'Floor (X) <= Float'Ceiling (X));
+   end Test_Floor_5;
+
+   procedure Test_Floor_6 (X : Float)
+   is
+   begin
+      --  All these should be true.
+
+      if X = 0.4 then
+         pragma Assert (Float'Floor (X)   = 0.0);
+         pragma Assert (Float'Ceiling (X) = 1.0);
+
+      elsif X = 0.5 then
+         pragma Assert (Float'Floor (X)   = 0.0);
+         pragma Assert (Float'Ceiling (X) = 1.0);
+
+      elsif X = 0.6 then
+         pragma Assert (Float'Floor (X)   = 0.0);
+         pragma Assert (Float'Ceiling (X) = 1.0);
+
+      elsif X = 12.0 then
+         pragma Assert (Float'Floor (X)   = 12.0);
+         pragma Assert (Float'Ceiling (X) = 12.0);
+
+      elsif X = -0.5 then
+         pragma Assert (Float'Floor (X)   = -1.0);
+         pragma Assert (Float'Ceiling (X) =  0.0);
+      end if;
+   end Test_Floor_6;
+
+   procedure Test_Round_1 (X : Float;
+                           I : out Integer)
+     with Pre => X in -4096.0 .. 4096.0,
+     Contract_Cases => (X = -1.6 => I = -2,
+                        X = -1.5 => I = -2,
+                        X = -1.4 => I = -1,
+                        X = -1.0 => I = -1,
+                        X =  0.0 => I =  0,
+                        X =  1.0 => I =  1,
+                        X =  1.4 => I =  1,
+                        X =  1.5 => I =  2,
+                        X =  1.6 => I =  2)
+   is
+   begin
+      I := Integer (X);
+   end Test_Round_1;
 
    ----------------------------------------------------------------------
    --  Other ideas
