@@ -1,291 +1,291 @@
 foo.adb:7:7: assertion not proved, requires Float (Y) = X) = (Long_Float (X) = Y
 foo.adb:7:30: info: range check proved
-generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:48:7: assertion not proved, requires X + Y >= X, in instantiation at foo.ads:9
-generic_float_tests.adb:48:7: assertion not proved, requires X + Y >= X, in instantiation at foo.ads:14
-generic_float_tests.adb:57:7: assertion not proved, requires X + Y > X, in instantiation at foo.ads:9
-generic_float_tests.adb:57:7: assertion not proved, requires X + Y > X, in instantiation at foo.ads:14
-generic_float_tests.adb:66:7: assertion not proved, requires false, in instantiation at foo.ads:9
-generic_float_tests.adb:66:7: assertion not proved, requires false, in instantiation at foo.ads:14
-generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:72:19: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:80:19: postcondition not proved, requires Underflow_1'Result > , in instantiation at foo.ads:9
-generic_float_tests.adb:80:19: postcondition not proved, requires Underflow_1'Result > , in instantiation at foo.ads:14
-generic_float_tests.adb:83:16: info: division check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:83:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:83:16: info: division check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:83:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:90:19: postcondition not proved, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:9
-generic_float_tests.adb:90:19: postcondition not proved, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:14
-generic_float_tests.adb:93:18: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:93:18: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:93:18: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:93:18: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:93:25: info: overflow check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:93:25: info: overflow check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:98:19: postcondition not proved, requires Underflow_2'result, in instantiation at foo.ads:9
-generic_float_tests.adb:98:19: postcondition not proved, requires Underflow_2'result, in instantiation at foo.ads:14
-generic_float_tests.adb:106:19: postcondition not proved, requires Underflow_3'Result > , in instantiation at foo.ads:9
-generic_float_tests.adb:106:19: postcondition not proved, requires Underflow_3'Result > , in instantiation at foo.ads:14
-generic_float_tests.adb:109:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:109:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:114:19: postcondition not proved, requires Sqrt_Comedy_1'result, in instantiation at foo.ads:9
-generic_float_tests.adb:114:19: postcondition not proved, requires Sqrt_Comedy_1'result, in instantiation at foo.ads:14
-generic_float_tests.adb:122:19: postcondition not proved, requires Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:9
-generic_float_tests.adb:122:19: postcondition not proved, requires Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:14
-generic_float_tests.adb:122:49: info: division check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:122:49: info: division check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:125:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:125:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:125:23: info: division check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:125:23: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:125:23: info: division check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:125:23: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:131:7: assertion not proved, requires X + X = X - (-X, in instantiation at foo.ads:9
-generic_float_tests.adb:131:7: assertion not proved, requires X + X = X - (-X, in instantiation at foo.ads:14
-generic_float_tests.adb:138:7: assertion not proved, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:9
-generic_float_tests.adb:138:7: assertion not proved, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:14
-generic_float_tests.adb:145:7: assertion not proved, requires X - Y) + Y = X, in instantiation at foo.ads:9
-generic_float_tests.adb:145:7: assertion not proved, requires X - Y) + Y = X, in instantiation at foo.ads:14
-generic_float_tests.adb:152:7: assertion not proved, requires X + Y) - Y = X, in instantiation at foo.ads:9
-generic_float_tests.adb:152:7: assertion not proved, requires X + Y) - Y = X, in instantiation at foo.ads:14
-generic_float_tests.adb:159:7: assertion not proved, requires 1.0 / X > , in instantiation at foo.ads:9
-generic_float_tests.adb:159:7: assertion not proved, requires 1.0 / X > , in instantiation at foo.ads:14
-generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:165:7: assertion not proved, requires A + B) + C = A + (B + C, in instantiation at foo.ads:9
-generic_float_tests.adb:165:7: assertion not proved, requires A + B) + C = A + (B + C, in instantiation at foo.ads:14
-generic_float_tests.adb:171:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:171:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:177:7: assertion not proved, requires A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:9
-generic_float_tests.adb:177:7: assertion not proved, requires A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:14
-generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:190:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:198:14: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:198:14: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:198:14: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:198:14: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:208:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:208:24: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:208:24: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:208:32: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:208:32: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:216:18: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:216:18: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:216:18: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:216:18: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:216:28: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:216:28: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:216:28: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:216:28: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:225:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:225:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:245:7: assertion not proved, requires F = , in instantiation at foo.ads:9
-generic_float_tests.adb:245:7: assertion not proved, requires F = , in instantiation at foo.ads:14
-generic_float_tests.adb:249:19: postcondition not proved, requires F = F'old, in instantiation at foo.ads:9
-generic_float_tests.adb:249:19: postcondition not proved, requires F = F'old, in instantiation at foo.ads:14
-generic_float_tests.adb:252:14: info: overflow check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:252:14: info: overflow check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:259:7: assertion not proved, requires X / X = , in instantiation at foo.ads:9
-generic_float_tests.adb:259:7: assertion not proved, requires X / X = , in instantiation at foo.ads:14
-generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:9
-generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:14
-generic_float_tests.adb:271:16: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:271:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:271:16: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:271:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:272:16: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:272:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:272:16: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:272:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:273:16: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:273:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:273:16: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:273:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:274:7: assertion not proved, requires A = C, in instantiation at foo.ads:9
-generic_float_tests.adb:274:7: assertion not proved, requires A = C, in instantiation at foo.ads:14
-generic_float_tests.adb:281:16: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:281:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:281:16: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:281:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:282:16: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:282:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:282:16: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:282:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:283:16: division check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:283:16: overflow check not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:283:16: division check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:283:16: overflow check not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:284:7: assertion not proved, requires X = B, in instantiation at foo.ads:9
-generic_float_tests.adb:284:7: assertion not proved, requires X = B, in instantiation at foo.ads:14
-generic_float_tests.adb:296:7: assertion not proved, requires - (- X) = + X, in instantiation at foo.ads:9
-generic_float_tests.adb:296:7: assertion not proved, requires - (- X) = + X, in instantiation at foo.ads:14
-generic_float_tests.adb:301:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:301:19: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:309:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:309:19: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:318:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:318:19: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:328:7: assertion not proved, requires FT'Floor (X) <= FT'floor, in instantiation at foo.ads:9
-generic_float_tests.adb:328:7: assertion not proved, requires FT'Floor (X) <= FT'floor, in instantiation at foo.ads:14
-generic_float_tests.adb:335:7: assertion not proved, requires X < FT'floor, in instantiation at foo.ads:9
-generic_float_tests.adb:335:7: assertion not proved, requires X < FT'floor, in instantiation at foo.ads:14
-generic_float_tests.adb:342:7: assertion not proved, requires X < FT'floor, in instantiation at foo.ads:9
-generic_float_tests.adb:342:7: assertion not proved, requires X < FT'floor, in instantiation at foo.ads:14
-generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:348:7: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:358:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:358:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:361:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:361:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:362:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:362:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:365:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:365:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:366:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:366:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:369:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:369:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:370:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:370:10: info: assertion proved, in instantiation at foo.ads:14
-generic_float_tests.adb:373:10: assertion not proved, requires FT'Floor (X) = -, in instantiation at foo.ads:9
-generic_float_tests.adb:373:10: assertion not proved, requires FT'Floor (X) = -, in instantiation at foo.ads:14
-generic_float_tests.adb:374:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:374:10: assertion not proved, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:381:6: disjoint contract cases not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:381:6: complete contract cases not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:381:6: disjoint contract cases not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:381:6: complete contract cases not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:381:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:381:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:382:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:382:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:383:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:383:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:384:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:384:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:9
-generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:14
-generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:9
-generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:14
-generic_float_tests.adb:387:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:387:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:388:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:388:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:389:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:389:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:398:19: postcondition not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:398:19: postcondition not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:436:6: disjoint contract cases not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:436:6: complete contract cases not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:436:6: disjoint contract cases not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:436:6: complete contract cases not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:436:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:436:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:437:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:437:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:438:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:438:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:439:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:439:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:9
-generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:14
-generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:9
-generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:14
-generic_float_tests.adb:442:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:442:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:443:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:443:34: contract case not proved, in instantiation at foo.ads:14
-generic_float_tests.adb:444:34: contract case not proved, in instantiation at foo.ads:9
-generic_float_tests.adb:444:34: contract case not proved, in instantiation at foo.ads:14
-generic_interval_tests.adb:8:19: postcondition not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:8:19: postcondition not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:18:19: postcondition not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:18:19: postcondition not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:26:19: postcondition not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:26:19: postcondition not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:34:19: postcondition not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:34:19: postcondition not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:42:19: postcondition not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:42:19: postcondition not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:50:19: postcondition not proved, requires X * Y >= X, in instantiation at bar.ads:7
-generic_interval_tests.adb:50:19: postcondition not proved, requires X * Y >= X, in instantiation at bar.ads:11
-generic_interval_tests.adb:58:19: postcondition not proved, requires X * Y > X, in instantiation at bar.ads:7
-generic_interval_tests.adb:58:19: postcondition not proved, requires X * Y > X, in instantiation at bar.ads:11
-generic_interval_tests.adb:66:19: postcondition not proved, requires X / Y <= abs X, in instantiation at bar.ads:7
-generic_interval_tests.adb:66:19: postcondition not proved, requires X / Y <= abs X, in instantiation at bar.ads:11
-generic_interval_tests.adb:66:21: info: division check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:66:21: info: division check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:78:10: assertion not proved, requires X < , in instantiation at bar.ads:7
-generic_interval_tests.adb:78:10: assertion not proved, requires X < , in instantiation at bar.ads:11
-generic_interval_tests.adb:87:12: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:87:12: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:88:10: assertion not proved, requires X < , in instantiation at bar.ads:7
-generic_interval_tests.adb:88:10: assertion not proved, requires X < , in instantiation at bar.ads:11
-generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:98:10: assertion not proved, requires X < , in instantiation at bar.ads:7
-generic_interval_tests.adb:98:10: assertion not proved, requires X < , in instantiation at bar.ads:11
-generic_interval_tests.adb:129:8: postcondition not proved, requires Z <= 6.0) xor (Z >= , in instantiation at bar.ads:11
-generic_interval_tests.adb:129:20: postcondition not proved, requires Z <= 6.0) xor (Z >= , in instantiation at bar.ads:7
-generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:138:19: postcondition not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:138:19: postcondition not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:147:19: postcondition not proved, requires Z > X, in instantiation at bar.ads:7
-generic_interval_tests.adb:147:19: postcondition not proved, requires Z > X, in instantiation at bar.ads:11
-generic_interval_tests.adb:150:14: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:150:14: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:156:19: postcondition not proved, requires Z > X, in instantiation at bar.ads:7
-generic_interval_tests.adb:156:19: postcondition not proved, requires Z > X, in instantiation at bar.ads:11
-generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:159:22: overflow check not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:159:22: overflow check not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:165:19: postcondition not proved, requires Z >= X, in instantiation at bar.ads:7
-generic_interval_tests.adb:165:19: postcondition not proved, requires Z >= X, in instantiation at bar.ads:11
-generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:168:22: overflow check not proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:168:22: overflow check not proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:178:19: info: postcondition proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:178:19: info: postcondition proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:181:7: info: assertion proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:181:7: info: assertion proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:182:7: info: assertion proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:182:7: info: assertion proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:183:7: info: assertion proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:183:7: info: assertion proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:184:14: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:184:14: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:184:18: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:184:18: info: overflow check proved, in instantiation at bar.ads:11
-generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:7
-generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:11
+generic_float_tests.adb__foo.ads_14_4:22:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:35:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:48:7: assertion not proved, requires X + Y >= X
+generic_float_tests.adb__foo.ads_14_4:57:7: assertion not proved, requires X + Y > X
+generic_float_tests.adb__foo.ads_14_4:66:7: assertion not proved, requires false
+generic_float_tests.adb__foo.ads_14_4:72:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_14_4:75:18: info: overflow check proved
+generic_float_tests.adb__foo.ads_14_4:80:19: postcondition not proved, requires Underflow_1'Result > 
+generic_float_tests.adb__foo.ads_14_4:83:16: info: division check proved
+generic_float_tests.adb__foo.ads_14_4:83:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:90:19: postcondition not proved, requires Inverse_Reciprocal'Result = A
+generic_float_tests.adb__foo.ads_14_4:93:18: division check not proved
+generic_float_tests.adb__foo.ads_14_4:93:18: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:93:25: info: division check proved
+generic_float_tests.adb__foo.ads_14_4:93:25: info: overflow check proved
+generic_float_tests.adb__foo.ads_14_4:98:19: postcondition not proved, requires Underflow_2'result
+generic_float_tests.adb__foo.ads_14_4:106:19: postcondition not proved, requires Underflow_3'Result > 
+generic_float_tests.adb__foo.ads_14_4:109:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:114:19: postcondition not proved, requires Sqrt_Comedy_1'result
+generic_float_tests.adb__foo.ads_14_4:122:19: postcondition not proved, requires Bad_Optimisation_1'Result = A / B
+generic_float_tests.adb__foo.ads_14_4:122:49: info: division check proved
+generic_float_tests.adb__foo.ads_14_4:125:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:125:23: info: division check proved
+generic_float_tests.adb__foo.ads_14_4:125:23: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:131:7: assertion not proved, requires X + X = X - (-X
+generic_float_tests.adb__foo.ads_14_4:138:7: assertion not proved, requires X - Y = 0.0) = (X = Y
+generic_float_tests.adb__foo.ads_14_4:145:7: assertion not proved, requires X - Y) + Y = X
+generic_float_tests.adb__foo.ads_14_4:152:7: assertion not proved, requires X + Y) - Y = X
+generic_float_tests.adb__foo.ads_14_4:159:7: assertion not proved, requires 1.0 / X > 
+generic_float_tests.adb__foo.ads_14_4:159:26: info: division check proved
+generic_float_tests.adb__foo.ads_14_4:165:7: assertion not proved, requires A + B) + C = A + (B + C
+generic_float_tests.adb__foo.ads_14_4:171:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:177:7: assertion not proved, requires A * (B + C) = (A * B) + (A * C
+generic_float_tests.adb__foo.ads_14_4:190:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:198:14: division check not proved
+generic_float_tests.adb__foo.ads_14_4:198:14: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:208:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:208:24: division check not proved
+generic_float_tests.adb__foo.ads_14_4:208:32: division check not proved
+generic_float_tests.adb__foo.ads_14_4:216:18: division check not proved
+generic_float_tests.adb__foo.ads_14_4:216:18: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:216:28: division check not proved
+generic_float_tests.adb__foo.ads_14_4:216:28: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:225:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:236:10: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:245:7: assertion not proved, requires F = 
+generic_float_tests.adb__foo.ads_14_4:249:19: postcondition not proved, requires F = F'old
+generic_float_tests.adb__foo.ads_14_4:252:14: info: overflow check proved
+generic_float_tests.adb__foo.ads_14_4:259:7: assertion not proved, requires X / X = 
+generic_float_tests.adb__foo.ads_14_4:259:24: info: division check proved
+generic_float_tests.adb__foo.ads_14_4:271:16: division check not proved
+generic_float_tests.adb__foo.ads_14_4:271:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:272:16: division check not proved
+generic_float_tests.adb__foo.ads_14_4:272:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:273:16: division check not proved
+generic_float_tests.adb__foo.ads_14_4:273:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:274:7: assertion not proved, requires A = C
+generic_float_tests.adb__foo.ads_14_4:281:16: division check not proved
+generic_float_tests.adb__foo.ads_14_4:281:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:282:16: division check not proved
+generic_float_tests.adb__foo.ads_14_4:282:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:283:16: division check not proved
+generic_float_tests.adb__foo.ads_14_4:283:16: overflow check not proved
+generic_float_tests.adb__foo.ads_14_4:284:7: assertion not proved, requires X = B
+generic_float_tests.adb__foo.ads_14_4:296:7: assertion not proved, requires - (- X) = + X
+generic_float_tests.adb__foo.ads_14_4:301:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_14_4:309:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_14_4:318:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_14_4:328:7: assertion not proved, requires FT'Floor (X) <= FT'floor
+generic_float_tests.adb__foo.ads_14_4:335:7: assertion not proved, requires X < FT'floor
+generic_float_tests.adb__foo.ads_14_4:342:7: assertion not proved, requires X < FT'floor
+generic_float_tests.adb__foo.ads_14_4:348:7: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:357:10: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:358:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_14_4:361:10: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:362:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_14_4:365:10: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:366:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_14_4:369:10: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:370:10: info: assertion proved
+generic_float_tests.adb__foo.ads_14_4:373:10: assertion not proved, requires FT'Floor (X) = -
+generic_float_tests.adb__foo.ads_14_4:374:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_14_4:381:6: disjoint contract cases not proved
+generic_float_tests.adb__foo.ads_14_4:381:6: complete contract cases not proved
+generic_float_tests.adb__foo.ads_14_4:381:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:382:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:383:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:384:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:385:34: info: contract case proved
+generic_float_tests.adb__foo.ads_14_4:386:34: info: contract case proved
+generic_float_tests.adb__foo.ads_14_4:387:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:388:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:389:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:398:19: postcondition not proved
+generic_float_tests.adb__foo.ads_14_4:406:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_14_4:421:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_14_4:436:6: disjoint contract cases not proved
+generic_float_tests.adb__foo.ads_14_4:436:6: complete contract cases not proved
+generic_float_tests.adb__foo.ads_14_4:436:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:437:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:438:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:439:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:440:34: info: contract case proved
+generic_float_tests.adb__foo.ads_14_4:441:34: info: contract case proved
+generic_float_tests.adb__foo.ads_14_4:442:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:443:34: contract case not proved
+generic_float_tests.adb__foo.ads_14_4:444:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:22:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:35:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:48:7: assertion not proved, requires X + Y >= X
+generic_float_tests.adb__foo.ads_9_4:57:7: assertion not proved, requires X + Y > X
+generic_float_tests.adb__foo.ads_9_4:66:7: assertion not proved, requires false
+generic_float_tests.adb__foo.ads_9_4:72:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_9_4:75:18: info: overflow check proved
+generic_float_tests.adb__foo.ads_9_4:80:19: postcondition not proved, requires Underflow_1'Result > 
+generic_float_tests.adb__foo.ads_9_4:83:16: info: division check proved
+generic_float_tests.adb__foo.ads_9_4:83:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:90:19: postcondition not proved, requires Inverse_Reciprocal'Result = A
+generic_float_tests.adb__foo.ads_9_4:93:18: division check not proved
+generic_float_tests.adb__foo.ads_9_4:93:18: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:93:25: info: division check proved
+generic_float_tests.adb__foo.ads_9_4:93:25: info: overflow check proved
+generic_float_tests.adb__foo.ads_9_4:98:19: postcondition not proved, requires Underflow_2'result
+generic_float_tests.adb__foo.ads_9_4:106:19: postcondition not proved, requires Underflow_3'Result > 
+generic_float_tests.adb__foo.ads_9_4:109:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:114:19: postcondition not proved, requires Sqrt_Comedy_1'result
+generic_float_tests.adb__foo.ads_9_4:122:19: postcondition not proved, requires Bad_Optimisation_1'Result = A / B
+generic_float_tests.adb__foo.ads_9_4:122:49: info: division check proved
+generic_float_tests.adb__foo.ads_9_4:125:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:125:23: info: division check proved
+generic_float_tests.adb__foo.ads_9_4:125:23: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:131:7: assertion not proved, requires X + X = X - (-X
+generic_float_tests.adb__foo.ads_9_4:138:7: assertion not proved, requires X - Y = 0.0) = (X = Y
+generic_float_tests.adb__foo.ads_9_4:145:7: assertion not proved, requires X - Y) + Y = X
+generic_float_tests.adb__foo.ads_9_4:152:7: assertion not proved, requires X + Y) - Y = X
+generic_float_tests.adb__foo.ads_9_4:159:7: assertion not proved, requires 1.0 / X > 
+generic_float_tests.adb__foo.ads_9_4:159:26: info: division check proved
+generic_float_tests.adb__foo.ads_9_4:165:7: assertion not proved, requires A + B) + C = A + (B + C
+generic_float_tests.adb__foo.ads_9_4:171:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:177:7: assertion not proved, requires A * (B + C) = (A * B) + (A * C
+generic_float_tests.adb__foo.ads_9_4:190:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:198:14: division check not proved
+generic_float_tests.adb__foo.ads_9_4:198:14: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:208:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:208:24: division check not proved
+generic_float_tests.adb__foo.ads_9_4:208:32: division check not proved
+generic_float_tests.adb__foo.ads_9_4:216:18: division check not proved
+generic_float_tests.adb__foo.ads_9_4:216:18: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:216:28: division check not proved
+generic_float_tests.adb__foo.ads_9_4:216:28: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:225:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:236:10: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:245:7: assertion not proved, requires F = 
+generic_float_tests.adb__foo.ads_9_4:249:19: postcondition not proved, requires F = F'old
+generic_float_tests.adb__foo.ads_9_4:252:14: info: overflow check proved
+generic_float_tests.adb__foo.ads_9_4:259:7: assertion not proved, requires X / X = 
+generic_float_tests.adb__foo.ads_9_4:259:24: info: division check proved
+generic_float_tests.adb__foo.ads_9_4:271:16: division check not proved
+generic_float_tests.adb__foo.ads_9_4:271:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:272:16: division check not proved
+generic_float_tests.adb__foo.ads_9_4:272:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:273:16: division check not proved
+generic_float_tests.adb__foo.ads_9_4:273:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:274:7: assertion not proved, requires A = C
+generic_float_tests.adb__foo.ads_9_4:281:16: division check not proved
+generic_float_tests.adb__foo.ads_9_4:281:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:282:16: division check not proved
+generic_float_tests.adb__foo.ads_9_4:282:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:283:16: division check not proved
+generic_float_tests.adb__foo.ads_9_4:283:16: overflow check not proved
+generic_float_tests.adb__foo.ads_9_4:284:7: assertion not proved, requires X = B
+generic_float_tests.adb__foo.ads_9_4:296:7: assertion not proved, requires - (- X) = + X
+generic_float_tests.adb__foo.ads_9_4:301:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_9_4:309:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_9_4:318:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_9_4:328:7: assertion not proved, requires FT'Floor (X) <= FT'floor
+generic_float_tests.adb__foo.ads_9_4:335:7: assertion not proved, requires X < FT'floor
+generic_float_tests.adb__foo.ads_9_4:342:7: assertion not proved, requires X < FT'floor
+generic_float_tests.adb__foo.ads_9_4:348:7: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:357:10: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:358:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_9_4:361:10: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:362:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_9_4:365:10: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:366:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_9_4:369:10: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:370:10: info: assertion proved
+generic_float_tests.adb__foo.ads_9_4:373:10: assertion not proved, requires FT'Floor (X) = -
+generic_float_tests.adb__foo.ads_9_4:374:10: assertion not proved, requires FT'Ceiling (X) = 
+generic_float_tests.adb__foo.ads_9_4:381:6: disjoint contract cases not proved
+generic_float_tests.adb__foo.ads_9_4:381:6: complete contract cases not proved
+generic_float_tests.adb__foo.ads_9_4:381:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:382:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:383:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:384:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:385:34: info: contract case proved
+generic_float_tests.adb__foo.ads_9_4:386:34: info: contract case proved
+generic_float_tests.adb__foo.ads_9_4:387:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:388:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:389:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:398:19: postcondition not proved
+generic_float_tests.adb__foo.ads_9_4:406:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_9_4:421:19: info: postcondition proved
+generic_float_tests.adb__foo.ads_9_4:436:6: disjoint contract cases not proved
+generic_float_tests.adb__foo.ads_9_4:436:6: complete contract cases not proved
+generic_float_tests.adb__foo.ads_9_4:436:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:437:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:438:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:439:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:440:34: info: contract case proved
+generic_float_tests.adb__foo.ads_9_4:441:34: info: contract case proved
+generic_float_tests.adb__foo.ads_9_4:442:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:443:34: contract case not proved
+generic_float_tests.adb__foo.ads_9_4:444:34: contract case not proved
+generic_interval_tests.adb__bar.ads_11_4:8:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_11_4:11:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:18:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_11_4:21:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:26:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_11_4:34:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_11_4:42:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_11_4:50:19: postcondition not proved, requires X * Y >= X
+generic_interval_tests.adb__bar.ads_11_4:58:19: postcondition not proved, requires X * Y > X
+generic_interval_tests.adb__bar.ads_11_4:66:19: postcondition not proved, requires X / Y <= abs X
+generic_interval_tests.adb__bar.ads_11_4:66:21: info: division check proved
+generic_interval_tests.adb__bar.ads_11_4:77:12: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:78:10: assertion not proved, requires X < 
+generic_interval_tests.adb__bar.ads_11_4:87:12: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:88:10: assertion not proved, requires X < 
+generic_interval_tests.adb__bar.ads_11_4:97:12: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:98:10: assertion not proved, requires X < 
+generic_interval_tests.adb__bar.ads_11_4:129:8: postcondition not proved, requires Z <= 6.0) xor (Z >= 
+generic_interval_tests.adb__bar.ads_11_4:132:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:138:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_11_4:141:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:147:19: postcondition not proved, requires Z > X
+generic_interval_tests.adb__bar.ads_11_4:150:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:156:19: postcondition not proved, requires Z > X
+generic_interval_tests.adb__bar.ads_11_4:159:15: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:159:22: overflow check not proved
+generic_interval_tests.adb__bar.ads_11_4:165:19: postcondition not proved, requires Z >= X
+generic_interval_tests.adb__bar.ads_11_4:168:15: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:168:22: overflow check not proved
+generic_interval_tests.adb__bar.ads_11_4:178:19: info: postcondition proved
+generic_interval_tests.adb__bar.ads_11_4:181:7: info: assertion proved
+generic_interval_tests.adb__bar.ads_11_4:182:7: info: assertion proved
+generic_interval_tests.adb__bar.ads_11_4:183:7: info: assertion proved
+generic_interval_tests.adb__bar.ads_11_4:184:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:184:18: info: overflow check proved
+generic_interval_tests.adb__bar.ads_11_4:184:22: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:8:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_7_4:11:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:18:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_7_4:21:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:26:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_7_4:34:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_7_4:42:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_7_4:50:19: postcondition not proved, requires X * Y >= X
+generic_interval_tests.adb__bar.ads_7_4:58:19: postcondition not proved, requires X * Y > X
+generic_interval_tests.adb__bar.ads_7_4:66:19: postcondition not proved, requires X / Y <= abs X
+generic_interval_tests.adb__bar.ads_7_4:66:21: info: division check proved
+generic_interval_tests.adb__bar.ads_7_4:77:12: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:78:10: assertion not proved, requires X < 
+generic_interval_tests.adb__bar.ads_7_4:87:12: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:88:10: assertion not proved, requires X < 
+generic_interval_tests.adb__bar.ads_7_4:97:12: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:98:10: assertion not proved, requires X < 
+generic_interval_tests.adb__bar.ads_7_4:129:20: postcondition not proved, requires Z <= 6.0) xor (Z >= 
+generic_interval_tests.adb__bar.ads_7_4:132:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:138:19: postcondition not proved
+generic_interval_tests.adb__bar.ads_7_4:141:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:147:19: postcondition not proved, requires Z > X
+generic_interval_tests.adb__bar.ads_7_4:150:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:156:19: postcondition not proved, requires Z > X
+generic_interval_tests.adb__bar.ads_7_4:159:15: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:159:22: overflow check not proved
+generic_interval_tests.adb__bar.ads_7_4:165:19: postcondition not proved, requires Z >= X
+generic_interval_tests.adb__bar.ads_7_4:168:15: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:168:22: overflow check not proved
+generic_interval_tests.adb__bar.ads_7_4:178:19: info: postcondition proved
+generic_interval_tests.adb__bar.ads_7_4:181:7: info: assertion proved
+generic_interval_tests.adb__bar.ads_7_4:182:7: info: assertion proved
+generic_interval_tests.adb__bar.ads_7_4:183:7: info: assertion proved
+generic_interval_tests.adb__bar.ads_7_4:184:14: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:184:18: info: overflow check proved
+generic_interval_tests.adb__bar.ads_7_4:184:22: info: overflow check proved
 homothetical.adb:8:14: postcondition not proved
 homothetical.adb:12:10: info: overflow check proved
 homothetical.adb:12:21: overflow check not proved
