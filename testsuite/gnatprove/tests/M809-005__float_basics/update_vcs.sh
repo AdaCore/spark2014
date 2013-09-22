@@ -11,8 +11,7 @@ mkdir vcs_01
 
 cd ${ROOT}
 gnatprove -P test.gpr \
-    -j 4 \
-    --prover smtlib2_dummy \
+    --prover cvc4_gnatprove \
     -d \
     -f \
     --warnings=off \
