@@ -634,23 +634,43 @@ package body Why.Gen.Expr is
          Slc := First_Sloc (N);
       end if;
 
-      loop
-         declare
-            File   : constant String := File_Name (Slc);
-            Line   : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Slc);
-            Column : constant Column_Number := Get_Column_Number (Slc);
-         begin
-            Append (Buf, File);
-            Append (Buf, ':');
-            Append (Buf, Int_Image (Integer (Line)));
-            Append (Buf, ':');
-            Append (Buf, Int_Image (Integer (Column)));
-            Slc := Instantiation_Location (Slc);
-            exit when Slc = No_Location;
-            Append (Buf, ':');
-         end;
-      end loop;
+      declare
+         P : Source_Ptr := Slc;
+         Print_Src : Boolean := False;
+      begin
+         loop
+            declare
+               File : constant String := File_Name (P);
+               Line   : constant Physical_Line_Number :=
+                 Get_Physical_Line_Number (P);
+               Column : constant Column_Number := Get_Column_Number (P);
+            begin
+               Append (Buf, File);
+               if Print_Src then
+                  Append (Buf, "_");
+                  Append (Buf, Int_Image (Integer (Line)));
+                  Append (Buf, '_');
+                  Append (Buf, Int_Image (Integer (Column)));
+               end if;
+               P := Instantiation_Location (P);
+               exit when P = No_Location;
+               Append (Buf, "__");
+               Print_Src := True;
+            end;
+         end loop;
+      end;
+
+      declare
+         Line   : constant Physical_Line_Number :=
+           Get_Physical_Line_Number (Slc);
+         Column : constant Column_Number := Get_Column_Number (Slc);
+      begin
+         Append (Buf, ':');
+         Append (Buf, Int_Image (Integer (Line)));
+         Append (Buf, ':');
+         Append (Buf, Int_Image (Integer (Column)));
+      end;
+
       return New_Identifier (Name => Prefix & To_String (Buf));
    end New_Located_Label;
 
