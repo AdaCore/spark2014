@@ -18,7 +18,12 @@ theory IEEE_Float32_Theory
   use import bool.Bool
   use import ieee754.Single_RNE
 
-  function bool_eq (x: single) (y: single) : bool
+  function bool_eq  single single : bool
+  function bool_lt  single single : bool
+  function bool_le  single single : bool
+  function bool_gt  single single : bool
+  function bool_ge  single single : bool
+  function bool_neq single single : bool
 
 end
 
@@ -26,6 +31,11 @@ theory IEEE_Float64_Theory
   use import bool.Bool
   use import ieee754.Double_RNE
 
-  function bool_eq (x: double) (y: double) : bool
+  function bool_eq  double double : bool
+  function bool_lt  double double : bool
+  function bool_le  double double : bool
+  function bool_gt  double double : bool
+  function bool_ge  double double : bool
+  function bool_neq double double : bool
 
 end

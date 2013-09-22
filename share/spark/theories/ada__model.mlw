@@ -204,7 +204,7 @@ module IEEE_Floating_Point_32
   function div_float (x : single) (y : single) : single = fp_div x y
 
   val div_float_ (x:single) (y:single) : single
-    requires { not fp_eq y fp_constant_zero }
+    requires { not isZero y }
     ensures { result = div_float x y }
 
 end
@@ -263,7 +263,7 @@ module IEEE_Floating_Point_64
   function div_float (x : double) (y : double) : double = fp_div x y
 
   val div_float_ (x:double) (y:double) : double
-    requires { not fp_eq y fp_constant_zero }
+    requires { not isZero y }
     ensures { result = div_float x y }
 
 end
