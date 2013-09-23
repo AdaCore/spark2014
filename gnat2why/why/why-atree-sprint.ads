@@ -50,10 +50,6 @@ private
      (State : in out Printer_State;
       Node  : W_Base_Type_Id);
 
-   procedure Ref_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id);
-
    procedure Effects_Pre_Op
      (State : in out Printer_State;
       Node  : W_Effects_Id);

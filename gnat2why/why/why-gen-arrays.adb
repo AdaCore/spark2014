@@ -265,10 +265,11 @@ package body Why.Gen.Arrays is
                                       (Value => Expr_Value (Def))));
          else
             Emit (Theory,
-                  New_Function_Decl (Domain => EW_Term,
-                                     Name   => Attr_Name,
-                                     Binders => (1 .. 0 => <>),
-                                     Return_Type => Int_Type));
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain => EW_Term,
+                     Name   => Attr_Name,
+                     Binders => (1 .. 0 => <>),
+                     Return_Type => Int_Type));
          end if;
          Subst (Cursor) :=
            New_Clone_Substitution
@@ -408,7 +409,7 @@ package body Why.Gen.Arrays is
               +New_Named_Type (Name => Why3_Type_Name);
          begin
             Emit (Theory,
-                  New_Function_Decl
+                  Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => New_Identifier (Name => "to_string"),
                      Binders     =>
@@ -421,7 +422,7 @@ package body Why.Gen.Arrays is
                           B_Type   => Image_Ty)),
                      Return_Type => Str_Typ));
             Emit (Theory,
-                  New_Function_Decl
+                  Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => New_Identifier (Name => "from_string"),
                      Binders     =>

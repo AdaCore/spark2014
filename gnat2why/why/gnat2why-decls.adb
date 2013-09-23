@@ -530,7 +530,7 @@ package body Gnat2Why.Decls is
       --  We generate a "logic", whose axiom will be given in a completion
 
       Emit (File.Cur_Theory,
-            New_Function_Decl
+            Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),

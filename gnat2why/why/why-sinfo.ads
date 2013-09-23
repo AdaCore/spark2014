@@ -49,7 +49,6 @@ package Why.Sinfo is
       -----------
 
       W_Base_Type,
-      W_Ref_Type,
 
       --------------------
       -- Type structure --

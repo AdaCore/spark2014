@@ -1292,21 +1292,42 @@ package body Why.Inter is
    -- New_Abstract_Base_Type --
    ----------------------------
 
-   function New_Abstract_Base_Type (E : Entity_Id) return W_Base_Type_Id
-   is
+   function New_Abstract_Base_Type (E : Entity_Id) return W_Base_Type_Id is
    begin
-      return New_Base_Type (Ada_Node  => E,
-                            Base_Type => EW_Abstract,
-                            Name      => To_Why_Id (E));
+      return New_Base_Type (Ada_Node   => E,
+                            Is_Mutable => False,
+                            Base_Type  => EW_Abstract,
+                            Name       => To_Why_Id (E));
    end New_Abstract_Base_Type;
 
-   function New_Named_Type (Name : W_Identifier_Id) return W_Base_Type_Id
-   is
+   --------------------
+   -- New_Named_Type --
+   --------------------
+
+   function New_Named_Type (Name : W_Identifier_Id) return W_Base_Type_Id is
    begin
-      return New_Base_Type (Ada_Node  => Empty,
-                            Base_Type => EW_Abstract,
-                            Name      => Name);
+      return New_Base_Type (Ada_Node   => Empty,
+                            Is_Mutable => False,
+                            Base_Type  => EW_Abstract,
+                            Name       => Name);
    end New_Named_Type;
+
+   ------------------
+   -- New_Ref_Type --
+   ------------------
+
+   function New_Ref_Type (Ty : W_Base_Type_Id) return W_Base_Type_Id is
+   begin
+      if Get_Is_Mutable (+Ty) then
+         return Ty;
+      else
+         return
+           New_Base_Type (Ada_Node   => Get_Ada_Node (+Ty),
+                          Base_Type  => Get_Base_Type (+Ty),
+                          Name       => Get_Name (+Ty),
+                          Is_Mutable => True);
+      end if;
+   end New_Ref_Type;
 
    -----------------
    -- Open_Theory --
@@ -1465,9 +1486,10 @@ package body Why.Inter is
          return Why_Types_Array (E);
       end if;
       Why_Types_Array (E) :=
-        New_Base_Type (Ada_Node => Empty,
-                       Base_Type => E,
-                       Name      => New_Identifier (Name => Img (E)));
+        New_Base_Type (Ada_Node   => Empty,
+                       Base_Type  => E,
+                       Is_Mutable => False,
+                       Name       => New_Identifier (Name => Img (E)));
       return Why_Types_Array (E);
    end Why_Types;
 

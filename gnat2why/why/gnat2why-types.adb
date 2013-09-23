@@ -341,13 +341,13 @@ package body Gnat2Why.Types is
    -------------------------------
 
    function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
-      return W_Simple_Value_Type_Id
+      return W_Primitive_Type_Id
    is
       Base : constant W_Primitive_Type_Id :=
         Why_Logic_Type_Of_Ada_Type (Ty);
    begin
       if Is_Mutable then
-         return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);
+         return +New_Ref_Type (Ty => +Base);
       else
          return +Base;
       end if;
@@ -356,7 +356,7 @@ package body Gnat2Why.Types is
    function Why_Prog_Type_Of_Ada_Obj
      (N            : Node_Id;
       Is_Primitive : Boolean := False)
-     return W_Simple_Value_Type_Id
+     return W_Primitive_Type_Id
    is
       Mutable : constant Boolean :=
                   not Is_Primitive and then Is_Mutable_In_Why (N);

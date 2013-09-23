@@ -150,6 +150,9 @@ package body Why.Atree.Sprint is
       Base_Type : constant EW_Type := Get_Base_Type (Node);
       Name      : constant W_Identifier_Id := Get_Name (Node);
    begin
+      if Get_Is_Mutable (Node) then
+         P (O, "ref ");
+      end if;
       if Present (Name) then
          Traverse (State, +Name);
       elsif Base_Type = EW_Abstract then
@@ -166,20 +169,6 @@ package body Why.Atree.Sprint is
       end if;
       State.Control := Abandon_Children;
    end Base_Type_Pre_Op;
-
-   ---------------------
-   -- Ref_Type_Pre_Op --
-   ---------------------
-
-   procedure Ref_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      P (O, "ref ");
-   end Ref_Type_Pre_Op;
 
    --------------------
    -- Effects_Pre_Op --
@@ -1024,7 +1013,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Any_Expr_Id)
    is
-      Res_Ty  : constant W_Simple_Value_Type_Id := Get_Return_Type (Node);
+      Res_Ty  : constant W_Primitive_Type_Id := Get_Return_Type (Node);
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
    begin
@@ -1232,7 +1221,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Raise_Id)
    is
-      Exn_Type : constant W_Simple_Value_Type_OId := Get_Exn_Type (Node);
+      Exn_Type : constant W_Primitive_Type_OId := Get_Exn_Type (Node);
    begin
       P (O, "raise ");
 
@@ -1294,7 +1283,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Unreachable_Code_Id)
    is
-      Exn_Type : constant W_Simple_Value_Type_OId :=
+      Exn_Type : constant W_Primitive_Type_OId :=
                    Get_Exn_Type (Node);
    begin
       P (O, "absurd");
@@ -1316,7 +1305,7 @@ package body Why.Atree.Sprint is
       Node  : W_Function_Decl_Id)
    is
       Name        : constant W_Identifier_Id := Get_Name (Node);
-      Return_Type : constant W_Simple_Value_Type_Id := Get_Return_Type (Node);
+      Return_Type : constant W_Primitive_Type_Id := Get_Return_Type (Node);
       Binders     : constant W_Binder_OList := Get_Binders (Node);
 
    begin
@@ -1414,7 +1403,7 @@ package body Why.Atree.Sprint is
       Def         : constant W_Expr_Id := Get_Def (Node);
       Name        : constant W_Identifier_Id := Get_Name (Spec);
       Binders     : constant W_Binder_OList := Get_Binders (Spec);
-      Return_Type : constant W_Simple_Value_Type_OId := Get_Return_Type (Spec);
+      Return_Type : constant W_Primitive_Type_OId := Get_Return_Type (Spec);
       Pre         : constant W_Pred_OId := Get_Pre (Spec);
       Post        : constant W_Pred_OId := Get_Post (Spec);
    begin

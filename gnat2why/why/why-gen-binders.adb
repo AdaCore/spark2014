@@ -174,7 +174,7 @@ package body Why.Gen.Binders is
 
       function New_Arg_Type
         (Binder : Binder_Type)
-        return W_Simple_Value_Type_Id;
+        return W_Primitive_Type_Id;
 
       ------------------
       -- New_Arg_Type --
@@ -182,10 +182,10 @@ package body Why.Gen.Binders is
 
       function New_Arg_Type
         (Binder : Binder_Type)
-        return W_Simple_Value_Type_Id is
+        return W_Primitive_Type_Id is
       begin
          if Domain = EW_Prog and then Binder.Mutable then
-            return New_Ref_Type (Aliased_Type => Binder.B_Type);
+            return +New_Ref_Type (Ty => +Binder.B_Type);
          else
             return +Binder.B_Type;
          end if;

@@ -95,7 +95,7 @@ package Why.Gen.Progs is
    with Pre => Progs'Length /= 0;
 
    function New_Result
-     (T : W_Simple_Value_Type_Id)
+     (T : W_Primitive_Type_Id)
      return W_Binder_Id;
 
 end Why.Gen.Progs;
