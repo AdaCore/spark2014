@@ -313,9 +313,9 @@ package body Gnat2Why.Types is
         EW_Abstract (Ty);
    begin
       if Is_Mutable then
-         return +New_Ref_Type (Ty => +Base);
+         return New_Ref_Type (Ty => Base);
       else
-         return +Base;
+         return Base;
       end if;
    end  Why_Prog_Type_Of_Ada_Type;
 
