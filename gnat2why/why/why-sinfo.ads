@@ -57,9 +57,7 @@ package Why.Sinfo is
       W_Effects,
       W_Binder,
       W_Transparent_Type_Definition,
-      W_Adt_Definition,
       W_Record_Definition,
-      W_Constr_Decl,
 
       -------------------------
       -- Predicate structure --
@@ -67,7 +65,6 @@ package Why.Sinfo is
 
       W_Triggers,
       W_Trigger,
-      W_Match_Case,
 
       --------------------
       -- Prog structure --
@@ -106,7 +103,6 @@ package Why.Sinfo is
       W_Literal,
       W_Binding,
       W_Elsif,
-      W_Match,
       W_Conditional,
 
       -------------------------
@@ -119,8 +115,6 @@ package Why.Sinfo is
       W_Binary_Op,
       W_Unary_Op,
       W_Deref,
-      W_Constr,
-      W_Array_Access,
       W_Record_Access,
       W_Record_Update,
       W_Record_Aggregate,
@@ -131,7 +125,6 @@ package Why.Sinfo is
 
       W_Any_Expr,
       W_Assignment,
-      W_Array_Update,
       W_Binding_Ref,
       W_While_Loop,
       W_Statement_Sequence,
@@ -139,8 +132,6 @@ package Why.Sinfo is
       W_Assert,
       W_Raise,
       W_Try_Block,
-      W_Tag_Intro,
-      W_Unreachable_Code,
 
       ----------------------------
       -- Top-level declarations --
