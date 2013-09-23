@@ -59,7 +59,6 @@ with Why.Types;              use Why.Types;
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
-with Gnat2Why.Types;         use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
 
@@ -413,10 +412,7 @@ package body Gnat2Why.Subprograms is
                B_Type   =>
                  (if Use_Why_Base_Type (Id) then
                      +Base_Why_Type (Unique_Entity (Etype (Id)))
-                  else
-                  +Why_Prog_Type_Of_Ada_Type
-                    (Etype (Id),
-                     Is_Mutable => False)));
+                  else EW_Abstract (Etype (Id))));
             Next (Param);
             Count := Count + 1;
          end;

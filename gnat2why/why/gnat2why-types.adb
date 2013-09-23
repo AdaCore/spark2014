@@ -291,21 +291,4 @@ package body Gnat2Why.Types is
       end if;
    end Translate_Type;
 
-   -------------------------------
-   -- Why_Prog_Type_Of_Ada_Type --
-   -------------------------------
-
-   function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
-      return W_Type_Id
-   is
-      Base : constant W_Type_Id :=
-        EW_Abstract (Ty);
-   begin
-      if Is_Mutable then
-         return New_Ref_Type (Ty => Base);
-      else
-         return Base;
-      end if;
-   end  Why_Prog_Type_Of_Ada_Type;
-
 end Gnat2Why.Types;
