@@ -1519,9 +1519,9 @@ package body Why.Atree.Sprint is
    -- Type_Pre_Op --
    -----------------
 
-   procedure Type_Pre_Op
+   procedure Type_Decl_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Type_Id)
+      Node  : W_Type_Decl_Id)
    is
       use Node_Lists;
 
@@ -1576,7 +1576,7 @@ package body Why.Atree.Sprint is
 
       NL (O);
       State.Control := Abandon_Children;
-   end Type_Pre_Op;
+   end Type_Decl_Pre_Op;
 
    -----------------------------------
    -- Global_Ref_Declaration_Pre_Op --

@@ -638,19 +638,19 @@ package body Xtree_Sinfo is
                  "Def", "W_Pred", Id_One);
       Set_Domain (W_Goal, EW_Term);
 
-      ------------
-      -- W_Type --
-      ------------
+      -----------------
+      -- W_Type_Decl --
+      -----------------
 
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Args", "W_Identifier", Id_Set);
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Name", "W_Identifier", Id_One);
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Labels", "W_Identifier", Id_Set);
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Definition", "W_Type_Definition", Id_Lone);
-      Set_Domain (W_Type, EW_Term);
+      Set_Domain (W_Type_Decl, EW_Term);
 
       ------------------------------
       -- W_Global_Ref_Declaration --

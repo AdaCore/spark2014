@@ -83,9 +83,10 @@ package body Why.Gen.Scalars is
    begin
 
       Emit (Theory,
-            New_Type (Name => Why_Id,
-                      Labels =>
-                        (1 => New_Identifier (Name => """bounded_type"""))));
+            New_Type_Decl
+              (Name => Why_Id,
+               Labels =>
+                 (1 => New_Identifier (Name => """bounded_type"""))));
 
       Define_Scalar_Attributes
         (Theory    => Theory,
@@ -175,7 +176,7 @@ package body Why.Gen.Scalars is
                 Orig_Name => To_Ident (WNE_Attr_Last),
                 Image     => To_Ident (WNE_Attr_Last))));
    begin
-      Emit (Theory, New_Type (Name => Why_Name));
+      Emit (Theory, New_Type_Decl (Name => Why_Name));
       Define_Scalar_Attributes
         (Theory    => Theory,
          Base_Type => EW_Real,

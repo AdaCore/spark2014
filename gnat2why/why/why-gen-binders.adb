@@ -380,7 +380,7 @@ package body Why.Gen.Binders is
        Binders  : Binder_Array) return W_Declaration_Id is
    begin
       return
-         New_Type
+         New_Type_Decl
            (Ada_Node   => Ada_Node,
             Name       => Name,
             Definition =>

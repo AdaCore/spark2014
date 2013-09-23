@@ -150,7 +150,7 @@ package Why.Sinfo is
       W_Function_Def,
       W_Axiom,
       W_Goal,
-      W_Type,
+      W_Type_Decl,
       W_Global_Ref_Declaration,
       W_Exception_Declaration,
       W_Include_Declaration,

@@ -229,7 +229,7 @@ package body Gnat2Why.Types is
 
             if Short_Name (E) /= Short_Name (Base_E) then
                Emit (Theory,
-                     New_Type (Name => E_Ident,
+                     New_Type_Decl (Name => E_Ident,
                                Alias => +New_Named_Type (Base_Ident)));
             end if;
 

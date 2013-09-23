@@ -320,7 +320,7 @@ package body Why.Gen.Arrays is
                Origin        => Clone_Id,
                Substitutions => Subst));
       Emit (Theory,
-            New_Type
+            New_Type_Decl
               (Why3_Type_Name,
                Alias =>
                  +New_Named_Type (Name => New_Identifier (Name => "__t"))));
@@ -395,7 +395,7 @@ package body Why.Gen.Arrays is
                Origin        => Clone_Id,
                Substitutions => Subst));
       Emit (Theory,
-            New_Type
+            New_Type_Decl
               (Why3_Type_Name,
                Alias =>
                  +New_Named_Type (Name => New_Identifier (Name => "__t"))));

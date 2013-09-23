@@ -773,7 +773,7 @@ package body Why.Gen.Records is
       --  Get the empty record case out of the way
 
       if Count_Why_Record_Fields (E) = 0 then
-         Emit (Theory, New_Type (Name => Ty_Ident));
+         Emit (Theory, New_Type_Decl (Name => Ty_Ident));
          return;
       end if;
 
@@ -797,11 +797,12 @@ package body Why.Gen.Records is
 
             if Short_Name (E) /= Short_Name (Clone) then
                Emit (Theory,
-                     New_Type (Name => Ty_Ident,
-                               Alias =>
-                                 +New_Named_Type
-                                   (Name =>
-                                        To_Why_Id (Clone, Local => True))));
+                     New_Type_Decl
+                       (Name => Ty_Ident,
+                        Alias =>
+                          +New_Named_Type
+                          (Name =>
+                               To_Why_Id (Clone, Local => True))));
             end if;
 
             --  if the cloned type is a root type, we need to define the

@@ -429,17 +429,16 @@ package body Gnat2Why.Decls is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
         (if Entity_In_SPARK (E) then
-            New_Type
+            New_Type_Decl
               (Name  => To_Ident (WNE_Type),
                Alias => +Why_Logic_Type_Of_Ada_Obj (E))
          else
-            New_Type
-              (Name => To_Ident (WNE_Type),
-               Args => 0));
+            New_Type_Decl
+              (Name => To_Ident (WNE_Type)));
       Typ  : constant W_Base_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter
-         then +EW_Int_Type
-         else +New_Named_Type (Name => Get_Name (W_Type_Id (Decl))));
+         then EW_Int_Type
+         else New_Named_Type (Name => Get_Name (W_Type_Decl_Id (Decl))));
 
       function Normalize_Type (E : Entity_Id) return Entity_Id;
       --  Choose the correct type to use
@@ -1263,7 +1262,7 @@ package body Gnat2Why.Decls is
                   if Short_Name (Formal) /= Short_Name (Actual) then
                      Emit
                        (TFile.Cur_Theory,
-                        New_Type
+                        New_Type_Decl
                           (Name  =>
                                New_Identifier (Name => Short_Name (Formal)),
                            Alias => Why_Logic_Type_Of_Ada_Type (Actual)));
@@ -1485,9 +1484,7 @@ package body Gnat2Why.Decls is
       Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
 
       Emit (File.Cur_Theory,
-            New_Type
-              (Name => To_Ident (WNE_Type),
-               Args => 0));
+            New_Type_Decl (Name => To_Ident (WNE_Type)));
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration

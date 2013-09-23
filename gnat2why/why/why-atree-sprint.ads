@@ -270,9 +270,9 @@ private
      (State : in out Printer_State;
       Node  : W_Goal_Id);
 
-   procedure Type_Pre_Op
+   procedure Type_Decl_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Type_Id);
+      Node  : W_Type_Decl_Id);
 
    procedure Global_Ref_Declaration_Pre_Op
      (State : in out Printer_State;
