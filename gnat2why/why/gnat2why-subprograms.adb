@@ -414,7 +414,9 @@ package body Gnat2Why.Subprograms is
                  (if Use_Why_Base_Type (Id) then
                      +Base_Why_Type (Unique_Entity (Etype (Id)))
                   else
-                  +Why_Prog_Type_Of_Ada_Obj (Id, True)));
+                  +Why_Prog_Type_Of_Ada_Type
+                    (Etype (Id),
+                     Is_Mutable => False)));
             Next (Param);
             Count := Count + 1;
          end;

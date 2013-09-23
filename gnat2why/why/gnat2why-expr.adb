@@ -68,7 +68,6 @@ with Why.Inter;              use Why.Inter;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
-with Gnat2Why.Types;         use Gnat2Why.Types;
 
 package body Gnat2Why.Expr is
 
@@ -641,7 +640,7 @@ package body Gnat2Why.Expr is
                               (Name   => Name,
                                Def    =>
                                +New_Simpl_Any_Prog
-                                 (T    => Why_Logic_Type_Of_Ada_Obj (N),
+                                 (T    => EW_Abstract (Etype (N)),
                                   Pred =>
                                   +W_Expr_Id'(New_Relation
                                     (Domain   => EW_Pred,

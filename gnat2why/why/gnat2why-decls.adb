@@ -53,7 +53,6 @@ with Why.Conversions;     use Why.Conversions;
 
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
-with Gnat2Why.Types;      use Gnat2Why.Types;
 
 with Ada.Containers.Doubly_Linked_Lists;
 
@@ -430,7 +429,7 @@ package body Gnat2Why.Decls is
         (if Entity_In_SPARK (E) then
             New_Type_Decl
               (Name  => To_Ident (WNE_Type),
-               Alias => +Why_Logic_Type_Of_Ada_Obj (E))
+               Alias => EW_Abstract (Etype (E)))
          else
             New_Type_Decl
               (Name => To_Ident (WNE_Type)));
@@ -508,8 +507,7 @@ package body Gnat2Why.Decls is
    is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String := Base_Name;
-      Typ       : constant W_Type_Id :=
-        Why_Logic_Type_Of_Ada_Obj (E);
+      Typ       : constant W_Type_Id := EW_Abstract (Etype (E));
 
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -557,7 +555,7 @@ package body Gnat2Why.Decls is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
         Base_Name & To_String (WNE_Constant_Axiom);
-      Typ    : constant W_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
+      Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
       Ty_Ent : constant Entity_Id := Unique_Entity (Etype (E));
