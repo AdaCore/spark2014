@@ -162,23 +162,23 @@ package body Gnat2Why.Types is
       --  is modeled as an abstract type to have range checks.
 
       if Ty = Standard_Boolean then
-         return +EW_Bool_Type;
+         return EW_Bool_Type;
       elsif Ty = Universal_Fixed then
-         return +EW_Real_Type;
+         return EW_Real_Type;
       elsif Ekind (Ty) in Private_Kind then
 
          --  For a private type or record subtype, use the most underlying type
          --  if it is in SPARK. Otherwise, return the special private type.
 
          if Entity_In_External_Axioms (Ty) then
-            return +New_Abstract_Base_Type (Ty);
+            return New_Abstract_Base_Type (Ty);
          elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
             return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
          else
-            return +EW_Private_Type;
+            return EW_Private_Type;
          end if;
       else
-         return +New_Abstract_Base_Type (Ty);
+         return New_Abstract_Base_Type (Ty);
       end if;
    end  Why_Logic_Type_Of_Ada_Type;
 
