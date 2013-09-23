@@ -59,12 +59,6 @@ package body Xtree_Sinfo is
       New_Class ("W_Value",
                  W_Not,
                  W_Unreachable_Code);
-      New_Class ("W_Primitive_Type",
-                 W_Base_Type,
-                 W_Abstract_Type);
-      New_Class ("W_Simple_Value_Type",
-                 W_Base_Type,
-                 W_Ref_Type);
 
       New_Class ("W_Type_Definition",
                  W_Transparent_Type_Definition,
@@ -73,7 +67,7 @@ package body Xtree_Sinfo is
                  W_Function_Decl,
                  W_Clone_Declaration);
       New_Class ("W_Any_Node",
-                 W_Base_Type,
+                 W_Type,
                  W_File);
       New_Class ("W_Generic_Theory",
                  W_Theory_Declaration,
@@ -87,33 +81,19 @@ package body Xtree_Sinfo is
       New_Special_Field ("Checked", "Boolean", Checked_Default_Value);
 
       -----------------
-      -- W_Base_Type --
+      -- W_Type --
       -----------------
 
       --  Important note: when Base_Type = EW_Abstract, the Ada node must be
       --  specified.
 
-      New_Field (W_Base_Type,
+      New_Field (W_Type,
                  "Base_Type", "EW_Type");
-      Set_Domain (W_Base_Type, EW_Term);
-
-      ---------------------
-      -- W_Abstract_Type --
-      ---------------------
-
-      --  Deprecated - use W_Base_Type with Base_Type = EW_Abstract instead
-
-      New_Field (W_Abstract_Type,
+      New_Field (W_Type,
                  "Name", "W_Identifier", Id_One);
-      Set_Domain (W_Abstract_Type, EW_Term);
-
-      ----------------
-      -- W_Ref_Type --
-      ----------------
-
-      New_Field (W_Ref_Type,
-                 "Aliased_Type", "W_Primitive_Type", Id_One);
-      Set_Domain (W_Ref_Type, EW_Prog);
+      New_Field (W_Type,
+                 "Is_Mutable", "Boolean");
+      Set_Domain (W_Type, EW_Term);
 
       ---------------
       -- W_Effects --
@@ -135,14 +115,14 @@ package body Xtree_Sinfo is
       New_Field (W_Binder,
                  "Name", "W_Identifier", Id_Lone);
       New_Field (W_Binder,
-                 "Arg_Type", "W_Simple_Value_Type", Id_One);
+                 "Arg_Type", "W_Type", Id_One);
 
       -----------------------------------
       -- W_Transparent_Type_Definition --
       -----------------------------------
 
       New_Field (W_Transparent_Type_Definition,
-                 "Type_Definition", "W_Primitive_Type", Id_One);
+                 "Type_Definition", "W_Type", Id_One);
       Set_Domain (W_Effects, EW_Term);
 
       ----------------------
@@ -160,7 +140,7 @@ package body Xtree_Sinfo is
       New_Field (W_Constr_Decl,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Constr_Decl,
-                 "Arg_List", "W_Primitive_Type", Id_Set);
+                 "Arg_List", "W_Type", Id_Set);
       Set_Domain (W_Constr_Decl, EW_Term);
 
       -------------------------
@@ -278,7 +258,7 @@ package body Xtree_Sinfo is
       New_Field (W_Universal_Quantif,
                  "Labels", "W_Identifier", Id_Set);
       New_Field (W_Universal_Quantif,
-                 "Var_Type", "W_Primitive_Type", Id_One);
+                 "Var_Type", "W_Type", Id_One);
       New_Field (W_Universal_Quantif,
                  "Triggers", "W_Triggers", Id_Lone);
       New_Field (W_Universal_Quantif,
@@ -293,7 +273,7 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Labels", "W_Identifier", Id_Set);
       New_Field (W_Existential_Quantif,
-                 "Var_Type", "W_Primitive_Type", Id_One);
+                 "Var_Type", "W_Type", Id_One);
       New_Field (W_Existential_Quantif,
                  "Pred", "W_Pred", Id_One);
 
@@ -504,7 +484,7 @@ package body Xtree_Sinfo is
       New_Field (W_Any_Expr,
                  "Post", "W_Pred", Id_Lone);
       New_Field (W_Any_Expr,
-                 "Return_Type", "W_Simple_Value_Type", Id_One);
+                 "Return_Type", "W_Type", Id_One);
 
       ------------------
       -- W_Assignment --
@@ -582,7 +562,7 @@ package body Xtree_Sinfo is
       New_Field (W_Raise,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Raise,
-                 "Exn_Type", "W_Simple_Value_Type", Id_Lone);
+                 "Exn_Type", "W_Type", Id_Lone);
 
       -----------------
       -- W_Try_Block --
@@ -606,7 +586,7 @@ package body Xtree_Sinfo is
       ------------------------
 
       New_Field (W_Unreachable_Code,
-                 "Exn_Type", "W_Simple_Value_Type", Id_Lone);
+                 "Exn_Type", "W_Type", Id_Lone);
 
       ---------------------
       -- W_Function_Decl --
@@ -623,7 +603,7 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Decl,
                  "Post", "W_Pred", Id_Lone);
       New_Field (W_Function_Decl,
-                 "Return_Type", "W_Simple_Value_Type", Id_One);
+                 "Return_Type", "W_Type", Id_One);
       New_Field (W_Function_Decl,
                  "Labels", "W_Identifier", Id_Set);
 
@@ -658,19 +638,19 @@ package body Xtree_Sinfo is
                  "Def", "W_Pred", Id_One);
       Set_Domain (W_Goal, EW_Term);
 
-      ------------
-      -- W_Type --
-      ------------
+      -----------------
+      -- W_Type_Decl --
+      -----------------
 
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Args", "W_Identifier", Id_Set);
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Name", "W_Identifier", Id_One);
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Labels", "W_Identifier", Id_Set);
-      New_Field (W_Type,
+      New_Field (W_Type_Decl,
                  "Definition", "W_Type_Definition", Id_Lone);
-      Set_Domain (W_Type, EW_Term);
+      Set_Domain (W_Type_Decl, EW_Term);
 
       ------------------------------
       -- W_Global_Ref_Declaration --
@@ -679,7 +659,7 @@ package body Xtree_Sinfo is
       New_Field (W_Global_Ref_Declaration,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Global_Ref_Declaration,
-                 "Ref_Type", "W_Primitive_Type", Id_One);
+                 "Ref_Type", "W_Type", Id_One);
       New_Field (W_Global_Ref_Declaration,
                  "Labels", "W_Identifier", Id_Set);
       Set_Domain (W_Global_Ref_Declaration, EW_Prog);
@@ -691,7 +671,7 @@ package body Xtree_Sinfo is
       New_Field (W_Exception_Declaration,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Exception_Declaration,
-                 "Arg", "W_Primitive_Type", Id_Lone);
+                 "Arg", "W_Type", Id_Lone);
       Set_Domain (W_Exception_Declaration, EW_Prog);
 
       ---------------------------

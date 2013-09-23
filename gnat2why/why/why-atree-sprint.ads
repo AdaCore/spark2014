@@ -46,13 +46,9 @@ package Why.Atree.Sprint is
 private
    type Printer_State is new Traversal_State with null record;
 
-   procedure Base_Type_Pre_Op
+   procedure Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Base_Type_Id);
-
-   procedure Ref_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id);
+      Node  : W_Type_Id);
 
    procedure Effects_Pre_Op
      (State : in out Printer_State;
@@ -274,9 +270,9 @@ private
      (State : in out Printer_State;
       Node  : W_Goal_Id);
 
-   procedure Type_Pre_Op
+   procedure Type_Decl_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Type_Id);
+      Node  : W_Type_Decl_Id);
 
    procedure Global_Ref_Declaration_Pre_Op
      (State : in out Printer_State;

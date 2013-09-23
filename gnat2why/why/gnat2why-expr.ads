@@ -31,7 +31,6 @@ with Types;          use Types;
 
 with Why.Types;      use Why.Types;
 with Why.Ids;        use Why.Ids;
-with Why.Inter;      use Why.Inter;
 with Why.Sinfo;      use Why.Sinfo;
 
 with Gnat2Why.Nodes; use Gnat2Why.Nodes;
@@ -60,7 +59,7 @@ package Gnat2Why.Expr is
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;
       Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id) return W_Term_Id;
+      Expected_Type : W_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
 
@@ -78,7 +77,7 @@ package Gnat2Why.Expr is
       T           : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params;
-      T_Type      : W_Base_Type_OId := Why_Empty) return W_Expr_Id;
+      T_Type      : W_Type_OId := Why_Empty) return W_Expr_Id;
    --  Given an N_Range node N and a Why expr T, create an expression
    --  low <= T <= high
    --  where "low" and "high" are the lower and higher bounds of N.
@@ -122,7 +121,7 @@ package Gnat2Why.Expr is
 
    function Transform_Expr
      (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id;
+      Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
@@ -142,7 +141,7 @@ package Gnat2Why.Expr is
    function Transform_Expr_With_Actions
      (Expr          : Node_Id;
       Actions       : List_Id;
-      Expected_Type : W_Base_Type_Id;
+      Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id;
    --  Same as Transform_Expr, but takes into account the declarations of

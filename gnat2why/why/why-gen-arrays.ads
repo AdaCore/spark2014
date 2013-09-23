@@ -179,8 +179,8 @@ package Why.Gen.Arrays is
      (Domain        : EW_Domain;
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
-      To            : W_Base_Type_Id;
-      From          : W_Base_Type_Id;
+      To            : W_Type_Id;
+      From          : W_Type_Id;
       Range_Check   : Node_Id := Empty) return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which

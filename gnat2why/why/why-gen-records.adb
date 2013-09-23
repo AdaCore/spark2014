@@ -37,8 +37,6 @@ with VC_Kinds;           use VC_Kinds;
 
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
-with Gnat2Why.Types;     use Gnat2Why.Types;
-with Gnat2Why.Util;      use Gnat2Why.Util;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
@@ -49,6 +47,7 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Terms;      use Why.Gen.Terms;
+with Why.Inter;          use Why.Inter;
 with Why.Types;          use Why.Types;
 
 package body Why.Gen.Records is
@@ -248,8 +247,8 @@ package body Why.Gen.Records is
       Root       : constant Entity_Id := Root_Record_Type (E);
       Is_Root    : constant Boolean := Root = E;
       Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
-      Abstr_Ty   : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Ty_Ident);
+      Abstr_Ty   : constant W_Type_Id :=
+        +New_Named_Type (Name => Ty_Ident);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
       --  Component_Info record. This map is initialized by a call to
@@ -347,7 +346,7 @@ package body Why.Gen.Records is
          Index           : Natural := 1;
          From_Binder     : constant Binder_Array :=
            (1 => (B_Name => A_Ident,
-                  B_Type => Why_Logic_Type_Of_Ada_Type (Root),
+                  B_Type => EW_Abstract (Root),
                   others => <>));
          From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
 
@@ -433,7 +432,7 @@ package body Why.Gen.Records is
                Name        => To_Ident (WNE_To_Base),
                Binders     => R_Binder,
                Return_Type =>
-                 Why_Logic_Type_Of_Ada_Type (Root),
+                 EW_Abstract (Root),
                Def         =>
                  New_Record_Aggregate
                    (Associations => To_Root_Aggr)));
@@ -506,7 +505,7 @@ package body Why.Gen.Records is
                   Binder_Type'(B_Name => B_Ident,
                                  B_Type => Abstr_Ty,
                                  others => <>)),
-               Return_Type => New_Base_Type (Base_Type => EW_Bool),
+               Return_Type => +EW_Bool_Type,
                Def         =>
                  New_Conditional
                    (Domain    => EW_Term,
@@ -584,7 +583,7 @@ package body Why.Gen.Records is
                               Name        => Prog_Name,
                               Binders     => R_Binder,
                               Return_Type =>
-                                Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                                EW_Abstract (Etype (Field)),
                               Pre         => Precond,
                               Post        => Post));
                   end;
@@ -608,7 +607,7 @@ package body Why.Gen.Records is
             Binders (Index) :=
               (B_Name => To_Why_Id (Field, Local => True),
                B_Type =>
-                 Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                 EW_Abstract (Etype (Field)),
                others => <>);
             loop
                Next_Component_Or_Discriminant (Field);
@@ -773,7 +772,7 @@ package body Why.Gen.Records is
       --  Get the empty record case out of the way
 
       if Count_Why_Record_Fields (E) = 0 then
-         Emit (Theory, New_Type (Name => Ty_Ident));
+         Emit (Theory, New_Type_Decl (Name => Ty_Ident));
          return;
       end if;
 
@@ -797,11 +796,12 @@ package body Why.Gen.Records is
 
             if Short_Name (E) /= Short_Name (Clone) then
                Emit (Theory,
-                     New_Type (Name => Ty_Ident,
-                               Alias =>
-                                 New_Abstract_Type
-                                   (Name =>
-                                        To_Why_Id (Clone, Local => True))));
+                     New_Type_Decl
+                       (Name => Ty_Ident,
+                        Alias =>
+                          +New_Named_Type
+                          (Name =>
+                               To_Why_Id (Clone, Local => True))));
             end if;
 
             --  if the cloned type is a root type, we need to define the
@@ -857,8 +857,8 @@ package body Why.Gen.Records is
       Root   : Entity_Id)
    is
       Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
-      Root_Abstr : constant W_Primitive_Type_Id :=
-        New_Abstract_Type (Name => Root_Ident);
+      Root_Abstr : constant W_Type_Id :=
+        +New_Named_Type (Name => Root_Ident);
       A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
       Num_Discr  : constant Natural := Count_Discriminants (E);
       Discr      : Node_Id := First_Discriminant (E);
@@ -885,7 +885,7 @@ package body Why.Gen.Records is
             R_Binder (Count) :=
               Binder_Type'(B_Name => To_Why_Id (Discr, Local => True),
                            B_Type =>
-                             Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
+                             EW_Abstract (Etype (Discr)),
                            others => <>);
             Args (Count) := +To_Why_Id (Discr, Local => True);
             Check_Pred :=

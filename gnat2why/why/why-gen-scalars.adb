@@ -81,9 +81,10 @@ package body Why.Gen.Scalars is
    begin
 
       Emit (Theory,
-            New_Type (Name => Why_Id,
-                      Labels =>
-                        (1 => New_Identifier (Name => """bounded_type"""))));
+            New_Type_Decl
+              (Name => Why_Id,
+               Labels =>
+                 (1 => New_Identifier (Name => """bounded_type"""))));
 
       Define_Scalar_Attributes
         (Theory    => Theory,
@@ -178,11 +179,11 @@ package body Why.Gen.Scalars is
       case Get_EW_Type (Entity) is
          when EW_Float =>
             Emit (Theory,
-                  New_Type (Name   => Why_Name,
-                            Labels => (1 => New_Identifier
-                                         (Name => """bounded_type"""))));
+                  New_Type_Decl (Name   => Why_Name,
+                                 Labels => (1 => New_Identifier
+                                             (Name => """bounded_type"""))));
          when others =>
-            Emit (Theory, New_Type (Name => Why_Name));
+            Emit (Theory, New_Type_Decl (Name => Why_Name));
       end case;
 
       Define_Scalar_Attributes
@@ -247,7 +248,7 @@ package body Why.Gen.Scalars is
                Emit_Top_Level_Declarations
                  (Theory      => Theory,
                   Binders     => (1 .. 0 => <>),
-                  Return_Type => New_Base_Type (Base_Type => Base_Type),
+                  Return_Type => +Why_Types (Base_Type),
                   Spec        => (1 => Spec));
             end if;
          end;

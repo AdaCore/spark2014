@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;          use Types;
+with Types;           use Types;
 
-with Why.Inter;      use Why.Inter;
 with Why.Gen.Binders; use Why.Gen.Binders;
+with Gnat2Why.Util;   use Gnat2Why.Util;
 
 package Gnat2Why.Subprograms is
 

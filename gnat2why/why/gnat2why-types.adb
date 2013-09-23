@@ -40,18 +40,17 @@ with SPARK_Definition;   use SPARK_Definition;
 with SPARK_Util;         use SPARK_Util;
 
 with Why;                use Why;
-with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Gen.Scalars;    use Why.Gen.Scalars;
+with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
-with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package body Gnat2Why.Types is
 
@@ -139,50 +138,6 @@ package body Gnat2Why.Types is
       end if;
    end Ident_Of_Ada_Type;
 
-   -------------------------------
-   -- Why_Logic_Type_Of_Ada_Obj --
-   -------------------------------
-
-   function Why_Logic_Type_Of_Ada_Obj
-     (N : Node_Id)
-     return W_Primitive_Type_Id is
-   begin
-      return Why_Logic_Type_Of_Ada_Type (Etype (N));
-   end  Why_Logic_Type_Of_Ada_Obj;
-
-   --------------------------------
-   -- Why_Logic_Type_Of_Ada_Type --
-   --------------------------------
-
-   function Why_Logic_Type_Of_Ada_Type
-     (Ty : Node_Id)
-     return W_Primitive_Type_Id is
-   begin
-
-      --  Standard.Boolean is modeled as bool; any other boolean subtype
-      --  is modeled as an abstract type to have range checks.
-
-      if Ty = Standard_Boolean then
-         return New_Base_Type (Base_Type => EW_Bool);
-      elsif Ty = Universal_Fixed then
-         return New_Base_Type (Base_Type => EW_Real);
-      elsif Ekind (Ty) in Private_Kind then
-
-         --  For a private type or record subtype, use the most underlying type
-         --  if it is in SPARK. Otherwise, return the special private type.
-
-         if Entity_In_External_Axioms (Ty) then
-            return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
-         elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
-            return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
-         else
-            return New_Base_Type (Base_Type => EW_Private);
-         end if;
-      else
-         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => Ty);
-      end if;
-   end  Why_Logic_Type_Of_Ada_Type;
-
    --------------------
    -- Translate_Type --
    --------------------
@@ -230,10 +185,8 @@ package body Gnat2Why.Types is
 
             if Short_Name (E) /= Short_Name (Base_E) then
                Emit (Theory,
-                     New_Type (Name => E_Ident,
-                               Alias =>
-                                 New_Abstract_Type
-                                   (Name => Base_Ident)));
+                     New_Type_Decl (Name => E_Ident,
+                               Alias => +New_Named_Type (Base_Ident)));
             end if;
 
             if Has_Discriminants (E) then
@@ -325,7 +278,7 @@ package body Gnat2Why.Types is
                Name        => To_Ident (WNE_Dummy),
                Binders     => (1 .. 0 => <>),
                Return_Type =>
-                 New_Abstract_Type (Name => To_Why_Id (E, Local => True))));
+                 +New_Named_Type (Name => To_Why_Id (E, Local => True))));
       end if;
 
       --  If E is the full view of a private type, use its partial view as the
@@ -337,33 +290,5 @@ package body Gnat2Why.Types is
          Close_Theory (File, Filter_Entity => E);
       end if;
    end Translate_Type;
-
-   -------------------------------
-   -- Why_Prog_Type_Of_Ada_Type --
-   -------------------------------
-
-   function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
-      return W_Simple_Value_Type_Id
-   is
-      Base : constant W_Primitive_Type_Id :=
-        Why_Logic_Type_Of_Ada_Type (Ty);
-   begin
-      if Is_Mutable then
-         return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);
-      else
-         return +Base;
-      end if;
-   end  Why_Prog_Type_Of_Ada_Type;
-
-   function Why_Prog_Type_Of_Ada_Obj
-     (N            : Node_Id;
-      Is_Primitive : Boolean := False)
-     return W_Simple_Value_Type_Id
-   is
-      Mutable : constant Boolean :=
-                  not Is_Primitive and then Is_Mutable_In_Why (N);
-   begin
-      return Why_Prog_Type_Of_Ada_Type (Etype (N), Mutable);
-   end  Why_Prog_Type_Of_Ada_Obj;
 
 end Gnat2Why.Types;

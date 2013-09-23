@@ -30,8 +30,6 @@ with Ada.Strings.Unbounded.Hash;
 
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 
-with Atree;                              use Atree;
-with Sinfo;                              use Sinfo;
 with Types;                              use Types;
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
@@ -41,31 +39,13 @@ pragma Warnings (Off);
 with Why.Sinfo;                          use Why.Sinfo;
 pragma Warnings (On);
 with Why.Ids;                            use Why.Ids;
-with Why.Atree.Builders;                 use Why.Atree.Builders;
 with Why.Types;                          use Why.Types;
-
 with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
+with Gnat2Why.Util;                      use Gnat2Why.Util;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
    --  phases of the translation process.
-
-   type Why_Section_Enum is
-     (
-      WF_Pure,
-      WF_Variables,
-      WF_Context,
-      WF_Main);
-
-   type Why_Section is tagged
-      record
-         File        : W_File_Id;
-         Kind        : Why_Section_Enum;
-         Cur_Theory  : W_Theory_Declaration_Id;
-      end record;
-   --  Making this type tagged is a way to force by-reference passing of
-   --  objects of this type. This is needed because we have aliasing between
-   --  parameters of many functions and the global variable Why_Sections below.
 
    function Make_Empty_Why_File
      (Kind : Why_Section_Enum) return Why_Section
@@ -115,11 +95,6 @@ package Why.Inter is
 
    procedure Add_Effect_Imports (P : Why_Section;
                                  S : Name_Set.Set);
-
-   Why_Sections : array (Why_Section_Enum) of Why_Section;
-   Why_File_Name : String_Access;
-
-   Why_File_Suffix : constant String := ".mlw";
 
    Extra_Modules_Map : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
    --  Mappings from Ada nodes to Why logic functions for their translation
@@ -223,82 +198,62 @@ package Why.Inter is
 
    function To_Why_Type (T : String) return W_Identifier_Id;
 
-   EW_Bool_Type : constant W_Base_Type_Id :=
-                    New_Base_Type (Base_Type => EW_Bool);
-   EW_Int_Type  : constant W_Base_Type_Id :=
-                    New_Base_Type (Base_Type => EW_Int);
-   EW_Float32_Type : constant W_Base_Type_Id :=
-                    New_Base_Type (Base_Type => EW_Float32);
-   EW_Float64_Type : constant W_Base_Type_Id :=
-                    New_Base_Type (Base_Type => EW_Float64);
-   EW_Real_Type : constant W_Base_Type_Id :=
-                    New_Base_Type (Base_Type => EW_Real);
-   EW_Private_Type : constant W_Base_Type_Id :=
-                       New_Base_Type (Base_Type => EW_Private);
+   function EW_Bool_Type return W_Type_Id;
+   function EW_Int_Type return W_Type_Id;
+   function EW_Float32_Type return W_Type_Id;
+   function EW_Float64_Type return W_Type_Id;
+   function EW_Real_Type return W_Type_Id;
+   function EW_Private_Type return W_Type_Id;
+   function EW_Unit_Type return W_Type_Id;
+   function EW_Prop_Type return W_Type_Id;
+   function Why_Types (E : EW_Basic_Type) return W_Type_Id;
 
-   type Why_Scalar_Or_Array_Type_Array is
-     array (EW_Scalar_Or_Array_Or_Private) of W_Base_Type_Id;
+   function EW_Abstract (N : Node_Id) return W_Type_Id;
+   function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
+   function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
+   function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
 
-   Why_Types : constant Why_Scalar_Or_Array_Type_Array :=
-                 (EW_Bool    => EW_Bool_Type,
-                  EW_Int     => EW_Int_Type,
-                  EW_Float32 => EW_Float32_Type,
-                  EW_Float64 => EW_Float64_Type,
-                  EW_Real    => EW_Real_Type,
-                  EW_Private => EW_Private_Type);
+   function Type_Of_Node (N : Node_Id) return W_Type_Id;
 
-   function EW_Abstract (N : Node_Id) return W_Base_Type_Id;
-
-   function Base_Why_Type (N : Node_Id) return W_Base_Type_Id;
-   function Base_Why_Type (W : W_Base_Type_Id) return W_Base_Type_Id;
+   function Base_Why_Type (N : Node_Id) return W_Type_Id;
+   function Base_Why_Type (W : W_Type_Id) return W_Type_Id;
    --  Return the base type in Why of the given node. This type will be
    --  used for comparisons, conversions etc. Examples are EW_Real_Type
    --  for standard__float, and the Root_Record_Type for record types.
 
-   function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
+   function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean;
 
-   function Is_Array_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
+   function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean;
 
-   function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
-   function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id;
+   function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id;
+   function Base_Why_Type (Left, Right : Node_Id) return W_Type_Id;
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
-   function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type;
+   function Get_EW_Type (T : W_Type_Id) return EW_Type;
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 
-   function Up (WT : W_Base_Type_Id) return W_Base_Type_Id;
+   function Up (WT : W_Type_Id) return W_Type_Id;
    --  If WT is the highest base type, return WT; otherwise, return the
    --  smallest base type BT such that WT < BT.
 
-   function Up (From, To : W_Base_Type_Id) return W_Base_Type_Id;
+   function Up (From, To : W_Type_Id) return W_Type_Id;
    --  Same as unary Up, except that it stops when To is reached;
    --  i.e. if From = To then To is returned.
 
-   function  LCA (Left, Right : W_Base_Type_Id;
-                  Force : Boolean := False) return W_Base_Type_Id;
+   function  LCA (Left, Right : W_Type_Id;
+                  Force : Boolean := False) return W_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
-   function Full_Name (N : Entity_Id) return String
-      with Pre => (Nkind (N) in N_Entity);
-   --  Given an N_Entity, return its Full Name, as used in Why.
+   function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean;
+   --  Return True if Left and Right are both W_Type_Id nodes, and Eq
+   --  returns True on these seen as W_Type_Id nodes.
 
-   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean;
-   --  The full name of an entity is based on its unique name in nearly all
-   --  cases, so that this name can be used e.g. to retrieve completion
-   --  theories. In a few cases which require special handling
-   --  (currently Standard_Boolean and Universal_Fixed), the full name is hard
-   --  coded for Why, so should not be used as a representative of the entity.
-
-   function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean;
-   --  Return True if Left and Right are both W_Base_Type_Id nodes, and Eq
-   --  returns True on these seen as W_Base_Type_Id nodes.
-
-   function Eq (Left, Right : W_Base_Type_Id) return Boolean;
+   function Eq_Base (Left, Right : W_Type_Id) return Boolean;
    --  Extensional equality (i.e. returns True if Left and Right are of
    --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
 
@@ -324,5 +279,14 @@ private
    Entity_Dependencies : Node_Graphs.Map;
    --  Mapping from an entity to the set of entities on which it depends. This
    --  map is filled by Close_Theory.
+
+   function EW_Bool_Type return W_Type_Id is (Why_Types (EW_Bool));
+   function EW_Int_Type return W_Type_Id is (Why_Types (EW_Int));
+   function EW_Private_Type return W_Type_Id is (Why_Types (EW_Private));
+   function EW_Prop_Type return W_Type_Id is (Why_Types (EW_Prop));
+   function EW_Float32_Type return W_Type_Id is (Why_Types (EW_Float32));
+   function EW_Float64_Type return W_Type_Id is (Why_Types (EW_Float64));
+   function EW_Real_Type return W_Type_Id is (Why_Types (EW_Real));
+   function EW_Unit_Type return W_Type_Id is (Why_Types (EW_Unit));
 
 end Why.Inter;

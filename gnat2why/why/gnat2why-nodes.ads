@@ -25,11 +25,8 @@
 
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Hashed_Maps;
-
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
 with AA_Util;                use AA_Util;
 with Atree;                  use Atree;
@@ -43,8 +40,6 @@ with Uintp;                  use Uintp;
 
 with VC_Kinds;               use VC_Kinds;
 
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Ids;                use Why.Ids;
 with Why.Types;              use Why.Types;
 
 package Gnat2Why.Nodes is
@@ -98,112 +93,6 @@ package Gnat2Why.Nodes is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => "=");
-
-   package Ada_Ent_To_Why is
-
-      --  This package is a map from Ada names to a Why node, possibly with a
-      --  type. Ada names can have the form of Entity_Ids or Entity_Names.
-
-      type Map is private;
-      type Cursor is private;
-
-      Empty_Map : constant Map;
-
-      procedure Insert (M : in out Map;
-                        E : Entity_Id;
-                        W : Binder_Type);
-
-      procedure Insert (M : in out Map;
-                        E : Entity_Name;
-                        W : Binder_Type);
-
-      function Element (M : Map; E : Entity_Id) return Binder_Type;
-      function Element (C : Cursor) return Binder_Type;
-
-      function Find (M : Map; E : Entity_Id) return Cursor;
-      function Find (M : Map; E : Entity_Name) return Cursor;
-
-      function Has_Element (M : Map; E : Entity_Id) return Boolean;
-      function Has_Element (C : Cursor) return Boolean;
-
-      procedure Push_Scope (M : in out Map);
-      --  Mark that a new scope has begun. See the documentation of
-      --  [Pop_Scope].
-
-      procedure Pop_Scope (M : in out Map);
-      --  Restore the map into the state it was at the last call to Push_Scope.
-      --  Does nothing if Push_Scope was never called.
-
-   private
-
-      package Name_To_Why_Map is new Ada.Containers.Hashed_Maps
-        (Key_Type => Entity_Name,
-         Element_Type    => Binder_Type,
-         Hash            => Name_Hash,
-         Equivalent_Keys => Name_Equal,
-         "="             => "=");
-
-      package Ent_To_Why is new Ada.Containers.Hashed_Maps
-        (Key_Type        => Node_Id,
-         Element_Type    => Binder_Type,
-         Hash            => Node_Hash,
-         Equivalent_Keys => "=",
-         "="             => "=");
-
-      type Action_Enum is
-        (Insert_Ent, Insert_Name, Remove_Ent, Remove_Name, Boundary);
-
-      type Action (Kind : Action_Enum) is record
-         case Kind is
-            when Boundary =>
-               null;
-            when Remove_Ent =>
-               Rem_Entity : Entity_Id;
-            when Remove_Name =>
-               Rem_Name : Entity_Name;
-            when Insert_Ent | Insert_Name =>
-               Ins_Binder : Binder_Type;
-               case Kind is
-                  when Insert_Ent =>
-                     Ins_Entity : Entity_Id;
-                  when Insert_Name =>
-                     Ins_Name : Entity_Name;
-                  when others =>
-                     null;
-               end case;
-         end case;
-      end record;
-
-      package Undo_Stacks is new Ada.Containers.Indefinite_Doubly_Linked_Lists
-        (Element_Type => Action,
-         "="          => "=");
-
-      type Map is record
-         Entity_Ids   : Ent_To_Why.Map;
-         Entity_Names : Name_To_Why_Map.Map;
-         Undo_Stack   : Undo_Stacks.List;
-      end record;
-
-      Empty_Map : constant Map :=
-        Map'(Entity_Ids   => Ent_To_Why.Empty_Map,
-             Entity_Names => Name_To_Why_Map.Empty_Map,
-             Undo_Stack   => Undo_Stacks.Empty_List);
-
-      type Cursor_Kind is (CK_Ent, CK_Str);
-
-      type Cursor is record
-
-         --  This should be a variant record, but then it could not be a
-         --  completion of the private type above, so here we have the
-         --  invariant that when Kind = CK_Ent, then Ent_Cursor is valid,
-         --  otherwise, Name_Cursor is valid.
-
-         Kind        : Cursor_Kind;
-         Ent_Cursor  : Ent_To_Why.Cursor;
-         Name_Cursor : Name_To_Why_Map.Cursor;
-      end record;
-
-   end Ada_Ent_To_Why;
 
    function Has_Precondition (E : Entity_Id) return Boolean
    with Pre => Is_Overloadable (E);
@@ -291,9 +180,6 @@ package Gnat2Why.Nodes is
    --  Get the name of the type of an Ada node, as a Node_Id of Kind
    --  N_Defining_Identifier
 
-   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id;
-   --  Get the name of the type of an Ada node, as a Why Type
-
    function Get_Range (N : Node_Id) return Node_Id
       with Post =>
          (Present (Low_Bound (Get_Range'Result)) and then
@@ -321,6 +207,17 @@ package Gnat2Why.Nodes is
    --  Return the "short name" of an Ada entity, which corresponds to the
    --  actual name used for that entity in Why3 (as opposed to the name of
    --  the module)
+
+   function Full_Name (N : Entity_Id) return String
+      with Pre => (Nkind (N) in N_Entity);
+   --  Given an N_Entity, return its Full Name, as used in Why.
+
+   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean;
+   --  The full name of an entity is based on its unique name in nearly all
+   --  cases, so that this name can be used e.g. to retrieve completion
+   --  theories. In a few cases which require special handling
+   --  (currently Standard_Boolean and Universal_Fixed), the full name is hard
+   --  coded for Why, so should not be used as a representative of the entity.
 
    function Avoid_Why3_Keyword (S : String) return String;
    --  Append a "__" whenever S is equal to a Why3 keyword.

@@ -25,3 +25,4 @@ do_checks.adb:147:57: overflow check not proved
 do_checks.adb:159:39: range check not proved
 do_checks.adb:165:38: info: range check proved
 do_checks.adb:165:67: overflow check not proved
+more checks to come

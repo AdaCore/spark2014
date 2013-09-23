@@ -52,7 +52,7 @@ package Why.Gen.Expr is
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Base_Type_Id) return W_Expr_Id;
+       Base        : W_Type_Id) return W_Expr_Id;
    --  Generate the expression "Left and Right"; choose the right "and"
    --  operation depending on "Base", e.g. for modular or boolean types.
 
@@ -67,7 +67,7 @@ package Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : W_Base_Type_Id;
+      Arg_Types   : W_Type_Id;
       Domain      : EW_Domain)
       return W_Expr_Id;
 
@@ -78,7 +78,7 @@ package Why.Gen.Expr is
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
       Domain      : EW_Domain;
-      Base        : W_Base_Type_Id) return W_Expr_Id;
+      Base        : W_Type_Id) return W_Expr_Id;
    --  Generate the expression "Left or Right"; choose the right "or" operation
    --  depending on "Base", e.g. for modular or boolean types.
 
@@ -93,7 +93,7 @@ package Why.Gen.Expr is
    function New_Xor_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Base_Type_Id) return W_Expr_Id;
+       Base        : W_Type_Id) return W_Expr_Id;
    --  Build an expression "Left xor Right", and choose the right xor operation
    --  depending on "Base", which is either EW_Bool_Type or EW_Int_Type.
 
@@ -155,7 +155,7 @@ package Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
-      Base_Type : W_Base_Type_Id;
+      Base_Type : W_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
@@ -165,15 +165,15 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Base_Type_Id;
-      From     : W_Base_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id;
+      From     : W_Type_Id) return W_Expr_Id;
 
    function Insert_Scalar_Conversion
      (Domain      : EW_Domain;
       Ada_Node    : Node_Id := Empty;
       Expr        : W_Expr_Id;
-      To          : W_Base_Type_Id;
-      From        : W_Base_Type_Id;
+      To          : W_Type_Id;
+      From        : W_Type_Id;
       Round_Func  : W_Identifier_Id := Why_Empty;
       Range_Check : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
@@ -187,8 +187,8 @@ package Why.Gen.Expr is
      (Ada_Node    : Node_Id;
       Domain      : EW_Domain;
       Expr        : W_Expr_Id;
-      From        : W_Base_Type_Id;
-      To          : W_Base_Type_Id;
+      From        : W_Type_Id;
+      To          : W_Type_Id;
       Discr_Check : Node_Id := Empty) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.

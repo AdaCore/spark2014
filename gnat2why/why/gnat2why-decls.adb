@@ -25,35 +25,34 @@
 
 with GNAT.Source_Info;
 
-with Atree;                use Atree;
-with Einfo;                use Einfo;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sem_Ch12;             use Sem_Ch12;
-with Sem_Util;             use Sem_Util;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
-with String_Utils;         use String_Utils;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Namet;               use Namet;
+with Nlists;              use Nlists;
+with Sem_Ch12;            use Sem_Ch12;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
+with Sinput;              use Sinput;
+with String_Utils;        use String_Utils;
 
-with SPARK_Definition;     use SPARK_Definition;
-with SPARK_Util;           use SPARK_Util;
+with SPARK_Definition;    use SPARK_Definition;
+with SPARK_Util;          use SPARK_Util;
 
-with Why.Ids;              use Why.Ids;
-with Why.Sinfo;            use Why.Sinfo;
-with Why.Atree.Accessors;  use Why.Atree.Accessors;
-with Why.Atree.Mutators;   use Why.Atree.Mutators;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Gen.Decl;         use Why.Gen.Decl;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Gen.Expr;         use Why.Gen.Expr;
-with Why.Types;            use Why.Types;
-with Why.Conversions;      use Why.Conversions;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
+with Why.Conversions;     use Why.Conversions;
 
-with Gnat2Why.Expr;        use Gnat2Why.Expr;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
-with Gnat2Why.Types;       use Gnat2Why.Types;
-with Gnat2Why.Util;        use Gnat2Why.Util;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 with Ada.Containers.Doubly_Linked_Lists;
 
@@ -385,8 +384,7 @@ package body Gnat2Why.Decls is
                      Binder_Type'(Ada_Node => E,
                                   B_Name   => To_Why_Id (E),
                                   B_Ent    => null,
-                                  B_Type   =>
-                                    Why_Logic_Type_Of_Ada_Type (Etype (E)),
+                                  B_Type   => EW_Abstract (Etype (E)),
                                   Mutable  =>
                                     Ekind (E) in Object_Kind and then
                                   Is_Mutable_In_Why (E)));
@@ -429,17 +427,16 @@ package body Gnat2Why.Decls is
       Name : constant String := Full_Name (E);
       Decl : constant W_Declaration_Id :=
         (if Entity_In_SPARK (E) then
-            New_Type
+            New_Type_Decl
               (Name  => To_Ident (WNE_Type),
-               Alias => +Why_Logic_Type_Of_Ada_Obj (E))
+               Alias => EW_Abstract (Etype (E)))
          else
-            New_Type
-              (Name => To_Ident (WNE_Type),
-               Args => 0));
-      Typ  : constant W_Primitive_Type_Id :=
+            New_Type_Decl
+              (Name => To_Ident (WNE_Type)));
+      Typ  : constant W_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter
-         then New_Base_Type (Base_Type => EW_Int)
-         else New_Abstract_Type (Name => Get_Name (W_Type_Id (Decl))));
+         then EW_Int_Type
+         else New_Named_Type (Name => Get_Name (W_Type_Decl_Id (Decl))));
 
       function Normalize_Type (E : Entity_Id) return Entity_Id;
       --  Choose the correct type to use
@@ -510,8 +507,7 @@ package body Gnat2Why.Decls is
    is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String := Base_Name;
-      Typ       : constant W_Primitive_Type_Id :=
-        Why_Logic_Type_Of_Ada_Obj (E);
+      Typ       : constant W_Type_Id := EW_Abstract (Etype (E));
 
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -530,7 +526,7 @@ package body Gnat2Why.Decls is
       --  We generate a "logic", whose axiom will be given in a completion
 
       Emit (File.Cur_Theory,
-            New_Function_Decl
+            Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
@@ -559,11 +555,11 @@ package body Gnat2Why.Decls is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
         Base_Name & To_String (WNE_Constant_Axiom);
-      Typ    : constant W_Primitive_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
+      Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
       Ty_Ent : constant Entity_Id := Unique_Entity (Etype (E));
-      Use_Ty : constant W_Base_Type_Id :=
+      Use_Ty : constant W_Type_Id :=
         (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent) else
             Type_Of_Node (E));
 
@@ -831,7 +827,7 @@ package body Gnat2Why.Decls is
                           & "__" & Short_Name (Formal) & "\." &
                             Short_Name (Formal)),
                         To       => W_Any_Node_Id
-                          (Why_Logic_Type_Of_Ada_Type (Actual)));
+                          (EW_Abstract (Actual)));
 
                      --  If the formal has a private kind, Base_Type_Name,
                      --  To_Base_Name, Of_Base_Name, and In_Range_Name must be
@@ -839,9 +835,9 @@ package body Gnat2Why.Decls is
 
                      if Ekind (Formal) in Private_Kind then
                         declare
-                           Actual_Type : constant W_Primitive_Type_OId :=
-                             Why_Logic_Type_Of_Ada_Type (Actual);
-                           Actual_Base : constant W_Primitive_Type_OId :=
+                           Actual_Type : constant W_Type_OId :=
+                             EW_Abstract (Actual);
+                           Actual_Base : constant W_Type_OId :=
                              +Base_Why_Type (Unique_Entity (Actual));
                         begin
 
@@ -1137,7 +1133,7 @@ package body Gnat2Why.Decls is
 
          function Why_Logic_Type_Of_Ada_Generic_Type
            (Ty       : Node_Id;
-            Is_Input : Boolean) return W_Primitive_Type_Id;
+            Is_Input : Boolean) return W_Type_Id;
          --  Take an Ada Node and transform it into a Why logic type. The Ada
          --  Node is expected to be a Defining_Identifier for a type.
          --  Return the associated actual if Ty is a generic formal parameter.
@@ -1146,7 +1142,7 @@ package body Gnat2Why.Decls is
 
          function Why_Logic_Type_Of_Ada_Generic_Type
            (Ty       : Node_Id;
-            Is_Input : Boolean) return W_Primitive_Type_Id is
+            Is_Input : Boolean) return W_Type_Id is
 
             --  Goes through a list of parameters to find actual that is
             --  associated with the formal Ty
@@ -1203,9 +1199,9 @@ package body Gnat2Why.Decls is
                   if Is_Input and then
                     Is_Scalar_Type (Actual) and then
                     not Is_Boolean_Type (Actual) then
-                     return +Base_Why_Type (Unique_Entity (Actual));
+                     return Base_Why_Type (Unique_Entity (Actual));
                   else
-                     return Why_Logic_Type_Of_Ada_Type (Actual);
+                     return EW_Abstract (Actual);
                   end if;
                end;
             else
@@ -1216,9 +1212,9 @@ package body Gnat2Why.Decls is
                   --  If Is_Input is true, checks wether the base_type of
                   --  Ty should be used.
 
-                  return +Base_Why_Type (Unique_Entity (Ty));
+                  return Base_Why_Type (Unique_Entity (Ty));
                else
-                  return Why_Logic_Type_Of_Ada_Type (Ty);
+                  return EW_Abstract (Ty);
                end if;
             end if;
          end Why_Logic_Type_Of_Ada_Generic_Type;
@@ -1263,10 +1259,10 @@ package body Gnat2Why.Decls is
                   if Short_Name (Formal) /= Short_Name (Actual) then
                      Emit
                        (TFile.Cur_Theory,
-                        New_Type
+                        New_Type_Decl
                           (Name  =>
                                New_Identifier (Name => Short_Name (Formal)),
-                           Alias => Why_Logic_Type_Of_Ada_Type (Actual)));
+                           Alias => EW_Abstract (Actual)));
                   end if;
 
                   if Ekind (Actual) in E_Record_Type and then
@@ -1276,8 +1272,8 @@ package body Gnat2Why.Decls is
                      --  to define the conversion functions
 
                      declare
-                        F_Ty   : constant W_Primitive_Type_Id :=
-                          New_Abstract_Type
+                        F_Ty   : constant W_Type_Id :=
+                          +New_Named_Type
                             (Name => New_Identifier
                                (Name => Short_Name (Formal)));
                         A_Ident    : constant W_Identifier_Id :=
@@ -1342,15 +1338,15 @@ package body Gnat2Why.Decls is
                        Parameter_Specifications
                          (Get_Subprogram_Spec (Formal));
                      F_Param : Node_Id := First (F_Params);
-                     F_Type : constant W_Primitive_Type_Id :=
+                     F_Type : constant W_Type_Id :=
                        Why_Logic_Type_Of_Ada_Generic_Type
                          (Etype (Formal), False);
                      A_Params : constant List_Id :=
                        Parameter_Specifications
                          (Get_Subprogram_Spec (Actual));
                      A_Param : Node_Id := First (A_Params);
-                     A_Type : constant W_Primitive_Type_Id :=
-                       Why_Logic_Type_Of_Ada_Type (Etype (Actual));
+                     A_Type : constant W_Type_Id :=
+                       EW_Abstract (Etype (Actual));
                      Binders : Binder_Array
                        (1 .. Integer (List_Length (F_Params)));
                      Args    : W_Expr_Array
@@ -1365,14 +1361,13 @@ package body Gnat2Why.Decls is
                         declare
                            A_Id   : constant Node_Id :=
                              Defining_Identifier (A_Param);
-                           A_Type : constant W_Primitive_Type_Id :=
+                           A_Type : constant W_Type_Id :=
                              (if Use_Why_Base_Type (A_Id) then
                               +Base_Why_Type (Unique_Entity (Etype (A_Id)))
-                              else Why_Logic_Type_Of_Ada_Type
-                                (Etype (A_Id)));
+                              else EW_Abstract (Etype (A_Id)));
                            F_Id   : constant Node_Id :=
                              Defining_Identifier (F_Param);
-                           F_Type : constant W_Primitive_Type_Id :=
+                           F_Type : constant W_Type_Id :=
                              Why_Logic_Type_Of_Ada_Generic_Type
                                (Etype (F_Id), True);
                            Name : constant W_Identifier_Id :=
@@ -1485,15 +1480,12 @@ package body Gnat2Why.Decls is
       Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
 
       Emit (File.Cur_Theory,
-            New_Type
-              (Name => To_Ident (WNE_Type),
-               Args => 0));
+            New_Type_Decl (Name => To_Ident (WNE_Type)));
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E.all, Local => True),
-            Ref_Type =>
-              New_Abstract_Type (Name => To_Ident (WNE_Type))));
+            Ref_Type => +New_Named_Type (Name => To_Ident (WNE_Type))));
 
       Close_Theory (File, Filter_Entity => Empty, No_Import => True);
    end Translate_External_Object;

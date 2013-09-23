@@ -48,9 +48,7 @@ package Why.Sinfo is
       -- Types --
       -----------
 
-      W_Base_Type,
-      W_Abstract_Type,
-      W_Ref_Type,
+      W_Type,
 
       --------------------
       -- Type structure --
@@ -152,7 +150,7 @@ package Why.Sinfo is
       W_Function_Def,
       W_Axiom,
       W_Goal,
-      W_Type,
+      W_Type_Decl,
       W_Global_Ref_Declaration,
       W_Exception_Declaration,
       W_Include_Declaration,
@@ -224,17 +222,10 @@ package Why.Sinfo is
    --  EW_Float64
        EW_Real;
 
-   subtype EW_Basic_Type is EW_Base_Type range
+   subtype EW_Basic_Type is EW_Type range
        EW_Unit ..
    --  EW_Prop
    --  EW_Bool
-   --  EW_Int
-   --  EW_Float32
-   --  EW_Float64
-       EW_Real;
-
-   subtype EW_Scalar_Or_Array_Or_Private is EW_Type range
-       EW_Bool ..
    --  EW_Int
    --  EW_Float32
    --  EW_Float64

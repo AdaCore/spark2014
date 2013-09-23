@@ -131,7 +131,7 @@ package Xtree_Tables is
    ------------------
 
    subtype Valid_Kind is Why_Node_Kind
-     range W_Base_Type .. Why_Node_Kind'Last;
+     range W_Type .. Why_Node_Kind'Last;
 
    Why_Tree_Info : array (Why_Node_Kind) of Why_Node_Info;
    --  Structural info for the variant part of the Why syntax tree

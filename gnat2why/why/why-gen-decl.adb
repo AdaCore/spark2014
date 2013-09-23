@@ -43,63 +43,24 @@ package body Why.Gen.Decl is
          New_Item => +Decl);
    end Emit;
 
-   --------------
-   -- New_Type --
-   --------------
+   -------------------
+   -- New_Type_Decl --
+   -------------------
 
-   function New_Type (Name : String) return W_Declaration_Id is
+   function New_Type_Decl (Name : String) return W_Declaration_Id is
    begin
-      return New_Type (Name => New_Identifier (Name => Name));
-   end New_Type;
+      return New_Type_Decl (Name => New_Identifier (Name => Name));
+   end New_Type_Decl;
 
-   function New_Type
+   function New_Type_Decl
      (Name  : W_Identifier_Id;
-      Alias : W_Primitive_Type_Id) return W_Declaration_Id is
+      Alias : W_Type_Id) return W_Declaration_Id is
    begin
-      return New_Type
+      return New_Type_Decl
         (Name => Name,
          Definition => New_Transparent_Type_Definition
            (Domain          => EW_Prog,
             Type_Definition => Alias));
-   end New_Type;
-
-   function New_Type
-     (Name : W_Identifier_Id;
-      Args : Natural)
-     return W_Declaration_Id
-   is
-      C       : Character := 'a';
-      Type_Ar : W_Identifier_Array := (1 .. Args => <>);
-   begin
-      if Args = 0 then
-         return New_Type (Name => Name);
-      end if;
-
-      for I in 1 .. Args loop
-         Type_Ar (I) := New_Identifier (Name => (1 => C));
-         C := Character'Succ (C);
-      end loop;
-
-      return
-        New_Type
-          (Name => Name,
-           Args => Type_Ar);
-   end New_Type;
-
-   ------------------------
-   -- New_Adt_Definition --
-   ------------------------
-
-   function New_Adt_Definition
-     (Name         : W_Identifier_Id;
-      Constructors : W_Constr_Decl_Array)
-     return W_Declaration_Id is
-   begin
-      return
-        New_Type
-          (Name => Name,
-           Definition =>
-             New_Adt_Definition (Constructors => Constructors));
-   end New_Adt_Definition;
+   end New_Type_Decl;
 
 end Why.Gen.Decl;

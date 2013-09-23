@@ -42,7 +42,6 @@ with SPARK_Util;            use SPARK_Util;
 
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Sinfo;             use Why.Sinfo;
-with Why.Inter;             use Why.Inter;
 
 package body Gnat2Why.Nodes is
 
@@ -55,215 +54,6 @@ package body Gnat2Why.Nodes is
         (Unit (Enclosing_Comp_Unit_Node (Corresponding_Body (N)))));
 
    Why3_Keywords : String_Utils.String_Sets.Set;
-
-   package body Ada_Ent_To_Why is
-
-      -------------
-      -- Element --
-      -------------
-
-      function Element (M : Map; E : Entity_Id)
-                            return Binder_Type is
-      begin
-         return M.Entity_Ids.Element (E);
-      end Element;
-
-      function Element (C : Cursor) return Binder_Type is
-      begin
-         case C.Kind is
-            when CK_Ent =>
-               return Ent_To_Why.Element (C.Ent_Cursor);
-            when CK_Str =>
-               return Name_To_Why_Map.Element (C.Name_Cursor);
-         end case;
-      end Element;
-
-      ----------
-      -- Find --
-      ----------
-
-      function Find (M : Map; E : Entity_Id) return Cursor is
-         C : constant Ent_To_Why.Cursor := M.Entity_Ids.Find (E);
-      begin
-         if Ent_To_Why.Has_Element (C) then
-            return Cursor'(CK_Ent,
-                           C,
-                           Name_To_Why_Map.No_Element);
-         else
-            return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                           Name_To_Why_Map.No_Element);
-         end if;
-      end Find;
-
-      function Find (M : Map; E : Entity_Name) return Cursor is
-         C : constant Name_To_Why_Map.Cursor := M.Entity_Names.Find (E);
-      begin
-         if Name_To_Why_Map.Has_Element (C) then
-            return Cursor'(CK_Str, Ent_To_Why.No_Element,
-                           C);
-         else
-            declare
-               Ent : constant Entity_Id := Find_Object_Entity (E);
-            begin
-               if Present (Ent) then
-                  return Find (M, Ent);
-               else
-                  return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                                 Name_To_Why_Map.No_Element);
-               end if;
-            end;
-         end if;
-      end Find;
-
-      -----------------
-      -- Has_Element --
-      -----------------
-
-      function Has_Element (M : Map; E : Entity_Id) return Boolean
-      is
-      begin
-         return M.Entity_Ids.Contains (E);
-      end Has_Element;
-
-      function Has_Element (C : Cursor) return Boolean
-      is
-      begin
-         case C.Kind is
-            when CK_Ent =>
-               return Ent_To_Why.Has_Element (C.Ent_Cursor);
-            when CK_Str =>
-               return Name_To_Why_Map.Has_Element (C.Name_Cursor);
-         end case;
-      end Has_Element;
-
-      ------------
-      -- Insert --
-      ------------
-
-      procedure Insert (M : in out Map;
-                        E : Entity_Id;
-                        W : Binder_Type)
-      is
-         C : Ent_To_Why.Cursor;
-         Inserted : Boolean;
-      begin
-         M.Entity_Ids.Insert (E, W, C, Inserted);
-         if Undo_Stacks.Is_Empty (M.Undo_Stack) then
-
-            --  At the global level (no undo stack) we expect that there are no
-            --  clashes in symbols
-
-            pragma Assert (Inserted);
-         else
-            if Inserted then
-               M.Undo_Stack.Append (Action'(Remove_Ent, E));
-            else
-
-               --  If there was already an entry for the entity, we need to
-               --  store in the undo stack the fact that this info must be
-               --  reinserted
-
-               M.Undo_Stack.Append
-                 (Action'(Kind       => Insert_Ent,
-                          Ins_Entity => Ent_To_Why.Key (C),
-                          Ins_Binder => Ent_To_Why.Element (C)));
-               M.Entity_Ids.Replace (E, W);
-               M.Undo_Stack.Append (Action'(Remove_Ent, E));
-            end if;
-         end if;
-      end Insert;
-
-      procedure Insert (M : in out Map;
-                        E : Entity_Name;
-                        W : Binder_Type) is
-         C : Name_To_Why_Map.Cursor;
-         Inserted : Boolean;
-      begin
-         M.Entity_Names.Insert (E, W, C, Inserted);
-         if Undo_Stacks.Is_Empty (M.Undo_Stack) then
-
-            --  At the global level (no undo stack) we expect that there are no
-            --  clashes in symbols
-
-            pragma Assert (Inserted);
-         else
-            if Inserted then
-               M.Undo_Stack.Append (Action'(Remove_Name, E));
-            else
-
-               --  If there was already an entry for the name, we need to
-               --  store in the undo stack the fact that this info must be
-               --  reinserted
-
-               M.Undo_Stack.Append
-                 (Action'(Kind => Insert_Name,
-                          Ins_Name => Name_To_Why_Map.Key (C),
-                          Ins_Binder => Name_To_Why_Map.Element (C)));
-               M.Entity_Names.Replace (E, W);
-               M.Undo_Stack.Append (Action'(Remove_Name, E));
-            end if;
-         end if;
-      end Insert;
-
-      ---------------
-      -- Pop_Scope --
-      ---------------
-
-      procedure Pop_Scope (M : in out Map) is
-
-         procedure Apply_Action (C : Undo_Stacks.Cursor);
-         --  apply a single action
-
-         ------------------
-         -- Apply_Action --
-         ------------------
-
-         procedure Apply_Action (C : Undo_Stacks.Cursor) is
-            A : constant Action := Undo_Stacks.Element (C);
-         begin
-            case A.Kind is
-               when Insert_Ent =>
-                  M.Entity_Ids.Include (A.Ins_Entity, A.Ins_Binder);
-               when Insert_Name =>
-                  M.Entity_Names.Include (A.Ins_Name, A.Ins_Binder);
-               when Remove_Ent =>
-                  M.Entity_Ids.Delete (A.Rem_Entity);
-               when Remove_Name =>
-                  M.Entity_Names.Delete (A.Rem_Name);
-               when Boundary =>
-                  raise Program_Error;
-            end case;
-         end Apply_Action;
-
-         C : Undo_Stacks.Cursor := M.Undo_Stack.Last;
-         Tmp : Undo_Stacks.Cursor;
-
-      begin
-         while Undo_Stacks.Has_Element (C) and then
-           Undo_Stacks.Element (C).Kind /= Boundary loop
-            Apply_Action (C);
-            Tmp := C;
-            Undo_Stacks.Previous (C);
-            M.Undo_Stack.Delete (Tmp);
-         end loop;
-
-         --  we still need to delete the boundary marker, if it exists
-
-         if Undo_Stacks.Has_Element (C) then
-            M.Undo_Stack.Delete (C);
-         end if;
-      end Pop_Scope;
-
-      ----------------
-      -- Push_Scope --
-      ----------------
-
-      procedure Push_Scope (M : in out Map) is
-      begin
-         M.Undo_Stack.Append (Action'(Kind => Boundary));
-      end Push_Scope;
-
-   end Ada_Ent_To_Why;
 
    ------------------
    -- Add_To_Graph --
@@ -343,6 +133,51 @@ package body Gnat2Why.Nodes is
 
    function Body_File_Name_Without_Suffix (N : Node_Id) return String is
       (File_Name_Without_Suffix (Body_File_Name (N)));
+
+   ---------------
+   -- Full_Name --
+   ---------------
+
+   function Full_Name (N : Entity_Id) return String is
+   begin
+      --  In special cases, return a fixed name. These cases should match those
+      --  for which Full_Name_Is_Not_Unique_Name returns True.
+
+      if Full_Name_Is_Not_Unique_Name (N) then
+         if N = Standard_Boolean then
+            return "bool";
+         elsif N = Universal_Fixed then
+            return "real";
+         else
+            raise Program_Error;
+         end if;
+
+      --  In the general case, return a name based on the Unique_Name
+
+      else
+         declare
+            S : String := Unique_Name (N);
+         begin
+
+            --  In Why3, enumeration literals need to be upper case. Why2
+            --  doesn't care, so we enforce upper case here
+
+            if Ekind (N) = E_Enumeration_Literal then
+               Capitalize_First (S);
+            end if;
+            return S;
+         end;
+      end if;
+   end Full_Name;
+
+   ----------------------------------
+   -- Full_Name_Is_Not_Unique_Name --
+   ----------------------------------
+
+   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean is
+   begin
+      return N = Standard_Boolean or else N = Universal_Fixed;
+   end Full_Name_Is_Not_Unique_Name;
 
    -----------------------
    -- Get_Graph_Closure --
@@ -1085,19 +920,6 @@ package body Gnat2Why.Nodes is
          return Why_Scalar_Type_Name (EW_Real);
       else
          return Full_Name (E);
-      end if;
-   end Type_Of_Node;
-
-   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
-   begin
-      if E = Standard_Boolean then
-         return EW_Bool_Type;
-      elsif E = Universal_Fixed then
-         return EW_Real_Type;
-      else
-         return EW_Abstract (E);
       end if;
    end Type_Of_Node;
 

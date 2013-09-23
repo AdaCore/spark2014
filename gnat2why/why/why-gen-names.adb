@@ -30,7 +30,6 @@ with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
-with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
 package body Why.Gen.Names is
@@ -122,8 +121,8 @@ package body Why.Gen.Names is
    ---------------------
 
    function Conversion_Name
-      (From : W_Base_Type_Id;
-       To   : W_Base_Type_Id) return W_Identifier_Id
+      (From : W_Type_Id;
+       To   : W_Type_Id) return W_Identifier_Id
    is
       From_Kind : constant EW_Type := Get_Base_Type (From);
       To_Kind   : constant EW_Type := Get_Base_Type (To);
@@ -295,6 +294,7 @@ package body Why.Gen.Names is
          when EW_Real    => return "real";
          when EW_Int     => return "int";
          when EW_Bool    => return "bool";
+         when EW_Private => return "__private";
       end case;
    end EW_Base_Type_Name;
 
@@ -331,7 +331,7 @@ package body Why.Gen.Names is
 
    function New_Bool_Cmp
      (Rel       : EW_Relation;
-      Arg_Types : W_Base_Type_Id) return W_Identifier_Id
+      Arg_Types : W_Type_Id) return W_Identifier_Id
    is
       Kind : constant EW_Type := Get_Base_Type (Arg_Types);
       A    : constant Node_Id :=

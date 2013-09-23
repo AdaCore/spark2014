@@ -70,9 +70,9 @@
 --    Why.Gen.Arrays
 --  are useful.
 
-with Types;     use Types;
-with Why.Ids;   use Why.Ids;
-with Why.Inter; use Why.Inter;
+with Types;         use Types;
+with Why.Ids;       use Why.Ids;
+with Gnat2Why.Util; use Gnat2Why.Util;
 
 package Gnat2Why.Types is
 
@@ -82,31 +82,6 @@ package Gnat2Why.Types is
    --  Generate the Why3 declaration module for the type entity in argument.
    --  This function basically dispatches to the corresponding specific package
    --  in Why.Gen.* (Scalars, Records, or Arrays).
-
-   function Why_Prog_Type_Of_Ada_Obj
-     (N            : Node_Id;
-      Is_Primitive : Boolean := False)
-      return W_Simple_Value_Type_Id;
-   --  Take an Ada Node and transform it into a Why program type. The Ada Node
-   --  is expected to be a Defining_Identifier for a program variable. If
-   --  Is_Primitive is True, force the result to be a primitive type
-   --  (i.e. no ref).
-
-   function Why_Logic_Type_Of_Ada_Obj (N : Node_Id)
-     return W_Primitive_Type_Id;
-   --  Take an Ada Node and transform it into a Why logic type. The Ada Node
-   --  is expected to be a Defining_Identifier for a program variable.
-
-   function Why_Logic_Type_Of_Ada_Type (Ty : Node_Id)
-     return W_Primitive_Type_Id;
-   --  Take an Ada Node and transform it into a Why logic type. The Ada Node
-   --  is expected to be a Defining_Identifier for a type.
-
-   function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
-      return W_Simple_Value_Type_Id;
-   --  Take an Ada Node and transform it into a Why program type. The Ada Node
-   --  is expected to be a Defining_Identifier for a type. The Boolean
-   --  argument decides if a "ref" constructor is built on top.
 
    function Ident_Of_Ada_Type (E : Entity_Id) return W_Identifier_Id;
    --  Transform the type entity in argument to an identifier. This function

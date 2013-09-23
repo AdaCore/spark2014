@@ -23,31 +23,39 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
 with Constant_Tree;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
 with SPARK_Xrefs;         use SPARK_Xrefs;
 with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
-with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
+with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
 
-with Gnat2Why.Util;       use Gnat2Why.Util;
+with Why.Images;          use Why.Images;
 
 ---------------
 -- Why.Inter --
 ---------------
 
 package body Why.Inter is
+
+   type Why_Types_Array_Type is array (EW_Basic_Type) of W_Type_Id;
+
+   Why_Types_Array : Why_Types_Array_Type := (others => Why_Empty);
+   --  is initialized as needed in function Why_Types
 
    -----------------------
    -- Local Subprograms --
@@ -65,7 +73,7 @@ package body Why.Inter is
    --  and should be treated specially.
 
    package Type_Hierarchy is
-     new Constant_Tree (EW_Base_Type, EW_Unit);
+     new Constant_Tree (EW_Type, EW_Unit);
 
    function Extract_Object_Name (Obj : String) return String;
    --  Extract the name after the last "__"; return Obj when the string does
@@ -303,9 +311,9 @@ package body Why.Inter is
          S : Set;
       end record;
 
-      procedure Base_Type_Pre_Op
+      procedure Type_Pre_Op
         (State : in out Search_State;
-         Node  : W_Base_Type_Id);
+         Node  : W_Type_Id);
 
       procedure Identifier_Pre_Op
         (State : in out Search_State;
@@ -371,15 +379,15 @@ package body Why.Inter is
       -- Base_Type_Pre_Op --
       ----------------------
 
-      procedure Base_Type_Pre_Op
+      procedure Type_Pre_Op
         (State : in out Search_State;
-         Node  : W_Base_Type_Id)
+         Node  : W_Type_Id)
       is
       begin
          if Get_Base_Type (+Node) = EW_Abstract then
             Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
          end if;
-      end Base_Type_Pre_Op;
+      end Type_Pre_Op;
 
       -----------------------
       -- Identifier_Pre_Op --
@@ -690,7 +698,7 @@ package body Why.Inter is
    -- Base_Why_Type --
    -------------------
 
-   function Base_Why_Type (W : W_Base_Type_Id) return W_Base_Type_Id is
+   function Base_Why_Type (W : W_Type_Id) return W_Type_Id is
       Kind : constant EW_Type := Get_Base_Type (W);
    begin
       case Kind is
@@ -701,7 +709,7 @@ package body Why.Inter is
       end case;
    end Base_Why_Type;
 
-   function Base_Why_Type (N : Node_Id) return W_Base_Type_Id is
+   function Base_Why_Type (N : Node_Id) return W_Type_Id is
 
       E   : constant EW_Type := Get_EW_Term_Type (N);
       Typ : constant Entity_Id := Etype (N);
@@ -718,13 +726,13 @@ package body Why.Inter is
       end case;
    end Base_Why_Type;
 
-   function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id
+   function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id
    is
    begin
       return LCA (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
 
-   function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id is
+   function Base_Why_Type (Left, Right : Node_Id) return W_Type_Id is
    begin
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
@@ -1000,34 +1008,45 @@ package body Why.Inter is
       end if;
    end Eq;
 
-   function Eq (Left, Right : W_Base_Type_Id) return Boolean is
-      Left_Kind  : constant EW_Type := Get_Base_Type (Left);
-      Right_Kind : constant EW_Type := Get_Base_Type (Right);
+   function Eq_Base (Left, Right : W_Type_Id) return Boolean is
    begin
-      if Left_Kind /= Right_Kind then
-         return False;
+      if Left = Right then
+         return True;
       end if;
-
-      return Left_Kind /= EW_Abstract
-        or else Eq (Get_Ada_Node (+Left), Get_Ada_Node (+Right));
-   end Eq;
+      declare
+         N1 : constant W_Identifier_Id := Get_Name (+Left);
+         N2 : constant W_Identifier_Id := Get_Name (+Right);
+      begin
+         if N1 = N2 then
+            return True;
+         end if;
+         if Get_Context (N1) = Get_Context (N2) then
+            return Get_Symbol (N1) = Get_Symbol (N2);
+         else
+            return False;
+         end if;
+      end;
+   end Eq_Base;
 
    ------------------
    -- Eq_Base_Type --
    ------------------
 
-   function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean is
+   function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean is
    begin
-      return Get_Kind (+Left) = W_Base_Type
-        and then Get_Kind (+Right) = W_Base_Type
-        and then Eq (+Left, +Right);
+      if Left = Right then
+         return True;
+      end if;
+      return Get_Kind (+Left) = W_Type
+        and then Get_Kind (+Right) = W_Type
+        and then Eq_Base (+Left, +Right);
    end Eq_Base_Type;
 
    -----------------
    -- EW_Abstract --
    -----------------
 
-   function EW_Abstract (N : Node_Id) return W_Base_Type_Id is
+   function EW_Abstract (N : Node_Id) return W_Type_Id is
    begin
       if N = Standard_Boolean then
          return EW_Bool_Type;
@@ -1042,7 +1061,7 @@ package body Why.Inter is
         or else Has_Private_Declaration (N)
       then
          if Entity_In_External_Axioms (N) then
-            return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
+            return New_Abstract_Base_Type (N);
          else
             declare
                Under_Typ : constant Entity_Id := Most_Underlying_Type (N);
@@ -1054,8 +1073,7 @@ package body Why.Inter is
                   --  directly.
 
                   if Under_Typ = N then
-                     return New_Base_Type (Base_Type => EW_Abstract,
-                                           Ada_Node  => N);
+                     return New_Abstract_Base_Type (N);
 
                   --  Recurse with the most underlying type
 
@@ -1067,7 +1085,7 @@ package body Why.Inter is
                --  __private abstract type.
 
                else
-                  return New_Base_Type (Base_Type => EW_Private);
+                  return EW_Private_Type;
                end if;
             end;
          end if;
@@ -1075,7 +1093,7 @@ package body Why.Inter is
       --  Normal case: the type is translated into its own abstract type
 
       else
-         return New_Base_Type (Base_Type => EW_Abstract, Ada_Node => N);
+         return New_Abstract_Base_Type (N);
       end if;
    end EW_Abstract;
 
@@ -1132,58 +1150,13 @@ package body Why.Inter is
       return Spec_File_Name_Without_Suffix (U);
    end File_Base_Name_Of_Entity;
 
-   ---------------
-   -- Full_Name --
-   ---------------
-
-   function Full_Name (N : Entity_Id) return String is
-   begin
-      --  In special cases, return a fixed name. These cases should match those
-      --  for which Full_Name_Is_Not_Unique_Name returns True.
-
-      if Full_Name_Is_Not_Unique_Name (N) then
-         if N = Standard_Boolean then
-            return "bool";
-         elsif N = Universal_Fixed then
-            return "real";
-         else
-            raise Program_Error;
-         end if;
-
-      --  In the general case, return a name based on the Unique_Name
-
-      else
-         declare
-            S : String := Unique_Name (N);
-         begin
-
-            --  In Why3, enumeration literals need to be upper case. Why2
-            --  doesn't care, so we enforce upper case here
-
-            if Ekind (N) = E_Enumeration_Literal then
-               Capitalize_First (S);
-            end if;
-            return S;
-         end;
-      end if;
-   end Full_Name;
-
-   ----------------------------------
-   -- Full_Name_Is_Not_Unique_Name --
-   ----------------------------------
-
-   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean is
-   begin
-      return N = Standard_Boolean or else N = Universal_Fixed;
-   end Full_Name_Is_Not_Unique_Name;
-
    -----------------
    -- Get_EW_Type --
    -----------------
 
-   function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type is
+   function Get_EW_Type (T : W_Type_Id) return EW_Type is
    begin
-      if Get_Kind (+T) = W_Base_Type then
+      if Get_Kind (+T) = W_Type then
          return Get_Base_Type (+T);
       else
          return EW_Abstract;
@@ -1286,7 +1259,7 @@ package body Why.Inter is
    -- Is_Record_Conversion --
    --------------------------
 
-   function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean
+   function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
        Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
        Is_Record_Type (Get_Ada_Node (+Left)) and then
@@ -1296,7 +1269,7 @@ package body Why.Inter is
    -- Is_Array_Conversion --
    -------------------------
 
-   function Is_Array_Conversion (Left, Right : W_Base_Type_Id) return Boolean
+   function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
        Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
        Is_Array_Type (Get_Ada_Node (+Left)) and then
@@ -1307,14 +1280,14 @@ package body Why.Inter is
    ---------
 
    function LCA
-     (Left  : W_Base_Type_Id;
-      Right : W_Base_Type_Id;
-      Force : Boolean := False) return W_Base_Type_Id
+     (Left  : W_Type_Id;
+      Right : W_Type_Id;
+      Force : Boolean := False) return W_Type_Id
    is
       Left_Base, Right_Base : EW_Type;
 
    begin
-      if not Force and then Eq (Left, Right) then
+      if not Force and then Eq_Base (Left, Right) then
          return Left;
 
       else
@@ -1363,6 +1336,47 @@ package body Why.Inter is
          return Full_Name (N);
       end if;
    end Name_Of_Node;
+
+   ----------------------------
+   -- New_Abstract_Base_Type --
+   ----------------------------
+
+   function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id is
+   begin
+      return New_Type (Ada_Node   => E,
+                       Is_Mutable => False,
+                       Base_Type  => EW_Abstract,
+                       Name       => To_Why_Id (E));
+   end New_Abstract_Base_Type;
+
+   --------------------
+   -- New_Named_Type --
+   --------------------
+
+   function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id is
+   begin
+      return New_Type (Ada_Node   => Empty,
+                       Is_Mutable => False,
+                       Base_Type  => EW_Abstract,
+                       Name       => Name);
+   end New_Named_Type;
+
+   ------------------
+   -- New_Ref_Type --
+   ------------------
+
+   function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id is
+   begin
+      if Get_Is_Mutable (+Ty) then
+         return Ty;
+      else
+         return
+           New_Type (Ada_Node   => Get_Ada_Node (+Ty),
+                     Base_Type  => Get_Base_Type (+Ty),
+                     Name       => Get_Name (+Ty),
+                     Is_Mutable => True);
+      end if;
+   end New_Ref_Type;
 
    -----------------
    -- Open_Theory --
@@ -1466,11 +1480,28 @@ package body Why.Inter is
       end if;
    end To_Why_Type;
 
+   ------------------
+   -- Type_Of_Node --
+   ------------------
+
+   function Type_Of_Node (N : Node_Id) return W_Type_Id
+   is
+      E : constant Entity_Id := Type_Of_Node (N);
+   begin
+      if E = Standard_Boolean then
+         return EW_Bool_Type;
+      elsif E = Universal_Fixed then
+         return EW_Real_Type;
+      else
+         return EW_Abstract (E);
+      end if;
+   end Type_Of_Node;
+
    --------
    -- Up --
    --------
 
-   function Up (WT : W_Base_Type_Id) return W_Base_Type_Id is
+   function Up (WT : W_Type_Id) return W_Type_Id is
       Kind : constant EW_Type := Get_Base_Type (WT);
    begin
       case Kind is
@@ -1485,14 +1516,31 @@ package body Why.Inter is
    -- Up --
    --------
 
-   function Up (From, To : W_Base_Type_Id) return W_Base_Type_Id is
+   function Up (From, To : W_Type_Id) return W_Type_Id is
    begin
-      if Eq (From, To) then
+      if Eq_Base (From, To) then
          return From;
       else
          return Up (From);
       end if;
    end Up;
+
+   ---------------
+   -- Why_Types --
+   ---------------
+
+   function Why_Types (E : EW_Basic_Type) return W_Type_Id is
+   begin
+      if Why_Types_Array (E) /= Why_Empty then
+         return Why_Types_Array (E);
+      end if;
+      Why_Types_Array (E) :=
+        New_Type (Ada_Node   => Empty,
+                       Base_Type  => E,
+                       Is_Mutable => False,
+                       Name       => New_Identifier (Name => Img (E)));
+      return Why_Types_Array (E);
+   end Why_Types;
 
 begin
    Type_Hierarchy.Move_Child (EW_Unit, EW_Real);

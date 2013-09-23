@@ -24,8 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Types;                  use Types;
-with Why.Inter;              use Why.Inter;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with Gnat2Why.Util;          use Gnat2Why.Util;
 
 package Gnat2Why.Decls is
 

@@ -29,23 +29,11 @@ package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
    --  toplevel declarations.
 
-   function New_Type (Name : String) return W_Declaration_Id;
+   function New_Type_Decl (Name : String) return W_Declaration_Id;
 
-   function New_Type
+   function New_Type_Decl
      (Name  : W_Identifier_Id;
-      Alias : W_Primitive_Type_Id) return W_Declaration_Id;
-
-   function New_Type
-     (Name : W_Identifier_Id;
-      Args : Natural)
-     return W_Declaration_Id;
-   --  Declare a new abstract type. If Args is given, declare a polymorphic
-   --  abstract type with the given number of arguments.
-
-   function New_Adt_Definition
-     (Name         : W_Identifier_Id;
-      Constructors : W_Constr_Decl_Array)
-     return W_Declaration_Id;
+      Alias : W_Type_Id) return W_Declaration_Id;
 
    procedure Emit
      (Theory : W_Theory_Declaration_Id;

@@ -23,17 +23,128 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
+
 --  Utilities for the transformation phase
 
-with Types;            use Types;
+with Types;                  use Types;
 
-with Why.Atree.Tables; use Why.Atree.Tables;
-with Why.Ids;          use Why.Ids;
-with Why.Inter;        use Why.Inter;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with Why.Atree.Tables;       use Why.Atree.Tables;
+with Why.Ids;                use Why.Ids;
 
-with Gnat2Why.Nodes;   use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Why.Gen.Binders;        use Why.Gen.Binders;
 
 package Gnat2Why.Util is
+
+   package Ada_Ent_To_Why is
+
+      --  This package is a map from Ada names to a Why node, possibly with a
+      --  type. Ada names can have the form of Entity_Ids or Entity_Names.
+
+      type Map is private;
+      type Cursor is private;
+
+      Empty_Map : constant Map;
+
+      procedure Insert (M : in out Map;
+                        E : Entity_Id;
+                        W : Binder_Type);
+
+      procedure Insert (M : in out Map;
+                        E : Entity_Name;
+                        W : Binder_Type);
+
+      function Element (M : Map; E : Entity_Id) return Binder_Type;
+      function Element (C : Cursor) return Binder_Type;
+
+      function Find (M : Map; E : Entity_Id) return Cursor;
+      function Find (M : Map; E : Entity_Name) return Cursor;
+
+      function Has_Element (M : Map; E : Entity_Id) return Boolean;
+      function Has_Element (C : Cursor) return Boolean;
+
+      procedure Push_Scope (M : in out Map);
+      --  Mark that a new scope has begun. See the documentation of
+      --  [Pop_Scope].
+
+      procedure Pop_Scope (M : in out Map);
+      --  Restore the map into the state it was at the last call to Push_Scope.
+      --  Does nothing if Push_Scope was never called.
+
+   private
+
+      package Name_To_Why_Map is new Ada.Containers.Hashed_Maps
+        (Key_Type => Entity_Name,
+         Element_Type    => Binder_Type,
+         Hash            => Name_Hash,
+         Equivalent_Keys => Name_Equal,
+         "="             => "=");
+
+      package Ent_To_Why is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => Binder_Type,
+         Hash            => Node_Hash,
+         Equivalent_Keys => "=",
+         "="             => "=");
+
+      type Action_Enum is
+        (Insert_Ent, Insert_Name, Remove_Ent, Remove_Name, Boundary);
+
+      type Action (Kind : Action_Enum) is record
+         case Kind is
+            when Boundary =>
+               null;
+            when Remove_Ent =>
+               Rem_Entity : Entity_Id;
+            when Remove_Name =>
+               Rem_Name : Entity_Name;
+            when Insert_Ent | Insert_Name =>
+               Ins_Binder : Binder_Type;
+               case Kind is
+                  when Insert_Ent =>
+                     Ins_Entity : Entity_Id;
+                  when Insert_Name =>
+                     Ins_Name : Entity_Name;
+                  when others =>
+                     null;
+               end case;
+         end case;
+      end record;
+
+      package Undo_Stacks is new Ada.Containers.Indefinite_Doubly_Linked_Lists
+        (Element_Type => Action,
+         "="          => "=");
+
+      type Map is record
+         Entity_Ids   : Ent_To_Why.Map;
+         Entity_Names : Name_To_Why_Map.Map;
+         Undo_Stack   : Undo_Stacks.List;
+      end record;
+
+      Empty_Map : constant Map :=
+        Map'(Entity_Ids   => Ent_To_Why.Empty_Map,
+             Entity_Names => Name_To_Why_Map.Empty_Map,
+             Undo_Stack   => Undo_Stacks.Empty_List);
+
+      type Cursor_Kind is (CK_Ent, CK_Str);
+
+      type Cursor is record
+
+         --  This should be a variant record, but then it could not be a
+         --  completion of the private type above, so here we have the
+         --  invariant that when Kind = CK_Ent, then Ent_Cursor is valid,
+         --  otherwise, Name_Cursor is valid.
+
+         Kind        : Cursor_Kind;
+         Ent_Cursor  : Ent_To_Why.Cursor;
+         Name_Cursor : Name_To_Why_Map.Cursor;
+      end record;
+
+   end Ada_Ent_To_Why;
 
    Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
 
@@ -55,6 +166,28 @@ package Gnat2Why.Util is
       --  Flag that is True if references are allowed
    end record;
    --  Set of parameters for the transformation phase
+
+   type Why_Section_Enum is
+     (
+      WF_Pure,
+      WF_Variables,
+      WF_Context,
+      WF_Main);
+
+   type Why_Section is tagged
+      record
+         File        : W_File_Id;
+         Kind        : Why_Section_Enum;
+         Cur_Theory  : W_Theory_Declaration_Id;
+      end record;
+   --  Making this type tagged is a way to force by-reference passing of
+   --  objects of this type. This is needed because we have aliasing between
+   --  parameters of many functions and the global variable Why_Sections below.
+
+   Why_Sections : array (Why_Section_Enum) of Why_Section;
+   Why_File_Name : String_Access;
+
+   Why_File_Suffix : constant String := ".mlw";
 
    function Usual_Params (Phase : Transformation_Phase)
                           return Transformation_Params
