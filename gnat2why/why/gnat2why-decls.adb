@@ -435,7 +435,7 @@ package body Gnat2Why.Decls is
          else
             New_Type_Decl
               (Name => To_Ident (WNE_Type)));
-      Typ  : constant W_Base_Type_Id :=
+      Typ  : constant W_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter
          then EW_Int_Type
          else New_Named_Type (Name => Get_Name (W_Type_Decl_Id (Decl))));
@@ -509,7 +509,7 @@ package body Gnat2Why.Decls is
    is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String := Base_Name;
-      Typ       : constant W_Base_Type_Id :=
+      Typ       : constant W_Type_Id :=
         Why_Logic_Type_Of_Ada_Obj (E);
 
    begin
@@ -558,11 +558,11 @@ package body Gnat2Why.Decls is
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=
         Base_Name & To_String (WNE_Constant_Axiom);
-      Typ    : constant W_Base_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
+      Typ    : constant W_Type_Id := Why_Logic_Type_Of_Ada_Obj (E);
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
       Ty_Ent : constant Entity_Id := Unique_Entity (Etype (E));
-      Use_Ty : constant W_Base_Type_Id :=
+      Use_Ty : constant W_Type_Id :=
         (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent) else
             Type_Of_Node (E));
 
@@ -838,9 +838,9 @@ package body Gnat2Why.Decls is
 
                      if Ekind (Formal) in Private_Kind then
                         declare
-                           Actual_Type : constant W_Base_Type_OId :=
+                           Actual_Type : constant W_Type_OId :=
                              Why_Logic_Type_Of_Ada_Type (Actual);
-                           Actual_Base : constant W_Base_Type_OId :=
+                           Actual_Base : constant W_Type_OId :=
                              +Base_Why_Type (Unique_Entity (Actual));
                         begin
 
@@ -1136,7 +1136,7 @@ package body Gnat2Why.Decls is
 
          function Why_Logic_Type_Of_Ada_Generic_Type
            (Ty       : Node_Id;
-            Is_Input : Boolean) return W_Base_Type_Id;
+            Is_Input : Boolean) return W_Type_Id;
          --  Take an Ada Node and transform it into a Why logic type. The Ada
          --  Node is expected to be a Defining_Identifier for a type.
          --  Return the associated actual if Ty is a generic formal parameter.
@@ -1145,7 +1145,7 @@ package body Gnat2Why.Decls is
 
          function Why_Logic_Type_Of_Ada_Generic_Type
            (Ty       : Node_Id;
-            Is_Input : Boolean) return W_Base_Type_Id is
+            Is_Input : Boolean) return W_Type_Id is
 
             --  Goes through a list of parameters to find actual that is
             --  associated with the formal Ty
@@ -1275,7 +1275,7 @@ package body Gnat2Why.Decls is
                      --  to define the conversion functions
 
                      declare
-                        F_Ty   : constant W_Base_Type_Id :=
+                        F_Ty   : constant W_Type_Id :=
                           +New_Named_Type
                             (Name => New_Identifier
                                (Name => Short_Name (Formal)));
@@ -1341,14 +1341,14 @@ package body Gnat2Why.Decls is
                        Parameter_Specifications
                          (Get_Subprogram_Spec (Formal));
                      F_Param : Node_Id := First (F_Params);
-                     F_Type : constant W_Base_Type_Id :=
+                     F_Type : constant W_Type_Id :=
                        Why_Logic_Type_Of_Ada_Generic_Type
                          (Etype (Formal), False);
                      A_Params : constant List_Id :=
                        Parameter_Specifications
                          (Get_Subprogram_Spec (Actual));
                      A_Param : Node_Id := First (A_Params);
-                     A_Type : constant W_Base_Type_Id :=
+                     A_Type : constant W_Type_Id :=
                        Why_Logic_Type_Of_Ada_Type (Etype (Actual));
                      Binders : Binder_Array
                        (1 .. Integer (List_Length (F_Params)));
@@ -1364,14 +1364,14 @@ package body Gnat2Why.Decls is
                         declare
                            A_Id   : constant Node_Id :=
                              Defining_Identifier (A_Param);
-                           A_Type : constant W_Base_Type_Id :=
+                           A_Type : constant W_Type_Id :=
                              (if Use_Why_Base_Type (A_Id) then
                               +Base_Why_Type (Unique_Entity (Etype (A_Id)))
                               else Why_Logic_Type_Of_Ada_Type
                                 (Etype (A_Id)));
                            F_Id   : constant Node_Id :=
                              Defining_Identifier (F_Param);
-                           F_Type : constant W_Base_Type_Id :=
+                           F_Type : constant W_Type_Id :=
                              Why_Logic_Type_Of_Ada_Generic_Type
                                (Etype (F_Id), True);
                            Name : constant W_Identifier_Id :=

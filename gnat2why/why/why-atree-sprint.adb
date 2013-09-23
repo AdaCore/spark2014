@@ -143,9 +143,9 @@ package body Why.Atree.Sprint is
    -- Base_Type_Pre_Op --
    ----------------------
 
-   procedure Base_Type_Pre_Op
+   procedure Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Base_Type_Id)
+      Node  : W_Type_Id)
    is
       Base_Type : constant EW_Type := Get_Base_Type (Node);
       Name      : constant W_Identifier_Id := Get_Name (Node);
@@ -168,7 +168,7 @@ package body Why.Atree.Sprint is
          P (O, Base_Type);
       end if;
       State.Control := Abandon_Children;
-   end Base_Type_Pre_Op;
+   end Type_Pre_Op;
 
    --------------------
    -- Effects_Pre_Op --
@@ -227,7 +227,7 @@ package body Why.Atree.Sprint is
       (State : in out Printer_State;
        Node : W_Constr_Decl_Id)
    is
-      Args : constant W_Base_Type_List := Get_Arg_List (Node);
+      Args : constant W_Type_List := Get_Arg_List (Node);
       Name : constant W_Identifier_Id := Get_Name (Node);
    begin
       P (O, "| ");
@@ -427,7 +427,7 @@ package body Why.Atree.Sprint is
       Node  : W_Universal_Quantif_Id)
    is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
-      Var_Type        : constant W_Base_Type_Id := Get_Var_Type (Node);
+      Var_Type        : constant W_Type_Id := Get_Var_Type (Node);
       Triggers        : constant W_Triggers_OId := Get_Triggers (Node);
       Pred            : constant W_Pred_Id := Get_Pred (Node);
       Forall_Sequence : constant Boolean :=
@@ -469,7 +469,7 @@ package body Why.Atree.Sprint is
       Node  : W_Existential_Quantif_Id)
    is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
-      Var_Type        : constant W_Base_Type_Id := Get_Var_Type (Node);
+      Var_Type        : constant W_Type_Id := Get_Var_Type (Node);
       Pred            : constant W_Pred_Id := Get_Pred (Node);
       Exists_Sequence : constant Boolean :=
                           Get_Kind (+Pred) = W_Existential_Quantif;
@@ -1013,7 +1013,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Any_Expr_Id)
    is
-      Res_Ty  : constant W_Base_Type_Id := Get_Return_Type (Node);
+      Res_Ty  : constant W_Type_Id := Get_Return_Type (Node);
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
    begin
@@ -1221,7 +1221,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Raise_Id)
    is
-      Exn_Type : constant W_Base_Type_OId := Get_Exn_Type (Node);
+      Exn_Type : constant W_Type_OId := Get_Exn_Type (Node);
    begin
       P (O, "raise ");
 
@@ -1283,7 +1283,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Unreachable_Code_Id)
    is
-      Exn_Type : constant W_Base_Type_OId :=
+      Exn_Type : constant W_Type_OId :=
                    Get_Exn_Type (Node);
    begin
       P (O, "absurd");
@@ -1305,7 +1305,7 @@ package body Why.Atree.Sprint is
       Node  : W_Function_Decl_Id)
    is
       Name        : constant W_Identifier_Id := Get_Name (Node);
-      Return_Type : constant W_Base_Type_Id := Get_Return_Type (Node);
+      Return_Type : constant W_Type_Id := Get_Return_Type (Node);
       Binders     : constant W_Binder_OList := Get_Binders (Node);
 
    begin
@@ -1403,7 +1403,7 @@ package body Why.Atree.Sprint is
       Def         : constant W_Expr_Id := Get_Def (Node);
       Name        : constant W_Identifier_Id := Get_Name (Spec);
       Binders     : constant W_Binder_OList := Get_Binders (Spec);
-      Return_Type : constant W_Base_Type_OId := Get_Return_Type (Spec);
+      Return_Type : constant W_Type_OId := Get_Return_Type (Spec);
       Pre         : constant W_Pred_OId := Get_Pre (Spec);
       Post        : constant W_Pred_OId := Get_Post (Spec);
    begin
@@ -1607,7 +1607,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Exception_Declaration_Id)
    is
-      Arg : constant W_Base_Type_OId := Get_Arg (Node);
+      Arg : constant W_Type_OId := Get_Arg (Node);
    begin
       P (O, "exception ");
       Traverse (State, +Get_Name (Node));

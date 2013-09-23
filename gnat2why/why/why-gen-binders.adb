@@ -52,7 +52,7 @@ package body Why.Gen.Binders is
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Binders     : Binder_Array;
-      Return_Type : W_Base_Type_Id;
+      Return_Type : W_Type_Id;
       Spec        : Declaration_Spec_Array)
    is
       Spec0 : Declaration_Spec_Array := Spec;
@@ -66,7 +66,7 @@ package body Why.Gen.Binders is
    -----------------
 
    function New_Binders
-     (Anonymous_Binders : W_Base_Type_Array)
+     (Anonymous_Binders : W_Type_Array)
      return Binder_Array
    is
       Result : Binder_Array (Anonymous_Binders'Range);
@@ -174,7 +174,7 @@ package body Why.Gen.Binders is
 
       function New_Arg_Type
         (Binder : Binder_Type)
-        return W_Base_Type_Id;
+        return W_Type_Id;
 
       ------------------
       -- New_Arg_Type --
@@ -182,7 +182,7 @@ package body Why.Gen.Binders is
 
       function New_Arg_Type
         (Binder : Binder_Type)
-        return W_Base_Type_Id is
+        return W_Type_Id is
       begin
          if Domain = EW_Prog and then Binder.Mutable then
             return +New_Ref_Type (Ty => +Binder.B_Type);
@@ -281,7 +281,7 @@ package body Why.Gen.Binders is
       Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : W_Base_Type_Id;
+      Return_Type : W_Type_Id;
       Labels      : W_Identifier_Array := (1 .. 0 => <>);
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id := True_Pred;
@@ -309,14 +309,14 @@ package body Why.Gen.Binders is
       Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : W_Base_Type_OId := Why_Empty;
+      Return_Type : W_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
       Labels      : W_Identifier_Array := (1 .. 0 => <>);
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id
    is
-      RT : constant W_Base_Type_Id :=
+      RT : constant W_Type_Id :=
              (if Return_Type = Why_Empty then
                 (case Domain is
                    when EW_Pred => +EW_Bool_Type,
@@ -399,7 +399,7 @@ package body Why.Gen.Binders is
       Pred     : W_Pred_Id) return W_Pred_Id
    is
       Cnt : Natural;
-      Typ : W_Base_Type_Id;
+      Typ : W_Type_Id;
    begin
       if Binders'Length = 0 then
          return Pred;
@@ -416,11 +416,11 @@ package body Why.Gen.Binders is
          --  Count all the binders that have the same type as the first one. We
          --  only do that when we can compare equal types using the
          --  Eq_Base_Type function, which excludes currently types which are
-         --  not of kind W_Base_Type.
+         --  not of kind W_Type.
 
          Typ := Binders (Binders'First).B_Type;
 
-         if Get_Kind (+Binders (Binders'First).B_Type) /= W_Base_Type then
+         if Get_Kind (+Binders (Binders'First).B_Type) /= W_Type then
             declare
                Vars          : constant W_Identifier_Array :=
                                  (1 => Binders (Binders'First).B_Name);
@@ -509,7 +509,7 @@ package body Why.Gen.Binders is
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Binders     : Binder_Array;
-      Return_Type : W_Base_Type_Id;
+      Return_Type : W_Type_Id;
       Spec        : in out Declaration_Spec_Array)
    is
       Logic_Def_Emitted : Boolean := False;

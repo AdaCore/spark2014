@@ -57,8 +57,8 @@ package body Why.Gen.Expr is
    function Insert_Single_Conversion
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
-      To       : W_Base_Type_Id;
-      From     : W_Base_Type_Id;
+      To       : W_Type_Id;
+      From     : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id;
    --  Assuming that there is at most one step between To and From in the
    --  type hierarchy (i.e. that it exists a conversion from From
@@ -110,8 +110,8 @@ package body Why.Gen.Expr is
      (Ada_Node    : Node_Id;
       Domain      : EW_Domain;
       Expr        : W_Expr_Id;
-      From        : W_Base_Type_Id;
-      To          : W_Base_Type_Id;
+      From        : W_Type_Id;
+      To          : W_Type_Id;
       Discr_Check : Node_Id := Empty) return W_Expr_Id
    is
       --  Current result expression
@@ -120,7 +120,7 @@ package body Why.Gen.Expr is
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
       pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
-      Base : constant W_Base_Type_Id := EW_Abstract (Root_Record_Type (L));
+      Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
 
    begin
       --  When From = To and no check needs to be inserted, do nothing
@@ -176,8 +176,8 @@ package body Why.Gen.Expr is
      (Domain        : EW_Domain;
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
-      To            : W_Base_Type_Id;
-      From          : W_Base_Type_Id;
+      To            : W_Type_Id;
+      From          : W_Type_Id;
       Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
@@ -185,7 +185,7 @@ package body Why.Gen.Expr is
       Result : W_Expr_Id := Expr;
 
       --  Current type of the result expression
-      Cur : W_Base_Type_Id := From;
+      Cur : W_Type_Id := From;
 
       --  Type and kind for the range check
       Range_Type : Entity_Id;
@@ -244,7 +244,7 @@ package body Why.Gen.Expr is
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
          declare
-            Save : constant W_Base_Type_Id := Cur;
+            Save : constant W_Type_Id := Cur;
          begin
             Cur := Base_Why_Type (To);
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -297,8 +297,8 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Base_Type_Id;
-      From     : W_Base_Type_Id) return W_Expr_Id is
+      To       : W_Type_Id;
+      From     : W_Type_Id) return W_Expr_Id is
    begin
       --  Nothing to do if From = To
 
@@ -336,8 +336,8 @@ package body Why.Gen.Expr is
    function Insert_Single_Conversion
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
-      To       : W_Base_Type_Id;
-      From     : W_Base_Type_Id;
+      To       : W_Type_Id;
+      From     : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id
    is
    begin
@@ -442,7 +442,7 @@ package body Why.Gen.Expr is
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Base_Type_Id) return W_Expr_Id is
+       Base        : W_Type_Id) return W_Expr_Id is
    begin
       if Base = EW_Bool_Type then
          return New_And_Expr (Left, Right, Domain);
@@ -525,11 +525,11 @@ package body Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : W_Base_Type_Id;
+      Arg_Types   : W_Type_Id;
       Domain      : EW_Domain)
      return W_Expr_Id
    is
-      Op_Type : W_Base_Type_Id;
+      Op_Type : W_Type_Id;
       Left1   : W_Expr_Id;
       Right1  : W_Expr_Id;
 
@@ -712,7 +712,7 @@ package body Why.Gen.Expr is
    function New_Or_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Base_Type_Id) return W_Expr_Id is
+       Base        : W_Type_Id) return W_Expr_Id is
    begin
       if Base = EW_Bool_Type then
          return New_Or_Expr (Left, Right, Domain);
@@ -792,7 +792,7 @@ package body Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
-      Base_Type : W_Base_Type_Id;
+      Base_Type : W_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id
    is
@@ -926,7 +926,7 @@ package body Why.Gen.Expr is
    function New_Xor_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
-       Base        : W_Base_Type_Id) return W_Expr_Id is
+       Base        : W_Type_Id) return W_Expr_Id is
 
    begin
       if Domain = EW_Pred and then Base = EW_Bool_Type then

@@ -144,7 +144,7 @@ package body Gnat2Why.Types is
 
    function Why_Logic_Type_Of_Ada_Obj
      (N : Node_Id)
-     return W_Base_Type_Id is
+     return W_Type_Id is
    begin
       return Why_Logic_Type_Of_Ada_Type (Etype (N));
    end  Why_Logic_Type_Of_Ada_Obj;
@@ -155,7 +155,7 @@ package body Gnat2Why.Types is
 
    function Why_Logic_Type_Of_Ada_Type
      (Ty : Node_Id)
-     return W_Base_Type_Id is
+     return W_Type_Id is
    begin
 
       --  Standard.Boolean is modeled as bool; any other boolean subtype
@@ -340,9 +340,9 @@ package body Gnat2Why.Types is
    -------------------------------
 
    function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
-      return W_Base_Type_Id
+      return W_Type_Id
    is
-      Base : constant W_Base_Type_Id :=
+      Base : constant W_Type_Id :=
         Why_Logic_Type_Of_Ada_Type (Ty);
    begin
       if Is_Mutable then
@@ -355,7 +355,7 @@ package body Gnat2Why.Types is
    function Why_Prog_Type_Of_Ada_Obj
      (N            : Node_Id;
       Is_Primitive : Boolean := False)
-     return W_Base_Type_Id
+     return W_Type_Id
    is
       Mutable : constant Boolean :=
                   not Is_Primitive and then Is_Mutable_In_Why (N);

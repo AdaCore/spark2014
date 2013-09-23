@@ -121,8 +121,8 @@ package body Why.Gen.Names is
    ---------------------
 
    function Conversion_Name
-      (From : W_Base_Type_Id;
-       To   : W_Base_Type_Id) return W_Identifier_Id
+      (From : W_Type_Id;
+       To   : W_Type_Id) return W_Identifier_Id
    is
       From_Kind : constant EW_Type := Get_Base_Type (From);
       To_Kind   : constant EW_Type := Get_Base_Type (To);
@@ -299,7 +299,7 @@ package body Why.Gen.Names is
 
    function New_Bool_Cmp
      (Rel       : EW_Relation;
-      Arg_Types : W_Base_Type_Id) return W_Identifier_Id
+      Arg_Types : W_Type_Id) return W_Identifier_Id
    is
       Kind : constant EW_Type := Get_Base_Type (Arg_Types);
       A    : constant Node_Id :=

@@ -51,8 +51,8 @@ package Why.Gen.Names is
    --  Return Name_Id for Name
 
    function Conversion_Name
-      (From : W_Base_Type_Id;
-       To   : W_Base_Type_Id) return W_Identifier_Id;
+      (From : W_Type_Id;
+       To   : W_Type_Id) return W_Identifier_Id;
    --  Return the name of the conversion function between the two types
 
    function Range_Pred_Name
@@ -72,7 +72,7 @@ package Why.Gen.Names is
 
    function New_Bool_Cmp
      (Rel       : EW_Relation;
-      Arg_Types : W_Base_Type_Id)
+      Arg_Types : W_Type_Id)
      return W_Identifier_Id;
    --  Return the name of boolean comparison operators for Why term types
    --  in the domain EW_Term (i.e. the name of a logic function returning

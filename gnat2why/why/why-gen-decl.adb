@@ -54,7 +54,7 @@ package body Why.Gen.Decl is
 
    function New_Type_Decl
      (Name  : W_Identifier_Id;
-      Alias : W_Base_Type_Id) return W_Declaration_Id is
+      Alias : W_Type_Id) return W_Declaration_Id is
    begin
       return New_Type_Decl
         (Name => Name,

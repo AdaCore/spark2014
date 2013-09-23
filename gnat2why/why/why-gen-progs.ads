@@ -41,7 +41,7 @@ package Why.Gen.Progs is
      (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
-      Return_Type : W_Base_Type_Id := Why_Empty)
+      Return_Type : W_Type_Id := Why_Empty)
        return W_Prog_Id;
    --  Generate an assumption statement. There is no such thing in Why2, so it
    --  is encoded as follows:
@@ -82,7 +82,7 @@ package Why.Gen.Progs is
    --  build a located abstract Why3 program expression.
 
    function New_Simpl_Any_Prog
-     (T    : W_Base_Type_Id;
+     (T    : W_Type_Id;
       Pred : W_Pred_OId := Why_Empty) return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type, satisfying
    --  proposition Pred.
@@ -95,7 +95,7 @@ package Why.Gen.Progs is
    with Pre => Progs'Length /= 0;
 
    function New_Result
-     (T : W_Base_Type_Id)
+     (T : W_Type_Id)
      return W_Binder_Id;
 
 end Why.Gen.Progs;

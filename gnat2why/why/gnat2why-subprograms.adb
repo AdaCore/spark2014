@@ -1233,7 +1233,7 @@ package body Gnat2Why.Subprograms is
          declare
             Ty_Ent  : constant Entity_Id :=
               Unique_Entity (Etype (E));
-            Equ_Ty  : constant W_Base_Type_Id :=
+            Equ_Ty  : constant W_Type_Id :=
               (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent)
                  else EW_Abstract (Ty_Ent));
             Guard   : constant W_Pred_Id :=
@@ -1289,7 +1289,7 @@ package body Gnat2Why.Subprograms is
       Post         : W_Pred_Id;
       Prog_Id      : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
-      Why_Type     : W_Base_Type_Id := Why_Empty;
+      Why_Type     : W_Type_Id := Why_Empty;
    begin
       Open_Theory (File, Name,
                    Comment =>

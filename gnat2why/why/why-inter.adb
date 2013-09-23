@@ -52,7 +52,7 @@ with Why.Images;          use Why.Images;
 
 package body Why.Inter is
 
-   type Why_Types_Array_Type is array (EW_Basic_Type) of W_Base_Type_Id;
+   type Why_Types_Array_Type is array (EW_Basic_Type) of W_Type_Id;
 
    Why_Types_Array : Why_Types_Array_Type := (others => Why_Empty);
    --  is initialized as needed in function Why_Types
@@ -73,7 +73,7 @@ package body Why.Inter is
    --  and should be treated specially.
 
    package Type_Hierarchy is
-     new Constant_Tree (EW_Base_Type, EW_Unit);
+     new Constant_Tree (EW_Type, EW_Unit);
 
    function Extract_Object_Name (Obj : String) return String;
    --  Extract the name after the last "__"; return Obj when the string does
@@ -301,9 +301,9 @@ package body Why.Inter is
          S : Set;
       end record;
 
-      procedure Base_Type_Pre_Op
+      procedure Type_Pre_Op
         (State : in out Search_State;
-         Node  : W_Base_Type_Id);
+         Node  : W_Type_Id);
 
       procedure Identifier_Pre_Op
         (State : in out Search_State;
@@ -369,15 +369,15 @@ package body Why.Inter is
       -- Base_Type_Pre_Op --
       ----------------------
 
-      procedure Base_Type_Pre_Op
+      procedure Type_Pre_Op
         (State : in out Search_State;
-         Node  : W_Base_Type_Id)
+         Node  : W_Type_Id)
       is
       begin
          if Get_Base_Type (+Node) = EW_Abstract then
             Analyze_Ada_Node (State.S, Get_Ada_Node (+Node));
          end if;
-      end Base_Type_Pre_Op;
+      end Type_Pre_Op;
 
       -----------------------
       -- Identifier_Pre_Op --
@@ -688,7 +688,7 @@ package body Why.Inter is
    -- Base_Why_Type --
    -------------------
 
-   function Base_Why_Type (W : W_Base_Type_Id) return W_Base_Type_Id is
+   function Base_Why_Type (W : W_Type_Id) return W_Type_Id is
       Kind : constant EW_Type := Get_Base_Type (W);
    begin
       case Kind is
@@ -699,7 +699,7 @@ package body Why.Inter is
       end case;
    end Base_Why_Type;
 
-   function Base_Why_Type (N : Node_Id) return W_Base_Type_Id is
+   function Base_Why_Type (N : Node_Id) return W_Type_Id is
 
       E   : constant EW_Type := Get_EW_Term_Type (N);
       Typ : constant Entity_Id := Etype (N);
@@ -716,13 +716,13 @@ package body Why.Inter is
       end case;
    end Base_Why_Type;
 
-   function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id
+   function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id
    is
    begin
       return LCA (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
 
-   function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id is
+   function Base_Why_Type (Left, Right : Node_Id) return W_Type_Id is
    begin
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
@@ -968,7 +968,7 @@ package body Why.Inter is
       end if;
    end Eq;
 
-   function Eq_Base (Left, Right : W_Base_Type_Id) return Boolean is
+   function Eq_Base (Left, Right : W_Type_Id) return Boolean is
    begin
       if Left = Right then
          return True;
@@ -992,13 +992,13 @@ package body Why.Inter is
    -- Eq_Base_Type --
    ------------------
 
-   function Eq_Base_Type (Left, Right : W_Base_Type_Id) return Boolean is
+   function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean is
    begin
       if Left = Right then
          return True;
       end if;
-      return Get_Kind (+Left) = W_Base_Type
-        and then Get_Kind (+Right) = W_Base_Type
+      return Get_Kind (+Left) = W_Type
+        and then Get_Kind (+Right) = W_Type
         and then Eq_Base (+Left, +Right);
    end Eq_Base_Type;
 
@@ -1006,7 +1006,7 @@ package body Why.Inter is
    -- EW_Abstract --
    -----------------
 
-   function EW_Abstract (N : Node_Id) return W_Base_Type_Id is
+   function EW_Abstract (N : Node_Id) return W_Type_Id is
    begin
       if N = Standard_Boolean then
          return EW_Bool_Type;
@@ -1114,9 +1114,9 @@ package body Why.Inter is
    -- Get_EW_Type --
    -----------------
 
-   function Get_EW_Type (T : W_Base_Type_Id) return EW_Type is
+   function Get_EW_Type (T : W_Type_Id) return EW_Type is
    begin
-      if Get_Kind (+T) = W_Base_Type then
+      if Get_Kind (+T) = W_Type then
          return Get_Base_Type (+T);
       else
          return EW_Abstract;
@@ -1210,7 +1210,7 @@ package body Why.Inter is
    -- Is_Record_Conversion --
    --------------------------
 
-   function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean
+   function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
        Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
        Is_Record_Type (Get_Ada_Node (+Left)) and then
@@ -1220,7 +1220,7 @@ package body Why.Inter is
    -- Is_Array_Conversion --
    -------------------------
 
-   function Is_Array_Conversion (Left, Right : W_Base_Type_Id) return Boolean
+   function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
        Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
        Is_Array_Type (Get_Ada_Node (+Left)) and then
@@ -1231,9 +1231,9 @@ package body Why.Inter is
    ---------
 
    function LCA
-     (Left  : W_Base_Type_Id;
-      Right : W_Base_Type_Id;
-      Force : Boolean := False) return W_Base_Type_Id
+     (Left  : W_Type_Id;
+      Right : W_Type_Id;
+      Force : Boolean := False) return W_Type_Id
    is
       Left_Base, Right_Base : EW_Type;
 
@@ -1292,40 +1292,40 @@ package body Why.Inter is
    -- New_Abstract_Base_Type --
    ----------------------------
 
-   function New_Abstract_Base_Type (E : Entity_Id) return W_Base_Type_Id is
+   function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id is
    begin
-      return New_Base_Type (Ada_Node   => E,
-                            Is_Mutable => False,
-                            Base_Type  => EW_Abstract,
-                            Name       => To_Why_Id (E));
+      return New_Type (Ada_Node   => E,
+                       Is_Mutable => False,
+                       Base_Type  => EW_Abstract,
+                       Name       => To_Why_Id (E));
    end New_Abstract_Base_Type;
 
    --------------------
    -- New_Named_Type --
    --------------------
 
-   function New_Named_Type (Name : W_Identifier_Id) return W_Base_Type_Id is
+   function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id is
    begin
-      return New_Base_Type (Ada_Node   => Empty,
-                            Is_Mutable => False,
-                            Base_Type  => EW_Abstract,
-                            Name       => Name);
+      return New_Type (Ada_Node   => Empty,
+                       Is_Mutable => False,
+                       Base_Type  => EW_Abstract,
+                       Name       => Name);
    end New_Named_Type;
 
    ------------------
    -- New_Ref_Type --
    ------------------
 
-   function New_Ref_Type (Ty : W_Base_Type_Id) return W_Base_Type_Id is
+   function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id is
    begin
       if Get_Is_Mutable (+Ty) then
          return Ty;
       else
          return
-           New_Base_Type (Ada_Node   => Get_Ada_Node (+Ty),
-                          Base_Type  => Get_Base_Type (+Ty),
-                          Name       => Get_Name (+Ty),
-                          Is_Mutable => True);
+           New_Type (Ada_Node   => Get_Ada_Node (+Ty),
+                     Base_Type  => Get_Base_Type (+Ty),
+                     Name       => Get_Name (+Ty),
+                     Is_Mutable => True);
       end if;
    end New_Ref_Type;
 
@@ -1435,7 +1435,7 @@ package body Why.Inter is
    -- Type_Of_Node --
    ------------------
 
-   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id
+   function Type_Of_Node (N : Node_Id) return W_Type_Id
    is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
@@ -1452,7 +1452,7 @@ package body Why.Inter is
    -- Up --
    --------
 
-   function Up (WT : W_Base_Type_Id) return W_Base_Type_Id is
+   function Up (WT : W_Type_Id) return W_Type_Id is
       Kind : constant EW_Type := Get_Base_Type (WT);
    begin
       case Kind is
@@ -1467,7 +1467,7 @@ package body Why.Inter is
    -- Up --
    --------
 
-   function Up (From, To : W_Base_Type_Id) return W_Base_Type_Id is
+   function Up (From, To : W_Type_Id) return W_Type_Id is
    begin
       if Eq_Base (From, To) then
          return From;
@@ -1480,13 +1480,13 @@ package body Why.Inter is
    -- Why_Types --
    ---------------
 
-   function Why_Types (E : EW_Basic_Type) return W_Base_Type_Id is
+   function Why_Types (E : EW_Basic_Type) return W_Type_Id is
    begin
       if Why_Types_Array (E) /= Why_Empty then
          return Why_Types_Array (E);
       end if;
       Why_Types_Array (E) :=
-        New_Base_Type (Ada_Node   => Empty,
+        New_Type (Ada_Node   => Empty,
                        Base_Type  => E,
                        Is_Mutable => False,
                        Name       => New_Identifier (Name => Img (E)));

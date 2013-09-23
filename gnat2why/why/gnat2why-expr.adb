@@ -126,7 +126,7 @@ package body Gnat2Why.Expr is
 
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
-      Expected_Type : W_Base_Type_OId := Why_Empty;
+      Expected_Type : W_Type_OId := Why_Empty;
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id;
    --  Build Case expression of Ada Node.
@@ -184,7 +184,7 @@ package body Gnat2Why.Expr is
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params;
-      Current_Type : out W_Base_Type_Id) return W_Expr_Id;
+      Current_Type : out W_Type_Id) return W_Expr_Id;
    --  Compute an access expression for record and array accesses without
    --  considering subexpressions. [N] represents the Ada node of the access,
    --  and [Expr] the Why expression of the prefix.
@@ -226,7 +226,7 @@ package body Gnat2Why.Expr is
                                   Expr         : Node_Id;
                                   Ent          : Entity_Id;
                                   Domain       : EW_Domain;
-                                  Current_Type : out W_Base_Type_Id)
+                                  Current_Type : out W_Type_Id)
                                   return W_Expr_Id;
    --  Transform an Ada identifier to a Why item (take care of enumeration
    --  literals, boolean values etc)
@@ -337,7 +337,7 @@ package body Gnat2Why.Expr is
    function Transform_Attr
      (Expr               : Node_Id;
       Domain             : EW_Domain;
-      Current_Type       : out W_Base_Type_Id;
+      Current_Type       : out W_Type_Id;
       Params             : Transformation_Params) return W_Expr_Id;
    --  Range_Check_Needed is set to True for some attributes (like 'Pos,
    --  'Length, 'Modulus) which return a universal integer, so that we check
@@ -361,7 +361,7 @@ package body Gnat2Why.Expr is
    function Transform_Enum_Literal
      (Expr         : Node_Id;
       Enum         : Entity_Id;
-      Current_Type : out W_Base_Type_Id;
+      Current_Type : out W_Type_Id;
       Domain       : EW_Domain)
       return W_Expr_Id;
    --  Translate an Ada enumeration literal to Why. There are a number of
@@ -515,7 +515,7 @@ package body Gnat2Why.Expr is
       else
          declare
             Rng              : constant Node_Id := Get_Range (N);
-            Why_Base         : constant W_Base_Type_Id := Base_Why_Type (N);
+            Why_Base         : constant W_Type_Id := Base_Why_Type (N);
             Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
             Low_Expr         : constant W_Term_Id :=
               +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
@@ -665,7 +665,7 @@ package body Gnat2Why.Expr is
 
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
-      Expected_Type : W_Base_Type_OId := Why_Empty;
+      Expected_Type : W_Type_OId := Why_Empty;
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
@@ -999,7 +999,7 @@ package body Gnat2Why.Expr is
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;
       Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id) return W_Term_Id
+      Expected_Type : W_Type_Id) return W_Term_Id
    is
       Params : constant Transformation_Params :=
         (Theory      => File.Cur_Theory,
@@ -1141,9 +1141,9 @@ package body Gnat2Why.Expr is
             declare
                --  Types:
 
-               Formal_T      : constant W_Base_Type_Id :=
+               Formal_T      : constant W_Type_Id :=
                                  Type_Of_Node (Formal);
-               Actual_T      : constant W_Base_Type_Id :=
+               Actual_T      : constant W_Type_Id :=
                                  Type_Of_Node (Actual);
 
                --  Variables:
@@ -1481,7 +1481,7 @@ package body Gnat2Why.Expr is
       Expr         : W_Expr_Id;
       Domain       : EW_Domain;
       Params       : Transformation_Params;
-      Current_Type : out W_Base_Type_Id) return W_Expr_Id
+      Current_Type : out W_Type_Id) return W_Expr_Id
    is
    begin
       case Nkind (N) is
@@ -1616,7 +1616,7 @@ package body Gnat2Why.Expr is
                                   EW_Term,
                                   Params => Params);
                Dim         : constant Pos := Number_Dimensions (Prefix_Type);
-               BT          : constant W_Base_Type_Id :=
+               BT          : constant W_Type_Id :=
                                +Why_Logic_Type_Of_Ada_Type (Prefix_Type);
                Result_Id   : constant W_Identifier_Id := To_Ident (WNE_Result);
                Binders     : constant W_Identifier_Array :=
@@ -1693,14 +1693,14 @@ package body Gnat2Why.Expr is
       T           : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params;
-      T_Type      : W_Base_Type_OId := Why_Empty) return W_Expr_Id
+      T_Type      : W_Type_OId := Why_Empty) return W_Expr_Id
    is
       Subdomain  : constant EW_Domain :=
                      (if Domain = EW_Pred then EW_Term else Domain);
       Range_Node : constant Node_Id := Get_Range (N);
       Low        : constant Node_Id := Low_Bound (Range_Node);
       High       : constant Node_Id := High_Bound (Range_Node);
-      Base_Type  : W_Base_Type_Id := Base_Why_Type (Low, High);
+      Base_Type  : W_Type_Id := Base_Why_Type (Low, High);
 
       R : W_Expr_Id;
 
@@ -2006,7 +2006,7 @@ package body Gnat2Why.Expr is
 
          --  Values used in calls to the aggregate function
 
-         Ret_Type      : constant W_Base_Type_Id :=
+         Ret_Type      : constant W_Type_Id :=
                            +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
@@ -2355,7 +2355,7 @@ package body Gnat2Why.Expr is
                else
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
-                     Elmt_Type : constant W_Base_Type_Id :=
+                     Elmt_Type : constant W_Type_Id :=
                                    +Why_Logic_Type_Of_Ada_Type (Exp_Type);
                      Value     : constant W_Expr_Id :=
                                    +Ada_Ent_To_Why.Element (Args, Expr).B_Name;
@@ -3097,7 +3097,7 @@ package body Gnat2Why.Expr is
    function Transform_Attr
      (Expr               : Node_Id;
       Domain             : EW_Domain;
-      Current_Type       : out W_Base_Type_Id;
+      Current_Type       : out W_Type_Id;
       Params             : Transformation_Params) return W_Expr_Id
    is
       Aname   : constant Name_Id := Attribute_Name (Expr);
@@ -3199,7 +3199,7 @@ package body Gnat2Why.Expr is
 
          when Attribute_Val =>
             declare
-               Val_Type : constant W_Base_Type_Id :=
+               Val_Type : constant W_Type_Id :=
                  Type_Of_Node (Base_Type (Entity (Var)));
             begin
                T := Transform_Expr (First (Expressions (Expr)),
@@ -3359,7 +3359,7 @@ package body Gnat2Why.Expr is
 
          when Attribute_Value =>
             declare
-               Why_Str : constant W_Base_Type_Id :=
+               Why_Str : constant W_Type_Id :=
                            +Why_Logic_Type_Of_Ada_Type (Standard_String);
                Arg     : constant W_Expr_Id :=
                            Transform_Expr (First (Expressions (Expr)),
@@ -3426,7 +3426,7 @@ package body Gnat2Why.Expr is
          when Attribute_Min | Attribute_Max =>
             declare
                Ada_Ty : constant Entity_Id := Etype (Expr);
-               Base : constant W_Base_Type_Id := Base_Why_Type (Ada_Ty);
+               Base : constant W_Type_Id := Base_Why_Type (Ada_Ty);
                Arg1 : constant W_Expr_Id :=
                  Transform_Expr (First (Expressions (Expr)),
                                  Base,
@@ -3807,7 +3807,7 @@ package body Gnat2Why.Expr is
    function Transform_Enum_Literal
      (Expr         : Node_Id;
       Enum         : Entity_Id;
-      Current_Type : out W_Base_Type_Id;
+      Current_Type : out W_Type_Id;
       Domain       : EW_Domain)
       return W_Expr_Id is
    begin
@@ -3843,7 +3843,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Expr
      (Expr          : Node_Id;
-      Expected_Type : W_Base_Type_Id;
+      Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
@@ -3870,7 +3870,7 @@ package body Gnat2Why.Expr is
          else
             Etype (Expr));
 
-      Current_Type : W_Base_Type_Id := Type_Of_Node (Expr_Type);
+      Current_Type : W_Type_Id := Type_Of_Node (Expr_Type);
       T            : W_Expr_Id;
       Pretty_Label : W_Identifier_Id := Why_Empty;
       Local_Params : Transformation_Params := Params;
@@ -4039,7 +4039,7 @@ package body Gnat2Why.Expr is
                   Left      : constant Node_Id := Left_Opnd (Expr);
                   Right     : constant Node_Id := Right_Opnd (Expr);
 
-                  BT        : constant W_Base_Type_Id :=
+                  BT        : constant W_Type_Id :=
                     Base_Why_Type (Left, Right);
                   Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
@@ -4279,7 +4279,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
             declare
-               Base  : constant W_Base_Type_Id :=
+               Base  : constant W_Type_Id :=
                  (if Is_Boolean_Type (Expr_Type) then EW_Bool_Type
                   else EW_Int_Type);
                Left  : constant W_Expr_Id :=
@@ -4757,7 +4757,7 @@ package body Gnat2Why.Expr is
    function Transform_Expr_With_Actions
      (Expr          : Node_Id;
       Actions       : List_Id;
-      Expected_Type : W_Base_Type_Id;
+      Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
@@ -4806,7 +4806,7 @@ package body Gnat2Why.Expr is
                                   Expr         : Node_Id;
                                   Ent          : Entity_Id;
                                   Domain       : EW_Domain;
-                                  Current_Type : out W_Base_Type_Id)
+                                  Current_Type : out W_Type_Id)
                                   return W_Expr_Id
    is
       C   : constant Ada_Ent_To_Why.Cursor :=
@@ -4873,7 +4873,7 @@ package body Gnat2Why.Expr is
       function Transform_Alternative
         (Var       : W_Identifier_Id;
          Alt       : Node_Id;
-         Base_Type : W_Base_Type_Id)
+         Base_Type : W_Type_Id)
          return W_Expr_Id;
       --  If the alternative Alt is a subtype mark, transform it as a simple
       --  membership test "Var in Alt". Otherwise transform it as an equality
@@ -4890,7 +4890,7 @@ package body Gnat2Why.Expr is
       function Transform_Alternative
         (Var       : W_Identifier_Id;
          Alt       : Node_Id;
-         Base_Type : W_Base_Type_Id)
+         Base_Type : W_Type_Id)
          return W_Expr_Id
       is
          Result : W_Expr_Id;
@@ -4982,7 +4982,7 @@ package body Gnat2Why.Expr is
       Var       : constant Node_Id := Left_Opnd (Expr);
       Result    : W_Expr_Id;
       Why_Var   : constant W_Identifier_Id := New_Temp_Identifier;
-      Base_Type : W_Base_Type_Id := Base_Why_Type (Var);
+      Base_Type : W_Type_Id := Base_Why_Type (Var);
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
       Var_Expr  : W_Expr_Id;
@@ -5159,7 +5159,7 @@ package body Gnat2Why.Expr is
       Index_Type : constant Entity_Id := Etype (Index_Ent);
       Why_Id     : constant W_Identifier_Id :=
                      New_Identifier (Name     => Full_Name (Index_Ent));
-      Index_Base : constant W_Base_Type_Id :=
+      Index_Base : constant W_Type_Id :=
                      (if Over_Range then +EW_Int_Type
                       else
                         Why_Logic_Type_Of_Ada_Type (Index_Type));
@@ -5395,7 +5395,7 @@ package body Gnat2Why.Expr is
             begin
                if Expression (Stmt_Or_Decl) /= Empty then
                   declare
-                     Return_Type : constant W_Base_Type_Id :=
+                     Return_Type : constant W_Type_Id :=
                        Type_Of_Node (Etype (Return_Applies_To
                          (Return_Statement_Entity (Stmt_Or_Decl))));
                   begin
@@ -5697,7 +5697,7 @@ package body Gnat2Why.Expr is
       Id        : constant W_Identifier_Id :=
         New_Identifier (Ada_Node => N, Name => Name);
       Ty        : constant Entity_Id := Type_Of_Node (N);
-      Why_Type  : constant W_Base_Type_Id :=
+      Why_Type  : constant W_Type_Id :=
         New_Abstract_Base_Type (Ty);
       Decl_File : Why_Section := Why_Sections (Dispatch_Entity (N));
    begin

@@ -198,60 +198,60 @@ package Why.Inter is
 
    function To_Why_Type (T : String) return W_Identifier_Id;
 
-   function EW_Bool_Type return W_Base_Type_Id;
-   function EW_Int_Type return W_Base_Type_Id;
-   function EW_Real_Type return W_Base_Type_Id;
-   function EW_Private_Type return W_Base_Type_Id;
-   function EW_Unit_Type return W_Base_Type_Id;
-   function EW_Prop_Type return W_Base_Type_Id;
-   function Why_Types (E : EW_Basic_Type) return W_Base_Type_Id;
+   function EW_Bool_Type return W_Type_Id;
+   function EW_Int_Type return W_Type_Id;
+   function EW_Real_Type return W_Type_Id;
+   function EW_Private_Type return W_Type_Id;
+   function EW_Unit_Type return W_Type_Id;
+   function EW_Prop_Type return W_Type_Id;
+   function Why_Types (E : EW_Basic_Type) return W_Type_Id;
 
-   function EW_Abstract (N : Node_Id) return W_Base_Type_Id;
-   function New_Abstract_Base_Type (E : Entity_Id) return W_Base_Type_Id;
-   function New_Named_Type (Name : W_Identifier_Id) return W_Base_Type_Id;
-   function New_Ref_Type (Ty : W_Base_Type_Id) return W_Base_Type_Id;
+   function EW_Abstract (N : Node_Id) return W_Type_Id;
+   function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
+   function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
+   function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
 
-   function Type_Of_Node (N : Node_Id) return W_Base_Type_Id;
+   function Type_Of_Node (N : Node_Id) return W_Type_Id;
 
-   function Base_Why_Type (N : Node_Id) return W_Base_Type_Id;
-   function Base_Why_Type (W : W_Base_Type_Id) return W_Base_Type_Id;
+   function Base_Why_Type (N : Node_Id) return W_Type_Id;
+   function Base_Why_Type (W : W_Type_Id) return W_Type_Id;
    --  Return the base type in Why of the given node. This type will be
    --  used for comparisons, conversions etc. Examples are EW_Real_Type
    --  for standard__float, and the Root_Record_Type for record types.
 
-   function Is_Record_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
+   function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean;
 
-   function Is_Array_Conversion (Left, Right : W_Base_Type_Id) return Boolean;
+   function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean;
 
-   function Base_Why_Type (Left, Right : W_Base_Type_Id) return W_Base_Type_Id;
-   function Base_Why_Type (Left, Right : Node_Id) return W_Base_Type_Id;
+   function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id;
+   function Base_Why_Type (Left, Right : Node_Id) return W_Type_Id;
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
-   function Get_EW_Type (T : W_Base_Type_Id) return EW_Type;
+   function Get_EW_Type (T : W_Type_Id) return EW_Type;
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 
-   function Up (WT : W_Base_Type_Id) return W_Base_Type_Id;
+   function Up (WT : W_Type_Id) return W_Type_Id;
    --  If WT is the highest base type, return WT; otherwise, return the
    --  smallest base type BT such that WT < BT.
 
-   function Up (From, To : W_Base_Type_Id) return W_Base_Type_Id;
+   function Up (From, To : W_Type_Id) return W_Type_Id;
    --  Same as unary Up, except that it stops when To is reached;
    --  i.e. if From = To then To is returned.
 
-   function  LCA (Left, Right : W_Base_Type_Id;
-                  Force : Boolean := False) return W_Base_Type_Id;
+   function  LCA (Left, Right : W_Type_Id;
+                  Force : Boolean := False) return W_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
    --  i.e. the smallest base type B such that Left <= B and right <= B.
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
-   function Eq_Base_Type (Left, Right : W_Base_Type_Id) return Boolean;
-   --  Return True if Left and Right are both W_Base_Type_Id nodes, and Eq
-   --  returns True on these seen as W_Base_Type_Id nodes.
+   function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean;
+   --  Return True if Left and Right are both W_Type_Id nodes, and Eq
+   --  returns True on these seen as W_Type_Id nodes.
 
-   function Eq_Base (Left, Right : W_Base_Type_Id) return Boolean;
+   function Eq_Base (Left, Right : W_Type_Id) return Boolean;
    --  Extensional equality (i.e. returns True if Left and Right are of
    --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
 
@@ -278,11 +278,11 @@ private
    --  Mapping from an entity to the set of entities on which it depends. This
    --  map is filled by Close_Theory.
 
-   function EW_Bool_Type return W_Base_Type_Id is (Why_Types (EW_Bool));
-   function EW_Int_Type return W_Base_Type_Id is (Why_Types (EW_Int));
-   function EW_Private_Type return W_Base_Type_Id is (Why_Types (EW_Private));
-   function EW_Prop_Type return W_Base_Type_Id is (Why_Types (EW_Prop));
-   function EW_Real_Type return W_Base_Type_Id is (Why_Types (EW_Real));
-   function EW_Unit_Type return W_Base_Type_Id is (Why_Types (EW_Unit));
+   function EW_Bool_Type return W_Type_Id is (Why_Types (EW_Bool));
+   function EW_Int_Type return W_Type_Id is (Why_Types (EW_Int));
+   function EW_Private_Type return W_Type_Id is (Why_Types (EW_Private));
+   function EW_Prop_Type return W_Type_Id is (Why_Types (EW_Prop));
+   function EW_Real_Type return W_Type_Id is (Why_Types (EW_Real));
+   function EW_Unit_Type return W_Type_Id is (Why_Types (EW_Unit));
 
 end Why.Inter;

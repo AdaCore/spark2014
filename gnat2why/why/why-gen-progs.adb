@@ -43,7 +43,7 @@ package body Why.Gen.Progs is
      (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
-      Return_Type : W_Base_Type_Id := Why_Empty)
+      Return_Type : W_Type_Id := Why_Empty)
       return W_Prog_Id is
    begin
       return
@@ -203,7 +203,7 @@ package body Why.Gen.Progs is
    ----------------
 
    function New_Result
-     (T : W_Base_Type_Id)
+     (T : W_Type_Id)
      return W_Binder_Id is
    begin
       return New_Binder
@@ -217,7 +217,7 @@ package body Why.Gen.Progs is
    ------------------------
 
    function New_Simpl_Any_Prog
-     (T    : W_Base_Type_Id;
+     (T    : W_Type_Id;
       Pred : W_Pred_OId := Why_Empty) return W_Prog_Id
    is
    begin
