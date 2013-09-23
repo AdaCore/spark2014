@@ -760,8 +760,7 @@ package body Why.Gen.Arrays is
       Dimension  : Pos) return W_Pred_Id
    is
       Comp_Type  : constant Node_Id := Component_Type (Left_Type);
-      Elmt_Type  : constant W_Type_Id :=
-        +Why_Logic_Type_Of_Ada_Type (Comp_Type);
+      Elmt_Type  : constant W_Type_Id := EW_Abstract (Comp_Type);
       Left       : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,

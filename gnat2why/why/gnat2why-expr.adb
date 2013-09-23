@@ -1616,8 +1616,7 @@ package body Gnat2Why.Expr is
                                   EW_Term,
                                   Params => Params);
                Dim         : constant Pos := Number_Dimensions (Prefix_Type);
-               BT          : constant W_Type_Id :=
-                               +Why_Logic_Type_Of_Ada_Type (Prefix_Type);
+               BT          : constant W_Type_Id := EW_Abstract (Prefix_Type);
                Result_Id   : constant W_Identifier_Id := To_Ident (WNE_Result);
                Binders     : constant W_Identifier_Array :=
                                New_Temp_Identifiers (Positive (Dim));
@@ -1928,7 +1927,7 @@ package body Gnat2Why.Expr is
             Args (Cnt) :=
               Transform_Expr
                 (Element (Value),
-                 +Why_Logic_Type_Of_Ada_Type (Element (Typ)),
+                 EW_Abstract (Element (Typ)),
                  Domain,
                  Params);
             Next (Value);
@@ -2007,7 +2006,7 @@ package body Gnat2Why.Expr is
          --  Values used in calls to the aggregate function
 
          Ret_Type      : constant W_Type_Id :=
-                           +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
+                           EW_Abstract (Expr_Typ);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -2059,7 +2058,7 @@ package body Gnat2Why.Expr is
                   B_Name   => Ident,
                   B_Ent    => null,
                   Mutable  => False,
-                  B_Type   => Why_Logic_Type_Of_Ada_Type (Element (Typ)));
+                  B_Type   => EW_Abstract (Element (Typ)));
             begin
                Call_Params (Cnt) := B;
                Call_Args (Cnt) := +Ident;
@@ -2356,7 +2355,7 @@ package body Gnat2Why.Expr is
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
                      Elmt_Type : constant W_Type_Id :=
-                                   +Why_Logic_Type_Of_Ada_Type (Exp_Type);
+                                   EW_Abstract (Exp_Type);
                      Value     : constant W_Expr_Id :=
                                    +Ada_Ent_To_Why.Element (Args, Expr).B_Name;
                      Read      : constant W_Expr_Id :=
@@ -3355,12 +3354,12 @@ package body Gnat2Why.Expr is
                               Name     => "to_string"),
                            Args     => (1 => T));
 
-            Current_Type := +Why_Logic_Type_Of_Ada_Type (Standard_String);
+            Current_Type := EW_Abstract (Standard_String);
 
          when Attribute_Value =>
             declare
                Why_Str : constant W_Type_Id :=
-                           +Why_Logic_Type_Of_Ada_Type (Standard_String);
+                           EW_Abstract (Standard_String);
                Arg     : constant W_Expr_Id :=
                            Transform_Expr (First (Expressions (Expr)),
                                            Why_Str,
@@ -5160,9 +5159,8 @@ package body Gnat2Why.Expr is
       Why_Id     : constant W_Identifier_Id :=
                      New_Identifier (Name     => Full_Name (Index_Ent));
       Index_Base : constant W_Type_Id :=
-                     (if Over_Range then +EW_Int_Type
-                      else
-                        Why_Logic_Type_Of_Ada_Type (Index_Type));
+                     (if Over_Range then EW_Int_Type
+                      else EW_Abstract (Index_Type));
       Cond_Expr  : W_Expr_Id;
 
       --  Start of Transform_Quantified_Expression
@@ -5330,22 +5328,21 @@ package body Gnat2Why.Expr is
                if not Box_Present (Association) then
                   Expr := Transform_Expr
                     (Expression (Association),
-                     +Why_Logic_Type_Of_Ada_Type (Etype (Component)),
+                     EW_Abstract (Etype (Component)),
                      Domain, Params);
                else
                   pragma Assert (Domain = EW_Prog);
                   Expr :=
                      +New_Simpl_Any_Prog
                          (T =>
-                            +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+                            EW_Abstract (Etype (Component)));
                end if;
                Next (Association);
             else
                pragma Assert (Domain = EW_Prog);
                Expr :=
                  +New_Simpl_Any_Prog
-                   (T =>
-                      +Why_Logic_Type_Of_Ada_Type (Etype (Component)));
+                   (T => +EW_Abstract (Etype (Component)));
             end if;
             Result (J) :=
                New_Field_Association

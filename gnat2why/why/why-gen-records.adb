@@ -37,7 +37,6 @@ with VC_Kinds;           use VC_Kinds;
 
 with Gnat2Why.Expr;      use Gnat2Why.Expr;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
-with Gnat2Why.Types;     use Gnat2Why.Types;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
@@ -347,7 +346,7 @@ package body Why.Gen.Records is
          Index           : Natural := 1;
          From_Binder     : constant Binder_Array :=
            (1 => (B_Name => A_Ident,
-                  B_Type => Why_Logic_Type_Of_Ada_Type (Root),
+                  B_Type => EW_Abstract (Root),
                   others => <>));
          From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
 
@@ -433,7 +432,7 @@ package body Why.Gen.Records is
                Name        => To_Ident (WNE_To_Base),
                Binders     => R_Binder,
                Return_Type =>
-                 Why_Logic_Type_Of_Ada_Type (Root),
+                 EW_Abstract (Root),
                Def         =>
                  New_Record_Aggregate
                    (Associations => To_Root_Aggr)));
@@ -584,7 +583,7 @@ package body Why.Gen.Records is
                               Name        => Prog_Name,
                               Binders     => R_Binder,
                               Return_Type =>
-                                Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                                EW_Abstract (Etype (Field)),
                               Pre         => Precond,
                               Post        => Post));
                   end;
@@ -608,7 +607,7 @@ package body Why.Gen.Records is
             Binders (Index) :=
               (B_Name => To_Why_Id (Field, Local => True),
                B_Type =>
-                 Why_Logic_Type_Of_Ada_Type (Etype (Field)),
+                 EW_Abstract (Etype (Field)),
                others => <>);
             loop
                Next_Component_Or_Discriminant (Field);
@@ -886,7 +885,7 @@ package body Why.Gen.Records is
             R_Binder (Count) :=
               Binder_Type'(B_Name => To_Why_Id (Discr, Local => True),
                            B_Type =>
-                             Why_Logic_Type_Of_Ada_Type (Etype (Discr)),
+                             EW_Abstract (Etype (Discr)),
                            others => <>);
             Args (Count) := +To_Why_Id (Discr, Local => True);
             Check_Pred :=

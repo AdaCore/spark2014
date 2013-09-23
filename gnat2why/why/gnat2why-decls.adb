@@ -385,8 +385,7 @@ package body Gnat2Why.Decls is
                      Binder_Type'(Ada_Node => E,
                                   B_Name   => To_Why_Id (E),
                                   B_Ent    => null,
-                                  B_Type   =>
-                                    Why_Logic_Type_Of_Ada_Type (Etype (E)),
+                                  B_Type   => EW_Abstract (Etype (E)),
                                   Mutable  =>
                                     Ekind (E) in Object_Kind and then
                                   Is_Mutable_In_Why (E)));
@@ -830,7 +829,7 @@ package body Gnat2Why.Decls is
                           & "__" & Short_Name (Formal) & "\." &
                             Short_Name (Formal)),
                         To       => W_Any_Node_Id
-                          (Why_Logic_Type_Of_Ada_Type (Actual)));
+                          (EW_Abstract (Actual)));
 
                      --  If the formal has a private kind, Base_Type_Name,
                      --  To_Base_Name, Of_Base_Name, and In_Range_Name must be
@@ -839,7 +838,7 @@ package body Gnat2Why.Decls is
                      if Ekind (Formal) in Private_Kind then
                         declare
                            Actual_Type : constant W_Type_OId :=
-                             Why_Logic_Type_Of_Ada_Type (Actual);
+                             EW_Abstract (Actual);
                            Actual_Base : constant W_Type_OId :=
                              +Base_Why_Type (Unique_Entity (Actual));
                         begin
@@ -1202,9 +1201,9 @@ package body Gnat2Why.Decls is
                   if Is_Input and then
                     Is_Scalar_Type (Actual) and then
                     not Is_Boolean_Type (Actual) then
-                     return +Base_Why_Type (Unique_Entity (Actual));
+                     return Base_Why_Type (Unique_Entity (Actual));
                   else
-                     return Why_Logic_Type_Of_Ada_Type (Actual);
+                     return EW_Abstract (Actual);
                   end if;
                end;
             else
@@ -1215,9 +1214,9 @@ package body Gnat2Why.Decls is
                   --  If Is_Input is true, checks wether the base_type of
                   --  Ty should be used.
 
-                  return +Base_Why_Type (Unique_Entity (Ty));
+                  return Base_Why_Type (Unique_Entity (Ty));
                else
-                  return Why_Logic_Type_Of_Ada_Type (Ty);
+                  return EW_Abstract (Ty);
                end if;
             end if;
          end Why_Logic_Type_Of_Ada_Generic_Type;
@@ -1265,7 +1264,7 @@ package body Gnat2Why.Decls is
                         New_Type_Decl
                           (Name  =>
                                New_Identifier (Name => Short_Name (Formal)),
-                           Alias => Why_Logic_Type_Of_Ada_Type (Actual)));
+                           Alias => EW_Abstract (Actual)));
                   end if;
 
                   if Ekind (Actual) in E_Record_Type and then
@@ -1349,7 +1348,7 @@ package body Gnat2Why.Decls is
                          (Get_Subprogram_Spec (Actual));
                      A_Param : Node_Id := First (A_Params);
                      A_Type : constant W_Type_Id :=
-                       Why_Logic_Type_Of_Ada_Type (Etype (Actual));
+                       EW_Abstract (Etype (Actual));
                      Binders : Binder_Array
                        (1 .. Integer (List_Length (F_Params)));
                      Args    : W_Expr_Array
@@ -1367,8 +1366,7 @@ package body Gnat2Why.Decls is
                            A_Type : constant W_Type_Id :=
                              (if Use_Why_Base_Type (A_Id) then
                               +Base_Why_Type (Unique_Entity (Etype (A_Id)))
-                              else Why_Logic_Type_Of_Ada_Type
-                                (Etype (A_Id)));
+                              else EW_Abstract (Etype (A_Id)));
                            F_Id   : constant Node_Id :=
                              Defining_Identifier (F_Param);
                            F_Type : constant W_Type_Id :=

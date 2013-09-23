@@ -958,7 +958,7 @@ package body Gnat2Why.Subprograms is
                  (1 => New_Identifier
                     (Name =>
                        """GP_Ada_Name:" & Source_Name (E) & "'Result""")),
-               Ref_Type => Why_Logic_Type_Of_Ada_Type (Etype (E))));
+               Ref_Type => EW_Abstract (Etype (E))));
       end if;
 
       --  Translate statements in the body of the subp
@@ -1332,7 +1332,7 @@ package body Gnat2Why.Subprograms is
       --  one P.F
 
       if Ekind (E) = E_Function then
-         Why_Type := +Why_Logic_Type_Of_Ada_Type (Etype (E));
+         Why_Type := +EW_Abstract (Etype (E));
          Ada_Ent_To_Why.Insert (Symbol_Table,
                                 E,
                                 Binder_Type'(
@@ -1377,8 +1377,7 @@ package body Gnat2Why.Subprograms is
                               (Left   => New_Relation
                                    (Op      => EW_Eq,
                                     Op_Type =>
-                                      Get_EW_Type (+Why_Logic_Type_Of_Ada_Type
-                                      (Etype (E))),
+                                      Get_EW_Type (EW_Abstract (Etype (E))),
                                     Left    => +To_Ident (WNE_Result),
                                     Right   =>
                                     New_Call
@@ -1406,7 +1405,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Func_Binders,
-                  Return_Type => +Why_Logic_Type_Of_Ada_Type (Etype (E)),
+                  Return_Type => +EW_Abstract (Etype (E)),
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post));

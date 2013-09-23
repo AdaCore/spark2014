@@ -146,41 +146,8 @@ package body Gnat2Why.Types is
      (N : Node_Id)
      return W_Type_Id is
    begin
-      return Why_Logic_Type_Of_Ada_Type (Etype (N));
+      return EW_Abstract (Etype (N));
    end  Why_Logic_Type_Of_Ada_Obj;
-
-   --------------------------------
-   -- Why_Logic_Type_Of_Ada_Type --
-   --------------------------------
-
-   function Why_Logic_Type_Of_Ada_Type
-     (Ty : Node_Id)
-     return W_Type_Id is
-   begin
-
-      --  Standard.Boolean is modeled as bool; any other boolean subtype
-      --  is modeled as an abstract type to have range checks.
-
-      if Ty = Standard_Boolean then
-         return EW_Bool_Type;
-      elsif Ty = Universal_Fixed then
-         return EW_Real_Type;
-      elsif Ekind (Ty) in Private_Kind then
-
-         --  For a private type or record subtype, use the most underlying type
-         --  if it is in SPARK. Otherwise, return the special private type.
-
-         if Entity_In_External_Axioms (Ty) then
-            return New_Abstract_Base_Type (Ty);
-         elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
-            return Why_Logic_Type_Of_Ada_Type (Most_Underlying_Type (Ty));
-         else
-            return EW_Private_Type;
-         end if;
-      else
-         return New_Abstract_Base_Type (Ty);
-      end if;
-   end  Why_Logic_Type_Of_Ada_Type;
 
    --------------------
    -- Translate_Type --
@@ -343,7 +310,7 @@ package body Gnat2Why.Types is
       return W_Type_Id
    is
       Base : constant W_Type_Id :=
-        Why_Logic_Type_Of_Ada_Type (Ty);
+        EW_Abstract (Ty);
    begin
       if Is_Mutable then
          return +New_Ref_Type (Ty => +Base);
