@@ -187,6 +187,26 @@ package body SPARK_Util is
       end loop;
    end Append;
 
+   --------------------------------
+   -- Check_Needed_On_Conversion --
+   --------------------------------
+
+   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean is
+   begin
+      --  No check needed if same type
+
+      if To = From then
+         return False;
+
+      --  No check needed when converting to base type
+
+      elsif To = Etype (From) then
+         return False;
+      end if;
+
+      return True;
+   end Check_Needed_On_Conversion;
+
    --------------------------------------
    -- Expression_Functions_All_The_Way --
    --------------------------------------
@@ -361,6 +381,45 @@ package body SPARK_Util is
 
       return Flat_Stmts;
    end Get_Flat_Statement_And_Declaration_List;
+
+   ---------------------------------
+   -- Get_Formal_Type_From_Actual --
+   ---------------------------------
+
+   function Get_Formal_Type_From_Actual (Actual : Node_Id) return Entity_Id is
+      Formal_Type : Entity_Id := Empty;
+
+      procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id);
+      --  If Some_Actual is the desired actual parameter, set Formal_Type to
+      --  the type of the corresponding formal parameter.
+
+      --------------------
+      -- Check_Call_Arg --
+      --------------------
+
+      procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id) is
+      begin
+         if Some_Actual = Actual then
+            Formal_Type := Etype (Some_Formal);
+         end if;
+      end Check_Call_Arg;
+
+      procedure Find_Expr_In_Call_Args is new
+        Iterate_Call_Arguments (Check_Call_Arg);
+
+      Par : constant Node_Id := Parent (Actual);
+
+   begin
+      if Nkind (Par) = N_Parameter_Association then
+         Find_Expr_In_Call_Args (Parent (Par));
+      else
+         Find_Expr_In_Call_Args (Par);
+      end if;
+
+      pragma Assert (Present (Formal_Type));
+
+      return Formal_Type;
+   end Get_Formal_Type_From_Actual;
 
    ----------------------
    -- Get_Global_Items --

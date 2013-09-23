@@ -253,4 +253,17 @@ package SPARK_Util is
       Writes : out Node_Sets.Set);
    --  Returns the set of input and output items in Global pragma P
 
+   function Get_Formal_Type_From_Actual (Actual : Node_Id) return Entity_Id
+   with
+     Pre => Nkind_In (Parent (Actual), N_Function_Call,
+                                       N_Parameter_Association,
+                                       N_Procedure_Call_Statement);
+   --  Given an actual parameter Actual of a call, returns the type of the
+   --  corresponding formal parameter.
+
+   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
+   --  Returns whether a check may be needed when converting an expression
+   --  of type From to an expression of type To. Currently a very coarse
+   --  approximation to rule out obvious cases.
+
 end SPARK_Util;

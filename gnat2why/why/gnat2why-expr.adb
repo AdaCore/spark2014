@@ -1954,9 +1954,9 @@ package body Gnat2Why.Expr is
          --  Compute the call
 
          R := New_Call (Ada_Node => Expr,
-                          Domain   => Domain,
-                          Name     => Func,
-                          Args     => Args);
+                        Domain   => Domain,
+                        Name     => Func,
+                        Args     => Args);
 
          --  In programs, we generate a check that all the choices are
          --  compatible with their index subtype:
@@ -2191,20 +2191,18 @@ package body Gnat2Why.Expr is
          is
             Expr : Node_Id;
          begin
-            --  Fill together the arrays Index_Values and Index_Types
-
-            if Nkind (Expr_Or_Association) = N_Component_Association then
-               Index_Values.Append (Expr_Or_Association);
-               Index_Types.Append (Etype (Index));
-            end if;
-
-            --  Fill together the arrays Values and Types
-
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then Box_Present (Expr_Or_Association)
             then
                null;
             else
+               --  Fill together the arrays Index_Values and Index_Types
+
+               Index_Values.Append (Expr_Or_Association);
+               Index_Types.Append (Etype (Index));
+
+               --  Fill together the arrays Values and Types
+
                Expr :=
                  (if Nkind (Expr_Or_Association) =
                     N_Component_Association
@@ -4424,7 +4422,9 @@ package body Gnat2Why.Expr is
                       Else_Part => Else_Expr);
             end;
 
-         when N_Type_Conversion =>
+         when N_Qualified_Expression |
+              N_Type_Conversion      =>
+
             --  When converting to a flating-point or fixed-point type, a
             --  rounding operation should be applied on the intermediate
             --  real value. This is ensured by requiring that the converted
@@ -4559,13 +4559,6 @@ package body Gnat2Why.Expr is
                                    Expected_Type,
                                    EW_Prog,
                                    Local_Params));
-
-         when N_Qualified_Expression =>
-            Current_Type := Base_Why_Type (Expression (Expr));
-            T := Transform_Expr (Expression (Expr),
-                                 Current_Type,
-                                 Domain,
-                                 Local_Params);
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="

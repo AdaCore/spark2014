@@ -365,45 +365,7 @@ package body Gnat2Why.Nodes is
          when N_Function_Call            |
               N_Procedure_Call_Statement |
               N_Parameter_Association    =>
-
-            Call : declare
-
-               Found : Boolean := False;
-
-               procedure Check_Call_Arg (Formal, Actual : Node_Id);
-               --  If Actual is the right expression, set Check_Type to the
-               --  Etype of Formal.
-
-               --------------------
-               -- Check_Call_Arg --
-               --------------------
-
-               procedure Check_Call_Arg (Formal, Actual : Node_Id) is
-               begin
-                  if Expr = Actual then
-                     Check_Type := Etype (Formal);
-                     Found := True;
-                  end if;
-               end Check_Call_Arg;
-
-               procedure Find_Expr_in_Call_Args is new
-                 Iterate_Call_Arguments (Check_Call_Arg);
-
-            begin
-               if Nkind (Par) = N_Parameter_Association then
-                  Find_Expr_in_Call_Args (Parent (Par));
-               else
-                  Find_Expr_in_Call_Args (Par);
-               end if;
-
-               --  The only possible child node of a call with a range check
-               --  should be one of the arguments, so Found should always be
-               --  True at this point.
-
-               if not Found then
-                  raise Program_Error;
-               end if;
-            end Call;
+            Check_Type := Get_Formal_Type_From_Actual (Expr);
 
          when N_Attribute_Reference =>
             Attribute : declare

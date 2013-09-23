@@ -114,7 +114,21 @@ package body Why.Gen.Expr is
       To        : W_Base_Type_Id;
       From      : W_Base_Type_Id) return W_Expr_Id
    is
+      --  When converting between Ada types, detect cases where a check is not
+      --  needed.
+
+      Check_Needed : constant Boolean :=
+        (if Get_Base_Type (From) = EW_Abstract
+              and
+            Get_Base_Type (To) = EW_Abstract
+         then
+            Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
+                                        To   => Get_Ada_Node (+To))
+         else
+            True);
+
       T : W_Expr_Id := Term;
+
    begin
       --  Conversion between record types need to go through their common root
       --  record type. A discriminant check may be needed. Currently perform it
@@ -124,11 +138,17 @@ package body Why.Gen.Expr is
       if Is_Record_Conversion (From, To) then
          declare
             Discr_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog
-                 and then Nkind (Parent (Expr)) in N_Type_Conversion      |
-                                                   N_Assignment_Statement
-               then
-                  Parent (Expr)
+              (if Domain = EW_Prog and Check_Needed then
+                (case Nkind (Parent (Expr)) is
+                   when N_Assignment_Statement |
+                        N_Qualified_Expression |
+                        N_Type_Conversion      =>
+                     Parent (Expr),
+                   when N_Function_Call            |
+                        N_Parameter_Association    |
+                        N_Procedure_Call_Statement =>
+                     Expr,
+                   when others => Empty)
                else Empty);
          begin
             T := Insert_Record_Conversion (Domain      => Domain,
@@ -142,17 +162,19 @@ package body Why.Gen.Expr is
       elsif Is_Array_Conversion (From, To) then
          declare
             Range_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog then
+              (if Domain = EW_Prog and Check_Needed then
                 (if Do_Range_Check (Expr) then
                     Expr
 
                  --  The flag Do_Length_Check is not set consistently in the
                  --  frontend, so check every array conversion.
                  elsif Nkind (Parent (Expr)) in N_Assignment_Statement     |
+                                                N_Qualified_Expression     |
                                                 N_Function_Call            |
                                                 N_Op_And                   |
                                                 N_Op_Or                    |
                                                 N_Op_Xor                   |
+                                                N_Parameter_Association    |
                                                 N_Procedure_Call_Statement |
                                                 N_Type_Conversion
                  then
@@ -179,7 +201,7 @@ package body Why.Gen.Expr is
             --  in sinfo.ads for details.)
 
             Range_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog then
+              (if Domain = EW_Prog and Check_Needed then
                  (if Do_Range_Check (Expr) then
                        Expr
                   elsif Nkind (Expr) = N_Type_Conversion
@@ -260,9 +282,11 @@ package body Why.Gen.Expr is
               (case Nkind (Discr_Check) is
                   when N_Assignment_Statement =>
                      Unique_Entity (Etype (Name (Discr_Check))),
-                  when N_Type_Conversion =>
+                  when N_Qualified_Expression |
+                       N_Type_Conversion      =>
                      Unique_Entity (Etype (Discr_Check)),
-                  when others => Empty);
+                  when others =>  --  Reach here only for actual parameters
+                     Get_Formal_Type_From_Actual (Discr_Check));
          begin
             Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
                                                           Check_Entity,
