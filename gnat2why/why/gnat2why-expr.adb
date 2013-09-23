@@ -2006,7 +2006,7 @@ package body Gnat2Why.Expr is
 
          --  Values used in calls to the aggregate function
 
-         Ret_Type      : constant W_Primitive_Type_Id :=
+         Ret_Type      : constant W_Base_Type_Id :=
                            +Why_Logic_Type_Of_Ada_Type (Expr_Typ);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
@@ -5159,7 +5159,7 @@ package body Gnat2Why.Expr is
       Index_Type : constant Entity_Id := Etype (Index_Ent);
       Why_Id     : constant W_Identifier_Id :=
                      New_Identifier (Name     => Full_Name (Index_Ent));
-      Index_Base : constant W_Primitive_Type_Id :=
+      Index_Base : constant W_Base_Type_Id :=
                      (if Over_Range then +EW_Int_Type
                       else
                         Why_Logic_Type_Of_Ada_Type (Index_Type));

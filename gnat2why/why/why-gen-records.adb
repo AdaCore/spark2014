@@ -248,7 +248,7 @@ package body Why.Gen.Records is
       Root       : constant Entity_Id := Root_Record_Type (E);
       Is_Root    : constant Boolean := Root = E;
       Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
-      Abstr_Ty   : constant W_Primitive_Type_Id :=
+      Abstr_Ty   : constant W_Base_Type_Id :=
         +New_Named_Type (Name => Ty_Ident);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
@@ -857,7 +857,7 @@ package body Why.Gen.Records is
       Root   : Entity_Id)
    is
       Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
-      Root_Abstr : constant W_Primitive_Type_Id :=
+      Root_Abstr : constant W_Base_Type_Id :=
         +New_Named_Type (Name => Root_Ident);
       A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
       Num_Discr  : constant Natural := Count_Discriminants (E);

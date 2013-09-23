@@ -59,9 +59,6 @@ package body Xtree_Sinfo is
       New_Class ("W_Value",
                  W_Not,
                  W_Unreachable_Code);
-      New_Class ("W_Primitive_Type",
-                 W_Base_Type,
-                 W_Base_Type);
 
       New_Class ("W_Type_Definition",
                  W_Transparent_Type_Definition,
@@ -118,14 +115,14 @@ package body Xtree_Sinfo is
       New_Field (W_Binder,
                  "Name", "W_Identifier", Id_Lone);
       New_Field (W_Binder,
-                 "Arg_Type", "W_Primitive_Type", Id_One);
+                 "Arg_Type", "W_Base_Type", Id_One);
 
       -----------------------------------
       -- W_Transparent_Type_Definition --
       -----------------------------------
 
       New_Field (W_Transparent_Type_Definition,
-                 "Type_Definition", "W_Primitive_Type", Id_One);
+                 "Type_Definition", "W_Base_Type", Id_One);
       Set_Domain (W_Effects, EW_Term);
 
       ----------------------
@@ -143,7 +140,7 @@ package body Xtree_Sinfo is
       New_Field (W_Constr_Decl,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Constr_Decl,
-                 "Arg_List", "W_Primitive_Type", Id_Set);
+                 "Arg_List", "W_Base_Type", Id_Set);
       Set_Domain (W_Constr_Decl, EW_Term);
 
       -------------------------
@@ -261,7 +258,7 @@ package body Xtree_Sinfo is
       New_Field (W_Universal_Quantif,
                  "Labels", "W_Identifier", Id_Set);
       New_Field (W_Universal_Quantif,
-                 "Var_Type", "W_Primitive_Type", Id_One);
+                 "Var_Type", "W_Base_Type", Id_One);
       New_Field (W_Universal_Quantif,
                  "Triggers", "W_Triggers", Id_Lone);
       New_Field (W_Universal_Quantif,
@@ -276,7 +273,7 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Labels", "W_Identifier", Id_Set);
       New_Field (W_Existential_Quantif,
-                 "Var_Type", "W_Primitive_Type", Id_One);
+                 "Var_Type", "W_Base_Type", Id_One);
       New_Field (W_Existential_Quantif,
                  "Pred", "W_Pred", Id_One);
 
@@ -487,7 +484,7 @@ package body Xtree_Sinfo is
       New_Field (W_Any_Expr,
                  "Post", "W_Pred", Id_Lone);
       New_Field (W_Any_Expr,
-                 "Return_Type", "W_Primitive_Type", Id_One);
+                 "Return_Type", "W_Base_Type", Id_One);
 
       ------------------
       -- W_Assignment --
@@ -565,7 +562,7 @@ package body Xtree_Sinfo is
       New_Field (W_Raise,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Raise,
-                 "Exn_Type", "W_Primitive_Type", Id_Lone);
+                 "Exn_Type", "W_Base_Type", Id_Lone);
 
       -----------------
       -- W_Try_Block --
@@ -589,7 +586,7 @@ package body Xtree_Sinfo is
       ------------------------
 
       New_Field (W_Unreachable_Code,
-                 "Exn_Type", "W_Primitive_Type", Id_Lone);
+                 "Exn_Type", "W_Base_Type", Id_Lone);
 
       ---------------------
       -- W_Function_Decl --
@@ -606,7 +603,7 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Decl,
                  "Post", "W_Pred", Id_Lone);
       New_Field (W_Function_Decl,
-                 "Return_Type", "W_Primitive_Type", Id_One);
+                 "Return_Type", "W_Base_Type", Id_One);
       New_Field (W_Function_Decl,
                  "Labels", "W_Identifier", Id_Set);
 
@@ -662,7 +659,7 @@ package body Xtree_Sinfo is
       New_Field (W_Global_Ref_Declaration,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Global_Ref_Declaration,
-                 "Ref_Type", "W_Primitive_Type", Id_One);
+                 "Ref_Type", "W_Base_Type", Id_One);
       New_Field (W_Global_Ref_Declaration,
                  "Labels", "W_Identifier", Id_Set);
       Set_Domain (W_Global_Ref_Declaration, EW_Prog);
@@ -674,7 +671,7 @@ package body Xtree_Sinfo is
       New_Field (W_Exception_Declaration,
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Exception_Declaration,
-                 "Arg", "W_Primitive_Type", Id_Lone);
+                 "Arg", "W_Base_Type", Id_Lone);
       Set_Domain (W_Exception_Declaration, EW_Prog);
 
       ---------------------------

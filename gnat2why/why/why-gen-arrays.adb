@@ -233,7 +233,7 @@ package body Why.Gen.Arrays is
                                   Und_Ent        : Entity_Id)
    is
       Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Int_Type  : constant W_Primitive_Type_Id := +EW_Int_Type;
+      Int_Type  : constant W_Base_Type_Id := +EW_Int_Type;
       Index     : Entity_Id := First_Index (Und_Ent);
       Subst     : W_Clone_Substitution_Array
         (1 .. Integer (Dimension * 2) + 1);
@@ -335,7 +335,7 @@ package body Why.Gen.Arrays is
                                     Und_Ent        : Entity_Id)
    is
       Dimension : constant Pos := Number_Dimensions (Und_Ent);
-      Int_Type    : constant W_Primitive_Type_Id := +EW_Int_Type;
+      Int_Type    : constant W_Base_Type_Id := +EW_Int_Type;
       Subst     : W_Clone_Substitution_Array
         (1 .. Integer (Dimension * 4) + 1);
       Cursor    : Integer := 1;
@@ -354,7 +354,7 @@ package body Why.Gen.Arrays is
          declare
             Ind_Ty : constant Entity_Id := Etype (Index);
             B_Ty   : constant Entity_Id := Base_Type (Ind_Ty);
-            B_Type : constant W_Primitive_Type_Id :=
+            B_Type : constant W_Base_Type_Id :=
               +Type_Of_Node (B_Ty);
          begin
             Subst (Cursor) :=
@@ -403,9 +403,9 @@ package body Why.Gen.Arrays is
          declare
             Dummy_Ident : constant W_Identifier_Id :=
               New_Identifier (Name => "x");
-            Image_Ty    : constant W_Primitive_Type_Id :=
+            Image_Ty    : constant W_Base_Type_Id :=
               +New_Named_Type (Name => New_Identifier (Name => "__image"));
-            Str_Typ     : constant W_Primitive_Type_Id :=
+            Str_Typ     : constant W_Base_Type_Id :=
               +New_Named_Type (Name => Why3_Type_Name);
          begin
             Emit (Theory,

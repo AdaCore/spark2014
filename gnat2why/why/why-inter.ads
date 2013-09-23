@@ -228,7 +228,7 @@ package Why.Inter is
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
-   function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type;
+   function Get_EW_Type (T : W_Base_Type_Id) return EW_Type;
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 
@@ -247,7 +247,7 @@ package Why.Inter is
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
-   function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean;
+   function Eq_Base_Type (Left, Right : W_Base_Type_Id) return Boolean;
    --  Return True if Left and Right are both W_Base_Type_Id nodes, and Eq
    --  returns True on these seen as W_Base_Type_Id nodes.
 

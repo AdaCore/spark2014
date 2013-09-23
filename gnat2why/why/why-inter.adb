@@ -992,7 +992,7 @@ package body Why.Inter is
    -- Eq_Base_Type --
    ------------------
 
-   function Eq_Base_Type (Left, Right : W_Primitive_Type_Id) return Boolean is
+   function Eq_Base_Type (Left, Right : W_Base_Type_Id) return Boolean is
    begin
       if Left = Right then
          return True;
@@ -1114,7 +1114,7 @@ package body Why.Inter is
    -- Get_EW_Type --
    -----------------
 
-   function Get_EW_Type (T : W_Primitive_Type_Id) return EW_Type is
+   function Get_EW_Type (T : W_Base_Type_Id) return EW_Type is
    begin
       if Get_Kind (+T) = W_Base_Type then
          return Get_Base_Type (+T);

@@ -86,24 +86,24 @@ package Gnat2Why.Types is
    function Why_Prog_Type_Of_Ada_Obj
      (N            : Node_Id;
       Is_Primitive : Boolean := False)
-      return W_Primitive_Type_Id;
+      return W_Base_Type_Id;
    --  Take an Ada Node and transform it into a Why program type. The Ada Node
    --  is expected to be a Defining_Identifier for a program variable. If
    --  Is_Primitive is True, force the result to be a primitive type
    --  (i.e. no ref).
 
    function Why_Logic_Type_Of_Ada_Obj (N : Node_Id)
-     return W_Primitive_Type_Id;
+     return W_Base_Type_Id;
    --  Take an Ada Node and transform it into a Why logic type. The Ada Node
    --  is expected to be a Defining_Identifier for a program variable.
 
    function Why_Logic_Type_Of_Ada_Type (Ty : Node_Id)
-     return W_Primitive_Type_Id;
+     return W_Base_Type_Id;
    --  Take an Ada Node and transform it into a Why logic type. The Ada Node
    --  is expected to be a Defining_Identifier for a type.
 
    function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
-      return W_Primitive_Type_Id;
+      return W_Base_Type_Id;
    --  Take an Ada Node and transform it into a Why program type. The Ada Node
    --  is expected to be a Defining_Identifier for a type. The Boolean
    --  argument decides if a "ref" constructor is built on top.

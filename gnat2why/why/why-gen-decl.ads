@@ -33,7 +33,7 @@ package Why.Gen.Decl is
 
    function New_Type
      (Name  : W_Identifier_Id;
-      Alias : W_Primitive_Type_Id) return W_Declaration_Id;
+      Alias : W_Base_Type_Id) return W_Declaration_Id;
 
    function New_Type
      (Name : W_Identifier_Id;

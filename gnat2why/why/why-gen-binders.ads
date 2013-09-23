@@ -47,7 +47,7 @@ package Why.Gen.Binders is
       Ada_Node : Node_Id := Empty;
       B_Name   : W_Identifier_Id;
       B_Ent    : Entity_Name;
-      B_Type   : W_Primitive_Type_Id;
+      B_Type   : W_Base_Type_Id;
       Mutable  : Boolean := False;
    end record;
    --  This record represents a variable binding B_Name of type B_Type. In some
@@ -58,7 +58,7 @@ package Why.Gen.Binders is
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
    function New_Binders
-     (Anonymous_Binders : W_Primitive_Type_Array)
+     (Anonymous_Binders : W_Base_Type_Array)
      return Binder_Array;
 
    function New_Universal_Quantif
@@ -96,7 +96,7 @@ package Why.Gen.Binders is
       Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
+      Return_Type : W_Base_Type_Id;
       Labels      : W_Identifier_Array := (1 .. 0 => <>);
       Effects     : W_Effects_Id := New_Effects;
       Pre         : W_Pred_Id := True_Pred;
@@ -108,7 +108,7 @@ package Why.Gen.Binders is
       Domain      : EW_Domain;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_OId := Why_Empty;
+      Return_Type : W_Base_Type_OId := Why_Empty;
       Def         : W_Expr_Id;
       Labels      : W_Identifier_Array := (1 .. 0 => <>);
       Pre         : W_Pred_Id := True_Pred;
@@ -233,14 +233,14 @@ package Why.Gen.Binders is
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
+      Return_Type : W_Base_Type_Id;
       Spec        : in out Declaration_Spec_Array);
 
    procedure Emit_Top_Level_Declarations
      (Theory      : W_Theory_Declaration_Id;
       Ada_Node    : Node_Id := Empty;
       Binders     : Binder_Array;
-      Return_Type : W_Primitive_Type_Id;
+      Return_Type : W_Base_Type_Id;
       Spec        : Declaration_Spec_Array);
 
    function Unit_Param return Binder_Type;

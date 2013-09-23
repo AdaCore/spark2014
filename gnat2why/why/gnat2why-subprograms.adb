@@ -1289,7 +1289,7 @@ package body Gnat2Why.Subprograms is
       Post         : W_Pred_Id;
       Prog_Id      : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
-      Why_Type     : W_Primitive_Type_Id := Why_Empty;
+      Why_Type     : W_Base_Type_Id := Why_Empty;
    begin
       Open_Theory (File, Name,
                    Comment =>
