@@ -25,8 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 
-with Atree;          use Atree;
-with Sinfo;          use Sinfo;
 with Types;          use Types;
 
 with Why.Types;      use Why.Types;
@@ -46,15 +44,26 @@ package Gnat2Why.Expr is
    --  Generate an assignment from an object declaration
 
    function Assume_Of_Scalar_Subtype
-     (Params : Transformation_Params;
-      N      : Entity_Id;
-      Base   : Entity_Id) return W_Prog_Id;
+     (Params   : Transformation_Params;
+      N        : Entity_Id;
+      Base     : Entity_Id;
+      Do_Check : Boolean) return W_Prog_Id;
+   --  Generate an assumption that relates the constant bounds of the scalar
+   --  subtype to their dynamic value. If Do_Check=True, also generate a
+   --  range check that the range_constraint is compatible with the subtype.
+   --  Returns the empty program if N is a scalar subtype with a static
+   --  range_constraint.
 
    function Assume_Of_Subtype_Indication
      (Params   : Transformation_Params;
       N        : Node_Id;
-      Sub_Type : Entity_Id) return W_Prog_Id
-   with Pre => Nkind (N) = N_Subtype_Indication;
+      Sub_Type : Entity_Id;
+      Do_Check : Boolean) return W_Prog_Id;
+   --  Generate an assumption that relates the constant bounds of the scalar
+   --  subtype Sub_Typ to their dynamic value. If Do_Check=True, also generate
+   --  a range check that the range_constraint in Sub_Typ is compatible with
+   --  the subtype. Returns the empty program if N is not a scalar subtype,
+   --  or is a scalar subtype with a static range_constraint.
 
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;

@@ -810,7 +810,8 @@ package body Gnat2Why.Expr.Loops is
                    (Assume_Of_Subtype_Indication
                       (Params   => Body_Params,
                        N        => Loop_Range,
-                       Sub_Type => Etype (Defining_Identifier (LParam_Spec))),
+                       Sub_Type => Etype (Defining_Identifier (LParam_Spec)),
+                       Do_Check => True),
                     Entire_Loop);
             end if;
 

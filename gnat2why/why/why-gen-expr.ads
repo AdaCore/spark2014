@@ -161,6 +161,14 @@ package Why.Gen.Expr is
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
 
+   function Insert_Checked_Conversion
+     (Expr      : Node_Id;
+      Expr_Type : Entity_Id;
+      Domain    : EW_Domain;
+      Term      : W_Expr_Id;
+      To        : W_Base_Type_Id;
+      From      : W_Base_Type_Id) return W_Expr_Id;
+
    function Insert_Simple_Conversion
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
