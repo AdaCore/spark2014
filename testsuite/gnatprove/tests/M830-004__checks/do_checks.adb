@@ -1,7 +1,7 @@
 procedure Do_Checks is
 
    Zero : Integer := 0;
-   Branch : Natural := 19;
+   Branch : Natural := 105;
 
    --  Check that a range check is performed on every subtype indication with
    --  a range_constraint.
@@ -195,6 +195,101 @@ procedure Do_Checks is
       end case;
    end Do_Range_Check;
 
+   --  Check that a length check is performed where needed
+   procedure Do_Length_Check is
+      type A1 is array (Natural range <>) of Boolean;
+      subtype A2 is A1(0 .. 10);
+   begin
+      case Branch is
+         --  logical operator on array
+         --  UNCOMMENT WHEN SUPPORTED IN GNATPROVE
+         --  when 100 =>
+         --     declare
+         --        procedure P (X, Y : in out A1) is
+         --        begin
+         --           X := X and Y;  --  BAD
+         --        end;
+         --        X : A1(0 .. 10) := (others => False);
+         --        Y : A1(1 .. 10) := (others => False);
+         --     begin
+         --        P (X, Y);
+         --     end;
+         --  when 101 =>
+         --     declare
+         --        procedure P (X, Y : in out A1) is
+         --        begin
+         --           X := X and Y;  --  OK
+         --        end;
+         --        X : A1(0 .. 10) := (others => False);
+         --        Y : A1(1 .. 11) := (others => False);
+         --     begin
+         --        P (X, Y);
+         --     end;
+
+         --  value conversion to constrained array
+         when 102 =>
+            declare
+               procedure P (X : A1; Y : out A2) is
+               begin
+                  Y := X;  --  BAD
+               end;
+               X : A1(1 .. 10) := (others => False);
+               Y : A2;
+            begin
+               P (X, Y);
+            end;
+         when 103 =>
+            declare
+               procedure P (X : A1; Y : out A2) with
+                 Pre => X'First = 1 and X'Last = 11
+               is
+               begin
+                  Y := X;  --  OK
+               end;
+               X : A1(1 .. 11) := (others => False);
+               Y : A2;
+            begin
+               P (X, Y);
+            end;
+
+         --  view conversion to constrained array
+         when 104 =>
+            declare
+               procedure P1 (X : in out A2) is
+               begin
+                  null;
+               end;
+               procedure P2 (X : in out A1) is
+               begin
+                  P1(X);  --  BAD
+               end;
+               X : A1(1 .. 10) := (others => False);
+            begin
+               P2 (X);
+            end;
+         when 105 =>
+            declare
+               procedure P1 (X : in out A2) is
+               begin
+                  null;
+               end;
+               procedure P2 (X : in out A1) with
+                 Pre => X'First = 1 and X'Last = 11
+               is
+               begin
+                  P1(X);  --  OK
+               end;
+               X : A1(1 .. 11) := (others => False);
+            begin
+               P2 (X);
+            end;
+
+         when others =>
+            null;
+      end case;
+   end Do_Length_Check;
+
 begin
+   Do_Length_Check;
    Do_Range_Check;
 end Do_Checks;
