@@ -88,6 +88,83 @@ package body Why.Gen.Expr is
       end if;
    end Cur_Subp_Sloc;
 
+   --------------
+   -- Get_Type --
+   --------------
+
+   function Get_Type (E : W_Expr_Id) return W_Type_Id is
+   begin
+      case Get_Kind (+E) is
+         when W_Integer_Constant =>
+            return EW_Int_Type;
+
+         when W_Real_Constant =>
+            return EW_Real_Type;
+
+         when W_Void
+            | W_While_Loop
+            | W_Assignment
+            | W_Assert
+            | W_Statement_Sequence =>
+            return EW_Unit_Type;
+
+         when W_Literal =>
+            return EW_Bool_Type;
+
+         when W_Binary_Op =>
+            return Why_Types (Get_Op_Type (W_Binary_Op_Id (E)));
+
+         when W_Unary_Op =>
+            return Why_Types (Get_Op_Type (W_Unary_Op_Id (E)));
+
+         when W_Identifier =>
+            return Get_Typ (W_Identifier_Id (E));
+
+         when W_Tagged =>
+            return Get_Typ (W_Tagged_Id (E));
+
+         when W_Call =>
+            return Get_Typ (W_Call_Id (E));
+
+         when W_Binding =>
+            return Get_Typ (W_Binding_Id (E));
+
+         when W_Elsif =>
+            return Get_Typ (W_Elsif_Id (E));
+
+         when W_Conditional =>
+            return Get_Typ (W_Conditional_Id (E));
+
+         when W_Deref =>
+            return Get_Typ (W_Deref_Id (E));
+
+         when W_Record_Access =>
+            return Get_Typ (W_Record_Access_Id (E));
+
+         when W_Record_Update =>
+            return Get_Typ (W_Record_Update_Id (E));
+
+         when W_Record_Aggregate =>
+            return Get_Typ (W_Record_Aggregate_Id (E));
+
+         when W_Binding_Ref =>
+            return Get_Typ (W_Binding_Ref_Id (E));
+
+         when W_Any_Expr =>
+            return Get_Return_Type (W_Any_Expr_Id (E));
+
+         when W_Abstract_Expr =>
+            return Get_Typ (W_Abstract_Expr_Id (E));
+
+         when W_Try_Block =>
+            return Get_Typ (W_Try_Block_Id (E));
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+   end Get_Type;
+
    -------------------------
    -- Cur_Subp_Name_Label --
    -------------------------

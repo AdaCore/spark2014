@@ -222,4 +222,6 @@ package Why.Gen.Expr is
      (Ty   : Entity_Id;
       Attr : Attribute_Id) return W_Expr_Id;
 
+   function Get_Type (E : W_Expr_Id) return W_Type_Id;
+   --  extract the type of a given expression
 end Why.Gen.Expr;
