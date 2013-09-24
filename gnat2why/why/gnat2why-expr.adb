@@ -1865,11 +1865,13 @@ package body Gnat2Why.Expr is
          if Nkind (N) = N_Object_Declaration then
             Id := New_Identifier (Name => Full_Name (Defining_Identifier (N)));
 
-            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                   Defining_Identifier (N),
-                                   Binder_Type'(B_Name => +Id,
-                                                B_Type => Why_Empty,
-                                                others => <>));
+            Ada_Ent_To_Why.Insert
+              (Symbol_Table,
+               Defining_Identifier (N),
+               Binder_Type'(B_Name => Id,
+                            B_Type =>
+                              EW_Abstract (Etype (Defining_Identifier (N))),
+                            others => <>));
          end if;
 
          Next (N);
@@ -4803,13 +4805,7 @@ package body Gnat2Why.Expr is
          begin
             T := +Why_Ent.B_Name;
 
-            --  The type should never be empty, and the assignment be done in
-            --  any case
-
-            if Why_Ent.B_Type /= Why_Empty and then
-              Get_EW_Type (Why_Ent.B_Type) /= EW_Abstract then
-               Current_Type := +Why_Ent.B_Type;
-            end if;
+            Current_Type := Why_Ent.B_Type;
          end;
 
       elsif Ekind (Ent) = E_Enumeration_Literal then

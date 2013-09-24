@@ -207,6 +207,11 @@ package Why.Inter is
    function Why_Types (E : EW_Basic_Type) return W_Type_Id;
 
    function EW_Abstract (N : Node_Id) return W_Type_Id;
+   --  Convert an Ada type entity into a Why type. This function respects the
+   --  gnat2why encoding. For example, for N = Boolean the function returns
+   --  EW_Bool_Type, for non-SPARK types and private types, EW_Private_Type
+   --  is returned. For all the details, see the implementation.
+
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;

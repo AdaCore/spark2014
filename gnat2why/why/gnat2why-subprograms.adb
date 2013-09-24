@@ -349,16 +349,14 @@ package body Gnat2Why.Subprograms is
             for R of Read_Names loop
                declare
                   Entity : constant Entity_Id := Find_Object_Entity (R);
-                  Name   : constant String :=
-                    (if Present (Entity) then Full_Name (Entity) else "");
                begin
                   if Present (Entity) then
                      Result (Count) :=
                        (Ada_Node => Entity,
-                        B_Name   => New_Identifier (Name => Name),
+                        B_Name   =>
+                          New_Identifier (Name => Full_Name (Entity)),
                         B_Ent    => null,
-                        B_Type   =>
-                          +New_Named_Type (Name => To_Why_Type (Name)),
+                        B_Type   => EW_Abstract (Etype (Entity)),
                         Mutable  => False);
                   else
                      Result (Count) :=
@@ -366,7 +364,7 @@ package body Gnat2Why.Subprograms is
                         B_Name   => New_Identifier (Name => R.all),
                         B_Ent    => R,
                         B_Type   =>
-                          +New_Named_Type (Name => To_Why_Type (R.all)),
+                          New_Named_Type (Name => To_Why_Type (R.all)),
                         Mutable  => False);
                   end if;
                end;
@@ -410,7 +408,7 @@ package body Gnat2Why.Subprograms is
                Mutable  => Is_Mutable_In_Why (Id),
                B_Type   =>
                  (if Use_Why_Base_Type (Id) then
-                     +Base_Why_Type (Unique_Entity (Etype (Id)))
+                       Base_Why_Type (Unique_Entity (Etype (Id)))
                   else EW_Abstract (Etype (Id))));
             Next (Param);
             Count := Count + 1;
@@ -1452,7 +1450,7 @@ package body Gnat2Why.Subprograms is
       --  one P.F
 
       if Ekind (E) = E_Function then
-         Why_Type := +EW_Abstract (Etype (E));
+         Why_Type := EW_Abstract (Etype (E));
          Ada_Ent_To_Why.Insert (Symbol_Table,
                                 E,
                                 Binder_Type'(
@@ -1525,7 +1523,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Func_Binders,
-                  Return_Type => +EW_Abstract (Etype (E)),
+                  Return_Type => EW_Abstract (Etype (E)),
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post));
@@ -1537,7 +1535,7 @@ package body Gnat2Why.Subprograms is
               (Domain      => EW_Prog,
                Name        => Prog_Id,
                Binders     => Func_Binders,
-               Return_Type => +EW_Unit_Type,
+               Return_Type => EW_Unit_Type,
                Effects     => Effects,
                Pre         => Pre,
                Post        => Post));

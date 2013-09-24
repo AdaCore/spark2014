@@ -40,7 +40,6 @@ with SPARK_Util;          use SPARK_Util;
 
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
@@ -425,18 +424,14 @@ package body Gnat2Why.Decls is
       E     : Entity_Id)
    is
       Name : constant String := Full_Name (E);
-      Decl : constant W_Declaration_Id :=
-        (if Entity_In_SPARK (E) then
-            New_Type_Decl
-              (Name  => To_Ident (WNE_Type),
-               Alias => EW_Abstract (Etype (E)))
-         else
-            New_Type_Decl
-              (Name => To_Ident (WNE_Type)));
       Typ  : constant W_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter
          then EW_Int_Type
-         else New_Named_Type (Name => Get_Name (W_Type_Decl_Id (Decl))));
+         else EW_Abstract (Etype (E)));
+      Decl : constant W_Declaration_Id :=
+        New_Type_Decl
+          (Name  => To_Ident (WNE_Type),
+           Alias => Typ);
 
       function Normalize_Type (E : Entity_Id) return Entity_Id;
       --  Choose the correct type to use
@@ -485,7 +480,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
-            Ref_Type => Typ));
+            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
       Ada_Ent_To_Why.Insert (Symbol_Table,
                              E,
                              Binder_Type'(
@@ -1499,7 +1494,7 @@ package body Gnat2Why.Decls is
         (File.Cur_Theory,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E.all, Local => True),
-            Ref_Type => +New_Named_Type (Name => To_Ident (WNE_Type))));
+            Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
 
       Close_Theory (File, Filter_Entity => Empty, No_Import => True);
    end Translate_External_Object;
