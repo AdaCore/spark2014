@@ -1,5 +1,5 @@
 \documentclass[paperletter]{sig-alternate-2013}
-\usepackage[utf8]{inputenc}
+
 \usepackage{url}
 \usepackage{xspace}
 \usepackage{hyperref}
@@ -42,10 +42,39 @@
 
 \lstset{language=SPARK}
 
-\begin{document}
+% Set US-letter size. It should be done automatically but it is not...
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
 
+
+% Licence related stuff
+\newfont{\mycrnotice}{ptmr8t at 7pt}
+\newfont{\myconfname}{ptmri8t at 7pt}
+\let\crnotice\mycrnotice%
+\let\confname\myconfname%
+
+\permission{Permission to make digital or hard copies of all or part
+  of this work for personal or classroom use is granted without fee
+  provided that copies are not made or distributed for profit or
+  commercial advantage and that copies bear this notice and the full
+  citation on the first page. Copyrights for components of this work
+  owned by others than the author(s) must be honored. Abstracting with
+  credit is permitted. To copy otherwise, or republish, to post on
+  servers or to redistribute to lists, requires prior specific
+  permission and/or a fee. Request permissions from
+  permissions@acm.org.}
+
+\conferenceinfo{HILT'13,}{November 10--14, 2013, Pittsburgh, PA, USA \\
+  {\mycrnotice{Copyright is held by the authors. Publication
+      rights licensed to ACM.}}}  \copyrightetc{ACM \the\acmcopyr}
+\crdata{978-1-4503-2466-3/13/11\ ...\$15.00}
 \CopyrightYear{2013}
-\crdata{978-1-4503-2466-3/13/11}
+
+\clubpenalty=10000
+\widowpenalty = 10000
+
+
+\begin{document}
 
 \title{Optimising Verification Effort with \newspark}
 
@@ -58,17 +87,15 @@
   \affaddr{22 St Lawrence Street}\\
   \affaddr{Bath BA1 1AN (United Kingdom)}\\
   \email{pavlos.efstathopoulos@altran.com}
-  \alignauthor Andrew Hawthorn\\
+% 2nd. author
+  \alignauthor
+  Andrew Hawthorn\\
   \affaddr{ALTRAN}\\
   \affaddr{22 St Lawrence Street}\\
   \affaddr{Bath BA1 1AN (United Kingdom)}\\
   \email{andrew.hawthorn@altran.com} }
 
 \maketitle
-
-\terms{Languages; Verification}
-\keywords{Formal methods; Verification and validation; Certification;
-Dependability; DO-178C}
 
 \section{Extended Abstract}
 The introduction of executable contracts in Ada 2012 brings a new
@@ -106,7 +133,7 @@ language we are now able to decide whether or not to prove, test or
 use a combination of the two methods to verify our software.  We will
 present examples of the following situations and demonstrate how a
 combination of proof and test can resolve them all:
-\begin {enumerate}
+\begin{enumerate}
 \item \emph{Prove by strengthening assertions} - try to fully prove
   the code by strengthening preconditions and adding assertions until
   full proof is achieved. No testing is involved in this scenario.
@@ -117,11 +144,13 @@ combination of proof and test can resolve them all:
 
 \item \emph{Prove some, test some} - attempt to prove the code, find
   that some verification conditions can not be discharged, and resort
-  to testing. At this point the user can either perform exclusively
-  testing (prove no properties) or prove only a subset of the
-  properties of the code and test the remaining. For instance, prove
-  freedom of run-time exceptions and test contracts related with
-  functional behaviour.
+  to testing. At this point the user can either:
+  \begin{itemize}
+  \item perform exclusively testing (prove no properties)
+  \item or prove only a subset of the properties of the code and test
+    the remaining. For instance, prove freedom of run-time exceptions
+    and test contracts related with functional behaviour.
+  \end{itemize}
 
 \item \emph{Use test to debug contracts} - make a first unsuccessful
   attempt to prove the code and afterwards utilize testing to identify
@@ -144,7 +173,6 @@ combination of proof and test can resolve them all:
 
 \end{enumerate}
 
-
 By walking through the examples, we will demonstrate how a combination
 of the use of the SPARK 2014 tool set and a commercially available unit
 testing tool have the potential to dramatically reduce subprogram
@@ -154,6 +182,14 @@ We conclude by summarising our views on the relative merits of
 alternative styles of contracts. Specifically, concluding where
 different types of contracts are most productively used.
 
+% ACM categories.
+\category{D.2.4}{Software/Program Verification}{Formal methods,
+  Programming by contract, Reliability, Validation}
+
+\terms{Design, Reliability, Security, Verification}
+
+\keywords{Verification and Validation, Certification,
+Dependability, DO-178C}
 
 \bibliographystyle{plain}
 \bibliography{proof_and_test}
