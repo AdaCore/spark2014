@@ -1,5 +1,5 @@
 foo.adb:7:7: assertion not proved, requires Float (Y) = X) = (Long_Float (X) = Y
-foo.adb:7:30: info: range check proved
+foo.adb:7:30: range check not proved
 generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:22:7: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:35:7: info: assertion proved, in instantiation at foo.ads:9
@@ -297,6 +297,8 @@ homothetical.adb:41:10: info: loop invariant initialization proved
 homothetical.adb:41:10: info: loop invariant preservation proved
 homothetical.adb:42:40: info: index check proved
 homothetical.adb:44:20: info: precondition proved
+homothetical.adb:47:16: info: length check proved
+homothetical.adb:48:16: info: length check proved
 homothetical.adb:50:7: assertion not proved
 homothetical.adb:59:58: overflow check not proved
 homothetical.adb:59:59: info: overflow check proved

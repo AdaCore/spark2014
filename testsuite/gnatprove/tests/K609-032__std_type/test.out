@@ -3,4 +3,3 @@ check_file.adb:3:23: warning: unused variable "Contents" [unused]
 check_file.adb:5:04: warning: statement has no effect [ineffective]
 check_file.adb:7:33: warning: unused initial value of "Expect_End_Of_Page" [unused_initial_value]
 check_file.adb:7:33: warning: unused variable "Expect_End_Of_Page" [unused]
-check_file.adb:3:23: info: range check proved

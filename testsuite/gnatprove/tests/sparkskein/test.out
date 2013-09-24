@@ -1,5 +1,3 @@
-skein.adb:103:32: info: range check proved
-skein.adb:105:32: info: range check proved
 skein.adb:114:7: assertion not proved, requires Dst'First = 0
 skein.adb:116:7: assertion not proved, requires Src'First = 0
 skein.adb:118:7: assertion not proved, requires Dst'Last >= Dst_Offset + (Byte_Count - 1
@@ -13,8 +11,6 @@ skein.adb:138:43: info: overflow check proved
 skein.adb:138:43: info: range check proved
 skein.adb:138:48: info: division check proved
 skein.adb:138:56: range check not proved
-skein.adb:146:32: info: range check proved
-skein.adb:147:32: info: range check proved
 skein.adb:162:7: assertion not proved, requires Src'First = 0
 skein.adb:164:7: assertion not proved, requires Dst'First = 0
 skein.adb:166:7: assertion not proved, requires Src_Offset <= Src'last
@@ -37,16 +33,20 @@ skein.adb:192:74: index check not proved
 skein.adb:192:74: overflow check not proved
 skein.adb:207:33: range check not proved
 skein.adb:210:33: overflow check not proved
-skein.adb:247:7: info: range check proved
 skein.adb:283:76: info: division check proved
 skein.adb:283:76: range check not proved
 skein.adb:286:56: info: division check proved
 skein.adb:286:56: range check not proved
 skein.adb:287:62: info: division check proved
 skein.adb:287:62: range check not proved
+skein.adb:558:26: info: length check proved
+skein.adb:569:25: info: length check proved
+skein.adb:609:41: info: length check proved
+skein.adb:644:42: range check not proved
 skein.adb:662:17: range check not proved
 skein.adb:663:35: overflow check not proved
-skein.adb:716:14: info: range check proved
+skein.adb:688:36: length check not proved
+skein.adb:696:38: length check not proved
 skein.adb:757:25: range check not proved
 skein.adb:759:30: overflow check not proved
 skein.adb:759:30: range check not proved
@@ -70,7 +70,6 @@ skein.adb:819:41: range check not proved
 skein.adb:822:54: overflow check not proved
 skein.adb:822:54: range check not proved
 skein.adb:824:54: overflow check not proved
-skein.adb:836:14: info: range check proved
 skein.adb:866:14: info: range check proved
 skein.adb:882:60: range check not proved
 skein.adb:883:89: range check not proved
@@ -83,6 +82,7 @@ skein.adb:889:89: range check not proved
 skein.adb:913:47: overflow check not proved
 skein.adb:913:52: info: division check proved
 skein.adb:913:52: range check not proved
+skein.adb:918:44: length check not proved
 skein.adb:921:44: division check not proved
 skein.adb:948:26: overflow check not proved
 skein.adb:948:26: range check not proved
@@ -90,4 +90,4 @@ skein.adb:948:41: overflow check not proved
 skein.adb:955:56: overflow check not proved
 skein.adb:955:56: range check not proved
 skein.adb:961:37: range check not proved
-skein.adb:969:13: info: range check proved
+skein.adb:981:34: info: range check proved

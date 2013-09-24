@@ -1,8 +1,21 @@
+aggregate.adb:5:14: info: length check proved
 aggregate.adb:5:28: info: division check proved
 aggregate.adb:5:28: info: overflow check proved
 aggregate.adb:5:45: info: overflow check proved
 aggregate.adb:6:26: info: overflow check proved
 aggregate.ads:10:21: postcondition not proved
+arr_aggregate.adb:6:18: info: length check proved
+arr_aggregate.adb:8:18: info: length check proved
+arr_aggregate.adb:16:18: info: length check proved
+arr_aggregate.adb:18:18: info: length check proved
+arr_aggregate.adb:20:18: info: length check proved
+arr_aggregate.adb:22:18: info: length check proved
+arr_aggregate.adb:24:18: info: length check proved
+arr_aggregate.adb:32:18: info: length check proved
+arr_aggregate.adb:34:18: info: length check proved
+arr_aggregate.adb:36:18: info: length check proved
+arr_aggregate.adb:38:18: info: length check proved
+arr_aggregate.adb:40:18: info: length check proved
 arr_aggregate.adb:46:7: info: precondition proved
 arr_aggregate.adb:51:7: info: precondition proved
 arr_aggregate.adb:56:7: info: precondition proved

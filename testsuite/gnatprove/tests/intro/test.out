@@ -1,4 +1,3 @@
-pricing.adb:6:13: info: range check proved
 pricing.adb:9:11: info: range check proved
 pricing.adb:10:10: info: loop invariant initialization proved
 pricing.adb:10:10: info: loop invariant preservation proved

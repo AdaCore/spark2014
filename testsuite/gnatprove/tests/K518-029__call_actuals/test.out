@@ -9,13 +9,13 @@ call_actuals.adb:20:17: range check not proved
 call_actuals.adb:25:15: range check not proved
 call_actuals.adb:26:15: info: range check proved
 call_actuals.adb:26:18: range check not proved
-call_actuals.adb:31:12: info: range check proved
+call_actuals.adb:31:12: range check not proved
 call_actuals.adb:31:14: range check not proved
 call_actuals.adb:32:14: info: range check proved
 call_actuals.adb:32:17: range check not proved
 call_actuals.adb:38:11: range check not proved
 call_actuals.adb:38:15: range check not proved
-call_actuals.adb:41:11: range check not proved
+call_actuals.adb:41:11: info: range check proved
 call_actuals.adb:41:18: info: range check proved
 call_actuals.ads:7:18: warning: unused initial value of "X" [unused_initial_value]
 call_actuals.ads:7:21: warning: unused initial value of "Y" [unused_initial_value]

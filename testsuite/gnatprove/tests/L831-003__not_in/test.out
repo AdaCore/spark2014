@@ -1,4 +1,3 @@
-lcp.adb:3:10: info: range check proved
 lcp.adb:7:12: overflow check not proved
 lcp.adb:8:19: info: overflow check proved
 lcp.adb:13:15: info: index check proved

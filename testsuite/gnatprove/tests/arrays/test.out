@@ -1,9 +1,6 @@
-arrays.adb:2:13: info: range check proved
 arrays.adb:6:17: overflow check not proved
-arrays.adb:11:13: info: range check proved
 arrays.adb:15:19: info: division check proved
 arrays.adb:16:20: overflow check not proved
-arrays.adb:22:13: info: range check proved
 arrays.adb:23:17: info: overflow check proved
 arrays.adb:23:17: info: range check proved
 arrays.ads:5:14: postcondition not proved, requires Sum'Result >= X'length
