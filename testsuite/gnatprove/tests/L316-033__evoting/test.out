@@ -1,4 +1,7 @@
+evoting.adb:52:60: info: length check proved
+evoting.adb:57:41: info: range check proved
 evoting.adb:58:52: range check not proved
+evoting.adb:58:52: length check not proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
@@ -10,6 +13,7 @@ evoting.adb:152:10: info: loop invariant proved
 evoting.adb:152:52: info: overflow check proved
 evoting.adb:168:54: overflow check not proved
 evoting.adb:168:54: info: range check proved
+evoting.adb:170:27: info: range check proved
 evoting.adb:172:13: info: precondition proved
 evoting.adb:175:63: info: range check proved
 evoting.adb:176:51: info: overflow check proved

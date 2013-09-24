@@ -1,9 +1,9 @@
-fb20a00.adb:6:13: info: range check proved
 fb20a00.adb:9:7: info: range check proved
 fb20a00.adb:10:7: info: range check proved
-fb20a00.adb:15:28: info: range check proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:38: info: range check proved
+fb20a00.adb:34:18: length check not proved
+fb20a00.adb:35:18: length check not proved
 fb20a00.adb:37:34: overflow check not proved
 fb20a00.adb:37:49: overflow check not proved
 fb20a00.adb:39:11: range check not proved

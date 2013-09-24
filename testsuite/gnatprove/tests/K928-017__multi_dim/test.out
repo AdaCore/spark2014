@@ -1,3 +1,8 @@
+multi.adb:7:18: info: length check proved
+multi.adb:9:18: info: length check proved
+multi.adb:11:18: info: length check proved
+multi.adb:13:18: info: length check proved
+multi.adb:15:18: info: length check proved
 multi.ads:8:18: warning: unused initial value of "A" [unused_initial_value]
 multi.ads:10:14: postcondition not proved
 multi.ads:10:67: info: index check proved

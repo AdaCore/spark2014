@@ -30,6 +30,7 @@ with GNAT.Source_Info;
 
 with Ada.Containers;         use Ada.Containers;
 
+with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Eval_Fat;
 with Namet;                  use Namet;
@@ -38,6 +39,7 @@ with Opt;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
@@ -500,9 +502,10 @@ package body Gnat2Why.Expr is
    ------------------------------
 
    function Assume_Of_Scalar_Subtype
-     (Params : Transformation_Params;
-      N      : Entity_Id;
-      Base   : Entity_Id) return W_Prog_Id
+     (Params   : Transformation_Params;
+      N        : Entity_Id;
+      Base     : Entity_Id;
+      Do_Check : Boolean) return W_Prog_Id
    is
    begin
       --  If the range is not static, we need to generate a check that
@@ -563,22 +566,31 @@ package body Gnat2Why.Expr is
                  (Domain => EW_Pred,
                   Left   => +First_In_Range,
                   Right => +Last_In_Range));
-            Assuming        : constant W_Prog_Id :=
-              New_Assume_Statement
-                (Ada_Node => N,
-                 Pre      => Precond,
-                 Post     =>
-                   +New_And_Expr
-                   (Domain => EW_Pred,
-                    Left   => +Rel_First,
-                    Right  => +Rel_Last));
+            Postcond        : constant W_Pred_Id :=
+              +New_And_Expr (Domain => EW_Pred,
+                             Left   => +Rel_First,
+                             Right  => +Rel_Last);
+            Assuming : W_Prog_Id;
+
          begin
-            return
-              +New_VC_Expr
-              (Ada_Node => N,
-               Domain   => EW_Prog,
-               Reason   => VC_Range_Check,
-               Expr     => +Assuming);
+            if Do_Check then
+               Assuming := New_Assume_Statement (Ada_Node => N,
+                                                 Pre      => Precond,
+                                                 Post     => Postcond);
+               return
+                 +New_VC_Expr (Ada_Node => N,
+                               Domain   => EW_Prog,
+                               Reason   => VC_Range_Check,
+                               Expr     => +Assuming);
+            else
+               Assuming :=
+                 New_Assume_Statement (Ada_Node => N,
+                                       Post     =>
+                                         +New_And_Expr (Domain => EW_Pred,
+                                                        Left   => +Precond,
+                                                        Right  => +Postcond));
+               return Assuming;
+            end if;
          end;
       end if;
    end Assume_Of_Scalar_Subtype;
@@ -590,12 +602,14 @@ package body Gnat2Why.Expr is
    function Assume_Of_Subtype_Indication
      (Params   : Transformation_Params;
       N        : Node_Id;
-      Sub_Type : Entity_Id) return W_Prog_Id is
+      Sub_Type : Entity_Id;
+      Do_Check : Boolean) return W_Prog_Id is
    begin
       if Is_Scalar_Type (Sub_Type) then
-         return Assume_Of_Scalar_Subtype (Params => Params,
-                                          N      => Sub_Type,
-                                          Base   => Etype (Subtype_Mark (N)));
+         return Assume_Of_Scalar_Subtype (Params   => Params,
+                                          N        => Sub_Type,
+                                          Base     => Etype (Subtype_Mark (N)),
+                                          Do_Check => Do_Check);
       else
          return New_Void;
       end if;
@@ -1178,10 +1192,11 @@ package body Gnat2Why.Expr is
                --  "in out" parameters:
 
                Fetch_Actual  : constant W_Prog_Id :=
-                                 +Insert_Simple_Conversion
-                                   (Domain   => Fetch_Domain,
-                                    Ada_Node => Actual,
-                                    Expr     =>
+                                 +Insert_Checked_Conversion
+                                   (Ada_Node      => Actual,
+                                    Ada_Type => Etype (Actual),
+                                    Domain    => Fetch_Domain,
+                                    Expr =>
                                       +Transform_Expr (Actual,
                                                        EW_Prog,
                                                        Params),
@@ -1198,12 +1213,13 @@ package body Gnat2Why.Expr is
                --  ... with the appropriate range checks...
 
                Arg_Value     : constant W_Prog_Id :=
-                                 +Insert_Simple_Conversion
-                                   (Domain   => EW_Prog,
-                                    Ada_Node => Actual,
-                                    Expr     => +Tmp_Var_Deref,
-                                    From     => Formal_T,
-                                    To       => Actual_T);
+                                 +Insert_Checked_Conversion
+                                   (Ada_Node      => Actual,
+                                    Ada_Type => Etype (Actual),
+                                    Domain    => EW_Prog,
+                                    Expr      => +Tmp_Var_Deref,
+                                    From      => Formal_T,
+                                    To        => Actual_T);
 
                --  ...then store it into the actual:
 
@@ -1737,7 +1753,8 @@ package body Gnat2Why.Expr is
          R := +Sequence
                 (Assume_Of_Subtype_Indication (Params   => Params,
                                                N        => N,
-                                               Sub_Type => Etype (N)),
+                                               Sub_Type => Etype (N),
+                                               Do_Check => True),
                  +R);
       end if;
 
@@ -1937,9 +1954,9 @@ package body Gnat2Why.Expr is
          --  Compute the call
 
          R := New_Call (Ada_Node => Expr,
-                          Domain   => Domain,
-                          Name     => Func,
-                          Args     => Args);
+                        Domain   => Domain,
+                        Name     => Func,
+                        Args     => Args);
 
          --  In programs, we generate a check that all the choices are
          --  compatible with their index subtype:
@@ -2176,7 +2193,9 @@ package body Gnat2Why.Expr is
          begin
             --  Fill together the arrays Index_Values and Index_Types
 
-            if Nkind (Expr_Or_Association) = N_Component_Association then
+            if Nkind (Expr_Or_Association) = N_Component_Association
+              and then not Is_Others_Choice (Choices (Expr_Or_Association))
+            then
                Index_Values.Append (Expr_Or_Association);
                Index_Types.Append (Etype (Index));
             end if;
@@ -3647,9 +3666,11 @@ package body Gnat2Why.Expr is
             begin
                case Ekind (Ent) is
                   when Scalar_Kind =>
-                     R := Assume_Of_Scalar_Subtype (Params => Body_Params,
-                                                    N      => Ent,
-                                                    Base   => Base);
+                     R := Assume_Of_Scalar_Subtype
+                            (Params   => Body_Params,
+                             N        => Ent,
+                             Base     => Base,
+                             Do_Check => True);
 
                   when Array_Kind =>
                      declare
@@ -3668,7 +3689,8 @@ package body Gnat2Why.Expr is
                                      (Assume_Of_Subtype_Indication
                                        (Params   => Body_Params,
                                         N        => Index,
-                                        Sub_Type => Etype (Index)),
+                                        Sub_Type => Etype (Index),
+                                        Do_Check => Comes_From_Source (Index)),
                                       R);
                            end if;
                            Next (Index);
@@ -3685,9 +3707,10 @@ package body Gnat2Why.Expr is
                            while Present (Index) loop
                               R := Sequence
                                      (Assume_Of_Scalar_Subtype
-                                        (Params => Body_Params,
-                                         N      => Etype (Index),
-                                         Base   => Etype (Index_Base)),
+                                       (Params   => Body_Params,
+                                        N        => Etype (Index),
+                                        Base     => Etype (Index_Base),
+                                        Do_Check => Comes_From_Source (Index)),
                                       R);
                               Next (Index);
                               Next (Index_Base);
@@ -3718,7 +3741,8 @@ package body Gnat2Why.Expr is
                                      (Assume_Of_Subtype_Indication
                                         (Params   => Body_Params,
                                          N        => Typ,
-                                         Sub_Type => Etype (Comp)),
+                                         Sub_Type => Etype (Comp),
+                                         Do_Check => Comes_From_Source (Typ)),
                                       R);
                            end if;
                            Next_Component (Comp);
@@ -3788,7 +3812,8 @@ package body Gnat2Why.Expr is
             R := +Sequence
                    (Assume_Of_Subtype_Indication (Params   => Params,
                                                   N        => Choice,
-                                                  Sub_Type => Choice_Type),
+                                                  Sub_Type => Choice_Type,
+                                                  Do_Check => True),
                     +R);
          end if;
 
@@ -4494,30 +4519,38 @@ package body Gnat2Why.Expr is
                       Else_Part => Else_Expr);
             end;
 
-         when N_Type_Conversion =>
-            --  When converting to a flating-point or fixed-point type, a
-            --  rounding operation should be applied on the intermediate
-            --  real value. This is ensured by requiring that the converted
-            --  expression is translated into a value of the type of the
-            --  conversion Current_Type.
+         when N_Qualified_Expression |
+              N_Type_Conversion      =>
 
-            if Ekind (Expr_Type) in Real_Kind then
-               T := Transform_Expr (Expression (Expr),
-                                    Current_Type,
-                                    Domain,
-                                    Local_Params);
+            --  When converting between discrete types, only require that the
+            --  converted expression is translated into a value of the expected
+            --  type. Necessary checks and conversions will be introduced at
+            --  the end of Transform_Expr below.
 
-            --  In other cases, only require that the converted expression
-            --  is translated into a value of the expected type. Necessary
-            --  checks and conversions will be introduced at the end of
-            --  Transform_Expr below.
-
-            else
+            if Domain /= EW_Prog and Ekind (Expr_Type) in Discrete_Kind then
                T := Transform_Expr (Expression (Expr),
                                     Expected_Type,
                                     Domain,
                                     Local_Params);
                Current_Type := Expected_Type;
+
+            --  In other cases, require that the converted expression
+            --  is translated into a value of the type of the conversion
+            --  Current_Type.
+
+            --  When converting to a flating-point or fixed-point type,
+            --  this ensures that a rounding operation can be applied on
+            --  the intermediate real value.
+
+            --  When converting to a discriminant record or an array, this
+            --  ensures that the proper target type can be retrieved from
+            --  the current node, to call the right checking function.
+
+            else
+               T := Transform_Expr (Expression (Expr),
+                                    Current_Type,
+                                    Domain,
+                                    Local_Params);
             end if;
 
          when N_Unchecked_Type_Conversion =>
@@ -4630,13 +4663,6 @@ package body Gnat2Why.Expr is
                                    EW_Prog,
                                    Local_Params));
 
-         when N_Qualified_Expression =>
-            Current_Type := Base_Why_Type (Expression (Expr));
-            T := Transform_Expr (Expression (Expr),
-                                 Current_Type,
-                                 Domain,
-                                 Local_Params);
-
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
                                   & Node_Kind'Image (Nkind (Expr)));
@@ -4734,107 +4760,13 @@ package body Gnat2Why.Expr is
 
       if Domain in EW_Pred then
          null;
-
-      --  Conversion between record types need to go through their common root
-      --  record type. A discriminant check may be needed. Currently perform it
-      --  on all discriminant record types, as the flag Do_Discriminant_Check
-      --  is not set appropriately by the frontend on type conversions.
-
-      elsif Is_Record_Conversion (Current_Type, Expected_Type) then
-         declare
-            Discr_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog
-                 and then Nkind (Parent (Expr)) in N_Type_Conversion      |
-                                                   N_Assignment_Statement
-               then
-                  Parent (Expr)
-               else Empty);
-         begin
-            T := Insert_Record_Conversion (Domain      => Domain,
-                                           Ada_Node    => Expr,
-                                           Expr        => T,
-                                           From        => Current_Type,
-                                           To          => Expected_Type,
-                                           Discr_Check => Discr_Check_Node);
-         end;
-
-      elsif Is_Array_Conversion (Current_Type, Expected_Type) then
-         declare
-            Range_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog then
-                (if Do_Range_Check (Expr) then
-                    Expr
-                 elsif Nkind (Parent (Expr)) in N_Type_Conversion |
-                                                N_Assignment_Statement |
-                                                N_Op_And |
-                                                N_Op_Or |
-                                                N_Op_Xor
-                   and then Do_Length_Check (Parent (Expr))
-                 then
-                    Expr
-                 else Empty)
-               else Empty);
-         begin
-            T := Insert_Array_Conversion (Domain      => Domain,
-                                          Ada_Node    => Expr,
-                                          Expr        => T,
-                                          From        => Current_Type,
-                                          To          => Expected_Type,
-                                          Range_Check => Range_Check_Node);
-         end;
-
-      --  Conversion between scalar types
-
       else
-         declare
-            --  Node whose Etype gives the bounds for a range check, if not
-            --  Empty. This node is directly Expr when Do_Range_Check is
-            --  set, or the expression of a type conversion whose flag
-            --  Do_Overflow_Check is set. (See description of these flags
-            --  in sinfo.ads for details.)
-
-            Range_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog then
-                 (if Do_Range_Check (Expr) then
-                       Expr
-                  elsif Nkind (Expr) = N_Type_Conversion
-                  and then Do_Overflow_Check (Expr)
-                  then
-                     Expression (Expr)
-                  else Empty)
-               else Empty);
-
-            Round_Func : W_Identifier_Id;
-
-         begin
-
-            --  When converting to a floating-point or fixed-point type, from
-            --  either a discrete type or another real type, rounding should
-            --  be applied on the value of type real. Round_Func is the
-            --  appropriate rounding function for the type.
-            --
-            --  When converting from a floating-point type to another
-            --  floating-point type the theory takes care of the
-            --  rounding and the conversion.
-
-            if Nkind (Expr) = N_Type_Conversion
-              and then Ekind (Expr_Type) in Real_Kind
-              and then Get_Base_Type (Base_Why_Type
-                                        (Expected_Type)) not in EW_Float
-            then
-               Round_Func := Float_Round_Name (Expr_Type);
-            else
-               Round_Func := Why_Empty;
-            end if;
-
-            T := Insert_Scalar_Conversion (Domain      => Domain,
-                                           Ada_Node    => Expr,
-                                           Expr        => T,
-                                           From        => Current_Type,
-                                           To          => Expected_Type,
-                                           Round_Func  => Round_Func,
-                                           Range_Check => Range_Check_Node);
-         end;
+         T := Insert_Checked_Conversion (Ada_Node => Expr,
+                                         Ada_Type => Expr_Type,
+                                         Domain   => Domain,
+                                         Expr     => T,
+                                         To       => Expected_Type,
+                                         From     => Current_Type);
       end if;
 
       return T;

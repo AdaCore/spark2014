@@ -1,8 +1,8 @@
 \section{Conclusion and future work}
 We have implemented a prototype tool chain from SPARK 2014 language subset to
-Coq and its semantical formalization and proof in Coq. The experiments on running certified 
-interpreter show that our formalized SPARK semantics can capture the desired run-time errors.
-This's encouraging, but there are still a lot of work needed to do.
+Coq and its semantical formalization and proof in Coq. The experiments on running the certified 
+interpreter shows that our formalized SPARK semantics can capture the desired run-time behavior.
+This is encouraging, however there is still a lot of work needed to be done.
 
 Our next step is to prove the correctness of optimizations that remove 
 useless run-time checks. 
@@ -16,8 +16,8 @@ these optimizations correct, namely to prove that those executions
 with $\mathit{less}$ run-time checks behave exactly as those following the 
 reference semantics, which perform systematically $\mathit{all}$ the checks. 
 
-What's more, we are also interested in adding more SPARK language features, 
-such as procedure call, pre/post aspects and loop invariant, to expand our
-current SPARK subset and make it more practical. These SPARK formalization work
+In addition, we are also interested in adding more SPARK language features, 
+such as procedure calls, pre/post aspects and loop invariants, to expand our
+current SPARK subset and make it more practical. This work on formalizing the SPARK semantics
 also paves the way for our further work on machine-verified proof of correctness of
-SPARK static analysis and translations.
+SPARK static analysis and translation tools.

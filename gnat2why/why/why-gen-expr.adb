@@ -102,6 +102,151 @@ package body Why.Gen.Expr is
                Subprogram_Full_Source_Name (Current_Subp));
    end Cur_Subp_Name_Label;
 
+   -------------------------------
+   -- Insert_Checked_Conversion --
+   -------------------------------
+
+   function Insert_Checked_Conversion
+     (Ada_Node : Node_Id;
+      Ada_Type : Entity_Id;
+      Domain   : EW_Domain;
+      Expr     : W_Expr_Id;
+      To       : W_Type_Id;
+      From     : W_Type_Id) return W_Expr_Id
+   is
+      --  When converting between Ada types, detect cases where a check is not
+      --  needed.
+
+      Check_Needed : constant Boolean :=
+        (if Get_Base_Type (From) = EW_Abstract
+              and
+            Get_Base_Type (To) = EW_Abstract
+         then
+            Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
+                                        To   => Get_Ada_Node (+To))
+         else
+            True);
+
+      T : W_Expr_Id := Expr;
+
+   begin
+      --  Conversion between record types need to go through their common root
+      --  record type. A discriminant check may be needed. Currently perform it
+      --  on all discriminant record types, as the flag Do_Discriminant_Check
+      --  is not set appropriately by the frontend on type conversions.
+
+      if Is_Record_Conversion (From, To) then
+         declare
+            Discr_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog and Check_Needed then
+                (case Nkind (Parent (Ada_Node)) is
+                   when N_Assignment_Statement |
+                        N_Qualified_Expression |
+                        N_Type_Conversion      =>
+                     Parent (Ada_Node),
+                   when N_Function_Call            |
+                        N_Parameter_Association    |
+                        N_Procedure_Call_Statement =>
+                     Ada_Node,
+                   when others => Empty)
+               else Empty);
+         begin
+            T := Insert_Record_Conversion (Domain      => Domain,
+                                           Ada_Node    => Ada_Node,
+                                           Expr        => T,
+                                           From        => From,
+                                           To          => To,
+                                           Discr_Check => Discr_Check_Node);
+         end;
+
+      elsif Is_Array_Conversion (From, To) then
+         declare
+            Range_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog and Check_Needed then
+                (if Do_Range_Check (Ada_Node) then
+                    Ada_Node
+
+                 --  The flag Do_Length_Check is not set consistently in the
+                 --  frontend, so check every array conversion.
+                 elsif Nkind (Parent (Ada_Node)) in
+                   N_Assignment_Statement     |
+                   N_Qualified_Expression     |
+                   N_Function_Call            |
+                   N_Op_And                   |
+                   N_Op_Or                    |
+                   N_Op_Xor                   |
+                   N_Parameter_Association    |
+                   N_Procedure_Call_Statement |
+                   N_Type_Conversion
+                 then
+                    Ada_Node
+                 else Empty)
+               else Empty);
+         begin
+            T := Insert_Array_Conversion (Domain      => Domain,
+                                          Ada_Node    => Ada_Node,
+                                          Expr        => T,
+                                          From        => From,
+                                          To          => To,
+                                          Range_Check => Range_Check_Node);
+         end;
+
+      --  Conversion between scalar types
+
+      else
+         declare
+            --  Node whose Etype gives the bounds for a range check, if not
+            --  Empty. This node is directly Expr when Do_Range_Check is
+            --  set, or the expression of a type conversion whose flag
+            --  Do_Overflow_Check is set. (See description of these flags
+            --  in sinfo.ads for details.)
+
+            Range_Check_Node : constant Node_Id :=
+              (if Domain = EW_Prog and Check_Needed then
+                 (if Do_Range_Check (Ada_Node) then
+                    Ada_Node
+                  elsif Nkind (Parent (Ada_Node)) = N_Type_Conversion
+                    and then Do_Overflow_Check (Parent (Ada_Node))
+                  then
+                    Ada_Node
+                  else Empty)
+               else Empty);
+
+            Round_Func : W_Identifier_Id;
+
+         begin
+
+            --  When converting to a floating-point or fixed-point type, from
+            --  either a discrete type or another real type, rounding should
+            --  be applied on the value of type real. Round_Func is the
+            --  appropriate rounding function for the type.
+            --
+            --  When converting from a floating-point type to another
+            --  floating-point type the theory takes care of the
+            --  rounding and the conversion.
+
+            if Nkind (Ada_Node) = N_Type_Conversion
+              and then Ekind (Ada_Type) in Real_Kind
+              and then Get_Base_Type (Base_Why_Type (To)) not in EW_Float
+            then
+               Round_Func := Float_Round_Name (Ada_Type);
+            else
+               Round_Func := Why_Empty;
+            end if;
+
+            T := Insert_Scalar_Conversion (Domain      => Domain,
+                                           Ada_Node    => Ada_Node,
+                                           Expr        => T,
+                                           From        => From,
+                                           To          => To,
+                                           Round_Func  => Round_Func,
+                                           Range_Check => Range_Check_Node);
+         end;
+      end if;
+
+      return T;
+   end Insert_Checked_Conversion;
+
    ------------------------------
    -- Insert_Record_Conversion --
    ------------------------------
@@ -147,9 +292,11 @@ package body Why.Gen.Expr is
               (case Nkind (Discr_Check) is
                   when N_Assignment_Statement =>
                      Unique_Entity (Etype (Name (Discr_Check))),
-                  when N_Type_Conversion =>
+                  when N_Qualified_Expression |
+                       N_Type_Conversion      =>
                      Unique_Entity (Etype (Discr_Check)),
-                  when others => Empty);
+                  when others =>  --  Reach here only for actual parameters
+                     Get_Formal_Type_From_Actual (Discr_Check));
          begin
             Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
                                                           Check_Entity,

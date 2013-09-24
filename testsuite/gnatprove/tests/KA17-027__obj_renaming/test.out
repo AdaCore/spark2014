@@ -10,6 +10,7 @@ main.adb:78:04: warning: statement has no effect [ineffective]
 main.adb:78:04: warning: unused assignment to "Rec_Obj" [ineffective]
 main.adb:12:14: info: postcondition proved
 main.adb:15:14: info: postcondition proved
+main.adb:15:35: info: length check proved
 main.adb:18:14: info: postcondition proved
 main.adb:58:32: overflow check not proved
 main.adb:69:4: info: assertion proved

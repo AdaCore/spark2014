@@ -25,4 +25,39 @@ do_checks.adb:147:57: overflow check not proved
 do_checks.adb:159:39: range check not proved
 do_checks.adb:165:38: info: range check proved
 do_checks.adb:165:67: overflow check not proved
-more checks to come
+do_checks.adb:234:24: length check not proved
+do_checks.adb:239:19: info: range check proved
+do_checks.adb:247:24: info: length check proved
+do_checks.adb:252:16: info: precondition proved
+do_checks.adb:252:19: info: range check proved
+do_checks.adb:264:22: length check not proved
+do_checks.adb:268:20: info: range check proved
+do_checks.adb:280:22: info: length check proved
+do_checks.adb:284:16: info: precondition proved
+do_checks.adb:284:20: info: range check proved
+do_checks.adb:312:20: discriminant check not proved
+do_checks.adb:312:25: index check not proved
+do_checks.adb:312:32: discriminant check not proved
+do_checks.adb:312:37: index check not proved
+do_checks.adb:325:20: info: discriminant check proved
+do_checks.adb:325:25: index check not proved
+do_checks.adb:325:32: info: discriminant check proved
+do_checks.adb:325:37: index check not proved
+do_checks.adb:330:16: precondition not proved
+do_checks.adb:401:24: discriminant check not proved
+do_checks.adb:406:22: discriminant check not proved
+do_checks.adb:414:24: info: discriminant check proved
+do_checks.adb:419:16: precondition not proved
+do_checks.adb:419:22: discriminant check not proved
+do_checks.adb:452:24: discriminant check not proved
+do_checks.adb:456:23: discriminant check not proved
+do_checks.adb:456:25: discriminant check not proved
+do_checks.adb:462:23: discriminant check not proved
+do_checks.adb:468:24: discriminant check not proved
+do_checks.adb:473:19: discriminant check not proved
+do_checks.adb:473:22: discriminant check not proved
+do_checks.adb:481:26: discriminant check not proved
+do_checks.adb:488:22: discriminant check not proved
+do_checks.adb:496:26: info: discriminant check proved
+do_checks.adb:503:16: precondition not proved
+do_checks.adb:503:22: discriminant check not proved
