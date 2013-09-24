@@ -1,6 +1,6 @@
 DOC=proof_and_test
 SLIDES=hilt_2013_presentation.tex
-ABS=proof_and_test_extended_abstract
+ABS=hilt54-efstathopoulos.tex
 
 all: clean doc abstract slides
 
