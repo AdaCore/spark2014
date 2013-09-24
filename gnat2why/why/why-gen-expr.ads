@@ -162,12 +162,14 @@ package Why.Gen.Expr is
    --  comparisons being in Base_Type (int or real)
 
    function Insert_Checked_Conversion
-     (Expr      : Node_Id;
-      Expr_Type : Entity_Id;
-      Domain    : EW_Domain;
-      Term      : W_Expr_Id;
-      To        : W_Type_Id;
-      From      : W_Type_Id) return W_Expr_Id;
+     (Ada_Node : Node_Id;
+      Ada_Type : Entity_Id;
+      Domain   : EW_Domain;
+      Expr     : W_Expr_Id;
+      To       : W_Type_Id;
+      From     : W_Type_Id) return W_Expr_Id;
+   --  Returns the expression of type To that converts Expr of type From,
+   --  possibly inserting checks during the conversion.
 
    function Insert_Simple_Conversion
      (Ada_Node : Node_Id := Empty;
@@ -175,6 +177,8 @@ package Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       From     : W_Type_Id) return W_Expr_Id;
+   --  Returns the expression of type To that converts Expr of type From. No
+   --  check is inserted in the conversion.
 
    function Insert_Scalar_Conversion
      (Domain      : EW_Domain;

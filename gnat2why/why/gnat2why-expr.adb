@@ -1193,10 +1193,10 @@ package body Gnat2Why.Expr is
 
                Fetch_Actual  : constant W_Prog_Id :=
                                  +Insert_Checked_Conversion
-                                   (Expr      => Actual,
-                                    Expr_Type => Etype (Actual),
+                                   (Ada_Node      => Actual,
+                                    Ada_Type => Etype (Actual),
                                     Domain    => Fetch_Domain,
-                                    Term =>
+                                    Expr =>
                                       +Transform_Expr (Actual,
                                                        EW_Prog,
                                                        Params),
@@ -1214,10 +1214,10 @@ package body Gnat2Why.Expr is
 
                Arg_Value     : constant W_Prog_Id :=
                                  +Insert_Checked_Conversion
-                                   (Expr      => Actual,
-                                    Expr_Type => Etype (Actual),
+                                   (Ada_Node      => Actual,
+                                    Ada_Type => Etype (Actual),
                                     Domain    => EW_Prog,
-                                    Term      => +Tmp_Var_Deref,
+                                    Expr      => +Tmp_Var_Deref,
                                     From      => Formal_T,
                                     To        => Actual_T);
 
@@ -4668,12 +4668,12 @@ package body Gnat2Why.Expr is
       if Domain in EW_Pred then
          null;
       else
-         T := Insert_Checked_Conversion (Expr      => Expr,
-                                         Expr_Type => Expr_Type,
-                                         Domain    => Domain,
-                                         Term      => T,
-                                         To        => Expected_Type,
-                                         From      => Current_Type);
+         T := Insert_Checked_Conversion (Ada_Node => Expr,
+                                         Ada_Type => Expr_Type,
+                                         Domain   => Domain,
+                                         Expr     => T,
+                                         To       => Expected_Type,
+                                         From     => Current_Type);
       end if;
 
       return T;

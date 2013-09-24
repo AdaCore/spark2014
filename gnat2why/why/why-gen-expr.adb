@@ -107,12 +107,12 @@ package body Why.Gen.Expr is
    -------------------------------
 
    function Insert_Checked_Conversion
-     (Expr      : Node_Id;
-      Expr_Type : Entity_Id;
-      Domain    : EW_Domain;
-      Term      : W_Expr_Id;
-      To        : W_Type_Id;
-      From      : W_Type_Id) return W_Expr_Id
+     (Ada_Node : Node_Id;
+      Ada_Type : Entity_Id;
+      Domain   : EW_Domain;
+      Expr     : W_Expr_Id;
+      To       : W_Type_Id;
+      From     : W_Type_Id) return W_Expr_Id
    is
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
@@ -127,7 +127,7 @@ package body Why.Gen.Expr is
          else
             True);
 
-      T : W_Expr_Id := Term;
+      T : W_Expr_Id := Expr;
 
    begin
       --  Conversion between record types need to go through their common root
@@ -139,20 +139,20 @@ package body Why.Gen.Expr is
          declare
             Discr_Check_Node : constant Node_Id :=
               (if Domain = EW_Prog and Check_Needed then
-                (case Nkind (Parent (Expr)) is
+                (case Nkind (Parent (Ada_Node)) is
                    when N_Assignment_Statement |
                         N_Qualified_Expression |
                         N_Type_Conversion      =>
-                     Parent (Expr),
+                     Parent (Ada_Node),
                    when N_Function_Call            |
                         N_Parameter_Association    |
                         N_Procedure_Call_Statement =>
-                     Expr,
+                     Ada_Node,
                    when others => Empty)
                else Empty);
          begin
             T := Insert_Record_Conversion (Domain      => Domain,
-                                           Ada_Node    => Expr,
+                                           Ada_Node    => Ada_Node,
                                            Expr        => T,
                                            From        => From,
                                            To          => To,
@@ -163,27 +163,28 @@ package body Why.Gen.Expr is
          declare
             Range_Check_Node : constant Node_Id :=
               (if Domain = EW_Prog and Check_Needed then
-                (if Do_Range_Check (Expr) then
-                    Expr
+                (if Do_Range_Check (Ada_Node) then
+                    Ada_Node
 
                  --  The flag Do_Length_Check is not set consistently in the
                  --  frontend, so check every array conversion.
-                 elsif Nkind (Parent (Expr)) in N_Assignment_Statement     |
-                                                N_Qualified_Expression     |
-                                                N_Function_Call            |
-                                                N_Op_And                   |
-                                                N_Op_Or                    |
-                                                N_Op_Xor                   |
-                                                N_Parameter_Association    |
-                                                N_Procedure_Call_Statement |
-                                                N_Type_Conversion
+                 elsif Nkind (Parent (Ada_Node)) in
+                   N_Assignment_Statement     |
+                   N_Qualified_Expression     |
+                   N_Function_Call            |
+                   N_Op_And                   |
+                   N_Op_Or                    |
+                   N_Op_Xor                   |
+                   N_Parameter_Association    |
+                   N_Procedure_Call_Statement |
+                   N_Type_Conversion
                  then
-                    Expr
+                    Ada_Node
                  else Empty)
                else Empty);
          begin
             T := Insert_Array_Conversion (Domain      => Domain,
-                                          Ada_Node    => Expr,
+                                          Ada_Node    => Ada_Node,
                                           Expr        => T,
                                           From        => From,
                                           To          => To,
@@ -202,12 +203,12 @@ package body Why.Gen.Expr is
 
             Range_Check_Node : constant Node_Id :=
               (if Domain = EW_Prog and Check_Needed then
-                 (if Do_Range_Check (Expr) then
-                    Expr
-                  elsif Nkind (Parent (Expr)) = N_Type_Conversion
-                    and then Do_Overflow_Check (Parent (Expr))
+                 (if Do_Range_Check (Ada_Node) then
+                    Ada_Node
+                  elsif Nkind (Parent (Ada_Node)) = N_Type_Conversion
+                    and then Do_Overflow_Check (Parent (Ada_Node))
                   then
-                    Expr
+                    Ada_Node
                   else Empty)
                else Empty);
 
@@ -217,15 +218,15 @@ package body Why.Gen.Expr is
             --  appropriate rounding function for the type.
 
             Round_Func : constant W_Identifier_Id :=
-              (if Nkind (Expr) = N_Type_Conversion
-                 and then Ekind (Expr_Type) in Real_Kind
+              (if Nkind (Ada_Node) = N_Type_Conversion
+                 and then Ekind (Ada_Type) in Real_Kind
                then
-                  Float_Round_Name (Expr_Type)
+                  Float_Round_Name (Ada_Type)
                else Why_Empty);
 
          begin
             T := Insert_Scalar_Conversion (Domain      => Domain,
-                                           Ada_Node    => Expr,
+                                           Ada_Node    => Ada_Node,
                                            Expr        => T,
                                            From        => From,
                                            To          => To,
