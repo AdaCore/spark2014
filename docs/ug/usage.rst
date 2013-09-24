@@ -707,10 +707,9 @@ step-by-step exploration of simple code examples.
 
 This section is structured into the following subsections:
 
- - Flow analysis examples
- - Basic proof examples
- - Call examples
- - Loop examples
+.. contents:: 
+  :depth: 1
+  :local:
 
 .. _flow_examples:
 
