@@ -317,7 +317,7 @@ The new aspects are:
 .. centered:: **Static Semantics**
 
 1. Concurrent accesses of a volatile variable may cause a run-time
-   exception that cannot be proven to be absent by |SPARK|.  
+   exception that cannot be proven to be absent by |SPARK|.
 
    [An example is a strictly 32-bit machine with a 64-bit Long_Float
    type, where some (invalid) floating point values will trap (and
@@ -379,8 +379,8 @@ The new aspects are:
 
    .. ifconfig:: Display_Trace_Units
 
-      :Trace Unit: FE 7.1.3 LR A constant, a discriminant nor a loop
-          parameter shall not be Volatile.
+      :Trace Unit: FE 7.1.3 LR A constant, a discriminant or a loop
+                   parameter shall not be Volatile.
 
 .. _tu-external_state_variables-07:
 
@@ -389,7 +389,7 @@ The new aspects are:
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.1.3 LR A non-volatile object shall not have a
-          Volatile component.
+                   Volatile component.
 
 .. _tu-external_state_variables-08:
 
@@ -1875,7 +1875,7 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
       corresponding (via the process described in the rules 3a - 3e
       above) to the original ``dependency_clause`` in the Depends
       aspect.
- 
+
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 7.2.5 LR Refined_Depends references constituents of the
@@ -2189,7 +2189,7 @@ private child unit (or a public descendant thereof).
                         -- State abstraction declared in the private
                         -- part must have a Part_Of option.
        is
-          -- B1 may be used in aspect specifications provided 
+          -- B1 may be used in aspect specifications provided
           -- Outer.A1 is not also used.
           procedure Init_B1
              with Global  => (Output => B1),
@@ -2197,8 +2197,8 @@ private child unit (or a public descendant thereof).
 
           procedure Init_A2
              -- We can only refer to Outer.Hidden_State which is
-             -- a constituent of Outer.A2 if the subprogram does 
-             -- not also refer to Outer.A2. 
+             -- a constituent of Outer.A2 if the subprogram does
+             -- not also refer to Outer.A2.
              with Global  => (Output => Hidden_State),
                   Depends => (Hidden_State => null);
 
@@ -2226,8 +2226,8 @@ private child unit (or a public descendant thereof).
 
          procedure Init_A2
             -- The Global sparct is already in terms of the constituent
-            -- Hidden_State which is part of of A2, so no refined 
-            -- Global or Depends aspects are required. 
+            -- Hidden_State which is part of of A2, so no refined
+            -- Global or Depends aspects are required.
          is
          begin
             Outer.Hidden_State := 0;
@@ -2257,7 +2257,7 @@ private child unit (or a public descendant thereof).
    package Outer.Public_Child
    is
       -- Outer.A1 and Outer.A2 are visible but
-      -- Outer.Hidden_State is not (by the rules of Ada) 
+      -- Outer.Hidden_State is not (by the rules of Ada)
       -- The Global and Depends Aspects are in terms
       -- of the encapsulating state abstraction Outer.A2.
       procedure Init_A2_With (Val : in Integer)
@@ -2267,7 +2267,7 @@ private child unit (or a public descendant thereof).
 
    package body Outer.Public_Child
    is
-      -- Outer.Hidden is visible here but the 
+      -- Outer.Hidden is visible here but the
       -- refinement of A2 is not so there are
       -- no Refined_Global or Refined_Depends
       procedure Init_A2_With (Val : in Integer)
@@ -2277,7 +2277,7 @@ private child unit (or a public descendant thereof).
          Outer.Hidden_State := Val;
       end Init_A2_With;
    end Outer.Public_Child;
-   
+
 
    package Q
       with Abstract_State => (Q1, Q2)
@@ -2299,9 +2299,9 @@ private child unit (or a public descendant thereof).
    private package Q.Child
       with Abstract_State => (C1 with Part_Of => Q.Q1)
    is
-      -- C1 rather than the encapsulating state abstraction 
-      -- may be used in aspect specifications provided 
-      -- Q.Q1 is not also denoted in the same aspect 
+      -- C1 rather than the encapsulating state abstraction
+      -- may be used in aspect specifications provided
+      -- Q.Q1 is not also denoted in the same aspect
       -- specification.
 
       -- Here C1 is used so Q1 cannot also be used in
@@ -2311,7 +2311,7 @@ private child unit (or a public descendant thereof).
               Depends => (C1 => null);
 
       -- Q.Hidden_State which is a constituent of Q.Q2
-      -- is visible here so it can be used in a aspect 
+      -- is visible here so it can be used in a aspect
       -- specification provided Q.Q2 is not also used.
       procedure Init_Q2
          with Global  => (Output => Q.Hidden_State),
@@ -2386,15 +2386,15 @@ private child unit (or a public descendant thereof).
    private package R.Child
       with Abstract_State => (R2 with Part_Of => R.R1)
    is
-      -- Both R.R1 and R2 are visible.  
+      -- Both R.R1 and R2 are visible.
 
-      -- Here more than just the R2 constituent of R.R1 
-      -- will be updated and so we use R.R1 in the 
+      -- Here more than just the R2 constituent of R.R1
+      -- will be updated and so we use R.R1 in the
       -- aspect specifications rather than R2.
       -- R2 cannot also be used in the aspect
-      -- specifications of this subprogram 
+      -- specifications of this subprogram
       procedure Private_Op (I, J : in Integer)
-         with Global => (In_Out => R.R1), 
+         with Global => (In_Out => R.R1),
              Depends => (R.R1 =>+ (I, J));
    end R.Child;
 
@@ -2649,7 +2649,7 @@ abstraction on to external states which are given in this section.
 
    package Externals
       with Abstract_State => ((Combined_Inputs with External => Async_Writers),
-                              (Displays with External => Asyc_Readers),
+                              (Displays with External => Async_Readers),
                               (Complex_Device with External => (Async_Readers,
                                                                 Effective_Writes,
                                                                 Async_Writers))),
@@ -2711,7 +2711,7 @@ abstraction on to external states which are given in this section.
                                          Part_Of  => Externals.Displays)
    is
       procedure Display (Text: in String)
-         with Global_ => State,
+         with Global  => State,
               Depends => (State => Text);
    end Externals.Main_Display;
 
@@ -2720,7 +2720,7 @@ abstraction on to external states which are given in this section.
                                          Part_Of  => Externals.Displays)
    is
       procedure Display (Text: in String)
-         with Global_ => State,
+         with Global  => State,
               Depends => (State => Text);
    end Externals.Secondary_Display;
 
@@ -2749,7 +2749,7 @@ abstraction on to external states which are given in this section.
    is
       procedure Read (Combined_Value : out Integer)
          with Refined_Global  => (Temperature.State, Temperature.State),
-              Refined_Depends => (Combined_Value => 
+              Refined_Depends => (Combined_Value =>
                                      (Temperature.State, Pressure.State)
       is
         Temp,
@@ -2763,7 +2763,7 @@ abstraction on to external states which are given in this section.
       procedure Display (D_Main, D_Secondary : in String)
          with Global  => (Output => (Main_Display.State,
                                      Secondary.State)),
-              Depends => ((Main_Display.State, 
+              Depends => ((Main_Display.State,
                            Secondary_Display.State) => (D_Main, D_Secondary))
       is
       begin
@@ -3044,7 +3044,7 @@ abstraction on to external states which are given in this section.
                                              HAL.FIFO_Status,
                                              HAL.Wdog_State),
                        HAL.Wdog_State   =>+ HAL.FIFO_Status,
-                       HAL.FIFO_Control => null)
+                       HAL.FIFO_Control =>  null)
    is
       Wdog_Timed_Out, Found : Boolean;
       A_Byte                : HAL.Byte_T;
@@ -3072,8 +3072,8 @@ abstraction on to external states which are given in this section.
 
             exit when Wdog_Timed_Out;
 
-            Get_Byte (A_Byte);
-            Put_Byte (A_Byte);
+            HAL.Get_Byte (A_Byte);
+            HAL.Put_Byte (A_Byte);
          end loop;
       end if;
 
@@ -3395,7 +3395,7 @@ global variables discussed later in this section.
    they both belonged to some enclosing declaration list with the body
    immediately following the specification. This means that the early call
    region in which a call is permitted can span the specification/body boundary.
-   
+
 .. This is important for tagged type declarations.
 
 .. _tu-elaboration_issues-10:
@@ -3420,7 +3420,7 @@ global variables discussed later in this section.
       an Elaborate_All pragma as described above (the pragma must be
       given explicitly; it is not supplied implicitly).
 
-    [Corner case notes: 
+    [Corner case notes:
     These rules correctly prohibit the following example:
 
    .. code-block:: ada
