@@ -57,15 +57,16 @@ Explicit Run-time Checks Using Coq}
 \begin{document}
 \conferenceinfo{HILT'13,} {November 10--14, 2013, Pittsburgh, PA, USA.}
 \CopyrightYear{2013}
-\crdata{978-1-4503-2467-0/13/11}
+\crdata{978-1-4503-2466-3/13/11}
 \clubpenalty=10000
 \widowpenalty = 10000
 
-%\title{\mytitle\thanks{Work supported in part by }}
-\title{\mytitle\thanks{}}
-%
+\title{\mytitle\thanks{}} 
+\renewcommand\footnotemark{}
+\renewcommand\footnoterule{}
+
 \numberofauthors{2}
-%
+
 \author{
   \alignauthor 
   Pierre Courtieu,Maria Virginia Aponte, Tristan Crolard \\
@@ -89,11 +90,7 @@ Explicit Run-time Checks Using Coq}
   \email{trevor.jennings@altran.com}
 }
 \date{\today}
-\iftechreport
-	\pagenumbering{arabic}
-	\pagestyle{plain}
-\fi
-%
+
 \maketitle
 \input{abstract.tex}
 \category{D.2.4}{Software Engineering}{Software/Program Verification},
@@ -104,6 +101,7 @@ Formal Methods, Correctness Proofs
 \terms{Reliability, Security, Verification}
 
 \keywords{SPARK, Coq Proof Assistant, Formal Semantics,  Machine-Verified Proof}
+
 \input{motivation}
 %\vspace{2cm}
 \input{formalizationwork}
@@ -112,8 +110,7 @@ Formal Methods, Correctness Proofs
 \input{acknowledgements}
 
 \bibliographystyle{abbrv}
-%\bibliography{santos}
-%\vspace{2cm}
-\input{acm-compliant-bib}
-%
+%\bibliography{HILT2013_Ref}
+\input{HILT2013_Bib}
+
 \end{document}
