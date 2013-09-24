@@ -369,8 +369,10 @@ package body Why.Gen.Names is
    function New_Division (Kind : EW_Numeric) return W_Identifier_Id is
    begin
       case Kind is
-         when EW_Float =>
-            return To_Ident (WNE_Float_Div);
+         when EW_Float32 =>
+            return To_Ident (WNE_Float32_Div);
+         when EW_Float64 =>
+            return To_Ident (WNE_Float64_Div);
          when EW_Real =>
             return To_Ident (WNE_Real_Div);
          when EW_Int =>
@@ -631,7 +633,8 @@ package body Why.Gen.Names is
          when WNE_Of_Float         => return "of_float";
          when WNE_To_Float         => return "to_float";
          when WNE_Float_Abs        => return "fp_abs";
-         when WNE_Float_Div        => return "div_float";
+         when WNE_Float32_Div      => return "div_single";
+         when WNE_Float64_Div      => return "div_double";
          when WNE_Float_Exp        => return "TBD_exp_TBD";
          when WNE_Float_Min        => return "fp_min";
          when WNE_Float_Max        => return "fp_max";

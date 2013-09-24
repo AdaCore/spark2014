@@ -201,11 +201,11 @@ module IEEE_Floating_Point_32
 
   function dummy : t
 
-  function div_float (x : single) (y : single) : single = fp_div x y
+  function div_single (x : single) (y : single) : single = fp_div x y
 
-  val div_float_ (x:single) (y:single) : single
+  val div_single_ (x:single) (y:single) : single
     requires { not isZero y }
-    ensures { result = div_float x y }
+    ensures { result = fp_div x y }
 
 end
 
@@ -260,11 +260,11 @@ module IEEE_Floating_Point_64
 
   function dummy : t
 
-  function div_float (x : double) (y : double) : double = fp_div x y
+  function div_double (x : double) (y : double) : double = fp_div x y
 
-  val div_float_ (x:double) (y:double) : double
+  val div_double_ (x:double) (y:double) : double
     requires { not isZero y }
-    ensures { result = div_float x y }
+    ensures { result = fp_div x y }
 
 end
 
