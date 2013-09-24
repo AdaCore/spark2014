@@ -484,7 +484,9 @@ package body Gnat2Why.Expr.Loops is
          Loop_Param_Ent :=
            Defining_Identifier (Loop_Parameter_Specification (Scheme));
          Loop_Index     :=
-           To_Why_Id (E => Loop_Param_Ent, Domain => EW_Prog);
+           To_Why_Id (E      => Loop_Param_Ent,
+                      Domain => EW_Prog,
+                      Typ    => EW_Int_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Ada_Ent_To_Why.Insert (Symbol_Table,
                                 Loop_Param_Ent,
@@ -492,7 +494,6 @@ package body Gnat2Why.Expr.Loops is
                                   Ada_Node => Loop_Param_Ent,
                                   B_Name   => Loop_Index,
                                   B_Ent    => null,
-                                  B_Type   => +EW_Int_Type,
                                   Mutable  => True));
       end if;
 
@@ -659,6 +660,7 @@ package body Gnat2Why.Expr.Loops is
             Cond_Pred : constant W_Pred_Id :=
               +Transform_Expr_With_Actions (Condition (Scheme),
                                             Condition_Actions (Scheme),
+                                            EW_Bool_Type,
                                             EW_Pred,
                                             Params => Body_Params);
 
@@ -783,21 +785,25 @@ package body Gnat2Why.Expr.Loops is
                       Value  => +Init_Index),
                  Entire_Loop);
             Entire_Loop :=
-               New_Binding
+               +New_Typed_Binding
                  (Name    => High_Ident,
+                  Domain  => EW_Prog,
                   Def     => +Transform_Expr (High_Bound (Actual_Range),
-                                              EW_Int_Type,
-                                              EW_Prog,
-                                              Params => Body_Params),
+                                             EW_Int_Type,
+                                             EW_Prog,
+                                             Params => Body_Params),
                   Context => +Entire_Loop);
             Entire_Loop :=
-               New_Binding
-                 (Name    => Low_Ident,
-                  Def     => +Transform_Expr (Low_Bound (Actual_Range),
-                                              EW_Int_Type,
-                                              EW_Prog,
-                                              Params => Body_Params),
-                  Context => +Entire_Loop);
+              +New_Typed_Binding
+                (Name    => Low_Ident,
+                 Domain  => EW_Prog,
+                 Def     =>
+                   +Transform_Expr
+                     (Low_Bound (Actual_Range),
+                      EW_Int_Type,
+                      EW_Prog,
+                      Params => Body_Params),
+                 Context => +Entire_Loop);
 
             --  For loop_parameter_specification whose
             --  discrete_subtype_definition is a subtype_indication,

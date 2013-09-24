@@ -35,6 +35,7 @@ with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
 
 with Why.Gen.Name_Gen;
+with Why.Types;
 
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 
@@ -90,32 +91,38 @@ package Why.Gen.Names is
    function New_Abs (Kind : EW_Numeric) return W_Identifier_Id;
    --  Return the name of the absolute value operator for the given kind
 
-   function New_Identifier (Ada_Node : Node_Id := Empty; Name : String)
+   function New_Identifier (Ada_Node : Node_Id := Empty;
+                            Name     : String;
+                            Typ      : W_Type_Id := Why.Types.Why_Empty)
        return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name     : String;
-                            Context  : String)
+                            Context  : String;
+                            Typ      : W_Type_Id := Why.Types.Why_Empty)
        return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
-      Name     : String)
+      Name     : String;
+      Typ      : W_Type_Id := Why.Types.Why_Empty)
       return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Context  : String)
+      Context  : String;
+      Typ      : W_Type_Id := Why.Types.Why_Empty)
      return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
-      Symbol   : Name_Id)
+      Symbol   : Name_Id;
+      Typ      : W_Type_Id := Why.Types.Why_Empty)
       return W_Identifier_Id;
 
    function New_Identifier
@@ -124,7 +131,8 @@ package Why.Gen.Names is
       Name     : String;
       Context  : Name_Id) return W_Identifier_Id;
 
-   function New_Temp_Identifier return W_Identifier_Id;
+   function New_Temp_Identifier (Typ : W_Type_Id := Why.Types.Why_Empty)
+                                 return W_Identifier_Id;
    function New_Temp_Identifier return String;
    --  Return a new unique identifier
 
@@ -279,7 +287,9 @@ package Why.Gen.Names is
 
    function Prefix (S        : String;
                     W        : Why_Name_Enum;
-                    Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+                    Ada_Node : Node_Id := Empty;
+                    Typ      : W_Type_Id := Why.Types.Why_Empty)
+                    return W_Identifier_Id;
 
    function Prefix (P        : String;
                     N        : String;
@@ -298,11 +308,6 @@ package Why.Gen.Names is
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";
    Assume                   : constant String := "assume";
-
-   package New_Result_Temp_Identifier is
-     new Name_Gen.Arity_1 (EW_Term, "", "result");
-   --  Return a new identifier for the temporary used to store a function's
-   --  result.
 
    package Assume_Name is
       new Name_Gen.Arity_1 (EW_Term, "", Assume);

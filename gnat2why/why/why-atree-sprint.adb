@@ -810,10 +810,10 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Deref_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
       P (O, "!");
+      Traverse (State, +Get_Right (Node));
+      State.Control := Abandon_Children;
    end Deref_Pre_Op;
 
    --------------------

@@ -1329,7 +1329,8 @@ package body Why.Inter is
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
                        Local  : Boolean := False;
-                       Rec    : Entity_Id := Empty) return W_Identifier_Id
+                       Rec    : Entity_Id := Empty;
+                       Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body and then
@@ -1354,23 +1355,27 @@ package body Why.Inter is
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
-                                      Name     => Field);
+                                      Name     => Field,
+                                      Typ      => Typ);
             else
                return New_Identifier (Ada_Node => Ada_N,
                                       Name     => Field,
-                                      Context  => Full_Name (Ada_N));
+                                      Context  => Full_Name (Ada_N),
+                                      Typ      => Typ);
             end if;
          end;
       elsif Local then
-         return New_Identifier (Ada_Node => E, Name => Suffix);
+         return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
       elsif Suffix = "" then
          return New_Identifier (Ada_Node => E,
-                                Name     => Full_Name (E));
+                                Name     => Full_Name (E),
+                                Typ      => Typ);
       else
          return
            New_Identifier (Ada_Node => E,
                            Name     => Suffix,
-                           Context => Full_Name (E));
+                           Context  => Full_Name (E),
+                           Typ      => Typ);
       end if;
    end To_Why_Id;
 

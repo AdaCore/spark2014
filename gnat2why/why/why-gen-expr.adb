@@ -101,14 +101,20 @@ package body Why.Gen.Expr is
          when W_Real_Constant =>
             return EW_Real_Type;
 
+         when W_Literal =>
+            return EW_Bool_Type;
+
          when W_Void
             | W_While_Loop
             | W_Assignment
-            | W_Assert
-            | W_Statement_Sequence =>
+            | W_Assert =>
             return EW_Unit_Type;
 
-         when W_Literal =>
+         when W_Relation
+            | W_Connection
+            | W_Not
+            | W_Universal_Quantif
+            | W_Existential_Quantif =>
             return EW_Bool_Type;
 
          when W_Binary_Op =>
@@ -158,6 +164,24 @@ package body Why.Gen.Expr is
 
          when W_Try_Block =>
             return Get_Typ (W_Try_Block_Id (E));
+
+         when W_Raise =>
+            return Get_Typ (W_Raise_Id (E));
+
+         when W_Label =>
+            return Get_Typ (W_Label_Id (E));
+
+         --  ??? The following nodes should get their own Type field at some
+         --  point, right now we use recursion.
+
+         when W_Statement_Sequence =>
+            declare
+               use Node_Lists;
+               L : constant List :=
+                 Get_List (+Get_Statements (W_Statement_Sequence_Id (E)));
+            begin
+               return Get_Type (+Last_Element (L));
+            end;
 
          when others =>
             raise Program_Error;
@@ -228,7 +252,8 @@ package body Why.Gen.Expr is
                        Prefix (Ada_Node => To_Ent,
                                P        => Full_Name (To_Ent),
                                N        => "range_check"),
-                     Args   => Args);
+                     Args   => Args,
+                     Typ    => EW_Abstract (To_Ent));
          return New_Located_Assert (Ada_Node, Check, VC_Range_Check);
       end Insert_Array_Range_Check;
 
@@ -337,7 +362,7 @@ package body Why.Gen.Expr is
                      and then (Sliding or else not Is_Constrained (From_Ent));
 
       if Needs_Tmp then
-         Tmp_Var := New_Temp_Identifier;
+         Tmp_Var := New_Temp_Identifier (Typ => From);
          Arr_Expr := +Tmp_Var;
       else
          Arr_Expr := Expr;
@@ -364,7 +389,8 @@ package body Why.Gen.Expr is
                   Name   =>
                     Prefix (P => To_String (Ada_Array_Name (Int (Dim))),
                             N => "slide"),
-                  Args   => Args);
+                  Args   => Args,
+                  Typ    => To);
             end;
          elsif not Is_Constrained (From_Ent) then
                T :=
@@ -374,9 +400,18 @@ package body Why.Gen.Expr is
                       Prefix (Ada_Node => From_Ent,
                               S        => Full_Name (From_Ent),
                               W        => WNE_To_Array),
-                    Args => (1 => Arr_Expr));
+                    Args => (1 => Arr_Expr),
+                    Typ  => To);
+
+         --  No actual why call or conversion is inserted here, but we still
+         --  need to change the type of the Why AST node. We do that by adding
+         --  a dummy node
+
          else
-            T := Arr_Expr;
+            T := New_Label (Labels => (1 .. 0 => <>),
+                            Def    => Arr_Expr,
+                            Domain => Domain,
+                            Typ    => To);
          end if;
       else
          declare
@@ -391,7 +426,8 @@ package body Why.Gen.Expr is
                    Prefix (Ada_Node => To_Ent,
                            S        => Full_Name (To_Ent),
                            W        => WNE_Of_Array),
-                 Args => Args);
+                 Args => Args,
+                 Typ  => To);
          end;
       end if;
 
@@ -413,7 +449,7 @@ package body Why.Gen.Expr is
 
       if Needs_Tmp then
          T :=
-           New_Binding
+           New_Typed_Binding
              (Domain  => Domain,
               Name    => Tmp_Var,
               Def     => +Expr,
@@ -431,12 +467,12 @@ package body Why.Gen.Expr is
       Ada_Type : Entity_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id
+      To       : W_Type_Id) return W_Expr_Id
    is
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
 
+      From : constant W_Type_Id := Get_Type (Expr);
       Check_Needed : constant Boolean :=
         (if Get_Base_Type (From) = EW_Abstract
               and
@@ -756,10 +792,12 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      return New_Call (Domain   => Domain,
-                       Ada_Node => Ada_Node,
-                       Name     => Conversion_Name (From => From, To => To),
-                       Args     => (1 => +Expr));
+      return
+        New_Call (Domain   => Domain,
+                  Ada_Node => Ada_Node,
+                  Name     => Conversion_Name (From => From, To => To),
+                  Args     => (1 => +Expr),
+                  Typ      => To);
    end Insert_Single_Conversion;
 
    ----------------------
@@ -808,7 +846,8 @@ package body Why.Gen.Expr is
       else
          return New_Call (Domain => Domain,
                           Name   => To_Ident (WNE_Bool_And),
-                          Args   => (1 => +Left, 2 => +Right));
+                          Args   => (1 => +Left, 2 => +Right),
+                          Typ    => EW_Bool_Type);
       end if;
    end New_And_Expr;
 
@@ -836,13 +875,15 @@ package body Why.Gen.Expr is
               New_Call (Domain => Domain,
                         Name   => To_Ident (WNE_Bool_And),
                         Args   => (1 => +Conjuncts (Conjuncts'First),
-                                   2 => +Conjuncts (Conjuncts'First + 1)));
+                                   2 => +Conjuncts (Conjuncts'First + 1)),
+                        Typ    => EW_Bool_Type);
          begin
             for K in Conjuncts'First + 2 .. Conjuncts'Last loop
                Result := New_Call (Domain => Domain,
                                    Name   => To_Ident (WNE_Bool_And),
                                    Args   => (1 => Result,
-                                              2 => +Conjuncts (K)));
+                                              2 => +Conjuncts (K)),
+                                   Typ    => EW_Bool_Type);
             end loop;
 
             return Result;
@@ -861,7 +902,8 @@ package body Why.Gen.Expr is
          return
            New_Call (Domain => Domain,
                      Name   => To_Ident (WNE_Bitwise_And),
-                     Args   => (1 => +Left, 2 => +Right));
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => EW_Int_Type);
       end if;
    end New_And_Expr;
 
@@ -924,7 +966,8 @@ package body Why.Gen.Expr is
          begin
             return +Prefix (Ada_Node => Ty,
                             S        => S,
-                            W        => Attr_To_Why_Name (Attr));
+                            W        => Attr_To_Why_Name (Attr),
+                            Typ      => EW_Int_Type);
          end;
       end if;
    end New_Attribute_Expr;
@@ -984,7 +1027,8 @@ package body Why.Gen.Expr is
            New_Call
              (Name   => New_Bool_Cmp (Cmp, Op_Type),
               Args   => (1 => +Left1, 2 => +Right1),
-              Domain => Domain);
+              Domain => Domain,
+              Typ    => EW_Bool_Type);
       end if;
    end New_Comparison;
 
@@ -1078,7 +1122,8 @@ package body Why.Gen.Expr is
       else
          return New_Call (Domain => Domain,
                           Name   => To_Ident (WNE_Bool_Or),
-                          Args   => (1 => +Left, 2 => +Right));
+                          Args   => (1 => +Left, 2 => +Right),
+                          Typ    => EW_Bool_Type);
       end if;
    end New_Or_Expr;
 
@@ -1112,7 +1157,8 @@ package body Why.Gen.Expr is
                Result := New_Call (Domain => Domain,
                                    Name   => To_Ident (WNE_Bool_Or),
                                    Args   => (1 => Result,
-                                              2 => +Conjuncts (K)));
+                                              2 => +Conjuncts (K)),
+                                   Typ    => EW_Bool_Type);
             end loop;
 
             return Result;
@@ -1131,7 +1177,8 @@ package body Why.Gen.Expr is
          return
            New_Call (Domain => Domain,
                      Name   => To_Ident (WNE_Bitwise_Or),
-                     Args   => (1 => +Left, 2 => +Right));
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => EW_Int_Type);
       end if;
    end New_Or_Expr;
 
@@ -1248,9 +1295,27 @@ package body Why.Gen.Expr is
              (Condition => +Condition,
               Then_Part => Then_Part,
               Else_Part => Else_Part,
-              Domain    => Domain);
+              Domain    => Domain,
+              Typ       => Get_Type (Then_Part));
       end if;
    end New_Simpl_Conditional;
+
+   -----------------------
+   -- New_Typed_Binding --
+   -----------------------
+
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Identifier_Id;
+      Def      : W_Value_Id;
+      Context  : W_Expr_Id)
+      return W_Expr_Id is
+   begin
+      return
+        New_Binding
+          (Ada_Node, Domain, Name, Def, Context, Get_Type (Context));
+   end New_Typed_Binding;
 
    -----------------
    -- New_VC_Call --
@@ -1261,7 +1326,8 @@ package body Why.Gen.Expr is
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id
+       Domain   : EW_Domain;
+       Typ      : W_Type_Id) return W_Expr_Id
    is
    begin
       return
@@ -1273,7 +1339,8 @@ package body Why.Gen.Expr is
                (Ada_Node => Ada_Node,
                 Name     => Name,
                 Args     => Progs,
-                Domain   => Domain),
+                Domain   => Domain,
+                Typ      => Typ),
            Domain  => Domain);
    end New_VC_Call;
 
@@ -1294,7 +1361,8 @@ package body Why.Gen.Expr is
               (Ada_Node => Ada_Node,
                Labels   => New_VC_Labels (Ada_Node, Reason),
                Def      => Expr,
-               Domain   => Domain);
+               Domain   => Domain,
+               Typ      => Get_Type (Expr));
       else
          return Expr;
       end if;
@@ -1365,7 +1433,10 @@ package body Why.Gen.Expr is
               New_Call
                 (Domain => Domain,
                  Name   => Id,
-                 Args   => (1 => +Left, 2 => +Right));
+                 Args   => (1 => +Left, 2 => +Right),
+                 Typ    =>
+                   (if Base = EW_Bool_Type then EW_Bool_Type
+                    else EW_Int_Type));
          end;
       end if;
    end New_Xor_Expr;
@@ -1384,7 +1455,8 @@ package body Why.Gen.Expr is
          return +New_Identifier (Ada_Node => E,
                                  Domain  => Domain,
                                  Context => Full_Name (E),
-                                 Name    => To_String (WNE_Dummy));
+                                 Name    => To_String (WNE_Dummy),
+                                 Typ     => EW_Abstract (E));
       end if;
    end Why_Default_Value;
 

@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Tables; use Why.Atree.Tables;
 with Why.Conversions;  use Why.Conversions;
+with Why.Gen.Expr;     use Why.Gen.Expr;
 with Why.Gen.Names;    use Why.Gen.Names;
 with Why.Gen.Decl;     use Why.Gen.Decl;
 with Why.Inter;        use Why.Inter;
@@ -72,9 +72,8 @@ package body Why.Gen.Binders is
       for J in Anonymous_Binders'Range loop
          Result (J) :=
            (B_Name =>
-              New_Identifier (Name => "dummy__" & N),
-            B_Type =>
-              Anonymous_Binders (J),
+              New_Identifier (Name => "dummy__" & N,
+                              Typ => Anonymous_Binders (J)),
             others => <>);
          N := Character'Succ (N);
       end loop;
@@ -170,9 +169,9 @@ package body Why.Gen.Binders is
         return W_Type_Id is
       begin
          if Domain = EW_Prog and then Binder.Mutable then
-            return +New_Ref_Type (Ty => +Binder.B_Type);
+            return New_Ref_Type (Ty => Get_Type (+Binder.B_Name));
          else
-            return +Binder.B_Type;
+            return Get_Type (+Binder.B_Name);
          end if;
       end New_Arg_Type;
 
@@ -226,7 +225,7 @@ package body Why.Gen.Binders is
          return New_Existential_Quantif
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
-            Var_Type  => Binders (Binders'First).B_Type,
+            Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
             Pred      =>
               New_Existential_Quantif (Empty,
                                        Binders (Binders'First + 1
@@ -393,7 +392,7 @@ package body Why.Gen.Binders is
          return New_Universal_Quantif
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
-            Var_Type  => Binders (Binders'First).B_Type,
+            Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
             Triggers  => Triggers,
             Pred      => Pred);
 
@@ -403,15 +402,54 @@ package body Why.Gen.Binders is
          --  Eq_Base_Type function, which excludes currently types which are
          --  not of kind W_Type.
 
-         Typ := Binders (Binders'First).B_Type;
+         Typ := Get_Type (+(Binders (Binders'First).B_Name));
 
-         if Get_Kind (+Binders (Binders'First).B_Type) /= W_Type then
-            declare
-               Vars          : constant W_Identifier_Array :=
-                                 (1 => Binders (Binders'First).B_Name);
-               Other_Binders : constant Binder_Array :=
-                                 Binders (Binders'First + 1 .. Binders'Last);
-            begin
+         Cnt := 0;
+         for B of Binders loop
+            if Eq_Base_Type (Get_Type (+B.B_Name), Typ) then
+               Cnt := Cnt + 1;
+            end if;
+         end loop;
+
+            pragma Assert (Cnt >= 1);
+
+         declare
+            Vars          : W_Identifier_Array (1 .. Cnt);
+            Other_Binders : Binder_Array (1 .. Binders'Length - Cnt);
+            Vars_Cnt      : Natural;
+            Others_Cnt    : Natural;
+         begin
+            --  Separate binders that have the same type as the first one
+            --  from the remaining binders.
+
+            Vars_Cnt   := 0;
+            Others_Cnt := 0;
+            Typ        := Get_Type (+Binders (Binders'First).B_Name);
+            for B of Binders loop
+               if Eq_Base_Type (Get_Type (+B.B_Name), Typ) then
+                  Vars_Cnt := Vars_Cnt + 1;
+                  Vars (Vars_Cnt) := B.B_Name;
+               else
+                  Others_Cnt := Others_Cnt + 1;
+                  Other_Binders (Others_Cnt) := B;
+               end if;
+            end loop;
+
+            --  Quantify at the same time over all binders that have the
+            --  same type as the first one. This avoids the generation of
+            --  very deep Why3 expressions, whose traversal may lead to
+            --  stack overflow. However, avoid the recursive call in the
+            --  case where [Other_Binders] is empty. This makes sure that we
+            --  put the trigger on the axiom.
+
+            if Other_Binders'Length = 0 then
+               return New_Universal_Quantif
+                 (Ada_Node  => Ada_Node,
+                  Variables => Vars,
+                  Var_Type  => Typ,
+                  Triggers  => Triggers,
+                  Pred      => Pred);
+            else
                return New_Universal_Quantif
                  (Ada_Node  => Ada_Node,
                   Variables => Vars,
@@ -421,68 +459,8 @@ package body Why.Gen.Binders is
                                            Binders   => Other_Binders,
                                            Triggers  => Triggers,
                                            Pred      => Pred));
-
-            end;
-
-         else
-            Cnt := 0;
-            for B of Binders loop
-               if Eq_Base_Type (B.B_Type, Typ) then
-                  Cnt := Cnt + 1;
-               end if;
-            end loop;
-
-            pragma Assert (Cnt >= 1);
-
-            declare
-               Vars          : W_Identifier_Array (1 .. Cnt);
-               Other_Binders : Binder_Array (1 .. Binders'Length - Cnt);
-               Vars_Cnt      : Natural;
-               Others_Cnt    : Natural;
-            begin
-               --  Separate binders that have the same type as the first one
-               --  from the remaining binders.
-
-               Vars_Cnt   := 0;
-               Others_Cnt := 0;
-               Typ        := Binders (Binders'First).B_Type;
-               for B of Binders loop
-                  if Eq_Base_Type (B.B_Type, Typ) then
-                     Vars_Cnt := Vars_Cnt + 1;
-                     Vars (Vars_Cnt) := B.B_Name;
-                  else
-                     Others_Cnt := Others_Cnt + 1;
-                     Other_Binders (Others_Cnt) := B;
-                  end if;
-               end loop;
-
-               --  Quantify at the same time over all binders that have the
-               --  same type as the first one. This avoids the generation of
-               --  very deep Why3 expressions, whose traversal may lead to
-               --  stack overflow. However, avoid the recursive call in the
-               --  case where [Other_Binders] is empty. This makes sure that we
-               --  put the trigger on the axiom.
-
-               if Other_Binders'Length = 0 then
-                  return New_Universal_Quantif
-                    (Ada_Node  => Ada_Node,
-                     Variables => Vars,
-                     Var_Type  => Typ,
-                     Triggers  => Triggers,
-                     Pred      => Pred);
-               else
-                  return New_Universal_Quantif
-                    (Ada_Node  => Ada_Node,
-                     Variables => Vars,
-                     Var_Type  => Typ,
-                     Pred      =>
-                       New_Universal_Quantif (Ada_Node  => Empty,
-                                              Binders   => Other_Binders,
-                                              Triggers  => Triggers,
-                                              Pred      => Pred));
-               end if;
-            end;
-         end if;
+            end if;
+         end;
       end if;
    end New_Universal_Quantif;
 
@@ -647,9 +625,9 @@ package body Why.Gen.Binders is
    function Unit_Param return Binder_Type is
    begin
       return
-        (B_Name   => New_Identifier (Name => "__void_param"),
+        (B_Name   =>
+           New_Identifier (Name => "__void_param", Typ => EW_Unit_Type),
          B_Ent    => null,
-         B_Type   => +EW_Unit_Type,
          Mutable  => False,
          Ada_Node => Empty);
    end Unit_Param;

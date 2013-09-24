@@ -46,7 +46,7 @@ package body Xtree_Sinfo is
                   W_Conditional);
       New_Domain ("W_Term",
                   "W_Prog",
-                  W_Identifier,
+                  W_Label,
                   W_Record_Aggregate);
       New_Domain ("W_Prog",
                   "W_Expr",
@@ -281,9 +281,11 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Label,
-                 "Labels", "W_Identifier", Id_Some);
+                 "Labels", "W_Identifier", Id_Set);
       New_Field (W_Label,
                  "Def", "W_Expr", Id_One);
+      New_Field (W_Label,
+                 "Typ", "W_Type", Id_Lone);
 
       ------------------
       -- W_Identifier --
@@ -378,8 +380,6 @@ package body Xtree_Sinfo is
                  "Left", "W_Expr", Id_One);
       New_Field (W_Binary_Op,
                  "Right", "W_Expr", Id_One);
-      New_Field (W_Binary_Op,
-                 "Typ", "W_Type", Id_Lone);
 
       -----------------
       -- W_Unary_Op --
@@ -391,8 +391,6 @@ package body Xtree_Sinfo is
                  "Right", "W_Expr", Id_One);
       New_Field (W_Unary_Op,
                  "Op_Type", "EW_Scalar");
-      New_Field (W_Unary_Op,
-                 "Typ", "W_Type", Id_Lone);
 
       -------------
       -- W_Deref --
@@ -515,6 +513,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Raise,
                  "Exn_Type", "W_Type", Id_Lone);
+      New_Field (W_Raise,
+                 "Typ", "W_Type", Id_Lone);
 
       -----------------
       -- W_Try_Block --

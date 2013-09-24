@@ -174,7 +174,8 @@ package body Why.Gen.Progs is
              (Ada_Node => Ada_Node,
               Expr     => +Post,
               Reason   => VC_Assert,
-              Domain   => EW_Pred));
+              Domain   => EW_Pred),
+           Typ      => Get_Type (+Expr));
    end New_Located_Abstract;
 
    ------------------------

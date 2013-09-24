@@ -129,7 +129,8 @@ package Why.Gen.Expr is
        Name     : W_Identifier_Id;
        Progs    : W_Expr_Array;
        Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id;
+       Domain   : EW_Domain;
+       Typ      : W_Type_Id) return W_Expr_Id;
    --  If we are not in the term domain, build a call with VC and location
    --  labels.
 
@@ -179,8 +180,7 @@ package Why.Gen.Expr is
       Ada_Type : Entity_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From,
    --  possibly inserting checks during the conversion.
 
@@ -217,6 +217,15 @@ package Why.Gen.Expr is
       Need_Check : Boolean := False) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
+
+   function New_Typed_Binding
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : W_Identifier_Id;
+      Def      : W_Value_Id;
+      Context  : W_Expr_Id)
+      return W_Expr_Id;
+   --  same as New_Binding, but adds type information coming from Context
 
    function New_Attribute_Expr
      (Ty   : Entity_Id;

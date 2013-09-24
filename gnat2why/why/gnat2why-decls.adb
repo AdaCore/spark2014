@@ -381,9 +381,10 @@ package body Gnat2Why.Decls is
                     (Symbol_Table,
                      E,
                      Binder_Type'(Ada_Node => E,
-                                  B_Name   => To_Why_Id (E),
+                                  B_Name   =>
+                                    To_Why_Id (E,
+                                      Typ => EW_Abstract (Etype (E))),
                                   B_Ent    => null,
-                                  B_Type   => EW_Abstract (Etype (E)),
                                   Mutable  =>
                                     Ekind (E) in Object_Kind and then
                                   Is_Mutable_In_Why (E)));
@@ -485,9 +486,8 @@ package body Gnat2Why.Decls is
                              E,
                              Binder_Type'(
                                Ada_Node => E,
-                               B_Name   => To_Why_Id (E),
+                               B_Name   => To_Why_Id (E, Typ => Typ),
                                B_Ent    => null,
-                               B_Type   => Typ,
                                Mutable  => True));
       Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Variable;
@@ -530,9 +530,8 @@ package body Gnat2Why.Decls is
                              E,
                              Binder_Type'(
                                Ada_Node => E,
-                               B_Name   => To_Why_Id (E),
+                               B_Name   => To_Why_Id (E, Typ => Typ),
                                B_Ent    => null,
-                               B_Type   => Typ,
                                Mutable  => False));
       Close_Theory (File,
                     Filter_Entity  => E,
@@ -1286,10 +1285,9 @@ package body Gnat2Why.Decls is
                             (Name => New_Identifier
                                (Name => Short_Name (Formal)));
                         A_Ident    : constant W_Identifier_Id :=
-                          New_Identifier (Name => "a");
+                          New_Identifier (Name => "a", Typ => F_Ty);
                         R_Binder   : constant Binder_Array :=
                           (1 => (B_Name => A_Ident,
-                                 B_Type => F_Ty,
                                  others => <>));
                      begin
 
@@ -1382,14 +1380,14 @@ package body Gnat2Why.Decls is
                            Name : constant W_Identifier_Id :=
                              New_Identifier
                                (Ada_Node => Empty,
-                                Name => Full_Name (F_Id));
+                                Name => Full_Name (F_Id),
+                                Typ  => F_Type);
                         begin
                            Binders (Count) :=
                              (Ada_Node => F_Id,
                               B_Name   => Name,
                               B_Ent    => null,
-                              Mutable  => False,
-                              B_Type   => F_Type);
+                              Mutable  => False);
 
                            Args (Count) := Insert_Simple_Conversion
                              (Domain        => EW_Term,

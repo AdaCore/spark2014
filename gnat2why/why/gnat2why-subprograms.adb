@@ -354,17 +354,19 @@ package body Gnat2Why.Subprograms is
                      Result (Count) :=
                        (Ada_Node => Entity,
                         B_Name   =>
-                          New_Identifier (Name => Full_Name (Entity)),
+                          New_Identifier
+                            (Name => Full_Name (Entity),
+                             Typ  => EW_Abstract (Etype (Entity))),
                         B_Ent    => null,
-                        B_Type   => EW_Abstract (Etype (Entity)),
                         Mutable  => False);
                   else
                      Result (Count) :=
                        (Ada_Node => Empty,
-                        B_Name   => New_Identifier (Name => R.all),
+                        B_Name   =>
+                          New_Identifier
+                            (Name => R.all,
+                             Typ  => New_Named_Type (To_Why_Type (R.all))),
                         B_Ent    => R,
-                        B_Type   =>
-                          New_Named_Type (Name => To_Why_Type (R.all)),
                         Mutable  => False);
                   end if;
                end;
@@ -398,18 +400,20 @@ package body Gnat2Why.Subprograms is
 
          declare
             Id   : constant Node_Id := Defining_Identifier (Param);
+            Typ  : constant W_Type_Id :=
+                 (if Use_Why_Base_Type (Id) then
+                       Base_Why_Type (Unique_Entity (Etype (Id)))
+                  else EW_Abstract (Etype (Id)));
             Name : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => Empty, Name => Full_Name (Id));
+              New_Identifier (Ada_Node => Empty,
+                              Name     => Full_Name (Id),
+                              Typ      => Typ);
          begin
             Result (Count) :=
               (Ada_Node => Id,
                B_Name   => Name,
                B_Ent    => null,
-               Mutable  => Is_Mutable_In_Why (Id),
-               B_Type   =>
-                 (if Use_Why_Base_Type (Id) then
-                       Base_Why_Type (Unique_Entity (Etype (Id)))
-                  else EW_Abstract (Etype (Id))));
+               Mutable  => Is_Mutable_In_Why (Id));
             Next (Param);
             Count := Count + 1;
          end;
@@ -1007,7 +1011,9 @@ package body Gnat2Why.Subprograms is
       --  create a new identifier for F'Result.
 
       Reset_Map_For_Old;
-      Result_Name := New_Result_Temp_Identifier.Id (Name);
+      Result_Name :=
+        New_Identifier
+          (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
 
       --  Generate code to detect possible run-time errors in the postcondition
 
@@ -1457,8 +1463,8 @@ package body Gnat2Why.Subprograms is
                                   B_Name =>
                                     +To_Why_Id (E      => E,
                                                 Domain => EW_Term,
-                                                Local  => True),
-                                  B_Type => Why_Type,
+                                                Local  => True,
+                                                Typ    => Why_Type),
                                   others => <>));
       end if;
 
@@ -1546,8 +1552,7 @@ package body Gnat2Why.Subprograms is
                              E,
                              Binder_Type'(
                                Ada_Node => E,
-                               B_Name   => To_Why_Id (E),
-                               B_Type   => Why_Type,
+                               B_Name   => To_Why_Id (E, Typ => Why_Type),
                                others   => <>));
 
       Close_Theory (File,

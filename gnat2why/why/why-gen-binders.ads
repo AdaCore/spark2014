@@ -47,7 +47,6 @@ package Why.Gen.Binders is
       Ada_Node : Node_Id := Empty;
       B_Name   : W_Identifier_Id;
       B_Ent    : Entity_Name;
-      B_Type   : W_Type_Id;
       Mutable  : Boolean := False;
    end record;
    --  This record represents a variable binding B_Name of type B_Type. In some

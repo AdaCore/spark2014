@@ -26,6 +26,7 @@
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Sem_Eval;            use Sem_Eval;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Stand;               use Stand;
 with Uintp;               use Uintp;
@@ -154,7 +155,8 @@ package body Why.Gen.Arrays is
           (Domain    => Domain,
            Condition => Cond,
            Then_Part => Len,
-           Else_Part => New_Integer_Constant (Value => Uint_0));
+           Else_Part => New_Integer_Constant (Value => Uint_0),
+           Typ       => EW_Int_Type);
    end Build_Length_Expr;
 
    function Build_Length_Expr
@@ -362,15 +364,17 @@ package body Why.Gen.Arrays is
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
-                 +New_Named_Type (Name => New_Identifier (Name => "__t"))));
+                 New_Named_Type (Name => New_Identifier (Name => "__t"))));
       if Und_Ent = Standard_String then
          declare
-            Dummy_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "x");
             Image_Ty    : constant W_Type_Id :=
-              +New_Named_Type (Name => New_Identifier (Name => "__image"));
+              New_Named_Type (Name => New_Identifier (Name => "__image"));
+            Dummy_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "x", Typ => Image_Ty);
             Str_Typ     : constant W_Type_Id :=
-              +New_Named_Type (Name => Why3_Type_Name);
+              New_Named_Type (Name => Why3_Type_Name);
+            Dummy_Ident2 : constant W_Identifier_Id :=
+              New_Identifier (Name => "x", Typ => Str_Typ);
          begin
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
@@ -382,8 +386,7 @@ package body Why.Gen.Arrays is
                           Ada_Node => Empty,
                           Mutable  => False,
                           B_Ent    => null,
-                          B_Name   => Dummy_Ident,
-                          B_Type   => Image_Ty)),
+                          B_Name   => Dummy_Ident)),
                      Return_Type => Str_Typ));
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
@@ -395,8 +398,7 @@ package body Why.Gen.Arrays is
                           Ada_Node => Empty,
                           Mutable  => False,
                           B_Ent    => null,
-                          B_Name   => Dummy_Ident,
-                          B_Type   => Str_Typ)),
+                          B_Name   => Dummy_Ident2)),
                      Return_Type => Image_Ty));
          end;
       end if;
@@ -453,13 +455,16 @@ package body Why.Gen.Arrays is
       Elts     : constant W_Expr_Id :=
         (if Is_Constrained (Ty_Entity) then Ar
          else Array_Convert_To_Base (Ty_Entity, Domain, Ar));
+      Ret_Ty   : constant W_Type_Id :=
+        Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
    begin
       return
         New_Call
         (Ada_Node => Ada_Node,
          Name     => Name,
          Domain   => Domain,
-         Args     => (1 => Elts) & Index);
+         Args     => (1 => Elts) & Index,
+         Typ      => Ret_Ty);
    end New_Array_Access;
 
    ---------------------------

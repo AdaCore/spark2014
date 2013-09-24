@@ -360,42 +360,49 @@ package body Why.Gen.Names is
    -- New_Identifier --
    --------------------
 
-   function New_Identifier (Ada_Node : Node_Id := Empty; Name : String)
+   function New_Identifier (Ada_Node : Node_Id := Empty;
+                            Name     : String;
+                            Typ      : W_Type_Id := Why_Empty)
                             return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name);
+      return New_Identifier (Ada_Node, EW_Term, Name, Typ);
    end New_Identifier;
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name    : String;
-                            Context : String)
+                            Context : String;
+                            Typ      : W_Type_Id := Why_Empty)
                             return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name, Context);
-   end New_Identifier;
-
-   function New_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : String)
-     return W_Identifier_Id is
-   begin
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Domain => Domain,
-                             Symbol => NID (Name));
+      return New_Identifier (Ada_Node, EW_Term, Name, Context, Typ);
    end New_Identifier;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Context  : String)
+      Typ      : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
       return New_Identifier (Ada_Node => Ada_Node,
                              Domain   => Domain,
                              Symbol   => NID (Name),
-                             Context  => NID (Capitalize_First (Context)));
+                             Typ      => Typ);
+   end New_Identifier;
+
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Name     : String;
+      Context  : String;
+      Typ      : W_Type_Id := Why_Empty)
+     return W_Identifier_Id is
+   begin
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Domain   => Domain,
+                             Symbol   => NID (Name),
+                             Context  => NID (Capitalize_First (Context)),
+                             Typ      => Typ);
    end New_Identifier;
 
    function New_Identifier
@@ -414,13 +421,15 @@ package body Why.Gen.Names is
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
-      Symbol   : Name_Id)
+      Symbol   : Name_Id;
+      Typ      : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
       return New_Identifier (Ada_Node => Ada_Node,
                              Domain   => Domain,
                              Symbol   => Symbol,
-                             Context  => No_Name);
+                             Context  => No_Name,
+                             Typ      => Typ);
    end New_Identifier;
 
    ---------
@@ -440,7 +449,7 @@ package body Why.Gen.Names is
 
    New_Temp_Identifier_Counter : Natural := 0;
 
-   function New_Temp_Identifier return String is
+   function New_Temp_Identifier  return String is
       Counter_Img : constant String :=
                       Natural'Image (New_Temp_Identifier_Counter);
    begin
@@ -450,9 +459,10 @@ package body Why.Gen.Names is
         & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last);
    end New_Temp_Identifier;
 
-   function New_Temp_Identifier return W_Identifier_Id is
+   function New_Temp_Identifier (Typ : W_Type_Id := Why_Empty)
+                                 return W_Identifier_Id is
    begin
-      return New_Identifier (Name => New_Temp_Identifier);
+      return New_Identifier (Name => New_Temp_Identifier, Typ => Typ);
    end New_Temp_Identifier;
 
    --------------------------
@@ -619,13 +629,15 @@ package body Why.Gen.Names is
 
    function Prefix (S        : String;
                     W        : Why_Name_Enum;
-                    Ada_Node : Node_Id := Empty) return W_Identifier_Id
+                    Ada_Node : Node_Id := Empty;
+                    Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
    begin
       return New_Identifier
         (Context => S,
          Name    => To_String (W),
-         Ada_Node => Ada_Node);
+         Ada_Node => Ada_Node,
+         Typ      => Typ);
    end Prefix;
 
    function Prefix (P        : String;
