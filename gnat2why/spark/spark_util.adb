@@ -897,6 +897,16 @@ package body SPARK_Util is
       return Entity_In_External_Axioms (Typ);
    end Is_External_Axioms_Discriminant;
 
+   ----------------------
+   -- Is_Others_Choice --
+   ----------------------
+
+   function Is_Others_Choice (Choices : List_Id) return Boolean is
+   begin
+      return List_Length (Choices) = 1
+        and then Nkind (First (Choices)) = N_Others_Choice;
+   end Is_Others_Choice;
+
    ---------------------
    -- Is_Partial_View --
    ---------------------

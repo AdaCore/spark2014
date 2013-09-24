@@ -211,9 +211,6 @@ package body Why.Gen.Records is
       --  special case where the N_Discrete_Choice is actually an
       --  N_Others_Choice
 
-      function Is_Others_Choice (N : Node_Id) return Boolean;
-      --  Check whether the N_Variant is actually an N_Others_Choice
-
       procedure Declare_Conversion_Functions;
       --  Generate conversion functions from this type to the root type, and
       --  back.
@@ -284,7 +281,8 @@ package body Why.Gen.Records is
                     To   => EW_Int_Type,
                     From => EW_Abstract (Etype (Ada_Discr)));
                New_Cond : constant W_Pred_Id :=
-                 (if Is_Others_Choice (Info.Parent_Variant) then
+                 (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
+                  then
                   Compute_Others_Choice (Info, Discr)
                   else
                   +Transform_Discrete_Choices
@@ -313,7 +311,7 @@ package body Why.Gen.Records is
          Cond     : W_Pred_Id := True_Pred;
       begin
          while Present (Var) loop
-            if not Is_Others_Choice (Var) then
+            if not Is_Others_Choice (Discrete_Choices (Var)) then
                Cond :=
                  +New_And_Then_Expr
                    (Domain => EW_Pred,
@@ -737,18 +735,6 @@ package body Why.Gen.Records is
             Mark_Component_List (Components, Empty, Empty);
          end if;
       end Init_Component_Info;
-
-      ----------------------
-      -- Is_Others_Choice --
-      ----------------------
-
-      function Is_Others_Choice (N : Node_Id) return Boolean
-      is
-         Choices : constant List_Id := Discrete_Choices (N);
-      begin
-         return List_Length (Choices) = 1 and then
-                 Nkind (First (Choices)) = N_Others_Choice;
-      end Is_Others_Choice;
 
       --------------------------------
       -- Transform_Discrete_Choices --

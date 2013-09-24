@@ -401,6 +401,10 @@ package body Gnat2Why.Nodes is
             raise Program_Error;
       end case;
 
+      --  Reach through a non-private type in order to query its kind
+
+      Check_Type := Most_Underlying_Type (Check_Type);
+
       --  If the parent expression is an array access, this is an index check
 
       if Nkind (Par) = N_Indexed_Component then

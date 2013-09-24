@@ -266,4 +266,7 @@ package SPARK_Util is
    --  of type From to an expression of type To. Currently a very coarse
    --  approximation to rule out obvious cases.
 
+   function Is_Others_Choice (Choices : List_Id) return Boolean;
+   --  Returns True if Choices is the singleton list with an "others" element
+
 end SPARK_Util;

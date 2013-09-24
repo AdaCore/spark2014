@@ -111,8 +111,8 @@ package body Why.Gen.Expr is
       Expr_Type : Entity_Id;
       Domain    : EW_Domain;
       Term      : W_Expr_Id;
-      To        : W_Base_Type_Id;
-      From      : W_Base_Type_Id) return W_Expr_Id
+      To        : W_Type_Id;
+      From      : W_Type_Id) return W_Expr_Id
    is
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
@@ -203,11 +203,11 @@ package body Why.Gen.Expr is
             Range_Check_Node : constant Node_Id :=
               (if Domain = EW_Prog and Check_Needed then
                  (if Do_Range_Check (Expr) then
-                       Expr
-                  elsif Nkind (Expr) = N_Type_Conversion
-                  and then Do_Overflow_Check (Expr)
+                    Expr
+                  elsif Nkind (Parent (Expr)) = N_Type_Conversion
+                    and then Do_Overflow_Check (Parent (Expr))
                   then
-                     Expression (Expr)
+                    Expr
                   else Empty)
                else Empty);
 

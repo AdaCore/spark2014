@@ -166,8 +166,8 @@ package Why.Gen.Expr is
       Expr_Type : Entity_Id;
       Domain    : EW_Domain;
       Term      : W_Expr_Id;
-      To        : W_Base_Type_Id;
-      From      : W_Base_Type_Id) return W_Expr_Id;
+      To        : W_Type_Id;
+      From      : W_Type_Id) return W_Expr_Id;
 
    function Insert_Simple_Conversion
      (Ada_Node : Node_Id := Empty;

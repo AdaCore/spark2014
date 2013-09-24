@@ -2191,18 +2191,22 @@ package body Gnat2Why.Expr is
          is
             Expr : Node_Id;
          begin
+            --  Fill together the arrays Index_Values and Index_Types
+
+            if Nkind (Expr_Or_Association) = N_Component_Association
+              and then not Is_Others_Choice (Choices (Expr_Or_Association))
+            then
+               Index_Values.Append (Expr_Or_Association);
+               Index_Types.Append (Etype (Index));
+            end if;
+
+            --  Fill together the arrays Values and Types
+
             if Nkind (Expr_Or_Association) = N_Component_Association
               and then Box_Present (Expr_Or_Association)
             then
                null;
             else
-               --  Fill together the arrays Index_Values and Index_Types
-
-               Index_Values.Append (Expr_Or_Association);
-               Index_Types.Append (Etype (Index));
-
-               --  Fill together the arrays Values and Types
-
                Expr :=
                  (if Nkind (Expr_Or_Association) =
                     N_Component_Association
@@ -4425,29 +4429,35 @@ package body Gnat2Why.Expr is
          when N_Qualified_Expression |
               N_Type_Conversion      =>
 
-            --  When converting to a flating-point or fixed-point type, a
-            --  rounding operation should be applied on the intermediate
-            --  real value. This is ensured by requiring that the converted
-            --  expression is translated into a value of the type of the
-            --  conversion Current_Type.
+            --  When converting between discrete types, only require that the
+            --  converted expression is translated into a value of the expected
+            --  type. Necessary checks and conversions will be introduced at
+            --  the end of Transform_Expr below.
 
-            if Ekind (Expr_Type) in Real_Kind then
-               T := Transform_Expr (Expression (Expr),
-                                    Current_Type,
-                                    Domain,
-                                    Local_Params);
-
-            --  In other cases, only require that the converted expression
-            --  is translated into a value of the expected type. Necessary
-            --  checks and conversions will be introduced at the end of
-            --  Transform_Expr below.
-
-            else
+            if Domain /= EW_Prog and Ekind (Expr_Type) in Discrete_Kind then
                T := Transform_Expr (Expression (Expr),
                                     Expected_Type,
                                     Domain,
                                     Local_Params);
                Current_Type := Expected_Type;
+
+            --  In other cases, require that the converted expression
+            --  is translated into a value of the type of the conversion
+            --  Current_Type.
+
+            --  When converting to a flating-point or fixed-point type,
+            --  this ensures that a rounding operation can be applied on
+            --  the intermediate real value.
+
+            --  When converting to a discriminant record or an array, this
+            --  ensures that the proper target type can be retrieved from
+            --  the current node, to call the right checking function.
+
+            else
+               T := Transform_Expr (Expression (Expr),
+                                    Current_Type,
+                                    Domain,
+                                    Local_Params);
             end if;
 
          when N_Unchecked_Type_Conversion =>
