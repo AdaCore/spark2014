@@ -635,7 +635,7 @@ package body Why.Gen.Names is
          when WNE_Float_Abs        => return "fp_abs";
          when WNE_Float32_Div      => return "div_single";
          when WNE_Float64_Div      => return "div_double";
-         when WNE_Float_Exp        => return "TBD_exp_TBD";
+         when WNE_Float_Exp        => return "fp_pown";
          when WNE_Float_Min        => return "fp_min";
          when WNE_Float_Max        => return "fp_max";
          when WNE_Float_Floor      => return "floor";
