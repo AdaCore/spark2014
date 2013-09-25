@@ -8,7 +8,7 @@
 1. In |SPARK| the elaboration of a package shall only update, directly or
    indirectly, variables declared immediately within the package.
 
-.. _etu-packages:
+.. _emu-packages:
 
 Package Specifications and Declarations
 ---------------------------------------
@@ -1776,6 +1776,113 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 
 .. _etu-refined_global_aspects-vr:
 
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    package Refined_Global_Examples 
+    with Abstract_State => (S1, S2),
+	 Initializes =>(S1, V1)
+    is
+       V1 : Integer := 0;  -- Visible state variables
+
+       procedure P1_1 (I : in Integer)
+	 with Global => (In_Out => S1);
+
+       procedure P1_2 (I : in Integer)
+	 with Global => (In_Out => S1);
+
+       procedure P1_3 (Result : out Integer)
+	 with Global => (Input => S1);
+
+       procedure P1_4 (I : in Integer)
+	 with Global => (Output => S1);
+
+       procedure P2
+	 with Global => (Input  => V1,
+			 In_Out => S2);
+
+       procedure P3 (J : in Integer)
+	 with Global => (Output => V1);
+
+       procedure P4
+	 with Global => (Input => (S1, V1),
+			 In_Out => S2);
+    end Refined_Global_Examples;
+
+    package body Refined_Global_Examples 
+    with Refined_State => (S1 => (A, B),
+			   S2 => (X, Y, Z))
+    is
+       A : Integer := 1;  -- The constituents of S1
+       B : Integer := 2;  -- Initialized as promised
+
+       X, Y, Z : Integer; -- The constituents of S2
+			  -- Not initialized
+
+       procedure P1_1 (I : in Integer)
+	 with Refined_Global => 
+	   (In_Out => A,  -- Refined onto constituents of S1
+	    Output => B)  -- B is Output but A is In_Out and so
+       is                 --  Global S1 is also In_Out
+       begin
+	  B := A;
+	  A := I;
+       end P1_1;      
+
+       procedure P1_2 (I : in Integer)
+	 with Refined_Global => 
+	   (Output => A)     -- Not all of the constituents of S1 are updated      
+       is                    -- and so the Global S1 must In_Out 
+       begin
+	  A := I;
+       end P1_2;      
+
+       procedure P1_3 (Result : out Integer)
+	 with Refined_Global => 
+	   (Input => B)      -- Not all of the constituents of S1 are read but none
+       is                    -- of them are updated so the Global S1 is Input
+       begin
+	 Result := B;
+       end P1_3;        
+
+       procedure P1_4 (I : in Integer)
+	 with Refined_Global => 
+     with Refined_Global =>
+	   (Output => (A, B))-- The constituents of S1 are not read but they are all
+       is                    -- updated and so the mode selector of S1 is Output
+       begin
+	  A := I;
+	  B := A;
+       end P1_4; 
+
+       procedure P2
+	 with Refined_Global => 
+	   (Input  => V1,    -- V1 has no constituents and not subject to refinement
+	    Output => Z)     -- Only the constituent Z of S2 is updated and so the
+       is                    -- the mode selector of the Global S2 is In_Out
+       begin
+	 Z := V1;
+       end P2;
+
+       procedure P3 (J : in Integer)
+       is                    -- No Refined_Global aspect here because V1 has no
+       begin                 -- refinement.
+	 V1 := J;
+       end P3;        
+
+       procedure P4
+	 with Refined_Global => 
+	   (Input => (A, V1),-- The refinment of both S1 and S2 are visible 
+	    Output => (X, Y))-- and cannot be denoted here.  Their constituents
+       is                    -- must be used instead.
+       begin
+	 X := V1;
+	 Y := A;         
+       end P4;                   
+
+    end Refined_Global_Examples;
+
 .. _refined-depends-aspect:
 
 Refined_Depends Aspects
@@ -1955,6 +2062,128 @@ as it is used purely for static analysis purposes and is not executed.
 9. The verification rules given for :ref:`depends-aspects` also apply.
 
 .. _etu-refined_depends_aspects-vr:
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    package Refined_Depends_Examples
+    with Abstract_State => (S1, S2),
+	 Initializes =>(S1, V1)
+    is
+       V1 : Integer := 0;  -- Visible state variables
+
+       procedure P1_1 (I : in Integer)
+	 with Global  => (In_Out => S1),
+	      Depends => (S1 =>+ I);
+
+       procedure P1_2 (I : in Integer)
+	 with Global  => (In_Out => S1),
+	      Depends => (S1 =>+ I);
+
+       procedure P1_3 (Result : out Integer)
+	 with Global  => (Input => S1),
+	      Depends => (Result => S1);
+
+       procedure P1_4 (I : in Integer)
+	 with Global  => (Output => S1),
+	      Depends => (S1 => I);
+
+       procedure P2
+	 with Global  => (Input  => V1,
+			  In_Out => S2),
+	      Depends => (S2 =>+ V1);
+
+       procedure P3 (J : in Integer)
+	 with Global  => (Output => V1),
+	      Depends => (V1 => J);
+
+       procedure P4
+	 with Global  => (Input => (S1, V1),
+			 In_Out => S2),
+	      Depends => (S2 =>+ (S1, V1));
+    end Refined_Depends_Examples;
+
+    package body Refined_Depends_Examples
+    with Refined_State => (S1 => (A, B),
+			   S2 => (X, Y, Z))
+    is
+       A : Integer := 1;  -- The constituents of S1
+       B : Integer := 2;  -- Initialized as promised
+
+       X, Y, Z : Integer; -- The constituents of S2
+			  -- Not initialized
+
+       procedure P1_1 (I : in Integer)
+	 with Refined_Global  => (In_Out => A,
+				  Output => B),
+	      Refined_Depends => 
+		(A => I,  -- A and B are the constituents of S1 both are outputs
+		 B => A)  -- A is dependent on I but A is also an input and B 
+       is                 -- depends on A.  Hence the Depends => (S1 =>+ I)
+       begin
+	  B := A;
+	  A := I;
+       end P1_1;
+
+       procedure P1_2 (I : in Integer)
+	 with Refined_Global  => (Output => A),   
+	      Refined_Depends => 
+		 (A => I) -- One but not all of the constituents of S1 is updated
+       is                 -- hence the Depends =>  (S1 =>+ I)
+       begin
+	  A := I;
+       end P1_2;
+
+       procedure P1_3 (Result : out Integer)
+	 with Refined_Global  => (Input => B),
+	      Refined_Depends => 
+		 (Result => B) -- Not all of the constituents of S1 are read but
+       is                      -- none of them are updated, hence
+       begin                   --  Depends => (Result => S1) 
+	 Result := B;
+       end P1_3;
+
+       procedure P1_4 (I : in Integer)
+	 with Refined_Global  => (Output => (A, B)),
+	      Refined_Depends =>
+		((A, B) => I)  -- The constituents of S1 are not inputs but all of
+       is                      -- the constituents of S1 are updated, hence,
+       begin                   -- Depends => (S1 => I)
+	  A := B;
+	  B := A;
+       end P1_4;
+
+       procedure P2
+	 with Refined_Global  => (Input  => V1,
+				  Output => Z),     
+	      Refined_Depends =>
+		(Z => V1)      -- Only the constituent Z of S2 is an output but the
+       is                      -- other constituents of S2 are preserved, hence,
+       begin                   -- Depends => (S2 =>+ V1);
+	 Z := V1;
+       end P2;
+
+       procedure P3 (J : in Integer)
+       is                      -- No Refined_Depends aspect here because V1 has no
+       begin                   -- refinement.
+	 V1 := J;
+       end P3;
+
+       procedure P4
+	 with Refined_Global  => (Input => (A, V1),
+				  Output => (X, Y)),
+	      Refined_Depends => 
+		(X => V1,      -- Only the constituents X and Y of S2 are updated  
+		 Y => A)       -- Z is not updated and so S2 must have a self-
+       is                      -- dependency. The constituent A of S1 is read
+       begin                   -- and none of the constituents of S1 are updated,
+	 X := V1;              -- hence, Depends => (S2 =>+ (S1, V1))
+	 Y := A;
+       end P4;
+
+    end Refined_Depends_Examples;
+
 
 .. _package_hierarchy:
 
@@ -2532,6 +2761,175 @@ be a Boolean ``expression``.
 
 .. _etu-refined_postcondition_aspects-vr:
 
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    -- This example shows the two ways in which the Refined_Post aspect is useful.
+    -- (1) To write a postcondition in terms of the full view of a private type.
+    -- (2) To write a postcondition in terms of the constituents of a state abstraction.
+    -- In either case a postcondition may be strengthened by the Refined_Post
+    -- aspect by adding further constraints.
+    -- The combination of these two types of usage in a single package is not 
+    -- necessarily common but is used here for brevity of the example.
+    package Stacks with
+      Abstract_State => The_Stack,   -- State abstraction used for usage (2).
+      Initializes => The_Stack
+    is
+       type Stack_Type is private;   -- Abstract type used for usage (1).
+
+    ----------------------------- Usage (1) ---------------------------------------- 
+       function Is_Empty (S : Stack_Type) return Boolean;
+       -- Default postcondition is True.
+
+       function Is_Full (S : Stack_Type) return Boolean;
+       -- Default postcondition is True.
+
+       procedure Push (S : in out Stack_Type; I : in Integer) with
+	 Pre  => not Is_Full (S),
+	 Post => not Is_Empty (S);
+
+       procedure Pop (S : in out Stack_Type) with
+	 Post => not Is_Full (S);
+
+       function Top (S : Stack_Type) return Integer with
+	 Pre => not Is_Empty (S);
+
+    ----------------------------- Usage (2) ----------------------------------------
+       function Is_Empty return Boolean with
+	 Global => The_Stack;
+       -- Default postcondition is True.
+
+       function Is_Full return Boolean with
+	 Global => The_Stack;
+       -- Default postcondition is True.
+
+       procedure Push (I : Integer) with
+	 Global => (In_Out => The_Stack),
+	 Pre    => not Is_Full,
+	 Post   => not Is_Empty;
+
+       procedure Pop with
+	 Global => (In_Out => The_Stack),
+	 Post   => not Is_Full;
+
+       function Top return Integer with
+	 Global => The_Stack,
+	 Pre    => not Is_Empty;
+       -- Default postcondition is True.
+    private
+       -- Full type declaration of private type for usage (1).
+       Stack_Size : constant := 100;
+
+       type Pointer_Type is range 0 .. Stack_Size;
+       subtype Stack_Index is Pointer_Type range 1 .. Pointer_Type'Last;
+       type Stack_Array is array (Stack_Index) of Integer;
+
+       -- All stack objects have default initialization.
+       type Stack_Type is record
+	  Pointer : Pointer_Type := 0;
+	  Vector  : Stack_Array := (others => 0);
+       end record;
+    end Stacks;
+
+    package body Stacks with
+      Refined_State => (The_Stack => (A_Pointer, A_Vector))
+    is
+       -- Constituents of state abstraction The_Stack for usage (2)
+       -- We promised to initialize The_Stack
+       A_Pointer : Pointer_Type := 0;
+       A_Vector  : Stack_Array := (others => 0);
+
+
+    ----------------------------- Usage (1) ---------------------------------------- 
+       function Is_Empty (S : Stack_Type) return Boolean is (S.Pointer = 0);
+       -- Default Refined_Post => Is_Empty'Result = S.Pointer = 0
+       -- refines the postcondition of True in terms of the full view of Stack_Type.
+
+       function Is_Full (S : Stack_Type) return Boolean is (S.Pointer = Stack_Size);
+       -- Default Refined_Post => Is_Full'Result = S.Pointer = Stack_Size
+       -- refines the postcondition of True in terms of the full view of Stack_Type.
+
+       procedure Push (S : in out Stack_Type; I : in Integer) with
+	 Refined_Post => S.Pointer = S.Pointer'Old + 1 and
+			 S.Vector = S.Vector'Old'Update (Pointer => I)
+	 -- Refined_Post in terms of full view of Stack_Type and a further
+	 -- constraint added specifying what is required by the implementation.
+       is
+       begin
+	  S.Pointer := S.Pointer + 1; 
+	  S.Vector (S.Pointer) := I;
+       end Push;
+
+       procedure Pop (S : in out Stack_Type) with
+	 Refined_Post => S.Pointer = S.Pointer'Old - 1
+	 -- Refined_Post in terms of full view of Stack_Type and also
+	 -- specifies what is required by the implementation.
+       is
+       begin
+	  if S.Pointer > 0 then      
+	     S.Pointer := S.Pointer - 1;
+	  end if;         
+       end Pop;         
+
+       function Top (S : Stack_Type) return Integer is  (S.Vector (S.Pointer));
+       -- Default Refined_Post => Top'Result = S.Vector (S.Pointer (S.Pointer))
+       -- refines the postcondition of True in terms of the full view of Stack_Type.
+
+    ----------------------------- Usage (2) ----------------------------------------
+
+       -- Is_Empty could have been written as a expression function as was done
+       -- for Is_Empty (S : Stack_Type) but is presented here as a subproram body 
+       -- to contrast the two approaches
+       function Is_Empty return Boolean with
+	 Refined_Global => A_Pointer,
+	 Refined_Post   => Is_Empty'Result = (A_Pointer = 0)
+	 -- Refines the postcondition of True in terms of the constituent A_Pointer.
+       is
+       begin
+	  return A_Pointer = 0;
+       end Is_Empty;
+
+       -- Could be written as an expression function
+       function Is_Full return Boolean with
+	 Refined_Global => A_Pointer,
+	 Refined_Post   => Is_Full'Result = (A_Pointer = Stack_Size)
+	 -- Refines the postcondition of True in terms of the constituent A_Pointer.
+       is
+       begin
+	  return A_Pointer = Stack_Size;
+       end Is_Full;               
+
+       procedure Push (I : Integer) with
+	 Refined_Global => (In_Out => (A_Pointer, A_Vector)),
+	 Refined_Post   => A_Pointer = A_Pointer'Old + 1 and
+			   A_Vector = A_Vector'Old'Update (A_Pointer => I)
+	 -- Refined_Post in terms of constituents A_Pointer and A_Vector and a further
+	 -- constraint added specifying what is required by the implementation.   
+       is     
+       begin
+	  A_Pointer := A_Pointer + 1;
+	  A_Vector (A_Pointer) := I;
+       end Push;
+
+       procedure Pop with
+	 Refined_Global => (In_Out => A_Pointer),
+	 Refined_Post   => A_Pointer = A_Pointer'Old - 1
+	 -- Refined_Post in terms of constituents A_Pointer and also
+	 -- specifies what is required by the implementation.  
+       is
+       begin
+	  A_Pointer := A_Pointer - 1;
+       end Pop;
+
+       function Top return Integer is (A_Vector (A_Pointer)) with
+	 Refined_Global => (A_Pointer, A_Vector);
+       -- Default Refined_Post => Top'Result = A_Vector (S.Pointer)
+       -- refines the postcondition of True in terms of the constituents
+       -- A_Pointer and A_Vector.
+
+    end Stacks;
+
 .. todo:: refined contract_cases.
           To be completed in a post-Release 1 version of this document.
 
@@ -2711,7 +3109,7 @@ abstraction on to external states which are given in this section.
                                          Part_Of  => Externals.Displays)
    is
       procedure Display (Text: in String)
-         with Global  => State,
+         with Global => (Output => State),
               Depends => (State => Text);
    end Externals.Main_Display;
 
@@ -2720,10 +3118,9 @@ abstraction on to external states which are given in this section.
                                          Part_Of  => Externals.Displays)
    is
       procedure Display (Text: in String)
-         with Global  => State,
+         with Global => (Output => State),
               Depends => (State => Text);
    end Externals.Secondary_Display;
-
 
    with System.Storage_Elements,
         Externals.Temperature,
@@ -2748,23 +3145,24 @@ abstraction on to external states which are given in this section.
                           -- non-volatile constituents.
    is
       procedure Read (Combined_Value : out Integer)
-         with Refined_Global  => (Temperature.State, Temperature.State),
-              Refined_Depends => (Combined_Value =>
-                                     (Temperature.State, Pressure.State)
+         with Refined_Global  => (Temperature.State, Pressure.State),
+              Refined_Depends => (Combined_Value => 
+                                     (Temperature.State, Pressure.State))
       is
         Temp,
         Press : Integer;
+        K : constant := 1234;
       begin
         Temperature.Read (Temp);
         Pressure.Read (Press);
-        Combined_Value := Some_Function_Of (Temp, Pressure);
+        Combined_Value := Press + Temp * K;-- Some_Function_Of (Temp, Pressure);
       end Read;
 
       procedure Display (D_Main, D_Secondary : in String)
-         with Global  => (Output => (Main_Display.State,
-                                     Secondary.State)),
-              Depends => ((Main_Display.State,
-                           Secondary_Display.State) => (D_Main, D_Secondary))
+         with Refined_Global  => (Output => (Main_Display.State,
+                                     Secondary_Display.State)),
+              Refined_Depends => ((Main_Display.State, 
+                                   Secondary_Display.State) => (D_Main, D_Secondary))
       is
       begin
         Main_Display.Display (D_Main);
@@ -2825,7 +3223,7 @@ abstraction on to external states which are given in this section.
          end if;
       end Output_Value;
 
-      ...
+   -- ...
 
    end Externals;
 
@@ -2864,8 +3262,8 @@ abstraction on to external states which are given in this section.
       procedure Skip_To (Pattern : in Byte_T; Found : out Boolean)
          with Global  => (Input  => FIFO_Status,
                           In_Out => Serial_In),
-              Depends => (Found,
-                          Serial_In => (FIFO_Status, Pattern, Serial_In));
+              Depends => ((Found,
+                           Serial_In) => (FIFO_Status, Pattern, Serial_In));
 
       -- This procedure reads the status of the input and output FIFOs.
       procedure Get_FIFO_Status (A_Byte : out Byte_T)
@@ -3019,7 +3417,7 @@ abstraction on to external states which are given in this section.
       is
          Watch_Dog_OK : Boolean;
       begin
-         Watch_Dog_OK := Wdog_Shared_Memory;_
+         Watch_Dog_OK := Wdog_Shared_Memory;
          if Watch_Dog_OK then
             -- Retrigger the watch dog timer
             Wdog_shared_memory := True;
@@ -3032,8 +3430,8 @@ abstraction on to external states which are given in this section.
 
    end HAL;
 
-
    with HAL;
+   use type HAL.Byte_T;
    procedure Main
       with Global  => (Input  => HAL.FIFO_Status,
                        In_Out => (HAL.Serial_In, HAL.Wdog_State),
@@ -3078,7 +3476,6 @@ abstraction on to external states which are given in this section.
       end if;
 
    end Main;
-
 
 Private Types and Private Extensions
 ------------------------------------
