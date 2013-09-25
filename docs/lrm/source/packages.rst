@@ -3689,7 +3689,7 @@ global variables discussed later in this section.
 
    .. code-block:: ada
 
-    package Pkg is
+    package body Pkg is
        ...
        procedure P;
        procedure Q;
@@ -3703,21 +3703,23 @@ global variables discussed later in this section.
    even though the call to Q precedes the body of Q. The early call region
    for either P or Q begins immediately after the declaration of X.
    Note that because the call to P is executable during elaboration, so
-   is the call to Q.
+   is the call to Q.]
 
-   [TBD:
-   it would be possible to relax this rule by defining
-   a less-restrictive notion of preelaborability which allows, for example,
+   
+.. todo:: It would be possible to relax this rule by defining
+          a less-restrictive notion of preelaborability which allows, for example,
 
-    .. code-block:: ada
+          .. code-block:: ada
 
-     type Rec is record F1, F2 : Integer; end record;
-     X : constant Rec := (123, 456);  -- not preelaborable
+             type Rec is record F1, F2 : Integer; end record;
+             X : constant Rec := (123, 456);  -- not preelaborable
 
-   while still disallowing the things that need to be disallowed and
-   then defining the above rules in terms of this new notion instead of
-   preelaborability. The only disadvantage of this is the added complexity
-   of defining this new notion.]
+          while still disallowing the things that need to be disallowed and
+          then defining the above rules in terms of this new notion instead of
+          preelaborability. The only disadvantage of this is the added complexity
+          of defining this new notion.
+
+          To be considered post release 1.
 
 .. _tu-elaboration_issues-05:
 
@@ -3730,7 +3732,9 @@ global variables discussed later in this section.
 .. _tu-elaboration_issues-06:
 
 6. If an instance of a generic occurs in the same compilation_unit as the
-   body of the generic, the body must precede the instance. [If this rule
+   body of the generic, the body must precede the instance. 
+
+   [If this rule
    were only needed in order to avoid elaboration check failures, a similar
    rule to the rule for calls could be defined. This stricter rule is used
    in order to avoid having to cope with use-before-definition, as in
@@ -3787,7 +3791,7 @@ global variables discussed later in this section.
 
 .. _tu-elaboration_issues-09:
 
-9. For purposes of defining the early call region, the spec and body of a
+9. For purposes of defining the early call region, the specification and body of a
    library unit package which has an Elaborate_Body pragma are treated as if
    they both belonged to some enclosing declaration list with the body
    immediately following the specification. This means that the early call
@@ -3800,40 +3804,170 @@ global variables discussed later in this section.
 10. For the inter-compilation_unit case, |SPARK| enforces the following static
     elaboration order rule:
 
-    * If a unit has elaboration code that can directly or indirectly
-      make a call to a subprogram in a with'd unit, or instantiate a
-      generic package in a with'd unit, then if the with'd unit does
-      not have pragma Pure or Preelaborate, then the client should
-      have a pragma Elaborate_All for the with'd unit. For generic
-      subprogram instantiations, the rule can be relaxed to require
-      only a pragma Elaborate. [This rule is the same as the GNAT
-      static elaboration order rule as given in the GNAT Pro User's
-      Guide.]
+    a. If a unit has elaboration code that can directly or indirectly
+       make a call to a subprogram in a with'd unit, or instantiate a
+       generic package in a with'd unit, then if the with'd unit does
+       not have pragma Pure or Preelaborate, then the client should
+       have a pragma Elaborate_All for the with'd unit. For generic
+       subprogram instantiations, the rule can be relaxed to require
+       only a pragma Elaborate. [This rule is the same as the GNAT
+       static elaboration order rule as given in the GNAT Pro User's
+       Guide.]
 
-    * For each call that is executable during elaboration for a given
-      library unit package spec or body, there are two cases: it is
-      (statically) a call to a subprogram whose body is in the current
-      compilation_unit, or it is not. In the latter case, we require
-      an Elaborate_All pragma as described above (the pragma must be
-      given explicitly; it is not supplied implicitly).
-
-    [Corner case notes:
-    These rules correctly prohibit the following example:
-
-   .. code-block:: ada
-
-     package P is
-        function F return Boolean;
-        Flag : Boolean := F; -- would fail elab check
-     end;]
+    b. For each call that is executable during elaboration for a given
+       library unit package spec or body, there are two cases: it is
+       (statically) a call to a subprogram whose body is in the
+       current compilation_unit, or it is not. In the latter case, we
+       require an Elaborate_All pragma as described above (the pragma
+       must be given explicitly; it is not supplied implicitly).
 
 .. _tu-elaboration_issues-11:
 
 11. For an instantiation of a generic which does not occur in the same
     compilation unit as the generic body, the rules are as described
-    in the GNAT RM passage quoted above.
+    in the GNAT Pro User's Guide passage quoted above.
 
 .. _etu-elaboration_issues-lr:
+
+[These rules correctly prohibit the following example:
+
+.. code-block:: ada
+
+   package P is
+      function F return Boolean;
+      Flag : Boolean := F; -- would fail elaboration checks
+   end; --]
+
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    function Times_2 (X : Integer) return Integer
+    is
+    begin
+       return 2 * X;
+    end Times_2;
+
+    with Times_2;
+    package Intra_Unit_Elaboration_Order_Examples 
+    with Initializes => (X, Y)
+    is
+       pragma Elaborate_Body;        -- Ensures body of package is elaborated
+				     -- immediately after its declaration
+       procedure P (I : in out Integer); -- P and hence Q are executable during 
+       procedure Q (J : in out Integer); -- elaboration as P is called in the package body
+
+       X : Integer := Times_2 (10);  -- Not preelaborable
+				     -- The early call region begins here
+				     -- and extends into the package body because
+				     -- of the Elaborate_Body pragma.
+
+       Y : Integer;
+
+       procedure R (Z : in out Integer)
+	 with Post => Z = G (Z'Old); -- The call to G is allowed here as it is in
+				     -- the early call region
+
+       procedure S (A : in out Integer)
+         with Global => Y;           -- Global Y needs to be initialized.
+   
+
+       function F (I : Integer) return Integer;
+       function G (J : Integer) return Integer is (2 * F (J));
+				     -- The call to F is allowed here as it is in
+				     -- early call region.   
+    end Intra_Unit_Elaboration_Order_Examples;
+
+    package body Intra_Unit_Elaboration_Order_Examples is
+
+       function F (I : Integer) return Integer is (I + 1);
+       -- The early call region for F ends here as the body has been
+       -- declared. It can now be called using normal visibility rules.
+
+       procedure P (I : in out Integer)
+       is
+       begin
+	  if I > 10 then
+	     Q (I);  -- Q is still in the eartly call region and so this call is allowed 
+	  end if;
+       end P;
+       -- The early call region for P ends here as the body has been
+       -- declared. It can now be called using normal visibility rules.
+
+       procedure Q (J : in out Integer)
+       is
+       begin
+	  if J > 20 then
+	     J := J - 10;
+	     P (J);  -- P can be called as its body is declared.
+	  end if;
+       end Q;
+       -- The early call region for Q ends here as the body has been
+       -- declared. It can now be called using normal visibility rules.
+
+       procedure R (Z : in out Integer)
+       is 
+       begin
+	  Z := G (Z);  -- The expression function G has been declared and so can be called
+       end R;
+
+      procedure S (A : in out Integer)
+      is
+      begin
+        A := A + Y;  -- Reference to Y is ok because it is in the early call region
+                     -- and the Elaborate_Body pragma ensures it is initialized
+                     -- before it is used.
+      end S;
+
+    begin
+       Y := 42;
+       P (X);   -- Call to P and hence Q during the elaboration of the package.
+    end Intra_Unit_Elaboration_Order_Examples;
+
+    package Inter_1 is
+       function F (I : Integer) return Integer;
+    end Inter_1;
+
+    package body Inter_1 is
+       function F (I : Integer) return Integer is (I);
+    end Inter_1;
+
+    package Inter_2 is
+       function G (I : Integer) return Integer;
+    end Inter_2;
+
+    package body Inter_2 is
+       function G (I : Integer) return Integer is (I);
+    end Inter_2;
+
+    with Inter_1;
+    pragma Elaborate_All (Inter_1);    -- Ensure the body of the called function F
+				       -- has been elaborated.
+    package Inter_Unit_Elaboration_Examples is
+       X : Integer := Inter_1.F (10);  -- The call to F is ok because its body is 
+				       -- sure to have been elaborated. 
+       Y : Integer;
+
+       procedure P (I : in out Integer); -- P is declared so that the package 
+                                         -- requires a body for this example.
+
+    end Inter_Unit_Elaboration_Examples;
+
+    with Inter_2;
+    pragma Elaborate_All (Inter_2);  -- Ensure body of called function G has
+				     -- been elaborated.
+    package body Inter_Unit_Elaboration_Examples is
+
+      procedure P (I : in out Integer) is
+       begin
+	  I := 2 * I;
+       end P;
+
+    begin
+       Y := Inter_2.G (20);          -- Call to G is ok because the body of
+				     -- G is sure to have been elaborated.
+    end Inter_Unit_Elaboration_Examples;
+    
 
 Use of Initial_Condition and Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
