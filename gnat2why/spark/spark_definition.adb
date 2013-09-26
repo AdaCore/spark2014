@@ -205,9 +205,14 @@ package body SPARK_Definition is
       --  If SPARK_Mode is On, raise an error
 
       if SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_F (Msg & " is not in SPARK", N);
+         Error_Msg_F (Msg & " is not allowed in SPARK", N);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-         Error_Msg_F ("\\ violation of SPARK_Mode #", N);
+
+         if From_Aspect_Specification (Current_SPARK_Pragma) then
+            Error_Msg_F ("\\ violation of aspect SPARK_Mode #", N);
+         else
+            Error_Msg_F ("\\ violation of pragma SPARK_Mode #", N);
+         end if;
       end if;
    end Mark_Violation;
 
@@ -224,9 +229,14 @@ package body SPARK_Definition is
       --  If SPARK_Mode is On, raise an error
 
       if SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_FE (Msg & " & is not in SPARK", N, From);
+         Error_Msg_FE (Msg & " & is not allowed in SPARK", N, From);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-         Error_Msg_F ("\\ violation of SPARK_Mode #", N);
+
+         if From_Aspect_Specification (Current_SPARK_Pragma) then
+            Error_Msg_F ("\\ violation of aspect SPARK_Mode #", N);
+         else
+            Error_Msg_F ("\\ violation of pragma SPARK_Mode #", N);
+         end if;
       end if;
    end Mark_Violation;
 
