@@ -843,7 +843,7 @@ package body Why.Gen.Expr is
       else
          declare
             S : constant String :=
-              (if Ty = Standard_Boolean then "Boolean"
+              (if Is_Standard_Boolean_Type (Ty) then "Boolean"
                else Full_Name (Ty));
          begin
             return +Prefix (Ada_Node => Ty,
@@ -1302,7 +1302,7 @@ package body Why.Gen.Expr is
                                E      : Entity_Id) return W_Expr_Id
    is
    begin
-      if E = Standard_Boolean then
+      if Is_Standard_Boolean_Type (E) then
          return New_Literal (Domain => Domain, Value => EW_True);
       else
          return +New_Identifier (Ada_Node => E,
