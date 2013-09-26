@@ -148,10 +148,11 @@ package Why.Gen.Expr is
    --  VC reason
 
    function Cur_Subp_Sloc return W_Identifier_Id;
-   --  Return a label that identifies the current subprogram
+   --  Return a label that identifies the current subprogram or package
 
    function Cur_Subp_Name_Label return W_Identifier_Id;
-   --  Return a label that contains the name of the current subprogram.
+   --  Return a label that contains the name of the current subprogram or
+   --  package.
 
    function New_Range_Expr
      (Domain    : EW_Domain;

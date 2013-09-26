@@ -32,7 +32,6 @@ with Sem_Eval;              use Sem_Eval;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
-with Stand;                 use Stand;
 with Uintp;                 use Uintp;
 
 with SPARK_Util;            use SPARK_Util;

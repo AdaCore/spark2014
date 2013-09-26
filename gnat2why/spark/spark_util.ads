@@ -92,6 +92,13 @@ package SPARK_Util is
                        N_Generic_Package_Declaration);
    --  Return the declaration node for a package entity E
 
+   function Get_Package_Body (E : Entity_Id) return Node_Id with
+     Pre  => Ekind_In (E, E_Package, E_Generic_Package),
+     Post => (if Present (Get_Package_Body'Result) then
+                Nkind (Get_Package_Body'Result) = N_Package_Body);
+   --  Return the declaration node for the body of a package entity E, if there
+   --  is one.
+
    function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id;
    --  Return the pragma Contract_Cases for E, if any
 

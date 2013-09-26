@@ -537,6 +537,28 @@ package body SPARK_Util is
    end Get_Global_Items;
 
    ----------------------
+   -- Get_Package_Body --
+   ----------------------
+
+   function Get_Package_Body (E : Entity_Id) return Node_Id is
+      N : Node_Id;
+   begin
+      N := Get_Package_Decl (E);
+
+      if Present (Corresponding_Body (N)) then
+         N := Parent (Corresponding_Body (N));
+
+         if Nkind (N) = N_Defining_Program_Unit_Name then
+            N := Parent (N);
+         end if;
+      else
+         N := Empty;
+      end if;
+
+      return N;
+   end Get_Package_Body;
+
+   ----------------------
    -- Get_Package_Decl --
    ----------------------
 

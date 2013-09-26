@@ -858,6 +858,116 @@ package body Gnat2Why.Subprograms is
       end if;
    end Compute_Spec;
 
+   ------------------------------------------
+   -- Generate_VCs_For_Package_Elaboration --
+   ------------------------------------------
+
+   procedure Generate_VCs_For_Package_Elaboration
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Name       : constant String  := Full_Name (E);
+      Spec_N     : constant Node_Id := Get_Package_Spec (E);
+      Body_N     : constant Node_Id := Get_Package_Body (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations (Spec_N);
+      Priv_Decls : constant List_Id := Private_Declarations (Spec_N);
+      Init_Cond  : constant Node_Id :=
+        Get_Pragma (E, Pragma_Initial_Condition);
+      Params     : Transformation_Params;
+
+      Why_Body   : W_Prog_Id := New_Void;
+      Post       : W_Pred_Id;
+
+   begin
+      --  We open a new theory, so that the context is fresh for that package
+
+      Open_Theory (File, Name & "__def",
+                   Comment =>
+                     "Module for checking absence of run-time errors and "
+                       & "package initial condition on package elaboration of "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Current_Subp := E;
+
+      Params := (File        => File.File,
+                 Theory      => File.Cur_Theory,
+                 Phase       => Generate_VCs_For_Body,
+                 Gen_Image   => False,
+                 Ref_Allowed => True);
+
+      --  Translate initial condition of E
+
+      if Present (Init_Cond) then
+         declare
+            Expr : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Init_Cond)));
+         begin
+            --  Generate postcondition for generated subprogram, that
+            --  corresponds to the initial condition of the package.
+
+            Params.Phase := Generate_Contract_For_Body;
+            Post := +Transform_Expr (Expr, EW_Bool_Type, EW_Pred, Params);
+            Post :=
+              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
+
+            --  Generate program to check the absence of run-time errors in the
+            --  initial condition.
+
+            Params.Phase := Generate_VCs_For_Post;
+            Why_Body :=
+              +Transform_Expr (Expr, EW_Bool_Type, EW_Prog, Params);
+         end;
+
+      --  No initial condition, so no postcondition for the generated
+      --  subprogram.
+
+      else
+         Post := True_Pred;
+      end if;
+
+      --  Translate declarations and statements in the package body, if there
+      --  is one.
+
+      if Present (Body_N) then
+         if Present (Handled_Statement_Sequence (Body_N)) then
+            Why_Body :=
+              Sequence
+                (Transform_Statements_And_Declarations
+                   (Statements (Handled_Statement_Sequence (Body_N))),
+                 Why_Body);
+         end if;
+
+         Why_Body :=
+           Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+      end if;
+
+      --  Translate public and private declarations of the package
+
+      if Present (Priv_Decls) then
+         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+      end if;
+
+      if Present (Vis_Decls) then
+         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+      end if;
+
+      Emit (File.Cur_Theory,
+        New_Function_Def
+          (Domain  => EW_Prog,
+           Name    => To_Ident (WNE_Def),
+           Binders => (1 => Unit_Param),
+           Labels  =>
+             (1 => Cur_Subp_Sloc,
+              2 => Cur_Subp_Name_Label),
+           Post    => Post,
+           Def     => +Why_Body));
+
+      Close_Theory (File, Filter_Entity => Empty);
+   end Generate_VCs_For_Package_Elaboration;
+
    --------------------------------------
    -- Generate_VCs_For_Subprogram_Body --
    --------------------------------------

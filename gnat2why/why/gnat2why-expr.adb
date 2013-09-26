@@ -3629,8 +3629,12 @@ package body Gnat2Why.Expr is
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
             declare
                Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
-               Base : constant Entity_Id := Get_Base_Type (Decl);
+               Base : Entity_Id := Get_Base_Type (Decl);
             begin
+               if Present (Base) then
+                  Base := Most_Underlying_Type (Base);
+               end if;
+
                case Ekind (Ent) is
                   when Scalar_Kind =>
                      R := Assume_Of_Scalar_Subtype
@@ -3685,7 +3689,7 @@ package body Gnat2Why.Expr is
                         end if;
                      end;
 
-                  when Record_Kind =>
+                  when E_Record_Type | E_Record_Subtype =>
                      declare
                         Comp : Node_Id := First_Component (Ent);
                         Typ  : Node_Id;
@@ -3716,9 +3720,12 @@ package body Gnat2Why.Expr is
                         end loop;
                      end;
 
+                  when Private_Kind =>
+                     null;
+
                   when others =>
                      Ada.Text_IO.Put_Line
-                       ("[Transform_Declarations_Block] ekind ="
+                       ("[Transform_Declaration] ekind ="
                         & Entity_Kind'Image (Ekind (Ent)));
                      raise Not_Implemented;
                end case;
