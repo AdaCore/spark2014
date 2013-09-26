@@ -176,4 +176,3 @@ units.adb:29:38: overflow check not proved
 units.adb:29:48: info: division check proved
 units.adb:29:48: overflow check not proved
 units.ads:51:20: info: precondition proved
-An error occurred when calling the prover.
