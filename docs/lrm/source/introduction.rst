@@ -514,21 +514,15 @@ Some are expanded in subsequent sections within this chapter.
   support the development, analysis and verification of programs which are only
   partly in |SPARK|, with other parts in another language, for instance, C.
   |SPARK| specific aspects manually specified at unit level will form the
-  boundary interface between the |SPARK| and other parts of the program. *No
-  further detail is given in the current draft of this document on mixing SPARK
-  2014 code with non-Ada code.*
-
-  .. todo::
-     Complete detail on mixing |SPARK| with non-Ada code.
-     To be completed in the Milestone 4 version of this document.
+  boundary interface between the |SPARK| and other parts of the program.
 
 - |SPARK| shall support entities which do not affect the functionality of
   a program but may be used in the test and verification of a program.
   See section :ref:`ghost_entities`.
 
-- |SPARK| shall provide counterparts of all language features and analysis
-  modes provided in SPARK 83/95/2005, unless it has been identified that customers
-  do not find them useful.
+- |SPARK| shall provide counterparts of all language features and
+  analysis modes provided in SPARK 83/95/2005, unless it has been
+  identified that customers do not find them useful.
 
 - Enhanced support for specifying and verifying properties of secure systems
   shall be provided (over what is available in SPARK 2005). [The features to
@@ -539,21 +533,25 @@ Some are expanded in subsequent sections within this chapter.
   might be volatile variables, typically either an input or an output.
   See section :ref:`volatile` for further details.
 
-- The language shall offer an unambiguous semantics. In Ada terminology, this
-  means that all erroneous and unspecified behavior shall be eliminated either
-  by direct exclusion or by adding rules which indirectly guarantee that some
-  implementation-dependent choice, other than the fundamental data types and
-  constants, cannot effect the externally-visible behavior of the program. For
-  example, Ada does not specify the order in which actual parameters are
-  evaluated as part of a subprogram call. As a result of the SPARK rules which
-  prevent the evaluation of an expression from having side effects, two
-  implementations might choose different parameter evaluation orders for a given
-  call but this difference won't have any observable effect. [This means
-  implementation-defined and partially-specified features may be outside of
-  |SPARK| by definition, though their use could be allowed and a warning or
-  error generated for the user. See section :ref:`in_out` for further details.]
-  *Note that the current draft of this document does not necessarily define all
-  restrictions necessary to guarantee an unambiguous semantics.*
+- The language shall offer an unambiguous semantics. In Ada
+  terminology, this means that all erroneous and unspecified behavior
+  shall be eliminated either by direct exclusion or by adding rules
+  which indirectly guarantee that some implementation-dependent
+  choice, other than the fundamental data types and constants, cannot
+  effect the externally-visible behavior of the program. For example,
+  Ada does not specify the order in which actual parameters are
+  evaluated as part of a subprogram call. As a result of the SPARK
+  rules which prevent the evaluation of an expression from having side
+  effects, two implementations might choose different parameter
+  evaluation orders for a given call but this difference won't have
+  any observable effect. [This means implementation-defined and
+  partially-specified features may be outside of |SPARK| by
+  definition, though their use could be allowed and a warning or error
+  generated for the user. See section :ref:`in_out` for further
+  details.] Where the possibility of ambiguity still exists it is
+  noted, namely the reading of an invalid value from an external
+  source and the use of Unchecked_Conversion, otherwise There are no
+  known ambiguities in the language presented in this document.
 
 - |SPARK| shall support provision of "formal analysis" as defined by DO-333,
   which states "an analysis method can only be regarded as formal analysis if
@@ -562,18 +560,18 @@ Some are expanded in subsequent sections within this chapter.
   unambiguous semantics is required to achieve this and additionally any other
   language feature that for which sound analysis is difficult or impractical
   will be eliminated or its use constrained to meet this goal. See section
-  :ref:`main_restricts` for further details. *Note that the current draft of
-  this document does not necessarily define all restrictions necessary to
-  guarantee soundness.*
+  :ref:`main_restricts` for further details.
 
 .. todo::
    Ensure that all strategic requirements have been implemented.
-   To be completed in the Milestone 4 version of this document.
+   I think a strategic requirement of AdaCore 
+   To be completed in a post-Release 1 version of this document.
 
-.. todo::
-   Where Ada 2012 language features are designated as not in SPARK 2014 in subsequent
-   chapters of this document, add tracing back to the strategic requirement that
-   motivates that designation. To be completed in the Milestone 4 version of this document.
+.. todo:: Where Ada 2012 language features are designated as not in
+     SPARK 2014 in subsequent chapters of this document, add tracing
+     back to the strategic requirement that motivates that
+     designation. To be completed in a post-Release 1 version of this
+     document.
 
 .. _explain_sprs:
 
