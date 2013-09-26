@@ -1308,7 +1308,7 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Identifier_Id;
-      Def      : W_Value_Id;
+      Def      : W_Expr_Id;
       Context  : W_Expr_Id)
       return W_Expr_Id is
    begin

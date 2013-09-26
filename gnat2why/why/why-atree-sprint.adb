@@ -476,11 +476,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Relation_Id)
    is
-      Left   : constant W_Value_Id := Get_Left (Node);
+      Left   : constant W_Expr_Id := Get_Left (Node);
       Op     : constant EW_Relation := Get_Op (Node);
-      Right  : constant W_Value_Id := Get_Right (Node);
+      Right  : constant W_Expr_Id := Get_Right (Node);
       Op2    : constant EW_Relation := Get_Op2 (Node);
-      Right2 : constant W_Value_OId := Get_Right2 (Node);
+      Right2 : constant W_Expr_OId := Get_Right2 (Node);
    begin
       P (O, "( ");
       Traverse (State, +Left);
@@ -825,7 +825,7 @@ package body Why.Atree.Sprint is
       Node  : W_Binding_Id)
    is
       Name             : constant W_Identifier_Id := Get_Name (Node);
-      Def              : constant W_Value_Id := Get_Def (Node);
+      Def              : constant W_Expr_Id := Get_Def (Node);
       Context          : constant W_Expr_Id := Get_Context (Node);
       Binding_Sequence : constant Boolean := Get_Kind (+Context) = W_Binding;
    begin

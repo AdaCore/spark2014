@@ -1476,7 +1476,7 @@ package body Gnat2Why.Expr is
                declare
                   Prefix_Type : constant Entity_Id :=
                     Expected_Type_Of_Prefix (Prefix (N));
-                  Prefix_Expr : constant W_Value_Id :=
+                  Prefix_Expr : constant W_Expr_Id :=
                     +Transform_Expr (Domain        => EW_Prog,
                                      Expr          => Prefix (N),
                                      Expected_Type =>
@@ -1651,7 +1651,7 @@ package body Gnat2Why.Expr is
             declare
                Prefix_Name : constant W_Identifier_Id := New_Temp_Identifier;
                Value_Name  : constant W_Identifier_Id := New_Temp_Identifier;
-               Prefix_Expr : constant W_Value_Id :=
+               Prefix_Expr : constant W_Expr_Id :=
                                +Transform_Expr
                                  (Prefix (N),
                                   EW_Term,
@@ -2136,7 +2136,7 @@ package body Gnat2Why.Expr is
            +New_Typed_Binding
              (Name   => Aggr_Temp,
               Domain => EW_Pred,
-              Def    => W_Value_Id (Call),
+              Def    => Call,
               Context =>
                 +Transform_Array_Component_Associations
                   (Expr   => Expr,
@@ -3291,50 +3291,23 @@ package body Gnat2Why.Expr is
                         T := New_Attribute_Expr
                           (Nth_Index_Type (Entity (Var), Dim),
                            Attr_Id);
-                     elsif Is_Constrained (Ty_Ent) then
-                        if Attr_Id = Attribute_Length then
-                           declare
-                              Ind_Ty : constant Entity_Id :=
-                                Nth_Index_Type (Ty_Ent, Dim);
-                           begin
-                              T :=
-                                Build_Length_Expr
-                                  (Domain => Domain,
-                                   First  =>
-                                     New_Attribute_Expr
-                                       (Ind_Ty, Attribute_First),
-                                   Last   =>
-                                     New_Attribute_Expr
-                                       (Ind_Ty, Attribute_Last));
-                           end;
-                        else
-                           T :=
-                             New_Attribute_Expr
-                               (Nth_Index_Type (Ty_Ent, Dim), Attr_Id);
-                        end if;
-                        if Domain = EW_Prog then
-                           T :=
-                             +Sequence
-                               (New_Ignore
-                                  (Prog =>
-                                       +Transform_Expr (Var, Domain, Params)),
-                                +T);
-                        end if;
+
+                     --  Object'First
+
                      else
-                        T :=
-                          New_Call
-                            (Domain => Domain,
-                             Name   =>
-                               Prefix
-                                 (Ada_Node => Ty_Ent,
-                                  P        => Full_Name (Ty_Ent),
-                                  N        =>
-                                    Append_Num
-                                      (To_String (Attr_To_Why_Name (Attr_Id)),
-                                       Dim)),
-                             Args   =>
-                               (1 => Transform_Expr (Var, Domain, Params)),
-                             Typ    => EW_Int_Type);
+                        declare
+                           Why_Expr : constant W_Expr_Id :=
+                             Transform_Expr (Var, Domain, Params);
+                        begin
+                           T :=
+                             Get_Array_Attr
+                               (Domain, Why_Expr, Ty_Ent, Attr_Id,
+                                Positive (UI_To_Int (Dim)));
+                           if Domain = EW_Prog then
+                              T :=
+                                +Sequence (New_Ignore (Prog => +Why_Expr), +T);
+                           end if;
+                        end;
                      end if;
 
                   when Discrete_Kind | Real_Kind =>

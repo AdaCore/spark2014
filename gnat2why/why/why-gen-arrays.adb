@@ -418,7 +418,12 @@ package body Why.Gen.Arrays is
       Ty_Name : constant String := Full_Name (Ty);
    begin
       if Is_Constrained (Ty) then
-         return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
+         if Attr in Attribute_First | Attribute_Last then
+            return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
+         else
+            return
+              Build_Length_Expr (Domain, Expr, Ty, Dim);
+         end if;
       else
          return
            New_Call
@@ -432,7 +437,8 @@ package body Why.Gen.Arrays is
                        (To_String
                           (Attr_To_Why_Name (Attr)),
                         Dim)),
-              Args   => (1 => Expr));
+              Args   => (1 => Expr),
+              Typ    => EW_Int_Type);
       end if;
    end Get_Array_Attr;
 
