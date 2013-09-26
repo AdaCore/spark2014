@@ -288,7 +288,7 @@ where
    -- This subprogram is specified using a Contract_Cases aspect.
    -- The prover will chack that the cases are disjoint and
    -- cover the domain of X.
-   procedure Incr_Threshold (X : in out Integer; Threshold : in Integer) 
+   procedure Incr_Threshold (X : in out Integer; Threshold : in Integer)
       with Contract_Cases => (X < Threshold  => X = X'Old + 1,
                               X >= Threshold => X = X'Old);
 
@@ -302,7 +302,7 @@ where
                     elsif X'Old = Threshold then X = X'Old);
 
    -- Contract_Cases can be used in conjunction with  pre and postconditions.
-   procedure Incr_Threshold_2 (X : in out Integer; Threshold : in Integer) 
+   procedure Incr_Threshold_2 (X : in out Integer; Threshold : in Integer)
       with Pre  => X in 0 .. Threshold,
            Post => X >= X'Old,
            Contract_Cases => (X < Threshold => X = X'Old + 1,
@@ -545,7 +545,8 @@ is used purely for static analysis purposes and is not executed.
            abstraction is not visible, the referencing of one or more
            of its constituents by a subprogram may be represented by a
            ``global_item`` that denotes the state abstraction in the
-           ``global_specification`` of the subprogram.
+           ``global_specification`` of the subprogram. Covered by
+           another TU.
 
 .. _tu-global_aspects-16:
 
@@ -574,7 +575,7 @@ is used purely for static analysis purposes and is not executed.
         .. ifconfig:: Display_Trace_Units
 
           :Trace Unit: FA 6.1.4 VR Output may only be updated other than
-             the use of a discriminant or a property related to a property 
+             the use of a discriminant or a property related to a property
              of the object such as A'First, A'Last or A'Length.  It does
              not allow the use of attributes which are dependent on the value
              of the object such as X'Old or X'Update.
@@ -1160,7 +1161,7 @@ subprograms.
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 6.1.6 SS Any entity declared inside a ghost entity, is also
-                   defined to be Ghost.
+                   defined to be Ghost. Covered by another TU.
 
 .. _tu-ghost_functions-03:
 
@@ -1170,7 +1171,8 @@ subprograms.
    .. ifconfig:: Display_Trace_Units
 
       :Trace Unit: FE 6.1.6 SS The Link_Name aspect of an imported ghost entity
-                   cannot be resolved in the external environment.
+                   cannot be resolved in the external environment. Covered by
+                   another TU.
 
 .. _etu-ghost_functions-ss:
 
@@ -1425,7 +1427,7 @@ remaining components of the composite object with their value preserved.
 
 This means that if a formal parameter of a subprogram is a composite
 type and only individual components, but not all, are updated, then
-the mode of the formal parameter should be **in out**.  
+the mode of the formal parameter should be **in out**.
 
 In general, it is not possible to statically determine whether all
 elements of an array have been updated by a subprogram if individual
@@ -1493,18 +1495,18 @@ it.
     procedure Param_1 (X : out String)
     is
     begin
-       if X'Length > 0 and X'First = 1 then 
-	  X (1) := '?'; 
+       if X'Length > 0 and X'First = 1 then
+	  X (1) := '?';
        end if;
     end Param_1;
-    
+
     -- In SPARK the parameter mode should be in out meaning that the
     -- entire array is initialized before the call to the subprogram.
     procedure Param_1 (X : in out String)
     is
     begin
-       if X'Length > 0 and X'First = 1 then 
-	  X (1) := '?'; 
+       if X'Length > 0 and X'First = 1 then
+	  X (1) := '?';
        end if;
     end Param_1;
 
@@ -1657,24 +1659,24 @@ No extra dynamic semantics are associated with anti-aliasing.
        is
        begin
 	 I := I + Local_1;
-       end With_In_Global;      
+       end With_In_Global;
 
        procedure With_In_Out_Global (I : in Integer)
 	 with Global => (In_Out => Local_1)
        is
        begin
 	 Local_1 := I + Local_1;
-       end With_In_Out_Global;      
+       end With_In_Out_Global;
 
        procedure With_Composite_In_Out_Global (I : in Integer)
 	 with Global => (In_Out => Rec_1)
        is
        begin
 	 Rec_1.X := I + Rec_1.X;
-       end With_Composite_In_Out_Global;      
+       end With_Composite_In_Out_Global;
 
     begin
-       -- This is ok because parameters are by copy and there 
+       -- This is ok because parameters are by copy and there
        -- is only one out parameter
        One_In_One_Out (Local_1, Local_1);
 
@@ -1774,5 +1776,5 @@ Expression Functions
 
    function Expr_Func_1 (X : Natural; Y : Natural) return Natural is (X + Y)
      with Pre => X <= Natural'Last - Y;
-   
+
 
