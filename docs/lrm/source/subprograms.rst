@@ -55,17 +55,12 @@ a subprogram.
 
 .. centered:: **Legality Rules**
 
-.. _tu-subprogram_declarations-05:
+.. _tu-fe-subprogram_declarations-05:
 
 5. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
    a ``subprogram_body`` for a function for which no explicit declaration
    is given.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE PR 6.1 LR Functions shall not have a parameter_specification
-                   of out or in out.
 
 .. _etu-subprogram_declarations:
 
@@ -74,7 +69,7 @@ Preconditions and Postconditions
 
 .. centered:: **Legality Rules**
 
-.. _tu-preconditions_and_postconditions-01:
+.. _tu-nt-preconditions_and_postconditions-01:
 
 1. As indicated by the ``aspect_specification`` being part of a
    ``subprogram_declaration`` or ``subprogram_body``, a subprogram is
@@ -85,7 +80,7 @@ Preconditions and Postconditions
 
 .. centered:: **Static Semantics**
 
-.. _tu-preconditions_and_postconditions-02:
+.. _tu-nt-preconditions_and_postconditions-02:
 
 2. For an ``expression_function_declaration``, F, without an explicit
    Postcondition, the expression, E, implementing the function acts as
@@ -108,7 +103,7 @@ In order to extend Ada's support for specification of subprogram contracts
 
 .. centered:: **Legality Rules**
 
-.. _tu-subprogram_contracts-01:
+.. _tu-nt-subprogram_contracts-01:
 
 1. The Global, Depends and Contract_Cases aspects may be
    specified for a subprogram with an ``aspect_specification``. More
@@ -197,49 +192,34 @@ where
 
 .. centered:: **Legality Rules**
 
-.. _tu-contract_cases-01:
+.. _tu-fe-contract_cases-01:
 
 1. A Contract_Cases aspect may have at most one **others**
    ``contract_case`` and if it exists it must be the last one in the
    ``contract_case_list``.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.3 LR if an others contract case exists, it must
-                   be the last one in the list
-
-.. _tu-contract_cases-02:
+.. _tu-fe-contract_cases-02:
 
 2. A ``consequence`` expression is considered to be a postcondition
    expression for purposes of determining the legality of Old or
    Result ``attribute_references``.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.3 LR Attributes Old and Result can only
-                   appear in the consequence part of a contract_case
-
 .. _etu-contract_cases-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-contract_cases-03:
+.. _tu-fe-contract_cases-03:
 
 3. A Contract_Cases aspect is an assertion (as defined in RM
    11.4.2(1.1/3)); its assertion expressions are as described
    below. Contract_Cases may be specified as an
    ``assertion_aspect_mark`` in an Assertion_Policy pragma.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.3 SS Contract_Cases may be
-                   specified in an Assertion_Policy pragma
-
 .. _etu-contract_cases-ss:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-contract_cases-04:
+.. _tu-fe-contract_cases-04:
 
 4. Upon a call of a subprogram which is subject to an enabled
    Contract_Cases aspect, Contract_Cases checks are
@@ -266,17 +246,6 @@ where
      is performed that the evaluation of the selected ``consequence``
      evaluates to True; Assertions.Assertion_Error is raised if this
      check fails.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.3 DS If more than one contract_cases are
-                   True then Assertions.Assertion_Error is raised.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.3 DS If the consequence corresponding to
-                   the True contract_case does not evaluate to True
-                   then Assertions.Assertion_Error is raised.
 
 .. _etu-contract_cases-ds:
 
@@ -333,6 +302,8 @@ follow the grammar of ``global_specification``
 
 .. centered:: **Syntax**
 
+.. _tu-fe-global_aspects-syntax:
+
 ::
 
    global_specification        ::= (moded_global_list {, moded_global_list})
@@ -345,22 +316,16 @@ follow the grammar of ``global_specification``
    global_item                 ::= name
    null_global_specification   ::= null
 
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: FE 6.1.4 Syntax
+.. _etu-global_aspects-syntax:
 
 .. centered:: **Static Semantics**
 
-.. _tu-global_aspects-01:
+.. _tu-fa-global_aspects-01:
 
 1. A ``global_specification`` that is a ``global_list`` is shorthand for a
    ``moded_global_list`` with the ``mode_selector`` Input.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 SS an unmoded global_list is shorthand for Input
-
-.. _tu-global_aspects-02:
+.. _tu-cbatu-global_aspects-02:
 
 2. A ``global_item`` is *referenced* by a subprogram if:
 
@@ -373,114 +338,65 @@ follow the grammar of ``global_specification``
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.4 SS global_item is referenced by subprogram when it
-                   denotes an input/output, its entry value is used in an
-                   assertion expresson or it is used by another subprogram
-                   that is called by this subprogram. Covered by another TU
-
-.. _tu-global_aspects-03:
+.. _tu-fa-global_aspects-03:
 
 3. A ``null_global_specification`` indicates that the subprogram does not
    reference any ``global_item`` directly or indirectly.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 SS no global_item referenced when
-                   null_global_specification
 
 .. _etu-global_aspects-ss:
 
 .. centered:: **Name Resolution Rules**
 
-.. _tu-global_aspects-04:
+.. _tu-fe-global_aspects-04:
 
 4. A ``global_item`` shall denote an entire object or a state abstraction.
    [This is a name resolution rule because a ``global_item`` can unambiguously
    denote a state abstraction even if a function having the same fully qualified
    name is also present].
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 NRR global_item shall denote entire object or a state abstraction
-
 .. _etu-global_aspects-nr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-global_aspects-05:
+.. _tu-fe-global_aspects-05:
 
 5. The Global aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR Global aspect must be on subprogram's
-                   initial declaration
-
-.. _tu-global_aspects-06:
+.. _tu-fe-global_aspects-06:
 
 6. A ``global_item`` occurring in a Global aspect specification of a subprogram
    shall not denote a formal parameter of the subprogram.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR A ``global_item`` occurring in a Global
-          aspect specification of a subprogram shall not denote a
-          formal parameter of the subprogram.
-
-.. _tu-global_aspects-07:
+.. _tu-fe-global_aspects-07:
 
 7. A ``global_item`` shall not denote a constant object other than
    a formal parameter [of an enclosing subprogram] of mode **in**.
    [This restriction may be relaxed in some way at some point in the future.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR global_item shall only denote a constant if it is
-                   a formal parameter of an enclosing subprogram of mode in
-
-.. _tu-global_aspects-08:
+.. _tu-fe-global_aspects-08:
 
 8. A ``global_item`` shall not denote a state abstraction whose
    refinement is visible. [A state abstraction cannot be named within
-   its enclosing package's body other than in its refinement.  Its
+   its enclosing package's body other than in its refinement. Its
    constituents must be used rather than the state abstraction.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR global_item shall not denote state abstraction
-                   with visible refinement
-
-.. _tu-global_aspects-09:
+.. _tu-fe-global_aspects-09:
 
 9. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR each mode_selector shall occur at most once
-
-.. _tu-global_aspects-10:
+.. _tu-fe-global_aspects-10:
 
 10. A function subprogram shall not have a ``mode_selector`` of
     Output or In_Out in its Global aspect.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR functions cannot have Output or In_Out as mode_selector
-
-.. _tu-global_aspects-11:
+.. _tu-fe-global_aspects-11:
 
 11. The ``global_items`` in a single Global aspect specification shall denote
     distinct entities.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR global_items shall denote distinct entities
-
-.. _tu-global_aspects-12:
+.. _tu-fe-global_aspects-12:
 
 12. If a subprogram is nested within another and if the
     ``global_specification`` of the outer subprogram has an entity
@@ -489,12 +405,6 @@ follow the grammar of ``global_specification``
     then a ``global_item`` of the ``global_specification`` of the
     inner subprogram shall not denote the same entity with a
     ``mode_selector`` of In_Out or Output.
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.4 LR nested subprograms cannot have mode_specification
-                   of In_Out or Output if enclosing subprogram's mode_specification
-                   is Input
 
 .. _etu-global_aspects-lr:
 
@@ -505,31 +415,20 @@ is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-global_aspects-13:
+.. _tu-fa-global_aspects-13:
 
 13. For a subprogram that has a ``global_specification``, an object or
     state abstraction that is declared outside the scope of the
     subprogram, shall only be referenced within its implementation if
     it is a ``global_item`` in the ``global_specification``.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 LR if Global aspect does not mention an
-                   object or state abstraction, it cannot appear
-                   within the subprogram
-
-.. _tu-global_aspects-14:
+.. _tu-fa-global_aspects-14:
 
 14. A ``global_item`` shall occur in a Global aspect of a subprogram
     if and only if it denotes an entity that is referenced by the
     subprogram.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 VR global_item shall occur only if entity referenced
-                   is denoted by the subprogram
-
-.. _tu-global_aspects-15:
+.. _tu-cbatu-global_aspects-15:
 
 15. Where the refinement of a state abstraction is not visible (see
     :ref:`state_refinement`) and a subprogram references one or more
@@ -539,16 +438,7 @@ is used purely for static analysis purposes and is not executed.
     encapsulating a constituent is known from the Part_Of indicator on
     the declaration of the constituent.]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 LR Where the refinement of a state
-           abstraction is not visible, the referencing of one or more
-           of its constituents by a subprogram may be represented by a
-           ``global_item`` that denotes the state abstraction in the
-           ``global_specification`` of the subprogram. Covered by
-           another TU.
-
-.. _tu-global_aspects-16:
+.. _tu-fa-global_aspects-16:
 
 16. Each entity denoted by a ``global_item`` in a
     ``global_specification`` of a subprogram that is an input or
@@ -559,10 +449,6 @@ is used purely for static analysis purposes and is not executed.
     * a ``global_item`` that denotes an input but not an output has a
       ``mode_selector`` of Input;
 
-      .. ifconfig:: Display_Trace_Units
-
-        :Trace Unit: FA 6.1.4 VR Input must only be read.
-
     * a ``global_item`` has a ``mode_selector`` of Output if:
 
       - it denotes an output but not an input, other than the use of a
@@ -572,14 +458,6 @@ is used purely for static analysis purposes and is not executed.
         attributes that are dependent on the value of the object and
         shall not be used are X'Old and X'Update] and
 
-        .. ifconfig:: Display_Trace_Units
-
-          :Trace Unit: FA 6.1.4 VR Output may only be updated other than
-             the use of a discriminant or a property related to a property
-             of the object such as A'First, A'Last or A'Length.  It does
-             not allow the use of attributes which are dependent on the value
-             of the object such as X'Old or X'Update.
-
       - is always *fully initialized* (that is, all parts of the
         ``global_item`` are initialized) as a result of any successful
         execution of a call of the subprogram. A state abstraction
@@ -587,24 +465,10 @@ is used purely for static analysis purposes and is not executed.
         only updating one or more of its constituents [because it may
         have other constituents that are not visible];
 
-        .. ifconfig:: Display_Trace_Units
-
-          :Trace Unit: FA 6.1.4 VR Output must be fully initialized by
-              subprogram.  A state abstraction whose refinement is not
-              visible is not fully initialized by only updating one or
-              more of its constituents.
-
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
 
-      .. ifconfig:: Display_Trace_Units
-
-        :Trace Unit: FA 6.1.4 VR In_Out: The object is updated in at
-            least one execution path through the subprogram and is
-            either the object is read or there is at least one path
-            through the subprogram where the object is not updated.
-
-.. _tu-global_aspects-16.1:
+.. _tu-fa-global_aspects-16.1:
 
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
@@ -615,23 +479,12 @@ is used purely for static analysis purposes and is not executed.
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 VR Input has to only be read, Output has to be updated
-                   and In_Out has to be both read and updated
-
-.. _tu-global_aspects-17:
+.. _tu-fa-global_aspects-17:
 
 17. An entity that is denoted by a ``global_item`` which is referenced
     by a subprogram but is neither an input nor an output but is only
     referenced directly, or indirectly in assertion expressions has a
     ``mode_selector`` of Proof_In.
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.4 VR a Proof_In global_item is not referenced by a
-                   subprogram but is directly or indirectly referenced in
-                   assertion expressions
 
 .. _etu-global_aspects-vr:
 
@@ -713,6 +566,8 @@ the grammar of ``dependency_relation`` given below.
 
 .. centered:: **Syntax**
 
+.. _tu-fe-depends_aspects-syntax:
+
 ::
 
    dependency_relation    ::= null
@@ -732,13 +587,11 @@ where
 
    ``function_result`` is a function Result ``attribute_reference``.
 
-.. ifconfig:: Display_Trace_Units
-
-   :Trace Unit: FE 6.1.5 Syntax
+.. _etu-depends_aspects-syntax:
 
 .. centered:: **Name Resolution Rules**
 
-.. _tu-depends_aspects-01:
+.. _tu-fe-depends_aspects-01:
 
 1. An ``input`` or ``output`` of a ``dependency_relation`` shall denote only
    an entire object or a state abstraction. [This is a name resolution rule
@@ -746,48 +599,29 @@ where
    abstraction even if a function having the same fully qualified name is also
    present.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 NRR inputs and outputs of a dependency_relation shall denote
-                   entire objects or state abstractions
-
 .. _etu-depends_aspects-nr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-depends_aspects-02:
+.. _tu-fe-depends_aspects-02:
 
 2. The Depends aspect shall only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub).
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR Depends aspect shall be on subprogram's declaration
-
-.. _tu-depends_aspects-03:
+.. _tu-fe-depends_aspects-03:
 
 3. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
    named within its enclosing package's body other than in its refinement].
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR dependency_relation shall not denote a state
-                   abstraction with visible refinement
-
-.. _tu-depends_aspects-04:
+.. _tu-fe-depends_aspects-04:
 
 4. The *explicit input set* of a subprogram is the set of formal parameters of
    the subprogram of mode **in** and **in out** along with the entities denoted
    by ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of Input and In_Out.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR The input set consists of formal parameters of mode 'in'
-                   and 'in out' and global_items with mode_selector Input or In_Out
-
-.. _tu-depends_aspects-05:
+.. _tu-fe-depends_aspects-05:
 
 5. The *input set* of a subprogram is the explicit input set of the
    subprogram augmented with those formal parameters of mode **out** and
@@ -800,12 +634,7 @@ where
    unconstrained discriminated subtype. [Tagged types are mentioned in this rule
    in anticipation of a later version of |SPARK| will support them.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR discriminants, array bounds and tags of out formal
-                   parameters and output globals, are part of the input set
-
-.. _tu-depends_aspects-06:
+.. _tu-fe-depends_aspects-06:
 
 6. The *output set* of a subprogram is the set of formal parameters of the
    subprogram of mode **in out** and **out** along with the entities denoted by
@@ -813,130 +642,74 @@ where
    ``mode_selector`` of In_Out and Output and (for a function) the
    ``function_result``.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR The output set consists of formal parameters of mode 'out'
-                   and 'in out' and global_item with mode_selector Output or In_Out
-                   and for a function the function_result
-
-.. _tu-depends_aspects-07:
+.. _tu-fe-depends_aspects-07:
 
 7. The entity denoted by each ``input`` of a ``dependency_relation`` of a
    subprogram shall be a member of the input set of the subprogram.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR Entity denoted by input shall be member of input set
-
-.. _tu-depends_aspects-08:
+.. _tu-fe-depends_aspects-08:
 
 8. Every member of the explicit input set of a subprogram shall be denoted by
    at least one ``input`` of the ``dependency_relation`` of the subprogram.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR Every member of the input set shall be denoted by
-                   at least one input of the dependency_relation
-
-.. _tu-depends_aspects-09:
+.. _tu-fe-depends_aspects-09:
 
 9. The entity denoted by each ``output`` of a ``dependency_relation`` of a
    subprogram shall be a member of the output set of the subprogram.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR Entity denoted by output shall be member of output set
-
-.. _tu-depends_aspects-10:
+.. _tu-fe-depends_aspects-10:
 
 10. Every member of the output set of a subprogram shall be denoted by exactly
     one ``output`` in the ``dependency_relation`` of the subprogram.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR Every member of the output set shall be denoted
-                   by exactly one output of the dependency_relation
-
-.. _tu-depends_aspects-11:
+.. _tu-fa-depends_aspects-11:
 
 11. For the purposes of determining the legality of a Result
     ``attribute_reference``, a ``dependency_relation`` is considered
     to be a postcondition of the function to which the enclosing
     ``aspect_specification`` applies.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 LR 'Result on Depends aspect is checked as a
-                   postcondition of the function
-
-.. _tu-depends_aspects-12:
+.. _tu-fe-depends_aspects-12:
 
 12. In a ``dependency_relation`` there can be at most one
     ``dependency_clause`` which is a ``null_dependency_clause`` and if
     it exists it must be the last ``dependency_clause`` in the
     ``dependency_relation``.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR null_dependency_clause shall be the last
-                   dependency_clause in the dependency_relation
-
-.. _tu-depends_aspects-13:
+.. _tu-fe-depends_aspects-13:
 
 13. An entity denoted by an ``input`` which is in an ``input_list`` of
     a ``null_dependency_clause`` shall not be denoted by an ``input``
     in another ``input_list`` of the same ``dependency_relation``.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR an input of a null output_list shall not appear
-                   as an input in another input_list
-
-.. _tu-depends_aspects-14:
+.. _tu-fe-depends_aspects-14:
 
 14. The ``inputs`` in a single ``input_list`` shall denote distinct entities.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR input entities shall be distinct entities
-
-.. _tu-depends_aspects-15:
+.. _tu-fe-depends_aspects-15:
 
 15. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.5 LR null_dependency_clause shall not have input_list
-                   of null
 
 .. _etu-depends_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-depends_aspects-16:
+.. _tu-fa-depends_aspects-16:
 
 16. A ``dependency_clause`` with a "+" symbol in the syntax
     ``output_list`` =>+ ``input_list`` means that each ``output`` in
     the ``output_list`` has a *self-dependency*, that is, it is
-    dependent on itself.  [The text (A, B, C) =>+ Z is shorthand for
+    dependent on itself. [The text (A, B, C) =>+ Z is shorthand for
     (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 SS '+' introduces self dependence
-
-.. _tu-depends_aspects-17:
+.. _tu-cbatu-depends_aspects-17:
 
 17. A ``dependency_clause`` of the form A =>+ A has the same meaning
     as A => A.  [The reason for this rule is to allow the short hand:
     ((A, B) =>+ (A, C)) which is equivalent to (A => (A, C), B => (A,
     B, C)).]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 SS A =>+ A means A => A. Covered by another TU
-
-.. _tu-depends_aspects-18:
+.. _tu-fa-depends_aspects-18:
 
 18. A ``dependency_clause`` with a **null** ``input_list`` means that
     the final value of the entity denoted by each ``output`` in the
@@ -944,61 +717,34 @@ where
     the subprogram (other than itself, if the ``output_list`` =>+
     **null** self-dependency syntax is used).
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 SS dependency_clause with null input_list means that
-                   each output in the output_list does not depend on anything
-
-.. _tu-depends_aspects-19:
+.. _tu-fa-depends_aspects-19:
 
 19. The ``inputs`` in the ``input_list`` of a
     ``null_dependency_clause`` may be read by the subprogram but play
     no role in determining the values of any outputs of the
     subprogram.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 SS inputs in the input_list of a null_dependency_clause
-                   play no role in determining outputs of the subprogram
-
-.. _tu-depends_aspects-20:
+.. _tu-fa-depends_aspects-20:
 
 20. A Depends aspect of a subprogram with a **null**
     ``dependency_relation`` indicates that the subprogram has no
     ``inputs`` or ``outputs``.  [From an information flow analysis
     viewpoint it is a null operation (a no-op).]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 SS null dependency_relation means subprogram has
-                   no inputs or outputs
-
-.. _tu-depends_aspects-21:
+.. _tu-cbatu-depends_aspects-21:
 
 21. A function without an explicit Depends aspect specification has
     the default ``dependency_relation`` that its result is dependent
-    on all of its inputs.  [Generally an explicit Depends aspect is
+    on all of its inputs. [Generally an explicit Depends aspect is
     not required for a function declaration.]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.5 SS functions need no Depends aspect. Functions
-                   have implicit dependency_relation that result depends
-                   on all inputs. Covered by another TU
-
-.. _tu-depends_aspects-22:
+.. _tu-fa-depends_aspects-22:
 
 22. A procedure without an explicit Depends aspect specification has a
     default ``dependency_relation`` that each member of its output set
     is dependent on every member of its input set. [This conservative
     approximation may be improved by analyzing the body of the
     subprogram if it is present.]
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 SS a subprogram with no Depends or body
-                   has an implicit dependency_relation where each
-                   output is dependent on every input
 
 .. _etu-depends_aspects-ss:
 
@@ -1009,7 +755,7 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-depends_aspects-23:
+.. _tu-fa-depends_aspects-23:
 
 23. Each entity denoted by an ``output`` given in the Depends aspect
     of a subprogram must be an output in the implementation of the
@@ -1017,47 +763,27 @@ as it is used purely for static analysis purposes and is not executed.
     entities denoted by the ``inputs`` given in the ``input_list``
     associated with the ``output``.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 VR each output in the Depends aspect must be an
-                   output in the implementation and must depend on all its
-                   inputs and nothing else
-
-.. _tu-depends_aspects-24:
+.. _tu-fa-depends_aspects-24:
 
 24. Each output of the implementation of the subprogram body is denoted by
     an ``output`` in the Depends aspect of the subprogram.
 
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 VR all implementation's outputs must be outputs
-                   of the Depends aspect
-
-.. _tu-depends_aspects-25:
+.. _tu-fa-depends_aspects-25:
 
 25. Each input of the implementation of a subprogram body is denoted by an
     ``input`` of the Depends aspect of the subprogram.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 VR all implementation's inputs must be inputs of
-                   the Depends aspect (maybe in more than one input_list)
+.. _tu-fa-depends_aspects-26:
 
 26. If only part of an entire object or state abstraction (only some
     of its constituents) is updated then the updated entity is
     dependent on itself as the parts that are not updated have their
-    current value preserved.  [Where a constituent of a state
+    current value preserved. [Where a constituent of a state
     abstraction is updated but the refinement of the state abstraction
     is not visible, it is not known if all of the constituents have
     been updated by the subprogram and in such cases the the update is
     represented as the the update of the encapsulating state
     abstraction with a self dependency.]
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FA 6.1.5 VR If only part of an object or state
-          abstraction is updated it has a self dependency.
 
 .. _etu-depends_aspects-vr:
 
@@ -1141,55 +867,34 @@ subprograms.
 
 .. centered:: **Static Semantics**
 
-.. _tu-ghost_functions-01:
+.. _tu-cbatu-ghost_functions-01:
 
 1. |SPARK| defines the ``convention_identifier`` Ghost.
    An entity (e.g., a subprogram or an object) whose Convention aspect is
    specified to have the value Ghost is said to be a ghost entity (e.g., a ghost
    function or a ghost variable).
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: 6.1.6 SS An entity with Convention => Ghost is a ghost
-                   entity. Covered by another TU.
-
-.. _tu-ghost_functions-02:
+.. _tu-nt-ghost_functions-02:
 
 2. The Convention aspect of an entity declared inside of a ghost entity (e.g.,
    within the body of a ghost function) is defined to be Ghost.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 SS Any entity declared inside a ghost entity, is also
-                   defined to be Ghost. Covered by another TU.
-
-.. _tu-ghost_functions-03:
+.. _tu-nt-ghost_functions-03:
 
 3. The Link_Name aspect of an imported ghost entity is defined
    to be a name that cannot be resolved in the external environment.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 SS The Link_Name aspect of an imported ghost entity
-                   cannot be resolved in the external environment. Covered by
-                   another TU.
 
 .. _etu-ghost_functions-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-ghost_functions-04:
+.. _tu-fe-ghost_functions-04:
 
 4. Only functions can be explicitly declared with the Convention aspect Ghost.
    [This means that the scope of the following rules is restricted to functions,
    even though they are stated in more general terms.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR Only functions can be explicitly declared with
-                   Convention => Ghost.
-
-.. _tu-ghost_functions-05:
+.. _tu-fe-ghost_functions-05:
 
 5. A ghost entity shall only be referenced:
 
@@ -1203,59 +908,32 @@ subprograms.
      which passes a non-ghost variable as an out or in out mode actual
      parameter.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR A ghost entity shall only be referenced in
-                   an assertion expression, in another ghost entity or in
-                   a statement which does not contain (nor is itself) either
-                   an assignment statement targeting a non-ghost variable or
-                   a procedure call which passes a non-ghost variable as an
-                   out or in out actual parameter.
-
-.. _tu-ghost_functions-06:
+.. _tu-fe-ghost_functions-06:
 
 6. Within a ghost procedure, the view of any non-ghost variable is
    a constant view. Within a ghost procedure, a volatile object shall
    not be read. [In a ghost procedure we do not want to allow assignments to
    non-ghosts either via assignment statements or procedure calls.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR Within a ghost procedure, the view of any
-                   non-ghost variable is a constant view. Within a ghost
-                   procedure, a volatile object shall not be read.
-
-.. _tu-ghost_functions-07:
+.. _tu-fe-ghost_functions-07:
 
 7. A ghost entity shall not be referenced from within the expression of a
    predicate specification of a non-ghost subtype [because such predicates
    participate in determining the outcome of a membership test].
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR A ghost entity shall not be referenced from
-                   within the expression of a predicate specification of a
-                   non-ghost subtype.
-
    .. todo:: I am not sure we need the following rule. Decide after release 1.
 
-.. _tu-ghost_functions-08:
+.. _tu-nt-ghost_functions-08:
 
 8. All subcomponents of a ghost object shall be initialized by the
    elaboration of the declaration of the object.
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR All subcomponents of a ghost object shall be
-                   initialized by the elaboration of the declaration of the
-                   object.
 
    .. todo::
       Make worst-case assumptions about private types for this rule,
       or blast through privacy? To be completed in milestone 4 version
       of this document.
 
-.. _tu-ghost_functions-09:
+.. _tu-fe-ghost_functions-09:
 
 9. A ghost instantiation shall not be an instantiation of a non-ghost
    generic package. [This is a conservative rule until we have more precise
@@ -1263,24 +941,14 @@ subprograms.
    We will need the general rule that the elaboration of a ghost declaration of
    any kind cannot modify non-ghost state.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR A ghost instantiation shall not be an
-                   instantiation of a non-ghost generic package.
-
-.. _tu-ghost_functions-10:
+.. _tu-nt-ghost_functions-10:
 
 10. The Link_Name or External_Name aspects of an imported ghost entity
     shall not be specified. A Convention aspect specification for an
     entity declared inside of a ghost entity shall be confirming [(in
     other words, the specified Convention shall be Ghost)].
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR For an imported ghost entity, the Convention
-                   shall be Ghost.
-
-.. _tu-ghost_functions-11:
+.. _tu-nt-ghost_functions-11:
 
 11. Ghost tagged types are disallowed. [This is because just the
     existence of a ghost tagged type (even if it is never referenced)
@@ -1288,20 +956,11 @@ subprograms.
     not a problem because Convention participates in conformance
     checks (so ghost can't override non-ghost and vice versa).]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR Ghost tagged types are disallowed.
-
-.. _tu-ghost_functions-12:
+.. _tu-fe-ghost_functions-12:
 
 12. The Convention aspect of an External entity shall not be Ghost.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 LR The Convention aspect of an External entity
-                   shall not be Ghost.
-
-.. _tu-ghost_functions-lr:
+.. _etu-ghost_functions-lr:
 
 [We are ignoring interactions between ghostliness and freezing. Adding a ghost
 variable, for example, could change the freezing point of a non-ghost type. It
@@ -1323,7 +982,7 @@ ghosts-have-no-effect-on-program-behavior rule.]
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-ghost_functions-13:
+.. _tu-nt-ghost_functions-13:
 
 13. The effects of specifying a convention of Ghost on the runtime
     representation, calling conventions, and other such dynamic
@@ -1336,28 +995,15 @@ ghosts-have-no-effect-on-program-behavior rule.]
     in any enabled (e.g., via an Assertion_Policy pragma) assertions),
     then the Import aspect of the entity may be specified to be True.]
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 DS The effects of specifying a convention
-                   of Ghost on the runtime representation, calling
-                   conventions, and other such dynamic properties of
-                   an entity are the same as if a convention of Ada
-                   had been specified. Covered by another TU
-
 .. _etu-ghost_functions-ds:
 
 .. centered:: **Verification Rules**
 
-.. _tu-ghost_functions-14:
+.. _tu-cbatu-ghost_functions-14:
 
 14. A non-ghost output shall not depend on a ghost input.
 
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 VR A non-ghost output shall not depend on
-                   a ghost input.
-
-.. _tu-ghost_functions-15:
+.. _tu-fe-ghost_functions-15:
 
 15. A ghost entity shall not be referenced
 
@@ -1366,7 +1012,7 @@ ghosts-have-no-effect-on-program-behavior rule.]
     * within a control flow expression (e.g., the condition of an if
       statement, the selecting expression of a case statement, the
       bounds of a for loop) of a compound statement which contains
-      such a procedure call.  [The case of a non-ghost-updating
+      such a procedure call. [The case of a non-ghost-updating
       assignment statement is handled by a legality rule; this rule is
       needed to prevent a call to a procedure which updates a
       non-ghost via an up-level reference, as opposed to updating a
@@ -1375,21 +1021,9 @@ ghosts-have-no-effect-on-program-behavior rule.]
       [This rule is intended to ensure an update of a non-ghost entity
       shall not have a control flow dependency on a ghost entity.]
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 VR A ghost entity shall not be referenced within a
-                   call to a procedure which has a non-ghost output; or within
-                   a control flow expression of a compound statement which
-                   contains such a procedure call.
-
-.. _tu-ghost_functions-16:
+.. _tu-cbatu-ghost_functions-16:
 
 16. A ghost procedure shall not have a non-ghost output.
-
-    .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.1.6 VR A ghost procedure shall not have a non-ghost
-                   output.
 
 .. _etu-ghost_functions-vr:
 
@@ -1431,7 +1065,7 @@ the mode of the formal parameter should be **in out**.
 
 In general, it is not possible to statically determine whether all
 elements of an array have been updated by a subprogram if individual
-array elements are updated.  The mode of a formal parameter of an
+array elements are updated. The mode of a formal parameter of an
 array with such updates should be **in out**.
 
 [In future |SPARK| may provide a way of proving that all elements of
@@ -1441,46 +1075,28 @@ subprogram.]
 
 A formal parameter with a mode of **out** is treated as not having an
 entry value (apart from any discriminant or attributes of properties
-of the formal parameter).  Hence, a subprogram cannot read a value of
+of the formal parameter). Hence, a subprogram cannot read a value of
 a formal parameter of mode **out** until the subprogram has updated
 it.
 
 .. centered:: **Verification Rules**
 
-.. _tu-formal_parameter_modes-01:
+.. _tu-fa-formal_parameter_modes-01:
 
 1. A subprogram formal parameter of a composite type which is updated
    but not fully initialized by the subprogram shall have a mode of
    **in out**.
 
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.2 VR A subprogram formal parameter of a
-         composite type which is updated but not fully initialized by
-         the subprogram shall have a mode of **in out**.
-
-.. _tu-formal_parameter_modes-02:
+.. _tu-fa-formal_parameter_modes-02:
 
 2. A subprogram formal parameter of mode **out** shall not be read by
    the subprogram until it has been updated by the subprogram.  The
    use of a discriminant or an attribute related to a property, not
    its value, of the formal parameter is not considered to be a read
-   of the formal parameter.  [Examples of attributes that may be used
+   of the formal parameter. [Examples of attributes that may be used
    are A'First, A'Last and A'Length; examples of attributes that are
    dependent on the value of the formal parameter and shall not be
    used are X'Old and X'Update.]
-
-   .. ifconfig:: Display_Trace_Units
-
-      :Trace Unit: FE 6.2 VR A subprogram formal parameter of mode
-         **out** shall not be read by the subprogram until it has been
-         updated by the subprogram.  The use of a discriminant or an
-         attribute related to a property, not its value, of the formal
-         parameter is not considered to be a read of the formal
-         parameter.  [Examples of attributes that may be used are
-         A'First, A'Last and A'Length; examples of attributes that are
-         dependent on the value of the formal parameter and shall not
-         be used are X'Old and X'Update.]
 
 .. _etu-formal_parameter_modes:
 
