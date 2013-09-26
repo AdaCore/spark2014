@@ -1,1 +1,3 @@
-some dummy output
+pkg_a.adb:5:61: info: overflow check proved
+pkg_a.adb:10:9: precondition not proved
+pkg_a.ads:3:8: info: initial condition proved
