@@ -62,11 +62,13 @@ allowed (for example, in a Global ``aspect_specification``).
 
 2. A name denoting the abstract view of a variable shall occur only:
 
-   * as a ``global_item`` in a Global or Refined_Global aspect
-     specification; or
+   a. as a ``global_item`` in a Global or Refined_Global aspect
+      specification; or
 
-   * as an ``input`` or ``output`` in a Depends or Refined_Depends
-     aspect specification.
+   b. as an ``input`` or ``output`` in a Depends or Refined_Depends
+      aspect specification; or
+
+   c. in an ``input_list`` of an Initializes aspect.
 
 .. _etu-context_clauses_with_clauses_abstract_view-lr:
 
@@ -87,10 +89,6 @@ allowed (for example, in a Global ``aspect_specification``).
    view of the package contains an *abstract view* of the object.
 
 .. _tu-context_clauses_with_clauses_abstract_view-ss:
-
-.. todo:: Need to consider whether to allow an abstract view of a
-     name in other contexts where a name denoting a state abstraction
-     in an Initializes aspect spec.
 
 
 Subunits of Compilation Units

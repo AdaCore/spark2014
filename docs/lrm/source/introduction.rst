@@ -186,10 +186,6 @@ explanatory detail.
 In addition, examples of the use of the new features are given along with the
 language definition detail.
 
-.. todo::
-     We need to increase the number of examples given. To be completed in the Milestone 4
-     version of this document.
-
 .. _formal_analysis:
 
 Formal Analysis
