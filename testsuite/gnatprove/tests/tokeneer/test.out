@@ -1,3 +1,8 @@
+admin.adb:42:6: info: length check proved
+admin.adb:45:34: info: length check proved
+admin.adb:49:34: info: length check proved
+admin.adb:53:33: info: length check proved
+admin.adb:57:34: info: length check proved
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
@@ -14,7 +19,34 @@ admin.ads:163:26: info: postcondition proved
 admin.ads:190:7: postcondition not proved
 admin.ads:191:7: info: precondition proved
 admin.ads:215:26: info: postcondition proved
+admin.ads:245:29: info: length check proved
+admin.ads:246:58: info: length check proved
+admin.ads:250:58: info: length check proved
+admin.ads:254:58: info: length check proved
 alarm.ads:82:7: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
+auditlog.adb:80:32: info: length check proved
+auditlog.adb:89:45: info: length check proved
+auditlog.adb:94:53: info: length check proved
+auditlog.adb:105:54: info: length check proved
+auditlog.adb:134:38: info: length check proved
+auditlog.adb:153:20: info: length check proved
+auditlog.adb:153:28: info: length check proved
+auditlog.adb:154:28: info: length check proved
+auditlog.adb:155:28: info: length check proved
+auditlog.adb:156:28: info: length check proved
+auditlog.adb:157:28: info: length check proved
+auditlog.adb:158:28: info: length check proved
+auditlog.adb:159:28: info: length check proved
+auditlog.adb:160:28: info: length check proved
+auditlog.adb:161:28: info: length check proved
+auditlog.adb:162:28: info: length check proved
+auditlog.adb:163:28: info: length check proved
+auditlog.adb:164:28: info: length check proved
+auditlog.adb:165:28: info: length check proved
+auditlog.adb:166:28: info: length check proved
+auditlog.adb:167:28: info: length check proved
+auditlog.adb:168:28: info: length check proved
+auditlog.adb:169:28: info: length check proved
 auditlog.adb:194:26: info: range check proved
 auditlog.adb:244:46: length check not proved
 auditlog.adb:246:23: range check not proved
@@ -95,13 +127,17 @@ auditlog.adb:1870:47: range check not proved
 auditlog.adb:1870:50: overflow check not proved
 auditlog.adb:1870:69: overflow check not proved
 auditlog.adb:1914:10: info: assertion proved
+audittypes.ads:94:58: info: length check proved
+audittypes.ads:107:6: info: length check proved
 bio.adb:126:10: assertion not proved, requires Result = InternalError
+certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:220:49: info: length check proved
 certificatestore.adb:223:31: range check not proved
 certificatestore.adb:224:29: range check not proved
 certificatestore.adb:224:29: length check not proved
 certificatestore.adb:225:45: length check not proved
 certificatestore.adb:353:47: info: range check proved
+certtypes.ads:39:22: info: length check proved
 clock.adb:74:11: info: range check proved
 clock.adb:78:10: assertion not proved
 clock.adb:82:12: info: index check proved
@@ -148,6 +184,29 @@ clock.adb:419:32: info: division check proved
 clock.adb:423:7: precondition not proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
+configdata.adb:90:9: info: length check proved
+configdata.adb:92:9: info: length check proved
+configdata.adb:94:9: info: length check proved
+configdata.adb:96:9: info: length check proved
+configdata.adb:98:9: info: length check proved
+configdata.adb:100:9: info: length check proved
+configdata.adb:102:9: info: length check proved
+configdata.adb:104:9: info: length check proved
+configdata.adb:106:9: info: length check proved
+configdata.adb:108:9: info: length check proved
+configdata.adb:110:9: info: length check proved
+configdata.adb:112:9: info: length check proved
+configdata.adb:114:9: info: length check proved
+configdata.adb:127:6: info: length check proved
+configdata.adb:127:47: info: length check proved
+configdata.adb:128:47: info: length check proved
+configdata.adb:129:47: info: length check proved
+configdata.adb:130:47: info: length check proved
+configdata.adb:131:47: info: length check proved
+configdata.adb:132:47: info: length check proved
+configdata.adb:145:6: info: length check proved
+configdata.adb:145:38: info: length check proved
+configdata.adb:146:38: info: length check proved
 configdata.adb:237:44: info: overflow check proved
 configdata.adb:237:44: info: range check proved
 configdata.adb:276:51: info: overflow check proved
@@ -184,6 +243,19 @@ configdata.adb:1204:68: info: division check proved
 configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: range check not proved
+display.adb:42:57: info: length check proved
+display.adb:45:43: info: length check proved
+display.adb:50:43: info: length check proved
+display.adb:53:43: info: length check proved
+display.adb:57:43: info: length check proved
+display.adb:60:43: info: length check proved
+display.adb:65:43: info: length check proved
+display.adb:69:43: info: length check proved
+display.adb:72:43: info: length check proved
+display.adb:76:43: info: length check proved
+display.adb:79:43: info: length check proved
+display.adb:84:43: info: length check proved
+display.adb:89:43: info: length check proved
 display.adb:123:51: info: length check proved
 display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
@@ -194,6 +266,7 @@ display.adb:143:11: info: range check proved
 display.adb:148:33: index check not proved
 display.adb:148:33: overflow check not proved
 display.adb:150:32: range check not proved
+display.ads:66:48: info: length check proved
 door.adb:99:10: postcondition not proved, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
 door.ads:148:8: postcondition not proved
 door.ads:215:8: postcondition not proved
@@ -281,6 +354,13 @@ enclave.ads:621:19: info: precondition proved
 enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
 enclave.ads:652:23: precondition not proved
+floppy.adb:42:33: info: length check proved
+floppy.adb:43:37: info: length check proved
+floppy.adb:44:28: info: length check proved
+floppy.adb:45:28: info: length check proved
+iandatypes.ads:49:22: info: length check proved
+iandatypes.ads:67:38: info: length check proved
+keystore.adb:57:47: info: length check proved
 keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
 keystore.adb:195:57: info: overflow check proved
@@ -300,6 +380,22 @@ latch.ads:107:7: postcondition not proved
 latch.ads:142:8: postcondition not proved, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: postcondition not proved, requires Latch_Timeout = Time
 poll.ads:132:11: postcondition not proved
+screen.adb:122:6: info: length check proved
+screen.adb:122:7: info: length check proved
+screen.adb:123:7: info: length check proved
+screen.adb:124:7: info: length check proved
+screen.adb:125:7: info: length check proved
+screen.adb:126:7: info: length check proved
+screen.adb:127:7: info: length check proved
+screen.adb:128:7: info: length check proved
+screen.adb:129:7: info: length check proved
+screen.adb:130:7: info: length check proved
+screen.adb:131:7: info: length check proved
+screen.adb:132:7: info: length check proved
+screen.adb:133:7: info: length check proved
+screen.adb:134:7: info: length check proved
+screen.adb:135:7: info: length check proved
+screen.adb:136:7: info: length check proved
 screen.adb:815:43: info: length check proved
 screen.adb:816:40: info: length check proved
 screen.adb:818:40: range check not proved
@@ -308,6 +404,11 @@ stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
 stats.adb:104:47: info: overflow check proved
+tokenreader.adb:52:37: info: length check proved
+tokenreader.adb:63:26: info: length check proved
+tokenreader.adb:68:26: info: length check proved
+tokenreader.adb:68:36: info: length check proved
+tokenreader.adb:69:36: info: length check proved
 tokenreader.adb:101:47: info: range check proved
 tokenreader.adb:127:46: info: range check proved
 tokenreader.adb:153:44: info: range check proved

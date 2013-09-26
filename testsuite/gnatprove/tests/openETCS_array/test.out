@@ -27,6 +27,7 @@ deceleration_curve.adb:96:36: overflow check not proved
 deceleration_curve.adb:96:36: range check not proved
 deceleration_curve.adb:106:9: precondition not proved
 deceleration_curve.adb:110:12: precondition not proved
+deceleration_curve.ads:27:6: info: precondition proved
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: precondition not proved
@@ -36,10 +37,14 @@ example.adb:5:20: info: overflow check proved
 example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
+sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
+sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.ads:39:6: info: postcondition proved

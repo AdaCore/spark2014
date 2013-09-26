@@ -90,3 +90,5 @@ skein.adb:948:41: overflow check not proved
 skein.adb:955:56: overflow check not proved
 skein.adb:955:56: range check not proved
 skein.adb:961:37: range check not proved
+skein.ads:266:52: length check not proved
+skein.ads:267:52: length check not proved

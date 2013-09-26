@@ -1,3 +1,4 @@
+evoting.adb:32:45: info: length check proved
 evoting.adb:52:60: length check not proved
 evoting.adb:58:52: info: range check proved
 evoting.adb:58:52: info: length check proved
@@ -22,6 +23,7 @@ evoting.adb:266:32: info: length check proved
 evoting.adb:272:7: info: precondition proved
 evoting.adb:274:7: info: precondition proved
 evoting.adb:276:7: info: precondition proved
+evoting.ads:30:45: info: length check proved
 evoting.ads:54:1: info: postcondition proved
 evoting.ads:56:40: info: index check proved
 evoting.ads:92:6: postcondition not proved

@@ -4,8 +4,11 @@ database.adb:96:04: warning: statement has no effect [ineffective]
 database.adb:99:04: warning: statement has no effect [ineffective]
 database.adb:171:07: warning: statement has no effect [ineffective]
 database.adb:171:07: warning: unused assignment to "Links" [ineffective]
+database.adb:30:35: info: length check proved
 database.adb:43:17: info: postcondition proved
 database.adb:51:17: info: postcondition proved
+database.adb:96:52: info: length check proved
+database.adb:100:46: info: length check proved
 database.adb:111:21: info: range check proved
 database.adb:112:17: info: index check proved
 database.adb:113:36: info: index check proved
@@ -36,6 +39,8 @@ database.ads:112:14: info: precondition proved
 database.ads:112:14: info: postcondition proved
 database.ads:112:34: info: precondition proved
 database.ads:112:56: info: precondition proved
+identity.ads:8:36: info: length check proved
+identity.ads:17:30: info: length check proved
 money.adb:4:33: info: range check proved
 money.adb:7:33: info: range check proved
 money.ads:31:14: info: postcondition proved

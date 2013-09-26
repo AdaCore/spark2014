@@ -13,6 +13,8 @@ pack.adb:70:07: warning: statement has no effect [ineffective]
 pack.adb:71:07: warning: statement has no effect [ineffective]
 pack.adb:87:07: warning: statement has no effect [ineffective]
 pack.adb:87:13: warning: unused assignment to "A" [ineffective]
+pack.adb:3:23: info: length check proved
+pack.adb:4:32: info: length check proved
 pack.adb:12:34: info: length check proved
 pack.adb:13:41: info: length check proved
 pack.adb:14:41: info: length check proved
