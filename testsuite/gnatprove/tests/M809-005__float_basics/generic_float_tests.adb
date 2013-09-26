@@ -448,6 +448,40 @@ is
    end Test_Truncation_1;
 
    ----------------------------------------------------------------------
+   --  More complete examples
+   ----------------------------------------------------------------------
+
+   --  Requires M926-009 (scalars in loop variants)
+
+   --  procedure Control_Example (T1, T2, T3 : in FT)
+   --    with Pre => T1 >= 0.0 and
+   --                T2 >= 0.0 and
+   --                T3 >= 0.0 and
+   --                T1 + T2 + T3 in FT
+   --  is
+   --     Time : FT := 0.0;
+   --  begin
+   --     loop
+   --        if (Time < T1) then
+   --           --  accelerate
+   --           null;
+   --        elsif (Time < T1 + T2) then
+   --           --  cruise
+   --           null;
+   --        elsif (Time < T1 + T2 + T3) then
+   --           --  decelerate
+   --           null;
+   --        end if;
+   --
+   --        Time := Time + 0.0001;
+   --        pragma Loop_Variant (Increases => Time);
+   --
+   --        exit when not (Time < T1 + T2 + T3);
+   --     end loop;
+   --  end Control_Example;
+
+
+   ----------------------------------------------------------------------
    --  Other ideas
    ----------------------------------------------------------------------
 
