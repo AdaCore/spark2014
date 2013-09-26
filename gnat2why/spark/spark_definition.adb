@@ -76,10 +76,9 @@ package body SPARK_Definition is
    --  An error is raised if an entity that has a corresponding SPARK_Mode
    --  pragma of On is determined to be not in SPARK.
 
-   --  If the entity is defined in the spec or the body of the current compiled
-   --  unit, it is added to one of the list of entities Spec_Entities or
-   --  Body_Entities, which will be translated to Why3. The translation
-   --  will depend on the status (in SPARK or not) of each entity.
+   --  Each entity is added to the list of entities Entity_List. The
+   --  translation will depend on the status (in SPARK or not) of each entity,
+   --  and on where the entity is declared (in the current unit or not).
 
    --  A subprogram spec can be in SPARK even if its body is not in SPARK.
 
@@ -323,7 +322,7 @@ package body SPARK_Definition is
 
    procedure Mark_Entity (E : Entity_Id);
    --  Push entity E on the stack, mark E, and pop E from the stack. Always
-   --  adds E to the set of All_Entities as a result. If no violation was
+   --  adds E to the set of Entity_Set as a result. If no violation was
    --  detected, E is added to the Entities_In_SPARK.
 
    --  Marking of declarations
@@ -677,15 +676,15 @@ package body SPARK_Definition is
             --  external axioms should not be analyzed.
 
             if Entity_In_External_Axioms (E) then
-               All_Entities.Insert (Underlying_Type (E));
+               Entity_Set.Insert (Underlying_Type (E));
             elsif Type_Based_On_External_Axioms (E) then
 
                --  A private type based on a package with external axioms
                --  should be in SPARK.
 
-               All_Entities.Insert (Underlying_Type (E));
+               Entity_Set.Insert (Underlying_Type (E));
                Entities_In_SPARK.Include (Underlying_Type (E));
-               Spec_Entities.Append (Underlying_Type (E));
+               Entity_List.Append (Underlying_Type (E));
             else
                Mark_Entity (Underlying_Type (E));
             end if;
@@ -831,7 +830,7 @@ package body SPARK_Definition is
    begin
       --  Nothing to do if the entity E was already marked
 
-      if All_Entities.Contains (E) then
+      if Entity_Set.Contains (E) then
          return;
       end if;
 
@@ -868,7 +867,7 @@ package body SPARK_Definition is
 
       --  Include entity E in the set of entities marked
 
-      All_Entities.Insert (E);
+      Entity_Set.Insert (E);
 
       --  If the entity is declared in the scope of SPARK_Mode => Off, then do
       --  not consider whether it could be in SPARK or not.
@@ -939,7 +938,7 @@ package body SPARK_Definition is
       --  translated.
 
       if not Entity_In_External_Axioms (E) then
-         Spec_Entities.Append (E);
+         Entity_List.Append (E);
       end if;
 
       --  Update the information that a violation was detected
@@ -2114,7 +2113,7 @@ package body SPARK_Definition is
                if Ekind (Id) in Type_Kind then
                      Mark_Entity (Id);
                elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                  All_Entities.Include (Id);
+                  Entity_Set.Include (Id);
                   Entities_In_SPARK.Include (Id);
                end if;
             end if;
@@ -2146,7 +2145,7 @@ package body SPARK_Definition is
                      Mark_Entity (Id);
                   end if;
                elsif Ekind (Id) in Object_Kind | Subprogram_Kind then
-                  All_Entities.Include (Id);
+                  Entity_Set.Include (Id);
                   Entities_In_SPARK.Include (Id);
                end if;
             end if;
@@ -2172,7 +2171,7 @@ package body SPARK_Definition is
          --  Explicitly add the package declaration to the entities to
          --  translate into Why3.
 
-         Spec_Entities.Append (Id);
+         Entity_List.Append (Id);
 
          --  Mark types and subprograms from packages with external axioms as
          --  in SPARK or not.
@@ -2377,7 +2376,7 @@ package body SPARK_Definition is
 
       procedure Insert_All_And_SPARK (E : Entity_Id) is
       begin
-         All_Entities.Insert (E);
+         Entity_Set.Insert (E);
          Entities_In_SPARK.Insert (E);
       end Insert_All_And_SPARK;
 
@@ -2414,8 +2413,8 @@ package body SPARK_Definition is
       Initialize;
 
       for S in S_Types loop
-         All_Entities.Insert (Standard_Entity (S));
-         All_Entities.Include (Etype (Standard_Entity (S)));
+         Entity_Set.Insert (Standard_Entity (S));
+         Entity_Set.Include (Etype (Standard_Entity (S)));
          if Standard_Type_Is_In_SPARK (S) then
             Entities_In_SPARK.Insert (Standard_Entity (S));
             Entities_In_SPARK.Include (Etype (Standard_Entity (S)));
@@ -2501,7 +2500,7 @@ package body SPARK_Definition is
          if Ekind (E) = E_Function
            and then Present (Get_Expression_Function (E))
          then
-            Spec_Entities.Append (Defining_Entity (N));
+            Entity_List.Append (Defining_Entity (N));
          end if;
 
          if Is_Toplevel_Entity (E) then
