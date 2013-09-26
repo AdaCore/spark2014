@@ -1189,6 +1189,7 @@ of the package.]
        ...
     end Z;
 
+.. _initial_condition_aspect:
 
 Initial_Condition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3972,53 +3973,68 @@ global variables discussed later in this section.
 Use of Initial_Condition and Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. centered:: **Static Semantics**
+
 To ensure the correct semantics of the Initializes and Initial_Condition
 aspects, when applied to library units, language restrictions (described below)
 are imposed in |SPARK| which have the following consequences:
 
-   - During the elaboration of a library unit package (spec or body),
-     library-level variables declared outside of that package
-     cannot be modified and library-level variables declared
-     outside of that package can only be read if
+.. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-01:
 
-       * the variable (or its state abstraction) is mentioned in the
-         Initializes aspect of its enclosing package; and
+1. During the elaboration of a library unit package (spec or body),
+   library-level variables declared outside of that package cannot be
+   modified and library-level variables declared outside of that
+   package can only be read if
 
-       * an Elaborate (not necessarily an Elaborate_All) pragma
-         ensures that the body of that package has been elaborated.
+   a. the variable (or its state abstraction) is mentioned in the
+      Initializes aspect of its enclosing package (from
+      :ref:`initializes_aspect`); and
 
-   - From the end of the elaboration of a library package's body to the
-     invocation of the main program (i.e., during subsequent library unit
-     elaboration), variables declared in the package (and constituents of state
-     abstractions declared in the package) remain unchanged. The
-     Initial_Condition aspect is an assertion which is checked at the end of the
-     elaboration of a package body (but occurs textually in the package spec).
-     The initial condition of a library level package will remain true from this
-     point until the invocation of the main subprogram (because none of the
-     inputs used in computing the condition can change during this interval).
-     This means that a package's initial condition can be assumed to be true
-     both upon entry to the main subprogram itself and during elaboration of any
-     other unit which applies an Elaborate pragma to the library unit in
-     question (note: an Initial_Condition which depends on no variable inputs
-     can also be assumed to be true throughout the execution of the main
-     subprogram).
+   b. an Elaborate (not necessarily an Elaborate_All) pragma ensures
+      that the body of that package has been elaborated (from
+      :ref:`elaboration_issues`).
 
-   - If a package's Initializes aspect mentions a state abstraction whose
-     refinement includes constituents declared outside of that package,
-     then the elaboration of bodies of the enclosing packages of those
-     constituents will precede the elaboration of the body of the package
-     declaring the abstraction. The idea here is that all constituents
-     of a state abstraction whose initialization has been promised are
-     in fact initialized by the end of the elaboration of the body of
-     the abstraction's unit - we don't have to wait for the elaboration
-     of other units (e.g., private children) which contribute to
-     the abstraction.
+.. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-02:
+
+2. From the end of the elaboration of a library package's body to the
+   invocation of the main program (i.e., during subsequent library
+   unit elaboration), variables declared in the package (and
+   constituents of state abstractions declared in the package) remain
+   unchanged. The Initial_Condition aspect is an assertion which is
+   checked at the end of the elaboration of a package body (but occurs
+   textually in the package spec see :ref:`initial_condition_aspect`).
+   The initial condition of a library level package will remain true
+   from this point until the invocation of the main subprogram
+   (because none of the inputs used in computing the condition can
+   change during this interval).  This means that a package's initial
+   condition can be assumed to be true both upon entry to the main
+   subprogram itself and during elaboration of any other unit which
+   applies an Elaborate pragma to the library unit in question (note:
+   an Initial_Condition which depends on no variable inputs can also
+   be assumed to be true throughout the execution of the main
+   subprogram).
+
+.. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-03:
+
+3. If a package's Initializes aspect mentions a state abstraction
+   whose refinement includes constituents declared outside of that
+   package, then the elaboration of bodies of the enclosing packages
+   of those constituents will precede the elaboration of the body of
+   the package declaring the abstraction (as a consequence of the
+   rules given in :ref:`elaboration_issues`). The idea here is that
+   all constituents of a state abstraction whose initialization has
+   been promised are in fact initialized by the end of the elaboration
+   of the body of the abstraction's unit - we don't have to wait for
+   the elaboration of other units (e.g., private children) which
+   contribute to the abstraction.
+
+.. _etu-use_of_initial_condition_and_initializes_aspects-ss:
 
 .. centered:: **Verification Rules**
 
-.. _tu-use_of_initial_condition_and_initializes_aspects-01:
+.. _tu-use_of_initial_condition_and_initializes_aspects-04:
 
-1. If a read of a variable (or state abstraction, in the case of a
+4. If a read of a variable (or state abstraction, in the case of a
    call to a subprogram which takes an abstraction as an input) declared in
    another library unit is executable during elaboration (as defined above),
    then the compilation unit containing the read shall apply an Elaborate (not
@@ -4028,28 +4044,92 @@ are imposed in |SPARK| which have the following consequences:
    needed to ensure that the variable has been initialized at the time of the
    read.]
 
-.. _tu-use_of_initial_condition_and_initializes_aspects-02:
+.. _tu-use_of_initial_condition_and_initializes_aspects-05:
 
-2. The elaboration of a package's specification and body shall not write
-   to a variable (or state abstraction, in the case of a call to a procedure
-   which takes an abstraction as in output) declared outside of the package. The
-   implicit write associated with a read of an external input only state is
-   permitted. [This rule applies to all packages: library level or not,
-   instantiations or not.] The inputs and outputs of a package's elaboration
-   (including the elaboration of any private descendants of a library unit
-   package) shall be as described in the Initializes aspect of the package.
+5. The elaboration of a package's specification and body shall not
+   write to a variable (or state abstraction, in the case of a call to
+   a procedure which takes an abstraction as in output) declared
+   outside of the package. The output associated with a read of an
+   external state with the property Effective_Reads is permitted. 
+   [This rule applies to all packages: library level or not,
+   instantiations or not.] The inputs and outputs of a package's
+   elaboration (including the elaboration of any private descendants
+   of a library unit package) shall be as described in the Initializes
+   aspect of the package.
 
 .. _etu-use_of_initial_condition_and_initializes_aspects-vr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-use_of_initial_condition_and_initializes_aspects-03:
+.. _tu-use_of_initial_condition_and_initializes_aspects-06:
 
-3. A package body shall include Elaborate pragmas for all of the
-   other library units [(typically private children)] which provide constituents
-   for state abstraction refinements occurring in the given package body. [This
-   rule could be relaxed to apply only to constituents of an abstraction which
-   is mentioned in an Initializes aspect.]
+6. A package body shall include Elaborate pragmas for all of the other
+   library units [(typically private children)] which provide
+   constituents for a state abstraction denoted in the Initializes
+   aspect of the given package.
 
 .. _etu-use_of_initial_condition_and_initializes_aspects-lr:
 
+.. centered:: **Examples**
+
+.. code-block:: ada
+
+    package P 
+    with Initializes => VP
+    is
+       pragma Elaborate_Body; -- Needed because VP is 
+       VP : Integer;          -- Initialized in the body
+    end P;
+
+    with P;
+    pragma Elaborate (P); -- required because P.VP is used in initialization of V
+    package Initialization_And_Elaboration 
+    with Abstract_State => State,
+	 Initializes    => (State,
+			    V     =>  P.VP), -- Initialization of V dependent on P.VP
+         Initial_Condition => (V = P.VP and Get_It = 0)
+    is
+       V : Integer := P.VP;
+
+       procedure Do_It (I : in Integer)
+	 with Global => (In_Out => State);
+
+       function Get_It return Integer
+	 with Global => State;
+
+    end Initialization_And_Elaboration;
+
+    private package Initialization_And_Elaboration.Private_Child
+    with Abstract_State => (State with Part_Of => Initialization_And_Elaboration.State),
+	 Initializes    => State,
+         Initial_Condition => Get_Something = 0
+    is
+       procedure Do_Something (I : in Integer)
+	 with Global => (In_Out => State);
+
+       function Get_Something return Integer
+	 with Global => State;
+    end Initialization_And_Elaboration.Private_Child;
+
+    with Initialization_And_Elaboration.Private_Child;
+    -- pragma Elaborate for the private child is required because it
+    -- is a constituent of the state abstraction Initialization_And_Elaboration.State,
+    -- which is mentioned in the Initializes aspect of the package.
+    pragma Elaborate (Initialization_And_Elaboration.Private_Child);
+    package body Initialization_And_Elaboration 
+    with Refined_State => (State => Private_Child.State) -- State is initialized
+    is                                                   -- Private child must be elaborated.
+       procedure Do_It (I : in Integer)
+	 with Refined_Global => (In_Out => Private_Child.State)
+       is
+       begin
+	  Private_Child.Do_Something (I);
+       end Do_It;
+
+       function Get_It return Integer
+	  with Refined_Global => Private_Child.State
+       is        
+       begin
+	 return Private_Child.Get_Something;
+       end Get_It;         
+    end Initialization_And_Elaboration;
