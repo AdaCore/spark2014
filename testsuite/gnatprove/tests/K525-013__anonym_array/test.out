@@ -3,6 +3,7 @@ p.adb:1:17: warning: unused initial value of "B" [unused_initial_value]
 p.adb:3:04: warning: statement has no effect [ineffective]
 p.adb:5:10: warning: unused assignment [ineffective]
 p.adb:6:10: warning: unused assignment [ineffective]
+p.adb:3:36: info: length check proved
 p.adb:5:7: info: index check proved
 p.adb:6:7: info: index check proved
 p.adb:7:4: info: assertion proved

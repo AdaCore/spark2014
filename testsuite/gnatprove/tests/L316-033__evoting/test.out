@@ -1,7 +1,6 @@
-evoting.adb:52:60: info: length check proved
-evoting.adb:57:41: info: range check proved
-evoting.adb:58:52: range check not proved
-evoting.adb:58:52: length check not proved
+evoting.adb:52:60: length check not proved
+evoting.adb:58:52: info: range check proved
+evoting.adb:58:52: info: length check proved
 evoting.adb:60:49: info: range check proved
 evoting.adb:64:43: info: range check proved
 evoting.adb:95:7: info: precondition proved
@@ -13,17 +12,17 @@ evoting.adb:152:10: info: loop invariant proved
 evoting.adb:152:52: info: overflow check proved
 evoting.adb:168:54: overflow check not proved
 evoting.adb:168:54: info: range check proved
-evoting.adb:170:27: info: range check proved
 evoting.adb:172:13: info: precondition proved
 evoting.adb:175:63: info: range check proved
 evoting.adb:176:51: info: overflow check proved
 evoting.adb:233:25: range check not proved
 evoting.adb:236:28: range check not proved
 evoting.adb:253:7: info: precondition proved
+evoting.adb:266:32: info: length check proved
 evoting.adb:272:7: info: precondition proved
 evoting.adb:274:7: info: precondition proved
 evoting.adb:276:7: info: precondition proved
-evoting.ads:56:28: postcondition not proved, requires candidates(i)(j) = ' '
+evoting.ads:54:1: info: postcondition proved
 evoting.ads:56:40: info: index check proved
 evoting.ads:92:6: postcondition not proved
 evoting.ads:93:20: info: index check proved

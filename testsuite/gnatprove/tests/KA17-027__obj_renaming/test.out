@@ -12,6 +12,7 @@ main.adb:12:14: info: postcondition proved
 main.adb:15:14: info: postcondition proved
 main.adb:15:35: info: length check proved
 main.adb:18:14: info: postcondition proved
+main.adb:27:32: info: length check proved
 main.adb:58:32: overflow check not proved
 main.adb:69:4: info: assertion proved
 main.adb:70:4: info: assertion proved

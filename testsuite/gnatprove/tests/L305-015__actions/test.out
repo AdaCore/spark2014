@@ -20,6 +20,7 @@ actions.adb:33:07: warning: statement has no effect [ineffective]
 actions.adb:40:04: warning: statement has no effect [ineffective]
 actions.adb:41:53: warning: statement has no effect [ineffective]
 actions.adb:47:10: warning: statement has no effect [ineffective]
+actions.adb:3:13: info: length check proved
 actions.adb:15:6: info: index check proved
 actions.adb:18:7: info: assertion proved
 actions.adb:18:59: info: overflow check proved

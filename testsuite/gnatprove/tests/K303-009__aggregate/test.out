@@ -12,10 +12,20 @@ arr_aggregate.adb:20:18: info: length check proved
 arr_aggregate.adb:22:18: info: length check proved
 arr_aggregate.adb:24:18: info: length check proved
 arr_aggregate.adb:32:18: info: length check proved
+arr_aggregate.adb:32:19: info: length check proved
+arr_aggregate.adb:32:29: info: length check proved
 arr_aggregate.adb:34:18: info: length check proved
+arr_aggregate.adb:34:24: info: length check proved
+arr_aggregate.adb:34:51: info: length check proved
 arr_aggregate.adb:36:18: info: length check proved
+arr_aggregate.adb:36:19: info: length check proved
+arr_aggregate.adb:36:41: info: length check proved
 arr_aggregate.adb:38:18: info: length check proved
+arr_aggregate.adb:38:24: info: length check proved
+arr_aggregate.adb:38:54: info: length check proved
 arr_aggregate.adb:40:18: info: length check proved
+arr_aggregate.adb:40:24: info: length check proved
+arr_aggregate.adb:40:49: info: length check proved
 arr_aggregate.adb:46:7: info: precondition proved
 arr_aggregate.adb:51:7: info: precondition proved
 arr_aggregate.adb:56:7: info: precondition proved
@@ -35,6 +45,16 @@ arr_aggregate.ads:28:77: info: index check proved
 arr_aggregate.ads:32:14: info: postcondition proved
 arr_aggregate.ads:37:14: postcondition not proved
 arr_aggregate.ads:45:14: postcondition not proved
+arr_aggregate.ads:45:40: info: length check proved
+arr_aggregate.ads:45:50: info: length check proved
+arr_aggregate.ads:46:40: info: length check proved
+arr_aggregate.ads:46:52: info: length check proved
+arr_aggregate.ads:47:40: info: length check proved
+arr_aggregate.ads:47:52: info: length check proved
+arr_aggregate.ads:48:40: info: length check proved
+arr_aggregate.ads:48:50: info: length check proved
+arr_aggregate.ads:49:45: info: length check proved
+arr_aggregate.ads:49:55: info: length check proved
 rec_aggregate.ads:24:18: warning: unused initial value of "R" [unused_initial_value]
 rec_aggregate.ads:37:18: warning: unused initial value of "R" [unused_initial_value]
 rec_aggregate.ads:45:18: warning: unused initial value of "R" [unused_initial_value]

@@ -13,5 +13,6 @@ p.adb:9:04: warning: unused assignment to "Current_Out" [ineffective]
 p.adb:9:04: warning: unused assignment to "system.soft_links.abort_undefer" [ineffective]
 p.adb:9:04: warning: unused assignment to "the heap" [ineffective]
 p.adb:9:04: warning: unused assignment to "system.soft_links.abort_defer" [ineffective]
+p.adb:5:18: info: length check proved
 p.adb:8:10: range check not proved
 p.adb:8:10: precondition not proved

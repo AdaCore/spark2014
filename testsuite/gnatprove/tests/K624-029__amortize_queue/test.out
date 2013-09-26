@@ -3,10 +3,14 @@ amortized_queue.adb:7:22: precondition not proved
 amortized_queue.adb:11:25: info: precondition proved
 amortized_queue.adb:12:24: info: precondition proved
 amortized_queue.adb:17:10: precondition not proved
+amortized_queue.adb:20:30: discriminant check not proved
+amortized_queue.adb:20:45: discriminant check not proved
 amortized_queue.adb:24:25: info: precondition proved
 amortized_queue.adb:25:24: info: precondition proved
 amortized_queue.adb:27:7: precondition not proved
 amortized_queue.adb:30:10: precondition not proved
+amortized_queue.adb:33:30: discriminant check not proved
+amortized_queue.adb:33:45: discriminant check not proved
 amortized_queue.ads:30:24: info: overflow check proved
 amortized_queue.ads:31:20: info: range check proved
 amortized_queue.ads:32:17: info: precondition proved

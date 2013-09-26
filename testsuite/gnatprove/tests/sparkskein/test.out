@@ -42,11 +42,11 @@ skein.adb:287:62: range check not proved
 skein.adb:558:26: info: length check proved
 skein.adb:569:25: info: length check proved
 skein.adb:609:41: info: length check proved
-skein.adb:644:42: range check not proved
 skein.adb:662:17: range check not proved
 skein.adb:663:35: overflow check not proved
 skein.adb:688:36: length check not proved
 skein.adb:696:38: length check not proved
+skein.adb:703:83: length check not proved
 skein.adb:757:25: range check not proved
 skein.adb:759:30: overflow check not proved
 skein.adb:759:30: range check not proved
@@ -90,4 +90,3 @@ skein.adb:948:41: overflow check not proved
 skein.adb:955:56: overflow check not proved
 skein.adb:955:56: range check not proved
 skein.adb:961:37: range check not proved
-skein.adb:981:34: info: range check proved

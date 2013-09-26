@@ -1,5 +1,4 @@
 buf_read.adb:26:29: info: index check proved
-buf_read.adb:47:16: info: range check proved
 buf_read.adb:47:24: info: range check proved
 buf_read.adb:50:29: info: range check proved
 buf_read.ads:9:21: info: postcondition proved

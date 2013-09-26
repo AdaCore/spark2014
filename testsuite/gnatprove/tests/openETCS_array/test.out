@@ -137,6 +137,10 @@ step_function.ads:114:40: info: precondition proved
 step_function.ads:115:61: info: index check proved
 step_function.ads:116:40: info: precondition proved
 step_function.ads:117:61: info: index check proved
+step_function_test.adb:7:15: info: length check proved
+step_function_test.adb:14:15: info: length check proved
+step_function_test.adb:21:15: info: length check proved
+step_function_test.adb:31:15: info: length check proved
 step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
 step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
@@ -172,3 +176,4 @@ units.adb:29:38: overflow check not proved
 units.adb:29:48: info: division check proved
 units.adb:29:48: overflow check not proved
 units.ads:51:20: info: precondition proved
+An error occurred when calling the prover.
