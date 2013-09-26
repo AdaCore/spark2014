@@ -1,15 +1,15 @@
-pack.adb:5:11: type access to "Boolean" is not in SPARK
-pack.adb:5:11:  violation of SPARK_Mode at test.adc:1
-pack.adb:7:07: type used access to "Boolean" is not in SPARK
-pack.adb:7:07:  violation of SPARK_Mode at test.adc:1
-pack.adb:7:12: type used access to "Boolean" is not in SPARK
-pack.adb:7:12:  violation of SPARK_Mode at test.adc:1
-pack.adb:8:07: explicit dereference is not in SPARK
-pack.adb:8:07:  violation of SPARK_Mode at test.adc:1
-pack.adb:9:14: explicit dereference is not in SPARK
-pack.adb:9:14:  violation of SPARK_Mode at test.adc:1
-pack.ads:2:13: function with side-effects is not in SPARK
-pack.ads:2:13:  violation of SPARK_Mode at test.adc:1
+pack.adb:5:11: type access to "Boolean" is not allowed in SPARK
+pack.adb:5:11:  violation of aspect SPARK_Mode at pack.ads:1
+pack.adb:7:07: type used access to "Boolean" is not allowed in SPARK
+pack.adb:7:07:  violation of aspect SPARK_Mode at pack.ads:1
+pack.adb:7:12: type used access to "Boolean" is not allowed in SPARK
+pack.adb:7:12:  violation of aspect SPARK_Mode at pack.ads:1
+pack.adb:8:07: explicit dereference is not allowed in SPARK
+pack.adb:8:07:  violation of aspect SPARK_Mode at pack.ads:1
+pack.adb:9:14: explicit dereference is not allowed in SPARK
+pack.adb:9:14:  violation of aspect SPARK_Mode at pack.ads:1
+pack.ads:2:13: function with side-effects is not allowed in SPARK
+pack.ads:2:13:  violation of aspect SPARK_Mode at line 1
 
    compilation of pack.adb failed
 

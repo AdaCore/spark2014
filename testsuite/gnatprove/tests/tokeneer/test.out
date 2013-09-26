@@ -96,6 +96,7 @@ auditlog.adb:1870:50: overflow check not proved
 auditlog.adb:1870:69: overflow check not proved
 auditlog.adb:1914:10: info: assertion proved
 bio.adb:126:10: assertion not proved, requires Result = InternalError
+certificatestore.adb:220:49: info: length check proved
 certificatestore.adb:223:31: range check not proved
 certificatestore.adb:224:29: range check not proved
 certificatestore.adb:224:29: length check not proved
@@ -120,47 +121,37 @@ clock.adb:280:41: info: range check proved
 clock.adb:281:44: info: division check proved
 clock.adb:282:25: info: division check proved
 clock.adb:282:25: range check not proved
-clock.adb:328:7: info: precondition proved
-clock.adb:328:24: info: range check proved
+clock.adb:311:36: info: length check proved
+clock.adb:328:7: precondition not proved
 clock.adb:329:44: info: division check proved
 clock.adb:333:7: precondition not proved
-clock.adb:333:24: info: range check proved
 clock.adb:334:45: info: division check proved
 clock.adb:335:32: info: division check proved
 clock.adb:339:7: precondition not proved
-clock.adb:339:24: info: range check proved
 clock.adb:340:45: info: division check proved
 clock.adb:341:32: info: division check proved
 clock.adb:345:7: precondition not proved
-clock.adb:345:24: info: range check proved
 clock.adb:346:44: info: division check proved
+clock.adb:362:32: info: length check proved
 clock.adb:387:7: info: assertion proved
-clock.adb:391:7: info: precondition proved
-clock.adb:391:24: info: range check proved
+clock.adb:391:7: precondition not proved
 clock.adb:396:7: precondition not proved
-clock.adb:396:24: info: range check proved
 clock.adb:401:7: precondition not proved
-clock.adb:401:24: info: range check proved
 clock.adb:406:7: precondition not proved
-clock.adb:406:24: info: range check proved
 clock.adb:407:49: info: division check proved
 clock.adb:411:7: precondition not proved
-clock.adb:411:24: info: range check proved
 clock.adb:412:50: info: division check proved
 clock.adb:413:32: info: division check proved
 clock.adb:417:7: precondition not proved
-clock.adb:417:24: info: range check proved
 clock.adb:418:50: info: division check proved
 clock.adb:419:32: info: division check proved
 clock.adb:423:7: precondition not proved
-clock.adb:423:24: range check not proved
 clock.adb:424:50: info: division check proved
 clock.adb:425:32: info: division check proved
 configdata.adb:237:44: info: overflow check proved
 configdata.adb:237:44: info: range check proved
 configdata.adb:276:51: info: overflow check proved
 configdata.adb:276:51: info: range check proved
-configdata.adb:310:32: info: range check proved
 configdata.adb:323:20: range check not proved
 configdata.adb:331:48: index check not proved
 configdata.adb:331:63: index check not proved
@@ -171,23 +162,10 @@ configdata.adb:380:45: info: overflow check proved
 configdata.adb:380:50: info: overflow check proved
 configdata.adb:380:68: info: range check proved
 configdata.adb:416:38: info: range check proved
-configdata.adb:452:34: info: range check proved
-configdata.adb:484:34: info: range check proved
-configdata.adb:516:34: info: range check proved
-configdata.adb:548:34: info: range check proved
-configdata.adb:580:34: info: range check proved
-configdata.adb:612:34: info: range check proved
-configdata.adb:644:34: info: range check proved
-configdata.adb:676:34: info: range check proved
-configdata.adb:710:34: info: range check proved
-configdata.adb:714:35: info: range check proved
 configdata.adb:723:23: range check not proved
 configdata.adb:729:53: index check not proved
 configdata.adb:729:75: index check not proved
-configdata.adb:771:34: info: range check proved
-configdata.adb:803:34: info: range check proved
-configdata.adb:835:34: info: range check proved
-configdata.adb:868:34: info: range check proved
+configdata.adb:1057:34: info: length check proved
 configdata.adb:1062:30: info: division check proved
 configdata.adb:1064:59: range check not proved
 configdata.adb:1064:72: info: division check proved
@@ -322,6 +300,8 @@ latch.ads:107:7: postcondition not proved
 latch.ads:142:8: postcondition not proved, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: postcondition not proved, requires Latch_Timeout = Time
 poll.ads:132:11: postcondition not proved
+screen.adb:815:43: info: length check proved
+screen.adb:816:40: info: length check proved
 screen.adb:818:40: range check not proved
 screen.adb:818:40: length check not proved
 stats.adb:53:57: info: overflow check proved

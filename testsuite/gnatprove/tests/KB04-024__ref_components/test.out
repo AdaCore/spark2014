@@ -7,3 +7,4 @@ p.adb:17:04: warning: statement has no effect [ineffective]
 p.adb:17:12: warning: unused assignment [ineffective]
 p.adb:18:04: warning: statement has no effect [ineffective]
 p.adb:18:13: warning: unused assignment [ineffective]
+p.adb:3:13: info: length check proved

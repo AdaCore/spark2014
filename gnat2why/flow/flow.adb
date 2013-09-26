@@ -1016,7 +1016,7 @@ package body Flow is
       end Is_Requested_Subprogram;
    begin
       --  Process entities and construct graphs if necessary
-      for E of All_Entities loop
+      for E of Entity_Set loop
          case Ekind (E) is
             when Subprogram_Kind =>
                if Analysis_Requested (E)

@@ -129,7 +129,7 @@ package body Gnat2Why.Types is
    function Ident_Of_Ada_Type (E : Entity_Id) return W_Identifier_Id
    is
    begin
-      if E = Standard_Boolean then
+      if Is_Standard_Boolean_Type (E) then
          return New_Identifier (Name => "bool");
       elsif not Entity_In_SPARK (Most_Underlying_Type (E)) then
          return New_Identifier (Name => To_String (WNE_Private));
@@ -248,7 +248,7 @@ package body Gnat2Why.Types is
    --  Start of Translate_Type
 
    begin
-      if E = Standard_Boolean or else E = Universal_Fixed then
+      if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
          return;
       end if;
 

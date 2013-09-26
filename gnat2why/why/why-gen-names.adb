@@ -781,7 +781,7 @@ package body Why.Gen.Names is
             when RCK_Not_Last  => WNE_Check_Not_Last,
             when others        => WNE_Range_Check_Fun);
    begin
-      if Ty = Standard_Boolean then
+      if Is_Standard_Boolean_Type (Ty) then
          return Prefix (Ada_Node => Standard_Boolean,
                         S        => "Boolean",
                         W        => Name);
@@ -799,7 +799,7 @@ package body Why.Gen.Names is
    function Range_Pred_Name (Ty : Entity_Id) return W_Identifier_Id
    is
    begin
-      if Ty = Standard_Boolean then
+      if Is_Standard_Boolean_Type (Ty) then
          return Prefix (Ada_Node => Standard_Boolean,
                         S        => "Boolean",
                         W        => WNE_Range_Pred);

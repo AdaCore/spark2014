@@ -1,5 +1,5 @@
-package Pack is 
-
+package Pack is
+   pragma SPARK_Mode;
    X : Boolean;
 
    type Acc is access Integer;

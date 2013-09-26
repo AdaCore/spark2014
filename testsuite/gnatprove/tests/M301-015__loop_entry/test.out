@@ -4,10 +4,13 @@ p.adb:11:29: warning: statement has no effect [ineffective]
 p.adb:12:32: warning: statement has no effect [ineffective]
 p.adb:13:34: warning: statement has no effect [ineffective]
 p.adb:14:39: warning: unused assignment [ineffective]
+p.adb:8:14: info: length check proved
+p.adb:8:25: info: length check proved
+p.adb:8:47: info: length check proved
 p.adb:15:16: loop invariant initialization not proved, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
 p.adb:15:16: loop invariant preservation not proved, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
 p.adb:16:19: info: range check proved
-p.adb:16:41: info: range check proved
+p.adb:16:41: range check not proved
 p.adb:28:13: loop invariant initialization not proved, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
 p.adb:28:13: loop invariant preservation not proved, requires X (I3 + 1 .. Last) = XX'loop_entry (I3 + 1..3)
 p.adb:29:16: info: range check proved

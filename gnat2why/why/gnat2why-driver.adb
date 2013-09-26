@@ -412,8 +412,7 @@ package body Gnat2Why.Driver is
    begin
       --  Translate Ada entities into Why3
 
-      Translate_List_Entities (Spec_Entities);
-      Translate_List_Entities (Body_Entities);
+      Translate_List_Entities (Entity_List);
 
       --  For all objects whose declaration is not visible (has not been
       --  translated to Why), we generate a dummy declaration. This must
@@ -425,14 +424,10 @@ package body Gnat2Why.Driver is
       --  modules for entities, so that all completions for deferred constants
       --  and expression functions are defined.
 
-      for E of Spec_Entities loop
+      for E of Entity_List loop
          if Is_In_Current_Unit (E) then
             Do_Generate_VCs (E);
          end if;
-      end loop;
-
-      for E of Body_Entities loop
-         Do_Generate_VCs (E);
       end loop;
 
       Print_Why_File;

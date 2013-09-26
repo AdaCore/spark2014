@@ -14,7 +14,9 @@ conv.adb:15:07: warning: statement has no effect [ineffective]
 conv.adb:16:07: warning: statement has no effect [ineffective]
 conv.adb:17:07: warning: statement has no effect [ineffective]
 conv.adb:6:20: info: postcondition proved
-conv.adb:19:7: info: assertion proved
+conv.adb:15:17: info: discriminant check proved
+conv.adb:17:17: info: discriminant check proved
+conv.adb:19:7: assertion not proved, requires Id (X) = Id (Y)
 special.adb:12:07: warning: statement has no effect [ineffective]
 special.adb:15:17: warning: unused assignment [ineffective]
 special.adb:7:7: assertion not proved, requires V.X = A
@@ -23,6 +25,7 @@ special.adb:14:7: info: assertion proved
 special.adb:15:8: info: discriminant check proved
 subty.adb:4:07: warning: statement has no effect [ineffective]
 subty.adb:11:17: warning: unused assignment [ineffective]
+subty.adb:4:16: info: discriminant check proved
 subty.adb:6:7: info: assertion proved
 subty.adb:7:7: info: assertion proved
 subty.adb:7:23: info: discriminant check proved

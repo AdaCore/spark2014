@@ -125,6 +125,17 @@ package Why.Gen.Arrays is
    --  A conversion between unconstrained objects is similar, but the bounds
    --  are retrieved from the object instead of the type.
 
+   procedure Add_Attr_Arg
+     (Domain  : EW_Domain;
+      Args    : in out W_Expr_Array;
+      Expr    : W_Expr_Id;
+      Ty      : Entity_Id;
+      Attr    : Attribute_Id;
+      Dim     : Positive;
+      Arg_Ind : in out Positive);
+   --  Add an argument for the corresponding attribute of the array. See alse
+   --  [Get_Array_Attr].
+
    procedure Declare_Ada_Array
      (Theory         : W_Theory_Declaration_Id;
       Und_Ent        : Entity_Id);
@@ -169,23 +180,29 @@ package Why.Gen.Arrays is
    --
    --    <left_arr>[<index>] = <right_arr>[<index>]
 
+   procedure Add_Map_Arg
+     (Domain  : EW_Domain;
+      Args    : in out W_Expr_Array;
+      Expr    : W_Expr_Id;
+      Ty      : Entity_Id;
+      Arg_Ind : in out Positive);
+   --  Add an argument just for the "map" of the array. For constrained arrays,
+   --  this is the identity, for unconstrained arrays, this corresponds to the
+   --  selection of the corresponding field.
+
    function Build_Length_Expr
      (Domain : EW_Domain;
       First, Last : W_Expr_Id) return W_Expr_Id;
    --  Given the terms for first and last, build the expression
    --    if first <= last then last - first + 1 else 0
 
-   function Insert_Array_Conversion
-     (Domain        : EW_Domain;
-      Ada_Node      : Node_Id := Empty;
-      Expr          : W_Expr_Id;
-      To            : W_Type_Id;
-      From          : W_Type_Id;
-      Range_Check   : Node_Id := Empty) return W_Expr_Id;
-   --  Generate a conversion between two Ada array types. If Range check
-   --  is set, add a length or range check to the expression. Which
-   --  kind of check, and against which type, is determined by calling
-   --  [Gnat2why.Nodes.Get_Range_Check_Info] on the Range_Check node.
+   function Build_Length_Expr
+     (Domain : EW_Domain;
+      Expr   : W_Expr_Id;
+      Ty     : Entity_Id;
+      Dim    : Positive) return W_Expr_Id;
+   --  Given a type and an array expression, build the length expression for
+   --  this array.
 
    procedure Add_Array_Arg
      (Domain  : EW_Domain;

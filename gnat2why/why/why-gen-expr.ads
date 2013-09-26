@@ -161,6 +161,18 @@ package Why.Gen.Expr is
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
 
+   function Insert_Array_Conversion
+     (Domain     : EW_Domain;
+      Ada_Node   : Node_Id := Empty;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      From       : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id;
+   --  Generate a conversion between two Ada array types. If Range check
+   --  is set, add a length or range check to the expression. Which
+   --  kind of check, and against which type, is determined by calling
+   --  [Gnat2why.Nodes.Get_Range_Check_Info] on the Range_Check node.
+
    function Insert_Checked_Conversion
      (Ada_Node : Node_Id;
       Ada_Type : Entity_Id;
@@ -196,12 +208,12 @@ package Why.Gen.Expr is
    --  and the node is used to determine the kind of the check.
 
    function Insert_Record_Conversion
-     (Ada_Node    : Node_Id;
-      Domain      : EW_Domain;
-      Expr        : W_Expr_Id;
-      From        : W_Type_Id;
-      To          : W_Type_Id;
-      Discr_Check : Node_Id := Empty) return W_Expr_Id;
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      From       : W_Type_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 

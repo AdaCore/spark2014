@@ -45,17 +45,15 @@ with Gnat2Why.Nodes; use Gnat2Why.Nodes;
 
 package SPARK_Definition is
 
-   Spec_Entities : List_Of_Nodes.List;
-   Body_Entities : List_Of_Nodes.List;
-   --  Lists of entities which are defined in the current unit, that require
-   --  a translation in Why3. One is for entities defined in the spec, and the
-   --  other for entities defined in the body. These lists contains both
-   --  entities in SPARK and entities not in SPARK. Each entity may be
-   --  attached to a declaration or not (for Itypes).
+   Entity_List : List_Of_Nodes.List;
+   --  Lists of entities that should be translated to Why3. This list contains
+   --  both entities in SPARK and entities not in SPARK. VCs should be
+   --  generated only for entities in the current unit. Each entity may
+   --  be attached to a declaration or not (for Itypes).
 
-   All_Entities : Node_Sets.Set;
+   Entity_Set : Node_Sets.Set;
    --  Set of all entities marked so far. This contains both entities from the
-   --  current compiled unit, and also entities from other units.
+   --  current compiled unit, and entities from other units.
 
    procedure Before_Marking (Basename : String);
    --  Create a file to store detailed information about the SPARK status of

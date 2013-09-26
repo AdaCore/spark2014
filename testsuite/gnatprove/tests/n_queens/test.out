@@ -3,6 +3,7 @@ queen.adb:11:27: info: range check proved
 queen.adb:15:10: assertion not proved, requires not Consistent (C, I)
 queen.adb:16:10: info: assertion proved
 queen.adb:16:68: info: range check proved
+queen.adb:21:20: info: length check proved
 queen.adb:24:10: info: loop invariant initialization proved
 queen.adb:24:10: info: loop invariant preservation proved
 queen.adb:25:53: info: index check proved

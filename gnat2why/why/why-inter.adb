@@ -165,7 +165,7 @@ package body Why.Inter is
             --  Only Standard.Boolean is modeled as bool; any other boolean
             --  subtype is modeled as an abstract type to have range checks.
 
-            if UE = Standard_Boolean then
+            if Is_Standard_Boolean_Type (UE) then
                Imports (SI_Boolean) := True;
                Imports (SI_Integer) := True;
             else
@@ -1048,7 +1048,7 @@ package body Why.Inter is
 
    function EW_Abstract (N : Node_Id) return W_Type_Id is
    begin
-      if N = Standard_Boolean then
+      if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
       elsif N = Universal_Fixed then
          return EW_Real_Type;
@@ -1211,7 +1211,7 @@ package body Why.Inter is
             --  before that, as we have seen no cases where this was a
             --  problem for the prover.
 
-            if Ty = Standard_Boolean then
+            if Is_Standard_Boolean_Type (Ty) then
                return EW_Bool;
             elsif Ty = Universal_Fixed then
                return EW_Real;
@@ -1488,7 +1488,7 @@ package body Why.Inter is
    is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
-      if E = Standard_Boolean then
+      if Is_Standard_Boolean_Type (E) then
          return EW_Bool_Type;
       elsif E = Universal_Fixed then
          return EW_Real_Type;

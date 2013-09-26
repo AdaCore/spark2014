@@ -3,7 +3,6 @@ unconstr.adb:11:10: warning: unused assignment to "A" [ineffective]
 unconstr.adb:18:07: warning: statement has no effect [ineffective]
 unconstr.adb:18:10: warning: unused assignment to "A" [ineffective]
 unconstr.adb:11:7: info: precondition proved
-unconstr.adb:11:10: info: range check proved
 unconstr.adb:12:7: assertion not proved, requires A (0) = 1
 unconstr.adb:18:7: info: precondition proved
 unconstr.adb:18:15: info: range check proved

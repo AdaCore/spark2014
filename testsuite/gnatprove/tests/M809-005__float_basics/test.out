@@ -192,6 +192,8 @@ generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at 
 generic_float_tests.adb:406:19: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:421:19: info: postcondition proved, in instantiation at foo.ads:14
+generic_float_tests.adb:426:18: info: length check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:426:18: info: length check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:436:6: disjoint contract cases not proved, in instantiation at foo.ads:9
 generic_float_tests.adb:436:6: complete contract cases not proved, in instantiation at foo.ads:9
 generic_float_tests.adb:436:6: disjoint contract cases not proved, in instantiation at foo.ads:14
@@ -293,6 +295,9 @@ homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: overflow check not proved
 homothetical.adb:13:22: overflow check not proved
 homothetical.adb:13:28: overflow check not proved
+homothetical.adb:31:32: info: length check proved
+homothetical.adb:34:33: info: length check proved
+homothetical.adb:38:29: info: length check proved
 homothetical.adb:41:10: info: loop invariant initialization proved
 homothetical.adb:41:10: info: loop invariant preservation proved
 homothetical.adb:42:40: info: index check proved
