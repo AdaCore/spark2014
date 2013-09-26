@@ -29,7 +29,6 @@ with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
 with Sem_Eval;              use Sem_Eval;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with String_Utils;          use String_Utils;
@@ -45,6 +44,7 @@ with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
+with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Records;       use Why.Gen.Records;
 with Why.Inter;             use Why.Inter;
 
@@ -102,6 +102,250 @@ package body Why.Gen.Expr is
                Subprogram_Full_Source_Name (Current_Subp));
    end Cur_Subp_Name_Label;
 
+   -----------------------------
+   -- Insert_Array_Conversion --
+   -----------------------------
+
+   function Insert_Array_Conversion
+     (Domain     : EW_Domain;
+      Ada_Node   : Node_Id := Empty;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      From       : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id
+   is
+      To_Ent    : constant Entity_Id := Get_Ada_Node (+To);
+      From_Ent  : constant Entity_Id := Get_Ada_Node (+From);
+      Dim       : constant Positive := Positive (Number_Dimensions (To_Ent));
+
+      function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean;
+      --  Check whether a conversion between those types requires sliding.
+
+      function Insert_Length_Check
+        (Expr             : W_Expr_Id;
+         From_Ent, To_Ent : Entity_Id) return W_Prog_Id;
+
+      function Insert_Array_Range_Check
+        (Expr             : W_Expr_Id;
+         From_Ent, To_Ent : Entity_Id) return W_Prog_Id;
+
+      ------------------------------
+      -- Insert_Array_Range_Check --
+      ------------------------------
+
+      function Insert_Array_Range_Check
+        (Expr             : W_Expr_Id;
+         From_Ent, To_Ent : Entity_Id) return W_Prog_Id
+      is
+         Check   : W_Pred_Id;
+         Args    : W_Expr_Array (1 .. 2 * Dim);
+         Arg_Ind : Positive := 1;
+      begin
+         for I in 1 .. Dim loop
+            Add_Attr_Arg
+              (EW_Prog, Args, Expr, From_Ent, Attribute_First, I, Arg_Ind);
+            Add_Attr_Arg
+              (EW_Prog, Args, Expr, From_Ent, Attribute_Last, I, Arg_Ind);
+         end loop;
+         Check :=
+           New_Call (Name   =>
+                       Prefix (Ada_Node => To_Ent,
+                               P        => Full_Name (To_Ent),
+                               N        => "range_check"),
+                     Args   => Args);
+         return New_Located_Assert (Ada_Node, Check, VC_Range_Check);
+      end Insert_Array_Range_Check;
+
+      -------------------------
+      -- Insert_Length_Check --
+      -------------------------
+
+      function Insert_Length_Check
+        (Expr             : W_Expr_Id;
+         From_Ent, To_Ent : Entity_Id) return W_Prog_Id
+      is
+         Check : W_Pred_Id := True_Pred;
+      begin
+         for I in 1 .. Dim loop
+            declare
+               Input_Length    : constant W_Expr_Id :=
+                 Build_Length_Expr (Domain, Expr, From_Ent, I);
+               Expected_Length : constant W_Expr_Id :=
+                 Build_Length_Expr (Domain, Why_Empty, To_Ent, I);
+            begin
+               Check :=
+                 +New_And_Then_Expr
+                   (Domain => EW_Pred,
+                    Left   => +Check,
+                    Right  =>
+                      New_Relation
+                        (Domain  => Domain,
+                         Op_Type => EW_Int,
+                         Op      => EW_Eq,
+                         Left    => +Input_Length,
+                         Right   => +Expected_Length));
+            end;
+         end loop;
+         return New_Located_Assert (Ada_Node, Check, VC_Length_Check);
+      end Insert_Length_Check;
+
+      -----------------
+      -- Needs_Slide --
+      -----------------
+
+      function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
+      begin
+         --  Sliding is needed when we convert to a constrained type and the
+         --  'First of the From type is not known to be equal to the 'First
+         --  of the "To" type.
+
+         --  Sliding is only necessary when converting to a constrained array
+
+         if not Is_Constrained (To_Ent) then
+            return False;
+         end if;
+
+         --  When the "To" is constrained, sliding is always necessary when
+         --  converting from an unconstrained array
+
+         if not Is_Constrained (From_Ent) then
+            return True;
+         end if;
+
+         --  Here we have two constrained types, and we check if the 'First (I)
+         --  of both types differ for some dimension I
+
+         for I in 1 .. Dim loop
+            declare
+               Low_From : constant Node_Id :=
+                 Get_Low_Bound (Nth_Index_Type (From_Ent, Dim));
+               Low_To : constant Node_Id :=
+                 Get_Low_Bound (Nth_Index_Type (To_Ent, Dim));
+            begin
+               if not Is_Static_Expression (Low_From) or else
+                 not Is_Static_Expression (Low_To) or else
+                 Expr_Value (Low_From) /= Expr_Value (Low_To) then
+                  return True;
+               end if;
+            end;
+         end loop;
+
+         --  We statically know that the "first" are actually equal, no sliding
+         --  needed
+
+         return False;
+      end Needs_Slide;
+
+      Needs_Tmp   : Boolean := False;
+      Sliding     : constant Boolean := Needs_Slide (From_Ent, To_Ent);
+      Tmp_Var     : W_Identifier_Id;
+      Arr_Expr    : W_Expr_Id;
+      T           : W_Expr_Id;
+      Arg_Ind     : Positive := 1;
+
+      --  Beginning of processing for Insert_Array_Conversion
+
+   begin
+
+      if To_Ent = From_Ent then
+
+         --  No range check needed
+
+         return Expr;
+      end if;
+
+      --  We need a temp whenever there is a sliding, or when the "from" is
+      --  unconstrained, and only when the expression is not a variable already
+
+      Needs_Tmp := Get_Kind (+Expr) not in W_Identifier | W_Deref
+                     and then (Sliding or else not Is_Constrained (From_Ent));
+
+      if Needs_Tmp then
+         Tmp_Var := New_Temp_Identifier;
+         Arr_Expr := +Tmp_Var;
+      else
+         Arr_Expr := Expr;
+      end if;
+
+      --  ??? do not forget range checks
+
+      if Is_Constrained (To_Ent) then
+         if Sliding then
+            declare
+               Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
+            begin
+               Add_Map_Arg (Domain, Args, Arr_Expr, From_Ent, Arg_Ind);
+               for I in 1 .. Dim loop
+                  Add_Attr_Arg
+                    (Domain, Args, Arr_Expr, From_Ent,
+                     Attribute_First, Dim, Arg_Ind);
+                  Add_Attr_Arg
+                    (Domain, Args, Arr_Expr, To_Ent,
+                     Attribute_First, Dim, Arg_Ind);
+               end loop;
+               T := New_Call
+                 (Domain => Domain,
+                  Name   =>
+                    Prefix (P => To_String (Ada_Array_Name (Int (Dim))),
+                            N => "slide"),
+                  Args   => Args);
+            end;
+         elsif not Is_Constrained (From_Ent) then
+               T :=
+                 New_Call
+                   (Domain => Domain,
+                    Name   =>
+                      Prefix (Ada_Node => From_Ent,
+                              S        => Full_Name (From_Ent),
+                              W        => WNE_To_Array),
+                    Args => (1 => Arr_Expr));
+         else
+            T := Arr_Expr;
+         end if;
+      else
+         declare
+            Args     : W_Expr_Array (1 .. 2 * Dim + 1);
+            Arg_Ind  : Positive := 1;
+         begin
+            Add_Array_Arg (Domain, Args, Arr_Expr, From_Ent, Arg_Ind);
+            T :=
+              New_Call
+                (Domain => Domain,
+                 Name   =>
+                   Prefix (Ada_Node => To_Ent,
+                           S        => Full_Name (To_Ent),
+                           W        => WNE_Of_Array),
+                 Args => Args);
+         end;
+      end if;
+
+      if Domain = EW_Prog and Need_Check then
+         declare
+            Check_Type : constant Entity_Id := Get_Ada_Node (+To);
+         begin
+            if Is_Constrained (Check_Type) then
+               T := +Sequence
+                 (Insert_Length_Check (Arr_Expr, From_Ent, Check_Type),
+                  +T);
+            else
+               T := +Sequence
+                 (Insert_Array_Range_Check (Arr_Expr, From_Ent, Check_Type),
+                 +T);
+            end if;
+         end;
+      end if;
+
+      if Needs_Tmp then
+         T :=
+           New_Binding
+             (Domain  => Domain,
+              Name    => Tmp_Var,
+              Def     => +Expr,
+              Context => T);
+      end if;
+      return T;
+   end Insert_Array_Conversion;
+
    -------------------------------
    -- Insert_Checked_Conversion --
    -------------------------------
@@ -136,60 +380,23 @@ package body Why.Gen.Expr is
       --  is not set appropriately by the frontend on type conversions.
 
       if Is_Record_Conversion (From, To) then
-         declare
-            Discr_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog and Check_Needed then
-                (case Nkind (Parent (Ada_Node)) is
-                   when N_Assignment_Statement |
-                        N_Qualified_Expression |
-                        N_Type_Conversion      =>
-                     Parent (Ada_Node),
-                   when N_Function_Call            |
-                        N_Parameter_Association    |
-                        N_Procedure_Call_Statement =>
-                     Ada_Node,
-                   when others => Empty)
-               else Empty);
-         begin
-            T := Insert_Record_Conversion (Domain      => Domain,
-                                           Ada_Node    => Ada_Node,
-                                           Expr        => T,
-                                           From        => From,
-                                           To          => To,
-                                           Discr_Check => Discr_Check_Node);
-         end;
+         T := Insert_Record_Conversion (Domain     => Domain,
+                                        Ada_Node   => Ada_Node,
+                                        Expr       => T,
+                                        From       => From,
+                                        To         => To,
+                                        Need_Check => Check_Needed);
 
       elsif Is_Array_Conversion (From, To) then
-         declare
-            Range_Check_Node : constant Node_Id :=
-              (if Domain = EW_Prog and Check_Needed then
-                (if Do_Range_Check (Ada_Node) then
-                    Ada_Node
+         --  The flag Do_Length_Check is not set consistently in the
+         --  frontend, so check every array conversion.
 
-                 --  The flag Do_Length_Check is not set consistently in the
-                 --  frontend, so check every array conversion.
-                 elsif Nkind (Parent (Ada_Node)) in
-                   N_Assignment_Statement     |
-                   N_Qualified_Expression     |
-                   N_Function_Call            |
-                   N_Op_And                   |
-                   N_Op_Or                    |
-                   N_Op_Xor                   |
-                   N_Parameter_Association    |
-                   N_Procedure_Call_Statement |
-                   N_Type_Conversion
-                 then
-                    Ada_Node
-                 else Empty)
-               else Empty);
-         begin
-            T := Insert_Array_Conversion (Domain      => Domain,
-                                          Ada_Node    => Ada_Node,
-                                          Expr        => T,
-                                          From        => From,
-                                          To          => To,
-                                          Range_Check => Range_Check_Node);
-         end;
+         T := Insert_Array_Conversion (Domain     => Domain,
+                                       Ada_Node   => Ada_Node,
+                                       Expr       => T,
+                                       From       => From,
+                                       To         => To,
+                                       Need_Check => Check_Needed);
 
       --  Conversion between scalar types
 
@@ -243,12 +450,12 @@ package body Why.Gen.Expr is
    ------------------------------
 
    function Insert_Record_Conversion
-     (Ada_Node    : Node_Id;
-      Domain      : EW_Domain;
-      Expr        : W_Expr_Id;
-      From        : W_Type_Id;
-      To          : W_Type_Id;
-      Discr_Check : Node_Id := Empty) return W_Expr_Id
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      From       : W_Type_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id
    is
       --  Current result expression
       Result : W_Expr_Id := Expr;
@@ -261,9 +468,7 @@ package body Why.Gen.Expr is
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
-      if Eq_Base (To, From)
-        and then Discr_Check = Empty
-      then
+      if Eq_Base (To, From) and not Need_Check then
          return Expr;
       end if;
 
@@ -277,17 +482,9 @@ package body Why.Gen.Expr is
 
       --  2. Possibly perform the discriminant check
 
-      if Present (Discr_Check) then
+      if Domain = EW_Prog and Need_Check then
          declare
-            Check_Entity : constant Entity_Id :=
-              (case Nkind (Discr_Check) is
-                  when N_Assignment_Statement =>
-                     Unique_Entity (Etype (Name (Discr_Check))),
-                  when N_Qualified_Expression |
-                       N_Type_Conversion      =>
-                     Unique_Entity (Etype (Discr_Check)),
-                  when others =>  --  Reach here only for actual parameters
-                     Get_Formal_Type_From_Actual (Discr_Check));
+            Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
          begin
             Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
                                                           Check_Entity,

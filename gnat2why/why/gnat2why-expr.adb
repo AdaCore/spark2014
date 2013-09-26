@@ -1174,52 +1174,78 @@ package body Gnat2Why.Expr is
                --  1/ Before the call (saving into a temporary variable):
                ----------------------------------------------------------
 
-               --  On fetch, range checks are only needed when the formal
-               --  is "in out". Disable them by using the term domain in
-               --  case of "out" parameters.
+               --  On fetch, checks are only needed when the formal is a scalar
+               --  IN or IN OUT, and potentially always needed for composite
+               --  parameters.
 
-               Fetch_Domain  : constant EW_Domain :=
-                                 (if Ekind (Formal) in E_Out_Parameter then
-                                    EW_Term
-                                  else
-                                    EW_Prog);
+               Need_Check_On_Fetch : constant Boolean :=
+                 (if Ekind (Most_Underlying_Type (Etype (Formal)))
+                       in Scalar_Kind
+                  then
+                    Ekind (Formal) /= E_Out_Parameter
+                  else
+                    True);
 
                --  Generate an expression of the form:
                --
                --    to_formal_type (from_actual_type (!actual))
                --
-               --  ... with the appropriate range checks in the case of
-               --  "in out" parameters:
+               --  ... with the appropriate checks if needed.
+
+               Prefetch_Actual : constant W_Prog_Id :=
+                 +Transform_Expr (Actual,
+                                  EW_Prog,
+                                  Params);
 
                Fetch_Actual  : constant W_Prog_Id :=
-                                 +Insert_Checked_Conversion
-                                   (Ada_Node      => Actual,
-                                    Ada_Type => Etype (Actual),
-                                    Domain    => Fetch_Domain,
-                                    Expr =>
-                                      +Transform_Expr (Actual,
-                                                       EW_Prog,
-                                                       Params),
-                                    From     => Actual_T,
-                                    To       => Formal_T);
+                 (if Need_Check_On_Fetch then
+                   +Insert_Checked_Conversion (Ada_Node => Actual,
+                                               Ada_Type => Etype (Actual),
+                                               Domain   => EW_Prog,
+                                               Expr     => +Prefetch_Actual,
+                                               From     => Actual_T,
+                                               To       => Formal_T)
+                  else
+                   +Insert_Simple_Conversion (Ada_Node => Actual,
+                                              Domain   => EW_Prog,
+                                              Expr     => +Prefetch_Actual,
+                                              From     => Actual_T,
+                                              To       => Formal_T));
 
                --  2/ After the call (storing the result):
                -------------------------------------------
+
+               --  On store, checks are only needed when the formal is a scalar
+               --  OUT or IN OUT, and never needed for composite parameters.
+
+               Need_Check_On_Store : constant Boolean :=
+                 (if Ekind (Most_Underlying_Type (Etype (Formal)))
+                       in Scalar_Kind
+                  then
+                    Ekind (Formal) /= E_In_Parameter
+                  else
+                    False);
 
                --  Generate an expression of the form:
                --
                --    to_actual_type_ (from_formal_type (!tmp_var))
                --
-               --  ... with the appropriate range checks...
+               --  ... with the appropriate checks if needed.
 
                Arg_Value     : constant W_Prog_Id :=
-                                 +Insert_Checked_Conversion
-                                   (Ada_Node      => Actual,
-                                    Ada_Type => Etype (Actual),
-                                    Domain    => EW_Prog,
-                                    Expr      => +Tmp_Var_Deref,
-                                    From      => Formal_T,
-                                    To        => Actual_T);
+                 (if Need_Check_On_Store then
+                   +Insert_Checked_Conversion (Ada_Node => Actual,
+                                               Ada_Type => Etype (Actual),
+                                               Domain   => EW_Prog,
+                                               Expr     => +Tmp_Var_Deref,
+                                               From     => Formal_T,
+                                               To       => Actual_T)
+                  else
+                   +Insert_Simple_Conversion (Ada_Node => Actual,
+                                              Domain   => EW_Prog,
+                                              Expr     => +Tmp_Var_Deref,
+                                              From     => Formal_T,
+                                              To       => Actual_T));
 
                --  ...then store it into the actual:
 
