@@ -269,4 +269,8 @@ package SPARK_Util is
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
 
+   function Is_Standard_Boolean_Type (N : Node_Id) return Boolean;
+   --  Returns True if N is a sybtype of Standard_Boolean with the same
+   --  Scalar_Range
+
 end SPARK_Util;

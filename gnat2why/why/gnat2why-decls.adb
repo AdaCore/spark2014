@@ -1233,7 +1233,8 @@ package body Gnat2Why.Decls is
 
             begin
 
-               if Ekind (Formal) in Type_Kind then
+               if Ekind (Formal) in Type_Kind and then
+                 not Full_Name_Is_Not_Unique_Name (Formal) then
 
                   --  For type parameters, generate a theory that renames the
                   --  theory of the actual. Necessary for conversion functions.

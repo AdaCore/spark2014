@@ -144,7 +144,7 @@ package body Gnat2Why.Nodes is
       --  for which Full_Name_Is_Not_Unique_Name returns True.
 
       if Full_Name_Is_Not_Unique_Name (N) then
-         if N = Standard_Boolean then
+         if Is_Standard_Boolean_Type (N) then
             return "bool";
          elsif N = Universal_Fixed then
             return "real";
@@ -176,7 +176,7 @@ package body Gnat2Why.Nodes is
 
    function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean is
    begin
-      return N = Standard_Boolean or else N = Universal_Fixed;
+      return Is_Standard_Boolean_Type (N) or else N = Universal_Fixed;
    end Full_Name_Is_Not_Unique_Name;
 
    -----------------------
@@ -880,7 +880,7 @@ package body Gnat2Why.Nodes is
    is
       E : constant Entity_Id := Type_Of_Node (N);
    begin
-      if E = Standard_Boolean then
+      if Is_Standard_Boolean_Type (E) then
          return Why_Scalar_Type_Name (EW_Bool);
       elsif E = Universal_Fixed then
          return Why_Scalar_Type_Name (EW_Real);

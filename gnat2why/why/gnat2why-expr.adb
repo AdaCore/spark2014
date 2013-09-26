@@ -3177,7 +3177,7 @@ package body Gnat2Why.Expr is
             begin
                case Ekind (Etype (Var)) is
                   when Discrete_Kind =>
-                     if A_Type = Standard_Boolean then
+                     if Is_Standard_Boolean_Type (A_Type) then
                         W_Type := EW_Bool;
                         Ada.Text_IO.Put_Line
                           ("[Transform_Attr] boolean"
@@ -4063,7 +4063,7 @@ package body Gnat2Why.Expr is
 
             if Domain = EW_Pred and then
               Nkind (Expr) = N_Op_Eq and then
-              Etype (Left_Opnd (Expr)) = Standard_Boolean then
+              Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr))) then
                T :=
                  New_Connection
                    (Domain => EW_Pred,

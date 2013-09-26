@@ -30,6 +30,7 @@ with Sem_Util; use Sem_Util;
 with Sinput;   use Sinput;
 with Treepr;   use Treepr;
 with Uintp;    use Uintp;
+with Stand; use Stand;
 
 package body SPARK_Util is
    ------------------
@@ -838,6 +839,19 @@ package body SPARK_Util is
         and then Machine_Emax_Value (E) = Uint_2 ** Uint_7
         and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_7);
    end Is_Single_Precision_Floating_Point_Type;
+
+   ------------------------------
+   -- Is_Standard_Boolean_Type --
+   ------------------------------
+
+   function Is_Standard_Boolean_Type (N : Node_Id) return Boolean is
+   begin
+      return N = Standard_Boolean or else
+        (Nkind (N) in N_Entity and then
+         Ekind (N) = E_Enumeration_Subtype and then
+         Etype (N) = Standard_Boolean and then
+         Scalar_Range (N) = Scalar_Range (Etype (N)));
+   end Is_Standard_Boolean_Type;
 
    ---------------------------------
    -- Package_Has_External_Axioms --

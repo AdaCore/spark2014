@@ -1,4 +1,4 @@
-com_map.ads:50:22: info: precondition proved
+com_map.ads:47:22: info: precondition proved
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: info: loop invariant initialization proved
 deceleration_curve.adb:39:10: loop invariant preservation not proved

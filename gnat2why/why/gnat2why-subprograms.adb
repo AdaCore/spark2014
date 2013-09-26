@@ -33,7 +33,6 @@ with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
-with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with VC_Kinds;               use VC_Kinds;
 
@@ -1217,7 +1216,7 @@ package body Gnat2Why.Subprograms is
       --  There is no need to use the precondition here, as the above axiom
       --  is always sound.
 
-      if Etype (E) = Standard_Boolean then
+      if Is_Standard_Boolean_Type (Etype (E)) then
          Emit
            (File.Cur_Theory,
             New_Defining_Bool_Axiom

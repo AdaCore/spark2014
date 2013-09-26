@@ -34,12 +34,9 @@ package Com_Map is pragma SPARK_Mode (On);
    function Equivalent_Keys (K1, K2 : RBC_RIU_ID_t) return Boolean is
      (K1 = K2);
 
-   --  These subtype is needed until M821-008 is finished
-   subtype My_Boolean is Boolean;
-
    package Com_To_RBC_Map is new Ada.Containers.Formal_Hashed_Maps
      (Key_Type        => RBC_RIU_ID_t,
-      Element_Type    => My_Boolean, -- False: com being established
+      Element_Type    => Boolean, -- False: com being established
                                      -- True : com established
       Hash            => RBC_RIU_ID_Hash,
       Equivalent_Keys => Equivalent_Keys,
