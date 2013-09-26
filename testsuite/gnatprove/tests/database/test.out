@@ -1,3 +1,9 @@
+database.adb:29:07: warning: statement has no effect [ineffective]
+database.adb:32:07: warning: statement has no effect [ineffective]
+database.adb:96:04: warning: statement has no effect [ineffective]
+database.adb:99:04: warning: statement has no effect [ineffective]
+database.adb:171:07: warning: statement has no effect [ineffective]
+database.adb:171:07: warning: unused assignment to "Links" [ineffective]
 database.adb:43:17: info: postcondition proved
 database.adb:51:17: info: postcondition proved
 database.adb:111:21: info: range check proved

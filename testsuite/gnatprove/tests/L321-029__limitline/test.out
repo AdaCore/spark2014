@@ -1,1 +1,7 @@
+database.adb:29:07: warning: statement has no effect [ineffective]
+database.adb:32:07: warning: statement has no effect [ineffective]
+database.adb:96:04: warning: statement has no effect [ineffective]
+database.adb:99:04: warning: statement has no effect [ineffective]
+database.adb:171:07: warning: statement has no effect [ineffective]
+database.adb:171:07: warning: unused assignment to "Links" [ineffective]
 database.ads:53:41: info: precondition proved
