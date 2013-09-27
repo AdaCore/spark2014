@@ -44,9 +44,9 @@ evoting.adb:313:7: info: precondition proved
 evoting.adb:315:7: info: precondition proved
 evoting.ads:56:1: info: postcondition proved
 evoting.ads:58:40: info: index check proved
-evoting.ads:97:9: postcondition not proved, requires Counters_Sum(counters) = number_of_votes
+evoting.ads:95:11: postcondition not proved, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
-evoting.ads:107:22: postcondition not proved, requires counters(winner) > counters(i)
+evoting.ads:110:24: postcondition not proved, requires counters(winner) = counters(i)
 evoting.ads:105:25: info: range check proved
 evoting.ads:106:57: info: index check proved
 evoting.ads:107:50: info: index check proved
