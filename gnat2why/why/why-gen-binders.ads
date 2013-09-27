@@ -139,7 +139,6 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : EW_Type;
-      Ada_Type    : Entity_Id := Empty;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
      return W_Declaration_Id;
@@ -148,10 +147,6 @@ package Why.Gen.Binders is
    --   axiom <name>___def:
    --    forall x1 ... xn.
    --       pre -> (<name> (x1 .. xn) = <def>)
-
-   --  Ada_Type is the Ada entity of the return type. If it is a scalar type,
-   --  the comparison is done in the Why base type, and we expect "def" to be
-   --  of the base type.
 
    function New_Defining_Bool_Axiom
      (Ada_Node : Node_Id := Empty;

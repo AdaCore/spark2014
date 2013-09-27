@@ -23,13 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;            use Atree;
-with Einfo;            use Einfo;
 with Why.Atree.Tables; use Why.Atree.Tables;
 with Why.Conversions;  use Why.Conversions;
 with Why.Gen.Names;    use Why.Gen.Names;
 with Why.Gen.Decl;     use Why.Gen.Decl;
-with Why.Gen.Expr;     use Why.Gen.Expr;
 with Why.Inter;        use Why.Inter;
 
 package body Why.Gen.Binders is
@@ -94,27 +91,15 @@ package body Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : EW_Type;
-      Ada_Type    : Entity_Id := Empty;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
      return W_Declaration_Id
    is
-      Left     : W_Term_Id :=
-                   +New_Call
-                     (Domain  => EW_Term,
-                      Name    => Name,
-                      Binders => Binders);
+      Left : constant W_Term_Id := +New_Call (Domain  => EW_Term,
+                                              Name    => Name,
+                                              Binders => Binders);
       Equality : W_Pred_Id;
    begin
-      if Present (Ada_Type) and then Is_Scalar_Type (Ada_Type) then
-         Left :=
-           +Insert_Simple_Conversion
-           (Domain   => EW_Term,
-            Ada_Node => Ada_Node,
-            Expr     => +Left,
-            To       => Base_Why_Type (Ada_Type),
-            From     => EW_Abstract (Ada_Type));
-      end if;
       Equality :=
         New_Relation
           (Op      => EW_Eq,

@@ -558,10 +558,25 @@ package body Gnat2Why.Decls is
       Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
-      Ty_Ent : constant Entity_Id := Unique_Entity (Etype (E));
-      Use_Ty : constant W_Type_Id :=
-        (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent) else
-            Type_Of_Node (E));
+
+      --  Always use the Ada type for the equality between the constant result
+      --  and the translation of its initialization expression. Using "int"
+      --  instead is tempting to facilitate the job of automatic provers, but
+      --  it is potentially incorrect. For example for:
+
+      --    C : constant Natural := Largest_Int + 1;
+
+      --  we should *not* generate the incorrect axiom:
+
+      --    axiom c__def:
+      --      to_int(c) = to_int(largest_int) + 1
+
+      --  but the correct one:
+
+      --    axiom c__def:
+      --      c = of_int (to_int(largest_int) + 1)
+
+      Use_Ty : constant W_Type_Id := Type_Of_Node (E);
 
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -619,7 +634,6 @@ package body Gnat2Why.Decls is
                  (Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
-                  Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 
@@ -643,7 +657,6 @@ package body Gnat2Why.Decls is
                  (Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
-                  Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 

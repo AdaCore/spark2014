@@ -1338,11 +1338,25 @@ package body Gnat2Why.Subprograms is
 
       else
          declare
-            Ty_Ent  : constant Entity_Id :=
-              Unique_Entity (Etype (E));
-            Equ_Ty  : constant W_Type_Id :=
-              (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent)
-                 else EW_Abstract (Ty_Ent));
+            --  Always use the Ada type for the equality between the function
+            --  result and the translation of its expression body. Using "int"
+            --  instead is tempting to facilitate the job of automatic provers,
+            --  but it is potentially incorrect. For example for:
+
+            --    function F return Natural is (Largest_Int + 1);
+
+            --  we should *not* generate the incorrect axiom:
+
+            --    axiom f__def:
+            --      forall x:natural. to_int(x) = to_int(largest_int) + 1
+
+            --  but the correct one:
+
+            --    axiom f__def:
+            --      forall x:natural. x = of_int (to_int(largest_int) + 1)
+
+            Ty_Ent  : constant Entity_Id := Unique_Entity (Etype (E));
+            Equ_Ty  : constant W_Type_Id := EW_Abstract (Ty_Ent);
             Guard   : constant W_Pred_Id :=
                Compute_Guard_Formula (Logic_Func_Binders);
          begin
@@ -1351,7 +1365,6 @@ package body Gnat2Why.Subprograms is
                New_Defining_Axiom
                  (Name        => Logic_Id,
                   Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
-                  Ada_Type    => Ty_Ent,
                   Binders     => Logic_Func_Binders,
                   Pre         => Guard,
                   Def         =>
