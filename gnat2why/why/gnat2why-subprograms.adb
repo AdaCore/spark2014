@@ -881,7 +881,7 @@ package body Gnat2Why.Subprograms is
    begin
       --  We open a new theory, so that the context is fresh for that package
 
-      Open_Theory (File, Name & "__def",
+      Open_Theory (File, Name & "__package_def",
                    Comment =>
                      "Module for checking absence of run-time errors and "
                        & "package initial condition on package elaboration of "
