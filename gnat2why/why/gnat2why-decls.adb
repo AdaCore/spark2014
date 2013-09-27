@@ -417,82 +417,6 @@ package body Gnat2Why.Decls is
    end Register_External_Entities;
 
    ------------------------
-   -- Translate_Variable --
-   ------------------------
-
-   procedure Translate_Variable
-     (File : in out Why_Section;
-      E     : Entity_Id)
-   is
-      Name : constant String := Full_Name (E);
-      Typ  : constant W_Type_Id :=
-        (if Ekind (E) = E_Loop_Parameter
-         then EW_Int_Type
-         else EW_Abstract (Etype (E)));
-      Decl : constant W_Declaration_Id :=
-        New_Type_Decl
-          (Name  => To_Ident (WNE_Type),
-           Alias => Typ);
-
-      function Normalize_Type (E : Entity_Id) return Entity_Id;
-      --  Choose the correct type to use
-
-      --------------------
-      -- Normalize_Type --
-      --------------------
-
-      function Normalize_Type (E : Entity_Id) return Entity_Id is
-      begin
-         if not (Ekind (E) in Private_Kind) or else
-           Entity_In_External_Axioms (E)
-         then
-            return E;
-         end if;
-         if Entity_In_SPARK (MUT (E)) then
-            return Normalize_Type (MUT (E));
-         end if;
-         return E;
-      end Normalize_Type;
-
-   begin
-      Open_Theory (File, Name,
-                   Comment =>
-                     "Module for defining a ref holding the value of variable "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  Generate an alias for the name of the object's type, based on the
-      --  name of the object. This is useful when generating logic functions
-      --  from Ada functions, to generate additional parameters for the global
-      --  objects read.
-
-      Emit (File.Cur_Theory, Decl);
-
-      if Entity_In_SPARK (MUT (Etype (E))) then
-         Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
-      end if;
-
-      --  We generate a global ref
-
-      Emit
-        (File.Cur_Theory,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E, Local => True),
-            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             E,
-                             Binder_Type'(
-                               Ada_Node => E,
-                               B_Name   => To_Why_Id (E, Typ => Typ),
-                               B_Ent    => null,
-                               Mutable  => True));
-      Close_Theory (File, Filter_Entity => E, No_Import => True);
-   end Translate_Variable;
-
-   ------------------------
    -- Translate_Constant --
    ------------------------
 
@@ -665,6 +589,58 @@ package body Gnat2Why.Decls is
          end if;
       end if;
    end Translate_Constant_Value;
+
+   -------------------------------
+   -- Translate_External_Object --
+   -------------------------------
+
+   procedure Translate_External_Object (E : Entity_Name) is
+      File : Why_Section := Why_Sections (WF_Variables);
+   begin
+      Open_Theory
+        (File, Capitalize_First (E.all),
+         Comment =>
+           "Module declaring the external object """ & E.all &
+           ","" created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
+
+      Emit (File.Cur_Theory,
+            New_Type_Decl (Name => To_Ident (WNE_Type)));
+      Emit
+        (File.Cur_Theory,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E.all, Local => True),
+            Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
+
+      Close_Theory (File, Filter_Entity => Empty, No_Import => True);
+   end Translate_External_Object;
+
+   ---------------------------
+   -- Translate_Loop_Entity --
+   ---------------------------
+
+   procedure Translate_Loop_Entity
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Name : constant String := Full_Name (E);
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining the loop exit exception for the loop"
+                   & """" & Get_Name_String (Chars (E)) & """"
+                   & (if Sloc (E) > 0 then
+                     " defined at " & Build_Location_String (Sloc (E))
+                     else "")
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Emit (File.Cur_Theory,
+            New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
+                                       Arg  => Why_Empty));
+
+      Close_Theory (File, Filter_Entity => E, No_Import => True);
+   end Translate_Loop_Entity;
 
    --------------------------------------------
    -- Translate_Package_With_External_Axioms --
@@ -1471,57 +1447,81 @@ package body Gnat2Why.Decls is
       end if;
    end Translate_Package_With_External_Axioms;
 
-   -------------------------------
-   -- Translate_External_Object --
-   -------------------------------
+   ------------------------
+   -- Translate_Variable --
+   ------------------------
 
-   procedure Translate_External_Object (E : Entity_Name) is
-      File : Why_Section := Why_Sections (WF_Variables);
-   begin
-      Open_Theory
-        (File, Capitalize_First (E.all),
-         Comment =>
-           "Module declaring the external object """ & E.all &
-           ","" created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
-
-      Emit (File.Cur_Theory,
-            New_Type_Decl (Name => To_Ident (WNE_Type)));
-      Emit
-        (File.Cur_Theory,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E.all, Local => True),
-            Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
-
-      Close_Theory (File, Filter_Entity => Empty, No_Import => True);
-   end Translate_External_Object;
-
-   ---------------------------
-   -- Translate_Loop_Entity --
-   ---------------------------
-
-   procedure Translate_Loop_Entity
+   procedure Translate_Variable
      (File : in out Why_Section;
-      E    : Entity_Id)
+      E     : Entity_Id)
    is
       Name : constant String := Full_Name (E);
+      Typ  : constant W_Type_Id :=
+        (if Ekind (E) = E_Loop_Parameter
+         then EW_Int_Type
+         else EW_Abstract (Etype (E)));
+      Decl : constant W_Declaration_Id :=
+        New_Type_Decl
+          (Name  => To_Ident (WNE_Type),
+           Alias => Typ);
+
+      function Normalize_Type (E : Entity_Id) return Entity_Id;
+      --  Choose the correct type to use
+
+      --------------------
+      -- Normalize_Type --
+      --------------------
+
+      function Normalize_Type (E : Entity_Id) return Entity_Id is
+      begin
+         if not (Ekind (E) in Private_Kind) or else
+           Entity_In_External_Axioms (E)
+         then
+            return E;
+         end if;
+         if Entity_In_SPARK (MUT (E)) then
+            return Normalize_Type (MUT (E));
+         end if;
+         return E;
+      end Normalize_Type;
+
    begin
       Open_Theory (File, Name,
                    Comment =>
-                     "Module for defining the loop exit exception for the loop"
-                   & """" & Get_Name_String (Chars (E)) & """"
-                   & (if Sloc (E) > 0 then
-                     " defined at " & Build_Location_String (Sloc (E))
-                     else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                     "Module for defining a ref holding the value of variable "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (File.Cur_Theory,
-            New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
-                                       Arg  => Why_Empty));
+      --  Generate an alias for the name of the object's type, based on the
+      --  name of the object. This is useful when generating logic functions
+      --  from Ada functions, to generate additional parameters for the global
+      --  objects read.
 
+      Emit (File.Cur_Theory, Decl);
+
+      if Entity_In_SPARK (MUT (Etype (E))) then
+         Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
+      end if;
+
+      --  We generate a global ref
+
+      Emit
+        (File.Cur_Theory,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E, Local => True),
+            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Binder_Type'(
+                               Ada_Node => E,
+                               B_Name   => To_Why_Id (E, Typ => Typ),
+                               B_Ent    => null,
+                               Mutable  => True));
       Close_Theory (File, Filter_Entity => E, No_Import => True);
-   end Translate_Loop_Entity;
+   end Translate_Variable;
 
    -----------------------
    -- Use_Why_Base_Type --
