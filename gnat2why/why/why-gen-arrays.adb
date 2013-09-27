@@ -491,12 +491,13 @@ package body Why.Gen.Arrays is
 
    function New_Array_Access
      (Ada_Node  : Node_Id;
-      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
-      Domain    : EW_Domain;
-      Dimension : Pos) return W_Expr_Id
+      Domain    : EW_Domain) return W_Expr_Id
    is
+      Why_Ty    : constant W_Type_Id := Get_Type (Ar);
+      Ty_Entity : constant Entity_Id := Get_Ada_Node (+Why_Ty);
+      Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
         Prefix (Ada_Node => Ty_Entity,
                 S => To_String (Ada_Array_Name (Dimension)),
@@ -523,30 +524,24 @@ package body Why.Gen.Arrays is
    function New_Element_Equality
      (Ada_Node   : Node_Id := Empty;
       Left_Arr   : W_Expr_Id;
-      Left_Type  : Entity_Id;
       Right_Arr  : W_Expr_Id;
-      Right_Type : Entity_Id;
-      Index      : W_Expr_Array;
-      Dimension  : Pos) return W_Pred_Id
+      Index      : W_Expr_Array) return W_Pred_Id
    is
+      Left_Type  : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
       Comp_Type  : constant Node_Id := Component_Type (Left_Type);
       Elmt_Type  : constant W_Type_Id := EW_Abstract (Comp_Type);
       Left       : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
            Domain    => EW_Term,
-           Ty_Entity => Left_Type,
            Ar        => Left_Arr,
-           Index     => Index,
-           Dimension => Dimension);
+           Index     => Index);
       Right      : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
            Domain    => EW_Term,
-           Ty_Entity => Right_Type,
            Ar        => Right_Arr,
-           Index     => Index,
-           Dimension => Dimension);
+           Index     => Index);
       Result     : constant W_Pred_Id :=
         +New_Comparison
         (Domain    => EW_Pred,

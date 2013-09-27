@@ -154,11 +154,9 @@ package Why.Gen.Arrays is
 
    function New_Array_Access
      (Ada_Node  : Node_Id;
-      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
-      Domain    : EW_Domain;
-      Dimension : Pos) return W_Expr_Id;
+      Domain    : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access.
 
    function Array_Convert_To_Base
@@ -180,11 +178,8 @@ package Why.Gen.Arrays is
    function New_Element_Equality
      (Ada_Node   : Node_Id := Empty;
       Left_Arr   : W_Expr_Id;
-      Left_Type  : Entity_Id;
       Right_Arr  : W_Expr_Id;
-      Right_Type : Entity_Id;
-      Index      : W_Expr_Array;
-      Dimension  : Pos) return W_Pred_Id;
+      Index      : W_Expr_Array) return W_Pred_Id;
    --  Return a predicate of the form:
    --
    --    <left_arr>[<index>] = <right_arr>[<index>]

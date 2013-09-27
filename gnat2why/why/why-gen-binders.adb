@@ -538,7 +538,8 @@ package body Why.Gen.Binders is
                                         Name    => Spec (S).Name,
                                         Binders => Binders),
                                    Op      => EW_Eq,
-                                   Right   => +To_Ident (WNE_Result));
+                                   Right   =>
+                                     +New_Result_Ident (Why_Empty));
                            else
                               Spec (S).Post := True_Pred;
                            end if;

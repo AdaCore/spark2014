@@ -566,7 +566,7 @@ package body Why.Gen.Records is
                        To_Program_Space (Why_Name);
                      Post : constant W_Pred_Id :=
                        New_Relation
-                         (Left    => +To_Ident (WNE_Result),
+                         (Left    => +New_Result_Ident (Why_Empty),
                           Op_Type => EW_Abstract,
                           Op      => EW_Eq,
                           Right   =>
@@ -856,7 +856,7 @@ package body Why.Gen.Records is
       Post       : constant W_Pred_Id :=
         New_Relation (Op      => EW_Eq,
                       Op_Type => EW_Abstract,
-                      Left    => +To_Ident (WNE_Result),
+                      Left    => +New_Result_Ident (Why_Empty),
                       Right   => +A_Ident);
       R_Binder   : Binder_Array (1 .. Num_Discr + 1);
       Args       : W_Expr_Array (1 .. Num_Discr + 1);

@@ -209,7 +209,7 @@ package body Why.Gen.Progs is
    begin
       return New_Binder
         (Domain   => EW_Term,
-         Name     => To_Ident (WNE_Result),
+         Name     => New_Result_Ident (T),
          Arg_Type => T);
    end New_Result;
 

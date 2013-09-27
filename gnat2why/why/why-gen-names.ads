@@ -139,6 +139,8 @@ package Why.Gen.Names is
    function New_Temp_Identifiers (Num : Positive) return W_Identifier_Array;
    --  Return an array of new unique identifiers with Num elements
 
+   function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id;
+
    function To_Exprs (Ids : W_Identifier_Array) return W_Expr_Array;
    --  Conversion each element of Ids to exprs and return the result
 
@@ -252,7 +254,6 @@ package Why.Gen.Names is
       WNE_Real_Truncate,
       WNE_Real_Max,
       WNE_Real_Min,
-      WNE_Result,
       WNE_Result_Exc,
       WNE_Sandbox,
       WNE_String,
@@ -283,7 +284,8 @@ package Why.Gen.Names is
    function To_String (W : Why_Name_Enum) return String;
 
    function To_Ident (W        : Why_Name_Enum;
-                      Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+                      Ada_Node : Node_Id := Empty)
+                      return W_Identifier_Id;
 
    function Prefix (S        : String;
                     W        : Why_Name_Enum;

@@ -194,7 +194,6 @@ package body Gnat2Why.Expr is
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
       Prefix_Type : Entity_Id;
-      Val_Type    : Entity_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
    --  same as One_Level_Access, but for updates
@@ -658,7 +657,7 @@ package body Gnat2Why.Expr is
                       +W_Expr_Id'(New_Relation
                       (Domain   => EW_Pred,
                        Op_Type  => EW_Bool,
-                       Left     => +To_Ident (WNE_Result),
+                       Left     => +New_Result_Ident (EW_Abstract (Etype (N))),
                        Op       => EW_Eq,
                        Right    =>
                          +Transform_Expr (N, EW_Term, Params)))),
@@ -1488,7 +1487,6 @@ package body Gnat2Why.Expr is
                                        +Prefix_Expr,
                                        +Expr,
                                        Prefix_Type,
-                                       Expr_Type,
                                        EW_Prog,
                                        Params => Body_Params);
                   N := Prefix (N);
@@ -1562,7 +1560,6 @@ package body Gnat2Why.Expr is
             declare
                Ar      : constant Node_Id := Prefix (N);
                Dim     : constant Pos := Number_Dimensions (Type_Of_Node (Ar));
-               T_Name  : constant Entity_Id := Type_Of_Node (Ar);
                Indices : W_Expr_Array (1 .. Integer (Dim));
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
@@ -1579,10 +1576,8 @@ package body Gnat2Why.Expr is
                   New_Array_Access
                    (Ada_Node  => N,
                     Domain    => Domain,
-                    Ty_Entity => T_Name,
                     Ar        => Expr,
-                    Index     => Indices,
-                    Dimension => Dim);
+                    Index     => Indices);
             end;
 
          when others =>
@@ -1601,7 +1596,6 @@ package body Gnat2Why.Expr is
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
       Prefix_Type : Entity_Id;
-      Val_Type    : Entity_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id is
    begin
@@ -1649,8 +1643,10 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             declare
-               Prefix_Name : constant W_Identifier_Id := New_Temp_Identifier;
-               Value_Name  : constant W_Identifier_Id := New_Temp_Identifier;
+               Prefix_Name : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => Get_Type (Value));
+               Value_Name  : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => Get_Type (Value));
                Prefix_Expr : constant W_Expr_Id :=
                                +Transform_Expr
                                  (Prefix (N),
@@ -1658,7 +1654,8 @@ package body Gnat2Why.Expr is
                                   Params => Params);
                Dim         : constant Pos := Number_Dimensions (Prefix_Type);
                BT          : constant W_Type_Id := EW_Abstract (Prefix_Type);
-               Result_Id   : constant W_Identifier_Id := To_Ident (WNE_Result);
+               Result_Id   : constant W_Identifier_Id :=
+                 New_Result_Ident (BT);
                Binders     : constant W_Identifier_Array :=
                                New_Temp_Identifiers (Positive (Dim));
                Indexes     : constant W_Expr_Array := To_Exprs (Binders);
@@ -1673,19 +1670,13 @@ package body Gnat2Why.Expr is
                In_Slice_Eq : constant W_Pred_Id :=
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
-                                  Left_Type  => Prefix_Type,
                                   Right_Arr  => +Value_Name,
-                                  Right_Type => Val_Type,
-                                  Index      => Indexes,
-                                  Dimension  => Dim);
+                                  Index      => Indexes);
                Unchanged   : constant W_Pred_Id :=
                                New_Element_Equality
                                  (Left_Arr   => +Result_Id,
-                                  Left_Type  => Prefix_Type,
                                   Right_Arr  => +Prefix_Name,
-                                  Right_Type => Val_Type,
-                                  Index      => Indexes,
-                                  Dimension  => Dim);
+                                  Index      => Indexes);
 
                --  ??? Why is the Right_Type above Val_Type and not
                --  Prefix_Type?
@@ -2072,7 +2063,8 @@ package body Gnat2Why.Expr is
          Call          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
 
-         Aggr_Temp     : constant W_Identifier_Id := New_Temp_Identifier;
+         Aggr_Temp     : constant W_Identifier_Id :=
+           New_Temp_Identifier (Ret_Type);
 
          --  Select file for the declarations
 
@@ -2410,10 +2402,8 @@ package body Gnat2Why.Expr is
                        New_Array_Access
                          (Ada_Node => Expr_Or_Association,
                           Domain   => EW_Term,
-                          Dimension => Num_Dim,
                           Ar       => Arr,
-                          Index     => Indexes,
-                          Ty_Entity => Typ);
+                          Index     => Indexes);
                   begin
                      return New_Comparison
                        (Cmp       => EW_Eq,
@@ -3172,10 +3162,7 @@ package body Gnat2Why.Expr is
                     Right    => Name_For_Result,
                     Typ      => Get_Type (+Name_For_Result));
             else
-               T :=
-                 +New_Identifier
-                   (Name => To_String (WNE_Result),
-                    Typ => EW_Abstract (Etype (Var)));
+               T := +New_Result_Ident (EW_Abstract (Etype (Var)));
             end if;
 
          when Attribute_Old =>
@@ -5219,7 +5206,7 @@ package body Gnat2Why.Expr is
                            New_Relation
                              (Domain   => EW_Pred,
                               Op_Type  => EW_Bool,
-                              Left     => +To_Ident (WNE_Result),
+                              Left     => +New_Result_Ident (EW_Bool_Type),
                               Op       => EW_Eq,
                               Right    => +True_Term),
                          Op       => EW_Equivalent,

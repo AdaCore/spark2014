@@ -476,6 +476,11 @@ package body Why.Gen.Names is
       return Result;
    end New_Temp_Identifiers;
 
+   function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return New_Identifier (Name => "result", Typ => Typ);
+   end New_Result_Ident;
+
    --------------
    -- To_Exprs --
    --------------
@@ -509,7 +514,6 @@ package body Why.Gen.Names is
          when WNE_Of_Base      => return "of_base";
          when WNE_Type         => return "t";
          when WNE_Ignore       => return "___ignore";
-         when WNE_Result       => return "result";
          when WNE_Result_Exc   => return "Return__exc";
          when WNE_Range_Check_Fun => return "range_check_";
          when WNE_Eq           => return "eq";
@@ -603,7 +607,8 @@ package body Why.Gen.Names is
    --------------
 
    function To_Ident (W        : Why_Name_Enum;
-                      Ada_Node : Node_Id := Empty) return W_Identifier_Id
+                      Ada_Node : Node_Id := Empty)
+                      return W_Identifier_Id
    is
    begin
       if No (Ada_Node) then
