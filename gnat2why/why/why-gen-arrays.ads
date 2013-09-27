@@ -168,12 +168,10 @@ package Why.Gen.Arrays is
 
    function New_Array_Update
       (Ada_Node  : Node_Id;
-       Ty_Entity : Entity_Id;
        Ar        : W_Expr_Id;
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
-       Domain    : EW_Domain;
-       Dimension : Pos) return W_Expr_Id;
+       Domain    : EW_Domain) return W_Expr_Id;
 
    function New_Element_Equality
      (Ada_Node   : Node_Id := Empty;

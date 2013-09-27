@@ -559,13 +559,14 @@ package body Why.Gen.Arrays is
 
    function New_Array_Update
      (Ada_Node  : Node_Id;
-      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
       Value     : W_Expr_Id;
-      Domain    : EW_Domain;
-      Dimension : Pos) return W_Expr_Id
+      Domain    : EW_Domain) return W_Expr_Id
    is
+      W_Ty      : constant W_Type_Id := Get_Type (Ar);
+      Ty_Entity : constant Entity_Id := Get_Ada_Node (+W_Ty);
+      Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
         Prefix (S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Update);

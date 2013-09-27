@@ -1633,12 +1633,10 @@ package body Gnat2Why.Expr is
                end loop;
                return
                   New_Array_Update (Ada_Node  => N,
-                                    Ty_Entity => Prefix_Type,
                                     Ar        => Pref,
                                     Index     => Indices,
                                     Value     => Value,
-                                    Domain    => Domain,
-                                    Dimension => Dim);
+                                    Domain    => Domain);
             end;
 
          when N_Slice =>
