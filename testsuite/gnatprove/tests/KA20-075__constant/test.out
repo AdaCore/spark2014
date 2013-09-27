@@ -31,5 +31,5 @@ const.ads:24:30: info: overflow check proved
 const.ads:24:35: info: overflow check proved
 const.ads:28:30: info: overflow check proved
 const.ads:28:35: info: overflow check proved
-const.ads:32:30: overflow check not proved
+const.ads:32:30: info: overflow check proved
 const.ads:32:39: info: overflow check proved

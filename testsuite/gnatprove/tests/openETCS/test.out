@@ -3,14 +3,14 @@ deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: info: loop invariant initialization proved
 deceleration_curve.adb:39:10: loop invariant preservation not proved
 deceleration_curve.adb:41:10: assertion not proved
-deceleration_curve.adb:41:34: info: division check proved
-deceleration_curve.adb:41:48: info: division check proved
+deceleration_curve.adb:41:34: division check not proved
+deceleration_curve.adb:41:48: division check not proved
 deceleration_curve.adb:42:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
-deceleration_curve.adb:44:38: info: division check proved
+deceleration_curve.adb:44:38: division check not proved
 deceleration_curve.adb:45:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
-deceleration_curve.adb:48:39: info: division check proved
-deceleration_curve.adb:50:48: info: division check proved
-deceleration_curve.adb:50:48: info: overflow check proved
+deceleration_curve.adb:48:39: division check not proved
+deceleration_curve.adb:50:48: division check not proved
+deceleration_curve.adb:50:48: overflow check not proved
 deceleration_curve.adb:51:12: overflow check not proved
 deceleration_curve.adb:53:10: assertion not proved
 deceleration_curve.adb:59:25: overflow check not proved
@@ -30,7 +30,7 @@ deceleration_curve.adb:97:36: range check not proved
 deceleration_curve.adb:107:9: precondition not proved
 deceleration_curve.adb:111:12: precondition not proved
 deceleration_curve.ads:27:6: info: precondition proved
-deceleration_curve_test.adb:6:31: info: precondition proved
+deceleration_curve_test.adb:6:31: precondition not proved
 deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: precondition not proved
 deceleration_curve_test.adb:17:4: info: precondition proved
@@ -46,7 +46,7 @@ sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:243:46: precondition not proved
 sec_3_13_6_deceleration.adb:26:37: range check not proved
 sec_3_13_6_deceleration.adb:26:37: precondition not proved
 sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
@@ -56,14 +56,14 @@ sec_3_13_6_deceleration.ads:45:23: precondition not proved
 sec_3_13_6_deceleration.ads:46:23: overflow check not proved
 sec_3_13_6_deceleration.ads:46:26: precondition not proved
 sec_3_13_6_deceleration.ads:46:38: overflow check not proved
-sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
+sec_3_13_6_deceleration.ads:46:50: overflow check not proved
 sec_3_13_6_deceleration.ads:46:57: overflow check not proved
 sec_3_13_6_deceleration.ads:46:59: precondition not proved
 sec_3_13_6_deceleration.ads:47:22: overflow check not proved
 sec_3_13_6_deceleration.ads:47:22: range check not proved
 sec_3_13_6_deceleration.ads:47:30: precondition not proved
-sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
-sec_3_13_6_deceleration.ads:52:26: info: range check proved
+sec_3_13_6_deceleration.ads:52:26: overflow check not proved
+sec_3_13_6_deceleration.ads:52:26: range check not proved
 sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:75:14: postcondition not proved, requires Contains(Connections, destination)
@@ -183,3 +183,4 @@ units.ads:37:22: overflow check not proved
 units.ads:37:32: info: division check proved
 units.ads:37:32: overflow check not proved
 units.ads:43:20: info: precondition proved
+An error occurred when calling the prover.

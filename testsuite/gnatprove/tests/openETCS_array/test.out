@@ -8,7 +8,7 @@ deceleration_curve.adb:43:38: info: division check proved
 deceleration_curve.adb:44:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
 deceleration_curve.adb:49:48: info: division check proved
-deceleration_curve.adb:49:48: info: overflow check proved
+deceleration_curve.adb:49:48: overflow check not proved
 deceleration_curve.adb:50:12: overflow check not proved
 deceleration_curve.adb:52:10: assertion not proved
 deceleration_curve.adb:58:25: overflow check not proved
@@ -54,14 +54,14 @@ sec_3_13_6_deceleration.ads:45:23: precondition not proved
 sec_3_13_6_deceleration.ads:46:23: overflow check not proved
 sec_3_13_6_deceleration.ads:46:26: precondition not proved
 sec_3_13_6_deceleration.ads:46:38: overflow check not proved
-sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
+sec_3_13_6_deceleration.ads:46:50: overflow check not proved
 sec_3_13_6_deceleration.ads:46:57: overflow check not proved
 sec_3_13_6_deceleration.ads:46:59: precondition not proved
 sec_3_13_6_deceleration.ads:47:22: overflow check not proved
 sec_3_13_6_deceleration.ads:47:22: range check not proved
 sec_3_13_6_deceleration.ads:47:30: precondition not proved
-sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
-sec_3_13_6_deceleration.ads:52:26: info: range check proved
+sec_3_13_6_deceleration.ads:52:26: overflow check not proved
+sec_3_13_6_deceleration.ads:52:26: range check not proved
 sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:77:14: postcondition not proved, requires Contains(Connections, destination)
@@ -174,9 +174,9 @@ step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(
 step_function_test.adb:66:19: info: precondition proved
 step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) = 
 step_function_test.adb:67:19: info: precondition proved
-units.adb:24:29: info: overflow check proved
+units.adb:24:29: overflow check not proved
 units.adb:24:39: info: division check proved
-units.adb:24:39: info: overflow check proved
+units.adb:24:39: overflow check not proved
 units.adb:29:38: overflow check not proved
 units.adb:29:48: info: division check proved
 units.adb:29:48: overflow check not proved
