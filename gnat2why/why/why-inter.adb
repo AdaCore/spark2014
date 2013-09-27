@@ -1258,7 +1258,7 @@ package body Why.Inter is
          return
            Get_Name_String
              (Identifier_Get_Symbol
-                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).B_Name));
+                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).Main.B_Name));
       else
          return Full_Name (N);
       end if;

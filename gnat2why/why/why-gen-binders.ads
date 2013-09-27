@@ -56,6 +56,35 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
+   type Item_Enum is (Regular, UCArray);
+
+   type Item_Bounds is record
+      First : W_Identifier_Id;
+      Last  : W_Identifier_Id;
+   end record;
+
+   type Array_Bounds is array (1 .. 4) of Item_Bounds;
+
+   type Item_Type (Kind : Item_Enum := Regular) is record
+      Main : Binder_Type;
+      case Kind is
+         when Regular => null;
+         when UCArray =>
+            Dim    : Positive;
+            Bounds : Array_Bounds;
+      end case;
+   end record;
+
+   type Item_Array is array (Positive range <>) of Item_Type;
+
+   function Item_Array_Length (Arr : Item_Array) return Natural;
+   --  Return the number of variables that is introduced by the given
+   --  item_array (counting items plus e.g. array bounds)
+
+   function To_Binder_Array (A : Item_Array) return Binder_Array;
+   --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
+   --  bounds to binders
+
    function New_Binders
      (Anonymous_Binders : W_Type_Array)
      return Binder_Array;

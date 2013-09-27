@@ -58,6 +58,22 @@ package body Why.Gen.Binders is
         (Theory, Ada_Node, Binders, Return_Type, Spec0);
    end Emit_Top_Level_Declarations;
 
+   -----------------------
+   -- Item_Array_Length --
+   -----------------------
+
+   function Item_Array_Length (Arr : Item_Array) return Natural is
+      Count : Natural := 0;
+   begin
+      for Index in Arr'Range loop
+         case Arr (Index).Kind is
+            when Regular => Count := Count + 1;
+            when UCArray => Count := Count + 1 + 2 * Arr (Index).Dim;
+         end case;
+      end loop;
+      return Count;
+   end Item_Array_Length;
+
    -----------------
    -- New_Binders --
    -----------------
@@ -618,6 +634,39 @@ package body Why.Gen.Binders is
          end;
       end loop;
    end Set_Top_Level_Declarations;
+
+   ---------------------
+   -- To_Binder_Array --
+   ---------------------
+
+   function To_Binder_Array (A : Item_Array) return Binder_Array is
+      Result : Binder_Array (1 .. Item_Array_Length (A));
+      Count  : Natural := 1;
+   begin
+      for Index in A'Range loop
+         declare
+            Cur : Item_Type renames A (Index);
+         begin
+            Result (Count) := Cur.Main;
+            Count := Count + 1;
+            case Cur.Kind is
+               when Regular =>
+                  null;
+               when UCArray =>
+                  for Dim_Index in 1 .. Cur.Dim loop
+                     Result (Count) :=
+                       (B_Name => Cur.Bounds (Dim_Index).First,
+                        others => <>);
+                     Result (Count + 1) :=
+                       (B_Name => Cur.Bounds (Dim_Index).Last,
+                        others => <>);
+                     Count := Count + 2;
+                  end loop;
+            end case;
+         end;
+      end loop;
+      return Result;
+   end To_Binder_Array;
 
    ----------------
    -- Unit_Param --

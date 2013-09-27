@@ -913,7 +913,7 @@ package body Gnat2Why.Expr is
                   --  stored.
 
                   if Ada_Ent_To_Why.Has_Element (C) then
-                     T := +Ada_Ent_To_Why.Element (C).B_Name;
+                     T := +Ada_Ent_To_Why.Element (C).Main.B_Name;
                   else
                      T := +To_Why_Id (Elt.all, Local => False);
                   end if;
@@ -1857,11 +1857,9 @@ package body Gnat2Why.Expr is
                 (Name => Full_Name (Defining_Identifier (N)),
                  Typ  => EW_Abstract (Etype (Defining_Identifier (N))));
 
-            Ada_Ent_To_Why.Insert
-              (Symbol_Table,
-               Defining_Identifier (N),
-               Binder_Type'(B_Name => Id,
-                            others => <>));
+            Insert_Entity
+              (Defining_Identifier (N),
+               Id);
          end if;
 
          Next (N);
@@ -2075,10 +2073,11 @@ package body Gnat2Why.Expr is
 
          Ada_Ent_To_Why.Insert (Extra_Modules_Map,
                                 Expr,
-                                Binder_Type'(B_Name   => Func,
-                                             B_Ent    => null,
-                                             Ada_Node => Empty,
-                                             Mutable  => False));
+                                (Regular,
+                                 Binder_Type'(B_Name   => Func,
+                                              B_Ent    => null,
+                                              Ada_Node => Empty,
+                                              Mutable  => False)));
 
          --  Compute the parameters/arguments for the axiom/call
 
@@ -2101,7 +2100,7 @@ package body Gnat2Why.Expr is
                --  Fill in mapping from Ada nodes to Why identifiers for the
                --  generation of the proposition in the defining axiom.
 
-               Ada_Ent_To_Why.Insert (Args_Map, Element (Value), B);
+               Ada_Ent_To_Why.Insert (Args_Map, Element (Value), (Regular, B));
 
                Next (Typ);
                Next (Value);
@@ -2395,7 +2394,7 @@ package body Gnat2Why.Expr is
                      Elmt_Type : constant W_Type_Id :=
                                    EW_Abstract (Exp_Type);
                      Value     : constant W_Expr_Id :=
-                                   +Ada_Ent_To_Why.Element (Args, Expr).B_Name;
+                       +Ada_Ent_To_Why.Element (Args, Expr).Main.B_Name;
                      Read      : constant W_Expr_Id :=
                        New_Array_Access
                          (Ada_Node => Expr_Or_Association,
@@ -2788,7 +2787,7 @@ package body Gnat2Why.Expr is
            Complete_Translation
              (Params,
               Domain,
-              Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).B_Name,
+              Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).Main.B_Name,
               Values,
               Types,
               Index_Values,
@@ -4007,13 +4006,12 @@ package body Gnat2Why.Expr is
             declare
                C : constant Ada_Ent_To_Why.Cursor :=
                  Ada_Ent_To_Why.Find (Extra_Modules_Map, Expr);
-               B : Binder_Type;
             begin
                if not Ada_Ent_To_Why.Has_Element (C) then
                   Transform_String_Literal (Local_Params, Expr);
                end if;
-               B := Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr);
-               T := +B.B_Name;
+               T :=
+                 +Ada_Ent_To_Why.Element (Extra_Modules_Map, Expr).Main.B_Name;
             end;
 
          when N_Identifier | N_Expanded_Name =>
@@ -4747,11 +4745,7 @@ package body Gnat2Why.Expr is
       --  * quantified variables (use local name instead of global name)
 
       if Ada_Ent_To_Why.Has_Element (C) then
-         declare
-            Why_Ent : constant Binder_Type := Ada_Ent_To_Why.Element (C);
-         begin
-            T := +Why_Ent.B_Name;
-         end;
+         T := +Ada_Ent_To_Why.Element (C).Main.B_Name;
 
       elsif Ekind (Ent) = E_Enumeration_Literal then
          T := Transform_Enum_Literal (Expr, Ent, Domain);
@@ -5115,12 +5109,7 @@ package body Gnat2Why.Expr is
       --  enriched by the loop parameter
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             Index_Ent,
-                             Binder_Type'(Ada_Node => Index_Ent,
-                                          B_Name   => Why_Id,
-                                          B_Ent    => null,
-                                          Mutable  => False));
+      Insert_Entity (Index_Ent, Why_Id);
       Cond_Expr := Transform_Expr (Condition (Expr), Domain, Params);
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
@@ -5671,10 +5660,12 @@ package body Gnat2Why.Expr is
 
       Ada_Ent_To_Why.Insert (M => Extra_Modules_Map,
                              E => N,
-                             W => Binder_Type'(B_Name   => Id,
+                             W =>
+                               (Regular,
+                                Binder_Type'(B_Name   => Id,
                                                B_Ent    => null,
                                                Mutable  => False,
-                                               Ada_Node => Empty));
+                                               Ada_Node => Empty)));
    end Transform_String_Literal;
 
    -------------------------------

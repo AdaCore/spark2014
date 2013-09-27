@@ -377,17 +377,11 @@ package body Gnat2Why.Decls is
                declare
                   E : constant Entity_Id := Defining_Entity (N);
                begin
-                  Ada_Ent_To_Why.Insert
-                    (Symbol_Table,
-                     E,
-                     Binder_Type'(Ada_Node => E,
-                                  B_Name   =>
-                                    To_Why_Id (E,
-                                      Typ => EW_Abstract (Etype (E))),
-                                  B_Ent    => null,
-                                  Mutable  =>
-                                    Ekind (E) in Object_Kind and then
-                                  Is_Mutable_In_Why (E)));
+                  Insert_Entity
+                    (E,
+                     To_Why_Id (E, Typ => EW_Abstract (Etype (E))),
+                     Mutable => Ekind (E) in Object_Kind and then
+                     Is_Mutable_In_Why (E));
                end;
             end if;
 
@@ -450,13 +444,7 @@ package body Gnat2Why.Decls is
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             E,
-                             Binder_Type'(
-                               Ada_Node => E,
-                               B_Name   => To_Why_Id (E, Typ => Typ),
-                               B_Ent    => null,
-                               Mutable  => False));
+      Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
                     Filter_Entity  => E,
                     Defined_Entity => E);
@@ -1513,13 +1501,7 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             E,
-                             Binder_Type'(
-                               Ada_Node => E,
-                               B_Name   => To_Why_Id (E, Typ => Typ),
-                               B_Ent    => null,
-                               Mutable  => True));
+      Insert_Entity (E, To_Why_Id (E, Typ => Typ), Mutable => True);
       Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Variable;
 

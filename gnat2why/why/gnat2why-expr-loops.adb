@@ -40,7 +40,6 @@ with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
@@ -488,13 +487,7 @@ package body Gnat2Why.Expr.Loops is
                       Domain => EW_Prog,
                       Typ    => EW_Int_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Ada_Ent_To_Why.Insert (Symbol_Table,
-                                Loop_Param_Ent,
-                                Binder_Type'(
-                                  Ada_Node => Loop_Param_Ent,
-                                  B_Name   => Loop_Index,
-                                  B_Ent    => null,
-                                  Mutable  => True));
+         Insert_Entity (Loop_Param_Ent, Loop_Index, Mutable => True);
       end if;
 
       --  Retrieve the different parts of the loop

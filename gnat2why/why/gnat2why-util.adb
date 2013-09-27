@@ -43,12 +43,12 @@ package body Gnat2Why.Util is
       -------------
 
       function Element (M : Map; E : Entity_Id)
-                            return Binder_Type is
+                            return Item_Type is
       begin
          return M.Entity_Ids.Element (E);
       end Element;
 
-      function Element (C : Cursor) return Binder_Type is
+      function Element (C : Cursor) return Item_Type is
       begin
          case C.Kind is
             when CK_Ent =>
@@ -122,7 +122,7 @@ package body Gnat2Why.Util is
 
       procedure Insert (M : in out Map;
                         E : Entity_Id;
-                        W : Binder_Type)
+                        W : Item_Type)
       is
          C : Ent_To_Why.Cursor;
          Inserted : Boolean;
@@ -155,7 +155,7 @@ package body Gnat2Why.Util is
 
       procedure Insert (M : in out Map;
                         E : Entity_Name;
-                        W : Binder_Type) is
+                        W : Item_Type) is
          C : Name_To_Why_Map.Cursor;
          Inserted : Boolean;
       begin
@@ -306,6 +306,24 @@ package body Gnat2Why.Util is
       end loop;
       return Result;
    end Create_Zero_Binding;
+
+   -------------------
+   -- Insert_Entity --
+   -------------------
+
+   procedure Insert_Entity (E       : Entity_Id;
+                            Name    : W_Identifier_Id;
+                            Mutable : Boolean := False) is
+   begin
+      Ada_Ent_To_Why.Insert (Symbol_Table,
+                             E,
+                             Item_Type'(Regular,
+                               Binder_Type'(
+                                 B_Name   => Name,
+                                 B_Ent    => null,
+                                 Ada_Node => E,
+                                 Mutable  => Mutable)));
+   end Insert_Entity;
 
    -----------------------
    -- Is_Mutable_In_Why --
