@@ -402,7 +402,7 @@ There are no dynamic semantics associated with these aspects.
          with Volatile,
               Async_Readers,
               Address => System.Storage_Elements.To_Address (16#ACECAFE#);
-   end Input_Port;
+   end Output_Port;
 
    with System.Storage_Elements;
    package Multiple_Ports
