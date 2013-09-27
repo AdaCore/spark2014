@@ -32,12 +32,7 @@ with Get_SPARK_Xrefs;
 with Output;                 use Output;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
 with SPARK_Xrefs;            use SPARK_Xrefs;
-
-with SPARK_Util;             use SPARK_Util;
-
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 package body SPARK_Frame_Conditions is
 
@@ -577,7 +572,6 @@ package body SPARK_Frame_Conditions is
         Make_Entity_Name (Name'Unrestricted_Access);
       E_Id    : Id;
       Read_Ids : Id_Set.Set := Id_Set.Empty_Set;
-      Global_Node : constant Node_Id := Get_Pragma (E_Alias, Pragma_Global);
 
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
@@ -588,35 +582,7 @@ package body SPARK_Frame_Conditions is
       end if;
 
       E_Id := Entity_Ids.Element (E_Name);
-
-      if Present (Global_Node) then
-         declare
-            Reads  : Node_Sets.Set;
-            Writes : Node_Sets.Set;
-         begin
-            Get_Global_Items (Global_Node,
-                              Reads  => Reads,
-                              Writes => Writes);
-            for R of Reads loop
-               --  References to constant objects are not considered in SPARK
-               --  section, as these will be translated as constants in the
-               --  intermediate language for formal verification, and should
-               --  therefore never appear in frame conditions.
-
-               if not Is_Constant_Object (R) then
-                  declare
-                     Name    : aliased constant String := Unique_Name (R);
-                     R_Name  : constant Entity_Name    :=
-                       Make_Entity_Name (Name'Unrestricted_Access);
-                  begin
-                     Read_Ids.Include (Entity_Ids.Element (R_Name));
-                  end;
-               end if;
-            end loop;
-         end;
-      else
-         Read_Ids := Reads.Element (E_Id);
-      end if;
+      Read_Ids := Reads.Element (E_Id);
 
       return To_Names (Read_Ids - Defines.Element (E_Id));
    exception
@@ -641,7 +607,6 @@ package body SPARK_Frame_Conditions is
         Make_Entity_Name (Name'Unrestricted_Access);
       E_Id    : Id;
       Write_Ids : Id_Set.Set := Id_Set.Empty_Set;
-      Global_Node : constant Node_Id := Get_Pragma (E_Alias, Pragma_Global);
 
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
@@ -652,28 +617,7 @@ package body SPARK_Frame_Conditions is
       end if;
 
       E_Id := Entity_Ids.Element (E_Name);
-
-      if Present (Global_Node) then
-         declare
-            Reads  : Node_Sets.Set;
-            Writes : Node_Sets.Set;
-         begin
-            Get_Global_Items (Global_Node,
-                              Reads  => Reads,
-                              Writes => Writes);
-            for W of Writes loop
-               declare
-                  Name    : aliased constant String := Unique_Name (W);
-                  W_Name  : constant Entity_Name    :=
-                    Make_Entity_Name (Name'Unrestricted_Access);
-               begin
-                  Write_Ids.Include (Entity_Ids.Element (W_Name));
-               end;
-            end loop;
-         end;
-      else
-         Write_Ids := Writes.Element (E_Id);
-      end if;
+      Write_Ids := Writes.Element (E_Id);
 
       return To_Names (Write_Ids - Defines.Element (E_Id));
    exception

@@ -505,12 +505,6 @@ package body SPARK_Definition is
             Param_Id : Entity_Id;
 
          begin
-            if Has_Global_Writes (Id) then
-               Mark_Violation
-                 ("function with side-effects", Id, NIR_Impure_Function);
-               return;
-            end if;
-
             if Is_Non_Empty_List (Params) then
                Param := First (Params);
                while Present (Param) loop
