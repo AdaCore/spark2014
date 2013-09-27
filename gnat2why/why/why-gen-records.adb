@@ -378,7 +378,8 @@ package body Why.Gen.Records is
                             Expr   =>
                               New_Record_Access
                                 (Name => +A_Ident,
-                                 Field => Orig_Id)));
+                                 Field => Orig_Id,
+                                 Typ   => EW_Abstract (Etype (Orig)))));
                   To_Root_Aggr (Index) :=
                     New_Field_Association
                       (Domain => EW_Term,
@@ -391,7 +392,8 @@ package body Why.Gen.Records is
                             Expr   =>
                               New_Record_Access
                                 (Name  => +A_Ident,
-                                 Field => Field_Id)));
+                                 Field => Field_Id,
+                                 Typ   => EW_Abstract (Etype (Field)))));
                   Seen.Include (Orig);
                   Index := Index + 1;
                end;

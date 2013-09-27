@@ -2820,7 +2820,6 @@ package body Gnat2Why.Expr is
       Left      : constant Node_Id := Left_Opnd (Expr);
       Right     : constant Node_Id := Right_Opnd (Expr);
       Left_Ty   : constant Entity_Id := Etype (Left);
-      Right_Ty  : constant Entity_Id := Etype (Right);
       Dim       : constant Positive := Positive (Number_Dimensions (Left_Ty));
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
@@ -2835,24 +2834,24 @@ package body Gnat2Why.Expr is
       Left_Expr : constant W_Expr_Id :=
         Transform_Expr (Left, Subdomain, Params);
       Left_Name : constant W_Expr_Id :=
-        (if Left_Simp then Left_Expr else +New_Temp_Identifier);
+        (if Left_Simp then Left_Expr
+         else +New_Temp_Identifier (Get_Type (Left_Expr)));
       Right_Expr : constant W_Expr_Id :=
         Transform_Expr (Right, Subdomain, Params);
       Right_Name : constant W_Expr_Id :=
-        (if Right_Simp then Right_Expr else +New_Temp_Identifier);
+        (if Right_Simp then Right_Expr
+         else +New_Temp_Identifier (Get_Type (Right_Expr)));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg
         (Subdomain,
          Args,
          Left_Name,
-         Left_Ty,
          Arg_Ind);
       Add_Array_Arg
         (Subdomain,
          Args,
          Right_Name,
-         Right_Ty,
          Arg_Ind);
       T :=
         New_Call
@@ -2986,8 +2985,7 @@ package body Gnat2Why.Expr is
            Insert_Array_Conversion
              (Domain => Domain,
               Expr   => Tmp_Expr,
-              To     => Type_Of_Node (Etype (Expr)),
-              From   => Get_Type (Tmp_Expr));
+              To     => Type_Of_Node (Etype (Expr)));
 
       --  Even when there is no conversion, we still need to change the type
       --  node of the resulting expression. We do this by putting a dummy label
@@ -3016,13 +3014,11 @@ package body Gnat2Why.Expr is
             Ar_Low   : constant W_Expr_Id :=
               Get_Array_Attr (Domain => EW_Pred,
                               Expr   => Tmp_Expr,
-                              Ty     => Ty_Ent,
                               Attr   => Attribute_First,
                               Dim    => 1);
             Ar_High  : constant W_Expr_Id :=
               Get_Array_Attr (Domain => EW_Pred,
                               Expr   => Tmp_Expr,
-                              Ty     => Ty_Ent,
                               Attr   => Attribute_Last,
                               Dim    => 1);
             Check    : constant W_Pred_Id :=
@@ -3301,7 +3297,7 @@ package body Gnat2Why.Expr is
                         begin
                            T :=
                              Get_Array_Attr
-                               (Domain, Why_Expr, Ty_Ent, Attr_Id,
+                               (Domain, Why_Expr, Attr_Id,
                                 Positive (UI_To_Int (Dim)));
                            if Domain = EW_Prog then
                               T :=

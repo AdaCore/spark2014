@@ -35,6 +35,7 @@ with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Types;      use Gnat2Why.Types;
 
 with Why.Conversions;     use Why.Conversions;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Expr;        use Why.Gen.Expr;
@@ -65,9 +66,11 @@ package body Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive)
    is
+      W_Ty    : constant W_Type_Id := Get_Type (Expr);
+      pragma Assert (Get_Base_Type (W_Ty) = EW_Abstract);
+      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
       if Is_Constrained (Ty) then
@@ -93,13 +96,25 @@ package body Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
+      Attr    : Attribute_Id;
+      Dim     : Positive;
+      Arg_Ind : in out Positive)
+   is
+   begin
+      Args (Arg_Ind) := Get_Array_Attr (Domain, Expr, Attr, Dim);
+      Arg_Ind := Arg_Ind + 1;
+   end Add_Attr_Arg;
+
+   procedure Add_Attr_Arg
+     (Domain  : EW_Domain;
+      Args    : in out W_Expr_Array;
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
       Arg_Ind : in out Positive)
    is
    begin
-      Args (Arg_Ind) := Get_Array_Attr (Domain, Expr, Ty, Attr, Dim);
+      Args (Arg_Ind) := Get_Array_Attr (Domain, Ty, Attr, Dim);
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -111,15 +126,17 @@ package body Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive)
    is
+      W_Ty    : constant W_Type_Id := Get_Type (Expr);
+      pragma Assert (Get_Base_Type (W_Ty) = EW_Abstract);
+      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Dim     : constant Positive := Positive (Number_Dimensions (Ty));
    begin
-      Add_Map_Arg (Domain, Args, Expr, Ty, Arg_Ind);
+      Add_Map_Arg (Domain, Args, Expr, Arg_Ind);
       for I in 1 .. Dim loop
-         Add_Attr_Arg (Domain, Args, Expr, Ty, Attribute_First, I, Arg_Ind);
-         Add_Attr_Arg (Domain, Args, Expr, Ty, Attribute_Last, I, Arg_Ind);
+         Add_Attr_Arg (Domain, Args, Expr, Attribute_First, I, Arg_Ind);
+         Add_Attr_Arg (Domain, Args, Expr, Attribute_Last, I, Arg_Ind);
       end loop;
    end Add_Array_Arg;
 
@@ -162,14 +179,25 @@ package body Why.Gen.Arrays is
    function Build_Length_Expr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
+      Dim    : Positive) return W_Expr_Id is
+   begin
+      return
+        Build_Length_Expr
+          (Domain,
+           Get_Array_Attr (Domain, Expr, Attribute_First, Dim),
+           Get_Array_Attr (Domain, Expr, Attribute_Last, Dim));
+   end Build_Length_Expr;
+
+   function Build_Length_Expr
+     (Domain : EW_Domain;
       Ty     : Entity_Id;
       Dim    : Positive) return W_Expr_Id is
    begin
       return
         Build_Length_Expr
           (Domain,
-           Get_Array_Attr (Domain, Expr, Ty, Attribute_First, Dim),
-           Get_Array_Attr (Domain, Expr, Ty, Attribute_Last, Dim));
+           Get_Array_Attr (Domain, Ty, Attribute_First, Dim),
+           Get_Array_Attr (Domain, Ty, Attribute_Last, Dim));
    end Build_Length_Expr;
 
    -----------------------
@@ -404,6 +432,24 @@ package body Why.Gen.Arrays is
       end if;
    end Declare_Unconstrained;
 
+   ---------------------------
+   -- Get_Constr_Array_Attr --
+   ---------------------------
+
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id is
+   begin
+      if Attr in Attribute_First | Attribute_Last then
+         return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
+      else
+         return
+           Build_Length_Expr (Domain, Ty, Dim);
+      end if;
+   end Get_Array_Attr;
+
    --------------------
    -- Get_Array_Attr --
    --------------------
@@ -411,19 +457,16 @@ package body Why.Gen.Arrays is
    function Get_Array_Attr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
-      Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id
    is
+      W_Ty    : constant W_Type_Id := Get_Type (Expr);
+      pragma Assert (Get_Base_Type (W_Ty) = EW_Abstract);
+      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
       if Is_Constrained (Ty) then
-         if Attr in Attribute_First | Attribute_Last then
-            return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
-         else
-            return
-              Build_Length_Expr (Domain, Expr, Ty, Dim);
-         end if;
+         return Get_Array_Attr (Domain, Ty, Attr, Dim);
       else
          return
            New_Call

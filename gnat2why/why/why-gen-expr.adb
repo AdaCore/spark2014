@@ -211,9 +211,9 @@ package body Why.Gen.Expr is
       Ada_Node   : Node_Id := Empty;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      From       : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id
    is
+      From      : constant W_Type_Id := Get_Type (Expr);
       To_Ent    : constant Entity_Id := Get_Ada_Node (+To);
       From_Ent  : constant Entity_Id := Get_Ada_Node (+From);
       Dim       : constant Positive := Positive (Number_Dimensions (To_Ent));
@@ -222,20 +222,20 @@ package body Why.Gen.Expr is
       --  Check whether a conversion between those types requires sliding.
 
       function Insert_Length_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id;
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id;
 
       function Insert_Array_Range_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id;
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id;
 
       ------------------------------
       -- Insert_Array_Range_Check --
       ------------------------------
 
       function Insert_Array_Range_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id
       is
          Check   : W_Pred_Id;
          Args    : W_Expr_Array (1 .. 2 * Dim);
@@ -243,9 +243,9 @@ package body Why.Gen.Expr is
       begin
          for I in 1 .. Dim loop
             Add_Attr_Arg
-              (EW_Prog, Args, Expr, From_Ent, Attribute_First, I, Arg_Ind);
+              (EW_Prog, Args, Expr, Attribute_First, I, Arg_Ind);
             Add_Attr_Arg
-              (EW_Prog, Args, Expr, From_Ent, Attribute_Last, I, Arg_Ind);
+              (EW_Prog, Args, Expr, Attribute_Last, I, Arg_Ind);
          end loop;
          Check :=
            New_Call (Name   =>
@@ -262,17 +262,17 @@ package body Why.Gen.Expr is
       -------------------------
 
       function Insert_Length_Check
-        (Expr             : W_Expr_Id;
-         From_Ent, To_Ent : Entity_Id) return W_Prog_Id
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id
       is
          Check : W_Pred_Id := True_Pred;
       begin
          for I in 1 .. Dim loop
             declare
                Input_Length    : constant W_Expr_Id :=
-                 Build_Length_Expr (Domain, Expr, From_Ent, I);
+                 Build_Length_Expr (Domain, Expr, I);
                Expected_Length : constant W_Expr_Id :=
-                 Build_Length_Expr (Domain, Why_Empty, To_Ent, I);
+                 Build_Length_Expr (Domain, To_Ent, I);
             begin
                Check :=
                  +New_And_Then_Expr
@@ -375,13 +375,13 @@ package body Why.Gen.Expr is
             declare
                Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
             begin
-               Add_Map_Arg (Domain, Args, Arr_Expr, From_Ent, Arg_Ind);
+               Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
                for I in 1 .. Dim loop
                   Add_Attr_Arg
-                    (Domain, Args, Arr_Expr, From_Ent,
+                    (Domain, Args, Arr_Expr,
                      Attribute_First, Dim, Arg_Ind);
                   Add_Attr_Arg
-                    (Domain, Args, Arr_Expr, To_Ent,
+                    (Domain, Args, To_Ent,
                      Attribute_First, Dim, Arg_Ind);
                end loop;
                T := New_Call
@@ -418,7 +418,7 @@ package body Why.Gen.Expr is
             Args     : W_Expr_Array (1 .. 2 * Dim + 1);
             Arg_Ind  : Positive := 1;
          begin
-            Add_Array_Arg (Domain, Args, Arr_Expr, From_Ent, Arg_Ind);
+            Add_Array_Arg (Domain, Args, Arr_Expr, Arg_Ind);
             T :=
               New_Call
                 (Domain => Domain,
@@ -437,11 +437,11 @@ package body Why.Gen.Expr is
          begin
             if Is_Constrained (Check_Type) then
                T := +Sequence
-                 (Insert_Length_Check (Arr_Expr, From_Ent, Check_Type),
+                 (Insert_Length_Check (Arr_Expr, Check_Type),
                   +T);
             else
                T := +Sequence
-                 (Insert_Array_Range_Check (Arr_Expr, From_Ent, Check_Type),
+                 (Insert_Array_Range_Check (Arr_Expr, Check_Type),
                  +T);
             end if;
          end;
@@ -506,7 +506,6 @@ package body Why.Gen.Expr is
          T := Insert_Array_Conversion (Domain     => Domain,
                                        Ada_Node   => Ada_Node,
                                        Expr       => T,
-                                       From       => From,
                                        To         => To,
                                        Need_Check => Check_Needed);
 
@@ -764,7 +763,6 @@ package body Why.Gen.Expr is
          return Insert_Array_Conversion (Domain   => Domain,
                                          Ada_Node => Ada_Node,
                                          Expr     => Expr,
-                                         From     => From,
                                          To       => To);
 
       else

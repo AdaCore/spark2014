@@ -168,7 +168,6 @@ package Why.Gen.Expr is
       Ada_Node   : Node_Id := Empty;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      From       : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which

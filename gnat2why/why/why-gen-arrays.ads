@@ -129,12 +129,21 @@ package Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
+      Attr    : Attribute_Id;
+      Dim     : Positive;
+      Arg_Ind : in out Positive);
+   --  Add an argument for the corresponding attribute of the array. See
+   --  alse [Get_Array_Attr]. Add_Attr_Arg will work with constrained and
+   --  unconstrained arrays.
+
+   procedure Add_Attr_Arg
+     (Domain  : EW_Domain;
+      Args    : in out W_Expr_Array;
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
       Arg_Ind : in out Positive);
-   --  Add an argument for the corresponding attribute of the array. See alse
-   --  [Get_Array_Attr].
+   --  This variant of Add_Attr_Arg will only work for constrained types
 
    procedure Declare_Ada_Array
      (Theory         : W_Theory_Declaration_Id;
@@ -184,7 +193,6 @@ package Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive);
    --  Add an argument just for the "map" of the array. For constrained arrays,
    --  this is the identity, for unconstrained arrays, this corresponds to the
@@ -198,8 +206,12 @@ package Why.Gen.Arrays is
 
    function Build_Length_Expr
      (Domain : EW_Domain;
-      Expr   : W_Expr_Id;
       Ty     : Entity_Id;
+      Dim    : Positive) return W_Expr_Id;
+
+   function Build_Length_Expr
+     (Domain : EW_Domain;
+      Expr   : W_Expr_Id;
       Dim    : Positive) return W_Expr_Id;
    --  Given a type and an array expression, build the length expression for
    --  this array.
@@ -208,7 +220,6 @@ package Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive);
    --  This procedure is suitable to add the arguments (array, first, last) to
    --  an argument list, and the bounds of other dimensions if the array is not
@@ -220,7 +231,6 @@ package Why.Gen.Arrays is
    function Get_Array_Attr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
-      Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id
      with Pre =>
@@ -228,5 +238,12 @@ package Why.Gen.Arrays is
    --  Get the expression for the attribute (first/last) of the array.
    --  For constrained arrays, this refers to the introduced constant,
    --  for unconstrained arrays this is translated to a field access.
+
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id;
+   --  Same as Get_Array_Attr, can be used when the type is already known
 
 end Why.Gen.Arrays;
