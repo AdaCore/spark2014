@@ -24,8 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Types;           use Types;
-
-with Why.Gen.Binders; use Why.Gen.Binders;
 with Gnat2Why.Util;   use Gnat2Why.Util;
 
 package Gnat2Why.Subprograms is
@@ -80,10 +78,6 @@ package Gnat2Why.Subprograms is
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the Initial_Condition of E and the absence of run-time
    --  errors in the declarations and body statements of E.
-
-   function Compute_Binders (E : Entity_Id) return Binder_Array;
-   --  Return Why binders for the parameters of subprogram E. The array is
-   --  a singleton of unit type if E has no parameters.
 
    procedure Translate_Subprogram_Spec
      (File : in out Why_Section;

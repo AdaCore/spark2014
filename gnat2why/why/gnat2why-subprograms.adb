@@ -45,6 +45,7 @@ with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
@@ -73,6 +74,10 @@ package body Gnat2Why.Subprograms is
    --  In general, the binder array has *more* arguments than the Ada entity,
    --  because of effects. Note that these effect variables are not bound here,
    --  they refer to the global variables
+
+   function Compute_Binders (E : Entity_Id) return Binder_Array;
+   --  Return Why binders for the parameters of subprogram E. The array is
+   --  a singleton of unit type if E has no parameters.
 
    function Compute_Contract_Cases_Entry_Checks
      (Params : Transformation_Params;
