@@ -1,0 +1,2 @@
+report.adb:3:42: info: length check proved
+report.adb:14:38: length check not proved
