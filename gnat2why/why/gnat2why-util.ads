@@ -243,4 +243,6 @@ package Gnat2Why.Util is
    procedure Insert_Entity (E       : Entity_Id;
                             Name    : W_Identifier_Id;
                             Mutable : Boolean := False);
+
+   procedure Insert_Item (E : Entity_Id; I : Item_Type);
 end Gnat2Why.Util;

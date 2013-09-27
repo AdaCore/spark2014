@@ -229,15 +229,15 @@ module Unconstr_Array
     predicate in_range_base = in_range_base,
     predicate in_range      = in_range
 
-  type __base = Array__1.map component_type
+  type __split = Array__1.map component_type
 
   (* An unconstrained array comes with its bounds *)
   type __t =
-    { elts : __base; rt : I1.t }
+    { elts : __split; rt : I1.t }
 
-  function to_array (a : __t) : __base = a.elts
+  function to_array (a : __t) : __split = a.elts
 
-  function of_array (a : __base) (f l : int) : __t =
+  function of_array (a : __split) (f l : int) : __t =
     { elts = a; rt = I1.mk f l }
 
   function first (a : __t) : int = to_int (I1.first a.rt)
@@ -283,17 +283,17 @@ module Unconstr_Array_2
     predicate in_range_base = in_range_base_2,
     predicate in_range      = in_range_2
 
-  type __base = Array__2.map component_type
+  type __split = Array__2.map component_type
   type __t =
-    { elts     : __base;
+    { elts     : __split;
       rt       : I1.t;
       rt_2     : I2.t
     }
 
-  function to_array (a : __t) : __base =
+  function to_array (a : __t) : __split =
     a.elts
 
-  function of_array (a : __base)
+  function of_array (a : __split)
     (f l f2 l2 : int) : __t =
     { elts = a;
       rt = I1.mk f l;
@@ -359,18 +359,18 @@ module Unconstr_Array_3
     predicate in_range_base = in_range_base_3,
     predicate in_range      = in_range_3
 
-  type __base = Array__3.map component_type
+  type __split = Array__3.map component_type
   type __t =
-    { elts     : __base;
+    { elts     : __split;
       rt       : I1.t;
       rt_2     : I2.t;
       rt_3     : I3.t
     }
 
-  function to_array (a : __t) : __base =
+  function to_array (a : __t) : __split =
     a.elts
 
-  function of_array (a : __base)
+  function of_array (a : __split)
     (f l f2 l2 f3 l3 : int) : __t =
     { elts = a;
       rt = I1.mk f l;
@@ -455,20 +455,20 @@ module Unconstr_Array_4
     predicate in_range_base = in_range_base_4,
     predicate in_range      = in_range_4
 
-  type __base = Array__4.map component_type
+  type __split = Array__4.map component_type
 
   type __t =
-    { elts     : __base;
+    { elts     : __split;
       rt       : I1.t;
       rt_2     : I2.t;
       rt_3     : I3.t;
       rt_4     : I4.t
     }
 
-  function to_array (a : __t) : __base =
+  function to_array (a : __t) : __split =
     a.elts
 
-  function of_array (a : __base)
+  function of_array (a : __split)
     (f l f2 l2 f3 l3 f4 l4 : int) : __t =
     { elts = a;
       rt = I1.mk f l;

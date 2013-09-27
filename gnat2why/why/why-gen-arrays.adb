@@ -33,10 +33,12 @@ with Uintp;               use Uintp;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Types;      use Gnat2Why.Types;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -58,6 +60,14 @@ package body Why.Gen.Arrays is
    --  starting from the initial value of [Arg_Ind], and set the final value
    --  of [Arg_Ind] to the index after the last written value.
 
+   function Get_Array_Attr (Domain : EW_Domain;
+                            Item   : Item_Type;
+                            Attr   : Attribute_Id;
+                            Dim    : Positive) return W_Expr_Id;
+
+   function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
+     with Pre => Get_Kind (+E) in W_Identifier | W_Deref;
+
    -----------------
    -- Add_Map_Arg --
    -----------------
@@ -73,7 +83,7 @@ package body Why.Gen.Arrays is
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
-      if Is_Constrained (Ty) then
+      if Is_Constrained (Ty) or else Get_Base_Type (W_Ty) = EW_Split then
          Args (Arg_Ind) := Expr;
       else
          Args (Arg_Ind) :=
@@ -129,7 +139,6 @@ package body Why.Gen.Arrays is
       Arg_Ind : in out Positive)
    is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
-      pragma Assert (Get_Base_Type (W_Ty) = EW_Abstract);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Dim     : constant Positive := Positive (Number_Dimensions (Ty));
    begin
@@ -432,9 +441,9 @@ package body Why.Gen.Arrays is
       end if;
    end Declare_Unconstrained;
 
-   ---------------------------
-   -- Get_Constr_Array_Attr --
-   ---------------------------
+   --------------------
+   -- Get_Array_Attr --
+   --------------------
 
    function Get_Array_Attr
      (Domain : EW_Domain;
@@ -450,10 +459,6 @@ package body Why.Gen.Arrays is
       end if;
    end Get_Array_Attr;
 
-   --------------------
-   -- Get_Array_Attr --
-   --------------------
-
    function Get_Array_Attr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
@@ -461,12 +466,26 @@ package body Why.Gen.Arrays is
       Dim    : Positive) return W_Expr_Id
    is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
-      pragma Assert (Get_Base_Type (W_Ty) = EW_Abstract);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
+
+      --  If the type is constrained, just use the type information
+
       if Is_Constrained (Ty) then
          return Get_Array_Attr (Domain, Ty, Attr, Dim);
+
+      --  if the object is a split object, look up the required expressions in
+      --  the symbol table
+
+      elsif Get_Base_Type (W_Ty) = EW_Split then
+         pragma Assert (Get_Kind (+Expr) in W_Identifier | W_Deref);
+         return Get_Array_Attr (Domain,
+                                Ada_Ent_To_Why.Element
+                                  (Symbol_Table,
+                                   Get_Entity_Of_Variable (Expr)),
+                                Attr,
+                                Dim);
       else
          return
            New_Call
@@ -484,6 +503,48 @@ package body Why.Gen.Arrays is
               Typ    => EW_Int_Type);
       end if;
    end Get_Array_Attr;
+
+   function Get_Array_Attr (Domain : EW_Domain;
+                            Item   : Item_Type;
+                            Attr   : Attribute_Id;
+                            Dim    : Positive) return W_Expr_Id
+   is
+   begin
+      case Attr is
+         when Attribute_First =>
+            return +Item.Bounds (Dim).First;
+         when Attribute_Last =>
+            return +Item.Bounds (Dim).Last;
+         when Attribute_Length =>
+            return
+              Build_Length_Expr
+                (Domain => Domain,
+                 First  => +Item.Bounds (Dim).First,
+                 Last  => +Item.Bounds (Dim).Last);
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Array_Attr;
+
+   ----------------------------
+   -- Get_Entity_Of_Variable --
+   ----------------------------
+
+   function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id is
+   begin
+      case Get_Kind (+E) is
+         when W_Identifier =>
+            return Get_Ada_Node (+E);
+         when W_Deref =>
+            declare
+               Id : constant W_Identifier_Id := Get_Right (+E);
+            begin
+               return Get_Ada_Node (+Id);
+            end;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Entity_Of_Variable;
 
    ----------------------
    -- New_Array_Access --
@@ -611,9 +672,9 @@ package body Why.Gen.Arrays is
       end if;
    end New_Array_Update;
 
-   -------------------------------
-   -- New_Prepared_Array_Access --
-   -------------------------------
+   ---------------------------
+   -- Array_Convert_To_Base --
+   ---------------------------
 
    function Array_Convert_To_Base
      (Ty_Entity : Entity_Id;

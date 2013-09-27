@@ -129,7 +129,8 @@ package Why.Gen.Names is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Context  : Name_Id) return W_Identifier_Id;
+      Context  : Name_Id;
+      Typ      : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
 
    function New_Temp_Identifier (Typ : W_Type_Id := Why.Types.Why_Empty)
                                  return W_Identifier_Id;
@@ -267,7 +268,12 @@ package Why.Gen.Names is
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
 
-   function Append_Num (S : String; Count : Positive) return W_Identifier_Id;
+   function Append_Num (S        : String;
+                        Count    : Positive;
+                        Context  : Name_Id := No_Name;
+                        Typ      : W_Type_Id := Why.Types.Why_Empty;
+                        Ada_Node : Node_Id := Empty)
+                        return W_Identifier_Id;
 
    function Append_Num (W : Why_Name_Enum; Count : Positive)
                         return W_Identifier_Id;
@@ -280,6 +286,18 @@ package Why.Gen.Names is
 
    function Append_Num (S : String; Count : Positive) return String;
    function Append_Num (S : String; Count : Uint) return String;
+
+   function Attr_Append (Base     : String;
+                         A        : Attribute_Id;
+                         Count    : Positive;
+                         Typ      : W_Type_Id;
+                         Context  : Name_Id := No_Name;
+                         Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+
+   function Attr_Append (Base  : W_Identifier_Id;
+                         A     : Attribute_Id;
+                         Count : Positive;
+                         Typ   : W_Type_Id) return W_Identifier_Id;
 
    function To_String (W : Why_Name_Enum) return String;
 

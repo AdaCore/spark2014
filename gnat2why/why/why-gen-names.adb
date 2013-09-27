@@ -71,9 +71,19 @@ package body Why.Gen.Names is
       return Append_Num (S, Uint_To_Positive (Count));
    end Append_Num;
 
-   function Append_Num (S : String; Count : Positive) return W_Identifier_Id is
+   function Append_Num (S        : String;
+                        Count    : Positive;
+                        Context  : Name_Id := No_Name;
+                        Typ      : W_Type_Id := Why.Types.Why_Empty;
+                        Ada_Node : Node_Id := Empty)
+                        return W_Identifier_Id is
    begin
-      return New_Identifier (Name => Append_Num (S, Count));
+      return New_Identifier
+        (Domain => EW_Term,
+         Name     => Append_Num (S, Count),
+         Context  => Context,
+         Ada_Node => Ada_Node,
+         Typ      => Typ);
    end Append_Num;
 
    function Append_Num (W : Why_Name_Enum; Count : Positive)
@@ -96,6 +106,40 @@ package body Why.Gen.Names is
    begin
       return Append_Num (To_String (P) & "." & To_String (W), Count);
    end Append_Num;
+
+   -----------------
+   -- Attr_Append --
+   -----------------
+
+   function Attr_Append (Base     : String;
+                         A        : Attribute_Id;
+                         Count    : Positive;
+                         Typ      : W_Type_Id;
+                         Context  : Name_Id := No_Name;
+                         Ada_Node : Node_Id := Empty) return W_Identifier_Id is
+   begin
+      return
+        Append_Num (S        => Base & "_" & To_String (Attr_To_Why_Name (A)),
+                    Count    => Count,
+                    Typ      => Typ,
+                    Context  => Context,
+                    Ada_Node => Ada_Node);
+   end Attr_Append;
+
+   function Attr_Append (Base  : W_Identifier_Id;
+                         A     : Attribute_Id;
+                         Count : Positive;
+                         Typ   : W_Type_Id) return W_Identifier_Id is
+   begin
+      return
+        Attr_Append
+          (Get_Name_String (Get_Symbol (+Base)),
+           A,
+           Count,
+           Typ,
+           Get_Context (+Base),
+           Get_Ada_Node (+Base));
+   end Attr_Append;
 
    ----------------------
    -- Attr_To_Why_Name --
@@ -167,7 +211,7 @@ package body Why.Gen.Names is
                      raise Program_Error;
                   end if;
 
-               when EW_Abstract =>
+               when EW_Abstract | EW_Split =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
@@ -178,7 +222,7 @@ package body Why.Gen.Names is
                   end;
             end case;
 
-         when EW_Abstract =>
+         when EW_Abstract | EW_Split =>
             case To_Kind is
                when EW_Unit | EW_Prop | EW_Private =>
                   raise Not_Implemented;
@@ -195,7 +239,7 @@ package body Why.Gen.Names is
 
                --  Case of a conversion between two record types
 
-               when EW_Abstract =>
+               when EW_Abstract | EW_Split =>
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
@@ -321,7 +365,7 @@ package body Why.Gen.Names is
          when EW_Real => "Floating",
          when EW_Bool => "Boolean",
          when EW_Unit .. EW_Prop | EW_Private => "Main",
-         when EW_Abstract => Full_Name (Get_Ada_Node (+Arg_Types)));
+         when EW_Abstract | EW_Split => Full_Name (Get_Ada_Node (+Arg_Types)));
    begin
       return Prefix (Ada_Node => A,
                      S        => S,
@@ -409,13 +453,15 @@ package body Why.Gen.Names is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Context  : Name_Id)
+      Context  : Name_Id;
+      Typ      : W_Type_Id := Why_Empty)
      return W_Identifier_Id is
    begin
       return New_Identifier (Ada_Node => Ada_Node,
                              Domain   => Domain,
                              Symbol   => NID (Name),
-                             Context  => Context);
+                             Context  => Context,
+                             Typ      => Typ);
    end New_Identifier;
 
    function New_Identifier

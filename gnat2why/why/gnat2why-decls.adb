@@ -33,6 +33,7 @@ with Sem_Ch12;            use Sem_Ch12;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
+with Snames;              use Snames;
 with String_Utils;        use String_Utils;
 
 with SPARK_Definition;    use SPARK_Definition;
@@ -40,8 +41,9 @@ with SPARK_Util;          use SPARK_Util;
 
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
@@ -67,6 +69,9 @@ package body Gnat2Why.Decls is
    procedure Register_External_Entities (E : Entity_Id);
    --  This function is called on a package with external axioms.
    --  It registers all entities in the global symbol table.
+
+   function Mk_Item_Of_Entity (E    : Entity_Id;
+                               Name : W_Identifier_Id) return Item_Type;
 
    -----------------------------------
    -- Complete_Constant_Translation --
@@ -355,6 +360,47 @@ package body Gnat2Why.Decls is
       pragma Assert (Found);
       return Result;
    end Get_Generic_Parents;
+
+   -------------------------
+   -- Mk_Item_From_Entity --
+   -------------------------
+
+   function Mk_Item_Of_Entity (E    : Entity_Id;
+                               Name : W_Identifier_Id)
+     return Item_Type
+   is
+      Binder   : constant Binder_Type :=
+        Binder_Type'(Ada_Node => E,
+                     B_Name   => Name,
+                     B_Ent    => null,
+                     Mutable  => Is_Mutable_In_Why (E));
+   begin
+      if Ekind (E) in Object_Kind and then
+        Is_Array_Type (Etype (E)) and then
+        not Is_Constrained (Etype (E)) then
+         declare
+            Result : Item_Type :=
+              (Kind      => UCArray,
+               Main => Binder,
+               Dim    => Natural (Number_Dimensions (Etype (E))),
+               Bounds => (others => <>));
+            Index  : Node_Id := First_Index (Etype (E));
+         begin
+            for D in 1 .. Result.Dim loop
+               Result.Bounds (D).First :=
+                 Attr_Append (Name, Attribute_First, D,
+                              EW_Abstract (Etype (Index)));
+               Result.Bounds (D).Last :=
+                 Attr_Append (Name, Attribute_Last, D,
+                              EW_Abstract (Etype (Index)));
+               Next_Index (Index);
+            end loop;
+            return Result;
+         end;
+      else
+         return (Regular, Binder);
+      end if;
+   end Mk_Item_Of_Entity;
 
    --------------------------------
    -- Register_External_Entities --
@@ -1447,11 +1493,21 @@ package body Gnat2Why.Decls is
       Typ  : constant W_Type_Id :=
         (if Ekind (E) = E_Loop_Parameter
          then EW_Int_Type
-         else EW_Abstract (Etype (E)));
+         elsif Is_Array_Type (Etype (E)) and then
+           not Is_Constrained (Etype (E)) then
+              EW_Split (Etype (E))
+         else
+           EW_Abstract (Etype (E)));
+      Why_Name : constant W_Identifier_Id :=
+        To_Why_Id (E => E, Typ => Typ);
+      Local_Name : constant W_Identifier_Id :=
+        To_Why_Id (E => E, Typ => Typ, Local => True);
       Decl : constant W_Declaration_Id :=
         New_Type_Decl
           (Name  => To_Ident (WNE_Type),
            Alias => Typ);
+
+      Var : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
 
       function Normalize_Type (E : Entity_Id) return Entity_Id;
       --  Choose the correct type to use
@@ -1501,7 +1557,46 @@ package body Gnat2Why.Decls is
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
-      Insert_Entity (E, To_Why_Id (E, Typ => Typ), Mutable => True);
+      case Var.Kind is
+         when UCArray =>
+            for D in 1 .. Var.Dim loop
+               declare
+                  Ty_First : constant W_Type_Id :=
+                    Get_Typ (Var.Bounds (D).First);
+                  Ty_Last : constant W_Type_Id :=
+                    Get_Typ (Var.Bounds (D).Last);
+               begin
+                  Emit
+                    (File.Cur_Theory,
+                     Why.Atree.Builders.New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        =>
+                          Attr_Append
+                            (Local_Name,
+                             Attribute_First,
+                             D,
+                             Ty_First),
+                        Binders     => (1 .. 0 => <>),
+                        Return_Type => Ty_First));
+                  Emit
+                    (File.Cur_Theory,
+                     Why.Atree.Builders.New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        =>
+                          Attr_Append
+                            (Local_Name,
+                             Attribute_Last,
+                             D,
+                             Ty_Last),
+                        Binders     => (1 .. 0 => <>),
+                        Return_Type => Ty_Last));
+               end;
+            end loop;
+         when Regular =>
+            null;
+      end case;
+      Insert_Item (E, Var);
+
       Close_Theory (File, Filter_Entity => E, No_Import => True);
    end Translate_Variable;
 

@@ -181,6 +181,10 @@ package Why.Sinfo is
       --  not in SPARK.
       EW_Private,
 
+      --  This is a special marker for "split types"
+
+      EW_Split,
+
       EW_Abstract);
 
    subtype EW_Not_Null_Type is EW_Type range

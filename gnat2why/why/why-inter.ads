@@ -213,6 +213,10 @@ package Why.Inter is
    --  EW_Bool_Type, for non-SPARK types and private types, EW_Private_Type
    --  is returned. For all the details, see the implementation.
 
+   function EW_Split (N : Node_Id) return W_Type_Id;
+   --  This function does the exact same thing as EW_Abstract, but changes the
+   --  kind of the node to EW_Split
+
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;

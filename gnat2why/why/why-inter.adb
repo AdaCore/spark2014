@@ -88,6 +88,16 @@ package body Why.Inter is
       T_Name   : String;
       Use_Kind : EW_Clone_Type);
 
+   function EW_Abstract_Shared
+     (N    : Node_Id;
+      Kind : EW_Type) return W_Type_Id
+     with Pre => Kind in EW_Abstract | EW_Split;
+   --  Build an type node from an Ada type node, either of kind Split or
+   --  Abstract
+
+   function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
+     with Pre => Kind in EW_Abstract | EW_Split;
+
    package Standard_Imports is
 
       --  This package serves to trigger the necessary imports on the
@@ -994,12 +1004,7 @@ package body Why.Inter is
 
    function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean is
    begin
-      if Left = Right then
-         return True;
-      end if;
-      return Get_Kind (+Left) = W_Type
-        and then Get_Kind (+Right) = W_Type
-        and then Eq_Base (+Left, +Right);
+      return Left = Right or else Eq_Base (Left, Right);
    end Eq_Base_Type;
 
    -----------------
@@ -1007,6 +1012,17 @@ package body Why.Inter is
    -----------------
 
    function EW_Abstract (N : Node_Id) return W_Type_Id is
+   begin
+      return EW_Abstract_Shared (N, EW_Abstract);
+   end EW_Abstract;
+
+   ------------------------
+   -- EW_Abstract_Shared --
+   ------------------------
+
+   function EW_Abstract_Shared
+     (N    : Node_Id;
+      Kind : EW_Type) return W_Type_Id is
    begin
       if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
@@ -1016,10 +1032,10 @@ package body Why.Inter is
         or else Has_Private_Declaration (N)
       then
          if Entity_In_External_Axioms (N) then
-            return New_Abstract_Base_Type (N);
+            return New_Kind_Base_Type (N, Kind);
          elsif Entity_In_SPARK (MUT (N)) then
             if MUT (N) = N then
-               return New_Abstract_Base_Type (N);
+               return New_Kind_Base_Type (N, Kind);
             else
                return EW_Abstract (MUT (N));
             end if;
@@ -1029,9 +1045,14 @@ package body Why.Inter is
       elsif not Entity_In_SPARK (N) then
          return EW_Private_Type;
       else
-         return New_Abstract_Base_Type (N);
+         return New_Kind_Base_Type (N, Kind);
       end if;
-   end EW_Abstract;
+   end EW_Abstract_Shared;
+
+   function EW_Split (N : Node_Id) return W_Type_Id is
+   begin
+      return EW_Abstract_Shared (N, EW_Split);
+   end EW_Split;
 
    -------------------------
    -- Extract_Object_Name --
@@ -1187,8 +1208,8 @@ package body Why.Inter is
    --------------------------
 
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
-       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Is_Record_Type (Get_Ada_Node (+Left)) and then
        Is_Record_Type (Get_Ada_Node (+Right)));
 
@@ -1197,8 +1218,8 @@ package body Why.Inter is
    -------------------------
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
-       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Is_Array_Type (Get_Ada_Node (+Left)) and then
        Is_Array_Type (Get_Ada_Node (+Right)));
 
@@ -1270,11 +1291,33 @@ package body Why.Inter is
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id is
    begin
-      return New_Type (Ada_Node   => E,
-                       Is_Mutable => False,
-                       Base_Type  => EW_Abstract,
-                       Name       => To_Why_Id (E));
+      return New_Kind_Base_Type (E, EW_Abstract);
    end New_Abstract_Base_Type;
+
+   ------------------------
+   -- New_Kind_Base_Type --
+   ------------------------
+
+   function New_Kind_Base_Type
+     (E    : Entity_Id;
+      Kind : EW_Type) return W_Type_Id is
+   begin
+      if Kind = EW_Abstract then
+         return New_Type (Ada_Node   => E,
+                          Is_Mutable => False,
+                          Base_Type  => EW_Abstract,
+                          Name       => To_Why_Id (E));
+      else
+         return New_Type (Ada_Node   => E,
+                          Is_Mutable => False,
+                          Base_Type  => EW_Split,
+                          Name       =>
+                            New_Identifier
+                              (Ada_Node => E,
+                               Name     => "__split",
+                               Context  => Full_Name (E)));
+      end if;
+   end New_Kind_Base_Type;
 
    --------------------
    -- New_Named_Type --

@@ -325,6 +325,15 @@ package body Gnat2Why.Util is
                                  Mutable  => Mutable)));
    end Insert_Entity;
 
+   -----------------
+   -- Insert_Item --
+   -----------------
+
+   procedure Insert_Item (E : Entity_Id; I : Item_Type) is
+   begin
+      Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
+   end Insert_Item;
+
    -----------------------
    -- Is_Mutable_In_Why --
    -----------------------
