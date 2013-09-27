@@ -563,12 +563,18 @@ package body Why.Gen.Arrays is
         Prefix (Ada_Node => Ty_Entity,
                 S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Access);
-      Elts     : constant W_Expr_Id :=
-        (if Is_Constrained (Ty_Entity) then Ar
-         else Array_Convert_To_Base (Ty_Entity, Domain, Ar));
+      Elts     : W_Expr_Id;
       Ret_Ty   : constant W_Type_Id :=
         Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
    begin
+      if Is_Constrained (Ty_Entity) or else
+        Get_Base_Type (Why_Ty) = EW_Split
+      then
+         Elts := Ar;
+      else
+         Elts := Array_Convert_To_Base (Ty_Entity, Domain, Ar);
+      end if;
+
       return
         New_Call
         (Ada_Node => Ada_Node,
@@ -632,7 +638,9 @@ package body Why.Gen.Arrays is
         Prefix (S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Update);
    begin
-      if Is_Constrained (Ty_Entity) then
+      if Is_Constrained (Ty_Entity) or else
+        Get_Base_Type (W_Ty) = EW_Split
+      then
          return
            New_Call
              (Ada_Node => Ada_Node,
