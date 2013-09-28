@@ -15,6 +15,7 @@ Long_Size                    64
 Maximum_Alignment            16
 Max_Unaligned_Field          64
 Pointer_Size                 64
+Short_Enums                   0
 Short_Size                   16
 Strict_Alignment              0
 System_Allocator_Alignment   16
