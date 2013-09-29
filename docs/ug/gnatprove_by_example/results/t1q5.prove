@@ -1,10 +1,2 @@
-t1q5.adb:9:30: info: overflow check proved
-t1q5.adb:12:19: info: overflow check proved
-t1q5.adb:17:29: info: overflow check proved
-t1q5.adb:20:19: info: overflow check proved
-t1q5.adb:25:16: info: overflow check proved
-t1q5.ads:5:79: info: contract case proved
-t1q5.ads:6:52: info: contract case proved
-t1q5.ads:7:51: info: contract case proved
 t1q5.ads:5:11: info: disjoint contract cases proved
 t1q5.ads:5:11: info: complete contract cases proved

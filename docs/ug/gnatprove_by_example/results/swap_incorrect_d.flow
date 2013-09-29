@@ -1,4 +1,1 @@
-swap_incorrect_d.adb:10:09: use of uninitialized variable "Old_Y" [uninitialized__old_y]
-swap_incorrect_d.ads:5:20: ineffective import "Y" [ineffective_import]
-swap_incorrect_d.ads:7:11: "Y" missing from null dependency [depends_null]
-swap_incorrect_d.ads:7:23: "X" does not depend on "Y" [depends_wrong]
+swap_incorrect_d.adb:8:07: warning: variable "Old_Y" is read but never assigned

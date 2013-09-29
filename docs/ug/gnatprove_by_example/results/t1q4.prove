@@ -1,8 +1,0 @@
-t1q4.adb:16:33: info: overflow check proved
-t1q4.adb:16:38: info: overflow check proved
-t1q4.adb:16:52: info: overflow check proved
-t1q4.adb:18:36: info: overflow check proved
-t1q4.adb:21:10: info: loop invariant initialization proved
-t1q4.adb:21:10: info: loop invariant preservation proved
-t1q4.adb:27:23: info: range check proved
-t1q4.ads:5:19: info: postcondition proved

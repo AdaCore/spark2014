@@ -1,2 +1,0 @@
-swap_incorrect_b.ads:4:14: "Call_Count" must be listed in the Global aspect of "Swap" [missing_global]
-swap_incorrect_b.ads:4:14: flow analysis of "Swap" abandoned due to inconsistent graph

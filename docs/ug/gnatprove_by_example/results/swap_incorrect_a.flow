@@ -1,4 +1,0 @@
-swap_incorrect_a.ads:4:20: ineffective import "X" [ineffective_import]
-swap_incorrect_a.ads:7:11: "X" missing from null dependency [depends_null]
-swap_incorrect_a.ads:8:23: "Y" depends on "Y" [depends_missing]
-swap_incorrect_a.ads:8:23: "Y" does not depend on "X" [depends_wrong]
