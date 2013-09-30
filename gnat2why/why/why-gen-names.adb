@@ -505,10 +505,16 @@ package body Why.Gen.Names is
         & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last);
    end New_Temp_Identifier;
 
-   function New_Temp_Identifier (Typ : W_Type_Id := Why_Empty)
-                                 return W_Identifier_Id is
+   function New_Temp_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Typ      : W_Type_Id := Why_Empty)
+      return W_Identifier_Id is
    begin
-      return New_Identifier (Name => New_Temp_Identifier, Typ => Typ);
+      return
+        New_Identifier
+          (Ada_Node => Ada_Node,
+           Name     => New_Temp_Identifier,
+           Typ      => Typ);
    end New_Temp_Identifier;
 
    --------------------------
@@ -520,7 +526,7 @@ package body Why.Gen.Names is
       Typ : W_Type_Id) return W_Identifier_Array
    is
       Result : constant W_Identifier_Array (1 .. Num) :=
-                 (others => +New_Temp_Identifier (Typ));
+                 (others => +New_Temp_Identifier (Typ => Typ));
    begin
       return Result;
    end New_Temp_Identifiers;

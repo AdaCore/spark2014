@@ -515,7 +515,7 @@ package body Gnat2Why.Subprograms is
          else
             declare
                Guard_Ident : constant W_Identifier_Id :=
-                 New_Temp_Identifier (EW_Bool_Type);
+                 New_Temp_Identifier (Typ => EW_Bool_Type);
                --  Temporary Why name for the current guard
 
                --  Whether the current guard is enabled
@@ -718,7 +718,7 @@ package body Gnat2Why.Subprograms is
             declare
                --  Temporary Why name for the current guard
                Guard_Ident : constant W_Identifier_Id :=
-                 New_Temp_Identifier (EW_Bool_Type);
+                 New_Temp_Identifier (Typ => EW_Bool_Type);
 
                --  Whether the current guard is enabled
                Enabled     : constant W_Expr_Id := +Guard_Ident;

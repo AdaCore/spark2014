@@ -734,9 +734,9 @@ package body Gnat2Why.Expr.Loops is
                            T_Type => EW_Int_Type);
             Actual_Range : constant Node_Id := Get_Range (Loop_Range);
             Low_Ident    : constant W_Identifier_Id :=
-              New_Temp_Identifier (EW_Int_Type);
+              New_Temp_Identifier (Typ => EW_Int_Type);
             High_Ident   : constant W_Identifier_Id :=
-              New_Temp_Identifier (EW_Int_Type);
+              New_Temp_Identifier (Typ => EW_Int_Type);
             Init_Index   : constant W_Identifier_Id :=
               (if Is_Reverse then High_Ident else Low_Ident);
             Exit_Index   : constant W_Identifier_Id :=

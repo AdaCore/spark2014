@@ -528,8 +528,6 @@ package body Gnat2Why.Decls is
       --    axiom c__def:
       --      c = of_int (to_int(largest_int) + 1)
 
-      Use_Ty : constant W_Type_Id := Type_Of_Node (E);
-
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
@@ -551,7 +549,7 @@ package body Gnat2Why.Decls is
         and then Present (Expression (Decl))
       then
          Def := Get_Pure_Logic_Term_If_Possible
-           (File, Expression (Decl), Use_Ty);
+           (File, Expression (Decl), Typ);
       else
          Def := Why_Empty;
       end if;
@@ -576,7 +574,7 @@ package body Gnat2Why.Decls is
                         (Domain   => EW_Term,
                          Ada_Node => Expression (Decl),
                          Expr     => W_Expr_Id (Def),
-                         To       => Type_Of_Node (Partial_View (E))));
+                         To       => EW_Abstract (Etype (Partial_View (E)))));
             end if;
 
             Emit

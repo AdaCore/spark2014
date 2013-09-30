@@ -132,8 +132,11 @@ package Why.Gen.Names is
       Context  : Name_Id;
       Typ      : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
 
-   function New_Temp_Identifier (Typ : W_Type_Id := Why.Types.Why_Empty)
-                                 return W_Identifier_Id;
+   function New_Temp_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Typ      : W_Type_Id := Why.Types.Why_Empty)
+      return W_Identifier_Id;
+
    function New_Temp_Identifier return String;
    --  Return a new unique identifier
 

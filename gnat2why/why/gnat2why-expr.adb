@@ -1322,6 +1322,7 @@ package body Gnat2Why.Expr is
          Loop_Map : in out Ada_To_Why_Ident.Map)
       is
          Typ : W_Type_Id;
+         Nd  : Node_Id := Empty;
       begin
          pragma Unreferenced (Loop_Id);
 
@@ -1329,12 +1330,15 @@ package body Gnat2Why.Expr is
 
             if Nkind (Expr) in N_Identifier | N_Expanded_Name then
                Typ := Why_Type_Of_Entity (Entity (Expr));
+               Nd  := Entity (Expr);
             else
                Typ := EW_Abstract (Etype (Expr));
             end if;
             Loop_Map.Include
               (Expr,
-               New_Temp_Identifier (Typ => Typ));
+               New_Temp_Identifier
+                 (Typ      => Typ,
+                  Ada_Node => Nd));
          end if;
 
          Result := Loop_Map.Element (Expr);
@@ -1362,16 +1366,23 @@ package body Gnat2Why.Expr is
    -- Name_For_Old --
    ------------------
 
-   function Name_For_Old (N : Node_Id) return W_Identifier_Id is
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id
+   is
       Typ : W_Type_Id;
+      Nd  : Node_Id := Empty;
    begin
       if not Old_Map.Contains (N) then
          if Nkind (N) in N_Identifier | N_Expanded_Name then
             Typ := Why_Type_Of_Entity (Entity (N));
+            Nd := Entity (N);
          else
             Typ := EW_Abstract (Etype (N));
          end if;
-         Old_Map.Include (N, New_Temp_Identifier (Typ));
+         Old_Map.Include
+           (N,
+            New_Temp_Identifier
+              (Typ      => Typ,
+               Ada_Node => Nd));
       end if;
 
       return Old_Map.Element (N);
@@ -2052,7 +2063,7 @@ package body Gnat2Why.Expr is
          Def_Pred      : W_Pred_Id;
 
          Aggr_Temp     : constant W_Identifier_Id :=
-           New_Temp_Identifier (Ret_Type);
+           New_Temp_Identifier (Typ => Ret_Type);
 
          --  Select file for the declarations
 
@@ -2730,7 +2741,7 @@ package body Gnat2Why.Expr is
          --  Define index variables
 
          for J in 1 .. Integer (Num_Dim) loop
-            Binders (J) := New_Temp_Identifier (EW_Int_Type);
+            Binders (J) := New_Temp_Identifier (Typ => EW_Int_Type);
             Indexes (J) := +Binders (J);
          end loop;
 
@@ -2808,12 +2819,12 @@ package body Gnat2Why.Expr is
         Transform_Expr (Left, Subdomain, Params);
       Left_Name : constant W_Expr_Id :=
         (if Left_Simp then Left_Expr
-         else +New_Temp_Identifier (Get_Type (Left_Expr)));
+         else +New_Temp_Identifier (Typ => Get_Type (Left_Expr)));
       Right_Expr : constant W_Expr_Id :=
         Transform_Expr (Right, Subdomain, Params);
       Right_Name : constant W_Expr_Id :=
         (if Right_Simp then Right_Expr
-         else +New_Temp_Identifier (Get_Type (Right_Expr)));
+         else +New_Temp_Identifier (Typ => Get_Type (Right_Expr)));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
@@ -4878,7 +4889,7 @@ package body Gnat2Why.Expr is
       if Base_Type = EW_Bool_Type then
          Base_Type := EW_Int_Type;
       end if;
-      Why_Var := New_Temp_Identifier (Base_Type);
+      Why_Var := New_Temp_Identifier (Typ => Base_Type);
       Var_Expr :=
         Transform_Expr (Var,
                         Base_Type,

@@ -29,6 +29,7 @@ with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with SPARK_Xrefs;         use SPARK_Xrefs;
 with Sinfo;               use Sinfo;
+with Snames;              use Snames;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 with Constant_Tree;
@@ -1467,10 +1468,15 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif E = Universal_Fixed then
          return EW_Real_Type;
-      elsif Nkind (N) in N_Identifier | N_Expanded_Name then
-         return
-           Get_Typ
-             (Ada_Ent_To_Why.Element (Symbol_Table, Entity (N)).Main.B_Name);
+      elsif Nkind (N) = N_Attribute_Reference and then
+        Get_Attribute_Id (Attribute_Name (N)) in
+          Attribute_Old | Attribute_Loop_Entry then
+         return Type_Of_Node (Prefix (N));
+      elsif Nkind (N) in N_Identifier | N_Expanded_Name and then
+        Ekind (Entity (N)) in Object_Kind and then
+        Ekind (Entity (N)) not in E_Discriminant | E_Component
+      then
+         return Why_Type_Of_Entity (Entity (N));
       else
          return EW_Abstract (E);
       end if;
