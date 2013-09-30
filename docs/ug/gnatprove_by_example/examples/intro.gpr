@@ -3,7 +3,8 @@ project Intro is
    for Source_Dirs use ("../examples");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato13", "-gnatd.V");
+      for Default_Switches ("ada") use ("-gnato13");
+      for Local_Configuration_Pragmas use "intro.adc";
    end Compiler;
 
 end Intro;
