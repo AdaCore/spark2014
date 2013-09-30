@@ -2106,11 +2106,11 @@ package body Gnat2Why.Expr is
            New_Call (Ada_Node => Expr,
                      Domain   => EW_Term,
                      Name     => Func,
-                     Args     => Call_Args);
+                     Args     => Call_Args,
+                     Typ      => EW_Abstract (Etype (Expr)));
          Call :=
            Array_Convert_To_Base
-             (Ty_Entity => Etype (Expr),
-              Domain    => EW_Term,
+             (Domain    => EW_Term,
               Ar        => Aggr);
 
          Def_Pred :=
@@ -2816,16 +2816,8 @@ package body Gnat2Why.Expr is
          else +New_Temp_Identifier (Get_Type (Right_Expr)));
       Arg_Ind    : Positive := 1;
    begin
-      Add_Array_Arg
-        (Subdomain,
-         Args,
-         Left_Name,
-         Arg_Ind);
-      Add_Array_Arg
-        (Subdomain,
-         Args,
-         Right_Name,
-         Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Left_Name, Arg_Ind);
+      Add_Array_Arg (Subdomain, Args, Right_Name, Arg_Ind);
       T :=
         New_Call
           (Ada_Node => Expr,

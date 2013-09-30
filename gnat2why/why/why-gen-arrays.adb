@@ -36,11 +36,9 @@ with Gnat2Why.Types;      use Gnat2Why.Types;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 
 with Why.Conversions;     use Why.Conversions;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Inter;           use Why.Inter;
@@ -111,7 +109,12 @@ package body Why.Gen.Arrays is
       Arg_Ind : in out Positive)
    is
    begin
-      Args (Arg_Ind) := Get_Array_Attr (Domain, Expr, Attr, Dim);
+      Args (Arg_Ind) :=
+        Insert_Scalar_Conversion
+          (Domain,
+           Empty,
+           Get_Array_Attr (Domain, Expr, Attr, Dim),
+           EW_Int_Type);
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -124,7 +127,9 @@ package body Why.Gen.Arrays is
       Arg_Ind : in out Positive)
    is
    begin
-      Args (Arg_Ind) := Get_Array_Attr (Domain, Ty, Attr, Dim);
+      Args (Arg_Ind) :=
+        Insert_Scalar_Conversion
+          (Domain, Empty, Get_Array_Attr (Domain, Ty, Attr, Dim), EW_Int_Type);
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -148,6 +153,55 @@ package body Why.Gen.Arrays is
          Add_Attr_Arg (Domain, Args, Expr, Attribute_Last, I, Arg_Ind);
       end loop;
    end Add_Array_Arg;
+
+   -----------------------------
+   -- Array_Convert_From_Base --
+   -----------------------------
+
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   is
+      Ty     : constant W_Type_Id := Get_Type (Ar);
+      Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
+      Len    : constant Integer :=
+        1 + 2 * Integer (Number_Dimensions (Ty_Ent));
+      Args   : W_Expr_Array (1 .. Len);
+      Count  : Positive := 1;
+   begin
+      Add_Array_Arg (Domain, Args, Ar, Count);
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Ty_Ent,
+                     S        => Full_Name (Ty_Ent),
+                     W        => WNE_Of_Array),
+           Args   => Args,
+           Typ    => EW_Abstract (Ty_Ent));
+   end Array_Convert_From_Base;
+
+   ---------------------------
+   -- Array_Convert_To_Base --
+   ---------------------------
+
+   function Array_Convert_To_Base
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   is
+      Ty     : constant W_Type_Id := Get_Type (Ar);
+      Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Ty_Ent,
+                     S        => Full_Name (Ty_Ent),
+                     W        => WNE_To_Array),
+           Args   => (1 => +Ar),
+           Typ    => EW_Split (Ty_Ent));
+   end Array_Convert_To_Base;
 
    -----------------------
    -- Build_Length_Expr --
@@ -585,7 +639,7 @@ package body Why.Gen.Arrays is
       then
          Elts := Ar;
       else
-         Elts := Array_Convert_To_Base (Ty_Entity, Domain, Ar);
+         Elts := Array_Convert_To_Base (Domain, Ar);
       end if;
 
       return
@@ -688,25 +742,5 @@ package body Why.Gen.Arrays is
          end;
       end if;
    end New_Array_Update;
-
-   ---------------------------
-   -- Array_Convert_To_Base --
-   ---------------------------
-
-   function Array_Convert_To_Base
-     (Ty_Entity : Entity_Id;
-      Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id
-   is
-   begin
-      return
-        New_Call
-          (Domain => Domain,
-           Name   =>
-             Prefix (Ada_Node => Ty_Entity,
-                     S        => Full_Name (Ty_Entity),
-                     W        => WNE_To_Array),
-           Args   => (1 => +Ar));
-   end Array_Convert_To_Base;
 
 end Why.Gen.Arrays;

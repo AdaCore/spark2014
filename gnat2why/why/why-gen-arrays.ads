@@ -23,10 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Snames;    use Snames;
-with Types;     use Types;
-with Why.Ids;   use Why.Ids;
-with Why.Sinfo; use Why.Sinfo;
+with Snames;              use Snames;
+with Types;               use Types;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
+
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -160,11 +163,18 @@ package Why.Gen.Arrays is
    --  Generate an expr that corresponds to an array access.
 
    function Array_Convert_To_Base
-     (Ty_Entity : Entity_Id;
-      Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id;
-   --  "Prepare" an array access by converting the array in argument to its
-   --  Why3 base type.
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   with Pre => Get_Base_Type (Get_Type (Ar)) = EW_Abstract;
+   --  "Ar" must be a Why expression of unconstrained array type. Convert it to
+   --  the "split" view of UC arrays
+
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   with Pre => Get_Base_Type (Get_Type (Ar)) = EW_Split;
+   --  "Ar" must be a Why expression of unconstrained array type, in split
+   --  form. Convert it to the regular unconstrained form.
 
    function New_Array_Update
       (Ada_Node  : Node_Id;

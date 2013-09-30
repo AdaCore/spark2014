@@ -349,9 +349,28 @@ package body Why.Gen.Expr is
 
       if To_Ent = From_Ent then
 
-         --  No range check needed
+         --  In the case of unconstrained arrays, the Ada entity may be equal,
+         --  but in Why we have to convert from the split representation to the
+         --  unique representation. This is checked here.
 
-         return Expr;
+         if not Is_Constrained (To_Ent) then
+            if Get_Base_Type (From) = EW_Split and then
+              Get_Base_Type (To) = EW_Abstract
+            then
+               return Array_Convert_From_Base (Domain, Expr);
+            elsif Get_Base_Type (From) = EW_Abstract and then
+              Get_Base_Type (To) = EW_Split then
+               return Array_Convert_To_Base (Domain, Expr);
+            else
+               return Expr;
+            end if;
+
+         else
+
+            --  No range check needed
+
+            return Expr;
+         end if;
       end if;
 
       --  We need a temp whenever there is a sliding, or when the "from" is
@@ -392,18 +411,18 @@ package body Why.Gen.Expr is
                   Args   => Args,
                   Typ    => To);
             end;
-         elsif not Is_Constrained (From_Ent) or else
+         elsif not Is_Constrained (From_Ent) and then
            Get_Base_Type (From) /= EW_Split
          then
-               T :=
-                 New_Call
-                   (Domain => Domain,
-                    Name   =>
-                      Prefix (Ada_Node => From_Ent,
-                              S        => Full_Name (From_Ent),
-                              W        => WNE_To_Array),
-                    Args => (1 => Arr_Expr),
-                    Typ  => To);
+            T :=
+              New_Call
+                (Domain => Domain,
+                 Name   =>
+                   Prefix (Ada_Node => From_Ent,
+                           S        => Full_Name (From_Ent),
+                           W        => WNE_To_Array),
+                 Args => (1 => Arr_Expr),
+                 Typ  => To);
 
          --  No actual why call or conversion is inserted here, but we still
          --  need to change the type of the Why AST node. We do that by adding

@@ -1467,6 +1467,11 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif E = Universal_Fixed then
          return EW_Real_Type;
+      elsif Is_Array_Type (E) and then
+        not Is_Constrained (E) and then
+        Nkind (N) in N_Identifier | N_Expanded_Name and then
+        Is_Mutable_In_Why (Entity (N)) then
+         return EW_Split (E);
       else
          return EW_Abstract (E);
       end if;
