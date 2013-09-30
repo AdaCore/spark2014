@@ -1,0 +1,2 @@
+t1q1.adb:7:12: info: overflow check proved
+t1q1.ads:6:18: info: postcondition proved

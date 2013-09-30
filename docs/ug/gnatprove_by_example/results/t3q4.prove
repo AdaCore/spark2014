@@ -1,0 +1,9 @@
+t3q4.adb:8:18: info: postcondition proved
+t3q4.adb:13:27: info: precondition proved
+t3q4.adb:13:51: info: range check proved
+t3q4.adb:13:56: info: range check proved
+t3q4.adb:21:9: info: loop invariant initialization proved
+t3q4.adb:21:9: info: loop invariant preservation proved
+t3q4.adb:23:20: info: precondition proved
+t3q4.adb:23:57: info: range check proved
+t3q4.adb:25:20: info: range check proved
