@@ -3,7 +3,10 @@ project Intro is
    for Source_Dirs use ("../examples");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato13");
+      for Switches ("t1q4.ads") use ("-gnato13");
+      for Switches ("t1q4.adb") use ("-gnato13");
+      for Switches ("t1q5.ads") use ("-gnato13");
+      for Switches ("t1q5.adb") use ("-gnato13");
       for Local_Configuration_Pragmas use "intro.adc";
    end Compiler;
 
