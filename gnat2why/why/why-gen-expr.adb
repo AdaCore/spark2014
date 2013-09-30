@@ -476,9 +476,9 @@ package body Why.Gen.Expr is
 
       From : constant W_Type_Id := Get_Type (Expr);
       Check_Needed : constant Boolean :=
-        (if Get_Base_Type (From) = EW_Abstract
+        (if Get_Base_Type (From) in EW_Abstract | EW_Split
               and
-            Get_Base_Type (To) = EW_Abstract
+            Get_Base_Type (To) in EW_Abstract | EW_Split
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
