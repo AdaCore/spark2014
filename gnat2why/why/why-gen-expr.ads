@@ -194,7 +194,6 @@ package Why.Gen.Expr is
       Ada_Node    : Node_Id := Empty;
       Expr        : W_Expr_Id;
       To          : W_Type_Id;
-      From        : W_Type_Id;
       Round_Func  : W_Identifier_Id := Why_Empty;
       Range_Check : Node_Id := Empty) return W_Expr_Id;
    --  We expect Expr to be of the type that corresponds to the type "From".
@@ -208,7 +207,6 @@ package Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
-      From       : W_Type_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the

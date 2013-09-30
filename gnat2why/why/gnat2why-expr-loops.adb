@@ -700,7 +700,8 @@ package body Gnat2Why.Expr.Loops is
             Index_Deref  : constant W_Prog_Id :=
                              New_Deref
                                (Ada_Node => Stmt,
-                                Right    => +Loop_Index);
+                                Right    => +Loop_Index,
+                                Typ      => EW_Int_Type);
             Update_Op    : constant EW_Binary_Op :=
                              (if Is_Reverse then EW_Substract
                               else EW_Add);
@@ -727,7 +728,7 @@ package body Gnat2Why.Expr.Loops is
 
             Cond_Pred    : constant W_Pred_Id :=
               +Range_Expr (Loop_Range,
-                           New_Deref (Right => Loop_Index),
+                           New_Deref (Right => Loop_Index, Typ => EW_Int_Type),
                            EW_Pred,
                            Params => Body_Params,
                            T_Type => EW_Int_Type);

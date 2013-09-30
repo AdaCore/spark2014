@@ -57,7 +57,6 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       To       : W_Type_Id;
-      From     : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id;
    --  Assuming that there is at most one step between To and From in the
    --  type hierarchy (i.e. that it exists a conversion from From
@@ -498,7 +497,6 @@ package body Why.Gen.Expr is
          T := Insert_Record_Conversion (Domain     => Domain,
                                         Ada_Node   => Ada_Node,
                                         Expr       => T,
-                                        From       => From,
                                         To         => To,
                                         Need_Check => Check_Needed);
 
@@ -549,7 +547,6 @@ package body Why.Gen.Expr is
             T := Insert_Scalar_Conversion (Domain      => Domain,
                                            Ada_Node    => Ada_Node,
                                            Expr        => T,
-                                           From        => From,
                                            To          => To,
                                            Round_Func  => Round_Func,
                                            Range_Check => Range_Check_Node);
@@ -567,10 +564,10 @@ package body Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
-      From       : W_Type_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id
    is
+      From       : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
       Result : W_Expr_Id := Expr;
 
@@ -591,7 +588,6 @@ package body Why.Gen.Expr is
       Result := Insert_Single_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           To       => Base,
-                                          From     => From,
                                           Expr     => Result);
 
       --  2. Possibly perform the discriminant check
@@ -611,7 +607,6 @@ package body Why.Gen.Expr is
       Result := Insert_Single_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           To       => To,
-                                          From     => Base,
                                           Expr     => Result);
 
       return Result;
@@ -626,10 +621,10 @@ package body Why.Gen.Expr is
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
       To            : W_Type_Id;
-      From          : W_Type_Id;
       Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
+      From : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
       Result : W_Expr_Id := Expr;
 
@@ -672,7 +667,6 @@ package body Why.Gen.Expr is
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              To       => Cur,
-                                             From     => From,
                                              Expr     => Result);
       end if;
 
@@ -692,16 +686,11 @@ package body Why.Gen.Expr is
       --     real), convert from one to the other.
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
-         declare
-            Save : constant W_Type_Id := Cur;
-         begin
-            Cur := Base_Why_Type (To);
-            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                To       => Cur,
-                                                From     => Save,
-                                                Expr     => Result);
-         end;
+         Cur := Base_Why_Type (To);
+         Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                             Domain   => Domain,
+                                             To       => Cur,
+                                             Expr     => Result);
       end if;
 
       --  4. When converting to a floating-point or fixed-point type, always
@@ -711,7 +700,8 @@ package body Why.Gen.Expr is
          pragma Assert (Get_Base_Type (Cur) = EW_Real);
          Result := New_Call (Domain   => Domain,
                              Name     => Round_Func,
-                             Args     => (1 => Result));
+                             Args     => (1 => Result),
+                             Typ      => EW_Real_Type);
       end if;
 
       --  5. Possibly perform the range check, if not already applied
@@ -731,7 +721,6 @@ package body Why.Gen.Expr is
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              To       => To,
-                                             From     => Cur,
                                              Expr     => Result);
       end if;
 
@@ -760,7 +749,6 @@ package body Why.Gen.Expr is
          return Insert_Record_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
-                                          From     => From,
                                           To       => To);
 
       elsif Is_Array_Conversion (To, From) then
@@ -773,7 +761,6 @@ package body Why.Gen.Expr is
          return Insert_Scalar_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
-                                          From     => From,
                                           To       => To);
       end if;
    end Insert_Simple_Conversion;
@@ -786,9 +773,9 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       To       : W_Type_Id;
-      From     : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id
    is
+      From     : constant W_Type_Id := Get_Type (Expr);
    begin
       if Eq_Base (From, To) then
          return Expr;

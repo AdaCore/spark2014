@@ -2730,7 +2730,7 @@ package body Gnat2Why.Expr is
          --  Define index variables
 
          for J in 1 .. Integer (Num_Dim) loop
-            Binders (J) := New_Temp_Identifier;
+            Binders (J) := New_Temp_Identifier (EW_Int_Type);
             Indexes (J) := +Binders (J);
          end loop;
 

@@ -67,6 +67,7 @@ package body Why.Gen.Arrays is
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
      with Pre => Get_Kind (+E) in W_Identifier | W_Deref;
+   --  should return an object of type EW_Int_Type
 
    -----------------
    -- Add_Map_Arg --
@@ -156,13 +157,17 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       First, Last : W_Expr_Id) return W_Expr_Id
    is
+      First_Int : constant W_Expr_Id :=
+        Insert_Scalar_Conversion (Domain, Empty, First, EW_Int_Type);
+      Last_Int : constant W_Expr_Id :=
+        Insert_Scalar_Conversion (Domain, Empty, Last, EW_Int_Type);
       Cond : constant W_Expr_Id :=
         New_Relation
           (Domain  => Domain,
            Op_Type => EW_Int,
            Op      => EW_Le,
-           Left    => +First,
-           Right   => +Last);
+           Left    => +First_Int,
+           Right   => +Last_Int);
       Len : constant W_Expr_Id :=
         New_Binary_Op
           (Op      => EW_Add,
@@ -171,8 +176,8 @@ package body Why.Gen.Arrays is
              New_Binary_Op
                (Op      => EW_Substract,
                 Op_Type => EW_Int,
-                Left    => Last,
-                Right   => First),
+                Left    => Last_Int,
+                Right   => First_Int),
            Right   => New_Integer_Constant (Value => Uint_1));
    begin
       return
