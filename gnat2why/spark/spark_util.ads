@@ -44,6 +44,47 @@ package SPARK_Util is
    Name_GNATprove : constant String := "gnatprove";
    Name_External_Axiomatization : constant String := "external_axiomatization";
 
+   ------------------------------
+   -- Queries on Type Entities --
+   ------------------------------
+
+   function MUT (T : Entity_Id) return Entity_Id with
+     Pre => Ekind (T) in Type_Kind;
+   --  Returns the "most underlying type" of a type T, following the chain of
+   --  underlying types for private types, up to a non-private type. If T is
+   --  not private, it simply returns it. E. As a special case, return the
+   --  first type in a package with external axioms found.
+
+   --  The following functions provide wrappers for the query functions
+   --  in Einfo, that apply the query on the most underlying type of its
+   --  argument, hence skipping all layers of pivate types. To avoid confusion,
+   --  the wrapper for function Einfo.Is_Such_And_Such_Type is called
+   --  Has_Such_And_Such_Type.
+
+   function Has_Array_Type (T : Entity_Id) return Boolean is
+     (Is_Array_Type (MUT (T)));
+
+   function Has_Composite_Type (T : Entity_Id) return Boolean is
+     (Is_Composite_Type (MUT (T)));
+
+   function Has_Discrete_Type (T : Entity_Id) return Boolean is
+     (Is_Discrete_Type (MUT (T)));
+
+   function Has_Enumeration_Type (T : Entity_Id) return Boolean is
+     (Is_Enumeration_Type (MUT (T)));
+
+   function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
+     (Is_Modular_Integer_Type (MUT (T)));
+
+   function Has_Record_Type (T : Entity_Id) return Boolean is
+     (Is_Record_Type (MUT (T)));
+
+   function Has_Scalar_Type (T : Entity_Id) return Boolean is
+     (Is_Scalar_Type (MUT (T)));
+
+   function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
+     (Is_Signed_Integer_Type (MUT (T)));
+
    ---------------
    -- Utilities --
    ---------------
@@ -164,12 +205,6 @@ package SPARK_Util is
 
    function Partial_View (E : Entity_Id) return Entity_Id;
    --  Return the partial view for entity E
-
-   function Most_Underlying_Type (E : Entity_Id) return Entity_Id;
-   --  Takes a type E in parameter. If E is a private type, follow the chain of
-   --  underlying types to return the first non-private type. Otherwise, return
-   --  E. As a special case, return the first type in a package with external
-   --  axioms found.
 
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
       (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);

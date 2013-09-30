@@ -452,8 +452,8 @@ package body Gnat2Why.Decls is
          then
             return E;
          end if;
-         if Entity_In_SPARK (Most_Underlying_Type (E)) then
-            return Normalize_Type (Most_Underlying_Type (E));
+         if Entity_In_SPARK (MUT (E)) then
+            return Normalize_Type (MUT (E));
          end if;
          return E;
       end Normalize_Type;
@@ -475,7 +475,7 @@ package body Gnat2Why.Decls is
 
       Emit (File.Cur_Theory, Decl);
 
-      if Entity_In_SPARK (Most_Underlying_Type (Etype (E))) then
+      if Entity_In_SPARK (MUT (Etype (E))) then
          Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
       end if;
 

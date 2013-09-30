@@ -927,7 +927,7 @@ package body SPARK_Util is
 
    function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
-        Most_Underlying_Type
+        MUT
           (Unique_Defining_Entity (Get_Enclosing_Declaration (E)));
    begin
       return Entity_In_External_Axioms (Typ);
@@ -1067,12 +1067,12 @@ package body SPARK_Util is
       end;
    end Matching_Component_Association;
 
-   --------------------------
-   -- Most_Underlying_Type --
-   --------------------------
+   ---------
+   -- MUT --
+   ---------
 
-   function Most_Underlying_Type (E : Entity_Id) return Entity_Id is
-      Typ : Entity_Id := E;
+   function MUT (T : Entity_Id) return Entity_Id is
+      Typ : Entity_Id := T;
    begin
       loop
          --  For types in packages with external axioms, do not consider the
@@ -1086,7 +1086,7 @@ package body SPARK_Util is
             return Typ;
          end if;
       end loop;
-   end Most_Underlying_Type;
+   end MUT;
 
    -----------------------
    -- Number_Components --

@@ -1179,7 +1179,7 @@ package body Gnat2Why.Expr is
                --  parameters.
 
                Need_Check_On_Fetch : constant Boolean :=
-                 (if Ekind (Most_Underlying_Type (Etype (Formal)))
+                 (if Ekind (MUT (Etype (Formal)))
                        in Scalar_Kind
                   then
                     Ekind (Formal) /= E_Out_Parameter
@@ -1219,7 +1219,7 @@ package body Gnat2Why.Expr is
                --  OUT or IN OUT, and never needed for composite parameters.
 
                Need_Check_On_Store : constant Boolean :=
-                 (if Ekind (Most_Underlying_Type (Etype (Formal)))
+                 (if Ekind (MUT (Etype (Formal)))
                        in Scalar_Kind
                   then
                     Ekind (Formal) /= E_In_Parameter
@@ -3632,7 +3632,7 @@ package body Gnat2Why.Expr is
                Base : Entity_Id := Get_Base_Type (Decl);
             begin
                if Present (Base) then
-                  Base := Most_Underlying_Type (Base);
+                  Base := MUT (Base);
                end if;
 
                case Ekind (Ent) is
@@ -5477,8 +5477,19 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Raise_xxx_Error =>
-            Ada.Text_IO.Put_Line ("[Transform_Statement] raise xxx error");
-            raise Not_Implemented;
+            case RT_Exception_Code'Val
+              (Uintp.UI_To_Int (Reason (Stmt_Or_Decl)))
+            is
+               when CE_Discriminant_Check_Failed =>
+                  return +New_VC_Expr (Domain   => EW_Prog,
+                                       Ada_Node => Stmt_Or_Decl,
+                                       Expr     => +False_Pred,
+                                       Reason   => VC_Discriminant_Check);
+               when others =>
+                  Ada.Text_IO.Put_Line
+                    ("[Transform_Statement] raise xxx error");
+                  raise Not_Implemented;
+            end case;
 
          when N_Object_Declaration    |
               N_Subtype_Declaration   |

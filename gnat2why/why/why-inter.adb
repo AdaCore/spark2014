@@ -191,8 +191,8 @@ package body Why.Inter is
                   end case;
 
                when Private_Kind =>
-                  if Entity_In_SPARK (Most_Underlying_Type (UE)) then
-                     Set_SI_Internal (Most_Underlying_Type (UE));
+                  if Entity_In_SPARK (MUT (UE)) then
+                     Set_SI_Internal (MUT (UE));
                   end if;
 
                when E_Record_Type | E_Record_Subtype =>
@@ -1024,7 +1024,7 @@ package body Why.Inter is
             return New_Abstract_Base_Type (N);
          else
             declare
-               Under_Typ : constant Entity_Id := Most_Underlying_Type (N);
+               Under_Typ : constant Entity_Id := MUT (N);
             begin
                if Entity_In_SPARK (Under_Typ) then
 
@@ -1173,8 +1173,8 @@ package body Why.Inter is
          when Private_Kind =>
             if Entity_In_External_Axioms (Ty) then
                return EW_Abstract;
-            elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
-               return Get_EW_Term_Type (Most_Underlying_Type (Ty));
+            elsif Entity_In_SPARK (MUT (Ty)) then
+               return Get_EW_Term_Type (MUT (Ty));
             else
                return EW_Private;
             end if;
