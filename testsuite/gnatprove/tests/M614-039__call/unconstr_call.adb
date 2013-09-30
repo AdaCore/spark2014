@@ -26,8 +26,10 @@ package body Unconstr_Call is
    end Test_1;
 
    procedure Test_2 (Z : in out T) is
+      X : constant Integer := Z'First;
    begin
       Havoc (Z);
+      pragma Assert (X = Z'First);
    end Test_2;
 
 end Unconstr_Call;
