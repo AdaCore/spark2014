@@ -28,11 +28,14 @@ with Unchecked_Deallocation;
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
+with Fname.UF;
 with Get_SPARK_Xrefs;
-with Output;                 use Output;
+with Lib;
+with Osint;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with SPARK_Xrefs;            use SPARK_Xrefs;
+with Uname;
 
 package body SPARK_Frame_Conditions is
 
@@ -630,6 +633,51 @@ package body SPARK_Frame_Conditions is
          end if;
    end Get_Writes;
 
+   -------------------------
+   -- Has_Computed_Global --
+   -------------------------
+
+   --  A Global contract is computed for E whenever the corresponding ALI file
+   --  has been loaded.
+
+   function Has_Computed_Global (E : Entity_Id) return Boolean is
+
+      --  The code for retrieving the right name for the ALI file is similar
+      --  to the one printing 'W' lines in ALI files (see lib-writ.adb), which
+      --  needs to deal with non-standard naming schemes.
+
+      U : Unit_Name_Type;
+      Body_Fname : File_Name_Type;
+      ALI_File_Name : File_Name_Type;
+
+   begin
+      --  Compute the name of the ALI file containing the local effects of
+      --  subprogram E.
+
+      U := Lib.Unit_Name (Lib.Get_Source_Unit (E));
+
+      if Uname.Is_Spec_Name (U) then
+         Body_Fname :=
+           Fname.UF.Get_File_Name
+             (Uname.Get_Body_Name (U),
+              Subunit => False, May_Fail => True);
+
+         if Body_Fname = No_File then
+            Body_Fname := Fname.UF.Get_File_Name (U, Subunit => False);
+         end if;
+
+      else
+         Body_Fname := Fname.UF.Get_File_Name (U, Subunit => False);
+      end if;
+
+      ALI_File_Name := Osint.Lib_File_Name (Body_Fname);
+
+      --  Effects were computed for subprogram E iff the ALI file with its
+      --  local effects was loaded.
+
+      return Loaded_ALI_Files.Contains (ALI_File_Name);
+   end Has_Computed_Global;
+
    ------------------
    -- Id_Of_Entity --
    ------------------
@@ -659,7 +707,10 @@ package body SPARK_Frame_Conditions is
    -- Load_SPARK_Xrefs --
    ----------------------
 
-   procedure Load_SPARK_Xrefs (ALI_Filename : String) is
+   procedure Load_SPARK_Xrefs
+     (ALI_Filename    : String;
+      Has_SPARK_Xrefs : out Boolean)
+   is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
@@ -730,11 +781,8 @@ package body SPARK_Frame_Conditions is
             --  No SPARK cross-reference information in this ALI
 
             Close (ALI_File);
-            Write_Str ("error:" & ALI_Filename &
-                         " does not contain SPARK Xrefs section");
-            Write_Eol;
-
-            raise Terminate_Program;
+            Has_SPARK_Xrefs := False;
+            return;
          end if;
 
          Get_Line (ALI_File, Line, Last);
@@ -747,6 +795,7 @@ package body SPARK_Frame_Conditions is
          end case;
       end loop Scan_ALI;
 
+      Has_SPARK_Xrefs := True;
       Index := 1;
 
       Get_SPARK_From_ALI;

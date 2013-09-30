@@ -1774,6 +1774,23 @@ package body SPARK_Definition is
       elsif not In_SPARK (Entity (Nam)) then
          Mark_Violation ("subprogram called", N, From => Entity (Nam));
       end if;
+
+      --  Issue a warning for calls to subprograms with no Global contract,
+      --  either manually-written or computed. This is the case for standard
+      --  and external library subprograms for which no Global contract is
+      --  supplied. Note that subprograms for which an external axiomatization
+      --  is provided are exempted, as they should not have any effect on
+      --  global items.
+
+      if not Has_Computed_Global (Entity (Nam))
+        and then No (Get_Pragma (Entity (Nam), Pragma_Global))
+        and then not Entity_In_External_Axioms (Entity (Nam))
+      then
+         Error_Msg_NE
+           ("?no Global contract available for &", N, Entity (Nam));
+         Error_Msg_NE
+           ("\\ assuming & has no effect on global items", N, Entity (Nam));
+      end if;
    end Mark_Call;
 
    ---------------------------
