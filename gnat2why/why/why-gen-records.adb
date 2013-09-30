@@ -25,30 +25,31 @@
 
 with Ada.Containers.Hashed_Maps;
 
-with Atree;              use Atree;
-with Einfo;              use Einfo;
-with Elists;             use Elists;
-with Nlists;             use Nlists;
-with Sem_Util;           use Sem_Util;
-with Sinfo;              use Sinfo;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Elists;              use Elists;
+with Nlists;              use Nlists;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
 
-with SPARK_Util;         use SPARK_Util;
-with VC_Kinds;           use VC_Kinds;
+with SPARK_Util;          use SPARK_Util;
+with VC_Kinds;            use VC_Kinds;
 
-with Gnat2Why.Expr;      use Gnat2Why.Expr;
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Expr;       use Why.Gen.Expr;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Progs;      use Why.Gen.Progs;
-with Why.Gen.Terms;      use Why.Gen.Terms;
-with Why.Inter;          use Why.Inter;
-with Why.Types;          use Why.Types;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Preds;       use Why.Gen.Preds;
+with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Gen.Terms;       use Why.Gen.Terms;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Records is
 
@@ -276,9 +277,9 @@ package body Why.Gen.Records is
                     Expr =>
                       New_Record_Access
                         (Name  => +A_Ident,
-                         Field => To_Why_Id (Ada_Discr, Local => True)),
-                    To   => EW_Int_Type,
-                    From => EW_Abstract (Etype (Ada_Discr)));
+                         Field => To_Why_Id (Ada_Discr, Local => True),
+                         Typ   => EW_Abstract (Etype (Ada_Discr))),
+                    To   => EW_Int_Type);
                New_Cond : constant W_Pred_Id :=
                  (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
                   then
@@ -374,7 +375,6 @@ package body Why.Gen.Records is
                          Insert_Simple_Conversion
                            (Domain => EW_Term,
                             To     => EW_Abstract (Etype (Field)),
-                            From   => EW_Abstract (Etype (Orig)),
                             Expr   =>
                               New_Record_Access
                                 (Name => +A_Ident,
@@ -388,7 +388,6 @@ package body Why.Gen.Records is
                          Insert_Simple_Conversion
                            (Domain => EW_Term,
                             To     => EW_Abstract (Etype (Orig)),
-                            From   => EW_Abstract (Etype (Field)),
                             Expr   =>
                               New_Record_Access
                                 (Name  => +A_Ident,
@@ -1037,10 +1036,10 @@ package body Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id)
+      Value    : W_Expr_Id)
       return W_Expr_Id
    is
+      Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
       Update_Expr : constant W_Expr_Id :=
         New_Record_Update
           (Ada_Node => Ada_Node,

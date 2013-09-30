@@ -193,17 +193,13 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
-      Prefix_Type : Entity_Id;
+      Prefix_Type : W_Type_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
    --  same as One_Level_Access, but for updates
 
-   function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id;
-   --  ??? The comment below is incorrect, as Expected_Type_Of_Prefix is called
-   --  for every assignment, not only assignment to record components and array
-   --  cells. To be checked.
-   --
-   --  The node in argument is some array or record access. This function
+   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id;
+   --  The node in argument is the target of an assignment. This function
    --  computes the type of the entity that corresponds to the access.
    --  This may be different from the Etype of the node in case of
    --  unconstrained array types, or discriminant records.
@@ -296,11 +292,9 @@ package body Gnat2Why.Expr is
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
       Lvalue   : Node_Id;
-      Val_Type : Entity_Id;
       Expr     : W_Prog_Id) return W_Prog_Id;
    --  Translate an assignment of the form "Lvalue := Expr",
-   --  using Ada_Node for its source location. [Val_Type] is the type of
-   --  [Expr], and the type of the innermost component of the Lvalue.
+   --  using Ada_Node for its source location.
 
    ------------------------------------------
    -- Handling of Expressions with Actions --
@@ -965,12 +959,14 @@ package body Gnat2Why.Expr is
    -- Expected_Type_Of_Prefix --
    -----------------------------
 
-   function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id
+   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id
    is
    begin
       case Nkind (N) is
          when N_Identifier | N_Expanded_Name =>
-            return Type_Of_Node (N);
+            return
+              Get_Typ (Ada_Ent_To_Why.Element
+                       (Symbol_Table, Entity (N)).Main.B_Name);
 
          when N_Slice =>
             return Type_Of_Node (Unique_Entity (Etype (Prefix (N))));
@@ -1212,7 +1208,6 @@ package body Gnat2Why.Expr is
                    +Insert_Simple_Conversion (Ada_Node => Actual,
                                               Domain   => EW_Prog,
                                               Expr     => +Prefetch_Actual,
-                                              From     => Actual_T,
                                               To       => Formal_T));
 
                --  2/ After the call (storing the result):
@@ -1246,7 +1241,6 @@ package body Gnat2Why.Expr is
                    +Insert_Simple_Conversion (Ada_Node => Actual,
                                               Domain   => EW_Prog,
                                               Expr     => +Tmp_Var_Deref,
-                                              From     => Formal_T,
                                               To       => Actual_T));
 
                --  ...then store it into the actual:
@@ -1255,7 +1249,6 @@ package body Gnat2Why.Expr is
                                  New_Assignment
                                    (Ada_Node => Actual,
                                     Lvalue   => Actual,
-                                    Val_Type => Type_Of_Node (Actual),
                                     Expr     => Arg_Value);
             begin
                Statement_Sequence_Append_To_Statements (Store, Store_Value);
@@ -1417,7 +1410,6 @@ package body Gnat2Why.Expr is
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
       Lvalue   : Node_Id;
-      Val_Type : Entity_Id;
       Expr     : W_Prog_Id) return W_Prog_Id
    is
 
@@ -1443,8 +1435,7 @@ package body Gnat2Why.Expr is
 
       procedure Shift_Rvalue
         (N         : in out Node_Id;
-         Expr      : in out W_Prog_Id;
-         Expr_Type : in out Entity_Id);
+         Expr      : in out W_Prog_Id);
       --  the input triple (N, Expr, Expr_Type) describes an assignment
       --      N := Expr
       --  where N is the Ada node for some Lvalue of the form
@@ -1463,8 +1454,7 @@ package body Gnat2Why.Expr is
 
       procedure Shift_Rvalue
         (N         : in out Node_Id;
-         Expr      : in out W_Prog_Id;
-         Expr_Type : in out Entity_Id)
+         Expr      : in out W_Prog_Id)
       is
       begin
          case Nkind (N) is
@@ -1472,28 +1462,21 @@ package body Gnat2Why.Expr is
                null;
 
             when N_Type_Conversion =>
-               declare
-                  New_Type : constant Entity_Id := Etype (Expression (N));
-               begin
                   N := Expression (N);
                   Expr :=
                     +Insert_Simple_Conversion
                       (Domain => EW_Prog,
                        Expr   => +Expr,
-                       To     => Type_Of_Node (New_Type),
-                       From   => Type_Of_Node (Expr_Type));
-                  Expr_Type := New_Type;
-               end;
+                       To     => EW_Abstract (Etype (N)));
 
             when N_Selected_Component | N_Indexed_Component | N_Slice =>
                declare
-                  Prefix_Type : constant Entity_Id :=
+                  Prefix_Type : constant W_Type_Id :=
                     Expected_Type_Of_Prefix (Prefix (N));
                   Prefix_Expr : constant W_Expr_Id :=
                     +Transform_Expr (Domain        => EW_Prog,
                                      Expr          => Prefix (N),
-                                     Expected_Type =>
-                                       Type_Of_Node (Prefix_Type),
+                                     Expected_Type => Prefix_Type,
                                      Params        => Body_Params);
                begin
                   Expr :=
@@ -1504,7 +1487,6 @@ package body Gnat2Why.Expr is
                                        EW_Prog,
                                        Params => Body_Params);
                   N := Prefix (N);
-                  Expr_Type := Prefix_Type;
                end;
 
             when others =>
@@ -1518,10 +1500,9 @@ package body Gnat2Why.Expr is
 
       Left_Side  : Node_Id := Lvalue;
       Right_Side : W_Prog_Id := Expr;
-      Cur_Type   : Entity_Id := Val_Type;
    begin
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
-         Shift_Rvalue (Left_Side, Right_Side, Cur_Type);
+         Shift_Rvalue (Left_Side, Right_Side);
       end loop;
       return
         New_Assignment
@@ -1609,7 +1590,7 @@ package body Gnat2Why.Expr is
      (N           : Node_Id;
       Pref        : W_Expr_Id;
       Value       : W_Expr_Id;
-      Prefix_Type : Entity_Id;
+      Prefix_Type : W_Type_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id is
    begin
@@ -1627,7 +1608,6 @@ package body Gnat2Why.Expr is
                Domain   => Domain,
                Name     => Pref,
                Field    => Entity (Selector_Name (N)),
-               Ty       => Prefix_Type,
                Value    => Value);
 
          when N_Indexed_Component =>
@@ -1664,18 +1644,20 @@ package body Gnat2Why.Expr is
                                  (Prefix (N),
                                   EW_Term,
                                   Params => Params);
-               Dim         : constant Pos := Number_Dimensions (Prefix_Type);
-               BT          : constant W_Type_Id := EW_Abstract (Prefix_Type);
+               Dim     : constant Pos :=
+                  Number_Dimensions (Type_Of_Node (Prefix (N)));
                Result_Id   : constant W_Identifier_Id :=
-                 New_Result_Ident (BT);
+                 New_Result_Ident (Prefix_Type);
                Binders     : constant W_Identifier_Array :=
-                               New_Temp_Identifiers (Positive (Dim));
+                 New_Temp_Identifiers (Positive (Dim), Typ => EW_Int_Type);
+               Ada_Type    : constant Entity_Id :=
+                 Get_Ada_Node (+Prefix_Type);
                Indexes     : constant W_Expr_Array := To_Exprs (Binders);
                Range_Pred  : constant W_Expr_Id :=
                                Transform_Discrete_Choice
                                  (Choice => Discrete_Range (N),
                                   Choice_Type =>
-                                    Etype (First_Index (Prefix_Type)),
+                                    Etype (First_Index (Ada_Type)),
                                   Expr   => Indexes (1),
                                   Domain => EW_Pred,
                                   Params => Params);
@@ -1689,9 +1671,6 @@ package body Gnat2Why.Expr is
                                  (Left_Arr   => +Result_Id,
                                   Right_Arr  => +Prefix_Name,
                                   Index      => Indexes);
-
-               --  ??? Why is the Right_Type above Val_Type and not
-               --  Prefix_Type?
 
                Def         : constant W_Pred_Id :=
                                New_Conditional
@@ -1715,7 +1694,7 @@ package body Gnat2Why.Expr is
                          Name    => Value_Name,
                          Def     => +Value,
                          Context => +New_Simpl_Any_Prog
-                           (T => +BT,
+                           (T => Prefix_Type,
                             Pred => +Quantif)));
             end;
 
@@ -1762,7 +1741,6 @@ package body Gnat2Why.Expr is
 
       R := New_Range_Expr
           (Domain    => Domain,
-           Base_Type => Base_Type,
            Low       => +Transform_Expr (Low,
                                          Base_Type,
                                          Subdomain,
@@ -2404,9 +2382,6 @@ package body Gnat2Why.Expr is
                   return Callback (Dim + 1, Expr);
                else
                   declare
-                     Exp_Type  : constant Node_Id := Component_Type (Typ);
-                     Elmt_Type : constant W_Type_Id :=
-                                   EW_Abstract (Exp_Type);
                      Value     : constant W_Expr_Id :=
                        +Ada_Ent_To_Why.Element (Args, Expr).Main.B_Name;
                      Read      : constant W_Expr_Id :=
@@ -2420,7 +2395,6 @@ package body Gnat2Why.Expr is
                        (Cmp       => EW_Eq,
                         Left      => Read,
                         Right     => Value,
-                        Arg_Types => Elmt_Type,
                         Domain    => EW_Pred);
                   end;
                end if;
@@ -2627,7 +2601,6 @@ package body Gnat2Why.Expr is
                             (Cmp       => EW_Eq,
                              Left      => Indexes (Integer (Dim)),
                              Right     => Select_Nth_Index (Dim, Offset),
-                             Arg_Types => EW_Int_Type,
                              Domain    => EW_Pred),
                         Then_Part =>
                           Constrain_Value_At_Index
@@ -2642,7 +2615,6 @@ package body Gnat2Why.Expr is
                          (Cmp       => EW_Eq,
                           Left      => Indexes (Integer (Dim)),
                           Right     => Select_Nth_Index (Dim, 0),
-                          Arg_Types => EW_Int_Type,
                           Domain    => EW_Pred),
                      Then_Part   =>
                        Constrain_Value_At_Index (Dim, Expression, Callback),
@@ -2891,7 +2863,6 @@ package body Gnat2Why.Expr is
             Left      => T,
             Right     => New_Literal (Domain => Subdomain,
                                       Value  => EW_True),
-            Arg_Types => EW_Bool_Type,
             Domain    => Domain);
       elsif Nkind (Expr) = N_Op_Ne then
          T :=
@@ -3107,16 +3078,15 @@ package body Gnat2Why.Expr is
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
       Lvalue   : constant Node_Id := Name (Stmt);
-      Exp_Entity : constant Entity_Id := Expected_Type_Of_Prefix (Lvalue);
+      Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
    begin
       return
-        New_Assignment
+        Gnat2Why.Expr.New_Assignment
           (Ada_Node => Stmt,
            Lvalue   => Lvalue,
-           Val_Type => Exp_Entity,
            Expr     =>
              +Transform_Expr (Expression (Stmt),
-                              EW_Abstract (Exp_Entity),
+                              Exp_Entity,
                               EW_Prog,
                               Params => Body_Params));
    end Transform_Assignment_Statement;
@@ -3781,7 +3751,6 @@ package body Gnat2Why.Expr is
                                          Expected_Type => EW_Int_Type,
                                          Domain        => Subdomain,
                                          Params        => Params),
-            Arg_Types => EW_Int_Type,
             Domain    => Domain);
 
          --  In programs, we generate a check that the non-static value of a
@@ -4096,7 +4065,6 @@ package body Gnat2Why.Expr is
                            Left      => T,
                            Right     => New_Literal (Domain => Subdomain,
                                                      Value  => EW_True),
-                           Arg_Types => EW_Bool_Type,
                            Domain    => Domain);
                      elsif Nkind (Expr) = N_Op_Ne then
                         T :=
@@ -4110,7 +4078,6 @@ package body Gnat2Why.Expr is
                        (Cmp       => Transform_Compare_Op (Nkind (Expr)),
                         Left      => Left_Arg,
                         Right     => Right_Arg,
-                        Arg_Types => BT,
                         Domain    => Domain);
                   end if;
                end;
@@ -4831,7 +4798,6 @@ package body Gnat2Why.Expr is
                                             Expected_Type => Base_Type,
                                             Domain        => EW_Term,
                                             Params        => Params),
-               Arg_Types => EW_Int_Type,
                Domain    => Domain);
          end if;
 
@@ -4905,7 +4871,7 @@ package body Gnat2Why.Expr is
 
       Var       : constant Node_Id := Left_Opnd (Expr);
       Result    : W_Expr_Id;
-      Why_Var   : constant W_Identifier_Id := New_Temp_Identifier;
+      Why_Var   : W_Identifier_Id;
       Base_Type : W_Type_Id := Base_Why_Type (Var);
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
@@ -4920,6 +4886,7 @@ package body Gnat2Why.Expr is
       if Base_Type = EW_Bool_Type then
          Base_Type := EW_Int_Type;
       end if;
+      Why_Var := New_Temp_Identifier (Base_Type);
       Var_Expr :=
         Transform_Expr (Var,
                         Base_Type,

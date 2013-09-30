@@ -515,9 +515,12 @@ package body Why.Gen.Names is
    -- New_Temp_Identifiers --
    --------------------------
 
-   function New_Temp_Identifiers (Num : Positive) return W_Identifier_Array is
+   function New_Temp_Identifiers
+     (Num : Positive;
+      Typ : W_Type_Id) return W_Identifier_Array
+   is
       Result : constant W_Identifier_Array (1 .. Num) :=
-                 (others => +New_Temp_Identifier);
+                 (others => +New_Temp_Identifier (Typ));
    begin
       return Result;
    end New_Temp_Identifiers;

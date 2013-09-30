@@ -576,7 +576,6 @@ package body Gnat2Why.Decls is
                         (Domain   => EW_Term,
                          Ada_Node => Expression (Decl),
                          Expr     => W_Expr_Id (Def),
-                         From     => Use_Ty,
                          To       => Type_Of_Node (Partial_View (E))));
             end if;
 
@@ -1402,8 +1401,7 @@ package body Gnat2Why.Decls is
                            Args (Count) := Insert_Simple_Conversion
                              (Domain        => EW_Term,
                               Expr          => +Name,
-                              To            => +A_Type,
-                              From          => +F_Type);
+                              To            => +A_Type);
 
                            Next (F_Param);
                            Next (A_Param);
@@ -1428,9 +1426,9 @@ package body Gnat2Why.Decls is
                                 (Domain   => EW_Term,
                                  Name     => To_Why_Id (Actual,
                                    Domain => EW_Term),
-                                 Args  => Args),
-                              To            => +F_Type,
-                              From          => +A_Type)));
+                                 Args     => Args,
+                                 Typ      => A_Type),
+                              To            => F_Type)));
 
                   end;
 

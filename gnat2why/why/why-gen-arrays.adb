@@ -602,9 +602,6 @@ package body Why.Gen.Arrays is
       Right_Arr  : W_Expr_Id;
       Index      : W_Expr_Array) return W_Pred_Id
    is
-      Left_Type  : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
-      Comp_Type  : constant Node_Id := Component_Type (Left_Type);
-      Elmt_Type  : constant W_Type_Id := EW_Abstract (Comp_Type);
       Left       : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
@@ -622,8 +619,7 @@ package body Why.Gen.Arrays is
         (Domain    => EW_Pred,
          Cmp       => EW_Eq,
          Left      => Left,
-         Right     => Right,
-         Arg_Types => Elmt_Type);
+         Right     => Right);
    begin
       return Result;
    end New_Element_Equality;

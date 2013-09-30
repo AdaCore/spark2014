@@ -370,7 +370,8 @@ package body Why.Gen.Expr is
 
       --  ??? do not forget range checks
 
-      if Is_Constrained (To_Ent) then
+      if Is_Constrained (To_Ent) or else
+        Get_Base_Type (To) = EW_Split then
          if Sliding then
             declare
                Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
@@ -392,7 +393,9 @@ package body Why.Gen.Expr is
                   Args   => Args,
                   Typ    => To);
             end;
-         elsif not Is_Constrained (From_Ent) then
+         elsif not Is_Constrained (From_Ent) or else
+           Get_Base_Type (From) /= EW_Split
+         then
                T :=
                  New_Call
                    (Domain => Domain,
@@ -743,8 +746,9 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id is
+      To       : W_Type_Id) return W_Expr_Id
+   is
+      From : constant W_Type_Id := Get_Type (Expr);
    begin
       --  Nothing to do if From = To
 
@@ -977,20 +981,20 @@ package body Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : W_Type_Id;
       Domain      : EW_Domain)
      return W_Expr_Id
    is
-      Op_Type : W_Type_Id;
-      Left1   : W_Expr_Id;
-      Right1  : W_Expr_Id;
+      Op_Type  : W_Type_Id;
+      Left1    : W_Expr_Id;
+      Right1   : W_Expr_Id;
+      Arg_Type : constant W_Type_Id := Get_Type (Left);
 
    begin
       --  The only comparisons between Boolean operands that we translate in
       --  Why without going throught integers are the equality and inequality
       --  in a predicate context, translated as equivalence or inequivalence.
 
-      if Get_Base_Type (Arg_Types) = EW_Bool
+      if Get_Base_Type (Arg_Type) = EW_Bool
         and then (Cmp in EW_Inequality or else Domain /= EW_Pred)
       then
          Op_Type := EW_Int_Type;
@@ -998,16 +1002,14 @@ package body Why.Gen.Expr is
            Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => Left,
-              From   => Arg_Types,
               To     => EW_Int_Type);
          Right1 :=
            Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => Right,
-              From   => Arg_Types,
               To     => EW_Int_Type);
       else
-         Op_Type := Arg_Types;
+         Op_Type := Arg_Type;
          Left1  := Left;
          Right1 := Right;
       end if;
@@ -1248,7 +1250,6 @@ package body Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
-      Base_Type : W_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id
    is
@@ -1258,16 +1259,14 @@ package body Why.Gen.Expr is
            (Left  =>
               New_Comparison
                 (Domain    => Domain,
-                 Arg_Types => Base_Type,
                  Cmp       => EW_Le,
-                 Left      => +Low,
-                 Right     => +Expr),
+                 Left      => Low,
+                 Right     => Expr),
             Right  =>
               New_Comparison
                 (Domain    => Domain,
-                 Arg_Types => Base_Type,
                  Cmp       => EW_Le,
-                 Left      => +Expr,
+                 Left      => Expr,
                  Right     => High),
             Domain => Domain);
    end New_Range_Expr;

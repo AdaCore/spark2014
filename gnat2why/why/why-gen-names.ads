@@ -137,7 +137,10 @@ package Why.Gen.Names is
    function New_Temp_Identifier return String;
    --  Return a new unique identifier
 
-   function New_Temp_Identifiers (Num : Positive) return W_Identifier_Array;
+   function New_Temp_Identifiers
+     (Num : Positive;
+      Typ : W_Type_Id)
+      return W_Identifier_Array;
    --  Return an array of new unique identifiers with Num elements
 
    function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id;

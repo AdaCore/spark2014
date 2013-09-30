@@ -67,7 +67,6 @@ package Why.Gen.Expr is
    function New_Comparison
      (Cmp         : EW_Relation;
       Left, Right : W_Expr_Id;
-      Arg_Types   : W_Type_Id;
       Domain      : EW_Domain)
       return W_Expr_Id;
 
@@ -157,7 +156,6 @@ package Why.Gen.Expr is
 
    function New_Range_Expr
      (Domain    : EW_Domain;
-      Base_Type : W_Type_Id;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
@@ -187,8 +185,7 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id;
-      From     : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From. No
    --  check is inserted in the conversion.
 

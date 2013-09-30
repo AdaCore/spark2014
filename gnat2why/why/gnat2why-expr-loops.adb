@@ -732,8 +732,10 @@ package body Gnat2Why.Expr.Loops is
                            Params => Body_Params,
                            T_Type => EW_Int_Type);
             Actual_Range : constant Node_Id := Get_Range (Loop_Range);
-            Low_Ident    : constant W_Identifier_Id := New_Temp_Identifier;
-            High_Ident   : constant W_Identifier_Id := New_Temp_Identifier;
+            Low_Ident    : constant W_Identifier_Id :=
+              New_Temp_Identifier (EW_Int_Type);
+            High_Ident   : constant W_Identifier_Id :=
+              New_Temp_Identifier (EW_Int_Type);
             Init_Index   : constant W_Identifier_Id :=
               (if Is_Reverse then High_Ident else Low_Ident);
             Exit_Index   : constant W_Identifier_Id :=
@@ -748,7 +750,6 @@ package body Gnat2Why.Expr.Loops is
                             Right   => +Exit_Index);
             Cond_Prog    : constant W_Prog_Id :=
               +New_Range_Expr (Domain    => EW_Prog,
-                               Base_Type => EW_Int_Type,
                                Low       => +Low_Ident,
                                High      => +High_Ident,
                                Expr      => +Index_Deref);
@@ -934,8 +935,9 @@ package body Gnat2Why.Expr.Loops is
       begin
          return +New_Comparison (Cmp       => Cmp,
                                  Left      => Variant_Expr (Expr, EW_Term),
-                                 Right     => New_Deref (Right => +Name),
-                                 Arg_Types => EW_Int_Type,
+                                 Right     =>
+                                   New_Deref (Right => +Name,
+                                              Typ => EW_Int_Type),
                                  Domain    => EW_Pred);
       end Variant_Part_Does_Progress;
 
@@ -951,8 +953,9 @@ package body Gnat2Why.Expr.Loops is
       begin
          return +New_Comparison (Cmp       => EW_Eq,
                                  Left      => Variant_Expr (Expr, EW_Term),
-                                 Right     => New_Deref (Right => +Name),
-                                 Arg_Types => EW_Int_Type,
+                                 Right     =>
+                                   New_Deref (Right => +Name,
+                                              Typ => EW_Int_Type),
                                  Domain    => EW_Pred);
       end Variant_Part_Stays_Constant;
 
