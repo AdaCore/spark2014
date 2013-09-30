@@ -139,7 +139,7 @@ certificatestore.adb:225:45: length check not proved
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
 clock.adb:74:11: info: range check proved
-clock.adb:78:10: assertion not proved
+clock.adb:78:10: info: assertion proved
 clock.adb:82:12: info: index check proved
 clock.adb:82:56: info: division check proved
 clock.adb:83:20: info: division check proved
