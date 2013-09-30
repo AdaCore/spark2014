@@ -1,0 +1,13 @@
+abstract_state_illegal.ads:13:35: malformed abstract state declaration
+abstract_state_illegal.ads:15:31: "S1" conflicts with declaration at line 11
+abstract_state_illegal.ads:17:40: simple option not allowed in state declaration
+abstract_state_illegal.ads:20:52: invalid external state property
+abstract_state_illegal.ads:23:31: malformed abstract state declaration
+abstract_state_illegal.ads:26:53: duplicate state option
+abstract_state_illegal.ads:30:31: package "Invalid_Parameters" has non-null abstract state
+abstract_state_illegal.ads:33:15: aspect "Abstract_State" must apply to a package declaration
+abstract_state_illegal.ads:44:07: cannot introduce hidden state "Priv_Var"
+abstract_state_illegal.ads:44:07: package "Null_Abstract_State_With_Hidden_State" has null abstract state
+abstract_state_illegal.ads:52:07: "S1" conflicts with declaration at line 50
+abstract_state_illegal_2.ads:9:75: "=>" expected (positional association cannot follow named association)
+abstract_state_illegal_4-pub_child.adb:4:73: state "Pr_State" is not a valid constituent of ancestor state "Pub_State"

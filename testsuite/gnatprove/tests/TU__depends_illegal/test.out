@@ -1,0 +1,39 @@
+depends_illegal.ads:17:42: item "Par2" must appear in at least one input list of aspect Depends
+depends_illegal.ads:31:33: item "Comp" must appear in exactly one output list of aspect Depends
+depends_illegal.ads:32:33: item must denote variable, state or formal parameter
+depends_illegal.ads:33:27: item must denote variable, state or formal parameter
+depends_illegal.ads:34:23: item "X" must have mode "out" or "in out"
+depends_illegal.ads:34:33: item "Y" must have mode "in" or "in out"
+depends_illegal.ads:39:18: item "Par1" must appear in at least one input list of aspect Depends
+depends_illegal.ads:39:24: item "Par3" must appear in at least one input list of aspect Depends
+depends_illegal.ads:39:41: item "Par2" must appear in exactly one output list of aspect Depends
+depends_illegal.ads:39:47: item "Par4" must appear in exactly one output list of aspect Depends
+depends_illegal.ads:60:23: item "Par1" must have mode "out" or "in out"
+depends_illegal.ads:61:32: item "Par2" must have mode "in" or "in out"
+depends_illegal.ads:62:23: item "Z" must have mode "in out"
+depends_illegal.ads:72:11: result of "F1" must appear in exactly one output list
+depends_illegal.ads:72:40: function result cannot act as input
+depends_illegal.ads:91:33: item "A2" must appear in exactly one output list of aspect Depends
+depends_illegal.ads:95:23: null output list must be the last clause in a dependency relation
+depends_illegal.ads:95:31: input of a null output list appears in multiple input lists
+depends_illegal.ads:98:23: multiple null dependency relations not allowed
+depends_illegal.ads:111:31: input of a null output list appears in multiple input lists
+depends_illegal.ads:118:33: duplicate use of item
+depends_illegal.ads:122:24: item "Par2" must appear in exactly one output list of aspect Depends
+depends_illegal.ads:128:23: duplicate use of item
+depends_illegal.ads:138:37: item "Y" must appear in at least one input list of aspect Depends
+depends_illegal.ads:160:23: useless dependence, null depends on itself
+depends_illegal.ads:165:39: cannot mix null and non-null dependency items
+depends_illegal.ads:172:31: null dependency clause cannot have a null input list
+depends_illegal_2.adb:7:04: aspect specifications must appear in subprogram declaration
+depends_illegal_2.adb:29:11: constituent "Y" of state "A" must have mode Output in global refinement
+depends_illegal_2.adb:41:22: global reference to "A" not allowed (SPARK RM 6.1.5(4))
+depends_illegal_2.adb:41:22: refinement of "A" is visible at line 2
+depends_illegal_2.adb:42:36: global reference to "A" not allowed (SPARK RM 6.1.5(4))
+depends_illegal_2.adb:42:36: refinement of "A" is visible at line 2
+
+   compilation of depends_illegal_2.adb failed
+   compilation of depends_illegal.ads failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during frame condition computation, aborting.

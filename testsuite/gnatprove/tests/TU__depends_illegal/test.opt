@@ -1,0 +1,1 @@
+all XFAIL depends_illegal_3.adb: F1 cannot have a Depends. [M412-008]

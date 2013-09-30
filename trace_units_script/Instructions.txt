@@ -1,0 +1,37 @@
+1) The script takes a list of files and/or directories as arguments
+   and recursively looks for files that end in ".rst", ".ads", ".adb"
+   and ".ada".  If no arguments are presented, then the script
+   assumes that the argument is the current path ('.'). Then it
+   checks the trace units in the ".rst" files against trace units in
+   the other files (".ads", ".adb", ".ada").
+
+   If you are running the script from within the SPARK2014 repository,
+   then give ".." as a parameter.
+
+2) Duplicate files are not taken into consideration.
+
+3) The script does not get affected by wrong spaces.
+
+4) Trace Units in tests must be followed either by a blank line, by
+   code or by another trace unit (must not have an irrelevant comment
+   directly after a TU, because it will make the script think that
+   the comment is part of the TU).
+
+   Example of a TU in a test:
+
+    --  TU: 9. Each ``mode_selector`` shall occur at most once in a single
+    --  Global aspect.
+
+5) After the script gets executed, a csv file is created that says
+   which TU was found where. This allows us to find which test covers
+   which TU. I use LibreOffice to read this file (set the
+   separator to comma ',' and the delimiter to double-quote '"').
+
+6) If you want to add a TU in the LRM for which you do not
+   want to have a corresponding test, then add either:
+
+    "-cbatu-"     (stands for Checked By Another Trace Unit)
+
+                            or
+
+    "-nt-"        (not tested/testable)

@@ -1,0 +1,11 @@
+contract_cases_illegal.ads:14:11: others must be the last choice in aspect Contract_Cases
+contract_cases_illegal.ads:23:40: "Old" attribute misplaced inside contract cases
+contract_cases_illegal.ads:24:30: "Old" attribute misplaced inside contract cases
+contract_cases_illegal.ads:32:11: warning: contract cases do not mention result
+contract_cases_illegal.ads:32:39: "Result" attribute misplaced inside contract cases
+contract_cases_illegal.ads:32:61: warning: contract case refers only to pre-state
+Error while loading project file: test.gpr
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram overlapping_conditions
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : failed contract case at contract_cases_illegal_2.ads:34

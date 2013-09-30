@@ -1,0 +1,4 @@
+assume_and_assert_and_cut_illegal.adb:10:09: warning: unused assignment [ineffective]
+assume_and_assert_and_cut_illegal.adb:11:09: warning: unused assignment [ineffective]
+assume_and_assert_and_cut_illegal.adb:12:7: info: assertion proved
+assume_and_assert_and_cut_illegal.adb:13:7: assertion not proved, requires Y = 0
