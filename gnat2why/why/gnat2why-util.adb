@@ -23,12 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
-with Sinfo;                  use Sinfo;
-with Uintp;                  use Uintp;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Sinfo;               use Sinfo;
+with Uintp;               use Uintp;
 
-with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
 
 package body Gnat2Why.Util is
 
@@ -366,5 +367,14 @@ package body Gnat2Why.Util is
          return True;
       end if;
    end Is_Mutable_In_Why;
+
+   ------------------------
+   -- Why_Type_Of_Entity --
+   ------------------------
+
+   function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
+   begin
+      return Get_Typ (Ada_Ent_To_Why.Element (Symbol_Table, E).Main.B_Name);
+   end Why_Type_Of_Entity;
 
 end Gnat2Why.Util;

@@ -79,7 +79,6 @@ package body Why.Gen.Arrays is
       Arg_Ind : in out Positive)
    is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
-      pragma Assert (Get_Base_Type (W_Ty) = EW_Abstract);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
@@ -479,7 +478,6 @@ package body Why.Gen.Arrays is
       --  the symbol table
 
       elsif Get_Base_Type (W_Ty) = EW_Split then
-         pragma Assert (Get_Kind (+Expr) in W_Identifier | W_Deref);
          return Get_Array_Attr (Domain,
                                 Ada_Ent_To_Why.Element
                                   (Symbol_Table,
@@ -535,14 +533,24 @@ package body Why.Gen.Arrays is
       case Get_Kind (+E) is
          when W_Identifier =>
             return Get_Ada_Node (+E);
+
          when W_Deref =>
             declare
                Id : constant W_Identifier_Id := Get_Right (+E);
             begin
                return Get_Ada_Node (+Id);
             end;
+
+         when W_Tagged =>
+            declare
+               Expr : constant W_Expr_Id := Get_Def (W_Tagged_Id (E));
+            begin
+               return Get_Entity_Of_Variable (Expr);
+            end;
+
          when others =>
             raise Program_Error;
+
       end case;
    end Get_Entity_Of_Variable;
 

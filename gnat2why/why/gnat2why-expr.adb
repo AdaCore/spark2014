@@ -652,7 +652,7 @@ package body Gnat2Why.Expr is
                  Domain => EW_Prog,
                  Def    =>
                    +New_Simpl_Any_Prog
-                   (T    => EW_Abstract (Etype (N)),
+                   (T    => Get_Typ (Name),
                     Pred =>
                       +W_Expr_Id'(New_Relation
                       (Domain   => EW_Pred,
@@ -1326,14 +1326,22 @@ package body Gnat2Why.Expr is
 
       procedure Get_Name
         (Loop_Id  : Node_Id;
-         Loop_Map : in out Ada_To_Why_Ident.Map) is
+         Loop_Map : in out Ada_To_Why_Ident.Map)
+      is
+         Typ : W_Type_Id;
       begin
          pragma Unreferenced (Loop_Id);
 
          if not Loop_Map.Contains (Expr) then
+
+            if Nkind (Expr) in N_Identifier | N_Expanded_Name then
+               Typ := Why_Type_Of_Entity (Entity (Expr));
+            else
+               Typ := EW_Abstract (Etype (Expr));
+            end if;
             Loop_Map.Include
               (Expr,
-               New_Temp_Identifier (Typ => EW_Abstract (Etype (Expr))));
+               New_Temp_Identifier (Typ => Typ));
          end if;
 
          Result := Loop_Map.Element (Expr);
@@ -1362,9 +1370,15 @@ package body Gnat2Why.Expr is
    ------------------
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
+      Typ : W_Type_Id;
    begin
       if not Old_Map.Contains (N) then
-         Old_Map.Include (N, New_Temp_Identifier (EW_Abstract (Etype (N))));
+         if Nkind (N) in N_Identifier | N_Expanded_Name then
+            Typ := Why_Type_Of_Entity (Entity (N));
+         else
+            Typ := EW_Abstract (Etype (N));
+         end if;
+         Old_Map.Include (N, New_Temp_Identifier (Typ));
       end if;
 
       return Old_Map.Element (N);
