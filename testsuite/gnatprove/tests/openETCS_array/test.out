@@ -1,3 +1,13 @@
+deceleration_curve.adb:89:21: warning: no Global contract available for "Sqrt"
+deceleration_curve.adb:89:21: warning:  assuming "Sqrt" has no effect on global items
+deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:107:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:108:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:109:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
+deceleration_curve.adb:111:10: warning:  assuming "New_Line" has no effect on global items
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: assertion not proved
 deceleration_curve.adb:40:10: assertion not proved

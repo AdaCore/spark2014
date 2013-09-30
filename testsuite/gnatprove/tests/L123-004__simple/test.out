@@ -1,3 +1,93 @@
+evoting_simple.adb:26:07: warning: no Global contract available for "Open"
+evoting_simple.adb:26:07: warning:  assuming "Open" has no effect on global items
+evoting_simple.adb:28:17: warning: no Global contract available for "End_Of_File"
+evoting_simple.adb:28:17: warning:  assuming "End_Of_File" has no effect on global items
+evoting_simple.adb:30:10: warning: no Global contract available for "Get_Line"
+evoting_simple.adb:30:10: warning:  assuming "Get_Line" has no effect on global items
+evoting_simple.adb:35:07: warning: no Global contract available for "Close"
+evoting_simple.adb:35:07: warning:  assuming "Close" has no effect on global items
+evoting_simple.adb:43:10: warning: no Global contract available for "Put"
+evoting_simple.adb:43:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:44:10: warning: no Global contract available for "Put"
+evoting_simple.adb:44:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:45:10: warning: no Global contract available for "Put"
+evoting_simple.adb:45:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:52:10: warning: no Global contract available for "Put"
+evoting_simple.adb:52:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:54:10: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:54:10: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:61:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:61:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:62:07: warning: no Global contract available for "Put"
+evoting_simple.adb:62:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:63:07: warning: no Global contract available for "Put"
+evoting_simple.adb:63:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:64:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:64:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:68:07: warning: no Global contract available for "Put"
+evoting_simple.adb:68:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:69:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:69:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:82:10: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:82:10: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:84:10: warning: no Global contract available for "Put"
+evoting_simple.adb:84:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:85:10: warning: no Global contract available for "Put"
+evoting_simple.adb:85:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:86:10: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:86:10: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:88:10: warning: no Global contract available for "Get_Line"
+evoting_simple.adb:88:10: warning:  assuming "Get_Line" has no effect on global items
+evoting_simple.adb:91:13: warning: no Global contract available for "Put"
+evoting_simple.adb:91:13: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:93:13: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:93:13: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:95:13: warning: no Global contract available for "Get_Line"
+evoting_simple.adb:95:13: warning:  assuming "Get_Line" has no effect on global items
+evoting_simple.adb:100:16: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:100:16: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:103:13: warning: no Global contract available for "Put"
+evoting_simple.adb:103:13: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:104:13: warning: no Global contract available for "Put"
+evoting_simple.adb:104:13: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:105:13: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:105:13: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:118:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:118:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:121:10: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:121:10: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:122:10: warning: no Global contract available for "Get_Line"
+evoting_simple.adb:122:10: warning:  assuming "Get_Line" has no effect on global items
+evoting_simple.adb:129:16: warning: no Global contract available for "Put"
+evoting_simple.adb:129:16: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:131:16: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:131:16: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:161:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:161:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:170:10: warning: no Global contract available for "Put"
+evoting_simple.adb:170:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:171:10: warning: no Global contract available for "Put"
+evoting_simple.adb:171:10: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:173:10: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:173:10: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:176:07: warning: no Global contract available for "Put"
+evoting_simple.adb:176:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:177:07: warning: no Global contract available for "Put"
+evoting_simple.adb:177:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:178:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:178:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:180:07: warning: no Global contract available for "Put"
+evoting_simple.adb:180:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:181:07: warning: no Global contract available for "Put"
+evoting_simple.adb:181:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:182:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:182:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:185:07: warning: no Global contract available for "Put"
+evoting_simple.adb:185:07: warning:  assuming "Put" has no effect on global items
+evoting_simple.adb:187:07: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:187:07: warning:  assuming "Put_Line" has no effect on global items
+evoting_simple.adb:196:04: warning: no Global contract available for "Put_Line"
+evoting_simple.adb:196:04: warning:  assuming "Put_Line" has no effect on global items
 evoting_simple.adb:15:45: info: length check proved
 evoting_simple.adb:24:24: length check not proved
 evoting_simple.adb:31:43: info: range check proved
