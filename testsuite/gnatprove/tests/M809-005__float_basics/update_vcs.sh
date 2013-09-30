@@ -4,6 +4,7 @@ ROOT=$(pwd)
 
 rm -rf gnatprove
 
+mkdir -p /home/florian/projects/oxford-cde/vcs/vcs_01
 cd /home/florian/projects/oxford-cde/vcs/vcs_01
 git rm *
 cd ..
