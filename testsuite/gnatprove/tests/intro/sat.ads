@@ -1,4 +1,6 @@
-package Sat is pragma SPARK_Mode (On);
+pragma SPARK_Mode (On);
+
+package Sat is
 
    subtype My_Int is Integer range 0 .. 10_000;
 

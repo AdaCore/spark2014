@@ -22,8 +22,7 @@ package body Segway is
          State := Still;
       elsif Speed = 1 and then I = Accelerate then
          State := Forward;
-      elsif Speed = -1 and then I = Accelerate then
-         --  Oops, copy and paste error in the condition
+      elsif Speed = -1 and then I = Brake then
          State := Backward;
       end if;
    end State_Update;

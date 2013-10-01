@@ -1,3 +1,5 @@
+pragma SPARK_Mode (On);
+
 function After_Tax
   (Before_Tax : Natural;
    Rate       : Natural) return Natural is
