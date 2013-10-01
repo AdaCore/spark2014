@@ -1,0 +1,883 @@
+(* Module for axiomatizing type "short_short_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_short_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type short_short_integer "bounded_type"
+ 
+ function first  : int =
+  ( -128 )
+ 
+ function last  : int =
+  127
+ 
+ clone export "ada__model".Discrete with
+ type t = short_short_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "short_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type short_integer "bounded_type"
+ 
+ function first  : int =
+  ( -32768 )
+ 
+ function last  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = short_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer "bounded_type"
+ 
+ function first  : int =
+  ( -2147483648 )
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = long_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_long_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = long_long_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "natural", created in Gnat2Why.Types.Translate_Type *)
+module Standard__natural
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type natural "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = natural, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "positive", created in Gnat2Why.Types.Translate_Type *)
+module Standard__positive
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type positive "bounded_type"
+ 
+ function first  : int =
+  1
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = positive, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "short_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type short_float 
+ 
+ function first  : real =
+  (-.340282346638528859811704183484516925440.0)
+ 
+ function last  : real =
+  (340282346638528859811704183484516925440.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = short_float, 
+ function round_real_tmp = Floating.round_single, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type float 
+ 
+ function first  : real =
+  (-.340282346638528859811704183484516925440.0)
+ 
+ function last  : real =
+  (340282346638528859811704183484516925440.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = float, 
+ function round_real_tmp = Floating.round_single, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type long_float 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = long_float, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_long_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type long_long_float 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = long_long_float, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  255
+ 
+ clone export "ada__model".Discrete with
+ type t = character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "wide_character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type wide_character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  65535
+ 
+ clone export "ada__model".Discrete with
+ type t = wide_character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "wide_wide_character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_wide_character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type wide_wide_character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = wide_wide_character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__character.character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type string  = 
+  __t
+ 
+ function to_string 
+   (x : __image)  :string
+ 
+ function from_string 
+   (x : string)  :__image
+end
+
+(* Module for axiomatizing type "wide_string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__wide_character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__wide_character.wide_character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type wide_string  = 
+  __t
+end
+
+(* Module for axiomatizing type "wide_wide_string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_wide_string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__wide_wide_character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__wide_wide_character.wide_wide_character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type wide_wide_string  = 
+  __t
+end
+
+(* Module for axiomatizing type "duration", created in Gnat2Why.Types.Translate_Type *)
+module Standard__duration
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type duration 
+ 
+ function first  : real =
+  (-.9223372036854775808.0E-9)
+ 
+ function last  : real =
+  (9223372036854775807.0E-9)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = duration, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_8", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_8
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_8 "bounded_type"
+ 
+ function first  : int =
+  ( -128 )
+ 
+ function last  : int =
+  127
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_8, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_16", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_16
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_16 "bounded_type"
+ 
+ function first  : int =
+  ( -32768 )
+ 
+ function last  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_16, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_32", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_32
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_32 "bounded_type"
+ 
+ function first  : int =
+  ( -2147483648 )
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_32, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_64", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_64
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_64 "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_64, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "universal_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__universal_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type universal_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = universal_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "universal_real", created in Gnat2Why.Types.Translate_Type *)
+module Standard__universal_real
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type universal_real 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = universal_real, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "elementtype" defined at t3q4.ads:5, created in Gnat2Why.Types.Translate_Type *)
+module T3q4__elementtype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type elementtype "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  1000
+ 
+ clone export "ada__model".Discrete with
+ type t = elementtype, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "indextype" defined at t3q4.ads:6, created in Gnat2Why.Types.Translate_Type *)
+module T3q4__indextype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type indextype "bounded_type"
+ 
+ function first  : int =
+  1
+ 
+ function last  : int =
+  100
+ 
+ clone export "ada__model".Discrete with
+ type t = indextype, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "TarraytypeB" defined at t3q4.ads:7, created in Gnat2Why.Types.Translate_Type *)
+module T3q4__TarraytypeB
+ use import "_gnatprove_standard".Main
+ use import T3q4__elementtype
+ use import T3q4__indextype
+ use import Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = T3q4__elementtype.elementtype, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = T3q4__indextype.in_range
+ 
+ type tarraytypeB  = 
+  __t
+end
+
+(* Module for axiomatizing type "arraytype" defined at t3q4.ads:7, created in Gnat2Why.Types.Translate_Type *)
+module T3q4__arraytype
+ use import "_gnatprove_standard".Main
+ use import T3q4__elementtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function first  : int =
+  1
+ 
+ function last  : int =
+  100
+ 
+ clone export "ada__model".Constr_Array with
+ type component_type = T3q4__elementtype.elementtype, 
+ function first = first, 
+ function last = last
+ 
+ type arraytype  = 
+  __t
+end
+
+(* Module for axiomatizing type "sumtype" defined at t3q4.ads:8, created in Gnat2Why.Types.Translate_Type *)
+module T3q4__sumtype
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type sumtype "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  100000
+ 
+ clone export "ada__model".Discrete with
+ type t = sumtype, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for defining the constant "a" defined at t3q4.ads:10, created in Gnat2Why.Decls.Translate_Constant *)
+module T3q4__sumarray__a
+ use import "_gnatprove_standard".Main
+ use import T3q4__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function a 
+   :T3q4__arraytype.arraytype
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "sumarray" defined at t3q4.ads:10, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T3q4__sumarray
+ use import "_gnatprove_standard".Main
+ use import T3q4__arraytype
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function sumarray 
+   (t3q4__sumarray__a : T3q4__arraytype.arraytype)  :T3q4__sumtype.sumtype
+ 
+ val sumarray
+   (t3q4__sumarray__a : T3q4__arraytype.arraytype)  :T3q4__sumtype.sumtype
+  requires { true }
+  ensures { ( result = (sumarray t3q4__sumarray__a) ) }
+
+end
+
+(* Module for defining the constant "a" defined at t3q4.adb:5, created in Gnat2Why.Decls.Translate_Constant *)
+module T3q4__summed_between__a
+ use import "_gnatprove_standard".Main
+ use import T3q4__arraytype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function a 
+   :T3q4__arraytype.arraytype
+end
+
+(* Module for defining the constant "l" defined at t3q4.adb:6, created in Gnat2Why.Decls.Translate_Constant *)
+module T3q4__summed_between__l
+ use import "_gnatprove_standard".Main
+ use import T3q4__indextype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function l 
+   :T3q4__indextype.indextype
+end
+
+(* Module for defining the constant "u" defined at t3q4.adb:6, created in Gnat2Why.Decls.Translate_Constant *)
+module T3q4__summed_between__u
+ use import "_gnatprove_standard".Main
+ use import T3q4__indextype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ function u 
+   :T3q4__indextype.indextype
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "summed_between" defined at t3q4.adb:5, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T3q4__summed_between
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import T3q4__arraytype
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ function summed_between 
+   (t3q4__summed_between__a : T3q4__arraytype.arraytype) (t3q4__summed_between__l : int) (t3q4__summed_between__u : int)  :T3q4__sumtype.sumtype
+ 
+ val summed_between
+   (t3q4__summed_between__a : T3q4__arraytype.arraytype) (t3q4__summed_between__l : int) (t3q4__summed_between__u : int)  :T3q4__sumtype.sumtype
+  requires { ( t3q4__summed_between__l <= t3q4__summed_between__u ) }
+  ensures { ( ( result = (summed_between t3q4__summed_between__a t3q4__summed_between__l t3q4__summed_between__u) ) /\ ( (T3q4__sumtype.to_int result) <= ( ( ( t3q4__summed_between__u - t3q4__summed_between__l ) + 1 ) * 1000 ) ) ) }
+
+end
+
+(* Module giving a defining axiom for the expression function "summed_between" defined at t3q4.adb:5, created in Gnat2Why.Subprograms.Translate_Expression_Function_Body *)
+module T3q4__summed_between__expr_fun_axiom
+ use import "_gnatprove_standard".Main
+ use import T3q4__summed_between
+ use import T3q4__elementtype
+ use import T3q4__indextype
+ use import Standard__integer
+ use import T3q4__arraytype
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ axiom def_axiom :
+  (forall t3q4__summed_between__a  : T3q4__arraytype.arraytype.
+  (forall t3q4__summed_between__l t3q4__summed_between__u  : int [(T3q4__sumtype.to_int (T3q4__summed_between.summed_between t3q4__summed_between__a t3q4__summed_between__l t3q4__summed_between__u))].
+   ( ( (T3q4__indextype.in_range t3q4__summed_between__l) /\ (T3q4__indextype.in_range t3q4__summed_between__u) ) -> ( (T3q4__sumtype.to_int (T3q4__summed_between.summed_between t3q4__summed_between__a t3q4__summed_between__l t3q4__summed_between__u)) = (T3q4__sumtype.to_int (if (( t3q4__summed_between__l = t3q4__summed_between__u )) then (
+    (T3q4__sumtype.of_int (T3q4__elementtype.to_int (Array__1.get t3q4__summed_between__a t3q4__summed_between__l)))) else ((if (( t3q4__summed_between__l < t3q4__summed_between__u )) then (
+    (T3q4__sumtype.of_int ( (T3q4__sumtype.to_int (T3q4__summed_between.summed_between t3q4__summed_between__a t3q4__summed_between__l ( t3q4__summed_between__u - 1 ))) + (T3q4__elementtype.to_int (Array__1.get t3q4__summed_between__a t3q4__summed_between__u)) ))) else (
+    (T3q4__sumtype.of_int 0)))))) ) )))
+end
+
+(* Module including all necessary axioms for the subprogram "sumarray" declared at t3q4.ads:10, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T3q4__sumarray__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use import T3q4__sumarray
+ use import T3q4__arraytype
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+end
+
+(* Module including all necessary axioms for the subprogram "summed_between" declared at t3q4.adb:5, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T3q4__summed_between__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use import T3q4__summed_between
+ use import T3q4__summed_between__expr_fun_axiom
+ use import T3q4__elementtype
+ use import T3q4__indextype
+ use import Standard__integer
+ use import T3q4__arraytype
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+end
+(* Module for defining a ref holding the value of variable "sum" defined at t3q4.adb:18, created in Gnat2Why.Decls.Translate_Variable *)
+module T3q4__sumarray__sum
+ use import T3q4__sumtype
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  T3q4__sumtype.sumtype
+ 
+ val sum  : ref t
+end
+
+(* Module for defining a ref holding the value of variable "i" defined at t3q4.adb:20, created in Gnat2Why.Decls.Translate_Variable *)
+module T3q4__sumarray__L_1__i
+ use import T3q4__indextype
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  T3q4__indextype.indextype
+ 
+ val i  : ref int
+end
+(* Module for defining the loop exit exception for the loop"L_1" defined at t3q4.adb:20, created in Gnat2Why.Decls.Translate_Loop_Entity *)
+module T3q4__sumarray__L_1
+ use import "_gnatprove_standard".Main
+
+ exception L_1
+end
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "sumarray" defined at t3q4.ads:10, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T3q4__sumarray__def
+ use import "_gnatprove_standard".Main
+ use import T3q4__summed_between
+ use import T3q4__summed_between__expr_fun_axiom
+ use import T3q4__summed_between__expr_fun_closure
+ use import T3q4__elementtype
+ use import T3q4__sumarray__a
+ use import T3q4__indextype
+ use import Standard__integer
+ use import T3q4__sumarray__sum
+ use import T3q4__arraytype
+ use import T3q4__sumarray__L_1__i
+ use import T3q4__sumarray__L_1
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+ use        "_gnatprove_standard".Array__1
+
+ val t3q4__sumarray___result "GP_Ada_Name:SumArray'Result" : ref T3q4__sumtype.sumtype
+ 
+ let def "GP_Subp:t3q4.ads:10" "GP_Pretty_Ada:T3Q4.SumArray"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  try
+   ( T3q4__sumarray__sum.sum := ( (T3q4__sumtype.of_int(0)) );
+   ( "GP_Sloc:t3q4.adb:20:26" (let temp___standard__t3q4_0 = 1 in (
+   (let temp___standard__t3q4_1 = 100 in (
+    ( T3q4__sumarray__L_1__i.i := ( temp___standard__t3q4_0 );
+    (if ((andb(( temp___standard__t3q4_0 <= !T3q4__sumarray__L_1__i.i )) (( !T3q4__sumarray__L_1__i.i <= temp___standard__t3q4_1 )))) then (
+     try
+      while True do
+       invariant { 
+        ( "GP_Reason:VC_LOOP_INVARIANT" "GP_Sloc_VC:t3q4.adb:21:9" "keep_on_simp" ( (if (( !T3q4__sumarray__L_1__i.i <> 1 )) then (
+         ( "GP_Pretty_Ada:Sum = Summed_Between(A, IndexType'First, I - 1)" "GP_Sloc:t3q4.adb:23:14" ( (T3q4__sumtype.to_int !T3q4__sumarray__sum.sum) = (T3q4__sumtype.to_int (T3q4__summed_between.summed_between T3q4__sumarray__a.a 1 ( !T3q4__sumarray__L_1__i.i - 1 ))) ) )) else (
+         ( "GP_Pretty_Ada:true" "GP_Sloc:t3q4.adb:22:13" true ))) /\ ( "GP_Pretty_Ada:Sum <= 1000 * (I - IndexType'first" "GP_Sloc:t3q4.adb:24:12" ( (T3q4__sumtype.to_int !T3q4__sumarray__sum.sum) <= ( 1000 * ( !T3q4__sumarray__L_1__i.i - 1 ) ) ) ) ) )
+        }
+       ( ( (any unit
+       requires {true} 
+       ensures {( ( 1 <= !T3q4__sumarray__L_1__i.i ) /\ ( !T3q4__sumarray__L_1__i.i <= 100 ) )} 
+       );
+       abstract (___ignore((andb((if (( !T3q4__sumarray__L_1__i.i <> 1 )) then (
+        ( (T3q4__sumtype.to_int(!T3q4__sumarray__sum.sum)) = (T3q4__sumtype.to_int(( "GP_Reason:VC_PRECONDITION" "GP_Sloc_VC:t3q4.adb:23:20" "keep_on_simp" (T3q4__summed_between.summed_between(T3q4__sumarray__a.a) (1) (( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t3q4.adb:23:57" "keep_on_simp" (T3q4__indextype.range_check_(( !T3q4__sumarray__L_1__i.i - 1 ))) ))) ))) )) else (
+        (Boolean.of_int(1))))) (( (T3q4__sumtype.to_int(!T3q4__sumarray__sum.sum)) <= ( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t3q4.adb:24:24" "keep_on_simp" (Standard__integer.range_check_(( 1000 * ( !T3q4__sumarray__L_1__i.i - 1 ) ))) ) ))))) ensures {true} );
+       ( ( "GP_Sloc:t3q4.adb:25:13" T3q4__sumarray__sum.sum := ( (T3q4__sumtype.of_int(( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t3q4.adb:25:20" "keep_on_simp" (T3q4__sumtype.range_check_(( (T3q4__sumtype.to_int(!T3q4__sumarray__sum.sum)) + (T3q4__elementtype.to_int((Array__1.get(T3q4__sumarray__a.a) (!T3q4__sumarray__L_1__i.i)))) ))) ))) ) );
+       T3q4__sumarray__L_1__i.i := ( ( !T3q4__sumarray__L_1__i.i + 1 ) );
+       (if (( !T3q4__sumarray__L_1__i.i <= temp___standard__t3q4_1 )) then (
+        ()) else (
+        raise T3q4__sumarray__L_1.L_1)) ) )
+      done
+     with
+      T3q4__sumarray__L_1.L_1 -> ()
+     end)) )))
+   ))
+    );
+   ( "GP_Sloc:t3q4.adb:27:6" ( t3q4__sumarray___result := ( !T3q4__sumarray__sum.sum );
+   raise Return__exc ) );
+   raise Return__exc )
+  with
+   Return__exc -> ( abstract (___ignore(True)) ensures {true};
+   !t3q4__sumarray___result )
+  end
+end
+
+(* Module for checking absence of run-time errors and contract cases in the subprogram spec of "summed_between" defined at t3q4.adb:5, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Spec *)
+module T3q4__summed_between__pre
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+ use import T3q4__summed_between__l
+ use import T3q4__indextype
+ use import T3q4__summed_between__u
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ let pre_check "GP_Subp:t3q4.adb:5" "GP_Pretty_Ada:T3Q4.Summed_Between"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  ( abstract (___ignore(( (T3q4__indextype.to_int(T3q4__summed_between__l.l)) <= (T3q4__indextype.to_int(T3q4__summed_between__u.u)) ))) ensures {true};
+  (any unit
+  requires {true} 
+  ensures {( (T3q4__indextype.to_int T3q4__summed_between__l.l) <= (T3q4__indextype.to_int T3q4__summed_between__u.u) )} 
+  ) )
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "summed_between" defined at t3q4.adb:5, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T3q4__summed_between__def
+ use import "_gnatprove_standard".Main
+ use import T3q4__summed_between
+ use import T3q4__summed_between__expr_fun_axiom
+ use import T3q4__summed_between__expr_fun_closure
+ use import T3q4__elementtype
+ use import T3q4__summed_between__a
+ use import T3q4__summed_between__l
+ use import T3q4__indextype
+ use import Standard__integer
+ use import T3q4__summed_between__u
+ use import T3q4__arraytype
+ use import T3q4__sumtype
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ val t3q4__summed_between___result "GP_Ada_Name:Summed_Between'Result" : ref T3q4__sumtype.sumtype
+ 
+ let def "GP_Subp:t3q4.adb:5" "GP_Pretty_Ada:T3Q4.Summed_Between"  (__void_param : unit) 
+ requires { ( (T3q4__indextype.to_int T3q4__summed_between__l.l) <= (T3q4__indextype.to_int T3q4__summed_between__u.u) ) }
+ ensures { ( "GP_Reason:VC_POSTCONDITION" "GP_Sloc_VC:t3q4.adb:8:18" "keep_on_simp" ( "GP_Pretty_Ada:Summed_Between'Result <= (U - L + 1) * 1000" "GP_Sloc:t3q4.adb:8:18" ( (T3q4__sumtype.to_int !t3q4__summed_between___result) <= ( ( ( (T3q4__indextype.to_int T3q4__summed_between__u.u) - (T3q4__indextype.to_int T3q4__summed_between__l.l) ) + 1 ) * 1000 ) ) ) ) }
+  = 
+  try
+   ( ( "GP_Sloc:t3q4.adb:12:8" ( t3q4__summed_between___result := ( (if (( (T3q4__indextype.to_int(T3q4__summed_between__l.l)) = (T3q4__indextype.to_int(T3q4__summed_between__u.u)) )) then (
+    (T3q4__sumtype.of_int((T3q4__elementtype.to_int((Array__1.get(T3q4__summed_between__a.a) ((T3q4__indextype.to_int(T3q4__summed_between__l.l))))))))) else ((if (( (T3q4__indextype.to_int(T3q4__summed_between__l.l)) < (T3q4__indextype.to_int(T3q4__summed_between__u.u)) )) then (
+    (T3q4__sumtype.of_int(( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t3q4.adb:13:56" "keep_on_simp" (T3q4__sumtype.range_check_(( (T3q4__sumtype.to_int(( "GP_Reason:VC_PRECONDITION" "GP_Sloc_VC:t3q4.adb:13:27" "keep_on_simp" (T3q4__summed_between.summed_between(T3q4__summed_between__a.a) ((T3q4__indextype.to_int(T3q4__summed_between__l.l))) (( "GP_Reason:VC_RANGE_CHECK" "GP_Sloc_VC:t3q4.adb:13:51" "keep_on_simp" (T3q4__indextype.range_check_(( (T3q4__indextype.to_int(T3q4__summed_between__u.u)) - 1 ))) ))) ))) + (T3q4__elementtype.to_int((Array__1.get(T3q4__summed_between__a.a) ((T3q4__indextype.to_int(T3q4__summed_between__u.u)))))) ))) )))) else (
+    (T3q4__sumtype.of_int(0)))))) );
+   raise Return__exc ) );
+   raise Return__exc )
+  with
+   Return__exc -> ( abstract (___ignore(( (T3q4__sumtype.to_int(!t3q4__summed_between___result)) <= ( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t3q4.adb:8:56" "keep_on_simp" (Standard__integer.range_check_(( ( ( (T3q4__indextype.to_int(T3q4__summed_between__u.u)) - (T3q4__indextype.to_int(T3q4__summed_between__l.l)) ) + 1 ) * 1000 ))) ) ))) ensures {true};
+   !t3q4__summed_between___result )
+  end
+end

@@ -1,0 +1,663 @@
+(* Module for axiomatizing type "short_short_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_short_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type short_short_integer "bounded_type"
+ 
+ function first  : int =
+  ( -128 )
+ 
+ function last  : int =
+  127
+ 
+ clone export "ada__model".Discrete with
+ type t = short_short_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "short_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type short_integer "bounded_type"
+ 
+ function first  : int =
+  ( -32768 )
+ 
+ function last  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = short_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer "bounded_type"
+ 
+ function first  : int =
+  ( -2147483648 )
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = long_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_long_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = long_long_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "natural", created in Gnat2Why.Types.Translate_Type *)
+module Standard__natural
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type natural "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = natural, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "positive", created in Gnat2Why.Types.Translate_Type *)
+module Standard__positive
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type positive "bounded_type"
+ 
+ function first  : int =
+  1
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = positive, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "short_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type short_float 
+ 
+ function first  : real =
+  (-.340282346638528859811704183484516925440.0)
+ 
+ function last  : real =
+  (340282346638528859811704183484516925440.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = short_float, 
+ function round_real_tmp = Floating.round_single, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type float 
+ 
+ function first  : real =
+  (-.340282346638528859811704183484516925440.0)
+ 
+ function last  : real =
+  (340282346638528859811704183484516925440.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = float, 
+ function round_real_tmp = Floating.round_single, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type long_float 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = long_float, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_long_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type long_long_float 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = long_long_float, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  255
+ 
+ clone export "ada__model".Discrete with
+ type t = character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "wide_character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type wide_character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  65535
+ 
+ clone export "ada__model".Discrete with
+ type t = wide_character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "wide_wide_character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_wide_character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type wide_wide_character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = wide_wide_character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__character.character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type string  = 
+  __t
+ 
+ function to_string 
+   (x : __image)  :string
+ 
+ function from_string 
+   (x : string)  :__image
+end
+
+(* Module for axiomatizing type "wide_string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__wide_character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__wide_character.wide_character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type wide_string  = 
+  __t
+end
+
+(* Module for axiomatizing type "wide_wide_string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_wide_string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__wide_wide_character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__wide_wide_character.wide_wide_character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type wide_wide_string  = 
+  __t
+end
+
+(* Module for axiomatizing type "duration", created in Gnat2Why.Types.Translate_Type *)
+module Standard__duration
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type duration 
+ 
+ function first  : real =
+  (-.9223372036854775808.0E-9)
+ 
+ function last  : real =
+  (9223372036854775807.0E-9)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = duration, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_8", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_8
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_8 "bounded_type"
+ 
+ function first  : int =
+  ( -128 )
+ 
+ function last  : int =
+  127
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_8, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_16", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_16
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_16 "bounded_type"
+ 
+ function first  : int =
+  ( -32768 )
+ 
+ function last  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_16, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_32", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_32
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_32 "bounded_type"
+ 
+ function first  : int =
+  ( -2147483648 )
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_32, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_64", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_64
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_64 "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_64, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "universal_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__universal_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type universal_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = universal_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "universal_real", created in Gnat2Why.Types.Translate_Type *)
+module Standard__universal_real
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type universal_real 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = universal_real, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "increment" defined at t1q1d.ads:5, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T1q1d__increment
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ val increment
+   (t1q1d__increment__x : ref Standard__integer.integer)  :unit
+  requires { ( (Standard__integer.to_int !t1q1d__increment__x) < 2147483647 ) }
+  ensures { true }
+  writes {t1q1d__increment__x }
+
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "add2" defined at t1q1d.ads:8, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T1q1d__add2
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ val add2
+   (t1q1d__add2__x : ref Standard__integer.integer)  :unit
+  requires { ( (Standard__integer.to_int !t1q1d__add2__x) <= 2147483645 ) }
+  ensures { ( (Standard__integer.to_int !t1q1d__add2__x) = ( (Standard__integer.to_int (old !t1q1d__add2__x )) + 2 ) ) }
+  writes {t1q1d__add2__x }
+
+end
+
+(* Module including all necessary axioms for the subprogram "increment" declared at t1q1d.ads:5, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q1d__increment__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use import T1q1d__increment
+ use import Standard__integer
+ use import Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end
+
+(* Module including all necessary axioms for the subprogram "add2" declared at t1q1d.ads:8, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q1d__add2__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import Standard__integer
+ use import T1q1d__add2
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+end
+(* Module for defining a ref holding the value of variable "x" defined at t1q1d.ads:5, created in Gnat2Why.Decls.Translate_Variable *)
+module T1q1d__increment__x
+ use import Standard__integer
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  Standard__integer.integer
+ 
+ val x  : ref t
+end
+
+(* Module for defining a ref holding the value of variable "x" defined at t1q1d.ads:8, created in Gnat2Why.Decls.Translate_Variable *)
+module T1q1d__add2__x
+ use import Standard__integer
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  Standard__integer.integer
+ 
+ val x  : ref t
+end
+(* Module for checking absence of run-time errors and contract cases in the subprogram spec of "increment" defined at t1q1d.ads:5, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Spec *)
+module T1q1d__increment__pre
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import T1q1d__increment__x
+ use import Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let pre_check "GP_Subp:t1q1d.ads:5" "GP_Pretty_Ada:T1Q1D.Increment"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  ( abstract (___ignore(( (Standard__integer.to_int(!T1q1d__increment__x.x)) < 2147483647 ))) ensures {true};
+  (any unit
+  requires {true} 
+  ensures {( (Standard__integer.to_int !T1q1d__increment__x.x) < 2147483647 )} 
+  ) )
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "increment" defined at t1q1d.ads:5, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q1d__increment__def
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import T1q1d__increment__x
+ use import Standard__integer
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q1d.ads:5" "GP_Pretty_Ada:T1Q1D.Increment"  (__void_param : unit) 
+ requires { ( (Standard__integer.to_int !T1q1d__increment__x.x) < 2147483647 ) }
+ ensures { true }
+  = 
+  try
+   ( ( "GP_Sloc:t1q1d.adb:7:8" T1q1d__increment__x.x := ( (Standard__integer.of_int(( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t1q1d.adb:7:13" "keep_on_simp" (Standard__integer.range_check_(( (Standard__integer.to_int(!T1q1d__increment__x.x)) + 1 ))) ))) ) );
+   raise Return__exc )
+  with
+   Return__exc -> abstract (___ignore(True)) ensures {true}
+  end
+end
+
+(* Module for checking absence of run-time errors and contract cases in the subprogram spec of "add2" defined at t1q1d.ads:8, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Spec *)
+module T1q1d__add2__pre
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+ use import Standard__integer
+ use import Standard__integer
+ use import T1q1d__add2__x
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let pre_check "GP_Subp:t1q1d.ads:8" "GP_Pretty_Ada:T1Q1D.Add2"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  ( abstract (___ignore(( (Standard__integer.to_int(!T1q1d__add2__x.x)) <= 2147483645 ))) ensures {true};
+  (any unit
+  requires {true} 
+  ensures {( (Standard__integer.to_int !T1q1d__add2__x.x) <= 2147483645 )} 
+  ) )
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "add2" defined at t1q1d.ads:8, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q1d__add2__def
+ use import "_gnatprove_standard".Main
+ use import T1q1d__increment
+ use import T1q1d__increment__expr_fun_closure
+ use import Standard__integer
+ use import Standard__integer
+ use import T1q1d__add2__x
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ let def "GP_Subp:t1q1d.ads:8" "GP_Pretty_Ada:T1Q1D.Add2"  (__void_param : unit) 
+ requires { ( (Standard__integer.to_int !T1q1d__add2__x.x) <= 2147483645 ) }
+ ensures { ( "GP_Reason:VC_POSTCONDITION" "GP_Sloc_VC:t1q1d.ads:10:19" "keep_on_simp" ( "GP_Pretty_Ada:X = X'Old + 2" "GP_Sloc:t1q1d.ads:10:19" ( (Standard__integer.to_int !T1q1d__add2__x.x) = ( (Standard__integer.to_int (old !T1q1d__add2__x.x )) + 2 ) ) ) ) }
+  = 
+  ( abstract (___ignore(!T1q1d__add2__x.x)) ensures {true};
+  (let temp___standard__t1q1d_0 = (any Standard__integer.integer
+  ensures {( result = !T1q1d__add2__x.x )} 
+  ) in (
+   try
+    ( ( "GP_Sloc:t1q1d.adb:13:6" let t1q1d__increment__x  = ref (!T1q1d__add2__x.x) in 
+     ( ( "GP_Reason:VC_PRECONDITION" "GP_Sloc_VC:t1q1d.adb:13:6" "keep_on_simp" (T1q1d__increment.increment(t1q1d__increment__x)) );
+     T1q1d__add2__x.x := ( !t1q1d__increment__x ) ) );
+    ( "GP_Sloc:t1q1d.adb:14:6" let t1q1d__increment__x  = ref (!T1q1d__add2__x.x) in 
+     ( ( "GP_Reason:VC_PRECONDITION" "GP_Sloc_VC:t1q1d.adb:14:6" "keep_on_simp" (T1q1d__increment.increment(t1q1d__increment__x)) );
+     T1q1d__add2__x.x := ( !t1q1d__increment__x ) ) );
+    raise Return__exc )
+   with
+    Return__exc -> abstract (___ignore(( (Standard__integer.to_int(!T1q1d__add2__x.x)) = ( "GP_Reason:VC_OVERFLOW_CHECK" "GP_Sloc_VC:t1q1d.ads:10:29" "keep_on_simp" (Standard__integer.range_check_(( (Standard__integer.to_int(temp___standard__t1q1d_0)) + 2 ))) ) ))) ensures {true}
+   end))
+   )
+end

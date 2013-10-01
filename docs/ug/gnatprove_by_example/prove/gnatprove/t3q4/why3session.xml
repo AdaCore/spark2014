@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v2//EN" "http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="3">
+ <prover
+  id="0"
+  name="Alt-Ergo for GNATprove"
+  version="0.95"/>
+ <file
+  name="../t3q4.mlw"
+  verified="false"
+  expanded="true">
+  <theory
+   name="Standard__short_short_integer"
+   locfile="../t3q4.mlw"
+   loclnum="2" loccnumb="7" loccnume="36"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__short_integer"
+   locfile="../t3q4.mlw"
+   loclnum="22" loccnumb="7" loccnume="30"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer"
+   locfile="../t3q4.mlw"
+   loclnum="42" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_integer"
+   locfile="../t3q4.mlw"
+   loclnum="62" loccnumb="7" loccnume="29"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_long_integer"
+   locfile="../t3q4.mlw"
+   loclnum="82" loccnumb="7" loccnume="34"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__natural"
+   locfile="../t3q4.mlw"
+   loclnum="102" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__positive"
+   locfile="../t3q4.mlw"
+   loclnum="122" loccnumb="7" loccnume="25"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__short_float"
+   locfile="../t3q4.mlw"
+   loclnum="142" loccnumb="7" loccnume="28"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__float"
+   locfile="../t3q4.mlw"
+   loclnum="163" loccnumb="7" loccnume="22"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_float"
+   locfile="../t3q4.mlw"
+   loclnum="184" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_long_float"
+   locfile="../t3q4.mlw"
+   loclnum="205" loccnumb="7" loccnume="32"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__character"
+   locfile="../t3q4.mlw"
+   loclnum="226" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_character"
+   locfile="../t3q4.mlw"
+   loclnum="246" loccnumb="7" loccnume="31"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_wide_character"
+   locfile="../t3q4.mlw"
+   loclnum="266" loccnumb="7" loccnume="36"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__string"
+   locfile="../t3q4.mlw"
+   loclnum="286" loccnumb="7" loccnume="23"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_string"
+   locfile="../t3q4.mlw"
+   loclnum="313" loccnumb="7" loccnume="28"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_wide_string"
+   locfile="../t3q4.mlw"
+   loclnum="334" loccnumb="7" loccnume="33"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__duration"
+   locfile="../t3q4.mlw"
+   loclnum="355" loccnumb="7" loccnume="25"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_8"
+   locfile="../t3q4.mlw"
+   loclnum="375" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_16"
+   locfile="../t3q4.mlw"
+   loclnum="395" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_32"
+   locfile="../t3q4.mlw"
+   loclnum="415" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_64"
+   locfile="../t3q4.mlw"
+   loclnum="435" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__universal_integer"
+   locfile="../t3q4.mlw"
+   loclnum="455" loccnumb="7" loccnume="34"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__universal_real"
+   locfile="../t3q4.mlw"
+   loclnum="475" loccnumb="7" loccnume="31"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__elementtype"
+   locfile="../t3q4.mlw"
+   loclnum="496" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__indextype"
+   locfile="../t3q4.mlw"
+   loclnum="516" loccnumb="7" loccnume="22"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__TarraytypeB"
+   locfile="../t3q4.mlw"
+   loclnum="536" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__arraytype"
+   locfile="../t3q4.mlw"
+   loclnum="557" loccnumb="7" loccnume="22"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumtype"
+   locfile="../t3q4.mlw"
+   loclnum="580" loccnumb="7" loccnume="20"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray__a"
+   locfile="../t3q4.mlw"
+   loclnum="600" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray"
+   locfile="../t3q4.mlw"
+   loclnum="612" loccnumb="7" loccnume="21"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__summed_between__a"
+   locfile="../t3q4.mlw"
+   loclnum="631" loccnumb="7" loccnume="30"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__summed_between__l"
+   locfile="../t3q4.mlw"
+   loclnum="643" loccnumb="7" loccnume="30"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__summed_between__u"
+   locfile="../t3q4.mlw"
+   loclnum="654" loccnumb="7" loccnume="30"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__summed_between"
+   locfile="../t3q4.mlw"
+   loclnum="665" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__summed_between__expr_fun_axiom"
+   locfile="../t3q4.mlw"
+   loclnum="685" loccnumb="7" loccnume="43"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray__expr_fun_closure"
+   locfile="../t3q4.mlw"
+   loclnum="707" loccnumb="7" loccnume="39"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__summed_between__expr_fun_closure"
+   locfile="../t3q4.mlw"
+   loclnum="719" loccnumb="7" loccnume="45"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray__sum"
+   locfile="../t3q4.mlw"
+   loclnum="734" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray__L_1__i"
+   locfile="../t3q4.mlw"
+   loclnum="745" loccnumb="7" loccnume="29"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray__L_1"
+   locfile="../t3q4.mlw"
+   loclnum="755" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="T3q4__sumarray__def"
+   locfile="../t3q4.mlw"
+   loclnum="761" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t3q4.mlw"
+    loclnum="782" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="bc2f1674739f6c48786987f58d24364e"
+    proved="true"
+    expanded="true"
+    shape="ainfix &lt;=ato_intV7ainfix *c1000ainfix -V8c1Aainfix =ato_intV7ato_intasummed_betweenaac1ainfix -V8c1INainfix =V8c1Iainfix &lt;=V8c100Aainfix =V8ainfix +V6c1Aainfix =V7V2Aainfix =ato_intV2ainfix +ato_intV5ato_intagetaaV6Aainfix &lt;=V6c100Aainfix &lt;=c1V6Aain_rangeainfix +ato_intV5ato_intagetaaV6Iainfix &lt;=V6c100Aainfix &lt;=c1V6AtIainfix &lt;=ato_intV1ainfix *ainfix +ainfix -ainfix -V6c1c1c1c1000Aainfix =V1asummed_betweenaac1ainfix -V6c1Aainfix &lt;=c1ainfix -V6c1Aain_rangeainfix -V6c1INainfix =V6c1Aain_rangeainfix *c1000ainfix -V6c1Iainfix &lt;=V6c100Aainfix &lt;=c1V6Iainfix &lt;=ato_intV5ainfix *c1000ainfix -V6c1Aainfix =ato_intV5ato_intasummed_betweenaac1ainfix -V6c1INainfix =V6c1Aainfix &lt;=ato_intV3ainfix *c1000ainfix -V4c1Aainfix =ato_intV3ato_intasummed_betweenaac1ainfix -V4c1INainfix =V4c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+    <label
+     name="GP_Subp:t3q4.ads:10"/>
+    <label
+     name="GP_Pretty_Ada:T3Q4.SumArray"/>
+    <label
+     name="expl:VC for def"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t3q4.mlw"
+      loclnum="782" loccnumb="5" loccnume="8"
+      expl="1. loop invariant init"
+      sum="7e6a5115d9268ff298c56b221c3a2c64"
+      proved="true"
+      expanded="false"
+      shape="loop invariant initainfix &lt;=ato_intV3ainfix *c1000ainfix -V4c1Aainfix =ato_intV3ato_intasummed_betweenaac1ainfix -V4c1INainfix =V4c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+      <label
+       name="GP_Subp:t3q4.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.SumArray"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.01"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.2"
+      locfile="../t3q4.mlw"
+      loclnum="782" loccnumb="5" loccnume="8"
+      expl="2."
+      sum="75fdefdad64142e2c0e0ca7f36238366"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix *c1000ainfix -V6c1Iainfix &lt;=V6c100Aainfix &lt;=c1V6Iainfix &lt;=ato_intV5ainfix *c1000ainfix -V6c1Aainfix =ato_intV5ato_intasummed_betweenaac1ainfix -V6c1INainfix =V6c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+      <label
+       name="GP_Subp:t3q4.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.SumArray"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.3"
+      locfile="../t3q4.mlw"
+      loclnum="782" loccnumb="5" loccnume="8"
+      expl="3."
+      sum="9ddfbdbc48a593b6760166c386c1407f"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix -V6c1INainfix =V6c1Iainfix &lt;=V6c100Aainfix &lt;=c1V6Iainfix &lt;=ato_intV5ainfix *c1000ainfix -V6c1Aainfix =ato_intV5ato_intasummed_betweenaac1ainfix -V6c1INainfix =V6c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+      <label
+       name="GP_Subp:t3q4.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.SumArray"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.4"
+      locfile="../t3q4.mlw"
+      loclnum="782" loccnumb="5" loccnume="8"
+      expl="4."
+      sum="d05fdcb28b0e3fc75c1dbe7be3ee5216"
+      proved="true"
+      expanded="false"
+      shape="ainfix &lt;=c1ainfix -V6c1INainfix =V6c1Iainfix &lt;=V6c100Aainfix &lt;=c1V6Iainfix &lt;=ato_intV5ainfix *c1000ainfix -V6c1Aainfix =ato_intV5ato_intasummed_betweenaac1ainfix -V6c1INainfix =V6c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+      <label
+       name="GP_Subp:t3q4.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.SumArray"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.5"
+      locfile="../t3q4.mlw"
+      loclnum="782" loccnumb="5" loccnume="8"
+      expl="5."
+      sum="735d3511c8850bfdf58b33fd94009ff5"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix +ato_intV5ato_intagetaaV6Iainfix &lt;=V6c100Aainfix &lt;=c1V6Iainfix &lt;=ato_intV5ainfix *c1000ainfix -V6c1Aainfix =ato_intV5ato_intasummed_betweenaac1ainfix -V6c1INainfix =V6c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+      <label
+       name="GP_Subp:t3q4.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.SumArray"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.04"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.6"
+      locfile="../t3q4.mlw"
+      loclnum="782" loccnumb="5" loccnume="8"
+      expl="6. loop invariant preservation"
+      sum="e7355d7de65d2a83e4f54fc19112b4e5"
+      proved="true"
+      expanded="false"
+      shape="loop invariant preservationainfix &lt;=ato_intV7ainfix *c1000ainfix -V8c1Aainfix =ato_intV7ato_intasummed_betweenaac1ainfix -V8c1INainfix =V8c1Iainfix &lt;=V8c100Aainfix =V8ainfix +V6c1Aainfix =V7V2Aainfix =ato_intV2ainfix +ato_intV5ato_intagetaaV6Aainfix &lt;=V6c100Aainfix &lt;=c1V6Iainfix &lt;=ato_intV5ainfix *c1000ainfix -V6c1Aainfix =ato_intV5ato_intasummed_betweenaac1ainfix -V6c1INainfix =V6c1Iainfix &lt;=V4c100Aainfix &lt;=c1V4Iainfix =V4c1Iainfix =V3V0Aainfix =ato_intV0c0F">
+      <label
+       name="GP_Subp:t3q4.ads:10"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.SumArray"/>
+      <label
+       name="expl:VC for def"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.13"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+  <theory
+   name="T3q4__summed_between__pre"
+   locfile="../t3q4.mlw"
+   loclnum="827" loccnumb="7" loccnume="32"
+   verified="false"
+   expanded="true">
+   <goal
+    name="WP_parameter pre_check"
+    locfile="../t3q4.mlw"
+    loclnum="837" loccnumb="5" loccnume="14"
+    expl="VC for pre_check"
+    sum="89e4353a7d045522a482739b5b25daa9"
+    proved="false"
+    expanded="true"
+    shape="t">
+    <label
+     name="GP_Subp:t3q4.adb:5"/>
+    <label
+     name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+    <label
+     name="expl:VC for pre_check"/>
+    <transf
+     name="split_goal"
+     proved="false"
+     expanded="true">
+     <goal
+      name="WP_parameter pre_check.1"
+      locfile="../t3q4.mlw"
+      loclnum="837" loccnumb="5" loccnume="14"
+      expl="1."
+      sum="89e4353a7d045522a482739b5b25daa9"
+      proved="false"
+      expanded="false"
+      shape="t">
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <label
+       name="expl:VC for pre_check"/>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+  <theory
+   name="T3q4__summed_between__def"
+   locfile="../t3q4.mlw"
+   loclnum="849" loccnumb="7" loccnume="32"
+   verified="true"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../t3q4.mlw"
+    loclnum="868" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="ee79335665b94c2a0155d4271040ad85"
+    proved="true"
+    expanded="true"
+    shape="ainfix &lt;=ato_intV5ainfix *ainfix +ainfix -ato_intauato_intalc1c1000Iainfix =V6V5Aainfix =V5V4Aiiainfix =ato_intV4c0ainfix =ato_intV4V3Aainfix =V3V2Aainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1ainfix &lt;ato_intalato_intauainfix =ato_intV4ato_intagetaaato_intalainfix =ato_intalato_intauFAain_rangeainfix *ainfix +ainfix -ato_intauato_intalc1c1000Iainfix =V5V4Aiiainfix =ato_intV4c0ainfix =ato_intV4V3Aainfix =V3V2Aainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1ainfix &lt;ato_intalato_intauainfix =ato_intV4ato_intagetaaato_intalainfix =ato_intalato_intauAtIainfix =V3V2Aainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1Aain_rangeV2Iainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1AtIainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1Aainfix &lt;=ato_intalainfix -ato_intauc1Aain_rangeainfix -ato_intauc1Iainfix &lt;ato_intalato_intauINainfix =ato_intalato_intauIainfix &lt;=ato_intalato_intauF">
+    <label
+     name="expl:VC for def"/>
+    <label
+     name="GP_Subp:t3q4.adb:5"/>
+    <label
+     name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+    <transf
+     name="split_goal"
+     proved="true"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../t3q4.mlw"
+      loclnum="868" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="97a7ed5f3b94d2b06fff96c37ddba246"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix -ato_intauc1Iainfix &lt;ato_intalato_intauINainfix =ato_intalato_intauIainfix &lt;=ato_intalato_intauF">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.2"
+      locfile="../t3q4.mlw"
+      loclnum="868" loccnumb="5" loccnume="8"
+      expl="2."
+      sum="759ab1920de14c8d7415647f4750f459"
+      proved="true"
+      expanded="false"
+      shape="ainfix &lt;=ato_intalainfix -ato_intauc1Iainfix &lt;ato_intalato_intauINainfix =ato_intalato_intauIainfix &lt;=ato_intalato_intauF">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.3"
+      locfile="../t3q4.mlw"
+      loclnum="868" loccnumb="5" loccnume="8"
+      expl="3."
+      sum="61613ffcd429bf9dd714d675c98709f0"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeV2Iainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1Iainfix &lt;ato_intalato_intauINainfix =ato_intalato_intauIainfix &lt;=ato_intalato_intauF">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.4"
+      locfile="../t3q4.mlw"
+      loclnum="868" loccnumb="5" loccnume="8"
+      expl="4."
+      sum="d5437fe920581c585d16e0fef599a3b0"
+      proved="true"
+      expanded="false"
+      shape="tIainfix =V3V2Aainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1Iainfix &lt;ato_intalato_intauINainfix =ato_intalato_intauIainfix &lt;=ato_intalato_intauF">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.03"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.5"
+      locfile="../t3q4.mlw"
+      loclnum="868" loccnumb="5" loccnume="8"
+      expl="5."
+      sum="b428ce9dc6ed08f03401354d24adb46c"
+      proved="true"
+      expanded="false"
+      shape="ain_rangeainfix *ainfix +ainfix -ato_intauato_intalc1c1000Iainfix =V5V4Aiiainfix =ato_intV4c0ainfix =ato_intV4V3Aainfix =V3V2Aainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1ainfix &lt;ato_intalato_intauainfix =ato_intV4ato_intagetaaato_intalainfix =ato_intalato_intauIainfix &lt;=ato_intalato_intauF">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.02"/>
+      </proof>
+     </goal>
+     <goal
+      name="WP_parameter def.6"
+      locfile="../t3q4.mlw"
+      loclnum="868" loccnumb="5" loccnume="8"
+      expl="6."
+      sum="99100fd1cf3eb6898a0815a5049f5b6f"
+      proved="true"
+      expanded="false"
+      shape="ainfix &lt;=ato_intV5ainfix *ainfix +ainfix -ato_intauato_intalc1c1000Iainfix =V6V5Aainfix =V5V4Aiiainfix =ato_intV4c0ainfix =ato_intV4V3Aainfix =V3V2Aainfix =V2ainfix +V1ato_intagetaaato_intauAainfix =V1ato_intV0Aainfix &lt;=ato_intV0ainfix *ainfix +ainfix -ainfix -ato_intauc1ato_intalc1c1000Aainfix =V0asummed_betweenaaato_intalainfix -ato_intauc1ainfix &lt;ato_intalato_intauainfix =ato_intV4ato_intagetaaato_intalainfix =ato_intalato_intauFIainfix &lt;=ato_intalato_intauF">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:t3q4.adb:5"/>
+      <label
+       name="GP_Pretty_Ada:T3Q4.Summed_Between"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="valid" time="0.06"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+ </file>
+</why3session>

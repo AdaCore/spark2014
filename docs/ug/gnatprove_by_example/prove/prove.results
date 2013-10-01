@@ -1,0 +1,70 @@
+swap_incorrect_d.adb:8:07: warning: variable "Old_Y" is read but never assigned
+swap_incorrect_c.adb:8:07: warning: variable "Old_Y" is never read and never assigned
+t1q3b.ads:6:46: info: contract case proved
+t1q3b.ads:7:46: info: contract case proved
+t1q3b.ads:8:46: info: contract case proved
+t1q3b.ads:9:46: info: contract case proved
+t1q3b.ads:6:11: info: disjoint contract cases proved
+t1q3b.ads:6:11: info: complete contract cases proved
+t1q5.adb:9:30: info: overflow check proved
+t1q5.adb:12:19: info: overflow check proved
+t1q5.adb:17:29: info: overflow check proved
+t1q5.adb:20:19: info: overflow check proved
+t1q5.adb:25:16: info: overflow check proved
+t1q5.ads:6:79: info: contract case proved
+t1q5.ads:7:52: info: contract case proved
+t1q5.ads:8:51: info: contract case proved
+t1q5.ads:6:11: info: disjoint contract cases proved
+t1q5.ads:6:11: info: complete contract cases proved
+t1q1c.adb:13:6: precondition not proved
+t1q1c.adb:14:6: precondition not proved
+t1q1c.adb:7:13: info: overflow check proved
+t1q1e.adb:7:13: info: overflow check proved
+t1q1e.ads:7:19: info: postcondition proved
+t1q1e.ads:7:29: info: overflow check proved
+t1q1e.adb:13:6: info: precondition proved
+t1q1e.adb:14:6: info: precondition proved
+t1q1e.ads:11:19: info: postcondition proved
+t1q1e.ads:11:29: info: overflow check proved
+swap_incorrect_b.adb:14:32: overflow check not proved
+t3q4.adb:8:18: info: postcondition proved
+t3q4.adb:8:56: info: overflow check proved
+t3q4.adb:13:27: info: precondition proved
+t3q4.adb:13:51: info: range check proved
+t3q4.adb:13:56: info: range check proved
+t3q4.adb:21:9: info: loop invariant initialization proved
+t3q4.adb:21:9: info: loop invariant preservation proved
+t3q4.adb:23:20: info: precondition proved
+t3q4.adb:23:57: info: range check proved
+t3q4.adb:24:24: info: overflow check proved
+t3q4.adb:25:20: info: range check proved
+t1q1d.adb:7:13: info: overflow check proved
+t1q1d.adb:13:6: info: precondition proved
+t1q1d.adb:14:6: precondition not proved
+t1q1d.ads:10:19: postcondition not proved, requires X = X'Old + 2
+t1q1d.ads:10:29: info: overflow check proved
+t1q1a.adb:7:12: overflow check not proved
+t1q1.adb:7:12: info: overflow check proved
+t1q1.ads:7:18: info: postcondition proved
+t1q1.ads:7:28: info: overflow check proved
+t1q2.adb:9:12: info: overflow check proved
+t1q2.adb:10:5: info: assertion proved
+t1q2.adb:10:39: info: overflow check proved
+t1q2.adb:11:12: info: overflow check proved
+t1q2.ads:8:18: info: postcondition proved
+t1q2.ads:8:29: info: overflow check proved
+t1q2.ads:9:40: info: overflow check proved
+t1q4.adb:16:33: info: overflow check proved
+t1q4.adb:16:38: info: overflow check proved
+t1q4.adb:16:52: info: overflow check proved
+t1q4.adb:18:36: info: overflow check proved
+t1q4.adb:21:10: info: loop invariant initialization proved
+t1q4.adb:21:10: info: loop invariant preservation proved
+t1q4.adb:27:23: info: range check proved
+t1q4.ads:6:19: info: postcondition proved
+illegal_update.adb:12:16: overflow check not proved
+t1q1b.adb:7:13: info: overflow check proved
+t1q3c.adb:11:30: info: range check proved
+t1q3c.ads:8:18: info: postcondition proved
+t1q3c.ads:17:18: info: postcondition proved
+t1q3a.ads:6:19: info: postcondition proved

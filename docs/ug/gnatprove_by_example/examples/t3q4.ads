@@ -1,7 +1,6 @@
-pragma SPARK_Mode;
-
 package T3Q4
 is
+   pragma SPARK_Mode;
 
    subtype ElementType is Natural range 0..1000;
    subtype IndexType is Positive range 1..100;

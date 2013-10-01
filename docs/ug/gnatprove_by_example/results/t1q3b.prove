@@ -1,6 +1,6 @@
-t1q3b.ads:7:45: info: contract case proved
-t1q3b.ads:8:45: info: contract case proved
-t1q3b.ads:9:45: info: contract case proved
-t1q3b.ads:10:45: info: contract case proved
-t1q3b.ads:7:10: info: disjoint contract cases proved
-t1q3b.ads:7:10: info: complete contract cases proved
+t1q3b.ads:6:46: info: contract case proved
+t1q3b.ads:7:46: info: contract case proved
+t1q3b.ads:8:46: info: contract case proved
+t1q3b.ads:9:46: info: contract case proved
+t1q3b.ads:6:11: info: disjoint contract cases proved
+t1q3b.ads:6:11: info: complete contract cases proved

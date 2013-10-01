@@ -1,0 +1,670 @@
+(* Module for axiomatizing type "short_short_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_short_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type short_short_integer "bounded_type"
+ 
+ function first  : int =
+  ( -128 )
+ 
+ function last  : int =
+  127
+ 
+ clone export "ada__model".Discrete with
+ type t = short_short_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "short_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type short_integer "bounded_type"
+ 
+ function first  : int =
+  ( -32768 )
+ 
+ function last  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = short_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer "bounded_type"
+ 
+ function first  : int =
+  ( -2147483648 )
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = long_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_long_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type long_long_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = long_long_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "natural", created in Gnat2Why.Types.Translate_Type *)
+module Standard__natural
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type natural "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = natural, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "positive", created in Gnat2Why.Types.Translate_Type *)
+module Standard__positive
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type positive "bounded_type"
+ 
+ function first  : int =
+  1
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = positive, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "short_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__short_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type short_float 
+ 
+ function first  : real =
+  (-.340282346638528859811704183484516925440.0)
+ 
+ function last  : real =
+  (340282346638528859811704183484516925440.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = short_float, 
+ function round_real_tmp = Floating.round_single, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type float 
+ 
+ function first  : real =
+  (-.340282346638528859811704183484516925440.0)
+ 
+ function last  : real =
+  (340282346638528859811704183484516925440.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = float, 
+ function round_real_tmp = Floating.round_single, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type long_float 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = long_float, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "long_long_float", created in Gnat2Why.Types.Translate_Type *)
+module Standard__long_long_float
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type long_long_float 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = long_long_float, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  255
+ 
+ clone export "ada__model".Discrete with
+ type t = character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "wide_character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type wide_character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  65535
+ 
+ clone export "ada__model".Discrete with
+ type t = wide_character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "wide_wide_character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_wide_character
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type wide_wide_character "bounded_type"
+ 
+ function first  : int =
+  0
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = wide_wide_character, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__character.character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type string  = 
+  __t
+ 
+ function to_string 
+   (x : __image)  :string
+ 
+ function from_string 
+   (x : string)  :__image
+end
+
+(* Module for axiomatizing type "wide_string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__wide_character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__wide_character.wide_character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type wide_string  = 
+  __t
+end
+
+(* Module for axiomatizing type "wide_wide_string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__wide_wide_string
+ use import "_gnatprove_standard".Main
+ use import Standard__positive
+ use import Standard__integer
+ use import Standard__wide_wide_character
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Array__1
+
+ clone export "ada__model".Unconstr_Array with
+ type component_type = Standard__wide_wide_character.wide_wide_character, 
+ type base_type = Standard__integer.integer, 
+ function to_int = Standard__integer.to_int, 
+ predicate in_range_base = Standard__integer.in_range, 
+ predicate in_range = Standard__positive.in_range
+ 
+ type wide_wide_string  = 
+  __t
+end
+
+(* Module for axiomatizing type "duration", created in Gnat2Why.Types.Translate_Type *)
+module Standard__duration
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type duration 
+ 
+ function first  : real =
+  (-.9223372036854775808.0E-9)
+ 
+ function last  : real =
+  (9223372036854775807.0E-9)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = duration, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_8", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_8
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_8 "bounded_type"
+ 
+ function first  : int =
+  ( -128 )
+ 
+ function last  : int =
+  127
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_8, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_16", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_16
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_16 "bounded_type"
+ 
+ function first  : int =
+  ( -32768 )
+ 
+ function last  : int =
+  32767
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_16, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_32", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_32
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_32 "bounded_type"
+ 
+ function first  : int =
+  ( -2147483648 )
+ 
+ function last  : int =
+  2147483647
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_32, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "integer_64", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer_64
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type integer_64 "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = integer_64, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "universal_integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__universal_integer
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+
+ type universal_integer "bounded_type"
+ 
+ function first  : int =
+  ( -9223372036854775808 )
+ 
+ function last  : int =
+  9223372036854775807
+ 
+ clone export "ada__model".Discrete with
+ type t = universal_integer, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for axiomatizing type "universal_real", created in Gnat2Why.Types.Translate_Type *)
+module Standard__universal_real
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Floating
+ use import "real".RealInfix
+
+ type universal_real 
+ 
+ function first  : real =
+  (-.179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ function last  : real =
+  (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0)
+ 
+ clone export "ada__model".Floating_Point with
+ type t = universal_real, 
+ function round_real_tmp = Floating.round_double, 
+ function first = first, 
+ function last = last
+end
+
+(* Module for defining the constant "p" defined at t1q3b.ads:5, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q3b__nandgate__p
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ function p 
+   :bool
+end
+
+(* Module for defining the constant "q" defined at t1q3b.ads:5, created in Gnat2Why.Decls.Translate_Constant *)
+module T1q3b__nandgate__q
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ function q 
+   :bool
+end
+
+(* Module for declaring a program function (and possibly a logic function) for "nandgate" defined at t1q3b.ads:5, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module T1q3b__nandgate
+ use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ val nandgate
+   (t1q3b__nandgate__p : bool) (t1q3b__nandgate__q : bool) (t1q3b__nandgate__r : ref bool)  :unit
+  requires { true }
+  ensures { (if (( (old (andb (notb t1q3b__nandgate__p) (notb t1q3b__nandgate__q)) ) = True )) then (
+   ( !t1q3b__nandgate__r = True )) else ((if (( (old (andb (notb t1q3b__nandgate__p) t1q3b__nandgate__q) ) = True )) then (
+   ( !t1q3b__nandgate__r = True )) else ((if (( (old (andb t1q3b__nandgate__p (notb t1q3b__nandgate__q)) ) = True )) then (
+   ( !t1q3b__nandgate__r = True )) else ((if (( (old (andb t1q3b__nandgate__p t1q3b__nandgate__q) ) = True )) then (
+   not ( ( !t1q3b__nandgate__r = True ) )) else (
+   true)))))))) }
+  writes {t1q3b__nandgate__r }
+
+end
+
+(* Module including all necessary axioms for the subprogram "nandgate" declared at t1q3b.ads:5, created in Gnat2Why.Subprograms.Complete_Subprogram_Spec_Translation *)
+module T1q3b__nandgate__expr_fun_closure
+ use import "_gnatprove_standard".Main
+ use import T1q3b__nandgate
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+end
+(* Module for defining a ref holding the value of variable "r" defined at t1q3b.ads:5, created in Gnat2Why.Decls.Translate_Variable *)
+module T1q3b__nandgate__r
+ use import "_gnatprove_standard".Main
+
+ type t  = 
+  bool
+ 
+ val r  : ref t
+end
+(* Module for checking absence of run-time errors and contract cases in the subprogram spec of "nandgate" defined at t1q3b.ads:5, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Spec *)
+module T1q3b__nandgate__pre
+ use import "int".Int
+ use import "_gnatprove_standard".Main
+ use import T1q3b__nandgate__p
+ use import T1q3b__nandgate__q
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ let pre_check "GP_Subp:t1q3b.ads:5" "GP_Pretty_Ada:T1Q3B.NandGate"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  ( ( abstract (___ignore(True)) ensures {true};
+  (any unit
+  requires {true} 
+  ensures {true} 
+  ) );
+  ( abstract (___ignore((andb(T1q3b__nandgate__p.p) (T1q3b__nandgate__q.q)))) ensures {true};
+  (let temp___standard__t1q3b_3 = (any bool
+  ensures {( result = (andb T1q3b__nandgate__p.p T1q3b__nandgate__q.q) )} 
+  ) in (
+   ( abstract (___ignore((andb(T1q3b__nandgate__p.p) (not ( T1q3b__nandgate__q.q ))))) ensures {true};
+   (let temp___standard__t1q3b_2 = (any bool
+   ensures {( result = (andb T1q3b__nandgate__p.p (notb T1q3b__nandgate__q.q)) )} 
+   ) in (
+    ( abstract (___ignore((andb(not ( T1q3b__nandgate__p.p )) (T1q3b__nandgate__q.q)))) ensures {true};
+    (let temp___standard__t1q3b_1 = (any bool
+    ensures {( result = (andb (notb T1q3b__nandgate__p.p) T1q3b__nandgate__q.q) )} 
+    ) in (
+     ( abstract (___ignore((andb(not ( T1q3b__nandgate__p.p )) (not ( T1q3b__nandgate__q.q ))))) ensures {true};
+     (let temp___standard__t1q3b_0 = (any bool
+     ensures {( result = (andb (notb T1q3b__nandgate__p.p) (notb T1q3b__nandgate__q.q)) )} 
+     ) in (
+      ( assert { ( "GP_Reason:VC_DISJOINT_CONTRACT_CASES" "GP_Sloc_VC:t1q3b.ads:6:11" "keep_on_simp" ( ( ( ( ( 0 + (if (( temp___standard__t1q3b_0 = True )) then (
+       1) else (
+       0)) ) + (if (( temp___standard__t1q3b_1 = True )) then (
+       1) else (
+       0)) ) + (if (( temp___standard__t1q3b_2 = True )) then (
+       1) else (
+       0)) ) + (if (( temp___standard__t1q3b_3 = True )) then (
+       1) else (
+       0)) ) <= 1 ) ) };
+      assert { ( "GP_Reason:VC_COMPLETE_CONTRACT_CASES" "GP_Sloc_VC:t1q3b.ads:6:11" "keep_on_simp" ( ( ( ( ( 0 + (if (( temp___standard__t1q3b_0 = True )) then (
+       1) else (
+       0)) ) + (if (( temp___standard__t1q3b_1 = True )) then (
+       1) else (
+       0)) ) + (if (( temp___standard__t1q3b_2 = True )) then (
+       1) else (
+       0)) ) + (if (( temp___standard__t1q3b_3 = True )) then (
+       1) else (
+       0)) ) >= 1 ) ) } )))
+      )))
+     )))
+    )))
+   ) )
+end
+
+(* Module for checking absence of run-time errors and subprogram contract on subprogram body of "nandgate" defined at t1q3b.ads:5, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram_Body *)
+module T1q3b__nandgate__def
+ use import "_gnatprove_standard".Main
+ use import T1q3b__nandgate__p
+ use import T1q3b__nandgate__q
+ use import T1q3b__nandgate__r
+ use        "_gnatprove_standard".Integer
+ use import "int".Int
+ use        "_gnatprove_standard".Boolean
+
+ let def "GP_Subp:t1q3b.ads:5" "GP_Pretty_Ada:T1Q3B.NandGate"  (__void_param : unit) 
+ requires { true }
+ ensures { true }
+  = 
+  (let temp___standard__t1q3b_7 = (any bool
+  ensures {( result = (andb T1q3b__nandgate__p.p T1q3b__nandgate__q.q) )} 
+  ) in (
+  (let temp___standard__t1q3b_6 = (any bool
+  ensures {( result = (andb T1q3b__nandgate__p.p (notb T1q3b__nandgate__q.q)) )} 
+  ) in (
+  (let temp___standard__t1q3b_5 = (any bool
+  ensures {( result = (andb (notb T1q3b__nandgate__p.p) T1q3b__nandgate__q.q) )} 
+  ) in (
+  (let temp___standard__t1q3b_4 = (any bool
+  ensures {( result = (andb (notb T1q3b__nandgate__p.p) (notb T1q3b__nandgate__q.q)) )} 
+  ) in (
+   try
+    ( ( "GP_Sloc:t1q3b.adb:7:8" T1q3b__nandgate__r.r := ( not ( (andb(T1q3b__nandgate__p.p) (T1q3b__nandgate__q.q)) ) ) );
+    raise Return__exc )
+   with
+    Return__exc -> ( abstract (___ignore(True)) ensures {true};
+    ( ( ( abstract (___ignore((if (temp___standard__t1q3b_4) then (
+     !T1q3b__nandgate__r.r) else (
+     True)))) ensures {true};
+    assert { ( "GP_Reason:VC_CONTRACT_CASE" "GP_Sloc_VC:t1q3b.ads:6:46" "keep_on_simp" (if (( temp___standard__t1q3b_4 = True )) then (
+     ( !T1q3b__nandgate__r.r = True )) else true) ) } );
+    ( abstract (___ignore((if (temp___standard__t1q3b_5) then (
+     !T1q3b__nandgate__r.r) else (
+     True)))) ensures {true};
+    assert { ( "GP_Reason:VC_CONTRACT_CASE" "GP_Sloc_VC:t1q3b.ads:7:46" "keep_on_simp" (if (( temp___standard__t1q3b_5 = True )) then (
+     ( !T1q3b__nandgate__r.r = True )) else true) ) } ) );
+    ( abstract (___ignore((if (temp___standard__t1q3b_6) then (
+     !T1q3b__nandgate__r.r) else (
+     True)))) ensures {true};
+    assert { ( "GP_Reason:VC_CONTRACT_CASE" "GP_Sloc_VC:t1q3b.ads:8:46" "keep_on_simp" (if (( temp___standard__t1q3b_6 = True )) then (
+     ( !T1q3b__nandgate__r.r = True )) else true) ) } ) );
+    ( abstract (___ignore((if (temp___standard__t1q3b_7) then (
+     not ( !T1q3b__nandgate__r.r )) else (
+     True)))) ensures {true};
+    assert { ( "GP_Reason:VC_CONTRACT_CASE" "GP_Sloc_VC:t1q3b.ads:9:46" "keep_on_simp" (if (( temp___standard__t1q3b_7 = True )) then (
+     not ( ( !T1q3b__nandgate__r.r = True ) )) else true) ) } ) )
+   end))
+  ))
+  ))
+  ))
+
+end

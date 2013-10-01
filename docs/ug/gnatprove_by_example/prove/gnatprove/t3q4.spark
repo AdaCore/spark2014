@@ -1,0 +1,4 @@
+[
+{ "name" : "T3Q4.Summed_Between", "file" :"t3q4.adb", "line" :  5, "spark" : true, "violations" : [] }
+, { "name" : "T3Q4.SumArray", "file" :"t3q4.ads", "line" :  10, "spark" : true, "violations" : [] }
+]

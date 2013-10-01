@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v2//EN" "http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="3">
+ <prover
+  id="0"
+  name="Alt-Ergo for GNATprove"
+  version="0.95"/>
+ <file
+  name="../illegal_update.mlw"
+  verified="false"
+  expanded="true">
+  <theory
+   name="Standard__short_short_integer"
+   locfile="../illegal_update.mlw"
+   loclnum="2" loccnumb="7" loccnume="36"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__short_integer"
+   locfile="../illegal_update.mlw"
+   loclnum="22" loccnumb="7" loccnume="30"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer"
+   locfile="../illegal_update.mlw"
+   loclnum="42" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_integer"
+   locfile="../illegal_update.mlw"
+   loclnum="62" loccnumb="7" loccnume="29"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_long_integer"
+   locfile="../illegal_update.mlw"
+   loclnum="82" loccnumb="7" loccnume="34"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__natural"
+   locfile="../illegal_update.mlw"
+   loclnum="102" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__positive"
+   locfile="../illegal_update.mlw"
+   loclnum="122" loccnumb="7" loccnume="25"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__short_float"
+   locfile="../illegal_update.mlw"
+   loclnum="142" loccnumb="7" loccnume="28"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__float"
+   locfile="../illegal_update.mlw"
+   loclnum="163" loccnumb="7" loccnume="22"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_float"
+   locfile="../illegal_update.mlw"
+   loclnum="184" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__long_long_float"
+   locfile="../illegal_update.mlw"
+   loclnum="205" loccnumb="7" loccnume="32"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__character"
+   locfile="../illegal_update.mlw"
+   loclnum="226" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_character"
+   locfile="../illegal_update.mlw"
+   loclnum="246" loccnumb="7" loccnume="31"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_wide_character"
+   locfile="../illegal_update.mlw"
+   loclnum="266" loccnumb="7" loccnume="36"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__string"
+   locfile="../illegal_update.mlw"
+   loclnum="286" loccnumb="7" loccnume="23"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_string"
+   locfile="../illegal_update.mlw"
+   loclnum="313" loccnumb="7" loccnume="28"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__wide_wide_string"
+   locfile="../illegal_update.mlw"
+   loclnum="334" loccnumb="7" loccnume="33"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__duration"
+   locfile="../illegal_update.mlw"
+   loclnum="355" loccnumb="7" loccnume="25"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_8"
+   locfile="../illegal_update.mlw"
+   loclnum="375" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_16"
+   locfile="../illegal_update.mlw"
+   loclnum="395" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_32"
+   locfile="../illegal_update.mlw"
+   loclnum="415" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__integer_64"
+   locfile="../illegal_update.mlw"
+   loclnum="435" loccnumb="7" loccnume="27"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__universal_integer"
+   locfile="../illegal_update.mlw"
+   loclnum="455" loccnumb="7" loccnume="34"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Standard__universal_real"
+   locfile="../illegal_update.mlw"
+   loclnum="475" loccnumb="7" loccnume="31"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update"
+   locfile="../illegal_update.mlw"
+   loclnum="496" loccnumb="7" loccnume="21"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update__expr_fun_closure"
+   locfile="../illegal_update.mlw"
+   loclnum="511" loccnumb="7" loccnume="39"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update__x"
+   locfile="../illegal_update.mlw"
+   loclnum="520" loccnumb="7" loccnume="24"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update__tmp"
+   locfile="../illegal_update.mlw"
+   loclnum="531" loccnumb="7" loccnume="26"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update__do_stuff"
+   locfile="../illegal_update.mlw"
+   loclnum="541" loccnumb="7" loccnume="31"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update__do_stuff__expr_fun_closure"
+   locfile="../illegal_update.mlw"
+   loclnum="556" loccnumb="7" loccnume="49"
+   verified="true"
+   expanded="true">
+  </theory>
+  <theory
+   name="Illegal_update__def"
+   locfile="../illegal_update.mlw"
+   loclnum="562" loccnumb="7" loccnume="26"
+   verified="false"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../illegal_update.mlw"
+    loclnum="571" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="9290d3732fcaa1a71ab2a7db77d1af15"
+    proved="false"
+    expanded="true"
+    shape="t">
+    <label
+     name="GP_Subp:illegal_update.ads:2"/>
+    <label
+     name="GP_Pretty_Ada:Illegal_Update"/>
+    <label
+     name="expl:VC for def"/>
+    <transf
+     name="split_goal"
+     proved="false"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../illegal_update.mlw"
+      loclnum="571" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="9290d3732fcaa1a71ab2a7db77d1af15"
+      proved="false"
+      expanded="false"
+      shape="t">
+      <label
+       name="GP_Subp:illegal_update.ads:2"/>
+      <label
+       name="GP_Pretty_Ada:Illegal_Update"/>
+      <label
+       name="expl:VC for def"/>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+  <theory
+   name="Illegal_update__do_stuff__def"
+   locfile="../illegal_update.mlw"
+   loclnum="585" loccnumb="7" loccnume="36"
+   verified="false"
+   expanded="true">
+   <goal
+    name="WP_parameter def"
+    locfile="../illegal_update.mlw"
+    loclnum="594" loccnumb="5" loccnume="8"
+    expl="VC for def"
+    sum="e446ae4bdd35fcd073b5e4304f1825c4"
+    proved="false"
+    expanded="true"
+    shape="ain_rangeainfix +ato_intV0c1F">
+    <label
+     name="expl:VC for def"/>
+    <label
+     name="GP_Subp:illegal_update.adb:7"/>
+    <label
+     name="GP_Pretty_Ada:Illegal_Update.Do_Stuff"/>
+    <transf
+     name="split_goal"
+     proved="false"
+     expanded="true">
+     <goal
+      name="WP_parameter def.1"
+      locfile="../illegal_update.mlw"
+      loclnum="594" loccnumb="5" loccnume="8"
+      expl="1."
+      sum="e446ae4bdd35fcd073b5e4304f1825c4"
+      proved="false"
+      expanded="false"
+      shape="ain_rangeainfix +ato_intV0c1F">
+      <label
+       name="expl:VC for def"/>
+      <label
+       name="GP_Subp:illegal_update.adb:7"/>
+      <label
+       name="GP_Pretty_Ada:Illegal_Update.Do_Stuff"/>
+      <proof
+       prover="0"
+       timelimit="5"
+       memlimit="0"
+       obsolete="false"
+       archived="false">
+       <result status="unknown" time="0.02"/>
+      </proof>
+     </goal>
+    </transf>
+   </goal>
+  </theory>
+ </file>
+</why3session>

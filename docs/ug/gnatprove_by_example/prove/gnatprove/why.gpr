@@ -1,0 +1,21 @@
+project Why is
+for Source_Files use (
+   "t1q3a.mlw",
+   "t1q3c.mlw",
+   "t1q1b.mlw",
+   "swap_incorrect_d.mlw",
+   "illegal_update.mlw",
+   "t1q4.mlw",
+   "swap_incorrect_a.mlw",
+   "t1q2.mlw",
+   "t1q1.mlw",
+   "t1q1a.mlw",
+   "t1q1d.mlw",
+   "t3q4.mlw",
+   "swap_incorrect_b.mlw",
+   "t1q1e.mlw",
+   "t1q1c.mlw",
+   "swap_incorrect_c.mlw",
+   "t1q5.mlw",
+   "t1q3b.mlw");
+end Why;

@@ -1,0 +1,42 @@
+Analyzed 18 units
+in unit t3q4, 2 subprograms out of 2 analyzed
+  T3Q4.Summed_Between at t3q4.adb:5 proved (0 checks)
+  T3Q4.SumArray at t3q4.ads:10 proved (0 checks)
+in unit t1q1, 1 subprograms out of 1 analyzed
+  T1Q1.Increment at t1q1.ads:5 proved (0 checks)
+in unit t1q2, 1 subprograms out of 1 analyzed
+  T1Q2.Increment2 at t1q2.ads:5 proved (0 checks)
+in unit swap_incorrect_a, 1 subprograms out of 1 analyzed
+  Swap_Incorrect_A.Swap at swap_incorrect_a.ads:5 proved (0 checks)
+in unit t1q4, 1 subprograms out of 1 analyzed
+  T1Q4.ISQRT at t1q4.ads:5 proved (0 checks)
+in unit t1q5, 1 subprograms out of 1 analyzed
+  T1Q5.Bounded_Add at t1q5.ads:5 proved (0 checks)
+in unit swap_incorrect_b, 1 subprograms out of 1 analyzed
+  Swap_Incorrect_B.Swap at swap_incorrect_b.ads:5 proved (0 checks)
+in unit swap_incorrect_c, 1 subprograms out of 1 analyzed
+  Swap_Incorrect_C.Swap at swap_incorrect_c.ads:5 proved (0 checks)
+in unit swap_incorrect_d, 1 subprograms out of 1 analyzed
+  Swap_Incorrect_D.Swap at swap_incorrect_d.ads:5 proved (0 checks)
+in unit t1q3a, 1 subprograms out of 1 analyzed
+  T1Q3A.Swap at t1q3a.ads:5 proved (0 checks)
+in unit t1q3b, 1 subprograms out of 1 analyzed
+  T1Q3B.NandGate at t1q3b.ads:5 proved (0 checks)
+in unit t1q3c, 2 subprograms out of 2 analyzed
+  T1Q3C.NextDay_A at t1q3c.ads:7 proved (0 checks)
+  T1Q3C.NextDay_B at t1q3c.ads:16 proved (0 checks)
+in unit illegal_update, 1 subprograms out of 1 analyzed
+  Illegal_Update at illegal_update.ads:2 proved (0 checks)
+in unit t1q1a, 1 subprograms out of 1 analyzed
+  T1Q1A.Increment at t1q1a.ads:5 proved (0 checks)
+in unit t1q1b, 1 subprograms out of 1 analyzed
+  T1Q1B.Increment at t1q1b.ads:5 proved (0 checks)
+in unit t1q1c, 2 subprograms out of 2 analyzed
+  T1Q1C.Increment at t1q1c.ads:5 proved (0 checks)
+  T1Q1C.Add2 at t1q1c.adb:10 proved (0 checks)
+in unit t1q1d, 2 subprograms out of 2 analyzed
+  T1Q1D.Add2 at t1q1d.ads:8 proved (0 checks)
+  T1Q1D.Increment at t1q1d.ads:5 proved (0 checks)
+in unit t1q1e, 2 subprograms out of 2 analyzed
+  T1Q1E.Add2 at t1q1e.ads:9 proved (0 checks)
+  T1Q1E.Increment at t1q1e.ads:5 proved (0 checks)

@@ -1,0 +1,4 @@
+[
+{ "name" : "T1Q3C.NextDay_A", "file" :"t1q3c.ads", "line" :  7, "spark" : true, "violations" : [] }
+, { "name" : "T1Q3C.NextDay_B", "file" :"t1q3c.ads", "line" :  16, "spark" : true, "violations" : [] }
+]
