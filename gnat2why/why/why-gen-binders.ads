@@ -74,6 +74,12 @@ package Why.Gen.Binders is
             Bounds : Array_Bounds;
       end case;
    end record;
+   --  An item is like a generalized binder. It is used to represent the
+   --  mapping
+   --    Ada object  -> Why variables
+   --  which is not always 1 to 1. In the common case where it is 1 to 1, the
+   --  Kind "Regular" is used. The only other case for now is unconstrained
+   --  arrays, where extra objects are created to represent the bounds.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 
