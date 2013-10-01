@@ -375,13 +375,14 @@ package body Gnat2Why.Decls is
                      B_Ent    => null,
                      Mutable  => Is_Mutable_In_Why (E));
    begin
-      if Ekind (E) in Object_Kind and then
-        Is_Array_Type (Etype (E)) and then
-        not Is_Constrained (Etype (E)) then
+      if Ekind (E) in Object_Kind
+        and then Is_Array_Type (Etype (E))
+        and then not Is_Constrained (Etype (E))
+      then
          declare
             Result : Item_Type :=
-              (Kind      => UCArray,
-               Main => Binder,
+              (Kind   => UCArray,
+               Main   => Binder,
                Dim    => Natural (Number_Dimensions (Etype (E))),
                Bounds => (others => <>));
             Index  : Node_Id := First_Index (Etype (E));
@@ -1524,6 +1525,8 @@ package body Gnat2Why.Decls is
          end if;
          return E;
       end Normalize_Type;
+
+   --  Start of Translate_Variable
 
    begin
       Open_Theory (File, Name,
