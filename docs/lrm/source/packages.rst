@@ -956,20 +956,26 @@ be a *Boolean_*\ ``expression``.
 2. The Initial_Condition aspect shall follow the Abstract_State aspect and
    Initializes aspect if they are present.
 
-.. _tu-fe-initial_condition_aspects-03:
+.. _tu-nt-initial_condition_aspects-03:
 
-3. Each variable or indirectly referenced state abstraction in an Initial_Condition
-   aspect of a package Q which is declared immediately within the visible part of Q
-   shall be initialized during the elaboration of Q and be denoted by a ``name``
-   of an ``initialization_item`` of the Initializes aspect of Q.
+3. Rule removed.
 
 .. _etu-initial_condition_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-nt-initial_condition_aspects-04:
+.. _tu-fe-pf-initial_condition_aspects-04:
 
-4. Rule removed.
+4. An Initial_Condition aspect is a sort of postcondition for the
+   elaboration of both the specification and body of a package. If
+   present on a package, then its *Boolean_*\ ``expression`` defines
+   properties (a predicate) of the state of the package which can be
+   assumed to be true immediately following the elaboration of the
+   package. [The expression of the Initial_Condition cannot denote a
+   state abstraction. This means that to express properties of hidden
+   state, functions declared in the visible part acting on the state
+   abstractions of the package must be used.]
+
 
 .. _etu-initial_condition_aspects-ss:
 
@@ -998,16 +1004,13 @@ be a *Boolean_*\ ``expression``.
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
 
-.. _tu-pr-fa-initial_condition_aspects-07:
+.. _tu-fe-initial_condition_aspects-07:
 
-7. An Initial_Condition aspect is a sort of postcondition for the elaboration
-   of both the specification and body of a package. If present on a package, then
-   its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
-   of the package which can be assumed to be true immediately following the
-   elaboration of the package. [The expression of the Initial_Condition cannot
-   denote a state abstraction. This means that to express properties of
-   hidden state, functions declared in the visible part acting on the state
-   abstractions of the package must be used.]
+7. Each variable or indirectly referenced state abstraction in an
+   Initial_Condition aspect of a package Q which is declared
+   immediately within the visible part of Q shall be initialized
+   during the elaboration of Q and be denoted by a ``name`` of an
+   ``initialization_item`` of the Initializes aspect of Q.
 
 .. _etu-initial_condition_aspects-vr:
 
