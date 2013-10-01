@@ -5497,9 +5497,6 @@ package body Gnat2Why.Expr is
 
          when N_Pragma =>
             case Get_Pragma_Id (Pragma_Name (Stmt_Or_Decl)) is
-               when Pragma_Annotate =>
-                  return New_Void (Stmt_Or_Decl);
-
                when Pragma_Check =>
                   declare
                      Check_Expr : W_Prog_Id;
@@ -5545,7 +5542,11 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
 
-               when Pragma_Export     |
+               --  Pragmas which can occur in declaration or statement
+               --  position, and which have no effect on proof.
+
+               when Pragma_Annotate   |
+                    Pragma_Export     |
                     Pragma_Import     |
                     Pragma_SPARK_Mode |
                     Pragma_Warnings   =>

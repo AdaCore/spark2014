@@ -34,7 +34,6 @@ with GNATCOLL.JSON;
 
 with Call;                    use Call;
 with String_Utils;            use String_Utils;
-with SPARK_Violations;
 with VC_Kinds;
 
 with Configuration;           use Configuration;
@@ -180,7 +179,7 @@ procedure SPARK_Report is
 
    begin
       Ada.Directories.Set_Directory (Dir);
-      Iterate_SPARK (Path => '*' & SPARK_Violations.SPARK_Suffix);
+      Iterate_SPARK (Path => '*' & VC_Kinds.SPARK_Suffix);
       Iterate_Proof (Path => '*' & VC_Kinds.Proof_Suffix);
       Ada.Directories.Set_Directory (Save_Dir);
    exception

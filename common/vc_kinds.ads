@@ -67,6 +67,8 @@ package VC_Kinds is
         VC_Loop_Invariant |
         VC_Assert);
 
+   SPARK_Suffix : constant String := ".spark";
+
    Proof_Suffix : constant String := ".proof";
 
 end VC_Kinds;
