@@ -1,4 +1,0 @@
-[
-{ "name" : "T1Q1C.Increment", "file" :"t1q1c.ads", "line" :  5, "spark" : true, "violations" : [] }
-, { "name" : "T1Q1C.Add2", "file" :"t1q1c.adb", "line" :  10, "spark" : true, "violations" : [] }
-]
