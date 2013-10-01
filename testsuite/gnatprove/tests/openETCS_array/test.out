@@ -172,7 +172,7 @@ step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) 
 step_function_test.adb:50:19: info: precondition proved
 step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) = 
 step_function_test.adb:51:19: info: precondition proved
-step_function_test.adb:54:4: info: assertion proved
+step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:4: info: precondition proved
 step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:61:22: info: precondition proved
