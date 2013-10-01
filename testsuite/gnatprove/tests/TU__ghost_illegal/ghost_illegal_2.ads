@@ -28,16 +28,9 @@ is
    --  TU: 7. A ghost entity shall not be referenced from within the expression
    --  of a predicate specification of a non-ghost subtype [because such
    --  predicates participate in determining the outcome of a membership test].
-   --  .. todo:: I am not sure we need the following rule. Decide after release
-   --  1.
    subtype Even is Integer
      with Dynamic_Predicate => Is_Even (Even);
 
-   --  TU: 7. A ghost entity shall not be referenced from within the expression
-   --  of a predicate specification of a non-ghost subtype [because such
-   --  predicates participate in determining the outcome of a membership test].
-   --  .. todo:: I am not sure we need the following rule. Decide after release
-   --  1.
    subtype Odd is Integer
      with Dynamic_Predicate => not Is_Even (Odd);
 
