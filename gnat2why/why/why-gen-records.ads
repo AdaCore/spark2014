@@ -61,8 +61,7 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id) return W_Expr_Id;
+      Value    : W_Expr_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the update to an Ada
    --  record field. Emit all necessary checks.
    --  Note that this function does not generate an assignment, instead it

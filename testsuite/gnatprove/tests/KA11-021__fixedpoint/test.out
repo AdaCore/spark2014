@@ -5,6 +5,8 @@ pack.adb:7:27: range check not proved
 pack.ads:4:04: warning: statement has no effect [ineffective]
 pack.ads:13:04: warning: statement has no effect [ineffective]
 pack.ads:14:04: warning: statement has no effect [ineffective]
+pack.ads:7:12: range check not proved
+pack.ads:11:48: range check not proved
 pack.ads:18:19: postcondition not proved, requires Stash + Pocket = Stash'Old + Pocket'old
 pack.ads:18:26: overflow check not proved
 pack.ads:18:47: overflow check not proved

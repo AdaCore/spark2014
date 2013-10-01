@@ -33,6 +33,7 @@ with Sem_Ch12;            use Sem_Ch12;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
+with Snames;              use Snames;
 with String_Utils;        use String_Utils;
 
 with SPARK_Definition;    use SPARK_Definition;
@@ -41,8 +42,8 @@ with SPARK_Util;          use SPARK_Util;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
@@ -68,6 +69,9 @@ package body Gnat2Why.Decls is
    procedure Register_External_Entities (E : Entity_Id);
    --  This function is called on a package with external axioms.
    --  It registers all entities in the global symbol table.
+
+   function Mk_Item_Of_Entity (E    : Entity_Id;
+                               Name : W_Identifier_Id) return Item_Type;
 
    -----------------------------------
    -- Complete_Constant_Translation --
@@ -357,6 +361,48 @@ package body Gnat2Why.Decls is
       return Result;
    end Get_Generic_Parents;
 
+   -------------------------
+   -- Mk_Item_From_Entity --
+   -------------------------
+
+   function Mk_Item_Of_Entity (E    : Entity_Id;
+                               Name : W_Identifier_Id)
+     return Item_Type
+   is
+      Binder   : constant Binder_Type :=
+        Binder_Type'(Ada_Node => E,
+                     B_Name   => Name,
+                     B_Ent    => null,
+                     Mutable  => Is_Mutable_In_Why (E));
+   begin
+      if Ekind (E) in Object_Kind
+        and then Is_Array_Type (Etype (E))
+        and then not Is_Constrained (Etype (E))
+      then
+         declare
+            Result : Item_Type :=
+              (Kind   => UCArray,
+               Main   => Binder,
+               Dim    => Natural (Number_Dimensions (Etype (E))),
+               Bounds => (others => <>));
+            Index  : Node_Id := First_Index (Etype (E));
+         begin
+            for D in 1 .. Result.Dim loop
+               Result.Bounds (D).First :=
+                 Attr_Append (Name, Attribute_First, D,
+                              EW_Abstract (Etype (Index)));
+               Result.Bounds (D).Last :=
+                 Attr_Append (Name, Attribute_Last, D,
+                              EW_Abstract (Etype (Index)));
+               Next_Index (Index);
+            end loop;
+            return Result;
+         end;
+      else
+         return (Regular, Binder);
+      end if;
+   end Mk_Item_Of_Entity;
+
    --------------------------------
    -- Register_External_Entities --
    --------------------------------
@@ -378,16 +424,11 @@ package body Gnat2Why.Decls is
                declare
                   E : constant Entity_Id := Defining_Entity (N);
                begin
-                  Ada_Ent_To_Why.Insert
-                    (Symbol_Table,
-                     E,
-                     Binder_Type'(Ada_Node => E,
-                                  B_Name   => To_Why_Id (E),
-                                  B_Ent    => null,
-                                  B_Type   => EW_Abstract (Etype (E)),
-                                  Mutable  =>
-                                    Ekind (E) in Object_Kind and then
-                                  Is_Mutable_In_Why (E)));
+                  Insert_Entity
+                    (E,
+                     To_Why_Id (E, Typ => EW_Abstract (Etype (E))),
+                     Mutable => Ekind (E) in Object_Kind and then
+                     Is_Mutable_In_Why (E));
                end;
             end if;
 
@@ -415,87 +456,6 @@ package body Gnat2Why.Decls is
       Register_Decls
         (Decls  => Visible_Declarations (Get_Package_Spec (E)));
    end Register_External_Entities;
-
-   ------------------------
-   -- Translate_Variable --
-   ------------------------
-
-   procedure Translate_Variable
-     (File : in out Why_Section;
-      E     : Entity_Id)
-   is
-      Name : constant String := Full_Name (E);
-      Decl : constant W_Declaration_Id :=
-        (if Entity_In_SPARK (E) then
-            New_Type_Decl
-              (Name  => To_Ident (WNE_Type),
-               Alias => EW_Abstract (Etype (E)))
-         else
-            New_Type_Decl
-              (Name => To_Ident (WNE_Type)));
-      Typ  : constant W_Type_Id :=
-        (if Ekind (E) = E_Loop_Parameter
-         then EW_Int_Type
-         else New_Named_Type (Name => Get_Name (W_Type_Decl_Id (Decl))));
-
-      function Normalize_Type (E : Entity_Id) return Entity_Id;
-      --  Choose the correct type to use
-
-      --------------------
-      -- Normalize_Type --
-      --------------------
-
-      function Normalize_Type (E : Entity_Id) return Entity_Id is
-      begin
-         if not (Ekind (E) in Private_Kind) or else
-           Entity_In_External_Axioms (E)
-         then
-            return E;
-         end if;
-         if Entity_In_SPARK (Most_Underlying_Type (E)) then
-            return Normalize_Type (Most_Underlying_Type (E));
-         end if;
-         return E;
-      end Normalize_Type;
-
-   begin
-      Open_Theory (File, Name,
-                   Comment =>
-                     "Module for defining a ref holding the value of variable "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  Generate an alias for the name of the object's type, based on the
-      --  name of the object. This is useful when generating logic functions
-      --  from Ada functions, to generate additional parameters for the global
-      --  objects read.
-
-      Emit (File.Cur_Theory, Decl);
-
-      if Entity_In_SPARK (Most_Underlying_Type (Etype (E))) then
-         Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
-      end if;
-
-      --  We generate a global ref
-
-      Emit
-        (File.Cur_Theory,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E, Local => True),
-            Ref_Type => Typ));
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             E,
-                             Binder_Type'(
-                               Ada_Node => E,
-                               B_Name   => To_Why_Id (E),
-                               B_Ent    => null,
-                               B_Type   => Typ,
-                               Mutable  => True));
-      Close_Theory (File, Filter_Entity => E, No_Import => True);
-   end Translate_Variable;
 
    ------------------------
    -- Translate_Constant --
@@ -531,14 +491,7 @@ package body Gnat2Why.Decls is
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Return_Type => Typ));
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             E,
-                             Binder_Type'(
-                               Ada_Node => E,
-                               B_Name   => To_Why_Id (E),
-                               B_Ent    => null,
-                               B_Type   => Typ,
-                               Mutable  => False));
+      Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
                     Filter_Entity  => E,
                     Defined_Entity => E);
@@ -558,10 +511,23 @@ package body Gnat2Why.Decls is
       Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
-      Ty_Ent : constant Entity_Id := Unique_Entity (Etype (E));
-      Use_Ty : constant W_Type_Id :=
-        (if Is_Scalar_Type (Ty_Ent) then Base_Why_Type (Ty_Ent) else
-            Type_Of_Node (E));
+
+      --  Always use the Ada type for the equality between the constant result
+      --  and the translation of its initialization expression. Using "int"
+      --  instead is tempting to facilitate the job of automatic provers, but
+      --  it is potentially incorrect. For example for:
+
+      --    C : constant Natural := Largest_Int + 1;
+
+      --  we should *not* generate the incorrect axiom:
+
+      --    axiom c__def:
+      --      to_int(c) = to_int(largest_int) + 1
+
+      --  but the correct one:
+
+      --    axiom c__def:
+      --      c = of_int (to_int(largest_int) + 1)
 
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -584,7 +550,7 @@ package body Gnat2Why.Decls is
         and then Present (Expression (Decl))
       then
          Def := Get_Pure_Logic_Term_If_Possible
-           (File, Expression (Decl), Use_Ty);
+           (File, Expression (Decl), Typ);
       else
          Def := Why_Empty;
       end if;
@@ -609,8 +575,7 @@ package body Gnat2Why.Decls is
                         (Domain   => EW_Term,
                          Ada_Node => Expression (Decl),
                          Expr     => W_Expr_Id (Def),
-                         From     => Use_Ty,
-                         To       => Type_Of_Node (Partial_View (E))));
+                         To       => EW_Abstract (Etype (Partial_View (E)))));
             end if;
 
             Emit
@@ -619,7 +584,6 @@ package body Gnat2Why.Decls is
                  (Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
-                  Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 
@@ -643,7 +607,6 @@ package body Gnat2Why.Decls is
                  (Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
                   Return_Type => Get_EW_Type (Typ),
-                  Ada_Type    => Ty_Ent,
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 
@@ -658,6 +621,58 @@ package body Gnat2Why.Decls is
          end if;
       end if;
    end Translate_Constant_Value;
+
+   -------------------------------
+   -- Translate_External_Object --
+   -------------------------------
+
+   procedure Translate_External_Object (E : Entity_Name) is
+      File : Why_Section := Why_Sections (WF_Variables);
+   begin
+      Open_Theory
+        (File, Capitalize_First (E.all),
+         Comment =>
+           "Module declaring the external object """ & E.all &
+           ","" created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
+
+      Emit (File.Cur_Theory,
+            New_Type_Decl (Name => To_Ident (WNE_Type)));
+      Emit
+        (File.Cur_Theory,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E.all, Local => True),
+            Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
+
+      Close_Theory (File, Filter_Entity => Empty, No_Import => True);
+   end Translate_External_Object;
+
+   ---------------------------
+   -- Translate_Loop_Entity --
+   ---------------------------
+
+   procedure Translate_Loop_Entity
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Name : constant String := Full_Name (E);
+   begin
+      Open_Theory (File, Name,
+                   Comment =>
+                     "Module for defining the loop exit exception for the loop"
+                   & """" & Get_Name_String (Chars (E)) & """"
+                   & (if Sloc (E) > 0 then
+                     " defined at " & Build_Location_String (Sloc (E))
+                     else "")
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Emit (File.Cur_Theory,
+            New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
+                                       Arg  => Why_Empty));
+
+      Close_Theory (File, Filter_Entity => E, No_Import => True);
+   end Translate_Loop_Entity;
 
    --------------------------------------------
    -- Translate_Package_With_External_Axioms --
@@ -1278,10 +1293,9 @@ package body Gnat2Why.Decls is
                             (Name => New_Identifier
                                (Name => Short_Name (Formal)));
                         A_Ident    : constant W_Identifier_Id :=
-                          New_Identifier (Name => "a");
+                          New_Identifier (Name => "a", Typ => F_Ty);
                         R_Binder   : constant Binder_Array :=
                           (1 => (B_Name => A_Ident,
-                                 B_Type => F_Ty,
                                  others => <>));
                      begin
 
@@ -1374,20 +1388,19 @@ package body Gnat2Why.Decls is
                            Name : constant W_Identifier_Id :=
                              New_Identifier
                                (Ada_Node => Empty,
-                                Name => Full_Name (F_Id));
+                                Name => Full_Name (F_Id),
+                                Typ  => F_Type);
                         begin
                            Binders (Count) :=
                              (Ada_Node => F_Id,
                               B_Name   => Name,
                               B_Ent    => null,
-                              Mutable  => False,
-                              B_Type   => F_Type);
+                              Mutable  => False);
 
                            Args (Count) := Insert_Simple_Conversion
                              (Domain        => EW_Term,
                               Expr          => +Name,
-                              To            => +A_Type,
-                              From          => +F_Type);
+                              To            => +A_Type);
 
                            Next (F_Param);
                            Next (A_Param);
@@ -1412,9 +1425,9 @@ package body Gnat2Why.Decls is
                                 (Domain   => EW_Term,
                                  Name     => To_Why_Id (Actual,
                                    Domain => EW_Term),
-                                 Args  => Args),
-                              To            => +F_Type,
-                              From          => +A_Type)));
+                                 Args     => Args,
+                                 Typ      => A_Type),
+                              To            => F_Type)));
 
                   end;
 
@@ -1465,57 +1478,126 @@ package body Gnat2Why.Decls is
       end if;
    end Translate_Package_With_External_Axioms;
 
-   -------------------------------
-   -- Translate_External_Object --
-   -------------------------------
+   ------------------------
+   -- Translate_Variable --
+   ------------------------
 
-   procedure Translate_External_Object (E : Entity_Name) is
-      File : Why_Section := Why_Sections (WF_Variables);
-   begin
-      Open_Theory
-        (File, Capitalize_First (E.all),
-         Comment =>
-           "Module declaring the external object """ & E.all &
-           ","" created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Add_With_Clause (File.Cur_Theory, "ref", "Ref", EW_Import, EW_Module);
-
-      Emit (File.Cur_Theory,
-            New_Type_Decl (Name => To_Ident (WNE_Type)));
-      Emit
-        (File.Cur_Theory,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E.all, Local => True),
-            Ref_Type => +New_Named_Type (Name => To_Ident (WNE_Type))));
-
-      Close_Theory (File, Filter_Entity => Empty, No_Import => True);
-   end Translate_External_Object;
-
-   ---------------------------
-   -- Translate_Loop_Entity --
-   ---------------------------
-
-   procedure Translate_Loop_Entity
+   procedure Translate_Variable
      (File : in out Why_Section;
-      E    : Entity_Id)
+      E     : Entity_Id)
    is
       Name : constant String := Full_Name (E);
+      Typ  : constant W_Type_Id :=
+        (if Ekind (E) = E_Loop_Parameter
+         then EW_Int_Type
+         elsif Is_Array_Type (Etype (E)) and then
+           not Is_Constrained (Etype (E)) then
+              EW_Split (Etype (E))
+         else
+           EW_Abstract (Etype (E)));
+      Why_Name : constant W_Identifier_Id :=
+        To_Why_Id (E => E, Typ => Typ);
+      Local_Name : constant W_Identifier_Id :=
+        To_Why_Id (E => E, Typ => Typ, Local => True);
+      Decl : constant W_Declaration_Id :=
+        New_Type_Decl
+          (Name  => To_Ident (WNE_Type),
+           Alias => Typ);
+
+      Var : constant Item_Type := Mk_Item_Of_Entity (E, Why_Name);
+
+      function Normalize_Type (E : Entity_Id) return Entity_Id;
+      --  Choose the correct type to use
+
+      --------------------
+      -- Normalize_Type --
+      --------------------
+
+      function Normalize_Type (E : Entity_Id) return Entity_Id is
+      begin
+         if not (Ekind (E) in Private_Kind) or else
+           Entity_In_External_Axioms (E)
+         then
+            return E;
+         end if;
+         if Entity_In_SPARK (MUT (E)) then
+            return Normalize_Type (MUT (E));
+         end if;
+         return E;
+      end Normalize_Type;
+
+   --  Start of Translate_Variable
+
    begin
       Open_Theory (File, Name,
                    Comment =>
-                     "Module for defining the loop exit exception for the loop"
-                   & """" & Get_Name_String (Chars (E)) & """"
-                   & (if Sloc (E) > 0 then
-                     " defined at " & Build_Location_String (Sloc (E))
-                     else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                     "Module for defining a ref holding the value of variable "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (File.Cur_Theory,
-            New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
-                                       Arg  => Why_Empty));
+      --  Generate an alias for the name of the object's type, based on the
+      --  name of the object. This is useful when generating logic functions
+      --  from Ada functions, to generate additional parameters for the global
+      --  objects read.
+
+      Emit (File.Cur_Theory, Decl);
+
+      if Entity_In_SPARK (MUT (Etype (E))) then
+         Add_Use_For_Entity (File, Normalize_Type (Etype (E)));
+      end if;
+
+      --  We generate a global ref
+
+      Emit
+        (File.Cur_Theory,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E, Local => True),
+            Ref_Type => New_Named_Type (To_Ident (WNE_Type))));
+      case Var.Kind is
+         when UCArray =>
+            for D in 1 .. Var.Dim loop
+               declare
+                  Ty_First : constant W_Type_Id :=
+                    Get_Typ (Var.Bounds (D).First);
+                  Ty_Last : constant W_Type_Id :=
+                    Get_Typ (Var.Bounds (D).Last);
+               begin
+                  Emit
+                    (File.Cur_Theory,
+                     Why.Atree.Builders.New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        =>
+                          Attr_Append
+                            (Local_Name,
+                             Attribute_First,
+                             D,
+                             Ty_First),
+                        Binders     => (1 .. 0 => <>),
+                        Return_Type => Ty_First));
+                  Emit
+                    (File.Cur_Theory,
+                     Why.Atree.Builders.New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        =>
+                          Attr_Append
+                            (Local_Name,
+                             Attribute_Last,
+                             D,
+                             Ty_Last),
+                        Binders     => (1 .. 0 => <>),
+                        Return_Type => Ty_Last));
+               end;
+            end loop;
+         when Regular =>
+            null;
+      end case;
+      Insert_Item (E, Var);
 
       Close_Theory (File, Filter_Entity => E, No_Import => True);
-   end Translate_Loop_Entity;
+   end Translate_Variable;
 
    -----------------------
    -- Use_Why_Base_Type --

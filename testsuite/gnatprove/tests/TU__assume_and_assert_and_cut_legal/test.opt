@@ -1,0 +1,2 @@
+all XFAIL Assume generates proof obligation. LRM says it does NOT.
+

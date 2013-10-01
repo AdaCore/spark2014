@@ -1,3 +1,74 @@
+evoting.adb:42:07: warning: no Global contract available for "Assert"
+evoting.adb:42:07: warning:  assuming "Assert" has no effect on global items
+evoting.adb:53:07: warning: no Global contract available for "Open"
+evoting.adb:53:07: warning:  assuming "Open" has no effect on global items
+evoting.adb:55:17: warning: no Global contract available for "End_Of_File"
+evoting.adb:55:17: warning:  assuming "End_Of_File" has no effect on global items
+evoting.adb:57:10: warning: no Global contract available for "Get_Line"
+evoting.adb:57:10: warning:  assuming "Get_Line" has no effect on global items
+evoting.adb:63:07: warning: no Global contract available for "Close"
+evoting.adb:63:07: warning:  assuming "Close" has no effect on global items
+evoting.adb:71:10: warning: no Global contract available for "Put"
+evoting.adb:71:10: warning:  assuming "Put" has no effect on global items
+evoting.adb:72:10: warning: no Global contract available for "Put"
+evoting.adb:72:10: warning:  assuming "Put" has no effect on global items
+evoting.adb:73:10: warning: no Global contract available for "Put"
+evoting.adb:73:10: warning:  assuming "Put" has no effect on global items
+evoting.adb:80:10: warning: no Global contract available for "Put"
+evoting.adb:80:10: warning:  assuming "Put" has no effect on global items
+evoting.adb:82:10: warning: no Global contract available for "Put_Line"
+evoting.adb:82:10: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:90:07: warning: no Global contract available for "Put_Line"
+evoting.adb:90:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:91:07: warning: no Global contract available for "Put"
+evoting.adb:91:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:92:07: warning: no Global contract available for "Put"
+evoting.adb:92:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:93:07: warning: no Global contract available for "Put_Line"
+evoting.adb:93:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:97:07: warning: no Global contract available for "Put"
+evoting.adb:97:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:98:07: warning: no Global contract available for "Put_Line"
+evoting.adb:98:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:170:07: warning: no Global contract available for "Put_Line"
+evoting.adb:170:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:173:10: warning: no Global contract available for "Put_Line"
+evoting.adb:173:10: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:174:10: warning: no Global contract available for "Get_Line"
+evoting.adb:174:10: warning:  assuming "Get_Line" has no effect on global items
+evoting.adb:181:16: warning: no Global contract available for "Put"
+evoting.adb:181:16: warning:  assuming "Put" has no effect on global items
+evoting.adb:183:16: warning: no Global contract available for "Put_Line"
+evoting.adb:183:16: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:200:07: warning: no Global contract available for "Assert"
+evoting.adb:200:07: warning:  assuming "Assert" has no effect on global items
+evoting.adb:262:07: warning: no Global contract available for "Put_Line"
+evoting.adb:262:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:278:10: warning: no Global contract available for "Put"
+evoting.adb:278:10: warning:  assuming "Put" has no effect on global items
+evoting.adb:279:10: warning: no Global contract available for "Put"
+evoting.adb:279:10: warning:  assuming "Put" has no effect on global items
+evoting.adb:281:10: warning: no Global contract available for "Put_Line"
+evoting.adb:281:10: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:284:07: warning: no Global contract available for "Put"
+evoting.adb:284:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:285:07: warning: no Global contract available for "Put"
+evoting.adb:285:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:286:07: warning: no Global contract available for "Put_Line"
+evoting.adb:286:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:288:07: warning: no Global contract available for "Put"
+evoting.adb:288:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:289:07: warning: no Global contract available for "Put"
+evoting.adb:289:07: warning:  assuming "Put" has no effect on global items
+evoting.adb:290:07: warning: no Global contract available for "Put_Line"
+evoting.adb:290:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:294:07: warning: no Global contract available for "Put_Line"
+evoting.adb:294:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:298:13: warning: no Global contract available for "Put_Line"
+evoting.adb:298:13: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:309:07: warning: no Global contract available for "Put_Line"
+evoting.adb:309:07: warning:  assuming "Put_Line" has no effect on global items
+evoting.adb:32:45: info: length check proved
 evoting.adb:52:60: length check not proved
 evoting.adb:58:52: info: range check proved
 evoting.adb:58:52: info: length check proved
@@ -42,11 +113,12 @@ evoting.adb:305:32: info: length check proved
 evoting.adb:311:7: info: precondition proved
 evoting.adb:313:7: info: precondition proved
 evoting.adb:315:7: info: precondition proved
+evoting.ads:32:45: info: length check proved
 evoting.ads:56:1: info: postcondition proved
 evoting.ads:58:40: info: index check proved
-evoting.ads:97:9: postcondition not proved, requires Counters_Sum(counters) = number_of_votes
+evoting.ads:95:11: postcondition not proved, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
-evoting.ads:107:22: postcondition not proved, requires counters(winner) > counters(i)
+evoting.ads:110:24: postcondition not proved, requires counters(winner) = counters(i)
 evoting.ads:105:25: info: range check proved
 evoting.ads:106:57: info: index check proved
 evoting.ads:107:50: info: index check proved

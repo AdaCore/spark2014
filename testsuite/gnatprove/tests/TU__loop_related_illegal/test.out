@@ -1,0 +1,22 @@
+loop_related_illegal.adb:14:07: pragma "Loop_Invariant" must appear immediately within the statements of a loop
+loop_related_illegal.adb:32:13: pragma "Loop_Invariant" must appear immediately within the statements of a loop
+loop_related_illegal.adb:47:44: expected a discrete type
+loop_related_illegal.adb:47:44: found type "Real" defined at line 42
+loop_related_illegal.adb:68:07: pragma "Assert" with Loop_Entry must appear immediately within the statements of a loop
+loop_related_illegal.adb:84:16: attribute "Loop_Entry" must appear within appropriate pragma
+loop_related_illegal.adb:109:36: prefix of attribute "Loop_Entry" cannot reference local entities
+loop_related_illegal.adb:129:37: prefix of attribute "Loop_Entry" that applies to outer loop must denote an entity
+loop_related_illegal_2.adb:8:07: warning: statement has no effect [ineffective]
+loop_related_illegal_2.adb:12:12: warning: unused assignment [ineffective]
+loop_related_illegal_2.adb:14:12: warning: unused assignment [ineffective]
+loop_related_illegal_2.adb:15:10: warning: statement has no effect [ineffective]
+loop_related_illegal_2.adb:25:07: warning: statement has no effect [ineffective]
+loop_related_illegal_2.adb:29:12: warning: unused assignment [ineffective]
+loop_related_illegal_2.adb:32:10: warning: statement has no effect [ineffective]
+loop_related_illegal_2.ads:5:43: warning: unused initial value of "Par" [unused_initial_value]
+loop_related_illegal_2.adb:17:7: assertion not proved, requires Y = 10
+loop_related_illegal_2.adb:30:10: loop variant not proved
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Variant failed at loop_related_illegal_2.adb:30
+
+raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Invariant failed at main2.adb:13

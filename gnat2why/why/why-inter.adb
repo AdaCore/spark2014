@@ -29,6 +29,7 @@ with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with SPARK_Xrefs;         use SPARK_Xrefs;
 with Sinfo;               use Sinfo;
+with Snames;              use Snames;
 with Stand;               use Stand;
 with String_Utils;        use String_Utils;
 with Constant_Tree;
@@ -87,6 +88,16 @@ package body Why.Inter is
      (P        : Why_Section;
       T_Name   : String;
       Use_Kind : EW_Clone_Type);
+
+   function EW_Abstract_Shared
+     (N    : Node_Id;
+      Kind : EW_Type) return W_Type_Id
+     with Pre => Kind in EW_Abstract | EW_Split;
+   --  Build an type node from an Ada type node, either of kind Split or
+   --  Abstract
+
+   function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
+     with Pre => Kind in EW_Abstract | EW_Split;
 
    package Standard_Imports is
 
@@ -191,8 +202,8 @@ package body Why.Inter is
                   end case;
 
                when Private_Kind =>
-                  if Entity_In_SPARK (Most_Underlying_Type (UE)) then
-                     Set_SI_Internal (Most_Underlying_Type (UE));
+                  if Entity_In_SPARK (MUT (UE)) then
+                     Set_SI_Internal (MUT (UE));
                   end if;
 
                when E_Record_Type | E_Record_Subtype =>
@@ -994,12 +1005,7 @@ package body Why.Inter is
 
    function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean is
    begin
-      if Left = Right then
-         return True;
-      end if;
-      return Get_Kind (+Left) = W_Type
-        and then Get_Kind (+Right) = W_Type
-        and then Eq_Base (+Left, +Right);
+      return Left = Right or else Eq_Base (Left, Right);
    end Eq_Base_Type;
 
    -----------------
@@ -1008,54 +1014,46 @@ package body Why.Inter is
 
    function EW_Abstract (N : Node_Id) return W_Type_Id is
    begin
+      return EW_Abstract_Shared (N, EW_Abstract);
+   end EW_Abstract;
+
+   ------------------------
+   -- EW_Abstract_Shared --
+   ------------------------
+
+   function EW_Abstract_Shared
+     (N    : Node_Id;
+      Kind : EW_Type) return W_Type_Id is
+   begin
       if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
       elsif N = Universal_Fixed then
          return EW_Real_Type;
-
-      --  Private types that are not in SPARK should be translated at the
-      --  special __private abstract type. Other private types should be
-      --  translated into the most underlying type.
-
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
          if Entity_In_External_Axioms (N) then
-            return New_Abstract_Base_Type (N);
+            return New_Kind_Base_Type (N, Kind);
+         elsif Entity_In_SPARK (MUT (N)) then
+            if MUT (N) = N then
+               return New_Kind_Base_Type (N, Kind);
+            else
+               return EW_Abstract (MUT (N));
+            end if;
          else
-            declare
-               Under_Typ : constant Entity_Id := Most_Underlying_Type (N);
-            begin
-               if Entity_In_SPARK (Under_Typ) then
-
-                  --  Avoid infinite recursion if the private type is its own
-                  --  most underlying type. Return the expected abstract type
-                  --  directly.
-
-                  if Under_Typ = N then
-                     return New_Abstract_Base_Type (N);
-
-                  --  Recurse with the most underlying type
-
-                  else
-                     return EW_Abstract (Under_Typ);
-                  end if;
-
-               --  The underlying type is not in SPARK, return the special
-               --  __private abstract type.
-
-               else
-                  return EW_Private_Type;
-               end if;
-            end;
+            return EW_Private_Type;
          end if;
-
-      --  Normal case: the type is translated into its own abstract type
-
+      elsif not Entity_In_SPARK (N) then
+         return EW_Private_Type;
       else
-         return New_Abstract_Base_Type (N);
+         return New_Kind_Base_Type (N, Kind);
       end if;
-   end EW_Abstract;
+   end EW_Abstract_Shared;
+
+   function EW_Split (N : Node_Id) return W_Type_Id is
+   begin
+      return EW_Abstract_Shared (N, EW_Split);
+   end EW_Split;
 
    -------------------------
    -- Extract_Object_Name --
@@ -1173,8 +1171,8 @@ package body Why.Inter is
          when Private_Kind =>
             if Entity_In_External_Axioms (Ty) then
                return EW_Abstract;
-            elsif Entity_In_SPARK (Most_Underlying_Type (Ty)) then
-               return Get_EW_Term_Type (Most_Underlying_Type (Ty));
+            elsif Entity_In_SPARK (MUT (Ty)) then
+               return Get_EW_Term_Type (MUT (Ty));
             else
                return EW_Private;
             end if;
@@ -1211,8 +1209,8 @@ package body Why.Inter is
    --------------------------
 
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
-       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Is_Record_Type (Get_Ada_Node (+Left)) and then
        Is_Record_Type (Get_Ada_Node (+Right)));
 
@@ -1221,8 +1219,8 @@ package body Why.Inter is
    -------------------------
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) = EW_Abstract and then
-       Get_Base_Type (Base_Why_Type (Right)) = EW_Abstract and then
+   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Is_Array_Type (Get_Ada_Node (+Left)) and then
        Is_Array_Type (Get_Ada_Node (+Right)));
 
@@ -1282,7 +1280,7 @@ package body Why.Inter is
          return
            Get_Name_String
              (Identifier_Get_Symbol
-                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).B_Name));
+                (+Ada_Ent_To_Why.Element (Extra_Modules_Map, N).Main.B_Name));
       else
          return Full_Name (N);
       end if;
@@ -1294,11 +1292,33 @@ package body Why.Inter is
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id is
    begin
-      return New_Type (Ada_Node   => E,
-                       Is_Mutable => False,
-                       Base_Type  => EW_Abstract,
-                       Name       => To_Why_Id (E));
+      return New_Kind_Base_Type (E, EW_Abstract);
    end New_Abstract_Base_Type;
+
+   ------------------------
+   -- New_Kind_Base_Type --
+   ------------------------
+
+   function New_Kind_Base_Type
+     (E    : Entity_Id;
+      Kind : EW_Type) return W_Type_Id is
+   begin
+      if Kind = EW_Abstract then
+         return New_Type (Ada_Node   => E,
+                          Is_Mutable => False,
+                          Base_Type  => EW_Abstract,
+                          Name       => To_Why_Id (E));
+      else
+         return New_Type (Ada_Node   => E,
+                          Is_Mutable => False,
+                          Base_Type  => EW_Split,
+                          Name       =>
+                            New_Identifier
+                              (Ada_Node => E,
+                               Name     => "__split",
+                               Context  => Full_Name (E)));
+      end if;
+   end New_Kind_Base_Type;
 
    --------------------
    -- New_Named_Type --
@@ -1353,7 +1373,8 @@ package body Why.Inter is
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
                        Local  : Boolean := False;
-                       Rec    : Entity_Id := Empty) return W_Identifier_Id
+                       Rec    : Entity_Id := Empty;
+                       Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind | E_Subprogram_Body and then
@@ -1378,23 +1399,27 @@ package body Why.Inter is
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
-                                      Name     => Field);
+                                      Name     => Field,
+                                      Typ      => Typ);
             else
                return New_Identifier (Ada_Node => Ada_N,
                                       Name     => Field,
-                                      Context  => Full_Name (Ada_N));
+                                      Context  => Full_Name (Ada_N),
+                                      Typ      => Typ);
             end if;
          end;
       elsif Local then
-         return New_Identifier (Ada_Node => E, Name => Suffix);
+         return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
       elsif Suffix = "" then
          return New_Identifier (Ada_Node => E,
-                                Name     => Full_Name (E));
+                                Name     => Full_Name (E),
+                                Typ      => Typ);
       else
          return
            New_Identifier (Ada_Node => E,
                            Name     => Suffix,
-                           Context => Full_Name (E));
+                           Context  => Full_Name (E),
+                           Typ      => Typ);
       end if;
    end To_Why_Id;
 
@@ -1443,6 +1468,15 @@ package body Why.Inter is
          return EW_Bool_Type;
       elsif E = Universal_Fixed then
          return EW_Real_Type;
+      elsif Nkind (N) = N_Attribute_Reference and then
+        Get_Attribute_Id (Attribute_Name (N)) in
+          Attribute_Old | Attribute_Loop_Entry then
+         return Type_Of_Node (Prefix (N));
+      elsif Nkind (N) in N_Identifier | N_Expanded_Name and then
+        Ekind (Entity (N)) in Object_Kind and then
+        Ekind (Entity (N)) not in E_Discriminant | E_Component
+      then
+         return Why_Type_Of_Entity (Entity (N));
       else
          return EW_Abstract (E);
       end if;

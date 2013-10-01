@@ -1,5 +1,5 @@
 tab.adb:6:49: range check not proved
-tab.adb:9:10: info: loop invariant initialization proved
+tab.adb:9:10: loop invariant initialization not proved
 tab.adb:9:10: loop invariant preservation not proved
 tab.adb:10:21: info: range check proved
 tab.adb:11:22: info: index check proved

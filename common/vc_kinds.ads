@@ -49,6 +49,7 @@ package VC_Kinds is
 
       --  Assertions
 
+      VC_Initial_Condition,
       VC_Precondition,
       VC_Postcondition,
       VC_Contract_Case,

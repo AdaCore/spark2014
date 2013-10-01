@@ -1,0 +1,8 @@
+loop_related_legal.adb:25:15: warning: unused assignment [ineffective]
+loop_related_legal.adb:9:32: info: overflow check proved
+loop_related_legal.adb:11:10: info: loop invariant initialization proved
+loop_related_legal.adb:11:10: info: loop invariant preservation proved
+loop_related_legal.adb:26:13: info: loop invariant initialization proved
+loop_related_legal.adb:26:13: info: loop invariant preservation proved
+loop_related_legal.adb:28:10: info: loop variant proved
+loop_related_legal.adb:29:21: info: range check proved

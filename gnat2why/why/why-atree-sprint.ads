@@ -58,10 +58,6 @@ private
      (State : in out Printer_State;
       Node  : W_Binder_Id);
 
-   procedure Constr_Decl_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Constr_Decl_Id);
-
    procedure Record_Definition_Pre_Op
       (State : in out Printer_State;
        Node : W_Record_Definition_Id);
@@ -73,10 +69,6 @@ private
    procedure Trigger_Pre_Op
      (State : in out Printer_State;
       Node  : W_Trigger_Id);
-
-   procedure Match_Case_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Match_Case_Id);
 
    procedure Postcondition_Pre_Op
      (State : in out Printer_State;
@@ -130,10 +122,6 @@ private
      (State : in out Printer_State;
       Node  : W_Call_Id);
 
-   procedure Constr_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Constr_Id);
-
    procedure Literal_Pre_Op
      (State : in out Printer_State;
       Node  : W_Literal_Id);
@@ -170,17 +158,9 @@ private
      (State : in out Printer_State;
       Node  : W_Deref_Id);
 
-   procedure Match_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Match_Id);
-
    procedure Binding_Pre_Op
      (State : in out Printer_State;
       Node  : W_Binding_Id);
-
-   procedure Array_Access_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Access_Id);
 
    procedure Record_Access_Pre_Op
      (State : in out Printer_State;
@@ -205,10 +185,6 @@ private
    procedure Assignment_Pre_Op
      (State : in out Printer_State;
       Node  : W_Assignment_Id);
-
-   procedure Array_Update_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Update_Id);
 
    procedure Binding_Ref_Pre_Op
      (State : in out Printer_State;
@@ -245,14 +221,6 @@ private
    procedure Try_Block_Pre_Op
      (State : in out Printer_State;
       Node  : W_Try_Block_Id);
-
-   procedure Tag_Intro_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Tag_Intro_Id);
-
-   procedure Unreachable_Code_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Unreachable_Code_Id);
 
    procedure Function_Decl_Pre_Op
      (State : in out Printer_State;

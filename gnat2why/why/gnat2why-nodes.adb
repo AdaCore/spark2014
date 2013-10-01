@@ -403,7 +403,7 @@ package body Gnat2Why.Nodes is
 
       --  Reach through a non-private type in order to query its kind
 
-      Check_Type := Most_Underlying_Type (Check_Type);
+      Check_Type := MUT (Check_Type);
 
       --  If the parent expression is an array access, this is an index check
 
@@ -869,8 +869,8 @@ package body Gnat2Why.Nodes is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      if Entity_In_SPARK (Most_Underlying_Type (T)) then
-         return Most_Underlying_Type (T);
+      if Entity_In_SPARK (MUT (T)) then
+         return MUT (T);
       else
          return T;
       end if;

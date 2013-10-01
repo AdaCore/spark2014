@@ -93,8 +93,7 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id);
    --  Generates VCs for entity E. This is currently a noop if E is not a
-   --  subprogram. This could be extended one day to generate VCs for the
-   --  elaboration code of packages.
+   --  subprogram or a package.
 
    procedure Print_Why_File;
    --  Print the input Why3 file on disk
@@ -195,8 +194,19 @@ package body Gnat2Why.Driver is
       --  units.
 
       for Index in ALIs.First .. ALIs.Last loop
-         Load_SPARK_Xrefs (Name_String (Name_Id
-           (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
+         declare
+            ALI_File_Name : constant File_Name_Type :=
+              ALIs.Table (Index).Afile;
+            ALI_File_Name_Str : constant String :=
+              Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
+            Has_SPARK_Xrefs : Boolean;
+         begin
+            Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs);
+
+            if Has_SPARK_Xrefs then
+               Loaded_ALI_Files.Include (ALI_File_Name);
+            end if;
+         end;
       end loop;
 
       --  Compute the frame condition from raw SPARK cross-reference
@@ -211,29 +221,33 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      --  Currently generate VCs only on subprograms in SPARK
+      if Ekind (E) in Subprogram_Kind and Entity_In_SPARK (E) then
 
-      if not (Ekind (E) in Subprogram_Kind
-               and then Entity_In_SPARK (E))
+         --  Generate Why3 code to check absence of run-time errors in
+         --  preconditions.
+
+         if Has_Precondition (E)
+           or else Present (Get_Subprogram_Contract_Cases (E))
+         then
+            Generate_VCs_For_Subprogram_Spec (Why_Sections (WF_Main), E);
+         end if;
+
+         --  In 'prove' mode, generate Why3 code to check absence of run-time
+         --  errors in the body of a subprogram, and to check that a subprogram
+         --  body implements its contract.
+
+         if Entity_Body_In_SPARK (E) then
+            Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
+         end if;
+
+      elsif Ekind (E) = E_Package
+              and then
+            (if Present (Get_Package_Body (E)) then
+               Entity_Body_In_SPARK (E)
+             else
+               Entity_In_SPARK (E))
       then
-         return;
-      end if;
-
-      --  Generate Why3 code to check absence of run-time errors in
-      --  preconditions.
-
-      if Has_Precondition (E)
-        or else Present (Get_Subprogram_Contract_Cases (E))
-      then
-         Generate_VCs_For_Subprogram_Spec (Why_Sections (WF_Main), E);
-      end if;
-
-      --  In 'prove' mode, generate Why3 code to check absence of run-time
-      --  errors in the body of a subprogram, and to check that a subprogram
-      --  body implements its contract.
-
-      if Entity_Body_In_SPARK (E) then
-         Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
+         Generate_VCs_For_Package_Elaboration (Why_Sections (WF_Main), E);
       end if;
    end Do_Generate_VCs;
 

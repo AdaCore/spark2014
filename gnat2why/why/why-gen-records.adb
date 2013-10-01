@@ -25,30 +25,31 @@
 
 with Ada.Containers.Hashed_Maps;
 
-with Atree;              use Atree;
-with Einfo;              use Einfo;
-with Elists;             use Elists;
-with Nlists;             use Nlists;
-with Sem_Util;           use Sem_Util;
-with Sinfo;              use Sinfo;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Elists;              use Elists;
+with Nlists;              use Nlists;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
 
-with SPARK_Util;         use SPARK_Util;
-with VC_Kinds;           use VC_Kinds;
+with SPARK_Util;          use SPARK_Util;
+with VC_Kinds;            use VC_Kinds;
 
-with Gnat2Why.Expr;      use Gnat2Why.Expr;
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Expr;       use Why.Gen.Expr;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Progs;      use Why.Gen.Progs;
-with Why.Gen.Terms;      use Why.Gen.Terms;
-with Why.Inter;          use Why.Inter;
-with Why.Types;          use Why.Types;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Preds;       use Why.Gen.Preds;
+with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Gen.Terms;       use Why.Gen.Terms;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Records is
 
@@ -244,17 +245,16 @@ package body Why.Gen.Records is
       Root       : constant Entity_Id := Root_Record_Type (E);
       Is_Root    : constant Boolean := Root = E;
       Ty_Ident   : constant W_Identifier_Id := To_Why_Id (E, Local => True);
-      Abstr_Ty   : constant W_Type_Id :=
-        +New_Named_Type (Name => Ty_Ident);
+      Abstr_Ty   : constant W_Type_Id := New_Named_Type (Name => Ty_Ident);
       Comp_Info  : Info_Maps.Map := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
       --  Component_Info record. This map is initialized by a call to
       --  Init_Component_Info;
 
-      A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
+      A_Ident    : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Abstr_Ty);
       R_Binder   : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
-               B_Type => Abstr_Ty,
                others => <>));
 
       --------------------------------
@@ -277,9 +277,9 @@ package body Why.Gen.Records is
                     Expr =>
                       New_Record_Access
                         (Name  => +A_Ident,
-                         Field => To_Why_Id (Ada_Discr, Local => True)),
-                    To   => EW_Int_Type,
-                    From => EW_Abstract (Etype (Ada_Discr)));
+                         Field => To_Why_Id (Ada_Discr, Local => True),
+                         Typ   => EW_Abstract (Etype (Ada_Discr))),
+                    To   => EW_Int_Type);
                New_Cond : constant W_Pred_Id :=
                  (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
                   then
@@ -342,9 +342,10 @@ package body Why.Gen.Records is
          Field           : Entity_Id;
          Seen            : Node_Sets.Set := Node_Sets.Empty_Set;
          Index           : Natural := 1;
+         A_Ident         : constant W_Identifier_Id :=
+           New_Identifier (Name => "a", Typ => EW_Abstract (Root));
          From_Binder     : constant Binder_Array :=
            (1 => (B_Name => A_Ident,
-                  B_Type => EW_Abstract (Root),
                   others => <>));
          From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
 
@@ -374,11 +375,11 @@ package body Why.Gen.Records is
                          Insert_Simple_Conversion
                            (Domain => EW_Term,
                             To     => EW_Abstract (Etype (Field)),
-                            From   => EW_Abstract (Etype (Orig)),
                             Expr   =>
                               New_Record_Access
                                 (Name => +A_Ident,
-                                 Field => Orig_Id)));
+                                 Field => Orig_Id,
+                                 Typ   => EW_Abstract (Etype (Orig)))));
                   To_Root_Aggr (Index) :=
                     New_Field_Association
                       (Domain => EW_Term,
@@ -387,11 +388,11 @@ package body Why.Gen.Records is
                          Insert_Simple_Conversion
                            (Domain => EW_Term,
                             To     => EW_Abstract (Etype (Orig)),
-                            From   => EW_Abstract (Etype (Field)),
                             Expr   =>
                               New_Record_Access
                                 (Name  => +A_Ident,
-                                 Field => Field_Id)));
+                                 Field => Field_Id,
+                                 Typ   => EW_Abstract (Etype (Field)))));
                   Seen.Include (Orig);
                   Index := Index + 1;
                end;
@@ -452,7 +453,8 @@ package body Why.Gen.Records is
 
       procedure Declare_Equality_Function
       is
-         B_Ident   : constant W_Identifier_Id := New_Identifier (Name => "b");
+         B_Ident   : constant W_Identifier_Id :=
+           New_Identifier (Name => "b", Typ => Abstr_Ty);
          Condition : W_Pred_Id := True_Pred;
          Comp      : Entity_Id := First_Component_Or_Discriminant (E);
       begin
@@ -501,8 +503,7 @@ package body Why.Gen.Records is
                  R_Binder &
                Binder_Array'(1 =>
                   Binder_Type'(B_Name => B_Ident,
-                                 B_Type => Abstr_Ty,
-                                 others => <>)),
+                               others => <>)),
                Return_Type => +EW_Bool_Type,
                Def         =>
                  New_Conditional
@@ -564,7 +565,7 @@ package body Why.Gen.Records is
                        To_Program_Space (Why_Name);
                      Post : constant W_Pred_Id :=
                        New_Relation
-                         (Left    => +To_Ident (WNE_Result),
+                         (Left    => +New_Result_Ident (Why_Empty),
                           Op_Type => EW_Abstract,
                           Op      => EW_Eq,
                           Right   =>
@@ -603,9 +604,11 @@ package body Why.Gen.Records is
       begin
          for Index in 1 .. Num_Fields loop
             Binders (Index) :=
-              (B_Name => To_Why_Id (Field, Local => True),
-               B_Type =>
-                 EW_Abstract (Etype (Field)),
+              (B_Name =>
+                 To_Why_Id
+                   (Field,
+                    Local => True,
+                    Typ => EW_Abstract (Etype (Field))),
                others => <>);
             loop
                Next_Component_Or_Discriminant (Field);
@@ -845,13 +848,14 @@ package body Why.Gen.Records is
       Root_Ident : constant W_Identifier_Id := To_Why_Id (Root);
       Root_Abstr : constant W_Type_Id :=
         +New_Named_Type (Name => Root_Ident);
-      A_Ident    : constant W_Identifier_Id := New_Identifier (Name => "a");
+      A_Ident    : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Root_Abstr);
       Num_Discr  : constant Natural := Count_Discriminants (E);
       Discr      : Node_Id := First_Discriminant (E);
       Post       : constant W_Pred_Id :=
         New_Relation (Op      => EW_Eq,
                       Op_Type => EW_Abstract,
-                      Left    => +To_Ident (WNE_Result),
+                      Left    => +New_Result_Ident (Why_Empty),
                       Right   => +A_Ident);
       R_Binder   : Binder_Array (1 .. Num_Discr + 1);
       Args       : W_Expr_Array (1 .. Num_Discr + 1);
@@ -861,7 +865,6 @@ package body Why.Gen.Records is
    begin
       R_Binder (Num_Discr + 1) :=
         Binder_Type'(B_Name => A_Ident,
-                     B_Type => Root_Abstr,
                      others => <>);
       Args (Num_Discr + 1) := +A_Ident;
       Count := 1;
@@ -869,10 +872,13 @@ package body Why.Gen.Records is
       while Present (Discr) loop
          if Is_Not_Hidden_Discriminant (Discr) then
             R_Binder (Count) :=
-              Binder_Type'(B_Name => To_Why_Id (Discr, Local => True),
-                           B_Type =>
-                             EW_Abstract (Etype (Discr)),
-                           others => <>);
+              Binder_Type'
+                (B_Name =>
+                   To_Why_Id
+                     (Discr,
+                      Local => True,
+                      Typ => EW_Abstract (Etype (Discr))),
+                 others => <>);
             Args (Count) := +To_Why_Id (Discr, Local => True);
             Check_Pred :=
               +New_And_Expr
@@ -980,7 +986,8 @@ package body Why.Gen.Records is
          Name     => Range_Check_Name (Check_Ty, RCK_Range),
          Progs    => Prepare_Args_For_Subtype_Check (Check_Ty, +Expr),
          Domain   => EW_Prog,
-         Reason   => VC_Discriminant_Check);
+         Reason   => VC_Discriminant_Check,
+         Typ      => Get_Type (+Expr));
    end Insert_Subtype_Discriminant_Check;
 
    ---------------------------
@@ -996,6 +1003,8 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Call_Id : constant W_Identifier_Id := To_Why_Id (Field, Rec => Ty);
+      Ret_Ty  : constant W_Type_Id :=
+        Type_Of_Node (Search_Component_By_Name (Ty, Field));
    begin
       if Domain = EW_Prog and then
         Do_Discriminant_Check (Ada_Node) then
@@ -1005,15 +1014,16 @@ package body Why.Gen.Records is
               Name     => To_Program_Space (Call_Id),
               Progs    => (1 => Name),
               Domain   => Domain,
-              Reason   => VC_Discriminant_Check);
+              Reason   => VC_Discriminant_Check,
+              Typ      => Ret_Ty);
       else
          return
            New_Call
              (Ada_Node => Ada_Node,
               Name     => Call_Id,
-              Args    => (1 => Name),
-              Domain   => Domain);
-
+              Args     => (1 => Name),
+              Domain   => Domain,
+              Typ      => Ret_Ty);
       end if;
    end New_Ada_Record_Access;
 
@@ -1026,10 +1036,10 @@ package body Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id)
+      Value    : W_Expr_Id)
       return W_Expr_Id
    is
+      Ty          : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
       Update_Expr : constant W_Expr_Id :=
         New_Record_Update
           (Ada_Node => Ada_Node,

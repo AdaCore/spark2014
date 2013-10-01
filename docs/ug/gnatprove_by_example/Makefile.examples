@@ -4,20 +4,20 @@ DUMMY:=$(shell mkdir -p flow prove)
 
 RESULTS=$(PWD)/results
 ALL=$(wildcard examples/*.adb)
-ALL_FLOW_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.flow,$(ALL)) 
-ALL_PROVE_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL)) 
+ALL_FLOW_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.flow,$(ALL))
+ALL_PROVE_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL))
 
 gnatprove: flow prove
 
 flow:
-	cp examples/intro.gpr flow
-	cd flow && gnatprove -q -P intro.gpr --report=all --mode=flow \
+	cp examples/intro.gpr examples/intro.adc flow
+	-cd flow && gnatprove -k -q -P intro.gpr --report=all --warnings=on --mode=flow \
 	  > flow.results
 
 prove:
-	cp examples/intro.gpr prove
-	cd prove && gnatprove -q -P intro.gpr --report=all --mode=prove --timeout=5 \
-	  > prove.results
+	cp examples/intro.gpr examples/intro.adc prove
+	cd prove && gnatprove -q -P intro.gpr --report=all --warnings=on --mode=prove \
+	  --timeout=5 > prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 

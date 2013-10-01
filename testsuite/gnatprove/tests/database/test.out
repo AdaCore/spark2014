@@ -4,8 +4,11 @@ database.adb:96:04: warning: statement has no effect [ineffective]
 database.adb:99:04: warning: statement has no effect [ineffective]
 database.adb:171:07: warning: statement has no effect [ineffective]
 database.adb:171:07: warning: unused assignment to "Links" [ineffective]
+database.adb:30:35: info: length check proved
 database.adb:43:17: info: postcondition proved
 database.adb:51:17: info: postcondition proved
+database.adb:96:52: info: length check proved
+database.adb:100:46: info: length check proved
 database.adb:111:21: info: range check proved
 database.adb:112:17: info: index check proved
 database.adb:113:36: info: index check proved
@@ -23,20 +26,22 @@ database.adb:285:17: info: precondition proved
 database.adb:291:42: info: precondition proved
 database.adb:303:27: info: precondition proved
 database.adb:309:42: info: precondition proved
-database.ads:51:14: info: postcondition proved
-database.ads:53:41: info: precondition proved
-database.ads:74:41: info: precondition proved
-database.ads:93:14: info: precondition proved
-database.ads:94:14: info: precondition proved
-database.ads:94:14: info: postcondition proved
-database.ads:94:34: info: precondition proved
-database.ads:94:56: info: precondition proved
-database.ads:111:25: info: precondition proved
-database.ads:112:14: info: precondition proved
-database.ads:112:14: info: postcondition proved
-database.ads:112:34: info: precondition proved
-database.ads:112:56: info: precondition proved
+database.ads:53:14: info: postcondition proved
+database.ads:55:41: info: precondition proved
+database.ads:76:41: info: precondition proved
+database.ads:95:14: info: precondition proved
+database.ads:96:14: info: precondition proved
+database.ads:96:14: info: postcondition proved
+database.ads:96:34: info: precondition proved
+database.ads:96:56: info: precondition proved
+database.ads:113:25: info: precondition proved
+database.ads:114:14: info: precondition proved
+database.ads:114:14: info: postcondition proved
+database.ads:114:34: info: precondition proved
+database.ads:114:56: info: precondition proved
+identity.ads:10:36: info: length check proved
+identity.ads:19:30: info: length check proved
 money.adb:4:33: info: range check proved
 money.adb:7:33: info: range check proved
-money.ads:31:14: info: postcondition proved
-money.ads:36:14: info: postcondition proved
+money.ads:33:14: info: postcondition proved
+money.ads:38:14: info: postcondition proved

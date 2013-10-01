@@ -47,7 +47,6 @@ package Why.Gen.Binders is
       Ada_Node : Node_Id := Empty;
       B_Name   : W_Identifier_Id;
       B_Ent    : Entity_Name;
-      B_Type   : W_Type_Id;
       Mutable  : Boolean := False;
    end record;
    --  This record represents a variable binding B_Name of type B_Type. In some
@@ -56,6 +55,41 @@ package Why.Gen.Binders is
    --  B_Ent field if no entity node is available for the entity.
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
+
+   type Item_Enum is (Regular, UCArray);
+
+   type Item_Bounds is record
+      First : W_Identifier_Id;
+      Last  : W_Identifier_Id;
+   end record;
+
+   type Array_Bounds is array (1 .. 4) of Item_Bounds;
+
+   type Item_Type (Kind : Item_Enum := Regular) is record
+      Main : Binder_Type;
+      case Kind is
+         when Regular => null;
+         when UCArray =>
+            Dim    : Positive;
+            Bounds : Array_Bounds;
+      end case;
+   end record;
+   --  An item is like a generalized binder. It is used to represent the
+   --  mapping
+   --    Ada object  -> Why variables
+   --  which is not always 1 to 1. In the common case where it is 1 to 1, the
+   --  Kind "Regular" is used. The only other case for now is unconstrained
+   --  arrays, where extra objects are created to represent the bounds.
+
+   type Item_Array is array (Positive range <>) of Item_Type;
+
+   function Item_Array_Length (Arr : Item_Array) return Natural;
+   --  Return the number of variables that is introduced by the given
+   --  item_array (counting items plus e.g. array bounds)
+
+   function To_Binder_Array (A : Item_Array) return Binder_Array;
+   --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
+   --  bounds to binders
 
    function New_Binders
      (Anonymous_Binders : W_Type_Array)
@@ -139,7 +173,6 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : EW_Type;
-      Ada_Type    : Entity_Id := Empty;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
      return W_Declaration_Id;
@@ -148,10 +181,6 @@ package Why.Gen.Binders is
    --   axiom <name>___def:
    --    forall x1 ... xn.
    --       pre -> (<name> (x1 .. xn) = <def>)
-
-   --  Ada_Type is the Ada entity of the return type. If it is a scalar type,
-   --  the comparison is done in the Why base type, and we expect "def" to be
-   --  of the base type.
 
    function New_Defining_Bool_Axiom
      (Ada_Node : Node_Id := Empty;

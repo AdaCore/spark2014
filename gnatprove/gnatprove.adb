@@ -656,8 +656,6 @@ procedure Gnatprove is
 
       Args.Append ("-cargs:Ada");
       Args.Append ("-gnatc");       --  No object file generation
-      Args.Append ("-I");
-      Args.Append (Stdlib_ALI_Dir);
 
       if Show_Tag then
          Args.Append ("-gnatw.d"); -- generation of unique tag

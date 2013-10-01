@@ -1,0 +1,15 @@
+incr_loop.adb:6:10: loop invariant initialization not proved
+incr_loop.adb:6:10: loop invariant preservation not proved
+incr_loop.adb:7:41: overflow check not proved
+incr_loop.adb:8:19: info: index check proved
+incr_loop.adb:8:38: info: index check proved
+incr_loop.adb:8:41: info: overflow check proved
+incr_loop.adb:11:19: info: index check proved
+incr_loop.adb:11:38: info: index check proved
+incr_loop.adb:11:41: info: overflow check proved
+incr_loop.adb:12:25: overflow check not proved
+incr_loop.ads:6:47: index check not proved
+incr_loop.ads:8:13: postcondition not proved
+incr_loop.ads:9:42: info: index check proved
+incr_loop.ads:9:54: info: index check proved
+incr_loop.ads:9:57: info: overflow check proved

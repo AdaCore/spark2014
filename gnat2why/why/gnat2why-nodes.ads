@@ -129,7 +129,7 @@ package Gnat2Why.Nodes is
    --  or not
 
    function Subp_Location (E : Entity_Id) return String
-   with Pre => (Ekind (E) in Subprogram_Kind);
+   with Pre => (Ekind (E) in Subprogram_Kind | E_Package);
    --  for a given subprogram entity, compute the string that identifies this
    --  subprogram. The string will be of the form GP_Subp:foo.ads:12, where
    --  this is the file and line where this subprogram is declared.

@@ -52,14 +52,14 @@ package Gnat2Why.Util is
 
       procedure Insert (M : in out Map;
                         E : Entity_Id;
-                        W : Binder_Type);
+                        W : Item_Type);
 
       procedure Insert (M : in out Map;
                         E : Entity_Name;
-                        W : Binder_Type);
+                        W : Item_Type);
 
-      function Element (M : Map; E : Entity_Id) return Binder_Type;
-      function Element (C : Cursor) return Binder_Type;
+      function Element (M : Map; E : Entity_Id) return Item_Type;
+      function Element (C : Cursor) return Item_Type;
 
       function Find (M : Map; E : Entity_Id) return Cursor;
       function Find (M : Map; E : Entity_Name) return Cursor;
@@ -79,14 +79,14 @@ package Gnat2Why.Util is
 
       package Name_To_Why_Map is new Ada.Containers.Hashed_Maps
         (Key_Type => Entity_Name,
-         Element_Type    => Binder_Type,
+         Element_Type    => Item_Type,
          Hash            => Name_Hash,
          Equivalent_Keys => Name_Equal,
          "="             => "=");
 
       package Ent_To_Why is new Ada.Containers.Hashed_Maps
         (Key_Type        => Node_Id,
-         Element_Type    => Binder_Type,
+         Element_Type    => Item_Type,
          Hash            => Node_Hash,
          Equivalent_Keys => "=",
          "="             => "=");
@@ -103,7 +103,7 @@ package Gnat2Why.Util is
             when Remove_Name =>
                Rem_Name : Entity_Name;
             when Insert_Ent | Insert_Name =>
-               Ins_Binder : Binder_Type;
+               Ins_Binder : Item_Type;
                case Kind is
                   when Insert_Ent =>
                      Ins_Entity : Entity_Id;
@@ -235,5 +235,19 @@ package Gnat2Why.Util is
    function Is_Mutable_In_Why (N : Node_Id) return Boolean;
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
    --  the Why translation
+
+   ------------------------------
+   -- Symbol table subprograms --
+   ------------------------------
+
+   procedure Insert_Entity (E       : Entity_Id;
+                            Name    : W_Identifier_Id;
+                            Mutable : Boolean := False);
+
+   procedure Insert_Item (E : Entity_Id; I : Item_Type);
+
+   function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id;
+   --  For an object entity in Ada, return the Why type that has been
+   --  registered for it in the symbol table.
 
 end Gnat2Why.Util;

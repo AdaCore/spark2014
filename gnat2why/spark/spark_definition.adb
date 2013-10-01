@@ -39,6 +39,7 @@ with Sinfo;                              use Sinfo;
 with Sinput;                             use Sinput;
 with Snames;                             use Snames;
 with Stand;                              use Stand;
+with Uintp;
 
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 with SPARK_Util;                         use SPARK_Util;
@@ -505,12 +506,6 @@ package body SPARK_Definition is
             Param_Id : Entity_Id;
 
          begin
-            if Has_Global_Writes (Id) then
-               Mark_Violation
-                 ("function with side-effects", Id, NIR_Impure_Function);
-               return;
-            end if;
-
             if Is_Non_Empty_List (Params) then
                Param := First (Params);
                while Present (Param) loop
@@ -1216,6 +1211,7 @@ package body SPARK_Definition is
               and then List_Length (Then_Statements (Parent (N))) = 1
             then
                null;
+
             elsif Present (Parent (N))
               and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
               and then Present (Parent (Parent (N)))
@@ -1225,6 +1221,22 @@ package body SPARK_Definition is
                                   (Parent (Parent (N))))) = N
             then
                null;
+
+            --  The frontend inserts explicit checks during semantic analysis
+            --  in some cases, for which gnatprove issues a corresponding
+            --  check. Currently, this is only used for discriminant checks
+            --  introduced when converting a discriminant type into another
+            --  discriminant type, in which multiple source discriminants are
+            --  mapped to the same target discriminant (RM 4.6(43)).
+
+            elsif Nkind (N) in N_Raise_xxx_Error then
+               case RT_Exception_Code'Val (Uintp.UI_To_Int (Reason (N))) is
+                  when CE_Discriminant_Check_Failed =>
+                     null;
+                  when others =>
+                     Mark_Violation ("raise statement", N, NIR_Exception);
+               end case;
+
             else
                Mark_Violation ("raise statement", N, NIR_Exception);
             end if;
@@ -1310,32 +1322,24 @@ package body SPARK_Definition is
             Mark_Subtype_Indication (N);
 
          when N_Type_Conversion =>
-            declare
-               E2 : constant Entity_Id :=
-                 Get_Full_View (Entity (Subtype_Mark (N)));
-            begin
-               if Is_Composite_Type (E2) then
-                  pragma Assert (Nkind (Expression (N)) in N_Has_Etype);
-                  declare
-                     E1 : constant Entity_Id :=
-                       Get_Full_View (Etype (Expression (N)));
-                  begin
-                     if E1 /= E2 and then
-                       Is_Composite_Type (E1) and then
-                       (not Is_Array_Type (E1) or else
-                          not Is_Array_Type (E2) or else
-                        Component_Type (E1) /= Component_Type (E2)) then
-
-                        Mark_Violation ("conversion between composite types",
-                                        N, NYI_Composite_Conv);
-                     else
-                        Mark (Expression (N));
-                     end if;
-                  end;
-               else
-                  Mark (Expression (N));
-               end if;
-            end;
+            if Has_Array_Type (Etype (N)) then
+               declare
+                  Target_Comp_Typ : constant Entity_Id :=
+                    MUT (Component_Type (MUT (Etype (N))));
+                  Source_Comp_Typ : constant Entity_Id :=
+                    MUT (Component_Type (MUT (Etype (Expression (N)))));
+               begin
+                  if Target_Comp_Typ /= Source_Comp_Typ then
+                     Error_Msg_N
+                       ("conversion between array types that have different "
+                        & "element types is not yet supported", N);
+                  else
+                     Mark (Expression (N));
+                  end if;
+               end;
+            else
+               Mark (Expression (N));
+            end if;
 
          when N_Unary_Op =>
             Mark_Unary_Op (N);
@@ -1779,6 +1783,23 @@ package body SPARK_Definition is
 
       elsif not In_SPARK (Entity (Nam)) then
          Mark_Violation ("subprogram called", N, From => Entity (Nam));
+      end if;
+
+      --  Issue a warning for calls to subprograms with no Global contract,
+      --  either manually-written or computed. This is the case for standard
+      --  and external library subprograms for which no Global contract is
+      --  supplied. Note that subprograms for which an external axiomatization
+      --  is provided are exempted, as they should not have any effect on
+      --  global items.
+
+      if not Has_Computed_Global (Entity (Nam))
+        and then No (Get_Pragma (Entity (Nam), Pragma_Global))
+        and then not Entity_In_External_Axioms (Entity (Nam))
+      then
+         Error_Msg_NE
+           ("?no Global contract available for &", N, Entity (Nam));
+         Error_Msg_NE
+           ("\\ assuming & has no effect on global items", N, Entity (Nam));
       end if;
    end Mark_Call;
 
@@ -2646,7 +2667,7 @@ package body SPARK_Definition is
 
    procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id)
    is
-      Typ : constant Entity_Id := Most_Underlying_Type (Id);
+      Typ : constant Entity_Id := MUT (Id);
    begin
       if not In_SPARK (Typ) then
          Mark_Violation ("type", N, From => Typ);

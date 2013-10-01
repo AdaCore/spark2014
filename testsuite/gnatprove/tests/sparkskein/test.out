@@ -1,3 +1,97 @@
+skein.adb:136:48: warning: no Global contract available for "Shift_Right"
+skein.adb:136:48: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:186:22: warning: no Global contract available for "Shift_Left"
+skein.adb:186:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:187:22: warning: no Global contract available for "Shift_Left"
+skein.adb:187:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:188:22: warning: no Global contract available for "Shift_Left"
+skein.adb:188:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:189:22: warning: no Global contract available for "Shift_Left"
+skein.adb:189:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:190:22: warning: no Global contract available for "Shift_Left"
+skein.adb:190:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:191:22: warning: no Global contract available for "Shift_Left"
+skein.adb:191:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:192:22: warning: no Global contract available for "Shift_Left"
+skein.adb:192:22: warning:  assuming "Shift_Left" has no effect on global items
+skein.adb:297:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:297:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:304:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:304:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:310:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:310:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:316:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:316:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:326:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:326:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:333:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:333:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:339:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:339:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:345:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:345:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:355:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:355:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:362:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:362:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:368:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:368:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:374:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:374:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:384:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:384:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:391:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:391:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:397:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:397:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:403:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:403:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:413:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:413:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:420:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:420:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:426:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:426:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:432:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:432:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:442:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:442:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:449:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:449:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:455:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:455:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:461:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:461:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:471:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:471:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:478:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:478:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:484:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:484:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:490:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:490:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:500:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:500:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:507:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:507:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:513:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:513:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:519:29: warning: no Global contract available for "Rotate_Left"
+skein.adb:519:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:883:62: warning: no Global contract available for "Shift_Right"
+skein.adb:883:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:884:62: warning: no Global contract available for "Shift_Right"
+skein.adb:884:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:885:62: warning: no Global contract available for "Shift_Right"
+skein.adb:885:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:886:62: warning: no Global contract available for "Shift_Right"
+skein.adb:886:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:887:62: warning: no Global contract available for "Shift_Right"
+skein.adb:887:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:888:62: warning: no Global contract available for "Shift_Right"
+skein.adb:888:62: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:889:62: warning: no Global contract available for "Shift_Right"
+skein.adb:889:62: warning:  assuming "Shift_Right" has no effect on global items
 skein.adb:114:7: assertion not proved, requires Dst'First = 0
 skein.adb:116:7: assertion not proved, requires Src'First = 0
 skein.adb:118:7: assertion not proved, requires Dst'Last >= Dst_Offset + (Byte_Count - 1
@@ -90,3 +184,5 @@ skein.adb:948:41: overflow check not proved
 skein.adb:955:56: overflow check not proved
 skein.adb:955:56: range check not proved
 skein.adb:961:37: range check not proved
+skein.ads:266:52: length check not proved
+skein.ads:267:52: length check not proved

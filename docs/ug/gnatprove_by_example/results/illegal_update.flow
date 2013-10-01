@@ -1,0 +1,6 @@
+illegal_update.adb:3:04: warning: statement has no effect [ineffective]
+illegal_update.adb:10:11: "X" must be a global output of "Do_Stuff" [illegal_update]
+illegal_update.adb:14:04: warning: statement has no effect [ineffective]
+illegal_update.adb:14:04: warning: unused assignment to "X" [ineffective]
+illegal_update.adb:14:04: warning: unused assignment to "Tmp" [ineffective]
+illegal_update.ads:1:27: warning: "X" is not modified, could be "in" [inout_only_read]

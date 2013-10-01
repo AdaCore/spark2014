@@ -1,4 +1,6 @@
-package Money is  
+pragma SPARK_Mode (On);
+
+package Money is
 
    --  An amount of mone is always qualified by the currency in which it is
    --  expressed. None corresponds to the invalid currency.

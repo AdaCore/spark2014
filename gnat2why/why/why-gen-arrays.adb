@@ -26,17 +26,19 @@
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Sem_Eval;            use Sem_Eval;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Stand;               use Stand;
 with Uintp;               use Uintp;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Types;      use Gnat2Why.Types;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Inter;           use Why.Inter;
@@ -56,6 +58,15 @@ package body Why.Gen.Arrays is
    --  starting from the initial value of [Arg_Ind], and set the final value
    --  of [Arg_Ind] to the index after the last written value.
 
+   function Get_Array_Attr (Domain : EW_Domain;
+                            Item   : Item_Type;
+                            Attr   : Attribute_Id;
+                            Dim    : Positive) return W_Expr_Id;
+
+   function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
+     with Pre => Get_Kind (+E) in W_Identifier | W_Deref;
+   --  should return an object of type EW_Int_Type
+
    -----------------
    -- Add_Map_Arg --
    -----------------
@@ -64,12 +75,13 @@ package body Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive)
    is
+      W_Ty    : constant W_Type_Id := Get_Type (Expr);
+      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
-      if Is_Constrained (Ty) then
+      if Is_Constrained (Ty) or else Get_Base_Type (W_Ty) = EW_Split then
          Args (Arg_Ind) := Expr;
       else
          Args (Arg_Ind) :=
@@ -92,13 +104,32 @@ package body Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
+      Attr    : Attribute_Id;
+      Dim     : Positive;
+      Arg_Ind : in out Positive)
+   is
+   begin
+      Args (Arg_Ind) :=
+        Insert_Scalar_Conversion
+          (Domain,
+           Empty,
+           Get_Array_Attr (Domain, Expr, Attr, Dim),
+           EW_Int_Type);
+      Arg_Ind := Arg_Ind + 1;
+   end Add_Attr_Arg;
+
+   procedure Add_Attr_Arg
+     (Domain  : EW_Domain;
+      Args    : in out W_Expr_Array;
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
       Arg_Ind : in out Positive)
    is
    begin
-      Args (Arg_Ind) := Get_Array_Attr (Domain, Expr, Ty, Attr, Dim);
+      Args (Arg_Ind) :=
+        Insert_Scalar_Conversion
+          (Domain, Empty, Get_Array_Attr (Domain, Ty, Attr, Dim), EW_Int_Type);
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -110,17 +141,67 @@ package body Why.Gen.Arrays is
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Expr    : W_Expr_Id;
-      Ty      : Entity_Id;
       Arg_Ind : in out Positive)
    is
+      W_Ty    : constant W_Type_Id := Get_Type (Expr);
+      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Dim     : constant Positive := Positive (Number_Dimensions (Ty));
    begin
-      Add_Map_Arg (Domain, Args, Expr, Ty, Arg_Ind);
+      Add_Map_Arg (Domain, Args, Expr, Arg_Ind);
       for I in 1 .. Dim loop
-         Add_Attr_Arg (Domain, Args, Expr, Ty, Attribute_First, I, Arg_Ind);
-         Add_Attr_Arg (Domain, Args, Expr, Ty, Attribute_Last, I, Arg_Ind);
+         Add_Attr_Arg (Domain, Args, Expr, Attribute_First, I, Arg_Ind);
+         Add_Attr_Arg (Domain, Args, Expr, Attribute_Last, I, Arg_Ind);
       end loop;
    end Add_Array_Arg;
+
+   -----------------------------
+   -- Array_Convert_From_Base --
+   -----------------------------
+
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   is
+      Ty     : constant W_Type_Id := Get_Type (Ar);
+      Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
+      Len    : constant Integer :=
+        1 + 2 * Integer (Number_Dimensions (Ty_Ent));
+      Args   : W_Expr_Array (1 .. Len);
+      Count  : Positive := 1;
+   begin
+      Add_Array_Arg (Domain, Args, Ar, Count);
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Ty_Ent,
+                     S        => Full_Name (Ty_Ent),
+                     W        => WNE_Of_Array),
+           Args   => Args,
+           Typ    => EW_Abstract (Ty_Ent));
+   end Array_Convert_From_Base;
+
+   ---------------------------
+   -- Array_Convert_To_Base --
+   ---------------------------
+
+   function Array_Convert_To_Base
+     (Domain    : EW_Domain;
+      Ar        : W_Expr_Id) return W_Expr_Id
+   is
+      Ty     : constant W_Type_Id := Get_Type (Ar);
+      Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Ty_Ent,
+                     S        => Full_Name (Ty_Ent),
+                     W        => WNE_To_Array),
+           Args   => (1 => +Ar),
+           Typ    => EW_Split (Ty_Ent));
+   end Array_Convert_To_Base;
 
    -----------------------
    -- Build_Length_Expr --
@@ -130,13 +211,17 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       First, Last : W_Expr_Id) return W_Expr_Id
    is
+      First_Int : constant W_Expr_Id :=
+        Insert_Scalar_Conversion (Domain, Empty, First, EW_Int_Type);
+      Last_Int : constant W_Expr_Id :=
+        Insert_Scalar_Conversion (Domain, Empty, Last, EW_Int_Type);
       Cond : constant W_Expr_Id :=
         New_Relation
           (Domain  => Domain,
            Op_Type => EW_Int,
            Op      => EW_Le,
-           Left    => +First,
-           Right   => +Last);
+           Left    => +First_Int,
+           Right   => +Last_Int);
       Len : constant W_Expr_Id :=
         New_Binary_Op
           (Op      => EW_Add,
@@ -145,8 +230,8 @@ package body Why.Gen.Arrays is
              New_Binary_Op
                (Op      => EW_Substract,
                 Op_Type => EW_Int,
-                Left    => Last,
-                Right   => First),
+                Left    => Last_Int,
+                Right   => First_Int),
            Right   => New_Integer_Constant (Value => Uint_1));
    begin
       return
@@ -154,20 +239,32 @@ package body Why.Gen.Arrays is
           (Domain    => Domain,
            Condition => Cond,
            Then_Part => Len,
-           Else_Part => New_Integer_Constant (Value => Uint_0));
+           Else_Part => New_Integer_Constant (Value => Uint_0),
+           Typ       => EW_Int_Type);
    end Build_Length_Expr;
 
    function Build_Length_Expr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
+      Dim    : Positive) return W_Expr_Id is
+   begin
+      return
+        Build_Length_Expr
+          (Domain,
+           Get_Array_Attr (Domain, Expr, Attribute_First, Dim),
+           Get_Array_Attr (Domain, Expr, Attribute_Last, Dim));
+   end Build_Length_Expr;
+
+   function Build_Length_Expr
+     (Domain : EW_Domain;
       Ty     : Entity_Id;
       Dim    : Positive) return W_Expr_Id is
    begin
       return
         Build_Length_Expr
           (Domain,
-           Get_Array_Attr (Domain, Expr, Ty, Attribute_First, Dim),
-           Get_Array_Attr (Domain, Expr, Ty, Attribute_Last, Dim));
+           Get_Array_Attr (Domain, Ty, Attribute_First, Dim),
+           Get_Array_Attr (Domain, Ty, Attribute_Last, Dim));
    end Build_Length_Expr;
 
    -----------------------
@@ -362,15 +459,17 @@ package body Why.Gen.Arrays is
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
-                 +New_Named_Type (Name => New_Identifier (Name => "__t"))));
+                 New_Named_Type (Name => New_Identifier (Name => "__t"))));
       if Und_Ent = Standard_String then
          declare
-            Dummy_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "x");
             Image_Ty    : constant W_Type_Id :=
-              +New_Named_Type (Name => New_Identifier (Name => "__image"));
+              New_Named_Type (Name => New_Identifier (Name => "__image"));
+            Dummy_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "x", Typ => Image_Ty);
             Str_Typ     : constant W_Type_Id :=
-              +New_Named_Type (Name => Why3_Type_Name);
+              New_Named_Type (Name => Why3_Type_Name);
+            Dummy_Ident2 : constant W_Identifier_Id :=
+              New_Identifier (Name => "x", Typ => Str_Typ);
          begin
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
@@ -382,8 +481,7 @@ package body Why.Gen.Arrays is
                           Ada_Node => Empty,
                           Mutable  => False,
                           B_Ent    => null,
-                          B_Name   => Dummy_Ident,
-                          B_Type   => Image_Ty)),
+                          B_Name   => Dummy_Ident)),
                      Return_Type => Str_Typ));
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
@@ -395,8 +493,7 @@ package body Why.Gen.Arrays is
                           Ada_Node => Empty,
                           Mutable  => False,
                           B_Ent    => null,
-                          B_Name   => Dummy_Ident,
-                          B_Type   => Str_Typ)),
+                          B_Name   => Dummy_Ident2)),
                      Return_Type => Image_Ty));
          end;
       end if;
@@ -408,15 +505,44 @@ package body Why.Gen.Arrays is
 
    function Get_Array_Attr
      (Domain : EW_Domain;
-      Expr   : W_Expr_Id;
       Ty     : Entity_Id;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id is
+   begin
+      if Attr in Attribute_First | Attribute_Last then
+         return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
+      else
+         return
+           Build_Length_Expr (Domain, Ty, Dim);
+      end if;
+   end Get_Array_Attr;
+
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Expr   : W_Expr_Id;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id
    is
+      W_Ty    : constant W_Type_Id := Get_Type (Expr);
+      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Ty_Name : constant String := Full_Name (Ty);
    begin
+
+      --  If the type is constrained, just use the type information
+
       if Is_Constrained (Ty) then
-         return New_Attribute_Expr (Nth_Index_Type (Ty, Dim), Attr);
+         return Get_Array_Attr (Domain, Ty, Attr, Dim);
+
+      --  if the object is a split object, look up the required expressions in
+      --  the symbol table
+
+      elsif Get_Base_Type (W_Ty) = EW_Split then
+         return Get_Array_Attr (Domain,
+                                Ada_Ent_To_Why.Element
+                                  (Symbol_Table,
+                                   Get_Entity_Of_Variable (Expr)),
+                                Attr,
+                                Dim);
       else
          return
            New_Call
@@ -430,9 +556,62 @@ package body Why.Gen.Arrays is
                        (To_String
                           (Attr_To_Why_Name (Attr)),
                         Dim)),
-              Args   => (1 => Expr));
+              Args   => (1 => Expr),
+              Typ    => EW_Int_Type);
       end if;
    end Get_Array_Attr;
+
+   function Get_Array_Attr (Domain : EW_Domain;
+                            Item   : Item_Type;
+                            Attr   : Attribute_Id;
+                            Dim    : Positive) return W_Expr_Id
+   is
+   begin
+      case Attr is
+         when Attribute_First =>
+            return +Item.Bounds (Dim).First;
+         when Attribute_Last =>
+            return +Item.Bounds (Dim).Last;
+         when Attribute_Length =>
+            return
+              Build_Length_Expr
+                (Domain => Domain,
+                 First  => +Item.Bounds (Dim).First,
+                 Last  => +Item.Bounds (Dim).Last);
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Array_Attr;
+
+   ----------------------------
+   -- Get_Entity_Of_Variable --
+   ----------------------------
+
+   function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id is
+   begin
+      case Get_Kind (+E) is
+         when W_Identifier =>
+            return Get_Ada_Node (+E);
+
+         when W_Deref =>
+            declare
+               Id : constant W_Identifier_Id := Get_Right (+E);
+            begin
+               return Get_Ada_Node (+Id);
+            end;
+
+         when W_Tagged =>
+            declare
+               Expr : constant W_Expr_Id := Get_Def (W_Tagged_Id (E));
+            begin
+               return Get_Entity_Of_Variable (Expr);
+            end;
+
+         when others =>
+            raise Program_Error;
+
+      end case;
+   end Get_Entity_Of_Variable;
 
    ----------------------
    -- New_Array_Access --
@@ -440,26 +619,36 @@ package body Why.Gen.Arrays is
 
    function New_Array_Access
      (Ada_Node  : Node_Id;
-      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
-      Domain    : EW_Domain;
-      Dimension : Pos) return W_Expr_Id
+      Domain    : EW_Domain) return W_Expr_Id
    is
+      Why_Ty    : constant W_Type_Id := Get_Type (Ar);
+      Ty_Entity : constant Entity_Id := Get_Ada_Node (+Why_Ty);
+      Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
         Prefix (Ada_Node => Ty_Entity,
                 S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Access);
-      Elts     : constant W_Expr_Id :=
-        (if Is_Constrained (Ty_Entity) then Ar
-         else Array_Convert_To_Base (Ty_Entity, Domain, Ar));
+      Elts     : W_Expr_Id;
+      Ret_Ty   : constant W_Type_Id :=
+        Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
    begin
+      if Is_Constrained (Ty_Entity) or else
+        Get_Base_Type (Why_Ty) = EW_Split
+      then
+         Elts := Ar;
+      else
+         Elts := Array_Convert_To_Base (Domain, Ar);
+      end if;
+
       return
         New_Call
         (Ada_Node => Ada_Node,
          Name     => Name,
          Domain   => Domain,
-         Args     => (1 => Elts) & Index);
+         Args     => (1 => Elts) & Index,
+         Typ      => Ret_Ty);
    end New_Array_Access;
 
    ---------------------------
@@ -469,37 +658,27 @@ package body Why.Gen.Arrays is
    function New_Element_Equality
      (Ada_Node   : Node_Id := Empty;
       Left_Arr   : W_Expr_Id;
-      Left_Type  : Entity_Id;
       Right_Arr  : W_Expr_Id;
-      Right_Type : Entity_Id;
-      Index      : W_Expr_Array;
-      Dimension  : Pos) return W_Pred_Id
+      Index      : W_Expr_Array) return W_Pred_Id
    is
-      Comp_Type  : constant Node_Id := Component_Type (Left_Type);
-      Elmt_Type  : constant W_Type_Id := EW_Abstract (Comp_Type);
       Left       : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
            Domain    => EW_Term,
-           Ty_Entity => Left_Type,
            Ar        => Left_Arr,
-           Index     => Index,
-           Dimension => Dimension);
+           Index     => Index);
       Right      : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
            Domain    => EW_Term,
-           Ty_Entity => Right_Type,
            Ar        => Right_Arr,
-           Index     => Index,
-           Dimension => Dimension);
+           Index     => Index);
       Result     : constant W_Pred_Id :=
         +New_Comparison
         (Domain    => EW_Pred,
          Cmp       => EW_Eq,
          Left      => Left,
-         Right     => Right,
-         Arg_Types => Elmt_Type);
+         Right     => Right);
    begin
       return Result;
    end New_Element_Equality;
@@ -510,18 +689,21 @@ package body Why.Gen.Arrays is
 
    function New_Array_Update
      (Ada_Node  : Node_Id;
-      Ty_Entity : Entity_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
       Value     : W_Expr_Id;
-      Domain    : EW_Domain;
-      Dimension : Pos) return W_Expr_Id
+      Domain    : EW_Domain) return W_Expr_Id
    is
+      W_Ty      : constant W_Type_Id := Get_Type (Ar);
+      Ty_Entity : constant Entity_Id := Get_Ada_Node (+W_Ty);
+      Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
         Prefix (S => To_String (Ada_Array_Name (Dimension)),
                 W => WNE_Array_Update);
    begin
-      if Is_Constrained (Ty_Entity) then
+      if Is_Constrained (Ty_Entity) or else
+        Get_Base_Type (W_Ty) = EW_Split
+      then
          return
            New_Call
              (Ada_Node => Ada_Node,
@@ -560,25 +742,5 @@ package body Why.Gen.Arrays is
          end;
       end if;
    end New_Array_Update;
-
-   -------------------------------
-   -- New_Prepared_Array_Access --
-   -------------------------------
-
-   function Array_Convert_To_Base
-     (Ty_Entity : Entity_Id;
-      Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id
-   is
-   begin
-      return
-        New_Call
-          (Domain => Domain,
-           Name   =>
-             Prefix (Ada_Node => Ty_Entity,
-                     S        => Full_Name (Ty_Entity),
-                     W        => WNE_To_Array),
-           Args   => (1 => +Ar));
-   end Array_Convert_To_Base;
 
 end Why.Gen.Arrays;

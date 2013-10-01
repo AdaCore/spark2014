@@ -13,6 +13,8 @@ pack.adb:70:07: warning: statement has no effect [ineffective]
 pack.adb:71:07: warning: statement has no effect [ineffective]
 pack.adb:87:07: warning: statement has no effect [ineffective]
 pack.adb:87:13: warning: unused assignment to "A" [ineffective]
+pack.adb:3:23: info: length check proved
+pack.adb:4:32: info: length check proved
 pack.adb:12:34: info: length check proved
 pack.adb:13:41: info: length check proved
 pack.adb:14:41: info: length check proved
@@ -44,6 +46,6 @@ pack.adb:66:25: info: length check proved
 pack.adb:70:36: info: length check proved
 pack.adb:71:36: info: length check proved
 pack.adb:77:19: info: postcondition proved
-pack.adb:77:47: index check not proved
+pack.adb:77:47: info: index check proved
 pack.adb:88:7: assertion not proved, requires A (8) = 1
 pack.adb:89:7: assertion not proved, requires A (9) = 2

@@ -183,7 +183,8 @@ package Why.Inter is
    function To_Why_Id (E      : Entity_Id;
                        Domain : EW_Domain := EW_Prog;
                        Local  : Boolean := False;
-                       Rec    : Entity_Id := Empty) return W_Identifier_Id;
+                       Rec    : Entity_Id := Empty;
+                       Typ    : W_Type_Id := Why_Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic world
    --  There is also a local and a global name of each identifier. The local
@@ -207,6 +208,15 @@ package Why.Inter is
    function Why_Types (E : EW_Basic_Type) return W_Type_Id;
 
    function EW_Abstract (N : Node_Id) return W_Type_Id;
+   --  Convert an Ada type entity into a Why type. This function respects the
+   --  gnat2why encoding. For example, for N = Boolean the function returns
+   --  EW_Bool_Type, for non-SPARK types and private types, EW_Private_Type
+   --  is returned. For all the details, see the implementation.
+
+   function EW_Split (N : Node_Id) return W_Type_Id;
+   --  This function does the exact same thing as EW_Abstract, but changes the
+   --  kind of the node to EW_Split
+
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (Name : W_Identifier_Id) return W_Type_Id;
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
