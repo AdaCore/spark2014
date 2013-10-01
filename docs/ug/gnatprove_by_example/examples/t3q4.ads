@@ -1,3 +1,5 @@
+pragma SPARK_Mode;
+
 package T3Q4
 is
 

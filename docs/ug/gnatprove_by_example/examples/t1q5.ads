@@ -1,3 +1,5 @@
+pragma SPARK_Mode;
+
 package T1Q5
 is
 

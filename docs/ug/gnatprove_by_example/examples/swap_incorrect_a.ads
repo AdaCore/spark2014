@@ -1,3 +1,5 @@
+pragma SPARK_Mode;
+
 package Swap_Incorrect_A
 is
 

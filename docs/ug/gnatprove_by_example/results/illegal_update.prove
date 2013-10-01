@@ -1,1 +1,1 @@
-illegal_update.adb:10:16: overflow check not proved
+illegal_update.adb:12:16: overflow check not proved

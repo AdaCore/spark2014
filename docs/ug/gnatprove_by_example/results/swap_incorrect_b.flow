@@ -1,2 +1,2 @@
 swap_incorrect_b.adb:4:04: warning: statement has no effect [ineffective]
-swap_incorrect_b.ads:4:14: "Call_Count" must be listed in the Global aspect of "Swap"
+swap_incorrect_b.ads:6:14: "Call_Count" must be listed in the Global aspect of "Swap"

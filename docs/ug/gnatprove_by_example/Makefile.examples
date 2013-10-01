@@ -10,12 +10,12 @@ ALL_PROVE_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL))
 gnatprove: flow prove
 
 flow:
-	cp examples/intro.gpr examples/intro.adc flow
+	cp examples/intro.gpr flow
 	-cd flow && gnatprove -k -q -P intro.gpr --report=all --warnings=on --mode=flow \
 	  > flow.results
 
 prove:
-	cp examples/intro.gpr examples/intro.adc prove
+	cp examples/intro.gpr prove
 	cd prove && gnatprove -q -P intro.gpr --report=all --warnings=on --mode=prove \
 	  --timeout=5 > prove.results
 
