@@ -2201,6 +2201,15 @@ package body SPARK_Definition is
    -- Mark_Pragma --
    -----------------
 
+   --  gnatprove currently deals with a subset of the Ada and GNAT pragmas.
+   --  Other recognized pragmas are ignored, and a warning is issued here (and
+   --  in flow analysis, and in proof) that the pragma is ignored. Any change
+   --  in the set of pragmas that gnatprove supports should be reflected:
+   --    . in Mark_Pragma below
+   --    . for flow analysis, in Pragma_Relevant_To_Flow in
+   --      flow-control_flow_graph.adb
+   --    . for proof, in Transform_Pragma in gnat2why-expr.adb
+
    procedure Mark_Pragma (N : Node_Id) is
       Pname   : constant Name_Id   := Pragma_Name (N);
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
@@ -2219,8 +2228,6 @@ package body SPARK_Definition is
          end if;
       end if;
 
-      Error_Msg_Name_1 := Pname;
-
       case Prag_Id is
 
          --  pragma Check ([Name    =>] Identifier,
@@ -2229,11 +2236,18 @@ package body SPARK_Definition is
 
          when Pragma_Check =>
 
-            --  Pragma Check generated for Pre/Postconditions are ignored
+            --  Ignore pragma Check for preconditions and postconditions
 
-            if Chars (Get_Pragma_Arg (Arg1)) /= Name_Precondition
-              and then Chars (Get_Pragma_Arg (Arg1)) /= Name_Postcondition
+            if Is_Pragma_Check (N, Name_Precondition)
+                 or else
+               Is_Pragma_Check (N, Name_Pre)
+                 or else
+               Is_Pragma_Check (N, Name_Postcondition)
+                 or else
+               Is_Pragma_Check (N, Name_Post)
             then
+               null;
+            else
                Mark (Get_Pragma_Arg (Arg2));
             end if;
 
@@ -2256,50 +2270,6 @@ package body SPARK_Definition is
                   Next (Variant);
                end loop;
             end;
-
-         --  SPARK pragmas
-
-         when Pragma_Abstract_State    |
-              Pragma_Depends           |
-              Pragma_Global            |
-              Pragma_Initializes       |
-              Pragma_Initial_Condition |
-              Pragma_Refined_State     |
-              Pragma_Refined_Depends   |
-              Pragma_Refined_Global    |
-              Pragma_SPARK_Mode        =>
-            null;
-
-         --  Ignored pragmas, either because they are already taken into
-         --  account (Precondition and Postcondition), or because they have no
-         --  effect on verification (Export, Preelaborate, Pure, Unmodified,
-         --  Unreferenced, Warnings).
-
-         when Pragma_Ada_83           |
-              Pragma_Ada_95           |
-              Pragma_Ada_05           |
-              Pragma_Ada_2005         |
-              Pragma_Ada_12           |
-              Pragma_Ada_2012         |
-              Pragma_Annotate         |
-              Pragma_Assertion_Policy |
-              Pragma_Check_Policy     |
-              Pragma_Contract_Cases   |
-              Pragma_Convention       |
-              Pragma_Elaborate_All    |
-              Pragma_Elaborate_Body   |
-              Pragma_Export           |
-              Pragma_Inline           |
-              Pragma_Pack             |
-              Pragma_Precondition     |
-              Pragma_Preelaborate     |
-              Pragma_Postcondition    |
-              Pragma_Pure             |
-              Pragma_Test_Case        |
-              Pragma_Unmodified       |
-              Pragma_Unreferenced     |
-              Pragma_Warnings         =>
-            null;
 
          when Pragma_Import =>
             --  If the associated node of Pragma_Import:
@@ -2327,6 +2297,54 @@ package body SPARK_Definition is
 
          when Pragma_Overflow_Mode =>
             Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
+
+         --  Pragmas that do not need any marking, either because:
+         --  . they are defined by SPARK 2014, or
+         --  . they are already taken into account elsewhere (contracts)
+         --  . they have no effect on verification
+
+         when Pragma_Abstract_State               |
+              Pragma_Ada_83                       |
+              Pragma_Ada_95                       |
+              Pragma_Ada_05                       |
+              Pragma_Ada_2005                     |
+              Pragma_Ada_12                       |
+              Pragma_Ada_2012                     |
+              Pragma_Annotate                     |
+              Pragma_Assertion_Policy             |
+              Pragma_Check_Policy                 |
+              Pragma_Contract_Cases               |
+              Pragma_Convention                   |
+              Pragma_Depends                      |
+              Pragma_Elaborate                    |
+              Pragma_Elaborate_All                |
+              Pragma_Elaborate_Body               |
+              Pragma_Export                       |
+              Pragma_Global                       |
+              Pragma_Initializes                  |
+              Pragma_Initial_Condition            |
+              Pragma_Inline                       |
+              Pragma_Inline_Always                |
+              Pragma_Pack                         |
+              Pragma_Postcondition                |
+              Pragma_Precondition                 |
+              Pragma_Preelaborate                 |
+              Pragma_Preelaborable_Initialization |
+              Pragma_Pure                         |
+              Pragma_Pure_Function                |
+              Pragma_Refined_Depends              |
+              Pragma_Refined_Global               |
+              Pragma_Refined_State                |
+              Pragma_SPARK_Mode                   |
+              Pragma_Test_Case                    |
+              Pragma_Unmodified                   |
+              Pragma_Unreferenced                 |
+              Pragma_Warnings                     =>
+            null;
+
+         when Unknown_Pragma =>
+            Error_Msg_Name_1 := Pname;
+            Mark_Violation ("unknown pragma %", N);
 
          when others =>
             Error_Msg_Name_1 := Pname;

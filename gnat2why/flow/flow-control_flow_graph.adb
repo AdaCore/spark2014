@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Errout;
 with Nlists;                          use Nlists;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Util;                        use Sem_Util;
@@ -30,7 +31,6 @@ with Sinfo;                           use Sinfo;
 with Snames;                          use Snames;
 
 with Treepr;                          use Treepr;
-with Output;                          use Output;
 
 with Flow.Debug;                      use Flow.Debug;
 pragma Unreferenced (Flow.Debug);
@@ -2308,12 +2308,20 @@ package body Flow.Control_Flow_Graph is
    begin
       case Get_Pragma_Id (N) is
          when Pragma_Abstract_State               |
+              Pragma_Ada_83                       |
+              Pragma_Ada_95                       |
               Pragma_Ada_05                       |
+              Pragma_Ada_2005                     |
+              Pragma_Ada_12                       |
               Pragma_Ada_2012                     |
               Pragma_Annotate                     |
+              Pragma_Assertion_Policy             |
+              Pragma_Check_Policy                 |
               Pragma_Contract_Cases               |
               Pragma_Convention                   |
               Pragma_Depends                      |
+              Pragma_Elaborate                    |
+              Pragma_Elaborate_All                |
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
               Pragma_Global                       |
@@ -2355,16 +2363,11 @@ package body Flow.Control_Flow_Graph is
               Pragma_Unreferenced =>
             return True;
 
-         when Unknown_Pragma =>
-            --  If we find an Unknown_Pragma we raise Why.Not_SPARK
-            raise Why.Not_SPARK;
-
          when others =>
-            --  If we find another pragma which got past the "in
-            --  SPARK" check we should do one of the above.
-            Write_Str ("Unexpected pragma: " &
-                         Pragma_Id'Image (Get_Pragma_Id (N)));
-            Write_Eol;
+            Errout.Error_Msg_Name_1 := Pragma_Name (N);
+            Errout.Error_Msg_N
+              ("?pragma % is not yet supported in flow analysis", N);
+            Errout.Error_Msg_N ("\\ it is currently ignored", N);
             return False;
       end case;
 

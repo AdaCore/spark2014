@@ -32,6 +32,7 @@ with Ada.Containers;         use Ada.Containers;
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
+with Errout;                 use Errout;
 with Eval_Fat;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
@@ -366,12 +367,20 @@ package body Gnat2Why.Expr is
    --  Convert a membership expression (N_In or N_Not_In) into a boolean Why
    --  expression.
 
+   function Transform_Pragma (Prag : Node_Id) return W_Prog_Id with
+     Pre => Nkind (Prag) = N_Pragma;
+   --  Returns the Why program for pragma Prag
+
    function Transform_Array_Equality
      (Params : Transformation_Params;
       Expr   : Node_Id;
       Domain : EW_Domain) return W_Expr_Id;
    --  Translate an equality on arrays into a Why expression, take care of the
    --  different cases (constrained / unconstrained) for each argument
+
+   function Transform_Raise (Stat : Node_Id) return W_Prog_Id with
+     Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
+   --  Returns the Why program for raise statement Stat
 
    -------------------
    -- Apply_Modulus --
@@ -3698,6 +3707,12 @@ package body Gnat2Why.Expr is
                end case;
             end;
 
+         when N_Pragma =>
+            R := Transform_Pragma (Decl);
+
+         when N_Raise_xxx_Error | N_Raise_Statement =>
+            R := Transform_Raise (Decl);
+
          when others =>
             null;
       end case;
@@ -4995,6 +5010,141 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Membership_Expression;
 
+   ----------------------
+   -- Transform_Pragma --
+   ----------------------
+
+   function Transform_Pragma (Prag : Node_Id) return W_Prog_Id is
+      Pname   : constant Name_Id   := Pragma_Name (Prag);
+      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+
+   begin
+      case Prag_Id is
+
+         --  Ignore pragma Check for preconditions and postconditions
+
+         when Pragma_Check =>
+            if Is_Pragma_Check (Prag, Name_Precondition)
+                 or else
+               Is_Pragma_Check (Prag, Name_Pre)
+                 or else
+               Is_Pragma_Check (Prag, Name_Postcondition)
+                 or else
+               Is_Pragma_Check (Prag, Name_Post)
+            then
+               return New_Void (Prag);
+
+            else
+               declare
+                  Check_Expr : W_Prog_Id;
+                  Pred       : W_Pred_Id;
+
+                  --  Mark non-selected loop invariants (those not occurring
+                  --  next to the first batch of selected variants and
+                  --  invariants) as loop invariant VCs.
+
+                  Reason : constant VC_Kind :=
+                    (if Is_Pragma_Check (Prag, Name_Loop_Invariant)
+                     then
+                        VC_Loop_Invariant
+                     else
+                        VC_Assert);
+
+               begin
+                  Transform_Pragma_Check (Prag, Check_Expr, Pred);
+
+                  if Is_Pragma_Assert_And_Cut (Prag) then
+                     if Check_Expr /= Why_Empty then
+                        return Check_Expr;
+                     else
+                        return New_Void (Prag);
+                     end if;
+                  elsif Is_False_Boolean (+Pred) then
+                     return
+                       +New_VC_Expr
+                       (Ada_Node => Prag,
+                        Expr     => +New_Identifier (Name => "absurd"),
+                        Reason   => Reason,
+                        Domain   => EW_Prog);
+                  elsif Is_True_Boolean (+Pred) then
+                     return New_Void (Prag);
+                  elsif Check_Expr /= Why_Empty then
+                     return
+                       Sequence (Check_Expr,
+                                 New_Located_Assert
+                                   (Prag, Pred, Reason));
+                  else
+                     return New_Located_Assert (Prag, Pred, Reason);
+                  end if;
+               end;
+            end if;
+
+         --  Pragma Overflow_Mode should have an effect on proof, but is
+         --  currently ignored (and a corresponding warning is issued
+         --  during marking).
+
+         when Pragma_Overflow_Mode =>
+            return New_Void (Prag);
+
+         --  Ignore pragmas which have no effect on proof, or whose effect
+         --  is taken into account elsewhere (contract, loop variant).
+
+         when Pragma_Abstract_State               |
+              Pragma_Ada_83                       |
+              Pragma_Ada_95                       |
+              Pragma_Ada_05                       |
+              Pragma_Ada_2005                     |
+              Pragma_Ada_12                       |
+              Pragma_Ada_2012                     |
+              Pragma_Annotate                     |
+              Pragma_Assertion_Policy             |
+              Pragma_Check_Policy                 |
+              Pragma_Contract_Cases               |
+              Pragma_Convention                   |
+              Pragma_Depends                      |
+              Pragma_Elaborate                    |
+              Pragma_Elaborate_All                |
+              Pragma_Elaborate_Body               |
+              Pragma_Export                       |
+              Pragma_Global                       |
+              Pragma_Import                       |
+              Pragma_Initializes                  |
+              Pragma_Initial_Condition            |
+              Pragma_Inline                       |
+              Pragma_Inline_Always                |
+              Pragma_Loop_Variant                 |
+              Pragma_Pack                         |
+              Pragma_Postcondition                |
+              Pragma_Precondition                 |
+              Pragma_Preelaborate                 |
+              Pragma_Preelaborable_Initialization |
+              Pragma_Pure                         |
+              Pragma_Pure_Function                |
+              Pragma_Refined_Depends              |
+              Pragma_Refined_Global               |
+              Pragma_Refined_State                |
+              Pragma_SPARK_Mode                   |
+              Pragma_Test_Case                    |
+              Pragma_Unmodified                   |
+              Pragma_Unreferenced                 |
+              Pragma_Warnings                     =>
+            return New_Void (Prag);
+
+         --  Pragmas which should not reach here
+
+         when Pragma_Loop_Invariant =>
+            raise Program_Error;
+
+         --  Ignore other pragmas with a warning
+
+         when others =>
+            Error_Msg_Name_1 := Pragma_Name (Prag);
+            Error_Msg_N ("?pragma % is not yet supported in proof", Prag);
+            Error_Msg_N ("\\ it is currently ignored", Prag);
+            return New_Void (Prag);
+      end case;
+   end Transform_Pragma;
+
    ----------------------------
    -- Transform_Pragma_Check --
    ----------------------------
@@ -5241,6 +5391,36 @@ package body Gnat2Why.Expr is
       end if;
    end Transform_Quantified_Expression;
 
+   ---------------------
+   -- Transform_Raise --
+   ---------------------
+
+   function Transform_Raise (Stat : Node_Id) return W_Prog_Id is
+   begin
+      case Nkind (Stat) is
+         when N_Raise_xxx_Error =>
+            case RT_Exception_Code'Val
+              (Uintp.UI_To_Int (Reason (Stat)))
+            is
+               when CE_Discriminant_Check_Failed =>
+                  return +New_VC_Expr (Domain   => EW_Prog,
+                                       Ada_Node => Stat,
+                                       Expr     => +False_Pred,
+                                       Reason   => VC_Discriminant_Check);
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         --  ??? NEED TO BE IMPLEMENTED (M121-026)
+
+         when N_Raise_Statement =>
+            return New_Void;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Transform_Raise;
+
    ---------------------------------------------
    -- Transform_Record_Component_Associations --
    ---------------------------------------------
@@ -5303,7 +5483,7 @@ package body Gnat2Why.Expr is
    ----------------------------------------
 
    function Transform_Statement_Or_Declaration
-     (Stmt_Or_Decl           : Node_Id;
+     (Stmt_Or_Decl   : Node_Id;
       Assert_And_Cut : out W_Pred_Id) return W_Prog_Id is
    begin
       --  Make sure that Assert_And_Cut is initialized
@@ -5459,21 +5639,6 @@ package body Gnat2Why.Expr is
                     Domain    => EW_Prog);
             end;
 
-         when N_Raise_xxx_Error =>
-            case RT_Exception_Code'Val
-              (Uintp.UI_To_Int (Reason (Stmt_Or_Decl)))
-            is
-               when CE_Discriminant_Check_Failed =>
-                  return +New_VC_Expr (Domain   => EW_Prog,
-                                       Ada_Node => Stmt_Or_Decl,
-                                       Expr     => +False_Pred,
-                                       Reason   => VC_Discriminant_Check);
-               when others =>
-                  Ada.Text_IO.Put_Line
-                    ("[Transform_Statement] raise xxx error");
-                  raise Not_Implemented;
-            end case;
-
          when N_Object_Declaration    |
               N_Subtype_Declaration   |
               N_Full_Type_Declaration =>
@@ -5496,69 +5661,20 @@ package body Gnat2Why.Expr is
             return Transform_Block_Statement (Stmt_Or_Decl);
 
          when N_Pragma =>
-            case Get_Pragma_Id (Pragma_Name (Stmt_Or_Decl)) is
-               when Pragma_Check =>
-                  declare
-                     Check_Expr : W_Prog_Id;
-                     Pred       : W_Pred_Id;
+            if Is_Pragma_Assert_And_Cut (Stmt_Or_Decl) then
+               declare
+                  Check_Expr : W_Prog_Id;
+                  Pred       : W_Pred_Id;
+               begin
+                  Transform_Pragma_Check (Stmt_Or_Decl, Check_Expr, Pred);
+                  Assert_And_Cut := Pred;
+               end;
+            end if;
 
-                     --  Mark non-selected loop invariants (those not occurring
-                     --  next to the first batch of selected variants and
-                     --  invariants) as loop invariant VCs.
+            return Transform_Pragma (Stmt_Or_Decl);
 
-                     Reason : constant VC_Kind :=
-                       (if Is_Pragma_Check (Stmt_Or_Decl, Name_Loop_Invariant)
-                        then
-                          VC_Loop_Invariant
-                        else
-                          VC_Assert);
-
-                  begin
-                     Transform_Pragma_Check (Stmt_Or_Decl, Check_Expr, Pred);
-
-                     if Is_Pragma_Assert_And_Cut (Stmt_Or_Decl) then
-                        Assert_And_Cut := Pred;
-                        if Check_Expr /= Why_Empty then
-                           return Check_Expr;
-                        else
-                           return New_Void (Stmt_Or_Decl);
-                        end if;
-                     elsif Is_False_Boolean (+Pred) then
-                        return
-                          +New_VC_Expr
-                            (Ada_Node => Stmt_Or_Decl,
-                             Expr     => +New_Identifier (Name => "absurd"),
-                             Reason   => Reason,
-                             Domain   => EW_Prog);
-                     elsif Is_True_Boolean (+Pred) then
-                        return New_Void (Stmt_Or_Decl);
-                     elsif Check_Expr /= Why_Empty then
-                        return
-                          Sequence (Check_Expr,
-                                    New_Located_Assert
-                                      (Stmt_Or_Decl, Pred, Reason));
-                     else
-                        return New_Located_Assert (Stmt_Or_Decl, Pred, Reason);
-                     end if;
-                  end;
-
-               --  Pragmas which can occur in declaration or statement
-               --  position, and which have no effect on proof.
-
-               when Pragma_Annotate   |
-                    Pragma_Export     |
-                    Pragma_Import     |
-                    Pragma_SPARK_Mode |
-                    Pragma_Warnings   =>
-                  return New_Void (Stmt_Or_Decl);
-
-               when others =>
-                  Ada.Text_IO.Put_Line
-                    ("[Transform_Statement] pragma kind ="
-                     & Pragma_Id'Image
-                         (Get_Pragma_Id (Pragma_Name (Stmt_Or_Decl))));
-                  raise Not_Implemented;
-            end case;
+         when N_Raise_xxx_Error | N_Raise_Statement =>
+            return Transform_Raise (Stmt_Or_Decl);
 
          --  ??? Should not occur (L927-029), but until this is fixed, ignore
          --  freeze nodes.
@@ -5583,9 +5699,6 @@ package body Gnat2Why.Expr is
 
          when N_Subprogram_Body        |
               N_Subprogram_Declaration =>
-            return New_Void;
-
-         when N_Raise_Statement =>
             return New_Void;
 
          when others =>
