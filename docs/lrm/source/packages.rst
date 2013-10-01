@@ -967,16 +967,9 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-pr-fa-initial_condition_aspects-04:
+.. _tu-nt-initial_condition_aspects-04:
 
-4. An Initial_Condition aspect is a sort of postcondition for the elaboration
-   of both the specification and body of a package. If present on a package, then
-   its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
-   of the package which can be assumed to be true immediately following the
-   elaboration of the package. [The expression of the Initial_Condition cannot
-   denote a state abstraction. This means that to express properties of
-   hidden state, functions declared in the visible part acting on the state
-   abstractions of the package must be used.]
+4. Rule removed.
 
 .. _etu-initial_condition_aspects-ss:
 
@@ -1004,6 +997,17 @@ be a *Boolean_*\ ``expression``.
 6. [The Initial_Condition aspect gives a proof obligation to show that the
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
+
+.. _tu-pr-fa-initial_condition_aspects-07:
+
+7. An Initial_Condition aspect is a sort of postcondition for the elaboration
+   of both the specification and body of a package. If present on a package, then
+   its *Boolean_*\ ``expression`` defines properties (a predicate) of the state
+   of the package which can be assumed to be true immediately following the
+   elaboration of the package. [The expression of the Initial_Condition cannot
+   denote a state abstraction. This means that to express properties of
+   hidden state, functions declared in the visible part acting on the state
+   abstractions of the package must be used.]
 
 .. _etu-initial_condition_aspects-vr:
 
