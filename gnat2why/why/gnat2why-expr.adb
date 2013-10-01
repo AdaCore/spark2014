@@ -4776,7 +4776,7 @@ package body Gnat2Why.Expr is
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
       else
-         Ada.Text_IO.Put_Line ("[Transform_Identifier] unregistered entity"
+         Ada.Text_IO.Put_Line ("[Transform_Identifier] unregistered entity "
                                & Full_Name (Ent));
          raise Program_Error;
       end if;
