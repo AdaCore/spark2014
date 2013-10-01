@@ -593,7 +593,7 @@ package body Gnat2Why.Subprograms is
                                            Map    => Guard_Map,
                                            Expr   => Result);
 
-      return Result;
+      return New_Ignore (Prog => Result);
    end Compute_Contract_Cases_Entry_Checks;
 
    ----------------------------------------
@@ -929,7 +929,7 @@ package body Gnat2Why.Subprograms is
             --  Generate program to check the absence of run-time errors in the
             --  initial condition.
 
-            Params.Phase := Generate_VCs_For_Post;
+            Params.Phase := Generate_VCs_For_Contract;
             Why_Body :=
               +Transform_Expr (Expr, EW_Bool_Type, EW_Prog, Params);
          end;
@@ -982,40 +982,40 @@ package body Gnat2Why.Subprograms is
    end Generate_VCs_For_Package_Elaboration;
 
    --------------------------------------
-   -- Generate_VCs_For_Subprogram_Body --
+   -- Generate_VCs_For_Subprogram_Spec --
    --------------------------------------
 
-   procedure Generate_VCs_For_Subprogram_Body
-     (File   : in out Why_Section;
-      E      : Entity_Id)
+   procedure Generate_VCs_For_Subprogram
+     (File : in out Why_Section;
+      E    : Entity_Id)
    is
-      Name       : constant String  := Full_Name (E);
-      Body_N     : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
-      Post_N     : constant Node_Id := Get_Location_For_Postcondition (E);
-      Pre        : W_Pred_Id;
-      Post       : W_Pred_Id;
-      Post_Check : W_Prog_Id;
-      Params     : Transformation_Params;
+      Name     : constant String := Full_Name (E);
+      Params   : Transformation_Params;
+
+      Body_N   : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
+      Post_N   : constant Node_Id := Get_Location_For_Postcondition (E);
+      Assume   : W_Prog_Id;
+      Prog     : W_Prog_Id;
+      Why_Body : W_Prog_Id;
+      Post     : W_Pred_Id;
 
       --  Mapping from guards to temporary names, and Why program to check
       --  contract cases on exit.
       Guard_Map      : Ada_To_Why_Ident.Map;
       Contract_Check : W_Prog_Id;
+      Post_Check     : W_Prog_Id;
 
-      Why_Body   : W_Prog_Id;
    begin
-      --  We open a new theory, so that the context is fresh for that
-      --  subprogram
-
-      Open_Theory (File, Name & "__def",
+      Open_Theory (File, Name & "__pre",
                    Comment =>
-                     "Module for checking absence of run-time errors and "
-                       & "subprogram contract on subprogram body of "
+                     "Module for checking contracts and absence of "
+                       & "run-time errors in subprogram "
                        & """" & Get_Name_String (Chars (E)) & """"
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
       Current_Subp := E;
 
       --  First, clear the list of translations for X'Old expressions, and
@@ -1026,166 +1026,26 @@ package body Gnat2Why.Subprograms is
         New_Identifier
           (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
 
-      --  Generate code to detect possible run-time errors in the postcondition
-
-      Params := (File        => File.File,
-                 Theory      => File.Cur_Theory,
-                 Phase       => Generate_VCs_For_Post,
-                 Gen_Image   => False,
-                 Ref_Allowed => True);
-
-      Compute_Contract_Cases_Exit_Checks
-        (Params    => Params,
-         E         => E,
-         Guard_Map => Guard_Map,
-         Result    => Contract_Check);
-
-      Post_Check :=
-        Sequence
-          (New_Ignore (Prog =>
-                       +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
-           Contract_Check);
-
-      --  Set the phase to Generate_Contract_For_Body from now on, so that
-      --  occurrences of F'Result are properly translated as Result_Name.
-
-      Params.Phase := Generate_Contract_For_Body;
-
-      --  Translate contract of E. A No_Return subprogram, from the inside, has
-      --  postcondition false, but the precondition is unchanged
-
-      Pre  := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
-      if No_Return (E) then
-         Post := False_Pred;
-      else
-         Params.Gen_Image := True;
-         Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
-         Params.Gen_Image := False;
-      end if;
-
-      --  Set the phase to Generate_VCs_For_Body from now on, so that
-      --  occurrences of X'Old are properly translated as reference to the
-      --  corresponding binder.
-
-      Params.Phase := Generate_VCs_For_Body;
-
-      --  Declare a global variable to hold the result of a function
-
-      if Ekind (E) = E_Function then
-         Emit
-           (File.Cur_Theory,
-            New_Global_Ref_Declaration
-              (Name     => Result_Name,
-               Labels =>
-                 (1 => New_Identifier
-                    (Name =>
-                       """GP_Ada_Name:" & Source_Name (E) & "'Result""")),
-               Ref_Type => EW_Abstract (Etype (E))));
-      end if;
-
-      --  Translate statements in the body of the subp
-
-      Why_Body :=
-        Transform_Statements_And_Declarations
-          (Statements
-               (Handled_Statement_Sequence (Body_N)));
-
-      --  Translate statements in declaration block
-
-      Why_Body :=
-        Transform_Declarations_Block (Declarations (Body_N), Why_Body);
-
-      --  Enclose the subprogram body in a try-block, so that return
-      --  statements can be translated as raising exceptions.
-
-      declare
-         Raise_Stmt : constant W_Prog_Id :=
-                        New_Raise
-                          (Ada_Node => Body_N,
-                           Name     => To_Ident (WNE_Result_Exc));
-         Result_Var : constant W_Prog_Id :=
-                        (if Ekind (E) = E_Function then
-                         New_Deref
-                           (Ada_Node => Body_N,
-                            Right    => Result_Name)
-                         else New_Void);
-      begin
-         Why_Body :=
-           New_Try_Block
-             (Prog    => Sequence (Why_Body, Raise_Stmt),
-              Handler =>
-                (1 =>
-                   New_Handler
-                     (Name => To_Ident (WNE_Result_Exc),
-                      Def  => Sequence (Post_Check, Result_Var))));
-      end;
-
-      --  add declarations for 'Old variables
-
-      Why_Body := Bind_From_Mapping_In_Expr (Params, Map_For_Old, Why_Body);
-
-      --  Bind value of guard expressions. We do not generate checks for
-      --  run-time errors here, as they are already generated in
-      --  Compute_Contract_Cases_Entry_Checks.
-
-      Why_Body := Bind_From_Mapping_In_Expr (Params => Params,
-                                      Map    => Guard_Map,
-                                      Expr   => Why_Body,
-                                      Do_Runtime_Error_Check => False);
-
-      Emit (File.Cur_Theory,
-        New_Function_Def
-          (Domain  => EW_Prog,
-           Name    => To_Ident (WNE_Def),
-           Binders => (1 => Unit_Param),
-           Labels  =>
-             (1 => Cur_Subp_Sloc,
-              2 => Cur_Subp_Name_Label),
-           Pre     => Pre,
-           Post    =>
-             +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred),
-           Def     => +Why_Body));
-
-      --  We should *not* filter our own entity, it is needed for recursive
-      --  calls
-
-      Close_Theory (File, Filter_Entity => Empty);
-   end Generate_VCs_For_Subprogram_Body;
-
-   --------------------------------------
-   -- Generate_VCs_For_Subprogram_Spec --
-   --------------------------------------
-
-   procedure Generate_VCs_For_Subprogram_Spec
-     (File : in out Why_Section;
-      E    : Entity_Id)
-   is
-      Name    : constant String := Full_Name (E);
-      Params  : Transformation_Params;
-
-      Prog    : W_Prog_Id;
-
-   begin
-      Open_Theory (File, Name & "__pre",
-                   Comment =>
-                     "Module for checking absence of run-time errors and "
-                       & "contract cases in the subprogram spec of "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Current_Subp := E;
       Params :=
         (File        => File.File,
          Theory      => File.Cur_Theory,
-         Phase       => Generate_VCs_For_Pre,
+         Phase       => Generate_VCs_For_Contract,
          Gen_Image   => False,
          Ref_Allowed => True);
 
       --  Generate checks for absence of run-time error in the precondition, if
       --  any.
+
+      --  The body of the subprogram may contain declarations that are in fact
+      --  essantial to prove absence of RTE in the pre, e.g. compiler-generated
+      --  subtype declarations. We need to take those into account.
+
+      if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+         Assume :=
+           Transform_Declarations_Not_From_Source (Declarations (Body_N));
+      else
+         Assume := New_Void;
+      end if;
 
       --  If contract cases are present, generate checks for absence of
       --  run-time errors in guards, and check that contract cases are disjoint
@@ -1193,11 +1053,124 @@ package body Gnat2Why.Subprograms is
       --  precondition is assumed.
 
       Prog := Sequence
-        ((1 => New_Ignore
+        ((1 => Assume,
+          2 => New_Ignore
           (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
-          2 => New_Assume_Statement
+          3 => New_Assume_Statement
             (Post => +Compute_Spec (Params, E, Name_Precondition, EW_Pred)),
-          3 => Compute_Contract_Cases_Entry_Checks (Params, E)));
+          4 => Compute_Contract_Cases_Entry_Checks (Params, E)));
+
+      if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+         Compute_Contract_Cases_Exit_Checks
+           (Params    => Params,
+            E         => E,
+            Guard_Map => Guard_Map,
+            Result    => Contract_Check);
+
+         Post_Check :=
+           Sequence
+             (New_Ignore
+                (Prog =>
+                       +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
+              Contract_Check);
+
+         --  Set the phase to Generate_Contract_For_Body from now on, so that
+         --  occurrences of F'Result are properly translated as Result_Name.
+
+         Params.Phase := Generate_Contract_For_Body;
+
+         --  Translate contract of E. A No_Return subprogram, from the inside,
+         --  has postcondition false, but the precondition is unchanged
+
+         if No_Return (E) then
+            Post := False_Pred;
+         else
+            Params.Gen_Image := True;
+            Post := +Compute_Spec (Params, E, Name_Postcondition, EW_Pred);
+            Params.Gen_Image := False;
+         end if;
+
+         Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
+
+         --  Set the phase to Generate_VCs_For_Body from now on, so that
+         --  occurrences of X'Old are properly translated as reference to
+         --  the corresponding binder.
+
+         Params.Phase := Generate_VCs_For_Body;
+
+         --  Declare a global variable to hold the result of a function
+
+         if Ekind (E) = E_Function then
+            Emit
+              (File.Cur_Theory,
+               New_Global_Ref_Declaration
+                 (Name     => Result_Name,
+                  Labels =>
+                    (1 =>
+                         New_Identifier
+                       (Name =>
+                            """GP_Ada_Name:" & Source_Name (E) & "'Result""")),
+                  Ref_Type => EW_Abstract (Etype (E))));
+         end if;
+
+         --  Translate statements in the body of the subp
+
+         Why_Body :=
+           Transform_Statements_And_Declarations
+             (Statements
+                (Handled_Statement_Sequence (Body_N)));
+
+         --  Translate statements in declaration block
+
+         Why_Body :=
+           Sequence
+             (Transform_Declarations_From_Source (Declarations (Body_N)),
+              Why_Body);
+
+         --  Enclose the subprogram body in a try-block, so that return
+         --  statements can be translated as raising exceptions.
+
+         declare
+            Raise_Stmt : constant W_Prog_Id :=
+              New_Raise
+                (Ada_Node => Body_N,
+                 Name     => To_Ident (WNE_Result_Exc));
+            Result_Var : constant W_Prog_Id :=
+              (if Ekind (E) = E_Function then
+                    New_Deref
+                 (Ada_Node => Body_N,
+                  Right    => Result_Name)
+               else New_Void);
+         begin
+            Why_Body :=
+              New_Try_Block
+                (Prog    => Sequence (Why_Body, Raise_Stmt),
+                 Handler =>
+                   (1 =>
+                          New_Handler
+                      (Name => To_Ident (WNE_Result_Exc),
+                       Def  => Sequence (Post_Check, Result_Var))));
+         end;
+
+         --  add declarations for 'Old variables
+
+         Why_Body := Bind_From_Mapping_In_Expr (Params, Map_For_Old, Why_Body);
+
+         --  Bind value of guard expressions. We do not generate checks for
+         --  run-time errors here, as they are already generated in
+         --  Compute_Contract_Cases_Entry_Checks.
+
+         Why_Body :=
+           Bind_From_Mapping_In_Expr
+             (Params => Params,
+              Map    => Guard_Map,
+              Expr   => Why_Body,
+              Do_Runtime_Error_Check => False);
+
+         Prog := Sequence (Prog, Why_Body);
+      else
+         Post := True_Pred;
+      end if;
 
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the
@@ -1205,19 +1178,23 @@ package body Gnat2Why.Subprograms is
 
       Add_With_Clause (File.Cur_Theory, "int", "Int", EW_Import, EW_Theory);
 
-      Emit
-        (File.Cur_Theory,
-         New_Function_Def
-           (Domain  => EW_Prog,
-            Name    => To_Ident (WNE_Pre_Check),
-            Binders => (1 => Unit_Param),
-            Labels  =>
-              (1 => Cur_Subp_Sloc,
-               2 => Cur_Subp_Name_Label),
-            Def     => +Prog,
-            Post    => True_Pred));
-      Close_Theory (File, Filter_Entity => E);
-   end Generate_VCs_For_Subprogram_Spec;
+      Emit (File.Cur_Theory,
+            New_Function_Def
+              (Domain  => EW_Prog,
+               Name    => To_Ident (WNE_Def),
+               Binders => (1 => Unit_Param),
+               Labels  =>
+                 (1 => Cur_Subp_Sloc,
+                  2 => Cur_Subp_Name_Label),
+               Post    => Post
+                 ,
+               Def     => +Prog));
+
+      --  We should *not* filter our own entity, it is needed for recursive
+      --  calls
+
+      Close_Theory (File, Filter_Entity => Empty);
+   end Generate_VCs_For_Subprogram;
 
    ------------------------------------
    -- Get_Location_For_Postcondition --

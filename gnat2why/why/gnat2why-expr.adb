@@ -3709,6 +3709,43 @@ package body Gnat2Why.Expr is
       return R;
    end Transform_Declarations_Block;
 
+   ----------------------------------------
+   -- Transform_Declarations_From_Source --
+   ----------------------------------------
+
+   function Transform_Declarations_From_Source
+     (L : List_Id) return W_Prog_Id
+   is
+      Cur_Decl : Node_Id := First (L);
+      Result   : W_Prog_Id := New_Void;
+   begin
+      while Present (Cur_Decl) and then not Comes_From_Source (Cur_Decl) loop
+         Next (Cur_Decl);
+      end loop;
+      while Present (Cur_Decl) loop
+         Result := Sequence (Result, Transform_Declaration (Cur_Decl));
+         Next (Cur_Decl);
+      end loop;
+      return Result;
+   end Transform_Declarations_From_Source;
+
+   --------------------------------------------
+   -- Transform_Declarations_Not_From_Source --
+   --------------------------------------------
+
+   function Transform_Declarations_Not_From_Source
+     (L : List_Id) return W_Prog_Id
+   is
+      Cur_Decl : Node_Id := First (L);
+      Result   : W_Prog_Id := New_Void;
+   begin
+      while Present (Cur_Decl) and then not Comes_From_Source (Cur_Decl) loop
+         Result := Sequence (Result, Transform_Declaration (Cur_Decl));
+         Next (Cur_Decl);
+      end loop;
+      return Result;
+   end Transform_Declarations_Not_From_Source;
+
    -------------------------------
    -- Transform_Discrete_Choice --
    -------------------------------

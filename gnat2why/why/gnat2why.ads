@@ -283,14 +283,10 @@ package Gnat2Why is
    type Transformation_Phase is
      (Generate_Logic,
       --  Generation of Why3 code for logic constructs.
-      Generate_VCs_For_Pre,
+      Generate_VCs_For_Contract,
       --  Generation of Why3 code to check absence of run-time errors in
-      --  preconditions and guards of Contract_Cases, and that these guards
-      --  are disjoint and complete.
-      Generate_VCs_For_Post,
-      --  Generation of Why3 code to check absence of run-time errors in
-      --  postconditions and consequences of Contract_Cases, and that
-      --  individual consequences hold.
+      --  pre and post, and Contract_Cases, and that these guards are disjoint
+      --  and complete.
       Generate_VCs_For_Assert,
       --  Generation of Why3 code to check absence of run-time errors in
       --  all assertions except precondition and postcondition.
@@ -308,15 +304,13 @@ package Gnat2Why is
    --  errors, or in the context of generating a postcondition in Why3.
 
    subtype Generate_VCs is Transformation_Phase range
-     Generate_VCs_For_Pre ..
-     --  Generate_VCs_For_Post
+     Generate_VCs_For_Contract ..
      --  Generate_VCs_For_Assert
      Generate_VCs_For_Body;
    --  Transformation phases for the generation of VCs
 
    subtype Generate_VCs_For_Assertion is Transformation_Phase range
-     Generate_VCs_For_Pre ..
-     --  Generate_VCs_For_Post
+     Generate_VCs_For_Contract ..
      Generate_VCs_For_Assert;
    --  Transformation phases for the generation of VCs to check absence of
    --  run-time errors in assertions.

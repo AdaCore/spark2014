@@ -186,6 +186,15 @@ package Gnat2Why.Expr is
    --  to assert/assume statements, object declarations to assignment
    --  statements
 
+   function Transform_Declarations_Not_From_Source
+     (L : List_Id) return W_Prog_Id;
+   --  Transform the declarations in the list, but only up to and excluding the
+   --  first declaration that comes from source.
+
+   function Transform_Declarations_From_Source (L : List_Id) return W_Prog_Id;
+   --  Transform the declarations in the list, but excluding the leading
+   --  declarations that do not come from source.
+
    ----------------------------------------
    -- Attributes Old, Loop_Entry, Result --
    ----------------------------------------

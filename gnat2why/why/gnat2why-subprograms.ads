@@ -59,14 +59,7 @@ package Gnat2Why.Subprograms is
 
    Current_Subp : Entity_Id := Empty;
 
-   procedure Generate_VCs_For_Subprogram_Body
-     (File : in out Why_Section;
-      E    : Entity_Id);
-   --  Generate Why code from which Why VC generator will generate all VCs
-   --  related to the contract of E and the absence of run-time errors in the
-   --  body and postcondition of E.
-
-   procedure Generate_VCs_For_Subprogram_Spec
+   procedure Generate_VCs_For_Subprogram
      (File : in out Why_Section;
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs

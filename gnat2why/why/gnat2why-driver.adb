@@ -224,21 +224,9 @@ package body Gnat2Why.Driver is
       if Ekind (E) in Subprogram_Kind and Entity_In_SPARK (E) then
 
          --  Generate Why3 code to check absence of run-time errors in
-         --  preconditions.
+         --  contracts and body.
 
-         if Has_Precondition (E)
-           or else Present (Get_Subprogram_Contract_Cases (E))
-         then
-            Generate_VCs_For_Subprogram_Spec (Why_Sections (WF_Main), E);
-         end if;
-
-         --  In 'prove' mode, generate Why3 code to check absence of run-time
-         --  errors in the body of a subprogram, and to check that a subprogram
-         --  body implements its contract.
-
-         if Entity_Body_In_SPARK (E) then
-            Generate_VCs_For_Subprogram_Body (Why_Sections (WF_Main), E);
-         end if;
+         Generate_VCs_For_Subprogram (Why_Sections (WF_Main), E);
 
       elsif Ekind (E) = E_Package
               and then
