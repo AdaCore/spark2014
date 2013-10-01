@@ -831,7 +831,10 @@ package body Why.Gen.Records is
       end if;
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
-      if not Is_Root and then Has_Discriminants (E) then
+      if not Is_Root
+        and then Has_Discriminants (E)
+        and then Is_Constrained (E)
+      then
          Declare_Conversion_Check_Function (Theory, E, Root);
       end if;
    end Declare_Ada_Record;

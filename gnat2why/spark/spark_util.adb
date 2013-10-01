@@ -203,6 +203,13 @@ package body SPARK_Util is
 
       elsif To = Etype (From) then
          return False;
+
+      --  Converting to unconstrained record types does not require a check
+      --  on conversion. The needed check is inserted by the frontend using
+      --  an explicit exception.
+
+      elsif Is_Record_Type (To) and then not Is_Constrained (To) then
+         return False;
       end if;
 
       return True;
