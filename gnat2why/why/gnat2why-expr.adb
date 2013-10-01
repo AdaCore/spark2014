@@ -3083,15 +3083,27 @@ package body Gnat2Why.Expr is
       Lvalue   : constant Node_Id := Name (Stmt);
       Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
    begin
+
+      --  The Exp_Entity type is in fact the type that is expected in Why.
+      --  The Etype of Lvalue is a more precise type entity in Ada. We have to
+      --  respect both constraints here, so we first convert to the Ada type
+      --  (to get checks), and then convert to Why (without checks) to get the
+      --  types right.
+
       return
         Gnat2Why.Expr.New_Assignment
           (Ada_Node => Stmt,
            Lvalue   => Lvalue,
            Expr     =>
-             +Transform_Expr (Expression (Stmt),
-                              Exp_Entity,
-                              EW_Prog,
-                              Params => Body_Params));
+             +Insert_Simple_Conversion
+               (Domain => EW_Prog,
+                To     => Exp_Entity,
+                Expr   =>
+                  +Transform_Expr
+                  (Expression (Stmt),
+                   EW_Abstract (Etype (Lvalue)),
+                   EW_Prog,
+                   Params => Body_Params)));
    end Transform_Assignment_Statement;
 
    -----------------------------
