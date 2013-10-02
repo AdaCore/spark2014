@@ -169,8 +169,7 @@ package body SPARK_Definition is
    --  is appended to the error message.
 
    procedure Mark_Violation
-     (Msg  : String;
-      N    : Node_Id;
+     (N    : Node_Id;
       From : Entity_Id);
    --  Mark node N as a violation of SPARK, due to the use of entity From which
    --  is not in SPARK. An error message is issued if current SPARK_Mode is On.
@@ -210,8 +209,7 @@ package body SPARK_Definition is
    end Mark_Violation;
 
    procedure Mark_Violation
-     (Msg  : String;
-      N    : Node_Id;
+     (N    : Node_Id;
       From : Entity_Id)
    is
    begin
@@ -222,7 +220,7 @@ package body SPARK_Definition is
       --  If SPARK_Mode is On, raise an error
 
       if SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_FE (Msg & " & is not allowed in SPARK", N, From);
+         Error_Msg_FE ("& is not allowed in SPARK", N, From);
          Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
          if From_Aspect_Specification (Current_SPARK_Pragma) then
@@ -398,7 +396,7 @@ package body SPARK_Definition is
          T    : constant Entity_Id := Etype (E);
       begin
          if not In_SPARK (T) then
-            Mark_Violation ("type", N, From => T);
+            Mark_Violation (N, From => T);
          end if;
 
          if Present (Expr) then
@@ -428,13 +426,13 @@ package body SPARK_Definition is
          --  in SPARK.
 
          if not In_SPARK (T) then
-            Mark_Violation ("type", Def, From => T);
+            Mark_Violation (Def, From => T);
          end if;
 
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
-            Mark_Violation ("type", Def, From => Sub);
+            Mark_Violation (Def, From => Sub);
          end if;
 
          if Aliased_Present (N) then
@@ -466,13 +464,13 @@ package body SPARK_Definition is
          Register_Object_Entity (E);
 
          if not In_SPARK (T) then
-            Mark_Violation ("type", E, From => T);
+            Mark_Violation (E, From => T);
          end if;
 
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
-            Mark_Violation ("type", E, From => Sub);
+            Mark_Violation (E, From => Sub);
          end if;
       end Mark_Parameter_Entity;
 
@@ -542,7 +540,7 @@ package body SPARK_Definition is
                while Present (Param_Spec) loop
                   Formal := Defining_Identifier (Param_Spec);
                   if not In_SPARK (Etype (Formal)) then
-                     Mark_Violation ("type", E, From => Etype (Formal));
+                     Mark_Violation (E, From => Etype (Formal));
                   end if;
                   Mark_Entity (Formal);
                   Next (Param_Spec);
@@ -555,8 +553,7 @@ package body SPARK_Definition is
             if Nkind (N) = N_Function_Specification
               and then not In_SPARK (Etype (Id))
             then
-               Mark_Violation
-                 ("return type", Result_Definition (N), From => Etype (Id));
+               Mark_Violation (Result_Definition (N), From => Etype (Id));
             end if;
          end Mark_Subprogram_Specification;
 
@@ -724,8 +721,7 @@ package body SPARK_Definition is
 
                while Present (Index) loop
                   if not In_SPARK (Etype (Index)) then
-                     Mark_Violation
-                       ("index type", E, From => Etype (Index));
+                     Mark_Violation (E, From => Etype (Index));
                   end if;
                   Next_Index (Index);
                end loop;
@@ -739,8 +735,7 @@ package body SPARK_Definition is
                --  Check that component type is in SPARK.
 
                if not In_SPARK (Component_Typ) then
-                  Mark_Violation
-                    ("component type", E, From => Component_Typ);
+                  Mark_Violation (E, From => Component_Typ);
                end if;
             end;
 
@@ -754,7 +749,7 @@ package body SPARK_Definition is
             if Ekind (E) = E_Record_Subtype
               and then not In_SPARK (Base_Type (E))
             then
-               Mark_Violation ("base type", E, From => Base_Type (E));
+               Mark_Violation (E, From => Base_Type (E));
             end if;
 
             if Is_Interface (E) then
@@ -778,7 +773,7 @@ package body SPARK_Definition is
                      if Ekind (Field) in Object_Kind
                        and then not In_SPARK (Typ)
                      then
-                        Mark_Violation ("component type", Typ, From => Typ);
+                        Mark_Violation (Typ, From => Typ);
                      end if;
 
                      Next_Component_Or_Discriminant (Field);
@@ -947,7 +942,7 @@ package body SPARK_Definition is
       if Nkind (N) in N_Has_Etype
         and then not In_SPARK (Etype (N))
       then
-         Mark_Violation ("type used", N, From => Etype (N));
+         Mark_Violation (N, From => Etype (N));
       end if;
 
       --  Dispatch on node kind
@@ -1752,34 +1747,47 @@ package body SPARK_Definition is
          Mark_List (Actuals);
       end if;
 
-      --  If this is an indirect call, an entry call, a call to a protected
-      --  operation or the subprogram called is not in SPARK, then the call is
-      --  not in SPARK.
+      --  If this is an indirect call or the subprogram called is not in SPARK,
+      --  then the call is not in SPARK.
 
       if not Is_Entity_Name (Nam)
         or else No (Entity (Nam))
       then
-         Mark_Violation ("call", N);
+         if Nkind (Nam) = N_Explicit_Dereference then
+            if Nkind (N) = N_Procedure_Call_Statement then
+               Mark_Violation ("call through access to procedure", N);
+            else
+               pragma Assert (Nkind (N) = N_Function_Call);
+               Mark_Violation ("call through access to function", N);
+            end if;
+
+         else
+            --  Are there cases where we reach here??? For the moment, issue a
+            --  generic error message about "indirect calls".
+
+            Mark_Violation ("indirect call", N);
+         end if;
 
       elsif not In_SPARK (Entity (Nam)) then
-         Mark_Violation ("subprogram called", N, From => Entity (Nam));
-      end if;
+         Mark_Violation (N, From => Entity (Nam));
 
-      --  Issue a warning for calls to subprograms with no Global contract,
-      --  either manually-written or computed. This is the case for standard
-      --  and external library subprograms for which no Global contract is
-      --  supplied. Note that subprograms for which an external axiomatization
-      --  is provided are exempted, as they should not have any effect on
-      --  global items.
+      else
+         --  Issue a warning for calls to subprograms with no Global contract,
+         --  either manually-written or computed. This is the case for standard
+         --  and external library subprograms for which no Global contract
+         --  is supplied. Note that subprograms for which an external
+         --  axiomatization is provided are exempted, as they should not
+         --  have any effect on global items.
 
-      if not Has_Computed_Global (Entity (Nam))
-        and then No (Get_Pragma (Entity (Nam), Pragma_Global))
-        and then not Entity_In_External_Axioms (Entity (Nam))
-      then
-         Error_Msg_NE
-           ("?no Global contract available for &", N, Entity (Nam));
-         Error_Msg_NE
-           ("\\ assuming & has no effect on global items", N, Entity (Nam));
+         if not Has_Computed_Global (Entity (Nam))
+           and then No (Get_Pragma (Entity (Nam), Pragma_Global))
+           and then not Entity_In_External_Axioms (Entity (Nam))
+         then
+            Error_Msg_NE
+              ("?no Global contract available for &", N, Entity (Nam));
+            Error_Msg_NE
+              ("\\ assuming & has no effect on global items", N, Entity (Nam));
+         end if;
       end if;
    end Mark_Call;
 
@@ -1861,17 +1869,17 @@ package body SPARK_Definition is
                     or else Ekind (E) in Formal_Kind)
                  and then not In_SPARK (Entity (N))
                then
-                  Mark_Violation ("object", N, From => Entity (N));
+                  Mark_Violation (N, From => Entity (N));
                end if;
 
             when Named_Kind =>
                if not In_SPARK (Entity (N)) then
-                  Mark_Violation ("object", N, From => Entity (N));
+                  Mark_Violation (N, From => Entity (N));
                end if;
 
             when Type_Kind =>
                if not In_SPARK (Entity (N)) then
-                  Mark_Violation ("type", N, From => Entity (N));
+                  Mark_Violation (N, From => Entity (N));
                end if;
 
             --  Subprogram name appears for example in Sub'Result
@@ -2590,7 +2598,7 @@ package body SPARK_Definition is
       --  Check that the base type is in SPARK
 
       if not In_SPARK (T) then
-         Mark_Violation ("base type", N, From => T);
+         Mark_Violation (N, From => T);
       end if;
 
       if Nkind (N) = N_Subtype_Indication then
@@ -2609,14 +2617,12 @@ package body SPARK_Definition is
                      case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
                         if not In_SPARK (Entity (Cstr)) then
-                           Mark_Violation
-                             ("index type", N, From => Entity (Cstr));
+                           Mark_Violation (N, From => Entity (Cstr));
                         end if;
 
                      when N_Subtype_Indication =>
                         if not In_SPARK (Subtype_Mark (Cstr)) then
-                           Mark_Violation
-                             ("index type", N, From => Subtype_Mark (Cstr));
+                           Mark_Violation (N, From => Subtype_Mark (Cstr));
                         end if;
 
                      when N_Range =>
@@ -2681,7 +2687,7 @@ package body SPARK_Definition is
       Typ : constant Entity_Id := MUT (Id);
    begin
       if not In_SPARK (Typ) then
-         Mark_Violation ("type", N, From => Typ);
+         Mark_Violation (N, From => Typ);
       end if;
    end Mark_Most_Underlying_Type_In_SPARK;
 
