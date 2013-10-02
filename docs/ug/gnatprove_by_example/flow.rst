@@ -3,7 +3,8 @@ Flow Analysis Examples
 
 This section presents the results of running |GNATprove| in flow
 analysis mode on a number of examples to illustrate the various flow
-errors and warnings that might be raised.
+errors and warnings that might be raised. Note the use of
+``pragma SPARK_Mode`` to identify each example as SPARK.
 
 Here is the specification of a swap subprogram along with flow
 analysis contracts. The ``Global`` aspect is ``null``, specifying
