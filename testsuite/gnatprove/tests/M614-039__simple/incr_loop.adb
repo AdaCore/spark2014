@@ -8,7 +8,7 @@ package body Incr_Loop is
                A (K) = A'Loop_Entry (K) + 1)
              and
              (for all K in I .. A'Last  =>
-               A (K) = A'Loop_Entry (K) + 1));
+               A (K) = A'Loop_Entry (K)));
          A (I) := A (I) + 1;
       end loop;
    end Iter;
