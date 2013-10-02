@@ -1,1 +1,3 @@
-missing check
+discr_dyn.adb:15:04: warning: statement has no effect [ineffective]
+discr_dyn.adb:15:29: discriminant check not proved
+discr_dyn.adb:15:44: length check not proved
