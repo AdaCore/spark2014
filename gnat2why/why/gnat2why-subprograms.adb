@@ -186,7 +186,7 @@ package body Gnat2Why.Subprograms is
 
    begin
       if Arg_Length = 0
-        and then not Has_Global_Reads (E)
+        and then not Has_Global_Reads (E, Include_Constants => False)
       then
          return W_Expr_Array'(1 => New_Void);
       end if;
@@ -240,7 +240,7 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
 
-      Read_Names  := Get_Reads (E);
+      Read_Names  := Get_Reads (E, Include_Constants => False);
       Write_Names := Get_Writes (E);
 
       for Name of Write_Names loop
@@ -330,7 +330,7 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read
 
-      Read_Names := Get_Reads (E);
+      Read_Names := Get_Reads (E, Include_Constants => False);
 
       --  If E has no parameters and no read effects, return a singleton of
       --  unit type.
@@ -1245,7 +1245,8 @@ package body Gnat2Why.Subprograms is
         To_Binder_Array (Logic_Func_Binders);
       Logic_Id           : constant W_Identifier_Id :=
                              To_Why_Id (E, Domain => EW_Term, Local => False);
-      Read_Names         : constant Name_Set.Set := Get_Reads (E);
+      Read_Names         : constant Name_Set.Set :=
+        Get_Reads (E, Include_Constants => False);
 
       Base_Name : constant String := Full_Name (E);
       Name      : constant String :=

@@ -820,7 +820,8 @@ package body Gnat2Why.Expr is
       Subp   : constant Entity_Id := Entity (Name (Call));
       Assocs : constant List_Id := Parameter_Associations (Call);
       Len    : Nat;
-      Read_Names : constant Name_Set.Set := Get_Reads (Subp);
+      Read_Names : constant Name_Set.Set :=
+        Get_Reads (Subp, Include_Constants => False);
    begin
       Nb_Of_Refs := 0;
       Len := List_Length (Assocs);

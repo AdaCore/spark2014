@@ -268,10 +268,12 @@ package body Gnat2Why.Util is
       begin
          if Nkind_In (N, N_Identifier, N_Expanded_Name)
            and then Present (Entity (N))
-           and then (case Ekind (Entity (N)) is
-                        when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
-                        when Subprogram_Kind => Has_Global_Reads (Entity (N)),
-                        when others          => False)
+           and then
+             (case Ekind (Entity (N)) is
+                 when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
+                 when Subprogram_Kind =>
+                    Has_Global_Reads (Entity (N), Include_Constants => False),
+                 when others          => False)
          then
             Variable_Reference_Seen := True;
             return Abandon;

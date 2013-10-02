@@ -376,7 +376,8 @@ package body Flow is
          --  computed globals...
 
          declare
-            ALI_Reads  : constant Name_Set.Set := Get_Reads (Subprogram);
+            ALI_Reads  : constant Name_Set.Set :=
+              Get_Reads (Subprogram, Include_Constants => True);
             ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
 
             function Get_Flow_Id

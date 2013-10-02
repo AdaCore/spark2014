@@ -884,7 +884,7 @@ package body Why.Inter is
                --  needs visibility over the "variable" Why file.
 
                Has_Effects : constant Boolean :=
-                 Has_Global_Reads (Decl_E)
+                 Has_Global_Reads (Decl_E, Include_Constants => False)
                    or else Has_Global_Writes (Decl_E);
             begin
                --  Subprograms without read/write global effects are declared
