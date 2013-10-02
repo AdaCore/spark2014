@@ -1,9 +1,9 @@
 refined_depends_illegal.adb:4:14: useless refinement, subprogram "P1" does not mention abstract state with visible refinement
-refined_depends_illegal.adb:18:14: useless refinement, subprogram "No_Depends_Contract" lacks dependence clauses
+refined_depends_illegal.adb:18:14: useless refinement, subprogram "No_Depends_Contract" lacks dependence clauses (SPARK RM 7.2.5(2))
 refined_depends_illegal.adb:31:14: aspect "Refined_Depends" cannot apply to a stand alone body
-refined_depends_illegal.adb:48:48: item "X" must appear in exactly one output list of aspect Depends
-refined_depends_illegal.adb:57:51: item "Var2" must appear in at least one input list of aspect Depends
-refined_depends_illegal.adb:58:44: item "Var" must appear in exactly one output list of aspect Depends
+refined_depends_illegal.adb:48:48: item "X" must appear in exactly one output dependence list (SPARK RM 6.1.5(10))
+refined_depends_illegal.adb:57:51: item "Var2" must appear in at least one input dependence list (SPARK RM 6.1.5(8))
+refined_depends_illegal.adb:58:44: item "Var" must appear in exactly one output dependence list (SPARK RM 6.1.5(10))
 refined_depends_illegal.adb:68:39: unmatched or extra clause in dependence refinement
 refined_depends_illegal.adb:77:48: duplicate use of item
 refined_depends_illegal.adb:85:48: cannot mix null and non-null dependency items
