@@ -95,18 +95,18 @@ is
    end Init_Record_Error;
 
 
-   procedure Init_Array_Throug_Call_Warn (An_Arr : out Array_T) is
+   procedure Init_Array_Through_Call_Warn (An_Arr : out Array_T) is
    begin
       for I in 1 .. 10 loop
          Set (I, An_Arr (I));  --  This should be a warning.
       end loop;
-   end Init_Array_Throug_Call_Warn;
+   end Init_Array_Through_Call_Warn;
 
 
-   procedure Init_Array_Throug_Call_Error (An_Arr : out Array_T) is
+   procedure Init_Array_Through_Call_Error (An_Arr : out Array_T) is
    begin
       for I in 1 .. 10 loop
          Set (An_Arr (I / 2), An_Arr (I));  --  This should be an error.
       end loop;
-   end Init_Array_Throug_Call_Error;
+   end Init_Array_Through_Call_Error;
 end Uninitialized;
