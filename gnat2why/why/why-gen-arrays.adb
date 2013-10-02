@@ -709,7 +709,8 @@ package body Why.Gen.Arrays is
              (Ada_Node => Ada_Node,
               Domain   => Domain,
               Name     => Name,
-              Args     => (1 => +Ar) & Index & (1 => +Value));
+              Args     => (1 => +Ar) & Index & (1 => +Value),
+              Typ      => W_Ty);
       else
          declare
             Args      : constant W_Expr_Array :=
@@ -726,7 +727,8 @@ package body Why.Gen.Arrays is
                 (Ada_Node => Ada_Node,
                  Domain   => Domain,
                  Name     => Name,
-                 Args     => Args);
+                 Args     => Args,
+                 Typ      => W_Ty);
          begin
             return
               New_Record_Update
@@ -738,7 +740,8 @@ package body Why.Gen.Arrays is
                        Field  => Prefix (Ada_Node => Ty_Entity,
                                          S        => Full_Name (Ty_Entity),
                                          W        => WNE_Array_Elts),
-                       Value  => Array_Upd)));
+                       Value  => Array_Upd)),
+                 Typ     => W_Ty);
          end;
       end if;
    end New_Array_Update;
