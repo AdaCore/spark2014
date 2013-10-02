@@ -544,10 +544,14 @@ package body Gnat2Why.Decls is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Default values of parameters are not considered as the value of the
-      --  constant representing the parameter.
+      --  constant representing the parameter. We do not generate an axiom
+      --  for constants inserted by the compiler, as their initialization
+      --  expression may not be expressible as a logical term (e.g., it may
+      --  include X'Loop_Entry for a constant inserted in a block of actions).
 
       if Ekind (E) /= E_In_Parameter
         and then Present (Expression (Decl))
+        and then Comes_From_Source (E)
       then
          Def := Get_Pure_Logic_Term_If_Possible
            (File, Expression (Decl), Typ);

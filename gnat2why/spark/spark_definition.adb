@@ -1537,15 +1537,24 @@ package body SPARK_Definition is
             --  corresponding effects (for bounds of dynamic types) discarded
             --  when translating to Why.
 
-            if not (Nkind (N) = N_Subtype_Declaration
-                     or else
-                    Nkind (N) = N_Full_Type_Declaration
-                     or else
-                    (Nkind (N) = N_Object_Declaration
-                      and then Constant_Present (N)))
-            then
-               return False;
-            end if;
+            case Nkind (N) is
+               when N_Subtype_Declaration   |
+                    N_Full_Type_Declaration =>
+                  null;
+
+               when N_Object_Declaration =>
+                  if Constant_Present (N) then
+                     null;
+                  else
+                     return False;
+                  end if;
+
+               when N_Freeze_Entity =>
+                  null;
+
+               when others =>
+                  return False;
+            end case;
 
             Next (N);
          end loop;

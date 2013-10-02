@@ -1818,23 +1818,34 @@ package body Gnat2Why.Expr is
       T := Expr;
       N := First (Actions);
       while Present (N) loop
-         pragma Assert (Nkind (N) = N_Subtype_Declaration
-                          or else
-                        Nkind (N) = N_Full_Type_Declaration
-                          or else
-                        (Nkind (N) = N_Object_Declaration
-                          and then Constant_Present (N)));
+         case Nkind (N) is
 
-         --  Ignore type declarations in actions
+            --  Currently ignore type declarations in actions. A more precise
+            --  treatment would factor out the code of Transform_Declaration
+            --  to possibly generate an assumption here.
 
-         if Nkind (N) = N_Object_Declaration then
-            T := New_Typed_Binding
-              (Domain   => Subdomain,
-               Name     =>
-                 New_Identifier (Name => Full_Name (Defining_Identifier (N))),
-               Def      => +Transform_Expr (Expression (N), Subdomain, Params),
-               Context  => T);
-         end if;
+            when N_Subtype_Declaration   |
+                 N_Full_Type_Declaration =>
+               null;
+
+            when N_Object_Declaration =>
+               pragma Assert (Constant_Present (N));
+
+               T := New_Typed_Binding
+                 (Domain  => Subdomain,
+                  Name    =>
+                     New_Identifier
+                      (Name => Full_Name (Defining_Identifier (N))),
+                  Def     =>
+                     +Transform_Expr (Expression (N), Subdomain, Params),
+                  Context => T);
+
+            when N_Freeze_Entity =>
+               null;
+
+            when others =>
+               raise Program_Error;
+         end case;
 
          Next (N);
       end loop;
@@ -1855,25 +1866,34 @@ package body Gnat2Why.Expr is
    begin
       N := First (Actions);
       while Present (N) loop
-         pragma Assert (Nkind (N) = N_Subtype_Declaration
-                          or else
-                        Nkind (N) = N_Full_Type_Declaration
-                          or else
-                        (Nkind (N) = N_Object_Declaration
-                          and then Constant_Present (N)));
+         case Nkind (N) is
 
-         --  Ignore type declarations in actions
+            --  Currently ignore type declarations in actions. A more precise
+            --  treatment would factor out the code of Transform_Declaration
+            --  to possibly generate an assumption here.
 
-         if Nkind (N) = N_Object_Declaration then
-            Id :=
-              New_Identifier
-                (Name => Full_Name (Defining_Identifier (N)),
-                 Typ  => EW_Abstract (Etype (Defining_Identifier (N))));
+            when N_Subtype_Declaration   |
+                 N_Full_Type_Declaration =>
+               null;
 
-            Insert_Entity
-              (Defining_Identifier (N),
-               Id);
-         end if;
+            when N_Object_Declaration =>
+               pragma Assert (Constant_Present (N));
+
+               Id :=
+                 New_Identifier
+                   (Name => Full_Name (Defining_Identifier (N)),
+                    Typ  => EW_Abstract (Etype (Defining_Identifier (N))));
+
+               Insert_Entity
+                 (Defining_Identifier (N),
+                  Id);
+
+            when N_Freeze_Entity =>
+               null;
+
+            when others =>
+               raise Program_Error;
+         end case;
 
          Next (N);
       end loop;
