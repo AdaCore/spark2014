@@ -37,7 +37,7 @@ is
 
 
    package Variable_Not_Denoted_By_Initializes
-     --  TU: 3. Each variable or indirectly referenced state abstraction in an
+     --  TU: 7. Each variable or indirectly referenced state abstraction in an
      --  Initial_Condition aspect of a package Q which is declared immediately
      --  within the visible part of Q shall be initialized during the
      --  elaboration of Q and be denoted by a ``name`` of an
