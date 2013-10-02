@@ -53,30 +53,14 @@ can be determined prior to formal program verification.
 Attributes
 ~~~~~~~~~~
 
-.. todo::  Are there any other language defined attributes which will not be supported?
-           To be completed in the Milestone 4 version of this document.
+Many of the Ada language defined attributes are in |SPARK| but there
+are exclusions for instance X'Access, as access types are not
+supported.  For a full list of attributes supported by |SPARK| see
+:ref:`language_defined_attributes`.
 
-.. todo::  What do we do about Gnat defined attributes, a useful one is:
-      For a prefix X that denotes an object, the GNAT-defined attribute
-      ``X'Valid_Scalars`` is defined in |SPARK|.
-      This Boolean-valued attribute is equal to the conjunction of
-      the ``Valid`` attributes of all of the scalar parts of X.
-
-      [If X has no volatile parts, ``X'Valid_Scalars`` implies that each scalar
-      subcomponent of X has a value belonging to its subtype. Unlike the
-      Ada-defined ``Valid`` attribute, the ``Valid_Scalars`` attribute is
-      defined for all objects, not just scalar objects.]
-
-      Perhaps we should list which ones are supported in an appendix?
-      Or should they be part of the main language definition?
-
-      It would be possible to use such attributes in assertion expressions but
-      not generally in Ada code in a non-Gnat compiler.
-
-      To be completed in the Milestone 4 version of this document.
-      Note that as language-defined attributes form Appendix K of the
-      Ada RM, any GNAT-defined attributes supported in |SPARK| will
-      be presented in an appendix.
+A |SPARK| implementation is permitted to support other attributes
+which are not Ada or |SPARK| language defined attributes and these
+should be documented in the User Guide for the tool.
 
 
 User-Defined References

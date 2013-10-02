@@ -36,8 +36,11 @@ SPARK 2014 Reference Manual
    exceptions
    generic-units
    representation-issues
-   shared-variable-control
    the-standard-library
+   shared-variable-control
+   language-defined-aspects-and-attributes
+   language-defined-pragmas
+   glossary
 
 .. raw:: latex
 

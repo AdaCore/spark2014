@@ -93,10 +93,6 @@ This introduction contains the following sections:
 
 - Section :ref:`explain_sprs` provides expanded detail on the main strategic requirements.
 
-- Section :ref:`notes` provides some brief detail on the current status and contents
-  of this document.
-
-
 .. _lifecycle:
 
 Lifecycle of this Document
@@ -132,10 +128,15 @@ verification tools.
 
 This manual is written in the style and language of the Ada 2012 RM,
 so knowledge of Ada 2012 is assumed.  Chapters 2 through 13 mirror
-the structure of the Ada 2012 RM.  Chapter 14 covers all the annexes
+the structure of the Ada 2012 RM.  Chapters 14 onward cover all the annexes
 of the Ada 2012 RM. Moreover, this manual should be interpreted as an extension
 of the Ada 2012 RM (that is, |SPARK| is fully defined by this document taken together
 with the Ada 2012 RM).
+
+The |SPARK| RM uses and introduces technical terms in its
+descriptions, those that are less well known or introduced are
+summarised in a :ref:`glossary` following the sections covering the
+Ada annexes.
 
 |SPARK| introduces a number of aspects. The language rules are written as if all
 the |SPARK| specific aspects are present but minimum requirements are placed on
@@ -143,7 +144,9 @@ a tool which analyzes |SPARK| to be able to synthesize (from the source code)
 some of these aspects if they are not present. A tool may synthesize more
 aspects than the minimum required (see :ref:`verific_modes`). An equivalent
 pragma is available for each of the new aspects but these are not covered
-explicitly in the language rules either.
+explicitly in the language rules either.  The pragmas used by |SPARK| are
+documented in :ref:`language_defined_pragmas`. 
+
 
 Readers interested in how SPARK 2005 constructs and idioms map into
 |SPARK| should consult the appendix :ref:`mapping-spec-label`.
@@ -217,11 +220,6 @@ Data and information-flow analysis is not valid and might not be possible if the
 legality rules of Ada 2012 and those presented in this document are not met.
 Similarly, a formal verification might not be possible if the legality rules are
 not met and may be unsound if data-flow errors are present.
-
-
-.. todo::
-      Consider adding a glossary, defining terms such as flow analysis and formal verification.
-      To be completed in the Milestone 4 version of this document.
 
 Further Details on Formal Verification
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -431,10 +429,6 @@ and proofs.  If an Ada compiler defines a pragma with the same name as
 a |SPARK| specific pragma but has different semantics, then the
 compilation or execution of the program may fail.
 
-.. todo::
-      The pragmas equivalent to the new aspects need to be added to this document.
-      To be added in the Milestone 4 version of this document.
-
 Main Program
 ------------
 
@@ -530,7 +524,7 @@ Some are expanded in subsequent sections within this chapter.
   implemented until after release 1 of the |SPARK| tools.]
 
 - |SPARK| shall support the analysis of external communication channels, which
-  might be volatile variables, typically either an input or an output.
+  are typically implemented using volatile variables. 
   See section :ref:`volatile` for further details.
 
 - The language shall offer an unambiguous semantics. In Ada
@@ -544,7 +538,7 @@ Some are expanded in subsequent sections within this chapter.
   rules which prevent the evaluation of an expression from having side
   effects, two implementations might choose different parameter
   evaluation orders for a given call but this difference won't have
-  any observable effect. [This means implementation-defined and
+  any observable effect. [This means undefined, implementation-defined and
   partially-specified features may be outside of |SPARK| by
   definition, though their use could be allowed and a warning or error
   generated for the user. See section :ref:`in_out` for further
@@ -562,10 +556,10 @@ Some are expanded in subsequent sections within this chapter.
   will be eliminated or its use constrained to meet this goal. See section
   :ref:`main_restricts` for further details.
 
-.. todo::
-   Ensure that all strategic requirements have been implemented.
-   I think a strategic requirement of AdaCore 
-   To be completed in a post-Release 1 version of this document.
+.. todo:: Ensure that all strategic requirements have been
+     implemented.  I think a strategic requirement of AdaCore is the
+     suport for tagged types and dynamic dispatching.  To be completed
+     in a post-Release 1 version of this document.
 
 .. todo:: Where Ada 2012 language features are designated as not in
      SPARK 2014 in subsequent chapters of this document, add tracing
@@ -670,36 +664,138 @@ not included in the postcondition.
 
 In general, formal verification works by imposing requirements on the callers of
 proved code, and these requirements should be shown to hold even when formal
-verification and testing are combined. Any toolset that proposes a combination
+verification and testing are combined. Any tool set that proposes a combination
 of formal verification and testing for |SPARK| should provide a detailed process
 for doing so, including any necessary additional testing of proof assumptions.
 
-Restrictions that Apply to the Tested Code
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Conditions that Apply to the Tested Code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are two sources of restriction that apply to the tested code:
+The unit of test and formal verification is a subprogram (the sequence
+of statements of a package body is regarded as a subprogram).
+There are several sources of conditions that apply to a tested subprogram:
 
-#. The need to validate a partial proof that relies on code that is not
-   itself proven but is only tested.
+- The need to validate a partial proof of a subprogram that calls a
+  subprogram that is not itself proven but is only tested.
 
-#. The need to validate the assumptions on which a proof is based when
-   proven code is combined with tested code.
+- The need to validate the assumptions on which a proof of a
+  subprogram is based when a tested subprogram calls it.
 
-The specific details of the restrictions to be applied to tested code -- which
-will typically be non-|SPARK| -- code will be given in a subsequent draft of this document.
+- A tested subprogram may be flow analyzed if it is in |SPARK| even if
+  it is not formally proven.
 
-*No further detail is given in the current draft of this document on Combining
-Formal Verification and Testing, or on providing what it needs. Further detail
-will be provided at least in part under TN LC10-020.*
+- A tested subprogram may have properties that are formally proven. 
 
-.. todo::
-   Add detail on restrictions to be applied to tested code, making clear that the burden
-   is on the user to get this right, and not getting it right can invalidate the assumptions
-   on which proof is based. To be completed in the Milestone 4 version of this document.
+Flow analysis of a non-proven subprogram
+########################################
 
-.. todo::
-   Complete detail on combining formal verification and testing.
-   To be completed in the Milestone 4 version of this document.
+If a subprogram is in |SPARK| but is too complex or difficult to prove
+formally then it still may be flow analyzed which is a fast and
+efficient process.  Flow analysis in the absence proof of has a number
+of significant benefits as the subprogram implementation is
+
+- checked that it is in |SPARK|;
+
+- checked that there are no uses of initialized variables;
+
+- checked that there are no ineffective statements; and
+ 
+- checked against its specified Global and Depends aspects if they
+  exist or alternatively facilitating their synthesis.  This is
+  important because this automatically checks one of the conditions on
+  tested subprograms which are called from proven code (see
+  :ref:`tested_from_proven`).
+
+Proving properties of a tested subprogram
+#########################################
+
+A tested subprogram which is in SPARK may have proerties, such as the
+absence of run-time exceptions proven even though the full
+functionality of the subprogram is tested rather than proven.  The
+extent to which proof is performed is controlled using pragma Assume
+(see :ref:`pragma_assume`).
+
+To perform proof of absencce of run-time exceptions but not the
+postcondition of a subprogram a pragma Assume stating the
+postcondition is placed immediately prior to each exit point from the
+subprogram (each return statement or the end of the body).  Parts of
+the postcondition may be proved using a similar scheme.
+
+If the proof of absence of one or more run-time exceptions is not
+proven automatically or takes too long to prove then pragma Assume may
+be used to suppress the proof of a particular check.
+
+Pragma Assume informs the proof system that the assumed expression is
+always True and so the prover does not attempt to prove it.  In
+general pragma Assune should be used with caution but it acts as a
+pragma Assert when the subprogram code is run.  Therefore, in a
+subprogram that is tested it acts as an extra test.
+
+.. _tested_from_proven:
+
+Conditions on a tested subprogram which is called from a partially proven subprogram
+####################################################################################
+
+When a subprogram which is to be partially proven calls a tested
+(but not proven subprogram) then the following conditions must be met
+by the called subprogram:
+
+- if it is in |SPARK| then it should be flow analyzed to demonstrate
+  that the implementation satisfies the Global aspect and Depends
+  aspects pf the subprogram if they are given, otherwise conservative
+  approximations will be synthesized from the implementation of
+  the subprogram;
+
+- if it is not in |SPARK| then at least a Global aspect shall be
+  specified for the subprogram.  The Global aspect must truthfully
+  represent the global variables and state abstractions known to the
+  |SPARK| program (not just the calling subprogram) and specify
+  whether each of the global items are an Input, an Output or is
+  In_Out.  The onus is on the user to show that the Global (and
+  Depends) aspect is correct as the |SPARK| tools do not check this
+  because the subprogarm is not in |SPARK|;
+
+- it shall not update any variable or state abstraction
+  known to the |SPARK| program, directly or indirectly, apart from
+  through an actual parameter of the subprogram or a global item
+  listed in its Global aspect.  Updating a variable or state
+  abstraction through an object of an access type or through a
+  subprogram call is an indirect update. Here again, if the subprogram
+  is not in |SPARK| and can be flow analyzed, the onus is on the user
+  to show this condition is met; and
+
+- if it has a postcondition sufficient testing to demonstrate to a
+  high-level of confidence that the postcondition is always True must
+  be performed.
+
+A tool set may provide further tools to demonstrate that the Global
+aspects are satisfied by a non-|SPARK| subprogram and possibly
+partially check the post condition.
+
+Conditions on a tested subprogram which is calls a proven subprogram
+####################################################################
+
+A tested (but not proven) subprogram which calls a proven subprogram
+must satisfy the following conditions:
+
+- if it is in |SPARK| then flow analysis of the tested subprogram
+  should be performed.  This demonstrates that all variables and state
+  abstractions which are inputs to the called subprogram are
+  initialized and that the outputs of the called subprogram are used;
+
+- if it is not in |SPARK| the user must ensure that all variables and
+  state abstractions that are inputs to the called subprogram are
+  initialized prior to calling the subprogram.  This is the
+  responsibility of the user as the |SPARK| tools cannot check this as
+  the subprogram is not in |SPARK|; and
+
+- if it is in |SPARK| it may be possible to prove that the
+  precondition of the called subprogram is always satisfied even if no
+  other proof is undertaken, otherwise sufficient testing must be
+  performed by the user to demonstrate to a high-level of confidence
+  that the precondition of the subprogram will always be True when the
+  subprogram is called.  The proof of the called subprogram relies on
+  its precondition evaluating to True.
 
 .. _code_policy:
 
@@ -973,15 +1069,6 @@ Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guid
    analysis on the |SPARK| code to be carried out.
    To be completed in the Milestone 4 version of this document.
 
-.. todo::
-   Complete detail on mixing code that is in and out of |SPARK|.
-   In particular, where subheadings such as Legality Rules or Static Semantics are
-   used to classify the language rules given for new language features, any rules
-   given to restrict the Ada subset being used need to be classified in some way (for
-   example, as Subset Rules) and so given under a corresponding heading. In addition,
-   the inconsistency between the headings used for statements and exceptions needs
-   to be addressed. To be completed in the Milestone 4 version of this document.
-
 .. _volatile:
 
 External State
@@ -1003,15 +1090,3 @@ variable such that an update of a volatile variable may also have some
 other observable effect.  |SPARK| further extends these principles to
 apply to state abstractions. (see section :ref:`external_state`).
 
-.. _notes:
-
-Notes on the Current Draft
---------------------------
-
-The aim of this draft of the document is to fully define the main features of
-the |SPARK| language. Subsequent updates for release 1 of the tools are only
-expected to fix problems arising during implementation of the tools and correct
-any errors in the document.
-
-There are two areas of the language where there is on-going significant discussion
-and so are likely to change. These areas are "Externals" and "Refined_Pre and Refined_Post".
