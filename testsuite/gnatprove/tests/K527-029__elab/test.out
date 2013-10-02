@@ -1,2 +1,6 @@
+report.adb:13:20: warning: unused assignment [ineffective]
+report.adb:14:35: warning: "Test_Name" might not be initialized [uninitialized]
+report.adb:14:35: warning: unused assignment [ineffective]
 report.adb:3:42: info: length check proved
 report.adb:14:38: length check not proved
+report.ads:5:06: warning: statement has no effect [ineffective]

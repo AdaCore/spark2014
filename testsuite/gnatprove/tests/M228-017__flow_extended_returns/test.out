@@ -1,8 +1,3 @@
-extended_returns.adb:7:07: "Result.D" might not be initialized [uninitialized]
-extended_returns.adb:7:07: "Result.C" might not be initialized [uninitialized]
-extended_returns.adb:7:07: "Result.B" might not be initialized [uninitialized]
-
-   compilation of extended_returns.adb failed
-
-gprbuild: *** compilation phase failed
-gnatprove: error during translation to intermediate language, aborting.
+extended_returns.adb:7:07: warning: "Result.D" might not be initialized [uninitialized]
+extended_returns.adb:7:07: warning: "Result.C" might not be initialized [uninitialized]
+extended_returns.adb:7:07: warning: "Result.B" might not be initialized [uninitialized]

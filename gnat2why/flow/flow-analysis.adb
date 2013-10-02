@@ -1239,6 +1239,12 @@ package body Flow.Analysis is
       --  As above but allows a node to specify where the trace is
       --  attached.
 
+      function Variable_Defined_In_Other_Path
+        (V_Initial : Flow_Graphs.Vertex_Id;
+         V_Use     : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Checks if the variable corresponding to V_Initial is defined on any
+      --  of the paths that lead to V_Use.
+
       -------------------------------
       -- Mark_Definition_Free_Path --
       -------------------------------
@@ -1318,6 +1324,142 @@ package body Flow.Analysis is
                                     Tag   => Tag);
       end Mark_Definition_Free_Path;
 
+      ------------------------------------
+      -- Variable_Defined_In_Other_Path --
+      ------------------------------------
+
+      function Variable_Defined_In_Other_Path
+        (V_Initial : Flow_Graphs.Vertex_Id;
+         V_Use     : Flow_Graphs.Vertex_Id) return Boolean
+      is
+         Key_I : constant Flow_Id := FA.PDG.Get_Key (V_Initial);
+         Key_U : constant Flow_Id := FA.PDG.Get_Key (V_Use);
+
+         Is_Defined_In_Other_Path : Boolean := False;
+
+         function Is_Array return Boolean;
+         --  Returns True if Key_I corresponds to an array
+
+         function Is_In_Variables_Used return Boolean;
+         --  Returns True if the variable associated with Key_I is used by
+         --  Key_U. It currently only works for an N_Assignment_Statement.
+
+         function Vertex_Points_To_Itself return Boolean;
+         --  Returns True if V_Use belongs on V_Use's Out_Neighbours
+
+         procedure Visitor
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Checks if V defines the variable associated with Key_I
+
+         function Is_Array return Boolean is
+         begin
+            if Key_I.Kind = Direct_Mapping
+              and then Is_Array_Type (Etype (Key_I.Node))
+            then
+               return True;
+            elsif Key_I.Kind = Record_Field
+               and then Is_Array_Type (Etype (Key_I.Component.Last_Element))
+            then
+               return True;
+            end if;
+
+            return False;
+         end Is_Array;
+
+         function Is_In_Variables_Used return Boolean is
+            Used : Flow_Id_Sets.Set;
+         begin
+            if Nkind (Key_U.Node) = N_Assignment_Statement then
+               Used := Get_Variable_Set (FA.Scope, Expression (Key_U.Node));
+               for Variable_Used of Used loop
+                  if Variable_Used.Kind = Key_I.Kind
+                    and then Variable_Used.Node = Key_I.Node
+                  then
+                     return True;
+                  end if;
+               end loop;
+            end if;
+
+            return False;
+         end Is_In_Variables_Used;
+
+         function Vertex_Points_To_Itself return Boolean is
+         begin
+            for Out_Neighbour of FA.PDG.Get_Collection
+              (V_Use, Flow_Graphs.Out_Neighbours)
+            loop
+               if Out_Neighbour = V_Use then
+                  return True;
+               end if;
+            end loop;
+
+            return False;
+         end Vertex_Points_To_Itself;
+
+         procedure Visitor
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+         begin
+            if V = V_Initial
+              or else V = V_Use
+            then
+               TV := Flow_Graphs.Continue;
+            else
+               for Var_Def of FA.PDG.Get_Attributes (V).Variables_Defined loop
+                  if Var_Def.Kind = Key_I.Kind then
+                     case Key_I.Kind is
+                        when Direct_Mapping | Record_Field =>
+                           if Key_I.Node = Var_Def.Node then
+                              Is_Defined_In_Other_Path := True;
+                              TV := Flow_Graphs.Abort_Traversal;
+                           end if;
+
+                        when Magic_String =>
+                           if Key_I.Name = Var_Def.Name then
+                              Is_Defined_In_Other_Path := True;
+                              TV := Flow_Graphs.Abort_Traversal;
+                           end if;
+
+                        when others =>
+                           raise Why.Unexpected_Node;
+                     end case;
+                  end if;
+               end loop;
+               TV := Flow_Graphs.Continue;
+            end if;
+         end Visitor;
+      begin
+
+         FA.PDG.DFS (Start         => V_Use,
+                     Include_Start => False,
+                     Visitor       => Visitor'Access,
+                     Reversed      => True);
+
+         if (not Is_Defined_In_Other_Path)
+           and then Vertex_Points_To_Itself
+         then
+            case Key_I.Kind is
+               when Direct_Mapping | Record_Field =>
+                  --  Check if node corresponds to an array.
+                  if Is_Array
+                    and then not Is_In_Variables_Used
+                  then
+                     Is_Defined_In_Other_Path := True;
+                  end if;
+
+               when Magic_String =>
+                  null;
+
+               when others =>
+                  raise Why.Unexpected_Node;
+            end case;
+         end if;
+
+         return Is_Defined_In_Other_Path;
+      end Variable_Defined_In_Other_Path;
+
    begin
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1335,11 +1477,23 @@ package body Flow.Analysis is
                   begin
                      if Key_U.Variant = Final_Value then
                         if Atr_U.Is_Global then
-                           Error_Msg_Flow
-                             (Msg => "& might not be initialized",
-                              N   => Find_Global (FA.Analyzed_Entity, Key_I),
-                              F1  => Key_I,
-                              Tag => "uninitialized");
+                           if Variable_Defined_In_Other_Path (V_Initial,
+                                                              V_Use) then
+                              Error_Msg_Flow
+                                (Msg => "& might not be initialized",
+                                 N   => Find_Global
+                                   (FA.Analyzed_Entity, Key_I),
+                                 F1  => Key_I,
+                                 Tag => "uninitialized",
+                                 Warning => True);
+                           else
+                              Error_Msg_Flow
+                                (Msg => "& is not initialized",
+                                 N   => Find_Global
+                                   (FA.Analyzed_Entity, Key_I),
+                                 F1  => Key_I,
+                                 Tag => "uninitialized");
+                           end if;
                            Mark_Definition_Free_Path
                              (E_Loc => Find_Global (FA.Analyzed_Entity, Key_I),
                               From  => FA.Start_Vertex,
@@ -1373,12 +1527,23 @@ package body Flow.Analysis is
                            --  As we don't have a global, but an
                            --  export, it means we must be dealing
                            --  with a parameter.
-                           Error_Msg_Flow
-                             (Msg => "& might not be initialized in &",
-                              N   => Error_Location (FA.PDG, V_Use),
-                              F1  => Key_I,
-                              F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                              Tag => "uninitialized");
+                           if Variable_Defined_In_Other_Path (V_Initial,
+                                                              V_Use) then
+                              Error_Msg_Flow
+                                (Msg => "& might not be initialized in &",
+                                 N   => Error_Location (FA.PDG, V_Use),
+                                 F1  => Key_I,
+                                 F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
+                                 Tag => "uninitialized",
+                                 Warning => True);
+                           else
+                              Error_Msg_Flow
+                                (Msg => "& is not initialized in &",
+                                 N   => Error_Location (FA.PDG, V_Use),
+                                 F1  => Key_I,
+                                 F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
+                                 Tag => "uninitialized");
+                           end if;
                            Mark_Definition_Free_Path
                              (E_Loc => V_Use,
                               From  => FA.Start_Vertex,
@@ -1393,14 +1558,21 @@ package body Flow.Analysis is
                            null;
                         end if;
                      else
-                        --  !!! possibly have something special for
-                        --  !!! arrays: "might not be fully
-                        --  !!! initialized"
-                        Error_Msg_Flow
-                          (Msg => "& might not be initialized",
-                           N   => Error_Location (FA.PDG, V_Use),
-                           F1  => Key_I,
-                           Tag => "uninitialized");
+                        if Variable_Defined_In_Other_Path (V_Initial,
+                                                           V_Use) then
+                           Error_Msg_Flow
+                             (Msg     => "& might not be initialized",
+                              N       => Error_Location (FA.PDG, V_Use),
+                              F1      => Key_I,
+                              Tag     => "uninitialized",
+                              Warning => True);
+                        else
+                           Error_Msg_Flow
+                             (Msg => "& is not initialized",
+                              N   => Error_Location (FA.PDG, V_Use),
+                              F1  => Key_I,
+                              Tag => "uninitialized");
+                        end if;
                         Mark_Definition_Free_Path
                           (E_Loc => V_Use,
                            From  => FA.Start_Vertex,

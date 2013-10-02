@@ -1,11 +1,11 @@
-test.adb:9:38: "X" might not be initialized [uninitialized]
-test.adb:18:38: "X" might not be initialized [uninitialized]
+test.adb:9:38: "X" is not initialized [uninitialized]
+test.adb:18:38: "X" is not initialized [uninitialized]
 test.adb:27:27: warning: statement has no effect [ineffective]
-test.adb:28:41: "X" might not be initialized [uninitialized]
+test.adb:28:41: "X" is not initialized [uninitialized]
 test.adb:39:27: warning: statement has no effect [ineffective]
-test.adb:43:38: "X" might not be initialized [uninitialized]
-test.adb:52:45: "X" might not be initialized [uninitialized]
-test.adb:61:26: "X" might not be initialized [uninitialized]
+test.adb:43:38: "X" is not initialized [uninitialized]
+test.adb:52:45: "X" is not initialized [uninitialized]
+test.adb:61:26: "X" is not initialized [uninitialized]
 
    compilation of test.adb failed
 

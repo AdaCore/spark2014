@@ -1,3 +1,17 @@
+fib.adb:20:15: warning: unused assignment [ineffective]
+fib.adb:21:15: warning: unused assignment [ineffective]
+fib.adb:26:09: warning: unused assignment [ineffective]
+fib.adb:36:12: warning: unused assignment [ineffective]
+fib.adb:38:09: warning: unused assignment [ineffective]
+fib.adb:48:12: warning: unused assignment [ineffective]
+fib.adb:131:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:134:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:137:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:140:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:149:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:152:16: warning: "A1" might not be initialized [uninitialized]
+fib.adb:155:16: warning: "A2" might not be initialized [uninitialized]
+fib.adb:158:16: warning: "A2" might not be initialized [uninitialized]
 fib.adb:7:11: range check not proved
 fib.adb:8:10: loop invariant initialization not proved
 fib.adb:8:10: loop invariant preservation not proved
@@ -95,6 +109,10 @@ fib.adb:157:32: overflow check not proved
 fib.adb:158:13: index check not proved
 fib.adb:158:24: index check not proved
 fib.adb:158:24: overflow check not proved
+fib.ads:36:41: warning: "A1" might not be initialized in "Arraypartitionedtransfersc" [uninitialized]
+fib.ads:36:45: warning: "A2" might not be initialized in "Arraypartitionedtransfersc" [uninitialized]
+fib.ads:47:43: warning: "A1" might not be initialized in "Arraypartitionedtransfersifl" [uninitialized]
+fib.ads:47:47: warning: "A2" might not be initialized in "Arraypartitionedtransfersifl" [uninitialized]
 fib.ads:14:14: postcondition not proved, requires l1 = l2
 fib.ads:25:14: postcondition not proved, requires p1 = p2
 fib.ads:33:14: postcondition not proved, requires p1 = p1

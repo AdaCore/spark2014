@@ -1,3 +1,5 @@
+tab_init.adb:7:11: warning: "T" might not be initialized [uninitialized]
+tab_init.adb:9:16: warning: "T" might not be initialized [uninitialized]
 tab_init.adb:7:11: info: loop invariant initialization proved
 tab_init.adb:7:11: info: loop invariant preservation proved
 tab_init.adb:8:42: info: index check proved

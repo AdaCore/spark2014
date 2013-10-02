@@ -1,14 +1,21 @@
 com_map.ads:47:22: info: precondition proved
+deceleration_curve.adb:85:47: warning: "Braking_Curve.Curve" might not be initialized [uninitialized]
 deceleration_curve.adb:90:21: warning: no Global contract available for "Sqrt"
 deceleration_curve.adb:90:21: warning:  assuming "Sqrt" has no effect on global items
+deceleration_curve.adb:107:60: warning: statement has no effect [ineffective]
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:108:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:108:10: warning: statement has no effect [ineffective]
 deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:109:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:109:10: warning: statement has no effect [ineffective]
 deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:110:10: warning:  assuming "Put" has no effect on global items
+deceleration_curve.adb:110:10: warning: statement has no effect [ineffective]
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
 deceleration_curve.adb:112:10: warning:  assuming "New_Line" has no effect on global items
+deceleration_curve.adb:112:10: warning: statement has no effect [ineffective]
+deceleration_curve.adb:114:10: warning: statement has no effect [ineffective]
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: info: loop invariant initialization proved
 deceleration_curve.adb:39:10: loop invariant preservation not proved
@@ -39,7 +46,13 @@ deceleration_curve.adb:97:36: overflow check not proved
 deceleration_curve.adb:97:36: range check not proved
 deceleration_curve.adb:107:9: precondition not proved
 deceleration_curve.adb:111:12: precondition not proved
-deceleration_curve.ads:27:6: precondition not proved
+deceleration_curve.ads:84:26: warning: unused initial value of "Braking_Curve" [unused_initial_value]
+deceleration_curve.ads:27:6: info: precondition proved
+deceleration_curve_test.adb:6:04: warning: statement has no effect [ineffective]
+deceleration_curve_test.adb:8:04: warning: statement has no effect [ineffective]
+deceleration_curve_test.adb:17:04: warning: statement has no effect [ineffective]
+deceleration_curve_test.adb:17:30: warning: unused assignment to "Braking_Curve" [ineffective]
+deceleration_curve_test.adb:18:04: warning: statement has no effect [ineffective]
 deceleration_curve_test.adb:6:31: precondition not proved
 deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: precondition not proved
@@ -57,8 +70,12 @@ sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:243:46: precondition not proved
+sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused initial value of "D" [unused_initial_value]
+sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D" [unused]
 sec_3_13_6_deceleration.adb:26:37: range check not proved
 sec_3_13_6_deceleration.adb:26:37: precondition not proved
+sec_3_13_6_deceleration.ads:34:43: warning: unused initial value of "D" [unused_initial_value]
+sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D" [unused]
 sec_3_13_6_deceleration.ads:39:6: postcondition not proved, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: precondition not proved
@@ -75,14 +92,47 @@ sec_3_13_6_deceleration.ads:47:30: precondition not proved
 sec_3_13_6_deceleration.ads:52:26: overflow check not proved
 sec_3_13_6_deceleration.ads:52:26: range check not proved
 sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
+section_3_5_3.adb:31:07: warning: statement has no effect [ineffective]
+section_3_5_3.adb:34:07: warning: statement has no effect [ineffective]
+section_3_5_3.adb:37:10: warning: statement has no effect [ineffective]
+section_3_5_3.adb:38:13: warning: statement has no effect [ineffective]
+section_3_5_3.adb:41:32: warning: unused assignment [ineffective]
+section_3_5_3.adb:48:13: warning: statement has no effect [ineffective]
+section_3_5_3.adb:65:17: warning: statement has no effect [ineffective]
 section_3_5_3.adb:41:54: info: overflow check proved
+section_3_5_3.ads:68:45: warning: unused initial value of "Destination" [unused_initial_value]
+section_3_5_3.ads:69:45: warning: unused initial value of "Phone" [unused_initial_value]
+section_3_5_3.ads:80:26: warning: unused initial value of "Rbc_Identity" [unused_initial_value]
+section_3_5_3.ads:80:26: warning: unused variable "Rbc_Identity" [unused]
+section_3_5_3.ads:81:26: warning: unused initial value of "Rbc_Number" [unused_initial_value]
+section_3_5_3.ads:81:26: warning: unused variable "Rbc_Number" [unused]
+section_3_5_3.ads:82:26: warning: unused initial value of "Action" [unused_initial_value]
+section_3_5_3.ads:82:26: warning: unused variable "Action" [unused]
+section_3_5_3.ads:83:26: warning: unused initial value of "Apply_To_Sleeping_Units" [unused_initial_value]
+section_3_5_3.ads:83:26: warning: unused variable "Apply_To_Sleeping_Units" [unused]
 section_3_5_3.ads:75:14: postcondition not proved, requires Contains(Connections, destination)
+section_4_6.ads:102:24: warning: unused initial value of "Mode" [unused_initial_value]
+section_4_6.ads:102:24: warning: unused variable "Mode" [unused]
 section_4_6.ads:106:6: disjoint contract cases not proved
 section_4_6.ads:106:6: complete contract cases not proved
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved
 section_4_6.ads:109:14: info: postcondition proved
+step_function.adb:106:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:108:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:111:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:114:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:119:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:123:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:130:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:134:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:141:10: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:150:41: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:157:41: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:164:41: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:173:38: warning: "Merge.Step" might not be initialized [uninitialized]
+step_function.adb:180:41: warning: "Merge.Step" might not be initialized [uninitialized]
 step_function.adb:30:10: info: loop invariant initialization proved
 step_function.adb:30:10: info: loop invariant preservation proved
 step_function.adb:31:50: info: index check proved
@@ -154,6 +204,13 @@ step_function.ads:114:40: info: precondition proved
 step_function.ads:115:61: index check not proved
 step_function.ads:116:40: info: precondition proved
 step_function.ads:117:61: index check not proved
+step_function_test.adb:5:04: warning: statement has no effect [ineffective]
+step_function_test.adb:12:04: warning: statement has no effect [ineffective]
+step_function_test.adb:19:04: warning: statement has no effect [ineffective]
+step_function_test.adb:29:04: warning: statement has no effect [ineffective]
+step_function_test.adb:56:04: warning: statement has no effect [ineffective]
+step_function_test.adb:56:36: warning: unused assignment to "Sfun_Merge" [ineffective]
+step_function_test.adb:58:38: warning: statement has no effect [ineffective]
 step_function_test.adb:7:15: info: length check proved
 step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved
@@ -162,17 +219,17 @@ step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
 step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
 step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
 step_function_test.adb:44:4: assertion not proved, requires Step_Function.Is_Valid(sfun4)
-step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) = 
+step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) =
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) = 
+step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) =
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) = 
+step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) =
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) = 
+step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) =
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) = 
+step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) =
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) = 
+step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) =
 step_function_test.adb:51:19: info: precondition proved
 step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:4: info: precondition proved
@@ -180,11 +237,11 @@ step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
-step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) = 
+step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) =
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) = 
+step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) = 
+step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) =
 step_function_test.adb:67:19: info: precondition proved
 units.adb:24:38: overflow check not proved
 units.adb:24:48: info: division check proved

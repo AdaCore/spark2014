@@ -1,5 +1,18 @@
+put.adb:2:16: warning: unused initial value of "X" [unused_initial_value]
+put.adb:6:04: warning: statement has no effect [ineffective]
+put.adb:11:08: warning: unused assignment [ineffective]
+put.adb:16:11: warning: unused assignment [ineffective]
+put.adb:17:11: warning: unused assignment [ineffective]
+put.adb:18:13: warning: unused assignment [ineffective]
+put.adb:19:17: warning: unused assignment [ineffective]
+put.adb:19:17: warning: "S" might not be initialized [uninitialized]
+put.adb:20:07: warning: statement has no effect [ineffective]
+put.adb:23:04: warning: statement has no effect [ineffective]
+put.adb:24:13: warning: unused assignment [ineffective]
+put.adb:25:17: warning: unused assignment [ineffective]
 put.adb:28:04: warning: no Global contract available for "Put"
 put.adb:28:04: warning:  assuming "Put" has no effect on global items
+put.adb:28:04: warning: statement has no effect [ineffective]
 put.adb:11:33: info: overflow check proved
 put.adb:16:18: info: division check proved
 put.adb:17:19: info: overflow check proved

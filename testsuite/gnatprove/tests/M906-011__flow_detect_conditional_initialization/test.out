@@ -1,0 +1,16 @@
+uninitialized.adb:29:09: warning: "X" might not be initialized [uninitialized]
+uninitialized.adb:40:14: "Var" is not initialized [uninitialized]
+uninitialized.adb:46:32: warning: "Var" might not be initialized [uninitialized]
+uninitialized.adb:58:21: warning: "An_Arr" might not be initialized [uninitialized]
+uninitialized.adb:68:18: "Arr" is not initialized [uninitialized]
+uninitialized.adb:80:15: warning: "Rec.Boo" might not be initialized [uninitialized]
+uninitialized.adb:83:22: warning: "Rec.Arr" might not be initialized [uninitialized]
+uninitialized.adb:90:17: "A_Rec.Boo" is not initialized [uninitialized]
+uninitialized.adb:93:24: "A_Rec.Arr" is not initialized [uninitialized]
+uninitialized.adb:101:18: warning: "An_Arr" might not be initialized [uninitialized]
+uninitialized.adb:109:15: formal parameters "X" and "Y" might be aliased
+
+   compilation of uninitialized.adb failed
+
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.

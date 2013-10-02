@@ -1,4 +1,4 @@
-uninitialized.adb:6:07: "B" might not be initialized [uninitialized]
+uninitialized.adb:6:07: "B" is not initialized [uninitialized]
 
    compilation of uninitialized.adb failed
 

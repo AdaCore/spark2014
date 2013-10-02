@@ -1,3 +1,23 @@
+infoflow.adb:59:10: warning: "Cache_V1" might not be initialized [uninitialized]
+infoflow.adb:61:23: warning: "Cache_V1" might not be initialized [uninitialized]
+infoflow.adb:67:10: warning: "Cache_V2" might not be initialized [uninitialized]
+infoflow.adb:69:23: warning: "Cache_V2" might not be initialized [uninitialized]
+infoflow.adb:79:10: warning: "Outkeys_V1" might not be initialized [uninitialized]
+infoflow.adb:81:25: warning: "Outkeys_V1" might not be initialized [uninitialized]
+infoflow.adb:87:10: warning: "Outkeys_V2" might not be initialized [uninitialized]
+infoflow.adb:89:25: warning: "Outkeys_V2" might not be initialized [uninitialized]
+infoflow.adb:172:10: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:174:22: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:177:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:182:10: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:187:22: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:190:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:200:10: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:202:22: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:205:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:205:07: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:216:10: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:221:22: warning: "A_V2" might not be initialized [uninitialized]
 infoflow.adb:59:10: info: loop invariant initialization proved
 infoflow.adb:60:42: loop invariant preservation not proved, requires Cache_V1 (K) = 0
 infoflow.adb:67:10: info: loop invariant initialization proved
@@ -109,6 +129,12 @@ infoflow.adb:220:55: index check not proved
 infoflow.adb:221:16: index check not proved
 infoflow.adb:221:36: index check not proved
 infoflow.adb:221:36: overflow check not proved
+infoflow.ads:61:07: warning: unused initial value of "J" [unused_initial_value]
+infoflow.ads:73:54: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:89:55: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:112:07: warning: "A_V1" might not be initialized in "Arraypartitionedtransfer" [uninitialized]
+infoflow.ads:112:13: warning: "A_V2" might not be initialized in "Arraypartitionedtransfer" [uninitialized]
+infoflow.ads:114:17: warning: unused initial value of "I" [unused_initial_value]
 infoflow.ads:9:6: disjoint contract cases not proved
 infoflow.ads:9:6: complete contract cases not proved
 infoflow.ads:12:24: contract case not proved
