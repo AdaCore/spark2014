@@ -815,6 +815,18 @@ that ``C1`` and ``C2`` contain the same elements in the same order but
 also that ``C1`` and ``C2`` share the same cursors. This function is
 generaly used for writing frame-conditions.
 
+Note that the model of ``Strict_Equal`` uses the theoretical equality
+on elements whereas its implementation uses the parameter ``=``
+of the generic to compare elements. This is done so that the function
+``Strict_Equal`` can always be used to express invariant properties of
+collections over loops and calls.
+This difference between proof and test means that, when the parameter
+``=`` is not the physical equality on elements, a
+user should be careful not to use testing to discharge
+assumptions involving ``Strict_Equal``, such as preconditions of
+proven subprograms and postconditions of programs called by a
+proven subprogram, which mention ``Strict_Equal``.
+
 For example, in the function ``My_Preppend`` below, ``Strict_Equal`` is
 used to state that ``My_Preppend`` does not modify the tail of the
 list. Note that we use ``First (L1'Old)`` to refer to the first
