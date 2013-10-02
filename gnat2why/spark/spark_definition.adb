@@ -1566,7 +1566,12 @@ package body SPARK_Definition is
       if Present (L) then
          Mark_List (L);
          if not Acceptable_Actions (L) then
-            Mark_Violation ("expression with action", N);
+
+            --  We should never reach here, but in case we do, we issue an
+            --  understandable error message pointing to the source of the
+            --  too complex actions.
+
+            Error_Msg_N ("too complex actions inserted in expression", N);
          end if;
       end if;
    end Mark_Actions;
