@@ -1,0 +1,2 @@
+renam.ads:3:17: warning: unused initial value of "M" [unused_initial_value]
+renam.ads:3:17: warning: unused variable "M" [unused]

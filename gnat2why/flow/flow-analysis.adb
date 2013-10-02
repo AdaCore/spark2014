@@ -1731,13 +1731,17 @@ package body Flow.Analysis is
                elsif A.Is_Global then
                   --  We have an unused global, we need to give the
                   --  error on the subprogram, instead of the
-                  --  global.
-                  Error_Msg_Flow
-                    (Msg     => "unused global &",
-                     N       => Find_Global (FA.Analyzed_Entity, F),
-                     F1      => F,
-                     Tag     => "unused",
-                     Warning => True);
+                  --  global. In generative mode we don't produce this
+                  --  warning.
+
+                  if not FA.Is_Generative then
+                     Error_Msg_Flow
+                       (Msg     => "unused global &",
+                        N       => Find_Global (FA.Analyzed_Entity, F),
+                        F1      => F,
+                        Tag     => "unused",
+                        Warning => True);
+                  end if;
                else
                   --  !!! distinguish between variables and parameters
                   Error_Msg_Flow

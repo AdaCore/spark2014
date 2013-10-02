@@ -376,10 +376,6 @@ package body Flow is
          --  computed globals...
 
          declare
-            ALI_Reads  : constant Name_Set.Set :=
-              Get_Reads (Subprogram, Include_Constants => True);
-            ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
-
             function Get_Flow_Id
               (Name : Entity_Name;
                View : Parameter_Variant)
@@ -403,9 +399,30 @@ package body Flow is
                return Magic_String_Id (Name, View);
             end Get_Flow_Id;
 
+            ALI_Reads  : constant Name_Set.Set :=
+              Get_Reads (Subprogram, Include_Constants => True);
+            ALI_Writes : constant Name_Set.Set := Get_Writes (Subprogram);
+
+            F : Flow_Id;
          begin
+
+            --  We process the reads
+
             for R of ALI_Reads loop
-               Reads.Include (Get_Flow_Id (R, In_View));
+               F := Get_Flow_Id (R, In_View);
+               case F.Kind is
+                  when Direct_Mapping =>
+                     if Ekind (Get_Direct_Mapping_Id (F)) /= E_Constant then
+                        --  We completely ignore all constants for now.
+                        Reads.Include (F);
+                     end if;
+
+                  when Magic_String =>
+                     Reads.Include (F);
+
+                  when Null_Value | Record_Field =>
+                     raise Program_Error;
+               end case;
             end loop;
 
             for W of ALI_Writes loop
@@ -415,8 +432,9 @@ package body Flow is
                --
                --  This also takes care of discriminants as every out
                --  is really an in out.
-               Reads.Include (Get_Flow_Id (W, In_View));
-               Writes.Include (Get_Flow_Id (W, Out_View));
+               F := Get_Flow_Id (W, Out_View);
+               Reads.Include (Change_Variant (F, In_View));
+               Writes.Include (F);
             end loop;
          end;
 

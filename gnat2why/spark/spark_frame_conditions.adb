@@ -955,14 +955,10 @@ package body SPARK_Frame_Conditions is
                        and then not Is_Heap_Variable (Ref_Entity)
                        and then Xref.Rtype in 'c' | 'r' | 'm'
                      then
-                        --  Remove test below to take into account constants
-                        --  in computed effects (M926-024).
-                        if Xref.Rtype /= 'c' then
-                           Add_To_Map (Defines,
-                                       Id_Of_Entity (Def_Scope_Ent),
-                                       Id_Of_Entity (Ref_Entity));
-                           File_Defines.Include (Ref_Entity, File_Entity);
-                        end if;
+                        Add_To_Map (Defines,
+                                    Id_Of_Entity (Def_Scope_Ent),
+                                    Id_Of_Entity (Ref_Entity));
+                        File_Defines.Include (Ref_Entity, File_Entity);
                      end if;
 
                      --  Register xref according to type
@@ -973,14 +969,10 @@ package body SPARK_Frame_Conditions is
                                        Id_Of_Entity (Ref_Scope_Ent),
                                        Id_Of_Entity (Ref_Entity));
                         when 'c' =>
-                           --  Remove test below to take into account constants
-                           --  in computed effects (M926-024).
-                           if False then
-                              Constants.Include (Id_Of_Entity (Ref_Entity));
-                              Add_To_Map (Reads,
-                                          Id_Of_Entity (Ref_Scope_Ent),
-                                          Id_Of_Entity (Ref_Entity));
-                           end if;
+                           Constants.Include (Id_Of_Entity (Ref_Entity));
+                           Add_To_Map (Reads,
+                                       Id_Of_Entity (Ref_Scope_Ent),
+                                       Id_Of_Entity (Ref_Entity));
 
                         when 'm' =>
                            Add_To_Map (Writes,
