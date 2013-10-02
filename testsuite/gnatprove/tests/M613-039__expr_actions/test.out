@@ -1,0 +1,45 @@
+list.adb:23:10: precondition not proved
+list.adb:23:19: info: precondition proved
+list.adb:23:31: range check not proved
+list.adb:24:10: loop invariant initialization not proved
+list.adb:24:10: loop invariant preservation not proved
+list.adb:25:35: overflow check not proved
+list.adb:25:43: info: overflow check proved
+list.adb:26:54: index check not proved
+list.adb:26:59: info: precondition proved
+list.adb:26:71: range check not proved
+list.adb:30:10: precondition not proved
+list.adb:30:23: precondition not proved
+list.adb:31:10: precondition not proved
+list.adb:32:10: loop invariant initialization not proved
+list.adb:32:10: loop invariant preservation not proved
+list.adb:33:38: info: overflow check proved
+list.adb:34:21: range check not proved
+list.adb:34:21: length check not proved
+list.adb:34:44: info: overflow check proved
+list.adb:35:24: range check not proved
+list.adb:35:24: length check not proved
+list.adb:35:58: info: overflow check proved
+list.adb:37:15: precondition not proved
+list.adb:37:29: range check not proved
+list.adb:37:34: info: precondition proved
+list.adb:37:61: overflow check not proved
+list.adb:37:65: overflow check not proved
+list.adb:37:65: range check not proved
+list.ads:16:17: postcondition not proved, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1)
+list.ads:16:17: precondition not proved
+list.ads:16:29: range check not proved
+list.ads:16:34: precondition not proved
+list.ads:16:79: overflow check not proved
+list.ads:16:83: overflow check not proved
+list.ads:16:83: range check not proved
+main.adb:9:15: precondition not proved
+main.adb:15:26: precondition not proved
+stack.adb:4:47: range check not proved
+stack.adb:5:55: range check not proved
+stack.adb:20:22: info: range check proved
+stack.adb:21:19: info: index check proved
+stack.adb:32:22: info: range check proved
+stack.ads:19:14: info: precondition proved
+stack.ads:19:14: postcondition not proved
+stack.ads:23:14: postcondition not proved, requires To_But_Top (S'old) = To (S)

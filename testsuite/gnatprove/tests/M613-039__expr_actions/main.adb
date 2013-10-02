@@ -1,5 +1,5 @@
 with List; use List;
-with Text_IO; use Text_IO;
+with Print;
 procedure Main is 
 
    L : List.List;
@@ -12,6 +12,6 @@ begin
    L:= Reverse_List (L);
 
    for I in 1 .. 10 loop
-      Put_Line (My_Lists.Element (L, I)'img);
+      Print.Put (My_Lists.Element (L, I));
    end loop;
  end main;
