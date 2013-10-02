@@ -1829,16 +1829,24 @@ package body Gnat2Why.Expr is
                null;
 
             when N_Object_Declaration =>
-               pragma Assert (Constant_Present (N));
+               declare
+                  E : constant Entity_Id := Defining_Identifier (N);
+               begin
+                  pragma Assert (Constant_Present (N));
 
-               T := New_Typed_Binding
-                 (Domain  => Subdomain,
-                  Name    =>
-                     New_Identifier
-                      (Name => Full_Name (Defining_Identifier (N))),
-                  Def     =>
-                     +Transform_Expr (Expression (N), Subdomain, Params),
-                  Context => T);
+                  T :=
+                    New_Typed_Binding
+                      (Domain  => Subdomain,
+                       Name    =>
+                         New_Identifier (Name => Full_Name (E)),
+                       Def     =>
+                         +Transform_Expr
+                         (Expression (N),
+                          EW_Abstract (Etype (E)),
+                          Subdomain,
+                          Params),
+                       Context => T);
+               end;
 
             when N_Freeze_Entity =>
                null;
@@ -2990,7 +2998,7 @@ package body Gnat2Why.Expr is
            Insert_Array_Conversion
              (Domain => Domain,
               Expr   => Tmp_Expr,
-              To     => Type_Of_Node (Etype (Expr)));
+              To     => EW_Abstract (Etype (Expr)));
 
       --  Even when there is no conversion, we still need to change the type
       --  node of the resulting expression. We do this by putting a dummy label
