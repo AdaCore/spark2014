@@ -73,43 +73,11 @@ package body Gnat2Why.Decls is
    function Mk_Item_Of_Entity (E    : Entity_Id;
                                Name : W_Identifier_Id) return Item_Type;
 
-   -----------------------------------
-   -- Complete_Constant_Translation --
-   -----------------------------------
-
-   procedure Complete_Constant_Translation
-     (File : in out Why_Section;
-      E    : Entity_Id)
-   is
-      Base_Name : constant String := Full_Name (E);
-      Name      : constant String :=
-        Base_Name & To_String (WNE_Constant_Closure);
-
-   begin
-      Open_Theory (File, Name,
-                   Comment =>
-                     "Module including all necessary axioms for the "
-                   & "constant "
-                   & """" & Get_Name_String (Chars (E)) & """"
-                   & (if Sloc (E) > 0 then
-                        " declared at " & Build_Location_String (Sloc (E))
-                     else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  No filtering is necessary here, as the theory should on the contrary
-      --  use the previously defined theory for the constant.
-      --  Attach the newly created theory as a completion of the existing one.
-
-      Close_Theory (File,
-                    Filter_Entity  => Empty,
-                    Defined_Entity => E,
-                    Do_Closure     => True);
-      Add_Completion (Base_Name, Name, File.Kind);
-   end Complete_Constant_Translation;
-
    -------------------------------------------------------
    -- Complete_Package_With_External_Axioms_Translation --
    -------------------------------------------------------
+
+   --  ??? Not used anymore (M607-025), do we still need it?
 
    procedure Complete_Package_With_External_Axioms_Translation
      (E    : Entity_Id)
@@ -193,7 +161,7 @@ package body Gnat2Why.Decls is
                     or else Ekind (E) in Named_Kind then
 
                      Open_Theory
-                       (TFile, Theory_Name & To_String (WNE_Constant_Closure),
+                       (TFile, Theory_Name & To_String (WNE_Axiom),
                         Comment =>
                           "Module including all necessary axioms for the "
                         & "parameters of the generic constant "
@@ -211,7 +179,9 @@ package body Gnat2Why.Decls is
                            N               =>
                              List_Of_Entity.Element (Completion),
                            Use_Kind        => EW_Clone_Default,
-                           With_Completion => True);
+                           With_Completion => True);  --  ??? Do we need to
+                                                      --  include completion
+                                                      --  now? (M607--025)
 
                         List_Of_Entity.Next (Completion);
                      end loop;
@@ -221,10 +191,10 @@ package body Gnat2Why.Decls is
                                    Defined_Entity => Empty,
                                    Do_Closure     => True);
 
-                     Add_Completion
-                       (Theory_Name,
-                        Theory_Name & To_String (WNE_Constant_Closure),
-                        TFile.Kind);
+--                       Add_Completion
+--                         (Theory_Name,
+--                          Theory_Name & To_String (WNE_Axiom),
+--                          TFile.Kind);
                   end if;
 
                   --  For subprograms, add a new empty theory for
@@ -232,7 +202,7 @@ package body Gnat2Why.Decls is
 
                   if Ekind (E) in Subprogram_Kind then
                      Open_Theory
-                       (TFile, Theory_Name & To_String (WNE_Expr_Fun_Closure),
+                       (TFile, Theory_Name & To_String (WNE_Axiom),
                         Comment =>
                           "Module including all necessary axioms for the "
                         & "parameters of the generic subprogram "
@@ -250,7 +220,9 @@ package body Gnat2Why.Decls is
                            N               =>
                              List_Of_Entity.Element (Completion),
                            Use_Kind        => EW_Clone_Default,
-                           With_Completion => True);
+                           With_Completion => True);  --  ??? Do we need to
+                                                      --  include completion
+                                                      --  now? (M607--025)
 
                         List_Of_Entity.Next (Completion);
                      end loop;
@@ -260,10 +232,10 @@ package body Gnat2Why.Decls is
                                    Defined_Entity => Empty,
                                    Do_Closure     => True);
 
-                     Add_Completion
-                       (Theory_Name,
-                        Theory_Name & To_String (WNE_Expr_Fun_Closure),
-                        TFile.Kind);
+--                       Add_Completion
+--                         (Theory_Name,
+--                          Theory_Name & To_String (WNE_Axiom),
+--                          TFile.Kind);
                   end if;
                end;
             end if;
@@ -506,8 +478,7 @@ package body Gnat2Why.Decls is
       E    : Entity_Id)
    is
       Base_Name : constant String := Full_Name (E);
-      Name      : constant String :=
-        Base_Name & To_String (WNE_Constant_Axiom);
+      Name      : constant String := Base_Name & To_String (WNE_Axiom);
       Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
@@ -559,10 +530,8 @@ package body Gnat2Why.Decls is
          Def := Why_Empty;
       end if;
 
-      if Def = Why_Empty then
-         Discard_Theory (File);
+      if Def /= Why_Empty then
 
-      else
          --  The definition of constants is done in a separate theory. This
          --  theory is added as a completion of the base theory defining the
          --  constant.
@@ -591,16 +560,6 @@ package body Gnat2Why.Decls is
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 
-            --  No filtering is necessary here, as the theory should on the
-            --  contrary use the previously defined theory for the partial
-            --  view. Attach the newly created theory as a completion of the
-            --  existing one.
-
-            Close_Theory (File,
-                          Filter_Entity  => Empty,
-                          Defined_Entity => Partial_View (E));
-            Add_Completion (Base_Name, Name, File.Kind);
-
          --  In the general case, we generate a defining axiom if necessary and
          --  possible.
 
@@ -613,17 +572,18 @@ package body Gnat2Why.Decls is
                   Return_Type => Get_EW_Type (Typ),
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
-
-            --  No filtering is necessary here, as the theory should on the
-            --  contrary use the previously defined theory for the partial
-            --  view.
-
-            Close_Theory (File,
-                          Filter_Entity  => Empty,
-                          Defined_Entity => E);
-            Add_Completion (Base_Name, Name, File.Kind);
          end if;
       end if;
+
+      --  No filtering is necessary here, as the theory should on the
+      --  contrary use the previously defined theory for the partial
+      --  view. Attach the newly created theory as a completion of the
+      --  existing one.
+
+      Close_Theory (File,
+                    Filter_Entity  => Empty,
+                    Defined_Entity =>
+                      (if Is_Full_View (E) then Partial_View (E) else E));
    end Translate_Constant_Value;
 
    -------------------------------

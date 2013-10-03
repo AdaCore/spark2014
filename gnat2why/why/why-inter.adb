@@ -272,35 +272,6 @@ package body Why.Inter is
 
    end Standard_Imports;
 
-   --------------------
-   -- Add_Completion --
-   --------------------
-
-   procedure Add_Completion
-     (Name            : String;
-      Completion_Name : String;
-      Kind            : Why_Context_Section_Enum)
-   is
-      Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
-      Unb_Comp : constant Unbounded_String :=
-        To_Unbounded_String (Completion_Name);
-      Completions  : Why_File_Completion_Lists.List;
-   begin
-      pragma Assert (Unb_Name /= Unb_Comp);
-
-      if not Why_File_Completion.Contains (Unb_Name) then
-         Completions := Why_File_Completion_Lists.Empty_List;
-      else
-         Completions := Why_File_Completion.Element (Unb_Name);
-      end if;
-
-      Completions.Append (Why_File_Completion_Item'(Name => Unb_Comp,
-                                                    Kind => Kind));
-
-      Why_File_Completion.Include (Key      => Unb_Name,
-                                   New_Item => Completions);
-   end Add_Completion;
-
    -------------------------
    -- Compute_Ada_Nodeset --
    -------------------------
@@ -457,98 +428,6 @@ package body Why.Inter is
       return SS.S;
    end Compute_Ada_Nodeset;
 
-   ---------------------
-   -- Get_Completions --
-   ---------------------
-
-   function Get_Completions
-     (Name       : String;
-      Up_To_Kind : Why_Section_Enum) return Why_Completions
-   is
-      function Num_Compl (L : Why_File_Completion_Lists.List) return Natural;
-      --  Find the number of completions from L
-
-      procedure Get_Compl
-        (L           :        Why_File_Completion_Lists.List;
-         Position    : in out Natural;
-         Completions : in out Why_Completions);
-      --  Find all the completions from L
-
-      ---------------
-      -- Num_Compl --
-      ---------------
-
-      function Num_Compl (L : Why_File_Completion_Lists.List) return Natural is
-         Count : Natural := 0;
-      begin
-         for Compl of L loop
-            if Compl.Kind <= Up_To_Kind then
-               Count := Count + 1;
-
-               if Why_File_Completion.Contains (Compl.Name) then
-                  Count := Count +
-                    Num_Compl (Why_File_Completion.Element (Compl.Name));
-               end if;
-            end if;
-         end loop;
-
-         return Count;
-      end Num_Compl;
-
-      ---------------
-      -- Get_Compl --
-      ---------------
-
-      procedure Get_Compl
-        (L           :        Why_File_Completion_Lists.List;
-         Position    : in out Natural;
-         Completions : in out Why_Completions) is
-      begin
-         for Compl of L loop
-            if Compl.Kind <= Up_To_Kind then
-               Completions (Position) := Compl;
-               Position := Position + 1;
-               if Why_File_Completion.Contains (Compl.Name) then
-                  Get_Compl (Why_File_Completion.Element (Compl.Name),
-                             Position, Completions);
-               end if;
-            end if;
-         end loop;
-      end Get_Compl;
-
-      Unb_Name : constant Unbounded_String := To_Unbounded_String (Name);
-      Count : Natural;
-      Direct_Completions : Why_File_Completion_Lists.List;
-
-   --  Start of Get_Completions
-
-   begin
-      if Why_File_Completion.Contains (Unb_Name) then
-         Direct_Completions := Why_File_Completion.Element (Unb_Name);
-
-         --  Find the number of completions for Name
-
-         Count := Num_Compl (Direct_Completions);
-
-         --  Return all completions
-
-         declare
-            Completions : Why_Completions (1 .. Count);
-            Position    : Positive := 1;
-         begin
-            Get_Compl (Direct_Completions, Position, Completions);
-            return Completions;
-         end;
-
-      else
-         declare
-            Completions : Why_Completions (1 .. 0);
-         begin
-            return Completions;
-         end;
-      end if;
-   end Get_Completions;
-
    ------------------------
    -- Add_Effect_Imports --
    ------------------------
@@ -627,19 +506,11 @@ package body Why.Inter is
       Add_With_Clause (P, Theory_Name, Import);
 
       if With_Completion then
-         declare
-            Completions  : constant Why_Completions :=
-              Get_Completions (Raw_Name, Up_To_Kind => P.Kind);
-         begin
-            for J in Completions'Range loop
-               declare
-                  Compl_Name : constant String :=
-                    Capitalize_First (To_String (Completions (J).Name));
-               begin
-                  Add_With_Clause (P, Compl_Name, Import);
-               end;
-            end loop;
-         end;
+         if Nkind (N) in N_Entity
+           and then not Entity_In_External_Axioms (N)
+         then
+            Add_With_Clause (P, Theory_Name & To_String (WNE_Axiom), Import);
+         end if;
       end if;
    end Add_Use_For_Entity;
 
@@ -748,20 +619,12 @@ package body Why.Inter is
       Defined_Entity  : Entity_Id := Empty;
       Do_Closure      : Boolean := False;
       No_Import       : Boolean := False;
-      With_Completion : Boolean := True)
+      With_Completion : Boolean := False)
    is
       use Node_Sets;
       S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
 
    begin
-      --  If required, compute the closure of entities on which Defined_Entity
-      --  depends, and add those in the set of nodes S used for computing
-      --  includes.
-
-      if Do_Closure then
-         S.Union (Get_Graph_Closure (Entity_Dependencies, Defined_Entity));
-      end if;
-
       Standard_Imports.Clear;
       Add_Standard_With_Clause (P, "Main", EW_Import);
 
@@ -773,6 +636,36 @@ package body Why.Inter is
 
          --  S contains all mentioned Ada entities; for each, we get the
          --  unit where it was defined and add it to the unit set
+
+         if Present (Defined_Entity) then
+            for N of S loop
+               --  Here we need to consider entities and some non-entities
+               --  such as string literals. We do *not* consider the
+               --  Filter_Entity, nor its Full_View. Loop parameters are a
+               --  bit special, we want to deal with them only if they are
+               --  from loop, but not from a quantifier.
+
+               if N /= Filter_Entity
+                 and then
+                   (if Nkind (N) in N_Entity and then Is_Full_View (N) then
+                           Partial_View (N) /= Filter_Entity)
+                   and then
+                     (if Nkind (N) in N_Entity and then
+                      Ekind (N) = E_Loop_Parameter
+                      then not Is_Quantified_Loop_Param (N))
+               then
+                  Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
+               end if;
+            end loop;
+         end if;
+
+         --  If required, compute the closure of entities on which
+         --  Defined_Entity depends, and add those in the set of nodes S
+         --  used for computing includes.
+
+         if Do_Closure then
+            S.Union (Get_Graph_Closure (Entity_Dependencies, Defined_Entity));
+         end if;
 
          for N of S loop
             --  Here we need to consider entities and some non-entities
@@ -792,13 +685,6 @@ package body Why.Inter is
             then
                Standard_Imports.Set_SI (N);
                Add_Use_For_Entity (P, N, With_Completion => With_Completion);
-
-               --  When Defined_Entity is present, add the entities on which it
-               --  depends in the graph of dependencies.
-
-               if Present (Defined_Entity) then
-                  Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
-               end if;
             end if;
          end loop;
 

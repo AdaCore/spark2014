@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with GNAT.Source_Info;
+
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with AA_Util;                use AA_Util;
 with ALI.Util;               use ALI.Util;
@@ -42,6 +44,7 @@ with Outputs;                use Outputs;
 with Sem;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
 with Stand;                  use Stand;
 with Switch;                 use Switch;
 
@@ -85,12 +88,6 @@ package body Gnat2Why.Driver is
    procedure Translate_Entity (E : Entity_Id);
    --  Translates entity E into Why
 
-   procedure Complete_Entity_Translation (E : Entity_Id);
-   --  Complete the translation of entity E, after all entities from the same
-   --  unit (spec or body) have been translated. This is used currently to
-   --  generate a theory for expression functions that imports all necessary
-   --  axioms from other expression functions.
-
    procedure Do_Generate_VCs (E : Entity_Id);
    --  Generates VCs for entity E. This is currently a noop if E is not a
    --  subprogram or a package.
@@ -102,46 +99,6 @@ package body Gnat2Why.Driver is
    --  This procedure is used when there is nothing to do, but it should be
    --  signalled that everything went fine. This is done by creating the main
    --  output file of gnat2why, the main Why file.
-
-   ---------------------------------
-   -- Complete_Entity_Translation --
-   ---------------------------------
-
-   procedure Complete_Entity_Translation (E : Entity_Id) is
-      File : Why_Section := Why_Sections (Dispatch_Entity_Completion (E));
-
-   begin
-      case Ekind (E) is
-         --  Always generate a module for SPARK subprogram declarations, so
-         --  that units which depend on this one can rely on the presence of
-         --  the completion.
-
-         when Subprogram_Kind =>
-            if Entity_In_SPARK (E) then
-               Complete_Subprogram_Spec_Translation (File, E);
-            end if;
-
-         --  Always generate a module for SPARK constant declarations, so
-         --  that units which depend on this one can rely on the presence of
-         --  the completion.
-
-         when E_Constant =>
-            if Entity_In_SPARK (E) and then not Is_Full_View (E) then
-               Complete_Constant_Translation (File, E);
-            end if;
-
-         when E_Package =>
-
-            --  Complete entities defined in packages with external axioms.
-
-            if Entity_In_External_Axioms (E) then
-               Complete_Package_With_External_Axioms_Translation (E);
-            end if;
-
-         when others =>
-            null;
-      end case;
-   end Complete_Entity_Translation;
 
    ----------------------------
    -- Compute_Global_Effects --
@@ -391,21 +348,8 @@ package body Gnat2Why.Driver is
 
       procedure Translate_List_Entities (List_Entities : List_Of_Nodes.List) is
       begin
-         --  First translate all entities
-
          for E of List_Entities loop
             Translate_Entity (E);
-         end loop;
-
-         --  Finally, completions are added for entities that require one.
-         --  Currently, this is done to provide a "closure" theory which
-         --  includes the defining axioms for constants and expression
-         --  functions. This completion is defined last to break possible
-         --  mutually dependent or out-of-order definitions of constants and
-         --  expression functions.
-
-         for E of List_Entities loop
-            Complete_Entity_Translation (E);
          end loop;
       end Translate_List_Entities;
 
@@ -440,9 +384,43 @@ package body Gnat2Why.Driver is
    ----------------------
 
    procedure Translate_Entity (E : Entity_Id) is
+
+      procedure Generate_Empty_Axiom_Theory
+        (File : in out Why_Section;
+         E    : Entity_Id);
+      --  Generates an empty theory for the axiom related to E. This is done
+      --  for every entity for which there is no axiom theory generated, so
+      --  that modules for VC generation can consistently include the axiom
+      --  theory of all they entities they use.
+
+      ---------------------------------
+      -- Generate_Empty_Axiom_Theory --
+      ---------------------------------
+
+      procedure Generate_Empty_Axiom_Theory
+        (File : in out Why_Section;
+         E    : Entity_Id)
+      is
+         Name : constant String := Full_Name (E) & To_String (WNE_Axiom);
+      begin
+         Open_Theory
+           (File, Name,
+            Comment =>
+              "Module giving an empty axiom for the entity "
+                & """" & Get_Name_String (Chars (E)) & """"
+                & (if Sloc (E) > 0 then
+                    " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Close_Theory (File, Filter_Entity => Empty);
+      end Generate_Empty_Axiom_Theory;
+
       File       : Why_Section := Why_Sections (Dispatch_Entity (E));
       Compl_File : Why_Section :=
         Why_Sections (Dispatch_Entity_Completion (E));
+      New_Theory : Boolean;
+
+   --  Start of Translate_Entity
 
    begin
       case Ekind (E) is
@@ -453,7 +431,10 @@ package body Gnat2Why.Driver is
             if Entity_In_SPARK (E)
               and then Ekind (E) not in Private_Kind
             then
-               Translate_Type (File, E);
+               Translate_Type (File, E, New_Theory);
+               if New_Theory then
+                  Generate_Empty_Axiom_Theory (File, E);
+               end if;
             end if;
 
          when Named_Kind =>
@@ -475,19 +456,37 @@ package body Gnat2Why.Driver is
 
             if not Is_Mutable_In_Why (E) then
                if Entity_In_SPARK (E) then
-                  if not Is_Full_View (E) then
+                  if Ekind (E) = E_Constant then
+                     if Is_Partial_View (E) then
+                        Translate_Constant (File, E);
+                        if not Entity_In_SPARK (Full_View (E)) then
+                           Generate_Empty_Axiom_Theory (File, E);
+                        end if;
+                     elsif Is_Full_View (E) then
+                        Translate_Constant_Value (Compl_File, E);
+                     else
+                        Translate_Constant (File, E);
+                        Translate_Constant_Value (Compl_File, E);
+                     end if;
+                  else
                      Translate_Constant (File, E);
+                     Generate_Empty_Axiom_Theory (File, E);
                   end if;
-                  Translate_Constant_Value (Compl_File, E);
                end if;
             else
                Translate_Variable (File, E);
+               Generate_Empty_Axiom_Theory (File, E);
             end if;
 
          when Subprogram_Kind =>
-
             if Entity_In_SPARK (E) then
                Translate_Subprogram_Spec (File, E);
+
+               if not (Present (Get_Expression_Function (E)))
+                 or else not Entity_Body_In_SPARK (E)
+               then
+                  Generate_Empty_Axiom_Theory (File, E);
+               end if;
             end if;
 
          --  An entity E_Subprogram_Body should be present only for expression
@@ -523,6 +522,7 @@ package body Gnat2Why.Driver is
 
          when E_Loop =>
             Translate_Loop_Entity (File, E);
+            Generate_Empty_Axiom_Theory (File, E);
 
          when others =>
             raise Program_Error;

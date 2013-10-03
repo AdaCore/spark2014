@@ -136,40 +136,6 @@ package body Gnat2Why.Subprograms is
    function Get_Location_For_Postcondition (E : Entity_Id) return Node_Id;
    --  Return a node with a proper location for the postcondition of E, if any
 
-   ------------------------------------------
-   -- Complete_Subprogram_Spec_Translation --
-   ------------------------------------------
-
-   procedure Complete_Subprogram_Spec_Translation
-     (File : in out Why_Section;
-      E    : Entity_Id)
-   is
-      Base_Name : constant String := Full_Name (E);
-      Name      : constant String :=
-        Base_Name & To_String (WNE_Expr_Fun_Closure);
-
-   begin
-      Open_Theory (File, Name,
-                   Comment =>
-                     "Module including all necessary axioms for the "
-                       & "subprogram "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " declared at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  No filtering is necessary here, as the theory should on the contrary
-      --  use the previously defined theory for the subprogram declaration.
-      --  Attach the newly created theory as a completion of the existing one.
-
-      Close_Theory (File,
-                    Filter_Entity  => Empty,
-                    Defined_Entity => E,
-                    Do_Closure     => True);
-      Add_Completion (Base_Name, Name, File.Kind);
-   end Complete_Subprogram_Spec_Translation;
-
    ------------------
    -- Compute_Args --
    ------------------
@@ -978,12 +944,15 @@ package body Gnat2Why.Subprograms is
            Post    => Post,
            Def     => +Why_Body));
 
-      Close_Theory (File, Filter_Entity => Empty);
+      Close_Theory (File,
+                    Filter_Entity => Empty,
+                    With_Completion => True,
+                    Do_Closure => True);
    end Generate_VCs_For_Package_Elaboration;
 
-   --------------------------------------
-   -- Generate_VCs_For_Subprogram_Spec --
-   --------------------------------------
+   ---------------------------------
+   -- Generate_VCs_For_Subprogram --
+   ---------------------------------
 
    procedure Generate_VCs_For_Subprogram
      (File : in out Why_Section;
@@ -1006,7 +975,7 @@ package body Gnat2Why.Subprograms is
       Post_Check     : W_Prog_Id;
 
    begin
-      Open_Theory (File, Name & "__pre",
+      Open_Theory (File, Name & "__subprogram_def",
                    Comment =>
                      "Module for checking contracts and absence of "
                        & "run-time errors in subprogram "
@@ -1193,7 +1162,11 @@ package body Gnat2Why.Subprograms is
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls
 
-      Close_Theory (File, Filter_Entity => Empty);
+      Close_Theory (File,
+                    Defined_Entity => E,
+                    Filter_Entity => Empty,
+                    With_Completion => True,
+                    Do_Closure => True);
    end Generate_VCs_For_Subprogram;
 
    ------------------------------------
@@ -1249,8 +1222,7 @@ package body Gnat2Why.Subprograms is
         Get_Reads (E, Include_Constants => False);
 
       Base_Name : constant String := Full_Name (E);
-      Name      : constant String :=
-        Base_Name & To_String (WNE_Expr_Fun_Axiom);
+      Name      : constant String := Base_Name & To_String (WNE_Axiom);
 
       Params : Transformation_Params;
 
@@ -1382,7 +1354,6 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Filter_Entity  => Empty,
                     Defined_Entity => E);
-      Add_Completion (Base_Name, Name, File.Kind);
    end Translate_Expression_Function_Body;
 
    -------------------------------

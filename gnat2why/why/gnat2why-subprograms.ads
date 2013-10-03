@@ -78,12 +78,6 @@ package Gnat2Why.Subprograms is
    --  Generate a Why declaration that corresponds to an Ada subprogram. Entity
    --  E is a E_Function or E_Procedure.
 
-   procedure Complete_Subprogram_Spec_Translation
-     (File : in out Why_Section;
-      E    : Entity_Id);
-   --  Generates a theory that completes the base theory for a subprogram
-   --  declaration.
-
    procedure Translate_Expression_Function_Body
      (File : in out Why_Section;
       E    : Entity_Id);

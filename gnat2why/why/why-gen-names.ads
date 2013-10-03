@@ -196,21 +196,8 @@ package Why.Gen.Names is
       WNE_Dummy,
       WNE_Eq,
 
-      --  suffix for the name of the theory defining the axiom for an
-      --  expression function
-      WNE_Expr_Fun_Axiom,
-
-      --  suffix for the name of the theory importing all necessary axioms from
-      --  other expression functions
-      WNE_Expr_Fun_Closure,
-
-      --  suffix for the name of the theory defining the axiom for a deferred
-      --  constant.
-      WNE_Constant_Axiom,
-
-      --  suffix for the name of the theory importing all necessary axioms from
-      --  expression functions for a constant
-      WNE_Constant_Closure,
+      --  suffix for the name of the theory defining the axiom for an entity
+      WNE_Axiom,
 
       --  Name of an unknown floating-point rounding operation, when the
       --  floating-point type is neither single precision nor double precision.

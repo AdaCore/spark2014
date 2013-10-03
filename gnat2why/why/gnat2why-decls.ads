@@ -52,12 +52,6 @@ package Gnat2Why.Decls is
    --  previously declared by a call to Translate_Constant, for IN
    --  parameters, named numbers and constant objects.
 
-   procedure Complete_Constant_Translation
-     (File : in out Why_Section;
-      E    : Entity_Id);
-   --  Generates a theory that completes the base theory for a constant
-   --  declaration.
-
    procedure Translate_External_Object (E : Entity_Name);
    --  For a "magic string" generate a dummy declaration module which contains
    --  the type and the variable declaration.

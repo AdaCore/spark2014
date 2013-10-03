@@ -616,6 +616,7 @@ package body Why.Gen.Names is
          when WNE_Array_Last_Field => return "last";
          when WNE_Array_Offset => return "offset";
          when WNE_Array_Update => return "set";
+         when WNE_Axiom        => return "__axiom";
          when WNE_Bool_Eq      => return "bool_eq";
          when WNE_Bool_Ne      => return "bool_ne";
          when WNE_Bool_Lt      => return "bool_lt";
@@ -635,10 +636,6 @@ package body Why.Gen.Names is
          when WNE_Private      => return "__private";
          when WNE_Keep_On_Simp => return "keep_on_simp";
          when WNE_Pretty_Ada   => return "GP_Pretty_Ada";
-         when WNE_Expr_Fun_Axiom   => return "__expr_fun_axiom";
-         when WNE_Expr_Fun_Closure => return "__expr_fun_closure";
-         when WNE_Constant_Axiom => return "__constant_axiom";
-         when WNE_Constant_Closure => return "__constant_closure";
          when WNE_Check_Not_First => return "check_not_first";
          when WNE_Check_Not_Last => return "check_not_last";
          when WNE_Attr_First => return "first";

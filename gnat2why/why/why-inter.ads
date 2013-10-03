@@ -23,11 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
-
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 
 with Types;                              use Types;
@@ -58,7 +53,7 @@ package Why.Inter is
       Defined_Entity  : Entity_Id := Empty;
       Do_Closure      : Boolean := False;
       No_Import       : Boolean := False;
-      With_Completion : Boolean := True);
+      With_Completion : Boolean := False);
    --  Close the current theory by adding all necessary imports and adding
    --  the theory to the file. If not Empty, Defined_Entity is the entity
    --  defined by the current theory, which is used to complete the graph
@@ -99,46 +94,6 @@ package Why.Inter is
    Extra_Modules_Map : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
    --  Mappings from Ada nodes to Why logic functions for their translation
    --  This map is used for string literals and aggregates
-
-   -----------------
-   -- Completions --
-   -----------------
-
-   --  Some entities are defined in more than one module. There might be one or
-   --  two additional modules, one in the contextual file for the spec, and
-   --  one in the contextual file for the body. For each additional module,
-   --  Add_Completion is called to record that completion. Later, when a
-   --  dependence on this entity is noted, Get_Completions is called to
-   --  retrieve the names of the additional modules to include.
-
-   --  This mechanism is also used to trace the dependence between an instance
-   --  of a generic package with a Why axiomatization and the expression
-   --  functions coming from its actuals.
-
-   subtype Why_Context_Section_Enum is Why_Section_Enum range
-     WF_Pure .. WF_Context;
-
-   type Why_File_Completion_Item is record
-      Name : Unbounded_String;
-      Kind : Why_Context_Section_Enum;
-   end record;
-
-   type Why_Completions is array (Positive range <>) of
-     Why_File_Completion_Item;
-   --  Return type of Get_Completions, to get all completions of a theory
-
-   procedure Add_Completion
-     (Name            : String;
-      Completion_Name : String;
-      Kind            : Why_Context_Section_Enum);
-   --  Add the completion Completion_Name to theory Name
-
-   function Get_Completions
-     (Name       : String;
-      Up_To_Kind : Why_Section_Enum) return Why_Completions;
-   --  Return the completions for the theory called Name, in a file of kind
-   --  Why_File_Enum, so only completions of kinds less than Why_File_Enum are
-   --  taken into account, to avoid circularities in Why file dependences.
 
    Standard_Why_Package_Name : constant String := "_standard";
 
@@ -269,21 +224,6 @@ package Why.Inter is
    --  Return True if Left and Right corresponds to the same Why identifier
 
 private
-   package Why_File_Completion_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type    => Why_File_Completion_Item,
-      "="             => "=");
-
-   package Why_File_Completions is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Unbounded_String,
-      Element_Type    => Why_File_Completion_Lists.List,
-      Hash            => Ada.Strings.Unbounded.Hash,
-      Equivalent_Keys => "=",
-      "="             => Why_File_Completion_Lists."=");
-   --  Data type storing chained completions of theories
-
-   Why_File_Completion : Why_File_Completions.Map;
-   --  Global variable storing completions of theories
-
    Entity_Dependencies : Node_Graphs.Map;
    --  Mapping from an entity to the set of entities on which it depends. This
    --  map is filled by Close_Theory.
