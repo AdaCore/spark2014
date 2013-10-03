@@ -7,8 +7,13 @@ uninitialized.adb:80:15: warning: "Rec.Boo" might not be initialized [uninitiali
 uninitialized.adb:83:22: warning: "Rec.Arr" might not be initialized [uninitialized]
 uninitialized.adb:90:17: "A_Rec.Boo" is not initialized [uninitialized]
 uninitialized.adb:93:24: "A_Rec.Arr" is not initialized [uninitialized]
-uninitialized.adb:101:18: warning: "An_Arr" might not be initialized [uninitialized]
-uninitialized.adb:109:15: formal parameters "X" and "Y" might be aliased
+uninitialized.adb:103:13: "Another_Rec.Arr" is not initialized [uninitialized]
+uninitialized.adb:110:18: warning: "An_Arr" might not be initialized [uninitialized]
+uninitialized.adb:118:15: formal parameters "X" and "Y" might be aliased
+uninitialized.adb:127:30: warning: statement has no effect [ineffective]
+uninitialized.adb:128:15: warning: unused assignment [ineffective]
+uninitialized.adb:128:15: "A" is not initialized [uninitialized]
+uninitialized.adb:129:15: warning: unused assignment [ineffective]
 
    compilation of uninitialized.adb failed
 

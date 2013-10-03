@@ -1,3 +1,0 @@
-extended_returns.adb:7:07: warning: "Result.D" might not be initialized [uninitialized]
-extended_returns.adb:7:07: warning: "Result.C" might not be initialized [uninitialized]
-extended_returns.adb:7:07: warning: "Result.B" might not be initialized [uninitialized]

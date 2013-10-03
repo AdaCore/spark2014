@@ -1,2 +1,1 @@
 p.adb:5:13: warning: unused assignment [ineffective]
-p.adb:5:13: warning: "X" might not be initialized [uninitialized]

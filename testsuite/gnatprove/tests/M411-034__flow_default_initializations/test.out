@@ -1,7 +1,6 @@
 test.adb:4:04: warning: statement has no effect [ineffective]
 test.adb:5:04: warning: statement has no effect [ineffective]
-test.adb:42:09: warning: "Tmp.A" might not be initialized [uninitialized]
-test.adb:80:09: warning: "Tmp.A.A" might not be initialized [uninitialized]
+test.adb:42:09: "Tmp.A" is not initialized [uninitialized]
 test.adb:91:14: flow analysis of "Test_06" abandoned due to records with non-manifest initializations
 test.adb:100:25: default initialization cannot depend on "Tmp"
 

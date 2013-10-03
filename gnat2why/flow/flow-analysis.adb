@@ -1220,6 +1220,13 @@ package body Flow.Analysis is
    procedure Find_Use_Of_Uninitialised_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
+      function Is_Global_Or_Export
+        (V, V_U : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Returns True if the variable corresponding to an initial vertex V is
+      --  a global parameter, an exported formal parameter or if the node
+      --  corresponding to V_U is either a simple or an extended return
+      --  statement.
+
       procedure Mark_Definition_Free_Path
         (E_Loc : Flow_Graphs.Vertex_Id;
          From  : Flow_Graphs.Vertex_Id;
@@ -1244,6 +1251,32 @@ package body Flow.Analysis is
          V_Use     : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the variable corresponding to V_Initial is defined on any
       --  of the paths that lead to V_Use.
+
+      -------------------------
+      -- Is_Global_Or_Export --
+      -------------------------
+
+      function Is_Global_Or_Export
+        (V, V_U : Flow_Graphs.Vertex_Id) return Boolean
+      is
+         Key_I   : constant Flow_Id      := FA.PDG.Get_Key (V);
+         Atr_I   : constant V_Attributes := FA.PDG.Get_Attributes (V);
+         Key_U   : constant Flow_Id      := FA.PDG.Get_Key (V_U);
+         V_Final : constant Flow_Graphs.Vertex_Id :=
+           FA.PDG.Get_Vertex (Change_Variant (Key_I, Final_Value));
+         Atr_F   : constant V_Attributes :=
+           FA.PDG.Get_Attributes (V_Final);
+      begin
+         if Atr_I.Is_Global
+           or Atr_F.Is_Export
+           or Nkind_In (Nkind (Key_U.Node), N_Simple_Return_Statement,
+                        N_Extended_Return_Statement)
+         then
+            return True;
+         end if;
+
+         return False;
+      end Is_Global_Or_Export;
 
       -------------------------------
       -- Mark_Definition_Free_Path --
@@ -1351,6 +1384,11 @@ package body Flow.Analysis is
 
          Is_Defined_In_Other_Path : Boolean := False;
 
+         function Comes_Before_V_Use
+           (V : Flow_Graphs.Vertex_Id) return Boolean;
+         --  Returns True if V is farther from the End vertex of the CFG graph
+         --  than V_Use is.
+
          function Is_Array return Boolean;
          --  Returns True if Key_I corresponds to an array
 
@@ -1365,6 +1403,62 @@ package body Flow.Analysis is
            (V  : Flow_Graphs.Vertex_Id;
             TV : out Flow_Graphs.Simple_Traversal_Instruction);
          --  Checks if V defines the variable associated with Key_I
+
+         ------------------------
+         -- Comes_Before_V_Use --
+         ------------------------
+
+         function Comes_Before_V_Use
+           (V : Flow_Graphs.Vertex_Id) return Boolean
+         is
+            Distance_From_End          : Natural;
+            V_Distance, V_Use_Distance : Natural;
+
+            procedure Found_End
+              (V  : Flow_Graphs.Vertex_Id;
+               TV : out Flow_Graphs.Traversal_Instruction);
+            --  This is used a the Search procedure for calling Shortest_Path.
+            --  It terminates the search once V is the End vertex.
+
+            procedure Increase_Distance (V : Flow_Graphs.Vertex_Id);
+            --  This is used a the Step procedure for calling Shortest_Path.
+            --  It just increases the distance by one.
+
+            procedure Found_End
+              (V  : Flow_Graphs.Vertex_Id;
+               TV : out Flow_Graphs.Traversal_Instruction)
+            is
+            begin
+               if V = FA.End_Vertex then
+                  TV :=  Flow_Graphs.Found_Destination;
+               else
+                  TV :=  Flow_Graphs.Continue;
+               end if;
+            end Found_End;
+
+            procedure Increase_Distance (V : Flow_Graphs.Vertex_Id) is
+               pragma Unreferenced (V);
+            begin
+               Distance_From_End := Distance_From_End + 1;
+            end Increase_Distance;
+
+         begin
+            Distance_From_End := 0;
+            FA.CFG.Shortest_Path (Start         => V,
+                                  Allow_Trivial => False,
+                                  Search        => Found_End'Access,
+                                  Step          => Increase_Distance'Access);
+            V_Distance := Distance_From_End;
+
+            Distance_From_End := 0;
+            FA.CFG.Shortest_Path (Start         => V_Use,
+                                  Allow_Trivial => False,
+                                  Search        => Found_End'Access,
+                                  Step          => Increase_Distance'Access);
+            V_Use_Distance := Distance_From_End;
+
+            return V_Distance >= V_Use_Distance;
+         end Comes_Before_V_Use;
 
          --------------
          -- Is_Array --
@@ -1435,19 +1529,33 @@ package body Flow.Analysis is
             if V = V_Initial
               or else V = V_Use
             then
-               TV := Flow_Graphs.Continue;
+               TV := Flow_Graphs.Skip_Children;
             else
                for Var_Def of FA.PDG.Get_Attributes (V).Variables_Defined loop
                   if Var_Def.Kind = Key_I.Kind then
                      case Key_I.Kind is
-                        when Direct_Mapping | Record_Field =>
-                           if Key_I.Node = Var_Def.Node then
+                        when Direct_Mapping =>
+                           if Key_I.Node = Var_Def.Node
+                             and then Comes_Before_V_Use (V)
+                           then
+                              Is_Defined_In_Other_Path := True;
+                              TV := Flow_Graphs.Abort_Traversal;
+                           end if;
+
+                        when Record_Field =>
+                           if Key_I.Node = Var_Def.Node
+                             and then Key_I.Component.Last_Element =
+                               Var_Def.Component.Last_Element
+                             and then Comes_Before_V_Use (V)
+                           then
                               Is_Defined_In_Other_Path := True;
                               TV := Flow_Graphs.Abort_Traversal;
                            end if;
 
                         when Magic_String =>
-                           if Key_I.Name = Var_Def.Name then
+                           if Key_I.Name = Var_Def.Name
+                             and then Comes_Before_V_Use (V)
+                           then
                               Is_Defined_In_Other_Path := True;
                               TV := Flow_Graphs.Abort_Traversal;
                            end if;
@@ -1469,9 +1577,12 @@ package body Flow.Analysis is
                      Visitor       => Visitor'Access,
                      Reversed      => True);
 
-         --  Even if there is no other definition of V_Initial than V_Use,
-         --  V_Use itself could be defining the value of V_Initial inside a
-         --  loop for an array???
+         --  Arrays that are partially defined, have an implicit dependency on
+         --  themselves. For this check, we cannot depend on the Variables_Used
+         --  because they capture this implicit dependency. Instead, if we
+         --  are dealing with an array, we recaltulate the variables that
+         --  appear on the right hand side of the assignment statement and if
+         --  the array is not amongst them, we concider the array defined.
 
          if (not Is_Defined_In_Other_Path)
            and then Vertex_Points_To_Itself
@@ -1598,25 +1709,38 @@ package body Flow.Analysis is
                      else
                         if Variable_Defined_In_Other_Path (V_Initial,
                                                            V_Use) then
-                           Error_Msg_Flow
-                             (Msg     => "& might not be initialized",
-                              N       => Error_Location (FA.PDG, V_Use),
-                              F1      => Key_I,
-                              Tag     => "uninitialized",
-                              Warning => True);
+                           if Is_Global_Or_Export (V_Initial, V_Use) then
+                              --  If we are dealing with a global, an export or
+                              --  V_Use is a Function_Return we issue a
+                              --  warning. We do NOT issue one for local
+                              --  variables.
+                              Error_Msg_Flow
+                                (Msg     => "& might not be initialized",
+                                 N       => Error_Location (FA.PDG, V_Use),
+                                 F1      => Key_I,
+                                 Tag     => "uninitialized",
+                                 Warning => True);
+                              Mark_Definition_Free_Path
+                                (E_Loc => V_Use,
+                                 From  => FA.Start_Vertex,
+                                 To    => V_Use,
+                                 Var   => Change_Variant (Key_I, Normal_Use),
+                                 Tag   => "uninitialized");
+                           end if;
                         else
                            Error_Msg_Flow
                              (Msg => "& is not initialized",
                               N   => Error_Location (FA.PDG, V_Use),
                               F1  => Key_I,
                               Tag => "uninitialized");
+                           Mark_Definition_Free_Path
+                             (E_Loc => V_Use,
+                              From  => FA.Start_Vertex,
+                              To    => V_Use,
+                              Var   => Change_Variant (Key_I, Normal_Use),
+                              Tag   => "uninitialized");
                         end if;
-                        Mark_Definition_Free_Path
-                          (E_Loc => V_Use,
-                           From  => FA.Start_Vertex,
-                           To    => V_Use,
-                           Var   => Change_Variant (Key_I, Normal_Use),
-                           Tag   => "uninitialized");
+
                      end if;
                   end;
                end loop;

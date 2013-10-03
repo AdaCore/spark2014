@@ -47,7 +47,7 @@ is
    is
    begin
       if X > 0 then
-         Var := X;
+         Var := X;  --  This should be a warning.
       end if;
    end Init_Var_Warn_2;
 
@@ -95,6 +95,15 @@ is
    end Init_Record_Error;
 
 
+   procedure Init_Record_Error_2 (A_Rec : out Record_T) is
+      Another_Rec : Record_T;
+   begin
+      Another_Rec.Boo := False;
+
+      A_Rec := Another_Rec;  --  This should be an error.
+   end Init_Record_Error_2;
+
+
    procedure Init_Array_Through_Call_Warn (An_Arr : out Array_T) is
    begin
       for I in 1 .. 10 loop
@@ -109,4 +118,15 @@ is
          Set (An_Arr (I / 2), An_Arr (I));  --  This should be an error.
       end loop;
    end Init_Array_Through_Call_Error;
+
+
+   procedure Tab is
+      A : Array_T;
+      Tmp : Integer;
+   begin
+      for J in Array_T'Range loop
+         Tmp  := A(J);  --  This should be an error.
+         A(J) := Tmp;
+      end loop;
+   end Tab;
 end Uninitialized;
