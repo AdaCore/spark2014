@@ -1268,6 +1268,10 @@ package body Flow.Analysis is
            (V : Flow_Graphs.Vertex_Id);
          --  Step procedure for Shortest_Path.
 
+         ----------------------
+         -- Are_We_There_Yet --
+         ----------------------
+
          procedure Are_We_There_Yet
            (V           : Flow_Graphs.Vertex_Id;
             Instruction : out Flow_Graphs.Traversal_Instruction)
@@ -1284,6 +1288,10 @@ package body Flow.Analysis is
             end if;
          end Are_We_There_Yet;
 
+         -------------
+         -- Add_Loc --
+         -------------
+
          procedure Add_Loc
            (V : Flow_Graphs.Vertex_Id)
          is
@@ -1293,6 +1301,8 @@ package body Flow.Analysis is
                Path.Include (V);
             end if;
          end Add_Loc;
+
+      --  Start of Mark_Definition_Free_Path
 
       begin
          FA.CFG.Shortest_Path (Start         => From,
@@ -1308,6 +1318,10 @@ package body Flow.Analysis is
                            Set   => Path,
                            Tag   => Tag);
       end Mark_Definition_Free_Path;
+
+      -------------------------------
+      -- Mark_Definition_Free_Path --
+      -------------------------------
 
       procedure Mark_Definition_Free_Path
         (E_Loc : Flow_Graphs.Vertex_Id;
@@ -1345,12 +1359,16 @@ package body Flow.Analysis is
          --  Key_U. It currently only works for an N_Assignment_Statement.
 
          function Vertex_Points_To_Itself return Boolean;
-         --  Returns True if V_Use belongs on V_Use's Out_Neighbours
+         --  Returns True if V_Use belongs to V_Use's Out_Neighbours
 
          procedure Visitor
            (V  : Flow_Graphs.Vertex_Id;
             TV : out Flow_Graphs.Simple_Traversal_Instruction);
          --  Checks if V defines the variable associated with Key_I
+
+         --------------
+         -- Is_Array --
+         --------------
 
          function Is_Array return Boolean is
          begin
@@ -1366,6 +1384,10 @@ package body Flow.Analysis is
 
             return False;
          end Is_Array;
+
+         --------------------------
+         -- Is_In_Variables_Used --
+         --------------------------
 
          function Is_In_Variables_Used return Boolean is
             Used : Flow_Id_Sets.Set;
@@ -1384,6 +1406,10 @@ package body Flow.Analysis is
             return False;
          end Is_In_Variables_Used;
 
+         -----------------------------
+         -- Vertex_Points_To_Itself --
+         -----------------------------
+
          function Vertex_Points_To_Itself return Boolean is
          begin
             for Out_Neighbour of FA.PDG.Get_Collection
@@ -1396,6 +1422,10 @@ package body Flow.Analysis is
 
             return False;
          end Vertex_Points_To_Itself;
+
+         -------------
+         -- Visitor --
+         -------------
 
          procedure Visitor
            (V  : Flow_Graphs.Vertex_Id;
@@ -1430,12 +1460,18 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Continue;
             end if;
          end Visitor;
-      begin
 
+      --  Start of Variable_Defined_In_Other_Path
+
+      begin
          FA.PDG.DFS (Start         => V_Use,
                      Include_Start => False,
                      Visitor       => Visitor'Access,
                      Reversed      => True);
+
+         --  Even if there is no other definition of V_Initial than V_Use,
+         --  V_Use itself could be defining the value of V_Initial inside a
+         --  loop for an array???
 
          if (not Is_Defined_In_Other_Path)
            and then Vertex_Points_To_Itself
@@ -1459,6 +1495,8 @@ package body Flow.Analysis is
 
          return Is_Defined_In_Other_Path;
       end Variable_Defined_In_Other_Path;
+
+   --  Start of Find_Use_Of_Uninitialised_Variables
 
    begin
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
