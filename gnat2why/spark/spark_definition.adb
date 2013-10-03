@@ -1636,12 +1636,6 @@ package body SPARK_Definition is
 
    begin
       case N_Binary_Op'(Nkind (N)) is
-         when N_Op_Concat =>
-            Violation_Detected := True;
-            if SPARK_Pragma_Is (Opt.On) then
-               Error_Msg_N ("concatenation is not yet supported", N);
-            end if;
-
          when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
             if Is_Array_Type (Left_T) then
                Violation_Detected := True;
@@ -1665,7 +1659,8 @@ package body SPARK_Definition is
             null;
 
          when N_Op_Eq | N_Op_Ne | N_Op_Expon | N_Op_Add | N_Op_Subtract |
-              N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
+              N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem |
+              N_Op_Concat =>
             null;
       end case;
 

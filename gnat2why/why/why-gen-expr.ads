@@ -161,6 +161,23 @@ package Why.Gen.Expr is
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
 
+   function New_Int_Add
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id;
+   --  Function to build Left + Right with integer addition; will convert Left
+   --  and Right to "int" if necessary
+
+   function New_Int_Substract
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id;
+   --  Function to build Left - Right with integer addition; will convert Left
+   --  and Right to "int" if necessary
+
+   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
+   --  Convert argument to int if not already done
+
    function Insert_Array_Conversion
      (Domain     : EW_Domain;
       Ada_Node   : Node_Id := Empty;

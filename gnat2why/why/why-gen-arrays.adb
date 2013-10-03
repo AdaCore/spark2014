@@ -181,6 +181,29 @@ package body Why.Gen.Arrays is
            Typ    => EW_Abstract (Ty_Ent));
    end Array_Convert_From_Base;
 
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Target    : Entity_Id;
+      Ar        : W_Expr_Id;
+      First     : W_Expr_Id;
+      Last      : W_Expr_Id) return W_Expr_Id
+   is
+      First_Int : constant W_Expr_Id :=
+        Insert_Scalar_Conversion (Domain, Expr => First, To => EW_Int_Type);
+      Last_Int : constant W_Expr_Id :=
+        Insert_Scalar_Conversion (Domain, Expr => Last, To => EW_Int_Type);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   =>
+             Prefix (Ada_Node => Target,
+                     S        => Full_Name (Target),
+                     W        => WNE_Of_Array),
+           Args   => (1 => Ar, 2 => First_Int, 3 => Last_Int),
+           Typ    => EW_Abstract (Target));
+   end Array_Convert_From_Base;
+
    ---------------------------
    -- Array_Convert_To_Base --
    ---------------------------
@@ -651,38 +674,6 @@ package body Why.Gen.Arrays is
          Typ      => Ret_Ty);
    end New_Array_Access;
 
-   ---------------------------
-   --  New_Element_Equality --
-   ---------------------------
-
-   function New_Element_Equality
-     (Ada_Node   : Node_Id := Empty;
-      Left_Arr   : W_Expr_Id;
-      Right_Arr  : W_Expr_Id;
-      Index      : W_Expr_Array) return W_Pred_Id
-   is
-      Left       : constant W_Expr_Id :=
-        New_Array_Access
-          (Ada_Node  => Ada_Node,
-           Domain    => EW_Term,
-           Ar        => Left_Arr,
-           Index     => Index);
-      Right      : constant W_Expr_Id :=
-        New_Array_Access
-          (Ada_Node  => Ada_Node,
-           Domain    => EW_Term,
-           Ar        => Right_Arr,
-           Index     => Index);
-      Result     : constant W_Pred_Id :=
-        +New_Comparison
-        (Domain    => EW_Pred,
-         Cmp       => EW_Eq,
-         Left      => Left,
-         Right     => Right);
-   begin
-      return Result;
-   end New_Element_Equality;
-
    ----------------------
    -- New_Array_Update --
    ----------------------
@@ -745,5 +736,37 @@ package body Why.Gen.Arrays is
          end;
       end if;
    end New_Array_Update;
+
+   ---------------------------
+   --  New_Element_Equality --
+   ---------------------------
+
+   function New_Element_Equality
+     (Ada_Node   : Node_Id := Empty;
+      Left_Arr   : W_Expr_Id;
+      Right_Arr  : W_Expr_Id;
+      Index      : W_Expr_Array) return W_Pred_Id
+   is
+      Left       : constant W_Expr_Id :=
+        New_Array_Access
+          (Ada_Node  => Ada_Node,
+           Domain    => EW_Term,
+           Ar        => Left_Arr,
+           Index     => Index);
+      Right      : constant W_Expr_Id :=
+        New_Array_Access
+          (Ada_Node  => Ada_Node,
+           Domain    => EW_Term,
+           Ar        => Right_Arr,
+           Index     => Index);
+      Result     : constant W_Pred_Id :=
+        +New_Comparison
+        (Domain    => EW_Pred,
+         Cmp       => EW_Eq,
+         Left      => Left,
+         Right     => Right);
+   begin
+      return Result;
+   end New_Element_Equality;
 
 end Why.Gen.Arrays;

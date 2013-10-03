@@ -191,6 +191,7 @@ end
 
   Sliding shifts the elements of the array according to the difference between
   the old and new value of first
+
 *)
 theory Array__1
 
@@ -233,6 +234,25 @@ theory Array__1
     forall i : int
       [get (slide a old_first new_first) i].
       get (slide a old_first new_first) i = get a (i - (new_first - old_first))
+
+  (* Concatenation is only defined for one-dimensional arrays; it appends a
+     map to another. We do not really care about the valid ranges of the
+     original arrays, but we need to know for each access to the
+     concatenation, which of the arguments we need to look at. Also, if we are
+     interested in the second argument, a shift must be made depending on the
+     original "first" value. *)
+
+  function concat (map 'a) int int (map 'a) int int : map 'a
+
+  axiom concat_def :
+    forall a b : map 'a.
+    forall a_first a_last b_first b_last : int.
+    forall i : int [get (concat a a_first a_last b b_first b_last) i].
+      (a_first <= i <= a_last ->
+          get (concat a a_first a_last b b_first b_last) i = get a i)
+          /\
+      (i > a_last ->
+        get (concat a a_first a_last b b_first b_last) i = get b (i-a_last + b_first - 1))
 end
 
 theory Array__2

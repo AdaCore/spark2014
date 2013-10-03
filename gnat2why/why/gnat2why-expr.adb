@@ -273,19 +273,13 @@ package body Gnat2Why.Expr is
      (Params       : Transformation_Params;
       Domain       : EW_Domain;
       Expr         : Node_Id) return W_Expr_Id;
-   --  Transform a slice Expr. It may be
-   --  called multiple times on the same Ada node, corresponding to different
-   --  phases of the translation. The first time it is called on an Ada node,
-   --  a logic function is generated and stored in Ada_To_Why_Func, so that the
-   --  function and axiom are generated only once per source slice. This
-   --  function F is used for generating each translation of this node. It
-   --  takes in parameters the prefix and bounds of the slice.
-   --
-   --     function F (prefix:<type>, low:int, high:int) : <type>
-   --
-   --     axiom A:
-   --        forall id:<type>. forall low:int. forall high:int.
-   --           R = F(id,low,high) -> <proposition for the slice R>
+   --  Transform a slice Expr.
+
+   function Transform_Concatenation
+     (Params : Transformation_Params;
+      Domain : EW_Domain;
+      Expr   : Node_Id) return W_Expr_Id;
+   --  Handle concatenation nodes
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
@@ -2851,8 +2845,8 @@ package body Gnat2Why.Expr is
         Is_Constrained (Left_Ty) or else
         Nkind (Left) in N_Identifier | N_Expanded_Name;
       Right_Simp : constant Boolean :=
-        Is_Constrained (Left_Ty) or else
-        Nkind (Left) in N_Identifier | N_Expanded_Name;
+        Is_Constrained (Etype (Right)) or else
+        Nkind (Right) in N_Identifier | N_Expanded_Name;
       Left_Expr : constant W_Expr_Id :=
         Transform_Expr (Left, Subdomain, Params);
       Left_Name : constant W_Expr_Id :=
@@ -3557,6 +3551,145 @@ package body Gnat2Why.Expr is
          when N_Op_Ne => return EW_Ne;
       end case;
    end Transform_Compare_Op;
+
+   -----------------------------
+   -- Transform_Concatenation --
+   -----------------------------
+
+   function Transform_Concatenation
+     (Params : Transformation_Params;
+      Domain : EW_Domain;
+      Expr   : Node_Id) return W_Expr_Id
+   is
+      Left      : constant W_Expr_Id :=
+        Transform_Expr (Left_Opnd (Expr), Domain, Params);
+      Right     : constant W_Expr_Id :=
+        Transform_Expr (Right_Opnd (Expr), Domain, Params);
+      Left_Simp : constant Boolean :=
+        Is_Constrained (Etype (Left_Opnd (Expr))) or else
+        Nkind (Left_Opnd (Expr)) in N_Identifier | N_Expanded_Name;
+      Right_Simp : constant Boolean :=
+        Is_Constrained (Etype (Right_Opnd (Expr))) or else
+        Nkind (Right_Opnd (Expr)) in N_Identifier | N_Expanded_Name;
+      Left_Name : constant W_Expr_Id :=
+        (if Left_Simp then Left
+         else +New_Temp_Identifier (Typ => Get_Type (Left)));
+      Right_Name : constant W_Expr_Id :=
+        (if Right_Simp then Right
+         else +New_Temp_Identifier (Typ => Get_Type (Right)));
+      Args       : W_Expr_Array (1 .. 6);
+      Arg_Ind    : Positive := 1;
+      T          : W_Expr_Id;
+      First_Expr : W_Expr_Id;
+      Low_Type   : Entity_Id;
+
+      function Build_Last_Expr return W_Expr_Id;
+      --  build the expression that yields the value of the 'Last attribute
+      --  of the concatenation. It is simply
+      --    first + length of left opnd + length of right_opnd - 1
+
+      ---------------------
+      -- Build_Last_Expr --
+      ---------------------
+
+      function Build_Last_Expr return W_Expr_Id is
+      begin
+         return
+           New_Int_Substract
+             (Domain,
+              New_Int_Add
+                (Domain,
+                 To_Int (Domain, First_Expr),
+                 New_Int_Add
+                   (Domain,
+                    To_Int
+                      (Domain,
+                       Get_Array_Attr
+                         (Domain, Left_Name, Attribute_Length, 1)),
+                    To_Int
+                      (Domain,
+                       Get_Array_Attr
+                         (Domain, Right_Name, Attribute_Length, 1)))),
+              New_Integer_Constant (Value => Uint_1));
+      end Build_Last_Expr;
+
+      --  Start of processing for Transform_Concatenation
+   begin
+
+      --  We first build the call to concatenation
+
+      Add_Array_Arg (Domain, Args, Left_Name, Arg_Ind);
+      Add_Array_Arg (Domain, Args, Right_Name, Arg_Ind);
+      T :=
+        New_Call
+          (Ada_Node => Expr,
+           Domain   => Domain,
+           Name     =>
+             Prefix
+               (Ada_Node => Etype (Expr),
+                P        => To_String (Ada_Array_Name (1)),
+                N        => "concat"),
+           Args     => Args,
+           Typ      => EW_Abstract (Etype (Expr)));
+
+      --  Depending on the lower bound of the concat, the object may not slided
+      --  correctly, because the concat operator in Why assumes that the new
+      --  low bound is the one of the left opnd. But this is not always the
+      --  case in Ada, see RM 4.5.3(6-7). So we first compute the new lower
+      --  bound and then slide. The test here is taken from exp_ch4.adb,
+      --  Expand_Concatenate.
+
+      Low_Type := First_Subtype (Root_Type (Base_Type (Etype (Expr))));
+      if Is_Constrained (Low_Type) then
+         First_Expr := Get_Array_Attr (Domain, Low_Type, Attribute_First, 1);
+         T := New_Call
+           (Domain => Domain,
+            Name   =>
+              Prefix (P => To_String (Ada_Array_Name (1)),
+                      N => "slide"),
+            Args   =>
+              (1 => T,
+               2 => Get_Array_Attr (Domain, Left_Name, Attribute_First, 1),
+               3 => First_Expr));
+      else
+         First_Expr := Get_Array_Attr (Domain, Left_Name, Attribute_First, 1);
+      end if;
+
+      --  Now the expression T is of the Why3 array type. We need to convert
+      --  it to the type of the concatenation expression. Whenever this type is
+      --  constrained, we are done. In other cases, we need to convert to the
+      --  unconstrained representation.
+
+      if not Is_Constrained (Etype (Expr)) then
+         T :=
+           Array_Convert_From_Base
+             (Domain => Domain,
+              Target => Etype (Expr),
+              Ar     => T,
+              First  => First_Expr,
+              Last   => Build_Last_Expr);
+      end if;
+
+      --  Finally, we bind the introduced names if any, and return
+
+      if not Left_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Left_Name,
+              Def     => +Left,
+              Context => T);
+      end if;
+      if not Right_Simp then
+         T :=
+           New_Typed_Binding
+             (Domain  => Domain,
+              Name    => +Right_Name,
+              Def     => +Right,
+              Context => T);
+      end if;
+      return T;
+   end Transform_Concatenation;
 
    ---------------------------
    -- Transform_Declaration --
@@ -4457,6 +4590,9 @@ package body Gnat2Why.Expr is
 
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             end Short_Circuit;
+
+         when N_Op_Concat =>
+            T := Transform_Concatenation (Local_Params, Domain, Expr);
 
          when N_Membership_Test =>
             T := Transform_Membership_Expression (Local_Params, Domain, Expr);

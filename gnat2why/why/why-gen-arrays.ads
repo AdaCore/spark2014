@@ -176,6 +176,16 @@ package Why.Gen.Arrays is
    --  "Ar" must be a Why expression of unconstrained array type, in split
    --  form. Convert it to the regular unconstrained form.
 
+   function Array_Convert_From_Base
+     (Domain    : EW_Domain;
+      Target    : Entity_Id;
+      Ar        : W_Expr_Id;
+      First     : W_Expr_Id;
+      Last      : W_Expr_Id) return W_Expr_Id;
+   --  This variant can be used when we need to build an unconstrained array,
+   --  but "Ar" is not in split form. We need to provide the target type and
+   --  first/last expressions explicitly.
+
    function New_Array_Update
       (Ada_Node  : Node_Id;
        Ar        : W_Expr_Id;

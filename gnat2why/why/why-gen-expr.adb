@@ -1038,6 +1038,56 @@ package body Why.Gen.Expr is
       end if;
    end New_Comparison;
 
+   -----------------
+   -- New_Int_Add --
+   -----------------
+
+   function New_Int_Add
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        New_Binary_Op
+          (Op      => EW_Add,
+           Op_Type => EW_Int,
+           Left    =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Left,
+                To     => EW_Int_Type),
+           Right   =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Right,
+                To     => EW_Int_Type));
+   end New_Int_Add;
+
+   -----------------------
+   -- New_Int_Substract --
+   -----------------------
+
+   function New_Int_Substract
+     (Domain : EW_Domain;
+      Left   : W_Expr_Id;
+      Right  : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        New_Binary_Op
+          (Op      => EW_Substract,
+           Op_Type => EW_Int,
+           Left    =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Left,
+                To     => EW_Int_Type),
+           Right   =>
+             Insert_Scalar_Conversion
+               (Domain => Domain,
+                Expr   => Right,
+                To     => EW_Int_Type));
+   end New_Int_Substract;
+
    ----------------------
    -- New_Located_Expr --
    ----------------------
@@ -1443,6 +1493,16 @@ package body Why.Gen.Expr is
          end;
       end if;
    end New_Xor_Expr;
+
+   ------------
+   -- To_Int --
+   ------------
+
+   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        Insert_Scalar_Conversion (Domain => D, Expr => E, To => EW_Int_Type);
+   end To_Int;
 
    -----------------------
    -- Why_Default_Value --
