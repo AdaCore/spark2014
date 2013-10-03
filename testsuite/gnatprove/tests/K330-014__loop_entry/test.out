@@ -8,9 +8,9 @@ for_loops.adb:46:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:46:13: warning:  assuming "Put_Line" has no effect on global items
 for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:59:13: warning:  assuming "Put_Line" has no effect on global items
-for_loops.adb:16:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test1) > 0
+for_loops.adb:16:10: warning: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test1) > 0
 for_loops.adb:16:10: info: loop invariant preservation proved
-for_loops.adb:29:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
+for_loops.adb:29:10: warning: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
 for_loops.adb:29:10: info: loop invariant preservation proved
 for_loops.adb:44:13: info: loop invariant initialization proved
 for_loops.adb:44:13: info: loop invariant preservation proved
@@ -24,11 +24,11 @@ optional.adb:13:35: info: length check proved
 optional.adb:17:10: info: loop invariant initialization proved
 optional.adb:17:10: info: loop invariant preservation proved
 optional.adb:24:46: info: length check proved
-optional.adb:27:11: index check not proved
+optional.adb:27:11: warning: array index check might fail
 optional.adb:31:13: info: loop invariant initialization proved
-optional.adb:31:13: loop invariant preservation not proved, requires TA'Loop_Entry (Outer, Inner) = 0
+optional.adb:31:13: warning: loop invariant might fail after first iteration, requires TA'Loop_Entry (Outer, Inner) = 0
 utils.adb:10:29: info: range check proved
-utils.adb:10:34: overflow check not proved
+utils.adb:10:34: warning: overflow check might fail
 while_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 while_loops.adb:9:04: warning:  assuming "Put_Line" has no effect on global items
 while_loops.adb:16:10: warning: no Global contract available for "Put_Line"
@@ -41,13 +41,13 @@ while_loops.adb:67:13: warning: no Global contract available for "Put_Line"
 while_loops.adb:67:13: warning:  assuming "Put_Line" has no effect on global items
 while_loops.adb:18:10: info: loop invariant initialization proved
 while_loops.adb:18:10: info: loop invariant preservation proved
-while_loops.adb:20:29: overflow check not proved
-while_loops.adb:32:10: loop invariant initialization not proved, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
+while_loops.adb:20:29: warning: overflow check might fail
+while_loops.adb:32:10: warning: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
 while_loops.adb:32:10: info: loop invariant preservation proved
 while_loops.adb:36:29: info: overflow check proved
 while_loops.adb:48:13: info: loop invariant initialization proved
 while_loops.adb:48:13: info: loop invariant preservation proved
-while_loops.adb:53:29: overflow check not proved
+while_loops.adb:53:29: warning: overflow check might fail
 while_loops.adb:65:13: info: loop invariant initialization proved
 while_loops.adb:65:13: info: loop invariant preservation proved
 while_loops.adb:70:29: info: overflow check proved

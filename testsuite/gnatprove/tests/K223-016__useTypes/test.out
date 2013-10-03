@@ -1,1 +1,1 @@
-iandatypes.adb:6:37: range check not proved
+iandatypes.adb:6:37: warning: range check might fail

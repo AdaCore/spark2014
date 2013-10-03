@@ -5,7 +5,7 @@ p.ads:3:53: info: range check proved
 p.ads:3:56: info: overflow check proved
 p.ads:7:36: info: postcondition proved
 p.ads:10:38: info: range check proved
-p.ads:10:43: overflow check not proved
-p.ads:14:15: postcondition not proved, requires Down (X) = Down (X - 1) + 1
+p.ads:10:43: warning: overflow check might fail
+p.ads:14:15: warning: postcondition might fail, requires Down (X) = Down (X - 1) + 1
 p.ads:14:34: info: range check proved
-p.ads:14:39: overflow check not proved
+p.ads:14:39: warning: overflow check might fail

@@ -12,27 +12,27 @@ arith.adb:19:09: warning: unused assignment [ineffective]
 arith.adb:23:12: warning: possible reassociation due to missing parentheses
 arith.adb:23:17: warning: possible reassociation due to missing parentheses
 arith.adb:26:11: warning: possible reassociation due to missing parentheses
-arith.adb:7:14: overflow check not proved
-arith.adb:7:18: overflow check not proved
-arith.adb:8:14: overflow check not proved
-arith.adb:8:18: overflow check not proved
+arith.adb:7:14: warning: overflow check might fail
+arith.adb:7:18: warning: overflow check might fail
+arith.adb:8:14: warning: overflow check might fail
+arith.adb:8:18: warning: overflow check might fail
 arith.adb:11:15: info: overflow check proved
 arith.adb:11:20: info: overflow check proved
 arith.adb:12:14: info: overflow check proved
-arith.adb:12:19: overflow check not proved
-arith.adb:15:14: overflow check not proved
-arith.adb:15:18: division check not proved
-arith.adb:16:14: division check not proved
-arith.adb:16:14: overflow check not proved
-arith.adb:16:18: overflow check not proved
-arith.adb:19:14: overflow check not proved
-arith.adb:19:18: overflow check not proved
-arith.adb:20:14: division check not proved
-arith.adb:20:14: overflow check not proved
-arith.adb:20:18: overflow check not proved
-arith.adb:23:14: overflow check not proved
-arith.adb:23:19: overflow check not proved
-arith.adb:23:23: overflow check not proved
-arith.adb:23:28: division check not proved
-arith.adb:26:16: overflow check not proved
-arith.adb:26:23: overflow check not proved
+arith.adb:12:19: warning: overflow check might fail
+arith.adb:15:14: warning: overflow check might fail
+arith.adb:15:18: warning: divide by zero might fail
+arith.adb:16:14: warning: divide by zero might fail
+arith.adb:16:14: warning: overflow check might fail
+arith.adb:16:18: warning: overflow check might fail
+arith.adb:19:14: warning: overflow check might fail
+arith.adb:19:18: warning: overflow check might fail
+arith.adb:20:14: warning: divide by zero might fail
+arith.adb:20:14: warning: overflow check might fail
+arith.adb:20:18: warning: overflow check might fail
+arith.adb:23:14: warning: overflow check might fail
+arith.adb:23:19: warning: overflow check might fail
+arith.adb:23:23: warning: overflow check might fail
+arith.adb:23:28: warning: divide by zero might fail
+arith.adb:26:16: warning: overflow check might fail
+arith.adb:26:23: warning: overflow check might fail

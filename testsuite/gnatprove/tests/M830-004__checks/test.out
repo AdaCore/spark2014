@@ -1,56 +1,56 @@
-do_checks.adb:14:24: range check not proved
+do_checks.adb:14:24: warning: range check might fail
 do_checks.adb:20:24: info: range check proved
-do_checks.adb:20:57: overflow check not proved
-do_checks.adb:28:16: range check not proved
+do_checks.adb:20:57: warning: overflow check might fail
+do_checks.adb:28:16: warning: range check might fail
 do_checks.adb:35:16: info: range check proved
-do_checks.adb:35:48: overflow check not proved
-do_checks.adb:44:21: range check not proved
+do_checks.adb:35:48: warning: overflow check might fail
+do_checks.adb:44:21: warning: range check might fail
 do_checks.adb:50:21: info: range check proved
-do_checks.adb:50:58: overflow check not proved
-do_checks.adb:58:16: range check not proved
+do_checks.adb:50:58: warning: overflow check might fail
+do_checks.adb:58:16: warning: range check might fail
 do_checks.adb:64:16: info: range check proved
-do_checks.adb:64:61: overflow check not proved
-do_checks.adb:71:17: range check not proved
+do_checks.adb:64:61: warning: overflow check might fail
+do_checks.adb:71:17: warning: range check might fail
 do_checks.adb:75:17: info: range check proved
-do_checks.adb:75:50: overflow check not proved
-do_checks.adb:83:19: range check not proved
+do_checks.adb:75:50: warning: overflow check might fail
+do_checks.adb:83:19: warning: range check might fail
 do_checks.adb:91:19: info: range check proved
-do_checks.adb:91:51: overflow check not proved
-do_checks.adb:100:16: range check not proved
+do_checks.adb:91:51: warning: overflow check might fail
+do_checks.adb:100:16: warning: range check might fail
 do_checks.adb:106:16: info: range check proved
-do_checks.adb:106:65: overflow check not proved
-do_checks.adb:134:25: range check not proved
+do_checks.adb:106:65: warning: overflow check might fail
+do_checks.adb:134:25: warning: range check might fail
 do_checks.adb:147:25: info: range check proved
-do_checks.adb:147:57: overflow check not proved
-do_checks.adb:159:39: range check not proved
-do_checks.adb:159:39: length check not proved
+do_checks.adb:147:57: warning: overflow check might fail
+do_checks.adb:159:39: warning: range check might fail
+do_checks.adb:159:39: warning: length check might fail
 do_checks.adb:165:38: info: range check proved
-do_checks.adb:165:38: length check not proved
-do_checks.adb:165:67: overflow check not proved
-do_checks.adb:234:24: length check not proved
+do_checks.adb:165:38: warning: length check might fail
+do_checks.adb:165:67: warning: overflow check might fail
+do_checks.adb:234:24: warning: length check might fail
 do_checks.adb:236:35: info: length check proved
 do_checks.adb:247:24: info: length check proved
 do_checks.adb:249:35: info: length check proved
 do_checks.adb:252:16: info: precondition proved
-do_checks.adb:264:22: length check not proved
+do_checks.adb:264:22: warning: length check might fail
 do_checks.adb:266:35: info: length check proved
 do_checks.adb:280:22: info: length check proved
 do_checks.adb:282:35: info: length check proved
 do_checks.adb:284:16: info: precondition proved
-do_checks.adb:312:20: discriminant check not proved
-do_checks.adb:312:25: index check not proved
-do_checks.adb:312:32: discriminant check not proved
-do_checks.adb:312:37: index check not proved
+do_checks.adb:312:20: warning: discriminant check might fail
+do_checks.adb:312:25: warning: array index check might fail
+do_checks.adb:312:32: warning: discriminant check might fail
+do_checks.adb:312:37: warning: array index check might fail
 do_checks.adb:325:20: info: discriminant check proved
-do_checks.adb:325:25: index check not proved
+do_checks.adb:325:25: warning: array index check might fail
 do_checks.adb:325:32: info: discriminant check proved
-do_checks.adb:325:37: index check not proved
-do_checks.adb:330:16: precondition not proved
-do_checks.adb:401:24: discriminant check not proved
+do_checks.adb:325:37: warning: array index check might fail
+do_checks.adb:330:16: warning: precondition might fail
+do_checks.adb:401:24: warning: discriminant check might fail
 do_checks.adb:414:24: info: discriminant check proved
-do_checks.adb:419:16: precondition not proved
-do_checks.adb:456:23: discriminant check not proved
-do_checks.adb:473:19: discriminant check not proved
-do_checks.adb:481:26: discriminant check not proved
+do_checks.adb:419:16: warning: precondition might fail
+do_checks.adb:456:23: warning: discriminant check might fail
+do_checks.adb:473:19: warning: discriminant check might fail
+do_checks.adb:481:26: warning: discriminant check might fail
 do_checks.adb:496:26: info: discriminant check proved
-do_checks.adb:503:16: precondition not proved
+do_checks.adb:503:16: warning: precondition might fail

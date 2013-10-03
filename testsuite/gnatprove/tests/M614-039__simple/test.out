@@ -1,6 +1,6 @@
 incr_loop.adb:6:10: info: loop invariant initialization proved
 incr_loop.adb:6:10: info: loop invariant preservation proved
-incr_loop.adb:7:41: overflow check not proved
+incr_loop.adb:7:41: warning: overflow check might fail
 incr_loop.adb:8:19: info: index check proved
 incr_loop.adb:8:38: info: index check proved
 incr_loop.adb:8:41: info: overflow check proved

@@ -1,7 +1,7 @@
 twodim.adb:11:16: warning: unused initial value of "M" [unused_initial_value]
 twodim.adb:11:16: warning: unused variable "M" [unused]
-twodim.adb:8:16: division check not proved
-twodim.adb:8:16: overflow check not proved
-twodim.adb:8:25: index check not proved
-twodim.adb:8:29: overflow check not proved
-twodim.adb:13:27: overflow check not proved
+twodim.adb:8:16: warning: divide by zero might fail
+twodim.adb:8:16: warning: overflow check might fail
+twodim.adb:8:25: warning: array index check might fail
+twodim.adb:8:29: warning: overflow check might fail
+twodim.adb:13:27: warning: overflow check might fail

@@ -9,5 +9,5 @@ refined_depends_illegal.adb:77:48: duplicate use of item
 refined_depends_illegal.adb:85:48: cannot mix null and non-null dependency items
 refined_depends_illegal_2.adb:7:31: warning: missing dependency "Par => Y" [depends_missing]
 refined_depends_illegal_2.adb:17:31: warning: missing dependency "Y => Par" [depends_missing]
-refined_depends_illegal_2.adb:10:16: overflow check not proved
-refined_depends_illegal_2.adb:21:14: overflow check not proved
+refined_depends_illegal_2.adb:10:16: warning: overflow check might fail
+refined_depends_illegal_2.adb:21:14: warning: overflow check might fail

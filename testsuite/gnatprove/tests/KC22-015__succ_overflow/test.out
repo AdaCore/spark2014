@@ -1,6 +1,6 @@
 p.adb:13:35: info: range check proved
-p.adb:13:42: range check not proved
+p.adb:13:42: warning: range check might fail
 p.adb:21:31: info: range check proved
-p.adb:21:38: range check not proved
+p.adb:21:38: warning: range check might fail
 p.adb:29:18: info: range check proved
 p.adb:37:19: info: range check proved

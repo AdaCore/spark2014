@@ -5,8 +5,8 @@ p.adb:12:7: info: precondition proved
 p.adb:13:7: info: precondition proved
 p.adb:19:10: info: precondition proved
 p.adb:21:10: info: precondition proved
-p.ads:22:14: postcondition not proved
+p.ads:22:14: warning: postcondition might fail
 p.ads:22:34: info: precondition proved
-p.ads:26:14: postcondition not proved, requires Strict_Equal (L, L'old)
+p.ads:26:14: warning: postcondition might fail, requires Strict_Equal (L, L'old)
 p.ads:29:13: info: precondition proved
-p.ads:30:14: postcondition not proved
+p.ads:30:14: warning: postcondition might fail

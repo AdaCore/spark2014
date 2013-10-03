@@ -31,9 +31,9 @@ minmax.adb:57:16: info: range check proved
 minmax.adb:58:7: info: assertion proved
 minmax.adb:59:7: info: assertion proved
 minmax.adb:64:16: info: range check proved
-minmax.adb:64:27: overflow check not proved
-minmax.adb:65:16: range check not proved
-minmax.adb:65:24: overflow check not proved
+minmax.adb:64:27: warning: overflow check might fail
+minmax.adb:65:16: warning: range check might fail
+minmax.adb:65:24: warning: overflow check might fail
 minmax.adb:66:7: info: assertion proved
 minmax.adb:67:7: info: assertion proved
 minmax.adb:67:31: info: overflow check proved

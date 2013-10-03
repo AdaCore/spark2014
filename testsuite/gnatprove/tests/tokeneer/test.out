@@ -6,24 +6,24 @@ admin.adb:57:34: info: length check proved
 admin.adb:103:7: info: assertion proved
 admin.adb:110:10: info: loop invariant initialization proved
 admin.adb:110:10: info: loop invariant preservation proved
-admin.adb:121:13: assertion not proved
+admin.adb:121:13: warning: assertion might fail
 admin.adb:129:17: info: range check proved
 admin.adb:137:16: info: loop invariant initialization proved
-admin.adb:137:16: loop invariant preservation not proved
+admin.adb:137:16: warning: loop invariant might fail after first iteration
 admin.adb:144:38: info: index check proved
 admin.adb:156:36: info: index check proved
 admin.adb:253:16: info: range check proved
 admin.ads:103:26: info: postcondition proved
 admin.ads:143:7: info: postcondition proved
 admin.ads:163:26: info: postcondition proved
-admin.ads:190:7: postcondition not proved
+admin.ads:190:7: warning: postcondition might fail
 admin.ads:191:7: info: precondition proved
 admin.ads:215:26: info: postcondition proved
 admin.ads:245:29: info: length check proved
 admin.ads:246:58: info: length check proved
 admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
-alarm.ads:82:7: postcondition not proved, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
+alarm.ads:82:7: warning: postcondition might fail, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:80:32: info: length check proved
 auditlog.adb:89:45: info: length check proved
 auditlog.adb:94:53: info: length check proved
@@ -48,18 +48,18 @@ auditlog.adb:167:28: info: length check proved
 auditlog.adb:168:28: info: length check proved
 auditlog.adb:169:28: info: length check proved
 auditlog.adb:194:26: info: range check proved
-auditlog.adb:244:46: length check not proved
-auditlog.adb:246:23: range check not proved
+auditlog.adb:244:46: warning: length check might fail
+auditlog.adb:246:23: warning: range check might fail
 auditlog.adb:246:23: info: length check proved
 auditlog.adb:499:22: info: precondition proved
-auditlog.adb:600:34: length check not proved
-auditlog.adb:753:47: range check not proved
+auditlog.adb:600:34: warning: length check might fail
+auditlog.adb:753:47: warning: range check might fail
 auditlog.adb:753:50: info: overflow check proved
 auditlog.adb:753:69: info: overflow check proved
-auditlog.adb:757:10: postcondition not proved
-auditlog.adb:758:47: range check not proved
-auditlog.adb:758:50: overflow check not proved
-auditlog.adb:758:69: overflow check not proved
+auditlog.adb:757:10: warning: postcondition might fail
+auditlog.adb:758:47: warning: range check might fail
+auditlog.adb:758:50: warning: overflow check might fail
+auditlog.adb:758:69: warning: overflow check might fail
 auditlog.adb:808:13: info: postcondition proved
 auditlog.adb:821:75: info: range check proved
 auditlog.adb:868:13: info: postcondition proved
@@ -74,15 +74,15 @@ auditlog.adb:986:10: info: postcondition proved
 auditlog.adb:988:47: info: overflow check proved
 auditlog.adb:1008:50: info: range check proved
 auditlog.adb:1010:44: info: range check proved
-auditlog.adb:1074:47: range check not proved
+auditlog.adb:1074:47: warning: range check might fail
 auditlog.adb:1074:50: info: overflow check proved
 auditlog.adb:1074:69: info: overflow check proved
 auditlog.adb:1077:10: info: postcondition proved
-auditlog.adb:1078:47: range check not proved
-auditlog.adb:1078:50: overflow check not proved
-auditlog.adb:1078:69: overflow check not proved
+auditlog.adb:1078:47: warning: range check might fail
+auditlog.adb:1078:50: warning: overflow check might fail
+auditlog.adb:1078:69: warning: overflow check might fail
 auditlog.adb:1086:10: info: precondition proved
-auditlog.adb:1093:10: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1093:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1095:50: info: range check proved
 auditlog.adb:1095:53: info: overflow check proved
 auditlog.adb:1095:72: info: overflow check proved
@@ -90,29 +90,29 @@ auditlog.adb:1097:10: info: assertion proved
 auditlog.adb:1098:10: info: assertion proved
 auditlog.adb:1100:10: info: precondition proved
 auditlog.adb:1111:10: info: assertion proved
-auditlog.adb:1113:50: range check not proved
-auditlog.adb:1113:53: overflow check not proved
+auditlog.adb:1113:50: warning: range check might fail
+auditlog.adb:1113:53: warning: overflow check might fail
 auditlog.adb:1113:72: info: overflow check proved
-auditlog.adb:1115:10: assertion not proved, requires LogFileEntries(CurrentLogFile) = 1
+auditlog.adb:1115:10: warning: assertion might fail, requires LogFileEntries(CurrentLogFile) = 1
 auditlog.adb:1116:10: info: assertion proved
-auditlog.adb:1125:7: assertion not proved
-auditlog.adb:1127:47: range check not proved
-auditlog.adb:1127:50: overflow check not proved
-auditlog.adb:1127:69: overflow check not proved
-auditlog.adb:1132:7: precondition not proved
-auditlog.adb:1566:7: precondition not proved
+auditlog.adb:1125:7: warning: assertion might fail
+auditlog.adb:1127:47: warning: range check might fail
+auditlog.adb:1127:50: warning: overflow check might fail
+auditlog.adb:1127:69: warning: overflow check might fail
+auditlog.adb:1132:7: warning: precondition might fail
+auditlog.adb:1566:7: warning: precondition might fail
 auditlog.adb:1576:10: info: precondition proved
 auditlog.adb:1658:22: info: precondition proved
-auditlog.adb:1697:13: assertion not proved
-auditlog.adb:1702:53: range check not proved
-auditlog.adb:1702:56: overflow check not proved
-auditlog.adb:1702:75: overflow check not proved
-auditlog.adb:1732:52: range check not proved
-auditlog.adb:1742:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
-auditlog.adb:1744:47: range check not proved
-auditlog.adb:1744:50: overflow check not proved
-auditlog.adb:1744:69: overflow check not proved
-auditlog.adb:1834:10: assertion not proved
+auditlog.adb:1697:13: warning: assertion might fail
+auditlog.adb:1702:53: warning: range check might fail
+auditlog.adb:1702:56: warning: overflow check might fail
+auditlog.adb:1702:75: warning: overflow check might fail
+auditlog.adb:1732:52: warning: range check might fail
+auditlog.adb:1742:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1744:47: warning: range check might fail
+auditlog.adb:1744:50: warning: overflow check might fail
+auditlog.adb:1744:69: warning: overflow check might fail
+auditlog.adb:1834:10: warning: assertion might fail
 auditlog.adb:1837:52: info: range check proved
 auditlog.adb:1837:55: info: overflow check proved
 auditlog.adb:1837:74: info: overflow check proved
@@ -121,21 +121,21 @@ auditlog.adb:1852:50: info: range check proved
 auditlog.adb:1852:53: info: overflow check proved
 auditlog.adb:1852:72: info: overflow check proved
 auditlog.adb:1858:53: info: range check proved
-auditlog.adb:1861:47: info: range check proved
-auditlog.adb:1868:7: assertion not proved, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
-auditlog.adb:1870:47: range check not proved
-auditlog.adb:1870:50: overflow check not proved
-auditlog.adb:1870:69: overflow check not proved
+auditlog.adb:1861:47: warning: range check might fail
+auditlog.adb:1868:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1870:47: warning: range check might fail
+auditlog.adb:1870:50: warning: overflow check might fail
+auditlog.adb:1870:69: warning: overflow check might fail
 auditlog.adb:1914:10: info: assertion proved
 audittypes.ads:94:58: info: length check proved
 audittypes.ads:107:6: info: length check proved
-bio.adb:126:10: assertion not proved, requires Result = InternalError
+bio.adb:126:10: warning: assertion might fail, requires Result = InternalError
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:220:49: info: length check proved
-certificatestore.adb:223:31: range check not proved
-certificatestore.adb:224:29: range check not proved
-certificatestore.adb:224:29: length check not proved
-certificatestore.adb:225:45: length check not proved
+certificatestore.adb:223:31: warning: range check might fail
+certificatestore.adb:224:29: warning: range check might fail
+certificatestore.adb:224:29: warning: length check might fail
+certificatestore.adb:225:45: warning: length check might fail
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
 clock.adb:74:11: info: range check proved
@@ -156,7 +156,7 @@ clock.adb:280:41: info: division check proved
 clock.adb:280:41: info: range check proved
 clock.adb:281:44: info: division check proved
 clock.adb:282:25: info: division check proved
-clock.adb:282:25: range check not proved
+clock.adb:282:25: warning: range check might fail
 clock.adb:311:36: info: length check proved
 clock.adb:328:7: info: precondition proved
 clock.adb:329:44: info: division check proved
@@ -211,9 +211,9 @@ configdata.adb:237:44: info: overflow check proved
 configdata.adb:237:44: info: range check proved
 configdata.adb:276:51: info: overflow check proved
 configdata.adb:276:51: info: range check proved
-configdata.adb:323:20: range check not proved
-configdata.adb:331:48: index check not proved
-configdata.adb:331:63: index check not proved
+configdata.adb:323:20: warning: range check might fail
+configdata.adb:331:48: warning: array index check might fail
+configdata.adb:331:63: warning: array index check might fail
 configdata.adb:379:35: info: overflow check proved
 configdata.adb:379:35: info: range check proved
 configdata.adb:380:35: info: range check proved
@@ -221,17 +221,17 @@ configdata.adb:380:45: info: overflow check proved
 configdata.adb:380:50: info: overflow check proved
 configdata.adb:380:68: info: range check proved
 configdata.adb:416:38: info: range check proved
-configdata.adb:723:23: range check not proved
-configdata.adb:729:53: index check not proved
-configdata.adb:729:75: index check not proved
+configdata.adb:723:23: warning: range check might fail
+configdata.adb:729:53: warning: array index check might fail
+configdata.adb:729:75: warning: array index check might fail
 configdata.adb:1057:34: info: length check proved
 configdata.adb:1062:30: info: division check proved
-configdata.adb:1064:59: range check not proved
+configdata.adb:1064:59: warning: range check might fail
 configdata.adb:1064:72: info: division check proved
 configdata.adb:1065:72: info: division check proved
 configdata.adb:1068:31: info: division check proved
 configdata.adb:1068:42: info: division check proved
-configdata.adb:1069:59: range check not proved
+configdata.adb:1069:59: warning: range check might fail
 configdata.adb:1069:72: info: division check proved
 configdata.adb:1070:72: info: division check proved
 configdata.adb:1094:69: info: division check proved
@@ -242,7 +242,7 @@ configdata.adb:1194:69: info: division check proved
 configdata.adb:1204:68: info: division check proved
 configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
-configdata.adb:1767:17: range check not proved
+configdata.adb:1767:17: warning: range check might fail
 display.adb:42:57: info: length check proved
 display.adb:45:43: info: length check proved
 display.adb:50:43: info: length check proved
@@ -261,25 +261,25 @@ display.adb:128:11: info: range check proved
 display.adb:137:30: info: index check proved
 display.adb:138:30: info: index check proved
 display.adb:139:30: info: index check proved
-display.adb:140:32: range check not proved
+display.adb:140:32: warning: range check might fail
 display.adb:143:11: info: range check proved
-display.adb:148:33: index check not proved
-display.adb:148:33: overflow check not proved
-display.adb:150:32: range check not proved
+display.adb:148:33: warning: array index check might fail
+display.adb:148:33: warning: overflow check might fail
+display.adb:150:32: warning: range check might fail
 display.ads:66:48: info: length check proved
-door.adb:99:10: postcondition not proved, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
-door.ads:148:8: postcondition not proved
-door.ads:215:8: postcondition not proved
-door.ads:270:8: postcondition not proved
+door.adb:99:10: warning: postcondition might fail, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
+door.ads:148:8: warning: postcondition might fail
+door.ads:215:8: warning: postcondition might fail
+door.ads:270:8: warning: postcondition might fail
 enclave.adb:109:18: info: precondition proved
 enclave.adb:207:29: info: postcondition proved
 enclave.adb:276:10: info: postcondition proved
 enclave.adb:288:16: info: precondition proved
 enclave.adb:362:29: info: postcondition proved
 enclave.adb:441:29: info: postcondition proved
-enclave.adb:570:19: precondition not proved
+enclave.adb:570:19: warning: precondition might fail
 enclave.adb:575:24: info: precondition proved
-enclave.adb:579:10: postcondition not proved
+enclave.adb:579:10: warning: postcondition might fail
 enclave.adb:593:19: info: precondition proved
 enclave.adb:598:24: info: precondition proved
 enclave.adb:638:48: info: precondition proved
@@ -287,7 +287,7 @@ enclave.adb:697:29: info: postcondition proved
 enclave.adb:829:15: info: precondition proved
 enclave.adb:837:19: info: precondition proved
 enclave.adb:842:24: info: precondition proved
-enclave.adb:846:10: postcondition not proved
+enclave.adb:846:10: warning: postcondition might fail
 enclave.adb:856:19: info: precondition proved
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
@@ -297,28 +297,28 @@ enclave.adb:1046:15: info: precondition proved
 enclave.adb:1055:10: info: precondition proved
 enclave.adb:1057:10: info: precondition proved
 enclave.adb:1138:15: info: precondition proved
-enclave.adb:1140:10: postcondition not proved
+enclave.adb:1140:10: warning: postcondition might fail
 enclave.adb:1148:19: info: precondition proved
 enclave.adb:1189:15: info: precondition proved
 enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
 enclave.adb:1316:24: info: precondition proved
-enclave.adb:1320:10: postcondition not proved
-enclave.adb:1344:19: precondition not proved
+enclave.adb:1320:10: warning: postcondition might fail
+enclave.adb:1344:19: warning: precondition might fail
 enclave.adb:1349:24: info: precondition proved
 enclave.adb:1354:22: info: precondition proved
-enclave.adb:1368:12: precondition not proved
+enclave.adb:1368:12: warning: precondition might fail
 enclave.adb:1508:15: info: precondition proved
 enclave.adb:1523:24: info: precondition proved
-enclave.adb:1527:10: postcondition not proved
-enclave.adb:1537:17: precondition not proved
+enclave.adb:1527:10: warning: postcondition might fail
+enclave.adb:1537:17: warning: precondition might fail
 enclave.adb:1545:19: info: precondition proved
 enclave.adb:1568:19: info: precondition proved
 enclave.adb:1573:24: info: precondition proved
 enclave.adb:1800:19: info: precondition proved
 enclave.adb:1818:19: info: precondition proved
 enclave.adb:1823:24: info: precondition proved
-enclave.adb:1827:11: postcondition not proved
+enclave.adb:1827:11: warning: postcondition might fail
 enclave.adb:1850:19: info: precondition proved
 enclave.adb:1873:19: info: precondition proved
 enclave.adb:1878:24: info: precondition proved
@@ -326,34 +326,34 @@ enclave.adb:1883:22: info: precondition proved
 enclave.adb:1885:17: info: precondition proved
 enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
-enclave.adb:1893:13: precondition not proved
-enclave.adb:1896:13: precondition not proved
+enclave.adb:1893:13: warning: precondition might fail
+enclave.adb:1896:13: warning: precondition might fail
 enclave.adb:2079:13: info: precondition proved
 enclave.adb:2082:13: info: precondition proved
 enclave.adb:2085:13: info: precondition proved
-enclave.adb:2531:13: precondition not proved
-enclave.adb:2536:13: precondition not proved
+enclave.adb:2531:13: warning: precondition might fail
+enclave.adb:2536:13: warning: precondition might fail
 enclave.adb:2902:22: info: precondition proved
 enclave.adb:2907:27: info: precondition proved
-enclave.adb:2911:13: postcondition not proved
+enclave.adb:2911:13: warning: postcondition might fail
 enclave.adb:2920:22: info: precondition proved
 enclave.adb:2925:27: info: precondition proved
 enclave.adb:2929:22: info: precondition proved
 enclave.adb:2956:27: info: precondition proved
 enclave.adb:2965:21: info: precondition proved
-enclave.adb:2966:42: range check not proved
-enclave.adb:2997:10: precondition not proved
-enclave.ads:118:7: postcondition not proved
-enclave.ads:226:7: postcondition not proved
-enclave.ads:286:7: postcondition not proved
+enclave.adb:2966:42: warning: range check might fail
+enclave.adb:2997:10: warning: precondition might fail
+enclave.ads:118:7: warning: postcondition might fail
+enclave.ads:226:7: warning: postcondition might fail
+enclave.ads:286:7: warning: postcondition might fail
 enclave.ads:576:19: info: precondition proved
 enclave.ads:585:19: info: precondition proved
 enclave.ads:590:24: info: precondition proved
-enclave.ads:594:7: postcondition not proved
+enclave.ads:594:7: warning: postcondition might fail
 enclave.ads:621:19: info: precondition proved
 enclave.ads:630:19: info: precondition proved
 enclave.ads:635:24: info: precondition proved
-enclave.ads:652:23: precondition not proved
+enclave.ads:652:23: warning: precondition might fail
 floppy.adb:42:33: info: length check proved
 floppy.adb:43:37: info: length check proved
 floppy.adb:44:28: info: length check proved
@@ -365,21 +365,21 @@ keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
 keystore.adb:195:57: info: overflow check proved
 keystore.adb:197:49: info: length check proved
-keystore.adb:206:33: index check not proved
+keystore.adb:206:33: warning: array index check might fail
 keystore.adb:206:33: info: overflow check proved
 keystore.adb:206:49: info: overflow check proved
 keystore.adb:223:52: info: division check proved
-keystore.adb:226:14: range check not proved
-keystore.adb:242:22: precondition not proved
-keystore.adb:253:36: range check not proved
+keystore.adb:226:14: warning: range check might fail
+keystore.adb:242:22: warning: precondition might fail
+keystore.adb:253:36: warning: range check might fail
 keystore.adb:337:40: info: length check proved
 keystore.adb:810:77: info: length check proved
-keystore.ads:255:7: postcondition not proved
-keystore.ads:275:26: postcondition not proved, requires not (PrivateKeyPresent)
-latch.ads:107:7: postcondition not proved
-latch.ads:142:8: postcondition not proved, requires IsLocked = LatchisLocked or SystemFault
-latch.ads:162:26: postcondition not proved, requires Latch_Timeout = Time
-poll.ads:132:11: postcondition not proved
+keystore.ads:255:7: warning: postcondition might fail
+keystore.ads:275:26: warning: postcondition might fail, requires not (PrivateKeyPresent)
+latch.ads:107:7: warning: postcondition might fail
+latch.ads:142:8: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
+latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
+poll.ads:132:11: warning: postcondition might fail
 screen.adb:122:6: info: length check proved
 screen.adb:122:7: info: length check proved
 screen.adb:123:7: info: length check proved
@@ -398,8 +398,8 @@ screen.adb:135:7: info: length check proved
 screen.adb:136:7: info: length check proved
 screen.adb:815:43: info: length check proved
 screen.adb:816:40: info: length check proved
-screen.adb:818:40: range check not proved
-screen.adb:818:40: length check not proved
+screen.adb:818:40: warning: range check might fail
+screen.adb:818:40: warning: length check might fail
 stats.adb:53:57: info: overflow check proved
 stats.adb:70:51: info: overflow check proved
 stats.adb:87:53: info: overflow check proved
@@ -418,7 +418,7 @@ tokenreader.adb:755:43: info: range check proved
 updates.ads:96:12: info: postcondition proved
 updates.ads:188:11: info: postcondition proved
 userentry.adb:685:19: info: precondition proved
-userentry.adb:919:12: postcondition not proved, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
+userentry.adb:919:12: warning: postcondition might fail, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
 userentry.adb:1301:13: info: precondition proved
-userentry.adb:1305:13: precondition not proved
-userentry.adb:1309:13: precondition not proved
+userentry.adb:1305:13: warning: precondition might fail
+userentry.adb:1309:13: warning: precondition might fail

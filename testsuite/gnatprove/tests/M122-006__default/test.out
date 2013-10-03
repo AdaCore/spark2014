@@ -2,4 +2,4 @@ p.adb:8:03: warning: statement has no effect [ineffective]
 p.adb:17:05: warning: unused assignment [ineffective]
 p.adb:18:05: warning: unused assignment [ineffective]
 p.adb:8:16: info: discriminant check proved
-p.adb:18:9: discriminant check not proved
+p.adb:18:9: warning: discriminant check might fail

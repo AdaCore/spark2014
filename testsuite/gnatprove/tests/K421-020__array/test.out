@@ -1,1 +1,1 @@
-p.adb:15:16: range check not proved
+p.adb:15:16: warning: range check might fail

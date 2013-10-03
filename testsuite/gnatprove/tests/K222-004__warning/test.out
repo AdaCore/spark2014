@@ -1,3 +1,3 @@
 pack.adb:16:09: warning: unused assignment [ineffective]
 pack.adb:17:07: warning: statement has no effect [ineffective]
-pack.ads:3:19: postcondition not proved, requires not F'result
+pack.ads:3:19: warning: postcondition might fail, requires not F'result

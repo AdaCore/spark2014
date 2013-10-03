@@ -12,5 +12,5 @@ p.adb:9:04: warning: no Global contract available for "Put_Line"
 p.adb:9:04: warning:  assuming "Put_Line" has no effect on global items
 p.adb:9:04: warning: statement has no effect [ineffective]
 p.adb:5:18: info: length check proved
-p.adb:8:10: range check not proved
-p.adb:8:10: precondition not proved
+p.adb:8:10: warning: range check might fail
+p.adb:8:10: warning: precondition might fail

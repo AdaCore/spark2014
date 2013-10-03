@@ -1,6 +1,6 @@
 pack.adb:19:07: warning: statement has no effect [ineffective]
 pack.adb:21:07: warning: statement has no effect [ineffective]
 pack.adb:21:11: warning: unused assignment to "X" [ineffective]
-pack.ads:8:19: postcondition not proved, requires X = X'old
-pack.ads:11:19: postcondition not proved, requires X = X'old
-pack.ads:16:19: postcondition not proved, requires X = X'old
+pack.ads:8:19: warning: postcondition might fail, requires X = X'old
+pack.ads:11:19: warning: postcondition might fail, requires X = X'old
+pack.ads:16:19: warning: postcondition might fail, requires X = X'old

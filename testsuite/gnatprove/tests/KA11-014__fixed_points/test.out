@@ -1,10 +1,10 @@
-pack.adb:6:25: overflow check not proved
-pack.adb:6:25: range check not proved
-pack.adb:7:27: overflow check not proved
-pack.adb:7:27: range check not proved
+pack.adb:6:25: warning: overflow check might fail
+pack.adb:6:25: warning: range check might fail
+pack.adb:7:27: warning: overflow check might fail
+pack.adb:7:27: warning: range check might fail
 pack.ads:4:04: warning: statement has no effect [ineffective]
 pack.ads:14:04: warning: statement has no effect [ineffective]
 pack.ads:15:04: warning: statement has no effect [ineffective]
-pack.ads:19:19: postcondition not proved, requires Stash + Pocket = Stash'Old + Pocket'old
-pack.ads:19:26: overflow check not proved
-pack.ads:19:47: overflow check not proved
+pack.ads:19:19: warning: postcondition might fail, requires Stash + Pocket = Stash'Old + Pocket'old
+pack.ads:19:26: warning: overflow check might fail
+pack.ads:19:47: warning: overflow check might fail

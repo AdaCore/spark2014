@@ -1,3 +1,3 @@
 p.adb:3:34: info: length check proved
-p.adb:6:11: range check not proved
-p.adb:7:19: overflow check not proved
+p.adb:6:11: warning: range check might fail
+p.adb:7:19: warning: overflow check might fail

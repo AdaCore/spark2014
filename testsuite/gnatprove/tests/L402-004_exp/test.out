@@ -1,7 +1,7 @@
-p.adb:3:7: overflow check not proved
+p.adb:3:7: warning: overflow check might fail
 p.adb:3:29: info: overflow check proved
-p.adb:4:14: overflow check not proved
-p.adb:5:14: overflow check not proved
-p.adb:6:12: overflow check not proved
-p.adb:7:14: overflow check not proved
-p.adb:8:14: overflow check not proved
+p.adb:4:14: warning: overflow check might fail
+p.adb:5:14: warning: overflow check might fail
+p.adb:6:12: warning: overflow check might fail
+p.adb:7:14: warning: overflow check might fail
+p.adb:8:14: warning: overflow check might fail

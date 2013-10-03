@@ -1,12 +1,12 @@
-tab.adb:6:49: range check not proved
-tab.adb:9:10: loop invariant initialization not proved
-tab.adb:9:10: loop invariant preservation not proved
+tab.adb:6:49: warning: range check might fail
+tab.adb:9:10: warning: loop invariant might fail in first iteration
+tab.adb:9:10: warning: loop invariant might fail after first iteration
 tab.adb:10:21: info: range check proved
 tab.adb:11:22: info: index check proved
-tab.adb:12:28: range check not proved
+tab.adb:12:28: warning: range check might fail
 tab.adb:12:53: info: overflow check proved
-tab.adb:12:62: index check not proved
+tab.adb:12:62: warning: array index check might fail
 tab.adb:12:67: info: index check proved
-tab.adb:14:15: index check not proved
-tab.adb:15:24: overflow check not proved
-tab.ads:6:17: postcondition not proved
+tab.adb:14:15: warning: array index check might fail
+tab.adb:15:24: warning: overflow check might fail
+tab.ads:6:17: warning: postcondition might fail

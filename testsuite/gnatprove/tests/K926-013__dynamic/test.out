@@ -21,10 +21,10 @@ dynamic.adb:16:17: info: range check proved
 dynamic.adb:17:17: info: range check proved
 dynamic.adb:18:17: info: range check proved
 dynamic.adb:19:17: info: range check proved
-dynamic.adb:20:19: range check not proved
-dynamic.adb:21:17: range check not proved
+dynamic.adb:20:19: warning: range check might fail
+dynamic.adb:21:17: warning: range check might fail
 dynamic.adb:22:19: info: overflow check proved
-dynamic.adb:22:19: range check not proved
+dynamic.adb:22:19: warning: range check might fail
 dynamic.adb:24:14: info: overflow check proved
 dynamic.ads:5:16: warning: unused initial value of "X" [unused_initial_value]
 dynamic.ads:7:21: info: postcondition proved

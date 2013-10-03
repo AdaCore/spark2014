@@ -1,4 +1,4 @@
-contract_cases_illegal.ads:14:11: others must be the last choice in aspect Contract_Cases (SPARK RM 6.1.3(1))
+contract_cases_illegal.ads:14:11: others must be the last choice in aspect Contract_Cases
 contract_cases_illegal.ads:23:40: "Old" attribute misplaced inside contract cases
 contract_cases_illegal.ads:24:30: "Old" attribute misplaced inside contract cases
 contract_cases_illegal.ads:32:11: warning: contract cases do not mention result

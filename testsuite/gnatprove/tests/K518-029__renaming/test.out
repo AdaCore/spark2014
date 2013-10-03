@@ -1,2 +1,2 @@
 renam.ads:2:04: warning: statement has no effect [ineffective]
-renam.ads:5:33: postcondition not proved, requires X = X'old
+renam.ads:5:33: warning: postcondition might fail, requires X = X'old

@@ -2,4 +2,4 @@ invertinjection.adb:6:10: info: loop invariant initialization proved
 invertinjection.adb:6:10: info: loop invariant preservation proved
 invertinjection.adb:7:58: info: index check proved
 invertinjection.adb:10:7: info: assertion proved
-invertinjection.ads:15:71: postcondition not proved, requires I = J
+invertinjection.ads:15:71: warning: postcondition might fail, requires I = J

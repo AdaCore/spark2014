@@ -9,38 +9,38 @@ deceleration_curve.adb:109:10: warning:  assuming "Put" has no effect on global 
 deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
 deceleration_curve.adb:111:10: warning:  assuming "New_Line" has no effect on global items
 deceleration_curve.adb:37:10: info: assertion proved
-deceleration_curve.adb:39:10: assertion not proved
-deceleration_curve.adb:40:10: assertion not proved
+deceleration_curve.adb:39:10: warning: assertion might fail
+deceleration_curve.adb:40:10: warning: assertion might fail
 deceleration_curve.adb:40:34: info: division check proved
 deceleration_curve.adb:40:48: info: division check proved
-deceleration_curve.adb:41:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
+deceleration_curve.adb:41:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:43:38: info: division check proved
-deceleration_curve.adb:44:10: assertion not proved, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
+deceleration_curve.adb:44:10: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
 deceleration_curve.adb:49:48: info: division check proved
-deceleration_curve.adb:49:48: overflow check not proved
-deceleration_curve.adb:50:12: overflow check not proved
-deceleration_curve.adb:52:10: assertion not proved
-deceleration_curve.adb:58:25: overflow check not proved
-deceleration_curve.adb:60:31: overflow check not proved
+deceleration_curve.adb:49:48: warning: overflow check might fail
+deceleration_curve.adb:50:12: warning: overflow check might fail
+deceleration_curve.adb:52:10: warning: assertion might fail
+deceleration_curve.adb:58:25: warning: overflow check might fail
+deceleration_curve.adb:60:31: warning: overflow check might fail
 deceleration_curve.adb:69:36: info: division check proved
 deceleration_curve.adb:69:36: info: range check proved
 deceleration_curve.adb:81:9: info: precondition proved
-deceleration_curve.adb:89:19: overflow check not proved
-deceleration_curve.adb:89:32: overflow check not proved
-deceleration_curve.adb:90:13: overflow check not proved
-deceleration_curve.adb:90:29: overflow check not proved
-deceleration_curve.adb:91:13: overflow check not proved
+deceleration_curve.adb:89:19: warning: overflow check might fail
+deceleration_curve.adb:89:32: warning: overflow check might fail
+deceleration_curve.adb:90:13: warning: overflow check might fail
+deceleration_curve.adb:90:29: warning: overflow check might fail
+deceleration_curve.adb:91:13: warning: overflow check might fail
 deceleration_curve.adb:91:46: info: division check proved
-deceleration_curve.adb:91:46: overflow check not proved
-deceleration_curve.adb:96:36: overflow check not proved
-deceleration_curve.adb:96:36: range check not proved
-deceleration_curve.adb:106:9: precondition not proved
-deceleration_curve.adb:110:12: precondition not proved
-deceleration_curve.ads:27:6: info: precondition proved
+deceleration_curve.adb:91:46: warning: overflow check might fail
+deceleration_curve.adb:96:36: warning: overflow check might fail
+deceleration_curve.adb:96:36: warning: range check might fail
+deceleration_curve.adb:106:9: warning: precondition might fail
+deceleration_curve.adb:110:12: warning: precondition might fail
+deceleration_curve.ads:27:6: warning: precondition might fail
 deceleration_curve_test.adb:6:31: info: precondition proved
-deceleration_curve_test.adb:15:4: assertion not proved, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
-deceleration_curve_test.adb:15:19: precondition not proved
+deceleration_curve_test.adb:15:4: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
+deceleration_curve_test.adb:15:19: warning: precondition might fail
 deceleration_curve_test.adb:17:4: info: precondition proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
@@ -54,40 +54,40 @@ sec_3_13_2_monitoring_inputs.ads:183:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:199:8: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
-sec_3_13_6_deceleration.adb:26:37: range check not proved
+sec_3_13_2_monitoring_inputs.ads:243:46: warning: precondition might fail
+sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.ads:39:6: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
-sec_3_13_6_deceleration.ads:40:37: precondition not proved
-sec_3_13_6_deceleration.ads:45:23: precondition not proved
-sec_3_13_6_deceleration.ads:46:23: overflow check not proved
-sec_3_13_6_deceleration.ads:46:26: precondition not proved
-sec_3_13_6_deceleration.ads:46:38: overflow check not proved
-sec_3_13_6_deceleration.ads:46:50: overflow check not proved
-sec_3_13_6_deceleration.ads:46:57: overflow check not proved
-sec_3_13_6_deceleration.ads:46:59: precondition not proved
-sec_3_13_6_deceleration.ads:47:22: overflow check not proved
-sec_3_13_6_deceleration.ads:47:22: range check not proved
-sec_3_13_6_deceleration.ads:47:30: precondition not proved
-sec_3_13_6_deceleration.ads:52:26: overflow check not proved
-sec_3_13_6_deceleration.ads:52:26: range check not proved
-sec_3_13_8_targets_decel_curves.adb:24:7: precondition not proved
+sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
+sec_3_13_6_deceleration.ads:45:23: warning: precondition might fail
+sec_3_13_6_deceleration.ads:46:23: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:46:26: warning: precondition might fail
+sec_3_13_6_deceleration.ads:46:38: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:46:50: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:46:57: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:46:59: warning: precondition might fail
+sec_3_13_6_deceleration.ads:47:22: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:47:22: warning: range check might fail
+sec_3_13_6_deceleration.ads:47:30: warning: precondition might fail
+sec_3_13_6_deceleration.ads:52:26: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:52:26: warning: range check might fail
+sec_3_13_8_targets_decel_curves.adb:24:7: warning: precondition might fail
 section_3_5_3.adb:41:54: info: overflow check proved
-section_3_5_3.ads:77:14: postcondition not proved, requires Contains(Connections, destination)
+section_3_5_3.ads:77:14: warning: postcondition might fail, requires Contains(Connections, destination)
 section_4_6.ads:105:06: warning: contract cases do not mention result
-section_4_6.ads:105:6: disjoint contract cases not proved
-section_4_6.ads:105:6: complete contract cases not proved
+section_4_6.ads:105:6: warning: contract cases might not be disjoint
+section_4_6.ads:105:6: warning: contract cases might not be complete
 section_4_6.ads:105:55: info: contract case proved
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
-step_function.adb:31:27: assertion not proved, requires X >= SFun.Step(j).Delimiter
+step_function.adb:31:27: warning: assertion might fail, requires X >= SFun.Step(j).Delimiter
 step_function.adb:31:42: info: index check proved
 step_function.adb:32:61: info: index check proved
 step_function.adb:32:61: info: overflow check proved
 step_function.adb:45:10: info: loop invariant initialization proved
-step_function.adb:45:10: loop invariant preservation not proved
+step_function.adb:45:10: warning: loop invariant might fail after first iteration
 step_function.adb:47:34: info: index check proved
 step_function.adb:48:33: info: index check proved
 step_function.adb:51:31: info: index check proved
@@ -95,7 +95,7 @@ step_function.adb:53:34: info: index check proved
 step_function.adb:78:17: info: range check proved
 step_function.adb:95:7: info: assertion proved
 step_function.adb:98:10: info: loop invariant initialization proved
-step_function.adb:98:10: loop invariant preservation not proved
+step_function.adb:98:10: warning: loop invariant might fail after first iteration
 step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved
 step_function.adb:121:49: info: index check proved
@@ -119,11 +119,11 @@ step_function.adb:171:19: info: precondition proved
 step_function.adb:172:19: info: precondition proved
 step_function.adb:178:22: info: precondition proved
 step_function.adb:179:22: info: precondition proved
-step_function.adb:185:22: range check not proved
-step_function.adb:187:30: assertion not proved, requires Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter
+step_function.adb:185:22: warning: range check might fail
+step_function.adb:187:30: warning: assertion might fail, requires Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter
 step_function.adb:187:42: info: index check proved
 step_function.adb:187:69: info: index check proved
-step_function.adb:189:16: assertion not proved, requires Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter
+step_function.adb:189:16: warning: assertion might fail, requires Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter
 step_function.adb:189:44: info: index check proved
 step_function.adb:189:73: info: index check proved
 step_function.ads:40:17: info: postcondition proved
@@ -136,13 +136,13 @@ step_function.ads:56:12: info: postcondition proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
-step_function.ads:72:6: postcondition not proved
-step_function.ads:73:28: index check not proved
-step_function.ads:74:50: index check not proved
+step_function.ads:72:6: warning: postcondition might fail
+step_function.ads:73:28: warning: array index check might fail
+step_function.ads:74:50: warning: array index check might fail
 step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved
 step_function.ads:86:6: info: postcondition proved
-step_function.ads:101:4: postcondition not proved
+step_function.ads:101:4: warning: postcondition might fail
 step_function.ads:106:30: info: index check proved
 step_function.ads:106:56: info: index check proved
 step_function.ads:111:30: info: index check proved
@@ -156,38 +156,38 @@ step_function_test.adb:7:15: info: length check proved
 step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved
 step_function_test.adb:31:15: info: length check proved
-step_function_test.adb:41:4: assertion not proved, requires Is_Valid(SFun1)
-step_function_test.adb:42:4: assertion not proved, requires Is_Valid(SFun2)
-step_function_test.adb:43:4: assertion not proved, requires Step_Function.Is_Valid(sfun3)
-step_function_test.adb:44:4: assertion not proved, requires Step_Function.Is_Valid(sfun4)
-step_function_test.adb:46:4: assertion not proved, requires Get_Value(SFun1, 0) = 
+step_function_test.adb:41:4: warning: assertion might fail, requires Is_Valid(SFun1)
+step_function_test.adb:42:4: warning: assertion might fail, requires Is_Valid(SFun2)
+step_function_test.adb:43:4: warning: assertion might fail, requires Step_Function.Is_Valid(sfun3)
+step_function_test.adb:44:4: warning: assertion might fail, requires Step_Function.Is_Valid(sfun4)
+step_function_test.adb:46:4: warning: assertion might fail, requires Get_Value(SFun1, 0) = 
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:47:4: assertion not proved, requires Get_Value(SFun1, 1) = 
+step_function_test.adb:47:4: warning: assertion might fail, requires Get_Value(SFun1, 1) = 
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:48:4: assertion not proved, requires Get_Value(SFun1, 3) = 
+step_function_test.adb:48:4: warning: assertion might fail, requires Get_Value(SFun1, 3) = 
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:49:4: assertion not proved, requires Get_Value(SFun1, 4) = 
+step_function_test.adb:49:4: warning: assertion might fail, requires Get_Value(SFun1, 4) = 
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:50:4: assertion not proved, requires Get_Value(SFun1, 5) = 
+step_function_test.adb:50:4: warning: assertion might fail, requires Get_Value(SFun1, 5) = 
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:51:4: assertion not proved, requires Get_Value(SFun1, Function_Range'Last) = 
+step_function_test.adb:51:4: warning: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) = 
 step_function_test.adb:51:19: info: precondition proved
-step_function_test.adb:54:4: assertion not proved, requires Has_Same_Delimiters(SFun1, SFun2)
+step_function_test.adb:54:4: warning: assertion might fail, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:4: info: precondition proved
-step_function_test.adb:61:7: assertion not proved, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
+step_function_test.adb:61:7: warning: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
-step_function_test.adb:65:4: assertion not proved, requires Minimum_Until_Point(sfun4, 1) = 
+step_function_test.adb:65:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 1) = 
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:66:4: assertion not proved, requires Minimum_Until_Point(sfun4, 5) = 
+step_function_test.adb:66:4: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 5) = 
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:67:4: assertion not proved, requires Minimum_Until_Point(sfun_merge, 11) = 
+step_function_test.adb:67:4: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) = 
 step_function_test.adb:67:19: info: precondition proved
-units.adb:24:29: overflow check not proved
+units.adb:24:29: warning: overflow check might fail
 units.adb:24:39: info: division check proved
-units.adb:24:39: overflow check not proved
-units.adb:29:38: overflow check not proved
+units.adb:24:39: warning: overflow check might fail
+units.adb:29:38: warning: overflow check might fail
 units.adb:29:48: info: division check proved
-units.adb:29:48: overflow check not proved
+units.adb:29:48: warning: overflow check might fail
 units.ads:51:20: info: precondition proved
