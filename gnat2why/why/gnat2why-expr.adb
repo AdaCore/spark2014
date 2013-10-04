@@ -3661,6 +3661,7 @@ package body Gnat2Why.Expr is
          Args (1) := New_Singleton_Call (Domain, Left_Name, First_Expr);
          Args (2) := First_Expr;
          Args (3) := First_Expr;
+         Arg_Ind := 4;
       else
          Add_Array_Arg (Domain, Args, Left_Name, Arg_Ind);
       end if;
@@ -3675,13 +3676,12 @@ package body Gnat2Why.Expr is
 
       --  We first build the call to concatenation
 
-      Add_Array_Arg (Domain, Args, Right_Name, Arg_Ind);
-      T :=
-        New_Concat_Call (Domain, Args, EW_Abstract (Etype (Expr)));
+      T := New_Concat_Call (Domain, Args, EW_Abstract (Etype (Expr)));
 
       --  Depending on the lower bound of the concat, the object may not slided
       --  correctly, because the concat operator in Why assumes that the new
       --  low bound is the one of the left opnd.
+
       if Is_Constrained (Low_Type) then
          T :=
            New_Call
