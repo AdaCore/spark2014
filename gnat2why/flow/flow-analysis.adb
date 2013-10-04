@@ -1291,17 +1291,15 @@ package body Flow.Analysis is
 
             return False;
          end Var_Def_Is_Export_Or_Global;
-      begin
-         if Atr_I.Is_Global
-           or Atr_F.Is_Export
-           or Var_Def_Is_Export_Or_Global
-           or Nkind_In (Nkind (Key_U.Node), N_Simple_Return_Statement,
-                        N_Extended_Return_Statement)
-         then
-            return True;
-         end if;
 
-         return False;
+      --  Start of Is_Global_Or_Export
+
+      begin
+         return Atr_I.Is_Global
+           or else Atr_F.Is_Export
+           or else Var_Def_Is_Export_Or_Global
+           or else Nkind (Key_U.Node) in N_Simple_Return_Statement |
+                                         N_Extended_Return_Statement;
       end Is_Global_Or_Export;
 
       -------------------------------
