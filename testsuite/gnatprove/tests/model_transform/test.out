@@ -8,12 +8,14 @@ model.adb:73:62: info: index check proved
 model.adb:74:56: info: range check proved
 model.adb:76:60: info: index check proved
 model.adb:77:54: info: range check proved
-model.ads:36:14: info: postcondition proved
-model.ads:40:14: info: postcondition proved
-model.ads:63:14: info: postcondition proved
-model.ads:68:14: info: postcondition proved
-model.ads:102:14: info: postcondition proved
-model.ads:106:14: info: postcondition proved
-model.ads:129:14: info: postcondition proved
-model.ads:134:14: info: postcondition proved
-model.ads:156:12: postcondition not proved, requires Name(Owned_State(SM)(To(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (To(Owned_Flow(Transform'Result) (T)
+model.ads:37:14: info: postcondition proved
+model.ads:41:14: info: postcondition proved
+model.ads:64:14: info: postcondition proved
+model.ads:69:14: info: postcondition proved
+model.ads:83:6: info: length check proved
+model.ads:100:6: info: length check proved
+model.ads:111:14: info: postcondition proved
+model.ads:115:14: info: postcondition proved
+model.ads:141:14: info: postcondition proved
+model.ads:146:14: info: postcondition proved
+model.ads:163:12: warning: postcondition might fail, requires Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (From(Owned_Flow(Transform'Result) (T)
