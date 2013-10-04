@@ -1,0 +1,54 @@
+concat.adb:4:28: info: range check proved
+concat.adb:4:28: info: length check proved
+concat.adb:6:7: info: assertion proved
+concat.adb:7:7: info: assertion proved
+concat.adb:11:29: info: range check proved
+concat.adb:11:29: info: length check proved
+concat.adb:13:7: info: assertion proved
+concat.adb:14:7: info: assertion proved
+concat.adb:18:19: warning: range check might fail
+concat.adb:18:19: info: length check proved
+concat.adb:20:7: warning: assertion might fail, requires D'First = A'first
+concat.adb:21:7: warning: assertion might fail, requires D'Length = A'Length + B'length
+concat.adb:22:7: warning: assertion might fail, requires D'Last = A'First + A'Last + 1 + (B'Last - B'first
+concat.adb:22:39: warning: overflow check might fail
+concat.adb:22:48: warning: overflow check might fail
+concat.adb:22:52: warning: overflow check might fail
+concat.adb:22:62: warning: overflow check might fail
+concat.adb:25:13: info: length check proved
+concat.adb:26:14: info: length check proved
+concat_left.adb:5:19: warning: range check might fail
+concat_left.adb:5:19: info: length check proved
+concat_left.adb:7:7: warning: assertion might fail, requires Z'First = Integer'first
+concat_left.adb:8:7: info: assertion proved
+concat_left.adb:8:26: info: index check proved
+concat_left.adb:9:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
+concat_left.adb:13:18: info: range check proved
+concat_left.adb:13:18: info: length check proved
+concat_left.adb:15:7: info: assertion proved
+concat_left.adb:16:7: info: assertion proved
+concat_left.adb:20:19: info: range check proved
+concat_left.adb:20:19: info: length check proved
+concat_left.adb:22:7: info: assertion proved
+concat_left.adb:23:7: info: assertion proved
+concat_left.adb:26:13: info: length check proved
+concat_left.adb:27:14: info: length check proved
+concat_right.adb:5:19: warning: range check might fail
+concat_right.adb:5:19: info: length check proved
+concat_right.adb:7:7: warning: assertion might fail, requires Z'First = Y'first
+concat_right.adb:8:7: warning: assertion might fail, requires Z (Z'First) = Y (Y'first)
+concat_right.adb:8:26: warning: array index check might fail
+concat_right.adb:8:40: warning: array index check might fail
+concat_right.adb:9:7: warning: assertion might fail, requires Z (Z'Last) = X
+concat_right.adb:9:26: warning: array index check might fail
+concat_right.adb:10:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
+concat_right.adb:14:27: info: range check proved
+concat_right.adb:14:27: info: length check proved
+concat_right.adb:16:7: warning: assertion might fail, requires Z (Z'First) = Y'first
+concat_right.adb:17:7: info: assertion proved
+concat_right.adb:21:28: info: range check proved
+concat_right.adb:21:28: info: length check proved
+concat_right.adb:23:7: warning: assertion might fail, requires Z (Z'First) = Y'first
+concat_right.adb:24:7: info: assertion proved
+concat_right.adb:27:13: info: length check proved
+concat_right.adb:28:14: info: length check proved
