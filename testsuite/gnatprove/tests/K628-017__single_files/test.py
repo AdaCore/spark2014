@@ -1,3 +1,4 @@
 from test_support import *
 
-prove_all (opt=["s.adb", "-u"])
+prove (opt=["s.adb", "-u"])
+#Flow analysis not enabled [MA04-007]

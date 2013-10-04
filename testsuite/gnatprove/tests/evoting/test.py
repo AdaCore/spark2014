@@ -2,4 +2,4 @@ from test_support import *
 
 prove(steps=400, opt=["--proof=then_split"])
 #Cannot activate flow analysis. There is a legit issue
-#with Ada.Text_Io and uninitialized variables.
+#with Ada.Text_Io and uninitialized variables [MA04-007].
