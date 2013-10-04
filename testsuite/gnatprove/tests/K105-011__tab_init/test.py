@@ -1,4 +1,3 @@
 from test_support import *
 
-prove()
-#Flow analysis not enabled [MA04-007]
+prove() # flow disabled due to spurious errors (MA04-007)

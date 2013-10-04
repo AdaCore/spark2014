@@ -1,5 +1,6 @@
-package Model is 
+package Model is
    type Name_T is new Natural;
+   No_Name : constant Name_T := 0;
 
    -----------
    -- State --
@@ -74,8 +75,12 @@ package Model is
    type UML_Action is record
       Name_Data : Name_T;
    end record;
+   No_UML_Action : constant UML_Action := (Name_Data => No_Name);
    type UML_Action_Access is new Integer range 0 .. 100;
+   No_UML_Action_Access : constant UML_Action_Access := 0;
    type UML_Action_Vector is array (UML_Action_Access) of UML_Action;
+   No_UML_Action_Vector : constant UML_Action_Vector :=
+     (others => No_UML_Action);
 
    function Name (Self : UML_Action) return Name_T is (Self.Name_Data);
 
@@ -86,9 +91,13 @@ package Model is
    type UML_Control_Flow is record
       From_Data, To_Data : UML_Action_Access;
    end record;
+   No_UML_Control_Flow : constant UML_Control_Flow :=
+     (From_Data => No_UML_Action_Access, To_Data => No_UML_Action_Access);
    type UML_Control_Flow_Access is new Integer range 0 .. 100;
    type UML_Control_Flow_Vector is
      array (UML_Control_Flow_Access) of UML_Control_Flow;
+   No_UML_Control_Flow_Vector : constant UML_Control_Flow_Vector :=
+     (others => No_UML_Control_Flow);
 
    --  Setters/getters --
 
@@ -113,6 +122,9 @@ package Model is
       Owned_Action_Data : UML_Action_Vector;
       Owned_Flow_Data   : UML_Control_Flow_Vector;
    end record;
+   No_UML_Activity : constant UML_Activity :=
+     (Owned_Action_Data => No_UML_Action_Vector,
+      Owned_Flow_Data => No_UML_Control_Flow_Vector);
    type UML_Activity_Access is new Integer range 0 .. 100;
 
    --  Setters/getters --

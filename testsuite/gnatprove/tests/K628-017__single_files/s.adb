@@ -1,4 +1,4 @@
-package body S is 
+package body S is
 
   function Contains (Table : IntArray; Value : Integer) return Boolean is
   begin
@@ -14,7 +14,7 @@ package body S is
      return False;
   end Contains;
 
-  procedure Move (Dest, Src : out IntArray) is
+  procedure Move (Dest : out IntArray; Src : in out IntArray) is
      Src_Old : constant Intarray := Src;
   begin
      for Index in Dest'Range loop

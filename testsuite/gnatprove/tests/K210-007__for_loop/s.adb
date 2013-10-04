@@ -1,4 +1,4 @@
-package body S is  
+package body S is
 
    function Contains (Table : IntArray; Value : Integer) return Boolean is
    begin
@@ -30,7 +30,7 @@ package body S is
       pragma Assert (T = 1);
    end Test_Index;
 
-   procedure Move (Dest, Src : out IntArray) is
+   procedure Move (Dest : out IntArray; Src : in out IntArray) is
    begin
       for Index in Dest'Range loop
          pragma Loop_Invariant ((for all J in Dest'First .. Index - 1 =>
@@ -43,7 +43,7 @@ package body S is
       end loop;
    end Move;
 
-   procedure Move2 (Dest, Src : out IntArray) is
+   procedure Move2 (Dest : out IntArray; Src : in out IntArray) is
    begin
       for Index in reverse Dest'Range loop
          pragma Loop_Invariant ((for all J in Index + 1 .. Dest'Last =>

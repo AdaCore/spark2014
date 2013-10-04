@@ -1,4 +1,4 @@
-package body Model is 
+package body Model is
 
    procedure Set_From
      (Self : in out UML_Transition; Val : UML_State_Access) is
@@ -53,9 +53,9 @@ package body Model is
    end Set_Owned_Flow;
 
    function Transform (SM : UML_State_Machine) return UML_Activity is
-      AV  : UML_Action_Vector;
-      CFV : UML_Control_Flow_Vector;
-      Act : UML_Activity;
+      AV  : UML_Action_Vector := No_UML_Action_Vector;
+      CFV : UML_Control_Flow_Vector := No_UML_Control_Flow_Vector;
+      Act : UML_Activity := No_UML_Activity;
    begin
       for S in Owned_State(SM)'Range loop
 	 pragma Loop_Invariant
