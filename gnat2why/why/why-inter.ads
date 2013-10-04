@@ -47,13 +47,16 @@ package Why.Inter is
    with Post => (Make_Empty_Why_File'Result.Cur_Theory = Why_Empty);
    --  Return an empty Why_File with the given name and kind
 
+   type Theory_Kind is
+     (Standalone_Theory,      --  standalone definition of symbols
+      Definition_Theory,      --  definition of symbols
+      Axiom_Theory,           --  axioms for previously defined symbols
+      VC_Generation_Theory);  --  generation of VCs
+
    procedure Close_Theory
-     (P               : in out Why_Section;
-      Filter_Entity   : Entity_Id;
-      Defined_Entity  : Entity_Id := Empty;
-      Do_Closure      : Boolean := False;
-      No_Import       : Boolean := False;
-      With_Completion : Boolean := False);
+     (P              : in out Why_Section;
+      Kind           : Theory_Kind;
+      Defined_Entity : Entity_Id := Empty);
    --  Close the current theory by adding all necessary imports and adding
    --  the theory to the file. If not Empty, Defined_Entity is the entity
    --  defined by the current theory, which is used to complete the graph

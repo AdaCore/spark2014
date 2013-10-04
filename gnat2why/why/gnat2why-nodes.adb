@@ -185,7 +185,7 @@ package body Gnat2Why.Nodes is
 
    function Get_Graph_Closure
      (Map  : Node_Graphs.Map;
-      From : Node_Id) return Node_Sets.Set
+      From : Node_Sets.Set) return Node_Sets.Set
    is
       use Node_Sets;
       Result   : Set;
@@ -213,8 +213,8 @@ package body Gnat2Why.Nodes is
       end Update_Work_Set;
 
    begin
-      Work_Set.Include (From);
-      Result.Include (From);
+      Work_Set := From;
+      Result := From;
 
       while not Work_Set.Is_Empty loop
          First := Work_Set.First;
@@ -228,6 +228,17 @@ package body Gnat2Why.Nodes is
       end loop;
 
       return Result;
+   end Get_Graph_Closure;
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
+      From : Node_Id) return Node_Sets.Set
+   is
+      use Node_Sets;
+      Work_Set : Set;
+   begin
+      Work_Set.Include (From);
+      return Get_Graph_Closure (Map, Work_Set);
    end Get_Graph_Closure;
 
    -------------------

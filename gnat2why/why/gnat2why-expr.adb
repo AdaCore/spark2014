@@ -2197,7 +2197,9 @@ package body Gnat2Why.Expr is
                                                 (Terms => (1 => Aggr)))),
                                   Def      => Def_Pred));
 
-         Close_Theory (Decl_File, Filter_Entity => Expr);
+         Close_Theory (Decl_File,
+                       Kind => Definition_Theory,
+                       Defined_Entity => Expr);
          if Params.File = Decl_File.File then
             Decl_File.Cur_Theory := Params.Theory;
          end if;
@@ -6024,7 +6026,9 @@ package body Gnat2Why.Expr is
             Name        => Id,
             Binders     => (1 .. 0 => <>),
             Return_Type => Why_Type));
-      Close_Theory (Decl_File, Filter_Entity => N);
+      Close_Theory (Decl_File,
+                    Kind => Definition_Theory,
+                    Defined_Entity => N);
 
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Params.Theory;

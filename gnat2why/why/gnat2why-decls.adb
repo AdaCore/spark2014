@@ -187,9 +187,8 @@ package body Gnat2Why.Decls is
                      end loop;
 
                      Close_Theory (TFile,
-                                   Filter_Entity  => Empty,
-                                   Defined_Entity => Empty,
-                                   Do_Closure     => True);
+                                   Kind => Axiom_Theory,
+                                   Defined_Entity => Empty);
 
 --                       Add_Completion
 --                         (Theory_Name,
@@ -228,9 +227,8 @@ package body Gnat2Why.Decls is
                      end loop;
 
                      Close_Theory (TFile,
-                                   Filter_Entity  => Empty,
-                                   Defined_Entity => Empty,
-                                   Do_Closure     => True);
+                                   Kind => Axiom_Theory,
+                                   Defined_Entity => Empty);
 
 --                       Add_Completion
 --                         (Theory_Name,
@@ -465,7 +463,7 @@ package body Gnat2Why.Decls is
                Return_Type => Typ));
       Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
-                    Filter_Entity  => E,
+                    Kind => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Constant;
 
@@ -581,7 +579,7 @@ package body Gnat2Why.Decls is
       --  existing one.
 
       Close_Theory (File,
-                    Filter_Entity  => Empty,
+                    Kind => Axiom_Theory,
                     Defined_Entity =>
                       (if Is_Full_View (E) then Partial_View (E) else E));
    end Translate_Constant_Value;
@@ -609,7 +607,8 @@ package body Gnat2Why.Decls is
            (Name     => To_Why_Id (E.all, Local => True),
             Ref_Type => New_Named_Type (Name => To_Ident (WNE_Type))));
 
-      Close_Theory (File, Filter_Entity => Empty, No_Import => True);
+      Close_Theory (File,
+                    Kind => Standalone_Theory);
    end Translate_External_Object;
 
    ---------------------------
@@ -635,7 +634,8 @@ package body Gnat2Why.Decls is
             New_Exception_Declaration (Name => To_Why_Id (E, Local => True),
                                        Arg  => Why_Empty));
 
-      Close_Theory (File, Filter_Entity => E, No_Import => True);
+      Close_Theory (File,
+                    Kind => Standalone_Theory);
    end Translate_Loop_Entity;
 
    --------------------------------------------
@@ -1283,7 +1283,8 @@ package body Gnat2Why.Decls is
                      end;
                   end if;
 
-                  Close_Theory (TFile, Filter_Entity => Empty);
+                  Close_Theory (TFile,
+                                Kind => Definition_Theory);
 
                elsif Ekind (Formal) = E_Function then
 
@@ -1395,7 +1396,8 @@ package body Gnat2Why.Decls is
 
                   end;
 
-                  Close_Theory (TFile, Filter_Entity => Empty);
+                  Close_Theory (TFile,
+                                Kind => Definition_Theory);
 
                end if;
             end;
@@ -1560,7 +1562,8 @@ package body Gnat2Why.Decls is
       end case;
       Insert_Item (E, Var);
 
-      Close_Theory (File, Filter_Entity => E, No_Import => True);
+      Close_Theory (File,
+                    Kind => Standalone_Theory);
    end Translate_Variable;
 
    -----------------------

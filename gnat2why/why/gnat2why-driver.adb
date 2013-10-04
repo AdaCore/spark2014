@@ -412,7 +412,8 @@ package body Gnat2Why.Driver is
                     " defined at " & Build_Location_String (Sloc (E))
                    else "")
                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-         Close_Theory (File, Filter_Entity => Empty);
+         Close_Theory (File,
+                       Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
 
       File       : Why_Section := Why_Sections (Dispatch_Entity (E));

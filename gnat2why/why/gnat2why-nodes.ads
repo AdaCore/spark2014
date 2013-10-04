@@ -83,6 +83,12 @@ package Gnat2Why.Nodes is
 
    function Get_Graph_Closure
      (Map  : Node_Graphs.Map;
+      From : Node_Sets.Set) return Node_Sets.Set;
+   --  Return the set of nodes reachable from nodes in From by following the
+   --  edges in the graph Map.
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
       From : Node_Id) return Node_Sets.Set;
    --  Return the set of nodes reachable from node From by following the edges
    --  in the graph Map.

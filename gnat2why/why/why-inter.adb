@@ -614,114 +614,189 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory
-     (P               : in out Why_Section;
-      Filter_Entity   : Entity_Id;
-      Defined_Entity  : Entity_Id := Empty;
-      Do_Closure      : Boolean := False;
-      No_Import       : Boolean := False;
-      With_Completion : Boolean := False)
+     (P              : in out Why_Section;
+      Kind           : Theory_Kind;
+      Defined_Entity : Entity_Id := Empty)
    is
       use Node_Sets;
       S : Set := Compute_Ada_Nodeset (+P.Cur_Theory);
+
+      function Is_Relevant_Node_For_Imports
+        (N             : Node_Id;
+         Filter_Entity : Node_Id := Empty) return Boolean;
+      --  Returns True if N is relevant for theory imports. Filter_Entity is a
+      --  node that should not be considered in these imports.
+
+      procedure Add_Definition_Imports (Filter_Entity : Node_Id := Empty);
+      --  Adds imports for the definitions of symbols in S
+
+      procedure Add_Axiom_Imports;
+      --  Adds imports for the axioms of symbols in S
+
+      procedure Add_Standard_Imports;
+      --  Adds imports for the standard Why library
+
+      procedure Record_Dependencies (Defined_Entity : Entity_Id);
+      --  Records the dependencies between Defined_Entity and the nodes in S
+
+      -----------------------
+      -- Add_Axiom_Imports --
+      -----------------------
+
+      procedure Add_Axiom_Imports is
+      begin
+         for N of S loop
+            if Is_Relevant_Node_For_Imports (N) then
+               Standard_Imports.Set_SI (N);
+               Add_Use_For_Entity (P, N, With_Completion => True);
+            end if;
+         end loop;
+      end Add_Axiom_Imports;
+
+      ----------------------------
+      -- Add_Definition_Imports --
+      ----------------------------
+
+      procedure Add_Definition_Imports (Filter_Entity : Node_Id := Empty) is
+      begin
+         for N of S loop
+            if Is_Relevant_Node_For_Imports (N, Filter_Entity) then
+               Standard_Imports.Set_SI (N);
+               Add_Use_For_Entity (P, N, With_Completion => False);
+            end if;
+         end loop;
+      end Add_Definition_Imports;
+
+      --------------------------
+      -- Add_Standard_Imports --
+      --------------------------
+
+      procedure Add_Standard_Imports is
+         --  We add the dependencies to Gnatprove_Standard theories that may
+         --  have been triggered
+         use Standard_Imports;
+      begin
+         for Index in Imports'Range loop
+            if Imports (Index) then
+               Add_Standard_With_Clause
+                 (P,
+                  To_String (Index),
+                  EW_Clone_Default);
+
+               --  Two special cases for infix symbols; these are the only
+               --  theories (as opposed to modules) that are used, and the
+               --  only ones to be "use import"ed
+
+               if Index = SI_Integer then
+                  Add_With_Clause (P.Cur_Theory,
+                                   "int",
+                                   "Int",
+                                   EW_Import,
+                                   EW_Theory);
+               elsif Index = SI_Float then
+                  Add_With_Clause (P.Cur_Theory,
+                                   "real",
+                                   "RealInfix",
+                                   EW_Import,
+                                   EW_Theory);
+               end if;
+            end if;
+         end loop;
+      end Add_Standard_Imports;
+
+      ----------------------------------
+      -- Is_Relevant_Node_For_Imports --
+      ----------------------------------
+
+      --  Here we need to consider entities and some non-entities such as
+      --  string literals. We do *not* consider the Filter_Entity, nor its
+      --  Full_View. Loop parameters are a bit special, we want to deal with
+      --  them only if they are from loop, but not from a quantifier.
+
+      function Is_Relevant_Node_For_Imports
+        (N             : Node_Id;
+         Filter_Entity : Node_Id := Empty) return Boolean is
+      begin
+         return N /= Filter_Entity
+           and then
+             (if Nkind (N) in N_Entity and then Is_Full_View (N) then
+                Partial_View (N) /= Filter_Entity)
+           and then
+             (if Nkind (N) in N_Entity
+                and then Ekind (N) = E_Loop_Parameter
+              then not Is_Quantified_Loop_Param (N));
+      end Is_Relevant_Node_For_Imports;
+
+      -------------------------
+      -- Record_Dependencies --
+      -------------------------
+
+      procedure Record_Dependencies (Defined_Entity : Entity_Id) is
+      begin
+         for N of S loop
+            if Is_Relevant_Node_For_Imports (N) then
+               Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
+            end if;
+         end loop;
+      end Record_Dependencies;
+
+   --  Start of Close_Theory
 
    begin
       Standard_Imports.Clear;
       Add_Standard_With_Clause (P, "Main", EW_Import);
 
-      if not (No_Import) then
+      case Kind is
+         --  case 1: a standalone theory with no imports
 
-         if Present (Filter_Entity) then
-            Standard_Imports.Set_SI (Filter_Entity);
-         end if;
+         when Standalone_Theory =>
+            null;
 
-         --  S contains all mentioned Ada entities; for each, we get the
-         --  unit where it was defined and add it to the unit set
+         --  case 2: a theory defining the symbols for Defined_Entity
 
-         if Present (Defined_Entity) then
-            for N of S loop
-               --  Here we need to consider entities and some non-entities
-               --  such as string literals. We do *not* consider the
-               --  Filter_Entity, nor its Full_View. Loop parameters are a
-               --  bit special, we want to deal with them only if they are
-               --  from loop, but not from a quantifier.
+         --  Add dependencies between Defined_Entity and all other entities
+         --  used in the its definition. This will be used when importing the
+         --  axiom theories in case 4 below.
 
-               if N /= Filter_Entity
-                 and then
-                   (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                           Partial_View (N) /= Filter_Entity)
-                   and then
-                     (if Nkind (N) in N_Entity and then
-                      Ekind (N) = E_Loop_Parameter
-                      then not Is_Quantified_Loop_Param (N))
-               then
-                  Add_To_Graph (Entity_Dependencies, Defined_Entity, N);
-               end if;
-            end loop;
-         end if;
+         --  Add imports for other symbols used in the definition of
+         --  Defined_Entity. Make sure not to import the current theory
+         --  defining Defined_Entity itself. Add standard imports.
 
-         --  If required, compute the closure of entities on which
-         --  Defined_Entity depends, and add those in the set of nodes S
-         --  used for computing includes.
-
-         if Do_Closure then
-            S.Union (Get_Graph_Closure (Entity_Dependencies, Defined_Entity));
-         end if;
-
-         for N of S loop
-            --  Here we need to consider entities and some non-entities
-            --  such as string literals. We do *not* consider the
-            --  Filter_Entity, nor its Full_View. Loop parameters are a
-            --  bit special, we want to deal with them only if they are
-            --  from loop, but not from a quantifier.
-
-            if N /= Filter_Entity
-              and then
-                (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                 Partial_View (N) /= Filter_Entity)
-              and then
-                (if Nkind (N) in N_Entity and then
-                 Ekind (N) = E_Loop_Parameter
-                 then not Is_Quantified_Loop_Param (N))
-            then
-               Standard_Imports.Set_SI (N);
-               Add_Use_For_Entity (P, N, With_Completion => With_Completion);
+         when Definition_Theory =>
+            if Present (Defined_Entity) then
+               Standard_Imports.Set_SI (Defined_Entity);
+               Record_Dependencies (Defined_Entity);
             end if;
-         end loop;
+            Add_Definition_Imports (Filter_Entity => Defined_Entity);
+            Add_Standard_Imports;
 
-         --  We add the dependencies to Gnatprove_Standard theories that may
-         --  have been triggered
+         --  case 3: a theory giving axioms for Defined_Entity
 
-         declare
-            use Standard_Imports;
-         begin
-            for Index in Imports'Range loop
-               if Imports (Index) then
-                  Add_Standard_With_Clause
-                    (P,
-                     To_String (Index),
-                     EW_Clone_Default);
+         --  Add dependencies between Defined_Entity and all other entities
+         --  used in the its axioms. This will be used when importing the
+         --  axiom theories in case 4 below.
 
-                  --  Two special cases for infix symbols; these are the only
-                  --  theories (as opposed to modules) that are used, and the
-                  --  only ones to be "use import"ed
+         --  Add imports for all symbols used in the axioms of Defined_Entity.
+         --  The definition theory for Defined_Entity will be one of those. Add
+         --  standard imports.
 
-                  if Index = SI_Integer then
-                     Add_With_Clause (P.Cur_Theory,
-                                      "int",
-                                      "Int",
-                                      EW_Import,
-                                      EW_Theory);
-                  elsif Index = SI_Float then
-                     Add_With_Clause (P.Cur_Theory,
-                                      "real",
-                                      "RealInfix",
-                                      EW_Import,
-                                      EW_Theory);
-                  end if;
-               end if;
-            end loop;
-         end;
-      end if;
+         when Axiom_Theory =>
+            pragma Assert (Present (Defined_Entity));
+            Record_Dependencies (Defined_Entity);
+            Add_Definition_Imports;
+            Add_Standard_Imports;
+
+         --  case 4: a theory for generating VCs
+
+         --  Add to S the set of all axioms used transitively to define symbols
+         --  in the current theory. Add imports for all symbols used and their
+         --  axioms. Add standard imports.
+
+         when VC_Generation_Theory =>
+            S.Union (Get_Graph_Closure (Entity_Dependencies, S));
+            Add_Axiom_Imports;
+            Add_Standard_Imports;
+      end case;
 
       File_Append_To_Theories (P.File, +P.Cur_Theory);
       P.Cur_Theory := Why_Empty;

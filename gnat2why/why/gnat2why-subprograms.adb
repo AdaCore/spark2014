@@ -945,9 +945,7 @@ package body Gnat2Why.Subprograms is
            Def     => +Why_Body));
 
       Close_Theory (File,
-                    Filter_Entity => Empty,
-                    With_Completion => True,
-                    Do_Closure => True);
+                    Kind => VC_Generation_Theory);
    end Generate_VCs_For_Package_Elaboration;
 
    ---------------------------------
@@ -1163,10 +1161,8 @@ package body Gnat2Why.Subprograms is
       --  calls
 
       Close_Theory (File,
-                    Defined_Entity => E,
-                    Filter_Entity => Empty,
-                    With_Completion => True,
-                    Do_Closure => True);
+                    Kind => VC_Generation_Theory,
+                    Defined_Entity => E);
    end Generate_VCs_For_Subprogram;
 
    ------------------------------------
@@ -1240,7 +1236,8 @@ package body Gnat2Why.Subprograms is
       --  If the entity's body is not in SPARK, generate an empty module.
 
       if not Entity_Body_In_SPARK (E) then
-         Close_Theory (File, Filter_Entity => Empty);
+         Close_Theory (File,
+                       Kind => Standalone_Theory);
          return;
       end if;
 
@@ -1251,7 +1248,8 @@ package body Gnat2Why.Subprograms is
       if not
         All_Aggregates_Are_Fully_Initialized (Expression (Expr_Fun_N))
       then
-         Close_Theory (File, Filter_Entity => Empty);
+         Close_Theory (File,
+                       Kind => Standalone_Theory);
          return;
       end if;
 
@@ -1352,7 +1350,7 @@ package body Gnat2Why.Subprograms is
       --  Attach the newly created theory as a completion of the existing one.
 
       Close_Theory (File,
-                    Filter_Entity  => Empty,
+                    Kind => Axiom_Theory,
                     Defined_Entity => E);
    end Translate_Expression_Function_Body;
 
@@ -1515,7 +1513,7 @@ package body Gnat2Why.Subprograms is
       Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
 
       Close_Theory (File,
-                    Filter_Entity  => E,
+                    Kind => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Subprogram_Spec;
 

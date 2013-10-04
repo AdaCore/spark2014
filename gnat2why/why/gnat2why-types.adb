@@ -290,9 +290,13 @@ package body Gnat2Why.Types is
          --  the filtering entity, as it is the entity used everywhere in AST.
 
          if Is_Full_View (E) then
-            Close_Theory (File, Filter_Entity => Partial_View (E));
+            Close_Theory (File,
+                          Kind => Definition_Theory,
+                          Defined_Entity => Partial_View (E));
          else
-            Close_Theory (File, Filter_Entity => E);
+            Close_Theory (File,
+                          Kind => Definition_Theory,
+                          Defined_Entity => E);
          end if;
       end if;
    end Translate_Type;
