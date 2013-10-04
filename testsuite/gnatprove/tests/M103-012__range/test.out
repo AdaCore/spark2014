@@ -3,5 +3,5 @@ p.adb:7:05: warning: statement has no effect [ineffective]
 p.adb:12:03: warning: statement has no effect [ineffective]
 p.adb:14:03: warning: statement has no effect [ineffective]
 p.adb:7:14: info: length check proved
-p.adb:7:17: info: range check proved
+p.adb:7:17: range check might fail
 p.adb:12:26: info: length check proved
