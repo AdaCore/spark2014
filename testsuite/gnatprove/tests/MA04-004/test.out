@@ -1,0 +1,2 @@
+uninitialized.adb:8:09: warning: "X" might not be initialized [uninitialized]
+uninitialized.adb:8:14: warning: overflow check might fail

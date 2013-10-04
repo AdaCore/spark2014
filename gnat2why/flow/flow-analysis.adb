@@ -1262,13 +1262,39 @@ package body Flow.Analysis is
          Key_I   : constant Flow_Id      := FA.PDG.Get_Key (V);
          Atr_I   : constant V_Attributes := FA.PDG.Get_Attributes (V);
          Key_U   : constant Flow_Id      := FA.PDG.Get_Key (V_U);
+         Atr_U   : constant V_Attributes := FA.PDG.Get_Attributes (V_U);
          V_Final : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Key_I, Final_Value));
          Atr_F   : constant V_Attributes :=
            FA.PDG.Get_Attributes (V_Final);
+
+         function Var_Def_Is_Export_Or_Global return Boolean;
+         --  Return True if any of the Variables_Defined of Atr_U is either an
+         --  export or a global variable.
+
+         function Var_Def_Is_Export_Or_Global return Boolean is
+         begin
+            for Key_Var of Atr_U.Variables_Defined loop
+               declare
+                  V_Var    : constant Flow_Graphs.Vertex_Id :=
+                    FA.PDG.Get_Vertex (Change_Variant (Key_Var, Final_Value));
+                  Atr_Var  : constant V_Attributes :=
+                    FA.PDG.Get_Attributes (V_Var);
+               begin
+                  if Atr_Var.Is_Export
+                    or Atr_Var.Is_Global
+                  then
+                     return True;
+                  end if;
+               end;
+            end loop;
+
+            return False;
+         end Var_Def_Is_Export_Or_Global;
       begin
          if Atr_I.Is_Global
            or Atr_F.Is_Export
+           or Var_Def_Is_Export_Or_Global
            or Nkind_In (Nkind (Key_U.Node), N_Simple_Return_Statement,
                         N_Extended_Return_Statement)
          then
