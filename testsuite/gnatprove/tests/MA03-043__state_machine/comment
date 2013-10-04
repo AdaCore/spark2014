@@ -1,0 +1,706 @@
+From andrew.hawthorn@altran.com  Thu Oct  3 09:34:37 2013
+From: Andrew Hawthorn <andrew.hawthorn@altran.com>
+To: "'spark@adacore.com'" <spark@adacore.com>
+CC: Stuart Matthews <stuart.matthews@altran.com>, "'slavomir.petrik@se.transport.bombardier.com'"
+ <slavomir.petrik@se.transport.bombardier.com>
+Date: Thu, 3 Oct 2013 14:34:34 +0100
+Subject: [MA03-043] - #3314 : State Machine Examples
+Message-ID: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+Content-Type: text/plain
+MIME-Version: 1.0
+X-Act-Attachment: /reportd/gnatbugs/MA/MA03-043/file_1.bin (multipart/related)
+X-Act-Attachment: /reportd/gnatbugs/MA/MA03-043/State_Machine_Examples.zip (application/x-zip-compressed)
+
+Hi Slavomir,
+
+I've added some new files to combine elements of the contract cases and
+table driven approaches. The example is quite complex so I suggest you
+don't look at these until after we've been able to look through them at
+our next conference call. Unfortunately, we've not been able to use the
+"Contract_Cases" construct in the new example because of current
+limitations in our tools. Instead, we'v e used a case expression
+function. This does not affect the types of checks that the tools
+complete but does slightly change the presentation. Thanks,
+
+Andrew.
+
+Andrew HAWTHORN Head of SW Capability Altran UK / Intelligent Systems
+Division
+
+
+From spark@adacore.com Thu Oct 03 09:34:39 2013 -0400
+From: spark@adacore.com
+Date: Thu, 03 Oct 2013 09:34:39 -0400
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+Content-Type: text/plain; charset="us-ascii"
+To: Andrew Hawthorn <andrew.hawthorn@altran.com>
+CC: "'spark@adacore.com'" <spark@adacore.com>, Stuart Matthews <stuart.matthews@altran.com>,
+ "'slavomir.petrik@se.transport.bombardier.com'" <slavomir.petrik@se.transport.bombardier.com>
+In-Reply-To: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+X-Adacore-Bugnumber: autoreply
+Message-ID: <bugtool.MA03-043.26899.20131003133439.1@seine.gnat.com>
+
+[Automatic message from GNAT report ticket mechanism]
+
+Dear customer,
+
+Your report has been automatically assigned ticket number [MA03-043].
+Please be sure to put this number in the subject line of any
+subsequent followup message. Messages from us on this report will
+quote this ticket number.
+
+Thank you for using GNAT.
+
+-- The GNAT support team
+
+From svn-do-not-reply@adacore.com  Thu Oct  3 09:34:39 2013
+From: svn-do-not-reply@adacore.com (spark)
+To: file-ci@adacore.com.do-not-reply
+Subject: [gnatbugs] rev 17910 checked in trunk/gnatbugs/MA/MA03-043/
+X-Act-Checkin: gnatbugs
+Content-Type: text/plain; charset=UTF-8
+Message-ID: <20131003133439.6027915E185@seine.gnat.com>
+Date: Thu,  3 Oct 2013 09:34:39 -0400 (EDT)
+
+Author:       spark
+Date:         2013-10-03 09:34:38 -0400 (Thu, 03 Oct 2013)
+New revision: 17910
+Repository:   seine:/reportd/svnroot
+
+Log:
+[MA03-043] - #3314 : State Machine Examples
+<71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+
+Modified:
+	trunk/gnatbugs/MA/MA03-043/
+	trunk/gnatbugs/MA/MA03-043/State_Machine_Examples.zip
+	trunk/gnatbugs/MA/MA03-043/file_1.bin
+
+Diff:
+Added: trunk/gnatbugs/MA/MA03-043/State_Machine_Examples.zip
+===================================================================
+(Binary files differ)
+
+
+Property changes on: trunk/gnatbugs/MA/MA03-043/State_Machine_Examples.zip
+___________________________________________________________________
+Added: svn:mime-type
+   + application/zip
+
+Added: trunk/gnatbugs/MA/MA03-043/file_1.bin
+===================================================================
+(Binary files differ)
+
+
+Property changes on: trunk/gnatbugs/MA/MA03-043/file_1.bin
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+From moy@adacore.com  Thu Oct  3 10:15:58 2013
+Content-Type: text/plain; charset=windows-1252
+MIME-Version: 1.0 (Mac OS X Mail 6.6 \(1510\))
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+From: Yannick Moy <moy@adacore.com>
+In-Reply-To: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+Date: Thu, 3 Oct 2013 16:15:57 +0200
+CC: spark@adacore.com, Stuart Matthews <stuart.matthews@altran.com>
+Message-ID: <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+To: Andrew Hawthorn <andrew.hawthorn@altran.com>
+
+-- Andrew Hawthorn (2013-10-03)
+>
+>
+> Unfortunately, we’ve not been able to use the “Contract_Cases” construct in the new example because of current limitations in our tools. Instead, we’ve used a case expression function.
+
+Andrew, can you give us some info on the limitation you mention above? Is there a TN for that?
+--
+Yannick Moy, Senior Software Engineer, AdaCore
+
+
+
+
+From dewar@adacore.com  Thu Oct  3 10:19:52 2013
+Message-ID: <524D7D05.6000203@adacore.com>
+Date: Thu, 03 Oct 2013 10:19:49 -0400
+From: Robert Dewar <dewar@adacore.com>
+MIME-Version: 1.0
+To: Yannick Moy <moy@adacore.com>
+CC: Andrew Hawthorn <andrew.hawthorn@altran.com>, spark@adacore.com,  Stuart
+ Matthews <stuart.matthews@altran.com>
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com>
+In-Reply-To: <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+On 10/3/2013 10:15 AM, Yannick Moy wrote:
+> -- Andrew Hawthorn (2013-10-03)
+>>
+>>
+>> Unfortunately, we’ve not been able to use the “Contract_Cases” construct in the new example because of current limitations in our tools. Instead, we’ve used a case expression function.
+>
+> Andrew, can you give us some info on the limitation you mention above? Is there a TN for that?
+> --
+> Yannick Moy, Senior Software Engineer, AdaCore
+>
+>
+>
+What is this ticket about, there seems to be nothing in the comment
+file shedding enlightenment?
+
+Also what is the file_1.bin file that is filed in the ticket?
+
+From charlet@adacore.com  Thu Oct  3 10:31:19 2013
+From: charlet@adacore.com
+Date: Thu, 03 Oct 2013 10:31:19 -0400
+Subject: [bugtool:MA03-043] SPARK: state machine examples - descr changed
+Content-Type: text/plain; charset="us-ascii"
+To: bugtool <file@gnat.com>, hawthorn@adacore.com
+Message-ID: <bugtool.MA03-043.20971.20131003143119.1@kwai.gnat.com>
+
+Changed by: charlet
+Description changed from: State Machine Examples
+  to: SPARK: state machine examples
+
+
+View this TN at <https://intranet.adacore.com/crm/#tn=MA03-043>
+
+From charlet@adacore.com  Thu Oct  3 10:31:40 2013
+From: charlet@adacore.com
+Date: Thu, 03 Oct 2013 10:31:40 -0400
+Subject: [bugtool:MA03-043] SPARK: state machine examples - moved to dead
+Content-Type: text/plain; charset="us-ascii"
+To: bugtool <file@gnat.com>, hawthorn@adacore.com
+Message-ID: <bugtool.MA03-043.21133.20131003143140.1@kwai.gnat.com>
+
+Changed by: charlet
+Moved from: open to: dead
+Why: no action item left?
+
+View this TN at <https://intranet.adacore.com/crm/#tn=MA03-043>
+
+From andrew.hawthorn@altran.com  Thu Oct  3 10:40:18 2013
+Message-ID: <524D81D1.2040802@altran.com>
+Date: Thu, 03 Oct 2013 15:40:17 +0100
+From: Andrew Hawthorn <andrew.hawthorn@altran.com>
+MIME-Version: 1.0
+To: Yannick Moy <moy@adacore.com>
+CC: spark@adacore.com, Stuart Matthews <stuart.matthews@altran.com>
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com>
+In-Reply-To: <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+On 03/10/2013 15:15, Yannick Moy wrote:
+> -- Andrew Hawthorn (2013-10-03)
+>>
+>>
+>> Unfortunately, we’ve not been able to use the “Contract_Cases” construct in the new example because of current limitations in our tools. Instead, we’ve used a case expression function.
+>
+> Andrew, can you give us some info on the limitation you mention above? Is there a TN for that?
+
+We need to be able to use "Contract_Cases" in the post-condition of a
+function or as a function expression. This then allows us to analyse
+properties of the function (eg completeness).
+
+If you look at the examples, sm_using_contracts.ads uses contract cases
+successfully but we want to be able to check that all states are
+reachable (plus other properties). I therefore had to create
+sm_using_case_expression.adb which uses an expression function with a
+case expression.
+
+Thanks,
+
+Andrew.
+
+From stuart.matthews@altran.com  Thu Oct  3 10:42:10 2013
+Message-ID: <524D8241.4090304@altran.com>
+Date: Thu, 03 Oct 2013 15:42:09 +0100
+From: Stuart Matthews <stuart.matthews@altran.com>
+MIME-Version: 1.0
+To: Robert Dewar <dewar@adacore.com>
+CC: Yannick Moy <moy@adacore.com>,  Andrew Hawthorn <andrew.hawthorn@altran.com>,
+ spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+In-Reply-To: <524D7D05.6000203@adacore.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+On 03/10/2013 15:19, Robert Dewar wrote:
+>
+>>
+> What is this ticket about, there seems to be nothing in the comment
+> file shedding enlightenment?
+>
+> Also what is the file_1.bin file that is filed in the ticket?
+Hi Robert,
+
+file_1.bin just seems to be the html version of Andrew's email and can
+be ignored. The interesting bit is State_Machine_Examples.zip.
+
+Which comment file are you referring to?
+
+Stuart
+
+From kanig@adacore.com  Thu Oct  3 10:44:06 2013
+Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
+To: "Robert Dewar" <dewar@adacore.com>, "Stuart Matthews" <stuart.matthews@altran.com>
+CC: "Yannick Moy" <moy@adacore.com>, "Andrew Hawthorn" <andrew.hawthorn@altran.com>,
+ spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+ <524D8241.4090304@altran.com>
+Date: Thu, 03 Oct 2013 16:44:00 +0200
+MIME-Version: 1.0
+From: "Johannes Kanig" <kanig@adacore.com>
+Message-ID: <op.w4du7msl1b2obh@novo.act-europe.fr>
+In-Reply-To: <524D8241.4090304@altran.com>
+
+On Thu, 03 Oct 2013 16:42:09 +0200, Stuart Matthews <stuart.matthews@altran.com> wrote:
+> Which comment file are you referring to?
+
+The comment file is just AdaCore slang for the messages on a ticket :-)
+
+--
+Johannes Kanig <kanig@adacore.com>
+
+From dewar@adacore.com  Thu Oct  3 10:47:23 2013
+Message-ID: <524D8377.6050304@adacore.com>
+Date: Thu, 03 Oct 2013 10:47:19 -0400
+From: Robert Dewar <dewar@adacore.com>
+MIME-Version: 1.0
+To: Johannes Kanig <kanig@adacore.com>
+CC: Stuart Matthews <stuart.matthews@altran.com>,  Yannick Moy <moy@adacore.com>,
+ Andrew Hawthorn <andrew.hawthorn@altran.com>, spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+ <524D8241.4090304@altran.com> <op.w4du7msl1b2obh@novo.act-europe.fr>
+In-Reply-To: <op.w4du7msl1b2obh@novo.act-europe.fr>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+
+On 10/3/2013 10:44 AM, Johannes Kanig wrote:
+> On Thu, 03 Oct 2013 16:42:09 +0200, Stuart Matthews <stuart.matthews@altran.com> wrote:
+>> Which comment file are you referring to?
+>
+> The comment file is just AdaCore slang for the messages on a ticket :-)
+
+Not much slangy about it, the file in the ticket is called comment. It
+records all emails mentioning the ticket number.
+>
+
+From moy@adacore.com  Thu Oct  3 10:47:57 2013
+Content-Type: text/plain; charset=windows-1252
+MIME-Version: 1.0 (Mac OS X Mail 6.6 \(1510\))
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+From: Yannick Moy <moy@adacore.com>
+In-Reply-To: <524D81D1.2040802@altran.com>
+Date: Thu, 3 Oct 2013 16:47:56 +0200
+CC: spark@adacore.com, Stuart Matthews <stuart.matthews@altran.com>
+Message-ID: <BFC50416-27FE-426B-8BD8-AB3FAB875F9A@adacore.com>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+To: Andrew Hawthorn <andrew.hawthorn@altran.com>
+
+-- Andrew Hawthorn (2013-10-03)
+> On 03/10/2013 15:15, Yannick Moy wrote:
+>> -- Andrew Hawthorn (2013-10-03)
+>>>
+>>>
+>>> Unfortunately, we’ve not been able to use the “Contract_Cases” construct in the new example because of current limitations in our tools. Instead, we’ve used a case expression function.
+>>
+>> Andrew, can you give us some info on the limitation you mention above? Is there a TN for that?
+>
+> We need to be able to use "Contract_Cases" in the post-condition of a function
+
+this is certainly allowed. Can you show what you want to write but cannot?
+
+> or as a function expression.
+
+I don't understand. You can use Contract_Cases as the contract of an expression function. but for the implementation of the expression function, you need to use expressions (which the Contract_Cases is not).
+
+> If you look at the examples, sm_using_contracts.ads uses contract cases successfully but we want to be able to check that all states are reachable (plus other properties). I therefore had to create sm_using_case_expression.adb which uses an expression function with a case expression.
+
+
+I don't follow the argument here, can you show the limitation that you wrote about?
+--
+Yannick Moy, Senior Software Engineer, AdaCore
+
+
+
+
+From dewar@adacore.com  Thu Oct  3 10:48:21 2013
+Message-ID: <524D83B2.7080106@adacore.com>
+Date: Thu, 03 Oct 2013 10:48:18 -0400
+From: Robert Dewar <dewar@adacore.com>
+MIME-Version: 1.0
+To: Stuart Matthews <stuart.matthews@altran.com>
+CC: Yannick Moy <moy@adacore.com>,  Andrew Hawthorn <andrew.hawthorn@altran.com>,
+ spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+ <524D8241.4090304@altran.com>
+In-Reply-To: <524D8241.4090304@altran.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+
+On 10/3/2013 10:42 AM, Stuart Matthews wrote:
+> On 03/10/2013 15:19, Robert Dewar wrote:
+>>
+>>>
+>> What is this ticket about, there seems to be nothing in the comment
+>> file shedding enlightenment?
+>>
+>> Also what is the file_1.bin file that is filed in the ticket?
+> Hi Robert,
+>
+> file_1.bin just seems to be the html version of Andrew's email and can
+> be ignored. The interesting bit is State_Machine_Examples.zip.
+
+What "Andrew's email" are you referring to
+
+From stuart.matthews@altran.com  Thu Oct  3 10:49:17 2013
+Message-ID: <524D83EB.7060704@altran.com>
+Date: Thu, 03 Oct 2013 15:49:15 +0100
+From: Stuart Matthews <stuart.matthews@altran.com>
+MIME-Version: 1.0
+To: Andrew Hawthorn <andrew.hawthorn@altran.com>
+CC: Yannick Moy <moy@adacore.com>, spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+In-Reply-To: <524D81D1.2040802@altran.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+On 03/10/2013 15:40, Andrew Hawthorn wrote:
+> On 03/10/2013 15:15, Yannick Moy wrote:
+>> -- Andrew Hawthorn (2013-10-03)
+>>>
+>>>
+>>> Unfortunately, we’ve not been able to use the “Contract_Cases”
+>>> construct in the new example because of current limitations in our
+>>> tools. Instead, we’ve used a case expression function.
+>>
+>> Andrew, can you give us some info on the limitation you mention
+>> above? Is there a TN for that?
+>
+> We need to be able to use "Contract_Cases" in the post-condition of a
+> function or as a function expression. This then allows us to analyse
+> properties of the function (eg completeness).
+>
+> If you look at the examples, sm_using_contracts.ads uses contract
+> cases successfully but we want to be able to check that all states are
+> reachable (plus other properties). I therefore had to create
+> sm_using_case_expression.adb which uses an expression function with a
+> case expression.
+>
+> Thanks,
+>
+> Andrew.
+>
+
+To add a bit more explanation - our first version simply moved the
+contract cases into a function, but we came across the limitation that
+the VCs for a nested function in a post condition don't currently get
+generated.
+
+I believe this limitation is documeneted in M815-008/L525-024 - which
+perhaps ought to be re-opened as a "SPARK 2015".
+
+Stuart
+
+From charlet@eu.adacore.com  Thu Oct  3 10:49:45 2013
+Date: Thu, 3 Oct 2013 16:49:44 +0200
+From: Arnaud Charlet <charlet@adacore.com>
+To: Andrew Hawthorn <andrew.hawthorn@altran.com>
+CC: Yannick Moy <moy@adacore.com>, spark@adacore.com, Stuart Matthews <stuart.matthews@altran.com>
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+Message-ID: <20131003144944.GA9107@adacore.com>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <524D81D1.2040802@altran.com>
+
+> >Andrew, can you give us some info on the limitation you mention above? Is
+> >there a TN for that?
+>
+> We need to be able to use "Contract_Cases" in the post-condition of
+> a function or as a function expression. This then allows us to
+> analyse properties of the function (eg completeness).
+
+Andrew,
+
+Can you please open an internal ticket for this limitation?
+
+Also, if you could please follow our procedures for creating this ticket, that
+would be greatly appreciated :-) (In particular, do NOT put people in cc:
+when opening a ticket as you did for MA03-044), and also use a straight text
+body for your email body, MA03-043 was created with attachments only, creating
+confusion as noted by Robert).
+
+Arno
+
+From charlet@eu.adacore.com  Thu Oct  3 10:51:33 2013
+Date: Thu, 3 Oct 2013 16:51:32 +0200
+From: Arnaud Charlet <charlet@adacore.com>
+To: Robert Dewar <dewar@adacore.com>
+CC: Johannes Kanig <kanig@adacore.com>, Stuart Matthews <stuart.matthews@altran.com>,
+ Yannick Moy <moy@adacore.com>, Andrew Hawthorn <andrew.hawthorn@altran.com>,
+ spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+Message-ID: <20131003145132.GB9107@adacore.com>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+ <524D8241.4090304@altran.com> <op.w4du7msl1b2obh@novo.act-europe.fr> <524D8377.6050304@adacore.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <524D8377.6050304@adacore.com>
+
+> Not much slangy about it, the file in the ticket is called comment. It
+
+Certainly slangy since this is AdaCore specific: Altran folks do not have
+access to our filesystem, they only see tickets via the CRM and GT.
+
+Anyway, Andrew used attachments instead of using standard email body,
+creating this confusion. You can see his email by looking at file_1.bin
+
+Arno
+
+From moy@adacore.com  Thu Oct  3 11:12:11 2013
+Content-Type: text/plain; charset=windows-1252
+MIME-Version: 1.0 (Mac OS X Mail 6.6 \(1510\))
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+From: Yannick Moy <moy@adacore.com>
+In-Reply-To: <524D83EB.7060704@altran.com>
+Date: Thu, 3 Oct 2013 17:12:09 +0200
+CC: Andrew Hawthorn <andrew.hawthorn@altran.com>, spark@adacore.com
+Message-ID: <C0898547-6D8C-4676-AADA-ADD4920EE7BD@adacore.com>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+ <524D83EB.7060704@altran.com>
+To: Stuart Matthews <stuart.matthews@altran.com>
+
+-- Stuart Matthews (2013-10-03)
+>
+> To add a bit more explanation - our first version simply moved the contract cases into a function,
+
+you mean a regular function, not an expression function, ok.
+
+> but we came across the limitation that the VCs for a nested function in a post condition don't currently get generated.
+
+you mean the *axiom* for a regular function called in a postcondition is not available when proving this postcondition, right?
+
+> I believe this limitation is documeneted in M815-008/L525-024 - which perhaps ought to be re-opened as a "SPARK 2015".
+
+
+The first TN is unrelated. M525-024 is indeed about getting the axiom of regular functions called in assertions. I've reopened it for SPARK 15.
+--
+Yannick Moy, Senior Software Engineer, AdaCore
+
+
+
+
+From andrew.hawthorn@altran.com  Thu Oct  3 12:45:52 2013
+Message-ID: <524D9F3F.6060108@altran.com>
+Date: Thu, 03 Oct 2013 17:45:51 +0100
+From: Andrew Hawthorn <andrew.hawthorn@altran.com>
+MIME-Version: 1.0
+To: Yannick Moy <moy@adacore.com>
+CC: Stuart Matthews <stuart.matthews@altran.com>, spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+ <524D83EB.7060704@altran.com> <C0898547-6D8C-4676-AADA-ADD4920EE7BD@adacore.com>
+In-Reply-To: <C0898547-6D8C-4676-AADA-ADD4920EE7BD@adacore.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+On 03/10/2013 16:12, Yannick Moy wrote:
+> -- Stuart Matthews (2013-10-03)
+>>
+>> To add a bit more explanation - our first version simply moved the contract cases into a function,
+>
+> you mean a regular function, not an expression function, ok.
+Yes.
+
+>
+>> but we came across the limitation that the VCs for a nested function in a post condition don't currently get generated.
+>
+> you mean the *axiom* for a regular function called in a postcondition is not available when proving this postcondition, right?
+>
+yes
+
+>> I believe this limitation is documeneted in M815-008/L525-024 - which perhaps ought to be re-opened as a "SPARK 2015".
+>
+>
+> The first TN is unrelated. M525-024 is indeed about getting the axiom of regular functions called in assertions. I've reopened it for SPARK 15.
+Great.
+
+
+From andrew.hawthorn@altran.com  Thu Oct  3 12:46:51 2013
+Message-ID: <524D9F7A.6030905@altran.com>
+Date: Thu, 03 Oct 2013 17:46:50 +0100
+From: Andrew Hawthorn <andrew.hawthorn@altran.com>
+MIME-Version: 1.0
+To: Arnaud Charlet <charlet@adacore.com>
+CC: Yannick Moy <moy@adacore.com>, spark@adacore.com,  Stuart Matthews <stuart.matthews@altran.com>
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+ <20131003144944.GA9107@adacore.com>
+In-Reply-To: <20131003144944.GA9107@adacore.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+
+On 03/10/2013 15:49, Arnaud Charlet wrote:
+>>> Andrew, can you give us some info on the limitation you mention above? Is
+>>> there a TN for that?
+>>
+>> We need to be able to use "Contract_Cases" in the post-condition of
+>> a function or as a function expression. This then allows us to
+>> analyse properties of the function (eg completeness).
+>
+> Andrew,
+>
+> Can you please open an internal ticket for this limitation?
+>
+> Also, if you could please follow our procedures for creating this ticket, that
+> would be greatly appreciated :-) (In particular, do NOT put people in cc:
+> when opening a ticket as you did for MA03-044), and also use a straight text
+> body for your email body, MA03-043 was created with attachments only, creating
+> confusion as noted by Robert).
+>
+I'm sorry about the confusion caused by my initial e-mail. Thankfully I
+don't need
+to raise a new TN because Yannick has already re-opened L525-024 which
+should resolve this issue.
+
+From charlet@eu.adacore.com  Thu Oct  3 12:50:19 2013
+Date: Thu, 3 Oct 2013 18:50:17 +0200
+From: Arnaud Charlet <charlet@adacore.com>
+To: Andrew Hawthorn <andrew.hawthorn@altran.com>
+CC: Yannick Moy <moy@adacore.com>, spark@adacore.com, Stuart Matthews <stuart.matthews@altran.com>
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+Message-ID: <20131003165017.GA5713@adacore.com>
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D81D1.2040802@altran.com>
+ <20131003144944.GA9107@adacore.com> <524D9F7A.6030905@altran.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <524D9F7A.6030905@altran.com>
+
+> Thankfully I don't need
+> to raise a new TN because Yannick has already re-opened L525-024
+> which should resolve this issue.
+
+Right, L525-024 is sufficient (and marked for post release 1).
+
+From dewar@adacore.com  Thu Oct  3 15:54:20 2013
+Message-ID: <524DCB6C.5090803@adacore.com>
+Date: Thu, 03 Oct 2013 15:54:20 -0400
+From: Robert Dewar <dewar@adacore.com>
+MIME-Version: 1.0
+To: Arnaud Charlet <charlet@adacore.com>
+CC: Johannes Kanig <kanig@adacore.com>,  Stuart Matthews <stuart.matthews@altran.com>,
+ Yannick Moy <moy@adacore.com>,  Andrew Hawthorn <andrew.hawthorn@altran.com>,
+ spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+ <524D8241.4090304@altran.com> <op.w4du7msl1b2obh@novo.act-europe.fr> <524D8377.6050304@adacore.com>
+ <20131003145132.GB9107@adacore.com>
+In-Reply-To: <20131003145132.GB9107@adacore.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+
+On 10/3/2013 10:51 AM, Arnaud Charlet wrote:
+>> Not much slangy about it, the file in the ticket is called comment. It
+>
+> Certainly slangy since this is AdaCore specific: Altran folks do not have
+> access to our filesystem, they only see tickets via the CRM and GT.
+
+AH, OK, thanks for clarification!
+>
+> Anyway, Andrew used attachments instead of using standard email body,
+> creating this confusion. You can see his email by looking at file_1.bin
+
+OK, probably a good idea to just incorporate that into the comment
+file I will do that!
+>
+> Arno
+>
+
+
+
+From dewar@adacore.com  Thu Oct  3 16:21:46 2013
+From: dewar@adacore.com (dewar)
+To: gnatbugs-ci@adacore.com.do-not-reply
+Subject: [gnatbugs] rev 17928 checked in trunk/gnatbugs/MA/MA03-043/file_1.bin
+X-Act-Checkin: gnatbugs
+Content-Type: text/plain; charset=UTF-8
+Message-ID: <20131003202146.5A4FB3FB31@kwai.gnat.com>
+Date: Thu,  3 Oct 2013 16:21:46 -0400 (EDT)
+
+Author:       dewar
+Date:         2013-10-03 16:21:45 -0400 (Thu, 03 Oct 2013)
+New revision: 17928
+Repository:   kwai:/reportd/svnroot
+
+Log:
+Files updated in MA03-043:
+remove html file, email copied as plain text
+
+Modified:
+	trunk/gnatbugs/MA/MA03-043/file_1.bin
+
+Diff:
+Deleted: trunk/gnatbugs/MA/MA03-043/file_1.bin
+===================================================================
+(Binary files differ)
+
+From dewar@adacore.com  Thu Oct  3 16:21:46 2013
+From: dewar@adacore.com
+To: file@gnat.com
+Subject: [bugtool:MA03-043] SPARK: state machine examples (files updated)
+Message-ID: <bugtool.MA03-043.5506.20131003202146.1@kwai.gnat.com>
+Date: Thu,  3 Oct 2013 16:21:46 -0400 (EDT)
+
+remove html file, email copied as plain text
+Remove    file_1.bin
+From dewar@adacore.com  Thu Oct  3 16:26:26 2013
+From: dewar@adacore.com
+To: file@gnat.com
+Subject: [bugtool:MA03-043] SPARK: state machine examples (files updated)
+Message-ID: <bugtool.MA03-043.14323.20131003202625.1@kwai.gnat.com>
+Date: Thu,  3 Oct 2013 16:26:25 -0400 (EDT)
+
+update comment file with decoded email msg
+Update    comment
+
+From dewar@adacore.com  Thu Oct  3 16:27:15 2013
+Message-ID: <524DD323.5040109@adacore.com>
+Date: Thu, 03 Oct 2013 16:27:15 -0400
+From: Robert Dewar <dewar@adacore.com>
+MIME-Version: 1.0
+To: Arnaud Charlet <charlet@adacore.com>
+CC: Johannes Kanig <kanig@adacore.com>,  Stuart Matthews <stuart.matthews@altran.com>,
+ Yannick Moy <moy@adacore.com>,  Andrew Hawthorn <andrew.hawthorn@altran.com>,
+ spark@adacore.com
+Subject: Re: [MA03-043] - #3314 : State Machine Examples
+References: <71E08C07CB3C444098033ABD69925159145B566564@BATH-EXCMS.praxis.local>
+ <D05F1B05-84A7-4151-BE97-4D23CB82AB1E@adacore.com> <524D7D05.6000203@adacore.com>
+ <524D8241.4090304@altran.com> <op.w4du7msl1b2obh@novo.act-europe.fr> <524D8377.6050304@adacore.com>
+ <20131003145132.GB9107@adacore.com> <524DCB6C.5090803@adacore.com>
+In-Reply-To: <524DCB6C.5090803@adacore.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+
+
+> OK, probably a good idea to just incorporate that into the comment
+> file I will do that!
+
+Comment file now looks the way it should!
+
