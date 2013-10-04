@@ -73,202 +73,6 @@ package body Gnat2Why.Decls is
    function Mk_Item_Of_Entity (E    : Entity_Id;
                                Name : W_Identifier_Id) return Item_Type;
 
-   -------------------------------------------------------
-   -- Complete_Package_With_External_Axioms_Translation --
-   -------------------------------------------------------
-
-   --  ??? Not used anymore (M607-025), do we still need it?
-
-   procedure Complete_Package_With_External_Axioms_Translation
-     (E    : Entity_Id)
-   is
-
-      procedure Compute_Completions
-        (G_Parents :     List_Of_Entity.List;
-         Compl     : out List_Of_Entity.List);
-      --  Returns the list of the actuals of the generic parameters of
-      --  G_Parents.
-
-      procedure Complete_Decls (Decls  : List_Id;
-                                C_List : List_Of_Entity.List);
-      --  Generate an empty completion package for functions and constants
-      --  Containing a reference to actuals of the generic parameters
-
-      --  ??? Should be replaced by an import of the actuals of the generic
-      --  parameters for every function that uses elements of the generic
-      --  when the completion mechanism is redesigned.
-
-      procedure Compute_Completions
-        (G_Parents :     List_Of_Entity.List;
-         Compl     : out List_Of_Entity.List) is
-
-         procedure Compute_Completions_Package
-           (Assoc         : List_Id);
-
-         procedure Compute_Completions_Package
-           (Assoc         : List_Id) is
-
-            CurAssoc  : Node_Id := First (Assoc);
-         begin
-            while Present (CurAssoc) loop
-               declare
-                  Actual : constant Entity_Id :=
-                    Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
-               begin
-                  if not (Ekind (Actual) in Type_Kind) then
-                     List_Of_Entity.Append (Compl, Actual);
-                  end if;
-               end;
-               Next (CurAssoc);
-            end loop;
-         end Compute_Completions_Package;
-
-         GParent_Cur : List_Of_Entity.Cursor :=
-           List_Of_Entity.First (G_Parents);
-      begin
-         while List_Of_Entity.Has_Element (GParent_Cur) loop
-            Compute_Completions_Package
-              (Generic_Associations (Get_Package_Instantiation_Node
-               (List_Of_Entity.Element (GParent_Cur))));
-
-            List_Of_Entity.Next (GParent_Cur);
-         end loop;
-      end Compute_Completions;
-
-      procedure Complete_Decls (Decls  : List_Id;
-                                C_List : List_Of_Entity.List) is
-         N      : Node_Id := First (Decls);
-      begin
-
-         while Present (N) loop
-            if Comes_From_Source (N) and then
-              Nkind (N) in N_Subtype_Declaration
-              | N_Private_Type_Declaration
-                | N_Subprogram_Declaration | N_Object_Declaration then
-               declare
-                  E : constant Entity_Id := Defining_Entity (N);
-                  Theory_Name : constant String := Full_Name (E);
-                  TFile : Why_Section :=  Why_Sections (Dispatch_Entity (E));
-                  Completion : List_Of_Entity.Cursor :=
-                    List_Of_Entity.First (C_List);
-               begin
-
-                  --  For constants, add a new empty theory for
-                  --  constant_closure
-
-                  if (Ekind (E) in Object_Kind
-                      and then not Is_Mutable_In_Why (E))
-                    or else Ekind (E) in Named_Kind then
-
-                     Open_Theory
-                       (TFile, Theory_Name & To_String (WNE_Axiom),
-                        Comment =>
-                          "Module including all necessary axioms for the "
-                        & "parameters of the generic constant "
-                        & """" & Get_Name_String (Chars (E)) & """"
-                        & (if Sloc (E) > 0 then
-                             " declared at " & Build_Location_String (Sloc (E))
-                          else "")
-                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-                     --  Add the completion of function parameters
-
-                     while List_Of_Entity.Has_Element (Completion) loop
-                        Add_Use_For_Entity
-                          (P               => TFile,
-                           N               =>
-                             List_Of_Entity.Element (Completion),
-                           Use_Kind        => EW_Clone_Default,
-                           With_Completion => True);  --  ??? Do we need to
-                                                      --  include completion
-                                                      --  now? (M607--025)
-
-                        List_Of_Entity.Next (Completion);
-                     end loop;
-
-                     Close_Theory (TFile,
-                                   Kind => Axiom_Theory,
-                                   Defined_Entity => Empty);
-
---                       Add_Completion
---                         (Theory_Name,
---                          Theory_Name & To_String (WNE_Axiom),
---                          TFile.Kind);
-                  end if;
-
-                  --  For subprograms, add a new empty theory for
-                  --  expr_fun_closure
-
-                  if Ekind (E) in Subprogram_Kind then
-                     Open_Theory
-                       (TFile, Theory_Name & To_String (WNE_Axiom),
-                        Comment =>
-                          "Module including all necessary axioms for the "
-                        & "parameters of the generic subprogram "
-                        & """" & Get_Name_String (Chars (E)) & """"
-                        & (if Sloc (E) > 0 then
-                             " declared at " & Build_Location_String (Sloc (E))
-                          else "")
-                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-                     --  Add the completion of function parameters
-
-                     while List_Of_Entity.Has_Element (Completion) loop
-                        Add_Use_For_Entity
-                          (P               => TFile,
-                           N               =>
-                             List_Of_Entity.Element (Completion),
-                           Use_Kind        => EW_Clone_Default,
-                           With_Completion => True);  --  ??? Do we need to
-                                                      --  include completion
-                                                      --  now? (M607--025)
-
-                        List_Of_Entity.Next (Completion);
-                     end loop;
-
-                     Close_Theory (TFile,
-                                   Kind => Axiom_Theory,
-                                   Defined_Entity => Empty);
-
---                       Add_Completion
---                         (Theory_Name,
---                          Theory_Name & To_String (WNE_Axiom),
---                          TFile.Kind);
-                  end if;
-               end;
-            end if;
-
-            --  Call Complete_Decls recursively on Package_Declaration and
-            --  Package_Instantiation.
-
-            if Comes_From_Source (N) and then
-              Nkind (N) = N_Package_Instantiation then
-               Complete_Decls
-                 (Decls  => Visible_Declarations
-                    (Specification (Instance_Spec (N))),
-                  C_List => C_List);
-            end if;
-
-            if Comes_From_Source (N) and then
-              Nkind (N) in N_Package_Declaration then
-               Complete_Decls
-                 (Decls  => Visible_Declarations (Get_Package_Spec (N)),
-                  C_List => C_List);
-            end if;
-
-            Next (N);
-         end loop;
-      end Complete_Decls;
-
-      C_List : List_Of_Entity.List;
-   begin
-      Compute_Completions (Get_Generic_Parents (E), C_List);
-
-      Complete_Decls
-        (Decls  => Visible_Declarations (Get_Package_Spec (E)),
-         C_List => C_List);
-   end Complete_Package_With_External_Axioms_Translation;
-
    -------------------------
    -- Get_Generic_Parents --
    -------------------------
@@ -679,6 +483,123 @@ package body Gnat2Why.Decls is
       --  Declares a Why type per formal of type kind of the first element of
       --  G_Parents and a Why function per formal of function kind of the first
       --  element of G_Parents
+
+      procedure Add_Dependencies (E       : Entity_Id;
+                                  Parents : List_Of_Entity.List);
+      --  Add extra dependencies between entities declared in the generic
+      --  and entities of the actual parameters.
+
+      ----------------------
+      -- Add_Dependencies --
+      ----------------------
+
+      procedure Add_Dependencies (E       : Entity_Id;
+                                  Parents : List_Of_Entity.List)
+      is
+
+         procedure Compute_Completions
+           (Compl     : out List_Of_Entity.List);
+         --  Returns the list of the actuals of the generic parameters of
+         --  G_Parents.
+
+         procedure Add_Dependencies_Decls (Decls  : List_Id;
+                                           C_List : List_Of_Entity.List);
+         --  Add dependencies for actuals of the generic parameters to every
+         --  declaration
+
+         procedure Compute_Completions
+           (Compl     : out List_Of_Entity.List) is
+
+            procedure Compute_Completions_Package
+              (Assoc         : List_Id);
+
+            procedure Compute_Completions_Package
+              (Assoc         : List_Id) is
+
+               CurAssoc  : Node_Id := First (Assoc);
+            begin
+               while Present (CurAssoc) loop
+                  declare
+                     Actual : constant Entity_Id :=
+                       Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+                  begin
+                     if not (Ekind (Actual) in Type_Kind) then
+                        List_Of_Entity.Append (Compl, Actual);
+                     end if;
+                  end;
+                  Next (CurAssoc);
+               end loop;
+            end Compute_Completions_Package;
+
+            GParent_Cur : List_Of_Entity.Cursor :=
+              List_Of_Entity.First (Parents);
+         begin
+            while List_Of_Entity.Has_Element (GParent_Cur) loop
+               Compute_Completions_Package
+                 (Generic_Associations (Get_Package_Instantiation_Node
+                  (List_Of_Entity.Element (GParent_Cur))));
+
+               List_Of_Entity.Next (GParent_Cur);
+            end loop;
+         end Compute_Completions;
+
+         procedure Add_Dependencies_Decls (Decls  : List_Id;
+                                   C_List : List_Of_Entity.List) is
+            N      : Node_Id := First (Decls);
+         begin
+
+            while Present (N) loop
+               if Comes_From_Source (N) and then
+                 Nkind (N) in N_Subtype_Declaration
+                 | N_Private_Type_Declaration
+                   | N_Subprogram_Declaration | N_Object_Declaration then
+                  declare
+                     E : constant Entity_Id := Defining_Entity (N);
+                     Completion : List_Of_Entity.Cursor :=
+                       List_Of_Entity.First (C_List);
+                  begin
+
+                     --  Add the completion of actual parameters
+
+                     while List_Of_Entity.Has_Element (Completion) loop
+                        Add_Extra_Dependency
+                          (E, List_Of_Entity.Element (Completion));
+
+                        List_Of_Entity.Next (Completion);
+                     end loop;
+                  end;
+               end if;
+
+               --  Call Add_Dependencies_Decls recursively on
+               --  Package_Declaration and Package_Instantiation.
+
+               if Comes_From_Source (N) and then
+                 Nkind (N) = N_Package_Instantiation then
+                  Add_Dependencies_Decls
+                    (Decls  => Visible_Declarations
+                       (Specification (Instance_Spec (N))),
+                     C_List => C_List);
+               end if;
+
+               if Comes_From_Source (N) and then
+                 Nkind (N) in N_Package_Declaration then
+                  Add_Dependencies_Decls
+                    (Decls  => Visible_Declarations (Get_Package_Spec (N)),
+                     C_List => C_List);
+               end if;
+
+               Next (N);
+            end loop;
+         end Add_Dependencies_Decls;
+
+         C_List : List_Of_Entity.List;
+      begin
+         Compute_Completions (C_List);
+
+         Add_Dependencies_Decls
+           (Decls  => Visible_Declarations (Get_Package_Spec (E)),
+            C_List => C_List);
+      end Add_Dependencies;
 
       --------------------
       -- Compute_Length --
@@ -1439,6 +1360,8 @@ package body Gnat2Why.Decls is
                     NID (Get_Generic_Name (Package_Entity,
                       List_Of_Entity.First (G_Parents)) & ".mlw"),
                   Subst     => Subst));
+
+            Add_Dependencies (Package_Entity, G_Parents);
 
          end;
       end if;

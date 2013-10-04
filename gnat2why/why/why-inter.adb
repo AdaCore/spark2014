@@ -460,6 +460,17 @@ package body Why.Inter is
       Add_Effect_Imports (P.Cur_Theory, S);
    end Add_Effect_Imports;
 
+   --------------------------
+   -- Add_Extra_Dependency --
+   --------------------------
+
+   procedure Add_Extra_Dependency (Defined_Entity : Entity_Id;
+                                   New_Dependency : Entity_Id) is
+   begin
+      Add_To_Graph (Entity_Dependencies, Defined_Entity,
+                    New_Dependency);
+   end Add_Extra_Dependency;
+
    ------------------------
    -- Add_Use_For_Entity --
    ------------------------
