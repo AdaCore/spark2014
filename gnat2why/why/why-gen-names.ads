@@ -317,10 +317,6 @@ package Why.Gen.Names is
    function Convert_From (Kind : EW_Basic_Type) return Why_Name_Enum
    with Pre => (Kind in EW_Int | EW_Real);
 
-   Array_Conv_Idemp         : constant String := "conv_idem";
-   Array_Conv_Idemp_2       : constant String := "conv_idem_2";
-   Assume                   : constant String := "assume";
-
    function Ada_Array_Name (Dimension : Pos) return Why_Name_Enum;
 
 end Why.Gen.Names;
