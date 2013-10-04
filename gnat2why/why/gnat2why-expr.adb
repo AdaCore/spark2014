@@ -3565,15 +3565,20 @@ package body Gnat2Why.Expr is
         Transform_Expr (Left_Opnd (Expr), Domain, Params);
       Right     : constant W_Expr_Id :=
         Transform_Expr (Right_Opnd (Expr), Domain, Params);
-      Left_Simp : constant Boolean :=
-        Is_Constrained (Etype (Left_Opnd (Expr))) or else
-        Nkind (Left_Opnd (Expr)) in N_Identifier | N_Expanded_Name;
+
+      --  Left_Name holds a (simple) array expression for the left_opnd, even
+      --  it is a component. Left_Simp is true whenever 'Left' is already
+      --  simple enough, and no temp name needs to be introduced.
+
+      Left_Simp : Boolean;
+      Left_Name : W_Expr_Id;
+
       Right_Simp : constant Boolean :=
-        Is_Constrained (Etype (Right_Opnd (Expr))) or else
-        Nkind (Right_Opnd (Expr)) in N_Identifier | N_Expanded_Name;
-      Left_Name : constant W_Expr_Id :=
-        (if Left_Simp then Left
-         else +New_Temp_Identifier (Typ => Get_Type (Left)));
+        (if Is_Component_Right_Opnd (Expr) then
+              Nkind (Right_Opnd (Expr)) in N_Identifier | N_Expanded_Name
+         else
+           (Is_Constrained (Etype (Right_Opnd (Expr))) or else
+            Nkind (Right_Opnd (Expr)) in N_Identifier | N_Expanded_Name));
       Right_Name : constant W_Expr_Id :=
         (if Right_Simp then Right
          else +New_Temp_Identifier (Typ => Get_Type (Right)));
@@ -3582,6 +3587,8 @@ package body Gnat2Why.Expr is
       T          : W_Expr_Id;
       First_Expr : W_Expr_Id;
       Low_Type   : Entity_Id;
+      One_Term   : constant W_Expr_Id :=
+        New_Integer_Constant (Value => Uint_1);
 
       function Build_Last_Expr return W_Expr_Id;
       --  build the expression that yields the value of the 'Last attribute
@@ -3593,6 +3600,12 @@ package body Gnat2Why.Expr is
       ---------------------
 
       function Build_Last_Expr return W_Expr_Id is
+         Left_Length : constant W_Expr_Id :=
+           (if Is_Component_Left_Opnd (Expr) then One_Term
+            else Get_Array_Attr (Domain, Left_Name, Attribute_Length, 1));
+         Right_Length : constant W_Expr_Id :=
+           (if Is_Component_Right_Opnd (Expr) then One_Term
+            else Get_Array_Attr (Domain, Right_Name, Attribute_Length, 1));
       begin
          return
            New_Int_Substract
@@ -3602,57 +3615,85 @@ package body Gnat2Why.Expr is
                  To_Int (Domain, First_Expr),
                  New_Int_Add
                    (Domain,
-                    To_Int
-                      (Domain,
-                       Get_Array_Attr
-                         (Domain, Left_Name, Attribute_Length, 1)),
-                    To_Int
-                      (Domain,
-                       Get_Array_Attr
-                         (Domain, Right_Name, Attribute_Length, 1)))),
-              New_Integer_Constant (Value => Uint_1));
+                    To_Int (Domain, Left_Length),
+                    To_Int (Domain, Right_Length))),
+              One_Term);
       end Build_Last_Expr;
 
       --  Start of processing for Transform_Concatenation
+
    begin
 
-      --  We first build the call to concatenation
+      if Is_Component_Left_Opnd (Expr) then
+         Left_Simp :=
+           Nkind (Left_Opnd (Expr)) in N_Identifier | N_Expanded_Name;
+      else
+         Left_Simp :=
+           Is_Constrained (Etype (Left_Opnd (Expr))) or else
+           Nkind (Left_Opnd (Expr)) in N_Identifier | N_Expanded_Name;
+      end if;
 
-      Add_Array_Arg (Domain, Args, Left_Name, Arg_Ind);
-      Add_Array_Arg (Domain, Args, Right_Name, Arg_Ind);
-      T :=
-        New_Call
-          (Ada_Node => Expr,
-           Domain   => Domain,
-           Name     =>
-             Prefix
-               (Ada_Node => Etype (Expr),
-                P        => To_String (Ada_Array_Name (1)),
-                N        => "concat"),
-           Args     => Args,
-           Typ      => EW_Abstract (Etype (Expr)));
+      if Left_Simp then
+         Left_Name := Left;
+      else
+         Left_Name := +New_Temp_Identifier (Typ => Get_Type (Left));
+      end if;
 
-      --  Depending on the lower bound of the concat, the object may not slided
-      --  correctly, because the concat operator in Why assumes that the new
-      --  low bound is the one of the left opnd. But this is not always the
-      --  case in Ada, see RM 4.5.3(6-7). So we first compute the new lower
-      --  bound and then slide. The test here is taken from exp_ch4.adb,
+      --  Computing the lower bound of the concatenation first; see RM
+      --  4.5.3(6-7). for the rules. The test here is taken from exp_ch4.adb,
       --  Expand_Concatenate.
 
       Low_Type := First_Subtype (Root_Type (Base_Type (Etype (Expr))));
       if Is_Constrained (Low_Type) then
          First_Expr := Get_Array_Attr (Domain, Low_Type, Attribute_First, 1);
-         T := New_Call
-           (Domain => Domain,
-            Name   =>
-              Prefix (P => To_String (Ada_Array_Name (1)),
-                      N => "slide"),
-            Args   =>
-              (1 => T,
-               2 => Get_Array_Attr (Domain, Left_Name, Attribute_First, 1),
-               3 => First_Expr));
+      elsif Is_Component_Left_Opnd (Expr) then
+         First_Expr :=
+           New_Attribute_Expr
+             (Nth_Index_Type (Etype (Expr), 1), Attribute_First);
       else
          First_Expr := Get_Array_Attr (Domain, Left_Name, Attribute_First, 1);
+      end if;
+
+      --  We are now in position do to the actual concatenation. Let's first
+      --  prepare the arguments to the concat call.
+
+      if Is_Component_Left_Opnd (Expr) then
+         Args (1) := New_Singleton_Call (Domain, Left_Name, First_Expr);
+         Args (2) := First_Expr;
+         Args (3) := First_Expr;
+      else
+         Add_Array_Arg (Domain, Args, Left_Name, Arg_Ind);
+      end if;
+
+      if Is_Component_Right_Opnd (Expr) then
+         Args (4) := New_Singleton_Call (Domain, Right_Name, One_Term);
+         Args (5) := One_Term;
+         Args (6) := One_Term;
+      else
+         Add_Array_Arg (Domain, Args, Right_Name, Arg_Ind);
+      end if;
+
+      --  We first build the call to concatenation
+
+      Add_Array_Arg (Domain, Args, Right_Name, Arg_Ind);
+      T :=
+        New_Concat_Call (Domain, Args, EW_Abstract (Etype (Expr)));
+
+      --  Depending on the lower bound of the concat, the object may not slided
+      --  correctly, because the concat operator in Why assumes that the new
+      --  low bound is the one of the left opnd.
+      if Is_Constrained (Low_Type) then
+         T :=
+           New_Call
+             (Domain => Domain,
+              Name   =>
+                Prefix (P => To_String (Ada_Array_Name (1)),
+                        N => "slide"),
+              Args   =>
+                (1 => T,
+                 2 => Get_Array_Attr (Domain, Left_Name, Attribute_First, 1),
+                 3 => First_Expr),
+              Typ    => EW_Abstract (Etype (Expr)));
       end if;
 
       --  Now the expression T is of the Why3 array type. We need to convert

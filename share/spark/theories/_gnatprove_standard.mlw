@@ -253,6 +253,16 @@ theory Array__1
           /\
       (i > a_last ->
         get (concat a a_first a_last b b_first b_last) i = get b (i-a_last + b_first - 1))
+
+   (* a singleton array is the array which is defined only at the given
+   position, and yields the given value. *)
+
+   function singleton 'a int : map 'a
+
+   axiom singleton_def :
+    forall v : 'a.
+    forall i : int  [get (singleton v i) i].
+      get (singleton v i) i = v
 end
 
 theory Array__2

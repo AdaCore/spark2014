@@ -737,6 +737,26 @@ package body Why.Gen.Arrays is
       end if;
    end New_Array_Update;
 
+   ---------------------
+   -- New_Concat_Call --
+   ---------------------
+
+   function New_Concat_Call
+     (Domain : EW_Domain;
+      Args   : W_Expr_Array;
+      Typ    : W_Type_Id) return W_Expr_Id is
+   begin
+      return
+        New_Call
+          (Domain   => Domain,
+           Name     =>
+             Prefix
+               (P        => To_String (Ada_Array_Name (1)),
+                N        => "concat"),
+           Args     => Args,
+           Typ      => Typ);
+   end New_Concat_Call;
+
    ---------------------------
    --  New_Element_Equality --
    ---------------------------
@@ -768,5 +788,24 @@ package body Why.Gen.Arrays is
    begin
       return Result;
    end New_Element_Equality;
+
+   ------------------------
+   -- New_Singleton_Call --
+   ------------------------
+
+   function New_Singleton_Call
+     (Domain : EW_Domain;
+      Elt    : W_Expr_Id;
+      Pos    : W_Expr_Id) return W_Expr_Id is
+   begin
+      return
+        New_Call
+          (Domain   => Domain,
+           Name     =>
+             Prefix
+               (P        => To_String (Ada_Array_Name (1)),
+                N        => "singleton"),
+           Args     => (1 => Elt, 2 => Pos));
+   end New_Singleton_Call;
 
 end Why.Gen.Arrays;

@@ -259,4 +259,16 @@ package Why.Gen.Arrays is
       Dim    : Positive) return W_Expr_Id;
    --  Same as Get_Array_Attr, can be used when the type is already known
 
+   function New_Concat_Call
+     (Domain : EW_Domain;
+      Args   : W_Expr_Array;
+      Typ    : W_Type_Id) return W_Expr_Id;
+   --  return a call to the concat function in Why array theory
+
+   function New_Singleton_Call
+     (Domain : EW_Domain;
+      Elt    : W_Expr_Id;
+      Pos    : W_Expr_Id) return W_Expr_Id;
+   --  return a call to the singleton function in Why array theory
+
 end Why.Gen.Arrays;
