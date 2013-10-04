@@ -34,7 +34,6 @@ with Uintp;                 use Uintp;
 with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
 
-with Why.Gen.Name_Gen;
 with Why.Types;
 
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
@@ -321,9 +320,6 @@ package Why.Gen.Names is
    Array_Conv_Idemp         : constant String := "conv_idem";
    Array_Conv_Idemp_2       : constant String := "conv_idem_2";
    Assume                   : constant String := "assume";
-
-   package Assume_Name is
-      new Name_Gen.Arity_1 (EW_Term, "", Assume);
 
    function Ada_Array_Name (Dimension : Pos) return Why_Name_Enum;
 

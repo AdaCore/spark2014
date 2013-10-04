@@ -422,7 +422,7 @@ package body Gnat2Why.Expr is
 
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id
    is
-      Lvalue   : constant Entity_Id := Defining_Identifier (N);
+      Lvalue   : Entity_Id := Defining_Identifier (N);
       Rexpr    : constant Node_Id := Expression (N);
    begin
 
@@ -438,11 +438,19 @@ package body Gnat2Why.Expr is
       --  let var_name__assume = <rexpr> in
       --    assume (var_name = var_name_assume);
 
+      --  Some objects have two declarations, e.g. the partial and full view of
+      --  a package level object. In this case, we always use the type of the
+      --  partial view.
+
+      if Is_Full_View (Lvalue) then
+         Lvalue := Partial_View (Lvalue);
+      end if;
+
       if Present (Rexpr) then
          declare
             Why_Expr : constant W_Prog_Id :=
                          +Transform_Expr (Rexpr,
-                                          Type_Of_Node (Lvalue),
+                                          EW_Abstract (Etype (Lvalue)),
                                           EW_Prog,
                                           Params => Body_Params);
             L_Name   : constant String := Full_Name (Lvalue);
@@ -451,7 +459,7 @@ package body Gnat2Why.Expr is
             if Is_Mutable_In_Why (Lvalue) then
                return New_Assignment
                  (Ada_Node => N,
-                  Name     => L_Id,
+                  Name     => To_Why_Id (Lvalue),
                   Value    => Why_Expr);
 
             elsif Is_Static_Expression (Rexpr) then
@@ -465,7 +473,8 @@ package body Gnat2Why.Expr is
             else
                declare
                   Tmp_Var : constant W_Identifier_Id :=
-                              Assume_Name.Id (L_Name);
+                    New_Identifier (Name => L_Name & "__assume",
+                                    Typ  => EW_Abstract (Etype (Lvalue)));
                   Eq      : constant W_Pred_Id :=
                               New_Relation
                                 (Op      => EW_Eq,
