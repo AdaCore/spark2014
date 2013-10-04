@@ -121,7 +121,7 @@ auditlog.adb:1852:50: info: range check proved
 auditlog.adb:1852:53: info: overflow check proved
 auditlog.adb:1852:72: info: overflow check proved
 auditlog.adb:1858:53: info: range check proved
-auditlog.adb:1861:47: warning: range check might fail
+auditlog.adb:1861:47: info: range check proved
 auditlog.adb:1868:7: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
 auditlog.adb:1870:47: warning: range check might fail
 auditlog.adb:1870:50: warning: overflow check might fail
