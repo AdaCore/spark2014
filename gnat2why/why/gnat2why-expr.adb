@@ -3682,7 +3682,9 @@ package body Gnat2Why.Expr is
       --  correctly, because the concat operator in Why assumes that the new
       --  low bound is the one of the left opnd.
 
-      if Is_Constrained (Low_Type) then
+      if not Is_Component_Left_Opnd (Expr)
+        and then Is_Constrained (Low_Type)
+      then
          T :=
            New_Call
              (Domain => Domain,
@@ -3699,16 +3701,33 @@ package body Gnat2Why.Expr is
       --  Now the expression T is of the Why3 array type. We need to convert
       --  it to the type of the concatenation expression. Whenever this type is
       --  constrained, we are done. In other cases, we need to convert to the
-      --  unconstrained representation.
+      --  unconstrained representation. This situation also requires a range
+      --  check.
 
       if not Is_Constrained (Etype (Expr)) then
-         T :=
-           Array_Convert_From_Base
-             (Domain => Domain,
-              Target => Etype (Expr),
-              Ar     => T,
-              First  => First_Expr,
-              Last   => Build_Last_Expr);
+         declare
+            Target    : constant Entity_Id := Nth_Index_Type (Etype (Expr), 1);
+            Last_Expr : W_Expr_Id := Build_Last_Expr;
+         begin
+            if Domain = EW_Prog then
+               Last_Expr :=
+                 New_VC_Call
+                   (Domain   => EW_Prog,
+                    Ada_Node => Expr,
+                    Name     => Range_Check_Name (Target, RCK_Range),
+                    Progs    => (1 => +Last_Expr),
+                    Reason   => VC_Range_Check,
+                    Typ      => EW_Int_Type);
+            end if;
+            T :=
+              Array_Convert_From_Base
+                (Domain => Domain,
+                 Target => Etype (Expr),
+                 Ar     => T,
+                 First  => First_Expr,
+                 Last   => Last_Expr);
+
+         end;
       end if;
 
       --  Finally, we bind the introduced names if any, and return
