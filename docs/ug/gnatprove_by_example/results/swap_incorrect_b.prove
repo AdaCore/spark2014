@@ -1,1 +1,1 @@
-swap_incorrect_b.adb:14:32: overflow check not proved
+swap_incorrect_b.adb:14:32: warning: overflow check might fail
