@@ -18,4 +18,4 @@ model.ads:111:14: info: postcondition proved
 model.ads:115:14: info: postcondition proved
 model.ads:141:14: info: postcondition proved
 model.ads:146:14: info: postcondition proved
-model.ads:163:12: warning: postcondition might fail, requires Name(Owned_State(SM)(From(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (From(Owned_Flow(Transform'Result) (T)
+model.ads:168:12: warning: postcondition might fail, requires Name(Owned_State(SM)(To(Owned_Transition(SM)(T)))) = Name(Owned_Action(Transform'Result) (To(Owned_Flow(Transform'Result) (T)

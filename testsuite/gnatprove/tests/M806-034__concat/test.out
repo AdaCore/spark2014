@@ -20,7 +20,7 @@ concat.adb:26:14: info: length check proved
 concat_left.adb:5:19: warning: range check might fail
 concat_left.adb:5:19: info: length check proved
 concat_left.adb:7:7: warning: assertion might fail, requires Z'First = Integer'first
-concat_left.adb:8:7: info: assertion proved
+concat_left.adb:8:7: warning: assertion might fail, requires Z (Z'First) = X
 concat_left.adb:8:26: info: index check proved
 concat_left.adb:9:7: warning: assertion might fail, requires Z'Length = Y'Length + 1
 concat_left.adb:13:18: info: range check proved
