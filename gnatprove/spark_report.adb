@@ -239,9 +239,15 @@ procedure SPARK_Report is
                 Int_Image (Num_Subps (Unit)) & " analyzed");
          Iter_Unit_Subps (Unit, For_Each_Subp'Access);
       end For_Each_Unit;
+
+      --  Start of processing for Print_Proof_Report
+
+      N_Un : constant Integer := Num_Units;
    begin
-      Put_Line (Handle, "Analyzed" & Num_Units'Img & " units");
-      Iter_Units (For_Each_Unit'Access);
+      if N_Un > 0 then
+         Put_Line (Handle, "Analyzed" & N_Un'Img & " units");
+         Iter_Units (For_Each_Unit'Access);
+      end if;
    end Print_Proof_Report;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
