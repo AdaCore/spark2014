@@ -65,8 +65,9 @@ package Why.Inter is
    --  depends. With_Completion is True if the completion theories should be
    --  added too.
 
-   procedure Add_Extra_Dependency (Defined_Entity : Entity_Id;
-                                   New_Dependency : Entity_Id);
+   procedure Add_Extra_Dependency
+     (Defined_Entity : Entity_Id;
+      New_Dependency : Entity_Id);
    --  Add an extra dependency New_Dependency for entity Defined_Entity
 
    procedure Discard_Theory (P : in out Why_Section);

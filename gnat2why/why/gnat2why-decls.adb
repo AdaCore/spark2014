@@ -484,8 +484,9 @@ package body Gnat2Why.Decls is
       --  G_Parents and a Why function per formal of function kind of the first
       --  element of G_Parents
 
-      procedure Add_Dependencies (E       : Entity_Id;
-                                  Parents : List_Of_Entity.List);
+      procedure Add_Dependencies
+        (E         : Entity_Id;
+         G_Parents : List_Of_Entity.List);
       --  Add extra dependencies between entities declared in the generic
       --  and entities of the actual parameters.
 
@@ -493,37 +494,43 @@ package body Gnat2Why.Decls is
       -- Add_Dependencies --
       ----------------------
 
-      procedure Add_Dependencies (E       : Entity_Id;
-                                  Parents : List_Of_Entity.List)
+      procedure Add_Dependencies
+        (E         : Entity_Id;
+         G_Parents : List_Of_Entity.List)
       is
-
          procedure Compute_Completions
-           (Compl     : out List_Of_Entity.List);
+           (Compl : out List_Of_Entity.List);
          --  Returns the list of the actuals of the generic parameters of
          --  G_Parents.
 
-         procedure Add_Dependencies_Decls (Decls  : List_Id;
-                                           C_List : List_Of_Entity.List);
+         procedure Add_Dependencies_Decls
+           (Decls  : List_Id;
+            C_List : List_Of_Entity.List);
          --  Add dependencies for actuals of the generic parameters to every
          --  declaration
 
+         -------------------------
+         -- Compute_Completions --
+         -------------------------
+
          procedure Compute_Completions
-           (Compl     : out List_Of_Entity.List) is
+           (Compl : out List_Of_Entity.List)
+         is
+            procedure Compute_Completions_Package (Assoc : List_Id);
 
-            procedure Compute_Completions_Package
-              (Assoc         : List_Id);
+            ---------------------------------
+            -- Compute_Completions_Package --
+            ---------------------------------
 
-            procedure Compute_Completions_Package
-              (Assoc         : List_Id) is
-
-               CurAssoc  : Node_Id := First (Assoc);
+            procedure Compute_Completions_Package (Assoc : List_Id) is
+               CurAssoc : Node_Id := First (Assoc);
             begin
                while Present (CurAssoc) loop
                   declare
                      Actual : constant Entity_Id :=
                        Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                   begin
-                     if not (Ekind (Actual) in Type_Kind) then
+                     if Ekind (Actual) not in Type_Kind then
                         List_Of_Entity.Append (Compl, Actual);
                      end if;
                   end;
@@ -531,61 +538,61 @@ package body Gnat2Why.Decls is
                end loop;
             end Compute_Completions_Package;
 
-            GParent_Cur : List_Of_Entity.Cursor :=
-              List_Of_Entity.First (Parents);
-         begin
-            while List_Of_Entity.Has_Element (GParent_Cur) loop
-               Compute_Completions_Package
-                 (Generic_Associations (Get_Package_Instantiation_Node
-                  (List_Of_Entity.Element (GParent_Cur))));
+         --  Start of Compute_Completions
 
-               List_Of_Entity.Next (GParent_Cur);
+         begin
+            for GParent of G_Parents loop
+               Compute_Completions_Package
+                 (Generic_Associations
+                    (Get_Package_Instantiation_Node (GParent)));
             end loop;
          end Compute_Completions;
 
-         procedure Add_Dependencies_Decls (Decls  : List_Id;
-                                   C_List : List_Of_Entity.List) is
-            N      : Node_Id := First (Decls);
+         ----------------------------
+         -- Add_Dependencies_Decls --
+         ----------------------------
+
+         procedure Add_Dependencies_Decls
+           (Decls  : List_Id;
+            C_List : List_Of_Entity.List)
+         is
+            N : Node_Id := First (Decls);
          begin
-
             while Present (N) loop
-               if Comes_From_Source (N) and then
-                 Nkind (N) in N_Subtype_Declaration
-                 | N_Private_Type_Declaration
-                   | N_Subprogram_Declaration | N_Object_Declaration then
-                  declare
-                     E : constant Entity_Id := Defining_Entity (N);
-                     Completion : List_Of_Entity.Cursor :=
-                       List_Of_Entity.First (C_List);
-                  begin
+               if Comes_From_Source (N) then
+                  case Nkind (N) is
+                     when N_Subtype_Declaration
+                        | N_Private_Type_Declaration
+                        | N_Subprogram_Declaration
+                        | N_Object_Declaration =>
+                        declare
+                           E : constant Entity_Id := Defining_Entity (N);
+                        begin
+                           --  Add the completion of actual parameters
 
-                     --  Add the completion of actual parameters
+                           for Completion of C_List loop
+                              Add_Extra_Dependency (E, Completion);
+                           end loop;
+                        end;
 
-                     while List_Of_Entity.Has_Element (Completion) loop
-                        Add_Extra_Dependency
-                          (E, List_Of_Entity.Element (Completion));
+                     --  Call Add_Dependencies_Decls recursively on
+                     --  N_Package_Declaration and N_Package_Instantiation.
 
-                        List_Of_Entity.Next (Completion);
-                     end loop;
-                  end;
-               end if;
+                     when N_Package_Instantiation =>
+                        Add_Dependencies_Decls
+                          (Decls  => Visible_Declarations
+                                       (Specification (Instance_Spec (N))),
+                           C_List => C_List);
 
-               --  Call Add_Dependencies_Decls recursively on
-               --  Package_Declaration and Package_Instantiation.
+                     when N_Package_Declaration =>
+                        Add_Dependencies_Decls
+                          (Decls  =>
+                              Visible_Declarations (Get_Package_Spec (N)),
+                           C_List => C_List);
 
-               if Comes_From_Source (N) and then
-                 Nkind (N) = N_Package_Instantiation then
-                  Add_Dependencies_Decls
-                    (Decls  => Visible_Declarations
-                       (Specification (Instance_Spec (N))),
-                     C_List => C_List);
-               end if;
-
-               if Comes_From_Source (N) and then
-                 Nkind (N) in N_Package_Declaration then
-                  Add_Dependencies_Decls
-                    (Decls  => Visible_Declarations (Get_Package_Spec (N)),
-                     C_List => C_List);
+                     when others =>
+                        null;
+                  end case;
                end if;
 
                Next (N);
@@ -593,6 +600,9 @@ package body Gnat2Why.Decls is
          end Add_Dependencies_Decls;
 
          C_List : List_Of_Entity.List;
+
+      --  Start of Add_Dependencies
+
       begin
          Compute_Completions (C_List);
 
@@ -1332,6 +1342,8 @@ package body Gnat2Why.Decls is
       G_Parents : constant List_Of_Entity.List :=
         Get_Generic_Parents (Package_Entity);
       Subst_Length : Natural;
+
+   --  Start of Translate_Package_With_External_Axioms
 
    begin
       Register_External_Entities (Package_Entity);
