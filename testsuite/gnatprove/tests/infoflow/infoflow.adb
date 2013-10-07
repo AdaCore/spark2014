@@ -1,4 +1,4 @@
-package body Infoflow is pragma SPARK_Mode (On);  
+package body Infoflow is pragma SPARK_Mode (On);
    procedure Machine_Step is
    begin
       declare
@@ -56,17 +56,17 @@ package body Infoflow is pragma SPARK_Mode (On);
    procedure ScrubCache (Cache_V1, Cache_V2 : out SensorCacheType) is
    begin
       for I in SensorIds loop
-         pragma Loop_Invariant (for all K in SensorIds =>
-                          (if K < I then Cache_V1 (K) = 0));
          Cache_V1 (I) := 0;
+         pragma Loop_Invariant (for all K in SensorIds =>
+                                  (if K <= I then Cache_V1 (K) = 0));
       end loop;
 
       --  duplicate version 2
 
       for I in SensorIds loop
-         pragma Loop_Invariant (for all K in SensorIds =>
-                          (if K < I then Cache_V2 (K) = 0));
          Cache_V2 (I) := 0;
+         pragma Loop_Invariant (for all K in SensorIds =>
+                                  (if K <= I then Cache_V2 (K) = 0));
       end loop;
    end ScrubCache;
 
@@ -76,17 +76,17 @@ package body Infoflow is pragma SPARK_Mode (On);
       J                      : in KeyTableEntries) is
    begin
       for I in KeyTableEntries loop
-         pragma Loop_Invariant (for all K in KeyTableEntries =>
-                          (if K < I then OutKeys_V1 (K) = InKeys_V1 (K)));
          OutKeys_V1 (I) := InKeys_V1 (I);
+         pragma Loop_Invariant (for all K in KeyTableEntries =>
+                              (if K <= I then OutKeys_V1 (K) = InKeys_V1 (K)));
       end loop;
 
       --  duplicate version 2
 
       for I in KeyTableEntries loop
-         pragma Loop_Invariant (for all K in KeyTableEntries =>
-                          (if K < I then OutKeys_V2 (K) = InKeys_V2 (K)));
          OutKeys_V2 (I) := InKeys_V2 (I);
+         pragma Loop_Invariant (for all K in KeyTableEntries =>
+                              (if K <= I then OutKeys_V2 (K) = InKeys_V2 (K)));
       end loop;
    end CopyKeys;
 

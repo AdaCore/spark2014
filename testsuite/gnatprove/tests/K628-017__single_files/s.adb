@@ -18,13 +18,13 @@ package body S is
      Src_Old : constant Intarray := Src;
   begin
      for Index in Dest'Range loop
-        pragma Assert ((for all J in Dest'First .. Index - 1 =>
-                         Dest (J) = Src_Old (J)) and
-		       (for all J in Index .. Dest'Last =>
-                         Src (J) = Src_Old (J)));
-
         Dest (Index) := Src (Index);
         Src (Index) := 0;
+
+        pragma Assert ((for all J in Dest'First .. Index =>
+                          Dest (J) = Src_Old (J)) and
+                         (for all J in Index + 1 .. Dest'Last =>
+                            Src (J) = Src_Old (J)));
      end loop;
   end Move;
 

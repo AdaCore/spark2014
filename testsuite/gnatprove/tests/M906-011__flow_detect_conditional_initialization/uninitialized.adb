@@ -129,4 +129,15 @@ is
          A(J) := Tmp;
       end loop;
    end Tab;
+
+
+   procedure Local (Y : out Integer) is
+      X : Integer;
+   begin
+      if False then
+         X := 0;
+      end if;
+      X := X + 1;  --  This should be a warning.
+      Y := 1;
+   end Local;
 end Uninitialized;

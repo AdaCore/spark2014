@@ -1,3 +1,5 @@
+fb20a00.adb:25:24: warning: "Ret" might not be initialized [uninitialized]
+fb20a00.adb:27:24: warning: "Ret" might not be initialized [uninitialized]
 fb20a00.adb:30:10: warning: "Ret" might not be initialized [uninitialized]
 fb20a00.adb:9:7: info: range check proved
 fb20a00.adb:10:7: info: range check proved

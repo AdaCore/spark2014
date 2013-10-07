@@ -1,20 +1,36 @@
-infoflow.adb:59:10: info: loop invariant initialization proved
-infoflow.adb:60:42: warning: loop invariant might fail after first iteration, requires Cache_V1 (K) = 0
-infoflow.adb:67:10: info: loop invariant initialization proved
-infoflow.adb:68:42: warning: loop invariant might fail after first iteration, requires Cache_V2 (K) = 0
-infoflow.adb:79:10: info: loop invariant initialization proved
-infoflow.adb:80:42: warning: loop invariant might fail after first iteration, requires OutKeys_V1 (K) = InKeys_V1 (K)
-infoflow.adb:87:10: info: loop invariant initialization proved
-infoflow.adb:88:42: warning: loop invariant might fail after first iteration, requires OutKeys_V2 (K) = InKeys_V2 (K)
+infoflow.adb:59:23: warning: "Cache_V1" might not be initialized [uninitialized]
+infoflow.adb:67:23: warning: "Cache_V2" might not be initialized [uninitialized]
+infoflow.adb:79:25: warning: "Outkeys_V1" might not be initialized [uninitialized]
+infoflow.adb:87:25: warning: "Outkeys_V2" might not be initialized [uninitialized]
+infoflow.adb:172:10: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:174:22: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:177:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:182:10: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:187:22: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:190:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:200:10: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:202:22: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:205:07: warning: "A_V1" might not be initialized [uninitialized]
+infoflow.adb:205:07: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:216:10: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:221:22: warning: "A_V2" might not be initialized [uninitialized]
+infoflow.adb:60:10: info: loop invariant initialization proved
+infoflow.adb:60:10: info: loop invariant preservation proved
+infoflow.adb:68:10: info: loop invariant initialization proved
+infoflow.adb:68:10: info: loop invariant preservation proved
+infoflow.adb:80:10: info: loop invariant initialization proved
+infoflow.adb:80:10: info: loop invariant preservation proved
+infoflow.adb:88:10: info: loop invariant initialization proved
+infoflow.adb:88:10: info: loop invariant preservation proved
 infoflow.adb:99:28: info: division check proved
 infoflow.adb:101:13: warning: loop invariant might fail in first iteration
 infoflow.adb:101:13: warning: loop invariant might fail after first iteration
-infoflow.adb:103:40: warning: array index check might fail
+infoflow.adb:103:40: info: index check proved
 infoflow.adb:103:64: warning: array index check might fail
-infoflow.adb:105:40: warning: array index check might fail
-infoflow.adb:105:64: warning: array index check might fail
-infoflow.adb:106:42: warning: array index check might fail
-infoflow.adb:106:64: warning: array index check might fail
+infoflow.adb:105:40: info: index check proved
+infoflow.adb:105:64: info: index check proved
+infoflow.adb:106:42: info: index check proved
+infoflow.adb:106:64: info: index check proved
 infoflow.adb:107:27: warning: array index check might fail
 infoflow.adb:108:19: warning: array index check might fail
 infoflow.adb:108:39: warning: array index check might fail
@@ -25,12 +41,12 @@ infoflow.adb:113:7: info: assertion proved
 infoflow.adb:121:28: info: division check proved
 infoflow.adb:123:13: warning: loop invariant might fail in first iteration
 infoflow.adb:123:13: warning: loop invariant might fail after first iteration
-infoflow.adb:125:40: warning: array index check might fail
+infoflow.adb:125:40: info: index check proved
 infoflow.adb:125:64: warning: array index check might fail
-infoflow.adb:127:40: warning: array index check might fail
-infoflow.adb:127:64: warning: array index check might fail
-infoflow.adb:128:42: warning: array index check might fail
-infoflow.adb:128:64: warning: array index check might fail
+infoflow.adb:127:40: info: index check proved
+infoflow.adb:127:64: info: index check proved
+infoflow.adb:128:42: info: index check proved
+infoflow.adb:128:64: info: index check proved
 infoflow.adb:129:27: warning: array index check might fail
 infoflow.adb:130:19: warning: array index check might fail
 infoflow.adb:130:39: warning: array index check might fail
@@ -43,7 +59,7 @@ infoflow.adb:140:46: info: index check proved
 infoflow.adb:140:60: warning: array index check might fail
 infoflow.adb:140:68: info: division check proved
 infoflow.adb:141:29: info: index check proved
-infoflow.adb:141:43: warning: array index check might fail
+infoflow.adb:141:43: info: index check proved
 infoflow.adb:141:51: info: division check proved
 infoflow.adb:147:22: info: division check proved
 infoflow.adb:149:13: warning: loop invariant might fail in first iteration
@@ -54,72 +70,78 @@ infoflow.adb:152:37: info: index check proved
 infoflow.adb:152:58: info: index check proved
 infoflow.adb:153:39: info: index check proved
 infoflow.adb:153:58: info: index check proved
-infoflow.adb:154:29: warning: array index check might fail
-infoflow.adb:155:16: warning: array index check might fail
-infoflow.adb:155:31: warning: array index check might fail
+infoflow.adb:154:29: info: index check proved
+infoflow.adb:155:16: info: index check proved
+infoflow.adb:155:31: info: index check proved
 infoflow.adb:155:31: warning: overflow check might fail
 infoflow.adb:156:18: warning: array index check might fail
 infoflow.adb:156:18: warning: overflow check might fail
 infoflow.adb:161:7: warning: precondition might fail
 infoflow.adb:163:7: warning: precondition might fail
-infoflow.adb:173:27: warning: loop invariant might fail in first iteration, requires A_V1 (M) = B_V1 (M)
-infoflow.adb:173:27: warning: loop invariant might fail after first iteration, requires A_V1 (M) = B_V1 (M)
-infoflow.adb:173:33: warning: array index check might fail
-infoflow.adb:173:44: warning: array index check might fail
-infoflow.adb:174:16: warning: array index check might fail
-infoflow.adb:174:31: warning: array index check might fail
+infoflow.adb:172:10: info: loop invariant initialization proved
+infoflow.adb:172:10: info: loop invariant preservation proved
+infoflow.adb:173:33: info: index check proved
+infoflow.adb:173:44: info: index check proved
+infoflow.adb:174:16: info: index check proved
+infoflow.adb:174:31: info: index check proved
 infoflow.adb:179:12: warning: assertion might fail, requires A_V1 (M) = B_V1 (M)
-infoflow.adb:179:18: warning: array index check might fail
-infoflow.adb:179:29: warning: array index check might fail
+infoflow.adb:179:18: info: index check proved
+infoflow.adb:179:29: info: index check proved
 infoflow.adb:181:22: warning: overflow check might fail
-infoflow.adb:182:10: warning: loop invariant might fail in first iteration
+infoflow.adb:182:10: info: loop invariant initialization proved
 infoflow.adb:182:10: warning: loop invariant might fail after first iteration
-infoflow.adb:183:42: warning: array index check might fail
-infoflow.adb:183:53: warning: array index check might fail
-infoflow.adb:186:42: warning: array index check might fail
-infoflow.adb:186:55: warning: array index check might fail
-infoflow.adb:187:16: warning: array index check might fail
-infoflow.adb:187:36: warning: array index check might fail
-infoflow.adb:187:36: warning: overflow check might fail
+infoflow.adb:183:42: info: index check proved
+infoflow.adb:183:53: info: index check proved
+infoflow.adb:186:42: info: index check proved
+infoflow.adb:186:55: info: index check proved
+infoflow.adb:187:16: info: index check proved
+infoflow.adb:187:36: info: index check proved
+infoflow.adb:187:36: info: overflow check proved
 infoflow.adb:190:7: warning: assertion might fail
-infoflow.adb:192:19: warning: array index check might fail
-infoflow.adb:192:30: warning: array index check might fail
-infoflow.adb:195:19: warning: array index check might fail
-infoflow.adb:195:32: warning: array index check might fail
-infoflow.adb:201:27: warning: loop invariant might fail in first iteration, requires A_V2 (M) = B_V2 (M)
-infoflow.adb:201:27: warning: loop invariant might fail after first iteration, requires A_V2 (M) = B_V2 (M)
-infoflow.adb:201:33: warning: array index check might fail
-infoflow.adb:201:44: warning: array index check might fail
-infoflow.adb:202:16: warning: array index check might fail
-infoflow.adb:202:31: warning: array index check might fail
+infoflow.adb:192:19: info: index check proved
+infoflow.adb:192:30: info: index check proved
+infoflow.adb:195:19: info: index check proved
+infoflow.adb:195:32: info: index check proved
+infoflow.adb:200:10: info: loop invariant initialization proved
+infoflow.adb:200:10: info: loop invariant preservation proved
+infoflow.adb:201:33: info: index check proved
+infoflow.adb:201:44: info: index check proved
+infoflow.adb:202:16: info: index check proved
+infoflow.adb:202:31: info: index check proved
 infoflow.adb:205:7: warning: assertion might fail
-infoflow.adb:207:19: warning: array index check might fail
-infoflow.adb:207:30: warning: array index check might fail
-infoflow.adb:210:19: warning: array index check might fail
-infoflow.adb:210:32: warning: array index check might fail
-infoflow.adb:213:19: warning: array index check might fail
-infoflow.adb:213:30: warning: array index check might fail
+infoflow.adb:207:19: info: index check proved
+infoflow.adb:207:30: info: index check proved
+infoflow.adb:210:19: info: index check proved
+infoflow.adb:210:32: info: index check proved
+infoflow.adb:213:19: info: index check proved
+infoflow.adb:213:30: info: index check proved
 infoflow.adb:215:22: warning: overflow check might fail
-infoflow.adb:216:10: warning: loop invariant might fail in first iteration
+infoflow.adb:216:10: info: loop invariant initialization proved
 infoflow.adb:216:10: warning: loop invariant might fail after first iteration
-infoflow.adb:217:42: warning: array index check might fail
-infoflow.adb:217:53: warning: array index check might fail
-infoflow.adb:220:42: warning: array index check might fail
-infoflow.adb:220:55: warning: array index check might fail
-infoflow.adb:221:16: warning: array index check might fail
-infoflow.adb:221:36: warning: array index check might fail
-infoflow.adb:221:36: warning: overflow check might fail
+infoflow.adb:217:42: info: index check proved
+infoflow.adb:217:53: info: index check proved
+infoflow.adb:220:42: info: index check proved
+infoflow.adb:220:55: info: index check proved
+infoflow.adb:221:16: info: index check proved
+infoflow.adb:221:36: info: index check proved
+infoflow.adb:221:36: info: overflow check proved
+infoflow.ads:61:07: warning: unused initial value of "J" [unused_initial_value]
+infoflow.ads:73:54: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:89:55: warning: unused initial value of "I" [unused_initial_value]
+infoflow.ads:112:07: warning: "A_V1" might not be initialized in "Arraypartitionedtransfer" [uninitialized]
+infoflow.ads:112:13: warning: "A_V2" might not be initialized in "Arraypartitionedtransfer" [uninitialized]
+infoflow.ads:114:17: warning: unused initial value of "I" [unused_initial_value]
 infoflow.ads:9:6: warning: contract cases might not be disjoint
 infoflow.ads:9:6: warning: contract cases might not be complete
-infoflow.ads:12:24: warning: contract case might fail
+infoflow.ads:12:24: info: contract case proved
 infoflow.ads:16:24: warning: contract case might fail
 infoflow.ads:29:14: info: postcondition proved
 infoflow.ads:37:6: warning: contract cases might not be complete
-infoflow.ads:38:24: warning: contract case might fail
+infoflow.ads:38:24: info: contract case proved
 infoflow.ads:48:6: info: complete contract cases proved
-infoflow.ads:48:30: warning: contract case might fail
+infoflow.ads:48:30: info: contract case proved
 infoflow.ads:63:6: warning: contract cases might not be complete
-infoflow.ads:64:27: warning: contract case might fail
+infoflow.ads:64:27: info: contract case proved
 infoflow.ads:74:6: warning: contract cases might not be disjoint
 infoflow.ads:74:6: warning: contract cases might not be complete
 infoflow.ads:78:40: info: division check proved
@@ -158,13 +180,13 @@ infoflow.ads:103:33: warning: array index check might fail
 infoflow.ads:103:44: warning: array index check might fail
 infoflow.ads:129:6: warning: contract cases might not be disjoint
 infoflow.ads:129:6: warning: contract cases might not be complete
-infoflow.ads:131:33: warning: array index check might fail
-infoflow.ads:131:44: warning: array index check might fail
+infoflow.ads:131:33: info: index check proved
+infoflow.ads:131:44: info: index check proved
 infoflow.ads:132:24: warning: contract case might fail
 infoflow.ads:132:33: warning: array index check might fail
 infoflow.ads:132:44: warning: array index check might fail
-infoflow.ads:135:34: warning: array index check might fail
-infoflow.ads:135:49: warning: array index check might fail
+infoflow.ads:135:34: info: index check proved
+infoflow.ads:135:49: info: index check proved
 infoflow.ads:136:24: warning: contract case might fail
 infoflow.ads:136:33: warning: array index check might fail
 infoflow.ads:136:44: warning: array index check might fail

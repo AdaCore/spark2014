@@ -33,26 +33,26 @@ package body S is
    procedure Move (Dest : out IntArray; Src : in out IntArray) is
    begin
       for Index in Dest'Range loop
-         pragma Loop_Invariant ((for all J in Dest'First .. Index - 1 =>
-                          Dest (J) = Src'Loop_Entry (J)) and
-                        (for all J in Index .. Dest'Last =>
-                          Src (J) = Src'Loop_Entry (J)));
-
          Dest (Index) := Src (Index);
          Src (Index) := 0;
+
+         pragma Loop_Invariant ((for all J in Dest'First .. Index =>
+                                   Dest (J) = Src'Loop_Entry (J)) and
+                                  (for all J in Index + 1 .. Dest'Last =>
+                                     Src (J) = Src'Loop_Entry (J)));
       end loop;
    end Move;
 
    procedure Move2 (Dest : out IntArray; Src : in out IntArray) is
    begin
       for Index in reverse Dest'Range loop
-         pragma Loop_Invariant ((for all J in Index + 1 .. Dest'Last =>
-                          Dest (J) = Src'Loop_Entry (J)) and
-                        (for all J in Dest'First .. Index =>
-                          Src (J) = Src'Loop_Entry (J)));
-
          Dest (Index) := Src (Index);
          Src (Index) := 0;
+
+         pragma Loop_Invariant ((for all J in Index .. Dest'Last =>
+                                   Dest (J) = Src'Loop_Entry (J)) and
+                                  (for all J in Dest'First .. Index - 1 =>
+                                     Src (J) = Src'Loop_Entry (J)));
       end loop;
    end Move2;
 end S;

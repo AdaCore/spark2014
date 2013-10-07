@@ -14,6 +14,11 @@ uninitialized.adb:127:30: warning: statement has no effect [ineffective]
 uninitialized.adb:128:15: warning: unused assignment [ineffective]
 uninitialized.adb:128:15: "A" is not initialized [uninitialized]
 uninitialized.adb:129:15: warning: unused assignment [ineffective]
+uninitialized.adb:129:15: warning: "A" might not be initialized [uninitialized]
+uninitialized.adb:137:07: warning: statement has no effect [ineffective]
+uninitialized.adb:138:12: warning: unused assignment [ineffective]
+uninitialized.adb:140:09: warning: unused assignment [ineffective]
+uninitialized.adb:140:09: warning: "X" might not be initialized [uninitialized]
 
    compilation of uninitialized.adb failed
 
