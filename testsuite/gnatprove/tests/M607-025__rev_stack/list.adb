@@ -14,6 +14,8 @@ package body List is
       First : constant Integer := First_Index (L);
       Last  : constant Integer := Last_Index (L);
    begin
+      clear (Res);
+      
       for I in First .. Last loop
          Push (S, Element (L, I));
          pragma Loop_Invariant
