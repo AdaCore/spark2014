@@ -289,7 +289,7 @@ generic_interval_tests.adb:184:18: info: overflow check proved, in instantiation
 generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:11
 homothetical.adb:13:17: warning: no Global contract available for "Sqrt"
-homothetical.adb:13:17: warning: assuming "Sqrt" has no effect on global items
+homothetical.adb:13:17: warning:  assuming "Sqrt" has no effect on global items
 homothetical.adb:8:14: warning: postcondition might fail
 homothetical.adb:12:10: info: overflow check proved
 homothetical.adb:12:21: warning: overflow check might fail
