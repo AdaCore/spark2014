@@ -1,0 +1,44 @@
+list.adb:18:10: warning: precondition might fail
+list.adb:18:19: info: precondition proved
+list.adb:18:31: info: range check proved
+list.adb:19:10: warning: loop invariant might fail in first iteration
+list.adb:19:10: warning: loop invariant might fail after first iteration
+list.adb:21:35: info: overflow check proved
+list.adb:21:43: info: overflow check proved
+list.adb:23:56: info: index check proved
+list.adb:23:61: info: precondition proved
+list.adb:23:73: info: range check proved
+list.adb:27:10: info: range check proved
+list.adb:27:10: warning: precondition might fail
+list.adb:27:23: warning: precondition might fail
+list.adb:28:10: warning: precondition might fail
+list.adb:29:10: warning: loop invariant might fail in first iteration
+list.adb:29:10: warning: loop invariant might fail after first iteration
+list.adb:31:40: info: overflow check proved
+list.adb:31:48: info: overflow check proved
+list.adb:33:38: info: overflow check proved
+list.adb:35:43: info: overflow check proved
+list.adb:36:34: info: index check proved
+list.adb:36:63: info: index check proved
+list.adb:39:20: info: precondition proved
+list.adb:39:34: info: range check proved
+list.adb:39:39: info: precondition proved
+list.adb:39:66: info: overflow check proved
+list.adb:39:70: info: overflow check proved
+list.adb:39:70: info: range check proved
+list.ads:13:14: info: postcondition proved
+list.ads:14:19: info: precondition proved
+list.ads:14:31: info: range check proved
+list.ads:14:36: info: precondition proved
+list.ads:14:81: info: overflow check proved
+list.ads:14:85: info: overflow check proved
+list.ads:14:85: info: range check proved
+stack.adb:4:47: warning: range check might fail
+stack.adb:5:55: warning: range check might fail
+stack.adb:20:22: info: range check proved
+stack.adb:21:19: info: index check proved
+stack.adb:32:22: info: range check proved
+stack.ads:20:14: info: precondition proved
+stack.ads:20:14: warning: postcondition might fail
+stack.ads:24:14: warning: postcondition might fail, requires To_But_Top (S'old) = To (S)
+stack.ads:35:60: info: index check proved
