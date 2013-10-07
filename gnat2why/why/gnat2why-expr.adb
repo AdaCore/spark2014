@@ -5907,8 +5907,7 @@ package body Gnat2Why.Expr is
          when N_Raise_xxx_Error | N_Raise_Statement =>
             return Transform_Raise (Stmt_Or_Decl);
 
-         --  ??? Should not occur (L927-029), but until this is fixed, ignore
-         --  freeze nodes.
+         --  Freeze nodes do not have any impact on proof
 
          when N_Freeze_Entity =>
             return New_Void;
