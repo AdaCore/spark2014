@@ -384,13 +384,12 @@ procedure Gnatprove is
       end if;
    end Execute_Step;
 
-   -------------------
-   -- File_Is_Empty --
-   -------------------
+   --------------------------
+   -- Report_File_Is_Empty --
+   --------------------------
 
    function Report_File_Is_Empty (Filename : String) return Boolean is
    begin
-
       --  ??? This is a bit of a hack; we assume that the report file is
       --  basically empty when the character count is very low (but not zero).
 
@@ -435,9 +434,8 @@ procedure Gnatprove is
          declare
             File : constant String := SPARK_Report_File (Obj_Dir);
          begin
-
             --  If nothing is in SPARK, the user has probably forgotten to put
-            --  a SPARK_Mode pragma somewhere
+            --  a SPARK_Mode pragma somewhere.
 
             if Report_File_Is_Empty (File) then
                Put_Line (Standard_Error,
