@@ -64,13 +64,14 @@ package Flow.Analysis is
 
    procedure Find_Use_Of_Uninitialised_Variables
      (FA : in out Flow_Analysis_Graphs);
-   --  Find all instances where uninitialised variables are used. If a variable
-   --  is always uninitialized then raise an Error, otherwise raise a Warning.
+   --  Find all instances where uninitialised variables are used. If a
+   --  variable is always uninitialized then raise an Error, otherwise
+   --  raise a Warning.
    --
    --                               Algorithm
-   --  * Find a vertex (USE) that has an arrow from a 'Initial vertex going in
+   --  * Find a vertex (USE) that has an edge from a 'Initial vertex going in
    --    it.
-   --  * In the PDG graph and starting from USE, call DFS in reverse and stop
+   --  * In the CFG graph starting from USE, perform a DFS in reverse and stop
    --    upon finding a vertex (DEF) that defines the variable associated with
    --    the 'Initial vertex.
    --  * If DEF does not exist then issue an Error. Else, if DEF exists:
@@ -79,6 +80,8 @@ package Flow.Analysis is
    --    - else if USE does NOT have an arrow coming in from the Start vertex
    --      (in the PDG graph) then issue a Warning
    --    - else issue an Error.
+   --
+   --  Complexity is O(N^2)
 
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop statements.
