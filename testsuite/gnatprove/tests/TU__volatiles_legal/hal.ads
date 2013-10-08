@@ -8,12 +8,14 @@ package HAL
               ((FIFO_Status
                   with External => Async_Writers),
                (Serial_In
-                  with External => (Async_Writers, Effective_Reads)),
+                  with External => (Async_Writers,
+                                    Effective_Reads)),
                   -- Each value received is significant
                (FIFO_Control
                   with External => Async_Readers),
                (Serial_Out
-                  with External => (Async_Readers, Effective_Writes)),
+                  with External => (Async_Readers,
+                                    Effective_Writes)),
                (Wdog_State
                   with External => (Async_Readers,
                                     Async_Writers)))
@@ -34,7 +36,9 @@ is
      with Global  => (Input  => FIFO_Status,
                       In_Out => Serial_In),
           Depends => ((Found,
-                       Serial_In) => (FIFO_Status, Pattern, Serial_In));
+                       Serial_In) => (FIFO_Status,
+                                      Pattern,
+                                      Serial_In));
 
    -- This procedure reads the status of the input and output FIFOs.
    procedure Get_FIFO_Status (A_Byte : out Byte_T)
