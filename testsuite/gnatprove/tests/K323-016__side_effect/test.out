@@ -1,9 +1,6 @@
-pack.adb:11:14: subprogram called "F1" is not allowed in SPARK
-pack.adb:11:14:  violation of pragma SPARK_Mode at pack.ads:1
-pack.ads:6:13: function with side-effects is not allowed in SPARK
-pack.ads:6:13:  violation of pragma SPARK_Mode at line 1
-pack.ads:7:13: function with side-effects is not allowed in SPARK
-pack.ads:7:13:  violation of pragma SPARK_Mode at line 1
+pack.ads:6:13: function with output global "X" is not allowed in SPARK [side_effects]
+pack.ads:7:13: function with output global "X" is not allowed in SPARK [side_effects]
+compilation abandoned due to previous error
 
    compilation of pack.adb failed
 

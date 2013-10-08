@@ -37,6 +37,7 @@ with Gnat2Why_Args;
 
 with Flow.Slice;            use Flow.Slice;
 with Flow.Utility;          use Flow.Utility;
+with Flow_Error_Messages;   use Flow_Error_Messages;
 
 --  with Treepr;                use Treepr;
 --  with Flow.Debug;            use Flow.Debug;
@@ -58,43 +59,6 @@ package body Flow.Analysis is
                             V : Flow_Graphs.Vertex_Id)
                             return Node_Or_Entity_Id;
    --  Find a good place to raise an error for vertex V.
-
-   function Escape (S : Unbounded_String)
-                    return Unbounded_String
-     with Post => Length (Escape'Result) >= Length (S);
-   --  Escape any special characters used in the error message (for
-   --  example transforms "=>" into "='>" as > is a special insertion
-   --  character.
-
-   function Substitute (S : Unbounded_String;
-                        F : Flow_Id)
-                        return Unbounded_String;
-   --  Find the first '&' or '#' and substitute with the given flow
-   --  id, with or without enclosing quotes respectively.
-
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False);
-   --  Output an error (or warning) message attached to the given
-   --  node.
-
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             F1      : Flow_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False);
-   --  Output a message attached to the given node with a substitution
-   --  using F1. Use & or # as the substitution characters, which
-   --  quote the flow id with or without double quotes respectively.
-
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             F1      : Flow_Id;
-                             F2      : Flow_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False);
-   --  As above with two nodes to substitute.
 
    function Get_Line (G   : Flow_Graphs.T'Class;
                       V   : Flow_Graphs.Vertex_Id;
@@ -148,177 +112,6 @@ package body Flow.Analysis is
          end case;
       end if;
    end Error_Location;
-
-   ------------
-   -- Escape --
-   ------------
-
-   function Escape (S : Unbounded_String)
-                    return Unbounded_String
-   is
-      R : Unbounded_String := Null_Unbounded_String;
-   begin
-      for Index in Positive range 1 .. Length (S) loop
-         if Element (S, Index) in '%' | '$' | '{' | '*' | '&' |
-           '#' | '}' | '@' | '^' | '>' |
-           '!' | '?' | '<' | '`' | ''' | '\' | '|' | '~'
-         then
-            Append (R, "'");
-         end if;
-         Append (R, Element (S, Index));
-      end loop;
-      return R;
-   end Escape;
-
-   ----------------
-   -- Substitute --
-   ----------------
-
-   function Substitute (S : Unbounded_String;
-                        F : Flow_Id)
-                        return Unbounded_String
-   is
-      R      : Unbounded_String := Null_Unbounded_String;
-      Do_Sub : Boolean          := True;
-      Quote  : Boolean;
-   begin
-      for Index in Positive range 1 .. Length (S) loop
-         if Do_Sub and then Element (S, Index) in '&' | '#' then
-            Quote := Element (S, Index) = '&';
-            case  F.Kind is
-               when Null_Value =>
-                  Append (R, "NULL");
-
-               when Direct_Mapping | Record_Field =>
-                  if Quote then
-                     Append (R, """");
-                  end if;
-                  Append (R, Flow_Id_To_String (F));
-                  if Quote then
-                     Append (R, """");
-                  end if;
-
-               when Magic_String =>
-                  --  ??? we may want to use __gnat_decode() here instead
-                  if F.Name.all = "__HEAP" then
-                     if Quote then
-                        Append (R, """the heap""");
-                     else
-                        Append (R, "the heap");
-                     end if;
-                  else
-                     if Quote then
-                        Append (R, """");
-                     end if;
-                     declare
-                        Index : Positive := 1;
-                     begin
-                        --  Replace __ with . in the magic string.
-                        while Index <= F.Name.all'Length loop
-                           case F.Name.all (Index) is
-                              when '_' =>
-                                 if Index < F.Name.all'Length and then
-                                   F.Name.all (Index + 1) = '_' then
-                                    Append (R, ".");
-                                    Index := Index + 2;
-                                 else
-                                    Append (R, '_');
-                                    Index := Index + 1;
-                                 end if;
-
-                              when others =>
-                                 Append (R, F.Name.all (Index));
-                                 Index := Index + 1;
-                           end case;
-                        end loop;
-                     end;
-                     if Quote then
-                        Append (R, """");
-                     end if;
-                  end if;
-
-            end case;
-            Do_Sub := False;
-
-         else
-            Append (R, Element (S, Index));
-         end if;
-      end loop;
-      return R;
-   end Substitute;
-
-   --------------------
-   -- Error_Msg_Flow --
-   --------------------
-
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False)
-
-   is
-      M : Unbounded_String := Escape (To_Unbounded_String (Msg));
-   begin
-      --  Assemble message string to be passed to Error_Msg_N
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
-      end if;
-
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
-   end Error_Msg_Flow;
-
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             F1      : Flow_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False)
-   is
-      M : Unbounded_String;
-   begin
-      --  Assemble message string to be passed to Error_Msg_N
-      M := Escape (Substitute (To_Unbounded_String (Msg),
-                               F1));
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
-      end if;
-
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
-   end Error_Msg_Flow;
-
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             F1      : Flow_Id;
-                             F2      : Flow_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False)
-   is
-      M : Unbounded_String;
-   begin
-      --  Assemble message string to be passed to Error_Msg_N
-      M := Escape (Substitute (Substitute (To_Unbounded_String (Msg),
-                                           F1),
-                               F2));
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
-      end if;
-
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
-   end Error_Msg_Flow;
 
    --------------
    -- Get_Line --
@@ -699,6 +492,21 @@ package body Flow.Analysis is
    begin
       --  Innocent until proven guilty.
       Sane := True;
+
+      --  Sanity check for functions with global outputs.
+      if Ekind (FA.Analyzed_Entity) = E_Function
+        and then FA.Function_Side_Effects_Present
+      then
+         if Gnat2Why_Args.Flow_Debug_Mode then
+            Error_Msg_NE
+              ("flow analysis of & abandoned due to function with side " &
+                 "effects!",
+               FA.Analyzed_Entity,
+               FA.Analyzed_Entity);
+         end if;
+         Sane := False;
+         return;
+      end if;
 
       --  Sanity check for aliasing.
 

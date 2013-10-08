@@ -830,7 +830,8 @@ package body Flow is
                                            (Get_Pragma (E, Pragma_Depends))),
                Last_Statement_Is_Raise => Last_Statement_Is_Raise (E),
                Depends_N         => Empty,
-               Refined_Depends_N => Empty);
+               Refined_Depends_N => Empty,
+               Function_Side_Effects_Present => False);
 
          when E_Package =>
             FA := Flow_Analysis_Graphs'

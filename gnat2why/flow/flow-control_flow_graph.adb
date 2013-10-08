@@ -38,6 +38,7 @@ pragma Unreferenced (Flow.Debug);
 with Flow.Antialiasing;               use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility; use Flow.Control_Flow_Graph.Utility;
 with Flow.Utility;                    use Flow.Utility;
+with Flow_Error_Messages;             use Flow_Error_Messages;
 
 with Why;
 
@@ -2492,6 +2493,19 @@ package body Flow.Control_Flow_Graph is
                                      Is_Write => True);
                      end if;
                      Globals.Include (Change_Variant (G, Normal_Use), P);
+
+                     --  If we are dealing with a function, since we found a
+                     --  global output, we raise an error.
+                     if Ekind (FA.Analyzed_Entity) = E_Function then
+                        Error_Msg_Flow
+                          (Msg => "function with output global & is not " &
+                             "allowed in SPARK",
+                           N   => FA.Analyzed_Entity,
+                           F1  => G,
+                           Tag => "side_effects");
+
+                        FA.Function_Side_Effects_Present := True;
+                     end if;
                   end;
                end loop;
 

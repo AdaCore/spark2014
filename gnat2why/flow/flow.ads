@@ -159,6 +159,10 @@ package Flow is
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.
 
+            Function_Side_Effects_Present : Boolean;
+            --  Set to true if we are dealing with a function that has side
+            --  effects.
+
          when E_Package =>
             null;
 
