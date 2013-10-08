@@ -1420,23 +1420,17 @@ module Ada__containers__formal_vectors__copy
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__strict_equal
 
-  predicate cap_is_max vector vector int
-
- axiom cap_is_max_def:
-   forall co1 co2:vector, max:int 
-                  [cap_is_max co1 co2 max].
-   if capacity co1 > max then capacity co2 = capacity co1 else capacity co2 = max
-
   function copy vector int : vector
 
-  axiom copy_def:
-    forall co:vector, cap:int [copy co cap].
-          cap <= index_type_length -> strict_equal co (copy co cap)  = True
-                       /\ cap_is_max co (copy co cap) cap
+  axiom copy__def:
+    forall co : vector, cap : int [copy co cap].
+       strict_equal co (copy co cap) = True /\
+       (cap = 0 -> capacity co = capacity (copy co cap)) /\
+       (index_type_length >= cap >= length_ co ->  capacity (copy co cap) = cap)
 
   val copy (co: vector) (cap:int) : vector
-     requires { cap <= index_type_length }
-     ensures  { strict_equal co (result) = True /\ cap_is_max co result cap  }
+     requires { cap = 0 \/ index_type_length >= cap >= length_ co}
+     ensures { result = copy co cap }
 end
 
 module Ada__containers__formal_vectors__set_length

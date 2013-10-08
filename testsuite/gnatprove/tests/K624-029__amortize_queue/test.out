@@ -1,5 +1,5 @@
 amortized_queue.adb:4:27: info: precondition proved
-amortized_queue.adb:7:22: warning: precondition might fail
+amortized_queue.adb:7:22: info: precondition proved
 amortized_queue.adb:11:25: info: precondition proved
 amortized_queue.adb:12:24: info: precondition proved
 amortized_queue.adb:17:10: warning: precondition might fail
@@ -7,7 +7,7 @@ amortized_queue.adb:20:30: warning: discriminant check might fail
 amortized_queue.adb:20:45: warning: discriminant check might fail
 amortized_queue.adb:24:25: info: precondition proved
 amortized_queue.adb:25:24: info: precondition proved
-amortized_queue.adb:27:7: warning: precondition might fail
+amortized_queue.adb:27:7: info: precondition proved
 amortized_queue.adb:30:10: warning: precondition might fail
 amortized_queue.adb:33:30: warning: discriminant check might fail
 amortized_queue.adb:33:45: warning: discriminant check might fail
