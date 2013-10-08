@@ -1376,11 +1376,11 @@ package body Flow.Analysis is
 
          Is_Defined_In_Other_Path : Boolean := False;
 
-         function Is_In_Variables_Used return Boolean;
-         --  Returns True if the The_Var is used by Key_U. It
-         --  currently only works for an N_Assignment_Statement.
+         function The_Var_Is_In_Assignment_RHS return Boolean;
+         --  If V_Use is an assignment statement, then this function
+         --  checks if The_Var appears on its RHS.
          --
-         --  !!! This is a really bad name
+         --  If V_Use is not an assignment statement we return False.
 
          function Start_To_V_Def_Without_V_Use
            (V_Def : Flow_Graphs.Vertex_Id) return Boolean;
@@ -1394,11 +1394,11 @@ package body Flow.Analysis is
          --
          --  Sets Is_Defined_In_Other_Path
 
-         --------------------------
-         -- Is_In_Variables_Used --
-         --------------------------
+         ----------------------------------
+         -- The_Var_Is_In_Assignment_RHS --
+         ----------------------------------
 
-         function Is_In_Variables_Used return Boolean is
+         function The_Var_Is_In_Assignment_RHS return Boolean is
             Used : Flow_Id_Sets.Set;
          begin
             if Nkind (Key_U.Node) = N_Assignment_Statement then
@@ -1407,7 +1407,7 @@ package body Flow.Analysis is
             end if;
 
             return False;
-         end Is_In_Variables_Used;
+         end The_Var_Is_In_Assignment_RHS;
 
          ----------------------------------
          -- Start_To_V_Def_Without_V_Use --
@@ -1525,7 +1525,7 @@ package body Flow.Analysis is
                when Direct_Mapping | Record_Field =>
                   --  Check if node corresponds to an array.
                   if The_Var_Is_Array
-                    and then not Is_In_Variables_Used
+                    and then not The_Var_Is_In_Assignment_RHS
                   then
                      Is_Defined_In_Other_Path := True;
                   end if;
