@@ -2537,18 +2537,26 @@ package body Flow.Control_Flow_Graph is
                   then Get_Pragma (FA.Analyzed_Entity, Pragma_Initializes)
                   else Get_Pragma (Spec_Entity (FA.Analyzed_Entity),
                                    Pragma_Initializes));
+
+               Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+               --  We need to make sure to only add each global once
+               --  (an entity might be used to derive more than one of
+               --  our states).
             begin
                if Present (Initializes_Contract) then
                   for Opt_In of Parse_Initializes (Initializes_Contract) loop
                      if Opt_In.Exists then
                         for G of Opt_In.The_Set loop
-                           Create_Initial_And_Final_Vertices
-                             (F             => G,
-                              Mode          => Mode_In,
-                              Uninitialized =>
-                                not Is_Initialized_At_Elaboration
-                                (Get_Direct_Mapping_Id (G)),
-                              FA            => FA);
+                           if not Global_Ins.Contains (G) then
+                              Global_Ins.Include (G);
+                              Create_Initial_And_Final_Vertices
+                                (F             => G,
+                                 Mode          => Mode_In,
+                                 Uninitialized =>
+                                   not Is_Initialized_At_Elaboration
+                                   (Get_Direct_Mapping_Id (G)),
+                                 FA            => FA);
+                           end if;
                         end loop;
                      end if;
                   end loop;
