@@ -9,7 +9,7 @@ Appendix
 .. _command line:
 
 Command-line Options
---------------------
+====================
 
 |GNATprove| is executed with the following command line:
 
@@ -96,6 +96,185 @@ example, the following package in the project file sets the default mode of
 
 Switches given on the command line have priority over switches given in the
 project file.
+
+Implementation Defined Pragmas
+==============================
+
+.. _Pragma_SPARK_Mode:
+
+Pragma ``SPARK_Mode``
+---------------------
+
+SPARK_Mode is a three-valued aspect. At least until we get to the
+next paragraph, a SPARK_Mode of On, Off, or Auto is associated
+with each Ada construct. In general, On indicates that the construct is
+required to be in |SPARK|, Off indicates otherwise, and Auto
+is discussed below.
+
+Some Ada constructs are said to have more than one "section".
+For example, a declaration which requires a completion will have (at least)
+two sections: the initial declaration and the completion. The SPARK_Modes
+of the different sections of one entity may differ. In other words,
+SPARK_Mode is not an aspect of an entity but rather of a section of an entity.
+
+For example, if a subprogram declaration has a SPARK_Mode of On while
+its body has a SPARK_Mode of Off, then an error would be generated if
+the subprogram  took a parameter of an access type but not if
+the subprogram declared a local variable of an
+access type (recall that access types are not in |SPARK|).
+
+A package is defined to have 4 sections: its visible part, its private part,
+its body declarations, and its body statements. Non-package declarations which
+require a completion have two sections, as noted above; all other entities and
+constructs have only one section.
+
+If the SPARK_Mode of a section of an entity is Off, then the SPARK_Mode
+of a later section of that entity shall not be On. [For example, a subprogram
+can have a SPARK declaration and a non-SPARK body, but not vice versa.]
+
+The SPARK_Mode aspect can be specified either via a pragma or via an
+aspect_specification. In some contexts, only a pragma can be used
+because of syntactic limitations. In those contexts where an
+aspect_specification can be used, it has the same effect as a
+corresponding pragma.
+
+The form of a pragma SPARK_Mode is as follows:
+
+.. code-block:: ada
+
+   pragma SPARK_Mode [ (On | Off) ]
+
+The form for the aspect_definition of a SPARK_Mode aspect_specification is
+as follows:
+
+.. code-block:: ada
+
+   [ On | Off ]
+
+For example:
+
+.. code-block:: ada
+
+   package P
+      with SPARK_Mode => On
+   is
+
+The pragma can be used as a configuration pragma. The effect of
+such a configuration pragma is described below in the rules for
+determining the SPARK_Mode aspect value for an arbitrary section of an
+arbitrary Ada entity or construct.
+
+Pragma ``SPARK_Mode`` shall be used as a local pragma in only the following
+contexts and has the described semantics:
+
+* When the pragma appears at the start of the visible declarations (preceded
+  only by other pragmas) of a package declaration, it specifies the
+  SPARK_Mode aspect of the visible part of the package. This can also
+  be accomplished via a SPARK_Mode aspect specification as part of the
+  package_specification.
+
+* When the pragma appears at the start of the private declarations of a
+  package (only other pragmas can appear between the ``private`` keyword
+  and the ``SPARK_Mode`` pragma), it specifies the SPARK_Mode aspect
+  of the private part of the package. [This cannot be accomplished via
+  an aspect_specification.]
+
+* When the pragma appears immediately at the start of the declarations of a
+  package body (preceded only by other pragmas),
+  it specifies the SPARK_Mode aspect of the body declarations of the package.
+  This can also be accomplished via a SPARK_Mode aspect specification
+  as part of the package_body.
+
+* When the pragma appears at the start of the elaboration statements of
+  a package body (only other pragmas can appear between the ``begin``
+  keyword and the ``SPARK_Mode`` pragma),
+  it specifies the SPARK_Mode aspect of the body
+  the default mode of the package body). [This cannot be accomplished via
+  an aspect_specification.]
+
+* When the pragma appears after a subprogram declaration (with only other
+  pragmas intervening), it specifies the SPARK_Mode aspect of the
+  subprogram's specification. This can also be accomplished via a SPARK_Mode
+  aspect_specification as part of the subprogram_declaration.
+  [This does not include the case of a subprogram whose initial declaration
+  is via a subprogram_body_stub. Such a subprogram has only one section
+  because a subunit is not a completion.]
+
+* When the pragma appears at the start of the declarations of a subprogram
+  body (preceded only by other pragmas), it specifies the SPARK_Mode aspect
+  of the subprogram's body. This can also be accomplished via a SPARK_Mode
+  aspect_specification as part of the subprogram_body.
+
+A default argument of On is assumed for any SPARK_Mode pragma or
+aspect_specification for which no argument is explicitly specified.
+
+A Spark_Mode of Auto cannot be explicitly specified; the
+cases in which a Spark_Mode of Auto is implicitly specified are
+described below. Roughly speaking, Auto indicates that it is left up to
+the formal verification tools to determine whether or not a given construct
+is in |SPARK|.
+
+A SPARK_Mode pragma or aspect specification shall only apply to a
+(section of a) library-level package or subprogram.
+
+The SPARK_Mode aspect value of an arbitrary section of an arbitrary
+Ada entity or construct is then defined to be the following value
+(except if this yields a result of Auto for a non-package; see below):
+
+- If SPARK_Mode has been specified for the given section of the
+  given entity or construct, then the specified value;
+
+- else for the private part of a package, if SPARK_Mode has been specified
+  for the public part of the same package, then the SPARK_Mode of
+  the public part;
+
+- else for a package body statements, if SPARK_Mode has been specified for the
+  body declarations of the same package, then the SPARK_Mode of the
+  body declarations;
+
+- else for any of the visible part or body declarations of a library
+  unit package or either section of a library unit subprogram,
+  if there is an applicable SPARK_Mode configuration pragma then the
+  value specified by the pragma; if no such configuration pragma
+  applies, then an implicit specification of Auto is assumed;
+
+- else the SPARK_Mode of the enclosing section of the nearest enclosing
+  package or subprogram;
+
+- Corner cases: the SPARK_Mode of the visible declarations of the
+  limited view of a package is always Auto; the SPARK_Mode of any
+  section of a generic library unit is On.
+  [Recall that any generic unit is in |SPARK|.]
+
+If the above computation yields a result of Auto for any construct
+other than one of the four sections of a package, then a result of On
+or Off is determined instead based on the legality (with respect to
+the rules of |SPARK|) of the construct. The construct's SPARK_Mode is
+On if and only if the construct is in |SPARK|. [A SPARK_Mode of Auto
+is therefore only possible for (sections of) a package.]
+
+In code where SPARK_Mode is On (also called "SPARK code"), the rules of
+|SPARK| are enforced. In particular, such code shall not reference
+non-SPARK entities, although such code may reference a SPARK declaration
+with one or more non-SPARK subsequent sections (e.g., a package whose
+visible part has a SPARK_Mode of On but whose private part has a SPARK_Mode
+of Off; a package whose visible part has a SPARK_Mode of Auto may also be
+referenced).
+Similarly, code where SPARK_Mode is On shall not enclose code where
+SPARK_Mode is Off unless the non-SPARK code is part of the "completion"
+(using that term imprecisely, because we are including the private
+part of a package as part of its "completion" here) of a SPARK declaration.
+
+SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
+speaking) part of the |SPARK| language. It is used to notionally transform
+programs which would otherwise not be in |SPARK| so that they can
+be viewed (at least in part) as |SPARK| programs.
+
+[TBD: Do we need to state rules for handling multiple applicable Spark_Mode
+configuration pragmas? Simplest rule: "it is always an error".
+Alternatively (and very roughly speaking), "two pragmas in the same file
+is an error, but any .ads/.adb file configuration pragma takes precedence
+over any .adc file pragma".]
 
 .. _GNATprove_Limitations:
 
