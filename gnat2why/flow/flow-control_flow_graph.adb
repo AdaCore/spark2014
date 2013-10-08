@@ -2308,12 +2308,12 @@ package body Flow.Control_Flow_Graph is
    begin
       case Get_Pragma_Id (N) is
          when Pragma_Abstract_State               |
+              Pragma_Ada_05                       |
+              Pragma_Ada_12                       |
+              Pragma_Ada_2005                     |
+              Pragma_Ada_2012                     |
               Pragma_Ada_83                       |
               Pragma_Ada_95                       |
-              Pragma_Ada_05                       |
-              Pragma_Ada_2005                     |
-              Pragma_Ada_12                       |
-              Pragma_Ada_2012                     |
               Pragma_Annotate                     |
               Pragma_Assertion_Policy             |
               Pragma_Check_Policy                 |
@@ -2325,6 +2325,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
               Pragma_Global                       |
+              Pragma_Import                       |
               Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
@@ -2332,8 +2333,8 @@ package body Flow.Control_Flow_Graph is
               Pragma_Pack                         |
               Pragma_Postcondition                |
               Pragma_Precondition                 |
-              Pragma_Preelaborate                 |
               Pragma_Preelaborable_Initialization |
+              Pragma_Preelaborate                 |
               Pragma_Pure                         |
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
@@ -2355,9 +2356,6 @@ package body Flow.Control_Flow_Graph is
             else
                return True;
             end if;
-
-         when Pragma_Import =>
-            return True;
 
          when Pragma_Unmodified   |
               Pragma_Unreferenced =>
