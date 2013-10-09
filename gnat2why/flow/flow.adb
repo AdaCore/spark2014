@@ -1051,7 +1051,7 @@ package body Flow is
                   Pkg_Body : Node_Id;
                begin
                   if Analysis_Requested (E)
-                    and Entity_In_SPARK (E)
+                    and Entity_Body_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then
                      FA_Graphs.Include (E, Flow_Analyse_Entity (E));
