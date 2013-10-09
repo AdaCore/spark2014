@@ -4,10 +4,6 @@ Representation Issues
 .. todo:: Provide full detail on Representation Issues.
           To be completed in a post-Release 1 version of this document.
           
-.. todo:: This statement was originally in this chapter 
-     "Pragma or aspect ``Unchecked_Union`` is not in |SPARK|" this needs to be 
-     recorded in the list of unsupported aspects and pragmas.
-     To be completed in the Milestone 4 version of this document.
           
 Operational and Representation Aspects
 ---------------------------------------

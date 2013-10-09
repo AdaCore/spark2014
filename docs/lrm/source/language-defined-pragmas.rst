@@ -94,6 +94,7 @@ Pre		  	      Yes
 Refined_Depends    	      Yes
 Refined_Global	 	      Yes
 Refined_State 	 	      Yes
+SPARK_Mode         	      Yes                    Language defined but implementation dependent
 ============================= ====================== =================================================
 
 .. _tu-fe-language_defined_pragmas-03:
@@ -105,7 +106,6 @@ Refined_State 	 	      Yes
 Pragma                        Allowed in SPARK 2014  Comment
 ============================= ====================== =================================================
 Annotate		      Yes	
-SPARK_Mode         	      Yes
 Restriction_Warnings  	      ?			     We amy need this for SPARK profiles
 Test_Case          	      Yes
 Warnings           	      Yes

@@ -1064,11 +1064,6 @@ assumptions made during formal verification.
 
 Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guide (reference TBD).
 
-.. todo::
-   We need to consider what might need to be levied on the non-|SPARK| code in order for flow
-   analysis on the |SPARK| code to be carried out.
-   To be completed in the Milestone 4 version of this document.
-
 .. _volatile:
 
 External State

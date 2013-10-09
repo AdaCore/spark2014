@@ -100,6 +100,7 @@ Refined_Depends    	      Yes
 Refined_Global	 	      Yes
 Refined_Post		      Yes
 Refined_State 	 	      Yes
+SPARK_Mode		      Yes		     Language defined but implementation dependent
 ============================= ====================== =================================================
 
 .. _etu-language_defined_aspects:
