@@ -2195,28 +2195,20 @@ package body SPARK_Definition is
          Specs_In_SPARK.Include (Id);
       end if;
 
-      --  Do not analyze package declarations in SPARK_Mode => Off
+      if Present (Vis_Decls) then
+         Mark_List (Vis_Decls);
+      end if;
 
-      if not SPARK_Pragma_Is (Opt.Off) then
-         if Present (Vis_Decls) then
-            Mark_List (Vis_Decls);
-         end if;
+      Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
-         Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
+      if Present (Priv_Decls) then
+         Mark_List (Priv_Decls);
+      end if;
 
-         --  Do not analyze package private declarations in SPARK_Mode => Off
+      --  Mark package in SPARK if SPARK_Mode => On
 
-         if not SPARK_Pragma_Is (Opt.Off) then
-            if Present (Priv_Decls) then
-               Mark_List (Priv_Decls);
-            end if;
-
-            --  Mark package in SPARK if SPARK_Mode => On
-
-            if SPARK_Pragma_Is (Opt.On) then
-               Mark_Entity (Id);
-            end if;
-         end if;
+      if SPARK_Pragma_Is (Opt.On) then
+         Mark_Entity (Id);
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -2578,11 +2570,7 @@ package body SPARK_Definition is
          Specs_In_SPARK.Include (E);
       end if;
 
-      --  Do not analyze subprogram declarations in SPARK_Mode => Off
-
-      if not SPARK_Pragma_Is (Opt.Off) then
-         Mark_Entity (E);
-      end if;
+      Mark_Entity (E);
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Subprogram_Declaration;
