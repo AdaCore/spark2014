@@ -1,4 +1,5 @@
-package body Stacks is 
+package body Stacks is
+   pragma SPARK_Mode (Off);
 
    procedure Push (S : in out Stack; E : Element) is
    begin

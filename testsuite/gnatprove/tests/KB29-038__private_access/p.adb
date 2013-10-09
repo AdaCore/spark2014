@@ -1,4 +1,5 @@
-package body P is 
+package body P is
+   pragma SPARK_Mode (Off);
    procedure Log (X : T2) is
    begin
       null;

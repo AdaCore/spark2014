@@ -25,7 +25,7 @@ use type AlarmTypes.StatusT;
 
 package body Alarm
 --# own Output is out Alarm.Interfac.Output;
-is
+is pragma SPARK_Mode (On);
 
    function IsAlarming return Boolean is
    begin

@@ -1,4 +1,5 @@
-package body Pack is 
+package body Pack is
+   pragma SPARK_Mode (Off);
 
    Value : Child;
 

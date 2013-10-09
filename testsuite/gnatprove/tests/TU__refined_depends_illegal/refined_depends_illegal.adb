@@ -1,4 +1,6 @@
-package body Refined_Depends_Illegal is
+package body Refined_Depends_Illegal
+  with SPARK_Mode
+is
    package body No_Abstract_State is
       procedure P1 (Par : out Integer)
         with Refined_Global => (Par => Global_Var)

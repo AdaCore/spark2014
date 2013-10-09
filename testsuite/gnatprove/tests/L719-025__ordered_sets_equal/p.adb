@@ -1,4 +1,4 @@
-package body P is 
+package body P is pragma SPARK_Mode (On);
 
    procedure Identity (L : in out Set; E : Element_Type) is
       Cu : Cursor;

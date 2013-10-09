@@ -1,7 +1,8 @@
 with SM_Operations; use SM_Operations;
 
 package body SM_Using_Case_Expression
-   with Refined_State => (Abs_State => State)
+  with SPARK_Mode,
+       Refined_State => (Abs_State => State)
 is
 
 

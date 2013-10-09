@@ -1,4 +1,5 @@
 package body Pack is
+   pragma SPARK_Mode (Off);
 
    function PP1 return Boolean is
 

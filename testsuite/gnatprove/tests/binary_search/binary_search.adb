@@ -1,3 +1,5 @@
+pragma SPARK_Mode (On);
+
 package body Binary_Search is
 
    function Search (A : Ar ; I : Integer) return T is

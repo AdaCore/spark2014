@@ -1,11 +1,15 @@
 package body Arith is
 
-   function Sum (X, Y : Integer) return Integer is
+   function Sum (X, Y : Integer) return Integer
+     with SPARK_Mode => Off
+   is
    begin
       return X + Y;
    end Sum;
 
-   function Sum2 (X, Y : Integer) return Integer is
+   function Sum2 (X, Y : Integer) return Integer
+     with SPARK_Mode => Off
+   is
    begin
       return X + Y;
    end Sum2;
@@ -19,7 +23,9 @@ package body Arith is
       return Z;
    end Sum_Array;
 
-   function Sum_Array2 (X, Y : Int_Array) return Int_Array is
+   function Sum_Array2 (X, Y : Int_Array) return Int_Array
+     with SPARK_Mode => Off
+   is
       Z : Int_Array;
    begin
       for J in Index loop

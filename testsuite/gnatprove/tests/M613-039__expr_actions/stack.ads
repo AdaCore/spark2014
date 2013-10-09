@@ -1,4 +1,4 @@
-package Stack is 
+package Stack is pragma SPARK_Mode (On);
    type Stack  is private;
 
    package Model is

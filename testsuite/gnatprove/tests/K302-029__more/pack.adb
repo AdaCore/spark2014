@@ -1,5 +1,5 @@
-package body Pack is 
-
+package body Pack is
+   pragma SPARK_Mode;
    procedure P0 is
       procedure P3 is
       begin

@@ -30,7 +30,7 @@ package body AuditLog
 --#              NumberLogEntries,
 --#              AuditSystemFault &
 --#    FileState is LogFiles;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

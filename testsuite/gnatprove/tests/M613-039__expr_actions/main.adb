@@ -1,6 +1,6 @@
 with List; use List;
 with Print;
-procedure Main is 
+procedure Main is pragma SPARK_Mode (On);
 
    L : List.List;
 

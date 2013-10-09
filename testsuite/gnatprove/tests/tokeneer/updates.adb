@@ -21,7 +21,7 @@ with Latch;
 with Screen;
 
 package body Updates
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

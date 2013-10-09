@@ -1,3 +1,5 @@
+pragma SPARK_Mode (On);
+
 package body Segway is
 
    ------------------

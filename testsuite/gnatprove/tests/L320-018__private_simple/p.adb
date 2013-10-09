@@ -1,4 +1,5 @@
-package body P is 
+package body P is
+   pragma SPARK_Mode (Off);
    function Get (X : T) return T is
       Tmp : T;
    begin

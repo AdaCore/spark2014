@@ -30,7 +30,7 @@ use type KeyStore.Interfac.MaskT;
 package body KeyStore
 --# Own Store is KeyStore.Interfac.Store &
 --#     State is ThisTISInfo;
-is
+is pragma SPARK_Mode (On);
 
    ----------------------------------------------------------------
    -- Types
@@ -855,7 +855,7 @@ is
    --#                                        PrivateKeyPresent(ThisTISInfo~));
    is
       pragma Postcondition
-        (((Added and then not IsPublic) <= PrivateKeyPresent) and 
+        (((Added and then not IsPublic) <= PrivateKeyPresent) and
          (not (Added and then not IsPublic)) <= (PrivateKeyPresent =
                                            PrivateKeyPresent'Old));
       TheKeyTemplate : Interfac.KeyTemplateT;

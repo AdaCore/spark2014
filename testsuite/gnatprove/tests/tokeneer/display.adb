@@ -32,7 +32,7 @@ package body Display
 --#               CurrentlyDisplayed,
 --#               Sizes &
 --#     Output is out Display.Interfac.Output;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

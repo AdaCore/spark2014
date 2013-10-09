@@ -26,7 +26,7 @@ use type BasicTypes.Unsigned32T;
 
 package body Bio
 --# own Input is in Bio.Interfac.Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

@@ -1,5 +1,4 @@
 package Counters is
-   pragma SPARK_Mode (On);
    type Change_Mode is
      (Increase,
       Increase_Then_Decrease,

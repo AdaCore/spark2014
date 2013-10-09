@@ -1,5 +1,6 @@
 package body Refined_Depends_Illegal_2
-  with Refined_State => (State => (X, Y))
+  with SPARK_Mode,
+       Refined_State => (State => (X, Y))
 is
    X, Y : Integer := 0;
 

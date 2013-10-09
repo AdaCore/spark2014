@@ -42,7 +42,7 @@ package body UserEntry
 --# own State is Status,
 --#              FingerTimeout,
 --#              TokenRemovalTimeout;
-is
+is pragma SPARK_Mode (On);
 
 
    ------------------------------------------------------------------

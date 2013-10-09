@@ -30,7 +30,7 @@ package body Door
 --#              AlarmTimeout,
 --#              DoorAlarm &
 --#     Input is in Door.Interfac.Input;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- State

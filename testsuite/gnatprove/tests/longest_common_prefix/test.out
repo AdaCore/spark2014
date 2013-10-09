@@ -1,15 +1,15 @@
-lcp.adb:7:12: info: overflow check proved
-lcp.adb:8:17: info: overflow check proved
-lcp.adb:9:20: info: index check proved
-lcp.adb:9:20: info: overflow check proved
-lcp.adb:9:32: info: index check proved
-lcp.adb:9:32: info: overflow check proved
-lcp.adb:11:7: info: loop invariant initialization proved
-lcp.adb:11:7: info: loop invariant preservation proved
-lcp.adb:11:62: info: index check proved
-lcp.adb:11:74: info: index check proved
-lcp.adb:12:7: info: loop variant proved
-lcp.adb:14:14: info: overflow check proved
+lcp.adb:8:12: info: overflow check proved
+lcp.adb:9:17: info: overflow check proved
+lcp.adb:10:20: info: index check proved
+lcp.adb:10:20: info: overflow check proved
+lcp.adb:10:32: info: index check proved
+lcp.adb:10:32: info: overflow check proved
+lcp.adb:12:7: info: loop invariant initialization proved
+lcp.adb:12:7: info: loop invariant preservation proved
+lcp.adb:12:62: info: index check proved
+lcp.adb:12:74: info: index check proved
+lcp.adb:13:7: info: loop variant proved
+lcp.adb:15:14: info: overflow check proved
 lcp.ads:6:5: info: postcondition proved
 lcp.ads:6:47: info: index check proved
 lcp.ads:6:59: info: index check proved

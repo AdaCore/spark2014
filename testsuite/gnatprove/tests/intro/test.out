@@ -1,17 +1,17 @@
-pricing.adb:9:11: info: range check proved
-pricing.adb:10:10: info: loop invariant initialization proved
-pricing.adb:10:10: info: loop invariant preservation proved
-pricing.adb:11:21: info: range check proved
-pricing.adb:11:56: info: overflow check proved
-pricing.adb:12:44: info: index check proved
+pricing.adb:11:11: info: range check proved
+pricing.adb:12:10: info: loop invariant initialization proved
+pricing.adb:12:10: info: loop invariant preservation proved
+pricing.adb:13:21: info: range check proved
+pricing.adb:13:56: info: overflow check proved
+pricing.adb:14:44: info: index check proved
 pricing.ads:13:14: info: postcondition proved
 pricing.ads:18:14: info: postcondition proved
 pricing.ads:18:23: info: range check proved
 pricing.ads:19:62: info: index check proved
-sat.adb:5:12: info: range check proved
-sat.adb:10:12: info: overflow check proved
-sat.adb:11:12: info: overflow check proved
-sat.adb:11:12: info: range check proved
+sat.adb:7:12: info: range check proved
+sat.adb:12:12: info: overflow check proved
+sat.adb:13:12: info: overflow check proved
+sat.adb:13:12: info: range check proved
 sat.ads:8:6: info: disjoint contract cases proved
 sat.ads:8:6: info: complete contract cases proved
 sat.ads:8:41: info: contract case proved

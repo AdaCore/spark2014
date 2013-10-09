@@ -1,7 +1,9 @@
+pragma SPARK_Mode (On);
+
 with Identity;
 use type Identity.Id;
 
-package body Database is  
+package body Database is
 
    --------------------
    -- Local Packages --

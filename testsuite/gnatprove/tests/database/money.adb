@@ -1,4 +1,6 @@
-package body Money is  
+pragma SPARK_Mode (On);
+
+package body Money is
 
    function "+" (A, B : Amount) return Amount is
      (Amount'(A.Currency, A.Raw + B.Raw));

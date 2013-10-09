@@ -1,9 +1,9 @@
-package body P is 
+package body P is pragma SPARK_Mode (On);
 
    procedure Identity (L : in out List; Cu : in out Cursor) is
    begin
       Insert (L, Cu, 1);
-      Cu := (if Cu = No_Element then Last (L) 
+      Cu := (if Cu = No_Element then Last (L)
              else Previous (L, Cu));
       Delete (L, Cu);
    end Identity;
@@ -16,7 +16,7 @@ package body P is
       Delete (L, Cu);
       Insert (L, Nxt, E, Cu);
    end Nearly_Identity;
-   
+
    procedure Identity_Swap (L : in out List; Cu1 : Cursor; Cu2 : Cursor) is
       L_In : constant List := Copy (L);
    begin
@@ -24,7 +24,7 @@ package body P is
       pragma Assert (Element (L, Cu1) = Element (L_In, Cu2));
       Swap (L, Cu1, Cu2);
    end Identity_Swap;
-   
+
    procedure Identity_Swap_Links (L : in out List; Cu1 : Cursor; Cu2 : Cursor)
    is
    begin

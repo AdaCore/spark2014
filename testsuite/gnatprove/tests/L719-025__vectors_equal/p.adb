@@ -1,4 +1,4 @@
-package body P is 
+package body P is pragma SPARK_Mode (On);
 
    procedure Nearly_Identity_1 (L : in out Vector; I : Extended_Index) is
    begin
@@ -12,7 +12,7 @@ package body P is
       Delete (L, I);
       Insert (L, I, E);
    end Nearly_Identity_2;
-   
+
    procedure Identity_Swap (L : in out Vector; I1, I2 : Index_Type) is
       L_In : constant Vector := Copy (L);
    begin

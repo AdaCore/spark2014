@@ -22,6 +22,8 @@
 --  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
+pragma SPARK_Mode (On);
+
 with Ada.Text_Io;
 use Ada.Text_Io;
 with Ada.Assertions;

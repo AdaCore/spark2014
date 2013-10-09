@@ -32,7 +32,7 @@ package body TokenReader
 --#     Status is in TokenReader.Interfac.ReaderStatus &
 --#     Input is in TokenReader.Interfac.ReaderInput &
 --#     Output is out TokenReader.Interfac.ReaderOutput;
-is
+is pragma SPARK_Mode (On);
 
    ------------------------------------------------------------------
    -- Types

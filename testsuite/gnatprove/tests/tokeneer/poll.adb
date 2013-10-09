@@ -24,7 +24,7 @@ with UserToken;
 with AdminToken;
 
 package body Poll
-is
+is pragma SPARK_Mode (On);
 
 
 

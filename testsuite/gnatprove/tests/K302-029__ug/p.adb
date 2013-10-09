@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    procedure Set with
      SPARK_Mode => Off
    is
@@ -7,6 +7,7 @@ package body P is
    end Set;
 
    procedure P0 is
+      pragma SPARK_Mode (Off);
       Y : Boolean;
 
       function Get return Boolean is

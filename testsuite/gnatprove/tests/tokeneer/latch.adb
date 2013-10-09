@@ -24,7 +24,7 @@ package body Latch
 --# own State  is CurrentLatch,
 --#               LatchTimeout &
 --#     Output is    out Latch.Interfac.Output;
-is
+is pragma SPARK_Mode (On);
 
    function Latch_Timeout return Clock.TimeT is
    begin

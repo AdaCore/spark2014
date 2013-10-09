@@ -1,4 +1,6 @@
-package body Functions_Illegal_2 is
+package body Functions_Illegal_2
+  with SPARK_Mode
+is
    function Cant_Have_Formal_Out (Par : out Integer) return Integer is
    begin
       Par := 1;

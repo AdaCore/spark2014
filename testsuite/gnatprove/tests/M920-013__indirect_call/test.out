@@ -1,15 +1,15 @@
 calls.adb:8:07: tasking is not allowed in SPARK
-calls.adb:8:07:  violation of pragma SPARK_Mode at calls.ads:1
+calls.adb:8:07:  violation of pragma SPARK_Mode at line 1
 calls.adb:13:07: tasking is not allowed in SPARK
-calls.adb:13:07:  violation of pragma SPARK_Mode at calls.ads:1
+calls.adb:13:07:  violation of pragma SPARK_Mode at line 1
 calls.adb:23:07: call through access to procedure is not allowed in SPARK
-calls.adb:23:07:  violation of pragma SPARK_Mode at calls.ads:1
+calls.adb:23:07:  violation of pragma SPARK_Mode at line 1
 calls.adb:26:07: tasking is not allowed in SPARK
-calls.adb:26:07:  violation of pragma SPARK_Mode at calls.ads:1
+calls.adb:26:07:  violation of pragma SPARK_Mode at line 1
 calls.adb:29:07: tasking is not allowed in SPARK
-calls.adb:29:07:  violation of pragma SPARK_Mode at calls.ads:1
+calls.adb:29:07:  violation of pragma SPARK_Mode at line 1
 calls.adb:32:07: "R'Class" is not allowed in SPARK
-calls.adb:32:07:  violation of pragma SPARK_Mode at calls.ads:1
+calls.adb:32:07:  violation of pragma SPARK_Mode at line 1
 calls.ads:7:13: access to subprogram with profile "T2s" is not allowed in SPARK
 calls.ads:7:13:  violation of pragma SPARK_Mode at line 1
 calls.ads:7:33: access to subprogram with profile "T2s" is not allowed in SPARK

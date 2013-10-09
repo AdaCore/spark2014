@@ -1,4 +1,5 @@
 package body Segway.Execute is
+   pragma SPARK_Mode (Off);
 
    -------------
    -- Execute --

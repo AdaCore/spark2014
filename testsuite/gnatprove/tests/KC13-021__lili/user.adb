@@ -1,6 +1,6 @@
 with Lili;
 
-package body User is 
+package body User is
 
    package Events is new Lili (Integer);
 
