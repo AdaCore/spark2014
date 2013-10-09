@@ -21,8 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Nlists;   use Nlists;
+with Errout;   use Errout;
 with Namet;    use Namet;
+with Nlists;   use Nlists;
 
 with Treepr;   use Treepr;
 
@@ -290,7 +291,12 @@ package body Flow.Utility is
                       Writes       => Global_Writes,
                       Refined_View => Should_Use_Refined_View (Scope,
                                                                Callsite));
-         pragma Assert (Flow_Id_Sets.Length (Global_Writes) = 0);
+         if Flow_Id_Sets.Length (Global_Writes) > 0 then
+            Error_Msg_NE
+              (Msg => "side-effects of function & are not modelled in SPARK",
+               N   => Callsite,
+               E   => Subprogram);
+         end if;
 
          Used_Variables :=
            Used_Variables or
