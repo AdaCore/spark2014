@@ -178,7 +178,7 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind and Entity_In_SPARK (E) then
+      if Ekind (E) in Subprogram_Kind and Entity_Spec_In_SPARK (E) then
 
          --  Generate Why3 code to check absence of run-time errors in
          --  contracts and body.
@@ -190,7 +190,7 @@ package body Gnat2Why.Driver is
             (if Present (Get_Package_Body (E)) then
                Entity_Body_In_SPARK (E)
              else
-               Entity_In_SPARK (E))
+               Entity_Spec_In_SPARK (E))
       then
          Generate_VCs_For_Package_Elaboration (Why_Sections (WF_Main), E);
       end if;

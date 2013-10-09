@@ -144,13 +144,17 @@ package body SPARK_Definition is
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
+   Specs_In_SPARK    : Node_Sets.Set;
+   --  Subprograms and packages whose spec is marked in SPARK
+
    Bodies_In_SPARK   : Node_Sets.Set;
-   --  Subprogram entities whose body is in SPARK. An entity is inserted
-   --  in this set if, after marking, no violations where attached to the
-   --  corresponding body scope.
+   --  Subprograms and packages whose body is marked in SPARK
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean is
      (Entities_In_SPARK.Contains (E));
+
+   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean is
+     (Specs_In_SPARK.Contains (E));
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean is
      (Bodies_In_SPARK.Contains (E));
@@ -2185,7 +2189,11 @@ package body SPARK_Definition is
          return;
       end if;
 
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+      Current_SPARK_Pragma := SPARK_Pragma (Id);
+
+      if SPARK_Pragma_Is (Opt.On) then
+         Specs_In_SPARK.Include (Id);
+      end if;
 
       --  Do not analyze package declarations in SPARK_Mode => Off
 
@@ -2194,7 +2202,7 @@ package body SPARK_Definition is
             Mark_List (Vis_Decls);
          end if;
 
-         Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
+         Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
          --  Do not analyze package private declarations in SPARK_Mode => Off
 
@@ -2564,7 +2572,11 @@ package body SPARK_Definition is
 
       --  Mark entity
 
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+      Current_SPARK_Pragma := SPARK_Pragma (E);
+
+      if SPARK_Pragma_Is (Opt.On) then
+         Specs_In_SPARK.Include (E);
+      end if;
 
       --  Do not analyze subprogram declarations in SPARK_Mode => Off
 

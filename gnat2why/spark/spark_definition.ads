@@ -71,10 +71,14 @@ package SPARK_Definition is
    --  Put marks on package Standard
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean;
-   --  Return whether the entity E is in SPARK. Note that a subprogram E can be
-   --  in SPARK without its body being in SPARK.
+   --  Returns True if entity E is in SPARK. Note that E may be in SPARK
+   --  without being marked by the user in SPARK, in which case it can be
+   --  called from SPARK code, but no VC will be generated for E.
+
+   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean;
+   --  Returns True if the spec of subprogram or package E was marked in SPARK
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
-   --  Return whether the body of subprogram E is in SPARK
+   --  Returns True if the body of subprogram or package E was marked in SPARK
 
 end SPARK_Definition;
