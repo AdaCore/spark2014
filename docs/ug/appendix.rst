@@ -132,6 +132,9 @@ If the SPARK_Mode of a section of an entity is Off or Auto, then the SPARK_Mode
 of a later section of that entity shall not be On. [For example, a subprogram
 can have a SPARK declaration and a non-SPARK body, but not vice versa.]
 
+If the SPARK_Mode of a section of an entity is Auto, then the SPARK_Mode
+of a later section of that entity shall not be On or Off.
+
 The SPARK_Mode aspect can be specified either via a pragma or via an
 aspect_specification. In some contexts, only a pragma can be used
 because of syntactic limitations. In those contexts where an
