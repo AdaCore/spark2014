@@ -15,13 +15,14 @@ p.adb:36:12: info: length check proved
 p.adb:43:12: info: length check proved
 p.adb:50:12: info: length check proved
 [
-{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc2", "file" :"p.adb", "line" :  9, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc3", "file" :"p.adb", "line" :  15, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc4", "file" :"p.adb", "line" :  21, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc5", "file" :"p.adb", "line" :  27, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc6", "file" :"p.adb", "line" :  33, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc7", "file" :"p.adb", "line" :  39, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc8", "file" :"p.adb", "line" :  46, "spark" : true, "violations" : [] }
+{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "body" }
+, { "name" : "P.Proc2", "file" :"p.adb", "line" :  9, "spark" : "body" }
+, { "name" : "P.Proc3", "file" :"p.adb", "line" :  15, "spark" : "body" }
+, { "name" : "P.Proc4", "file" :"p.adb", "line" :  21, "spark" : "body" }
+, { "name" : "P.Proc5", "file" :"p.adb", "line" :  27, "spark" : "body" }
+, { "name" : "P.Proc6", "file" :"p.adb", "line" :  33, "spark" : "body" }
+, { "name" : "P.Proc7", "file" :"p.adb", "line" :  39, "spark" : "body" }
+, { "name" : "P.Proc8", "file" :"p.adb", "line" :  46, "spark" : "body" }
+, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "body" }
 ]
 

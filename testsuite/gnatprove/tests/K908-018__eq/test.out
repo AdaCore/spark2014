@@ -1,7 +1,8 @@
 pack.ads:11:19: info: postcondition proved
 pack.ads:14:19: info: postcondition proved
 [
-{ "name" : "Pack.Equal", "file" :"pack.ads", "line" :  10, "spark" : true, "violations" : [] }
-, { "name" : "Pack.Equal", "file" :"pack.ads", "line" :  13, "spark" : true, "violations" : [] }
+{ "name" : "Pack.Equal", "file" :"pack.ads", "line" :  10, "spark" : "body" }
+, { "name" : "Pack.Equal", "file" :"pack.ads", "line" :  13, "spark" : "body" }
+, { "name" : "Pack", "file" :"pack.ads", "line" :  1, "spark" : "body" }
 ]
 

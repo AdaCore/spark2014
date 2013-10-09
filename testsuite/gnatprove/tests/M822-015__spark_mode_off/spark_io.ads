@@ -11,7 +11,8 @@
 with Ada.Text_IO;
 
 package Spark_IO
-   with Abstract_State => (State, Inputs, Outputs),
+  with SPARK_Mode,
+        Abstract_State => (State, Inputs, Outputs),
         Initializes    => (State, Inputs, Outputs)
 is
 

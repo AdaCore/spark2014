@@ -7,13 +7,14 @@ p.adb:39:09: warning: unused assignment [ineffective]
 p.adb:46:09: warning: unused assignment [ineffective]
 p.adb:53:09: warning: unused assignment [ineffective]
 [
-{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc2", "file" :"p.adb", "line" :  12, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc3", "file" :"p.adb", "line" :  18, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc4", "file" :"p.adb", "line" :  24, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc5", "file" :"p.adb", "line" :  30, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc6", "file" :"p.adb", "line" :  36, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc7", "file" :"p.adb", "line" :  42, "spark" : true, "violations" : [] }
-, { "name" : "P.Proc8", "file" :"p.adb", "line" :  49, "spark" : true, "violations" : [] }
+{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "body" }
+, { "name" : "P.Proc2", "file" :"p.adb", "line" :  12, "spark" : "body" }
+, { "name" : "P.Proc3", "file" :"p.adb", "line" :  18, "spark" : "body" }
+, { "name" : "P.Proc4", "file" :"p.adb", "line" :  24, "spark" : "body" }
+, { "name" : "P.Proc5", "file" :"p.adb", "line" :  30, "spark" : "body" }
+, { "name" : "P.Proc6", "file" :"p.adb", "line" :  36, "spark" : "body" }
+, { "name" : "P.Proc7", "file" :"p.adb", "line" :  42, "spark" : "body" }
+, { "name" : "P.Proc8", "file" :"p.adb", "line" :  49, "spark" : "body" }
+, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "body" }
 ]
 
