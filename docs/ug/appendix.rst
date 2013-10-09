@@ -128,7 +128,7 @@ its body declarations, and its body statements. Non-package declarations which
 require a completion have two sections, as noted above; all other entities and
 constructs have only one section.
 
-If the SPARK_Mode of a section of an entity is Off or Auto, then the SPARK_Mode
+If the SPARK_Mode of a section of an entity is Off, then the SPARK_Mode
 of a later section of that entity shall not be On. [For example, a subprogram
 can have a SPARK declaration and a non-SPARK body, but not vice versa.]
 
