@@ -286,7 +286,9 @@ package body SPARK_Definition is
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
       SPARK_Status : constant String :=
-        (if Entity_Body_In_SPARK (Id) then "true" else "false");
+        (if Entity_Body_In_SPARK (Id) then "body"
+         elsif Entity_Spec_In_SPARK (Id) then "spec"
+         else "no");
       Line_Num     : constant String :=
         Get_Logical_Line_Number (Sloc (Id))'Img;
    begin
@@ -299,8 +301,7 @@ package body SPARK_Definition is
                 "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
                   """file"" :""" & File_Name (Sloc (Id)) & """, " &
                   """line"" : " & Line_Num & ", " &
-                  """spark"" : " & SPARK_Status & ", " &
-                  """violations"" : [] }");
+                  """spark"" : """ & SPARK_Status & """ }");
    end Generate_Output_In_Out_SPARK;
 
    ----------------------------------
@@ -2060,25 +2061,28 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
-      --  Only analyze package body declarations in SPARK_Mode => On
+      Mark_List (Declarations (N));
+
+      Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
+
+      --  Only analyze package body statements in SPARK_Mode => On
 
       if SPARK_Pragma_Is (Opt.On) then
-         Mark_List (Declarations (N));
 
-         Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
+         --  Always mark the body in SPARK
 
-         --  Only analyze package body statements in SPARK_Mode => On
+         Bodies_In_SPARK.Include (Id);
 
-         if SPARK_Pragma_Is (Opt.On) then
-
-            --  Always mark the body in SPARK
-
-            Bodies_In_SPARK.Include (Id);
-
-            if Present (HSS) then
-               Mark (HSS);
-            end if;
+         if Present (HSS) then
+            Mark (HSS);
          end if;
+      end if;
+
+      --  Postprocessing: indicate in output file if package is in
+      --  SPARK or not, for reporting, debug and verifications.
+
+      if Is_Toplevel_Entity (Id) then
+         Generate_Output_In_Out_SPARK (Id);
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -2534,14 +2538,13 @@ package body SPARK_Definition is
          then
             Entity_List.Append (Defining_Entity (N));
          end if;
+      end if;
 
-         if Is_Toplevel_Entity (E) then
+      --  Postprocessing: indicate in output file if subprogram is in
+      --  SPARK or not, for reporting, debug and verifications.
 
-            --  Postprocessing: indicate in output file if subprogram is in
-            --  SPARK or not, for debug and verifications.
-
-            Generate_Output_In_Out_SPARK (E);
-         end if;
+      if Is_Toplevel_Entity (E) then
+         Generate_Output_In_Out_SPARK (E);
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;

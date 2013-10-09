@@ -113,7 +113,7 @@ procedure SPARK_Report is
             begin
                Add_SPARK_Status (Unit,
                                  Mk_Subp_Of_Entity (Result),
-                                 Get (Get (Result, "spark")));
+                                 Get (Get (Result, "spark")) = "body");
             end;
          end loop;
       end;
