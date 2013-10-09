@@ -1,5 +1,6 @@
 skein.adb:136:48: warning: no Global contract available for "Shift_Right"
 skein.adb:136:48: warning:  assuming "Shift_Right" has no effect on global items
+skein.adb:184:26: warning: "Dst" might not be initialized [uninitialized]
 skein.adb:186:22: warning: no Global contract available for "Shift_Left"
 skein.adb:186:22: warning:  assuming "Shift_Left" has no effect on global items
 skein.adb:187:22: warning: no Global contract available for "Shift_Left"
@@ -78,6 +79,7 @@ skein.adb:513:29: warning: no Global contract available for "Rotate_Left"
 skein.adb:513:29: warning:  assuming "Rotate_Left" has no effect on global items
 skein.adb:519:29: warning: no Global contract available for "Rotate_Left"
 skein.adb:519:29: warning:  assuming "Rotate_Left" has no effect on global items
+skein.adb:534:20: warning: "Ks" might not be initialized [uninitialized]
 skein.adb:883:62: warning: no Global contract available for "Shift_Right"
 skein.adb:883:62: warning:  assuming "Shift_Right" has no effect on global items
 skein.adb:884:62: warning: no Global contract available for "Shift_Right"

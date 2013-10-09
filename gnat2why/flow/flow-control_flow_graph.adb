@@ -1224,7 +1224,8 @@ package body Flow.Control_Flow_Graph is
 
          procedure Find_Return is new Traverse_Proc (Process => Proc);
 
-         V : Flow_Graphs.Vertex_Id;
+         V           : Flow_Graphs.Vertex_Id;
+         Faux_Exit_V : Flow_Graphs.Vertex_Id;
 
       begin
          --  Check if we have a return statement.
@@ -1252,9 +1253,28 @@ package body Flow.Control_Flow_Graph is
          else
             --  We have neither return nor exit, so we simulate an
             --  "exit when false" at the end of the loop.
-            --  !!! Workaround for stdlib bug
-            CM (Union_Id (N)).Standard_Exits.Union
-              (CM.Element (Union_Id (Statements (N))).Standard_Exits);
+
+            --  We need a previously unused node, we can abuse the end
+            --  label for this. This represents our "exit when false"
+            --  node. We cannot just add a fake exit to the very last
+            --  vertex in the loop body, as this introduces
+            --  interesting (and unwanted) control dependencies on it.
+            FA.CFG.Add_Vertex
+              (Direct_Mapping_Id (End_Label (N)),
+               Make_Aux_Vertex_Attributes (E_Loc => N),
+               Faux_Exit_V);
+
+            --  We now thread this at the back of the connection map
+            --  for Statements (N). Sorry, this is really quite ugly.
+            Linkup (FA.CFG,
+                    CM (Union_Id (Statements (N))).Standard_Exits,
+                    Faux_Exit_V);
+            CM (Union_Id (Statements (N))).Standard_Exits :=
+              Vertex_Sets.To_Set (Faux_Exit_V);
+
+            --  Finally we add a mark the faux exit vertex as a
+            --  possible exit of this loop.
+            CM (Union_Id (N)).Standard_Exits.Include (Faux_Exit_V);
          end if;
 
          --  Loop the loop: V -> body -> V
@@ -1428,7 +1448,7 @@ package body Flow.Control_Flow_Graph is
          end if;
       end if;
 
-      --  Now we need to glue the loop entry checks to the front of
+      --  Now we need to glue the 'loop_entry checks to the front of
       --  the loop.
       declare
          Augmented_Loop : Union_Lists.List := Union_Lists.Empty_List;
