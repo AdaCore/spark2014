@@ -1,13 +1,13 @@
 with Segway; use Segway;
 
 package body Segway.Execute is
+   pragma SPARK_Mode (Off);
 
    -------------
    -- Execute --
    -------------
 
    procedure Execute (Read : Reader) is
-      pragma SPARK_Mode (Off);
       I : Input;
    begin
       loop
