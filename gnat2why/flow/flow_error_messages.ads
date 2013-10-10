@@ -37,7 +37,7 @@ package Flow_Error_Messages is
    --  node.
 
    procedure Error_Msg_Flow (Msg     : String;
-                             N       : Types.Node_Id;
+                             N       : Node_Id;
                              F1      : Flow_Id;
                              Tag     : String := "";
                              Warning : Boolean := False);
