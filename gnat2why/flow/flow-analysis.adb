@@ -380,61 +380,21 @@ package body Flow.Analysis is
       Writes := To_Entire_Variables (Writes);
 
       for R of Reads loop
-         case R.Kind is
-            when Direct_Mapping =>
-               if not Is_Initialized_At_Elaboration
-                 (Get_Direct_Mapping_Id (R))
-               then
-                  Error_Msg_Flow
-                    (Msg => "& may not be initialized after elaboration of &",
-                     N   => Find_Global (FA.Analyzed_Entity, R),
-                     F1  => R,
-                     F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag => "uninitialized");
-               end if;
 
-            when Magic_String =>
-               --  !!! Remove once M711-031 is implemented
-               Error_Msg_Flow
-                 (Msg => "analysis of main program impossible in the "&
-                    "presence of computed global &",
-                  N   => Find_Global (FA.Analyzed_Entity, R),
-                  F1  => R,
-                  Tag => "uninitialized");
+         --  !!! Fix this for magic strings once M711-031 is implemented
+         if not (R.Kind in Direct_Mapping | Record_Field and then
+                   Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (R)))
+         then
+            Error_Msg_Flow
+              (Msg     => "& might not be initialized after elaboration "&
+                 "of main program &",
+               N       => Find_Global (FA.Analyzed_Entity, R),
+               F1      => R,
+               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag     => "uninitialized",
+               Warning => True);
+         end if;
 
-            when Null_Value | Record_Field =>
-               raise Why.Unexpected_Node;
-         end case;
-      end loop;
-
-      for W of Writes loop
-         case W.Kind is
-            when Direct_Mapping =>
-               if Is_Initialized_At_Elaboration
-                 (Get_Direct_Mapping_Id (W))
-               then
-                  --  !!! if we initialize something, make use of it
-                  --  in another package and then overwrite it here
-                  --  this is not really a warning. think about this!
-                  if not Reads.Contains (Change_Variant (W, In_View)) then
-                     Error_Msg_Flow
-                       (Msg     => "ineffective initialization of & " &
-                          "(is global output in main program &)",
-                        N       => Find_Node_In_Initializes
-                          (Get_Direct_Mapping_Id (W)),
-                        F1      => W,
-                        F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                        Tag     => "ineffective",
-                        Warning => True);
-                  end if;
-               end if;
-
-            when Magic_String =>
-               null;
-
-            when Null_Value | Record_Field =>
-               raise Why.Unexpected_Node;
-         end case;
       end loop;
    end Analyse_Main;
 
