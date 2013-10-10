@@ -581,22 +581,33 @@ package body Gnat2Why.Expr is
 
          begin
             if Do_Check then
-               Assuming := New_Assume_Statement (Ada_Node => N,
-                                                 Pre      => Precond,
-                                                 Post     => Postcond);
-               return
-                 +New_VC_Expr (Ada_Node => N,
-                               Domain   => EW_Prog,
-                               Reason   => VC_Range_Check,
-                               Expr     => +Assuming);
+               if Is_Locally_Defined_In_Loop (N) then
+                  Assuming := New_Assume_Statement (Ada_Node => N,
+                                                    Pre      => Precond,
+                                                    Post     => True_Pred);
+               else
+                  Assuming := New_Assume_Statement (Ada_Node => N,
+                                                    Pre      => Precond,
+                                                    Post     => Postcond);
+               end if;
+
+               return +New_VC_Expr (Ada_Node => N,
+                                    Domain   => EW_Prog,
+                                    Reason   => VC_Range_Check,
+                                    Expr     => +Assuming);
+
             else
-               Assuming :=
-                 New_Assume_Statement (Ada_Node => N,
-                                       Post     =>
-                                         +New_And_Expr (Domain => EW_Pred,
-                                                        Left   => +Precond,
-                                                        Right  => +Postcond));
-               return Assuming;
+               if Is_Locally_Defined_In_Loop (N) then
+                  return New_Void;
+               else
+                  Assuming :=
+                    New_Assume_Statement
+                      (Ada_Node => N,
+                       Post     => +New_And_Expr (Domain => EW_Pred,
+                                                  Left   => +Precond,
+                                                  Right  => +Postcond));
+                  return Assuming;
+               end if;
             end if;
          end;
       end if;

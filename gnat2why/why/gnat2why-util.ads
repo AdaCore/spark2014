@@ -225,6 +225,9 @@ package Gnat2Why.Util is
    -- Queries --
    -------------
 
+   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
+   --  Returns True if node N is defined locally to a loop
+
    function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
    --  Returns whether the expression E depends on a variable, either directly,
    --  or through the read effects of a function call. This is used to decide

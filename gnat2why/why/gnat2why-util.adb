@@ -30,6 +30,7 @@ with Uintp;               use Uintp;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Sem_Util; use Sem_Util;
 
 package body Gnat2Why.Util is
 
@@ -337,6 +338,27 @@ package body Gnat2Why.Util is
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
 
+   --------------------------------
+   -- Is_Locally_Defined_In_Loop --
+   --------------------------------
+
+   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean is
+      Stmt : Node_Id := Parent (N);
+   begin
+      while Present (Stmt) loop
+         if Nkind (Stmt) = N_Loop_Statement then
+            return True;
+
+         elsif Is_Body_Or_Package_Declaration (Stmt) then
+            return False;
+         end if;
+
+         Stmt := Parent (Stmt);
+      end loop;
+
+      return False;
+   end Is_Locally_Defined_In_Loop;
+
    -----------------------
    -- Is_Mutable_In_Why --
    -----------------------
@@ -360,9 +382,19 @@ package body Gnat2Why.Util is
                          E_Discriminant        |
                          Named_Kind            |
                          Subprogram_Kind
-              or else
-            Is_Constant_Object (N)
       then
+         return False;
+
+      --  Constants defined locally to a loop inside a subprogram (or any
+      --  other dynamic scope) may end up having different values, so should
+      --  be mutable in Why.
+
+      elsif Ekind (N) = E_Constant
+        and then Is_Locally_Defined_In_Loop (N)
+      then
+         return True;
+
+      elsif Is_Constant_Object (N) then
          return False;
 
       else
