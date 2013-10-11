@@ -23,8 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  ??? A comment about what the gnatprove wrapper actually does would be
---  helpful.
+--  This program (gnatprove) is the command line interface of the SPARK 2014
+--  tools. It works in three steps:
+--
+--  1) Compute ALI information
+--     This step generates, for all relevant units, the ALI files, which
+--     contain the computed effects for all subprograms and packages.
+--  2) Translate_To_Why
+--     ??? change name of that subprogram
+--     This step does all the SPARK analyses except proof. The tool "gnat2why"
+--     is called on all units. The analyses done by gnat2why are
+--     SPARK_Mode and Flow analysis. gnat2why also translates the SPARK code to
+--     Why3.
+--  3) Compute_VCs
+--     ??? change the name of that subprogram
+--     This step calls "gnatwhy3" on the Why3 files generated in step 2. This
+--     will do the proofs and report proof messages.
+--  4) Call SPARK_Report. The previous steps have generated extra information,
+--     which is read in by the spark_report tool, and aggregated to a report.
+--     See the documentation of spark_report.adb for the details.
 
 with Ada.Directories;    use Ada.Directories;
 with Ada.Environment_Variables;
