@@ -265,7 +265,7 @@ package body Gnat2Why.Driver is
       --  Do some flow analysis
 
       if Gnat2Why_Args.Flow_Analysis_Mode then
-         Flow_Analyse_CUnit;
+         Flow_Analyse_CUnit (GNAT_Root);
       end if;
 
       if Compilation_Errors then

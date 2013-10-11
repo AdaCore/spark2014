@@ -23,7 +23,6 @@
 
 with Ada.Text_IO;
 
-with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Util;              use Sem_Util;
@@ -67,10 +66,9 @@ package body Flow.Analysis is
    --  Obtain the location for the given vertex as in "foo.adb:12".
 
    procedure Write_Vertex_Set
-     (G     : Flow_Graphs.T;
-      E_Loc : Node_Or_Entity_Id;
-      Set   : Vertex_Sets.Set;
-      Tag   : String);
+     (G        : Flow_Graphs.T;
+      Set      : Vertex_Sets.Set;
+      Filename : String);
    --  Write a trace file for GPS.
 
    procedure Global_Required
@@ -136,27 +134,10 @@ package body Flow.Analysis is
    ----------------------
 
    procedure Write_Vertex_Set
-     (G     : Flow_Graphs.T;
-      E_Loc : Node_Or_Entity_Id;
-      Set   : Vertex_Sets.Set;
-      Tag   : String)
+     (G        : Flow_Graphs.T;
+      Set      : Vertex_Sets.Set;
+      Filename : String)
    is
-      SI       : constant Source_File_Index :=
-        Get_Source_File_Index (Sloc (E_Loc));
-
-      Line_No  : constant String :=
-        Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (E_Loc)));
-
-      Col_No   : constant String :=
-        Column_Number'Image (Get_Column_Number (Sloc (E_Loc)));
-
-      Filename : constant String :=
-        Get_Name_String (File_Name (SI)) &
-        "_" & Line_No (2 .. Line_No'Last) &
-        "_" & Col_No (2 .. Col_No'Last) &
-        "_" & Tag &
-        ".trace";
-
       FD       : Ada.Text_IO.File_Type;
    begin
       if not Set.Is_Empty then
@@ -191,6 +172,7 @@ package body Flow.Analysis is
         FA.Magic_Source (Var.Name);
 
       Error_Issued : Boolean := False;
+      Tracefile    : Unbounded_String;
 
       function Find_First_Call_With_Global (F : Flow_Id) return Node_Id;
       --  Find the first statement which defines or depends on Var.
@@ -255,11 +237,14 @@ package body Flow.Analysis is
          case Nkind (N) is
             when N_Procedure_Call_Statement | N_Function_Call =>
                if Offending_Subprograms.Contains (Entity (Name (N))) then
-                  Error_Msg_NE
-                    ("called subprogram & requires GLOBAL aspect" &
-                       " to make state visible!",
-                     N,
-                     Entity (Name (N)));
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "called subprogram & requires GLOBAL " &
+                       "aspect to make state visible",
+                     N         => N,
+                     F1        => Direct_Mapping_Id (Entity (Name (N))));
+
                   Error_Issued := True;
                end if;
 
@@ -359,8 +344,9 @@ package body Flow.Analysis is
    ------------------
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
-      Reads  : Flow_Id_Sets.Set;
-      Writes : Flow_Id_Sets.Set;
+      Reads     : Flow_Id_Sets.Set;
+      Writes    : Flow_Id_Sets.Set;
+      Tracefile : Unbounded_String;
    begin
       if not FA.Is_Main then
          --  Nothing to see here, move along.
@@ -380,19 +366,20 @@ package body Flow.Analysis is
       Writes := To_Entire_Variables (Writes);
 
       for R of Reads loop
-
          --  !!! Fix this for magic strings once M711-031 is implemented
          if not (R.Kind in Direct_Mapping | Record_Field and then
                    Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (R)))
          then
             Error_Msg_Flow
-              (Msg     => "& might not be initialized after elaboration "&
+              (FA        => FA,
+               Tracefile => Tracefile,
+               Msg       => "& might not be initialized after elaboration " &
                  "of main program &",
-               N       => Find_Global (FA.Analyzed_Entity, R),
-               F1      => R,
-               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag     => "uninitialized",
-               Warning => True);
+               N         => Find_Global (FA.Analyzed_Entity, R),
+               F1        => R,
+               F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag       => "uninitialized",
+               Warning   => True);
          end if;
 
       end loop;
@@ -405,6 +392,8 @@ package body Flow.Analysis is
    procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
                            Sane : out Boolean)
    is
+      Tracefile : Unbounded_String;
+
       function Proc_Record_Decl (N : Node_Id) return Traverse_Result;
       --  Check each component declaration for use of non-manifest
       --  constants.
@@ -432,9 +421,12 @@ package body Flow.Analysis is
                      for F of Deps loop
                         --  !!! consider moving this to spark_definition
                         Error_Msg_Flow
-                          (Msg => "default initialization cannot depend on &",
-                           N   => Expression (N),
-                           F1  => F);
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "default initialization cannot " &
+                             "depend on &",
+                           N         => Expression (N),
+                           F1        => F);
                         Sane := False;
                      end loop;
                   end;
@@ -458,11 +450,13 @@ package body Flow.Analysis is
         and then FA.Function_Side_Effects_Present
       then
          if Gnat2Why_Args.Flow_Debug_Mode then
-            Error_Msg_NE
-              ("flow analysis of & abandoned due to function with side " &
-                 "effects!",
-               FA.Analyzed_Entity,
-               FA.Analyzed_Entity);
+            Error_Msg_Flow
+              (FA        => FA,
+               Tracefile => Tracefile,
+               Msg       => "flow analysis of & abandoned due to " &
+                 "function with side effects",
+               N         => FA.Analyzed_Entity,
+               F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
          Sane := False;
          return;
@@ -472,10 +466,12 @@ package body Flow.Analysis is
 
       if FA.Aliasing_Present then
          if Gnat2Why_Args.Flow_Debug_Mode then
-            Error_Msg_NE
-              ("flow analysis of & abandoned due to aliasing!",
-               FA.Analyzed_Entity,
-               FA.Analyzed_Entity);
+            Error_Msg_Flow
+              (FA        => FA,
+               Tracefile => Tracefile,
+               Msg       => "flow analysis of & abandoned due to aliasing",
+               N         => FA.Analyzed_Entity,
+               F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
          Sane := False;
          return;
@@ -488,11 +484,13 @@ package body Flow.Analysis is
       Check_Record_Declarations (FA.Scope);
       if not Sane then
          if Gnat2Why_Args.Flow_Debug_Mode then
-            Error_Msg_NE
-              ("flow analysis of & abandoned due to records with non-manifest"
-                 &  " initializations!",
-               FA.Analyzed_Entity,
-               FA.Analyzed_Entity);
+            Error_Msg_Flow
+              (FA        => FA,
+               Tracefile => Tracefile,
+               Msg       => "flow analysis of & abandoned due to records " &
+                 "with non-manifest initializations",
+               N         => FA.Analyzed_Entity,
+               F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
          return;
       end if;
@@ -528,7 +526,9 @@ package body Flow.Analysis is
                            --  occurrence of the variable, possibly
                            --  via a continuation message
                            Error_Msg_Flow
-                             (Msg => "& must be listed in the " & Tmp &
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "& must be listed in the " & Tmp &
                                 " aspect of &",
                               N   => FA.Analyzed_Entity,
                               F1  => Entire_Variable (Var),
@@ -549,10 +549,13 @@ package body Flow.Analysis is
 
       if not Sane then
          if Gnat2Why_Args.Flow_Debug_Mode then
-            Error_Msg_NE
-              ("flow analysis of & abandoned due to inconsistent graph!",
-               FA.Analyzed_Entity,
-               FA.Analyzed_Entity);
+            Error_Msg_Flow
+              (FA        => FA,
+               Tracefile => Tracefile,
+               Msg       => "flow analysis of & abandoned due to " &
+                 "inconsistent graph",
+               N   => FA.Analyzed_Entity,
+               F1  => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
          return;
       end if;
@@ -569,6 +572,7 @@ package body Flow.Analysis is
       F_Initial : Flow_Id;
       A_Initial : V_Attributes;
       Unwritten : Boolean;
+      Tracefile : Unbounded_String;
 
       Written_Entire_Vars : Flow_Id_Sets.Set;
       Unwritten_Vars      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
@@ -618,18 +622,22 @@ package body Flow.Analysis is
 
                if A_Final.Is_Global then
                   Error_Msg_Flow
-                    (Msg     => "& is not modified, could be INPUT",
-                     N       => Find_Global (FA.Analyzed_Entity, F_Final),
-                     F1      => F_Final,
-                     Tag     => "inout_only_read",
-                     Warning => True);
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "& is not modified, could be INPUT",
+                     N         => Find_Global (FA.Analyzed_Entity, F_Final),
+                     F1        => F_Final,
+                     Tag       => "inout_only_read",
+                     Warning   => True);
                else
                   Error_Msg_Flow
-                    (Msg     => "& is not modified, could be IN",
-                     N       => Error_Location (FA.PDG, V),
-                     F1      => F_Final,
-                     Tag     => "inout_only_read",
-                     Warning => True);
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "& is not modified, could be IN",
+                     N         => Error_Location (FA.PDG, V),
+                     F1        => F_Final,
+                     Tag       => "inout_only_read",
+                     Warning   => True);
                end if;
             end if;
          end if;
@@ -648,7 +656,7 @@ package body Flow.Analysis is
 
       Effective_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Entire_Ids      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-
+      Tracefile       : Unbounded_String;
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -719,20 +727,24 @@ package body Flow.Analysis is
                        not FA.Is_Generative
                      then
                         Error_Msg_Flow
-                          (Msg     => "unused initial value of &",
-                           N       => Find_Global (FA.Analyzed_Entity, F),
-                           F1      => F,
-                           Tag     => "unused_initial_value",
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "unused initial value of &",
+                           N         => Find_Global (FA.Analyzed_Entity, F),
+                           F1        => F,
+                           Tag       => "unused_initial_value",
                         Warning => True);
                      end if;
                   else
                      Error_Msg_Flow
-                       (Msg     => "unused initial value of &",
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "unused initial value of &",
                         --  !!! find_import
-                        N       => Error_Location (FA.PDG, V),
-                        F1      => F,
-                        Tag     => "unused_initial_value",
-                        Warning => True);
+                        N         => Error_Location (FA.PDG, V),
+                        F1        => F,
+                        Tag       => "unused_initial_value",
+                        Warning   => True);
                   end if;
                end if;
             end if;
@@ -745,6 +757,8 @@ package body Flow.Analysis is
    --------------------------
 
    procedure Find_Illegal_Updates (FA : in out Flow_Analysis_Graphs) is
+      Tracefile : Unbounded_String;
+
       procedure Print_Error (Illegal_Use_Loc : Flow_Graphs.Vertex_Id;
                              The_Global_Id   : Flow_Id;
                              The_Global_Atr  : V_Attributes);
@@ -761,22 +775,26 @@ package body Flow.Analysis is
          if The_Global_Atr.Is_Global then
             if FA.Kind in E_Package | E_Package_Body then
                Error_Msg_Flow
-                 (Msg => "illegal update of &," &
+                 (FA        => FA,
+                  Tracefile => Tracefile,
+                  Msg       => "illegal update of &," &
                     " which is not part of &",
-                  N   => Error_Location (FA.PDG, Illegal_Use_Loc),
-                  F1  => The_Global_Id,
-                  F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag => Tag);
+                  N         => Error_Location (FA.PDG, Illegal_Use_Loc),
+                  F1        => The_Global_Id,
+                  F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag       => Tag);
 
             else
                Error_Msg_Flow
-                 (Msg => "& must be a global output of &",
-                  N   => Error_Location (FA.PDG, Illegal_Use_Loc),
-                  F1  => (if Illegal_Use_Atr.Is_Parameter
-                          then Illegal_Use_Atr.Parameter_Formal
-                          else The_Global_Id),
-                  F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag => Tag);
+                 (FA        => FA,
+                  Tracefile => Tracefile,
+                  Msg       => "& must be a global output of &",
+                  N         => Error_Location (FA.PDG, Illegal_Use_Loc),
+                  F1        => (if Illegal_Use_Atr.Is_Parameter
+                                then Illegal_Use_Atr.Parameter_Formal
+                                else The_Global_Id),
+                  F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag       => Tag);
             end if;
          else
             --  It *has* to be a global. The compiler would catch any
@@ -823,6 +841,8 @@ package body Flow.Analysis is
    ---------------------------------
 
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
+      Tracefile : Unbounded_String;
+
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex.
 
@@ -943,48 +963,57 @@ package body Flow.Analysis is
 
                      elsif Is_Easily_Printable (Tmp) then
                         Error_Msg_Flow
-                          (Msg     => "unused assignment to &",
-                           N       => Error_Location (FA.PDG, V),
-                           F1      => Tmp,
-                           Tag     => Tag,
-                           Warning => True);
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "unused assignment to &",
+                           N         => Error_Location (FA.PDG, V),
+                           F1        => Tmp,
+                           Tag       => Tag,
+                           Warning   => True);
 
                      else
                         Error_Msg_Flow
-                          (Msg     => "unused assignment",
-                           N       => Error_Location (FA.PDG, V),
-                           Tag     => Tag,
-                           Warning => True);
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "unused assignment",
+                           N         => Error_Location (FA.PDG, V),
+                           Tag       => Tag,
+                           Warning   => True);
                      end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow
-                       (Msg     => "unused assignment",
-                        N       => Error_Location (FA.PDG, V),
-                        Tag     => Tag,
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "unused assignment",
+                        N         => Error_Location (FA.PDG, V),
+                        Tag       => Tag,
+                        Warning   => True);
 
                   elsif Nkind (N) = N_Object_Declaration then
                      Error_Msg_Flow
-                       (Msg     => "initialization has no effect",
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg     => "initialization has no effect",
                         N       => Error_Location (FA.PDG, V),
                         Tag     => Tag,
                         Warning => True);
 
                   else
                      Error_Msg_Flow
-                       (Msg     => "statement has no effect",
-                        N       => Error_Location (FA.PDG, V),
-                        Tag     => Tag,
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "statement has no effect",
+                        N         => Error_Location (FA.PDG, V),
+                        Tag       => Tag,
+                        Warning   => True);
 
                   end if;
                   if Mask.Length >= 1 then
                      Write_Vertex_Set
-                       (G     => FA.PDG,
-                        E_Loc => Error_Location (FA.PDG, V),
-                        Set   => Mask,
-                        Tag   => Tag);
+                       (G        => FA.PDG,
+                        Set      => Mask,
+                        Filename => To_String (Tracefile));
                   end if;
                end if;
             end if;
@@ -999,24 +1028,15 @@ package body Flow.Analysis is
    procedure Find_Use_Of_Uninitialised_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
+      Tracefile : Unbounded_String;
+
       procedure Mark_Definition_Free_Path
-        (E_Loc : Flow_Graphs.Vertex_Id;
-         From  : Flow_Graphs.Vertex_Id;
-         To    : Flow_Graphs.Vertex_Id;
-         Var   : Flow_Id;
-         Tag   : String);
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id;
+         Var  : Flow_Id);
       --  Write a trace file for the error message at E_Loc with the
       --  given Tag. The trace will mark the path From -> To which
       --  does not define Var.
-
-      procedure Mark_Definition_Free_Path
-        (E_Loc : Node_Id;
-         From  : Flow_Graphs.Vertex_Id;
-         To    : Flow_Graphs.Vertex_Id;
-         Var   : Flow_Id;
-         Tag   : String);
-      --  As above but allows a node to specify where the trace is
-      --  attached.
 
       function Might_Be_Defined_In_Other_Path
         (V_Initial : Flow_Graphs.Vertex_Id;
@@ -1031,11 +1051,9 @@ package body Flow.Analysis is
       -------------------------------
 
       procedure Mark_Definition_Free_Path
-        (E_Loc : Node_Id;
-         From  : Flow_Graphs.Vertex_Id;
-         To    : Flow_Graphs.Vertex_Id;
-         Var   : Flow_Id;
-         Tag   : String)
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id;
+         Var  : Flow_Id)
       is
          Path_Found : Boolean := False;
          Path       : Vertex_Sets.Set;
@@ -1092,29 +1110,9 @@ package body Flow.Analysis is
          --  A little sanity check can't hurt.
          pragma Assert (Path_Found);
 
-         Write_Vertex_Set (G     => FA.CFG,
-                           E_Loc => E_Loc,
-                           Set   => Path,
-                           Tag   => Tag);
-      end Mark_Definition_Free_Path;
-
-      -------------------------------
-      -- Mark_Definition_Free_Path --
-      -------------------------------
-
-      procedure Mark_Definition_Free_Path
-        (E_Loc : Flow_Graphs.Vertex_Id;
-         From  : Flow_Graphs.Vertex_Id;
-         To    : Flow_Graphs.Vertex_Id;
-         Var   : Flow_Id;
-         Tag   : String)
-      is
-      begin
-         Mark_Definition_Free_Path (E_Loc => Error_Location (FA.CFG, E_Loc),
-                                    From  => From,
-                                    To    => To,
-                                    Var   => Var,
-                                    Tag   => Tag);
+         Write_Vertex_Set (G        => FA.CFG,
+                           Set      => Path,
+                           Filename => To_String (Tracefile));
       end Mark_Definition_Free_Path;
 
       ------------------------------------
@@ -1370,26 +1368,28 @@ package body Flow.Analysis is
                                                               V_Use)
                            then
                               Error_Msg_Flow
-                                (Msg => "& might not be initialized",
-                                 N   => Find_Global
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       => "& might not be initialized",
+                                 N         => Find_Global
                                    (FA.Analyzed_Entity, Key_I),
-                                 F1  => Key_I,
-                                 Tag => "uninitialized",
-                                 Warning => True);
+                                 F1        => Key_I,
+                                 Tag       => "uninitialized",
+                                 Warning   => True);
                            else
                               Error_Msg_Flow
-                                (Msg => "& is not initialized",
-                                 N   => Find_Global
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       => "& is not initialized",
+                                 N         => Find_Global
                                    (FA.Analyzed_Entity, Key_I),
-                                 F1  => Key_I,
-                                 Tag => "uninitialized");
+                                 F1        => Key_I,
+                                 Tag       => "uninitialized");
                            end if;
                            Mark_Definition_Free_Path
-                             (E_Loc => Find_Global (FA.Analyzed_Entity, Key_I),
-                              From  => FA.Start_Vertex,
-                              To    => FA.End_Vertex,
-                              Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => "uninitialized");
+                             (From => FA.Start_Vertex,
+                              To   => FA.End_Vertex,
+                              Var  => Change_Variant (Key_I, Normal_Use));
 
                         elsif Atr_U.Is_Function_Return then
 
@@ -1403,18 +1403,19 @@ package body Flow.Analysis is
                               --  statement is not a raise statement.
 
                               Error_Msg_Flow
-                                (Msg =>
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       =>
                                    "possibly missing return statement in &",
-                                 N   =>
+                                 N         =>
                                    Error_Location (FA.PDG, FA.Start_Vertex),
-                                 F1  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                                 Tag => "noreturn");
+                                 F1        => Direct_Mapping_Id
+                                   (FA.Analyzed_Entity),
+                                 Tag       => "noreturn");
                               Mark_Definition_Free_Path
-                                (E_Loc => FA.Start_Vertex,
-                                 From  => FA.Start_Vertex,
-                                 To    => FA.End_Vertex,
-                                 Var   => Change_Variant (Key_I, Normal_Use),
-                                 Tag   => "noreturn");
+                                (From => FA.Start_Vertex,
+                                 To   => FA.End_Vertex,
+                                 Var  => Change_Variant (Key_I, Normal_Use));
                            end if;
 
                         elsif Atr_U.Is_Export then
@@ -1427,26 +1428,32 @@ package body Flow.Analysis is
                                                               V_Use)
                            then
                               Error_Msg_Flow
-                                (Msg => "& might not be initialized in &",
-                                 N   => Error_Location (FA.PDG, V_Use),
-                                 F1  => Key_I,
-                                 F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                                 Tag => "uninitialized",
-                                 Warning => True);
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       => "& might not be " &
+                                   "initialized in &",
+                                 N         => Error_Location
+                                   (FA.PDG, V_Use),
+                                 F1        => Key_I,
+                                 F2        => Direct_Mapping_Id
+                                   (FA.Analyzed_Entity),
+                                 Tag       => "uninitialized",
+                                 Warning   => True);
                            else
                               Error_Msg_Flow
-                                (Msg => "& is not initialized in &",
-                                 N   => Error_Location (FA.PDG, V_Use),
-                                 F1  => Key_I,
-                                 F2  => Direct_Mapping_Id (FA.Analyzed_Entity),
-                                 Tag => "uninitialized");
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       => "& is not initialized in &",
+                                 N         => Error_Location (FA.PDG, V_Use),
+                                 F1        => Key_I,
+                                 F2        => Direct_Mapping_Id
+                                   (FA.Analyzed_Entity),
+                                 Tag       => "uninitialized");
                            end if;
                            Mark_Definition_Free_Path
-                             (E_Loc => V_Use,
-                              From  => FA.Start_Vertex,
-                              To    => FA.End_Vertex,
-                              Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => "uninitialized");
+                             (From => FA.Start_Vertex,
+                              To   => FA.End_Vertex,
+                              Var  => Change_Variant (Key_I, Normal_Use));
 
                         else
 
@@ -1464,29 +1471,29 @@ package body Flow.Analysis is
                                                            V_Use)
                         then
                            Error_Msg_Flow
-                             (Msg     => "& might not be initialized",
-                              N       => Error_Location (FA.PDG, V_Use),
-                              F1      => Key_I,
-                              Tag     => "uninitialized",
-                              Warning => True);
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "& might not be initialized",
+                              N         => Error_Location (FA.PDG, V_Use),
+                              F1        => Key_I,
+                              Tag       => "uninitialized",
+                              Warning   => True);
                            Mark_Definition_Free_Path
-                             (E_Loc => V_Use,
-                              From  => FA.Start_Vertex,
-                              To    => V_Use,
-                              Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => "uninitialized");
+                             (From => FA.Start_Vertex,
+                              To   => V_Use,
+                              Var  => Change_Variant (Key_I, Normal_Use));
                         else
                            Error_Msg_Flow
-                             (Msg => "& is not initialized",
-                              N   => Error_Location (FA.PDG, V_Use),
-                              F1  => Key_I,
-                              Tag => "uninitialized");
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "& is not initialized",
+                              N         => Error_Location (FA.PDG, V_Use),
+                              F1        => Key_I,
+                              Tag       => "uninitialized");
                            Mark_Definition_Free_Path
-                             (E_Loc => V_Use,
-                              From  => FA.Start_Vertex,
-                              To    => V_Use,
-                              Var   => Change_Variant (Key_I, Normal_Use),
-                              Tag   => "uninitialized");
+                             (From => FA.Start_Vertex,
+                              To   => V_Use,
+                              Var  => Change_Variant (Key_I, Normal_Use));
                         end if;
 
                      end if;
@@ -1505,6 +1512,7 @@ package body Flow.Analysis is
       Done      : Boolean       := False;
       Tmp       : Flow_Graphs.T := FA.DDG.Create;
       Is_Stable : Boolean;
+      Tracefile : Unbounded_String;
    begin
       for Loop_Id of FA.Loops loop
          Done := False;
@@ -1547,10 +1555,12 @@ package body Flow.Analysis is
 
                         --  Complain
                         Error_Msg_Flow
-                          (Msg     => "stable",
-                           N       => Error_Location (FA.PDG, N_Loop),
-                           Tag     => "stable",
-                           Warning => True);
+                          (FA        => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "stable",
+                           N         => Error_Location (FA.PDG, N_Loop),
+                           Tag       => "stable",
+                           Warning   => True);
 
                         --  There might be other stable elements now.
                         Done := False;
@@ -1569,6 +1579,7 @@ package body Flow.Analysis is
    procedure Find_Unused_Objects (FA : in out Flow_Analysis_Graphs) is
       Used_Ids   : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Entire_Ids : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Tracefile  : Unbounded_String;
    begin
       --  First we collect a set of all unused inputs.
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -1646,20 +1657,24 @@ package body Flow.Analysis is
 
                   if not FA.Is_Generative then
                      Error_Msg_Flow
-                       (Msg     => "unused global &",
-                        N       => Find_Global (FA.Analyzed_Entity, F),
-                        F1      => F,
-                        Tag     => "unused",
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "unused global &",
+                        N         => Find_Global (FA.Analyzed_Entity, F),
+                        F1        => F,
+                        Tag       => "unused",
+                        Warning   => True);
                   end if;
                else
                   --  !!! distinguish between variables and parameters
                   Error_Msg_Flow
-                    (Msg     => "unused variable &",
-                     N       => Error_Location (FA.PDG, V),
-                     F1      => F,
-                     Tag     => "unused",
-                     Warning => True);
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "unused variable &",
+                     N         => Error_Location (FA.PDG, V),
+                     F1        => F,
+                     Tag       => "unused",
+                     Warning   => True);
                end if;
             end;
          end if;
@@ -1671,6 +1686,7 @@ package body Flow.Analysis is
    ---------------------
 
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
+      Tracefile : Unbounded_String;
 
       function Find_Export (E : Entity_Id) return Node_Id;
       --  Looks through the depends aspect on FA.Analyzed_Entity and
@@ -1773,11 +1789,13 @@ package body Flow.Analysis is
             if not Actual_Deps.Contains (F_Out) then
                --  !!! check quotation in errout.ads
                Error_Msg_Flow
-                 (Msg     => "missing dependency ""null => #""",
-                  N       => Depends_Location,
-                  F1      => F_Out,
-                  Tag     => "depends_null",
-                  Warning => True);
+                 (FA        => FA,
+                  Tracefile => Tracefile,
+                  Msg       => "missing dependency ""null => #""",
+                  N         => Depends_Location,
+                  F1        => F_Out,
+                  Tag       => "depends_null",
+                  Warning   => True);
             end if;
          end;
       end loop;
@@ -1814,12 +1832,14 @@ package body Flow.Analysis is
                --  !!! legality error, should be moved to frontend;
                --  !!! possibly raise exception here
                Error_Msg_Flow
-                 (Msg     => "expected to see & on the left-hand-side of" &
+                 (FA        => FA,
+                  Tracefile => Tracefile,
+                  Msg       => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
-                  N       => Depends_Location,
-                  F1      => F_Out,
-                  Tag     => "depends_missing_clause",
-                  Warning => True);
+                  N         => Depends_Location,
+                  F1        => F_Out,
+                  Tag       => "depends_missing_clause",
+                  Warning   => True);
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
@@ -1847,19 +1867,24 @@ package body Flow.Analysis is
                   --  mention.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (Msg     => "missing dependency ""null => #""",
-                        N       => Depends_Location,
-                        F1      => Missing_Var,
-                        Tag     => "depends_null",
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "missing dependency ""null => #""",
+                        N         => Depends_Location,
+                        F1        => Missing_Var,
+                        Tag       => "depends_null",
+                        Warning   => True);
                   else
                      Error_Msg_Flow
-                       (Msg     => "missing dependency ""# => #""",
-                        N       => Find_Export (Get_Direct_Mapping_Id (F_Out)),
-                        F1      => F_Out,
-                        F2      => Missing_Var,
-                        Tag     => "depends_missing",
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "missing dependency ""# => #""",
+                        N         => Find_Export
+                          (Get_Direct_Mapping_Id (F_Out)),
+                        F1        => F_Out,
+                        F2        => Missing_Var,
+                        Tag       => "depends_missing",
+                        Warning   => True);
                      --  !!! show path
                   end if;
                end loop;
@@ -1869,20 +1894,25 @@ package body Flow.Analysis is
                   --  not happen in reality.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (Msg     => "incorrect dependency ""null => #""",
-                        N       => Depends_Location,
-                        F1      => Wrong_Var,
-                        Tag     => "depends_wrong",
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "incorrect dependency ""null => #""",
+                        N         => Depends_Location,
+                        F1        => Wrong_Var,
+                        Tag       => "depends_wrong",
+                        Warning   => True);
                      --  ??? show a path?
                   else
                      Error_Msg_Flow
-                       (Msg     => "incorrect dependency ""# => #""",
-                        N       => Find_Export (Get_Direct_Mapping_Id (F_Out)),
-                        F1      => F_Out,
-                        F2      => Wrong_Var,
-                        Tag     => "depends_wrong",
-                        Warning => True);
+                       (FA        => FA,
+                        Tracefile => Tracefile,
+                        Msg       => "incorrect dependency ""# => #""",
+                        N         => Find_Export
+                          (Get_Direct_Mapping_Id (F_Out)),
+                        F1        => F_Out,
+                        F2        => Wrong_Var,
+                        Tag       => "depends_wrong",
+                        Warning   => True);
                   end if;
                end loop;
 

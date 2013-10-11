@@ -21,11 +21,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
+with Ada.Text_IO;                        use Ada.Text_IO;
+with GNAT.String_Split;
+with GNAT.SHA1;
 
-with Errout;                  use Errout;
+with Atree;                              use Atree;
+with Sinput;                             use Sinput;
+with Einfo;                              use Einfo;
+with Errout;                             use Errout;
+with Sem_Util;                           use Sem_Util;
 
-with Flow;                    use Flow;
+with String_Utils;                       use String_Utils;
+with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
+with Gnat2Why_Args;                      use Gnat2Why_Args;
 
 package body Flow_Error_Messages is
 
@@ -45,6 +53,19 @@ package body Flow_Error_Messages is
                         return Unbounded_String;
    --  Find the first '&' or '#' and substitute with the given flow
    --  id, with or without enclosing quotes respectively.
+
+   procedure Print_JSON_Or_Normal_Msg (Msg       : String;
+                                       N         : Node_Id;
+                                       F1        : Flow_Id;
+                                       F2        : Flow_Id;
+                                       Tag       : String;
+                                       Warning   : Boolean;
+                                       Tracefile : out Unbounded_String;
+                                       Entity    : String);
+   --  If Ide_Mode is set then we print a JSON message. Otherwise, we just
+   --  print a regular message. It also generates a unique Tracefile name
+   --  based on a SHA1 hash of the JSON_Msg and adds a JSON entry to the
+   --  "unit.flow" file.
 
    ------------
    -- Escape --
@@ -144,77 +165,259 @@ package body Flow_Error_Messages is
       return R;
    end Substitute;
 
+   ------------------------------
+   -- Print_JSON_Or_Normal_Msg --
+   ------------------------------
+
+   procedure Print_JSON_Or_Normal_Msg (Msg       : String;
+                                       N         : Node_Id;
+                                       F1        : Flow_Id;
+                                       F2        : Flow_Id;
+                                       Tag       : String;
+                                       Warning   : Boolean;
+                                       Tracefile : out Unbounded_String;
+                                       Entity    : String)
+   is
+      M      : Unbounded_String;
+      JSON_M : Unbounded_String;
+      Subs   : GNAT.String_Split.Slice_Set;  --  Contain the substrings
+      Sep    : constant String := ":";       --  Set the separator to ':'
+      C      : GNAT.SHA1.Context;
+
+      File   : constant String := File_Name (Sloc (N));
+      Line   : constant String := Get_Logical_Line_Number_Img (Sloc (N));
+      Col    : constant String :=
+        Int_Image (Integer (Get_Column_Number (Sloc (N))));
+   begin
+      --  Assemble message string
+      if F1 /= Null_Flow_Id
+        and then F2 /= Null_Flow_Id
+      then
+         M := Escape (Substitute (Substitute (To_Unbounded_String (Msg),
+                                              F1),
+                                  F2));
+      elsif F1 /= Null_Flow_Id then
+         M := Escape (Substitute (To_Unbounded_String (Msg),
+                                  F1));
+      else
+         M := Escape (To_Unbounded_String (Msg));
+      end if;
+
+      --  Append file
+      JSON_M := "{""file"":""" & To_Unbounded_String (File) &""",";
+
+      --  Append line
+      JSON_M := JSON_M & """line"":" & To_Unbounded_String (Line);
+      JSON_M := JSON_M & ",";
+
+      --  Append column
+      JSON_M := JSON_M & """col"":" & To_Unbounded_String (Col);
+      JSON_M := JSON_M & ",";
+
+      --  Before appending the message we first escape any '"' that are
+      --  in it. The script is in python so we use '\' to escape it.
+      declare
+         Escaped_M : Unbounded_String := Null_Unbounded_String;
+      begin
+         for Index in Positive range 1 .. Length (M) loop
+            if Element (M, Index) = '"' then
+               Append (Escaped_M, "\");
+            end if;
+            Append (Escaped_M, Element (M, Index));
+         end loop;
+         --  Append escaped message
+         JSON_M := JSON_M & """message"":""" & Escaped_M;
+         JSON_M := JSON_M & """,";
+      end;
+
+      --  Append rule
+      JSON_M := JSON_M & """rule"":""" & To_Unbounded_String (Tag);
+      JSON_M := JSON_M & """,";
+
+      --  Append severity
+      JSON_M := JSON_M & """severity"":""";
+      if Warning then
+         JSON_M := JSON_M & "warning"",";
+      else
+         JSON_M := JSON_M & "error"",";
+      end if;
+
+      --  Append entity information
+      --  Originally the entity info looks like "GP_Subp:foo.ads:12" so
+      --  we split it up (using ':' as the separator).
+      GNAT.String_Split.Create (S          => Subs,
+                                From       => Entity,
+                                Separators => Sep);
+
+      JSON_M := JSON_M & """entity"":{""file"":""";
+      if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 2 then
+         JSON_M := JSON_M & To_Unbounded_String
+           (GNAT.String_Split.Slice (Subs, 2));
+      end if;
+      JSON_M := JSON_M & """,";
+
+      if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 3 then
+         JSON_M := JSON_M & """line"":" & To_Unbounded_String
+           (GNAT.String_Split.Slice (Subs, 3));
+      end if;
+      JSON_M := JSON_M & ",";
+
+      if Integer (GNAT.String_Split.Slice_Count (Subs)) >= 1 then
+         JSON_M := JSON_M & """name"":""" & To_Unbounded_String
+           (GNAT.String_Split.Slice (Subs, 1));
+      end if;
+      JSON_M := JSON_M & """},";
+
+      --  Create a SHA1 hash of the current JSON message and then set
+      --  that as the name of the tracefile.
+      GNAT.SHA1.Update (C, To_String (JSON_M));
+      Tracefile := To_Unbounded_String (GNAT.SHA1.Digest (C) & ".trace");
+
+      --  Append tracefile
+      JSON_M := JSON_M & """tracefile"":""";
+      JSON_M := JSON_M & Tracefile & """}";
+
+      if Ide_Mode then
+         --  if Ide_Mode is set then we print the JSON message.
+         Put_Line (To_String (JSON_M));
+      end if;
+
+      --  Append the JSON message to JSON_Msgs_List.
+      JSON_Msgs_List.Append (JSON_M);
+
+      --  Assemble message string to be passed to Error_Msg_N
+      if Tag'Length >= 1 then
+         Append (M, " '[" & Tag & "']");
+      end if;
+      Append (M, "!!");
+      if Warning then
+         Append (M, '?');
+      end if;
+
+      --  Issue error message
+      Error_Msg_N (To_String (M), N);
+   end Print_JSON_Or_Normal_Msg;
+
+   ---------------------------
+   -- Create_Flow_Msgs_File --
+   ---------------------------
+
+   procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id) is
+      FD : Ada.Text_IO.File_Type;
+
+      Flow_File_Name : constant String := Spec_File_Name_Without_Suffix
+        (Enclosing_Comp_Unit_Node (GNAT_Root)) & ".flow";
+      --  Holds the name of the file that contains all emitted flow messages
+   begin
+      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Flow_File_Name);
+
+      Ada.Text_IO.Put (FD, "[");
+      Ada.Text_IO.New_Line (FD);
+
+      --  Write all elements except for the last one
+      while JSON_Msgs_List.Length > 1 loop
+         Ada.Text_IO.Put (FD, To_String (JSON_Msgs_List.First_Element) & ",");
+         Ada.Text_IO.New_Line (FD);
+         JSON_Msgs_List.Delete_First;
+      end loop;
+
+      --  Write the last element
+      if not JSON_Msgs_List.Is_Empty then
+         Ada.Text_IO.Put (FD, To_String (JSON_Msgs_List.First_Element));
+         Ada.Text_IO.New_Line (FD);
+      end if;
+
+      Ada.Text_IO.Put (FD, "]");
+
+      Ada.Text_IO.Close (FD);
+   end Create_Flow_Msgs_File;
+
    --------------------
    -- Error_Msg_Flow --
    --------------------
 
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False)
-
+   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
+                             Tracefile : out Unbounded_String;
+                             Msg       : String;
+                             N         : Node_Id;
+                             Tag       : String := "";
+                             Warning   : Boolean := False)
    is
-      M : Unbounded_String := Escape (To_Unbounded_String (Msg));
+      Entity : Unbounded_String;
    begin
-      --  Assemble message string to be passed to Error_Msg_N
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
+      if Ekind (FA.Analyzed_Entity) in Subprogram_Kind | E_Package then
+         Entity := To_Unbounded_String (Subp_Location (FA.Analyzed_Entity));
+      else
+         Entity := Null_Unbounded_String;
       end if;
 
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
+      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
+      --  also be printed.
+      Print_JSON_Or_Normal_Msg (Msg       => Msg,
+                                N         => N,
+                                F1        => Null_Flow_Id,
+                                F2        => Null_Flow_Id,
+                                Tag       => Tag,
+                                Warning   => Warning,
+                                Tracefile => Tracefile,
+                                Entity    => To_String (Entity));
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             F1      : Flow_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False)
+   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
+                             Tracefile : out Unbounded_String;
+                             Msg       : String;
+                             N         : Node_Id;
+                             F1        : Flow_Id;
+                             Tag       : String := "";
+                             Warning   : Boolean := False)
    is
-      M : Unbounded_String;
+      Entity : Unbounded_String;
    begin
-      --  Assemble message string to be passed to Error_Msg_N
-      M := Escape (Substitute (To_Unbounded_String (Msg),
-                               F1));
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
+      if Ekind (FA.Analyzed_Entity) in Subprogram_Kind | E_Package then
+         Entity := To_Unbounded_String (Subp_Location (FA.Analyzed_Entity));
+      else
+         Entity := Null_Unbounded_String;
       end if;
 
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
+      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
+      --  also be printed.
+      Print_JSON_Or_Normal_Msg (Msg       => Msg,
+                                N         => N,
+                                F1        => F1,
+                                F2        => Null_Flow_Id,
+                                Tag       => Tag,
+                                Warning   => Warning,
+                                Tracefile => Tracefile,
+                                Entity    => To_String (Entity));
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (Msg     : String;
-                             N       : Node_Id;
-                             F1      : Flow_Id;
-                             F2      : Flow_Id;
-                             Tag     : String := "";
-                             Warning : Boolean := False)
+   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
+                             Tracefile : out Unbounded_String;
+                             Msg       : String;
+                             N         : Node_Id;
+                             F1        : Flow_Id;
+                             F2        : Flow_Id;
+                             Tag       : String := "";
+                             Warning   : Boolean := False)
    is
-      M : Unbounded_String;
+      Entity : Unbounded_String;
    begin
-      --  Assemble message string to be passed to Error_Msg_N
-      M := Escape (Substitute (Substitute (To_Unbounded_String (Msg),
-                                           F1),
-                               F2));
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
+      if Ekind (FA.Analyzed_Entity) in Subprogram_Kind | E_Package then
+         Entity := To_Unbounded_String (Subp_Location (FA.Analyzed_Entity));
+      else
+         Entity := Null_Unbounded_String;
       end if;
 
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
+      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
+      --  also be printed.
+      Print_JSON_Or_Normal_Msg (Msg       => Msg,
+                                N         => N,
+                                F1        => F1,
+                                F2        => F2,
+                                Tag       => Tag,
+                                Warning   => Warning,
+                                Tracefile => Tracefile,
+                                Entity    => To_String (Entity));
    end Error_Msg_Flow;
 
 end Flow_Error_Messages;

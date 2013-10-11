@@ -45,6 +45,13 @@ with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 package Flow is
 
    ----------------------------------------------------------------------
+   --  Global variables
+   ----------------------------------------------------------------------
+
+   JSON_Msgs_List : Unbounded_String_Lists.List;
+   --  This will holds all of the emitted flow messages in JSON format
+
+   ----------------------------------------------------------------------
    --  Flow_Graphs
    ----------------------------------------------------------------------
 
@@ -266,7 +273,7 @@ package Flow is
    --  Main entry to flo analysis
    ----------------------------------------------------------------------
 
-   procedure Flow_Analyse_CUnit;
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
    --  Flow analyses the current compilation unit
 
 end Flow;

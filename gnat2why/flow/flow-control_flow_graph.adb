@@ -2409,6 +2409,7 @@ package body Flow.Control_Flow_Graph is
       Precon_Block    : Graph_Connections;
       Body_N          : Node_Id;
       Spec_N          : Node_Id;
+      Tracefile       : Unbounded_String;
    begin
       pragma Assert (Is_Valid (FA));
 
@@ -2518,8 +2519,10 @@ package body Flow.Control_Flow_Graph is
                      --  global output, we raise an error.
                      if Ekind (FA.Analyzed_Entity) = E_Function then
                         Error_Msg_Flow
-                          (Msg => "function with output global & is not " &
-                             "allowed in SPARK",
+                          (FA  => FA,
+                           Tracefile => Tracefile,
+                           Msg       => "function with output global & " &
+                             "is not allowed in SPARK",
                            N   => FA.Analyzed_Entity,
                            F1  => G,
                            Tag => "side_effects");

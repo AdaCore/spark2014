@@ -29,18 +29,19 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
-with Atree; use Atree;
-with Sinfo; use Sinfo;
-with Types; use Types;
+with Atree;                              use Atree;
+with Sinfo;                              use Sinfo;
+with Types;                              use Types;
 
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 --  Node_Sets and Node_Hash
 
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 --  Entity_Name
 
-with Flow_Tree_Utility;      use Flow_Tree_Utility;
+with Flow_Tree_Utility;                  use Flow_Tree_Utility;
 
 package Flow_Types is
 
@@ -64,6 +65,9 @@ package Flow_Types is
    function To_Ordered_Entity_Set (S : Node_Sets.Set)
                                    return Ordered_Entity_Sets.Set;
    --  Convert a hashed node set into an ordered node set.
+
+   package Unbounded_String_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Unbounded_String);
 
    ----------------------------------------------------------------------
    --  Flow_Id

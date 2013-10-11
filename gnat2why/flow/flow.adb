@@ -22,26 +22,26 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
-with Ada.Strings;               use Ada.Strings;
+with Ada.Strings;                   use Ada.Strings;
 with Ada.Strings.Maps;
 
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sem_Util;                  use Sem_Util;
-with Snames;                    use Snames;
-with Sprint;                    use Sprint;
-with Sinfo;                     use Sinfo;
-with Lib;                       use Lib;
+with Namet;                         use Namet;
+with Nlists;                        use Nlists;
+with Sem_Util;                      use Sem_Util;
+with Snames;                        use Snames;
+with Sprint;                        use Sprint;
+with Sinfo;                         use Sinfo;
+with Lib;                           use Lib;
 
-with Output;                    use Output;
-with Treepr;                    use Treepr;
+with Output;                        use Output;
+with Treepr;                        use Treepr;
 
 with Why;
-with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Util;
 
 with Gnat2Why_Args;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;     use GNAT.Directory_Operations;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -50,7 +50,8 @@ with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 
-with Flow.Utility;              use Flow.Utility;
+with Flow.Utility;                  use Flow.Utility;
+with Flow_Error_Messages;           use Flow_Error_Messages;
 
 use type Ada.Containers.Count_Type;
 
@@ -952,7 +953,7 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit is
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
 
@@ -1123,6 +1124,9 @@ package body Flow is
          end if;
 
       end loop;
+
+      --  Create the "unit.flow" file that contains all emitted flow messages.
+      Create_Flow_Msgs_File (GNAT_Root);
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Str (Character'Val (8#33#) & "[33m" &
