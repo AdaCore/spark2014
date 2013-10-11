@@ -123,10 +123,6 @@ package Why.Inter is
                               Th_Type  : EW_Theory_Type := EW_Module);
    --  Add a package name to the context of a Why package.
 
-   function File_Base_Name_Of_Entity (E : Entity_Id) return String;
-   --  return the base name of the unit in which the entity is
-   --  defined
-
    function Name_Of_Node (N : Node_Id) return String;
    --  Return the uncapitalized name which needs to be used to include the
    --  Why entity for that node (after capitalization).

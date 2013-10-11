@@ -1054,34 +1054,6 @@ package body Why.Inter is
       end if;
    end Extract_Object_Name;
 
-   ------------------------------
-   -- File_Base_Name_Of_Entity --
-   ------------------------------
-
-   function File_Base_Name_Of_Entity (E : Entity_Id) return String is
-      U : Node_Id;
-   begin
-      if Is_In_Standard_Package (E) then
-         return Standard_Why_Package_Name;
-      end if;
-      U := Enclosing_Comp_Unit_Node (E);
-
-      --  Itypes are not attached to the tree, so we go through the
-      --  associated node
-
-      if not Present (U) and then Is_Itype (E) then
-         U := Enclosing_Comp_Unit_Node (Associated_Node_For_Itype (E));
-      end if;
-
-      --  Special handling for entities of subunits, we extract the library
-      --  unit
-
-      while Nkind (Unit (U)) = N_Subunit loop
-         U := Library_Unit (U);
-      end loop;
-      return Spec_File_Name_Without_Suffix (U);
-   end File_Base_Name_Of_Entity;
-
    -----------------
    -- Get_EW_Type --
    -----------------
