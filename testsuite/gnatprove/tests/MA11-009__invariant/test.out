@@ -1,0 +1,19 @@
+kmp.adb:6:29: warning: length check might fail
+kmp.adb:11:23: info: overflow check proved
+kmp.adb:12:39: info: overflow check proved
+kmp.adb:13:13: info: loop invariant initialization proved
+kmp.adb:13:13: warning: loop invariant might fail after first iteration
+kmp.adb:15:13: warning: loop invariant might fail in first iteration
+kmp.adb:16:17: warning: range check might fail
+kmp.adb:16:22: warning: overflow check might fail
+kmp.adb:16:34: warning: range check might fail
+kmp.adb:16:44: info: overflow check proved
+kmp.adb:17:19: info: index check proved
+kmp.adb:17:27: info: index check proved
+kmp.adb:18:23: info: overflow check proved
+kmp.adb:19:23: warning: overflow check might fail
+kmp.adb:20:22: info: index check proved
+kmp.adb:22:23: info: overflow check proved
+kmp.adb:23:22: info: index check proved
+kmp.adb:25:27: info: index check proved
+kmp.ads:9:17: warning: postcondition might fail, requires Init_Next'Result'Length = P'length
