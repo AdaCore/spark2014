@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  ??? A comment about what the gnatprove wrapper actually does would be
+--  helpful.
+
 with Ada.Directories;    use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;
