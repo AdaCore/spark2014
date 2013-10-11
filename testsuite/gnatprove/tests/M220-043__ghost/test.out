@@ -2,7 +2,6 @@ semantics.adb:25:35: warning: unused initial value of "Var" [unused_initial_valu
 semantics.adb:41:07: warning: statement has no effect [ineffective]
 semantics.adb:9:7: warning: assertion might fail, requires Formal + Ghost_Func > 0
 semantics.adb:9:29: warning: overflow check might fail
-semantics.adb:10:7: info: assertion proved
 semantics.adb:10:29: warning: overflow check might fail
 semantics.adb:13:27: warning: overflow check might fail
 semantics.adb:15:10: info: loop invariant initialization proved
