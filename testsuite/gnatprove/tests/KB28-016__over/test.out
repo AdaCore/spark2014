@@ -1,5 +1,5 @@
-c45532o.adb:10:06: warning: statement has no effect [ineffective]
-c45532o.adb:11:06: warning: statement has no effect [ineffective]
-c45532o.adb:12:06: warning: statement has no effect [ineffective]
+c45532o.adb:10:06: warning: initialization has no effect [ineffective]
+c45532o.adb:11:06: warning: initialization has no effect [ineffective]
+c45532o.adb:12:06: warning: initialization has no effect [ineffective]
 c45532o.adb:14:19: warning: unused assignment [ineffective]
 c45532o.adb:14:33: warning: overflow check might fail

@@ -1,2 +1,2 @@
-t3q5.adb:46:10: warning: statement has no effect [ineffective]
+t3q5.adb:46:10: warning: initialization has no effect [ineffective]
 t3q5.ads:19:13: warning: null global effect assumed on imported subprogram

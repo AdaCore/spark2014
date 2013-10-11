@@ -1,7 +1,7 @@
-database.adb:31:07: warning: statement has no effect [ineffective]
-database.adb:34:07: warning: statement has no effect [ineffective]
-database.adb:98:04: warning: statement has no effect [ineffective]
-database.adb:101:04: warning: statement has no effect [ineffective]
+database.adb:31:07: warning: initialization has no effect [ineffective]
+database.adb:34:07: warning: initialization has no effect [ineffective]
+database.adb:98:04: warning: initialization has no effect [ineffective]
+database.adb:101:04: warning: initialization has no effect [ineffective]
 database.adb:173:07: warning: statement has no effect [ineffective]
 database.adb:173:07: warning: unused assignment to "Links" [ineffective]
 database.adb:32:35: info: length check proved

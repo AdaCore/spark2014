@@ -513,6 +513,10 @@ package body Flow.Analysis is
                declare
                   Neutral : constant Flow_Id :=
                     Change_Variant (Var, Normal_Use);
+                  Tmp : constant String :=
+                    (case FA.Kind is
+                        when E_Subprogram_Body => "Global",
+                        when others            => "Initializes");
                begin
                   if not FA.All_Vars.Contains (Neutral) then
                      case Neutral.Kind is
@@ -524,8 +528,8 @@ package body Flow.Analysis is
                            --  occurrence of the variable, possibly
                            --  via a continuation message
                            Error_Msg_Flow
-                             (Msg => "& must be listed in the Global " &
-                                "aspect of &",
+                             (Msg => "& must be listed in the " & Tmp &
+                                " aspect of &",
                               N   => FA.Analyzed_Entity,
                               F1  => Entire_Variable (Var),
                               F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
@@ -956,6 +960,13 @@ package body Flow.Analysis is
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow
                        (Msg     => "unused assignment",
+                        N       => Error_Location (FA.PDG, V),
+                        Tag     => Tag,
+                        Warning => True);
+
+                  elsif Nkind (N) = N_Object_Declaration then
+                     Error_Msg_Flow
+                       (Msg     => "initialization has no effect",
                         N       => Error_Location (FA.PDG, V),
                         Tag     => Tag,
                         Warning => True);

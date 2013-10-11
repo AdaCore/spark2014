@@ -1118,6 +1118,7 @@ package body Flow is
                   Analysis.Find_Use_Of_Uninitialised_Variables (FA);
                   Analysis.Find_Ineffective_Statements (FA);
                   Analysis.Find_Illegal_Updates (FA);
+                  Analysis.Find_Use_Of_Uninitialised_Variables (FA);
             end case;
          end if;
 

@@ -1,4 +1,4 @@
-counter.adb:3:04: warning: statement has no effect [ineffective]
+counter.adb:3:04: warning: initialization has no effect [ineffective]
 vectors.adb:5:14: warning: "counter.count" is not modified, could be "input" [inout_only_read]
 vectors.adb:17:38: warning: overflow check might fail
 vectors.adb:22:49: info: length check proved

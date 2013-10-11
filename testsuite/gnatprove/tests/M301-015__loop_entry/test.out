@@ -1,4 +1,4 @@
-p.adb:8:04: warning: statement has no effect [ineffective]
+p.adb:8:04: warning: initialization has no effect [ineffective]
 p.adb:10:25: warning: statement has no effect [ineffective]
 p.adb:11:29: warning: statement has no effect [ineffective]
 p.adb:12:32: warning: statement has no effect [ineffective]

@@ -1,4 +1,4 @@
-chars.adb:13:07: warning: statement has no effect [ineffective]
-chars.adb:14:07: warning: statement has no effect [ineffective]
-chars.adb:15:07: warning: statement has no effect [ineffective]
+chars.adb:13:07: warning: initialization has no effect [ineffective]
+chars.adb:14:07: warning: initialization has no effect [ineffective]
+chars.adb:15:07: warning: initialization has no effect [ineffective]
 chars.ads:3:20: info: postcondition proved

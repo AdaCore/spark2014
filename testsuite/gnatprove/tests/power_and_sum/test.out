@@ -1,5 +1,5 @@
-power_and_sum.adb:31:07: warning: statement has no effect [ineffective]
-power_and_sum.adb:33:07: warning: statement has no effect [ineffective]
+power_and_sum.adb:31:07: warning: initialization has no effect [ineffective]
+power_and_sum.adb:33:07: warning: initialization has no effect [ineffective]
 power_and_sum.adb:9:10: warning: loop invariant might fail in first iteration
 power_and_sum.adb:9:10: warning: loop invariant might fail after first iteration
 power_and_sum.adb:9:47: warning: range check might fail

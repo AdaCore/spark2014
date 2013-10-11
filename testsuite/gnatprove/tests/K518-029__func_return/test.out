@@ -1,4 +1,4 @@
-func_return.adb:3:04: warning: statement has no effect [ineffective]
+func_return.adb:3:04: warning: initialization has no effect [ineffective]
 func_return.adb:12:14: warning: range check might fail
 func_return.adb:17:16: warning: range check might fail
 func_return.adb:22:17: warning: range check might fail

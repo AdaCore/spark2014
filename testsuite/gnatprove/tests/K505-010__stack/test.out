@@ -1,1 +1,1 @@
-error.ads:13:04: warning: statement has no effect [ineffective]
+error.ads:13:04: warning: initialization has no effect [ineffective]

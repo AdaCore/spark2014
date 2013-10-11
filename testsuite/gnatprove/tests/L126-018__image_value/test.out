@@ -1,7 +1,7 @@
 p.adb:2:14: warning: "Y" is not modified, could be "in" [inout_only_read]
 p.adb:2:14: warning: unused variable "Y" [unused]
-p.adb:4:04: warning: statement has no effect [ineffective]
-p.adb:5:04: warning: statement has no effect [ineffective]
+p.adb:4:04: warning: initialization has no effect [ineffective]
+p.adb:5:04: warning: initialization has no effect [ineffective]
 p.adb:5:18: warning: no Global contract available for "Get_Line"
 p.adb:5:18: warning:  assuming "Get_Line" has no effect on global items
 p.adb:7:04: warning: no Global contract available for "Put_Line"

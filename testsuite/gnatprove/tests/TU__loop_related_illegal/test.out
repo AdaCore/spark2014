@@ -6,11 +6,11 @@ loop_related_illegal.adb:68:07: pragma "Assert" with Loop_Entry must appear imme
 loop_related_illegal.adb:84:16: attribute "Loop_Entry" must appear within appropriate pragma
 loop_related_illegal.adb:109:36: prefix of attribute "Loop_Entry" cannot reference local entities
 loop_related_illegal.adb:129:37: prefix of attribute "Loop_Entry" that applies to outer loop must denote an entity
-loop_related_illegal_2.adb:8:07: warning: statement has no effect [ineffective]
+loop_related_illegal_2.adb:8:07: warning: initialization has no effect [ineffective]
 loop_related_illegal_2.adb:12:12: warning: unused assignment [ineffective]
 loop_related_illegal_2.adb:14:12: warning: unused assignment [ineffective]
 loop_related_illegal_2.adb:15:10: warning: statement has no effect [ineffective]
-loop_related_illegal_2.adb:25:07: warning: statement has no effect [ineffective]
+loop_related_illegal_2.adb:25:07: warning: initialization has no effect [ineffective]
 loop_related_illegal_2.adb:29:12: warning: unused assignment [ineffective]
 loop_related_illegal_2.adb:32:10: warning: statement has no effect [ineffective]
 loop_related_illegal_2.ads:5:43: warning: unused initial value of "Par" [unused_initial_value]
