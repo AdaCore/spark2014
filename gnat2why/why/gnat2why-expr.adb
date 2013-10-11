@@ -365,6 +365,10 @@ package body Gnat2Why.Expr is
      Pre => Nkind (Prag) = N_Pragma;
    --  Returns the Why program for pragma Prag
 
+   function Transform_Pragma_Check (Prag : Node_Id) return W_Prog_Id;
+   --  Returns the Why program for pragma Check (pragma Assert,
+   --  Assume etc internally are all pragma Check).
+
    function Transform_Array_Equality
      (Params : Transformation_Params;
       Expr   : Node_Id;
@@ -5255,60 +5259,7 @@ package body Gnat2Why.Expr is
          --  Ignore pragma Check for preconditions and postconditions
 
          when Pragma_Check =>
-            if Is_Pragma_Check (Prag, Name_Precondition)
-                 or else
-               Is_Pragma_Check (Prag, Name_Pre)
-                 or else
-               Is_Pragma_Check (Prag, Name_Postcondition)
-                 or else
-               Is_Pragma_Check (Prag, Name_Post)
-            then
-               return New_Void (Prag);
-
-            else
-               declare
-                  Check_Expr : W_Prog_Id;
-                  Pred       : W_Pred_Id;
-
-                  --  Mark non-selected loop invariants (those not occurring
-                  --  next to the first batch of selected variants and
-                  --  invariants) as loop invariant VCs.
-
-                  Reason : constant VC_Kind :=
-                    (if Is_Pragma_Check (Prag, Name_Loop_Invariant)
-                     then
-                        VC_Loop_Invariant
-                     else
-                        VC_Assert);
-
-               begin
-                  Transform_Pragma_Check (Prag, Check_Expr, Pred);
-
-                  if Is_Pragma_Assert_And_Cut (Prag) then
-                     if Check_Expr /= Why_Empty then
-                        return Check_Expr;
-                     else
-                        return New_Void (Prag);
-                     end if;
-                  elsif Is_False_Boolean (+Pred) then
-                     return
-                       +New_VC_Expr
-                       (Ada_Node => Prag,
-                        Expr     => +New_Identifier (Name => "absurd"),
-                        Reason   => Reason,
-                        Domain   => EW_Prog);
-                  elsif Is_True_Boolean (+Pred) then
-                     return New_Void (Prag);
-                  elsif Check_Expr /= Why_Empty then
-                     return
-                       Sequence (Check_Expr,
-                                 New_Located_Assert
-                                   (Prag, Pred, Reason));
-                  else
-                     return New_Located_Assert (Prag, Pred, Reason);
-                  end if;
-               end;
-            end if;
+            return Transform_Pragma_Check (Prag);
 
          --  Pragma Overflow_Mode should have an effect on proof, but is
          --  currently ignored (and a corresponding warning is issued
@@ -5412,6 +5363,76 @@ package body Gnat2Why.Expr is
       else
          raise Program_Error;
       end if;
+   end Transform_Pragma_Check;
+
+   function Transform_Pragma_Check (Prag : Node_Id) return W_Prog_Id is
+      Check_Expr : W_Prog_Id;
+      Pred       : W_Pred_Id;
+
+      --  Mark non-selected loop invariants (those not occurring
+      --  next to the first batch of selected variants and
+      --  invariants) as loop invariant VCs.
+
+      Reason : constant VC_Kind :=
+        (if Is_Pragma_Check (Prag, Name_Loop_Invariant)
+         then VC_Loop_Invariant
+         else VC_Assert);
+
+      T : W_Prog_Id;
+   begin
+
+      --  pre and post are not handled here
+
+      if Is_Pragma_Check (Prag, Name_Precondition)
+        or else
+          Is_Pragma_Check (Prag, Name_Pre)
+        or else
+          Is_Pragma_Check (Prag, Name_Postcondition)
+        or else
+          Is_Pragma_Check (Prag, Name_Post)
+      then
+         return New_Void (Prag);
+      end if;
+
+      Transform_Pragma_Check (Prag, Check_Expr, Pred);
+
+      --  assert and cut is not handled here, except for runtime errors.
+
+      if Is_Pragma_Assert_And_Cut (Prag) then
+         if Check_Expr /= Why_Empty then
+            return Check_Expr;
+         else
+            return New_Void (Prag);
+         end if;
+      end if;
+
+      --  get rid of simple cases true and false
+
+      if Is_False_Boolean (+Pred) then
+         return
+           +New_VC_Expr
+           (Ada_Node => Prag,
+            Expr     => +New_Identifier (Name => "absurd"),
+            Reason   => Reason,
+            Domain   => EW_Prog);
+      elsif Is_True_Boolean (+Pred) then
+         return New_Void (Prag);
+      end if;
+
+      --  now handle remaining cases of "regular" pragma Check/Assert and
+      --  pragma Assume
+
+      if Is_Pragma_Check (Prag, Name_Assume) then
+         T := New_Assume_Statement (Post => Pred);
+      else
+         T := New_Located_Assert (Prag, Pred, Reason);
+      end if;
+
+      if Check_Expr /= Why_Empty then
+         T := Sequence (Check_Expr, T);
+      end if;
+
+      return T;
    end Transform_Pragma_Check;
 
    -------------------------------------
