@@ -36,6 +36,8 @@ with Why.Inter;          use Why.Inter;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
 
+with Gnat2Why.Util; use Gnat2Why.Util;
+
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
@@ -59,54 +61,55 @@ package body Why.Gen.Scalars is
    is
       Why_Id : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
       Is_Mod : constant Boolean := Modulus /= Why_Empty;
+      Is_Static : constant Boolean :=
+        not Type_Is_Modeled_As_Int_Or_Real (Entity);
+      Static_String : constant String :=
+        (if Is_Static then "Static" else "Dynamic");
+      Mod_String : constant String :=
+        (if Is_Mod then "Modular" else "Discrete");
       Clone_Id : constant W_Identifier_Id :=
-        (if Is_Mod then
-         New_Identifier (Name    => """ada__model"".Modular")
-         else
-         New_Identifier (Name    => """ada__model"".Discrete"));
+        New_Identifier
+          (Name => """ada__model""." & Static_String & "_" & Mod_String);
+      Default_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Type_Subst,
+                 Orig_Name => New_Identifier (Name => "t"),
+                 Image     => Why_Id));
+      Static_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Ident (WNE_Attr_First),
+                 Image     => To_Ident (WNE_Attr_First)),
+         2 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Ident (WNE_Attr_Last),
+                 Image     => To_Ident (WNE_Attr_Last)));
+      Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Ident (WNE_Attr_Modulus),
+                 Image     => To_Ident (WNE_Attr_Modulus)));
       Clone_Subst : constant W_Clone_Substitution_Array :=
-        (1 =>
-           New_Clone_Substitution
-             (Kind      => EW_Type_Subst,
-              Orig_Name => New_Identifier (Name => "t"),
-              Image     => Why_Id),
-         2 =>
-           New_Clone_Substitution
-             (Kind      => EW_Function,
-              Orig_Name => To_Ident (WNE_Attr_First),
-              Image     => To_Ident (WNE_Attr_First)),
-         3 =>
-           New_Clone_Substitution
-             (Kind      => EW_Function,
-              Orig_Name => To_Ident (WNE_Attr_Last),
-              Image     => To_Ident (WNE_Attr_Last)));
-   begin
+        Default_Clone_Subst
+          & (if Is_Static then Static_Clone_Subst else (1 .. 0 => <>))
+          & (if Is_Mod then Mod_Clone_Subst else (1 .. 0 => <>));
 
+   begin
       Emit (Theory,
             New_Type_Decl
-              (Name => Why_Id,
-               Labels =>
-                 (1 => New_Identifier (Name => """bounded_type"""))));
+              (Name   => Why_Id,
+               Labels => (1 => New_Identifier (Name => """bounded_type"""))));
 
-      Define_Scalar_Attributes
-        (Theory    => Theory,
-         Base_Type => EW_Int,
-         First     => +First,
-         Last      => +Last,
-         Modulus   => +Modulus);
+      Define_Scalar_Attributes (Theory    => Theory,
+                                Base_Type => EW_Int,
+                                First     => +First,
+                                Last      => +Last,
+                                Modulus   => +Modulus);
       Emit (Theory,
-            New_Clone_Declaration
-              (Theory_Kind => EW_Module,
-               Clone_Kind  => EW_Export,
-               Origin      => Clone_Id,
-               Substitutions =>
-                 (if Is_Mod then
-                  Clone_Subst &
-                  (1 => New_Clone_Substitution
-                      (Kind      => EW_Function,
-                       Orig_Name => To_Ident (WNE_Attr_Modulus),
-                       Image     => To_Ident (WNE_Attr_Modulus)))
-                    else Clone_Subst)));
+            New_Clone_Declaration (Theory_Kind   => EW_Module,
+                                   Clone_Kind    => EW_Export,
+                                   Origin        => Clone_Id,
+                                   Substitutions => Clone_Subst));
    end Declare_Ada_Abstract_Signed_Int;
 
    ----------------------
@@ -120,8 +123,13 @@ package body Why.Gen.Scalars is
       Last    : W_Real_Constant_Id)
    is
       Why_Name : constant W_Identifier_Id := To_Why_Id (Entity, Local => True);
+      Is_Static : constant Boolean :=
+        not Type_Is_Modeled_As_Int_Or_Real (Entity);
+      Static_String : constant String :=
+        (if Is_Static then "Static" else "Dynamic");
       Clone_Id : constant W_Identifier_Id :=
-        New_Identifier (Name    => """ada__model"".Floating_Point");
+        New_Identifier
+          (Name => """ada__model""." & Static_String & "_Floating_Point");
       Has_Round_Real : constant Boolean :=
         Is_Single_Precision_Floating_Point_Type (Entity)
           or else
@@ -137,58 +145,42 @@ package body Why.Gen.Scalars is
 
       --  If the type Entity has a rounding operation, use it in the clone
       --  substitution to replace the default one.
+      Default_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Type_Subst,
+                 Orig_Name => New_Identifier (Name => "t"),
+                 Image     => Why_Name));
+      Round_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Ident (WNE_Float_Round_Tmp),
+                 Image     => Round_Id));
+      Static_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Ident (WNE_Attr_First),
+                 Image     => To_Ident (WNE_Attr_First)),
+         2 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Ident (WNE_Attr_Last),
+                 Image     => To_Ident (WNE_Attr_Last)));
       Clone_Subst : constant W_Clone_Substitution_Array :=
-        (if Has_Round_Real then
-          (1 =>
-             New_Clone_Substitution
-               (Kind      => EW_Type_Subst,
-                Orig_Name => New_Identifier (Name => "t"),
-                Image     => Why_Name),
-           2 =>
-             New_Clone_Substitution
-               (Kind      => EW_Function,
-                Orig_Name => To_Ident (WNE_Float_Round_Tmp),
-                Image     => Round_Id),
-           3 =>
-             New_Clone_Substitution
-               (Kind      => EW_Function,
-                Orig_Name => To_Ident (WNE_Attr_First),
-                Image     => To_Ident (WNE_Attr_First)),
-           4 =>
-             New_Clone_Substitution
-               (Kind      => EW_Function,
-                Orig_Name => To_Ident (WNE_Attr_Last),
-                Image     => To_Ident (WNE_Attr_Last)))
-        else
-          (1 =>
-             New_Clone_Substitution
-               (Kind      => EW_Type_Subst,
-                Orig_Name => New_Identifier (Name => "t"),
-                Image     => Why_Name),
-           2 =>
-             New_Clone_Substitution
-               (Kind      => EW_Function,
-                Orig_Name => To_Ident (WNE_Attr_First),
-                Image     => To_Ident (WNE_Attr_First)),
-           3 =>
-             New_Clone_Substitution
-               (Kind      => EW_Function,
-                Orig_Name => To_Ident (WNE_Attr_Last),
-                Image     => To_Ident (WNE_Attr_Last))));
+        Default_Clone_Subst
+          & (if Has_Round_Real then Round_Clone_Subst else (1 .. 0 => <>))
+          & (if Is_Static then Static_Clone_Subst else (1 .. 0 => <>));
+
    begin
       Emit (Theory, New_Type_Decl (Name => Why_Name));
-      Define_Scalar_Attributes
-        (Theory    => Theory,
-         Base_Type => EW_Real,
-         First     => +First,
-         Last      => +Last,
-         Modulus   => Why_Empty);
+      Define_Scalar_Attributes (Theory    => Theory,
+                                Base_Type => EW_Real,
+                                First     => +First,
+                                Last      => +Last,
+                                Modulus   => Why_Empty);
       Emit (Theory,
-            New_Clone_Declaration
-              (Theory_Kind => EW_Module,
-               Clone_Kind  => EW_Export,
-               Origin      => Clone_Id,
-               Substitutions => Clone_Subst));
+            New_Clone_Declaration (Theory_Kind   => EW_Module,
+                                   Clone_Kind    => EW_Export,
+                                   Origin        => Clone_Id,
+                                   Substitutions => Clone_Subst));
    end Declare_Ada_Real;
 
    ------------------------------

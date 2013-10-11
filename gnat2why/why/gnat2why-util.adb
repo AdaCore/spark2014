@@ -25,12 +25,15 @@
 
 with Atree;               use Atree;
 with Einfo;               use Einfo;
+with Sem_Eval;            use Sem_Eval;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Uintp;               use Uintp;
 
+with SPARK_Definition;
+
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Sem_Util; use Sem_Util;
 
 package body Gnat2Why.Util is
 
@@ -338,6 +341,16 @@ package body Gnat2Why.Util is
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
 
+   ----------------------------
+   -- Is_Dynamic_Scalar_Type --
+   ----------------------------
+
+   function Type_Is_Modeled_As_Int_Or_Real (T : Entity_Id) return Boolean is
+   begin
+      return SPARK_Definition.Loop_Entity_Set.Contains (T)
+        and then not Is_Static_Subtype (T);
+   end Type_Is_Modeled_As_Int_Or_Real;
+
    --------------------------------
    -- Is_Locally_Defined_In_Loop --
    --------------------------------
@@ -387,10 +400,12 @@ package body Gnat2Why.Util is
 
       --  Constants defined locally to a loop inside a subprogram (or any
       --  other dynamic scope) may end up having different values, so should
-      --  be mutable in Why.
+      --  be mutable in Why, except when they are defined inside "actions" (in
+      --  which case they are defined as local "let" bound variables in Why).
 
       elsif Ekind (N) = E_Constant
-        and then Is_Locally_Defined_In_Loop (N)
+        and then SPARK_Definition.Loop_Entity_Set.Contains (N)
+        and then not SPARK_Definition.Actions_Entity_Set.Contains (N)
       then
          return True;
 

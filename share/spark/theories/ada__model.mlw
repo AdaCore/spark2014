@@ -1,7 +1,8 @@
 module Discrete_Base
   (* The module that is used as basis for all discrete types. It contains the
     whole discrete theory, except the coerce_axiom which differs between
-    modular and non-modular types. *)
+    modular and non-modular types, and range-related functions and axioms which
+    differ between "static" and "dynamic" discrete types. *)
 
   use import int.Int
   use import "_gnatprove_standard".Main
@@ -11,22 +12,15 @@ module Discrete_Base
 
   type t "bounded_type"
 
-  function first : int
-
-  function last : int
-
   function attr__ATTRIBUTE_IMAGE int : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
   function attr__ATTRIBUTE_VALUE __image : int
 
-  val attr__ATTRIBUTE_VALUE_ (x : __image)  :int
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : int
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
-
-  predicate in_range "bounded_type"  (x : int) =
-    ( first <= x <= last )
 
   function to_int "bounded_type" t : int
 
@@ -36,9 +30,29 @@ module Discrete_Base
     requires { true }
     ensures { to_int(result) = x }
 
-  val range_check_ (n : int) : int
-    requires { in_range n }
-    ensures { result = n }
+  predicate eq (x : t) (y : t) = ( to_int x = to_int y )
+
+  axiom inversion_axiom "bounded_type" :
+    forall x : t [to_int x].
+    of_int (to_int (x)) = x
+
+  function dummy : t
+end
+
+module Static_Discrete_Base
+  (* The module that is used as basis for all "static" discrete types.
+     It contains the whole discrete theory, except the coerce_axiom which
+     differs between modular and non-modular types. "Static" here means that
+     Why only sees a static version of the type, with constants for the bounds,
+     even though this might correspond to dynamic types in Ada. *)
+
+  use import int.Int
+
+  clone export Discrete_Base
+
+  function first : int
+
+  function last : int
 
   val check_not_last (n : int) : int
     requires { n <> last }
@@ -48,40 +62,73 @@ module Discrete_Base
     requires { n <> first }
     ensures { result = n }
 
-  predicate eq (x : t) (y : t) = ( to_int x = to_int y )
+  predicate in_range "bounded_type" (x : int) =
+    ( first <= x <= last )
+
+  val range_check_ (n : int) : int
+    requires { in_range n }
+    ensures { result = n }
 
   axiom range_axiom "bounded_type" :
     forall x : t. in_range (to_int x)
-
-  axiom inversion_axiom "bounded_type" :
-    forall x : t [to_int x].
-    of_int (to_int (x)) = x
-
-  function dummy : t
 end
 
-module Discrete
+module Static_Discrete
   use import int.Int
-  clone export Discrete_Base
+  clone export Static_Discrete_Base
 
   axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
       in_range x -> to_int (of_int x) = x
-
 end
 
-module Modular
-  clone export Discrete_Base
+module Static_Modular
+  clone export Static_Discrete_Base
 
   function attr__ATTRIBUTE_MODULUS : int
 
   axiom coerce_axiom "bounded_type" :
     forall x  : int [to_int (of_int x)].
       to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
-
 end
 
-module Floating_Point
+module Dynamic_Discrete_Base
+  (* The module that is used as basis for all "dynamic" discrete types.
+     It contains the whole discrete theory, except the coerce_axiom which
+     differs between modular and non-modular types. "Dynamic" here means that
+     Why sees a dynamic version of the type, with references for the bounds,
+     which correspond to some cases of dynamic types in Ada. *)
+
+  use import int.Int
+  use import ref.Ref
+  clone export Discrete_Base
+
+  (* left uninterpreted, used for unconstrained arrays based on this index range *)
+  predicate in_range "bounded_type" (x : int)
+
+  val first : ref int
+
+  val last : ref int
+end
+
+module Dynamic_Discrete
+  use import int.Int
+  clone export Dynamic_Discrete_Base
+end
+
+module Dynamic_Modular
+  clone export Dynamic_Discrete_Base
+
+  function attr__ATTRIBUTE_MODULUS : int
+
+  axiom coerce_axiom "bounded_type" :
+    forall x  : int [to_int (of_int x)].
+      to_int (of_int x) = Integer.math_mod x attr__ATTRIBUTE_MODULUS
+end
+
+module Floating_Point_Base
+  (* The module that is used as basis for all floating-point types. *)
+
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Floating
   use import real.RealInfix
@@ -94,6 +141,39 @@ module Floating_Point
 
   function round_real_tmp real : real
   function round_real (x : real) : real = round_real_tmp (x)
+
+  function to_real t : real
+
+  function of_real real : t
+
+  val of_real (x : real) : t
+    requires { true }
+    ensures  { to_real (result) = x }
+
+  predicate eq  (x : t) (y : t) = (to_real x = to_real y)
+
+  axiom inversion_axiom :
+    forall x : t [to_real x].
+      of_real ( to_real(x) ) = x
+
+  function attr__ATTRIBUTE_IMAGE real : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : real
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : real
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+ function dummy :t
+end
+
+module Static_Floating_Point
+  (* The module that is used as basis for all "static" floating-point types. *)
+
+  use import real.RealInfix
+  clone export Floating_Point_Base
 
   function first  : real
 
@@ -111,19 +191,9 @@ module Floating_Point
   predicate in_range  (x : real) =
    ( first <=. x <=. last )
 
-  function to_real t : real
-
-  function of_real real : t
-
-  val of_real (x : real) : t
-    requires { true }
-    ensures  { to_real (result) = x }
-
   val range_check_ (n : real)  :real
     requires { in_range n }
     ensures { result = n }
-
-  predicate eq  (x : t) (y : t) = (to_real x = to_real y)
 
   axiom range_axiom :
     forall x  : t.  in_range (to_real x)
@@ -131,22 +201,17 @@ module Floating_Point
   axiom coerce_axiom :
     forall x  : real [to_real (of_real x) | in_range x, of_real x].
       in_range x -> to_real (of_real x) = x
+end
 
-  axiom inversion_axiom :
-    forall x : t [to_real x].
-      of_real ( to_real(x) ) = x
+module Dynamic_Floating_Point
+  (* The module that is used as basis for all "dynamic" floating-point types. *)
 
-  function attr__ATTRIBUTE_IMAGE real : __image
+  use import ref.Ref
+  clone export Floating_Point_Base
 
-  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+  val first : ref real
 
-  function attr__ATTRIBUTE_VALUE __image : real
-
-  val attr__ATTRIBUTE_VALUE_ (x : __image) : real
-    requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
-
- function dummy :t
+  val last  : ref real
 end
 
 (* The following modules are templates for unconstrained and constrained array

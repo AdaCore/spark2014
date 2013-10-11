@@ -116,11 +116,23 @@ package body SPARK_Definition is
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
 
+   Inside_Loop : Boolean;
+   --  Set to True when traversing a loop. This is used to detect which
+   --  entities are defined in loops, which may require a special
+   --  translation. Those entities are stored in Loop_Entity_Set.
+
+   Inside_Actions : Boolean;
+   --  Set to True when traversing actions (statements introduced by the
+   --  compiler inside expressions), which require a special translation.
+   --  Those entities are stored in Actions_Entity_Set.
+
    procedure Initialize;
    procedure Initialize is
    begin
       Current_SPARK_Pragma := Empty;
       Violation_Detected := False;
+      Inside_Loop := False;
+      Inside_Actions := False;
    end Initialize;
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean;
@@ -827,6 +839,18 @@ package body SPARK_Definition is
          return;
       end if;
 
+      --  Store entities defines in loops in Loop_Entity_Set
+
+      if Inside_Loop then
+         Loop_Entity_Set.Insert (E);
+      end if;
+
+      --  Store entities defines in actions in Actions_Entity_Set
+
+      if Inside_Actions then
+         Actions_Entity_Set.Insert (E);
+      end if;
+
       --  Types may be marked out of order, because completions of private
       --  types need to be marked at the point of their partial view
       --  declaration, to avoid out-of-order declarations in Why.
@@ -1061,15 +1085,23 @@ package body SPARK_Definition is
             Mark_Violation ("iterator specification", N, "SRM 5.5.2");
 
          when N_Loop_Statement =>
-            --  Mark the entity for the loop, which is used in the translation
-            --  phase to generate exceptions for this loop.
+            declare
+               Save_Inside_Loop : constant Boolean := Inside_Loop;
+            begin
+               Inside_Loop := True;
 
-            Mark_Entity (Entity (Identifier (N)));
+               --  Mark the entity for the loop, which is used in the
+               --  translation phase to generate exceptions for this loop.
 
-            if Present (Iteration_Scheme (N)) then
-               Mark_Iteration_Scheme (Iteration_Scheme (N));
-            end if;
-            Mark_List (Statements (N));
+               Mark_Entity (Entity (Identifier (N)));
+
+               if Present (Iteration_Scheme (N)) then
+                  Mark_Iteration_Scheme (Iteration_Scheme (N));
+               end if;
+               Mark_List (Statements (N));
+
+               Inside_Loop := Save_Inside_Loop;
+            end;
 
          when N_Membership_Test =>
             if Is_Array_Type (Etype (Left_Opnd (N))) then
@@ -1562,7 +1594,13 @@ package body SPARK_Definition is
          return True;
       end Acceptable_Actions;
 
+      Save_Inside_Actions : constant Boolean := Inside_Actions;
+
+   --  Start of Mark_Actions
+
    begin
+      Inside_Actions := True;
+
       if Present (L) then
          Mark_List (L);
          if not Acceptable_Actions (L) then
@@ -1574,6 +1612,8 @@ package body SPARK_Definition is
             Error_Msg_N ("too complex actions inserted in expression", N);
          end if;
       end if;
+
+      Inside_Actions := Save_Inside_Actions;
    end Mark_Actions;
 
    ------------------------------

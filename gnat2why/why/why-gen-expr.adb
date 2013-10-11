@@ -24,13 +24,18 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
 with Errout;                use Errout;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
 with Sem_Eval;              use Sem_Eval;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
+with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
 
@@ -47,9 +52,8 @@ with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Records;       use Why.Gen.Records;
 with Why.Inter;             use Why.Inter;
 
-with Gnat2Why.Expr;         use Gnat2Why.Expr;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
+with Gnat2Why.Util;         use Gnat2Why.Util;
 
 package body Why.Gen.Expr is
 
@@ -631,6 +635,68 @@ package body Why.Gen.Expr is
       return Result;
    end Insert_Record_Conversion;
 
+   -----------------------------
+   -- Do_Range_Or_Index_Check --
+   -----------------------------
+
+   function Do_Range_Or_Index_Check
+     (Ada_Node   : Node_Id;
+      Ty         : Entity_Id;
+      W_Expr     : W_Expr_Id;
+      Check_Kind : Range_Check_Kind) return W_Prog_Id is
+   begin
+      if Type_Is_Modeled_As_Int_Or_Real (Ty) then
+         declare
+            Tmp_Var : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Get_Type (W_Expr));
+            First : constant W_Expr_Id :=
+              New_Attribute_Expr (Ty, Attribute_First);
+            Last : constant W_Expr_Id :=
+              New_Attribute_Expr (Ty, Attribute_Last);
+            Rel_First        : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Get_Base_Type (Get_Type (W_Expr)),
+                 Left     => +First,
+                 Right    => +Tmp_Var,
+                 Op       => EW_Le);
+            Rel_Last         : constant W_Pred_Id :=
+              New_Relation
+                (Op_Type  => Get_Base_Type (Get_Type (W_Expr)),
+                 Left     => +Tmp_Var,
+                 Right    => +Last,
+                 Op       => EW_Le);
+            In_Bounds : constant W_Expr_Id :=
+              New_And_Expr (Domain => EW_Pred,
+                            Left   => +Rel_First,
+                            Right  => +Rel_Last);
+            Check : constant W_Prog_Id :=
+              New_Assert
+                (Pred =>
+                   +New_VC_Expr (Ada_Node => Ada_Node,
+                                 Expr     => In_Bounds,
+                                 Reason   => To_VC_Kind (Check_Kind),
+                                 Domain   => EW_Prog));
+            Do_Check : constant W_Expr_Id :=
+              New_Typed_Binding
+                (Domain  => EW_Prog,
+                 Name    => Tmp_Var,
+                 Def     => +W_Expr,
+                 Context => +Sequence (Check, +Tmp_Var));
+
+         begin
+            return +Do_Check;
+         end;
+      else
+         return +New_VC_Call (Domain   => EW_Prog,
+                              Ada_Node => Ada_Node,
+                              Name     =>
+                                Range_Check_Name (Ty, Check_Kind),
+                              Progs    => (1 => +W_Expr),
+                              Reason   => To_VC_Kind (Check_Kind),
+                              Typ      => Get_Type (W_Expr));
+      end if;
+   end Do_Range_Or_Index_Check;
+
    ------------------------------
    -- Insert_Scalar_Conversion --
    ------------------------------
@@ -643,6 +709,202 @@ package body Why.Gen.Expr is
       Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Check   : Node_Id := Empty) return W_Expr_Id
    is
+      procedure Get_Range_Check_Info
+        (Expr       : Node_Id;
+         Check_Type : out Entity_Id;
+         Check_Kind : out Range_Check_Kind);
+      --  The frontend sets Do_Range_Check flag to True both for range checks
+      --  and for index checks. We distinguish between these by calling this
+      --  procedure, which also sets the bounds against which the value of Expr
+      --  should be checked. Expr should have the flag Do_Range_Check flag set
+      --  to True. Check_Type is set to the entity giving the bounds for the
+      --  check. Check_Kind is set to VC_Range_Check or VC_Index_Check.
+
+      function Insert_Range_Check
+        (Expr : Node_Id;
+         T    : W_Expr_Id) return W_Expr_Id;
+      --  Inserts a check on top of the Why expression T, which might be either
+      --  a range check, or an index check, depending on the corresponding
+      --  Ada node Expr. Expr also determines the bounds for the check.
+      --  [Get_Range_Check_Info] is called to determine the type and kind
+      --  of the check.
+
+      --------------------------
+      -- Get_Range_Check_Info --
+      --------------------------
+
+      procedure Get_Range_Check_Info
+        (Expr       : Node_Id;
+         Check_Type : out Entity_Id;
+         Check_Kind : out Range_Check_Kind)
+      is
+         Par : constant Node_Id := Parent (Expr);
+
+      begin
+         --  Set the appropriate entity in Check_Type giving the bounds for the
+         --  check, depending on the parent node Par.
+
+         case Nkind (Par) is
+
+         when N_Assignment_Statement =>
+            Check_Type := Etype (Name (Par));
+
+         --  For an array access, retrieve the type for the corresponding index
+
+         when N_Indexed_Component =>
+
+            Indexed_Component : declare
+               Obj        : constant Node_Id := Prefix (Par);
+               Array_Type : Entity_Id;
+               Act_Cursor : Node_Id;
+               Ty_Cursor  : Node_Id;
+               Found      : Boolean;
+
+            begin
+               --  When present, the Actual_Subtype of the entity should be
+               --  used instead of the Etype of the prefix.
+
+               if Is_Entity_Name (Obj)
+                 and then Present (Actual_Subtype (Entity (Obj)))
+               then
+                  Array_Type := Actual_Subtype (Entity (Obj));
+               else
+                  Array_Type := Etype (Obj);
+               end if;
+
+               --  Find the index type that corresponds to the expression
+
+               Ty_Cursor  := First_Index (Unique_Entity (Array_Type));
+               Act_Cursor := First (Expressions (Par));
+               Found      := False;
+               while Present (Act_Cursor) loop
+                  if Expr = Act_Cursor then
+                     Check_Type := Etype (Ty_Cursor);
+                     Found := True;
+                     exit;
+                  end if;
+
+                  Next (Act_Cursor);
+                  Next_Index (Ty_Cursor);
+               end loop;
+
+               --  The only possible child node of an indexed component with a
+               --  range check should be one of the expressions, so Found
+               --  should always be True at this point.
+
+               if not Found then
+                  raise Program_Error;
+               end if;
+            end Indexed_Component;
+
+         when N_Type_Conversion =>
+            Check_Type := Etype (Par);
+
+         when N_Qualified_Expression =>
+            Check_Type := Etype (Par);
+
+         when N_Simple_Return_Statement =>
+            Check_Type :=
+              Etype (Return_Applies_To (Return_Statement_Entity (Par)));
+
+            --  For a call, retrieve the type for the corresponding argument
+
+         when N_Function_Call            |
+              N_Procedure_Call_Statement |
+              N_Parameter_Association    =>
+            Check_Type := Get_Formal_Type_From_Actual (Expr);
+
+         when N_Attribute_Reference =>
+            Attribute : declare
+               Aname   : constant Name_Id := Attribute_Name (Par);
+               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+            begin
+               case Attr_Id is
+                  when Attribute_Pred |
+                       Attribute_Succ |
+                       Attribute_Val  =>
+                     Check_Type := Base_Type (Entity (Prefix (Par)));
+
+                  when others =>
+                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
+                                           & Attribute_Id'Image (Attr_Id));
+                     raise Program_Error;
+               end case;
+            end Attribute;
+
+         when N_Object_Declaration =>
+            Check_Type := Etype (Defining_Identifier (Par));
+
+         when N_Op_Expon =>
+
+            --  A range check on exponentiation is only possible on the right
+            --  operand, and in this case the check range is "Natural"
+
+            Check_Type := Standard_Natural;
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
+                                  & Node_Kind'Image (Nkind (Par)));
+            raise Program_Error;
+         end case;
+
+         --  Reach through a non-private type in order to query its kind
+
+         Check_Type := MUT (Check_Type);
+
+         --  If the parent expression is an array access, this is an index
+         --  check.
+
+         if Nkind (Par) = N_Indexed_Component then
+            Check_Kind := RCK_Index;
+
+         --  If the target type is a constrained array, we have a length check.
+
+         elsif Is_Array_Type (Check_Type) and then
+           Is_Constrained (Check_Type) then
+            Check_Kind := RCK_Length;
+
+         --  For 'Pred and 'Succ, it's also a range check, but the range is a
+         --  bit different. We use a different Check_Kind here.
+
+         elsif Nkind (Par) = N_Attribute_Reference and then
+           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred then
+            Check_Kind := RCK_Not_First;
+         elsif Nkind (Par) = N_Attribute_Reference and then
+           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ then
+            Check_Kind := RCK_Not_Last;
+
+         --  Otherwise, this is a range check
+
+         else
+            Check_Kind := RCK_Range;
+         end if;
+      end Get_Range_Check_Info;
+
+      ------------------------
+      -- Insert_Range_Check --
+      ------------------------
+
+      function Insert_Range_Check
+        (Expr : Node_Id;
+         T    : W_Expr_Id) return W_Expr_Id
+      is
+         Check_Type : Entity_Id;
+         Check_Kind : Range_Check_Kind;
+
+      begin
+         --  Determine the type Check_Type, whose base type will give the
+         --  bounds for the check, and whether the check is a range check or
+         --  an index check.
+
+         Get_Range_Check_Info (Expr, Check_Type, Check_Kind);
+
+         return +Do_Range_Or_Index_Check (Ada_Node   => Expr,
+                                          Ty         => Check_Type,
+                                          W_Expr     => T,
+                                          Check_Kind => Check_Kind);
+      end Insert_Range_Check;
+
       From : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
       Result : W_Expr_Id := Expr;
@@ -656,6 +918,8 @@ package body Why.Gen.Expr is
 
       --  Set to True after range check has been applied
       Range_Check_Applied : Boolean := False;
+
+   --  Start of Insert_Scalar_Conversion
 
    begin
       --  When From = To and no check nor rounding needs to be inserted, do
@@ -971,11 +1235,23 @@ package body Why.Gen.Expr is
             S : constant String :=
               (if Is_Standard_Boolean_Type (Ty) then "Boolean"
                else Full_Name (Ty));
+            T : W_Expr_Id;
+            BT : constant W_Type_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then
+                    EW_Int_Type
+               else Base_Why_Type (Ty));
          begin
-            return +Prefix (Ada_Node => Ty,
-                            S        => S,
-                            W        => Attr_To_Why_Name (Attr),
-                            Typ      => EW_Int_Type);
+            T := +Prefix (Ada_Node => Ty,
+                          S        => S,
+                          W        => Attr_To_Why_Name (Attr),
+                          Typ      => BT);
+
+            if Type_Is_Modeled_As_Int_Or_Real (Ty) then
+               T := New_Deref (Right => +T,
+                               Typ   => BT);
+            end if;
+
+            return T;
          end;
       end if;
    end New_Attribute_Expr;

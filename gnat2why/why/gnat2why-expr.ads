@@ -72,15 +72,6 @@ package Gnat2Why.Expr is
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
 
-   function Insert_Range_Check
-     (Expr : Node_Id;
-      T    : W_Expr_Id) return W_Expr_Id;
-   --  Inserts a check on top of the Why expression T, which might be either
-   --  a range check, or an index check, depending on the corresponding
-   --  Ada node Expr. Expr also determines the bounds for the check.
-   --  [Get_Range_Check_Info] is called to determine the type and kind of
-   --  the check.
-
    function Range_Expr
      (N           : Node_Id;
       T           : W_Expr_Id;

@@ -580,25 +580,53 @@ package body Gnat2Why.Expr is
             Assuming : W_Prog_Id;
 
          begin
-            if Do_Check then
-               if Is_Locally_Defined_In_Loop (N) then
-                  Assuming := New_Assume_Statement (Ada_Node => N,
-                                                    Pre      => Precond,
-                                                    Post     => True_Pred);
-               else
+            --  If the scalar subtype is modeled as "int" or "real", assign the
+            --  variables corresponding to its bounds instead of assuming the
+            --  values of constants corresponding to its bounds.
+
+            if Type_Is_Modeled_As_Int_Or_Real (N) then
+               declare
+                  Low_Var : constant W_Expr_Id :=
+                    +Get_Right
+                      (W_Deref_Id (New_Attribute_Expr (N, Attribute_First)));
+                  High_Var : constant W_Expr_Id :=
+                    +Get_Right
+                      (W_Deref_Id (New_Attribute_Expr (N, Attribute_Last)));
+                  Set_Bounds : constant W_Prog_Id :=
+                    Sequence (New_Assignment (Name => +Low_Var,
+                                              Value => +Low_Expr),
+                              New_Assignment (Name => +High_Var,
+                                              Value => +High_Expr));
+               begin
+                  if Do_Check then
+                     Assuming := New_Assume_Statement (Ada_Node => N,
+                                                       Pre      => Precond,
+                                                       Post     => True_Pred);
+                     return
+                       Sequence (Set_Bounds,
+                                 +New_VC_Expr (Ada_Node => N,
+                                               Domain   => EW_Prog,
+                                               Reason   => VC_Range_Check,
+                                               Expr     => +Assuming));
+                  else
+                     return Set_Bounds;
+                  end if;
+               end;
+
+            --  Scalar subtype is modeled as abstract type, with constants for
+            --  the bounds. Generate assumptions that relate these constants to
+            --  their value.
+
+            else
+               if Do_Check then
                   Assuming := New_Assume_Statement (Ada_Node => N,
                                                     Pre      => Precond,
                                                     Post     => Postcond);
-               end if;
+                  return +New_VC_Expr (Ada_Node => N,
+                                       Domain   => EW_Prog,
+                                       Reason   => VC_Range_Check,
+                                       Expr     => +Assuming);
 
-               return +New_VC_Expr (Ada_Node => N,
-                                    Domain   => EW_Prog,
-                                    Reason   => VC_Range_Check,
-                                    Expr     => +Assuming);
-
-            else
-               if Is_Locally_Defined_In_Loop (N) then
-                  return New_Void;
                else
                   Assuming :=
                     New_Assume_Statement
@@ -1110,33 +1138,6 @@ package body Gnat2Why.Expr is
                           Reason   => VC_Overflow_Check,
                           Typ      => Get_Type (T));
    end Insert_Overflow_Check;
-
-   ------------------------
-   -- Insert_Range_Check --
-   ------------------------
-
-   function Insert_Range_Check
-     (Expr : Node_Id;
-      T    : W_Expr_Id) return W_Expr_Id
-   is
-      Check_Type : Entity_Id;
-      Check_Kind : Range_Check_Kind;
-
-   begin
-      --  Determine the type Check_Type, whose base type will give the bounds
-      --  for the check, and whether the check is a range check or an index
-      --  check.
-
-      Get_Range_Check_Info (Expr, Check_Type, Check_Kind);
-
-      return New_VC_Call (Domain   => EW_Prog,
-                          Ada_Node => Expr,
-                          Name     =>
-                            Range_Check_Name (Check_Type, Check_Kind),
-                          Progs    => (1 => +T),
-                          Reason   => To_VC_Kind (Check_Kind),
-                          Typ      => Get_Type (T));
-   end Insert_Range_Check;
 
    ------------------------
    -- Insert_Ref_Context --
@@ -3737,12 +3738,10 @@ package body Gnat2Why.Expr is
          begin
             if Domain = EW_Prog then
                Last_Expr :=
-                 New_VC_Call (Domain   => EW_Prog,
-                              Ada_Node => Expr,
-                              Name     => Range_Check_Name (Target, RCK_Range),
-                              Progs    => (1 => +Last_Expr),
-                              Reason   => VC_Range_Check,
-                              Typ      => EW_Int_Type);
+                 +Do_Range_Or_Index_Check (Ada_Node   => Expr,
+                                           Ty         => Target,
+                                           W_Expr     => Last_Expr,
+                                           Check_Kind => RCK_Range);
             end if;
             T := Array_Convert_From_Base (Domain => Domain,
                                           Target => Etype (Expr),
@@ -4071,17 +4070,15 @@ package body Gnat2Why.Expr is
          then
             R := +Sequence
                    (+New_Ignore (Prog =>
-                      +New_VC_Call
-                        (Domain   => EW_Prog,
-                         Ada_Node => Choice,
-                         Name     => Range_Check_Name (Choice_Type, RCK_Range),
-                         Progs    =>
-                           (1 => Transform_Expr (Expr          => Choice,
-                                                 Expected_Type => EW_Int_Type,
-                                                 Domain        => Subdomain,
-                                                 Params        => Params)),
-                         Reason   => To_VC_Kind (RCK_Range),
-                         Typ      => EW_Abstract (Choice_Type))),
+                      Do_Range_Or_Index_Check
+                        (Ada_Node   => Choice,
+                         Ty         => Choice_Type,
+                         W_Expr     =>
+                           Transform_Expr (Expr          => Choice,
+                                           Expected_Type => EW_Int_Type,
+                                           Domain        => Subdomain,
+                                           Params        => Params),
+                         Check_Kind => RCK_Range)),
                     +R);
          end if;
       end if;
@@ -5668,7 +5665,8 @@ package body Gnat2Why.Expr is
                when CE_Discriminant_Check_Failed =>
                   return +New_VC_Expr (Domain   => EW_Prog,
                                        Ada_Node => Stat,
-                                       Expr     => +False_Pred,
+                                       Expr     =>
+                                          +New_Identifier (Name => "absurd"),
                                        Reason   => VC_Discriminant_Check);
                when others =>
                   raise Program_Error;

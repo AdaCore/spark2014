@@ -55,6 +55,14 @@ package SPARK_Definition is
    --  Set of all entities marked so far. This contains both entities from the
    --  current compiled unit, and entities from other units.
 
+   Loop_Entity_Set : Node_Sets.Set;
+   --  Set of entities defined in loops, which may require a special
+   --  translation. See gnat2why.ads for details.
+
+   Actions_Entity_Set : Node_Sets.Set;
+   --  Set of entities defined in actions which require a special translation.
+   --  See gnat2why.ads for details.
+
    procedure Before_Marking (Basename : String);
    --  Create a file to store detailed information about the SPARK status of
    --  toplevel subprograms (spec/body in SPARK or not). Use the argument as

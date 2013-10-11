@@ -37,6 +37,8 @@ with VC_Kinds;            use VC_Kinds;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 
+with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
+
 package Why.Gen.Expr is
 
    function Is_False_Boolean (P : W_Expr_Id) return Boolean;
@@ -177,6 +179,14 @@ package Why.Gen.Expr is
 
    function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
    --  Convert argument to int if not already done
+
+   function Do_Range_Or_Index_Check
+     (Ada_Node   : Node_Id;
+      Ty         : Entity_Id;
+      W_Expr     : W_Expr_Id;
+      Check_Kind : Range_Check_Kind) return W_Prog_Id;
+   --  Returns the Why program that does range of index checking on W_Expr, for
+   --  type Ty.
 
    function Insert_Array_Conversion
      (Domain     : EW_Domain;

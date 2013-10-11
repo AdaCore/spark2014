@@ -225,6 +225,13 @@ package Gnat2Why.Util is
    -- Queries --
    -------------
 
+   function Type_Is_Modeled_As_Int_Or_Real (T : Entity_Id) return Boolean;
+   --  Returns True if T is a scalar type that should be translated into Why
+   --  as an unbounded type "int" or "real". This is currently done for dynamic
+   --  types defined inside loops, which should not be treated as having
+   --  constants bounds, because translation of the loop in Why may lead
+   --  to having two coexisting versions of the type.
+
    function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
    --  Returns True if node N is defined locally to a loop
 
