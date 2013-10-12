@@ -1,1 +1,3 @@
 swap_incorrect_c.adb:8:07: warning: variable "Old_Y" is never read and never assigned
+swap_incorrect_c.adb:7:07: warning: statement has no effect [ineffective]
+swap_incorrect_c.adb:8:07: warning: unused variable "Old_Y" [unused]
