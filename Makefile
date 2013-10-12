@@ -90,7 +90,7 @@ doc-nightly:
 	$(MAKE) doc
 
 $(DOC):
-	$(MAKE) -C docs/$@ latexpdf
+	echo x | $(MAKE) -C docs/$@ latexpdf
 	$(MAKE) -C docs/$@ html
 	mkdir -p $(DOCDIR)/pdf
 	mkdir -p $(DOCDIR)/html/$@
