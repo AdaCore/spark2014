@@ -85,8 +85,9 @@ install:
 
 doc: $(DOC)
 
-doc-nightly: doc
+doc-nightly:
 	cd docs/ug; $(MAKE) generate-nightly
+	$(MAKE) doc
 
 $(DOC):
 	$(MAKE) -C docs/$@ latexpdf
