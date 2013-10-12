@@ -30,17 +30,14 @@ with SPARK_Util; use SPARK_Util;
 
 with Why;
 
---  with Treepr; use Treepr;
---  with Output; use Output;
-
 package body Flow_Tree_Utility is
 
    --------------------------------
    -- Lexicographic_Entity_Order --
    --------------------------------
 
-   function Lexicographic_Entity_Order (Left, Right : Node_Id)
-                                        return Boolean is
+   function Lexicographic_Entity_Order
+     (Left, Right : Node_Id) return Boolean is
    begin
       return Unique_Name (Left) < Unique_Name (Right);
    end Lexicographic_Entity_Order;
@@ -49,16 +46,14 @@ package body Flow_Tree_Utility is
    -- Contains_Loop_Entry_Reference --
    -----------------------------------
 
-   function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean
-   is
+   function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean is
       Found_Loop_Entry : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Sets found_loop_entry if the N is a loop_entry attribute
       --  reference.
 
-      function Proc (N : Node_Id) return Traverse_Result
-      is
+      function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
             when N_Attribute_Reference =>
@@ -77,6 +72,7 @@ package body Flow_Tree_Utility is
       end Proc;
 
       procedure Search_For_Loop_Entry is new Traverse_Proc (Proc);
+
    begin
       Search_For_Loop_Entry (N);
       return Found_Loop_Entry;
@@ -86,8 +82,7 @@ package body Flow_Tree_Utility is
    -- Get_Procedure_Specification --
    ---------------------------------
 
-   function Get_Procedure_Specification (E : Entity_Id) return Node_Id
-   is
+   function Get_Procedure_Specification (E : Entity_Id) return Node_Id is
       N : Node_Id;
    begin
       N := Parent (E);
@@ -105,8 +100,7 @@ package body Flow_Tree_Utility is
    -- Might_Be_Main --
    -------------------
 
-   function Might_Be_Main (E : Entity_Id) return Boolean
-   is
+   function Might_Be_Main (E : Entity_Id) return Boolean is
    begin
       return (Scope_Depth_Value (E) = Uint_1 or else
                 (Is_Generic_Instance (E) and then
@@ -118,8 +112,7 @@ package body Flow_Tree_Utility is
    -- Find_Node_In_Initializes --
    ------------------------------
 
-   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   is
+   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id is
       P  : Entity_Id := E;
       UE : constant Entity_Id := Unique_Entity (E);
 
@@ -127,7 +120,7 @@ package body Flow_Tree_Utility is
       Row, LHS : Node_Id;
 
    begin
-      --  !!! Fix this to support refined state
+      --  ??? Fix this to support refined state
 
       while Ekind (P) /= E_Package loop
          case Ekind (P) is
@@ -242,8 +235,7 @@ package body Flow_Tree_Utility is
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean
-   is
+   function Is_Initialized_At_Elaboration (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
          when E_Abstract_State =>
@@ -270,8 +262,7 @@ package body Flow_Tree_Utility is
    -- Is_Package_State --
    ----------------------
 
-   function Is_Package_State (E : Entity_Id) return Boolean
-   is
+   function Is_Package_State (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
          when E_Abstract_State =>
@@ -288,7 +279,6 @@ package body Flow_Tree_Utility is
 
          when others =>
             return False;
-
       end case;
    end Is_Package_State;
 
@@ -296,8 +286,7 @@ package body Flow_Tree_Utility is
    -- Get_Body --
    --------------
 
-   function Get_Body (E : Entity_Id) return Entity_Id
-   is
+   function Get_Body (E : Entity_Id) return Entity_Id is
       P : constant Node_Id := Parent (Parent (E));
    begin
       case Nkind (P) is
@@ -321,8 +310,7 @@ package body Flow_Tree_Utility is
    -- Get_Enclosing_Scope --
    -------------------------
 
-   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr
-   is
+   function Get_Enclosing_Scope (N : Node_Id) return Scope_Ptr is
       P : Node_Id := Parent (N);
    begin
       while Present (P) and then
@@ -341,8 +329,7 @@ package body Flow_Tree_Utility is
    -- Get_Enclosing_Body_Scope --
    ------------------------------
 
-   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr
-   is
+   function Get_Enclosing_Body_Scope (N : Node_Id) return Scope_Ptr is
       P : Node_Id := Parent (N);
    begin
       while Present (P) and then
@@ -358,9 +345,9 @@ package body Flow_Tree_Utility is
    -- Should_Use_Refined_View --
    -----------------------------
 
-   function Should_Use_Refined_View (Scope : Scope_Ptr;
-                                     N     : Node_Id)
-                                     return Boolean
+   function Should_Use_Refined_View
+     (Scope : Scope_Ptr;
+      N     : Node_Id) return Boolean
    is
       Spec_E : constant Node_Id := Entity (Name (N));
       Body_E : constant Node_Id := Get_Body (Spec_E);
@@ -368,8 +355,8 @@ package body Flow_Tree_Utility is
       Scope_Of_Called_Subprogram : Scope_Ptr;
       P                          : Scope_Ptr;
    begin
-      --  !!! To be resolved completely in M314-012 once M619-012 is
-      --  !!! answered.
+      --  ??? To be resolved completely in M314-012 once M619-012 is answered.
+
       if Present (Body_E) then
          Scope_Of_Called_Subprogram := Get_Enclosing_Body_Scope
            (Get_Enclosing_Body_Scope (Body_E));
