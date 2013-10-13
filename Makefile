@@ -86,7 +86,7 @@ install:
 doc: $(DOC)
 
 doc-nightly:
-	cd docs/ug; $(MAKE) generate-nightly
+	# cd docs/ug; $(MAKE) generate-nightly
 	$(MAKE) doc
 
 $(DOC):
