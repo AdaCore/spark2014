@@ -10,8 +10,9 @@ package body Refined_Depends_Legal
 is
    A, B, C, D : Integer := 1;
 
-
-   procedure P1 (Par1 : in Integer; Par2 : out Integer ; Par3 : in out Integer)
+   procedure P1 (Par1 : in     Integer;
+                 Par2 :    out Integer;
+                 Par3 : in out Integer)
      with Refined_Global  => (Input  => A,
                               Output => (C, D)),
           Refined_Depends => (Par2 => (Par1, A),
@@ -25,7 +26,6 @@ is
       C    := A;
       D    := Par3;
    end P1;
-
 
    procedure P2
      with Refined_Global  => (Input  => Refined_Depends_Legal.Pr_Child.Pr_Var,

@@ -1,4 +1,5 @@
 package body Refined_State_Illegal
+  with SPARK_Mode
 is
    package body Pac1
       with Refined_State  => (S => (Var1, null))

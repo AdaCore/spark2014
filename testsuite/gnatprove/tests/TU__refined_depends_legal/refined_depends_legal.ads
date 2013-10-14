@@ -1,5 +1,3 @@
-limited with Refined_Depends_Legal.Pr_Child;
-
 package Refined_Depends_Legal
   with SPARK_Mode,
        Abstract_State => (S, S2, S3, S_Null, S_Null2),
@@ -18,5 +16,5 @@ is
 
    procedure P2
      with Global  => (In_Out => S3),
-          Depends => (S3 =>+ Refined_Depends_Legal.Pr_Child.Pr_Var);
+          Depends => (S3 => S3);
 end Refined_Depends_Legal;

@@ -33,7 +33,7 @@ is
    --  abstract_state_list ::= state_name_with_options {, state_name_with_options}
      with Abstract_State => ((A with External),
                              (B with External => Async_Readers),
-                             (C with Part_Of => State_Name.A),
+                             C,
                              (D with External => (Async_Readers,
                                                   Effective_Writes)),
                              (E with External => (Async_Writers,
@@ -58,11 +58,9 @@ is
    --  abstract_state_list ::= state_name, {state_name_with_options}
      with Abstract_State => (A,
                              (B with External),
-                             (C with External,
-                                     Part_Of => State_Name.A),
+                             (C with External),
                              D,
-                             (E with External => Async_Readers,
-                                     Part_Of  => State_Name.A),
+                             (E with External => Async_Readers),
                              F)
    is
    end Mixed_State_Names;
