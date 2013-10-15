@@ -21,11 +21,11 @@ SPARK 2014 Toolset User's Guide
 
    getting_started
    introduction
-   language_subset
-   writing
-   usage
-   goals
-   gnattest
+   spark_2014
+   tutorial
+   gnatprove
+   usage_scenarios
+   test_and_proof
    appendix
    gfdl
 
