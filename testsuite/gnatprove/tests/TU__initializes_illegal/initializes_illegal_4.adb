@@ -1,6 +1,7 @@
 package body Initializes_Illegal_4 is
    package body Pac1
-     with Refined_State => (State => (Y, Z))
+     with Refined_State => (State => (Y,
+                                      Z))
    is
       Y : Integer;
       Z : Integer := 5;  -- Z should not be initialized
@@ -8,17 +9,16 @@ package body Initializes_Illegal_4 is
       X := 10;  --  X should not be initialized
    end Pac1;
 
-
    package body Pac2
      with Refined_State => (State  => Body_Var,
-                            State2 => (Body_Var2, Body_Var3))
+                            State2 => (Body_Var2,
+                                       Body_Var3))
    is
       Body_Var, Body_Var2, Body_Var3 : Integer;
    begin
       Body_Var  := 0;
       Body_Var2 := Body_Var;  --  Body_Var2 should not be initialized
    end Pac2;
-
 
    package body Pac3
      with Refined_State => (State => Body_Var)

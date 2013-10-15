@@ -1,8 +1,5 @@
-package Initializes_Illegal_4
-  with SPARK_Mode
-is
+package Initializes_Illegal_4 is
    G_Var, G_Var2 : Integer := 20;
-
 
    package Pac1
      --  TU: 8. The Initializes aspect of a package specification asserts which
@@ -20,7 +17,6 @@ is
       X : Integer;
    end Pac1;
 
-
    package Pac2
      --  TU: 10. If the Initializes aspect is specified for a package, then
      --  after the body (which may be implicit if the package has no explicit
@@ -36,7 +32,6 @@ is
    is
       Var, Var2 : Integer := 0;  --  Var should not be initialized
    end Pac2;
-
 
    package Pac3
      --  TU: 11. If an ``initialization_item`` has an ``input_list`` then the
@@ -55,7 +50,6 @@ is
       Var : Integer := G_Var + G_Var2;  --  Var should only depend on G_Var
                                         --  for its initialization
    end Pac3;
-
 
    package Pac4
      --  TU: 6. An ``initialization_item`` with a **null** ``input_list`` is

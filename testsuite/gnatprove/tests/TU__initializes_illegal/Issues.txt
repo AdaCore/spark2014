@@ -1,9 +1,0 @@
-initializes_illegal_4: - Flow analysis does not check if we have
-                       initialized variables with a null Initializes
-                       aspect yet.
-                       - Front end incorrectly rejects one of the
-                       examples.
-initializes_illegal_5: Part_Of aspect needs to be implemented for this
-                       test to be executed.
-initializes_illegal_6: Part_Of aspect needs to be implemented for this
-                       test to be executed.

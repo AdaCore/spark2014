@@ -1,0 +1,32 @@
+initializes_illegal.adb:3:11: aspect "Initializes" must apply to a package declaration
+initializes_illegal.ads:9:36: cannot mix null and non-null initialization items
+initializes_illegal.ads:15:12: package "Incorrect_Placement" requires state refinement
+initializes_illegal_2.ads:5:08: aspect "Abstract_State" cannot come after aspect "Initializes"
+initializes_illegal_3.ads:21:30: initialization item must denote variable or state (SPARK RM 7.1.5(3))
+initializes_illegal_3.ads:23:27: "PrivVar" is undefined
+initializes_illegal_3.ads:25:30: initialization item "SS" must appear in the visible declarations of package "Initializes_Illegal_3" (SPARK RM 7.1.5(7))
+initializes_illegal_3.ads:27:30: initialization item "XX" must appear in the visible declarations of package "Initializes_Illegal_3" (SPARK RM 7.1.5(7))
+initializes_illegal_3.ads:29:34: input item "Rec" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
+initializes_illegal_3.ads:29:39: input item "S2" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
+initializes_illegal_3.ads:29:46: input item "SS" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
+initializes_illegal_3.ads:29:54: input item "XX" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
+initializes_illegal_3.ads:33:45: duplicate input item (SPARK RM 7.1.5(5))
+initializes_illegal_3.ads:33:49: duplicate input item (SPARK RM 7.1.5(5))
+initializes_illegal_3_helper.ads:4:67: "S2" not declared in "Initializes_Illegal_3"
+initializes_illegal_4.adb:6:07: warning: variable "Y" is read but never assigned
+initializes_illegal_4.adb:17:28: warning: variable "Body_Var3" is read but never assigned
+initializes_illegal_4.adb:7:07: warning: initialization has no effect [ineffective]
+initializes_illegal_4.adb:9:09: warning: unused assignment [ineffective]
+initializes_illegal_4.adb:20:17: warning: unused assignment [ineffective]
+initializes_illegal_4.adb:23:17: "G_Var2" must be listed in the Initializes aspect of "Pac3"
+initializes_illegal_4.ads:2:04: warning: initialization has no effect [ineffective]
+initializes_illegal_4.ads:33:07: warning: initialization has no effect [ineffective]
+initializes_illegal_4.ads:36:12: "G_Var2" must be listed in the Initializes aspect of "Pac3"
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
+initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
+initializes_illegal_5.ads:13:66: "Pr_Var" not declared in "Pr_Child"
+initializes_illegal_6.adb:7:04: warning: variable "Var" is read but never assigned
+initializes_illegal_6.adb:7:04: "Var" is not initialized in "Initializes_Illegal_6" [uninitialized]
+gprbuild: *** compilation phase failed
+gnatprove: error during translation to intermediate language, aborting.
