@@ -34,13 +34,16 @@ use type Ada.Containers.Count_Type;
 
 package Flow.Utility is
 
-   function Get_Variable_Set (Scope : Scope_Ptr;
-                              N     : Node_Id)
+   function Get_Variable_Set (Scope   : Scope_Ptr;
+                              N       : Node_Id;
+                              Reduced : Boolean := False)
                               return Flow_Id_Sets.Set;
-   --  Obtain all variables used in an expression.
+   --  Obtain all variables used in an expression. If reduced is true,
+   --  onbtain only entire variables.
 
-   function Get_Variable_Set (Scope : Scope_Ptr;
-                              L     : List_Id)
+   function Get_Variable_Set (Scope   : Scope_Ptr;
+                              L       : List_Id;
+                              Reduced : Boolean := False)
                               return Flow_Id_Sets.Set;
    --  As above, but operating on a list.
 
@@ -81,6 +84,14 @@ package Flow.Utility is
    --  Given the entity for a subprogram, return the expression(s) for
    --  its precondition and the condition(s) of its Contract_Cases (or
    --  return the empty list if none of these exist).
+
+   function Get_Postcondition_Expressions
+     (E : Entity_Id) return Node_Lists.List
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   --  Given the entity for a subprogram or package, return all
+   --  expression(s) associated with postconditions: the
+   --  postcondition, the rhs for contract cases and the initial
+   --  condition; or an empty list of none of these exist.
 
    function Is_Precondition_Check (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma and then

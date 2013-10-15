@@ -108,6 +108,10 @@ package Flow is
       Scope             : Scope_Ptr;
       --  The entity and scope of the analysed entity.
 
+      Spec_Node         : Entity_Id;
+      --  Useful shorthand to the node where the n_contract node is
+      --  attached.
+
       Start_Vertex      : Flow_Graphs.Vertex_Id;
       End_Vertex        : Flow_Graphs.Vertex_Id;
       --  The start and end vertices in the graphs.

@@ -91,12 +91,15 @@ package body Flow is
    --  Flow_Id. This is used for emitting more helpful error messages
    --  if a Magic_String Flow_Id is concerened.
 
-   function Flow_Analyse_Entity (E : Entity_Id)
+   function Flow_Analyse_Entity (E : Entity_Id;
+                                 S : Node_Id)
                                  return Flow_Analysis_Graphs
      with Pre  => Ekind (E) in Subprogram_Kind | E_Package | E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
-   --  Flow analyse the given entity. This subprogram does nothing for
-   --  entities without a body and not in SPARK 2014.
+   --  Flow analyse the given entity E. S should be the node
+   --  representing the specification of E (i.e. where the N_Contract
+   --  node is attached). This subprogram does nothing for entities
+   --  without a body and not in SPARK 2014.
 
    -------------------------
    -- Add_To_Temp_String  --
@@ -799,7 +802,8 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   function Flow_Analyse_Entity (E : Entity_Id)
+   function Flow_Analyse_Entity (E : Entity_Id;
+                                 S : Node_Id)
                                  return Flow_Analysis_Graphs
    is
       FA : Flow_Analysis_Graphs;
@@ -810,6 +814,7 @@ package body Flow is
               (Kind              => E_Subprogram_Body,
                Analyzed_Entity   => E,
                Scope             => SPARK_Util.Get_Subprogram_Body (E),
+               Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
@@ -839,6 +844,7 @@ package body Flow is
               (Kind              => E_Package,
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Scope (E),
+               Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
@@ -859,6 +865,7 @@ package body Flow is
               (Kind              => E_Package_Body,
                Analyzed_Entity   => E,
                Scope             => Get_Enclosing_Body_Scope (E),
+               Spec_Node         => S,
                Start_Vertex      => Null_Vertex,
                End_Vertex        => Null_Vertex,
                CFG               => Create,
@@ -1043,7 +1050,7 @@ package body Flow is
                if Analysis_Requested (E)
                  and Entity_Body_In_SPARK (E)
                then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+                  FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
                end if;
 
             when E_Package =>
@@ -1055,7 +1062,7 @@ package body Flow is
                     and Entity_Body_In_SPARK (E)
                     and not In_Predefined_Unit (E)
                   then
-                     FA_Graphs.Include (E, Flow_Analyse_Entity (E));
+                     FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
 
                      Pkg_Body := Pkg_Spec;
                      while Present (Pkg_Body) and
@@ -1072,7 +1079,7 @@ package body Flow is
                                          and then
                                          Ekind (Pkg_Body) = E_Package_Body);
                         FA_Graphs.Include (Pkg_Body,
-                                           Flow_Analyse_Entity (Pkg_Body));
+                                           Flow_Analyse_Entity (Pkg_Body, E));
                      end if;
                   end if;
                end;

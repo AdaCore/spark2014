@@ -1,3 +1,8 @@
+ic.adb:57:34: "Y" must be listed in the Initializes aspect of "Test_04"
+ic.adb:72:45: "X" must be listed in the Initializes aspect of "Test_05"
+ic.adb:72:45: "Y" must be listed in the Initializes aspect of "Test_05"
+ic.adb:82:26: "Y" must be listed in the Global aspect of "Sanity_Check_1"
+ic.adb:91:44: "Y" must be listed in the Global aspect of "Sanity_Check_2"
 pkg_a.adb:7:04: "A" is not initialized in "Pkg_A" [uninitialized]
 pkg_a.adb:9:04: warning: initialization has no effect [ineffective]
 pkg_a.adb:16:06: "X" is not initialized [uninitialized]
@@ -17,6 +22,7 @@ pkg_e.adb:14:06: warning: unused assignment [ineffective]
 pkg_e.ads:7:03: "Vis_A" is not initialized in "Pkg_E" [uninitialized]
 pkg_e.ads:10:03: warning: initialization has no effect [ineffective]
 
+   compilation of ic.adb failed
    compilation of pkg_a.adb failed
    compilation of pkg_b.adb failed
    compilation of pkg_c.adb failed

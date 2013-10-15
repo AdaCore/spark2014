@@ -393,10 +393,16 @@ package body Flow.Analysis is
                            Sane : out Boolean)
    is
       Tracefile : Unbounded_String;
+      All_Vars : constant Flow_Id_Sets.Set :=
+        To_Entire_Variables (FA.All_Vars);
 
       function Proc_Record_Decl (N : Node_Id) return Traverse_Result;
       --  Check each component declaration for use of non-manifest
       --  constants.
+
+      function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
+      --  Return the set of variables which are introduced in a
+      --  quantifier under node N
 
       function Proc_Record_Decl (N : Node_Id) return Traverse_Result
       is
@@ -441,6 +447,36 @@ package body Flow.Analysis is
       procedure Check_Record_Declarations is
         new Traverse_Proc (Proc_Record_Decl);
 
+      function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
+      is
+         RV : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+         function Proc (N : Node_Id) return Traverse_Result;
+
+         function Proc (N : Node_Id) return Traverse_Result is
+         begin
+            case Nkind (N) is
+               when N_Quantified_Expression =>
+                  --  Sanity check: Iterator_Specification is not in
+                  --  SPARK so it should always be empty.
+                  pragma Assert (not Present (Iterator_Specification (N)));
+
+                  RV.Include (Direct_Mapping_Id
+                                (Defining_Identifier
+                                   (Loop_Parameter_Specification (N))));
+
+               when others =>
+                  null;
+            end case;
+            return OK;
+         end Proc;
+
+         procedure Traverse is new Traverse_Proc (Proc);
+      begin
+         Traverse (N);
+         return RV;
+      end Quantified_Variables;
+
    begin
       --  Innocent until proven guilty.
       Sane := True;
@@ -464,6 +500,8 @@ package body Flow.Analysis is
 
       --  Sanity check for aliasing.
 
+      pragma Assert_And_Cut (Sane);
+
       if FA.Aliasing_Present then
          if Gnat2Why_Args.Flow_Debug_Mode then
             Error_Msg_Flow
@@ -479,7 +517,7 @@ package body Flow.Analysis is
 
       --  Sanity check for bad default initializations.
 
-      pragma Assert (Sane);
+      pragma Assert_And_Cut (Sane);
 
       Check_Record_Declarations (FA.Scope);
       if not Sane then
@@ -495,10 +533,50 @@ package body Flow.Analysis is
          return;
       end if;
 
+      --  Sanity check that postconditions do not reference
+      --  non-visible state.
+
+      pragma Assert_And_Cut (Sane);
+
+      for Expr of Get_Postcondition_Expressions (FA.Spec_Node) loop
+         declare
+            --  The variables used are all variables appearing in the
+            --  expression - any that have been introduced through a
+            --  quantifier.
+            V_Used : constant Ordered_Flow_Id_Sets.Set :=
+              To_Ordered_Flow_Id_Set
+              (Get_Variable_Set (FA.Scope, Expr, True) -
+                 Quantified_Variables (Expr));
+
+            Tmp : constant String :=
+              (case FA.Kind is
+                  when E_Subprogram_Body => "Global",
+                  when others            => "Initializes");
+         begin
+            for Var of V_Used loop
+               if not All_Vars.Contains (Var) then
+                  --  ??? it would be nice to improve the error location
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Tracefile => Tracefile,
+                     Msg       => "& must be listed in the " & Tmp &
+                       " aspect of &",
+                     N         => Expr,
+                     F1        => Entire_Variable (Var),
+                     F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
+                  Sane := False;
+               end if;
+            end loop;
+         end;
+      end loop;
+      if not Sane then
+         return;
+      end if;
+
       --  Sanity check all vertices if they mention a flow id that we
       --  do not know about.
 
-      pragma Assert (Sane);
+      pragma Assert_And_Cut (Sane);
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare

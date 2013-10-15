@@ -2347,6 +2347,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Export                       |
               Pragma_Global                       |
               Pragma_Import                       |
+              Pragma_Initial_Condition            |
               Pragma_Initializes                  |
               Pragma_Inline                       |
               Pragma_Inline_Always                |
