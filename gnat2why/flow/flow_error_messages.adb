@@ -193,14 +193,11 @@ package body Flow_Error_Messages is
       if F1 /= Null_Flow_Id
         and then F2 /= Null_Flow_Id
       then
-         M := Escape (Substitute (Substitute (To_Unbounded_String (Msg),
-                                              F1),
-                                  F2));
+         M := Substitute (Substitute (To_Unbounded_String (Msg), F1), F2);
       elsif F1 /= Null_Flow_Id then
-         M := Escape (Substitute (To_Unbounded_String (Msg),
-                                  F1));
+         M := Substitute (To_Unbounded_String (Msg), F1);
       else
-         M := Escape (To_Unbounded_String (Msg));
+         M := To_Unbounded_String (Msg);
       end if;
 
       --  Append file
@@ -295,6 +292,7 @@ package body Flow_Error_Messages is
       else
          --  Assemble message string to be passed to Error_Msg_N
 
+         M := Escape (M);
          if Tag'Length >= 1 then
             Append (M, " '[" & Tag & "']");
          end if;
