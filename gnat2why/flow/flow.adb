@@ -32,6 +32,8 @@ with Snames;                        use Snames;
 with Sprint;                        use Sprint;
 with Sinfo;                         use Sinfo;
 with Lib;                           use Lib;
+with Errout;                        use Errout;
+with Osint;                         use Osint;
 
 with Output;                        use Output;
 with Treepr;                        use Treepr;
@@ -960,8 +962,7 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root       : Node_Id;
-                                 Has_Flow_Errors : out Boolean) is
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
 
@@ -1143,8 +1144,13 @@ package body Flow is
          Write_Eol;
       end if;
 
-      --  Set Has_Flow_Errors
-      Has_Flow_Errors := Found_Flow_Error;
+      --  If an error was found then print all errors/warnings and return
+      --  Program_Error.
+      if Found_Flow_Error then
+         Finalize (True);
+         Output_Messages;
+         Exit_Program (E_Errors);
+      end if;
    end Flow_Analyse_CUnit;
 
 end Flow;

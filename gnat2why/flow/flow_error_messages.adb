@@ -29,6 +29,7 @@ with Atree;                              use Atree;
 with Sinput;                             use Sinput;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
+with Erroutc;                            use Erroutc;
 with Opt;                                use Opt;
 with Sem_Util;                           use Sem_Util;
 
@@ -189,17 +190,8 @@ package body Flow_Error_Messages is
       Line   : constant String := Get_Logical_Line_Number_Img (Sloc (N));
       Col    : constant String :=
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
-   begin
-      --  Set Found_Errors to True if either we are not dealing with a warning
-      --  or we are dealing with a warning and the Warning_Mode is
-      --  Treat_As_Error.
-      if (not Warning)
-        or else (Warning
-                   and then Opt.Warning_Mode = Treat_As_Error)
-      then
-         Found_Flow_Error := True;
-      end if;
 
+   begin
       --  Assemble message string
       if F1 /= Null_Flow_Id
         and then F2 /= Null_Flow_Id
@@ -209,6 +201,32 @@ package body Flow_Error_Messages is
          M := Substitute (To_Unbounded_String (Msg), F1);
       else
          M := To_Unbounded_String (Msg);
+      end if;
+
+      --  If we are dealing with a warning and warnings should be suppresed for
+      --  the given node, then we do nothing.
+      declare
+         Temp : String_Ptr;
+      begin
+         Temp := new String'(To_String (M));
+         if Warning
+           and then (Warnings_Suppressed (Sloc (N))
+                       or else Warning_Specifically_Suppressed
+                       (Sloc (N), Temp))
+         then
+            Free (Temp);
+            return;
+         end if;
+      end;
+
+      --  Set Found_Errors to True if either we are not dealing with a warning
+      --  or we are dealing with a warning and the Warning_Mode is
+      --  Treat_As_Error.
+      if (not Warning)
+        or else (Warning
+                   and then Opt.Warning_Mode = Treat_As_Error)
+      then
+         Found_Flow_Error := True;
       end if;
 
       --  Append file

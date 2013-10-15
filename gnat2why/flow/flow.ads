@@ -281,10 +281,7 @@ package Flow is
    --  Main entry to flo analysis
    ----------------------------------------------------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root       : Node_Id;
-                                 Has_Flow_Errors : out Boolean);
-   --  Flow analyses the current compilation unit. Sets Has_Flow_Errors to
-   --  True if either a flow error was found, or if a flow warning was found
-   --  and warnings are treated as errors.
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
+   --  Flow analyses the current compilation unit.
 
 end Flow;
