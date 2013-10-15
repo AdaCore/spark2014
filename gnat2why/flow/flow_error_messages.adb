@@ -219,12 +219,17 @@ package body Flow_Error_Messages is
       declare
          Escaped_M : Unbounded_String := Null_Unbounded_String;
       begin
+         if Warning then
+            Append (Escaped_M, "warning: ");
+         end if;
+
          for Index in Positive range 1 .. Length (M) loop
             if Element (M, Index) = '"' then
                Append (Escaped_M, "\");
             end if;
             Append (Escaped_M, Element (M, Index));
          end loop;
+
          --  Append escaped message
          JSON_M := JSON_M & """message"":""" & Escaped_M;
          JSON_M := JSON_M & """,";
@@ -277,25 +282,29 @@ package body Flow_Error_Messages is
       JSON_M := JSON_M & """tracefile"":""";
       JSON_M := JSON_M & Tracefile & """}";
 
-      if Ide_Mode then
-         --  if Ide_Mode is set then we print the JSON message.
-         Put_Line (To_String (JSON_M));
-      end if;
-
       --  Append the JSON message to JSON_Msgs_List.
       JSON_Msgs_List.Append (JSON_M);
 
-      --  Assemble message string to be passed to Error_Msg_N
-      if Tag'Length >= 1 then
-         Append (M, " '[" & Tag & "']");
-      end if;
-      Append (M, "!!");
-      if Warning then
-         Append (M, '?');
-      end if;
+      --  If Ide_Mode is set, then we print the JSON message
 
-      --  Issue error message
-      Error_Msg_N (To_String (M), N);
+      if Ide_Mode then
+         Put_Line (To_String (JSON_M));
+
+      --  Otherwise we issue an error message
+
+      else
+         --  Assemble message string to be passed to Error_Msg_N
+
+         if Tag'Length >= 1 then
+            Append (M, " '[" & Tag & "']");
+         end if;
+         Append (M, "!!");
+         if Warning then
+            Append (M, '?');
+         end if;
+
+         Error_Msg_N (To_String (M), N);
+      end if;
    end Print_JSON_Or_Normal_Msg;
 
    ---------------------------
