@@ -93,7 +93,7 @@ fib.adb:139:33: warning: overflow check might fail
 fib.adb:140:13: warning: array index check might fail
 fib.adb:140:24: warning: array index check might fail
 fib.adb:140:24: warning: overflow check might fail
-fib.adb:148:11: info: range check proved
+fib.adb:148:11: warning: range check might fail
 fib.adb:149:13: warning: array index check might fail
 fib.adb:149:22: warning: array index check might fail
 fib.adb:151:11: warning: range check might fail
