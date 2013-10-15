@@ -29,6 +29,7 @@ with Atree;                              use Atree;
 with Sinput;                             use Sinput;
 with Einfo;                              use Einfo;
 with Errout;                             use Errout;
+with Opt;                                use Opt;
 with Sem_Util;                           use Sem_Util;
 
 with String_Utils;                       use String_Utils;
@@ -189,6 +190,16 @@ package body Flow_Error_Messages is
       Col    : constant String :=
         Int_Image (Integer (Get_Column_Number (Sloc (N))));
    begin
+      --  Set Found_Errors to True if either we are not dealing with a warning
+      --  or we are dealing with a warning and the Warning_Mode is
+      --  Treat_As_Error.
+      if (not Warning)
+        or else (Warning
+                   and then Opt.Warning_Mode = Treat_As_Error)
+      then
+         Found_Flow_Error := True;
+      end if;
+
       --  Assemble message string
       if F1 /= Null_Flow_Id
         and then F2 /= Null_Flow_Id

@@ -960,7 +960,8 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
+   procedure Flow_Analyse_CUnit (GNAT_Root       : Node_Id;
+                                 Has_Flow_Errors : out Boolean) is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
 
@@ -1142,6 +1143,8 @@ package body Flow is
          Write_Eol;
       end if;
 
+      --  Set Has_Flow_Errors
+      Has_Flow_Errors := Found_Flow_Error;
    end Flow_Analyse_CUnit;
 
 end Flow;

@@ -48,8 +48,12 @@ package Flow is
    --  Global variables
    ----------------------------------------------------------------------
 
-   JSON_Msgs_List : Unbounded_String_Lists.List;
+   JSON_Msgs_List   : Unbounded_String_Lists.List;
    --  This will holds all of the emitted flow messages in JSON format
+
+   Found_Flow_Error : Boolean := False;
+   --  This boolean becomes True if we find a flow error or if we find a
+   --  flow warning while Warning_Mode = Treat_As_Error.
 
    ----------------------------------------------------------------------
    --  Flow_Graphs
@@ -277,7 +281,10 @@ package Flow is
    --  Main entry to flo analysis
    ----------------------------------------------------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
-   --  Flow analyses the current compilation unit
+   procedure Flow_Analyse_CUnit (GNAT_Root       : Node_Id;
+                                 Has_Flow_Errors : out Boolean);
+   --  Flow analyses the current compilation unit. Sets Has_Flow_Errors to
+   --  True if either a flow error was found, or if a flow warning was found
+   --  and warnings are treated as errors.
 
 end Flow;

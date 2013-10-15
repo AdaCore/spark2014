@@ -201,8 +201,9 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      N         : constant Node_Id := Unit (GNAT_Root);
-      Base_Name : constant String := Body_File_Name_Without_Suffix (N);
+      N               : constant Node_Id := Unit (GNAT_Root);
+      Base_Name       : constant String := Body_File_Name_Without_Suffix (N);
+      Has_Flow_Errors : Boolean;
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
@@ -265,11 +266,11 @@ package body Gnat2Why.Driver is
       --  Do some flow analysis
 
       if Gnat2Why_Args.Flow_Analysis_Mode then
-         Flow_Analyse_CUnit (GNAT_Root);
-      end if;
+         Flow_Analyse_CUnit (GNAT_Root, Has_Flow_Errors);
 
-      if Compilation_Errors then
-         return;
+         if Has_Flow_Errors then
+            return;
+         end if;
       end if;
 
       --  Start the translation to Why
