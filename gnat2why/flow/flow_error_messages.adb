@@ -43,39 +43,37 @@ package body Flow_Error_Messages is
    use type Flow_Graphs.Vertex_Id;
    use type Flow_Id_Sets.Set;
 
-   function Escape (S : Unbounded_String)
-                    return Unbounded_String
+   function Escape (S : Unbounded_String) return Unbounded_String
      with Post => Length (Escape'Result) >= Length (S);
    --  Escape any special characters used in the error message (for
    --  example transforms "=>" into "='>" as > is a special insertion
    --  character.
 
-   function Substitute (S : Unbounded_String;
-                        F : Flow_Id)
-                        return Unbounded_String;
+   function Substitute
+     (S : Unbounded_String;
+      F : Flow_Id) return Unbounded_String;
    --  Find the first '&' or '#' and substitute with the given flow
    --  id, with or without enclosing quotes respectively.
 
-   procedure Print_JSON_Or_Normal_Msg (Msg       : String;
-                                       N         : Node_Id;
-                                       F1        : Flow_Id;
-                                       F2        : Flow_Id;
-                                       Tag       : String;
-                                       Warning   : Boolean;
-                                       Tracefile : out Unbounded_String;
-                                       Entity    : String);
+   procedure Print_JSON_Or_Normal_Msg
+     (Msg       : String;
+      N         : Node_Id;
+      F1        : Flow_Id;
+      F2        : Flow_Id;
+      Tag       : String;
+      Warning   : Boolean;
+      Tracefile : out Unbounded_String;
+      Entity    : String);
    --  If Ide_Mode is set then we print a JSON message. Otherwise, we just
    --  print a regular message. It also generates a unique Tracefile name
    --  based on a SHA1 hash of the JSON_Msg and adds a JSON entry to the
-   --  "unit.flow" file.
+   --  "basename.flow" file.
 
    ------------
    -- Escape --
    ------------
 
-   function Escape (S : Unbounded_String)
-                    return Unbounded_String
-   is
+   function Escape (S : Unbounded_String) return Unbounded_String is
       R : Unbounded_String := Null_Unbounded_String;
    begin
       for Index in Positive range 1 .. Length (S) loop
@@ -85,8 +83,10 @@ package body Flow_Error_Messages is
          then
             Append (R, "'");
          end if;
+
          Append (R, Element (S, Index));
       end loop;
+
       return R;
    end Escape;
 
@@ -94,9 +94,9 @@ package body Flow_Error_Messages is
    -- Substitute --
    ----------------
 
-   function Substitute (S : Unbounded_String;
-                        F : Flow_Id)
-                        return Unbounded_String
+   function Substitute
+     (S : Unbounded_String;
+      F : Flow_Id) return Unbounded_String
    is
       R      : Unbounded_String := Null_Unbounded_String;
       Do_Sub : Boolean          := True;
@@ -105,7 +105,8 @@ package body Flow_Error_Messages is
       for Index in Positive range 1 .. Length (S) loop
          if Do_Sub and then Element (S, Index) in '&' | '#' then
             Quote := Element (S, Index) = '&';
-            case  F.Kind is
+
+            case F.Kind is
                when Null_Value =>
                   Append (R, "NULL");
 
@@ -113,7 +114,9 @@ package body Flow_Error_Messages is
                   if Quote then
                      Append (R, """");
                   end if;
+
                   Append (R, Flow_Id_To_String (F));
+
                   if Quote then
                      Append (R, """");
                   end if;
@@ -130,6 +133,7 @@ package body Flow_Error_Messages is
                      if Quote then
                         Append (R, """");
                      end if;
+
                      declare
                         Index : Positive := 1;
                      begin
@@ -152,6 +156,7 @@ package body Flow_Error_Messages is
                            end case;
                         end loop;
                      end;
+
                      if Quote then
                         Append (R, """");
                      end if;
@@ -164,6 +169,7 @@ package body Flow_Error_Messages is
             Append (R, Element (S, Index));
          end if;
       end loop;
+
       return R;
    end Substitute;
 
@@ -171,14 +177,15 @@ package body Flow_Error_Messages is
    -- Print_JSON_Or_Normal_Msg --
    ------------------------------
 
-   procedure Print_JSON_Or_Normal_Msg (Msg       : String;
-                                       N         : Node_Id;
-                                       F1        : Flow_Id;
-                                       F2        : Flow_Id;
-                                       Tag       : String;
-                                       Warning   : Boolean;
-                                       Tracefile : out Unbounded_String;
-                                       Entity    : String)
+   procedure Print_JSON_Or_Normal_Msg
+     (Msg       : String;
+      N         : Node_Id;
+      F1        : Flow_Id;
+      F2        : Flow_Id;
+      Tag       : String;
+      Warning   : Boolean;
+      Tracefile : out Unbounded_String;
+      Entity    : String)
    is
       M      : Unbounded_String;
       JSON_M : Unbounded_String;
@@ -204,8 +211,8 @@ package body Flow_Error_Messages is
          M := To_Unbounded_String (Msg);
       end if;
 
-      --  If we are dealing with a warning and warnings should be suppresed for
-      --  the given node, then we do nothing.
+      --  If we are dealing with a warning and warnings should be suppressed
+      --  for the given node, then we do nothing.
 
       if Warning then
          declare
@@ -375,12 +382,13 @@ package body Flow_Error_Messages is
    -- Error_Msg_Flow --
    --------------------
 
-   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
-                             Tracefile : out Unbounded_String;
-                             Msg       : String;
-                             N         : Node_Id;
-                             Tag       : String := "";
-                             Warning   : Boolean := False)
+   procedure Error_Msg_Flow
+     (FA        : Flow_Analysis_Graphs;
+      Tracefile : out Unbounded_String;
+      Msg       : String;
+      N         : Node_Id;
+      Tag       : String := "";
+      Warning   : Boolean := False)
    is
       Entity : Unbounded_String;
    begin
@@ -392,23 +400,25 @@ package body Flow_Error_Messages is
 
       --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
       --  also be printed.
-      Print_JSON_Or_Normal_Msg (Msg       => Msg,
-                                N         => N,
-                                F1        => Null_Flow_Id,
-                                F2        => Null_Flow_Id,
-                                Tag       => Tag,
-                                Warning   => Warning,
-                                Tracefile => Tracefile,
-                                Entity    => To_String (Entity));
+      Print_JSON_Or_Normal_Msg
+        (Msg       => Msg,
+         N         => N,
+         F1        => Null_Flow_Id,
+         F2        => Null_Flow_Id,
+         Tag       => Tag,
+         Warning   => Warning,
+         Tracefile => Tracefile,
+         Entity    => To_String (Entity));
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
-                             Tracefile : out Unbounded_String;
-                             Msg       : String;
-                             N         : Node_Id;
-                             F1        : Flow_Id;
-                             Tag       : String := "";
-                             Warning   : Boolean := False)
+   procedure Error_Msg_Flow
+     (FA        : Flow_Analysis_Graphs;
+      Tracefile : out Unbounded_String;
+      Msg       : String;
+      N         : Node_Id;
+      F1        : Flow_Id;
+      Tag       : String := "";
+      Warning   : Boolean := False)
    is
       Entity : Unbounded_String;
    begin
@@ -418,26 +428,26 @@ package body Flow_Error_Messages is
          Entity := Null_Unbounded_String;
       end if;
 
-      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
-      --  also be printed.
-      Print_JSON_Or_Normal_Msg (Msg       => Msg,
-                                N         => N,
-                                F1        => F1,
-                                F2        => Null_Flow_Id,
-                                Tag       => Tag,
-                                Warning   => Warning,
-                                Tracefile => Tracefile,
-                                Entity    => To_String (Entity));
+      Print_JSON_Or_Normal_Msg
+        (Msg       => Msg,
+         N         => N,
+         F1        => F1,
+         F2        => Null_Flow_Id,
+         Tag       => Tag,
+         Warning   => Warning,
+         Tracefile => Tracefile,
+         Entity    => To_String (Entity));
    end Error_Msg_Flow;
 
-   procedure Error_Msg_Flow (FA        : Flow_Analysis_Graphs;
-                             Tracefile : out Unbounded_String;
-                             Msg       : String;
-                             N         : Node_Id;
-                             F1        : Flow_Id;
-                             F2        : Flow_Id;
-                             Tag       : String := "";
-                             Warning   : Boolean := False)
+   procedure Error_Msg_Flow
+     (FA        : Flow_Analysis_Graphs;
+      Tracefile : out Unbounded_String;
+      Msg       : String;
+      N         : Node_Id;
+      F1        : Flow_Id;
+      F2        : Flow_Id;
+      Tag       : String := "";
+      Warning   : Boolean := False)
    is
       Entity : Unbounded_String;
    begin
@@ -447,16 +457,15 @@ package body Flow_Error_Messages is
          Entity := Null_Unbounded_String;
       end if;
 
-      --  Call Print_JSON_Msg_Or_Normal_Msg. If required, a JSON message will
-      --  also be printed.
-      Print_JSON_Or_Normal_Msg (Msg       => Msg,
-                                N         => N,
-                                F1        => F1,
-                                F2        => F2,
-                                Tag       => Tag,
-                                Warning   => Warning,
-                                Tracefile => Tracefile,
-                                Entity    => To_String (Entity));
+      Print_JSON_Or_Normal_Msg
+        (Msg       => Msg,
+         N         => N,
+         F1        => F1,
+         F2        => F2,
+         Tag       => Tag,
+         Warning   => Warning,
+         Tracefile => Tracefile,
+         Entity    => To_String (Entity));
    end Error_Msg_Flow;
 
 end Flow_Error_Messages;
