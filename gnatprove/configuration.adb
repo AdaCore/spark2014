@@ -93,7 +93,7 @@ ASCII.LF &
 ASCII.LF &
 ASCII.LF &
 "gnatprove basic switches:" & ASCII.LF &
-" -f                 Force recompilation/proving of all units and all VCs" &
+" -f                 Force recompilation/analysis of all units" &
 ASCII.LF &
 " -jnnn              Use nnn parallel processes (default: 1)" &
 ASCII.LF &
@@ -125,14 +125,44 @@ ASCII.LF &
 " -h, --help         Display this usage information" &
 ASCII.LF &
 ASCII.LF &
+" * Main mode values" &
+ASCII.LF &
+"   . check - Check SPARK restrictions for code where SPARK_Mode=On" &
+ASCII.LF &
+"   . flow  - Prove object initialization and flow contracts" &
+ASCII.LF &
+"   . prove - Prove subprogram contracts and absence of run-time errors" &
+ASCII.LF &
+"   . all   - Activates all modes (default)" &
+ASCII.LF &
+ASCII.LF &
+" * Report mode values" &
+ASCII.LF &
+"   . fail       - Report failures to prove checks (default)" &
+ASCII.LF &
+"   . all        - Report all results of proving checks" &
+ASCII.LF &
+"   . statistics - Same as all, plus timing and steps information" &
+ASCII.LF &
+ASCII.LF &
+" * Warning mode values" &
+ASCII.LF &
+"   . off   - Do not issue warnings" &
+ASCII.LF &
+"   . on    - Issue warnings" &
+ASCII.LF &
+"   . error - Treat warnings as errors (default)" &
+ASCII.LF &
+ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
 " -d, --debug        Debug mode" &
 ASCII.LF &
 " --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
 ASCII.LF &
-"     --proof=p      Set the proof mode "&
-"(p=normal*, no_wp, all_split, path_wp, no_split)" &
+"     --proof=p      Set the proof mode (p=no_split*, then_split, path_wp,"&
+ASCII.LF &
+"                    no_wp, all_split)" &
 ASCII.LF &
 "     --RTS=dir      Specify the Ada runtime name/location" &
 ASCII.LF &
@@ -144,11 +174,27 @@ ASCII.LF &
 & ASCII.LF &
 "     --timeout=s    Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
-"     --limit-line=s Limit proofs to given file and line" &
+"     --limit-line=s Limit analysis to given file and line" &
 ASCII.LF &
-"     --limit-subp=s Limit proofs to subprogram defined by file and line" &
+"     --limit-subp=s Limit analysis to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s     Use given prover instead of default Alt-Ergo prover";
+"     --prover=s     Use given prover instead of default Alt-Ergo prover" &
+ASCII.LF &
+ASCII.LF &
+" * Proof mode values" &
+ASCII.LF &
+"   . no_split   - Generate one formula per check (default)" &
+ASCII.LF &
+"   . then_split - Start with one formula per check, then split into" &
+ASCII.LF &
+"                  paths when needed" &
+ASCII.LF &
+"   . path_wp    - Generate one formula per path for each check" &
+ASCII.LF &
+"   . no_wp      - Do not compute checks, do not call prover" &
+ASCII.LF &
+"   . all_split  - Compute all checks, save them to file, do not call prover" &
+ASCII.LF;
 
    --------------
    -- Clean_Up --
@@ -340,85 +386,71 @@ ASCII.LF &
       Define_Switch
          (Config,
           Debug'Access,
-          "-d", Long_Switch => "--debug",
-          Help => "Debug mode");
+          "-d", Long_Switch => "--debug");
 
       Define_Switch
          (Config,
           Flow_Extra_Debug'Access,
-          Long_Switch => "--flow-debug",
-          Help => "Extra debugging for flow analysis (requires graphviz)");
+          Long_Switch => "--flow-debug");
 
       Define_Switch
         (Config, Project_File'Access,
-         "-P:",
-         Help => "The name of the project file");
+         "-P:");
 
       Define_Switch
         (Config,
          Force'Access,
-         "-f",
-         Help => "Force recompilation / proving of all units and all VCs");
+         "-f");
 
       Define_Switch
          (Config, Parallel'Access,
           Long_Switch => "-j:",
-          Initial => -1,
-          Help => "Set the number of parallel processes (default is 1)");
+          Initial => -1);
 
       Define_Switch
          (Config,
           Continue_On_Error'Access,
-          "-k",
-          Help => "Do not stop analysis at the first error");
+          "-k");
 
       Define_Switch
         (Config,
          MMode_Input'Access,
-         Long_Switch => "--mode=",
-         Help => "Set the mode of GNATprove (check | prove | flow | all)");
+         Long_Switch => "--mode=");
 
       Define_Switch
         (Config,
          Warning_Input'Access,
-         Long_Switch => "--warnings=",
-         Help => "Set the warning mode of GNATprove (off | on | error)");
+         Long_Switch => "--warnings=");
 
       Define_Switch
         (Config,
          Proof_Input'Access,
-         Long_Switch => "--proof=",
-         Help => "Select proof mode (normal | no_wp | all_split)");
+         Long_Switch => "--proof=");
 
       Define_Switch
         (Config,
          Pedantic'Access,
-         Long_Switch => "--pedantic",
-         Help => "Use a strict interpretation of the Ada standard");
+         Long_Switch => "--pedantic");
 
       Define_Switch
         (Config,
          RTS_Dir'Access,
-         Long_Switch => "--RTS=",
-         Help => "Specify the Ada runtime name/location");
+         Long_Switch => "--RTS=");
 
       Define_Switch
         (Config,
          IDE_Progress_Bar'Access,
-         Long_Switch => "--ide-progress-bar",
-         Help => "Generate information on progress for display in IDE");
+         Long_Switch => "--ide-progress-bar");
 
       Define_Switch
         (Config,
          Show_Tag'Access,
-         Long_Switch => "--show-tag",
-         Help => "Add a unique tag at the end of each error message");
+         Long_Switch => "--show-tag");
 
       Define_Switch
          (Config,
           Quiet'Access,
-          "-q", Long_Switch => "--quiet",
-          Help => "Be quiet/terse");
+          "-q", Long_Switch => "--quiet");
 
       Define_Switch
         (Config,
@@ -427,51 +459,43 @@ ASCII.LF &
 
       Define_Switch
          (Config, Steps'Access,
-          Long_Switch => "--steps=",
-          Help => "Set the maximum number of proof steps for Alt-Ergo");
+          Long_Switch => "--steps=");
 
       Define_Switch
          (Config, Timeout'Access,
-          Long_Switch => "--timeout=",
-          Help => "Set the prover timeout in seconds (default is 1)");
+          Long_Switch => "--timeout=");
 
       Define_Switch
          (Config,
           Only_Given'Access,
-          "-u",
-          Help => "Unique compilation - only compile/prove the given files");
+          "-u");
 
       Define_Switch
          (Config,
           All_Projects'Access,
-          "-U",
-          Help => "Unique compilation for all sources of all projects");
+          "-U");
 
       Define_Switch
         (Config,
          Verbose'Access,
-         "-v", Long_Switch => "--verbose",
-         Help => "Output extra verbose information");
+         "-v", Long_Switch => "--verbose");
 
       Define_Switch
         (Config,
          Limit_Line'Access,
-         Long_Switch => "--limit-line=",
-         Help => "Limit proofs to given file and line");
+         Long_Switch => "--limit-line=");
 
-      Define_Switch (Config, "*", Help => "list of source files");
+      Define_Switch (Config, "*");
 
       Define_Switch
         (Config,
          Limit_Subp'Access,
-         Long_Switch => "--limit-subp=",
-         Help => "limit proofs to subp defined by given file and line");
+         Long_Switch => "--limit-subp=");
 
       Define_Switch
         (Config,
          Alter_Prover'Access,
-         Long_Switch => "--prover=",
-         Help => "Use given prover instead of default Alt-Ergo prover");
+         Long_Switch => "--prover=");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
@@ -564,17 +588,10 @@ ASCII.LF &
       elsif Proof_Input.all = "no_split" then
          Proof := No_Split;
 
-      --  The default proof mode is no_split, unless --limit-line is used to
-      --  focus the proof on a line (typically interactively), in which case
-      --  the default proof mode is then_split, so that a failure to prove a VC
-      --  gives a program path that can be shown to the user.
+      --  The default proof mode is no_split
 
       elsif Proof_Input.all = "" then
-         if Limit_Line /= null and then Limit_Line.all /= "" then
-            Proof := Then_Split;
-         else
-            Proof := No_Split;
-         end if;
+         Proof := No_Split;
       else
          Abort_With_Help
            ("proof mode should be one of " &
