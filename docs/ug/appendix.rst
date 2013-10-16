@@ -1,5 +1,3 @@
-.. highlight:: ada
-
 .. _Appendix:
 
 ********
@@ -11,58 +9,65 @@ Appendix
 Command-line Options
 ====================
 
-|GNATprove| is executed with the following command line:
+|GNATprove| is executed with the following command line::
 
-   ``gnatprove -P <project_file.gpr> [switches] [optional_list_of_files]``
+ Usage: gnatprove -Pproj [files] [switches] [-cargs switches]
+ proj is a GNAT project file
+ files is one or more file names
+ -cargs switches are passed to gcc
 
-|GNATprove| accepts the following basic switches:
+ gnatprove basic switches:
+ -f                 Force recompilation/analysis of all units
+ -jnnn              Use nnn parallel processes (default: 1)
+ -k                 Do not stop analysis at the first error
+     --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)
+ -q, --quiet        Be quiet/terse
+     --clean        Remove GNATprove intermediate files, and exit
+     --report=r     Set the report mode of GNATprove (r=fail*, all, statistics)
+ -u                 Unique compilation, only prove the given files
+ -U                 Prove all files of all projects
+ -v, --verbose      Output extra verbose information
+     --version      Output version of the tool and exit
+     --warnings=w   Set the warning mode of GNATprove (w=off, on, error*)
+ -h, --help         Display this usage information
 
-* ``-f``      Force recompilation/proving of all units and all VCs
-* ``-jnnn``   Use nnn parallel processes (default: 1)
-* ``-k```     Do not stop analysis at the first error
-* ``--mode=M`` Proof mode
+ * Main mode values
+   . check - Check SPARK restrictions for code where SPARK_Mode=On
+   . flow  - Prove object initialization and flow contracts
+   . prove - Prove subprogram contracts and absence of run-time errors
+   . all   - Activates all modes (default)
 
-  * ``check`` - Check SPARK restrictions for code where SPARK_Mode=On
-  * ``flow``  - Prove object initialization, globals and depends contracts
-  * ``prove`` - Prove subprogram contracts and absence of run-time
-    errors (default)
-  * ``all``   - Activates all modes
+ * Report mode values
+   . fail       - Report failures to prove checks (default)
+   . all        - Report all results of proving checks
+   . statistics - Same as all, plus timing and steps information
 
-* ``-q``      Be quiet/terse
-* ``--clean`` Remove GNATprove intermediate files, and exit
-* ``--report=M`` Output mode
+ * Warning mode values
+   . off   - Do not issue warnings
+   . on    - Issue warnings
+   . error - Treat warnings as errors (default)
 
-  * ``fail``       - Report failures to prove VCs (default)
-  * ``all``        - Report all results of proving VCs
-  * ``statistics`` - Report all results of proving VCs, including
-    timing and steps information
+ gnatprove advanced switches:
+ -d, --debug        Debug mode
+ --flow-debug       Extra debugging for flow analysis (requires graphviz)
+     --proof=p      Set the proof mode (p=no_split*, then_split, path_wp,
+                    no_wp, all_split)
+     --RTS=dir      Specify the Ada runtime name/location
+     --show-tag     Append a unique tag to each error message
+     --pedantic     Use a strict interpretation of the Ada standard
+     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo
+     --timeout=s    Set the prover timeout in seconds (default: 1)
+     --limit-line=s Limit analysis to given file and line
+     --limit-subp=s Limit analysis to subprogram defined by file and line
+     --prover=s     Use given prover instead of default Alt-Ergo prover
 
-* ``-u``      Unique compilation, only prove the given files
-* ``-U``      Prove all files of all projects
-* ``-v``, ``--verbose`` Output extra verbose information
-* ``--version``         Output version of the tool and exit
-* ``-h``, ``--help``    Display usage information
-
-|GNATprove| accepts the following advanced switches:
-
-* ``-d``, ``--debug``   Debug mode
-* ``--proof=M``         Proof mode
-
-  * ``no_wp``      - Do not compute VCs, do not call prover
-  * ``all_split``  - Compute all VCs, save them to file, do not call prover
-  * ``path_wp``    - Generate one formula per path for each check
-  * ``no_split``   - Generate one formula per check
-  * ``then_split`` - Start with one formula per check, then split into
-    paths when needed
-
-* ``--RTS=DIR``   Specify the Ada runtime name/location
-* ``--pedantic``  Use a strict interpretation of the Ada standard
-* ``--steps=nnn`` Set the maximum number of proof steps to nnn for Alt-Ergo
-* ``--timeout=s`` Set the prover timeout in seconds (default: 1)
-* ``--limit-line=file:line`` Limit proofs to the specified file and line
-* ``--limit-subp=file:line`` Limit proofs to the specified subprogram
-  declared at the location given by file and line
-* ``--prover=s``  Use given prover instead of default Alt-Ergo prover
+ * Proof mode values
+   . no_split   - Generate one formula per check (default)
+   . then_split - Start with one formula per check, then split into
+                  paths when needed
+   . path_wp    - Generate one formula per path for each check
+   . no_wp      - Do not compute checks, do not call prover
+   . all_split  - Compute all checks, save them to file, do not call prover
 
 .. _Alternative_Provers:
 
@@ -77,7 +82,7 @@ search your PATH for any supported provers and add them to the config
 file. Any such prover can then be used with the ``--prover`` option,
 for example:
 
-   ``gnatprove -P foo.gpr --prover=cvc4_gnatprove``
+   ``gnatprove -P foo.gpr --prover=cvc4``
 
 .. _Project_Attributes:
 
@@ -87,11 +92,11 @@ Project Attributes
 |GNATprove| reads the package ``Prove`` in the given project file. This package
 is allowed to contain an attribute ``Switches``, which defines additional
 command line switches that are used for the invokation of |GNATprove|. As an
-example, the following package in the project file sets the default mode of
-|GNATprove| to ``prove``::
+example, the following package in the project file sets the default report mode
+of |GNATprove| to ``all``::
 
     package Prove is
-       for Switches use ("--mode=prove");
+       for Switches use ("--report=all");
     end Prove;
 
 Switches given on the command line have priority over switches given in the
@@ -297,7 +302,7 @@ globals and dependency aspects. We expect to remove this limitation
 after the first release.
 
 Portability Issues
-------------------
+==================
 
 To execute a |SPARK| program, it is expected that users will compile
 the program (as an Ada program) using an Ada compiler.
@@ -377,34 +382,3 @@ introduced in a later version of Ada must be avoided (unless it is
 expressed as a safely-ignored pragma). This seems worth mentioning because
 Ada 2012 constructs such as quantified expressions
 and conditional expressions are often heavily used in |SPARK| programs.
-
-Language Features Not Yet Supported
------------------------------------
-
-The major features not yet supported are:
-
-* OO programming: tagged types, dispatching
-* invariants on types (invariants and predicates)
-
-|GNATprove| outputs in the :ref:`summary file` which features from |SPARK| are
-not yet supported and used in the program [using brackets]:
-
-* aggregate: aggregate extension;
-* arithmetic operation: not yet implemented arithmetic operation;
-* attribute: not yet implemented attribute;
-* concatenation: array concatenation;
-* container: formal container;
-* dispatch: dispatching;
-* expression with action: expression with action;
-* multi dim array: multi-dimensional array of dimension > 4;
-* pragma: not yet implemented pragma;
-* representation clause: representation clause;
-* tagged type: tagged type;
-* type invariant;
-* type predicate;
-* operation on arrays: rarely used operation on arrays, such as boolean
-  operators;
-* iterators: loops with iterators;
-* class wide types: class wide types;
-* interfaces: interfaces;
-* not yet implemented: any other not yet implemented construct.

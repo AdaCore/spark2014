@@ -46,25 +46,35 @@ excluded from Release 1 of the |SPARK| language and tools for scheduling reasons
 These are scheduled for inclusion in Release 2, the most notable items being
 support for tasking and tagged types.
 
-Identiying |SPARK| Code With Pragma ``SPARK_Mode``
-==================================================
+Identifying |SPARK| Code
+========================
 
-This section contains a simple description of pragma ``SPARK_Mode``. See
-:ref:`Pragma_SPARK_Mode` for the complete description.
+In general a program can have some parts that are in |SPARK| (and follow all
+the rules in the |SPARK| Reference Manual), and some parts that are full
+Ada 2012. Pragma or aspect ``SPARK_Mode`` is used to identify which parts are
+in |SPARK| (by default programs are in full Ada).
+
+This section contains a simple description of pragma and aspect
+``SPARK_Mode``. See :ref:`Pragma_SPARK_Mode` for the complete description.
+
+Note that |GNATprove| only analyzes parts of the code that are identified as
+being in |SPARK| using pragma or aspect ``SPARK_Mode``.
 
 Placement Rules
 ---------------
-
-In general a program can have some parts that are in |SPARK| (and
-follow all the rules in the |SPARK| Reference Manual), and some parts that are full
-Ada 2012. Pragma or aspect ``SPARK_Mode`` is used to identify which parts
-are in |SPARK| (by default programs are in full Ada).
 
 The form of a pragma SPARK_Mode is as follows:
 
 .. code-block:: ada
 
    pragma SPARK_Mode [ (On | Off) ]
+
+For example:
+
+.. code-block:: ada
+
+   pragma SPARK_Mode (On);
+   package P is
 
 The form of an aspect SPARK_Mode is as follows:
 
@@ -170,7 +180,7 @@ The data-flow analysis performed by the |SPARK| tools considers the initializati
 of variables and the data dependencies of subprograms (which variables are read
 or written). This type of analysis can detect errors such as attempting to read
 from a variable which has not been assigned a value. In order to perform data-flow
-analysis the tools need to know the complete set of variables which may be read
+analysis, the tools need to know the complete set of variables which may be read
 or written by each subprogram, which consists of any formal parameters of the
 subprogram and any global variables used by the subprogram. This set of global
 variables may be specified by the programmer via the global annotation, as in
@@ -183,14 +193,14 @@ this example:
       with Global => (In_Out => Total);
 
 This states that the global variable ``Total`` is both an input and an output of the
-subprogram, i.e. it is both read and written. If such a global annotation is
+subprogram (it is both read and written). If such a Global annotation is
 present then it will be used in the analysis of calls to the subprogram - callers
 may assume that ``Total`` is both read and written and, very importantly, that no
 other global variables are read or written by this subprogram. Then, when the body
-of the subprogram is analyzed the tools will check that its implementation satisfies
+of the subprogram is analyzed, the tools will check that its implementation satisfies
 this contract.
 
-If the global annotation is not explicitly provided then the tools can derive it
+If the Global annotation is not explicitly provided then the tools can derive it
 automatically from the body of the subprogram. This may be appropriate in a number
 of situations, for example:
 
@@ -199,11 +209,11 @@ of situations, for example:
   the code was written with the intention that it would be analyzed.
 
 - Code is in maintenance phase, it might or might not have all of the |SPARK|
-  specific aspects. If the aspects are present, the synthesized aspects may be
-  compared with the explicit ones and auto correction used to update the aspects
-  if the changes are acceptable. If there are aspects missing they are
-  automatically synthesized for analysis purposes. This is also regarded
-  as generative analysis.
+  Global aspects. If the Global aspects are present, the synthesized aspects
+  may be compared with the explicit ones to update the aspects if the changes
+  are acceptable. If there are aspects missing, they are automatically
+  synthesized for analysis purposes. This is also regarded as generative
+  analysis.
 
 - Legacy code is analyzed which has no (or incomplete) |SPARK| specific aspects
   This is regarded as *retrospective analysis*, where code is being analyzed
@@ -214,11 +224,11 @@ of situations, for example:
 Abstract_State, Refined_State and Initializes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The previous section discussed the global annotation, which applies to subprograms.
+The previous section discussed the Global annotation, which applies to subprograms.
 There are two more annotations required for data-flow analysis, and these apply to
 packages rather than subprograms. Consider the specification of ``Add_To_Total``
 above. The global variable ``Total`` might well be declared in the body of the enclosing
-package. If the specification of ``Add_To_Total`` appears in the package specification
+package. If the specification of ``Add_To_Total`` appears in the package specification,
 then its global annotation is referring to a variable ``Total`` about which nothing
 is known because the package body has not yet been analyzed. Indeed, the package
 body might not even have been written yet. The Abstract_State annotation allows
@@ -256,7 +266,7 @@ In order to perform this flow analysis for the whole program the tools need to
 know which elements of package state are initialized when the main program
 starts executing and which are still uninitialized. This is the purpose of the
 initializes annotation - it tells us what is initialized by the elaboration of
-the package. In our example package ``P`` does initialize ``Total`` so this is specified
+the package. In our example, package ``P`` does initialize ``Total`` so this is specified
 by the initializes annotation.
 
 .. code-block:: ada
@@ -292,7 +302,7 @@ be a one-to-many relationship or even, in special cases, a one-to-null relations
 Depends
 ^^^^^^^
 
-The depends annotation adds more detail to subprogram contracts by specifying
+The Depends annotation adds more detail to subprogram contracts by specifying
 the relationship between the inputs and the outputs.
 
 .. code-block:: ada
@@ -302,25 +312,24 @@ the relationship between the inputs and the outputs.
       with Depends => (X => Y,
                        Y => X);
 
-In the example above the depends annotation states that the final value of ``X``
+In the example above the Depends annotation states that the final value of ``X``
 depends on the initial value of ``Y``, and the final value of ``Y`` depends on the
 initial value of ``X``. It is important to note that this is not stating the
 stronger property that the values of ``X`` and ``Y`` are swapped - that would require
 a postcondition aspect which will be described in the next section. So an
 implementation which, for example, doubled ``X`` and ``Y`` and then swapped their
-values would satisfy this dependency. If a depends annotation is present then
-it must be complete, i.e. for every output of the subprogram it must specify
+values would satisfy this dependency. If a Depends annotation is present then
+it must be complete: for every output of the subprogram it must specify
 the (possibly null) list of inputs on which that output depends.
 
-The depends aspect of a subprogram is used by the tools when performing flow
+The Depends aspect of a subprogram is used by the tools when performing flow
 analysis of calls to that subprogram, and it is checked by the tools when
-analysing the body. This level of flow analysis is referred to as information-flow
+analyzing the body. This level of flow analysis is referred to as information-flow
 analysis. As with the other annotations discussed so far, if the
-depends aspect is not provided explicitly for a subprogram then it will be
-synthesized by the tools. (The synthesized dependency will be a conservative
+Depends aspect is not provided explicitly for a subprogram then it will be
+synthesized by the tools. The synthesized dependency will be a conservative
 approximation if the body of the subprogram is not available for analysis,
-and may still be an approximation even if the body is available. For more details
-see the |SPARK| Reference Manual.)
+and may still be an approximation even if the body is available.
 
 .. _Preconditions and Postconditions:
 
@@ -369,12 +378,12 @@ calling context. For example:
       Pre  => X + Y in Integer,
       Post => Add'Result = X + Y;
 
-    function Access (A : My_Array; J : Index) return Element with
+    function Get_Value (A : My_Array; J : Index) return Element with
       Pre  => A(J) /= No_Element,
       Post => Add'Result = A(J);
 
 |GNATprove| generates checks to show that ``X + Y`` in the precondition of
-``Add`` can never overflow, and that ``A(J)`` in the precondition of ``Access``
+``Add`` can never overflow, and that ``A(J)`` in the precondition of ``Get_Value``
 can never access ``A`` outside its bounds. These checks cannot be proved. One
 can usually rewrite the precondition so that it cannot raise a run-time error,
 either by adding a guard in the precondition, or by using a different
@@ -385,10 +394,11 @@ formulation that cannot raise a run-time error. For example:
 
     function Add (X, Y : Integer) return Integer with
       Pre  => (if X > 0 and Y > 0 then X <= Integer'Last - Y)
-                and then (if X < 0 and Y < 0 then X >= Integer'First - Y),
+                and then
+              (if X < 0 and Y < 0 then X >= Integer'First - Y),
       Post => Add'Result = X + Y;
 
-    function Access (A : My_Array; J : Index) return Element with
+    function Get_Value (A : My_Array; J : Index) return Element with
       Pre  => J in A'Range and then A(J) /= No_Element,
       Post => Add'Result = A(J);
 
@@ -438,14 +448,14 @@ disjoint and complete contract cases:
    :linenos:
 
     procedure Incr_Threshold (X : in out Integer) with
-      Contract_Cases => (X < Threshold  => X = X'Old + 1,
-                         X >= Threshold => X = X'Old);
+      Contract_Cases => (X < Threshold => X = X'Old + 1,
+                         X = Threshold => X = X'Old);
 
 Each case in the list consists in a guard and a consequence separated by the
 symbol ``=>``. All guards are evaluated on entry to the subprogram. For each
 input, only one guard should evaluate to ``True``. The corresponding
 consequence should evaluate to ``True`` when returning from the subprogram. For
-example, the contract cases of ``Incr_Threshold`` expresses that the subprogram
+example, the contract cases of ``Incr_Threshold`` express that the subprogram
 should be called in two distinct cases only:
 
 * on inputs that are strictly less than the value of a given threshold, in
@@ -463,7 +473,8 @@ following precondition and postcondition:
 
     procedure Incr_Threshold (X : in out Integer) with
       Pre  => (X < Threshold and not (X = Threshold))
-               or else (not (X < Threshold) and X = Threshold),
+                or else
+              (not (X < Threshold) and X = Threshold),
       Post => (if X'Old < Threshold'Old then X = X'Old + 1
                elsif X'Old = Threshold'Old then X = X'Old);
 
@@ -493,7 +504,7 @@ not considered, because this case is ruled out by the precondition of
 ``Incr_Threshold``.
 
 Note that the completeness is automatically reached when the last guard is
-``others``, denoting all cases not captured by any of the other guard. For
+``others``, denoting all cases that are not captured by any other guard. For
 example:
 
 .. code-block:: ada
@@ -519,7 +530,7 @@ visible part, in which case the postcondition on the declaration defaults to ``T
 
 |GNATprove| will attempt to verify that the precondition of the subprogram together
 with its refined postcondition imply the postcondition on the declaration (and
-an error will be reported if this cannot be shown to hold).
+a warning will be reported if this cannot be shown to hold).
 
 The example below shows how this might be used in a package which provides a type
 for declaring stacks of integers, and operations for that type. In the package
@@ -571,6 +582,11 @@ of which we will see more in the next section.
 Expression Functions
 ^^^^^^^^^^^^^^^^^^^^
 
+Expression functions are functions whose body is an expression, which can be
+defined in a spec unit.  Expression functions were introduced in Ada 2012 as a
+useful abstraction mechanism for stating properties in preconditions and
+postconditions.
+
 Expression functions that do not have a user-defined postcondition are treated
 specially by |GNATprove|, which generates an implicit postcondition stating
 that their result is equal to the expression that defines them. For example,
@@ -590,6 +606,12 @@ This postcondition is automatically satisfied, so |GNATprove| does not generate
 checks for it. Expression functions that have a user-defined postcondition
 are treated like regular functions.
 
+Currently, the knowledge that a function call in an annotation respects
+its postcondition (when called in a context where the precondition is
+satisfied) is only available for expression functions. Thus, expression
+functions should be used whenever possible for these functions called in
+annotations.
+
 .. _Ghost Functions:
 
 Ghost Functions
@@ -599,15 +621,15 @@ Sometimes it is useful to declare functions that are needed in annotations only,
 but that are intended never to be called in executable code. Such functions may
 be used to factor out common parts of expressions in annotations, or to make it
 easier to express some desired property to be proved or tested. Such functions
-are referred to as Ghost Functions and their key property is that they have no
+are referred to as ghost functions and their key property is that they have no
 effect on the dynamic semantics of the Ada program. If all ghost functions
-and references to them in assertions were removed from the source code the behaviour
+and references to them in assertions were removed from the source code, the behaviour
 of the compiled program would be unchanged.
 
 Ghost functions are identified by the convention ``Ghost`` and may be expression
-functions or regular functions. If they are regular functions then they may be
+functions or regular functions. If they are regular functions, then they may be
 executable (with a body declared as normal) or non-executable (no body is declared).
-If they are non-executable then they can only be used for proof, not testing, and
+If they are non-executable, then they can only be used for proof, not testing, and
 their definitions might be provided by an external proof tool in order to complete
 the formal verification process.
 
@@ -618,54 +640,25 @@ mentioned above.
 
    function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
       (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
-      with Pre        => Lo <= Hi,
-           Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
-           Convention => Ghost;
+   with Pre        => Lo <= Hi,
+        Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
+        Convention => Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
-      with Pre        => Lo <= Hi,
-           Post       => A_Ghost_Function'Result in Lo .. Hi,
-           Convention => Ghost;
+   with Pre        => Lo <= Hi,
+        Post       => A_Ghost_Function'Result in Lo .. Hi,
+        Convention => Ghost;
    -- The body of the function is declared elsewhere.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
-      with Pre        => Lo <= Hi,
-           Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
-           Convention => Ghost,
-           Import;
+   with Pre        => Lo <= Hi,
+        Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
+        Convention => Ghost,
+        Import;
    -- The body of the function is not declared elsewhere.
 
-The |SPARK| tools will verify that ghost functions cannot influence any non-ghost
+The |SPARK| tools verify that ghost functions cannot influence any non-ghost
 entities in the program.
-
-Function Calls in Annotations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The contracts of functions called in annotations are essential for automatic
-proofs. Currently, the knowledge that a function call in an annotation respects
-its postcondition (when called in a context where the precondition is
-satisfied) is only available for expression functions. Thus, expression
-functions should be used whenever possible for these functions called in
-annotations.  The syntax of expression functions, introduced in Ada 2012,
-allows defining functions whose implementation simply returns an expression,
-such as ``Is_Even``, ``Is_Odd`` and ``Is_Prime`` below.
-
-.. code-block:: ada
-   :linenos:
-
-    function Is_Even (X : Integer) return Boolean is (X mod 2 = 0);
-
-    function Is_Odd (X : Integer) return Boolean is (not Even (X));
-
-    function Is_Prime (X : Integer) with
-      Pre => Is_Odd (X);
-
-Calls to Standard Library Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The standard library for the host is pre-analyzed, and ``Global`` contracts are
-generated for these subprograms, so that user code can call standard library
-subprograms.
 
 Loop Invariants
 ---------------
@@ -692,7 +685,7 @@ given below:
    function Contains (Table : IntArray; Value : Integer) return Boolean with
      Post => (if Contains'Result then
                 (for some J in Table'Range => Table (J) = Value)
- 	     else
+ 	      else
                 (for all J in Table'Range => Table (J) /= Value));
 
    function Contains (Table : IntArray; Value : Integer) return Boolean is
@@ -710,7 +703,7 @@ given below:
    end Contains;
 
 When the loop involves modifying a variable, it may be necessary to refer to
-the value of the variable at loop entry. This can be done using the GNAT
+the value of the variable at loop entry. This can be done using
 attribute ``Loop_Entry``. For example, in order to prove the postcondition of
 function ``Move`` below, one has to write a loop invariant referring to
 ``Src'Loop_Entry`` such as the one given below:
@@ -738,7 +731,7 @@ function ``Move`` below, one has to write a loop invariant referring to
 Note in particular the second conjunct in the loop invariant, which states that
 the ``Src`` array has not been modified between indexes ``Index`` and
 ``Dest'Last``. This part of an invariant or contract stating what has not been
-modified, called in the literature the *frame condition*, is essential for
+modified, called in the scientific literature the *frame condition*, is essential for
 |GNATprove| to work effectively. Special care should be taken to write adequate
 frame conditions, as they usually look obvious to programmers, and so it is
 very common to forget to write them.
@@ -781,11 +774,11 @@ reached at execution. As an example, consider the following expression:
 
     (for all I in 1 .. 10 => 1 / (I - 3) > 0)
 
-This quantified expression will never raise a run-time error, because the
-test is already false for the first value of the range, ``I = 1``, and the
-execution will stop, with the result value ``False``. However, |GNATprove|
-requires the expression to be run-time error free over the entire range,
-including ``I = 3``, so there will be an unproved VC for this case.
+This quantified expression will never raise a run-time error, because the test
+is already false for the first value of the range, ``I = 1``, and the execution
+will stop, with the result value ``False``. However, |GNATprove| requires the
+expression to be run-time error free over the entire range, including ``I =
+3``, so there will be an unproved check for the division by zero in this case.
 
 Pragma ``Assert_And_Cut``
 -------------------------
@@ -821,12 +814,33 @@ of the procedure, hence many fewer paths.
 Overflow Modes
 --------------
 
+Annotations such as preconditions, postconditions, assertions, loop invariants,
+are analyzed by |GNATprove| with the exact same meaning that they have during
+execution. In particular, evaluating the expressions in an annotation may raise
+a run-time error, in which case |GNATprove| will attempt to prove that this
+error cannot occur, and report a warning otherwise.
+
+Integer overflows are a kind of run-time errors that occurs when the result of
+an arithmetic computation does not fit in the bounds of the machine type used
+to hold the result. In some cases, it is convenient to express properties in
+annotations as they would be expressed in mathematics, where quantities are
+unbounded, for example:
+
 .. code-block:: ada
    :linenos:
 
     function Add (X, Y : Integer) return Integer with
       Pre  => X + Y in Integer,
       Post => Add'Result = X + Y;
+
+The precondition of ``Add`` states that the result of adding its two parameters
+should fit in type ``Integer``. In the default mode, evaluating this expression
+will fail an overflow check, because the result of ``X + Y`` is stored in a
+temporary of type ``Integer``. If the compilation switch ``-gnato13`` is used,
+then annotations are compiled specially, so that arithmetic operations use
+unbounded intermediate results. In this mode, |GNATprove| does not generate a
+check for the addition of ``X`` and ``Y`` in the precondition of ``Add``, as
+there is no possible overflow here.
 
 |SPARK| Libraries
 =================
@@ -856,27 +870,27 @@ reasonable amount of time.
 Specification of formal containers is in |SPARK|. As a consequence,
 there is no procedure that take a procedure as an argument such that
 ``Update_Element`` or ``Query_Element`` in Ada Standard container
-library. What is more, the Ada 2012 iteration mechanism that allows
+library. The Ada 2012 iteration mechanism that allows
 the use of ``for all`` and ``for some`` on Ada Standard containers is
-not available on formal containers.
+not available yet on formal containers.
 
 Formal containers are adapted to the specification process. First of all,
-cursors no longer have a reference to underlying container. Indeed, in
-Ada Standard container library, cursor contain a pointer to their
-underlying container. As a consequence, if a container is modified
-then so are every cursor of this container. This modification also
-allows to use the same cursor inside different containers. In
-particular, it is useful to link elements associated to a list before
-and after a modification. Formal containers also provide three new
-functions per container type. ``Right (C : Container; Cu : Cursor)
-returns Container`` and ``Left (C : Container; Cu : Cursor) returns
-Container`` can be used to write loop invariant. They return the right
-(resp. the left) part of the container ``C`` starting before
-(resp. stopping before) the cursor ``Cu``.
+cursors no longer have a reference to underlying container. Indeed, in Ada
+Standard container library, cursors contain a pointer to their underlying
+container. As a consequence, if a container is modified, then so are all
+cursors attached to this container, which is contrary to the philosophy of
+modular verification in |SPARK|, hence the modification to separate cursors
+from containers. This modification also allows to use the same cursor with
+different containers. In particular, it is useful to link elements associated
+to a list before and after a modification. Formal containers also provide three
+new functions per container type. ``Right (C : Container; Cu : Cursor) returns
+Container`` and ``Left (C : Container; Cu : Cursor) returns Container`` can be
+used to write loop invariant. They return the right (resp. the left) part of
+the container ``C`` starting before (resp. stopping before) the cursor ``Cu``.
 
 For example, in the function ``My_Find`` below, ``Left`` is used in the
-loop-invariant to state that the element ``E`` has not been found in
-the part of the list that as been analyzed yet.
+loop invariant to state that the element ``E`` has not been found in
+the part of the list that as been analyzed already.
 
 .. code-block:: ada
    :linenos:
@@ -884,8 +898,9 @@ the part of the list that as been analyzed yet.
    function My_Find (L : List; E : Element_Type) return Cursor with
      Post => (if My_Find'Result = No_Element then
                 not Contains (L, E)
-              else Has_Element (L, My_Find'Result) and then
-              Element (L, My_Find'Result) = E);
+              else (Has_Element (L, My_Find'Result)
+                     and then
+                    Element (L, My_Find'Result) = E));
 
 .. code-block:: ada
    :linenos:
@@ -909,7 +924,8 @@ really are equal with respect to everything that can impact existing
 functions of the library. On lists for example, it does not only check
 that ``C1`` and ``C2`` contain the same elements in the same order but
 also that ``C1`` and ``C2`` share the same cursors. This function is
-generaly used for writing frame-conditions.
+generaly used for stating which parts of a container do not change in a
+loop invariant or a postcondition.
 
 Note that the model of ``Strict_Equal`` uses the theoretical equality
 on elements whereas its implementation uses the parameter ``=``
@@ -917,27 +933,28 @@ of the generic to compare elements. This is done so that the function
 ``Strict_Equal`` can always be used to express invariant properties of
 collections over loops and calls.
 This difference between proof and test means that, when the parameter
-``=`` is not the physical equality on elements, a
+``=`` used to instantiate a generic formal container
+is not the physical equality on elements, a
 user should be careful not to use testing to discharge
 assumptions involving ``Strict_Equal``, such as preconditions of
 proven subprograms and postconditions of programs called by a
 proven subprogram, which mention ``Strict_Equal``.
 
-For example, in the function ``My_Preppend`` below, ``Strict_Equal`` is
-used to state that ``My_Preppend`` does not modify the tail of the
+For example, in the function ``My_Prepend`` below, ``Strict_Equal`` is
+used to state that ``My_Prepend`` does not modify the tail of the
 list. Note that we use ``First (L1'Old)`` to refer to the first
-element of the tail in the output of preppend, which would not have
+element of the tail in the postcondition of ``My_Prepend``, which would not have
 been possible if cursors still had an internal reference to the list
 they come from.
 
 .. code-block:: ada
    :linenos:
 
-   procedure My_Preppend (L1 : in out List; E : Element_Type) with
-     Pre => L1.Capacity > Length (L1),
-     Post => Length (L1) = 1 + Length (L1'Old) and then
-             First_Element (L1) = E and then
-             Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
+   procedure My_Prepend (L1 : in out List; E : Element_Type) with
+     Pre  => L1.Capacity > Length (L1),
+     Post => Length (L1) = 1 + Length (L1'Old)
+               and then First_Element (L1) = E
+               and then Strict_Equal (Right (L1, First (L1'Old)), L1'Old);
 
 Mixing |SPARK| Code and Ada Code
 ================================
@@ -981,71 +998,11 @@ meets this obligation if it is semantically equivalent (with respect to
 dynamic semantics) to some notional completion that could have been
 written in |SPARK|.
 
-Failure to follow this rule can lead to subtle problems.
-For example, a SPARK private type whose non-SPARK completion includes a
-reference to a variable in a default initial value expression for a
-record component could be a violation. Given this |SPARK| example
-
-.. code-block:: ada
-
-   declare
-     X : T := T'(others => <>);
-   begin
-     Modify_Some_Global_Variables;
-     Flag := (X = T'(others => <>));
-
-, the rules of |SPARK| imply that Flag must be assigned the value True.
-If T is a private type with a non-SPARK completion such that
-Flag is assigned False when the program executes, then the user's
-obligation has not been met. If this seems obscure, well, that's the point:
-care needs to be taken in this area.
-
-When the |SPARK| Reference Manual defines the static and dynamic
-semantics of |SPARK|, there is no description of the semantics of
-non-SPARK constructs (just as the Ada manual does not describe,
-for example, the dynamic semantics of assigning an array to a record).
-So how is the semantics of a such "mixed" |SPARK| programs defined?
-It would not be very helpful to say that "a mixed program is not a |SPARK|
-program; it is an Ada program, so go look in the Ada Reference Manual"
-because this would be useless with respect to flow analysis and proofs
-(although it might be fine for static and dynamic semantics).
-
 The |SPARK| semantics (specifically including flow analysis and proofs) of
-a "mixed" program which meets the aforementioned "is semantically equivalent ...
-to some ... completion ... written in |SPARK|" requirement is well defined -
+a "mixed" program which meets the aforementioned requirement is well defined -
 it is the semantics of the equivalent 100% |SPARK| program.
 For the semantics of other "mixed" programs, go look in the Ada Reference
 Manual.
-
-[A minor detail: this approach assumes that the details of the notional
-"equivalent |SPARK|" completion do not affect the static semantics,
-flow analysis, and proofs of the |SPARK| portion of the program. This is
-generally true but there are some sticky details. For example, consider
-the "no partial default initialization" rule for a type declaration,
-which says that either all or none of a record type's non-discriminant
-components shall have full default initialization. If a private type is
-used as a component type (and no explicit default value is provided for
-that component at the point of the component declaration), the implementation
-of this rule involves looking through the private type to its completion.
-As it happens, this particular case can be implemented fairly easily even
-if the completion of the type is Ada-but-not-SPARK, but this is a case where
-the properties of the completion "poke through". Similarly, the caller of
-a SPARK subprogram normally does not need to see the body of the subprogram,
-but the implementation of the |SPARK| rules which prevent calling a
-subprogram before its body has been elaborated are an exception to this.
-These rules can be generalized to handle some Ada-but-not-SPARK constructs,
-but in the most general case (e.g., a call to an imported subprogram)
-optimistic assumptions are made and it is the responsibility of the user
-to ensure that this does not lead to problems.]
-
-Note that one possible non-SPARK completion for a given SPARK
-subprogram_declaration is an Import pragma (or an equivalent
-aspect_specification). This means that |SPARK| code can invoke
-code written in languages other than Ada (e.g., C).
-Definitionally, this is a minor point - if the completion of a given
-subprogram is not in |SPARK|, it really doesn't matter how it is
-implemented because the user has taken responsibility for ensuring
-that the implementation is "correct".
 
 In the case of a package, the specification/completion division described
 above is a simplification of the true situation. A package is divided into

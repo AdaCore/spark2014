@@ -26,7 +26,7 @@ When |GNATprove| is run in ``flow`` mode it performs flow analysis to check
 for errors relating to initialization of, and information flow between,
 variables. If the code under analysis does not include global or depends
 annotations then this analysis will detect errors relating to:
- 
+
  - the use of uninitialized variables;
  - unused variables;
  - unused assignments;
@@ -95,7 +95,7 @@ where |GNATprove| warns that ``T`` is unused.
 
 .. _flow analysis of code with globals:
 
-Flow Analysis of Code with Globals 
+Flow Analysis of Code with Globals
 ----------------------------------
 
 If the user has added global annotations to the code then |GNATprove|
@@ -133,7 +133,7 @@ annotation is corrected and the code is reanalysed.
 
 .. _flow analysis of code with depends:
 
-Flow Analysis of Code with Depends 
+Flow Analysis of Code with Depends
 ----------------------------------
 
 If the user has specified depends annotations then |GNATprove| can go still
@@ -232,12 +232,12 @@ the following checks when it is executed:
 * length check
 
 The precise meaning of these checks is given by the Ada Language Reference
-Manual. An (*overflow check*) violation occurs when the result of an arithmetic
+Manual. An *overflow check* violation occurs when the result of an arithmetic
 operation cannot be represented in the base type (usually a machine integer)
-for this operation. A (*range check*) violation occurs when a value does not
-respect the range constraint for its type. An (*index check*) violation occurs
+for this operation. A *range check* violation occurs when a value does not
+respect the range constraint for its type. An *index check* violation occurs
 when the value used to index into an array does not fit between the array
-bounds. A (*division check*) violation occurs when the divisor of a division
+bounds. A *division check* violation occurs when the divisor of a division
 operation (or ``rem`` or ``mod``) is zero. A *discriminant check* violation
 occurs when the discriminant(s) of a discriminant record does not have the
 expected value for a given operation. A *length check* violation occurs when an
@@ -305,9 +305,11 @@ to prove that the postcondition of the subprogram analyzed is satisfied.
 In order to prove such VCs, the user may have to write loop invariants, for
 which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
-(*loop invariant preservation*). See :ref:`how to write loop invariants`.
+(*loop invariant preservation*).
 
-Analysing incomplete programs
+..  See :ref:`how to write loop invariants`.
+
+Analysing Incomplete Programs
 -----------------------------
 
 It is often necessary to analyse |SPARK| programs which are not complete.
@@ -320,7 +322,7 @@ this would typically be dealt with by using pragma SPARK_Mode to
 identify code which is intended to be in and out of |SPARK|.
 
 When developing new code, if a package specification is present but the body does
-not yet exist the tools will assume that the specification is correct when 
+not yet exist the tools will assume that the specification is correct when
 analysing code that depends on it. But if the body is present and contains
 errors this will prevent the analysis of units that depend on it. This might be
 an issue when software is being developed by a team and a developer checks in a
@@ -336,4 +338,3 @@ problematic bodies can be excluded from analysis as follows:
 
 Alternatively, the project file could list only the package specifications, not
 the bodies.
-

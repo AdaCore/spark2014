@@ -1,13 +1,12 @@
-.. _writing and verifying spark programs:
+.. _spark tutorial:
 
-**************************************
-Writing and Verifying |SPARK| Programs
-**************************************
+****************
+|SPARK| Tutorial
+****************
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
-completely in |SPARK|.  The examples that follow demonstrate the use of the
-|SPARK| toolset within the GPS integrated development environment. All the tools
-may also be run from the command-line, see :ref:`command line`.
+completely in |SPARK|, within the GPS integrated development environment. All
+the tools may also be run from the command-line, see :ref:`command line`.
 
 Writing |SPARK| Programs
 ========================
@@ -21,15 +20,9 @@ these errors.
 
 We start with creating a GNAT project file in ``search.gpr``:
 
-.. code-block:: ada
-
-    project Search is
-       for Source_Dirs use (".");
-
-       package Compiler is
-          for Default_Switches ("Ada") use ("-gnatwa");
-       end Compiler;
-    end Search;
+.. literalinclude:: linear_search/search_ada/search.gpr
+   :language: ada
+   :linenos:
 
 It specifies that the source code to inspect is in the current directory, and
 that the code should be compiled at maximum warning level (switch
@@ -37,77 +30,35 @@ that the code should be compiled at maximum warning level (switch
 for in-depth documentation of this technology, consult the |GNAT Pro|
 User's Guide.
 
-The obvious specification of ``Search`` is given in file ``search.ads``:
+The obvious specification of ``Search`` is given in file ``search.ads``, where
+we specify that the spec is in |SPARK| by using pragma ``SPARK_Mode``.
 
-.. code-block:: ada
+.. literalinclude:: linear_search/search_ada/search.ads
+   :language: ada
+   :linenos:
 
-   package Search is
+The implementation of ``Search`` given in file ``search.adb``, where we specify
+that the body is in |SPARK| by using pragma ``SPARK_Mode``.  It is as obvious
+as its specification, using a loop to go through the array parameter ``A`` and
+looking for the first index at which ``Val`` is found, if there is such an
+index.
 
-      type Index is range 1 .. 10;
-      type Element is new Integer;
+.. literalinclude:: linear_search/search_ada/search.adb
+   :language: ada
+   :linenos:
 
-      type Arr is array (Index) of Element;
-
-      function Linear_Search
-        (A        : Arr;
-         Val      : Element;
-         At_Index : out Index) return Boolean;
-      --  Returns True if A contains value Val, in which case it also returns
-      --  in At_Index the first index with value Val. Returns False otherwise.
-
-   end Search;
-
-The implementation of ``Search`` given in file ``search.adb`` is as obvious as
-its specification, using a loop to go through the array parameter ``A``
-and looking for the first index at which ``Val`` is found, if there
-is such an index:
-
-.. code-block:: ada
-
-   package body Search is
-
-      function Linear_Search
-        (A        : Arr;
-         Val      : Element;
-         At_Index : out Index) return Boolean
-      is
-         Pos : Index := A'First;
-      begin
-         while Pos < A'Last loop
-            if A(Pos) = Val then
-               At_Index := Pos;
-               return True;
-            end if;
-
-            Pos := Pos + 1;
-         end loop;
-
-         return False;
-      end Linear_Search;
-
-   end Search;
-
-We can check that the above code is valid Ada by using the ``Build::Check
+We can check that the above code is valid Ada by using the ``Build > Check
 Semantic`` menu, which completes without any errors or warnings:
 
 .. image:: static/search_check_semantic.png
 
-To state that this code should be valid |SPARK|, we can add the
-``SPARK_Mode`` pragma in the sources as a local pragma, or in a configuration
-file as a configuration pragma. We consider here the former case, where the
-following is added as the first line of ``search.ads``:
+Then, we run |GNATprove| on this unit, using the :menuselection:`SPARK -->
+Examine File` menu, so that it issues errors on |SPARK| code that violates
+|SPARK| rules:
 
-.. code-block:: ada
+.. image:: static/search_examine.png
 
-    pragma SPARK_Mode (On);
-
-Then, we run |GNATprove| in mode ``check``, using the ``Prove::Prove File``
-menu and selecting mode ``check``, so that it issues errors on code that has
-``SPARK_Mode=On`` but is not in SPARK:
-
-.. image:: static/search_check.png
-
-It detects here that function ``Linear_Search`` is not in SPARK, because it has
+It detects here that function ``Linear_Search`` is not in |SPARK|, because it has
 an ``out`` parameter:
 
 .. image:: static/search_not_spark.png
@@ -122,80 +73,34 @@ We correct this problem by defining a record type ``Search_Result`` holding
 both the Boolean result and the index for cases when the value is found, and
 making ``Linear_Search`` return this type:
 
-.. code-block:: ada
-
-    pragma SPARK_Mode (On);
-
-    package Search is
-
-       type Index is range 1 .. 10;
-       type Element is new Integer;
-
-       type Arr is array (Index) of Element;
-
-       type Search_Result is record
-          Found    : Boolean;
-          At_Index : Index;
-       end record;
-
-       function Linear_Search
-         (A   : Arr;
-          Val : Element) return Search_Result;
-
-    end Search;
+.. literalinclude:: linear_search/search_spark/search.ads
+   :language: ada
+   :linenos:
 
 The implementation of ``Linear_Search`` is modified to use this type:
 
-.. code-block:: ada
+.. literalinclude:: linear_search/search_spark/search.adb
+   :language: ada
+   :linenos:
 
-    pragma SPARK_Mode (On);
+Re-running |GNATprove| on this unit, using the :menuselection:`SPARK -->
+Examine File` menu, reports a different kind of error that we describe in
+:ref:`proving spark programs`.
 
-    package body Search is
+It is not yet very interesting |SPARK| code though, as it does not contain any
+contracts, which are necessary to be able to apply formal verification
+modularly on each subprogram, independently of the implementation of other
+subprograms. The precondition constrains the value of input parameters, while
+the postcondition states desired properties of the result of the function. See
+:ref:`Preconditions and Postconditions` for more details. Here, we can require
+in the precondition that callers of ``Linear_Search`` always pass a
+non-negative value for parameter ``Val``, and we can state that, when the
+search succeeds, the index returned points to the desired value in the array:
 
-       function Linear_Search
-         (A   : Arr;
-          Val : Element) return Search_Result
-       is
-          Pos : Index := A'First;
-          Res : Search_Result;
-       begin
-          while Pos < A'Last loop
-             if A(Pos) = Val then
-                Res.At_Index := Pos;
-                Res.Found := True;
-                return Res;
-             end if;
-
-             Pos := Pos + 1;
-          end loop;
-
-          Res.Found := False;
-          return Res;
-       end Linear_Search;
-
-    end Search;
-
-|GNATprove| runs without errors in mode ``check`` on this program, which is
-thus valid |SPARK| code. It is not yet very interesting |SPARK| code though, as
-it does not contain any contracts, which are necessary to be able to apply
-formal verification modularly on each subprogram, independently of the
-implementation of other subprograms. The precondition constrains the value of
-input parameters, while the postcondition states desired properties of the
-result of the function. See :ref:`Preconditions and Postconditions` for more
-details. Here, we can require in the precondition that callers of
-``Linear_Search`` always pass a non-negative value for parameter ``Val``, and
-we can state that, when the search succeeds, the index returned points to the
-desired value in the array:
-
-.. code-block:: ada
-
-   function Linear_Search
-     (A   : Arr;
-      Val : Element) return Search_Result
-   with
-     Pre  => Val >= 0,
-     Post => (if Linear_Search'Result.Found then
-                A (Linear_Search'Result.At_Index) = Val);
+.. literalinclude:: linear_search/search_contract/search.ads
+   :language: ada
+   :linenos:
+   :lines: 21-27
 
 Notice the use of an if-expression in the postcondition to express an
 implication: if the search succeeds it implies that the value at the returned index
@@ -219,28 +124,10 @@ state that the search fails. We use a helper function ``Value_Found_In_Range``
 to express that a value ``Val`` is found in an array ``A`` within given bounds
 ``Low`` and ``Up``:
 
-.. code-block:: ada
-
-   function Value_Found_In_Range
-     (A       : Arr;
-      Val     : Element;
-      Low, Up : Index) return Boolean
-   is (for some J in Low .. Up => A(J) = Val);
-
-   function Linear_Search
-     (A   : Arr;
-      Val : Element) return Search_Result
-   with
-     Pre  => Val >= 0,
-     Post => (if Linear_Search'Result.Found then
-                A (Linear_Search'Result.At_Index) = Val),
-     Contract_Cases =>
-       (A(1) = Val =>
-          Linear_Search'Result.At_Index = 1,
-        Value_Found_In_Range (A, Val, 2, 10) =>
-          Linear_Search'Result.Found,
-        (for all J in Arr'Range => A(J) /= Val) =>
-          not Linear_Search'Result.Found);
+.. literalinclude:: linear_search/search_contract/search.ads
+   :language: ada
+   :linenos:
+   :lines: 15-34
 
 Note that we express ``Value_Found_In_Range`` as an expression function, a
 function whose body consists of a single expression, which can be given in a
@@ -270,34 +157,9 @@ We can compile the above program, and test it on a set of selected inputs. The
 following test program exercises the case where the searched value is present in
 the array and the case where it is not:
 
-.. code-block:: ada
-
-    with Search;      use Search;
-    with Ada.Text_IO; use Ada.Text_IO;
-
-    procedure Test_Search is
-       A   : constant Arr := (1, 5, 3, 8, 8, 2, 0, 1, 0, 4);
-       Res : Search_Result;
-
-    begin
-       Res := Linear_Search (A, 1);
-       if Res.Found then
-          if Res.At_Index = 1 then
-             Put_Line ("OK: Found existing value at first index");
-          else
-             Put_Line ("not OK: Found existing value at other index");
-          end if;
-       else
-          Put_Line ("not OK: Did not find existing value");
-       end if;
-
-       Res := Linear_Search (A, 6);
-       if not Res.Found then
-          Put_Line ("OK: Did not find non-existing value");
-       else
-          Put_Line ("not OK: Found non-existing value");
-       end if;
-    end Test_Search;
+.. literalinclude:: linear_search/search_contract/test_search.adb
+   :language: ada
+   :linenos:
 
 We can check that the implementation of ``Search`` passes this test by
 compiling and running the test program:
@@ -359,16 +221,10 @@ evaluate to ``True``. We correct the contract of ``Linear_Search`` by
 strengthening the guard of the second contract case, so that it only applies
 when the value is not found at index 1:
 
-.. code-block:: ada
-     :emphasize-lines: 4
-
-     Contract_Cases =>
-       (A(1) = Val =>
-          Linear_Search'Result.At_Index = 1,
-        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-          Linear_Search'Result.Found,
-        (for all J in Arr'Range => A(J) /= Val) =>
-          not Linear_Search'Result.Found);
+.. literalinclude:: linear_search/search_flow/search.ads
+   :language: ada
+   :linenos:
+   :lines: 28-34
 
 With this updated contract, the test passes again, but this time with
 assertions checked at run time:
@@ -385,8 +241,10 @@ that achieves 100% coverage for all the common coverage criteria, once
 impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
-Detailed Guidance on Using |GNATprove|
-======================================
+.. _proving spark programs:
+
+Proving |SPARK| Programs
+========================
 
 Formal verification of |SPARK| programs is a two-step process:
 
@@ -397,7 +255,7 @@ Formal verification of |SPARK| programs is a two-step process:
 
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
 ``flow`` mode. Step 2 is implemented as a deductive verification pass
-in the tool |GNATprove|, in the default ``prove`` mode. 
+in the tool |GNATprove|, in the default ``prove`` mode.
 
 The difference between these two steps should be emphasized. Static analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
@@ -420,31 +278,31 @@ independently, so the more cores are available the faster it completes.
    more or less time to complete a proof depending on the platform and machine
    used.
 
-We start with the flow analysis of ``Search``, using the still experimental mode
-``flow`` of |GNATprove| reached through the ``Prove::Prove File`` menu:
+We start with the flow analysis of ``Search``, using mode ``flow`` of
+|GNATprove| reached through the :menuselection:`SPARK --> Examine File` menu:
 
 .. image:: static/search_flow.png
 
 Here, it issues an error message:
 
-.. code-block:: bash
-
-   search.adb:21:07: use of uninitialized variable "res.at_index"
+.. image:: static/search_flow_error.png
 
 Inside the GPS editor, we can click on the path icon, either on the left of the
-message, or on line 21 in file ``search.adb``, to show the path on which
+message, or on line 23 in file ``search.adb``, to show the path on which
 ``Res.At_Index`` is not initialized:
 
-.. image:: static/search_flow_error.png
+.. image:: static/search_flow_error_path.png
+
+Another click on the icon makes the path disappear.
 
 .. note::
 
-   If you use the SPARK-HiLite GPL 2013 release, the way to display a path
-   in GPS is slightly different. Instead of clicking on an icon, you need
-   to right-click on the error message in the Location View, and select
-   ``Prove::Show Path`` in the contextual menu that is raised. The menu
-   ``Prove::Show Path`` displayed when right-clicking in the code panel
-   should not be used.
+   If you use the SPARK-HiLite GPL 2013 release, the way to display a path in
+   GPS is slightly different. Instead of clicking on an icon, you need to
+   right-click on the error message in the Location View, and select
+   :menuselection:`Prove --> Show Path` in the contextual menu that is
+   raised. The menu :menuselection:`Prove --> Show Path` displayed when
+   right-clicking in the code panel should not be used.
 
 This shows that, when the value is not found, the component ``At_Index``
 of the value returned is indeed not initialized. Although that is allowed in Ada,
@@ -454,50 +312,30 @@ we could give a dummy value to component ``At_Index`` when the search fails, we
 choose to turn the type ``Search_Result`` into a discriminant record, so that
 the component ``At_Index`` is only usable when the search succeeds:
 
-.. code-block:: ada
-
-       type Search_Result (Found : Boolean := False) is record
-          case Found is
-             when True =>
-                At_Index : Index;
-             when False =>
-                null;
-          end case;
-       end record;
+.. literalinclude:: linear_search/search_prove/search.ads
+   :language: ada
+   :linenos:
+   :lines: 10-17
 
 Then, in the implementation of ``Linear_Search``, we change the value of the
 discriminant depending on the success of the search:
 
-.. code-block:: ada
-
-       function Linear_Search
-         (A   : Arr;
-          Val : Element) return Search_Result
-       is
-          Pos : Index := A'First;
-          Res : Search_Result;
-       begin
-          while Pos < A'Last loop
-             if A(Pos) = Val then
-                Res := (Found    => True,
-                        At_Index => Pos);
-                return Res;
-             end if;
-
-             Pos := Pos + 1;
-          end loop;
-
-          Res := (Found => False);
-          return Res;
-       end Linear_Search;
+.. literalinclude:: linear_search/search_prove/search.adb
+   :language: ada
+   :linenos:
+   :lines: 5-24
 
 |GNATprove| runs without errors in mode ``flow`` on this program, which shows
 there are no reads of uninitialized data.
 
 We continue with the proof of contracts and absence of run-time errors, using
-the main mode ``prove`` of |GNATprove|, in the ``Prove::Prove File`` menu. It
-completes in a few seconds, with messages stating that 3 checks could not be
-proved:
+the main mode ``prove`` of |GNATprove| reached through the
+:menuselection:`SPARK --> Prove File` menu.
+
+.. image:: static/search_prove_file.png
+
+We use the default settings and click on :menuselection:`Execute`. It completes
+in a few seconds, with a message stating that a check could not be proved:
 
 .. image:: static/search_not_proved.png
 
@@ -506,8 +344,8 @@ which means that it was proved. Likewise, there are no such messages on the
 body of ``Linear_Search``, which means that no run-time errors can be raised
 when executing the function.
 
-All 3 unproved checks are checked when exiting from ``Linear_Search``. It is
-expected that not much can be proved at this point, given that the body of
+The message corresponds to a check done when exiting from ``Linear_Search``. It
+is expected that not much can be proved at this point, given that the body of
 ``Linear_Search`` has a loop but no loop invariant, so the formulas generated
 for these checks assume the worst about locations modified in the loop. A loop
 invariant is a special pragma ``Loop_Invariant`` stating an assertion in a
@@ -518,20 +356,19 @@ cumulative effect of loop iterations, so that the contract cases of
 ``Linear_Search`` become provable. Here, it should state that the value
 searched was not previously found:
 
-.. code-block:: ada
-
-         pragma Loop_Invariant
-           (not Value_Found_In_Range (A, Val, A'First, Pos));
+.. literalinclude:: linear_search/search_loopinv/search.adb
+   :language: ada
+   :lines: 19-20
 
 As stated above, this invariant holds exactly between the two statements in the
 loop (after the if-statement, before the increment of the index). Thus, it
-should be inserted at this place. With this loop invariant, two checks
-previously not proved are now proved, and a check previously proved becomes
+should be inserted at this place. With this loop invariant, the check
+previously not proved is now proved, and two checks previously proved become
 unproved:
 
 .. image:: static/search_loopinv.png
 
-The new unproved check may seem odd, since all we did was add information in
+The new unproved checks may seem odd, since all we did was add information in
 the form of a loop invariant. The reason is that we also removed information at
 the same time. By adding a loop invariant, we require |GNATprove| to prove
 iterations around the (virtual) loop formed by the following steps:
@@ -554,23 +391,19 @@ We solve this issue by setting the type of ``Pos`` to the base type of
 ``Index``, which ranges past the last value of ``Index``. (This may not be the
 simplest solution, but we use it here for the dynamics of this tutorial.)
 
-.. code-block:: ada
-
-      Pos : Index'Base := A'First;
+.. literalinclude:: linear_search/search_loopinv_ok/search.adb
+   :language: ada
+   :lines: 9
 
 And we add the range information for ``Pos`` to the loop invariant:
 
-.. code-block:: ada
+.. literalinclude:: linear_search/search_loopinv_ok/search.adb
+   :language: ada
+   :lines: 19-22
 
-         pragma Loop_Invariant
-           (Pos in A'Range
-              and then
-            not Value_Found_In_Range (A, Val, A'First, Pos));
+This allows |GNATprove| to prove the range check, but not the contract:
 
-This allows |GNATprove| to prove the range check on line 21, but the loop invariant
-preservation becomes unproved:
-
-.. image:: static/search_loopinv_not_proved.png
+.. image:: static/search_contract_not_proved.png
 
 This is actually progress! Indeed, the loop invariant should be strong enough
 to:
@@ -579,8 +412,7 @@ to:
 #. prove that it is preserved from iteration to iteration
 #. prove the postcondition and contract cases of the subprogram
 
-So we have just achieved goal 1 above! And the currently unproved preservation
-of the loop invariant is goal 2.
+So we have just achieved goal 1 above!
 
 As we have modified the code and annotations, it is a good time to compile and
 run our test program, before doing any more formal verification work. This
@@ -600,15 +432,19 @@ prover. Its default of 1s is deliberately low, to facilitate interaction with
 |GNATprove| during the development of annotations, but it is not sufficient to
 prove the more complex checks. Let's increase it to 10s, and rerun |GNATprove|:
 
-.. image:: static/search_loopinv_proved.png
+.. image:: static/search_10s_timeout.png
 
-The loop invariant preservation was proved! One unproved check remains, in the
-contract cases of ``Linear_Search``. We need to check that the loop invariant
-is strong enough to prove the unproved contract case (goal 3 above). To help
-with this assessment, we use the ``Prove Line`` contextual menu available on
-line 35:
+The unproved check remains in the contract cases of ``Linear_Search``. The next
+step is to use the :menuselection:`SPARK --> Prove Line` contextual menu
+available on line 35:
 
 .. image:: static/search_prove_line.png
+
+We select the ``check first, then path`` value for choice ``One proof by`` in
+the window raised, in order to maximize proof precision, and click on
+:menuselection:`Execute`:
+
+.. image:: static/search_prove_line_by_path.png
 
 This runs |GNATprove| only on the checks that originate from line 35, in a
 special mode which considers separately individual execution paths if
@@ -620,12 +456,12 @@ on which the contract case is not proved:
 
 .. note::
 
-   If you use the SPARK-HiLite GPL 2013 release, the way to display a path
-   in GPS is slightly different. Instead of clicking on an icon, you need
-   to right-click on the error message in the Location View, and select
-   ``Prove::Show Path`` in the contextual menu that is raised. The menu
-   ``Prove::Show Path`` displayed when right-clicking in the code panel
-   should not be used.
+   If you use the SPARK-HiLite GPL 2013 release, the way to display a path in
+   GPS is slightly different. Instead of clicking on an icon, you need to
+   right-click on the error message in the Location View, and select
+   :menuselection:`Prove --> Show Path` in the contextual menu that is
+   raised. The menu :menuselection:`Prove --> Show Path` displayed when
+   right-clicking in the code panel should not be used.
 
 This corresponds to a case where the implementation of ``Loop_Search`` does not
 find the searched value, but the guard of the second contract case holds,
@@ -634,12 +470,12 @@ the path highlighted, we can see that the loop exits when ``Pos = A'Last``, so
 the value 10 is never considered! We correct this bug by changing the loop test
 from a strict to a non-strict comparison operation:
 
-.. code-block:: ada
-
-         while Pos <= A'Last loop
+.. literalinclude:: linear_search/search_no_variant/search.adb
+   :language: ada
+   :lines: 12
 
 On this modified code, we rerun |GNATprove| on line 35, checking the box
-``Report Proved VCs`` to get information even when a check is proved. The
+``Report checks proved`` to get information even when a check is proved. The
 reassuring green color (and the accompanying info message) show that the check
 was proved this time:
 
@@ -648,7 +484,7 @@ was proved this time:
 As usual after code changes, we rerun the test program, which shows no
 errors. Rerunning |GNATprove| on the complete file shows no more unproved
 checks. The ``Search`` unit has been fully proved. To see all the checks that
-were proved, we can rerun the tool with box ``Report Proved VCs`` checked,
+were proved, we can rerun the tool with box ``Report checks proved`` checked,
 which displays the results previously computed:
 
 .. image:: static/search_all_proved.png
@@ -662,91 +498,21 @@ this monotonicity property also shows that there cannot be an infinite number
 of iterations of the loop. The natural loop invariant for ``Linear_Search`` is
 the index ``Pos``, which increases at each loop iteration:
 
-.. code-block:: ada
-
-         pragma Loop_Variant (Increases => Pos);
+.. literalinclude:: linear_search/search_final/search.adb
+   :language: ada
+   :lines: 23
 
 With this last modification, the test program still runs without errors (it
 checks dynamically that the loop variant is respected), and the program is
 still fully proved. Here is the final version of ``Search``, with the complete
 annotations:
 
-.. code-block:: ada
+.. literalinclude:: linear_search/search_final/search.ads
+   :language: ada
+   :linenos:
 
-    pragma SPARK_Mode (On);
+.. literalinclude:: linear_search/search_final/search.adb
+   :language: ada
+   :linenos:
 
-    package Search is
-
-       type Index is range 1 .. 10;
-       type Element is new Integer;
-
-       type Arr is array (Index) of Element;
-
-       type Search_Result (Found : Boolean := False) is record
-          case Found is
-             when True =>
-                At_Index : Index;
-             when False =>
-                null;
-          end case;
-       end record;
-
-       function Value_Found_In_Range
-         (A       : Arr;
-          Val     : Element;
-          Low, Up : Index) return Boolean
-       is (for some J in Low .. Up => A(J) = Val);
-
-       function Linear_Search
-         (A   : Arr;
-          Val : Element) return Search_Result
-       with
-         Pre  => Val >= 0,
-         Post => (if Linear_Search'Result.Found then
-                    A (Linear_Search'Result.At_Index) = Val),
-         Contract_Cases =>
-           (A(1) = Val =>
-              Linear_Search'Result.At_Index = 1,
-            A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-              Linear_Search'Result.Found,
-            (for all J in Arr'Range => A(J) /= Val) =>
-              not Linear_Search'Result.Found);
-
-    end Search;
-
-.. code-block:: ada
-
-    pragma SPARK_Mode (On);
-
-    package body Search is
-
-       function Linear_Search
-         (A   : Arr;
-          Val : Element) return Search_Result
-       is
-          Pos : Index'Base := A'First;
-          Res : Search_Result;
-       begin
-          while Pos <= A'Last loop
-             if A(Pos) = Val then
-                Res := (Found    => True,
-                        At_Index => Pos);
-                return Res;
-             end if;
-
-             pragma Loop_Invariant
-               (Pos in A'Range
-                  and then
-                not Value_Found_In_Range (A, Val, A'First, Pos));
-             pragma Loop_Variant (Increases => Pos);
-
-             Pos := Pos + 1;
-          end loop;
-
-          Res := (Found => False);
-          return Res;
-       end Linear_Search;
-
-    end Search;
-
-This concludes our initial tour of the |SPARK| toolset!
+This concludes our tutorial on the |SPARK| toolset.

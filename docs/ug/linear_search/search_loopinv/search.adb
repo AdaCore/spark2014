@@ -6,10 +6,10 @@ package body Search is
      (A   : Arr;
       Val : Element) return Search_Result
    is
-      Pos : Index'Base := A'First;
+      Pos : Index := A'First;
       Res : Search_Result;
    begin
-      while Pos <= A'Last loop
+      while Pos < A'Last loop
          if A(Pos) = Val then
             Res := (Found    => True,
                     At_Index => Pos);
@@ -17,10 +17,7 @@ package body Search is
          end if;
 
          pragma Loop_Invariant
-           (Pos in A'Range
-              and then
-            not Value_Found_In_Range (A, Val, A'First, Pos));
-         pragma Loop_Variant (Increases => Pos);
+           (not Value_Found_In_Range (A, Val, A'First, Pos));
 
          Pos := Pos + 1;
       end loop;

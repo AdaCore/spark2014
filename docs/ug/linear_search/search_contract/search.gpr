@@ -1,0 +1,14 @@
+project Search is
+
+   for Source_Dirs use (".");
+   for Main use ("test_search.adb", "test_search.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatwa", "-gnata", "-g", "-O0");
+   end Compiler;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-aU");
+   end Pretty_Printer;
+
+end Search;

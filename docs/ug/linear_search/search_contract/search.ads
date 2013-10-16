@@ -28,7 +28,7 @@ package Search is
      Contract_Cases =>
        (A(1) = Val =>
           Linear_Search'Result.At_Index = 1,
-        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+        Value_Found_In_Range (A, Val, 2, 10) =>
           Linear_Search'Result.Found,
         (for all J in Arr'Range => A(J) /= Val) =>
           not Linear_Search'Result.Found);
