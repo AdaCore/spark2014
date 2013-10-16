@@ -2361,6 +2361,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Pure_Function                |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
+              Pragma_Refined_Post                 |
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
               Pragma_Test_Case                    |

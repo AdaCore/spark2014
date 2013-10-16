@@ -188,6 +188,7 @@ package body Flow.Utility is
       case Name is
          when Name_Precondition      |
               Name_Postcondition     |
+              Name_Refined_Post      |
               Name_Contract_Cases    |
               Name_Initial_Condition =>
 
@@ -197,6 +198,11 @@ package body Flow.Utility is
             elsif Name = Name_Postcondition then
                Other_Name := Name_Post;
                P := Pre_Post_Conditions (C);
+            elsif Name = Name_Refined_Post then
+               Other_Name := Name_Refined_Post;
+               P := Pre_Post_Conditions
+                 (Contract (Defining_Unit_Name (Specification
+                                                  (Get_Subprogram_Body (E)))));
             elsif Name = Name_Initial_Condition then
                Other_Name := Name_Initial_Condition;
                P := Classifications (C);
@@ -810,6 +816,10 @@ package body Flow.Utility is
                   end loop;
                end;
             end if;
+
+            for X of Find_Contracts (E, Name_Refined_Post) loop
+               P_Expr.Append (X);
+            end loop;
 
          when E_Package =>
             P_Expr := Find_Contracts (E, Name_Initial_Condition);

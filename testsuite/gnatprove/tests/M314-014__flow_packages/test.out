@@ -1,8 +1,11 @@
-ic.adb:57:34: "Y" must be listed in the Initializes aspect of "Test_04"
-ic.adb:72:45: "X" must be listed in the Initializes aspect of "Test_05"
-ic.adb:72:45: "Y" must be listed in the Initializes aspect of "Test_05"
-ic.adb:82:26: "Y" must be listed in the Global aspect of "Sanity_Check_1"
-ic.adb:91:44: "Y" must be listed in the Global aspect of "Sanity_Check_2"
+ic.adb:58:34: "Y" must be listed in the Initializes aspect of "Test_04"
+ic.adb:73:45: "X" must be listed in the Initializes aspect of "Test_05"
+ic.adb:73:45: "Y" must be listed in the Initializes aspect of "Test_05"
+ic.adb:97:09: warning: pragma "REFINED_POST" is not yet supported
+ic.adb:97:09: warning:  it is currently ignored
+ic.adb:97:29: "Y" must be listed in the Global aspect of "Sanity_Check_5"
+ic.adb:108:26: "Y" must be listed in the Global aspect of "Sanity_Check_1"
+ic.adb:117:44: "Y" must be listed in the Global aspect of "Sanity_Check_2"
 pkg_a.adb:7:04: "A" is not initialized in "Pkg_A" [uninitialized]
 pkg_a.adb:9:04: warning: initialization has no effect [ineffective]
 pkg_a.adb:16:06: "X" is not initialized [uninitialized]
