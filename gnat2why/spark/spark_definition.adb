@@ -1634,26 +1634,27 @@ package body SPARK_Definition is
 
          --  Support a subset of the aspects defined in Ada RM
 
-            Attribute_Ceiling    |
-            Attribute_Image      |
-            Attribute_First      |
-            Attribute_Floor      |
-            Attribute_Last       |
-            Attribute_Length     |
-            Attribute_Max        |
-            Attribute_Min        |
-            Attribute_Mod        |
-            Attribute_Modulus    |
-            Attribute_Old        |
-            Attribute_Pos        |
-            Attribute_Pred       |
-            Attribute_Range      |
-            Attribute_Result     |
-            Attribute_Rounding   |
-            Attribute_Truncation |
-            Attribute_Succ       |
-            Attribute_Val        |
-            Attribute_Value      =>
+           Attribute_Ceiling    |
+           Attribute_Image      |
+           Attribute_First      |
+           Attribute_Floor      |
+           Attribute_Last       |
+           Attribute_Length     |
+           Attribute_Max        |
+           Attribute_Min        |
+           Attribute_Mod        |
+           Attribute_Modulus    |
+           Attribute_Old        |
+           Attribute_Pos        |
+           Attribute_Pred       |
+           Attribute_Range      |
+           Attribute_Result     |
+           Attribute_Rounding   |
+           Attribute_Truncation |
+           Attribute_Succ       |
+           Attribute_Update     |
+           Attribute_Val        |
+           Attribute_Value      =>
 
             null;
 
