@@ -247,12 +247,12 @@ is
    procedure Slice_07 (A : in out String)
    is
    begin
-      Op_String_Char (A (3 .. 12), A (2));   --  OK
+      Op_String_Char (A (3 .. 12), A (2));   --  OK (but requires proof)
       Op_String_Char (A (3 .. 12), A (5));   --  illegal
-      Op_String_Char (A (3 .. 12), A (20));  --  OK
-      Op_String_Char (A (3 .. 12), 'x');     --  OK
+      Op_String_Char (A (3 .. 12), A (20));  --  OK (but requires proof)
+      Op_String_Char (A (3 .. 12), 'x');     --  OK (ditto)
 
-      Op_String_Char (A (3 .. 12) (8 .. 10), A (5));   --  OK
+      Op_String_Char (A (3 .. 12) (8 .. 10), A (5));   --  OK (ditto)
    end Slice_07;
 
    procedure Slice_08 (A : in out String;
@@ -316,6 +316,29 @@ is
       Wibble (A (5), A (3),
               X,     Y);
    end Overlay;
+
+   ----------------------------------------------------------------------
+   --  Type conversions
+   ----------------------------------------------------------------------
+
+   procedure Op_Foo (A : in out Positive;
+                     B :        Natural)
+   is
+   begin
+      A := A + B;
+   end Op_Foo;
+
+   procedure Test_TC_1 (X : in out Integer)
+   is
+   begin
+      Op_Foo (Positive (X), Natural (X));
+   end Test_TC_1;
+
+   procedure Test_TC_2 (X : in out Integer)
+   is
+   begin
+      Op_Foo (Positive (X), Natural'(X));
+   end Test_TC_2;
 
    --  TODO: Type/view conversion
 
