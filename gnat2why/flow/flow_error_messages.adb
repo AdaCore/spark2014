@@ -215,17 +215,17 @@ package body Flow_Error_Messages is
       --  for the given node, then we do nothing.
 
       if Warning then
+         if Warnings_Suppressed (Sloc (N)) then
+            return;
+         end if;
+
          declare
-            Temp : String_Ptr := new String'(To_String (M));
+            Temp : aliased String := To_String (M);
          begin
-            if Warnings_Suppressed (Sloc (N))
-                 or else
-               Warning_Specifically_Suppressed (Sloc (N), Temp)
+            if Warning_Specifically_Suppressed
+                 (Sloc (N), Temp'Unchecked_Access)
             then
-               Free (Temp);
                return;
-            else
-               Free (Temp);
             end if;
          end;
       end if;
@@ -233,9 +233,7 @@ package body Flow_Error_Messages is
       --  A flow error is found if we are not dealing with a warning or we are
       --  dealing with a warning and the Warning_Mode is Treat_As_Error.
 
-      if not Warning
-        or else Opt.Warning_Mode = Treat_As_Error
-      then
+      if not Warning or else Opt.Warning_Mode = Treat_As_Error then
          Found_Flow_Error := True;
       end if;
 
