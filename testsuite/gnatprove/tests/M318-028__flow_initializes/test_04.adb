@@ -1,7 +1,7 @@
 with Pkg_B;
 
 procedure Test_04
-with Global => (Output => Pkg_B.State) -- Ineffective initialization in Pkg_B
+with Global => (Output => Pkg_B.State)
 is
 begin
    Pkg_B.Init;

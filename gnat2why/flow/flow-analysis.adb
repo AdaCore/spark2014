@@ -345,7 +345,7 @@ package body Flow.Analysis is
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
       Reads     : Flow_Id_Sets.Set;
-      Writes    : Flow_Id_Sets.Set;
+      Unused    : Flow_Id_Sets.Set;
       Tracefile : Unbounded_String;
    begin
       if not FA.Is_Main then
@@ -360,10 +360,10 @@ package body Flow.Analysis is
       --     Output  ->   Always OK
       Get_Globals (Subprogram   => FA.Analyzed_Entity,
                    Reads        => Reads,
-                   Writes       => Writes,
+                   Writes       => Unused,
                    Refined_View => True);
-      Reads  := To_Entire_Variables (Reads);
-      Writes := To_Entire_Variables (Writes);
+      Reads := To_Entire_Variables (Reads);
+      --  Note we never actually need writes in this analysis.
 
       for R of Reads loop
          --  !!! Fix this for magic strings once M711-031 is implemented
