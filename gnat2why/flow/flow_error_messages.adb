@@ -193,6 +193,7 @@ package body Flow_Error_Messages is
 
    begin
       --  Assemble message string
+
       if F1 /= Null_Flow_Id
         and then F2 /= Null_Flow_Id
       then
@@ -205,26 +206,28 @@ package body Flow_Error_Messages is
 
       --  If we are dealing with a warning and warnings should be suppresed for
       --  the given node, then we do nothing.
-      declare
-         Temp : String_Ptr;
-      begin
-         Temp := new String'(To_String (M));
-         if Warning
-           and then (Warnings_Suppressed (Sloc (N))
-                       or else Warning_Specifically_Suppressed
-                       (Sloc (N), Temp))
-         then
-            Free (Temp);
-            return;
-         end if;
-      end;
 
-      --  Set Found_Errors to True if either we are not dealing with a warning
-      --  or we are dealing with a warning and the Warning_Mode is
-      --  Treat_As_Error.
-      if (not Warning)
-        or else (Warning
-                   and then Opt.Warning_Mode = Treat_As_Error)
+      if Warning then
+         declare
+            Temp : String_Ptr := new String'(To_String (M));
+         begin
+            if Warnings_Suppressed (Sloc (N))
+                 or else
+               Warning_Specifically_Suppressed (Sloc (N), Temp)
+            then
+               Free (Temp);
+               return;
+            else
+               Free (Temp);
+            end if;
+         end;
+      end if;
+
+      --  A flow error is found if we are not dealing with a warning or we are
+      --  dealing with a warning and the Warning_Mode is Treat_As_Error.
+
+      if not Warning
+        or else Opt.Warning_Mode = Treat_As_Error
       then
          Found_Flow_Error := True;
       end if;

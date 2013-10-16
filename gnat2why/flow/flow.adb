@@ -1145,10 +1145,11 @@ package body Flow is
       end if;
 
       --  If an error was found then print all errors/warnings and return
-      --  Program_Error.
+      --  with an error status.
+
       if Found_Flow_Error then
-         Finalize (True);
-         Output_Messages;
+         Errout.Finalize (Last_Call => True);
+         Errout.Output_Messages;
          Exit_Program (E_Errors);
       end if;
    end Flow_Analyse_CUnit;
