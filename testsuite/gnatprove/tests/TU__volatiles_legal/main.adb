@@ -2,7 +2,8 @@ with HAL;
 use type HAL.Byte_T;
 
 procedure Main
-  with Global  => (Input  => HAL.FIFO_Status,
+  with SPARK_Mode,
+       Global  => (Input  => HAL.FIFO_Status,
                    In_Out => (HAL.Serial_In,
                               HAL.Wdog_State),
                    Output => (HAL.FIFO_Control,

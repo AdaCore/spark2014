@@ -1,4 +1,6 @@
-package body Initializes_Illegal is
+package body Initializes_Illegal
+  with SPARK_Mode
+is
    package body Incorrect_Placement
      with Initializes => S
    is

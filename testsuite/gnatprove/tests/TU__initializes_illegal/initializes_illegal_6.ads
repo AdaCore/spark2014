@@ -9,7 +9,8 @@ package Initializes_Illegal_6
   --    :ref:`package_hierarchy`)] by their declaring package. [It follows
   --    that such constituents will appear in the initialization clause
   --    of the declaring unit unless they are external states.]
-  with Abstract_State => State,
+  with SPARK_Mode,
+       Abstract_State => State,
        Initializes    => State
 is
    function F1 return Integer

@@ -1,4 +1,6 @@
-package body Contract_Cases_Illegal_2 is
+package body Contract_Cases_Illegal_2
+  with SPARK_Mode
+is
    procedure Overlapping_Conditions (A, B : Integer ; C : out Integer) is
    begin
       C := Integer'Min (A, B);

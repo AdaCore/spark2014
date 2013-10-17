@@ -1,4 +1,6 @@
-package body Refined_Global_Illegal is
+package body Refined_Global_Illegal
+  with SPARK_Mode
+is
    package body No_Abstract_State is
       procedure P1
         with Refined_Global => (Output => Var)

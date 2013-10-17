@@ -4,6 +4,6 @@ private package Externals.Temperature
                                      Part_Of  => Externals.Combined_Inputs)
 is
    procedure Read (Temp : out Integer)
-      with Global  => State,
-           Depends => (Temp => State);
+     with Global  => State,
+          Depends => (Temp => State);
 end Externals.Temperature;

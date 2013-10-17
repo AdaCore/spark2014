@@ -1,4 +1,6 @@
-package body Loop_Related_Illegal is
+package body Loop_Related_Illegal
+  with SPARK_Mode
+is
    procedure Not_Within_Loop is
    --  TU: 6. A construct which is restricted to loops shall occur immediately
    --  within either:

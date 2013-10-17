@@ -1,4 +1,6 @@
-package body Refined_Post_Illegal_2 is
+package body Refined_Post_Illegal_2
+  with SPARK_Mode
+is
    procedure P1 (Par : out Integer)
      with Refined_Post => Par > 10
      --  Refined_Post should imply abstract Post but in this

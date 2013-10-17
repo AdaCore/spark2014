@@ -1,4 +1,6 @@
-package body Volatiles_Legal is
+package body Volatiles_Legal
+  with SPARK_Mode
+is
    procedure P1 (Par : in out Vol_Rec_T) is
       Tmp1, Tmp2 : Integer;
    begin

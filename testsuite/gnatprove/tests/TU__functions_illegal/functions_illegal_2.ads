@@ -1,5 +1,5 @@
 package Functions_Illegal_2
-   with SPARK_Mode
+  with SPARK_Mode
 is
    function Cant_Have_Formal_Out (Par : out Integer) return Integer;
      --  TU: 5. A function declaration shall not have a

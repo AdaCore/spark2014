@@ -1,7 +1,9 @@
 with Depends_Illegal_3_Helper;
 use  Depends_Illegal_3_Helper;
 
-package body Depends_Illegal_3 is
+package body Depends_Illegal_3
+  with SPARK_Mode
+is
    procedure P1 (Par1 : in out Integer ; Par2 : in Integer)
      --  TU: 16. A ``dependency_clause`` with a "+" symbol in the syntax
      --  ``output_list`` =>+ ``input_list`` means that each ``output`` in

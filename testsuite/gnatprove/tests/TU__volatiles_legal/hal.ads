@@ -70,5 +70,4 @@ is
      with Global  => (In_Out => Wdog_State),
           Depends => (Result     => Wdog_State,
                       Wdog_State => Wdog_State);
-
 end HAL;

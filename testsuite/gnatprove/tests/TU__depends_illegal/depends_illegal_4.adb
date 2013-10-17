@@ -1,4 +1,6 @@
-package body Depends_Illegal_4 is
+package body Depends_Illegal_4
+  with SPARK_Mode
+is
    X, Y : Natural := 1;  --  The package should not have any state.
 
 

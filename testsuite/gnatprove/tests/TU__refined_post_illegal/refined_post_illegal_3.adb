@@ -1,4 +1,6 @@
-package body Refined_Post_Illegal_3 is
+package body Refined_Post_Illegal_3
+  with SPARK_Mode
+is
    procedure P1 (Par : out Integer)
      with Refined_Post => Par = 2
    is

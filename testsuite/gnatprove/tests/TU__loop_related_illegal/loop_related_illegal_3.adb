@@ -1,4 +1,6 @@
-package body Loop_Related_Illegal_3 is
+package body Loop_Related_Illegal_3
+  with SPARK_Mode
+is
    procedure Unevaluated (Par : out Integer) is
    --  TU: 7. The prefix of a Loop_Entry ``attribute_reference`` shall
    --  statically denote an entity, or shall denote an

@@ -1,4 +1,6 @@
-package body Refined_Post_Illegal is
+package body Refined_Post_Illegal
+  with SPARK_Mode
+is
    function Inv_Func_1 return Boolean is
    begin
       return True;

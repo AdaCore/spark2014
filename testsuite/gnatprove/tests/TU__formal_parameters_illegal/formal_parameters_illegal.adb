@@ -1,4 +1,6 @@
-package body Formal_Parameters_Illegal is
+package body Formal_Parameters_Illegal
+  with SPARK_Mode
+is
    type Record_T is record
       A, B : Integer;
    end record;

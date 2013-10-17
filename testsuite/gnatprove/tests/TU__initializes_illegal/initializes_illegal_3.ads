@@ -17,7 +17,8 @@ package Initializes_Illegal_3
   --  TU: 7. The Initializes aspect of a package has visibility of the
   --  declarations occurring immediately within the visible part of the
   --  package.
-  with Abstract_State => (S1, S2),
+  with SPARK_Mode,
+       Abstract_State => (S1, S2),
        Initializes    => (Rec.A,  --  Not entire variable
 
                           PrivVar,  --  Not visible

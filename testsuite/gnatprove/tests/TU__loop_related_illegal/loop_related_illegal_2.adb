@@ -1,4 +1,6 @@
-package body Loop_Related_Illegal_2 is
+package body Loop_Related_Illegal_2
+  with SPARK_Mode
+is
    procedure Loop_Invariant_Acts_As_Cut_Point is
    --  TU: 1. Pragma Loop_Invariant is like a pragma Assert except it also acts
    --  as a *cut point* in formal verification. A cut point means that a prover

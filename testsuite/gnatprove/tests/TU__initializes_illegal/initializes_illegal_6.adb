@@ -1,7 +1,8 @@
 with Initializes_Illegal_6.Pr_Child;
 
 package body Initializes_Illegal_6
-  with Refined_State => (State => (Var,
+  with SPARK_Mode,
+       Refined_State => (State => (Var,
                                    Initializes_Illegal_6.Pr_Child.Pr_Var))
 is
    Var : Integer;

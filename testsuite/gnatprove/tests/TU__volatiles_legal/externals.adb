@@ -5,7 +5,8 @@ with System.Storage_Elements,
      Externals.Secondary_Display;
 
 package body Externals
-  with Refined_State => (Combined_Inputs => (Externals.Temperature.State,
+  with SPARK_Mode,
+       Refined_State => (Combined_Inputs => (Externals.Temperature.State,
                                              Externals.Pressure.State),
                          -- Both Temperature and
                          -- Pressure are inputs only.
@@ -55,12 +56,12 @@ is
      with Volatile,
           Async_Readers,
           Effective_Writes, -- Every value written to the port is significant.
-          Address  => System.Storage_Elements.To_Address (16#ACECAFE#);
+          Address  => System.Storage_Elements.To_Address (16#ACECAFE0#);
 
    In_Reg : Integer
      with Volatile,
           Async_Writers,
-          Address  => System.Storage_Elements.To_Address (16#A11CAFE#);
+          Address  => System.Storage_Elements.To_Address (16#A11CAFE0#);
 
    function Last_Value_Sent return Integer
      with Refined_Global => Saved_Value -- Refined_Global aspect only

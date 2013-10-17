@@ -1,7 +1,8 @@
 with System.Storage_Elements;
 
 package body HAL
-  with Refined_State => (Serial_In    => Read_FIFO,
+  with SPARK_Mode,
+       Refined_State => (Serial_In    => Read_FIFO,
                          Serial_Out   => Write_FIFO,
                          FIFO_Status  => Status,
                          FIFO_Control => Control,
@@ -13,7 +14,7 @@ is
      with Volatile,
           Async_Writers,
           Effective_Reads,
-          Address => System.Storage_Elements.To_Address(16#A1CAFE#);
+          Address => System.Storage_Elements.To_Address(16#A1CAFE0#);
 
    -- Each byte written is significant, it is a sequence of bytes
    -- and so Effective_Writes => True.
@@ -21,7 +22,7 @@ is
      with Volatile,
           Async_Readers,
           Effective_Writes,
-          Address => System.Storage_Elements.To_Address(16#A2CAFE#);
+          Address => System.Storage_Elements.To_Address(16#A2CAFE0#);
 
    -- The read of the FIFO status is a snap shot of the current status
    -- individual reads are independent of other reads of the FIFO status
@@ -29,7 +30,7 @@ is
    Status: Byte_T
      with Volatile,
           Async_Writers,
-          Address => System.Storage_Elements.To_Address(16#A3CAFE#);
+          Address => System.Storage_Elements.To_Address(16#A3CAFE0#);
 
    -- The value written to the FIFO control register are independent
    -- of other value written to the control register and so
@@ -37,7 +38,7 @@ is
    Control: Byte_T
      with Volatile,
           Async_Readers,
-          Address => System.Storage_Elements.To_Address(16#A4CAFE#);
+          Address => System.Storage_Elements.To_Address(16#A4CAFE0#);
 
    -- This is a bidirectional port but individual reads and writes
    -- are independent and so Effective_Reads and Effective_Writes
@@ -46,7 +47,7 @@ is
      with Volatile,
           Async_Writers,
           Async_Readers,
-          Address => System.Storage_Elements.To_Address(16#A5CAFE#);
+          Address => System.Storage_Elements.To_Address(16#A5CAFE0#);
 
    procedure Get_Byte (A_Byte : out Byte_T)
      with Refined_Global  => (In_Out    => Read_FIFO),
@@ -65,7 +66,7 @@ is
                                               Pattern,
                                               Read_FIFO))
    is
-      Read_FIFO_Empty : constant Byte_T := 16#01#;
+      Read_FIFO_Empty : constant Byte_T := 16#010#;
       Current_Status : Byte_T;
       Next_Byte : Byte_T;
    begin
@@ -98,7 +99,7 @@ is
      with Refined_Global  => (Output => Control),
           Refined_Depends => (Control => null)
    is
-      In_FIFO_Clear : constant Byte_T := 16#01#;
+      In_FIFO_Clear : constant Byte_T := 16#010#;
    begin
       Control := In_FIFO_Clear;
    end Clear_In_FIFO;
@@ -107,7 +108,7 @@ is
      with Refined_Global  => (Output => Control),
           Refined_Depends => (Control => null)
    is
-      Out_FIFO_Clear : constant Byte_T := 16#02#;
+      Out_FIFO_Clear : constant Byte_T := 16#020#;
    begin
       Control := Out_FIFO_Clear;
    end Clear_Out_FIFO;

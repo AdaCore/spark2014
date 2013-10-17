@@ -1,4 +1,6 @@
-package Initializes_Illegal_4 is
+package Initializes_Illegal_4
+  with SPARK_Mode
+is
    G_Var, G_Var2 : Integer := 20;
 
    package Pac1

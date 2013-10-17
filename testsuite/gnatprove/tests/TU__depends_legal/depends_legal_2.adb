@@ -1,5 +1,6 @@
 package body Depends_Legal_2
-  with Refined_State => (State => Rec1)
+  with SPARK_Mode,
+       Refined_State => (State => Rec1)
 is
    type Dis_Rec (D : Boolean := True) is record
       case D is

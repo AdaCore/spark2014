@@ -9,7 +9,8 @@ package Initializes_Illegal_5
   --  determining the initial value of the state abstraction or variable
   --  denoted by the ``name`` of the ``initialization_item`` but are not
   --  constituents of the state abstraction.
-  with Abstract_State => State,
+  with SPARK_Mode,
+       Abstract_State => State,
        Initializes    => (State => Initializes_Illegal_5.Pr_Child.Pr_Var)
 is
    function F1 return Integer

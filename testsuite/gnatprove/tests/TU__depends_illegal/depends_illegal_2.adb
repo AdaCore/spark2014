@@ -1,5 +1,6 @@
 package body Depends_Illegal_2
-  with Refined_State => (A => (X, Y))
+  with SPARK_Mode,
+       Refined_State => (A => (X, Y))
 is
    X, Y : Natural;
 

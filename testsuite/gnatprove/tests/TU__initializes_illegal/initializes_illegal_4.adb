@@ -1,4 +1,6 @@
-package body Initializes_Illegal_4 is
+package body Initializes_Illegal_4
+  with SPARK_Mode
+is
    package body Pac1
      with Refined_State => (State => (Y,
                                       Z))

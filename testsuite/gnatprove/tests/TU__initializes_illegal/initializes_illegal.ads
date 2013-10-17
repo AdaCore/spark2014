@@ -1,4 +1,6 @@
-package Initializes_Illegal is
+package Initializes_Illegal
+  with SPARK_Mode
+is
    package Illegal_Syntax
      --  TU: ::
      --  initialization_spec ::= initialization_list
