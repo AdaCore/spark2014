@@ -167,8 +167,8 @@ Project` are equivalent.
    checkboxes and additional switches that were previously added are still
    appropriate.
 
-When editing an Ada file, |GNATprove| can also be run from the context menu,
-which can be obtained by a right click:
+When editing an Ada file, |GNATprove| can also be run from a
+:menuselection:`SPARK` contextual menu, which can be obtained by a right click:
 
 .. csv-table::
    :header: "Submenu", "Action"
@@ -231,24 +231,16 @@ information messages for checks proved.
 In mode ``all``, GNATprove behaves just as if both modes ``flow`` and
 ``prove`` were activated.
 
-|GNATprove| always generates :ref:`project statistics` in file
-``gnatprove.out``.
-
-.. _project statistics:
-
-Project Statistics
-------------------
-
-Based on the automatic detection of which subprograms are in |SPARK|,
-|GNATprove| generates global project statistics in file ``gnatprove.out``. The
-statistics describe:
+|GNATprove| generates global project statistics in file ``gnatprove.out``,
+which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
+Report`. The statistics describe:
 
 * which units were analyzed
 * which subprograms in these units were analyzed
 * the results of this analysis
 
-Warnings
-========
+Warning Control
+===============
 
 |GNATprove| issues three kinds of warnings, which are controlled separately:
 
