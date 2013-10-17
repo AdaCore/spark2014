@@ -3,7 +3,30 @@
 \usepackage{url}
 \usepackage{xspace}
 \usepackage{hyperref}
+\usepackage[usenames,dvipsnames]{color}
 \usepackage{listings}
+\newcommand{\CodeSymbol}[1]{\textcolor{Bittersweet}{#1}}
+\lstset{
+   language=Ada,
+   keywordstyle=\color{RedViolet}\ttfamily\bf,
+   showspaces=false,
+   basicstyle=\ttfamily,
+   commentstyle=\color{red}\textit,
+   stringstyle=\color{MidnightBlue}\ttfamily,
+   showtabs=false,
+   showstringspaces=false,
+   morekeywords=[1]Pre,
+   morekeywords=[2]Post,
+   morekeywords=[3]Test\_Case,
+   literate={(}{{\CodeSymbol{(}}}1
+            {)}{{\CodeSymbol{)}}}1
+            {>}{{\CodeSymbol{$>$}}}1
+            {<}{{\CodeSymbol{$<$}}}1
+            {=}{{\CodeSymbol{$=$}}}1
+            {:}{{\CodeSymbol{$:$}}}1
+            {.}{{\CodeSymbol{$.$}}}1
+            {;}{{\CodeSymbol{$;$}}}1
+}
 
 \newcommand{\DO}{\textsc{do-178}\xspace}
 \newcommand{\DOB}{\textsc{do-178b}\xspace}
@@ -195,7 +218,7 @@ required by a Mode Profile)''.
 
 We have converted above conditions into \newspark Boolean variables,
 with an explicit priority variable. Above condition thus becomes:
-\begin{lstlisting}[language=Ada]
+\begin{lstlisting}
 type priority_t is range 1..7;
 priority : priority_t;
 
@@ -224,7 +247,7 @@ merge of two speed restrictions, taking at each point the most
 restrictive one.
 
 To encode step function, we used the following data structure:
-\begin{lstlisting}[language=Ada]
+\begin{lstlisting}
 package Step_Function is pragma SPARK_Mode (On);
    type Num_Delimiters_Range is range 0 .. 10;
 
@@ -270,7 +293,7 @@ at the same priority. We thus used the \SPARK{Contract_Cases} of
 \newspark to check that all conditions are indeed disjoint. In
 practice, we wrote the following function specification:
 
-\begin{lstlisting}[language=Ada]
+\begin{lstlisting}
 function transition(mode : etcs_mode_t)
   return etcs_mode_t
 with Contract_Cases =>
@@ -286,7 +309,7 @@ Regarding the step functions, we wrote a formal specification for all
 functions. For example procedure \SPARK{Restrictive_Merge} has
 following contract:
 
-\begin{lstlisting}[language=Ada]
+\begin{lstlisting}
 procedure
  Restrictive_Merge(SFun1, SFun2 : in Step_Function_t;
                    Merge : out Step_Function_t)
