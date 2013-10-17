@@ -1004,11 +1004,16 @@ module Ada__containers__formal_ordered_maps__strict_equal
   axiom strict_equal__def:
     forall co1 co2 : map [strict_equal co1 co2].
     ((forall cu:cursor [position co1 cu | position co2 cu].
-       position co1 cu = position co2 cu) /\
+       position co1 cu > 0 <-> position co2 cu > 0) /\
      (forall cu:cursor [key co1 cu | key co2 cu]. position co1 cu > 0 ->
         Ada__containers__formal_ordered_maps__key_type.to_base (key co1 cu) = Ada__containers__formal_ordered_maps__key_type.to_base (key co2 cu)) /\
      (forall cu:cursor [element co1 cu | element co2 cu]. position co1 cu > 0 ->
         Ada__containers__formal_ordered_maps__element_type.to_base (element co1 cu) = Ada__containers__formal_ordered_maps__element_type.to_base (element co2 cu))) <->  strict_equal co1 co2 = True
+
+  axiom strict_equal__position:
+    forall co1 co2 : map [strict_equal co1 co2].
+    strict_equal co1 co2 = True -> (forall cu:cursor [position co1 cu | position co2 cu].
+       position co1 cu = position co2 cu)
 
   axiom strict_equal_length_:
     forall co1 co2 : map [strict_equal co1 co2].
