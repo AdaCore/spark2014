@@ -1404,10 +1404,20 @@ package body Why.Gen.Expr is
       --  are rewritten in a strange manner, so we do not do this optimization
       --  in that case. See also [New_Pretty_Label].
 
-      if (not Left_Most and then Is_VC) or else
-        (Comes_From_Source (N) and then Original_Node (N) /= N and then
-        Nkind (Original_Node (N)) = N_And_Then) then
+      if (not Left_Most and Is_VC)
+            or else
+         (Comes_From_Source (N)
+           and then Original_Node (N) /= N
+           and then Nkind (Original_Node (N)) = N_And_Then)
+      then
          Slc := Sloc (N);
+
+      --  First_Sloc does some magic to point before the opening parentheses in
+      --  an expression, which does not work on locations inside instances of
+      --  generics. Use Sloc on First_Node instead in that case.
+
+      elsif Instantiation_Location (Sloc (N)) /= No_Location then
+         Slc := Sloc (First_Node (N));
       else
          Slc := First_Sloc (N);
       end if;
