@@ -9,13 +9,13 @@ is
    Vol : Natural
      with Volatile,
           Async_Writers,
-          Address => System.Storage_Elements.To_Address (16#BBC#);
+          Address => System.Storage_Elements.To_Address (16#BBC0#);
 
    Vol2 : Natural
      with Volatile,
           Async_Writers,
           Effective_Reads,
-          Address => System.Storage_Elements.To_Address (16#CAB#);
+          Address => System.Storage_Elements.To_Address (16#CAB0#);
 
    package P is new Volatiles_Illegal_Helper.Gen (Size => Vol);
    --  TU: 8. A Volatile object shall not be used as an actual parameter in a

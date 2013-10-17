@@ -1,6 +1,8 @@
 with System.Storage_Elements;
 
-package body Volatiles_Illegal_9 is
+package body Volatiles_Illegal_9
+  with SPARK_Mode
+is
    procedure Embeded is
       --  TU: 5. The declaration of a Volatile object (other than as a formal
       --  parameter) shall be at library level. [That is, it shall not be

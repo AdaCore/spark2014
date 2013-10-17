@@ -1,6 +1,6 @@
-package body Volatiles_Illegal_4 is
-   procedure Scalar_Formal_Parameter (Par : in out Vol_Int_T);
-
+package body Volatiles_Illegal_4
+  with SPARK_Mode
+is
    procedure P1 (Par : in Vol_Rec_T ; Par2 : out Integer) is
    begin
       Par2 := Par.X;

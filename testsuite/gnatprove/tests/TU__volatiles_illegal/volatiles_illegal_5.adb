@@ -1,4 +1,6 @@
-package body Volatiles_Illegal_5 is
+package body Volatiles_Illegal_5
+  with SPARK_Mode
+is
    procedure Vol_Loop_Par (Par : in out Integer) is
    begin
       --  TU: 6. A constant, a discriminant or a loop parameter shall not be

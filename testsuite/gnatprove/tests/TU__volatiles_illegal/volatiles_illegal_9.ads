@@ -1,6 +1,8 @@
 with System.Storage_Elements;
 
-package Volatiles_Illegal_9 is
+package Volatiles_Illegal_9
+  with SPARK_Mode
+is
    pragma Elaborate_Body (Volatiles_Illegal_9);
 
    A : Integer;

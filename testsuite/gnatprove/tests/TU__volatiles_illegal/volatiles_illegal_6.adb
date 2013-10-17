@@ -1,7 +1,8 @@
 with System.Storage_Elements;
 
 package body Volatiles_Illegal_6
-  with Refined_State => (State => Vol)  --  Aspect Effective_Writes is set
+  with SPARK_Mode,
+       Refined_State => (State => Vol)  --  Aspect Effective_Writes is set
                                         --  for Vol while it is not set
                                         --  for State.
 is

@@ -1,8 +1,9 @@
 with System.Storage_Elements;
 
 package Volatiles_Illegal_1
-  with Abstract_State => (State1 with External => (Async_Readers,
-                                                   Async_Writers => True))
+  with SPARK_Mode,
+       Abstract_State => (State with External => (Async_Readers,
+                                                  Async_Writers => True))
        --  TU: 2. If just the name of the property is given then its value
        --  defaults to True [; for instance Async_Readers defaults to
        --  Async_Readers => True].

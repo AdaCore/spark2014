@@ -31,18 +31,18 @@ is
 
    B : Integer
      with Volatile,
-          Address => System.Storage_Elements.To_Address (16#B0B#);
+          Address => System.Storage_Elements.To_Address (16#B0B0#);
 
    type Vol_Rec_T is record
       X : Integer := 0;
    end record with Volatile;
 
    Vol1 : Vol_Rec_T
-     with Address => System.Storage_Elements.To_Address (16#ABC#);
+     with Address => System.Storage_Elements.To_Address (16#ABC0#);
 
    Vol2 : Vol_Rec_T
      with Async_Writers,
-          Address => System.Storage_Elements.To_Address (16#ABCD#);
+          Address => System.Storage_Elements.To_Address (16#ABCD0#);
 
    procedure P1 (Par : in Vol_Rec_T ; Par2 : out Integer);
    --  Par must have Async_Writers => True and Effective_Reads => False.

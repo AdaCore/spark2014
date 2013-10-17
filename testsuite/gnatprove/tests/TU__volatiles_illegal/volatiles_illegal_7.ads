@@ -1,7 +1,8 @@
 with System.Storage_Elements;
 
 package Volatiles_Illegal_7
-  with Abstract_State => State
+  with SPARK_Mode,
+       Abstract_State => State
        --  TU: 1. A state abstraction that is not specified as External shall
        --  not have ``constituents`` which are External states.
 

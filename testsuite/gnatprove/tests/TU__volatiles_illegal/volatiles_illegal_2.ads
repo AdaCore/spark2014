@@ -24,11 +24,6 @@ package Volatiles_Illegal_2
   --  TU: 4. The aspects shall only be specified in the aspect specification of
   --  a Volatile object declaration excluding Volatile formal parameter
   --  declarations.
-
-  --  TU: 12. A Volatile object shall only occur as an actual parameter of a
-  --  subprogram if the corresponding formal parameter is of a non-scalar
-  --  Volatile type or as an actual parameter in a call to an instance of
-  --  Unchecked_Conversion.
   with SPARK_Mode,
        Abstract_State => ((State with External => (others => False)),
                           --  The above should not be allowed.
@@ -42,30 +37,15 @@ package Volatiles_Illegal_2
                           --  Not a valid combination of options.
 
                           (State4 with External => (Async_Readers => False,
-                                                    others => True)),
+                                                    others => True)))
                           --  Another invalid combination of options.
-
-                          (State5 with External))
-  --  TU: 1. If an external state is declared without any of the external
-  --  properties specified then all of the properties default to a value
-  --  of True.
 is
    X : Integer
      with Async_Writers,
-          Address => System.Storage_Elements.To_Address (16#B01D#);
+          Address => System.Storage_Elements.To_Address (16#B01D0#);
    --  Cannot have property Async_Writers on a non-Volatile.
-
-   type Vol_Int_T is new Integer with Volatile;
-
-   procedure Scalar_Formal_Parameter (Par : in out Vol_Int_T);
-   --  Volatile formal parameter Par is a scalar.
 
    procedure Proc (X : Integer with Volatile, Async_Readers);
    --  Formal parameter declarations cannot have Volatile and/or
    --  Async_Readers.
-
-   procedure Proc2
-     with Global => (Input => State5);
-   --  State5 has Effective_Reads set to True, so it cannot be a
-   --  Global Input parameter.
 end Volatiles_Illegal_2;

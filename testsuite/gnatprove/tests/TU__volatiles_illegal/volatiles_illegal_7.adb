@@ -1,8 +1,9 @@
 with System.Storage_Elements;
 
 package body Volatiles_Illegal_7
-  with Refined_State => (State => Vol)     --  State was not declared as
-                                           --  External.
+  with SPARK_Mode,
+       Refined_State => (State => Vol)  --  State was not declared as
+                                        --  External.
 is
    Vol : Natural
      with Volatile,
